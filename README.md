@@ -31,7 +31,16 @@ scripts are built from source, see [Scripts](docs/scripts.md).
 
 1. Use Linux (or WSL on Windows), with Python 3.11 or later, ninja, and clang and LLVM, whose `clang` and
    `llvm-objcopy` assemble the scripts and must be on the `PATH`. macOS needs Wine for the Metrowerks tools
-   (`configure.py --wine wine`).
+   (`configure.py --wine wine`). The scripts need the Python packages in `requirements.txt`; the docs run them from
+   a virtual environment in `.venv`:
+
+   ```sh
+   python3 -m venv .venv
+   .venv/bin/pip install -r requirements.txt
+   ```
+
+   With [Nix](https://nixos.org), `nix develop` gives a shell with all of the above from `flake.nix`. On NixOS the
+   release binary of dsd doesn't run, so configure with `--dsd-from-source`; the shell has cargo for it.
 
 2. Place your own dumps at `orig/baserom_b2_us.nds` and/or `orig/baserom_w2_us.nds`. They must match the SHA1s above.
    They are not included and will not be provided. `tools/scripts/verify_dsi_rom.py` checks a dump against the

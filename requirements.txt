@@ -1,0 +1,4 @@
+capstone
+cryptography
+pyelftools
+PyYAML
