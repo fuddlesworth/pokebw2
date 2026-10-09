@@ -5,22 +5,42 @@
 #include "struct_decls.h"
 
 // RecordSave is the block that getRecordBlkAddress returns. The encrypted records that GameData_GetRecords returns
-// are GameRecords
+// are GameRecords: the counters of the first 0x47 records are words, and those of the rest halfwords. All but the
+// first are encrypted, with the sum of them as the seed
+
+#define RECORD_COUNT_WORD 0x47
+#define RECORD_COUNT 0xa7
+
+struct GameRecords {
+    u32 words[RECORD_COUNT_WORD];
+    u16 halfwords[RECORD_COUNT - RECORD_COUNT_WORD];
+    u16 checksum;
+    u16 seedHigh;
+};
+
+// The size of the records
+u32 func_020093d0(void);
+void initTrainerCardInfoBlk(GameRecords *records);
+void EncryptRecordStorage(GameRecords *records, u32 id);
+void DecryptRecordStorage(GameRecords *records, u32 id);
+u32 GetRecordCounter(GameRecords *records, int id);
+u32 SetRecordCounter(GameRecords *records, int id, u32 value);
+u32 GetRecordCounterMax(u32 id);
+// Sets a record to value, or to its maximum
+u32 func_020094cc(GameRecords *records, u32 id, u32 value);
 
 // Clears the flag that is set, with the console's MAC address and the time, while a match is in progress
 void RecordSave_ClearMatchInProgress(RecordSave *record);
 
-void RecordAddOne(GameRecords *records, u32 id);
-// The size of the records
-u32 func_020093d0(void);
+u32 RecordAddOne(GameRecords *records, u32 id);
 u32 RecordGet(GameRecords *records, u32 id);
-void RecordAdd(GameRecords *records, u32 id, u32 value);
+u32 RecordAdd(GameRecords *records, u32 id, u32 value);
 // Sets a record to value if that is higher, up to the record's maximum
-void func_02009508(GameRecords *records, u32 id, u32 value);
+u32 func_02009508(GameRecords *records, u32 id, u32 value);
 // The Trial House's best rank and best points
 void func_02009618(GameRecords *records, u8 rank);
 // The Battle Test rank
-u16 func_02009628(GameRecords *records);
+u8 func_02009628(GameRecords *records);
 // Record 0x7c
 u32 func_02009650(GameRecords *records);
 void func_020095e0(GameRecords *records);
