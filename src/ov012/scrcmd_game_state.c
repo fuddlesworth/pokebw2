@@ -44,31 +44,31 @@ BOOL s00E0_GameGetVersion(VM *vm, FieldScriptEnv *env) {
 BOOL func_ov012_02155608(VM *vm, FieldScriptEnv *env) {
     GameData *gameData;
     SaveControl *save;
-    TrainerDataSave *trainerData;
+    Config *trainerData;
     u32 mode;
 
     gameData = FieldScriptEnv_GetGameData(env);
     save = GameData_GetSaveControl(gameData);
-    trainerData = getTrainerDataBlkAddress(save);
+    trainerData = (Config *)getTrainerDataBlkAddress(save);
     mode = func_02008a84(trainerData);
     if (mode == 0) {
         mode = 1;
     } else if (mode == 1) {
         mode = 0;
     }
-    func_02008a8c((Config *)trainerData, mode);
+    func_02008a8c(trainerData, mode);
     return FALSE;
 }
 
 BOOL func_ov012_02155638(VM *vm, FieldScriptEnv *env) {
     GameData *gameData;
     SaveControl *save;
-    TrainerDataSave *trainerData;
+    Config *trainerData;
     u16 *value;
 
     gameData = FieldScriptEnv_GetGameData(env);
     save = GameData_GetSaveControl(gameData);
-    trainerData = getTrainerDataBlkAddress(save);
+    trainerData = (Config *)getTrainerDataBlkAddress(save);
     value = ScriptReadVar(vm, env);
     *value = func_02008a84(trainerData);
     return FALSE;
@@ -421,7 +421,7 @@ BOOL s00E2_SaveDataCheckRequired(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     GameData *gameData = GSYS_GetGameData(gsys);
     SaveControl *save = GameData_GetSaveControl(gameData);
-    TrainerDataSave *config = getTrainerDataBlkAddress(save);
+    Config *config = (Config *)getTrainerDataBlkAddress(save);
     u16 *value = ScriptReadVar(vm, env);
 
     switch (func_02008ac8(config)) {

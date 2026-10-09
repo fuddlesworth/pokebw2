@@ -7821,7 +7821,7 @@ data_0208f021_w2_us kind:data(any) addr:0x0208f021
 SAVEDATA_INIT kind:data(any) addr:0x0208f18c
 dna_splicer_item_idxs kind:data(any) addr:0x0208f4f8
 ITEM_CATEGORIES kind:data(any) addr:0x0208f4fc
-data_0208f750 kind:data(any) addr:0x0208f77c
+sKeyRemaps kind:data(any) addr:0x0208f77c
 data_0208f78c kind:data(any) addr:0x0208f7b8
 nines kind:data(any) addr:0x0208f7cc
 data_0208f7b8 kind:data(any) addr:0x0208f7e4
