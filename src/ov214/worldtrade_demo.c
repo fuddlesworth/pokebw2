@@ -237,7 +237,7 @@ PlayerInfo *WorldTrade_MakePartnerStatus(Dpw_Tr_Data *dtd) {
     func_02008bf8(info, dtd->trainerType);
     func_02008c14(info, dtd->countryCode, dtd->localCode);
     info->id = dtd->trainerID;
-    info->unk14 = dtd->id;
+    info->profileId = dtd->id;
     return info;
 }
 

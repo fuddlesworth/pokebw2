@@ -47,7 +47,7 @@ UnityTowerVisitor *func_02009e68(UnityTowerSurveySave *save);
 BOOL func_02009e6c(UnityTowerSurveySave *save, u32 country);
 // Counts one more country met
 void func_02009d04(UnityTowerSurveySave *save);
-u8 UnityTowerVisitor_GetProvince(void *visitor);
+u8 UnityTowerVisitor_GetProvince(PlayerInfo *playerInfo);
 u8 UnityTowerVisitor_GetCountry(PlayerInfo *playerInfo);
 u32 UnityTower_GetVisitorParam(UnityTowerSurveySave *save, u32 index, u32 param);
 void func_02009db4(UnityTowerSurveySave *save, u32 index, u32 param, u32 value);

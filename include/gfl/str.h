@@ -38,8 +38,8 @@ u16 GFL_StrBufGetTerminator(void);
 void GFL_StrBufConcat(StrBuf *dest, const StrBuf *src);
 void GFL_StrBufAppend(StrBuf *strbuf, u16 c);
 
-// From a game file at 0x02008ba0, which is not decompiled yet
+// From mystatus.c
 void textCopy(const u16 *src, StrBuf *dest);
-StrBuf *copyTrainerNameToNewStrbuf(const u16 *name, HeapID heapId);
+StrBuf *copyTrainerNameToNewStrbuf(const u16 *name, u32 heapId);
 
 #endif // POKEBW2_GFL_STR_H

@@ -84,7 +84,7 @@ static void WBSaveConvert_ReadPlayer(void *save, WBSavePlayer *player) {
     player->id = info->id;
     sys_memcpy(info->name, player->name, sizeof(player->name));
     player->gender = info->gender;
-    player->unk15 = info->unk1B;
+    player->unk15 = info->version;
 }
 
 static void WBSaveConvert_ReadMemories(void *save, WBSaveMemories *memories) {

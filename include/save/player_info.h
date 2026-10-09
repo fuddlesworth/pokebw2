@@ -12,15 +12,21 @@
 struct PlayerInfo {
     u16 name[8];
     u32 id;
-    u32 unk14;
-    u8 unk18[3];
-    u8 unk1B;
+    // The GameSpy profile ID
+    s32 profileId;
+    u8 country;
+    u8 province;
+    u8 region;
+    // The game version the player started on, VERSION_BLACK2 or VERSION_WHITE2
+    u8 version;
     u8 unk1C;
     u8 gender;
     u8 unk1E[2];
 };
 
 u16 *GetPlayerName(PlayerInfo *info);
+// Copies at most n characters of a name, as wcharsncpy does
+void copyName(const u16 *src, u16 *dest, u32 n);
 u32 PlayerInfo_GetSize(void);
 u32 getTrainerGender(PlayerInfo *info);
 u16 getTrainerID(PlayerInfo *info);
