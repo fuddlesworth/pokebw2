@@ -446,7 +446,7 @@ static BOOL BattleRecTool_StoreSetupParams(const BtlSetup *setup, BattleRecSetup
     rec->unk30 = setup->unkA2;
     rec->unk32_5 = setup->fieldSituation.unk19;
     rec->unk33_7 = setup->unk97 ? TRUE : FALSE;
-    initConfig(setup->config, (TrainerDataSave *)rec->config);
+    initConfig(setup->config, (Config *)rec->config);
     return TRUE;
 }
 

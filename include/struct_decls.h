@@ -56,6 +56,7 @@ typedef struct Calendar Calendar;
 typedef struct CodeInParam CodeInParam;
 typedef struct CommPlayerSupport CommPlayerSupport;
 typedef struct CommPlayerSys CommPlayerSys;
+typedef struct Config Config;
 typedef struct FldCommActSys FldCommActSys;
 typedef struct GFLBitmap GFLBitmap;
 typedef struct GameBeacon GameBeacon;

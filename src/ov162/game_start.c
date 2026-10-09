@@ -329,7 +329,7 @@ static BOOL NewGame_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     func_02005b60(wk->preloadedSeqs);
     SaveControlIntr_Free(wk->saveTask);
     func_02008b34(wk->newPlayerInfo, SaveControl_GetPlayerInfo(save));
-    initConfig(wk->newConfig, getTrainerDataBlkAddress(save));
+    initConfig(wk->newConfig, (Config *)getTrainerDataBlkAddress(save));
     copyRivalNameIntoHollowBlock(getHollow_RivalData(save), wk->rivalName);
     GFL_HeapFree(wk->newPlayerInfo);
     GFL_HeapFree(wk->newConfig);
@@ -384,7 +384,7 @@ static BOOL Continue_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     gameInfoValues[0] = func_0200ca64(wk->gameInfo);
     gameInfoValues[1] = func_0200ca74(wk->gameInfo);
     func_02007324(save);
-    func_02008ab4(getTrainerDataBlkAddress(save));
+    func_02008ab4((Config *)getTrainerDataBlkAddress(save));
     func_02008fb8(save, &location);
     GCTX_ProcMgrReplaceProc(OVERLAY_NONE, &GAMESYSTEM_PROC_FUNCTIONS,
                             GameSystem_CreateProcData(GAME_ENTRYPOINT_FIELD_CONTINUE, location.zoneId,

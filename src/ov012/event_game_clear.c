@@ -223,7 +223,7 @@ void func_ov012_0215a50c(GameClearWork *work) {
 
     work->ov266Param.unk00 = work->unk08 == 1;
     work->ov266Param.playerInfo = GetGameDataPlayerInfo(work->gameData);
-    value = func_02008a84(getTrainerDataBlkAddress(GameData_GetSaveControl(work->gameData)));
+    value = func_02008a84((Config *)getTrainerDataBlkAddress(GameData_GetSaveControl(work->gameData)));
     work->ov266Param.unk04 = value;
     work->ov267Param.unk00 = value;
 }

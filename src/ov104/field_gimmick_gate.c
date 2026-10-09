@@ -137,7 +137,7 @@ void func_ov104_021eec80(Field *field) {
     FieldExpObjSystem *expObj = Field_GetExpObjSystem(field);
     GimmickGateWork *work;
 
-    func_02008a84(getTrainerDataBlkAddress(GameData_GetSaveControl(GSYS_GetGameData(Field_GetGameSystem(field)))));
+    func_02008a84((Config *)getTrainerDataBlkAddress(GameData_GetSaveControl(GSYS_GetGameData(Field_GetGameSystem(field)))));
     LoadFieldExpandObjData(expObj, &data_ov104_021f03d0[1], 1);
     work = func_ov104_021eee34(field);
     func_ov104_021eeee0(work);
