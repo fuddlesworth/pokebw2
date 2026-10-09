@@ -5,6 +5,7 @@
 #include "gfl/heap.h"
 #include "nitro/fx.h"
 #include "nitro/rtc.h"
+#include "save/playtime.h"
 #include "struct_decls.h"
 
 SaveControl *SaveControl_GetInstance(void);
@@ -280,18 +281,6 @@ EventWork *getConstDataBlock(SaveControl *save);
 PokeDexSave *getPokedexSaveAddress(SaveControl *save);
 // The play time: hours and minutes
 PlayTime *func_02008de8(SaveControl *save);
-u16 func_02008cec(PlayTime *time);
-u8 func_02008cf0(PlayTime *time);
-// The date and time of the last save, which the play time's word at 4 holds as bit fields: the year, month, day, hour
-// and minute
-u32 func_02008d68(PlayTime *time);
-u32 func_02008d70(PlayTime *time);
-u32 func_02008d78(PlayTime *time);
-u32 func_02008d80(PlayTime *time);
-u32 func_02008d88(PlayTime *time);
-// Copy the word at 4 of the play time out and back
-void func_02008d90(PlayTime *time, u32 *copy);
-void func_02008d98(PlayTime *time, u32 *copy);
 // A byte of this block, at 7, tells the start menu whether to ask about the C-Gear
 void *func_02009918(SaveControl *save);
 // Mark the downloaded C-Gear skin as there, and keep its CRC
