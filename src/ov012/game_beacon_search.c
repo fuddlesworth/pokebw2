@@ -4,6 +4,7 @@
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_system.h"
+#include "gfl/net_whpipe.h"
 #include "gfl/std.h"
 #include "gfl/ui.h"
 #include "nitro/os.h"

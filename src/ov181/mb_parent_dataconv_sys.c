@@ -9,6 +9,7 @@
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "gfl/ui.h"
+#include "gfl/wih.h"
 #include "gfl/wm_icon.h"
 #include "nitro/mb.h"
 #include "nitro/os.h"

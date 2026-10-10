@@ -4,15 +4,15 @@
 #include "types.h"
 #include "gfl/heap.h"
 
-// The Wi-Fi connection of the network library (dwc_rap.c and dwc_rapcommon.c, in overlay 11)
+// dwc_rap.c, in overlay 11: the GFL net's Wi-Fi connection, over Nintendo's DWC library
+
+// Asked about a connection event, with its work and three of the event's values
+typedef u32 (*DWCRapEventFunc)(void *work, int a1, int event, int a3);
 
 void func_ov011_021516a0(BOOL a0);
-void func_ov011_021520a0(u32 a0, u32 size, HeapID heapId);
 // Sets the function called when the connection is lost
 void func_ov011_02152040(void (*func)(void *work, int a1, int code), void *work);
 // Sets a function asked about connection events, with its work
-void func_ov011_0215205c(u32 (*func)(void *work, int a1, int event), void *work);
-void func_ov011_02152158(void);
-BOOL func_ov011_02152404(u32 a0, u32 a1);
+void func_ov011_0215205c(DWCRapEventFunc func, void *work);
 
 #endif // POKEBW2_GFL_DWC_RAP_H

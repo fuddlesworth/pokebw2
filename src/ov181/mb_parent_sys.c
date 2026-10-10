@@ -28,6 +28,7 @@
 #include "gfl/tcb.h"
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
+#include "gfl/wih.h"
 #include "gfl/wm_icon.h"
 #include "nitro/card.h"
 #include "nitro/fs.h"

@@ -32,7 +32,7 @@ struct GSyncDownload {
 };
 
 static void GSyncDownload_OnNdEvent(u32 reason, u32 error);
-static u32 GSyncDownload_OnDwcEvent(void *work, int a1, int event);
+static u32 GSyncDownload_OnDwcEvent(void *work, int a1, int event, int a3);
 static BOOL GSyncDownload_UpdateTimer(GSyncDownload *dl);
 
 static GSyncDownload *_pDLWork;
@@ -77,7 +77,7 @@ void *GSyncDownload_GetBuffer(GSyncDownload *dl) {
     return dl->buffer;
 }
 
-static u32 GSyncDownload_OnDwcEvent(void *work, int a1, int event) {
+static u32 GSyncDownload_OnDwcEvent(void *work, int a1, int event, int a3) {
     GSyncDownload *dl = work;
 
     if (!dl->cleanedUp && func_ov189_021a57dc()) {
