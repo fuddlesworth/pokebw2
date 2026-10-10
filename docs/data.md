@@ -510,7 +510,7 @@ Unlike a regular trainer (see [Trainers](#trainers)), a facility trainer has no 
 its sets at random, and the facility sets the level and IVs. The sets are a pool that many trainers share, which is why
 they are files of their own that trainers name.
 
-## Map matrices and areas
+## Map matrices, areas and lights
 
 A zone's header names its map matrix, `data/map_matrices/<matrix>.json` (`a/0/0/9`), by its constant in
 `data/constants/map_matrices.txt`, which names a matrix after the first zone that uses it, the overworld's
@@ -522,6 +522,13 @@ The areas, `data/areas/areas.json`, are the records of `a/0/1/3` (`AreaData`), w
 share: their props, textures, animations (null for none), lights and colors, by the numbers of files that aren't built
 from source yet. A zone's header names its area by its number, and an area with seasons has a record per season after
 it. `tools/scripts/area_data.py` packs them. Both versions have the same matrices and areas.
+
+An area's lights are a lighting set, `data/lights/field/<n>.json` (`a/0/6/0`, `ARCID_LIGHTS_FIELD`), by its number;
+the battles' are `data/lights/battle/<n>.json` (`a/0/6/1`). A set is the periods of the day, which
+`FieldLight_FlushCore` applies in turn: when each ends (an hour of the season's table and minutes after it), the four
+lights (on or off, color and direction in 4096ths), the materials' diffuse, ambient, specular and emission colors, the
+fog's color and the color the screen clears to. Colors are 0 to 31 per component. `tools/scripts/light_data.py`
+packs them, and both versions have the same sets.
 
 ## Zone events
 
