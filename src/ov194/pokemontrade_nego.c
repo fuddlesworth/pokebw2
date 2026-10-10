@@ -1,8 +1,10 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "app/ov139.h"
 #include "app/pokemon_trade_local.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -1262,7 +1264,7 @@ static void func_ov194_021bdcc4(PokemonTradeWork *wk) {
                     PartyPkm *pkm = wk->negoPkm[1][i];
                     if (func_ov189_0219d3e8(response, count)) {
                         u32 item = PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
-                        MsgData *msgData = GFL_MsgSysLoadData(FALSE, 2, 101, wk->heapId);
+                        MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, wk->heapId);
                         StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, MSG_INVALID_PKM_TRAINER);
                         GFL_MsgDataFree(msgData);
                         if (PML_ItemIsMail(item)) {

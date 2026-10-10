@@ -5,6 +5,7 @@
 #include "app/pms_select_graphic.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -207,7 +208,7 @@ static BOOL PMSSelect_Init(GameProc *proc, u32 *state, void *param, void *work) 
     wk->wordSave = getDexBlkAddress(selectParam->save);
     wk->param = selectParam;
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 159, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PMS_INPUT, wk->heapId);
     wk->queue = func_02021998(wk->heapId);
     wk->procMgr = CreateGameProcManager(wk->heapId);
     wk->prevPos = POS_NONE;

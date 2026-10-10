@@ -7,7 +7,9 @@
 #include "constants/field_script.h"
 #include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/script_text_banks.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "field/event_poke_status.h"
 #include "field/field.h"
 #include "field/field_camera.h"
@@ -1041,7 +1043,7 @@ static void ShopUI_LoadPokeMartItems(ShopUIWork *wk, u32 shopId, u32 fileId, u32
     u32 file;
     int i;
 
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 64, wk->heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_NAMES, wk->heapId);
     counts = GFL_ArcSysReadHeapNew(ARCID_SHOP_ITEM_COUNTS, 0, HEAPID_TAIL(wk->heapId));
     if (shopId == SHOP_ID_BADGE_MART) {
         file = BADGE_SHOP_DAT_IDS[badges];
@@ -1072,7 +1074,7 @@ static void ShopUI_LoadPokeMartItems(ShopUIWork *wk, u32 shopId, u32 fileId, u32
 static void ShopUI_LoadBPShopItems(ShopUIWork *wk, u32 index) {
     int count;
     int i = 0;
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 64, wk->heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_NAMES, wk->heapId);
     const ShopItem *items = BP_SHOP_ITEMS[index];
 
     count = BP_SHOP_ITEM_COUNTS[index];
@@ -1114,7 +1116,7 @@ static void ShopUI_LoadSpecialPokeMartItems(ShopUIWork *wk, int shopId) {
 
 static void ShopUI_LoadMoveTutorItems(ShopUIWork *wk, u32 tutor) {
     int i = 0;
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 64, wk->heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_NAMES, wk->heapId);
     const MoveTutorShopItem *items = MOVE_TUTOR_SHOP_ITEMS[tutor];
     int count = MOVE_TUTOR_SHOP_ITEM_COUNTS[tutor];
 
@@ -1138,9 +1140,9 @@ static void ShopUI_FreeListMenu(ShopUIWork *wk) {
 }
 
 static u32 ShopUI_LoadMsgData(ShopUIWork *wk, u32 shopId) {
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, 613, wk->heapId);
-    wk->itemInfoMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 63, wk->heapId);
-    wk->moveInfoMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 402, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_0613, wk->heapId);
+    wk->itemInfoMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_DESCRIPTIONS, wk->heapId);
+    wk->moveInfoMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_13, wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
     wk->message = GFL_StrBufCreate(200, wk->heapId);
     wk->tcbManager = GFL_TCBExMgrCreate(wk->heapId, wk->heapId, 32, 32);

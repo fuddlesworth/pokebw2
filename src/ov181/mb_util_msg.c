@@ -1,6 +1,7 @@
 #include "types.h"
 #include "app/mb_parent/mb_util_msg.h"
 #include "constants/arc.h"
+#include "constants/script_text_banks.h"
 #include "field/talkmsgwin.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -412,7 +413,7 @@ int MBUtilMsg_UpdateConfirm(MBUtilMsg *msg) {
 }
 
 void MBUtilMsg_PrintNoWireless(MBUtilMsg *msg, s32 wait) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, 0xd0, msg->heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, msg->heapId);
 
     if (msg->stream != NULL) {
         func_020223cc(msg->stream);

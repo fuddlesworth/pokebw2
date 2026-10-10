@@ -1,5 +1,7 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
+#include "constants/text_banks.h"
 #include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
@@ -33,7 +35,7 @@ static void func_ov055_021e65c8(GameData *gameData, u16 *counts);
 static BOOL func_ov055_021e65e8(GameData *gameData, u32 tournament, u16 *counts);
 
 void func_ov055_021e6388(HeapID heapId, u32 message, StrBuf *strbuf) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, 2, 409, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY, heapId);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);
@@ -42,7 +44,7 @@ void func_ov055_021e6388(HeapID heapId, u32 message, StrBuf *strbuf) {
 }
 
 void func_ov055_021e63b4(HeapID heapId, u32 message, StrBuf *strbuf) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, 2, 410, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_2, heapId);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);
@@ -94,7 +96,7 @@ static int func_ov055_021e647c(int style) {
 
 void func_ov055_021e6488(int style, StrBuf *strbuf) {
     u16 message = sBattleStyles[func_ov055_021e647c(style)].name;
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, 2, 405, HEAPID_FIELDMAP);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_WBT_PARTY, HEAPID_FIELDMAP);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);

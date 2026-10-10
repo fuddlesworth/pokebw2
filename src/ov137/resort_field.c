@@ -1,4 +1,6 @@
 #include "types.h"
+#include "constants/arc.h"
+#include "constants/script_text_banks.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/field_camera.h"
@@ -1158,7 +1160,7 @@ static ResortBubbles *func_ov137_021efdac(HeapID heapId, void *msgBGSys, ResortP
     bubbles->info = info;
     bubbles->occupants = occupants;
     bubbles->enabled = enabled;
-    bubbles->msgData = GFL_MsgSysLoadData(FALSE, 3, 203, heapId);
+    bubbles->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_JOIN_AVENUE, heapId);
     for (i = 0; i < RESORT_BUBBLES; i++) {
         func_ov137_021f022c(&bubbles->bubbles[i], i, heapId);
     }

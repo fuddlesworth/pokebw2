@@ -5,6 +5,7 @@
 #include "app/title.h"
 #include "constants/arc.h"
 #include "constants/species.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -509,7 +510,7 @@ static void TitleBG_Init(TitleBG *bg, HeapID heapId) {
     GFL_BGSysLoadScr(5);
     bg->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, heapId);
     bg->printQueue = func_02021998(heapId);
-    bg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 373, heapId);
+    bg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_16, heapId);
     bg->strbuf = GFL_StrBufCreate(64, heapId);
     GFL_MsgDataLoadStrbuf(bg->msgData, 1, bg->strbuf);
     width = GFL_FontGetBlockWidth(bg->strbuf, bg->font, 0);

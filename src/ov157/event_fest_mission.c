@@ -1,4 +1,6 @@
 #include "types.h"
+#include "constants/arc.h"
+#include "constants/script_text_banks.h"
 #include "field/event_fest_mission.h"
 #include "constants/sound.h"
 #include "field/encounter.h"
@@ -167,7 +169,7 @@ static void FestMissionEvent_Init(FestMissionEventWork *work, GameSystem *gsys, 
     work->festival = GSYS_GetLinkFestival(gsys);
     work->festText = getTextFileForFestMissions(work->heapId);
     work->passPowerData = PassPowerData_Create(work->heapId);
-    work->msgData = GFL_MsgSysLoadData(FALSE, 3, 412, work->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_0412, work->heapId);
     work->wordSet = GFL_WordSetSystemCreate(6, 48, work->heapId);
     work->strbuf = GFL_StrBufCreate(161, work->heapId);
     work->formatted = GFL_StrBufCreate(161, work->heapId);

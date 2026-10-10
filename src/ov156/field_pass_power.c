@@ -1,6 +1,8 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "field/field_pass_power.h"
 #include "constants/items.h"
+#include "constants/script_text_banks.h"
 #include "constants/sound.h"
 #include "field/field.h"
 #include "field/field_actor.h"
@@ -135,7 +137,7 @@ static void PassPowerList_Init(PassPowerListWork *work, GameSystem *gsys, Field 
     work->msgBGSys = Field_GetMsgBGSys(work->field);
     work->actorSystem = Field_GetActorSystem(work->field);
     work->passPowerData = PassPowerData_Create(work->heapId);
-    work->msgData = GFL_MsgSysLoadData(FALSE, 3, 414, work->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10435, work->heapId);
     work->wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     work->strbuf = GFL_StrBufCreate(129, work->heapId);
     work->formatted = GFL_StrBufCreate(129, work->heapId);

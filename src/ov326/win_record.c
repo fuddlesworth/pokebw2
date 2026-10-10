@@ -4,6 +4,7 @@
 #include "app/win_record_graphic.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -375,7 +376,7 @@ static BOOL WinRecord_Init(GameProc *proc, u32 *state, void *param, void *work) 
     wk->param = param;
     wk->graphic = WinRecordGraphic_Create(0, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 411, wk->heapId);
+    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0411, wk->heapId);
     wk->msgData[1] = NULL;
     wk->printQueue = func_02021998(wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);

@@ -5,6 +5,7 @@
 #include "app/gsync.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -512,8 +513,8 @@ static void GSyncMenu_LoadGraphics(GSyncMenuWork *wk) {
 
     wk->strBuf = GFL_StrBufCreate(300, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 44, wk->heapId);
-    wk->dsiMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 439, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0044, wk->heapId);
+    wk->dsiMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_ERROR, wk->heapId);
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_GSYNC_MENU, wk->heapId);
     GFL_G2DIOLoadArcNCLRDefault(arc, 1, PALTYPE_SUB_BG, 0, 0, wk->heapId);

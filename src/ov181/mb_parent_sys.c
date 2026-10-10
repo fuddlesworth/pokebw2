@@ -7,6 +7,7 @@
 #include "constants/field_script.h"
 #include "constants/items.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "constants/version.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -745,7 +746,7 @@ static void MBParent_DrawTopScreen(MBParentWork *wk) {
     GFL_BGSysLoadScr(bg);
     GFL_ArcToolFree(arc);
     window = BmpWin_CreateDynamic(bg, 1, 4, 30, 8, 7, TRUE);
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 0x66, wk->heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_STARTMENU_GFL_NET_ERR_DISP_MESSAGE, wk->heapId);
     strbuf = GFL_MsgDataLoadStrbufNew(msgData, 1);
     GFL_BitmapFill(BmpWin_GetBitmap(window), 7);
     GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(window), 0, 0, strbuf, MBUtilMsg_GetFont(wk->msg), 0x1167);

@@ -133,7 +133,7 @@ Egg and Bad Egg after the species' names:
 | `place_names.txt` | `\from{places.name}` | Each place's `name` |
 | `ability_names_upper.txt` | `\from{abilities.name_upper}` | Each ability's `name` in capitals, from ability 1 |
 | `trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
-| `trainer_msg_load_2.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
+| `trainer_messages.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
 In the JSON, a line break is a real one (`"\n"` in the JSON) rather than `\n`; control codes and other escapes are as
 in the text files. The other languages' Pokédex entries and categories, which the game keeps for older species, stay
@@ -147,7 +147,8 @@ file's after its first script ID (`global_10885.txt`). A system message file is 
 word set function that loads it or its contents show (`move_names.txt`, `natures.txt`), or else after the source file or
 function that loads it (`delete_save.txt`); the others keep their number until they are known (`0001.txt`), as
 `TEXT_BANK_0001`. To rename one, rename its constant with `rename_constant.py`, which renames the file. Both versions
-have the same text.
+have the same text. The code names a message file by its constant too: `GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE,
+TEXT_BANK_TRADE_NAMES, heapId)`, from `constants/text_banks.h` and `constants/script_text_banks.h`.
 
 ## Species
 

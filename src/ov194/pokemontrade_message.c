@@ -4,6 +4,7 @@
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
+#include "constants/text_banks.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
@@ -192,7 +193,7 @@ void func_ov194_021bfe9c(PokemonTradeWork *wk) {
 
 void func_ov194_021bfedc(PokemonTradeWork *wk) {
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, 2, 177, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_3, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->drawStr = GFL_StrBufCreate(128, wk->heapId);
     wk->drawTemplate = GFL_StrBufCreate(128, wk->heapId);
@@ -467,7 +468,7 @@ static void func_ov194_021c0790(PartyPkm *pkm, BmpWin *window, int x, int y, Pok
 
 // The nature
 static void func_ov194_021c0848(PartyPkm *pkm, BmpWin *window, int x, int y, PokemonTradeWork *wk) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, 2, 27, wk->heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NATURES, wk->heapId);
     GFL_MsgDataLoadStrbuf(msgData, PokeParty_GetNature(pkm), wk->drawStr);
     GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), x, y, wk->drawStr, wk->font);
     GFL_MsgDataFree(msgData);

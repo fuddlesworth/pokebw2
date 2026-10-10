@@ -1,6 +1,7 @@
 #include "types.h"
 #include "app/name_entry.h"
 #include "constants/arc.h"
+#include "constants/text_banks.h"
 #include "field/field_event.h"
 #include "field/field_script.h"
 #include "field/ov117.h"
@@ -170,7 +171,7 @@ static void PlasmaFrigate_CheckPassword(PlasmaFrigatePassword *wk, NameEntryPara
         *wk->result = FALSE;
         return;
     }
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 48, wk->heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_PLASMA_FRIGATE_SCRCMD_BSUBWAY, wk->heapId);
     password = GFL_MsgDataLoadStrbufNew(msgData, PlasmaFrigate_GetPasswordIndex(wk->playerInfo));
     if (GFL_StrBufCmpIgnoreAccents(nameEntry->name, password) == TRUE) {
         *wk->result = TRUE;

@@ -1,6 +1,9 @@
 // The report: the screen that asks whether to save the game, saves it alongside the field and says so. Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
+#include "constants/arc.h"
+#include "constants/script_text_banks.h"
+#include "constants/text_banks.h"
 #include "field/event_save.h"
 #include "field/field.h"
 #include "field/field_actor.h"
@@ -90,7 +93,7 @@ u32 EventSave_Update(EventSaveWork *work, u32 *state) {
         if (FieldSubscreen_IsReady(Field_GetSubscreen(work->field)) == TRUE &&
             func_ov036_02198b04(Field_GetSubscreen(work->field)) == TRUE) {
             work->report = GFL_HeapAllocate(work->heapId, sizeof(ReportWork), FALSE, "report_event.c", 159);
-            work->report->msgData = GFL_MsgSysLoadData(FALSE, 3, 0xd0, work->heapId);
+            work->report->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, work->heapId);
             work->report->strbuf = GFL_StrBufCreate(0x200, work->heapId);
             work->report->tcbManager = GFL_TCBExMgrCreate(work->heapId, work->heapId, 1, 4);
             work->report->cursor = KeyCursor_Create(0xf, 1, 1, work->heapId);
@@ -363,7 +366,7 @@ static BOOL func_ov012_02164110(EventSaveWork *work) {
 }
 
 static void func_ov012_02164150(EventSaveWork *work) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, 2, 0x167, work->heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0359, work->heapId);
 
     work->report->items[0].str = GFL_MsgDataLoadStrbufNew(msgData, 8);
     work->report->items[0].color = 0x39e3;

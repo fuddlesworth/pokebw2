@@ -1,10 +1,12 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "app/itemmenu.h"
 #include "app/bag.h"
 #include "app/bag_item.h"
 #include "app/itemmenu_disp.h"
 #include "constants/items.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "field/player_action.h"
 #include "gfl/arc.h"
 #include "gfl/bg_sys.h"
@@ -2185,7 +2187,7 @@ static BOOL ItemMenuProc_Init(GameProc *proc, u32 *state, void *param, void *dat
         }
         func_02008894(work->cursor, pocket, row, scroll);
     }
-    work->msgData = GFL_MsgSysLoadData(FALSE, 2, 6, work->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN, work->heapId);
     work->strbuf = GFL_StrBufCreate(200, work->heapId);
     work->expandBuf = GFL_StrBufCreate(200, work->heapId);
     work->tempBuf = GFL_StrBufCreate(64, work->heapId);

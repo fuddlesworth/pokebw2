@@ -1,4 +1,6 @@
 #include "types.h"
+#include "constants/arc.h"
+#include "constants/text_banks.h"
 #include "app/bag.h"
 #include "battle/b_bag_main.h"
 #include "battle/b_plist_main.h"
@@ -352,7 +354,7 @@ BOOL func_ov167_021cea24(BtlvCore *core, s32 *seq, void *work) {
         *keys = 0;
         func_ov167_021d0cd4(core->scu);
         func_ov169_06899c7c(core->unk1C4);
-        wk->msgData = GFL_MsgSysLoadData(FALSE, 2, 0x17, core->heapId);
+        wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTLV_CORE, core->heapId);
         wk->wait = 0;
         (*seq)++;
         break;

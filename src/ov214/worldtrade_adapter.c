@@ -1,6 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/heap.h"
@@ -224,7 +225,7 @@ WorldTradeNumFont *WorldTrade_NumFontCreate(u32 unused0, u32 unused1, u32 unused
     numFont->heapId = heapId;
     numFont->font = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, heapId);
     numFont->printQueue = func_02021998(heapId);
-    numFont->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 0x19f, heapId);
+    numFont->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0415, heapId);
     numFont->wordSet = GFL_WordSetSystemCreateDefault(heapId);
     return numFont;
 }

@@ -1,4 +1,6 @@
 #include "types.h"
+#include "constants/arc.h"
+#include "constants/text_banks.h"
 #include "field/encounter.h"
 #include "field/field.h"
 #include "field/field_environment.h"
@@ -596,8 +598,8 @@ void func_ov104_021ef43c(GimmickGateWork *work) {
 
     func_ov104_021efa18(work, &list);
     wordSet = GFL_WordSetSystemCreate(4, 0x100, work->heapId);
-    placeMessages = GFL_MsgSysLoadData(0, 2, 0x6d, work->heapId);
-    weatherMessages = GFL_MsgSysLoadData(0, 2, 0x2b, work->heapId);
+    placeMessages = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PLACE_NAMES, work->heapId);
+    weatherMessages = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GYM_INSECT, work->heapId);
     for (i = 0; i < 4; i++) {
         if (list.zones[i] == 0x267) {
             continue;
@@ -657,7 +659,7 @@ void func_ov104_021ef5ac(GimmickGateWork *work) {
         return;
     }
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
-    msgData = GFL_MsgSysLoadData(0, 2, 0x6d, work->heapId);
+    msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PLACE_NAMES, work->heapId);
     zoneName = GFL_MsgDataLoadStrbufNew(msgData, ZoneData_GetPlaceNameID(zone));
     func_0202437c(wordSet, 0, zoneName, 0, 1, 0);
     GFL_StrBufFree(zoneName);

@@ -7,6 +7,7 @@
 #include "app/t_download/t_download_util.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
@@ -130,7 +131,7 @@ static BOOL TDownload_Init(GameProc *proc, u32 *state, void *param, void *work) 
     wk->graphic = TDownloadGraphic_Create(0, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreate(8, 40, wk->heapId);
-    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 404, wk->heapId);
+    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0404, wk->heapId);
     wk->msgData[1] = NULL;
     wk->printQueue = func_02021998(wk->heapId);
     wk->tcbEx = GFL_TCBExMgrCreate(wk->heapId, wk->heapId, 32, 32);

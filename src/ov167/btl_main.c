@@ -16,8 +16,10 @@
 #include "battle/btlv.h"
 #include "battle/pokewood_cutin.h"
 #include "constants/abilities.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
+#include "constants/text_banks.h"
 #include "constants/version.h"
 #include "gfl/arc.h"
 #include "gfl/graphics.h"
@@ -1113,7 +1115,7 @@ BOOL func_ov167_0219b160(BtlMainModule *mainModule, s32 *state) {
                     func_ov167_0219d72c(&mainModule->trainers[i], mainModule->heapId, info);
                     if (i != mainModule->playerClientId && setup->unkDD_2) {
                         j = 0;
-                        msgData = GFL_MsgSysLoadData(0, 2, 0x65, mainModule->heapId);
+                        msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, mainModule->heapId);
                         strBuf = GFL_MsgDataLoadStrbufNew(msgData, 0x19);
                         GFL_MsgDataFree(msgData);
                         str = GFL_StrBufGetStringPtr(strBuf);
@@ -1124,7 +1126,7 @@ BOOL func_ov167_0219b160(BtlMainModule *mainModule, s32 *state) {
                         GFL_StrBufFree(strBuf);
                         copyTrainerName(mainModule->trainers[i].playerInfo, name);
                         GFL_StrBufFree(mainModule->trainers[i].name);
-                        msgData = GFL_MsgSysLoadData(0, 2, 0x65, mainModule->heapId);
+                        msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, mainModule->heapId);
                         mainModule->trainers[i].name = GFL_MsgDataLoadStrbufNew(msgData, 0x19);
                         GFL_MsgDataFree(msgData);
                     }

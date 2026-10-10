@@ -1,5 +1,7 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
+#include "constants/text_banks.h"
 #include "demo/shinka_demo.h"
 #include "field/event_field_trade.h"
 #include "field/field_event.h"
@@ -62,7 +64,7 @@ StrBuf *FieldTradeInput_LoadName(u32 heapId, u32 messageId) {
     MsgData *msgData;
     StrBuf *name;
 
-    msgData = GFL_MsgSysLoadData(FALSE, 2, 0x25, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TRADE_NAMES, heapId);
     name = GFL_MsgDataLoadStrbufNew(msgData, messageId);
     GFL_MsgDataFree(msgData);
     return name;

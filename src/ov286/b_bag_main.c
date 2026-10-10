@@ -10,6 +10,7 @@
 #include "battle/btlv_finger_cursor.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -805,7 +806,7 @@ static void BBagMain_LoadGraphics(BBagWork *work) {
 }
 
 static void BBagMain_InitText(BBagWork *work) {
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 1, work->param->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0001, work->param->heapId);
     work->wordSet = GFL_WordSetSystemCreateDefault(work->param->heapId);
     work->printQueue = func_02021998(work->param->heapId);
     work->strBuf = GFL_StrBufCreate(0x200, work->param->heapId);

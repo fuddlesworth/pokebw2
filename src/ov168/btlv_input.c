@@ -14,6 +14,7 @@
 #include "constants/arc.h"
 #include "constants/moves.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -601,7 +602,7 @@ static BtlvInput *BtlvInput_Create(GameData *gameData, u32 rule, u32 unk54, Pale
     for (i = 0; i < 4; i++) {
         work->moveChars[i] = -1;
     }
-    work->msgData = GFL_MsgSysLoadData(FALSE, 2, 0x15, work->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0021, work->heapId);
     work->pressedButton = -1;
     work->typeLoaded = FALSE;
     work->typePalBuf = NULL;

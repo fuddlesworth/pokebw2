@@ -7,6 +7,7 @@
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -1076,7 +1077,7 @@ static void BPlistMain_LoadGraphics(BPlistWork *work) {
 }
 
 static void BPlistMain_InitText(BPlistWork *work) {
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 2, work->param->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EGG_DEMO, work->param->heapId);
     work->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, work->param->heapId);
     work->wordSet = GFL_WordSetSystemCreateDefault(work->param->heapId);
     work->printQueue = func_020219a8(0x800, work->param->heapId);

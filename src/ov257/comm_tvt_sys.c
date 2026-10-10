@@ -1,5 +1,6 @@
 #include "app/comm_tvt/comm_tvt_sys.h"
 #include "types.h"
+#include "constants/arc.h"
 #include "app/comm_tvt.h"
 #include "app/comm_tvt/camera_system.h"
 #include "app/comm_tvt/ctvt_call.h"
@@ -10,6 +11,7 @@
 #include "app/comm_tvt/ctvt_talk.h"
 #include "app/comm_tvt/draw_system.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "field/field_sound.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -620,7 +622,7 @@ static void CommTvt_FreeResources(CommTvtWork *sys) {
 
 static void CommTvt_InitMessages(CommTvtWork *sys) {
     sys->font = GFL_FontCreate(23, 0, 0, FALSE, sys->heapId);
-    sys->msgData = GFL_MsgSysLoadData(FALSE, 2, 29, sys->heapId);
+    sys->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW, sys->heapId);
     sys->printQueue = func_020219a8(0x800, sys->heapId);
     GFL_BGSysLoadNCLRDefault(23, 5, 0, 0x140, 0x20, sys->heapId);
     GFL_BGSysLoadNCLRDefault(23, 5, 4, 0x140, 0x20, sys->heapId);

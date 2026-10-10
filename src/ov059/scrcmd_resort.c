@@ -1,5 +1,7 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
+#include "constants/script_text_banks.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/field_script.h"
@@ -1156,7 +1158,7 @@ BOOL func_ov059_021e6f14(VM *vm, FieldScriptEnv *env) {
     wordSet = ScriptWork_GetWordSet(work);
     heapId = Field_GetHeapID(field);
     unk = func_ov059_021e7bd8(field);
-    msgData = GFL_MsgSysLoadData(FALSE, 3, 609, HEAPID_TAIL(heapId));
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10685, HEAPID_TAIL(heapId));
     strbuf = GFL_MsgDataLoadStrbufNew(msgData, func_ov137_021f1d60(unk, id, column + 7));
     func_0202437c(wordSet, index, strbuf, 2, 1, 2);
     GFL_StrBufFree(strbuf);
@@ -1347,7 +1349,7 @@ BOOL func_ov059_021e6fc8(VM *vm, FieldScriptEnv *env) {
     case 19:
     case 20:
         mode -= 13;
-        msgData = GFL_MsgSysLoadData(FALSE, 3, 609, HEAPID_TAIL(heapId));
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10685, HEAPID_TAIL(heapId));
         n = 0;
         for (i = 0; i < 8; i++) {
             u32 target = joinAveTextHandler(person, i + 48, NULL);

@@ -8,6 +8,7 @@
 #include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/species.h"
+#include "constants/text_banks.h"
 #include "demo/shinka_demo.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -1110,8 +1111,8 @@ static void ShinkaDemo_InitMsg(ShinkaDemoParam *param, ShinkaDemoWork *wk) {
     BmpWin_FlushMap(window);
     GFL_BGSysQueueScrLoad(BmpWin_GetBGIndex(window));
     wk->frameChars = LoadCursorImageEndOfHeap(1, 2, 0, wk->graphicHeapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 364, wk->graphicHeapId);
-    wk->moveMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 401, wk->graphicHeapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SHINKA_DEMO, wk->graphicHeapId);
+    wk->moveMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SHINKA_DEMO_BTL_MAIN, wk->graphicHeapId);
     wk->tcbExManager = GFL_TCBExMgrCreate(wk->graphicHeapId, wk->graphicHeapId, 1, 0);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 15);
     wk->message = NULL;
@@ -1243,7 +1244,7 @@ static void ShinkaDemo_ShowWindow(ShinkaDemoParam *param, ShinkaDemoWork *wk, BO
 }
 
 static void ShinkaDemo_InitMenu(ShinkaDemoParam *param, ShinkaDemoWork *wk) {
-    wk->menuMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 440, wk->graphicHeapId);
+    wk->menuMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_YES_NO, wk->graphicHeapId);
     wk->menu = func_ov139_0219a584(wk->graphicHeapId, 5, 0, 1, 0, ShinkaDemoGraphic_GetClActUnit(wk->graphic), wk->font,
                                    wk->printQueue, 0);
     wk->choices[0] = NULL;

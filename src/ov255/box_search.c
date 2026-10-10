@@ -5,6 +5,7 @@
 #include "app/ov139.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -484,11 +485,11 @@ static BOOL func_ov255_021d3b64(GameProc *proc, u32 *state, void *param, void *w
     wk->pokedex = GameData_GetPokedex(searchParam->syswk->param->gameData);
     wk->graphic = func_ov255_021d6d28(0, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 13, wk->heapId);
-    wk->natureNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 27, wk->heapId);
-    wk->abilityNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 374, wk->heapId);
-    wk->abilityInfo = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 375, wk->heapId);
-    wk->speciesNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 90, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_BOX_MAIN_SAVE_INIT, wk->heapId);
+    wk->natureNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NATURES, wk->heapId);
+    wk->abilityNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_NAMES, wk->heapId);
+    wk->abilityInfo = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_DESCRIPTIONS, wk->heapId);
+    wk->speciesNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPECIES_NAMES, wk->heapId);
     wk->printQueue = func_02021998(wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
     func_ov255_021d3df0(wk->heapId);

@@ -1,5 +1,7 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
+#include "constants/text_banks.h"
 #include "field/bsubway_scr.h"
 #include "field/ov134.h"
 #include "field/wbt.h"
@@ -335,7 +337,7 @@ void func_ov055_021e713c(WbtSystem *sys, u32 a1, PlayerInfo *playerInfo, u16 pla
     func_ov055_021e6f74(sys, sys->partyC4, 41122, 20, 6, NULL);
     heapId = HEAPID_TAIL(sys->heapId);
     name = GFL_StrBufCreate(14, heapId);
-    msgData = GFL_MsgSysLoadData(FALSE, 2, 405, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_WBT_PARTY, heapId);
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, 18, name);
         GFL_MsgDataFree(msgData);

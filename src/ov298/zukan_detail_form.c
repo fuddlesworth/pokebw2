@@ -3,6 +3,7 @@
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/species.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -1237,8 +1238,8 @@ static void ZukanDetailForm_CreateText(ZukanDetailFormParam *param, ZukanDetailF
         GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[i]), 0);
         BmpWin_FlushChar(wk->windows[i]);
     }
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 441, param->heapId);
-    wk->formMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 450, param->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_TITLE, param->heapId);
+    wk->formMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0450, param->heapId);
     wk->formNameTable = GFL_ArcSysReadHeapNewLZGetLen(ARCID_FORM_NAME_TABLE, 0, FALSE, param->heapId, &size);
 
     bitmap = BmpWin_GetBitmap(wk->windows[WINDOW_LABELS]);

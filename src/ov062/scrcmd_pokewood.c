@@ -1,5 +1,6 @@
 #include "types.h"
 #include "constants/arc.h"
+#include "constants/text_banks.h"
 #include "field/event_pokewood.h"
 #include "field/field_script.h"
 #include "field/pokewood_system.h"
@@ -18,7 +19,7 @@
 
 // The script plugin of Pokéstar Studios (plugin 10), commands from 1000
 
-#define POKEWOOD_MSG_FILE 354
+#define POKEWOOD_MSG_FILE TEXT_BANK_POKEWOOD_LINES
 
 static u16 func_ov062_021e5800(u16 value) {
     static const struct {

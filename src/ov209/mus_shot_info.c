@@ -2,6 +2,7 @@
 #include "app/musical/mus_shot_info.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "field/musical.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -325,7 +326,7 @@ static void MusShotInfo_InitMessage(MusShotInfo *info) {
     BmpWin_FlushMap(info->msgWin);
     GFL_BGSysLoadScr(4);
     info->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, info->heapId);
-    info->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 99, info->heapId);
+    info->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_2, info->heapId);
     LoadSysMsgBox(4, 1, 11, 0, info->heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 4, 0x140, 0x20, info->heapId);
     func_020232d8();

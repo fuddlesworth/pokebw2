@@ -1,6 +1,8 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/items.h"
+#include "constants/script_text_banks.h"
+#include "constants/text_banks.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/field_camera.h"
@@ -1000,9 +1002,9 @@ static void func_ov060_021e688c(ResortShopWork *wk, u8 mode, u8 subMode) {
     MsgData *itemDescriptions;
     int n = 0;
 
-    itemNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 64, wk->heapId);
-    scriptMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, 609, wk->heapId);
-    itemDescriptions = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 63, wk->heapId);
+    itemNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_NAMES, wk->heapId);
+    scriptMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10685, wk->heapId);
+    itemDescriptions = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_DESCRIPTIONS, wk->heapId);
     count = ResortShopData_GetGoodsCount(wk->shops, wk->row);
     wk->options = ListMenuCore_CreateOptionList(count + 1, wk->heapId);
     for (i = 0; i < count; i++) {
@@ -1216,7 +1218,7 @@ static void func_ov060_021e70e0(ResortShopWork *wk) {
 }
 
 static u8 func_ov060_021e7128(ResortShopWork *wk, u8 mode) {
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, 610, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_SCRCMD_RESORT_SHOP, wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreate(8, 64, wk->heapId);
     wk->message = GFL_StrBufCreate(200, wk->heapId);
     wk->tcbManager = GFL_TCBExMgrCreate(wk->heapId, wk->heapId, 32, 32);
@@ -1683,7 +1685,7 @@ static StrBuf *func_ov060_021e8040(ResortShopWork *wk, JoinAvenuePerson *person)
     void *flags = func_02038470(person);
     StrBuf *strbuf = GFL_StrBufCreate(128, wk->heapId);
     u16 shop = ResortShopData_GetShopParam(ResortShopData_GetPersonShop(wk->shops, person), 0);
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, 609, HEAPID_TAIL(wk->heapId));
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10685, HEAPID_TAIL(wk->heapId));
     StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, shop + 42);
     u16 a = joinAveTextHandler(person, 21, NULL);
     u16 b = joinAveTextHandler(person, 22, NULL);

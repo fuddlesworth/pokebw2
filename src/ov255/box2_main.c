@@ -14,6 +14,7 @@
 #include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/species.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -417,7 +418,7 @@ void Box2Main_SetBlendAlpha(BOOL enabled) {
 }
 
 void Box2Main_InitMsg(Box2SysWork *syswk) {
-    syswk->app->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 13, HEAPID_BOX2_APP);
+    syswk->app->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_BOX_MAIN_SAVE_INIT, HEAPID_BOX2_APP);
     syswk->app->font = GFL_FontCreate(ARCID_FONT, 0, 1, FALSE, HEAPID_BOX2_APP);
     syswk->app->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, HEAPID_BOX2_APP);
     syswk->app->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_BOX2_APP);

@@ -44,6 +44,8 @@ order you write them.
   out to be a named room. A member of an archive that the code loads by number goes in `narc_<archive>.txt` once the
   code shows what it is (see `docs/data.md`, Constant lists). `include/constants/` holds the hand-written ones,
   `HEAPID_*` and the like.
+  A message file is a `TEXT_BANK_*` (system messages) or `SCRIPT_TEXT_*` (script messages), never its number:
+  `GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_NAMES, heapId)`.
 
 ## 4. Write the C
 

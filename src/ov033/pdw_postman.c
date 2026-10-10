@@ -1,5 +1,8 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
+#include "constants/script_text_banks.h"
+#include "constants/text_banks.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/mystery_gift_pokemon.h"
@@ -59,7 +62,7 @@ PdwPostmanItemWindow *func_ov033_02177998(Field *field, PdwPostmanItem *items, u
     work->field = field;
     work->items = items;
     work->count = count;
-    work->messages = GFL_MsgSysLoadData(FALSE, 3, 0x1e0, heapId);
+    work->messages = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10390, heapId);
     work->wordSet = GFL_WordSetSystemCreateDefault(heapId);
     work->first = GFL_StrBufCreate(0x80, heapId);
     work->second = GFL_StrBufCreate(0x80, heapId);
@@ -83,7 +86,7 @@ void func_ov033_02177a60(PdwPostmanItemWindow *work) {
     MsgData *messages;
     s32 i;
 
-    messages = GFL_MsgSysLoadData(FALSE, 2, 0x40, HEAPID_TAIL(work->heapId));
+    messages = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_NAMES, HEAPID_TAIL(work->heapId));
     for (i = 0; i < work->count; i++) {
         GFL_MsgDataLoadStrbuf(messages, work->items[i].item, work->first);
         func_ov036_02187c4c(work->window, 0, 14 * i, work->first);

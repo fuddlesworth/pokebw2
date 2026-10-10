@@ -4,6 +4,7 @@
 #include "app/zukan_detail.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "field/player_state.h"
 #include "field/townmap_util.h"
 #include "field/zone.h"
@@ -1093,8 +1094,8 @@ static void ZukanDetailMap_CreateWindows(ZukanDetailMapParam *param, ZukanDetail
         GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[i]), 0);
         BmpWin_FlushChar(wk->windows[i]);
     }
-    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 441, param->heapId);
-    wk->msgData[1] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 109, param->heapId);
+    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_TITLE, param->heapId);
+    wk->msgData[1] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PLACE_NAMES, param->heapId);
 }
 
 static void ZukanDetailMap_FreeWindows(ZukanDetailMapParam *param, ZukanDetailMapWork *wk, ZukanDetailCommon *common) {

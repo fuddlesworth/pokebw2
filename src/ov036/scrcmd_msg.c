@@ -3,6 +3,8 @@
 // name for the file; scrcmd_msg.c is descriptive. Function names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
+#include "constants/arc.h"
+#include "constants/script_text_banks.h"
 #include "battle/trainer_data.h"
 #include "field/festival.h"
 #include "field/field.h"
@@ -196,7 +198,7 @@ BOOL s0040_MoneyWinDisp(VM *vm, FieldScriptEnv *env) {
     WordSet *wordSet = ScriptWork_GetWordSet(work);
     StrBuf *text = ScriptWork_GetAltStrBuf(work);
     HeapID heapId = Field_GetHeapID(field);
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, 3, 0xd0, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, heapId);
     StrBuf *strbuf = GFL_StrBufCreate(0x80, heapId);
     u32 cash = getCash(getTrainerCardDataBlkAddress(gameData));
 
@@ -224,7 +226,7 @@ BOOL s0042_MoneyWinUpdate(VM *vm, FieldScriptEnv *env) {
     WordSet *wordSet = ScriptWork_GetWordSet(work);
     StrBuf *text = ScriptWork_GetAltStrBuf(work);
     HeapID heapId = Field_GetHeapID(field);
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, 3, 0xd0, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, heapId);
     StrBuf *strbuf = GFL_StrBufCreate(0x80, heapId);
 
     WordSetNumber(wordSet, 2, getCash(getTrainerCardDataBlkAddress(gameData)), 7, 1, TRUE);
@@ -927,7 +929,7 @@ static StrBuf *setupFormattedTextBuffer(FieldScriptEnv *env, StrBuf *dest, u32 f
     if (fileNo == SCRIPT_MSG_FILE) {
         GFL_MsgDataLoadStrbuf(msgData, msgId, text);
     } else {
-        fileMsgData = GFL_MsgSysLoadData(FALSE, 3, fileNo, FieldScriptEnv_GetHeapID(env));
+        fileMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, fileNo, FieldScriptEnv_GetHeapID(env));
         GFL_MsgDataLoadStrbuf(fileMsgData, msgId, text);
         GFL_MsgDataFree(fileMsgData);
     }

@@ -1,4 +1,6 @@
 #include "types.h"
+#include "constants/arc.h"
+#include "constants/text_banks.h"
 #include "app/ov174.h"
 #include "constants/version.h"
 #include "field/event_poke_status.h"
@@ -417,9 +419,9 @@ BOOL s005D_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
     case 1:
     case 8:
         if (kind == 1) {
-            msgData = GFL_MsgSysLoadData(FALSE, 2, 0x5d, heapId);
+            msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_13, heapId);
         } else {
-            msgData = GFL_MsgSysLoadData(FALSE, 2, 0x1e4, heapId);
+            msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_0484, heapId);
         }
         str = GFL_MsgDataLoadStrbufNew(msgData, arg + 3);
         func_0202437c(wordSet, wordIndex, str, 0, 1, 2);
@@ -432,14 +434,14 @@ BOOL s005D_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
         GFL_StrBufFree(str);
         break;
     case 3:
-        msgData = GFL_MsgSysLoadData(FALSE, 2, 0x60, heapId);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_S005D_WORD_SET_MUSICAL_INFO, heapId);
         str = GFL_MsgDataLoadStrbufNew(msgData, arg);
         func_0202437c(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
         GFL_MsgDataFree(msgData);
         break;
     case 4:
-        msgData = GFL_MsgSysLoadData(FALSE, 2, 0x60, heapId);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_S005D_WORD_SET_MUSICAL_INFO, heapId);
         str = GFL_MsgDataLoadStrbufNew(msgData, arg + 4);
         func_0202437c(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
@@ -488,7 +490,7 @@ BOOL s005D_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
         } else {
             messages[2] = order[3] + 4;
         }
-        msgData = GFL_MsgSysLoadData(FALSE, 2, 0x60, heapId);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_S005D_WORD_SET_MUSICAL_INFO, heapId);
         for (i = 0; i < 3; i++) {
             str = GFL_MsgDataLoadStrbufNew(msgData, messages[i]);
             func_0202437c(wordSet, i, str, 0, 1, 2);

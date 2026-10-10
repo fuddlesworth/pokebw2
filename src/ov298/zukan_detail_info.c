@@ -4,6 +4,7 @@
 #include "app/zukan_info.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -217,9 +218,9 @@ static BOOL ZukanDetailInfo_Main(ZukanDetailProcSys *sys, int *seq, void *param_
 
         *seq = INFO_SEQ_FADE_IN;
         wk->font = GFL_FontCreate(ARCID_FONT, 0, 1, FALSE, param->heapId);
-        wk->msgData[0] = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, 464, param->heapId);
-        wk->msgData[1] = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, 451, param->heapId);
-        wk->msgData[2] = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, 471, param->heapId);
+        wk->msgData[0] = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPECIES_CATEGORIES, param->heapId);
+        wk->msgData[1] = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEDEX_HEIGHTS, param->heapId);
+        wk->msgData[2] = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEDEX_WEIGHTS, param->heapId);
         for (bg = 0; bg <= 7; bg++) {
             if (bg != 1 && bg != 5) {
                 GFL_BGSysMoveBG(bg, BG_MOVE_SET_X, 0);
