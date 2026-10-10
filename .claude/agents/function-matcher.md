@@ -1,6 +1,7 @@
 ---
 name: function-matcher
 description: Grinds one nonmatching pokebw2 function toward a byte match in its own context, so long diffs, asm and variant files stay out of the main conversation. Give it the source file, the function, the class of difference if known, and what was already tried. It owns that source file while it runs, so never run two on the same file. It returns the best natural C found, its score, and a ready docs/nonmatching-functions.md row if it doesn't match.
+model: sonnet
 tools: Bash, Read, Edit, Write, Grep, Glob
 ---
 

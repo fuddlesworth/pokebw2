@@ -1,6 +1,7 @@
 ---
 name: decomp-reviewer
 description: Read-only adversarial review of a pokebw2 decompiled file and its diff before commit. Checks the project's conventions (one original file, address order, statics, headers, names, swan marking, both versions' configs), whether the C is natural or contains fake-match tricks, and that docs and nonmatching rows are current. Give it the source file and say whether the changes are staged or unstaged. Reports findings; never fixes them.
+model: sonnet
 tools: Bash, Read, Grep, Glob
 ---
 

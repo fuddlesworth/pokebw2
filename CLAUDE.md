@@ -87,7 +87,9 @@ Skills in `.claude/skills/`:
 - `finish-file`: verify both versions, mark complete, document mismatches, commit, then merge, rebuild and push.
 - `record-lesson`: where a new lesson goes and how to write it.
 
-Agents in `.claude/agents/`, used to keep large asm and diffs out of the main context:
+Agents in `.claude/agents/`, used to keep large asm and diffs out of the main context. They run on cheaper models
+(`model:` in each file): `boundary-scout` on Haiku, the rest on Sonnet; pass `model: "opus"` for a function worth it.
+- `file-writer`: writes one original file's C from the asm and probes it; the caller registers, builds and commits.
 - `function-matcher`: grinds one function. It owns that file while it runs.
 - `boundary-scout`: proposes the files of a module range, read-only.
 - `struct-recovery`: derives a struct's layout from every access to it, read-only.

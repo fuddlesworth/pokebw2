@@ -1,6 +1,7 @@
 ---
 name: struct-recovery
 description: Read-only. Derives a pokebw2 struct's layout from every access to it in the asm, checks it against swan's headers and any existing definition, and proposes the one definition with offsets, types, names and its owning header. Use when a work struct or a struct shared by several functions or files needs its layout, or when two partial layouts of one struct disagree.
+model: sonnet
 tools: Bash, Read, Grep, Glob
 ---
 

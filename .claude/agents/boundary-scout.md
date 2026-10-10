@@ -1,6 +1,7 @@
 ---
 name: boundary-scout
 description: Read-only. Proposes the original source files of a pokebw2 module or address range. For each file it gives the range in every section, the name with its evidence (embedded string or descriptive), its placement, which functions can be static, and the add_source_file.py command. Use before decompiling a new overlay or a large stretch of ARM9 main, so the long source_files.py and symbol output stays out of the main context.
+model: haiku
 tools: Bash, Read, Grep, Glob
 ---
 
