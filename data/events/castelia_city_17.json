@@ -28,7 +28,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x0464",
+            "flag": "EVENT_FLAG_0x0464",
             "script": 7024,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -85,7 +85,7 @@
     "triggers": [
         {
             "script": 1,
-            "var": "0x40fd",
+            "var": "EVENT_WORK_0x40fd",
             "value": 0,
             "type": 0,
             "grid": {

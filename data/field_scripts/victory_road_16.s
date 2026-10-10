@@ -29,7 +29,7 @@ Script_1:
     MsgWinCloseAll
     ActorCmdExec 251, Movement_016C
     ActorCmdWait
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009E
@@ -37,7 +37,7 @@ Script_1:
     VMJump L_00C7
 
 L_009E:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BF
@@ -84,7 +84,7 @@ L_00E8:
     ActorDelete 251
     SEWait
     BGMChangeMap
-    WorkSetConst 0x4124, 1
+    WorkSetConst EVENT_WORK_0x4124, 1
     HollowRivalCmd_0262 1, 38
     FinishAllEvents
     ActorsUnpauseAll

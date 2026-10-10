@@ -232,7 +232,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x04cb",
+            "flag": "EVENT_FLAG_0x04cb",
             "script": 7127,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -251,7 +251,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x04cc",
+            "flag": "EVENT_FLAG_0x04cc",
             "script": 7128,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -270,7 +270,7 @@
             "model": 162,
             "movement": 15,
             "type": 0,
-            "flag": "0x0387",
+            "flag": "EVENT_FLAG_0x0387",
             "script": 2,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -304,7 +304,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": "0x4146",
+            "var": "EVENT_WORK_0x4146",
             "value": 1,
             "type": 0,
             "grid": {
@@ -318,7 +318,7 @@
         },
         {
             "script": 3,
-            "var": "0x4146",
+            "var": "EVENT_WORK_0x4146",
             "value": 1,
             "type": 0,
             "grid": {
@@ -332,7 +332,7 @@
         },
         {
             "script": 3,
-            "var": "0x4146",
+            "var": "EVENT_WORK_0x4146",
             "value": 1,
             "type": 0,
             "grid": {

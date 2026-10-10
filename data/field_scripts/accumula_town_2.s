@@ -65,18 +65,18 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 433
+    VMStackPushFlag EVENT_FLAG_0x01b1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 434
+    VMStackPushFlag EVENT_FLAG_0x01b2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01B7
-    VMStackPushFlag 431
+    VMStackPushFlag EVENT_FLAG_0x01af
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -85,10 +85,10 @@ Script_5:
     VMJump L_01B1
 
 L_00FA:
-    VMStackPushFlag 431
+    VMStackPushFlag EVENT_FLAG_0x01af
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -125,7 +125,7 @@ L_0191:
     CallTrainerLose
 
 L_0193:
-    FlagSet 433
+    FlagSet EVENT_FLAG_0x01b1
     VMCall L_03AB
     VMJump L_01B1
 
@@ -139,18 +139,18 @@ L_01B1:
     VMJump L_02DC
 
 L_01B7:
-    VMStackPushFlag 433
+    VMStackPushFlag EVENT_FLAG_0x01b1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 434
+    VMStackPushFlag EVENT_FLAG_0x01b2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02CE
-    VMStackPushFlag 432
+    VMStackPushFlag EVENT_FLAG_0x01b0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -159,10 +159,10 @@ L_01B7:
     VMJump L_02C8
 
 L_0209:
-    VMStackPushFlag 432
+    VMStackPushFlag EVENT_FLAG_0x01b0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -199,7 +199,7 @@ L_02A0:
     CallTrainerLose
 
 L_02A2:
-    FlagSet 434
+    FlagSet EVENT_FLAG_0x01b2
     // "Hey! I'm so glad we were able\nto trade Pokémon and have a battle!"
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_HeyImGladWe, 0, 0
     LastKeyWait
@@ -254,8 +254,8 @@ L_02E2:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_AmbipomKnowsNastyPlot, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 431
-    WorkSetConst 0x4000, 1
+    FlagSet EVENT_FLAG_0x01af
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_0381
 
 L_0373:
@@ -313,8 +313,8 @@ L_03AB:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_AlakazamKnowsPsychoCut, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 432
-    WorkSetConst 0x4000, 1
+    FlagSet EVENT_FLAG_0x01b0
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_044A
 
 L_043C:

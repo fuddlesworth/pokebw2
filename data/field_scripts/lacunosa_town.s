@@ -35,24 +35,24 @@ Script_1:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_009B
-    FlagSet 787
-    FlagSet 780
+    FlagSet EVENT_FLAG_0x0313
+    FlagSet EVENT_FLAG_0x030c
     VMJump L_00A3
 
 L_009B:
-    FlagReset 787
-    FlagReset 780
+    FlagReset EVENT_FLAG_0x0313
+    FlagReset EVENT_FLAG_0x030c
 
 L_00A3:
-    VMStackPush 0x40cc
+    VMStackPush EVENT_WORK_0x40cc
     VMStackPushConst 4
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00BE
     DebugPrint 2323
-    FlagSet 780
+    FlagSet EVENT_FLAG_0x030c
 
 L_00BE:
-    VMStackPush 0x40cc
+    VMStackPush EVENT_WORK_0x40cc
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E9
@@ -60,7 +60,7 @@ L_00BE:
     ObjInitNPCGPos 9, 0, 655, 0, 171
 
 L_00E9:
-    VMStackPush 0x40ce
+    VMStackPush EVENT_WORK_0x40ce
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0120
@@ -72,7 +72,7 @@ L_0120:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40cc
+    VMStackPush EVENT_WORK_0x40cc
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014D
@@ -80,7 +80,7 @@ Script_2:
     ActorSetGPos 9, 655, 0, 171, 0
 
 L_014D:
-    VMStackPush 0x40ce
+    VMStackPush EVENT_WORK_0x40ce
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0184
@@ -93,10 +93,10 @@ L_0184:
 
 Script_3:
     ActorsPauseAll
-    WorkSetConst 0x40cc, 1
-    FlagSet 960
-    FlagSet 776
-    FlagSet 2482
+    WorkSetConst EVENT_WORK_0x40cc, 1
+    FlagSet EVENT_FLAG_0x03c0
+    FlagSet EVENT_FLAG_0x0308
+    FlagSet EVENT_FLAG_0x09b2
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
     VMStackPushConst 667
@@ -293,7 +293,7 @@ L_04F1:
     ActorCmdExec 255, Movement_0FB4
     ActorCmdWait
     RTReserveScript 3
-    FlagSet 780
+    FlagSet EVENT_FLAG_0x030c
     MapChangeWarp ZONE_LACUNOSA_TOWN_3, 6, 9, 0
     FinishAllEvents
     ActorsUnpauseAll
@@ -301,7 +301,7 @@ L_04F1:
 
 Script_4:
     ActorsPauseAll
-    WorkSetConst 0x40cc, 3
+    WorkSetConst EVENT_WORK_0x40cc, 3
     ActorWalkRoute 255, 653, 170, 1, 8, 1
     ActorCmdWait
     // "Professor Juniper: Wasn't that\nan interesting folktale?[f000]븁\u0000\nThe Pokémon's true identity may be\nunknown, but the power mentioned[f000]븀\u0000\nin the story is incredible![f000]븁\u0000"
@@ -405,8 +405,8 @@ L_05CE:
     ActorCmdExec 9, Movement_0F6C
     ActorCmdWait
     ActorDelete 9
-    FlagSet 778
-    FlagSet 779
+    FlagSet EVENT_FLAG_0x030a
+    FlagSet EVENT_FLAG_0x030b
     HollowRivalCmd_0262 3, 7
     HollowRivalCmd_0262 0, 6
     FinishAllEvents
@@ -417,7 +417,7 @@ Script_16:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40ce
+    VMStackPush EVENT_WORK_0x40ce
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0748
@@ -521,12 +521,12 @@ Script_5:
 
 L_0895:
     PlayerGetGPos 0x8021, 0x8022
-    VMStackPush 0x40ce
+    VMStackPush EVENT_WORK_0x40ce
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A51
-    WorkSetConst 0x40ce, 2
-    FlagReset 785
+    WorkSetConst EVENT_WORK_0x40ce, 2
+    FlagReset EVENT_FLAG_0x0311
     HollowRivalCmd_0262 1, 22
     ActorAdd 10
     ActorAdd 11
@@ -719,7 +719,7 @@ L_0BCD:
     ActorCmdWait
 
 L_0BCF:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BF2
@@ -727,7 +727,7 @@ L_0BCF:
     VMJump L_0C1F
 
 L_0BF2:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C15
@@ -752,7 +752,7 @@ L_0C1F:
     ActorCmdWait
     ActorDelete 10
     ActorDelete 11
-    FlagSet 785
+    FlagSet EVENT_FLAG_0x0311
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Get back here![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GetBackHere, 12, 0, 1
@@ -760,9 +760,9 @@ L_0C1F:
     ActorWalkRoute 12, 638, 186, 1, 4, 0
     ActorCmdWait
     ActorDelete 12
-    FlagSet 784
-    WorkSetConst 0x40ce, 3
-    WorkSetConst 0x40cc, 4
+    FlagSet EVENT_FLAG_0x0310
+    WorkSetConst EVENT_WORK_0x40ce, 3
+    WorkSetConst EVENT_WORK_0x40cc, 4
     HollowRivalCmd_0262 1, 23
     VMReturn
 
@@ -878,7 +878,7 @@ Script_10:
 
 Script_11:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E1D
@@ -917,7 +917,7 @@ Script_12:
 
 Script_13:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E82

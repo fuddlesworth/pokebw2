@@ -7,7 +7,7 @@
 
 Script_1:
     ActorsPauseAll
-    FlagReset 1007
+    FlagReset EVENT_FLAG_0x03ef
     ActorAdd 1
     ActorAdd 0
     ActorAdd 3

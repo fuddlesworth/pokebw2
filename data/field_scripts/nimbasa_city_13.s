@@ -10,7 +10,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 262
+    VMStackPushFlag EVENT_FLAG_0x0106
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AA
@@ -31,7 +31,7 @@ Script_1:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 262
+    FlagSet EVENT_FLAG_0x0106
     // "If a Pokémon holds a Soothe Bell, it will\nbecome more friendly to you."
     ParentActorMsg MSGFILE_SCRIPT, NimbasaCity13_Text_IfPokemonHoldsSoothe, 0, 0
     LastKeyWait

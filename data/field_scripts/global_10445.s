@@ -33,7 +33,7 @@ L_0045:
     VMJump L_00E8
 
 L_0078:
-    VMStackPush 0x408a
+    VMStackPush EVENT_WORK_0x408a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B1
@@ -78,13 +78,13 @@ Script_2:
     VMJump L_0164
 
 L_012D:
-    VMStackPush 0x408a
+    VMStackPush EVENT_WORK_0x408a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0158
     // "I think I've finally designed Décor\nitems so great that people will dream[f000]븀\u0000\nabout them![f000]븁\u0000\nHere! Which one would you dream about?"
     ActorMsg MSGFILE_SCRIPT, Global10445_Text_ThinkIveFinallyDesigned, 0x8011, 2, 0
-    WorkSetConst 0x408a, 1
+    WorkSetConst EVENT_WORK_0x408a, 1
     VMJump L_0164
 
 L_0158:

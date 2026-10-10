@@ -20,7 +20,7 @@
 Script_14:
     WorkSetConst 0x8020, 0
     RTCGetSeason 0x8020
-    WorkCmpConst 0x418c, 1
+    WorkCmpConst EVENT_WORK_0x418c, 1
     VMJumpIf CMP_EQ, L_0057
     VMJump L_0076
 
@@ -29,13 +29,13 @@ L_0057:
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0070
-    WorkSetConst 0x418c, 0
+    WorkSetConst EVENT_WORK_0x418c, 0
 
 L_0070:
     VMJump L_010C
 
 L_0076:
-    WorkCmpConst 0x418c, 2
+    WorkCmpConst EVENT_WORK_0x418c, 2
     VMJumpIf CMP_EQ, L_0089
     VMJump L_00A8
 
@@ -44,13 +44,13 @@ L_0089:
     VMStackPushConst 1
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00A2
-    WorkSetConst 0x418c, 0
+    WorkSetConst EVENT_WORK_0x418c, 0
 
 L_00A2:
     VMJump L_010C
 
 L_00A8:
-    WorkCmpConst 0x418c, 3
+    WorkCmpConst EVENT_WORK_0x418c, 3
     VMJumpIf CMP_EQ, L_00BB
     VMJump L_00DA
 
@@ -59,13 +59,13 @@ L_00BB:
     VMStackPushConst 2
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00D4
-    WorkSetConst 0x418c, 0
+    WorkSetConst EVENT_WORK_0x418c, 0
 
 L_00D4:
     VMJump L_010C
 
 L_00DA:
-    WorkCmpConst 0x418c, 4
+    WorkCmpConst EVENT_WORK_0x418c, 4
     VMJumpIf CMP_EQ, L_00ED
     VMJump L_010C
 
@@ -74,13 +74,13 @@ L_00ED:
     VMStackPushConst 3
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0106
-    WorkSetConst 0x418c, 0
+    WorkSetConst EVENT_WORK_0x418c, 0
 
 L_0106:
     VMJump L_010C
 
 L_010C:
-    FlagReset 2559
+    FlagReset EVENT_FLAG_0x09ff
     WorkSetConst 0x8020, 0
     VMHalt
 
@@ -246,9 +246,9 @@ L_029B:
 
 Script_13:
     ActorsPauseAll
-    FlagReset 925
-    FlagReset 926
-    FlagReset 927
+    FlagReset EVENT_FLAG_0x039d
+    FlagReset EVENT_FLAG_0x039e
+    FlagReset EVENT_FLAG_0x039f
     ActorAdd 10
     ActorAdd 11
     ActorAdd 12
@@ -284,13 +284,13 @@ L_0347:
     ActorCmdExec 255, Movement_0808
     ActorCmdWait
     BGMPlay SEQ_BGM_DARK_TRINITY
-    VMStackPushFlag 406
+    VMStackPushFlag EVENT_FLAG_0x0196
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0398
     // "You...\nCongratulations.[f000]븁\u0000\nGhetsis won't do anything anymore...[f000]븁\u0000\nNo, to be more precise,\nhe can't do anything anymore...[f000]븁\u0000\nThat's why we won't forgive you.\nBattle us!"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_CongratulationsGhetsisWontAnything, 10, 0, 0
-    FlagSet 406
+    FlagSet EVENT_FLAG_0x0196
     VMJump L_03A4
 
 L_0398:
@@ -348,7 +348,7 @@ L_0458:
 L_046A:
     ActorCmdExec 11, Movement_0838
     ActorCmdWait
-    FlagSet 925
+    FlagSet EVENT_FLAG_0x039d
     WorkSetConst 0x8024, 0
     PokePartyGetCount 0x8024, 2
     VMStackPush 0x8024
@@ -384,7 +384,7 @@ L_0501:
     ActorCmdExec 11, Movement_0844
     ActorCmdWait
     ActorDelete 11
-    FlagSet 926
+    FlagSet EVENT_FLAG_0x039e
     ActorCmdExec 12, Movement_0844
     ActorCmdWait
     WorkCmpConst 0x8023, 195
@@ -441,7 +441,7 @@ L_05F4:
     ActorCmdExec 12, Movement_0844
     ActorCmdWait
     ActorDelete 12
-    FlagSet 927
+    FlagSet EVENT_FLAG_0x039f
     VMJump L_062C
 
 L_060C:
@@ -451,7 +451,7 @@ L_060C:
     ActorCmdExec 12, Movement_0844
     ActorCmdWait
     ActorDelete 12
-    FlagSet 927
+    FlagSet EVENT_FLAG_0x039f
 
 L_062C:
     VMJump L_0652
@@ -463,7 +463,7 @@ L_0632:
     ActorCmdExec 12, Movement_0844
     ActorCmdWait
     ActorDelete 12
-    FlagSet 927
+    FlagSet EVENT_FLAG_0x039f
 
 L_0652:
     VMJump L_0688
@@ -477,8 +477,8 @@ L_0658:
     ActorCmdWait
     ActorDelete 11
     ActorDelete 12
-    FlagSet 926
-    FlagSet 927
+    FlagSet EVENT_FLAG_0x039e
+    FlagSet EVENT_FLAG_0x039f
 
 L_0688:
     VMJump L_06BE
@@ -492,17 +492,17 @@ L_068E:
     ActorCmdWait
     ActorDelete 11
     ActorDelete 12
-    FlagSet 926
-    FlagSet 927
+    FlagSet EVENT_FLAG_0x039e
+    FlagSet EVENT_FLAG_0x039f
 
 L_06BE:
     VMJump L_0702
 
 L_06C4:
     MsgWinCloseAll
-    FlagSet 925
-    FlagSet 926
-    FlagSet 927
+    FlagSet EVENT_FLAG_0x039d
+    FlagSet EVENT_FLAG_0x039e
+    FlagSet EVENT_FLAG_0x039f
     ActorCmdExec 10, Movement_0844
     ActorCmdExec 11, Movement_0844
     ActorCmdExec 12, Movement_0844
@@ -527,7 +527,7 @@ L_070A:
     VMJump L_0733
 
 L_0727:
-    WorkSetConst 0x418c, 1
+    WorkSetConst EVENT_WORK_0x418c, 1
     VMJump L_0790
 
 L_0733:
@@ -536,7 +536,7 @@ L_0733:
     VMJump L_0752
 
 L_0746:
-    WorkSetConst 0x418c, 2
+    WorkSetConst EVENT_WORK_0x418c, 2
     VMJump L_0790
 
 L_0752:
@@ -545,7 +545,7 @@ L_0752:
     VMJump L_0771
 
 L_0765:
-    WorkSetConst 0x418c, 3
+    WorkSetConst EVENT_WORK_0x418c, 3
     VMJump L_0790
 
 L_0771:
@@ -554,16 +554,16 @@ L_0771:
     VMJump L_0790
 
 L_0784:
-    WorkSetConst 0x418c, 4
+    WorkSetConst EVENT_WORK_0x418c, 4
     VMJump L_0790
 
 L_0790:
     VMReturn
 
 L_0792:
-    FlagSet 925
-    FlagSet 926
-    FlagSet 927
+    FlagSet EVENT_FLAG_0x039d
+    FlagSet EVENT_FLAG_0x039e
+    FlagSet EVENT_FLAG_0x039f
     VMReturn
     Move 13, 1
     MoveEnd

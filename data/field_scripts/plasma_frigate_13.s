@@ -54,20 +54,20 @@
     WorkSetConst 0x8026, 0
 
 Script_1:
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E7
-    FlagSet 845
+    FlagSet EVENT_FLAG_0x034d
 
 L_00E7:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 2
     VMStackCmp CMP_LT
-    VMStackPush 0x4105
+    VMStackPush EVENT_WORK_0x4105
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -83,7 +83,7 @@ Script_3:
     VMHalt
 
 L_0128:
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0147
@@ -94,7 +94,7 @@ L_0147:
     Plugin12_Cmd1001 0, 1
 
 L_014D:
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_016C
@@ -105,7 +105,7 @@ L_016C:
     Plugin12_Cmd1001 1, 1
 
 L_0172:
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0191
@@ -116,7 +116,7 @@ L_0191:
     Plugin12_Cmd1001 2, 1
 
 L_0197:
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B6
@@ -149,7 +149,7 @@ Script_16:
     // "Oh! I nearly forgot to tell you!\nThis floor is a maze of pipes.[f000]븁\u0000\nYou've got to step on switches\nto connect or disconnect the pipes.[f000]븁\u0000\nIt's a good thing you can walk\non the pipes.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_OhNearlyForgotTell, 9, 0, 0
     MsgWinCloseAll
-    WorkSetConst 0x4103, 2
+    WorkSetConst EVENT_WORK_0x4103, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -180,7 +180,7 @@ Script_41:
 
 Script_18:
     ActorsPauseAll
-    FlagReset 843
+    FlagReset EVENT_FLAG_0x034b
     EvCameraInit
     EvCameraUnbind
     EvCameraMoveTo 9688, 0, 0xed000, 0xf8000, 0, 0xaf000, 28
@@ -212,7 +212,7 @@ Script_18:
     VMJump L_02FA
 
 L_02F4:
-    FlagSet 843
+    FlagSet EVENT_FLAG_0x034b
     CallTrainerLose
 
 L_02FA:
@@ -222,8 +222,8 @@ L_02FA:
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_ZinzolinBeatenAgainNo, 10, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4105, 1
-    WorkSetConst 0x40f3, 1
+    WorkSetConst EVENT_WORK_0x4105, 1
+    WorkSetConst EVENT_WORK_0x40f3, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -240,7 +240,7 @@ Script_19:
     SEPlay SEQ_SE_MESSAGE
     // "It looks like it controls the\ntemperature inside the ship."
     SystemMsg PlasmaFrigate13_Text_LooksLikeControlsTemperature, 2
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0361
@@ -253,7 +253,7 @@ L_0361:
     MsgWinCloseAll
 
 L_0365:
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0389
@@ -274,7 +274,7 @@ Script_20:
     SEPlay SEQ_SE_MESSAGE
     // "It's a device to control\nthe ship's energy system."
     SystemMsg PlasmaFrigate13_Text_ItsDeviceControlShips, 2
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03B8
@@ -287,7 +287,7 @@ L_03B8:
     MsgWinCloseAll
 
 L_03BC:
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03E0
@@ -338,7 +338,7 @@ Script_25:
 
 Script_26:
     ActorsPauseAll
-    VMStackPush 0x4125
+    VMStackPush EVENT_WORK_0x4125
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0493
@@ -381,8 +381,8 @@ L_04F0:
     ActorCmdExec 255, Movement_0C04
     ActorCmdWait
     ActorDelete 11
-    FlagSet 841
-    WorkSetConst 0x4125, 2
+    FlagSet EVENT_FLAG_0x0349
+    WorkSetConst EVENT_WORK_0x4125, 2
     VMReturn
     .balign 4, 0
 
@@ -454,20 +454,20 @@ Script_6:
 
 Script_12:
     ActorsPauseAll
-    WorkSetConst 0x40f5, 1
+    WorkSetConst EVENT_WORK_0x40f5, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
     InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -485,16 +485,16 @@ L_0614:
     SEWait
     Plugin12_Cmd1003 0
     Plugin12_Cmd1002 0
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -513,20 +513,20 @@ L_066C:
 
 Script_13:
     ActorsPauseAll
-    WorkSetConst 0x40f6, 1
+    WorkSetConst EVENT_WORK_0x40f6, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
     InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -544,16 +544,16 @@ L_06D0:
     SEWait
     Plugin12_Cmd1003 1
     Plugin12_Cmd1002 1
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -572,20 +572,20 @@ L_0728:
 
 Script_14:
     ActorsPauseAll
-    WorkSetConst 0x40f7, 1
+    WorkSetConst EVENT_WORK_0x40f7, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
     InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -603,16 +603,16 @@ L_078C:
     SEWait
     Plugin12_Cmd1003 2
     Plugin12_Cmd1002 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -631,20 +631,20 @@ L_07E4:
 
 Script_15:
     ActorsPauseAll
-    WorkSetConst 0x40f8, 1
+    WorkSetConst EVENT_WORK_0x40f8, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
     InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -662,16 +662,16 @@ L_0848:
     SEWait
     Plugin12_Cmd1003 3
     Plugin12_Cmd1002 3
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -690,10 +690,10 @@ L_08A0:
 
 Script_7:
     ActorsPauseAll
-    WorkSetConst 0x4000, 1
-    WorkSetConst 0x4001, 0
-    WorkSetConst 0x4002, 0
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4000, 1
+    WorkSetConst EVENT_WORK_0x4001, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     Plugin12_Cmd1000 0
     FinishAllEvents
     ActorsUnpauseAll
@@ -701,10 +701,10 @@ Script_7:
 
 Script_8:
     ActorsPauseAll
-    WorkSetConst 0x4001, 1
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4002, 0
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4001, 1
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     Plugin12_Cmd1000 1
     FinishAllEvents
     ActorsUnpauseAll
@@ -712,10 +712,10 @@ Script_8:
 
 Script_9:
     ActorsPauseAll
-    WorkSetConst 0x4002, 1
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4001, 0
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4002, 1
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     Plugin12_Cmd1000 2
     FinishAllEvents
     ActorsUnpauseAll
@@ -723,10 +723,10 @@ Script_9:
 
 Script_10:
     ActorsPauseAll
-    WorkSetConst 0x4003, 1
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4001, 0
-    WorkSetConst 0x4002, 0
+    WorkSetConst EVENT_WORK_0x4003, 1
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
     Plugin12_Cmd1000 3
     FinishAllEvents
     ActorsUnpauseAll

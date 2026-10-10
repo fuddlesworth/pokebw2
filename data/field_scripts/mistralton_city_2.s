@@ -23,7 +23,7 @@ Script_1:
     VMJump L_0088
 
 L_0047:
-    VMStackPushFlag 139
+    VMStackPushFlag EVENT_FLAG_0x008b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0074
@@ -64,7 +64,7 @@ Script_2:
     VMJump L_0108
 
 L_00C3:
-    VMStackPushFlag 139
+    VMStackPushFlag EVENT_FLAG_0x008b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F4
@@ -74,7 +74,7 @@ L_00C3:
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCity2_Text_WowJetBadgeWon, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagReset 615
+    FlagReset EVENT_FLAG_0x0267
     VMJump L_0108
 
 L_00F4:

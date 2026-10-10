@@ -9,13 +9,13 @@
 Script_1:
     WorkSetConst 0x8020, 0
     Random 0x8020, 3
-    VMStackPushFlag 2754
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2755
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2756
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac4
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -25,7 +25,7 @@ Script_1:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006A
-    FlagSet 2754
+    FlagSet EVENT_FLAG_DAILY_0x0ac2
     VMJump L_009E
 
 L_006A:
@@ -33,7 +33,7 @@ L_006A:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0087
-    FlagSet 2755
+    FlagSet EVENT_FLAG_DAILY_0x0ac3
     VMJump L_009E
 
 L_0087:
@@ -41,7 +41,7 @@ L_0087:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009E
-    FlagSet 2756
+    FlagSet EVENT_FLAG_DAILY_0x0ac4
 
 L_009E:
     VMHalt
@@ -50,7 +50,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2754
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00CD
@@ -60,7 +60,7 @@ Script_2:
     VMJump L_0111
 
 L_00CD:
-    VMStackPushFlag 2755
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F2
@@ -70,7 +70,7 @@ L_00CD:
     VMJump L_0111
 
 L_00F2:
-    VMStackPushFlag 2756
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac4
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0111
@@ -88,7 +88,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2754
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0146
@@ -98,7 +98,7 @@ Script_3:
     VMJump L_018A
 
 L_0146:
-    VMStackPushFlag 2755
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_016B
@@ -108,7 +108,7 @@ L_0146:
     VMJump L_018A
 
 L_016B:
-    VMStackPushFlag 2756
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac4
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_018A

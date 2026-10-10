@@ -29,7 +29,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 383
+    VMStackPushFlag EVENT_FLAG_0x017f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B5
@@ -48,7 +48,7 @@ Script_2:
     ParentActorMsg MSGFILE_SCRIPT, Route63_Text_KnowWhatWhenGave, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 383
+    FlagSet EVENT_FLAG_0x017f
     VMJump L_00C3
 
 L_00B5:

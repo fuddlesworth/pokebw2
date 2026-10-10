@@ -32,7 +32,7 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BA
@@ -49,9 +49,9 @@ Script_3:
     ParentActorMsg MSGFILE_SCRIPT, IcirrusCity5_Text_WellShucksHaveGood, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     BGMPlay SEQ_BGM_R_F
-    FlagSet 2559
+    FlagSet EVENT_FLAG_0x09ff
     BGMAmbienceResume
     VMJump L_00B4
 

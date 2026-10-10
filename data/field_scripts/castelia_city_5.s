@@ -26,20 +26,20 @@
     WorkSetConst 0x8027, 0
 
 Script_10:
-    VMStackPushFlag 293
+    VMStackPushFlag EVENT_FLAG_0x0125
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00AA
-    FlagReset 770
-    VMStackPushFlag 2752
+    FlagReset EVENT_FLAG_0x0302
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AA
-    WorkSetConst 0x40c8, 1
+    WorkSetConst EVENT_WORK_0x40c8, 1
 
 L_00AA:
     VMHalt
@@ -78,25 +78,25 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2752
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_034C
-    VMStackPushFlag 293
+    VMStackPushFlag EVENT_FLAG_0x0125
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0161
-    VMStackPushFlag 292
+    VMStackPushFlag EVENT_FLAG_0x0124
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014F
     // "Wah ha ha ha![f000]븁\u0000\nThere's a rumor the new Champion\nloves our Casteliacones.[f000]븁\u0000\nAnd suddenly an avalanche of customers\nare screaming for our ice cream![f000]븁\u0000\nI'm screaming for joy! Eeeek!\nIt's the super-popular Casteliacone![f000]븀\u0000\nHow many do you want?"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_WahHaHaHa, 0, 0, 0
-    FlagSet 292
+    FlagSet EVENT_FLAG_0x0124
     VMJump L_015B
 
 L_014F:
@@ -107,13 +107,13 @@ L_015B:
     VMJump L_0196
 
 L_0161:
-    VMStackPushFlag 291
+    VMStackPushFlag EVENT_FLAG_0x0123
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_018A
     // "Castelia City's Casteliacone\nis the perfect souvenir![f000]븁\u0000\nA while ago, our store\nwas really popular.[f000]븁\u0000\nRecently, however, we don't\nget as many customers as we used to.[f000]븁\u0000\nBut, whining won't accomplish anything.\nI just have to work hard to sell them![f000]븁\u0000\nWell then, how about a Casteliacone?[f000]븁\u0000\nIt's $100.\nWould you like to buy one?"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_CasteliaCitysCasteliaconePerfect, 0, 0, 0
-    FlagSet 291
+    FlagSet EVENT_FLAG_0x0123
     VMJump L_0196
 
 L_018A:
@@ -194,12 +194,12 @@ L_028C:
     RTCallGlobal 2801
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 2752
-    VMStackPushFlag 293
+    FlagSet EVENT_FLAG_DAILY_0x0ac0
+    VMStackPushFlag EVENT_FLAG_0x0125
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F5
-    FlagSet 293
+    FlagSet EVENT_FLAG_0x0125
     VMCall Script_4
 
 L_02F5:
@@ -207,10 +207,10 @@ L_02F5:
 
 L_02FB:
     MoneyWinClose
-    VMStackPushFlag 293
+    VMStackPushFlag EVENT_FLAG_0x0125
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -237,7 +237,7 @@ L_034C:
     MsgWinCloseAll
 
 L_035C:
-    VMStackPush 0x40c8
+    VMStackPush EVENT_WORK_0x40c8
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03CC
@@ -250,15 +250,15 @@ L_035C:
     VMSleep 4
     ActorCmdExec 6, Movement_0B74
     ActorCmdWait
-    VMStackPushFlag 2752
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03C6
-    WorkSetConst 0x40c8, 0
+    WorkSetConst EVENT_WORK_0x40c8, 0
     VMJump L_03CC
 
 L_03C6:
-    WorkSetConst 0x40c8, 1
+    WorkSetConst EVENT_WORK_0x40c8, 1
 
 L_03CC:
     FinishAllEvents
@@ -266,7 +266,7 @@ L_03CC:
     VMHalt
 
 Script_4:
-    FlagReset 771
+    FlagReset EVENT_FLAG_0x0303
     ActorAdd 1
     ActorWalkRoute 1, 14, 35, 1, 8, 1
     ActorCmdWait
@@ -281,7 +281,7 @@ Script_4:
     ActorWalkRoute 1, 14, 18, 1, 8, 1
     ActorCmdWait
     ActorDelete 1
-    FlagSet 771
+    FlagSet EVENT_FLAG_0x0303
     VMReturn
 
 Script_5:
@@ -344,7 +344,7 @@ Script_9:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2752
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F1
@@ -355,7 +355,7 @@ Script_9:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06DD
-    WorkSetConst 0x40c8, 2
+    WorkSetConst EVENT_WORK_0x40c8, 2
     // "The line gets reeeally long!\nBut, it's worth lining up![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_LineGetsReeeallyLong, 6, 0, 0
     MsgWinCloseAll
@@ -458,7 +458,7 @@ Script_11:
     VMSleep 3
     ActorCmdExec 255, Movement_0B8C
     ActorCmdWait
-    VMStackPushFlag 2752
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0905
@@ -469,7 +469,7 @@ Script_11:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08F1
-    WorkSetConst 0x40c8, 2
+    WorkSetConst EVENT_WORK_0x40c8, 2
     // "The line gets reeeally long!\nBut, it's worth lining up![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_LineGetsReeeallyLong, 6, 0, 0
     MsgWinCloseAll
@@ -552,17 +552,17 @@ L_0913:
     VMHalt
 
 Script_12:
-    VMStackPushFlag 2752
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0ABF
-    VMStackPushFlag 292
+    VMStackPushFlag EVENT_FLAG_0x0124
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_095F
     // "Wah ha ha ha![f000]븁\u0000\nThere's a rumor the new Champion\nloves our Casteliacones.[f000]븁\u0000\nAnd suddenly an avalanche of customers\nare screaming for our ice cream![f000]븁\u0000\nI'm screaming for joy! Eeeek!\nIt's the super-popular Casteliacone![f000]븀\u0000\nHow many do you want?"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_WahHaHaHa, 0, 0, 0
-    FlagSet 292
+    FlagSet EVENT_FLAG_0x0124
     VMJump L_096B
 
 L_095F:
@@ -641,7 +641,7 @@ L_0A61:
     RTCallGlobal 2801
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 2752
+    FlagSet EVENT_FLAG_DAILY_0x0ac0
 
 L_0AA1:
     VMJump L_0AB9
@@ -663,7 +663,7 @@ L_0ABF:
     MsgWinCloseAll
 
 L_0ACF:
-    VMStackPush 0x40c8
+    VMStackPush EVENT_WORK_0x40c8
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B3F
@@ -676,15 +676,15 @@ L_0ACF:
     VMSleep 4
     ActorCmdExec 6, Movement_0B74
     ActorCmdWait
-    VMStackPushFlag 2752
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B39
-    WorkSetConst 0x40c8, 0
+    WorkSetConst EVENT_WORK_0x40c8, 0
     VMJump L_0B3F
 
 L_0B39:
-    WorkSetConst 0x40c8, 1
+    WorkSetConst EVENT_WORK_0x40c8, 1
 
 L_0B3F:
     VMReturn

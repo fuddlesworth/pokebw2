@@ -37,17 +37,17 @@
     WorkSetConst 0x8022, 0
 
 Script_12:
-    FlagSet 950
-    FlagSet 951
-    FlagSet 953
-    FlagSet 955
-    FlagSet 957
-    FlagReset 948
-    FlagReset 949
-    FlagReset 952
-    FlagReset 954
-    FlagReset 956
-    VMStackPush 0x40c3
+    FlagSet EVENT_FLAG_0x03b6
+    FlagSet EVENT_FLAG_0x03b7
+    FlagSet EVENT_FLAG_0x03b9
+    FlagSet EVENT_FLAG_0x03bb
+    FlagSet EVENT_FLAG_0x03bd
+    FlagReset EVENT_FLAG_0x03b4
+    FlagReset EVENT_FLAG_0x03b5
+    FlagReset EVENT_FLAG_0x03b8
+    FlagReset EVENT_FLAG_0x03ba
+    FlagReset EVENT_FLAG_0x03bc
+    VMStackPush EVENT_WORK_0x40c3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E5
@@ -56,7 +56,7 @@ Script_12:
     VMJump L_015A
 
 L_00E5:
-    VMStackPush 0x40c3
+    VMStackPush EVENT_WORK_0x40c3
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0116
@@ -65,7 +65,7 @@ L_00E5:
     VMJump L_015A
 
 L_0116:
-    VMStackPush 0x40c3
+    VMStackPush EVENT_WORK_0x40c3
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013B
@@ -73,7 +73,7 @@ L_0116:
     VMJump L_015A
 
 L_013B:
-    VMStackPush 0x40c3
+    VMStackPush EVENT_WORK_0x40c3
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_015A
@@ -130,13 +130,13 @@ Script_14:
     ActorCmdWait
     ActorDelete 6
     ActorDelete 5
-    WorkSetConst 0x40c3, 5
-    FlagSet 716
-    FlagSet 717
-    FlagSet 717
-    FlagSet 708
-    FlagSet 1001
-    WorkSetConst 0x40c5, 1
+    WorkSetConst EVENT_WORK_0x40c3, 5
+    FlagSet EVENT_FLAG_0x02cc
+    FlagSet EVENT_FLAG_0x02cd
+    FlagSet EVENT_FLAG_0x02cd
+    FlagSet EVENT_FLAG_0x02c4
+    FlagSet EVENT_FLAG_0x03e9
+    WorkSetConst EVENT_WORK_0x40c5, 1
     HollowRivalCmd_0262 1, 12
     FinishAllEvents
     ActorsUnpauseAll
@@ -210,7 +210,7 @@ L_0304:
     // "Team Plasma: N![f000]븁\u0000\nTeam Plasma's king... What a joke!\nHe's nothing more than a traitor![f000]븁\u0000\nHe disappeared somewhere and abandoned\nus when we needed him![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_TeamPlasmaNTeam, 3, 3, 0
     MsgWinCloseAll
-    FlagReset 716
+    FlagReset EVENT_FLAG_0x02cc
     ActorAdd 5
     // "Hey![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_Hey, 5, 6, 1
@@ -257,10 +257,10 @@ L_0304:
     ActorWalkRoute 2, 212, 433, 1, 8, 1
     ActorCmdWait
     ActorSetGPos 2, 198, 2, 396, 2
-    FlagSet 716
-    FlagSet 707
-    WorkSetConst 0x40c3, 1
-    FlagSet 2478
+    FlagSet EVENT_FLAG_0x02cc
+    FlagSet EVENT_FLAG_0x02c3
+    WorkSetConst EVENT_WORK_0x40c3, 1
+    FlagSet EVENT_FLAG_0x09ae
     HollowRivalCmd_0262 1, 9
     FinishAllEvents
     ActorsUnpauseAll
@@ -359,7 +359,7 @@ L_05C9:
     MsgWinCloseAll
     // "Rood: My guest.[f000]븁\u0000\nIf you're going to come inside,\nI would like to see what kind[f000]븀\u0000\nof person you are, Trainer.[f000]븁\u0000\nThat's right. In a Pokémon battle.\nDo you find this acceptable?"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_RoodGuestIfYoure, 4, 3, 0
-    WorkSetConst 0x40c3, 2
+    WorkSetConst EVENT_WORK_0x40c3, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -456,7 +456,7 @@ L_072F:
     // "Rood: I apologize for testing you.[f000]븁\u0000\nBeing former members of Team Plasma,\nwe must deal with a lot...[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_RoodApologizeTestingBeing, 4, 3, 0
     MsgWinCloseAll
-    FlagReset 716
+    FlagReset EVENT_FLAG_0x02cc
     ActorAdd 5
     ActorSetGPos 5, 185, 2, 398, 3
     ActorCmdExec 5, Movement_07DC
@@ -480,9 +480,9 @@ L_072F:
     ActorCmdExec 255, Movement_07E4
     ActorCmdExec 5, Movement_07EC
     ActorCmdWait
-    WorkSetConst 0x40c3, 3
-    FlagSet 715
-    FlagSet 706
+    WorkSetConst EVENT_WORK_0x40c3, 3
+    FlagSet EVENT_FLAG_0x02cb
+    FlagSet EVENT_FLAG_0x02c2
     RTReserveScript 1
     MapChangeWarp ZONE_DRIFTVEIL_CITY_6, 7, 25, 0
     VMReturn
@@ -601,7 +601,7 @@ Script_6:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0990
-    VMStackPush 0x4097
+    VMStackPush EVENT_WORK_0x4097
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_095B
@@ -612,7 +612,7 @@ Script_6:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0945
-    WorkSetConst 0x4097, 1
+    WorkSetConst EVENT_WORK_0x4097, 1
     // "In Triple Battles, you send out three\nPokémon at a time and battle![f000]븁\u0000\nThe rules are simple: just make all of\nyour opponent's Pokémon faint.[f000]븁\u0000\nAnd that's a rough explanation\nof Triple Battles.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_TripleBattlesSendOut, 0, 0, 0
     VMCall L_0AF2
@@ -628,7 +628,7 @@ L_0955:
     VMJump L_098A
 
 L_095B:
-    VMStackPush 0x4097
+    VMStackPush EVENT_WORK_0x4097
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_097A
@@ -645,7 +645,7 @@ L_098A:
     VMJump L_0A29
 
 L_0990:
-    VMStackPush 0x4097
+    VMStackPush EVENT_WORK_0x4097
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09FA
@@ -656,7 +656,7 @@ L_0990:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09E4
-    WorkSetConst 0x4097, 1
+    WorkSetConst EVENT_WORK_0x4097, 1
     // "In Rotation Battles, you send out three\nPokémon at a time and battle![f000]븁\u0000\nOne Pokémon takes the lead position,\nand the other two stand on each side.[f000]븁\u0000\nThe trick is, each turn you can change\ntheir positions...[f000]븁\u0000\nAnd that's a rough explanation\nof Rotation Battles.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_RotationBattlesSendOut, 0, 0, 0
     VMCall L_0A2F
@@ -672,7 +672,7 @@ L_09F4:
     VMJump L_0A29
 
 L_09FA:
-    VMStackPush 0x4097
+    VMStackPush EVENT_WORK_0x4097
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A19
@@ -731,7 +731,7 @@ L_0ABE:
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_SheeshThatsEmbarrassingGetting, 0, 0, 0
     LastKeyWait
     ActorMsgClose
-    WorkSetConst 0x4097, 2
+    WorkSetConst EVENT_WORK_0x4097, 2
 
 L_0AD4:
     VMJump L_0AEA
@@ -787,7 +787,7 @@ L_0B81:
     ActorMsg MSGFILE_SCRIPT, DriftveilCity_Text_SheeshThatsEmbarrassingGetting_2, 0, 0, 0
     LastKeyWait
     ActorMsgClose
-    WorkSetConst 0x4097, 2
+    WorkSetConst EVENT_WORK_0x4097, 2
 
 L_0B97:
     VMJump L_0BAD

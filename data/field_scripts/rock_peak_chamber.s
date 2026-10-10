@@ -123,7 +123,7 @@ L_0130:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0172
-    FlagSet 922
+    FlagSet EVENT_FLAG_0x039a
     ActorDelete 0x8011
     CallWildBattleEnd
     VMJump L_0174
@@ -152,7 +152,7 @@ L_01A8:
     VMJump L_01EA
 
 L_01BB:
-    FlagSet 400
+    FlagSet EVENT_FLAG_0x0190
     GameGetVersion 0x8010
     VMStackPush 0x8010
     VMStackPushConst 23

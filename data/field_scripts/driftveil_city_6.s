@@ -24,31 +24,31 @@
     WorkSetConst 0x8022, 0
 
 Script_15:
-    Cmd_02B2 0, 0x400f
-    DebugPrint 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 0, EVENT_WORK_0x400f
+    DebugPrint EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x404a
+    VMStackPush EVENT_WORK_0x404a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x413f
+    VMStackPush EVENT_WORK_0x413f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00AB
-    FlagSet 714
-    FlagSet 696
-    FlagSet 974
-    FlagReset 697
-    WorkSetConst 0x413f, 2
+    FlagSet EVENT_FLAG_0x02ca
+    FlagSet EVENT_FLAG_0x02b8
+    FlagSet EVENT_FLAG_0x03ce
+    FlagReset EVENT_FLAG_0x02b9
+    WorkSetConst EVENT_WORK_0x413f, 2
 
 L_00AB:
-    VMStackPushFlag 417
+    VMStackPushFlag EVENT_FLAG_0x01a1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 491
+    VMStackPushFlag EVENT_FLAG_0x01eb
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -57,10 +57,10 @@ L_00AB:
     VMJump L_0103
 
 L_00DA:
-    VMStackPushFlag 417
+    VMStackPushFlag EVENT_FLAG_0x01a1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 491
+    VMStackPushFlag EVENT_FLAG_0x01eb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -92,21 +92,21 @@ Script_17:
     ActorsPauseAll
     FadeInBlack
     FadeWait
-    WorkSetConst 0x413f, 3
-    WorkSetConst 0x404a, 1
-    FlagReset 696
-    VMStackPushFlag 289
+    WorkSetConst EVENT_WORK_0x413f, 3
+    WorkSetConst EVENT_WORK_0x404a, 1
+    FlagReset EVENT_FLAG_0x02b8
+    VMStackPushFlag EVENT_FLAG_0x0121
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0176
-    FlagReset 714
+    FlagReset EVENT_FLAG_0x02ca
 
 L_0176:
-    VMStackPushFlag 417
+    VMStackPushFlag EVENT_FLAG_0x01a1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_018D
-    FlagReset 974
+    FlagReset EVENT_FLAG_0x03ce
 
 L_018D:
     FinishAllEvents
@@ -195,8 +195,8 @@ L_0310:
     VMCall L_03A6
 
 L_0316:
-    FlagSet 719
-    WorkSetConst 0x413f, 1
+    FlagSet EVENT_FLAG_0x02cf
+    WorkSetConst EVENT_WORK_0x413f, 1
     HollowRivalCmd_0262 1, 10
     FinishAllEvents
     ActorsUnpauseAll
@@ -204,7 +204,7 @@ L_0316:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 289
+    VMStackPushFlag EVENT_FLAG_0x0121
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_038C
@@ -407,8 +407,8 @@ L_0625:
 
 L_0650:
     ActorCmdWait
-    Cmd_02B2 0, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 0, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_067D
@@ -423,8 +423,8 @@ L_067D:
 L_0689:
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 289
-    FlagSet 714
+    FlagSet EVENT_FLAG_0x0121
+    FlagSet EVENT_FLAG_0x02ca
 
 L_0695:
     WorkSetConst 0x8023, 0
@@ -448,7 +448,7 @@ Movement_06E4:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_071B
@@ -475,7 +475,7 @@ L_072F:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0764
@@ -624,11 +624,11 @@ Script_14:
     ActorSetEyeToEye
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    VMStackPushFlag 430
+    VMStackPushFlag EVENT_FLAG_0x01ae
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0912
-    FlagSet 430
+    FlagSet EVENT_FLAG_0x01ae
     // "[f000]Ā\u0001\u0001: What?[f000]븁\u0000\nI heard that Team Plasma left\nmany Pokémon behind when they fled.[f000]븁\u0000\nAnd I'm helping find their\nreal Trainers...[f000]븁\u0000\nThat aside...[f000]븁\u0000\nSince you're here, you should have a\nbattle with me before you go!"
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCity6_Text_WhatHeardTeamPlasma, 0, 0
     YesNoWin 0x8010
@@ -638,7 +638,7 @@ Script_14:
     VMJumpIf CMP_STACK, L_08FE
     VMCall L_097A
     HollowRivalCmd_0262 1, 43
-    FlagSet 491
+    FlagSet EVENT_FLAG_0x01eb
     VMJump L_090C
 
 L_08FE:
@@ -651,7 +651,7 @@ L_090C:
     VMJump L_0974
 
 L_0912:
-    VMStackPushFlag 2779
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0adb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0966
@@ -689,7 +689,7 @@ L_097A:
     // "[f000]Ā\u0001\u0001: Here I come![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCity6_Text_HereCome, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09A7
@@ -697,7 +697,7 @@ L_097A:
     VMJump L_09D0
 
 L_09A7:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09C8
@@ -724,7 +724,7 @@ L_09F1:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCity6_Text_SupposeThatsIfWinning, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2779
+    FlagSet EVENT_FLAG_DAILY_0x0adb
     VMReturn
     .balign 4, 0
     Move 13, 1

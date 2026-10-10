@@ -6,7 +6,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 474
+    VMStackPushFlag EVENT_FLAG_0x01da
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0085
@@ -34,7 +34,7 @@ Script_1:
     ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate9_Text_IfHaveThesePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 474
+    FlagSet EVENT_FLAG_0x01da
     VMJump L_0099
 
 L_0085:

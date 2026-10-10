@@ -13,25 +13,25 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0037
-    WorkSetConst 0x400a, 555
+    WorkSetConst EVENT_WORK_0x400a, 555
 
 L_0037:
     VMHalt
 
 Script_2:
     PokemonLeagueCmd_PlayCaitlinAmbience
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005A
     ActorSetGPos 0, 15, 15, 7, 1
 
 L_005A:
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0075
@@ -42,7 +42,7 @@ L_0075:
 
 Script_3:
     PokemonLeagueCmd_PlayCaitlinAmbience
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009A
@@ -54,7 +54,7 @@ L_009A:
     ActorSetGPos 0, 15, 15, 7, 1
 
 L_00A6:
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C1
@@ -67,19 +67,19 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0239
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CE
     // "It's me who appeared\nwhen the flower opened up.[f000]븁\u0000\nYou, standing over there...[f000]븁\u0000\nYou look like a Pokémon Trainer\nwith strength and kindness.[f000]븁\u0000\nWhat I look for in my opponent is\nsuperb strength...[f000]븁\u0000\nI'm counting on you![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_ItsWhoAppearedWhen, 0, 1, 0
     MsgWinCloseAll
-    FlagSet 2410
-    WorkSetConst 0x400a, 555
+    FlagSet EVENT_FLAG_0x096a
+    WorkSetConst EVENT_WORK_0x400a, 555
     WorkSetConst 0x8020, 0
     GameGetDifficulty 0x8020
     VMStackPush 0x8020
@@ -106,16 +106,16 @@ L_0161:
     CallTrainerLose
 
 L_0163:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -136,16 +136,16 @@ L_01C4:
     VMJump L_0233
 
 L_01CE:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -168,15 +168,15 @@ L_0233:
     VMJump L_038E
 
 L_0239:
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0329
     // "It's me who appeared\nwhen the flower opened up.[f000]븁\u0000\nYou who have been waiting...[f000]븁\u0000\nYou look like a Pokémon Trainer\nwith refined strength and[f000]븀\u0000\ndeepened kindness.[f000]븁\u0000\nWhat I look for in my opponent is\nsuperb strength...[f000]븁\u0000\nPlease unleash your power\nto the fullest![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_ItsWhoAppearedWhen_2, 0, 1, 0
     MsgWinCloseAll
-    FlagSet 2410
-    WorkSetConst 0x400a, 555
+    FlagSet EVENT_FLAG_0x096a
+    WorkSetConst EVENT_WORK_0x400a, 555
     WorkSetConst 0x8021, 0
     GameGetDifficulty 0x8021
     VMStackPush 0x8021
@@ -203,16 +203,16 @@ L_02BC:
     CallTrainerLose
 
 L_02BE:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -233,16 +233,16 @@ L_031F:
     VMJump L_038E
 
 L_0329:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -272,7 +272,7 @@ Script_5:
     Plugin3_Cmd1005 0
     SEPlay SEQ_SE_SW_CATTLEYA_01
     VMSleep 40
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -291,7 +291,7 @@ Script_6:
     VMSleep 30
     Plugin3_Cmd1008 0, 15
     VMSleep 60
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

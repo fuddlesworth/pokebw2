@@ -37,7 +37,7 @@
             "model": 162,
             "movement": 0,
             "type": 0,
-            "flag": "0x0265",
+            "flag": "EVENT_FLAG_0x0265",
             "script": 2000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -163,22 +163,22 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 1,
                     "script": 1
                 },
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 2,
                     "script": 3
                 },
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 3,
                     "script": 4
                 },
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 4,
                     "script": 2
                 }

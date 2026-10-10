@@ -6,16 +6,16 @@
     ScriptEntriesEnd
 
 Script_1:
-    FlagSet 950
-    FlagSet 951
-    FlagSet 953
-    FlagSet 955
-    FlagSet 957
-    FlagReset 948
-    FlagReset 949
-    FlagReset 952
-    FlagReset 954
-    FlagReset 956
+    FlagSet EVENT_FLAG_0x03b6
+    FlagSet EVENT_FLAG_0x03b7
+    FlagSet EVENT_FLAG_0x03b9
+    FlagSet EVENT_FLAG_0x03bb
+    FlagSet EVENT_FLAG_0x03bd
+    FlagReset EVENT_FLAG_0x03b4
+    FlagReset EVENT_FLAG_0x03b5
+    FlagReset EVENT_FLAG_0x03b8
+    FlagReset EVENT_FLAG_0x03ba
+    FlagReset EVENT_FLAG_0x03bc
     VMHalt
 
 Script_2:

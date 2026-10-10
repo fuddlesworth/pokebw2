@@ -47,7 +47,7 @@
             "model": 69,
             "movement": 0,
             "type": 0,
-            "flag": "0x03b3",
+            "flag": "EVENT_FLAG_0x03b3",
             "script": 2000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -85,7 +85,7 @@
             "model": 69,
             "movement": 0,
             "type": 0,
-            "flag": "0x03da",
+            "flag": "EVENT_FLAG_0x03da",
             "script": 6,
             "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
@@ -133,7 +133,7 @@
     "triggers": [
         {
             "script": 5,
-            "var": "0x411e",
+            "var": "EVENT_WORK_0x411e",
             "value": 0,
             "type": 0,
             "grid": {

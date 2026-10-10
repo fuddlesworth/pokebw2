@@ -16,7 +16,7 @@ Script_1:
     WorkSetConst 0x8025, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0061
@@ -27,10 +27,10 @@ Script_1:
     VMJump L_01E3
 
 L_0061:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 342
+    VMStackPushFlag EVENT_FLAG_0x0156
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -86,7 +86,7 @@ L_00EA:
     ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_StunfiskLuvdiscBothHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 342
+    FlagSet EVENT_FLAG_0x0156
     VMJump L_01AC
 
 L_015B:
@@ -117,10 +117,10 @@ L_01AC:
     VMJump L_01E3
 
 L_01B2:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 342
+    VMStackPushFlag EVENT_FLAG_0x0156
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND

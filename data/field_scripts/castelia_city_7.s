@@ -135,7 +135,7 @@ L_01E1:
     VMJump L_01F1
 
 L_01F1:
-    WorkSetConst 0x4137, 1
+    WorkSetConst EVENT_WORK_0x4137, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -194,7 +194,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4137
+    VMStackPush EVENT_WORK_0x4137
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02D9
@@ -212,7 +212,7 @@ Script_3:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity7_Text_IfUseMoveFlash_2, 0, 3, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4137, 1
+    WorkSetConst EVENT_WORK_0x4137, 1
     VMJump L_02E9
 
 L_02D9:

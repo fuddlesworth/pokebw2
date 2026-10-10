@@ -34,7 +34,7 @@ Script_3:
     WorkSetConst 0x8021, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 445
+    VMStackPushFlag EVENT_FLAG_0x01bd
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0073
@@ -80,7 +80,7 @@ L_00C8:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 445
+    FlagSet EVENT_FLAG_0x01bd
     WorkSetConst 0x8021, 1
     VMJump L_0135
 
@@ -114,7 +114,7 @@ L_014E:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 445
+    FlagSet EVENT_FLAG_0x01bd
     WorkSetConst 0x8021, 1
     VMJump L_01BB
 
@@ -149,11 +149,11 @@ L_0206:
     VMJump L_007F
 
 L_020C:
-    VMStackPushFlag 447
+    VMStackPushFlag EVENT_FLAG_0x01bf
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0223
-    FlagSet 447
+    FlagSet EVENT_FLAG_0x01bf
 
 L_0223:
     FinishAllEvents

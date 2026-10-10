@@ -11,7 +11,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 213
+    VMStackPushFlag EVENT_FLAG_0x00d5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005F
@@ -25,7 +25,7 @@ Script_1:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 213
+    FlagSet EVENT_FLAG_0x00d5
 
 L_005F:
     // "Sun Stones are stones that make certain\nPokémon evolve![f000]븁\u0000\nI gave it to Petilil as a present!"

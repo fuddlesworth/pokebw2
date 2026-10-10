@@ -24,7 +24,7 @@
 Script_1:
     WorkSetConst 0x8020, 0
     WorkSetConst 0x8021, 0
-    VMStackPushFlag 377
+    VMStackPushFlag EVENT_FLAG_0x0179
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0075
@@ -35,7 +35,7 @@ L_0075:
     WorkSetConst 0x8020, 0
 
 L_007B:
-    VMStackPushFlag 378
+    VMStackPushFlag EVENT_FLAG_0x017a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009A
@@ -50,14 +50,14 @@ L_00A0:
     VMHalt
 
 Script_13:
-    VMStackPushFlag 377
+    VMStackPushFlag EVENT_FLAG_0x0179
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C7
     ActorSetGPos 1, 17, 2, 17, 2
 
 L_00C7:
-    VMStackPushFlag 378
+    VMStackPushFlag EVENT_FLAG_0x017a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E6
@@ -127,12 +127,12 @@ L_0179:
     VMHalt
 
 L_018B:
-    FlagReset 895
+    FlagReset EVENT_FLAG_0x037f
     ActorAdd 1
     VMReturn
 
 L_0195:
-    FlagReset 896
+    FlagReset EVENT_FLAG_0x0380
     ActorAdd 0
     VMReturn
 
@@ -259,7 +259,7 @@ L_02E2:
     VMJump L_032B
 
 L_0325:
-    FlagSet 895
+    FlagSet EVENT_FLAG_0x037f
     CallTrainerLose
 
 L_032B:
@@ -268,7 +268,7 @@ L_032B:
     ActorMsgClose
     ActorCmdExec 1, Movement_03D8
     ActorCmdWait
-    FlagSet 377
+    FlagSet EVENT_FLAG_0x0179
     VMReturn
 
 L_0349:
@@ -288,7 +288,7 @@ L_0349:
     VMJump L_0392
 
 L_038C:
-    FlagSet 896
+    FlagSet EVENT_FLAG_0x0380
     CallTrainerLose
 
 L_0392:
@@ -297,7 +297,7 @@ L_0392:
     ActorMsgClose
     ActorCmdExec 0, Movement_03D8
     ActorCmdWait
-    FlagSet 378
+    FlagSet EVENT_FLAG_0x017a
     VMReturn
 
 Movement_03B0:
@@ -351,7 +351,7 @@ Script_9:
 
 Script_15:
     ActorsPauseAll
-    VMStackPushFlag 459
+    VMStackPushFlag EVENT_FLAG_0x01cb
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0453
@@ -380,8 +380,8 @@ L_0453:
     ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_HearGymLeaderLikes, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 459
-    FlagSet 669
+    FlagSet EVENT_FLAG_0x01cb
+    FlagSet EVENT_FLAG_0x029d
 
 L_049B:
     FinishAllEvents

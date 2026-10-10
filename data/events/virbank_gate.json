@@ -104,7 +104,7 @@
     "triggers": [
         {
             "script": 5,
-            "var": "0x4151",
+            "var": "EVENT_WORK_0x4151",
             "value": 0,
             "type": 0,
             "grid": {

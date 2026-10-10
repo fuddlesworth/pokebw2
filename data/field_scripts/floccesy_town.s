@@ -25,7 +25,7 @@
     WorkSetConst 0x8023, 0
 
 Script_1:
-    VMStackPush 0x40a5
+    VMStackPush EVENT_WORK_0x40a5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0083
@@ -33,10 +33,10 @@ Script_1:
     VMJump L_00B2
 
 L_0083:
-    VMStackPush 0x40a5
+    VMStackPush EVENT_WORK_0x40a5
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPush 0x40a5
+    VMStackPush EVENT_WORK_0x40a5
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -73,7 +73,7 @@ L_00F5:
     ActorCmdExec 0, Movement_0140
     ActorCmdWait
     ActorSetGPos 0, 113, 2, 669, 1
-    WorkSetConst 0x40a5, 1
+    WorkSetConst EVENT_WORK_0x40a5, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -115,7 +115,7 @@ L_0187:
     // "Oh ho!\nIt's your friend's Town Map, is it?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_OhHoItsFriends, 0, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E3
@@ -123,7 +123,7 @@ L_0187:
     VMJump L_0206
 
 L_01E3:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0201
@@ -154,7 +154,7 @@ L_0206:
     EvCameraEnd
     ActorCmdExec 0, Movement_0724
     ActorCmdWait
-    WorkSetConst 0x40a5, 2
+    WorkSetConst EVENT_WORK_0x40a5, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -218,8 +218,8 @@ L_0312:
     BMHndAudioVisualAnmPlay 0x8020, 1
     BMHndAnmWait 0x8020
     BMReleaseHandle 0x8020
-    WorkSetConst 0x40a5, 4
-    FlagSet 731
+    WorkSetConst EVENT_WORK_0x40a5, 4
+    FlagSet EVENT_FLAG_0x02db
     VMReturn
 
 Script_6:
@@ -336,11 +336,11 @@ L_04EE:
     BGMChangeMap
     ActorCmdWait
     ActorDelete 251
-    WorkSetConst 0x4153, 2
+    WorkSetConst EVENT_WORK_0x4153, 2
     HollowRivalCmd_0262 3, 0
-    FlagSet 742
-    FlagSet 741
-    WorkSetConst 0x40a8, 4
+    FlagSet EVENT_FLAG_0x02e6
+    FlagSet EVENT_FLAG_0x02e5
+    WorkSetConst EVENT_WORK_0x40a8, 4
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -16,7 +16,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0093
@@ -35,7 +35,7 @@ Script_1:
     ActorMsg MSGFILE_SCRIPT, PokemonLeague9_Text_IveBeenWaiting, 0, 1, 0
     MsgWaitAdvance
     MsgWinCloseAll
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMJump L_00A1
 
 L_0093:
@@ -95,7 +95,7 @@ L_013E:
     ActorCmdWait
     VMSleep 30
     Plugin3_Cmd1021
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FF

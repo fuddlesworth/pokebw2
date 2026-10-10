@@ -13,17 +13,17 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0037
-    WorkSetConst 0x400a, 555
+    WorkSetConst EVENT_WORK_0x400a, 555
 
 L_0037:
     VMHalt
 
 Script_2:
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0054
@@ -33,7 +33,7 @@ L_0054:
     VMHalt
 
 Script_3:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0071
@@ -41,7 +41,7 @@ Script_3:
     PokemonLeagueCmd_SetCamera 2
 
 L_0071:
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008C
@@ -54,19 +54,19 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0204
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0199
     // "What will be determined here is\nwhich of us can absorb the opponent's[f000]븀\u0000\nlight and shine...[f000]븁\u0000\nBut who will decide that?[f000]븁\u0000\nIt shall be I, Grimsley of the Elite Four,\nand I will fulfill my duty to be[f000]븀\u0000\nyour opponent.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PokemonLeague6_Text_WhatWillDeterminedHere, 0, 1, 0
     MsgWinCloseAll
-    FlagSet 2408
-    WorkSetConst 0x400a, 555
+    FlagSet EVENT_FLAG_0x0968
+    WorkSetConst EVENT_WORK_0x400a, 555
     WorkSetConst 0x8020, 0
     GameGetDifficulty 0x8020
     VMStackPush 0x8020
@@ -93,16 +93,16 @@ L_012C:
     CallTrainerLose
 
 L_012E:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -123,16 +123,16 @@ L_018F:
     VMJump L_01FE
 
 L_0199:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -155,15 +155,15 @@ L_01FE:
     VMJump L_0359
 
 L_0204:
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F4
     // "Life is a serious battle, and you have\nto use the tools you're given.[f000]븁\u0000\nIt's more important to master the cards\nyou're holding than to complain about[f000]븀\u0000\nthe ones your opponents were dealt.[f000]븁\u0000\nLet us begin.\nAnd may the best Trainer win![f000]븁\u0000\nContests like this are proof\nthat you are really living...[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PokemonLeague6_Text_LifeSeriousBattleHave, 0, 1, 0
     MsgWinCloseAll
-    FlagSet 2408
-    WorkSetConst 0x400a, 555
+    FlagSet EVENT_FLAG_0x0968
+    WorkSetConst EVENT_WORK_0x400a, 555
     WorkSetConst 0x8021, 0
     GameGetDifficulty 0x8021
     VMStackPush 0x8021
@@ -190,16 +190,16 @@ L_0287:
     CallTrainerLose
 
 L_0289:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -220,16 +220,16 @@ L_02EA:
     VMJump L_0359
 
 L_02F4:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -261,7 +261,7 @@ Script_5:
     Plugin3_Cmd1003 0
     SEPlay SEQ_SE_SW_GEEMA_02
     VMSleep 25
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -276,7 +276,7 @@ Script_6:
     VMSleep 50
     Plugin3_Cmd1002 1
     SEPlay SEQ_SE_SW_GEEMA_01
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

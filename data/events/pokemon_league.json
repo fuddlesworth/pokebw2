@@ -88,7 +88,7 @@
     "triggers": [
         {
             "script": 6,
-            "var": "0x4109",
+            "var": "EVENT_WORK_0x4109",
             "value": 0,
             "type": 0,
             "grid": {

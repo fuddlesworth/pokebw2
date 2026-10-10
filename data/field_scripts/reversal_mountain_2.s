@@ -7,7 +7,7 @@ Script_1:
     ActorsPauseAll
     ActorCmdExec 255, Movement_0038
     ActorCmdWait
-    WorkSetConst 0x4120, 1
+    WorkSetConst EVENT_WORK_0x4120, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

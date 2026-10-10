@@ -18,7 +18,7 @@ Script_1:
 
 Script_4:
     ActorsPauseAll
-    VMStackPush 0x411e
+    VMStackPush EVENT_WORK_0x411e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0061

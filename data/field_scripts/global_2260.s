@@ -127,13 +127,13 @@ Script_1:
     WorkSetConst 0x8021, 1
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 1
+    VMStackPushFlag EVENT_FLAG_0x0001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_020E
     // "Er...\nWho was I again?[f000]븁\u0000\n...\n...[f000]븁\u0000\n...Oh, that's right!\nI am the Move Deleter![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global2260_Text_ErWhoAgainOh, 0, 0
-    FlagSet 1
+    FlagSet EVENT_FLAG_0x0001
 
 L_020E:
     // "You've come to make me force your\nPokémon to forget some moves?"
@@ -164,12 +164,12 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WorkSetConst 0x802b, 0
-    FlagGet 124, 0x802b
+    FlagGet EVENT_FLAG_0x007c, 0x802b
     VMStackPush 0x802b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0292
-    FlagSet 124
+    FlagSet EVENT_FLAG_0x007c
     // "Everybody calls me the reminder girl.[f000]븁\u0000\nI know every move that Pokémon learn\nwhile they're leveling up.[f000]븁\u0000\nAnd I can make Pokémon remember\nthose moves![f000]븁\u0000\nIf you bring me a Heart Scale, I'll make\na Pokémon remember a move.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, Global2260_Text_EverybodyCallsReminderGirl, 0x8011, 2, 0
 

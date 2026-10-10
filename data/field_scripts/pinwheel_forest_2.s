@@ -20,7 +20,7 @@
     WorkSetConst 0x8024, 0
 
 Script_11:
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0065
@@ -31,7 +31,7 @@ L_0065:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0088
@@ -107,11 +107,11 @@ Script_4:
     ActorDelete 21
     ActorDelete 251
     ActorDelete 24
-    WorkSetConst 0x4111, 1
-    FlagSet 908
-    FlagSet 999
+    WorkSetConst EVENT_WORK_0x4111, 1
+    FlagSet EVENT_FLAG_0x038c
+    FlagSet EVENT_FLAG_0x03e7
     HollowRivalCmd_0262 2, 0
-    FlagReset 1000
+    FlagReset EVENT_FLAG_0x03e8
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -143,17 +143,17 @@ Script_5:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     WorkSetConst 0x8008, 5
-    WorkAdd 0x8008, 0x418a
+    WorkAdd 0x8008, EVENT_WORK_0x418a
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorMsg MSGFILE_SCRIPT, 0x8008, 254, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    VMStackPush 0x418a
+    VMStackPush EVENT_WORK_0x418a
     VMStackPushConst 4
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0263
-    WorkAdd 0x418a, 1
+    WorkAdd EVENT_WORK_0x418a, 1
 
 L_0263:
     FinishAllEvents
@@ -168,7 +168,7 @@ L_0269:
     VMStackPush 0x8022
     VMStackPush 0x8024
     VMStackCmp CMP_NE
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -186,7 +186,7 @@ L_02B4:
     ActorCmdWait
 
 L_02D1:
-    VMStackPushFlag 407
+    VMStackPushFlag EVENT_FLAG_0x0197
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F6
@@ -233,8 +233,8 @@ L_0342:
     VMStackPop 0x8002
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 407
-    WorkSetConst 0x400f, 0
+    FlagSet EVENT_FLAG_0x0197
+    WorkSetConst EVENT_WORK_0x400f, 0
     VMJump L_03D6
 
 L_03A6:
@@ -246,7 +246,7 @@ L_03A6:
     ActorCmdExec 21, Movement_057C
     ActorCmdExec 255, Movement_0554
     ActorCmdWait
-    WorkSetConst 0x400f, 1
+    WorkSetConst EVENT_WORK_0x400f, 1
 
 L_03D6:
     VMReturn
@@ -362,7 +362,7 @@ Script_2:
     // "Trainer Tips![f000]븁\u0000\n\nA forest is likely to contain many\nwell-hidden items![f000]븁\u0000\nThey may be hard to find,\nso look carefully!"
     MsgPlaceSign PinwheelForest2_Text_TrainerTipsForestLikely, 0
     MsgPlaceSignClose
-    FlagSet 2663
+    FlagSet EVENT_FLAG_0x0a67
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -414,7 +414,7 @@ Movement_059C:
 
 Script_6:
     ActorsPauseAll
-    VMStackPushFlag 470
+    VMStackPushFlag EVENT_FLAG_0x01d6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0694
@@ -450,7 +450,7 @@ Script_6:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 470
+    FlagSet EVENT_FLAG_0x01d6
     // "Finding the Pokémon that can\nonly be found in the rustling grass[f000]븀\u0000\nis really amazing!"
     ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_FindingPokemonCanOnly, 0, 0
     LastKeyWait

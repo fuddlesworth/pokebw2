@@ -11,7 +11,7 @@
     ScriptEntriesEnd
 
 Script_4:
-    VMStackPush 0x410a
+    VMStackPush EVENT_WORK_0x410a
     VMStackPushConst 3
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0041
@@ -293,7 +293,7 @@ L_04BC:
     VMJump L_04DF
 
 L_04CF:
-    FlagReset 2547
+    FlagReset EVENT_FLAG_0x09f3
     VMCall L_0632
     VMJump L_050A
 
@@ -426,7 +426,7 @@ L_0632:
     VMCall L_0764
 
 L_06B3:
-    VMStackPush 0x413c
+    VMStackPush EVENT_WORK_0x413c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06E3
@@ -435,7 +435,7 @@ L_06B3:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06E3
-    WorkSetConst 0x413c, 1
+    WorkSetConst EVENT_WORK_0x413c, 1
 
 L_06E3:
     PlayerGetGPos 0x8027, 0x8028
@@ -483,24 +483,24 @@ L_0764:
     VMStackPush 0x8010
     VMStackPush 0
     VMStackCmp CMP_GE
-    VMStackPushFlag 980
+    VMStackPushFlag EVENT_FLAG_0x03d4
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0797
-    FlagReset 980
+    FlagReset EVENT_FLAG_0x03d4
     ActorAdd 1
 
 L_0797:
     VMStackPush 0x8010
     VMStackPush 1
     VMStackCmp CMP_GE
-    VMStackPushFlag 981
+    VMStackPushFlag EVENT_FLAG_0x03d5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_07CA
-    FlagReset 981
+    FlagReset EVENT_FLAG_0x03d5
     ActorAdd 2
     ActorAdd 3
     ActorAdd 4
@@ -509,12 +509,12 @@ L_07CA:
     VMStackPush 0x8010
     VMStackPush 2
     VMStackCmp CMP_GE
-    VMStackPushFlag 982
+    VMStackPushFlag EVENT_FLAG_0x03d6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0801
-    FlagReset 982
+    FlagReset EVENT_FLAG_0x03d6
     ActorAdd 5
     ActorAdd 10
     ActorAdd 7
@@ -524,12 +524,12 @@ L_0801:
     VMStackPush 0x8010
     VMStackPush 3
     VMStackCmp CMP_GE
-    VMStackPushFlag 983
+    VMStackPushFlag EVENT_FLAG_0x03d7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0840
-    FlagReset 983
+    FlagReset EVENT_FLAG_0x03d7
     ActorAdd 9
     ActorAdd 6
     ActorAdd 11
@@ -541,12 +541,12 @@ L_0840:
     VMStackPush 0x8010
     VMStackPush 4
     VMStackCmp CMP_GE
-    VMStackPushFlag 984
+    VMStackPushFlag EVENT_FLAG_0x03d8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0887
-    FlagReset 984
+    FlagReset EVENT_FLAG_0x03d8
     ActorAdd 15
     ActorAdd 16
     ActorAdd 17
@@ -557,18 +557,18 @@ L_0840:
     ActorAdd 22
 
 L_0887:
-    WorkGet 0x4002, 0x8023
-    WorkSetConst 0x4005, 0
-    WorkSetConst 0x4006, 0
-    WorkSetConst 0x4007, 0
-    WorkSetConst 0x4008, 0
-    WorkSetConst 0x4009, 0
-    WorkSetConst 0x400a, 0
-    WorkSetConst 0x400b, 0
-    WorkSetConst 0x400c, 0
-    WorkSetConst 0x400d, 0
-    WorkSetConst 0x400e, 0
-    WorkSetConst 0x400f, 0
+    WorkGet EVENT_WORK_0x4002, 0x8023
+    WorkSetConst EVENT_WORK_0x4005, 0
+    WorkSetConst EVENT_WORK_0x4006, 0
+    WorkSetConst EVENT_WORK_0x4007, 0
+    WorkSetConst EVENT_WORK_0x4008, 0
+    WorkSetConst EVENT_WORK_0x4009, 0
+    WorkSetConst EVENT_WORK_0x400a, 0
+    WorkSetConst EVENT_WORK_0x400b, 0
+    WorkSetConst EVENT_WORK_0x400c, 0
+    WorkSetConst EVENT_WORK_0x400d, 0
+    WorkSetConst EVENT_WORK_0x400e, 0
+    WorkSetConst EVENT_WORK_0x400f, 0
     VMReturn
 
 L_08D1:
@@ -578,13 +578,13 @@ L_08D1:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0906
-    WorkSetConst 0x4000, 1
-    WorkGet 0x4001, 0x8023
-    WorkSetConst 0x4003, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
+    WorkGet EVENT_WORK_0x4001, 0x8023
+    WorkSetConst EVENT_WORK_0x4003, 1
     VMJump L_090C
 
 L_0906:
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
 
 L_090C:
     VMReturn
@@ -592,7 +592,7 @@ L_090C:
 Script_5:
     ActorsPauseAll
     VMCall L_0922
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -643,7 +643,7 @@ L_09BA:
 
 L_09D4:
     WordSetPlayerName 0
-    Plugin10_Cmd1010 0x4001, 0x8010
+    Plugin10_Cmd1010 EVENT_WORK_0x4001, 0x8010
     WorkCmpConst 0x8010, 1
     VMJumpIf CMP_EQ, L_09F0
     VMJump L_0A02
@@ -674,7 +674,7 @@ L_0A3A:
     VMJump L_0A4C
 
 L_0A4C:
-    Plugin10_Cmd1018 0x4001, 0x8010
+    Plugin10_Cmd1018 EVENT_WORK_0x4001, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ

@@ -152,8 +152,8 @@ Script_8:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 2, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 348
-    WorkSetConst 0x414a, 1
+    FlagSet EVENT_FLAG_0x015c
+    WorkSetConst EVENT_WORK_0x414a, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -289,8 +289,8 @@ Script_9:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 349
-    WorkSetConst 0x414b, 1
+    FlagSet EVENT_FLAG_0x015d
+    WorkSetConst EVENT_WORK_0x414b, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -418,8 +418,8 @@ Script_10:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 5, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 350
-    WorkSetConst 0x414c, 1
+    FlagSet EVENT_FLAG_0x015e
+    WorkSetConst EVENT_WORK_0x414c, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -555,8 +555,8 @@ Script_11:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 7, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 351
-    WorkSetConst 0x414d, 1
+    FlagSet EVENT_FLAG_0x015f
+    WorkSetConst EVENT_WORK_0x414d, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -692,8 +692,8 @@ Script_12:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 353
-    WorkSetConst 0x414e, 1
+    FlagSet EVENT_FLAG_0x0161
+    WorkSetConst EVENT_WORK_0x414e, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -799,8 +799,8 @@ Script_13:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 348
-    WorkSetConst 0x414a, 1
+    FlagSet EVENT_FLAG_0x015c
+    WorkSetConst EVENT_WORK_0x414a, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -906,8 +906,8 @@ Script_14:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 349
-    WorkSetConst 0x414b, 1
+    FlagSet EVENT_FLAG_0x015d
+    WorkSetConst EVENT_WORK_0x414b, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1013,8 +1013,8 @@ Script_15:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 350
-    WorkSetConst 0x414c, 1
+    FlagSet EVENT_FLAG_0x015e
+    WorkSetConst EVENT_WORK_0x414c, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1121,8 +1121,8 @@ Script_16:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 351
-    WorkSetConst 0x414d, 1
+    FlagSet EVENT_FLAG_0x015f
+    WorkSetConst EVENT_WORK_0x414d, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1227,8 +1227,8 @@ Script_17:
     ActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 353
-    WorkSetConst 0x414e, 1
+    FlagSet EVENT_FLAG_0x0161
+    WorkSetConst EVENT_WORK_0x414e, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1387,8 +1387,8 @@ Script_1:
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 348
-    WorkSetConst 0x414a, 1
+    FlagSet EVENT_FLAG_0x015c
+    WorkSetConst EVENT_WORK_0x414a, 1
     VMJump L_06EE
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
@@ -1556,8 +1556,8 @@ Script_2:
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 349
-    WorkSetConst 0x414b, 1
+    FlagSet EVENT_FLAG_0x015d
+    WorkSetConst EVENT_WORK_0x414b, 1
     VMJump L_07BF
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
@@ -1721,8 +1721,8 @@ Script_3:
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 350
-    WorkSetConst 0x414c, 1
+    FlagSet EVENT_FLAG_0x015e
+    WorkSetConst EVENT_WORK_0x414c, 1
     VMJump L_0890
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
@@ -1885,8 +1885,8 @@ Script_4:
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 351
-    WorkSetConst 0x414d, 1
+    FlagSet EVENT_FLAG_0x015f
+    WorkSetConst EVENT_WORK_0x414d, 1
     VMJump L_0961
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
@@ -2061,8 +2061,8 @@ Script_6:
     VMNop
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 353
-    WorkSetConst 0x414e, 1
+    FlagSet EVENT_FLAG_0x0161
+    WorkSetConst EVENT_WORK_0x414e, 1
     VMJump L_0A4E
     ParentActorMsg MSGFILE_SCRIPT, 0x8022, 0, 0
     LastKeyWait
@@ -2084,7 +2084,7 @@ Script_7:
     GameGetVersion 0x8020
     WorkSetConst 0x8022, 32
     WorkAdd 0x8022, 0x8021
-    VMStackPushFlag 354
+    VMStackPushFlag EVENT_FLAG_0x0162
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B3B
@@ -2128,12 +2128,12 @@ L_0AED:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 356
+    FlagSet EVENT_FLAG_0x0164
     // "With the Plasma Card,\nyou can enter the password![f000]븁\u0000\nDo the rest by yourself."
     ParentActorMsg MSGFILE_SCRIPT, Global10885_Text_PlasmaCardCanEnter, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 354
+    FlagSet EVENT_FLAG_0x0162
     VMJump L_0B49
 
 L_0B3B:

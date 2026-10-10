@@ -7,14 +7,14 @@
     ScriptEntriesEnd
 
 Script_2:
-    FlagSet 690
+    FlagSet EVENT_FLAG_0x02b2
     WorkSetConst 0x8020, 0
     RTCGetSeason 0x8020
     VMStackPush 0x8020
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0033
-    FlagReset 690
+    FlagReset EVENT_FLAG_0x02b2
 
 L_0033:
     WorkSetConst 0x8020, 0
@@ -22,7 +22,7 @@ L_0033:
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006A
@@ -35,10 +35,10 @@ Script_1:
     VMJump L_024B
 
 L_006A:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2747
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -48,8 +48,8 @@ L_006A:
     // "If you look for something in an empty\nplace like this, you can discover things![f000]븁\u0000\nLike this Fossil I just found! Take this![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IfLookSomethingEmpty_2, 2, 0, 0
     ActorMsgClose
-    Random 0x400f, 7
-    VMStackPush 0x400f
+    Random EVENT_WORK_0x400f, 7
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E0
@@ -63,7 +63,7 @@ L_006A:
     VMJump L_021D
 
 L_00E0:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0119
@@ -77,7 +77,7 @@ L_00E0:
     VMJump L_021D
 
 L_0119:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0152
@@ -91,7 +91,7 @@ L_0119:
     VMJump L_021D
 
 L_0152:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_018B
@@ -105,7 +105,7 @@ L_0152:
     VMJump L_021D
 
 L_018B:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C4
@@ -119,7 +119,7 @@ L_018B:
     VMJump L_021D
 
 L_01C4:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FD
@@ -146,7 +146,7 @@ L_021D:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IfComeAgainTomorrow, 2, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 2747
+    FlagSet EVENT_FLAG_DAILY_0x0abb
     VMJump L_024B
 
 L_0237:
@@ -169,11 +169,11 @@ Script_3:
     WorkSetConst 0x8023, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40fe
+    VMStackPush EVENT_WORK_0x40fe
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02EA
-    WorkSetConst 0x40fe, 1
+    WorkSetConst EVENT_WORK_0x40fe, 1
     // "Hello!\nI'm a Heavy Machinery Pro![f000]븁\u0000\nAnd... You!\nDo you like construction trucks?"
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HelloImHeavyMachinery, 7, 2, 0
     YesNoWin 0x8010
@@ -200,15 +200,15 @@ L_02D0:
     VMJump L_0466
 
 L_02EA:
-    VMStackPush 0x40fe
+    VMStackPush EVENT_WORK_0x40fe
     VMStackPushConst 1
     VMStackCmp CMP_GE
-    VMStackPush 0x40fe
+    VMStackPush EVENT_WORK_0x40fe
     VMStackPushConst 5
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_040E
-    VMStackPushFlag 2769
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0336
@@ -219,7 +219,7 @@ L_02EA:
     VMJump L_0408
 
 L_0336:
-    VMStackPushFlag 2770
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035F
@@ -233,7 +233,7 @@ L_035F:
     // "Hi! I've been waiting for you!\nOK. Let's get started!"
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HiIveBeenWaiting, 7, 2, 0
     MsgWaitAdvance
-    WorkCmpConst 0x40fe, 1
+    WorkCmpConst EVENT_WORK_0x40fe, 1
     VMJumpIf CMP_EQ, L_0380
     VMJump L_038C
 
@@ -242,7 +242,7 @@ L_0380:
     VMJump L_0408
 
 L_038C:
-    WorkCmpConst 0x40fe, 2
+    WorkCmpConst EVENT_WORK_0x40fe, 2
     VMJumpIf CMP_EQ, L_039F
     VMJump L_03AB
 
@@ -251,7 +251,7 @@ L_039F:
     VMJump L_0408
 
 L_03AB:
-    WorkCmpConst 0x40fe, 3
+    WorkCmpConst EVENT_WORK_0x40fe, 3
     VMJumpIf CMP_EQ, L_03BE
     VMJump L_03CA
 
@@ -260,7 +260,7 @@ L_03BE:
     VMJump L_0408
 
 L_03CA:
-    WorkCmpConst 0x40fe, 4
+    WorkCmpConst EVENT_WORK_0x40fe, 4
     VMJumpIf CMP_EQ, L_03DD
     VMJump L_03E9
 
@@ -269,7 +269,7 @@ L_03DD:
     VMJump L_0408
 
 L_03E9:
-    WorkCmpConst 0x40fe, 5
+    WorkCmpConst EVENT_WORK_0x40fe, 5
     VMJumpIf CMP_EQ, L_03FC
     VMJump L_0408
 
@@ -281,7 +281,7 @@ L_0408:
     VMJump L_0466
 
 L_040E:
-    VMStackPush 0x40fe
+    VMStackPush EVENT_WORK_0x40fe
     VMStackPushConst 6
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0466
@@ -326,8 +326,8 @@ L_046C:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2769
-    WorkSetConst 0x40fe, 2
+    FlagSet EVENT_FLAG_DAILY_0x0ad1
+    WorkSetConst EVENT_WORK_0x40fe, 2
     VMJump L_04EC
 
 L_04D8:
@@ -335,7 +335,7 @@ L_04D8:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2770
+    FlagSet EVENT_FLAG_DAILY_0x0ad2
 
 L_04EC:
     VMReturn
@@ -358,8 +358,8 @@ L_04EE:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2769
-    WorkSetConst 0x40fe, 3
+    FlagSet EVENT_FLAG_DAILY_0x0ad1
+    WorkSetConst EVENT_WORK_0x40fe, 3
     VMJump L_056E
 
 L_055A:
@@ -367,7 +367,7 @@ L_055A:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2770
+    FlagSet EVENT_FLAG_DAILY_0x0ad2
 
 L_056E:
     VMReturn
@@ -390,8 +390,8 @@ L_0570:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2769
-    WorkSetConst 0x40fe, 4
+    FlagSet EVENT_FLAG_DAILY_0x0ad1
+    WorkSetConst EVENT_WORK_0x40fe, 4
     VMJump L_05F0
 
 L_05DC:
@@ -399,7 +399,7 @@ L_05DC:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2770
+    FlagSet EVENT_FLAG_DAILY_0x0ad2
 
 L_05F0:
     VMReturn
@@ -422,8 +422,8 @@ L_05F2:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2769
-    WorkSetConst 0x40fe, 5
+    FlagSet EVENT_FLAG_DAILY_0x0ad1
+    WorkSetConst EVENT_WORK_0x40fe, 5
     VMJump L_0672
 
 L_065E:
@@ -431,7 +431,7 @@ L_065E:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2770
+    FlagSet EVENT_FLAG_DAILY_0x0ad2
 
 L_0672:
     VMReturn
@@ -461,8 +461,8 @@ L_0674:
     LastKeyWait
     MsgWinCloseAll
     MedalGive 99
-    FlagSet 2769
-    WorkSetConst 0x40fe, 6
+    FlagSet EVENT_FLAG_DAILY_0x0ad1
+    WorkSetConst EVENT_WORK_0x40fe, 6
     VMJump L_0714
 
 L_0700:
@@ -470,7 +470,7 @@ L_0700:
     ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2770
+    FlagSet EVENT_FLAG_DAILY_0x0ad2
 
 L_0714:
     VMReturn

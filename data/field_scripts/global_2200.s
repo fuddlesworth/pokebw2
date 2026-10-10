@@ -19,7 +19,7 @@
 L_004C:
     DayCareCheckSpawnFlag 0x8026
     DayCareGetPkmCount 0x8027
-    FlagGet 105, 0x8025
+    FlagGet EVENT_FLAG_0x0069, 0x8025
     WorkSetConst 0x8028, 2
     VMReturn
 
@@ -234,7 +234,7 @@ L_032D:
     VMJumpIf CMP_STACK, L_035C
     // "I'm the Day-Care Lady.\nWe can raise Pokémon for you.[f000]븁\u0000\nWould you like us to raise\nyour Pokémon?"
     ActorMsg MSGFILE_SCRIPT, Global2200_Text_ImDayCareLady, 0x8011, 2, 0
-    FlagSet 105
+    FlagSet EVENT_FLAG_0x0069
     VMJump L_0368
 
 L_035C:

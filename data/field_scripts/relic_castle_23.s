@@ -13,7 +13,7 @@ Script_1:
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
-    VMStackPushFlag 404
+    VMStackPushFlag EVENT_FLAG_0x0194
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_003E
@@ -29,8 +29,8 @@ L_0046:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0071
-    FlagSet 928
-    FlagSet 404
+    FlagSet EVENT_FLAG_0x03a0
+    FlagSet EVENT_FLAG_0x0194
     ActorDelete 0
     CallWildBattleEnd
     VMJump L_0073
@@ -45,7 +45,7 @@ L_0073:
     VMJump L_0094
 
 L_008A:
-    FlagSet 403
+    FlagSet EVENT_FLAG_0x0193
     VMJump L_00C4
 
 L_0094:

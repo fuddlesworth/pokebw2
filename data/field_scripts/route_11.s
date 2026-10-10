@@ -16,10 +16,10 @@ Script_5:
     VMHalt
 
 Script_6:
-    VMStackPush 0x40da
+    VMStackPush EVENT_WORK_0x40da
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 801
+    VMStackPushFlag EVENT_FLAG_0x0321
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -93,7 +93,7 @@ L_0124:
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
-    WorkSetConst 0x40da, 1
+    WorkSetConst EVENT_WORK_0x40da, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -114,7 +114,7 @@ Script_4:
     VMHalt
 
 L_017A:
-    VMStackPushFlag 300
+    VMStackPushFlag EVENT_FLAG_0x012c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01AD
@@ -136,9 +136,9 @@ L_01C7:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F8
-    FlagSet 801
-    FlagSet 300
-    WorkSetConst 0x40da, 1
+    FlagSet EVENT_FLAG_0x0321
+    FlagSet EVENT_FLAG_0x012c
+    WorkSetConst EVENT_WORK_0x40da, 1
     ActorDelete 0
     CallWildBattleEnd
     VMJump L_01FA
@@ -153,7 +153,7 @@ L_01FA:
     VMJump L_021B
 
 L_0211:
-    FlagSet 301
+    FlagSet EVENT_FLAG_0x012d
     VMJump L_0241
 
 L_021B:
@@ -167,7 +167,7 @@ L_023B:
     VMJump L_0241
 
 L_0241:
-    VMStackPushFlag 301
+    VMStackPushFlag EVENT_FLAG_0x012d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_025E

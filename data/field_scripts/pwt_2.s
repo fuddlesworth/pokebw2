@@ -24,12 +24,12 @@
     ScriptEntriesEnd
 
 Script_9:
-    VMStackPush 0x4135
+    VMStackPush EVENT_WORK_0x4135
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0091
-    FlagReset 892
-    FlagReset 891
+    FlagReset EVENT_FLAG_0x037c
+    FlagReset EVENT_FLAG_0x037b
     ActorAdd 14
     ActorAdd 5
     ActorSetGPos 13, 15, 0, 11, 0
@@ -43,7 +43,7 @@ Script_8:
     ActorsPauseAll
     ActorWalkRoute 255, 15, 25, 1, 8, 1
     VMSleep 8
-    FlagReset 891
+    FlagReset EVENT_FLAG_0x037b
     SEPlay SEQ_SE_KAIDAN
     ActorAdd 5
     SEWait
@@ -94,9 +94,9 @@ Script_8:
     ActorCmdWait
     ActorDelete 14
     ActorDelete 5
-    FlagSet 892
-    FlagSet 891
-    FlagSet 2441
+    FlagSet EVENT_FLAG_0x037c
+    FlagSet EVENT_FLAG_0x037b
+    FlagSet EVENT_FLAG_0x0989
     HollowRivalCmd_0262 2, 1
     HollowRivalCmd_0262 1, 13
     FinishAllEvents
@@ -110,7 +110,7 @@ Script_12:
     // "Clay: An outstandin' battle, runts![f000]븁\u0000\nNow everybody's gonna want to\njoin in on this here tournament[f000]븀\u0000\nan' show their stuff![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, Pwt2_Text_ClayOutstandinBattleRunts, 13, 0, 0
     MsgWinCloseAll
-    FlagReset 894
+    FlagReset EVENT_FLAG_0x037e
     ActorAdd 16
     ActorCmdExec 16, Movement_0530
     VMSleep 32
@@ -144,18 +144,18 @@ Script_12:
     ActorDelete 13
     MapReplaceSetEvent 4, 1, 1
     MapReplaceSetEvent 3, 0, 0
-    FlagSet 894
-    FlagSet 893
-    FlagSet 892
-    FlagSet 891
-    FlagReset 890
-    WorkSetConst 0x40c6, 2
-    WorkSetConst 0x4044, 0
-    FlagReset 2441
-    FlagReset 1001
+    FlagSet EVENT_FLAG_0x037e
+    FlagSet EVENT_FLAG_0x037d
+    FlagSet EVENT_FLAG_0x037c
+    FlagSet EVENT_FLAG_0x037b
+    FlagReset EVENT_FLAG_0x037a
+    WorkSetConst EVENT_WORK_0x40c6, 2
+    WorkSetConst EVENT_WORK_0x4044, 0
+    FlagReset EVENT_FLAG_0x0989
+    FlagReset EVENT_FLAG_0x03e9
     HollowRivalCmd_0262 1, 14
     HollowRivalCmd_0262 2, 2
-    WorkSetConst 0x4135, 2
+    WorkSetConst EVENT_WORK_0x4135, 2
     ActorAdd 17
     FinishAllEvents
     ActorsUnpauseAll

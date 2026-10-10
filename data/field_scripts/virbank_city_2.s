@@ -22,7 +22,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40ac
+    VMStackPush EVENT_WORK_0x40ac
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0055

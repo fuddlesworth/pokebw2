@@ -24,7 +24,7 @@ Script_2:
     // "Trainer Tips!\n[f000]븁\u0000\nTry pressing SELECT while\norganizing your PC Box.[f000]븁\u0000\nIt'll let you move your Pokémon\naround more easily![f000]븁\u0000\nThe more Pokémon you deposit,\nthe more Boxes you'll have."
     MsgPlaceSign Route12_Text_TrainerTipsTryPressing, 0
     MsgPlaceSignClose
-    FlagSet 2673
+    FlagSet EVENT_FLAG_0x0a71
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

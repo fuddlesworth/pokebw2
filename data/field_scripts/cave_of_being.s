@@ -44,7 +44,7 @@ L_0081:
     ActorMsg MSGFILE_SCRIPT, CaveOfBeing_Text_StillSpaceItsHard, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4115, 3
+    WorkSetConst EVENT_WORK_0x4115, 3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -55,7 +55,7 @@ Script_2:
     SystemMsg CaveOfBeing_Text_MysteriousPresenceCanFelt, 2
     LastKeyWait
     InfoMsgClose
-    FlagReset 916
+    FlagReset EVENT_FLAG_0x0394
     ActorCmdExec 0, Movement_0348
     ActorCmdExec 255, Movement_0358
     ActorCmdWait
@@ -158,12 +158,12 @@ Script_2:
     ActorWalkRoute 0, 18, 27, 1, 8, 1
     ActorCmdWait
     ActorDelete 0
-    WorkSetConst 0x4115, 4
-    WorkSetConst 0x4116, 1
-    WorkSetConst 0x4117, 1
-    WorkSetConst 0x4118, 1
-    FlagSet 916
-    FlagSet 917
+    WorkSetConst EVENT_WORK_0x4115, 4
+    WorkSetConst EVENT_WORK_0x4116, 1
+    WorkSetConst EVENT_WORK_0x4117, 1
+    WorkSetConst EVENT_WORK_0x4118, 1
+    FlagSet EVENT_FLAG_0x0394
+    FlagSet EVENT_FLAG_0x0395
     HollowRivalCmd_0262 0, 0
     FinishAllEvents
     ActorsUnpauseAll

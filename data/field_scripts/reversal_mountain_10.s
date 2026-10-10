@@ -14,16 +14,16 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPush 0x4120
+    VMStackPush EVENT_WORK_0x4120
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_005D
-    WorkSetConst 0x4120, 1
-    FlagReset 959
+    WorkSetConst EVENT_WORK_0x4120, 1
+    FlagReset EVENT_FLAG_0x03bf
 
 L_005D:
     VMHalt
@@ -34,7 +34,7 @@ Script_2:
 Script_3:
     ActorsPauseAll
     WordSetPlayerName 0
-    VMStackPushFlag 427
+    VMStackPushFlag EVENT_FLAG_0x01ab
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013C
@@ -77,8 +77,8 @@ L_0094:
     VMStackPop 0x8002
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 427
-    WorkSetConst 0x4121, 1
+    FlagSet EVENT_FLAG_0x01ab
+    WorkSetConst EVENT_WORK_0x4121, 1
     HollowRivalCmd_0262 1, 20
     VMJump L_01C3
 
@@ -116,8 +116,8 @@ L_0157:
     VMStackPop 0x8000
 
 L_01C3:
-    WorkSetConst 0x4120, 2
-    FlagSet 959
+    WorkSetConst EVENT_WORK_0x4120, 2
+    FlagSet EVENT_FLAG_0x03bf
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -139,21 +139,21 @@ Script_4:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02BE
-    VMStackPush 0x4121
+    VMStackPush EVENT_WORK_0x4121
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0241
     // "OK, then![f000]븁\u0000\nI want to do a little more research\nabout where Heatran might be![f000]븁\u0000\nThank you for coming with me!\nBe careful on the rest of your journey![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, ReversalMountain10_Text_OkThenWantLittle, 254, 0, 0
-    WorkSetConst 0x4120, 3
-    FlagSet 959
-    FlagReset 960
+    WorkSetConst EVENT_WORK_0x4120, 3
+    FlagSet EVENT_FLAG_0x03bf
+    FlagReset EVENT_FLAG_0x03c0
     VMJump L_0251
 
 L_0241:
     // "Oh, OK![f000]븁\u0000\nI want to do a little more\ninvestigating about Heatran.[f000]븁\u0000\nHeatran is a very rarely seen Pokémon,\nso if I find out more about it,[f000]븀\u0000\nProfessor Juniper will be really happy![f000]븁\u0000\nThanks for helping me!\nBe careful on your journey![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, ReversalMountain10_Text_OhOkWantLittle, 254, 0, 0
-    FlagReset 959
+    FlagReset EVENT_FLAG_0x03bf
 
 L_0251:
     MsgWinCloseAll
@@ -168,7 +168,7 @@ L_0251:
     RTCallGlobal 10536
     VMStackPop 0x8001
     VMStackPop 0x8000
-    VMStackPush 0x4120
+    VMStackPush EVENT_WORK_0x4120
     VMStackPushConst 3
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_02B8
@@ -230,7 +230,7 @@ L_0355:
     // "Oh! [f000]Ā\u0001\u0000![f000]븁\u0000\nHere! This is the place!\nLet's look around a little![f000]븁\u0000"
     ActorMsgGendered 1024, ReversalMountain10_Text_OhHerePlaceLets, ReversalMountain10_Text_OhHerePlaceLets_2, 254, 0, 0
     MsgWinCloseAll
-    WorkSetConst 0x4121, 2
+    WorkSetConst EVENT_WORK_0x4121, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -294,7 +294,7 @@ L_0437:
 
 Script_7:
     ActorsPauseAll
-    VMStackPushFlag 469
+    VMStackPushFlag EVENT_FLAG_0x01d5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04D5
@@ -317,7 +317,7 @@ Script_7:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 469
+    FlagSet EVENT_FLAG_0x01d5
     // "False Swipe leaves a Pokémon\nwith 1 HP when it would have fainted.[f000]븁\u0000\nIt's a very restrained move.[f000]븁\u0000\nIt's a great TM to use for catching\nPokémon and filling out the Habitat List!"
     ParentActorMsg MSGFILE_SCRIPT, ReversalMountain10_Text_FalseSwipeLeavesPokemon, 0, 0
     LastKeyWait

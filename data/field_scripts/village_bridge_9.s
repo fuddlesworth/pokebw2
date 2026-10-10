@@ -40,7 +40,7 @@ Script_1:
     ActorCmdExec 255, Movement_00F4
     ActorCmdWait
     MapChangeWarp ZONE_VILLAGE_BRIDGE, 31, 39, 3
-    FlagSet 466
+    FlagSet EVENT_FLAG_0x01d2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

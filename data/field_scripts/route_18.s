@@ -97,7 +97,7 @@ L_014D:
     FadeExWait
     ActorCmdWait
     ActorDelete 2
-    FlagSet 849
+    FlagSet EVENT_FLAG_0x0351
     VMSleep 30
     FadeEx 3, 16, 0, 4
     FadeExWait
@@ -116,8 +116,8 @@ Script_2:
     RTCallGlobal 2807
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 943
-    WorkSetConst 0x4074, 1
+    FlagSet EVENT_FLAG_0x03af
+    WorkSetConst EVENT_WORK_0x4074, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

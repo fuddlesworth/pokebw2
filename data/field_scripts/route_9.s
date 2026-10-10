@@ -36,7 +36,7 @@ Script_3:
     // "Trainer Tips!\n[f000]븁\u0000\nOne kind of Pokémon\ncan have different Abilities.[f000]븁\u0000\nTry to catch Pokémon you've\nalready caught before!"
     MsgPlaceSign Route9_Text_TrainerTipsOneKind, 0
     MsgPlaceSignClose
-    FlagSet 2672
+    FlagSet EVENT_FLAG_0x0a70
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

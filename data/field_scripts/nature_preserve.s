@@ -35,7 +35,7 @@ Script_1:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E
-    FlagSet 946
+    FlagSet EVENT_FLAG_0x03b2
     ActorDelete 1
     CallWildBattleEnd
     VMJump L_0080
@@ -50,7 +50,7 @@ L_0080:
     VMJump L_00A1
 
 L_0097:
-    FlagSet 420
+    FlagSet EVENT_FLAG_0x01a4
     VMJump L_00D1
 
 L_00A1:

@@ -26,7 +26,7 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -73,7 +73,7 @@ L_00BA:
     VMReturn
 
 L_00BC:
-    VMStackPushFlag 2438
+    VMStackPushFlag EVENT_FLAG_0x0986
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D5
@@ -125,7 +125,7 @@ Script_8:
     MedalDiscover 225
     MedalDiscover 229
     MedalDiscover 227
-    WorkSetConst 0x404d, 1
+    WorkSetConst EVENT_WORK_0x404d, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -187,7 +187,7 @@ Script_11:
     ActorMsg MSGFILE_SCRIPT, Entralink_Text_GoAheadReceiveTalk, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x404d, 4
+    WorkSetConst EVENT_WORK_0x404d, 4
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -224,7 +224,7 @@ Script_12:
     ActorMsg MSGFILE_SCRIPT, Entralink_Text_GoAheadReceiveTalk, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x404d, 4
+    WorkSetConst EVENT_WORK_0x404d, 4
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -242,7 +242,7 @@ Script_13:
     SystemMsg Entralink_Text_CanUsePassPower, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x404d, 6
+    WorkSetConst EVENT_WORK_0x404d, 6
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -251,7 +251,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x404d
+    VMStackPush EVENT_WORK_0x404d
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0351
@@ -260,7 +260,7 @@ Script_5:
     VMJump L_037C
 
 L_0351:
-    VMStackPush 0x404d
+    VMStackPush EVENT_WORK_0x404d
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0376

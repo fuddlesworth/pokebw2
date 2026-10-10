@@ -48,7 +48,7 @@ Script_1:
     ActorsPauseAll
     WordSetLoadRivalName 1
     WordSetPlayerName 0
-    VMStackPushFlag 487
+    VMStackPushFlag EVENT_FLAG_0x01e7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FD
@@ -74,7 +74,7 @@ L_00E5:
     ActorCmdWait
 
 L_00F3:
-    FlagSet 487
+    FlagSet EVENT_FLAG_0x01e7
     VMJump L_0117
 
 L_00FD:

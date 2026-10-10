@@ -23,27 +23,27 @@ Script_8:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0079
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0079
-    VMStackPush 0x4136
+    VMStackPush EVENT_WORK_0x4136
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0079
-    WorkSetConst 0x4136, 1
+    WorkSetConst EVENT_WORK_0x4136, 1
 
 L_0079:
     VMCall L_0081
     VMHalt
 
 L_0081:
-    Cmd_02B2 0, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 0, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00A0
-    WorkSetConst 0x4136, 0
+    WorkSetConst EVENT_WORK_0x4136, 0
 
 L_00A0:
     VMReturn
@@ -77,7 +77,7 @@ Script_3:
     // "Trainer Tips![f000]븁\u0000\n\nMake an effort to talk to all the\npeople you meet during your journey![f000]븁\u0000\nChances are they will have something\nuseful to tell you."
     MsgPlaceSign Route1_Text_TrainerTipsMakeEffort, 0
     MsgPlaceSignClose
-    FlagSet 2664
+    FlagSet EVENT_FLAG_0x0a68
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -391,7 +391,7 @@ L_054D:
     ActorCmdWait
     ActorDelete 251
     BGMChangeMap
-    WorkSetConst 0x4136, 2
+    WorkSetConst EVENT_WORK_0x4136, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

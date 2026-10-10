@@ -58,7 +58,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x407d",
+                    "var": "EVENT_WORK_0x407d",
                     "value": 0,
                     "script": 4
                 }

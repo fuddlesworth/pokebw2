@@ -15,9 +15,9 @@ Script_1:
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8020, 0
     WorkSetConst 0x8021, 0
-    FlagGet 2411, 0x8025
-    FlagGet 2402, 0x8026
-    FlagGet 2400, 0x8022
+    FlagGet EVENT_FLAG_0x096b, 0x8025
+    FlagGet EVENT_FLAG_0x0962, 0x8026
+    FlagGet EVENT_FLAG_0x0960, 0x8022
     HOFCheckIntegrity 0x8023
     PokecenPCOpen
     WordSetPlayerName 0
@@ -163,8 +163,8 @@ L_0242:
     WorkSetConst 0x8029, 0
     WorkSetConst 0x802a, 0
     WorkSetConst 0x802b, 0
-    FlagGet 2400, 0x802a
-    FlagGet 249, 0x802b
+    FlagGet EVENT_FLAG_0x0960, 0x802a
+    FlagGet EVENT_FLAG_0x00f9, 0x802b
     SEPlay SEQ_SE_PC_LOGIN
     // "The Pokémon Storage System\nwas accessed.[f000]븁\u0000"
     SystemMsg Global10090_Text_PokemonStorageSystemAccessed, 2
@@ -172,7 +172,7 @@ L_0242:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B2
-    FlagGet 246, 0x8010
+    FlagGet EVENT_FLAG_0x00f6, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -181,14 +181,14 @@ L_0242:
     MEWait
     // "Congratulations![f000]븁\u0000\nWallpapers were added to commemorate\nyour victory against the Champion.[f000]븁\u0000"
     SystemMsg Global10090_Text_CongratulationsWallpapersWereAdded, 2
-    FlagSet 246
+    FlagSet EVENT_FLAG_0x00f6
 
 L_02B2:
     VMStackPush 0x802b
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02EE
-    FlagGet 247, 0x8010
+    FlagGet EVENT_FLAG_0x00f7, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -197,7 +197,7 @@ L_02B2:
     MEWait
     // "Congratulations![f000]븁\u0000\nWallpapers were added to commemorate\nyour catching Kyurem.[f000]븁\u0000"
     SystemMsg Global10090_Text_CongratulationsWallpapersWereAdded_2, 2
-    FlagSet 247
+    FlagSet EVENT_FLAG_0x00f7
 
 L_02EE:
     WorkSetConst 0x8027, 0

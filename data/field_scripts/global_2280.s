@@ -300,13 +300,13 @@ Script_3:
     VMHalt
 
 L_0402:
-    VMStackPushFlag 253
+    VMStackPushFlag EVENT_FLAG_0x00fd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0429
     // "Heya![f000]븁\u0000\nThe professor gave you a Pokémon to\nstart your journey, right?[f000]븁\u0000\nIf that Pokémon is still with you, and if\nyou two have a strong bond, there's a[f000]븀\u0000\nspecial move it can learn...[f000]븁\u0000\nWant me to teach it a battle-combo move?"
     ParentActorMsg MSGFILE_SCRIPT, Global2280_Text_HeyaProfessorGavePokemon, 0, 0
-    FlagSet 253
+    FlagSet EVENT_FLAG_0x00fd
     VMJump L_0433
 
 L_0429:
@@ -451,14 +451,14 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WorkSetConst 0x8024, 72
-    VMStackPushFlag 325
+    VMStackPushFlag EVENT_FLAG_0x0145
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0638
     WordSetItemNameEx 0, 0x8024, 2, 0
     // "I'm the master Move Tutor![f000]븁\u0000\nAnd I'm also obsessed with\n[f000]ĉ\u0001\u0000![f000]븁\u0000\nGive me [f000]ĉ\u0001\u0000,\nand I'll thank you by teaching[f000]븀\u0000\nyour Pokémon a move![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global2280_Text_ImMasterMoveTutor, 0, 0
-    FlagSet 325
+    FlagSet EVENT_FLAG_0x0145
     VMJump L_0642
 
 L_0638:
@@ -476,14 +476,14 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WorkSetConst 0x8024, 73
-    VMStackPushFlag 326
+    VMStackPushFlag EVENT_FLAG_0x0146
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_068B
     WordSetItemNameEx 0, 0x8024, 2, 0
     // "I'm the master Move Tutor![f000]븁\u0000\nAnd I'm also obsessed with\n[f000]ĉ\u0001\u0000![f000]븁\u0000\nGive me [f000]ĉ\u0001\u0000,\nand I'll thank you by teaching[f000]븀\u0000\nyour Pokémon a move![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global2280_Text_ImMasterMoveTutor, 0, 0
-    FlagSet 326
+    FlagSet EVENT_FLAG_0x0146
     VMJump L_0695
 
 L_068B:
@@ -501,14 +501,14 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WorkSetConst 0x8024, 74
-    VMStackPushFlag 327
+    VMStackPushFlag EVENT_FLAG_0x0147
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06DE
     WordSetItemNameEx 0, 0x8024, 2, 0
     // "I'm the master Move Tutor![f000]븁\u0000\nAnd I'm also obsessed with\n[f000]ĉ\u0001\u0000![f000]븁\u0000\nGive me [f000]ĉ\u0001\u0000,\nand I'll thank you by teaching[f000]븀\u0000\nyour Pokémon a move![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global2280_Text_ImMasterMoveTutor, 0, 0
-    FlagSet 327
+    FlagSet EVENT_FLAG_0x0147
     VMJump L_06E8
 
 L_06DE:
@@ -526,14 +526,14 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WorkSetConst 0x8024, 75
-    VMStackPushFlag 328
+    VMStackPushFlag EVENT_FLAG_0x0148
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0731
     WordSetItemNameEx 0, 0x8024, 2, 0
     // "I'm the master Move Tutor![f000]븁\u0000\nAnd I'm also obsessed with\n[f000]ĉ\u0001\u0000![f000]븁\u0000\nGive me [f000]ĉ\u0001\u0000,\nand I'll thank you by teaching[f000]븀\u0000\nyour Pokémon a move![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global2280_Text_ImMasterMoveTutor, 0, 0
-    FlagSet 328
+    FlagSet EVENT_FLAG_0x0148
     VMJump L_073B
 
 L_0731:
@@ -564,10 +564,10 @@ L_0747:
 L_0780:
     // "Well, that's just fine![f000]븁\u0000\nPick the move you want\nme to teach![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global2280_Text_WellThatsJustFine, 0, 0
-    WorkSetConst 0x400c, 0
-    WorkSetConst 0x400d, 0
-    WorkSetConst 0x400e, 0
-    WorkSetConst 0x400f, 0
+    WorkSetConst EVENT_WORK_0x400c, 0
+    WorkSetConst EVENT_WORK_0x400d, 0
+    WorkSetConst EVENT_WORK_0x400e, 0
+    WorkSetConst EVENT_WORK_0x400f, 0
     WorkCmpConst 0x8024, 72
     VMJumpIf CMP_EQ, L_07B5
     VMJump L_07DB
@@ -628,11 +628,11 @@ L_0860:
     VMJump L_0886
 
 L_0886:
-    DebugPrint 0x400c
-    DebugPrint 0x400d
-    DebugPrint 0x400e
-    DebugPrint 0x400f
-    VMStackPush 0x400c
+    DebugPrint EVENT_WORK_0x400c
+    DebugPrint EVENT_WORK_0x400d
+    DebugPrint EVENT_WORK_0x400e
+    DebugPrint EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08C1
@@ -644,7 +644,7 @@ L_0886:
     VMReturn
 
 L_08C1:
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08E4
@@ -655,7 +655,7 @@ L_08C1:
     VMReturn
 
 L_08E4:
-    PokePartyHasMove 0x8010, 0x400d, 0x400e
+    PokePartyHasMove 0x8010, EVENT_WORK_0x400d, EVENT_WORK_0x400e
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -667,8 +667,8 @@ L_08E4:
     VMReturn
 
 L_090F:
-    WorkGet 0x8021, 0x400d
-    WorkGet 0x8020, 0x400e
+    WorkGet 0x8021, EVENT_WORK_0x400d
+    WorkGet 0x8020, EVENT_WORK_0x400e
     WorkSetConst 0x8022, 0
     WorkSetConst 0x8023, 1
     VMCall L_098A
@@ -724,19 +724,19 @@ L_09DA:
     MsgWaitAdvance
 
 L_09DC:
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_GT
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0A2D
     WorkSetConst 0x8029, 0
-    ItemSub 0x8024, 0x400f, 0x8029
+    ItemSub 0x8024, EVENT_WORK_0x400f, 0x8029
     WordSetPlayerName 0
-    WordSetItemNameEx 1, 0x8024, 0x400f, 0
-    WordSetNumber 2, 0x400f, 2
+    WordSetItemNameEx 1, 0x8024, EVENT_WORK_0x400f, 0
+    WordSetNumber 2, EVENT_WORK_0x400f, 2
     // "[f000]Ā\u0001\u0000 handed over\n[f000]ȁ\u0001\u0002 [f000]ĉ\u0001\u0001 in exchange."
     SystemMsg Global2280_Text_HandedOverExchange, 0
     LastKeyWait
@@ -867,19 +867,19 @@ L_0BCB:
     MsgWaitAdvance
 
 L_0BCD:
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_GT
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0C1E
     WorkSetConst 0x802a, 0
-    ItemSub 0x8024, 0x400f, 0x802a
+    ItemSub 0x8024, EVENT_WORK_0x400f, 0x802a
     WordSetPlayerName 0
-    WordSetItemNameEx 1, 0x8024, 0x400f, 0
-    WordSetNumber 2, 0x400f, 2
+    WordSetItemNameEx 1, 0x8024, EVENT_WORK_0x400f, 0
+    WordSetNumber 2, EVENT_WORK_0x400f, 2
     // "[f000]Ā\u0001\u0000 handed over\n[f000]ȁ\u0001\u0002 [f000]ĉ\u0001\u0001 in exchange."
     SystemMsg Global2280_Text_HandedOverExchange, 0
     LastKeyWait

@@ -14,10 +14,10 @@
     ScriptEntriesEnd
 
 Script_10:
-    VMStackPushFlag 266
+    VMStackPushFlag EVENT_FLAG_0x010a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x409d
+    VMStackPush EVENT_WORK_0x409d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -26,10 +26,10 @@ Script_10:
     VMJump L_008E
 
 L_005F:
-    VMStackPushFlag 266
+    VMStackPushFlag EVENT_FLAG_0x010a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x409d
+    VMStackPush EVENT_WORK_0x409d
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -143,13 +143,13 @@ L_01EF:
 Script_4:
     ActorCmdExec 255, Movement_0320
     ActorCmdWait
-    VMStackPushFlag 265
+    VMStackPushFlag EVENT_FLAG_0x0109
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_023A
     Cmd_0268 0
     VMCall L_025A
-    FlagSet 265
+    FlagSet EVENT_FLAG_0x0109
 
 L_023A:
     ActorCmdExec 255, Movement_0300
@@ -245,7 +245,7 @@ Script_6:
     ActorCmdExec 255, Movement_03B0
     VMCall L_025A
     ActorCmdWait
-    FlagSet 266
+    FlagSet EVENT_FLAG_0x010a
     TrainerBGMPlayPush TRAINER_HARLEQUIN_JACK
     ActorCmdExec 0, Movement_03B8
     ActorCmdWait
@@ -262,7 +262,7 @@ Script_6:
     VMJump L_038B
 
 L_0385:
-    FlagReset 266
+    FlagReset EVENT_FLAG_0x010a
     CallTrainerLose
 
 L_038B:
@@ -271,7 +271,7 @@ L_038B:
     ActorMsgClose
     ActorCmdExec 0, Movement_03C4
     ActorCmdWait
-    WorkSetConst 0x409d, 1
+    WorkSetConst EVENT_WORK_0x409d, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -313,7 +313,7 @@ Script_8:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_047E
-    VMStackPushFlag 109
+    VMStackPushFlag EVENT_FLAG_0x006d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_046A
@@ -331,7 +331,7 @@ Script_8:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_ThemeGymNoneOther, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 109
+    FlagSet EVENT_FLAG_0x006d
     VMJump L_0478
 
 L_046A:
@@ -370,7 +370,7 @@ Script_9:
     VMJump L_04E8
 
 L_04C5:
-    VMStackPushFlag 2477
+    VMStackPushFlag EVENT_FLAG_0x09ad
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04E3

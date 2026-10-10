@@ -117,7 +117,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x04c8",
+            "flag": "EVENT_FLAG_0x04c8",
             "script": 7124,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],

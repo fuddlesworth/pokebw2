@@ -33,7 +33,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 723
+    VMStackPushFlag EVENT_FLAG_0x02d3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006B
@@ -132,8 +132,8 @@ L_017E:
     ActorDelete 3
     MapReplaceSetEvent 3, 1, 1
     MapChangeCore ZONE_CASTELIA_CITY_10, 12, 0, 10, 2
-    FlagSet 722
-    WorkSetConst 0x40ae, 1
+    FlagSet EVENT_FLAG_0x02d2
+    WorkSetConst EVENT_WORK_0x40ae, 1
     VMJump L_01D6
 
 L_01C6:

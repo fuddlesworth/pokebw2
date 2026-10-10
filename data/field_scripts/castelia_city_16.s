@@ -38,7 +38,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 210
+    VMStackPushFlag EVENT_FLAG_0x00d2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F5
@@ -62,7 +62,7 @@ Script_2:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_QuickBallMakesEasier, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 210
+    FlagSet EVENT_FLAG_0x00d2
     VMJump L_0103
 
 L_00F5:
@@ -95,7 +95,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 362
+    VMStackPushFlag EVENT_FLAG_0x016a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A7
@@ -119,7 +119,7 @@ Script_3:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_TimerBallMakesEasier, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 362
+    FlagSet EVENT_FLAG_0x016a
     VMJump L_01B5
 
 L_01A7:

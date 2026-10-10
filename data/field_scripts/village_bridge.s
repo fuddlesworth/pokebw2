@@ -26,7 +26,7 @@
     WorkSetConst 0x8025, 0
 
 Script_14:
-    VMStackPush 0x40d4
+    VMStackPush EVENT_WORK_0x40d4
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0083
@@ -75,7 +75,7 @@ Script_4:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013D
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_011F
@@ -101,7 +101,7 @@ L_0137:
     VMJump L_018C
 
 L_013D:
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0174
@@ -112,7 +112,7 @@ L_013D:
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_DerlethWhatPiercingMind, 0, 0
     LastKeyWait
     ActorMsgClose
-    WorkSetConst 0x400a, 1
+    WorkSetConst EVENT_WORK_0x400a, 1
     VMJump L_018C
 
 L_0174:
@@ -136,7 +136,7 @@ Script_5:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FC
-    VMStackPush 0x400b
+    VMStackPush EVENT_WORK_0x400b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01DE
@@ -162,7 +162,7 @@ L_01F6:
     VMJump L_024B
 
 L_01FC:
-    VMStackPush 0x400b
+    VMStackPush EVENT_WORK_0x400b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0233
@@ -173,7 +173,7 @@ L_01FC:
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_AickmanKnowSoundDoesnt, 0, 0
     LastKeyWait
     ActorMsgClose
-    WorkSetConst 0x400b, 1
+    WorkSetConst EVENT_WORK_0x400b, 1
     VMJump L_024B
 
 L_0233:
@@ -197,7 +197,7 @@ Script_6:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02BB
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_029D
@@ -223,7 +223,7 @@ L_02B5:
     VMJump L_030A
 
 L_02BB:
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F2
@@ -234,7 +234,7 @@ L_02BB:
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_RussoAhemAhemNow, 0, 0
     LastKeyWait
     ActorMsgClose
-    WorkSetConst 0x400c, 1
+    WorkSetConst EVENT_WORK_0x400c, 1
     VMJump L_030A
 
 L_02F2:
@@ -258,7 +258,7 @@ Script_7:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_037A
-    VMStackPush 0x400d
+    VMStackPush EVENT_WORK_0x400d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035C
@@ -284,7 +284,7 @@ L_0374:
     VMJump L_03C9
 
 L_037A:
-    VMStackPush 0x400d
+    VMStackPush EVENT_WORK_0x400d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03B1
@@ -295,7 +295,7 @@ L_037A:
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_KoontzHuhLeavingAlready, 0, 0
     LastKeyWait
     ActorMsgClose
-    WorkSetConst 0x400d, 1
+    WorkSetConst EVENT_WORK_0x400d, 1
     VMJump L_03C9
 
 L_03B1:
@@ -468,7 +468,7 @@ L_05B2:
     MsgWinCloseAll
     CallTrainerBattle TRAINER_GENTLEMAN_STONEWALL, 0, 0
     VMCall L_03EB
-    WorkSetConst 0x40d4, 1
+    WorkSetConst EVENT_WORK_0x40d4, 1
     // "I've steadily extended my win streak\nfor two years... And now it's over...[f000]븁\u0000\nBut I have a strong will.\nI declare that I'll try again[f000]븀\u0000\nto have a 1,000-win streak![f000]븁\u0000\nI won't battle you next time, though.\nYou'll just break my streak."
     ActorMsg MSGFILE_SCRIPT, VillageBridge_Text_IveSteadilyExtendedWin, 8, 0, 0
     MsgWaitAdvance
@@ -744,7 +744,7 @@ Script_13:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A87
@@ -786,9 +786,9 @@ L_0A39:
     ActorCmdExec 255, Movement_0ACC
     ActorCmdWait
     ActorDelete 18
-    WorkSetConst 0x4108, 4
-    FlagSet 861
-    FlagReset 862
+    WorkSetConst EVENT_WORK_0x4108, 4
+    FlagSet EVENT_FLAG_0x035d
+    FlagReset EVENT_FLAG_0x035e
     VMJump L_0A6D
 
 L_0A5F:
@@ -810,7 +810,7 @@ L_0A81:
     VMJump L_0AA8
 
 L_0A87:
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AA8
@@ -1025,7 +1025,7 @@ Movement_0C88:
 
 Script_15:
     ActorsPauseAll
-    VMStackPushFlag 468
+    VMStackPushFlag EVENT_FLAG_0x01d4
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0CD7
@@ -1038,7 +1038,7 @@ Script_15:
     VMJump L_0D68
 
 L_0CD7:
-    VMStackPushFlag 466
+    VMStackPushFlag EVENT_FLAG_0x01d2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0D54

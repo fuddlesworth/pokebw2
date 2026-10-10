@@ -15,22 +15,22 @@
 
 Script_1:
     WorkSetConst 0x8020, 0
-    VMStackPush 0x416d
+    VMStackPush EVENT_WORK_0x416d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x416e
+    VMStackPush EVENT_WORK_0x416e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x416f
+    VMStackPush EVENT_WORK_0x416f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4170
+    VMStackPush EVENT_WORK_0x4170
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4171
+    VMStackPush EVENT_WORK_0x4171
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4172
+    VMStackPush EVENT_WORK_0x4172
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -40,31 +40,31 @@ Script_1:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_00A5
     StadiumLoadTrainerTable
-    Cmd_0249 0x416d, 0x416e, 0x416f, 0x4170, 0x4171, 0x4172
+    Cmd_0249 EVENT_WORK_0x416d, EVENT_WORK_0x416e, EVENT_WORK_0x416f, EVENT_WORK_0x4170, EVENT_WORK_0x4171, EVENT_WORK_0x4172
     StadiumFreeTrainerTable
 
 L_00A5:
-    FlagSet 649
-    FlagSet 650
-    FlagSet 651
-    FlagSet 652
-    FlagSet 653
+    FlagSet EVENT_FLAG_0x0289
+    FlagSet EVENT_FLAG_0x028a
+    FlagSet EVENT_FLAG_0x028b
+    FlagSet EVENT_FLAG_0x028c
+    FlagSet EVENT_FLAG_0x028d
     TrainerCardHasBadge 0x8020, 4
     VMStackPush 0x8020
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D6
-    FlagReset 649
+    FlagReset EVENT_FLAG_0x0289
 
 L_00D6:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F9
-    FlagReset 650
-    FlagReset 651
-    FlagReset 652
-    FlagReset 653
+    FlagReset EVENT_FLAG_0x028a
+    FlagReset EVENT_FLAG_0x028b
+    FlagReset EVENT_FLAG_0x028c
+    FlagReset EVENT_FLAG_0x028d
 
 L_00F9:
     StadiumLoadTrainerTable
@@ -93,7 +93,7 @@ L_014E:
     StadiumSetupActorsDouble 19, 12, 22, 3
 
 L_0189:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D6
@@ -102,7 +102,7 @@ L_0189:
     StadiumSetupActorSingle 8, 11, 4
     StadiumSetupActorsDouble 19, 12, 22, 4
     StadiumSetupActorsDouble 20, 13, 23, 4
-    StadiumSetupActorsTriple 14, 15, 16, 0x416d, 0x416e, 0x416f
+    StadiumSetupActorsTriple 14, 15, 16, EVENT_WORK_0x416d, EVENT_WORK_0x416e, EVENT_WORK_0x416f
 
 L_01D6:
     StadiumFreeTrainerTable

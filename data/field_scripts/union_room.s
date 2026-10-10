@@ -12,13 +12,13 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 102
+    VMStackPushFlag EVENT_FLAG_0x0066
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0030
     // "Welcome to the Union Room.[f000]븁\u0000\nIf there is anything you need help\nwith, please let me know![f000]븁\u0000"
     InfoMsg UnionRoom_Text_WelcomeUnionRoomIf, 2
-    FlagSet 102
+    FlagSet EVENT_FLAG_0x0066
 
 L_0030:
     WorkSetConst 0x8020, 0

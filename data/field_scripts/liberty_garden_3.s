@@ -23,7 +23,7 @@ L_002A:
     VMStackPushConst 494
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005C
-    WorkSetConst 0x400a, 1
+    WorkSetConst EVENT_WORK_0x400a, 1
 
 L_005C:
     DebugPrint 0x8021
@@ -102,7 +102,7 @@ Script_4:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x400a, 0
+    WorkSetConst EVENT_WORK_0x400a, 0
     VMJump L_01AE
 
 L_019F:
@@ -110,7 +110,7 @@ L_019F:
     InfoMsg LibertyGarden3_Text_VictiniSeemsLonelyPoke, 1
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x400a, 0
+    WorkSetConst EVENT_WORK_0x400a, 0
 
 L_01AE:
     FinishAllEvents

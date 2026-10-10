@@ -18,11 +18,11 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2772
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad4
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02E0
-    VMStackPushFlag 2771
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B0
@@ -37,20 +37,20 @@ L_006E:
     VMStackPushConst 50
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00A6
-    WorkGet 0x4187, 0x8020
+    WorkGet EVENT_WORK_0x4187, 0x8020
     WorkSetConst 0x8021, 1
 
 L_00A6:
     VMJump L_006E
 
 L_00AC:
-    FlagSet 2771
+    FlagSet EVENT_FLAG_DAILY_0x0ad3
 
 L_00B0:
     // "I'm very particular about\nthe Speed of Pokémon!"
     ParentActorMsg MSGFILE_SCRIPT, Route42_Text_ImVeryParticularAbout, 0, 0
     MsgWaitAdvance
-    WordSetNumber 1, 0x4187, 3
+    WordSetNumber 1, EVENT_WORK_0x4187, 3
     // "That's why I'm wondering if you\nhave any Pokémon with a Speed[f000]븀\u0000\nof [f000]Ȃ\u0001\u0001 or greater with you!"
     ParentActorMsg MSGFILE_SCRIPT, Route42_Text_ThatsWhyImWondering, 0, 0
     MsgWaitAdvance
@@ -69,7 +69,7 @@ L_00D5:
     PokePartyIsEgg 0x8027, 0x8023
     PokePartyGetParam 0x8028, 0x8023, 160
     VMStackPush 0x8024
-    VMStackPush 0x4187
+    VMStackPush EVENT_WORK_0x4187
     VMStackCmp CMP_EQ
     VMStackPush 0x8027
     VMStackPushConst 0
@@ -107,7 +107,7 @@ L_0174:
     PokePartyIsEgg 0x8027, 0x8023
     PokePartyGetParam 0x8028, 0x8023, 160
     VMStackPush 0x8024
-    VMStackPush 0x4187
+    VMStackPush EVENT_WORK_0x4187
     VMStackCmp CMP_GE
     VMStackPush 0x8027
     VMStackPushConst 0
@@ -147,7 +147,7 @@ L_01FA:
     ParentActorMsg MSGFILE_SCRIPT, Route42_Text_ThereManyDifferentPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2772
+    FlagSet EVENT_FLAG_DAILY_0x0ad4
     VMJump L_02DA
 
 L_025D:
@@ -172,7 +172,7 @@ L_025D:
     ParentActorMsg MSGFILE_SCRIPT, Route42_Text_ThereManyDifferentPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2772
+    FlagSet EVENT_FLAG_DAILY_0x0ad4
     VMJump L_02DA
 
 L_02C0:

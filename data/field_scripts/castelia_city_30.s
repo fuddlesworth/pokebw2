@@ -99,7 +99,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 393
+    VMStackPushFlag EVENT_FLAG_0x0189
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0208
@@ -147,7 +147,7 @@ L_01DA:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity30_Text_WhatsMoreWeLearned, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 393
+    FlagSet EVENT_FLAG_0x0189
     VMJump L_0249
 
 L_0208:
@@ -198,7 +198,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WorkSetConst 0x8024, 0
-    VMStackPushFlag 2411
+    VMStackPushFlag EVENT_FLAG_0x096b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C5
@@ -209,18 +209,18 @@ Script_5:
     ActorCmdWait
     // "Oh!\nYou have a Pal Pad, I see![f000]븁\u0000\nYou can register your friends in your\nPal Pad.[f000]븁\u0000\nAfter you register, you can link with\nthose friends over Nintendo Wi-Fi[f000]븀\u0000\nConnection to do all kinds of fun things![f000]븁\u0000\nYou can trade Pokémon, challenge\nyour friends to a battle, and so on.[f000]븁\u0000\nLet me give you a quick how-to on\nregistering your friends.[f000]븁\u0000\nYou can either input your friend's code\ndirectly by using your Pal Pad...[f000]븁\u0000\nOr you can use the IR Connection\nfeature of the C-Gear.[f000]븁\u0000\nThen, you can register your friend![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity30_Text_OhHavePalPad, 1, 2, 0
-    FlagSet 2411
+    FlagSet EVENT_FLAG_0x096b
 
 L_02C5:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0414
-    VMStackPushFlag 394
+    VMStackPushFlag EVENT_FLAG_0x018a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_031E
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0312
@@ -286,8 +286,8 @@ L_03DE:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity30_Text_EeveeAmazingPokemonHas, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 394
-    WorkSetConst 0x400a, 1
+    FlagSet EVENT_FLAG_0x018a
+    WorkSetConst EVENT_WORK_0x400a, 1
 
 L_03F6:
     VMJump L_040E

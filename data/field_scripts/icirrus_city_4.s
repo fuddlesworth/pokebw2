@@ -10,22 +10,22 @@
     ScriptEntriesEnd
 
 Script_4:
-    VMStackPushFlag 2757
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0039
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_003F
 
 L_0039:
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
 
 L_003F:
-    FlagSet 2757
+    FlagSet EVENT_FLAG_DAILY_0x0ac5
     VMHalt
 
 Script_6:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AC
@@ -51,9 +51,9 @@ Script_5:
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8027, 0
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
     WorkSetConst 0x8028, 0
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FF

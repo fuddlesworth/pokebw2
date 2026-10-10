@@ -11,11 +11,11 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 337
+    VMStackPushFlag EVENT_FLAG_0x0151
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008A
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004C
@@ -23,7 +23,7 @@ Script_1:
     VMJump L_0084
 
 L_004C:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006B
@@ -31,7 +31,7 @@ L_004C:
     VMJump L_0084
 
 L_006B:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0084
@@ -52,7 +52,7 @@ L_0098:
     VMHalt
 
 L_009E:
-    VMStackPushFlag 336
+    VMStackPushFlag EVENT_FLAG_0x0150
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C6
@@ -60,7 +60,7 @@ L_009E:
     // "Which Pokémon did you pick\nto be your partner at the beginning?[f000]븁\u0000\n...\n...[f000]븁\u0000\nOh, really? It was [f000]ā\u0001\u0000?"
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown7_Text_WhichPokemonDidPick, 0, 0
     MsgWaitAdvance
-    FlagSet 336
+    FlagSet EVENT_FLAG_0x0150
 
 L_00C6:
     // "All righty, I'll quiz you about Snivy!\nIs Snivy's height 2'04\"?"
@@ -106,13 +106,13 @@ L_0130:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown7_Text_LookingPokedexFunPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 337
+    FlagSet EVENT_FLAG_0x0151
 
 L_0170:
     VMReturn
 
 L_0172:
-    VMStackPushFlag 336
+    VMStackPushFlag EVENT_FLAG_0x0150
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_019A
@@ -120,7 +120,7 @@ L_0172:
     // "Which Pokémon did you pick\nto be your partner at the beginning?[f000]븁\u0000\n...\n...[f000]븁\u0000\nOh, really? It was [f000]ā\u0001\u0000?"
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown7_Text_WhichPokemonDidPick, 0, 0
     MsgWaitAdvance
-    FlagSet 336
+    FlagSet EVENT_FLAG_0x0150
 
 L_019A:
     // "Well, then I'll quiz you about Tepig!\nIs Tepig's height 1'08\"?"
@@ -152,7 +152,7 @@ L_019A:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown7_Text_LookingPokedexFunPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 337
+    FlagSet EVENT_FLAG_0x0151
     VMJump L_0230
 
 L_0222:
@@ -174,7 +174,7 @@ L_0244:
     VMReturn
 
 L_0246:
-    VMStackPushFlag 336
+    VMStackPushFlag EVENT_FLAG_0x0150
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_026E
@@ -182,7 +182,7 @@ L_0246:
     // "Which Pokémon did you pick\nto be your partner at the beginning?[f000]븁\u0000\n...\n...[f000]븁\u0000\nOh, really? It was [f000]ā\u0001\u0000?"
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown7_Text_WhichPokemonDidPick, 0, 0
     MsgWaitAdvance
-    FlagSet 336
+    FlagSet EVENT_FLAG_0x0150
 
 L_026E:
     // "OK! I'll quiz you about Oshawott!\nIs Oshawott's height 2'00\"?"
@@ -221,7 +221,7 @@ L_02A3:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown7_Text_LookingPokedexFunPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 337
+    FlagSet EVENT_FLAG_0x0151
     VMJump L_0318
 
 L_030A:

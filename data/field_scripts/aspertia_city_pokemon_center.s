@@ -12,10 +12,10 @@
     ScriptEntriesEnd
 
 Script_6:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 5
     VMStackCmp CMP_EQ
-    VMStackPushFlag 989
+    VMStackPushFlag EVENT_FLAG_0x03dd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -117,12 +117,12 @@ Script_3:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 8
     SEWait
-    FlagReset 2430
+    FlagReset EVENT_FLAG_0x097e
     BGMChangeMap
-    WorkSetConst 0x40a1, 6
-    FlagSet 732
-    FlagReset 744
-    FlagReset 743
+    WorkSetConst EVENT_WORK_0x40a1, 6
+    FlagSet EVENT_FLAG_0x02dc
+    FlagReset EVENT_FLAG_0x02e8
+    FlagReset EVENT_FLAG_0x02e7
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

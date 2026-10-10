@@ -25,7 +25,7 @@ Script_3:
     FadeInBlack
     FadeWait
     Cmd_018E 2
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     ActorCmdExec 251, Movement_01A0
     VMSleep 20
     ActorCmdExec 255, Movement_01A8
@@ -38,8 +38,8 @@ Script_3:
     ActorCmdExec 255, Movement_0198
     ActorCmdWait
     ActorDelete 251
-    WorkSetConst 0x40c3, 4
-    FlagReset 717
+    WorkSetConst EVENT_WORK_0x40c3, 4
+    FlagReset EVENT_FLAG_0x02cd
     ObjInitPointGPos 2, 31, 0, 0
     HollowRivalCmd_0262 1, 11
     FinishAllEvents
@@ -49,11 +49,11 @@ Script_3:
 Script_1:
     ActorsPauseAll
     PlayerGetDir 0x8010
-    DebugPrint 0x4000
+    DebugPrint EVENT_WORK_0x4000
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND

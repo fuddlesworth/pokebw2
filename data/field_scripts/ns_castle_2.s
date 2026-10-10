@@ -17,7 +17,7 @@ Script_4:
     VMHalt
 
 Script_5:
-    VMStackPush 0x4113
+    VMStackPush EVENT_WORK_0x4113
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0055
@@ -28,7 +28,7 @@ L_0055:
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0078
@@ -52,7 +52,7 @@ L_0084:
     VMStackPush 0x8022
     VMStackPush 0x8024
     VMStackCmp CMP_NE
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -117,15 +117,15 @@ L_0176:
     VMStackPop 0x8002
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WorkSetConst 0x400f, 0
-    WorkSetConst 0x411d, 1
-    WorkSetConst 0x4114, 1
-    FlagSet 911
-    VMStackPushFlag 415
+    WorkSetConst EVENT_WORK_0x400f, 0
+    WorkSetConst EVENT_WORK_0x411d, 1
+    WorkSetConst EVENT_WORK_0x4114, 1
+    FlagSet EVENT_FLAG_0x038f
+    VMStackPushFlag EVENT_FLAG_0x019f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F9
-    WorkSetConst 0x4113, 1
+    WorkSetConst EVENT_WORK_0x4113, 1
 
 L_01F9:
     VMJump L_021D
@@ -136,7 +136,7 @@ L_01FF:
     MsgWinCloseAll
     ActorCmdExec 255, Movement_04B4
     ActorCmdWait
-    WorkSetConst 0x400f, 1
+    WorkSetConst EVENT_WORK_0x400f, 1
 
 L_021D:
     VMReturn
@@ -198,10 +198,10 @@ L_02B1:
     ActorCmdExec 254, Movement_04EC
     ActorCmdExec 255, Movement_04B4
     ActorCmdWait
-    FlagReset 911
+    FlagReset EVENT_FLAG_0x038f
     ActorAdd 0
     ActorDelete 254
-    WorkSetConst 0x4114, 0
+    WorkSetConst EVENT_WORK_0x4114, 0
     VMJump L_035C
 
 L_033E:
@@ -289,8 +289,8 @@ Script_3:
     ActorCmdExec 255, Movement_049C
     ActorCmdWait
     ActorPairSetMoveEnable 0
-    WorkSetConst 0x4113, 3
-    FlagSet 911
+    WorkSetConst EVENT_WORK_0x4113, 3
+    FlagSet EVENT_FLAG_0x038f
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

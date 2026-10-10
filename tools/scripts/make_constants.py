@@ -12,6 +12,7 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trades extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --places
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --files
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --flags
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused, and are named after their ID, as
@@ -331,6 +332,40 @@ def file_names() -> dict[str, dict[int, str]]:
     }
 
 
+# The ranges of the event flags and variables, from EventWork_GetFlagBytePtr (0x17f bytes of saved flags, then 8 of
+# temporary ones from 0x4000), TrainerFlagGet (0x5f0 + the trainer), EventWork_ResetDailyFlags (0xaa0 to 0xb03),
+# HIDDEN_ITEM_FLAG_START (0xb04) and EventWork_GetWkPtr (the variables from 0x4000 before the flags, at 0x35e)
+FLAGS_END, TRAINER_FLAGS, DAILY_FLAGS, HIDDEN_ITEM_FLAGS = 0xBF8, 0x5F0, (0xAA0, 0xB03), 0xB04
+TEMP_FLAGS, TEMP_FLAG_COUNT, VARS, VAR_COUNT = 0x4000, 64, 0x4000, 0x35E // 2
+
+
+def flag_names(named: dict[int, str]) -> dict[int, str]:
+    """Returns a name for every event flag: the named ones, the trainers' (EVENT_FLAG_TRAINER_<trainer>), the hidden
+    items' and the temporary ones by their number, and the rest, the daily ones among them, by their value."""
+    from gen_constants import load
+
+    trainers = {number: trainer for trainer, number in reversed(load("trainers").items())}
+    names = {}
+    for flag in range(1, FLAGS_END):
+        if flag in named:
+            names[flag] = named[flag]
+        elif TRAINER_FLAGS <= flag < TRAINER_FLAGS + len(trainers):
+            names[flag] = "EVENT_FLAG_" + trainers[flag - TRAINER_FLAGS]
+        elif DAILY_FLAGS[0] <= flag <= DAILY_FLAGS[1]:
+            names[flag] = f"EVENT_FLAG_DAILY_{flag:#06x}"
+        elif flag >= HIDDEN_ITEM_FLAGS:
+            names[flag] = f"EVENT_FLAG_HIDDEN_ITEM_{flag - HIDDEN_ITEM_FLAGS}"
+        else:
+            names[flag] = f"EVENT_FLAG_{flag:#06x}"
+    for flag in range(TEMP_FLAGS, TEMP_FLAGS + TEMP_FLAG_COUNT):
+        names[flag] = named.get(flag, f"EVENT_FLAG_TEMP_{flag - TEMP_FLAGS}")
+    return names
+
+
+def var_names(named: dict[int, str]) -> dict[int, str]:
+    return {var: named.get(var, f"EVENT_WORK_{var:#06x}") for var in range(VARS, VARS + VAR_COUNT)}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -344,6 +379,8 @@ def main():
                         help="write only this list of the game's text, such as natures, since the lists are edited "
                              "by hand after")
     parser.add_argument("--places", action="store_true", help="write only places.txt, from the place names")
+    parser.add_argument("--flags", action="store_true",
+                        help="write only flags.txt and vars.txt, every flag and variable, keeping the names they have")
     parser.add_argument("--files", action="store_true",
                         help="write only field_scripts.txt, script_text_banks.txt and text_banks.txt, from the zones, "
                              "the global scripts and the names of the files in data/")
@@ -366,6 +403,20 @@ def main():
     if args.encounters:
         write_list(args.output / "encounters.txt", encounter_names(args.encounters),
                    "Wild encounter tables, by the place of the first zone that has them, numbered where places repeat")
+    if args.flags:
+        from gen_constants import load
+
+        named_flags = {v: k for k, v in load("flags").items() if not k.startswith(("EVENT_FLAG_0x", "EVENT_FLAG_TRAINER_",
+                       "EVENT_FLAG_DAILY_0x", "EVENT_FLAG_HIDDEN_ITEM_", "EVENT_FLAG_TEMP_"))}
+        named_vars = {v: k for k, v in load("vars").items() if not k.startswith("EVENT_WORK_0x")}
+        write_list(args.output / "flags.txt", flag_names(named_flags),
+                   "Event flags: the saved ones from 1, with the trainers' from 0x5f0, the daily ones from 0xaa0 and "
+                   "the hidden items' from 0xb04, then the temporary ones from 0x4000. Named ones keep their names; "
+                   "rename the others when the code or a script shows what they are", hexadecimal=True)
+        write_list(args.output / "vars.txt", var_names(named_vars),
+                   "Event variables, from 0x4000; rename one when the code or a script shows what it is",
+                   hexadecimal=True)
+        return
     if args.files:
         descriptions = {
             "field_scripts": "Field script files: each zone's scripts and map scripts, by the zone, and the global "

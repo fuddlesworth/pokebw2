@@ -41,15 +41,15 @@ Script_17:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C9
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C9
-    VMStackPushFlag 438
+    VMStackPushFlag EVENT_FLAG_0x01b6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C9
-    FlagReset 978
+    FlagReset EVENT_FLAG_0x03d2
 
 L_00C9:
     WorkSetConst 0x8025, 0
@@ -57,30 +57,30 @@ L_00C9:
     VMHalt
 
 L_00D7:
-    Cmd_02B2 0, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 0, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F4
-    FlagSet 978
+    FlagSet EVENT_FLAG_0x03d2
 
 L_00F4:
     VMReturn
 
 L_00F6:
-    Cmd_02B2 0, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 0, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012A
-    VMStackPushFlag 978
+    VMStackPushFlag EVENT_FLAG_0x03d2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0126
     ActorDelete 21
 
 L_0126:
-    FlagSet 978
+    FlagSet EVENT_FLAG_0x03d2
 
 L_012A:
     VMReturn
@@ -114,7 +114,7 @@ Script_3:
     // "Trainer Tips![f000]븁\u0000\n\nThere are different Cases\nfor each type of item.[f000]븁\u0000\nItems are placed automatically in\nthe correct Case by their type.[f000]븁\u0000\nThe name of the Case tells you\nwhat type of items will be kept there.[f000]븁\u0000\nAlso, you can place anything in\nFree Space, no matter what it is.[f000]븁\u0000\nSo you can keep items you often use\nin one place."
     MsgPlaceSign Route5_Text_TrainerTipsThereDifferent, 0
     MsgPlaceSignClose
-    FlagSet 2668
+    FlagSet EVENT_FLAG_0x0a6c
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -262,7 +262,7 @@ L_03EA:
     SEPlay SEQ_SE_KAIDAN
     HiddenHollowCallWarpIn 1
     BGMChangeMap
-    WorkSetConst 0x4139, 1
+    WorkSetConst EVENT_WORK_0x4139, 1
     MedalDiscover 57
     MedalDiscover 85
     FinishAllEvents
@@ -328,14 +328,14 @@ Movement_04B8:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2750
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abe
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04E3
-    Random 0x4175, 5
+    Random EVENT_WORK_0x4175, 5
 
 L_04E3:
-    VMStackPushFlag 2751
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abf
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0508
@@ -363,7 +363,7 @@ L_0522:
     WorkSetConst 0x8028, 0
     WorkSetConst 0x8026, 200
     MoneyWinDisp 31, 1
-    WorkCmpConst 0x4175, 0
+    WorkCmpConst EVENT_WORK_0x4175, 0
     VMJumpIf CMP_EQ, L_0553
     VMJump L_0561
 
@@ -372,7 +372,7 @@ L_0553:
     VMJump L_0606
 
 L_0561:
-    WorkCmpConst 0x4175, 1
+    WorkCmpConst EVENT_WORK_0x4175, 1
     VMJumpIf CMP_EQ, L_0574
     VMJump L_0582
 
@@ -381,7 +381,7 @@ L_0574:
     VMJump L_0606
 
 L_0582:
-    WorkCmpConst 0x4175, 2
+    WorkCmpConst EVENT_WORK_0x4175, 2
     VMJumpIf CMP_EQ, L_0595
     VMJump L_05A3
 
@@ -390,7 +390,7 @@ L_0595:
     VMJump L_0606
 
 L_05A3:
-    WorkCmpConst 0x4175, 3
+    WorkCmpConst EVENT_WORK_0x4175, 3
     VMJumpIf CMP_EQ, L_05B6
     VMJump L_05C4
 
@@ -399,7 +399,7 @@ L_05B6:
     VMJump L_0606
 
 L_05C4:
-    WorkCmpConst 0x4175, 4
+    WorkCmpConst EVENT_WORK_0x4175, 4
     VMJumpIf CMP_EQ, L_05D7
     VMJump L_05E5
 
@@ -408,7 +408,7 @@ L_05D7:
     VMJump L_0606
 
 L_05E5:
-    WorkCmpConst 0x4175, 5
+    WorkCmpConst EVENT_WORK_0x4175, 5
     VMJumpIf CMP_EQ, L_05F8
     VMJump L_0606
 
@@ -417,7 +417,7 @@ L_05F8:
     VMJump L_0606
 
 L_0606:
-    VMStackPushFlag 2750
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abe
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_062B
@@ -435,7 +435,7 @@ L_0637:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08FE
-    WorkCmpConst 0x4175, 0
+    WorkCmpConst EVENT_WORK_0x4175, 0
     VMJumpIf CMP_EQ, L_0661
     VMJump L_066F
 
@@ -444,7 +444,7 @@ L_0661:
     VMJump L_0714
 
 L_066F:
-    WorkCmpConst 0x4175, 1
+    WorkCmpConst EVENT_WORK_0x4175, 1
     VMJumpIf CMP_EQ, L_0682
     VMJump L_0690
 
@@ -453,7 +453,7 @@ L_0682:
     VMJump L_0714
 
 L_0690:
-    WorkCmpConst 0x4175, 2
+    WorkCmpConst EVENT_WORK_0x4175, 2
     VMJumpIf CMP_EQ, L_06A3
     VMJump L_06B1
 
@@ -462,7 +462,7 @@ L_06A3:
     VMJump L_0714
 
 L_06B1:
-    WorkCmpConst 0x4175, 3
+    WorkCmpConst EVENT_WORK_0x4175, 3
     VMJumpIf CMP_EQ, L_06C4
     VMJump L_06D2
 
@@ -471,7 +471,7 @@ L_06C4:
     VMJump L_0714
 
 L_06D2:
-    WorkCmpConst 0x4175, 4
+    WorkCmpConst EVENT_WORK_0x4175, 4
     VMJumpIf CMP_EQ, L_06E5
     VMJump L_06F3
 
@@ -480,7 +480,7 @@ L_06E5:
     VMJump L_0714
 
 L_06F3:
-    WorkCmpConst 0x4175, 5
+    WorkCmpConst EVENT_WORK_0x4175, 5
     VMJumpIf CMP_EQ, L_0706
     VMJump L_0714
 
@@ -522,7 +522,7 @@ L_0770:
     ActorMsg MSGFILE_SCRIPT, Route5_Text_Five200YoureSmart, 0, 2, 0
     MsgWinCloseAll
     MoneyWinClose
-    WorkCmpConst 0x4175, 0
+    WorkCmpConst EVENT_WORK_0x4175, 0
     VMJumpIf CMP_EQ, L_079F
     VMJump L_07C5
 
@@ -537,7 +537,7 @@ L_079F:
     VMJump L_08E2
 
 L_07C5:
-    WorkCmpConst 0x4175, 1
+    WorkCmpConst EVENT_WORK_0x4175, 1
     VMJumpIf CMP_EQ, L_07D8
     VMJump L_07FE
 
@@ -552,7 +552,7 @@ L_07D8:
     VMJump L_08E2
 
 L_07FE:
-    WorkCmpConst 0x4175, 2
+    WorkCmpConst EVENT_WORK_0x4175, 2
     VMJumpIf CMP_EQ, L_0811
     VMJump L_0837
 
@@ -567,7 +567,7 @@ L_0811:
     VMJump L_08E2
 
 L_0837:
-    WorkCmpConst 0x4175, 3
+    WorkCmpConst EVENT_WORK_0x4175, 3
     VMJumpIf CMP_EQ, L_084A
     VMJump L_0870
 
@@ -582,7 +582,7 @@ L_084A:
     VMJump L_08E2
 
 L_0870:
-    WorkCmpConst 0x4175, 4
+    WorkCmpConst EVENT_WORK_0x4175, 4
     VMJumpIf CMP_EQ, L_0883
     VMJump L_08A9
 
@@ -597,7 +597,7 @@ L_0883:
     VMJump L_08E2
 
 L_08A9:
-    WorkCmpConst 0x4175, 5
+    WorkCmpConst EVENT_WORK_0x4175, 5
     VMJumpIf CMP_EQ, L_08BC
     VMJump L_08E2
 
@@ -617,7 +617,7 @@ L_08E2:
     LastKeyWait
     MsgWinCloseAll
     MoneyWinClose
-    FlagSet 2751
+    FlagSet EVENT_FLAG_DAILY_0x0abf
 
 L_08F8:
     VMJump L_0910
@@ -630,7 +630,7 @@ L_08FE:
     MsgWinCloseAll
 
 L_0910:
-    FlagSet 2750
+    FlagSet EVENT_FLAG_DAILY_0x0abe
     VMReturn
 
 Script_5:
@@ -654,7 +654,7 @@ Script_5:
 L_0959:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 281
+    VMStackPushFlag EVENT_FLAG_0x0119
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09CD
@@ -666,7 +666,7 @@ L_0959:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09B5
-    FlagSet 281
+    FlagSet EVENT_FLAG_0x0119
     // "In Triple Battles, you send out three\nPokémon at a time and battle![f000]븁\u0000\nThe rules are simple: just make all of\nyour opponent's Pokémon faint.[f000]븁\u0000\nAnd that's a rough explanation\nof Triple Battles.[f000]븁\u0000"
     // "In Rotation Battles, you send out three\nPokémon at a time and battle![f000]븁\u0000\nOne Pokémon takes the lead position,\nand the other two stand on each side.[f000]븁\u0000\nThe trick is, each turn you can change\ntheir positions...[f000]븁\u0000\nAnd that's a rough explanation\nof Rotation Battles.[f000]븁\u0000"
     ActorMsgVersioned 1024, Route5_Text_TripleBattlesSendOut, Route5_Text_RotationBattlesSendOut, 8, 0, 0
@@ -814,7 +814,7 @@ L_0AD0:
     ActorDelete 15
     ActorDelete 16
     ActorDelete 17
-    FlagSet 760
+    FlagSet EVENT_FLAG_0x02f8
     VMSleep 30
     FadeEx 3, 16, 0, 4
     FadeExWait
@@ -1170,13 +1170,13 @@ Script_16:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 435
+    VMStackPushFlag EVENT_FLAG_0x01b3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1090
     // "Cheren: I heard that you met\na Pokémon Trainer called N.[f000]븁\u0000\nThat's not really why I'm here, though.\nWill you battle me?"
     ParentActorMsg MSGFILE_SCRIPT, Route5_Text_CherenHeardMetPokemon, 0, 0
-    FlagSet 435
+    FlagSet EVENT_FLAG_0x01b3
     VMJump L_109A
 
 L_1090:
@@ -1260,8 +1260,8 @@ L_11BA:
     ActorCmdExec 255, Movement_0E08
     ActorCmdWait
     ActorDelete 21
-    FlagSet 978
-    FlagSet 438
+    FlagSet EVENT_FLAG_0x03d2
+    FlagSet EVENT_FLAG_0x01b6
     VMJump L_11E8
 
 L_11DA:
@@ -1307,8 +1307,8 @@ L_1265:
     CallTrainerLose
 
 L_1267:
-    MusicalIsPropOwned 84, 0x4001
-    VMStackPush 0x4001
+    MusicalIsPropOwned 84, EVENT_WORK_0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12B0

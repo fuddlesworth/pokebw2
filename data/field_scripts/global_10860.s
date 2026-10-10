@@ -27,7 +27,7 @@ Script_1:
     VMJump L_005A
 
 L_004E:
-    WorkSetConst 0x4126, 2
+    WorkSetConst EVENT_WORK_0x4126, 2
     VMJump L_0210
 
 L_005A:
@@ -36,7 +36,7 @@ L_005A:
     VMJump L_0079
 
 L_006D:
-    WorkSetConst 0x4127, 2
+    WorkSetConst EVENT_WORK_0x4127, 2
     VMJump L_0210
 
 L_0079:
@@ -45,7 +45,7 @@ L_0079:
     VMJump L_0098
 
 L_008C:
-    WorkSetConst 0x4128, 2
+    WorkSetConst EVENT_WORK_0x4128, 2
     VMJump L_0210
 
 L_0098:
@@ -54,7 +54,7 @@ L_0098:
     VMJump L_00B7
 
 L_00AB:
-    WorkSetConst 0x4129, 2
+    WorkSetConst EVENT_WORK_0x4129, 2
     VMJump L_0210
 
 L_00B7:
@@ -63,7 +63,7 @@ L_00B7:
     VMJump L_00D6
 
 L_00CA:
-    WorkSetConst 0x412a, 2
+    WorkSetConst EVENT_WORK_0x412a, 2
     VMJump L_0210
 
 L_00D6:
@@ -72,7 +72,7 @@ L_00D6:
     VMJump L_00F5
 
 L_00E9:
-    WorkSetConst 0x412b, 2
+    WorkSetConst EVENT_WORK_0x412b, 2
     VMJump L_0210
 
 L_00F5:
@@ -81,7 +81,7 @@ L_00F5:
     VMJump L_0114
 
 L_0108:
-    WorkSetConst 0x412c, 2
+    WorkSetConst EVENT_WORK_0x412c, 2
     VMJump L_0210
 
 L_0114:
@@ -90,7 +90,7 @@ L_0114:
     VMJump L_0133
 
 L_0127:
-    WorkSetConst 0x412d, 2
+    WorkSetConst EVENT_WORK_0x412d, 2
     VMJump L_0210
 
 L_0133:
@@ -99,7 +99,7 @@ L_0133:
     VMJump L_0152
 
 L_0146:
-    WorkSetConst 0x412e, 2
+    WorkSetConst EVENT_WORK_0x412e, 2
     VMJump L_0210
 
 L_0152:
@@ -108,7 +108,7 @@ L_0152:
     VMJump L_0171
 
 L_0165:
-    WorkSetConst 0x412f, 2
+    WorkSetConst EVENT_WORK_0x412f, 2
     VMJump L_0210
 
 L_0171:
@@ -117,7 +117,7 @@ L_0171:
     VMJump L_0190
 
 L_0184:
-    WorkSetConst 0x4130, 2
+    WorkSetConst EVENT_WORK_0x4130, 2
     VMJump L_0210
 
 L_0190:
@@ -126,7 +126,7 @@ L_0190:
     VMJump L_01AF
 
 L_01A3:
-    WorkSetConst 0x4131, 2
+    WorkSetConst EVENT_WORK_0x4131, 2
     VMJump L_0210
 
 L_01AF:
@@ -135,7 +135,7 @@ L_01AF:
     VMJump L_01CE
 
 L_01C2:
-    WorkSetConst 0x4132, 2
+    WorkSetConst EVENT_WORK_0x4132, 2
     VMJump L_0210
 
 L_01CE:
@@ -144,7 +144,7 @@ L_01CE:
     VMJump L_01ED
 
 L_01E1:
-    WorkSetConst 0x4133, 2
+    WorkSetConst EVENT_WORK_0x4133, 2
     VMJump L_0210
 
 L_01ED:
@@ -153,7 +153,7 @@ L_01ED:
     VMJump L_020C
 
 L_0200:
-    WorkSetConst 0x4134, 2
+    WorkSetConst EVENT_WORK_0x4134, 2
     VMJump L_0210
 
 L_020C:
@@ -165,21 +165,21 @@ L_0210:
     VMStackPushConst 10
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0283
-    WorkSetConst 0x4126, 2
-    WorkSetConst 0x4127, 2
-    WorkSetConst 0x4128, 2
-    WorkSetConst 0x4129, 2
-    WorkSetConst 0x412a, 2
-    WorkSetConst 0x412b, 2
-    WorkSetConst 0x412c, 2
-    WorkSetConst 0x412d, 2
-    WorkSetConst 0x412e, 2
-    WorkSetConst 0x412f, 2
-    WorkSetConst 0x4130, 2
-    WorkSetConst 0x4131, 2
-    WorkSetConst 0x4132, 2
-    WorkSetConst 0x4133, 2
-    WorkSetConst 0x4134, 2
+    WorkSetConst EVENT_WORK_0x4126, 2
+    WorkSetConst EVENT_WORK_0x4127, 2
+    WorkSetConst EVENT_WORK_0x4128, 2
+    WorkSetConst EVENT_WORK_0x4129, 2
+    WorkSetConst EVENT_WORK_0x412a, 2
+    WorkSetConst EVENT_WORK_0x412b, 2
+    WorkSetConst EVENT_WORK_0x412c, 2
+    WorkSetConst EVENT_WORK_0x412d, 2
+    WorkSetConst EVENT_WORK_0x412e, 2
+    WorkSetConst EVENT_WORK_0x412f, 2
+    WorkSetConst EVENT_WORK_0x4130, 2
+    WorkSetConst EVENT_WORK_0x4131, 2
+    WorkSetConst EVENT_WORK_0x4132, 2
+    WorkSetConst EVENT_WORK_0x4133, 2
+    WorkSetConst EVENT_WORK_0x4134, 2
 
 L_0283:
     FinishAllEvents

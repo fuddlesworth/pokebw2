@@ -30,11 +30,11 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2772
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad4
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02FC
-    VMStackPushFlag 2771
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00CC
@@ -49,20 +49,20 @@ L_008A:
     VMStackPushConst 50
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00C2
-    WorkGet 0x4187, 0x8020
+    WorkGet EVENT_WORK_0x4187, 0x8020
     WorkSetConst 0x8021, 1
 
 L_00C2:
     VMJump L_008A
 
 L_00C8:
-    FlagSet 2771
+    FlagSet EVENT_FLAG_DAILY_0x0ad3
 
 L_00CC:
     // "I'm very particular about a\nPokémon's Attack!"
     ParentActorMsg MSGFILE_SCRIPT, Route414_Text_ImVeryParticularAbout_2, 0, 0
     MsgWaitAdvance
-    WordSetNumber 1, 0x4187, 3
+    WordSetNumber 1, EVENT_WORK_0x4187, 3
     // "That's why... You![f000]븁\u0000\nDo you have a Pokémon whose Attack\nstat is the same as or higher than [f000]Ȃ\u0001\u0001?"
     ParentActorMsg MSGFILE_SCRIPT, Route414_Text_ThatsWhyHavePokemon, 0, 0
     MsgWaitAdvance
@@ -81,7 +81,7 @@ L_00F1:
     PokePartyIsEgg 0x8027, 0x8023
     PokePartyGetParam 0x8028, 0x8023, 160
     VMStackPush 0x8024
-    VMStackPush 0x4187
+    VMStackPush EVENT_WORK_0x4187
     VMStackCmp CMP_EQ
     VMStackPush 0x8027
     VMStackPushConst 0
@@ -119,7 +119,7 @@ L_0190:
     PokePartyIsEgg 0x8027, 0x8023
     PokePartyGetParam 0x8028, 0x8023, 160
     VMStackPush 0x8024
-    VMStackPush 0x4187
+    VMStackPush EVENT_WORK_0x4187
     VMStackCmp CMP_GE
     VMStackPush 0x8027
     VMStackPushConst 0
@@ -159,7 +159,7 @@ L_0216:
     ParentActorMsg MSGFILE_SCRIPT, Route414_Text_VariousAttacksVariousPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2772
+    FlagSet EVENT_FLAG_DAILY_0x0ad4
     VMJump L_02F6
 
 L_0279:
@@ -184,7 +184,7 @@ L_0279:
     ParentActorMsg MSGFILE_SCRIPT, Route414_Text_VariousAttacksVariousPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2772
+    FlagSet EVENT_FLAG_DAILY_0x0ad4
     VMJump L_02F6
 
 L_02DC:

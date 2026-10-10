@@ -61,7 +61,7 @@ L_00D2:
     ActorCmdWait
     ActorCmdExec 0, Movement_0288
     ActorCmdWait
-    WorkSetConst 0x407d, 1
+    WorkSetConst EVENT_WORK_0x407d, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -70,7 +70,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0161
@@ -84,7 +84,7 @@ Script_1:
     MEWait
     FadeEx 3, 16, 0, 2
     FadeExWait
-    WorkSetConst 0x400a, 1
+    WorkSetConst EVENT_WORK_0x400a, 1
     VMCall L_016D
     VMJump L_0167
 

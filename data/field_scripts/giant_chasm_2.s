@@ -16,7 +16,7 @@
     WorkSetConst 0x8023, 0
 
 L_003A:
-    VMStackPushFlag 364
+    VMStackPushFlag EVENT_FLAG_0x016c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005D
@@ -44,8 +44,8 @@ Script_7:
     ActorsPauseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    FlagReset 878
-    FlagReset 880
+    FlagReset EVENT_FLAG_0x036e
+    FlagReset EVENT_FLAG_0x0370
     ActorAdd 9
     ActorAdd 10
     ActorWalkRoute 9, 61, 36, 1, 8, 1
@@ -114,11 +114,11 @@ Script_7:
     ActorCmdWait
     ActorDelete 9
     ActorDelete 10
-    FlagSet 876
-    FlagSet 878
-    FlagSet 880
-    FlagSet 857
-    WorkSetConst 0x4070, 2
+    FlagSet EVENT_FLAG_0x036c
+    FlagSet EVENT_FLAG_0x036e
+    FlagSet EVENT_FLAG_0x0370
+    FlagSet EVENT_FLAG_0x0359
+    WorkSetConst EVENT_WORK_0x4070, 2
     HollowRivalCmd_0262 1, 33
     FinishAllEvents
     ActorsUnpauseAll

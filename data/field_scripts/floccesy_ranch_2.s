@@ -28,7 +28,7 @@ Script_1:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0083
@@ -36,7 +36,7 @@ Script_2:
     VMJump L_00CD
 
 L_0083:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00A8
@@ -44,7 +44,7 @@ L_0083:
     VMJump L_00CD
 
 L_00A8:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00CD
@@ -52,10 +52,10 @@ L_00A8:
     VMJump L_00CD
 
 L_00CD:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 5
     VMStackCmp CMP_LT
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMStackCmp CMP_AND
@@ -66,7 +66,7 @@ L_00CD:
     VMJump L_015D
 
 L_011A:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_015D
@@ -90,7 +90,7 @@ Script_3:
     // "[f000]Ā\u0001\u0001: Oh! Nice!\nYou've come here to toughen up![f000]븁\u0000\nAll right! Let's see how much\nstronger you've become! Come at me![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OhNiceYouveCome, 0, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BF
@@ -98,7 +98,7 @@ Script_3:
     VMJump L_01E8
 
 L_01BF:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E0
@@ -136,7 +136,7 @@ L_0221:
     // "[f000]Ā\u0001\u0001: Tch...\nShe didn't have to do that...[f000]븁\u0000\nThanks to you, too. We just left,\nand you've already helped me out.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_TchSheDidntHave, 0, 0, 0
     MsgWinCloseAll
-    FlagReset 727
+    FlagReset EVENT_FLAG_0x02d7
     ActorAdd 2
     ActorWalkRoute 2, 44, 45, 1, 8, 1
     VMSleep 4
@@ -209,7 +209,7 @@ L_0221:
     LastKeyWait
     MsgWinCloseAll
     ActorSetGPos 0, 25, 2, 44, 0
-    WorkSetConst 0x40a7, 1
+    WorkSetConst EVENT_WORK_0x40a7, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -258,7 +258,7 @@ L_0484:
     ActorCmdExec 255, Movement_0F24
     ActorCmdWait
     ActorSetGPos 0, 22, 3, 22, 0
-    WorkSetConst 0x40a7, 2
+    WorkSetConst EVENT_WORK_0x40a7, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -328,7 +328,7 @@ L_0541:
     ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_StillPokemonDontJust, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40a7, 3
+    WorkSetConst EVENT_WORK_0x40a7, 3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -410,7 +410,7 @@ L_06A7:
     // "I'll check this area![f000]븁\u0000\nYou go deeper in the grove\nand look![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_IllCheckAreaGo, 0, 0, 0
     MsgWinCloseAll
-    WorkSetConst 0x40a7, 4
+    WorkSetConst EVENT_WORK_0x40a7, 4
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -555,10 +555,10 @@ L_07BF:
     ActorSetGPos 3, 47, 2, 40, 2
     FadeEx 3, 16, 0, 4
     FadeExWait
-    WorkSetConst 0x40a7, 5
-    WorkSetConst 0x40a5, 3
-    FlagSet 729
-    FlagSet 728
+    WorkSetConst EVENT_WORK_0x40a7, 5
+    WorkSetConst EVENT_WORK_0x40a5, 3
+    FlagSet EVENT_FLAG_0x02d9
+    FlagSet EVENT_FLAG_0x02d8
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -580,7 +580,7 @@ Movement_09B4:
     WorkAnd 1, 17
     DebugPrint 18
     VMReturn
-    VMStackPushFlag 14
+    VMStackPushFlag EVENT_FLAG_0x000e
     PokePartyGetSpecies 0, 34
     VMNop
     FlagSet 0
@@ -684,7 +684,7 @@ Movement_0AEC:
 Script_8:
     ActorsPauseAll
     WordSetLoadRivalName 1
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B2E
@@ -697,7 +697,7 @@ Script_8:
     VMJump L_0BAF
 
 L_0B2E:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B5B
@@ -710,7 +710,7 @@ L_0B2E:
     VMJump L_0BAF
 
 L_0B5B:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B88
@@ -723,7 +723,7 @@ L_0B5B:
     VMJump L_0BAF
 
 L_0B88:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BAF
@@ -741,10 +741,10 @@ L_0BAF:
 
 Script_9:
     ActorsPauseAll
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 5
     VMStackCmp CMP_EQ
-    VMStackPushFlag 482
+    VMStackPushFlag EVENT_FLAG_0x01e2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -755,14 +755,14 @@ Script_9:
     ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OwnerThanksItsAll, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 482
+    FlagSet EVENT_FLAG_0x01e2
     VMJump L_0C49
 
 L_0BF8:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 5
     VMStackCmp CMP_EQ
-    VMStackPushFlag 482
+    VMStackPushFlag EVENT_FLAG_0x01e2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -790,10 +790,10 @@ L_0C49:
 
 Script_10:
     ActorsPauseAll
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 5
     VMStackCmp CMP_EQ
-    VMStackPushFlag 268
+    VMStackPushFlag EVENT_FLAG_0x010c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -804,7 +804,7 @@ Script_10:
     ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_PokemonFoundHerdierGreat, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 268
+    FlagSet EVENT_FLAG_0x010c
     VMJump L_0D69
 
 L_0C92:
@@ -853,7 +853,7 @@ L_0D10:
     MEWait
     FadeEx 3, 16, 0, 2
     FadeExWait
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMJump L_0D69
 
 L_0D5B:
@@ -888,7 +888,7 @@ Script_11:
 
 Script_12:
     ActorsPauseAll
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0DE8

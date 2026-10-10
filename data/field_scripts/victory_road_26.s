@@ -9,11 +9,11 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPush 0x4123
+    VMStackPush EVENT_WORK_0x4123
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0033
-    FlagReset 966
+    FlagReset EVENT_FLAG_0x03c6
 
 L_0033:
     VMHalt
@@ -31,8 +31,8 @@ Script_2:
     ActorWalkRoute 0, 28, 7, 1, 6, 0
     ActorCmdWait
     ActorDelete 0
-    WorkSetConst 0x4123, 4
-    FlagSet 966
+    WorkSetConst EVENT_WORK_0x4123, 4
+    FlagSet EVENT_FLAG_0x03c6
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

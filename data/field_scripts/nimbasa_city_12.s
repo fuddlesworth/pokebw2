@@ -46,7 +46,7 @@ Script_3:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0099

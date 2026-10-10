@@ -107,7 +107,7 @@ L_01B4:
     ActorDelete 8
     ActorDelete 7
     ActorDelete 6
-    FlagSet 958
+    FlagSet EVENT_FLAG_0x03be
 
 L_01C6:
     FinishAllEvents
@@ -200,8 +200,8 @@ Script_4:
     ActorCmdWait
     SEPlay SEQ_SE_SW_YACONROAD_01
     SEWait
-    FlagSet 948
-    FlagReset 951
+    FlagSet EVENT_FLAG_0x03b4
+    FlagReset EVENT_FLAG_0x03b7
     RTReserveScript 2
     MapChangeCore ZONE_CLAY_TUNNEL_2, 27, 0, 14, 2
     VMJump L_02DD
@@ -237,8 +237,8 @@ Script_5:
     ActorCmdWait
     SEPlay SEQ_SE_SW_YACONROAD_01
     SEWait
-    FlagSet 950
-    FlagReset 956
+    FlagSet EVENT_FLAG_0x03b6
+    FlagReset EVENT_FLAG_0x03bc
     RTReserveScript 7
     MapChangeCore ZONE_CLAY_TUNNEL_3, 19, 0, 35, 1
     VMJump L_0358
@@ -274,8 +274,8 @@ Script_6:
     ActorCmdWait
     SEPlay SEQ_SE_SW_YACONROAD_01
     SEWait
-    FlagSet 949
-    FlagReset 957
+    FlagSet EVENT_FLAG_0x03b5
+    FlagReset EVENT_FLAG_0x03bd
     RTReserveScript 7
     MapChangeCore ZONE_CLAY_TUNNEL_3, 56, 0, 84, 1
     VMJump L_03D3

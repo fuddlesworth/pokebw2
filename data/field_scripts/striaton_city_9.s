@@ -94,10 +94,10 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 0
     VMStackCmp CMP_GE
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 2
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
@@ -109,10 +109,10 @@ L_0172:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_049B
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 1
     VMStackCmp CMP_GE
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 2
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
@@ -130,7 +130,7 @@ L_01D1:
     WorkSetConst 0x8021, 1
 
 L_01D7:
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8021
@@ -170,7 +170,7 @@ L_01D7:
     // "Oh! I knew it![f000]븁\u0000\nHearing you say it makes\nme feel much more confident![f000]븁\u0000\nPassing the Iron Ball to a\nPokémon with Levitate[f000]븀\u0000\nmeans Ground-type moves can hit it![f000]븁\u0000\nThanks!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_OhKnewHearingSay, 0, 2, 0
     MsgWaitAdvance
-    WorkSetConst 0x40f9, 1
+    WorkSetConst EVENT_WORK_0x40f9, 1
     VMJump L_02AD
 
 L_02A7:
@@ -186,7 +186,7 @@ L_02B9:
     VMJump L_0495
 
 L_02BF:
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackPush 0x8021
@@ -208,7 +208,7 @@ L_02BF:
     // "I see! Smack Down![f000]븁\u0000\nThat move will knock a Flying-type\nPokémon or a Pokémon with Levitate[f000]븀\u0000\nout of the air, so Ground-type moves[f000]븀\u0000\nwill work on it![f000]븁\u0000\nSo if I use Smack Down and then use\na Ground-type move...[f000]븁\u0000\nI get it now!\nThanks!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_SeeSmackDownMove, 0, 2, 0
     MsgWaitAdvance
-    WorkSetConst 0x40f9, 2
+    WorkSetConst EVENT_WORK_0x40f9, 2
     VMJump L_039E
 
 L_033E:
@@ -219,7 +219,7 @@ L_033E:
     // "I see! Gravity![f000]븁\u0000\nThe move Gravity makes gravity stronger,\nso Ground-type moves will work on[f000]븀\u0000\nPokémon with the Levitate Ability or[f000]븀\u0000\nFlying-type Pokémon.[f000]븁\u0000\nSo if I use Gravity and then use\na Ground-type move...[f000]븁\u0000\nI get it now!\nThanks!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_SeeGravityMoveGravity, 0, 2, 0
     MsgWaitAdvance
-    WorkSetConst 0x40f9, 2
+    WorkSetConst EVENT_WORK_0x40f9, 2
     VMJump L_039E
 
 L_036B:
@@ -230,7 +230,7 @@ L_036B:
     // "I see! Gastro Acid![f000]븁\u0000\nThat's right--Gastro Acid eliminates the\neffects of Abilities.[f000]븁\u0000\nThat means Levitate won't work anymore![f000]븁\u0000\nSo if I use Gastro Acid and then use\na Ground-type move...[f000]븁\u0000\nI get it now!\nThanks!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_SeeGastroAcidThats, 0, 2, 0
     MsgWaitAdvance
-    WorkSetConst 0x40f9, 2
+    WorkSetConst EVENT_WORK_0x40f9, 2
     VMJump L_039E
 
 L_0398:
@@ -240,7 +240,7 @@ L_039E:
     VMJump L_0495
 
 L_03A4:
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMStackPush 0x8021
@@ -262,7 +262,7 @@ L_03A4:
     // "So it's Mold Breaker, then?[f000]븁\u0000\nI guess that's right.\nMold Breaker lets you use moves[f000]븀\u0000\nregardless of the target's Ability![f000]븁\u0000\nLevitate won't matter, so you can land\nhit after hit with Ground-type moves![f000]븁\u0000\nMold Breaker's so cool!\nViva Mold Breaker!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_ItsMoldBreakerThen, 0, 2, 0
     MsgWaitAdvance
-    WorkSetConst 0x40f9, 3
+    WorkSetConst EVENT_WORK_0x40f9, 3
     WorkSetConst 0x8021, 1
     VMJump L_0495
 
@@ -274,7 +274,7 @@ L_0429:
     // "So it's Teravolt, then?![f000]븁\u0000\nI guess that's right.\nTeravolt lets you use moves[f000]븀\u0000\nregardless of the target's Ability![f000]븁\u0000\nLevitate won't matter, so you can land\nhit after hit with Ground-type moves![f000]븁\u0000\nTeravolt's so cool!\nViva Teravolt!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_ItsTeravoltThenGuess, 0, 2, 0
     MsgWaitAdvance
-    WorkSetConst 0x40f9, 3
+    WorkSetConst EVENT_WORK_0x40f9, 3
     WorkSetConst 0x8021, 1
     VMJump L_0495
 
@@ -286,7 +286,7 @@ L_045C:
     // "So it's Turboblaze, then?![f000]븁\u0000\nI guess that's right.\nTurboblaze lets you use moves[f000]븀\u0000\nregardless of the target's Ability![f000]븁\u0000\nLevitate won't matter, so you can land\nhit after hit with Ground-type moves![f000]븁\u0000\nTurboblaze is so cool!\nViva Turboblaze!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_ItsTurboblazeThenGuess, 0, 2, 0
     MsgWaitAdvance
-    WorkSetConst 0x40f9, 3
+    WorkSetConst EVENT_WORK_0x40f9, 3
     WorkSetConst 0x8021, 1
     VMJump L_0495
 
@@ -297,7 +297,7 @@ L_0495:
     VMJump L_0172
 
 L_049B:
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0521
@@ -314,7 +314,7 @@ L_049B:
     MsgWinCloseAll
     CallTrainerBattle TRAINER_ACE_TRAINER_DUSTY, 0, 0
     VMCall L_05D8
-    WorkSetConst 0x40f9, 4
+    WorkSetConst EVENT_WORK_0x40f9, 4
     // "Hmm...[f000]븁\u0000\nI thought I was completely\nprepared for anti-Levitate tactics...[f000]븁\u0000\nIn real battles, things never\ngo as well as you would think.[f000]븁\u0000\nOr maybe you're just that good!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_HmmThoughtCompletelyPrepared, 0, 2, 0
     LastKeyWait
@@ -340,7 +340,7 @@ L_0531:
     VMJump L_05D2
 
 L_0537:
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05AF
@@ -354,7 +354,7 @@ L_0537:
     MsgWinCloseAll
     CallTrainerBattle TRAINER_ACE_TRAINER_DUSTY, 0, 0
     VMCall L_05D8
-    WorkSetConst 0x40f9, 4
+    WorkSetConst EVENT_WORK_0x40f9, 4
     // "Hmm...[f000]븁\u0000\nI thought I was completely\nprepared for anti-Levitate tactics...[f000]븁\u0000\nIn real battles, things never\ngo as well as you would think.[f000]븁\u0000\nOr maybe you're just that good!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_HmmThoughtCompletelyPrepared, 0, 2, 0
     LastKeyWait
@@ -371,7 +371,7 @@ L_05A9:
     VMJump L_05D2
 
 L_05AF:
-    VMStackPush 0x40f9
+    VMStackPush EVENT_WORK_0x40f9
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05D2
@@ -440,7 +440,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 355
+    VMStackPushFlag EVENT_FLAG_0x0163
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0864
@@ -543,7 +543,7 @@ L_07DD:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 355
+    FlagSet EVENT_FLAG_0x0163
     // "Here's a combo you can use in a\nDouble Battle![f000]븁\u0000\nHave one of your Pokémon hold a\nPersim Berry.[f000]븁\u0000\nThen, have the other one use Swagger\non that Pokémon.[f000]븁\u0000\nIts Attack will go up, and the Berry will\nheal the confusion immediately.[f000]븀\u0000\nThen it can hit the opponent harder![f000]븁\u0000\nThere are many possible combinations\nin Double Battle!"
     ActorMsg MSGFILE_SCRIPT, StriatonCity9_Text_HeresComboCanUse, 4, 2, 0
     LastKeyWait

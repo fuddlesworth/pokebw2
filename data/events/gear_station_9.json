@@ -71,7 +71,7 @@
     "triggers": [
         {
             "script": 10341,
-            "var": "0x400f",
+            "var": "EVENT_WORK_0x400f",
             "value": 0,
             "type": 0,
             "grid": {

@@ -121,7 +121,7 @@
     "triggers": [
         {
             "script": 5,
-            "var": "0x411c",
+            "var": "EVENT_WORK_0x411c",
             "value": 0,
             "type": 0,
             "grid": {

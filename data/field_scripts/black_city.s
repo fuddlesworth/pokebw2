@@ -30,11 +30,11 @@ Script_2:
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0086
-    VMStackPushFlag 970
+    VMStackPushFlag EVENT_FLAG_0x03ca
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0080
-    FlagReset 970
+    FlagReset EVENT_FLAG_0x03ca
     ActorAdd 3
 
 L_0080:
@@ -45,19 +45,19 @@ L_0086:
     VMStackPushConst 10
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00CF
-    VMStackPushFlag 970
+    VMStackPushFlag EVENT_FLAG_0x03ca
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B4
-    FlagReset 970
+    FlagReset EVENT_FLAG_0x03ca
     ActorAdd 3
 
 L_00B4:
-    VMStackPushFlag 971
+    VMStackPushFlag EVENT_FLAG_0x03cb
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00CF
-    FlagReset 971
+    FlagReset EVENT_FLAG_0x03cb
     ActorAdd 6
 
 L_00CF:

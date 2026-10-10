@@ -29,10 +29,10 @@ Script_2:
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0065
-    WorkSetConst 0x4119, 1
+    WorkSetConst EVENT_WORK_0x4119, 1
 
 L_0065:
-    WorkCmpConst 0x4110, 1
+    WorkCmpConst EVENT_WORK_0x4110, 1
     VMJumpIf CMP_EQ, L_0078
     VMJump L_00A2
 
@@ -45,7 +45,7 @@ L_0078:
     VMJump L_01C3
 
 L_00A2:
-    WorkCmpConst 0x4110, 2
+    WorkCmpConst EVENT_WORK_0x4110, 2
     VMJumpIf CMP_EQ, L_00B5
     VMJump L_00DF
 
@@ -58,7 +58,7 @@ L_00B5:
     VMJump L_01C3
 
 L_00DF:
-    WorkCmpConst 0x4110, 3
+    WorkCmpConst EVENT_WORK_0x4110, 3
     VMJumpIf CMP_EQ, L_00F2
     VMJump L_011C
 
@@ -71,7 +71,7 @@ L_00F2:
     VMJump L_01C3
 
 L_011C:
-    WorkCmpConst 0x4110, 4
+    WorkCmpConst EVENT_WORK_0x4110, 4
     VMJumpIf CMP_EQ, L_012F
     VMJump L_0159
 
@@ -84,7 +84,7 @@ L_012F:
     VMJump L_01C3
 
 L_0159:
-    WorkCmpConst 0x4110, 5
+    WorkCmpConst EVENT_WORK_0x4110, 5
     VMJumpIf CMP_EQ, L_016C
     VMJump L_0196
 
@@ -97,7 +97,7 @@ L_016C:
     VMJump L_01C3
 
 L_0196:
-    WorkCmpConst 0x4110, 6
+    WorkCmpConst EVENT_WORK_0x4110, 6
     VMJumpIf CMP_EQ, L_01A9
     VMJump L_01C3
 
@@ -110,7 +110,7 @@ L_01A9:
     VMJump L_01C3
 
 L_01C3:
-    VMStackPush 0x413a
+    VMStackPush EVENT_WORK_0x413a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_023A
@@ -265,8 +265,8 @@ L_034F:
     MedalDiscover 182
     MedalDiscover 186
     MedalDiscover 190
-    WorkSetConst 0x410b, 1
-    WorkSetConst 0x4110, 1
+    WorkSetConst EVENT_WORK_0x410b, 1
+    WorkSetConst EVENT_WORK_0x4110, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -328,7 +328,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     Plugin8_Cmd1007 4, 255, 0, 0
-    WorkCmpConst 0x4110, 0
+    WorkCmpConst EVENT_WORK_0x4110, 0
     VMJumpIf CMP_EQ, L_0545
     VMJump L_055B
 
@@ -340,7 +340,7 @@ L_0545:
     VMJump L_0640
 
 L_055B:
-    WorkCmpConst 0x4110, 1
+    WorkCmpConst EVENT_WORK_0x4110, 1
     VMJumpIf CMP_EQ, L_056E
     VMJump L_0590
 
@@ -350,11 +350,11 @@ L_056E:
     LastKeyWait
     ActorMsgClose
     Plugin8_Cmd1028 1, 0
-    WorkSetConst 0x4110, 2
+    WorkSetConst EVENT_WORK_0x4110, 2
     VMJump L_0640
 
 L_0590:
-    WorkCmpConst 0x4110, 2
+    WorkCmpConst EVENT_WORK_0x4110, 2
     VMJumpIf CMP_EQ, L_05A3
     VMJump L_05B9
 
@@ -366,7 +366,7 @@ L_05A3:
     VMJump L_0640
 
 L_05B9:
-    WorkCmpConst 0x4110, 3
+    WorkCmpConst EVENT_WORK_0x4110, 3
     VMJumpIf CMP_EQ, L_05CC
     VMJump L_05EE
 
@@ -376,11 +376,11 @@ L_05CC:
     LastKeyWait
     ActorMsgClose
     Plugin8_Cmd1028 1, 1
-    WorkSetConst 0x4110, 4
+    WorkSetConst EVENT_WORK_0x4110, 4
     VMJump L_0640
 
 L_05EE:
-    WorkCmpConst 0x4110, 4
+    WorkCmpConst EVENT_WORK_0x4110, 4
     VMJumpIf CMP_EQ, L_0601
     VMJump L_0617
 
@@ -392,7 +392,7 @@ L_0601:
     VMJump L_0640
 
 L_0617:
-    WorkCmpConst 0x4110, 5
+    WorkCmpConst EVENT_WORK_0x4110, 5
     VMJumpIf CMP_EQ, L_062A
     VMJump L_0640
 
@@ -429,7 +429,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     Plugin8_Cmd1007 4, 255, 0, 0
-    WorkCmpConst 0x4110, 0
+    WorkCmpConst EVENT_WORK_0x4110, 0
     VMJumpIf CMP_EQ, L_0691
     VMJump L_06A3
 
@@ -439,7 +439,7 @@ L_0691:
     VMJump L_075C
 
 L_06A3:
-    WorkCmpConst 0x4110, 1
+    WorkCmpConst EVENT_WORK_0x4110, 1
     VMJumpIf CMP_EQ, L_06B6
     VMJump L_06C8
 
@@ -449,7 +449,7 @@ L_06B6:
     VMJump L_075C
 
 L_06C8:
-    WorkCmpConst 0x4110, 2
+    WorkCmpConst EVENT_WORK_0x4110, 2
     VMJumpIf CMP_EQ, L_06DB
     VMJump L_06ED
 
@@ -459,7 +459,7 @@ L_06DB:
     VMJump L_075C
 
 L_06ED:
-    WorkCmpConst 0x4110, 3
+    WorkCmpConst EVENT_WORK_0x4110, 3
     VMJumpIf CMP_EQ, L_0700
     VMJump L_0712
 
@@ -469,7 +469,7 @@ L_0700:
     VMJump L_075C
 
 L_0712:
-    WorkCmpConst 0x4110, 4
+    WorkCmpConst EVENT_WORK_0x4110, 4
     VMJumpIf CMP_EQ, L_0725
     VMJump L_0737
 
@@ -479,7 +479,7 @@ L_0725:
     VMJump L_075C
 
 L_0737:
-    WorkCmpConst 0x4110, 5
+    WorkCmpConst EVENT_WORK_0x4110, 5
     VMJumpIf CMP_EQ, L_074A
     VMJump L_075C
 
@@ -515,7 +515,7 @@ Script_6:
     SEWait
     Plugin8_Cmd1028 3, 4
     Plugin8_Cmd1028 3, 5
-    WorkSetConst 0x4110, 6
+    WorkSetConst EVENT_WORK_0x4110, 6
     Plugin8_Cmd1030 18, 0
     FinishAllEvents
     ActorsUnpauseAll
@@ -779,8 +779,8 @@ L_0C19:
     Plugin8_Cmd1008 1, 3, 1
     Plugin8_Cmd1008 1, 3, 2
     Plugin8_Cmd1008 1, 3, 3
-    WorkSetConst 0x413a, 2
-    FlagReset 2545
+    WorkSetConst EVENT_WORK_0x413a, 2
+    FlagReset EVENT_FLAG_0x09f1
     MapChangeCore ZONE_JOIN_AVENUE_2, 8, 0, 8, 1
     FadeInWhite
     FadeWait

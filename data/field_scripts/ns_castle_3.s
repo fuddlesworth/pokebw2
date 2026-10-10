@@ -68,9 +68,9 @@ Script_11:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x4113, 2
-    FlagSet 415
-    FlagReset 911
+    WorkSetConst EVENT_WORK_0x4113, 2
+    FlagSet EVENT_FLAG_0x019f
+    FlagReset EVENT_FLAG_0x038f
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

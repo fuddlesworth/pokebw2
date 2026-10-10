@@ -32,7 +32,7 @@ Script_4:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_ArentOneUsBut, 4, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
-    WorkSetConst 0x4147, 1
+    WorkSetConst EVENT_WORK_0x4147, 1
     TrainerFlagSet TRAINER_ROUGHNECK_RICKY
     ActorCmdExec 4, Movement_03AC
     VMSleep 8
@@ -47,7 +47,7 @@ Script_4:
 
 Script_1:
     ActorsPauseAll
-    VMStackPush 0x4147
+    VMStackPush EVENT_WORK_0x4147
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FD
@@ -74,8 +74,8 @@ L_0111:
 
 Script_2:
     ActorsPauseAll
-    TrainerFlagGet TRAINER_DANCER_JEAN_PAUL, 0x400f
-    VMStackPush 0x4147
+    TrainerFlagGet TRAINER_DANCER_JEAN_PAUL, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x4147
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014C
@@ -88,7 +88,7 @@ Script_2:
     VMJump L_018B
 
 L_014C:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0179
@@ -113,9 +113,9 @@ L_018B:
 
 Script_3:
     ActorsPauseAll
-    TrainerFlagGet TRAINER_GUITARIST_TINA, 0x400f
-    TrainerFlagGet TRAINER_DANCER_JEAN_PAUL, 0x400e
-    VMStackPush 0x4147
+    TrainerFlagGet TRAINER_GUITARIST_TINA, EVENT_WORK_0x400f
+    TrainerFlagGet TRAINER_DANCER_JEAN_PAUL, EVENT_WORK_0x400e
+    VMStackPush EVENT_WORK_0x4147
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CC
@@ -128,7 +128,7 @@ Script_3:
     VMJump L_0205
 
 L_01CC:
-    VMStackPush 0x400e
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F9
@@ -166,7 +166,7 @@ L_020B:
     VMSleep 4
     ActorCmdExec 255, Movement_03F0
     ActorCmdWait
-    WorkSetConst 0x4147, 2
+    WorkSetConst EVENT_WORK_0x4147, 2
     TrainerFlagSet TRAINER_DANCER_JEAN_PAUL
     VMReturn
 
@@ -183,12 +183,12 @@ L_0265:
     ActorCmdExec 2, Movement_03E4
     ActorCmdWait
     MedalGive 95
-    WorkSetConst 0x4147, 3
+    WorkSetConst EVENT_WORK_0x4147, 3
     TrainerFlagSet TRAINER_GUITARIST_TINA
     VMReturn
 
 L_02AB:
-    VMStackPush 0x4147
+    VMStackPush EVENT_WORK_0x4147
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F4
@@ -199,7 +199,7 @@ L_02AB:
     VMJump L_0380
 
 L_02F4:
-    VMStackPush 0x4147
+    VMStackPush EVENT_WORK_0x4147
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_033D
@@ -210,7 +210,7 @@ L_02F4:
     VMJump L_0380
 
 L_033D:
-    VMStackPush 0x4147
+    VMStackPush EVENT_WORK_0x4147
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0380

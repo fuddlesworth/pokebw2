@@ -18,7 +18,7 @@ Script_4:
     VMHalt
 
 Script_5:
-    VMStackPush 0x40b2
+    VMStackPush EVENT_WORK_0x40b2
     VMStackPushConst 1
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0055
@@ -45,7 +45,7 @@ Script_1:
     VMSleep 120
     EvCameraMoveTo 9467, 0, 0x123000, 0x81000, 0, 0xdb000, 40
     ActorCmdWait
-    FlagReset 754
+    FlagReset EVENT_FLAG_0x02f2
     ActorAdd 2
     ActorCmdExec 1, Movement_03C0
     ActorWalkRoute 2, 8, 15, 0, 4, 1
@@ -91,8 +91,8 @@ L_014F:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity12_Text_IrisYepSewersPerfect, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40b2, 2
-    FlagSet 754
+    WorkSetConst EVENT_WORK_0x40b2, 2
+    FlagSet EVENT_FLAG_0x02f2
     HollowRivalCmd_0262 1, 1
     FinishAllEvents
     ActorsUnpauseAll
@@ -124,8 +124,8 @@ Script_6:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity12_Text_WhatGoingNowRan, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40b2, 4
-    FlagSet 752
+    WorkSetConst EVENT_WORK_0x40b2, 4
+    FlagSet EVENT_FLAG_0x02f0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -147,15 +147,15 @@ Script_7:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity12_Text_WhatGoingNowRan, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40b2, 4
-    FlagSet 752
+    WorkSetConst EVENT_WORK_0x40b2, 4
+    FlagSet EVENT_FLAG_0x02f0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_2:
     ActorsPauseAll
-    VMStackPush 0x40b2
+    VMStackPush EVENT_WORK_0x40b2
     VMStackPushConst 3
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_02C3
@@ -194,7 +194,7 @@ Script_8:
 
 Script_3:
     ActorsPauseAll
-    VMStackPush 0x40b2
+    VMStackPush EVENT_WORK_0x40b2
     VMStackPushConst 1
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0328
@@ -206,7 +206,7 @@ Script_3:
     VMJump L_0369
 
 L_0328:
-    VMStackPush 0x40b2
+    VMStackPush EVENT_WORK_0x40b2
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0355

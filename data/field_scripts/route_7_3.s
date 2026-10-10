@@ -9,7 +9,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 485
+    VMStackPushFlag EVENT_FLAG_0x01e5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0051
@@ -52,7 +52,7 @@ L_0051:
     SystemMsg Route73_Text_LandorusHasBeenRegistered, 0
     MsgWaitAdvance
     InfoMsgClose
-    FlagSet 485
+    FlagSet EVENT_FLAG_0x01e5
 
 L_00D5:
     FinishAllEvents

@@ -18,7 +18,7 @@ Script_1:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40a6
+    VMStackPush EVENT_WORK_0x40a6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0057
@@ -58,7 +58,7 @@ Script_3:
     // "I'll show you what's\ncool about my Pokémon![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, FloccesyTown2_Text_IllShowWhatsCool, 1, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_011B
@@ -66,7 +66,7 @@ Script_3:
     VMJump L_0144
 
 L_011B:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013C
@@ -103,7 +103,7 @@ L_0144:
     // "Girl: Some Pokémon battles are\ndecided by type matchups![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, FloccesyTown2_Text_GirlSomePokemonBattles, 0, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01EA
@@ -111,7 +111,7 @@ L_0144:
     VMJump L_0213
 
 L_01EA:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_020B
@@ -151,10 +151,10 @@ L_0213:
     ActorMsg MSGFILE_SCRIPT, FloccesyTown2_Text_MeetingPokemonPeopleNever, 2, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40a6, 1
-    WorkSetConst 0x40a5, 5
-    FlagReset 730
-    WorkSetConst 0x40a3, 3
+    WorkSetConst EVENT_WORK_0x40a6, 1
+    WorkSetConst EVENT_WORK_0x40a5, 5
+    FlagReset EVENT_FLAG_0x02da
+    WorkSetConst EVENT_WORK_0x40a3, 3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -205,11 +205,11 @@ Movement_0310:
 Script_4:
     ActorsPauseAll
     KeysCmd_02D1 0x8023
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03C8
-    VMStackPushFlag 428
+    VMStackPushFlag EVENT_FLAG_0x01ac
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0358
@@ -217,7 +217,7 @@ Script_4:
     VMJump L_03C2
 
 L_0358:
-    VMStackPushFlag 428
+    VMStackPushFlag EVENT_FLAG_0x01ac
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackPush 0x8023
@@ -297,8 +297,8 @@ L_044C:
 L_0452:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    Cmd_02D5 19, 0x400f
-    VMStackPush 0x400f
+    Cmd_02D5 19, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0483
@@ -678,8 +678,8 @@ L_0A40:
 L_0A4E:
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 428
-    FlagSet 750
+    FlagSet EVENT_FLAG_0x01ac
+    FlagSet EVENT_FLAG_0x02ee
     VMJump L_0A70
 
 L_0A60:
@@ -772,7 +772,7 @@ L_0BB5:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 3
     SEWait
-    FlagSet 996
+    FlagSet EVENT_FLAG_0x03e4
     VMJump L_0BDB
 
 L_0BCB:

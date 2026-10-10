@@ -357,10 +357,10 @@ Script_11:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4184
+    VMStackPush EVENT_WORK_0x4184
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2765
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -382,8 +382,8 @@ Script_11:
     LastKeyWait
     MsgWinCloseAll
     MoneyAdd 1200
-    FlagSet 2764
-    WorkSetConst 0x4184, 1
+    FlagSet EVENT_FLAG_DAILY_0x0acc
+    WorkSetConst EVENT_WORK_0x4184, 1
     VMJump L_04D6
 
 L_04C8:
@@ -396,15 +396,15 @@ L_04D6:
     VMJump L_06A2
 
 L_04DC:
-    VMStackPush 0x4184
+    VMStackPush EVENT_WORK_0x4184
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2765
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0681
-    VMStackPushFlag 2764
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0522
@@ -426,7 +426,7 @@ L_052C:
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2764
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -449,16 +449,16 @@ L_052C:
     ParentActorMsg MSGFILE_SCRIPT, ShoppingMall_Text_ShoppingMuchFunIm, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2765
-    FlagReset 2764
-    WorkSetConst 0x4184, 0
+    FlagSet EVENT_FLAG_DAILY_0x0acd
+    FlagReset EVENT_FLAG_DAILY_0x0acc
+    WorkSetConst EVENT_WORK_0x4184, 0
     VMJump L_0667
 
 L_05D2:
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2764
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acc
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -481,9 +481,9 @@ L_05D2:
     ParentActorMsg MSGFILE_SCRIPT, ShoppingMall_Text_ShoppingMuchFunIm, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2765
-    FlagReset 2764
-    WorkSetConst 0x4184, 0
+    FlagSet EVENT_FLAG_DAILY_0x0acd
+    FlagReset EVENT_FLAG_DAILY_0x0acc
+    WorkSetConst EVENT_WORK_0x4184, 0
     VMJump L_0667
 
 L_0659:
@@ -505,7 +505,7 @@ L_067B:
     VMJump L_06A2
 
 L_0681:
-    VMStackPushFlag 2765
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acd
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06A2

@@ -51,10 +51,10 @@ Script_5:
     WorkSetConst 0x8024, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4185
+    VMStackPush EVENT_WORK_0x4185
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4003
+    VMStackPush EVENT_WORK_0x4003
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -62,8 +62,8 @@ Script_5:
     // "Argh! Loud! It's way too noisy![f000]븁\u0000\nIt's all the trains! They never stop![f000]븁\u0000\nWhen the train runs below,\nit's unbearably noisy!"
     ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_ArghLoudItsWay, 1, 0, 1
     MsgWaitAdvance
-    Random 0x4002, 4
-    VMStackPush 0x4002
+    Random EVENT_WORK_0x4002, 4
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F2
@@ -73,7 +73,7 @@ Script_5:
     VMJump L_0161
 
 L_00F2:
-    VMStackPush 0x4002
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0119
@@ -83,7 +83,7 @@ L_00F2:
     VMJump L_0161
 
 L_0119:
-    VMStackPush 0x4002
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0140
@@ -93,7 +93,7 @@ L_0119:
     VMJump L_0161
 
 L_0140:
-    VMStackPush 0x4002
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0161
@@ -123,8 +123,8 @@ L_0167:
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01CC
-    PokePartyGetSpecies 0x4185, 0x8021
-    WordSetPokeSpecies 0, 0x4185
+    PokePartyGetSpecies EVENT_WORK_0x4185, 0x8021
+    WordSetPokeSpecies 0, EVENT_WORK_0x4185
     WorkSetConst 0x8023, 1
 
 L_01CC:
@@ -140,7 +140,7 @@ L_01D8:
     ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_OhHeyHeyS, 1, 0, 1
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4003, 1
+    WorkSetConst EVENT_WORK_0x4003, 1
     VMJump L_0217
 
 L_0207:
@@ -153,7 +153,7 @@ L_0217:
     VMJump L_0230
 
 L_021D:
-    WordSetPokeSpecies 0, 0x4185
+    WordSetPokeSpecies 0, EVENT_WORK_0x4185
     // "This is what I've discovered.[f000]븁\u0000\nWhen I speak in a low voice,\nI don't mind the train noise.[f000]븁\u0000\nI was the one being noisy, after all...[f000]븁\u0000\nThanks to you and your [f000]ā\u0001\u0000,\nnow I know. Thank you."
     ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_WhatIveDiscoveredWhen, 0, 0
     LastKeyWait
@@ -194,8 +194,8 @@ Script_6:
 
 Script_7:
     ActorsPauseAll
-    Cmd_02B4 0, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B4 0, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_02DD
@@ -225,7 +225,7 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03DF
@@ -264,9 +264,9 @@ L_0391:
     ActorCmdExec 255, Movement_042C
     ActorCmdWait
     ActorDelete 3
-    WorkSetConst 0x4108, 3
-    FlagSet 860
-    FlagReset 861
+    WorkSetConst EVENT_WORK_0x4108, 3
+    FlagSet EVENT_FLAG_0x035c
+    FlagReset EVENT_FLAG_0x035d
     VMJump L_03C5
 
 L_03B7:
@@ -288,7 +288,7 @@ L_03D9:
     VMJump L_0400
 
 L_03DF:
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0400

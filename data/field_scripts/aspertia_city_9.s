@@ -81,7 +81,7 @@ Script_7:
     VMJump L_012B
 
 L_0108:
-    VMStackPush 0x40ab
+    VMStackPush EVENT_WORK_0x40ab
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0126

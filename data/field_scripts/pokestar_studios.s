@@ -47,56 +47,56 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPush 0x413c
+    VMStackPush EVENT_WORK_0x413c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C7
-    FlagReset 995
-    FlagReset 994
+    FlagReset EVENT_FLAG_0x03e3
+    FlagReset EVENT_FLAG_0x03e2
 
 L_00C7:
-    Cmd_02CB 0x400f
-    VMStackPush 0x400f
+    Cmd_02CB EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E8
-    FlagReset 691
+    FlagReset EVENT_FLAG_0x02b3
     VMJump L_0151
 
 L_00E8:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0109
-    FlagReset 691
-    FlagReset 692
+    FlagReset EVENT_FLAG_0x02b3
+    FlagReset EVENT_FLAG_0x02b4
     VMJump L_0151
 
 L_0109:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012E
-    FlagReset 691
-    FlagReset 692
-    FlagReset 693
+    FlagReset EVENT_FLAG_0x02b3
+    FlagReset EVENT_FLAG_0x02b4
+    FlagReset EVENT_FLAG_0x02b5
     VMJump L_0151
 
 L_012E:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0151
-    FlagReset 691
-    FlagReset 692
-    FlagReset 693
-    FlagReset 694
+    FlagReset EVENT_FLAG_0x02b3
+    FlagReset EVENT_FLAG_0x02b4
+    FlagReset EVENT_FLAG_0x02b5
+    FlagReset EVENT_FLAG_0x02b6
 
 L_0151:
     VMHalt
 
 Script_2:
-    VMStackPush 0x410a
+    VMStackPush EVENT_WORK_0x410a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0184
@@ -105,28 +105,28 @@ Script_2:
     VMJump L_01A3
 
 L_0184:
-    VMStackPush 0x410a
+    VMStackPush EVENT_WORK_0x410a
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A3
     ActorSetGPos 0, 45, 0, 19, 1
 
 L_01A3:
-    VMStackPush 0x413c
+    VMStackPush EVENT_WORK_0x413c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0200
     ActorSetGPos 0, 45, 2, 21, 0
     ActorSetGPos 26, 31, 2, 9, 0
     ActorDelete 17
-    VMStackPushFlag 693
+    VMStackPushFlag EVENT_FLAG_0x02b5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E9
     ActorDelete 35
 
 L_01E9:
-    VMStackPushFlag 694
+    VMStackPushFlag EVENT_FLAG_0x02b6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0200
@@ -235,7 +235,7 @@ Script_3:
     VMSleep 4
     ActorCmdExec 255, Movement_0500
     ActorCmdWait
-    WorkSetConst 0x410a, 2
+    WorkSetConst EVENT_WORK_0x410a, 2
     MapChangeWarp ZONE_POKESTAR_STUDIOS_4, 15, 31, 0
     RTReserveScript 10867
     FinishAllEvents
@@ -271,12 +271,12 @@ Script_33:
     VMSleep 4
     ActorCmdExec 255, Movement_0584
     ActorCmdWait
-    FlagSet 2440
+    FlagSet EVENT_FLAG_0x0988
     RTReserveScript 10819
     MapChangeWarp ZONE_POKESTAR_STUDIOS_3, 14, 21, 0
-    WorkSetConst 0x410a, 3
-    WorkSetConst 0x40ac, 4
-    FlagReset 724
+    WorkSetConst EVENT_WORK_0x410a, 3
+    WorkSetConst EVENT_WORK_0x40ac, 4
+    FlagReset EVENT_FLAG_0x02d4
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -494,8 +494,8 @@ Script_4:
     MsgWinCloseAll
     RTReserveScript 2
     MapChangeWarp ZONE_POKESTAR_STUDIOS_5, 11, 16, 3
-    FlagSet 458
-    FlagSet 995
+    FlagSet EVENT_FLAG_0x01ca
+    FlagSet EVENT_FLAG_0x03e3
     WorkSetConst 0x8024, 0
     WorkSetConst 0x8023, 0
     FinishAllEvents
@@ -569,8 +569,8 @@ Movement_08F4:
 Script_5:
     ActorsPauseAll
     WordSetPlayerName 0
-    Cmd_02CB 0x400f
-    VMStackPush 0x400f
+    Cmd_02CB EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 3
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0954
@@ -604,8 +604,8 @@ L_0968:
 Script_6:
     ActorsPauseAll
     WordSetPlayerName 0
-    Cmd_02CB 0x400f
-    VMStackPush 0x400f
+    Cmd_02CB EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 3
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_09AE
@@ -729,8 +729,8 @@ Script_14:
 Script_15:
     ActorsPauseAll
     WordSetPlayerName 0
-    Cmd_02CB 0x400f
-    VMStackPush 0x400f
+    Cmd_02CB EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 3
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0AE2
@@ -756,8 +756,8 @@ L_0AF4:
 Script_16:
     ActorsPauseAll
     WordSetPlayerName 0
-    Cmd_02CB 0x400f
-    VMStackPush 0x400f
+    Cmd_02CB EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 2
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0B30
@@ -770,7 +770,7 @@ Script_16:
     VMJump L_0B71
 
 L_0B30:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 4
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0B5D
@@ -798,8 +798,8 @@ L_0B71:
 Script_17:
     ActorsPauseAll
     WordSetPlayerName 0
-    Cmd_02CB 0x400f
-    VMStackPush 0x400f
+    Cmd_02CB EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 3
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0BAD

@@ -41,7 +41,7 @@ L_0075:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BF
-    FlagReset 746
+    FlagReset EVENT_FLAG_0x02ea
     MedalGetGuruActor 0x8010, 0x8024
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -62,7 +62,7 @@ L_00BF:
     ActorDelete 0x8024
 
 L_00DC:
-    FlagSet 746
+    FlagSet EVENT_FLAG_0x02ea
 
 L_00E0:
     VMReturn
@@ -128,8 +128,8 @@ Script_3:
     ActorCmdExec 1, Movement_0354
     ActorCmdWait
     ActorDelete 1
-    FlagSet 730
-    FlagReset 731
+    FlagSet EVENT_FLAG_0x02da
+    FlagReset EVENT_FLAG_0x02db
     ActorAdd 0
     BMCreateHandleByGPos 0x8029, 1, 107, 661
     BMHndAudioVisualAnmPlay 0x8029, 0
@@ -160,11 +160,11 @@ Script_3:
     BMHndAudioVisualAnmPlay 0x8029, 1
     BMHndAnmWait 0x8029
     BMReleaseHandle 0x8029
-    FlagSet 731
-    WorkSetConst 0x40a5, 6
-    FlagSet 267
-    WorkSetConst 0x40a8, 1
-    WorkSetConst 0x409e, 1
+    FlagSet EVENT_FLAG_0x02db
+    WorkSetConst EVENT_WORK_0x40a5, 6
+    FlagSet EVENT_FLAG_0x010b
+    WorkSetConst EVENT_WORK_0x40a8, 1
+    WorkSetConst EVENT_WORK_0x409e, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -230,17 +230,17 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x409e, 0
+    WorkCmpConst EVENT_WORK_0x409e, 0
     VMJumpIf CMP_EQ, L_037F
     VMJump L_0391
 
 L_037F:
     VMCall L_0299
-    WorkSetConst 0x409e, 1
+    WorkSetConst EVENT_WORK_0x409e, 1
     VMJump L_0486
 
 L_0391:
-    WorkCmpConst 0x409e, 2
+    WorkCmpConst EVENT_WORK_0x409e, 2
     VMJumpIf CMP_EQ, L_03A4
     VMJump L_03BD
 
@@ -253,7 +253,7 @@ L_03A4:
     VMJump L_0486
 
 L_03BD:
-    WorkCmpConst 0x409e, 4
+    WorkCmpConst EVENT_WORK_0x409e, 4
     VMJumpIf CMP_EQ, L_03D0
     VMJump L_03E7
 
@@ -266,7 +266,7 @@ L_03D0:
     VMJump L_0486
 
 L_03E7:
-    WorkCmpConst 0x409e, 1
+    WorkCmpConst EVENT_WORK_0x409e, 1
     VMJumpIf CMP_EQ, L_03FA
     VMJump L_0451
 
@@ -279,7 +279,7 @@ L_03FA:
     VMStackPush 0x8023
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0441
-    WorkSetConst 0x409e, 2
+    WorkSetConst EVENT_WORK_0x409e, 2
     WordSetPlayerName 0
     WordSetPlaceName 1, 28
     // "Oh! [f000]Ā\u0001\u0000!\nGreat! Really great![f000]븁\u0000\nYou know what? Just now\nyou passed the checkpoint[f000]븀\u0000\nthe Medal Rally Office set[f000]븀\u0000\nand reached the goal![f000]븁\u0000\nSo, we'll have an award ceremony\nat the Medal Rally Office[f000]븀\u0000\nin [f000]ą\u0001\u0001.[f000]븁\u0000\nSo, please come to the office!"
@@ -295,7 +295,7 @@ L_0447:
     VMJump L_0486
 
 L_0451:
-    WorkCmpConst 0x409e, 3
+    WorkCmpConst EVENT_WORK_0x409e, 3
     VMJumpIf CMP_EQ, L_0464
     VMJump L_0486
 
@@ -511,7 +511,7 @@ L_0708:
     VMStackPushConst 1
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0735
-    WorkSetConst 0x409e, 4
+    WorkSetConst EVENT_WORK_0x409e, 4
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000. Finally,\nyou've come this far.[f000]븁\u0000\nWell, to honor the best and ultimate\nachievement, we'll have an extravagant[f000]븀\u0000\nevent at the Medal Rally Office![f000]븁\u0000\nYo! You're the best!"
     ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_FinallyYouveComeFar, 0, 0

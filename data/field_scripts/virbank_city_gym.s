@@ -10,21 +10,21 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPushFlag 763
+    VMStackPushFlag EVENT_FLAG_0x02fb
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004B
-    WorkSetConst 0x4000, 1
-    WorkSetConst 0x4001, 1
-    WorkSetConst 0x4002, 1
-    WorkSetConst 0x4003, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
+    WorkSetConst EVENT_WORK_0x4002, 1
+    WorkSetConst EVENT_WORK_0x4003, 1
     VMJump L_0063
 
 L_004B:
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4001, 1
-    WorkSetConst 0x4002, 1
-    WorkSetConst 0x4003, 1
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4001, 1
+    WorkSetConst EVENT_WORK_0x4002, 1
+    WorkSetConst EVENT_WORK_0x4003, 1
 
 L_0063:
     VMHalt
@@ -34,7 +34,7 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    VMStackPush 0x40aa
+    VMStackPush EVENT_WORK_0x40aa
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E2
@@ -77,7 +77,7 @@ L_00F7:
 L_0101:
     ActorCmdExec 255, Movement_0238
     ActorCmdWait
-    VMStackPushFlag 116
+    VMStackPushFlag EVENT_FLAG_0x0074
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0150
@@ -91,7 +91,7 @@ L_0101:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 116
+    FlagSet EVENT_FLAG_0x0074
 
 L_0150:
     WorkCmpConst 0x8020, 8
@@ -134,7 +134,7 @@ L_01CC:
     VMJump L_01DC
 
 L_01DC:
-    WorkSetConst 0x40aa, 1
+    WorkSetConst EVENT_WORK_0x40aa, 1
 
 L_01E2:
     WorkSetConst 0x8021, 0
@@ -217,7 +217,7 @@ Script_5:
     VMJump L_02DC
 
 L_02B9:
-    VMStackPush 0x40ac
+    VMStackPush EVENT_WORK_0x40ac
     VMStackPushConst 4
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_02D7

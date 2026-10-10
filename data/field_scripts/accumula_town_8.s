@@ -16,7 +16,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPush 0x4107
+    VMStackPush EVENT_WORK_0x4107
     VMStackPushConst 1
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_005F
@@ -71,7 +71,7 @@ L_00E2:
 L_00E8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4107
+    VMStackPush EVENT_WORK_0x4107
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0243
@@ -153,7 +153,7 @@ L_021D:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_OneMoreThingIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4107, 1
+    WorkSetConst EVENT_WORK_0x4107, 1
     VMJump L_023D
 
 L_0239:
@@ -164,7 +164,7 @@ L_023D:
     VMJump L_03CC
 
 L_0243:
-    VMStackPush 0x4107
+    VMStackPush EVENT_WORK_0x4107
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03CC
@@ -259,7 +259,7 @@ L_0382:
     RTCallGlobal 2802
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WorkSetConst 0x4107, 2
+    WorkSetConst EVENT_WORK_0x4107, 2
     VMJump L_03CC
 
 L_03C8:

@@ -193,7 +193,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4138",
+                    "var": "EVENT_WORK_0x4138",
                     "value": 1,
                     "script": 13
                 }

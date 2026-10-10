@@ -46,7 +46,7 @@ Script_1:
     ActorsPauseAll
     WorkSetConst 0x8020, 0
     VMCall L_0058
-    FlagSet 2640
+    FlagSet EVENT_FLAG_0x0a50
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -55,7 +55,7 @@ Script_2:
     ActorsPauseAll
     WorkSetConst 0x8020, 1
     VMCall L_0058
-    FlagSet 2641
+    FlagSet EVENT_FLAG_0x0a51
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -64,7 +64,7 @@ Script_3:
     ActorsPauseAll
     WorkSetConst 0x8020, 2
     VMCall L_0058
-    FlagSet 2642
+    FlagSet EVENT_FLAG_0x0a52
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -73,7 +73,7 @@ Script_4:
     ActorsPauseAll
     WorkSetConst 0x8020, 3
     VMCall L_0058
-    FlagSet 2643
+    FlagSet EVENT_FLAG_0x0a53
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -82,7 +82,7 @@ Script_5:
     ActorsPauseAll
     WorkSetConst 0x8020, 4
     VMCall L_0058
-    FlagSet 2644
+    FlagSet EVENT_FLAG_0x0a54
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -91,7 +91,7 @@ Script_6:
     ActorsPauseAll
     WorkSetConst 0x8020, 5
     VMCall L_0058
-    FlagSet 2645
+    FlagSet EVENT_FLAG_0x0a55
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -100,7 +100,7 @@ Script_7:
     ActorsPauseAll
     WorkSetConst 0x8020, 6
     VMCall L_0058
-    FlagSet 2646
+    FlagSet EVENT_FLAG_0x0a56
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -109,7 +109,7 @@ Script_8:
     ActorsPauseAll
     WorkSetConst 0x8020, 7
     VMCall L_0058
-    FlagSet 2647
+    FlagSet EVENT_FLAG_0x0a57
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -118,7 +118,7 @@ Script_9:
     ActorsPauseAll
     WorkSetConst 0x8020, 8
     VMCall L_0058
-    FlagSet 2648
+    FlagSet EVENT_FLAG_0x0a58
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -127,7 +127,7 @@ Script_10:
     ActorsPauseAll
     WorkSetConst 0x8020, 9
     VMCall L_0058
-    FlagSet 2649
+    FlagSet EVENT_FLAG_0x0a59
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -136,7 +136,7 @@ Script_11:
     ActorsPauseAll
     WorkSetConst 0x8020, 10
     VMCall L_0058
-    FlagSet 2650
+    FlagSet EVENT_FLAG_0x0a5a
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -145,7 +145,7 @@ Script_12:
     ActorsPauseAll
     WorkSetConst 0x8020, 11
     VMCall L_0058
-    FlagSet 2651
+    FlagSet EVENT_FLAG_0x0a5b
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -154,7 +154,7 @@ Script_13:
     ActorsPauseAll
     WorkSetConst 0x8020, 12
     VMCall L_0058
-    FlagSet 2652
+    FlagSet EVENT_FLAG_0x0a5c
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -163,7 +163,7 @@ Script_14:
     ActorsPauseAll
     WorkSetConst 0x8020, 13
     VMCall L_0058
-    FlagSet 2653
+    FlagSet EVENT_FLAG_0x0a5d
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -172,7 +172,7 @@ Script_15:
     ActorsPauseAll
     WorkSetConst 0x8020, 14
     VMCall L_0058
-    FlagSet 2654
+    FlagSet EVENT_FLAG_0x0a5e
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -181,7 +181,7 @@ Script_16:
     ActorsPauseAll
     WorkSetConst 0x8020, 15
     VMCall L_0058
-    FlagSet 2655
+    FlagSet EVENT_FLAG_0x0a5f
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -190,7 +190,7 @@ Script_17:
     ActorsPauseAll
     WorkSetConst 0x8020, 16
     VMCall L_0058
-    FlagSet 2656
+    FlagSet EVENT_FLAG_0x0a60
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -199,7 +199,7 @@ Script_18:
     ActorsPauseAll
     WorkSetConst 0x8020, 17
     VMCall L_0058
-    FlagSet 2657
+    FlagSet EVENT_FLAG_0x0a61
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -208,7 +208,7 @@ Script_19:
     ActorsPauseAll
     WorkSetConst 0x8020, 18
     VMCall L_0058
-    FlagSet 2658
+    FlagSet EVENT_FLAG_0x0a62
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -217,7 +217,7 @@ Script_20:
     ActorsPauseAll
     WorkSetConst 0x8020, 19
     VMCall L_0058
-    FlagSet 2659
+    FlagSet EVENT_FLAG_0x0a63
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

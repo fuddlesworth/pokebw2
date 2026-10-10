@@ -235,7 +235,7 @@ L_0348:
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_03F6
-    VMStackPushFlag 363
+    VMStackPushFlag EVENT_FLAG_0x016b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03E0
@@ -250,7 +250,7 @@ L_0348:
     RTCallGlobal 2806
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 363
+    FlagSet EVENT_FLAG_0x016b
     VMJump L_03F0
 
 L_03E0:

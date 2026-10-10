@@ -11,7 +11,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 252
+    VMStackPushFlag EVENT_FLAG_0x00fc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0043
@@ -22,7 +22,7 @@ Script_1:
 L_0043:
     // "You can call me the Judge.[f000]븁\u0000\nHeh heh, that's actually not my real\nname, but it's what everyone calls me.[f000]븁\u0000\nIt's because of this weird power I have.\nIt's a gift, really.[f000]븁\u0000\nI can discern--judge, you might say--the\noverall potential of individual Pokémon.[f000]븁\u0000\nIf you'd like, I could judge the\nintriguing potential of your Pokémon.[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_CanCallJudgeHeh, 0, 0
-    FlagSet 252
+    FlagSet EVENT_FLAG_0x00fc
 
 L_0051:
     ActorMsgClose

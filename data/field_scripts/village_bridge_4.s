@@ -18,10 +18,10 @@ Script_1:
     WorkSetConst 0x8029, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2753
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 299
+    VMStackPushFlag EVENT_FLAG_0x012b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -30,15 +30,15 @@ Script_1:
     VMJump L_013E
 
 L_0079:
-    VMStackPushFlag 2753
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4182
+    VMStackPush EVENT_WORK_0x4182
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00BB
-    WordSetPokeSpecies 0, 0x4182
+    WordSetPokeSpecies 0, EVENT_WORK_0x4182
     // "The Official Hip Waders Catch of the Day\nis [f000]ā\u0001\u0000![f000]븀\u0000\nHave you caught one already?"
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge4_Text_OfficialHipWadersCatch, 0, 0
     YesNoWin 0x8010
@@ -46,31 +46,31 @@ L_0079:
     VMJump L_013E
 
 L_00BB:
-    VMStackPushFlag 2753
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 299
+    VMStackPushFlag EVENT_FLAG_0x012b
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_010D
     // "Yo! Member No. 2!\nTimes have changed...[f000]븁\u0000\nThat's right! Because today is a new day,\nwe've got a new Official Hip Waders[f000]븀\u0000\nCatch of the Day! Isn't it exciting?[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge4_Text_YoMemberNo2, 0, 0
-    FishingChallengeGetRandomPkm 0x4182
-    WordSetPokeSpecies 0, 0x4182
+    FishingChallengeGetRandomPkm EVENT_WORK_0x4182
+    WordSetPokeSpecies 0, EVENT_WORK_0x4182
     // "Here we go! I'll announce the\nOfficial Hip Waders Catch of the Day![f000]븁\u0000\nThe Pokémon we're fishing for\ntoday is [f000]ā\u0001\u0000![f000]븀\u0000\nIf you catch one, please show it to me!"
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge4_Text_HereWeGoIll, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2753
-    FlagSet 299
+    FlagSet EVENT_FLAG_DAILY_0x0ac1
+    FlagSet EVENT_FLAG_0x012b
     VMJump L_013E
 
 L_010D:
-    VMStackPushFlag 2753
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4182
+    VMStackPush EVENT_WORK_0x4182
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -86,7 +86,7 @@ L_013E:
     VMHalt
 
 L_0144:
-    VMStackPushFlag 298
+    VMStackPushFlag EVENT_FLAG_0x012a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0167
@@ -104,16 +104,16 @@ L_0171:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B7
-    FishingChallengeGetRandomPkm 0x4182
-    WordSetPokeSpecies 0, 0x4182
+    FishingChallengeGetRandomPkm EVENT_WORK_0x4182
+    WordSetPokeSpecies 0, EVENT_WORK_0x4182
     // "Awesome! Now you are the second member\nof the Hip Waders![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge4_Text_AwesomeNowSecondMember, 0, 0
     // "Here we go! I'll announce the\nOfficial Hip Waders Catch of the Day![f000]븁\u0000\nThe Pokémon we're fishing for\ntoday is [f000]ā\u0001\u0000![f000]븀\u0000\nIf you catch one, please show it to me!"
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge4_Text_HereWeGoIll, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2753
-    FlagSet 299
+    FlagSet EVENT_FLAG_DAILY_0x0ac1
+    FlagSet EVENT_FLAG_0x012b
     VMJump L_01C9
 
 L_01B7:
@@ -121,7 +121,7 @@ L_01B7:
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge4_Text_ThatsWayTideTurns, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 298
+    FlagSet EVENT_FLAG_0x012a
 
 L_01C9:
     VMReturn
@@ -143,7 +143,7 @@ L_01CB:
     PokePartyGetSpecies 0x8023, 0x8021
     WordSetPokeSpecies 0, 0x8023
     PokePartyGetMetDate 0x8029, 0x8027, 0x8025, 0x8021
-    VMStackPush 0x4182
+    VMStackPush EVENT_WORK_0x4182
     VMStackPush 0x8023
     VMStackCmp CMP_EQ
     VMStackPush 0x8026
@@ -165,11 +165,11 @@ L_01CB:
     RTCallGlobal 2806
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WorkSetConst 0x4182, 0
+    WorkSetConst EVENT_WORK_0x4182, 0
     VMJump L_02E5
 
 L_028D:
-    VMStackPush 0x4182
+    VMStackPush EVENT_WORK_0x4182
     VMStackPush 0x8023
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_02B4

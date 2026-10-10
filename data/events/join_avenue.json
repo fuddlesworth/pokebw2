@@ -410,7 +410,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": "0x410b",
+            "var": "EVENT_WORK_0x410b",
             "value": 0,
             "type": 0,
             "grid": {
@@ -440,7 +440,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x413a",
+                    "var": "EVENT_WORK_0x413a",
                     "value": 1,
                     "script": 11
                 }

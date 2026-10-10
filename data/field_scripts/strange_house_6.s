@@ -9,7 +9,7 @@
 Script_1:
     ActorsPauseAll
     VMSleep 16
-    FlagReset 898
+    FlagReset EVENT_FLAG_0x0382
     ActorAdd 0
     ActorCmdExec 0, Movement_0084
     ActorCmdWait
@@ -21,8 +21,8 @@ Script_1:
     ActorCmdExec 0, Movement_00D8
     ActorCmdWait
     ActorDelete 0
-    FlagSet 898
-    WorkSetConst 0x4075, 2
+    FlagSet EVENT_FLAG_0x0382
+    WorkSetConst EVENT_WORK_0x4075, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -85,16 +85,16 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2731
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0aab
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D5
-    Random 0x417d, 16
-    FlagSet 2731
+    Random EVENT_WORK_0x417d, 16
+    FlagSet EVENT_FLAG_DAILY_0x0aab
 
 L_00D5:
-    WordSetPokeTypeName 0, 0x417d
-    VMStackPushFlag 2732
+    WordSetPokeTypeName 0, EVENT_WORK_0x417d
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0aac
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03CA
@@ -131,10 +131,10 @@ L_017C:
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 0
     PokePartyGetTypes 0x8023, 0x8024, 0x8020
-    VMStackPush 0x417d
+    VMStackPush EVENT_WORK_0x417d
     VMStackPush 0x8023
     VMStackCmp CMP_EQ
-    VMStackPush 0x417d
+    VMStackPush EVENT_WORK_0x417d
     VMStackPush 0x8024
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -242,7 +242,7 @@ L_036E:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity14_Text_AwwBestPleaseCome, 1, 2, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 2732
+    FlagSet EVENT_FLAG_DAILY_0x0aac
     VMJump L_0398
 
 L_0388:

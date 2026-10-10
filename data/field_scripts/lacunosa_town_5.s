@@ -17,11 +17,11 @@ Script_1:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0045
-    FlagReset 786
+    FlagReset EVENT_FLAG_0x0312
     VMJump L_0049
 
 L_0045:
-    FlagSet 786
+    FlagSet EVENT_FLAG_0x0312
 
 L_0049:
     VMHalt
@@ -40,7 +40,7 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 2784
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ae0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0142
@@ -49,8 +49,8 @@ Script_3:
     // "My work always keeps me very busy, so\nI'm thrilled if I can go home at night.[f000]븁\u0000\nI'm sorry to leave my wife lonely, but\nthat's the life of a powerful executive.[f000]븁\u0000\nOh, this is a souvenir from a business\ntrip. She does not seem to need it,[f000]븀\u0000\nso I will give it to you.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, LacunosaTown5_Text_WorkAlwaysKeepsVery, 2, 0, 0
     ActorMsgClose
-    Random 0x400f, 3
-    VMStackPush 0x400f
+    Random EVENT_WORK_0x400f, 3
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00CF
@@ -64,7 +64,7 @@ Script_3:
     VMJump L_0128
 
 L_00CF:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0108
@@ -91,7 +91,7 @@ L_0128:
     ActorMsg MSGFILE_SCRIPT, LacunosaTown5_Text_TomorrowItsWorkAlways, 2, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 2784
+    FlagSet EVENT_FLAG_DAILY_0x0ae0
     VMJump L_0156
 
 L_0142:

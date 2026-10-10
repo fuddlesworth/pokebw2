@@ -50,7 +50,7 @@ Script_1:
 
 Script_2:
     ActorsPauseAll
-    FlagReset 814
+    FlagReset EVENT_FLAG_0x032e
     SEPlay SEQ_SE_KAIDAN
     ActorAdd 2
     SEWait
@@ -100,8 +100,8 @@ L_00C6:
     ActorDelete 2
     SEWait
     BGMChangeMap
-    FlagSet 814
-    WorkSetConst 0x40ed, 1
+    FlagSet EVENT_FLAG_0x032e
+    WorkSetConst EVENT_WORK_0x40ed, 1
     MedalDiscover 60
     FinishAllEvents
     ActorsUnpauseAll
@@ -136,13 +136,13 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 6
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_031F
     // "Free-for-all! It's the Castelia\nHarlequin Hunt! You haven't visited...[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_FreeAllItsCastelia, 0, 0
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_022E
@@ -160,7 +160,7 @@ Script_7:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40e2, 6
+    WorkSetConst EVENT_WORK_0x40e2, 6
     VMJump L_0319
 
 L_022E:
@@ -175,7 +175,7 @@ L_023A:
     VMStackPush 0x8025
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 312
+    VMStackPushFlag EVENT_FLAG_0x0138
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -189,7 +189,7 @@ L_0288:
     VMStackPush 0x8025
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 313
+    VMStackPushFlag EVENT_FLAG_0x0139
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -203,7 +203,7 @@ L_02C3:
     VMStackPush 0x8025
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPushFlag 314
+    VMStackPushFlag EVENT_FLAG_0x013a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND

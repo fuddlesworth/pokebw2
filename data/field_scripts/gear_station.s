@@ -28,7 +28,7 @@ Script_5:
     ActorCmdExec 255, Movement_006C
     ActorCmdWait
     PlayerSetRailPos 2, 0, 1
-    WorkSetConst 0x417c, 0
+    WorkSetConst EVENT_WORK_0x417c, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -82,7 +82,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_010B

@@ -14,7 +14,7 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0049
@@ -24,7 +24,7 @@ L_0049:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40a9
+    VMStackPush EVENT_WORK_0x40a9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0082
@@ -107,8 +107,8 @@ Script_3:
     ActorCmdWait
     ActorSetGPos 0, 15, 2, 2, 1
     ActorSetGPos 2, 13, 0, 9, 3
-    FlagSet 115
-    WorkSetConst 0x40a9, 1
+    FlagSet EVENT_FLAG_0x0073
+    WorkSetConst EVENT_WORK_0x40a9, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -142,7 +142,7 @@ Script_4:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C2
-    VMStackPush 0x40a9
+    VMStackPush EVENT_WORK_0x40a9
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_02A6
@@ -161,7 +161,7 @@ L_02BC:
     VMJump L_0307
 
 L_02C2:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F1
@@ -290,11 +290,11 @@ L_0434:
     ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_UnovaRegionThereEight, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 2414
-    WorkSetConst 0x40a8, 2
-    FlagReset 742
-    FlagSet 739
-    FlagSet 1015
+    FlagSet EVENT_FLAG_0x096e
+    WorkSetConst EVENT_WORK_0x40a8, 2
+    FlagReset EVENT_FLAG_0x02e6
+    FlagSet EVENT_FLAG_0x02e3
+    FlagSet EVENT_FLAG_0x03f7
     MedalDiscover 130
     VMReturn
 
@@ -356,9 +356,9 @@ L_05B2:
     CallTrainerLose
 
 L_05B4:
-    WorkAdd 0x40a9, 1
+    WorkAdd EVENT_WORK_0x40a9, 1
     TrainerFlagSet TRAINER_YOUNGSTER_PEDRO
-    VMStackPush 0x40a9
+    VMStackPush EVENT_WORK_0x40a9
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_05E3
@@ -380,7 +380,7 @@ L_05EF:
     VMJump L_063C
 
 L_0603:
-    VMStackPush 0x40a9
+    VMStackPush EVENT_WORK_0x40a9
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_062C
@@ -483,9 +483,9 @@ L_078D:
     CallTrainerLose
 
 L_078F:
-    WorkAdd 0x40a9, 1
+    WorkAdd EVENT_WORK_0x40a9, 1
     TrainerFlagSet TRAINER_LASS_SERENA
-    VMStackPush 0x40a9
+    VMStackPush EVENT_WORK_0x40a9
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_07C2
@@ -509,7 +509,7 @@ L_07D2:
     VMJump L_081B
 
 L_07E2:
-    VMStackPush 0x40a9
+    VMStackPush EVENT_WORK_0x40a9
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_080B

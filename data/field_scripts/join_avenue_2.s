@@ -13,7 +13,7 @@
     WorkSetConst 0x8023, 0
 
 Script_1:
-    VMStackPush 0x413a
+    VMStackPush EVENT_WORK_0x413a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0056
@@ -22,10 +22,10 @@ Script_1:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0056
-    WorkSetConst 0x4119, 1
+    WorkSetConst EVENT_WORK_0x4119, 1
 
 L_0056:
-    VMStackPush 0x4119
+    VMStackPush EVENT_WORK_0x4119
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0106
@@ -58,7 +58,7 @@ L_00D5:
     VMJump L_0100
 
 L_00E8:
-    WorkSetConst 0x4119, 0
+    WorkSetConst EVENT_WORK_0x4119, 0
     ActorDelete 1
     ActorDelete 2
     ActorDelete 3
@@ -68,13 +68,13 @@ L_0100:
     VMJump L_0118
 
 L_0106:
-    WorkSetConst 0x4119, 0
+    WorkSetConst EVENT_WORK_0x4119, 0
     ActorDelete 1
     ActorDelete 2
     ActorDelete 3
 
 L_0118:
-    VMStackPush 0x413a
+    VMStackPush EVENT_WORK_0x413a
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014F
@@ -83,7 +83,7 @@ L_0118:
     Plugin8_Cmd1027 1, 0x8024
     Plugin8_Cmd1027 2, 0x8024
     Plugin8_Cmd1027 3, 0x8024
-    WorkSetConst 0x413a, 0
+    WorkSetConst EVENT_WORK_0x413a, 0
 
 L_014F:
     WorkSetConst 0x8024, 0
@@ -492,7 +492,7 @@ L_0757:
     VMJump L_0763
 
 L_0763:
-    WorkSetConst 0x4119, 0
+    WorkSetConst EVENT_WORK_0x4119, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -684,8 +684,8 @@ L_0B07:
     ActorMsg MSGFILE_SCRIPT, JoinAvenue2_Text_TodayHaveSurpriseEverybody, 1, 0, 0
     Plugin8_Cmd1030 21, 7
     ActorMsgClose
-    WorkSetConst 0x413a, 1
-    FlagSet 2545
+    WorkSetConst EVENT_WORK_0x413a, 1
+    FlagSet EVENT_FLAG_0x09f1
     MapChangeWarp ZONE_JOIN_AVENUE, 15, 70, 0
     VMReturn
 

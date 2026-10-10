@@ -12,7 +12,7 @@ Script_1:
     InfoMsg PlasmaFrigate17_Text_WarningWarningIntrudersVessel, 2
     LastKeyWait
     InfoMsgClose_0039
-    WorkSetConst 0x4149, 2
+    WorkSetConst EVENT_WORK_0x4149, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

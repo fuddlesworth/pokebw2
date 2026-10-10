@@ -40,28 +40,28 @@ Script_1:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_00A8
-    FlagReset 815
+    FlagReset EVENT_FLAG_0x032f
     VMJump L_00AC
 
 L_00A8:
-    FlagSet 815
+    FlagSet EVENT_FLAG_0x032f
 
 L_00AC:
     VMJump L_00B6
 
 L_00B2:
-    FlagSet 815
+    FlagSet EVENT_FLAG_0x032f
 
 L_00B6:
-    VMStackPushFlag 374
+    VMStackPushFlag EVENT_FLAG_0x0176
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x410c
+    VMStackPush EVENT_WORK_0x410c
     VMStackPushConst 6
     VMStackCmp CMP_NE
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00DF
-    WorkSetConst 0x410c, 0
+    WorkSetConst EVENT_WORK_0x410c, 0
 
 L_00DF:
     VMHalt
@@ -304,8 +304,8 @@ Script_16:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    Random 0x4000, 3
-    VMStackPush 0x4000
+    Random EVENT_WORK_0x4000, 3
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03AB
@@ -316,7 +316,7 @@ Script_16:
     VMJump L_03F3
 
 L_03AB:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D2
@@ -327,7 +327,7 @@ L_03AB:
     VMJump L_03F3
 
 L_03D2:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03F3
@@ -436,7 +436,7 @@ Script_19:
     BMHndAudioVisualAnmPlay 0x8010, 1
     BMHndAnmWait 0x8010
     BMReleaseHandle 0x8010
-    FlagSet 1013
+    FlagSet EVENT_FLAG_0x03f5
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

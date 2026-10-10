@@ -15,13 +15,13 @@ Script_1:
     WorkSetConst 0x8020, 0
     WorkSetConst 0x8021, 0
     WorkSetConst 0x8022, 0
-    VMStackPushFlag 225
+    VMStackPushFlag EVENT_FLAG_0x00e1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0051
     // "Hi! I am a humble Maid![f000]븁\u0000\nMy master has a big heart to match his\nbig belly. He's a gourmet![f000]븁\u0000\nSo I am looking for ingredients that will\nmake his heart jump for joy![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HiAmHumbleMaid, 0, 0
-    FlagSet 225
+    FlagSet EVENT_FLAG_0x00e1
 
 L_0051:
     WorkSetConst 0x8023, 0
@@ -124,13 +124,13 @@ Script_2:
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8027, 0
-    VMStackPushFlag 226
+    VMStackPushFlag EVENT_FLAG_0x00e2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01DF
     // "Ore, ore, ore...\nOres that I adore![f000]븁\u0000\nAh, this is where you should laugh...[f000]븁\u0000\nAnyway... I will pay you well for\nrare ores.[f000]븁\u0000\nAnd not just ores! Stones, gems,\nshards...anything mineral! I love it all![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_OreOreOreOres, 0, 0
-    FlagSet 226
+    FlagSet EVENT_FLAG_0x00e2
 
 L_01DF:
     WorkSetConst 0x8028, 0
@@ -235,16 +235,16 @@ Script_3:
     WorkSetConst 0x802b, 0
     WorkSetConst 0x802c, 0
     WorkSetConst 0x802d, 0
-    VMStackPushFlag 227
+    VMStackPushFlag EVENT_FLAG_0x00e3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0375
     // "As you can see,\nI am an ultrarich billionaire![f000]븁\u0000\nAnd as you can see,\nmy hobby is to collect rare items![f000]븁\u0000\nIn fact, this outfit is ultra expensive\nand rare.[f000]븀\u0000\nCan you see it? Can you?[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_CanSeeAmUltrarich, 0, 0
-    FlagSet 227
+    FlagSet EVENT_FLAG_0x00e3
 
 L_0375:
-    VMStackPushFlag 233
+    VMStackPushFlag EVENT_FLAG_0x00e9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_044D
@@ -261,7 +261,7 @@ L_0375:
     // "Actually, it's...\nIt's a rare treasure, Relic Crown![f000]븁\u0000\nI was told it was at the innermost part\nof the Abyssal Ruins![f000]븁\u0000\nI think it is understandable that you\nwant to treasure it, but will you sell it[f000]븀\u0000\nto me for $[f000]ȇ\u0001\u0001? Will you?"
     ActorMsg MSGFILE_SCRIPT, Global10480_Text_ActuallyItsItsRare, 0, 2, 0
     YesNoWin 0x8010
-    FlagSet 233
+    FlagSet EVENT_FLAG_0x00e9
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -415,13 +415,13 @@ Script_4:
     WorkSetConst 0x8034, 0
     WorkSetConst 0x8035, 0
     WorkSetConst 0x8036, 0
-    VMStackPushFlag 251
+    VMStackPushFlag EVENT_FLAG_0x00fb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0613
     // "Hey, check it out. I've got a sweet deal\nfor ya![f000]븁\u0000\nYou know how Pokémon like to hide behind\nstones or rocks, yeah?[f000]븁\u0000\nSometimes they hide cool stuff, too.[f000]븁\u0000\nIf you find something cool behind a rock,\nyou should bring it to me.[f000]븁\u0000\nI'll make it worth your while.[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HeyCheckOutIve, 0, 0
-    FlagSet 251
+    FlagSet EVENT_FLAG_0x00fb
 
 L_0613:
     WorkSetConst 0x8037, 0
@@ -524,13 +524,13 @@ Script_5:
     WorkSetConst 0x8039, 0
     WorkSetConst 0x803a, 0
     WorkSetConst 0x803b, 0
-    VMStackPushFlag 332
+    VMStackPushFlag EVENT_FLAG_0x014c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07A1
     // "I work on a farm in Mistralton City.\nSo I need lots of Mulch! So much Mulch![f000]븁\u0000\nYou're a Pokémon Trainer, right? Do you\nknow much about Hidden Grottoes?[f000]븁\u0000\nYou can sometimes find Mulch\ndeep inside Hidden Grottoes![f000]븀\u0000\nLots of Mulch! So much Mulch![f000]븁\u0000\nMulch is great!\nI have much love for Mulch![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_WorkFarmMistraltonCity, 0, 0
-    FlagSet 332
+    FlagSet EVENT_FLAG_0x014c
 
 L_07A1:
     WorkSetConst 0x803c, 0

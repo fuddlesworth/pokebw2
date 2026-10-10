@@ -9,7 +9,7 @@
 Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    FlagSet 899
+    FlagSet EVENT_FLAG_0x0383
     ActorDelete 0
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -105,7 +105,7 @@ L_0170:
     ActorCmdExec 251, Movement_0220
     ActorCmdWait
     ActorDelete 251
-    WorkSetConst 0x4073, 1
+    WorkSetConst EVENT_WORK_0x4073, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -227,7 +227,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05c4",
+            "flag": "EVENT_FLAG_0x05c4",
             "script": 7376,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],

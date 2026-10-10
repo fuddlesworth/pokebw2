@@ -7,7 +7,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0039
@@ -20,7 +20,7 @@ Script_1:
     VMJump L_007D
 
 L_0039:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0069
@@ -50,7 +50,7 @@ Script_2:
     ActorsPauseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B8
@@ -63,7 +63,7 @@ Script_2:
     VMJump L_00FD
 
 L_00B8:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E5

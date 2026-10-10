@@ -98,7 +98,7 @@
     "triggers": [
         {
             "script": 10291,
-            "var": "0x4085",
+            "var": "EVENT_WORK_0x4085",
             "value": 0,
             "type": 0,
             "grid": {
@@ -120,7 +120,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x408d",
+                    "var": "EVENT_WORK_0x408d",
                     "value": 1,
                     "script": 3
                 }

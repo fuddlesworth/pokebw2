@@ -34,7 +34,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 320
+    VMStackPushFlag EVENT_FLAG_0x0140
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00A9
@@ -53,7 +53,7 @@ Script_3:
     PVWait
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 320
+    FlagSet EVENT_FLAG_0x0140
     VMJump L_00C5
 
 L_00A9:

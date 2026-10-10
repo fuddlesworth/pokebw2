@@ -53,13 +53,13 @@ Script_4:
 
 Script_5:
     ActorsPauseAll
-    VMStackPushFlag 437
+    VMStackPushFlag EVENT_FLAG_0x01b5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0153
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 436
+    VMStackPushFlag EVENT_FLAG_0x01b4
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B4
@@ -70,7 +70,7 @@ Script_5:
 L_00B4:
     // "Um... Excuse me...\nTrainer?[f000]븁\u0000\nThis Pokémon Egg was found at the\nDay Care. Would you raise it?"
     ParentActorMsg MSGFILE_SCRIPT, NacreneGate_Text_UmExcuseTrainerPokemon, 0, 0
-    FlagSet 436
+    FlagSet EVENT_FLAG_0x01b4
 
 L_00C2:
     YesNoWin 0x8010
@@ -86,7 +86,7 @@ L_00C2:
     // "Oh! OK![f000]븁\u0000\nPlease take good care of this Egg![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, NacreneGate_Text_OhOkPleaseTake, 0, 0
     MsgWinCloseAll
-    FlagSet 437
+    FlagSet EVENT_FLAG_0x01b5
     WordSetPlayerName 0
     MEPlay SEQ_ME_TAMAGO_GET
     // "[f000]Ā\u0001\u0000 received the Egg!"

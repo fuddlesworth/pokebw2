@@ -128,7 +128,7 @@
             "model": 103,
             "movement": 15,
             "type": 0,
-            "flag": "0x0385",
+            "flag": "EVENT_FLAG_0x0385",
             "script": 2000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -147,7 +147,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x0458",
+            "flag": "EVENT_FLAG_0x0458",
             "script": 7012,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -166,7 +166,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x045e",
+            "flag": "EVENT_FLAG_0x045e",
             "script": 7018,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -185,7 +185,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x04a7",
+            "flag": "EVENT_FLAG_0x04a7",
             "script": 7091,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -261,7 +261,7 @@
     "triggers": [
         {
             "script": 2,
-            "var": "0x40e4",
+            "var": "EVENT_WORK_0x40e4",
             "value": 1,
             "type": 0,
             "grid": {
@@ -275,7 +275,7 @@
         },
         {
             "script": 4,
-            "var": "0x40e6",
+            "var": "EVENT_WORK_0x40e6",
             "value": 1,
             "type": 0,
             "grid": {
@@ -289,7 +289,7 @@
         },
         {
             "script": 7,
-            "var": "0x40e9",
+            "var": "EVENT_WORK_0x40e9",
             "value": 1,
             "type": 0,
             "grid": {
@@ -303,7 +303,7 @@
         },
         {
             "script": 3,
-            "var": "0x40e5",
+            "var": "EVENT_WORK_0x40e5",
             "value": 1,
             "type": 0,
             "grid": {
@@ -317,7 +317,7 @@
         },
         {
             "script": 5,
-            "var": "0x40e7",
+            "var": "EVENT_WORK_0x40e7",
             "value": 1,
             "type": 0,
             "grid": {
@@ -331,7 +331,7 @@
         },
         {
             "script": 6,
-            "var": "0x40e8",
+            "var": "EVENT_WORK_0x40e8",
             "value": 1,
             "type": 0,
             "grid": {
@@ -345,7 +345,7 @@
         },
         {
             "script": 8,
-            "var": "0x40ea",
+            "var": "EVENT_WORK_0x40ea",
             "value": 1,
             "type": 0,
             "grid": {
@@ -359,7 +359,7 @@
         },
         {
             "script": 9,
-            "var": "0x40eb",
+            "var": "EVENT_WORK_0x40eb",
             "value": 1,
             "type": 0,
             "grid": {
@@ -373,7 +373,7 @@
         },
         {
             "script": 10,
-            "var": "0x40ec",
+            "var": "EVENT_WORK_0x40ec",
             "value": 1,
             "type": 0,
             "grid": {
@@ -387,7 +387,7 @@
         },
         {
             "script": 11,
-            "var": "0x410d",
+            "var": "EVENT_WORK_0x410d",
             "value": 0,
             "type": 0,
             "grid": {

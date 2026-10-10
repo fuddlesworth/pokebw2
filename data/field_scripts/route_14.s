@@ -24,7 +24,7 @@ Script_2:
     // "Trainer Tips!\n[f000]븁\u0000\nThe maximum number of Boxes is now 24![f000]븁\u0000\nIn other words, you can store\n720 Pokémon!"
     MsgPlaceSign Route14_Text_TrainerTipsMaximumNumber, 0
     MsgPlaceSignClose
-    FlagSet 2675
+    FlagSet EVENT_FLAG_0x0a73
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -36,7 +36,7 @@ Script_3:
     // "Trainer Tips!\n[f000]븁\u0000\nWhile you are using the Xtransceiver,\npress a direction on the +Control Pad.[f000]븁\u0000\nThe appearance of the screen will\nchange in varied ways!"
     MsgPlaceSign Route14_Text_TrainerTipsWhileUsing, 0
     MsgPlaceSignClose
-    FlagSet 2676
+    FlagSet EVENT_FLAG_0x0a74
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

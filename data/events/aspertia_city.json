@@ -218,7 +218,7 @@
             "model": 291,
             "movement": 0,
             "type": 0,
-            "flag": "0x02e9",
+            "flag": "EVENT_FLAG_0x02e9",
             "script": 1,
             "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
@@ -237,7 +237,7 @@
             "model": 251,
             "movement": 0,
             "type": 0,
-            "flag": "0x02e7",
+            "flag": "EVENT_FLAG_0x02e7",
             "script": 9,
             "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
@@ -256,7 +256,7 @@
             "model": 249,
             "movement": 0,
             "type": 0,
-            "flag": "0x02e6",
+            "flag": "EVENT_FLAG_0x02e6",
             "script": 7,
             "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
@@ -275,7 +275,7 @@
             "model": 9,
             "movement": 0,
             "type": 0,
-            "flag": "0x02e8",
+            "flag": "EVENT_FLAG_0x02e8",
             "script": 10,
             "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
@@ -351,7 +351,7 @@
             "model": 223,
             "movement": 0,
             "type": 0,
-            "flag": "0x02e5",
+            "flag": "EVENT_FLAG_0x02e5",
             "script": 24,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -370,7 +370,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x044c",
+            "flag": "EVENT_FLAG_0x044c",
             "script": 7000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -465,7 +465,7 @@
             "model": 251,
             "movement": 0,
             "type": 0,
-            "flag": "0x03ef",
+            "flag": "EVENT_FLAG_0x03ef",
             "script": 2000,
             "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
@@ -583,7 +583,7 @@
     "triggers": [
         {
             "script": 18,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 0,
             "type": 0,
             "grid": {
@@ -597,7 +597,7 @@
         },
         {
             "script": 19,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 1,
             "type": 0,
             "grid": {
@@ -611,7 +611,7 @@
         },
         {
             "script": 3,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 3,
             "type": 0,
             "grid": {
@@ -625,7 +625,7 @@
         },
         {
             "script": 33,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 4,
             "type": 0,
             "grid": {
@@ -639,7 +639,7 @@
         },
         {
             "script": 2,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 2,
             "type": 0,
             "grid": {
@@ -653,7 +653,7 @@
         },
         {
             "script": 8,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 5,
             "type": 0,
             "grid": {
@@ -667,7 +667,7 @@
         },
         {
             "script": 22,
-            "var": "0x40a4",
+            "var": "EVENT_WORK_0x40a4",
             "value": 0,
             "type": 0,
             "grid": {
@@ -681,7 +681,7 @@
         },
         {
             "script": 20,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 1,
             "type": 0,
             "grid": {
@@ -695,7 +695,7 @@
         },
         {
             "script": 21,
-            "var": "0x40a1",
+            "var": "EVENT_WORK_0x40a1",
             "value": 1,
             "type": 0,
             "grid": {
@@ -721,17 +721,17 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x40a1",
+                    "var": "EVENT_WORK_0x40a1",
                     "value": 6,
                     "script": 4
                 },
                 {
-                    "var": "0x40a8",
+                    "var": "EVENT_WORK_0x40a8",
                     "value": 2,
                     "script": 23
                 },
                 {
-                    "var": "0x4115",
+                    "var": "EVENT_WORK_0x4115",
                     "value": 1,
                     "script": 25
                 }

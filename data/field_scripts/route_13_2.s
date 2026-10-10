@@ -33,7 +33,7 @@ Script_4:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 304
+    VMStackPushFlag EVENT_FLAG_0x0130
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FC
@@ -75,7 +75,7 @@ L_00E4:
     ParentActorMsg MSGFILE_SCRIPT, Route132_Text_DoesntMatterPokemonEven, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 304
+    FlagSet EVENT_FLAG_0x0130
     VMJump L_0110
 
 L_00FC:

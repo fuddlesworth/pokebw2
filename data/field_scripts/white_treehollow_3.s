@@ -6,5 +6,5 @@
     ScriptEntriesEnd
 
 Script_1:
-    Plugin9_Cmd1010 0x4020
+    Plugin9_Cmd1010 EVENT_WORK_0x4020
     VMHalt

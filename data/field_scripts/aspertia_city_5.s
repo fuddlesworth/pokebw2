@@ -11,7 +11,7 @@ Script_1:
     ActorSetEyeToEye
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    VMStackPushFlag 2401
+    VMStackPushFlag EVENT_FLAG_0x0961
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0045
@@ -40,7 +40,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2401
+    VMStackPushFlag EVENT_FLAG_0x0961
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0094

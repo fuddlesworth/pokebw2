@@ -64,7 +64,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 361
+    VMStackPushFlag EVENT_FLAG_0x0169
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02E9
@@ -104,7 +104,7 @@ L_00C7:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 361
+    FlagSet EVENT_FLAG_0x0169
     // "A lot of items have effects when Pokémon\nhold them, so be on the lookout for[f000]븀\u0000\nthese items![f000]븁\u0000\nWell, work hard to fill up your Pokédex!\nGood luck!"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_LotItemsHaveEffects, 2, 2, 0
     LastKeyWait
@@ -141,7 +141,7 @@ L_019B:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 361
+    FlagSet EVENT_FLAG_0x0169
     // "A lot of items have effects when Pokémon\nhold them, so be on the lookout for[f000]븀\u0000\nthese items![f000]븁\u0000\nWell, work hard to fill up your Pokédex!\nGood luck!"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_LotItemsHaveEffects, 2, 2, 0
     LastKeyWait
@@ -178,7 +178,7 @@ L_0231:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 361
+    FlagSet EVENT_FLAG_0x0169
     // "A lot of items have effects when Pokémon\nhold them, so be on the lookout for[f000]븀\u0000\nthese items![f000]븁\u0000\nWell, work hard to fill up your Pokédex!\nGood luck!"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_LotItemsHaveEffects, 2, 2, 0
     LastKeyWait
@@ -287,8 +287,8 @@ L_03EC:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    FlagSet 852
-    WorkSetConst 0x40fc, 1
+    FlagSet EVENT_FLAG_0x0354
+    WorkSetConst EVENT_WORK_0x40fc, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -323,10 +323,10 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 6
     VMStackCmp CMP_NE
-    VMStackPushFlag 314
+    VMStackPushFlag EVENT_FLAG_0x013a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -334,8 +334,8 @@ Script_8:
     SEPlay SEQ_SE_FLD_41
     // "I'm from the Castelia Harlequin Hunt![f000]븁\u0000\nYou found the Battle Company\nHarlequin! All riiight!"
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_ImFromCasteliaHarlequin, 0, 0
-    FlagSet 314
-    WorkAdd 0x40e2, 1
+    FlagSet EVENT_FLAG_0x013a
+    WorkAdd EVENT_WORK_0x40e2, 1
     SEWait
     LastKeyWait
     MsgWinCloseAll

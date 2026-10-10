@@ -39,7 +39,7 @@ L_0078:
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0098
     ActorCmdWait
-    WorkSetConst 0x417f, 0
+    WorkSetConst EVENT_WORK_0x417f, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -81,7 +81,7 @@ Script_3:
     // "Trainer Tips!\n[f000]븁\u0000\nTap the yellow button at the top of a\nPC Box to switch to Group Move mode.[f000]븁\u0000\nIt lets you move groups\nof Pokémon in your PC Boxes."
     MsgPlaceSign Route3_Text_TrainerTipsTapYellow, 0
     MsgPlaceSignClose
-    FlagSet 2666
+    FlagSet EVENT_FLAG_0x0a6a
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -194,7 +194,7 @@ L_020B:
 
 Script_10:
     ActorsPauseAll
-    VMStackPushFlag 471
+    VMStackPushFlag EVENT_FLAG_0x01d7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F1
@@ -230,7 +230,7 @@ Script_10:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 471
+    FlagSet EVENT_FLAG_0x01d7
     // "Pokémon Trainers sure\nare good at meeting Pokémon."
     ParentActorMsg MSGFILE_SCRIPT, Route3_Text_PokemonTrainersSureGood, 0, 0
     LastKeyWait

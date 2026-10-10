@@ -22,11 +22,11 @@ Script_2:
     InfoMsg Global10470_Text_ClickSoundReverberates, 2
     LastKeyWait
     InfoMsgClose_0039
-    FlagReset 215
-    FlagReset 214
-    WorkSetConst 0x4094, 0
-    WorkSetConst 0x4095, 0
-    WorkSetConst 0x4096, 0
+    FlagReset EVENT_FLAG_0x00d7
+    FlagReset EVENT_FLAG_0x00d6
+    WorkSetConst EVENT_WORK_0x4094, 0
+    WorkSetConst EVENT_WORK_0x4095, 0
+    WorkSetConst EVENT_WORK_0x4096, 0
     ActorSetGPos 0, 80, 3, 79, 1
     ActorSetGPos 1, 80, 3, 77, 1
     FinishAllEvents
@@ -81,18 +81,18 @@ Script_6:
     EvCameraShake 10, 0, 3, 20, 1, 0, 1, 5
     SEWait
     CallDiving 2
-    FlagReset 215
-    FlagReset 214
-    WorkSetConst 0x4094, 0
-    WorkSetConst 0x4095, 0
-    WorkSetConst 0x4096, 0
+    FlagReset EVENT_FLAG_0x00d7
+    FlagReset EVENT_FLAG_0x00d6
+    WorkSetConst EVENT_WORK_0x4094, 0
+    WorkSetConst EVENT_WORK_0x4095, 0
+    WorkSetConst EVENT_WORK_0x4096, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_7:
     ActorsPauseAll
-    VMStackPushFlag 215
+    VMStackPushFlag EVENT_FLAG_0x00d7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_016F
@@ -106,8 +106,8 @@ Script_7:
     InfoMsg Global10470_Text_WallMovedCanProceed, 2
     LastKeyWait
     InfoMsgClose_0039
-    FlagSet 215
-    WorkSetConst 0x4095, 1
+    FlagSet EVENT_FLAG_0x00d7
+    WorkSetConst EVENT_WORK_0x4095, 1
 
 L_016F:
     FinishAllEvents
@@ -116,7 +116,7 @@ L_016F:
 
 Script_8:
     ActorsPauseAll
-    VMStackPushFlag 214
+    VMStackPushFlag EVENT_FLAG_0x00d6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C7
@@ -130,8 +130,8 @@ Script_8:
     InfoMsg Global10470_Text_WallMovedCanProceed, 2
     LastKeyWait
     InfoMsgClose_0039
-    FlagSet 214
-    WorkSetConst 0x4096, 1
+    FlagSet EVENT_FLAG_0x00d6
+    WorkSetConst EVENT_WORK_0x4096, 1
 
 L_01C7:
     FinishAllEvents

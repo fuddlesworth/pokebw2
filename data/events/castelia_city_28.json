@@ -119,7 +119,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": "0x411a",
+            "var": "EVENT_WORK_0x411a",
             "value": 0,
             "type": 0,
             "grid": {

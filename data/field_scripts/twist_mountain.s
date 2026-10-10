@@ -19,7 +19,7 @@ Script_1:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005B
@@ -29,7 +29,7 @@ Script_2:
     ParentActorMsg MSGFILE_SCRIPT, TwistMountain_Text_ImMarshalOneElite, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 489
+    FlagSet EVENT_FLAG_0x01e9
     VMJump L_0152
 
 L_005B:
@@ -94,8 +94,8 @@ L_013A:
     ActorCmdExec 0, Movement_026C
     ActorCmdWait
     ActorDelete 0
-    FlagSet 668
-    WorkSetConst 0x413b, 1
+    FlagSet EVENT_FLAG_0x029c
+    WorkSetConst EVENT_WORK_0x413b, 1
 
 L_0152:
     FinishAllEvents
@@ -104,7 +104,7 @@ L_0152:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01AD
@@ -119,7 +119,7 @@ Script_3:
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0298
     ActorCmdWait
-    FlagSet 489
+    FlagSet EVENT_FLAG_0x01e9
     VMJump L_024E
 
 L_01AD:
@@ -153,8 +153,8 @@ L_01AD:
     ActorCmdExec 0, Movement_026C
     ActorCmdWait
     ActorDelete 0
-    FlagSet 668
-    WorkSetConst 0x413b, 1
+    FlagSet EVENT_FLAG_0x029c
+    WorkSetConst EVENT_WORK_0x413b, 1
 
 L_024E:
     FinishAllEvents

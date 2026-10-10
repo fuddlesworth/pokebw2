@@ -47,12 +47,12 @@ Script_1:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40e4
+    VMStackPush EVENT_WORK_0x40e4
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00CC
-    WorkSetConst 0x40e4, 1
+    WorkSetConst EVENT_WORK_0x40e4, 1
 
 L_00CC:
     VMStackPush 0x8024
@@ -66,12 +66,12 @@ L_00E5:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40e5
+    VMStackPush EVENT_WORK_0x40e5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0114
-    WorkSetConst 0x40e5, 1
+    WorkSetConst EVENT_WORK_0x40e5, 1
 
 L_0114:
     VMStackPush 0x8024
@@ -85,12 +85,12 @@ L_012D:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40e6
+    VMStackPush EVENT_WORK_0x40e6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_015C
-    WorkSetConst 0x40e6, 1
+    WorkSetConst EVENT_WORK_0x40e6, 1
 
 L_015C:
     VMStackPush 0x8024
@@ -104,12 +104,12 @@ L_0175:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40e7
+    VMStackPush EVENT_WORK_0x40e7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01A4
-    WorkSetConst 0x40e7, 1
+    WorkSetConst EVENT_WORK_0x40e7, 1
 
 L_01A4:
     VMStackPush 0x8024
@@ -123,12 +123,12 @@ L_01BD:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40e8
+    VMStackPush EVENT_WORK_0x40e8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01EC
-    WorkSetConst 0x40e8, 1
+    WorkSetConst EVENT_WORK_0x40e8, 1
 
 L_01EC:
     VMStackPush 0x8024
@@ -142,12 +142,12 @@ L_0205:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40e9
+    VMStackPush EVENT_WORK_0x40e9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0234
-    WorkSetConst 0x40e9, 1
+    WorkSetConst EVENT_WORK_0x40e9, 1
 
 L_0234:
     VMStackPush 0x8024
@@ -161,12 +161,12 @@ L_024D:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40ea
+    VMStackPush EVENT_WORK_0x40ea
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_027C
-    WorkSetConst 0x40ea, 1
+    WorkSetConst EVENT_WORK_0x40ea, 1
 
 L_027C:
     VMStackPush 0x8024
@@ -180,12 +180,12 @@ L_0295:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40eb
+    VMStackPush EVENT_WORK_0x40eb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02C4
-    WorkSetConst 0x40eb, 1
+    WorkSetConst EVENT_WORK_0x40eb, 1
 
 L_02C4:
     VMStackPush 0x8024
@@ -195,14 +195,14 @@ L_02C4:
     WorkSetConst 0x8025, 0
 
 L_02DD:
-    VMStackPush 0x40ec
+    VMStackPush EVENT_WORK_0x40ec
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F6
-    WorkSetConst 0x40ec, 1
+    WorkSetConst EVENT_WORK_0x40ec, 1
 
 L_02F6:
-    WorkGet 0x4000, 0x8025
+    WorkGet EVENT_WORK_0x4000, 0x8025
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8024, 0
     VMCall L_004C
@@ -219,7 +219,7 @@ Script_2:
     SystemMsg VictoryRoad_Text_BasicBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40e4, 2
+    WorkSetConst EVENT_WORK_0x40e4, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -231,7 +231,7 @@ Script_3:
     SystemMsg VictoryRoad_Text_ToxicBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40e5, 2
+    WorkSetConst EVENT_WORK_0x40e5, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -243,7 +243,7 @@ Script_4:
     SystemMsg VictoryRoad_Text_InsectBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40e6, 2
+    WorkSetConst EVENT_WORK_0x40e6, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -255,7 +255,7 @@ Script_5:
     SystemMsg VictoryRoad_Text_BoltBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40e7, 2
+    WorkSetConst EVENT_WORK_0x40e7, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -267,7 +267,7 @@ Script_6:
     SystemMsg VictoryRoad_Text_QuakeBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40e8, 2
+    WorkSetConst EVENT_WORK_0x40e8, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -279,7 +279,7 @@ Script_7:
     SystemMsg VictoryRoad_Text_JetBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40e9, 2
+    WorkSetConst EVENT_WORK_0x40e9, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -291,7 +291,7 @@ Script_8:
     SystemMsg VictoryRoad_Text_LegendBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40ea, 2
+    WorkSetConst EVENT_WORK_0x40ea, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -303,14 +303,14 @@ Script_9:
     SystemMsg VictoryRoad_Text_WaveBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x40eb, 2
+    WorkSetConst EVENT_WORK_0x40eb, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_10:
     ActorsPauseAll
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_047C
@@ -334,8 +334,8 @@ L_045E:
     VMCall L_0498
     BadgeGateCmd_PlayLastGate
     VMCall L_049E
-    WorkSetConst 0x40ec, 2
-    FlagSet 2530
+    WorkSetConst EVENT_WORK_0x40ec, 2
+    FlagSet EVENT_FLAG_0x09e2
     VMJump L_0486
 
 L_047C:
@@ -423,10 +423,10 @@ Script_11:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    FlagSet 901
-    WorkSetConst 0x410d, 1
+    FlagSet EVENT_FLAG_0x0385
+    WorkSetConst EVENT_WORK_0x410d, 1
     HollowRivalCmd_0262 1, 37
-    FlagSet 1031
+    FlagSet EVENT_FLAG_0x0407
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

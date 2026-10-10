@@ -164,7 +164,7 @@
             "model": 360,
             "movement": 0,
             "type": 0,
-            "flag": "0x03f6",
+            "flag": "EVENT_FLAG_0x03f6",
             "script": 10,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -186,12 +186,12 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x409e",
+                    "var": "EVENT_WORK_0x409e",
                     "value": 2,
                     "script": 1
                 },
                 {
-                    "var": "0x409e",
+                    "var": "EVENT_WORK_0x409e",
                     "value": 4,
                     "script": 2
                 }

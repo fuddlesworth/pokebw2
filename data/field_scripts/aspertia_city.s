@@ -46,7 +46,7 @@ Script_5:
     VMHalt
 
 Script_6:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D1
@@ -55,14 +55,14 @@ Script_6:
     VMJump L_0121
 
 L_00D1:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00EA
     VMJump L_0121
 
 L_00EA:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 6
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0121
@@ -71,10 +71,10 @@ L_00EA:
     ActorSetGPos 3, 38, 1, 741, 3
 
 L_0121:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 2
     VMStackCmp CMP_LT
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMStackCmp CMP_OR
@@ -82,21 +82,21 @@ L_0121:
     ActorSetGPos 6, 36, 1, 741, 3
 
 L_0150:
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_016F
     ActorSetGPos 2, 42, 1, 741, 2
 
 L_016F:
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_018E
     ActorSetGPos 2, 40, 1, 741, 1
 
 L_018E:
-    VMStackPush 0x4115
+    VMStackPush EVENT_WORK_0x4115
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B9
@@ -117,7 +117,7 @@ Script_22:
     // "[f000]Ā\u0001\u0001: Oh, I get it![f000]븁\u0000\nThe outlook is Aspertia's\nmost famous spot![f000]븁\u0000\nI'll bet Bianca is up there\nlooking at the scenery![f000]븁\u0000\nC'mon!\nGo get your Pokémon already![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, AspertiaCity_Text_OhGetOutlookAspertias, 254, 0, 0
     MsgWinCloseAll
-    FlagReset 745
+    FlagReset EVENT_FLAG_0x02e9
     ActorAdd 0
     PlayerGetGPos 0x8021, 0x8022
     ActorSetGPos 0, 0x8021, 7, 720, 0
@@ -139,8 +139,8 @@ Script_22:
     ActorCmdWait
 
 L_0255:
-    WorkSetConst 0x40a4, 1
-    WorkSetConst 0x40a1, 2
+    WorkSetConst EVENT_WORK_0x40a4, 1
+    WorkSetConst EVENT_WORK_0x40a1, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -149,7 +149,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 2
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_029B
@@ -161,7 +161,7 @@ Script_1:
     VMJump L_02D1
 
 L_029B:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C7
@@ -183,7 +183,7 @@ L_02D1:
 
 Script_7:
     ActorsPauseAll
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 2
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_02F8
@@ -191,7 +191,7 @@ Script_7:
     VMJump L_03E5
 
 L_02F8:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0317
@@ -199,7 +199,7 @@ L_02F8:
     VMJump L_03E5
 
 L_0317:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0346
@@ -212,7 +212,7 @@ L_0317:
     VMJump L_03E5
 
 L_0346:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0373
@@ -225,7 +225,7 @@ L_0346:
     VMJump L_03E5
 
 L_0373:
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D1
@@ -344,7 +344,7 @@ L_050D:
     LastKeyWait
     MsgWinCloseAll
     BGMChangeMap
-    WorkSetConst 0x40a1, 3
+    WorkSetConst EVENT_WORK_0x40a1, 3
     VMReturn
     .balign 4, 0
 
@@ -376,7 +376,7 @@ L_0538:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_059D
-    WorkSetConst 0x4030, 0
+    WorkSetConst EVENT_WORK_0x4030, 0
     Cmd_0209 8, 3
     WorkSetConst 0x8025, 495
     WordSetPokeSpecies 1, 495
@@ -388,7 +388,7 @@ L_059D:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05D2
-    WorkSetConst 0x4030, 1
+    WorkSetConst EVENT_WORK_0x4030, 1
     Cmd_0209 8, 1
     WorkSetConst 0x8025, 498
     WordSetPokeSpecies 1, 498
@@ -396,7 +396,7 @@ L_059D:
     VMJump L_05EE
 
 L_05D2:
-    WorkSetConst 0x4030, 2
+    WorkSetConst EVENT_WORK_0x4030, 2
     Cmd_0209 8, 2
     WorkSetConst 0x8025, 501
     WordSetPokeSpecies 1, 501
@@ -411,7 +411,7 @@ L_05EE:
     MsgWaitAdvance
     InfoMsgClose
     PokePartyAdd 0x8010, 0x8025, 0, 5
-    FlagSet 2401
+    FlagSet EVENT_FLAG_0x0961
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8024, 0
     // "Bianca: Oh, wow! You and [f000]ā\u0001\u0002\nare a perfect match![f000]븁\u0000\nBy the way, would you like to give\na nickname to the Pokémon you chose?"
@@ -436,7 +436,7 @@ L_0658:
     // "Bianca: Now you've got your Pokémon,\nso I'll give you this, too--a Pokédex![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, AspertiaCity_Text_BiancaNowYouveGot, 2, 1, 0
     MsgWinCloseAll
-    FlagSet 2402
+    FlagSet EVENT_FLAG_0x0962
     MEPlay SEQ_ME_KEYITEM
     TrainerCardGetSex 0x8010
     VMStackPush 0x8010
@@ -460,7 +460,7 @@ L_069F:
     ActorMsg MSGFILE_SCRIPT, AspertiaCity_Text_BiancaWantKnowWhat, 2, 1, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40a1, 4
+    WorkSetConst EVENT_WORK_0x40a1, 4
     VMReturn
 
 L_06C6:
@@ -538,7 +538,7 @@ Script_24:
 
 Script_9:
     ActorsPauseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07D8
@@ -546,7 +546,7 @@ Script_9:
     VMJump L_07FB
 
 L_07D8:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07F6
@@ -740,7 +740,7 @@ L_0A50:
     MsgWinCloseAll
     ActorCmdExec 2, Movement_1E94
     ActorCmdWait
-    WorkSetConst 0x40a1, 5
+    WorkSetConst EVENT_WORK_0x40a1, 5
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -764,7 +764,7 @@ Script_8:
 
 L_0B1A:
     WordSetLoadRivalName 1
-    WorkCmpConst 0x4030, 0
+    WorkCmpConst EVENT_WORK_0x4030, 0
     VMJumpIf CMP_EQ, L_0B30
     VMJump L_0B3B
 
@@ -773,7 +773,7 @@ L_0B30:
     VMJump L_0B77
 
 L_0B3B:
-    WorkCmpConst 0x4030, 1
+    WorkCmpConst EVENT_WORK_0x4030, 1
     VMJumpIf CMP_EQ, L_0B4E
     VMJump L_0B59
 
@@ -782,7 +782,7 @@ L_0B4E:
     VMJump L_0B77
 
 L_0B59:
-    WorkCmpConst 0x4030, 2
+    WorkCmpConst EVENT_WORK_0x4030, 2
     VMJumpIf CMP_EQ, L_0B6C
     VMJump L_0B77
 
@@ -797,7 +797,7 @@ L_0B77:
     // "[f000]Ā\u0001\u0001: Let's see how good\na Trainer you are![f000]븁\u0000\nI'll use my [f000]ā\u0001\u0003\nthat I raised from an Egg![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, AspertiaCity_Text_LetsSeeHowGood, 0, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BB8
@@ -805,7 +805,7 @@ L_0B77:
     VMJump L_0BE1
 
 L_0BB8:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BD9
@@ -850,7 +850,7 @@ L_0C5C:
     ActorWalkRoute 0, 37, 724, 2, 8, 0
 
 L_0C6A:
-    FlagSet 745
+    FlagSet EVENT_FLAG_0x02e9
     VMSleep 20
     ActorCmdExec 255, Movement_1EDC
     BGMChangeMap
@@ -960,7 +960,7 @@ L_0D8C:
     MapChangeWarp ZONE_ASPERTIA_CITY_POKEMON_CENTER, 7, 19, 0
     EvCameraRebind
     EvCameraEnd
-    FlagSet 745
+    FlagSet EVENT_FLAG_0x02e9
     WorkSetConst 0x8028, 0
     VMReturn
 
@@ -984,7 +984,7 @@ Movement_0E90:
 
 Script_4:
     ActorsPauseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0EB8
@@ -992,7 +992,7 @@ Script_4:
     VMJump L_0EDB
 
 L_0EB8:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0ED6
@@ -1079,7 +1079,7 @@ L_0EDB:
     ActorCmdExec 255, Movement_1EE4
     ActorCmdExec 3, Movement_1ED4
     ActorCmdWait
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1077
@@ -1087,7 +1087,7 @@ L_0EDB:
     VMJump L_109A
 
 L_1077:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1095
@@ -1102,10 +1102,10 @@ L_109A:
     ActorMsg MSGFILE_SCRIPT, AspertiaCity_Text_MomBonVoyageTake, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40a1, 7
-    FlagSet 742
-    FlagSet 740
-    FlagSet 803
+    WorkSetConst EVENT_WORK_0x40a1, 7
+    FlagSet EVENT_FLAG_0x02e6
+    FlagSet EVENT_FLAG_0x02e4
+    FlagSet EVENT_FLAG_0x0323
     HollowRivalCmd_0262 4, 1
     FinishAllEvents
     ActorsUnpauseAll
@@ -1144,7 +1144,7 @@ Script_23:
     EvCameraUnbind
     EvCameraMoveTo 9688, 0, 0xed000, 0x278000, 0x1000f, 0x2e2b000, 24
     SEPlay SEQ_SE_KAIDAN
-    FlagReset 741
+    FlagReset EVENT_FLAG_0x02e5
     ActorAdd 7
     SEWait
     EvCameraWait
@@ -1269,12 +1269,12 @@ Script_23:
     VMCall L_1406
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40a8, 3
-    WorkSetConst 0x40ab, 1
-    WorkSetConst 0x4153, 1
-    FlagSet 741
-    FlagSet 106
-    FlagReset 1032
+    WorkSetConst EVENT_WORK_0x40a8, 3
+    WorkSetConst EVENT_WORK_0x40ab, 1
+    WorkSetConst EVENT_WORK_0x4153, 1
+    FlagSet EVENT_FLAG_0x02e5
+    FlagSet EVENT_FLAG_0x006a
+    FlagReset EVENT_FLAG_0x0408
     HollowRivalCmd_0262 3, 1
     TrainerCardCmd_00E7 1
     TrainerCardCmd_00E7 2
@@ -1489,9 +1489,9 @@ L_16B6:
     VMStackPop 0x8002
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WorkSetConst 0x40a1, 1
-    FlagSet 744
-    FlagSet 745
+    WorkSetConst EVENT_WORK_0x40a1, 1
+    FlagSet EVENT_FLAG_0x02e8
+    FlagSet EVENT_FLAG_0x02e9
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1588,7 +1588,7 @@ L_186F:
 
 Script_11:
     ActorsPauseAll
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 1
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_18B0
@@ -1615,7 +1615,7 @@ L_18C4:
 
 Script_31:
     ActorsPauseAll
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 1
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_18F9
@@ -1736,7 +1736,7 @@ Script_16:
 
 Script_17:
     ActorsPauseAll
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 1
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_1A1D
@@ -1802,9 +1802,9 @@ Script_25:
     ActorCmdWait
     ActorDelete 0
     ActorDelete 3
-    FlagSet 745
-    FlagSet 744
-    WorkSetConst 0x4115, 2
+    FlagSet EVENT_FLAG_0x02e9
+    FlagSet EVENT_FLAG_0x02e8
+    WorkSetConst EVENT_WORK_0x4115, 2
     HollowRivalCmd_0262 0, 10
     HollowRivalCmd_0262 1, 41
     FinishAllEvents
@@ -1941,7 +1941,7 @@ L_1D8B:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    FlagSet 1007
+    FlagSet EVENT_FLAG_0x03ef
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -21,7 +21,7 @@ Script_1:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 296
+    VMStackPushFlag EVENT_FLAG_0x0128
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0051
@@ -43,7 +43,7 @@ L_0067:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 296
+    VMStackPushFlag EVENT_FLAG_0x0128
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008E
@@ -138,7 +138,7 @@ L_0146:
     ActorMsg MSGFILE_SCRIPT, ChargestoneCave3_Text_Nuggetaboutit, 1, 3, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 296
+    FlagSet EVENT_FLAG_0x0128
     VMReturn
 
 Movement_01D8:

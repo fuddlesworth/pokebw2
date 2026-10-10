@@ -8,7 +8,7 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0031
@@ -19,7 +19,7 @@ L_0031:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0062
@@ -60,7 +60,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 385
+    VMStackPushFlag EVENT_FLAG_0x0181
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0126
@@ -83,7 +83,7 @@ Script_4:
     ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate7_Text_IfKeepGettingExtra, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 385
+    FlagSet EVENT_FLAG_0x0181
     VMJump L_0120
 
 L_0112:

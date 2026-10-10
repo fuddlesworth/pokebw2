@@ -65,7 +65,7 @@ Script_1:
     FadeWait
     EvCameraWait
     ActorCmdWait
-    VMStackPush 0x4087
+    VMStackPush EVENT_WORK_0x4087
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0153
@@ -78,7 +78,7 @@ L_0153:
 L_0157:
     EvCameraRebind
     EvCameraEnd
-    VMStackPush 0x4087
+    VMStackPush EVENT_WORK_0x4087
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0180

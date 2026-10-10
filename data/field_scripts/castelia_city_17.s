@@ -68,7 +68,7 @@ L_00F6:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity17_Text_ThinkingWhenWinIts, 2, 5, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40fd, 1
+    WorkSetConst EVENT_WORK_0x40fd, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

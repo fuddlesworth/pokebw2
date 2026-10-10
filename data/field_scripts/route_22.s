@@ -38,7 +38,7 @@ L_006B:
 
 L_0079:
     ActorCmdWait
-    FlagReset 811
+    FlagReset EVENT_FLAG_0x032b
     ActorAdd 7
     PlayerGetGPos 0x8021, 0x8022
     BGMPlay SEQ_BGM_E_ACHROMA
@@ -260,11 +260,11 @@ L_040F:
     BGMChangeMap
     MapReplaceSetEvent 5, 1, 1
     MapReplaceSetEvent 6, 0, 0
-    FlagSet 811
-    FlagSet 368
-    WorkSetConst 0x4044, 1
-    WorkSetConst 0x4106, 1
-    WorkSetConst 0x40e3, 2
+    FlagSet EVENT_FLAG_0x032b
+    FlagSet EVENT_FLAG_0x0170
+    WorkSetConst EVENT_WORK_0x4044, 1
+    WorkSetConst EVENT_WORK_0x4106, 1
+    WorkSetConst EVENT_WORK_0x40e3, 2
     HollowRivalCmd_0262 1, 29
     FinishAllEvents
     ActorsUnpauseAll
@@ -280,7 +280,7 @@ Script_2:
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
-    VMStackPushFlag 329
+    VMStackPushFlag EVENT_FLAG_0x0149
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_049F
@@ -302,7 +302,7 @@ L_04B9:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04E0
-    FlagSet 810
+    FlagSet EVENT_FLAG_0x032a
     ActorDelete 6
     CallWildBattleEnd
     VMJump L_04E2
@@ -317,7 +317,7 @@ L_04E2:
     VMJump L_0503
 
 L_04F9:
-    FlagSet 330
+    FlagSet EVENT_FLAG_0x014a
     VMJump L_0529
 
 L_0503:
@@ -331,7 +331,7 @@ L_0523:
     VMJump L_0529
 
 L_0529:
-    VMStackPushFlag 330
+    VMStackPushFlag EVENT_FLAG_0x014a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0546
@@ -341,7 +341,7 @@ L_0529:
     InfoMsgClose
 
 L_0546:
-    FlagSet 329
+    FlagSet EVENT_FLAG_0x0149
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

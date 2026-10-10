@@ -12,7 +12,7 @@
 
 Script_2:
     ActorsPauseAll
-    VMStackPush 0x40b1
+    VMStackPush EVENT_WORK_0x40b1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0150
@@ -68,8 +68,8 @@ Script_2:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x40b1, 1
-    FlagReset 751
+    WorkSetConst EVENT_WORK_0x40b1, 1
+    FlagReset EVENT_FLAG_0x02ef
     VMJump L_0164
 
 L_0150:

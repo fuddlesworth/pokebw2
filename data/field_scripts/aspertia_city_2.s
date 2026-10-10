@@ -26,10 +26,10 @@ Script_1:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40a3
+    VMStackPush EVENT_WORK_0x40a3
     VMStackPushConst 1
     VMStackCmp CMP_GE
-    VMStackPushFlag 739
+    VMStackPushFlag EVENT_FLAG_0x02e3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -45,14 +45,14 @@ Script_18:
     VMHalt
 
 L_0091:
-    VMStackPushFlag 736
+    VMStackPushFlag EVENT_FLAG_0x02e0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AE
     ObjInitPointGPos 7, 11, 0, 1
 
 L_00AE:
-    VMStackPushFlag 737
+    VMStackPushFlag EVENT_FLAG_0x02e1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00CB
@@ -67,7 +67,7 @@ Script_17:
     EvCameraUnbind
     EvCameraMoveTo 9688, 0, 0xed000, 0x58000, 0, 0xa8000, 1
     EvCameraWait
-    FlagReset 740
+    FlagReset EVENT_FLAG_0x02e4
     ActorAdd 0
     ActorSetGPos 0, 5, 0, 10, 0
     FadeInBlackQ
@@ -167,7 +167,7 @@ L_025B:
 L_0284:
     // "OK!\nStep two completed![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, AspertiaCity2_Text_OkStepTwoCompleted, 0, 1, 0
-    VMStackPushFlag 1
+    VMStackPushFlag EVENT_FLAG_0x0001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02BC
@@ -204,7 +204,7 @@ L_0308:
     ActorCmdWait
     ActorCmdExec 0, Movement_0978
     ActorCmdWait
-    WorkSetConst 0x40a0, 1
+    WorkSetConst EVENT_WORK_0x40a0, 1
     HollowRivalCmd_0263 4
     FinishAllEvents
     ActorsUnpauseAll
@@ -295,17 +295,17 @@ Script_16:
     ActorMsg MSGFILE_SCRIPT, AspertiaCity2_Text_MomNoMatterWhat, 0, 1, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40a0, 3
-    FlagReset 745
-    FlagReset 744
-    WorkSetConst 0x4115, 1
+    WorkSetConst EVENT_WORK_0x40a0, 3
+    FlagReset EVENT_FLAG_0x02e9
+    FlagReset EVENT_FLAG_0x02e8
+    WorkSetConst EVENT_WORK_0x4115, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0515
@@ -313,7 +313,7 @@ Script_4:
     VMJump L_0575
 
 L_0515:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0542
@@ -326,7 +326,7 @@ L_0515:
     VMJump L_0575
 
 L_0542:
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 2
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_056F
@@ -349,7 +349,7 @@ L_0575:
 L_057B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 999
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05AD
@@ -366,7 +366,7 @@ L_05AD:
     ParentActorMsg MSGFILE_SCRIPT, AspertiaCity2_Text_MomWelcomeBackHey, 0, 0
     MsgWinCloseAll
     VMCall L_05DE
-    Random 0x400a, 5
+    Random EVENT_WORK_0x400a, 5
     VMCall L_060C
     ParentActorMsg MSGFILE_SCRIPT, 0x8008, 0, 0
     LastKeyWait
@@ -381,13 +381,13 @@ L_05DE:
     MEWait
     FadeEx 3, 16, 0, 2
     FadeExWait
-    WorkSetConst 0x400f, 999
+    WorkSetConst EVENT_WORK_0x400f, 999
     RecordAdd 72, 1
     VMReturn
 
 L_060C:
     WordSetPlayerName 0
-    WorkCmpConst 0x400a, 0
+    WorkCmpConst EVENT_WORK_0x400a, 0
     VMJumpIf CMP_EQ, L_0622
     VMJump L_062E
 
@@ -396,7 +396,7 @@ L_0622:
     VMJump L_06AA
 
 L_062E:
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0641
     VMJump L_064D
 
@@ -405,7 +405,7 @@ L_0641:
     VMJump L_06AA
 
 L_064D:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0660
     VMJump L_066C
 
@@ -414,7 +414,7 @@ L_0660:
     VMJump L_06AA
 
 L_066C:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_067F
     VMJump L_068B
 
@@ -423,7 +423,7 @@ L_067F:
     VMJump L_06AA
 
 L_068B:
-    WorkCmpConst 0x400a, 4
+    WorkCmpConst EVENT_WORK_0x400a, 4
     VMJumpIf CMP_EQ, L_069E
     VMJump L_06AA
 
@@ -436,10 +436,10 @@ L_06AA:
 
 Script_5:
     ActorsPauseAll
-    VMStackPush 0x4115
+    VMStackPush EVENT_WORK_0x4115
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPush 0x4115
+    VMStackPush EVENT_WORK_0x4115
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -453,7 +453,7 @@ Script_5:
     VMJump L_071E
 
 L_06EB:
-    VMStackPush 0x4115
+    VMStackPush EVENT_WORK_0x4115
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_070A

@@ -19,7 +19,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 457
+    VMStackPushFlag EVENT_FLAG_0x01c9
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0077
@@ -39,13 +39,13 @@ L_0077:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01DD
-    VMStackPushFlag 456
+    VMStackPushFlag EVENT_FLAG_0x01c8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BD
     // "Oh!\nYou're a newcomer, aren't you?[f000]븁\u0000\nThen, let's battle without saying a word!\nAre you ready?"
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_OhYoureNewcomerArent, 0, 0
-    FlagSet 456
+    FlagSet EVENT_FLAG_0x01c8
     VMJump L_00C7
 
 L_00BD:
@@ -75,7 +75,7 @@ L_0115:
     CallTrainerLose
 
 L_0117:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B5
@@ -107,7 +107,7 @@ L_0117:
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_BreadWillHaveTons, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 457
+    FlagSet EVENT_FLAG_0x01c9
     VMJump L_01AF
 
 L_01AB:
@@ -136,7 +136,7 @@ L_01D7:
     VMJump L_0289
 
 L_01DD:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_027B
@@ -168,7 +168,7 @@ L_01DD:
     ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_BreadWillHaveTons, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 457
+    FlagSet EVENT_FLAG_0x01c9
     VMJump L_0275
 
 L_0271:

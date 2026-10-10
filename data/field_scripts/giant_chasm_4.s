@@ -20,7 +20,7 @@ Script_8:
     VMHalt
 
 Script_9:
-    VMStackPush 0x4071
+    VMStackPush EVENT_WORK_0x4071
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0093
@@ -140,7 +140,7 @@ Script_1:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02EC
-    FlagReset 882
+    FlagReset EVENT_FLAG_0x0372
     ActorAdd 3
     ActorAdd 13
     CallTrainerBattleEnd
@@ -223,10 +223,10 @@ L_02EE:
     EvCameraRebind
     EvCameraEnd
     ActorDelete 6
-    FlagSet 884
-    WorkSetConst 0x4071, 1
-    WorkSetConst 0x4072, 1
-    FlagSet 975
+    FlagSet EVENT_FLAG_0x0374
+    WorkSetConst EVENT_WORK_0x4071, 1
+    WorkSetConst EVENT_WORK_0x4072, 1
+    FlagSet EVENT_FLAG_0x03cf
     HollowRivalCmd_0262 0, 6
     HollowRivalCmd_0262 1, 35
     HollowRivalCmd_0262 2, 9

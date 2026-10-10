@@ -41,8 +41,8 @@ Script_4:
     ActorsPauseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    FlagReset 838
-    FlagReset 839
+    FlagReset EVENT_FLAG_0x0346
+    FlagReset EVENT_FLAG_0x0347
     PlayerGetGPos 0x8022, 0x8023
     BGMPlayPush SEQ_BGM_E_7_SAGE
     ActorCmdExec 4, Movement_0488
@@ -122,7 +122,7 @@ L_00DD:
     ActorCmdWait
     ActorCmdExec 255, Movement_03A8
     ActorCmdWait
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0215
@@ -130,7 +130,7 @@ L_00DD:
     VMJump L_0242
 
 L_0215:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0238
@@ -180,12 +180,12 @@ L_0242:
     ActorCmdExec 255, Movement_0490
     ActorCmdExec 251, Movement_0498
     ActorCmdWait
-    FlagSet 838
-    FlagSet 839
-    WorkSetConst 0x4100, 2
-    FlagReset 855
-    WorkSetConst 0x4106, 4
-    WorkSetConst 0x4044, 2
+    FlagSet EVENT_FLAG_0x0346
+    FlagSet EVENT_FLAG_0x0347
+    WorkSetConst EVENT_WORK_0x4100, 2
+    FlagReset EVENT_FLAG_0x0357
+    WorkSetConst EVENT_WORK_0x4106, 4
+    WorkSetConst EVENT_WORK_0x4044, 2
     MapReplaceSetEvent 5, 0, 0
     MapReplaceSetEvent 6, 0, 0
     FadeOutBlackQ
@@ -218,7 +218,7 @@ L_038A:
     VMJump L_0398
 
 L_0392:
-    FlagSet 839
+    FlagSet EVENT_FLAG_0x0347
     CallTrainerLose
 
 L_0398:

@@ -20,17 +20,17 @@ Script_5:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     WorkSetConst 0x8008, 13
-    WorkAdd 0x8008, 0x4181
+    WorkAdd 0x8008, EVENT_WORK_0x4181
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorMsg MSGFILE_SCRIPT, 0x8008, 254, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    VMStackPush 0x4181
+    VMStackPush EVENT_WORK_0x4181
     VMStackPushConst 2
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0073
-    WorkAdd 0x4181, 1
+    WorkAdd EVENT_WORK_0x4181, 1
 
 L_0073:
     FinishAllEvents
@@ -43,17 +43,17 @@ Script_6:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     WorkSetConst 0x8008, 23
-    WorkAdd 0x8008, 0x4174
+    WorkAdd 0x8008, EVENT_WORK_0x4174
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorMsg MSGFILE_SCRIPT, 0x8008, 254, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    VMStackPush 0x4174
+    VMStackPush EVENT_WORK_0x4174
     VMStackPushConst 4
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00C0
-    WorkAdd 0x4174, 1
+    WorkAdd EVENT_WORK_0x4174, 1
 
 L_00C0:
     FinishAllEvents
@@ -62,8 +62,8 @@ L_00C0:
 
 Script_3:
     ActorsPauseAll
-    RTGetZoneID 0x400f
-    VMStackPush 0x400f
+    RTGetZoneID EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 273
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F9
@@ -93,17 +93,17 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     WordSetPlayerName 0
     WorkSetConst 0x8008, 2
-    WorkAdd 0x8008, 0x4195
+    WorkAdd 0x8008, EVENT_WORK_0x4195
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorMsg MSGFILE_SCRIPT, 0x8008, 254, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    VMStackPush 0x4195
+    VMStackPush EVENT_WORK_0x4195
     VMStackPushConst 4
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0157
-    WorkAdd 0x4195, 1
+    WorkAdd EVENT_WORK_0x4195, 1
 
 L_0157:
     FinishAllEvents
@@ -111,7 +111,7 @@ L_0157:
     VMHalt
 
 Script_1:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0172
@@ -124,7 +124,7 @@ L_0172:
     VMHalt
 
 Script_2:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_019B

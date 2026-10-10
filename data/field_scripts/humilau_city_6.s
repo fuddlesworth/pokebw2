@@ -15,15 +15,15 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 15
+    VMStackPushFlag EVENT_FLAG_0x000f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0051
-    PedometerGet 0x400e
-    DebugPrint 0x400e
+    PedometerGet EVENT_WORK_0x400e
+    DebugPrint EVENT_WORK_0x400e
 
 L_0051:
-    VMStackPushFlag 2768
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E
@@ -36,10 +36,10 @@ L_0051:
     VMJump L_032A
 
 L_007E:
-    VMStackPushFlag 2768
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 15
+    VMStackPushFlag EVENT_FLAG_0x000f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -53,7 +53,7 @@ L_007E:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CD
-    WorkSetConst 0x400e, 0
+    WorkSetConst EVENT_WORK_0x400e, 0
     // "Oh my!\nYou're very understanding![f000]븁\u0000\nWonderful. Please walk a lot\nwith my cute Mienfoo![f000]븁\u0000\nBut...\nPlease don't go out of this house![f000]븁\u0000\nIt's dangerous outside.\nAll right. Take good care of my Mienfoo![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_OhYoureVeryUnderstanding, 1, 0, 0
     MsgWinCloseAll
@@ -106,8 +106,8 @@ L_016F:
     VMStackPop 0x8001
     VMStackPop 0x8000
     PedometerStart
-    WorkSetConst 0x400f, 1
-    FlagSet 15
+    WorkSetConst EVENT_WORK_0x400f, 1
+    FlagSet EVENT_FLAG_0x000f
     VMJump L_01DD
 
 L_01CD:
@@ -120,10 +120,10 @@ L_01DD:
     VMJump L_032A
 
 L_01E3:
-    VMStackPush 0x400e
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 365
     VMStackCmp CMP_LT
-    VMStackPushFlag 15
+    VMStackPushFlag EVENT_FLAG_0x000f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -153,9 +153,9 @@ L_01E3:
     VMStackPop 0x8000
     VMCall L_0330
     PedometerEnd
-    WorkSetConst 0x400f, 0
-    FlagSet 2768
-    FlagReset 15
+    WorkSetConst EVENT_WORK_0x400f, 0
+    FlagSet EVENT_FLAG_DAILY_0x0ad0
+    FlagReset EVENT_FLAG_0x000f
     VMJump L_02A6
 
 L_0296:
@@ -193,10 +193,10 @@ L_02AC:
     LastKeyWait
     MsgWinCloseAll
     PedometerEnd
-    WorkSetConst 0x400f, 0
-    FlagSet 2768
-    FlagSet 2783
-    FlagReset 15
+    WorkSetConst EVENT_WORK_0x400f, 0
+    FlagSet EVENT_FLAG_DAILY_0x0ad0
+    FlagSet EVENT_FLAG_DAILY_0x0adf
+    FlagReset EVENT_FLAG_0x000f
 
 L_032A:
     FinishAllEvents
@@ -481,10 +481,10 @@ Movement_071C:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2768
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -500,10 +500,10 @@ Script_2:
     VMJump L_08B0
 
 L_076F:
-    VMStackPushFlag 2768
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2783
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0adf
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -519,10 +519,10 @@ L_076F:
     VMJump L_08B0
 
 L_07B4:
-    VMStackPushFlag 2768
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2783
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0adf
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -540,11 +540,11 @@ L_07B4:
 L_07F9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    DebugPrint 0x400e
+    DebugPrint EVENT_WORK_0x400e
     WordSetPlayerName 0
-    PedometerGet 0x400e
+    PedometerGet EVENT_WORK_0x400e
     PVPlay 619, 0
-    VMStackPush 0x400e
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 99
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0835
@@ -556,7 +556,7 @@ L_07F9:
     VMJump L_08B0
 
 L_0835:
-    VMStackPush 0x400e
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 199
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_085A
@@ -568,7 +568,7 @@ L_0835:
     VMJump L_08B0
 
 L_085A:
-    VMStackPush 0x400e
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 299
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_087F
@@ -580,7 +580,7 @@ L_085A:
     VMJump L_08B0
 
 L_087F:
-    VMStackPush 0x400e
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 364
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_08A4
@@ -606,7 +606,7 @@ L_08B0:
 Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 15
+    VMStackPushFlag EVENT_FLAG_0x000f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08DF
@@ -641,7 +641,7 @@ L_091A:
 Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 15
+    VMStackPushFlag EVENT_FLAG_0x000f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0949

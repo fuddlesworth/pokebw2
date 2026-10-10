@@ -23,7 +23,7 @@ Script_1:
     VMJump L_0096
 
 L_0051:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0080
@@ -122,11 +122,11 @@ L_0148:
     TrainerFlagSet TRAINER_ACE_TRAINER_MELINA
     TrainerFlagSet TRAINER_ACE_TRAINER_JEANNE
     TrainerFlagSet TRAINER_ACE_TRAINER_SABLE
-    FlagSet 2421
-    WorkSetConst 0x40df, 1
-    WorkSetConst 0x40e3, 1
-    FlagReset 810
-    FlagSet 1002
+    FlagSet EVENT_FLAG_0x0975
+    WorkSetConst EVENT_WORK_0x40df, 1
+    WorkSetConst EVENT_WORK_0x40e3, 1
+    FlagReset EVENT_FLAG_0x032a
+    FlagSet EVENT_FLAG_0x03ea
     HollowRivalCmd_0262 1, 27
     PlayerGetDir 0x8020
     ActorCmdExec 0, Movement_0434
@@ -217,7 +217,7 @@ Movement_0310:
 
 Script_2:
     ActorsPauseAll
-    VMStackPush 0x411f
+    VMStackPush EVENT_WORK_0x411f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_034B
@@ -235,7 +235,7 @@ L_034B:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03DB
-    VMStackPushFlag 117
+    VMStackPushFlag EVENT_FLAG_0x0075
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03C1
@@ -255,7 +255,7 @@ L_034B:
     ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_HumilausPokemonGymProceed, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 117
+    FlagSet EVENT_FLAG_0x0075
     VMJump L_03D5
 
 L_03C1:

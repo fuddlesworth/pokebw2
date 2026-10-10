@@ -132,7 +132,7 @@ L_0202:
     VMJump L_0250
 
 L_0215:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_023A

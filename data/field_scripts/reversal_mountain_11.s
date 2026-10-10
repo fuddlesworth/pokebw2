@@ -12,16 +12,16 @@
     WorkSetConst 0x8023, 0
 
 Script_1:
-    VMStackPushFlag 900
+    VMStackPushFlag EVENT_FLAG_0x0384
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4074
+    VMStackPush EVENT_WORK_0x4074
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0057
-    FlagSet 900
-    WorkSetConst 0x4074, 1
+    FlagSet EVENT_FLAG_0x0384
+    WorkSetConst EVENT_WORK_0x4074, 1
 
 L_0057:
     VMHalt
@@ -81,7 +81,7 @@ L_0146:
     // "Heatran is a Pokémon with\nmagma-like blood flowing through it![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, ReversalMountain11_Text_HeatranPokemonMagmaLike, 254, 0, 0
     MsgWinCloseAll
-    WorkSetConst 0x4121, 3
+    WorkSetConst EVENT_WORK_0x4121, 3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -97,8 +97,8 @@ Script_2:
     VMJumpIf CMP_STACK, L_01BA
     MsgWinCloseAll
     VMSleep 8
-    FlagReset 900
-    WorkSetConst 0x4074, 2
+    FlagReset EVENT_FLAG_0x0384
+    WorkSetConst EVENT_WORK_0x4074, 2
     PVPlay 485, 0
     // "Gwogobo gwobobobo!"
     InfoMsg ReversalMountain11_Text_GwogoboGwobobobo, 1
@@ -136,8 +136,8 @@ Script_3:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_021A
-    FlagSet 900
-    WorkSetConst 0x4074, 3
+    FlagSet EVENT_FLAG_0x0384
+    WorkSetConst EVENT_WORK_0x4074, 3
     ActorDelete 0
     CallWildBattleEnd
     VMJump L_021C
@@ -152,7 +152,7 @@ L_021C:
     VMJump L_023D
 
 L_0233:
-    FlagSet 380
+    FlagSet EVENT_FLAG_0x017c
     VMJump L_0263
 
 L_023D:
@@ -166,7 +166,7 @@ L_025D:
     VMJump L_0263
 
 L_0263:
-    VMStackPushFlag 380
+    VMStackPushFlag EVENT_FLAG_0x017c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0280

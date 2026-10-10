@@ -80,7 +80,7 @@ Script_3:
     WorkSetConst 0x8021, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2761
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_025F
@@ -113,8 +113,8 @@ Script_3:
     MEWait
     FadeEx 3, 16, 0, 2
     FadeExWait
-    Random 0x400a, 100
-    VMStackPush 0x400a
+    Random EVENT_WORK_0x400a, 100
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 5
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_01CA
@@ -126,7 +126,7 @@ Script_3:
     VMJump L_0213
 
 L_01CA:
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 25
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_01FB
@@ -145,7 +145,7 @@ L_01FB:
     ActorMsgClose
 
 L_0213:
-    FlagSet 2761
+    FlagSet EVENT_FLAG_DAILY_0x0ac9
     VMJump L_022D
 
 L_021D:

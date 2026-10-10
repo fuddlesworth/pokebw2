@@ -24,22 +24,22 @@ Script_9:
     VMStackPush 0x8023
     VMStackPushConst 4
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2774
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_007B
-    FlagReset 902
+    FlagReset EVENT_FLAG_0x0386
     VMJump L_007F
 
 L_007B:
-    FlagSet 902
+    FlagSet EVENT_FLAG_0x0386
 
 L_007F:
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -48,10 +48,10 @@ L_007F:
     VMJump L_00D7
 
 L_00AE:
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 0
     VMStackCmp CMP_NE
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -227,17 +227,17 @@ L_039D:
     ActorCmdWait
     ActorDelete 15
     BGMChangeMap
-    WorkSetConst 0x40b6, 3
-    FlagSet 758
-    FlagSet 757
-    FlagReset 988
+    WorkSetConst EVENT_WORK_0x40b6, 3
+    FlagSet EVENT_FLAG_0x02f6
+    FlagSet EVENT_FLAG_0x02f5
+    FlagReset EVENT_FLAG_0x03dc
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_6:
     ActorsPauseAll
-    VMStackPush 0x40b6
+    VMStackPush EVENT_WORK_0x40b6
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_044E
@@ -381,7 +381,7 @@ Script_1:
     // "Trainer Tips![f000]븁\u0000\n\nPokémon have a source of energy\nfor using moves.[f000]븁\u0000\nIt's called PP, meaning Power Points.\nThey have PP for each move.[f000]븁\u0000\nWhen a move has no PP remaining,\nthat Pokémon cannot use that move.[f000]븁\u0000\nThat's a good time to head for\nthe Pokémon Center!"
     MsgPlaceSign Route4_Text_TrainerTipsPokemonHave, 0
     MsgPlaceSignClose
-    FlagSet 2667
+    FlagSet EVENT_FLAG_0x0a6b
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -427,8 +427,8 @@ Script_8:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0620
-    FlagSet 902
-    FlagSet 2774
+    FlagSet EVENT_FLAG_0x0386
+    FlagSet EVENT_FLAG_DAILY_0x0ad6
     ActorDelete 25
     CallWildBattleEnd
     VMJump L_0622

@@ -16,7 +16,7 @@ Script_9:
     ActorsPauseAll
     FadeInBlackQ
     FadeWait
-    VMStackPush 0x40cb
+    VMStackPush EVENT_WORK_0x40cb
     VMStackPushConst 1
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0045
@@ -82,9 +82,9 @@ L_00FC:
     ActorCmdExec 255, Movement_0278
     ActorCmdWait
     ActorDelete 5
-    FlagSet 777
-    WorkSetConst 0x40cb, 2
-    WorkSetConst 0x4120, 1
+    FlagSet EVENT_FLAG_0x0309
+    WorkSetConst EVENT_WORK_0x40cb, 2
+    WorkSetConst EVENT_WORK_0x4120, 1
     HollowRivalCmd_0262 3, 4
     HollowRivalCmd_0262 0, 4
     FinishAllEvents

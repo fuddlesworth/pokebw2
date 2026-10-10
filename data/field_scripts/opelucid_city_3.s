@@ -49,11 +49,11 @@ Script_4:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 444
+    VMStackPushFlag EVENT_FLAG_0x01bc
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0163
-    VMStackPushFlag 241
+    VMStackPushFlag EVENT_FLAG_0x00f1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0149
@@ -80,7 +80,7 @@ Script_2:
     ActorMsg MSGFILE_SCRIPT, OpelucidCity3_Text_IfPokemonHoldsRing, 1, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 241
+    FlagSet EVENT_FLAG_0x00f1
     VMJump L_0143
 
 L_0133:
@@ -120,11 +120,11 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 444
+    VMStackPushFlag EVENT_FLAG_0x01bc
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CB
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BB

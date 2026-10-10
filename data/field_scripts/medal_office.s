@@ -15,7 +15,7 @@
     ScriptEntriesEnd
 
 Script_11:
-    VMStackPush 0x409e
+    VMStackPush EVENT_WORK_0x409e
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004D
@@ -26,7 +26,7 @@ L_004D:
 
 Script_1:
     ActorsPauseAll
-    FlagReset 1014
+    FlagReset EVENT_FLAG_0x03f6
     WordSetPlayerName 0
     ActorCmdExec 1, Movement_03A8
     VMSleep 12
@@ -83,8 +83,8 @@ Script_1:
     ActorMsg MSGFILE_SCRIPT, MedalOffice_Text_HonorAchievementWillPresent, 4, 2, 0
     MsgWinCloseAll
     MEPlay SEQ_ME_MD_FAN03
-    MedalGetFieldEffectID 1, 0x400f
-    PlayFieldEffect 0x400f
+    MedalGetFieldEffectID 1, EVENT_WORK_0x400f
+    PlayFieldEffect EVENT_WORK_0x400f
     MEWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 received\nthe [f000][ff00]\u0001\u0002[f000]ĵ\u0001\u0001[f000][ff00]\u0001\u0000 Medal![f000]븁\u0000"
@@ -95,9 +95,9 @@ Script_1:
     ActorMsg MSGFILE_SCRIPT, MedalOffice_Text_MedalRallyFarFrom, 4, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x409e, 3
+    WorkSetConst EVENT_WORK_0x409e, 3
     MedalAcknowledge 1, 1
-    FlagSet 1014
+    FlagSet EVENT_FLAG_0x03f6
     WorkSetConst 0x8020, 0
     FinishAllEvents
     ActorsUnpauseAll
@@ -105,7 +105,7 @@ Script_1:
 
 Script_2:
     ActorsPauseAll
-    FlagReset 1014
+    FlagReset EVENT_FLAG_0x03f6
     ActorCmdExec 1, Movement_03A8
     VMSleep 12
     ActorCmdExec 0, Movement_07CC
@@ -162,8 +162,8 @@ Script_2:
     ActorMsg MSGFILE_SCRIPT, MedalOffice_Text_HonorAchievementWillPresent_2, 4, 2, 0
     MsgWinCloseAll
     MEPlay SEQ_ME_MD_FAN04
-    MedalGetFieldEffectID 6, 0x400f
-    PlayFieldEffect 0x400f
+    MedalGetFieldEffectID 6, EVENT_WORK_0x400f
+    PlayFieldEffect EVENT_WORK_0x400f
     MEWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 received\nthe [f000][ff00]\u0001\u0002[f000]ĵ\u0001\u0001[f000][ff00]\u0001\u0000 Medal![f000]븁\u0000"
@@ -194,7 +194,7 @@ Script_2:
     ActorMsg MSGFILE_SCRIPT, MedalOffice_Text_LegendWhoCollectedAll, 4, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x409e, 5
+    WorkSetConst EVENT_WORK_0x409e, 5
     MedalAcknowledge 6, 1
     WorkSetConst 0x8021, 0
     FinishAllEvents
@@ -236,7 +236,7 @@ Movement_03E8:
 Script_10:
     ActorsPauseAll
     WordSetPlayerName 0
-    VMStackPush 0x409e
+    VMStackPush EVENT_WORK_0x409e
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_042E
@@ -410,7 +410,7 @@ L_065D:
 
 Script_5:
     ActorsPauseAll
-    VMStackPush 0x409e
+    VMStackPush EVENT_WORK_0x409e
     VMStackPushConst 1
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_069E
@@ -423,7 +423,7 @@ Script_5:
     VMJump L_06F2
 
 L_069E:
-    VMStackPush 0x409e
+    VMStackPush EVENT_WORK_0x409e
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06CB
@@ -436,7 +436,7 @@ L_069E:
     VMJump L_06F2
 
 L_06CB:
-    VMStackPush 0x409e
+    VMStackPush EVENT_WORK_0x409e
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F2
@@ -498,10 +498,10 @@ Script_9:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 6
     VMStackCmp CMP_NE
-    VMStackPushFlag 312
+    VMStackPushFlag EVENT_FLAG_0x0138
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -509,8 +509,8 @@ Script_9:
     SEPlay SEQ_SE_FLD_41
     // "I'm from the Castelia Harlequin Hunt![f000]븁\u0000\nYou found the Medal Office.\nAll riiight!"
     ParentActorMsg MSGFILE_SCRIPT, MedalOffice_Text_ImFromCasteliaHarlequin, 0, 0
-    FlagSet 312
-    WorkAdd 0x40e2, 1
+    FlagSet EVENT_FLAG_0x0138
+    WorkAdd EVENT_WORK_0x40e2, 1
     SEWait
     LastKeyWait
     MsgWinCloseAll

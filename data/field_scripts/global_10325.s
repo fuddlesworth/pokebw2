@@ -14,13 +14,13 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 132
+    VMStackPushFlag EVENT_FLAG_0x0084
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0059
     // "Pokémon Trades help you connect with\nthe world![f000]븀\u0000\nThe world will be bigger![f000]븁\u0000\nIf you trade Pokémon with many people,\nyou will be happy![f000]븁\u0000\nBecause I will give you something good![f000]븁\u0000\nSo, Trainer, have you traded Pokémon\nwith many people?"
     ParentActorMsg MSGFILE_SCRIPT, Global10325_Text_PokemonTradesHelpConnect, 0, 0
-    FlagSet 132
+    FlagSet EVENT_FLAG_0x0084
     VMJump L_0063
 
 L_0059:

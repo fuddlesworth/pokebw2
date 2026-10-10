@@ -14,13 +14,13 @@ Script_5:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_003F
-    WorkSetConst 0x4020, 209
-    WorkSetConst 0x4021, 209
+    WorkSetConst EVENT_WORK_0x4020, 209
+    WorkSetConst EVENT_WORK_0x4021, 209
     VMJump L_004B
 
 L_003F:
-    WorkSetConst 0x4020, 129
-    WorkSetConst 0x4021, 129
+    WorkSetConst EVENT_WORK_0x4020, 129
+    WorkSetConst EVENT_WORK_0x4021, 129
 
 L_004B:
     VMHalt
@@ -29,7 +29,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 256
+    VMStackPushFlag EVENT_FLAG_0x0100
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E
@@ -69,7 +69,7 @@ L_007E:
     ActorMsg MSGFILE_SCRIPT, Route72_Text_OhOhWhatCute, 0, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 256
+    FlagSet EVENT_FLAG_0x0100
     VMJump L_0129
 
 L_0119:

@@ -20,7 +20,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 338
+    VMStackPushFlag EVENT_FLAG_0x0152
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0142
@@ -59,7 +59,7 @@ Script_1:
     ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_AaaahWonderfulChoirLove, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 338
+    FlagSet EVENT_FLAG_0x0152
     VMJump L_0114
 
 L_0106:
@@ -125,7 +125,7 @@ L_0142:
     ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_OhArentTympoleJust, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 338
+    FlagSet EVENT_FLAG_0x0152
     VMJump L_01F7
 
 L_01E9:

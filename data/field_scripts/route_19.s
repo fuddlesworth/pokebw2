@@ -72,15 +72,15 @@ Script_1:
     ActorMsg MSGFILE_SCRIPT, Route19_Text_ByeNowMeetLots, 5, 0, 0
     MsgWinCloseAll
     VMCall L_0205
-    WorkSetConst 0x40a3, 1
-    FlagSet 987
-    FlagReset 739
-    FlagSet 744
-    FlagSet 743
-    FlagReset 740
-    FlagReset 803
+    WorkSetConst EVENT_WORK_0x40a3, 1
+    FlagSet EVENT_FLAG_0x03db
+    FlagReset EVENT_FLAG_0x02e3
+    FlagSet EVENT_FLAG_0x02e8
+    FlagSet EVENT_FLAG_0x02e7
+    FlagReset EVENT_FLAG_0x02e4
+    FlagReset EVENT_FLAG_0x0323
     HollowRivalCmd_0262 4, 0
-    WorkSetConst 0x40a1, 8
+    WorkSetConst EVENT_WORK_0x40a1, 8
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -221,8 +221,8 @@ L_037D:
     ActorCmdWait
     BGMChangeMap
     ActorDelete 1
-    WorkSetConst 0x40a3, 2
-    FlagSet 738
+    WorkSetConst EVENT_WORK_0x40a3, 2
+    FlagSet EVENT_FLAG_0x02e2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -281,7 +281,7 @@ Movement_0464:
 
 Script_7:
     ActorsPauseAll
-    FlagReset 738
+    FlagReset EVENT_FLAG_0x02e2
     ActorAdd 1
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000![f000]븁\u0000"
@@ -343,8 +343,8 @@ Script_7:
     ActorCmdWait
     BGMChangeMap
     ActorDelete 1
-    WorkSetConst 0x40a3, 4
-    FlagSet 738
+    WorkSetConst EVENT_WORK_0x40a3, 4
+    FlagSet EVENT_FLAG_0x02e2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -372,7 +372,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 16
+    VMStackPushFlag EVENT_FLAG_0x0010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_069F
@@ -383,7 +383,7 @@ Script_3:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0689
-    FlagSet 16
+    FlagSet EVENT_FLAG_0x0010
     // "That so...\nWell then, watch me carefully![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, Route19_Text_WellThenWatchCarefully, 0, 4, 0
     MsgWinCloseAll
@@ -485,7 +485,7 @@ Script_6:
     // "Trainer Tips![f000]븁\u0000\n\nMake an effort to talk to all the\npeople you meet during your journey![f000]븁\u0000\nChances are they will have something\nuseful to tell you."
     MsgPlaceSign Route19_Text_TrainerTipsMakeEffort, 0
     MsgPlaceSignClose
-    FlagSet 2677
+    FlagSet EVENT_FLAG_0x0a75
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -20,7 +20,7 @@ Script_1:
     PokeDexIsComplete 0x8021, 1
     DebugPrint 0x8020
     DebugPrint 0x8021
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0075
@@ -33,7 +33,7 @@ Script_1:
     VMJump L_019D
 
 L_0075:
-    VMStackPushFlag 221
+    VMStackPushFlag EVENT_FLAG_0x00dd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FF
@@ -58,9 +58,9 @@ L_0075:
     LastKeyWait
     MsgWinCloseAll
     MedalGive 44
-    FlagReset 736
-    FlagSet 221
-    WorkSetConst 0x400a, 1
+    FlagReset EVENT_FLAG_0x02e0
+    FlagSet EVENT_FLAG_0x00dd
+    WorkSetConst EVENT_WORK_0x400a, 1
     VMJump L_00F9
 
 L_00E5:
@@ -75,7 +75,7 @@ L_00F9:
     VMJump L_019D
 
 L_00FF:
-    VMStackPushFlag 222
+    VMStackPushFlag EVENT_FLAG_0x00de
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0189
@@ -100,9 +100,9 @@ L_00FF:
     LastKeyWait
     MsgWinCloseAll
     MedalGive 45
-    FlagReset 737
-    FlagSet 222
-    WorkSetConst 0x400a, 1
+    FlagReset EVENT_FLAG_0x02e1
+    FlagSet EVENT_FLAG_0x00de
+    WorkSetConst EVENT_WORK_0x400a, 1
     VMJump L_0183
 
 L_016F:
@@ -155,11 +155,11 @@ Script_3:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_028A
-    VMStackPushFlag 2739
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ab3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_021D
@@ -190,7 +190,7 @@ L_021D:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity19_Text_ThinkAboutBattlesVery, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2739
+    FlagSet EVENT_FLAG_DAILY_0x0ab3
     VMJump L_0284
 
 L_0276:
@@ -203,7 +203,7 @@ L_0284:
     VMJump L_031E
 
 L_028A:
-    VMStackPushFlag 2739
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ab3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B7
@@ -234,7 +234,7 @@ L_02B7:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity19_Text_ThinkAboutBattlesVery, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2739
+    FlagSet EVENT_FLAG_DAILY_0x0ab3
     VMJump L_031E
 
 L_0310:
@@ -250,11 +250,11 @@ L_031E:
 
 Script_5:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D3
-    VMStackPushFlag 2762
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0aca
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0366
@@ -285,7 +285,7 @@ L_0366:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity19_Text_AwwwWhatGreatPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2762
+    FlagSet EVENT_FLAG_DAILY_0x0aca
     VMJump L_03CD
 
 L_03BF:
@@ -298,7 +298,7 @@ L_03CD:
     VMJump L_0467
 
 L_03D3:
-    VMStackPushFlag 2762
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0aca
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0400
@@ -329,7 +329,7 @@ L_0400:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity19_Text_AwwwWhatGreatPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2762
+    FlagSet EVENT_FLAG_DAILY_0x0aca
     VMJump L_0467
 
 L_0459:

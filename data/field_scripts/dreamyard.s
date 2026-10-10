@@ -18,10 +18,10 @@
     WorkSetConst 0x8023, 0
 
 Script_3:
-    VMStackPushFlag 374
+    VMStackPushFlag EVENT_FLAG_0x0176
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x410c
+    VMStackPush EVENT_WORK_0x410c
     VMStackPushConst 6
     VMStackCmp CMP_NE
     VMStackCmp CMP_AND
@@ -31,11 +31,11 @@ Script_3:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0088
-    WorkSetConst 0x4020, 4510
+    WorkSetConst EVENT_WORK_0x4020, 4510
     VMJump L_008E
 
 L_0088:
-    WorkSetConst 0x4020, 4509
+    WorkSetConst EVENT_WORK_0x4020, 4509
 
 L_008E:
     VMHalt
@@ -71,7 +71,7 @@ L_00CA:
     MsgWinCloseAll
 
 L_00DB:
-    FlagReset 853
+    FlagReset EVENT_FLAG_0x0355
     ActorAdd 7
     ActorSetGPos 7, 19, 0, 0x8023, 2
     ActorMoveLinear 7, 13, 0, 0x8023, 24
@@ -105,8 +105,8 @@ L_015A:
     ActorCmdWait
     ActorMoveLinear 7, 19, 0, 0x8023, 18
     ActorDelete 7
-    FlagSet 853
-    WorkSetConst 0x410c, 1
+    FlagSet EVENT_FLAG_0x0355
+    WorkSetConst EVENT_WORK_0x410c, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -136,13 +136,13 @@ L_01BA:
     MsgWinCloseAll
 
 L_01CB:
-    FlagReset 853
+    FlagReset EVENT_FLAG_0x0355
     ActorAdd 7
     ActorSetGPos 7, 44, 2, 22, 2
     ActorMoveLinear 7, 26, 2, 22, 48
     ActorDelete 7
-    FlagSet 853
-    WorkSetConst 0x410c, 2
+    FlagSet EVENT_FLAG_0x0355
+    WorkSetConst EVENT_WORK_0x410c, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -172,7 +172,7 @@ L_0235:
     MsgWinCloseAll
 
 L_0246:
-    FlagReset 853
+    FlagReset EVENT_FLAG_0x0355
     ActorAdd 7
     VMStackPush 0x8022
     VMStackPushConst 26
@@ -201,8 +201,8 @@ L_02B0:
 
 L_02DB:
     ActorDelete 7
-    FlagSet 853
-    WorkSetConst 0x410c, 3
+    FlagSet EVENT_FLAG_0x0355
+    WorkSetConst EVENT_WORK_0x410c, 3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -232,7 +232,7 @@ L_0325:
     MsgWinCloseAll
 
 L_0336:
-    FlagReset 853
+    FlagReset EVENT_FLAG_0x0355
     ActorAdd 7
     VMStackPush 0x8022
     VMStackPushConst 35
@@ -252,8 +252,8 @@ L_036F:
 
 L_039A:
     ActorDelete 7
-    FlagSet 853
-    WorkSetConst 0x410c, 4
+    FlagSet EVENT_FLAG_0x0355
+    WorkSetConst EVENT_WORK_0x410c, 4
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -283,7 +283,7 @@ L_03E4:
     MsgWinCloseAll
 
 L_03F5:
-    FlagReset 853
+    FlagReset EVENT_FLAG_0x0355
     ActorAdd 7
     VMStackPush 0x8022
     VMStackPushConst 22
@@ -347,8 +347,8 @@ L_04DF:
 
 L_04FE:
     ActorDelete 7
-    FlagSet 853
-    WorkSetConst 0x410c, 5
+    FlagSet EVENT_FLAG_0x0355
+    WorkSetConst EVENT_WORK_0x410c, 5
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -378,7 +378,7 @@ L_0548:
     MsgWinCloseAll
 
 L_0559:
-    FlagReset 853
+    FlagReset EVENT_FLAG_0x0355
     ActorAdd 7
     ActorSetGPos 7, 56, 4, 12, 2
     ActorMoveLinear 7, 50, 4, 12, 18
@@ -412,13 +412,13 @@ L_05D4:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_061C
-    FlagSet 853
-    WorkSetConst 0x410c, 6
-    VMStackPushFlag 497
+    FlagSet EVENT_FLAG_0x0355
+    WorkSetConst EVENT_WORK_0x410c, 6
+    VMStackPushFlag EVENT_FLAG_0x01f1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0610
-    FlagReset 1037
+    FlagReset EVENT_FLAG_0x040d
     ActorAdd 11
 
 L_0610:
@@ -436,7 +436,7 @@ L_061E:
     VMJump L_063F
 
 L_0635:
-    FlagSet 374
+    FlagSet EVENT_FLAG_0x0176
     VMJump L_0696
 
 L_063F:
@@ -468,11 +468,11 @@ L_0690:
     VMJump L_0696
 
 L_0696:
-    VMStackPushFlag 390
+    VMStackPushFlag EVENT_FLAG_0x0186
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06AD
-    FlagSet 390
+    FlagSet EVENT_FLAG_0x0186
 
 L_06AD:
     FinishAllEvents
@@ -490,8 +490,8 @@ Script_10:
     RTCallGlobal 2807
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 1037
-    FlagSet 497
+    FlagSet EVENT_FLAG_0x040d
+    FlagSet EVENT_FLAG_0x01f1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -26,21 +26,21 @@ Script_1:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0075
-    WorkSetConst 0x4020, 121
-    WorkSetConst 0x4021, 365
-    WorkSetConst 0x4022, 368
+    WorkSetConst EVENT_WORK_0x4020, 121
+    WorkSetConst EVENT_WORK_0x4021, 365
+    WorkSetConst EVENT_WORK_0x4022, 368
     VMJump L_0087
 
 L_0075:
-    WorkSetConst 0x4020, 121
-    WorkSetConst 0x4021, 364
-    WorkSetConst 0x4022, 367
+    WorkSetConst EVENT_WORK_0x4020, 121
+    WorkSetConst EVENT_WORK_0x4021, 364
+    WorkSetConst EVENT_WORK_0x4022, 367
 
 L_0087:
     VMHalt
 
 Script_2:
-    VMStackPush 0x4072
+    VMStackPush EVENT_WORK_0x4072
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AE
@@ -48,7 +48,7 @@ Script_2:
     VMJump L_00D9
 
 L_00AE:
-    VMStackPush 0x4072
+    VMStackPush EVENT_WORK_0x4072
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D9
@@ -56,10 +56,10 @@ L_00AE:
     ActorSetGPos 0, 17, 0, 16, 2
 
 L_00D9:
-    VMStackPush 0x4072
+    VMStackPush EVENT_WORK_0x4072
     VMStackPushConst 4
     VMStackCmp CMP_EQ
-    VMStackPush 0x410d
+    VMStackPush EVENT_WORK_0x410d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -171,7 +171,7 @@ L_0293:
     ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisCameFreakWithout, 0, 0, 0
     MsgWinCloseAll
     BGMPlay SEQ_BGM_EV_GIANTHOLE_01
-    FlagSet 2556
+    FlagSet EVENT_FLAG_0x09fc
     BGMAmbienceResume
     Plugin14_Cmd1004 1
     VMSleep 100
@@ -179,8 +179,8 @@ L_0293:
     FadeWait
     EvCameraRebind
     EvCameraEnd
-    FlagReset 886
-    FlagReset 888
+    FlagReset EVENT_FLAG_0x0376
+    FlagReset EVENT_FLAG_0x0378
     MapChangeCore ZONE_GIANT_CHASM_6, 15, 0, 21, 0
     EvCameraInit
     EvCameraUnbind
@@ -202,8 +202,8 @@ L_0350:
     Plugin14Cmd_ShiftActor 4, 4, 0
     FadeInBlackQ
     FadeWait
-    FlagSet 2555
-    FlagReset 2556
+    FlagSet EVENT_FLAG_0x09fb
+    FlagReset EVENT_FLAG_0x09fc
     VMSleep 7
     // "N: [f000]븉\u0001\u0001Reshiram told me\nKyurem is suffering![f000]븁\u0000\nI can't allow selfish humans\nto make Pokémon suffer![f000]븁\u0000\nAnd I like Unova.[f000]븁\u0000\nIt's the place that taught me\nhow to live as a human...[f000]븁\u0000\nIt's the place that made me notice the\nharmony between Pokémon and humans[f000]븀\u0000\nliving together...[f000]븁\u0000\nI will protect the Pokémon\nand humans who live here![f000]븉\u0001\u0000[f000]븁\u0000"
     // "N: [f000]븉\u0001\u0001Zekrom told me\nKyurem is suffering![f000]븁\u0000\nI can't allow selfish humans\nto make Pokémon suffer![f000]븁\u0000\nAnd I like Unova.[f000]븁\u0000\nIt's the place that taught me\nhow to live as a human...[f000]븁\u0000\nIt's the place that made me notice the\nharmony between Pokémon and humans[f000]븀\u0000\nliving together...[f000]븁\u0000\nI will protect the Pokémon\nand humans who live here![f000]븉\u0001\u0000[f000]븁\u0000"
@@ -277,9 +277,9 @@ L_0470:
     BGMPush 6
     FadeWait
     ActorDelete 2
-    WorkSetConst 0x4020, 366
+    WorkSetConst EVENT_WORK_0x4020, 366
     ActorAdd 2
-    FlagSet 888
+    FlagSet EVENT_FLAG_0x0378
     ActorDelete 3
     FieldClose
     Call3DDemo 16, 0
@@ -336,7 +336,7 @@ L_0544:
     BGMPush 6
     FadeWait
     ActorDelete 251
-    FlagSet 887
+    FlagSet EVENT_FLAG_0x0377
     ActorDelete 2
     EvCameraRebind
     EvCameraEnd
@@ -361,7 +361,7 @@ L_05C3:
     FieldOpen
 
 L_05D7:
-    FlagReset 889
+    FlagReset EVENT_FLAG_0x0379
     ActorAdd 1
     ActorSetGPos 0, 17, 0, 16, 1
     ActorSetGPos 255, 15, 0, 20, 0
@@ -400,7 +400,7 @@ L_05D7:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x4072, 2
+    WorkSetConst EVENT_WORK_0x4072, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -482,7 +482,7 @@ L_0755:
     SEPlay SEQ_SE_FLD_176
     PokePartyRecoverAll
     SEWait
-    WorkSetConst 0x4072, 3
+    WorkSetConst EVENT_WORK_0x4072, 3
     VMCall L_08D4
     VMReturn
 
@@ -589,10 +589,10 @@ L_08D4:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0941
-    FlagSet 885
-    FlagReset 968
-    FlagReset 969
-    FlagSet 889
+    FlagSet EVENT_FLAG_0x0375
+    FlagReset EVENT_FLAG_0x03c8
+    FlagReset EVENT_FLAG_0x03c9
+    FlagSet EVENT_FLAG_0x0379
     ActorDelete 0
     ActorAdd 5
     ActorSetGPos 255, 15, 0, 16, 3
@@ -689,8 +689,8 @@ L_0A74:
     VMSleep 30
     ActorCmdExec 4, Movement_1178
     ActorCmdWait
-    Cmd_02B4 0, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B4 0, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0AD7
@@ -730,8 +730,8 @@ L_0AE3:
     FadeExWait
     VMSleep 160
     Plugin14_Cmd1005
-    FlagReset 2555
-    FlagReset 1031
+    FlagReset EVENT_FLAG_0x09fb
+    FlagReset EVENT_FLAG_0x0407
     ActorAdd 11
     BGMChangeMap
     ActorWalkRoute 11, 15, 18, 1, 8, 1
@@ -768,17 +768,17 @@ L_0BC9:
     ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_RememberWhereWeFirst, 11, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagReset 364
-    WorkSetConst 0x4072, 4
-    FlagSet 876
-    FlagSet 878
-    FlagSet 879
-    FlagSet 882
-    FlagSet 885
-    FlagSet 968
-    FlagSet 886
-    FlagSet 888
-    FlagSet 854
+    FlagReset EVENT_FLAG_0x016c
+    WorkSetConst EVENT_WORK_0x4072, 4
+    FlagSet EVENT_FLAG_0x036c
+    FlagSet EVENT_FLAG_0x036e
+    FlagSet EVENT_FLAG_0x036f
+    FlagSet EVENT_FLAG_0x0372
+    FlagSet EVENT_FLAG_0x0375
+    FlagSet EVENT_FLAG_0x03c8
+    FlagSet EVENT_FLAG_0x0376
+    FlagSet EVENT_FLAG_0x0378
+    FlagSet EVENT_FLAG_0x0356
     HollowRivalCmd_0262 0, 6
     HollowRivalCmd_0262 1, 36
     HollowRivalCmd_0262 2, 12
@@ -926,8 +926,8 @@ L_0DCA:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    FlagSet 889
-    FlagReset 888
+    FlagSet EVENT_FLAG_0x0379
+    FlagReset EVENT_FLAG_0x0378
     ActorDelete 1
     ActorAdd 3
     ActorSetGPos 255, 15, 0, 16, 0
@@ -951,18 +951,18 @@ L_0E58:
     EvCameraEnd
     ActorDelete 1
     ActorAdd 1
-    FlagReset 889
+    FlagReset EVENT_FLAG_0x0379
     CallWildBattleEnd
 
 L_0E87:
     VMJump L_0EA6
 
 L_0E8D:
-    VMStackPushFlag 889
+    VMStackPushFlag EVENT_FLAG_0x0379
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0EA4
-    FlagReset 889
+    FlagReset EVENT_FLAG_0x0379
 
 L_0EA4:
     CallWildLose
@@ -1014,8 +1014,8 @@ Script_8:
     RTCallGlobal 2807
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 1003
-    FlagSet 481
+    FlagSet EVENT_FLAG_0x03eb
+    FlagSet EVENT_FLAG_0x01e1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1035,17 +1035,17 @@ Script_9:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0FB5
-    FlagSet 1004
+    FlagSet EVENT_FLAG_0x03ec
     ActorDelete 8
-    VMStackPushFlag 481
+    VMStackPushFlag EVENT_FLAG_0x01e1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0F8E
-    FlagReset 1003
+    FlagReset EVENT_FLAG_0x03eb
     ActorAdd 7
 
 L_0F8E:
-    VMStackPushFlag 483
+    VMStackPushFlag EVENT_FLAG_0x01e3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0FAD
@@ -1065,7 +1065,7 @@ L_0FB7:
     VMJump L_0FDC
 
 L_0FCE:
-    FlagSet 249
+    FlagSet EVENT_FLAG_0x00f9
     Cmd_00E4 2
     VMJump L_100C
 
@@ -1084,7 +1084,7 @@ L_0FFC:
     VMJump L_100C
 
 L_100C:
-    VMStackPushFlag 483
+    VMStackPushFlag EVENT_FLAG_0x01e3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1025
@@ -1096,7 +1096,7 @@ L_1025:
     VMHalt
 
 L_102B:
-    FlagReset 1011
+    FlagReset EVENT_FLAG_0x03f3
     ActorAdd 9
     ActorAdd 10
     ActorWalkRoute 9, 15, 18, 0, 8, 0
@@ -1111,7 +1111,7 @@ L_102B:
     MsgWinCloseAll
     // "Bianca: [f000]Ā\u0001\u0000, you're amazing!\nYou've met so many Pokémon![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_BiancaYoureAmazingYouve, 10, 4, 0
-    VMStackPushFlag 388
+    VMStackPushFlag EVENT_FLAG_0x0184
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_10B3
@@ -1140,9 +1140,9 @@ L_10BF:
     ActorCmdWait
     ActorDelete 9
     ActorDelete 10
-    FlagSet 483
-    FlagSet 1011
-    FlagReset 739
+    FlagSet EVENT_FLAG_0x01e3
+    FlagSet EVENT_FLAG_0x03f3
+    FlagReset EVENT_FLAG_0x02e3
     VMReturn
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010

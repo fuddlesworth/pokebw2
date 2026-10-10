@@ -7,7 +7,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2401
+    VMStackPushFlag EVENT_FLAG_0x0961
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0039
@@ -34,7 +34,7 @@ L_004D:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 2401
+    VMStackPushFlag EVENT_FLAG_0x0961
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0086

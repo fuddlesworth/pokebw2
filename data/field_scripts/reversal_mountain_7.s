@@ -19,7 +19,7 @@ Script_1:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F8
-    VMStackPush 0x4121
+    VMStackPush EVENT_WORK_0x4121
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006F
@@ -51,10 +51,10 @@ L_00AE:
     RTCallGlobal 10536
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WorkSetConst 0x4120, 3
-    WorkSetConst 0x4121, 3
-    FlagSet 959
-    FlagReset 960
+    WorkSetConst EVENT_WORK_0x4120, 3
+    WorkSetConst EVENT_WORK_0x4121, 3
+    FlagSet EVENT_FLAG_0x03bf
+    FlagReset EVENT_FLAG_0x03c0
     HollowRivalCmd_0262 3, 0
     ActorAdd 0
     ActorDelete 254

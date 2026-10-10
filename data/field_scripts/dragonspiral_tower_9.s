@@ -13,7 +13,7 @@
 
 Script_1:
     GameGetVersion 0x8020
-    VMStackPushFlag 667
+    VMStackPushFlag EVENT_FLAG_0x029b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005C
@@ -21,11 +21,11 @@ Script_1:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0056
-    WorkSetConst 0x4020, 365
+    WorkSetConst EVENT_WORK_0x4020, 365
     VMJump L_005C
 
 L_0056:
-    WorkSetConst 0x4020, 364
+    WorkSetConst EVENT_WORK_0x4020, 364
 
 L_005C:
     VMHalt
@@ -68,9 +68,9 @@ L_00E5:
     VMSleep 8
     Plugin14_Cmd1012
     BGMPlayEx 1002, 6
-    FlagReset 667
-    WorkSetConst 0x411b, 2
-    WorkSetConst 0x4020, 365
+    FlagReset EVENT_FLAG_0x029b
+    WorkSetConst EVENT_WORK_0x411b, 2
+    WorkSetConst EVENT_WORK_0x4020, 365
     // "The Dark Stone draws in the aura of\nthe surroundings and converts it into[f000]븀\u0000\na powerful force, which is...now...[f000]븁\u0000\nBeing released!"
     SystemMsg DragonspiralTower9_Text_DarkStoneDrawsAura, 2
     MsgWaitAdvance
@@ -120,9 +120,9 @@ L_01B2:
     VMSleep 8
     Plugin14_Cmd1012
     BGMPlayEx 1002, 6
-    FlagReset 667
-    WorkSetConst 0x411b, 2
-    WorkSetConst 0x4020, 364
+    FlagReset EVENT_FLAG_0x029b
+    WorkSetConst EVENT_WORK_0x411b, 2
+    WorkSetConst EVENT_WORK_0x4020, 364
     // "The Light Stone draws in the aura of\nthe surroundings and converts it into[f000]븀\u0000\na powerful force, which is...now...[f000]븁\u0000\nBeing released!"
     SystemMsg DragonspiralTower9_Text_LightStoneDrawsAura, 2
     MsgWaitAdvance
@@ -258,7 +258,7 @@ L_03A1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D6
     ActorDelete 0
-    FlagSet 667
+    FlagSet EVENT_FLAG_0x029b
     EvCameraInit
     EvCameraUnbind
     EvCameraMoveToDefault 1
@@ -279,7 +279,7 @@ L_03D8:
     VMJump L_03FF
 
 L_03F5:
-    FlagSet 234
+    FlagSet EVENT_FLAG_0x00ea
     VMJump L_0456
 
 L_03FF:
@@ -311,7 +311,7 @@ L_0450:
     VMJump L_0456
 
 L_0456:
-    VMStackPushFlag 480
+    VMStackPushFlag EVENT_FLAG_0x01e0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_046F
@@ -416,9 +416,9 @@ L_057F:
     EvCameraWait
     ActorCmdWait
     ActorDelete 251
-    FlagSet 480
-    FlagSet 912
-    FlagReset 1004
+    FlagSet EVENT_FLAG_0x01e0
+    FlagSet EVENT_FLAG_0x0390
+    FlagReset EVENT_FLAG_0x03ec
     EvCameraRebind
     EvCameraEnd
     VMReturn

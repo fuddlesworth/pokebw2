@@ -44,7 +44,7 @@ L_006C:
 Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    FlagGet 2404, 0x8010
+    FlagGet EVENT_FLAG_0x0964, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -93,7 +93,7 @@ L_00F9:
 
 L_0105:
     WorkSetConst 0x8021, 0
-    FlagSet 2404
+    FlagSet EVENT_FLAG_0x0964
     Cmd_01DD 1, 70, 0
     PokePartyHasMoveAny 0x8021, 70
     WordSetPartyPokeName 0, 0x8021
@@ -112,7 +112,7 @@ L_0105:
 
 Script_2:
     ActorsPauseAll
-    FlagGet 2404, 0x8010
+    FlagGet EVENT_FLAG_0x0964, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -121,7 +121,7 @@ Script_2:
     VMJump L_01A6
 
 L_0173:
-    FlagSet 2404
+    FlagSet EVENT_FLAG_0x0964
     Cmd_01DD 1, 70, 0
     WordSetPartyPokeName 0, 0x8000
     // "[f000]Ă\u0001\u0000 used Strength![f000]븁\u0000"
@@ -152,7 +152,7 @@ Script_3:
     VMJump L_0220
 
 L_01D7:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FB
@@ -309,7 +309,7 @@ Script_7:
     VMJump L_0425
 
 L_03DC:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0400
@@ -428,7 +428,7 @@ Script_12:
     VMJump L_0599
 
 L_053F:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0563
@@ -477,7 +477,7 @@ Script_13:
 
 Script_14:
     ActorsPauseAll
-    FlagGet 215, 0x8010
+    FlagGet EVENT_FLAG_0x00d7, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -497,7 +497,7 @@ L_0616:
 
 Script_15:
     ActorsPauseAll
-    FlagGet 214, 0x8010
+    FlagGet EVENT_FLAG_0x00d6, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ

@@ -14,15 +14,15 @@
     WorkSetConst 0x8021, 0
 
 Script_1:
-    VMStackPush 0x4186
+    VMStackPush EVENT_WORK_0x4186
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004D
-    WorkSetConst 0x4020, 17
+    WorkSetConst EVENT_WORK_0x4020, 17
     VMJump L_0053
 
 L_004D:
-    WorkSetConst 0x4020, 297
+    WorkSetConst EVENT_WORK_0x4020, 297
 
 L_0053:
     VMHalt
@@ -77,7 +77,7 @@ Script_4:
     // "Trainer Tips![f000]븁\u0000\n\nPokémon that participate in battle\nreceive Exp. Points.[f000]븁\u0000\nHave your Pokémon battle often,\nand make them stronger and stronger!"
     MsgPlaceSign Route2_Text_TrainerTipsPokemonParticipate, 0
     MsgPlaceSignClose
-    FlagSet 2665
+    FlagSet EVENT_FLAG_0x0a69
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -90,7 +90,7 @@ Script_5:
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8027, 0
-    VMStackPush 0x4186
+    VMStackPush EVENT_WORK_0x4186
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0245
@@ -117,8 +117,8 @@ L_0130:
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0195
-    PokePartyGetSpecies 0x4186, 0x8023
-    WordSetPokeSpecies 0, 0x4186
+    PokePartyGetSpecies EVENT_WORK_0x4186, 0x8023
+    WordSetPokeSpecies 0, EVENT_WORK_0x4186
     WorkSetConst 0x8025, 1
 
 L_0195:
@@ -144,7 +144,7 @@ L_01A1:
     ParentActorMsg MSGFILE_SCRIPT, Route2_Text_OhCantFitAny, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4186, 0
+    WorkSetConst EVENT_WORK_0x4186, 0
     VMJump L_0235
 
 L_01FF:
@@ -160,7 +160,7 @@ L_01FF:
     ParentActorMsg MSGFILE_SCRIPT, Route2_Text_WhatFeelingCoursingThrough, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
 
 L_0235:
     VMJump L_023F
@@ -173,7 +173,7 @@ L_023F:
     VMJump L_0289
 
 L_0245:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0272
@@ -187,7 +187,7 @@ L_0245:
 
 L_0272:
     SEPlay SEQ_SE_MESSAGE
-    WordSetPokeSpecies 0, 0x4186
+    WordSetPokeSpecies 0, EVENT_WORK_0x4186
     // "Jugga jya jaaaan![f000]븁\u0000\nDeedley deeedly deeedly deeedly,\nmeedley meedley meedley meedley,[f000]븀\u0000\nMEEEEEEE![f000]븁\u0000\nYeeeeah! Your [f000]ā\u0001\u0000's\nhard-rockin' Ability opened my eyes![f000]븁\u0000\nJuggah juggah jah!\nDuddah daaaaaah, bwan![f000]븁\u0000\nThat's it! I should join Roxie's band!\nI could rock out with her! Dual guitars![f000]븀\u0000\nAwesome!"
     ParentActorMsg MSGFILE_SCRIPT, Route2_Text_JuggaJyaJaaaanDeedley, 0, 0
     LastKeyWait

@@ -30,8 +30,8 @@ L_0065:
     MoneyWinClose
     // "Yes, I know.\nI know![f000]븁\u0000\n$300 a bottle is expensive![f000]븁\u0000\nBut, if I don't sell this,\nI'll be in trouble...[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_YesKnowKnow300, 0, 2, 0
-    Random 0x4000, 5
-    VMStackPush 0x4000
+    Random EVENT_WORK_0x4000, 5
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009E
@@ -40,7 +40,7 @@ L_0065:
     VMJump L_012C
 
 L_009E:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C3
@@ -49,7 +49,7 @@ L_009E:
     VMJump L_012C
 
 L_00C3:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E8
@@ -58,7 +58,7 @@ L_00C3:
     VMJump L_012C
 
 L_00E8:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_010D
@@ -67,7 +67,7 @@ L_00E8:
     VMJump L_012C
 
 L_010D:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012C
@@ -185,7 +185,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_036F
@@ -227,9 +227,9 @@ L_0321:
     ActorCmdExec 255, Movement_045C
     ActorCmdWait
     ActorDelete 4
-    WorkSetConst 0x4108, 1
-    FlagSet 858
-    FlagReset 859
+    WorkSetConst EVENT_WORK_0x4108, 1
+    FlagSet EVENT_FLAG_0x035a
+    FlagReset EVENT_FLAG_0x035b
     VMJump L_0355
 
 L_0347:
@@ -251,7 +251,7 @@ L_0369:
     VMJump L_0431
 
 L_036F:
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0396
@@ -262,7 +262,7 @@ L_036F:
     VMJump L_0431
 
 L_0396:
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 6
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0410
@@ -281,7 +281,7 @@ L_0396:
     RTCallGlobal 2801
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WorkSetConst 0x4108, 7
+    WorkSetConst EVENT_WORK_0x4108, 7
     VMJump L_040A
 
 L_03FC:
@@ -294,7 +294,7 @@ L_040A:
     VMJump L_0431
 
 L_0410:
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 7
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0431

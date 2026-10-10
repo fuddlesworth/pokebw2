@@ -40,7 +40,7 @@ L_008B:
 
 Script_3:
     VMCall L_005A
-    FlagSet 678
+    FlagSet EVENT_FLAG_0x02a6
     WorkSetConst 0x8024, 0
     RTCGetSeason 0x8024
     WorkSetConst 0x8025, 0
@@ -49,63 +49,63 @@ Script_3:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C4
-    FlagReset 678
+    FlagReset EVENT_FLAG_0x02a6
 
 L_00C4:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0321
-    VMStackPush 0x4098
+    VMStackPush EVENT_WORK_0x4098
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4098
+    VMStackPush EVENT_WORK_0x4098
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0118
-    FlagSet 684
-    FlagSet 685
-    FlagSet 687
-    FlagSet 688
-    FlagSet 689
-    FlagReset 683
+    FlagSet EVENT_FLAG_0x02ac
+    FlagSet EVENT_FLAG_0x02ad
+    FlagSet EVENT_FLAG_0x02af
+    FlagSet EVENT_FLAG_0x02b0
+    FlagSet EVENT_FLAG_0x02b1
+    FlagReset EVENT_FLAG_0x02ab
     VMJump L_031B
 
 L_0118:
-    VMStackPush 0x4098
+    VMStackPush EVENT_WORK_0x4098
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_031B
     VMStackPush 0x8024
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2746
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0aba
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01E6
-    FlagSet 683
-    FlagSet 684
-    FlagSet 685
-    FlagSet 687
-    FlagSet 688
-    FlagSet 689
-    FlagReset 683
+    FlagSet EVENT_FLAG_0x02ab
+    FlagSet EVENT_FLAG_0x02ac
+    FlagSet EVENT_FLAG_0x02ad
+    FlagSet EVENT_FLAG_0x02af
+    FlagSet EVENT_FLAG_0x02b0
+    FlagSet EVENT_FLAG_0x02b1
+    FlagReset EVENT_FLAG_0x02ab
     Random 0x8026, 2
-    WorkGet 0x4166, 0x8026
+    WorkGet EVENT_WORK_0x4166, 0x8026
     Random 0x8025, 4
     VMStackPush 0x8025
     VMStackPushConst 2
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_01A5
-    FlagReset 684
+    FlagReset EVENT_FLAG_0x02ac
     Random 0x8026, 5
-    WorkGet 0x4167, 0x8026
+    WorkGet EVENT_WORK_0x4167, 0x8026
     VMJump L_01A9
 
 L_01A5:
-    FlagSet 684
+    FlagSet EVENT_FLAG_0x02ac
 
 L_01A9:
     Random 0x8025, 2
@@ -113,49 +113,49 @@ L_01A9:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D8
-    FlagReset 685
+    FlagReset EVENT_FLAG_0x02ad
     Random 0x8026, 5
-    WorkGet 0x4168, 0x8026
+    WorkGet EVENT_WORK_0x4168, 0x8026
     VMJump L_01DC
 
 L_01D8:
-    FlagSet 685
+    FlagSet EVENT_FLAG_0x02ad
 
 L_01DC:
-    FlagSet 2746
+    FlagSet EVENT_FLAG_DAILY_0x0aba
     VMJump L_031B
 
 L_01E6:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2746
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0aba
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02E0
-    FlagSet 683
-    FlagSet 684
-    FlagSet 685
-    FlagSet 687
-    FlagSet 688
-    FlagSet 689
+    FlagSet EVENT_FLAG_0x02ab
+    FlagSet EVENT_FLAG_0x02ac
+    FlagSet EVENT_FLAG_0x02ad
+    FlagSet EVENT_FLAG_0x02af
+    FlagSet EVENT_FLAG_0x02b0
+    FlagSet EVENT_FLAG_0x02b1
     Random 0x8026, 5
-    WorkGet 0x4166, 0x8026
-    FlagReset 683
+    WorkGet EVENT_WORK_0x4166, 0x8026
+    FlagReset EVENT_FLAG_0x02ab
     Random 0x8025, 4
     DebugPrint 0x8025
     VMStackPush 0x8025
     VMStackPushConst 2
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0264
-    FlagReset 687
+    FlagReset EVENT_FLAG_0x02af
     Random 0x8026, 5
-    WorkGet 0x416a, 0x8026
+    WorkGet EVENT_WORK_0x416a, 0x8026
     VMJump L_0268
 
 L_0264:
-    FlagSet 687
+    FlagSet EVENT_FLAG_0x02af
 
 L_0268:
     Random 0x8025, 2
@@ -164,13 +164,13 @@ L_0268:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_029B
-    FlagReset 688
+    FlagReset EVENT_FLAG_0x02b0
     Random 0x8026, 5
-    WorkGet 0x416b, 0x8026
+    WorkGet EVENT_WORK_0x416b, 0x8026
     VMJump L_029F
 
 L_029B:
-    FlagSet 688
+    FlagSet EVENT_FLAG_0x02b0
 
 L_029F:
     Random 0x8025, 4
@@ -179,16 +179,16 @@ L_029F:
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02D2
-    FlagReset 689
+    FlagReset EVENT_FLAG_0x02b1
     Random 0x8026, 5
-    WorkGet 0x416c, 0x8026
+    WorkGet EVENT_WORK_0x416c, 0x8026
     VMJump L_02D6
 
 L_02D2:
-    FlagSet 689
+    FlagSet EVENT_FLAG_0x02b1
 
 L_02D6:
-    FlagSet 2746
+    FlagSet EVENT_FLAG_DAILY_0x0aba
     VMJump L_031B
 
 L_02E0:
@@ -200,34 +200,34 @@ L_02E0:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_031B
-    FlagSet 683
-    FlagSet 684
-    FlagSet 685
-    FlagSet 687
-    FlagSet 688
-    FlagSet 689
+    FlagSet EVENT_FLAG_0x02ab
+    FlagSet EVENT_FLAG_0x02ac
+    FlagSet EVENT_FLAG_0x02ad
+    FlagSet EVENT_FLAG_0x02af
+    FlagSet EVENT_FLAG_0x02b0
+    FlagSet EVENT_FLAG_0x02b1
 
 L_031B:
     VMJump L_0339
 
 L_0321:
-    FlagSet 683
-    FlagSet 684
-    FlagSet 685
-    FlagSet 687
-    FlagSet 688
-    FlagSet 689
+    FlagSet EVENT_FLAG_0x02ab
+    FlagSet EVENT_FLAG_0x02ac
+    FlagSet EVENT_FLAG_0x02ad
+    FlagSet EVENT_FLAG_0x02af
+    FlagSet EVENT_FLAG_0x02b0
+    FlagSet EVENT_FLAG_0x02b1
 
 L_0339:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 417
+    VMStackPushFlag EVENT_FLAG_0x01a1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0366
-    FlagReset 944
+    FlagReset EVENT_FLAG_0x03b0
     HollowRivalCmd_0262 1, 41
 
 L_0366:
@@ -258,7 +258,7 @@ Script_4:
     // "Let's see how well we've\nraised our Pokémon![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_LetsSeeHowWell, 251, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03F8
@@ -266,7 +266,7 @@ Script_4:
     VMJump L_0421
 
 L_03F8:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0419
@@ -320,7 +320,7 @@ L_04A9:
     ActorDelete 251
     SEWait
     BGMChangeMap
-    WorkSetConst 0x40cd, 1
+    WorkSetConst EVENT_WORK_0x40cd, 1
     HollowRivalCmd_0262 1, 21
     FinishAllEvents
     ActorsUnpauseAll
@@ -352,7 +352,7 @@ Script_12:
     CallXTransceiver 7, 0
     FadeInBlackQ
     FadeWait
-    WorkSetConst 0x4146, 2
+    WorkSetConst EVENT_WORK_0x4146, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -371,8 +371,8 @@ Script_5:
 
 Script_6:
     ActorsPauseAll
-    Cmd_02D5 18, 0x400f
-    VMStackPush 0x400f
+    Cmd_02D5 18, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0576
@@ -496,7 +496,7 @@ Script_10:
     ActorSetEyeToEye
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    VMStackPushFlag 414
+    VMStackPushFlag EVENT_FLAG_0x019e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0800
@@ -510,7 +510,7 @@ Script_10:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 414
+    FlagSet EVENT_FLAG_0x019e
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: It's Dive![f000]븁\u0000\nIf you have a Pokémon that knows it,\nyou can dive to the ocean floor.[f000]븁\u0000\nIf it wasn't for you, I wouldn't have\nfound my sister's Purrloin...[f000]븀\u0000\nOr should I say her Liepard...[f000]븁\u0000"
@@ -525,7 +525,7 @@ Script_10:
     // "Go get 'em, guys![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_GoGetEmGuys, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0719
@@ -533,7 +533,7 @@ Script_10:
     VMJump L_0742
 
 L_0719:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_073A
@@ -579,9 +579,9 @@ L_07B0:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 6
     SEWait
-    FlagSet 417
-    FlagSet 944
-    FlagReset 974
+    FlagSet EVENT_FLAG_0x01a1
+    FlagSet EVENT_FLAG_0x03b0
+    FlagReset EVENT_FLAG_0x03ce
     HollowRivalCmd_0262 1, 42
     VMCall L_093B
     VMJump L_07FA
@@ -610,7 +610,7 @@ L_0800:
     // "Go get 'em, guys![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_GoGetEmGuys, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0854
@@ -618,7 +618,7 @@ L_0800:
     VMJump L_087D
 
 L_0854:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0875
@@ -664,9 +664,9 @@ L_08EB:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 6
     SEWait
-    FlagSet 417
-    FlagSet 944
-    FlagReset 974
+    FlagSet EVENT_FLAG_0x01a1
+    FlagSet EVENT_FLAG_0x03b0
+    FlagReset EVENT_FLAG_0x03ce
     HollowRivalCmd_0262 1, 42
     VMCall L_093B
     VMJump L_0935
@@ -685,7 +685,7 @@ L_0935:
     VMHalt
 
 L_093B:
-    FlagReset 979
+    FlagReset EVENT_FLAG_0x03d3
     ActorAdd 7
     ActorSetGPos 7, 764, 65531, 304, 2
     PlayerGetGPos 0x8021, 0x8022
@@ -778,11 +778,11 @@ L_0A84:
     ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_JustMakeSureKnow, 7, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0ACA
-    WorkSetConst 0x418f, 1
+    WorkSetConst EVENT_WORK_0x418f, 1
 
 L_0ACA:
     VMReturn
@@ -832,16 +832,16 @@ Script_11:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x418f, 0
+    WorkCmpConst EVENT_WORK_0x418f, 0
     VMJumpIf CMP_EQ, L_0B57
     VMJump L_0B61
 
 L_0B57:
-    DebugPrint 0x418f
+    DebugPrint EVENT_WORK_0x418f
     VMJump L_0D80
 
 L_0B61:
-    WorkCmpConst 0x418f, 1
+    WorkCmpConst EVENT_WORK_0x418f, 1
     VMJumpIf CMP_EQ, L_0B74
     VMJump L_0B88
 
@@ -853,7 +853,7 @@ L_0B74:
     VMJump L_0D80
 
 L_0B88:
-    WorkCmpConst 0x418f, 2
+    WorkCmpConst EVENT_WORK_0x418f, 2
     VMJumpIf CMP_EQ, L_0B9B
     VMJump L_0BB9
 
@@ -867,7 +867,7 @@ L_0B9B:
     VMJump L_0D80
 
 L_0BB9:
-    WorkCmpConst 0x418f, 3
+    WorkCmpConst EVENT_WORK_0x418f, 3
     VMJumpIf CMP_EQ, L_0BCC
     VMJump L_0BEA
 
@@ -881,7 +881,7 @@ L_0BCC:
     VMJump L_0D80
 
 L_0BEA:
-    WorkCmpConst 0x418f, 4
+    WorkCmpConst EVENT_WORK_0x418f, 4
     VMJumpIf CMP_EQ, L_0BFD
     VMJump L_0C2B
 
@@ -894,11 +894,11 @@ L_0BFD:
     ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x418f, 5
+    WorkSetConst EVENT_WORK_0x418f, 5
     VMJump L_0D80
 
 L_0C2B:
-    WorkCmpConst 0x418f, 5
+    WorkCmpConst EVENT_WORK_0x418f, 5
     VMJumpIf CMP_EQ, L_0C3E
     VMJump L_0C5C
 
@@ -912,7 +912,7 @@ L_0C3E:
     VMJump L_0D80
 
 L_0C5C:
-    WorkCmpConst 0x418f, 6
+    WorkCmpConst EVENT_WORK_0x418f, 6
     VMJumpIf CMP_EQ, L_0C6F
     VMJump L_0C9D
 
@@ -925,11 +925,11 @@ L_0C6F:
     ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x418f, 7
+    WorkSetConst EVENT_WORK_0x418f, 7
     VMJump L_0D80
 
 L_0C9D:
-    WorkCmpConst 0x418f, 7
+    WorkCmpConst EVENT_WORK_0x418f, 7
     VMJumpIf CMP_EQ, L_0CB0
     VMJump L_0CCE
 
@@ -943,7 +943,7 @@ L_0CB0:
     VMJump L_0D80
 
 L_0CCE:
-    WorkCmpConst 0x418f, 8
+    WorkCmpConst EVENT_WORK_0x418f, 8
     VMJumpIf CMP_EQ, L_0CE1
     VMJump L_0D80
 
@@ -981,7 +981,7 @@ L_0D5E:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 7
     SEWait
-    FlagSet 979
+    FlagSet EVENT_FLAG_0x03d3
     VMJump L_0D80
 
 L_0D80:

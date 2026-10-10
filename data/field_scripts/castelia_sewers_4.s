@@ -6,7 +6,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2781
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0add
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0035
@@ -94,7 +94,7 @@ L_0143:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaSewers4_Text_TomorrowAnotherDayRun, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2781
+    FlagSet EVENT_FLAG_DAILY_0x0add
     VMReturn
     .balign 4, 0
 

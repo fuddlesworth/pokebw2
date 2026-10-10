@@ -32,7 +32,7 @@ L_0047:
     WorkSetConst 0x8022, 0
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 0
-    VMStackPushFlag 106
+    VMStackPushFlag EVENT_FLAG_0x006a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E

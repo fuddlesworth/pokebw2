@@ -138,7 +138,7 @@
             "model": 250,
             "movement": 0,
             "type": 0,
-            "flag": "0x02f4",
+            "flag": "EVENT_FLAG_0x02f4",
             "script": 2000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -247,7 +247,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": "0x40b4",
+            "var": "EVENT_WORK_0x40b4",
             "value": 1,
             "type": 0,
             "grid": {
@@ -261,7 +261,7 @@
         },
         {
             "script": 3,
-            "var": "0x40b4",
+            "var": "EVENT_WORK_0x40b4",
             "value": 1,
             "type": 0,
             "grid": {

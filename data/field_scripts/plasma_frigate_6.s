@@ -25,10 +25,10 @@ Script_2:
     VMHalt
 
 Script_3:
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_EQ
-    VMStackPushFlag 854
+    VMStackPushFlag EVENT_FLAG_0x0356
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -37,10 +37,10 @@ Script_3:
     VMJump L_00B8
 
 L_0089:
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 2
     VMStackCmp CMP_GE
-    VMStackPushFlag 854
+    VMStackPushFlag EVENT_FLAG_0x0356
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -56,8 +56,8 @@ Script_4:
 Script_5:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    FlagReset 848
-    FlagReset 854
+    FlagReset EVENT_FLAG_0x0350
+    FlagReset EVENT_FLAG_0x0356
     ActorWalkRoute 255, 11, 8, 1, 8, 0
     ActorCmdWait
     EvCameraInit
@@ -109,7 +109,7 @@ Script_5:
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ThatsRightKyuremWill, 4, 0, 0
     MsgWinCloseAll
     ActorAdd 1
-    FlagSet 2554
+    FlagSet EVENT_FLAG_0x09fa
     ActorCmdExec 1, Movement_08AC
     BGMChangeMap
     ActorCmdWait
@@ -177,9 +177,9 @@ Script_5:
     VMJump L_0327
 
 L_0319:
-    FlagSet 848
-    FlagSet 854
-    FlagReset 2554
+    FlagSet EVENT_FLAG_0x0350
+    FlagSet EVENT_FLAG_0x0356
+    FlagReset EVENT_FLAG_0x09fa
     CallTrainerLose
 
 L_0327:
@@ -192,13 +192,13 @@ L_0327:
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadYoureNot, 5, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 847
-    WorkSetConst 0x40f4, 2
-    WorkSetConst 0x4101, 1
-    FlagSet 842
-    FlagSet 843
-    FlagSet 1026
-    FlagSet 909
+    FlagSet EVENT_FLAG_0x034f
+    WorkSetConst EVENT_WORK_0x40f4, 2
+    WorkSetConst EVENT_WORK_0x4101, 1
+    FlagSet EVENT_FLAG_0x034a
+    FlagSet EVENT_FLAG_0x034b
+    FlagSet EVENT_FLAG_0x0402
+    FlagSet EVENT_FLAG_0x038d
     VMHalt
     .balign 4, 0
 
@@ -242,9 +242,9 @@ Script_7:
     VMCall L_08C0
     // "Shadow Triad: Even if I lose,\nLord Ghetsis simply has to win..."
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadEvenIf, 5, 0, 0
-    WorkAdd 0x40f4, 1
+    WorkAdd EVENT_WORK_0x40f4, 1
     TrainerFlagSet TRAINER_TEAM_PLASMA_SHADOW_2
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0426
@@ -289,9 +289,9 @@ Script_8:
     VMCall L_08C0
     // "Shadow Triad: Listen well![f000]븁\u0000\nThe only thing we want is\nthe world Lord Ghetsis desires!"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadListenWell, 3, 0, 0
-    WorkAdd 0x40f4, 1
+    WorkAdd EVENT_WORK_0x40f4, 1
     TrainerFlagSet TRAINER_TEAM_PLASMA_SHADOW_3
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04C0
@@ -356,7 +356,7 @@ L_0540:
     // "You...\nI'll return this Pokémon to you.[f000]븁\u0000\nConsidering what Lord Ghetsis\nis about to do,[f000]븀\u0000\nI have no further need of it.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_IllReturnPokemonConsidering, 1, 0, 0
     MsgWinCloseAll
-    FlagReset 2554
+    FlagReset EVENT_FLAG_0x09fa
     ActorCmdExec 1, Movement_08B4
     ActorCmdExec 5, Movement_08B4
     ActorCmdExec 3, Movement_08B4
@@ -382,16 +382,16 @@ L_05D1:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x4101, 2
-    FlagSet 848
-    FlagSet 857
+    WorkSetConst EVENT_WORK_0x4101, 2
+    FlagSet EVENT_FLAG_0x0350
+    FlagSet EVENT_FLAG_0x0359
     VMReturn
 
 Script_9:
     ActorsPauseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_065D
@@ -446,7 +446,7 @@ Script_10:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     PVPlay 510, 0
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_06D5
@@ -558,7 +558,7 @@ L_07FF:
 Script_12:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0829
@@ -580,7 +580,7 @@ L_082E:
 Script_13:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_085C
@@ -602,7 +602,7 @@ L_0861:
 Script_14:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_088F
@@ -643,7 +643,7 @@ L_08C0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0939
     PlayerGetGPos 0x8022, 0x8023
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMStackPush 0x8022
@@ -655,7 +655,7 @@ L_08C0:
     VMJump L_0931
 
 L_0912:
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0931

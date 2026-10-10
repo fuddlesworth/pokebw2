@@ -85,7 +85,7 @@
     "triggers": [
         {
             "script": 2,
-            "var": "0x40e0",
+            "var": "EVENT_WORK_0x40e0",
             "value": 0,
             "type": 0,
             "grid": {

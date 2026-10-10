@@ -11,10 +11,10 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 3
     VMStackCmp CMP_GE
-    VMStackPushFlag 824
+    VMStackPushFlag EVENT_FLAG_0x0338
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -28,7 +28,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0107
@@ -41,7 +41,7 @@ Script_2:
     ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_WhyHowComeAll, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
-    WorkSetConst 0x40ee, 3
+    WorkSetConst EVENT_WORK_0x40ee, 3
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
     VMStackPushConst 14
@@ -67,7 +67,7 @@ L_0101:
     VMJump L_0128
 
 L_0107:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0128
@@ -96,10 +96,10 @@ Script_3:
     ActorMsgClose
     CallTrainerBattle TRAINER_SCHOOL_KID_ALBERTA, 0, 0
     VMCall L_01AB
-    WorkSetConst 0x40ef, 1
-    FlagSet 341
-    FlagSet 827
-    FlagReset 828
+    WorkSetConst EVENT_WORK_0x40ef, 1
+    FlagSet EVENT_FLAG_0x0155
+    FlagSet EVENT_FLAG_0x033b
+    FlagReset EVENT_FLAG_0x033c
     TrainerFlagSet TRAINER_SCHOOL_KID_ALBERTA
     // "Losing a battle is so draining.\nI feel really burned out somehow."
     ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_LosingBattleDrainingFeel, 0, 0
@@ -149,10 +149,10 @@ Script_4:
     ActorMsgClose
     CallTrainerBattle TRAINER_SCHOOL_KID_ALBERTA, 0, 0
     VMCall L_01AB
-    WorkSetConst 0x40ef, 1
-    FlagSet 341
-    FlagSet 827
-    FlagReset 828
+    WorkSetConst EVENT_WORK_0x40ef, 1
+    FlagSet EVENT_FLAG_0x0155
+    FlagSet EVENT_FLAG_0x033b
+    FlagReset EVENT_FLAG_0x033c
     TrainerFlagSet TRAINER_SCHOOL_KID_ALBERTA
     // "Losing a battle is so draining.\nI feel really burned out somehow."
     ActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_LosingBattleDrainingFeel, 3, 0, 0

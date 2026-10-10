@@ -11,27 +11,27 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WordSetPlayerName 1
-    MusicalIsPropOwned 99, 0x4001
-    MusicalIsPropOwned 98, 0x4002
-    MusicalIsPropOwned 95, 0x4003
-    MusicalIsPropOwned 96, 0x4004
-    VMStackPush 0x4001
+    MusicalIsPropOwned 99, EVENT_WORK_0x4001
+    MusicalIsPropOwned 98, EVENT_WORK_0x4002
+    MusicalIsPropOwned 95, EVENT_WORK_0x4003
+    MusicalIsPropOwned 96, EVENT_WORK_0x4004
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4002
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4003
+    VMStackPush EVENT_WORK_0x4003
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4004
+    VMStackPush EVENT_WORK_0x4004
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_007A
-    WorkSetConst 0x4084, 1
+    WorkSetConst EVENT_WORK_0x4084, 1
 
 L_007A:
     ItemCheckAmount ITEM_PROP_CASE, 1, 0x8010
@@ -39,7 +39,7 @@ L_007A:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0222
-    VMStackPush 0x4084
+    VMStackPush EVENT_WORK_0x4084
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BE
@@ -50,7 +50,7 @@ L_007A:
     VMJump L_021C
 
 L_00BE:
-    VMStackPushFlag 2730
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0aaa
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E7
@@ -73,7 +73,7 @@ L_00E7:
     ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_AmGladAlsoHuge, 0, 0, 0
     ActorMsgClose
     WorkSetConst 0x8021, 0
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_015D
@@ -87,7 +87,7 @@ L_00E7:
     VMJump L_0202
 
 L_015D:
-    VMStackPush 0x4002
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0196
@@ -101,7 +101,7 @@ L_015D:
     VMJump L_0202
 
 L_0196:
-    VMStackPush 0x4003
+    VMStackPush EVENT_WORK_0x4003
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CF
@@ -115,7 +115,7 @@ L_0196:
     VMJump L_0202
 
 L_01CF:
-    VMStackPush 0x4004
+    VMStackPush EVENT_WORK_0x4004
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0202
@@ -128,7 +128,7 @@ L_01CF:
     ActorMsgClose
 
 L_0202:
-    FlagSet 2730
+    FlagSet EVENT_FLAG_DAILY_0x0aaa
     VMJump L_021C
 
 L_020C:

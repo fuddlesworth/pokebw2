@@ -79,11 +79,11 @@ L_0102:
     VMHalt
 
 L_010E:
-    VMStackPushFlag 2456
+    VMStackPushFlag EVENT_FLAG_0x0998
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0125
-    FlagSet 2456
+    FlagSet EVENT_FLAG_0x0998
 
 L_0125:
     VMReturn

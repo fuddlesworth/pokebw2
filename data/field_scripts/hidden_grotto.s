@@ -111,7 +111,7 @@ Script_3:
     VMStackPop 0x8001
     VMStackPop 0x8000
     HiddenHollowReset
-    FlagReset 2431
+    FlagReset EVENT_FLAG_0x097f
     ObjInitPointGPos 0, 15, 0, 31
     RecordAdd 44, 1
     WorkSetConst 0x8027, 0
@@ -163,7 +163,7 @@ Movement_0230:
 
 Script_6:
     ActorsPauseAll
-    FlagSet 2641
+    FlagSet EVENT_FLAG_0x0a51
     Cmd_02C5 27
     ActorNew 15, 26, 0, 251, 249, 0
     ActorWalkRoute 251, 14, 14, 1, 8, 1

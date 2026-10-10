@@ -8,13 +8,13 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0031
-    FlagSet 820
-    FlagReset 821
-    FlagReset 822
+    FlagSet EVENT_FLAG_0x0334
+    FlagReset EVENT_FLAG_0x0335
+    FlagReset EVENT_FLAG_0x0336
 
 L_0031:
     VMHalt
@@ -33,7 +33,7 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 7
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E
@@ -62,7 +62,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0112
@@ -77,11 +77,11 @@ Script_4:
     ParentActorMsg MSGFILE_SCRIPT, HumilauCity4_Text_YoureNiceWouldGreat, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40ee, 1
-    FlagReset 823
-    FlagReset 824
-    FlagReset 825
-    FlagReset 826
+    WorkSetConst EVENT_WORK_0x40ee, 1
+    FlagReset EVENT_FLAG_0x0337
+    FlagReset EVENT_FLAG_0x0338
+    FlagReset EVENT_FLAG_0x0339
+    FlagReset EVENT_FLAG_0x033a
     VMJump L_010C
 
 L_00FE:
@@ -94,10 +94,10 @@ L_010C:
     VMJump L_01C5
 
 L_0112:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 1
     VMStackCmp CMP_GE
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 5
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
@@ -109,7 +109,7 @@ L_0112:
     VMJump L_01C5
 
 L_0149:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 6
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A4
@@ -128,11 +128,11 @@ L_0149:
     ParentActorMsg MSGFILE_SCRIPT, HumilauCity4_Text_WishTheirHappiness, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40ee, 7
+    WorkSetConst EVENT_WORK_0x40ee, 7
     VMJump L_01C5
 
 L_01A4:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 7
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C5

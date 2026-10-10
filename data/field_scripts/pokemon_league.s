@@ -11,18 +11,18 @@
     ScriptEntriesEnd
 
 Script_1:
-    FlagReset 2407
-    FlagReset 2408
-    FlagReset 2409
-    FlagReset 2410
-    VMStackPush 0x4109
+    FlagReset EVENT_FLAG_0x0967
+    FlagReset EVENT_FLAG_0x0968
+    FlagReset EVENT_FLAG_0x0969
+    FlagReset EVENT_FLAG_0x096a
+    VMStackPush EVENT_WORK_0x4109
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004D
     ObjInitNPCGPos 1, 1, 32, 1, 46
 
 L_004D:
-    FlagSet 367
+    FlagSet EVENT_FLAG_0x016f
     VMHalt
 
 Script_2:
@@ -82,13 +82,13 @@ Script_6:
     ActorCmdWait
 
 L_00F9:
-    VMStackPushFlag 366
+    VMStackPushFlag EVENT_FLAG_0x016e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0128
     // "The Pokémon League is a place where you\nboth pursue strength and express it.[f000]븁\u0000\nThe way to express it is simple...[f000]븁\u0000\nYou just have to beat the Elite Four and\nthe Champion![f000]븁\u0000\nYou can start your challenge by battling\nany of the Elite Four, and if you defeat[f000]븀\u0000\nthem all, you can challenge the Champion![f000]븁\u0000\nHowever! I warn you, once you start\nyour challenge, there's no turning back.[f000]븁\u0000\nYou must keep battling until you defeat\nthem all...or are defeated yourself.[f000]븁\u0000\nDo you want to go in?"
     ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_PokemonLeaguePlaceWhere, 1, 5, 0
-    FlagSet 366
+    FlagSet EVENT_FLAG_0x016e
     HollowRivalCmd_0262 1, 39
     VMJump L_0134
 
@@ -126,7 +126,7 @@ L_01A1:
 
 L_01A9:
     ActorCmdWait
-    WorkSetConst 0x4109, 1
+    WorkSetConst EVENT_WORK_0x4109, 1
     VMJump L_01CF
 
 L_01B7:

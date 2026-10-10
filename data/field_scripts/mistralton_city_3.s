@@ -246,7 +246,7 @@ Script_2:
 Script_3:
     ActorsPauseAll
     TrainerCardHasBadge 0x8008, 5
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 3
     VMStackCmp CMP_LE
     VMStackPush 0x8008
@@ -263,19 +263,19 @@ Script_3:
     VMJump L_0524
 
 L_03B9:
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0524
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 290
+    VMStackPushFlag EVENT_FLAG_0x0122
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03FB
     // "Looks like the Professor's reached a\nstopping point in her investigation.[f000]븁\u0000\nReady to hop aboard my plane?"
     ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_LooksLikeProfessorsReached, 4, 0, 0
-    FlagSet 290
+    FlagSet EVENT_FLAG_0x0122
     VMJump L_0407
 
 L_03FB:
@@ -297,7 +297,7 @@ L_0407:
     // "OK, Skyla, we're ready.\nPlease take us to Lentimas Town![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkSkylaWereReady, 2, 0, 0
     MsgWinCloseAll
-    FlagReset 769
+    FlagReset EVENT_FLAG_0x0301
     SEPlay SEQ_SE_KAIDAN
     ActorAdd 3
     SEWait
@@ -336,12 +336,12 @@ L_04BA:
     ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_SkylaHeeHeeLooks, 4, 1, 0
     MsgWinCloseAll
     VMCall L_07D6
-    FlagSet 767
-    FlagSet 768
-    FlagSet 769
-    FlagSet 790
-    FlagReset 1006
-    WorkSetConst 0x40cb, 1
+    FlagSet EVENT_FLAG_0x02ff
+    FlagSet EVENT_FLAG_0x0300
+    FlagSet EVENT_FLAG_0x0301
+    FlagSet EVENT_FLAG_0x0316
+    FlagReset EVENT_FLAG_0x03ee
+    WorkSetConst EVENT_WORK_0x40cb, 1
     VMJump L_0524
 
 L_0514:
@@ -377,7 +377,7 @@ Script_5:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05AE
-    VMStackPushFlag 375
+    VMStackPushFlag EVENT_FLAG_0x0177
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_059A
@@ -385,7 +385,7 @@ Script_5:
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HrmphThereHaveAce, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 375
+    FlagSet EVENT_FLAG_0x0177
     VMJump L_05A8
 
 L_059A:
@@ -402,7 +402,7 @@ L_05AE:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05FA
-    VMStackPushFlag 376
+    VMStackPushFlag EVENT_FLAG_0x0178
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05EC
@@ -410,7 +410,7 @@ L_05AE:
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OohShinyThAce, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 376
+    FlagSet EVENT_FLAG_0x0178
     VMJump L_05FA
 
 L_05EC:
@@ -429,7 +429,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40cb
+    VMStackPush EVENT_WORK_0x40cb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0637
@@ -471,7 +471,7 @@ L_06A5:
     VMStackPush 0x8020
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 421
+    VMStackPushFlag EVENT_FLAG_0x01a5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -488,7 +488,7 @@ L_06A5:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0721
-    FlagSet 421
+    FlagSet EVENT_FLAG_0x01a5
     // "OK. We will contact Skyla,\nso please board the plane and wait.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkWeWillContact, 6, 2, 0
     MsgWinCloseAll
@@ -650,7 +650,7 @@ Script_10:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 472
+    VMStackPushFlag EVENT_FLAG_0x01d8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09A2
@@ -683,7 +683,7 @@ Script_10:
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HavingPokemonCanBig, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 472
+    FlagSet EVENT_FLAG_0x01d8
     VMJump L_099C
 
 L_098E:

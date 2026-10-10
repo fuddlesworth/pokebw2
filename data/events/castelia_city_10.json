@@ -26,7 +26,7 @@
             "model": 291,
             "movement": 0,
             "type": 0,
-            "flag": "0x02ec",
+            "flag": "EVENT_FLAG_0x02ec",
             "script": 2000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -45,7 +45,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x0467",
+            "flag": "EVENT_FLAG_0x0467",
             "script": 7027,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -146,7 +146,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x40ae",
+                    "var": "EVENT_WORK_0x40ae",
                     "value": 1,
                     "script": 2
                 }

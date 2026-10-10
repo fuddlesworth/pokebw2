@@ -15,7 +15,7 @@ Script_1:
     VMHalt
 
 Script_3:
-    VMStackPush 0x4123
+    VMStackPush EVENT_WORK_0x4123
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004F
@@ -23,7 +23,7 @@ Script_3:
     VMJump L_006E
 
 L_004F:
-    VMStackPush 0x4123
+    VMStackPush EVENT_WORK_0x4123
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006E
@@ -49,7 +49,7 @@ Script_2:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 9
     SEWait
-    WorkSetConst 0x4123, 2
+    WorkSetConst EVENT_WORK_0x4123, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -69,8 +69,8 @@ Script_5:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 9
     SEWait
-    WorkSetConst 0x4123, 3
-    FlagSet 961
+    WorkSetConst EVENT_WORK_0x4123, 3
+    FlagSet EVENT_FLAG_0x03c1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

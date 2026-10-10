@@ -17,7 +17,7 @@
     WorkSetConst 0x8023, 0
 
 L_0036:
-    VMStackPush 0x4106
+    VMStackPush EVENT_WORK_0x4106
     VMStackPushConst 3
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0053
@@ -31,7 +31,7 @@ Script_1:
     VMHalt
 
 Script_2:
-    VMStackPush 0x4106
+    VMStackPush EVENT_WORK_0x4106
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0082
@@ -39,10 +39,10 @@ Script_2:
     VMJump L_00E6
 
 L_0082:
-    VMStackPush 0x4106
+    VMStackPush EVENT_WORK_0x4106
     VMStackPushConst 4
     VMStackCmp CMP_EQ
-    VMStackPushFlag 855
+    VMStackPushFlag EVENT_FLAG_0x0357
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -51,10 +51,10 @@ L_0082:
     VMJump L_00E6
 
 L_00B7:
-    VMStackPush 0x4106
+    VMStackPush EVENT_WORK_0x4106
     VMStackPushConst 5
     VMStackCmp CMP_EQ
-    VMStackPushFlag 857
+    VMStackPushFlag EVENT_FLAG_0x0359
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -72,8 +72,8 @@ Script_4:
     ActorsPauseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    FlagReset 855
-    FlagReset 856
+    FlagReset EVENT_FLAG_0x0357
+    FlagReset EVENT_FLAG_0x0358
     EvCameraInit
     EvCameraUnbind
     EvCameraMoveTo 9688, 0, 0xed000, 0x3219000, 0xfffaffb1, 0xf02000, 48
@@ -159,7 +159,7 @@ L_0242:
     EvCameraEnd
     MapReplaceSetEvent 5, 0, 0
     MapReplaceSetEvent 6, 1, 1
-    WorkSetConst 0x4106, 2
+    WorkSetConst EVENT_WORK_0x4106, 2
     RTReserveScript 7
     MapChangeCore ZONE_ROUTE_21, 797, 65531, 241, 3
     FinishAllEvents
@@ -272,31 +272,31 @@ Script_7:
     EvCameraRebind
     EvCameraEnd
     ObjInitWarpGPos 2, 800, 65531, 241
-    WorkSetConst 0x4106, 3
-    FlagSet 855
-    FlagSet 856
-    FlagReset 830
-    FlagReset 832
-    FlagSet 831
-    FlagSet 829
-    FlagReset 1002
+    WorkSetConst EVENT_WORK_0x4106, 3
+    FlagSet EVENT_FLAG_0x0357
+    FlagSet EVENT_FLAG_0x0358
+    FlagReset EVENT_FLAG_0x033e
+    FlagReset EVENT_FLAG_0x0340
+    FlagSet EVENT_FLAG_0x033f
+    FlagSet EVENT_FLAG_0x033d
+    FlagReset EVENT_FLAG_0x03ea
     HollowRivalCmd_0262 1, 30
     GameGetVersion 0x8020
     VMStackPush 0x8020
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_049D
-    WorkSetConst 0x40f1, 0
-    WorkSetConst 0x40f2, 1
-    WorkSetConst 0x4103, 1
-    WorkSetConst 0x4102, 1
+    WorkSetConst EVENT_WORK_0x40f1, 0
+    WorkSetConst EVENT_WORK_0x40f2, 1
+    WorkSetConst EVENT_WORK_0x4103, 1
+    WorkSetConst EVENT_WORK_0x4102, 1
     VMJump L_04B5
 
 L_049D:
-    WorkSetConst 0x40f1, 1
-    WorkSetConst 0x40f2, 0
-    WorkSetConst 0x4103, 1
-    WorkSetConst 0x4102, 1
+    WorkSetConst EVENT_WORK_0x40f1, 1
+    WorkSetConst EVENT_WORK_0x40f2, 0
+    WorkSetConst EVENT_WORK_0x4103, 1
+    WorkSetConst EVENT_WORK_0x4102, 1
 
 L_04B5:
     FinishAllEvents
@@ -325,7 +325,7 @@ Script_5:
     ActorsPauseAll
     FadeInBlackQ
     FadeWait
-    FlagReset 857
+    FlagReset EVENT_FLAG_0x0359
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Team Plasma![f000]븁\u0000\nNo matter where you fly,\nI won't let you get away![f000]븁\u0000\nBut, what's over there anyway?[f000]븁\u0000"
@@ -374,10 +374,10 @@ Script_5:
     ActorMsgVersioned 1024, Route21_Text_ThenHowShouldWe, Route21_Text_ThenHowShouldWe_2, 11, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4106, 5
-    WorkSetConst 0x4070, 1
-    FlagSet 855
-    FlagSet 364
+    WorkSetConst EVENT_WORK_0x4106, 5
+    WorkSetConst EVENT_WORK_0x4070, 1
+    FlagSet EVENT_FLAG_0x0357
+    FlagSet EVENT_FLAG_0x016c
     HollowRivalCmd_0262 2, 9
     HollowRivalCmd_0262 1, 32
     HollowRivalCmd_0262 3, 7

@@ -26,7 +26,7 @@
             "model": 358,
             "movement": 14,
             "type": 0,
-            "flag": "0x03c4",
+            "flag": "EVENT_FLAG_0x03c4",
             "script": 10821,
             "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
@@ -45,7 +45,7 @@
             "model": 345,
             "movement": 0,
             "type": 0,
-            "flag": "0x03c4",
+            "flag": "EVENT_FLAG_0x03c4",
             "script": 10820,
             "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
@@ -278,7 +278,7 @@
     "triggers": [
         {
             "script": 10818,
-            "var": "0x4000",
+            "var": "EVENT_WORK_0x4000",
             "value": 1,
             "type": 0,
             "grid": {
@@ -304,7 +304,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4001",
+                    "var": "EVENT_WORK_0x4001",
                     "value": 1,
                     "script": 10823
                 }

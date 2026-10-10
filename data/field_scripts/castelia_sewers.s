@@ -16,15 +16,15 @@
     WorkSetConst 0x8024, 0
 
 Script_1:
-    VMStackPush 0x40b3
+    VMStackPush EVENT_WORK_0x40b3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0063
-    FlagReset 755
+    FlagReset EVENT_FLAG_0x02f3
 
 L_0063:
     VMHalt
@@ -34,7 +34,7 @@ Script_2:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0088
@@ -85,7 +85,7 @@ L_00DB:
 L_0127:
     ActorCmdExec 255, Movement_08D8
     ActorCmdWait
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0194
@@ -108,7 +108,7 @@ L_0127:
     VMJump L_0241
 
 L_0194:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F7
@@ -149,7 +149,7 @@ L_01F7:
     VMStackPop 0x8000
 
 L_0241:
-    FlagSet 755
+    FlagSet EVENT_FLAG_0x02f3
     HollowRivalCmd_0262 1, 2
     VMJump L_0269
 
@@ -213,7 +213,7 @@ L_02D7:
     RTCallGlobal 10536
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagReset 755
+    FlagReset EVENT_FLAG_0x02f3
     HollowRivalCmd_0262 1, 3
     ActorAdd 0
     ActorDelete 254
@@ -279,7 +279,7 @@ Script_3:
     ActorCmdExec 254, Movement_0900
     ActorCmdExec 255, Movement_0900
     ActorCmdWait
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04A4
@@ -287,7 +287,7 @@ Script_3:
     VMJump L_04D1
 
 L_04A4:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04C7
@@ -448,12 +448,12 @@ L_052B:
     ActorDelete 19
     ActorDelete 20
     ActorDelete 21
-    WorkSetConst 0x40b3, 1
-    WorkSetConst 0x40b2, 3
-    FlagSet 755
-    FlagSet 759
-    FlagSet 1005
-    FlagSet 752
+    WorkSetConst EVENT_WORK_0x40b3, 1
+    WorkSetConst EVENT_WORK_0x40b2, 3
+    FlagSet EVENT_FLAG_0x02f3
+    FlagSet EVENT_FLAG_0x02f7
+    FlagSet EVENT_FLAG_0x03ed
+    FlagSet EVENT_FLAG_0x02f0
     HollowRivalCmd_0262 1, 4
     MedalDiscover 58
     FinishAllEvents

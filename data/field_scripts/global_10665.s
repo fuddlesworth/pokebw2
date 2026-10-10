@@ -105,7 +105,7 @@ Script_2:
     WbtCmd_SetStyle 0
     WbtCmd_SetRound 2
     Plugin7_Cmd1005
-    Plugin7_Cmd1040 0x4020
+    Plugin7_Cmd1040 EVENT_WORK_0x4020
     ActorNew 21, 15, 3, 251, 162, 0
     EvCameraInit
     EvCameraUnbind
@@ -126,7 +126,7 @@ Script_3:
     WbtCmd_SetStyle 0
     WbtCmd_SetRound 3
     Plugin7_Cmd1005
-    Plugin7_Cmd1040 0x4020
+    Plugin7_Cmd1040 EVENT_WORK_0x4020
     ActorNew 21, 15, 3, 251, 162, 0
     VMCall L_07E0
     VMStackPush 0x8027
@@ -158,7 +158,7 @@ L_0256:
     VMStackPushConst 11
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0315
-    Plugin7_Cmd1040 0x4020
+    Plugin7_Cmd1040 EVENT_WORK_0x4020
     ActorNew 3, 15, 3, 251, 162, 0
     ActorSetGPos 255, 42, 0, 15, 2
     ActorCmdExec 251, Movement_0AD4
@@ -186,7 +186,7 @@ L_0256:
     VMJump L_037F
 
 L_0315:
-    Plugin7_Cmd1040 0x4020
+    Plugin7_Cmd1040 EVENT_WORK_0x4020
     ActorNew 3, 15, 3, 251, 162, 0
     ActorCmdExec 251, Movement_0AD4
     ActorCmdWait
@@ -319,7 +319,7 @@ L_053D:
     EvCameraWait
     Plugin7_Cmd1047 1
     WbtCmd_SetRound 3
-    Plugin7_Cmd1040 0x4020
+    Plugin7_Cmd1040 EVENT_WORK_0x4020
     ActorNew 3, 15, 3, 251, 162, 0
     ActorSetGPos 255, 31, 0, 15, 2
     ActorCmdExec 251, Movement_0AD4
@@ -464,7 +464,7 @@ L_07E0:
     EvCameraWait
     Plugin7_Cmd1047 2
     WbtCmd_SetRound 4
-    Plugin7_Cmd1040 0x4020
+    Plugin7_Cmd1040 EVENT_WORK_0x4020
     ActorNew 3, 15, 3, 251, 162, 0
     ActorSetGPos 255, 42, 0, 15, 2
     ActorCmdExec 251, Movement_0AD4
@@ -971,8 +971,8 @@ L_0EBD:
 L_0EC9:
     Random 0x8021, 100
     DebugPrint 0x8021
-    WorkSetConst 0x400e, 0
-    WorkSetConst 0x400f, 0
+    WorkSetConst EVENT_WORK_0x400e, 0
+    WorkSetConst EVENT_WORK_0x400f, 0
     VMStackPush 0x8023
     VMStackPush 0x8021
     VMStackCmp CMP_GE
@@ -999,7 +999,7 @@ L_0F33:
 
 L_0F3C:
     VMCall L_1405
-    WorkSetConst 0x400e, 1
+    WorkSetConst EVENT_WORK_0x400e, 1
 
 L_0F48:
     Random 0x8021, 100
@@ -1030,18 +1030,18 @@ L_0FA6:
 
 L_0FAF:
     VMCall L_1405
-    WorkSetConst 0x400f, 1
+    WorkSetConst EVENT_WORK_0x400f, 1
 
 L_0FBB:
     VMSleep 60
-    VMStackPush 0x400e
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0FD6
     MsgWinCloseNo 1
 
 L_0FD6:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0FED
@@ -1062,7 +1062,7 @@ L_0FEF:
     WorkSetConst 0x8025, 1
     WorkSetConst 0x8026, 1
     VMCall L_156B
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
 
 L_102F:
     VMSleep 20
@@ -1076,10 +1076,10 @@ L_102F:
     WorkSetConst 0x8025, 16
     WorkSetConst 0x8026, 2
     VMCall L_156B
-    WorkSetConst 0x4002, 1
+    WorkSetConst EVENT_WORK_0x4002, 1
 
 L_106E:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1085
@@ -1097,10 +1097,10 @@ L_1085:
     WorkSetConst 0x8025, 18
     WorkSetConst 0x8026, 3
     VMCall L_156B
-    WorkSetConst 0x4003, 1
+    WorkSetConst EVENT_WORK_0x4003, 1
 
 L_10C4:
-    VMStackPush 0x4002
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_10DB
@@ -1118,10 +1118,10 @@ L_10DB:
     WorkSetConst 0x8025, 1
     WorkSetConst 0x8026, 4
     VMCall L_156B
-    WorkSetConst 0x4004, 1
+    WorkSetConst EVENT_WORK_0x4004, 1
 
 L_111A:
-    VMStackPush 0x4003
+    VMStackPush EVENT_WORK_0x4003
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1131
@@ -1139,10 +1139,10 @@ L_1131:
     WorkSetConst 0x8025, 18
     WorkSetConst 0x8026, 5
     VMCall L_156B
-    WorkSetConst 0x4005, 1
+    WorkSetConst EVENT_WORK_0x4005, 1
 
 L_1170:
-    VMStackPush 0x4004
+    VMStackPush EVENT_WORK_0x4004
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1187
@@ -1160,10 +1160,10 @@ L_1187:
     WorkSetConst 0x8025, 1
     WorkSetConst 0x8026, 6
     VMCall L_156B
-    WorkSetConst 0x4006, 1
+    WorkSetConst EVENT_WORK_0x4006, 1
 
 L_11C6:
-    VMStackPush 0x4005
+    VMStackPush EVENT_WORK_0x4005
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11DD
@@ -1171,7 +1171,7 @@ L_11C6:
 
 L_11DD:
     VMSleep 20
-    VMStackPush 0x4006
+    VMStackPush EVENT_WORK_0x4006
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11F8
@@ -1193,7 +1193,7 @@ L_11FA:
     WorkSetConst 0x8026, 1
     VMCall L_156B
     VMSleep 20
-    WorkSetConst 0x4007, 1
+    WorkSetConst EVENT_WORK_0x4007, 1
 
 L_123E:
     Random 0x8021, 100
@@ -1206,10 +1206,10 @@ L_123E:
     WorkSetConst 0x8025, 18
     WorkSetConst 0x8026, 2
     VMCall L_156B
-    WorkSetConst 0x4008, 1
+    WorkSetConst EVENT_WORK_0x4008, 1
 
 L_1279:
-    VMStackPush 0x4007
+    VMStackPush EVENT_WORK_0x4007
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1290
@@ -1227,10 +1227,10 @@ L_1290:
     WorkSetConst 0x8025, 1
     WorkSetConst 0x8026, 3
     VMCall L_156B
-    WorkSetConst 0x4009, 1
+    WorkSetConst EVENT_WORK_0x4009, 1
 
 L_12CF:
-    VMStackPush 0x4008
+    VMStackPush EVENT_WORK_0x4008
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12E6
@@ -1248,10 +1248,10 @@ L_12E6:
     WorkSetConst 0x8025, 18
     WorkSetConst 0x8026, 4
     VMCall L_156B
-    WorkSetConst 0x400a, 1
+    WorkSetConst EVENT_WORK_0x400a, 1
 
 L_1325:
-    VMStackPush 0x4009
+    VMStackPush EVENT_WORK_0x4009
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_133C
@@ -1269,10 +1269,10 @@ L_133C:
     WorkSetConst 0x8025, 5
     WorkSetConst 0x8026, 5
     VMCall L_156B
-    WorkSetConst 0x400b, 1
+    WorkSetConst EVENT_WORK_0x400b, 1
 
 L_137B:
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1392
@@ -1290,10 +1290,10 @@ L_1392:
     WorkSetConst 0x8025, 19
     WorkSetConst 0x8026, 6
     VMCall L_156B
-    WorkSetConst 0x400c, 1
+    WorkSetConst EVENT_WORK_0x400c, 1
 
 L_13D1:
-    VMStackPush 0x400b
+    VMStackPush EVENT_WORK_0x400b
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_13E8
@@ -1301,7 +1301,7 @@ L_13D1:
 
 L_13E8:
     VMSleep 20
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1403

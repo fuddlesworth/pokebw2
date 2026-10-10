@@ -29,50 +29,50 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPushFlag 2780
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0adc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007D
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
 
 L_007D:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40df
+    VMStackPush EVENT_WORK_0x40df
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009E
     ActorSetGPos 0, 787, 65532, 176, 2
 
 L_009E:
-    VMStackPushFlag 311
+    VMStackPushFlag EVENT_FLAG_0x0137
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_010F
-    VMStackPushFlag 806
+    VMStackPushFlag EVENT_FLAG_0x0326
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 807
+    VMStackPushFlag EVENT_FLAG_0x0327
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00F4
-    FlagSet 806
-    FlagSet 807
+    FlagSet EVENT_FLAG_0x0326
+    FlagSet EVENT_FLAG_0x0327
     ActorDelete 2
     ActorDelete 3
 
 L_00F4:
-    VMStackPushFlag 808
+    VMStackPushFlag EVENT_FLAG_0x0328
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_010F
-    FlagReset 808
+    FlagReset EVENT_FLAG_0x0328
     ActorAdd 5
 
 L_010F:
@@ -95,7 +95,7 @@ L_013A:
     ActorMsg MSGFILE_SCRIPT, HumilauCity_Text_WellGetDnaSplicers, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40de, 2
+    WorkSetConst EVENT_WORK_0x40de, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -141,7 +141,7 @@ L_0203:
     ActorCmdExec 255, Movement_0778
     ActorCmdWait
     ActorDelete 251
-    WorkSetConst 0x411f, 1
+    WorkSetConst EVENT_WORK_0x411f, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -177,7 +177,7 @@ Script_4:
     // "[f000]Ā\u0001\u0001: You got all of the Badges!\nYou're really something![f000]븁\u0000\nUsually, you'd go to\nthe Pokémon League now, but...[f000]븀\u0000\ndealing with Team Plasma comes first![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, HumilauCity_Text_GotAllBadgesYoure, 0, 5, 0
     MsgWinCloseAll
-    FlagReset 805
+    FlagReset EVENT_FLAG_0x0325
     ActorAdd 1
     ActorWalkRoute 1, 783, 178, 1, 8, 1
     VMSleep 32
@@ -226,9 +226,9 @@ L_031D:
     ActorWalkRoute 0, 783, 184, 1, 8, 1
     ActorCmdWait
     ActorDelete 0
-    WorkSetConst 0x40df, 2
-    FlagSet 804
-    FlagSet 805
+    WorkSetConst EVENT_WORK_0x40df, 2
+    FlagSet EVENT_FLAG_0x0324
+    FlagSet EVENT_FLAG_0x0325
     HollowRivalCmd_0262 1, 28
     FinishAllEvents
     ActorsUnpauseAll
@@ -241,7 +241,7 @@ Movement_0388:
 
 Script_5:
     ActorsPauseAll
-    VMStackPush 0x40de
+    VMStackPush EVENT_WORK_0x40de
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03CE
@@ -252,7 +252,7 @@ Script_5:
     ActorMsg MSGFILE_SCRIPT, HumilauCity_Text_WellGetDnaSplicers, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40de, 2
+    WorkSetConst EVENT_WORK_0x40de, 2
     VMJump L_03E5
 
 L_03CE:
@@ -289,11 +289,11 @@ Script_7:
     ParentActorMsg MSGFILE_SCRIPT, HumilauCity_Text_HaHaHeyWait, 0, 0
     LastKeyWait
     ActorMsgClose
-    VMStackPushFlag 806
+    VMStackPushFlag EVENT_FLAG_0x0326
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0434
-    FlagSet 311
+    FlagSet EVENT_FLAG_0x0137
 
 L_0434:
     FinishAllEvents
@@ -302,7 +302,7 @@ L_0434:
 
 Script_8:
     ActorsPauseAll
-    VMStackPushFlag 2451
+    VMStackPushFlag EVENT_FLAG_0x0993
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0482
@@ -318,7 +318,7 @@ Script_8:
     SEWait
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2451
+    FlagSet EVENT_FLAG_0x0993
     VMJump L_0496
 
 L_0482:
@@ -346,7 +346,7 @@ Script_10:
     ActorCmdWait
 
 L_04C3:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04EF
@@ -354,19 +354,19 @@ L_04C3:
     InfoMsg HumilauCity_Text_ItsFaceBoard, 2
     LastKeyWait
     InfoMsgClose_0039
-    FlagSet 2780
-    WorkSetConst 0x4000, 1
+    FlagSet EVENT_FLAG_DAILY_0x0adc
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_070A
 
 L_04EF:
-    FlagReset 985
-    WorkSetConst 0x4000, 1
+    FlagReset EVENT_FLAG_0x03d9
+    WorkSetConst EVENT_WORK_0x4000, 1
     // "There's a face board![f000]븁\u0000"
     InfoMsg HumilauCity_Text_TheresFaceBoard, 2
     InfoMsgClose_0039
     ActorAdd 6
-    Random 0x4001, 4
-    VMStackPush 0x4001
+    Random EVENT_WORK_0x4001, 4
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0531
@@ -374,7 +374,7 @@ L_04EF:
     VMJump L_05A0
 
 L_0531:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0558
@@ -382,7 +382,7 @@ L_0531:
     VMJump L_05A0
 
 L_0558:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_057F
@@ -390,7 +390,7 @@ L_0558:
     VMJump L_05A0
 
 L_057F:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05A0
@@ -420,7 +420,7 @@ L_05DF:
     FadeExWait
     SEWait
     VMSleep 8
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_062A
@@ -429,7 +429,7 @@ L_05DF:
     VMJump L_069D
 
 L_062A:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_064F
@@ -438,7 +438,7 @@ L_062A:
     VMJump L_069D
 
 L_064F:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0674
@@ -447,7 +447,7 @@ L_064F:
     VMJump L_069D
 
 L_0674:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_069D
@@ -481,8 +481,8 @@ L_06F0:
     ActorDelete 251
     VMSleep 16
     MedalGive 98
-    FlagSet 985
-    FlagSet 2780
+    FlagSet EVENT_FLAG_0x03d9
+    FlagSet EVENT_FLAG_DAILY_0x0adc
 
 L_070A:
     FinishAllEvents
@@ -664,7 +664,7 @@ Script_20:
 
 Script_19:
     ActorsPauseAll
-    VMStackPushFlag 2454
+    VMStackPushFlag EVENT_FLAG_0x0996
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_090A
@@ -684,7 +684,7 @@ Script_19:
     ParentActorMsg MSGFILE_SCRIPT, HumilauCity_Text_AhhhhTodaySunday, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2454
+    FlagSet EVENT_FLAG_0x0996
     VMJump L_091E
 
 L_090A:

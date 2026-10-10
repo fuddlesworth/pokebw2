@@ -35,7 +35,7 @@
     "triggers": [
         {
             "script": 1,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 0,
             "rail": {

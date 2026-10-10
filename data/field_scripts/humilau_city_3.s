@@ -9,7 +9,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 405
+    VMStackPushFlag EVENT_FLAG_0x0195
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0039
@@ -49,7 +49,7 @@ L_0039:
     ParentActorMsg MSGFILE_SCRIPT, HumilauCity3_Text_HeyHeyHeyTangrowth, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 405
+    FlagSet EVENT_FLAG_0x0195
     VMJump L_00DE
 
 L_00D0:

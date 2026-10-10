@@ -24,8 +24,8 @@ Script_5:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0069
-    Random 0x4003, 9
-    WorkAdd 0x4003, 11
+    Random EVENT_WORK_0x4003, 9
+    WorkAdd EVENT_WORK_0x4003, 11
     VMJump L_00BF
 
 L_0069:
@@ -33,8 +33,8 @@ L_0069:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008E
-    Random 0x4003, 16
-    WorkAdd 0x4003, 19
+    Random EVENT_WORK_0x4003, 16
+    WorkAdd EVENT_WORK_0x4003, 19
     VMJump L_00BF
 
 L_008E:
@@ -42,13 +42,13 @@ L_008E:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B3
-    Random 0x4003, 9
-    WorkAdd 0x4003, 11
+    Random EVENT_WORK_0x4003, 9
+    WorkAdd EVENT_WORK_0x4003, 11
     VMJump L_00BF
 
 L_00B3:
-    Random 0x4003, 9
-    WorkAdd 0x4003, 1
+    Random EVENT_WORK_0x4003, 9
+    WorkAdd EVENT_WORK_0x4003, 1
 
 L_00BF:
     WorkSetConst 0x8020, 0
@@ -80,7 +80,7 @@ Script_3:
     ActorMsg MSGFILE_SCRIPT, Route62_Text_SorryHaveSlowedDown, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2439
+    FlagSet EVENT_FLAG_0x0987
     HollowRivalCmd_0262 2, 6
     FinishAllEvents
     ActorsUnpauseAll
@@ -151,7 +151,7 @@ Script_2:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0231
-    WordSetNumber 0, 0x4003, 2
+    WordSetNumber 0, EVENT_WORK_0x4003, 2
     // "Route 6's temperature [f000]ȁ\u0001\u0000 °C"
     InfoMsg Route62_Text_Route6sTemperatureC, 2
     VMJump L_0287
@@ -161,7 +161,7 @@ L_0231:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0256
-    WordSetNumber 0, 0x4003, 2
+    WordSetNumber 0, EVENT_WORK_0x4003, 2
     // "Route 6's temperature [f000]ȁ\u0001\u0000 °C"
     InfoMsg Route62_Text_Route6sTemperatureC_2, 2
     VMJump L_0287
@@ -171,13 +171,13 @@ L_0256:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_027B
-    WordSetNumber 0, 0x4003, 2
+    WordSetNumber 0, EVENT_WORK_0x4003, 2
     // "Route 6's temperature [f000]ȁ\u0001\u0000 °C"
     InfoMsg Route62_Text_Route6sTemperatureC_3, 2
     VMJump L_0287
 
 L_027B:
-    WordSetNumber 0, 0x4003, 2
+    WordSetNumber 0, EVENT_WORK_0x4003, 2
     // "Route 6's temperature -[f000]Ȁ\u0001\u0000 °C"
     InfoMsg Route62_Text_Route6sTemperatureC_4, 2
 
@@ -218,7 +218,7 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 426
+    VMStackPushFlag EVENT_FLAG_0x01aa
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0335
@@ -328,7 +328,7 @@ L_048C:
     ActorMsg MSGFILE_SCRIPT, Route62_Text_ItsAbilitySereneGrace, 8, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 426
+    FlagSet EVENT_FLAG_0x01aa
 
 L_04A0:
     WorkSetConst 0x8026, 0

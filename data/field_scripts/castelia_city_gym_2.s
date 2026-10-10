@@ -101,7 +101,7 @@ Script_3:
     VMJump L_0176
 
 L_013D:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0166
@@ -191,12 +191,12 @@ L_0228:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym2_Text_StruggleBugAlsoLowers, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 2416
-    WorkSetConst 0x40b4, 1
-    FlagReset 756
+    FlagSet EVENT_FLAG_0x0970
+    WorkSetConst EVENT_WORK_0x40b4, 1
+    FlagReset EVENT_FLAG_0x02f4
     HollowRivalCmd_0262 1, 5
-    FlagSet 753
-    WorkSetConst 0x40b2, 4
+    FlagSet EVENT_FLAG_0x02f1
+    WorkSetConst EVENT_WORK_0x40b2, 4
     TrainerFlagSet TRAINER_HARLEQUIN_ANDERS
     VMReturn
     .balign 4, 0

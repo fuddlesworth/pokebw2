@@ -23,7 +23,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0102
     PokeDexGetEvaluationParams 2, 0x8020, 0x8021, 0x8022
-    VMStackPushFlag 141
+    VMStackPushFlag EVENT_FLAG_0x008d
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00A1
@@ -78,7 +78,7 @@ L_0112:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012F
-    FlagSet 141
+    FlagSet EVENT_FLAG_0x008d
 
 L_012F:
     PokeDexGetEvaluationParams 2, 0x8020, 0x8021, 0x8022
@@ -218,7 +218,7 @@ L_02FA:
 L_02FC:
     WorkSetConst 0x8023, 0
     PokeDexIsComplete 0x8010, 2
-    VMStackPushFlag 136
+    VMStackPushFlag EVENT_FLAG_0x0088
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8010
@@ -231,7 +231,7 @@ L_02FC:
 
 L_0337:
     PokeDexIsComplete 0x8010, 3
-    VMStackPushFlag 137
+    VMStackPushFlag EVENT_FLAG_0x0089
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8010
@@ -248,7 +248,7 @@ L_0337:
 
 L_037C:
     PokeDexIsComplete 0x8010, 1
-    VMStackPushFlag 138
+    VMStackPushFlag EVENT_FLAG_0x008a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8010
@@ -269,7 +269,7 @@ L_03C1:
 L_03C3:
     WorkSetConst 0x8023, 0
     PokeDexIsComplete 0x8010, 1
-    VMStackPushFlag 138
+    VMStackPushFlag EVENT_FLAG_0x008a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8010
@@ -302,7 +302,7 @@ L_0434:
     RTCallGlobal 2805
     // "If you have a Permit,\nyou can go to the Nature Preserve[f000]븀\u0000\nfrom Mistralton City by plane![f000]븁\u0000\nGo check it out to see\nwhat kind of place it is![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_IfHavePermitCan, 0, 0
-    FlagSet 136
+    FlagSet EVENT_FLAG_0x0088
 
 L_0452:
     VMStackPush 0x8025
@@ -324,7 +324,7 @@ L_048C:
     RTCallGlobal 2805
     // "If you have an Oval Charm,\nwe don't know why,[f000]븀\u0000\nbut you'll have a better chance to[f000]븀\u0000\nfind Eggs at the Pokémon Day Care![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_IfHaveOvalCharm, 0, 0
-    FlagSet 137
+    FlagSet EVENT_FLAG_0x0089
 
 L_04AA:
     VMStackPush 0x8026
@@ -346,7 +346,7 @@ L_04E4:
     RTCallGlobal 2805
     // "If you have a Shiny Charm,\nwe don't know why, but you'll have a[f000]븀\u0000\nbetter chance to find Shiny Pokémon![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_IfHaveShinyCharm, 0, 0
-    FlagSet 138
+    FlagSet EVENT_FLAG_0x008a
 
 L_0502:
     VMReturn
@@ -419,7 +419,7 @@ L_05F3:
     VMJump L_0667
 
 L_05F9:
-    VMStackPushFlag 141
+    VMStackPushFlag EVENT_FLAG_0x008d
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_062C

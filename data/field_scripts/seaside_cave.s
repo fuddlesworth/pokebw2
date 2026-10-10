@@ -13,7 +13,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40d8
+    VMStackPush EVENT_WORK_0x40d8
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0041
@@ -33,7 +33,7 @@ L_004F:
 
 Script_2:
     ActorsPauseAll
-    WorkSetConst 0x4152, 1
+    WorkSetConst EVENT_WORK_0x4152, 1
     ActorCmdExec 12, Movement_035C
     ActorCmdWait
     WorkSetConst 0x8020, 0
@@ -77,8 +77,8 @@ L_00A8:
     ActorDelete 8
     ActorDelete 10
     ActorDelete 11
-    FlagSet 867
-    WorkSetConst 0x4152, 1
+    FlagSet EVENT_FLAG_0x0363
+    WorkSetConst EVENT_WORK_0x4152, 1
     FadeEx 3, 16, 0, 4
     FadeExWait
     VMSleep 30
@@ -153,7 +153,7 @@ Script_5:
 Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 368
+    VMStackPushFlag EVENT_FLAG_0x0170
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FD
@@ -217,7 +217,7 @@ L_0286:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02CE
-    FlagSet 868
+    FlagSet EVENT_FLAG_0x0364
     ActorDelete 9
     CallWildBattleEnd
     VMJump L_02D0

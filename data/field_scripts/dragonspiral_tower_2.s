@@ -128,8 +128,8 @@ L_01DC:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 1
     SEWait
-    FlagSet 1012
-    WorkSetConst 0x4148, 2
+    FlagSet EVENT_FLAG_0x03f4
+    WorkSetConst EVENT_WORK_0x4148, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

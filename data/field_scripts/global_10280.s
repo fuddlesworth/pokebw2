@@ -14,7 +14,7 @@ Script_1:
     ActorSetEyeToEye
     // "I am researching Pokémon Fossils here.[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, Global10280_Text_AmResearchingPokemonFossils, 0, 0
-    VMStackPush 0x417a
+    VMStackPush EVENT_WORK_0x417a
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_004F
@@ -231,7 +231,7 @@ L_0368:
     VMStackPushConst 6
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03B4
-    WorkGet 0x417a, 0x8022
+    WorkGet EVENT_WORK_0x417a, 0x8022
     WorkSetConst 0x8020, 9
     VMCall L_00B9
     VMJump L_0410
@@ -260,13 +260,13 @@ L_03B4:
     CallPokeNameInput 0x8010, 0x8026, 1
 
 L_040A:
-    WorkSetConst 0x417a, 0
+    WorkSetConst EVENT_WORK_0x417a, 0
 
 L_0410:
     VMReturn
 
 L_0412:
-    WorkGet 0x8022, 0x417a
+    WorkGet 0x8022, EVENT_WORK_0x417a
     VMCall L_05C9
     VMCall L_0368
     VMReturn

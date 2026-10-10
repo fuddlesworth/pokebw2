@@ -14,11 +14,11 @@ Script_1:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_003B
-    WorkSetConst 0x4020, 209
+    WorkSetConst EVENT_WORK_0x4020, 209
     VMJump L_0041
 
 L_003B:
-    WorkSetConst 0x4020, 129
+    WorkSetConst EVENT_WORK_0x4020, 129
 
 L_0041:
     VMHalt

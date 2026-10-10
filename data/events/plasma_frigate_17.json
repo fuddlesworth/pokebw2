@@ -7,7 +7,7 @@
             "model": 294,
             "movement": 13,
             "type": 1,
-            "flag": "0x03d0",
+            "flag": "EVENT_FLAG_0x03d0",
             "script": 3437,
             "direction": "DIR_UP",
             "params": [ 1, 0, 0 ],
@@ -86,7 +86,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4149",
+                    "var": "EVENT_WORK_0x4149",
                     "value": 1,
                     "script": 1
                 }

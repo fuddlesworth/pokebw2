@@ -198,7 +198,7 @@
             "model": 97,
             "movement": 0,
             "type": 0,
-            "flag": "0x02db",
+            "flag": "EVENT_FLAG_0x02db",
             "script": 8,
             "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
@@ -217,7 +217,7 @@
             "model": 360,
             "movement": 0,
             "type": 0,
-            "flag": "0x02da",
+            "flag": "EVENT_FLAG_0x02da",
             "script": 2000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -331,7 +331,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x0457",
+            "flag": "EVENT_FLAG_0x0457",
             "script": 7011,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -440,7 +440,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": "0x40a5",
+            "var": "EVENT_WORK_0x40a5",
             "value": 0,
             "type": 0,
             "grid": {
@@ -454,7 +454,7 @@
         },
         {
             "script": 4,
-            "var": "0x40a5",
+            "var": "EVENT_WORK_0x40a5",
             "value": 1,
             "type": 0,
             "grid": {
@@ -468,7 +468,7 @@
         },
         {
             "script": 5,
-            "var": "0x40a5",
+            "var": "EVENT_WORK_0x40a5",
             "value": 2,
             "type": 0,
             "grid": {
@@ -482,7 +482,7 @@
         },
         {
             "script": 6,
-            "var": "0x40a5",
+            "var": "EVENT_WORK_0x40a5",
             "value": 3,
             "type": 0,
             "grid": {
@@ -496,7 +496,7 @@
         },
         {
             "script": 7,
-            "var": "0x40a5",
+            "var": "EVENT_WORK_0x40a5",
             "value": 3,
             "type": 0,
             "grid": {
@@ -510,7 +510,7 @@
         },
         {
             "script": 17,
-            "var": "0x4153",
+            "var": "EVENT_WORK_0x4153",
             "value": 1,
             "type": 0,
             "grid": {
@@ -536,7 +536,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x40a5",
+                    "var": "EVENT_WORK_0x40a5",
                     "value": 5,
                     "script": 10637
                 }

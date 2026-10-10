@@ -12,7 +12,7 @@
     ScriptEntriesEnd
 
 L_001A:
-    VMStackPushFlag 364
+    VMStackPushFlag EVENT_FLAG_0x016c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_003D
@@ -39,7 +39,7 @@ Script_5:
     VMHalt
 
 L_0067:
-    VMStackPush 0x40fb
+    VMStackPush EVENT_WORK_0x40fb
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0092
@@ -66,7 +66,7 @@ Script_6:
     // "[f000]Ā\u0001\u0001: Just to let you know...\nYou're about to feel my rage![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_JustLetKnowYoure, 0, 6, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FD
@@ -74,7 +74,7 @@ Script_6:
     VMJump L_012A
 
 L_00FD:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0120
@@ -135,12 +135,12 @@ L_012A:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 0
     SEWait
-    FlagSet 836
-    WorkSetConst 0x40ff, 1
-    WorkSetConst 0x4100, 1
-    WorkSetConst 0x40f1, 3
-    FlagSet 830
-    FlagSet 832
+    FlagSet EVENT_FLAG_0x0344
+    WorkSetConst EVENT_WORK_0x40ff, 1
+    WorkSetConst EVENT_WORK_0x4100, 1
+    WorkSetConst EVENT_WORK_0x40f1, 3
+    FlagSet EVENT_FLAG_0x033e
+    FlagSet EVENT_FLAG_0x0340
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -182,7 +182,7 @@ Movement_0290:
 Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 356
+    VMStackPushFlag EVENT_FLAG_0x0164
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C9
@@ -193,12 +193,12 @@ Script_2:
     VMJump L_0394
 
 L_02C9:
-    VMStackPush 0x40fb
+    VMStackPush EVENT_WORK_0x40fb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_038A
-    PlasmaFrigateCmd_GetPasswordIndex 0x400a
-    DebugPrint 0x400a
+    PlasmaFrigateCmd_GetPasswordIndex EVENT_WORK_0x400a
+    DebugPrint EVENT_WORK_0x400a
     SEPlay SEQ_SE_SW_PLAZMASHIP_01
     SEWait
     // "There is a device...\nIt seems to be for entering a password.[f000]븁\u0000\nWill you enter a password?"
@@ -232,8 +232,8 @@ L_02C9:
     SystemMsg PlasmaFrigate12_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40fb, 1
-    FlagSet 357
+    WorkSetConst EVENT_WORK_0x40fb, 1
+    FlagSet EVENT_FLAG_0x0165
     VMJump L_037C
 
 L_036C:

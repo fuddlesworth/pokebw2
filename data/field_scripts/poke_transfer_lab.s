@@ -8,7 +8,7 @@
     ScriptEntriesEnd
 
 Script_2:
-    FlagGet 123, 0x8010
+    FlagGet EVENT_FLAG_0x007b, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ

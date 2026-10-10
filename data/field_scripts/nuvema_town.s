@@ -13,10 +13,10 @@
     ScriptEntriesEnd
 
 Script_9:
-    VMStackPush 0x4115
+    VMStackPush EVENT_WORK_0x4115
     VMStackPushConst 4
     VMStackCmp CMP_NE
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -39,8 +39,8 @@ Script_1:
 
 Script_2:
     ActorsPauseAll
-    Cmd_02B4 2, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B4 2, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00A4

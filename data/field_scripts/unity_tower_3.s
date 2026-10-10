@@ -16,50 +16,50 @@
 
 Script_1:
     WorkSetConst 0x8021, 0
-    Cmd_01CE 0, 0x4020
-    Cmd_01CE 1, 0x4021
-    Cmd_01CE 2, 0x4022
-    Cmd_01CE 3, 0x4023
-    Cmd_01CE 4, 0x4024
-    FlagSet 608
-    FlagSet 609
-    FlagSet 610
-    FlagSet 611
-    FlagSet 612
+    Cmd_01CE 0, EVENT_WORK_0x4020
+    Cmd_01CE 1, EVENT_WORK_0x4021
+    Cmd_01CE 2, EVENT_WORK_0x4022
+    Cmd_01CE 3, EVENT_WORK_0x4023
+    Cmd_01CE 4, EVENT_WORK_0x4024
+    FlagSet EVENT_FLAG_0x0260
+    FlagSet EVENT_FLAG_0x0261
+    FlagSet EVENT_FLAG_0x0262
+    FlagSet EVENT_FLAG_0x0263
+    FlagSet EVENT_FLAG_0x0264
     UnityTowerGetStateParam 0, 0x8021
     VMStackPush 0x8021
     VMStackPushConst 0
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_0085
-    FlagReset 608
+    FlagReset EVENT_FLAG_0x0260
 
 L_0085:
     VMStackPush 0x8021
     VMStackPushConst 1
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_009C
-    FlagReset 609
+    FlagReset EVENT_FLAG_0x0261
 
 L_009C:
     VMStackPush 0x8021
     VMStackPushConst 2
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_00B3
-    FlagReset 610
+    FlagReset EVENT_FLAG_0x0262
 
 L_00B3:
     VMStackPush 0x8021
     VMStackPushConst 3
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_00CA
-    FlagReset 611
+    FlagReset EVENT_FLAG_0x0263
 
 L_00CA:
     VMStackPush 0x8021
     VMStackPushConst 4
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_00E1
-    FlagReset 612
+    FlagReset EVENT_FLAG_0x0264
 
 L_00E1:
     VMHalt
@@ -139,7 +139,7 @@ L_01BB:
     VMJumpIf CMP_STACK, L_0236
     VMCall L_03FA
     UnityTowerSetFloor 0x8025, 0x8024
-    WorkSetConst 0x417e, 1
+    WorkSetConst EVENT_WORK_0x417e, 1
     RTReserveScript 9
     SEPlay SEQ_SE_FLD_23
     FadeOutBlackQ
@@ -221,7 +221,7 @@ Script_10:
 
 Script_3:
     ActorsPauseAll
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
     VMCall L_037D
     FinishAllEvents
     ActorsUnpauseAll
@@ -229,7 +229,7 @@ Script_3:
 
 Script_4:
     ActorsPauseAll
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMCall L_037D
     FinishAllEvents
     ActorsUnpauseAll
@@ -237,7 +237,7 @@ Script_4:
 
 Script_5:
     ActorsPauseAll
-    WorkSetConst 0x4000, 2
+    WorkSetConst EVENT_WORK_0x4000, 2
     VMCall L_037D
     FinishAllEvents
     ActorsUnpauseAll
@@ -245,7 +245,7 @@ Script_5:
 
 Script_6:
     ActorsPauseAll
-    WorkSetConst 0x4000, 3
+    WorkSetConst EVENT_WORK_0x4000, 3
     VMCall L_037D
     FinishAllEvents
     ActorsUnpauseAll
@@ -253,7 +253,7 @@ Script_6:
 
 Script_7:
     ActorsPauseAll
-    WorkSetConst 0x4000, 4
+    WorkSetConst EVENT_WORK_0x4000, 4
     VMCall L_037D
     FinishAllEvents
     ActorsUnpauseAll
@@ -263,17 +263,17 @@ L_037D:
     WorkSetConst 0x802a, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    UnityTowerGetVisitorParam 0x4000, 0x8010
+    UnityTowerGetVisitorParam EVENT_WORK_0x4000, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03B4
-    UnityTowerCmd_02D8 0x4000
-    UnityTowerInitVisitorMessage 0x4000, 1, 0x802a
+    UnityTowerCmd_02D8 EVENT_WORK_0x4000
+    UnityTowerInitVisitorMessage EVENT_WORK_0x4000, 1, 0x802a
     VMJump L_03BC
 
 L_03B4:
-    UnityTowerInitVisitorMessage 0x4000, 0, 0x802a
+    UnityTowerInitVisitorMessage EVENT_WORK_0x4000, 0, 0x802a
 
 L_03BC:
     ParentActorMsg MSGFILE_SCRIPT, 0x802a, 0, 0

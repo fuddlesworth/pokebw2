@@ -26,16 +26,16 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPushFlag 918
+    VMStackPushFlag EVENT_FLAG_0x0396
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4116
+    VMStackPush EVENT_WORK_0x4116
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_008D
-    FlagSet 918
-    WorkSetConst 0x4116, 1
+    FlagSet EVENT_FLAG_0x0396
+    WorkSetConst EVENT_WORK_0x4116, 1
 
 L_008D:
     VMHalt
@@ -203,8 +203,8 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_029E
     MsgWinCloseAll
-    FlagReset 918
-    WorkSetConst 0x4116, 2
+    FlagReset EVENT_FLAG_0x0396
+    WorkSetConst EVENT_WORK_0x4116, 2
     PlayerGetDir 0x8020
     VMStackPush 0x8020
     VMStackPushConst 0
@@ -256,8 +256,8 @@ Script_6:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F4
-    FlagSet 918
-    WorkSetConst 0x4116, 3
+    FlagSet EVENT_FLAG_0x0396
+    WorkSetConst EVENT_WORK_0x4116, 3
     ActorDelete 0
     CallWildBattleEnd
     VMJump L_02F6
@@ -272,7 +272,7 @@ L_02F6:
     VMJump L_0317
 
 L_030D:
-    FlagSet 396
+    FlagSet EVENT_FLAG_0x018c
     VMJump L_0347
 
 L_0317:

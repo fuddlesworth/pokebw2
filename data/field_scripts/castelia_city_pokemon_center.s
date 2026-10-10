@@ -16,7 +16,7 @@ Script_5:
     WorkSetConst 0x8020, 0
     WorkSetConst 0x8021, 0
     PlayerGetGPos 0x8020, 0x8021
-    VMStackPushFlag 260
+    VMStackPushFlag EVENT_FLAG_0x0104
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E
@@ -32,7 +32,7 @@ Script_5:
 
 L_006C:
     ActorSetGPos 8, 7, 0, 12, 0
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
 
 L_007E:
     RTCallGlobal 10395
@@ -48,10 +48,10 @@ Script_4:
     UnityTowerGetVisitorCountry 0x8023
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 260
+    VMStackPushFlag EVENT_FLAG_0x0104
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -124,7 +124,7 @@ L_01B2:
     MsgWinCloseAll
 
 L_01CC:
-    FlagSet 260
+    FlagSet EVENT_FLAG_0x0104
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

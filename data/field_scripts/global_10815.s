@@ -15,25 +15,25 @@
     ScriptEntriesEnd
 
 Script_1:
-    FlagSet 914
-    FlagReset 915
-    VMStackPushFlag 2440
+    FlagSet EVENT_FLAG_0x0392
+    FlagReset EVENT_FLAG_0x0393
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004F
-    FlagReset 963
-    FlagReset 964
+    FlagReset EVENT_FLAG_0x03c3
+    FlagReset EVENT_FLAG_0x03c4
     VMJump L_0057
 
 L_004F:
-    FlagSet 963
-    FlagSet 964
+    FlagSet EVENT_FLAG_0x03c3
+    FlagSet EVENT_FLAG_0x03c4
 
 L_0057:
     VMHalt
 
 Script_2:
-    VMStackPushFlag 2440
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B5
@@ -49,14 +49,14 @@ Script_2:
 L_009D:
     WorkSetConst 0x8021, 0
     WorkSetConst 0x8020, 0
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_00BB
 
 L_00B5:
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
 
 L_00BB:
-    VMStackPushFlag 458
+    VMStackPushFlag EVENT_FLAG_0x01ca
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00DA
@@ -80,10 +80,10 @@ Script_3:
     WorkSetConst 0x8022, 1
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2440
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2547
+    VMStackPushFlag EVENT_FLAG_0x09f3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -107,7 +107,7 @@ L_0164:
 L_016C:
     // "Welcome to the soundstage\nof Pokéstar Studios![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, Global10815_Text_WelcomeSoundstagePokestarStudios, 0x8011, 2, 0
-    VMStackPushFlag 2440
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BF
@@ -145,7 +145,7 @@ L_01F1:
     VMJump L_0235
 
 L_0204:
-    VMStackPushFlag 2440
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0229
@@ -205,11 +205,11 @@ L_02C9:
     VMJump L_030D
 
 L_02DC:
-    VMStackPushFlag 2440
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0301
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     WorkSetConst 0x8022, 0
     VMJump L_0307
 
@@ -310,13 +310,13 @@ L_0420:
 
 L_043A:
     WorkSetConst 0x8011, 0
-    VMStackPushFlag 2440
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0463
-    WorkSetConst 0x4001, 1
-    FlagSet 701
-    WorkSetConst 0x40ab, 4
+    WorkSetConst EVENT_WORK_0x4001, 1
+    FlagSet EVENT_FLAG_0x02bd
+    WorkSetConst EVENT_WORK_0x40ab, 4
 
 L_0463:
     VMCall L_0744
@@ -329,11 +329,11 @@ L_0463:
 
 L_0488:
     WorkSetConst 0x8022, 8
-    VMStackPushFlag 2440
+    VMStackPushFlag EVENT_FLAG_0x0988
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04A7
-    WorkSetConst 0x4001, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
 
 L_04A7:
     VMReturn
@@ -488,10 +488,10 @@ L_06C0:
 
 L_06CE:
     ActorCmdWait
-    Plugin10_Cmd1019 0x8024, 0x4020, 0x4021
-    FlagReset 914
-    FlagSet 915
-    FlagSet 963
+    Plugin10_Cmd1019 0x8024, EVENT_WORK_0x4020, EVENT_WORK_0x4021
+    FlagReset EVENT_FLAG_0x0392
+    FlagSet EVENT_FLAG_0x0393
+    FlagSet EVENT_FLAG_0x03c3
     MapChangeWarp ZONE_POKESTAR_STUDIOS_2, 15, 16, 0
     VMReturn
 
@@ -511,8 +511,8 @@ Movement_070C:
     MoveEnd
 
 L_0714:
-    FlagSet 914
-    FlagReset 915
+    FlagSet EVENT_FLAG_0x0392
+    FlagReset EVENT_FLAG_0x0393
     ActorCmdExec 0, Movement_0730
     ActorCmdExec 255, Movement_0738
     ActorCmdWait
@@ -1003,17 +1003,17 @@ Script_9:
     ActorCmdExec 2, Movement_0E44
     ActorCmdExec 1, Movement_0E4C
     ActorCmdWait
-    FlagSet 963
-    FlagSet 964
+    FlagSet EVENT_FLAG_0x03c3
+    FlagSet EVENT_FLAG_0x03c4
     ActorDelete 2
     ActorDelete 1
-    FlagReset 2440
-    FlagSet 2547
+    FlagReset EVENT_FLAG_0x0988
+    FlagSet EVENT_FLAG_0x09f3
     MedalDiscover 216
     MedalDiscover 218
     MedalDiscover 219
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4001, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

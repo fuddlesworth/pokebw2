@@ -51,7 +51,7 @@ Script_3:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2455
+    VMStackPushFlag EVENT_FLAG_0x0997
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0245
@@ -155,7 +155,7 @@ L_01D8:
     ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_UntilFigureOutWay, 2, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2455
+    FlagSet EVENT_FLAG_0x0997
     VMJump L_0259
 
 L_0245:

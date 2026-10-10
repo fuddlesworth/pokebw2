@@ -15,7 +15,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 220
+    VMStackPushFlag EVENT_FLAG_0x00dc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004D
@@ -38,7 +38,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x4160, 3
+    WorkCmpConst EVENT_WORK_0x4160, 3
     VMJumpIf CMP_EQ, L_007C
     VMJump L_008C
 
@@ -48,7 +48,7 @@ L_007C:
     VMJump L_00B9
 
 L_008C:
-    WorkCmpConst 0x4160, 1
+    WorkCmpConst EVENT_WORK_0x4160, 1
     VMJumpIf CMP_EQ, L_009F
     VMJump L_00AF
 

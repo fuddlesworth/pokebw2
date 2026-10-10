@@ -289,7 +289,7 @@ L_0462:
     VMJump L_04C9
 
 L_04BD:
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
     VMJump L_05A2
 
 L_04C9:
@@ -298,7 +298,7 @@ L_04C9:
     VMJump L_04E8
 
 L_04DC:
-    WorkSetConst 0x4001, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
     VMJump L_05A2
 
 L_04E8:
@@ -307,7 +307,7 @@ L_04E8:
     VMJump L_0507
 
 L_04FB:
-    WorkSetConst 0x4002, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
     VMJump L_05A2
 
 L_0507:
@@ -316,7 +316,7 @@ L_0507:
     VMJump L_0526
 
 L_051A:
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     VMJump L_05A2
 
 L_0526:
@@ -325,7 +325,7 @@ L_0526:
     VMJump L_0545
 
 L_0539:
-    WorkSetConst 0x4004, 0
+    WorkSetConst EVENT_WORK_0x4004, 0
     VMJump L_05A2
 
 L_0545:
@@ -334,7 +334,7 @@ L_0545:
     VMJump L_0564
 
 L_0558:
-    WorkSetConst 0x4005, 0
+    WorkSetConst EVENT_WORK_0x4005, 0
     VMJump L_05A2
 
 L_0564:
@@ -343,7 +343,7 @@ L_0564:
     VMJump L_0583
 
 L_0577:
-    WorkSetConst 0x4006, 0
+    WorkSetConst EVENT_WORK_0x4006, 0
     VMJump L_05A2
 
 L_0583:
@@ -352,7 +352,7 @@ L_0583:
     VMJump L_05A2
 
 L_0596:
-    WorkSetConst 0x4007, 0
+    WorkSetConst EVENT_WORK_0x4007, 0
     VMJump L_05A2
 
 L_05A2:
@@ -1063,7 +1063,7 @@ L_11AF:
     Plugin8_Cmd1007 4, 255, 0, 0
     // "...Oh?[f000]븁\u0000\nThe owner is here![f000]븁\u0000\nGo to [f000]ĺ\u0001\u0000's office.[f000]븁\u0000"
     SystemMsg Global10685_Text_OhOwnerHereGo, 2
-    WorkSetConst 0x4119, 1
+    WorkSetConst EVENT_WORK_0x4119, 1
 
 L_11E8:
     FadeEx 3, 0, 16, 2
@@ -1434,8 +1434,8 @@ L_1834:
     VMJump L_18AE
 
 L_189C:
-    WorkGet 0x8026, 0x4000
-    WorkSetConst 0x4000, 1
+    WorkGet 0x8026, EVENT_WORK_0x4000
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_19B1
 
 L_18AE:
@@ -1444,8 +1444,8 @@ L_18AE:
     VMJump L_18D3
 
 L_18C1:
-    WorkGet 0x8026, 0x4001
-    WorkSetConst 0x4001, 1
+    WorkGet 0x8026, EVENT_WORK_0x4001
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMJump L_19B1
 
 L_18D3:
@@ -1454,8 +1454,8 @@ L_18D3:
     VMJump L_18F8
 
 L_18E6:
-    WorkGet 0x8026, 0x4002
-    WorkSetConst 0x4002, 1
+    WorkGet 0x8026, EVENT_WORK_0x4002
+    WorkSetConst EVENT_WORK_0x4002, 1
     VMJump L_19B1
 
 L_18F8:
@@ -1464,8 +1464,8 @@ L_18F8:
     VMJump L_191D
 
 L_190B:
-    WorkGet 0x8026, 0x4003
-    WorkSetConst 0x4003, 1
+    WorkGet 0x8026, EVENT_WORK_0x4003
+    WorkSetConst EVENT_WORK_0x4003, 1
     VMJump L_19B1
 
 L_191D:
@@ -1474,8 +1474,8 @@ L_191D:
     VMJump L_1942
 
 L_1930:
-    WorkGet 0x8026, 0x4004
-    WorkSetConst 0x4004, 1
+    WorkGet 0x8026, EVENT_WORK_0x4004
+    WorkSetConst EVENT_WORK_0x4004, 1
     VMJump L_19B1
 
 L_1942:
@@ -1484,8 +1484,8 @@ L_1942:
     VMJump L_1967
 
 L_1955:
-    WorkGet 0x8026, 0x4005
-    WorkSetConst 0x4005, 1
+    WorkGet 0x8026, EVENT_WORK_0x4005
+    WorkSetConst EVENT_WORK_0x4005, 1
     VMJump L_19B1
 
 L_1967:
@@ -1494,8 +1494,8 @@ L_1967:
     VMJump L_198C
 
 L_197A:
-    WorkGet 0x8026, 0x4006
-    WorkSetConst 0x4006, 1
+    WorkGet 0x8026, EVENT_WORK_0x4006
+    WorkSetConst EVENT_WORK_0x4006, 1
     VMJump L_19B1
 
 L_198C:
@@ -1504,8 +1504,8 @@ L_198C:
     VMJump L_19B1
 
 L_199F:
-    WorkGet 0x8026, 0x4007
-    WorkSetConst 0x4007, 1
+    WorkGet 0x8026, EVENT_WORK_0x4007
+    WorkSetConst EVENT_WORK_0x4007, 1
     VMJump L_19B1
 
 L_19B1:
@@ -1522,7 +1522,7 @@ L_19E4:
     VMStackPush 0x8026
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4008
+    VMStackPush EVENT_WORK_0x4008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -1531,7 +1531,7 @@ L_19E4:
     Plugin8_Cmd1007 17, 255, 0, 1
     Plugin8_Cmd1003 87, 0x8024
     ActorMsg MSGFILE_SCRIPT, 0x8024, 0x8023, 2, 0
-    WorkSetConst 0x4008, 1
+    WorkSetConst EVENT_WORK_0x4008, 1
 
 L_1A39:
     WorkSetConst 0x8021, 1
@@ -2777,8 +2777,8 @@ L_2DD0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_2E15
     ActorMsgClose
-    WorkSetConst 0x413a, 1
-    FlagSet 2545
+    WorkSetConst EVENT_WORK_0x413a, 1
+    FlagSet EVENT_FLAG_0x09f1
     MapChangeWarp ZONE_JOIN_AVENUE, 15, 70, 0
     WorkSetConst 0x8021, 0
 
@@ -3729,8 +3729,8 @@ L_3D4E:
     VMHalt
 
 L_3D5C:
-    WorkSetConst 0x400b, 0
-    Plugin8_Cmd1032 0x802e, 0x400b, 0x8026
+    WorkSetConst EVENT_WORK_0x400b, 0
+    Plugin8_Cmd1032 0x802e, EVENT_WORK_0x400b, 0x8026
     VMStackPush 0x8026
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3754,15 +3754,15 @@ L_3DA7:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_3E4E
-    Plugin8_Cmd1032 0x802e, 0x400b, 0x8026
-    WorkAdd 0x400b, 1
+    Plugin8_Cmd1032 0x802e, EVENT_WORK_0x400b, 0x8026
+    WorkAdd EVENT_WORK_0x400b, 1
     DebugPrint 0x8026
     WorkAdd 0x8026, 16
     WorkSub 0x8026, 1
     DebugPrint 0x8026
     Plugin8_Cmd1029 0x8023, 0x8026, 0x8024
     ActorMsg MSGFILE_SCRIPT, 0x8024, 0x8023, 2, 0
-    Plugin8_Cmd1032 0x802e, 0x400b, 0x8026
+    Plugin8_Cmd1032 0x802e, EVENT_WORK_0x400b, 0x8026
     VMStackPush 0x8026
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -4132,7 +4132,7 @@ L_44BF:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_44DE
-    WorkSetConst 0x4110, 3
+    WorkSetConst EVENT_WORK_0x4110, 3
 
 L_44DE:
     VMJump L_4509
@@ -4205,7 +4205,7 @@ L_45C5:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_45E8
-    WorkSetConst 0x4110, 5
+    WorkSetConst EVENT_WORK_0x4110, 5
     RTReserveScript 6
 
 L_45E8:
@@ -4417,12 +4417,12 @@ L_48C3:
     VMJump L_491D
 
 L_48D6:
-    VMStackPush 0x4110
+    VMStackPush EVENT_WORK_0x4110
     VMStackPushConst 6
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_4917
-    WorkSetConst 0x4110, 6
-    WorkSetConst 0x410b, 1
+    WorkSetConst EVENT_WORK_0x4110, 6
+    WorkSetConst EVENT_WORK_0x410b, 1
     Plugin8_Cmd1030 18, 0
     Plugin8_Cmd1028 3, 4
     Plugin8_Cmd1028 3, 5
@@ -4438,8 +4438,8 @@ L_491D:
     VMJump L_4950
 
 L_4930:
-    WorkSetConst 0x413a, 1
-    FlagSet 2545
+    WorkSetConst EVENT_WORK_0x413a, 1
+    FlagSet EVENT_FLAG_0x09f1
     MapChangeWarp ZONE_JOIN_AVENUE, 15, 70, 0
     WorkSetConst 0x8021, 0
     VMJump L_4956

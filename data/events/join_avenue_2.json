@@ -101,7 +101,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4119",
+                    "var": "EVENT_WORK_0x4119",
                     "value": 1,
                     "script": 3
                 }

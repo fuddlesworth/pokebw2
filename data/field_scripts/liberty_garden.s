@@ -21,11 +21,11 @@
     WorkSetConst 0x8023, 0
 
 Script_12:
-    VMStackPush 0x4138
+    VMStackPush EVENT_WORK_0x4138
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012F
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_012F
@@ -41,7 +41,7 @@ L_007A:
     VMStackPushConst 494
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AC
-    WorkSetConst 0x400a, 1
+    WorkSetConst EVENT_WORK_0x400a, 1
 
 L_00AC:
     DebugPrint 0x8021
@@ -49,11 +49,11 @@ L_00AC:
     VMJump L_007A
 
 L_00BC:
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00DB
-    WorkSetConst 0x4138, 1
+    WorkSetConst EVENT_WORK_0x4138, 1
     VMJump L_012F
 
 L_00DB:
@@ -62,8 +62,8 @@ L_00DB:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0108
-    WorkSetConst 0x4138, 1
-    WorkSetConst 0x400a, 2
+    WorkSetConst EVENT_WORK_0x4138, 1
+    WorkSetConst EVENT_WORK_0x400a, 2
     VMJump L_012F
 
 L_0108:
@@ -72,8 +72,8 @@ L_0108:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012F
-    WorkSetConst 0x4138, 1
-    WorkSetConst 0x400a, 3
+    WorkSetConst EVENT_WORK_0x4138, 1
+    WorkSetConst EVENT_WORK_0x400a, 3
 
 L_012F:
     VMHalt
@@ -90,7 +90,7 @@ Script_13:
     BGMPlay SEQ_BGM_E_DOCTOR
     ActorCmdExec 251, Movement_0244
     ActorCmdWait
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0182
     VMJump L_0194
 
@@ -100,7 +100,7 @@ L_0182:
     VMJump L_01DE
 
 L_0194:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_01A7
     VMJump L_01B9
 
@@ -110,7 +110,7 @@ L_01A7:
     VMJump L_01DE
 
 L_01B9:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_01CC
     VMJump L_01DE
 
@@ -138,7 +138,7 @@ L_01DE:
     ActorCmdWait
     BGMChangeMap
     ActorDelete 251
-    WorkSetConst 0x4138, 2
+    WorkSetConst EVENT_WORK_0x4138, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -153,7 +153,7 @@ Script_11:
     ActorsPauseAll
     FadeInBlackQ
     FadeWait
-    VMStackPush 0x4138
+    VMStackPush EVENT_WORK_0x4138
     VMStackPushConst 1
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_026B
@@ -270,7 +270,7 @@ L_038D:
     VMStackPushConst 494
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03BF
-    WorkSetConst 0x400f, 1
+    WorkSetConst EVENT_WORK_0x400f, 1
 
 L_03BF:
     DebugPrint 0x8021
@@ -278,7 +278,7 @@ L_03BF:
     VMJump L_038D
 
 L_03CF:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03FC

@@ -40,7 +40,7 @@ Script_3:
     // "Trainer Tips!\n[f000]븁\u0000\nPress SELECT to change the location\nof items in the Bag![f000]븁\u0000\nPoink!"
     MsgPlaceSign Route8_Text_TrainerTipsPressSelect, 0
     MsgPlaceSignClose
-    FlagSet 2671
+    FlagSet EVENT_FLAG_0x0a6f
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -50,7 +50,7 @@ Script_4:
     RTCGetDayPart 0x8010
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2749
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B6
@@ -123,7 +123,7 @@ L_019E:
     ParentActorMsg MSGFILE_SCRIPT, Route8_Text_YeahYeahIfLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2749
+    FlagSet EVENT_FLAG_DAILY_0x0abd
     VMJump L_01C4
 
 L_01B6:
@@ -163,8 +163,8 @@ L_0228:
 L_0236:
     ActorCmdWait
     ActorDelete 1
-    FlagSet 791
-    FlagReset 792
+    FlagSet EVENT_FLAG_0x0317
+    FlagReset EVENT_FLAG_0x0318
     VMJump L_025E
 
 L_024A:

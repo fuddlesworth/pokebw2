@@ -6,7 +6,7 @@
     "triggers": [
         {
             "script": 10494,
-            "var": "0x4161",
+            "var": "EVENT_WORK_0x4161",
             "value": 0,
             "type": 1,
             "grid": {
@@ -20,7 +20,7 @@
         },
         {
             "script": 10496,
-            "var": "0x4161",
+            "var": "EVENT_WORK_0x4161",
             "value": 0,
             "type": 3,
             "grid": {

@@ -28,62 +28,62 @@ Script_17:
     VMHalt
 
 Script_15:
-    Cmd_02B2 0, 0x400c
-    VMStackPush 0x400c
+    Cmd_02B2 0, EVENT_WORK_0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4047
+    VMStackPush EVENT_WORK_0x4047
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_008D
-    FlagReset 907
+    FlagReset EVENT_FLAG_0x038b
 
 L_008D:
     VMCall L_0095
     VMHalt
 
 L_0095:
-    Cmd_02B2 0, 0x400c
-    VMStackPushFlag 464
+    Cmd_02B2 0, EVENT_WORK_0x400c
+    VMStackPushFlag EVENT_FLAG_0x01d0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4047
+    VMStackPush EVENT_WORK_0x4047
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00D2
-    FlagSet 907
+    FlagSet EVENT_FLAG_0x038b
 
 L_00D2:
     VMReturn
 
 L_00D4:
-    Cmd_02B2 0, 0x400c
-    VMStackPushFlag 464
+    Cmd_02B2 0, EVENT_WORK_0x400c
+    VMStackPushFlag EVENT_FLAG_0x01d0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4047
+    VMStackPush EVENT_WORK_0x4047
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0128
-    VMStackPushFlag 907
+    VMStackPushFlag EVENT_FLAG_0x038b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0124
     ActorDelete 10
 
 L_0124:
-    FlagSet 907
+    FlagSet EVENT_FLAG_0x038b
 
 L_0128:
     VMReturn
@@ -92,11 +92,11 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    Cmd_02B2 0, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 0, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4047
+    VMStackPush EVENT_WORK_0x4047
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -105,7 +105,7 @@ Script_1:
     VMJump L_01AF
 
 L_0167:
-    VMStackPushFlag 464
+    VMStackPushFlag EVENT_FLAG_0x01d0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0186
@@ -113,10 +113,10 @@ L_0167:
     VMJump L_01AF
 
 L_0186:
-    VMStackPushFlag 464
+    VMStackPushFlag EVENT_FLAG_0x01d0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -136,7 +136,7 @@ L_01B5:
     RTReserveScript 1
     FadeWait
     MapChangeCore ZONE_FLOCCESY_TOWN_5, 6, 0, 3, 1
-    WorkSetConst 0x4047, 1
+    WorkSetConst EVENT_WORK_0x4047, 1
     VMReturn
 
 Script_16:
@@ -147,7 +147,7 @@ Script_16:
     ActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_ImGratefulEveryonesSupport, 10, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
-    VMStackPushFlag 464
+    VMStackPushFlag EVENT_FLAG_0x01d0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_020C
@@ -245,14 +245,14 @@ L_0346:
     // "Teaching is being taught...\nExcuse me, it's time for training.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_TeachingBeingTaughtExcuse, 10, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x4047
+    VMStackPush EVENT_WORK_0x4047
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_036F
     VMCall L_0375
 
 L_036F:
-    FlagSet 464
+    FlagSet EVENT_FLAG_0x01d0
     VMReturn
 
 L_0375:
@@ -278,12 +278,12 @@ L_03BE:
 L_03D8:
     ActorCmdWait
     ActorDelete 10
-    FlagSet 907
+    FlagSet EVENT_FLAG_0x038b
     VMReturn
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 907
+    VMStackPushFlag EVENT_FLAG_0x038b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0413
@@ -324,19 +324,19 @@ Script_4:
     SEPlay SEQ_SE_FLD_64
     Cmd_018F 0
     Cmd_0190 0
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0487
     ActorSetGPos 2, 19, 0, 54, 1
     ActorSetGPos 3, 18, 0, 53, 1
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMJump L_04A5
 
 L_0487:
     ActorSetGPos 2, 18, 0, 55, 1
     ActorSetGPos 3, 17, 0, 54, 1
-    WorkSetConst 0x4001, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
 
 L_04A5:
     FinishAllEvents
@@ -348,19 +348,19 @@ Script_5:
     SEPlay SEQ_SE_FLD_64
     Cmd_018F 1
     Cmd_0190 1
-    VMStackPush 0x4002
+    VMStackPush EVENT_WORK_0x4002
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04F0
     ActorSetGPos 5, 55, 3, 42, 1
     ActorSetGPos 6, 54, 3, 43, 1
-    WorkSetConst 0x4002, 1
+    WorkSetConst EVENT_WORK_0x4002, 1
     VMJump L_050E
 
 L_04F0:
     ActorSetGPos 5, 55, 3, 44, 1
     ActorSetGPos 6, 56, 3, 43, 1
-    WorkSetConst 0x4002, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
 
 L_050E:
     FinishAllEvents
@@ -372,19 +372,19 @@ Script_6:
     SEPlay SEQ_SE_FLD_64
     Cmd_018F 2
     Cmd_0190 2
-    VMStackPush 0x4003
+    VMStackPush EVENT_WORK_0x4003
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0559
     ActorSetGPos 8, 17, 6, 32, 1
     ActorSetGPos 9, 18, 6, 33, 1
-    WorkSetConst 0x4003, 1
+    WorkSetConst EVENT_WORK_0x4003, 1
     VMJump L_0577
 
 L_0559:
     ActorSetGPos 8, 16, 6, 33, 1
     ActorSetGPos 9, 17, 6, 34, 1
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
 
 L_0577:
     FinishAllEvents

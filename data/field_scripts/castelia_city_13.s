@@ -86,24 +86,24 @@ L_01AE:
     VMReturn
 
 L_01B0:
-    WorkSetConst 0x408e, 1
+    WorkSetConst EVENT_WORK_0x408e, 1
     VMReturn
 
 L_01B8:
-    WorkSetConst 0x408e, 0
+    WorkSetConst EVENT_WORK_0x408e, 0
     VMReturn
 
 Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    FlagGet 204, 0x8010
+    FlagGet EVENT_FLAG_0x00cc, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FF
     VMCall L_4298
-    FlagSet 204
+    FlagSet EVENT_FLAG_0x00cc
     TrainerGameInfoCmd_020C
     VMCall L_01B0
     VMCall L_0236
@@ -457,7 +457,7 @@ L_06C0:
     VMJump L_06DD
 
 L_06D3:
-    FlagSet 145
+    FlagSet EVENT_FLAG_0x0091
     VMJump L_0BF8
 
 L_06DD:
@@ -466,7 +466,7 @@ L_06DD:
     VMJump L_06FA
 
 L_06F0:
-    FlagSet 146
+    FlagSet EVENT_FLAG_0x0092
     VMJump L_0BF8
 
 L_06FA:
@@ -475,7 +475,7 @@ L_06FA:
     VMJump L_0717
 
 L_070D:
-    FlagSet 147
+    FlagSet EVENT_FLAG_0x0093
     VMJump L_0BF8
 
 L_0717:
@@ -484,7 +484,7 @@ L_0717:
     VMJump L_0734
 
 L_072A:
-    FlagSet 148
+    FlagSet EVENT_FLAG_0x0094
     VMJump L_0BF8
 
 L_0734:
@@ -493,7 +493,7 @@ L_0734:
     VMJump L_0751
 
 L_0747:
-    FlagSet 149
+    FlagSet EVENT_FLAG_0x0095
     VMJump L_0BF8
 
 L_0751:
@@ -502,7 +502,7 @@ L_0751:
     VMJump L_076E
 
 L_0764:
-    FlagSet 150
+    FlagSet EVENT_FLAG_0x0096
     VMJump L_0BF8
 
 L_076E:
@@ -511,7 +511,7 @@ L_076E:
     VMJump L_078B
 
 L_0781:
-    FlagSet 151
+    FlagSet EVENT_FLAG_0x0097
     VMJump L_0BF8
 
 L_078B:
@@ -520,7 +520,7 @@ L_078B:
     VMJump L_07A8
 
 L_079E:
-    FlagSet 152
+    FlagSet EVENT_FLAG_0x0098
     VMJump L_0BF8
 
 L_07A8:
@@ -529,7 +529,7 @@ L_07A8:
     VMJump L_07C5
 
 L_07BB:
-    FlagSet 153
+    FlagSet EVENT_FLAG_0x0099
     VMJump L_0BF8
 
 L_07C5:
@@ -538,7 +538,7 @@ L_07C5:
     VMJump L_07E2
 
 L_07D8:
-    FlagSet 154
+    FlagSet EVENT_FLAG_0x009a
     VMJump L_0BF8
 
 L_07E2:
@@ -547,7 +547,7 @@ L_07E2:
     VMJump L_07FF
 
 L_07F5:
-    FlagSet 155
+    FlagSet EVENT_FLAG_0x009b
     VMJump L_0BF8
 
 L_07FF:
@@ -556,7 +556,7 @@ L_07FF:
     VMJump L_081C
 
 L_0812:
-    FlagSet 156
+    FlagSet EVENT_FLAG_0x009c
     VMJump L_0BF8
 
 L_081C:
@@ -565,7 +565,7 @@ L_081C:
     VMJump L_0839
 
 L_082F:
-    FlagSet 157
+    FlagSet EVENT_FLAG_0x009d
     VMJump L_0BF8
 
 L_0839:
@@ -574,7 +574,7 @@ L_0839:
     VMJump L_0856
 
 L_084C:
-    FlagSet 158
+    FlagSet EVENT_FLAG_0x009e
     VMJump L_0BF8
 
 L_0856:
@@ -583,7 +583,7 @@ L_0856:
     VMJump L_0873
 
 L_0869:
-    FlagSet 159
+    FlagSet EVENT_FLAG_0x009f
     VMJump L_0BF8
 
 L_0873:
@@ -592,7 +592,7 @@ L_0873:
     VMJump L_0890
 
 L_0886:
-    FlagSet 160
+    FlagSet EVENT_FLAG_0x00a0
     VMJump L_0BF8
 
 L_0890:
@@ -601,7 +601,7 @@ L_0890:
     VMJump L_08AD
 
 L_08A3:
-    FlagSet 161
+    FlagSet EVENT_FLAG_0x00a1
     VMJump L_0BF8
 
 L_08AD:
@@ -610,7 +610,7 @@ L_08AD:
     VMJump L_08CA
 
 L_08C0:
-    FlagSet 162
+    FlagSet EVENT_FLAG_0x00a2
     VMJump L_0BF8
 
 L_08CA:
@@ -619,7 +619,7 @@ L_08CA:
     VMJump L_08E7
 
 L_08DD:
-    FlagSet 163
+    FlagSet EVENT_FLAG_0x00a3
     VMJump L_0BF8
 
 L_08E7:
@@ -628,7 +628,7 @@ L_08E7:
     VMJump L_0904
 
 L_08FA:
-    FlagSet 164
+    FlagSet EVENT_FLAG_0x00a4
     VMJump L_0BF8
 
 L_0904:
@@ -637,7 +637,7 @@ L_0904:
     VMJump L_0921
 
 L_0917:
-    FlagSet 165
+    FlagSet EVENT_FLAG_0x00a5
     VMJump L_0BF8
 
 L_0921:
@@ -646,7 +646,7 @@ L_0921:
     VMJump L_093E
 
 L_0934:
-    FlagSet 166
+    FlagSet EVENT_FLAG_0x00a6
     VMJump L_0BF8
 
 L_093E:
@@ -655,7 +655,7 @@ L_093E:
     VMJump L_095B
 
 L_0951:
-    FlagSet 167
+    FlagSet EVENT_FLAG_0x00a7
     VMJump L_0BF8
 
 L_095B:
@@ -664,7 +664,7 @@ L_095B:
     VMJump L_0978
 
 L_096E:
-    FlagSet 168
+    FlagSet EVENT_FLAG_0x00a8
     VMJump L_0BF8
 
 L_0978:
@@ -673,7 +673,7 @@ L_0978:
     VMJump L_0995
 
 L_098B:
-    FlagSet 169
+    FlagSet EVENT_FLAG_0x00a9
     VMJump L_0BF8
 
 L_0995:
@@ -682,7 +682,7 @@ L_0995:
     VMJump L_09B2
 
 L_09A8:
-    FlagSet 170
+    FlagSet EVENT_FLAG_0x00aa
     VMJump L_0BF8
 
 L_09B2:
@@ -691,7 +691,7 @@ L_09B2:
     VMJump L_09CF
 
 L_09C5:
-    FlagSet 171
+    FlagSet EVENT_FLAG_0x00ab
     VMJump L_0BF8
 
 L_09CF:
@@ -700,7 +700,7 @@ L_09CF:
     VMJump L_09EC
 
 L_09E2:
-    FlagSet 172
+    FlagSet EVENT_FLAG_0x00ac
     VMJump L_0BF8
 
 L_09EC:
@@ -709,7 +709,7 @@ L_09EC:
     VMJump L_0A09
 
 L_09FF:
-    FlagSet 173
+    FlagSet EVENT_FLAG_0x00ad
     VMJump L_0BF8
 
 L_0A09:
@@ -718,7 +718,7 @@ L_0A09:
     VMJump L_0A26
 
 L_0A1C:
-    FlagSet 174
+    FlagSet EVENT_FLAG_0x00ae
     VMJump L_0BF8
 
 L_0A26:
@@ -727,7 +727,7 @@ L_0A26:
     VMJump L_0A43
 
 L_0A39:
-    FlagSet 175
+    FlagSet EVENT_FLAG_0x00af
     VMJump L_0BF8
 
 L_0A43:
@@ -736,7 +736,7 @@ L_0A43:
     VMJump L_0A60
 
 L_0A56:
-    FlagSet 176
+    FlagSet EVENT_FLAG_0x00b0
     VMJump L_0BF8
 
 L_0A60:
@@ -745,7 +745,7 @@ L_0A60:
     VMJump L_0A7D
 
 L_0A73:
-    FlagSet 177
+    FlagSet EVENT_FLAG_0x00b1
     VMJump L_0BF8
 
 L_0A7D:
@@ -754,7 +754,7 @@ L_0A7D:
     VMJump L_0A9A
 
 L_0A90:
-    FlagSet 178
+    FlagSet EVENT_FLAG_0x00b2
     VMJump L_0BF8
 
 L_0A9A:
@@ -763,7 +763,7 @@ L_0A9A:
     VMJump L_0AB7
 
 L_0AAD:
-    FlagSet 179
+    FlagSet EVENT_FLAG_0x00b3
     VMJump L_0BF8
 
 L_0AB7:
@@ -772,7 +772,7 @@ L_0AB7:
     VMJump L_0AD4
 
 L_0ACA:
-    FlagSet 180
+    FlagSet EVENT_FLAG_0x00b4
     VMJump L_0BF8
 
 L_0AD4:
@@ -781,7 +781,7 @@ L_0AD4:
     VMJump L_0AF1
 
 L_0AE7:
-    FlagSet 181
+    FlagSet EVENT_FLAG_0x00b5
     VMJump L_0BF8
 
 L_0AF1:
@@ -790,7 +790,7 @@ L_0AF1:
     VMJump L_0B0E
 
 L_0B04:
-    FlagSet 182
+    FlagSet EVENT_FLAG_0x00b6
     VMJump L_0BF8
 
 L_0B0E:
@@ -799,7 +799,7 @@ L_0B0E:
     VMJump L_0B2B
 
 L_0B21:
-    FlagSet 183
+    FlagSet EVENT_FLAG_0x00b7
     VMJump L_0BF8
 
 L_0B2B:
@@ -808,7 +808,7 @@ L_0B2B:
     VMJump L_0B48
 
 L_0B3E:
-    FlagSet 184
+    FlagSet EVENT_FLAG_0x00b8
     VMJump L_0BF8
 
 L_0B48:
@@ -817,7 +817,7 @@ L_0B48:
     VMJump L_0B65
 
 L_0B5B:
-    FlagSet 185
+    FlagSet EVENT_FLAG_0x00b9
     VMJump L_0BF8
 
 L_0B65:
@@ -826,7 +826,7 @@ L_0B65:
     VMJump L_0B82
 
 L_0B78:
-    FlagSet 186
+    FlagSet EVENT_FLAG_0x00ba
     VMJump L_0BF8
 
 L_0B82:
@@ -835,7 +835,7 @@ L_0B82:
     VMJump L_0B9F
 
 L_0B95:
-    FlagSet 187
+    FlagSet EVENT_FLAG_0x00bb
     VMJump L_0BF8
 
 L_0B9F:
@@ -844,7 +844,7 @@ L_0B9F:
     VMJump L_0BBC
 
 L_0BB2:
-    FlagSet 188
+    FlagSet EVENT_FLAG_0x00bc
     VMJump L_0BF8
 
 L_0BBC:
@@ -853,7 +853,7 @@ L_0BBC:
     VMJump L_0BD9
 
 L_0BCF:
-    FlagSet 189
+    FlagSet EVENT_FLAG_0x00bd
     VMJump L_0BF8
 
 L_0BD9:
@@ -862,7 +862,7 @@ L_0BD9:
     VMJump L_0BF6
 
 L_0BEC:
-    FlagSet 190
+    FlagSet EVENT_FLAG_0x00be
     VMJump L_0BF8
 
 L_0BF6:
@@ -3448,7 +3448,7 @@ L_2FBF:
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_3056
-    FlagGet 145, 0x8010
+    FlagGet EVENT_FLAG_0x0091, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3456,7 +3456,7 @@ L_2FBF:
     ListMenuAdd 28, 65535, 24
 
 L_2FF3:
-    FlagGet 147, 0x8010
+    FlagGet EVENT_FLAG_0x0093, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3464,7 +3464,7 @@ L_2FF3:
     ListMenuAdd 29, 65535, 25
 
 L_3014:
-    FlagGet 149, 0x8010
+    FlagGet EVENT_FLAG_0x0095, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3472,7 +3472,7 @@ L_3014:
     ListMenuAdd 30, 65535, 26
 
 L_3035:
-    FlagGet 151, 0x8010
+    FlagGet EVENT_FLAG_0x0097, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3484,7 +3484,7 @@ L_3056:
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_312F
-    FlagGet 153, 0x8010
+    FlagGet EVENT_FLAG_0x0099, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3492,7 +3492,7 @@ L_3056:
     ListMenuAdd 32, 65535, 28
 
 L_308A:
-    FlagGet 155, 0x8010
+    FlagGet EVENT_FLAG_0x009b, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3500,7 +3500,7 @@ L_308A:
     ListMenuAdd 33, 65535, 29
 
 L_30AB:
-    FlagGet 157, 0x8010
+    FlagGet EVENT_FLAG_0x009d, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3508,7 +3508,7 @@ L_30AB:
     ListMenuAdd 34, 65535, 30
 
 L_30CC:
-    FlagGet 159, 0x8010
+    FlagGet EVENT_FLAG_0x009f, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3516,7 +3516,7 @@ L_30CC:
     ListMenuAdd 35, 65535, 31
 
 L_30ED:
-    FlagGet 161, 0x8010
+    FlagGet EVENT_FLAG_0x00a1, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3524,7 +3524,7 @@ L_30ED:
     ListMenuAdd 36, 65535, 32
 
 L_310E:
-    FlagGet 163, 0x8010
+    FlagGet EVENT_FLAG_0x00a3, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3536,7 +3536,7 @@ L_312F:
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_3208
-    FlagGet 165, 0x8010
+    FlagGet EVENT_FLAG_0x00a5, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3544,7 +3544,7 @@ L_312F:
     ListMenuAdd 38, 65535, 34
 
 L_3163:
-    FlagGet 167, 0x8010
+    FlagGet EVENT_FLAG_0x00a7, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3552,7 +3552,7 @@ L_3163:
     ListMenuAdd 39, 65535, 35
 
 L_3184:
-    FlagGet 169, 0x8010
+    FlagGet EVENT_FLAG_0x00a9, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3560,7 +3560,7 @@ L_3184:
     ListMenuAdd 40, 65535, 36
 
 L_31A5:
-    FlagGet 171, 0x8010
+    FlagGet EVENT_FLAG_0x00ab, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3568,7 +3568,7 @@ L_31A5:
     ListMenuAdd 41, 65535, 37
 
 L_31C6:
-    FlagGet 173, 0x8010
+    FlagGet EVENT_FLAG_0x00ad, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3576,7 +3576,7 @@ L_31C6:
     ListMenuAdd 42, 65535, 38
 
 L_31E7:
-    FlagGet 175, 0x8010
+    FlagGet EVENT_FLAG_0x00af, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3588,7 +3588,7 @@ L_3208:
     VMStackPushConst 4
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_32C0
-    FlagGet 177, 0x8010
+    FlagGet EVENT_FLAG_0x00b1, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3596,7 +3596,7 @@ L_3208:
     ListMenuAdd 44, 65535, 40
 
 L_323C:
-    FlagGet 179, 0x8010
+    FlagGet EVENT_FLAG_0x00b3, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3604,7 +3604,7 @@ L_323C:
     ListMenuAdd 45, 65535, 41
 
 L_325D:
-    FlagGet 181, 0x8010
+    FlagGet EVENT_FLAG_0x00b5, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3612,7 +3612,7 @@ L_325D:
     ListMenuAdd 46, 65535, 42
 
 L_327E:
-    FlagGet 183, 0x8010
+    FlagGet EVENT_FLAG_0x00b7, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3620,7 +3620,7 @@ L_327E:
     ListMenuAdd 47, 65535, 43
 
 L_329F:
-    FlagGet 185, 0x8010
+    FlagGet EVENT_FLAG_0x00b9, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3632,7 +3632,7 @@ L_32C0:
     VMStackPushConst 5
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_3315
-    FlagGet 187, 0x8010
+    FlagGet EVENT_FLAG_0x00bb, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3640,7 +3640,7 @@ L_32C0:
     ListMenuAdd 49, 65535, 45
 
 L_32F4:
-    FlagGet 189, 0x8010
+    FlagGet EVENT_FLAG_0x00bd, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3660,7 +3660,7 @@ L_332E:
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_33C5
-    FlagGet 146, 0x8010
+    FlagGet EVENT_FLAG_0x0092, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3668,7 +3668,7 @@ L_332E:
     ListMenuAdd 28, 65535, 1
 
 L_3362:
-    FlagGet 148, 0x8010
+    FlagGet EVENT_FLAG_0x0094, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3676,7 +3676,7 @@ L_3362:
     ListMenuAdd 29, 65535, 2
 
 L_3383:
-    FlagGet 150, 0x8010
+    FlagGet EVENT_FLAG_0x0096, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3684,7 +3684,7 @@ L_3383:
     ListMenuAdd 30, 65535, 3
 
 L_33A4:
-    FlagGet 152, 0x8010
+    FlagGet EVENT_FLAG_0x0098, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3696,7 +3696,7 @@ L_33C5:
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_349E
-    FlagGet 154, 0x8010
+    FlagGet EVENT_FLAG_0x009a, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3704,7 +3704,7 @@ L_33C5:
     ListMenuAdd 32, 65535, 5
 
 L_33F9:
-    FlagGet 156, 0x8010
+    FlagGet EVENT_FLAG_0x009c, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3712,7 +3712,7 @@ L_33F9:
     ListMenuAdd 33, 65535, 6
 
 L_341A:
-    FlagGet 158, 0x8010
+    FlagGet EVENT_FLAG_0x009e, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3720,7 +3720,7 @@ L_341A:
     ListMenuAdd 34, 65535, 7
 
 L_343B:
-    FlagGet 160, 0x8010
+    FlagGet EVENT_FLAG_0x00a0, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3728,7 +3728,7 @@ L_343B:
     ListMenuAdd 35, 65535, 8
 
 L_345C:
-    FlagGet 162, 0x8010
+    FlagGet EVENT_FLAG_0x00a2, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3736,7 +3736,7 @@ L_345C:
     ListMenuAdd 36, 65535, 9
 
 L_347D:
-    FlagGet 164, 0x8010
+    FlagGet EVENT_FLAG_0x00a4, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3748,7 +3748,7 @@ L_349E:
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_3577
-    FlagGet 166, 0x8010
+    FlagGet EVENT_FLAG_0x00a6, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3756,7 +3756,7 @@ L_349E:
     ListMenuAdd 38, 65535, 11
 
 L_34D2:
-    FlagGet 168, 0x8010
+    FlagGet EVENT_FLAG_0x00a8, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3764,7 +3764,7 @@ L_34D2:
     ListMenuAdd 39, 65535, 12
 
 L_34F3:
-    FlagGet 170, 0x8010
+    FlagGet EVENT_FLAG_0x00aa, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3772,7 +3772,7 @@ L_34F3:
     ListMenuAdd 40, 65535, 13
 
 L_3514:
-    FlagGet 172, 0x8010
+    FlagGet EVENT_FLAG_0x00ac, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3780,7 +3780,7 @@ L_3514:
     ListMenuAdd 41, 65535, 14
 
 L_3535:
-    FlagGet 174, 0x8010
+    FlagGet EVENT_FLAG_0x00ae, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3788,7 +3788,7 @@ L_3535:
     ListMenuAdd 42, 65535, 15
 
 L_3556:
-    FlagGet 176, 0x8010
+    FlagGet EVENT_FLAG_0x00b0, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3800,7 +3800,7 @@ L_3577:
     VMStackPushConst 4
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_362F
-    FlagGet 178, 0x8010
+    FlagGet EVENT_FLAG_0x00b2, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3808,7 +3808,7 @@ L_3577:
     ListMenuAdd 44, 65535, 17
 
 L_35AB:
-    FlagGet 180, 0x8010
+    FlagGet EVENT_FLAG_0x00b4, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3816,7 +3816,7 @@ L_35AB:
     ListMenuAdd 45, 65535, 18
 
 L_35CC:
-    FlagGet 182, 0x8010
+    FlagGet EVENT_FLAG_0x00b6, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3824,7 +3824,7 @@ L_35CC:
     ListMenuAdd 46, 65535, 19
 
 L_35ED:
-    FlagGet 184, 0x8010
+    FlagGet EVENT_FLAG_0x00b8, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3832,7 +3832,7 @@ L_35ED:
     ListMenuAdd 47, 65535, 20
 
 L_360E:
-    FlagGet 186, 0x8010
+    FlagGet EVENT_FLAG_0x00ba, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3844,7 +3844,7 @@ L_362F:
     VMStackPushConst 5
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_3684
-    FlagGet 188, 0x8010
+    FlagGet EVENT_FLAG_0x00bc, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -3852,7 +3852,7 @@ L_362F:
     ListMenuAdd 49, 65535, 22
 
 L_3663:
-    FlagGet 190, 0x8010
+    FlagGet EVENT_FLAG_0x00be, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7115,7 +7115,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    FlagGet 204, 0x8010
+    FlagGet EVENT_FLAG_0x00cc, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7133,12 +7133,12 @@ L_61DF:
     VMHalt
 
 L_61E5:
-    FlagGet 205, 0x8010
+    FlagGet EVENT_FLAG_0x00cd, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_6214
-    FlagSet 205
+    FlagSet EVENT_FLAG_0x00cd
     VMCall L_01B8
     VMCall L_7332
     VMJump L_6235
@@ -7453,7 +7453,7 @@ L_668C:
     VMJump L_66A9
 
 L_669F:
-    FlagSet 191
+    FlagSet EVENT_FLAG_0x00bf
     VMJump L_6793
 
 L_66A9:
@@ -7462,7 +7462,7 @@ L_66A9:
     VMJump L_66C6
 
 L_66BC:
-    FlagSet 192
+    FlagSet EVENT_FLAG_0x00c0
     VMJump L_6793
 
 L_66C6:
@@ -7471,7 +7471,7 @@ L_66C6:
     VMJump L_66E3
 
 L_66D9:
-    FlagSet 193
+    FlagSet EVENT_FLAG_0x00c1
     VMJump L_6793
 
 L_66E3:
@@ -7480,7 +7480,7 @@ L_66E3:
     VMJump L_6700
 
 L_66F6:
-    FlagSet 194
+    FlagSet EVENT_FLAG_0x00c2
     VMJump L_6793
 
 L_6700:
@@ -7489,7 +7489,7 @@ L_6700:
     VMJump L_671D
 
 L_6713:
-    FlagSet 195
+    FlagSet EVENT_FLAG_0x00c3
     VMJump L_6793
 
 L_671D:
@@ -7498,7 +7498,7 @@ L_671D:
     VMJump L_673A
 
 L_6730:
-    FlagSet 196
+    FlagSet EVENT_FLAG_0x00c4
     VMJump L_6793
 
 L_673A:
@@ -7507,7 +7507,7 @@ L_673A:
     VMJump L_6757
 
 L_674D:
-    FlagSet 197
+    FlagSet EVENT_FLAG_0x00c5
     VMJump L_6793
 
 L_6757:
@@ -7516,7 +7516,7 @@ L_6757:
     VMJump L_6774
 
 L_676A:
-    FlagSet 198
+    FlagSet EVENT_FLAG_0x00c6
     VMJump L_6793
 
 L_6774:
@@ -7525,7 +7525,7 @@ L_6774:
     VMJump L_6791
 
 L_6787:
-    FlagSet 199
+    FlagSet EVENT_FLAG_0x00c7
     VMJump L_6793
 
 L_6791:
@@ -7593,7 +7593,7 @@ L_687C:
     VMJump L_689B
 
 L_688F:
-    FlagGet 191, 0x8010
+    FlagGet EVENT_FLAG_0x00bf, 0x8010
     VMJump L_6995
 
 L_689B:
@@ -7602,7 +7602,7 @@ L_689B:
     VMJump L_68BA
 
 L_68AE:
-    FlagGet 192, 0x8010
+    FlagGet EVENT_FLAG_0x00c0, 0x8010
     VMJump L_6995
 
 L_68BA:
@@ -7611,7 +7611,7 @@ L_68BA:
     VMJump L_68D9
 
 L_68CD:
-    FlagGet 193, 0x8010
+    FlagGet EVENT_FLAG_0x00c1, 0x8010
     VMJump L_6995
 
 L_68D9:
@@ -7620,7 +7620,7 @@ L_68D9:
     VMJump L_68F8
 
 L_68EC:
-    FlagGet 194, 0x8010
+    FlagGet EVENT_FLAG_0x00c2, 0x8010
     VMJump L_6995
 
 L_68F8:
@@ -7629,7 +7629,7 @@ L_68F8:
     VMJump L_6917
 
 L_690B:
-    FlagGet 195, 0x8010
+    FlagGet EVENT_FLAG_0x00c3, 0x8010
     VMJump L_6995
 
 L_6917:
@@ -7638,7 +7638,7 @@ L_6917:
     VMJump L_6936
 
 L_692A:
-    FlagGet 196, 0x8010
+    FlagGet EVENT_FLAG_0x00c4, 0x8010
     VMJump L_6995
 
 L_6936:
@@ -7647,7 +7647,7 @@ L_6936:
     VMJump L_6955
 
 L_6949:
-    FlagGet 197, 0x8010
+    FlagGet EVENT_FLAG_0x00c5, 0x8010
     VMJump L_6995
 
 L_6955:
@@ -7656,7 +7656,7 @@ L_6955:
     VMJump L_6974
 
 L_6968:
-    FlagGet 198, 0x8010
+    FlagGet EVENT_FLAG_0x00c6, 0x8010
     VMJump L_6995
 
 L_6974:
@@ -7665,7 +7665,7 @@ L_6974:
     VMJump L_6993
 
 L_6987:
-    FlagGet 199, 0x8010
+    FlagGet EVENT_FLAG_0x00c7, 0x8010
     VMJump L_6995
 
 L_6993:
@@ -7676,7 +7676,7 @@ L_6995:
 
 L_6997:
     WorkSetConst 0x804d, 0
-    FlagGet 191, 0x8008
+    FlagGet EVENT_FLAG_0x00bf, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7684,7 +7684,7 @@ L_6997:
     WorkAdd 0x804d, 1
 
 L_69BC:
-    FlagGet 192, 0x8008
+    FlagGet EVENT_FLAG_0x00c0, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7692,7 +7692,7 @@ L_69BC:
     WorkAdd 0x804d, 1
 
 L_69DB:
-    FlagGet 193, 0x8008
+    FlagGet EVENT_FLAG_0x00c1, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7700,7 +7700,7 @@ L_69DB:
     WorkAdd 0x804d, 1
 
 L_69FA:
-    FlagGet 194, 0x8008
+    FlagGet EVENT_FLAG_0x00c2, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7708,7 +7708,7 @@ L_69FA:
     WorkAdd 0x804d, 1
 
 L_6A19:
-    FlagGet 195, 0x8008
+    FlagGet EVENT_FLAG_0x00c3, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7716,7 +7716,7 @@ L_6A19:
     WorkAdd 0x804d, 1
 
 L_6A38:
-    FlagGet 196, 0x8008
+    FlagGet EVENT_FLAG_0x00c4, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7724,7 +7724,7 @@ L_6A38:
     WorkAdd 0x804d, 1
 
 L_6A57:
-    FlagGet 197, 0x8008
+    FlagGet EVENT_FLAG_0x00c5, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7732,7 +7732,7 @@ L_6A57:
     WorkAdd 0x804d, 1
 
 L_6A76:
-    FlagGet 198, 0x8008
+    FlagGet EVENT_FLAG_0x00c6, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7740,7 +7740,7 @@ L_6A76:
     WorkAdd 0x804d, 1
 
 L_6A95:
-    FlagGet 199, 0x8008
+    FlagGet EVENT_FLAG_0x00c7, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7752,7 +7752,7 @@ L_6AB4:
     VMReturn
 
 L_6ABC:
-    FlagGet 191, 0x8008
+    FlagGet EVENT_FLAG_0x00bf, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7761,7 +7761,7 @@ L_6ABC:
     VMReturn
 
 L_6ADD:
-    FlagGet 192, 0x8008
+    FlagGet EVENT_FLAG_0x00c0, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7770,7 +7770,7 @@ L_6ADD:
     VMReturn
 
 L_6AFE:
-    FlagGet 193, 0x8008
+    FlagGet EVENT_FLAG_0x00c1, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7779,7 +7779,7 @@ L_6AFE:
     VMReturn
 
 L_6B1F:
-    FlagGet 194, 0x8008
+    FlagGet EVENT_FLAG_0x00c2, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7788,7 +7788,7 @@ L_6B1F:
     VMReturn
 
 L_6B40:
-    FlagGet 195, 0x8008
+    FlagGet EVENT_FLAG_0x00c3, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7797,7 +7797,7 @@ L_6B40:
     VMReturn
 
 L_6B61:
-    FlagGet 196, 0x8008
+    FlagGet EVENT_FLAG_0x00c4, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7806,7 +7806,7 @@ L_6B61:
     VMReturn
 
 L_6B82:
-    FlagGet 197, 0x8008
+    FlagGet EVENT_FLAG_0x00c5, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7815,7 +7815,7 @@ L_6B82:
     VMReturn
 
 L_6BA3:
-    FlagGet 198, 0x8008
+    FlagGet EVENT_FLAG_0x00c6, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -7824,7 +7824,7 @@ L_6BA3:
     VMReturn
 
 L_6BC4:
-    FlagGet 199, 0x8008
+    FlagGet EVENT_FLAG_0x00c7, 0x8008
     VMStackPush 0x8008
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -8860,12 +8860,12 @@ Script_4:
     ActorSetEyeToEye
     // "Hello!\nGreeting is important, isn't it?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_HelloGreetingImportantIsnt, 0x8011, 2, 0
-    FlagGet 206, 0x8010
+    FlagGet EVENT_FLAG_0x00ce, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_79D7
-    FlagSet 206
+    FlagSet EVENT_FLAG_0x00ce
     // "If you don't mind, would you tell me\nyour favorite greeting?"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_IfDontMindWould, 0x8011, 2, 0
     VMJump L_79E3
@@ -8916,12 +8916,12 @@ Script_5:
     ActorSetEyeToEye
     // "Hello! Do you always have a feeling\nof gratitude?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_HelloAlwaysHaveFeeling, 0x8011, 2, 0
-    FlagGet 207, 0x8010
+    FlagGet EVENT_FLAG_0x00cf, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7AB1
-    FlagSet 207
+    FlagSet EVENT_FLAG_0x00cf
     // "Oh, you dropped your Poké Ball.\nHere you are.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OhDroppedPokeBall, 0x8011, 2, 0
     ActorMsgClose
@@ -8977,12 +8977,12 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    FlagGet 391, 0x8010
+    FlagGet EVENT_FLAG_0x0187, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7B66
-    FlagSet 391
+    FlagSet EVENT_FLAG_0x0187
     // "When you're happy,\nwhat do you say?[f000]븁\u0000\nI say “Awesome!\"\nCould you teach me a new phrase?"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WhenYoureHappyWhat, 0x8011, 2, 0
     VMJump L_7B72
@@ -9367,10 +9367,10 @@ Script_16:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 6
     VMStackCmp CMP_NE
-    VMStackPushFlag 313
+    VMStackPushFlag EVENT_FLAG_0x0139
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -9378,8 +9378,8 @@ Script_16:
     SEPlay SEQ_SE_FLD_41
     // "I'm from the Castelia Harlequin Hunt![f000]븁\u0000\nYou found the Passerby Analytics HQ\nHarlequin! All riiight!"
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ImFromCasteliaHarlequin, 0, 0
-    FlagSet 313
-    WorkAdd 0x40e2, 1
+    FlagSet EVENT_FLAG_0x0139
+    WorkAdd EVENT_WORK_0x40e2, 1
     SEWait
     LastKeyWait
     MsgWinCloseAll
@@ -9398,20 +9398,20 @@ L_8064:
 
 Script_15:
     TrainerGameInfoCmd_020B 0x8010
-    FlagSet 637
-    FlagSet 638
-    FlagSet 639
-    FlagSet 640
-    FlagSet 641
-    FlagSet 642
-    FlagSet 643
+    FlagSet EVENT_FLAG_0x027d
+    FlagSet EVENT_FLAG_0x027e
+    FlagSet EVENT_FLAG_0x027f
+    FlagSet EVENT_FLAG_0x0280
+    FlagSet EVENT_FLAG_0x0281
+    FlagSet EVENT_FLAG_0x0282
+    FlagSet EVENT_FLAG_0x0283
     WorkCmpConst 0x8010, 1
     VMJumpIf CMP_EQ, L_809D
     VMJump L_80AB
 
 L_809D:
-    FlagReset 637
-    FlagReset 638
+    FlagReset EVENT_FLAG_0x027d
+    FlagReset EVENT_FLAG_0x027e
     VMJump L_8167
 
 L_80AB:
@@ -9420,10 +9420,10 @@ L_80AB:
     VMJump L_80D4
 
 L_80BE:
-    FlagReset 637
-    FlagReset 638
-    FlagReset 639
-    FlagReset 640
+    FlagReset EVENT_FLAG_0x027d
+    FlagReset EVENT_FLAG_0x027e
+    FlagReset EVENT_FLAG_0x027f
+    FlagReset EVENT_FLAG_0x0280
     VMJump L_8167
 
 L_80D4:
@@ -9432,11 +9432,11 @@ L_80D4:
     VMJump L_8101
 
 L_80E7:
-    FlagReset 637
-    FlagReset 638
-    FlagReset 639
-    FlagReset 640
-    FlagReset 641
+    FlagReset EVENT_FLAG_0x027d
+    FlagReset EVENT_FLAG_0x027e
+    FlagReset EVENT_FLAG_0x027f
+    FlagReset EVENT_FLAG_0x0280
+    FlagReset EVENT_FLAG_0x0281
     VMJump L_8167
 
 L_8101:
@@ -9445,12 +9445,12 @@ L_8101:
     VMJump L_8132
 
 L_8114:
-    FlagReset 637
-    FlagReset 638
-    FlagReset 639
-    FlagReset 640
-    FlagReset 641
-    FlagReset 642
+    FlagReset EVENT_FLAG_0x027d
+    FlagReset EVENT_FLAG_0x027e
+    FlagReset EVENT_FLAG_0x027f
+    FlagReset EVENT_FLAG_0x0280
+    FlagReset EVENT_FLAG_0x0281
+    FlagReset EVENT_FLAG_0x0282
     VMJump L_8167
 
 L_8132:
@@ -9459,13 +9459,13 @@ L_8132:
     VMJump L_8167
 
 L_8145:
-    FlagReset 637
-    FlagReset 638
-    FlagReset 639
-    FlagReset 640
-    FlagReset 641
-    FlagReset 642
-    FlagReset 643
+    FlagReset EVENT_FLAG_0x027d
+    FlagReset EVENT_FLAG_0x027e
+    FlagReset EVENT_FLAG_0x027f
+    FlagReset EVENT_FLAG_0x0280
+    FlagReset EVENT_FLAG_0x0281
+    FlagReset EVENT_FLAG_0x0282
+    FlagReset EVENT_FLAG_0x0283
     VMJump L_8167
 
 L_8167:

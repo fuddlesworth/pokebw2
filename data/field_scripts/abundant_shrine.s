@@ -20,7 +20,7 @@ Script_2:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4150
+    VMStackPush EVENT_WORK_0x4150
     VMStackPushConst 2
     VMStackCmp CMP_NE
     VMStackPush 0x8025
@@ -29,24 +29,24 @@ Script_2:
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_008D
-    FlagReset 1028
-    WorkSetConst 0x4150, 1
+    FlagReset EVENT_FLAG_0x0404
+    WorkSetConst EVENT_WORK_0x4150, 1
     VMJump L_00AA
 
 L_008D:
-    FlagSet 1028
-    VMStackPush 0x4150
+    FlagSet EVENT_FLAG_0x0404
+    VMStackPush EVENT_WORK_0x4150
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AA
-    WorkSetConst 0x4150, 0
+    WorkSetConst EVENT_WORK_0x4150, 0
 
 L_00AA:
-    VMStackPush 0x4155
+    VMStackPush EVENT_WORK_0x4155
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C1
-    FlagReset 1038
+    FlagReset EVENT_FLAG_0x040e
 
 L_00C1:
     WorkSetConst 0x8025, 0
@@ -118,8 +118,8 @@ L_01F7:
     ActorCmdExec 255, Movement_04B0
     ActorCmdWait
     ActorDelete 11
-    FlagSet 1028
-    WorkSetConst 0x4150, 2
+    FlagSet EVENT_FLAG_0x0404
+    WorkSetConst EVENT_WORK_0x4150, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -198,8 +198,8 @@ L_0275:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 14
     SEWait
-    WorkSetConst 0x4155, 1
-    FlagSet 1038
+    WorkSetConst EVENT_WORK_0x4155, 1
+    FlagSet EVENT_FLAG_0x040e
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -256,7 +256,7 @@ Movement_03D4:
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2450
+    VMStackPushFlag EVENT_FLAG_0x0992
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0436
@@ -276,7 +276,7 @@ Script_1:
     ParentActorMsg MSGFILE_SCRIPT, AbundantShrine_Text_StinkyStinkyMulchGrows, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2450
+    FlagSet EVENT_FLAG_0x0992
     VMJump L_044A
 
 L_0436:

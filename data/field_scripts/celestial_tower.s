@@ -11,16 +11,16 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPushFlag 919
+    VMStackPushFlag EVENT_FLAG_0x0397
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4117
+    VMStackPush EVENT_WORK_0x4117
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0051
-    FlagSet 919
-    WorkSetConst 0x4117, 1
+    FlagSet EVENT_FLAG_0x0397
+    WorkSetConst EVENT_WORK_0x4117, 1
 
 L_0051:
     VMHalt
@@ -36,12 +36,12 @@ Script_2:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F0
-    VMStackPushFlag 408
+    VMStackPushFlag EVENT_FLAG_0x0198
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0095
     FunfestMissionBroadcast 24, 0
-    FlagSet 408
+    FlagSet EVENT_FLAG_0x0198
 
 L_0095:
     Cmd_0240 64, 30
@@ -59,11 +59,11 @@ L_0095:
     InfoMsg CelestialTower_Text_SoundBellReverberatesThrough, 2
     LastKeyWait
     InfoMsgClose_0039
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00EA
-    WorkSetConst 0x40ee, 6
+    WorkSetConst EVENT_WORK_0x40ee, 6
 
 L_00EA:
     VMJump L_00F9
@@ -90,8 +90,8 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B0
     MsgWinCloseAll
-    FlagReset 919
-    WorkSetConst 0x4117, 2
+    FlagReset EVENT_FLAG_0x0397
+    WorkSetConst EVENT_WORK_0x4117, 2
     VMSleep 30
     PVPlay 481, 0
     // "Kyauun!"
@@ -143,8 +143,8 @@ Script_4:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0206
-    FlagSet 919
-    WorkSetConst 0x4117, 3
+    FlagSet EVENT_FLAG_0x0397
+    WorkSetConst EVENT_WORK_0x4117, 3
     ActorDelete 0
     CallWildBattleEnd
     VMJump L_0208
@@ -159,7 +159,7 @@ L_0208:
     VMJump L_0229
 
 L_021F:
-    FlagSet 397
+    FlagSet EVENT_FLAG_0x018d
     VMJump L_0259
 
 L_0229:

@@ -15,7 +15,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F0
@@ -28,11 +28,11 @@ Script_2:
     ParentActorMsg MSGFILE_SCRIPT, CelestialTower5_Text_SeeWeWereThinking, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
-    WorkSetConst 0x40ee, 5
-    FlagSet 823
-    FlagSet 824
-    FlagSet 825
-    FlagSet 826
+    WorkSetConst EVENT_WORK_0x40ee, 5
+    FlagSet EVENT_FLAG_0x0337
+    FlagSet EVENT_FLAG_0x0338
+    FlagSet EVENT_FLAG_0x0339
+    FlagSet EVENT_FLAG_0x033a
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
     VMStackPushConst 12
@@ -59,7 +59,7 @@ L_00D6:
     VMJump L_0111
 
 L_00F0:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 5
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0111

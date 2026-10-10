@@ -11,7 +11,7 @@
 
 Script_1:
     WorkSetConst 0x8021, 0
-    VMStackPush 0x4178
+    VMStackPush EVENT_WORK_0x4178
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00AF
@@ -65,12 +65,12 @@ L_00B7:
     BSubwayCmd_Tool 311, 1, 0, 0
     BSubwayCmd_Tool 351, 0, 0, 32776
     VMCall L_02B7
-    WorkGet 0x4022, 0x8010
+    WorkGet EVENT_WORK_0x4022, 0x8010
     VMJump L_0136
 
 L_0126:
     BSubwayCmd_Tool 308, 0, 0, 32784
-    WorkGet 0x4022, 0x8010
+    WorkGet EVENT_WORK_0x4022, 0x8010
 
 L_0136:
     ActorNew 9, 4, 2, 226, 164, 0
@@ -94,10 +94,10 @@ L_0152:
     BSubwayCmd_Tool 311, 1, 0, 0
     BSubwayCmd_Tool 351, 0, 0, 32776
     VMCall L_02B7
-    WorkGet 0x4022, 0x8010
+    WorkGet EVENT_WORK_0x4022, 0x8010
     BSubwayCmd_Tool 351, 1, 0, 32776
     VMCall L_02B7
-    WorkGet 0x4023, 0x8010
+    WorkGet EVENT_WORK_0x4023, 0x8010
     VMJump L_01E5
 
 L_01D1:
@@ -125,7 +125,7 @@ L_0246:
     BSubwayCmd_Tool 311, 1, 0, 0
 
 L_0250:
-    WorkGet 0x4022, 0x8010
+    WorkGet EVENT_WORK_0x4022, 0x8010
     BSubwayCmd_Tool 351, 1, 0, 32776
     VMCall L_02B7
     VMStackPush 0x8010
@@ -139,7 +139,7 @@ L_0289:
     BSubwayCmd_Tool 311, 1, 0, 0
 
 L_0293:
-    WorkGet 0x4023, 0x8010
+    WorkGet EVENT_WORK_0x4023, 0x8010
     ActorNew 9, 5, 2, 226, 164, 0
     ActorNew 9, 3, 2, 227, 165, 0
     VMReturn
@@ -226,7 +226,7 @@ Script_2:
     ActorsPauseAll
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8026, 0
-    WorkSetConst 0x4178, 0
+    WorkSetConst EVENT_WORK_0x4178, 0
     BSubwayCmd_Tool 310, 0, 0, 32805
     BSubwayCmd_Tool 22, 0x8025, 0, 32806
     VMStackPush 0x8026
@@ -292,7 +292,7 @@ Script_3:
     ActorsPauseAll
     WorkSetConst 0x8027, 0
     WorkSetConst 0x8028, 0
-    WorkSetConst 0x4178, 0
+    WorkSetConst EVENT_WORK_0x4178, 0
     BSubwayCmd_Tool 334, 0, 0, 0
     FadeInBlackQ
     FadeWait
@@ -686,7 +686,7 @@ L_0B0F:
     FadeOutBlackQ
     FadeWait
     ActorCmdWait
-    WorkSetConst 0x4179, 1
+    WorkSetConst EVENT_WORK_0x4179, 1
     BSubwayCmd_Tool 347, 0, 0, 0
     BSubwayCmd_Tool 202, 1, 0, 0
     MapChangeCore ZONE_BATTLE_SUBWAY_2, 75, 0, 12, 1
@@ -913,7 +913,7 @@ L_0E5A:
     BSubwayCmd_Tool 350, 0, 0, 0
     FadeOutBlackQ
     FadeWait
-    WorkSetConst 0x4178, 2
+    WorkSetConst EVENT_WORK_0x4178, 2
     BSubwayCmd_Tool 347, 0, 0, 0
     BSubwayCmd_Tool 202, 1, 0, 0
     MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
@@ -942,7 +942,7 @@ L_0ECC:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0F45
-    WorkSetConst 0x4176, 1
+    WorkSetConst EVENT_WORK_0x4176, 1
     BSubwayCmd_Tool 322, 0, 0, 0
     BSubwayCmd_Tool 306, 0, 0, 0
     BSubwayCmd_Tool 347, 0, 0, 0
@@ -1044,7 +1044,7 @@ L_109E:
 
 L_10AE:
     ListMenuShow
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
     WorkCmpConst 0x8010, 0
     VMJumpIf CMP_EQ, L_10C9
     VMJump L_1202
@@ -1063,8 +1063,8 @@ L_10C9:
     VMReturn
 
 L_1100:
-    WorkSetConst 0x4000, 0
-    BSubwayCmd_Tool 405, 2, 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
+    BSubwayCmd_Tool 405, 2, EVENT_WORK_0x4000, 0
     BSubwayCmd_Tool 415, 0, 0, 32800
     VMStackPush 0x8020
     VMStackPushConst 1
@@ -1086,7 +1086,7 @@ L_1137:
     VMReturn
 
 L_1168:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11BC
@@ -1115,7 +1115,7 @@ L_11BC:
     FadeWait
     BSubwayCmd_Tool 347, 0, 0, 0
     BSubwayCmd_Tool 202, 1, 0, 0
-    WorkSetConst 0x4178, 2
+    WorkSetConst EVENT_WORK_0x4178, 2
     MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
 
 L_11F6:
@@ -1153,8 +1153,8 @@ L_1221:
     VMReturn
 
 L_127D:
-    WorkSetConst 0x4000, 1
-    BSubwayCmd_Tool 405, 2, 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 1
+    BSubwayCmd_Tool 405, 2, EVENT_WORK_0x4000, 0
     BSubwayCmd_Tool 415, 0, 0, 32800
     VMStackPush 0x8020
     VMStackPushConst 1
@@ -1508,7 +1508,7 @@ L_187E:
 
 L_1890:
     WorkSetConst 0x803f, 0
-    WorkSetConst 0x4176, 3
+    WorkSetConst EVENT_WORK_0x4176, 3
     BSubwayCmd_Tool 310, 0, 0, 32831
     VMStackPush 0x803f
     VMStackPushConst 3
@@ -1541,7 +1541,7 @@ L_1904:
 
 L_1916:
     VMCall L_1619
-    WorkSetConst 0x4176, 3
+    WorkSetConst EVENT_WORK_0x4176, 3
     VMCall L_16E1
     VMReturn
 

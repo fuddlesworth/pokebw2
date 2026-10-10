@@ -64,7 +64,7 @@ L_0094:
     VMStackCmp CMP_OR
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_00FF
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F9
@@ -86,7 +86,7 @@ L_00FF:
     VMStackCmp CMP_OR
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0151
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014B
@@ -108,7 +108,7 @@ L_0151:
     VMStackCmp CMP_OR
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_019D
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_019D
@@ -234,18 +234,18 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2766
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ace
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0320
-    VMStackPushFlag 333
+    VMStackPushFlag EVENT_FLAG_0x014d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0308
     // "Sorry to bother you, but I like low\nplaces like this and little tiny things.[f000]븁\u0000\nTiny Pokémon are the most interesting![f000]븁\u0000\nI particularly like Pokémon that have a\nheight of eight inches or less.[f000]븁\u0000\nBy the way...\nDo you have any tiny Pokémon?[f000]븁\u0000\nIf you do, could you show me?"
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_SorryBotherButLike, 0, 0
     MsgWaitAdvance
-    FlagSet 333
+    FlagSet EVENT_FLAG_0x014d
     VMJump L_0314
 
 L_0308:
@@ -452,7 +452,7 @@ L_05BD:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_ThanksShowingTinyPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2766
+    FlagSet EVENT_FLAG_DAILY_0x0ace
     VMJump L_0624
 
 L_0616:
@@ -468,18 +468,18 @@ Script_9:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2767
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acf
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0682
-    VMStackPushFlag 334
+    VMStackPushFlag EVENT_FLAG_0x014e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_066A
     // "You know what?![f000]븁\u0000\nI love high places like this,\nand really big things![f000]븁\u0000\nMy favorite Pokémon\nare big ones, too![f000]븁\u0000\nWhat I mean by big, you know,\nis being more than 17 feet tall![f000]븁\u0000\nC'mon! If you have a big\nPokémon, show it to me!"
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_KnowWhatLoveHigh, 0, 0
     MsgWaitAdvance
-    FlagSet 334
+    FlagSet EVENT_FLAG_0x014e
     VMJump L_0676
 
 L_066A:
@@ -656,7 +656,7 @@ L_08B0:
     ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_BigThanksShowingBig, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2767
+    FlagSet EVENT_FLAG_DAILY_0x0acf
     VMJump L_0917
 
 L_0909:

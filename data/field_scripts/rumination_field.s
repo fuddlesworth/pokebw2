@@ -12,7 +12,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 331
+    VMStackPushFlag EVENT_FLAG_0x014b
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_003B
@@ -31,7 +31,7 @@ L_003B:
     ParentActorMsg MSGFILE_SCRIPT, RuminationField_Text_IveHeardItsCalled, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 331
+    FlagSet EVENT_FLAG_0x014b
 
 L_0061:
     FinishAllEvents

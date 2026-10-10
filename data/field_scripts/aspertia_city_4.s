@@ -9,34 +9,34 @@
     WorkSetConst 0x8020, 0
 
 Script_1:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 7
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0045
-    FlagSet 803
+    FlagSet EVENT_FLAG_0x0323
     VMJump L_0049
 
 L_0045:
-    FlagReset 803
+    FlagReset EVENT_FLAG_0x0323
 
 L_0049:
-    VMStackPushFlag 965
+    VMStackPushFlag EVENT_FLAG_0x03c5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0083
-    VMStackPushFlag 483
+    VMStackPushFlag EVENT_FLAG_0x01e3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 490
+    VMStackPushFlag EVENT_FLAG_0x01ea
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0083
-    FlagReset 965
+    FlagReset EVENT_FLAG_0x03c5
 
 L_0083:
     VMHalt
@@ -44,8 +44,8 @@ L_0083:
 Script_2:
     ActorsPauseAll
     WordSetPlayerName 0
-    RecordGet 71, 0x400f
-    VMStackPush 0x40a1
+    RecordGet 71, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BD
@@ -58,10 +58,10 @@ Script_2:
     VMJump L_01E1
 
 L_00BD:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40a1
+    VMStackPush EVENT_WORK_0x40a1
     VMStackPushConst 8
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -76,10 +76,10 @@ L_00BD:
     VMJump L_01E1
 
 L_0100:
-    VMStackPush 0x40a7
+    VMStackPush EVENT_WORK_0x40a7
     VMStackPushConst 1
     VMStackCmp CMP_GE
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 2
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
@@ -94,18 +94,18 @@ L_0100:
     VMJump L_01E1
 
 L_0143:
-    VMStackPush 0x4124
+    VMStackPush EVENT_WORK_0x4124
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C7
     VMCall L_01E7
-    VMStackPushFlag 483
+    VMStackPushFlag EVENT_FLAG_0x01e3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 490
+    VMStackPushFlag EVENT_FLAG_0x01ea
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 965
+    VMStackPushFlag EVENT_FLAG_0x03c5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -126,7 +126,7 @@ L_01A9:
     ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_KnowWhatBigBrother, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 490
+    FlagSet EVENT_FLAG_0x01ea
 
 L_01C1:
     VMJump L_01E1

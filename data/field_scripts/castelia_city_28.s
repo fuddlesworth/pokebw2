@@ -12,7 +12,7 @@
     WorkSetConst 0x8021, 0
 
 Script_2:
-    VMStackPush 0x411a
+    VMStackPush EVENT_WORK_0x411a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004B
@@ -29,7 +29,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x411a
+    VMStackPush EVENT_WORK_0x411a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CD
@@ -103,7 +103,7 @@ L_0172:
     VMCall L_036F
 
 L_0188:
-    WorkSetConst 0x411a, 1
+    WorkSetConst EVENT_WORK_0x411a, 1
     VMJump L_01C7
 
 L_0194:
@@ -218,7 +218,7 @@ L_030C:
     VMCall L_036F
 
 L_0322:
-    WorkSetConst 0x411a, 1
+    WorkSetConst EVENT_WORK_0x411a, 1
     VMJump L_0369
 
 L_032E:

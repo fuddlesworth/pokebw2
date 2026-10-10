@@ -28,7 +28,7 @@ Script_1:
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 219
+    VMStackPushFlag EVENT_FLAG_0x00db
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -104,12 +104,12 @@ L_019B:
 
 L_01D6:
     VMCall L_0335
-    FlagSet 219
-    VMStackPushFlag 2557
+    FlagSet EVENT_FLAG_0x00db
+    VMStackPushFlag EVENT_FLAG_0x09fd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F9
-    WorkSetConst 0x400a, 1
+    WorkSetConst EVENT_WORK_0x400a, 1
 
 L_01F9:
     // "When you came through the door,\nI remembered the melody![f000]븁\u0000\nAnd the Pokémon that had forgotten how\nto dance began to step lightly once more![f000]븁\u0000\nYou are the inspiration.\nYou are a mysterious child..."
@@ -128,7 +128,7 @@ L_0213:
 
 L_0219:
     WorkSetConst 0x8024, 0
-    VMStackPushFlag 219
+    VMStackPushFlag EVENT_FLAG_0x00db
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_023E
@@ -168,12 +168,12 @@ L_0284:
 
 L_02A7:
     VMCall L_0335
-    FlagSet 219
-    VMStackPushFlag 2557
+    FlagSet EVENT_FLAG_0x00db
+    VMStackPushFlag EVENT_FLAG_0x09fd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02CA
-    WorkSetConst 0x400a, 1
+    WorkSetConst EVENT_WORK_0x400a, 1
 
 L_02CA:
     VMStackPush 0x8010
@@ -364,7 +364,7 @@ Script_4:
 
 Script_5:
     ActorsPauseAll
-    VMStackPushFlag 219
+    VMStackPushFlag EVENT_FLAG_0x00db
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0563
@@ -377,7 +377,7 @@ Script_5:
     VMJump L_05D5
 
 L_0563:
-    VMStackPushFlag 2557
+    VMStackPushFlag EVENT_FLAG_0x09fd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05C1
@@ -393,8 +393,8 @@ L_0563:
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
-    FlagSet 2557
-    WorkSetConst 0x400a, 2
+    FlagSet EVENT_FLAG_0x09fd
+    WorkSetConst EVENT_WORK_0x400a, 2
     // "I'm going to have fun gathering Berries\nwith the people living in the countryside[f000]븀\u0000\nand the Pokémon I've met here in[f000]븀\u0000\nCastelia City![f000]븁\u0000\nOf course, I'll be humming\nMeloetta's tune while I gather them!"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ImGoingHaveFun, 4, 0, 0
     LastKeyWait
@@ -462,14 +462,14 @@ L_0640:
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
-    FlagSet 2557
+    FlagSet EVENT_FLAG_0x09fd
     // "I'm going to have fun gathering Berries\nwith the people living in the countryside[f000]븀\u0000\nand the Pokémon I've met here in[f000]븀\u0000\nCastelia City![f000]븁\u0000\nOf course, I'll be humming\nMeloetta's tune while I gather them!"
     ActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ImGoingHaveFun, 4, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 4, 2, 8, 0, 8, 0
     ActorCmdWait
-    WorkSetConst 0x400a, 2
+    WorkSetConst EVENT_WORK_0x400a, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

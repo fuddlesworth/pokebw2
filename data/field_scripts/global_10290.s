@@ -23,7 +23,7 @@ Script_1:
 
 Script_2:
     ActorsPauseAll
-    WorkSetConst 0x4085, 1
+    WorkSetConst EVENT_WORK_0x4085, 1
     VMCall L_0560
     VMCall L_004E
     FinishAllEvents
@@ -31,11 +31,11 @@ Script_2:
     VMHalt
 
 L_004E:
-    VMStackPushFlag 123
+    VMStackPushFlag EVENT_FLAG_0x007b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0083
-    FlagSet 123
+    FlagSet EVENT_FLAG_0x007b
     // "...So! You![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, Global10290_Text_SoYou, 0, 0, 0
     // "You are a fantastic Pokémon Trainer![f000]븁\u0000\nWill you participate in the great\nexperiment of the century?[f000]븁\u0000\nYou need two DS systems to use\nPoké Transfer![f000]븁\u0000\nWe will conduct the experiment with\nanother DS. Is that OK?"
@@ -192,9 +192,9 @@ L_0276:
     ActorMsg MSGFILE_SCRIPT, Global10290_Text_OkOkComeHere, 0, 0, 0
     ActorMsgClose
     VMCall L_0460
-    WorkSetConst 0x408d, 1
+    WorkSetConst EVENT_WORK_0x408d, 1
     PalParkCmd_CallMbParent
-    WorkSetConst 0x408d, 0
+    WorkSetConst EVENT_WORK_0x408d, 0
     VMCall L_04CA
     PalParkCmd_GetInfo 0, 0x8024
     VMStackPush 0x8024
@@ -267,7 +267,7 @@ L_039D:
 
 L_03AB:
     WorkSetConst 0x8026, 0
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 900
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_03D0
@@ -275,7 +275,7 @@ L_03AB:
     VMJump L_0452
 
 L_03D0:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 800
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_03EF
@@ -283,7 +283,7 @@ L_03D0:
     VMJump L_0452
 
 L_03EF:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 700
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_040E
@@ -291,7 +291,7 @@ L_03EF:
     VMJump L_0452
 
 L_040E:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 550
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_042D
@@ -299,7 +299,7 @@ L_040E:
     VMJump L_0452
 
 L_042D:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 400
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_044C
@@ -695,6 +695,6 @@ Movement_08F4:
 
 Script_6:
     VMCall L_04EE
-    WorkSetConst 0x408d, 0
+    WorkSetConst EVENT_WORK_0x408d, 0
     RTEndGlobal
     VMHalt

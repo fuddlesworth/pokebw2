@@ -13,13 +13,13 @@ L_000A:
     VMJumpIf CMP_STACK, L_0045
     ObjInitWarpGPos 3, 65288, 0, 248
     ObjInitWarpGPos 2, 65288, 0, 232
-    FlagSet 1039
+    FlagSet EVENT_FLAG_0x040f
     VMJump L_005D
 
 L_0045:
     ObjInitWarpGPos 0, 65288, 0, 248
     ObjInitWarpGPos 1, 65288, 0, 232
-    FlagSet 1040
+    FlagSet EVENT_FLAG_0x0410
 
 L_005D:
     VMReturn

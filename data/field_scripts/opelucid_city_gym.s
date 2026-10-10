@@ -25,20 +25,20 @@ Script_1:
     Cmd_02A4
     WorkSetConst 0x8023, 0
     TrainerFlagGet TRAINER_VETERAN_LUCIUS, 0x8023
-    VMStackPush 0x40cf
+    VMStackPush EVENT_WORK_0x40cf
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007D
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_0083
 
 L_007D:
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
 
 L_0083:
-    WorkSetConst 0x4001, 0
-    WorkSetConst 0x4002, 0
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     WorkSetConst 0x8023, 0
     VMHalt
 
@@ -127,11 +127,11 @@ Script_6:
     ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TrainersFarStrongerThan, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    VMStackPush 0x40cf
+    VMStackPush EVENT_WORK_0x40cf
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C8
-    WorkSetConst 0x40cf, 1
+    WorkSetConst EVENT_WORK_0x40cf, 1
 
 L_01C8:
     VMJump L_01DC
@@ -177,11 +177,11 @@ L_0248:
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
-    VMStackPush 0x40d1
+    VMStackPush EVENT_WORK_0x40d1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0275
-    WorkSetConst 0x40d1, 1
+    WorkSetConst EVENT_WORK_0x40d1, 1
 
 L_0275:
     // "You are strong enough to challenge\nMayor Drayden![f000]븁\u0000\nYou have the power to unleash the\nfull force of your deep desire to win!"
@@ -234,11 +234,11 @@ L_0309:
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
-    VMStackPush 0x40d1
+    VMStackPush EVENT_WORK_0x40d1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0336
-    WorkSetConst 0x40d1, 1
+    WorkSetConst EVENT_WORK_0x40d1, 1
 
 L_0336:
     // "A battle between you and Mayor\nDrayden must be stirring![f000]븁\u0000\nYou must desire victory\nmore than anything! Now, go!"
@@ -278,11 +278,11 @@ Script_10:
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
-    VMStackPush 0x40d0
+    VMStackPush EVENT_WORK_0x40d0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03C4
-    WorkSetConst 0x40d0, 1
+    WorkSetConst EVENT_WORK_0x40d0, 1
 
 L_03C4:
     // "The Trainers that wait above\nhave different fighting styles.[f000]븁\u0000\nThe one on the right fights\nonly Triple Battles.[f000]븁\u0000\nThe one on the left fights\nonly Rotation Battles.[f000]븁\u0000\nChoose the style of battle\nyou're better at![f000]븁\u0000\nRemember, they won't even battle you\nif you don't have three or more[f000]븀\u0000\nPokémon with you!"
@@ -319,11 +319,11 @@ Script_9:
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
-    VMStackPush 0x40d0
+    VMStackPush EVENT_WORK_0x40d0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_044C
-    WorkSetConst 0x40d0, 1
+    WorkSetConst EVENT_WORK_0x40d0, 1
 
 L_044C:
     // "As for the Trainers above me...[f000]븁\u0000\nThe one on the right fights\nonly Triple Battles.[f000]븁\u0000\nThe one on the left fights\nonly Rotation Battles.[f000]븁\u0000\nChoose the style of battle\nthat fits you better![f000]븁\u0000\nRemember, they won't even battle you\nif you don't have three or more[f000]븀\u0000\nPokémon with you!"
@@ -386,8 +386,8 @@ L_04BF:
     ActorCmdWait
 
 L_052F:
-    FlagSet 114
-    WorkSetConst 0x4145, 1
+    FlagSet EVENT_FLAG_0x0072
+    WorkSetConst EVENT_WORK_0x4145, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -533,8 +533,8 @@ L_06B7:
     TrainerFlagSet TRAINER_VETERAN_DENAE
     TrainerFlagSet TRAINER_VETERAN_RHONA
     TrainerFlagSet TRAINER_VETERAN_JERRY
-    FlagSet 2420
-    WorkSetConst 0x40d6, 1
+    FlagSet EVENT_FLAG_0x0974
+    WorkSetConst EVENT_WORK_0x40d6, 1
     HollowRivalCmd_0262 1, 24
     VMJump L_0748
 
@@ -552,12 +552,12 @@ L_0748:
 
 Script_13:
     ActorsPauseAll
-    VMStackPush 0x40cf
+    VMStackPush EVENT_WORK_0x40cf
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0775
     Cmd_02A7 0
-    WorkSetConst 0x40cf, 2
+    WorkSetConst EVENT_WORK_0x40cf, 2
     Cmd_02A6
 
 L_0775:

@@ -13,24 +13,24 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0037
-    WorkSetConst 0x400a, 555
+    WorkSetConst EVENT_WORK_0x400a, 555
 
 L_0037:
     VMHalt
 
 Script_2:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0058
     ActorSetGPos 0, 15, 22, 7, 1
 
 L_0058:
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0073
@@ -40,7 +40,7 @@ L_0073:
     VMHalt
 
 Script_3:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0096
@@ -52,7 +52,7 @@ L_0096:
     ActorSetGPos 0, 15, 22, 7, 1
 
 L_00A2:
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BD
@@ -65,15 +65,15 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_025C
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F1
-    VMStackPushFlag 489
+    VMStackPushFlag EVENT_FLAG_0x01e9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0114
@@ -88,8 +88,8 @@ L_0114:
     MsgWinCloseAll
 
 L_0122:
-    FlagSet 2409
-    WorkSetConst 0x400a, 555
+    FlagSet EVENT_FLAG_0x0969
+    WorkSetConst EVENT_WORK_0x400a, 555
     WorkSetConst 0x8020, 0
     GameGetDifficulty 0x8020
     VMStackPush 0x8020
@@ -116,16 +116,16 @@ L_0184:
     CallTrainerLose
 
 L_0186:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -146,16 +146,16 @@ L_01E7:
     VMJump L_0256
 
 L_01F1:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -178,15 +178,15 @@ L_0256:
     VMJump L_03B1
 
 L_025C:
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_034C
     // "I thank you deeply for the chance for\nanother round of combat against you.[f000]븁\u0000\nIn myself, I seek to develop\nthe strength of a fighter.[f000]븁\u0000\nAnd shatter any weakness in myself![f000]븁\u0000\nPrevailing with the force of\nmy convictions![f000]븁\u0000\nVictory, decisive victory, is my intention!\nChallenger, here I come![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_ThankDeeplyChanceAnother, 0, 1, 0
     MsgWinCloseAll
-    FlagSet 2409
-    WorkSetConst 0x400a, 555
+    FlagSet EVENT_FLAG_0x0969
+    WorkSetConst EVENT_WORK_0x400a, 555
     WorkSetConst 0x8021, 0
     GameGetDifficulty 0x8021
     VMStackPush 0x8021
@@ -213,16 +213,16 @@ L_02DF:
     CallTrainerLose
 
 L_02E1:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -243,16 +243,16 @@ L_0342:
     VMJump L_03B1
 
 L_034C:
-    VMStackPushFlag 2407
+    VMStackPushFlag EVENT_FLAG_0x0967
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2408
+    VMStackPushFlag EVENT_FLAG_0x0968
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2409
+    VMStackPushFlag EVENT_FLAG_0x0969
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2410
+    VMStackPushFlag EVENT_FLAG_0x096a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -285,7 +285,7 @@ Script_5:
     Plugin3_Cmd1014 0
     SEPlay SEQ_SE_SW_RENBU_02
     VMSleep 20
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -307,7 +307,7 @@ Script_6:
     Plugin3_Cmd1015
     SEPlay SEQ_SE_SW_RENBU_05
     VMSleep 5
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

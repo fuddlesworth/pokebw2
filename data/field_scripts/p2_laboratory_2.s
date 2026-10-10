@@ -9,8 +9,8 @@
     ScriptEntriesEnd
 
 Script_3:
-    FlagReset 656
-    VMStackPush 0x408f
+    FlagReset EVENT_FLAG_0x0290
+    VMStackPush EVENT_WORK_0x408f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0066
@@ -20,11 +20,11 @@ Script_3:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005C
-    WorkSetConst 0x408f, 1
+    WorkSetConst EVENT_WORK_0x408f, 1
     VMJump L_0060
 
 L_005C:
-    FlagSet 656
+    FlagSet EVENT_FLAG_0x0290
 
 L_0060:
     WorkSetConst 0x8020, 0
@@ -33,7 +33,7 @@ L_0066:
     VMHalt
 
 Script_5:
-    VMStackPush 0x408f
+    VMStackPush EVENT_WORK_0x408f
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0087
@@ -44,7 +44,7 @@ L_0087:
 
 Script_4:
     ActorsPauseAll
-    WorkSetConst 0x408f, 2
+    WorkSetConst EVENT_WORK_0x408f, 2
     VMCall L_012A
     // "Battle the Scientist?"
     SystemMsg P2Laboratory2_Text_BattleScientist, 0
@@ -59,7 +59,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x408f, 2
+    WorkCmpConst EVENT_WORK_0x408f, 2
     VMJumpIf CMP_EQ, L_00CA
     VMJump L_00FB
 
@@ -78,7 +78,7 @@ L_00EF:
     VMJump L_0124
 
 L_00FB:
-    WorkCmpConst 0x408f, 3
+    WorkCmpConst EVENT_WORK_0x408f, 3
     VMJumpIf CMP_EQ, L_010E
     VMJump L_0124
 
@@ -206,7 +206,7 @@ L_0297:
     VMStackPop 0x8000
     ActorCmdExec 0, Movement_03E8
     ActorCmdWait
-    WorkSetConst 0x408f, 3
+    WorkSetConst EVENT_WORK_0x408f, 3
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8022, 0
     WorkSetConst 0x8021, 0

@@ -13,8 +13,8 @@
 
 Script_1:
     ActorsPauseAll
-    DebugPrint 0x4188
-    WorkCmpConst 0x4188, 2
+    DebugPrint EVENT_WORK_0x4188
+    WorkCmpConst EVENT_WORK_0x4188, 2
     VMJumpIf CMP_EQ, L_0049
     VMJump L_0096
 
@@ -40,7 +40,7 @@ L_008E:
     VMJump L_0155
 
 L_0096:
-    WorkCmpConst 0x4188, 1
+    WorkCmpConst EVENT_WORK_0x4188, 1
     VMJumpIf CMP_EQ, L_00A9
     VMJump L_014F
 
@@ -70,7 +70,7 @@ L_00EB:
 
 L_00FE:
     WorkSetConst 0x8026, 2
-    FlagSet 484
+    FlagSet EVENT_FLAG_0x01e4
     VMJump L_0133
 
 L_010E:
@@ -89,7 +89,7 @@ L_0133:
     WorkSetConst 0x8023, 369
     WorkAdd 0x8023, 0x8026
     VMCall L_0161
-    FlagSet 2773
+    FlagSet EVENT_FLAG_DAILY_0x0ad5
     VMJump L_0155
 
 L_014F:
@@ -130,7 +130,7 @@ L_0161:
     ActorCmdWait
     WorkSetConst 0x8028, 9
     WorkAdd 0x8028, 0x8026
-    VMStackPush 0x4188
+    VMStackPush EVENT_WORK_0x4188
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0216
@@ -154,7 +154,7 @@ L_0216:
     BGMChangeMap
     WorkSetConst 0x8029, 0
     HollowRivalCmd_0266 0x8029
-    VMStackPush 0x4188
+    VMStackPush EVENT_WORK_0x4188
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_028E
@@ -189,7 +189,7 @@ L_028E:
     LastKeyWait
     ActorMsgClose
     ActorWalkRoute 0x8011, 45, 15, 0, 8, 1
-    VMStackPush 0x4188
+    VMStackPush EVENT_WORK_0x4188
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0314
@@ -205,15 +205,15 @@ L_0314:
     VMStackPush 0x8026
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_03D2
-    VMStackPushFlag 417
+    VMStackPushFlag EVENT_FLAG_0x01a1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 491
+    VMStackPushFlag EVENT_FLAG_0x01eb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -222,10 +222,10 @@ L_0314:
     VMJump L_03D2
 
 L_037A:
-    VMStackPushFlag 417
+    VMStackPushFlag EVENT_FLAG_0x01a1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 491
+    VMStackPushFlag EVENT_FLAG_0x01eb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -234,10 +234,10 @@ L_037A:
     VMJump L_03D2
 
 L_03A9:
-    VMStackPushFlag 417
+    VMStackPushFlag EVENT_FLAG_0x01a1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 491
+    VMStackPushFlag EVENT_FLAG_0x01eb
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -248,7 +248,7 @@ L_03D2:
     VMStackPush 0x8026
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -259,12 +259,12 @@ L_03FB:
     VMStackPush 0x8026
     VMStackPushConst 3
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0456
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_043D
@@ -272,7 +272,7 @@ L_03FB:
     VMJump L_0456
 
 L_043D:
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0456
@@ -310,7 +310,7 @@ L_04BC:
     WorkSetConst 0x802b, 0
 
 L_04C2:
-    WorkAdd 0x802b, 0x4189
+    WorkAdd 0x802b, EVENT_WORK_0x4189
     FieldTradeGetSpecies 0x802c, 0x802b
     WordSetPokeSpecies 1, 0x802c
     WordSetPlayerName 0
@@ -385,12 +385,12 @@ L_05BD:
     ActorMsgClose
     PokePartyGetParam 0x802e, 0x802d, 5
     FieldTradeStart 0x802b, 0x802d
-    WorkAdd 0x4189, 1
-    VMStackPush 0x4189
+    WorkAdd EVENT_WORK_0x4189, 1
+    VMStackPush EVENT_WORK_0x4189
     VMStackPushConst 12
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0617
-    WorkSetConst 0x4189, 0
+    WorkSetConst EVENT_WORK_0x4189, 0
 
 L_0617:
     HollowRivalCmd_02C3 0x802e
@@ -452,7 +452,7 @@ L_0701:
     DebugPrint 0x8021
     DebugPrint 0x8024
     DebugPrint 0x8025
-    FlagGet 2740, 0x8036
+    FlagGet EVENT_FLAG_DAILY_0x0ab4, 0x8036
     VMStackPush 0x8036
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -596,7 +596,7 @@ L_08BE:
     LastKeyWait
     ActorMsgClose
     Cmd_02C5 21
-    FlagSet 2740
+    FlagSet EVENT_FLAG_DAILY_0x0ab4
     TrainerFlagGet 0x8022, 0x8036
     VMStackPush 0x8036
     VMStackPushConst 1
@@ -669,19 +669,19 @@ L_0AAB:
     VMStackPush 0x803b
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 369
+    VMStackPushFlag EVENT_FLAG_0x0171
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 370
+    VMStackPushFlag EVENT_FLAG_0x0172
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 371
+    VMStackPushFlag EVENT_FLAG_0x0173
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 372
+    VMStackPushFlag EVENT_FLAG_0x0174
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 373
+    VMStackPushFlag EVENT_FLAG_0x0175
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND

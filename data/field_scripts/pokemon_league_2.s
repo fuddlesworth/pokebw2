@@ -8,7 +8,7 @@
     WorkSetConst 0x8020, 0
 
 Script_1:
-    FlagGet 367, 0x8010
+    FlagGet EVENT_FLAG_0x016f, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -21,7 +21,7 @@ L_003B:
 
 Script_2:
     ActorsPauseAll
-    FlagReset 367
+    FlagReset EVENT_FLAG_0x016f
     BMSetVisible 8, 31, 50, 1
     BMCreateHandleByGPos 0x8020, 8, 31, 50
     BMHndAudioVisualAnmPlay 0x8020, 0
@@ -38,10 +38,10 @@ Script_3:
     WorkSetConst 0x8022, 0
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 0
-    FlagGet 2407, 0x8021
-    FlagGet 2408, 0x8022
-    FlagGet 2409, 0x8023
-    FlagGet 2410, 0x8024
+    FlagGet EVENT_FLAG_0x0967, 0x8021
+    FlagGet EVENT_FLAG_0x0968, 0x8022
+    FlagGet EVENT_FLAG_0x0969, 0x8023
+    FlagGet EVENT_FLAG_0x096a, 0x8024
     VMStackPush 0x8021
     VMStackPushConst 1
     VMStackCmp CMP_EQ

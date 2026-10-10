@@ -38,7 +38,7 @@ Script_10:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AE
     ActorSetGPos 0, 9, 0, 84, 1
-    VMStackPushFlag 1001
+    VMStackPushFlag EVENT_FLAG_0x03e9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AE
@@ -137,7 +137,7 @@ L_0190:
     TrainerFlagSet TRAINER_WORKER_TAVARIUS
     TrainerFlagSet TRAINER_WORKER_NOEL
     TrainerFlagSet TRAINER_WORKER_FRIEDRICH
-    FlagSet 2418
+    FlagSet EVENT_FLAG_0x0972
     ActorCmdExec 7, Movement_073C
     ActorCmdWait
     VMSleep 30
@@ -203,7 +203,7 @@ L_02B1:
     VMJump L_0322
 
 L_02E9:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0312
@@ -233,7 +233,7 @@ Script_3:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03B4
-    VMStackPushFlag 111
+    VMStackPushFlag EVENT_FLAG_0x006f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03A0
@@ -251,7 +251,7 @@ Script_3:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_GymLeaderClayUses, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 111
+    FlagSet EVENT_FLAG_0x006f
     VMJump L_03AE
 
 L_03A0:
@@ -538,7 +538,7 @@ Movement_0744:
 
 Script_11:
     ActorsPauseAll
-    VMStackPush 0x40b9
+    VMStackPush EVENT_WORK_0x40b9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07C4
@@ -567,7 +567,7 @@ L_07AA:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_ClaysAwesomeHeCan, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40b9, 1
+    WorkSetConst EVENT_WORK_0x40b9, 1
     VMJump L_07D8
 
 L_07C4:
@@ -653,7 +653,7 @@ L_08CF:
     ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_ClaysAwesomeHeCan, 6, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40b9, 1
+    WorkSetConst EVENT_WORK_0x40b9, 1
     WorkSetConst 0x8024, 0
     WorkSetConst 0x8023, 0
     FinishAllEvents
@@ -662,7 +662,7 @@ L_08CF:
 
 Script_12:
     ActorsPauseAll
-    VMStackPush 0x40ba
+    VMStackPush EVENT_WORK_0x40ba
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_096F
@@ -691,7 +691,7 @@ L_0955:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HaveUsedElevatorIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40ba, 1
+    WorkSetConst EVENT_WORK_0x40ba, 1
     VMJump L_0983
 
 L_096F:
@@ -750,7 +750,7 @@ L_0A17:
     ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HaveUsedElevatorIf, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40ba, 1
+    WorkSetConst EVENT_WORK_0x40ba, 1
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8025, 0
     FinishAllEvents
@@ -759,7 +759,7 @@ L_0A17:
 
 Script_13:
     ActorsPauseAll
-    VMStackPush 0x40bb
+    VMStackPush EVENT_WORK_0x40bb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AB7
@@ -788,7 +788,7 @@ L_0A9D:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_SomethingDistantButClose, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bb, 1
+    WorkSetConst EVENT_WORK_0x40bb, 1
     VMJump L_0ACB
 
 L_0AB7:
@@ -831,14 +831,14 @@ L_0B22:
     ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_SomethingDistantButClose, 2, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bb, 1
+    WorkSetConst EVENT_WORK_0x40bb, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_14:
     ActorsPauseAll
-    VMStackPush 0x40bc
+    VMStackPush EVENT_WORK_0x40bc
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BB6
@@ -867,7 +867,7 @@ L_0B9C:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DriftveilCitysPokemonGym, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bc, 1
+    WorkSetConst EVENT_WORK_0x40bc, 1
     VMJump L_0BCA
 
 L_0BB6:
@@ -910,14 +910,14 @@ L_0C21:
     ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DriftveilCitysPokemonGym, 3, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bc, 1
+    WorkSetConst EVENT_WORK_0x40bc, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_15:
     ActorsPauseAll
-    VMStackPush 0x40bd
+    VMStackPush EVENT_WORK_0x40bd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0CB5
@@ -946,7 +946,7 @@ L_0C9B:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DrilburExcadrillKnowMove, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bd, 1
+    WorkSetConst EVENT_WORK_0x40bd, 1
     VMJump L_0CC9
 
 L_0CB5:
@@ -989,14 +989,14 @@ L_0D20:
     ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DrilburExcadrillKnowMove, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bd, 1
+    WorkSetConst EVENT_WORK_0x40bd, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_16:
     ActorsPauseAll
-    VMStackPush 0x40be
+    VMStackPush EVENT_WORK_0x40be
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0DB4
@@ -1025,7 +1025,7 @@ L_0D9A:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_IsntDarknessGreatIts, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40be, 1
+    WorkSetConst EVENT_WORK_0x40be, 1
     VMJump L_0DC8
 
 L_0DB4:
@@ -1068,14 +1068,14 @@ L_0E1F:
     ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_IsntDarknessGreatIts, 5, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40be, 1
+    WorkSetConst EVENT_WORK_0x40be, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_17:
     ActorsPauseAll
-    VMStackPush 0x40bf
+    VMStackPush EVENT_WORK_0x40bf
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0EB3
@@ -1104,7 +1104,7 @@ L_0E99:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_LifeFilledPitfallsIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bf, 1
+    WorkSetConst EVENT_WORK_0x40bf, 1
     VMJump L_0EC7
 
 L_0EB3:
@@ -1147,7 +1147,7 @@ L_0F1E:
     ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_LifeFilledPitfallsIf, 8, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40bf, 1
+    WorkSetConst EVENT_WORK_0x40bf, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

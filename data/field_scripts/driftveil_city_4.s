@@ -34,7 +34,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 321
+    VMStackPushFlag EVENT_FLAG_0x0141
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B0
@@ -56,15 +56,15 @@ L_0096:
     ActorMsgClose
 
 L_00A6:
-    FlagSet 321
+    FlagSet EVENT_FLAG_0x0141
     VMJump L_0142
 
 L_00B0:
-    VMStackPushFlag 2759
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012D
-    VMStackPushFlag 2758
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0121
@@ -95,7 +95,7 @@ L_0127:
     VMJump L_0142
 
 L_012D:
-    WordSetMoveName 0, 0x4183
+    WordSetMoveName 0, EVENT_WORK_0x4183
     // "I wonder what [f000]ć\u0001\u0000 looks like\nwhen it is actually used.[f000]븁\u0000\nI am sure you can use it skillfully!"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity4_Text_WonderWhatLooksLike, 0, 0, 0
     LastKeyWait
@@ -107,17 +107,17 @@ L_0142:
     VMHalt
 
 L_0148:
-    VMStackPushFlag 2758
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FD
-    ItemGetRandomOwnedTMMove 0x4183
-    FlagSet 2758
-    WordSetMoveName 0, 0x4183
+    ItemGetRandomOwnedTMMove EVENT_WORK_0x4183
+    FlagSet EVENT_FLAG_DAILY_0x0ac6
+    WordSetMoveName 0, EVENT_WORK_0x4183
     WorkSetConst 0x8022, 0
-    PokePartyHasMoveAny 0x8022, 0x4183
+    PokePartyHasMoveAny 0x8022, EVENT_WORK_0x4183
     DebugPrint 0x8022
-    DebugPrint 0x4183
+    DebugPrint EVENT_WORK_0x4183
     VMStackPush 0x8022
     VMStackPushConst 6
     VMStackCmp CMP_EQ
@@ -140,23 +140,23 @@ L_01A5:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WordSetMoveName 0, 0x4183
+    WordSetMoveName 0, EVENT_WORK_0x4183
     // "I wonder what [f000]ć\u0001\u0000 looks like\nwhen it is actually used.[f000]븁\u0000\nI am sure you can use it skillfully!"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity4_Text_WonderWhatLooksLike, 0, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 2759
+    FlagSet EVENT_FLAG_DAILY_0x0ac7
 
 L_01F1:
     WorkSetConst 0x8022, 0
     VMJump L_0291
 
 L_01FD:
-    WordSetMoveName 0, 0x4183
+    WordSetMoveName 0, EVENT_WORK_0x4183
     WorkSetConst 0x8023, 0
-    PokePartyHasMoveAny 0x8023, 0x4183
+    PokePartyHasMoveAny 0x8023, EVENT_WORK_0x4183
     DebugPrint 0x8023
-    DebugPrint 0x4183
+    DebugPrint EVENT_WORK_0x4183
     VMStackPush 0x8023
     VMStackPushConst 6
     VMStackCmp CMP_EQ
@@ -179,12 +179,12 @@ L_023F:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    WordSetMoveName 0, 0x4183
+    WordSetMoveName 0, EVENT_WORK_0x4183
     // "I wonder what [f000]ć\u0001\u0000 looks like\nwhen it is actually used.[f000]븁\u0000\nI am sure you can use it skillfully!"
     ActorMsg MSGFILE_SCRIPT, DriftveilCity4_Text_WonderWhatLooksLike, 0, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 2759
+    FlagSet EVENT_FLAG_DAILY_0x0ac7
 
 L_028B:
     WorkSetConst 0x8023, 0

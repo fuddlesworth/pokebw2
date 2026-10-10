@@ -78,7 +78,7 @@ L_00F6:
     ActorMsg MSGFILE_SCRIPT, VirbankGate_Text_KnowWhatTheySay, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4151, 1
+    WorkSetConst EVENT_WORK_0x4151, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

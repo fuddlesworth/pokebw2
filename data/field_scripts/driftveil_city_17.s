@@ -130,7 +130,7 @@ Script_1:
     FadeOutBlack
     FadeWait
     ActorCmdWait
-    FlagSet 697
+    FlagSet EVENT_FLAG_0x02b9
     EvCameraWait
     RTReserveScript 17
     EvCameraRebind

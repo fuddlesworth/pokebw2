@@ -132,7 +132,7 @@
     "triggers": [
         {
             "script": 2,
-            "var": "0x4137",
+            "var": "EVENT_WORK_0x4137",
             "value": 0,
             "type": 0,
             "grid": {

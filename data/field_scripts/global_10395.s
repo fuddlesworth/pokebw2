@@ -35,7 +35,7 @@ L_0059:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009F
-    FlagSet 614
+    FlagSet EVENT_FLAG_0x0266
     Cmd_01DB 6, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -48,7 +48,7 @@ L_0099:
     VMJump L_00DE
 
 L_009F:
-    FlagReset 614
+    FlagReset EVENT_FLAG_0x0266
     Cmd_01DB 6, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

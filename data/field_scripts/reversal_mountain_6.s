@@ -4,7 +4,7 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_001F

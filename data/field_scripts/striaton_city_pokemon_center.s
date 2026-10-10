@@ -74,7 +74,7 @@ Script_5:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0154
-    VMStackPushFlag 381
+    VMStackPushFlag EVENT_FLAG_0x017d
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0106
@@ -103,7 +103,7 @@ L_0106:
     ActorMsg MSGFILE_SCRIPT, StriatonCityPokemonCenter_Text_SinceEarlyTimesSinnoh, 8, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 381
+    FlagSet EVENT_FLAG_0x017d
 
 L_014E:
     VMJump L_0168

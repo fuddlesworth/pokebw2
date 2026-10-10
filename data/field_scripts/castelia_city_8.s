@@ -46,15 +46,15 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 446
+    VMStackPushFlag EVENT_FLAG_0x01be
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B2
-    VMStackPushFlag 248
+    VMStackPushFlag EVENT_FLAG_0x00f8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009E
-    FlagSet 248
+    FlagSet EVENT_FLAG_0x00f8
     // "It is small compared to a luxury liner.[f000]븁\u0000\nBut the size of a ship doesn't change the\nfeeling of adventure when you're out on[f000]븀\u0000\nthe open sea.[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity8_Text_SmallComparedLuxuryLiner, 0, 0
 
@@ -79,7 +79,7 @@ L_00C0:
     MsgWinCloseAll
     VMCall L_0129
     RTReserveScript 11
-    FlagSet 446
+    FlagSet EVENT_FLAG_0x01be
     FadeOutBlackQ
     FadeWait
     FieldClose

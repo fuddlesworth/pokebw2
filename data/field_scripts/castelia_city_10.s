@@ -40,11 +40,11 @@ Script_7:
     VMJump L_00D5
 
 L_00C9:
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMJump L_00DB
 
 L_00D5:
-    WorkSetConst 0x4001, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
 
 L_00DB:
     WorkSetConst 0x8021, 0
@@ -52,7 +52,7 @@ L_00DB:
     VMHalt
 
 Script_6:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0106
@@ -62,7 +62,7 @@ L_0106:
     VMHalt
 
 Script_8:
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0125
@@ -115,9 +115,9 @@ Script_2:
     ActorDelete 1
     SEWait
     HollowRivalCmd_0263 1
-    WorkSetConst 0x40ae, 2
-    WorkSetConst 0x40e2, 1
-    FlagSet 748
+    WorkSetConst EVENT_WORK_0x40ae, 2
+    WorkSetConst EVENT_WORK_0x40e2, 1
+    FlagSet EVENT_FLAG_0x02ec
     HollowRivalCmd_0262 1, 0
     FinishAllEvents
     ActorsUnpauseAll
@@ -201,7 +201,7 @@ Script_3:
     ActorsPauseAll
     FadeInBlackQ
     FadeWait
-    VMStackPush 0x40ae
+    VMStackPush EVENT_WORK_0x40ae
     VMStackPushConst 1
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_030B
@@ -227,7 +227,7 @@ Script_4:
 
 Script_5:
     ActorsPauseAll
-    VMStackPushFlag 2478
+    VMStackPushFlag EVENT_FLAG_0x09ae
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035C

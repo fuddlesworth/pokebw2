@@ -20,7 +20,7 @@ Script_1:
     BSubwayCmd_Tool 21, 0, 0, 32803
     ActorSetGPos 0, 17, 0, 14, 3
     ActorSetGPos 1, 76, 0, 14, 2
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008B
@@ -38,7 +38,7 @@ Script_2:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F0
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00F0
@@ -51,11 +51,11 @@ Script_2:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_00F0
-    WorkSetConst 0x4179, 3
+    WorkSetConst EVENT_WORK_0x4179, 3
 
 L_00F0:
     BSubwayCmd_Tool 18, 0x8023, 1, 0
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0117
@@ -68,7 +68,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01AB
@@ -241,8 +241,8 @@ L_031F:
     VMReturn
 
 L_0391:
-    WorkSetConst 0x4176, 4
-    WorkSetConst 0x4178, 1
+    WorkSetConst EVENT_WORK_0x4176, 4
+    WorkSetConst EVENT_WORK_0x4178, 1
     BSubwayCmd_Tool 322, 0, 0, 0
     BSubwayCmd_Tool 316, 0, 0, 0
     // "Saving...\nDon't turn off the power."
@@ -251,9 +251,9 @@ L_0391:
     MsgWinCloseAll
     RecordAdd 48, 1
     VMCall L_157C
-    FlagSet 604
-    FlagSet 605
-    WorkSetConst 0x4179, 0
+    FlagSet EVENT_FLAG_0x025c
+    FlagSet EVENT_FLAG_0x025d
+    WorkSetConst EVENT_WORK_0x4179, 0
     MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
     WorkSetConst 0x8024, 0
     VMReturn
@@ -288,8 +288,8 @@ L_0438:
     VMReturn
 
 L_0475:
-    WorkSetConst 0x4000, 0
-    BSubwayCmd_Tool 405, 2, 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
+    BSubwayCmd_Tool 405, 2, EVENT_WORK_0x4000, 0
     BSubwayCmd_Tool 415, 0, 0, 32802
     VMStackPush 0x8022
     VMStackPushConst 1
@@ -313,7 +313,7 @@ L_04B2:
     VMReturn
 
 L_04E9:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0508
@@ -593,8 +593,8 @@ L_091F:
 L_094C:
     // "Saving...\nDon't turn off the power."
     SystemMsg BattleSubway2_Text_SavingDontTurnOff, 2
-    WorkSetConst 0x4176, 4
-    WorkSetConst 0x4178, 1
+    WorkSetConst EVENT_WORK_0x4176, 4
+    WorkSetConst EVENT_WORK_0x4178, 1
     BSubwayCmd_Tool 21, 0, 0, 32803
     BSubwayCmd_Tool 322, 0, 0, 0
     BSubwayCmd_Tool 319, 0, 0, 0
@@ -647,20 +647,20 @@ L_0A17:
 L_0A48:
     RecordAdd 48, 1
     VMCall L_157C
-    FlagSet 604
-    FlagSet 605
-    WorkSetConst 0x4179, 0
+    FlagSet EVENT_FLAG_0x025c
+    FlagSet EVENT_FLAG_0x025d
+    WorkSetConst EVENT_WORK_0x4179, 0
     MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8025, 0
     VMReturn
 
 L_0A7C:
-    WorkSetConst 0x4176, 2
+    WorkSetConst EVENT_WORK_0x4176, 2
     VMCall L_157C
-    FlagSet 604
-    FlagSet 605
-    WorkSetConst 0x4179, 0
+    FlagSet EVENT_FLAG_0x025c
+    FlagSet EVENT_FLAG_0x025d
+    WorkSetConst EVENT_WORK_0x4179, 0
     VMCall L_1776
     VMReturn
 
@@ -688,11 +688,11 @@ L_0AC9:
     VMCall L_0B20
 
 L_0AF8:
-    WorkSetConst 0x4176, 2
+    WorkSetConst EVENT_WORK_0x4176, 2
     VMCall L_157C
-    FlagSet 604
-    FlagSet 605
-    WorkSetConst 0x4179, 0
+    FlagSet EVENT_FLAG_0x025c
+    FlagSet EVENT_FLAG_0x025d
+    WorkSetConst EVENT_WORK_0x4179, 0
     VMCall L_1776
     WorkSetConst 0x8027, 0
     VMReturn
@@ -711,8 +711,8 @@ L_0B20:
     VMJump L_0B7D
 
 L_0B5B:
-    WorkSetConst 0x4000, 1
-    BSubwayCmd_Tool 405, 2, 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 1
+    BSubwayCmd_Tool 405, 2, EVENT_WORK_0x4000, 0
     BSubwayCmd_Tool 406, 2, 0, 16384
     VMCall L_1718
     MsgWinCloseAll
@@ -858,7 +858,7 @@ Script_6:
     WorkSetConst 0x802e, 1
     BSubwayCmd_Tool 310, 0, 0, 32803
     BSubwayCmd_Tool 312, 0, 0, 32815
-    WorkSetConst 0x4179, 2
+    WorkSetConst EVENT_WORK_0x4179, 2
     WorkCmpConst 0x8023, 0
     VMJumpIf CMP_EQ, L_0DEF
     VMJump L_0E0E
@@ -868,7 +868,7 @@ L_0DEF:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E08
-    WorkSetConst 0x4179, 3
+    WorkSetConst EVENT_WORK_0x4179, 3
 
 L_0E08:
     VMJump L_0ECD
@@ -883,7 +883,7 @@ L_0E21:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E3A
-    WorkSetConst 0x4179, 3
+    WorkSetConst EVENT_WORK_0x4179, 3
 
 L_0E3A:
     VMJump L_0ECD
@@ -898,7 +898,7 @@ L_0E53:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E6C
-    WorkSetConst 0x4179, 3
+    WorkSetConst EVENT_WORK_0x4179, 3
 
 L_0E6C:
     VMJump L_0ECD
@@ -914,7 +914,7 @@ L_0E85:
     VMStackPushConst 21
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0EA8
-    WorkSetConst 0x4179, 3
+    WorkSetConst EVENT_WORK_0x4179, 3
 
 L_0EA8:
     VMJump L_0ECD
@@ -925,7 +925,7 @@ L_0EAE:
     VMJump L_0ECD
 
 L_0EC1:
-    WorkSetConst 0x4179, 3
+    WorkSetConst EVENT_WORK_0x4179, 3
     VMJump L_0ECD
 
 L_0ECD:
@@ -970,7 +970,7 @@ L_0ECD:
     VMJump L_0FA1
 
 L_0F97:
-    FlagReset 733
+    FlagReset EVENT_FLAG_0x02dd
     VMJump L_0FF8
 
 L_0FA1:
@@ -979,7 +979,7 @@ L_0FA1:
     VMJump L_0FBE
 
 L_0FB4:
-    FlagReset 734
+    FlagReset EVENT_FLAG_0x02de
     VMJump L_0FF8
 
 L_0FBE:
@@ -988,7 +988,7 @@ L_0FBE:
     VMJump L_0FDB
 
 L_0FD1:
-    FlagReset 735
+    FlagReset EVENT_FLAG_0x02df
     VMJump L_0FF8
 
 L_0FDB:
@@ -997,7 +997,7 @@ L_0FDB:
     VMJump L_0FF8
 
 L_0FEE:
-    FlagReset 735
+    FlagReset EVENT_FLAG_0x02df
     VMJump L_0FF8
 
 L_0FF8:
@@ -1142,18 +1142,18 @@ L_1248:
     BSubwayCmd_Tool 100, 1, 0, 0
 
 L_1252:
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_126F
     BSubwayCmd_Tool 349, 0, 0, 0
 
 L_126F:
-    VMStackPush 0x4165
+    VMStackPush EVENT_WORK_0x4165
     VMStackPushConst 10
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_1288
-    WorkAdd 0x4165, 1
+    WorkAdd EVENT_WORK_0x4165, 1
 
 L_1288:
     BSubwayCmd_Tool 321, 0, 0, 0
@@ -1172,7 +1172,7 @@ L_12B5:
     SystemMsg BattleSubway2_Text_SavingRecordDataDont, 2
     SaveDataWrite 0x8010
     InfoMsgClose
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12E6
@@ -1267,7 +1267,7 @@ L_1410:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_147D
     BSubwayCmd_Tool 31, 0, 0, 16416
-    FlagReset 604
+    FlagReset EVENT_FLAG_0x025c
     ActorAdd 2
     BSubwayCmd_Tool 23, 2, 0, 0
     BSubwayCmd_Tool 13, 2, 1, 0
@@ -1300,7 +1300,7 @@ L_14BE:
     BSubwayCmd_Tool 24, 2, 0, 0
 
 L_14E7:
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_153E
@@ -1372,7 +1372,7 @@ L_15D7:
 
 L_1620:
     FadeEx 3, 16, 0, 2
-    VMStackPush 0x4179
+    VMStackPush EVENT_WORK_0x4179
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1661

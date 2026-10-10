@@ -155,7 +155,7 @@
     "triggers": [
         {
             "script": 8,
-            "var": "0x4001",
+            "var": "EVENT_WORK_0x4001",
             "value": 1,
             "type": 0,
             "grid": {

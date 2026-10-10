@@ -28,35 +28,35 @@ Script_1:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007D
-    FlagReset 627
+    FlagReset EVENT_FLAG_0x0273
 
 L_007D:
     VMStackPush 0x8021
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0094
-    FlagReset 628
+    FlagReset EVENT_FLAG_0x0274
 
 L_0094:
     VMStackPush 0x8022
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AB
-    FlagReset 629
+    FlagReset EVENT_FLAG_0x0275
 
 L_00AB:
     VMStackPush 0x8023
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C2
-    FlagReset 630
+    FlagReset EVENT_FLAG_0x0276
 
 L_00C2:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D9
-    FlagReset 631
+    FlagReset EVENT_FLAG_0x0277
 
 L_00D9:
     VMHalt

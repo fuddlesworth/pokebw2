@@ -66,7 +66,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x0463",
+            "flag": "EVENT_FLAG_0x0463",
             "script": 7023,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],

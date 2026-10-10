@@ -41,7 +41,7 @@ Script_3:
     // "Trainer Tips!\n[f000]븁\u0000\nChange your type on the Trainer Card\nto change how other players see you.[f000]븁\u0000\nYou'll look different to others in the\nUnion Room and the Tag Log![f000]븁\u0000\nMatch it with your introduction or\ncharacter to show your individuality!"
     MsgPlaceSign Route13_Text_TrainerTipsChangeType, 0
     MsgPlaceSignClose
-    FlagSet 2674
+    FlagSet EVENT_FLAG_0x0a72
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -73,7 +73,7 @@ L_00CB:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x40db, 1
+    WorkSetConst EVENT_WORK_0x40db, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -88,7 +88,7 @@ Script_5:
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
-    VMStackPushFlag 302
+    VMStackPushFlag EVENT_FLAG_0x012e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013E
@@ -110,8 +110,8 @@ L_0158:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0183
-    FlagSet 802
-    FlagSet 302
+    FlagSet EVENT_FLAG_0x0322
+    FlagSet EVENT_FLAG_0x012e
     ActorDelete 21
     CallWildBattleEnd
     VMJump L_0185
@@ -126,7 +126,7 @@ L_0185:
     VMJump L_01A6
 
 L_019C:
-    FlagSet 303
+    FlagSet EVENT_FLAG_0x012f
     VMJump L_01CC
 
 L_01A6:
@@ -140,7 +140,7 @@ L_01C6:
     VMJump L_01CC
 
 L_01CC:
-    VMStackPushFlag 303
+    VMStackPushFlag EVENT_FLAG_0x012f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E9
@@ -158,7 +158,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 218
+    VMStackPushFlag EVENT_FLAG_0x00da
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0238
@@ -170,12 +170,12 @@ Script_6:
     ParentActorMsg MSGFILE_SCRIPT, Route13_Text_IllHuntingTreasureHere, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2738
-    FlagSet 218
+    FlagSet EVENT_FLAG_DAILY_0x0ab2
+    FlagSet EVENT_FLAG_0x00da
     VMJump L_0283
 
 L_0238:
-    VMStackPushFlag 2738
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ab2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0275
@@ -187,7 +187,7 @@ L_0238:
     ParentActorMsg MSGFILE_SCRIPT, Route13_Text_IllHuntingTreasureHere, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2738
+    FlagSet EVENT_FLAG_DAILY_0x0ab2
     VMJump L_0283
 
 L_0275:

@@ -15,7 +15,7 @@ Script_1:
     ActorCmdExec 251, Movement_01DC
     ActorCmdWait
     WordSetPlayerName 0
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005E
@@ -67,14 +67,14 @@ L_00F1:
     ActorMsgClose
     BMPlayHOFMachineSeq
     EvCameraEnd
-    MedalIsObtained 0x400e, 253
-    PokePartyGetCount 0x400f, 0
-    PokePartyGetCount 0x400d, 3
-    WorkSub 0x400f, 0x400d
-    VMStackPush 0x400e
+    MedalIsObtained EVENT_WORK_0x400e, 253
+    PokePartyGetCount EVENT_WORK_0x400f, 0
+    PokePartyGetCount EVENT_WORK_0x400d, 3
+    WorkSub EVENT_WORK_0x400f, EVENT_WORK_0x400d
+    VMStackPush EVENT_WORK_0x400e
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -103,7 +103,7 @@ L_0158:
     MedalDiscover 102
     MedalDiscover 136
     MedalDiscover 124
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CD

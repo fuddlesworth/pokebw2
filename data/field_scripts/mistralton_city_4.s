@@ -20,7 +20,7 @@ Script_1:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 455
+    VMStackPushFlag EVENT_FLAG_0x01c7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005B
@@ -35,14 +35,14 @@ Script_2:
 L_005B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 449
+    VMStackPushFlag EVENT_FLAG_0x01c1
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008A
     // "I'm very fussy about\nPokémon moves.[f000]븁\u0000\nI'm extra fussy about\nTechnical Machines! Yes, TMs![f000]븁\u0000\nHow many TMs have you collected\nso far?"
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCity4_Text_ImVeryFussyAbout, 0, 0
     MsgWaitAdvance
-    FlagSet 449
+    FlagSet EVENT_FLAG_0x01c1
     VMJump L_0096
 
 L_008A:
@@ -59,65 +59,65 @@ L_0096:
     VMStackPush 0x8020
     VMStackPushConst 10
     VMStackCmp CMP_GE
-    VMStackPushFlag 450
+    VMStackPushFlag EVENT_FLAG_0x01c2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00E0
     VMCall L_02CD
-    FlagSet 450
+    FlagSet EVENT_FLAG_0x01c2
     VMJump L_02C7
 
 L_00E0:
     VMStackPush 0x8020
     VMStackPushConst 20
     VMStackCmp CMP_GE
-    VMStackPushFlag 451
+    VMStackPushFlag EVENT_FLAG_0x01c3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0113
     VMCall L_02CD
-    FlagSet 451
+    FlagSet EVENT_FLAG_0x01c3
     VMJump L_02C7
 
 L_0113:
     VMStackPush 0x8020
     VMStackPushConst 35
     VMStackCmp CMP_GE
-    VMStackPushFlag 452
+    VMStackPushFlag EVENT_FLAG_0x01c4
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0146
     VMCall L_02CD
-    FlagSet 452
+    FlagSet EVENT_FLAG_0x01c4
     VMJump L_02C7
 
 L_0146:
     VMStackPush 0x8020
     VMStackPushConst 50
     VMStackCmp CMP_GE
-    VMStackPushFlag 453
+    VMStackPushFlag EVENT_FLAG_0x01c5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0179
     VMCall L_02CD
-    FlagSet 453
+    FlagSet EVENT_FLAG_0x01c5
     VMJump L_02C7
 
 L_0179:
     VMStackPush 0x8020
     VMStackPushConst 70
     VMStackCmp CMP_GE
-    VMStackPushFlag 454
+    VMStackPushFlag EVENT_FLAG_0x01c6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01AC
     VMCall L_02CD
-    FlagSet 454
+    FlagSet EVENT_FLAG_0x01c6
     VMJump L_02C7
 
 L_01AC:
@@ -140,7 +140,7 @@ L_01AC:
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCity4_Text_WowGreatJobYouve, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 455
+    FlagSet EVENT_FLAG_0x01c7
     VMJump L_02C7
 
 L_0208:

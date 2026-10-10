@@ -215,7 +215,7 @@
             "model": 20,
             "movement": 3,
             "type": 0,
-            "flag": "0x035b",
+            "flag": "EVENT_FLAG_0x035b",
             "script": 4,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],

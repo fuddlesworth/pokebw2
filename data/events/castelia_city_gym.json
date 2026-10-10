@@ -138,7 +138,7 @@
     "triggers": [
         {
             "script": 6,
-            "var": "0x409d",
+            "var": "EVENT_WORK_0x409d",
             "value": 0,
             "type": 0,
             "grid": {

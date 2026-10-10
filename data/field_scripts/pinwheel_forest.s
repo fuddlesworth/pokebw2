@@ -34,7 +34,7 @@ Script_4:
 Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 2760
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ac8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006F
@@ -100,7 +100,7 @@ L_00AE:
     RTCallGlobal 2806
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 2760
+    FlagSet EVENT_FLAG_DAILY_0x0ac8
     WorkSetConst 0x8022, 6
     WorkSetConst 0x8025, 1
     VMJump L_0176

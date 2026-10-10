@@ -144,22 +144,22 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 1,
                     "script": 1
                 },
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 2,
                     "script": 3
                 },
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 3,
                     "script": 4
                 },
                 {
-                    "var": "0x4176",
+                    "var": "EVENT_WORK_0x4176",
                     "value": 4,
                     "script": 2
                 }

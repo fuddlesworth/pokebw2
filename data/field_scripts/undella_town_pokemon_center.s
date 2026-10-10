@@ -13,7 +13,7 @@
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 295
+    VMStackPushFlag EVENT_FLAG_0x0127
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AE
@@ -47,7 +47,7 @@ L_0074:
     ActorMsg MSGFILE_SCRIPT, UndellaTownPokemonCenter_Text_IsntPrismScaleBeautiful, 8, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 295
+    FlagSet EVENT_FLAG_0x0127
     VMJump L_00C2
 
 L_00AE:
@@ -120,7 +120,7 @@ Script_2:
 
 Script_6:
     ActorsPauseAll
-    VMStackPushFlag 2459
+    VMStackPushFlag EVENT_FLAG_0x099b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E9
@@ -154,7 +154,7 @@ L_01B8:
     ParentActorMsg MSGFILE_SCRIPT, UndellaTownPokemonCenter_Text_HehHehWhatsImportant, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2459
+    FlagSet EVENT_FLAG_0x099b
     VMJump L_01FD
 
 L_01E9:

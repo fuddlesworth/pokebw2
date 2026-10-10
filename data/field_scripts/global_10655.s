@@ -46,48 +46,48 @@ L_0099:
     VMReturn
 
 Script_6:
-    FlagSet 871
-    FlagSet 872
-    FlagSet 873
+    FlagSet EVENT_FLAG_0x0367
+    FlagSet EVENT_FLAG_0x0368
+    FlagSet EVENT_FLAG_0x0369
     VMHalt
 
 L_00A9:
-    VMStackPushFlag 2441
+    VMStackPushFlag EVENT_FLAG_0x0989
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BE
     VMReturn
 
 L_00BE:
-    Plugin6_Cmd1023 0x4020, 0x4021, 0x4022
-    VMStackPush 0x4020
+    Plugin6_Cmd1023 EVENT_WORK_0x4020, EVENT_WORK_0x4021, EVENT_WORK_0x4022
+    VMStackPush EVENT_WORK_0x4020
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00E1
-    FlagReset 871
+    FlagReset EVENT_FLAG_0x0367
     ActorAdd 9
 
 L_00E1:
-    VMStackPush 0x4021
+    VMStackPush EVENT_WORK_0x4021
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00FC
-    FlagReset 872
+    FlagReset EVENT_FLAG_0x0368
     ActorAdd 10
 
 L_00FC:
-    VMStackPush 0x4022
+    VMStackPush EVENT_WORK_0x4022
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0117
-    FlagReset 873
+    FlagReset EVENT_FLAG_0x0369
     ActorAdd 11
 
 L_0117:
     VMReturn
 
 L_0119:
-    VMStackPushFlag 2441
+    VMStackPushFlag EVENT_FLAG_0x0989
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012E
@@ -107,7 +107,7 @@ L_0147:
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0164
-    WorkSetConst 0x4135, 1
+    WorkSetConst EVENT_WORK_0x4135, 1
 
 L_0164:
     VMReturn
@@ -116,7 +116,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4135
+    VMStackPush EVENT_WORK_0x4135
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0197
@@ -140,7 +140,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D6

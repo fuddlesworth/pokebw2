@@ -24,7 +24,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0142
@@ -66,9 +66,9 @@ L_00F4:
     ActorCmdExec 255, Movement_0188
     ActorCmdWait
     ActorDelete 4
-    WorkSetConst 0x4108, 6
-    FlagSet 863
-    FlagReset 858
+    WorkSetConst EVENT_WORK_0x4108, 6
+    FlagSet EVENT_FLAG_0x035f
+    FlagReset EVENT_FLAG_0x035a
     VMJump L_0128
 
 L_011A:
@@ -90,7 +90,7 @@ L_013C:
     VMJump L_0163
 
 L_0142:
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 6
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0163
@@ -184,7 +184,7 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 389
+    VMStackPushFlag EVENT_FLAG_0x0185
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0316
@@ -235,7 +235,7 @@ L_02AB:
     ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_BlackSludgeFewPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 389
+    FlagSet EVENT_FLAG_0x0185
     VMJump L_0310
 
 L_0302:

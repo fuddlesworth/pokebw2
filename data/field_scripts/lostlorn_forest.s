@@ -83,7 +83,7 @@ L_0127:
     ActorCmdExec 251, Movement_0188
     ActorCmdWait
     ActorDelete 251
-    FlagSet 967
+    FlagSet EVENT_FLAG_0x03c7
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

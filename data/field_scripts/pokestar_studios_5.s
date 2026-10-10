@@ -16,7 +16,7 @@
     ScriptEntriesEnd
 
 Script_1:
-    VMStackPush 0x413c
+    VMStackPush EVENT_WORK_0x413c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0051
@@ -35,7 +35,7 @@ Script_2:
     ActorCmdExec 0, Movement_008C
     ActorCmdWait
     ActorSetGPos 0, 12, 0, 30, 2
-    WorkSetConst 0x413c, 2
+    WorkSetConst EVENT_WORK_0x413c, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

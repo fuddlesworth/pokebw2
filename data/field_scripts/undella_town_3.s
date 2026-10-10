@@ -50,7 +50,7 @@ L_00B4:
     LastKeyWait
     MsgWinCloseAll
     BGMChangeMap
-    WorkSetConst 0x4098, 2
+    WorkSetConst EVENT_WORK_0x4098, 2
 
 L_00CC:
     FinishAllEvents
@@ -89,7 +89,7 @@ L_00F4:
     VMJump L_0134
 
 L_012C:
-    WorkSetConst 0x4098, 2
+    WorkSetConst EVENT_WORK_0x4098, 2
     CallTrainerLose
 
 L_0134:
@@ -97,8 +97,8 @@ L_0134:
     ActorMsg MSGFILE_SCRIPT, UndellaTown3_Text_CynthiaBeyondExpectationWhat, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4098, 3
-    WorkSetConst 0x400f, 1
+    WorkSetConst EVENT_WORK_0x4098, 3
+    WorkSetConst EVENT_WORK_0x400f, 1
     VMReturn
 
 Script_2:
@@ -108,7 +108,7 @@ Script_2:
     WordSetPlayerName 0
     WorkSetConst 0x8021, 0
     RTCGetSeason 0x8021
-    VMStackPush 0x4098
+    VMStackPush EVENT_WORK_0x4098
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BF
@@ -132,10 +132,10 @@ L_01B9:
     VMJump L_044C
 
 L_01BF:
-    VMStackPush 0x4098
+    VMStackPush EVENT_WORK_0x4098
     VMStackPushConst 3
     VMStackCmp CMP_EQ
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -150,29 +150,29 @@ L_01F8:
     VMStackPush 0x8021
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2745
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ab9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_03BB
-    VMStackPush 0x4166
+    VMStackPush EVENT_WORK_0x4166
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2748
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abc
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0254
     // "Cynthia: How terrific to see you again![f000]븁\u0000\nI've got to tell you...\nMy Pokémon are excited to battle yours.[f000]븁\u0000\nWould you care to be my opponent?"
     ActorMsg MSGFILE_SCRIPT, UndellaTown3_Text_CynthiaHowTerrificSee, 1, 0, 0
-    FlagSet 2748
+    FlagSet EVENT_FLAG_DAILY_0x0abc
     VMJump L_02CE
 
 L_0254:
-    VMStackPush 0x4166
+    VMStackPush EVENT_WORK_0x4166
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2748
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -182,17 +182,17 @@ L_0254:
     VMJump L_02CE
 
 L_0289:
-    VMStackPush 0x4166
+    VMStackPush EVENT_WORK_0x4166
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2748
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0abc
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02C2
     // "Cynthia: To live their lives to the\nfullest, people and Pokémon need[f000]븀\u0000\nthe chance to throw themselves into[f000]븀\u0000\nbattle against the fiercest opposition.[f000]븁\u0000\nThat's why I want to battle you.\nHow about it?"
     ActorMsg MSGFILE_SCRIPT, UndellaTown3_Text_CynthiaLiveTheirLives, 1, 0, 0
-    FlagSet 2748
+    FlagSet EVENT_FLAG_DAILY_0x0abc
     VMJump L_02CE
 
 L_02C2:
@@ -205,7 +205,7 @@ L_02CE:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0380
-    VMStackPush 0x4166
+    VMStackPush EVENT_WORK_0x4166
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_030A
@@ -225,7 +225,7 @@ L_0316:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0343
-    FlagSet 2745
+    FlagSet EVENT_FLAG_DAILY_0x0ab9
     CallTrainerBattleEnd
     VMJump L_0345
 
@@ -233,7 +233,7 @@ L_0343:
     CallTrainerLose
 
 L_0345:
-    VMStackPush 0x4166
+    VMStackPush EVENT_WORK_0x4166
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_036A
@@ -251,7 +251,7 @@ L_0376:
     VMJump L_03B5
 
 L_0380:
-    VMStackPush 0x4166
+    VMStackPush EVENT_WORK_0x4166
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03A5
@@ -274,12 +274,12 @@ L_03BB:
     VMStackPush 0x8021
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2745
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ab9
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0419
-    VMStackPush 0x4166
+    VMStackPush EVENT_WORK_0x4166
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0403
@@ -302,7 +302,7 @@ L_0419:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_044C
     WorkSetConst 0x8020, 29
-    WorkAdd 0x8020, 0x4166
+    WorkAdd 0x8020, EVENT_WORK_0x4166
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ParentActorMsg MSGFILE_SCRIPT, 0x8020, 0, 0
@@ -318,7 +318,7 @@ L_044C:
 Script_3:
     ActorsPauseAll
     WorkSetConst 0x8020, 19
-    WorkAdd 0x8020, 0x4167
+    WorkAdd 0x8020, EVENT_WORK_0x4167
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ParentActorMsg MSGFILE_SCRIPT, 0x8020, 0, 0
@@ -331,7 +331,7 @@ Script_3:
 Script_4:
     ActorsPauseAll
     WorkSetConst 0x8020, 24
-    WorkAdd 0x8020, 0x4168
+    WorkAdd 0x8020, EVENT_WORK_0x4168
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ParentActorMsg MSGFILE_SCRIPT, 0x8020, 0, 0
@@ -344,7 +344,7 @@ Script_4:
 Script_5:
     ActorsPauseAll
     WorkSetConst 0x8020, 39
-    WorkAdd 0x8020, 0x416a
+    WorkAdd 0x8020, EVENT_WORK_0x416a
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ParentActorMsg MSGFILE_SCRIPT, 0x8020, 0, 0
@@ -357,7 +357,7 @@ Script_5:
 Script_6:
     ActorsPauseAll
     WorkSetConst 0x8020, 44
-    WorkAdd 0x8020, 0x416b
+    WorkAdd 0x8020, EVENT_WORK_0x416b
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ParentActorMsg MSGFILE_SCRIPT, 0x8020, 0, 0
@@ -370,7 +370,7 @@ Script_6:
 Script_7:
     ActorsPauseAll
     WorkSetConst 0x8020, 34
-    WorkAdd 0x8020, 0x416c
+    WorkAdd 0x8020, EVENT_WORK_0x416c
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ParentActorMsg MSGFILE_SCRIPT, 0x8020, 0, 0

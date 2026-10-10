@@ -11,11 +11,11 @@
     ScriptEntriesEnd
 
 Script_2:
-    FlagSet 496
+    FlagSet EVENT_FLAG_0x01f0
     VMHalt
 
 Script_3:
-    VMStackPush 0x409f
+    VMStackPush EVENT_WORK_0x409f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0049
@@ -43,10 +43,10 @@ Script_1:
     VMJump L_00F0
 
 L_007E:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40cb
+    VMStackPush EVENT_WORK_0x40cb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -58,7 +58,7 @@ L_007E:
     VMJump L_00F0
 
 L_00B7:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E0
@@ -148,7 +148,7 @@ L_01A2:
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_WonderWhatProfessorJuniper, 0, 0
     LastKeyWait
     ActorMsgClose
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0211
@@ -165,14 +165,14 @@ L_0217:
     TrainerFlagSet TRAINER_PILOT_EWING
     TrainerFlagSet TRAINER_PILOT_CHASE
     TrainerFlagSet TRAINER_PILOT_ELRON
-    FlagSet 2419
-    WorkSetConst 0x40c1, 1
-    WorkAdd 0x40c2, 1
+    FlagSet EVENT_FLAG_0x0973
+    WorkSetConst EVENT_WORK_0x40c1, 1
+    WorkAdd EVENT_WORK_0x40c2, 1
     VMReturn
 
 Script_5:
     ActorsPauseAll
-    VMStackPush 0x409f
+    VMStackPush EVENT_WORK_0x409f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0326
@@ -188,7 +188,7 @@ Script_5:
     VMSleep 30
     ActorCmdExec 255, Movement_0334
     ActorCmdWait
-    VMStackPushFlag 112
+    VMStackPushFlag EVENT_FLAG_0x0070
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02DD
@@ -202,7 +202,7 @@ Script_5:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 112
+    FlagSet EVENT_FLAG_0x0070
 
 L_02DD:
     ActorWalkRoute 5, 12, 46, 1, 8, 0
@@ -216,7 +216,7 @@ L_02DD:
     InfoMsg MistraltonCityGym_Text_GymWindTunnelWhen_2, 2
     MsgWinCloseAll
     VMCall L_036A
-    WorkSetConst 0x409f, 1
+    WorkSetConst EVENT_WORK_0x409f, 1
 
 L_0326:
     FinishAllEvents
@@ -294,7 +294,7 @@ Script_7:
     VMJump L_0420
 
 L_03F4:
-    VMStackPushFlag 2485
+    VMStackPushFlag EVENT_FLAG_0x09b5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0415

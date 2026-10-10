@@ -76,7 +76,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 388
+    VMStackPushFlag EVENT_FLAG_0x0184
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0101
@@ -96,7 +96,7 @@ Script_6:
     MsgWinCloseAll
 
 L_00F7:
-    FlagSet 388
+    FlagSet EVENT_FLAG_0x0184
     VMJump L_010F
 
 L_0101:
@@ -114,14 +114,14 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     WordSetPlayerName 0
-    VMStackPushFlag 387
+    VMStackPushFlag EVENT_FLAG_0x0183
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014B
     // "Cedric: Hey, [f000]Ā\u0001\u0000!\nAre you meeting lots of Pokémon?[f000]븁\u0000\nThere really are lots of Pokémon in the\nUnova region and the rest of the world![f000]븁\u0000\nI made the Habitat List\nso people would know that![f000]븁\u0000\nI'll bet you're here because...[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, NuvemaTownLab_Text_CedricHeyMeetingLots, 0, 0
     RTCallGlobal 10381
-    FlagSet 387
+    FlagSet EVENT_FLAG_0x0183
     VMJump L_0159
 
 L_014B:
@@ -130,7 +130,7 @@ L_014B:
     RTCallGlobal 10381
 
 L_0159:
-    VMStackPushFlag 2437
+    VMStackPushFlag EVENT_FLAG_0x0985
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B8
@@ -150,7 +150,7 @@ L_0159:
     ParentActorMsg MSGFILE_SCRIPT, NuvemaTownLab_Text_SuperRodCanEven, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2437
+    FlagSet EVENT_FLAG_0x0985
     MedalDiscover 23
 
 L_01B8:

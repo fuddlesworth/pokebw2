@@ -34,7 +34,7 @@
 Script_1:
     BSubwayCmd_Tool 0, 0, 0, 32800
     BSubwayCmd_Tool 18, 0x8020, 0, 0
-    WorkCmpConst 0x4176, 1
+    WorkCmpConst EVENT_WORK_0x4176, 1
     VMJumpIf CMP_EQ, L_009F
     VMJump L_01FE
 
@@ -106,7 +106,7 @@ L_01CA:
     VMJump L_01F2
 
 L_01DC:
-    WorkSetConst 0x4176, 4
+    WorkSetConst EVENT_WORK_0x4176, 4
     VMCall L_2F21
     BSubwayCmd_Tool 201, 3, 0, 0
 
@@ -117,12 +117,12 @@ L_01F8:
     VMJump L_0229
 
 L_01FE:
-    WorkCmpConst 0x4176, 4
+    WorkCmpConst EVENT_WORK_0x4176, 4
     VMJumpIf CMP_EQ, L_0211
     VMJump L_0229
 
 L_0211:
-    WorkSetConst 0x4176, 4
+    WorkSetConst EVENT_WORK_0x4176, 4
     VMCall L_2F21
     VMCall L_32B0
     VMJump L_0229
@@ -133,7 +133,7 @@ L_0229:
 Script_2:
     BSubwayCmd_Tool 0, 0, 0, 32800
     BSubwayCmd_Tool 18, 0x8020, 0, 0
-    WorkCmpConst 0x4176, 1
+    WorkCmpConst EVENT_WORK_0x4176, 1
     VMJumpIf CMP_EQ, L_0252
     VMJump L_0399
 
@@ -201,7 +201,7 @@ L_0365:
     VMJump L_038D
 
 L_0377:
-    WorkSetConst 0x4176, 4
+    WorkSetConst EVENT_WORK_0x4176, 4
     VMCall L_2F21
     BSubwayCmd_Tool 201, 3, 0, 0
 
@@ -212,12 +212,12 @@ L_0393:
     VMJump L_03C4
 
 L_0399:
-    WorkCmpConst 0x4176, 4
+    WorkCmpConst EVENT_WORK_0x4176, 4
     VMJumpIf CMP_EQ, L_03AC
     VMJump L_03C4
 
 L_03AC:
-    WorkSetConst 0x4176, 4
+    WorkSetConst EVENT_WORK_0x4176, 4
     VMCall L_2F21
     VMCall L_32B0
     VMJump L_03C4
@@ -1384,7 +1384,7 @@ L_15FA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1661
     MsgWinCloseAll
-    WorkSetConst 0x4176, 1
+    WorkSetConst EVENT_WORK_0x4176, 1
     BSubwayCmd_Tool 322, 0, 0, 0
     BSubwayCmd_Tool 306, 0, 0, 0
     Plugin1_Cmd1002
@@ -1426,7 +1426,7 @@ Script_5:
     VMStackPushConst 0
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_16FF
-    WorkSetConst 0x4176, 1
+    WorkSetConst EVENT_WORK_0x4176, 1
     FadeEx 3, 0, 16, 2
     FadeExWait
     GameCommDisconnect 0x8022
@@ -1565,7 +1565,7 @@ L_1919:
     WorkSetConst 0x802f, 0
     BSubwayCmd_Tool 0, 0, 0, 32800
     WorkSetConst 0x802e, 1
-    FlagGet 2400, 0x802f
+    FlagGet EVENT_FLAG_0x0960, 0x802f
     WorkCmpConst 0x8020, 0
     VMJumpIf CMP_EQ, L_194E
     VMJump L_195A
@@ -1960,29 +1960,29 @@ L_1ED3:
     VMReturn
 
 L_1EDD:
-    WorkSetConst 0x4176, 0
-    WorkSetConst 0x4178, 0
-    WorkSetConst 0x4179, 0
+    WorkSetConst EVENT_WORK_0x4176, 0
+    WorkSetConst EVENT_WORK_0x4178, 0
+    WorkSetConst EVENT_WORK_0x4179, 0
     BSubwayCmd_Tool 5, 0, 0, 0
-    FlagSet 613
-    FlagSet 604
-    FlagSet 605
+    FlagSet EVENT_FLAG_0x0265
+    FlagSet EVENT_FLAG_0x025c
+    FlagSet EVENT_FLAG_0x025d
     VMReturn
 
 L_1F07:
-    WorkSetConst 0x4176, 4
-    WorkSetConst 0x4178, 1
-    FlagSet 613
-    FlagSet 604
-    FlagSet 605
+    WorkSetConst EVENT_WORK_0x4176, 4
+    WorkSetConst EVENT_WORK_0x4178, 1
+    FlagSet EVENT_FLAG_0x0265
+    FlagSet EVENT_FLAG_0x025c
+    FlagSet EVENT_FLAG_0x025d
     VMReturn
 
 L_1F21:
-    WorkSetConst 0x4176, 4
-    WorkSetConst 0x4178, 2
-    FlagSet 613
-    FlagSet 604
-    FlagSet 605
+    WorkSetConst EVENT_WORK_0x4176, 4
+    WorkSetConst EVENT_WORK_0x4178, 2
+    FlagSet EVENT_FLAG_0x0265
+    FlagSet EVENT_FLAG_0x025c
+    FlagSet EVENT_FLAG_0x025d
     VMReturn
     .balign 4, 0
 
@@ -3063,7 +3063,7 @@ L_2EBA:
 L_2EE0:
     VMCall L_2E47
     WorkGet 0x8021, 0x8010
-    FlagReset 613
+    FlagReset EVENT_FLAG_0x0265
     BSubwayCmd_Tool 25, 0x8021, 0, 32802
     VMStackPush 0x8022
     VMStackPushConst 1
@@ -3079,7 +3079,7 @@ L_2F11:
 L_2F21:
     VMCall L_2E47
     WorkGet 0x8021, 0x8010
-    FlagSet 613
+    FlagSet EVENT_FLAG_0x0265
     BSubwayCmd_Tool 25, 0x8021, 0, 32802
     VMStackPush 0x8022
     VMStackPushConst 1
@@ -3498,7 +3498,7 @@ L_3528:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_3563
-    Cmd_0222 0x4162
+    Cmd_0222 EVENT_WORK_0x4162
     VMCall L_3571
     FadeOutBlackQ
     FadeWait

@@ -16,7 +16,7 @@ Script_1:
     VMHalt
 
 Script_2:
-    VMStackPushFlag 941
+    VMStackPushFlag EVENT_FLAG_0x03ad
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0051
@@ -27,7 +27,7 @@ L_0051:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0074
@@ -124,8 +124,8 @@ L_01B0:
     VMReturn
 
 L_01BC:
-    FlagReset 941
-    WorkSetConst 0x4113, 4
+    FlagReset EVENT_FLAG_0x03ad
+    WorkSetConst EVENT_WORK_0x4113, 4
     VMStackPush 0x8000
     VMStackPush 0x8001
     WorkSet 0x8000, 4

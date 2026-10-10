@@ -70,9 +70,14 @@ ID order (`ZONE_CASTELIA_CITY_12`). The code names a few itself, such as `ZONE_V
 leads out of (`ZONE_OVERRIDES` in `make_constants.py --zones`). A numbered zone is a placeholder: when its map shows
 what it is, rename it.
 
-The game has no names for its event flags and variables, so `flags.txt` (`EVENT_FLAG_*`) and `vars.txt`
-(`EVENT_WORK_*`) only hold the ones named so far, each with its value. Name one there when the code or a script shows
-what it does, then write the field scripts again (`field_script.py disasm`), so that they use the name.
+`flags.txt` names every event flag and `vars.txt` every event variable, in their ranges, which the event work code
+gives: the saved flags from 1, among them each trainer's from 0x5f0 (`EVENT_FLAG_TRAINER_LEADER_CHEREN`,
+`TrainerFlagGet`), the daily ones from 0xaa0 to 0xb03 (`EventWork_ResetDailyFlags`) and the hidden items' from 0xb04
+(`EVENT_FLAG_HIDDEN_ITEM_<n>`), then 64 temporary flags from 0x4000; and the variables from 0x4000 to 0x41ae. The game
+names none of them, so the rest are placeholders by value, as pokeplatinum's are (`EVENT_FLAG_0x0404`,
+`EVENT_WORK_0x4150`): rename one with `rename_constant.py` when the code or a script shows what it does, and write the
+field scripts and events again so that they use the name. `make_constants.py --flags` writes the lists again, keeping
+the names given.
 
 The members of an archive that the code loads by number get a list of their own, `narc_<archive>.txt`, as pret's
 `.naix` names: the archive's name, then what the member is, then the kind of file, from its magic, such as

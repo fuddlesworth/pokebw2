@@ -317,7 +317,7 @@
             "model": 67,
             "movement": 0,
             "type": 0,
-            "flag": "0x02cf",
+            "flag": "EVENT_FLAG_0x02cf",
             "script": 7,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -336,7 +336,7 @@
             "model": 98,
             "movement": 0,
             "type": 0,
-            "flag": "0x02c2",
+            "flag": "EVENT_FLAG_0x02c2",
             "script": 9,
             "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
@@ -355,7 +355,7 @@
             "model": 293,
             "movement": 0,
             "type": 0,
-            "flag": "0x02c3",
+            "flag": "EVENT_FLAG_0x02c3",
             "script": 2000,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -374,7 +374,7 @@
             "model": 191,
             "movement": 0,
             "type": 0,
-            "flag": "0x02cb",
+            "flag": "EVENT_FLAG_0x02cb",
             "script": 8,
             "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
@@ -393,7 +393,7 @@
             "model": 291,
             "movement": 0,
             "type": 0,
-            "flag": "0x02cc",
+            "flag": "EVENT_FLAG_0x02cc",
             "script": 10,
             "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
@@ -412,7 +412,7 @@
             "model": 227,
             "movement": 0,
             "type": 0,
-            "flag": "0x02cd",
+            "flag": "EVENT_FLAG_0x02cd",
             "script": 2000,
             "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
@@ -431,7 +431,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x0492",
+            "flag": "EVENT_FLAG_0x0492",
             "script": 7070,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -678,7 +678,7 @@
             "model": 67,
             "movement": 0,
             "type": 0,
-            "flag": "0x02ce",
+            "flag": "EVENT_FLAG_0x02ce",
             "script": 28,
             "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
@@ -894,7 +894,7 @@
     "triggers": [
         {
             "script": 11,
-            "var": "0x40c3",
+            "var": "EVENT_WORK_0x40c3",
             "value": 0,
             "type": 0,
             "grid": {
@@ -908,7 +908,7 @@
         },
         {
             "script": 10860,
-            "var": "0x4127",
+            "var": "EVENT_WORK_0x4127",
             "value": 1,
             "type": 0,
             "grid": {
@@ -922,7 +922,7 @@
         },
         {
             "script": 29,
-            "var": "0x40c3",
+            "var": "EVENT_WORK_0x40c3",
             "value": 1,
             "type": 0,
             "grid": {
@@ -936,7 +936,7 @@
         },
         {
             "script": 30,
-            "var": "0x40c4",
+            "var": "EVENT_WORK_0x40c4",
             "value": 0,
             "type": 0,
             "grid": {
@@ -962,7 +962,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x40c3",
+                    "var": "EVENT_WORK_0x40c3",
                     "value": 4,
                     "script": 14
                 }

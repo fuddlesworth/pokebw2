@@ -41,11 +41,11 @@
     WorkSetConst 0x8029, 0
 
 Script_1:
-    FlagSet 980
-    FlagSet 981
-    FlagSet 982
-    FlagSet 983
-    FlagSet 984
+    FlagSet EVENT_FLAG_0x03d4
+    FlagSet EVENT_FLAG_0x03d5
+    FlagSet EVENT_FLAG_0x03d6
+    FlagSet EVENT_FLAG_0x03d7
+    FlagSet EVENT_FLAG_0x03d8
     VMHalt
 
 Script_24:
@@ -81,9 +81,9 @@ Script_2:
     WorkSetConst 0x8022, 5
     WorkSetConst 0x8025, 6
     WorkSetConst 0x8026, 7
-    WorkGet 0x8029, 0x4005
+    WorkGet 0x8029, EVENT_WORK_0x4005
     VMCall L_0686
-    WorkGet 0x4005, 0x8029
+    WorkGet EVENT_WORK_0x4005, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -127,9 +127,9 @@ Script_5:
     WorkSetConst 0x8022, 23
     WorkSetConst 0x8025, 24
     WorkSetConst 0x8026, 25
-    WorkGet 0x8029, 0x4006
+    WorkGet 0x8029, EVENT_WORK_0x4006
     VMCall L_0686
-    WorkGet 0x4006, 0x8029
+    WorkGet EVENT_WORK_0x4006, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -143,9 +143,9 @@ Script_6:
     WorkSetConst 0x8022, 29
     WorkSetConst 0x8025, 30
     WorkSetConst 0x8026, 31
-    WorkGet 0x8029, 0x4007
+    WorkGet 0x8029, EVENT_WORK_0x4007
     VMCall L_0686
-    WorkGet 0x4007, 0x8029
+    WorkGet EVENT_WORK_0x4007, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -174,9 +174,9 @@ Script_8:
     WorkSetConst 0x8022, 41
     WorkSetConst 0x8025, 42
     WorkSetConst 0x8026, 43
-    WorkGet 0x8029, 0x4008
+    WorkGet 0x8029, EVENT_WORK_0x4008
     VMCall L_0686
-    WorkGet 0x4008, 0x8029
+    WorkGet EVENT_WORK_0x4008, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -190,9 +190,9 @@ Script_9:
     WorkSetConst 0x8022, 47
     WorkSetConst 0x8025, 48
     WorkSetConst 0x8026, 49
-    WorkGet 0x8029, 0x4009
+    WorkGet 0x8029, EVENT_WORK_0x4009
     VMCall L_0686
-    WorkGet 0x4009, 0x8029
+    WorkGet EVENT_WORK_0x4009, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -206,9 +206,9 @@ Script_10:
     WorkSetConst 0x8022, 53
     WorkSetConst 0x8025, 54
     WorkSetConst 0x8026, 55
-    WorkGet 0x8029, 0x400a
+    WorkGet 0x8029, EVENT_WORK_0x400a
     VMCall L_0686
-    WorkGet 0x400a, 0x8029
+    WorkGet EVENT_WORK_0x400a, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -252,9 +252,9 @@ Script_13:
     WorkSetConst 0x8022, 71
     WorkSetConst 0x8025, 72
     WorkSetConst 0x8026, 73
-    WorkGet 0x8029, 0x400b
+    WorkGet 0x8029, EVENT_WORK_0x400b
     VMCall L_0686
-    WorkGet 0x400b, 0x8029
+    WorkGet EVENT_WORK_0x400b, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -283,9 +283,9 @@ Script_15:
     WorkSetConst 0x8022, 83
     WorkSetConst 0x8025, 84
     WorkSetConst 0x8026, 85
-    WorkGet 0x8029, 0x400c
+    WorkGet 0x8029, EVENT_WORK_0x400c
     VMCall L_0686
-    WorkGet 0x400c, 0x8029
+    WorkGet EVENT_WORK_0x400c, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -329,9 +329,9 @@ Script_18:
     WorkSetConst 0x8022, 101
     WorkSetConst 0x8025, 102
     WorkSetConst 0x8026, 103
-    WorkGet 0x8029, 0x400d
+    WorkGet 0x8029, EVENT_WORK_0x400d
     VMCall L_0686
-    WorkGet 0x400d, 0x8029
+    WorkGet EVENT_WORK_0x400d, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -390,9 +390,9 @@ Script_22:
     WorkSetConst 0x8022, 125
     WorkSetConst 0x8025, 126
     WorkSetConst 0x8026, 127
-    WorkGet 0x8029, 0x400e
+    WorkGet 0x8029, EVENT_WORK_0x400e
     VMCall L_0686
-    WorkGet 0x400e, 0x8029
+    WorkGet EVENT_WORK_0x400e, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -406,9 +406,9 @@ Script_23:
     WorkSetConst 0x8022, 131
     WorkSetConst 0x8025, 132
     WorkSetConst 0x8026, 133
-    WorkGet 0x8029, 0x400f
+    WorkGet 0x8029, EVENT_WORK_0x400f
     VMCall L_0686
-    WorkGet 0x400f, 0x8029
+    WorkGet EVENT_WORK_0x400f, 0x8029
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -419,14 +419,14 @@ L_0686:
     WordSetPlayerName 0
     ActorMsg MSGFILE_SCRIPT, 0x8020, 0x8011, 2, 0
     MsgWaitAdvance
-    Plugin10_Cmd1024 0x4002, 0x8021, 0x8027, 0x8028
+    Plugin10_Cmd1024 EVENT_WORK_0x4002, 0x8021, 0x8027, 0x8028
     VMStackPush 0x8029
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8027
     VMStackPushConst 0
     VMStackCmp CMP_NE
-    VMStackPush 0x4003
+    VMStackPush EVENT_WORK_0x4003
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -444,7 +444,7 @@ L_06EC:
     VMReturn
 
 L_06F2:
-    Plugin10_Cmd1010 0x4002, 0x8010
+    Plugin10_Cmd1010 EVENT_WORK_0x4002, 0x8010
     WorkCmpConst 0x8010, 0
     VMJumpIf CMP_EQ, L_070B
     VMJump L_071D

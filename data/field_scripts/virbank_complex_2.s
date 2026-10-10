@@ -14,7 +14,7 @@
     WorkSetConst 0x8022, 0
 
 Script_6:
-    WorkCmpConst 0x40dd, 0
+    WorkCmpConst EVENT_WORK_0x40dd, 0
     VMJumpIf CMP_EQ, L_0043
     VMJump L_0055
 
@@ -23,7 +23,7 @@ L_0043:
     VMJump L_009F
 
 L_0055:
-    WorkCmpConst 0x40dd, 1
+    WorkCmpConst EVENT_WORK_0x40dd, 1
     VMJumpIf CMP_EQ, L_0068
     VMJump L_007A
 
@@ -32,7 +32,7 @@ L_0068:
     VMJump L_009F
 
 L_007A:
-    WorkCmpConst 0x40dd, 2
+    WorkCmpConst EVENT_WORK_0x40dd, 2
     VMJumpIf CMP_EQ, L_008D
     VMJump L_009F
 
@@ -45,7 +45,7 @@ L_009F:
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 306
+    VMStackPushFlag EVENT_FLAG_0x0132
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0109
@@ -62,7 +62,7 @@ Script_1:
     ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_YeahThatsWhatLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 306
+    FlagSet EVENT_FLAG_0x0132
     VMJump L_0103
 
 L_00F5:
@@ -75,13 +75,13 @@ L_0103:
     VMJump L_01BA
 
 L_0109:
-    VMStackPushFlag 307
+    VMStackPushFlag EVENT_FLAG_0x0133
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 308
+    VMStackPushFlag EVENT_FLAG_0x0134
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 309
+    VMStackPushFlag EVENT_FLAG_0x0135
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -128,7 +128,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 306
+    VMStackPushFlag EVENT_FLAG_0x0132
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01EF
@@ -139,7 +139,7 @@ Script_2:
     VMJump L_025D
 
 L_01EF:
-    VMStackPushFlag 307
+    VMStackPushFlag EVENT_FLAG_0x0133
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0216
@@ -170,7 +170,7 @@ L_024B:
     ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_CameComplexPokemonCould, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 307
+    FlagSet EVENT_FLAG_0x0133
 
 L_025D:
     FinishAllEvents
@@ -181,7 +181,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 306
+    VMStackPushFlag EVENT_FLAG_0x0132
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0292
@@ -192,7 +192,7 @@ Script_3:
     VMJump L_0300
 
 L_0292:
-    VMStackPushFlag 308
+    VMStackPushFlag EVENT_FLAG_0x0134
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B9
@@ -223,7 +223,7 @@ L_02EE:
     ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_CompletelyForgotIfDont, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 308
+    FlagSet EVENT_FLAG_0x0134
 
 L_0300:
     FinishAllEvents
@@ -234,7 +234,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 306
+    VMStackPushFlag EVENT_FLAG_0x0132
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0335
@@ -245,7 +245,7 @@ Script_4:
     VMJump L_03A3
 
 L_0335:
-    VMStackPushFlag 309
+    VMStackPushFlag EVENT_FLAG_0x0135
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035C
@@ -276,7 +276,7 @@ L_0391:
     ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_ItsOkIfEvery, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 309
+    FlagSet EVENT_FLAG_0x0135
 
 L_03A3:
     FinishAllEvents
@@ -286,7 +286,7 @@ L_03A3:
 Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    WorkCmpConst 0x40dd, 0
+    WorkCmpConst EVENT_WORK_0x40dd, 0
     VMJumpIf CMP_EQ, L_03C2
     VMJump L_04C6
 
@@ -354,11 +354,11 @@ L_04A0:
     ActorCmdExec 255, Movement_0838
     ActorCmdWait
     ActorSetGPos 7, 8, 0, 47, 2
-    WorkSetConst 0x40dd, 1
+    WorkSetConst EVENT_WORK_0x40dd, 1
     VMJump L_0710
 
 L_04C6:
-    WorkCmpConst 0x40dd, 1
+    WorkCmpConst EVENT_WORK_0x40dd, 1
     VMJumpIf CMP_EQ, L_04D9
     VMJump L_05F1
 
@@ -433,11 +433,11 @@ L_05CB:
     ActorCmdExec 255, Movement_0848
     ActorCmdWait
     ActorSetGPos 7, 20, 65535, 58, 3
-    WorkSetConst 0x40dd, 2
+    WorkSetConst EVENT_WORK_0x40dd, 2
     VMJump L_0710
 
 L_05F1:
-    WorkCmpConst 0x40dd, 2
+    WorkCmpConst EVENT_WORK_0x40dd, 2
     VMJumpIf CMP_EQ, L_0604
     VMJump L_0710
 
@@ -466,7 +466,7 @@ L_064A:
 
 L_0658:
     ActorCmdWait
-    VMStackPushFlag 310
+    VMStackPushFlag EVENT_FLAG_0x0136
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F6
@@ -486,7 +486,7 @@ L_0658:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 310
+    FlagSet EVENT_FLAG_0x0136
     VMCall L_0716
     VMJump L_06F0
 
@@ -543,7 +543,7 @@ L_075C:
     ActorCmdExec 255, Movement_0840
     ActorCmdWait
     ActorSetGPos 7, 29, 0, 32, 0
-    WorkSetConst 0x40dd, 0
+    WorkSetConst EVENT_WORK_0x40dd, 0
     VMReturn
     .balign 4, 0
 
@@ -630,7 +630,7 @@ Movement_0850:
 
 Script_7:
     ActorsPauseAll
-    VMStackPushFlag 467
+    VMStackPushFlag EVENT_FLAG_0x01d3
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08F2
@@ -653,7 +653,7 @@ Script_7:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 467
+    FlagSet EVENT_FLAG_0x01d3
     // "If you fill up the Habitat Lists, you might\ncomplete the Pokédex before you know it!"
     ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_IfFillUpHabitat, 0, 0
     LastKeyWait

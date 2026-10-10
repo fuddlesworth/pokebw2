@@ -6,7 +6,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPush 0x4150
+    VMStackPush EVENT_WORK_0x4150
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0035

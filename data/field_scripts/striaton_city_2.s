@@ -25,62 +25,62 @@
     WorkSetConst 0x8022, 0
 
 Script_14:
-    Random 0x418e, 3
-    WorkCmpConst 0x418e, 0
+    Random EVENT_WORK_0x418e, 3
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_0075
     VMJump L_0093
 
 L_0075:
-    WorkSetConst 0x4020, 309
-    WorkSetConst 0x4021, 309
-    WorkSetConst 0x4022, 309
-    WorkSetConst 0x4023, 310
+    WorkSetConst EVENT_WORK_0x4020, 309
+    WorkSetConst EVENT_WORK_0x4021, 309
+    WorkSetConst EVENT_WORK_0x4022, 309
+    WorkSetConst EVENT_WORK_0x4023, 310
     VMJump L_00F5
 
 L_0093:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_00A6
     VMJump L_00C4
 
 L_00A6:
-    WorkSetConst 0x4020, 310
-    WorkSetConst 0x4021, 310
-    WorkSetConst 0x4022, 310
-    WorkSetConst 0x4023, 311
+    WorkSetConst EVENT_WORK_0x4020, 310
+    WorkSetConst EVENT_WORK_0x4021, 310
+    WorkSetConst EVENT_WORK_0x4022, 310
+    WorkSetConst EVENT_WORK_0x4023, 311
     VMJump L_00F5
 
 L_00C4:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_00D7
     VMJump L_00F5
 
 L_00D7:
-    WorkSetConst 0x4020, 311
-    WorkSetConst 0x4021, 311
-    WorkSetConst 0x4022, 311
-    WorkSetConst 0x4023, 309
+    WorkSetConst EVENT_WORK_0x4020, 311
+    WorkSetConst EVENT_WORK_0x4021, 311
+    WorkSetConst EVENT_WORK_0x4022, 311
+    WorkSetConst EVENT_WORK_0x4023, 309
     VMJump L_00F5
 
 L_00F5:
-    DebugPrint 0x418e
-    VMStackPushFlag 2776
+    DebugPrint EVENT_WORK_0x418e
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0112
-    WorkSetConst 0x418d, 0
+    WorkSetConst EVENT_WORK_0x418d, 0
 
 L_0112:
-    VMStackPushFlag 2777
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad9
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012B
-    WorkSetConst 0x400c, 2
+    WorkSetConst EVENT_WORK_0x400c, 2
 
 L_012B:
     VMHalt
 
 Script_16:
-    VMStackPush 0x4196
+    VMStackPush EVENT_WORK_0x4196
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_015E
@@ -89,7 +89,7 @@ Script_16:
     VMJump L_01BA
 
 L_015E:
-    VMStackPush 0x4196
+    VMStackPush EVENT_WORK_0x4196
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_018F
@@ -98,7 +98,7 @@ L_015E:
     VMJump L_01BA
 
 L_018F:
-    VMStackPush 0x4196
+    VMStackPush EVENT_WORK_0x4196
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BA
@@ -110,13 +110,13 @@ L_01BA:
 
 Script_1:
     ActorsPauseAll
-    WorkSetConst 0x400a, 1
-    Cmd_02B2 8, 0x400f
-    DebugPrint 0x400f
-    VMStackPush 0x400f
+    WorkSetConst EVENT_WORK_0x400a, 1
+    Cmd_02B2 8, EVENT_WORK_0x400f
+    DebugPrint EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4045
+    VMStackPush EVENT_WORK_0x4045
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -134,12 +134,12 @@ L_0203:
 
 Script_2:
     ActorsPauseAll
-    WorkSetConst 0x400a, 2
-    Cmd_02B2 8, 0x400f
-    VMStackPush 0x400f
+    WorkSetConst EVENT_WORK_0x400a, 2
+    Cmd_02B2 8, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4045
+    VMStackPush EVENT_WORK_0x4045
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -157,12 +157,12 @@ L_024C:
 
 Script_3:
     ActorsPauseAll
-    WorkSetConst 0x400a, 3
-    Cmd_02B2 8, 0x400f
-    VMStackPush 0x400f
+    WorkSetConst EVENT_WORK_0x400a, 3
+    Cmd_02B2 8, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4045
+    VMStackPush EVENT_WORK_0x4045
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -179,16 +179,16 @@ L_0295:
     VMHalt
 
 L_029B:
-    VMStackPushFlag 2776
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03C2
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_02C1
     VMJump L_0308
 
 L_02C1:
-    VMStackPush 0x418d
+    VMStackPush EVENT_WORK_0x418d
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02EE
@@ -212,12 +212,12 @@ L_0302:
     VMJump L_03BC
 
 L_0308:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_031B
     VMJump L_0362
 
 L_031B:
-    VMStackPush 0x418d
+    VMStackPush EVENT_WORK_0x418d
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0348
@@ -241,12 +241,12 @@ L_035C:
     VMJump L_03BC
 
 L_0362:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_0375
     VMJump L_03BC
 
 L_0375:
-    VMStackPush 0x418d
+    VMStackPush EVENT_WORK_0x418d
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03A2
@@ -275,18 +275,18 @@ L_03BC:
 L_03C2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_03DB
     VMJump L_0412
 
 L_03DB:
-    VMStackPushFlag 409
+    VMStackPushFlag EVENT_FLAG_0x0199
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0402
     // "I'm Chili! My Fire-type Pokémon\nand I are too hot to handle![f000]븁\u0000\nWhat it boils down to is\nI want you to be my partner!"
     ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ImChiliFireType, 0, 0
-    FlagSet 409
+    FlagSet EVENT_FLAG_0x0199
     VMJump L_040C
 
 L_0402:
@@ -297,18 +297,18 @@ L_040C:
     VMJump L_04A6
 
 L_0412:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0425
     VMJump L_045C
 
 L_0425:
-    VMStackPushFlag 410
+    VMStackPushFlag EVENT_FLAG_0x019a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_044C
     // "I'm a Water-type specialist,\nand my name is Cress.[f000]븀\u0000\nPleased to make your acquaintance.[f000]븁\u0000\nYou there. Would you be so kind\nas to be my partner in a battle[f000]븀\u0000\nwith my siblings?"
     ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ImWaterTypeSpecialist, 0, 0
-    FlagSet 410
+    FlagSet EVENT_FLAG_0x019a
     VMJump L_0456
 
 L_044C:
@@ -319,18 +319,18 @@ L_0456:
     VMJump L_04A6
 
 L_045C:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_046F
     VMJump L_04A6
 
 L_046F:
-    VMStackPushFlag 411
+    VMStackPushFlag EVENT_FLAG_0x019b
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0496
     // "Um. My name is Cilan.\nI like Grass-type Pokémon.[f000]븁\u0000\nWe were Gym Leaders, but\nin order to improve ourselves further,[f000]븀\u0000\nwe are working at this Restaurant[f000]븀\u0000\nand spending every day with Pokémon.[f000]븁\u0000\nHow about it? Would you team up with me\nand take part in a Double Battle?"
     ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_UmNameCilanLike, 0, 0
-    FlagSet 411
+    FlagSet EVENT_FLAG_0x019b
     VMJump L_04A0
 
 L_0496:
@@ -346,7 +346,7 @@ L_04A6:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AD2
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_04D0
     VMJump L_04E0
 
@@ -356,7 +356,7 @@ L_04D0:
     VMJump L_0526
 
 L_04E0:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_04F3
     VMJump L_0503
 
@@ -366,7 +366,7 @@ L_04F3:
     VMJump L_0526
 
 L_0503:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_0516
     VMJump L_0526
 
@@ -383,7 +383,7 @@ L_0526:
     EvCameraUnbind
     EvCameraMoveTo 9688, 0, 0xed000, 0xb8000, 0x1000f, 0x28000, 1
     EvCameraWait
-    FlagReset 942
+    FlagReset EVENT_FLAG_0x03ae
     ActorAdd 1
     ActorAdd 2
     ActorAdd 3
@@ -394,7 +394,7 @@ L_0526:
     ActorSetGPos 3, 12, 0, 5, 0
     ActorSetGPos 7, 13, 0, 5, 0
     ActorSetGPos 8, 8, 0, 5, 0
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_05C9
     VMJump L_05F3
 
@@ -405,7 +405,7 @@ L_05C9:
     VMJump L_066D
 
 L_05F3:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0606
     VMJump L_0630
 
@@ -416,7 +416,7 @@ L_0606:
     VMJump L_066D
 
 L_0630:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_0643
     VMJump L_066D
 
@@ -430,7 +430,7 @@ L_066D:
     VMSleep 30
     FadeEx 3, 16, 0, 2
     FadeExWait
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0690
     VMJump L_06BA
 
@@ -444,7 +444,7 @@ L_0690:
     VMJump L_0734
 
 L_06BA:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_06CD
     VMJump L_06F7
 
@@ -458,7 +458,7 @@ L_06CD:
     VMJump L_0734
 
 L_06F7:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_070A
     VMJump L_0734
 
@@ -474,7 +474,7 @@ L_070A:
 L_0734:
     ActorCmdExec 255, Movement_1D18
     ActorCmdWait
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0751
     VMJump L_0761
 
@@ -483,7 +483,7 @@ L_0751:
     VMJump L_07A7
 
 L_0761:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0774
     VMJump L_0784
 
@@ -492,7 +492,7 @@ L_0774:
     VMJump L_07A7
 
 L_0784:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_0797
     VMJump L_07A7
 
@@ -518,11 +518,11 @@ L_07D9:
     VMJump L_07E7
 
 L_07E1:
-    FlagSet 942
+    FlagSet EVENT_FLAG_0x03ae
     CallTrainerLose
 
 L_07E7:
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_07FA
     VMJump L_0810
 
@@ -532,7 +532,7 @@ L_07FA:
     VMJump L_0862
 
 L_0810:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0823
     VMJump L_0839
 
@@ -542,7 +542,7 @@ L_0823:
     VMJump L_0862
 
 L_0839:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_084C
     VMJump L_0862
 
@@ -554,7 +554,7 @@ L_084C:
 L_0862:
     ActorCmdWait
     VMSleep 20
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_087B
     VMJump L_0895
 
@@ -566,7 +566,7 @@ L_087B:
     VMJump L_08EF
 
 L_0895:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_08A8
     VMJump L_08C2
 
@@ -578,7 +578,7 @@ L_08A8:
     VMJump L_08EF
 
 L_08C2:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_08D5
     VMJump L_08EF
 
@@ -594,7 +594,7 @@ L_08EF:
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     FadeExWait
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0912
     VMJump L_0924
 
@@ -603,7 +603,7 @@ L_0912:
     VMJump L_096E
 
 L_0924:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0937
     VMJump L_0949
 
@@ -612,7 +612,7 @@ L_0937:
     VMJump L_096E
 
 L_0949:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_095C
     VMJump L_096E
 
@@ -630,7 +630,7 @@ L_096E:
     ActorSetGPos 10, 5, 0, 8, 1
     ActorSetGPos 9, 16, 0, 14, 2
     ActorSetGPos 11, 13, 0, 10, 1
-    FlagSet 942
+    FlagSet EVENT_FLAG_0x03ae
     ActorDelete 1
     ActorDelete 2
     ActorDelete 3
@@ -639,7 +639,7 @@ L_096E:
     FadeExWait
     EvCameraRebind
     EvCameraEnd
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0A11
     VMJump L_0A21
 
@@ -649,7 +649,7 @@ L_0A11:
     VMJump L_0A67
 
 L_0A21:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0A34
     VMJump L_0A44
 
@@ -659,7 +659,7 @@ L_0A34:
     VMJump L_0A67
 
 L_0A44:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_0A57
     VMJump L_0A67
 
@@ -671,38 +671,38 @@ L_0A57:
 L_0A67:
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2776
-    WorkCmpConst 0x400a, 1
+    FlagSet EVENT_FLAG_DAILY_0x0ad8
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0A82
     VMJump L_0A8E
 
 L_0A82:
-    WorkSetConst 0x418d, 1
+    WorkSetConst EVENT_WORK_0x418d, 1
     VMJump L_0ACC
 
 L_0A8E:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0AA1
     VMJump L_0AAD
 
 L_0AA1:
-    WorkSetConst 0x418d, 2
+    WorkSetConst EVENT_WORK_0x418d, 2
     VMJump L_0ACC
 
 L_0AAD:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_0AC0
     VMJump L_0ACC
 
 L_0AC0:
-    WorkSetConst 0x418d, 3
+    WorkSetConst EVENT_WORK_0x418d, 3
     VMJump L_0ACC
 
 L_0ACC:
     VMJump L_0B3F
 
 L_0AD2:
-    WorkCmpConst 0x400a, 1
+    WorkCmpConst EVENT_WORK_0x400a, 1
     VMJumpIf CMP_EQ, L_0AE5
     VMJump L_0AF5
 
@@ -712,7 +712,7 @@ L_0AE5:
     VMJump L_0B3B
 
 L_0AF5:
-    WorkCmpConst 0x400a, 2
+    WorkCmpConst EVENT_WORK_0x400a, 2
     VMJumpIf CMP_EQ, L_0B08
     VMJump L_0B18
 
@@ -722,7 +722,7 @@ L_0B08:
     VMJump L_0B3B
 
 L_0B18:
-    WorkCmpConst 0x400a, 3
+    WorkCmpConst EVENT_WORK_0x400a, 3
     VMJumpIf CMP_EQ, L_0B2B
     VMJump L_0B3B
 
@@ -736,7 +736,7 @@ L_0B3B:
     MsgWinCloseAll
 
 L_0B3F:
-    WorkSetConst 0x400a, 0
+    WorkSetConst EVENT_WORK_0x400a, 0
     VMReturn
     .balign 4, 0
 
@@ -768,23 +768,23 @@ Movement_0B78:
     MoveEnd
 
 L_0BA4:
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C6A
-    VMStackPushFlag 461
+    VMStackPushFlag EVENT_FLAG_0x01cd
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 462
+    VMStackPushFlag EVENT_FLAG_0x01ce
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 463
+    VMStackPushFlag EVENT_FLAG_0x01cf
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0C0C
-    WorkSetConst 0x4196, 1
+    WorkSetConst EVENT_WORK_0x4196, 1
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Let us tell you why the Trio Badge\nno longer exists![f000]븁\u0000"
@@ -793,7 +793,7 @@ L_0BA4:
     VMJump L_0C64
 
 L_0C0C:
-    VMStackPushFlag 461
+    VMStackPushFlag EVENT_FLAG_0x01cd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C3D
@@ -803,11 +803,11 @@ L_0C0C:
     ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HeyYouveGotOh, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 461
+    FlagSet EVENT_FLAG_0x01cd
     VMJump L_0C64
 
 L_0C3D:
-    VMStackPushFlag 461
+    VMStackPushFlag EVENT_FLAG_0x01cd
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C64
@@ -822,23 +822,23 @@ L_0C64:
     VMJump L_0DF0
 
 L_0C6A:
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0D30
-    VMStackPushFlag 461
+    VMStackPushFlag EVENT_FLAG_0x01cd
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 462
+    VMStackPushFlag EVENT_FLAG_0x01ce
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 463
+    VMStackPushFlag EVENT_FLAG_0x01cf
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0CD2
-    WorkSetConst 0x4196, 2
+    WorkSetConst EVENT_WORK_0x4196, 2
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A day that's important to me, Cress...[f000]븁\u0000"
@@ -847,7 +847,7 @@ L_0C6A:
     VMJump L_0D2A
 
 L_0CD2:
-    VMStackPushFlag 462
+    VMStackPushFlag EVENT_FLAG_0x01ce
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0D03
@@ -857,11 +857,11 @@ L_0CD2:
     ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HopeTodaySpecialDay, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 462
+    FlagSet EVENT_FLAG_0x01ce
     VMJump L_0D2A
 
 L_0D03:
-    VMStackPushFlag 462
+    VMStackPushFlag EVENT_FLAG_0x01ce
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0D2A
@@ -876,23 +876,23 @@ L_0D2A:
     VMJump L_0DF0
 
 L_0D30:
-    VMStackPush 0x400a
+    VMStackPush EVENT_WORK_0x400a
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0DF0
-    VMStackPushFlag 461
+    VMStackPushFlag EVENT_FLAG_0x01cd
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 462
+    VMStackPushFlag EVENT_FLAG_0x01ce
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 463
+    VMStackPushFlag EVENT_FLAG_0x01cf
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0D98
-    WorkSetConst 0x4196, 3
+    WorkSetConst EVENT_WORK_0x4196, 3
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Well, why don't I tell you\nwhat happened...[f000]븁\u0000"
@@ -901,7 +901,7 @@ L_0D30:
     VMJump L_0DF0
 
 L_0D98:
-    VMStackPushFlag 463
+    VMStackPushFlag EVENT_FLAG_0x01cf
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0DC9
@@ -911,11 +911,11 @@ L_0D98:
     ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WelcomeStriatonRestaurantPlace, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 463
+    FlagSet EVENT_FLAG_0x01cf
     VMJump L_0DF0
 
 L_0DC9:
-    VMStackPushFlag 463
+    VMStackPushFlag EVENT_FLAG_0x01cf
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0DF0
@@ -927,7 +927,7 @@ L_0DC9:
     ActorMsgClose
 
 L_0DF0:
-    WorkSetConst 0x400a, 0
+    WorkSetConst EVENT_WORK_0x400a, 0
     VMReturn
 
 L_0DF8:
@@ -942,7 +942,7 @@ Script_15:
     ActorsPauseAll
     FadeInBlackQ
     FadeWait
-    VMStackPush 0x4196
+    VMStackPush EVENT_WORK_0x4196
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E3B
@@ -951,7 +951,7 @@ Script_15:
     VMJump L_0E7F
 
 L_0E3B:
-    VMStackPush 0x4196
+    VMStackPush EVENT_WORK_0x4196
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E60
@@ -960,7 +960,7 @@ L_0E3B:
     VMJump L_0E7F
 
 L_0E60:
-    VMStackPush 0x4196
+    VMStackPush EVENT_WORK_0x4196
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E7F
@@ -970,8 +970,8 @@ L_0E60:
 L_0E7F:
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4045, 1
-    WorkSetConst 0x4196, 4
+    WorkSetConst EVENT_WORK_0x4045, 1
+    WorkSetConst EVENT_WORK_0x4196, 4
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1008,7 +1008,7 @@ Script_17:
 
 Script_18:
     ActorsPauseAll
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_0EEA
     VMJump L_0EF5
 
@@ -1017,7 +1017,7 @@ L_0EEA:
     VMJump L_0F31
 
 L_0EF5:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_0F08
     VMJump L_0F13
 
@@ -1026,7 +1026,7 @@ L_0F08:
     VMJump L_0F31
 
 L_0F13:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_0F26
     VMJump L_0F31
 
@@ -1035,7 +1035,7 @@ L_0F26:
     VMJump L_0F31
 
 L_0F31:
-    DebugPrint 0x418e
+    DebugPrint EVENT_WORK_0x418e
     ActorCmdExec 0, Movement_21F4
     ActorCmdWait
     PlayerGetGPos 0x8021, 0x8022
@@ -1072,9 +1072,9 @@ L_0F31:
     ActorDelete 3
     ActorCmdExec 0, Movement_1D50
     ActorCmdWait
-    FlagSet 942
-    WorkSetConst 0x400c, 0
-    WorkSetConst 0x400b, 0
+    FlagSet EVENT_FLAG_0x03ae
+    WorkSetConst EVENT_WORK_0x400c, 0
+    WorkSetConst EVENT_WORK_0x400b, 0
     VMJump L_1060
 
 L_102E:
@@ -1095,7 +1095,7 @@ L_1060:
 
 Script_6:
     ActorsPauseAll
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_107B
     VMJump L_1086
 
@@ -1104,7 +1104,7 @@ L_107B:
     VMJump L_10C2
 
 L_1086:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_1099
     VMJump L_10A4
 
@@ -1113,7 +1113,7 @@ L_1099:
     VMJump L_10C2
 
 L_10A4:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_10B7
     VMJump L_10C2
 
@@ -1122,7 +1122,7 @@ L_10B7:
     VMJump L_10C2
 
 L_10C2:
-    VMStackPushFlag 2777
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad9
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_10EF
@@ -1135,13 +1135,13 @@ L_10C2:
     VMJump L_11BF
 
 L_10EF:
-    VMStackPush 0x400c
+    VMStackPush EVENT_WORK_0x400c
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11AB
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_111B
     VMJump L_1126
 
@@ -1150,7 +1150,7 @@ L_111B:
     VMJump L_1162
 
 L_1126:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_1139
     VMJump L_1144
 
@@ -1159,7 +1159,7 @@ L_1139:
     VMJump L_1162
 
 L_1144:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_1157
     VMJump L_1162
 
@@ -1168,7 +1168,7 @@ L_1157:
     VMJump L_1162
 
 L_1162:
-    DebugPrint 0x418e
+    DebugPrint EVENT_WORK_0x418e
     // "Will you come see Striaton Restaurant's\nfamous [f000]ā\u0001\u0001 show?"
     ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WillComeSeeStriaton, 0, 0, 0
     YesNoWin 0x8010
@@ -1216,7 +1216,7 @@ L_11C5:
     ActorCmdExec 0, Movement_1DD0
     VMSleep 10
     VMCall L_1389
-    FlagReset 942
+    FlagReset EVENT_FLAG_0x03ae
     ActorAdd 1
     ActorAdd 2
     ActorAdd 3
@@ -1255,7 +1255,7 @@ L_12B3:
     ActorCmdWait
     VMCall L_1389
     PVWait
-    WorkSetConst 0x400b, 10
+    WorkSetConst EVENT_WORK_0x400b, 10
     VMJump L_137B
 
 L_12E9:
@@ -1273,7 +1273,7 @@ L_12FC:
     ActorCmdWait
     VMCall L_1389
     PVWait
-    WorkSetConst 0x400b, 20
+    WorkSetConst EVENT_WORK_0x400b, 20
     VMJump L_137B
 
 L_1332:
@@ -1291,16 +1291,16 @@ L_1345:
     ActorCmdWait
     VMCall L_1389
     PVWait
-    WorkSetConst 0x400b, 30
+    WorkSetConst EVENT_WORK_0x400b, 30
     VMJump L_137B
 
 L_137B:
     VMCall L_1447
-    WorkSetConst 0x400c, 1
+    WorkSetConst EVENT_WORK_0x400c, 1
     VMReturn
 
 L_1389:
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_139C
     VMJump L_13A8
 
@@ -1309,7 +1309,7 @@ L_139C:
     VMJump L_13E6
 
 L_13A8:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_13BB
     VMJump L_13C7
 
@@ -1318,7 +1318,7 @@ L_13BB:
     VMJump L_13E6
 
 L_13C7:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_13DA
     VMJump L_13E6
 
@@ -1330,7 +1330,7 @@ L_13E6:
     VMReturn
 
 L_13E8:
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_13FB
     VMJump L_1407
 
@@ -1339,7 +1339,7 @@ L_13FB:
     VMJump L_1445
 
 L_1407:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_141A
     VMJump L_1426
 
@@ -1348,7 +1348,7 @@ L_141A:
     VMJump L_1445
 
 L_1426:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_1439
     VMJump L_1445
 
@@ -1539,13 +1539,13 @@ Script_9:
     VMHalt
 
 L_17F0:
-    VMStackPushFlag 2777
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1919
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_181C
     VMJump L_1827
 
@@ -1554,7 +1554,7 @@ L_181C:
     VMJump L_1863
 
 L_1827:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_183A
     VMJump L_1845
 
@@ -1563,7 +1563,7 @@ L_183A:
     VMJump L_1863
 
 L_1845:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_1858
     VMJump L_1863
 
@@ -1599,7 +1599,7 @@ L_1863:
     ActorCmdWait
 
 L_18EC:
-    VMStackPush 0x400b
+    VMStackPush EVENT_WORK_0x400b
     VMStackPush 0x8020
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_190B
@@ -1619,7 +1619,7 @@ L_1919:
     VMReturn
 
 L_191B:
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_192E
     VMJump L_1939
 
@@ -1628,7 +1628,7 @@ L_192E:
     VMJump L_1975
 
 L_1939:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_194C
     VMJump L_1957
 
@@ -1637,7 +1637,7 @@ L_194C:
     VMJump L_1975
 
 L_1957:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_196A
     VMJump L_1975
 
@@ -1671,13 +1671,13 @@ L_1975:
     ActorCmdWait
     PVWait
     ActorDelete 13
-    WorkSetConst 0x400b, 77
+    WorkSetConst EVENT_WORK_0x400b, 77
     VMCall L_1AF7
-    FlagSet 2777
+    FlagSet EVENT_FLAG_DAILY_0x0ad9
     VMReturn
 
 L_1A04:
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_1A17
     VMJump L_1A22
 
@@ -1686,7 +1686,7 @@ L_1A17:
     VMJump L_1A5E
 
 L_1A22:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_1A35
     VMJump L_1A40
 
@@ -1695,7 +1695,7 @@ L_1A35:
     VMJump L_1A5E
 
 L_1A40:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_1A53
     VMJump L_1A5E
 
@@ -1707,7 +1707,7 @@ L_1A5E:
     // "You are...\n...[f000]븀\u0000\ninconceivably incorrect! I'm sorry...[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_InconceivablyIncorrectImSorry, 0, 0, 0
     MsgWinCloseAll
-    WorkCmpConst 0x400b, 10
+    WorkCmpConst EVENT_WORK_0x400b, 10
     VMJumpIf CMP_EQ, L_1A7F
     VMJump L_1A97
 
@@ -1718,7 +1718,7 @@ L_1A7F:
     VMJump L_1AED
 
 L_1A97:
-    WorkCmpConst 0x400b, 20
+    WorkCmpConst EVENT_WORK_0x400b, 20
     VMJumpIf CMP_EQ, L_1AAA
     VMJump L_1AC2
 
@@ -1729,7 +1729,7 @@ L_1AAA:
     VMJump L_1AED
 
 L_1AC2:
-    WorkCmpConst 0x400b, 30
+    WorkCmpConst EVENT_WORK_0x400b, 30
     VMJumpIf CMP_EQ, L_1AD5
     VMJump L_1AED
 
@@ -1745,7 +1745,7 @@ L_1AED:
     VMReturn
 
 L_1AF7:
-    WorkCmpConst 0x418e, 0
+    WorkCmpConst EVENT_WORK_0x418e, 0
     VMJumpIf CMP_EQ, L_1B0A
     VMJump L_1B15
 
@@ -1754,7 +1754,7 @@ L_1B0A:
     VMJump L_1B51
 
 L_1B15:
-    WorkCmpConst 0x418e, 1
+    WorkCmpConst EVENT_WORK_0x418e, 1
     VMJumpIf CMP_EQ, L_1B28
     VMJump L_1B33
 
@@ -1763,7 +1763,7 @@ L_1B28:
     VMJump L_1B51
 
 L_1B33:
-    WorkCmpConst 0x418e, 2
+    WorkCmpConst EVENT_WORK_0x418e, 2
     VMJumpIf CMP_EQ, L_1B46
     VMJump L_1B51
 
@@ -1775,7 +1775,7 @@ L_1B51:
     // "That marks the grand finale of\nour [f000]ā\u0001\u0001 show![f000]븀\u0000\nThank you, one and all![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_MarksGrandFinaleOur, 0, 0, 0
     MsgWinCloseAll
-    WorkCmpConst 0x400b, 10
+    WorkCmpConst EVENT_WORK_0x400b, 10
     VMJumpIf CMP_EQ, L_1B72
     VMJump L_1B88
 
@@ -1785,7 +1785,7 @@ L_1B72:
     VMJump L_1C0B
 
 L_1B88:
-    WorkCmpConst 0x400b, 20
+    WorkCmpConst EVENT_WORK_0x400b, 20
     VMJumpIf CMP_EQ, L_1B9B
     VMJump L_1BB1
 
@@ -1795,7 +1795,7 @@ L_1B9B:
     VMJump L_1C0B
 
 L_1BB1:
-    WorkCmpConst 0x400b, 30
+    WorkCmpConst EVENT_WORK_0x400b, 30
     VMJumpIf CMP_EQ, L_1BC4
     VMJump L_1BDA
 
@@ -1805,7 +1805,7 @@ L_1BC4:
     VMJump L_1C0B
 
 L_1BDA:
-    WorkCmpConst 0x400b, 77
+    WorkCmpConst EVENT_WORK_0x400b, 77
     VMJumpIf CMP_EQ, L_1BED
     VMJump L_1C0B
 
@@ -1832,9 +1832,9 @@ L_1C0B:
     ActorDelete 1
     ActorDelete 2
     ActorDelete 3
-    FlagSet 942
-    WorkSetConst 0x400c, 0
-    WorkSetConst 0x400b, 0
+    FlagSet EVENT_FLAG_0x03ae
+    WorkSetConst EVENT_WORK_0x400c, 0
+    WorkSetConst EVENT_WORK_0x400b, 0
     VMReturn
 
 Script_10:

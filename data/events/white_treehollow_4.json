@@ -83,7 +83,7 @@
     "triggers": [
         {
             "script": 10739,
-            "var": "0x4000",
+            "var": "EVENT_WORK_0x4000",
             "value": 0,
             "type": 4,
             "grid": {
@@ -97,7 +97,7 @@
         },
         {
             "script": 10738,
-            "var": "0x4000",
+            "var": "EVENT_WORK_0x4000",
             "value": 0,
             "type": 3,
             "grid": {
@@ -111,7 +111,7 @@
         },
         {
             "script": 10736,
-            "var": "0x4000",
+            "var": "EVENT_WORK_0x4000",
             "value": 0,
             "type": 1,
             "grid": {
@@ -125,7 +125,7 @@
         },
         {
             "script": 10737,
-            "var": "0x4000",
+            "var": "EVENT_WORK_0x4000",
             "value": 0,
             "type": 2,
             "grid": {

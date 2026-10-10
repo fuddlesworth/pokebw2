@@ -17,7 +17,7 @@
     "triggers": [
         {
             "script": 5,
-            "var": "0x4000",
+            "var": "EVENT_WORK_0x4000",
             "value": 0,
             "type": 2,
             "grid": {

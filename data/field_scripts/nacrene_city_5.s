@@ -15,7 +15,7 @@ Script_5:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0039
-    FlagReset 992
+    FlagReset EVENT_FLAG_0x03e0
 
 L_0039:
     VMHalt

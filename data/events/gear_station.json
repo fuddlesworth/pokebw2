@@ -174,7 +174,7 @@
             "model": 30,
             "movement": 69,
             "type": 0,
-            "flag": "0x0285",
+            "flag": "EVENT_FLAG_0x0285",
             "script": 10310,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -320,7 +320,7 @@
     "triggers": [
         {
             "script": 4,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 0,
             "rail": {
@@ -338,7 +338,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x417c",
+                    "var": "EVENT_WORK_0x417c",
                     "value": 1,
                     "script": 5
                 }

@@ -14,7 +14,7 @@
     ScriptEntriesEnd
 
 Script_7:
-    VMStackPush 0x4160
+    VMStackPush EVENT_WORK_0x4160
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0043
@@ -34,8 +34,8 @@ L_0045:
     VMJump L_00B5
 
 L_0076:
-    WorkSetConst 0x4160, 1
-    WorkSetConst 0x4020, 57
+    WorkSetConst EVENT_WORK_0x4160, 1
+    WorkSetConst EVENT_WORK_0x4020, 57
     RTCGetTime 0x8008, 0x8009
     VMStackPush 0x8008
     VMStackPushConst 14
@@ -45,7 +45,7 @@ L_0076:
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00AF
-    FlagSet 220
+    FlagSet EVENT_FLAG_0x00dc
 
 L_00AF:
     VMJump L_014D
@@ -58,8 +58,8 @@ L_00B5:
     VMJump L_0114
 
 L_00D5:
-    WorkSetConst 0x4160, 2
-    WorkSetConst 0x4020, 58
+    WorkSetConst EVENT_WORK_0x4160, 2
+    WorkSetConst EVENT_WORK_0x4020, 58
     RTCGetTime 0x8008, 0x8009
     VMStackPush 0x8008
     VMStackPushConst 14
@@ -69,14 +69,14 @@ L_00D5:
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_010E
-    FlagSet 220
+    FlagSet EVENT_FLAG_0x00dc
 
 L_010E:
     VMJump L_014D
 
 L_0114:
-    WorkSetConst 0x4160, 3
-    WorkSetConst 0x4020, 59
+    WorkSetConst EVENT_WORK_0x4160, 3
+    WorkSetConst EVENT_WORK_0x4020, 59
     RTCGetTime 0x8008, 0x8009
     VMStackPush 0x8008
     VMStackPushConst 14
@@ -86,43 +86,43 @@ L_0114:
     VMStackCmp CMP_LE
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_014D
-    FlagSet 220
+    FlagSet EVENT_FLAG_0x00dc
 
 L_014D:
-    VMStackPushFlag 220
+    VMStackPushFlag EVENT_FLAG_0x00dc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_016E
-    FlagReset 655
-    FlagSet 666
+    FlagReset EVENT_FLAG_0x028f
+    FlagSet EVENT_FLAG_0x029a
     VMJump L_0176
 
 L_016E:
-    FlagSet 655
-    FlagReset 666
+    FlagSet EVENT_FLAG_0x028f
+    FlagReset EVENT_FLAG_0x029a
 
 L_0176:
-    VMStackPushFlag 2741
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ab5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B7
     StadiumLoadTrainerTable
     StadiumResetTrainerFlags
     StadiumFreeTrainerTable
-    FlagSet 2741
-    WorkSetConst 0x416d, 0
-    WorkSetConst 0x416e, 0
-    WorkSetConst 0x416f, 0
-    WorkSetConst 0x4170, 0
-    WorkSetConst 0x4171, 0
-    WorkSetConst 0x4172, 0
+    FlagSet EVENT_FLAG_DAILY_0x0ab5
+    WorkSetConst EVENT_WORK_0x416d, 0
+    WorkSetConst EVENT_WORK_0x416e, 0
+    WorkSetConst EVENT_WORK_0x416f, 0
+    WorkSetConst EVENT_WORK_0x4170, 0
+    WorkSetConst EVENT_WORK_0x4171, 0
+    WorkSetConst EVENT_WORK_0x4172, 0
 
 L_01B7:
     VMReturn
 
 Script_6:
     ActorsPauseAll
-    VMStackPush 0x4160
+    VMStackPush EVENT_WORK_0x4160
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01DE
@@ -130,7 +130,7 @@ Script_6:
     VMJump L_020B
 
 L_01DE:
-    VMStackPush 0x4160
+    VMStackPush EVENT_WORK_0x4160
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0201
@@ -149,12 +149,12 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x4160, 3
+    WorkCmpConst EVENT_WORK_0x4160, 3
     VMJumpIf CMP_EQ, L_022C
     VMJump L_025F
 
 L_022C:
-    VMStackPushFlag 220
+    VMStackPushFlag EVENT_FLAG_0x00dc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_024F
@@ -170,12 +170,12 @@ L_0259:
     VMJump L_02D2
 
 L_025F:
-    WorkCmpConst 0x4160, 1
+    WorkCmpConst EVENT_WORK_0x4160, 1
     VMJumpIf CMP_EQ, L_0272
     VMJump L_02A5
 
 L_0272:
-    VMStackPushFlag 220
+    VMStackPushFlag EVENT_FLAG_0x00dc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0295
@@ -191,7 +191,7 @@ L_029F:
     VMJump L_02D2
 
 L_02A5:
-    VMStackPushFlag 220
+    VMStackPushFlag EVENT_FLAG_0x00dc
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C8
@@ -238,7 +238,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x4160, 3
+    WorkCmpConst EVENT_WORK_0x4160, 3
     VMJumpIf CMP_EQ, L_032F
     VMJump L_033F
 
@@ -248,7 +248,7 @@ L_032F:
     VMJump L_036C
 
 L_033F:
-    WorkCmpConst 0x4160, 1
+    WorkCmpConst EVENT_WORK_0x4160, 1
     VMJumpIf CMP_EQ, L_0352
     VMJump L_0362
 
@@ -272,7 +272,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x4160, 3
+    WorkCmpConst EVENT_WORK_0x4160, 3
     VMJumpIf CMP_EQ, L_0391
     VMJump L_03A1
 
@@ -282,7 +282,7 @@ L_0391:
     VMJump L_03CE
 
 L_03A1:
-    WorkCmpConst 0x4160, 1
+    WorkCmpConst EVENT_WORK_0x4160, 1
     VMJumpIf CMP_EQ, L_03B4
     VMJump L_03C4
 

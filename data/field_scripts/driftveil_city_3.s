@@ -53,7 +53,7 @@ Script_2:
     VMStackPushConst 70
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00FE
-    VMStackPushFlag 319
+    VMStackPushFlag EVENT_FLAG_0x013f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E8
@@ -71,7 +71,7 @@ Script_2:
     ActorMsg MSGFILE_SCRIPT, DriftveilCity3_Text_PokemonHoldingShellBell, 0, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 319
+    FlagSet EVENT_FLAG_0x013f
     VMJump L_00F8
 
 L_00E8:

@@ -19,11 +19,11 @@ Script_1:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_004D
-    FlagReset 786
+    FlagReset EVENT_FLAG_0x0312
     VMJump L_0051
 
 L_004D:
-    FlagSet 786
+    FlagSet EVENT_FLAG_0x0312
 
 L_0051:
     VMHalt

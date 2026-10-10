@@ -22,7 +22,7 @@
     ScriptEntriesEnd
 
 Script_10:
-    VMStackPush 0x4087
+    VMStackPush EVENT_WORK_0x4087
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006F
@@ -30,7 +30,7 @@ Script_10:
     VMJump L_008E
 
 L_006F:
-    VMStackPush 0x4087
+    VMStackPush EVENT_WORK_0x4087
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008E
@@ -99,7 +99,7 @@ L_012E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C2
     MsgWinCloseAll
-    WorkSetConst 0x4087, 1
+    WorkSetConst EVENT_WORK_0x4087, 1
     // "Oh, you!\nYou remind me of...[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OhRemind, 11, 0, 0
     MsgWinCloseAll
@@ -185,7 +185,7 @@ L_02BE:
     ActorCmdExec 11, Movement_0514
     ActorCmdWait
     ActorSetGPos 11, 17, 6, 3, 1
-    WorkSetConst 0x4087, 2
+    WorkSetConst EVENT_WORK_0x4087, 2
     VMReturn
 
 L_02FA:
@@ -285,7 +285,7 @@ Script_17:
     // "I hope you'll be the superstar of a\nnew generation![f000]븁\u0000\nIt's time to play Dress Up![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HopeYoullSuperstarNew, 11, 0, 0
     MsgWinCloseAll
-    WorkSetConst 0x404b, 1
+    WorkSetConst EVENT_WORK_0x404b, 1
     VMCall L_026E
     WorkSetConst 0x8026, 0
     FinishAllEvents
@@ -579,7 +579,7 @@ L_07C8:
 L_07EE:
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x404b, 1
+    WorkSetConst EVENT_WORK_0x404b, 1
     WorkSetConst 0x802b, 0
     FinishAllEvents
     ActorsUnpauseAll
@@ -631,7 +631,7 @@ L_08AB:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0921
-    FlagGet 243, 0x8010
+    FlagGet EVENT_FLAG_0x00f3, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -775,7 +775,7 @@ L_0AD9:
 
 Script_9:
     ActorsPauseAll
-    FlagGet 242, 0x8010
+    FlagGet EVENT_FLAG_0x00f2, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -792,7 +792,7 @@ Script_9:
     ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_GreatWorkSawPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 242
+    FlagSet EVENT_FLAG_0x00f2
     VMJump L_0B4C
 
 L_0B38:

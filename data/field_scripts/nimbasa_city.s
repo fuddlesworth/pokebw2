@@ -40,21 +40,21 @@
     WorkSetConst 0x8023, 0
 
 Script_8:
-    WorkSetConst 0x417c, 1
-    WorkSetConst 0x4160, 0
-    FlagReset 220
-    FlagSet 622
-    FlagSet 623
-    FlagSet 624
-    FlagSet 625
-    FlagSet 626
-    FlagSet 661
-    FlagSet 662
-    FlagSet 663
-    FlagSet 664
-    FlagSet 665
-    FlagSet 242
-    VMStackPushFlag 764
+    WorkSetConst EVENT_WORK_0x417c, 1
+    WorkSetConst EVENT_WORK_0x4160, 0
+    FlagReset EVENT_FLAG_0x00dc
+    FlagSet EVENT_FLAG_0x026e
+    FlagSet EVENT_FLAG_0x026f
+    FlagSet EVENT_FLAG_0x0270
+    FlagSet EVENT_FLAG_0x0271
+    FlagSet EVENT_FLAG_0x0272
+    FlagSet EVENT_FLAG_0x0295
+    FlagSet EVENT_FLAG_0x0296
+    FlagSet EVENT_FLAG_0x0297
+    FlagSet EVENT_FLAG_0x0298
+    FlagSet EVENT_FLAG_0x0299
+    FlagSet EVENT_FLAG_0x00f2
+    VMStackPushFlag EVENT_FLAG_0x02fc
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0112
@@ -63,17 +63,17 @@ Script_8:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_010C
-    WorkSetConst 0x4020, 240
+    WorkSetConst EVENT_WORK_0x4020, 240
     VMJump L_0112
 
 L_010C:
-    WorkSetConst 0x4020, 231
+    WorkSetConst EVENT_WORK_0x4020, 231
 
 L_0112:
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -82,10 +82,10 @@ L_0112:
     VMJump L_016A
 
 L_0141:
-    VMStackPush 0x4111
+    VMStackPush EVENT_WORK_0x4111
     VMStackPushConst 0
     VMStackCmp CMP_NE
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -100,7 +100,7 @@ Script_9:
     VMHalt
 
 L_0174:
-    VMStackPush 0x40c0
+    VMStackPush EVENT_WORK_0x40c0
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C3
@@ -190,7 +190,7 @@ Script_6:
     // "Trainer Tips![f000]븁\u0000\n\nGames occur at specific times in\nBig Stadium and Small Court![f000]븁\u0000\nYou might be able to have a Pokémon\nbattle with your favorite athlete!"
     MsgPlaceSign NimbasaCity_Text_TrainerTipsGamesOccur, 0
     MsgPlaceSignClose
-    FlagSet 2660
+    FlagSet EVENT_FLAG_0x0a64
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -202,7 +202,7 @@ Script_10:
     // "Trainer Tips![f000]븁\u0000\n\nThe Musical Theater is always\nlooking for participants![f000]븁\u0000\nYou might get more wonderful Props\nif you participate repeatedly!"
     MsgPlaceSign NimbasaCity_Text_TrainerTipsMusicalTheater, 0
     MsgPlaceSignClose
-    FlagSet 2661
+    FlagSet EVENT_FLAG_0x0a65
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -331,7 +331,7 @@ Script_30:
 
 Script_12:
     ActorsPauseAll
-    WorkSetConst 0x40c0, 2
+    WorkSetConst EVENT_WORK_0x40c0, 2
     HollowRivalCmd_0262 1, 7
     EvCameraInit
     EvCameraUnbind
@@ -438,12 +438,12 @@ L_0544:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0581
-    WorkAdd 0x40c0, 1
+    WorkAdd EVENT_WORK_0x40c0, 1
     CallTrainerBattleEnd
     VMJump L_0589
 
 L_0581:
-    WorkSetConst 0x40c0, 2
+    WorkSetConst EVENT_WORK_0x40c0, 2
     CallTrainerLose
 
 L_0589:
@@ -473,12 +473,12 @@ L_0589:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0626
-    WorkAdd 0x40c0, 1
+    WorkAdd EVENT_WORK_0x40c0, 1
     CallTrainerBattleEnd
     VMJump L_062E
 
 L_0626:
-    WorkSetConst 0x40c0, 2
+    WorkSetConst EVENT_WORK_0x40c0, 2
     CallTrainerLose
 
 L_062E:
@@ -516,12 +516,12 @@ L_0685:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06C2
-    WorkAdd 0x40c0, 1
+    WorkAdd EVENT_WORK_0x40c0, 1
     CallTrainerBattleEnd
     VMJump L_06CA
 
 L_06C2:
-    WorkSetConst 0x40c0, 2
+    WorkSetConst EVENT_WORK_0x40c0, 2
     CallTrainerLose
 
 L_06CA:
@@ -584,12 +584,12 @@ L_07AF:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07EC
-    WorkAdd 0x40c0, 1
+    WorkAdd EVENT_WORK_0x40c0, 1
     CallTrainerBattleEnd
     VMJump L_07F4
 
 L_07EC:
-    WorkSetConst 0x40c0, 2
+    WorkSetConst EVENT_WORK_0x40c0, 2
     CallTrainerLose
 
 L_07F4:
@@ -607,7 +607,7 @@ L_07F4:
 
 L_0828:
     ActorsPauseAll
-    WorkSetConst 0x40c0, 4
+    WorkSetConst EVENT_WORK_0x40c0, 4
     ActorWalkRoute 1, 405, 438, 1, 8, 0
     ActorCmdWait
     ActorCmdExec 1, Movement_0FE0
@@ -646,7 +646,7 @@ L_08A4:
     ActorDelete 2
     BGMFadeOutAll 40
     VMSleep 45
-    FlagSet 762
+    FlagSet EVENT_FLAG_0x02fa
     FadeEx 3, 16, 0, 4
     FadeExWait
     VMSleep 45
@@ -683,7 +683,7 @@ L_08A4:
     ActorWalkRoute 3, 411, 447, 1, 8, 1
     ActorCmdWait
     ActorDelete 3
-    FlagSet 761
+    FlagSet EVENT_FLAG_0x02f9
     HollowRivalCmd_0262 1, 8
     BGMChangeMap
     FinishAllEvents
@@ -692,7 +692,7 @@ L_08A4:
 
 Script_17:
     ActorsPauseAll
-    VMStackPushFlag 288
+    VMStackPushFlag EVENT_FLAG_0x0120
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09D0
@@ -701,7 +701,7 @@ Script_17:
     // "I heard that in Gear Station\nyou can have Pokémon battles[f000]븀\u0000\nin the subway![f000]븁\u0000\nSo I came here to test my skills,\nand, what do you know...[f000]븀\u0000\nthe Subway Bosses were here![f000]븁\u0000\nIsn't that amazing? I mean, they're\nthe strongest Trainers in Gear Station![f000]븁\u0000\nAnd they said they'd battle\nif it's two on two![f000]븁\u0000\nThis is an a-MAZ-ing opportunity!\nWould you PLEASE battle with me?"
     // "I heard that in Gear Station\nyou can have Pokémon battles[f000]븀\u0000\nin the subway![f000]븁\u0000\nSo I came here to test my skills,\nand, what do you know...[f000]븀\u0000\nthe Subway Bosses were here![f000]븁\u0000\nIsn't that amazing? I mean, they're\nthe strongest Trainers in Gear Station![f000]븁\u0000\nAnd they said they'd battle\nif it's two on two![f000]븁\u0000\nThis is an awesome opportunity!\nWould you battle with me?"
     ActorMsgGendered 1024, NimbasaCity_Text_HeardGearStationCan, NimbasaCity_Text_HeardGearStationCan_2, 5, 2, 0
-    FlagSet 288
+    FlagSet EVENT_FLAG_0x0120
     VMJump L_09E4
 
 L_09D0:
@@ -769,7 +769,7 @@ L_0ACE:
     ActorCmdExec 7, Movement_0F74
     ActorCmdWait
     TrainerCardGetSex 0x8023
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8023
@@ -781,7 +781,7 @@ L_0ACE:
     VMJump L_0C29
 
 L_0B53:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackPush 0x8023
@@ -793,7 +793,7 @@ L_0B53:
     VMJump L_0C29
 
 L_0B86:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackPush 0x8023
@@ -805,7 +805,7 @@ L_0B86:
     VMJump L_0C29
 
 L_0BB9:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackPush 0x8023
@@ -817,7 +817,7 @@ L_0BB9:
     VMJump L_0C29
 
 L_0BEC:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMStackPush 0x8023
@@ -917,7 +917,7 @@ L_0C83:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    FlagSet 764
+    FlagSet EVENT_FLAG_0x02fc
     VMJump L_0DDC
 
 L_0DC0:
@@ -1019,9 +1019,9 @@ L_0F19:
     ActorDelete 9
     ActorDelete 8
     VMSleep 8
-    FlagSet 864
-    FlagSet 865
-    FlagReset 866
+    FlagSet EVENT_FLAG_0x0360
+    FlagSet EVENT_FLAG_0x0361
+    FlagReset EVENT_FLAG_0x0362
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1166,7 +1166,7 @@ Script_31:
     BMHndAnmWait 0x8025
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8027, 0
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_10E6
@@ -1191,7 +1191,7 @@ L_111F:
     ActorMsg MSGFILE_SCRIPT, 0x8027, 251, 0, 0
 
 L_112B:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1172
@@ -1210,13 +1210,13 @@ L_112B:
 L_1172:
     LastKeyWait
     MsgWinCloseAll
-    FlagReset 1033
+    FlagReset EVENT_FLAG_0x0409
     ActorAdd 19
     ActorDelete 251
 
 L_1182:
     BMReleaseHandle 0x8025
-    WorkSetConst 0x4141, 1
+    WorkSetConst EVENT_WORK_0x4141, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

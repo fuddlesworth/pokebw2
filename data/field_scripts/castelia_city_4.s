@@ -12,7 +12,7 @@
     WorkSetConst 0x8022, 0
 
 Script_2:
-    WorkSetConst 0x411a, 0
+    WorkSetConst EVENT_WORK_0x411a, 0
     CasteliaRushInit
     VMHalt
 

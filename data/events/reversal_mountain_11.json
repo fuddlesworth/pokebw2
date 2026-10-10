@@ -7,7 +7,7 @@
             "model": 349,
             "movement": 15,
             "type": 0,
-            "flag": "0x0384",
+            "flag": "EVENT_FLAG_0x0384",
             "script": 3,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -41,7 +41,7 @@
     "triggers": [
         {
             "script": 2,
-            "var": "0x4074",
+            "var": "EVENT_WORK_0x4074",
             "value": 1,
             "type": 0,
             "grid": {
@@ -55,7 +55,7 @@
         },
         {
             "script": 4,
-            "var": "0x4121",
+            "var": "EVENT_WORK_0x4121",
             "value": 2,
             "type": 0,
             "grid": {

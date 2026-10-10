@@ -87,8 +87,8 @@ L_00F7:
     ActorCmdExec 255, Movement_01BC
     ActorCmdWait
     BGMChangeMap
-    WorkSetConst 0x40c9, 2
-    FlagSet 772
+    WorkSetConst EVENT_WORK_0x40c9, 2
+    FlagSet EVENT_FLAG_0x0304
     RTReserveScript 3
     MapChangeWarp ZONE_ROUTE_6_2, 6, 9, 0
     FinishAllEvents
@@ -126,8 +126,8 @@ Movement_01BC:
 
 Script_5:
     ActorsPauseAll
-    FlagReset 773
-    FlagReset 774
+    FlagReset EVENT_FLAG_0x0305
+    FlagReset EVENT_FLAG_0x0306
     ActorNew 110, 353, 1, 251, 369, 0
     PVPlay 638, 0
     // "Kawbraa!"
@@ -226,9 +226,9 @@ L_02F2:
     ActorMsg MSGFILE_SCRIPT, Route6_Text_DidCobalionAppearFront, 10, 6, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 773
-    FlagSet 774
-    WorkSetConst 0x40ca, 2
+    FlagSet EVENT_FLAG_0x0305
+    FlagSet EVENT_FLAG_0x0306
+    WorkSetConst EVENT_WORK_0x40ca, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -309,7 +309,7 @@ Script_2:
     // "Trainer Tips![f000]븁\u0000\n\nYou can register certain items with\nthe Y Button to use them easily![f000]븁\u0000\nLook for a square check box beside\nthe name of a Key Item."
     MsgPlaceSign Route6_Text_TrainerTipsCanRegister, 0
     MsgPlaceSignClose
-    FlagSet 2669
+    FlagSet EVENT_FLAG_0x0a6d
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

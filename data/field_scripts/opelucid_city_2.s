@@ -9,11 +9,11 @@
     ScriptEntriesEnd
 
 Script_4:
-    FlagSet 494
+    FlagSet EVENT_FLAG_0x01ee
     VMHalt
 
 Script_5:
-    VMStackPush 0x40d9
+    VMStackPush EVENT_WORK_0x40d9
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_003B
@@ -56,7 +56,7 @@ Script_3:
     // "Boom![f000]븁\u0000"
     ScreamMsg OpelucidCity2_Text_Boom, 2
     MsgWinCloseAll
-    FlagSet 2553
+    FlagSet EVENT_FLAG_0x09f9
     BGMChangeMap
     SEWait
     ActorCmdExec 0, Movement_027C
@@ -74,11 +74,11 @@ Script_3:
     SEWait
     ActorWalkRoute 255, 9, 14, 0, 8, 0
     ActorCmdWait
-    WorkSetConst 0x40d9, 2
-    FlagSet 800
-    FlagReset 794
-    FlagReset 1034
-    WorkSetConst 0x40d7, 1
+    WorkSetConst EVENT_WORK_0x40d9, 2
+    FlagSet EVENT_FLAG_0x0320
+    FlagReset EVENT_FLAG_0x031a
+    FlagReset EVENT_FLAG_0x040a
+    WorkSetConst EVENT_WORK_0x40d7, 1
     RTReserveScript 21
     WorkSetConst 0x8020, 0
     GameGetVersion 0x8020

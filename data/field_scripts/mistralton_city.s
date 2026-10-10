@@ -32,94 +32,94 @@ Script_21:
     VMHalt
 
 Script_7:
-    Cmd_02B2 13, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 13, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4049
+    VMStackPush EVENT_WORK_0x4049
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40cb
+    VMStackPush EVENT_WORK_0x40cb
     VMStackPushConst 1
     VMStackCmp CMP_GE
-    VMStackPushFlag 496
+    VMStackPushFlag EVENT_FLAG_0x01f0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00C9
-    FlagReset 765
+    FlagReset EVENT_FLAG_0x02fd
     ObjInitNPCGPos 3, 1, 78, 0, 269
 
 L_00C9:
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4049
+    VMStackPush EVENT_WORK_0x4049
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40cb
+    VMStackPush EVENT_WORK_0x40cb
     VMStackPushConst 1
     VMStackCmp CMP_GE
-    VMStackPushFlag 496
+    VMStackPushFlag EVENT_FLAG_0x01f0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0116
-    WorkSetConst 0x4154, 1
-    FlagSet 765
+    WorkSetConst EVENT_WORK_0x4154, 1
+    FlagSet EVENT_FLAG_0x02fd
 
 L_0116:
     VMCall L_0122
-    FlagReset 496
+    FlagReset EVENT_FLAG_0x01f0
     VMHalt
 
 L_0122:
-    Cmd_02B2 13, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 13, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4049
+    VMStackPush EVENT_WORK_0x4049
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40cb
+    VMStackPush EVENT_WORK_0x40cb
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0165
-    WorkSetConst 0x4154, 0
-    FlagSet 765
+    WorkSetConst EVENT_WORK_0x4154, 0
+    FlagSet EVENT_FLAG_0x02fd
 
 L_0165:
     VMReturn
 
 L_0167:
-    Cmd_02B2 13, 0x400f
-    VMStackPush 0x400f
+    Cmd_02B2 13, EVENT_WORK_0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x4049
+    VMStackPush EVENT_WORK_0x4049
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40cb
+    VMStackPush EVENT_WORK_0x40cb
     VMStackPushConst 1
     VMStackCmp CMP_GE
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01C1
-    VMStackPushFlag 765
+    VMStackPushFlag EVENT_FLAG_0x02fd
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B7
     ActorDelete 3
 
 L_01B7:
-    WorkSetConst 0x4154, 0
-    FlagSet 765
+    WorkSetConst EVENT_WORK_0x4154, 0
+    FlagSet EVENT_FLAG_0x02fd
 
 L_01C1:
     VMReturn
@@ -163,7 +163,7 @@ Script_3:
 Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    FlagReset 621
+    FlagReset EVENT_FLAG_0x026d
     ActorAdd 1
     ActorAdd 2
     ActorAdd 8
@@ -175,8 +175,8 @@ Script_4:
     RTCallGlobal 2814
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 615
-    FlagSet 139
+    FlagSet EVENT_FLAG_0x0267
+    FlagSet EVENT_FLAG_0x008b
     // "Oh! You found our treasure![f000]븁\u0000"
     ScreamMsg MistraltonCity_Text_OhFoundOurTreasure, 1
     MsgWinCloseAll
@@ -215,14 +215,14 @@ Script_4:
     ActorDelete 1
     ActorDelete 2
     ActorDelete 8
-    FlagSet 621
+    FlagSet EVENT_FLAG_0x026d
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_5:
     ActorsPauseAll
-    WorkSetConst 0x40c2, 1
+    WorkSetConst EVENT_WORK_0x40c2, 1
     PlayerGetGPos 0x8021, 0x8022
     ActorWalkRoute 4, 0x8021, 297, 1, 8, 0
     ActorCmdWait
@@ -371,8 +371,8 @@ L_0550:
     ActorWalkRoute 3, 90, 297, 1, 8, 1
     ActorCmdWait
     ActorDelete 3
-    FlagSet 765
-    FlagSet 699
+    FlagSet EVENT_FLAG_0x02fd
+    FlagSet EVENT_FLAG_0x02bb
     HollowRivalCmd_0262 0, 2
     FinishAllEvents
     ActorsUnpauseAll
@@ -382,8 +382,8 @@ Script_6:
     ActorsPauseAll
     ActorWalkRoute 255, 78, 271, 1, 8, 1
     ActorCmdWait
-    FlagReset 765
-    FlagReset 699
+    FlagReset EVENT_FLAG_0x02fd
+    FlagReset EVENT_FLAG_0x02bb
     ActorAdd 3
     ActorAdd 4
     SEPlay SEQ_SE_KAIDAN
@@ -398,7 +398,7 @@ Script_6:
     // "Skyla: Time for a quick hop in my plane![f000]븁\u0000\nHey, where did Professor Juniper get to?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, MistraltonCity_Text_SkylaTimeQuickHop, 3, 0, 0
     MsgWinCloseAll
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_071F
@@ -424,16 +424,16 @@ Script_6:
     // "OK! You come, too![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, MistraltonCity_Text_OkComeToo, 3, 0, 0
     MsgWinCloseAll
-    FlagReset 767
-    FlagReset 768
-    FlagSet 766
+    FlagReset EVENT_FLAG_0x02ff
+    FlagReset EVENT_FLAG_0x0300
+    FlagSet EVENT_FLAG_0x02fe
     VMJump L_0731
 
 L_071F:
     // "I wonder if she's still doing research\nin Celestial Tower?[f000]븁\u0000\nMmm... Could I ask you\nto go get the professor?[f000]븁\u0000\nI've got to finish flight preparations\nat Mistralton Cargo Service![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, MistraltonCity_Text_WonderIfShesStill, 3, 0, 0
     MsgWinCloseAll
-    FlagReset 767
+    FlagReset EVENT_FLAG_0x02ff
 
 L_0731:
     ActorCmdExec 3, Movement_094C
@@ -442,11 +442,11 @@ L_0731:
     ActorCmdWait
     ActorDelete 3
     ActorDelete 4
-    FlagSet 765
-    FlagSet 699
-    FlagSet 1006
-    WorkSetConst 0x40c1, 2
-    WorkAdd 0x40c2, 1
+    FlagSet EVENT_FLAG_0x02fd
+    FlagSet EVENT_FLAG_0x02bb
+    FlagSet EVENT_FLAG_0x03ee
+    WorkSetConst EVENT_WORK_0x40c1, 2
+    WorkAdd EVENT_WORK_0x40c2, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -468,7 +468,7 @@ Script_9:
 
 Script_20:
     ActorsPauseAll
-    FlagReset 765
+    FlagReset EVENT_FLAG_0x02fd
     ActorWalkRoute 255, 78, 271, 0, 8, 1
     ActorCmdWait
     ActorAdd 3
@@ -503,9 +503,9 @@ Script_10:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 3
     SEWait
-    WorkSetConst 0x4049, 1
-    WorkSetConst 0x4154, 2
-    FlagSet 765
+    WorkSetConst EVENT_WORK_0x4049, 1
+    WorkSetConst EVENT_WORK_0x4154, 2
+    FlagSet EVENT_FLAG_0x02fd
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -686,7 +686,7 @@ Movement_09B8:
 
 Script_18:
     ActorsPauseAll
-    VMStackPushFlag 2449
+    VMStackPushFlag EVENT_FLAG_0x0991
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A36
@@ -706,7 +706,7 @@ Script_18:
     ParentActorMsg MSGFILE_SCRIPT, MistraltonCity_Text_PokemonsFavoriteBerryLeppa, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2449
+    FlagSet EVENT_FLAG_0x0991
     VMJump L_0A4A
 
 L_0A36:

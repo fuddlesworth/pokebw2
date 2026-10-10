@@ -24,14 +24,14 @@ Script_7:
     VMStackPushConst 2
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0067
-    FlagSet 910
+    FlagSet EVENT_FLAG_0x038e
     VMJump L_006B
 
 L_0067:
-    FlagReset 910
+    FlagReset EVENT_FLAG_0x038e
 
 L_006B:
-    VMStackPush 0x40ab
+    VMStackPush EVENT_WORK_0x40ab
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0090
@@ -39,14 +39,14 @@ L_006B:
     VMJump L_00AF
 
 L_0090:
-    VMStackPush 0x40ab
+    VMStackPush EVENT_WORK_0x40ab
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AF
     ObjInitNPCGPos 21, 1, 151, 2, 646
 
 L_00AF:
-    VMStackPush 0x40ab
+    VMStackPush EVENT_WORK_0x40ab
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00CE
@@ -164,7 +164,7 @@ L_0234:
     ActorCmdWait
     ActorCmdExec 0, Movement_07BC
     ActorCmdWait
-    WorkSetConst 0x40ab, 2
+    WorkSetConst EVENT_WORK_0x40ab, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -182,7 +182,7 @@ Movement_0278:
 
 Script_4:
     ActorsPauseAll
-    VMStackPush 0x40ab
+    VMStackPush EVENT_WORK_0x40ab
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_02B3
@@ -296,9 +296,9 @@ L_0359:
     ActorWalkRoute 21, 162, 668, 1, 8, 0
     ActorCmdWait
     ActorDelete 23
-    WorkSetConst 0x40ab, 3
-    FlagSet 703
-    FlagSet 1032
+    WorkSetConst EVENT_WORK_0x40ab, 3
+    FlagSet EVENT_FLAG_0x02bf
+    FlagSet EVENT_FLAG_0x0408
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -340,7 +340,7 @@ Script_9:
     ActorsPauseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    VMStackPush 0x40ab
+    VMStackPush EVENT_WORK_0x40ab
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0531
@@ -405,7 +405,7 @@ L_05E1:
     VMSleep 8
     ActorCmdExec 255, Movement_07B4
     ActorCmdWait
-    FlagReset 2558
+    FlagReset EVENT_FLAG_0x09fe
     BGMChangeMap
     VMStackPush 0x8020
     VMStackPushConst 1
@@ -465,11 +465,11 @@ L_06DB:
     ActorCmdWait
     ActorDelete 21
     ActorDelete 22
-    FlagSet 701
-    FlagSet 702
-    WorkSetConst 0x40ab, 6
-    FlagReset 726
-    WorkSetConst 0x40ac, 7
+    FlagSet EVENT_FLAG_0x02bd
+    FlagSet EVENT_FLAG_0x02be
+    WorkSetConst EVENT_WORK_0x40ab, 6
+    FlagReset EVENT_FLAG_0x02d6
+    WorkSetConst EVENT_WORK_0x40ac, 7
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -355,13 +355,13 @@ L_0520:
 
 Script_1:
     MusicalCmd_0165 39, 0, 0x8021
-    WorkGet 0x4021, 0x8021
+    WorkGet EVENT_WORK_0x4021, 0x8021
     MusicalCmd_0165 39, 1, 0x8021
-    WorkGet 0x4022, 0x8021
+    WorkGet EVENT_WORK_0x4022, 0x8021
     MusicalCmd_0165 39, 2, 0x8021
-    WorkGet 0x4023, 0x8021
+    WorkGet EVENT_WORK_0x4023, 0x8021
     MusicalCmd_0165 39, 3, 0x8021
-    WorkGet 0x4024, 0x8021
+    WorkGet EVENT_WORK_0x4024, 0x8021
     VMHalt
 
 Script_2:
@@ -530,11 +530,11 @@ L_0813:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0875
-    FlagSet 622
+    FlagSet EVENT_FLAG_0x026e
     VMJump L_0879
 
 L_0875:
-    FlagReset 622
+    FlagReset EVENT_FLAG_0x026e
 
 L_0879:
     MusicalCmd_0166 1, 0, 0x8029
@@ -542,11 +542,11 @@ L_0879:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_089D
-    FlagSet 623
+    FlagSet EVENT_FLAG_0x026f
     VMJump L_08A1
 
 L_089D:
-    FlagReset 623
+    FlagReset EVENT_FLAG_0x026f
 
 L_08A1:
     MusicalCmd_0166 2, 0, 0x8029
@@ -554,11 +554,11 @@ L_08A1:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08C5
-    FlagSet 624
+    FlagSet EVENT_FLAG_0x0270
     VMJump L_08C9
 
 L_08C5:
-    FlagReset 624
+    FlagReset EVENT_FLAG_0x0270
 
 L_08C9:
     MusicalCmd_0166 3, 0, 0x8029
@@ -566,11 +566,11 @@ L_08C9:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08ED
-    FlagSet 625
+    FlagSet EVENT_FLAG_0x0271
     VMJump L_08F1
 
 L_08ED:
-    FlagReset 625
+    FlagReset EVENT_FLAG_0x0271
 
 L_08F1:
     MusicalCmd_0166 4, 0, 0x8029
@@ -578,11 +578,11 @@ L_08F1:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0915
-    FlagSet 626
+    FlagSet EVENT_FLAG_0x0272
     VMJump L_0919
 
 L_0915:
-    FlagReset 626
+    FlagReset EVENT_FLAG_0x0272
 
 L_0919:
     MusicalCmd_0166 5, 0, 0x8029
@@ -590,11 +590,11 @@ L_0919:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_093D
-    FlagSet 661
+    FlagSet EVENT_FLAG_0x0295
     VMJump L_0941
 
 L_093D:
-    FlagReset 661
+    FlagReset EVENT_FLAG_0x0295
 
 L_0941:
     MusicalCmd_0166 6, 0, 0x8029
@@ -602,11 +602,11 @@ L_0941:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0965
-    FlagSet 662
+    FlagSet EVENT_FLAG_0x0296
     VMJump L_0969
 
 L_0965:
-    FlagReset 662
+    FlagReset EVENT_FLAG_0x0296
 
 L_0969:
     MusicalCmd_0166 7, 0, 0x8029
@@ -614,11 +614,11 @@ L_0969:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_098D
-    FlagSet 663
+    FlagSet EVENT_FLAG_0x0297
     VMJump L_0991
 
 L_098D:
-    FlagReset 663
+    FlagReset EVENT_FLAG_0x0297
 
 L_0991:
     MusicalCmd_0166 8, 0, 0x8029
@@ -626,11 +626,11 @@ L_0991:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09B5
-    FlagSet 664
+    FlagSet EVENT_FLAG_0x0298
     VMJump L_09B9
 
 L_09B5:
-    FlagReset 664
+    FlagReset EVENT_FLAG_0x0298
 
 L_09B9:
     MusicalCmd_0166 9, 0, 0x8029
@@ -638,21 +638,21 @@ L_09B9:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09DD
-    FlagSet 665
+    FlagSet EVENT_FLAG_0x0299
     VMJump L_09E1
 
 L_09DD:
-    FlagReset 665
+    FlagReset EVENT_FLAG_0x0299
 
 L_09E1:
     WorkSetConst 0x8029, 0
-    FlagReset 242
+    FlagReset EVENT_FLAG_0x00f2
     Cmd_0167 20, 0, 0, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A0C
-    FlagSet 243
+    FlagSet EVENT_FLAG_0x00f3
 
 L_0A0C:
     FadeOutBlackQ

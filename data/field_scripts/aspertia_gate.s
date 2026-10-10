@@ -57,7 +57,7 @@ L_0088:
     ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_WhenPokemonGetHurt, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40e0, 1
+    WorkSetConst EVENT_WORK_0x40e0, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -66,7 +66,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40e0
+    VMStackPush EVENT_WORK_0x40e0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0162
@@ -89,7 +89,7 @@ Script_3:
     WordSetPlayerName 0
     // "When Pokémon get hurt, take it easy\nand go to a Pokémon Center."
     ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_WhenPokemonGetHurt, 0, 0, 0
-    WorkSetConst 0x40e0, 1
+    WorkSetConst EVENT_WORK_0x40e0, 1
     VMJump L_016F
 
 L_0162:
@@ -106,7 +106,7 @@ L_016F:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A8
@@ -119,7 +119,7 @@ Script_4:
     VMJump L_01FD
 
 L_01A8:
-    VMStackPush 0x4000
+    VMStackPush EVENT_WORK_0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E9
@@ -131,7 +131,7 @@ L_01A8:
     ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_LoveReadNewsInformation, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
     VMJump L_01FD
 
 L_01E9:

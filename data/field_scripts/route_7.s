@@ -10,7 +10,7 @@
     ScriptEntriesEnd
 
 Script_4:
-    FlagReset 408
+    FlagReset EVENT_FLAG_0x0198
     VMHalt
 
 Script_1:
@@ -42,7 +42,7 @@ Script_3:
     // "Trainer Tips![f000]븁\u0000\n\nThe number of Exp. Points you get\nafter a battle is based on levels.[f000]븁\u0000\nWhen your Pokémon is weaker than\nits opponent, it will get more.[f000]븁\u0000\nBut if your Pokémon is stronger,\nit won't get as many."
     MsgPlaceSign Route7_Text_TrainerTipsNumberExp, 0
     MsgPlaceSignClose
-    FlagSet 2670
+    FlagSet EVENT_FLAG_0x0a6e
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -74,7 +74,7 @@ Script_5:
     CallXTransceiver 4, 0
     FadeInBlackQ
     FadeWait
-    WorkSetConst 0x4099, 1
+    WorkSetConst EVENT_WORK_0x4099, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

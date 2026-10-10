@@ -38,7 +38,7 @@ Script_3:
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 216
+    VMStackPushFlag EVENT_FLAG_0x00d8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D5
@@ -67,7 +67,7 @@ Script_1:
     VMJump L_0116
 
 L_00D5:
-    VMStackPushFlag 2503
+    VMStackPushFlag EVENT_FLAG_0x09c7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0102
@@ -94,7 +94,7 @@ L_0116:
 
 Script_5:
     ActorsPauseAll
-    VMStackPushFlag 2447
+    VMStackPushFlag EVENT_FLAG_0x098f
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_019C
@@ -126,7 +126,7 @@ L_0174:
     ParentActorMsg MSGFILE_SCRIPT, DesertResort2_Text_SpendingEachDayLiving, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2447
+    FlagSet EVENT_FLAG_0x098f
     VMJump L_01B0
 
 L_019C:

@@ -34,7 +34,7 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0087
@@ -140,13 +140,13 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 6
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_032C
     // "Free-for-all! It's the Castelia\nHarlequin Hunt! You haven't visited...[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_FreeAllItsCastelia, 0, 0
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_023B
@@ -164,7 +164,7 @@ Script_7:
     ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40e2, 6
+    WorkSetConst EVENT_WORK_0x40e2, 6
     VMJump L_0326
 
 L_023B:
@@ -179,7 +179,7 @@ L_0247:
     VMStackPush 0x8024
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 312
+    VMStackPushFlag EVENT_FLAG_0x0138
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -193,7 +193,7 @@ L_0295:
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 313
+    VMStackPushFlag EVENT_FLAG_0x0139
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -207,7 +207,7 @@ L_02D0:
     VMStackPush 0x8024
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPushFlag 314
+    VMStackPushFlag EVENT_FLAG_0x013a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND

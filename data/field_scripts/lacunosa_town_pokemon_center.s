@@ -22,11 +22,11 @@ Script_1:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0053
-    FlagReset 786
+    FlagReset EVENT_FLAG_0x0312
     VMJump L_0057
 
 L_0053:
-    FlagSet 786
+    FlagSet EVENT_FLAG_0x0312
 
 L_0057:
     VMHalt
@@ -63,7 +63,7 @@ Script_3:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E4

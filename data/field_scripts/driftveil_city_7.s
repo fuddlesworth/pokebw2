@@ -227,7 +227,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 324
+    VMStackPushFlag EVENT_FLAG_0x0144
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_040E
@@ -281,7 +281,7 @@ L_038F:
     ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_GladCameGetGood, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 324
+    FlagSet EVENT_FLAG_0x0144
     VMJump L_03F4
 
 L_03E6:

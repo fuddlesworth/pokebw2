@@ -9,7 +9,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2457
+    VMStackPushFlag EVENT_FLAG_0x0999
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005C
@@ -26,7 +26,7 @@ Script_1:
     SEWait
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2457
+    FlagSet EVENT_FLAG_0x0999
     VMJump L_0070
 
 L_005C:
@@ -56,7 +56,7 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    VMStackPushFlag 282
+    VMStackPushFlag EVENT_FLAG_0x011a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C1
@@ -101,7 +101,7 @@ L_0102:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 282
+    FlagSet EVENT_FLAG_0x011a
 
 L_014A:
     FinishAllEvents
@@ -155,7 +155,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02D0
@@ -194,9 +194,9 @@ L_0282:
     ActorCmdExec 255, Movement_0314
     ActorCmdWait
     ActorDelete 3
-    WorkSetConst 0x4108, 2
-    FlagSet 859
-    FlagReset 860
+    WorkSetConst EVENT_WORK_0x4108, 2
+    FlagSet EVENT_FLAG_0x035b
+    FlagReset EVENT_FLAG_0x035c
     VMJump L_02B6
 
 L_02A8:
@@ -218,7 +218,7 @@ L_02CA:
     VMJump L_02F1
 
 L_02D0:
-    VMStackPush 0x4108
+    VMStackPush EVENT_WORK_0x4108
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F1

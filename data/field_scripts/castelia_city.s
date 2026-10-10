@@ -60,9 +60,9 @@ L_00D4:
 
 L_00DC:
     ActorCmdWait
-    WorkSetConst 0x40b1, 2
-    FlagSet 751
-    FlagReset 1030
+    WorkSetConst EVENT_WORK_0x40b1, 2
+    FlagSet EVENT_FLAG_0x02ef
+    FlagReset EVENT_FLAG_0x0406
     ActorAdd 12
     ActorDelete 0
     WorkSetConst 0x8023, 0
@@ -90,10 +90,10 @@ Script_9:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 12
     SEWait
-    WorkSetConst 0x40b1, 3
-    FlagSet 1030
-    FlagReset 753
-    WorkSetConst 0x40b2, 1
+    WorkSetConst EVENT_WORK_0x40b1, 3
+    FlagSet EVENT_FLAG_0x0406
+    FlagReset EVENT_FLAG_0x02f1
+    WorkSetConst EVENT_WORK_0x40b2, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -413,9 +413,9 @@ L_0615:
 
 L_0650:
     ActorCmdWait
-    WorkSetConst 0x40e2, 2
+    WorkSetConst EVENT_WORK_0x40e2, 2
     MedalDiscover 19
-    FlagSet 2476
+    FlagSet EVENT_FLAG_0x09ac
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8024, 0
@@ -427,13 +427,13 @@ Script_21:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 6
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_07E7
     // "Free-for-all! It's the Castelia\nHarlequin Hunt! You haven't visited...[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_FreeAllItsCastelia, 0, 0
-    VMStackPush 0x40e2
+    VMStackPush EVENT_WORK_0x40e2
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F6
@@ -451,7 +451,7 @@ Script_21:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40e2, 6
+    WorkSetConst EVENT_WORK_0x40e2, 6
     VMJump L_07E1
 
 L_06F6:
@@ -466,7 +466,7 @@ L_0702:
     VMStackPush 0x8028
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPushFlag 312
+    VMStackPushFlag EVENT_FLAG_0x0138
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -480,7 +480,7 @@ L_0750:
     VMStackPush 0x8028
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 313
+    VMStackPushFlag EVENT_FLAG_0x0139
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -494,7 +494,7 @@ L_078B:
     VMStackPush 0x8028
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPushFlag 314
+    VMStackPushFlag EVENT_FLAG_0x013a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND

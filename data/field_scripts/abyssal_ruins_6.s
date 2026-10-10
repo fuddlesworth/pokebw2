@@ -22,17 +22,17 @@
     WorkSetConst 0x8021, 0
 
 Script_16:
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0067
-    WorkSetConst 0x418f, 3
+    WorkSetConst EVENT_WORK_0x418f, 3
 
 L_0067:
     VMHalt
 
 Script_14:
-    VMStackPushFlag 215
+    VMStackPushFlag EVENT_FLAG_0x00d7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0094
@@ -46,7 +46,7 @@ L_0094:
     MoveEnd
 
 Script_15:
-    VMStackPushFlag 215
+    VMStackPushFlag EVENT_FLAG_0x00d7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00CB
@@ -59,7 +59,7 @@ L_00CB:
 L_00CD:
     SEPlay SEQ_SE_MESSAGE
     Cmd_0230 0x8020, 0
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00F2

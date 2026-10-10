@@ -22,21 +22,21 @@ Script_1:
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0063
-    FlagReset 786
-    FlagReset 783
+    FlagReset EVENT_FLAG_0x0312
+    FlagReset EVENT_FLAG_0x030f
     VMJump L_006B
 
 L_0063:
-    FlagSet 786
-    FlagSet 783
+    FlagSet EVENT_FLAG_0x0312
+    FlagSet EVENT_FLAG_0x030f
 
 L_006B:
-    VMStackPush 0x40cc
+    VMStackPush EVENT_WORK_0x40cc
     VMStackPushConst 4
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0086
     DebugPrint 2323
-    FlagReset 783
+    FlagReset EVENT_FLAG_0x030f
 
 L_0086:
     VMHalt
@@ -46,10 +46,10 @@ Script_2:
 
 Script_3:
     ActorsPauseAll
-    WorkSetConst 0x40cc, 2
+    WorkSetConst EVENT_WORK_0x40cc, 2
     ActorWalkRoute 255, 6, 5, 1, 8, 1
     ActorCmdWait
-    FlagReset 782
+    FlagReset EVENT_FLAG_0x030e
     ActorAdd 2
     SEPlay SEQ_SE_KAIDAN
     SEWait
@@ -131,10 +131,10 @@ L_0113:
     ActorDelete 1
     ActorDelete 2
     SEWait
-    FlagSet 781
-    FlagSet 782
-    FlagReset 784
-    WorkSetConst 0x40ce, 1
+    FlagSet EVENT_FLAG_0x030d
+    FlagSet EVENT_FLAG_0x030e
+    FlagReset EVENT_FLAG_0x0310
+    WorkSetConst EVENT_WORK_0x40ce, 1
     HollowRivalCmd_0262 3, 6
     HollowRivalCmd_0262 0, 5
     FinishAllEvents
@@ -145,7 +145,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40cc
+    VMStackPush EVENT_WORK_0x40cc
     VMStackPushConst 4
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0284

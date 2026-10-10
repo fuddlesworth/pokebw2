@@ -38,33 +38,33 @@
 
 Script_3:
     VMCall L_0277
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AD
-    WorkSetConst 0x4044, 3
+    WorkSetConst EVENT_WORK_0x4044, 3
 
 L_00AD:
-    VMStackPushFlag 429
+    VMStackPushFlag EVENT_FLAG_0x01ad
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2793
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ae9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00D8
-    FlagReset 1029
-    FlagSet 846
+    FlagReset EVENT_FLAG_0x0405
+    FlagSet EVENT_FLAG_0x034e
 
 L_00D8:
     VMHalt
 
 Script_1:
     GameGetVersion 0x8020
-    VMStackPush 0x40f1
+    VMStackPush EVENT_WORK_0x40f1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f2
+    VMStackPush EVENT_WORK_0x40f2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -74,17 +74,17 @@ Script_1:
     ActorSetGPos 255, 8, 0, 30, 3
 
 L_011D:
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013C
     ActorSetGPos 255, 9, 0, 30, 3
 
 L_013C:
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -106,7 +106,7 @@ L_013C:
     ActorSetGPos 13, 14, 0, 27, 2
 
 L_020B:
-    VMStackPush 0x40f1
+    VMStackPush EVENT_WORK_0x40f1
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0248
@@ -116,7 +116,7 @@ L_020B:
     VMJump L_0267
 
 L_0248:
-    VMStackPush 0x40f2
+    VMStackPush EVENT_WORK_0x40f2
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0267
@@ -150,7 +150,7 @@ L_02AE:
     ObjInitWarpGPos 0, 0, 0, 0
 
 L_02D5:
-    VMStackPush 0x40c6
+    VMStackPush EVENT_WORK_0x40c6
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0302
@@ -159,7 +159,7 @@ L_02D5:
     VMJump L_0343
 
 L_0302:
-    VMStackPush 0x4106
+    VMStackPush EVENT_WORK_0x4106
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_032F
@@ -217,7 +217,7 @@ Script_22:
     ActorCmdWait
     WordSetLoadRivalName 1
     BGMPlay SEQ_BGM_SW_D_27_F_AJITO
-    FlagReset 2560
+    FlagReset EVENT_FLAG_0x0a00
     BGMAmbienceResume
     // "[f000]Ā\u0001\u0001: You guys...\nSeriously, this is Team Plasma's base?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate_Text_GuysSeriouslyTeamPlasmas, 0, 0, 0
@@ -291,7 +291,7 @@ Script_22:
     MsgWinCloseAll
     ActorCmdExec 4, Movement_06BC
     ActorCmdWait
-    WorkSetConst 0x40f0, 2
+    WorkSetConst EVENT_WORK_0x40f0, 2
     HollowRivalCmd_0262 0, 0
     HollowRivalCmd_0262 1, 16
     HollowRivalCmd_0262 2, 4
@@ -355,7 +355,7 @@ Script_6:
     ActorsPauseAll
     WordSetLoadRivalName 1
     WordSetPlayerName 0
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0701
@@ -367,7 +367,7 @@ Script_6:
     VMJump L_08AF
 
 L_0701:
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0852
@@ -406,7 +406,7 @@ L_0796:
     ActorCmdExec 7, Movement_13B4
     ActorCmdExec 8, Movement_13B4
     ActorCmdWait
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07CB
@@ -414,7 +414,7 @@ L_0796:
     VMJump L_07F8
 
 L_07CB:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07EE
@@ -429,26 +429,26 @@ L_07F8:
     WordSetLoadRivalName 1
     WordSetPlayerName 0
     VMCall L_0A60
-    WorkSetConst 0x40f0, 4
-    WorkSetConst 0x40c6, 4
-    FlagSet 830
-    FlagSet 831
-    FlagSet 829
-    FlagSet 833
-    FlagSet 834
-    FlagReset 711
-    FlagReset 712
-    FlagSet 710
+    WorkSetConst EVENT_WORK_0x40f0, 4
+    WorkSetConst EVENT_WORK_0x40c6, 4
+    FlagSet EVENT_FLAG_0x033e
+    FlagSet EVENT_FLAG_0x033f
+    FlagSet EVENT_FLAG_0x033d
+    FlagSet EVENT_FLAG_0x0341
+    FlagSet EVENT_FLAG_0x0342
+    FlagReset EVENT_FLAG_0x02c7
+    FlagReset EVENT_FLAG_0x02c8
+    FlagSet EVENT_FLAG_0x02c6
     MapReplaceSetEvent 4, 0, 0
     RTReserveScript 3
     MapChangeWarp ZONE_PWT, 197, 491, 0
     VMJump L_08AF
 
 L_0852:
-    VMStackPush 0x40f1
+    VMStackPush EVENT_WORK_0x40f1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f1
+    VMStackPush EVENT_WORK_0x40f1
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_OR
@@ -494,7 +494,7 @@ Script_7:
     ActorsPauseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A28
@@ -567,7 +567,7 @@ L_09CF:
     // "Cheren: Thanks!\nYou've really become much stronger![f000]븁\u0000\nHelp out [f000]Ā\u0001\u0001\nnext, OK?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate_Text_CherenThanksYouveReally, 1, 0, 0
     MsgWinCloseAll
-    WorkSetConst 0x40f0, 3
+    WorkSetConst EVENT_WORK_0x40f0, 3
     VMJump L_0A3C
 
 L_0A28:
@@ -619,8 +619,8 @@ L_0A60:
     // "Cheren: Good idea...[f000]븁\u0000\nThere are a lot of things I want\nto ask about as well.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate_Text_CherenGoodIdeaThere, 1, 5, 0
     MsgWinCloseAll
-    FlagReset 833
-    FlagReset 834
+    FlagReset EVENT_FLAG_0x0341
+    FlagReset EVENT_FLAG_0x0342
     SEPlay SEQ_SE_KAIDAN
     ActorAdd 16
     SEWait
@@ -743,7 +743,7 @@ Script_9:
 
 Script_10:
     ActorsPauseAll
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0CCB
@@ -949,7 +949,7 @@ Script_23:
     ActorWalkRoute 14, 13, 20, 1, 4, 0
     ActorWalkRoute 15, 13, 20, 1, 4, 0
     ActorCmdWait
-    WorkSetConst 0x40f2, 2
+    WorkSetConst EVENT_WORK_0x40f2, 2
     ActorDelete 14
     ActorDelete 15
     ActorDelete 23
@@ -960,7 +960,7 @@ L_0F04:
     ActorWalkRoute 14, 13, 38, 1, 4, 0
     ActorWalkRoute 15, 14, 38, 1, 4, 0
     ActorCmdWait
-    WorkSetConst 0x40f1, 2
+    WorkSetConst EVENT_WORK_0x40f1, 2
     ActorSetGPos 14, 18, 0, 45, 0
     ActorSetGPos 15, 19, 0, 46, 0
 
@@ -980,7 +980,7 @@ L_0F40:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0F99
-    FlagSet 832
+    FlagSet EVENT_FLAG_0x0340
 
 L_0F99:
     HollowRivalCmd_0262 0, 6
@@ -1110,17 +1110,17 @@ Script_29:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2793
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ae9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_121C
-    VMStackPushFlag 493
+    VMStackPushFlag EVENT_FLAG_0x01ed
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_119A
     // "Even the same Pokémon\ncan exhibit different strengths[f000]븀\u0000\ndepending on the Trainer![f000]븁\u0000\nIt's so interesting!\nVery, very interesting![f000]븁\u0000\nWell, now!\nGive me but a moment of your time!"
     ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate_Text_EvenSamePokemonCan, 0, 0
-    FlagSet 493
+    FlagSet EVENT_FLAG_0x01ed
     VMJump L_11A4
 
 L_119A:
@@ -1153,7 +1153,7 @@ L_11F0:
     ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate_Text_ThingsPokemonHaveSeen, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2793
+    FlagSet EVENT_FLAG_DAILY_0x0ae9
     VMJump L_1216
 
 L_1208:
@@ -1206,14 +1206,14 @@ L_1268:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1371
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1298
     VMCall L_1375
 
 L_1298:
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1369
@@ -1233,7 +1233,7 @@ L_1298:
     ActorSetGPos 0, 12, 0, 32, 0
     ActorSetGPos 1, 14, 0, 32, 0
     ActorSetGPos 255, 13, 0, 33, 0
-    FlagSet 831
+    FlagSet EVENT_FLAG_0x033f
 
 L_1369:
     CallTrainerBattleEnd

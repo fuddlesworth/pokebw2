@@ -110,7 +110,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4000",
+                    "var": "EVENT_WORK_0x4000",
                     "value": 1,
                     "script": 5
                 }

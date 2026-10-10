@@ -14,25 +14,25 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPush 0x40d2
+    VMStackPush EVENT_WORK_0x40d2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f0
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0070
-    VMStackPushFlag 788
+    VMStackPushFlag EVENT_FLAG_0x0314
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006A
-    FlagSet 788
+    FlagSet EVENT_FLAG_0x0314
 
 L_006A:
     VMJump L_0089
 
 L_0070:
-    VMStackPush 0x40d2
+    VMStackPush EVENT_WORK_0x40d2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0089
@@ -42,7 +42,7 @@ L_0089:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40d2
+    VMStackPush EVENT_WORK_0x40d2
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AA
@@ -98,13 +98,13 @@ L_011D:
     ActorCmdWait
     ActorWalkRoute 13, 15, 40, 1, 8, 0
     ActorCmdWait
-    WorkSetConst 0x40d2, 1
-    VMStackPush 0x40f0
+    WorkSetConst EVENT_WORK_0x40d2, 1
+    VMStackPush EVENT_WORK_0x40f0
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B3
     ActorDelete 13
-    FlagSet 788
+    FlagSet EVENT_FLAG_0x0314
     VMJump L_01BF
 
 L_01B3:
@@ -125,8 +125,8 @@ Script_4:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 11
     SEWait
-    FlagSet 789
-    WorkSetConst 0x40d3, 1
+    FlagSet EVENT_FLAG_0x0315
+    WorkSetConst EVENT_WORK_0x40d3, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -184,7 +184,7 @@ Movement_0270:
 
 Script_7:
     ActorsPauseAll
-    VMStackPushFlag 2448
+    VMStackPushFlag EVENT_FLAG_0x0990
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02FC
@@ -217,7 +217,7 @@ L_02DE:
     ParentActorMsg MSGFILE_SCRIPT, ChargestoneCave2_Text_IllLiveHereFrom, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2448
+    FlagSet EVENT_FLAG_0x0990
     VMJump L_0310
 
 L_02FC:

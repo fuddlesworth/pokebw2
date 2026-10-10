@@ -227,11 +227,11 @@ L_034D:
     ActorDelete 0
     SEWait
     BGMChangeMap
-    WorkSetConst 0x40b4, 2
-    FlagSet 756
-    FlagReset 758
-    WorkSetConst 0x40b6, 1
-    FlagSet 988
+    WorkSetConst EVENT_WORK_0x40b4, 2
+    FlagSet EVENT_FLAG_0x02f4
+    FlagReset EVENT_FLAG_0x02f6
+    WorkSetConst EVENT_WORK_0x40b6, 1
+    FlagSet EVENT_FLAG_0x03dc
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -260,7 +260,7 @@ Script_2:
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 2452
+    VMStackPushFlag EVENT_FLAG_0x0994
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0437
@@ -280,7 +280,7 @@ Script_4:
     ParentActorMsg MSGFILE_SCRIPT, CasteliaCity2_Text_IfKeepBattlingYoull, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2452
+    FlagSet EVENT_FLAG_0x0994
     VMJump L_044B
 
 L_0437:

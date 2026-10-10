@@ -20,9 +20,9 @@ Script_1:
 Script_2:
     ActorsPauseAll
     WorkSetConst 0x8020, 0
-    Random 0x400b, 5
+    Random EVENT_WORK_0x400b, 5
     WorkSetConst 0x8020, 1
-    WorkAdd 0x8020, 0x400b
+    WorkAdd 0x8020, EVENT_WORK_0x400b
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ParentActorMsg MSGFILE_SCRIPT, 0x8020, 0, 0

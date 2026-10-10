@@ -14,7 +14,7 @@
 
 Script_4:
     ActorsPauseAll
-    VMStackPushFlag 474
+    VMStackPushFlag EVENT_FLAG_0x01da
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009D
@@ -42,7 +42,7 @@ Script_4:
     ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate22_Text_YearnedThemSinceChild, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 474
+    FlagSet EVENT_FLAG_0x01da
     VMJump L_00B1
 
 L_009D:
@@ -60,7 +60,7 @@ L_00B1:
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E6
@@ -141,7 +141,7 @@ Script_7:
     InfoMsg PlasmaFrigate22_Text_WarningWarningIntrudersVessel, 2
     LastKeyWait
     InfoMsgClose_0039
-    WorkSetConst 0x4149, 2
+    WorkSetConst EVENT_WORK_0x4149, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

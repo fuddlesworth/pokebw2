@@ -7,7 +7,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0039
@@ -22,11 +22,11 @@ Script_1:
 L_0039:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 277
+    VMStackPushFlag EVENT_FLAG_0x0115
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BD
-    VMStackPush 0x40a8
+    VMStackPush EVENT_WORK_0x40a8
     VMStackPushConst 3
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00A9
@@ -44,7 +44,7 @@ L_0039:
     ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_UltraBallReallyGood, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 277
+    FlagSet EVENT_FLAG_0x0115
     VMJump L_00B7
 
 L_00A9:
@@ -69,7 +69,7 @@ L_00CB:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 2406
+    VMStackPushFlag EVENT_FLAG_0x0966
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0100

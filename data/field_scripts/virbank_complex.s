@@ -21,7 +21,7 @@ Script_2:
     WorkSetConst 0x8020, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 2763
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0acb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0102
@@ -67,7 +67,7 @@ L_00B2:
     MsgWinCloseAll
     // "See? It's a good deal, isn't it?\nWe can trade again tomorrow if you want!"
     ParentActorMsg MSGFILE_SCRIPT, VirbankComplex_Text_SeeItsGoodDeal, 0, 0
-    FlagSet 2763
+    FlagSet EVENT_FLAG_DAILY_0x0acb
 
 L_00E8:
     VMJump L_00F8

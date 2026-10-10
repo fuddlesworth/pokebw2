@@ -18,7 +18,7 @@
     ScriptEntriesEnd
 
 Script_14:
-    FlagSet 495
+    FlagSet EVENT_FLAG_0x01ef
     VMHalt
 
 Script_1:

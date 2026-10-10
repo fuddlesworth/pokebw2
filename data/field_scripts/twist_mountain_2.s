@@ -10,12 +10,12 @@
 
 Script_1:
     RTCGetSeason 0x8020
-    FlagSet 682
+    FlagSet EVENT_FLAG_0x02aa
     VMStackPush 0x8020
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0037
-    FlagReset 682
+    FlagReset EVENT_FLAG_0x02aa
 
 L_0037:
     VMHalt

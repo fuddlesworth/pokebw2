@@ -28,7 +28,7 @@ Script_8:
     VMHalt
 
 L_0044:
-    VMStackPushFlag 364
+    VMStackPushFlag EVENT_FLAG_0x016c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0067
@@ -42,7 +42,7 @@ L_0071:
     VMReturn
 
 L_0073:
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0092
@@ -53,7 +53,7 @@ L_0092:
     Plugin12_Cmd1006 0, 1
 
 L_0098:
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B7
@@ -64,7 +64,7 @@ L_00B7:
     Plugin12_Cmd1006 1, 1
 
 L_00BD:
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00DC
@@ -75,7 +75,7 @@ L_00DC:
     Plugin12_Cmd1006 2, 1
 
 L_00E2:
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0101
@@ -103,7 +103,7 @@ Script_9:
     // "[f000]Ā\u0001\u0001: Just to let you know...\nYou're about to feel my rage![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_JustLetKnowYoure, 0, 6, 0
     MsgWinCloseAll
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0172
@@ -111,7 +111,7 @@ Script_9:
     VMJump L_019F
 
 L_0172:
-    VMStackPush 0x4030
+    VMStackPush EVENT_WORK_0x4030
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0195
@@ -166,11 +166,11 @@ L_019F:
     SEPlay SEQ_SE_KAIDAN
     ActorDelete 0
     SEWait
-    FlagSet 835
-    WorkSetConst 0x40ff, 1
-    WorkSetConst 0x4100, 1
-    WorkSetConst 0x40f2, 3
-    FlagSet 830
+    FlagSet EVENT_FLAG_0x0343
+    WorkSetConst EVENT_WORK_0x40ff, 1
+    WorkSetConst EVENT_WORK_0x4100, 1
+    WorkSetConst EVENT_WORK_0x40f2, 3
+    FlagSet EVENT_FLAG_0x033e
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -211,20 +211,20 @@ Movement_02E4:
 
 Script_4:
     ActorsPauseAll
-    WorkSetConst 0x40f5, 1
+    WorkSetConst EVENT_WORK_0x40f5, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
     InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -242,16 +242,16 @@ L_0352:
     SEWait
     Plugin12_Cmd1007 0
     Plugin12_Cmd1008 0
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -270,20 +270,20 @@ L_03AA:
 
 Script_5:
     ActorsPauseAll
-    WorkSetConst 0x40f6, 1
+    WorkSetConst EVENT_WORK_0x40f6, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
     InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -301,16 +301,16 @@ L_040E:
     SEWait
     Plugin12_Cmd1007 1
     Plugin12_Cmd1008 1
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -329,20 +329,20 @@ L_0466:
 
 Script_6:
     ActorsPauseAll
-    WorkSetConst 0x40f7, 1
+    WorkSetConst EVENT_WORK_0x40f7, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
     InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -360,16 +360,16 @@ L_04CA:
     SEWait
     Plugin12_Cmd1007 2
     Plugin12_Cmd1008 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -388,20 +388,20 @@ L_0522:
 
 Script_7:
     ActorsPauseAll
-    WorkSetConst 0x40f8, 1
+    WorkSetConst EVENT_WORK_0x40f8, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
     InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -419,16 +419,16 @@ L_0586:
     SEWait
     Plugin12_Cmd1007 3
     Plugin12_Cmd1008 3
-    VMStackPush 0x40f5
+    VMStackPush EVENT_WORK_0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f6
+    VMStackPush EVENT_WORK_0x40f6
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f7
+    VMStackPush EVENT_WORK_0x40f7
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f8
+    VMStackPush EVENT_WORK_0x40f8
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND

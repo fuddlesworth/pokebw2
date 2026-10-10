@@ -15,11 +15,11 @@
     WorkSetConst 0x8021, 0
 
 Script_8:
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 5
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_004B
-    WorkSetConst 0x418f, 6
+    WorkSetConst EVENT_WORK_0x418f, 6
 
 L_004B:
     VMHalt
@@ -45,7 +45,7 @@ Movement_006C:
 L_0078:
     SEPlay SEQ_SE_MESSAGE
     Cmd_0230 0x8020, 0
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_009D
@@ -244,8 +244,8 @@ Script_9:
     RTCallGlobal 2807
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 1469
-    WorkSetConst 0x418f, 8
+    FlagSet EVENT_FLAG_0x05bd
+    WorkSetConst EVENT_WORK_0x418f, 8
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

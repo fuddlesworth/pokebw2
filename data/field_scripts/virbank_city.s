@@ -30,7 +30,7 @@
     WorkSetConst 0x8021, 0
 
 Script_24:
-    VMStackPush 0x40ac
+    VMStackPush EVENT_WORK_0x40ac
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C3
@@ -42,7 +42,7 @@ Script_24:
     VMJump L_00EE
 
 L_00C3:
-    VMStackPush 0x40ac
+    VMStackPush EVENT_WORK_0x40ac
     VMStackPushConst 7
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00EE
@@ -53,7 +53,7 @@ L_00EE:
     VMHalt
 
 Script_14:
-    VMStackPush 0x40ac
+    VMStackPush EVENT_WORK_0x40ac
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013F
@@ -98,9 +98,9 @@ Script_1:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x40ac, 2
-    FlagSet 726
-    FlagSet 2489
+    WorkSetConst EVENT_WORK_0x40ac, 2
+    FlagSet EVENT_FLAG_0x02d6
+    FlagSet EVENT_FLAG_0x09b9
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -178,7 +178,7 @@ Movement_0274:
 
 Script_2:
     ActorsPauseAll
-    VMStackPushFlag 492
+    VMStackPushFlag EVENT_FLAG_0x01ec
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B3
@@ -203,7 +203,7 @@ L_02B3:
     RTCallGlobal 2806
     VMStackPop 0x8001
     VMStackPop 0x8000
-    FlagSet 492
+    FlagSet EVENT_FLAG_0x01ec
 
 L_02EB:
     FinishAllEvents
@@ -404,7 +404,7 @@ Script_9:
     CallXTransceiver 1, 0
     FadeInBlackQ
     FadeWait
-    WorkSetConst 0x40ac, 1
+    WorkSetConst EVENT_WORK_0x40ac, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -454,12 +454,12 @@ L_0555:
     ActorMsg MSGFILE_SCRIPT, VirbankCity_Text_IllCrushNewPlans, 8, 0, 0
     MsgWinCloseAll
     BGMChangeMap
-    WorkSetConst 0x40ac, 5
+    WorkSetConst EVENT_WORK_0x40ac, 5
     VMReturn
 
 Script_11:
     ActorsPauseAll
-    VMStackPush 0x40ac
+    VMStackPush EVENT_WORK_0x40ac
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_064C
@@ -487,7 +487,7 @@ L_0666:
 
 Script_12:
     ActorsPauseAll
-    VMStackPush 0x40ac
+    VMStackPush EVENT_WORK_0x40ac
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_069F
@@ -628,12 +628,12 @@ L_076B:
     ActorCmdWait
     ActorDelete 8
     SEWait
-    WorkSetConst 0x40ac, 6
-    FlagSet 724
-    FlagReset 701
-    FlagReset 702
-    FlagSet 2558
-    WorkSetConst 0x40ab, 5
+    WorkSetConst EVENT_WORK_0x40ac, 6
+    FlagSet EVENT_FLAG_0x02d4
+    FlagReset EVENT_FLAG_0x02bd
+    FlagReset EVENT_FLAG_0x02be
+    FlagSet EVENT_FLAG_0x09fe
+    WorkSetConst EVENT_WORK_0x40ab, 5
     VMJump L_0929
 
 L_091B:
@@ -934,11 +934,11 @@ L_0C82:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    FlagSet 726
-    FlagReset 763
-    WorkSetConst 0x40ac, 8
-    FlagReset 722
-    FlagReset 723
+    FlagSet EVENT_FLAG_0x02d6
+    FlagReset EVENT_FLAG_0x02fb
+    WorkSetConst EVENT_WORK_0x40ac, 8
+    FlagReset EVENT_FLAG_0x02d2
+    FlagReset EVENT_FLAG_0x02d3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

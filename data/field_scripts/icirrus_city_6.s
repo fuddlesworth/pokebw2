@@ -14,13 +14,13 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 200
+    VMStackPushFlag EVENT_FLAG_0x00c8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0049
     // "Ahem![f000]븁\u0000\nI am the chairman who loves Pokémon the\nmost among Pokéfans in the entire world![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity6_Text_AhemAmChairmanWho, 2, 0, 0
-    FlagSet 200
+    FlagSet EVENT_FLAG_0x00c8
 
 L_0049:
     // "If you are a Trainer, will you show me\nhow you are raising your Pokémon[f000]븀\u0000\nwith loving care?"
@@ -70,7 +70,7 @@ L_00D8:
     VMJumpIf CMP_STACK, L_019B
     // "You've raised it very well.\nIt's received a lot of love from you.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity6_Text_YouveRaisedVeryWell, 2, 0, 0
-    VMStackPushFlag 203
+    VMStackPushFlag EVENT_FLAG_0x00cb
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0189
@@ -84,7 +84,7 @@ L_00D8:
     VMStackPop 0x8000
     // "That is a token of gratitude for showing\nme your great love for your Pokémon!"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity6_Text_TokenGratitudeShowingGreat, 2, 0, 0
-    FlagSet 203
+    FlagSet EVENT_FLAG_0x00cb
     VMJump L_0195
 
 L_0189:
@@ -101,7 +101,7 @@ L_019B:
     VMJumpIf CMP_STACK, L_0217
     // "You've raised it quite well.\nI feel your love for this Pokémon.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity6_Text_YouveRaisedQuiteWell, 2, 0, 0
-    VMStackPushFlag 202
+    VMStackPushFlag EVENT_FLAG_0x00ca
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0205
@@ -115,7 +115,7 @@ L_019B:
     VMStackPop 0x8000
     // "That is a token of gratitude for showing\nme your great love for your Pokémon!"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity6_Text_TokenGratitudeShowingGreat, 2, 0, 0
-    FlagSet 202
+    FlagSet EVENT_FLAG_0x00ca
     VMJump L_0211
 
 L_0205:
@@ -132,7 +132,7 @@ L_0217:
     VMJumpIf CMP_STACK, L_0293
     // "You've raised it well.\nYou must be affectionate.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity6_Text_YouveRaisedWellMust, 2, 0, 0
-    VMStackPushFlag 201
+    VMStackPushFlag EVENT_FLAG_0x00c9
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0281
@@ -146,7 +146,7 @@ L_0217:
     VMStackPop 0x8000
     // "That is a token of gratitude for showing\nme your great love for your Pokémon!"
     ActorMsg MSGFILE_SCRIPT, IcirrusCity6_Text_TokenGratitudeShowingGreat, 2, 0, 0
-    FlagSet 201
+    FlagSet EVENT_FLAG_0x00c9
     VMJump L_028D
 
 L_0281:

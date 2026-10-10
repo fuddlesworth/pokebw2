@@ -12,10 +12,10 @@
     WorkSetConst 0x8022, 0
 
 Script_1:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 2
     VMStackCmp CMP_GE
-    VMStackPushFlag 823
+    VMStackPushFlag EVENT_FLAG_0x0337
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -30,7 +30,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     TrainerCardHasBadge 0x8008, 5
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C0
@@ -48,11 +48,11 @@ Script_2:
     ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_ProfessorJuniperGivingLucky, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkAdd 0x40c2, 1
+    WorkAdd EVENT_WORK_0x40c2, 1
     VMJump L_0271
 
 L_00C0:
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMStackPush 0x8008
@@ -136,15 +136,15 @@ L_0210:
 
 L_022C:
     ActorDelete 0
-    WorkAdd 0x40c2, 1
-    FlagSet 766
-    FlagReset 768
+    WorkAdd EVENT_WORK_0x40c2, 1
+    FlagSet EVENT_FLAG_0x02fe
+    FlagReset EVENT_FLAG_0x0300
     HollowRivalCmd_0262 0, 3
     HollowRivalCmd_0262 1, 18
     VMJump L_0271
 
 L_0250:
-    VMStackPush 0x40c2
+    VMStackPush EVENT_WORK_0x40c2
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0271
@@ -203,7 +203,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03AA
@@ -216,7 +216,7 @@ Script_3:
     ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_WinLoseImWaitress, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
-    WorkSetConst 0x40ee, 2
+    WorkSetConst EVENT_WORK_0x40ee, 2
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
     VMStackPushConst 15
@@ -242,7 +242,7 @@ L_03A4:
     VMJump L_03CB
 
 L_03AA:
-    VMStackPush 0x40ee
+    VMStackPush EVENT_WORK_0x40ee
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_03CB

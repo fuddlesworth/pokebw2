@@ -45,7 +45,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05bc",
+            "flag": "EVENT_FLAG_0x05bc",
             "script": 7368,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -64,7 +64,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05b8",
+            "flag": "EVENT_FLAG_0x05b8",
             "script": 7364,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -83,7 +83,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05ba",
+            "flag": "EVENT_FLAG_0x05ba",
             "script": 7366,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -102,7 +102,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05b7",
+            "flag": "EVENT_FLAG_0x05b7",
             "script": 7363,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -121,7 +121,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05b9",
+            "flag": "EVENT_FLAG_0x05b9",
             "script": 7365,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -140,7 +140,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05b6",
+            "flag": "EVENT_FLAG_0x05b6",
             "script": 7362,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -159,7 +159,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05b5",
+            "flag": "EVENT_FLAG_0x05b5",
             "script": 7361,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -178,7 +178,7 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": "0x05bb",
+            "flag": "EVENT_FLAG_0x05bb",
             "script": 7367,
             "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
@@ -197,7 +197,7 @@
     "triggers": [
         {
             "script": 6,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 0,
             "grid": {
@@ -211,7 +211,7 @@
         },
         {
             "script": 1,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 6,
             "grid": {
@@ -225,7 +225,7 @@
         },
         {
             "script": 2,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 6,
             "grid": {
@@ -239,7 +239,7 @@
         },
         {
             "script": 3,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 6,
             "grid": {
@@ -253,7 +253,7 @@
         },
         {
             "script": 4,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 6,
             "grid": {
@@ -267,7 +267,7 @@
         },
         {
             "script": 5,
-            "var": "0x4096",
+            "var": "EVENT_WORK_0x4096",
             "value": 0,
             "type": 6,
             "grid": {
@@ -281,7 +281,7 @@
         },
         {
             "script": 8,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 0,
             "grid": {
@@ -295,7 +295,7 @@
         },
         {
             "script": 9,
-            "var": "0x400a",
+            "var": "EVENT_WORK_0x400a",
             "value": 0,
             "type": 0,
             "grid": {
@@ -309,7 +309,7 @@
         },
         {
             "script": 5,
-            "var": "0x4096",
+            "var": "EVENT_WORK_0x4096",
             "value": 1,
             "type": 6,
             "grid": {

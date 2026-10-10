@@ -6,7 +6,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 2458
+    VMStackPushFlag EVENT_FLAG_0x099a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0050
@@ -23,7 +23,7 @@ Script_1:
     SEWait
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 2458
+    FlagSet EVENT_FLAG_0x099a
     VMJump L_0064
 
 L_0050:

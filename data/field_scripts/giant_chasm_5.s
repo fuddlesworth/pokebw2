@@ -10,7 +10,7 @@
     WorkSetConst 0x8023, 0
 
 L_0026:
-    VMStackPushFlag 364
+    VMStackPushFlag EVENT_FLAG_0x016c
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0049

@@ -6,7 +6,7 @@
 
 Script_1:
     ActorsPauseAll
-    VMStackPushFlag 259
+    VMStackPushFlag EVENT_FLAG_0x0103
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0035
@@ -50,7 +50,7 @@ L_0035:
     ActorMsg MSGFILE_SCRIPT, Route152_Text_ThankVeryMuchPlease, 0, 0, 0
     LastKeyWait
     ActorMsgClose
-    FlagSet 259
+    FlagSet EVENT_FLAG_0x0103
     VMJump L_00E8
 
 L_00D8:

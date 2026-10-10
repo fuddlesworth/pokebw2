@@ -20,14 +20,14 @@ Script_1:
     VMStackPush 0x8023
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2775
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0077
-    FlagReset 903
-    WorkSetConst 0x4020, 323
+    FlagReset EVENT_FLAG_0x0387
+    WorkSetConst EVENT_WORK_0x4020, 323
     VMJump L_00BE
 
 L_0077:
@@ -37,18 +37,18 @@ L_0077:
     VMStackPush 0x8023
     VMStackPushConst 4
     VMStackCmp CMP_EQ
-    VMStackPushFlag 2775
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ad7
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00BA
-    FlagReset 903
-    WorkSetConst 0x4020, 324
+    FlagReset EVENT_FLAG_0x0387
+    WorkSetConst EVENT_WORK_0x4020, 324
     VMJump L_00BE
 
 L_00BA:
-    FlagSet 903
+    FlagSet EVENT_FLAG_0x0387
 
 L_00BE:
     VMHalt
@@ -100,8 +100,8 @@ L_0166:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0191
-    FlagSet 903
-    FlagSet 2775
+    FlagSet EVENT_FLAG_0x0387
+    FlagSet EVENT_FLAG_DAILY_0x0ad7
     ActorDelete 8
     CallWildBattleEnd
     VMJump L_0193
@@ -170,7 +170,7 @@ Script_3:
     CallXTransceiver 8, 0
     FadeInBlackQ
     FadeWait
-    WorkSetConst 0x4146, 2
+    WorkSetConst EVENT_WORK_0x4146, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

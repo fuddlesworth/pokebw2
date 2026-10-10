@@ -13,12 +13,12 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": "0x4178",
+                    "var": "EVENT_WORK_0x4178",
                     "value": 1,
                     "script": 2
                 },
                 {
-                    "var": "0x4178",
+                    "var": "EVENT_WORK_0x4178",
                     "value": 2,
                     "script": 3
                 }

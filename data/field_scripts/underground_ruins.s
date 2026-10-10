@@ -25,7 +25,7 @@ Script_3:
 
 L_0030:
     VMCall L_02C8
-    WorkCmpConst 0x4000, 0
+    WorkCmpConst EVENT_WORK_0x4000, 0
     VMJumpIf CMP_EQ, L_0049
     VMJump L_004F
 
@@ -33,7 +33,7 @@ L_0049:
     VMJump L_00C7
 
 L_004F:
-    WorkCmpConst 0x4000, 1
+    WorkCmpConst EVENT_WORK_0x4000, 1
     VMJumpIf CMP_EQ, L_0062
     VMJump L_006C
 
@@ -42,7 +42,7 @@ L_0062:
     VMJump L_00C7
 
 L_006C:
-    WorkCmpConst 0x4000, 2
+    WorkCmpConst EVENT_WORK_0x4000, 2
     VMJumpIf CMP_EQ, L_007F
     VMJump L_0089
 
@@ -51,7 +51,7 @@ L_007F:
     VMJump L_00C7
 
 L_0089:
-    WorkCmpConst 0x4000, 3
+    WorkCmpConst EVENT_WORK_0x4000, 3
     VMJumpIf CMP_EQ, L_009C
     VMJump L_00A6
 
@@ -60,7 +60,7 @@ L_009C:
     VMJump L_00C7
 
 L_00A6:
-    WorkCmpConst 0x4000, 4
+    WorkCmpConst EVENT_WORK_0x4000, 4
     VMJumpIf CMP_EQ, L_00B9
     VMJump L_00C3
 
@@ -132,7 +132,7 @@ L_0161:
     EvCameraRebind
     EvCameraEnd
     VMCall L_02C8
-    WorkCmpConst 0x4000, 0
+    WorkCmpConst EVENT_WORK_0x4000, 0
     VMJumpIf CMP_EQ, L_01C0
     VMJump L_01D6
 
@@ -142,7 +142,7 @@ L_01C0:
     VMJump L_028A
 
 L_01D6:
-    WorkCmpConst 0x4000, 1
+    WorkCmpConst EVENT_WORK_0x4000, 1
     VMJumpIf CMP_EQ, L_01E9
     VMJump L_01FF
 
@@ -152,7 +152,7 @@ L_01E9:
     VMJump L_028A
 
 L_01FF:
-    WorkCmpConst 0x4000, 2
+    WorkCmpConst EVENT_WORK_0x4000, 2
     VMJumpIf CMP_EQ, L_0212
     VMJump L_0228
 
@@ -162,7 +162,7 @@ L_0212:
     VMJump L_028A
 
 L_0228:
-    WorkCmpConst 0x4000, 3
+    WorkCmpConst EVENT_WORK_0x4000, 3
     VMJumpIf CMP_EQ, L_023B
     VMJump L_0251
 
@@ -172,7 +172,7 @@ L_023B:
     VMJump L_028A
 
 L_0251:
-    WorkCmpConst 0x4000, 4
+    WorkCmpConst EVENT_WORK_0x4000, 4
     VMJumpIf CMP_EQ, L_0264
     VMJump L_027A
 
@@ -218,11 +218,11 @@ L_02C8:
     WorkSetConst 0x8022, 0
     KeysCmd_02B1 0x8022
     RTCGetTime 0x8008, 0x8009
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F7
-    WorkSetConst 0x4000, 2
+    WorkSetConst EVENT_WORK_0x4000, 2
     VMJump L_036A
 
 L_02F7:
@@ -230,7 +230,7 @@ L_02F7:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0316
-    WorkSetConst 0x4000, 4
+    WorkSetConst EVENT_WORK_0x4000, 4
     VMJump L_036A
 
 L_0316:
@@ -238,7 +238,7 @@ L_0316:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0335
-    WorkSetConst 0x4000, 3
+    WorkSetConst EVENT_WORK_0x4000, 3
     VMJump L_036A
 
 L_0335:
@@ -250,14 +250,14 @@ L_0335:
     VMStackCmp CMP_LT
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0364
-    WorkSetConst 0x4000, 0
+    WorkSetConst EVENT_WORK_0x4000, 0
     VMJump L_036A
 
 L_0364:
-    WorkSetConst 0x4000, 1
+    WorkSetConst EVENT_WORK_0x4000, 1
 
 L_036A:
-    DebugPrint 0x4000
+    DebugPrint EVENT_WORK_0x4000
     WorkSetConst 0x8022, 0
     VMReturn
 
@@ -292,7 +292,7 @@ Movement_03CC:
 
 Script_6:
     ActorsPauseAll
-    VMStackPush 0x4001
+    VMStackPush EVENT_WORK_0x4001
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_047E
@@ -323,7 +323,7 @@ Script_6:
     FadeExWait
     // "A loud, heavy sound echoed\non the other side of the door..."
     InfoMsg UndergroundRuins_Text_LoudHeavySoundEchoed, 2
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMJump L_047A
 
 L_0475:

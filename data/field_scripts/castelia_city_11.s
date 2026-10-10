@@ -15,7 +15,7 @@ Script_1:
     ActorCmdWait
     ActorCmdExec 0, Movement_0220
     ActorCmdWait
-    VMStackPush 0x417b
+    VMStackPush EVENT_WORK_0x417b
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E8
@@ -133,7 +133,7 @@ L_01E8:
     ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_ThankSailingUsRoyal, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x417b, 0
+    WorkSetConst EVENT_WORK_0x417b, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -165,7 +165,7 @@ Script_2:
     WorkSetConst 0x8022, 0
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 0
-    VMStackPushFlag 2744
+    VMStackPushFlag EVENT_FLAG_DAILY_0x0ab8
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0414
@@ -336,8 +336,8 @@ L_048B:
     ActorCmdExec 255, Movement_0444
     ActorCmdWait
     RecordAdd 126, 1
-    WorkSetConst 0x417b, 0
-    FlagSet 2744
+    WorkSetConst EVENT_WORK_0x417b, 0
+    FlagSet EVENT_FLAG_DAILY_0x0ab8
     RTReserveScript 29
     MapChangeWarp ZONE_ROYAL_UNOVA, 29, 29, 0
     VMReturn

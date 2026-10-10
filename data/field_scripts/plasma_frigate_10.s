@@ -34,20 +34,20 @@
     WorkSetConst 0x8023, 0
 
 Script_1:
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0091
-    FlagSet 844
+    FlagSet EVENT_FLAG_0x034c
 
 L_0091:
     VMHalt
 
 Script_2:
-    VMStackPush 0x40f4
+    VMStackPush EVENT_WORK_0x40f4
     VMStackPushConst 2
     VMStackCmp CMP_LT
-    VMStackPush 0x4104
+    VMStackPush EVENT_WORK_0x4104
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -63,7 +63,7 @@ Script_3:
     VMHalt
 
 L_00D2:
-    VMStackPush 0x40fa
+    VMStackPush EVENT_WORK_0x40fa
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FD
@@ -95,7 +95,7 @@ Script_13:
     // "Oh! I nearly forgot to tell you!\nThis floor is a maze of pipes.[f000]븁\u0000\nYou've got to step on switches\nto connect or disconnect the pipes.[f000]븁\u0000\nIt's a good thing you can walk\non the pipes.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate10_Text_OhNearlyForgotTell, 11, 0, 0
     MsgWinCloseAll
-    WorkSetConst 0x4102, 2
+    WorkSetConst EVENT_WORK_0x4102, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -126,7 +126,7 @@ Script_24:
 
 Script_15:
     ActorsPauseAll
-    FlagReset 842
+    FlagReset EVENT_FLAG_0x034a
     EvCameraInit
     EvCameraUnbind
     EvCameraMoveTo 9688, 0, 0xed000, 0xf8000, 0, 0xaf000, 28
@@ -158,7 +158,7 @@ Script_15:
     VMJump L_023B
 
 L_0235:
-    FlagSet 842
+    FlagSet EVENT_FLAG_0x034a
     CallTrainerLose
 
 L_023B:
@@ -168,8 +168,8 @@ L_023B:
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate10_Text_ZinzolinBeatenAgainNo, 10, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x4104, 1
-    WorkSetConst 0x40f3, 1
+    WorkSetConst EVENT_WORK_0x4104, 1
+    WorkSetConst EVENT_WORK_0x40f3, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -186,7 +186,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     // "It looks like it controls the\ntemperature inside the ship."
     SystemMsg PlasmaFrigate10_Text_LooksLikeControlsTemperature, 2
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02A1
@@ -199,7 +199,7 @@ L_02A1:
     MsgWinCloseAll
 
 L_02A5:
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C9
@@ -220,7 +220,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     // "It's a device to control\nthe ship's energy system."
     SystemMsg PlasmaFrigate10_Text_ItsDeviceControlShips, 2
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F8
@@ -233,7 +233,7 @@ L_02F8:
     MsgWinCloseAll
 
 L_02FC:
-    VMStackPushFlag 909
+    VMStackPushFlag EVENT_FLAG_0x038d
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0320
@@ -284,7 +284,7 @@ Script_22:
 
 Script_23:
     ActorsPauseAll
-    VMStackPush 0x4125
+    VMStackPush EVENT_WORK_0x4125
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D3
@@ -327,8 +327,8 @@ L_0430:
     ActorCmdExec 255, Movement_074C
     ActorCmdWait
     ActorDelete 9
-    FlagSet 840
-    WorkSetConst 0x4125, 2
+    FlagSet EVENT_FLAG_0x0348
+    WorkSetConst EVENT_WORK_0x4125, 2
     VMReturn
     .balign 4, 0
 
@@ -400,10 +400,10 @@ Script_6:
 
 Script_7:
     ActorsPauseAll
-    WorkSetConst 0x4000, 1
-    WorkSetConst 0x4001, 0
-    WorkSetConst 0x4002, 0
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4000, 1
+    WorkSetConst EVENT_WORK_0x4001, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     Plugin12_Cmd1000 0
     FinishAllEvents
     ActorsUnpauseAll
@@ -411,10 +411,10 @@ Script_7:
 
 Script_8:
     ActorsPauseAll
-    WorkSetConst 0x4001, 1
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4002, 0
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4001, 1
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     Plugin12_Cmd1000 1
     FinishAllEvents
     ActorsUnpauseAll
@@ -422,10 +422,10 @@ Script_8:
 
 Script_9:
     ActorsPauseAll
-    WorkSetConst 0x4002, 1
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4001, 0
-    WorkSetConst 0x4003, 0
+    WorkSetConst EVENT_WORK_0x4002, 1
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
+    WorkSetConst EVENT_WORK_0x4003, 0
     Plugin12_Cmd1000 2
     FinishAllEvents
     ActorsUnpauseAll
@@ -433,10 +433,10 @@ Script_9:
 
 Script_10:
     ActorsPauseAll
-    WorkSetConst 0x4003, 1
-    WorkSetConst 0x4000, 0
-    WorkSetConst 0x4001, 0
-    WorkSetConst 0x4002, 0
+    WorkSetConst EVENT_WORK_0x4003, 1
+    WorkSetConst EVENT_WORK_0x4000, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
+    WorkSetConst EVENT_WORK_0x4002, 0
     Plugin12_Cmd1000 3
     FinishAllEvents
     ActorsUnpauseAll
@@ -445,7 +445,7 @@ Script_10:
 Script_12:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
-    VMStackPushFlag 356
+    VMStackPushFlag EVENT_FLAG_0x0164
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05AF
@@ -456,12 +456,12 @@ Script_12:
     VMJump L_067A
 
 L_05AF:
-    VMStackPush 0x40fa
+    VMStackPush EVENT_WORK_0x40fa
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0670
-    PlasmaFrigateCmd_GetPasswordIndex 0x400a
-    DebugPrint 0x400a
+    PlasmaFrigateCmd_GetPasswordIndex EVENT_WORK_0x400a
+    DebugPrint EVENT_WORK_0x400a
     SEPlay SEQ_SE_SW_PLAZMASHIP_01
     SEWait
     // "There is a device...\nIt seems to be for entering a password.[f000]븁\u0000\nWill you enter a password?"
@@ -495,8 +495,8 @@ L_05AF:
     SystemMsg PlasmaFrigate10_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40fa, 1
-    FlagSet 357
+    WorkSetConst EVENT_WORK_0x40fa, 1
+    FlagSet EVENT_FLAG_0x0165
     VMJump L_0662
 
 L_0652:

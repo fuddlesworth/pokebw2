@@ -17,34 +17,34 @@
 
 Script_3:
     WorkSetConst 0x8026, 0
-    RTCGetDate 0x8026, 0x400f
-    VMStackPushFlag 483
+    RTCGetDate 0x8026, EVENT_WORK_0x400f
+    VMStackPushFlag EVENT_FLAG_0x01e3
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPushFlag 484
+    VMStackPushFlag EVENT_FLAG_0x01e4
     VMStackPushConst 1
     VMStackCmp CMP_EQ
-    VMStackPush 0x4194
+    VMStackPush EVENT_WORK_0x4194
     VMStackPush 0x8026
     VMStackCmp CMP_NE
     VMStackCmp CMP_AND
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0081
-    FlagReset 912
+    FlagReset EVENT_FLAG_0x0390
 
 L_0081:
-    WorkSetConst 0x400f, 0
+    WorkSetConst EVENT_WORK_0x400f, 0
     WorkSetConst 0x8026, 0
     GameGetVersion 0x8010
     VMStackPush 0x8010
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B0
-    WorkSetConst 0x4020, 365
+    WorkSetConst EVENT_WORK_0x4020, 365
     VMJump L_00B6
 
 L_00B0:
-    WorkSetConst 0x4020, 364
+    WorkSetConst EVENT_WORK_0x4020, 364
 
 L_00B6:
     WorkSetConst 0x8027, 0
@@ -53,11 +53,11 @@ L_00B6:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00DF
-    WorkSetConst 0x4021, 231
+    WorkSetConst EVENT_WORK_0x4021, 231
     VMJump L_00E5
 
 L_00DF:
-    WorkSetConst 0x4021, 240
+    WorkSetConst EVENT_WORK_0x4021, 240
 
 L_00E5:
     WorkSetConst 0x8027, 0
@@ -71,7 +71,7 @@ Script_5:
     VMHalt
 
 L_00F7:
-    VMStackPushFlag 912
+    VMStackPushFlag EVENT_FLAG_0x0390
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_011C
@@ -83,9 +83,9 @@ L_011C:
 
 Script_1:
     ActorsPauseAll
-    FlagReset 912
-    FlagReset 913
-    FlagReset 1035
+    FlagReset EVENT_FLAG_0x0390
+    FlagReset EVENT_FLAG_0x0391
+    FlagReset EVENT_FLAG_0x040b
     ActorAdd 0
     ActorSetGPos 0, 16, 0, 48, 0
     BGMPlay SEQ_BGM_E_N_SWAN
@@ -234,12 +234,12 @@ L_0371:
     ActorCmdExec 255, Movement_046C
     ActorCmdWait
     ActorDelete 2
-    WorkSetConst 0x4114, 2
-    WorkSetConst 0x4112, 1
-    FlagSet 941
-    WorkSetConst 0x411d, 2
-    FlagSet 1035
-    WorkSetConst 0x400f, 99
+    WorkSetConst EVENT_WORK_0x4114, 2
+    WorkSetConst EVENT_WORK_0x4112, 1
+    FlagSet EVENT_FLAG_0x03ad
+    WorkSetConst EVENT_WORK_0x411d, 2
+    FlagSet EVENT_FLAG_0x040b
+    WorkSetConst EVENT_WORK_0x400f, 99
     VMCall L_057D
     FinishAllEvents
     ActorsUnpauseAll
@@ -325,10 +325,10 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPush 0x4114
+    VMStackPush EVENT_WORK_0x4114
     VMStackPushConst 3
     VMStackCmp CMP_EQ
-    VMStackPushFlag 480
+    VMStackPushFlag EVENT_FLAG_0x01e0
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -337,10 +337,10 @@ Script_2:
     VMJump L_0530
 
 L_04E9:
-    VMStackPush 0x4114
+    VMStackPush EVENT_WORK_0x4114
     VMStackPushConst 3
     VMStackCmp CMP_EQ
-    VMStackPushFlag 480
+    VMStackPushFlag EVENT_FLAG_0x01e0
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -434,7 +434,7 @@ L_060F:
     ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_ImReadyWheneverIll, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    VMStackPush 0x400f
+    VMStackPush EVENT_WORK_0x400f
     VMStackPushConst 99
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0642
@@ -442,7 +442,7 @@ L_060F:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x400f, 0
+    WorkSetConst EVENT_WORK_0x400f, 0
 
 L_0642:
     BGMChangeMap
@@ -568,14 +568,14 @@ L_07FF:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    WorkSetConst 0x4114, 3
-    FlagSet 913
-    WorkSetConst 0x411b, 1
-    WorkSetConst 0x4148, 1
+    WorkSetConst EVENT_WORK_0x4114, 3
+    FlagSet EVENT_FLAG_0x0391
+    WorkSetConst EVENT_WORK_0x411b, 1
+    WorkSetConst EVENT_WORK_0x4148, 1
     VMReturn
 
 L_0833:
-    VMStackPushFlag 486
+    VMStackPushFlag EVENT_FLAG_0x01e6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0858
@@ -654,11 +654,11 @@ L_0976:
     ActorCmdExec 255, Movement_0A90
     ActorCmdWait
     ActorDelete 0
-    RTCGetDate 0x8028, 0x400f
-    WorkGet 0x4194, 0x8028
-    FlagSet 912
-    FlagReset 486
-    WorkSetConst 0x400f, 0
+    RTCGetDate 0x8028, EVENT_WORK_0x400f
+    WorkGet EVENT_WORK_0x4194, 0x8028
+    FlagSet EVENT_FLAG_0x0390
+    FlagReset EVENT_FLAG_0x01e6
+    WorkSetConst EVENT_WORK_0x400f, 0
     WorkSetConst 0x8028, 0
     VMJump L_09BE
 
@@ -667,7 +667,7 @@ L_09AA:
     ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_VeryWellYoureFree, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 486
+    FlagSet EVENT_FLAG_0x01e6
 
 L_09BE:
     VMReturn
@@ -678,7 +678,7 @@ L_09C0:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A28
-    VMStackPush 0x4114
+    VMStackPush EVENT_WORK_0x4114
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A20

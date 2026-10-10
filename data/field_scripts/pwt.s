@@ -25,10 +25,10 @@
     WorkSetConst 0x8022, 0
 
 L_005C:
-    VMStackPush 0x40c6
+    VMStackPush EVENT_WORK_0x40c6
     VMStackPushConst 2
     VMStackCmp CMP_LT
-    VMStackPush 0x40c6
+    VMStackPush EVENT_WORK_0x40c6
     VMStackPushConst 3
     VMStackCmp CMP_GT
     VMStackCmp CMP_OR
@@ -40,7 +40,7 @@ L_0089:
 
 Script_5:
     VMCall L_005C
-    VMStackPush 0x40c6
+    VMStackPush EVENT_WORK_0x40c6
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B0
@@ -54,7 +54,7 @@ Script_17:
     VMHalt
 
 Script_6:
-    VMStackPush 0x40c6
+    VMStackPush EVENT_WORK_0x40c6
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00DF
@@ -62,7 +62,7 @@ Script_6:
     VMJump L_010A
 
 L_00DF:
-    VMStackPush 0x40c6
+    VMStackPush EVENT_WORK_0x40c6
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_010A
@@ -142,10 +142,10 @@ L_01B8:
     VMSleep 12
     ActorCmdExec 6, Movement_0294
     ActorCmdWait
-    WorkSetConst 0x40c6, 1
-    FlagSet 711
-    FlagSet 713
-    FlagSet 1000
+    WorkSetConst EVENT_WORK_0x40c6, 1
+    FlagSet EVENT_FLAG_0x02c7
+    FlagSet EVENT_FLAG_0x02c9
+    FlagSet EVENT_FLAG_0x03e8
     RTReserveScript 8
     MapChangeWarp ZONE_PWT_2, 15, 26, 0
     FinishAllEvents
@@ -184,9 +184,9 @@ Movement_0294:
 
 Script_2:
     ActorsPauseAll
-    FlagReset 711
-    FlagReset 712
-    FlagReset 710
+    FlagReset EVENT_FLAG_0x02c7
+    FlagReset EVENT_FLAG_0x02c8
+    FlagReset EVENT_FLAG_0x02c6
     EvCameraInit
     EvCameraUnbind
     EvCameraMoveTo 9688, 0, 0xed000, 0xc58000, 0, 0x1d48000, 10
@@ -270,14 +270,14 @@ Script_2:
     ActorDelete 6
     ActorDelete 8
     ActorDelete 251
-    WorkSetConst 0x40c6, 3
-    FlagSet 711
-    FlagSet 712
-    FlagSet 890
-    FlagReset 830
-    FlagReset 831
-    FlagReset 829
-    WorkSetConst 0x40f0, 1
+    WorkSetConst EVENT_WORK_0x40c6, 3
+    FlagSet EVENT_FLAG_0x02c7
+    FlagSet EVENT_FLAG_0x02c8
+    FlagSet EVENT_FLAG_0x037a
+    FlagReset EVENT_FLAG_0x033e
+    FlagReset EVENT_FLAG_0x033f
+    FlagReset EVENT_FLAG_0x033d
+    WorkSetConst EVENT_WORK_0x40f0, 1
     HollowRivalCmd_0262 1, 15
     HollowRivalCmd_0262 2, 3
     FinishAllEvents
@@ -348,15 +348,15 @@ Script_3:
     ActorWalkRoute 8, 197, 476, 1, 8, 1
     ActorCmdWait
     ActorDelete 8
-    WorkSetConst 0x40c6, 5
-    FlagSet 711
-    FlagSet 712
-    FlagReset 772
-    FlagReset 775
-    WorkSetConst 0x4135, 3
-    WorkSetConst 0x40c9, 1
-    WorkSetConst 0x40ca, 1
-    FlagSet 962
+    WorkSetConst EVENT_WORK_0x40c6, 5
+    FlagSet EVENT_FLAG_0x02c7
+    FlagSet EVENT_FLAG_0x02c8
+    FlagReset EVENT_FLAG_0x0304
+    FlagReset EVENT_FLAG_0x0307
+    WorkSetConst EVENT_WORK_0x4135, 3
+    WorkSetConst EVENT_WORK_0x40c9, 1
+    WorkSetConst EVENT_WORK_0x40ca, 1
+    FlagSet EVENT_FLAG_0x03c2
     HollowRivalCmd_0262 2, 5
     HollowRivalCmd_0262 1, 17
     FinishAllEvents
@@ -527,13 +527,13 @@ Script_14:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 135
+    VMStackPushFlag EVENT_FLAG_0x0087
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0779
     // "When a Pokémon learns the move\nHidden Power, somehow I can tell[f000]븀\u0000\nwhat type that move will be![f000]븁\u0000\nShould I tell you what type of\nHidden Power your Pokémon will learn?"
     ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_WhenPokemonLearnsMove, 0, 0
-    FlagSet 135
+    FlagSet EVENT_FLAG_0x0087
     VMJump L_0783
 
 L_0779:

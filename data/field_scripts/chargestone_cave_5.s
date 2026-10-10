@@ -100,7 +100,7 @@ Script_1:
     EvCameraRebind
     EvCameraEnd
     RTReserveScript 2110
-    WorkCmpConst 0x4192, 8
+    WorkCmpConst EVENT_WORK_0x4192, 8
     VMJumpIf CMP_EQ, L_01EF
     VMJump L_0201
 
@@ -109,7 +109,7 @@ L_01EF:
     VMJump L_04C0
 
 L_0201:
-    WorkCmpConst 0x4192, 20
+    WorkCmpConst EVENT_WORK_0x4192, 20
     VMJumpIf CMP_EQ, L_0214
     VMJump L_0226
 
@@ -118,7 +118,7 @@ L_0214:
     VMJump L_04C0
 
 L_0226:
-    WorkCmpConst 0x4192, 41
+    WorkCmpConst EVENT_WORK_0x4192, 41
     VMJumpIf CMP_EQ, L_0239
     VMJump L_024B
 
@@ -127,7 +127,7 @@ L_0239:
     VMJump L_04C0
 
 L_024B:
-    WorkCmpConst 0x4192, 65
+    WorkCmpConst EVENT_WORK_0x4192, 65
     VMJumpIf CMP_EQ, L_025E
     VMJump L_0270
 
@@ -136,7 +136,7 @@ L_025E:
     VMJump L_04C0
 
 L_0270:
-    WorkCmpConst 0x4192, 99
+    WorkCmpConst EVENT_WORK_0x4192, 99
     VMJumpIf CMP_EQ, L_0283
     VMJump L_0295
 
@@ -145,7 +145,7 @@ L_0283:
     VMJump L_04C0
 
 L_0295:
-    WorkCmpConst 0x4192, 109
+    WorkCmpConst EVENT_WORK_0x4192, 109
     VMJumpIf CMP_EQ, L_02A8
     VMJump L_02BA
 
@@ -154,7 +154,7 @@ L_02A8:
     VMJump L_04C0
 
 L_02BA:
-    WorkCmpConst 0x4192, 115
+    WorkCmpConst EVENT_WORK_0x4192, 115
     VMJumpIf CMP_EQ, L_02CD
     VMJump L_02DF
 
@@ -163,7 +163,7 @@ L_02CD:
     VMJump L_04C0
 
 L_02DF:
-    WorkCmpConst 0x4192, 122
+    WorkCmpConst EVENT_WORK_0x4192, 122
     VMJumpIf CMP_EQ, L_02F2
     VMJump L_0304
 
@@ -172,7 +172,7 @@ L_02F2:
     VMJump L_04C0
 
 L_0304:
-    WorkCmpConst 0x4192, 146
+    WorkCmpConst EVENT_WORK_0x4192, 146
     VMJumpIf CMP_EQ, L_0317
     VMJump L_0329
 
@@ -181,7 +181,7 @@ L_0317:
     VMJump L_04C0
 
 L_0329:
-    WorkCmpConst 0x4192, 1
+    WorkCmpConst EVENT_WORK_0x4192, 1
     VMJumpIf CMP_EQ, L_033C
     VMJump L_034E
 
@@ -190,7 +190,7 @@ L_033C:
     VMJump L_04C0
 
 L_034E:
-    WorkCmpConst 0x4192, 425
+    WorkCmpConst EVENT_WORK_0x4192, 425
     VMJumpIf CMP_EQ, L_0361
     VMJump L_0373
 
@@ -199,7 +199,7 @@ L_0361:
     VMJump L_04C0
 
 L_0373:
-    WorkCmpConst 0x4192, 435
+    WorkCmpConst EVENT_WORK_0x4192, 435
     VMJumpIf CMP_EQ, L_0386
     VMJump L_0398
 
@@ -208,7 +208,7 @@ L_0386:
     VMJump L_04C0
 
 L_0398:
-    WorkCmpConst 0x4192, 454
+    WorkCmpConst EVENT_WORK_0x4192, 454
     VMJumpIf CMP_EQ, L_03AB
     VMJump L_03BD
 
@@ -217,7 +217,7 @@ L_03AB:
     VMJump L_04C0
 
 L_03BD:
-    WorkCmpConst 0x4192, 472
+    WorkCmpConst EVENT_WORK_0x4192, 472
     VMJumpIf CMP_EQ, L_03D0
     VMJump L_03E2
 
@@ -226,7 +226,7 @@ L_03D0:
     VMJump L_04C0
 
 L_03E2:
-    WorkCmpConst 0x4192, 398
+    WorkCmpConst EVENT_WORK_0x4192, 398
     VMJumpIf CMP_EQ, L_03F5
     VMJump L_0407
 
@@ -235,7 +235,7 @@ L_03F5:
     VMJump L_04C0
 
 L_0407:
-    WorkCmpConst 0x4192, 407
+    WorkCmpConst EVENT_WORK_0x4192, 407
     VMJumpIf CMP_EQ, L_041A
     VMJump L_042C
 
@@ -244,7 +244,7 @@ L_041A:
     VMJump L_04C0
 
 L_042C:
-    WorkCmpConst 0x4192, 413
+    WorkCmpConst EVENT_WORK_0x4192, 413
     VMJumpIf CMP_EQ, L_043F
     VMJump L_0451
 
@@ -253,7 +253,7 @@ L_043F:
     VMJump L_04C0
 
 L_0451:
-    WorkCmpConst 0x4192, 443
+    WorkCmpConst EVENT_WORK_0x4192, 443
     VMJumpIf CMP_EQ, L_0464
     VMJump L_0476
 
@@ -262,7 +262,7 @@ L_0464:
     VMJump L_04C0
 
 L_0476:
-    WorkCmpConst 0x4192, 460
+    WorkCmpConst EVENT_WORK_0x4192, 460
     VMJumpIf CMP_EQ, L_0489
     VMJump L_049B
 
@@ -271,7 +271,7 @@ L_0489:
     VMJump L_04C0
 
 L_049B:
-    WorkCmpConst 0x4192, 602
+    WorkCmpConst EVENT_WORK_0x4192, 602
     VMJumpIf CMP_EQ, L_04AE
     VMJump L_04C0
 

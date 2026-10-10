@@ -15,8 +15,8 @@
     WorkSetConst 0x8020, 0
 
 Script_10:
-    WorkSetConst 0x4001, 0
-    VMStackPush 0x417e
+    WorkSetConst EVENT_WORK_0x4001, 0
+    VMStackPush EVENT_WORK_0x417e
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_005B
@@ -27,7 +27,7 @@ L_005B:
     VMCall L_078C
 
 L_0061:
-    WorkSetConst 0x417e, 0
+    WorkSetConst EVENT_WORK_0x417e, 0
     VMHalt
 
 Script_9:
@@ -76,7 +76,7 @@ L_00F5:
     ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_IndeedPleaseStepInside, 0, 0
     ActorMsgClose
     VMCall L_06C5
-    WorkSetConst 0x417e, 1
+    WorkSetConst EVENT_WORK_0x417e, 1
     RTReserveScript 9
     SEPlay SEQ_SE_FLD_23
     FadeOutBlackQ
@@ -174,7 +174,7 @@ Script_7:
     WorkSetConst 0x8025, 0
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    WorkCmpConst 0x4086, 0
+    WorkCmpConst EVENT_WORK_0x4086, 0
     VMJumpIf CMP_EQ, L_0222
     VMJump L_022E
 
@@ -183,7 +183,7 @@ L_0222:
     VMJump L_0424
 
 L_022E:
-    WorkCmpConst 0x4086, 1
+    WorkCmpConst EVENT_WORK_0x4086, 1
     VMJumpIf CMP_EQ, L_0241
     VMJump L_024D
 
@@ -192,7 +192,7 @@ L_0241:
     VMJump L_0424
 
 L_024D:
-    WorkCmpConst 0x4086, 2
+    WorkCmpConst EVENT_WORK_0x4086, 2
     VMJumpIf CMP_EQ, L_0260
     VMJump L_026C
 
@@ -201,7 +201,7 @@ L_0260:
     VMJump L_0424
 
 L_026C:
-    WorkCmpConst 0x4086, 3
+    WorkCmpConst EVENT_WORK_0x4086, 3
     VMJumpIf CMP_EQ, L_027F
     VMJump L_028B
 
@@ -210,7 +210,7 @@ L_027F:
     VMJump L_0424
 
 L_028B:
-    WorkCmpConst 0x4086, 4
+    WorkCmpConst EVENT_WORK_0x4086, 4
     VMJumpIf CMP_EQ, L_029E
     VMJump L_02AA
 
@@ -219,7 +219,7 @@ L_029E:
     VMJump L_0424
 
 L_02AA:
-    WorkCmpConst 0x4086, 5
+    WorkCmpConst EVENT_WORK_0x4086, 5
     VMJumpIf CMP_EQ, L_02BD
     VMJump L_02C9
 
@@ -228,7 +228,7 @@ L_02BD:
     VMJump L_0424
 
 L_02C9:
-    WorkCmpConst 0x4086, 6
+    WorkCmpConst EVENT_WORK_0x4086, 6
     VMJumpIf CMP_EQ, L_02DC
     VMJump L_02E8
 
@@ -237,7 +237,7 @@ L_02DC:
     VMJump L_0424
 
 L_02E8:
-    WorkCmpConst 0x4086, 7
+    WorkCmpConst EVENT_WORK_0x4086, 7
     VMJumpIf CMP_EQ, L_02FB
     VMJump L_0307
 
@@ -246,7 +246,7 @@ L_02FB:
     VMJump L_0424
 
 L_0307:
-    WorkCmpConst 0x4086, 8
+    WorkCmpConst EVENT_WORK_0x4086, 8
     VMJumpIf CMP_EQ, L_031A
     VMJump L_0326
 
@@ -255,7 +255,7 @@ L_031A:
     VMJump L_0424
 
 L_0326:
-    WorkCmpConst 0x4086, 9
+    WorkCmpConst EVENT_WORK_0x4086, 9
     VMJumpIf CMP_EQ, L_0339
     VMJump L_0345
 
@@ -264,7 +264,7 @@ L_0339:
     VMJump L_0424
 
 L_0345:
-    WorkCmpConst 0x4086, 10
+    WorkCmpConst EVENT_WORK_0x4086, 10
     VMJumpIf CMP_EQ, L_0358
     VMJump L_0364
 
@@ -273,7 +273,7 @@ L_0358:
     VMJump L_0424
 
 L_0364:
-    WorkCmpConst 0x4086, 11
+    WorkCmpConst EVENT_WORK_0x4086, 11
     VMJumpIf CMP_EQ, L_0377
     VMJump L_0383
 
@@ -282,7 +282,7 @@ L_0377:
     VMJump L_0424
 
 L_0383:
-    WorkCmpConst 0x4086, 12
+    WorkCmpConst EVENT_WORK_0x4086, 12
     VMJumpIf CMP_EQ, L_0396
     VMJump L_03A2
 
@@ -291,7 +291,7 @@ L_0396:
     VMJump L_0424
 
 L_03A2:
-    WorkCmpConst 0x4086, 13
+    WorkCmpConst EVENT_WORK_0x4086, 13
     VMJumpIf CMP_EQ, L_03B5
     VMJump L_03C1
 
@@ -300,7 +300,7 @@ L_03B5:
     VMJump L_0424
 
 L_03C1:
-    WorkCmpConst 0x4086, 14
+    WorkCmpConst EVENT_WORK_0x4086, 14
     VMJumpIf CMP_EQ, L_03D4
     VMJump L_03E0
 
@@ -309,7 +309,7 @@ L_03D4:
     VMJump L_0424
 
 L_03E0:
-    WorkCmpConst 0x4086, 15
+    WorkCmpConst EVENT_WORK_0x4086, 15
     VMJumpIf CMP_EQ, L_03F3
     VMJump L_03FF
 
@@ -318,7 +318,7 @@ L_03F3:
     VMJump L_0424
 
 L_03FF:
-    WorkCmpConst 0x4086, 16
+    WorkCmpConst EVENT_WORK_0x4086, 16
     VMJumpIf CMP_EQ, L_0412
     VMJump L_041E
 
@@ -353,18 +353,18 @@ Script_8:
     ActorCmdExec 4, Movement_0BC8
     ActorCmdExec 255, Movement_0BD4
     ActorCmdWait
-    VMStackPush 0x4086
+    VMStackPush EVENT_WORK_0x4086
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04AE
     // "You're a new face.\nIs this your first time here?[f000]븁\u0000\nUnity Tower is the place where\nTrainers come from all over the world.[f000]븁\u0000\nThat's why I work hard every day doing\nsecurity checks to protect those[f000]븀\u0000\nyoung Trainers.[f000]븁\u0000\nDon't loiter around here\nand cause trouble.[f000]븀\u0000\n...'Kay, you can pass.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, UnityTower2_Text_YoureNewFaceFirst, 4, 0, 0
     ActorMsgClose
-    WorkSetConst 0x4086, 1
+    WorkSetConst EVENT_WORK_0x4086, 1
     VMJump L_06AF
 
 L_04AE:
-    WorkCmpConst 0x4002, 2
+    WorkCmpConst EVENT_WORK_0x4002, 2
     VMJumpIf CMP_EQ, L_04C1
     VMJump L_04CD
 
@@ -373,7 +373,7 @@ L_04C1:
     VMJump L_0685
 
 L_04CD:
-    WorkCmpConst 0x4002, 3
+    WorkCmpConst EVENT_WORK_0x4002, 3
     VMJumpIf CMP_EQ, L_04E0
     VMJump L_04EC
 
@@ -382,7 +382,7 @@ L_04E0:
     VMJump L_0685
 
 L_04EC:
-    WorkCmpConst 0x4002, 4
+    WorkCmpConst EVENT_WORK_0x4002, 4
     VMJumpIf CMP_EQ, L_04FF
     VMJump L_050B
 
@@ -391,7 +391,7 @@ L_04FF:
     VMJump L_0685
 
 L_050B:
-    WorkCmpConst 0x4002, 5
+    WorkCmpConst EVENT_WORK_0x4002, 5
     VMJumpIf CMP_EQ, L_051E
     VMJump L_052A
 
@@ -400,7 +400,7 @@ L_051E:
     VMJump L_0685
 
 L_052A:
-    WorkCmpConst 0x4002, 6
+    WorkCmpConst EVENT_WORK_0x4002, 6
     VMJumpIf CMP_EQ, L_053D
     VMJump L_0549
 
@@ -409,7 +409,7 @@ L_053D:
     VMJump L_0685
 
 L_0549:
-    WorkCmpConst 0x4002, 7
+    WorkCmpConst EVENT_WORK_0x4002, 7
     VMJumpIf CMP_EQ, L_055C
     VMJump L_0568
 
@@ -418,7 +418,7 @@ L_055C:
     VMJump L_0685
 
 L_0568:
-    WorkCmpConst 0x4002, 8
+    WorkCmpConst EVENT_WORK_0x4002, 8
     VMJumpIf CMP_EQ, L_057B
     VMJump L_0587
 
@@ -427,7 +427,7 @@ L_057B:
     VMJump L_0685
 
 L_0587:
-    WorkCmpConst 0x4002, 9
+    WorkCmpConst EVENT_WORK_0x4002, 9
     VMJumpIf CMP_EQ, L_059A
     VMJump L_05A6
 
@@ -436,7 +436,7 @@ L_059A:
     VMJump L_0685
 
 L_05A6:
-    WorkCmpConst 0x4002, 10
+    WorkCmpConst EVENT_WORK_0x4002, 10
     VMJumpIf CMP_EQ, L_05B9
     VMJump L_05C5
 
@@ -445,7 +445,7 @@ L_05B9:
     VMJump L_0685
 
 L_05C5:
-    WorkCmpConst 0x4002, 11
+    WorkCmpConst EVENT_WORK_0x4002, 11
     VMJumpIf CMP_EQ, L_05D8
     VMJump L_05E4
 
@@ -454,7 +454,7 @@ L_05D8:
     VMJump L_0685
 
 L_05E4:
-    WorkCmpConst 0x4002, 12
+    WorkCmpConst EVENT_WORK_0x4002, 12
     VMJumpIf CMP_EQ, L_05F7
     VMJump L_0603
 
@@ -463,7 +463,7 @@ L_05F7:
     VMJump L_0685
 
 L_0603:
-    WorkCmpConst 0x4002, 13
+    WorkCmpConst EVENT_WORK_0x4002, 13
     VMJumpIf CMP_EQ, L_0616
     VMJump L_0622
 
@@ -472,7 +472,7 @@ L_0616:
     VMJump L_0685
 
 L_0622:
-    WorkCmpConst 0x4002, 14
+    WorkCmpConst EVENT_WORK_0x4002, 14
     VMJumpIf CMP_EQ, L_0635
     VMJump L_0641
 
@@ -481,7 +481,7 @@ L_0635:
     VMJump L_0685
 
 L_0641:
-    WorkCmpConst 0x4002, 15
+    WorkCmpConst EVENT_WORK_0x4002, 15
     VMJumpIf CMP_EQ, L_0654
     VMJump L_0660
 
@@ -490,7 +490,7 @@ L_0654:
     VMJump L_0685
 
 L_0660:
-    WorkCmpConst 0x4002, 16
+    WorkCmpConst EVENT_WORK_0x4002, 16
     VMJumpIf CMP_EQ, L_0673
     VMJump L_067F
 
@@ -509,12 +509,12 @@ L_0685:
     WordSetPlayerName 3
     ActorMsg MSGFILE_SCRIPT, 0x8027, 4, 0, 0
     ActorMsgClose
-    WorkGet 0x4086, 0x4002
+    WorkGet EVENT_WORK_0x4086, EVENT_WORK_0x4002
 
 L_06AF:
     ActorCmdExec 4, Movement_0BDC
     ActorCmdWait
-    WorkSetConst 0x4001, 0
+    WorkSetConst EVENT_WORK_0x4001, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -582,15 +582,15 @@ L_078C:
     WorkSetConst 0x8028, 0
     WorkSetConst 0x8029, 0
     WorkSetConst 0x802a, 0
-    VMStackPush 0x4086
+    VMStackPush EVENT_WORK_0x4086
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07BD
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMJump L_0BBE
 
 L_07BD:
-    WorkCmpConst 0x4086, 1
+    WorkCmpConst EVENT_WORK_0x4086, 1
     VMJumpIf CMP_EQ, L_07D0
     VMJump L_07DC
 
@@ -599,7 +599,7 @@ L_07D0:
     VMJump L_09AF
 
 L_07DC:
-    WorkCmpConst 0x4086, 2
+    WorkCmpConst EVENT_WORK_0x4086, 2
     VMJumpIf CMP_EQ, L_07EF
     VMJump L_07FB
 
@@ -608,7 +608,7 @@ L_07EF:
     VMJump L_09AF
 
 L_07FB:
-    WorkCmpConst 0x4086, 3
+    WorkCmpConst EVENT_WORK_0x4086, 3
     VMJumpIf CMP_EQ, L_080E
     VMJump L_081A
 
@@ -617,7 +617,7 @@ L_080E:
     VMJump L_09AF
 
 L_081A:
-    WorkCmpConst 0x4086, 4
+    WorkCmpConst EVENT_WORK_0x4086, 4
     VMJumpIf CMP_EQ, L_082D
     VMJump L_0839
 
@@ -626,7 +626,7 @@ L_082D:
     VMJump L_09AF
 
 L_0839:
-    WorkCmpConst 0x4086, 5
+    WorkCmpConst EVENT_WORK_0x4086, 5
     VMJumpIf CMP_EQ, L_084C
     VMJump L_0858
 
@@ -635,7 +635,7 @@ L_084C:
     VMJump L_09AF
 
 L_0858:
-    WorkCmpConst 0x4086, 6
+    WorkCmpConst EVENT_WORK_0x4086, 6
     VMJumpIf CMP_EQ, L_086B
     VMJump L_0877
 
@@ -644,7 +644,7 @@ L_086B:
     VMJump L_09AF
 
 L_0877:
-    WorkCmpConst 0x4086, 7
+    WorkCmpConst EVENT_WORK_0x4086, 7
     VMJumpIf CMP_EQ, L_088A
     VMJump L_0896
 
@@ -653,7 +653,7 @@ L_088A:
     VMJump L_09AF
 
 L_0896:
-    WorkCmpConst 0x4086, 8
+    WorkCmpConst EVENT_WORK_0x4086, 8
     VMJumpIf CMP_EQ, L_08A9
     VMJump L_08B5
 
@@ -662,7 +662,7 @@ L_08A9:
     VMJump L_09AF
 
 L_08B5:
-    WorkCmpConst 0x4086, 9
+    WorkCmpConst EVENT_WORK_0x4086, 9
     VMJumpIf CMP_EQ, L_08C8
     VMJump L_08D4
 
@@ -671,7 +671,7 @@ L_08C8:
     VMJump L_09AF
 
 L_08D4:
-    WorkCmpConst 0x4086, 10
+    WorkCmpConst EVENT_WORK_0x4086, 10
     VMJumpIf CMP_EQ, L_08E7
     VMJump L_08F3
 
@@ -680,7 +680,7 @@ L_08E7:
     VMJump L_09AF
 
 L_08F3:
-    WorkCmpConst 0x4086, 11
+    WorkCmpConst EVENT_WORK_0x4086, 11
     VMJumpIf CMP_EQ, L_0906
     VMJump L_0912
 
@@ -689,7 +689,7 @@ L_0906:
     VMJump L_09AF
 
 L_0912:
-    WorkCmpConst 0x4086, 12
+    WorkCmpConst EVENT_WORK_0x4086, 12
     VMJumpIf CMP_EQ, L_0925
     VMJump L_0931
 
@@ -698,7 +698,7 @@ L_0925:
     VMJump L_09AF
 
 L_0931:
-    WorkCmpConst 0x4086, 13
+    WorkCmpConst EVENT_WORK_0x4086, 13
     VMJumpIf CMP_EQ, L_0944
     VMJump L_0950
 
@@ -707,7 +707,7 @@ L_0944:
     VMJump L_09AF
 
 L_0950:
-    WorkCmpConst 0x4086, 14
+    WorkCmpConst EVENT_WORK_0x4086, 14
     VMJumpIf CMP_EQ, L_0963
     VMJump L_096F
 
@@ -716,7 +716,7 @@ L_0963:
     VMJump L_09AF
 
 L_096F:
-    WorkCmpConst 0x4086, 15
+    WorkCmpConst EVENT_WORK_0x4086, 15
     VMJumpIf CMP_EQ, L_0982
     VMJump L_098E
 
@@ -725,7 +725,7 @@ L_0982:
     VMJump L_09AF
 
 L_098E:
-    WorkCmpConst 0x4086, 16
+    WorkCmpConst EVENT_WORK_0x4086, 16
     VMJumpIf CMP_EQ, L_09A1
     VMJump L_09AD
 
@@ -865,12 +865,12 @@ L_0B8C:
     VMStackPush 0x8029
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0BBE
-    WorkSetConst 0x4001, 1
+    WorkSetConst EVENT_WORK_0x4001, 1
     VMStackPush 0x802a
-    VMStackPush 0x4086
+    VMStackPush EVENT_WORK_0x4086
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_0BBE
-    WorkGet 0x4002, 0x802a
+    WorkGet EVENT_WORK_0x4002, 0x802a
 
 L_0BBE:
     VMReturn

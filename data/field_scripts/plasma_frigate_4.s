@@ -17,10 +17,10 @@ Script_2:
     VMHalt
 
 Script_3:
-    VMStackPush 0x40f3
+    VMStackPush EVENT_WORK_0x40f3
     VMStackPushConst 2
     VMStackCmp CMP_EQ
-    VMStackPushFlag 429
+    VMStackPushFlag EVENT_FLAG_0x01ad
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -29,10 +29,10 @@ Script_3:
     VMJump L_0098
 
 L_0069:
-    VMStackPush 0x40f3
+    VMStackPush EVENT_WORK_0x40f3
     VMStackPushConst 3
     VMStackCmp CMP_EQ
-    VMStackPushFlag 429
+    VMStackPushFlag EVENT_FLAG_0x01ad
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -80,7 +80,7 @@ Script_5:
     EvCameraRebind
     EvCameraEnd
     BGMChangeMap
-    WorkSetConst 0x40f3, 2
+    WorkSetConst EVENT_WORK_0x40f3, 2
     VMHalt
     .balign 4, 0
 
@@ -184,17 +184,17 @@ L_02C2:
     ActorMsg MSGFILE_SCRIPT, PlasmaFrigate4_Text_ButHaveShownPotential, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    WorkSetConst 0x40f3, 3
-    WorkSetConst 0x40f4, 1
-    WorkSetConst 0x4125, 1
+    WorkSetConst EVENT_WORK_0x40f3, 3
+    WorkSetConst EVENT_WORK_0x40f4, 1
+    WorkSetConst EVENT_WORK_0x4125, 1
     VMReturn
 
 Script_6:
     ActorsPauseAll
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f3
+    VMStackPush EVENT_WORK_0x40f3
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -203,10 +203,10 @@ Script_6:
     VMJump L_0418
 
 L_0319:
-    VMStackPushFlag 2400
+    VMStackPushFlag EVENT_FLAG_0x0960
     VMStackPushConst 0
     VMStackCmp CMP_EQ
-    VMStackPush 0x40f3
+    VMStackPush EVENT_WORK_0x40f3
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMStackCmp CMP_AND
@@ -222,7 +222,7 @@ L_0319:
 L_0356:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    VMStackPushFlag 429
+    VMStackPushFlag EVENT_FLAG_0x01ad
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_040A
@@ -262,8 +262,8 @@ L_03B8:
     ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate4_Text_IfYoudLikePlease, 0, 0
     LastKeyWait
     MsgWinCloseAll
-    FlagSet 429
-    FlagSet 2793
+    FlagSet EVENT_FLAG_0x01ad
+    FlagSet EVENT_FLAG_DAILY_0x0ae9
     VMJump L_0418
 
 L_040A:

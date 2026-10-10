@@ -32,17 +32,17 @@
     WorkSetConst 0x8021, 0
 
 Script_24:
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0087
-    WorkSetConst 0x418f, 2
+    WorkSetConst EVENT_WORK_0x418f, 2
 
 L_0087:
     VMHalt
 
 Script_22:
-    VMStackPush 0x4094
+    VMStackPush EVENT_WORK_0x4094
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B4
@@ -53,7 +53,7 @@ L_00B4:
     VMHalt
 
 Script_23:
-    VMStackPush 0x4094
+    VMStackPush EVENT_WORK_0x4094
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E1
@@ -66,7 +66,7 @@ L_00E1:
 L_00E3:
     SEPlay SEQ_SE_MESSAGE
     Cmd_0230 0x8020, 0
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0108
@@ -243,7 +243,7 @@ Script_19:
     ActorsPauseAll
     WorkSetConst 0x8022, 0
     AbyssalRuinsCmd_GetStepCounter 0x8022
-    VMStackPush 0x4094
+    VMStackPush EVENT_WORK_0x4094
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_030B
@@ -254,7 +254,7 @@ L_030B:
     SEPlay SEQ_SE_MESSAGE
     // "HOJLFWBSCOPPH[f000]븁\u0000"
     Cmd_0230 AbyssalRuins5_Text_Hojlfwbscopph, 0
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0330
@@ -278,7 +278,7 @@ L_0338:
     SEPlay SEQ_SE_MESSAGE
     // "HOJLFWBSCOPPH[f000]븁\u0000"
     Cmd_0230 AbyssalRuins5_Text_Hojlfwbscopph, 0
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0370
@@ -298,14 +298,14 @@ L_0370:
     SystemMsg AbyssalRuins5_Text_WallMovedCanProceed, 2
     LastKeyWait
     InfoMsgClose
-    WorkSetConst 0x4094, 1
+    WorkSetConst EVENT_WORK_0x4094, 1
     VMJump L_03DB
 
 L_03B2:
     SEPlay SEQ_SE_MESSAGE
     // "UTPMTUFHHOJLPO"
     Cmd_0230 AbyssalRuins5_Text_Utpmtufhhojlpo, 0
-    VMStackPush 0x418f
+    VMStackPush EVENT_WORK_0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_03D7

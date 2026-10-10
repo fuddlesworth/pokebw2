@@ -59,7 +59,7 @@ L_008B:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D5
-    FlagSet 924
+    FlagSet EVENT_FLAG_0x039c
     ActorDelete 3
     CallWildBattleEnd
     VMJump L_00D7
@@ -74,7 +74,7 @@ L_00D7:
     VMJump L_00F8
 
 L_00EE:
-    FlagSet 402
+    FlagSet EVENT_FLAG_0x0192
     VMJump L_0128
 
 L_00F8:

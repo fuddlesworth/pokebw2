@@ -25,8 +25,8 @@ Script_1:
     ActorCmdWait
     SEPlay SEQ_SE_SW_YACONROAD_01
     SEWait
-    FlagSet 951
-    FlagReset 948
+    FlagSet EVENT_FLAG_0x03b7
+    FlagReset EVENT_FLAG_0x03b4
     RTReserveScript 7
     MapChangeCore ZONE_CLAY_TUNNEL, 27, 0, 38, 2
     VMJump L_007F
