@@ -339,7 +339,8 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     delink_outputs = sorted({f["delink_file"] for f in files})
     n.build(delink_outputs, "delink", dsd_configs, implicit=[extract_dir / "config.yaml"],
             variables={"config": str(arm9_config)})
-    n.build([lcf_file, objects_file], "lcf", dsd_configs, variables={"config": str(arm9_config)})
+    n.build([lcf_file, objects_file], "lcf", dsd_configs, implicit=[extract_dir / "config.yaml"],
+            variables={"config": str(arm9_config)})
     link_lcf = lcf_file
     if shift:
         # Padding in the linker script moves the code and data after it, see tools/scripts/shift_lcf.py
