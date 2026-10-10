@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fire Fang",
+    "description": "The user bites with flame-cloaked fangs.\nIt may also make the target flinch or leave\nit burned.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

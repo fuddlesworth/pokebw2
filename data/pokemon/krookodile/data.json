@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Krookodile",
+    "category": "Intimidation Pokémon",
+    "pokedex_entry": "Very violent Pokémon, they try\nto clamp down on anything that\nmoves in front of their eyes.",
     "base_stats": {
         "hp": 95,
         "attack": 117,

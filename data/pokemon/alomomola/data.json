@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Alomomola",
+    "category": "Caring Pokémon",
+    "pokedex_entry": "It gently holds injured and weak\nPokémon in its fins. Its special\nmembrane heals their wounds.",
     "base_stats": {
         "hp": 165,
         "attack": 75,

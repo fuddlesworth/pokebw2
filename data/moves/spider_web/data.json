@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Spider Web",
+    "description": "The user ensnares the target with thin,\ngooey silk so it can't flee from battle.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

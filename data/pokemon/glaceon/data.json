@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Glaceon",
+    "category": "Fresh Snow Pokémon",
+    "pokedex_entry": "It lowers its body heat to freeze its\nfur. The hairs then become like needles\nit can fire.",
     "base_stats": {
         "hp": 65,
         "attack": 60,

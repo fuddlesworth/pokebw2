@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lotad",
+    "category": "Water Weed Pokémon",
+    "pokedex_entry": "It looks like an aquatic plant and\nserves as a ferry to Pokémon\nthat can't swim.",
     "base_stats": {
         "hp": 40,
         "attack": 30,

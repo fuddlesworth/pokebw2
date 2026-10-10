@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Doom Desire",
+    "description": "Two turns after this move is used, the\nuser blasts the target with a\nconcentrated bundle of light.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_SPECIAL",

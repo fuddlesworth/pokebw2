@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Dark Pulse",
+    "description": "The user releases a horrible aura imbued\nwith dark thoughts.\nIt may also make the target flinch.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

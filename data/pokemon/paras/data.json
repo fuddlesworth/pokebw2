@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Paras",
+    "category": "Mushroom Pokémon",
+    "pokedex_entry": "Mushrooms named tochukaso grow\non its back. They grow along\nwith the host Paras.",
     "base_stats": {
         "hp": 35,
         "attack": 70,

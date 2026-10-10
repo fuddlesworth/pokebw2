@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rock Climb",
+    "description": "The user attacks the target by smashing\ninto it with incredible force.\nIt may also confuse the target.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

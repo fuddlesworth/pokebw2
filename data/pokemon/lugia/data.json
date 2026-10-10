@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lugia",
+    "category": "Diving Pokémon",
+    "pokedex_entry": "It sleeps in a deep-sea trench.\nIf it flaps its wings, it is said to\ncause a 40-day storm.",
     "base_stats": {
         "hp": 106,
         "attack": 90,

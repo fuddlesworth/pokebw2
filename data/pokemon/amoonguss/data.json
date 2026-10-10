@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Amoonguss",
+    "category": "Mushroom Pokémon",
+    "pokedex_entry": "It moves the caps on both arms\nand does a dance to lure prey.\nIt prefers damp places.",
     "base_stats": {
         "hp": 114,
         "attack": 85,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gardevoir",
+    "category": "Embrace Pokémon",
+    "pokedex_entry": "To protect its Trainer, it will\nexpend all its psychic power\nto create a small black hole.",
     "base_stats": {
         "hp": 68,
         "attack": 65,

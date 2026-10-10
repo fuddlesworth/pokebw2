@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rhona",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -27,6 +28,12 @@
             "ability": 1,
             "item": "ITEM_ROCKY_HELMET",
             "moves": [ "MOVE_DRAGON_CLAW", "MOVE_SWAGGER", "MOVE_SUBSTITUTE", "MOVE_PROTECT" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Such defense...\nIt is beyond comparison!"
         }
     ]
 }

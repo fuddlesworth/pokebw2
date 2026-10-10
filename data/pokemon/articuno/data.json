@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Articuno",
+    "category": "Freeze Pokémon",
+    "pokedex_entry": "A legendary bird Pokémon.\nIt can create blizzards by\nfreezing moisture in the air.",
     "base_stats": {
         "hp": 90,
         "attack": 85,

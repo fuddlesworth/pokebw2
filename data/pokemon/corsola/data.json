@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Corsola",
+    "category": "Coral Pokémon",
+    "pokedex_entry": "They prefer unpolluted southern seas.\nTheir coral branches lose their color\nand deteriorate in dirty water.",
     "base_stats": {
         "hp": 55,
         "attack": 55,

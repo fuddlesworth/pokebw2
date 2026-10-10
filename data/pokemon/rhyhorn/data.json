@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Rhyhorn",
+    "category": "Spikes Pokémon",
+    "pokedex_entry": "Its powerful tackles can destroy\nanything. However, it is too\nslow witted to help people work.",
     "base_stats": {
         "hp": 80,
         "attack": 85,

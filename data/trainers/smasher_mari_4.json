@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Mari",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My pinpoint smash is as accurate as\nthreading a string through a needle!{be00}\nThink you can handle it?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You happily handle any kind of attack!\nWhat a big heart you have!"
+        },
+        {
+            "type": 15,
+            "text": "I'll show that I have a big heart, too!\nHere, have this item!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "You need to put everything you've\ngot into each and every hit of the ball!{be01}\nTreat each moment of your life as if\nit's a match point!"
         }
     ]
 }

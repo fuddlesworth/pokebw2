@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Webster",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_IRON_HEAD", "MOVE_POWER_WHIP", "MOVE_PAYBACK", "MOVE_INGRAIN" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Behold the blinding brilliance of my many\nGym Badges!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your skill is too brilliant to behold!\nIt's so bright that I can't see anything!"
+        },
+        {
+            "type": 2,
+            "text": "That Badge you have there...{be01}\nNo, it is your skill and the Pokémon with\nyou that are so brilliantly shining!"
         }
     ]
 }

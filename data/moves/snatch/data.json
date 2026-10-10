@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Snatch",
+    "description": "The user steals the effects of any\nhealing or stat-changing move the\nopponent attempts to use.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Guillotine",
+    "description": "A vicious, tearing attack with big pincers.\nThe target will faint instantly\nif this attack hits.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_OHKO",
     "category": "MOVE_CATEGORY_PHYSICAL",

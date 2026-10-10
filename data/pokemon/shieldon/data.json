@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Shieldon",
+    "category": "Shield Pokémon",
+    "pokedex_entry": "It is outstandingly armored. As a\nresult, it can eat grass and\nberries without having to fight.",
     "base_stats": {
         "hp": 30,
         "attack": 42,

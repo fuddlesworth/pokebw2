@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Starly",
+    "category": "Starling Pokémon",
+    "pokedex_entry": "Because they are weak individually,\nthey form groups. However, they\nbicker if the group grows too big.",
     "base_stats": {
         "hp": 40,
         "attack": 55,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Horton",
     "class": "TRAINER_CLASS_ARTIST",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Art is explosions! Life forces\ncolliding together!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh, I just got whitewashed!"
+        },
+        {
+            "type": 2,
+            "text": "Boom!{be01}\nColors collide to form new colors!"
         }
     ]
 }

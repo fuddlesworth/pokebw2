@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sweet Scent",
+    "description": "A sweet scent that lowers the opposing\nteam's evasiveness. It also lures wild\nPokémon if used in grass, etc.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

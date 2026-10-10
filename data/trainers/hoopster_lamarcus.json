@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lamarcus",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey! Trainer!{be01}\nI will strike you from above.\nMy attack has a height!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "That's right.\nThe Pokémon do the fighting, not me..."
+        },
+        {
+            "type": 15,
+            "text": "How about this one?\nIt's got quite a flavor!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "We always play basketball\nwith Pokémon here!"
         }
     ]
 }

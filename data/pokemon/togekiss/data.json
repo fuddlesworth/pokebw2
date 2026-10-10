@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Togekiss",
+    "category": "Jubilee Pokémon",
+    "pokedex_entry": "It shares many blessings with\npeople who respect one another's\nrights and avoid needless strife.",
     "base_stats": {
         "hp": 85,
         "attack": 50,

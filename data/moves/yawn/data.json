@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Yawn",
+    "description": "The user lets loose a huge yawn that\nlulls the target into falling asleep\non the next turn.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

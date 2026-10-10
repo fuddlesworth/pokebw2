@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Harmon",
     "class": "TRAINER_CLASS_BOSS_TRAINER_M_161",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_RED_CARD",
             "moves": [ "MOVE_THUNDER", "MOVE_SUPERPOWER", "MOVE_RAIN_DANCE", "MOVE_THUNDER_WAVE" ]
         }
-    ]
+    ],
+    "messages": []
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bob",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Kids! Please cooperate with the\nspecial training for my Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My block was supposed to guard\nagainst even Steel-type Pokémon..."
+        },
+        {
+            "type": 15,
+            "text": "This gift might be more effective\nthan my block!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Physical therapy is over,\nso we're doing some special training."
         }
     ]
 }

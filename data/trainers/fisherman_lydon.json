@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lydon",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Fishermen read the flow of water\nor the flow of a battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The flow of the battle...\nIt's too wild to follow!"
+        },
+        {
+            "type": 2,
+            "text": "The flow of water here on Route 17\nis very wild.{be01}\nIf you don't tap into it well,\nyou cannot go where you want!"
         }
     ]
 }

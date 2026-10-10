@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Woobat",
+    "category": "Bat Pokémon",
+    "pokedex_entry": "The heart-shaped mark left on a body\nafter a Woobat has been attached to it\nis said to bring good fortune.",
     "base_stats": {
         "hp": 55,
         "attack": 45,

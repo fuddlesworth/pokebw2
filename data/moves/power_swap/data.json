@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Power Swap",
+    "description": "The user employs its psychic power to\nswitch changes to its Attack and\nSp. Atk with the target.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

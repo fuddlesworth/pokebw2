@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gliscor",
+    "category": "Fang Scorp Pokémon",
+    "pokedex_entry": "It dances silently through the sky.\nWhen it approaches prey, it can\nland a critical hit in an instant.",
     "base_stats": {
         "hp": 75,
         "attack": 95,

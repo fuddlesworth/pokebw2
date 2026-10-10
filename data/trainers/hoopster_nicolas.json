@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nicolas",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "You don't even have three healthy\nPokémon? That's just odd!"
+        },
+        {
+            "type": 0,
+            "text": "Fooling you fair and square!\nThat's what we call a trick play!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What the hoops?\nI was the one who was tricked!"
+        },
+        {
+            "type": 2,
+            "text": "How are you gonna get past an opponent?\nThat's vital for battles and basketball."
         }
     ]
 }

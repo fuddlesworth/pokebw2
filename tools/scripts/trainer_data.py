@@ -4,12 +4,18 @@ writes them from the ROM once, and pack builds the trainer (a/0/9/1) and party (
 build does.
 
     trainer_data.py dump extract/b2_us/files data/trainers
-    trainer_data.py pack data/trainers TRAINERS PARTIES
+    trainer_data.py pack data/trainers TRAINERS PARTIES MESSAGE_TABLE MESSAGE_OFFSETS
 
 Each trainer is data/trainers/<trainer>.json, named after its constant (smasher_elena.json for
 TRAINER_SMASHER_ELENA), and the archives have them in the order of data/constants/trainers.txt. TRAINER_NONE has no
 file: its entries are the empty placeholder the game has, a 16-byte record and a 6-byte party. trainer.schema.json
 describes each field.
+
+A trainer's file also holds its name and its messages, which the text files take with \\from{trainers.name} and
+\\from{trainers.messages} (see text_sources.py). The messages are lines of system message file 381, in the order of
+the trainer message table (a/0/8/9), which pairs each with its trainer and type, and whose offset for each trainer is
+in a/0/9/0 (TrainerMsg_Load). That order is the trainers of data/trainers/message_order.json, then any others with
+messages, in ID order; the packer writes both tables from it.
 """
 import argparse
 import struct
@@ -20,12 +26,16 @@ sys.path.insert(0, str(Path(__file__).parent))
 from datajson import DataError, label, load, load_schema, name, value, write  # noqa: E402
 from gen_constants import load as load_list  # noqa: E402
 from narc import read_narc, write_narc  # noqa: E402
+from text_data import message_lines  # noqa: E402
+from text_sources import message_order, to_json, trainers as trainer_files  # noqa: E402
 
 TRAINER = struct.Struct("<4B4HIBBH")
 assert TRAINER.size == 20
 MON = struct.Struct("<4BHH")
 NONE_TRAINER, NONE_PARTY = bytes(16), bytes(6)
 PARTY_MOVES, PARTY_ITEMS = 1, 2
+# Files of the system messages (a/0/0/2) with the trainers' messages and names
+MESSAGES, NAMES = 381, 382
 
 
 def file_name(trainer: str) -> str:
@@ -78,8 +88,27 @@ def dump(files: Path, output: Path):
     names = ordered_trainers()
     if not len(trainers) == len(parties) == len(names) or (trainers[0], parties[0]) != (NONE_TRAINER, NONE_PARTY):
         sys.exit("the archives don't have one entry per trainer of trainers.txt, from the empty TRAINER_NONE")
-    for trainer_name, trainer, party in list(zip(names, trainers, parties))[1:]:
-        write(output / file_name(trainer_name), trainer_json(trainer, party))
+    trainer_names = message_lines(files / "a/0/0/2", NAMES)
+    lines = message_lines(files / "a/0/0/2", MESSAGES)
+    (table,) = read_narc((files / "a/0/8/9").read_bytes())
+    messages: dict[int, list] = {}
+    order = []
+    for i, line in enumerate(lines):
+        trainer, kind = struct.unpack_from("<HH", table, 4 * i)
+        if trainer not in messages:
+            order.append(names[trainer])
+        messages.setdefault(trainer, []).append({"type": kind, "text": to_json(line)})
+    for index, (trainer_name, trainer, party) in enumerate(zip(names, trainers, parties)):
+        if index == 0:
+            continue
+        name_line = trainer_names[index]
+        text = {"name": to_json(name_line.removeprefix("\\c"))}
+        if not name_line.startswith("\\c"):
+            text["compress_name"] = False
+        data = trainer_json(trainer, party)
+        data = {"$schema": data.pop("$schema"), **text, **data, "messages": messages.get(index, [])}
+        write(output / file_name(trainer_name), data)
+    write(output / "message_order.json", order)
     print(f"wrote {len(trainers) - 1} trainers to {output}")
 
 
@@ -109,7 +138,19 @@ def trainer_bytes(data: dict, where: str) -> tuple[bytes, bytes]:
     return record, b"".join(entries)
 
 
-def pack(root: Path, trainers_output: Path, parties_output: Path):
+def message_tables() -> tuple[bytes, bytes]:
+    """Returns the trainer message table, a (trainer, type) pair per message, and each trainer's offset in it."""
+    ids = load_list("trainers")
+    table = b""
+    offsets = [0] * len(ids)
+    for trainer_name in message_order():
+        offsets[ids[trainer_name]] = len(table)
+        for message in trainer_files()[trainer_name]["messages"]:
+            table += struct.pack("<HH", ids[trainer_name], message["type"])
+    return table, struct.pack(f"<{len(offsets)}H", *offsets)
+
+
+def pack(root: Path, trainers_output: Path, parties_output: Path, table_output: Path, offsets_output: Path):
     schema = load_schema(root / "trainer.schema.json")
     trainers, parties = [NONE_TRAINER], [NONE_PARTY]
     for trainer_name in ordered_trainers()[1:]:
@@ -117,7 +158,9 @@ def pack(root: Path, trainers_output: Path, parties_output: Path):
         record, party = trainer_bytes(load(path, schema), label(path))
         trainers.append(record)
         parties.append(party)
-    for output, members in ((trainers_output, trainers), (parties_output, parties)):
+    table, offsets = message_tables()
+    for output, members in ((trainers_output, trainers), (parties_output, parties), (table_output, [table]),
+                            (offsets_output, [offsets])):
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_bytes(write_narc(members))
 
@@ -128,9 +171,10 @@ def main():
     dump_parser = commands.add_parser("dump", help="write data/trainers/ from the extracted files")
     dump_parser.add_argument("files", type=Path, help="the extracted files/ directory")
     dump_parser.add_argument("output", type=Path)
-    pack_parser = commands.add_parser("pack", help="build the trainer and party archives from data/trainers/")
+    pack_parser = commands.add_parser("pack", help="build the trainer archives from data/trainers/")
     pack_parser.add_argument("root", type=Path)
-    pack_parser.add_argument("outputs", type=Path, nargs=2, metavar="ARCHIVE", help="the trainer and party archives")
+    pack_parser.add_argument("outputs", type=Path, nargs=4, metavar="ARCHIVE",
+                             help="the trainer, party, trainer message table and message offset archives")
     args = parser.parse_args()
     if args.command == "dump":
         dump(args.files, args.output)

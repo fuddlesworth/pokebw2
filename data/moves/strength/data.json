@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Strength",
+    "description": "The target is slugged with a punch thrown\nat maximum power. It can also be used\nto move heavy boulders.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

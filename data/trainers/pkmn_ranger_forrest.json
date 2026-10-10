@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Forrest",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm always patrolling this area!{be01}\nI'll show you a Pokémon battle that\ntakes advantage of the terrain!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Argh! I couldn't take advantage of\nthe terrain... What went wrong?!"
+        },
+        {
+            "type": 15,
+            "text": "A Ranger always has one of these.\nI'll give it to you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "The forest and the Pokémon\nthat live inside are alive...{be01}\nSomething changes every day,\nso it's fun to patrol!"
         }
     ]
 }

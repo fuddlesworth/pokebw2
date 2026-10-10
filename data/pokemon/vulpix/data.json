@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Vulpix",
+    "category": "Fox Pokémon",
+    "pokedex_entry": "As each tail grows, its fur becomes\nmore lustrous. When held, it feels\nslightly warm.",
     "base_stats": {
         "hp": 38,
         "attack": 41,

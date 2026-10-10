@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Struggle",
+    "description": "An attack that is used in desperation\nonly if the user has no PP. It also hurts\nthe user slightly.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

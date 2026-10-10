@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chloris",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_ROTATION",
     "items": [],
@@ -34,6 +35,24 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_OUTRAGE", "MOVE_EARTHQUAKE", "MOVE_SUCKER_PUNCH", "MOVE_RETALIATE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "A Rotation Battle is a battle using\nthree Pokémon!"
+        },
+        {
+            "type": 0,
+            "text": "In Rotation Battles, it's also important\nto know when NOT to rotate.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I've been training for Rotation Battles for\ntwo years now, but it's still not enough..."
+        },
+        {
+            "type": 2,
+            "text": "I'm sure that Grimsley would've\nknown when to rotate..."
         }
     ]
 }

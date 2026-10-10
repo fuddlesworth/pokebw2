@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Whirlpool",
+    "description": "Traps foes in a violent swirling\nwhirlpool for four to five turns.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

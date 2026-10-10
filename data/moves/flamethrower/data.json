@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Flamethrower",
+    "description": "The target is scorched with an intense\nblast of fire. It may also leave the target\nwith a burn.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

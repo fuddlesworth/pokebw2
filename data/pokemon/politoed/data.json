@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Politoed",
+    "category": "Frog Pokémon",
+    "pokedex_entry": "It gathers groups of others as\ntheir leader. Its cries make\nPoliwag obey.",
     "base_stats": {
         "hp": 90,
         "attack": 75,

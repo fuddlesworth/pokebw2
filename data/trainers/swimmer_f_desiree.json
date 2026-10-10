@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Desiree",
     "class": "TRAINER_CLASS_SWIMMER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Catch this! My Pokémon is huge!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wow! Impressive Pokémon!\nEven more so than I expected!"
+        },
+        {
+            "type": 2,
+            "text": "Wailord is over 47 feet long,\nbut it still fits inside a Poké Ball!{be00}\nThe power of science sure is incredible!"
         }
     ]
 }

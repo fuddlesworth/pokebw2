@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Delibird",
+    "category": "Delivery Pokémon",
+    "pokedex_entry": "It carries food all day long.\nWhen someone is lost in the\nmountains, it shares that food.",
     "base_stats": {
         "hp": 45,
         "attack": 55,

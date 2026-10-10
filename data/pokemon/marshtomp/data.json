@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Marshtomp",
+    "category": "Mud Fish Pokémon",
+    "pokedex_entry": "Its sturdy legs give it sure\nfooting, even in mud. It\nburrows into dirt to sleep.",
     "base_stats": {
         "hp": 70,
         "attack": 85,

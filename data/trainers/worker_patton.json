@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Patton",
     "class": "TRAINER_CLASS_WORKER_44",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hold up, youngster!\nA battle will help you warm up!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hah! Battling gets me so warm that I'm\neven sweating!"
+        },
+        {
+            "type": 2,
+            "text": "You can feel my face if you don't\nbelieve me. See? Dripping with sweat!"
         }
     ]
 }

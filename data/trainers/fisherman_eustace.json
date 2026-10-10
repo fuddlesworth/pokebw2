@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Eustace",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If there are Trainers,\nI just have battles with them.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I've never seen\nsuch a strong Trainer!"
+        },
+        {
+            "type": 2,
+            "text": "I'll battle with anyone.{be01}\nBecause they may show me Water-type\nPokémon I've never seen."
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wobbuffet",
+    "category": "Patient Pokémon",
+    "pokedex_entry": "It desperately tries to keep its\nblack tail hidden. It is said to be\nproof the tail hides a secret.",
     "base_stats": {
         "hp": 190,
         "attack": 33,

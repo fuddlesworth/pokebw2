@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Vespiquen",
+    "category": "Beehive Pokémon",
+    "pokedex_entry": "It houses its colony in cells in its body\nand releases various pheromones to\nmake those grubs do its bidding.",
     "base_stats": {
         "hp": 70,
         "attack": 80,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Smoochum",
+    "category": "Kiss Pokémon",
+    "pokedex_entry": "It tests everything by touching\nwith its lips, which remember\nwhat it likes and dislikes.",
     "base_stats": {
         "hp": 45,
         "attack": 30,

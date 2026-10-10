@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bubble",
+    "description": "A spray of countless bubbles is jetted at\nthe opposing team. It may also lower the\ntargets' Speed stats.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

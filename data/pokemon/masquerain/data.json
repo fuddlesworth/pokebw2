@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Masquerain",
+    "category": "Eyeball Pokémon",
+    "pokedex_entry": "Its antennae have eye patterns\non them. Its four wings enable it\nto hover and fly in any direction.",
     "base_stats": {
         "hp": 70,
         "attack": 60,

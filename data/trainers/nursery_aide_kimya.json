@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kimya",
     "class": "TRAINER_CLASS_NURSERY_AIDE",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I always give it my best when I'm\naround kids and Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh no! I'm not being a very good\nexample to the kids, am I?"
+        },
+        {
+            "type": 2,
+            "text": "Every day is full of amazing, new\ndiscoveries when I'm with children{be00}\nand Pokémon!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Jellicent",
+    "category": "Floating Pokémon",
+    "pokedex_entry": "Its body is mostly seawater.\nIt's said there's a castle of ships\nJellicent have sunk on the seafloor.",
     "base_stats": {
         "hp": 100,
         "attack": 60,

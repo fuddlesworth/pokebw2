@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Torkoal",
+    "category": "Coal Pokémon",
+    "pokedex_entry": "It burns coal inside its shell for\nenergy. It blows out black soot if\nit is endangered.",
     "base_stats": {
         "hp": 70,
         "attack": 85,

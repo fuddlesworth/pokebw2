@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Heal Pulse",
+    "description": "The user emits a healing pulse which\nrestores the target's HP by up to\nhalf of its max HP.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_HEAL",
     "category": "MOVE_CATEGORY_STATUS",

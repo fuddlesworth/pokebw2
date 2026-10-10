@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Palpitoad",
+    "category": "Vibration Pokémon",
+    "pokedex_entry": "It lives in the water and on land.\nIt uses its long, sticky tongue\nto immobilize its opponents.",
     "base_stats": {
         "hp": 75,
         "attack": 65,

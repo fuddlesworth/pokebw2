@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Wh-wh-wh-wh-wh-wh-what is this?!\nP-P-P-P-P-P-Plasmaaaa!"
         }
     ]
 }

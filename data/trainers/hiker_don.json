@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Don",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hi-ho!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hi-ho..."
+        },
+        {
+            "type": 2,
+            "text": "Once you've reached the top of a peak,\nthere's no place to go but down.{be01}\nLife is full of ups and downs."
         }
     ]
 }

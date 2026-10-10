@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Abra",
+    "category": "Psi Pokémon",
+    "pokedex_entry": "Using its psychic power is such a\nstrain on its brain that it needs\nto sleep for 18 hours a day.",
     "base_stats": {
         "hp": 25,
         "attack": 20,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sealeo",
+    "category": "Ball Roll Pokémon",
+    "pokedex_entry": "Be it Spheal or Poké Ball, it will spin\nany round object on its nose\nwith the greatest of ease.",
     "base_stats": {
         "hp": 90,
         "attack": 60,

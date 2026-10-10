@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Rhyperior",
+    "category": "Drill Pokémon",
+    "pokedex_entry": "It can launch a rock held in its\nhand like a missile by tightening\nthen expanding muscles instantly.",
     "base_stats": {
         "hp": 115,
         "attack": 140,

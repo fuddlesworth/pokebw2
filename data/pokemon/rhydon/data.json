@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Rhydon",
+    "category": "Drill Pokémon",
+    "pokedex_entry": "Standing on its hind legs freed its\nforelegs and made it smarter. It is\nvery forgetful, however.",
     "base_stats": {
         "hp": 105,
         "attack": 130,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Croconaw",
+    "category": "Big Jaw Pokémon",
+    "pokedex_entry": "Once it bites down, it won't let go\nuntil it loses its fangs. New fangs\nquickly grow into place.",
     "base_stats": {
         "hp": 65,
         "attack": 80,

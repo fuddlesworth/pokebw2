@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Freira",
     "class": "TRAINER_CLASS_BOSS_TRAINER_FREIRA",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_CHOICE_BAND",
             "moves": [ "MOVE_X_SCISSOR", "MOVE_AQUA_TAIL", "MOVE_EARTHQUAKE", "MOVE_STONE_EDGE" ]
         }
-    ]
+    ],
+    "messages": []
 }

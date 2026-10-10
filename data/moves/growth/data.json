@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Growth",
+    "description": "The user's body grows all at once,\nraising the Attack and Sp. Atk stats.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

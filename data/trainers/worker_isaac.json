@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Isaac",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,12 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_ASSURANCE", "MOVE_TACKLE", "MOVE_POISON_GAS" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Is this what it means to face reality?"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sheer Cold",
+    "description": "The target is attacked with a blast of\nabsolute-zero cold.\nThe target instantly faints if it hits.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_OHKO",
     "category": "MOVE_CATEGORY_SPECIAL",

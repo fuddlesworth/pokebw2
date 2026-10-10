@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sandstorm",
+    "description": "A five-turn sandstorm is summoned\nto hurt all combatants except the\nRock, Ground, and Steel types.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

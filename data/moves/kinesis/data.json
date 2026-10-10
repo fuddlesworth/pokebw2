@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Kinesis",
+    "description": "The user distracts the target\nby bending a spoon.\nIt lowers the target's accuracy.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

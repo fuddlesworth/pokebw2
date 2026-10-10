@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Robert",
     "class": "TRAINER_CLASS_GENTLEMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_HYPER_POTION" ],
@@ -15,6 +16,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Impressive display!\n...Shall we break for tea?"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Meowth",
+    "category": "Scratch Cat Pokémon",
+    "pokedex_entry": "It is nocturnal in nature. If it\nspots something shiny, its eyes\nglitter brightly.",
     "base_stats": {
         "hp": 40,
         "attack": 45,

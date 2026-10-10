@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Waylon",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm gonna get a lot stronger\nso I can impress Roxie!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ah haha...\nIt can't be true..."
+        },
+        {
+            "type": 2,
+            "text": "I want to get a lot stronger\nso I can impress Roxie!"
         }
     ]
 }

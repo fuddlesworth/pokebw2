@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Stoutland",
+    "category": "Big-Hearted Pokémon",
+    "pokedex_entry": "Being wrapped in its long fur is so\ncomfortable that a person would be fine\neven overnight on a wintry mountain.",
     "base_stats": {
         "hp": 85,
         "attack": 100,

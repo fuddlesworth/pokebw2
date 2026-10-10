@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Groudon",
+    "category": "Continent Pokémon",
+    "pokedex_entry": "It had been asleep in underground\nmagma ever since it fiercely\nfought Kyogre long ago.",
     "base_stats": {
         "hp": 100,
         "attack": 150,

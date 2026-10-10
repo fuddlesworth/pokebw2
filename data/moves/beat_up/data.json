@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Beat Up",
+    "description": "The user gets all party Pokémon to attack\nthe target. The more party Pokémon,\nthe greater the number of attacks.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

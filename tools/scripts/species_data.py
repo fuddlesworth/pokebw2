@@ -33,8 +33,13 @@ sys.path.insert(0, str(Path(__file__).parent))
 from datajson import DataError, label, load, load_schema, name, value, write  # noqa: E402
 from gen_constants import load as load_list  # noqa: E402
 from narc import read_narc, write_narc  # noqa: E402
+from text_data import message_lines  # noqa: E402
+from text_sources import article, to_json  # noqa: E402
 
 GROWTH_RATES = "growth_rates.csv"
+# Files of the system messages (a/0/0/2) with the species' names, names with an article, categories and Pokédex
+# entries, one line per species from SPECIES_NONE
+NAMES, NAMES_WITH_ARTICLE, CATEGORIES, POKEDEX_ENTRIES = 90, 483, 464, 442
 RECORD = struct.Struct("<6B2BBBH3H10BHHBBHHH4I5I")
 assert RECORD.size == 0x4C
 STATS = ["hp", "attack", "defense", "speed", "special_attack", "special_defense"]
@@ -152,8 +157,19 @@ def dump(files: Path, output: Path):
             data["baby_species"] = name("SPECIES_", struct.unpack("<H", babies[index])[0])
         return data
 
+    text = files / "a/0/0/2"
+    names, with_article, categories, entries = (message_lines(text, n) for n in
+                                                (NAMES, NAMES_WITH_ARTICLE, CATEGORIES, POKEDEX_ENTRIES))
     for name_, index in species:
-        write(output / directory(name_) / "data.json", entry(index))
+        data = entry(index)
+        species_text = {"name": to_json(names[index])}
+        # SPECIES_NONE's line is empty
+        if index and f"{{bd01}}{article(species_text)} {{ff00:255}}{names[index]}" != with_article[index]:
+            species_text["name_article"] = with_article[index].removeprefix("{bd01}").split(" ")[0]
+        species_text["category"] = to_json(categories[index])
+        species_text["pokedex_entry"] = to_json(entries[index])
+        schema = {"$schema": data.pop("$schema")}
+        write(output / directory(name_) / "data.json", {**schema, **species_text, **data})
     for index in range(len(species), form_start):
         write(output / "extra" / f"{index}.json", entry(index))
     for record, name_, form in forms:

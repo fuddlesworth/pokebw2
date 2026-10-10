@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Scyther",
+    "category": "Mantis Pokémon",
+    "pokedex_entry": "The sharp scythes on its forearms\nbecome increasingly sharp by\ncutting through hard objects.",
     "base_stats": {
         "hp": 70,
         "attack": 110,

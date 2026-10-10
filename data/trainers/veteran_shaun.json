@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shaun",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -61,6 +62,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_HEAVY_SLAM", "MOVE_BODY_SLAM", "MOVE_WILD_CHARGE", "MOVE_CRUNCH" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "These Pokémon were born\non the same day and raised together!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh!\nYou're pretty good!"
+        },
+        {
+            "type": 2,
+            "text": "Our days with Pokémon\nare full of happiness, and{be00}\nour joys will grow as we live together!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Omastar",
+    "category": "Spiral Pokémon",
+    "pokedex_entry": "It is thought that this Pokémon\nbecame extinct because its spiral\nshell grew too large.",
     "base_stats": {
         "hp": 70,
         "attack": 60,

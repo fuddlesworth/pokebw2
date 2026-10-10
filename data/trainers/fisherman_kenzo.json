@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kenzo",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'll have a battle with you using\nmy freshly caught Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I had no idea how my Pokémon would fight.\nI mean, I caught them just a moment ago!"
+        },
+        {
+            "type": 2,
+            "text": "I may have just caught them, but\nI'll raise them to be strong!{be01}\nOur time together has just begun!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Patrat",
+    "category": "Scout Pokémon",
+    "pokedex_entry": "Extremely cautious, one of them\nwill always be on the lookout, but it\nwon't notice a foe coming from behind.",
     "base_stats": {
         "hp": 45,
         "attack": 55,

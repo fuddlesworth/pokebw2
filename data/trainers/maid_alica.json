@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Alica",
     "class": "TRAINER_CLASS_MAID",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "What? A battle at a place like this?\nWait! Everybody is watching us!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Well, thanks to you,\nI overcame my stage fright."
+        },
+        {
+            "type": 15,
+            "text": "Well... OK, then. I'll just have\nto overcome my anxiety... Here!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "What? Nobody is watching me?\nNooooo. Look at me, please!"
         }
     ]
 }

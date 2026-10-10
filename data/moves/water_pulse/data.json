@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Water Pulse",
+    "description": "The user attacks the target with\na pulsing blast of water.\nIt may also confuse the target.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

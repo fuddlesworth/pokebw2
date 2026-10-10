@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Brady",
     "class": "TRAINER_CLASS_JANITOR",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey! Trainer!\nI'm cleaning here, so out of the way!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Why, I'll be!"
+        },
+        {
+            "type": 2,
+            "text": "As long as folks live, they make messes.\nAs soon as they do, I clean 'em up!"
         }
     ]
 }

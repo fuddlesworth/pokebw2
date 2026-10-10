@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Millie",
     "class": "TRAINER_CLASS_SCHOOL_KID_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hi, hi! Trainer!{be01}\nPlease show me what kinds of Pokémon\nyou are training!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Great, great! I didn't know\nthat way to raise Pokémon!"
+        },
+        {
+            "type": 2,
+            "text": "When you let a Pokémon evolve, it will be\nstronger, but if you don't let it evolve,{be00}\nit will learn moves quicker."
         }
     ]
 }

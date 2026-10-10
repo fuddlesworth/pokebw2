@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Irene",
     "class": "TRAINER_CLASS_PKMN_BREEDER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Having lots of battles is the best\nway to train a Pokémon quickly!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your training method is great!\nI'm going to copy it!"
+        },
+        {
+            "type": 2,
+            "text": "I want to battle you each time\nyou come here! Got it?"
         }
     ]
 }

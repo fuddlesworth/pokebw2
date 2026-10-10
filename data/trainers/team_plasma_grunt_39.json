@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "It's not just our outfits that have\nchanged around here!{be01}\nWe're not living for the Pokémon anymore,\nbut for ourselves!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whyyyy...?"
+        },
+        {
+            "type": 2,
+            "text": "Our king abandoned us...{be01}\nWe couldn't survive unless we changed\nthe way we thought..."
         }
     ]
 }

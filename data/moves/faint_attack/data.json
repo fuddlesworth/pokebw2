@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Faint Attack",
+    "description": "The user approaches the target\ndisarmingly, then throws a sucker punch.\nIt hits without fail.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

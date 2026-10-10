@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ferroseed",
+    "category": "Thorn Seed Pokémon",
+    "pokedex_entry": "It absorbs the iron it finds in the\nrock while clinging to the ceiling.\nIt shoots spikes when in danger.",
     "base_stats": {
         "hp": 44,
         "attack": 50,

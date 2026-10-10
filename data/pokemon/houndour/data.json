@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Houndour",
+    "category": "Dark Pokémon",
+    "pokedex_entry": "It is smart enough to hunt in\npacks. It uses a variety of cries\nfor communicating with others.",
     "base_stats": {
         "hp": 45,
         "attack": 60,

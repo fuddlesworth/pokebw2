@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Weavile",
+    "category": "Sharp Claw Pokémon",
+    "pokedex_entry": "They communicate by clawing\nsigns in boulders and work\ntogether to surround enemies.",
     "base_stats": {
         "hp": 70,
         "attack": 120,

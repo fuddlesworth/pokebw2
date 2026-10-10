@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Tail Whip",
+    "description": "The user wags its tail cutely, making\nopposing Pokémon less wary and\nlowering their Defense stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

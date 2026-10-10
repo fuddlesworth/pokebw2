@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lanturn",
+    "category": "Light Pokémon",
+    "pokedex_entry": "Lanturn's light can shine up from\ngreat depths. It is nicknamed\n“The Deep-Sea Star.\"",
     "base_stats": {
         "hp": 125,
         "attack": 58,

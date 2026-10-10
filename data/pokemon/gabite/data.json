@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gabite",
+    "category": "Cave Pokémon",
+    "pokedex_entry": "It loves sparkly things. It seeks\ntreasures in caves and hoards the\nloot in its nest.",
     "base_stats": {
         "hp": 68,
         "attack": 90,

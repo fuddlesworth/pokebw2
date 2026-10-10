@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bob",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Kids! Please cooperate with the\ntraining for my Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "But my passing technique was supposed to\nbe so incredible that even Psychic-type{be00}\nPokémon couldn't predict it..."
+        },
+        {
+            "type": 15,
+            "text": "Maybe this gift will be more\neffective than my passing technique!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Football is a thinking person's sport!\nYou've got to outmaneuver and outwit{be00}\nyour opponent if you want to win!"
         }
     ]
 }

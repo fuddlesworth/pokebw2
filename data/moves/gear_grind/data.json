@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Gear Grind",
+    "description": "The user attacks by throwing\ntwo steel gears at its target.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

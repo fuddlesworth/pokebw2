@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Crofton",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I trained my body and mind\nby standing under a waterfall!{be00}\nNothing will faze me now!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What...\nI mean, how?"
+        },
+        {
+            "type": 15,
+            "text": "I admit your strength\nand give you this gift!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Maybe I should train my body and mind\nby standing under a waterfall!{be01}\nI can get clean while I'm at it!"
         }
     ]
 }

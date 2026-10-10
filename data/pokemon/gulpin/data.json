@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gulpin",
+    "category": "Stomach Pokémon",
+    "pokedex_entry": "Almost all its body is its stomach.\nIts harsh digestive juices quickly\ndissolve anything it swallows.",
     "base_stats": {
         "hp": 70,
         "attack": 43,

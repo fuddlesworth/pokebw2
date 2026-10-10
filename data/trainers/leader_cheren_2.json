@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Cheren",
     "class": "TRAINER_CLASS_LEADER_CHEREN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_POTION" ],
@@ -37,6 +38,20 @@
             "ability": 1,
             "item": "ITEM_ORAN_BERRY",
             "moves": [ "MOVE_WORK_UP", "MOVE_BITE", "MOVE_TACKLE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "To have chosen that move...\nI see! You'll be a powerful opponent!"
+        },
+        {
+            "type": 19,
+            "text": "As a Gym Leader, I aim to be a wall for\nyou to overcome!"
+        },
+        {
+            "type": 1,
+            "text": "This! This is what a real\nPokémon battle is!"
         }
     ]
 }

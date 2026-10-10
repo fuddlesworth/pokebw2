@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kenny",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You sure are unlucky to have\nrun into someone as strong as me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I guess it was I who was unlucky\nto have run into you!"
+        },
+        {
+            "type": 2,
+            "text": "Turning bad luck into good luck...\nI wish I knew how to do that."
         }
     ]
 }

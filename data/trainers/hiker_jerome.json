@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jerome",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,12 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_QUICK_ATTACK", "MOVE_FORESIGHT", "MOVE_ENDURE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Why was I so conceited as to think I could\nshow you anything?"
         }
     ]
 }

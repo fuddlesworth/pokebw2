@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Murkrow",
+    "category": "Darkness Pokémon",
+    "pokedex_entry": "If spotted, it will lure an unwary\nperson into chasing it then lose\nthe pursuer on mountain trails.",
     "base_stats": {
         "hp": 60,
         "attack": 85,

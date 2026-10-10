@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Damon",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Argh! It got away!\nI almost caught it, too!{be00}\nTimes like this call for a Pokémon battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Phew! I lost again, but it was nice\nto take my mind off fishing for a bit!"
+        },
+        {
+            "type": 2,
+            "text": "You've got to remain optimistic if\nyou want to be a good Fisherman!{be00}\nEven if your catch gets away,{be00}\nthere's no use crying about it!"
         }
     ]
 }

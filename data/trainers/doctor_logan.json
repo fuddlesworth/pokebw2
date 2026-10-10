@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Logan",
     "class": "TRAINER_CLASS_DOCTOR",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_HEAL", "ITEM_MAX_POTION" ],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am a Doctor!{be01}\nIf you have Pokémon in bad shape...\nLet me see your Pokémon in battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your strength is fathomless!\nI am deeply impressed."
+        },
+        {
+            "type": 13,
+            "text": "Whether your Pokémon are healthy\nor not, I'll restore them to full health!{be01}"
+        },
+        {
+            "type": 14,
+            "text": "I aim to be the best Doctor in the world!{be01}\nBut my first step will be to become the\nbest Doctor in Unova."
         }
     ]
 }

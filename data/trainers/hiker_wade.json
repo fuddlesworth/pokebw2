@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Wade",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Why do I dig?\nWhy do you fight?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your past experience...\nIs that the source of your strength?"
+        },
+        {
+            "type": 2,
+            "text": "The more you fight,\nthe stronger you'll be.{be01}\nThe more you dig,\nthe bigger the hole will be...{be01}\nIf you have a purpose,\nthere's no wasted effort!"
         }
     ]
 }

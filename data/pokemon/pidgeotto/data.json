@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pidgeotto",
+    "category": "Bird Pokémon",
+    "pokedex_entry": "It flies over its wide territory in\nsearch of prey, downing it\nwith its highly developed claws.",
     "base_stats": {
         "hp": 63,
         "attack": 60,

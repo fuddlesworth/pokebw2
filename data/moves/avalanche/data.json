@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Avalanche",
+    "description": "An attack move that inflicts double the\ndamage if the user has been hurt by the\ntarget in the same turn.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

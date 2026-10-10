@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Tirtouga",
+    "category": "Prototurtle Pokémon",
+    "pokedex_entry": "This Pokémon was restored from a fossil.\nIt swam skillfully and dove\nto depths beyond half a mile.",
     "base_stats": {
         "hp": 54,
         "attack": 78,

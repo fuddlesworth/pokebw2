@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Refresh",
+    "description": "The user rests to cure itself of a\npoisoning, burn, or paralysis.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

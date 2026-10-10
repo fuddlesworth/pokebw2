@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Endure",
+    "description": "The user endures any attack with at least\n1 HP. Its chance of failing rises if it is\nused in succession.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

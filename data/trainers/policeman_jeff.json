@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jeff",
     "class": "TRAINER_CLASS_POLICEMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Are you a criminal?!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh, you are not a criminal...\nSorry! Lo siento!"
+        },
+        {
+            "type": 15,
+            "text": "Hey! Come on!\nI'll give you this, so cheer up!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I'm here because I heard someone\naround here was faking points."
         }
     ]
 }

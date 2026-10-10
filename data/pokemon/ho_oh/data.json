@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ho-Oh",
+    "category": "Rainbow Pokémon",
+    "pokedex_entry": "Its feathers are in seven colors.\nIt is said that anyone seeing it is\npromised eternal happiness.",
     "base_stats": {
         "hp": 106,
         "attack": 130,

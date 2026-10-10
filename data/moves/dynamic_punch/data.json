@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "DynamicPunch",
+    "description": "The user punches the target with full,\nconcentrated power.\nIt confuses the target if it hits.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

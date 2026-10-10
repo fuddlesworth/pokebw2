@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Astonish",
+    "description": "The user attacks the target while shouting\nin a startling fashion.\nIt may also make the target flinch.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

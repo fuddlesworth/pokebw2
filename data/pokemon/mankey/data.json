@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mankey",
+    "category": "Pig Monkey Pokémon",
+    "pokedex_entry": "It lives in treetop colonies.\nIf one becomes enraged, the whole\ncolony rampages for no reason.",
     "base_stats": {
         "hp": 40,
         "attack": 80,

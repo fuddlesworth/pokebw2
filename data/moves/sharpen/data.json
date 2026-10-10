@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sharpen",
+    "description": "The user reduces its polygon count to\nmake itself more jagged, raising the\nAttack stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

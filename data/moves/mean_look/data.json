@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mean Look",
+    "description": "The user pins the target with a dark,\narresting look.\nThe target becomes unable to flee.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Amy",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Watch my furious tennis footwork!\nYou get it now? We're really tough!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "But...but I'm tough enough to go all day\nand all night..."
+        },
+        {
+            "type": 2,
+            "text": "Someday I want to play a doubles match\nwith pairs of people and Pokémon."
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Igglybuff",
+    "category": "Balloon Pokémon",
+    "pokedex_entry": "Its body has a faintly sweet scent\nand is bouncy and soft. If it bounces\neven once, it cannot stop.",
     "base_stats": {
         "hp": 90,
         "attack": 30,

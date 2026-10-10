@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jonah",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I-I...\nI'm not plump, am I?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Gotta go huge!"
+        },
+        {
+            "type": 15,
+            "text": "I'm gonna go huge, I tell you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I'm trying to bulk up so I can\nshrug off any opponent's tackle!{be00}\nI'm not getting plump!"
         }
     ]
 }

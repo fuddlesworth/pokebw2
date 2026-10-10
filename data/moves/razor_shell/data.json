@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Razor Shell",
+    "description": "The user cuts its target with sharp\nshells. This attack may also lower the\ntarget's Defense stat.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_PHYSICAL",

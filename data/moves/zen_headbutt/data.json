@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Zen Headbutt",
+    "description": "The user focuses its willpower to its head\nand attacks the target.\nIt may also make the target flinch.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

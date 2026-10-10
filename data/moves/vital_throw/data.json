@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Vital Throw",
+    "description": "The user attacks last.\nIn return, this throw move is\nguaranteed not to miss.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

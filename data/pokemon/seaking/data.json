@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Seaking",
+    "category": "Goldfish Pokémon",
+    "pokedex_entry": "In autumn, its body becomes more\nfatty in preparing to propose to a\nmate. It takes on beautiful colors.",
     "base_stats": {
         "hp": 80,
         "attack": 92,

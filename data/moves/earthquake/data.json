@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Earthquake",
+    "description": "The user sets off an earthquake that\nstrikes those around it.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

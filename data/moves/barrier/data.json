@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Barrier",
+    "description": "The user throws up a sturdy wall that\nsharply raises its Defense stat.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

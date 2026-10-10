@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Encore",
+    "description": "The user compels the target\nto keep using only the move\nit last used for three turns.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

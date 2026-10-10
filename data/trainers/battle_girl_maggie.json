@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Maggie",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh! Trainer!\nDo you want to learn a bitter lesson?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Training complete!\nI think I may've improved a bit."
+        },
+        {
+            "type": 2,
+            "text": "No need to rush!{be01}\nI'm just a normal person, so there's no\nway I can become the best all at once!"
         }
     ]
 }

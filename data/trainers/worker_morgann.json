@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Morgann",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Ex! Ca! Vate!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Jack! Ham! Merrrr!"
+        },
+        {
+            "type": 2,
+            "text": "Excavate! Jackhammer!\nThey're manly sounding words, right!"
         }
     ]
 }

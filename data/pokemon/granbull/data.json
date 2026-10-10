@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Granbull",
+    "category": "Fairy Pokémon",
+    "pokedex_entry": "It is timid in spite of its looks.\nIf it becomes enraged, however,\nit will strike with its huge fangs.",
     "base_stats": {
         "hp": 90,
         "attack": 120,

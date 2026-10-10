@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Disable",
+    "description": "For four turns, this move prevents the\ntarget from using the move it last used.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

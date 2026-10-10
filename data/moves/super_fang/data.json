@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Super Fang",
+    "description": "The user chomps hard on the\ntarget with its sharp front fangs.\nIt cuts the target's HP to half.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

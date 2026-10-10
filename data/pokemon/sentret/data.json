@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sentret",
+    "category": "Scout Pokémon",
+    "pokedex_entry": "It has a very nervous nature.\nIt stands up high on its tail so it\ncan scan wide areas.",
     "base_stats": {
         "hp": 35,
         "attack": 46,

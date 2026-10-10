@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Heracross",
+    "category": "Single Horn Pokémon",
+    "pokedex_entry": "No matter how heavy its opponents,\nit flings them far away\nwith its prized horn.",
     "base_stats": {
         "hp": 80,
         "attack": 125,

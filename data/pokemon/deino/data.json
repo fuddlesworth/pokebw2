@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Deino",
+    "category": "Irate Pokémon",
+    "pokedex_entry": "Lacking sight, it's unaware of its\nsurroundings, so it bumps into things\nand eats anything that moves.",
     "base_stats": {
         "hp": 52,
         "attack": 65,

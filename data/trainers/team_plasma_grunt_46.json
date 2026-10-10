@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,12 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_SLUDGE_WAVE", "MOVE_ACID_ARMOR", "MOVE_SCREECH", "MOVE_FLING" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Oh! Plasmaaaa!\nGlory to Team Plasma!"
         }
     ]
 }

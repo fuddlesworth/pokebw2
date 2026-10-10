@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lao",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "That incredibly flashy dorm,\nand squealing cheerleaders all around...{be01}\nGrrr...\nI am envious!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What is so great about popular athletes?\nWhat is bad about martial artists?"
+        },
+        {
+            "type": 15,
+            "text": "My feelings as a martial artist are\ncontained within this. Please have it.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "A run-down dojo, and a lot of shouts like\nhai-ya and kee-up...{be01}\nIf I had known this before, I would have\nbeen a different kind of athlete."
         }
     ]
 }

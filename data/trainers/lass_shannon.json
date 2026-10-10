@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shannon",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "See my extraordinarily pretty Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ahh! Its fire has been weakened?!"
+        },
+        {
+            "type": 2,
+            "text": "When you feel a Pokémon breathing, you\ncan really feel how alive they are!"
         }
     ]
 }

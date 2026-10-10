@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Todd",
     "class": "TRAINER_CLASS_INFIELDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Training or not, I don't hold back!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Impressive!\nYou've got some spectacular skills!"
+        },
+        {
+            "type": 15,
+            "text": "This is a token of my appreciation!\nTake it with you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "If I practice against strong Pokémon\nthen I can get even stronger!"
         }
     ]
 }

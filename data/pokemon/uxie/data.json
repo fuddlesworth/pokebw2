@@ -1,5 +1,9 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Uxie",
+    "name_article": "a",
+    "category": "Knowledge Pokémon",
+    "pokedex_entry": "When Uxie flew, people gained the\nability to solve problems.\nIt was the birth of knowledge.",
     "base_stats": {
         "hp": 75,
         "attack": 75,

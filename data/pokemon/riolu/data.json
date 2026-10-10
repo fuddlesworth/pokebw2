@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Riolu",
+    "category": "Emanation Pokémon",
+    "pokedex_entry": "It uses the shapes of auras,\nwhich change according to emotion,\nto communicate with others.",
     "base_stats": {
         "hp": 40,
         "attack": 70,

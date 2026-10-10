@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fissure",
+    "description": "The user opens up a fissure in the ground\nand drops the target in.\nThe target instantly faints if it hits.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_OHKO",
     "category": "MOVE_CATEGORY_PHYSICAL",

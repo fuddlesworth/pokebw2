@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Azra",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You gotta have stamina!{be01}\nBurn the flames of life,\nand never stop moving forward!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I'm out of stamina!"
+        },
+        {
+            "type": 2,
+            "text": "I was just joking about never stopping!{be01}\nYou need to take a break every once\nin a while to rest your mind and body!"
         }
     ]
 }

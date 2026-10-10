@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Harmony",
     "class": "TRAINER_CLASS_BOSS_TRAINER_F_164",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_MENTAL_HERB",
             "moves": [ "MOVE_HURRICANE", "MOVE_SUPERPOWER", "MOVE_RAIN_DANCE", "MOVE_TAUNT" ]
         }
-    ]
+    ],
+    "messages": []
 }

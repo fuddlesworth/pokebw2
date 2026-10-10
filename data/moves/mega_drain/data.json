@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mega Drain",
+    "description": "A nutrient-draining attack. The user's\nHP is restored by half the damage taken\nby the target.",
     "type": "TYPE_GRASS",
     "quality": "MOVE_QUALITY_DAMAGE_DRAIN",
     "category": "MOVE_CATEGORY_SPECIAL",

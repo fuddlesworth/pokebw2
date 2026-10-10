@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Amnesia",
+    "description": "The user temporarily empties its mind to\nforget its concerns.\nIt sharply raises the user's Sp. Def stat.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

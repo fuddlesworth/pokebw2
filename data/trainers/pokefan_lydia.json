@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lydia",
     "class": "TRAINER_CLASS_POKEFAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm planning on transferring a Pokémon\nusing Poké Transfer.{be00}\nBut before I do...{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Phew... I should have just transferred\nmy Pokémon after all, huh?"
+        },
+        {
+            "type": 2,
+            "text": "To meet your Pokémon beyond the\nconstraints of time and distance...{be01}\nThe desire to meet like that has sure led\nto some amazing inventions, huh?"
         }
     ]
 }

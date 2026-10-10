@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shelly",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_PETAL_DANCE", "MOVE_QUIVER_DANCE", "MOVE_TEETER_DANCE", "MOVE_SYNTHESIS" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Our unity won't be bested by anyone!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "We couldn't win...\nBut that's all right."
+        },
+        {
+            "type": 2,
+            "text": "My Pokémon was once stolen by\nTeam Plasma.{be01}\nI'm just so grateful that we can be\ntogether like this now."
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Katie",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You will keep moving forward to wherever\nyour curiosity leads, won't you?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You've got an inexhaustible supply of\ncuriosity, haven't you!"
+        },
+        {
+            "type": 15,
+            "text": "To curiosity without end!\nHere's your reward. Wonderful.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Surprise! Excitement! Awe!{be01}\nCan you even imagine what must be waiting\nfor you up ahead?"
         }
     ]
 }

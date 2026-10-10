@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Arm Thrust",
+    "description": "The user looses a flurry of open-palmed\narm thrusts that hit two to five times in\na row.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

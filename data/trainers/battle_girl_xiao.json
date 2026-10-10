@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Xiao",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "...Are you sure you want someone like me?\nOne moping around in a place like this?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "If only he was also as strong as you are..."
+        },
+        {
+            "type": 2,
+            "text": "When you like someone, you try to show\nthem your good points, don't you?{be01}\nWell, I went and thoroughly beat the guy\nthat I liked in a Pokémon battle..."
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Cosmic Power",
+    "description": "The user absorbs a mystical power from\nspace to raise its Defense and\nSp. Def stats.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Flaaffy",
+    "category": "Wool Pokémon",
+    "pokedex_entry": "Not even downy wool will grow on\nits rubbery, nonconductive patches\nof skin that prevent electrical shock.",
     "base_stats": {
         "hp": 70,
         "attack": 55,

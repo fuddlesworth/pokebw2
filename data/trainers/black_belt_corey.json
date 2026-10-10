@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Corey",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_ROTATION",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "If you had three Pokémon, then we could\ndo a Rotation Battle!"
+        },
+        {
+            "type": 0,
+            "text": "I will read your mind and predict your\nevery move!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your moves...\nThey are entirely unpredictable!"
+        },
+        {
+            "type": 2,
+            "text": "I am a Trainer who fights as freely as the\nclouds drift in the sky!{be00}\nDo not stiffen up on me!"
         }
     ]
 }

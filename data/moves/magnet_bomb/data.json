@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Magnet Bomb",
+    "description": "The user launches steel bombs that\nstick to the target.\nThis attack will not miss.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

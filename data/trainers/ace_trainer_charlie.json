@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Charlie",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You chose to speak to me from\namong so many people!{be00}\nYou have a good eye!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You are a worthy opponent!"
+        },
+        {
+            "type": 15,
+            "text": "The way you use moves...\nQuite honestly, I like it!{be01}\nHere, this is for you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Heehee.{be01}\nEven when I am in the crowd,\npeople can tell I am strong."
         }
     ]
 }

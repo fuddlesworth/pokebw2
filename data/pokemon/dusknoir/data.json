@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dusknoir",
+    "category": "Gripper Pokémon",
+    "pokedex_entry": "It is said to take lost spirits\ninto its pliant body and guide\nthem home.",
     "base_stats": {
         "hp": 45,
         "attack": 100,

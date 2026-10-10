@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Magma Storm",
+    "description": "The target becomes trapped\nwithin a maelstrom of fire that rages\nfor four to five turns.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

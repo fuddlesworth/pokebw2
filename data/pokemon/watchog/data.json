@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Watchog",
+    "category": "Lookout Pokémon",
+    "pokedex_entry": "Using luminescent matter, it\nmakes its eyes and body glow\nand stuns attacking opponents.",
     "base_stats": {
         "hp": 60,
         "attack": 85,

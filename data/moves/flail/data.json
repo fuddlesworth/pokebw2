@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Flail",
+    "description": "The user flails about aimlessly to attack.\nIt becomes more powerful the less HP\nthe user has.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You people! Don't get cocky just because\nyou've got Pokémon!{be01}\nWe've got Pokémon, too!\nPokémon that we've stolen from all over!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What makes your Pokémon so different\nfrom mine?"
+        },
+        {
+            "type": 2,
+            "text": "What is this! Who would come after us with\nonly two people?!"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shadow",
     "class": "TRAINER_CLASS_TEAM_PLASMA_SHADOW",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -34,6 +35,12 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_SUCKER_PUNCH", "MOVE_PSYCHO_CUT", "MOVE_X_SCISSOR", "MOVE_AERIAL_ACE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "...So what."
         }
     ]
 }

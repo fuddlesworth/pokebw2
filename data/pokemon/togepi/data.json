@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Togepi",
+    "category": "Spike Ball Pokémon",
+    "pokedex_entry": "It transforms the kindness and joy\nof others into happiness, which it\nstores in its shell.",
     "base_stats": {
         "hp": 35,
         "attack": 20,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nishino",
     "class": "TRAINER_CLASS_GAME_FREAK_NISHINO",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,12 @@
             "ability": 2,
             "item": "ITEM_LEFTOVERS",
             "moves": [ "MOVE_SUPERPOWER", "MOVE_CRUNCH", "MOVE_BODY_SLAM", "MOVE_YAWN" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Ah... I see...\nThat was quite well thought out."
         }
     ]
 }

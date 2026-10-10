@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Goldeen",
+    "category": "Goldfish Pokémon",
+    "pokedex_entry": "Though it appears very elegant\nwhen swimming with fins unfurled, it\ncan jab powerfully with its horn.",
     "base_stats": {
         "hp": 45,
         "attack": 67,

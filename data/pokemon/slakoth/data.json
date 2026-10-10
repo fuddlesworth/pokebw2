@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Slakoth",
+    "category": "Slacker Pokémon",
+    "pokedex_entry": "If it eats just three leaves in a day,\nit is satisfied. Other than that,\nit sleeps for 20 hours a day.",
     "base_stats": {
         "hp": 60,
         "attack": 60,

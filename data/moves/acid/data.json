@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Acid",
+    "description": "The opposing team is attacked with a spray\nof harsh acid. The acid may also lower\nthe targets' Sp. Def stats.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

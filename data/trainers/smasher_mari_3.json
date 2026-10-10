@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Mari",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "No matter how fast the ball is moving,\nit doesn't escape my vision!{be00}\nNothing gets past me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your strength has been preserved\nin my mind's eye!"
+        },
+        {
+            "type": 15,
+            "text": "I hope you'll preserve this gift\nin your mind's eye!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Sometimes it's best to let the ball go\nby instead of hitting it back.{be01}\nIn tennis, you need to be able to\nmake quick decisions on the fly!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Klink",
+    "category": "Gear Pokémon",
+    "pokedex_entry": "Two bodies comprise a fixed pair.\nThey spin around each other\nto generate energy.",
     "base_stats": {
         "hp": 40,
         "attack": 55,

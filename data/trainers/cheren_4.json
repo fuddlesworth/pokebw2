@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Cheren",
     "class": "TRAINER_CLASS_PKMN_TRAINER_CHEREN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,20 @@
             "ability": 0,
             "item": "ITEM_FOCUS_SASH",
             "moves": [ "MOVE_HYDRO_PUMP", "MOVE_AQUA_JET", "MOVE_BLIZZARD", "MOVE_X_SCISSOR" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "I will use everything that I've learned in\nmy life until now!"
+        },
+        {
+            "type": 20,
+            "text": "My Pokémon and I will\nput all our energy into this battle!"
+        },
+        {
+            "type": 1,
+            "text": "Thank you.\nYou are really great."
         }
     ]
 }

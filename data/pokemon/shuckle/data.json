@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Shuckle",
+    "category": "Mold Pokémon",
+    "pokedex_entry": "The berries stored in its\nvaselike shell eventually\nbecome a thick, pulpy juice.",
     "base_stats": {
         "hp": 20,
         "attack": 10,

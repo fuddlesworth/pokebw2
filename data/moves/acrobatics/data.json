@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Acrobatics",
+    "description": "The user nimbly strikes the target.\nIf the user is not holding an item,\nthis attack inflicts massive damage.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

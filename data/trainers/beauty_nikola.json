@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nikola",
     "class": "TRAINER_CLASS_BEAUTY",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Welcome to the Nimbasa City Gym, where\nPokémon and Trainers come together to{be00}\nput on magnificent Pokémon battles!{be01}\nLet the fashion show begin!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The show has just begun...{be01}\n...What? It's over already?"
+        },
+        {
+            "type": 2,
+            "text": "You and your Pokémon were\npositively shining!"
         }
     ]
 }

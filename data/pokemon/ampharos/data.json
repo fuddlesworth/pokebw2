@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ampharos",
+    "category": "Light Pokémon",
+    "pokedex_entry": "The tip of its tail shines so brightly it\ncan be used to send sea-navigation\nbeacons to distant foreign shores.",
     "base_stats": {
         "hp": 90,
         "attack": 75,

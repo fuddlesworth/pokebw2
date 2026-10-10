@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tommy",
     "class": "TRAINER_CLASS_PSYCHIC_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I will use my supernatural powers to\nhelp my Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wow! That's amazing!"
+        },
+        {
+            "type": 2,
+            "text": "Drawing out your Pokémon's power\nlike that...{be01}\nI think that is a real\nsupernatural power."
         }
     ]
 }

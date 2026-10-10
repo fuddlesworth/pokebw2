@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Electroweb",
+    "description": "The user captures and attacks opposing\nPokémon by using an electric net. It\nreduces the targets' Speed stat.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

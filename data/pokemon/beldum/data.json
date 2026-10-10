@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Beldum",
+    "category": "Iron Ball Pokémon",
+    "pokedex_entry": "Its cells are all magnetic,\nand it communicates with others\nby using magnetic pulses.",
     "base_stats": {
         "hp": 40,
         "attack": 55,

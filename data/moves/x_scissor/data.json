@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "X-Scissor",
+    "description": "The user slashes at the target by\ncrossing its scythes or claws as if\nthey were a pair of scissors.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

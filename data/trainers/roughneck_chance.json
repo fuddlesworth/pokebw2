@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chance",
     "class": "TRAINER_CLASS_ROUGHNECK",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Join our team!{be01}\nActually, I will force you\nto join our team!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Our team doesn't need a Trainer\nwho is quite that strong!"
+        },
+        {
+            "type": 2,
+            "text": "We hang out here every day!\nEvery day until the end of time!"
         }
     ]
 }

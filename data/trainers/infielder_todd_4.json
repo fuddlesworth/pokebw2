@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Todd",
     "class": "TRAINER_CLASS_INFIELDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My right shoulder is itching to throw!{be01}\nLet's see if you can catch my super\nfastball, right down the center!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Not even my super fastball was enough!\nWell, at least I can say I gave it my all!"
+        },
+        {
+            "type": 15,
+            "text": "This is a token of my appreciation!\nTake it with you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Thanks to you, I feel like I can\nbe proud of my fastball!{be01}\nThanks so much!"
         }
     ]
 }

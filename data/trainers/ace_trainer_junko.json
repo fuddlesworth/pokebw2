@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Junko",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "Right now, I feel like\nmastering Triple Battles!{be01}\nIt sure would be great if you had three\nor more Pokémon ready for battle!"
+        },
+        {
+            "type": 0,
+            "text": "Let me test what fighting style\nis more effective!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "By any chance, are you a\nTriple Battle genius?!"
+        },
+        {
+            "type": 2,
+            "text": "If you'd like, please have\nTriple Battles with your friends."
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sinan",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -34,6 +35,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_GYRO_BALL", "MOVE_SOLAR_BEAM", "MOVE_PAYBACK", "MOVE_DOUBLE_EDGE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I came here because this place feels\nquite nostalgic to me...{be01}\nBut now I'd rather battle with you than\nstroll down memory lane!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I see... So that's it.\nI used to also be that focused long ago."
+        },
+        {
+            "type": 2,
+            "text": "I am reminded of my childhood and chasing\ninnocently after Bug-type Pokémon...{be01}\nIt was that day, in this very place, that\nI started on the path to “Trainerhood.\""
         }
     ]
 }

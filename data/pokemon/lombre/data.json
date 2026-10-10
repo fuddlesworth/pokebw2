@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lombre",
+    "category": "Jolly Pokémon",
+    "pokedex_entry": "It has a mischievous spirit. If it\nspots an angler, it will tug on the\nfishing line to interfere.",
     "base_stats": {
         "hp": 60,
         "attack": 50,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Psychic",
+    "description": "The target is hit by a strong telekinetic\nforce. It may also reduce the target's\nSp. Def stat.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Azurill",
+    "category": "Polka Dot Pokémon",
+    "pokedex_entry": "It swings its large, nutrient-filled\ntail around to fight opponents\nbigger than itself.",
     "base_stats": {
         "hp": 50,
         "attack": 20,

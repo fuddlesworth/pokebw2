@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Iron Head",
+    "description": "The user slams the target\nwith its steel-hard head.\nIt may also make the target flinch.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

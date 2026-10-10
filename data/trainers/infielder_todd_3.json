@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Todd",
     "class": "TRAINER_CLASS_INFIELDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My partner and I have been through a\nlot together! Here we go!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I won't let consecutive losses get me down!\nThat's my policy!"
+        },
+        {
+            "type": 15,
+            "text": "This is a token of my appreciation!\nTake it with you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Don't let losses get you down, either!\nDo things your own way!"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "DragonBreath",
+    "description": "The user exhales a mighty gust that\ninflicts damage. It may also leave the\ntarget with paralysis.",
     "type": "TYPE_DRAGON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

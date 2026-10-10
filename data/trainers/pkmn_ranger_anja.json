@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Anja",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Scorching desert!\nA passion for adventure!{be00}\nAnd a heated battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hot! Hot! Hot! Hot!!"
+        },
+        {
+            "type": 15,
+            "text": "Speed is crucial\nto treat a burn!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Whether it is hot or cold,\nthere is no problem if you have passion!"
         }
     ]
 }

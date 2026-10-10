@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Carnivine",
+    "category": "Bug Catcher Pokémon",
+    "pokedex_entry": "Using its tentacles to lash itself to\ntrees, it lies in wait for prey, luring it\nclose with sweet-smelling drool.",
     "base_stats": {
         "hp": 74,
         "attack": 100,

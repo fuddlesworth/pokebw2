@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mismagius",
+    "category": "Magical Pokémon",
+    "pokedex_entry": "Its cry sounds like an incantation.\nIt is said the cry may rarely be\nimbued with happiness-giving power.",
     "base_stats": {
         "hp": 60,
         "attack": 60,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Blaziken",
+    "category": "Blaze Pokémon",
+    "pokedex_entry": "Flames spout from its wrists,\nenveloping its knuckles. Its\npunches scorch its foes.",
     "base_stats": {
         "hp": 80,
         "attack": 120,

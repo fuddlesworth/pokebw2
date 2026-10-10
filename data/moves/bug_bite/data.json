@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bug Bite",
+    "description": "The user bites the target. If the target\nis holding a Berry, the user eats it and\ngains its effect.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

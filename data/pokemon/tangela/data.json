@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Tangela",
+    "category": "Vine Pokémon",
+    "pokedex_entry": "Many writhing vines cover it,\nso its true identity remains unknown.\nThe blue vines grow its whole life long.",
     "base_stats": {
         "hp": 65,
         "attack": 55,

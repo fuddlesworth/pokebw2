@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lynette",
     "class": "TRAINER_CLASS_PSYCHIC_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You... Who are you?{be01}\nThere is another person here besides me?\nWe don't need any Trainers here!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "So you are a normal person...\nA normal ⒆⒇ Trainer..."
+        },
+        {
+            "type": 2,
+            "text": "This house...\nIt brims with fear, sorrow, defeat...{be01}\nSo many feelings fill these walls, giving\nrise to a mysterious energy."
         }
     ]
 }

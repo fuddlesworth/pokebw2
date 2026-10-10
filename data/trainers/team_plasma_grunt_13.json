@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_SLUDGE_BOMB", "MOVE_DOUBLE_HIT", "MOVE_EXPLOSION", "MOVE_HAZE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "How about we see how well I can use this\nPokémon I got!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Plasmaaaa!\n...Hmph! No good, huh?"
+        },
+        {
+            "type": 2,
+            "text": "They said that if I joined Team Plasma, I\ncould get powerful Pokémon and do{be00}\nwhatever I liked!{be01}\nBut this Pokémon I got...\nIt's useless!"
         }
     ]
 }

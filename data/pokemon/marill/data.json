@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Marill",
+    "category": "Aqua Mouse Pokémon",
+    "pokedex_entry": "The oil-filled tail functions\nas a buoy, so it's fine even\nin rivers with strong currents.",
     "base_stats": {
         "hp": 70,
         "attack": 20,

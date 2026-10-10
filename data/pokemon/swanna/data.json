@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Swanna",
+    "category": "White Bird Pokémon",
+    "pokedex_entry": "Despite their elegant appearance,\nthey can flap their wings strongly\nand fly for thousands of miles.",
     "base_stats": {
         "hp": 75,
         "attack": 87,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Audra",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I choose a move, and\nmy Pokémon will do the move.{be01}\nIn a moment, that move will\nreach your Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I lost, but during the battle,\nwe were connected. Right?"
+        },
+        {
+            "type": 15,
+            "text": "This Berry may connect\nyou and your Pokémon.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "From today to tomorrow...\npeople, Pokémon, and the world...{be01}\nThey're all connected, you know?"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fury Attack",
+    "description": "The target is jabbed repeatedly with a\nhorn or beak two to five times in a row.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

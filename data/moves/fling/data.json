@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fling",
+    "description": "The user flings its held item at the target\nto attack. Its power and effects depend\non the item.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mawile",
+    "category": "Deceiver Pokémon",
+    "pokedex_entry": "Attached to its head is a huge\nset of jaws formed by horns.\nIt can chew through iron beams.",
     "base_stats": {
         "hp": 50,
         "attack": 85,

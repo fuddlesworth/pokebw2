@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Helia",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Ta-da!\nHere's my cute Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh maaan!"
+        },
+        {
+            "type": 2,
+            "text": "...It's OK. My precious Pokémon will\nmake me feel better when we get home."
         }
     ]
 }

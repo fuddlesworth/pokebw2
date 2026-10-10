@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Nightmare",
+    "description": "A sleeping target sees a nightmare\nthat inflicts some damage every turn.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hyper Voice",
+    "description": "The user lets loose a horribly echoing\nshout with the power to inflict damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

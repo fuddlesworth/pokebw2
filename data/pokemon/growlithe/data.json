@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Growlithe",
+    "category": "Puppy Pokémon",
+    "pokedex_entry": "Extremely loyal to its Trainer, it will\nbark at those who approach the Trainer\nunexpectedly and run them out of town.",
     "base_stats": {
         "hp": 55,
         "attack": 70,

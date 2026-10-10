@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Unown",
+    "category": "Symbol Pokémon",
+    "pokedex_entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
     "base_stats": {
         "hp": 48,
         "attack": 72,

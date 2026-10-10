@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Snubbull",
+    "category": "Fairy Pokémon",
+    "pokedex_entry": "Small Pokémon flee from its scary\nface. It is, however, considered\nby women to be cute.",
     "base_stats": {
         "hp": 60,
         "attack": 80,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Drayden",
     "class": "TRAINER_CLASS_LEADER_DRAYDEN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_HYPER_POTION" ],
@@ -47,6 +48,20 @@
             "ability": 2,
             "item": "ITEM_SITRUS_BERRY",
             "moves": [ "MOVE_DRAGON_TAIL", "MOVE_SHADOW_CLAW", "MOVE_X_SCISSOR", "MOVE_DRAGON_DANCE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "Whatever move you chose, it fills me with the\nheat of battle!"
+        },
+        {
+            "type": 19,
+            "text": "My blood burns with even more fire at\nthis age! I've still got some fight in me!"
+        },
+        {
+            "type": 1,
+            "text": "This bitterness that floods me after\na defeat...{be01}\nThe heart that does not succumb to such a\nfeeling is filled with energy and life!"
         }
     ]
 }

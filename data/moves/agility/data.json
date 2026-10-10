@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Agility",
+    "description": "The user relaxes and lightens its body to\nmove faster. It sharply boosts\nthe Speed stat.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

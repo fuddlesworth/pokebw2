@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Selfdestruct",
+    "description": "The user attacks everything around it\nby causing an explosion.\nThe user faints upon using this move.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

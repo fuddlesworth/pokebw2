@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cranidos",
+    "category": "Head Butt Pokémon",
+    "pokedex_entry": "A lifelong jungle dweller from 100\nmillion years ago, it would snap\nobstructing trees with head butts.",
     "base_stats": {
         "hp": 67,
         "attack": 125,

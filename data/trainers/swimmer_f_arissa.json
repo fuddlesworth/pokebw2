@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Arissa",
     "class": "TRAINER_CLASS_SWIMMER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Seeing a Pokémon use its best moves\nagainst another Pokémon{be00}\nis really an adventure!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The adventure is over already."
+        },
+        {
+            "type": 2,
+            "text": "It appears that my vacation\nshall never end.{be01}\nI wonder if that's OK..."
         }
     ]
 }

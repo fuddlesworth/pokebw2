@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Pay Day",
+    "description": "Numerous coins are hurled at the\ntarget to inflict damage.\nMoney is earned after the battle.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

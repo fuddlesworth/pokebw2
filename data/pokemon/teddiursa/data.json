@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Teddiursa",
+    "category": "Little Bear Pokémon",
+    "pokedex_entry": "It lets honey soak into its paws\nso it can lick them all the time.\nEvery set of paws tastes unique.",
     "base_stats": {
         "hp": 60,
         "attack": 80,

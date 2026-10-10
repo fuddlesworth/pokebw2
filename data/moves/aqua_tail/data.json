@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Aqua Tail",
+    "description": "The user attacks by swinging its tail as if\nit were a vicious wave in a raging storm.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

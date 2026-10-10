@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Razor Wind",
+    "description": "A two-turn attack. Blades of wind hit\nopposing Pokémon on the second turn.\nCritical hits land more easily.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Murphy",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -52,6 +53,20 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_X_SCISSOR", "MOVE_POISON_JAB", "MOVE_ROCK_SLIDE", "MOVE_SWORDS_DANCE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey there, young Trainer!{be01}\nIf you're unsure about something,\nI'll happily act as your opponent!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Excellent!\nThis was a defeat I can't disagree with!"
+        },
+        {
+            "type": 2,
+            "text": "I'm ashamed to admit it, but\nI'm actually lost right now...{be01}\nNow, which way did I come from again?"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Drain Punch",
+    "description": "An energy-draining punch. The user's\nHP is restored by half the damage taken\nby the target.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE_DRAIN",
     "category": "MOVE_CATEGORY_PHYSICAL",

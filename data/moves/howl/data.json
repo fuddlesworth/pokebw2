@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Howl",
+    "description": "The user howls loudly to raise its spirit,\nboosting its Attack stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

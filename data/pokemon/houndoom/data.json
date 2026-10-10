@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Houndoom",
+    "category": "Dark Pokémon",
+    "pokedex_entry": "The flames it breathes when angry\ncontain toxins. If they cause a\nburn, it will hurt forever.",
     "base_stats": {
         "hp": 75,
         "attack": 90,

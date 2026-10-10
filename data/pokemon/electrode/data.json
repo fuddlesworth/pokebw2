@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Electrode",
+    "category": "Ball Pokémon",
+    "pokedex_entry": "It is known to drift on winds if it\nis bloated to bursting with stored\nelectricity.",
     "base_stats": {
         "hp": 60,
         "attack": 50,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Julius",
     "class": "TRAINER_CLASS_DOCTOR",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_HEAL", "ITEM_HYPER_POTION" ],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If Team Plasma takes over the world,\nthere should be fewer Pokémon injured.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Grr... Tell me! Please!\nJust what is a Pokémon battle?!"
+        },
+        {
+            "type": 13,
+            "text": "Injured Pokémon have both enemies\nand friends!{be01}"
+        },
+        {
+            "type": 14,
+            "text": "Don't you think there will be less war if\nTeam Plasma takes over the world?"
         }
     ]
 }

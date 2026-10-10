@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elmer",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_WILD_CHARGE", "MOVE_FLAMETHROWER", "MOVE_CRUNCH", "MOVE_CRUSH_CLAW" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "All I want are powerful Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I can't comprehend this!\nHow could my partner lose?!"
+        },
+        {
+            "type": 2,
+            "text": "All I want are powerful Pokémon!{be01}\nOnly a Pokémon that understands that\ncan become one of my partners!"
         }
     ]
 }

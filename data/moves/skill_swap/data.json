@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Skill Swap",
+    "description": "The user employs its psychic power to\nexchange Abilities with the target.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

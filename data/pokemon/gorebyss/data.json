@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gorebyss",
+    "category": "South Sea Pokémon",
+    "pokedex_entry": "It lives at the bottom of the sea.\nIn the springtime, its pink body\nturns more vivid for some reason.",
     "base_stats": {
         "hp": 55,
         "attack": 84,

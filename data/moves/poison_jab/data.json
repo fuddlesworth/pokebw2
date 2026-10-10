@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Poison Jab",
+    "description": "The target is stabbed with a tentacle or\narm steeped in poison. It may also\npoison the target.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

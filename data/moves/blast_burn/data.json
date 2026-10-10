@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Blast Burn",
+    "description": "The target is razed by a fiery explosion.\nThe user must rest on the\nnext turn, however.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

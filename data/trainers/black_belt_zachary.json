@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Zachary",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh no, I won't let a precious training\npartner get away that easily!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "A battle against a Trainer really is the\nbest training!"
+        },
+        {
+            "type": 2,
+            "text": "Looking for training partners over here!{be01}\nI wouldn't say no to a girlfriend, either!"
         }
     ]
 }

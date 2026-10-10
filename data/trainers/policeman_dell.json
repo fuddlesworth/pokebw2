@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dell",
     "class": "TRAINER_CLASS_POLICEMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey, you!\nStop right there!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "There's no stopping you!\nOne might call you unstoppable!"
+        },
+        {
+            "type": 2,
+            "text": "Go all out while you're still young!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Medicham",
+    "category": "Meditate Pokémon",
+    "pokedex_entry": "It gains the ability to see the aura\nof its opponents by honing its mind\nthrough starvation.",
     "base_stats": {
         "hp": 60,
         "attack": 60,

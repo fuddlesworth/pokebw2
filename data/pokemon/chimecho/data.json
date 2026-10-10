@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Chimecho",
+    "category": "Wind Chime Pokémon",
+    "pokedex_entry": "Its cries echo inside its hollow\nbody to emerge as beautiful notes\nfor startling and repelling foes.",
     "base_stats": {
         "hp": 65,
         "attack": 50,

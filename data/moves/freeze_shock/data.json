@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Freeze Shock",
+    "description": "On the second turn, the user hits the\ntarget with electrically charged ice.\nIt may leave the target with paralysis.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

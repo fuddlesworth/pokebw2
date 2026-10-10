@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Wes",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My Pokémon's poison really stings!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What a defeat!\nI guess I got a taste of my own poison!"
+        },
+        {
+            "type": 2,
+            "text": "A little sting, and then the slow\ndrain begins...{be01}\nThe super-technical way that Poison-type\nPokémon attack is so cool!"
         }
     ]
 }

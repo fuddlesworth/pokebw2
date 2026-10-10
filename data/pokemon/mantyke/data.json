@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mantyke",
+    "category": "Kite Pokémon",
+    "pokedex_entry": "The pattern on its back\nvaries by region. It often\nswims in a school of Remoraid.",
     "base_stats": {
         "hp": 45,
         "attack": 20,

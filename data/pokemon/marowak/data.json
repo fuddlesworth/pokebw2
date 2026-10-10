@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Marowak",
+    "category": "Bone Keeper Pokémon",
+    "pokedex_entry": "From its birth, this savage Pokémon\nconstantly holds bones. It is\nskilled in using them as weapons.",
     "base_stats": {
         "hp": 60,
         "attack": 80,

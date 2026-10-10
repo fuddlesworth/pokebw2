@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Waterfall",
+    "description": "The user charges at the target\nand may make it flinch.\nIt can also be used to climb a waterfall.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

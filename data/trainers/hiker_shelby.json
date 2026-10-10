@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shelby",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm chasing my dream,\nand I'm fighting for a victory!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I can't catch that dream!"
+        },
+        {
+            "type": 2,
+            "text": "There was once a legendary Pokémon\nhidden away in this cave.{be01}\nWhat do you think it felt?\nWhat do you think it was hoping for?"
         }
     ]
 }

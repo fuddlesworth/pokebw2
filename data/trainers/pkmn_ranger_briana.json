@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Briana",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "There was a whisper on the wind that told\nme of your coming!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I will become the wind and blow..."
+        },
+        {
+            "type": 15,
+            "text": "Oh! I almost forgot!\nI found some Chesto Berries, so...{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Wind blows into caves when you're\nclose to an entrance or exit."
         }
     ]
 }

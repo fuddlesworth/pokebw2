@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Embargo",
+    "description": "It prevents the target from using its held\nitem. Its Trainer is also prevented from\nusing items on it.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Power Gem",
+    "description": "The user attacks with a ray of light that\nsparkles as if it were made of gemstones.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

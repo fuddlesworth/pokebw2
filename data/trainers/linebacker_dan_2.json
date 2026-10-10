@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dan",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "POWER!!{be01}\nIf you have power that nobody can beat,\nyou can win both Pokémon battles{be00}\nand football games!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I...still don't have enough power?"
+        },
+        {
+            "type": 15,
+            "text": "I may still not have enough power,\nbut I'm not short on kindness!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Mmmm... Maybe I should\ntrain more..."
         }
     ]
 }

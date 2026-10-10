@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Terrance",
     "class": "TRAINER_CLASS_SCIENTIST_M_52",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_SP_DEF" ],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The fact that you are here means...\nthat you are also part of the sewer?!{be00}\nAll right! Then I will survey you, too!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Huh...? Where am I?\nWho are you?"
+        },
+        {
+            "type": 2,
+            "text": "What?! You mean that I got so\ncaught up in my survey of the sewer{be00}\nthat I ended up in the Relic Passage?!"
         }
     ]
 }

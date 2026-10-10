@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pawniard",
+    "category": "Sharp Blade Pokémon",
+    "pokedex_entry": "Ignoring their injuries, groups attack\nby sinking the blades that cover their\nbodies into their prey.",
     "base_stats": {
         "hp": 45,
         "attack": 85,

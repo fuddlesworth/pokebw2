@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pidgey",
+    "category": "Tiny Bird Pokémon",
+    "pokedex_entry": "It is docile and prefers to avoid\nconflict. If disturbed, however,\nit can ferociously strike back.",
     "base_stats": {
         "hp": 40,
         "attack": 45,

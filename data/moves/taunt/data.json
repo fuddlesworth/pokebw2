@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Taunt",
+    "description": "The target is taunted into a rage that\nallows it to use only attack moves\nfor three turns.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

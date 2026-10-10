@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rosalyn",
     "class": "TRAINER_CLASS_NURSERY_AIDE",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hear the cry of my heart!{be01}\n“Everyone, SIT DOWN and SHUT UP!\"{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hah... Hah... Hah... I feel a bit better now\nthat I've let that out."
+        },
+        {
+            "type": 2,
+            "text": "I like kids and Pokémon both, but I'm\njust not that nice!"
         }
     ]
 }

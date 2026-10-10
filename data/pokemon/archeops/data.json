@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Archeops",
+    "category": "First Bird Pokémon",
+    "pokedex_entry": "It runs better than it flies.\nIt takes off into the sky by\nrunning at a speed of 25 mph.",
     "base_stats": {
         "hp": 75,
         "attack": 140,

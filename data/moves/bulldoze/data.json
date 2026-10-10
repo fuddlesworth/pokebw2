@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bulldoze",
+    "description": "The user stomps down on the ground\nand attacks everything in the area. Hit\nPokémon's Speed stat is reduced.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_PHYSICAL",

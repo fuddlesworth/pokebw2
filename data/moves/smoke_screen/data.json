@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "SmokeScreen",
+    "description": "The user releases an obscuring cloud\nof smoke or ink. It reduces the\ntarget's accuracy.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

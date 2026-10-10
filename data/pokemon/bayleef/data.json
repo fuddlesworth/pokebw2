@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Bayleef",
+    "category": "Leaf Pokémon",
+    "pokedex_entry": "The buds that ring its neck give\noff a spicy aroma that perks\npeople up.",
     "base_stats": {
         "hp": 60,
         "attack": 62,

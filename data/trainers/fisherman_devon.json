@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Devon",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -39,6 +40,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Fishing is a perfectly respectable sport!\nWhy isn't there a fishing stadium?!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "...Of course, fishing is fun\nwhen you enjoy it in nature.{be01}"
+        },
+        {
+            "type": 15,
+            "text": "Thanks for the fun time!\nHere's a symbol of my appreciation!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I like quiet nature,\nbut I like lively places like this, too."
         }
     ]
 }

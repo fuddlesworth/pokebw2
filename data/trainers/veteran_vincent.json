@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Vincent",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_STONE_EDGE", "MOVE_FOCUS_BLAST", "MOVE_ICE_BEAM", "MOVE_FIRE_BLAST" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Down in a valley...\nyou and I face each other...{be01}"
+        },
+        {
+            "type": 1,
+            "text": "If you were the challenger, I'm sure even\nTeam Plasma would fall before you!"
+        },
+        {
+            "type": 2,
+            "text": "Even if Team Plasma had succeeded in\nreleasing all of the Pokémon...{be01}\nI'm sure that people would have just\nfound other ways to fight."
         }
     ]
 }

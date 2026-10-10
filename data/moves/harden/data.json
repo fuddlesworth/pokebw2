@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Harden",
+    "description": "The user stiffens all the muscles in its\nbody to raise its Defense stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

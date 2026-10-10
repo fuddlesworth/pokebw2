@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wynaut",
+    "category": "Bright Pokémon",
+    "pokedex_entry": "It grows strong by pushing up\nagainst others en masse.\nIt loves eating sweet fruit.",
     "base_stats": {
         "hp": 95,
         "attack": 23,

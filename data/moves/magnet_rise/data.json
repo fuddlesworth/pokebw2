@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Magnet Rise",
+    "description": "The user levitates using electrically\ngenerated magnetism for five turns.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

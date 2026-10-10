@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Arcanine",
+    "category": "Legendary Pokémon",
+    "pokedex_entry": "The sight of it running over 6,200 miles\nin a single day and night has captivated\nmany people.",
     "base_stats": {
         "hp": 90,
         "attack": 110,

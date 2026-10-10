@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ledyba",
+    "category": "Five Star Pokémon",
+    "pokedex_entry": "It is so timid, it can't move if it\nisn't with a swarm of others. It\nconveys its feelings with scent.",
     "base_stats": {
         "hp": 40,
         "attack": 20,

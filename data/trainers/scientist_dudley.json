@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dudley",
     "class": "TRAINER_CLASS_SCIENTIST_M_52",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_SPECIAL" ],
@@ -23,6 +24,12 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Oh!\nMy groundbreaking research..."
         }
     ]
 }

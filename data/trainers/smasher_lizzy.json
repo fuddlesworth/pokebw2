@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lizzy",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My serve is 120 miles per hour!{be01}\nThat's the kind of killer attack I'm\nabout to show you!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ohhh, I wanted to continue the rally just a\nlittle bit longer!"
+        },
+        {
+            "type": 2,
+            "text": "A rally that goes on for ages--it's\ntough but still so fulfilling!"
         }
     ]
 }

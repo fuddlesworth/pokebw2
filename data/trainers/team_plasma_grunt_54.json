@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "This is our place! We aren't going to\nlet anyone mess with it!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ahhhh! The floor is covered in mud after all\nthat fighting!"
+        },
+        {
+            "type": 2,
+            "text": "There are people who can't live anywhere\nbut here! You got a problem with that?!"
         }
     ]
 }

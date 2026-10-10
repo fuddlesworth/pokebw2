@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tyrone",
     "class": "TRAINER_CLASS_PRESCHOOLER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Take this!\nHyper Beam!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whoops..."
+        },
+        {
+            "type": 2,
+            "text": "A Hyper Beam? Hmm...no.\nMaybe I want to do a Giga Impact now?"
         }
     ]
 }

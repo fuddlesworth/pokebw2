@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Growl",
+    "description": "The user growls in an endearing way,\nmaking the opposing team less wary.\nThe foes' Attack stats are lowered.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jaye",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -39,6 +40,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I love Bug-type Pokémon, and I love\nbug catching!{be01}\nOf course I looove Pokémon battles, too!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I won't lose to anyone when it comes to bug\ncatching, yet I..."
+        },
+        {
+            "type": 2,
+            "text": "If I catch all of the Bug-type Pokémon in\nthe Unova region, I can get a Bug-type{be00}\nCatcher Medal!{be01}\nThat's what I'm aiming for!"
         }
     ]
 }

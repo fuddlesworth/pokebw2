@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Captivate",
+    "description": "If it is the opposite gender of the user,\nthe target is charmed into harshly\nlowering its Sp. Atk stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

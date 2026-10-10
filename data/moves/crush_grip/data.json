@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Crush Grip",
+    "description": "The target is crushed with great force.\nThe attack is more powerful the more\nHP the target has left.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

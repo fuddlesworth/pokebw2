@@ -1,5 +1,7 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bianca",
+    "compress_name": false,
     "class": "TRAINER_CLASS_PKMN_TRAINER_BIANCA",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -61,6 +63,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_LEAF_STORM", "MOVE_DRAGON_TAIL", "MOVE_COIL", "MOVE_RETURN" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "S-s-still... That's fine.\nWe're just fine!"
+        },
+        {
+            "type": 20,
+            "text": "Uh...at a time like this,\nI am supposed to do...what?"
+        },
+        {
+            "type": 1,
+            "text": "Thank you for having a battle with me!\nIt was a lot of fun!"
         }
     ]
 }

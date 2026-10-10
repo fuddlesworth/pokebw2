@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dodrio",
+    "category": "Triple Bird Pokémon",
+    "pokedex_entry": "When Doduo evolves into this odd\nbreed, one of its heads splits into\ntwo. It runs at nearly 40 mph.",
     "base_stats": {
         "hp": 60,
         "attack": 110,

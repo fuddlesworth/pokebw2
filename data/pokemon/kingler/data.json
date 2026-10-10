@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kingler",
+    "category": "Pincer Pokémon",
+    "pokedex_entry": "The larger pincer has 10,000-\nhorsepower strength. However, it\nis so heavy, it is difficult to aim.",
     "base_stats": {
         "hp": 55,
         "attack": 130,

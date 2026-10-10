@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Horsea",
+    "category": "Dragon Pokémon",
+    "pokedex_entry": "It makes its nest in the shade of\ncorals. If it senses danger, it\nspits murky ink and flees.",
     "base_stats": {
         "hp": 30,
         "attack": 40,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Alexander",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If you win against me,\nI will give you something good{be00}\nfrom this backpack!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You are great!\nAnd strong!"
+        },
+        {
+            "type": 15,
+            "text": "Here you are.\nI will give you this as I promised!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "It feels great to run as fast as you can\nover mountains and through forests.{be00}\nRight?"
         }
     ]
 }

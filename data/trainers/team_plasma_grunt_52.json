@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm the fighting sweeper!\nI'll clean up garbage like you!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oops..."
+        },
+        {
+            "type": 2,
+            "text": "The fact that I let you sneak in here\nmeans I'll probably lose my Pokémon, huh?{be01}\nThe Pokémon we stole with that plan two\nyears ago are running out, after all."
         }
     ]
 }

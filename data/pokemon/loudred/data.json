@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Loudred",
+    "category": "Big Voice Pokémon",
+    "pokedex_entry": "The shock waves from its cries can\ntip over trucks. It stamps its\nfeet to power up.",
     "base_stats": {
         "hp": 84,
         "attack": 71,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sterling",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -34,6 +35,20 @@
             "gender": 0,
             "ability": 1,
             "moves": [ "MOVE_EARTHQUAKE", "MOVE_IRON_DEFENSE", "MOVE_MEGA_PUNCH", "MOVE_SHADOW_PUNCH" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The people who pass by here\nhave such different moods!{be01}\nIt's fun to watch, and even more fun\nto fight against them!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Mwa haha!\nIt's fun!"
+        },
+        {
+            "type": 2,
+            "text": "Your Pokémon was in a really good mood\nthe moment that you won!"
         }
     ]
 }

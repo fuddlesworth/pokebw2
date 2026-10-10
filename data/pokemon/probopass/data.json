@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Probopass",
+    "category": "Compass Pokémon",
+    "pokedex_entry": "It freely controls three units\ncalled Mini-Noses using\nmagnetic force.",
     "base_stats": {
         "hp": 60,
         "attack": 55,

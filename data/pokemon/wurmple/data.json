@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wurmple",
+    "category": "Worm Pokémon",
+    "pokedex_entry": "Often targeted by bird Pokémon,\nit desperately resists by releasing\npoison from its tail spikes.",
     "base_stats": {
         "hp": 45,
         "attack": 45,

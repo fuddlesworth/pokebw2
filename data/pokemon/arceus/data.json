@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Arceus",
+    "category": "Alpha Pokémon",
+    "pokedex_entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
     "base_stats": {
         "hp": 120,
         "attack": 120,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mightyena",
+    "category": "Bite Pokémon",
+    "pokedex_entry": "It chases down prey in a pack.\nIt will never disobey the commands\nof a skilled Trainer.",
     "base_stats": {
         "hp": 70,
         "attack": 90,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bess",
     "class": "TRAINER_CLASS_BOSS_TRAINER_BESS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_MYSTIC_WATER",
             "moves": [ "MOVE_AQUA_JET", "MOVE_DOUBLE_EDGE", "MOVE_ICE_BEAM", "MOVE_SWAGGER" ]
         }
-    ]
+    ],
+    "messages": []
 }

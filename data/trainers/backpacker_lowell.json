@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lowell",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I travel the world because\nI'm looking for danger!{be00}\nAre you dangerous, Trainer?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You're so dangerous that I was in\ndanger of giving up the match!"
+        },
+        {
+            "type": 2,
+            "text": "Why do I seek out danger?{be01}\nBecause it's exciting, that's why!\nIt makes me feel alive!"
         }
     ]
 }

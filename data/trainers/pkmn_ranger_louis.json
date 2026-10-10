@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Louis",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am a Pokémon Ranger, here to gather\nup some electric power!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whoa! Can I still not draw forth my\nelectrifying powers?!"
+        },
+        {
+            "type": 15,
+            "text": "Take this.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I don't know if it's unfair or just plain\ncool when Pokémon use electricity!"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grimsley",
     "class": "TRAINER_CLASS_ELITE_FOUR_GRIMSLEY",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,24 @@
             "ability": 1,
             "item": "ITEM_SITRUS_BERRY",
             "moves": [ "MOVE_GUILLOTINE", "MOVE_NIGHT_SLASH", "MOVE_X_SCISSOR", "MOVE_AERIAL_ACE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "I never thought you would use that move...\nNot a bad choice at all."
+        },
+        {
+            "type": 19,
+            "text": "Those who give up on themselves\ncan never claim victory!"
+        },
+        {
+            "type": 20,
+            "text": "There's got to be a way to win...\nEven in the most extreme of conditions!"
+        },
+        {
+            "type": 1,
+            "text": "Which Pokémon should I raise?{be01}\nWhich moves should I teach my Pokémon?{be01}\nWhat items should I give my Pokémon?{be01}\nYou need to think everything through very\nthoroughly if you want to win!{be01}\nIn that sense, you're a very\nimpressive battler!"
         }
     ]
 }

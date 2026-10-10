@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Heatran",
+    "category": "Lava Dome Pokémon",
+    "pokedex_entry": "Its body is made of rugged steel.\nHowever, it is partially melted in\nspots because of its own heat.",
     "base_stats": {
         "hp": 91,
         "attack": 90,

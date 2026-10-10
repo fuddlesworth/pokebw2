@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Altaria",
+    "category": "Humming Pokémon",
+    "pokedex_entry": "On sunny days, it flies freely through\nthe sky and blends into the clouds.\nIt sings in a beautiful soprano.",
     "base_stats": {
         "hp": 75,
         "attack": 70,

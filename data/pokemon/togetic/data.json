@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Togetic",
+    "category": "Happiness Pokémon",
+    "pokedex_entry": "To share its happiness, it flies\naround the world seeking kind-\nhearted people.",
     "base_stats": {
         "hp": 55,
         "attack": 40,

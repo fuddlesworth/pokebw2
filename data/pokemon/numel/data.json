@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Numel",
+    "category": "Numb Pokémon",
+    "pokedex_entry": "The magma in its body reaches\n2,200 degrees F. Its hump gets smaller\nwhen it uses Fire-type moves.",
     "base_stats": {
         "hp": 60,
         "attack": 60,

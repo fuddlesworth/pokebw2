@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Clamp",
+    "description": "The target is clamped and squeezed by\nthe user's very thick and sturdy shell for\nfour to five turns.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

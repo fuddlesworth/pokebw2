@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dragonair",
+    "category": "Dragon Pokémon",
+    "pokedex_entry": "If its body takes on an aura, the\nweather changes instantly. It is\nsaid to live in seas and lakes.",
     "base_stats": {
         "hp": 61,
         "attack": 84,

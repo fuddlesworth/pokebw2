@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Ally Switch",
+    "description": "The user teleports using a strange power\nand switches its place with one of\nits allies.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

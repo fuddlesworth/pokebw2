@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cherubi",
+    "category": "Cherry Pokémon",
+    "pokedex_entry": "The small ball is not only filled with\nnutrients, it is also tasty. Starly\ntry to peck it off.",
     "base_stats": {
         "hp": 45,
         "attack": 35,

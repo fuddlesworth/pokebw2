@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mantine",
+    "category": "Kite Pokémon",
+    "pokedex_entry": "If it builds up enough speed swimming, it\ncan fly over 300 feet out of the water\nfrom the surface of the ocean.",
     "base_stats": {
         "hp": 65,
         "attack": 40,

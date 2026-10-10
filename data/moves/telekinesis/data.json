@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Telekinesis",
+    "description": "The user makes the target float with its\npsychic power. The target is easier to\nhit for three turns.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

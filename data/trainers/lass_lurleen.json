@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lurleen",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I was taught by Master Cheren himself\nhow to battle with Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Nooo way!\nYou're stronger than Master Cheren?!"
+        },
+        {
+            "type": 2,
+            "text": "The more that you study Pokémon, the\nmore you'll understand them.{be00}\nIt's, like, way too much fun!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Chimchar",
+    "category": "Chimp Pokémon",
+    "pokedex_entry": "It is very agile. Before going to\nsleep, it extinguishes the flame\non its tail to prevent fires.",
     "base_stats": {
         "hp": 44,
         "attack": 58,

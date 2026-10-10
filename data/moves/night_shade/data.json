@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Night Shade",
+    "description": "The user makes the target see a\nfrightening mirage. It inflicts damage\nmatching the user's level.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

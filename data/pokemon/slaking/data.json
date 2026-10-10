@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Slaking",
+    "category": "Lazy Pokémon",
+    "pokedex_entry": "This Pokémon lives lying on its side.\nIt only rolls over and moves when\nthere is no more grass to eat.",
     "base_stats": {
         "hp": 150,
         "attack": 160,

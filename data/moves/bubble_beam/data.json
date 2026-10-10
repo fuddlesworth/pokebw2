@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "BubbleBeam",
+    "description": "A spray of bubbles is forcefully ejected\nat the opposing team. It may also lower\ntheir Speed stats.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

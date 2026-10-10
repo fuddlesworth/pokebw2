@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nelson",
     "class": "TRAINER_CLASS_CLERK_M_66",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -47,6 +48,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am not skipping work!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "If I had known this would happen,\nI would have worked diligently."
+        },
+        {
+            "type": 15,
+            "text": "OK!\nTime to get serious!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Taking a productive break\nis also part of any job!"
         }
     ]
 }

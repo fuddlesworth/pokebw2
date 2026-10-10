@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Weezing",
+    "category": "Poison Gas Pokémon",
+    "pokedex_entry": "Inhaling toxic fumes from trash\nand mixing them inside its body\nlets it spread an even fouler stench.",
     "base_stats": {
         "hp": 65,
         "attack": 90,

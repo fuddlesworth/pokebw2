@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Typhlosion",
+    "category": "Volcano Pokémon",
+    "pokedex_entry": "It attacks using blasts of fire.\nIt creates heat shimmers with\nintense fire to hide itself.",
     "base_stats": {
         "hp": 78,
         "attack": 84,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lena",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "O Trainer, embarking on the path to\nVictory Road!{be01}\nWon't you show me your true power?!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You didn't have to show me quite that\nmuch power..."
+        },
+        {
+            "type": 15,
+            "text": "If you have that much power, though, I'm\nsure that you can use one of these!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "If you climb the stairs, you'll reach the\nBadge Check Gates...{be00}\nVictory Road lies right before you."
         }
     ]
 }

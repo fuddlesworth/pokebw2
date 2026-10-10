@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Zebstrika",
+    "category": "Thunderbolt Pokémon",
+    "pokedex_entry": "When this ill-tempered Pokémon\nruns wild, it shoots lightning\nfrom its mane in all directions.",
     "base_stats": {
         "hp": 75,
         "attack": 100,

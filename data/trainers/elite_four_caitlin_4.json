@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Caitlin",
     "class": "TRAINER_CLASS_ELITE_FOUR_CAITLIN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,24 @@
             "ability": 0,
             "item": "ITEM_LIFE_ORB",
             "moves": [ "MOVE_ZEN_HEADBUTT", "MOVE_BULLET_PUNCH", "MOVE_EARTHQUAKE", "MOVE_HAMMER_ARM" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "I will show you how harmonious\nmy Pokémon and I are!"
+        },
+        {
+            "type": 19,
+            "text": "Battling in extreme conditions\nlike this makes me stronger!"
+        },
+        {
+            "type": 20,
+            "text": "I will control my emotions and use them\nas energy to help me obtain victory!"
+        },
+        {
+            "type": 1,
+            "text": "As impressive as always...{be01}\nNo. You and your Pokémon were even\nmore elegant and excellent than before!{be01}\nTo have been able to battle against\nsuch a splendid team...{be01}\nMy Pokémon and I learned so much!\nI offer you my thanks.{be00}\nPlease battle me again sometime."
         }
     ]
 }

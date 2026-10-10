@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Latias",
+    "category": "Eon Pokémon",
+    "pokedex_entry": "Its body is covered with a down\nthat can refract light in such a\nway that it becomes invisible.",
     "base_stats": {
         "hp": 80,
         "attack": 80,

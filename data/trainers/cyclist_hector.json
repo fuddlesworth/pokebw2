@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Hector",
     "class": "TRAINER_CLASS_CYCLIST_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "When I'm riding my Bicycle, don't\nyou think I look stronger?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The cool breeze in my face stopped!\nSo did my Bicycle!"
+        },
+        {
+            "type": 2,
+            "text": "Cycling is a sport, too!\nFollow the rules and ride safely!"
         }
     ]
 }

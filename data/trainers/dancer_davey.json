@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Davey",
     "class": "TRAINER_CLASS_DANCER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "When I come here, I get hyper!\nSo, let's have a battle right away!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I lost against you too quickly!"
+        },
+        {
+            "type": 15,
+            "text": "Here, have this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "When I am watching a game, I get hyper!\nI just can't sit still!"
         }
     ]
 }

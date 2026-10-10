@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Ingrain",
+    "description": "The user lays roots that restore\nits HP on every turn. Because it is\nrooted, it can't switch out.",
     "type": "TYPE_GRASS",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

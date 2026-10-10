@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Morimoto",
     "class": "TRAINER_CLASS_GAME_FREAK_MORIMOTO",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_SUPER_POTION" ],
@@ -37,6 +38,12 @@
             "ability": 0,
             "item": "ITEM_ORAN_BERRY",
             "moves": [ "MOVE_WATER_GUN", "MOVE_FURY_SWIPES", "MOVE_LICK" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "After all, I am the strongest and greatest.\nJust kidding!"
         }
     ]
 }

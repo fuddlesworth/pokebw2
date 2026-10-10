@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Focus Energy",
+    "description": "The user takes a deep breath and\nfocuses so that critical hits land\nmore easily.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

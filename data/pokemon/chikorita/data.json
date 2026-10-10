@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Chikorita",
+    "category": "Leaf Pokémon",
+    "pokedex_entry": "It uses the leaf on its head to\ndetermine the temperature and\nhumidity. It loves to sunbathe.",
     "base_stats": {
         "hp": 45,
         "attack": 49,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Persephone",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Tcha! That all you got?\nGuess it's enough..."
         }
     ]
 }

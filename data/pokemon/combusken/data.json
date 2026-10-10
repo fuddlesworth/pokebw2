@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Combusken",
+    "category": "Young Fowl Pokémon",
+    "pokedex_entry": "Its kicking mastery lets it loose\n10 kicks per second. It emits\nsharp cries to intimidate foes.",
     "base_stats": {
         "hp": 60,
         "attack": 85,

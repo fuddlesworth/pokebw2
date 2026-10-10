@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Twineedle",
+    "description": "The user damages the target twice in\nsuccession by jabbing it with two spikes.\nIt may also poison the target.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

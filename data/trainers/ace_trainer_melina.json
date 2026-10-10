@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Melina",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "It is said that water will not grow\nstagnant as long as it keeps flowing...{be00}\nSo as long as I keep moving onward...{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I won't give up, even if I am defeated!\nThat toughness is the pride of an{be00}\nAce Trainer!"
+        },
+        {
+            "type": 2,
+            "text": "When riding leaves, the direction they\nfloat in will depend on which side you{be00}\ngot on from.{be01}\nDon't worry! If you keep trying, you'll\nfind our Leader sooner or later!"
         }
     ]
 }

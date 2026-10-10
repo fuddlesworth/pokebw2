@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Britney",
     "class": "TRAINER_CLASS_CLERK_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I may look like a regular Clerk ⑮, but\nin fact I am a glamorous female spy!{be00}\nCan you feel it? How strong I am?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh! This spy has failed her mission!"
+        },
+        {
+            "type": 2,
+            "text": "I am investigating the new CEO as part of\nmy work as a female spy.{be00}\nI'll find out what he's hiding!{be01}\nBut he couldn't really be a child,\ncould he? That's just ridiculous!"
         }
     ]
 }

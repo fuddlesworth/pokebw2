@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kendall",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_TACKLE", "MOVE_BITE", "MOVE_ODOR_SLEUTH", "MOVE_WORK_UP" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "It's “The Waving Weaving Walk\"--\nWawalk for short!{be01}\nI wonder what kind of Pokémon\nwe'll meet today?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your Pokémon have good Abilities,\ndon't they?"
+        },
+        {
+            "type": 2,
+            "text": "I totally loved the Wawalk TV show, but\nthey took it off the air."
         }
     ]
 }

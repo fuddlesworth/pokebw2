@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Charm",
+    "description": "The user gazes at the target rather\ncharmingly, making it less wary.\nThe target's Attack is harshly lowered.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

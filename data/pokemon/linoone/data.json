@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Linoone",
+    "category": "Rushing Pokémon",
+    "pokedex_entry": "It charges prey at speeds over\n60 mph. However, because it can\nonly run straight, it often fails.",
     "base_stats": {
         "hp": 78,
         "attack": 70,

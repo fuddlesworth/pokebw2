@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Bulbasaur",
+    "category": "Seed Pokémon",
+    "pokedex_entry": "For some time after its birth, it\ngrows by gaining nourishment from\nthe seed on its back.",
     "base_stats": {
         "hp": 45,
         "attack": 49,

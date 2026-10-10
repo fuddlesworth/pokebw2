@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Mali",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -47,6 +48,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Now dance gracefully!\nBring forth your beautiful moves!{be00}\nLet us perform, my lovely Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Even though they lost,\nmy Pokémon are still cute!"
+        },
+        {
+            "type": 2,
+            "text": "I'll make my cute Pokémon even stronger\nby having battles with lots of Trainers!"
         }
     ]
 }

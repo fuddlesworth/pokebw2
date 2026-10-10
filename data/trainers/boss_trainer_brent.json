@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Brent",
     "class": "TRAINER_CLASS_BOSS_TRAINER_BRENT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_EXPERT_BELT",
             "moves": [ "MOVE_ICE_BEAM", "MOVE_THUNDERBOLT", "MOVE_FLAMETHROWER", "MOVE_ATTRACT" ]
         }
-    ]
+    ],
+    "messages": []
 }

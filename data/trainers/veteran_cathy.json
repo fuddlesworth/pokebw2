@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Cathy",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_AIR_SLASH", "MOVE_POISON_FANG", "MOVE_SHADOW_BALL", "MOVE_X_SCISSOR" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Wait!\nYou, young Trainer over there!{be01}\nLook at my Pokémon.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Not bad!\nI like your strength."
+        },
+        {
+            "type": 2,
+            "text": "I'd love to brag about my Pokémon, but it\nwould take too long, so I'll resist!"
         }
     ]
 }

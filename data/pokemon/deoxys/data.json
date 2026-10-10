@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Deoxys",
+    "category": "DNA Pokémon",
+    "pokedex_entry": "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
     "base_stats": {
         "hp": 50,
         "attack": 150,

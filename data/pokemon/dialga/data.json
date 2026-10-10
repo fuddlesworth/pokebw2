@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dialga",
+    "category": "Temporal Pokémon",
+    "pokedex_entry": "A legendary Pokémon of Sinnoh.\nIt is said that time flows when\nDialga's heart beats.",
     "base_stats": {
         "hp": 100,
         "attack": 120,

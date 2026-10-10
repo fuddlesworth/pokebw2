@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rival",
     "class": "TRAINER_CLASS_PKMN_TRAINER_RIVAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_HYPER_POTION" ],
@@ -34,6 +35,20 @@
             "gender": 0,
             "ability": 0,
             "item": "ITEM_MIRACLE_SEED"
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "Let's do it, partner!"
+        },
+        {
+            "type": 20,
+            "text": "I'm counting on you!"
+        },
+        {
+            "type": 1,
+            "text": "I couldn't even draw out my team's\nreal strength... How pathetic!"
         }
     ]
 }

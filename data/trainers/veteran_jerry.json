@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jerry",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -27,6 +28,12 @@
             "ability": 2,
             "item": "ITEM_DRAGON_GEM",
             "moves": [ "MOVE_DRAGON_CLAW", "MOVE_FLAMETHROWER", "MOVE_ROCK_SLIDE", "MOVE_CRUNCH" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Such energy on the offense...\nYou are truly without equal!"
         }
     ]
 }

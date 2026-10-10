@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Treecko",
+    "category": "Wood Gecko Pokémon",
+    "pokedex_entry": "The soles of its feet are covered\nby countless tiny spikes, enabling\nit to walk on walls and ceilings.",
     "base_stats": {
         "hp": 40,
         "attack": 45,

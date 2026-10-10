@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tony",
     "class": "TRAINER_CLASS_STRIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Pokémon and Poké Balls\nare my real friends!{be01}\nJoin the training of\nour Pokémon Eleven!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Aghhhhh! I'm still such a rookie!\nI have more than enough guts, though!"
+        },
+        {
+            "type": 15,
+            "text": "It's sharing time yet again for\nmy copious amount of guts!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "My Pokémon and I\nstill haven't practiced enough...{be00}\nTo put it in levels, we're about a 20..."
         }
     ]
 }

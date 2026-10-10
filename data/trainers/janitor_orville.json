@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Orville",
     "class": "TRAINER_CLASS_JANITOR",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh! I haven't seen you before!\nWould you mind sparring with me?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wow! Astounding! For one so young,\nyou're quite impressive, indeed!"
+        },
+        {
+            "type": 2,
+            "text": "Look carefully around the ranch and on\nthe roads, and you might find items on{be00}\nthe ground!"
         }
     ]
 }

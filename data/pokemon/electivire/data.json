@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Electivire",
+    "category": "Thunderbolt Pokémon",
+    "pokedex_entry": "The instant it presses the tips of its\ntails onto an opponent, it sends over\n20,000 volts of electricity into the foe.",
     "base_stats": {
         "hp": 75,
         "attack": 123,

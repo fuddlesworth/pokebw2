@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Billy Jo",
     "class": "TRAINER_CLASS_GUITARIST",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_TACKLE", "MOVE_ASSURANCE", "MOVE_POISON_GAS" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I can always be straight and honest\nwith myself whenever I'm playing the{be00}\nguitar or having a Pokémon battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Argh! The happy times always end\nso quickly!"
+        },
+        {
+            "type": 2,
+            "text": "It's because I'm with my Pokémon that\nI can happily play my guitar.{be01}\nAnd it's because I play my guitar that\nmy Pokémon become strong. Get it?"
         }
     ]
 }

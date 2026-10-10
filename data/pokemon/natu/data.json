@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Natu",
+    "category": "Tiny Bird Pokémon",
+    "pokedex_entry": "It picks food from cactus plants,\ndeftly avoiding buds and spines.\nIt seems to skip about to move.",
     "base_stats": {
         "hp": 40,
         "attack": 50,

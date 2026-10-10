@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ludicolo",
+    "category": "Carefree Pokémon",
+    "pokedex_entry": "If it hears festive music, all its\nmuscles fill with energy. It can't\nhelp breaking out into a dance.",
     "base_stats": {
         "hp": 80,
         "attack": 70,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chan",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "A Triple Battle is a three-against-three\nPokémon battle!"
+        },
+        {
+            "type": 0,
+            "text": "Heh heh! I wonder what would happen if I\nhad all three Pokémon attack at once?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I couldn't pick a target to focus on...\nOr, rather, you never let me pick one!"
+        },
+        {
+            "type": 2,
+            "text": "A flood of attacks from three Pokémon...{be01}\nI know! “Jetstream\" attack!\nLet's call it that."
         }
     ]
 }

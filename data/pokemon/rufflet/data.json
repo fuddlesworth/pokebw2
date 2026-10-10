@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Rufflet",
+    "category": "Eaglet Pokémon",
+    "pokedex_entry": "It stands up to massive opponents, not\nout of courage, but out of recklessness.\nBut that is how it gets stronger.",
     "base_stats": {
         "hp": 70,
         "attack": 83,

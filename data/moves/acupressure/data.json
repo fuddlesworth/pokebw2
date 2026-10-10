@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Acupressure",
+    "description": "The user applies pressure to stress\npoints, sharply boosting one of\nits stats.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

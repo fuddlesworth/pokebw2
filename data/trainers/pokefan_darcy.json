@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Darcy",
     "class": "TRAINER_CLASS_POKEFAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_MAX_POTION" ],
@@ -47,6 +48,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Did you see today's game?{be01}\nThere was some great ballhandling by\nplayers and Pokémon!{be01}\nThe excitement gets me pumped\nfor a battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I lost, but I am still excited!"
+        },
+        {
+            "type": 15,
+            "text": "I'm really excited. Here,\nplease accept this gift!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "The only place you can watch Pokémon\nenjoying sports is Nimbasa City!"
         }
     ]
 }

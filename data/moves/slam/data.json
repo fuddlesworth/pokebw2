@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Slam",
+    "description": "The target is slammed with a long tail,\nvines, etc., to inflict damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

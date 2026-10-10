@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tavarius",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Looks like the conveyor brought\nin a strong Trainer like you!"
         }
     ]
 }

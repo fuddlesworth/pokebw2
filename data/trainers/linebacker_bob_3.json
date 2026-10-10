@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bob",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Kids! Please cooperate with this\npractice session for my Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "But my running play was supposed to\nbe so incredible that even Flying-type{be00}\nPokémon couldn't keep up..."
+        },
+        {
+            "type": 15,
+            "text": "Maybe this gift will be more\neffective than my running play!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Having a powerful and speedy\nrunning play is key to being a{be00}\ngood football player!"
         }
     ]
 }

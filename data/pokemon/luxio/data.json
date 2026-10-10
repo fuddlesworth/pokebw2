@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Luxio",
+    "category": "Spark Pokémon",
+    "pokedex_entry": "Strong electricity courses through\nthe tips of its sharp claws. A light\nscratch causes fainting in foes.",
     "base_stats": {
         "hp": 60,
         "attack": 85,

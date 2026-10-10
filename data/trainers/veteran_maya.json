@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Maya",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_DRACO_METEOR", "MOVE_EARTHQUAKE", "MOVE_FIRE_BLAST", "MOVE_STONE_EDGE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I come to bear upon you now like a dragon\nfrom above...!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Salamence... Even in defeat, you are the\nmost noble of Pokémon."
+        },
+        {
+            "type": 2,
+            "text": "A lone island in a distant sea...\nA steep and treacherous ravine...{be01}\nYes, this is what the noble and powerful\nDragon-type Pokémon is like."
         }
     ]
 }

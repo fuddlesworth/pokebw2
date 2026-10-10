@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Bidoof",
+    "category": "Plump Mouse Pokémon",
+    "pokedex_entry": "A comparison revealed that\nBidoof's front teeth grow at\nthe same rate as Rattata's.",
     "base_stats": {
         "hp": 59,
         "attack": 45,

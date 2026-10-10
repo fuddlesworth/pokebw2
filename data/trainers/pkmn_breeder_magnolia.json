@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Magnolia",
     "class": "TRAINER_CLASS_PKMN_BREEDER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm proud of my Pokémon, which\nI raised with love and care!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Looks like I lost to you in the\nlove-and-care department... You're amazing!"
+        },
+        {
+            "type": 2,
+            "text": "If you don't raise your Pokémon with\nlove and care, they'll grow up to be{be00}\nsad Pokémon that don't want to battle!"
         }
     ]
 }

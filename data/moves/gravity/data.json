@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Gravity",
+    "description": "Gravity is intensified for five turns,\nmaking moves involving flying unusable\nand negating Levitate.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

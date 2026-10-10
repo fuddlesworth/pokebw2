@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Simon",
     "class": "TRAINER_CLASS_SCIENTIST_M_52",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_DEFEND" ],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I wonder if being good at sports\nand being good at battles are related?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It was very helpful..."
+        },
+        {
+            "type": 15,
+            "text": "Ummmm. You are\nquite interesting.{be01}\nPlease have this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Both sports and Pokémon are\nlike a science for me!"
         }
     ]
 }

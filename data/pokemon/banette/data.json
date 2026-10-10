@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Banette",
+    "category": "Marionette Pokémon",
+    "pokedex_entry": "A doll that became a Pokémon over\nits grudge of being thrown away. It\nseeks the child who disowned it.",
     "base_stats": {
         "hp": 64,
         "attack": 115,

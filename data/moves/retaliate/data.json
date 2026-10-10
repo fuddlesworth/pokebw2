@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Retaliate",
+    "description": "The user gets revenge for a fainted ally.\nIf an ally fainted in the previous turn,\nthis attack's damage increases.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

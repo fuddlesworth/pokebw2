@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lucario",
+    "category": "Aura Pokémon",
+    "pokedex_entry": "By reading the auras of all things,\nit can tell how others are feeling\nfrom over half a mile away.",
     "base_stats": {
         "hp": 70,
         "attack": 110,

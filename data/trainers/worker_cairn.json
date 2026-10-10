@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Cairn",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Let's see you take a powerful attack\nfrom veteran Workers like us!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "We've trained by doing physical work.\nSo even when we lose, we're powerful!"
+        },
+        {
+            "type": 2,
+            "text": "This Worker is happy to have a job that\nlets him be with his favorite Pokémon!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dunsparce",
+    "category": "Land Snake Pokémon",
+    "pokedex_entry": "It creates mazes in dark locations.\nWhen spotted, it flees into the\nground by digging with its tail.",
     "base_stats": {
         "hp": 100,
         "attack": 70,

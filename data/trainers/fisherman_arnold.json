@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Arnold",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Just a little bit more...\nI just need that spark!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "...I've done it!\nThis haiku will be my magnum opus!"
+        },
+        {
+            "type": 2,
+            "text": "I see myself there,\nreflected in the still lake.{be00}\nA silent defeat..."
         }
     ]
 }

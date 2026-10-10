@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Magikarp",
+    "category": "Fish Pokémon",
+    "pokedex_entry": "A Magikarp living for many years\ncan leap a mountain using Splash.\nThe move remains useless, though.",
     "base_stats": {
         "hp": 20,
         "attack": 10,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Secret Power",
+    "description": "The user attacks the target with a\nsecret power. Its added effects vary\ndepending on the user's environment.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Iria",
     "class": "TRAINER_CLASS_BOSS_TRAINER_F_163",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_AIR_BALLOON",
             "moves": [ "MOVE_THUNDER", "MOVE_EXTRASENSORY", "MOVE_SHADOW_BALL", "MOVE_MAGNET_RISE" ]
         }
-    ]
+    ],
+    "messages": []
 }

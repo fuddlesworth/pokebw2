@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Empoleon",
+    "category": "Emperor Pokémon",
+    "pokedex_entry": "If anyone were to hurt its pride,\nit would slash them with wings that\ncan cleave through an ice floe.",
     "base_stats": {
         "hp": 84,
         "attack": 86,

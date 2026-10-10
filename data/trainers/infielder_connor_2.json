@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Connor",
     "class": "TRAINER_CLASS_INFIELDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I've practiced and practiced\nand become a great player!{be00}\nNow, let's play ball!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Game over!"
+        },
+        {
+            "type": 15,
+            "text": "Here's a gift to show my thanks to\nyou for coming!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Now, practice, practice, practice!{be01}\nPracticing over and over is the best way\nto be good at anything!{be01}\nMy hard work will make me a great player!"
         }
     ]
 }

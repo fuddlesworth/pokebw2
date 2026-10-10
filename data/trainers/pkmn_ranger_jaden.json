@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jaden",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I will show you the harshness\nof the desert through a battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Desert...hot... Mouth...dry... Grfrrrfl..."
+        },
+        {
+            "type": 15,
+            "text": "Be careful of burns!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "If a Pokémon gets a burn,\nit also weakens physical attacks.{be00}\nThis works quite well!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Venipede",
+    "category": "Centipede Pokémon",
+    "pokedex_entry": "Using the feelers on its head and tail,\nit picks up vibrations in the air to\ndetermine its prey's location and state.",
     "base_stats": {
         "hp": 30,
         "attack": 45,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Shinx",
+    "category": "Flash Pokémon",
+    "pokedex_entry": "The extension and contraction of\nits muscles generates electricity.\nIt glows when in trouble.",
     "base_stats": {
         "hp": 45,
         "attack": 65,

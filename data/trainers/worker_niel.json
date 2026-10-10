@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Niel",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Everything went dark all of a sudden!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cobalion",
+    "category": "Iron Will Pokémon",
+    "pokedex_entry": "It has a body and heart of steel.\nIt worked with its allies to punish\npeople when they hurt Pokémon.",
     "base_stats": {
         "hp": 91,
         "attack": 90,

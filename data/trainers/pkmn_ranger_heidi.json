@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Heidi",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I want to drag people here\nand have them enlist as Pokémon Rangers.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wow! Electrifying!\nYou are so goooood!"
+        },
+        {
+            "type": 15,
+            "text": "To the incredible “Y...O...U.\"{be01}"
+        },
+        {
+            "type": 16,
+            "text": "You! Be a Pokémon Ranger!\nI will give you a good workout!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Panpour",
+    "category": "Spray Pokémon",
+    "pokedex_entry": "The water stored inside the tuft\non its head is full of nutrients.\nIt waters plants with it using its tail.",
     "base_stats": {
         "hp": 50,
         "attack": 53,

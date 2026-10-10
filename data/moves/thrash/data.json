@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Thrash",
+    "description": "The user rampages and attacks for two\nto three turns. It then becomes\nconfused, however.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

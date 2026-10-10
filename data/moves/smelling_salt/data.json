@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "SmellingSalt",
+    "description": "This attack inflicts double damage on a\ntarget with paralysis. It also cures the\ntarget's paralysis, however.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

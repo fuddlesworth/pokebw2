@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jariel",
     "class": "TRAINER_CLASS_BOSS_TRAINER_M_161",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_WHITE_HERB",
             "moves": [ "MOVE_DRACO_METEOR", "MOVE_PSYCHIC", "MOVE_ICY_WIND", "MOVE_THUNDERBOLT" ]
         }
-    ]
+    ],
+    "messages": []
 }

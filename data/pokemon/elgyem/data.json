@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Elgyem",
+    "category": "Cerebral Pokémon",
+    "pokedex_entry": "Rumors of its origin are linked to a UFO\ncrash site in the desert 50 years ago.",
     "base_stats": {
         "hp": 55,
         "attack": 55,

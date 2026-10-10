@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Octillery",
+    "category": "Jet Pokémon",
+    "pokedex_entry": "It has a tendency to want to be in holes.\nIt prefers rock crags or pots and\nsprays ink from them before attacking.",
     "base_stats": {
         "hp": 75,
         "attack": 105,

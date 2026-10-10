@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Athena",
     "class": "TRAINER_CLASS_SCIENTIST_F_46",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_SPECIAL" ],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The mysterious psychic power! You cannot\nsee it, yet it is definitely there!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Argh! It's always like this!\nI cannot see what really matters!"
+        },
+        {
+            "type": 2,
+            "text": "The hole in a donut... There is nothing\nthere, and yet it exists. I love that!"
         }
     ]
 }

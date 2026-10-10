@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fake Tears",
+    "description": "The user feigns crying to fluster\nthe target, harshly lowering its\nSp. Def stat.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

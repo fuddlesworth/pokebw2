@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sceptile",
+    "category": "Forest Pokémon",
+    "pokedex_entry": "The leaves that grow on its arms\ncan slice down thick trees. It is\nwithout peer in jungle combat.",
     "base_stats": {
         "hp": 70,
         "attack": 85,

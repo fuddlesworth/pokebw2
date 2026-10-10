@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Daniel",
     "class": "TRAINER_CLASS_GENTLEMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Let us have our Pokémon battle with\ngentlemanly reserve!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ho, ho, ho! Quite the affront!"
+        },
+        {
+            "type": 2,
+            "text": "I have enjoyed every day I spend with\nmy Pokémon.{be01}\nIf only my Pokémon feel the same way,\nthen I can die happy!"
         }
     ]
 }

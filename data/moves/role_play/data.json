@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Role Play",
+    "description": "The user mimics the target completely,\ncopying the target's natural Ability.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

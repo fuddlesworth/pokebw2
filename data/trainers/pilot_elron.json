@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elron",
     "class": "TRAINER_CLASS_PILOT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Right side clear! Left side clear!{be01}\nBattle flight is ready for takeout!{be01}\nErr... I mean takeoff!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Unfortunately...we are forced to land."
+        },
+        {
+            "type": 2,
+            "text": "How far can you fly in the\nface of strong winds?{be01}\nHigh performance is important for planes,\nbut perhaps feelings are what's{be00}\nimportant for people and Pokémon."
         }
     ]
 }

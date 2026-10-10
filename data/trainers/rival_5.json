@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rival",
     "class": "TRAINER_CLASS_PKMN_TRAINER_RIVAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_TACKLE", "MOVE_TAIL_WHIP" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "Come on, partner! Shrug it off!\nYou're stronger than that!"
+        },
+        {
+            "type": 20,
+            "text": "We're still OK!\nWe can keep going!"
+        },
+        {
+            "type": 1,
+            "text": "It can't be!{be01}\nHow could I have lost?\nI need to apologize to my partner..."
         }
     ]
 }

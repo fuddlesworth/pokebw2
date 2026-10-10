@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Nasty Plot",
+    "description": "The user stimulates its brain by thinking\nbad thoughts.\nIt sharply raises the user's Sp. Atk.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

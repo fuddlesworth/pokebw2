@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Leech Life",
+    "description": "The user drains the target's blood.\nThe user's HP is restored by half the\ndamage taken by the target.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_DAMAGE_DRAIN",
     "category": "MOVE_CATEGORY_PHYSICAL",

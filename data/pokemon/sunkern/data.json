@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sunkern",
+    "category": "Seed Pokémon",
+    "pokedex_entry": "It suddenly falls out of the sky in\nthe morning. Knowing it's weak, it\nsimply feeds until it evolves.",
     "base_stats": {
         "hp": 30,
         "attack": 30,

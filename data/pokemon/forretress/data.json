@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Forretress",
+    "category": "Bagworm Pokémon",
+    "pokedex_entry": "It is encased in a steel shell. Its\npeering eyes are all that can be\nseen of its mysterious innards.",
     "base_stats": {
         "hp": 75,
         "attack": 90,

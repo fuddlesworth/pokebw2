@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Icy Wind",
+    "description": "The user attacks with a gust of\nchilled air. It also reduces the targets'\nSpeed stat.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

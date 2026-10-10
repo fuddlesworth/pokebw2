@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Golbat",
+    "category": "Bat Pokémon",
+    "pokedex_entry": "Flitting around in the dead of night,\nit sinks its fangs into its prey and\ndrains a nearly fatal amount of blood.",
     "base_stats": {
         "hp": 75,
         "attack": 80,

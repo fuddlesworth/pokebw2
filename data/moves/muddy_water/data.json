@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Muddy Water",
+    "description": "The user attacks by shooting muddy water\nat the opposing team.\nIt may also lower the targets' accuracy.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

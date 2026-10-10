@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Gail",
     "class": "TRAINER_CLASS_BOSS_TRAINER_GAIL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_FOCUS_SASH",
             "moves": [ "MOVE_EXTREME_SPEED", "MOVE_AURA_SPHERE", "MOVE_DRAGON_PULSE", "MOVE_SWORDS_DANCE" ]
         }
-    ]
+    ],
+    "messages": []
 }

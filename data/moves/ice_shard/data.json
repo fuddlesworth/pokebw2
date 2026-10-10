@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Ice Shard",
+    "description": "The user flash freezes chunks of\nice and hurls them at the target.\nThis move always goes first.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

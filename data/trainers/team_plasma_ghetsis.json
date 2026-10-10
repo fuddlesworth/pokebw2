@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ghetsis",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GHETSIS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,20 @@
             "ability": 0,
             "item": "ITEM_LIFE_ORB",
             "moves": [ "MOVE_DRAGON_RUSH", "MOVE_CRUNCH", "MOVE_ROCK_SLIDE", "MOVE_FRUSTRATION" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "I was expecting exactly that kind of move!"
+        },
+        {
+            "type": 20,
+            "text": "What's this?!\nThis is nothing like I expected!"
+        },
+        {
+            "type": 1,
+            "text": "Could it be?!{be01}\nMy plans for complete and total world\ndomination foiled yet again?{be01}\nNo!{be01}\nIt mustn't be!{be01}\nI couldn't have been defeated by some\nrandom Trainer from who knows where!"
         }
     ]
 }

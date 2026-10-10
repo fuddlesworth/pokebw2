@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Constrict",
+    "description": "The target is attacked with long, creeping\ntentacles or vines.\nIt may also lower the target's Speed stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hail",
+    "description": "The user summons a hailstorm lasting five\nturns. It damages all Pokémon except the\nIce type.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

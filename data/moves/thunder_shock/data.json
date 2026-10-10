@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "ThunderShock",
+    "description": "A jolt of electricity is hurled\nat the target to inflict damage. It may\nalso leave the target with paralysis.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Delcatty",
+    "category": "Prim Pokémon",
+    "pokedex_entry": "The reason it does not have a nest\nis that it simply searches for a clean,\ncomfortable place then sleeps there.",
     "base_stats": {
         "hp": 70,
         "attack": 65,

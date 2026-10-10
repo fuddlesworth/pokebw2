@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tiffany",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh! A person!\nI haven't met another person in so long!{be01}\nYou're a Trainer, aren't you?!\nThen let's battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Huh? Maybe my instincts have grown dull\nafter so long...?"
+        },
+        {
+            "type": 2,
+            "text": "The roads around here are really very\ncomplicated, so hardly anyone ever comes{be00}\nthis way."
         }
     ]
 }

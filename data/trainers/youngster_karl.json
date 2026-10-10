@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Karl",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I just keep running around!\nI've got the whole field to myself!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I know... I know...\nI shouldn't take it all for myself."
+        },
+        {
+            "type": 2,
+            "text": "I ran around a ton and got the\nHeavy Walker Medal!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Thundurus",
+    "category": "Bolt Strike Pokémon",
+    "pokedex_entry": "As it flies around, it shoots lightning all\nover the place and causes forest fires.\nIt is therefore disliked.",
     "base_stats": {
         "hp": 79,
         "attack": 115,

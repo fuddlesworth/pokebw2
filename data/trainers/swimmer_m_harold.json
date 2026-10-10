@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Harold",
     "class": "TRAINER_CLASS_SWIMMER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I trained with Marlon,\nthe Gym Leader of Humilau City!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I still have room to improve!\nThanks for teaching me a lesson!"
+        },
+        {
+            "type": 2,
+            "text": "They say that Marlon, the Gym Leader\nof Humilau City, can stay in the ocean{be00}\nfor seven days and seven nights!"
         }
     ]
 }

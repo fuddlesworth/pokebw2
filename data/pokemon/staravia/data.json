@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Staravia",
+    "category": "Starling Pokémon",
+    "pokedex_entry": "Recognizing their own weakness,\nthey always live in a group. When\nalone, a Staravia cries noisily.",
     "base_stats": {
         "hp": 55,
         "attack": 75,

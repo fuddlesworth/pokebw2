@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Serperior",
+    "category": "Regal Pokémon",
+    "pokedex_entry": "It only gives its all against strong\nopponents who are not fazed by the\nglare from Serperior's noble eyes.",
     "base_stats": {
         "hp": 75,
         "attack": 75,

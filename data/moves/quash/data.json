@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Quash",
+    "description": "The user suppresses the target and\nmakes its move go last.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Teppei",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Cute Pokémon or tough Pokémon...{be01}\nWhich kind do you go for?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "See, I like the cutely tough ones!"
+        },
+        {
+            "type": 2,
+            "text": "Most people think that Rock- and Steel-\ntype Pokémon are all tough looking.{be01}\nBut there are some cute little round\nones as well, you see!"
         }
     ]
 }

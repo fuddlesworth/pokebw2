@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Snover",
+    "category": "Frost Tree Pokémon",
+    "pokedex_entry": "Seemingly curious about people,\nthey gather around footsteps they\nfind on snowy mountains.",
     "base_stats": {
         "hp": 60,
         "attack": 62,

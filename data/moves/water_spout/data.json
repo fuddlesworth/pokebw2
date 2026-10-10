@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Water Spout",
+    "description": "The user spouts water to damage the\nopposing team. The lower the user's HP,\nthe less powerful it becomes.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

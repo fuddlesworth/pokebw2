@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Joyce",
     "class": "TRAINER_CLASS_PSYCHIC_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Indescribable energy\nis flowing to me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The energy is escaping...\nAww..."
+        },
+        {
+            "type": 2,
+            "text": "The thoughts and wishes of the Pokémon\nthat rest here also provide energy!"
         }
     ]
 }

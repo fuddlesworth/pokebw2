@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Healing Wish",
+    "description": "The user faints. In return, the Pokémon\ntaking its place will have its HP restored\nand status cured.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

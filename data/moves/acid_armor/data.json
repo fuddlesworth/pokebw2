@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Acid Armor",
+    "description": "The user alters its cellular structure to\nliquefy itself, sharply raising its\nDefense stat.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

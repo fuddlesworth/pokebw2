@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Malory",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'll show you the Ranger spirit that\nburns with a crimson flame!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh! I see your Trainer spirit also burns\nwith a crimson flame!"
+        },
+        {
+            "type": 15,
+            "text": "I'll offer you this in recognition of\nyour spirit.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "My red costume really goes with the\nleaves over here!"
         }
     ]
 }

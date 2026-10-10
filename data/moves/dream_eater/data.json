@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Dream Eater",
+    "description": "The user eats the dreams of a sleeping\ntarget. It absorbs half the damage\ncaused to heal the user's HP.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE_DRAIN",
     "category": "MOVE_CATEGORY_SPECIAL",

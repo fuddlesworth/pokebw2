@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Anthony",
     "class": "TRAINER_CLASS_RICH_BOY",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If you want to know what the VIP seats\nare like, you'd better beat me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "VIP seats are very far away\nfrom the athletes!"
+        },
+        {
+            "type": 15,
+            "text": "VIP! VIP!\nV...I...P!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I could see the game fine, but\nthe athletes looked like grains of rice."
         }
     ]
 }

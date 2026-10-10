@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Swords Dance",
+    "description": "A frenetic dance to uplift the fighting\nspirit. It sharply raises the user's\nAttack stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

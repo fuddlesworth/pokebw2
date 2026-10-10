@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ilse",
     "class": "TRAINER_CLASS_NURSERY_AIDE",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -43,6 +44,12 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_RETALIATE", "MOVE_OUTRAGE", "MOVE_HAMMER_ARM", "MOVE_EARTHQUAKE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "That's right... We can't force Pokémon to\nbattle out of hatred..."
         }
     ]
 }

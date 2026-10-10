@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Hippopotas",
+    "category": "Hippo Pokémon",
+    "pokedex_entry": "It shuts its nostrils tight then\ntravels through sand as if walking.\nThey form colonies of around 10.",
     "base_stats": {
         "hp": 68,
         "attack": 72,

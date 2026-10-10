@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Metang",
+    "category": "Iron Claw Pokémon",
+    "pokedex_entry": "It is formed by two Beldum joining\ntogether. Its two brains are linked,\namplifying its psychic power.",
     "base_stats": {
         "hp": 60,
         "attack": 75,

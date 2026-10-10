@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Electrike",
+    "category": "Lightning Pokémon",
+    "pokedex_entry": "Using electricity stored in its fur,\nit stimulates its muscles to\nheighten its reaction speed.",
     "base_stats": {
         "hp": 40,
         "attack": 45,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gible",
+    "category": "Land Shark Pokémon",
+    "pokedex_entry": "It attacks using its huge mouth.\nWhile its attacks are powerful, it\nhurts itself out of clumsiness, too.",
     "base_stats": {
         "hp": 58,
         "attack": 70,

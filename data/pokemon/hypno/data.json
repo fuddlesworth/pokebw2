@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Hypno",
+    "category": "Hypnosis Pokémon",
+    "pokedex_entry": "Seeing its swinging pendulum can\ninduce sleep in three seconds,\neven in someone who just woke up.",
     "base_stats": {
         "hp": 85,
         "attack": 73,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Manuel",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The tunnel to Twist Mountain is complete!\nI heard that and came running!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I never heard that there were Trainers\nthis strong, though..."
+        },
+        {
+            "type": 2,
+            "text": "Apparently the soil here in this tunnel is\nquite like that in the ruins in Hoenn..."
         }
     ]
 }

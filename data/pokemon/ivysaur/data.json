@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ivysaur",
+    "category": "Seed Pokémon",
+    "pokedex_entry": "When the bud on its back starts\nswelling, a sweet aroma wafts to\nindicate the flower's coming bloom.",
     "base_stats": {
         "hp": 60,
         "attack": 62,

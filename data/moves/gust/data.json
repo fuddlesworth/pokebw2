@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Gust",
+    "description": "A gust of wind is whipped up by wings and\nlaunched at the target to inflict damage.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

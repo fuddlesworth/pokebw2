@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Helping Hand",
+    "description": "The user assists an ally by boosting\nthe power of its attack.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

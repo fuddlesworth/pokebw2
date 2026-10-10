@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Seedot",
+    "category": "Acorn Pokémon",
+    "pokedex_entry": "When it dangles from a tree\nbranch, it looks just like an acorn.\nIt enjoys scaring other Pokémon.",
     "base_stats": {
         "hp": 40,
         "attack": 40,

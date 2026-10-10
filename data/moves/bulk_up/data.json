@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bulk Up",
+    "description": "The user tenses its muscles to bulk up\nits body, boosting both its Attack and\nDefense stats.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

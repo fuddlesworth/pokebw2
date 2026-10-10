@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bonemerang",
+    "description": "The user throws the bone it holds. The\nbone loops to hit the target twice,\ncoming and going.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

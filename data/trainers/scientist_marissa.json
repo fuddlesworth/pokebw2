@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Marissa",
     "class": "TRAINER_CLASS_SCIENTIST_F_46",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_SPECIAL" ],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I shall uncover the mechanism behind\nTrainer and Pokémon relationships!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Why are Pokémon able to understand\ntheir Trainer's orders?"
+        },
+        {
+            "type": 2,
+            "text": "I wonder if Professor Rowan of the Sinnoh\nregion has managed to unlock the mystery{be00}\nof how Pokémon evolve."
         }
     ]
 }

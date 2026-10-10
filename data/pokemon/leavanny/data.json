@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Leavanny",
+    "category": "Nurturing Pokémon",
+    "pokedex_entry": "Upon finding a small Pokémon, it weaves\nclothing for it from leaves by using the\nsticky silk secreted from its mouth.",
     "base_stats": {
         "hp": 75,
         "attack": 103,

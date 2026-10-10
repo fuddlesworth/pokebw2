@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Simipour",
+    "category": "Geyser Pokémon",
+    "pokedex_entry": "It prefers places with clean water.\nWhen its tuft runs low, it replenishes\nit by siphoning up water with its tail.",
     "base_stats": {
         "hp": 75,
         "attack": 98,

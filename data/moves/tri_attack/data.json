@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Tri Attack",
+    "description": "The user strikes with a simultaneous\nthree-beam attack. May also burn, freeze,\nor leave the target with paralysis.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elliot",
     "class": "TRAINER_CLASS_POKEFAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I will unveil my Pokémon to you!\nThey are the best in the world!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your Pokémon are also cute,\nbut my Pokémon are charming!"
+        },
+        {
+            "type": 2,
+            "text": "Listen. My love for my Pokémon\nis the best in the world.{be00}\nNobody can beat it."
         }
     ]
 }

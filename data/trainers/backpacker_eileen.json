@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Eileen",
     "class": "TRAINER_CLASS_BACKPACKER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My path and yours...\nThey cross here and now...{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Now that I think about it, I've come\nquite far..."
+        },
+        {
+            "type": 2,
+            "text": "I am going wherever I can have glorious\nbattles against new people...{be01}\nIt sounds quite daring, doesn't it?"
         }
     ]
 }

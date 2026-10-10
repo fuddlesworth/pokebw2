@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kyle",
     "class": "TRAINER_CLASS_SWIMMER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You see this enormous puddle?\nThey call it an ocean!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whoa!\nYou're enormous, too!"
+        },
+        {
+            "type": 2,
+            "text": "Big things are awesome! Why?\nBecause they're big!"
         }
     ]
 }

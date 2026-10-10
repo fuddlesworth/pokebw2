@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Roar of Time",
+    "description": "The user blasts the target with power\nthat distorts even time.\nThe user must rest on the next turn.",
     "type": "TYPE_DRAGON",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

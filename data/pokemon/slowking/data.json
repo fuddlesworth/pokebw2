@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Slowking",
+    "category": "Royal Pokémon",
+    "pokedex_entry": "Being bitten by Shellder gave it\nintelligence comparable to that of\naward-winning scientists.",
     "base_stats": {
         "hp": 95,
         "attack": 75,

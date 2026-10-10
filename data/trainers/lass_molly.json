@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Molly",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Let's see who has the\nmost admirable Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Even though we lost, my Pokémon\nare still pretty admirable..."
+        },
+        {
+            "type": 2,
+            "text": "If we can't win with these numbers,\nmaybe I should find my Pokémon{be00}\nsome more friends!"
         }
     ]
 }

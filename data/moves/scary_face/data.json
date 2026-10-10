@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Scary Face",
+    "description": "The user frightens the target with a scary\nface to harshly reduce its Speed stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

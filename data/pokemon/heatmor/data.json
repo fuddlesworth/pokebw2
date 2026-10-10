@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Heatmor",
+    "category": "Anteater Pokémon",
+    "pokedex_entry": "It draws in air through its tail,\ntransforms it into fire, and uses it like\na tongue. It melts Durant and eats them.",
     "base_stats": {
         "hp": 85,
         "attack": 97,

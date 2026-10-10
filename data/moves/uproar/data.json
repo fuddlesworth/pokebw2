@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Uproar",
+    "description": "The user attacks in an uproar for\nthree turns. Over that time,\nno one can fall asleep.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

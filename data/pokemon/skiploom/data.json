@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Skiploom",
+    "category": "Cottonweed Pokémon",
+    "pokedex_entry": "It blooms when the weather warms.\nIt floats in the sky to soak up as\nmuch sunlight as possible.",
     "base_stats": {
         "hp": 55,
         "attack": 45,

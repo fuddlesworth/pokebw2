@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Headbutt",
+    "description": "The user sticks out its head and attacks\nby charging straight into the target.\nIt may also make the target flinch.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

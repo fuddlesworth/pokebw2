@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "José",
     "class": "TRAINER_CLASS_PRESCHOOLER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh! And I just heard a Pokémon, too!\nOh, boo...{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your Pokémon seemed kinda happy, Trainer!"
+        },
+        {
+            "type": 2,
+            "text": "There are Pokémon hiding beyond\nthose bushes!"
         }
     ]
 }

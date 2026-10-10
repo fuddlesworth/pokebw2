@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hydro Cannon",
+    "description": "The target is hit with a watery blast.\nThe user must rest on the\nnext turn, however.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

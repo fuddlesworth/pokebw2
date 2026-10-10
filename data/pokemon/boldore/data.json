@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Boldore",
+    "category": "Ore Pokémon",
+    "pokedex_entry": "When it is healthy, its core sticks out.\nAlways facing the same way, it swiftly\nmoves front to back and left to right.",
     "base_stats": {
         "hp": 70,
         "attack": 105,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lillipup",
+    "category": "Puppy Pokémon",
+    "pokedex_entry": "Though it is a very brave Pokémon,\nit's also smart enough to check its\nfoe's strength and avoid battle.",
     "base_stats": {
         "hp": 45,
         "attack": 60,

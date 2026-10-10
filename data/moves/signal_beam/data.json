@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Signal Beam",
+    "description": "The user attacks with a sinister beam of\nlight. It may also confuse the target.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

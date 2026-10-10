@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Colress",
     "class": "TRAINER_CLASS_PKMN_TRAINER_COLRESS_195",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_SUPER_POTION" ],
@@ -23,6 +24,12 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Splendid!\nYou are quite the Trainer!"
         }
     ]
 }

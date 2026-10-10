@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Corky",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "The magic number is three! You need\nthree healthy Pokémon who can fight!"
+        },
+        {
+            "type": 0,
+            "text": "Behold the destructive force created\nby my three prized Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your combined force as a team is greater\nthan ours!"
+        },
+        {
+            "type": 2,
+            "text": "Perhaps I need to meet my Pokémon head-\non... Then we could be a stronger team!"
         }
     ]
 }

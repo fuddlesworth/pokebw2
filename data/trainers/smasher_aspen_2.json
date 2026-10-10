@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Aspen",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The world championships are coming soon!\nI will practice volleys{be00}\nby using you as a wall!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh, whew! Must...catch...my breath.\nThat was some good training..."
+        },
+        {
+            "type": 15,
+            "text": "Huh huh huh...\nLemme...catch...my breath...{be01}"
+        },
+        {
+            "type": 16,
+            "text": "You and I have just met.\nLet's start the game from the beginning!"
         }
     ]
 }

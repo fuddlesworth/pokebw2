@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rock Tomb",
+    "description": "Boulders are hurled at the target. It also\nlowers the target's Speed by preventing\nits movement.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_PHYSICAL",

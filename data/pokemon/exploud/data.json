@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Exploud",
+    "category": "Loud Noise Pokémon",
+    "pokedex_entry": "Its howls can be heard over six\nmiles away. It emits all sorts of\nnoises from the ports on its body.",
     "base_stats": {
         "hp": 104,
         "attack": 91,

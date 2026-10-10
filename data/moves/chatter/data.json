@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Chatter",
+    "description": "The user attacks using a sound wave\nbased on words it has learned.\nIt may also confuse the target.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

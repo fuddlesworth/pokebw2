@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Me First",
+    "description": "The user tries to cut ahead of the target\nto steal and use the target's intended\nmove with greater power.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_STATUS",

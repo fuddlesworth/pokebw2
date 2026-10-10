@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sewaddle",
+    "category": "Sewing Pokémon",
+    "pokedex_entry": "Since this Pokémon makes its own\nclothes out of leaves, it is a popular\nmascot for fashion designers.",
     "base_stats": {
         "hp": 45,
         "attack": 53,

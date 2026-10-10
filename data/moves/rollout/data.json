@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rollout",
+    "description": "The user continually rolls into the target\nover five turns. It becomes stronger\neach time it hits.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

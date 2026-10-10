@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lunatone",
+    "category": "Meteorite Pokémon",
+    "pokedex_entry": "The phase of the moon apparently\nhas some effect on its power.\nIt's active on the night of a full moon.",
     "base_stats": {
         "hp": 70,
         "attack": 55,

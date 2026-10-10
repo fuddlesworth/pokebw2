@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Roberto",
     "class": "TRAINER_CLASS_STRIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My style is to use powerful Pokémon\nto keep up a winning streak!{be00}\nI'll teach you a lesson!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "...You taught me!\nYou're so powerful!"
+        },
+        {
+            "type": 15,
+            "text": "This is my thanks for teaching me!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I'll research some more battle styles\nso I can learn to use this power{be00}\nmore effectively!"
         }
     ]
 }

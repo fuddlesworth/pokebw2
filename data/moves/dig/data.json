@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Dig",
+    "description": "The user burrows, then attacks\non the second turn.\nIt can also be used to exit dungeons.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

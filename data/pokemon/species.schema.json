@@ -12,6 +12,16 @@
     ],
     "properties": {
         "$schema": { "type": "string", "description": "This schema, for editors" },
+        "name": {
+            "type": "string",
+            "description": "The species' name, which the text files take with \\from{species.name}, also in capitals and with its article. Species only: forms and extra records have none"
+        },
+        "name_article": {
+            "enum": [ "a", "an" ],
+            "description": "The article of the name where it isn't \"an\" before a vowel and \"a\" before anything else, as for Uxie"
+        },
+        "category": { "type": "string", "description": "The Pokédex category, such as \"Seed Pokémon\". Species only" },
+        "pokedex_entry": { "type": "string", "description": "The Pokédex entry, with its line breaks. Species only" },
         "base_stats": { "$ref": "#/$defs/stats", "description": "Base stats, 0 to 255 each" },
         "types": {
             "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/type" },

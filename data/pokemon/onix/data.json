@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Onix",
+    "category": "Rock Snake Pokémon",
+    "pokedex_entry": "Opening its large mouth, it ingests\nmassive amounts of soil and creates\nlong tunnels.",
     "base_stats": {
         "hp": 35,
         "attack": 45,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hydro Pump",
+    "description": "The target is blasted by a huge volume\nof water launched under great pressure.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

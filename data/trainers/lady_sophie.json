@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sophie",
     "class": "TRAINER_CLASS_LADY",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You!\nYou are a fan of that person.{be01}\nI can tell!\nBut that person is mine!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh no, oh why?\nI am sorry..."
+        },
+        {
+            "type": 15,
+            "text": "I can't let you have that person,\nbut take this instead...{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Come to think of it,\nthe more supporters there are,{be00}\nthe better.{be01}\nYou! Cheer until you lose your voice,\nand clap until your hands fall off!"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mud Shot",
+    "description": "The user attacks by hurling a blob of mud\nat the target.\nIt also reduces the target's Speed.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

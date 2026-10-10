@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Escavalier",
+    "category": "Cavalry Pokémon",
+    "pokedex_entry": "Wearing the shell covering they stole\nfrom Shelmet, they defend themselves\nand attack with two lances.",
     "base_stats": {
         "hp": 70,
         "attack": 135,

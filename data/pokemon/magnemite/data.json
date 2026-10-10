@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Magnemite",
+    "category": "Magnet Pokémon",
+    "pokedex_entry": "The electromagnetic waves emitted by\nthe units at the sides of its head expel\nantigravity, which allows it to float.",
     "base_stats": {
         "hp": 25,
         "attack": 35,

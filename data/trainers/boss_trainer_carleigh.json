@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Carleigh",
     "class": "TRAINER_CLASS_BOSS_TRAINER_CARLEIGH",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_LIFE_ORB",
             "moves": [ "MOVE_LEAF_STORM", "MOVE_X_SCISSOR", "MOVE_AERIAL_ACE", "MOVE_SWORDS_DANCE" ]
         }
-    ]
+    ],
+    "messages": []
 }

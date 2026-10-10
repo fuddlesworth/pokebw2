@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shauntal",
     "class": "TRAINER_CLASS_ELITE_FOUR_SHAUNTAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -57,6 +58,24 @@
             "ability": 2,
             "item": "ITEM_CHOICE_SCARF",
             "moves": [ "MOVE_ENERGY_BALL", "MOVE_FIRE_BLAST", "MOVE_PSYCHIC", "MOVE_SHADOW_BALL" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "First impressions are everything!"
+        },
+        {
+            "type": 19,
+            "text": "It's not over yet!\nI'll finish it my way!"
+        },
+        {
+            "type": 20,
+            "text": "I hope for a good ending! I hate endings\nthat leave a bitter taste in one's mouth!"
+        },
+        {
+            "type": 1,
+            "text": "Do you ever feel at a loss for words when\nsomething greatly moves you?{be00}\nTo tell the truth...{be01}\nI'm a writer, but right now I'm having\ntrouble putting my feelings into words.{be01}\nYou were just that impressive!"
         }
     ]
 }

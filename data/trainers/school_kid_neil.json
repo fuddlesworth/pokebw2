@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Neil",
     "class": "TRAINER_CLASS_SCHOOL_KID_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,12 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_TACKLE", "MOVE_BITE", "MOVE_LEER", "MOVE_ODOR_SLEUTH" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "The research that I spent my whole life on\nwas all for naught?!"
         }
     ]
 }

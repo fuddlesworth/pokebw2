@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Flash Cannon",
+    "description": "The user gathers all its light energy and\nreleases it at once. It may also lower the\ntarget's Sp. Def stat.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

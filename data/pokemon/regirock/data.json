@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Regirock",
+    "category": "Rock Peak Pokémon",
+    "pokedex_entry": "Its entire body is made of rock.\nIf any part chips off in battle, it\nattaches rocks to repair itself.",
     "base_stats": {
         "hp": 80,
         "attack": 100,

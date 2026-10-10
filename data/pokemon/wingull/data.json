@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wingull",
+    "category": "Seagull Pokémon",
+    "pokedex_entry": "It makes its nest on sheer cliffs.\nRiding the sea breeze, it glides\nup into the expansive skies.",
     "base_stats": {
         "hp": 40,
         "attack": 30,

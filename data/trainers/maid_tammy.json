@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tammy",
     "class": "TRAINER_CLASS_MAID",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -61,6 +62,12 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_ZEN_HEADBUTT", "MOVE_METEOR_MASH", "MOVE_EARTHQUAKE", "MOVE_BULLET_PUNCH" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Why? How could this be?\nHow could you try hard for someone else?!"
         }
     ]
 }

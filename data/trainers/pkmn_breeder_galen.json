@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Galen",
     "class": "TRAINER_CLASS_PKMN_BREEDER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I need to practice more as a\nPokémon Breeder.{be00}\nPlease, be my opponent!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I've still got a long way to go...\nI'll be raising my Pokémon!"
+        },
+        {
+            "type": 2,
+            "text": "Thank you so much!{be01}\nI learned a lot from our battle.\nBe my opponent again sometime!"
         }
     ]
 }

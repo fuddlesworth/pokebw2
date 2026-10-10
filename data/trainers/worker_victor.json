@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Victor",
     "class": "TRAINER_CLASS_WORKER_44",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "See the combination of my cool Ice-type\nPokémon and my hot fighting spirit!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It looks like you can also make an\nice-and-heat combination!"
+        },
+        {
+            "type": 2,
+            "text": "Twist Mountain is cold all year round!{be01}\nIt's a great place for Ice-type Pokémon\nthat are happy in the depths of winter!"
         }
     ]
 }

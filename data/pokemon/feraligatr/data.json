@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Feraligatr",
+    "category": "Big Jaw Pokémon",
+    "pokedex_entry": "It usually moves slowly, but it\ngoes at blinding speed when it\nattacks and bites prey.",
     "base_stats": {
         "hp": 85,
         "attack": 105,

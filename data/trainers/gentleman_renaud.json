@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Renaud",
     "class": "TRAINER_CLASS_GENTLEMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A lot of sports started\nas Gentlemen's games!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ladies and Gentlemen!\nThe game is over!"
+        },
+        {
+            "type": 15,
+            "text": "Because I am a Gentleman,\nI will present you with this gift.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Pokémon battles were born spontaneously\nwhen people and Pokémon{be00}\nfirst became friendly."
         }
     ]
 }

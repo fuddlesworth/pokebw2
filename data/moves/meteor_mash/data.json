@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Meteor Mash",
+    "description": "The target is hit with a hard punch fired\nlike a meteor. It may also raise\nthe user's Attack.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_DAMAGE_USER_STAT_CHANGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

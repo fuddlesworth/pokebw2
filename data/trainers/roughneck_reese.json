@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Reese",
     "class": "TRAINER_CLASS_ROUGHNECK",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If I win, give me your Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "That was just a joke.\nEveryone's taking it so seriously!"
+        },
+        {
+            "type": 2,
+            "text": "Hmph! I take weak Pokémon and raise\nthem with tender care until they're{be00}\ngood and strong! That's my policy!"
         }
     ]
 }

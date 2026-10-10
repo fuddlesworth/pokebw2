@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The fighting furies:\nwe are Team Plasma!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What's a strong Trainer, huh?\nJust someone who uses their Pokémon?!"
+        },
+        {
+            "type": 2,
+            "text": "Strong Trainers don't care anything\nabout their Pokémon!{be01}\nThey're just bullies who force them to\nget stronger no matter how hard it is!"
         }
     ]
 }

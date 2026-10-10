@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Portia",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -34,6 +35,20 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_SURF", "MOVE_PSYSHOCK", "MOVE_FLASH_CANNON", "MOVE_GRASS_KNOT" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Are you sure? I'm strong, you know.\nYou still want to take me on?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Yes, I'm sure... I'm weak, you know.\nWhy did you want to take me on?"
+        },
+        {
+            "type": 2,
+            "text": "Not wanting to admit my own limits,\nI am continuing to battle on...{be00}\nThat's right! At least I'm persistent!"
         }
     ]
 }

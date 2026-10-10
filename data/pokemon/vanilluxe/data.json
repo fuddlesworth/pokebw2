@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Vanilluxe",
+    "category": "Snowstorm Pokémon",
+    "pokedex_entry": "Swallowing large amounts of water, they\nmake snow clouds inside their bodies and,\nwhen angry, cause violent blizzards.",
     "base_stats": {
         "hp": 71,
         "attack": 95,

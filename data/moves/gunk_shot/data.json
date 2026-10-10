@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Gunk Shot",
+    "description": "The user shoots filthy garbage\nat the target to attack.\nIt may also poison the target.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

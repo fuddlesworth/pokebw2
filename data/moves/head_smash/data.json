@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Head Smash",
+    "description": "The user attacks the target with a\nhazardous, full-power headbutt.\nThe user also takes terrible damage.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

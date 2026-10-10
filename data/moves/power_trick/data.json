@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Power Trick",
+    "description": "The user employs its psychic power to\nswitch its Attack with its Defense stat.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

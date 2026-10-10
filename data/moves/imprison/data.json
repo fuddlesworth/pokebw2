@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Imprison",
+    "description": "If the opponents know any move also known\nby the user, the opponents are prevented\nfrom using it.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

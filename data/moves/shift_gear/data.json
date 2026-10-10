@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Shift Gear",
+    "description": "The user rotates its gears, raising its\nAttack and sharply raising its Speed.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

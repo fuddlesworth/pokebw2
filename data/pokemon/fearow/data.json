@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Fearow",
+    "category": "Beak Pokémon",
+    "pokedex_entry": "It has the stamina to fly all\nday on its broad wings. It\nfights by using its sharp beak.",
     "base_stats": {
         "hp": 65,
         "attack": 90,

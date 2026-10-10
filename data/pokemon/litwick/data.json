@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Litwick",
+    "category": "Candle Pokémon",
+    "pokedex_entry": "Its flame is usually out, but it starts\nshining when it absorbs life force\nfrom people or Pokémon.",
     "base_stats": {
         "hp": 50,
         "attack": 30,

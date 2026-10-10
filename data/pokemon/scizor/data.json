@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Scizor",
+    "category": "Pincer Pokémon",
+    "pokedex_entry": "It raises its pincers with eyelike\nmarkings for intimidation. It also\nswings them down dangerously.",
     "base_stats": {
         "hp": 70,
         "attack": 130,

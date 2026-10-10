@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Randall",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "First, one big last gulp...{be01}\nHold your breath!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Puaaahhh!\n...Holding your breath is really tough!"
+        },
+        {
+            "type": 2,
+            "text": "The air that I just breathed in...{be01}\nIt could actually be really ancient air\nthat hasn't changed for ages, you know?"
         }
     ]
 }

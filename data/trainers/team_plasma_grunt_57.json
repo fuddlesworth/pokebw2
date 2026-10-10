@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh-ho-ho!\nYou've been ambushed!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I lost!\nNo! Plasmaaaa!"
+        },
+        {
+            "type": 2,
+            "text": "Lose! J-just go and lose already!\nA kid like you should definitely lose!"
         }
     ]
 }

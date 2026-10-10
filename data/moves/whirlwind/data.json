@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Whirlwind",
+    "description": "The target is blown away and switched.\nIn the wild, a battle against a single\nPokémon ends.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_FORCE_SWITCH",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Aerodactyl",
+    "category": "Fossil Pokémon",
+    "pokedex_entry": "A Pokémon that roamed the skies\nin the dinosaur era. Its teeth are\nlike saw blades.",
     "base_stats": {
         "hp": 80,
         "attack": 105,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Naoko",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Surprised? That's when I'll make my move!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Just as I'd expect!\nYou're ready for anything, aren't you?"
+        },
+        {
+            "type": 15,
+            "text": "If you are prepared,\nyou don't have to worry!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I burrowed under the fallen leaves\nto become one with nature!"
         }
     ]
 }

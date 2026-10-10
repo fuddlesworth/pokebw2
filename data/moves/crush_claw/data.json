@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Crush Claw",
+    "description": "The user slashes the target with hard\nand sharp claws.\nIt may also lower the target's Defense.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_PHYSICAL",

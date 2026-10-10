@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Floatzel",
+    "category": "Sea Weasel Pokémon",
+    "pokedex_entry": "It is a common sight around\nfishing ports. It is known to\nrescue people and carry off prey.",
     "base_stats": {
         "hp": 85,
         "attack": 105,

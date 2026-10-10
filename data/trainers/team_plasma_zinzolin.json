@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Zinzolin",
     "class": "TRAINER_CLASS_TEAM_PLASMA_ZINZOLIN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -34,6 +35,12 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_NIGHT_SLASH", "MOVE_SLASH", "MOVE_ICE_SHARD", "MOVE_METAL_CLAW" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "The longer you live, the more opportunities\nfor failure."
         }
     ]
 }

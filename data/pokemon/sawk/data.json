@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sawk",
+    "category": "Karate Pokémon",
+    "pokedex_entry": "Desiring the strongest karate chop,\nthey seclude themselves in\nmountains and train without sleeping.",
     "base_stats": {
         "hp": 75,
         "attack": 125,

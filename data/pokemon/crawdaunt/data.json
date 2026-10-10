@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Crawdaunt",
+    "category": "Rogue Pokémon",
+    "pokedex_entry": "Loving to battle, this Pokémon pinches\nall Pokémon that enter its territory\nwith its pincers and throws them out.",
     "base_stats": {
         "hp": 63,
         "attack": 120,

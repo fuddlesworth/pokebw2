@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Double Kick",
+    "description": "The target is quickly kicked twice in\nsuccession using both feet.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

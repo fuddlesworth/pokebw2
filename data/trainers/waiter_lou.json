@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lou",
     "class": "TRAINER_CLASS_WAITER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am a Waiter who is good\nat Pokémon battles.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wonderful battle! A learning experience.\n...Thanks for the tip!"
+        },
+        {
+            "type": 2,
+            "text": "Our specialty is the best\nPokémon battles."
         }
     ]
 }

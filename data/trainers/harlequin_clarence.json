@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Clarence",
     "class": "TRAINER_CLASS_HARLEQUIN_233",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "What do you think? This Pokémon Gym...\nHow should I say? Isn't it full of...{be00}\noutrageous and mysterious charms?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You've got quite a bit of charm\nyourself, don't you?"
+        },
+        {
+            "type": 2,
+            "text": "Look carefully at the direction in which\nthe string extends from the cocoon.{be01}\nFind the end of the string, and\nproceed in that direction!"
         }
     ]
 }

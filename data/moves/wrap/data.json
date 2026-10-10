@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Wrap",
+    "description": "A long body or vines are used to wrap and\nsqueeze the target for four to five turns.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

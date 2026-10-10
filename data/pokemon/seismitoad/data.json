@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Seismitoad",
+    "category": "Vibration Pokémon",
+    "pokedex_entry": "By putting power into its bumps,\nit creates vibrations and increases\nthe power of its punches.",
     "base_stats": {
         "hp": 105,
         "attack": 85,

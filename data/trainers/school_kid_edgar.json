@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Edgar",
     "class": "TRAINER_CLASS_SCHOOL_KID_M",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "A Triple Battle is a special battle you\ncan hold using three Pokémon!"
+        },
+        {
+            "type": 0,
+            "text": "Behold the strength I have perfected\nthrough Triple Battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "How could this be...\nI thought I'd perfected it..."
+        },
+        {
+            "type": 2,
+            "text": "If you want to be the best, you need to\nknow the best moves and tricks for{be00}\nTriple Battles!"
         }
     ]
 }

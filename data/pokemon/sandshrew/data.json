@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sandshrew",
+    "category": "Mouse Pokémon",
+    "pokedex_entry": "It digs deep burrows to live in.\nWhen in danger, it rolls up its\nbody to withstand attacks.",
     "base_stats": {
         "hp": 50,
         "attack": 75,

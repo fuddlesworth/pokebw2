@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Baton Pass",
+    "description": "The user switches places with a party\nPokémon in waiting, passing along any\nstat changes.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

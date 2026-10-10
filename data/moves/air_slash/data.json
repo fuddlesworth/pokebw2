@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Air Slash",
+    "description": "The user attacks with a blade of air that\nslices even the sky. It may also make the\ntarget flinch.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

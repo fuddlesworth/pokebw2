@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Focus Blast",
+    "description": "The user heightens its mental focus and\nunleashes its power.\nIt may also lower the target's Sp. Def.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

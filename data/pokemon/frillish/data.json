@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Frillish",
+    "category": "Floating Pokémon",
+    "pokedex_entry": "If its veil-like arms stun and wrap\na foe, that foe will be dragged miles\nbelow the surface, never to return.",
     "base_stats": {
         "hp": 55,
         "attack": 40,

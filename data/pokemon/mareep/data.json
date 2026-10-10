@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mareep",
+    "category": "Wool Pokémon",
+    "pokedex_entry": "When cold weather increases static\nelectricity, its wool doubles in size\nand the tip of its tail glows slightly.",
     "base_stats": {
         "hp": 55,
         "attack": 40,

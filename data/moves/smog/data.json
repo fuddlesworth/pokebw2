@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Smog",
+    "description": "The target is attacked with a\ndischarge of filthy gases.\nIt may also poison the target.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

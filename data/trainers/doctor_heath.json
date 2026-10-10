@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Heath",
     "class": "TRAINER_CLASS_DOCTOR",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_HEAL", "ITEM_HYPER_POTION" ],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "As a Doctor, I will be examining your\nPokémon's strength!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh! What's this?\nIt is the very picture of health!"
+        },
+        {
+            "type": 13,
+            "text": "Before you go, let me give your Pokémon\na little booster shot!{be01}"
+        },
+        {
+            "type": 14,
+            "text": "Feel free to drop by anytime your\nPokémon need a little TLC!"
         }
     ]
 }

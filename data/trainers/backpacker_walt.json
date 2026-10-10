@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Walt",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm wandering the world trying to find a\nplace where I belong...{be00}\nHow about you?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I lost...\nSo this isn't where I belong either..."
+        },
+        {
+            "type": 2,
+            "text": "You don't just find your place in\nthe world. You've got to make it!"
         }
     ]
 }

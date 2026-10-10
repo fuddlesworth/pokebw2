@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Thalia",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My Pokémon and I spend so much time\ntogether, we don't need words{be00}\nto understand one another.{be01}\nDo you think you can win against us?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You can understand each other\nvery well, too!"
+        },
+        {
+            "type": 15,
+            "text": "When you see this Berry,\nplease remember us!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "The best part about being a\nPokémon Ranger is that you get{be00}\nto spend time with Pokémon!"
         }
     ]
 }

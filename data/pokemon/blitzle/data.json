@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Blitzle",
+    "category": "Electrified Pokémon",
+    "pokedex_entry": "Its mane shines when it discharges\nelectricity. They use the frequency and\nrhythm of these flashes to communicate.",
     "base_stats": {
         "hp": 45,
         "attack": 60,

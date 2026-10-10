@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Conversion 2",
+    "description": "The user changes its type to make itself\nresistant to the type of the attack the\nopponent used last.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

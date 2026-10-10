@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Unfezant",
+    "category": "Proud Pokémon",
+    "pokedex_entry": "Males swing the plumage on\ntheir heads to threaten others,\nbut females are better at flying.",
     "base_stats": {
         "hp": 80,
         "attack": 105,

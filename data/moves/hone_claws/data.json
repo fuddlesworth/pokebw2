@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hone Claws",
+    "description": "The user sharpens its claws to\nboost its Attack stat and accuracy.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

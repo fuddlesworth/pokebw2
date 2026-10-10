@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Abigail",
     "class": "TRAINER_CLASS_BOSS_TRAINER_ABIGAIL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_MUSCLE_BAND",
             "moves": [ "MOVE_MAGNITUDE", "MOVE_ROCK_SLIDE", "MOVE_SHADOW_PUNCH", "MOVE_IRON_DEFENSE" ]
         }
-    ]
+    ],
+    "messages": []
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Combee",
+    "category": "Tiny Bee Pokémon",
+    "pokedex_entry": "This Pokémon is a set of three.\nWhen they sleep, they gather up\nand form a giant hive of 100 Combee.",
     "base_stats": {
         "hp": 30,
         "attack": 30,

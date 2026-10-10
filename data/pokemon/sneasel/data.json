@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sneasel",
+    "category": "Sharp Claw Pokémon",
+    "pokedex_entry": "A smart and sneaky Pokémon,\nit makes its opponents flinch by suddenly\nshowing the claws hidden in its paws.",
     "base_stats": {
         "hp": 55,
         "attack": 95,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pachirisu",
+    "category": "EleSquirrel Pokémon",
+    "pokedex_entry": "A pair may be seen rubbing their\ncheek pouches together in an\neffort to share stored electricity.",
     "base_stats": {
         "hp": 60,
         "attack": 45,

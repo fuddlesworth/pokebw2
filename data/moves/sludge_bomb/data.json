@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sludge Bomb",
+    "description": "Unsanitary sludge is hurled at the target.\nIt may also poison the target.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Psych Up",
+    "description": "The user hypnotizes itself into\ncopying any stat change made\nby the target.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Volt Tackle",
+    "description": "The user electrifies itself, then charges.\nIt causes considerable damage to the user\nand may leave the target with paralysis.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

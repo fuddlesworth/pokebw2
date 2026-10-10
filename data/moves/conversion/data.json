@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Conversion",
+    "description": "The user changes its type to become the\nsame type as one of its moves.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Hippowdon",
+    "category": "Heavyweight Pokémon",
+    "pokedex_entry": "It is surprisingly quick to anger.\nIt holds its mouth agape as a\ndisplay of its strength.",
     "base_stats": {
         "hp": 108,
         "attack": 112,

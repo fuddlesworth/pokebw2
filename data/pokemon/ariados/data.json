@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ariados",
+    "category": "Long Leg Pokémon",
+    "pokedex_entry": "It attaches silk to its prey and\nsets it free. Later, it tracks the\nsilk to the prey and its friends.",
     "base_stats": {
         "hp": 70,
         "attack": 90,

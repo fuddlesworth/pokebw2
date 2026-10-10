@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Quilava",
+    "category": "Volcano Pokémon",
+    "pokedex_entry": "It intimidates foes with the heat\nof its flames. The fire burns more\nstrongly when it readies to fight.",
     "base_stats": {
         "hp": 58,
         "attack": 64,

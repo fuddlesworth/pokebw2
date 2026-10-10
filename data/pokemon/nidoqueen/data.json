@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Nidoqueen",
+    "category": "Drill Pokémon",
+    "pokedex_entry": "Its entire body is armored with\nhard scales. It will protect the\nyoung in its burrow with its life.",
     "base_stats": {
         "hp": 90,
         "attack": 82,

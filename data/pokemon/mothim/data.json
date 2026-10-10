@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mothim",
+    "category": "Moth Pokémon",
+    "pokedex_entry": "While it loves floral honey, it won't\ngather any itself. Instead, it\nplots to steal some from Combee.",
     "base_stats": {
         "hp": 70,
         "attack": 94,

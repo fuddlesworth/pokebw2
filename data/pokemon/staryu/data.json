@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Staryu",
+    "category": "Star Shape Pokémon",
+    "pokedex_entry": "As long as its red core remains,\nit can regenerate its body instantly,\neven if it's torn apart.",
     "base_stats": {
         "hp": 30,
         "attack": 45,

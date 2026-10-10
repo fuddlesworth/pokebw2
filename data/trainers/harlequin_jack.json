@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jack",
     "class": "TRAINER_CLASS_HARLEQUIN_233",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "...That's right.\nI was taking a nap inside the cocoon!"
         }
     ]
 }

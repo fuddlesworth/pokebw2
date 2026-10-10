@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Zorua",
+    "category": "Tricky Fox Pokémon",
+    "pokedex_entry": "It changes so it looks just\nlike its foe, tricks it, and then\nuses that opportunity to flee.",
     "base_stats": {
         "hp": 40,
         "attack": 65,

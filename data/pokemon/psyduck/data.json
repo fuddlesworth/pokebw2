@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Psyduck",
+    "category": "Duck Pokémon",
+    "pokedex_entry": "When headaches stimulate its brain\ncells, which are usually inactive,\nit can use a mysterious power.",
     "base_stats": {
         "hp": 50,
         "attack": 52,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Charley",
     "class": "TRAINER_CLASS_HARLEQUIN_32",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Sports and juggling are the same.\nYou must entertain the audience!{be00}\nI will show you the fruits of my practice.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "While I am having a Pokémon battle,\nI catch 10 balls!"
+        },
+        {
+            "type": 15,
+            "text": "Here, catch this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I have mastered the technique,\nbut I cannot use it!{be00}\nI just have to have real battles!"
         }
     ]
 }

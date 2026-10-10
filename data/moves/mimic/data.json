@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mimic",
+    "description": "The user copies the target's last move.\nThe move can be used during battle\nuntil the Pokémon is switched out.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

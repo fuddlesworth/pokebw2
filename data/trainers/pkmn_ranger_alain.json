@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Alain",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "When I am watching a game,\nI feel like I should be moving, too!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "That was a good workout!"
+        },
+        {
+            "type": 15,
+            "text": "Oohh! I can't stop moving!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "The stadium is nice, but I'd sure\nlove to play sports outdoors!"
         }
     ]
 }

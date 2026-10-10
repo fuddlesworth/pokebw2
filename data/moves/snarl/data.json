@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Snarl",
+    "description": "The user yells as if it is ranting about\nsomething, making the targets' Sp. Atk\nstat decrease.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

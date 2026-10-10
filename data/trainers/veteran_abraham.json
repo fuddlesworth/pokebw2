@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Abraham",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_STEEL_WING", "MOVE_NIGHT_SLASH", "MOVE_X_SCISSOR", "MOVE_SWORDS_DANCE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I just felt a great wind...\nAre you the one who kicked it up?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "This defeat will also be blown far away..."
+        },
+        {
+            "type": 2,
+            "text": "You are the wind.{be01}\nA supple and comforting wind blowing\nthrough Victory Road!"
         }
     ]
 }

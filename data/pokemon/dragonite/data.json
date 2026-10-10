@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dragonite",
+    "category": "Dragon Pokémon",
+    "pokedex_entry": "It is said to make its home\nsomewhere in the sea. It guides\ncrews of shipwrecks to shore.",
     "base_stats": {
         "hp": 91,
         "attack": 134,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mist Ball",
+    "description": "A mistlike flurry of down envelops and\ndamages the target. It may also lower\nthe target's Sp. Atk.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

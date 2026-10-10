@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Heat Wave",
+    "description": "The user attacks by exhaling hot breath\non the opposing team. It may also leave\ntargets with a burn.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

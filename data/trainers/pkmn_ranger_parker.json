@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Parker",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Knowing oneself, knowing the other,\nand knowing the surroundings...{be00}\nThat's a Ranger!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Knowing your opponent is a difficult feat!"
+        },
+        {
+            "type": 15,
+            "text": "Do you know about this?{be01}"
+        },
+        {
+            "type": 16,
+            "text": "If you know what kind of wild Pokémon\ninhabit an area, you can bring along{be00}\nPokémon who are strong against them and{be00}\nwill have no problem moving ahead."
         }
     ]
 }

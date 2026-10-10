@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Venomoth",
+    "category": "Poison Moth Pokémon",
+    "pokedex_entry": "It flutters its wings to scatter\ndustlike scales. The scales leach\ntoxins if they contact skin.",
     "base_stats": {
         "hp": 70,
         "attack": 65,

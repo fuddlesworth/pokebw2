@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Icicle Crash",
+    "description": "The user attacks by harshly dropping\nan icicle onto the target.\nIt may also make the target flinch.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pignite",
+    "category": "Fire Pig Pokémon",
+    "pokedex_entry": "The more it eats, the more fuel it has\nto make the fire in its stomach stronger.\nThis fills it with even more power.",
     "base_stats": {
         "hp": 90,
         "attack": 93,

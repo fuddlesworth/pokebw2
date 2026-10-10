@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Snorlax",
+    "category": "Sleeping Pokémon",
+    "pokedex_entry": "When its belly is full, it becomes\ntoo lethargic to even lift a finger,\nso it is safe to bounce on its belly.",
     "base_stats": {
         "hp": 160,
         "attack": 110,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "John",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A young Trainer! It's important for the\nyoung to get lots of exercise, isn't it?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "A healthy sweat...\nBoy, I am glad that I am an athlete!"
+        },
+        {
+            "type": 15,
+            "text": "Athletes like me are generous!\nHere, have this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I want a Poké Ball that's\nas big as a basketball!{be01}\nI think it would be more comfortable\nfor the Pokémon inside it."
         }
     ]
 }

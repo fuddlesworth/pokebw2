@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Arbok",
+    "category": "Cobra Pokémon",
+    "pokedex_entry": "The pattern on its belly is for\nintimidation. It constricts foes\nwhile they are frozen in fear.",
     "base_stats": {
         "hp": 60,
         "attack": 85,

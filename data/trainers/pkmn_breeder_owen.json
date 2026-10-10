@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Owen",
     "class": "TRAINER_CLASS_PKMN_BREEDER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -55,6 +56,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "To raise healthy Pokémon, you need\nto keep their minds and bodies active,{be00}\nwatching games and having battles!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It's so frustrating to lose!\nBut it's also important to learn from it."
+        },
+        {
+            "type": 15,
+            "text": "I just remembered something important.\nCome on now. No holding back!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "You learn more when you lose\nthan when you win!{be00}\nI think it's the same for sports, too."
         }
     ]
 }

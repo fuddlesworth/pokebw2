@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Grotle",
+    "category": "Grove Pokémon",
+    "pokedex_entry": "It knows where pure water wells\nup. It carries fellow Pokémon there\non its back.",
     "base_stats": {
         "hp": 75,
         "attack": 89,

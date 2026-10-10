@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Markus",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Whooo!\nMoun-TAAAIIIN!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Let the scales fall from your eyes!"
+        },
+        {
+            "type": 2,
+            "text": "Mountains are sacred places.\nI am here to purify my heart and mind."
         }
     ]
 }

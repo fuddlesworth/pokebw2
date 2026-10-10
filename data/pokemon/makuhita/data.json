@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Makuhita",
+    "category": "Guts Pokémon",
+    "pokedex_entry": "It toughens its body by slamming\ninto thick trees. Many snapped\ntrees can be found near its nest.",
     "base_stats": {
         "hp": 72,
         "attack": 60,

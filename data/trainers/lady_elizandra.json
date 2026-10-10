@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elizandra",
     "class": "TRAINER_CLASS_LADY",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Amazing...\nPlease, take me away with you!"
         }
     ]
 }

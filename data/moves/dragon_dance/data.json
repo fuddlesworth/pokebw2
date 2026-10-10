@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Dragon Dance",
+    "description": "The user vigorously performs a mystic,\npowerful dance that boosts its Attack and\nSpeed stats.",
     "type": "TYPE_DRAGON",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Infernape",
+    "category": "Flame Pokémon",
+    "pokedex_entry": "It uses unique fighting moves with\nfire on its hands and feet. It will\ntake on any opponent.",
     "base_stats": {
         "hp": 76,
         "attack": 104,

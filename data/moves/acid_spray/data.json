@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Acid Spray",
+    "description": "The user spits fluid that works to melt\nthe target. This harshly reduces\nthe target's Sp. Def stat.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

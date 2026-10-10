@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Doduo",
+    "category": "Twin Bird Pokémon",
+    "pokedex_entry": "The brains in its two heads appear\nto communicate emotions to each\nother with a telepathic power.",
     "base_stats": {
         "hp": 35,
         "attack": 85,

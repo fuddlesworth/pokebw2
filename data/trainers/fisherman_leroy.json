@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Leroy",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am a wonderful Fisherman\nwho loves everything!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I even love a disappointing result!"
+        },
+        {
+            "type": 2,
+            "text": "I want to go deep-sea fishing\nusing the Royal Unova{be00}\nthat leaves from Castelia City!"
         }
     ]
 }

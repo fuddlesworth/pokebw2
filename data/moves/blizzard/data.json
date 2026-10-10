@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Blizzard",
+    "description": "A howling blizzard is summoned to strike\nthe opposing team. It may also freeze\nthem solid.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

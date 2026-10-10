@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Derrick",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "If only you had three Pokémon that were\nready for battle!"
+        },
+        {
+            "type": 0,
+            "text": "Oh! You look pretty good!\nLet's play some pickup!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "That's game!\nYou totally crushed me."
+        },
+        {
+            "type": 2,
+            "text": "I wanna play at Small Court in\nNimbasa City someday..."
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Autotomize",
+    "description": "The user sheds part of its body\nto make itself lighter and sharply\nraise its Speed stat.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

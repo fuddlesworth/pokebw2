@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Clarke",
     "class": "TRAINER_CLASS_SCIENTIST_M_52",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_DEFEND" ],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Sine, cosine, tangent!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hmm. A tautology."
+        },
+        {
+            "type": 2,
+            "text": "What a catastrophic theorem!"
         }
     ]
 }

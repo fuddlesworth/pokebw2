@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Stored Power",
+    "description": "The user attacks the target with stored\npower. The more the user's stats are\nraised, the greater the damage.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Franklin",
     "class": "TRAINER_CLASS_SCIENTIST_M_52",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_ATTACK" ],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Let us conduct some Pokémon research.\nYes, let us show each other our Pokémon.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Mm, mm! A new discovery and an\never-deepening mystery..."
+        },
+        {
+            "type": 2,
+            "text": "The more you research, the more you\ncan discover.{be01}\nBut with Pokémon, you can become friends\neven without understanding everything."
         }
     ]
 }

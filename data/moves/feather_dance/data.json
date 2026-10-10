@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "FeatherDance",
+    "description": "The user covers the target's body with a\nmass of down that harshly lowers its\nAttack stat.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

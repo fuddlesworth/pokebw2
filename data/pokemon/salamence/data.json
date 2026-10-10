@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Salamence",
+    "category": "Dragon Pokémon",
+    "pokedex_entry": "As a result of its long-held dream\nof flying, its cellular structure\nchanged, and wings grew out.",
     "base_stats": {
         "hp": 95,
         "attack": 135,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hex",
+    "description": "This relentless attack does massive\ndamage to a target affected\nby status problems.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

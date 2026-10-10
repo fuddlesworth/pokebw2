@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Aggron",
+    "category": "Iron Armor Pokémon",
+    "pokedex_entry": "It claims an entire mountain as its own.\nThe more wounds it has, the more it has\nbattled, so don't take it lightly.",
     "base_stats": {
         "hp": 70,
         "attack": 110,

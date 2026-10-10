@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fire Pledge",
+    "description": "A column of fire hits opposing Pokémon.\nWhen used with its Grass equivalent, its\ndamage increases into a vast sea of fire.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

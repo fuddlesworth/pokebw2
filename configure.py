@@ -143,11 +143,13 @@ DATA_PACKS = [
     # Species data, level-up moves, evolutions, baby species and experience tables
     ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7"], False),
     ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"], False),  # Move data
-    ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2"], False),  # Trainers and their parties
+    # Trainers, their parties, and the table of their messages with its offsets
+    ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
     ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False),  # Zone headers
 ]
-DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py"]
+DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py",
+                   "tools/scripts/text_sources.py", "tools/scripts/text_data.py", "tools/scripts/msgdata.py"]
 
 # Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order
@@ -381,10 +383,13 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
             if matching:
                 checks.append(archive_ok)
 
+    # The text takes some of its messages from the data in JSON, with \from{...} lines (tools/scripts/text_sources.py)
+    text_data_sources = sorted(str(p.relative_to(ROOT)) for d in ("data/pokemon", "data/moves", "data/trainers")
+                               for p in (ROOT / d).rglob("*.json"))
     for path, source_dir in TEXT_ARCHIVES.items():
         archive = files_dir / path
         n.build([archive], "text_pack", sorted(Path(source_dir).glob("*.txt")),
-                implicit=["tools/scripts/text_data.py", "tools/scripts/msgdata.py", "tools/scripts/narc.py"],
+                implicit=[*DATA_PACK_TOOLS, *text_data_sources, *constant_sources],
                 order_only=[files_ok], variables={"dir": source_dir})
         archive_ok = stamp_dir / "files" / f"{path.replace('/', '_')}.ok"
         n.build([archive_ok], "check_file", [archive], implicit=[extract_dir / "config.yaml"],

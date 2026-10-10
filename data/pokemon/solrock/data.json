@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Solrock",
+    "category": "Meteorite Pokémon",
+    "pokedex_entry": "Solar energy is the source of its power,\nso it is strong during the daytime.\nWhen it spins, its body shines.",
     "base_stats": {
         "hp": 70,
         "attack": 95,

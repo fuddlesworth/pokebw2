@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Heart Swap",
+    "description": "The user employs its psychic power to\nswitch stat changes with the target.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

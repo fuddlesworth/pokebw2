@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Eli",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -18,5 +19,6 @@
             "item": "ITEM_CHOICE_SPECS",
             "moves": [ "MOVE_DISCHARGE", "MOVE_SIGNAL_BEAM", "MOVE_POWER_GEM", "MOVE_FOCUS_BLAST" ]
         }
-    ]
+    ],
+    "messages": []
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Nature Power",
+    "description": "An attack that makes use of nature's\npower. Its effects vary depending on the\nuser's environment.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

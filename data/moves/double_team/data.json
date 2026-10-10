@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Double Team",
+    "description": "By moving rapidly, the user makes illusory\ncopies of itself to raise its evasiveness.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

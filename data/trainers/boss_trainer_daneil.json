@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Daneil",
     "class": "TRAINER_CLASS_BOSS_TRAINER_DANEIL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_ZOOM_LENS",
             "moves": [ "MOVE_HONE_CLAWS", "MOVE_INFERNO", "MOVE_FOCUS_BLAST", "MOVE_SUCKER_PUNCH" ]
         }
-    ]
+    ],
+    "messages": []
 }

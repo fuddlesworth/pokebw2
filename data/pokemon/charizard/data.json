@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Charizard",
+    "category": "Flame Pokémon",
+    "pokedex_entry": "It is said that Charizard's fire\nburns hotter if it has\nexperienced harsh battles.",
     "base_stats": {
         "hp": 78,
         "attack": 84,

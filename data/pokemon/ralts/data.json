@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ralts",
+    "category": "Feeling Pokémon",
+    "pokedex_entry": "If its horns capture the warm\nfeelings of people or Pokémon,\nits body warms up slightly.",
     "base_stats": {
         "hp": 28,
         "attack": 25,

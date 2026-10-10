@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Intruder sighted!{be01}\nI'll have you know that the Pokémon I'm\nabout to use was stolen from a child!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "...What a weak Pokémon.\nI'll just have to go steal some better ones!"
+        },
+        {
+            "type": 2,
+            "text": "If we steal Pokémon, the number of\nTrainers in the world will go down.{be00}\nThen we won't have any more enemies!"
         }
     ]
 }

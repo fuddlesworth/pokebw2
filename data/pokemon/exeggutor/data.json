@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Exeggutor",
+    "category": "Coconut Pokémon",
+    "pokedex_entry": "It is called “The Walking Jungle.\"\nIf a head grows too big, it falls\noff and becomes an Exeggcute.",
     "base_stats": {
         "hp": 95,
         "attack": 95,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Slowpoke",
+    "category": "Dopey Pokémon",
+    "pokedex_entry": "Although slow, it is skilled at\nfishing with its tail. It does not\nfeel pain if its tail is bitten.",
     "base_stats": {
         "hp": 90,
         "attack": 65,

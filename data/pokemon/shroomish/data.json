@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Shroomish",
+    "category": "Mushroom Pokémon",
+    "pokedex_entry": "It spouts poison spores from the\ntop of its head. These spores\ncause pain all over if inhaled.",
     "base_stats": {
         "hp": 60,
         "attack": 40,

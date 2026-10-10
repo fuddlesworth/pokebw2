@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Pierce",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_THUNDER", "MOVE_BULLDOZE", "MOVE_BRICK_BREAK", "MOVE_COTTON_GUARD" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "One, you are a Pokémon Trainer.\nTwo, I am an Ace Trainer.{be01}\nPut them together, and it's obvious that\nwe are going to battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "One, you won!\nTwo, I lost..."
+        },
+        {
+            "type": 2,
+            "text": "One, I'm strong.\nTwo, you're stronger.{be01}\nPut them together, and you are clearly\na stronger Pokémon Trainer than I am!"
         }
     ]
 }

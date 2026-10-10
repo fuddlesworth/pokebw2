@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chili",
     "class": "TRAINER_CLASS_PKMN_TRAINER_CHILI",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -37,6 +38,12 @@
             "ability": 0,
             "item": "ITEM_LIFE_ORB",
             "moves": [ "MOVE_FLAMETHROWER", "MOVE_GRASS_KNOT", "MOVE_CRUNCH", "MOVE_WORK_UP" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Chili: Augh! You got me!\nYou and your Pokémon are on fire!"
         }
     ]
 }

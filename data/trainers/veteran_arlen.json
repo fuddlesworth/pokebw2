@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Arlen",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -43,6 +44,24 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_STONE_EDGE", "MOVE_PAYBACK", "MOVE_THUNDERBOLT", "MOVE_ICE_BEAM" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Mmm!\nYou smell like an athlete!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I see. That is the smell\nthat strong people give off..."
+        },
+        {
+            "type": 15,
+            "text": "You seem to be getting even stronger...\nOK. Please take this.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I hope you will get even stronger\nby using it."
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elie",
     "class": "TRAINER_CLASS_BOSS_TRAINER_F_163",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_CHOICE_SCARF",
             "moves": [ "MOVE_WATER_SPOUT", "MOVE_SHADOW_BALL", "MOVE_ENERGY_BALL", "MOVE_ICE_BEAM" ]
         }
-    ]
+    ],
+    "messages": []
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Yamask",
+    "category": "Spirit Pokémon",
+    "pokedex_entry": "These Pokémon arose from the spirits of\npeople interred in graves. Each retains\nmemories of its former life.",
     "base_stats": {
         "hp": 38,
         "attack": 30,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Hoothoot",
+    "category": "Owl Pokémon",
+    "pokedex_entry": "It marks time precisely. Some\ncountries consider it to be a wise\nfriend, versed in the world's ways.",
     "base_stats": {
         "hp": 60,
         "attack": 30,

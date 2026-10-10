@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Skuntank",
+    "category": "Skunk Pokémon",
+    "pokedex_entry": "It attacks by spraying a horribly\nsmelly fluid from the tip of its tail.\nAttacks from above confound it.",
     "base_stats": {
         "hp": 103,
         "attack": 93,

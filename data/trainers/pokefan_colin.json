@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Colin",
     "class": "TRAINER_CLASS_POKEFAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_MAX_POTION" ],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The athletes' Pokémon are great!{be01}\nBut my Pokémon are also great!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your Pokémon are also great!"
+        },
+        {
+            "type": 15,
+            "text": "In honor of our Pokémon,\nplease accept this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I will strive to raise my Pokémon\nto that level!"
         }
     ]
 }

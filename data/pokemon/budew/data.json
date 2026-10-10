@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Budew",
+    "category": "Bud Pokémon",
+    "pokedex_entry": "Sensitive to changing temperatures,\nthe bud blooms when it's warm,\nreleasing toxic pollen.",
     "base_stats": {
         "hp": 40,
         "attack": 30,

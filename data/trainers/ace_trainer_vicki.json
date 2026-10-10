@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Vicki",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_ROTATION",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "For a Rotation Battle, you've got to\nhave three Pokémon, you know!"
+        },
+        {
+            "type": 0,
+            "text": "My three beloved Pokémon will make their\ndebut in a perfect, weaving triangle.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You were the one who had the stronger\ncombined power as a team?!"
+        },
+        {
+            "type": 2,
+            "text": "With Rotation Battles, do you think that\nmaybe you need some Pokémon that can{be00}\ntake attacks, not just deal them out?"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Colress",
     "class": "TRAINER_CLASS_TEAM_PLASMA_COLRESS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "Come! Satisfy my urge to battle!"
+        },
+        {
+            "type": 19,
+            "text": "Marvelous! I shall believe in my Pokémon!"
+        },
+        {
+            "type": 20,
+            "text": "If-if I'd believed more, could I have\ndrawn out my Pokémon's power?"
+        },
+        {
+            "type": 1,
+            "text": "The bonds between us... Does the fact that\nwe can't see them make them more real?"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fusion Flare",
+    "description": "The user brings down a giant flame.\nThis attack does greater damage when\ninfluenced by an enormous thunderbolt.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

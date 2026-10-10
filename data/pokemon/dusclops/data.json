@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dusclops",
+    "category": "Beckon Pokémon",
+    "pokedex_entry": "It seeks drifting will-o'-the-wisps\nand sucks them into its empty body.\nWhat happens inside is a mystery.",
     "base_stats": {
         "hp": 40,
         "attack": 70,

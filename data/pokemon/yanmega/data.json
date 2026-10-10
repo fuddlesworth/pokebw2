@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Yanmega",
+    "category": "Ogre Darner Pokémon",
+    "pokedex_entry": "It prefers to battle by biting\napart foes' heads instantly\nwhile flying by at high speed.",
     "base_stats": {
         "hp": 86,
         "attack": 76,

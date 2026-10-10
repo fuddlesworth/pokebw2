@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Prinplup",
+    "category": "Penguin Pokémon",
+    "pokedex_entry": "Because every Prinplup considers\nitself to be the most important,\nthey can never form a group.",
     "base_stats": {
         "hp": 64,
         "attack": 66,

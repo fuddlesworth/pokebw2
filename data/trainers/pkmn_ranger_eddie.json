@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Eddie",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,24 @@
             "gender": 0,
             "ability": 1,
             "moves": [ "MOVE_FLASH_CANNON", "MOVE_DISCHARGE", "MOVE_THUNDER_WAVE", "MOVE_POWER_GEM" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm gonna numb you and your Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Unbelievable!\nI was the one struck numb...?"
+        },
+        {
+            "type": 15,
+            "text": "This is the best thing for when you're\nreally numb.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "A fighting style overflowing with power or\na strategy that excels technically...{be00}\nIt depends on the Pokémon, see!"
         }
     ]
 }

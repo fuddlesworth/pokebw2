@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Benga",
     "class": "TRAINER_CLASS_BOSS_TRAINER_BENGA",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_FOCUS_SASH",
             "moves": [ "MOVE_FIRE_BLAST", "MOVE_BUG_BUZZ", "MOVE_PSYCHIC", "MOVE_QUIVER_DANCE" ]
         }
-    ]
+    ],
+    "messages": []
 }

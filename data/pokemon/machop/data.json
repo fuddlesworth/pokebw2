@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Machop",
+    "category": "Superpower Pokémon",
+    "pokedex_entry": "Though small in stature, it is\npowerful enough to easily heft and\nthrow a number of Geodude at once.",
     "base_stats": {
         "hp": 70,
         "attack": 80,

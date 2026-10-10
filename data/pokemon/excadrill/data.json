@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Excadrill",
+    "category": "Subterrene Pokémon",
+    "pokedex_entry": "Forming a drill with its steel claws\nand head, it can bore through a steel\nplate, no matter how thick it is.",
     "base_stats": {
         "hp": 110,
         "attack": 135,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Lick",
+    "description": "The target is licked with a long tongue,\ncausing damage. It may also leave\nthe target with paralysis.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

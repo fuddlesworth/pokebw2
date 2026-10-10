@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Darumaka",
+    "category": "Zen Charm Pokémon",
+    "pokedex_entry": "When it sleeps, it pulls its limbs\ninto its body and its internal fire\ngoes down to 1,100° F.",
     "base_stats": {
         "hp": 70,
         "attack": 90,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Alize",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Ai! Ai! Ai!\nHi-yaaah!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Aww...\nIt was my turn next..."
+        },
+        {
+            "type": 2,
+            "text": "If you like sparring with Pokémon, you've\ngot to see Drayden in Opelucid City!{be00}\nHe's my idol!"
         }
     ]
 }

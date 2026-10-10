@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Poison Tail",
+    "description": "The user hits the target with its tail.\nIt may also poison the target.\nCritical hits land more easily.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

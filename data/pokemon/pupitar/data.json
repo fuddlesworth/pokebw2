@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pupitar",
+    "category": "Hard Shell Pokémon",
+    "pokedex_entry": "This pupa flies around wildly\nby venting with great force the\ngas pressurized inside its body.",
     "base_stats": {
         "hp": 70,
         "attack": 84,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Golett",
+    "category": "Automaton Pokémon",
+    "pokedex_entry": "Ancient science fashioned this\nPokémon from clay. It's been\nactive for thousands of years.",
     "base_stats": {
         "hp": 59,
         "attack": 74,

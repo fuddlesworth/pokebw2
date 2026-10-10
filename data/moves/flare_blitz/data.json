@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Flare Blitz",
+    "description": "The user cloaks itself in fire and charges\nat the target. The user sustains serious\ndamage and may leave the target burned.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

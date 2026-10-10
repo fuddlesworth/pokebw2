@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nina",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,5 +17,6 @@
             "gender": 0,
             "ability": 0
         }
-    ]
+    ],
+    "messages": []
 }

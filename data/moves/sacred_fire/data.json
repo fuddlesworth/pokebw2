@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sacred Fire",
+    "description": "The target is razed with a mystical fire\nof great intensity. It may also leave the\ntarget with a burn.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

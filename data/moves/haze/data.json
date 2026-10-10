@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Haze",
+    "description": "The user creates a haze that eliminates\nevery stat change among all the Pokémon\nengaged in battle.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

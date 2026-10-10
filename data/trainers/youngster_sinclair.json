@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sinclair",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Starting yesterday, I decided\nto become a bad dude!{be00}\nNow people will know I'm strong!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I guess I can't just up and decide to be\na bad dude... It's tougher than I thought!"
+        },
+        {
+            "type": 2,
+            "text": "I want to be like my big bro\nand have a shiny head!{be01}\nYou don't have to waste time\ndrying your hair after a shower!"
         }
     ]
 }

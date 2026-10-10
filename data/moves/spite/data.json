@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Spite",
+    "description": "The user unleashes its grudge on the move\nlast used by the target by cutting 4 PP\nfrom it.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

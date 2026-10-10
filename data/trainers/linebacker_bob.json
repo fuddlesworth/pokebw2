@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bob",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Kids! Please cooperate with the\nphysical therapy for me and my Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My tackle was supposed to crush\neven Rock-type Pokémon..."
+        },
+        {
+            "type": 15,
+            "text": "This present might be more\neffective than a tackle!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I was injured in a rough game, so\nI am undergoing some physical therapy."
         }
     ]
 }

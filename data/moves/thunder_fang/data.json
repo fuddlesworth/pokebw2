@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Thunder Fang",
+    "description": "The user bites with electrified fangs.\nIt may also make the target flinch or\nleave it with paralysis.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

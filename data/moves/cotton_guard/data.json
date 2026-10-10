@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Cotton Guard",
+    "description": "The user protects itself by wrapping\nits body in soft cotton, drastically\nraising the user's Defense stat.",
     "type": "TYPE_GRASS",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

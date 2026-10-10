@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Follow Me",
+    "description": "The user draws attention to itself,\nmaking all targets take aim\nonly at the user.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lewis",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I can feel the energy that overflows\nfrom the earth!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I felt the energy that overflowed\nfrom your Pokémon!"
+        },
+        {
+            "type": 15,
+            "text": "Take this!\nEarth's energyyyy!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Geothermal heat and abundant minerals...\nYes, volcanoes hold the planet's energy!"
         }
     ]
 }

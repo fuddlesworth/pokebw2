@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cyndaquil",
+    "category": "Fire Mouse Pokémon",
+    "pokedex_entry": "It has a timid nature. If it is\nstartled, the flames on its back\nburn more vigorously.",
     "base_stats": {
         "hp": 39,
         "attack": 52,

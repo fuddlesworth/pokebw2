@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Psybeam",
+    "description": "The target is attacked with a peculiar ray.\nIt may also cause confusion.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

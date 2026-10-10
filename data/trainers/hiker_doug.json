@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Doug",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey there, future Champion!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Gwahaha! When someone wins, their opponent\nhas to lose. Isn't that right?"
+        },
+        {
+            "type": 2,
+            "text": "If there were no Pokémon, we wouldn't\nworry about who's strong or who's weak.{be01}\nBut we also wouldn't have had the chance\nto meet and battle like this, I suppose."
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Seadra",
+    "category": "Dragon Pokémon",
+    "pokedex_entry": "Its spines provide protection.\nIts fins and bones are prized as\ntraditional-medicine ingredients.",
     "base_stats": {
         "hp": 55,
         "attack": 65,

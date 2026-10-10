@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Magmortar",
+    "category": "Blast Pokémon",
+    "pokedex_entry": "When shooting 3,600 degree F fireballs\nfrom its arms, its body takes on a\nwhitish hue from the intense heat.",
     "base_stats": {
         "hp": 75,
         "attack": 95,

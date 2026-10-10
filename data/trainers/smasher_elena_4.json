@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elena",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am a lady. I will challenge others\nto battle elegantly!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You should...\nGo easy on me!"
+        },
+        {
+            "type": 15,
+            "text": "I even give gifts in an elegant fashion!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "B-b-b-because I am a lady...\nwaaaah...{be00}\nI will admit my defeat gracefully..."
         }
     ]
 }

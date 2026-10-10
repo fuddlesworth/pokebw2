@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Josh",
     "class": "TRAINER_CLASS_DEPOT_AGENT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I want you to tell me something!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You showed me your full strength!"
+        },
+        {
+            "type": 15,
+            "text": "I got it! Here, have this! I bet you'll\nbe able to use it to its full potential!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I will work at the Battle Subway\nfrom now on, but...{be00}\nwhere is it?"
         }
     ]
 }

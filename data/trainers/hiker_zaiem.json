@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Zaiem",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "We feel filled with power when we're\nsurrounded by our beloved stone!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh stones!\nThis can't be stooone!"
+        },
+        {
+            "type": 2,
+            "text": "I'm not the only one who gets excited by\nall this stone--my Pokémon do, too!"
         }
     ]
 }

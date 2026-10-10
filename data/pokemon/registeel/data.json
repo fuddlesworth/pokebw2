@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Registeel",
+    "category": "Iron Pokémon",
+    "pokedex_entry": "Tempered by pressure underground\nover tens of thousands of years,\nits body cannot be scratched.",
     "base_stats": {
         "hp": 80,
         "attack": 75,

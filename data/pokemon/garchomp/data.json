@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Garchomp",
+    "category": "Mach Pokémon",
+    "pokedex_entry": "It is said that when one runs at\nhigh speed, its wings create blades\nof wind that can fell nearby trees.",
     "base_stats": {
         "hp": 108,
         "attack": 130,

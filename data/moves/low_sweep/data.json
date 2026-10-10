@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Low Sweep",
+    "description": "The user attacks the target's legs\nswiftly, reducing the target's\nSpeed stat.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Detect",
+    "description": "It enables the user to evade all attacks.\nIts chance of failing rises if it is used\nin succession.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Porygon2",
+    "category": "Virtual Pokémon",
+    "pokedex_entry": "It was upgraded to enable the\nexploration of other planets.\nHowever, it failed to measure up.",
     "base_stats": {
         "hp": 85,
         "attack": 80,

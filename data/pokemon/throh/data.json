@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Throh",
+    "category": "Judo Pokémon",
+    "pokedex_entry": "When it encounters a foe bigger than\nitself, it wants to throw it.\nIt changes belts as it gets stronger.",
     "base_stats": {
         "hp": 120,
         "attack": 100,

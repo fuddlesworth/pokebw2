@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Claude",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 1,
             "moves": [ "MOVE_AQUA_TAIL", "MOVE_SMACK_DOWN", "MOVE_ICE_BEAM", "MOVE_SHELL_SMASH" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You bothered to come all the way here?{be01}\nGood! I will reward your hard work by\nbattling with all of my strength!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "A battle with a good Trainer fills my heart\nwith warmth."
+        },
+        {
+            "type": 2,
+            "text": "The fact that you made it out here...{be01}\nThat's it! It must have been thanks to a\nPokémon carrying you with a hidden move!"
         }
     ]
 }

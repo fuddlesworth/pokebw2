@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Magic Coat",
+    "description": "A barrier reflects back to the target\nmoves like Leech Seed and moves\nthat damage status.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

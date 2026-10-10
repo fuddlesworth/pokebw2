@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Thunder Wave",
+    "description": "A weak electric charge is launched at\nthe target. It causes paralysis if it hits.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

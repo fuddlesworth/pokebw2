@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Zack",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Whooooa!!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I loooost!!"
+        },
+        {
+            "type": 2,
+            "text": "Isn't it fun how shouting out in a sewer\nor a tunnel makes your voice echo?"
         }
     ]
 }

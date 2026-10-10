@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Matthew",
     "class": "TRAINER_CLASS_WORKER_44",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Let's have a battle on these grounds,\nwhich I keep looking sharp!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The best battle\non the best ground!"
+        },
+        {
+            "type": 15,
+            "text": "And here is the best gift!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "OK! I will keep the grounds\nlooking perfect!"
         }
     ]
 }

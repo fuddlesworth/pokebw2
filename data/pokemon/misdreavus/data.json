@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Misdreavus",
+    "category": "Screech Pokémon",
+    "pokedex_entry": "A Pokémon that startles people in\nthe middle of the night. It gathers\nfear as its energy.",
     "base_stats": {
         "hp": 60,
         "attack": 60,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Ice Burn",
+    "description": "On the second turn, an ultracold,\nfreezing wind surrounds the target.\nThis may leave the target with a burn.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

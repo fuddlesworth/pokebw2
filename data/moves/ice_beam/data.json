@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Ice Beam",
+    "description": "The target is struck with an icy-cold\nbeam of energy.\nIt may also freeze the target solid.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

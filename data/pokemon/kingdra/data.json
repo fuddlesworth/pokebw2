@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kingdra",
+    "category": "Dragon Pokémon",
+    "pokedex_entry": "It lives in caves on the seafloor\nand creates giant whirlpools\nevery time it moves.",
     "base_stats": {
         "hp": 75,
         "attack": 95,

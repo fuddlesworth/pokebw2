@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Purrloin",
+    "category": "Devious Pokémon",
+    "pokedex_entry": "Their cute act is a ruse. They trick\npeople and steal their valuables\njust to see the looks on their faces.",
     "base_stats": {
         "hp": 41,
         "attack": 50,

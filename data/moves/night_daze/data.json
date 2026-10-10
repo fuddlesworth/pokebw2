@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Night Daze",
+    "description": "The user lets loose a pitch-black shock\nwave at its target. It may also lower the\ntarget's accuracy.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

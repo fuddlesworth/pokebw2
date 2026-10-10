@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Krabby",
+    "category": "River Crab Pokémon",
+    "pokedex_entry": "It lives in burrows dug on sandy\nbeaches. Its pincers fully grow\nback if they are broken in battle.",
     "base_stats": {
         "hp": 30,
         "attack": 105,

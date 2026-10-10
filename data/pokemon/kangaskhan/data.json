@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kangaskhan",
+    "category": "Parent Pokémon",
+    "pokedex_entry": "It raises its offspring in its belly\npouch. It lets the baby out to\nplay only when it feels safe.",
     "base_stats": {
         "hp": 105,
         "attack": 95,

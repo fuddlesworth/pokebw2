@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Eelektross",
+    "category": "EleFish Pokémon",
+    "pokedex_entry": "It latches on to prey with its sucker\nmouth, sinking in its fangs and shocking\nthe prey with powerful electricity.",
     "base_stats": {
         "hp": 85,
         "attack": 115,

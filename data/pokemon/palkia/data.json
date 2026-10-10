@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Palkia",
+    "category": "Spatial Pokémon",
+    "pokedex_entry": "A legendary Pokémon of Sinnoh.\nIt is said that space becomes more\nstable with Palkia's every breath.",
     "base_stats": {
         "hp": 90,
         "attack": 120,

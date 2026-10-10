@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Roggenrola",
+    "category": "Mantle Pokémon",
+    "pokedex_entry": "The hexagonal-shaped hole is its ear.\nIt has a tendency to walk in the\ndirection the sound is coming from.",
     "base_stats": {
         "hp": 55,
         "attack": 75,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Herman",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "We dig and we dig until we break through!\nWhat could be waiting on the other side?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You broke through!"
+        },
+        {
+            "type": 2,
+            "text": "Sweat dripping, chips flying,\ncrushing through rock and stone!{be00}\nThis is when I really feel alive!"
         }
     ]
 }

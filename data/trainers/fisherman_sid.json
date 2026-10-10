@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sid",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Check out my lively Pokémon, which\nI've gathered from all around the{be00}\nUnova region!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Mmm hmm! Looks like you are\neven more lively and fresh!"
+        },
+        {
+            "type": 2,
+            "text": "As long as you've got momentum,\nyou don't need experience or knowledge!"
         }
     ]
 }

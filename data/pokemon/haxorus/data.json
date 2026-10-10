@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Haxorus",
+    "category": "Axe Jaw Pokémon",
+    "pokedex_entry": "Its tusks are incredibly destructive.\nThey can easily slice through a thick,\nsturdy steel column every time.",
     "base_stats": {
         "hp": 76,
         "attack": 147,

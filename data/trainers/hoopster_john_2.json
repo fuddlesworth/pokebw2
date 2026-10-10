@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "John",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "No matter how much I sweat,\nI won't smell sweaty!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "A healthy sweat...\nBoy, I am glad that I am an athlete!"
+        },
+        {
+            "type": 15,
+            "text": "Here's what us athletes\ndo as a greeting!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "After a battle, take a bath!\nAfter eating, brush your teeth!"
         }
     ]
 }

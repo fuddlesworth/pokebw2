@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Bellossom",
+    "category": "Flower Pokémon",
+    "pokedex_entry": "When the heavy rainfall season\nends, it is drawn out by warm\nsunlight to dance in the open.",
     "base_stats": {
         "hp": 75,
         "attack": 80,

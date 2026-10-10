@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "GrassWhistle",
+    "description": "The user plays a pleasant melody that\nlulls the target into a deep sleep.",
     "type": "TYPE_GRASS",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

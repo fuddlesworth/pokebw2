@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mud Sport",
+    "description": "The user covers itself with mud. It\nweakens Electric-type moves while the\nuser is in the battle.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

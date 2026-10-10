@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Luxray",
+    "category": "Gleam Eyes Pokémon",
+    "pokedex_entry": "It can see clearly through walls\nto track down its prey and seek\nits lost young.",
     "base_stats": {
         "hp": 80,
         "attack": 120,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Latios",
+    "category": "Eon Pokémon",
+    "pokedex_entry": "A highly intelligent Pokémon.\nBy folding back its wings in flight,\nit can overtake jet planes.",
     "base_stats": {
         "hp": 80,
         "attack": 90,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Round",
+    "description": "The user attacks the target with a song.\nOthers can join in the Round and make\nthe attack do greater damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Plusle",
+    "category": "Cheering Pokémon",
+    "pokedex_entry": "It cheers on friends with pom-poms\nmade of sparks. It drains power\nfrom telephone poles.",
     "base_stats": {
         "hp": 60,
         "attack": 50,

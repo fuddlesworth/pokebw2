@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Parasect",
+    "category": "Mushroom Pokémon",
+    "pokedex_entry": "A mushroom grown larger than the\nhost's body controls Parasect.\nIt scatters poisonous spores.",
     "base_stats": {
         "hp": 60,
         "attack": 95,

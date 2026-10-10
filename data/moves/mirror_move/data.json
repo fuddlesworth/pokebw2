@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mirror Move",
+    "description": "The user counters the target by mimicking\nthe target's last move.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Psycho Shift",
+    "description": "Using its psychic power of suggestion,\nthe user transfers its status problems\nto the target.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

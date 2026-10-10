@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Norbert",
     "class": "TRAINER_CLASS_POKEFAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_SUPER_POTION" ],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "This may be a bit sudden, but please,\ncheck out my Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Even if my Pokémon lose,\nthey are still so cute!"
+        },
+        {
+            "type": 2,
+            "text": "Anytime, anywhere, no matter what,\nmy Pokémon are always the best for me!"
         }
     ]
 }

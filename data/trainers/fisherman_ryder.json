@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ryder",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Real Fishermen are impatient!\nSo we must battle immediately!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I lost!\nIt's the end!!"
+        },
+        {
+            "type": 2,
+            "text": "How do I know that real Fishermen\nare so impatient?{be01}\nBecause we change places frantically\nif we cannot catch Pokémon!"
         }
     ]
 }

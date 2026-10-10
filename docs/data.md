@@ -26,7 +26,7 @@ format and can write them again.
 | `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
 | `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
-| `a/0/9/1`, `a/0/9/2` | `data/trainers/` (JSON) | Trainers and their parties | `tools/scripts/trainer_data.py` |
+| `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `data/trainers/` (JSON) | Trainers, their parties, and the table of their messages | `tools/scripts/trainer_data.py` |
 | `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
@@ -92,13 +92,38 @@ How serious are you willing to get\nin order to get what you want?
 - A message that starts with `\c` is stored compressed, as the game stores trainers' names, among others.
 - A last line `\pad{XX}` is not a message but the byte that fills the end of the file to a multiple of 4 bytes, which
   the original files have as leftovers rather than 0.
+- A line `\from{species.name}` is not a message but stands for messages that come from the data in JSON, one per
+  species, move or trainer, as pokeplatinum's text banks come from `res/`: see below.
 
-The game encrypts each message with a key that depends on its ID, which `text_data.py` applies when packing. Files
-are numbered by their ID in the archive, `NNNN_name.txt`, and named where something says what they are for: a script
-message file after the place of the zone whose header names it (`0003_black_city.txt`), and a system message file
-after what it holds, which the word set function that loads it or its contents show (`0403_move_names.txt`,
-`0027_natures.txt`), or else after the source file or function that loads it (`0004_delete_save.txt`). The others keep their number until they are known (`0001.txt`). `text_data.py unpack` keeps
-the names of the files it writes over. Both versions have the same text.
+The text that belongs to a species, a move or a trainer is in its JSON file, so renaming a Pokémon or rewriting a
+trainer's lines is an edit in one place. The message files take it with `\from{...}` lines, which
+`tools/scripts/text_sources.py` expands when the text is packed, among the messages that belong to nothing, such as
+Egg and Bad Egg after the species' names:
+
+| File | Line | Messages |
+| --- | --- | --- |
+| `0090_species_names.txt` | `\from{species.name}` | Each species' `name` |
+| `0486_species_names_upper.txt` | `\from{species.name_upper}` | The same in capitals |
+| `0483_species_names_with_article.txt` | `\from{species.name_with_article}` | The same with "a" or "an" (`name_article` where the first letter doesn't tell) |
+| `0464_species_categories.txt` | `\from{species.category}` | Each species' `category` |
+| `0442_pokedex_entries.txt` | `\from{species.pokedex_entry}` | Each species' `pokedex_entry`; the forms' entries after them stay text |
+| `0403_move_names.txt` | `\from{moves.name}` | Each move's `name` |
+| `0488_move_names_upper.txt` | `\from{moves.name_upper}` | The same in capitals |
+| `0402_btl_main.txt` | `\from{moves.description}` | Each move's `description` |
+| `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
+| `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
+
+In the JSON, a line break is a real one (`"\n"` in the JSON) rather than `\n`; control codes and other escapes are as
+in the text files. The other languages' Pokédex entries and categories, which the game keeps for older species, stay
+text.
+
+The game encrypts each message with a key that depends on its ID, which `text_data.py` applies when packing. Files are
+numbered by their ID in the archive, `NNNN_name.txt`, and named where something says what they are for: a script message
+file after the place of the zone whose header names it (`0003_black_city.txt`), and a system message file after what it
+holds, which the word set function that loads it or its contents show (`0403_move_names.txt`, `0027_natures.txt`), or
+else after the source file or function that loads it (`0004_delete_save.txt`). The others keep their number until they
+are known (`0001.txt`). `text_data.py unpack` keeps the names of the files it writes over. Both versions have the same
+text.
 
 ## Species
 
@@ -110,6 +135,9 @@ evolutions (`a/0/1/9`) and its baby species (`a/0/2/0`). `data/pokemon/species.s
 ```json
 {
     "$schema": "../species.schema.json",
+    "name": "Bulbasaur",
+    "category": "Seed Pokémon",
+    "pokedex_entry": "For some time after its birth, it\ngrows by gaining nourishment from\nthe seed on its back.",
     "base_stats": {
         "hp": 45,
         ...
@@ -166,7 +194,8 @@ nothing names. Both versions have the same species data.
 
 To add a species, add its constant to the end of `species.txt` and its directory with a `data.json`; to add a form
 with a record of its own, add its `form_<n>.json` and its line to `forms.json`, and count it in the species' `forms`.
-The sprites, cries and names that the other archives hold aren't built from source yet.
+A species' name, category and Pokédex entry go into the text (see [Text](#text)); its sprites and cry aren't built
+from source yet.
 
 ## Moves
 
@@ -178,6 +207,8 @@ Each move has a directory in `data/moves/`, named after its constant (`thunderbo
 ```json
 {
     "$schema": "../move.schema.json",
+    "name": "Thunderbolt",
+    "description": "A strong electric blast is loosed at the\ntarget. It may also leave the target\nwith paralysis.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",
@@ -202,7 +233,7 @@ chance and duration. `stat_changes` holds up to three changes of the stats of `B
 class of the move's effect (`MOVE_QUALITY_*`), `target` which Pokémon it targets (`MOVE_TARGET_*`) and `flags` its
 properties (`MOVE_FLAG_*`), such as contact, sound or being blocked by Protect; `include/constants/battle.h` names
 each after the moves that have it. The record's "SS" marker, which every move has, is written by the packer. Both
-versions have the same move data. A move's name and description are still in the text archives.
+versions have the same move data. A move's name and description go into the text (see [Text](#text)).
 
 ## Trainers
 
@@ -214,6 +245,7 @@ its party (`a/0/9/2`), and `tools/scripts/trainer_data.py pack` builds both arch
 ```json
 {
     "$schema": "trainer.schema.json",
+    "name": "Shauntal",
     "class": "TRAINER_CLASS_ELITE_FOUR_SHAUNTAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -233,18 +265,29 @@ its party (`a/0/9/2`), and `tools/scripts/trainer_data.py pack` builds both arch
             "moves": [ "MOVE_WILL_O_WISP", ... ]
         },
         ...
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "..."
+        },
+        ...
     ]
 }
 ```
 
-A party either gives every Pokémon an `item` or none, and `moves` or none; the packer sets the record's party kind
+A trainer's `name` and `messages` go into the text (see [Text](#text)). The messages are also the trainer message table
+(`a/0/8/9`), which pairs each with its trainer and type (0 before the battle, 1 when the trainer loses, 8 when it wins,
+and other moments by number), and its offsets for each trainer (`a/0/9/0`), which `TrainerMsg_Load` reads; the packer
+writes both, with the trainers in the order of `data/trainers/message_order.json`, then any others that have messages. A
+party either gives every Pokémon an `item` or none, and `moves` or none; the packer sets the record's party kind
 (`PARTY_ITEMS`, `PARTY_MOVES`) from that, and a Pokémon without moves gets the moves of its level. `ai_flags` are the
-trainer AI scripts to run (`AI_FLAG_*`, see [Scripts](scripts.md)), `money` a multiplier of the prize money and
-`reward` an item given after the battle. A Pokémon's `difficulty` sets its individual values, and `gender` and
-`ability` pick them when not 0. `class` is a `TRAINER_CLASS_*` from `data/constants/trainer_classes.txt`, named after
-the class's name; where several classes share one, after their only trainer, their sex or their ID, as
-`TRAINER_CLASS_SCHOOL_KID_F` (`make_constants.py --trainer-classes`). `TRAINER_NONE` has no file: the packer writes
-the empty placeholder the game has for it. Both versions have the same trainers.
+trainer AI scripts to run (`AI_FLAG_*`, see [Scripts](scripts.md)), `money` a multiplier of the prize money and `reward`
+an item given after the battle. A Pokémon's `difficulty` sets its individual values, and `gender` and `ability` pick
+them when not 0. `class` is a `TRAINER_CLASS_*` from `data/constants/trainer_classes.txt`, named after the class's name;
+where several classes share one, after their only trainer, their sex or their ID, as `TRAINER_CLASS_SCHOOL_KID_F`
+(`make_constants.py --trainer-classes`). `TRAINER_NONE` has no file: the packer writes the empty placeholder the game
+has for it. Both versions have the same trainers.
 
 Each trainer's constant in `data/constants/trainers.txt`, which the field scripts use, is its class and name, as
 `TRAINER_YOUNGSTER_JIMMY`, without the class for the story characters, whose class is Pokémon Trainer

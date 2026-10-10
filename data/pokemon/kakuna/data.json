@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kakuna",
+    "category": "Cocoon Pokémon",
+    "pokedex_entry": "While awaiting evolution, it\nhides from predators under\nleaves and in nooks of branches.",
     "base_stats": {
         "hp": 45,
         "attack": 25,

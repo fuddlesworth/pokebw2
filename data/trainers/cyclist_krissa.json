@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Krissa",
     "class": "TRAINER_CLASS_CYCLIST_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Ting-a-ling-ling. ♪\nFull-speed attack, coming your way!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ting-a-ling-ling. ♪\nTing.♪ Ting-a-ling-ling. ♪"
+        },
+        {
+            "type": 2,
+            "text": "When people are running by, you\ncan't help but stop and look at them."
         }
     ]
 }

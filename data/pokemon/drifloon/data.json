@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Drifloon",
+    "category": "Balloon Pokémon",
+    "pokedex_entry": "These Pokémon are called the\n“Signpost for Wandering Spirits.\"\nChildren holding them sometimes vanish.",
     "base_stats": {
         "hp": 90,
         "attack": 50,

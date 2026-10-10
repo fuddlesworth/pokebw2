@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kipp",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_ROTATION",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "I'm trying to get better\nat Rotation Battles!{be01}\nI'll battle you if you have three or\nmore Pokémon ready for battle!"
+        },
+        {
+            "type": 0,
+            "text": "Let me test what fighting style\nis more effective!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What are you, some kind\nof Rotation Battle genius?"
+        },
+        {
+            "type": 2,
+            "text": "You should try having Rotation Battles\nwith your friends, too."
         }
     ]
 }

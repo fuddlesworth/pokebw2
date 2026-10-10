@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sunflora",
+    "category": "Sun Pokémon",
+    "pokedex_entry": "Since it converts sunlight\ninto energy, it is always looking\nin the direction of the sun.",
     "base_stats": {
         "hp": 75,
         "attack": 75,

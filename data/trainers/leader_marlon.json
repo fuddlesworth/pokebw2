@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Marlon",
     "class": "TRAINER_CLASS_LEADER_MARLON",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_HYPER_POTION" ],
@@ -37,6 +38,20 @@
             "ability": 2,
             "item": "ITEM_SITRUS_BERRY",
             "moves": [ "MOVE_SCALD", "MOVE_OMINOUS_WIND", "MOVE_BRINE", "MOVE_RECOVER" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "Dude...\nYou're really into this, huh!"
+        },
+        {
+            "type": 19,
+            "text": "Awww, dude... I know I'm about done,\nbut I'm still just so pumped up!"
+        },
+        {
+            "type": 1,
+            "text": "You totally rocked that!\nYou're raising some wicked Pokémon.{be00}\nYou got this Trainer thing down!"
         }
     ]
 }

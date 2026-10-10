@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hi there! I'm a Pokémon thief by trade!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hmph!\nI missed my chance to grab your Pokémon!"
+        },
+        {
+            "type": 2,
+            "text": "I will continue poaching Pokémon! I've\ngot to be at least a little stronger!"
         }
     ]
 }

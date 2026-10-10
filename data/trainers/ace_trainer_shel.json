@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shel",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Our battle will surely be worth a\npage in the book of your journey!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "If only I could have won, I would have\nbeen able to make an impression on you!"
+        },
+        {
+            "type": 2,
+            "text": "To be remembered by someone...\nThat may be what it means to be alive."
         }
     ]
 }

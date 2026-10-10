@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Hawk & Dar",
     "class": "TRAINER_CLASS_BACKERS_M",
     "battle_style": "BTL_STYLE_DOUBLE",
     "items": [],
@@ -23,6 +24,36 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 3,
+            "text": "Look!\nMy defense is magnificent!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hawk: It's strange. When professionals\nare playing, it looks so easy...{be01}\nDar: I guess we cannot play\nquite as well as the professionals..."
+        },
+        {
+            "type": 5,
+            "text": "Rock-solid defense!\nThat's a real thrill in football!"
+        },
+        {
+            "type": 6,
+            "text": "DE-fense! DE-fense!"
+        },
+        {
+            "type": 7,
+            "text": "Look!\nMy magnificent offense!{be01}"
+        },
+        {
+            "type": 9,
+            "text": "Offense that smashes in every direction!\nThat's a real thrill in football!"
+        },
+        {
+            "type": 10,
+            "text": "Offffffense!"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grant",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I keep a tally of all of the times that I\nhave won or lost up until today.{be01}\nIf I battle against you, I wonder which\nnumber will be increased.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "So my number of losses went up..."
+        },
+        {
+            "type": 2,
+            "text": "I'm not interested in anything\nbut Pokémon!{be01}\nIt may not be balanced, but I'm satisfied\nliving like this!"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Will-O-Wisp",
+    "description": "The user shoots a sinister, bluish-white\nflame at the target to inflict a burn.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

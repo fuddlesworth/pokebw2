@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Spearow",
+    "category": "Tiny Bird Pokémon",
+    "pokedex_entry": "It flaps its small wings busily to\nfly. Using its beak, it searches\nin grass for prey.",
     "base_stats": {
         "hp": 40,
         "attack": 60,

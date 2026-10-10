@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Connor",
     "class": "TRAINER_CLASS_INFIELDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My undefeated Pokémon and I\nhave our eyes set on you for{be00}\nour practice opponent!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I knew I had the right person!"
+        },
+        {
+            "type": 15,
+            "text": "I'm practicing my gift-giving technique\nfor my fans! Here, take this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I got some great practice\nfrom our battle!{be01}\nI'll become even stronger!"
         }
     ]
 }

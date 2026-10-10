@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Nidorino",
+    "category": "Poison Pin Pokémon",
+    "pokedex_entry": "It has a violent disposition and\nstabs foes with its horn, which\noozes poison upon impact.",
     "base_stats": {
         "hp": 61,
         "attack": 72,

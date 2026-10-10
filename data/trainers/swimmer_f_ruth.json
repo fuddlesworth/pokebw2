@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ruth",
     "class": "TRAINER_CLASS_SWIMMER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I learned all the good points of my\nClamperl and Shellder by swimming{be00}\nwith Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What a fresh Trainer!\nReally fresh, fresh!"
+        },
+        {
+            "type": 2,
+            "text": "I'm a girl with everything...{be01}\nWell, everything but a place to\nput my Poké Balls!"
         }
     ]
 }

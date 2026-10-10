@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Air Cutter",
+    "description": "The user launches razor-like wind to\nslash the opposing team.\nCritical hits land more easily.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

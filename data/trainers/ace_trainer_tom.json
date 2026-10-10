@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tom",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "An Ace Trainer like me has pride,\nso I won't lose!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I could not protect my pride.\nI'm mortified!"
+        },
+        {
+            "type": 2,
+            "text": "Pride does not mean acting arrogantly!{be01}\nI'm really proud of what\nI have achieved in my life!"
         }
     ]
 }

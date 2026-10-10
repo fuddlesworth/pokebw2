@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Rattata",
+    "category": "Mouse Pokémon",
+    "pokedex_entry": "It searches for food all day. It gnaws\non hard objects to wear down its fangs,\nwhich grow constantly during its lifetime.",
     "base_stats": {
         "hp": 30,
         "attack": 56,

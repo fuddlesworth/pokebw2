@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sigilyph",
+    "category": "Avianoid Pokémon",
+    "pokedex_entry": "The guardians of an ancient city, they\nalways fly the same route while\nkeeping watch for invaders.",
     "base_stats": {
         "hp": 72,
         "attack": 58,

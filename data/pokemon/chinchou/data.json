@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Chinchou",
+    "category": "Angler Pokémon",
+    "pokedex_entry": "It discharges positive and\nnegative electricity from its\nantenna tips to shock its foes.",
     "base_stats": {
         "hp": 75,
         "attack": 38,

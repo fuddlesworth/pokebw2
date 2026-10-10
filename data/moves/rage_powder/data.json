@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rage Powder",
+    "description": "The user scatters a cloud of irritating\npowder to draw attention to itself.\nOpponents aim only at the user.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

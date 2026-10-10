@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Cut",
+    "description": "The target is cut with a scythe or a claw.\nIt can also be used to cut down\nthin trees.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

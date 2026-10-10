@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Belle",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Wait a sec!{be01}\nLet me grip my Poké Ball a little\nbit tighter.{be01}\n...Yeah, like that! Now I'm good!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Squeeze!"
+        },
+        {
+            "type": 2,
+            "text": "If you hold your Poké Ball tight when\nyou're feeling unsure, your Pokémon will{be00}\ncheer you on!{be00}\nThat's why I'm OK!"
         }
     ]
 }

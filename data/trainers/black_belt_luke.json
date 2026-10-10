@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Luke",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I just won a battle back there, so I'm\nfeeling good!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh, whatever!\nI'm in a terrible mood now!"
+        },
+        {
+            "type": 2,
+            "text": "I think I'm gonna go to bed...{be01}\nI'm not enough of a man to be able\nto get right back up and try again."
         }
     ]
 }

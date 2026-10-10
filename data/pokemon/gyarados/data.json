@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gyarados",
+    "category": "Atrocious Pokémon",
+    "pokedex_entry": "Once it begins to rampage, a\nGyarados will burn everything\ndown, even in a harsh storm.",
     "base_stats": {
         "hp": 95,
         "attack": 125,

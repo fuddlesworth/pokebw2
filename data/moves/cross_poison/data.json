@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Cross Poison",
+    "description": "A slashing attack with a poisonous blade\nthat may also leave the target poisoned.\nCritical hits land more easily.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

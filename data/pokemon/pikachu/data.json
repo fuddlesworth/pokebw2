@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pikachu",
+    "category": "Mouse Pokémon",
+    "pokedex_entry": "It occasionally uses an electric\nshock to recharge a fellow Pikachu\nthat is in a weakened state.",
     "base_stats": {
         "hp": 35,
         "attack": 55,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Zigzagoon",
+    "category": "TinyRaccoon Pokémon",
+    "pokedex_entry": "It walks in zigzag fashion. It is\ngood at finding items in the\ngrass and even in the ground.",
     "base_stats": {
         "hp": 38,
         "attack": 30,

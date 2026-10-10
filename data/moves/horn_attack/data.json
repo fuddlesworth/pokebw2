@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Horn Attack",
+    "description": "The target is jabbed with a sharply\npointed horn to inflict damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Pat",
     "class": "TRAINER_CLASS_HARLEQUIN_32",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A battle on a raised walkway!\nThat's kind of cool.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Losing is uncool.\nNo, no, you are cool."
+        },
+        {
+            "type": 2,
+            "text": "Stand still on a raised walkway, and\nyou'll lose your balance and fall!"
         }
     ]
 }

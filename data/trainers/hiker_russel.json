@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Russel",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A Hiker, an athlete,\nand a Pokémon Trainer.{be00}\nDo you know what is important?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Grrrrrrr!\nClearly you know it!"
+        },
+        {
+            "type": 15,
+            "text": "Since you know, I'll give you\nsomething nice!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Prepare thoroughly.\nIf you don't, you can't do anything!"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kathrine",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh my! My Pokémon really seem raring\nto go today!{be01}\nSo I guess that means I'll be asking you\nfor a battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It seems my Pokémon weren't\nas ready as I thought!"
+        },
+        {
+            "type": 2,
+            "text": "Pokémon are alive, just like you or me, so\nit's no wonder that they might feel down.{be00}\nWhen that happens, just let them take{be00}\nit easy."
         }
     ]
 }

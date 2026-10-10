@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ditto",
+    "category": "Transform Pokémon",
+    "pokedex_entry": "It can reconstitute its entire cellular\nstructure to change into what it sees,\nbut it returns to normal when it relaxes.",
     "base_stats": {
         "hp": 48,
         "attack": 48,

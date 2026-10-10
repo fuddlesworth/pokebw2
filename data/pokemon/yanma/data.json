@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Yanma",
+    "category": "Clear Wing Pokémon",
+    "pokedex_entry": "By flapping its wings at high speed,\nit can fly freely through the air.\nEven sudden stops are no problem.",
     "base_stats": {
         "hp": 65,
         "attack": 65,

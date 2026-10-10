@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Iron Defense",
+    "description": "The user hardens its body's surface\nlike iron, sharply raising its\nDefense stat.",
     "type": "TYPE_STEEL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

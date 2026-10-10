@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kecleon",
+    "category": "Color Swap Pokémon",
+    "pokedex_entry": "It can freely change its body's\ncolor. The zigzag pattern on its\nbelly doesn't change, however.",
     "base_stats": {
         "hp": 60,
         "attack": 90,

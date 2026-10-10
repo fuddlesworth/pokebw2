@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Protect",
+    "description": "It enables the user to evade all attacks.\nIts chance of failing rises if it is used in\nsuccession.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

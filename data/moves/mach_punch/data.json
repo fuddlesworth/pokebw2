@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mach Punch",
+    "description": "The user throws a punch at blinding\nspeed. It is certain to strike first.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

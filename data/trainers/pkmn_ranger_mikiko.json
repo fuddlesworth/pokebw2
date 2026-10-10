@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Mikiko",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I hold no grudge, whether I win or lose.{be01}\nThe point of battle is to train\nmy Pokémon, after all.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "...Awww!\nBut I really wanted to win!"
+        },
+        {
+            "type": 15,
+            "text": "Gimme a Berry, gimme a Berry!\nGimme a Persim Berry!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "My Pokémon really go into a funk when\nwe don't win, though."
         }
     ]
 }

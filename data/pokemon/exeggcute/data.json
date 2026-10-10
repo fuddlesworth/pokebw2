@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Exeggcute",
+    "category": "Egg Pokémon",
+    "pokedex_entry": "Its six eggs converse using\ntelepathy. They can quickly gather\nif they become separated.",
     "base_stats": {
         "hp": 60,
         "attack": 40,

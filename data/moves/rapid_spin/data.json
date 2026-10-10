@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rapid Spin",
+    "description": "A spin attack that can also eliminate\nsuch moves as Bind, Wrap, Leech Seed,\nand Spikes.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

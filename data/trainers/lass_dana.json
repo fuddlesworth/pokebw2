@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dana",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I will be strong in Pokémon battles,\nand I will marry a professional athlete!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ah.\nI still have a long way to go!"
+        },
+        {
+            "type": 15,
+            "text": "Your Pokémon are strong. I will give\nsomething good to a strong person!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Strong people are always totally\nattractive. Don't you think?"
         }
     ]
 }

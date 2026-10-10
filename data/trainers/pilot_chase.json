@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chase",
     "class": "TRAINER_CLASS_PILOT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If you can beat me, you'll be able\nto face the Gym Leader...{be01}\nYou're too careless if you think that!\nDon't let your guard down yet!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "How could this be?!\nI wasn't being careless at all!"
+        },
+        {
+            "type": 2,
+            "text": "Landing is the hardest part about\npiloting a plane. You'd better stay{be00}\nalert until the very end!"
         }
     ]
 }

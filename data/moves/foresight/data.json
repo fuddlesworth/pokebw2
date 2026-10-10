@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Foresight",
+    "description": "Enables a Ghost-type target to be hit by\nNormal- and Fighting-type attacks. It also\nenables an evasive target to be hit.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

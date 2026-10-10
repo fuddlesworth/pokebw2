@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kit",
     "class": "TRAINER_CLASS_DOCTOR",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_HEAL", "ITEM_HYPER_POTION" ],
@@ -23,6 +24,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'll battle Pokémon even if I can't find\na pulse!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It wasn't just a pulse I couldn't find...\nI couldn't get the prize either..."
+        },
+        {
+            "type": 13,
+            "text": "I may have lost the prize, but I'll still\nmake your Pokémon healthy and hearty!{be01}"
+        },
+        {
+            "type": 14,
+            "text": "To make people healthy,\nDoctors go where they are needed."
         }
     ]
 }

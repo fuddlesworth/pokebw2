@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Phione",
+    "category": "Sea Drifter Pokémon",
+    "pokedex_entry": "It drifts in warm seas. It always\nreturns to where it was born, no\nmatter how far it may have drifted.",
     "base_stats": {
         "hp": 80,
         "attack": 80,

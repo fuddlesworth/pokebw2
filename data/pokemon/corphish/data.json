@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Corphish",
+    "category": "Ruffian Pokémon",
+    "pokedex_entry": "No matter how dirty the water\nin the river, it will adapt and thrive.\nIt has a strong will to survive.",
     "base_stats": {
         "hp": 43,
         "attack": 80,

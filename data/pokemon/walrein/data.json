@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Walrein",
+    "category": "Ice Break Pokémon",
+    "pokedex_entry": "Not only does its thick blubber keep it\nwarm, it also protects it from attacks.\nIt shatters ice with its prized tusks.",
     "base_stats": {
         "hp": 110,
         "attack": 80,

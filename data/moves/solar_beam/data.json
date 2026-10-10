@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "SolarBeam",
+    "description": "A two-turn attack. The user gathers\nlight, then blasts a bundled beam on the\nsecond turn.",
     "type": "TYPE_GRASS",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

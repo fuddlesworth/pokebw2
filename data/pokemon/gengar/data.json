@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gengar",
+    "category": "Shadow Pokémon",
+    "pokedex_entry": "The leer that floats in darkness\nbelongs to a Gengar delighting in\ncasting curses on people.",
     "base_stats": {
         "hp": 60,
         "attack": 65,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Thunderbolt",
+    "description": "A strong electric blast is loosed at the\ntarget. It may also leave the target\nwith paralysis.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

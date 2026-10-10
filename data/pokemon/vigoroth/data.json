@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Vigoroth",
+    "category": "Wild Monkey Pokémon",
+    "pokedex_entry": "Its heartbeat is fast and\nits blood so agitated that\nit can't sit still for one second.",
     "base_stats": {
         "hp": 80,
         "attack": 80,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Graveler",
+    "category": "Rock Pokémon",
+    "pokedex_entry": "It rolls on mountain paths to move.\nOnce it builds momentum, no Pokémon\ncan stop it without difficulty.",
     "base_stats": {
         "hp": 55,
         "attack": 95,

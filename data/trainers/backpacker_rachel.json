@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rachel",
     "class": "TRAINER_CLASS_BACKPACKER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "What kind of Pokémon is your\npartner on this journey?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wow! What an amazing and\nstrong friend you've got!"
+        },
+        {
+            "type": 2,
+            "text": "They say that a good companion makes the\njourney pleasant, but it's really true!{be01}\nWhen you're with Pokémon, the fun factor\njust multiplies, don't you think?"
         }
     ]
 }

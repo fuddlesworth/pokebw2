@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sketch",
+    "description": "It enables the user to permanently learn\nthe move last used by the target.\nOnce used, Sketch disappears.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

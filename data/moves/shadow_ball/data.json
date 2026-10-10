@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Shadow Ball",
+    "description": "The user hurls a shadowy blob at the\ntarget. It may also lower the target's\nSp. Def stat.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

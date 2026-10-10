@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lamarcus",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey there!{be01}\nThink you can overcome\nmy tricky dribbling style?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hey! Come on, watch me!\nI was dribbling this whole time!"
+        },
+        {
+            "type": 15,
+            "text": "I'm gonna pass this item to you\nwhile dribbling at the same time!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I love Pokémon battles,\nand I love basketball!{be01}\nI'm so lucky to be able to do both!"
         }
     ]
 }

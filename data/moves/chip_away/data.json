@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Chip Away",
+    "description": "Looking for an opening, the user strikes\ncontinually. The target's stat changes\ndon't affect this attack's damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

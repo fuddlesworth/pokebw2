@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Alan",
     "class": "TRAINER_CLASS_SCHOOL_KID_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Watch a game\nduring a study break!{be01}\nHave a battle\nduring a game break!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Gah!\nThis is so not relaxing!"
+        },
+        {
+            "type": 15,
+            "text": "I'll try doing this to see if\nI can't switch gears!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "When I come here for fun,\nI can study more efficiently!"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Block",
+    "description": "The user blocks the target's way with arms\nspread wide to prevent escape.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

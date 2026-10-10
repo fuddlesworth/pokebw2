@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Alia",
     "class": "TRAINER_CLASS_PSYCHIC_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_PSYCHIC", "MOVE_CHARGE_BEAM", "MOVE_SHADOW_BALL", "MOVE_CALM_MIND" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'll use my psychic powers to release my\nPokémon from its Poké Ball!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Well, that didn't go the way I wanted it to!"
+        },
+        {
+            "type": 2,
+            "text": "I hear that Caitlin of the Elite Four is\nan amazing Psychic.{be00}\nI'd sure love to face her head-on..."
         }
     ]
 }

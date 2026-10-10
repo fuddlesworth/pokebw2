@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bug Buzz",
+    "description": "The user vibrates its wings to generate a\ndamaging sound wave. It may also lower\nthe target's Sp. Def stat.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

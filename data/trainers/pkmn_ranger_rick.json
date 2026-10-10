@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rick",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am not running now,\nbut I usually barrel through{be00}\nas quickly as I can!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I have not crossed\nthe finish line of victory!"
+        },
+        {
+            "type": 15,
+            "text": "I'm going to use this little rest\nto give you this present!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Run and run in cities\nand on mountain paths!{be01}\nRun, and feel the world around you\nwith your whole being!"
         }
     ]
 }

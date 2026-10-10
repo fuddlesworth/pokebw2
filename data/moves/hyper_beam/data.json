@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hyper Beam",
+    "description": "The target is attacked with a powerful\nbeam. The user must rest on the next\nturn to regain its energy.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

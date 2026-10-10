@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Screech",
+    "description": "An earsplitting screech harshly reduces\nthe target's Defense stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

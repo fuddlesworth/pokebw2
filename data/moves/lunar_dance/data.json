@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Lunar Dance",
+    "description": "The user faints. In return, the Pokémon\ntaking its place will have its status and\nHP fully restored.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

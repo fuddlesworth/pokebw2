@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Mari",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 2,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I will show you a powerful serve!\nWatch this burn in at 120 miles per hour!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your attack just now...\nMore powerful!"
+        },
+        {
+            "type": 15,
+            "text": "How about a powerful present?{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Pokémon are sending over\nsome powerful serves so I can practice."
         }
     ]
 }

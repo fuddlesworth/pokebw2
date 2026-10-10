@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Slowbro",
+    "category": "Hermit Crab Pokémon",
+    "pokedex_entry": "Though usually dim witted, it\nseems to become inspired if the\nShellder on its tail bites down.",
     "base_stats": {
         "hp": 95,
         "attack": 75,

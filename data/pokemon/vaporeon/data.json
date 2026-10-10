@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Vaporeon",
+    "category": "Bubble Jet Pokémon",
+    "pokedex_entry": "Its cell composition is similar to water\nmolecules. As a result, it can't be seen\nwhen it melts away into water.",
     "base_stats": {
         "hp": 130,
         "attack": 65,

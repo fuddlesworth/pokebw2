@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Keita",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Shorts and Pokémon!\nThis is the ultimate combination!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It's not my Pokémon's fault!\nIt's not my shorts' fault either!"
+        },
+        {
+            "type": 2,
+            "text": "I'm wearing shorts to help toughen up\nmy kneecaps! Do you want to feel them?"
         }
     ]
 }

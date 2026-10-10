@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gallade",
+    "category": "Blade Pokémon",
+    "pokedex_entry": "When trying to protect someone,\nit extends its elbows as if they\nwere swords and fights savagely.",
     "base_stats": {
         "hp": 68,
         "attack": 125,

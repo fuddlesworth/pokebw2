@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Marsha",
     "class": "TRAINER_CLASS_SCHOOL_KID_F",
     "battle_style": "BTL_STYLE_ROTATION",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "In a Rotation Battle, you will battle\nusing three Pokémon!"
+        },
+        {
+            "type": 0,
+            "text": "It's a Rotation Battle!\nWill you go right? Will you go left?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Is it just a lack of experience that makes\nme unsure which way to rotate?"
+        },
+        {
+            "type": 2,
+            "text": "You have to make up for your lack of\nexperience with intellect and reasoning.{be01}\nIf you don't, you will never be able to\nwin against more experienced Trainers."
         }
     ]
 }

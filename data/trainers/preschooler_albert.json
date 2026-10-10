@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Albert",
     "class": "TRAINER_CLASS_PRESCHOOLER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm the strongest Trainer in\nVirbank City's preschool!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I guess I'm not the strongest in the world!"
+        },
+        {
+            "type": 2,
+            "text": "I know! I'll go home and take a nap!\nMom always says that I need to get lots{be00}\nof sleep if I want to be a big kid!"
         }
     ]
 }

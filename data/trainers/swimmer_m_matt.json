@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Matt",
     "class": "TRAINER_CLASS_SWIMMER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If you have the move Dive,\nyou can dive and sink!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Blub, blub, blub...\n...I am sinking."
+        },
+        {
+            "type": 2,
+            "text": "Have your Pokémon\nlearned the move Dive?{be01}\nDive is good! Great!\n'Cause it's Dive!"
         }
     ]
 }

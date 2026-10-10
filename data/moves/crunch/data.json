@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Crunch",
+    "description": "The user crunches up the target\nwith sharp fangs. It may also lower\nthe target's Defense stat.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Coil",
+    "description": "The user coils up and concentrates.\nThis raises its Attack and Defense stats\nas well as its accuracy.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

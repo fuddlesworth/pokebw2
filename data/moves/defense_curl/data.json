@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Defense Curl",
+    "description": "The user curls up to conceal weak spots\nand raise its Defense stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

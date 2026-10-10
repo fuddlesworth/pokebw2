@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Flash",
+    "description": "The user flashes a bright light that cuts\nthe target's accuracy.\nIt can also be used to illuminate caves.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sayuri",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -43,6 +44,24 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_OUTRAGE", "MOVE_WING_ATTACK", "MOVE_WATERFALL", "MOVE_FIRE_PUNCH" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Wow, you have a lot of Badges.\nLet me see your skills!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "That fighting style reminds me\nof the old days!"
+        },
+        {
+            "type": 15,
+            "text": "A person like you should use\ntop-shelf items--like this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "No matter how old we get,\nlet's stay Trainers!"
         }
     ]
 }

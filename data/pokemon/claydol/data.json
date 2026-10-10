@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Claydol",
+    "category": "Clay Doll Pokémon",
+    "pokedex_entry": "This mysterious Pokémon started life\nas an ancient clay figurine made over\n20,000 years ago.",
     "base_stats": {
         "hp": 60,
         "attack": 70,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ena",
     "class": "TRAINER_CLASS_PSYCHIC_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "It's coming... It's coming!\nThe ancient spiritual power!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The ancient power!\nThe sacred power!"
+        },
+        {
+            "type": 2,
+            "text": "I feel an extraordinary power emanating\nfrom up ahead!{be01}\nYes! It is a power that burns as warm and\nbright as the sun!"
         }
     ]
 }

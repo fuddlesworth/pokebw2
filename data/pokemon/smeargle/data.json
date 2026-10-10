@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Smeargle",
+    "category": "Painter Pokémon",
+    "pokedex_entry": "It marks its territory by using its\ntail like a paintbrush. There are\nmore than 5,000 different marks.",
     "base_stats": {
         "hp": 55,
         "attack": 20,

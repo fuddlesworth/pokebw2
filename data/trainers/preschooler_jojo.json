@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jojo",
     "class": "TRAINER_CLASS_PRESCHOOLER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The forest is full of little hollows and\nhillocks, and walking in it is so fun!{be01}\nAnd you know, having Pokémon battles is\neven more fun!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your Pokémon are soooo cool!"
+        },
+        {
+            "type": 2,
+            "text": "I want to ride through the forest on a\nPokémon!"
         }
     ]
 }

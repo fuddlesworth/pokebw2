@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Teeter Dance",
+    "description": "The user performs a wobbly dance that\nconfuses the Pokémon around it.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

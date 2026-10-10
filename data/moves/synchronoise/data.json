@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Synchronoise",
+    "description": "Using an odd shock wave, the user\ninflicts damage on any Pokémon of the same\ntype in the area around it.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

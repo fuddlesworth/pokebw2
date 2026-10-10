@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Karate Chop",
+    "description": "The target is attacked with a sharp chop.\nCritical hits land more easily.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

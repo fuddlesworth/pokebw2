@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Abed",
     "class": "TRAINER_CLASS_BOSS_TRAINER_ABED",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_MUSCLE_BAND",
             "moves": [ "MOVE_METAL_CLAW", "MOVE_NIGHT_SLASH", "MOVE_PSYCHO_CUT", "MOVE_ROCK_POLISH" ]
         }
-    ]
+    ],
+    "messages": []
 }

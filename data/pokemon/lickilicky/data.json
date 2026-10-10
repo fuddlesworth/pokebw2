@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lickilicky",
+    "category": "Licking Pokémon",
+    "pokedex_entry": "Their saliva contains lots of components\nthat can dissolve anything. The numbness\ncaused by their lick does not dissipate.",
     "base_stats": {
         "hp": 110,
         "attack": 85,

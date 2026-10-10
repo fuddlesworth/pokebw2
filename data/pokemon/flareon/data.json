@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Flareon",
+    "category": "Flame Pokémon",
+    "pokedex_entry": "Inhaled air is carried to its flame sac,\nheated, and exhaled as fire\nthat reaches over 3,000 degrees F.",
     "base_stats": {
         "hp": 65,
         "attack": 130,

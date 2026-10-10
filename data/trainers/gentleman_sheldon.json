@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sheldon",
     "class": "TRAINER_CLASS_GENTLEMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 1
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The sounds of gently crashing waves...\nThe smell of salt in the air...{be00}\nAnd a battle with a Trainer{be00}\nin the prime of youth!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Simply excellent!\nThat's what being young is all about!"
+        },
+        {
+            "type": 2,
+            "text": "I feel rejuvenated whenever I get the\nchance to have a Pokémon battle with{be00}\nsomeone younger than myself.{be01}\nIt's like I'm taking in that\nperson's youthfulness!"
         }
     ]
 }

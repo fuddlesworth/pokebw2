@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Neagle",
     "class": "TRAINER_CLASS_POLICEMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_TACKLE", "MOVE_BITE", "MOVE_ODOR_SLEUTH", "MOVE_WORK_UP" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "What's a kid like you doing\nwandering around these parts?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "To have bested an officer like me...\nWhat kind of kid are you?!"
+        },
+        {
+            "type": 2,
+            "text": "An officer's job is to keep patrolling\neven when nothing's going on!"
         }
     ]
 }

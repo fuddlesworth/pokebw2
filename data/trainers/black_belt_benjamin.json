@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Benjamin",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Let's fight!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You took a win from me!\nArrrgh! It's so frustrating!"
+        },
+        {
+            "type": 2,
+            "text": "I'll use the bitterness of this defeat\nto reach even greater heights!{be01}\nThat's right! There'd be no progress\nin the world without loss!"
         }
     ]
 }

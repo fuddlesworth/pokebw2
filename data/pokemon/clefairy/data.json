@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Clefairy",
+    "category": "Fairy Pokémon",
+    "pokedex_entry": "On nights with a full moon, Clefairy\ngather from all over and dance.\nBathing in moonlight makes them float.",
     "base_stats": {
         "hp": 70,
         "attack": 45,

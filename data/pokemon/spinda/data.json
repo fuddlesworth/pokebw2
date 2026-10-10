@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Spinda",
+    "category": "Spot Panda Pokémon",
+    "pokedex_entry": "No two Spinda have the same\npattern of spots. Its tottering\nstep fouls the aim of foes.",
     "base_stats": {
         "hp": 60,
         "attack": 60,

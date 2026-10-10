@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Duskull",
+    "category": "Requiem Pokémon",
+    "pokedex_entry": "It loves the crying of children. It\nstartles bad kids by passing\nthrough walls and making them cry.",
     "base_stats": {
         "hp": 20,
         "attack": 40,

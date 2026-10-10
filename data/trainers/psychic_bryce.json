@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bryce",
     "class": "TRAINER_CLASS_PSYCHIC_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm here to understand the end\nof the world, but I don't quite get it.{be01}\nIf I have a battle,\nwill I be enlightened...?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The end...\nIs that it?"
+        },
+        {
+            "type": 2,
+            "text": "People, Pokémon...\nEven if the world is gone,{be00}\nthat is not the end."
         }
     ]
 }

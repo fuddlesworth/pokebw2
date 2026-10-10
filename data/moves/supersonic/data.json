@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Supersonic",
+    "description": "The user generates odd sound waves from\nits body. It may confuse the target.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

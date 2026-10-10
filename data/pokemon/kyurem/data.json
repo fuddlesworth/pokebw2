@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kyurem",
+    "category": "Boundary Pokémon",
+    "pokedex_entry": "This legendary ice Pokémon waits for\na hero to fill in the missing parts\nof its body with truth or ideals.",
     "base_stats": {
         "hp": 125,
         "attack": 130,

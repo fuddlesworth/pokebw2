@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Struggle Bug",
+    "description": "While resisting, the user attacks the\nopposing Pokémon. The targets'\nSp. Atk stat is reduced.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

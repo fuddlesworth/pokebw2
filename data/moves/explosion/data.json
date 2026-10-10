@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Explosion",
+    "description": "The user explodes to inflict damage on\nthose around it.\nThe user faints upon using this move.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

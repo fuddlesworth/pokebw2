@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Nidoking",
+    "category": "Drill Pokémon",
+    "pokedex_entry": "One swing of its mighty tail can\nsnap a telephone pole as if it were\na matchstick.",
     "base_stats": {
         "hp": 81,
         "attack": 92,

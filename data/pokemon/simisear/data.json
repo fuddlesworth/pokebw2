@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Simisear",
+    "category": "Ember Pokémon",
+    "pokedex_entry": "When it gets excited, embers rise\nfrom its head and tail and it gets hot.\nFor some reason, it loves sweets.",
     "base_stats": {
         "hp": 75,
         "attack": 98,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Joey",
     "class": "TRAINER_CLASS_ROUGHNECK",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "This ain't no place for\nkids like you!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Just who are you?\nYou looked pretty timid..."
+        },
+        {
+            "type": 2,
+            "text": "All I know is that if you're a Trainer,\nyou're gonna get challenged!"
         }
     ]
 }

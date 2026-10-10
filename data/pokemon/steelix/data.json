@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Steelix",
+    "category": "Iron Snake Pokémon",
+    "pokedex_entry": "The iron it ingested with the soil it\nswallowed transformed its body and\nmade it harder than diamonds.",
     "base_stats": {
         "hp": 75,
         "attack": 85,

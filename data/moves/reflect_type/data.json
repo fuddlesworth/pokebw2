@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Reflect Type",
+    "description": "The user reflects the target's type,\nmaking it the same type as the target.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

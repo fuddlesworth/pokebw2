@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Body Slam",
+    "description": "The user drops onto the target\nwith its full body weight. It may also\nleave the target with paralysis.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

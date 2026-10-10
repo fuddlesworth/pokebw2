@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Raticate",
+    "category": "Mouse Pokémon",
+    "pokedex_entry": "With its long fangs, this surprisingly\nviolent Pokémon can gnaw away\neven thick concrete with ease.",
     "base_stats": {
         "hp": 55,
         "attack": 81,

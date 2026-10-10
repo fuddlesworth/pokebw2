@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jamie",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_EARTH_POWER", "MOVE_PSYCHIC", "MOVE_SHADOW_BALL", "MOVE_COSMIC_POWER" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You... Who's brought you this far?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It's your reliable Pokémon who brought you\nthis far, isn't it?"
+        },
+        {
+            "type": 2,
+            "text": "You know what I think? All people know\nwhat they can do alone, but...{be01}\nThere are a lot of things you can only do\nwith Pokémon, too!"
         }
     ]
 }

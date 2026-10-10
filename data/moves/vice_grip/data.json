@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "ViceGrip",
+    "description": "The target is gripped and squeezed from\nboth sides to inflict damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wailord",
+    "category": "Float Whale Pokémon",
+    "pokedex_entry": "It can sometimes knock out opponents\nwith the shock created by breaching and\ncrashing its big body onto the water.",
     "base_stats": {
         "hp": 170,
         "attack": 90,

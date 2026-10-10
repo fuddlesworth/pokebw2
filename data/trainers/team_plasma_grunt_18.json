@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I will use Team Plasma's science to bring\nout my Pokémon's greatest power!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Why are you strong? You're just a normal\nperson...not even that! You're just a kid!"
+        },
+        {
+            "type": 2,
+            "text": "We in Team Plasma force our Pokémon to\nuse their powers to the max!{be01}\nRelease Pokémon? Why would we do\nsomething so bothersome as that?"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Shedinja",
+    "category": "Shed Pokémon",
+    "pokedex_entry": "A discarded bug shell that came to\nlife. Peering into the crack on its\nback is said to steal one's spirit.",
     "base_stats": {
         "hp": 1,
         "attack": 90,

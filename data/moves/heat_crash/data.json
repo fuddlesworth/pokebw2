@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Heat Crash",
+    "description": "The user slams its target with its flame-\ncovered body. The more the user outweighs\nthe target, the greater the damage.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

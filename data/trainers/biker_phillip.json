@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Phillip",
     "class": "TRAINER_CLASS_BIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Heheh!\nNobody can beat my speed and fury!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I have lost!\nI am such a loser!"
+        },
+        {
+            "type": 2,
+            "text": "Ahh! Maybe I should just pick up\nmy bike and charge outta here!{be00}\nNo one would doubt how wild I am then!"
         }
     ]
 }

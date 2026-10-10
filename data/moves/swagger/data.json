@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Swagger",
+    "description": "The user enrages and confuses the target.\nHowever, it also sharply raises the\ntarget's Attack stat.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

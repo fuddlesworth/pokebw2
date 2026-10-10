@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Todd",
     "class": "TRAINER_CLASS_INFIELDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Together, my Pokémon and I\nare the world's strongest!!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wow! I didn't think anyone could\ncatch my blazing fastball!"
+        },
+        {
+            "type": 15,
+            "text": "Try to catch this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "My fastballs are so fast,\nnobody can hit them.{be01}\nVery few can catch my fastballs\nexcept Pokémon."
         }
     ]
 }

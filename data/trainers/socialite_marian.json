@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Marian",
     "class": "TRAINER_CLASS_SOCIALITE",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hello there, young Trainer.\nPlease, battle with me for a spell.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My oh my...\nToo bad. Looks like I lost."
+        },
+        {
+            "type": 2,
+            "text": "When I was young, I traveled all\naround, together with my Pokémon.{be01}\nOh, I was such a tomboy! Ah ha ha!"
         }
     ]
 }

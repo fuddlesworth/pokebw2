@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Triple Kick",
+    "description": "A consecutive three-kick attack that\nbecomes more powerful with each\nsuccessive hit.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

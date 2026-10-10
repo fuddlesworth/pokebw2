@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Winslow",
     "class": "TRAINER_CLASS_PILOT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My Pokémon is stronger than the wind.\nIt's my pride and joy!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It may be stronger than the wind, but my\nPokémon isn't as strong as yours."
+        },
+        {
+            "type": 2,
+            "text": "I became a Pilot so I could soar through\nthe skies alongside my flying Pokémon!"
         }
     ]
 }

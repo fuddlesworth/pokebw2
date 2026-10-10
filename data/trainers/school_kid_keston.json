@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Keston",
     "class": "TRAINER_CLASS_SCHOOL_KID_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 2
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hi, hi! Trainer!{be01}\nI will let you see\nwhat kind of Pokémon I have!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oooh, quit bugging me!"
+        },
+        {
+            "type": 2,
+            "text": "I'll bring out all the great sides of Bug-\ntype Pokémon for everyone to see...{be00}\nI'm gonna be just like Burgh someday!"
         }
     ]
 }

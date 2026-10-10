@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sudowoodo",
+    "category": "Imitation Pokémon",
+    "pokedex_entry": "To avoid being attacked, it does\nnothing but mimic a tree. It hates\nwater and flees from rain.",
     "base_stats": {
         "hp": 70,
         "attack": 100,

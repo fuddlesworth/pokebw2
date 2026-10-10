@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Addison",
     "class": "TRAINER_CLASS_PKMN_BREEDER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "We've just got to do what we can!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I feel like I understood what I could\ndo and what I couldn't."
+        },
+        {
+            "type": 2,
+            "text": "I'll try to increase the things I can\ndo and challenge you again!"
         }
     ]
 }

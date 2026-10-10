@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Rampardos",
+    "category": "Head Butt Pokémon",
+    "pokedex_entry": "If two were to smash their heads\ntogether, their foot-thick skulls\nwould keep them from fainting.",
     "base_stats": {
         "hp": 97,
         "attack": 165,

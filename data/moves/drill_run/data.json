@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Drill Run",
+    "description": "The user crashes into its target while\nrotating its body like a drill.\nCritical hits land more easily.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

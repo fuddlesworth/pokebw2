@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Carter",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -34,6 +35,24 @@
             "gender": 0,
             "ability": 1,
             "moves": [ "MOVE_THRASH", "MOVE_ZEN_HEADBUTT", "MOVE_EARTHQUAKE", "MOVE_STONE_EDGE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "Triple Battle is a new kind of battle\nwith three Pokémon!"
+        },
+        {
+            "type": 0,
+            "text": "OK! I will show you the results\nof my daily workouts!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The result of my daily workout...\ndidn't really show up.{be01}"
+        },
+        {
+            "type": 2,
+            "text": "I'm going to train my Pokémon properly\nand make sure they grow balanced.{be01}\nBwahaha! It's the challenges that make\nlife worth living, whatever your age!"
         }
     ]
 }

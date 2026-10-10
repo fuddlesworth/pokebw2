@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Audino",
+    "category": "Hearing Pokémon",
+    "pokedex_entry": "Using the feelers on its ears,\nit can tell how someone is feeling\nor when an egg might hatch.",
     "base_stats": {
         "hp": 103,
         "attack": 60,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wartortle",
+    "category": "Turtle Pokémon",
+    "pokedex_entry": "It is said to live 10,000 years.\nIts furry tail is popular as a\nsymbol of longevity.",
     "base_stats": {
         "hp": 59,
         "attack": 63,

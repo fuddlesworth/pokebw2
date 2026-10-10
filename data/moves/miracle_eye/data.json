@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Miracle Eye",
+    "description": "Enables a Dark-type target to be hit by\nPsychic-type attacks. It also enables\nan evasive target to be hit.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

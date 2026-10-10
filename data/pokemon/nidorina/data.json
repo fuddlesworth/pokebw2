@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Nidorina",
+    "category": "Poison Pin Pokémon",
+    "pokedex_entry": "When it senses danger, it raises\nall the barbs on its body. These\nbarbs grow slower than Nidorino's.",
     "base_stats": {
         "hp": 70,
         "attack": 62,

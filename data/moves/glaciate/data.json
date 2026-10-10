@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Glaciate",
+    "description": "The user attacks by blowing freezing cold\nair at opposing Pokémon. This attack\nreduces the targets' Speed stat.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

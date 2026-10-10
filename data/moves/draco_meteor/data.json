@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Draco Meteor",
+    "description": "Comets are summoned down from the sky\nonto the target. The attack's recoil\nharshly reduces the user's Sp. Atk stat.",
     "type": "TYPE_DRAGON",
     "quality": "MOVE_QUALITY_DAMAGE_USER_STAT_CHANGE",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Hugo",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -34,6 +35,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_DRAGON_CLAW", "MOVE_BULLDOZE", "MOVE_FLAMETHROWER", "MOVE_ROCK_SLIDE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The endless cycle of wins and losses...\nWill it always continue?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Every win and loss is a precious memory."
+        },
+        {
+            "type": 2,
+            "text": "Fighting together with a young kid like\nyou makes me feel young again myself."
         }
     ]
 }

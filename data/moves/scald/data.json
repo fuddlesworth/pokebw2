@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Scald",
+    "description": "The user shoots boiling hot water at\nits target. It may also leave the target\nwith a burn.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

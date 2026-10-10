@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elesa",
     "class": "TRAINER_CLASS_LEADER_ELESA",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_HYPER_POTION" ],
@@ -37,6 +38,20 @@
             "ability": 2,
             "item": "ITEM_SITRUS_BERRY",
             "moves": [ "MOVE_VOLT_SWITCH", "MOVE_FLAME_CHARGE", "MOVE_QUICK_ATTACK", "MOVE_PURSUIT" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "You and your Pokémon's moves\nare simply dazzling!"
+        },
+        {
+            "type": 19,
+            "text": "I've got to overcome this situation!\nI can't let my fans down!"
+        },
+        {
+            "type": 1,
+            "text": "You shocked me through and through!\nYou melted my heart!"
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Teleport",
+    "description": "Use it to flee from any wild Pokémon.\nIt can also warp to the last Pokémon\nCenter visited.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

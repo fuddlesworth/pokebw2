@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Magneton",
+    "category": "Magnet Pokémon",
+    "pokedex_entry": "The stronger electromagnetic waves\nfrom the three linked Magnemite are\nenough to dry out surrounding moisture.",
     "base_stats": {
         "hp": 50,
         "attack": 60,

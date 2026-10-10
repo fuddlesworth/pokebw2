@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Preston",
     "class": "TRAINER_CLASS_MUSICIAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Whatever the case, it's best to\ntry something for yourself!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hmm... I guess strumming instead of tapping\nwould have been best..."
+        },
+        {
+            "type": 2,
+            "text": "You're a strong Trainer!\nI'm a great Guitarist!{be00}\nWe're both pretty awesome!"
         }
     ]
 }

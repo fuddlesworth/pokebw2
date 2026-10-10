@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Relic Song",
+    "description": "The user sings an ancient song and attacks\nby appealing to the hearts of those\nlistening. It may also induce sleep.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

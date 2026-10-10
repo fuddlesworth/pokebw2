@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Dragon Tail",
+    "description": "The target is knocked away and switched.\nIn the wild, a battle against a single\nPokémon ends.",
     "type": "TYPE_DRAGON",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

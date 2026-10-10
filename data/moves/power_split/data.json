@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Power Split",
+    "description": "The user employs its psychic power to\naverage its Attack and Sp. Atk stats\nwith those of the target's.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

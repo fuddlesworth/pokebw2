@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rock Slide",
+    "description": "Large boulders are hurled at the opposing\nteam to inflict damage. It may also make\nthe targets flinch.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

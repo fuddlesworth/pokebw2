@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Dizzy Punch",
+    "description": "The target is hit with rhythmically\nlaunched punches that may also\nleave it confused.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

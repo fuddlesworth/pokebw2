@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lickitung",
+    "category": "Licking Pokémon",
+    "pokedex_entry": "Being licked by its long, saliva-covered\ntongue leaves a tingling sensation.\nExtending its tongue retracts its tail.",
     "base_stats": {
         "hp": 90,
         "attack": 55,

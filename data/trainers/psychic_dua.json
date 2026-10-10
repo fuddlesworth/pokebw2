@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dua",
     "class": "TRAINER_CLASS_PSYCHIC_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Just being here fills me\nwith magical power...{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You seem to be\nfull of magical power, too..."
+        },
+        {
+            "type": 2,
+            "text": "In ancient places, magical\nenergy remains...{be01}\nI can understand it.\nSo much sorrow and joy..."
         }
     ]
 }

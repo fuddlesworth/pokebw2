@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Tropius",
+    "category": "Fruit Pokémon",
+    "pokedex_entry": "It flies by flapping its broad leaves\nand gives the sweet, delicious\nfruit around its neck to children.",
     "base_stats": {
         "hp": 99,
         "attack": 68,

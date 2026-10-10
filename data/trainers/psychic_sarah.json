@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sarah",
     "class": "TRAINER_CLASS_PSYCHIC_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "...I still want to fight!{be01}\nThe wandering spirits are\nstill commanding me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Hah... Hah...\nThe spirit just left me."
+        },
+        {
+            "type": 2,
+            "text": "So many voices fill this tower,\neternally silenced...{be00}\nIf only someone would just listen..."
         }
     ]
 }

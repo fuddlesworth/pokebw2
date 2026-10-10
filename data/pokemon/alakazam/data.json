@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Alakazam",
+    "category": "Psi Pokémon",
+    "pokedex_entry": "The spoons clutched in its hands\nare said to have been created by\nits psychic powers.",
     "base_stats": {
         "hp": 55,
         "attack": 50,

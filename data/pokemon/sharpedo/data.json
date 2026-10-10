@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Sharpedo",
+    "category": "Brutal Pokémon",
+    "pokedex_entry": "Its fangs rip through sheet iron.\nIt swims at 75 mph and is known as\n“The Bully of the Sea.\"",
     "base_stats": {
         "hp": 70,
         "attack": 120,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cottonee",
+    "category": "Cotton Puff Pokémon",
+    "pokedex_entry": "Perhaps because they feel more at ease\nin a group, they stick to others they\nfind. They end up looking like a cloud.",
     "base_stats": {
         "hp": 40,
         "attack": 27,

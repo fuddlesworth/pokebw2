@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kabuto",
+    "category": "Shellfish Pokémon",
+    "pokedex_entry": "It is thought to have inhabited\nbeaches 300 million years ago.\nIt is protected by a stiff shell.",
     "base_stats": {
         "hp": 30,
         "attack": 80,

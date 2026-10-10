@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Remoraid",
+    "category": "Jet Pokémon",
+    "pokedex_entry": "The water they shoot from their mouths\ncan hit moving prey from more than\n300 feet away.",
     "base_stats": {
         "hp": 35,
         "attack": 65,

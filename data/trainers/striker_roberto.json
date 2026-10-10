@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Roberto",
     "class": "TRAINER_CLASS_STRIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I am about to give a lecture\non the strength created by gathering{be00}\na proper balance of different Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Bam! You lectured me!\nWhat a great Trainer!"
+        },
+        {
+            "type": 15,
+            "text": "Here's a lecture, right back at ya!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Team play with Pokémon\nbrought new fun to our sport."
         }
     ]
 }

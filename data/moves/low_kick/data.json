@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Low Kick",
+    "description": "A powerful low kick that makes the target\nfall over. It inflicts greater damage on\nheavier targets.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

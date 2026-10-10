@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Cody",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_ROTATION",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "A Rotation Battle is a new kind of battle\nthat uses three Pokémon.{be01}\nPlease prepare at least three Pokémon\nfor battle!"
+        },
+        {
+            "type": 0,
+            "text": "Round and round the rotation goes!{be01}\nCan you keep up without having your\nhead spin? Rotation Battle, begin!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ohhh... My head is spinning!"
+        },
+        {
+            "type": 2,
+            "text": "To have so easily emerged victorious\nfrom a sudden Rotation Battle...{be00}\nYou are cool! Too cool, in fact!"
         }
     ]
 }

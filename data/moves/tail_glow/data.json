@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Tail Glow",
+    "description": "The user stares at flashing lights to\nfocus its mind, drastically raising its\nSp. Atk stat.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

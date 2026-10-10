@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Edward",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I've overcome my fear of Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Mm-hmm! You really love Pokémon, don't you?"
+        },
+        {
+            "type": 2,
+            "text": "There are people who are afraid of\nPokémon, too.{be00}\nThough everyone seems to forget that."
         }
     ]
 }

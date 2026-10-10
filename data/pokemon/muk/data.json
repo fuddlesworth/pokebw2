@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Muk",
+    "category": "Sludge Pokémon",
+    "pokedex_entry": "It's so stinky! Muk's body contains\ntoxic elements, and any plant will\nwilt when it passes by.",
     "base_stats": {
         "hp": 105,
         "attack": 105,

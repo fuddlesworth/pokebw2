@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Clint",
     "class": "TRAINER_CLASS_WAITER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Cheering makes us\nthirsty. Right?{be01}\nIf you can win against me,\nI'll give you a drink!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The battle made me\neven thirstier!"
+        },
+        {
+            "type": 15,
+            "text": "Here you are.\nI will give you something good!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "At a place like this,\nit's good to drink a lot of water!"
         }
     ]
 }

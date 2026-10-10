@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ernest",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -18,5 +19,6 @@
             "item": "ITEM_CHOICE_SCARF",
             "moves": [ "MOVE_POWER_WHIP", "MOVE_SLUDGE_BOMB", "MOVE_EARTHQUAKE", "MOVE_FOCUS_BLAST" ]
         }
-    ]
+    ],
+    "messages": []
 }

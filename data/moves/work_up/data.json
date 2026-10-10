@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Work Up",
+    "description": "The user is roused, and its Attack\nand Sp. Atk stats increase.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

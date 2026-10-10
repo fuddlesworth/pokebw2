@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm going to go ahead and say it:\nPlasmaaaa!!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Do-over!\nCome on, let me have a do-over!"
+        },
+        {
+            "type": 2,
+            "text": "Pokémon are like our puppets!{be01}\nThey are bound by their Poké Balls and\ncontrolled by our orders!"
         }
     ]
 }

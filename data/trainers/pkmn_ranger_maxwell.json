@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Maxwell",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "We step now into a new world...\nWhat kind of dangers await?{be01}\nWill you be able to make it through?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Well, shoot!\nKeep going then!"
+        },
+        {
+            "type": 15,
+            "text": "You, who have the strength to move on...\nTake these with you.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I wonder if order is being preserved\nbetween Pokémon and humans."
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mesprit",
+    "category": "Emotion Pokémon",
+    "pokedex_entry": "When Mesprit flew, people learned\nthe joy and sadness of living.\nIt was the birth of emotions.",
     "base_stats": {
         "hp": 80,
         "attack": 105,

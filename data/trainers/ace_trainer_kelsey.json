@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Kelsey",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey, Trainer! Let's have a refreshing\nbattle and blow away all my troubles!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You guys...\nYou feel like an unbeatable combination."
+        },
+        {
+            "type": 2,
+            "text": "I've been thinking lately.{be01}\nEven if I were somehow separated from my\nPokémon, would they choose me as their{be00}\nTrainer again...?"
         }
     ]
 }

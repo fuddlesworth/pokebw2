@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chrissy",
     "class": "TRAINER_CLASS_PRESCHOOLER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Roar!{be01}\nI'm a Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Quit it!{be01}\nI'm not really a Pokémon!"
+        },
+        {
+            "type": 2,
+            "text": "I hide in the tall grass and pretend\nto be a Pokémon.{be01}\nI'm what you might call a\nmethod actress!"
         }
     ]
 }

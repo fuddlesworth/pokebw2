@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Feebas",
+    "category": "Fish Pokémon",
+    "pokedex_entry": "It is a shabby and ugly Pokémon.\nHowever, it is very hardy and\ncan survive on little water.",
     "base_stats": {
         "hp": 20,
         "attack": 15,

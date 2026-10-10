@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Confusion",
+    "description": "The target is hit by a weak telekinetic\nforce. It may also leave the\ntarget confused.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

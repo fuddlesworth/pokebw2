@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lamarcus",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey! Trainer!{be01}\nCheck out my long shot!\nI've got serious range!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "No one can beat me when it comes to taking\na long shot, but I still have a lot to learn{be00}\nwhen it comes to Pokémon battles!"
+        },
+        {
+            "type": 15,
+            "text": "Short pass of an item\ncoming right at you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "There's always more to learn when it\ncomes to improving one's technique in{be00}\nboth Pokémon battles and basketball!"
         }
     ]
 }

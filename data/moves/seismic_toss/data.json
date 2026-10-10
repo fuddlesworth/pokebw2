@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Seismic Toss",
+    "description": "The target is thrown using the power of\ngravity. It inflicts damage equal to\nthe user's level.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Keenan",
     "class": "TRAINER_CLASS_RICH_BOY",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 2
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My gorgeous Pokémon and I have come\nto frolic about Relic Castle! Here, take{be00}\na look at my Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Your strength is quite high class, indeed!"
+        },
+        {
+            "type": 2,
+            "text": "Visiting famous landmarks with\nmy most favorite Pokémon is a{be00}\ntruly exceptional experience!"
         }
     ]
 }

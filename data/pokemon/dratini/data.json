@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dratini",
+    "category": "Dragon Pokémon",
+    "pokedex_entry": "It is called the “Mirage Pokémon\"\nbecause so few have seen it.\nIts shed skin has been found.",
     "base_stats": {
         "hp": 41,
         "attack": 64,

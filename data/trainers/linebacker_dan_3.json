@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dan",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "POWER!!!{be01}\nWith my ripped muscles,\nI will overcome everything!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I still don't have\nenough muscles...?!"
+        },
+        {
+            "type": 15,
+            "text": "I may not have enough power...\nBut I'm not lacking in kindness!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Maybe I should change\nmy training regimen..."
         }
     ]
 }

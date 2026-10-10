@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Zubat",
+    "category": "Bat Pokémon",
+    "pokedex_entry": "It does not need eyes, because it\nemits ultrasonic waves to check\nits surroundings while it flies.",
     "base_stats": {
         "hp": 40,
         "attack": 45,

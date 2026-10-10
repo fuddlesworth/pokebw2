@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Purugly",
+    "category": "Tiger Cat Pokémon",
+    "pokedex_entry": "It binds its body with its tails to\nmake itself look bigger. If it locks\neyes, it will glare ceaselessly.",
     "base_stats": {
         "hp": 71,
         "attack": 82,

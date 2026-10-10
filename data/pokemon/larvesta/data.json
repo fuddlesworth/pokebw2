@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Larvesta",
+    "category": "Torch Pokémon",
+    "pokedex_entry": "Said to have been born from the sun,\nit spews fire from its horns and encases\nitself in a cocoon of fire when it evolves.",
     "base_stats": {
         "hp": 55,
         "attack": 85,

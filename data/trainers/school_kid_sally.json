@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sally",
     "class": "TRAINER_CLASS_SCHOOL_KID_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "OK, I decided!\nIf I win against you,{be00}\nI will be a Gym Leader!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ummmm...\nMaybe I'm not ready to be a Gym Leader?"
+        },
+        {
+            "type": 15,
+            "text": "You taught me a lot, so please\naccept this as a symbol of my thanks!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I have to consider what I will be\nby trying a lot of things!"
         }
     ]
 }

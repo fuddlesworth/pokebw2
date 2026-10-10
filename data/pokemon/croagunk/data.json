@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Croagunk",
+    "category": "Toxic Mouth Pokémon",
+    "pokedex_entry": "Inflating its poison sacs, it fills the\narea with an odd sound and hits\nflinching opponents with a poison jab.",
     "base_stats": {
         "hp": 48,
         "attack": 61,

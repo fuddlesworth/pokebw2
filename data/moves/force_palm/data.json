@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Force Palm",
+    "description": "The target is attacked with a shock wave.\nIt may also leave the target\nwith paralysis.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

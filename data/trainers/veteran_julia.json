@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Julia",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -43,6 +44,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_METAL_BURST", "MOVE_STONE_EDGE", "MOVE_THUNDER", "MOVE_FIRE_BLAST" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Twist Mountain's number one tactician!\nThat's me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Maybe I shouldn't have been satisfied with\njust being number one in Twist Mountain...?"
+        },
+        {
+            "type": 2,
+            "text": "Thank you...\nWith our battle, my eyes have{be00}\nbeen opened.{be01}\nBeing number one of Twist Mountain\nis only a stepping-stone on my journey!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Garbodor",
+    "category": "Trash Heap Pokémon",
+    "pokedex_entry": "Consuming garbage makes\nnew kinds of poison gases\nand liquids inside their bodies.",
     "base_stats": {
         "hp": 80,
         "attack": 95,

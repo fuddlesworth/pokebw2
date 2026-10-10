@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Brick Break",
+    "description": "The user attacks with a swift chop. It\ncan also break any barrier such as Light\nScreen and Reflect.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

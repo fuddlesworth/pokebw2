@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Fletcher",
     "class": "TRAINER_CLASS_ROUGHNECK",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey, hey, did you see that? Awesome!\nA lot of famous people from TV are here!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Athletes are all coooool.\nI want to be like them."
+        },
+        {
+            "type": 15,
+            "text": "You're so cool! I hope to be like you\nsomeday. Here, have this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Aghhhhh. Why didn't I bring a camera,\nor a notebook for an autograph?"
         }
     ]
 }

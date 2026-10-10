@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Glare",
+    "description": "The user intimidates the target with the\npattern on its belly to cause paralysis.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

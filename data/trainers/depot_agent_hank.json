@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Hank",
     "class": "TRAINER_CLASS_DEPOT_AGENT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "This is called the battle train!\nAll aboard!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You're the nonstop express line! I'm the\nlocal line that stops at every station..."
+        },
+        {
+            "type": 2,
+            "text": "Did you try out the Battle Subway?\nIt's in Nimbasa City.{be01}\nThere are a lot of unique Trainers\nyou can battle. It's very exciting!"
         }
     ]
 }

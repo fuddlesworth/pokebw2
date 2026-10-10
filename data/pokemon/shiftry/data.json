@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Shiftry",
+    "category": "Wicked Pokémon",
+    "pokedex_entry": "By flapping its leafy fan, it can\nwhip up gusts of 100 ft/second\nthat can level houses.",
     "base_stats": {
         "hp": 90,
         "attack": 100,

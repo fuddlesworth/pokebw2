@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wigglytuff",
+    "category": "Balloon Pokémon",
+    "pokedex_entry": "Its fine fur feels so pleasant,\nthose who accidentally touch it\ncannot take their hands away.",
     "base_stats": {
         "hp": 140,
         "attack": 70,

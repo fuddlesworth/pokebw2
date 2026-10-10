@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "String Shot",
+    "description": "The targets are bound with silk blown\nfrom the user's mouth. This silk reduces\nthe targets' Speed stat.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

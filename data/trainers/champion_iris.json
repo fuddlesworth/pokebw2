@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Iris",
     "class": "TRAINER_CLASS_CHAMPION",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,24 @@
             "ability": 2,
             "item": "ITEM_FOCUS_SASH",
             "moves": [ "MOVE_EARTHQUAKE", "MOVE_X_SCISSOR", "MOVE_DUAL_CHOP", "MOVE_DRAGON_DANCE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "The pain of my Pokémon...\nI feel it, too!"
+        },
+        {
+            "type": 19,
+            "text": "I'll hone my mind and become one with\nmy Pokémon!"
+        },
+        {
+            "type": 20,
+            "text": "No! Not yet!\nNo! We can fight on!!"
+        },
+        {
+            "type": 1,
+            "text": "Aghhhh...\nI did my best, but we lost..."
         }
     ]
 }

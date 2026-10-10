@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "We won't tolerate people\nwho have different ideas!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Argh...\nI won't forgive you!"
+        },
+        {
+            "type": 2,
+            "text": "I repeat! We won't tolerate people\nwho have different ideas!{be01}\nIf Team Plasma takes over the world,\nthen everyone will think the same way!"
         }
     ]
 }

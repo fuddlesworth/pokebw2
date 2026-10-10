@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sam",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If you want to know what I've got in my\nbackpack, why don't you try to beat me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whoaaa!\nI'm going to be buried!"
+        },
+        {
+            "type": 2,
+            "text": "My backpack is full of sand from\nthe desert.{be01}\nIt's my job to dig out Relic Castle before\nit gets completely buried!"
         }
     ]
 }

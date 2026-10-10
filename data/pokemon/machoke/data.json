@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Machoke",
+    "category": "Superpower Pokémon",
+    "pokedex_entry": "It happily carries heavy cargo to\ntoughen up. It willingly does hard\nwork for people.",
     "base_stats": {
         "hp": 80,
         "attack": 100,

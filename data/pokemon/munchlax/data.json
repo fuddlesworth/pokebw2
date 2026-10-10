@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Munchlax",
+    "category": "Big Eater Pokémon",
+    "pokedex_entry": "In its desperation to gulp down\nfood, it forgets about the food it\nhas hidden under its fur.",
     "base_stats": {
         "hp": 135,
         "attack": 85,

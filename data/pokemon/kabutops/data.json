@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kabutops",
+    "category": "Shellfish Pokémon",
+    "pokedex_entry": "It is thought that this Pokémon\ncame onto land because its\nprey adapted to life on land.",
     "base_stats": {
         "hp": 60,
         "attack": 115,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "April",
     "class": "TRAINER_CLASS_PKMN_BREEDER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Going through trials is the best for\ngrowing stronger!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You were the perfect trial!\nI mean, come on, you're so strong!"
+        },
+        {
+            "type": 2,
+            "text": "We raise our Pokémon by having\nthem battle!{be01}\nThat's why I'll be asking you for a\nPokémon battle every time you come here!"
         }
     ]
 }

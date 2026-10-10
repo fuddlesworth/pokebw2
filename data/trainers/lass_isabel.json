@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Isabel",
     "class": "TRAINER_CLASS_LASS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey, you! Have you seen my cute\nPokémon? Take a look!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My Purrloin is cute even if it loses!"
+        },
+        {
+            "type": 2,
+            "text": "Maybe I'll try a wild Pokémon next time\nso that I can win..."
         }
     ]
 }

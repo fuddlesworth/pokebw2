@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gothorita",
+    "category": "Manipulate Pokémon",
+    "pokedex_entry": "According to many old tales, it creates\nfriends for itself by controlling\nsleeping children on starry nights.",
     "base_stats": {
         "hp": 60,
         "attack": 45,

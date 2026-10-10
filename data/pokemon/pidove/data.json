@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pidove",
+    "category": "Tiny Pigeon Pokémon",
+    "pokedex_entry": "This very forgetful Pokémon will\nwait for a new order from its Trainer\neven though it already has one.",
     "base_stats": {
         "hp": 50,
         "attack": 55,

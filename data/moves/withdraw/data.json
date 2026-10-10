@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Withdraw",
+    "description": "The user withdraws its body into its hard\nshell, raising its Defense stat.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

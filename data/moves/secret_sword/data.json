@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Secret Sword",
+    "description": "The user cuts with its long horn. The odd\npower contained in the horn does physical\ndamage to the target.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

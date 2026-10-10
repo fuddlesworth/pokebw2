@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Caroll",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_ICE_BEAM", "MOVE_FLASH_CANNON", "MOVE_ICICLE_SPEAR", "MOVE_ACID_ARMOR" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Are you sure you want to seriously take\non someone like me, who seriously fights{be00}\nwith her Pokémon?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "This is the pain that comes from seriously\nfacing someone head-on..."
+        },
+        {
+            "type": 2,
+            "text": "I battle seriously, because I am after\nserious strength.{be01}\nThere's nothing worse than a\nhalfhearted opponent."
         }
     ]
 }

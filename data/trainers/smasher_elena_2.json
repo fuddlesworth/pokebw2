@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Elena",
     "class": "TRAINER_CLASS_SMASHER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "An elegant Smasher\nhas an elegant battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "E-e-e-even though I lost,\nI will not panic."
+        },
+        {
+            "type": 15,
+            "text": "I panicked!\nSo, here, have this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Because I am a lady, I won't be,\nwell, you know,{be00}\nch-ch-chagrined at losing.{be00}\nWell, maybe a teensy little bit."
         }
     ]
 }

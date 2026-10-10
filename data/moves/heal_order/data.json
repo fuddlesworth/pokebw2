@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Heal Order",
+    "description": "The user calls out its underlings to\nheal it. The user regains up to half of its\nmax HP.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_HEAL",
     "category": "MOVE_CATEGORY_STATUS",

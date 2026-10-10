@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Shellos",
+    "category": "Sea Slug Pokémon",
+    "pokedex_entry": "Beware of pushing strongly on\nits squishy body, as it makes a\nmysterious purple fluid ooze out.",
     "base_stats": {
         "hp": 76,
         "attack": 48,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ledian",
+    "category": "Five Star Pokémon",
+    "pokedex_entry": "It uses starlight as energy. When\nmore stars appear at night, the\npatterns on its back grow larger.",
     "base_stats": {
         "hp": 55,
         "attack": 35,

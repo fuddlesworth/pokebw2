@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Eevee",
+    "category": "Evolution Pokémon",
+    "pokedex_entry": "Thanks to its unstable genetic makeup,\nthis special Pokémon conceals many\ndifferent possible evolutions.",
     "base_stats": {
         "hp": 55,
         "attack": 55,

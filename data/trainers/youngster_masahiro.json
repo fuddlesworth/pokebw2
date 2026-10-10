@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Masahiro",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "All right! Time for a Pokémon battle!\nLet's begin!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whew!\nYou're way too strong!"
+        },
+        {
+            "type": 2,
+            "text": "Time for some special Pokémon\ntraining in the dark tall grass!"
         }
     ]
 }

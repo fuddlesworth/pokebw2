@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Fredric",
     "class": "TRAINER_CLASS_CLERK_M_67",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Someone sent me a ticket, so I came.\nBut there's no game going on!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I have a lot of work to do.\nWhat am I doing here?"
+        },
+        {
+            "type": 15,
+            "text": "I'll give you this. That way,\nat least I'll have done something.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Athletes on off days are no better\nthan guys on days off."
         }
     ]
 }

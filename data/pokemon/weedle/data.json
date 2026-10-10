@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Weedle",
+    "category": "Hairy Bug Pokémon",
+    "pokedex_entry": "It eats its weight in leaves every\nday. It fends off attackers with\nthe needle on its head.",
     "base_stats": {
         "hp": 40,
         "attack": 35,

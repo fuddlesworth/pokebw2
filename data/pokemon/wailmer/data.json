@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wailmer",
+    "category": "Ball Whale Pokémon",
+    "pokedex_entry": "It eats one ton of food every day.\nIt plays by shooting stored seawater\nout its blowholes with great force.",
     "base_stats": {
         "hp": 130,
         "attack": 70,

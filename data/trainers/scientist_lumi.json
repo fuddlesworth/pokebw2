@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lumi",
     "class": "TRAINER_CLASS_SCIENTIST_F_46",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_X_SPECIAL" ],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I love this place! The electricity\ncharges up my inspiration!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Aha!\nThat made a lightbulb go on in my head!"
+        },
+        {
+            "type": 2,
+            "text": "When a person moves,\nelectric signals travel in the body!{be01}\nAlso, when a person has an inspiration,\nelectric signals travel to the brain!"
         }
     ]
 }

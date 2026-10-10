@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dean",
     "class": "TRAINER_CLASS_FISHERMAN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You can learn all sorts of things from\na long day spent fishing.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "No matter what the outcome of a battle,\nyour Pokémon will never leave your side."
+        },
+        {
+            "type": 2,
+            "text": "Thinking that people and Pokémon will\nrespect you if you're strong is{be00}\njust a bunch of baloney, really.{be01}\nThe moment you lose, all those people\nwho were cheering for you will disappear."
         }
     ]
 }

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rock Blast",
+    "description": "The user hurls hard rocks at the target.\nTwo to five rocks are launched in quick\nsuccession.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

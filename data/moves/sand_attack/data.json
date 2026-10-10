@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sand-Attack",
+    "description": "Sand is hurled in the target's face,\nreducing its accuracy.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

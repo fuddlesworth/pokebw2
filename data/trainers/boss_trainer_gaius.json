@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Gaius",
     "class": "TRAINER_CLASS_BOSS_TRAINER_GAIUS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_FOCUS_SASH",
             "moves": [ "MOVE_ICE_PUNCH", "MOVE_FAKE_OUT", "MOVE_LOW_KICK", "MOVE_ICE_SHARD" ]
         }
-    ]
+    ],
+    "messages": []
 }

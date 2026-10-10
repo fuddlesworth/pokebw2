@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tim",
     "class": "TRAINER_CLASS_SWIMMER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "We spend our lives swimming!\nOf course we battle while swimming, too!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I lost. But I'm still cool, because not many\npeople can say they battled while swimming!"
+        },
+        {
+            "type": 2,
+            "text": "My Pokémon and I saw it\nwith our own eyes!{be01}\nI'm talking about the ancient ruins at\nthe bottom of the sea near Undella Town!"
         }
     ]
 }

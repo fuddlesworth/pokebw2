@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Clefable",
+    "category": "Fairy Pokémon",
+    "pokedex_entry": "Their ears are sensitive enough to hear\na pin drop from over a mile away,\nso they're usually found in quiet places.",
     "base_stats": {
         "hp": 95,
         "attack": 70,

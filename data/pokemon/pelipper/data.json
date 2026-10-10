@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pelipper",
+    "category": "Water Bird Pokémon",
+    "pokedex_entry": "Skimming the water's surface, it dips\nits large bill in the sea, scoops up food\nand water, and carries it.",
     "base_stats": {
         "hp": 60,
         "attack": 50,

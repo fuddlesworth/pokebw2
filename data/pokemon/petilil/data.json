@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Petilil",
+    "category": "Bulb Pokémon",
+    "pokedex_entry": "The leaves on its head grow right back\neven if they fall out. These bitter\nleaves refresh those who eat them.",
     "base_stats": {
         "hp": 45,
         "attack": 35,

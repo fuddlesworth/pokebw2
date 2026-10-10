@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lana",
     "class": "TRAINER_CLASS_CLERK_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -52,6 +53,12 @@
             "gender": 0,
             "ability": 2,
             "moves": [ "MOVE_BLIZZARD", "MOVE_SURF", "MOVE_HYDRO_PUMP", "MOVE_ICE_SHARD" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "What... Can it be that love is even stronger\nthan hatred?"
         }
     ]
 }

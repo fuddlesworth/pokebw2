@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Head Charge",
+    "description": "The user charges its head into its\ntarget, using its powerful guard hair.\nIt also damages the user a little.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

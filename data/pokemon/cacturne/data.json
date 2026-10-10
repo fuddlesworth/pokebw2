@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cacturne",
+    "category": "Scarecrow Pokémon",
+    "pokedex_entry": "It becomes active at night,\nseeking prey that is exhausted\nfrom the day's desert heat.",
     "base_stats": {
         "hp": 70,
         "attack": 115,

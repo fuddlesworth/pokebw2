@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Primeape",
+    "category": "Pig Monkey Pokémon",
+    "pokedex_entry": "It grows angry if you see its eyes\nand gets angrier if you run. If you\nbeat it, it gets even madder.",
     "base_stats": {
         "hp": 65,
         "attack": 105,

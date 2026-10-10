@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lilligant",
+    "category": "Flowering Pokémon",
+    "pokedex_entry": "The fragrance of the garland on its head\nhas a relaxing effect, but taking\ncare of it is very difficult.",
     "base_stats": {
         "hp": 70,
         "attack": 60,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chaz",
     "class": "TRAINER_CLASS_CLERK_M_66",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "Phew! I'll at least let my Pokémon take\nit easy on their days off!"
         }
     ]
 }

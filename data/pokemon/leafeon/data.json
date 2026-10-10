@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Leafeon",
+    "category": "Verdant Pokémon",
+    "pokedex_entry": "With cells similar to those of plants,\nit performs photosynthesis inside its\nbody and creates pure air.",
     "base_stats": {
         "hp": 65,
         "attack": 110,

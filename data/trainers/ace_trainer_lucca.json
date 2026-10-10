@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lucca",
     "class": "TRAINER_CLASS_ACE_TRAINER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I can see the plea in my Pokémon's eyes.\nTo fight! And to win!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The eyes of your Pokémon\nare glimmering with strength!"
+        },
+        {
+            "type": 2,
+            "text": "I can see the plea in my Pokémon's eyes.\nThey're saying, “Get back up! I'm OK!\"{be01}\nYep! I can understand my Pokémon's\nfeelings by looking into their eyes."
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Charmeleon",
+    "category": "Flame Pokémon",
+    "pokedex_entry": "In the rocky mountains where\nCharmeleon live, their fiery\ntails shine at night like stars.",
     "base_stats": {
         "hp": 58,
         "attack": 64,

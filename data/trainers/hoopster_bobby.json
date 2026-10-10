@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bobby",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I'm still a rookie, but someday\nI will be a great player!{be01}\nI'll improve by having a lot\nof Pokémon battles!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ugh!\nI missed the rebound!"
+        },
+        {
+            "type": 15,
+            "text": "Hey, you might be a fan of mine.\nI'll give you this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I won't make excuses for losing!{be01}\nWhy waste time dreaming up excuses?\nI'll spend that time getting stronger!"
         }
     ]
 }

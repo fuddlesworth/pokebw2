@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Shadow Punch",
+    "description": "The user throws a punch from the shadows.\nThe punch lands without fail.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

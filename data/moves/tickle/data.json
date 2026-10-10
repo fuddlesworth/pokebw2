@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Tickle",
+    "description": "The user tickles the target into laughing,\nreducing its Attack and Defense stats.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_SLUDGE_BOMB", "MOVE_DOUBLE_HIT", "MOVE_EXPLOSION", "MOVE_HAZE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Aren't you pretty confident, waltzing\nright into the enemy's stronghold!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Argh! No wonder you're so confident with\nthat kind of strength!"
+        },
+        {
+            "type": 2,
+            "text": "Those idealistic fools who thought they\nwere saving Pokémon are all gone.{be01}\nAll of us left here are real thugs\nwanting to take over the world!"
         }
     ]
 }

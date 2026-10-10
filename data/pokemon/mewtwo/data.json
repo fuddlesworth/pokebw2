@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mewtwo",
+    "category": "Genetic Pokémon",
+    "pokedex_entry": "A Pokémon created by recombining\nMew's genes. It's said to have the\nmost savage heart among Pokémon.",
     "base_stats": {
         "hp": 106,
         "attack": 110,

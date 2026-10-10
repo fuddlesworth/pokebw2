@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Reece",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Onward, my friends!\nMy Bug-type Pokémon swarm!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Pretty cool, huh?\nMy Bug-type Pokémon are the best!"
+        },
+        {
+            "type": 2,
+            "text": "It's not like I'm collecting them, but\nwhen I'm with lots of Bug-type Pokémon,{be00}\nmy lust for adventure is fulfilled!"
         }
     ]
 }

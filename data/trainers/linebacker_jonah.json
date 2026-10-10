@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jonah",
     "class": "TRAINER_CLASS_LINEBACKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I, I...\nI'm not fat, am I?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ripped!"
+        },
+        {
+            "type": 15,
+            "text": "Ripped, I tell you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I am ripped!\nI am not fat."
         }
     ]
 }

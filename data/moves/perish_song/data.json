@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Perish Song",
+    "description": "Any Pokémon that hears this song\nfaints in three turns, unless it switches\nout of battle.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

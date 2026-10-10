@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Spheal",
+    "category": "Clap Pokémon",
+    "pokedex_entry": "They can't swim well yet,\nand they move much faster by rolling.\nWhen they're happy, they clap fins.",
     "base_stats": {
         "hp": 70,
         "attack": 40,

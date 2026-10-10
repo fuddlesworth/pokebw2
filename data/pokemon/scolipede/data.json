@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Scolipede",
+    "category": "Megapede Pokémon",
+    "pokedex_entry": "It clasps its prey with the claws\non its neck until it stops moving.\nThen it finishes it off with deadly poison.",
     "base_stats": {
         "hp": 60,
         "attack": 90,

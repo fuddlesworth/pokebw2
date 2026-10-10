@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dewgong",
+    "category": "Sea Lion Pokémon",
+    "pokedex_entry": "Its streamlined body has low resistance,\nand it swims around cold oceans at\na speed of eight knots.",
     "base_stats": {
         "hp": 90,
         "attack": 70,

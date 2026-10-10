@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Echoed Voice",
+    "description": "The user attacks the target with an\nechoing voice. If this move is used\nevery turn, it does greater damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

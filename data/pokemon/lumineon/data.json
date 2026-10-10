@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lumineon",
+    "category": "Neon Pokémon",
+    "pokedex_entry": "It crawls along the seafloor using\nits long front fins like legs. It\ncompetes for food with Lanturn.",
     "base_stats": {
         "hp": 69,
         "attack": 69,

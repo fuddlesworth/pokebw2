@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rival",
     "class": "TRAINER_CLASS_PKMN_TRAINER_RIVAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,20 @@
             "ability": 0,
             "item": "ITEM_FOCUS_SASH",
             "moves": [ "MOVE_FIRE_BLAST", "MOVE_HEAD_SMASH", "MOVE_HAMMER_ARM", "MOVE_SCALD" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "My Pokémon seems to be in pain!\nMy partner's pain is my pain!"
+        },
+        {
+            "type": 20,
+            "text": "I can feel it! Our minds are one right now,\nme and my partner's!"
+        },
+        {
+            "type": 1,
+            "text": "Just as I'd expected! You are really\ndrawing forth your Pokémon's power!"
         }
     ]
 }

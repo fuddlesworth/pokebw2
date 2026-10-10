@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rival",
     "class": "TRAINER_CLASS_PKMN_TRAINER_RIVAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_MAX_POTION" ],
@@ -47,6 +48,20 @@
             "ability": 0,
             "item": "ITEM_MYSTIC_WATER",
             "moves": [ "MOVE_SURF", "MOVE_X_SCISSOR", "MOVE_ICE_BEAM", "MOVE_REVENGE" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "I saw that move coming from miles away!"
+        },
+        {
+            "type": 20,
+            "text": "We will put everything on the line for this\nmove! Right, partner?!"
+        },
+        {
+            "type": 1,
+            "text": "...Phew!\nYou're really something!"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Tyra",
     "class": "TRAINER_CLASS_PARASOL_LADY",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -34,6 +35,24 @@
             "gender": 0,
             "ability": 1,
             "moves": [ "MOVE_HYDRO_PUMP", "MOVE_MEGA_DRAIN", "MOVE_UPROAR", "MOVE_ZEN_HEADBUTT" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 24,
+            "text": "Triple Battles use three Pokémon!"
+        },
+        {
+            "type": 0,
+            "text": "If you turn a parasol around,\nit's like a flower blossoming in the rain!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whee! I'll spin around my parasol and send\nsome water droplets flying your way!"
+        },
+        {
+            "type": 2,
+            "text": "On rainy days, use a parasol,\nwear a coat, or get wet.{be00}\nDo as you like!"
         }
     ]
 }

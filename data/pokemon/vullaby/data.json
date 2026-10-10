@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Vullaby",
+    "category": "Diapered Pokémon",
+    "pokedex_entry": "Their wings are too tiny to allow them to\nfly. They guard their posteriors with\nbones that were gathered by Mandibuzz.",
     "base_stats": {
         "hp": 70,
         "attack": 55,

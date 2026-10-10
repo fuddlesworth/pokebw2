@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Illumise",
+    "category": "Firefly Pokémon",
+    "pokedex_entry": "With its sweet aroma, it guides\nVolbeat to draw signs with light in\nthe night sky.",
     "base_stats": {
         "hp": 65,
         "attack": 47,

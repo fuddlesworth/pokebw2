@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fake Out",
+    "description": "An attack that hits first and makes the\ntarget flinch. It only works the first turn\nthe user is in battle.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

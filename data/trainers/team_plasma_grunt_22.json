@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Even if we don't have our hero anymore,\nwe still won't lose!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Plasmaaaa!\nGlory to Team Plasma!"
+        },
+        {
+            "type": 2,
+            "text": "Maybe if Team Plasma can take over the\nUnova region, our king will come back..."
         }
     ]
 }

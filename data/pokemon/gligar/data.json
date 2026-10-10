@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gligar",
+    "category": "FlyScorpion Pokémon",
+    "pokedex_entry": "It clamps on to its chosen prey then\njabs the stinger on its tail into the\nprey while it's stunned with surprise.",
     "base_stats": {
         "hp": 65,
         "attack": 75,

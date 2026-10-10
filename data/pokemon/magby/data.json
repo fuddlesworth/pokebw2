@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Magby",
+    "category": "Live Coal Pokémon",
+    "pokedex_entry": "It's small, but its body temperature\nis over 1,100 degrees F. Embers escape\nits mouth and nose when it breathes.",
     "base_stats": {
         "hp": 45,
         "attack": 75,

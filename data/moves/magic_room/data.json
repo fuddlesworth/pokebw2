@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Magic Room",
+    "description": "The user creates a bizarre area\nin which Pokémon's held items\nlose their effects for five turns.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Punishment",
+    "description": "This attack's power increases\nthe more the target has powered\nup with stat changes.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

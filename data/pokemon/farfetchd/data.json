@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Farfetch'd",
+    "category": "Wild Duck Pokémon",
+    "pokedex_entry": "It can't live without the stalk it\nholds. That's why it defends the\nstalk from attackers with its life.",
     "base_stats": {
         "hp": 52,
         "attack": 65,

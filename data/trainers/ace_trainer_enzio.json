@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Enzio",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "To be as clear as water...\nThat is the style that I seek!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "When I lose, I feel as if I\nmight just disappear..."
+        },
+        {
+            "type": 2,
+            "text": "I may have been the one to lose, but\nI'm still going to go ahead and say it...{be01}\nYou should definitely seek a style,\nbut everyone has his or her own style!"
         }
     ]
 }

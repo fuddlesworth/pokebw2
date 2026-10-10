@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Pedro",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "You're strong! Or should I say\nyour Pokémon are strong?"
         }
     ]
 }

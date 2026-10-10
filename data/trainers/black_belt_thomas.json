@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Thomas",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Just three more people!{be01}\nI won't leave this spot till I win against\nthree more people!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Whoa!\nYour Pokémon were amazing!!"
+        },
+        {
+            "type": 2,
+            "text": "Heh! If beating an opponent is also a kind\nof strength then...{be01}\nI guess sticking to something you've\ndecided to do is also a kind of strength!"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Otto",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 1
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "This Hiker wandering the expanses of\nthe world will teach a child like you the{be00}\nharshness of life and the difficulty of{be00}\nPokémon battles!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The teacher was schooled...\nYou're very strict, aren't you?"
+        },
+        {
+            "type": 2,
+            "text": "Sometimes Pokémon are inside dust clouds!"
         }
     ]
 }

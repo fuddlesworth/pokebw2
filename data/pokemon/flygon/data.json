@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Flygon",
+    "category": "Mystic Pokémon",
+    "pokedex_entry": "Known as “The Desert Spirit,\"\nthis Pokémon hides in the sandstorms\nit causes by beating its wings.",
     "base_stats": {
         "hp": 80,
         "attack": 100,

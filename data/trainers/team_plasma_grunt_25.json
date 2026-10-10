@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Target acquired!\nTermination will now begin!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I was terminated...?\nWhat a Trainer!"
+        },
+        {
+            "type": 2,
+            "text": "We in Team Plasma are trying to keep all\nthe world's Pokémon for ourselves!{be01}\nIf we succeed in doing that, then world\ndomination wouldn't be a stretch!"
         }
     ]
 }

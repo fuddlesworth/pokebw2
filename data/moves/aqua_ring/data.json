@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Aqua Ring",
+    "description": "The user envelops itself in a veil made\nof water. It regains some HP on\nevery turn.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

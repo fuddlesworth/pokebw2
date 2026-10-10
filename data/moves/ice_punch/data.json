@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Ice Punch",
+    "description": "The target is punched with an icy fist.\nIt may also leave the target frozen.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

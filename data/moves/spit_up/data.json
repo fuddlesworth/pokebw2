@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Spit Up",
+    "description": "The power stored using the move Stockpile\nis released at once in an attack. The more\npower is stored, the greater the damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

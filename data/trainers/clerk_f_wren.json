@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Wren",
     "class": "TRAINER_CLASS_CLERK_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My darling is working here.\nHow about that? Are you envious?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My darling is seriously the best.\nHe puts athletes to shame."
+        },
+        {
+            "type": 15,
+            "text": "Here, I'll show the greatness\nof my darling to you!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "My darling is a Janitor!\nHe cleans this entire big place{be00}\nby himself every day. Cool, huh?{be00}\nNobody else can do what he does."
         }
     ]
 }

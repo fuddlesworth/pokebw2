@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dusty",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -43,6 +44,12 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_WILD_CHARGE", "MOVE_DRAGON_CLAW", "MOVE_GASTRO_ACID", "MOVE_COIL" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "And I was so excited, too..."
         }
     ]
 }

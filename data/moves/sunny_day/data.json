@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sunny Day",
+    "description": "The user intensifies the sun for\nfive turns, powering up\nFire-type moves.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

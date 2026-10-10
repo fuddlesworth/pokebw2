@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Clear Smog",
+    "description": "The user attacks by throwing a clump of\nspecial mud. All status changes are\nreturned to normal.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

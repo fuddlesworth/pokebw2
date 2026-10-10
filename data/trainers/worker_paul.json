@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Paul",
     "class": "TRAINER_CLASS_WORKER_26",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Even after we finish constructing this\ntunnel, my Drill Pokémon won't ever stop!{be00}\nThey can't be stopped!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You stopped my Drill Pokémon?!"
+        },
+        {
+            "type": 2,
+            "text": "Watch our Pokémon's dynamic forms as\nthey crush through the bedrock!{be01}\nI can't imagine ever building another\ntunnel without the help of Pokémon!"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Victreebel",
+    "category": "Flycatcher Pokémon",
+    "pokedex_entry": "It pools in its mouth a fluid with\na honey-like scent, which is really\nan acid that dissolves anything.",
     "base_stats": {
         "hp": 80,
         "attack": 105,

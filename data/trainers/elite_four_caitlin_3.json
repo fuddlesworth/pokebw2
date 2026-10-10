@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Caitlin",
     "class": "TRAINER_CLASS_ELITE_FOUR_CAITLIN",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -57,6 +58,24 @@
             "ability": 0,
             "item": "ITEM_LIFE_ORB",
             "moves": [ "MOVE_ZEN_HEADBUTT", "MOVE_BULLET_PUNCH", "MOVE_HAMMER_ARM", "MOVE_SHADOW_BALL" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "I have a feeling this battle will give my\nPokémon a chance to go all out!"
+        },
+        {
+            "type": 19,
+            "text": "I can't believe it's come to this!\nI must have gotten complacent."
+        },
+        {
+            "type": 20,
+            "text": "Ohhh, that's it! I'll go all out if it'll get\nme a win!"
+        },
+        {
+            "type": 1,
+            "text": "You and your Pokémon are\nboth excellent and elegant.{be01}\nTo have been able to battle against\nsuch a splendid team...{be01}\nMy Pokémon and I learned a lot!\nI offer you my thanks."
         }
     ]
 }

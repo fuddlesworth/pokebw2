@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Counter",
+    "description": "A retaliation move that counters any\nphysical attack, inflicting double the\ndamage taken.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

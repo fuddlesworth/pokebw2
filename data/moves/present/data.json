@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Present",
+    "description": "The user attacks by giving the target a\ngift with a hidden trap. It restores\nHP sometimes, however.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sing",
+    "description": "A soothing lullaby is sung in a calming\nvoice that puts the target into a deep\nslumber.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Crustle",
+    "category": "Stone Home Pokémon",
+    "pokedex_entry": "When its boulder is broken\nin battles for territory, it feels\nunsure and begins to weaken.",
     "base_stats": {
         "hp": 70,
         "attack": 95,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Dewott",
+    "category": "Discipline Pokémon",
+    "pokedex_entry": "As a result of strict training,\neach Dewott learns different\nforms for using the scalchops.",
     "base_stats": {
         "hp": 75,
         "attack": 75,

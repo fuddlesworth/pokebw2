@@ -17,10 +17,14 @@ sys.path.insert(0, str(Path(__file__).parent))
 from datajson import DataError, constants, label, load, load_schema, name, value, write  # noqa: E402
 from gen_constants import load as load_list  # noqa: E402
 from narc import read_narc, write_narc  # noqa: E402
+from text_data import message_lines  # noqa: E402
+from text_sources import to_json  # noqa: E402
 
 RECORD = struct.Struct("<6BbBH6BHbbB3B3b3B2sI")
 assert RECORD.size == 0x24
 MARKER = b"SS"
+# Files of the system messages (a/0/0/2) with the moves' names and descriptions, one line per move
+NAMES, DESCRIPTIONS = 403, 402
 
 
 def directory(move: str) -> str:
@@ -76,8 +80,11 @@ def dump(files: Path, output: Path):
     moves = ordered_moves()
     if len(members) != len(moves):
         sys.exit(f"{len(members)} moves in the archive and {len(moves)} in moves.txt")
-    for move, member in zip(moves, members):
-        write(output / directory(move) / "data.json", move_json(member))
+    names, descriptions = (message_lines(files / "a/0/0/2", n) for n in (NAMES, DESCRIPTIONS))
+    for index, (move, member) in enumerate(zip(moves, members)):
+        data = move_json(member)
+        text = {"name": to_json(names[index]), "description": to_json(descriptions[index])}
+        write(output / directory(move) / "data.json", {"$schema": data.pop("$schema"), **text, **data})
     print(f"wrote {len(members)} moves to {output}")
 
 

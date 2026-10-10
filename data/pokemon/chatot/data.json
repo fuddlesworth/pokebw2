@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Chatot",
+    "category": "Music Note Pokémon",
+    "pokedex_entry": "Its tongue is just like a human's.\nAs a result, it can cleverly mimic\nhuman speech.",
     "base_stats": {
         "hp": 76,
         "attack": 65,

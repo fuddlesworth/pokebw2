@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Haunter",
+    "category": "Gas Pokémon",
+    "pokedex_entry": "It likes to lurk in the dark and tap\nshoulders with a gaseous hand. Its\ntouch causes endless shuddering.",
     "base_stats": {
         "hp": 45,
         "attack": 50,

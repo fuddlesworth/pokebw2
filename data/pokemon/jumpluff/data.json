@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Jumpluff",
+    "category": "Cottonweed Pokémon",
+    "pokedex_entry": "Blown by seasonal winds, it\ncircles the globe, scattering\ncotton spores as it goes.",
     "base_stats": {
         "hp": 75,
         "attack": 55,

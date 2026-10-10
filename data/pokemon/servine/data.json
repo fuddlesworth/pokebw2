@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Servine",
+    "category": "Grass Snake Pokémon",
+    "pokedex_entry": "When it gets dirty, its leaves\ncan't be used in photosynthesis,\nso it always keeps itself clean.",
     "base_stats": {
         "hp": 60,
         "attack": 60,

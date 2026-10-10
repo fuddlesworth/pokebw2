@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Powder Snow",
+    "description": "The user attacks with a chilling gust\nof powdery snow.\nIt may also freeze the targets.",
     "type": "TYPE_ICE",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ike",
     "class": "TRAINER_CLASS_PRESCHOOLER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey, you!\nYou're gonna lose and cry!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "...Grrr!"
+        },
+        {
+            "type": 2,
+            "text": "That's it! I'm gonna become Champion, and\nthen I'll blow you outta the water!"
         }
     ]
 }

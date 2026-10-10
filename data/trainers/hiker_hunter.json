@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Hunter",
     "class": "TRAINER_CLASS_HIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "When I am surrounded by rocks,\nmy spirit goes up!!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "When I lose,\nmy spirits sink..."
+        },
+        {
+            "type": 2,
+            "text": "My spirits rise and fall.\nI'm just charmingly unpredictable!"
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Geoff",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "If there is a steep cave in the east,\nI go there and train my Pokémon, and{be00}\nif there is a strong Trainer in the west,{be00}\nI go there and challenge that Trainer!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My Pokémon clearly lack\nproper training!!"
+        },
+        {
+            "type": 2,
+            "text": "Pokémon training Pokémon...{be01}\nIf they live in rugged wilderness,\nthat can happen naturally."
         }
     ]
 }

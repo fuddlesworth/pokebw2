@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ron",
     "class": "TRAINER_CLASS_VETERAN_M",
     "battle_style": "BTL_STYLE_TRIPLE",
     "items": [],
@@ -31,6 +32,12 @@
             "difficulty": 150,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "The three Pokémon you picked...\nThey gave me a run for my money!"
         }
     ]
 }

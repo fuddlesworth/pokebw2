@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Milotic",
+    "category": "Tender Pokémon",
+    "pokedex_entry": "Its lovely scales are described as\nrainbow colored. They change color\ndepending on the viewing angle.",
     "base_stats": {
         "hp": 95,
         "attack": 60,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hi Jump Kick",
+    "description": "The target is attacked with a knee kick\nfrom a jump. If it misses, the user is hurt\ninstead.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

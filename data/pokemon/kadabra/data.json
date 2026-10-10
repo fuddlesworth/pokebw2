@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kadabra",
+    "category": "Psi Pokémon",
+    "pokedex_entry": "It stares at its silver spoon to\nfocus its mind. It emits more alpha\nwaves while doing so.",
     "base_stats": {
         "hp": 40,
         "attack": 35,

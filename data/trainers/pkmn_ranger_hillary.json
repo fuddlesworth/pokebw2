@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Hillary",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Get great powers drawn from nature\nwithout opposing it.{be00}\nThat is the strength of Rangers!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What great power!\nYour Pokémon are marvelous!"
+        },
+        {
+            "type": 15,
+            "text": "This is one of the powers\nI got from nature.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Pokémon are just too amazing, so we\nend up depending on them for everything.{be00}\nGreat power can be dangerous."
         }
     ]
 }

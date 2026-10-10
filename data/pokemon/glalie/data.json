@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Glalie",
+    "category": "Face Pokémon",
+    "pokedex_entry": "It prevents prey from escaping by\ninstantaneously freezing moisture\nin the air.",
     "base_stats": {
         "hp": 80,
         "attack": 80,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rest",
+    "description": "The user goes to sleep for two turns.\nIt fully restores the user's HP and heals\nany status problem.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

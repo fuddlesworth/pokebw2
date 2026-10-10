@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Chingling",
+    "category": "Bell Pokémon",
+    "pokedex_entry": "There is an orb inside its mouth.\nWhen it hops, the orb bounces all\nover and makes a ringing sound.",
     "base_stats": {
         "hp": 45,
         "attack": 30,

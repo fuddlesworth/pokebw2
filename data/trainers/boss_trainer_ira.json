@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ira",
     "class": "TRAINER_CLASS_BOSS_TRAINER_M_162",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -38,5 +39,6 @@
             "item": "ITEM_LIFE_ORB",
             "moves": [ "MOVE_OVERHEAT", "MOVE_STONE_EDGE", "MOVE_IRON_TAIL", "MOVE_ROAR" ]
         }
-    ]
+    ],
+    "messages": []
 }

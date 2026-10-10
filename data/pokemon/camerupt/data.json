@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Camerupt",
+    "category": "Eruption Pokémon",
+    "pokedex_entry": "The volcanoes on its back have a\nmajor eruption every 10 years--or\nwhenever it becomes really angry.",
     "base_stats": {
         "hp": 70,
         "attack": 100,

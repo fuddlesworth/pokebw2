@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Voltorb",
+    "category": "Ball Pokémon",
+    "pokedex_entry": "It looks just like a Poké Ball.\nIt is dangerous because it may\nelectrocute or explode on contact.",
     "base_stats": {
         "hp": 40,
         "attack": 30,

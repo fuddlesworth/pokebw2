@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Silvester",
     "class": "TRAINER_CLASS_ROUGHNECK",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My shiny head is a reflection\nof my fighting spirit!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My shine is set to blind!"
+        },
+        {
+            "type": 2,
+            "text": "My dumb little brother decided to follow\nin my footsteps and become a bad dude.{be01}\nI really wanted him to grow up\nand live respectably, though..."
         }
     ]
 }

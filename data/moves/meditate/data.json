@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Meditate",
+    "description": "The user meditates to awaken the power\ndeep within its body and raise its\nAttack stat.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

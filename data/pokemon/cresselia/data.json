@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cresselia",
+    "category": "Lunar Pokémon",
+    "pokedex_entry": "On nights around the quarter moon,\nthe aurora from its tail extends\nand undulates beautifully.",
     "base_stats": {
         "hp": 120,
         "attack": 70,

@@ -16,18 +16,23 @@ The text is UTF-8. In it:
 - A message that starts with `\\c` is stored compressed, as the game stores names, among others.
 - A last line `\\pad{XX}` is not a message but the byte that fills the end of the file to a multiple of 4 bytes, which
   the game's files have as leftovers rather than 0; it is ignored when no filling is needed.
+- A line `\\from{species.name}` is not a message but stands for messages from the game data in JSON, one per species,
+  move or trainer, such as the species' names (see text_sources.py). Unpacking writes the messages themselves.
 
 A message file holds one language. Each message is encrypted with a key that starts at 0x7c89 + 0x2983 times its
 index and rotates by 3 bits per character, and a compressed one packs its characters in 9 bits each.
 """
 import argparse
+import re
 import struct
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from msgdata import COMPRESSED, CONTROL, LINE_END, NEWLINE, decompress, decrypt  # noqa: E402
+from datajson import DataError  # noqa: E402
 from narc import read_narc, write_narc  # noqa: E402
+from text_sources import expand  # noqa: E402
 
 BASE_KEY = 0x7C89
 KEY_STEP = 0x2983
@@ -154,11 +159,26 @@ def unpack_file(data: bytes) -> str:
     return "".join(line + "\n" for line in lines)
 
 
+def message_lines(archive: Path, number: int) -> list[str]:
+    """Returns the messages of a file of a text archive as lines of a text file, without the padding line."""
+    lines = unpack_file(read_narc(archive.read_bytes())[number]).split("\n")[:-1]
+    return [line for line in lines if not line.startswith("\\pad{")]
+
+
+FROM = re.compile(r"\\from\{([\w.]+)\}")
+
+
 def pack_file(text: str) -> bytes:
-    messages = text.split("\n")
-    if messages[-1] != "":
+    lines = text.split("\n")
+    if lines[-1] != "":
         raise ValueError("the file doesn't end with a newline")
-    messages = messages[:-1]
+    messages = []
+    for line in lines[:-1]:
+        match = FROM.fullmatch(line)
+        if match:
+            messages += expand(match[1])
+        else:
+            messages.append(line)
     pad = 0
     if messages and messages[-1].startswith("\\pad{"):
         pad = int(messages.pop()[5:-1], 16)
@@ -198,16 +218,27 @@ def main():
         files = read_narc(args.archive.read_bytes())
         # Keep the names of files that are already there, NNNN_name.txt
         existing = {int(p.name[:4]): p for p in args.output.glob("[0-9][0-9][0-9][0-9]*.txt")}
+        kept = []
         for index, data in enumerate(files):
             path = existing.get(index, args.output / f"{index:04d}.txt")
+            # A file that takes messages from the data in JSON would get them twice
+            if path.exists() and any(FROM.fullmatch(line) for line in path.read_text(encoding="utf-8").split("\n")):
+                kept.append(path.name)
+                continue
             path.write_text(unpack_file(data), encoding="utf-8")
-        print(f"wrote {len(files)} files to {args.output}")
+        print(f"wrote {len(files) - len(kept)} files to {args.output}")
+        if kept:
+            print(f"kept {', '.join(kept)}, which take messages from the data in JSON")
     else:
         sources = sorted(args.directory.glob("*.txt"), key=lambda p: int(p.name[:4]))
         if [int(p.name[:4]) for p in sources] != list(range(len(sources))):
             raise SystemExit(f"{args.directory}: the files must be numbered 0000 on without gaps, NNNN_name.txt")
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_bytes(write_narc([pack_file(s.read_text(encoding="utf-8")) for s in sources]))
+        try:
+            files = [pack_file(s.read_text(encoding="utf-8")) for s in sources]
+        except DataError as error:
+            raise SystemExit(f"error: {error}")
+        args.output.write_bytes(write_narc(files))
 
 
 if __name__ == "__main__":

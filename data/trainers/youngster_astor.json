@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Astor",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "My Pokémon are gonna steam you out!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "We haven't lost in terms of dampness...\nI'm gonna keep believing that!"
+        },
+        {
+            "type": 2,
+            "text": "It sure is great to be all sodden.{be01}\nWho was the one who got to decide that\nbright, airy places are best?"
         }
     ]
 }

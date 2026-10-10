@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Golem",
+    "category": "Megaton Pokémon",
+    "pokedex_entry": "Even dynamite can't harm its hard,\nboulder-like body. It sheds its hide\njust once a year.",
     "base_stats": {
         "hp": 80,
         "attack": 110,

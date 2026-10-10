@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cubone",
+    "category": "Lonely Pokémon",
+    "pokedex_entry": "When it thinks of its dead mother,\nit cries. Its crying makes the\nskull it wears rattle hollowly.",
     "base_stats": {
         "hp": 50,
         "attack": 50,

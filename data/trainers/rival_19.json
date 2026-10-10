@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rival",
     "class": "TRAINER_CLASS_PKMN_TRAINER_RIVAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,20 @@
             "ability": 0,
             "item": "ITEM_CHARCOAL",
             "moves": [ "MOVE_FIRE_BLAST", "MOVE_HEAD_SMASH", "MOVE_HAMMER_ARM", "MOVE_SCALD" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "Battling against you always gets me\nriled up!"
+        },
+        {
+            "type": 20,
+            "text": "Like I'd lose to you!"
+        },
+        {
+            "type": 1,
+            "text": "This bitter...yet refreshing feeling."
         }
     ]
 }

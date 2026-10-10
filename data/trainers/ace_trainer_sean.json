@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Sean",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I wanna be like the Trainers on Route 1!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "S-so...this is Route 1!"
+        },
+        {
+            "type": 2,
+            "text": "Pop quiz! What's so good about Route 1?{be01}\nEverything! It's number one, after all!\nGet it?"
         }
     ]
 }

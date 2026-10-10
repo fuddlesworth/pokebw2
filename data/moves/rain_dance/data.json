@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rain Dance",
+    "description": "The user summons a heavy rain\nthat falls for five turns,\npowering up Water-type moves.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cubchoo",
+    "category": "Chill Pokémon",
+    "pokedex_entry": "Their snot is a barometer of health.\nWhen healthy, their snot is sticky and\nthe power of their ice moves increases.",
     "base_stats": {
         "hp": 55,
         "attack": 70,

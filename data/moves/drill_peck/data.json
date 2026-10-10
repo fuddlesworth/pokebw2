@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Drill Peck",
+    "description": "A corkscrewing attack with the\nsharp beak acting as a drill.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

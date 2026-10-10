@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Melita",
     "class": "TRAINER_CLASS_PKMN_RANGER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Haaah... Whoooosh...\nHaaah... Whoooosh...{be01}\nOK! After deep-breathing exercises\ncomes the time for a Pokémon battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "All that I can do now is sigh in sorrow..."
+        },
+        {
+            "type": 15,
+            "text": "But I can also do this!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "Different Pokémon can be found\nin different places.{be01}\nDoes that mean there is\na perfect place for everyone?"
         }
     ]
 }

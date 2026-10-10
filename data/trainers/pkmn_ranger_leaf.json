@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Leaf",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Those footsteps I have heard drawing\nnear... I have been waiting for you!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I knew as soon as I heard your footfalls\nthat you were a force to be reckoned with!"
+        },
+        {
+            "type": 15,
+            "text": "I had actually been meaning to\ngive you something.{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I was imagining how a Burmy must feel\nwrapped in a cloak of fallen leaves!"
         }
     ]
 }

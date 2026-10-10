@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sand Tomb",
+    "description": "The user traps the target inside a harshly\nraging sandstorm for four to five turns.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

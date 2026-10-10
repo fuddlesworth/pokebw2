@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lairon",
+    "category": "Iron Armor Pokémon",
+    "pokedex_entry": "Lairon fight over territory,\nand when their steel bodies\ncollide, sparks fly.",
     "base_stats": {
         "hp": 60,
         "attack": 90,

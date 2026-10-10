@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Mitzi",
     "class": "TRAINER_CLASS_SWIMMER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Time for an aquatic battle in\nthe sea near Undella Town!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I'm going to just float on by..."
+        },
+        {
+            "type": 2,
+            "text": "Sometimes Jellyfish Pokémon are\nfloating in the water around here!"
         }
     ]
 }

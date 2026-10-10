@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nicky",
     "class": "TRAINER_CLASS_ROUGHNECK",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_TACKLE", "MOVE_ASSURANCE", "MOVE_POISON_GAS" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Get in my way, and I'll knock you out!\nStay out of my way...and I'll knock{be00}\nyou out, too!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I'm the one who got knocked out!\nThat was exhilarating!"
+        },
+        {
+            "type": 2,
+            "text": "Hahaha! You're great!\nKnock 'em all out for me, OK?"
         }
     ]
 }

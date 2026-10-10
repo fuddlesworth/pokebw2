@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "After You",
+    "description": "The user helps the target and makes it\nuse its move right after the user.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

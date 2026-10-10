@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Toxicroak",
+    "category": "Toxic Mouth Pokémon",
+    "pokedex_entry": "The croaking that Toxicroak produces\nbefore a battle is for churning the\npoison it has stored in its poison sac.",
     "base_stats": {
         "hp": 83,
         "attack": 106,

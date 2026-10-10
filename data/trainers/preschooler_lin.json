@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Lin",
     "class": "TRAINER_CLASS_PRESCHOOLER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hi there! Look at my awesome Pokémon.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I...I'm not mad!"
+        },
+        {
+            "type": 2,
+            "text": "My Pokémon will always be with me,\neven if we lose!"
         }
     ]
 }

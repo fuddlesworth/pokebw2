@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Roserade",
+    "category": "Bouquet Pokémon",
+    "pokedex_entry": "Luring prey with a sweet scent, it\nuses poison whips on its arms\nto poison, bind, and finish off the prey.",
     "base_stats": {
         "hp": 60,
         "attack": 70,

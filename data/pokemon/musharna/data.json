@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Musharna",
+    "category": "Drowsing Pokémon",
+    "pokedex_entry": "The dream mist coming from its forehead\nchanges into many different colors\ndepending on the dream that was eaten.",
     "base_stats": {
         "hp": 116,
         "attack": 55,

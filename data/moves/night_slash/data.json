@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Night Slash",
+    "description": "The user slashes the target\nthe instant an opportunity arises.\nCritical hits land more easily.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

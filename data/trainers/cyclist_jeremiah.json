@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jeremiah",
     "class": "TRAINER_CLASS_CYCLIST_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Yahoooo!\nIf you call, I'll come right away!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I'm on fire, baby! On fire!"
+        },
+        {
+            "type": 2,
+            "text": "Riding a Bicycle is fine, but I want\nto ride away on a Pokémon!"
         }
     ]
 }

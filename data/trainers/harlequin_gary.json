@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Gary",
     "class": "TRAINER_CLASS_HARLEQUIN_233",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "You thought you could get\nthrough here? Think again!{be01}\nOr so you thought!\nI'm just blocking your way!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "My, my...\nAren't you a bit too strong?"
+        },
+        {
+            "type": 2,
+            "text": "Keep this a secret between you and me...{be01}\nDepending on which side you enter\nthe cocoon, you will come out somewhere{be00}\ndifferent on the other end."
         }
     ]
 }

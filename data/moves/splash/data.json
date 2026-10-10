@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Splash",
+    "description": "The user just flops and splashes around\nto no effect at all...",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

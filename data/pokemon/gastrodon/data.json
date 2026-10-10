@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gastrodon",
+    "category": "Sea Slug Pokémon",
+    "pokedex_entry": "Long ago, its entire back was\nshielded with a sturdy shell. There\nare traces of it left in its cells.",
     "base_stats": {
         "hp": 111,
         "attack": 83,

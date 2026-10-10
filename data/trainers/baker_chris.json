@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Chris",
     "class": "TRAINER_CLASS_BAKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 1,
             "item": "ITEM_SITRUS_BERRY"
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Welcome! Do you have\na reservation for a battle?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh my!\nIt appears you reserved a victory, too!"
+        },
+        {
+            "type": 2,
+            "text": "You are great!\nI want to hire you."
         }
     ]
 }

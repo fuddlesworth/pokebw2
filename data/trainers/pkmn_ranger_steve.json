@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Steve",
     "class": "TRAINER_CLASS_PKMN_RANGER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I've been waiting for this!\nWaiting for this very moment!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I had been waiting for such a strong Trainer\nas yourself!"
+        },
+        {
+            "type": 15,
+            "text": "I've been waiting for this!\nWaiting to give a gift to someone!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I've been lying in wait for ages beside a\nhidden item.{be01}\nAn Amoonguss couldn't have pulled off a\nbetter ambush...right?"
         }
     ]
 }

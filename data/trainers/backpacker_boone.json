@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Boone",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "What's this? A visitor? Ooh, I'm so happy\nto meet someone else here!{be01}\nCould I ask you to be my opponent in a\nlong-awaited Pokémon battle?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "It's all well and good fighting wild Pokémon,\nbut there is a certain thrill to be found in{be00}\nbattling against another Trainer!"
+        },
+        {
+            "type": 2,
+            "text": "This house... Doesn't it seem like the\nfurniture just moves itself?{be01}\nNo! It's not me! I'm seriously not\nmoving it!"
         }
     ]
 }

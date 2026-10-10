@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Meditite",
+    "category": "Meditate Pokémon",
+    "pokedex_entry": "It always trains deep in mountains.\nIt levitates when it heightens its\nspiritual power through meditation.",
     "base_stats": {
         "hp": 30,
         "attack": 40,

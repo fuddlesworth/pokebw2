@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Taillow",
+    "category": "TinySwallow Pokémon",
+    "pokedex_entry": "It has a gutsy spirit that makes\nit bravely take on tough foes. It\nflies in search of warm climates.",
     "base_stats": {
         "hp": 40,
         "attack": 55,

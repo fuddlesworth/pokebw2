@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Huntail",
+    "category": "Deep Sea Pokémon",
+    "pokedex_entry": "It lives deep in the sea. With a\ntail shaped like a small fish, it\nattracts unsuspecting prey.",
     "base_stats": {
         "hp": 55,
         "attack": 104,

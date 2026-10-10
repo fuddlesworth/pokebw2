@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Miltank",
+    "category": "Milk Cow Pokémon",
+    "pokedex_entry": "It is said that kids who drink\nMiltank's milk grow up to become\nhearty, healthy adults.",
     "base_stats": {
         "hp": 95,
         "attack": 80,

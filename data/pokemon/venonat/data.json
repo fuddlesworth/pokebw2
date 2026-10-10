@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Venonat",
+    "category": "Insect Pokémon",
+    "pokedex_entry": "Its big eyes are actually clusters\nof tiny eyes. At night, its kind is\ndrawn by light.",
     "base_stats": {
         "hp": 60,
         "attack": 55,

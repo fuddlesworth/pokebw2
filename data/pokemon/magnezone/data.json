@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Magnezone",
+    "category": "Magnet Area Pokémon",
+    "pokedex_entry": "Sometimes the magnetism emitted by\nMagnezone is too strong, making them\nattract each other so they cannot move.",
     "base_stats": {
         "hp": 70,
         "attack": 70,

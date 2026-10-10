@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bounce",
+    "description": "The user bounces up high, then drops on\nthe target on the second turn. It may\nalso leave the target with paralysis.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gloom",
+    "category": "Weed Pokémon",
+    "pokedex_entry": "The honey it drools from its mouth\nsmells so atrocious, it can curl\nnoses more than a mile away.",
     "base_stats": {
         "hp": 60,
         "attack": 65,

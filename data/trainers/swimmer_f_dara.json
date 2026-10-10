@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Dara",
     "class": "TRAINER_CLASS_SWIMMER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I was taking a little break, but hey,\nI always have time for Pokémon battles!{be00}\nLet's enjoy it as much as possible!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Wooosh!\nSsshhhh!!"
+        },
+        {
+            "type": 2,
+            "text": "I'll tell you why I was taking a break.{be01}\nI have trouble with my bikini.\nIt could be washed away..."
         }
     ]
 }

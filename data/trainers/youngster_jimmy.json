@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Jimmy",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -47,6 +48,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A Trainer catches another Trainer's eye.\nThat is the start of a Pokémon battle!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "What?!\nYou are too strong!"
+        },
+        {
+            "type": 2,
+            "text": "And I've done nothing but train my\nPokémon ever since I lost to that{be00}\nTrainer from Nuvema Town two years ago!"
         }
     ]
 }

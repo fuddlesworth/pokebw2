@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kirlia",
+    "category": "Emotion Pokémon",
+    "pokedex_entry": "If its Trainer becomes happy, it\noverflows with energy, dancing\njoyously while spinning about.",
     "base_stats": {
         "hp": 38,
         "attack": 35,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "ThunderPunch",
+    "description": "The target is punched with an electrified\nfist. It may also leave the target\nwith paralysis.",
     "type": "TYPE_ELECTRIC",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

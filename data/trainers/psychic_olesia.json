@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Olesia",
     "class": "TRAINER_CLASS_PSYCHIC_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Eeek! Why? I foresaw your move,\nand I was running away from you.{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Eeek! I foresaw your thoughts,\nbut I lost!"
+        },
+        {
+            "type": 2,
+            "text": "You can't help but to chase after what\nruns and to want what you can't have!"
         }
     ]
 }

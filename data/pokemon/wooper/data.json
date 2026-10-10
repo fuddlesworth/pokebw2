@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Wooper",
+    "category": "Water Fish Pokémon",
+    "pokedex_entry": "When walking on land, it covers its\nbody with a poisonous film that\nkeeps its skin from dehydrating.",
     "base_stats": {
         "hp": 55,
         "attack": 45,

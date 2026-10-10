@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Cradily",
+    "category": "Barnacle Pokémon",
+    "pokedex_entry": "It lives in the shallows of warm\nseas. When the tide goes out, it\ndigs up prey from beaches.",
     "base_stats": {
         "hp": 86,
         "attack": 81,

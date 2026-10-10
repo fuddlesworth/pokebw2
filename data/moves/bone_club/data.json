@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bone Club",
+    "description": "The user clubs the target with a bone.\nIt may also make the target flinch.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

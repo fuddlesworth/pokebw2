@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Payback",
+    "description": "If the user moves after the target,\nthis attack's power will be doubled.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Connor",
     "class": "TRAINER_CLASS_INFIELDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey!\nHey, let's practice together!{be01}\nI have to warn you--I will go all out\neven if we are just practicing!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I was no match for you...\nThere is always someone better."
+        },
+        {
+            "type": 15,
+            "text": "This is my thanks for training with me!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "I promise you!{be01}\nI will learn from this experience\nand become an even better player!"
         }
     ]
 }

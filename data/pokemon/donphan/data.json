@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Donphan",
+    "category": "Armor Pokémon",
+    "pokedex_entry": "It attacks by curling up then\nrolling into its foe. It can blow\napart a house in one hit.",
     "base_stats": {
         "hp": 90,
         "attack": 120,

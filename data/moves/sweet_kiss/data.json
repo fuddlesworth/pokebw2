@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Sweet Kiss",
+    "description": "The user kisses the target with a sweet,\nangelic cuteness that causes confusion.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

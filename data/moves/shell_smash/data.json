@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Shell Smash",
+    "description": "The user breaks its shell, lowering its\nDefense and Sp. Def stats but sharply\nraising Attack, Sp. Atk, and Speed stats.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rodrigo",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,5 +17,6 @@
             "gender": 0,
             "ability": 0
         }
-    ]
+    ],
+    "messages": []
 }

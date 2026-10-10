@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ninjask",
+    "category": "Ninja Pokémon",
+    "pokedex_entry": "Because it moves so quickly, it\nsometimes becomes unseeable. It\ncongregates around tree sap.",
     "base_stats": {
         "hp": 61,
         "attack": 90,

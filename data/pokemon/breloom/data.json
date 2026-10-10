@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Breloom",
+    "category": "Mushroom Pokémon",
+    "pokedex_entry": "Its short arms stretch when it\nthrows punches. Its technique is\nequal to that of pro boxers.",
     "base_stats": {
         "hp": 60,
         "attack": 130,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grace",
     "class": "TRAINER_CLASS_SOCIALITE",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Oh my, what a young Trainer.\nIf it's all right, why don't we battle?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "There at the end, I nearly called out my\nlate Pokémon's name..."
+        },
+        {
+            "type": 2,
+            "text": "Is it a good thing to forget your Pokémon\nafter they are gone?{be00}\nOr is it better when you cannot forget?"
         }
     ]
 }

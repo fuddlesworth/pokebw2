@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Poison Fang",
+    "description": "The user bites the target with toxic\nfangs. It may also leave the target\nbadly poisoned.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Turtwig",
+    "category": "Tiny Leaf Pokémon",
+    "pokedex_entry": "The shell on its back is made of\nsoil. On a very healthy Turtwig,\nthe shell should feel moist.",
     "base_stats": {
         "hp": 55,
         "attack": 68,

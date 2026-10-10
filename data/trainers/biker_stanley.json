@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Stanley",
     "class": "TRAINER_CLASS_BIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A motorcycle in the desert!\nDoesn't get much more wild than this, eh?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Motorcycles aren't compatible with sand.\nI'm not compatible with you!"
+        },
+        {
+            "type": 2,
+            "text": "Both bicycles and motorcycles get\ntheir tires stuck in the sand!"
         }
     ]
 }

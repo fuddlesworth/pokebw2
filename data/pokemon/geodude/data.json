@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Geodude",
+    "category": "Rock Pokémon",
+    "pokedex_entry": "At rest, it looks just like a rock.\nCarelessly stepping on it will make\nit swing its fists angrily.",
     "base_stats": {
         "hp": 40,
         "attack": 80,

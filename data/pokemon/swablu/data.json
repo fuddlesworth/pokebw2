@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Swablu",
+    "category": "Cotton Bird Pokémon",
+    "pokedex_entry": "For some reason, it likes\nto land on people's heads\nsoftly and act like it's a hat.",
     "base_stats": {
         "hp": 45,
         "attack": 40,

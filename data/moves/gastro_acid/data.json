@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Gastro Acid",
+    "description": "The user hurls up its stomach acids on\nthe target. The fluid eliminates the effect\nof the target's Ability.",
     "type": "TYPE_POISON",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

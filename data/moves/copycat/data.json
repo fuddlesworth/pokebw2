@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Copycat",
+    "description": "The user mimics the move used immediately\nbefore it. The move fails if no other move\nhas been used yet.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

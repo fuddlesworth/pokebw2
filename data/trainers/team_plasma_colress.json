@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Colress",
     "class": "TRAINER_CLASS_TEAM_PLASMA_COLRESS",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE" ],
@@ -57,6 +58,20 @@
             "ability": 0,
             "item": "ITEM_AIR_BALLOON",
             "moves": [ "MOVE_GEAR_GRIND", "MOVE_THUNDERBOLT", "MOVE_GIGA_IMPACT", "MOVE_SHIFT_GEAR" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "Come on! More!\nBring out your Pokémon's power!"
+        },
+        {
+            "type": 19,
+            "text": "I'm more psyched than I've ever been!\nI can still go on!"
+        },
+        {
+            "type": 1,
+            "text": "So this is what it means to draw forth the\npower hidden in your Pokémon!"
         }
     ]
 }

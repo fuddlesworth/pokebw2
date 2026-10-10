@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Leonard",
     "class": "TRAINER_CLASS_PILOT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,24 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey! It's me! It's me!\nI am the best Pilot in Unova!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You! You are daring!\nBe my apprentice!"
+        },
+        {
+            "type": 15,
+            "text": "Here! I'll give you this, so\nbecome my apprentice!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "A once-in-a-lifetime flight!\nFly, fly, and fly away!"
         }
     ]
 }

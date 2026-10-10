@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nicole",
     "class": "TRAINER_CLASS_PARASOL_LADY",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -16,6 +17,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_RAIN_DANCE", "MOVE_POWDER_SNOW", "MOVE_EMBER", "MOVE_WATER_GUN" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Pouring rain... ♪\nFighting Pokémon... ♪{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Ah, hear the sad melody\nof a total defeat..."
+        },
+        {
+            "type": 2,
+            "text": "Rain, rain! I love rain! ♪\nIf I'm crying, I can hide my tears with{be00}\nmy parasol!"
         }
     ]
 }

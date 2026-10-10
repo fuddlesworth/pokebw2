@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Talon",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "When you embark on a journey, you\ndiscover many joys...{be00}\nWhat will I discover fighting you?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The joy of victory and sorrow of defeat--\nboth gone in an instant..."
+        },
+        {
+            "type": 2,
+            "text": "I learned this lesson when I got to the\nend of my journey.{be01}\nJoy can be fleeting.\nBut true happiness never ends...{be00}\nJust as your Pokémon will never leave."
         }
     ]
 }

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Samantha",
     "class": "TRAINER_CLASS_PRESCHOOLER_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Instead of a Dragon-type Pokémon, I've\nfound myself a spectacular Trainer!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You were spectacular and, more than that,\nso strong!"
+        },
+        {
+            "type": 2,
+            "text": "I'm going to like Dragon-type Pokémon\nbecause I want to talk to Drayden!"
         }
     ]
 }

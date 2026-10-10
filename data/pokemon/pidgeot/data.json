@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Pidgeot",
+    "category": "Bird Pokémon",
+    "pokedex_entry": "By flapping its wings with all its\nmight, Pidgeot can make a gust of\nwind capable of bending tall trees.",
     "base_stats": {
         "hp": 83,
         "attack": 80,

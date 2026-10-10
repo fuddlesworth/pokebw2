@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Fraxure",
+    "category": "Axe Jaw Pokémon",
+    "pokedex_entry": "A broken tusk will not grow back, so\nit diligently sharpens its tusks on\nriver rocks after the end of a battle.",
     "base_stats": {
         "hp": 66,
         "attack": 117,

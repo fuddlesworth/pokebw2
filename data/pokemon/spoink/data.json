@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Spoink",
+    "category": "Bounce Pokémon",
+    "pokedex_entry": "Using its tail like a spring, it keeps\nits heart beating by bouncing\nconstantly. If it stops, it dies.",
     "base_stats": {
         "hp": 60,
         "attack": 25,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Bronzong",
+    "category": "Bronze Bell Pokémon",
+    "pokedex_entry": "In ages past, this Pokémon\nwas revered as a bringer of rain.\nIt was found buried in the ground.",
     "base_stats": {
         "hp": 67,
         "attack": 89,

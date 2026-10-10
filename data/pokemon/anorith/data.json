@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Anorith",
+    "category": "Old Shrimp Pokémon",
+    "pokedex_entry": "A Pokémon ancestor that was\nreanimated from a fossil. It lived\nin the sea and hunted with claws.",
     "base_stats": {
         "hp": 45,
         "attack": 95,

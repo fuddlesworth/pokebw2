@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Hitmonlee",
+    "category": "Kicking Pokémon",
+    "pokedex_entry": "Its legs can stretch double.\nFirst-time foes are startled by\nits extensible reach.",
     "base_stats": {
         "hp": 50,
         "attack": 120,

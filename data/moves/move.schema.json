@@ -5,11 +5,16 @@
     "type": "object",
     "additionalProperties": false,
     "required": [
-        "type", "quality", "category", "power", "accuracy", "pp", "priority", "hits", "inflicts", "crit_stage",
+        "name", "description", "type", "quality", "category", "power", "accuracy", "pp", "priority", "hits", "inflicts", "crit_stage",
         "flinch_chance", "effect", "drain", "heal", "target", "stat_changes", "flags"
     ],
     "properties": {
         "$schema": { "type": "string", "description": "This schema, for editors" },
+        "name": {
+            "type": "string",
+            "description": "The move's name, which the text files take with \\from{moves.name}, also in capitals"
+        },
+        "description": { "type": "string", "description": "The move's description, with its line breaks" },
         "type": { "type": "string", "x-constant": "TYPE_" },
         "quality": {
             "type": "string", "x-constant": "MOVE_QUALITY_",

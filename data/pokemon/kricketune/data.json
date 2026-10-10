@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Kricketune",
+    "category": "Cricket Pokémon",
+    "pokedex_entry": "There is a village that hosts a\ncontest based on the amazingly\nvariable cries of this Pokémon.",
     "base_stats": {
         "hp": 77,
         "attack": 85,

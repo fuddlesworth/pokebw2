@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Wonder Room",
+    "description": "The user creates a bizarre area in which\nPokémon's Defense and Sp. Def\nstats are swapped for five turns.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Zapdos",
+    "category": "Electric Pokémon",
+    "pokedex_entry": "A legendary Pokémon that is said\nto live in thunderclouds. It freely\ncontrols lightning bolts.",
     "base_stats": {
         "hp": 90,
         "attack": 90,

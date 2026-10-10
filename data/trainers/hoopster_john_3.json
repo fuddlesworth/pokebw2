@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "John",
     "class": "TRAINER_CLASS_HOOPSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,24 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The amount you sweat is a good\nindicator of how youthful you are!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "I don't care if I lose. I'm still young!\nThat was a good sweat!"
+        },
+        {
+            "type": 15,
+            "text": "When you start to sweat,\ntry using this item!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "My capacity for exercise is one of\nmy better points!{be01}\nIt's all so I can get a good sweat!"
         }
     ]
 }

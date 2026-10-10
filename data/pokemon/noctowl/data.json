@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Noctowl",
+    "category": "Owl Pokémon",
+    "pokedex_entry": "Its eyes are specially developed\nto enable it to see clearly even in\nmurky darkness and minimal light.",
     "base_stats": {
         "hp": 100,
         "attack": 50,

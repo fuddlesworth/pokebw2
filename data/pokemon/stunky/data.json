@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Stunky",
+    "category": "Skunk Pokémon",
+    "pokedex_entry": "It sprays a foul fluid from its\nrear. Its stench spreads over a\nmile radius, driving Pokémon away.",
     "base_stats": {
         "hp": 63,
         "attack": 63,

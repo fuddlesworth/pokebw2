@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bind",
+    "description": "Things such as long bodies or tentacles\nare used to bind and squeeze\nthe target for four to five turns.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_PHYSICAL",

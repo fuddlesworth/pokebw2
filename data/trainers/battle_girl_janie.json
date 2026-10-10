@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Janie",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,24 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A place where you can warm up!\nThat's what I heard and why I came here!{be00}\nLet's turn up the heat on this thing!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "The heat here is too much.\nI'm just burning up!"
+        },
+        {
+            "type": 15,
+            "text": "Accept this symbol of my excitement!{be01}"
+        },
+        {
+            "type": 16,
+            "text": "My warrior's heart is burning!\nThank you for the hot battle!{be01}\nNext, I will stay on this hot streak\nand watch the game!"
         }
     ]
 }

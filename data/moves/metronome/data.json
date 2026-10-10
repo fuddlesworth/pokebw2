@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Metronome",
+    "description": "The user waggles a finger and stimulates\nits brain into randomly using nearly\nany move.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

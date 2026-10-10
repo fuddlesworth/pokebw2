@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Lileep",
+    "category": "Sea Lily Pokémon",
+    "pokedex_entry": "It lived on the seafloor 100\nmillion years ago and was\nreanimated scientifically.",
     "base_stats": {
         "hp": 66,
         "attack": 41,

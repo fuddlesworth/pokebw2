@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Mud-Slap",
+    "description": "The user hurls mud in the target's face to\ninflict damage and lower its accuracy.",
     "type": "TYPE_GROUND",
     "quality": "MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS",
     "category": "MOVE_CATEGORY_SPECIAL",

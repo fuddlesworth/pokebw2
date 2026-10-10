@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shaye",
     "class": "TRAINER_CLASS_ACE_TRAINER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 100,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "I researched on the PC the best way\nto battle, and now I'm sure to win!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Seriously?"
+        },
+        {
+            "type": 2,
+            "text": "What I found on the PC was just someone\nelse's idea and not an answer that I had{be00}\ncome up with myself..."
         }
     ]
 }

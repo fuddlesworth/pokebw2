@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Hurricane",
+    "description": "The user attacks by wrapping its opponent\nin a fierce wind that flies up into the sky.\nIt may also confuse the target.",
     "type": "TYPE_FLYING",
     "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
     "category": "MOVE_CATEGORY_SPECIAL",

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Metagross",
+    "category": "Iron Leg Pokémon",
+    "pokedex_entry": "With four linked brains, it's more\nintelligent than a supercomputer, and\nit uses calculations to analyze foes.",
     "base_stats": {
         "hp": 80,
         "attack": 135,

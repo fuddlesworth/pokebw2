@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Raichu",
+    "category": "Mouse Pokémon",
+    "pokedex_entry": "Its tail discharges electricity into\nthe ground, protecting it from\ngetting shocked.",
     "base_stats": {
         "hp": 60,
         "attack": 90,

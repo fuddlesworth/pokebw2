@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Minimize",
+    "description": "The user compresses its body\nto make itself look smaller,\nwhich sharply raises its evasiveness.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

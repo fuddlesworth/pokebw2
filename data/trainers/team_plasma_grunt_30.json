@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Grunt",
     "class": "TRAINER_CLASS_TEAM_PLASMA_GRUNT_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "...I trained myself endlessly for two\nyears to get justice for Team Plasma!{be01}\nI won't lose to anyone anymore!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "...But if I lose, I won't be able to carry\nout my justice!"
+        },
+        {
+            "type": 2,
+            "text": "My plan for justice!{be01}\nI will carry it out no matter what anyone\nsays! No matter what!{be01}\nNot that you'd know anything about that!"
         }
     ]
 }

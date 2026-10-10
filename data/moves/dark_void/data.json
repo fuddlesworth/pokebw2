@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Dark Void",
+    "description": "Opposing Pokémon are dragged into\na world of total darkness that makes\nthem sleep.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_INFLICT",
     "category": "MOVE_CATEGORY_STATUS",

@@ -1,5 +1,7 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Emmet",
+    "compress_name": false,
     "class": "TRAINER_CLASS_SUBWAY_BOSS_EMMET",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +17,12 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "I am Emmet.{be01}\nI lost together with Ingo.{be01}\nYour combination is\nthe best. Perfect!{be00}\nYou're verrrrry strong Trainers.{be01}"
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Abomasnow",
+    "category": "Frost Tree Pokémon",
+    "pokedex_entry": "They appear when the snow flowers\nbloom. When the petals fall, they\nretreat to places unknown again.",
     "base_stats": {
         "hp": 90,
         "attack": 92,

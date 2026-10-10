@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Grimer",
+    "category": "Sludge Pokémon",
+    "pokedex_entry": "Born from sludge, these Pokémon now\ngather in polluted places and increase\nthe bacteria in their bodies.",
     "base_stats": {
         "hp": 80,
         "attack": 80,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Bestow",
+    "description": "The user passes its held item to the\ntarget when the target isn't holding\nan item.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

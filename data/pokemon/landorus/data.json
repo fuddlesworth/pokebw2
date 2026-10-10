@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Landorus",
+    "category": "Abundance Pokémon",
+    "pokedex_entry": "From the forces of lightning and wind,\nit creates energy to give nutrients to\nthe soil and make the land abundant.",
     "base_stats": {
         "hp": 89,
         "attack": 125,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Rock Throw",
+    "description": "The user picks up and throws a small\nrock at the target to attack.",
     "type": "TYPE_ROCK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

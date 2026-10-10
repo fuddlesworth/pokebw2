@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Buneary",
+    "category": "Rabbit Pokémon",
+    "pokedex_entry": "By extending its rolled-up ears\nand striking the ground, it can\nbound so high it surprises itself.",
     "base_stats": {
         "hp": 55,
         "attack": 66,

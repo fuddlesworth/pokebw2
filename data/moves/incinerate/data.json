@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Incinerate",
+    "description": "The user attacks the target with fire.\nIf the target is holding a Berry, the\nBerry becomes burnt up and unusable.",
     "type": "TYPE_FIRE",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

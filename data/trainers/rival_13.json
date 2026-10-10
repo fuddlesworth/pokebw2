@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Rival",
     "class": "TRAINER_CLASS_PKMN_TRAINER_RIVAL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -26,5 +27,6 @@
             "ability": 1,
             "item": "ITEM_NONE"
         }
-    ]
+    ],
+    "messages": []
 }

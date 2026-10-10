@@ -1,5 +1,7 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Bianca",
+    "compress_name": false,
     "class": "TRAINER_CLASS_PKMN_TRAINER_BIANCA",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -35,5 +37,6 @@
             "ability": 1,
             "moves": [ "MOVE_DRAIN_PUNCH", "MOVE_FAKE_OUT", "MOVE_U_TURN", "MOVE_ACROBATICS" ]
         }
-    ]
+    ],
+    "messages": []
 }

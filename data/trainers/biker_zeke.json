@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Zeke",
     "class": "TRAINER_CLASS_BIKER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Do you want to pass through here?{be01}\nThen, you must greet me!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "You!!\nWhat great strength you have!"
+        },
+        {
+            "type": 2,
+            "text": "Chase the sun during the day,\nand sleep all night...{be00}\nThat might be a good life for me."
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Regigigas",
+    "category": "Colossal Pokémon",
+    "pokedex_entry": "It is said to have made Pokémon\nthat look like itself from a special\nice mountain, rocks, and magma.",
     "base_stats": {
         "hp": 110,
         "attack": 160,

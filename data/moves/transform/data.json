@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Transform",
+    "description": "The user transforms into a copy of the\ntarget right down to having\nthe same move set.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

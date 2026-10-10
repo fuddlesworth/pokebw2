@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Defend Order",
+    "description": "The user calls out its underlings to\nshield its body, raising its Defense\nand Sp. Def stats.",
     "type": "TYPE_BUG",
     "quality": "MOVE_QUALITY_STAT_CHANGE",
     "category": "MOVE_CATEGORY_STATUS",

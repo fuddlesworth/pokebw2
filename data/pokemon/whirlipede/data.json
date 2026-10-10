@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Whirlipede",
+    "category": "Curlipede Pokémon",
+    "pokedex_entry": "Storing energy for evolution, it sits.\nBut, when predators approach, it\nmoves to stab them with poison spikes.",
     "base_stats": {
         "hp": 40,
         "attack": 55,

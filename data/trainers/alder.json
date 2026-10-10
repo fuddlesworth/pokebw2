@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Alder",
     "class": "TRAINER_CLASS_PKMN_TRAINER_ALDER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [ "ITEM_FULL_RESTORE", "ITEM_FULL_RESTORE" ],
@@ -67,6 +68,24 @@
             "ability": 0,
             "item": "ITEM_SITRUS_BERRY",
             "moves": [ "MOVE_HEAT_WAVE", "MOVE_QUIVER_DANCE", "MOVE_SILVER_WIND", "MOVE_PSYCHIC" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 17,
+            "text": "If that is the move you chose\nafter serious consideration, that's fine!"
+        },
+        {
+            "type": 19,
+            "text": "Woooo! Your inexhaustible fighting spirit!\nImpressive!"
+        },
+        {
+            "type": 20,
+            "text": "Good! That strength is good!\nBut I'm going to send it back at you!"
+        },
+        {
+            "type": 1,
+            "text": "After the battle, a fresh wind\nblew through my heart..."
         }
     ]
 }

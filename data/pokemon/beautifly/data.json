@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Beautifly",
+    "category": "Butterfly Pokémon",
+    "pokedex_entry": "Despite its looks, it is aggressive.\nIt jabs with its long, thin mouth if\ndisturbed while collecting pollen.",
     "base_stats": {
         "hp": 60,
         "attack": 70,

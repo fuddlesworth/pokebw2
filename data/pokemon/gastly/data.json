@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Gastly",
+    "category": "Gas Pokémon",
+    "pokedex_entry": "Born from gases, anyone would\nfaint if engulfed by its gaseous\nbody, which contains poison.",
     "base_stats": {
         "hp": 30,
         "attack": 35,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Destiny Bond",
+    "description": "When this move is used, if the user faints,\nthe Pokémon that landed the knockout\nhit also faints.",
     "type": "TYPE_GHOST",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

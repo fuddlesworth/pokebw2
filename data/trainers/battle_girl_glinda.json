@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Glinda",
     "class": "TRAINER_CLASS_BATTLE_GIRL",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Number! Four! Teen!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "OK!\nThank you very much!"
+        },
+        {
+            "type": 2,
+            "text": "Whether they win or lose, Pokémon can\nbecome just a little bit stronger after{be00}\neach and every battle."
         }
     ]
 }

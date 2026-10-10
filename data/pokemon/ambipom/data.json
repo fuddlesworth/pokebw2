@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Ambipom",
+    "category": "Long Tail Pokémon",
+    "pokedex_entry": "Split into two, the tails are so\nadept at handling and doing things,\nAmbipom rarely uses its hands.",
     "base_stats": {
         "hp": 75,
         "attack": 100,

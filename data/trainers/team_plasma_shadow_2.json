@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Shadow",
     "class": "TRAINER_CLASS_TEAM_PLASMA_SHADOW",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -34,6 +35,12 @@
             "gender": 0,
             "ability": 1,
             "moves": [ "MOVE_BUG_BUZZ", "MOVE_GIGA_DRAIN", "MOVE_SWIFT", "MOVE_ME_FIRST" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 1,
+            "text": "It doesn't bother us a bit if Pokémon\nwin or lose."
         }
     ]
 }

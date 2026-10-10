@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Cecile",
     "class": "TRAINER_CLASS_VETERAN_F",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -25,6 +26,20 @@
             "gender": 0,
             "ability": 0,
             "moves": [ "MOVE_ACROBATICS", "MOVE_U_TURN", "MOVE_CRUNCH", "MOVE_SANDSTORM" ]
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Hey, since you worked so hard to get\nhere, how about I be your opponent?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Thanks a bunch.\nIt was a lot of fun!"
+        },
+        {
+            "type": 2,
+            "text": "My Pokémon lets me ride on its back as\nit uses Surf or Waterfall.{be00}\nI really feel its love at those times!"
         }
     ]
 }

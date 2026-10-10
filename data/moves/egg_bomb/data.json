@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Egg Bomb",
+    "description": "A large egg is hurled at the target\nwith maximum force to inflict damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

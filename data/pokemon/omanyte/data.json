@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Omanyte",
+    "category": "Spiral Pokémon",
+    "pokedex_entry": "A Pokémon that was resurrected\nfrom a fossil using modern science.\nIt swam in ancient seas.",
     "base_stats": {
         "hp": 35,
         "attack": 40,

@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Fury Swipes",
+    "description": "The target is raked with sharp claws or\nscythes for two to five times in\nquick succession.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

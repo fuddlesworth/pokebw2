@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Assist",
+    "description": "The user hurriedly and randomly uses a\nmove among those known by other\nPokémon in the party.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

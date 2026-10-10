@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Trick Room",
+    "description": "The user creates a bizarre area in which\nslower Pokémon get to move first for\nfive turns.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_FIELD",
     "category": "MOVE_CATEGORY_STATUS",

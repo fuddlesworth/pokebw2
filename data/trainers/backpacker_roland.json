@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Roland",
     "class": "TRAINER_CLASS_BACKPACKER_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "A ruin buried under the sand!\nTo have run into another Trainer here!{be00}\nDoesn't this give you a grand sense{be00}\nof adventure?{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Bittersweet defeat becomes\na bittersweet memory..."
+        },
+        {
+            "type": 2,
+            "text": "It's a lot of fun to imagine how people in\nancient times lived their everyday lives!"
         }
     ]
 }

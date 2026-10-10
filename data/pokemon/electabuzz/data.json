@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Electabuzz",
+    "category": "Electric Pokémon",
+    "pokedex_entry": "Research is progressing on storing\nlightning in Electabuzz so this\nenergy can be used at any time.",
     "base_stats": {
         "hp": 65,
         "attack": 83,

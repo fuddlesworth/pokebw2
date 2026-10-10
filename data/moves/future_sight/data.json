@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Future Sight",
+    "description": "Two turns after this move is used,\na hunk of psychic energy\nattacks the target.",
     "type": "TYPE_PSYCHIC",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_SPECIAL",

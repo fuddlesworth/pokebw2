@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Soak",
+    "description": "The user shoots a torrent of water\nat the target and changes\nthe target's type to Water.",
     "type": "TYPE_WATER",
     "quality": "MOVE_QUALITY_SPECIAL",
     "category": "MOVE_CATEGORY_STATUS",

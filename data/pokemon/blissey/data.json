@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Blissey",
+    "category": "Happiness Pokémon",
+    "pokedex_entry": "The eggs it lays are filled with\nhappiness. Eating even one bite\nwill bring a smile to anyone.",
     "base_stats": {
         "hp": 255,
         "attack": 10,

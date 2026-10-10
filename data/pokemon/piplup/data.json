@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Piplup",
+    "category": "Penguin Pokémon",
+    "pokedex_entry": "A poor walker, it often falls down.\nHowever, its strong pride makes it\npuff up its chest without a care.",
     "base_stats": {
         "hp": 53,
         "attack": 51,

@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Drago",
     "class": "TRAINER_CLASS_BLACK_BELT",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "The path of karate is the path of\nhumanity...and the path of Pokémon!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oof! It is not by chance that you have won!"
+        },
+        {
+            "type": 2,
+            "text": "Winners win because they deserve to win!"
         }
     ]
 }

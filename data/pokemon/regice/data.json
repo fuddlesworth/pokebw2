@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Regice",
+    "category": "Iceberg Pokémon",
+    "pokedex_entry": "Its body is made of ice from the\nice age. It controls frigid air of\n-328 degrees Fahrenheit.",
     "base_stats": {
         "hp": 80,
         "attack": 50,

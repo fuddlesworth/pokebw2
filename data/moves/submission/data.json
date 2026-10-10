@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Submission",
+    "description": "The user grabs the target and recklessly\ndives for the ground. It also hurts the\nuser slightly.",
     "type": "TYPE_FIGHTING",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",

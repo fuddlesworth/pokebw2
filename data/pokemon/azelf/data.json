@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Azelf",
+    "category": "Willpower Pokémon",
+    "pokedex_entry": "When Azelf flew, people gained the\ndetermination to do things.\nIt was the birth of willpower.",
     "base_stats": {
         "hp": 75,
         "attack": 125,

@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Quagsire",
+    "category": "Water Fish Pokémon",
+    "pokedex_entry": "It has an easygoing nature. It\ndoesn't care if it bumps its head on\nboats and boulders while swimming.",
     "base_stats": {
         "hp": 95,
         "attack": 85,

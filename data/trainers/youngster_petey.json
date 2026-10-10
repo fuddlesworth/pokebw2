@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Petey",
     "class": "TRAINER_CLASS_YOUNGSTER",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -15,6 +16,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Feel this boiling spirit!\nMy Patrat is gonna amaze you!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh, this wilting spirit...\nIt wasn't supposed to end this way..."
+        },
+        {
+            "type": 2,
+            "text": "This indomitable spirit!\nI won't be brought down by losing!{be00}\nMoving forward is all that matters!"
         }
     ]
 }

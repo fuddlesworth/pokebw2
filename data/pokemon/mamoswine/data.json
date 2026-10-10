@@ -1,5 +1,8 @@
 {
     "$schema": "../species.schema.json",
+    "name": "Mamoswine",
+    "category": "Twin Tusk Pokémon",
+    "pokedex_entry": "When the temperature rose at\nthe end of the ice age, most\nMamoswine disappeared.",
     "base_stats": {
         "hp": 110,
         "attack": 130,

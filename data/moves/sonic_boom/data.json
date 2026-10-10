@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "SonicBoom",
+    "description": "The target is hit with a destructive shock\nwave that always inflicts 20 HP damage.",
     "type": "TYPE_NORMAL",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_SPECIAL",

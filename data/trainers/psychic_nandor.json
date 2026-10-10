@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Nandor",
     "class": "TRAINER_CLASS_PSYCHIC_M",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -23,6 +24,20 @@
             "difficulty": 50,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "This is a power spot!\nIt awakens your dormant power!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Did you spot my weakness?"
+        },
+        {
+            "type": 2,
+            "text": "Long ago there was this Pokémon called\nMusharna here that could eat dreams...{be00}\nand even make dreams real, or so{be00}\npeople say."
         }
     ]
 }

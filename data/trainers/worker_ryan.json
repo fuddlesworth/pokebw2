@@ -1,5 +1,6 @@
 {
     "$schema": "trainer.schema.json",
+    "name": "Ryan",
     "class": "TRAINER_CLASS_WORKER_44",
     "battle_style": "BTL_STYLE_SINGLE",
     "items": [],
@@ -31,6 +32,20 @@
             "difficulty": 0,
             "gender": 0,
             "ability": 0
+        }
+    ],
+    "messages": [
+        {
+            "type": 0,
+            "text": "Heavy labor is a breeze when you let a\nPsychic-type Pokémon take care of it!{be01}\nNow I can slack off and take it easy!{be01}"
+        },
+        {
+            "type": 1,
+            "text": "Oh, I see... If a Trainer starts slacking,\nit'll be his or her Pokémon that suffer."
+        },
+        {
+            "type": 2,
+            "text": "A real Worker works together with their\nPokémon!{be01}\nYou cannot just make Pokémon do all the\nwork while you slack off!"
         }
     ]
 }

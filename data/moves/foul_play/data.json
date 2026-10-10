@@ -1,5 +1,7 @@
 {
     "$schema": "../move.schema.json",
+    "name": "Foul Play",
+    "description": "The user turns the target's power\nagainst it. The higher the target's\nAttack stat, the greater the damage.",
     "type": "TYPE_DARK",
     "quality": "MOVE_QUALITY_DAMAGE",
     "category": "MOVE_CATEGORY_PHYSICAL",
