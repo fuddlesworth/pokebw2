@@ -29,11 +29,6 @@ struct FestMissionEntry {
     u32 missionId;
 };
 
-void func_ov030_02174108(u32 enabled);
-// Whether the Funfest's beacon updates are sent (func_ov030_02174e58 returns 2)
-BOOL func_ov030_02173c08(void);
-// Sends the game's beacon
-void func_ov030_02173780(void);
 void *Field_GetFesGimmick(Field *field);
 BOOL FesGimmick_IsCurrent(void *gimmick, u32 type);
 // Whether the Funfest mission keeps phenomena off the tile

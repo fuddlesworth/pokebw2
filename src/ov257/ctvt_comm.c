@@ -15,6 +15,7 @@
 #include "gfl/net_handle.h"
 #include "gfl/net_lower_data.h"
 #include "gfl/std.h"
+#include "gfl/wih.h"
 #include "save/player_info.h"
 #include "system/dsi.h"
 #include "system/game_data.h"
