@@ -9,11 +9,11 @@
 
 Script_1:
     AbyssalRuinsCmd_StartUnderwaterEffect
-    VMStackPushFlag EVENT_FLAG_0x09a0
+    VMStackPushFlag EVENT_FLAG_TOWN_MAP_ABYSSAL_RUINS
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0027
-    FlagSet EVENT_FLAG_0x09a0
+    FlagSet EVENT_FLAG_TOWN_MAP_ABYSSAL_RUINS
 
 L_0027:
     VMHalt

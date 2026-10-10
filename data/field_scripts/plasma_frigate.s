@@ -42,7 +42,7 @@ Script_3:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AD
-    WorkSetConst EVENT_WORK_0x4044, 3
+    WorkSetConst EVENT_WORK_PLASMA_FRIGATE_LOCATION, 3
 
 L_00AD:
     VMStackPushFlag EVENT_FLAG_0x01ad

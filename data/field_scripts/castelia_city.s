@@ -415,7 +415,7 @@ L_0650:
     ActorCmdWait
     WorkSetConst EVENT_WORK_0x40e2, 2
     MedalDiscover 19
-    FlagSet EVENT_FLAG_0x09ac
+    FlagSet EVENT_FLAG_ARRIVED_CASTELIA_CITY
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8024, 0

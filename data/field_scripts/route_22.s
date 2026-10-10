@@ -262,7 +262,7 @@ L_040F:
     MapReplaceSetEvent 6, 0, 0
     FlagSet EVENT_FLAG_0x032b
     FlagSet EVENT_FLAG_0x0170
-    WorkSetConst EVENT_WORK_0x4044, 1
+    WorkSetConst EVENT_WORK_PLASMA_FRIGATE_LOCATION, 1
     WorkSetConst EVENT_WORK_0x4106, 1
     WorkSetConst EVENT_WORK_0x40e3, 2
     HollowRivalCmd_0262 1, 29

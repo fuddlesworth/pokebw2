@@ -185,7 +185,7 @@ L_0242:
     WorkSetConst EVENT_WORK_0x4100, 2
     FlagReset EVENT_FLAG_0x0357
     WorkSetConst EVENT_WORK_0x4106, 4
-    WorkSetConst EVENT_WORK_0x4044, 2
+    WorkSetConst EVENT_WORK_PLASMA_FRIGATE_LOCATION, 2
     MapReplaceSetEvent 5, 0, 0
     MapReplaceSetEvent 6, 0, 0
     FadeOutBlackQ

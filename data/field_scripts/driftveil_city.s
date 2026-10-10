@@ -260,7 +260,7 @@ L_0304:
     FlagSet EVENT_FLAG_0x02cc
     FlagSet EVENT_FLAG_0x02c3
     WorkSetConst EVENT_WORK_0x40c3, 1
-    FlagSet EVENT_FLAG_0x09ae
+    FlagSet EVENT_FLAG_ARRIVED_DRIFTVEIL_CITY
     HollowRivalCmd_0262 1, 9
     FinishAllEvents
     ActorsUnpauseAll

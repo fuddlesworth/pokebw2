@@ -294,7 +294,7 @@ Script_7:
     VMJump L_0420
 
 L_03F4:
-    VMStackPushFlag EVENT_FLAG_0x09b5
+    VMStackPushFlag EVENT_FLAG_ARRIVED_UNDELLA_TOWN
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0415

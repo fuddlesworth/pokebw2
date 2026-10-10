@@ -4,8 +4,9 @@
     rename_constant.py ZONE_CASTELIA_CITY_12 ZONE_CASTELIA_CITY_NARROW_STREET
 
 The name is replaced as a whole word in the lists and in the tracked sources, headers, data, scripts and docs, and a
-data file or directory named after the constant, such as data/zones/castelia_city_12.json, is renamed with it. The new
-name must not be taken already. Rebuild afterwards: the build checks that nothing still uses the old name.
+data file or directory named after the constant, such as data/zones/castelia_city_12.json, is renamed with it. A
+message file's IDs and its header, text/<archive>/<bank>.h, are renamed with it too. The new name must not be taken
+already. Rebuild afterwards: the build checks that nothing still uses the old name.
 """
 import argparse
 import re
@@ -15,6 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from gen_constants import LISTS_DIR, parse  # noqa: E402
+from text_data import bank_prefix  # noqa: E402
 
 ROOT = LISTS_DIR.parents[1]
 PATHS = ["data", "src", "include", "lib", "docs", "tools/scripts"]
@@ -68,7 +70,14 @@ def main():
                     sys.exit(f"{args.new} must start with {prefix}, since its data is named after it")
                 moves.append((old_path, new_path))
 
-    word = re.compile(rf"\b{re.escape(args.old)}\b")
+    # A message file's IDs start with its name, and the code includes its header by the file's name
+    renames = [(re.compile(rf"\b{re.escape(args.old)}\b"), args.new)]
+    for old_path, new_path in moves:
+        if old_path.parent.parent == ROOT / "data/text":
+            renames.append((re.compile(rf"\b{re.escape(bank_prefix(old_path))}(?=\w)"), bank_prefix(new_path)))
+            header = f"text/{old_path.parent.name}/"
+            renames.append((re.compile(rf"(?<=[\"<]){re.escape(header + old_path.stem)}\.h(?=[\">])"),
+                            f"{header}{new_path.stem}.h"))
     files = subprocess.run(["git", "ls-files", "-z", *PATHS], cwd=ROOT, capture_output=True, check=True,
                            text=True).stdout.split("\0")
     changed = 0
@@ -77,7 +86,9 @@ def main():
         if path.suffix not in SUFFIXES or not path.is_file():
             continue
         text = path.read_text()
-        new_text = word.sub(args.new, text)
+        new_text = text
+        for pattern, replacement in renames:
+            new_text = pattern.sub(replacement, new_text)
         if new_text != text:
             path.write_text(new_text)
             changed += 1

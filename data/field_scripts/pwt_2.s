@@ -150,7 +150,7 @@ Script_12:
     FlagSet EVENT_FLAG_0x037b
     FlagReset EVENT_FLAG_0x037a
     WorkSetConst EVENT_WORK_0x40c6, 2
-    WorkSetConst EVENT_WORK_0x4044, 0
+    WorkSetConst EVENT_WORK_PLASMA_FRIGATE_LOCATION, 0
     FlagReset EVENT_FLAG_0x0989
     FlagReset EVENT_FLAG_0x03e9
     HollowRivalCmd_0262 1, 14

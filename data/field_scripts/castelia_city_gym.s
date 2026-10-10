@@ -370,7 +370,7 @@ Script_9:
     VMJump L_04E8
 
 L_04C5:
-    VMStackPushFlag EVENT_FLAG_0x09ad
+    VMStackPushFlag EVENT_FLAG_ARRIVED_NIMBASA_CITY
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04E3

@@ -335,7 +335,7 @@ L_045E:
     BadgeGateCmd_PlayLastGate
     VMCall L_049E
     WorkSetConst EVENT_WORK_0x40ec, 2
-    FlagSet EVENT_FLAG_0x09e2
+    FlagSet EVENT_FLAG_ARRIVED_VICTORY_ROAD
     VMJump L_0486
 
 L_047C:

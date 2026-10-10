@@ -100,7 +100,7 @@ Script_1:
     EvCameraEnd
     WorkSetConst EVENT_WORK_0x40ac, 2
     FlagSet EVENT_FLAG_0x02d6
-    FlagSet EVENT_FLAG_0x09b9
+    FlagSet EVENT_FLAG_ARRIVED_VIRBANK_CITY
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

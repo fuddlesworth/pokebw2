@@ -74,8 +74,10 @@ what it is, rename it.
 
 `flags.txt` names every event flag and `vars.txt` every event variable, in their ranges, which the event work code
 gives: the saved flags from 1, among them each trainer's from 0x5f0 (`EVENT_FLAG_TRAINER_LEADER_CHEREN`,
-`TrainerFlagGet`), the daily ones from 0xaa0 to 0xb03 (`EventWork_ResetDailyFlags`) and the hidden items' from 0xb04
-(`EVENT_FLAG_HIDDEN_ITEM_<n>`), then 64 temporary flags from 0x4000; and the variables from 0x4000 to 0x41ae. The game
+`TrainerFlagGet`), the ones set on first arriving at a place, which let the player fly there, from 0x9a5
+(`EVENT_FLAG_ARRIVED_NUVEMA_TOWN`, from the town map's places and the respawn table), the daily ones from 0xaa0 to 0xb03
+(`EventWork_ResetDailyFlags`) and the hidden items' from 0xb04 (`EVENT_FLAG_HIDDEN_ITEM_<n>`), then 64 temporary flags
+from 0x4000; and the variables from 0x4000 to 0x41ae. The game
 names none of them, so the rest are placeholders by value, as pokeplatinum's are (`EVENT_FLAG_0x0404`,
 `EVENT_WORK_0x4150`): rename one with `rename_constant.py` when the code or a script shows what it does, and write the
 field scripts and events again so that they use the name. `make_constants.py --flags` writes the lists again, keeping
@@ -156,8 +158,9 @@ are named after their constants, which give their order in the archive: a system
 file's after its first script ID (`global_10885.txt`). A system message file is named after what it holds, which the
 word set function that loads it or its contents show (`move_names.txt`, `natures.txt`), or else after the source file or
 function that loads it (`delete_save.txt`); the others keep their number until they are known (`0001.txt`), as
-`TEXT_BANK_0001`. To rename one, rename its constant with `rename_constant.py`, which renames the file. Both versions
-have the same text. The code names a message file by its constant too: `GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE,
+`TEXT_BANK_0001`. To rename one, rename its constant with `rename_constant.py`, which renames the file, its message IDs
+and its header with it (`TEXT_BANK_0377` to `TEXT_BANK_TOWN_MAP` made `Bank0377_Text_FlyWhere` `TownMap_Text_FlyWhere`).
+Both versions have the same text. The code names a message file by its constant too: `GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE,
 TEXT_BANK_TRADE_NAMES, heapId)`, from `constants/text_banks.h` and `constants/script_text_banks.h`.
 
 ## Species
@@ -529,6 +532,22 @@ the battles' are `data/lights/battle/<n>.json` (`a/0/6/1`). A set is the periods
 lights (on or off, color and direction in 4096ths), the materials' diffuse, ambient, specular and emission colors, the
 fog's color and the color the screen clears to. Colors are 0 to 31 per component. `tools/scripts/light_data.py`
 packs them, and both versions have the same sets.
+
+## Town map
+
+The town map's places, `data/town_map/places.json` (`a/0/8/5`), are the table that the town map, the Pokédex's habitat
+map and a beacon's details read by `TOWNMAP_PARAM_*` (`include/app/townmap/townmap_data.h`): for each place, in the
+order the code numbers them, its zone, kind, where its marker, cursor and touch area are, whether the player can fly
+there, the flags that let them and that show it (an event flag, or a `TOWNMAP_FLAG_*` that the code works out, from
+`constants/town_map.h`), its area on the habitat map, and its description and landmarks, messages of
+`data/text/system/town_map.txt` by ID. The versions differ only in a few descriptions, which then give one per version:
+
+```json
+"description": {"black2": "TownMap_Text_ConvenientCityRapidChange", "white2": "TownMap_Text_CityRespectsHistoryValues"},
+"landmarks": ["TownMap_Text_OpelucidCityGym", "TownMap_Text_PokemonCenter_9"],
+```
+
+`tools/scripts/town_map_data.py` packs it for each version.
 
 ## Zone events
 

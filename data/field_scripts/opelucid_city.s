@@ -413,7 +413,7 @@ Script_8:
     ActorDelete 11
     WorkSetConst EVENT_WORK_0x40d5, 1
     FlagSet EVENT_FLAG_0x0319
-    FlagSet EVENT_FLAG_0x09b1
+    FlagSet EVENT_FLAG_ARRIVED_OPELUCID_CITY
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

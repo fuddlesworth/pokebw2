@@ -160,6 +160,8 @@ DATA_PACKS = [
     ("tools/scripts/map_matrix_data.py", "data/map_matrices", ["a/0/0/9"], False),  # Map matrices
     ("tools/scripts/area_data.py", "data/areas", ["a/0/1/3"], False),  # Areas, a file of records rather than an archive
     ("tools/scripts/light_data.py", "data/lights", ["a/0/6/0", "a/0/6/1"], False),  # Field and battle lighting
+    # The town map's places, whose texts are messages of town_map.txt
+    ("tools/scripts/town_map_data.py", "data/town_map", ["a/0/8/5"], True, ["data/text/system/town_map.txt"]),
     # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
     ("tools/scripts/facility_data.py", "data/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
      ["data/facilities"]),
@@ -179,7 +181,7 @@ DATA_PACKS = [
 ]
 # What every packer reads besides its data: the scripts, and the move tutors' tables, which name the species data's
 # tutor bits (tools/scripts/species_data.py)
-DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py",
+DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/text_ids.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py",
                    "tools/scripts/text_sources.py", "tools/scripts/text_data.py", "tools/scripts/msgdata.py",
                    "src/ov036/scrcmd_shop.c", "tools/scripts/facility_data.py", "tools/scripts/make_constants.py"]
 
@@ -410,7 +412,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     for script, data_dir, paths, per_version, *other_dirs in DATA_PACKS:
         outputs = [files_dir / path for path in paths]
         sources = sorted(str(p.relative_to(ROOT)) for d in [data_dir, *(other_dirs[0] if other_dirs else [])]
-                         for p in (ROOT / d).rglob("*") if p.is_file())
+                         for p in ([ROOT / d] if (ROOT / d).is_file() else (ROOT / d).rglob("*")) if p.is_file())
         game = VERSIONS[version]["defines"][0].lower() if per_version else ""
         n.build(outputs, "data_pack", sources, implicit=[script, *DATA_PACK_TOOLS, *constant_sources],
                 order_only=[files_ok], variables={"script": script, "dir": data_dir, "game": game})

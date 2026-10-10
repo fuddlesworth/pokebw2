@@ -96,7 +96,7 @@ Script_3:
     WorkSetConst EVENT_WORK_0x40cc, 1
     FlagSet EVENT_FLAG_0x03c0
     FlagSet EVENT_FLAG_0x0308
-    FlagSet EVENT_FLAG_0x09b2
+    FlagSet EVENT_FLAG_ARRIVED_LACUNOSA_TOWN
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
     VMStackPushConst 667

@@ -1456,7 +1456,7 @@ Script_11:
     VMJump L_14F2
 
 L_14CF:
-    VMStackPushFlag EVENT_FLAG_0x09ae
+    VMStackPushFlag EVENT_FLAG_ARRIVED_DRIFTVEIL_CITY
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_14ED
