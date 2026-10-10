@@ -1,1 +1,1 @@
-        \x{ffff}
+DragonspiralTowerGate_Text_Empty =         \x{ffff}

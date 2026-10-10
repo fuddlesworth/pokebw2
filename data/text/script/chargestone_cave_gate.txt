@@ -1,1 +1,1 @@
-        \x{ffff}
+ChargestoneCaveGate_Text_Empty =         \x{ffff}

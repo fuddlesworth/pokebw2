@@ -1,9 +1,9 @@
-This & That
-Student
-Office Worker
-Creator
-Self-Employed
-Public Official
-Homemaker
-Artist
-Job-Hopper
+JobAnswers_Text_ThisThat = This & That
+JobAnswers_Text_Student = Student
+JobAnswers_Text_OfficeWorker = Office Worker
+JobAnswers_Text_Creator = Creator
+JobAnswers_Text_SelfEmployed = Self-Employed
+JobAnswers_Text_PublicOfficial = Public Official
+JobAnswers_Text_Homemaker = Homemaker
+JobAnswers_Text_Artist = Artist
+JobAnswers_Text_JobHopper = Job-Hopper

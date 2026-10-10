@@ -1,2 +1,2 @@
-       \x{ffff}
+ScriptEntreeForest_Text_Empty =        \x{ffff}
 \pad{0c}

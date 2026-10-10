@@ -1,32 +1,32 @@
-C-GEAR
-PASS POWER
-ELEGANT
-CUTE
-COOL
-GROUP
-GOTCHA
-COLLECTION
-COMPLETE
-SYSTEM
-LAUNCHER
-NATURE
-DOWSING
-TOWN MAP
-DESIGN
-DIGITAL
-HALL OF FAME
-INSTITUTE
-BADGE
-BATTLE TEST
-BATTLE BOX
-PASS ORB
-⒆⒇ CENTER
-POKÉMON
-MISSION
-MAIL
-MESSAGE
-ENTREE
-UNIQUE
-LEVEL
-RENTAL
-TM
+Bank0167_Text_CGear = C-GEAR
+Bank0167_Text_PassPower = PASS POWER
+Bank0167_Text_Elegant = ELEGANT
+Bank0167_Text_Cute = CUTE
+Bank0167_Text_Cool = COOL
+Bank0167_Text_Group = GROUP
+Bank0167_Text_Gotcha = GOTCHA
+Bank0167_Text_Collection = COLLECTION
+Bank0167_Text_Complete = COMPLETE
+Bank0167_Text_System = SYSTEM
+Bank0167_Text_Launcher = LAUNCHER
+Bank0167_Text_Nature = NATURE
+Bank0167_Text_Dowsing = DOWSING
+Bank0167_Text_TownMap = TOWN MAP
+Bank0167_Text_Design = DESIGN
+Bank0167_Text_Digital = DIGITAL
+Bank0167_Text_HallFame = HALL OF FAME
+Bank0167_Text_Institute = INSTITUTE
+Bank0167_Text_Badge = BADGE
+Bank0167_Text_BattleTest = BATTLE TEST
+Bank0167_Text_BattleBox = BATTLE BOX
+Bank0167_Text_PassOrb = PASS ORB
+Bank0167_Text_Center = ⒆⒇ CENTER
+Bank0167_Text_PokMon = POKÉMON
+Bank0167_Text_Mission = MISSION
+Bank0167_Text_Mail = MAIL
+Bank0167_Text_Message = MESSAGE
+Bank0167_Text_Entree = ENTREE
+Bank0167_Text_Unique = UNIQUE
+Bank0167_Text_Level = LEVEL
+Bank0167_Text_Rental = RENTAL
+Bank0167_Text_Tm = TM

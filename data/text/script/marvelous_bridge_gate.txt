@@ -1,1 +1,1 @@
-        \x{ffff}
+MarvelousBridgeGate_Text_Empty =         \x{ffff}

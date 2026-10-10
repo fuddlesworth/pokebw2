@@ -1,17 +1,17 @@
-NORMAL
-FIGHTING
-FLYING
-POISON
-GROUND
-ROCK
-BUG
-GHOST
-STEEL
-FIRE
-WATER
-GRASS
-ELECTRIC
-PSYCHIC
-ICE
-DRAGON
-DARK
+Bank0489_Text_Normal = NORMAL
+Bank0489_Text_Fighting = FIGHTING
+Bank0489_Text_Flying = FLYING
+Bank0489_Text_Poison = POISON
+Bank0489_Text_Ground = GROUND
+Bank0489_Text_Rock = ROCK
+Bank0489_Text_Bug = BUG
+Bank0489_Text_Ghost = GHOST
+Bank0489_Text_Steel = STEEL
+Bank0489_Text_Fire = FIRE
+Bank0489_Text_Water = WATER
+Bank0489_Text_Grass = GRASS
+Bank0489_Text_Electric = ELECTRIC
+Bank0489_Text_Psychic = PSYCHIC
+Bank0489_Text_Ice = ICE
+Bank0489_Text_Dragon = DRAGON
+Bank0489_Text_Dark = DARK

@@ -22,6 +22,10 @@ The text is UTF-8. In it:
 - A line `\\from{species.name}` is not a message but stands for messages from the game data in JSON, one per species,
   move or trainer, such as the species' names (see text_sources.py). Unpacking writes the messages themselves.
 
+Every message line starts with the message's ID, `BlackCity_Text_DaveUsedLotThugs = Dave: Used to be...`: its bank's
+name, then words of the message as unpacking first wrote it, unique in its bank. The build makes a header of each bank's
+IDs (text_ids.py), so the code and the scripts name messages rather than count lines, and an ID can be renamed freely.
+
 A message file holds one language. Each message is encrypted with a key that starts at 0x7c89 + 0x2983 times its
 index and rotates by 3 bits per character, and a compressed one packs its characters in 9 bits each.
 """
@@ -178,6 +182,53 @@ def message_lines(archive: Path, number: int) -> list[str]:
     return [line for line in lines if not line.startswith("\\pad{")]
 
 
+MESSAGE = re.compile(r"([A-Za-z_]\w*) =(?: (.*))?")
+STOP_WORDS = {"a", "an", "the", "and", "or", "of", "to", "is", "it", "i", "you", "your", "my", "me", "be", "in", "on",
+              "for", "this", "that", "are", "was", "with", "at", "as", "so", "do"}
+
+
+def bank_prefix(path: Path) -> str:
+    """The prefix of a bank's message IDs: its name in CamelCase, Bank0406 for a numbered one, and Script before a
+    script bank's whose name a system bank also has."""
+    stem = path.stem
+    name = f"Bank{stem}" if stem.isdigit() else "".join(word.capitalize() for word in stem.split("_"))
+    if path.parent.name == "script" and (path.parent.parent / "system" / path.name).exists():
+        name = "Script" + name
+    return name + "_Text_"
+
+
+def message_ids(prefix: str, messages: list[str]) -> list[str]:
+    """IDs for messages, from their first words, numbered from _2 where they repeat."""
+    ids, count = [], {}
+    for message in messages:
+        text = re.sub(r"\\x\{[^}]*\}|\{[^}]*\}|\\[nc]|\\.", " ", message).replace("é", "e").replace("’", "'")
+        words = [w.replace("'", "") for w in re.findall(r"[A-Za-z0-9][A-Za-z0-9']*", text)]
+        words = [w for w in words if w.lower() not in STOP_WORDS] or words
+        base = prefix + ("".join(w[:1].upper() + w[1:].lower() for w in words[:4]) or "Empty")
+        count[base] = count.get(base, 0) + 1
+        ids.append(base if count[base] == 1 else f"{base}_{count[base]}")
+    return ids
+
+
+def with_ids(path: Path, text: str) -> str:
+    """Puts an ID before each message line of a file's text, as unpacking writes it."""
+    lines = text.split("\n")[:-1]
+    messages = [line for line in lines if not line.startswith("\\pad{")]
+    ids = iter(message_ids(bank_prefix(path), messages))
+    return "".join((line if line.startswith("\\pad{") else f"{next(ids)} = {line}".rstrip()) + "\n"
+                   for line in lines)
+
+
+def split_message(line: str) -> tuple[str | None, str]:
+    """Returns a message line's ID and text; a \\from or \\pad line has no ID."""
+    if FROM.fullmatch(line) or line.startswith("\\pad{"):
+        return None, line
+    match = MESSAGE.fullmatch(line)
+    if not match:
+        raise ValueError(f"a message line starts with its ID, ID = text: {line[:60]!r}")
+    return match[1], match[2] or ""
+
+
 FROM = re.compile(r"\\from\{([\w.]+)\}")
 
 
@@ -191,7 +242,7 @@ def pack_file(text: str) -> bytes:
         if match:
             messages += expand(match[1])
         else:
-            messages.append(line)
+            messages.append(split_message(line)[1])
     pad = 0
     if messages and messages[-1].startswith("\\pad{"):
         pad = int(messages.pop()[5:-1], 16)
@@ -238,7 +289,7 @@ def main():
             if path.exists() and any(FROM.fullmatch(line) for line in path.read_text(encoding="utf-8").split("\n")):
                 kept.append(path.name)
                 continue
-            path.write_text(unpack_file(data), encoding="utf-8")
+            path.write_text(with_ids(path, unpack_file(data)), encoding="utf-8")
         print(f"wrote {len(files) - len(kept)} files to {args.output}")
         if kept:
             print(f"kept {', '.join(kept)}, which take messages from the data in JSON")

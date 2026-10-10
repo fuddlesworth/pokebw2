@@ -1,6 +1,6 @@
-RESHIRAM
-ZEKROM
-9909
-7707
-2202
+ScrcmdPlasmaFrigateScrcmdBsubway_Text_Reshiram = RESHIRAM
+ScrcmdPlasmaFrigateScrcmdBsubway_Text_Zekrom = ZEKROM
+ScrcmdPlasmaFrigateScrcmdBsubway_Text_9909 = 9909
+ScrcmdPlasmaFrigateScrcmdBsubway_Text_7707 = 7707
+ScrcmdPlasmaFrigateScrcmdBsubway_Text_2202 = 2202
 \pad{60}

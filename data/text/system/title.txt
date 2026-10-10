@@ -1,62 +1,62 @@
-Would you like to save the last battle\nas your Battle Video?
-    \x{ffff}
-    \x{ffff}
-The last battle will not be saved.\nOK?
-    \x{ffff}
-    \x{ffff}
-Is it OK to overwrite your existing\nBattle Video?
-    \x{ffff}
-    \x{ffff}
-Saving your Battle Video...\nDon't turn off the power.
-The Battle Video has been saved.
-There was an error.\nThe Battle Video couldn't be saved.
-Awaiting your friend's decision...\nPlease wait.
-You cannot record videos\nwith this Trainer... Please wait.
-You cannot record videos\nwith this Trainer.
-The last battle cannot be recorded.
-Time Limit:
-         \x{ffff}
-{0201:1}
-PREVIOUS RECORD
-Colosseum Single,\nNo Restrictions
-Colosseum Single,\nFlat
-Colosseum Single,\nNo Restrictions, Launcher On
-Colosseum Single,\nFlat, Launcher On
-Colosseum Double,\nNo Restrictions
-Colosseum Double,\nFlat
-Colosseum Double,\nNo Restrictions, Launcher On
-Colosseum Double,\nFlat, Launcher On
-Colosseum Triple,\nNo Restrictions
-Colosseum Triple,\nFlat
-Colosseum Triple,\nNo Restrictions, Launcher On
-Colosseum Triple,\nFlat, Launcher On
-Colosseum Rotation,\nNo Restrictions
-Colosseum Rotation,\nFlat
-Colosseum Rotation,\nNo Restrictions, Launcher On
-Colosseum Rotation,\nFlat, Launcher On
-Colosseum Multi,\nNo Restrictions
-Colosseum Multi,\nFlat
-Colosseum Multi,\nNo Restrictions, Launcher On
-Colosseum Multi,\nFlat, Launcher On
-Battle Subway,\nSingle
-Battle Subway,\nDouble
-Battle Subway,\nMulti
-Random Matchup, Free\nSingle
-Random Matchup, Free\nDouble
-Random Matchup, Free\nTriple
-Random Matchup, Free\nRotation
-Random Matchup, Free\nLauncher Battle
-Random Matchup, Rating\nSingle
-Random Matchup, Rating\nDouble
-Random Matchup, Rating\nTriple
-Random Matchup, Rating\nRotation
-Random Matchup, Rating\nLauncher Battle
-Competition, Single\nLauncher Off
-Competition, Single\nLauncher On
-Competition, Double\nLauncher Off
-Competition, Double\nLauncher On
-Competition, Triple\nLauncher Off
-Competition, Triple\nLauncher On
-Competition, Rotation\nLauncher Off
-Competition, Rotation\nLauncher On
+Title_Text_WouldLikeSaveLast = Would you like to save the last battle\nas your Battle Video?
+Title_Text_Empty =     \x{ffff}
+Title_Text_Empty_2 =     \x{ffff}
+Title_Text_LastBattleWillNot = The last battle will not be saved.\nOK?
+Title_Text_Empty_3 =     \x{ffff}
+Title_Text_Empty_4 =     \x{ffff}
+Title_Text_OkOverwriteExistingBattle = Is it OK to overwrite your existing\nBattle Video?
+Title_Text_Empty_5 =     \x{ffff}
+Title_Text_Empty_6 =     \x{ffff}
+Title_Text_SavingBattleVideoDont = Saving your Battle Video...\nDon't turn off the power.
+Title_Text_BattleVideoHasBeen = The Battle Video has been saved.
+Title_Text_ThereErrorBattleVideo = There was an error.\nThe Battle Video couldn't be saved.
+Title_Text_AwaitingFriendsDecisionPlease = Awaiting your friend's decision...\nPlease wait.
+Title_Text_CannotRecordVideosTrainer = You cannot record videos\nwith this Trainer... Please wait.
+Title_Text_CannotRecordVideosTrainer_2 = You cannot record videos\nwith this Trainer.
+Title_Text_LastBattleCannotRecorded = The last battle cannot be recorded.
+Title_Text_TimeLimit = Time Limit:
+Title_Text_Empty_7 =          \x{ffff}
+Title_Text_Empty_8 = {0201:1}
+Title_Text_PreviousRecord = PREVIOUS RECORD
+Title_Text_ColosseumSingleNoRestrictions = Colosseum Single,\nNo Restrictions
+Title_Text_ColosseumSingleFlat = Colosseum Single,\nFlat
+Title_Text_ColosseumSingleNoRestrictions_2 = Colosseum Single,\nNo Restrictions, Launcher On
+Title_Text_ColosseumSingleFlatLauncher = Colosseum Single,\nFlat, Launcher On
+Title_Text_ColosseumDoubleNoRestrictions = Colosseum Double,\nNo Restrictions
+Title_Text_ColosseumDoubleFlat = Colosseum Double,\nFlat
+Title_Text_ColosseumDoubleNoRestrictions_2 = Colosseum Double,\nNo Restrictions, Launcher On
+Title_Text_ColosseumDoubleFlatLauncher = Colosseum Double,\nFlat, Launcher On
+Title_Text_ColosseumTripleNoRestrictions = Colosseum Triple,\nNo Restrictions
+Title_Text_ColosseumTripleFlat = Colosseum Triple,\nFlat
+Title_Text_ColosseumTripleNoRestrictions_2 = Colosseum Triple,\nNo Restrictions, Launcher On
+Title_Text_ColosseumTripleFlatLauncher = Colosseum Triple,\nFlat, Launcher On
+Title_Text_ColosseumRotationNoRestrictions = Colosseum Rotation,\nNo Restrictions
+Title_Text_ColosseumRotationFlat = Colosseum Rotation,\nFlat
+Title_Text_ColosseumRotationNoRestrictions_2 = Colosseum Rotation,\nNo Restrictions, Launcher On
+Title_Text_ColosseumRotationFlatLauncher = Colosseum Rotation,\nFlat, Launcher On
+Title_Text_ColosseumMultiNoRestrictions = Colosseum Multi,\nNo Restrictions
+Title_Text_ColosseumMultiFlat = Colosseum Multi,\nFlat
+Title_Text_ColosseumMultiNoRestrictions_2 = Colosseum Multi,\nNo Restrictions, Launcher On
+Title_Text_ColosseumMultiFlatLauncher = Colosseum Multi,\nFlat, Launcher On
+Title_Text_BattleSubwaySingle = Battle Subway,\nSingle
+Title_Text_BattleSubwayDouble = Battle Subway,\nDouble
+Title_Text_BattleSubwayMulti = Battle Subway,\nMulti
+Title_Text_RandomMatchupFreeSingle = Random Matchup, Free\nSingle
+Title_Text_RandomMatchupFreeDouble = Random Matchup, Free\nDouble
+Title_Text_RandomMatchupFreeTriple = Random Matchup, Free\nTriple
+Title_Text_RandomMatchupFreeRotation = Random Matchup, Free\nRotation
+Title_Text_RandomMatchupFreeLauncher = Random Matchup, Free\nLauncher Battle
+Title_Text_RandomMatchupRatingSingle = Random Matchup, Rating\nSingle
+Title_Text_RandomMatchupRatingDouble = Random Matchup, Rating\nDouble
+Title_Text_RandomMatchupRatingTriple = Random Matchup, Rating\nTriple
+Title_Text_RandomMatchupRatingRotation = Random Matchup, Rating\nRotation
+Title_Text_RandomMatchupRatingLauncher = Random Matchup, Rating\nLauncher Battle
+Title_Text_CompetitionSingleLauncherOff = Competition, Single\nLauncher Off
+Title_Text_CompetitionSingleLauncher = Competition, Single\nLauncher On
+Title_Text_CompetitionDoubleLauncherOff = Competition, Double\nLauncher Off
+Title_Text_CompetitionDoubleLauncher = Competition, Double\nLauncher On
+Title_Text_CompetitionTripleLauncherOff = Competition, Triple\nLauncher Off
+Title_Text_CompetitionTripleLauncher = Competition, Triple\nLauncher On
+Title_Text_CompetitionRotationLauncherOff = Competition, Rotation\nLauncher Off
+Title_Text_CompetitionRotationLauncher = Competition, Rotation\nLauncher On
 \pad{8a}

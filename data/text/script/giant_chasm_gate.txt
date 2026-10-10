@@ -1,1 +1,1 @@
-        \x{ffff}
+GiantChasmGate_Text_Empty =         \x{ffff}

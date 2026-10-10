@@ -1,1 +1,1 @@
-        \x{ffff}
+Route14Gate_Text_Empty =         \x{ffff}

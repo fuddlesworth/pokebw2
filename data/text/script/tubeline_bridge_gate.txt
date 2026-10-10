@@ -1,1 +1,1 @@
-        \x{ffff}
+TubelineBridgeGate_Text_Empty =         \x{ffff}

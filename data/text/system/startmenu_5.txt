@@ -1,47 +1,47 @@
-BEAUTY
-DELIGHT
-STRANGENESS
-RECOMMEND
-CLEVERNESS
-DISAPPOINTED
-COOLNESS
-SADNESS
-CUTENESS
-SIMPLE
-ANGER
-HEALTHY
-REGRET
-HAPPINESS
-DEPRESSED
-INCREDIBLE
-LIKES
-DISLIKE
-BORED
-IMPORTANT
-ALL RIGHT
-ADORE
-TOUGHNESS
-ENJOYMENT
-USELESS
-DROOLING
-EXCITED
-SKILLFUL
-NICE
-TEARS
-HATE
-ROFL
-HAPPY
-ENERGETIC
-SURPRISE
-SUBTLE
-NERVOUS
-WANT
-SATISFIED
-DIFFICULT
-RARE
-MESSED UP
-NO WAY
-DANGER
-LOVEY-DOVEY
-ANTICIPATION
-SMILE
+Startmenu5_Text_Beauty = BEAUTY
+Startmenu5_Text_Delight = DELIGHT
+Startmenu5_Text_Strangeness = STRANGENESS
+Startmenu5_Text_Recommend = RECOMMEND
+Startmenu5_Text_Cleverness = CLEVERNESS
+Startmenu5_Text_Disappointed = DISAPPOINTED
+Startmenu5_Text_Coolness = COOLNESS
+Startmenu5_Text_Sadness = SADNESS
+Startmenu5_Text_Cuteness = CUTENESS
+Startmenu5_Text_Simple = SIMPLE
+Startmenu5_Text_Anger = ANGER
+Startmenu5_Text_Healthy = HEALTHY
+Startmenu5_Text_Regret = REGRET
+Startmenu5_Text_Happiness = HAPPINESS
+Startmenu5_Text_Depressed = DEPRESSED
+Startmenu5_Text_Incredible = INCREDIBLE
+Startmenu5_Text_Likes = LIKES
+Startmenu5_Text_Dislike = DISLIKE
+Startmenu5_Text_Bored = BORED
+Startmenu5_Text_Important = IMPORTANT
+Startmenu5_Text_AllRight = ALL RIGHT
+Startmenu5_Text_Adore = ADORE
+Startmenu5_Text_Toughness = TOUGHNESS
+Startmenu5_Text_Enjoyment = ENJOYMENT
+Startmenu5_Text_Useless = USELESS
+Startmenu5_Text_Drooling = DROOLING
+Startmenu5_Text_Excited = EXCITED
+Startmenu5_Text_Skillful = SKILLFUL
+Startmenu5_Text_Nice = NICE
+Startmenu5_Text_Tears = TEARS
+Startmenu5_Text_Hate = HATE
+Startmenu5_Text_Rofl = ROFL
+Startmenu5_Text_Happy = HAPPY
+Startmenu5_Text_Energetic = ENERGETIC
+Startmenu5_Text_Surprise = SURPRISE
+Startmenu5_Text_Subtle = SUBTLE
+Startmenu5_Text_Nervous = NERVOUS
+Startmenu5_Text_Want = WANT
+Startmenu5_Text_Satisfied = SATISFIED
+Startmenu5_Text_Difficult = DIFFICULT
+Startmenu5_Text_Rare = RARE
+Startmenu5_Text_MessedUp = MESSED UP
+Startmenu5_Text_NoWay = NO WAY
+Startmenu5_Text_Danger = DANGER
+Startmenu5_Text_LoveyDovey = LOVEY-DOVEY
+Startmenu5_Text_Anticipation = ANTICIPATION
+Startmenu5_Text_Smile = SMILE

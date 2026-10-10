@@ -1,1 +1,1 @@
-Chargestone Cave\nA shocking experience!
+ChargestoneCave_Text_ChargestoneCaveShockingExperience = Chargestone Cave\nA shocking experience!

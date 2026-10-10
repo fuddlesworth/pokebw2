@@ -574,6 +574,19 @@ def main():
         header = Path(GENERATED_INCLUDE_DIR) / "constants" / source.with_suffix(".h").name
         n.build([header], "gen_constants", [source.relative_to(ROOT)], implicit=["tools/scripts/gen_constants.py"])
         constant_headers.append(header)
+    # Each message file's header of its message IDs (tools/scripts/text_ids.py). A file with \from lines counts the
+    # messages of the data it takes, so it depends on that data
+    n.rule("text_ids", "$python tools/scripts/text_ids.py $in $out", "Generating $out", restat="1")
+    text_tools = ["tools/scripts/text_ids.py", *DATA_PACK_TOOLS]
+    from_data = sorted(str(p.relative_to(ROOT)) for d in TEXT_DATA_DIRS for p in (ROOT / d).rglob("*.json"))
+    from_data += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "data" / "constants").glob("*.txt"))
+    for source_dir in TEXT_ARCHIVES.values():
+        for source in sorted((ROOT / source_dir).glob("*.txt")):
+            header = Path(GENERATED_INCLUDE_DIR) / "text" / source.parent.name / source.with_suffix(".h").name
+            uses_data = "\\from{" in source.read_text(encoding="utf-8")
+            n.build([header], "text_ids", [source.relative_to(ROOT)],
+                    implicit=[*text_tools, *(from_data if uses_data else [])])
+            constant_headers.append(header)
     n.build(["constants_headers"], "phony", constant_headers)
 
     checks, configs = [], []

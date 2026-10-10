@@ -1,26 +1,26 @@
-PGL
-GTS
-POKÉMON DW
-Wi-Fi
-SPIN
-GAME SYNC
-COLOSSEUM
-SUBWAY
-GEONET
-SINGLE
-INFRARED
-DOUBLE
-CHAT
-CONNECTION
-FRIEND CODE
-TRIPLE
-ENTRALINK
-BATTLE VIDEOS
-VOICE CHAT
-POKÉ TRANSFER
-MULTI BATTLE
-MUSICAL
-UNION
-TAG LOG
-ROTATION
-WIRELESS
+Bank0168_Text_Pgl = PGL
+Bank0168_Text_Gts = GTS
+Bank0168_Text_PokMonDw = POKÉMON DW
+Bank0168_Text_WiFi = Wi-Fi
+Bank0168_Text_Spin = SPIN
+Bank0168_Text_GameSync = GAME SYNC
+Bank0168_Text_Colosseum = COLOSSEUM
+Bank0168_Text_Subway = SUBWAY
+Bank0168_Text_Geonet = GEONET
+Bank0168_Text_Single = SINGLE
+Bank0168_Text_Infrared = INFRARED
+Bank0168_Text_Double = DOUBLE
+Bank0168_Text_Chat = CHAT
+Bank0168_Text_Connection = CONNECTION
+Bank0168_Text_FriendCode = FRIEND CODE
+Bank0168_Text_Triple = TRIPLE
+Bank0168_Text_Entralink = ENTRALINK
+Bank0168_Text_BattleVideos = BATTLE VIDEOS
+Bank0168_Text_VoiceChat = VOICE CHAT
+Bank0168_Text_PokTransfer = POKÉ TRANSFER
+Bank0168_Text_MultiBattle = MULTI BATTLE
+Bank0168_Text_Musical = MUSICAL
+Bank0168_Text_Union = UNION
+Bank0168_Text_TagLog = TAG LOG
+Bank0168_Text_Rotation = ROTATION
+Bank0168_Text_Wireless = WIRELESS

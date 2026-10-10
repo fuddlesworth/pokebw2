@@ -82,12 +82,15 @@ named only when the code shows what it is, and the list holds only those, each w
 ## Text
 
 `a/0/0/2` (system messages) and `a/0/0/3` (script messages) hold the game's text, one message file per entry. Their
-sources are `data/text/system/<file>.txt` and `data/text/script/<file>.txt`, UTF-8, with one message per line, so
-the line number (from 0) is the message's ID:
+sources are `data/text/system/<file>.txt` and `data/text/script/<file>.txt`, UTF-8, with one message per line, in order.
+Each line starts with the message's ID, `ID = text`, made of its bank's name and words of the message as unpacking first
+wrote it; the build makes a header of each bank's IDs, `text/system/<bank>.h` or `text/script/<bank>.h`
+(`tools/scripts/text_ids.py`), so the code and the scripts name messages, and adding or removing a line doesn't change
+what they name. An ID can be renamed freely:
 
 ```
-Listen up!\nThere's nothing wrong with making money!{be01}\nBut there are wrong ways to do it...
-How serious are you willing to get\nin order to get what you want?
+BlackCity2_Text_ListenUpTheresNothing = Listen up!\nThere's nothing wrong with making money!{be01}\nBut there are wrong ways to do it...
+BlackCity2_Text_HowSeriousWillingGet = How serious are you willing to get\nin order to get what you want?
 ```
 
 - `\n` is a line break within a message, and `\\`, `\{` and `\}` are a backslash and braces.

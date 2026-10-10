@@ -1,44 +1,44 @@
-MATCH UP
-NO. 1
-BAD MATCHUP
-PREPARATION
-WINS
-NO MATCH
-SPIRIT
-CRITICAL HIT
-ACE CARD
-COME ON
-NO EFFECT
-ATTACK
-SURRENDER
-COURAGE
-TALENT
-STRATEGY
-MATCH
-VICTORY
-SENSE
-VERSUS
-FIGHTS
-POWER
-CHALLENGE
-CHAMPION
-STRONG
-TAKE IT EASY
-FOE
-GENIUS
-LEGEND
-TRAINER
-GOOD MATCHUP
-BATTLE
-EMERGENCY
-FIGHT
-REVIVE
-POINTS
-SERIOUS
-LOSS
-PARTNER
-INVINCIBLE
-EASY
-WEAK
-EASY WIN
-MOVE
+Bank0162_Text_MatchUp = MATCH UP
+Bank0162_Text_No1 = NO. 1
+Bank0162_Text_BadMatchup = BAD MATCHUP
+Bank0162_Text_Preparation = PREPARATION
+Bank0162_Text_Wins = WINS
+Bank0162_Text_NoMatch = NO MATCH
+Bank0162_Text_Spirit = SPIRIT
+Bank0162_Text_CriticalHit = CRITICAL HIT
+Bank0162_Text_AceCard = ACE CARD
+Bank0162_Text_Come = COME ON
+Bank0162_Text_NoEffect = NO EFFECT
+Bank0162_Text_Attack = ATTACK
+Bank0162_Text_Surrender = SURRENDER
+Bank0162_Text_Courage = COURAGE
+Bank0162_Text_Talent = TALENT
+Bank0162_Text_Strategy = STRATEGY
+Bank0162_Text_Match = MATCH
+Bank0162_Text_Victory = VICTORY
+Bank0162_Text_Sense = SENSE
+Bank0162_Text_Versus = VERSUS
+Bank0162_Text_Fights = FIGHTS
+Bank0162_Text_Power = POWER
+Bank0162_Text_Challenge = CHALLENGE
+Bank0162_Text_Champion = CHAMPION
+Bank0162_Text_Strong = STRONG
+Bank0162_Text_TakeEasy = TAKE IT EASY
+Bank0162_Text_Foe = FOE
+Bank0162_Text_Genius = GENIUS
+Bank0162_Text_Legend = LEGEND
+Bank0162_Text_Trainer = TRAINER
+Bank0162_Text_GoodMatchup = GOOD MATCHUP
+Bank0162_Text_Battle = BATTLE
+Bank0162_Text_Emergency = EMERGENCY
+Bank0162_Text_Fight = FIGHT
+Bank0162_Text_Revive = REVIVE
+Bank0162_Text_Points = POINTS
+Bank0162_Text_Serious = SERIOUS
+Bank0162_Text_Loss = LOSS
+Bank0162_Text_Partner = PARTNER
+Bank0162_Text_Invincible = INVINCIBLE
+Bank0162_Text_Easy = EASY
+Bank0162_Text_Weak = WEAK
+Bank0162_Text_EasyWin = EASY WIN
+Bank0162_Text_Move = MOVE

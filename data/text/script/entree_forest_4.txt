@@ -1,1 +1,1 @@
-        \x{ffff}
+EntreeForest4_Text_Empty =         \x{ffff}

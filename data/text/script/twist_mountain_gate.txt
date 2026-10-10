@@ -1,1 +1,1 @@
-        \x{ffff}
+TwistMountainGate_Text_Empty =         \x{ffff}

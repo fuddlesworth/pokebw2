@@ -1,1 +1,1 @@
-        \x{ffff}
+RelicCastle21_Text_Empty =         \x{ffff}

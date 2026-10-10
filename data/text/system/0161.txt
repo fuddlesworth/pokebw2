@@ -1,10 +1,10 @@
-絵_GOOD DAY!
-絵_HELLO!
-絵_I LOVE IT!
-絵_GOOD LUCK!
-絵_IT'S FUN!
-絵_HAPPY!
-絵_THANK YOU!
-絵_SUPER! ♪
-絵_SORRY...
-絵_BYE-BYE!
+Bank0161_Text_GoodDay = 絵_GOOD DAY!
+Bank0161_Text_Hello = 絵_HELLO!
+Bank0161_Text_Love = 絵_I LOVE IT!
+Bank0161_Text_GoodLuck = 絵_GOOD LUCK!
+Bank0161_Text_ItsFun = 絵_IT'S FUN!
+Bank0161_Text_Happy = 絵_HAPPY!
+Bank0161_Text_Thank = 絵_THANK YOU!
+Bank0161_Text_Super = 絵_SUPER! ♪
+Bank0161_Text_Sorry = 絵_SORRY...
+Bank0161_Text_ByeBye = 絵_BYE-BYE!

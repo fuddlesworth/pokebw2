@@ -1,38 +1,38 @@
-OPPONENT
-I
-YOU
-MOTHER
-GRANDFATHER
-UNCLE
-FATHER
-BOY
-ADULT
-BROTHER
-SISTER
-GRANDMOTHER
-AUNT
-PARENT
-OLD MAN
-ME
-GIRL
-GAL
-FAMILY
-HER
-HIM
-YOU
-SIBLINGS
-KIDS
-MR.
-MS.
-MYSELF
-WHO
-FRIEND
-ALLY
-PERSON
-BABY
-KIDS
-I
-EVERYONE
-RIVAL
-I
-I
+Bank0163_Text_Opponent = OPPONENT
+Bank0163_Text_I = I
+Bank0163_Text_You = YOU
+Bank0163_Text_Mother = MOTHER
+Bank0163_Text_Grandfather = GRANDFATHER
+Bank0163_Text_Uncle = UNCLE
+Bank0163_Text_Father = FATHER
+Bank0163_Text_Boy = BOY
+Bank0163_Text_Adult = ADULT
+Bank0163_Text_Brother = BROTHER
+Bank0163_Text_Sister = SISTER
+Bank0163_Text_Grandmother = GRANDMOTHER
+Bank0163_Text_Aunt = AUNT
+Bank0163_Text_Parent = PARENT
+Bank0163_Text_OldMan = OLD MAN
+Bank0163_Text_Me = ME
+Bank0163_Text_Girl = GIRL
+Bank0163_Text_Gal = GAL
+Bank0163_Text_Family = FAMILY
+Bank0163_Text_Her = HER
+Bank0163_Text_Him = HIM
+Bank0163_Text_You_2 = YOU
+Bank0163_Text_Siblings = SIBLINGS
+Bank0163_Text_Kids = KIDS
+Bank0163_Text_Mr = MR.
+Bank0163_Text_Ms = MS.
+Bank0163_Text_Myself = MYSELF
+Bank0163_Text_Who = WHO
+Bank0163_Text_Friend = FRIEND
+Bank0163_Text_Ally = ALLY
+Bank0163_Text_Person = PERSON
+Bank0163_Text_Baby = BABY
+Bank0163_Text_Kids_2 = KIDS
+Bank0163_Text_I_2 = I
+Bank0163_Text_Everyone = EVERYONE
+Bank0163_Text_Rival = RIVAL
+Bank0163_Text_I_3 = I
+Bank0163_Text_I_4 = I

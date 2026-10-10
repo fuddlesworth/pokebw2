@@ -1,6 +1,6 @@
-Trainee
-Rookie
-Elite
-Master
-Legend
-Legend
+MedalRanks_Text_Trainee = Trainee
+MedalRanks_Text_Rookie = Rookie
+MedalRanks_Text_Elite = Elite
+MedalRanks_Text_Master = Master
+MedalRanks_Text_Legend = Legend
+MedalRanks_Text_Legend_2 = Legend
