@@ -77,7 +77,7 @@ static void PdwAcc_StateWaitCreate(PdwAccWork *wk);
 static void PdwAcc_StateCreate(PdwAccWork *wk);
 static void PdwAcc_StateIdOnlyWait(PdwAccWork *wk);
 static void PdwAcc_StateShowIdOnly(PdwAccWork *wk);
-static void PdwAcc_OnDisconnect(void *work, int a1, int code);
+static void PdwAcc_OnDisconnect(void *work, int a1, int code, int error);
 static BOOL PdwAcc_ProcInit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL PdwAcc_ProcMain(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL PdwAcc_ProcExit(GameProc *proc, u32 *state, void *param, void *work);
@@ -292,7 +292,7 @@ static void PdwAcc_StateShowIdOnly(PdwAccWork *wk) {
     PdwAcc_ChangeState(wk, PdwAcc_StateIdOnlyWait, 572);
 }
 
-static void PdwAcc_OnDisconnect(void *work, int a1, int code) {
+static void PdwAcc_OnDisconnect(void *work, int a1, int code, int error) {
     PdwAccWork *wk = work;
 
     if (wk->http != NULL) {
@@ -315,7 +315,7 @@ static BOOL PdwAcc_ProcInit(GameProc *proc, u32 *state, void *param, void *work)
     wk->profileId = func_02008bdc(GetGameDataPlayerInfo(pdwParam->gameData));
     if (func_02042788()) {
         wk->http = func_ov189_0219d1b8(pdwParam->heapId, wk->profileId, pdwParam->loginBuffer);
-        func_ov011_02152040(PdwAcc_OnDisconnect, wk);
+        DWCRap_SetErrorFunc(PdwAcc_OnDisconnect, wk);
     }
     wk->disp = PdwAccDisp_Create(wk->heapId);
     wk->msg = PdwAccMessage_Create(wk->heapId, 107);
@@ -359,7 +359,7 @@ static BOOL PdwAcc_ProcMain(GameProc *proc, u32 *state, void *param, void *work)
             }
             Wipe_SetScreenCovered(0, WIPE_COLOR_BLACK);
             Wipe_SetScreenCovered(1, WIPE_COLOR_BLACK);
-            func_ov011_02152404(1, 0);
+            DWCRapCommon_CheckError(1, 0);
             pdwParam->disconnected = TRUE;
             done = TRUE;
         }
@@ -388,7 +388,7 @@ static BOOL PdwAcc_ProcExit(GameProc *proc, u32 *state, void *param, void *work)
         wk->http = NULL;
     }
     if (func_02042788()) {
-        func_ov011_02152040(NULL, NULL);
+        DWCRap_SetErrorFunc(NULL, NULL);
     }
     GFL_ProcReleaseSubsystem(proc);
     GFL_OvlUnload(OVERLAY_ID(189));

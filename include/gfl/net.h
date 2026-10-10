@@ -23,17 +23,35 @@ typedef struct {
     int (*getInfoSize)(void *work);
     void *(*unk18)(void *work);
     int (*unk1C)(void *work);
+    // Whether a beacon's game is one to join, a BOOL (*)(u8 gameCommandBase, u8 beaconCommandBase, void *work) that the
+    // games give with fewer parameters
     void *unk20;
     void (*unk24)(NetHandle *handle, int a1, void *work);
     void (*unk28)(NetHandle *handle, int a1, void *work);
     void (*unk2C)(void *work);
     void (*unk30)(void *work);
-    u8 unk34[0xc];
+    // 12 bytes that the games' init data zero, the last four of which are a function that dwc_rap.c calls with each
+    // Wi-Fi library error it queues (its code and its second value), and the game's work
+    union {
+        u8 unk34[0xc];
+        struct {
+            u8 unk34_0[8];
+            void (*callback)(int code, int param, void *work);
+        } wifiError;
+    } unk34;
     int (*unk40)(void *work);
     int (*unk44)(void *work);
     // The size of the heap for Wi-Fi
     u32 wifiHeapSize;
-    u8 unk4C[8];
+    // The game's ID in the wireless beacons (gameId, of which the low 16 bits go in them) after four more bytes. The
+    // games' init data give the bytes
+    union {
+        u8 unk4C[8];
+        struct {
+            u32 unk4C_0;
+            u32 gameId;
+        } id;
+    } unk4C;
     HeapID parentHeapId;
     HeapID heapId;
     HeapID wifiHeapId;
@@ -72,30 +90,35 @@ typedef BOOL (*GFLNetSendDoneFunc)(BOOL ok);
 
 typedef struct {
     void (*unk00)(int a0, int a1);
-    void (*init)(HeapID heapId, void *sys, int a2, void *work);
-    void (*unk08)(int a0);
+    // Starts the device; the callback, which the wireless device calls when its helper ends, is NULL from the net
+    BOOL (*init)(HeapID heapId, void *sys, BOOL (*callback)(BOOL success), void *work);
+    BOOL (*unk08)(void (*callback)(BOOL ok));
     // Runs the device each frame with the connected machines, returning a negative error or a status
     int (*update)(u16 connectBits);
     BOOL (*unk10)(int a0, int a1);
-    BOOL (*unk14)(int a0);
-    u8 unk18[0x10];
+    BOOL (*unk14)(void (*callback)(BOOL ok));
+    BOOL (*unk18)(void);
+    BOOL (*unk1C)(void);
+    BOOL (*unk20)(void);
+    BOOL (*unk24)(void);
     // A found beacon's data and MAC address, by index
     void *(*unk28)(int index);
     u8 *(*unk2C)(int index);
-    u8 unk30[8];
+    BOOL (*unk30)(void);
+    BOOL (*unk34)(void);
     BOOL (*unk38)(int a0);
-    void (*setDisconnectCallback)(void (*callback)(int netId));
+    BOOL (*setDisconnectCallback)(void (*callback)(int netId));
     int (*unk40)(int a0, BOOL (*callback)(void));
     BOOL (*unk44)(int a0, int a1);
     int (*unk48)(BOOL a0, const u8 *mac, int a2, int a3, void (*callback)(void));
-    u8 unk4C[4];
+    BOOL (*unk4C)(int a0, int a1, int a2, int a3);
     BOOL (*unk50)(int a0, int a1, int a2);
     BOOL (*unk54)(BOOL a0, int a1);
     BOOL (*unk58)(void);
     BOOL (*unk5C)(u8 *data);
     u8 *(*getRecvData)(int netId);
     BOOL (*send)(u8 *data, int size, int a2, GFLNetSendDoneFunc callback);
-    void (*setRecvCallback)(GFLNetRecvFunc callback);
+    BOOL (*setRecvCallback)(GFLNetRecvFunc callback);
     BOOL (*unk6C)(void);
     BOOL (*isConnected)(void);
     BOOL (*unk74)(void);
@@ -103,10 +126,11 @@ typedef struct {
     int (*getConnectBits)(void);
     int (*getNetId)(void);
     int (*getSignalLevel)(void);
-    BOOL (*isError)(void);
+    int (*isError)(void);
     void (*unk8C)(int a0);
     int (*unk90)(int a0);
-    u8 unk94[8];
+    int (*unk94)(void);
+    int (*unk98)(void);
     void (*unk9C)(void);
     BOOL (*unkA0)(void);
     BOOL (*unkA4)(void);
@@ -177,6 +201,14 @@ void *func_02012908(HeapID heapId, u32 a1);
 void func_02012994(void *work);
 void func_02012a4c(void);
 void GFL_NetErrAbort(void);
+void func_02012050(void);
+// Shows the error screen for an assertion that failed
+void AssertFailErrorDisp(void);
+// The wireless signal level of the DS Download Play, and the record of the best level a scan saw, which it sets and
+// clears
+u16 func_02012ea0(void);
+void func_02012ebc(u8 linkLevel);
+void func_02012edc(void);
 
 // The device table for a GFL_NET_TYPE_*, from outside the library
 const GFLNetDevTable *func_020116c0(int type);

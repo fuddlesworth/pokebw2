@@ -1557,7 +1557,7 @@ static void func_ov194_021b964c(PokemonTradeWork *wk) {
             func_ov194_021bbf5c(wk);
             func_ov194_021be6ac(wk);
             if (wk->type == 2) {
-                func_ov011_021516a0(FALSE);
+                DWCRap_SetMic(FALSE);
             }
             GFL_MsgDataLoadStrbuf(wk->msgData, 135, wk->strbuf);
             func_ov194_021bfe28(wk);
@@ -1678,7 +1678,7 @@ static void func_ov194_021b9974(PokemonTradeWork *wk) {
 static void func_ov194_021b99b4(PokemonTradeWork *wk) {
     func_02042ba8(TRUE, wk->heapId);
     if (wk->type == 2) {
-        func_ov011_021516a0(TRUE);
+        DWCRap_SetMic(TRUE);
     }
     GFL_MsgDataLoadStrbuf(wk->msgData, 6, wk->strbuf);
     func_ov194_021bfdf8(wk, TRUE, 0);
@@ -2979,11 +2979,11 @@ static BOOL PokemonTrade_ProcMain(GameProc *proc, u32 *state, void *param, void 
             func_ov189_0219d124(wk->unk0);
             func_ov189_0219d1f0(wk->unk0);
             wk->unk0 = NULL;
-            func_ov011_02152040(NULL, NULL);
-            func_ov011_02152158();
+            DWCRap_SetErrorFunc(NULL, NULL);
+            DWCRapCommon_EndSubHeap();
         }
         if (func_02042b20()) {
-            func_ov011_02152404(1, 1);
+            DWCRapCommon_CheckError(1, 1);
         } else if (wk->type != 1) {
             GFL_NetErrMarkShown();
         }

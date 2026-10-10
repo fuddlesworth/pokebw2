@@ -273,7 +273,7 @@ static void GSync_StateSendAnimJump(GSyncWork *wk);
 static void GSync_StateSendAnimIcon(GSyncWork *wk);
 static void GSync_StateSendShowIcon(GSyncWork *wk);
 static void GSync_StateSend(GSyncWork *wk);
-static void GSync_OnDisconnect(void *work, int a1, int code);
+static void GSync_OnDisconnect(void *work, int a1, int code, int error);
 static void GSync_RestoreDreamWorld(GSyncWork *wk);
 static BOOL GSync_PersonExists(GSyncResultPerson *person);
 static void GSync_PersonToPlayerInfo(GSyncResultPerson *person, PlayerInfo *info);
@@ -1679,7 +1679,7 @@ static void GSync_StateSend(GSyncWork *wk) {
     GSync_ChangeState(wk, GSync_StateSendShowIcon, 2673);
 }
 
-static void GSync_OnDisconnect(void *work, int a1, int code) {
+static void GSync_OnDisconnect(void *work, int a1, int code, int error) {
     GSyncWork *wk = work;
 
     if (wk->http != NULL) {
@@ -1800,7 +1800,7 @@ static BOOL GSync_ProcInit(GameProc *proc, u32 *state, void *param, void *work) 
         }
         if (pParent->gsyncResult != GSYNC_RESULT_NO_POKEMON) {
             wk->http = func_ov189_0219d1b8(HEAPID_GSYNC, profileID, pParent->loginBuffer);
-            func_ov011_02152040(GSync_OnDisconnect, wk);
+            DWCRap_SetErrorFunc(GSync_OnDisconnect, wk);
         }
     }
     wk->disp = GSyncDisp_Create(wk->heapId);
@@ -1830,7 +1830,7 @@ static BOOL GSync_ProcMain(GameProc *proc, u32 *state, void *param, void *work) 
         }
         Wipe_SetScreenCovered(0, WIPE_COLOR_BLACK);
         Wipe_SetScreenCovered(1, WIPE_COLOR_BLACK);
-        func_ov011_02152404(1, 0);
+        DWCRapCommon_CheckError(1, 0);
         wk->param->gsyncResult = GSYNC_RESULT_RETRY_LOGIN;
         return TRUE;
     }
@@ -1881,11 +1881,11 @@ static BOOL GSync_ProcExit(GameProc *proc, u32 *state, void *param, void *work) 
         GFL_HeapFree(wk->unk44);
     }
     if (func_02042788()) {
-        func_ov011_0215205c(NULL, NULL);
+        DWCRap_SetEventFunc(NULL, NULL);
     }
     if (wk->http != NULL) {
         func_ov189_0219d1f0(wk->http);
-        func_ov011_02152040(NULL, NULL);
+        DWCRap_SetErrorFunc(NULL, NULL);
     }
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(HEAPID_GSYNC);

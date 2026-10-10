@@ -565,7 +565,7 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
 
     switch (*state) {
     case 0:
-        func_ov011_0215205c(MysteryNet_OnDwcEvent, download);
+        DWCRap_SetEventFunc(MysteryNet_OnDwcEvent, download);
         sys_memset(download, 0, sizeof(MysteryNetDownload));
         download->cancel = FALSE;
         download->cancelled = FALSE;
@@ -702,7 +702,7 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
         break;
     case 9:
         download->initialized = FALSE;
-        func_ov011_0215205c(NULL, NULL);
+        DWCRap_SetEventFunc(NULL, NULL);
         MysteryNetSeq_SetNext(seq, MysteryNet_WifiEnd);
         break;
     case DOWNLOAD_WAIT:
