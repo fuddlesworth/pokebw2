@@ -56,8 +56,7 @@ a rule here changes, change it there too.
 - Long jobs run with `run_in_background` or Monitor, never `sleep`. Run the permuter only under a memory cap: an
   uncapped `-j8` run got the terminal OOM-killed (see `.claude/skills/match-function/permuter.md`).
 - A new worktree needs `orig/`, `.venv`, `tools/dsd`, `tools/objdiff-cli`, `tools/wibo` and `tools/mwccarm` linked
-  in from the main checkout, which the ignore rules cover, and `ninja extract/b2_us/config.yaml` before the first
-  full build.
+  in from the main checkout, which the ignore rules cover.
 
 ## Commands
 
