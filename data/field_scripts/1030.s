@@ -63,7 +63,7 @@ L_00A8:
     // "Just to let you know, my Roggenrola and\nI are the sturdiest things that were[f000]븀\u0000\never sturdy![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 2, 12, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 580, 0, 0
+    CallTrainerBattle TRAINER_BLACK_BELT_ROCKY, 0, 0
     VMCall L_0149
     // "Mmm![f000]븁\u0000\nYour strength is the real thing![f000]븁\u0000\nMy Roggenrola and I must\nbecome even sturdier,[f000]븀\u0000\nso we're off to continue our training![f000]븁\u0000\nFarewell!"
     ActorMsg MSGFILE_SCRIPT, 4, 12, 0, 0

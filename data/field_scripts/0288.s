@@ -110,11 +110,11 @@ L_013E:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C4
-    CallTrainerBattle 776, 0, 0
+    CallTrainerBattle TRAINER_CHAMPION_IRIS_3, 0, 0
     VMJump L_01CC
 
 L_01C4:
-    CallTrainerBattle 341, 0, 0
+    CallTrainerBattle TRAINER_CHAMPION_IRIS, 0, 0
 
 L_01CC:
     WorkSetConst 0x8027, 0
@@ -146,11 +146,11 @@ L_01FF:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_024A
-    CallTrainerBattle 781, 0, 0
+    CallTrainerBattle TRAINER_CHAMPION_IRIS_4, 0, 0
     VMJump L_0252
 
 L_024A:
-    CallTrainerBattle 536, 0, 0
+    CallTrainerBattle TRAINER_CHAMPION_IRIS_2, 0, 0
 
 L_0252:
     WorkSetConst 0x8028, 0

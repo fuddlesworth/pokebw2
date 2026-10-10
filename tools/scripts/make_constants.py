@@ -6,6 +6,7 @@ generates the headers from them with gen_constants.py.
 
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --sdat extract/b2_us/files/swan_sound_data.sdat
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trainer-classes extract/b2_us
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trainers extract/b2_us
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused and get no constant.
@@ -135,6 +136,37 @@ def trainer_class_names(extract: Path) -> dict[int, str]:
     return names
 
 
+# The class of the rivals and other story characters, which their names say enough without
+GENERIC_CLASS = "PKMN_TRAINER"
+
+
+def trainer_names(extract: Path) -> dict[int, str]:
+    """Returns the name of each trainer: its class and its name, as TRAINER_YOUNGSTER_JIMMY, without the class for
+    story characters (TRAINER_CHEREN), and with the ID for one without a name. Trainers with the same class and name,
+    such as rematches, get _2, _3 and so on in ID order."""
+    from narc import read_narc
+
+    files = extract / "files"
+    classes = [identifier(n.replace("⒆⒇", "Pkmn")) for n in read_archive_file(files / "a/0/0/2", TRAINER_CLASS_NAMES)]
+    texts = read_archive_file(files / "a/0/0/2", TRAINER_NAMES)
+    names: dict[int, str] = {}
+    count: dict[str, int] = {}
+    for i, trainer in enumerate(read_narc((files / "a/0/9/1").read_bytes())):
+        if i == 0:
+            names[i] = "TRAINER_NONE"
+            continue
+        trainer_class = classes[trainer[1]]
+        name = identifier(texts[i])
+        parts = [] if trainer_class == GENERIC_CLASS and name else [trainer_class]
+        parts.append(name or str(i))
+        base = "TRAINER_" + "_".join(parts)
+        count[base] = count.get(base, 0) + 1
+        names[i] = base if count[base] == 1 else f"{base}_{count[base]}"
+    if len(set(names.values())) != len(names):
+        sys.exit("two trainers have the same name")
+    return names
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -142,10 +174,16 @@ def main():
     parser.add_argument("--sdat", type=Path, help="the sound archive, files/swan_sound_data.sdat, for sound.txt")
     parser.add_argument("--trainer-classes", type=Path, metavar="EXTRACT",
                         help="write only trainer_classes.txt, from an extracted version such as extract/b2_us")
+    parser.add_argument("--trainers", type=Path, metavar="EXTRACT",
+                        help="write only trainers.txt, from an extracted version such as extract/b2_us")
     args = parser.parse_args()
     if args.trainer_classes:
         names = {c: f"TRAINER_CLASS_{name}" for c, name in trainer_class_names(args.trainer_classes).items()}
         write_list(args.output / "trainer_classes.txt", names, "Trainer classes, told apart by trainer, sex or ID")
+    if args.trainers:
+        write_list(args.output / "trainers.txt", trainer_names(args.trainers),
+                   "Trainers, by class and name, numbered where they repeat")
+    if args.trainer_classes or args.trainers:
         return
     if args.sdat:
         write_sound_list(args.output / "sound.txt", args.sdat.read_bytes())

@@ -311,7 +311,7 @@ L_049B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_050B
     MsgWinCloseAll
-    CallTrainerBattle 493, 0, 0
+    CallTrainerBattle TRAINER_ACE_TRAINER_DUSTY, 0, 0
     VMCall L_05D8
     WorkSetConst 0x40f9, 4
     // "Hmm...[f000]븁\u0000\nI thought I was completely\nprepared for anti-Levitate tactics...[f000]븁\u0000\nIn real battles, things never\ngo as well as you would think.[f000]븁\u0000\nOr maybe you're just that good!"
@@ -351,7 +351,7 @@ L_0537:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0599
     MsgWinCloseAll
-    CallTrainerBattle 493, 0, 0
+    CallTrainerBattle TRAINER_ACE_TRAINER_DUSTY, 0, 0
     VMCall L_05D8
     WorkSetConst 0x40f9, 4
     // "Hmm...[f000]븁\u0000\nI thought I was completely\nprepared for anti-Levitate tactics...[f000]븁\u0000\nIn real battles, things never\ngo as well as you would think.[f000]븁\u0000\nOr maybe you're just that good!"

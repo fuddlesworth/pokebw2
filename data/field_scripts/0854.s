@@ -800,7 +800,7 @@ L_0B77:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BB8
-    CallTrainerBattle 161, 0, 1
+    CallTrainerBattle TRAINER_RIVAL, 0, 1
     VMJump L_0BE1
 
 L_0BB8:
@@ -808,11 +808,11 @@ L_0BB8:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BD9
-    CallTrainerBattle 162, 0, 1
+    CallTrainerBattle TRAINER_RIVAL_2, 0, 1
     VMJump L_0BE1
 
 L_0BD9:
-    CallTrainerBattle 163, 0, 1
+    CallTrainerBattle TRAINER_RIVAL_3, 0, 1
 
 L_0BE1:
     CallTrainerBattleEnd

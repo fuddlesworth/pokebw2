@@ -78,7 +78,7 @@ L_00F4:
     // "Before I send out my Pokémon,\nmy heart always begins to race...[f000]븁\u0000\nInteresting...\nMy Pokémon in their Poké Balls are[f000]븀\u0000\nradiating a happy feeling.[f000]븁\u0000\nAre you the reason?\nWhat are you?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 456, 0, 0
+    CallTrainerBattle TRAINER_CYNTHIA, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -218,7 +218,7 @@ L_030A:
 
 L_0316:
     MsgWinCloseAll
-    CallTrainerBattle 456, 0, 0
+    CallTrainerBattle TRAINER_CYNTHIA, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

@@ -131,11 +131,11 @@ L_017C:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B3
-    CallTrainerBattle 766, 0, 0
+    CallTrainerBattle TRAINER_LEADER_BURGH_2, 0, 0
     VMJump L_01BB
 
 L_01B3:
-    CallTrainerBattle 154, 0, 0
+    CallTrainerBattle TRAINER_LEADER_BURGH, 0, 0
 
 L_01BB:
     WorkSetConst 0x8021, 0
@@ -196,6 +196,6 @@ L_0228:
     HollowRivalCmd_0262 1, 5
     FlagSet 753
     WorkSetConst 0x40b2, 4
-    TrainerFlagSet 737
+    TrainerFlagSet TRAINER_HARLEQUIN_ANDERS
     VMReturn
     .balign 4, 0

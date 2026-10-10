@@ -582,7 +582,7 @@ Movement_08C4:
     MoveEnd
 
 L_08D4:
-    CallTrainerBattle 345, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GHETSIS, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

@@ -6,6 +6,7 @@
 #include "constants/moves.h"
 #include "constants/sound.h"
 #include "constants/species.h"
+#include "constants/trainers.h"
 #include "constants/types.h"
 
     // In .data, which LLVM pads with zeros: in .text, clang 18 pads `.balign 4, 0` with ARM NOPs

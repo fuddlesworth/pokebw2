@@ -540,11 +540,11 @@ Script_13:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_091B
-    TrainerBGMPlayPush 751
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_47
     // "Ha ha! Your Pokémon will be\nhelping us take over the world[f000]븀\u0000\nin a few seconds![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 690, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_44, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

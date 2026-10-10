@@ -270,7 +270,7 @@ Script_22:
     ActorCmdExec 2, Movement_13A4
     ActorCmdExec 255, Movement_13E4
     ActorCmdWait
-    CallTrainerBattle 372, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_5, 0, 0
     VMCall L_1268
     ActorCmdExec 2, Movement_06AC
     ActorCmdWait
@@ -283,7 +283,7 @@ Script_22:
     ActorCmdExec 4, Movement_13AC
     ActorCmdExec 255, Movement_13EC
     ActorCmdWait
-    CallTrainerBattle 373, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_6, 0, 0
     VMCall L_1268
     // "Team Plasma: What's with this Trainer?![f000]븁\u0000\nThis reminds me of that Trainer who\nmessed with us two years ago...[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 14, 4, 0, 0
@@ -933,7 +933,7 @@ Script_23:
     // "Team Plasma: You![f000]븁\u0000\nYou must be friends of Smiley Swimsuit,\nthat guy who lowered the gangplank![f000]븁\u0000\nAaargh! You even got the roadblock\nCrustle out of the way![f000]븁\u0000\nHere I come!\nPlasmaaaa![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 48, 14, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 500, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_40, 0, 0
     VMCall L_1268
     ActorCmdExec 14, Movement_0FC0
     ActorCmdWait
@@ -1135,7 +1135,7 @@ L_11A4:
     // "The invisible force that exists between\nyou and Pokémon...[f000]븀\u0000\nThis time I will determine what it is![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 59, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 813, 0, 0
+    CallTrainerBattle TRAINER_COLRESS_2, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

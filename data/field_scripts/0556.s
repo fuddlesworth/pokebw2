@@ -411,7 +411,7 @@ L_057D:
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
-    CallTrainerBattle 5, 0, 0
+    CallTrainerBattle TRAINER_N, 0, 0
     VMJump L_05FD
 
 L_05E4:
@@ -421,7 +421,7 @@ L_05E4:
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
-    CallTrainerBattle 6, 0, 0
+    CallTrainerBattle TRAINER_N_2, 0, 0
 
 L_05FD:
     VMCall L_09C0
@@ -601,7 +601,7 @@ L_0864:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08B4
-    CallTrainerBattle 782, 0, 0
+    CallTrainerBattle TRAINER_N_3, 0, 0
     VMJump L_0911
 
 L_08B4:
@@ -609,7 +609,7 @@ L_08B4:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08D5
-    CallTrainerBattle 783, 0, 0
+    CallTrainerBattle TRAINER_N_4, 0, 0
     VMJump L_0911
 
 L_08D5:
@@ -617,7 +617,7 @@ L_08D5:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08F6
-    CallTrainerBattle 784, 0, 0
+    CallTrainerBattle TRAINER_N_5, 0, 0
     VMJump L_0911
 
 L_08F6:
@@ -625,7 +625,7 @@ L_08F6:
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0911
-    CallTrainerBattle 785, 0, 0
+    CallTrainerBattle TRAINER_N_6, 0, 0
 
 L_0911:
     VMCall L_09C0

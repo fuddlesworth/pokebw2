@@ -146,11 +146,11 @@ L_01D3:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_020C
-    CallTrainerBattle 765, 0, 0
+    CallTrainerBattle TRAINER_LEADER_ROXIE_2, 0, 0
     VMJump L_0214
 
 L_020C:
-    CallTrainerBattle 157, 0, 0
+    CallTrainerBattle TRAINER_LEADER_ROXIE, 0, 0
 
 L_0214:
     WorkSetConst 0x8024, 0
@@ -242,8 +242,8 @@ L_030E:
     ActorMsg MSGFILE_SCRIPT, 5, 4, 0, 0
     LastKeyWait
     ActorMsgClose
-    TrainerFlagSet 178
-    TrainerFlagSet 179
+    TrainerFlagSet TRAINER_ROUGHNECK_NICKY
+    TrainerFlagSet TRAINER_GUITARIST_BILLY_JO
     WorkSetConst 0x40ad, 1
     WorkSetConst 0x410a, 1
     WorkSetConst 0x40ac, 3

@@ -57,7 +57,7 @@ L_00F6:
     // "I'll show you just how much\nthis Battle Company has researched[f000]븀\u0000\nPokémon and Trainers![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 1, 1, 3, 0
     MsgWinCloseAll
-    CallTrainerBattle 503, 0, 0
+    CallTrainerBattle TRAINER_SCHOOL_KID_NEIL, 0, 0
     VMCall L_013E
     // "I lost...[f000]븁\u0000\nBecause you were strong,\nand I was weak.[f000]븁\u0000\nWe must do even more research\nfor Pokémon and for Trainers!"
     ActorMsg MSGFILE_SCRIPT, 2, 1, 3, 0

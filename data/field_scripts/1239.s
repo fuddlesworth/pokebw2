@@ -970,7 +970,7 @@ L_0ED3:
     VMReturn
 
 L_0EE9:
-    TrainerSayMessage 0x8020, 13, 0x8011
+    TrainerSayMessage 0x8020, TRAINER_STRIKER_TONY, 0x8011
     ActorMsgClose
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -979,24 +979,24 @@ L_0EE9:
     MEWait
     FadeEx 3, 16, 0, 2
     FadeExWait
-    TrainerSayMessage 0x8020, 14, 0x8011
+    TrainerSayMessage 0x8020, TRAINER_STRIKER_ROBERTO, 0x8011
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_0F21:
-    TrainerSayMessage 0x8020, 15, 0x8011
+    TrainerSayMessage 0x8020, TRAINER_ROUGHNECK_FLETCHER, 0x8011
     ActorMsgClose
     TrainerGetPrizeItem 0x8020, 0x8000
     WorkSetConst 0x8001, 1
     RTCallGlobal 2805
-    TrainerSayMessage 0x8020, 16, 0x8011
+    TrainerSayMessage 0x8020, TRAINER_YOUNGSTER_ABE, 0x8011
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_0F49:
-    TrainerSayMessage 0x8020, 16, 0x8011
+    TrainerSayMessage 0x8020, TRAINER_YOUNGSTER_ABE, 0x8011
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -1160,7 +1160,7 @@ L_1156:
     TrainerEyeEventInit 0
     TrainerEyeEventStart
     TrainerGetActorID 0, 0x8028
-    TrainerSayMessage 0x8027, 0, 0x8028
+    TrainerSayMessage 0x8027, TRAINER_NONE, 0x8028
     ActorMsgClose
     CallTrainerBattle 0x8027, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -1191,10 +1191,10 @@ L_11BD:
     TrainerEyeEventInit 1
     TrainerEyeEventStart
     TrainerGetActorID 0, 0x802b
-    TrainerSayMessage 0x8029, 3, 0x802b
+    TrainerSayMessage 0x8029, TRAINER_SMASHER_ASPEN, 0x802b
     ActorMsgClose
     TrainerGetActorID 1, 0x802b
-    TrainerSayMessage 0x802a, 7, 0x802b
+    TrainerSayMessage 0x802a, TRAINER_WORKER_MATTHEW, 0x802b
     ActorMsgClose
     CallTrainerBattle 0x8029, 0x802a, 0
     TrainerBattleIsVictory 0x8010
@@ -1226,13 +1226,13 @@ L_124E:
     TrainerEyeEventInit 0
     TrainerEyeEventStart
     TrainerGetActorID 0, 0x802e
-    TrainerSayMessage 0x802c, 0, 0x802e
+    TrainerSayMessage 0x802c, TRAINER_NONE, 0x802e
     ActorMsgClose
     TrainerBGMPlay 0x802d
     TrainerEyeEventInit 1
     TrainerEyeEventStart
     TrainerGetActorID 1, 0x802e
-    TrainerSayMessage 0x802d, 0, 0x802e
+    TrainerSayMessage 0x802d, TRAINER_NONE, 0x802e
     ActorMsgClose
     CallTrainerBattle 0x802c, 0x802d, 0
     TrainerBattleIsVictory 0x8010
@@ -1266,13 +1266,13 @@ L_12E5:
     TrainerEyeEventInit 0
     TrainerEyeEventStart
     TrainerGetActorID 0, 0x8032
-    TrainerSayMessage 0x8030, 0, 0x8032
+    TrainerSayMessage 0x8030, TRAINER_NONE, 0x8032
     ActorMsgClose
     TrainerBGMPlay 0x8031
     TrainerEyeEventInit 1
     TrainerEyeEventStart
     TrainerGetActorID 1, 0x8032
-    TrainerSayMessage 0x8031, 0, 0x8032
+    TrainerSayMessage 0x8031, TRAINER_NONE, 0x8032
     ActorMsgClose
     CallTrainerMultiBattle 0x802f, 0x8030, 0x8031, 0
     TrainerBattleIsVictory 0x8010

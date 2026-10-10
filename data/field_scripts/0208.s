@@ -692,7 +692,7 @@ L_097A:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09A7
-    CallTrainerBattle 696, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_22, 0, 0
     VMJump L_09D0
 
 L_09A7:
@@ -700,11 +700,11 @@ L_09A7:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09C8
-    CallTrainerBattle 697, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_23, 0, 0
     VMJump L_09D0
 
 L_09C8:
-    CallTrainerBattle 698, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_24, 0, 0
 
 L_09D0:
     TrainerBattleIsVictory 0x8010

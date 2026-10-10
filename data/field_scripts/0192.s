@@ -437,7 +437,7 @@ L_06E0:
     // "Rood: Let us begin![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 19, 4, 3, 0
     MsgWinCloseAll
-    CallTrainerBattle 346, 0, 0
+    CallTrainerBattle TRAINER_ROOD, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -713,7 +713,7 @@ L_0A87:
     // "You've got a good attitude, don't you![f000]븁\u0000\nI'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI'm always at full throttle.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 50, 0, 0, 0
     ActorMsgClose
-    CallTrainerBattle 367, 0, 0
+    CallTrainerBattle TRAINER_MOTORCYCLIST_CHARLES_4, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -769,7 +769,7 @@ L_0B4A:
     // "You've got a good attitude, don't you![f000]븁\u0000\nI'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI'm always at full throttle.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 59, 0, 0, 0
     ActorMsgClose
-    CallTrainerBattle 366, 0, 0
+    CallTrainerBattle TRAINER_MOTORCYCLIST_CHARLES_3, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

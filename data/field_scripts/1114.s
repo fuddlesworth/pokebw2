@@ -166,7 +166,7 @@ Script_5:
     // "You there!\nI won't let you interfere with[f000]븀\u0000\nLord Ghetsis's plans![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 14, 1, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 348, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -227,7 +227,7 @@ Script_6:
 
 Script_7:
     ActorsPauseAll
-    TrainerFlagGet 498, 0x8010
+    TrainerFlagGet TRAINER_TEAM_PLASMA_SHADOW_2, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -237,12 +237,12 @@ Script_7:
     // "Shadow Triad: I have no problem\nwith you, but this is for Lord Ghetsis![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 17, 5, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 498, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_2, 0, 0
     VMCall L_08C0
     // "Shadow Triad: Even if I lose,\nLord Ghetsis simply has to win..."
     ActorMsg MSGFILE_SCRIPT, 18, 5, 0, 0
     WorkAdd 0x40f4, 1
-    TrainerFlagSet 498
+    TrainerFlagSet TRAINER_TEAM_PLASMA_SHADOW_2
     VMStackPush 0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_EQ
@@ -274,7 +274,7 @@ L_0444:
 
 Script_8:
     ActorsPauseAll
-    TrainerFlagGet 499, 0x8010
+    TrainerFlagGet TRAINER_TEAM_PLASMA_SHADOW_3, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -284,12 +284,12 @@ Script_8:
     // "Shadow Triad: We swore to be loyal\nto Lord Ghetsis since he saved us![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 19, 3, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 499, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_3, 0, 0
     VMCall L_08C0
     // "Shadow Triad: Listen well![f000]븁\u0000\nThe only thing we want is\nthe world Lord Ghetsis desires!"
     ActorMsg MSGFILE_SCRIPT, 20, 3, 0, 0
     WorkAdd 0x40f4, 1
-    TrainerFlagSet 499
+    TrainerFlagSet TRAINER_TEAM_PLASMA_SHADOW_3
     VMStackPush 0x40f4
     VMStackPushConst 4
     VMStackCmp CMP_EQ

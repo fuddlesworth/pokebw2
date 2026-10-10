@@ -25,14 +25,14 @@ Script_4:
     // "Hey! This is our secret spot![f000]븁\u0000\nYou can't come waltzin' in\nhere like you own the place![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 0, 4, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 754, 0, 0
+    CallTrainerBattle TRAINER_ROUGHNECK_RICKY, 0, 0
     VMCall L_0382
     // "You aren't one of us...\nBut I don't mind tough Trainers."
     ActorMsg MSGFILE_SCRIPT, 1, 4, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x4147, 1
-    TrainerFlagSet 754
+    TrainerFlagSet TRAINER_ROUGHNECK_RICKY
     ActorCmdExec 4, Movement_03AC
     VMSleep 8
     ActorCmdExec 3, Movement_03BC
@@ -73,7 +73,7 @@ L_0111:
 
 Script_2:
     ActorsPauseAll
-    TrainerFlagGet 755, 0x400f
+    TrainerFlagGet TRAINER_DANCER_JEAN_PAUL, 0x400f
     VMStackPush 0x4147
     VMStackPushConst 3
     VMStackCmp CMP_EQ
@@ -112,8 +112,8 @@ L_018B:
 
 Script_3:
     ActorsPauseAll
-    TrainerFlagGet 756, 0x400f
-    TrainerFlagGet 755, 0x400e
+    TrainerFlagGet TRAINER_GUITARIST_TINA, 0x400f
+    TrainerFlagGet TRAINER_DANCER_JEAN_PAUL, 0x400e
     VMStackPush 0x4147
     VMStackPushConst 3
     VMStackCmp CMP_EQ
@@ -153,7 +153,7 @@ L_020B:
     // "This worn-out lot is our paradise![f000]븁\u0000\nWe're not gonna let some stranger\ncome in and trash the place![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 4, 3, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 755, 0, 0
+    CallTrainerBattle TRAINER_DANCER_JEAN_PAUL, 0, 0
     VMCall L_0382
     // "What's with you anyway?!\nYour fighting has a tight rhythm.[f000]븀\u0000\nI was groovin' with it before I knew it!"
     ActorMsg MSGFILE_SCRIPT, 5, 3, 0, 0
@@ -166,14 +166,14 @@ L_020B:
     ActorCmdExec 255, Movement_03F0
     ActorCmdWait
     WorkSetConst 0x4147, 2
-    TrainerFlagSet 755
+    TrainerFlagSet TRAINER_DANCER_JEAN_PAUL
     VMReturn
 
 L_0265:
     // "You made my crew cry![f000]븁\u0000\nI'm gonna pay you back in spades![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 8, 2, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 756, 0, 0
+    CallTrainerBattle TRAINER_GUITARIST_TINA, 0, 0
     VMCall L_0382
     // "People like you deserve a Medal...[f000]븁\u0000\nOK. I've decided.\nYou're the new boss of this area!"
     ActorMsg MSGFILE_SCRIPT, 9, 2, 0, 0
@@ -183,7 +183,7 @@ L_0265:
     ActorCmdWait
     MedalGive 95
     WorkSetConst 0x4147, 3
-    TrainerFlagSet 756
+    TrainerFlagSet TRAINER_GUITARIST_TINA
     VMReturn
 
 L_02AB:

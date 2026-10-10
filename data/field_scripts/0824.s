@@ -261,7 +261,7 @@ Script_4:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03F8
-    CallTrainerBattle 378, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_10, 0, 0
     VMJump L_0421
 
 L_03F8:
@@ -269,11 +269,11 @@ L_03F8:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0419
-    CallTrainerBattle 379, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_11, 0, 0
     VMJump L_0421
 
 L_0419:
-    CallTrainerBattle 380, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_12, 0, 0
 
 L_0421:
     TrainerBattleIsVictory 0x8010
@@ -528,7 +528,7 @@ Script_10:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0719
-    CallTrainerBattle 693, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_19, 0, 0
     VMJump L_0742
 
 L_0719:
@@ -536,11 +536,11 @@ L_0719:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_073A
-    CallTrainerBattle 694, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_20, 0, 0
     VMJump L_0742
 
 L_073A:
-    CallTrainerBattle 695, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_21, 0, 0
 
 L_0742:
     TrainerBattleIsVictory 0x8010
@@ -613,7 +613,7 @@ L_0800:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0854
-    CallTrainerBattle 693, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_19, 0, 0
     VMJump L_087D
 
 L_0854:
@@ -621,11 +621,11 @@ L_0854:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0875
-    CallTrainerBattle 694, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_20, 0, 0
     VMJump L_087D
 
 L_0875:
-    CallTrainerBattle 695, 0, 0
+    CallTrainerBattle TRAINER_RIVAL_21, 0, 0
 
 L_087D:
     TrainerBattleIsVictory 0x8010

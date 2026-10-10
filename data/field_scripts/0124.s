@@ -427,11 +427,11 @@ Script_15:
     PlayerSetSpecialSequence 1
 
 L_0544:
-    TrainerBGMPlayPush 359
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_4
     // "Team Plasma: Heh heh heh![f000]븁\u0000\nI stole this Pokémon two years ago,\nand I've been training it ever since![f000]븀\u0000\nIt's tough![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 359, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_4, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -459,14 +459,14 @@ L_0589:
     ActorCmdWait
     ActorCmdExec 4, Movement_0FE0
     ActorCmdWait
-    TrainerBGMPlayPush 751
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_47
     ActorCmdExec 255, Movement_0FD0
     ActorCmdExec 2, Movement_0FC8
     ActorCmdWait
     // "Team Plasma: Looks like I'm up next!\nJust to warn you, I show no mercy![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 11, 2, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 751, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_47, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -505,11 +505,11 @@ Script_16:
     PlayerSetSpecialSequence 1
 
 L_0685:
-    TrainerBGMPlayPush 751
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_47
     // "Team Plasma: You've got some nerve\nfor a little brat![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 751, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_47, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -537,7 +537,7 @@ L_06CA:
     ActorCmdWait
     ActorCmdExec 4, Movement_0FE0
     ActorCmdWait
-    TrainerBGMPlayPush 359
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_4
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
     VMStackPushConst 408
@@ -577,7 +577,7 @@ L_07AF:
     // "Team Plasma: I'm next![f000]븁\u0000\nI stole this Pokémon two years ago,\nand I've been training it ever since![f000]븀\u0000\nIt's tough![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 359, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_4, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

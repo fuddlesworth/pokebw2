@@ -107,7 +107,7 @@ L_019C:
     // "It looks like you're ready, then!\nOK! Let us begin![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 344, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_COLRESS, 0, 0
     VMCall L_045B
     // "Colress: So strong![f000]븁\u0000\nYou're a very strong Trainer indeed!\nSo let me ask you this![f000]븁\u0000\nAre you thinking of reaching\neven higher heights by understanding[f000]븀\u0000\neach other as Pokémon and Trainer?"
     ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
@@ -232,7 +232,7 @@ L_0356:
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0480
     ActorCmdWait
-    CallTrainerBattle 813, 0, 0
+    CallTrainerBattle TRAINER_COLRESS_2, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

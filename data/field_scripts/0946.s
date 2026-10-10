@@ -55,11 +55,11 @@ L_009C:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D3
-    CallTrainerBattle 771, 0, 0
+    CallTrainerBattle TRAINER_LEADER_MARLON_2, 0, 0
     VMJump L_00DB
 
 L_00D3:
-    CallTrainerBattle 160, 0, 0
+    CallTrainerBattle TRAINER_LEADER_MARLON, 0, 0
 
 L_00DB:
     WorkSetConst 0x8023, 0
@@ -115,12 +115,12 @@ L_0148:
     // "Shoots! I'm off then!\nHope it's useful![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
     ActorMsgClose
-    TrainerFlagSet 350
-    TrainerFlagSet 352
-    TrainerFlagSet 354
-    TrainerFlagSet 351
-    TrainerFlagSet 353
-    TrainerFlagSet 355
+    TrainerFlagSet TRAINER_ACE_TRAINER_DOYLE
+    TrainerFlagSet TRAINER_ACE_TRAINER_ENZIO
+    TrainerFlagSet TRAINER_ACE_TRAINER_SANTINO
+    TrainerFlagSet TRAINER_ACE_TRAINER_MELINA
+    TrainerFlagSet TRAINER_ACE_TRAINER_JEANNE
+    TrainerFlagSet TRAINER_ACE_TRAINER_SABLE
     FlagSet 2421
     WorkSetConst 0x40df, 1
     WorkSetConst 0x40e3, 1

@@ -245,13 +245,13 @@ Script_6:
     VMCall L_025A
     ActorCmdWait
     FlagSet 266
-    TrainerBGMPlayPush 735
+    TrainerBGMPlayPush TRAINER_HARLEQUIN_JACK
     ActorCmdExec 0, Movement_03B8
     ActorCmdWait
     // "When the cocoon breaks open,\nthe one that pops out is--moi![f000]븁\u0000\nOn that note, have a battle with moi![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
     ActorMsgClose
-    CallTrainerBattle 735, 0, 0
+    CallTrainerBattle TRAINER_HARLEQUIN_JACK, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

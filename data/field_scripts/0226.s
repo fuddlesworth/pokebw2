@@ -308,7 +308,7 @@ L_03A4:
     MsgWinCloseAll
     ActorCmdExec 10, Movement_07C0
     ActorCmdWait
-    CallTrainerBattle 687, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_5, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -366,7 +366,7 @@ L_046A:
     MsgWinCloseAll
     ActorCmdExec 11, Movement_07C0
     ActorCmdWait
-    CallTrainerBattle 688, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_6, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -423,7 +423,7 @@ L_0567:
     MsgWinCloseAll
     ActorCmdExec 12, Movement_07C0
     ActorCmdWait
-    CallTrainerBattle 689, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_7, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

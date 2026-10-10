@@ -111,7 +111,7 @@ L_0131:
     // "OK! Here we go![f000]븁\u0000\nWe'll have an actual match, so you can\nreally see how I've raised Excadrill![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
     MsgWinCloseAll
-    CallTradedPokemonBattle 699, 0, 0, 2
+    CallTradedPokemonBattle TRAINER_LASS_DIANA, 0, 0, 2
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -185,7 +185,7 @@ L_0240:
     // "OK! Here we go![f000]븁\u0000\nI'll show you how well I've raised\nHippowdon by having a battle with you![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
     MsgWinCloseAll
-    CallTradedPokemonBattle 700, 0, 0, 3
+    CallTradedPokemonBattle TRAINER_LASS_DIANA_2, 0, 0, 3
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

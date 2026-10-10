@@ -228,11 +228,11 @@ L_0386:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03BF
-    CallTrainerBattle 764, 0, 0
+    CallTrainerBattle TRAINER_LEADER_CHEREN_2, 0, 0
     VMJump L_03C7
 
 L_03BF:
-    CallTrainerBattle 156, 0, 0
+    CallTrainerBattle TRAINER_LEADER_CHEREN, 0, 0
 
 L_03C7:
     WorkSetConst 0x8023, 0
@@ -306,12 +306,12 @@ Script_5:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0642
-    TrainerFlagGet 171, 0x8010
+    TrainerFlagGet TRAINER_YOUNGSTER_PEDRO, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0603
-    TrainerBGMPlayPush 171
+    TrainerBGMPlayPush TRAINER_YOUNGSTER_PEDRO
     // "Cheren saw potential in me and\nmade me a Trainer in this Gym![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 12, 1, 0, 0
     ActorMsgClose
@@ -338,7 +338,7 @@ L_0533:
     ActorCmdExec 255, Movement_0898
     ActorCmdExec 1, Movement_08A0
     ActorCmdWait
-    CallTrainerBattle 171, 0, 0
+    CallTrainerBattle TRAINER_YOUNGSTER_PEDRO, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -356,7 +356,7 @@ L_05B2:
 
 L_05B4:
     WorkAdd 0x40a9, 1
-    TrainerFlagSet 171
+    TrainerFlagSet TRAINER_YOUNGSTER_PEDRO
     VMStackPush 0x40a9
     VMStackPushConst 3
     VMStackCmp CMP_GE
@@ -433,12 +433,12 @@ Script_6:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0821
-    TrainerFlagGet 172, 0x8010
+    TrainerFlagGet TRAINER_LASS_SERENA, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07E2
-    TrainerBGMPlayPush 172
+    TrainerBGMPlayPush TRAINER_LASS_SERENA
     // "Now I'll show you all of the\nthings I learned from Cheren![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 16, 2, 0, 0
     ActorMsgClose
@@ -465,7 +465,7 @@ L_070E:
     ActorCmdExec 255, Movement_08A0
     ActorCmdExec 2, Movement_0898
     ActorCmdWait
-    CallTrainerBattle 172, 0, 0
+    CallTrainerBattle TRAINER_LASS_SERENA, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -483,7 +483,7 @@ L_078D:
 
 L_078F:
     WorkAdd 0x40a9, 1
-    TrainerFlagSet 172
+    TrainerFlagSet TRAINER_LASS_SERENA
     VMStackPush 0x40a9
     VMStackPushConst 3
     VMStackCmp CMP_GE

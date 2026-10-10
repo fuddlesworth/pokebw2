@@ -33,7 +33,7 @@ Script_1:
 L_0077:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    TrainerFlagGet 335, 0x8010
+    TrainerFlagGet TRAINER_BAKER_CHRIS, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -60,14 +60,14 @@ L_00C7:
     // "All right![f000]븁\u0000\nI want to bake tasty bread\nfor strong Pokémon![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 335, 0, 0
+    CallTrainerBattle TRAINER_BAKER_CHRIS, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0115
     CallTrainerBattleEnd
-    TrainerFlagSet 335
+    TrainerFlagSet TRAINER_BAKER_CHRIS
     VMJump L_0117
 
 L_0115:

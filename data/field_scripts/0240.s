@@ -1333,7 +1333,7 @@ L_15B7:
     // "Shadow Triad: Heh heh...[f000]븁\u0000\nYou don't really think you can take\nthe DNA Splicers back, do you?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 50, 8, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 583, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_4, 0, 0
     VMCall L_1EF9
     PlayerGetGPos 0x8021, 0x8022
     // "Shadow Triad: Awww. How unlucky.[f000]븁\u0000\nI don't happen to be the one\nholding the DNA Splicers.[f000]븁\u0000\nI was just buying time\nfor the others to escape.[f000]븀\u0000\nCheerio, bye-bye, whatever.[f000]븁\u0000"
@@ -1776,7 +1776,7 @@ Script_14:
     // "Zinzolin: Oh, for crying out loud...[f000]븁\u0000\nI didn't expect to have to fight\nhampered by cold like this.[f000]븁\u0000\nWell, no matter! The fact that I'm\nshivering means I'm truly alive![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 38, 1, 0, 0
     ActorMsgClose
-    CallTrainerBattle 584, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_ZINZOLIN_3, 0, 0
     VMCall L_1EF9
     // "Zinzolin: You're a strong Trainer.[f000]븁\u0000\nYou definitely are adept\nat handling Pokémon.[f000]븁\u0000\nI believe I'll take my leave, simply\nbecause I can't stand this cold.[f000]븁\u0000\nBut...imagine this...[f000]븁\u0000\nA Unova region...completely...covered...\nin...ice.[f000]븁\u0000\nTo achieve that splendor,\nwe'll do whatever it takes[f000]븀\u0000\nto obtain the DNA Splicers.[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 39, 1, 0, 0
@@ -1822,19 +1822,19 @@ Script_15:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    TrainerFlagGet 585, 0x8010
+    TrainerFlagGet TRAINER_TEAM_PLASMA_GRUNT_41, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1D70
-    TrainerBGMPlayPush 585
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_41
     // "Team Plasma: Pokémon are pawns!\nThey're a means to an end.[f000]븁\u0000\nThat's what I was taught![f000]븁\u0000\nDon't think about it too much.\nIt's easier that way![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 22, 2, 0, 0
     ActorMsgClose
-    CallTrainerBattle 585, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_41, 0, 0
     VMCall L_1EF9
     WorkAdd 0x40d7, 1
-    TrainerFlagSet 585
+    TrainerFlagSet TRAINER_TEAM_PLASMA_GRUNT_41
     VMStackPush 0x40d7
     VMStackPushConst 5
     VMStackCmp CMP_GE
@@ -1868,19 +1868,19 @@ Script_16:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    TrainerFlagGet 586, 0x8010
+    TrainerFlagGet TRAINER_TEAM_PLASMA_GRUNT_42, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1E15
-    TrainerBGMPlayPush 586
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_42
     // "Team Plasma: This time, we'll take over\nthe Unova region![f000]븁\u0000\nYou! You're trembling already?\nFrom fear or from cold--either's good![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 25, 3, 0, 0
     ActorMsgClose
-    CallTrainerBattle 586, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_42, 0, 0
     VMCall L_1EF9
     WorkAdd 0x40d7, 1
-    TrainerFlagSet 586
+    TrainerFlagSet TRAINER_TEAM_PLASMA_GRUNT_42
     VMStackPush 0x40d7
     VMStackPushConst 5
     VMStackCmp CMP_GE
@@ -1914,19 +1914,19 @@ Script_19:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    TrainerFlagGet 587, 0x8010
+    TrainerFlagGet TRAINER_TEAM_PLASMA_GRUNT_43, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1EBA
-    TrainerBGMPlayPush 587
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_43
     // "Team Plasma: Don't get in our way!\nYou bother![f000]븀\u0000\nBother, bother, bother![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 28, 4, 0, 0
     ActorMsgClose
-    CallTrainerBattle 587, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_43, 0, 0
     VMCall L_1EF9
     WorkAdd 0x40d7, 1
-    TrainerFlagSet 587
+    TrainerFlagSet TRAINER_TEAM_PLASMA_GRUNT_43
     VMStackPush 0x40d7
     VMStackPushConst 5
     VMStackCmp CMP_GE

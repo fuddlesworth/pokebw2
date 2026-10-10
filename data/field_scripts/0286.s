@@ -85,11 +85,11 @@ Script_4:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0134
-    CallTrainerBattle 775, 0, 0
+    CallTrainerBattle TRAINER_ELITE_FOUR_CAITLIN_3, 0, 0
     VMJump L_013C
 
 L_0134:
-    CallTrainerBattle 41, 0, 0
+    CallTrainerBattle TRAINER_ELITE_FOUR_CAITLIN, 0, 0
 
 L_013C:
     WorkSetConst 0x8020, 0
@@ -182,11 +182,11 @@ L_0239:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_028F
-    CallTrainerBattle 780, 0, 0
+    CallTrainerBattle TRAINER_ELITE_FOUR_CAITLIN_4, 0, 0
     VMJump L_0297
 
 L_028F:
-    CallTrainerBattle 146, 0, 0
+    CallTrainerBattle TRAINER_ELITE_FOUR_CAITLIN_2, 0, 0
 
 L_0297:
     WorkSetConst 0x8021, 0

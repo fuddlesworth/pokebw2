@@ -724,7 +724,7 @@ L_0A35:
     VMJump L_0A70
 
 L_0A62:
-    CallTrainerBattle 340, 0, 0
+    CallTrainerBattle TRAINER_MOTORCYCLIST_CHARLES_2, 0, 0
     VMJump L_0A91
 
 L_0A70:
@@ -733,7 +733,7 @@ L_0A70:
     VMJump L_0A91
 
 L_0A83:
-    CallTrainerBattle 339, 0, 0
+    CallTrainerBattle TRAINER_MOTORCYCLIST_CHARLES, 0, 0
     VMJump L_0A91
 
 L_0A91:
@@ -1283,22 +1283,22 @@ Script_19:
     VMJumpIf CMP_STACK, L_12D8
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
-    TrainerFlagGet 256, 0x8010
+    TrainerFlagGet TRAINER_MUSICIAN_PRESTON, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12C4
-    TrainerBGMPlayPush 256
+    TrainerBGMPlayPush TRAINER_MUSICIAN_PRESTON
     // "Hum fiercely! My battle song!\nBattle fiercely! My Pokémon![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 256, 0, 0
+    CallTrainerBattle TRAINER_MUSICIAN_PRESTON, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1265
-    TrainerFlagSet 256
+    TrainerFlagSet TRAINER_MUSICIAN_PRESTON
     CallTrainerBattleEnd
     VMJump L_1267
 

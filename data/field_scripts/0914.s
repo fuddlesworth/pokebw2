@@ -152,7 +152,7 @@ L_0216:
     // "Working at this complex\nwas my dream...[f000]븁\u0000\nBut now that it's come true,\nI've got everything I want...[f000]븁\u0000\nWhat? The foreman said so? OK, fine.\nWe just have to battle, right?[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 203, 0, 0
+    CallTrainerBattle TRAINER_WORKER_ISAAC, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -205,7 +205,7 @@ L_02B9:
     // "I'm happy just to be with\nmy awesome Pokémon![f000]븁\u0000\nWhat? A battle?\nI guess so... I'll play a bit.[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 204, 0, 0
+    CallTrainerBattle TRAINER_WORKER_MITCHELL, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -258,7 +258,7 @@ L_035C:
     // "Every day is the same...[f000]븁\u0000\nI get bored when things don't change,\nso I don't mind battling you![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 205, 0, 0
+    CallTrainerBattle TRAINER_WORKER_NATHAN, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

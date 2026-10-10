@@ -28,8 +28,8 @@ commands that do nothing here are named `DummyNN` after their ID, as pokeplatinu
 Scripts go through the C preprocessor, so they use the same constants as the C code. The constant headers hold
 only `#define`s for this reason. The constants come from:
 
-- The lists in `data/constants/`, for moves, abilities, items, species, types and sounds, which the build turns into
-  headers (see [Constant lists](data.md#constant-lists)). They were written from the game's text by
+- The lists in `data/constants/`, for moves, abilities, items, species, types, sounds and trainers, which the build
+  turns into headers (see [Constant lists](data.md#constant-lists)). They were written from the game's text by
   `tools/scripts/make_constants.py`, which reads it with `tools/scripts/msgdata.py`.
 - pokeplatinum, for the move effects and held item effects that Gen 4 has, whose IDs this game keeps. Gen 5's move
   effects are named after their first move.

@@ -465,7 +465,7 @@ L_05B2:
     // "Gwa ha ha!\nEven though you're just a fledgling,[f000]븀\u0000\nyou'll still be my 1,000th win in a row![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 2, 8, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 177, 0, 0
+    CallTrainerBattle TRAINER_GENTLEMAN_STONEWALL, 0, 0
     VMCall L_03EB
     WorkSetConst 0x40d4, 1
     // "I've steadily extended my win streak\nfor two years... And now it's over...[f000]븁\u0000\nBut I have a strong will.\nI declare that I'll try again[f000]븀\u0000\nto have a 1,000-win streak![f000]븁\u0000\nI won't battle you next time, though.\nYou'll just break my streak."

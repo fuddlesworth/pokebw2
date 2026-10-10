@@ -74,11 +74,11 @@ Script_1:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_011C
-    CallTrainerBattle 768, 0, 0
+    CallTrainerBattle TRAINER_LEADER_CLAY_2, 0, 0
     VMJump L_0124
 
 L_011C:
-    CallTrainerBattle 158, 0, 0
+    CallTrainerBattle TRAINER_LEADER_CLAY, 0, 0
 
 L_0124:
     WorkSetConst 0x8021, 0
@@ -129,13 +129,13 @@ L_0190:
     RTCallGlobal 2805
     VMStackPop 0x8001
     VMStackPop 0x8000
-    TrainerFlagSet 319
-    TrainerFlagSet 320
-    TrainerFlagSet 321
-    TrainerFlagSet 322
-    TrainerFlagSet 323
-    TrainerFlagSet 324
-    TrainerFlagSet 325
+    TrainerFlagSet TRAINER_WORKER_MAYNARD
+    TrainerFlagSet TRAINER_WORKER_PASQUAL
+    TrainerFlagSet TRAINER_WORKER_TIBOR
+    TrainerFlagSet TRAINER_WORKER_NIEL
+    TrainerFlagSet TRAINER_WORKER_TAVARIUS
+    TrainerFlagSet TRAINER_WORKER_NOEL
+    TrainerFlagSet TRAINER_WORKER_FRIEDRICH
     FlagSet 2418
     ActorCmdExec 7, Movement_073C
     ActorCmdWait
@@ -544,12 +544,12 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorCmdExec 6, Movement_0744
-    TrainerBGMPlayPush 324
+    TrainerBGMPlayPush TRAINER_WORKER_NOEL
     ActorCmdWait
     // "My Pokémon dig because they\nbelieve they're gonna find something,[f000]븀\u0000\nand they battle because they believe[f000]븀\u0000\nthey're gonna win![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 324, 0, 0
+    CallTrainerBattle TRAINER_WORKER_NOEL, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -585,7 +585,7 @@ L_07D8:
 Script_18:
     ActorsPauseAll
     ActorCmdExec 6, Movement_0744
-    TrainerBGMPlayPush 324
+    TrainerBGMPlayPush TRAINER_WORKER_NOEL
     ActorCmdWait
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 0
@@ -635,7 +635,7 @@ L_088C:
     // "My Pokémon dig because they\nbelieve they're gonna find something,[f000]븀\u0000\nand they battle because they believe[f000]븀\u0000\nthey're gonna win![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 7, 6, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 324, 0, 0
+    CallTrainerBattle TRAINER_WORKER_NOEL, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -668,12 +668,12 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorCmdExec 1, Movement_0744
-    TrainerBGMPlayPush 323
+    TrainerBGMPlayPush TRAINER_WORKER_TAVARIUS
     ActorCmdWait
     // "The one you meet when you get on this\nconveyor is none other than me![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 323, 0, 0
+    CallTrainerBattle TRAINER_WORKER_TAVARIUS, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -709,7 +709,7 @@ L_0983:
 Script_19:
     ActorsPauseAll
     ActorCmdExec 1, Movement_0744
-    TrainerBGMPlayPush 323
+    TrainerBGMPlayPush TRAINER_WORKER_TAVARIUS
     ActorCmdWait
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8026, 0
@@ -732,7 +732,7 @@ L_09D4:
     // "The one you meet when you get on this\nconveyor is none other than me![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 9, 1, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 323, 0, 0
+    CallTrainerBattle TRAINER_WORKER_TAVARIUS, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -765,12 +765,12 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorCmdExec 2, Movement_0744
-    TrainerBGMPlayPush 321
+    TrainerBGMPlayPush TRAINER_WORKER_TIBOR
     ActorCmdWait
     // "I have a riddle for you!\nDo you know what is distant but close?[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 321, 0, 0
+    CallTrainerBattle TRAINER_WORKER_TIBOR, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -806,14 +806,14 @@ L_0ACB:
 Script_20:
     ActorsPauseAll
     ActorCmdExec 2, Movement_0744
-    TrainerBGMPlayPush 321
+    TrainerBGMPlayPush TRAINER_WORKER_TIBOR
     ActorCmdWait
     ActorCmdExec 255, Movement_0704
     ActorCmdWait
     // "I have a riddle for you!\nDo you know what is distant but close?[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 15, 2, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 321, 0, 0
+    CallTrainerBattle TRAINER_WORKER_TIBOR, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -844,12 +844,12 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorCmdExec 3, Movement_0744
-    TrainerBGMPlayPush 322
+    TrainerBGMPlayPush TRAINER_WORKER_NIEL
     ActorCmdWait
     // "Just because you work hard doesn't\nmean you're gonna get what you want![f000]븁\u0000\nBut if you don't work hard,\nthere are many things you can't do.[f000]븁\u0000\nLet me show you how tough\nmy hard work has made me![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 322, 0, 0
+    CallTrainerBattle TRAINER_WORKER_NIEL, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -885,14 +885,14 @@ L_0BCA:
 Script_21:
     ActorsPauseAll
     ActorCmdExec 3, Movement_0744
-    TrainerBGMPlayPush 322
+    TrainerBGMPlayPush TRAINER_WORKER_NIEL
     ActorCmdWait
     ActorCmdExec 3, Movement_06F4
     ActorCmdWait
     // "Just because you work hard doesn't\nmean you're gonna get what you want![f000]븁\u0000\nBut if you don't work hard,\nthere are many things you can't do.[f000]븁\u0000\nLet me show you how tough\nmy hard work has made me![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 11, 3, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 322, 0, 0
+    CallTrainerBattle TRAINER_WORKER_NIEL, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -923,12 +923,12 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorCmdExec 4, Movement_0744
-    TrainerBGMPlayPush 320
+    TrainerBGMPlayPush TRAINER_WORKER_PASQUAL
     ActorCmdWait
     // "Me and my Pokémon are\nprofessional tunnelers![f000]븁\u0000\nMy Pokémon can't be outdug\nor outburrowed! We have no rival![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 320, 0, 0
+    CallTrainerBattle TRAINER_WORKER_PASQUAL, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -964,14 +964,14 @@ L_0CC9:
 Script_22:
     ActorsPauseAll
     ActorCmdExec 4, Movement_0744
-    TrainerBGMPlayPush 320
+    TrainerBGMPlayPush TRAINER_WORKER_PASQUAL
     ActorCmdWait
     ActorCmdExec 255, Movement_070C
     ActorCmdWait
     // "Me and my Pokémon are\nprofessional tunnelers![f000]븁\u0000\nMy Pokémon can't be outdug\nor outburrowed! We have no rival![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 13, 4, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 320, 0, 0
+    CallTrainerBattle TRAINER_WORKER_PASQUAL, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -1002,12 +1002,12 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorCmdExec 5, Movement_0744
-    TrainerBGMPlayPush 319
+    TrainerBGMPlayPush TRAINER_WORKER_MAYNARD
     ActorCmdWait
     // "Here in the darkness...[f000]븁\u0000\nI proceeded step by step\nwhile feeling my Pokémon's every breath![f000]븁\u0000\nI'll show you the power of the bonds\nmy Pokémon and I built in this way![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 319, 0, 0
+    CallTrainerBattle TRAINER_WORKER_MAYNARD, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -1043,14 +1043,14 @@ L_0DC8:
 Script_23:
     ActorsPauseAll
     ActorCmdExec 5, Movement_0744
-    TrainerBGMPlayPush 319
+    TrainerBGMPlayPush TRAINER_WORKER_MAYNARD
     ActorCmdWait
     ActorCmdExec 255, Movement_0704
     ActorCmdWait
     // "Here in the darkness...[f000]븁\u0000\nI proceeded step by step\nwhile feeling my Pokémon's every breath![f000]븁\u0000\nI'll show you the power of the bonds\nmy Pokémon and I built in this way![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 17, 5, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 319, 0, 0
+    CallTrainerBattle TRAINER_WORKER_MAYNARD, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -1081,12 +1081,12 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorCmdExec 8, Movement_0744
-    TrainerBGMPlayPush 325
+    TrainerBGMPlayPush TRAINER_WORKER_FRIEDRICH
     ActorCmdWait
     // "When I say dig,\nyou say, “How low?\"[f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 325, 0, 0
+    CallTrainerBattle TRAINER_WORKER_FRIEDRICH, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -1122,14 +1122,14 @@ L_0EC7:
 Script_24:
     ActorsPauseAll
     ActorCmdExec 8, Movement_0744
-    TrainerBGMPlayPush 325
+    TrainerBGMPlayPush TRAINER_WORKER_FRIEDRICH
     ActorCmdWait
     ActorCmdExec 8, Movement_06FC
     ActorCmdWait
     // "When I say dig,\nyou say, “How low?\"[f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 19, 8, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 325, 0, 0
+    CallTrainerBattle TRAINER_WORKER_FRIEDRICH, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

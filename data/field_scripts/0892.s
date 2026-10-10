@@ -142,7 +142,7 @@ L_01FD:
     // "Hey! That gleaming thing there\nis the Basic Badge![f000]븁\u0000\nBut don't get a swelled head!\nIt's a rough world out there![f000]븀\u0000\nHere, I'll show you![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 206, 0, 0
+    CallTrainerBattle TRAINER_HIKER_JEROME, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -369,11 +369,11 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     ActorSetGPos 21, 146, 2, 663, 3
-    TrainerBGMPlayPush 763
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_48
     // "Yeesh! I really hate it when\npeople won't let things go![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 15, 22, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 763, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_48, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

@@ -61,7 +61,7 @@ Script_3:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_011B
-    CallTrainerBattle 169, 0, 0
+    CallTrainerBattle TRAINER_SCHOOL_KID_SEYMOUR, 0, 0
     VMJump L_0144
 
 L_011B:
@@ -69,11 +69,11 @@ L_011B:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013C
-    CallTrainerBattle 747, 0, 0
+    CallTrainerBattle TRAINER_SCHOOL_KID_SEYMOUR_2, 0, 0
     VMJump L_0144
 
 L_013C:
-    CallTrainerBattle 749, 0, 0
+    CallTrainerBattle TRAINER_SCHOOL_KID_SEYMOUR_3, 0, 0
 
 L_0144:
     VMCall L_02B6
@@ -106,7 +106,7 @@ L_0144:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01EA
-    CallTrainerBattle 170, 0, 0
+    CallTrainerBattle TRAINER_SCHOOL_KID_CASSIE, 0, 0
     VMJump L_0213
 
 L_01EA:
@@ -114,11 +114,11 @@ L_01EA:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_020B
-    CallTrainerBattle 748, 0, 0
+    CallTrainerBattle TRAINER_SCHOOL_KID_CASSIE_2, 0, 0
     VMJump L_0213
 
 L_020B:
-    CallTrainerBattle 750, 0, 0
+    CallTrainerBattle TRAINER_SCHOOL_KID_CASSIE_3, 0, 0
 
 L_0213:
     VMCall L_02B6
@@ -357,7 +357,7 @@ L_053A:
     // "Oh!\nMy heart jumps for joy![f000]븁\u0000\nWell, then, prepare yourself\nfor battle![f000]븁\u0000\nKiai![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 18, 2, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 582, 0, 0
+    CallTrainerBattle TRAINER_ALDER, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

@@ -23,7 +23,7 @@
 Script_1:
     Cmd_02A4
     WorkSetConst 0x8023, 0
-    TrainerFlagGet 381, 0x8023
+    TrainerFlagGet TRAINER_VETERAN_LUCIUS, 0x8023
     VMStackPush 0x40cf
     VMStackPushConst 2
     VMStackCmp CMP_EQ
@@ -464,11 +464,11 @@ L_0616:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0643
-    CallTrainerBattle 770, 0, 0
+    CallTrainerBattle TRAINER_LEADER_DRAYDEN_2, 0, 0
     VMJump L_064B
 
 L_0643:
-    CallTrainerBattle 159, 0, 0
+    CallTrainerBattle TRAINER_LEADER_DRAYDEN, 0, 0
 
 L_064B:
     WorkSetConst 0x802d, 0
@@ -527,11 +527,11 @@ L_06B7:
     ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
     LastKeyWait
     ActorMsgClose
-    TrainerFlagSet 381
-    TrainerFlagSet 384
-    TrainerFlagSet 385
-    TrainerFlagSet 383
-    TrainerFlagSet 382
+    TrainerFlagSet TRAINER_VETERAN_LUCIUS
+    TrainerFlagSet TRAINER_VETERAN_RON
+    TrainerFlagSet TRAINER_VETERAN_DENAE
+    TrainerFlagSet TRAINER_VETERAN_RHONA
+    TrainerFlagSet TRAINER_VETERAN_JERRY
     FlagSet 2420
     WorkSetConst 0x40d6, 1
     HollowRivalCmd_0262 1, 24

@@ -242,13 +242,13 @@ L_02D0:
     VMHalt
 
 L_02E2:
-    TrainerBGMPlayPush 621
+    TrainerBGMPlayPush TRAINER_RICH_BOY_ROLAN
     ActorCmdExec 1, Movement_03D0
     ActorCmdWait
     // "I'm going to overwhelm you with the speed\nI learned riding the roller coaster![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 0
     ActorMsgClose
-    CallTrainerBattle 621, 0, 0
+    CallTrainerBattle TRAINER_RICH_BOY_ROLAN, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -271,13 +271,13 @@ L_032B:
     VMReturn
 
 L_0349:
-    TrainerBGMPlayPush 148
+    TrainerBGMPlayPush TRAINER_LADY_COLETTE
     ActorCmdExec 0, Movement_03D0
     ActorCmdWait
     // "I'm also a Pokémon Trainer who was\ntoughened up by Ms. Elesa.[f000]븀\u0000\nI won't give up easily![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
     ActorMsgClose
-    CallTrainerBattle 148, 0, 0
+    CallTrainerBattle TRAINER_LADY_COLETTE, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

@@ -88,11 +88,11 @@ L_00F6:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012D
-    CallTrainerBattle 769, 0, 0
+    CallTrainerBattle TRAINER_LEADER_SKYLA_2, 0, 0
     VMJump L_0135
 
 L_012D:
-    CallTrainerBattle 155, 0, 0
+    CallTrainerBattle TRAINER_LEADER_SKYLA, 0, 0
 
 L_0135:
     WorkSetConst 0x8020, 0
@@ -159,11 +159,11 @@ L_0211:
     HollowRivalCmd_0262 1, 19
 
 L_0217:
-    TrainerFlagSet 149
-    TrainerFlagSet 150
-    TrainerFlagSet 151
-    TrainerFlagSet 152
-    TrainerFlagSet 332
+    TrainerFlagSet TRAINER_PILOT_FLYNN
+    TrainerFlagSet TRAINER_PILOT_WINSLOW
+    TrainerFlagSet TRAINER_PILOT_EWING
+    TrainerFlagSet TRAINER_PILOT_CHASE
+    TrainerFlagSet TRAINER_PILOT_ELRON
     FlagSet 2419
     WorkSetConst 0x40c1, 1
     WorkAdd 0x40c2, 1

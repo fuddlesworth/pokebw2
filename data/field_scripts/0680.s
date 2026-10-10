@@ -32,7 +32,7 @@ Script_2:
     // "Not hearing the peal of the bell\nmeans no happily ever after...[f000]븀\u0000\nIf we keep it from ringing,[f000]븀\u0000\nthen those two will never find happiness.[f000]븁\u0000\nThat's why I can't let you\ngo one step further![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 459, 0, 0
+    CallTrainerBattle TRAINER_CLERK_F_LANA, 0, 0
     VMCall L_0126
     // "People who don't give any love\nshouldn't ask for any...[f000]븀\u0000\nfrom people or Pokémon."
     ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0

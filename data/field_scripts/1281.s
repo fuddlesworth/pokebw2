@@ -1335,7 +1335,7 @@ L_1577:
     VMJump L_1585
 
 L_157D:
-    TrainerSayMessage 0x8026, 0, 0x8011
+    TrainerSayMessage 0x8026, TRAINER_NONE, 0x8011
 
 L_1585:
     ActorMsgClose

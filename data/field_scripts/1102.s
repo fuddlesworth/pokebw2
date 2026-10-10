@@ -169,7 +169,7 @@ L_01DE:
     // "Now that I think of it,\nI never asked your name.[f000]븁\u0000\n...\n...[f000]븁\u0000\n[f000]Ā\u0001\u0000...\nI'll remember that name.[f000]븁\u0000\nWell then, I will test you to see if\nyou're a Trainer who can bring out[f000]븀\u0000\nthe hidden potential of Pokémon![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 8, 14, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 358, 0, 0
+    CallTrainerBattle TRAINER_COLRESS, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

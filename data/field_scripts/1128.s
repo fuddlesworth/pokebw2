@@ -201,7 +201,7 @@ Script_18:
     // "You don't have the sense to know\nwhen to quit, it seems.[f000]븁\u0000\nIt's an act of mercy on my part\nto bring this to an end now![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 10, 10, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 497, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_ZINZOLIN_2, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

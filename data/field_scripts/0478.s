@@ -144,7 +144,7 @@ L_020E:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0341
-    CallTrainerBattle 135, 0, 0
+    CallTrainerBattle TRAINER_SCIENTIST_DUDLEY, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

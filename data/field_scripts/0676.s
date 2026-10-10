@@ -209,7 +209,7 @@ Script_3:
     // "You! You came here at the request of\nthe couple in Humilau City, didn't you?![f000]븁\u0000\nNo need for a reply!\nIf you want to ring the bell,[f000]븀\u0000\nyou'll have to battle with me![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 457, 0, 0
+    CallTrainerBattle TRAINER_WAITRESS_JAN, 0, 0
     VMCall L_0409
     // "Win or lose...\nI'm a Waitress...[f000]븁\u0000\nI carry the customers' orders\nwith a heaping side of love..."
     ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0

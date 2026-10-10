@@ -183,7 +183,7 @@ L_021D:
     // "Well, let's begin![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 592, 0, 0
+    CallTrainerBattle TRAINER_GAME_FREAK_MORIMOTO_2, 0, 0
     VMCall L_046D
     // "You think about battles very thoroughly.[f000]븁\u0000\nI lost, but I learned a lot from you.\nBesides, it was fun![f000]븁\u0000\nCome back again tomorrow."
     ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
@@ -227,7 +227,7 @@ L_02B7:
     // "Well, let's begin![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 140, 0, 0
+    CallTrainerBattle TRAINER_GAME_FREAK_MORIMOTO, 0, 0
     VMCall L_046D
     // "You think about battles very thoroughly.[f000]븁\u0000\nI lost, but I learned a lot from you.\nBesides, it was fun![f000]븁\u0000\nCome back again tomorrow."
     ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
@@ -278,7 +278,7 @@ L_0366:
     // "I like to win using my favorite Pokémon![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 357, 0, 0
+    CallTrainerBattle TRAINER_GAME_FREAK_NISHINO, 0, 0
     VMCall L_046D
     // "Awww! What great Pokémon![f000]븁\u0000\nThe great number of steps seems to have\nincreased their trust in you...[f000]븁\u0000\nI hope we can battle again tomorrow."
     ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
@@ -322,7 +322,7 @@ L_0400:
     // "I like to win using my favorite Pokémon![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 591, 0, 0
+    CallTrainerBattle TRAINER_GAME_FREAK_NISHINO_2, 0, 0
     VMCall L_046D
     // "Awww! What great Pokémon![f000]븁\u0000\nThe great number of steps seems to have\nincreased their trust in you...[f000]븁\u0000\nI hope we can battle again tomorrow."
     ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0

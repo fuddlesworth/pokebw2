@@ -31,12 +31,12 @@ The text archives are packed by `text_data.py` from text files rather than assem
 
 ## Constant lists
 
-The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences and
-trainer classes, are lists in `data/constants/`, one name per line. They are the source of truth: to add or rename one,
-edit its list. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`, which
-is on the include path, so the C code, the data sources and the scripts all use the same names, and the generated header
-can never disagree with its list. A line is a constant's full name, which takes the previous value plus one, or
-`NAME = value` (decimal or `0x` hex); `#` starts a comment.
+The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences,
+trainer classes and trainers, are lists in `data/constants/`, one name per line. They are the source of truth: to add
+or rename one, edit its list. The build generates a header from each list, `constants/<list>.h` in
+`build/include/generated/`, which is on the include path, so the C code, the data sources and the scripts all use the
+same names, and the generated header can never disagree with its list. A line is a constant's full name, which takes
+the previous value plus one, or `NAME = value` (decimal or `0x` hex); `#` starts a comment.
 
 ```
 # Species, by national Pokédex number (bootstrapped from the ROM by make_constants.py)
@@ -215,6 +215,11 @@ trainer AI scripts to run (`AI_FLAG_*`, see [Scripts](scripts.md)), `money` a mu
 `ability` pick them when not 0. `class` is a `TRAINER_CLASS_*` from `data/constants/trainer_classes.txt`, named after
 the class's name; where several classes share one, after their only trainer, their sex or their ID, as
 `TRAINER_CLASS_SCHOOL_KID_F` (`make_constants.py --trainer-classes`). Both versions have the same trainers.
+
+Each trainer's ID, the number of its file, is a `TRAINER_*` from `data/constants/trainers.txt`, which the field
+scripts use: its class and name, as `TRAINER_YOUNGSTER_JIMMY`, without the class for the story characters, whose
+class is Pokémon Trainer (`TRAINER_CHEREN`), and numbered from `_2` where a class and name repeat, as for rematches
+(`make_constants.py --trainers`).
 
 ## Wild encounters
 

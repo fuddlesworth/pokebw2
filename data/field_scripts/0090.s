@@ -44,7 +44,7 @@ Script_2:
     // "Oh! A company tour?\nAnyway, let's have a battle![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 501, 0, 0
+    CallTrainerBattle TRAINER_CLERK_M_CLEMENS, 0, 0
     VMCall L_0109
     // "What power! I'm moved,\nso I'll give you this present!"
     ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
@@ -101,7 +101,7 @@ Script_3:
     // "Did you come for Pokémon practice?\nI'll be happy to help you out![f000]븁\u0000"
     ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
     MsgWinCloseAll
-    CallTrainerBattle 502, 0, 0
+    CallTrainerBattle TRAINER_CLERK_M_WARREN, 0, 0
     VMCall L_0109
     // "With skills like that,\nyou can get the most out of these!"
     ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0

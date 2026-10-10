@@ -133,7 +133,7 @@ Script_1:
     // "Team Plasma: Like he said![f000]븁\u0000\nWe're going to crush you\nalong with the traitors![f000]븁\u0000\nBecause Team Plasma exists\nto cause trouble![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 13, 5, 6, 0
     MsgWinCloseAll
-    CallTrainerBattle 724, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_46, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

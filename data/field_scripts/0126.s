@@ -210,11 +210,11 @@ L_02F2:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_032B
-    CallTrainerBattle 767, 0, 0
+    CallTrainerBattle TRAINER_LEADER_ELESA_2, 0, 0
     VMJump L_0333
 
 L_032B:
-    CallTrainerBattle 153, 0, 0
+    CallTrainerBattle TRAINER_LEADER_ELESA, 0, 0
 
 L_0333:
     WorkSetConst 0x8020, 0
@@ -304,7 +304,7 @@ Script_4:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_055F
-    TrainerBGMPlayPush 207
+    TrainerBGMPlayPush TRAINER_BEAUTY_NIKOLA
     ActorCmdExec 2, Movement_09B0
     ActorCmdWait
     WorkSetConst 0x8022, 0
@@ -347,7 +347,7 @@ L_0522:
     // "Welcome to the Nimbasa Gym![f000]븁\u0000\nA stylish Pokémon battle and\nfashion show created by Pokémon[f000]븀\u0000\nand Trainers is starting now![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 10, 2, 0, 0
     ActorMsgClose
-    CallTrainerBattle 207, 0, 0
+    CallTrainerBattle TRAINER_BEAUTY_NIKOLA, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -432,7 +432,7 @@ Script_5:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0728
-    TrainerBGMPlayPush 208
+    TrainerBGMPlayPush TRAINER_BEAUTY_FLEMING
     ActorCmdExec 3, Movement_09B0
     ActorCmdWait
     WorkSetConst 0x8024, 0
@@ -475,7 +475,7 @@ L_06EB:
     // "Are you beautiful as a Trainer?\nSurprise me![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 13, 3, 0, 0
     ActorMsgClose
-    CallTrainerBattle 208, 0, 0
+    CallTrainerBattle TRAINER_BEAUTY_FLEMING, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -560,7 +560,7 @@ Script_6:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0964
-    TrainerBGMPlayPush 209
+    TrainerBGMPlayPush TRAINER_BEAUTY_AMP_RE
     ActorCmdExec 0, Movement_09B0
     ActorCmdWait
     WorkSetConst 0x8026, 0
@@ -603,7 +603,7 @@ L_08B4:
     // "The show is coming to its finale.\nNow, I'll see if you are worthy[f000]븀\u0000\nto stand on the same stage as Elesa![f000]븁\u0000"
     ActorMsg MSGFILE_SCRIPT, 16, 0, 0, 0
     ActorMsgClose
-    CallTrainerBattle 209, 0, 0
+    CallTrainerBattle TRAINER_BEAUTY_AMP_RE, 0, 0
     TrainerBattleIsVictory 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

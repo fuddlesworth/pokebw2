@@ -2091,13 +2091,13 @@ Script_7:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AAA
-    TrainerBGMPlayPush 439
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_24
     ActorCmdExec 0, Movement_0BD4
     ActorCmdWait
     VMJump L_0AB8
 
 L_0AAA:
-    TrainerBGMPlayPush 451
+    TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_36
     ActorCmdExec 1, Movement_0BD4
     ActorCmdWait
 
@@ -2109,11 +2109,11 @@ L_0AB8:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AE5
-    CallTrainerBattle 439, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_24, 0, 0
     VMJump L_0AED
 
 L_0AE5:
-    CallTrainerBattle 451, 0, 0
+    CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_36, 0, 0
 
 L_0AED:
     VMCall L_0B4F
