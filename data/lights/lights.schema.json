@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A lighting set: data/lights/field/<n>.json or data/lights/battle/<n>.json",
-    "description": "A file of ARCID_LIGHTS_FIELD (a/0/6/0), which an area names by its lights, or of ARCID_LIGHTS_BATTLE (a/0/6/1): the lighting through the day, an entry per period, which FieldLight_FlushCore applies. tools/scripts/light_data.py packs them in order.",
+    "description": "A file of ARCID_LIGHTS_FIELD (a/0/6/0), which an area names by its lights, or of ARCID_LIGHTS_BATTLE (a/0/6/1): the lighting through the day, an entry per period, which FieldLight_FlushCore applies. tools/data/light_data.py packs them in order.",
     "type": "object",
     "additionalProperties": false,
     "required": [ "periods" ],

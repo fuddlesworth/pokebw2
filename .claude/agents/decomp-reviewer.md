@@ -14,7 +14,7 @@ Read `CLAUDE.md` and `docs/code-organization.md` first. Then read the diff (`git
 Check:
 1. **The file:** one `delinks.txt` entry per original file in **both** `config/b2_us` and `config/w2_us`, with the
    same file and the same set of sections. `complete` only if every function matches in both versions; run
-   `.venv/bin/python tools/scripts/compiler_probe.py FILE --mismatches`, adding `--compilers 1.1p1` for game code,
+   `.venv/bin/python tools/decomp/compiler_probe.py FILE --mismatches`, adding `--compilers 1.1p1` for game code,
    and `--version w2_us`.
 2. **Order:** functions in address order (reverse for SPL); the data's declaration order consistent with its layout.
 3. **Statics:** each `static` function is unreferenced from other modules (`grep` its address in every `relocs.txt`

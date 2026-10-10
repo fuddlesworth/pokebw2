@@ -1,4 +1,4 @@
-# Names that are not in swan, applied by tools/scripts/rename_symbol.py
+# Names that are not in swan, applied by tools/decomp/rename_symbol.py
 # module address(b2_us) name
 . 0x02005844 BGMStack_ResetEntry
 . 0x02005890 BGMStack_InitEntry

@@ -63,17 +63,17 @@ a rule here changes, change it there too.
 | Task | Command |
 | --- | --- |
 | Disassemble a module (again after renames) | `tools/dsd dis -c config/b2_us/arm9/config.yaml -a build/asm --overlay 33` (or `--main`) |
-| One function's asm | `.venv/bin/python tools/scripts/show_func.py NAME [NAME...]` |
-| Probe a file against the ROM | `.venv/bin/python tools/scripts/compiler_probe.py src/X.c --compilers 1.1p1 --mismatches` |
+| One function's asm | `.venv/bin/python tools/decomp/show_func.py NAME [NAME...]` |
+| Probe a file against the ROM | `.venv/bin/python tools/decomp/compiler_probe.py src/X.c --compilers 1.1p1 --mismatches` |
 | Diff one function | `... compiler_probe.py src/X.c --compilers 1.1p1 --functions F --show-diff 1.1p1 --align` |
 | White 2 | add `--version w2_us` to the probe |
-| Try respellings | `.venv/bin/python tools/scripts/try_variants.py src/X.c F --score variants.c` |
-| Registers and stack slots of locals | `.venv/bin/python tools/scripts/locals.py src/X.c F` |
-| File boundaries and names | `.venv/bin/python tools/scripts/source_files.py ov033 [--profile START END]` |
-| Add a file to both versions | `.venv/bin/python tools/scripts/add_source_file.py src/X.c overlays/ov033 .text:A-B ... --incomplete` |
-| Mark complete | `.venv/bin/python tools/scripts/mark_complete.py src/X.c` |
-| Name a symbol | `.venv/bin/python tools/scripts/rename_symbol.py func_ov033_0217acd4 Name` |
-| Rename a constant of `data/constants/` and its uses | `.venv/bin/python tools/scripts/rename_constant.py OLD NEW` |
+| Try respellings | `.venv/bin/python tools/decomp/try_variants.py src/X.c F --score variants.c` |
+| Registers and stack slots of locals | `.venv/bin/python tools/decomp/locals.py src/X.c F` |
+| File boundaries and names | `.venv/bin/python tools/decomp/source_files.py ov033 [--profile START END]` |
+| Add a file to both versions | `.venv/bin/python tools/decomp/add_source_file.py src/X.c overlays/ov033 .text:A-B ... --incomplete` |
+| Mark complete | `.venv/bin/python tools/decomp/mark_complete.py src/X.c` |
+| Name a symbol | `.venv/bin/python tools/decomp/rename_symbol.py func_ov033_0217acd4 Name` |
+| Rename a constant of `data/constants/` and its uses | `.venv/bin/python tools/data/rename_constant.py OLD NEW` |
 | Progress of the local build | `ninja progress` |
 | Build and verify | `python3 configure.py && ninja 2>&1 \| tail -20` (configure only when source files were added) |
 

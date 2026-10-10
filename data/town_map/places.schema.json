@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "The town map's places: data/town_map/places.json",
-    "description": "The table of places that the town map, the Pokédex's habitat map and a beacon's details read (TownMapData_GetParam), in order: a/0/8/5. tools/scripts/town_map_data.py packs it.",
+    "description": "The table of places that the town map, the Pokédex's habitat map and a beacon's details read (TownMapData_GetParam), in order: a/0/8/5. tools/data/town_map_data.py packs it.",
     "type": "object",
     "additionalProperties": false,
     "required": [ "places" ],

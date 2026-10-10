@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A nature: data/natures/<nature>.json",
-    "description": "A nature's text, in the order of data/constants/natures.txt; what it does is the code's. The text files take it with \\from{natures.name} (tools/scripts/text_sources.py).",
+    "description": "A nature's text, in the order of data/constants/natures.txt; what it does is the code's. The text files take it with \\from{natures.name} (tools/text/text_sources.py).",
     "type": "object",
     "additionalProperties": false,
     "required": [ "name" ],

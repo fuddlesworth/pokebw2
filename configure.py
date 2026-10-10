@@ -18,9 +18,9 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).parent.resolve()
-sys.path.insert(0, str(ROOT / "tools" / "scripts"))
-from gen_constants import ordered_files  # noqa: E402
-from pms_words import CATEGORIES as PMS_WORD_CATEGORIES  # noqa: E402
+sys.path.insert(0, str(ROOT))
+from tools.data.gen_constants import ordered_files  # noqa: E402
+from tools.text.pms_words import CATEGORIES as PMS_WORD_CATEGORIES  # noqa: E402
 
 VERSIONS = {
     "b2_us": {"sha1": "e51e6dfb8678a3d19dcd2a10691b96a569ca0abb", "rom": "pokeblack2_us.nds", "defines": ["BLACK2"]},
@@ -119,7 +119,7 @@ def file_flags(source: Path, flags: list[str]) -> list[str]:
 LIBRARIES = load_libraries()
 # Header search path of every source file, the game's and the libraries': the game's headers, each library's public
 # headers, and the headers the build generates from the constant lists in data/constants/ (see
-# tools/scripts/gen_constants.py). A library's private headers sit beside its sources.
+# tools/data/gen_constants.py). A library's private headers sit beside its sources.
 GENERATED_INCLUDE_DIR = "build/include/generated"
 INCLUDE_DIRS = ["include", *(p.relative_to(ROOT).as_posix() for p in sorted(LIB_DIR.glob("*/include"))),
                 GENERATED_INCLUDE_DIR]
@@ -135,8 +135,8 @@ def library_of(source: Path) -> tuple[str, list[str]] | None:
 # Archives assembled from source, which replace their extracted counterparts in the ROM: the scripts. Each maps its path
 # under files/ to the directory of its members, one assembly file each, in archive order.
 ARCHIVES = {
-    "a/0/5/6": "data/field_scripts",  # Field scripts, see tools/scripts/field_script.py
-    "a/1/6/9": "data/tr_ai",  # Trainer AI scripts, see tools/scripts/tr_ai_script.py
+    "a/0/5/6": "data/field_scripts",  # Field scripts, see tools/script/field_script.py
+    "a/1/6/9": "data/tr_ai",  # Trainer AI scripts, see tools/script/tr_ai_script.py
 }
 
 # The constant list that names and orders each assembled archive's files, and the prefix of its constants
@@ -148,49 +148,49 @@ ARCHIVE_LISTS = {"a/0/5/6": ("field_scripts", "SCRIPTS_"), "a/1/6/9": ("tr_ai_sc
 # so those are inputs too.
 DATA_PACKS = [
     # Species data, level-up moves, evolutions, baby species, experience tables and egg moves
-    ("tools/scripts/species_data.py", "data/pokemon",
+    ("tools/data/species_data.py", "data/pokemon",
      ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7", "a/1/2/4"], False),
-    ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"], False),  # Move data
-    ("tools/scripts/item_data.py", "data/items", ["a/0/2/4"], False),  # Item data
+    ("tools/data/move_data.py", "data/moves", ["a/0/2/1"], False),  # Move data
+    ("tools/data/item_data.py", "data/items", ["a/0/2/4"], False),  # Item data
     # Trainers, their parties, and the table of their messages with its offsets
-    ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
-    ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
+    ("tools/data/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
+    ("tools/data/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
     # Zone headers, which give each zone the number of its events in data/events/order.json
-    ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False, ["data/events"]),
-    ("tools/scripts/trade_data.py", "data/trades", ["a/1/6/3"], False),  # In-game trades
-    ("tools/scripts/map_matrix_data.py", "data/map_matrices", ["a/0/0/9"], False),  # Map matrices
-    ("tools/scripts/area_data.py", "data/areas", ["a/0/1/3"], False),  # Areas, a file of records rather than an archive
-    ("tools/scripts/light_data.py", "data/lights", ["a/0/6/0", "a/0/6/1"], False),  # Field and battle lighting
+    ("tools/data/zone_data.py", "data/zones", ["a/0/1/2"], False, ["data/events"]),
+    ("tools/data/trade_data.py", "data/trades", ["a/1/6/3"], False),  # In-game trades
+    ("tools/data/map_matrix_data.py", "data/map_matrices", ["a/0/0/9"], False),  # Map matrices
+    ("tools/data/area_data.py", "data/areas", ["a/0/1/3"], False),  # Areas, a file of records rather than an archive
+    ("tools/data/light_data.py", "data/lights", ["a/0/6/0", "a/0/6/1"], False),  # Field and battle lighting
     # The town map's places, whose texts are messages of town_map.txt
-    ("tools/scripts/town_map_data.py", "data/town_map", ["a/0/8/5"], True, ["data/text/system/town_map.txt"]),
+    ("tools/data/town_map_data.py", "data/town_map", ["a/0/8/5"], True, ["data/text/system/town_map.txt"]),
     # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
-    ("tools/scripts/facility_data.py", "data/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
+    ("tools/data/facility_data.py", "data/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
      ["data/facilities"]),
     # The Black Tower, White Treehollow in White 2
-    ("tools/scripts/facility_data.py", "data/facilities/black_tower", ["a/2/6/2", "a/2/6/1"], False,
+    ("tools/data/facility_data.py", "data/facilities/black_tower", ["a/2/6/2", "a/2/6/1"], False,
      ["data/facilities"]),
     # The Pokémon World Tournament's three pools of trainers, each with the single sets' archive, and its rental sets
-    ("tools/scripts/facility_data.py", "data/facilities/pwt_regular", ["a/2/4/9", "a/2/5/0", "a/2/4/8"], False,
+    ("tools/data/facility_data.py", "data/facilities/pwt_regular", ["a/2/4/9", "a/2/5/0", "a/2/4/8"], False,
      ["data/facilities"]),
-    ("tools/scripts/facility_data.py", "data/facilities/pwt_leaders", ["a/2/5/2", "a/2/5/3", "a/2/5/1"], False,
+    ("tools/data/facility_data.py", "data/facilities/pwt_leaders", ["a/2/5/2", "a/2/5/3", "a/2/5/1"], False,
      ["data/facilities"]),
-    ("tools/scripts/facility_data.py", "data/facilities/pwt_masters", ["a/2/5/5", "a/2/5/6", "a/2/5/4"], False,
+    ("tools/data/facility_data.py", "data/facilities/pwt_masters", ["a/2/5/5", "a/2/5/6", "a/2/5/4"], False,
      ["data/facilities"]),
-    ("tools/scripts/facility_data.py", "data/facilities/pwt_rental", ["a/2/5/7"], False, ["data/facilities"]),
+    ("tools/data/facility_data.py", "data/facilities/pwt_rental", ["a/2/5/7"], False, ["data/facilities"]),
     # The zones' events, in the order of data/events/order.json
-    ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False),
+    ("tools/data/event_data.py", "data/events", ["a/1/2/6"], False),
 ]
 # What every packer reads besides its data: the scripts, and the move tutors' tables, which name the species data's
-# tutor bits (tools/scripts/species_data.py)
-DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/text_ids.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py",
-                   "tools/scripts/text_sources.py", "tools/scripts/text_data.py", "tools/scripts/msgdata.py",
-                   "src/ov036/scrcmd_shop.c", "tools/scripts/facility_data.py", "tools/scripts/make_constants.py"]
+# tutor bits (tools/data/species_data.py)
+DATA_PACK_TOOLS = ["tools/data/datajson.py", "tools/text/text_ids.py", "tools/data/gen_constants.py", "tools/data/narc.py",
+                   "tools/text/text_sources.py", "tools/text/text_data.py", "tools/text/msgdata.py",
+                   "src/ov036/scrcmd_shop.c", "tools/data/facility_data.py", "tools/data/make_constants.py"]
 
-# The data in JSON that the text takes messages from, with \from{...} lines (tools/scripts/text_sources.py)
+# The data in JSON that the text takes messages from, with \from{...} lines (tools/text/text_sources.py)
 TEXT_DATA_DIRS = ["data/pokemon", "data/moves", "data/items", "data/trainers", "data/abilities", "data/types",
                   "data/trades", "data/facilities", "data/trainer_classes", "data/natures", "data/places"]
 
-# Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
+# Text archives built from source, by tools/text/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order
 TEXT_ARCHIVES = {
     "a/0/0/2": "data/text/system",  # System messages
@@ -349,9 +349,9 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
             variables={"config": str(arm9_config)})
     link_lcf = lcf_file
     if shift:
-        # Padding in the linker script moves the code and data after it, see tools/scripts/shift_lcf.py
+        # Padding in the linker script moves the code and data after it, see tools/build/shift_lcf.py
         link_lcf = build_dir / "arm9_shifted.lcf"
-        n.build([link_lcf], "shift_lcf", [lcf_file], implicit=["tools/scripts/shift_lcf.py"],
+        n.build([link_lcf], "shift_lcf", [lcf_file], implicit=["tools/build/shift_lcf.py"],
                 variables={"amount": hex(shift)})
 
     # Source files are listed in delinks.txt by their path. Complete files are linked from the compiled object, and
@@ -382,7 +382,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     # The tree is made first, so that no archive is written through a link into extract/.
     files_dir = build_dir / "files"
     files_ok = stamp_dir / "files.ok"
-    n.build([files_ok], "files_tree", [], implicit=[extract_dir / "config.yaml", "tools/scripts/files_tree.py"],
+    n.build([files_ok], "files_tree", [], implicit=[extract_dir / "config.yaml", "tools/build/files_tree.py"],
             variables={"source": str(extract_dir / "files"), "output": str(files_dir),
                        "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES,
                                           *(a for _, _, pack, *_ in DATA_PACKS for a in pack)])})
@@ -399,7 +399,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
             n.build([member], "objcopy_bin", [obj])
             members.append(member)
         archive = files_dir / path
-        n.build([archive], "narc", members, implicit=["tools/scripts/narc.py"], order_only=[files_ok])
+        n.build([archive], "narc", members, implicit=["tools/data/narc.py"], order_only=[files_ok])
         archive_ok = stamp_dir / "files" / f"{path.replace('/', '_')}.ok"
         n.build([archive_ok], "check_file", [archive], implicit=[extract_dir / "config.yaml"],
                 variables={"original": str(extract_dir / "files" / path)})
@@ -426,7 +426,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
             if matching:
                 checks.append(archive_ok)
 
-    # The text takes some of its messages from the data in JSON, with \from{...} lines (tools/scripts/text_sources.py)
+    # The text takes some of its messages from the data in JSON, with \from{...} lines (tools/text/text_sources.py)
     text_data_sources = sorted(str(p.relative_to(ROOT)) for d in TEXT_DATA_DIRS for p in (ROOT / d).rglob("*.json"))
     for path, source_dir in TEXT_ARCHIVES.items():
         archive = files_dir / path
@@ -530,26 +530,26 @@ def main():
     n.rule("lcf", "$dsd lcf --config-path $config", "Generating linker script for $config")
     # mwccarm writes the dependency file next to the object, with Windows paths that fix_depfile.py converts
     n.rule("mwcc", f"mkdir -p $$(dirname $out) && $wine {shlex.quote(str(mwcc))} {' '.join(CC_FLAGS)} $defines "
-           "-gccdep -MD $includes -o $out $in && $python tools/scripts/fix_depfile.py $dep", "Compiling $in",
+           "-gccdep -MD $includes -o $out $in && $python tools/build/fix_depfile.py $dep", "Compiling $in",
            depfile="$dep", deps="gcc")
     # The older compilers (SPL's 1.2/base) warn when MWCIncludes, their system include path, isn't set. The code finds its
     # headers through -i, so any value does
     for i, (compiler, _) in enumerate(LIBRARIES.values()):
         lib_mwcc = tools_dir / "mwccarm" / compiler / "mwccarm.exe"
         n.rule(f"mwcc_{i}", f"mkdir -p $$(dirname $out) && MWCIncludes=. $wine {shlex.quote(str(lib_mwcc))} $flags "
-               "$defines -gccdep -MD $includes -o $out $in && $python tools/scripts/fix_depfile.py $dep",
+               "$defines -gccdep -MD $includes -o $out $in && $python tools/build/fix_depfile.py $dep",
                "Compiling $in", depfile="$dep", deps="gcc")
-    n.rule("shift_lcf", "$python tools/scripts/shift_lcf.py $in $out $amount", "Shifting $in")
+    n.rule("shift_lcf", "$python tools/build/shift_lcf.py $in $out $amount", "Shifting $in")
     n.rule("mwld", f"$wine {shlex.quote(str(mwld))} {' '.join(LD_FLAGS)} @$objects $lcf -o $out", "Linking $out")
     # Scripts go through the C preprocessor, so that they can include the constant headers
     n.rule("as", f"{shlex.quote(clang)} --target=armv5te-none-eabi -x assembler-with-cpp -c $as_includes $defines "
            "-MD -MF $dep -o $out $in", "Assembling $in", depfile="$dep", deps="gcc")
     n.rule("objcopy_bin", f"{shlex.quote(llvm_objcopy)} -O binary $in $out", "Converting $in")
-    n.rule("narc", "$python tools/scripts/narc.py pack $out $in", "Packing $out")
-    n.rule("text_pack", "$python tools/scripts/text_data.py pack $dir $out", "Packing $out")
+    n.rule("narc", "$python tools/data/narc.py pack $out $in", "Packing $out")
+    n.rule("text_pack", "$python tools/text/text_data.py pack $dir $out", "Packing $out")
     n.rule("data_pack", "$python $script pack $dir $game $out", "Packing $dir")
     n.rule("check_file", "cmp $in $original && mkdir -p $$(dirname $out) && touch $out", "Checking $in")
-    n.rule("files_tree", "$python tools/scripts/files_tree.py $source $output $built --stamp $out",
+    n.rule("files_tree", "$python tools/build/files_tree.py $source $output $built --stamp $out",
            "Linking the files of $output")
     # dsd points the ROM at the extracted files, and the build's own file system replaces them. BSD sed, as on macOS,
     # needs a backup suffix after -i, which GNU sed also takes
@@ -560,10 +560,10 @@ def main():
     n.rule("sha1", "sha1sum --quiet -c $in && touch $out", "Checking $rom")
     n.rule("ctx", f"$wine {shlex.quote(str(mwcc))} -EP -lang=c99 -gccinc $defines $includes $in "
            "| grep -v -e '^#line' -e 'prepdump' > $out", "Preprocessing $in")
-    n.rule("objdiff_config", f"$python tools/scripts/objdiff_config.py $version --dsd $dsd "
+    n.rule("objdiff_config", f"$python tools/build/objdiff_config.py $version --dsd $dsd "
            f"--compiler {DECOMP_ME_COMPILER} --c-flags '{' '.join(CC_FLAGS)}' -o $out", "Writing $out")
     n.rule("report", f"{tools_dir / 'objdiff-cli'} report generate -p . -o $out", "Generating $out")
-    n.rule("progress", "$python tools/scripts/progress.py $in", "Progress")
+    n.rule("progress", "$python tools/build/progress.py $in", "Progress")
     configure_args = [*args.versions, *(["--bugfix"] if args.bugfix else []),
                       *([f"--shift {args.shift:#x}"] if args.shift else [])]
     n.rule("configure", f"$python configure.py {' '.join(configure_args)}", "Reconfiguring", generator="1")
@@ -574,16 +574,16 @@ def main():
     # files and the scripts share one source of truth, and a mod only edits the list. Compiles depend on them
     # order-only; the depfiles rebuild what includes a changed header. A header that comes out the same is not
     # rewritten, and restat keeps its users from recompiling.
-    n.rule("gen_constants", "$python tools/scripts/gen_constants.py $in $out", "Generating $out", restat="1")
+    n.rule("gen_constants", "$python tools/data/gen_constants.py $in $out", "Generating $out", restat="1")
     constant_headers = []
     for source in sorted((ROOT / "data" / "constants").glob("*.txt")):
         header = Path(GENERATED_INCLUDE_DIR) / "constants" / source.with_suffix(".h").name
-        n.build([header], "gen_constants", [source.relative_to(ROOT)], implicit=["tools/scripts/gen_constants.py"])
+        n.build([header], "gen_constants", [source.relative_to(ROOT)], implicit=["tools/data/gen_constants.py"])
         constant_headers.append(header)
-    # Each message file's header of its message IDs (tools/scripts/text_ids.py). A file with \from lines counts the
+    # Each message file's header of its message IDs (tools/text/text_ids.py). A file with \from lines counts the
     # messages of the data it takes, so it depends on that data
-    n.rule("text_ids", "$python tools/scripts/text_ids.py $in $out", "Generating $out", restat="1")
-    text_tools = ["tools/scripts/text_ids.py", *DATA_PACK_TOOLS]
+    n.rule("text_ids", "$python tools/text/text_ids.py $in $out", "Generating $out", restat="1")
+    text_tools = ["tools/text/text_ids.py", *DATA_PACK_TOOLS]
     from_data = sorted(str(p.relative_to(ROOT)) for d in TEXT_DATA_DIRS for p in (ROOT / d).rglob("*.json"))
     from_data += sorted(str(p.relative_to(ROOT)) for p in (ROOT / "data" / "constants").glob("*.txt"))
     for source_dir in TEXT_ARCHIVES.values():
@@ -593,11 +593,11 @@ def main():
             n.build([header], "text_ids", [source.relative_to(ROOT)],
                     implicit=[*text_tools, *(from_data if uses_data else [])])
             constant_headers.append(header)
-    # The easy chat words, numbered across their categories' message files (tools/scripts/pms_words.py)
-    n.rule("pms_words", "$python tools/scripts/pms_words.py $out", "Generating $out", restat="1")
+    # The easy chat words, numbered across their categories' message files (tools/text/pms_words.py)
+    n.rule("pms_words", "$python tools/text/pms_words.py $out", "Generating $out", restat="1")
     pms_words_header = Path(GENERATED_INCLUDE_DIR) / "constants" / "pms_words.h"
     n.build([pms_words_header], "pms_words", [f"data/text/system/{file}.txt" for _, file, _ in PMS_WORD_CATEGORIES],
-            implicit=["tools/scripts/pms_words.py", *text_tools, *from_data])
+            implicit=["tools/text/pms_words.py", *text_tools, *from_data])
     constant_headers.append(pms_words_header)
     n.build(["constants_headers"], "phony", constant_headers)
 
@@ -609,7 +609,7 @@ def main():
 
     # objdiff.json covers one version, the primary one if it is being built
     objdiff_version = versions[0]
-    n.build(["objdiff.json"], "objdiff_config", configs, implicit=["tools/scripts/objdiff_config.py"],
+    n.build(["objdiff.json"], "objdiff_config", configs, implicit=["tools/build/objdiff_config.py"],
             variables={"version": objdiff_version})
     n.build(["report"], "phony", [Path("build") / objdiff_version / "report.json"])
     n.build(["progress"], "phony", [f"{objdiff_version}_progress"])

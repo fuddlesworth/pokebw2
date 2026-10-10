@@ -15,7 +15,7 @@ Method:
 1. Find the struct's sources: its allocation (`GFL_HeapAllocate(heap, SIZE, ...)` gives the size), the functions
    that receive the pointer, and where it is stored.
 2. Disassemble the functions involved (`tools/dsd dis ... -a build/asm --overlay N` if `build/asm` lacks them, then
-   `.venv/bin/python tools/scripts/show_func.py`). Never print whole `.s` files.
+   `.venv/bin/python tools/decomp/show_func.py`). Never print whole `.s` files.
 3. Collect every access through the pointer: offset, width (`ldrb`/`strb` is 1, `ldrh`/`strh` is 2, `ldrsb`/`ldrsh`
    are signed, `ldr`/`str`/`ldm` are 4 or more), and what the value is used for. A value passed to a known function
    tells its type. Watch for base-plus-offset addressing, where the struct is reached through `add rX, #imm` first.

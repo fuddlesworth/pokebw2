@@ -1018,7 +1018,7 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   it before its definition, as an unused inline function in a header does, even though that code is never emitted.
   `demo/shinka_demo_view.h` reconstructs such accessors for the evolution demo's helix constants. Heapsort is not
   stable, so objects of the same size come out in an order that depends on where every object in the file is declared,
-  and moving one object can reorder others. `tools/scripts/rodata_order.py` predicts the layout for a declaration order
+  and moving one object can reorder others. `tools/decomp/rodata_order.py` predicts the layout for a declaration order
   and tries the orders of the objects given with `--permute`; `intro_graphic.c` matches only with its light setups
   declared after the function whose BG setups are local initializers. Tables of pointers have to be checked by their
   relocations, and two with the same contents only by the code that loads them: `btlv_scu.c`'s four 12-byte
@@ -1089,7 +1089,7 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
 - `GFL_ASSERT` keeps its expression as a string in `.data`, so the variable it tests keeps its original name, as the
   Medal Rally's `p_sv` does.
 - Overlay IDs are linker symbols, written `OVERLAY_ID(279)` from `gfl/overlay.h`, which gives the literal pool entry
-  a relocation. Mark the literal in the config with `tools/scripts/config_fixes.py overlay-id`.
+  a relocation. Mark the literal in the config with `tools/decomp/config_fixes.py overlay-id`.
 - A table one element longer in the ROM than the code needs has a terminator: pml_item.c's `TM_MOVE_LIST` is 101 moves
   and a `MOVE_NONE`. Without it the next object starts 2 bytes early.
 
@@ -1110,6 +1110,6 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
 - Before blaming registers, check every literal argument, mask and field offset against the original: 11 of 18
   leftovers of `btlv_input.c` were a swapped argument pair, a wrong mask width, an 8-byte struct that is 12 in the
   game, a `?:` argument that is two calls, or a missing `case 0: break;`, each read as an allocation difference.
-- When the order of instructions differs and no source change moves it, try `tools/scripts/permuter_setup.py`, which
+- When the order of instructions differs and no source change moves it, try `tools/decomp/permuter_setup.py`, which
   prepares a function for [decomp-permuter](https://github.com/simonlindholm/decomp-permuter). Its result can point to
   a plain change: `GFL_BGSysAllocChar`'s registers only matched with its tile size, a `u8` from a call, in an `int`.

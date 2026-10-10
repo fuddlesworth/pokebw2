@@ -131,7 +131,7 @@ static void DebugGameStart_DrawCursor(DebugGameStartWork *wk);
 static u32 DebugGameStart_UpdateMenu(DebugGameStartWork *wk);
 static void DebugGameStart_CycleCursorColor(DebugGameStartWork *wk);
 
-// The static data is declared in this order to keep the original layout (tools/scripts/rodata_order.py)
+// The static data is declared in this order to keep the original layout (tools/decomp/rodata_order.py)
 static const TouchRectTable sDebugTouchRects = { {
     { 96, 112, 48, 208 },
     { 128, 144, 48, 208 },

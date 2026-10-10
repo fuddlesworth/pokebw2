@@ -275,7 +275,7 @@ static u32 StartMenu_WipeOut(StartMenuWork *wk, u32 next);
 static u32 StartMenu_StartBlink(StartMenuWork *wk, u32 next);
 static BOOL StartMenu_CheckBrokenSave(StartMenuWork *wk);
 
-// Declared in an order that gives the original layout of the data (tools/scripts/rodata_order.py)
+// Declared in an order that gives the original layout of the data (tools/decomp/rodata_order.py)
 
 static const BGSysVRAMConfig sVRAMConfig = {
     GX_VRAM_BG_128_A,  GX_VRAM_BGEXTPLTT_NONE,  GX_VRAM_SUB_BG_128_C,        GX_VRAM_SUB_BGEXTPLTT_NONE,

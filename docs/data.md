@@ -19,24 +19,24 @@ format and can write them again.
 
 | Archive | Sources | Contents | Script |
 | --- | --- | --- | --- |
-| `a/0/0/2` | `data/text/system/` | System messages | `tools/scripts/text_data.py` |
-| `a/0/0/3` | `data/text/script/` | Script messages | `tools/scripts/text_data.py` |
-| `a/0/1/2` | `data/zones/` (JSON) | Zone headers | `tools/scripts/zone_data.py` |
-| `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0`, `a/1/2/4` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species, egg moves | `tools/scripts/species_data.py` |
-| `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
-| `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
-| `a/0/2/4` | `data/items/` (JSON) | Item data | `tools/scripts/item_data.py` |
-| `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
-| `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `data/trainers/` (JSON) | Trainers, their parties, and the table of their messages | `tools/scripts/trainer_data.py` |
-| `a/0/0/9` | `data/map_matrices/` (JSON) | Map matrices | `tools/scripts/map_matrix_data.py` |
-| `a/0/1/3` | `data/areas/areas.json` | Area records | `tools/scripts/area_data.py` |
-| `a/1/2/6` | `data/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/scripts/event_data.py` |
-| `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
-| `a/1/6/3` | `data/trades/` (JSON) | In-game trades | `tools/scripts/trade_data.py` |
-| `a/2/1/2`, `a/2/1/1` | `data/facilities/battle_subway/` (JSON) | Battle Subway and Trial House trainers and Pokémon | `tools/scripts/facility_data.py` |
-| `a/2/6/2`, `a/2/6/1` | `data/facilities/black_tower/` (JSON) | Black Tower and White Treehollow trainers and Pokémon | `tools/scripts/facility_data.py` |
-| `a/2/4/8` to `a/2/5/7` | `data/facilities/pwt_*/` (JSON) | Pokémon World Tournament trainers, Pokémon and rental Pokémon | `tools/scripts/facility_data.py` |
-| `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
+| `a/0/0/2` | `data/text/system/` | System messages | `tools/text/text_data.py` |
+| `a/0/0/3` | `data/text/script/` | Script messages | `tools/text/text_data.py` |
+| `a/0/1/2` | `data/zones/` (JSON) | Zone headers | `tools/data/zone_data.py` |
+| `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0`, `a/1/2/4` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species, egg moves | `tools/data/species_data.py` |
+| `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/data/species_data.py` |
+| `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/data/move_data.py` |
+| `a/0/2/4` | `data/items/` (JSON) | Item data | `tools/data/item_data.py` |
+| `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/script/field_script.py` |
+| `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `data/trainers/` (JSON) | Trainers, their parties, and the table of their messages | `tools/data/trainer_data.py` |
+| `a/0/0/9` | `data/map_matrices/` (JSON) | Map matrices | `tools/data/map_matrix_data.py` |
+| `a/0/1/3` | `data/areas/areas.json` | Area records | `tools/data/area_data.py` |
+| `a/1/2/6` | `data/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/data/event_data.py` |
+| `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/data/encounter_data.py` |
+| `a/1/6/3` | `data/trades/` (JSON) | In-game trades | `tools/data/trade_data.py` |
+| `a/2/1/2`, `a/2/1/1` | `data/facilities/battle_subway/` (JSON) | Battle Subway and Trial House trainers and Pokémon | `tools/data/facility_data.py` |
+| `a/2/6/2`, `a/2/6/1` | `data/facilities/black_tower/` (JSON) | Black Tower and White Treehollow trainers and Pokémon | `tools/data/facility_data.py` |
+| `a/2/4/8` to `a/2/5/7` | `data/facilities/pwt_*/` (JSON) | Pokémon World Tournament trainers, Pokémon and rental Pokémon | `tools/data/facility_data.py` |
+| `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/script/tr_ai_script.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
 `TEXT_ARCHIVES`.
@@ -46,7 +46,7 @@ The text archives are packed by `text_data.py` from text files rather than assem
 The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences, trainer
 classes, trainers, zones, wild encounter tables, in-game trades, natures, places, event flags and event variables, are
 lists in `data/constants/`, one name per line. They are the source of truth: to add one, add it to its list, and to
-rename one, use `tools/scripts/rename_constant.py OLD NEW`, which renames its uses too, and its data file where the data
+rename one, use `tools/data/rename_constant.py OLD NEW`, which renames its uses too, and its data file where the data
 is named after it. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`,
 which is on the include path, so the C code, the data sources and the scripts all use the same names, and the generated
 header can never disagree with its list. A line is a constant's full name, which takes the previous value plus one, or
@@ -59,9 +59,9 @@ SPECIES_BULBASAUR
 SPECIES_IVYSAUR
 ```
 
-`tools/scripts/gen_constants.py` writes the headers, and its `load()` and `header_text()` give the scripts the same
+`tools/data/gen_constants.py` writes the headers, and its `load()` and `header_text()` give the scripts the same
 constants without a build. The lists were written once from the game's own text, and from the sound archive's symbols,
-by `tools/scripts/make_constants.py`, which can write them again; constants the game has no text for, such as
+by `tools/data/make_constants.py`, which can write them again; constants the game has no text for, such as
 `ITEM_LAST` or `TYPE_NULL`, were added by hand. Constants whose names come from the code rather than from the game's
 data, such as the battle and field script constants, stay hand-written headers in `include/constants/`.
 
@@ -94,7 +94,7 @@ named only when the code shows what it is, and the list holds only those, each w
 sources are `data/text/system/<file>.txt` and `data/text/script/<file>.txt`, UTF-8, with one message per line, in order.
 Each line starts with the message's ID, `ID = text`, made of its bank's name and words of the message as unpacking first
 wrote it; the build makes a header of each bank's IDs, `text/system/<bank>.h` or `text/script/<bank>.h`
-(`tools/scripts/text_ids.py`), so the code and the scripts name messages, and adding or removing a line doesn't change
+(`tools/text/text_ids.py`), so the code and the scripts name messages, and adding or removing a line doesn't change
 what they name. An ID can be renamed freely:
 
 ```
@@ -115,7 +115,7 @@ BlackCity2_Text_HowSeriousWillingGet = How serious are you willing to get\nin or
 
 The text that belongs to a species, a move or a trainer is in its JSON file, so renaming a Pokémon or rewriting a
 trainer's lines is an edit in one place. The message files take it with `\from{...}` lines, which
-`tools/scripts/text_sources.py` expands when the text is packed, among the messages that belong to nothing, such as
+`tools/text/text_sources.py` expands when the text is packed, among the messages that belong to nothing, such as
 Egg and Bad Egg after the species' names:
 
 | File | Line | Messages |
@@ -171,7 +171,7 @@ in order (`pms_word.c`): the species' capitalized names up to the Bad Egg, the m
 then the words of `pms_words_trainer.txt`, `pms_words_people.txt`, `pms_words_greetings.txt`,
 `pms_words_lifestyle.txt`, `pms_words_feelings.txt`, `pms_words_term.txt`, `pms_words_connection.txt`,
 `pms_words_animated.txt` and `pms_words_voice.txt`, the input screen's categories of the same names
-(`pms_categories.txt`). `tools/scripts/pms_words.py` makes `constants/pms_words.h` from them: each category's index,
+(`pms_categories.txt`). `tools/text/pms_words.py` makes `constants/pms_words.h` from them: each category's index,
 first word and count (`PMS_WORD_CATEGORY_GREETINGS`, `PMS_WORD_FIRST_GREETINGS`, `PMS_WORD_COUNT_GREETINGS`), a
 species', move's, type's or ability's word by its constant (`PMS_WORD_SPECIES(SPECIES_PIKACHU)`,
 `PMS_WORD_MOVE(MOVE_THUNDERBOLT)`), and every other word by its category and message ID (`PMS_WORD_GREETINGS_HELLO`
@@ -234,7 +234,7 @@ documents each field.
 }
 ```
 
-`tools/scripts/species_data.py pack` builds the archives, one entry per record, in this order:
+`tools/data/species_data.py pack` builds the archives, one entry per record, in this order:
 
 - The species of `data/constants/species.txt`, from `SPECIES_NONE` (`none/`, an empty record) to Genesect.
 - The extra records, `data/pokemon/extra/<record>.json`, which no species' forms point at, kept until their use is
@@ -276,7 +276,7 @@ sizes, and the Japanese category of every species. Its sprites and cry aren't bu
 
 Each move has a directory in `data/moves/`, named after its constant (`thunderbolt/` for `MOVE_THUNDERBOLT`), whose
 `data.json` is its record of the move data (`a/0/2/1`, the 0x24 bytes that `PML_MoveGetParamCore` reads).
-`tools/scripts/move_data.py pack` builds the archive in the order of `data/constants/moves.txt`, and
+`tools/data/move_data.py pack` builds the archive in the order of `data/constants/moves.txt`, and
 `data/moves/move.schema.json` documents each field.
 
 ```json
@@ -314,7 +314,7 @@ versions have the same move data. A move's name and description go into the text
 
 Each item has a directory in `data/items/`, named after its constant (`potion/` for `ITEM_POTION`), whose `data.json`
 is its file of the item data (`a/0/2/4`, the 36 bytes of `ItemData` in `include/pml/item.h`) and its text: its name,
-its name with an article, its plural and its description (see [Text](#text)). `tools/scripts/item_data.py pack`
+its name with an article, its plural and its description (see [Text](#text)). `tools/data/item_data.py pack`
 builds the archive in the order of `data/constants/items.txt`, and `data/items/item.schema.json` documents each field.
 
 ```json
@@ -351,20 +351,20 @@ data.
 
 An ability's text is `data/abilities/<ability>.json`, its name and description, and a type's `data/types/<type>.json`,
 its name, named after their constants and in the order of their lists. What they do is the code's, so they have no
-archive: only the text takes them (see [Text](#text)), and `tools/scripts/text_sources.py` validates them against
+archive: only the text takes them (see [Text](#text)), and `tools/text/text_sources.py` validates them against
 `ability.schema.json` and `type.schema.json`. `TYPE_NULL`, the type of a typeless move, has no name and no file. A
 trainer class's text, `data/trainer_classes/<class>.json`, is its name and its name with an article, which the game
 writes by hand ("a Twin" for Twins, none for the Gym Leaders), a nature's, `data/natures/<nature>.json`, its name,
 and a place's, `data/places/<place>.json`, its name. Zone headers name their place by its constant in
 `data/constants/places.txt` (`PLACE_ASPERTIA_CITY`), which `make_constants.py --places` named after the place names,
 numbering the ones that repeat, as the second copies of Unova's places.
-`tools/scripts/list_text_data.py` wrote them all from the game's text.
+`tools/text/list_text_data.py` wrote them all from the game's text.
 
 ## Trainers
 
 Each trainer is `data/trainers/<trainer>.json`, named after its constant (`elite_four_shauntal.json` for
 `TRAINER_ELITE_FOUR_SHAUNTAL`), as pokeplatinum's `res/trainers/data/`. It holds the trainer's record (`a/0/9/1`) and
-its party (`a/0/9/2`), and `tools/scripts/trainer_data.py pack` builds both archives in the order of
+its party (`a/0/9/2`), and `tools/data/trainer_data.py pack` builds both archives in the order of
 `data/constants/trainers.txt`. `data/trainers/trainer.schema.json` documents each field.
 
 ```json
@@ -423,7 +423,7 @@ Each trainer's constant in `data/constants/trainers.txt`, which the field script
 
 Each wild encounter table (`a/1/2/7`, which a zone's header names, `GetZoneEncID`) is `data/encounters/<table>.json`,
 named after its constant in `data/constants/encounters.txt` (`striaton_city.json` for `ENCOUNTERS_STRIATON_CITY`),
-which names the tables after the place of the first zone that has them. `tools/scripts/encounter_data.py pack`
+which names the tables after the place of the first zone that has them. `tools/data/encounter_data.py pack`
 builds each version's archive in the order of the list, and `data/encounters/encounters.schema.json` documents each
 field.
 
@@ -467,7 +467,7 @@ list and its file, and name it in a zone's header.
 ## Zone headers
 
 Each zone's header is `data/zones/<zone>.json`, named after its constant (`aspertia_city_gym.json` for
-`ZONE_ASPERTIA_CITY_GYM`). `tools/scripts/zone_data.py pack` puts the 615 headers, 0x30 bytes each, into the single
+`ZONE_ASPERTIA_CITY_GYM`). `tools/data/zone_data.py pack` puts the 615 headers, 0x30 bytes each, into the single
 entry of `a/0/1/2` in the order of `data/constants/zones.txt`, and `data/zones/zone.schema.json` documents each field
 and the code that reads it.
 
@@ -498,7 +498,7 @@ Each in-game trade is `data/trades/<trade>.json`, named after its constant in `d
 the trades after the species they offer (`petilil.json` for `TRADE_PETILIL`). It holds the offer that
 `EventFieldTrade_CreatePkm` makes the Pokémon from (`a/1/6/3`, `FieldTradeOfferData` in `include/field/fld_trade.h`)
 and the Pokémon's nickname and trainer's name, which the text takes (see [Text](#text)).
-`tools/scripts/trade_data.py pack` builds the archive in the order of the list, numbering each offer and its two
+`tools/data/trade_data.py pack` builds the archive in the order of the list, numbering each offer and its two
 names' message IDs from its place, and `data/trades/trade.schema.json` documents each field: the IVs, nature and sex
 are null for random ones. The field scripts name the trades they start, as `FieldTradeCheck 0x8022, TRADE_GIGALITH,
 0x8020`. Both versions have the same trades.
@@ -509,7 +509,7 @@ A battle facility's trainers and the Pokémon sets they pick from are in `data/f
 pokeplatinum's `res/trainers/frontier/`: `trainers/<trainer>.json` has a trainer's class, its sets by name, and its
 name and messages, which the text takes (see [Text](#text)); `pokemon/<set>.json` is a set (`BSubwayPokemonData` in
 `include/field/battle_facility.h`), named after its species and numbered from 1, as `gengar_4.json`; and `order.json`
-lists both in archive order. `tools/scripts/facility_data.py pack` builds the facility's trainers and Pokémon
+lists both in archive order. `tools/data/facility_data.py pack` builds the facility's trainers and Pokémon
 archives, and `data/facilities/facility.schema.json` and `set.schema.json` document the fields.
 
 `FACILITIES` in `facility_data.py` says which archives and message files are a facility's: the Battle Subway (`a/2/1/2`
@@ -534,19 +534,19 @@ they are files of their own that trainers name.
 A zone's header names its map matrix, `data/map_matrices/<matrix>.json` (`a/0/0/9`), by its constant in
 `data/constants/map_matrices.txt`, which names a matrix after the first zone that uses it, the overworld's
 `MAP_MATRIX_OVERWORLD`. A matrix is a grid of its cells' maps, files of the map archive (null for none), row by row,
-and, for the overworld's, of their zones by name; `tools/scripts/map_matrix_data.py` packs them in the list's order. A
+and, for the overworld's, of their zones by name; `tools/data/map_matrix_data.py` packs them in the list's order. A
 row stays on one line, so the file reads as the grid.
 
 The areas, `data/areas/areas.json`, are the records of `a/0/1/3` (`AreaData`), which name the graphics that zones
 share: their props, textures, animations (null for none), lights and colors, by the numbers of files that aren't built
 from source yet. A zone's header names its area by its number, and an area with seasons has a record per season after
-it. `tools/scripts/area_data.py` packs them. Both versions have the same matrices and areas.
+it. `tools/data/area_data.py` packs them. Both versions have the same matrices and areas.
 
 An area's lights are a lighting set, `data/lights/field/<n>.json` (`a/0/6/0`, `ARCID_LIGHTS_FIELD`), by its number;
 the battles' are `data/lights/battle/<n>.json` (`a/0/6/1`). A set is the periods of the day, which
 `FieldLight_FlushCore` applies in turn: when each ends (an hour of the season's table and minutes after it), the four
 lights (on or off, color and direction in 4096ths), the materials' diffuse, ambient, specular and emission colors, the
-fog's color and the color the screen clears to. Colors are 0 to 31 per component. `tools/scripts/light_data.py`
+fog's color and the color the screen clears to. Colors are 0 to 31 per component. `tools/data/light_data.py`
 packs them, and both versions have the same sets.
 
 ## Town map
@@ -563,7 +563,7 @@ there, the flags that let them and that show it (an event flag, or a `TOWNMAP_FL
 "landmarks": ["TownMap_Text_OpelucidCityGym", "TownMap_Text_PokemonCenter_9"],
 ```
 
-`tools/scripts/town_map_data.py` packs it for each version.
+`tools/data/town_map_data.py` packs it for each version.
 
 ## Zone events
 
@@ -612,6 +612,6 @@ of that zone it arrives at, and an NPC the direction it faces (`DIR_*`). An NPC'
 are written by name where the constant lists have one, and otherwise as their IDs in hex, as `"0x4176"`, as IDs are
 read; a file can write any ID that way. The init scripts are a map script table (see [Scripts](scripts.md)): a script by
 when it runs, or, for type 1, conditions on variables. A zone's header gives the number of its entities file (`entities`
-in `data/zones/`), and `tools/scripts/event_data.py pack` puts each zone's events at that number; the numbers in
+in `data/zones/`), and `tools/data/event_data.py pack` puts each zone's events at that number; the numbers in
 `data/events/placeholders.json`, which no zone uses, hold the game's 4-byte placeholder. Both versions have the same
 events.

@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A zone's events: data/events/<zone>.json",
-    "description": "The zone's entities file (archive a/1/2/6), which LoadZoneEntities reads: its background events, NPCs, warps, triggers and init scripts. tools/scripts/event_data.py packs each zone's at the number its header gives as entities (data/zones/). Names and layouts from swan (include/field/zone.h, include/field/field_actor.h). A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "The zone's entities file (archive a/1/2/6), which LoadZoneEntities reads: its background events, NPCs, warps, triggers and init scripts. tools/data/event_data.py packs each zone's at the number its header gives as entities (data/zones/). Names and layouts from swan (include/field/zone.h, include/field/field_actor.h). A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [ "bg_events", "npcs", "warps", "triggers", "init_scripts" ],

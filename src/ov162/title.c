@@ -166,7 +166,7 @@ static void TitleObj_Init(TitleObj *obj, HeapID heapId);
 static void TitleObj_Update(TitleObj *obj, HeapID heapId);
 static void TitleObj_Free(TitleObj *obj);
 
-// Declared in an order that gives the original layout of the data (tools/scripts/rodata_order.py)
+// Declared in an order that gives the original layout of the data (tools/decomp/rodata_order.py)
 
 #ifdef BLACK2
 #define CURVE_FILE 453

@@ -31,4 +31,4 @@ jobs:
           key: tools-${{ hashFiles('configure.py', 'lib/*/library.toml') }}
 
       - name: Compile
-        run: python tools/scripts/compile_all.py
+        run: python tools/decomp/compile_all.py

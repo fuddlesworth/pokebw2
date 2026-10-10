@@ -1,7 +1,7 @@
 # Nonmatching functions
 
 Every function that is in C but doesn't compile to the original. The addresses are Black 2's and White 2's.
-`tools/scripts/compiler_probe.py FILE --version b2_us` (and `w2_us`) shows the difference of each function in a file,
+`tools/decomp/compiler_probe.py FILE --version b2_us` (and `w2_us`) shows the difference of each function in a file,
 and `--show-diff 1.1p1` the instructions.
 
 ## In C, not matching

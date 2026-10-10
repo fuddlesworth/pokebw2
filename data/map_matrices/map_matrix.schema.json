@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A map matrix: data/map_matrices/<matrix>.json",
-    "description": "A map matrix (archive a/0/0/9), which a zone's header names: a grid of the maps of its cells and, for the overworld's, of their zones. tools/scripts/map_matrix_data.py packs them in the order of data/constants/map_matrices.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "A map matrix (archive a/0/0/9), which a zone's header names: a grid of the maps of its cells and, for the overworld's, of their zones. tools/data/map_matrix_data.py packs them in the order of data/constants/map_matrices.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [ "maps" ],

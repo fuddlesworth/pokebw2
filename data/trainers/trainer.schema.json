@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A trainer: data/trainers/<trainer>.json",
-    "description": "A trainer's record (archive a/0/9/1, 20 bytes) and its party (a/0/9/2). tools/scripts/trainer_data.py packs them in the order of data/constants/trainers.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "A trainer's record (archive a/0/9/1, 20 bytes) and its party (a/0/9/2). tools/data/trainer_data.py packs them in the order of data/constants/trainers.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [ "name", "class", "battle_style", "items", "ai_flags", "heals", "money", "reward", "party", "messages" ],

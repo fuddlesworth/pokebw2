@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "An item: data/items/<item>/data.json",
-    "description": "One item's file in ARCID_ITEMINFO (archive a/0/2/4, 36 bytes, ItemData in include/pml/item.h), with its name and description. tools/scripts/item_data.py packs them in the order of data/constants/items.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "One item's file in ARCID_ITEMINFO (archive a/0/2/4, 36 bytes, ItemData in include/pml/item.h), with its name and description. tools/data/item_data.py packs them in the order of data/constants/items.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [

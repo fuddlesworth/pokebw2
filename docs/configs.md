@@ -8,12 +8,12 @@ what they did so that it survives regenerating them.
 
 dsd sometimes cannot tell which overlay a relocation points to, because many overlays share addresses. It then lists
 every candidate, such as `module:overlays(36,214)`, and the build links to the first one, which gives the right bytes
-but the wrong symbol. `tools/scripts/config_fixes.py` fixes such relocations and other mistakes in both versions, and
+but the wrong symbol. `tools/decomp/config_fixes.py` fixes such relocations and other mistakes in both versions, and
 records them in `config/fixes.txt`:
 
 ```sh
-.venv/bin/python tools/scripts/config_fixes.py reloc-module overlays/ov004 'overlay(214)' 0x0214f6c0
-.venv/bin/python tools/scripts/config_fixes.py overlay-id overlays/ov004 214 0x0214f6bc
+.venv/bin/python tools/decomp/config_fixes.py reloc-module overlays/ov004 'overlay(214)' 0x0214f6c0
+.venv/bin/python tools/decomp/config_fixes.py overlay-id overlays/ov004 214 0x0214f6bc
 ```
 
 It also removes relocations and symbols that are not real (`remove-reloc`, `remove-symbol`), and gives a function a
@@ -26,7 +26,7 @@ so that the object before it does not seem to run on over it.
 that turns out to belong to the neighbouring file needs; `add_source_file.py` only adds files:
 
 ```sh
-.venv/bin/python tools/scripts/config_fixes.py section-end overlays/ov310 src/ov310/research_list.c .rodata 0x021a7028
+.venv/bin/python tools/decomp/config_fixes.py section-end overlays/ov310 src/ov310/research_list.c .rodata 0x021a7028
 ```
 
 A relocation that dsd could not pin to one overlay only links while its symbol is global. When a function becomes
@@ -40,7 +40,7 @@ pointers are fixed from it.
 After improving dsd's analysis, regenerate the configs of both versions and import the names again:
 
 ```sh
-.venv/bin/python tools/scripts/regenerate_configs.py path/to/swan
+.venv/bin/python tools/decomp/regenerate_configs.py path/to/swan
 ```
 
 This keeps the source files listed in each `delinks.txt`, but loses any other manual changes to the configs. It runs
@@ -75,12 +75,12 @@ A mod that changes code sizes moves everything after the change, so it only work
 that moves is a relocation; a pointer that dsd left as a plain number keeps the old address. The matching build can't
 show this, since nothing moves. Two tools check it:
 
-- `tools/scripts/unrelocated_pointers.py` lists the words in the main module and the overlays that point into code or
+- `tools/decomp/unrelocated_pointers.py` lists the words in the main module and the overlays that point into code or
   data that moves without a relocation. Those that point at a symbol are likely pointers; `--list MODULE` shows them
   and `--all` the rest, which are mostly byte tables that happen to look like addresses. A real one gets a relocation
   with `config_fixes.py add-reloc`, such as a pointer into an overlay that dsd couldn't attribute among the overlays
   at that address.
-- `python3 configure.py --shift 0x100` pads the code by that many bytes (`tools/scripts/shift_lcf.py`): in main
+- `python3 configure.py --shift 0x100` pads the code by that many bytes (`tools/build/shift_lcf.py`): in main
   before Game Freak's library, which moves the rest of main and every overlay, and at the start of each overlay's
   code. The ROMs then don't match, and are tested by playing them. Run `configure.py` without it to go back.
 

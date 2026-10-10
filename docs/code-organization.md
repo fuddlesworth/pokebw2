@@ -34,7 +34,7 @@ every section.
   one with the compiler it was built with. A library's public headers keep its name as their directory, as in
   `lib/nitro/include/nitro/os.h`, so code includes `"nitro/os.h"`. Every file is compiled with `include/` and every
   `lib/*/include/` on its search path.
-- `tools/scripts/source_files.py OVERLAY` finds the boundaries: it lists the embedded file names, the functions that
+- `tools/decomp/source_files.py OVERLAY` finds the boundaries: it lists the embedded file names, the functions that
   refer to them, and how well each boundary between two functions keeps every section's data references in file
   order and the calls inside one file.
   `docs/source-files.md` lists every overlay's files with the evidence for their names (`source_files.py --markdown`).
@@ -76,7 +76,7 @@ headers only exist after a build.
 ## Names
 
 Names come from the [swan](https://github.com/ds-pokemon-hacking/swan) symbol databases (GPL-3.0) by the
-ds-pokemon-hacking community, revision `4324f73` (2025-07-03). `tools/scripts/import_swan.py` applies them:
+ds-pokemon-hacking community, revision `4324f73` (2025-07-03). `tools/decomp/import_swan.py` applies them:
 
 - IDA-generated names are skipped.
 - A name is only applied if a symbol starts exactly at its address.
@@ -84,15 +84,15 @@ ds-pokemon-hacking community, revision `4324f73` (2025-07-03). `tools/scripts/im
 - Only default `func_`/`data_` names are replaced.
 
 ```sh
-.venv/bin/python tools/scripts/version_map.py b2_us w2_us -o build/map_b2_w2.tsv --symbols-output build/map_b2_w2_symbols.tsv
-.venv/bin/python tools/scripts/import_swan.py path/to/swan --map build/map_b2_w2.tsv --symbols-map build/map_b2_w2_symbols.tsv
+.venv/bin/python tools/decomp/version_map.py b2_us w2_us -o build/map_b2_w2.tsv --symbols-output build/map_b2_w2_symbols.tsv
+.venv/bin/python tools/decomp/import_swan.py path/to/swan --map build/map_b2_w2.tsv --symbols-map build/map_b2_w2_symbols.tsv
 ```
 
 Names that swan lacks are ours, and are recorded in `config/names.txt` by module and Black 2 address.
-`tools/scripts/rename_symbol.py` renames a symbol in both versions, updates the source files and records the name:
+`tools/decomp/rename_symbol.py` renames a symbol in both versions, updates the source files and records the name:
 
 ```sh
-.venv/bin/python tools/scripts/rename_symbol.py func_ov035_0217ed70 ElScoreboard_Create
+.venv/bin/python tools/decomp/rename_symbol.py func_ov035_0217ed70 ElScoreboard_Create
 ```
 
 ## Versions
@@ -102,6 +102,6 @@ Black 2's apart from relocations, and 112 differ. Every White 2 symbol with a Bl
 so source files are shared, and code that differs uses the `BLACK2` and `WHITE2` defines. Symbols only found in White 2
 get a `_w2_us` suffix.
 
-`tools/scripts/version_map.py` pairs the functions of two versions by their bytes, and pairs other symbols through
+`tools/decomp/version_map.py` pairs the functions of two versions by their bytes, and pairs other symbols through
 relocations and section offsets. Functions that differ are marked `different` in `build/version_map.tsv`. Check them
 with `compiler_probe.py --version w2_us`, which compiles with the `WHITE2` define, before marking a file complete.

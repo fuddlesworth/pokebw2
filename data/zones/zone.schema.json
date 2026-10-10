@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A zone's header: data/zones/<zone>.json",
-    "description": "One zone's header, 0x30 bytes, which ZoneData_GetHeader returns and the ZoneData_ and GetZone functions read. tools/scripts/zone_data.py packs them in the order of data/constants/zones.txt into the single entry of archive a/0/1/2. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "One zone's header, 0x30 bytes, which ZoneData_GetHeader returns and the ZoneData_ and GetZone functions read. tools/data/zone_data.py packs them in the order of data/constants/zones.txt into the single entry of archive a/0/1/2. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [

@@ -42,7 +42,7 @@ matches, and from grey to blue as it gets closer.
    `$(brew --prefix llvm)/bin` on the `PATH`.
 
 2. Place your own dumps at `orig/baserom_b2_us.nds` and/or `orig/baserom_w2_us.nds`. They must match the SHA1s above.
-   They are not included and will not be provided. `tools/scripts/verify_dsi_rom.py` checks a dump against the
+   They are not included and will not be provided. `tools/build/verify_dsi_rom.py` checks a dump against the
    digests in its own header.
 
 3. Configure and build. On first run, `configure.py` downloads [wibo](https://github.com/decompals/wibo), objdiff, the
@@ -82,7 +82,7 @@ matches, and from grey to blue as it gets closer.
 | `include/` | Headers shared by the C code, see [Code organization](docs/code-organization.md) |
 | `data/` | The game's data as JSON, one file per species, move, trainer, zone and encounter table, the constant lists, the text, and the scripts, all built into the ROM's files; see [Game data](docs/data.md) and [Scripts](docs/scripts.md) |
 | `include/asm/` | Macros for the scripts |
-| `tools/scripts/` | Helper scripts, such as `romdiff.py` to compare two ROMs region by region |
+| `tools/` | Our tools, by job: the build's steps, decompiling, the game data, the text and the scripts; see [tools/README.md](tools/README.md) |
 | `docs/` | The documentation listed below |
 | `CLAUDE.md`, `.claude/` | Rules, skills, agents and hooks for working on the decompilation with Claude Code |
 | `extract/`, `build/` | Generated, never committed |
@@ -91,7 +91,7 @@ matches, and from grey to blue as it gets closer.
 
 Each of the game's original source files becomes one C file, written from the assembly until every function compiles
 to the original bytes. Matching is checked per function with [objdiff](https://github.com/encounter/objdiff) and
-`tools/scripts/compiler_probe.py`, and the ROMs are rebuilt and checked against their SHA1s by every `ninja`.
+`tools/decomp/compiler_probe.py`, and the ROMs are rebuilt and checked against their SHA1s by every `ninja`.
 `ninja progress` prints how much of the game matches.
 
 ## Documentation

@@ -25,7 +25,7 @@ long `source_files.py` output stays out of this context.
 
 ```sh
 tools/dsd dis -c config/b2_us/arm9/config.yaml -a build/asm --overlay 33    # or --main; once per module
-.venv/bin/python tools/scripts/show_func.py FUNC_A FUNC_B                  # never cat the .s file
+.venv/bin/python tools/decomp/show_func.py FUNC_A FUNC_B                  # never cat the .s file
 ```
 
 The asm uses the current symbol names, so run `dsd dis` again after renaming. Read functions a few at a time, in the
@@ -74,7 +74,7 @@ perfect function.
 ## 5. Probe
 
 ```sh
-.venv/bin/python tools/scripts/compiler_probe.py src/ov033/x.c --compilers 1.1p1 --mismatches
+.venv/bin/python tools/decomp/compiler_probe.py src/ov033/x.c --compilers 1.1p1 --mismatches
 ```
 
 Library code built with another compiler, such as SPL with `1.2/base` (`lib/spl/library.toml`), gets its
@@ -88,7 +88,7 @@ file.
 ## 6. Register
 
 ```sh
-.venv/bin/python tools/scripts/add_source_file.py src/ov033/x.c overlays/ov033 .text:0x...-0x... .rodata:... .data:... --incomplete
+.venv/bin/python tools/decomp/add_source_file.py src/ov033/x.c overlays/ov033 .text:0x...-0x... .rodata:... .data:... --incomplete
 ```
 
 Leave out `--incomplete` only when everything matches; `mark_complete.py` is safer later (see finish-file). Run

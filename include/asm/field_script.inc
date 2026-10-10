@@ -1,4 +1,4 @@
-// Macros for the field scripts, written by tools/scripts/field_script.py inc
+// Macros for the field scripts, written by tools/script/field_script.py inc
 
 #include "constants/abilities.h"
 #include "constants/field_script.h"

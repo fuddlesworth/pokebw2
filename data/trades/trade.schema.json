@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "An in-game trade: data/trades/<trade>.json",
-    "description": "An in-game trade's offer (archive a/1/6/3, FieldTradeOfferData in include/field/fld_trade.h), which EventFieldTrade_CreatePkm makes the Pokémon from. tools/scripts/trade_data.py packs them in the order of data/constants/trades.txt, and the text takes the names with \\from{trades.names}. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "An in-game trade's offer (archive a/1/6/3, FieldTradeOfferData in include/field/fld_trade.h), which EventFieldTrade_CreatePkm makes the Pokémon from. tools/data/trade_data.py packs them in the order of data/constants/trades.txt, and the text takes the names with \\from{trades.names}. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [

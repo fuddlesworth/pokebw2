@@ -12,7 +12,7 @@ file, contiguous in every section and in the same order; names from embedded str
 order.
 
 Method:
-1. `.venv/bin/python tools/scripts/source_files.py MODULE` lists the embedded file names and the functions that use
+1. `.venv/bin/python tools/decomp/source_files.py MODULE` lists the embedded file names and the functions that use
    them. Then `--profile START END` for the range, and `--sections START END` for the data of a candidate file.
    Filter the output with `grep` and `head`; don't dump it whole.
 2. Where a string anchors a file, every function passing it belongs to it, and assert line numbers rise through it.

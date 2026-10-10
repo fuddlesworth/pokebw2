@@ -1,11 +1,11 @@
 # Source files
 
 Each source file is one of the game's original files, as [Code organization](code-organization.md) describes. This lists the
-files of every overlay that has some, with the evidence for their names. `tools/scripts/source_files.py --markdown`
+files of every overlay that has some, with the evidence for their names. `tools/decomp/source_files.py --markdown`
 prints the tables below from the configs and the ROM:
 
 - **Boundaries.** The linker placed one object per original file, so a file's `.text`, `.rodata`, `.data` and `.bss`
-  are each one range, in the same order in every section. `tools/scripts/source_files.py OVERLAY` lists the file names
+  are each one range, in the same order in every section. `tools/decomp/source_files.py OVERLAY` lists the file names
   embedded in the overlay and where they are used, and `--profile START END` scores each function boundary by whether
   the data references on both sides stay in file order and how many calls cross it. A boundary between two embedded
   names is where both scores are lowest; a boundary without a name nearby comes from the data order alone.

@@ -8,9 +8,9 @@ link the matching parts early, and never put two files in one entry.
 ## Finding them
 
 ```sh
-.venv/bin/python tools/scripts/source_files.py ov033                       # embedded file names and who uses them
-.venv/bin/python tools/scripts/source_files.py ov033 --profile START END   # boundary scores per function
-.venv/bin/python tools/scripts/source_files.py ov033 --sections START END  # data a .text range refers to, per section
+.venv/bin/python tools/decomp/source_files.py ov033                       # embedded file names and who uses them
+.venv/bin/python tools/decomp/source_files.py ov033 --profile START END   # boundary scores per function
+.venv/bin/python tools/decomp/source_files.py ov033 --sections START END  # data a .text range refers to, per section
 ```
 
 Pipe the output through `head` or `grep`; for a big overlay, use the `boundary-scout` agent.

@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A species or form: data/pokemon/<species>/data.json, form_<n>.json or extra/<record>.json",
-    "description": "One record of the species data (archive a/0/1/6, the 0x4c bytes that PML_PersonalGetParam reads), with the record's level-up moves (a/0/1/8), evolutions (a/0/1/9) and, for a species or an extra record, baby species (a/0/2/0). tools/scripts/species_data.py packs them. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "One record of the species data (archive a/0/1/6, the 0x4c bytes that PML_PersonalGetParam reads), with the record's level-up moves (a/0/1/8), evolutions (a/0/1/9) and, for a species or an extra record, baby species (a/0/2/0). tools/data/species_data.py packs them. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [

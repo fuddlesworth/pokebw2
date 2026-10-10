@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A wild encounter table: data/encounters/<table>.json",
-    "description": "One entry of the wild encounters (archive a/1/2/7), which zone headers name by its ENCOUNTERS_* constant: one table (EncData) for the whole year, or one for each season, which EncData_Load picks from. tools/scripts/encounter_data.py packs them in the order of data/constants/encounters.txt, for each version. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "One entry of the wild encounters (archive a/1/2/7), which zone headers name by its ENCOUNTERS_* constant: one table (EncData) for the whole year, or one for each season, which EncData_Load picks from. tools/data/encounter_data.py packs them in the order of data/constants/encounters.txt, for each version. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "properties": {

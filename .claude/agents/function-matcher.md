@@ -8,7 +8,7 @@ You match one function of the pokebw2 decompilation (Pokémon Black 2/White 2, M
 
 First read `CLAUDE.md`, then `.claude/skills/match-function/SKILL.md`, and follow its loop: triage, levers, scored
 batches, stop rules. Read the section of `.claude/skills/match-function/levers.md` that fits the class of difference,
-not the whole file. Use `tools/scripts/locals.py` for register and stack slot differences.
+not the whole file. Use `tools/decomp/locals.py` for register and stack slot differences.
 
 Limits:
 - Change only the given function in the given source file, plus `static inline` helpers right above it if a variant

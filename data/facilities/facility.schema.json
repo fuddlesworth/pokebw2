@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A battle facility's trainer: data/facilities/<facility>/trainers/<trainer>.json",
-    "description": "A trainer of a facility's trainers archive: its class and the sets it picks its Pokémon from, with its name and messages, which the text takes. tools/scripts/facility_data.py packs them in the order of the facility's order.json. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "A trainer of a facility's trainers archive: its class and the sets it picks its Pokémon from, with its name and messages, which the text takes. tools/data/facility_data.py packs them in the order of the facility's order.json. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [ "pokemon" ],

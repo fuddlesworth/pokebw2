@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A type: data/types/<type>.json",
-    "description": "A type's text, in the order of data/constants/types.txt; TYPE_NULL, the type of a typeless move, has none. The text files take it with \\from{types.name} (tools/scripts/text_sources.py).",
+    "description": "A type's text, in the order of data/constants/types.txt; TYPE_NULL, the type of a typeless move, has none. The text files take it with \\from{types.name} (tools/text/text_sources.py).",
     "type": "object",
     "additionalProperties": false,
     "required": [ "name" ],

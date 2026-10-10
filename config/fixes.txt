@@ -1,4 +1,4 @@
-# Fixes to dsd's analysis, applied by tools/scripts/config_fixes.py
+# Fixes to dsd's analysis, applied by tools/decomp/config_fixes.py
 # module address(b2_us) action [argument]
 . 0x02004fb0 reloc_addend 0x948
 . 0x02004fb4 reloc_addend 0x988

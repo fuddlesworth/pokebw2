@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A move: data/moves/<move>/data.json",
-    "description": "One record of the move data (archive a/0/2/1, the 0x24 bytes that PML_MoveGetParamCore reads). tools/scripts/move_data.py packs them in the order of data/constants/moves.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "description": "One record of the move data (archive a/0/2/1, the 0x24 bytes that PML_MoveGetParamCore reads). tools/data/move_data.py packs them in the order of data/constants/moves.txt. A string value is the name of a constant from data/constants/ or include/constants/.",
     "type": "object",
     "additionalProperties": false,
     "required": [
