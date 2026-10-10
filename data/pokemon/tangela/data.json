@@ -95,7 +95,18 @@
             "TM94",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000040", "0x00000000", "0x0000060f", "0x00002102" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SYNTHESIS",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

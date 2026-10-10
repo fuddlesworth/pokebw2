@@ -105,7 +105,21 @@
             "TM90",
             "TM92"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00001409", "0x00000224", "0x00006864" ]
+        "by_tutor": [
+            "MOVE_MAGIC_COAT",
+            "MOVE_FOUL_PLAY",
+            "MOVE_ICY_WIND",
+            "MOVE_DARK_PULSE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROLE_PLAY",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_SPITE",
+            "MOVE_TRICK",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 211,

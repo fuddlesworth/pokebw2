@@ -108,7 +108,22 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00005030", "0x00002472", "0x00000002", "0x00003020" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_IRON_HEAD",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_BLOCK",
+            "MOVE_GRAVITY",
+            "MOVE_MAGNET_RISE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ICY_WIND",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_TRICK",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 264,

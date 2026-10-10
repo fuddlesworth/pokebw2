@@ -53,7 +53,7 @@
             [ 15, "MOVE_BUG_BITE" ]
         ],
         "by_tm": [],
-        "tutors": [ "0x00000000", "0x00000001", "0x00000200", "0x00000002", "0x00000000" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_ELECTROWEB", "MOVE_SNORE" ]
     },
     "evolutions": [
         {

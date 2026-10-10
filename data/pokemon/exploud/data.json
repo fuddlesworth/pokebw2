@@ -113,7 +113,20 @@
             "HM03",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00007a00", "0x0000a400", "0x00000002", "0x00002300" ]
+        "by_tutor": [
+            "MOVE_LOW_KICK",
+            "MOVE_UPROAR",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_ICY_WIND",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_ENDEAVOR",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -98,7 +98,19 @@
             "HM01",
             "HM02"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x0000104a", "0x00001096", "0x00002800" ]
+        "by_tutor": [
+            "MOVE_BLOCK",
+            "MOVE_FOUL_PLAY",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_DARK_PULSE",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_ROOST",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

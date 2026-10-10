@@ -119,7 +119,30 @@
             "HM03",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00007a20", "0x00015d66", "0x00000002", "0x00003304" ]
+        "by_tutor": [
+            "MOVE_IRON_HEAD",
+            "MOVE_LOW_KICK",
+            "MOVE_UPROAR",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_BLOCK",
+            "MOVE_EARTH_POWER",
+            "MOVE_MAGNET_RISE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_SUPERPOWER",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DARK_PULSE",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_SPITE",
+            "MOVE_ENDEAVOR",
+            "MOVE_OUTRAGE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 168,

@@ -97,7 +97,16 @@
             "HM03",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000820", "0x00002100", "0x00000002", "0x00002300" ]
+        "by_tutor": [
+            "MOVE_IRON_HEAD",
+            "MOVE_UPROAR",
+            "MOVE_SUPERPOWER",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_ENDEAVOR",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 269,

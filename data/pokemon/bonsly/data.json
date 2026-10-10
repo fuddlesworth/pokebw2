@@ -88,7 +88,20 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000a02", "0x0000000e", "0x00000022", "0x00003018" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_LOW_KICK",
+            "MOVE_UPROAR",
+            "MOVE_BLOCK",
+            "MOVE_EARTH_POWER",
+            "MOVE_FOUL_PLAY",
+            "MOVE_SNORE",
+            "MOVE_ROLE_PLAY",
+            "MOVE_AFTER_YOU",
+            "MOVE_HELPING_HAND",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

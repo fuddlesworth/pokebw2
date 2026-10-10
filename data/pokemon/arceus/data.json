@@ -137,7 +137,32 @@
             "HM04",
             "HM05"
         ],
-        "tutors": [ "0x00000040", "0x00000030", "0x0001fcd5", "0x00000492", "0x00003620" ]
+        "by_tutor": [
+            "MOVE_DRACO_METEOR",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_IRON_HEAD",
+            "MOVE_MAGIC_COAT",
+            "MOVE_EARTH_POWER",
+            "MOVE_GRAVITY",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_LAST_RESORT",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DARK_PULSE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_TRICK",
+            "MOVE_OUTRAGE",
+            "MOVE_RECYCLE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

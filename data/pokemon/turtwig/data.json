@@ -87,7 +87,19 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000001", "0x00000040", "0x00010104", "0x0000040a", "0x00003002" ]
+        "by_tutor": [
+            "MOVE_GRASS_PLEDGE",
+            "MOVE_SEED_BOMB",
+            "MOVE_EARTH_POWER",
+            "MOVE_SUPERPOWER",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

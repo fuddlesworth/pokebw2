@@ -97,7 +97,20 @@
             "TM90",
             "HM02"
         ],
-        "tutors": [ "0x00000000", "0x00000804", "0x00003000", "0x00001592", "0x00002800" ]
+        "by_tutor": [
+            "MOVE_SUPER_FANG",
+            "MOVE_UPROAR",
+            "MOVE_DARK_PULSE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_SKY_ATTACK",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_ROOST",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 63,

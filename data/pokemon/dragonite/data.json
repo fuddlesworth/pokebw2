@@ -121,7 +121,25 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000040", "0x00007020", "0x00014d00", "0x00001093", "0x00002200" ]
+        "by_tutor": [
+            "MOVE_DRACO_METEOR",
+            "MOVE_IRON_HEAD",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_SUPERPOWER",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_ROOST",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -99,7 +99,24 @@
             "TM90",
             "TM92"
         ],
-        "tutors": [ "0x00000000", "0x00000800", "0x00009409", "0x00000242", "0x000068e4" ]
+        "by_tutor": [
+            "MOVE_UPROAR",
+            "MOVE_MAGIC_COAT",
+            "MOVE_FOUL_PLAY",
+            "MOVE_ICY_WIND",
+            "MOVE_DARK_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_HEAL_BELL",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_SPITE",
+            "MOVE_TRICK",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_WONDER_ROOM",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [
         {

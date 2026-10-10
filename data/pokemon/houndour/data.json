@@ -99,7 +99,20 @@
             "TM94",
             "TM95"
         ],
-        "tutors": [ "0x00000000", "0x00000804", "0x00019008", "0x00000032", "0x00002804" ]
+        "by_tutor": [
+            "MOVE_SUPER_FANG",
+            "MOVE_UPROAR",
+            "MOVE_FOUL_PLAY",
+            "MOVE_DARK_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_ROLE_PLAY",
+            "MOVE_SPITE",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

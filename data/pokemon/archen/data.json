@@ -102,7 +102,22 @@
             "TM94",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000900", "0x00014844", "0x00001092", "0x00003100" ]
+        "by_tutor": [
+            "MOVE_BOUNCE",
+            "MOVE_UPROAR",
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_ROOST",
+            "MOVE_ENDEAVOR",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

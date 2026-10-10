@@ -87,7 +87,17 @@
             "TM90",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000040", "0x00000000", "0x00000c0a", "0x0000200b" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_GASTRO_ACID",
+            "MOVE_WORRY_SEED",
+            "MOVE_AFTER_YOU",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

@@ -112,7 +112,31 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00007200", "0x00010c89", "0x00000827", "0x00007ca8" ]
+        "by_tutor": [
+            "MOVE_LOW_KICK",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_MAGIC_COAT",
+            "MOVE_FOUL_PLAY",
+            "MOVE_LAST_RESORT",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_IRON_TAIL",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROLE_PLAY",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_AFTER_YOU",
+            "MOVE_TRICK",
+            "MOVE_WONDER_ROOM",
+            "MOVE_RECYCLE",
+            "MOVE_SNATCH",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -80,7 +80,7 @@
             "HM03",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000404", "0x00000202", "0x00002000" ]
+        "by_tutor": [ "MOVE_EARTH_POWER", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_PAIN_SPLIT", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [
         {

@@ -106,7 +106,20 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000024", "0x00000002", "0x00010d02", "0x00000006", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_WATER_PLEDGE",
+            "MOVE_HYDRO_CANNON",
+            "MOVE_COVET",
+            "MOVE_BLOCK",
+            "MOVE_SUPERPOWER",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 9,

@@ -104,7 +104,19 @@
             "HM02",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00010116", "0x00000026", "0x00003200" ]
+        "by_tutor": [
+            "MOVE_BLOCK",
+            "MOVE_EARTH_POWER",
+            "MOVE_GRAVITY",
+            "MOVE_SUPERPOWER",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROLE_PLAY",
+            "MOVE_OUTRAGE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": []
 }

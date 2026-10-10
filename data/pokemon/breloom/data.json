@@ -104,7 +104,20 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00001040", "0x00010100", "0x00000c0a", "0x00002812" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_SUPERPOWER",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_WORRY_SEED",
+            "MOVE_HELPING_HAND",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

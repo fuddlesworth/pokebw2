@@ -52,7 +52,7 @@
             [ 7, "MOVE_HARDEN" ]
         ],
         "by_tm": [],
-        "tutors": [ "0x00000000", "0x00000001", "0x00000240", "0x00000000", "0x00000000" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_ELECTROWEB" ]
     },
     "evolutions": [
         {

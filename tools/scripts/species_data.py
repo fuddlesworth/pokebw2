@@ -21,10 +21,11 @@ The experience tables of the growth rates (a/0/1/7) are data/pokemon/growth_rate
 and a column per table, in archive order, each headed by its GROWTH_* constant. The two tables after the growth rates
 are copies of GROWTH_MEDIUM_FAST's that nothing names, headed EXTRA.
 """
+import argparse
 import csv
 import io
-import argparse
 import json
+import re
 import struct
 import sys
 from pathlib import Path
@@ -53,6 +54,24 @@ PARAM_PREFIXES = {
 }
 
 
+# The moves of the type move tutor, by their bit in the record's first tutor word: PokeParty_GetTutorMoveID tests bits 0
+# to 5 for the pledges and the starters' ultimate moves, and bit 6, Draco Meteor, is set for dragons only
+TYPE_TUTOR_MOVES = ["MOVE_GRASS_PLEDGE", "MOVE_FIRE_PLEDGE", "MOVE_WATER_PLEDGE", "MOVE_FRENZY_PLANT",
+                    "MOVE_BLAST_BURN", "MOVE_HYDRO_CANNON", "MOVE_DRACO_METEOR"]
+# The four move tutors' moves are their shop tables in this file, in the order of MOVE_TUTOR_SHOP_ITEMS: a move's bit
+# in its tutor's word is its place in the table (ShopUI_LoadMoveTutorItems, PML_UtilCheckMoveTutorPaid)
+TUTOR_SHOPS = Path(__file__).parents[2] / "src/ov036/scrcmd_shop.c"
+
+
+def tutor_moves() -> list[list[str]]:
+    """Returns the moves of each of the record's five tutor words, by bit: the type tutor's, then the four tutors'."""
+    source = TUTOR_SHOPS.read_text()
+    tables = {match[1]: re.findall(r"\{ \{ (MOVE_\w+), \d+ \}, \d+ \}", match[2]) for match in
+              re.finditer(r"static const MoveTutorShopItem (MOVE_TUTOR_ITEMS_\w+)\[\] = \{(.*?)\n\};", source, re.S)}
+    order = re.search(r"MOVE_TUTOR_SHOP_ITEMS\[\] = \{(.*?)\};", source, re.S)[1]
+    return [TYPE_TUTOR_MOVES] + [tables[name.strip()] for name in order.split(",") if name.strip()]
+
+
 def machine_bit(machine: str) -> int:
     return int(machine[2:]) - 1 if machine.startswith("TM") else int(machine[2:]) + 94
 
@@ -68,7 +87,7 @@ def directory(species: str) -> str:
 # Dumping
 
 
-def record_json(record: bytes, levelup: bytes, evolutions: bytes) -> dict:
+def record_json(record: bytes, levelup: bytes, evolutions: bytes, tutors_by_bit: list[list[str]]) -> dict:
     fields = RECORD.unpack(record)
     stats, (type1, type2, catch_rate, stage, evs) = fields[0:6], fields[6:11]
     items = fields[11:14]
@@ -122,7 +141,8 @@ def record_json(record: bytes, levelup: bytes, evolutions: bytes) -> dict:
         "learnset": {
             "by_level": by_level,
             "by_tm": [machine_name(bit) for bit in range(128) if machine_bits >> bit & 1],
-            "tutors": [f"{word:#010x}" for word in tutors],
+            "by_tutor": [moves[bit] for moves, word in zip(tutors_by_bit, tutors) for bit in range(32)
+                         if word >> bit & 1],
         },
         "evolutions": evolution_list,
     }
@@ -150,8 +170,10 @@ def dump(files: Path, output: Path):
     if [record for record, _, _ in forms] != list(range(form_start, len(records))):
         sys.exit("the form records are not the last records, one after the other")
 
+    tutors_by_bit = tutor_moves()
+
     def entry(index: int) -> dict:
-        data = record_json(records[index], levelup[index], evolutions[index])
+        data = record_json(records[index], levelup[index], evolutions[index], tutors_by_bit)
         if index < len(babies):
             data["regional_dex_number"] = None if dex[index] == NOT_IN_DEX else dex[index]
             data["baby_species"] = name("SPECIES_", struct.unpack("<H", babies[index])[0])
@@ -218,7 +240,18 @@ def record_files(root: Path) -> tuple[list[Path], int, dict[str, int]]:
     return files, with_babies, first_forms
 
 
-def record_bytes(data: dict, first_form: int, where: str) -> bytes:
+def tutor_words(moves: list[str], tutors_by_bit: list[list[str]], where: str) -> list[int]:
+    words = [0] * len(tutors_by_bit)
+    for move in moves:
+        place = next(((w, b) for w, word_moves in enumerate(tutors_by_bit) for b, m in enumerate(word_moves)
+                      if m == move), None)
+        if place is None:
+            raise DataError(f"{where}: learnset.by_tutor: {move} is not a tutor's move")
+        words[place[0]] |= 1 << place[1]
+    return words
+
+
+def record_bytes(data: dict, first_form: int, tutors_by_bit: list[list[str]], where: str) -> bytes:
     stats = [data["base_stats"][stat] for stat in STATS]
     evs = sum(data["ev_yields"][stat] << (2 * i) for i, stat in enumerate(STATS)) | data["underground"] << 12
     items = [value(data["held_items"][key], where) for key in ("common", "rare", "very_rare")]
@@ -233,7 +266,7 @@ def record_bytes(data: dict, first_form: int, where: str) -> bytes:
         *(value(a, where) for a in data["abilities"]), value(data["hidden_ability"], where), data["flee_rate"],
         first_form, data["forms"]["sprite_offset"], data["forms"]["count"], color, data["base_exp"], data["height"],
         data["weight"], *(machine_bits >> (32 * i) & 0xFFFFFFFF for i in range(4)),
-        *(int(word, 16) for word in data["learnset"]["tutors"]),
+        *tutor_words(data["learnset"]["by_tutor"], tutors_by_bit, where),
     )
 
 
@@ -241,6 +274,7 @@ def pack(root: Path, outputs: list[Path]):
     schema = load_schema(root / "species.schema.json")
     files, with_babies, first_forms = record_files(root)
     personal, levelup, evolutions, babies, dex = [], [], [], [], []
+    tutors_by_bit = tutor_moves()
     for index, path in enumerate(files):
         where = label(path)
         data = load(path, schema)
@@ -249,7 +283,7 @@ def pack(root: Path, outputs: list[Path]):
                             "has neither")
         species_name = f"SPECIES_{path.parent.name.upper()}"
         first_form = first_forms.get(species_name, 0) if path.name == "data.json" else 0
-        personal.append(record_bytes(data, first_form, where))
+        personal.append(record_bytes(data, first_form, tutors_by_bit, where))
         levelup.append(b"".join(struct.pack("<HH", value(move, where), level)
                                 for level, move in data["learnset"]["by_level"]) + b"\xff\xff\xff\xff")
         entries = [(value(e["method"], where), value(e["param"], where), value(e["species"], where))

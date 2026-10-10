@@ -83,7 +83,7 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000011", "0x00000000", "0x00000402", "0x00002001" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_SIGNAL_BEAM", "MOVE_SNORE", "MOVE_GIGA_DRAIN", "MOVE_GASTRO_ACID", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [
         {

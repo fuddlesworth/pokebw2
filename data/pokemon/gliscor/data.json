@@ -116,7 +116,20 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000001", "0x00011804", "0x00001186", "0x00003000" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_EARTH_POWER",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DARK_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_TAILWIND",
+            "MOVE_SKY_ATTACK",
+            "MOVE_ROOST",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 222,

@@ -91,7 +91,15 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000040", "0x00000000", "0x0000e000", "0x00000002", "0x00002200" ]
+        "by_tutor": [
+            "MOVE_DRACO_METEOR",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

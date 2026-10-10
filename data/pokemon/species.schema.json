@@ -94,7 +94,7 @@
         "height": { "$ref": "#/$defs/u16", "description": "In tenths of a meter" },
         "weight": { "$ref": "#/$defs/u16", "description": "In tenths of a kilogram" },
         "learnset": {
-            "type": "object", "additionalProperties": false, "required": [ "by_level", "by_tm", "tutors" ],
+            "type": "object", "additionalProperties": false, "required": [ "by_level", "by_tm", "by_tutor" ],
             "properties": {
                 "by_level": {
                     "type": "array",
@@ -109,10 +109,9 @@
                     "items": { "type": "string", "pattern": "^(TM(0[1-9]|[1-8][0-9]|9[0-5])|HM0[1-6])$" },
                     "description": "The TMs (TM01 to TM95) and HMs (HM01 to HM06) the species can learn"
                 },
-                "tutors": {
-                    "type": "array", "minItems": 5, "maxItems": 5,
-                    "items": { "type": "string", "pattern": "^0x[0-9a-f]{8}$" },
-                    "description": "The bits of the moves the species learns from the type move tutor, then from the four move tutors; which bit is which move isn't named yet"
+                "by_tutor": {
+                    "type": "array", "items": { "type": "string", "x-constant": "MOVE_" },
+                    "description": "The moves the species learns from the type move tutor (the pledges, the starters' ultimate moves and Draco Meteor) and the move tutors of Driftveil City, Lentimas Town, Humilau City and Nacrene City, whose lists are their shop tables in src/ov036/scrcmd_shop.c"
                 }
             }
         },

@@ -96,7 +96,15 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000401", "0x00000407", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_MAGIC_COAT",
+            "MOVE_ICY_WIND",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

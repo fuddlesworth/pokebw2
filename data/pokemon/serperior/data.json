@@ -100,7 +100,24 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000009", "0x00000040", "0x00014800", "0x0000040f", "0x00002a03" ]
+        "by_tutor": [
+            "MOVE_GRASS_PLEDGE",
+            "MOVE_FRENZY_PLANT",
+            "MOVE_SEED_BOMB",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_GASTRO_ACID",
+            "MOVE_WORRY_SEED",
+            "MOVE_OUTRAGE",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 3,

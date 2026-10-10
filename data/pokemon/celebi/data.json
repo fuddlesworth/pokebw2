@@ -102,7 +102,27 @@
             "TM92",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000850", "0x00002085", "0x0000044a", "0x000070f2" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_SEED_BOMB",
+            "MOVE_UPROAR",
+            "MOVE_MAGIC_COAT",
+            "MOVE_EARTH_POWER",
+            "MOVE_LAST_RESORT",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_HEAL_BELL",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_HELPING_HAND",
+            "MOVE_TRICK",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_WONDER_ROOM",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -85,7 +85,17 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000040", "0x00000000", "0x00000c0a", "0x00002812" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_WORRY_SEED",
+            "MOVE_HELPING_HAND",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

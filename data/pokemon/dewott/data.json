@@ -100,7 +100,16 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000004", "0x00000002", "0x00010c00", "0x00000002", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_WATER_PLEDGE",
+            "MOVE_COVET",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

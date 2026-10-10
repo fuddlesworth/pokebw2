@@ -149,8 +149,11 @@ DATA_PACKS = [
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
     ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False),  # Zone headers
 ]
+# What every packer reads besides its data: the scripts, and the move tutors' tables, which name the species data's
+# tutor bits (tools/scripts/species_data.py)
 DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py",
-                   "tools/scripts/text_sources.py", "tools/scripts/text_data.py", "tools/scripts/msgdata.py"]
+                   "tools/scripts/text_sources.py", "tools/scripts/text_data.py", "tools/scripts/msgdata.py",
+                   "src/ov036/scrcmd_shop.c"]
 
 # Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order

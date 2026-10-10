@@ -104,7 +104,16 @@
             "HM03",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000445", "0x00000002", "0x00003100" ]
+        "by_tutor": [
+            "MOVE_MAGIC_COAT",
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ICY_WIND",
+            "MOVE_SNORE",
+            "MOVE_ENDEAVOR",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 237,

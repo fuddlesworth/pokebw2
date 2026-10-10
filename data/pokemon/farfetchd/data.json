@@ -95,7 +95,20 @@
             "HM01",
             "HM02"
         ],
-        "tutors": [ "0x00000000", "0x00000802", "0x00010080", "0x00001196", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_UPROAR",
+            "MOVE_LAST_RESORT",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_SKY_ATTACK",
+            "MOVE_ROOST",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

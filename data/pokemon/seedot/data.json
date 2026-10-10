@@ -82,7 +82,16 @@
             "TM90",
             "TM94"
         ],
-        "tutors": [ "0x00000000", "0x00000040", "0x00000008", "0x0000040a", "0x00002006" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_FOUL_PLAY",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_SPITE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

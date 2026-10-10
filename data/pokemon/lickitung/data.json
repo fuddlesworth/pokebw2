@@ -110,7 +110,19 @@
             "HM03",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00007000", "0x00012c00", "0x00000007", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_IRON_TAIL",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

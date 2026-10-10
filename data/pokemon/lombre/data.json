@@ -95,7 +95,21 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00007840", "0x0000a400", "0x00000c0a", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_UPROAR",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_ICY_WIND",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

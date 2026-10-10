@@ -92,7 +92,15 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000011", "0x00000104", "0x00000402", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_EARTH_POWER",
+            "MOVE_SUPERPOWER",
+            "MOVE_SNORE",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

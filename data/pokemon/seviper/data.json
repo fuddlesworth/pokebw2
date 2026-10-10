@@ -97,7 +97,18 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00011800", "0x00000407", "0x00002801" ]
+        "by_tutor": [
+            "MOVE_AQUA_TAIL",
+            "MOVE_DARK_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_GASTRO_ACID",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 187,

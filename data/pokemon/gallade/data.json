@@ -129,7 +129,29 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00007218", "0x0000a001", "0x00000a06", "0x00006cf0" ]
+        "by_tutor": [
+            "MOVE_DUAL_CHOP",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_LOW_KICK",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_MAGIC_COAT",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_HELPING_HAND",
+            "MOVE_TRICK",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_WONDER_ROOM",
+            "MOVE_RECYCLE",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

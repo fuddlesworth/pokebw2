@@ -102,7 +102,19 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00004010", "0x00012c00", "0x00000022", "0x00002082" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_ICE_PUNCH",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_ROLE_PLAY",
+            "MOVE_WORRY_SEED",
+            "MOVE_WONDER_ROOM",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

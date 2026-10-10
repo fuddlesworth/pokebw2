@@ -96,7 +96,18 @@
             "HM02",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000040", "0x00004000", "0x0000148a", "0x00002202" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_TAILWIND",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_ROOST",
+            "MOVE_WORRY_SEED",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 288,

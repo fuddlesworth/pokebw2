@@ -102,7 +102,24 @@
             "TM90",
             "TM92"
         ],
-        "tutors": [ "0x00000000", "0x00007210", "0x00002009", "0x00000820", "0x00006c60" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_LOW_KICK",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_MAGIC_COAT",
+            "MOVE_FOUL_PLAY",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_ROLE_PLAY",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_TRICK",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_RECYCLE",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [
         {

@@ -83,7 +83,15 @@
             "TM90",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000042", "0x00000000", "0x0000040a", "0x00002002" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_SEED_BOMB",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 135,

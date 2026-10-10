@@ -94,7 +94,16 @@
             "TM90",
             "TM91"
         ],
-        "tutors": [ "0x00000000", "0x00000010", "0x00000441", "0x00000007", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_MAGIC_COAT",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ICY_WIND",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 197,

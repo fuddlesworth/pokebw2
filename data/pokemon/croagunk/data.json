@@ -105,7 +105,26 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x0000570c", "0x00001408", "0x00000826", "0x00002814" ]
+        "by_tutor": [
+            "MOVE_SUPER_FANG",
+            "MOVE_DUAL_CHOP",
+            "MOVE_BOUNCE",
+            "MOVE_LOW_KICK",
+            "MOVE_GUNK_SHOT",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_FOUL_PLAY",
+            "MOVE_ICY_WIND",
+            "MOVE_DARK_PULSE",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROLE_PLAY",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_SPITE",
+            "MOVE_HELPING_HAND",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

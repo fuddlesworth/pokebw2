@@ -91,7 +91,16 @@
             "HM03",
             "HM05"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000444", "0x00000406", "0x00003000" ]
+        "by_tutor": [
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ICY_WIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

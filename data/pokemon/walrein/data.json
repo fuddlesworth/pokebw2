@@ -97,7 +97,17 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000034", "0x00010c02", "0x00000002", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_SUPER_FANG",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_IRON_HEAD",
+            "MOVE_BLOCK",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 245,

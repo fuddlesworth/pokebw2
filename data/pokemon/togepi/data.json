@@ -100,7 +100,21 @@
             "TM90",
             "TM94"
         ],
-        "tutors": [ "0x00000000", "0x00000812", "0x0000a081", "0x00000042", "0x00002128" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_UPROAR",
+            "MOVE_MAGIC_COAT",
+            "MOVE_LAST_RESORT",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_HEAL_BELL",
+            "MOVE_AFTER_YOU",
+            "MOVE_TRICK",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

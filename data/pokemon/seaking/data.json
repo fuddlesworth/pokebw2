@@ -90,7 +90,16 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000190", "0x00000c00", "0x00000006", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_DRILL_RUN",
+            "MOVE_BOUNCE",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

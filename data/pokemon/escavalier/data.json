@@ -94,7 +94,15 @@
             "TM94",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000021", "0x00000040", "0x00000406", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_IRON_HEAD",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 156,

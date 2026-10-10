@@ -101,7 +101,23 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00001240", "0x0000110a", "0x00000c2a", "0x00002006" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_LOW_KICK",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_BLOCK",
+            "MOVE_FOUL_PLAY",
+            "MOVE_SUPERPOWER",
+            "MOVE_DARK_PULSE",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_ROLE_PLAY",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_WORRY_SEED",
+            "MOVE_SPITE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

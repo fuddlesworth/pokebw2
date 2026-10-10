@@ -94,7 +94,26 @@
             "TM94",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00007b02", "0x00018081", "0x00000842", "0x00002118" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_BOUNCE",
+            "MOVE_LOW_KICK",
+            "MOVE_UPROAR",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_MAGIC_COAT",
+            "MOVE_LAST_RESORT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAL_BELL",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_AFTER_YOU",
+            "MOVE_HELPING_HAND",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

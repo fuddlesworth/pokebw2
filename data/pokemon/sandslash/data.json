@@ -108,7 +108,16 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000006", "0x00010004", "0x00000006", "0x00003000" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_SUPER_FANG",
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 114,

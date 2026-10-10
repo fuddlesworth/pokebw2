@@ -87,7 +87,15 @@
             "TM90",
             "HM02"
         ],
-        "tutors": [ "0x00000000", "0x00000800", "0x00000000", "0x00001192", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_UPROAR",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_SKY_ATTACK",
+            "MOVE_ROOST",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

@@ -105,7 +105,19 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000200", "0x00000d44", "0x00000406", "0x00003000" ]
+        "by_tutor": [
+            "MOVE_LOW_KICK",
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_SUPERPOWER",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -100,7 +100,31 @@
             "TM93",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00007102", "0x00008491", "0x00000a66", "0x00003d50" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_BOUNCE",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_MAGIC_COAT",
+            "MOVE_GRAVITY",
+            "MOVE_LAST_RESORT",
+            "MOVE_ICY_WIND",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROLE_PLAY",
+            "MOVE_HEAL_BELL",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_HELPING_HAND",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_ENDEAVOR",
+            "MOVE_RECYCLE",
+            "MOVE_SNATCH",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 283,

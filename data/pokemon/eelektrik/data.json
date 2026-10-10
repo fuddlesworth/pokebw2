@@ -90,7 +90,20 @@
             "TM91",
             "TM93"
         ],
-        "tutors": [ "0x00000000", "0x00000114", "0x00010820", "0x00000407", "0x00002001" ]
+        "by_tutor": [
+            "MOVE_SUPER_FANG",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_BOUNCE",
+            "MOVE_MAGNET_RISE",
+            "MOVE_AQUA_TAIL",
+            "MOVE_IRON_TAIL",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_GASTRO_ACID",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

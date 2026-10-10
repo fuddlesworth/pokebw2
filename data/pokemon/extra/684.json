@@ -57,7 +57,7 @@
             [ 91, "MOVE_SKETCH" ]
         ],
         "by_tm": [],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x00000000" ]
+        "by_tutor": []
     },
     "evolutions": [],
     "regional_dex_number": null,

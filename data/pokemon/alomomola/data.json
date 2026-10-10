@@ -94,7 +94,16 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000100", "0x00000401", "0x00000206", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_BOUNCE",
+            "MOVE_MAGIC_COAT",
+            "MOVE_ICY_WIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 182,

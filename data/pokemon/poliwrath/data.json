@@ -97,7 +97,7 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00004000", "0x00000400", "0x00000002", "0x00002110" ]
+        "by_tutor": [ "MOVE_ICE_PUNCH", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_ENDEAVOR", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [],
     "regional_dex_number": null,

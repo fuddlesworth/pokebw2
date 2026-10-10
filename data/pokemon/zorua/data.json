@@ -101,7 +101,20 @@
             "TM95",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000902", "0x00009008", "0x00000006", "0x00002824" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_BOUNCE",
+            "MOVE_UPROAR",
+            "MOVE_FOUL_PLAY",
+            "MOVE_DARK_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SPITE",
+            "MOVE_TRICK",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

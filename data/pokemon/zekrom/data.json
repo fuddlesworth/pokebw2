@@ -109,7 +109,21 @@
             "HM02",
             "HM04"
         ],
-        "tutors": [ "0x00000040", "0x00001010", "0x0000e024", "0x00001082", "0x00002200" ]
+        "by_tutor": [
+            "MOVE_DRACO_METEOR",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_EARTH_POWER",
+            "MOVE_MAGNET_RISE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_TAILWIND",
+            "MOVE_ROOST",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 296,

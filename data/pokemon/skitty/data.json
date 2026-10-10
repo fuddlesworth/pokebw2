@@ -102,7 +102,19 @@
             "TM90",
             "TM93"
         ],
-        "tutors": [ "0x00000000", "0x00000802", "0x0001a480", "0x00000042", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_UPROAR",
+            "MOVE_LAST_RESORT",
+            "MOVE_ICY_WIND",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAL_BELL",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

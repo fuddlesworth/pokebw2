@@ -90,7 +90,16 @@
             "TM90",
             "TM91"
         ],
-        "tutors": [ "0x00000000", "0x00000810", "0x00000461", "0x00000002", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_UPROAR",
+            "MOVE_MAGIC_COAT",
+            "MOVE_MAGNET_RISE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ICY_WIND",
+            "MOVE_SNORE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

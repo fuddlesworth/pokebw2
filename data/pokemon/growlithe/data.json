@@ -98,7 +98,15 @@
             "TM95",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000002", "0x00010000", "0x00000012", "0x00002210" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_HELPING_HAND",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

@@ -100,7 +100,16 @@
             "TM90",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00007400", "0x00000000", "0x00000602", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_GUNK_SHOT",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_SNORE",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

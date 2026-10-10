@@ -108,7 +108,21 @@
             "TM90",
             "TM92"
         ],
-        "tutors": [ "0x00000000", "0x00000090", "0x00002015", "0x00000002", "0x000074a0" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_DRILL_RUN",
+            "MOVE_MAGIC_COAT",
+            "MOVE_EARTH_POWER",
+            "MOVE_GRAVITY",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_TRICK",
+            "MOVE_WONDER_ROOM",
+            "MOVE_RECYCLE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [
         {

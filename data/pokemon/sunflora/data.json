@@ -92,7 +92,19 @@
             "TM90",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000840", "0x00000004", "0x0000040a", "0x0000211a" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_UPROAR",
+            "MOVE_EARTH_POWER",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_AFTER_YOU",
+            "MOVE_HELPING_HAND",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 21,

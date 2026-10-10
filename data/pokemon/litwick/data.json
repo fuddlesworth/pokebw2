@@ -102,7 +102,15 @@
             "TM90",
             "TM92"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00001000", "0x00000212", "0x00002024" ]
+        "by_tutor": [
+            "MOVE_DARK_PULSE",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_SPITE",
+            "MOVE_TRICK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

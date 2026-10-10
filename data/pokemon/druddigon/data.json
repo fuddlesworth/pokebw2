@@ -111,7 +111,24 @@
             "HM03",
             "HM04"
         ],
-        "tutors": [ "0x00000040", "0x00003420", "0x00015900", "0x00000012", "0x00003a00" ]
+        "by_tutor": [
+            "MOVE_DRACO_METEOR",
+            "MOVE_IRON_HEAD",
+            "MOVE_GUNK_SHOT",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_SUPERPOWER",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DARK_PULSE",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_OUTRAGE",
+            "MOVE_SNATCH",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 270,

@@ -118,7 +118,24 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000040", "0x00000002", "0x00006481", "0x000010a2", "0x00002270" ]
+        "by_tutor": [
+            "MOVE_DRACO_METEOR",
+            "MOVE_COVET",
+            "MOVE_MAGIC_COAT",
+            "MOVE_LAST_RESORT",
+            "MOVE_ICY_WIND",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_SNORE",
+            "MOVE_ROLE_PLAY",
+            "MOVE_TAILWIND",
+            "MOVE_ROOST",
+            "MOVE_HELPING_HAND",
+            "MOVE_TRICK",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

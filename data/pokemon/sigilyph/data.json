@@ -105,7 +105,23 @@
             "TM92",
             "HM02"
         ],
-        "tutors": [ "0x00000000", "0x00000010", "0x00003411", "0x00001192", "0x00006060" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_MAGIC_COAT",
+            "MOVE_GRAVITY",
+            "MOVE_ICY_WIND",
+            "MOVE_DARK_PULSE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_TAILWIND",
+            "MOVE_SKY_ATTACK",
+            "MOVE_ROOST",
+            "MOVE_TRICK",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 120,

@@ -80,7 +80,15 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000a02", "0x00000000", "0x00000022", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_LOW_KICK",
+            "MOVE_UPROAR",
+            "MOVE_SNORE",
+            "MOVE_ROLE_PLAY",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

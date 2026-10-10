@@ -97,7 +97,16 @@
             "TM89",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000140", "0x00000000", "0x0000040a", "0x00002012" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_BOUNCE",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -98,7 +98,20 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000040", "0x00000006", "0x0000060b", "0x00003003" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_BLOCK",
+            "MOVE_EARTH_POWER",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_GASTRO_ACID",
+            "MOVE_WORRY_SEED",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

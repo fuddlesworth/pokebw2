@@ -84,7 +84,14 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00010104", "0x00000002", "0x00003000" ]
+        "by_tutor": [
+            "MOVE_EARTH_POWER",
+            "MOVE_SUPERPOWER",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

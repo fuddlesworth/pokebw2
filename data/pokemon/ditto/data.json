@@ -51,7 +51,7 @@
             [ 1, "MOVE_TRANSFORM" ]
         ],
         "by_tm": [],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x00000000" ]
+        "by_tutor": []
     },
     "evolutions": [],
     "regional_dex_number": 261,

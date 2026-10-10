@@ -88,7 +88,17 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000900", "0x00002d00", "0x00000002", "0x00002100" ]
+        "by_tutor": [
+            "MOVE_BOUNCE",
+            "MOVE_UPROAR",
+            "MOVE_SUPERPOWER",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 104,

@@ -95,7 +95,18 @@
             "TM94",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000081", "0x00000200", "0x00001486", "0x00002100" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_DRILL_RUN",
+            "MOVE_ELECTROWEB",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_TAILWIND",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_ROOST",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

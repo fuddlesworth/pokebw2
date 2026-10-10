@@ -95,7 +95,17 @@
             "TM89",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000011", "0x00000200", "0x00001482", "0x00006000" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_ELECTROWEB",
+            "MOVE_SNORE",
+            "MOVE_TAILWIND",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_ROOST",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

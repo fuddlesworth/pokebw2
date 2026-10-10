@@ -95,7 +95,23 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000540", "0x000181c6", "0x00000006", "0x00003100" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_BOUNCE",
+            "MOVE_GUNK_SHOT",
+            "MOVE_BLOCK",
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_LAST_RESORT",
+            "MOVE_SUPERPOWER",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ENDEAVOR",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

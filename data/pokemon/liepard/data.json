@@ -104,7 +104,22 @@
             "TM95",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000442", "0x00019008", "0x00000026", "0x00002824" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_SEED_BOMB",
+            "MOVE_GUNK_SHOT",
+            "MOVE_FOUL_PLAY",
+            "MOVE_DARK_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROLE_PLAY",
+            "MOVE_SPITE",
+            "MOVE_TRICK",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 13,

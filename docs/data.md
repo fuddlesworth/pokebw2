@@ -158,7 +158,7 @@ evolutions (`a/0/1/9`) and its baby species (`a/0/2/0`). `data/pokemon/species.s
             ...
         ],
         "by_tm": [ "TM06", "TM09", ... ],
-        "tutors": [ "0x00000001", "0x00000040", "0x00000000", "0x0000040f", "0x00002002" ]
+        "by_tutor": [ "MOVE_GRASS_PLEDGE", "MOVE_SEED_BOMB", "MOVE_BIND", ... ]
     },
     "evolutions": [
         {
@@ -184,10 +184,14 @@ evolutions (`a/0/1/9`) and its baby species (`a/0/2/0`). `data/pokemon/species.s
 
 The baby species archive stops before the forms, which have no `baby_species`. The species data archive ends with a
 table of the species' and extra records' Unova Pokédex numbers, which their files hold as `regional_dex_number`: its 301
-numbers match the game's Unova Pokédex, from #000 for Victini to #300. The TMs and HMs a species learns are named; the
-tutor moves are still bit masks. Three flags are named after the species that have them: `underground` (Diglett and
-Dugtrio, tested by the battle animations), `asymmetric` (species that don't look the same mirrored, such as Kingler
-and Absol) and `palette_forms` (Arceus, whose forms only change its palette).
+numbers match the game's Unova Pokédex, from #000 for Victini to #300. The TMs and HMs a species learns are named, and
+so are its tutor moves: the record keeps them as a bit per move of each tutor, and the packer finds each move's bit, the
+type tutor's (the pledges, the starters' ultimate moves and Draco Meteor, in the order `PokeParty_GetTutorMoveID` tests
+them) or its place in the shop table of the tutor of Driftveil City, Lentimas Town, Humilau City or Nacrene City in
+`src/ov036/scrcmd_shop.c`. A mod that changes a tutor's table keeps every species' tutor moves. Three flags are named
+after the species that have them: `underground` (Diglett and Dugtrio, tested by the battle animations), `asymmetric`
+(species that don't look the same mirrored, such as Kingler and Absol) and `palette_forms` (Arceus, whose forms only
+change its palette).
 
 Evolutions are a method (`EVO_METHOD_*`), its parameter, and the species evolved into, at most seven. The parameter
 depends on the method: a level, an item, a move, a species, or another value such as the beauty needed. The level-up

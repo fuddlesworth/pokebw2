@@ -97,7 +97,15 @@
             "TM90",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000801", "0x00000000", "0x00001402", "0x00002004" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_UPROAR",
+            "MOVE_SNORE",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_ROOST",
+            "MOVE_SPITE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -54,7 +54,7 @@
             [ 16, "MOVE_BUG_BITE" ]
         ],
         "by_tm": [],
-        "tutors": [ "0x00000000", "0x00000801", "0x00000000", "0x00000002", "0x00000100" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_UPROAR", "MOVE_SNORE", "MOVE_ENDEAVOR" ]
     },
     "evolutions": [
         {

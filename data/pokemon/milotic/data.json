@@ -92,7 +92,17 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000020", "0x00014c01", "0x00000003", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_IRON_HEAD",
+            "MOVE_MAGIC_COAT",
+            "MOVE_ICY_WIND",
+            "MOVE_AQUA_TAIL",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

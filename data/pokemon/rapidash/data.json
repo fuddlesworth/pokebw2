@@ -96,7 +96,15 @@
             "TM93",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000380", "0x00010000", "0x00000012", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_DRILL_RUN",
+            "MOVE_BOUNCE",
+            "MOVE_LOW_KICK",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

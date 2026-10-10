@@ -111,7 +111,21 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000040", "0x00000020", "0x0001c074", "0x00000002", "0x00003200" ]
+        "by_tutor": [
+            "MOVE_DRACO_METEOR",
+            "MOVE_IRON_HEAD",
+            "MOVE_EARTH_POWER",
+            "MOVE_GRAVITY",
+            "MOVE_MAGNET_RISE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_OUTRAGE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

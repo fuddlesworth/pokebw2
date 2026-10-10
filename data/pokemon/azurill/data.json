@@ -82,7 +82,18 @@
             "HM03",
             "HM05"
         ],
-        "tutors": [ "0x00000000", "0x00000902", "0x00018400", "0x00000006", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_BOUNCE",
+            "MOVE_UPROAR",
+            "MOVE_ICY_WIND",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

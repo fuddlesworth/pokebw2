@@ -96,7 +96,14 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000080", "0x00000044", "0x00000002", "0x00003000" ]
+        "by_tutor": [
+            "MOVE_DRILL_RUN",
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_SNORE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

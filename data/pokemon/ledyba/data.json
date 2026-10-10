@@ -91,7 +91,19 @@
             "TM89",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00005801", "0x00000000", "0x00001c86", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_UPROAR",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_TAILWIND",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_ROOST",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

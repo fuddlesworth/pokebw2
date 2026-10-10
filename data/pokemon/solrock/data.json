@@ -113,7 +113,24 @@
             "TM90",
             "TM92"
         ],
-        "tutors": [ "0x00000000", "0x00000030", "0x00002055", "0x00000212", "0x00007490" ]
+        "by_tutor": [
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_IRON_HEAD",
+            "MOVE_MAGIC_COAT",
+            "MOVE_EARTH_POWER",
+            "MOVE_GRAVITY",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_HELPING_HAND",
+            "MOVE_WONDER_ROOM",
+            "MOVE_RECYCLE",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 215,

@@ -86,7 +86,7 @@
             "TM90",
             "TM94"
         ],
-        "tutors": [ "0x00000000", "0x00000001", "0x00000040", "0x00000002", "0x00002100" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_SNORE", "MOVE_ENDEAVOR", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [
         {

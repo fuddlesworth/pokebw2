@@ -96,7 +96,7 @@
             "TM90",
             "TM93"
         ],
-        "tutors": [ "0x00000000", "0x00000010", "0x00000029", "0x00000002", "0x00002000" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_MAGIC_COAT", "MOVE_FOUL_PLAY", "MOVE_MAGNET_RISE", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [],
     "regional_dex_number": null,

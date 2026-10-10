@@ -101,7 +101,22 @@
             "TM90",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000051", "0x00000241", "0x0000044e", "0x00002012" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_SEED_BOMB",
+            "MOVE_MAGIC_COAT",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ELECTROWEB",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SYNTHESIS",
+            "MOVE_HEAL_BELL",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 19,

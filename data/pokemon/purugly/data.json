@@ -104,7 +104,18 @@
             "TM90",
             "HM01"
         ],
-        "tutors": [ "0x00000000", "0x00000006", "0x00018088", "0x00000006", "0x00002800" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_SUPER_FANG",
+            "MOVE_FOUL_PLAY",
+            "MOVE_LAST_RESORT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

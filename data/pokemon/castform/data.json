@@ -96,7 +96,7 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000480", "0x00000082", "0x00002000" ]
+        "by_tutor": [ "MOVE_LAST_RESORT", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_TAILWIND", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [],
     "regional_dex_number": 163,

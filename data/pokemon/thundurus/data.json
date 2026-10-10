@@ -110,7 +110,18 @@
             "HM02",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00001800", "0x00011108", "0x00000026", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_UPROAR",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FOUL_PLAY",
+            "MOVE_SUPERPOWER",
+            "MOVE_DARK_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROLE_PLAY",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 199,

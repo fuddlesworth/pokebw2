@@ -99,7 +99,7 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000800", "0x00001000", "0x00000202", "0x00002004" ]
+        "by_tutor": [ "MOVE_UPROAR", "MOVE_DARK_PULSE", "MOVE_SNORE", "MOVE_PAIN_SPLIT", "MOVE_SPITE", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [],
     "regional_dex_number": 47,

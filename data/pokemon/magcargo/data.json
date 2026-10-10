@@ -104,7 +104,16 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000044", "0x00000212", "0x00003008" ]
+        "by_tutor": [
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_AFTER_YOU",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

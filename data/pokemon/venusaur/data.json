@@ -100,7 +100,20 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000009", "0x00000040", "0x00000002", "0x0000040f", "0x00002202" ]
+        "by_tutor": [
+            "MOVE_GRASS_PLEDGE",
+            "MOVE_FRENZY_PLANT",
+            "MOVE_SEED_BOMB",
+            "MOVE_BLOCK",
+            "MOVE_BIND",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_OUTRAGE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

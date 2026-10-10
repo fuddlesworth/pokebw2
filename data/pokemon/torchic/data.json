@@ -92,7 +92,16 @@
             "HM01",
             "HM04"
         ],
-        "tutors": [ "0x00000002", "0x00000300", "0x00000080", "0x00000012", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_FIRE_PLEDGE",
+            "MOVE_BOUNCE",
+            "MOVE_LOW_KICK",
+            "MOVE_LAST_RESORT",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

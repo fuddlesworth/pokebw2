@@ -111,7 +111,19 @@
             "HM03",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x00004200", "0x00011408", "0x00000006", "0x00002804" ]
+        "by_tutor": [
+            "MOVE_LOW_KICK",
+            "MOVE_ICE_PUNCH",
+            "MOVE_FOUL_PLAY",
+            "MOVE_ICY_WIND",
+            "MOVE_DARK_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SPITE",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

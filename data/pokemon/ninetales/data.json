@@ -87,7 +87,19 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000002", "0x00013008", "0x00000232", "0x00002004" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_FOUL_PLAY",
+            "MOVE_DARK_PULSE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_ROLE_PLAY",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_SPITE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 249,

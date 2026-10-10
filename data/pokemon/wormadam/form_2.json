@@ -88,7 +88,21 @@
             "TM90",
             "TM91"
         ],
-        "tutors": [ "0x00000000", "0x00000c31", "0x00000260", "0x00000002", "0x00007100" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_IRON_HEAD",
+            "MOVE_GUNK_SHOT",
+            "MOVE_UPROAR",
+            "MOVE_MAGNET_RISE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ELECTROWEB",
+            "MOVE_SNORE",
+            "MOVE_ENDEAVOR",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SKILL_SWAP"
+        ]
     },
     "evolutions": []
 }

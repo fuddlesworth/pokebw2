@@ -95,7 +95,15 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000111", "0x00000208", "0x00000400", "0x00002000" ]
+        "by_tutor": [
+            "MOVE_BUG_BITE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_BOUNCE",
+            "MOVE_FOUL_PLAY",
+            "MOVE_ELECTROWEB",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

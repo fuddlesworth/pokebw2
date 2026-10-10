@@ -106,7 +106,27 @@
             "TM95",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x0000722c", "0x00017048", "0x00000806", "0x00002804" ]
+        "by_tutor": [
+            "MOVE_SUPER_FANG",
+            "MOVE_DUAL_CHOP",
+            "MOVE_IRON_HEAD",
+            "MOVE_LOW_KICK",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_FOUL_PLAY",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_DARK_PULSE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_SPITE",
+            "MOVE_SNATCH",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [
         {

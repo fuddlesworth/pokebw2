@@ -92,7 +92,17 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000040", "0x00000008", "0x0000040a", "0x0000200b" ]
+        "by_tutor": [
+            "MOVE_SEED_BOMB",
+            "MOVE_FOUL_PLAY",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_GASTRO_ACID",
+            "MOVE_WORRY_SEED",
+            "MOVE_AFTER_YOU",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 162,

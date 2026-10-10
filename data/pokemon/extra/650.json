@@ -84,7 +84,7 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x00000000" ]
+        "by_tutor": []
     },
     "evolutions": [],
     "regional_dex_number": null,

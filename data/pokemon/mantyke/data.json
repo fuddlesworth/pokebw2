@@ -91,7 +91,7 @@
             "HM05",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000110", "0x00000400", "0x00000002", "0x00002010" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [
         {

@@ -96,7 +96,17 @@
             "TM87",
             "TM90"
         ],
-        "tutors": [ "0x00000000", "0x00000034", "0x00001402", "0x00000002", "0x00002004" ]
+        "by_tutor": [
+            "MOVE_SUPER_FANG",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_IRON_HEAD",
+            "MOVE_BLOCK",
+            "MOVE_ICY_WIND",
+            "MOVE_DARK_PULSE",
+            "MOVE_SNORE",
+            "MOVE_SPITE",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

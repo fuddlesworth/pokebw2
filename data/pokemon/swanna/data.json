@@ -92,7 +92,16 @@
             "HM03",
             "HM06"
         ],
-        "tutors": [ "0x00000000", "0x00000800", "0x00000400", "0x00001182", "0x00002100" ]
+        "by_tutor": [
+            "MOVE_UPROAR",
+            "MOVE_ICY_WIND",
+            "MOVE_SNORE",
+            "MOVE_TAILWIND",
+            "MOVE_SKY_ATTACK",
+            "MOVE_ROOST",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 154,

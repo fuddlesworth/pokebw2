@@ -89,7 +89,7 @@
             "TM93",
             "HM01"
         ],
-        "tutors": [ "0x00000002", "0x00000002", "0x00000000", "0x00000012", "0x00002000" ]
+        "by_tutor": [ "MOVE_FIRE_PLEDGE", "MOVE_COVET", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_SLEEP_TALK" ]
     },
     "evolutions": [
         {

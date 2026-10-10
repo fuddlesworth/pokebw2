@@ -96,7 +96,24 @@
             "TM94",
             "HM02"
         ],
-        "tutors": [ "0x00000000", "0x00000012", "0x0000a081", "0x000019d2", "0x00002120" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_MAGIC_COAT",
+            "MOVE_LAST_RESORT",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_HYPER_VOICE",
+            "MOVE_SNORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_HEAL_BELL",
+            "MOVE_TAILWIND",
+            "MOVE_SKY_ATTACK",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_ROOST",
+            "MOVE_TRICK",
+            "MOVE_ENDEAVOR",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

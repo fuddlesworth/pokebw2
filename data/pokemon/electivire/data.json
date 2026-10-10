@@ -108,7 +108,21 @@
             "TM94",
             "HM04"
         ],
-        "tutors": [ "0x00000000", "0x0000721a", "0x00010220", "0x00000002", "0x00002010" ]
+        "by_tutor": [
+            "MOVE_COVET",
+            "MOVE_DUAL_CHOP",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_LOW_KICK",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_MAGNET_RISE",
+            "MOVE_ELECTROWEB",
+            "MOVE_IRON_TAIL",
+            "MOVE_SNORE",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 58,
