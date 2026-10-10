@@ -80,6 +80,16 @@ def types() -> list[dict]:
     return validated("types", "data/types", "TYPE_", "type.schema.json", skip={"TYPE_NULL"})
 
 
+@cache
+def trainer_classes() -> list[dict]:
+    return validated("trainer_classes", "data/trainer_classes", "TRAINER_CLASS_", "trainer_class.schema.json")
+
+
+@cache
+def natures() -> list[dict]:
+    return validated("natures", "data/natures", "NATURE_", "nature.schema.json")
+
+
 def validated(list_name: str, directory: str, prefix: str, schema_name: str, skip=frozenset()) -> list[dict]:
     """The files of data that only the text uses, which nothing else validates, in the order of their list."""
     schema = load_schema(ROOT / directory / schema_name)
@@ -157,7 +167,8 @@ def pokedex_lines(path: list[str]) -> list[str]:
             alternate_forms = max(data["forms"]["count"] - 1, 0)
             forms = pokedex.get("forms", [])
             if len(forms) != alternate_forms:
-                raise DataError(f"species {i}: pokedex.forms has {len(forms)} forms for {alternate_forms} alternate forms")
+                raise DataError(f"species {i}: pokedex.forms has {len(forms)} forms for {alternate_forms} "
+                                "alternate forms")
             lines += [to_line(form[path[1]]) for form in forms]
         elif len(path) == 1:
             lines.append(to_line(field(pokedex, path[0], f"species {i}: pokedex")))
@@ -192,7 +203,13 @@ SOURCES = {
     "items.description": lambda: [to_line(data["description"]) for data in items()],
     "abilities.name": lambda: [to_line(data["name"]) for data in abilities()],
     "abilities.description": lambda: [to_line(data["description"]) for data in abilities()],
+    # From ability 1: ABILITY_NONE's name in capitals isn't its name's
+    "abilities.name_upper": lambda: [upper(to_line(data["name"])) for data in abilities()[1:]],
     "types.name": lambda: [to_line(data["name"]) for data in types()],
+    "trainer_classes.name": lambda: [("\\c" if data.get("compress_name") else "") + to_line(data["name"])
+                                     for data in trainer_classes()],
+    "trainer_classes.name_with_article": lambda: [to_line(data["name_with_article"]) for data in trainer_classes()],
+    "natures.name": lambda: [to_line(data["name"]) for data in natures()],
     # Two lines per trade, its nickname and its trainer's name, the message IDs trade_data.py gives it
     "trades.names": lambda: [to_line(data[key]) for data in trades() for key in ("nickname", "trainer_name")],
     "trainers.name": lambda: [("\\c" if data.get("compress_name", True) else "") + to_line(data["name"])

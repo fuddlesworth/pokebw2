@@ -176,7 +176,7 @@ DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py"
 
 # The data in JSON that the text takes messages from, with \from{...} lines (tools/scripts/text_sources.py)
 TEXT_DATA_DIRS = ["data/pokemon", "data/moves", "data/items", "data/trainers", "data/abilities", "data/types",
-                  "data/trades", "data/facilities"]
+                  "data/trades", "data/facilities", "data/trainer_classes", "data/natures"]
 
 # Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order

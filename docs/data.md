@@ -128,6 +128,9 @@ Egg and Bad Egg after the species' names:
 | `0015_battle_subway_trainer_names.txt` | `\from{facilities.battle_subway.names}` | Each Battle Subway trainer's `name` |
 | `0376_battle_subway_trainer_messages.txt` | `\from{facilities.battle_subway.messages}` | Each one's three `messages` |
 | `0053_black_tower_trainer_names.txt` | `\from{facilities.black_tower.names}` | Each Black Tower trainer's `name` |
+| `0383_trainer_class_names.txt`, `0485_trainer_class_names_with_article.txt` | `\from{trainer_classes.name}`, `\from{trainer_classes.name_with_article}` | Each trainer class's `name` and `name_with_article` |
+| `0027_natures.txt` | `\from{natures.name}` | Each nature's `name` |
+| `0487_ability_names_upper.txt` | `\from{abilities.name_upper}` | Each ability's `name` in capitals, from ability 1 |
 | `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
 | `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
@@ -311,13 +314,15 @@ balls (1), battle items (2), HP and PP restoring (4) and status healing (8). An 
 first letter unless `name_article` says otherwise ("an HP Up", "the Leftovers", none for Honey). The 20 unused items,
 named "???", have constants of their own, as `ITEM_UNUSED_113`. Both versions have the same item data.
 
-## Abilities and types
+## Abilities, types, trainer classes and natures
 
 An ability's text is `data/abilities/<ability>.json`, its name and description, and a type's `data/types/<type>.json`,
 its name, named after their constants and in the order of their lists. What they do is the code's, so they have no
 archive: only the text takes them (see [Text](#text)), and `tools/scripts/text_sources.py` validates them against
-`ability.schema.json` and `type.schema.json`. `TYPE_NULL`, the type of a typeless move, has no name and no file.
-`tools/scripts/ability_type_data.py` wrote them from the game's text.
+`ability.schema.json` and `type.schema.json`. `TYPE_NULL`, the type of a typeless move, has no name and no file. A
+trainer class's text, `data/trainer_classes/<class>.json`, is its name and its name with an article, which the game
+writes by hand ("a Twin" for Twins, none for the Gym Leaders), and a nature's, `data/natures/<nature>.json`, its name.
+`tools/scripts/list_text_data.py` wrote them all from the game's text.
 
 ## Trainers
 
