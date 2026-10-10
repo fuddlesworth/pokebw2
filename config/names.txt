@@ -2377,6 +2377,10 @@ overlays/ov131 0x021eed3c RailSlipdown_Task
 overlays/ov139 0x0219a2a4 PrintStrAligned
 overlays/ov139 0x0219a2ec PrintFraction
 overlays/ov139 0x0219a410 GetStrWidthForAlign
+overlays/ov139 0x0219a438 MsgSearch_Create
+overlays/ov139 0x0219a490 MsgSearch_Free
+overlays/ov139 0x0219a4a4 MsgSearch_Find
+overlays/ov139 0x0219a534 StartsWith
 overlays/ov142 0x021998c0 ItemMenu_SetState
 overlays/ov142 0x021998dc ItemMenu_RedrawList
 overlays/ov142 0x021998f4 ItemMenu_UpdateList
