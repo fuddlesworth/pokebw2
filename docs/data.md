@@ -27,7 +27,7 @@ format and can write them again.
 | `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
 | `a/0/9/1`, `a/0/9/2` | `data/trainers/` (JSON) | Trainers and their parties | `tools/scripts/trainer_data.py` |
-| `a/1/2/7` | `data/encounters/` | Wild encounters | `tools/scripts/encounter_data.py` |
+| `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
@@ -36,12 +36,12 @@ The text archives are packed by `text_data.py` from text files rather than assem
 ## Constant lists
 
 The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences, trainer
-classes, trainers, zones, event flags and event variables, are lists in `data/constants/`, one name per line. They are
-the source of truth: to add one, add it to its list, and to rename one, use `tools/scripts/rename_constant.py OLD NEW`,
-which renames its uses too. The build generates a header from each list, `constants/<list>.h` in
-`build/include/generated/`, which is on the include path, so the C code, the data sources and the scripts all use the
-same names, and the generated header can never disagree with its list. A line is a constant's full name, which takes the
-previous value plus one, or `NAME = value` (decimal or `0x` hex); `#` starts a comment.
+classes, trainers, zones, wild encounter tables, event flags and event variables, are lists in `data/constants/`, one
+name per line. They are the source of truth: to add one, add it to its list, and to rename one, use
+`tools/scripts/rename_constant.py OLD NEW`, which renames its uses too. The build generates a header from each list,
+`constants/<list>.h` in `build/include/generated/`, which is on the include path, so the C code, the data sources and
+the scripts all use the same names, and the generated header can never disagree with its list. A line is a constant's
+full name, which takes the previous value plus one, or `NAME = value` (decimal or `0x` hex); `#` starts a comment.
 
 ```
 # Species, by national Pokédex number (bootstrapped from the ROM by make_constants.py)
@@ -252,35 +252,48 @@ Each trainer's constant in `data/constants/trainers.txt`, which the field script
 
 ## Wild encounters
 
-`a/1/2/7` holds the wild encounter tables, one per entry, which a zone's header names (`GetZoneEncID`). Their sources
-are `data/encounters/NNNN_place.s`, named after the place of that zone. Black 2 and White 2 have different encounters
-in many places, so where a table's rates or a group of its slots differ, the file has both under `#ifdef BLACK2`:
+Each wild encounter table (`a/1/2/7`, which a zone's header names, `GetZoneEncID`) is `data/encounters/<table>.json`,
+named after its constant in `data/constants/encounters.txt` (`striaton_city.json` for `ENCOUNTERS_STRIATON_CITY`),
+which names the tables after the place of the first zone that has them. `tools/scripts/encounter_data.py pack`
+builds each version's archive in the order of the list, and `data/encounters/encounters.schema.json` documents each
+field.
 
+Black 2 and White 2 have different encounters in many places. A table's rates, and each group of its slots, is either
+the same for both versions or an object with one for each:
+
+```json
+{
+    "$schema": "encounters.schema.json",
+    "all_year": {
+        "rates": {
+            "grass": 0,
+            ...
+            "surf": 10,
+            "fishing": 50,
+            ...
+        },
+        "grass": [],
+        ...
+        "surf": {
+            "black2": [
+                [ "SPECIES_BASCULIN", 45, 60 ],
+                ...
+            ],
+            "white2": [
+                [ "SPECIES_BASCULIN", 45, 60, 1 ],
+                ...
+            ]
+        },
+        ...
+    }
+}
 ```
-#include "asm/encounters.inc"
 
-// Striaton City
-
-    EncounterRates grass=0, dark_grass=0, shaking_grass=0, surf=10, rippling_surf=1, fishing=50, rippling_fishing=1
-    GrassEncounters
-    DarkGrassEncounters
-    ShakingGrassEncounters
-    SurfEncounters
-#ifdef BLACK2
-    Encounter SPECIES_BASCULIN, 45, 60
-    ...
-#else
-    Encounter SPECIES_BASCULIN, 45, 60, form=1
-    ...
-#endif
-    ...
-    EncountersEnd
-```
-
-A table (`EncData`) has a rate for each group of slots and then the slots: 12 each for grass, dark grass and shaking
-grass, and 5 each for surfing, rippling water, fishing and rippling fishing. A slot is a species, its lowest and
-highest level, and its form. A group fills the slots it doesn't list with empty ones, and listing too many is an
-error. A table with four seasons has four of these, for spring, summer, autumn and winter.
+A table (`EncData`) has a rate for each group of slots, the table's flags, and the slots: up to 12 each for grass,
+dark grass and shaking grass, and up to 5 each for surfing, rippling water, fishing and rippling fishing; the packer
+fills the rest with empty ones. A slot is a species, its lowest and highest level, and its form when not 0. A table is
+`all_year`, or has four, `spring`, `summer`, `autumn` and `winter`. To add a table, add its constant to the end of the
+list and its file, and name it in a zone's header.
 
 ## Zone headers
 

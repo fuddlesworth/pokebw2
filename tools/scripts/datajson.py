@@ -85,12 +85,23 @@ def load_schema(path: Path) -> dict:
 
 def validate(data, schema: dict, where: str, root: dict | None = None):
     """Checks data against a schema, using the keywords the data's schemas use: type, properties, required,
-    additionalProperties, items, prefixItems, minItems, maxItems, minimum, maximum, pattern, enum and $ref to $defs.
+    additionalProperties, items, prefixItems, minItems, maxItems, minimum, maximum, pattern, enum, anyOf and $ref to
+    $defs.
     "x-constant" names the prefix of the constants a string may be."""
     root = root or schema
     at = f"{where}: " if where else ""
     if "$ref" in schema:
         schema = root["$defs"][schema["$ref"].removeprefix("#/$defs/")]
+    if "anyOf" in schema:
+        errors = []
+        for option in schema["anyOf"]:
+            try:
+                validate(data, option, where, root)
+                break
+            except DataError as error:
+                errors.append(str(error))
+        else:
+            raise DataError(" / or: ".join(errors))
     types = schema.get("type")
     if types is not None:
         types = [types] if isinstance(types, str) else types

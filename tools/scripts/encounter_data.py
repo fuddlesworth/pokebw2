@@ -1,111 +1,156 @@
 #!/usr/bin/env python3
-"""Write the wild encounters (archive a/1/2/7) as editable sources, one file per encounter table, with the macros of
-include/asm/encounters.inc. Black 2 and White 2 have different encounters in many places; where a table's rates or a
-group of its slots differ, the file has both, under #ifdef BLACK2. The build assembles each version's back into its
-archive and checks that it matches.
+"""The wild encounters in data/encounters/, one JSON file per encounter table: dump writes them from the ROM once, and
+pack builds a version's archive (a/1/2/7) from them, which the build does.
 
-    encounter_data.py extract data/encounters    # reads extract/b2_us and extract/w2_us
+    encounter_data.py dump extract data/encounters    # reads extract/b2_us and extract/w2_us
+    encounter_data.py pack data/encounters black2 ARCHIVE
 
-Files are named after the place of the zone whose header names the table (GetZoneEncID).
+Each table is data/encounters/<table>.json, named after its constant (castelia_city.json for
+ENCOUNTERS_CASTELIA_CITY), and the archive has them in the order of data/constants/encounters.txt, which zone headers
+name them by. Black 2 and White 2 have different encounters in many places: a table's rates, or a group of its slots,
+is either the same for both versions or an object with one for each, { "black2": ..., "white2": ... }.
+encounters.schema.json describes each field.
 """
 import argparse
 import struct
+import sys
 from pathlib import Path
 
-from make_constants import identifier
-from msgdata import read_archive_file
-from narc import read_narc
-from gen_constants import constant_names, name
+sys.path.insert(0, str(Path(__file__).parent))
+from datajson import DataError, label, load, load_schema, name, value, write  # noqa: E402
+from gen_constants import load as load_list  # noqa: E402
+from narc import read_narc, write_narc  # noqa: E402
 
 TABLE_SIZE = 0xE8
-GROUPS = [("GrassEncounters", 12), ("DarkGrassEncounters", 12), ("ShakingGrassEncounters", 12),
-          ("SurfEncounters", 5), ("RipplingSurfEncounters", 5), ("FishingEncounters", 5),
-          ("RipplingFishingEncounters", 5)]
-SEASONS = ["Spring", "Summer", "Autumn", "Winter"]
-RATE_NAMES = ["grass", "dark_grass", "shaking_grass", "surf", "rippling_surf", "fishing", "rippling_fishing"]
-PLACE_NAMES = 109
-ZONE_SIZE = 48
-NO_ENCOUNTERS = 0x1FFF
+GROUPS = [("grass", 12), ("dark_grass", 12), ("shaking_grass", 12), ("surf", 5), ("rippling_surf", 5),
+          ("fishing", 5), ("rippling_fishing", 5)]
+SEASONS = ["spring", "summer", "autumn", "winter"]
+VERSIONS = ["black2", "white2"]
+EXTRACTS = {"black2": "b2_us", "white2": "w2_us"}
 
 
-def rates_line(table: bytes) -> str:
-    args = [f"{n}={v}" for n, v in zip(RATE_NAMES, table[:7])]
-    if table[7]:
-        args.append(f"flags={table[7]}")
-    return f"    EncounterRates {', '.join(args)}"
+def file_name(table: str) -> str:
+    return table.removeprefix("ENCOUNTERS_").lower() + ".json"
 
 
-def slot_lines(table: bytes, offset: int, count: int, species_names: dict[int, str]) -> list[str]:
-    lines = []
-    # The group fills the slots after the last one it lists with empty ones
+def ordered_tables() -> list[str]:
+    tables = sorted(load_list("encounters").items(), key=lambda item: item[1])
+    if [v for _, v in tables] != list(range(len(tables))):
+        sys.exit("encounters.txt doesn't number the tables from 0 in order")
+    return [table for table, _ in tables]
+
+
+# Dumping
+
+
+def rates_json(table: bytes) -> dict:
+    return {**{group: rate for (group, _), rate in zip(GROUPS, table[:7])}, "flags": table[7]}
+
+
+def slots_json(table: bytes, offset: int, count: int) -> list:
+    # The slots after the last one used are empty
     while count and not any(table[offset + 4 * (count - 1):offset + 4 * count]):
         count -= 1
+    slots = []
     for i in range(count):
-        value, low, high = struct.unpack_from("<HBB", table, offset + 4 * i)
-        species, form = value & 0x7FF, value >> 11
-        line = f"    Encounter {name(species_names, species)}, {low}, {high}"
-        lines.append(line + (f", form={form}" if form else ""))
-    return lines
+        species_form, low, high = struct.unpack_from("<HBB", table, offset + 4 * i)
+        slot = [name("SPECIES_", species_form & 0x7FF), low, high]
+        slots.append(slot + [species_form >> 11] if species_form >> 11 else slot)
+    return slots
 
 
-def versioned(black: list[str], white: list[str]) -> list[str]:
-    if black == white:
-        return black
-    return ["#ifdef BLACK2", *black, "#else", *white, "#endif"]
+def versioned(black, white):
+    return black if black == white else {"black2": black, "white2": white}
 
 
-def write_file(black: bytes, white: bytes, species_names: dict[int, str], title: str) -> str:
-    if len(black) != len(white):
-        raise ValueError(f"{title}: the versions have different numbers of seasons")
-    seasons = len(black) // TABLE_SIZE
-    lines = ['#include "asm/encounters.inc"', "", f"// {title}"]
-    for season in range(seasons):
-        b = black[TABLE_SIZE * season:TABLE_SIZE * (season + 1)]
-        w = white[TABLE_SIZE * season:TABLE_SIZE * (season + 1)]
-        lines.append("")
-        if seasons > 1:
-            lines.append(f"// {SEASONS[season]}")
-        lines += versioned([rates_line(b)], [rates_line(w)])
-        offset = 8
-        for group, count in GROUPS:
-            lines.append(f"    {group}")
-            lines += versioned(slot_lines(b, offset, count, species_names), slot_lines(w, offset, count, species_names))
-            offset += 4 * count
-        lines.append("    EncountersEnd")
-    return "\n".join(lines) + "\n"
+def season_json(black: bytes, white: bytes) -> dict:
+    season = {"rates": versioned(rates_json(black), rates_json(white))}
+    offset = 8
+    for group, count in GROUPS:
+        season[group] = versioned(slots_json(black, offset, count), slots_json(white, offset, count))
+        offset += 4 * count
+    return season
 
 
-def table_places(extract: Path) -> dict[int, str]:
-    """Returns the place name of each encounter table, from the zones whose headers name it."""
-    zones = read_narc((extract / "files/a/0/1/2").read_bytes())[0]
-    places = read_archive_file(extract / "files/a/0/0/2", PLACE_NAMES)
-    names = {}
-    for zone in range(len(zones) // ZONE_SIZE):
-        header = zones[ZONE_SIZE * zone:ZONE_SIZE * (zone + 1)]
-        table = struct.unpack_from("<H", header, 0x14)[0] & 0x1FFF
-        place = struct.unpack_from("<H", header, 0x1A)[0] & 0x3FF
-        if table != NO_ENCOUNTERS and place < len(places):
-            names.setdefault(table, places[place])
-    return names
+def table_json(black: bytes, white: bytes) -> dict:
+    if len(black) != len(white) or len(black) not in (TABLE_SIZE, 4 * TABLE_SIZE):
+        raise ValueError("the versions have different numbers of seasons")
+    data = {"$schema": "encounters.schema.json"}
+    if len(black) == TABLE_SIZE:
+        data["all_year"] = season_json(black, white)
+    else:
+        for i, season in enumerate(SEASONS):
+            part = slice(TABLE_SIZE * i, TABLE_SIZE * (i + 1))
+            data[season] = season_json(black[part], white[part])
+    return data
+
+
+def dump(extract: Path, output: Path):
+    archives = {v: read_narc((extract / EXTRACTS[v] / "files/a/1/2/7").read_bytes()) for v in VERSIONS}
+    tables = ordered_tables()
+    if not len(archives["black2"]) == len(archives["white2"]) == len(tables):
+        sys.exit("the archives don't have one entry per table of encounters.txt")
+    for table, black, white in zip(tables, archives["black2"], archives["white2"]):
+        write(output / file_name(table), table_json(black, white))
+    print(f"wrote {len(tables)} tables to {output}")
+
+
+# Packing
+
+
+def for_version(item, version: str):
+    """Returns the version's part of a value that is either the same for both versions or split between them."""
+    if isinstance(item, dict) and set(item) == set(VERSIONS):
+        return item[version]
+    return item
+
+
+def season_bytes(season: dict, version: str, where: str) -> bytes:
+    rates = for_version(season["rates"], version)
+    data = bytes([rates[group] for group, _ in GROUPS] + [rates["flags"]])
+    for group, count in GROUPS:
+        slots = for_version(season[group], version)
+        if len(slots) > count:
+            raise DataError(f"{where}: {group} has {len(slots)} slots, at most {count}")
+        for slot in slots:
+            species, low, high, *form = slot
+            data += struct.pack("<HBB", value(species, where) | (form[0] if form else 0) << 11, low, high)
+        data += bytes(4 * (count - len(slots)))
+    return data
+
+
+def pack(root: Path, version: str, output: Path):
+    schema = load_schema(root / "encounters.schema.json")
+    members = []
+    for table in ordered_tables():
+        path = root / file_name(table)
+        data, where = load(path, schema), label(path)
+        seasons = ["all_year"] if "all_year" in data else SEASONS
+        if any(season not in data for season in seasons) or ("all_year" in data and any(s in data for s in SEASONS)):
+            raise DataError(f"{where}: a table has all_year, or spring, summer, autumn and winter")
+        members.append(b"".join(season_bytes(data[season], version, f"{where}: {season}") for season in seasons))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_bytes(write_narc(members))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("extract", type=Path, help="the directory with the extracted versions, b2_us and w2_us")
-    parser.add_argument("output", type=Path)
+    commands = parser.add_subparsers(dest="command", required=True)
+    dump_parser = commands.add_parser("dump", help="write data/encounters/ from both extracted versions")
+    dump_parser.add_argument("extract", type=Path, help="the directory with the extracted versions, b2_us and w2_us")
+    dump_parser.add_argument("output", type=Path)
+    pack_parser = commands.add_parser("pack", help="build a version's encounter archive from data/encounters/")
+    pack_parser.add_argument("root", type=Path)
+    pack_parser.add_argument("version", choices=VERSIONS)
+    pack_parser.add_argument("output", type=Path)
     args = parser.parse_args()
-
-    black = read_narc((args.extract / "b2_us/files/a/1/2/7").read_bytes())
-    white = read_narc((args.extract / "w2_us/files/a/1/2/7").read_bytes())
-    places = table_places(args.extract / "b2_us")
-    species_names = constant_names("species.h", "SPECIES_")
-    args.output.mkdir(parents=True, exist_ok=True)
-    for index, (b, w) in enumerate(zip(black, white, strict=True)):
-        place = places.get(index)
-        stem = identifier(place).lower() if place else "unused"
-        title = place or "No zone's header names this table"
-        (args.output / f"{index:04d}_{stem}.s").write_text(write_file(b, w, species_names, title))
-    print(f"wrote {len(black)} files to {args.output}")
+    if args.command == "dump":
+        dump(args.extract, args.output)
+        return
+    try:
+        pack(args.root, args.version, args.output)
+    except DataError as error:
+        sys.exit(f"error: {error}")
 
 
 if __name__ == "__main__":

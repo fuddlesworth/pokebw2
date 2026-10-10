@@ -8,6 +8,7 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trainer-classes extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trainers extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --zones extract/b2_us
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --encounters extract/b2_us
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused and get no constant.
@@ -225,6 +226,30 @@ def zone_names(extract: Path) -> dict[int, str]:
     return dict(sorted(names.items()))
 
 
+def encounter_names(extract: Path) -> dict[int, str]:
+    """Returns the name of each wild encounter table, after the place of the first zone whose header names it,
+    numbered from _2 where places repeat."""
+    from narc import read_narc
+
+    files = extract / "files"
+    (data,) = read_narc((files / "a/0/1/2").read_bytes())
+    places = read_archive_file(files / "a/0/0/2", PLACE_NAMES)
+    tables = len(read_narc((files / "a/1/2/7").read_bytes()))
+    table_places: dict[int, str] = {}
+    for zone in range(len(data) // ZONE_HEADER_SIZE):
+        fields = struct.unpack_from("<BBHHHHH4HHHHHHHHHiii", data, ZONE_HEADER_SIZE * zone)
+        table, place = fields[11] & 0x1FFF, fields[14] & 0x3FF
+        if table < tables:
+            table_places.setdefault(table, identifier(places[place]))
+    names: dict[int, str] = {}
+    count: dict[str, int] = {}
+    for table in range(tables):
+        base = f"ENCOUNTERS_{table_places.get(table) or 'UNUSED'}"
+        count[base] = count.get(base, 0) + 1
+        names[table] = base if count[base] == 1 else f"{base}_{count[base]}"
+    return names
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -234,6 +259,8 @@ def main():
                         help="write only trainer_classes.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--trainers", type=Path, metavar="EXTRACT",
                         help="write only trainers.txt, from an extracted version such as extract/b2_us")
+    parser.add_argument("--encounters", type=Path, metavar="EXTRACT",
+                        help="write only encounters.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--zones", type=Path, metavar="EXTRACT",
                         help="write only zones.txt, from an extracted version such as extract/b2_us")
     args = parser.parse_args()
@@ -246,7 +273,10 @@ def main():
     if args.zones:
         write_list(args.output / "zones.txt", zone_names(args.zones),
                    "Zones, by place name, then by what they are or numbered where places repeat")
-    if args.trainer_classes or args.trainers or args.zones:
+    if args.encounters:
+        write_list(args.output / "encounters.txt", encounter_names(args.encounters),
+                   "Wild encounter tables, by the place of the first zone that has them, numbered where places repeat")
+    if args.trainer_classes or args.trainers or args.zones or args.encounters:
         return
     if args.sdat:
         write_sound_list(args.output / "sound.txt", args.sdat.read_bytes())
