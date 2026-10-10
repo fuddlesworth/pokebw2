@@ -143,6 +143,7 @@ DATA_PACKS = [
     # Species data, level-up moves, evolutions, baby species and experience tables
     ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7"], False),
     ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"], False),  # Move data
+    ("tools/scripts/item_data.py", "data/items", ["a/0/2/4"], False),  # Item data
     # Trainers, their parties, and the table of their messages with its offsets
     ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
@@ -384,7 +385,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
                 checks.append(archive_ok)
 
     # The text takes some of its messages from the data in JSON, with \from{...} lines (tools/scripts/text_sources.py)
-    text_data_sources = sorted(str(p.relative_to(ROOT)) for d in ("data/pokemon", "data/moves", "data/trainers")
+    text_data_sources = sorted(str(p.relative_to(ROOT)) for d in ("data/pokemon", "data/moves", "data/items", "data/trainers")
                                for p in (ROOT / d).rglob("*.json"))
     for path, source_dir in TEXT_ARCHIVES.items():
         archive = files_dir / path

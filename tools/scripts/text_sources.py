@@ -44,8 +44,12 @@ def upper(line: str) -> str:
 
 
 def ordered(list_name: str) -> list[str]:
-    items = sorted(load_list(list_name).items(), key=lambda item: item[1])
-    return [name for name, _ in items]
+    """The constants of a list in value order, the first one of each value: a list's second names for a value, such
+    as ITEM_LAST, are left out."""
+    first: dict[int, str] = {}
+    for name, number in load_list(list_name).items():
+        first.setdefault(number, name)
+    return [first[number] for number in sorted(first)]
 
 
 @cache
@@ -58,6 +62,11 @@ def species() -> list[dict]:
 @cache
 def moves() -> list[dict]:
     return [read(ROOT / "data/moves" / name.removeprefix("MOVE_").lower() / "data.json") for name in ordered("moves")]
+
+
+@cache
+def items() -> list[dict]:
+    return [read(ROOT / "data/items" / name.removeprefix("ITEM_").lower() / "data.json") for name in ordered("items")]
 
 
 @cache
@@ -84,6 +93,18 @@ def article(data: dict) -> str:
     """The article of a species' name: name_article if the file has one, else "an" before a vowel and "a" before
     anything else."""
     return data.get("name_article") or ("an" if data["name"][:1] in "AEIOU" else "a")
+
+
+def item_article(data: dict) -> str:
+    """The article of an item's name: name_article if the file has one, which can be "" for none, else as a species'."""
+    return data["name_article"] if "name_article" in data else ("an" if data["name"][:1] in "AEIOU" else "a")
+
+
+def item_with_article(data: dict) -> str:
+    if "name_with_article" in data:
+        return to_line(data["name_with_article"])
+    spoken = item_article(data)
+    return f"{{bd01}}{spoken + ' ' if spoken else ''}{{ff00:255}}{to_line(data['name'])}"
 
 
 def message_order() -> list[str]:
@@ -116,6 +137,11 @@ SOURCES = {
     "moves.name": lambda: [to_line(data["name"]) for data in moves()],
     "moves.name_upper": lambda: [upper(to_line(data["name"])) for data in moves()],
     "moves.description": lambda: [to_line(data["description"]) for data in moves()],
+    "items.name": lambda: [to_line(data["name"]) for data in items()],
+    # From item 1: ITEM_NONE's are "???"
+    "items.name_with_article": lambda: [item_with_article(data) for data in items()[1:]],
+    "items.name_plural": lambda: [to_line(data["name_plural"]) for data in items()[1:]],
+    "items.description": lambda: [to_line(data["description"]) for data in items()],
     "trainers.name": lambda: [("\\c" if data.get("compress_name", True) else "") + to_line(data["name"])
                               for data in trainers().values()],
     "trainers.messages": trainer_messages,

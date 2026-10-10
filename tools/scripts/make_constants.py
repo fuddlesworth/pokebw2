@@ -11,7 +11,8 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --encounters extract/b2_us
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
-"ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused and get no constant.
+"ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused, and are named after their ID, as
+ITEM_UNUSED_113, so that each has a constant and a data file.
 """
 import argparse
 import re
@@ -288,7 +289,9 @@ def main():
         for i, text in enumerate(lines):
             if i in overrides:
                 names[i] = f"{prefix}_{overrides[i]}"
-            elif text != "???":
+            elif text == "???":
+                names[i] = f"{prefix}_UNUSED_{i}"
+            else:
                 names[i] = f"{prefix}_{identifier(text)}"
         seen = {}
         for i, name in names.items():

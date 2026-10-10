@@ -24,6 +24,7 @@ SUFFIXES = {".txt", ".s", ".inc", ".c", ".h", ".cpp", ".md", ".py", ".json"}
 NAMED_DATA = [
     ("species", "data/pokemon", "SPECIES_", "/"),
     ("moves", "data/moves", "MOVE_", "/"),
+    ("items", "data/items", "ITEM_", "/"),
     ("trainers", "data/trainers", "TRAINER_", ".json"),
     ("encounters", "data/encounters", "ENCOUNTERS_", ".json"),
     ("zones", "data/zones", "ZONE_", ".json"),

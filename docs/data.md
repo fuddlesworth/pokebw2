@@ -25,6 +25,7 @@ format and can write them again.
 | `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species | `tools/scripts/species_data.py` |
 | `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
 | `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
+| `a/0/2/4` | `data/items/` (JSON) | Item data | `tools/scripts/item_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
 | `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `data/trainers/` (JSON) | Trainers, their parties, and the table of their messages | `tools/scripts/trainer_data.py` |
 | `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
@@ -110,6 +111,10 @@ Egg and Bad Egg after the species' names:
 | `0403_move_names.txt` | `\from{moves.name}` | Each move's `name` |
 | `0488_move_names_upper.txt` | `\from{moves.name_upper}` | The same in capitals |
 | `0402_btl_main.txt` | `\from{moves.description}` | Each move's `description` |
+| `0064_item_names.txt` | `\from{items.name}` | Each item's `name` |
+| `0481_item_names_with_article.txt` | `\from{items.name_with_article}` | The same with its article (`name_article`, or the whole `name_with_article` where it isn't written as the others) |
+| `0482_item_names_plural.txt` | `\from{items.name_plural}` | Each item's `name_plural` |
+| `0063_item_descriptions.txt` | `\from{items.description}` | Each item's `description` |
 | `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
 | `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
@@ -234,6 +239,43 @@ class of the move's effect (`MOVE_QUALITY_*`), `target` which Pokémon it target
 properties (`MOVE_FLAG_*`), such as contact, sound or being blocked by Protect; `include/constants/battle.h` names
 each after the moves that have it. The record's "SS" marker, which every move has, is written by the packer. Both
 versions have the same move data. A move's name and description go into the text (see [Text](#text)).
+
+## Items
+
+Each item has a directory in `data/items/`, named after its constant (`potion/` for `ITEM_POTION`), whose `data.json`
+is its file of the item data (`a/0/2/4`, the 36 bytes of `ItemData` in `include/pml/item.h`) and its text: its name,
+its name with an article, its plural and its description (see [Text](#text)). `tools/scripts/item_data.py pack`
+builds the archive in the order of `data/constants/items.txt`, and `data/items/item.schema.json` documents each field.
+
+```json
+{
+    "$schema": "../item.schema.json",
+    "name": "Potion",
+    "name_plural": "Potions",
+    "description": "A spray-type medicine for wounds.\nIt restores the HP of one Pokémon by\njust 20 points.",
+    "price": 30,
+    "hold_effect": "HOLD_EFFECT_NONE",
+    ...
+    "field_pocket": 1,
+    "battle_pocket": 4,
+    ...
+    "effects": {
+        "sleep_heal": false,
+        ...
+        "hp_restore": true,
+        ...
+        "hp_restore_amount": 20,
+        ...
+    }
+}
+```
+
+The price is in tens of Pokédollars, which `PML_ItemGetParam` multiplies by 10. An item has either a single `value` or
+`effects`, what it does used on a Pokémon (`ItemParams`); the packer sets the record's work type from which. The pockets
+are the bag's: 0 items, 1 medicine, 2 TMs and HMs, 3 berries and 4 key items outside battle, and in battle bits for
+balls (1), battle items (2), HP and PP restoring (4) and status healing (8). An item's article is "a" or "an" by its
+first letter unless `name_article` says otherwise ("an HP Up", "the Leftovers", none for Honey). The 20 unused items,
+named "???", have constants of their own, as `ITEM_UNUSED_113`. Both versions have the same item data.
 
 ## Trainers
 
