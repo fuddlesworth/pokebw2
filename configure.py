@@ -151,6 +151,9 @@ DATA_PACKS = [
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
     ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False),  # Zone headers
     ("tools/scripts/trade_data.py", "data/trades", ["a/1/6/3"], False),  # In-game trades
+    # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
+    ("tools/scripts/facility_data.py", "data/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
+     ["data/facilities"]),
     # The zones' events, at the numbers of their entities files, which the zone headers give
     ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False, ["data/zones"]),
 ]
@@ -158,11 +161,11 @@ DATA_PACKS = [
 # tutor bits (tools/scripts/species_data.py)
 DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py",
                    "tools/scripts/text_sources.py", "tools/scripts/text_data.py", "tools/scripts/msgdata.py",
-                   "src/ov036/scrcmd_shop.c"]
+                   "src/ov036/scrcmd_shop.c", "tools/scripts/facility_data.py", "tools/scripts/make_constants.py"]
 
 # The data in JSON that the text takes messages from, with \from{...} lines (tools/scripts/text_sources.py)
 TEXT_DATA_DIRS = ["data/pokemon", "data/moves", "data/items", "data/trainers", "data/abilities", "data/types",
-                  "data/trades"]
+                  "data/trades", "data/facilities"]
 
 # Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order

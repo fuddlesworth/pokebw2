@@ -31,6 +31,7 @@ format and can write them again.
 | `a/1/2/6` | `data/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/scripts/event_data.py` |
 | `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
 | `a/1/6/3` | `data/trades/` (JSON) | In-game trades | `tools/scripts/trade_data.py` |
+| `a/2/1/2`, `a/2/1/1` | `data/facilities/battle_subway/` (JSON) | Battle Subway and Trial House trainers and Pokémon | `tools/scripts/facility_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
@@ -121,6 +122,8 @@ Egg and Bad Egg after the species' names:
 | `0375_ability_descriptions.txt` | `\from{abilities.description}` | Each ability's `description` |
 | `0398_type_names.txt` | `\from{types.name}` | Each type's `name` |
 | `0037_trade_names.txt` | `\from{trades.names}` | Each trade's `nickname` and `trainer_name` |
+| `0015_battle_subway_trainer_names.txt` | `\from{facilities.battle_subway.names}` | Each Battle Subway trainer's `name` |
+| `0376_battle_subway_trainer_messages.txt` | `\from{facilities.battle_subway.messages}` | Each one's three `messages` |
 | `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
 | `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
@@ -439,6 +442,21 @@ and the Pokémon's nickname and trainer's name, which the text takes (see [Text]
 names' message IDs from its place, and `data/trades/trade.schema.json` documents each field: the IVs, nature and sex
 are null for random ones. The field scripts name the trades they start, as `FieldTradeCheck 0x8022, TRADE_GIGALITH,
 0x8020`. Both versions have the same trades.
+
+## Battle facilities
+
+A battle facility's trainers and the Pokémon sets they pick from are in `data/facilities/<facility>/`, as
+pokeplatinum's `res/trainers/frontier/`: `trainers/<trainer>.json` has a trainer's class, its sets by name, and its
+name and messages, which the text takes (see [Text](#text)); `pokemon/<set>.json` is a set (`BSubwayPokemonData` in
+`include/field/battle_facility.h`), named after its species and numbered from 1, as `gengar_4.json`; and `order.json`
+lists both in archive order. `tools/scripts/facility_data.py pack` builds the facility's trainers and Pokémon
+archives, and `data/facilities/facility.schema.json` and `set.schema.json` document the fields.
+
+`FACILITIES` in `facility_data.py` says which archives and message files are a facility's. So far that is the Battle
+Subway (`a/2/1/2` and `a/2/1/1`, whose trainers' names are system message file 15 and their three messages each file
+376), which the Trial House also uses (`func_ov012_02162864`). The other facilities' archives, of the Pokémon World
+Tournament and the Black Tower and White Treehollow among them, have the same formats but aren't tied to their code
+yet. Both versions have the same facility data.
 
 ## Zone events
 

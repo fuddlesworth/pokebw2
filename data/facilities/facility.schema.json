@@ -1,0 +1,24 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "A battle facility's trainer: data/facilities/<facility>/trainers/<trainer>.json",
+    "description": "A trainer of a facility's trainers archive: its class and the sets it picks its Pokémon from, with its name and messages, which the text takes. tools/scripts/facility_data.py packs them in the order of the facility's order.json. A string value is the name of a constant from data/constants/ or include/constants/.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [ "class", "pokemon" ],
+    "properties": {
+        "$schema": { "type": "string", "description": "This schema, for editors" },
+        "name": {
+            "type": "string",
+            "description": "The trainer's name. The trainers with names come first; the facility's last trainers may have none"
+        },
+        "class": { "type": [ "string", "integer" ], "x-constant": "TRAINER_CLASS_", "minimum": 0, "maximum": 65535 },
+        "pokemon": {
+            "type": "array", "items": { "type": "string" },
+            "description": "The sets the trainer picks its Pokémon from, by name, of the facility's pokemon/"
+        },
+        "messages": {
+            "type": "array", "items": { "type": "string" },
+            "description": "What the trainer says, with their line breaks: as many as the facility has for each trainer, for the trainers with names"
+        }
+    }
+}

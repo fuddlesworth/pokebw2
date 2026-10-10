@@ -176,7 +176,22 @@ SOURCES = {
 }
 
 
+def facility_lines(source: str) -> list[str] | None:
+    """facilities.<facility>.names or .messages: a battle facility's trainers' names or messages (facility_data.py)."""
+    parts = source.split(".")
+    if len(parts) != 3 or parts[0] != "facilities" or parts[2] not in ("names", "messages"):
+        return None
+    from facility_data import FACILITIES, text_lines
+
+    if parts[1] not in FACILITIES:
+        raise DataError(f"\\from{{{source}}}: no facility {parts[1]}")
+    return [to_line(line) for line in text_lines(parts[1], parts[2])]
+
+
 def expand(source: str) -> list[str]:
+    lines = facility_lines(source)
+    if lines is not None:
+        return lines
     if source not in SOURCES:
         raise DataError(f"\\from{{{source}}}: no such source; there are {', '.join(SOURCES)}")
     return SOURCES[source]()
