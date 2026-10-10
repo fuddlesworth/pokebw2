@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/undella_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -17,7 +18,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The longest road in Unova...\nI heard it's Route 13."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaGate_Text_LongestRoadUnovaHeard, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -29,7 +30,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I love to clear my path by\nhaving Pokémon use Hidden Moves!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaGate_Text_LoveClearPathBy, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

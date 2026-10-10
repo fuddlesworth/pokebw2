@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_15.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -10,7 +11,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Helping someone even though the person\ndoesn't ask for help...[f000]븀\u0000\nIt's like, “Who do you think you are?\"[f000]븁\u0000\nI don't get it, because I can't tell\nwhether another person is happy or not."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate15_Text_HelpingSomeoneEvenThough, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -22,7 +23,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Nobody has used the beds\nin this room.[f000]븁\u0000\nIf you think I'm lying, take a look,\nthen take a rest!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate15_Text_NobodyHasUsedBeds, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -34,14 +35,14 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     WordSetPlayerName 0
     // "The bed looks nice and comfortable.\nWill you take a quick rest?"
-    SystemMsg 2, 0
+    SystemMsg PlasmaFrigate15_Text_BedLooksNiceComfortable, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009C
     // "[f000]Ā\u0001\u0000 hopped into bed and\nfell asleep...[f000]븁\u0000"
-    SystemMsg 3, 0
+    SystemMsg PlasmaFrigate15_Text_HoppedIntoBedFell, 0
     InfoMsgClose
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -51,7 +52,7 @@ Script_3:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "[f000]Ā\u0001\u0000 and the Pokémon\ntook a nap and regained energy!"
-    SystemMsg 4, 0
+    SystemMsg PlasmaFrigate15_Text_PokemonTookNapRegained, 0
     LastKeyWait
 
 L_009C:

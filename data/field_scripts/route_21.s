@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_21.h"
 
 // Script plugin 15, from the zones that use this file
 
@@ -94,7 +95,7 @@ Script_4:
     ActorCmdExec 255, Movement_06A4
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: You found them!\nI knew you could do it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_FoundThemKnewCould, 9, 0, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -141,15 +142,15 @@ L_0242:
     ActorCmdWait
     EvCameraWait
     // "But...\nHow do we get in?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_ButHowWeGet, 9, 0, 0
     MsgWinCloseAll
     // "???: Hold up![f000]븁\u0000"
-    InfoMsg 2, 2
+    InfoMsg Route21_Text_HoldUp, 2
     MsgWinCloseAll
     Cmd_02E8 1, 1
     SEPlay SEQ_SE_SW_RENBU_02
     // "A heavy gangplank fell\nwith a solid thud...[f000]븁\u0000"
-    InfoMsg 3, 2
+    InfoMsg Route21_Text_HeavyGangplankFellSolid, 2
     MsgWinCloseAll
     SEWait
     EvCameraMoveToDefault 1
@@ -211,31 +212,31 @@ Script_7:
     ActorCmdExec 10, Movement_04BC
     ActorCmdWait
     // "Marlon: Eh, this should do it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_MarlonEhShould, 10, 0, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: I thought you weren't\ngoing to fight Team Plasma?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_ThoughtWerentGoingFight, 9, 0, 0
     MsgWinCloseAll
     // "Marlon: Hey, friends!\nTeam Plasma's not botherin' me.[f000]븁\u0000\nThey could be up to no good\nfor reals, and...[f000]븁\u0000\nIt's not my style to go around\ndecidin' Team Plasma's bad[f000]븀\u0000\nwithout thinkin' 'bout it[f000]븀\u0000\njust 'cause everyone says so![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_MarlonHeyFriendsTeam, 10, 0, 0
     // "But, eh, you're havin' trouble,\nso I've got to help out![f000]븀\u0000\nThat's what I want to do![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_ButEhYoureHavin, 10, 0, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Thanks...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_Thanks, 9, 0, 0
     MsgWinCloseAll
     // "Marlon: Listen, 'K.\nBelieve in somethin'![f000]븁\u0000\nSearchin' for stolen\nPokémon is fine![f000]븁\u0000\nKeepin' Unova from bein'\niced over's fine too![f000]븁\u0000\nIt's all good.\nBut think 'bout why you're doin' that.[f000]븁\u0000\nThe strength of your beliefs is what\ngives you and your Pokémon power![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_MarlonListenKBelieve, 10, 0, 0
     MsgWinCloseAll
     ActorCmdExec 10, Movement_06AC
     ActorCmdWait
     // "I made some noise,\nso some people came out![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_MadeSomeNoiseSome, 10, 0, 0
     MsgWinCloseAll
     ActorCmdExec 10, Movement_06A4
     ActorCmdWait
     // "Hey, be careful, 'K![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_HeyCarefulK, 10, 0, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -250,13 +251,13 @@ Script_7:
     SEWait
     EvCameraWait
     // "[f000]Ā\u0001\u0001: What was that?!\nThe guy sure doesn't follow through![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_WhatGuySureDoesnt, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0694
     ActorCmdExec 255, Movement_069C
     ActorCmdWait
     // "Well, I guess he was being\nkind in his own way...[f000]븁\u0000\nAll right, I'm going in![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_WellGuessHeBeing, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_04D8
     VMSleep 4
@@ -328,7 +329,7 @@ Script_5:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Team Plasma![f000]븁\u0000\nNo matter where you fly,\nI won't let you get away![f000]븁\u0000\nBut, what's over there anyway?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_TeamPlasmaNoMatter, 9, 0, 0
     MsgWinCloseAll
     SEPlay SEQ_SE_KAIDAN
     ActorAdd 11
@@ -340,18 +341,18 @@ Script_5:
     ActorCmdExec 255, Movement_06A4
     ActorCmdWait
     // "Cheren: Sorry I'm late...[f000]븁\u0000\nI suspect that they're flying\ntoward the Giant Chasm.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_CherenSorryImLate, 11, 0, 0
     MsgWinCloseAll
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: The Giant Chasm!\nThat's deep in Route 22, right?[f000]븁\u0000\nOK, I'm going!\n[f000]Ā\u0001\u0000! You come too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_GiantChasmThatsDeep, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_069C
     ActorCmdExec 255, Movement_0694
     ActorCmdWait
     // "That Pokémon...[f000]븁\u0000\nKyurem, was it?[f000]븁\u0000\nIts cry sounded\nlonely somehow.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_PokemonKyuremItsCry, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0624
     VMSleep 8
@@ -364,13 +365,13 @@ Script_5:
     ActorCmdExec 11, Movement_06AC
     ActorCmdWait
     // "Cheren: Kyurem![f000]븁\u0000\nTeam Plasma is using Kyurem's\npower for evil?![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route21_Text_CherenKyuremTeamPlasma, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_060C
     ActorCmdWait
     // "Then how should we stop\nTeam Plasma?[f000]븁\u0000\nIf Kyurem is, like Drayden said,\na legendary Dragon-type Pokémon,[f000]븀\u0000\nthe only ones who could stand up[f000]븀\u0000\nto it are Reshiram or Zekrom![f000]븁\u0000\nBut...\nNeither of them is here right now...[f000]븁\u0000\nWhere are the ones the legendary\nPokémon recognized as heroes, anyway?[f000]븀\u0000\nI guess I just have to find one of them!"
     // "Then how should we stop\nTeam Plasma?[f000]븁\u0000\nIf Kyurem is, like Drayden said,\na legendary Dragon-type Pokémon,[f000]븀\u0000\nthe only ones who could stand up[f000]븀\u0000\nto it are Zekrom or Reshiram![f000]븁\u0000\nBut...\nNeither of them is here right now...[f000]븁\u0000\nWhere are the ones the legendary\nPokémon recognized as heroes, anyway?[f000]븀\u0000\nI guess I just have to find one of them!"
-    ActorMsgVersioned 1024, 19, 20, 11, 0, 0
+    ActorMsgVersioned 1024, Route21_Text_ThenHowShouldWe, Route21_Text_ThenHowShouldWe_2, 11, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x4106, 5
@@ -406,7 +407,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Cheren: Yeah...[f000]븁\u0000\nYou can get to the Giant Chasm\nfrom Route 22."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route21_Text_CherenYeahCanGet, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

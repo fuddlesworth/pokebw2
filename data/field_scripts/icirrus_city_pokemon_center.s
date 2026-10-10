@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/icirrus_city_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -72,7 +73,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 613, 0
     // "Cuuub!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCityPokemonCenter_Text_Cuuub, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

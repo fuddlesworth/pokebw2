@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/black_city_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -42,7 +43,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Have you heard about the keys? They can\nswitch between black and white..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCityPokemonCenter_Text_HaveHeardAboutKeys, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

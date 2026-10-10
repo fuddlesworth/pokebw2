@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nuvema_town_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -44,7 +45,7 @@ Script_2:
     WordSetPlayerName 0
     Cmd_02B5 0, 1
     // "Cheren's Mom: Oh my...\nYou resemble [f000]Ā\u0001\u0001 somehow...[f000]븁\u0000\nYour name's [f000]Ā\u0001\u0000, you say?\nWow! You have a Pokédex, too![f000]븁\u0000\nEveryone grows up like this\nnow, don't they?"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown6_Text_CherensMomOhResemble, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_00C5
@@ -52,7 +53,7 @@ Script_2:
 L_00B4:
     WordSetPlayerName 0
     // "Cheren's Mom: Oh... So your name's\n[f000]Ā\u0001\u0000, then.[f000]븁\u0000\nWow! You have a Pokédex, too![f000]븁\u0000\nEveryone grows up like this now,\ndon't they?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown6_Text_CherensMomOhNames, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

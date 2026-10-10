@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10315.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -26,7 +27,7 @@ Script_1:
 
 L_006D:
     // "It's full of cardboard boxes with\nelectrical appliances in them.[f000]븁\u0000\nOh? Rotom would like to investigate the\nmotors of the electrical appliances...[f000]븁\u0000\nIs that OK?"
-    SystemMsg 1, 2
+    SystemMsg Global10315_Text_ItsFullCardboardBoxes_2, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -48,7 +49,7 @@ L_00BE:
 
 L_00C4:
     // "Which Rotom will you allow\nto enter a motor?[f000]븁\u0000"
-    SystemMsg 3, 2
+    SystemMsg Global10315_Text_WhichRotomWillAllow, 2
     InfoMsgClose
     CallPokeSelect 0, 0x8010, 0x8021, 0
     VMStackPush 0x8010
@@ -140,7 +141,7 @@ L_01EF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02FF
     // "Which appliance's motor will you\nallow [f000]Ă\u0001\u0000 to enter?"
-    SystemMsg 6, 2
+    SystemMsg Global10315_Text_WhichAppliancesMotorWill, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32813
     ListMenuAdd 7, 65535, 1
     ListMenuAdd 8, 65535, 2
@@ -183,13 +184,13 @@ L_0293:
     VMJumpIf CMP_STACK, L_02E2
     WordSetPartyPokeName 0, 0x8021
     // "[f000]Ă\u0001\u0000 hasn't entered a motor.[f000]븁\u0000"
-    SystemMsg 24, 2
+    SystemMsg Global10315_Text_HasntEnteredMotor, 2
     VMJump L_02ED
 
 L_02E2:
     WordSetPartyPokeName 0, 0x8021
     // "This [f000]Ă\u0001\u0000 has already entered\nthat appliance motor.[f000]븁\u0000"
-    SystemMsg 22, 2
+    SystemMsg Global10315_Text_HasAlreadyEnteredAppliance, 2
 
 L_02ED:
     VMJump L_02F9
@@ -216,7 +217,7 @@ L_0335:
     WordSetPartyPokeName 0, 0x8021
     PVPlay 479, 0
     // "[f000]Ă\u0001\u0000 entered the motor."
-    SystemMsg 14, 2
+    SystemMsg Global10315_Text_EnteredMotor, 2
     PVWait
     MsgWaitAdvance
     WorkSetConst 0x8023, 0
@@ -320,7 +321,7 @@ L_04AF:
     WordSetPartyPokeName 0, 0x8021
     WordSetMoveName 2, 0x802e
     // "[f000]Ă\u0001\u0000 forgot [f000]ć\u0001\u0002...[f000]븁\u0000"
-    SystemMsg 21, 2
+    SystemMsg Global10315_Text_Forgot, 2
 
 L_04BF:
     VMReturn
@@ -375,7 +376,7 @@ L_0574:
     WordSetMoveName 1, 0x8025
     WordSetMoveName 2, 0x8024
     // "1, [f000]븂\u0001\u00142, and[f000]븂\u0001\u0014... [f000]븂\u0001\u0014... [f000]븂\u0001\u0014... Ta-da![f000]븅\u0001\u0003[f000]븅\u0001\u0006[f000]븁\u0000\n[f000]Ă\u0001\u0000 forgot how to\nuse [f000]ć\u0001\u0001.[f000]븁\u0000\nAnd...[f000]븁\u0000"
-    SystemMsg 19, 2
+    SystemMsg Global10315_Text_12TaDa, 2
     WorkSetConst 0x8022, 20
     VMCall L_013E
     VMReturn
@@ -392,7 +393,7 @@ L_05A3:
     WordSetPartyPokeName 0, 0x8021
     WordSetMoveName 1, 0x8024
     // "[f000]Ă\u0001\u0000 is trying to\nlearn [f000]ć\u0001\u0001.[f000]븁\u0000\nBut [f000]Ă\u0001\u0000 can't learn\nmore than four moves.[f000]븁\u0000\nDelete a move to make\nroom for [f000]ć\u0001\u0001?"
-    SystemMsg 15, 2
+    SystemMsg Global10315_Text_TryingLearnButCant, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -420,7 +421,7 @@ L_0629:
     PokePartyGetMove 0x8025, 0x8021, 0x8023
     WordSetMoveName 1, 0x8025
     // "Is it OK to forget\nthe move [f000]ć\u0001\u0001?"
-    SystemMsg 18, 2
+    SystemMsg Global10315_Text_OkForgetMove, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -463,6 +464,6 @@ L_06C5:
 L_06C7:
     WordSetMoveName 1, 0x8024
     // "Give up on learning the\nmove [f000]ć\u0001\u0001?"
-    SystemMsg 16, 2
+    SystemMsg Global10315_Text_GiveUpLearningMove, 2
     YesNoWin 0x8010
     VMReturn

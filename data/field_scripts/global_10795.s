@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10795.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -26,7 +27,7 @@
 L_0058:
     SEPlay SEQ_SE_MESSAGE
     // "Look!\nYou've found a narrow path![f000]븁\u0000\nWill you follow it?"
-    SystemMsg 0, 2
+    SystemMsg Global10795_Text_LookYouveFoundNarrow, 2
     YesNoWin 0x8010
     InfoMsgClose
     SEWait

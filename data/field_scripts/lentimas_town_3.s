@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lentimas_town_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -38,7 +39,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I was born here and will die here.[f000]븁\u0000\nLentimas Town is a country town,\nbut I don't mind, because I don't know[f000]븀\u0000\nanywhere else."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LentimasTown3_Text_BornHereWillDie, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -50,7 +51,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There is nothing but beauty here,\nbut Skyla delivers things[f000]븀\u0000\nwe don't have."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LentimasTown3_Text_ThereNothingButBeauty, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

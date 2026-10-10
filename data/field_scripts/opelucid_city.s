@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -392,20 +393,20 @@ Script_8:
     ActorWalkRoute 11, 0x8021, 0x8022, 0, 8, 1
     ActorCmdWait
     // "Iris: Yahoo! I haven't seen you since\nI ran into you in Castelia City![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_IrisYahooHaventSeen, 11, 0, 0
     // "Are you here to battle Grandpa?[f000]븁\u0000\nYep! Opelucid City's Gym Leader,\nDrayden, is my grandpa.[f000]븁\u0000\nWe're not really related, though![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_HereBattleGrandpaYep, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_245C
     ActorCmdWait
     // "Oh! The Gym is that way![f000]븁\u0000\nBefore challenging it,\nyou might want to go to Route 9![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_OhGymWayBefore, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_2464
     ActorCmdWait
     // "Still, your Pokémon really respect you![f000]븁\u0000\nI feel how much fun your Pokémon are\nhaving, even from inside their Poké Balls![f000]븁\u0000\nGood luck![f000]븁\u0000"
     // "Still, your Pokémon really respect you![f000]븁\u0000\nI feel how much fun they're having,\neven from inside their Poké Balls![f000]븁\u0000\nGood luck![f000]븁\u0000"
-    ActorMsgGendered 1024, 3, 4, 11, 0, 0
+    ActorMsgGendered 1024, OpelucidCity_Text_StillPokemonReallyRespect, OpelucidCity_Text_StillPokemonReallyRespect_2, 11, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 11, 426, 0x8022, 0, 8, 0
     ActorCmdWait
@@ -435,7 +436,7 @@ Script_9:
     ActorCmdWait
     EvCameraWait
     // "Drayden: I'll show you the way.\nFollow me.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenIllShowWay, 0, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 0, 406, 154, 4, 8, 0
     VMSleep 24
@@ -472,7 +473,7 @@ Script_10:
     ActorsPauseAll
     PlayerGetGPos 0x8021, 0x8022
     // "This way.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_Way, 0, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 0, 418, 161, 4, 8, 0
     ActorCmdWait
@@ -487,7 +488,7 @@ Script_10:
 Script_11:
     ActorsPauseAll
     // "We're here.\nOK! Come inside.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_WereHereOkCome, 0, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 0, 418, 160, 0, 8, 0
     ActorCmdWait
@@ -514,7 +515,7 @@ Script_11:
 Script_21:
     ActorsPauseAll
     // "What was that?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_What, 0, 5, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -593,16 +594,16 @@ L_09A9:
 
 L_09B5:
     // "This world of ice...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_WorldIce, 0, 5, 0
     MsgWinCloseAll
     GameGetVersion 0x8023
     VMCall L_0D6C
     // "Haxorus!\nUse Dragon Tail![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_HaxorusUseDragonTail, 0, 5, 0
     MsgWinCloseAll
     PVPlay 612, 0
     // "Rarh raaaah!"
-    ActorMsg MSGFILE_SCRIPT, 11, 251, 6, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_RarhRaaaah, 251, 6, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -618,7 +619,7 @@ L_09B5:
     ActorCmdExec 0, Movement_246C
     ActorCmdWait
     // "That's enough, Haxorus![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ThatsEnoughHaxorus, 0, 5, 0
     MsgWinCloseAll
     VMStackPush 0x8023
     VMStackPushConst 23
@@ -634,10 +635,10 @@ L_0A6A:
     ActorCmdWait
     VMCall L_0E10
     // "Not only did the ice stay unbroken,\nthere's not even a scratch on it![f000]븀\u0000\nWhat's going on?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_NotOnlyDidIce, 0, 5, 0
     MsgWinCloseAll
     // "???: I don't think that's going to work.[f000]븁\u0000"
-    InfoMsg 14, 2
+    InfoMsg OpelucidCity_Text_DontThinkThatsGoing, 2
     MsgWinCloseAll
     BGMPlay SEQ_BGM_E_7_SAGE
     VMStackPush 0x8023
@@ -668,21 +669,21 @@ L_0B44:
     ActorCmdExec 4, Movement_244C
     ActorCmdWait
     // "Drayden: I remember you from N's Castle.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenRememberFromNs, 0, 5, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0D58
     ActorCmdWait
     // "Zinzolin: It's bitter cold.[f000]븁\u0000\nI'm shivering.\nI'm suffering, but I'm alive![f000]븁\u0000\nIt's what the essence of life feels like!\nIt's proof of my existence![f000]븁\u0000\nBut that's enough of philosophy.\nHere are the facts for your admiration:[f000]븁\u0000\nThis ice was specially created by\nTeam Plasma's technology.[f000]븁\u0000\nAs long as we have our secret weapon,\nyou'll never be able[f000]븀\u0000\nto melt or break this ice![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ZinzolinItsBitterCold, 1, 4, 0
     MsgWinCloseAll
     // "Let me explain our purpose here.[f000]븁\u0000\nDrayden, hand over the DNA Splicers![f000]븁\u0000\nOpelucid City is a city where the\npast and the future are entwined.[f000]븁\u0000\nCould there be a more perfect place\nfor the splicers that connect the[f000]븀\u0000\nseparated Pokémon?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_LetExplainOurPurpose, 1, 4, 0
     MsgWinCloseAll
     // "Drayden: Do you think someone\nwho knows what you did two years[f000]븀\u0000\nago will just hand them over quietly?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenThinkSomeoneWho, 0, 5, 0
     MsgWinCloseAll
     // "Zinzolin: Humph.\nThat's what I thought you'd say.[f000]븁\u0000\nAt this point, I'd like to threaten\nyou with another volley of ice,[f000]븀\u0000\nbut we can't use it for a moment...[f000]븁\u0000\nSigh. It won't be enjoyable in this cold,\nbut I guess we'll just search for them.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ZinzolinHumphThatsWhat, 1, 4, 0
     MsgWinCloseAll
     VMStackPush 0x8023
     VMStackPushConst 23
@@ -704,13 +705,13 @@ L_0C1F:
     BGMChangeMap
     ActorDelete 1
     // "Drayden: Those foul villains![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenThoseFoulVillains, 0, 5, 0
     ActorCmdExec 19, Movement_2464
     ActorCmdExec 0, Movement_245C
     ActorCmdWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000!\nI want you to help me![f000]븁\u0000\nWe're going to drive Team Plasma\nout of Opelucid City![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 0, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_WantHelpWereGoing, 0, 5, 0
     MsgWinCloseAll
     VMStackPush 0x8023
     VMStackPushConst 23
@@ -908,13 +909,13 @@ L_0F58:
 L_0F83:
     ActorCmdWait
     // "Drayden: You're even better than I\nhoped. Thanks to you, we drove them off.[f000]븁\u0000\nI'm grateful to your Pokémon, also.[f000]븁\u0000\nAfter all that, the least I can do\nis heal them with this medicine.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 40, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenYoureEvenBetter, 0, 1, 0
     MsgWinCloseAll
     SEPlay SEQ_SE_RECOVERY
     SEWait
     PokePartyRecoverAll
     // "Wait here a moment.\nI'll be right back.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 41, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_WaitHereMomentIll, 0, 1, 0
     MsgWinCloseAll
     GameGetVersion 0x8023
     VMStackPush 0x8023
@@ -987,15 +988,15 @@ L_1079:
 L_10B2:
     WordSetPlayerName 0
     // "Harrumph...[f000]븁\u0000\nThat's a new record for\nmaking it there and back.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 42, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_HarrumphThatsNewRecord, 0, 1, 0
     // "Look, [f000]Ā\u0001\u0000.\nThese are the DNA Splicers![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 43, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_LookTheseDnaSplicers, 0, 1, 0
     MsgWinCloseAll
     SEPlay SEQ_SE_W234_HIKARI
     FieldEffect 628
     SEWait
     // "This is what they were after![f000]븁\u0000\nWe're really fortunate Team Plasma\ndidn't get their hands on them![f000]븁\u0000\nI don't know what their goal is, but I'm\nsure they're planning something wicked.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 44, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_WhatTheyWereAfter, 0, 1, 0
     MsgWinCloseAll
     ActorAdd 8
     VMStackPush 0x8023
@@ -1031,13 +1032,13 @@ L_1163:
 
 L_1175:
     // "Shadow Triad: As we suspected...\nThe hiding place was in the Gym.[f000]븁\u0000\nWell thought out.\nIf Drayden isn't there, we can't get in.[f000]븁\u0000\nIf he is there, he's the strongest\nguard we could possibly face.[f000]븁\u0000\nIt also explains why the\nPokémon Gym was remodeled.[f000]븁\u0000\nWhatever.\nThe DNA Splicers are in our hands now.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 45, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ShadowTriadWeSuspected, 8, 2, 0
     MsgWinCloseAll
     // "Drayden: It's beyond my imagination to\nthink you'd use one of the Seven Sages[f000]븀\u0000\nto find out where the splicers were![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 46, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenItsBeyondImagination, 0, 1, 0
     MsgWinCloseAll
     // "Shadow Triad: Now you know, then.[f000]븁\u0000\nWe will accomplish our goals,\nno matter what the cost.[f000]븁\u0000\nWe don't have the ability to captivate\nthe hearts of others like Lord N does.[f000]븁\u0000\nInstead, we will bend people\nto our will with brute force.[f000]븀\u0000\nTwo years was a surprisingly long wait.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 47, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ShadowTriadNowKnow, 8, 2, 0
     MsgWinCloseAll
     ActorAdd 9
     ActorAdd 10
@@ -1086,7 +1087,7 @@ L_124F:
 
 L_1278:
     // "Drayden: If they've been stolen from us,\nwe'll just have to take them back![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 48, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenIfTheyveBeen, 0, 1, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     GameGetVersion 0x8023
@@ -1331,13 +1332,13 @@ L_15AB:
 
 L_15B7:
     // "Shadow Triad: Heh heh...[f000]븁\u0000\nYou don't really think you can take\nthe DNA Splicers back, do you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 50, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ShadowTriadHehHeh, 8, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_4, 0, 0
     VMCall L_1EF9
     PlayerGetGPos 0x8021, 0x8022
     // "Shadow Triad: Awww. How unlucky.[f000]븁\u0000\nI don't happen to be the one\nholding the DNA Splicers.[f000]븁\u0000\nI was just buying time\nfor the others to escape.[f000]븀\u0000\nCheerio, bye-bye, whatever.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 51, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ShadowTriadAwwwHow, 8, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8022
@@ -1433,23 +1434,23 @@ L_174B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1775
     // "Drayden: Oh no! Ah! No![f000]븁\u0000\nNo, no, it's not your fault, [f000]Ā\u0001\u0000.\nYou were impressive![f000]븁\u0000\nIt's me who's let everybody down.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 52, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenOhNoAh, 0, 3, 0
     VMJump L_1781
 
 L_1775:
     // "Drayden: Oh no! Ah! No![f000]븁\u0000\nNo, no, it's not your fault, [f000]Ā\u0001\u0000.\nYou were impressive![f000]븁\u0000\nIt's me who's let everybody down.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 52, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenOhNoAh, 0, 4, 0
 
 L_1781:
     MsgWinCloseAll
     MEPlay SEQ_ME_CALL
     // "The Xtransceiver is ringing."
-    SystemMsg 53, 2
+    SystemMsg OpelucidCity_Text_XtransceiverRinging, 2
     MEWait
     InfoMsgClose
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 picked up the Xtransceiver.[f000]븁\u0000"
-    SystemMsg 54, 2
+    SystemMsg OpelucidCity_Text_PickedUpXtransceiver, 2
     InfoMsgClose
     FadeOutBlackQ
     FadeWait
@@ -1461,12 +1462,12 @@ L_1781:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_17CF
     // "Drayden: Augh!\nIf there were only two of me![f000]븁\u0000\nThen I could protect the town\nand chase after them, too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 55, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenAughIfThere, 0, 3, 0
     VMJump L_17DB
 
 L_17CF:
     // "Drayden: Augh!\nIf there were only two of me![f000]븁\u0000\nThen I could protect the town\nand chase after them, too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 55, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenAughIfThere, 0, 4, 0
 
 L_17DB:
     MsgWinCloseAll
@@ -1495,12 +1496,12 @@ L_183A:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1865
     // "Cheren: [f000]Ā\u0001\u0000.\nDrayden, glad to see you're safe as well.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 56, 251, 6, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_CherenDraydenGladSee, 251, 6, 0
     VMJump L_1871
 
 L_1865:
     // "Cheren: [f000]Ā\u0001\u0000.\nDrayden, glad to see you're safe as well.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 56, 251, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_CherenDraydenGladSee, 251, 5, 0
 
 L_1871:
     MsgWinCloseAll
@@ -1509,12 +1510,12 @@ L_1871:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1898
     // "Drayden: Hello, Cheren.\nYou have certainly grown.[f000]븁\u0000\nI hear you filled in for Lenora by\nbecoming the Gym Leader in[f000]븀\u0000\nAspertia City.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 57, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenHelloCherenHave, 0, 3, 0
     VMJump L_18A4
 
 L_1898:
     // "Drayden: Hello, Cheren.\nYou have certainly grown.[f000]븁\u0000\nI hear you filled in for Lenora by\nbecoming the Gym Leader in[f000]븀\u0000\nAspertia City.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 57, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenHelloCherenHave, 0, 4, 0
 
 L_18A4:
     MsgWinCloseAll
@@ -1525,12 +1526,12 @@ L_18A4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_18D1
     // "Cheren: Thanks.\nWe should save catching up for later.[f000]븁\u0000\nI have a good idea of where\nTeam Plasma is hiding.[f000]븁\u0000\nThe place with the lowest temperature\nin the Unova region right now is[f000]븀\u0000\nan area close to Humilau City.[f000]븁\u0000\nDrayden, please protect Opelucid City.\n[f000]Ā\u0001\u0001 and I will find Team Plasma![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 58, 251, 6, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_CherenThanksWeShould, 251, 6, 0
     VMJump L_18DD
 
 L_18D1:
     // "Cheren: Thanks.\nWe should save catching up for later.[f000]븁\u0000\nI have a good idea of where\nTeam Plasma is hiding.[f000]븁\u0000\nThe place with the lowest temperature\nin the Unova region right now is[f000]븀\u0000\nan area close to Humilau City.[f000]븁\u0000\nDrayden, please protect Opelucid City.\n[f000]Ā\u0001\u0001 and I will find Team Plasma![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 58, 251, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_CherenThanksWeShould, 251, 5, 0
 
 L_18DD:
     MsgWinCloseAll
@@ -1539,12 +1540,12 @@ L_18DD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1904
     // "Drayden: Very well.\nI'll do my part--and thanks.[f000]븁\u0000\nThe chase I'll leave to you!\nBut...don't do anything reckless.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 59, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenVeryWellIll, 0, 3, 0
     VMJump L_1910
 
 L_1904:
     // "Drayden: Very well.\nI'll do my part--and thanks.[f000]븁\u0000\nThe chase I'll leave to you!\nBut...don't do anything reckless.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 59, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenVeryWellIll, 0, 4, 0
 
 L_1910:
     MsgWinCloseAll
@@ -1555,12 +1556,12 @@ L_1910:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_193D
     // "Cheren: [f000]Ā\u0001\u0000!\nI could use your help, if you're willing.[f000]븁\u0000\nYou're a skilled Trainer who can go\ntoe-to-toe with Team Plasma.[f000]븀\u0000\nThat's my definition of useful.[f000]븁\u0000\nDrayden, we're off![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 60, 251, 6, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_CherenCouldUseHelp, 251, 6, 0
     VMJump L_1949
 
 L_193D:
     // "Cheren: [f000]Ā\u0001\u0000!\nI could use your help, if you're willing.[f000]븁\u0000\nYou're a skilled Trainer who can go\ntoe-to-toe with Team Plasma.[f000]븀\u0000\nThat's my definition of useful.[f000]븁\u0000\nDrayden, we're off![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 60, 251, 5, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_CherenCouldUseHelp, 251, 5, 0
 
 L_1949:
     MsgWinCloseAll
@@ -1610,12 +1611,12 @@ L_19FA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1A21
     // "Drayden: Humilau City, huh...[f000]븁\u0000\nIs there anything to the\nnorth of Undella Town?[f000]븁\u0000\n[f000]Ā\u0001\u0000, protect Pokémon\nfrom Team Plasma![f000]븁\u0000\nAll people should think for themselves\nabout the nature of the relationship[f000]븀\u0000\nbetween people and Pokémon.[f000]븁\u0000\nIt's not something Team Plasma gets\nto decide for everyone!"
-    ActorMsg MSGFILE_SCRIPT, 61, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenHumilauCityHuh, 0, 3, 0
     VMJump L_1A2D
 
 L_1A21:
     // "Drayden: Humilau City, huh...[f000]븁\u0000\nIs there anything to the\nnorth of Undella Town?[f000]븁\u0000\n[f000]Ā\u0001\u0000, protect Pokémon\nfrom Team Plasma![f000]븁\u0000\nAll people should think for themselves\nabout the nature of the relationship[f000]븀\u0000\nbetween people and Pokémon.[f000]븁\u0000\nIt's not something Team Plasma gets\nto decide for everyone!"
-    ActorMsg MSGFILE_SCRIPT, 61, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenHumilauCityHuh, 0, 4, 0
 
 L_1A2D:
     LastKeyWait
@@ -1684,7 +1685,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I was just reminded of Iris.[f000]븁\u0000\nYes, the Champion.\nThat Iris...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 82, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_JustRemindedIrisYes, 0, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     RTReserveScript 1
@@ -1699,7 +1700,7 @@ L_1B34:
     VMJumpIf CMP_STACK, L_1B61
     SEPlay SEQ_SE_MESSAGE
     // "Drayden: They're getting tougher![f000]븁\u0000\n[f000]Ā\u0001\u0000!\nTake care of the others!"
-    ActorMsg MSGFILE_SCRIPT, 34, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenTheyreGettingTougher, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_1C2F
@@ -1716,7 +1717,7 @@ L_1B61:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Drayden: Little by little,\nthe ice is starting to melt.[f000]븁\u0000\nIt's all thanks to you.\nAs a fellow Trainer, I heartily thank you!"
-    ParentActorMsg MSGFILE_SCRIPT, 62, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenLittleByLittle, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1C2F
@@ -1733,7 +1734,7 @@ L_1B9E:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Drayden: The only one left is\nZinzolin of the Seven Sages![f000]븀\u0000\nWhere could he be?[f000]븁\u0000\nOh!\nWhat's going on at the Pokémon Gym?!"
-    ParentActorMsg MSGFILE_SCRIPT, 35, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenOnlyOneLeft, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1C2F
@@ -1746,7 +1747,7 @@ L_1BDB:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Drayden: They don't seem to be in\nthis area. However, they can hide their[f000]븀\u0000\npresence, so be on guard as you look!"
-    ParentActorMsg MSGFILE_SCRIPT, 49, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenTheyDontSeem, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1C2F
@@ -1759,7 +1760,7 @@ L_1C08:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Drayden: Humilau City, huh...[f000]븁\u0000\nIs there anything to the\nnorth of Undella Town?[f000]븁\u0000\n[f000]Ā\u0001\u0000, protect Pokémon\nfrom Team Plasma![f000]븁\u0000\nAll people should think for themselves\nabout the nature of the relationship[f000]븀\u0000\nbetween people and Pokémon.[f000]븁\u0000\nIt's not something Team Plasma gets\nto decide for everyone!"
-    ParentActorMsg MSGFILE_SCRIPT, 61, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_DraydenHumilauCityHuh, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1774,12 +1775,12 @@ Script_14:
     ActorSetEyeToEye
     BGMPlayPush SEQ_BGM_E_7_SAGE
     // "Zinzolin: Oh, for crying out loud...[f000]븁\u0000\nI didn't expect to have to fight\nhampered by cold like this.[f000]븁\u0000\nWell, no matter! The fact that I'm\nshivering means I'm truly alive![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ZinzolinOhCryingOut, 1, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_TEAM_PLASMA_ZINZOLIN_3, 0, 0
     VMCall L_1EF9
     // "Zinzolin: You're a strong Trainer.[f000]븁\u0000\nYou definitely are adept\nat handling Pokémon.[f000]븁\u0000\nI believe I'll take my leave, simply\nbecause I can't stand this cold.[f000]븁\u0000\nBut...imagine this...[f000]븁\u0000\nA Unova region...completely...covered...\nin...ice.[f000]븁\u0000\nTo achieve that splendor,\nwe'll do whatever it takes[f000]븀\u0000\nto obtain the DNA Splicers.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 39, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ZinzolinYoureStrongTrainer, 1, 0, 0
     ActorMsgClose
     GameGetVersion 0x8023
     FadeEx 3, 0, 16, 4
@@ -1829,7 +1830,7 @@ Script_15:
     VMJumpIf CMP_STACK, L_1D70
     TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_41
     // "Team Plasma: Pokémon are pawns!\nThey're a means to an end.[f000]븁\u0000\nThat's what I was taught![f000]븁\u0000\nDon't think about it too much.\nIt's easier that way![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaPokemonPawns, 2, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_41, 0, 0
     VMCall L_1EF9
@@ -1848,14 +1849,14 @@ L_1D70:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_1D99
     // "Team Plasma: The others were saying\nthat the only place we haven't yet[f000]븀\u0000\nsearched is the Pokémon Gym!"
-    ActorMsg MSGFILE_SCRIPT, 24, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaOthersWere, 2, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1DA9
 
 L_1D99:
     // "Team Plasma: How can this be?[f000]븁\u0000\nIs that the kind of power Pokémon have\nwhen they're not treated like objects?"
-    ActorMsg MSGFILE_SCRIPT, 23, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaHowCan, 2, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1875,7 +1876,7 @@ Script_16:
     VMJumpIf CMP_STACK, L_1E15
     TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_42
     // "Team Plasma: This time, we'll take over\nthe Unova region![f000]븁\u0000\nYou! You're trembling already?\nFrom fear or from cold--either's good![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 25, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaTimeWell, 3, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_42, 0, 0
     VMCall L_1EF9
@@ -1894,14 +1895,14 @@ L_1E15:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_1E3E
     // "Team Plasma: Now that you mention it,\nI think I might have been ordered[f000]븀\u0000\nto comb the Pokémon Gym..."
-    ActorMsg MSGFILE_SCRIPT, 27, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaNowMention, 3, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1E4E
 
 L_1E3E:
     // "Team Plasma: It's not over!\nThe others will find the DNA Splicers![f000]븀\u0000\nWhen they do, the Unova region is ours!"
-    ActorMsg MSGFILE_SCRIPT, 26, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaItsNot, 3, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1921,7 +1922,7 @@ Script_19:
     VMJumpIf CMP_STACK, L_1EBA
     TrainerBGMPlayPush TRAINER_TEAM_PLASMA_GRUNT_43
     // "Team Plasma: Don't get in our way!\nYou bother![f000]븀\u0000\nBother, bother, bother![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 28, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaDontGet, 4, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_43, 0, 0
     VMCall L_1EF9
@@ -1940,14 +1941,14 @@ L_1EBA:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_1EE3
     // "Team Plasma: Zinzolin said to stick to\nDrayden, because that's where we'll[f000]븀\u0000\nfind anything important!"
-    ActorMsg MSGFILE_SCRIPT, 30, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaZinzolinSaid, 4, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1EF3
 
 L_1EE3:
     // "Team Plasma: How humiliating...\nBeing bothered by a bother..."
-    ActorMsg MSGFILE_SCRIPT, 29, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaHowHumiliating, 4, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1980,7 +1981,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Team Plasma: I think Zinzolin was going\nto check the Pokémon Gym..."
-    ParentActorMsg MSGFILE_SCRIPT, 32, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaThinkZinzolin, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1F5F
@@ -1989,7 +1990,7 @@ L_1F4B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Team Plasma: I lost.\nI didn't stand a chance...[f000]븁\u0000\nI can't believe Haxorus blasted me\nall the way over here!"
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaLostDidnt, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2002,7 +2003,7 @@ Script_18:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Team Plasma: I've been nursing a\ngrudge for two years, old man.[f000]븁\u0000\n...Even if this is the first time\nI've battled you!"
-    ActorMsg MSGFILE_SCRIPT, 33, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaIveBeen, 6, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -2018,7 +2019,7 @@ Script_20:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Team Plasma: Oh, that Drayden!\nWhere did he hide the DNA Splicers?[f000]븀\u0000\nSomewhere familiar and common, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 37, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaOhDrayden, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1FC4
@@ -2027,7 +2028,7 @@ L_1FB0:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Team Plasma: That old guy won't hold\nback even if his opponent is a young girl."
-    ParentActorMsg MSGFILE_SCRIPT, 36, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_TeamPlasmaOldGuy, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2062,7 +2063,7 @@ L_2013:
 
 L_2030:
     // "I was just reminded of Iris.[f000]븁\u0000\nYes, the Champion.\nThat Iris...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 82, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_JustRemindedIrisYes, 0, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     RTReserveScript 1
@@ -2093,7 +2094,7 @@ Script_33:
     BMHndAnmWait 0x8029
     BMReleaseHandle 0x8029
     // "I was just reminded of Iris.[f000]븁\u0000\nYes, the Champion.\nThat Iris...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 82, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_JustRemindedIrisYes, 0, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     RTReserveScript 1
@@ -2112,7 +2113,7 @@ Script_30:
     FadeInBlackQ
     FadeWait
     // "I wonder what kind of\nChampion she'll become."
-    ActorMsg MSGFILE_SCRIPT, 83, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_WonderWhatKindChampion, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 0, 418, 161, 4, 8, 0
@@ -2135,7 +2136,7 @@ Script_22:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Why do Pokémon stay by our sides?[f000]븁\u0000\nIf we could talk to them, we could ask.\nI'm a bit scared about what they'd say."
-    ParentActorMsg MSGFILE_SCRIPT, 63, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_WhyPokemonStayBy, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_2183
@@ -2145,7 +2146,7 @@ L_216B:
     ActorSetEyeToEye
     // "The memories of everyone who has lived\nin this city have built up over the years[f000]븀\u0000\nwithout changing much."
     // "This city changes endlessly.[f000]븁\u0000\nAnd every change is engraved in the\nmemories of the people who live here."
-    ActorMsgVersioned 1024, 64, 65, 14, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity_Text_MemoriesEveryoneWhoHas, OpelucidCity_Text_CityChangesEndlesslyEvery, 14, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2163,7 +2164,7 @@ Script_23:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I reached heights I never could\nhave arrived at because I had[f000]븀\u0000\nPokémon by my side.[f000]븁\u0000\nAnd I believe my Pokémon became\ntough because they were with me!"
-    ParentActorMsg MSGFILE_SCRIPT, 66, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ReachedHeightsNeverCould, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_21D0
@@ -2173,7 +2174,7 @@ L_21B8:
     ActorSetEyeToEye
     // "I think some things shouldn't be\nchanged, even if it's inconvenient."
     // "I think some things must be changed\nno matter how much you love them!"
-    ActorMsgVersioned 1024, 67, 68, 12, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity_Text_ThinkSomeThingsShouldnt, OpelucidCity_Text_ThinkSomeThingsMust, 12, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2191,7 +2192,7 @@ Script_24:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A person called N had the\nlegendary Pokémon with him,[f000]븀\u0000\nbut was he really the hero?"
-    ParentActorMsg MSGFILE_SCRIPT, 69, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_PersonCalledNHad, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_221D
@@ -2201,7 +2202,7 @@ L_2205:
     ActorSetEyeToEye
     // "A world of ice.[f000]븁\u0000\nSuch beauty goes beyond old and new--\ninspirational, yet terrifying.[f000]븁\u0000\nThough, to me, there's a comfort in\nold things that you can't find in the new."
     // "A world of ice.[f000]븁\u0000\nSuch beauty goes beyond new and old--\ninspirational, yet terrifying.[f000]븁\u0000\nThough, to me, there's a coolness to new\nthings that I prize more than the old."
-    ActorMsgVersioned 1024, 70, 71, 15, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity_Text_WorldIceSuchBeauty, OpelucidCity_Text_WorldIceSuchBeauty_2, 15, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2219,7 +2220,7 @@ Script_25:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Gym Leader Drayden leads\nOpelucid City as its mayor![f000]븁\u0000\nHe's always training by wrestling\nwith his Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 72, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_GymLeaderDraydenLeads, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_2266
@@ -2228,7 +2229,7 @@ L_2252:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My Pokémon show me affection,\nso I'm not lonely![f000]븁\u0000\nAnd I return their affection even more!"
-    ParentActorMsg MSGFILE_SCRIPT, 73, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_PokemonShowAffectionIm, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2246,7 +2247,7 @@ Script_27:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There was a group that told\npeople to release their Pokémon.[f000]븁\u0000\nThey were great big liars, but it\ncreated a good opportunity to think."
-    ParentActorMsg MSGFILE_SCRIPT, 74, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_ThereGroupToldPeople, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_22B3
@@ -2256,7 +2257,7 @@ L_229B:
     ActorSetEyeToEye
     // "After that speech, my Pokémon\nand I have been thinking about[f000]븀\u0000\nwhat's true for us."
     // "After that speech, I've been thinking\nabout the ideal relationship for me and[f000]븀\u0000\nmy Pokémon as we move forward together."
-    ActorMsgVersioned 1024, 75, 76, 13, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity_Text_AfterSpeechPokemonHave, OpelucidCity_Text_AfterSpeechIveBeen, 13, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2274,7 +2275,7 @@ Script_28:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Unova's symbols are\nZekrom and Reshiram,[f000]븀\u0000\nbut I wonder where they are now.[f000]븁\u0000\nAre they passing along their\nancient knowledge to someone?"
-    ParentActorMsg MSGFILE_SCRIPT, 77, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity_Text_UnovasSymbolsZekromReshiram, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_2300
@@ -2284,7 +2285,7 @@ L_22E8:
     ActorSetEyeToEye
     // "Pursuing ideals is different from person\nto person and Pokémon to Pokémon.[f000]븁\u0000\nIn this city, it seems the ideal is\nto cherish the past."
     // "The truth people pursue is different\nfrom person to person and[f000]븀\u0000\nPokémon to Pokémon.[f000]븁\u0000\nIn this city, it seems the truth is\nconstant change."
-    ActorMsgVersioned 1024, 78, 79, 16, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity_Text_PursuingIdealsDifferentFrom, OpelucidCity_Text_TruthPeoplePursueDifferent, 16, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -2299,7 +2300,7 @@ Script_26:
     ActorSetEyeToEye
     // "The hopes of an ancient people are put\ninto this melody...[f000]븁\u0000\nI will bring them back to us now."
     // "Our hopes are put into this melody...\nI will send them to the future."
-    ActorMsgVersioned 1024, 80, 81, 18, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity_Text_HopesAncientPeoplePut, OpelucidCity_Text_OurHopesPutInto, 18, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -2311,7 +2312,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Opelucid City\nTime's Dividing Line"
-    MsgPlaceSign 84, 1
+    MsgPlaceSign OpelucidCity_Text_OpelucidCityTimesDividing, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -2322,7 +2323,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Drayden's House"
-    MsgPlaceSign 85, 2
+    MsgPlaceSign OpelucidCity_Text_DraydensHouse, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -2338,7 +2339,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Formerly the Battle House..."
-    MsgPlaceSign 87, 2
+    MsgPlaceSign OpelucidCity_Text_FormerlyBattleHouse_2, 2
     MsgPlaceSignClose
     VMJump L_239D
 
@@ -2346,7 +2347,7 @@ L_238B:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Formerly the Battle House..."
-    MsgPlaceSign 86, 2
+    MsgPlaceSign OpelucidCity_Text_FormerlyBattleHouse, 2
     MsgPlaceSignClose
 
 L_239D:
@@ -2359,7 +2360,7 @@ Script_4:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nMayor Drayden will teach you if he\nrecognizes you as a strong Trainer.[f000]븁\u0000\nVisit his home to learn the\nmost powerful Dragon-type move!"
-    MsgPlaceSign 88, 0
+    MsgPlaceSign OpelucidCity_Text_TrainerTipsMayorDrayden, 0
     MsgPlaceSignClose
     FlagSet 2662
     FinishAllEvents
@@ -2376,7 +2377,7 @@ Script_5:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Opelucid City Pokémon Gym\nLeader: Drayden[f000]븀\u0000\nThe Spartan Mayor"
-    MsgPlaceSign 90, 2
+    MsgPlaceSign OpelucidCity_Text_OpelucidCityPokemonGym_2, 2
     MsgPlaceSignClose
     VMJump L_2404
 
@@ -2384,7 +2385,7 @@ L_23F2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Opelucid City Pokémon Gym\nLeader: Drayden[f000]븀\u0000\nThe Spartan Mayor"
-    MsgPlaceSign 89, 2
+    MsgPlaceSign OpelucidCity_Text_OpelucidCityPokemonGym, 2
     MsgPlaceSignClose
 
 L_2404:

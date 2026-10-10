@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_7.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -16,7 +17,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There are medicinal herbs that make\nPokémon healthy.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_ThereMedicinalHerbsMake, 0, 0, 0
     VMStackPush 0x8000
     VMStackPush 0x8001
     WorkSet 0x8000, 15
@@ -39,7 +40,7 @@ Script_2:
     WorkSetConst 0x8024, 0
     MoneyWinDisp 31, 1
     // "Welcome! This is straight from the farm![f000]븁\u0000\nMoomoo Milk--one bottle for $500.\nWould you like some for your trip?"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_WelcomeStraightFromFarm, 1, 4, 0
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32801
     ListMenuAdd 8, 65535, 0
     ListMenuAdd 9, 65535, 1
@@ -79,7 +80,7 @@ L_0105:
     VMJumpIf CMP_STACK, L_0161
     MoneyWinClose
     // "Oh, my!\nYour Bag is full!"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_OhBagFull, 1, 4, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01FB
@@ -91,7 +92,7 @@ L_0161:
     VMJumpIf CMP_STACK, L_018C
     MoneyWinClose
     // "Oh, my!\nYou don't have enough money!"
-    ActorMsg MSGFILE_SCRIPT, 5, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_OhDontHaveEnough, 1, 4, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01FB
@@ -108,13 +109,13 @@ L_018C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CB
     // "Here it is! Your Moomoo Milk![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_HereMoomooMilk, 1, 4, 0
     MsgWinCloseAll
     VMJump L_01D9
 
 L_01CB:
     // "A dozen! That's 12 bottles.\nHere it is, your Moomoo Milk![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_DozenThats12Bottles, 1, 4, 0
     MsgWinCloseAll
 
 L_01D9:
@@ -133,7 +134,7 @@ L_01FB:
 L_0201:
     MoneyWinClose
     // "Please buy it next time![f000]븁\u0000\nJust so you know, our Moomoo Milk\nis straight from the farm.[f000]븁\u0000\nIt's super fresh!"
-    ActorMsg MSGFILE_SCRIPT, 6, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_PleaseBuyNextTime, 1, 4, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -147,7 +148,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I used to be part of Team Plasma.\nI have various kinds of incense.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_UsedPartTeamPlasma, 3, 0, 0
     VMStackPush 0x8000
     VMStackPush 0x8001
     WorkSet 0x8000, 16
@@ -164,7 +165,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The medicinal herbs imported from\nanother region work very well![f000]븁\u0000\nBut Pokémon don't seem to like them,\nbecause they taste a little bitter."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_MedicinalHerbsImportedFrom, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -176,7 +177,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, I'm sorry. I'm all sold out.[f000]븁\u0000\nThat Charles guy bought\neverything I had."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_OhImSorryIm, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -189,7 +190,7 @@ Script_7:
     ActorSetEyeToEye
     // "There must be a convenient town where\neverything is imported and everything[f000]븀\u0000\nis available."
     // "Somewhere, there's a laid-back town\nwhere people value the year's seasons.[f000]븁\u0000\nI heard we've imported a lot of goods\nfrom that town!"
-    ActorMsgVersioned 1024, 18, 19, 7, 0, 0
+    ActorMsgVersioned 1024, DriftveilCity7_Text_ThereMustConvenientTown, DriftveilCity7_Text_SomewhereTheresLaidBack, 7, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -202,7 +203,7 @@ Script_9:
     ActorSetEyeToEye
     // "Looking at seasonal vegetables is fun.[f000]븁\u0000\nBecause when the seasons change,\nthe vegetables available change!"
     // "Whenever we come to the market,\nvegetables of all seasons are available.[f000]븁\u0000\nIsn't that a marvel?"
-    ActorMsgVersioned 1024, 20, 21, 9, 0, 0
+    ActorMsgVersioned 1024, DriftveilCity7_Text_LookingSeasonalVegetablesFun, DriftveilCity7_Text_WheneverWeComeMarket, 9, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -215,7 +216,7 @@ Script_8:
     ActorSetEyeToEye
     // "Goods carried away from Driftveil arrive\nin a town somewhere else...[f000]븁\u0000\nYeah. The world is connected."
     // "Goods carried away from a town\nsomewhere else arrive in Driftveil...[f000]븁\u0000\nYeah. The world is connected."
-    ActorMsgVersioned 1024, 22, 23, 8, 0, 0
+    ActorMsgVersioned 1024, DriftveilCity7_Text_GoodsCarriedAwayFrom, DriftveilCity7_Text_GoodsCarriedAwayFrom_2, 8, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -231,14 +232,14 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_040E
     // "You! Glad you came!\nYou want something good?"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_GladCameWantSomething, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03FA
     // "Then, show me a Pokémon Lv. 30 or more![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_ThenShowPokemonLv, 0, 0
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8027, 0
@@ -267,7 +268,7 @@ L_038F:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_03E6
     // "Oh! Strong![f000]븁\u0000\nYou, great!\nTake this![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_OhStrongGreatTake, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -277,7 +278,7 @@ L_038F:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "You! Glad you came!\nGet good at Expert Belts![f000]븁\u0000\nIf a Pokémon has an Expert Belt, the\npower of its moves is slightly boosted[f000]븀\u0000\nwhen they are super effective!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_GladCameGetGood, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 324
@@ -285,7 +286,7 @@ L_038F:
 
 L_03E6:
     // "Oh! You--not so good yet![f000]븁\u0000\nAfter training Pokémon,\ncome back here again!"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_OhNotGoodYet, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -294,7 +295,7 @@ L_03F4:
 
 L_03FA:
     // "You, modest!\nYou should just want something good!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_ModestShouldJustWant, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -303,7 +304,7 @@ L_0408:
 
 L_040E:
     // "You! Glad you came!\nGet good at Expert Belts![f000]븁\u0000\nIf a Pokémon has an Expert Belt, the\npower of its moves is slightly boosted[f000]븀\u0000\nwhen they are super effective!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity7_Text_GladCameGetGood, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

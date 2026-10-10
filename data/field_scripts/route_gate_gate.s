@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_gate_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -18,7 +19,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This electric bulletin board has been\npitch black for a really long time."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RouteGateGate_Text_ElectricBulletinBoardHas, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -30,7 +31,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "One thing I learned during my travels\nis that home is a really nice place, too![f000]븀\u0000\nFunny--before I set off, I absolutely[f000]븀\u0000\ncouldn't wait to leave..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RouteGateGate_Text_OneThingLearnedDuring, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -42,7 +43,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My Pokémon just love to battle![f000]븁\u0000\nI'm absolutely worn out...\nSo I'm resting here..."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RouteGateGate_Text_PokemonJustLoveBattle, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/aspertia_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -23,7 +24,7 @@ Script_2:
     ActorCmdWait
     WordSetPlayerName 0
     // "Hey! [f000]Ā\u0001\u0000!\nYou can't go without...[f000]븁\u0000\n...Oh?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_HeyCantGoWithout, 0, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
@@ -42,7 +43,7 @@ L_0088:
     PokePartyGetMemberByType 0x8023, 2
     WordSetPartyPokeSpecies 1, 0x8023
     // "You're with [f000]ā\u0001\u0001![f000]븁\u0000\nOK. This is a going-away gift!\nDon't be shy. Take it.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_YoureOkGoingAway, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -53,7 +54,7 @@ L_0088:
     VMStackPop 0x8000
     WordSetPlayerName 0
     // "When Pokémon get hurt, take it easy\nand go to a Pokémon Center."
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_WhenPokemonGetHurt, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40e0, 1
@@ -71,12 +72,12 @@ Script_3:
     VMJumpIf CMP_STACK, L_0162
     WordSetPlayerName 0
     // "Hey! [f000]Ā\u0001\u0000!\nYou can't go without...[f000]븁\u0000\n...Oh?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_HeyCantGoWithout, 0, 0
     WordSetPlayerName 0
     PokePartyGetMemberByType 0x8023, 2
     WordSetPartyPokeSpecies 1, 0x8023
     // "You're with [f000]ā\u0001\u0001![f000]븁\u0000\nOK. This is a going-away gift!\nDon't be shy. Take it.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_YoureOkGoingAway, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -87,14 +88,14 @@ Script_3:
     VMStackPop 0x8000
     WordSetPlayerName 0
     // "When Pokémon get hurt, take it easy\nand go to a Pokémon Center."
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_WhenPokemonGetHurt, 0, 0, 0
     WorkSetConst 0x40e0, 1
     VMJump L_016F
 
 L_0162:
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000,\nhow is your journey?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_HowJourney, 0, 0
 
 L_016F:
     LastKeyWait
@@ -112,7 +113,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Remember that?[f000]븁\u0000\nThe day you passed this gate\nwith your Pokémon for the first time."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_RememberDayPassedGate, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01FD
@@ -125,9 +126,9 @@ L_01A8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hmm...\nI see. I see![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_HmmSeeSee, 1, 0, 0
     // "I love to read news and information\nabout the city displayed[f000]븀\u0000\non the electric bulletin board[f000]븀\u0000\non the wall!"
-    ActorMsg MSGFILE_SCRIPT, 5, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_LoveReadNewsInformation, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x4000, 1
@@ -137,7 +138,7 @@ L_01E9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I love to read news and information\nabout the city displayed[f000]븀\u0000\non the electric bulletin board[f000]븀\u0000\non the wall!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaGate_Text_LoveReadNewsInformation, 0, 0
     LastKeyWait
     ActorMsgClose
 

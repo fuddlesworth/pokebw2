@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_24.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -10,7 +11,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "So, I'm a “curiosee\"!\nDo you know what a “curiosee\" is?[f000]븁\u0000\nIt's a person who is curious about\neverything, who checks places[f000]븀\u0000\nwith nothing there, and who talks[f000]븀\u0000\nto all sorts of people!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity24_Text_ImCurioseeKnowWhat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -51,7 +52,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 507, 0
     // "Whooon!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity24_Text_Whooon, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/gear_station_8.h"
 
 // Script plugin 1, from the zones that use this file
 
@@ -73,7 +74,7 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a subway map of the Unova region.[f000]븁\u0000"
-    InfoMsg 0, 2
+    InfoMsg GearStation8_Text_ItsSubwayMapUnova, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait

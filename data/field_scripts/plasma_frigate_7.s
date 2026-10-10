@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_7.h"
 
 // Script plugin 12, from the zones that use this file
 
@@ -129,12 +130,12 @@ L_01B1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D8
     // "[f000]Ā\u0001\u0001: Again?![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 7, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_Again, 7, 5, 0
     VMJump L_01E4
 
 L_01D8:
     // "[f000]Ā\u0001\u0001: Again?![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 7, 4, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_Again, 7, 4, 0
 
 L_01E4:
     MsgWinCloseAll
@@ -145,12 +146,12 @@ L_01E4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0215
     // "Team Plasma: Wait![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_TeamPlasmaWait, 0, 6, 0
     VMJump L_0221
 
 L_0215:
     // "Team Plasma: Wait![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_TeamPlasmaWait, 0, 3, 0
 
 L_0221:
     MsgWinCloseAll
@@ -159,12 +160,12 @@ L_0221:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0248
     // "No need to be suspicious![f000]븁\u0000\nThis uniform is just a disguise.\nI'm ex-Team Plasma![f000]븁\u0000\nWhat I am now is a spy, to guard against\nanything bad they might cook up.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_NoNeedSuspiciousUniform, 0, 6, 0
     VMJump L_0254
 
 L_0248:
     // "No need to be suspicious![f000]븁\u0000\nThis uniform is just a disguise.\nI'm ex-Team Plasma![f000]븁\u0000\nWhat I am now is a spy, to guard against\nanything bad they might cook up.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_NoNeedSuspiciousUniform, 0, 3, 0
 
 L_0254:
     MsgWinCloseAll
@@ -173,12 +174,12 @@ L_0254:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_027B
     // "[f000]Ā\u0001\u0001: It must be a hard job,\nkeeping an eye on your former allies.[f000]븁\u0000\nSay, you don't know anything about a\nPurrloin stolen in Aspertia, do you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 7, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_MustHardJobKeeping, 7, 5, 0
     VMJump L_0287
 
 L_027B:
     // "[f000]Ā\u0001\u0001: It must be a hard job,\nkeeping an eye on your former allies.[f000]븁\u0000\nSay, you don't know anything about a\nPurrloin stolen in Aspertia, do you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 7, 4, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_MustHardJobKeeping, 7, 4, 0
 
 L_0287:
     MsgWinCloseAll
@@ -187,12 +188,12 @@ L_0287:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02AE
     // "S-sorry, but I don't know\nanything about that...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_SSorryButDont, 0, 6, 0
     VMJump L_02BA
 
 L_02AE:
     // "S-sorry, but I don't know\nanything about that...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_SSorryButDont, 0, 3, 0
 
 L_02BA:
     MsgWinCloseAll
@@ -201,12 +202,12 @@ L_02BA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02E1
     // "[f000]Ā\u0001\u0001: That's what I figured.[f000]븁\u0000\nI wouldn't expect someone from a\ngroup bent on world domination[f000]븀\u0000\nto be all that quick on the uptake.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 7, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_ThatsWhatFiguredWouldnt, 7, 5, 0
     VMJump L_02ED
 
 L_02E1:
     // "[f000]Ā\u0001\u0001: That's what I figured.[f000]븁\u0000\nI wouldn't expect someone from a\ngroup bent on world domination[f000]븀\u0000\nto be all that quick on the uptake.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 7, 4, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_ThatsWhatFiguredWouldnt, 7, 4, 0
 
 L_02ED:
     MsgWinCloseAll
@@ -255,12 +256,12 @@ L_037A:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03AB
     // "Oh...[f000]븁\u0000\nBut I honestly wanted\nto save Pokémon..."
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_OhButHonestlyWanted, 0, 6, 0
     VMJump L_03B7
 
 L_03AB:
     // "Oh...[f000]븁\u0000\nBut I honestly wanted\nto save Pokémon..."
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_OhButHonestlyWanted, 0, 3, 0
 
 L_03B7:
     LastKeyWait
@@ -304,7 +305,7 @@ Script_1:
     ActorSetEyeToEye
     // "In order to reach the heart of\nthis ship, you need a password.[f000]븁\u0000\nPlease get the password from\nthe members of Team Plasma."
     // "In this ship, the Plasma Frigate,\nyou move around by using warp panels.[f000]븀\u0000\nLook sharp!"
-    ActorMsgVersioned 1024, 8, 7, 0, 0, 0
+    ActorMsgVersioned 1024, PlasmaFrigate7_Text_OrderReachHeartShip, PlasmaFrigate7_Text_ShipPlasmaFrigateMove, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -320,7 +321,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Team Plasma has disbanded...[f000]븁\u0000\nAnd I finally just learned how to\nuse the warp panels to get around![f000]븁\u0000\nI'm so frustrated![f000]븁\u0000\nSo I'm going to stay here and use\nthe warp panels as much as I want!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_TeamPlasmaHasDisbanded, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_047B
@@ -329,7 +330,7 @@ L_0467:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I just joined Team Plasma, and\nthey won't give me a Pokémon yet.[f000]븁\u0000\nBut even a guy like me has\nsomething useful to share.[f000]븁\u0000\nYou need the Plasma Card\nto enter the password!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_JustJoinedTeamPlasma, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -347,7 +348,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Team Plasma has disbanded...[f000]븁\u0000\nAnd I finally just learned how to\nuse the warp panels to get around![f000]븁\u0000\nI'm so frustrated![f000]븁\u0000\nSo I'm going to stay here and use\nthe warp panels as much as I want!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_TeamPlasmaHasDisbanded, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_04C4
@@ -356,7 +357,7 @@ L_04B0:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I can't remember how to use\nthe warp panels to get around.[f000]븀\u0000\nAnd they won't give me a Pokémon yet...[f000]븁\u0000\nBut even a guy like me has\nsomething useful to share.[f000]븁\u0000\nYou step on four switches\nto remove the barrier!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate7_Text_CantRememberHowUse, 0, 0
     LastKeyWait
     ActorMsgClose
 

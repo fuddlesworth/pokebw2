@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -30,7 +31,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you've come from Route 4,\nNimbasa City is ahead.[f000]븁\u0000\nNext! If you've come from Nimbasa City,\nRoute 4 is ahead!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaGate_Text_IfYouveComeFrom, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -42,7 +43,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm always in the know about Nimbasa City\nthanks to this electric bulletin board!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaGate_Text_ImAlwaysKnowAbout, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

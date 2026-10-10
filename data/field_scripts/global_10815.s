@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10815.h"
 
 // Script plugin 10, from the zones that start its scripts
 
@@ -89,7 +90,7 @@ Script_3:
     VMJumpIf CMP_STACK, L_015E
     WordSetPlayerName 0
     // "Hey, [f000]Ā\u0001\u0000!\nDo you want to film a new movie?[f000]븁\u0000\nI'm sorry, but new scripts are\nbeing written as we speak![f000]븁\u0000\nFor now, go and see your debut\nlike the boss told you to do!"
-    ActorMsg MSGFILE_SCRIPT, 22, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyWantFilmNew, 0x8011, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0164
@@ -105,7 +106,7 @@ L_0164:
 
 L_016C:
     // "Welcome to the soundstage\nof Pokéstar Studios![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_WelcomeSoundstagePokestarStudios, 0x8011, 2, 0
     VMStackPushFlag 2440
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -117,7 +118,7 @@ L_016C:
     VMJumpIf CMP_STACK, L_01B9
     WordSetPlayerName 0
     // "Hey, [f000]Ā\u0001\u0000![f000]븁\u0000\nRecently, you've even begun\nto look like a movie star!"
-    ActorMsg MSGFILE_SCRIPT, 13, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyRecentlyYouveEven, 0x8011, 2, 0
     SEPlay SEQ_SE_TDEMO_001
     SEWait
     MsgWaitAdvance
@@ -225,7 +226,7 @@ L_030D:
 
 L_0320:
     // "Oh, I see!\nCome back later, then![f000]븁\u0000\nThe silver screen is waiting!"
-    ActorMsg MSGFILE_SCRIPT, 10, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OhSeeComeBack, 0x8011, 2, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8022, 0
@@ -339,7 +340,7 @@ L_04A7:
 
 L_04A9:
     // "Would you like to\ntry to shoot a film?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_WouldLikeTryShoot, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32803
     ListMenuAdd 25, 65535, 0
     ListMenuAdd 26, 65535, 1
@@ -360,7 +361,7 @@ L_04F7:
 
 L_050A:
     // "You can make movies here\nat Pokéstar Studios![f000]븁\u0000\nYou act with other actors\nas determined by the script.[f000]븁\u0000\nIf you meet all of the conditions\nfor completing the movie,[f000]븀\u0000\nthen it's a wrap.[f000]븁\u0000\nThen, we use the most\ncutting-edge VFX technology[f000]븀\u0000\nand finish the movie in an instant![f000]븁\u0000\nBe careful, because the\nnecessary conditions for[f000]븀\u0000\nmaking a good movie are[f000]븀\u0000\ndifferent from script to script![f000]븁\u0000\nThe final movie is released\nin the Pokéstar Studios Theater,[f000]븀\u0000\nso be sure to check it out![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_CanMakeMoviesHere, 0x8011, 2, 0
     MsgWinCloseAll
     VMJump L_0524
 
@@ -372,7 +373,7 @@ L_0524:
 
 L_0526:
     // "OK! Pick which script\nyou want to shoot![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OkPickWhichScript, 0x8011, 2, 0
     MsgWinCloseAll
     WorkSetConst 0x8024, 41
     Plugin10_Cmd1002 0x8024
@@ -390,7 +391,7 @@ L_055D:
 
 L_0565:
     // "OK! What kind of Pokémon do you\nwant to have perform with you?"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OkWhatKindPokemon, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32803
     ListMenuAdd 29, 65535, 0
     ListMenuAdd 28, 65535, 1
@@ -402,7 +403,7 @@ L_0565:
 
 L_05A7:
     // "OK! All right![f000]븁\u0000\nThen we'll provide you with the\nperfect Pokémon for the part![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OkAllRightThen_2, 0x8011, 2, 0
     MsgWinCloseAll
     WorkSetConst 0x8022, 5
     Plugin10_Cmd1014 0
@@ -426,7 +427,7 @@ L_05D8:
 L_0603:
     WordSetPlayerName 0
     // "So sorry![f000]븁\u0000\nI know you want to use\nyour own cool Pokémon.[f000]븁\u0000\nBut, would you film the movie with\nPokéstar Studios' Pokémon first?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_SorryKnowWantUse, 0x8011, 2, 0
 
 L_0612:
     VMJump L_061E
@@ -439,7 +440,7 @@ L_061E:
 
 L_0620:
     // "OK! All right![f000]븁\u0000\nThen pick the Pokémon\nthat will perform with you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OkAllRightThen, 0x8011, 2, 0
     MsgWinCloseAll
     Plugin10_Cmd1013 0x8010
     VMStackPush 0x8010
@@ -456,7 +457,7 @@ L_064D:
 L_0655:
     FunfestBGMReturn
     // "OK!\nThen let's start the shoot![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OkThenLetsStart, 0x8011, 2, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8029, 0x802a
     WorkCmpConst 0x8029, 12
@@ -543,7 +544,7 @@ L_075C:
 
 L_0782:
     // "Good work on the shoot![f000]븁\u0000\nWould you like to release\nthe film you just shot[f000]븀\u0000\nin the theater?"
-    ActorMsg MSGFILE_SCRIPT, 12, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_GoodWorkShootWould, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -576,7 +577,7 @@ L_07E8:
 
 L_07FB:
     // "It's really OK to not release\nthe movie you shot?"
-    ActorMsg MSGFILE_SCRIPT, 16, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_ItsReallyOkNot, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -599,14 +600,14 @@ L_083C:
 
 L_084F:
     // "Whoa! The screens are full![f000]븁\u0000\nIf you want to release a new\nmovie, you're going to have[f000]븀\u0000\nto end another movie's run![f000]븀\u0000\nIs that OK?"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_WhoaScreensFullIf, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08B1
     // "OK. Decide which film\nto remove from the theater.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OkDecideWhichFilm, 0x8011, 2, 0
     MsgWinCloseAll
     Plugin10_Cmd1003 1, 0x8026
     VMStackPush 0x8026
@@ -680,7 +681,7 @@ L_0955:
 L_0969:
     WordSetPlayerName 0
     // "OK! We'll send this straight\noff to the theater![f000]븁\u0000\n[f000]Ā\u0001\u0000, you're interested in\nhow the finished film turned out, right?[f000]븁\u0000\nWill you go to the theater right away?"
-    ActorMsg MSGFILE_SCRIPT, 17, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OkWellSendStraight, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -745,7 +746,7 @@ L_0A15:
 
 L_0A5E:
     // "Hey, [f000]Ā\u0001\u0000!\nThe movie you were just in[f000]븀\u0000\nwas a smash hit, right?[f000]븁\u0000\nThanks to that, the screenwriter\nwrote a new script in the series.[f000]븁\u0000\nThe sequel is called\n“[f000][ff00]\u0001\u0001[f000]Ŀ\u0001\u0001[f000][ff00]\u0001\u0000.\"[f000]븁\u0000\nWe'd love for you to give it a try\nand make another smash hit![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyMovieWereJust, 0x8011, 2, 0
     VMJump L_0B80
 
 L_0A70:
@@ -760,7 +761,7 @@ L_0A83:
     VMJumpIf CMP_STACK, L_0AA8
     WorkSetConst 0x802e, 1
     // "Hey, [f000]Ā\u0001\u0000![f000]븁\u0000\nThere's been a lot of buzz about\nyou lately! Several scripts have arrived[f000]븀\u0000\nfor movies they want you to be in![f000]븁\u0000\nHave a look at them when\nyou're deciding which film to try![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyTheresBeenLot, 0x8011, 2, 0
 
 L_0AA8:
     VMJump L_0B80
@@ -772,7 +773,7 @@ L_0AAE:
 
 L_0AC1:
     // "Hey, [f000]Ā\u0001\u0000![f000]븁\u0000\nYour popularity's been amazing lately!\nThey've decided to make a film[f000]븀\u0000\nwith you in mind![f000]븁\u0000\nThe movie is called\n“[f000][ff00]\u0001\u0001[f000]Ŀ\u0001\u0001[f000][ff00]\u0001\u0000.\"[f000]븁\u0000\nWe'd love for you to give it your best\nand make another smash hit![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyPopularitysBeenAmazing, 0x8011, 2, 0
     VMJump L_0B80
 
 L_0AD3:
@@ -782,7 +783,7 @@ L_0AD3:
 
 L_0AE6:
     // "Hey, [f000]Ā\u0001\u0000!!\nI've got some big news![f000]븁\u0000\nThe movie you were in\nshattered past box-office records![f000]븁\u0000\nMr. Deeoh is so happy that\nhe decided to make a movie[f000]븀\u0000\nto commemorate that![f000]븁\u0000\nThe movie is called\n“[f000][ff00]\u0001\u0001[f000]Ŀ\u0001\u0001[f000][ff00]\u0001\u0000.\"[f000]븁\u0000\nPlease film the movie\nand make it another smash hit![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyIveGotSome, 0x8011, 2, 0
     VMJump L_0B80
 
 L_0AF8:
@@ -792,7 +793,7 @@ L_0AF8:
 
 L_0B0B:
     // "Hey, [f000]Ā\u0001\u0000![f000]븁\u0000\nYour Pokéstar Studios career\nhas been going on for a long time now.[f000]븁\u0000\nA script has been finished that's perfect\nfor a seasoned pro such as yourself![f000]븁\u0000\nIts title is\n“[f000][ff00]\u0001\u0001[f000]Ŀ\u0001\u0001[f000][ff00]\u0001\u0000.\"[f000]븁\u0000\nWe'd love for you to give it your best\nand make another smash hit![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyPokestarStudiosCareer, 0x8011, 2, 0
     VMJump L_0B80
 
 L_0B1D:
@@ -807,7 +808,7 @@ L_0B30:
     VMJumpIf CMP_STACK, L_0B55
     WorkSetConst 0x802f, 1
     // "Hey, [f000]Ā\u0001\u0000!\nHow did your big-screen debut turn out?[f000]븁\u0000\nAt the very least, the boss seemed\nquite satisfied with your performance.[f000]븁\u0000\nHe brought a new script by\nto commemorate your[f000]븀\u0000\nPokéstar Studios debut![f000]븁\u0000\nGo have a look at it when\nyou want to shoot a film.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyHowDidBig, 0x8011, 2, 0
 
 L_0B55:
     VMJump L_0B80
@@ -819,7 +820,7 @@ L_0B5B:
 
 L_0B6E:
     // "Hey, [f000]Ā\u0001\u0000![f000]븁\u0000\nThere's a present for you today--\na new script![f000]븁\u0000\nThe title is\n“[f000][ff00]\u0001\u0001[f000]Ŀ\u0001\u0001[f000][ff00]\u0001\u0000.\"[f000]븁\u0000\nAs the title suggests,\nit was written because many people want[f000]븀\u0000\nto see you and Brycen together again![f000]븁\u0000\nWe'd love for you to give it a try\nand make another smash hit![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyTheresPresentToday, 0x8011, 2, 0
     VMJump L_0B80
 
 L_0B80:
@@ -837,7 +838,7 @@ Script_5:
     VMSleep 10
     WordSetPlayerName 0
     // "Hey, boss![f000]븁\u0000\nI brought [f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 46, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyBossBrought, 1, 2, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0E64
     ActorCmdWait
@@ -846,17 +847,17 @@ Script_5:
     ActorCmdExec 255, Movement_0CB8
     ActorCmdWait
     // "Well now, thanks for coming![f000]븁\u0000\nFirst, let me reintroduce myself.\nMy name is Stu Deeoh![f000]븀\u0000\nI'm the owner of Pokéstar Studios![f000]븁\u0000\nSo, [f000]Ā\u0001\u0000, dahling,\nI brought you here because I have[f000]븀\u0000\na very important request of you![f000]븁\u0000\nI'll bet you've figured it out,\nbut I want you to be in[f000]븀\u0000\nPokéstar Studios' movies![f000]븁\u0000\nThe scout said you were absolutely,\npositively oozing with star potential![f000]븁\u0000\nAnd when I saw you,\nyour potential struck me[f000]븀\u0000\nlike a lightning bolt![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 47, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_WellNowThanksComing, 2, 2, 0
     MsgWinCloseAll
     // "Yessir, boss![f000]븁\u0000\nThere's no doubt in my mind that\nthis Trainer will become a top star[f000]븀\u0000\nof Pokéstar Studios' silver screen![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 48, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_YessirBossTheresNo, 1, 2, 0
     MsgWinCloseAll
     // "I know! Isn't it fabulous?![f000]븁\u0000\nI am sure you'll be\na big star, dahling![f000]븁\u0000\nSo I beg of you! Be in a movie![f000]븁\u0000\nToday I've even called on\nan amazing, astounding[f000]븀\u0000\ncostar for you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 49, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_KnowIsntFabulousAm, 2, 2, 0
     ActorCmdExec 2, Movement_0E5C
     ActorCmdWait
     // "Brycen!\nWould you join us?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 50, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_BrycenWouldJoinUs, 2, 2, 0
     MsgWinCloseAll
     SEPlay SEQ_SE_KAIDAN
     SEWait
@@ -866,15 +867,15 @@ Script_5:
     ActorCmdExec 2, Movement_0E74
     ActorCmdWait
     // "I'm Brycen...\nPleased to meet you...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 51, 251, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_ImBrycenPleasedMeet, 251, 2, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0E64
     ActorCmdWait
     // "Brycen is Pokéstar Studios'\npride and joy--our marquee star![f000]븁\u0000\nI've prepared a positively perfect\nscript for a big, veteran star like him[f000]븀\u0000\nand a fresh, new talent like you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 52, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_BrycenPokestarStudiosPride, 2, 2, 0
     MsgWinCloseAll
     // "Those eyes...\nI look forward to acting with you...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 53, 251, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_ThoseEyesLookForward, 251, 2, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0CD0
     ActorCmdWait
@@ -882,11 +883,11 @@ Script_5:
     SEPlay SEQ_SE_KAIDAN
     SEWait
     // "Mhm!\nAs cool as ever![f000]븁\u0000\nSo that's the situation![f000]븁\u0000\nIf you talk to that fine staff member\nover there, you can shoot the film![f000]븁\u0000\nDon't be afraid of making mistakes!\nTo start with, try going big!"
-    ActorMsg MSGFILE_SCRIPT, 54, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_MhmCoolEverThats, 2, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     // "Well now, [f000]Ā\u0001\u0000!\nLooking forward to working with you![f000]븁\u0000\nPlease do your best until we make\na movie to release in the theater!"
-    ActorMsg MSGFILE_SCRIPT, 56, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_WellNowLookingForward, 1, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -923,7 +924,7 @@ Script_4:
     ActorCmdWait
     WordSetPlayerName 0
     // "Well now, [f000]Ā\u0001\u0000!\nLooking forward to working with you![f000]븁\u0000\nPlease do your best until we make\na movie to release in the theater!"
-    ActorMsg MSGFILE_SCRIPT, 56, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_WellNowLookingForward, 1, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0D1C
@@ -943,7 +944,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Movies! They're amazement itself![f000]븁\u0000\nCome now, [f000]Ā\u0001\u0000, dahling,\nbe surprised and moved![f000]븀\u0000\nTry the experience for yourself!"
-    ParentActorMsg MSGFILE_SCRIPT, 55, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10815_Text_MoviesTheyreAmazementItself, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -956,7 +957,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Well now, [f000]Ā\u0001\u0000!\nLooking forward to working with you![f000]븁\u0000\nPlease do your best until we make\na movie to release in the theater!"
-    ParentActorMsg MSGFILE_SCRIPT, 56, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10815_Text_WellNowLookingForward, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -968,7 +969,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pokéstar Studios...[f000]븁\u0000\nThis is a stage of dreams that only\nchosen Trainers can stand on![f000]븁\u0000\nPlease finish the procedures for\nfilming with the gentleman by the door..."
-    ParentActorMsg MSGFILE_SCRIPT, 61, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10815_Text_PokestarStudiosStageDreams, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -982,22 +983,22 @@ Script_9:
     ActorCmdWait
     WordSetPlayerName 0
     // "Great! Good work!\nThat was stirring acting![f000]븀\u0000\nI can't wait to see the finished film![f000]븁\u0000\nAnd this is where\nwe're really amazing![f000]븁\u0000\nThe movie you just filmed...\nwill be finished in an instant![f000]븀\u0000\nAnd released on the silver screen![f000]븁\u0000\nCome now, [f000]Ā\u0001\u0000, dahling!\nLet's be off to the theater![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 57, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_GreatGoodWorkStirring, 2, 2, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0E3C
     ActorCmdWait
     // "Hey! Boss!\nSorry to interrupt, but the time...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 58, 1, 1, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_HeyBossSorryInterrupt, 1, 1, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0E64
     ActorCmdWait
     // "Oh, that's right...\nGot it...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 59, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_OhThatsRightGot, 2, 2, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0E5C
     ActorCmdWait
     // "Boo! So sorry, [f000]Ā\u0001\u0000, dahling!\nI have to hurry off![f000]븁\u0000\nBut, [f000]Ā\u0001\u0000, you should go see\nhow your debut turned out![f000]븁\u0000\nI'm sure it will be an amazing movie.\nYou are in it, after all![f000]븁\u0000\nCiao! See you again soon!\nPokéstar Studios is always[f000]븀\u0000\nwaiting for you, [f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 60, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10815_Text_BooSorryDahlingHave, 2, 2, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0E44
     ActorCmdExec 1, Movement_0E4C

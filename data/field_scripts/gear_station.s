@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/gear_station.h"
 
 // Script plugin 1, from the zones that use this file
 
@@ -58,7 +59,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You can take the Battle Subway from\nGear Station!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GearStation_Text_CanTakeBattleSubway, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -70,7 +71,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Battle Subway is the subway\nwhere Trainers see who's strongest!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GearStation_Text_BattleSubwaySubwayWhere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -86,12 +87,12 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_010B
     // "The Battle Subway has seven lines\nin total![f000]븁\u0000\nIf you can ride a train with “Super\" in\nits name, then you're quite the Trainer!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GearStation_Text_BattleSubwayHasSeven_2, 0, 0
     VMJump L_0115
 
 L_010B:
     // "The Battle Subway has seven lines\nin total![f000]븁\u0000\nBut I heard that the only lines you can\ntake at the beginning are the Single,[f000]븀\u0000\nDouble, or Multi Trains!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GearStation_Text_BattleSubwayHasSeven, 0, 0
 
 L_0115:
     LastKeyWait
@@ -145,7 +146,7 @@ L_01A6:
     WorkSetConst 0x8024, 0
     WorkSetConst 0x8023, 0
     // "Hi, hi![f000]븁\u0000\nPlease tell me how you introduce yourself\nbefore a battle and how you feel when[f000]븀\u0000\nyou win or lose."
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GearStation_Text_HiHiPleaseTell, 0x8011, 4, 0
 
 L_01C4:
     VMStackPush 0x8023
@@ -223,7 +224,7 @@ L_02D0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_033C
     // "Thanks! Will you tell me your other\nfeelings, too?"
-    ActorMsg MSGFILE_SCRIPT, 11, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GearStation_Text_ThanksWillTellOther, 0x8011, 4, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -269,7 +270,7 @@ Script_7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03AB
     // "Under Construction"
-    SystemMsg 26, 2
+    SystemMsg GearStation_Text_UnderConstruction, 2
     LastKeyWait
     MsgWinCloseAll
     VMJump L_03B5
@@ -286,7 +287,7 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Single Trains"
-    SystemMsg 18, 2
+    SystemMsg GearStation_Text_PlatformSingleTrains, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -297,7 +298,7 @@ Script_9:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Double Trains"
-    SystemMsg 19, 2
+    SystemMsg GearStation_Text_PlatformDoubleTrains, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -308,7 +309,7 @@ Script_10:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Multi Trains"
-    SystemMsg 20, 2
+    SystemMsg GearStation_Text_PlatformMultiTrains, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -319,7 +320,7 @@ Script_11:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Wi-Fi Trains"
-    SystemMsg 21, 2
+    SystemMsg GearStation_Text_PlatformWiFiTrains, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -330,7 +331,7 @@ Script_12:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Super Single Trains"
-    SystemMsg 22, 2
+    SystemMsg GearStation_Text_PlatformSuperSingleTrains, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -341,7 +342,7 @@ Script_13:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Super Double Trains"
-    SystemMsg 23, 2
+    SystemMsg GearStation_Text_PlatformSuperDoubleTrains, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -352,7 +353,7 @@ Script_14:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Super Multi Trains"
-    SystemMsg 24, 2
+    SystemMsg GearStation_Text_PlatformSuperMultiTrains, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -363,7 +364,7 @@ Script_15:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Platform for Trains to Anville Town"
-    SystemMsg 25, 2
+    SystemMsg GearStation_Text_PlatformTrainsAnvilleTown, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

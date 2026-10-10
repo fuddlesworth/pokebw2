@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/floccesy_town_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -14,7 +15,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Here is a little advice!\nKeep a lot of Potions![f000]븁\u0000\nHere is some more advice!\nKeep a lot of Poké Balls, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTownPokemonCenter_Text_HereLittleAdviceKeep, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -35,7 +36,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0082
     // "Your [f000]ā\u0001\u0000 is male![f000]븁\u0000\nI wonder what the difference is\nbetween male and female Pokémon."
-    ActorMsg MSGFILE_SCRIPT, 1, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTownPokemonCenter_Text_MaleWonderWhatDifference, 9, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_00BB
@@ -46,14 +47,14 @@ L_0082:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00AB
     // "Your [f000]ā\u0001\u0000 is female![f000]븁\u0000\nI wonder what the difference is\nbetween male and female Pokémon."
-    ActorMsg MSGFILE_SCRIPT, 2, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTownPokemonCenter_Text_FemaleWonderWhatDifference, 9, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_00BB
 
 L_00AB:
     // "Your [f000]ā\u0001\u0000...\nIts gender is unknown.[f000]븁\u0000\nI wonder what the difference is between\nmale and female Pokémon."
-    ActorMsg MSGFILE_SCRIPT, 3, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTownPokemonCenter_Text_ItsGenderUnknownWonder, 9, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -69,7 +70,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I read the Help on the PC.\nI feel I became smarter!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTownPokemonCenter_Text_ReadHelpPcFeel, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

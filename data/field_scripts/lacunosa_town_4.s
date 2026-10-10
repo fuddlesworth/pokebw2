@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lacunosa_town_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -29,7 +30,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Of course it's dangerous\nto go out at night.[f000]븁\u0000\nMaybe you should stay inside\nduring the afternoon, too.[f000]븀\u0000\nThen there's no danger at all!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown4_Text_CourseItsDangerousGo, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

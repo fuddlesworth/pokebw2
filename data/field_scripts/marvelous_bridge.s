@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/marvelous_bridge.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -117,7 +118,7 @@ L_019E:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Man: Oh, yeah...\nReturns not accepted, got that?"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_ManOhYeahReturns, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -131,7 +132,7 @@ L_01B8:
     ActorSetEyeToEye
     // "Man: Son!\nI have a deal for YOU! And for you alone.[f000]븁\u0000\nHere's your chance. I will sell you the\nsecret Pokémon Magikarp...[f000]븀\u0000\nFor an unbelievable $500![f000]븁\u0000\nHow about it? Interested?"
     // "Man: Miss!\nI have a deal for YOU! And for you alone.[f000]븁\u0000\nHere's your chance. I will sell you the\nsecret Pokémon Magikarp...[f000]븀\u0000\nFor an unbelievable $500![f000]븁\u0000\nHow about it? Interested?"
-    ActorMsgGendered 1024, 7, 8, 0, 2, 0
+    ActorMsgGendered 1024, MarvelousBridge_Text_ManSonHaveDeal, MarvelousBridge_Text_ManMissHaveDeal, 0, 2, 0
     MoneyWinDisp 31, 1
     WorkSetConst 0x8025, 0
     YesNoWin 0x8025
@@ -149,7 +150,7 @@ L_01B8:
     VMJumpIf CMP_STACK, L_0232
     MoneyWinClose
     // "Looks like you don't have enough money."
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_LooksLikeDontHave, 0, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02D9
@@ -161,7 +162,7 @@ L_0232:
     VMJumpIf CMP_STACK, L_025D
     MoneyWinClose
     // "You have no room in your party!"
-    ActorMsg MSGFILE_SCRIPT, 12, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_HaveNoRoomParty, 0, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02D9
@@ -173,7 +174,7 @@ L_025D:
     MoneySub 500
     MoneyWinUpdate
     // "[f000]Ā\u0001\u0000 bought the Magikarp\nfor $500."
-    SystemMsg 9, 2
+    SystemMsg MarvelousBridge_Text_BoughtMagikarp500, 2
     MEWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -181,7 +182,7 @@ L_025D:
     PokePartyAdd 0x8010, 129, 0, 5
     PokePartySetIV 0x8026, 73, 31
     // "Would you like to give a\nnickname to this Magikarp?"
-    SystemMsg 10, 2
+    SystemMsg MarvelousBridge_Text_WouldLikeGiveNickname, 2
     WorkSetConst 0x8028, 0
     YesNoWin 0x8028
     InfoMsgClose
@@ -195,7 +196,7 @@ L_025D:
 
 L_02C5:
     // "Man: Oh, yeah...\nReturns not accepted, got that?"
-    ActorMsg MSGFILE_SCRIPT, 14, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_ManOhYeahReturns, 0, 2, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 250
@@ -210,7 +211,7 @@ L_02D9:
 L_02F7:
     MoneyWinClose
     // "Oh, that's too bad..."
-    ActorMsg MSGFILE_SCRIPT, 13, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_OhThatsTooBad, 0, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -226,7 +227,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03F3
     // "[f000]븉\u0001\u0002Oh... Oh...\nSo...thirsty...[f000]븁\u0000\nI met you on Village Bridge...[f000]븁\u0000\nG-g-give me...\nFresh Water...?[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_OhOhThirstyMet, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -241,7 +242,7 @@ Script_3:
     SEPlay SEQ_SE_ARDEMO_01
     SEWait
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge...\nNo, I'll leave for the Marine Tube!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
     PlayerGetDir 0x8010
@@ -267,7 +268,7 @@ L_03A5:
 
 L_03CB:
     // "[f000]븉\u0001\u0002But... You don't have Fresh Water...\nI appreciate the thought, though...[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_ButDontHaveFresh, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -276,7 +277,7 @@ L_03D9:
 
 L_03DF:
     // "[f000]븉\u0001\u0002Thank...[f000]븁\u0000\nWhat?\nOh...[f000]븁\u0000\nWithout Fresh Water...\nI can't run on bridges anymore.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_ThankWhatOhWithout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -289,7 +290,7 @@ L_03F3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0414
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge...\nNo, I'll leave for the Marine Tube!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -319,7 +320,7 @@ Movement_0440:
 Script_4:
     ActorsPauseAll
     // "The Lunar Wing started shining!\nDo you want to hold it up high?"
-    SystemMsg 0, 2
+    SystemMsg MarvelousBridge_Text_LunarWingStartedShining, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -335,7 +336,7 @@ Script_4:
     VMSleep 30
     PVPlay 488, 0
     // "Lunaaan..."
-    InfoMsg 1, 1
+    InfoMsg MarvelousBridge_Text_Lunaaan, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -369,7 +370,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 488, 0
     // "Lunaaan..."
-    ScreamMsg 1, 2
+    ScreamMsg MarvelousBridge_Text_Lunaaan, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -414,7 +415,7 @@ L_059F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05BC
     // "Cresselia disappeared somewhere..."
-    SystemMsg 2, 2
+    SystemMsg MarvelousBridge_Text_CresseliaDisappearedSomewhere, 2
     LastKeyWait
     InfoMsgClose
 
@@ -452,7 +453,7 @@ Script_8:
     ActorCmdExec 4, Movement_0694
     ActorCmdWait
     // "Huh... Wha...\nD-did she just disappear?"
-    ActorMsg MSGFILE_SCRIPT, 16, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_HuhWhaDDid, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x414f, 2
@@ -509,7 +510,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ahh...\nSuch magnificent scenery..."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_AhhSuchMagnificentScenery, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0720
@@ -522,7 +523,7 @@ L_06DF:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Huh... Wha...\nD-did she just disappear?"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_HuhWhaDDid, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0720
@@ -531,7 +532,7 @@ L_070C:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ahh...\nSuch magnificent scenery..."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarvelousBridge_Text_AhhSuchMagnificentScenery, 0, 0
     LastKeyWait
     ActorMsgClose
 

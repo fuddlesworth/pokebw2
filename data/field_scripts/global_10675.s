@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10675.h"
 
 // Script plugin 6, from the only plugin whose commands it decodes with
 
@@ -57,7 +58,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B9
     // "I know much about strong Trainers![f000]븁\u0000\nSo, I'll tell you about Gym Leaders and\nChampions and so on[f000]븀\u0000\nonce you've battled them!"
-    ParentActorMsg MSGFILE_SCRIPT, 176, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_KnowMuchAboutStrong, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_00BF
@@ -72,7 +73,7 @@ L_00BF:
 
 L_00C5:
     // "I know a lot about strong Trainers.[f000]븁\u0000\nHey! Which region's Trainers\ndo you want to know about?"
-    ParentActorMsg MSGFILE_SCRIPT, 56, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_KnowLotAboutStrong, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     VMCall L_11DE
     VMStackPush 0x8021
@@ -162,7 +163,7 @@ L_0216:
 
 L_0222:
     // "If you want to know about\nstrong Trainers, come back anytime!"
-    ParentActorMsg MSGFILE_SCRIPT, 58, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_IfWantKnowAbout, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -176,7 +177,7 @@ L_0238:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0670
     // "Which Trainer do you want to\nknow about?"
-    ParentActorMsg MSGFILE_SCRIPT, 57, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WhichTrainerWantKnow, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     Cmd_02D5 0, 0x8010
     VMStackPush 0x8010
@@ -306,7 +307,7 @@ L_044D:
 
 L_046A:
     // "Cheren is a new Gym Leader\nin Aspertia City.[f000]븁\u0000\nNonetheless, for his age,\nhe's very experienced and brilliant.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 121, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_CherenNewGymLeader, 2, 0
     VMJump L_066A
 
 L_047A:
@@ -316,7 +317,7 @@ L_047A:
 
 L_048D:
     // "Roxie![f000]븁\u0000\nRoxie is performing brilliantly in her band\nwhile being a Gym Leader in Virbank City.[f000]븁\u0000\nShe is a vocalist and bass guitarist![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 122, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_RoxieRoxiePerformingBrilliantly, 2, 0
     VMJump L_066A
 
 L_049D:
@@ -326,7 +327,7 @@ L_049D:
 
 L_04B0:
     // "Burgh is an artist and\nalso the Gym Leader of Castelia City.[f000]븁\u0000\nI heard he polished his skills\nin Nacrene City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 123, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BurghArtistAlsoGym, 2, 0
     VMJump L_066A
 
 L_04C0:
@@ -336,7 +337,7 @@ L_04C0:
 
 L_04D3:
     // "Elesa![f000]븁\u0000\nShe's the Gym Leader of Nimbasa City\nand also a top model.[f000]븁\u0000\nNo, she's the top model among\ntop models! The best top model![f000]븁\u0000\nEr... Everybody in the Unova region\nknows it, right?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 124, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_ElesaShesGymLeader, 2, 0
     VMJump L_066A
 
 L_04E3:
@@ -346,7 +347,7 @@ L_04E3:
 
 L_04F6:
     // "Clay... He doesn't look it,\nbut he's a hardworking man.[f000]븁\u0000\nYou'll know much more about him\nif you go to the Pokémon Gym[f000]븀\u0000\nin Driftveil City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 125, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_ClayHeDoesntLook, 2, 0
     VMJump L_066A
 
 L_0506:
@@ -356,7 +357,7 @@ L_0506:
 
 L_0519:
     // "Skyla![f000]븁\u0000\nAs a pilot, she exceeded her grandfather\nwho was called a gifted pilot.[f000]븁\u0000\nOn top of that, she's the Gym Leader\nof Mistralton City! She's great![f000]븁\u0000\nShe's a good friend of Elesa.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 126, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_SkylaPilotSheExceeded, 2, 0
     VMJump L_066A
 
 L_0529:
@@ -366,7 +367,7 @@ L_0529:
 
 L_053C:
     // "Drayden is the mayor and\nthe Gym Leader of Opelucid City.[f000]븁\u0000\nHe recognized Iris's talent\nand brought her to the Unova region.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 127, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_DraydenMayorGymLeader, 2, 0
     VMJump L_066A
 
 L_054C:
@@ -376,7 +377,7 @@ L_054C:
 
 L_055F:
     // "Marlon is the Gym Leader of Humilau City![f000]븁\u0000\nPutting that aside, being a man of the\nsea is not a profession, is it?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 128, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_MarlonGymLeaderHumilau, 2, 0
     VMJump L_066A
 
 L_056F:
@@ -386,7 +387,7 @@ L_056F:
 
 L_0582:
     // "Bianca!\nShe's an assistant of Professor Juniper![f000]븁\u0000\nShe's from Nuvema Town and started her\njourney of adventure with Cheren[f000]븀\u0000\nand another friend![f000]븁\u0000\nShe's humble, but she's a pretty\nstrong Trainer.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 129, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BiancaShesAssistantProfessor, 2, 0
     VMJump L_066A
 
 L_0592:
@@ -396,7 +397,7 @@ L_0592:
 
 L_05A5:
     // "Chili!\nHe's a triplet in Striaton City![f000]븀\u0000\nI believe he uses Fire-type Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 130, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_ChiliHesTripletStriaton, 2, 0
     VMJump L_066A
 
 L_05B5:
@@ -406,7 +407,7 @@ L_05B5:
 
 L_05C8:
     // "Cress!\nHe's a triplet in Striaton City![f000]븀\u0000\nI believe he uses Water-type Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 131, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_CressHesTripletStriaton, 2, 0
     VMJump L_066A
 
 L_05D8:
@@ -416,7 +417,7 @@ L_05D8:
 
 L_05EB:
     // "Cilan!\nHe's a triplet in Striaton City![f000]븀\u0000\nI believe he uses Grass-type Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 132, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_CilanHesTripletStriaton, 2, 0
     VMJump L_066A
 
 L_05FB:
@@ -426,7 +427,7 @@ L_05FB:
 
 L_060E:
     // "Lenora![f000]븁\u0000\nShe's the director of Nacrene Museum.[f000]븁\u0000\nI guess she was too busy with her\nresearch and quit being the Gym Leader.[f000]븁\u0000\nRetaliate that her Watchog used\nwas impressive![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 133, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_LenoraShesDirectorNacrene, 2, 0
     VMJump L_066A
 
 L_061E:
@@ -436,7 +437,7 @@ L_061E:
 
 L_0631:
     // "Brycen! He's now an outstanding\nmovie star in Pokéstar Studios.[f000]븁\u0000\nHaving said that, he was originally\nan actor.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 134, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BrycenHesNowOutstanding, 2, 0
     VMJump L_066A
 
 L_0641:
@@ -446,7 +447,7 @@ L_0641:
 
 L_0654:
     // "Alder![f000]븁\u0000\nHe's the previous Champion of\nthe Unova region.[f000]븁\u0000\nHe's gone through a lot of hardship,\nbut he's a person of high caliber.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 140, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_AlderHesPreviousChampion, 2, 0
     VMJump L_066A
 
 L_0664:
@@ -467,7 +468,7 @@ L_0678:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_095C
     // "Which Trainer do you want to\nknow about?"
-    ParentActorMsg MSGFILE_SCRIPT, 57, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WhichTrainerWantKnow, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     Cmd_02D5 20, 0x8010
     VMStackPush 0x8010
@@ -557,7 +558,7 @@ L_07E8:
 
 L_0805:
     // "Brock!\nHe's the Gym Leader of Pewter City.[f000]븁\u0000\nHe uses Rock-type Pokémon. I heard\nhe's proud of his strong defense.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 141, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BrockHesGymLeader, 2, 0
     VMJump L_0956
 
 L_0815:
@@ -567,7 +568,7 @@ L_0815:
 
 L_0828:
     // "Misty![f000]븁\u0000\nMisty is the Gym Leader of\nCerulean City.[f000]븁\u0000\nAs she's called the Tomboyish Mermaid,\nshe's an active, beautiful girl![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 142, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_MistyMistyGymLeader, 2, 0
     VMJump L_0956
 
 L_0838:
@@ -577,7 +578,7 @@ L_0838:
 
 L_084B:
     // "Lt. Surge![f000]븁\u0000\nHe used to be a soldier and acts as\nthe Gym Leader of Vermilion City.[f000]븁\u0000\nIs he from the Unova region?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 143, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_LtSurgeHeUsed, 2, 0
     VMJump L_0956
 
 L_085B:
@@ -587,7 +588,7 @@ L_085B:
 
 L_086E:
     // "Lady Erika![f000]븁\u0000\nShe's a lady who is the Gym Leader\nof Celadon City![f000]븁\u0000\nIs her hobby flower arrangement?[f000]븁\u0000\nShe dozes off quite often, but her\nlaid-back personality is part of[f000]븀\u0000\nher charm.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 144, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_LadyErikaShesLady, 2, 0
     VMJump L_0956
 
 L_087E:
@@ -597,7 +598,7 @@ L_087E:
 
 L_0891:
     // "Queen Sabrina![f000]븁\u0000\nShe's a psychic and the Gym Leader\nthat Saffron City is proud of![f000]븁\u0000\nAww, calling her “queen\" fits her image\nfor me.[f000]븁\u0000\nAh! I want her to see my future\nby Future Sight![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 145, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_QueenSabrinaShesPsychic, 2, 0
     VMJump L_0956
 
 L_08A1:
@@ -607,7 +608,7 @@ L_08A1:
 
 L_08B4:
     // "Blaine!\nThe Hotheaded Quiz Master.[f000]븁\u0000\nHe's the Gym Leader of Cinnabar Island,\nbut he had a tough time.[f000]븁\u0000\nThe original Gym was destroyed and\nhe had to go to Seafoam Islands.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 146, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BlaineHotheadedQuizMaster, 2, 0
     VMJump L_0956
 
 L_08C4:
@@ -617,7 +618,7 @@ L_08C4:
 
 L_08D7:
     // "Giovanni...[f000]븁\u0000\nI heard a lot of rumors about him,\nbut I don't know much about him.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 147, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_GiovanniHeardLotRumors, 2, 0
     VMJump L_0956
 
 L_08E7:
@@ -627,7 +628,7 @@ L_08E7:
 
 L_08FA:
     // "Janine![f000]븁\u0000\nAgain.\nJanine![f000]븁\u0000\nShe's the Gym Leader of Fuchsia City,\nand her father is Koga![f000]븀\u0000\nHe's one of the Elite Four![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 156, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_JanineAgainJanineShes, 2, 0
     VMJump L_0956
 
 L_090A:
@@ -637,7 +638,7 @@ L_090A:
 
 L_091D:
     // "Blue is a grandson of\nProfessor Oak.[f000]븁\u0000\nAnything else?[f000]븁\u0000\nOh, I believe he's a former Champion\nand the Gym Leader of Viridian City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 135, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BlueGrandsonProfessorOak, 2, 0
     VMJump L_0956
 
 L_092D:
@@ -647,7 +648,7 @@ L_092D:
 
 L_0940:
     // "Red...?[f000]븁\u0000\nI don't know much about him,\nbut I heard he is a legendary Trainer.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 174, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_RedDontKnowMuch, 2, 0
     VMJump L_0956
 
 L_0950:
@@ -668,7 +669,7 @@ L_0964:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C04
     // "Which Trainer do you want to\nknow about?"
-    ParentActorMsg MSGFILE_SCRIPT, 57, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WhichTrainerWantKnow, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     Cmd_02D5 27, 0x8010
     VMStackPush 0x8010
@@ -750,7 +751,7 @@ L_0AB3:
 
 L_0AD0:
     // "Falkner![f000]븁\u0000\nHe's the Gym Leader of Violet City.\nHe's a young man who battles with[f000]븀\u0000\nPokémon that his father counted on.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 148, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_FalknerHesGymLeader, 2, 0
     VMJump L_0BFE
 
 L_0AE0:
@@ -760,7 +761,7 @@ L_0AE0:
 
 L_0AF3:
     // "Bugsy.[f000]븁\u0000\nHe's a Gym Leader who's called\n“The Walking Bug Pokémon Encyclopedia.\"[f000]븁\u0000\nOh! The town he's in is Azalea!\n...I think.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 149, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BugsyHesGymLeader, 2, 0
     VMJump L_0BFE
 
 L_0B03:
@@ -770,7 +771,7 @@ L_0B03:
 
 L_0B16:
     // "Whitney!\nShe's the Gym Leader of Goldenrod City![f000]븁\u0000\nI believe she loves softball and\nwears clothes that look like a uniform.[f000]븁\u0000\nThe first thing I think about her\nis Rollout![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 150, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WhitneyShesGymLeader, 2, 0
     VMJump L_0BFE
 
 L_0B26:
@@ -780,7 +781,7 @@ L_0B26:
 
 L_0B39:
     // "Morty! He's a stoic Gym Leader.\nHe's training to see the legendary[f000]븀\u0000\nPokémon in Ecruteak City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 151, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_MortyHesStoicGym, 2, 0
     VMJump L_0BFE
 
 L_0B49:
@@ -790,7 +791,7 @@ L_0B49:
 
 L_0B5C:
     // "Chuck.[f000]븁\u0000\nHis wife thinks he's getting chubby.\nHe's the Gym Leader of Cianwood City![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 152, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_ChuckHisWifeThinks, 2, 0
     VMJump L_0BFE
 
 L_0B6C:
@@ -800,7 +801,7 @@ L_0B6C:
 
 L_0B7F:
     // "Jasmine![f000]븁\u0000\nShe's a compassionate woman of Steel![f000]븁\u0000\nShe's the Gym Leader of Olivine City.\nShe participates in Contests[f000]븀\u0000\nin the Sinnoh region.[f000]븁\u0000\nI heard she used to use\nRock-type Pokémon![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 153, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_JasmineShesCompassionateWoman, 2, 0
     VMJump L_0BFE
 
 L_0B8F:
@@ -810,7 +811,7 @@ L_0B8F:
 
 L_0BA2:
     // "Pryce.[f000]븁\u0000\nHe's the Gym Leader of Mahogany Town.\nHe's a cool gentleman![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 154, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_PryceHesGymLeader, 2, 0
     VMJump L_0BFE
 
 L_0BB2:
@@ -820,7 +821,7 @@ L_0BB2:
 
 L_0BC5:
     // "Clair![f000]븁\u0000\nShe uses Dragon-type Pokémon, and she's\nthe Gym Leader of Blackthorn City![f000]븁\u0000\nI heard Lance is her senior when it comes\nto training, and she's no match for him![f000]븁\u0000\nI hope Clair will be stronger than\nLance very soon![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 155, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_ClairSheUsesDragon, 2, 0
     VMJump L_0BFE
 
 L_0BD5:
@@ -830,7 +831,7 @@ L_0BD5:
 
 L_0BE8:
     // "Lance.[f000]븁\u0000\nHe's the Champion of the Pokémon League\nin the Kanto region.[f000]븁\u0000\nI think that he uses Dragon-type Pokémon\nand that he's from Blackthorn City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 136, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_LanceHesChampionPokemon, 2, 0
     VMJump L_0BFE
 
 L_0BF8:
@@ -851,7 +852,7 @@ L_0C0C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0F34
     // "Which Trainer do you want to\nknow about?"
-    ParentActorMsg MSGFILE_SCRIPT, 57, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WhichTrainerWantKnow, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     Cmd_02D5 36, 0x8010
     VMStackPush 0x8010
@@ -949,7 +950,7 @@ L_0D9D:
 
 L_0DBA:
     // "Roxanne![f000]븁\u0000\nShe's a teacher of a Trainers' School\nand also the Gym Leader of[f000]븀\u0000\nRustboro City![f000]븁\u0000\nIt's hard to tell how old she is--\nor any other women.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 157, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_RoxanneShesTeacherTrainers, 2, 0
     VMJump L_0F2E
 
 L_0DCA:
@@ -959,7 +960,7 @@ L_0DCA:
 
 L_0DDD:
     // "Brawly.\nHe's the Gym Leader of Dewford Town.[f000]븁\u0000\nIs he a Gym Leader or a surfer?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 158, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_BrawlyHesGymLeader, 2, 0
     VMJump L_0F2E
 
 L_0DED:
@@ -969,7 +970,7 @@ L_0DED:
 
 L_0E00:
     // "Wattson.[f000]븁\u0000\nHe's the Gym Leader of Mauville City.[f000]븁\u0000\nBeing cheerful all the time\nis the secret to his health.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 159, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WattsonHesGymLeader, 2, 0
     VMJump L_0F2E
 
 L_0E10:
@@ -979,7 +980,7 @@ L_0E10:
 
 L_0E23:
     // "Flannery![f000]븁\u0000\nShe's the Gym Leader of Lavaridge Town.\nI heard she loves hot springs![f000]븁\u0000\nAnd, I also heard her grandfather\nused to be one of the Elite Four![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 160, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_FlanneryShesGymLeader, 2, 0
     VMJump L_0F2E
 
 L_0E33:
@@ -989,7 +990,7 @@ L_0E33:
 
 L_0E46:
     // "Norman.[f000]븁\u0000\nHe's the Gym Leader of Petalburg City.\nHe is a friend of Professor Birch,[f000]븀\u0000\nwho is famous in the Hoenn region.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 161, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_NormanHesGymLeader, 2, 0
     VMJump L_0F2E
 
 L_0E56:
@@ -999,7 +1000,7 @@ L_0E56:
 
 L_0E69:
     // "Winona![f000]븁\u0000\nShe's the Gym Leader of Fortree City.\nShe spreads her wings around the world.[f000]븁\u0000\nShe's a perfect Trainer\nfor this tournament![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 162, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WinonaShesGymLeader, 2, 0
     VMJump L_0F2E
 
 L_0E79:
@@ -1009,7 +1010,7 @@ L_0E79:
 
 L_0E8C:
     // "Tate is one of the Gym Leaders of\nMossdeep City.[f000]븁\u0000\nHe'll challenge you for Double Battle\nwith his twin, Liza.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 163, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_TateOneGymLeaders, 2, 0
     VMJump L_0F2E
 
 L_0E9C:
@@ -1019,7 +1020,7 @@ L_0E9C:
 
 L_0EAF:
     // "Liza![f000]븁\u0000\nShe and her twin, Tate, are\nthe Gym Leaders of Mossdeep City.[f000]븁\u0000\nAs you expect of twins,\nthey're good at Double Battles![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 164, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_LizaSheHerTwin, 2, 0
     VMJump L_0F2E
 
 L_0EBF:
@@ -1029,7 +1030,7 @@ L_0EBF:
 
 L_0ED2:
     // "Juan![f000]븁\u0000\nHe's Wallace's teacher\nand the Gym Leader of Sootopolis City.[f000]븁\u0000\nI guess he's a ladies man.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 165, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_JuanHesWallacesTeacher, 2, 0
     VMJump L_0F2E
 
 L_0EE2:
@@ -1039,7 +1040,7 @@ L_0EE2:
 
 L_0EF5:
     // "Steven is a son of a wealthy family\nand a former Champion of Hoenn.[f000]븁\u0000\nIt might ring a bell if I say\nhis hobby is to collect Stones![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 137, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_StevenSonWealthyFamily, 2, 0
     VMJump L_0F2E
 
 L_0F05:
@@ -1049,7 +1050,7 @@ L_0F05:
 
 L_0F18:
     // "Wallace is the Champion of Hoenn.\nHe was originally a Gym Leader.[f000]븁\u0000\nI wonder why he replaced Steven.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 138, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WallaceChampionHoennHe, 2, 0
     VMJump L_0F2E
 
 L_0F28:
@@ -1070,7 +1071,7 @@ L_0F3C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11DC
     // "Which Trainer do you want to\nknow about?"
-    ParentActorMsg MSGFILE_SCRIPT, 57, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_WhichTrainerWantKnow, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     Cmd_02D5 45, 0x8010
     VMStackPush 0x8010
@@ -1152,7 +1153,7 @@ L_108B:
 
 L_10A8:
     // "Roark.[f000]븁\u0000\nHe's the young Gym Leader\nof Oreburgh City.[f000]븁\u0000\nHe supervises people who work in\nthe mines in the city.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 166, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_RoarkHesYoungGym, 2, 0
     VMJump L_11D6
 
 L_10B8:
@@ -1162,7 +1163,7 @@ L_10B8:
 
 L_10CB:
     // "Gardenia!\nI heard she's afraid of ghosts![f000]븁\u0000\nShe's the respectable Gym Leader\nof Eterna City, though![f000]븁\u0000\nHaving said that, everybody has\nsomething they don't like, right?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 167, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_GardeniaHeardShesAfraid, 2, 0
     VMJump L_11D6
 
 L_10DB:
@@ -1172,7 +1173,7 @@ L_10DB:
 
 L_10EE:
     // "Fantina![f000]븁\u0000\nShe tends to be misunderstood\ndue to her flashy appearance,[f000]븀\u0000\nbut she's a Gym Leader[f000]븀\u0000\nwith a compassionate heart![f000]븁\u0000\nShe consoles Pokémon's spirits\nat the Lost Tower near Hearthome City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 168, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_FantinaSheTendsMisunderstood, 2, 0
     VMJump L_11D6
 
 L_10FE:
@@ -1182,7 +1183,7 @@ L_10FE:
 
 L_1111:
     // "Maylene!\nThe barefoot fighting genius![f000]븁\u0000\nShe's the Gym Leader of Veilstone City\nand very serious about learning[f000]븀\u0000\nwhat it is to be strong![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 169, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_MayleneBarefootFightingGenius, 2, 0
     VMJump L_11D6
 
 L_1121:
@@ -1192,7 +1193,7 @@ L_1121:
 
 L_1134:
     // "Crasher Wake![f000]븁\u0000\nHe's a professional wrestler and\na Gym Leader.[f000]븁\u0000\nHe's an admirable man who uses his\nprize money for Pastoria City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 170, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_CrasherWakeHesProfessional, 2, 0
     VMJump L_11D6
 
 L_1144:
@@ -1202,7 +1203,7 @@ L_1144:
 
 L_1157:
     // "Byron!\nHe's the Gym Leader of Canalave City.[f000]븀\u0000\nHe always carries a shovel.[f000]븁\u0000\nBy the way, he's the father of Roark,\nwho's the Gym Leader of[f000]븀\u0000\nOreburgh City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 171, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_ByronHesGymLeader, 2, 0
     VMJump L_11D6
 
 L_1167:
@@ -1212,7 +1213,7 @@ L_1167:
 
 L_117A:
     // "Candice![f000]븁\u0000\nShe's the spirited Gym Leader\nof Snowpoint City![f000]븁\u0000\nShe also guards the temple\nin the city![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 172, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_CandiceShesSpiritedGym, 2, 0
     VMJump L_11D6
 
 L_118A:
@@ -1222,7 +1223,7 @@ L_118A:
 
 L_119D:
     // "Volkner...[f000]븁\u0000\nHe's the Leader of Sunyshore City.\nI heard he renovated the Pokémon Gym[f000]븀\u0000\nand caused blackouts in the city.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 173, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_VolknerHesLeaderSunyshore, 2, 0
     VMJump L_11D6
 
 L_11AD:
@@ -1232,7 +1233,7 @@ L_11AD:
 
 L_11C0:
     // "Cynthia!![f000]븁\u0000\nShe's the Champion of the Sinnoh region\nand an archeologist![f000]븁\u0000\nShe balances the use of various types\nof Pokémon![f000]븁\u0000\nRumor has it that she comes to a villa\nin Undella Town for her research![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 139, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10675_Text_CynthiaShesChampionSinnoh, 2, 0
     VMJump L_11D6
 
 L_11D0:

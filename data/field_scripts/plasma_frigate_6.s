@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -64,7 +65,7 @@ Script_5:
     EvCameraMoveTo 9688, 0, 0xed000, 0xb8000, 0, 0x34000, 80
     EvCameraWait
     // "???: That blasted Colress![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_BlastedColress, 4, 0, 0
     MsgWinCloseAll
     ActorCmdExec 4, Movement_0988
     ActorCmdWait
@@ -74,17 +75,17 @@ Script_5:
     SEWait
     ActorCmdWait
     // "The fool is far too committed\nto pure science.[f000]븁\u0000\nThis is how he repays me for\nmaking him the boss of Team Plasma?[f000]븁\u0000\nHow dare he put his personal\nintellectual curiosity before our[f000]븀\u0000\nultimate mission of conquering Unova![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_FoolFarTooCommitted, 4, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 4, 12, 2, 0, 16, 0
     ActorCmdWait
     // "How fortunate for you![f000]븁\u0000\nFew get to be the sole audience member\nfor one of my speeches.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_HowFortunateFewGet, 4, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 4, 12, 3, 0, 16, 0
     ActorCmdWait
     // "Team Plasma will use its\nknowledge and technology[f000]븀\u0000\nto take Kyurem's true[f000]븀\u0000\npower to its absolute limit[f000]븀\u0000\nand freeze the Unova region.[f000]븁\u0000\nThe terrified people and Pokémon\nwill bow at Team Plasma's...no...[f000]븀\u0000\nat MY feet![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_TeamPlasmaWillUse, 4, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 4, 13, 5, 0, 16, 0
     ActorCmdWait
@@ -94,7 +95,7 @@ Script_5:
     SEWait
     ActorCmdWait
     // "Kyurem is an empty being.[f000]븁\u0000\nThe remnants of a certain Pokémon\nwhen it split into Reshiram and[f000]븀\u0000\nZekrom...[f000]븁\u0000\nMy desire is absolute rule of Unova![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_KyuremEmptyBeingRemnants, 4, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 60
     ActorWalkRoute 4, 13, 7, 0, 16, 0
@@ -105,7 +106,7 @@ Script_5:
     EvCameraRebind
     EvCameraEnd
     // "That's right! Kyurem will be the vessel\ninto which my desires will be poured![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ThatsRightKyuremWill, 4, 0, 0
     MsgWinCloseAll
     ActorAdd 1
     FlagSet 2554
@@ -117,10 +118,10 @@ Script_5:
     ActorCmdExec 255, Movement_0980
     ActorCmdWait
     // "Shadow Triad: Lord Ghetsis.\nKyurem has been transferred![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadLordGhetsis, 1, 0, 0
     MsgWinCloseAll
     // "Ghetsis: It's finally here![f000]븁\u0000\nThe wonderful era in which\nI am the absolute ruler of Unova[f000]븀\u0000\nhas finally arrived![f000]븁\u0000\nI'll let you take care of this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_GhetsisItsFinallyHere, 4, 0, 0
     MsgWinCloseAll
     ActorCmdExec 4, Movement_0384
     VMSleep 26
@@ -137,34 +138,34 @@ Script_5:
     ActorCmdExec 255, Movement_0990
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Wait...\nYou're one of the Shadow Triad, right?[f000]븁\u0000\nTell me about the Purrloin\nthat was stolen in Aspertia.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_WaitYoureOneShadow, 0, 0, 0
     MsgWinCloseAll
     // "Shadow Triad: Very well...[f000]븁\u0000\nThis might be it.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadVeryWell, 1, 0, 0
     MsgWinCloseAll
     ActorAdd 2
     PVPlay 510, 0
     // "Grrooowwwl!"
-    ActorMsg MSGFILE_SCRIPT, 10, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_Grrooowwwl, 2, 0, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_09A0
     ActorCmdWait
     // "Shadow Triad: I stole this Pokémon\nfive years ago in Aspertia.[f000]븁\u0000\nSo it seems likely that it is the\nPokémon you're talking about.[f000]븁\u0000\nBut now, it only listens to my commands.[f000]븁\u0000\nSuch is the fate of Pokémon\nthat are trapped in Poké Balls![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadStolePokemon, 1, 0, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Wh-what?[f000]븁\u0000\nDon't mess with me...\nThat's someone else's Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_WhWhatDontMess, 0, 0, 0
     MsgWinCloseAll
     // "Shadow Triad: Ah...\nI feel sorry for Pokémon.[f000]븁\u0000\nThey're ruled by Poké Balls\nand the whims of their Trainers...[f000]븁\u0000\nLord Ghetsis spoke of\nPokémon liberation two years ago[f000]븀\u0000\nsimply for his own ambitions, but...[f000]븁\u0000\nIf his plans had succeeded, many Pokémon\nwould have been saved.[f000]븁\u0000\nThis Liepard--well, you knew it as a\nPurrloin--if it had been released,[f000]븀\u0000\nit might have returned to you.[f000]븁\u0000\nWell then...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadAhFeel, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0988
     ActorCmdExec 255, Movement_0980
     ActorCmdWait
     // "You there!\nI won't let you interfere with[f000]븀\u0000\nLord Ghetsis's plans![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ThereWontLetInterfere, 1, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -188,7 +189,7 @@ L_0327:
     ActorCmdExec 3, Movement_08AC
     ActorCmdWait
     // "Shadow Triad: You're not done yet..."
-    ActorMsg MSGFILE_SCRIPT, 15, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadYoureNot, 5, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 847
@@ -218,7 +219,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Shadow Triad: Can you defeat\nall three of us?"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadCanDefeat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -235,12 +236,12 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Shadow Triad: I have no problem\nwith you, but this is for Lord Ghetsis![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadHaveNo, 5, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_2, 0, 0
     VMCall L_08C0
     // "Shadow Triad: Even if I lose,\nLord Ghetsis simply has to win..."
-    ActorMsg MSGFILE_SCRIPT, 18, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadEvenIf, 5, 0, 0
     WorkAdd 0x40f4, 1
     TrainerFlagSet TRAINER_TEAM_PLASMA_SHADOW_2
     VMStackPush 0x40f4
@@ -263,7 +264,7 @@ L_0430:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Shadow Triad: Even if I lose,\nLord Ghetsis simply has to win..."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadEvenIf, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -282,12 +283,12 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Shadow Triad: We swore to be loyal\nto Lord Ghetsis since he saved us![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadWeSwore, 3, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_TEAM_PLASMA_SHADOW_3, 0, 0
     VMCall L_08C0
     // "Shadow Triad: Listen well![f000]븁\u0000\nThe only thing we want is\nthe world Lord Ghetsis desires!"
-    ActorMsg MSGFILE_SCRIPT, 20, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadListenWell, 3, 0, 0
     WorkAdd 0x40f4, 1
     TrainerFlagSet TRAINER_TEAM_PLASMA_SHADOW_3
     VMStackPush 0x40f4
@@ -310,7 +311,7 @@ L_04CA:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Shadow Triad: Even if I lose,\nLord Ghetsis simply has to win..."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadEvenIf, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -349,11 +350,11 @@ L_0540:
     EvCameraWait
     ActorCmdWait
     // "Shadow Triad: No matter...[f000]븁\u0000\nThe only thing you can do is\nwatch Lord Ghetsis use Kyurem[f000]븀\u0000\nto freeze Unova solid. That's all...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadNoMatter, 1, 0, 0
     ActorCmdExec 1, Movement_0990
     ActorCmdWait
     // "You...\nI'll return this Pokémon to you.[f000]븁\u0000\nConsidering what Lord Ghetsis\nis about to do,[f000]븀\u0000\nI have no further need of it.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_IllReturnPokemonConsidering, 1, 0, 0
     MsgWinCloseAll
     FlagReset 2554
     ActorCmdExec 1, Movement_08B4
@@ -374,7 +375,7 @@ L_0540:
 
 L_05D1:
     // "[f000]Ā\u0001\u0001: ...[f000]븁\u0000\n...[f000]븁\u0000\nHey...\n[f000]Ā\u0001\u0000...[f000]븁\u0000\nIf we let Team Plasma\ndo whatever they want...[f000]븁\u0000\nThere'll be more sad Pokémon\nlike Purrloin and Kyurem..."
-    ActorMsg MSGFILE_SCRIPT, 25, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_HeyIfWeLet, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     EvCameraMoveToDefault 32
@@ -397,7 +398,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]Ā\u0001\u0001: Sorry...[f000]븁\u0000\nThis situation is messing with my head...\nI just don't know what to do...[f000]븁\u0000\nI finally found my sister's Pokémon,\nbut now it's glaring at me...[f000]븁\u0000\nWhy?!"
-    ActorMsg MSGFILE_SCRIPT, 24, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_SorrySituationMessingHead, 0, 0, 0
     PlayerGetDir 0x8021
     VMStackPush 0x8021
     VMStackPushConst 2
@@ -420,7 +421,7 @@ L_065D:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]Ā\u0001\u0001: ...[f000]븁\u0000\n...[f000]븁\u0000\nHey...\n[f000]Ā\u0001\u0000...[f000]븁\u0000\nIf we let Team Plasma\ndo whatever they want...[f000]븁\u0000\nThere'll be more sad Pokémon\nlike Purrloin and Kyurem..."
-    ActorMsg MSGFILE_SCRIPT, 25, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_HeyIfWeLet, 0, 0, 0
     PlayerGetDir 0x8021
     VMStackPush 0x8021
     VMStackPushConst 2
@@ -450,12 +451,12 @@ Script_10:
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_06D5
     // "Grrooowwwl!"
-    ActorMsg MSGFILE_SCRIPT, 10, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_Grrooowwwl, 2, 0, 0
     VMJump L_06E1
 
 L_06D5:
     // "Grrrrrr..."
-    ActorMsg MSGFILE_SCRIPT, 30, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_Grrrrrr, 2, 0, 0
 
 L_06E1:
     PVWait
@@ -483,7 +484,7 @@ L_071E:
     ActorCmdExec 255, Movement_07B4
     ActorCmdWait
     // "Shadow Triad: If you want to go any\nfurther, you'll have to get past us.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate6_Text_ShadowTriadIfWant, 5, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8022
     VMStackPushConst 10
@@ -562,12 +563,12 @@ Script_12:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0829
     // "A map of the Unova region\nis being displayed."
-    InfoMsg 26, 2
+    InfoMsg PlasmaFrigate6_Text_MapUnovaRegionBeing, 2
     VMJump L_082E
 
 L_0829:
     // "The monitor is showing static..."
-    InfoMsg 29, 2
+    InfoMsg PlasmaFrigate6_Text_MonitorShowingStatic, 2
 
 L_082E:
     LastKeyWait
@@ -584,12 +585,12 @@ Script_13:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_085C
     // "Data about the ship\nis being displayed."
-    InfoMsg 27, 2
+    InfoMsg PlasmaFrigate6_Text_DataAboutShipBeing, 2
     VMJump L_0861
 
 L_085C:
     // "The monitor is showing static..."
-    InfoMsg 29, 2
+    InfoMsg PlasmaFrigate6_Text_MonitorShowingStatic, 2
 
 L_0861:
     LastKeyWait
@@ -606,12 +607,12 @@ Script_14:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_088F
     // "The monitor is showing static...[f000]븁\u0000\nThe voices of Team Plasma members\nwho should be in the ship can be heard."
-    InfoMsg 28, 2
+    InfoMsg PlasmaFrigate6_Text_MonitorShowingStaticVoices, 2
     VMJump L_0894
 
 L_088F:
     // "The monitor is showing static..."
-    InfoMsg 29, 2
+    InfoMsg PlasmaFrigate6_Text_MonitorShowingStatic, 2
 
 L_0894:
     LastKeyWait

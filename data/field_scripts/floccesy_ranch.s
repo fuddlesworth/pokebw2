@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/floccesy_ranch.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -8,7 +9,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Meet lots of Pokémon!\nFloccesy Ranch, just off Floccesy Town"
-    MsgPlaceSign 0, 2
+    MsgPlaceSign FloccesyRanch_Text_MeetLotsPokemonFloccesy, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

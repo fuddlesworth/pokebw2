@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_4_16.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -115,9 +116,9 @@ L_0196:
 
 L_01DE:
     // "Colress: I've been waiting for you![f000]븁\u0000\nWhat's the matter?\nInterested in what's behind me?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route416_Text_ColressIveBeenWaiting, 14, 0, 0
     // "These are not mere rocks, but\nthe Pokémon known as Crustle.[f000]븁\u0000\nObserve.[f000]븁\u0000\nWith this device I created\nto energize Pokémon, I'll...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route416_Text_TheseNotMereRocks, 14, 0, 0
     MsgWinCloseAll
     ActorCmdExec 14, Movement_0684
     VMSleep 4
@@ -153,7 +154,7 @@ L_01DE:
     ActorCmdExec 22, Movement_043C
     ActorCmdWait
     // "Colress: Those Crustle...[f000]븁\u0000\nWere they just lying here,\nout of energy, with their[f000]븀\u0000\nboulders on their backs?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route416_Text_ColressThoseCrustleWere, 14, 0, 0
     MsgWinCloseAll
     BGMPlay SEQ_BGM_E_ACHROMA
     ActorCmdExec 14, Movement_0694
@@ -161,13 +162,13 @@ L_01DE:
     ActorCmdExec 255, Movement_069C
     ActorCmdWait
     // "Team Plasma said we should recognize\nthe potential in Pokémon and[f000]븀\u0000\nliberate them from humans.[f000]븁\u0000\nI disagree.[f000]븁\u0000\nConversely, it should be humans who bring\nout the hidden potential in Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route416_Text_TeamPlasmaSaidWe, 14, 0, 0
     MsgWinCloseAll
     ActorCmdExec 14, Movement_041C
     ActorCmdWait
     WordSetPlayerName 0
     // "Now that I think of it,\nI never asked your name.[f000]븁\u0000\n...\n...[f000]븁\u0000\n[f000]Ā\u0001\u0000...\nI'll remember that name.[f000]븁\u0000\nWell then, I will test you to see if\nyou're a Trainer who can bring out[f000]븀\u0000\nthe hidden potential of Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route416_Text_NowThinkNeverAsked, 14, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_COLRESS, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -184,7 +185,7 @@ L_0336:
 L_0338:
     WordSetPlayerName 0
     // "Colress: I see! Just like the\nGym Leaders in each area or the[f000]븀\u0000\nElite Four and Champion in the[f000]븀\u0000\nPokémon League, you bring out the[f000]븀\u0000\npower in Pokémon by being kind to them![f000]븁\u0000\nThat's the kind of person you are.[f000]븁\u0000\nI'm extremely grateful for your help.\nThis is a token of my gratitude.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route416_Text_ColressSeeJustLike, 14, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -195,7 +196,7 @@ L_0338:
     VMStackPop 0x8000
     WordSetPlayerName 0
     // "Colress: It's so frustrating![f000]븁\u0000\nIf only we could talk to Pokémon\nin order to bring out their power![f000]븁\u0000\nBut there's no way a person\nlike that could ever exist![f000]븁\u0000\nWell then, [f000]Ā\u0001\u0000,\nI hope to see you again sometime.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route416_Text_ColressItsFrustratingIf, 14, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     ActorWalkRoute 14, 406, 563, 4, 8, 0
@@ -278,7 +279,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I never would have guessed\nthey were Crustle...[f000]븁\u0000\nIf you're interested in Crustle,\nyou'll find them in the Desert Resort,[f000]븀\u0000\nwhich is just past here!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route416_Text_NeverWouldHaveGuessed, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_048F
@@ -287,7 +288,7 @@ L_047B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey, Trainer![f000]븁\u0000\nThese boulders suddenly\nlined up like this...[f000]븁\u0000\nWhat's more, the HM Strength\nwon't budge them."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route416_Text_HeyTrainerTheseBoulders, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -301,7 +302,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Team Plasma said we should recognize\nthe potential in Pokémon and[f000]븀\u0000\nliberate them from humans.[f000]븁\u0000\nI disagree.[f000]븁\u0000\nConversely, it should be humans who bring\nout the hidden potential in Pokémon![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route416_Text_TeamPlasmaSaidWe, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -313,7 +314,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     WordSetPlayerName 0
     // "It's a big boulder, but it doesn't\nlook like a Pokémon can move it..."
-    SystemMsg 2, 2
+    SystemMsg Route416_Text_ItsBigBoulderBut, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -325,7 +326,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "All I do is look at the cars\ndriving down the freeway."
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route416_Text_AllLookCarsDriving, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -337,7 +338,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh! Trainer, take a look at the sand.[f000]븁\u0000\nDo you see how some areas are lighter?\nAnd some of the sand looks...darker...[f000]븁\u0000\nPokémon are hiding in the darker sand!"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route416_Text_OhTrainerTakeLook, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -349,7 +350,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When the ruins were discovered,\nnew construction was stopped...[f000]븁\u0000\nGuess you can't compete\nagainst the weight of history."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route416_Text_WhenRuinsWereDiscovered, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -361,7 +362,7 @@ Script_6:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 4"
-    MsgPlaceSign 16, 3
+    MsgPlaceSign Route416_Text_Route4, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -372,7 +373,7 @@ Script_7:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nPokémon have a source of energy\nfor using moves.[f000]븁\u0000\nIt's called PP, meaning Power Points.\nThey have PP for each move.[f000]븁\u0000\nWhen a move has no PP remaining,\nthat Pokémon cannot use that move.[f000]븁\u0000\nThat's a good time to head for\nthe Pokémon Center!"
-    MsgPlaceSign 17, 0
+    MsgPlaceSign Route416_Text_TrainerTipsPokemonHave, 0
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -383,7 +384,7 @@ Script_8:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Desert Resort Ahead\nRight: Nimbasa City"
-    MsgPlaceSign 18, 3
+    MsgPlaceSign Route416_Text_DesertResortAheadRight, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -394,7 +395,7 @@ Script_9:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nPokémon have a source of energy\nfor using moves.[f000]븁\u0000\nIt's called PP, meaning Power Points.\nThey have PP for each move.[f000]븁\u0000\nWhen a move has no PP remaining,\nthat Pokémon cannot use that move.[f000]븁\u0000\nThat's a good time to head for\nthe Pokémon Center!"
-    MsgPlaceSign 17, 0
+    MsgPlaceSign Route416_Text_TrainerTipsPokemonHave, 0
     MsgPlaceSignClose
     FlagSet 2667
     FinishAllEvents
@@ -406,7 +407,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     PVPlay 628, 0
     // "Ra ra ra ra!"
-    ScreamMsg 11, 2
+    ScreamMsg Route416_Text_RaRaRaRa, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -447,7 +448,7 @@ L_060B:
 
 L_062B:
     // "Braviary flew off into the sky..."
-    SystemMsg 12, 2
+    SystemMsg Route416_Text_BraviaryFlewOffInto, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_063B

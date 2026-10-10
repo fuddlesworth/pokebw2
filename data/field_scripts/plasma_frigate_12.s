@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_12.h"
 
 // Script plugin 12, from the zones that use this file
 
@@ -58,12 +59,12 @@ Script_6:
     ActorWalkRoute 255, 11, 12, 1, 8, 0
     ActorCmdWait
     // "Team Plasma: Who are you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_TeamPlasmaWho, 2, 5, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_025C
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Just to let you know...\nYou're about to feel my rage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_JustLetKnowYoure, 0, 6, 0
     MsgWinCloseAll
     VMStackPush 0x4030
     VMStackPushConst 0
@@ -89,10 +90,10 @@ L_012A:
     ActorCmdExec 1, Movement_0484
     ActorCmdWait
     // "Team Plasma: Ugh...!\nWe have to tell the others.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_TeamPlasmaUghWe, 2, 5, 0
     MsgWinCloseAll
     // "Team Plasma: Oh no! At this rate,\nthey'll get through our barriers![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_TeamPlasmaOhNo, 1, 3, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0278
     ActorCmdExec 1, Movement_0264
@@ -107,16 +108,16 @@ L_012A:
     ActorDelete 2
     SEWait
     // "[f000]Ā\u0001\u0001: They didn't have\nPurrloin with them![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_TheyDidntHavePurrloin, 0, 6, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_046C
     ActorCmdExec 0, Movement_046C
     ActorCmdWait
     // "Barriers, huh...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_BarriersHuh, 0, 0, 0
     MsgWinCloseAll
     // "And there's a device where\nyou enter a password here...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_TheresDeviceWhereEnter, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0484
     ActorCmdWait
@@ -125,7 +126,7 @@ L_012A:
     ActorCmdExec 255, Movement_0484
     ActorCmdWait
     // "That means...[f000]븁\u0000\nWe either have to find the password,\nor get it out of Team Plasma,[f000]븀\u0000\nto deactivate the barriers.[f000]븁\u0000\n[f000]Ā\u0001\u0000!\nLet's split up and find that password![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate12_Text_MeansWeEitherHave, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0290
     VMSleep 4
@@ -186,7 +187,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C9
     // "There is a device...[f000]븁\u0000\nIt seems that a card key is necessary\nto enter a password."
-    SystemMsg 8, 2
+    SystemMsg PlasmaFrigate12_Text_ThereDeviceSeemsCard, 2
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0394
@@ -201,7 +202,7 @@ L_02C9:
     SEPlay SEQ_SE_SW_PLAZMASHIP_01
     SEWait
     // "There is a device...\nIt seems to be for entering a password.[f000]븁\u0000\nWill you enter a password?"
-    SystemMsg 9, 2
+    SystemMsg PlasmaFrigate12_Text_ThereDeviceSeemsEntering, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -216,7 +217,7 @@ L_02C9:
     VMJumpIf CMP_STACK, L_036C
     SEPlay SEQ_SE_SW_PLAZMASHIP_02
     // "You succeeded in\nentering the password!"
-    SystemMsg 11, 2
+    SystemMsg PlasmaFrigate12_Text_SucceededEnteringPassword, 2
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -228,7 +229,7 @@ L_02C9:
     VMSleep 8
     Plugin12_Cmd1008 3
     // "All the barriers were deactivated,\nand now you can proceed!"
-    SystemMsg 12, 2
+    SystemMsg PlasmaFrigate12_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40fb, 1
@@ -239,7 +240,7 @@ L_036C:
     SEPlay SEQ_SE_SW_PLAZMASHIP_03
     SEWait
     // "The password is not correct."
-    SystemMsg 10, 2
+    SystemMsg PlasmaFrigate12_Text_PasswordNotCorrect, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -254,7 +255,7 @@ L_0384:
 
 L_038A:
     // "All the barriers were deactivated,\nand now you can proceed!"
-    SystemMsg 12, 2
+    SystemMsg PlasmaFrigate12_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -273,7 +274,7 @@ Script_1:
     ActorCmdWait
     SEWait
     // "Be careful!\nThe barriers are electrified!"
-    InfoMsg 13, 2
+    InfoMsg PlasmaFrigate12_Text_CarefulBarriersElectrified, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

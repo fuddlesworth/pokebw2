@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/aspertia_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -45,7 +46,7 @@ Script_3:
     ActorCmdExec 255, Movement_08D8
     ActorCmdWait
     // "Hello! I'm Clyde, the guide for Trainers\nwho challenge Pokémon Gyms.[f000]븁\u0000\nThank you for taking on the Gym!\nTake this to commemorate[f000]븀\u0000\nyour debut![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_HelloImClydeGuide, 3, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -55,9 +56,9 @@ Script_3:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Pokémon Gyms are facilities\nfor testing Trainers' abilities![f000]븁\u0000\nPut simply, if you can defeat\nthe Gym Leader, it means[f000]븀\u0000\nyou're a really good Trainer![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_PokemonGymsFacilitiesTesting, 3, 0, 0
     // "If you run out of Pokémon that can fight\nduring a Pokémon battle, you lose![f000]븁\u0000\nSo having a lot of Pokémon with you\nmight work to your advantage!"
-    ActorMsg MSGFILE_SCRIPT, 22, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_IfRunOutPokemon, 3, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 3, 12, 22, 0, 8, 0
@@ -75,18 +76,18 @@ Script_3:
     ActorWalkRoute 0, 15, 20, 0, 8, 1
     ActorCmdWait
     // "???: You must be a challenger![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_MustChallenger, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_08D0
     ActorCmdExec 2, Movement_08D0
     ActorCmdWait
     // "Welcome to Aspertia City's Pokémon Gym.[f000]븁\u0000\nI'm Cheren, the Gym Leader![f000]븁\u0000\nHm? Well, maybe I'd better say that I\njust became the Gym Leader![f000]븁\u0000\nMore importantly, we need to prepare\nbefore welcoming you to the Gym.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_WelcomeAspertiaCitysPokemon, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0244
     ActorCmdWait
     // "We have a challenger!\nYou two, take your places![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_WeHaveChallengerTwo, 0, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 40
     ActorCmdExec 1, Movement_08D8
@@ -98,7 +99,7 @@ Script_3:
     EvCameraRebind
     EvCameraEnd
     // "If you can defeat these two,\nthen I'll be your opponent!"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_IfCanDefeatThese, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 0, 15, 11, 1, 8, 1
@@ -152,7 +153,7 @@ L_02A6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you want to battle me,\nplease defeat those two first, OK?"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_IfWantBattlePlease, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -167,7 +168,7 @@ L_02C2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "In the Unova region, there are eight\nPokémon Gyms and eight Gym Badges![f000]븁\u0000\nIf you're a Trainer,\nyou could collect all of them![f000]븁\u0000\nThat will make it easier to fill\nthe pages of the Pokédex as well![f000]븁\u0000\nYes, two years ago, Pokédex in hand,\nI left on a journey with my friends."
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_UnovaRegionThereEight, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0307
@@ -176,7 +177,7 @@ L_02F1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Cheren: You should decide what\nyou're going to do from here out![f000]븁\u0000\nDon't worry about losing your way--\nyou have Pokémon by your side!"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_CherenShouldDecideWhat, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -220,7 +221,7 @@ L_0378:
 L_0386:
     ActorCmdWait
     // "Just as this is your first Gym challenge,\nthis is my first Pokémon battle[f000]븀\u0000\nas a Gym Leader![f000]븁\u0000\nLet's both do our best and have\na battle we can be proud of![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_JustFirstGymChallenge, 0, 0
     ActorMsgClose
     WorkSetConst 0x8023, 0
     GameGetDifficulty 0x8023
@@ -249,7 +250,7 @@ L_03EC:
 
 L_03EE:
     // "That battle has made me feel really\nglad you were my first challenger[f000]븀\u0000\nas a Gym Leader...[f000]븁\u0000\nI give you this in honor of the strength\nyou and your Pokémon showed![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_BattleHasMadeFeel, 0, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 0
     TrainerCardAddBadge 0
@@ -271,10 +272,10 @@ L_0434:
     MEWait
     WorkSetConst 0x8024, 0
     // "[f000]Ā\u0001\u0000 received the\nBasic Badge from Cheren![f000]븁\u0000"
-    SystemMsg 7, 0
+    SystemMsg AspertiaCityGym_Text_ReceivedBasicBadgeFrom, 0
     InfoMsgClose
     // "Here is your first Gym Badge,\nthe Basic Badge![f000]븀\u0000\nThis is an important milestone![f000]븁\u0000\nWith this Badge, Pokémon up to Lv. 20\nwill obey you, including traded Pokémon.[f000]븁\u0000\nAnd I want you to take this![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_HereFirstGymBadge, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -284,9 +285,9 @@ L_0434:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "TM83 can teach your\nPokémon the move Work Up![f000]븁\u0000\nWhen you use Work Up\nwhile battling, it raises[f000]븀\u0000\nthe user's Attack and Sp. Atk.[f000]븁\u0000\nBy the way, TMs can be used\nas many times as you want![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_Tm83CanTeachPokemon, 0, 0
     // "In the Unova region, there are eight\nPokémon Gyms and eight Gym Badges![f000]븁\u0000\nIf you're a Trainer,\nyou could collect all of them![f000]븁\u0000\nThat will make it easier to fill\nthe pages of the Pokédex as well![f000]븁\u0000\nYes, two years ago, Pokédex in hand,\nI left on a journey with my friends."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_UnovaRegionThereEight, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 2414
@@ -313,7 +314,7 @@ Script_5:
     VMJumpIf CMP_STACK, L_0603
     TrainerBGMPlayPush TRAINER_YOUNGSTER_PEDRO
     // "Cheren saw potential in me and\nmade me a Trainer in this Gym![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_CherenSawPotentialMade, 1, 0, 0
     ActorMsgClose
     EvCameraInit
     EvCameraUnbind
@@ -362,12 +363,12 @@ L_05B4:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_05E3
     // "Wow! You can challenge\nthe Gym Leader!"
-    ActorMsg MSGFILE_SCRIPT, 14, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_WowCanChallengeGym, 1, 0, 0
     VMJump L_05EF
 
 L_05E3:
     // "If you can defeat the girl, too,\nyou can challenge the Gym Leader!"
-    ActorMsg MSGFILE_SCRIPT, 13, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_IfCanDefeatGirl, 1, 0, 0
 
 L_05EF:
     LastKeyWait
@@ -384,14 +385,14 @@ L_0603:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_062C
     // "Wow! You can challenge\nthe Gym Leader!"
-    ActorMsg MSGFILE_SCRIPT, 14, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_WowCanChallengeGym, 1, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_063C
 
 L_062C:
     // "If you can defeat the girl, too,\nyou can challenge the Gym Leader!"
-    ActorMsg MSGFILE_SCRIPT, 13, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_IfCanDefeatGirl, 1, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -400,7 +401,7 @@ L_063C:
 
 L_0642:
     // "The reason Cheren saw potential\nin me was there was no one else...?[f000]븁\u0000\nNo way! Even if that is the case,\nI just have to get stronger!"
-    ActorMsg MSGFILE_SCRIPT, 15, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_ReasonCherenSawPotential, 1, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -440,7 +441,7 @@ Script_6:
     VMJumpIf CMP_STACK, L_07E2
     TrainerBGMPlayPush TRAINER_LASS_SERENA
     // "Now I'll show you all of the\nthings I learned from Cheren![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_NowIllShowAll, 2, 0, 0
     ActorMsgClose
     EvCameraInit
     EvCameraUnbind
@@ -489,14 +490,14 @@ L_078F:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_07C2
     // "OK. You're pretty good!\nBut, can you beat Cheren?"
-    ActorMsg MSGFILE_SCRIPT, 18, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_OkYourePrettyGood, 2, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_07D2
 
 L_07C2:
     // "I guess you can battle a little!\nThink you can beat the other Trainer?"
-    ActorMsg MSGFILE_SCRIPT, 17, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_GuessCanBattleLittle, 2, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -513,14 +514,14 @@ L_07E2:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_080B
     // "OK. You're pretty good!\nBut, can you beat Cheren?"
-    ActorMsg MSGFILE_SCRIPT, 18, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_OkYourePrettyGood, 2, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_081B
 
 L_080B:
     // "I guess you can battle a little!\nThink you can beat the other Trainer?"
-    ActorMsg MSGFILE_SCRIPT, 17, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_GuessCanBattleLittle, 2, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -529,7 +530,7 @@ L_081B:
 
 L_0821:
     // "I have to learn even more\nabout my Pokémon!"
-    ActorMsg MSGFILE_SCRIPT, 19, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_HaveLearnEvenMore, 2, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -548,7 +549,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you run out of Pokémon that can fight\nduring a Pokémon battle, you lose![f000]븁\u0000\nSo having a lot of Pokémon with you\nmight work to your advantage!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_IfRunOutPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0880
@@ -557,7 +558,7 @@ L_086C:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hope you'll remember the wonderful\nmoment in which you received[f000]븀\u0000\nthat Badge forever."
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCityGym_Text_HopeYoullRememberWonderful, 0, 0
     LastKeyWait
     ActorMsgClose
 

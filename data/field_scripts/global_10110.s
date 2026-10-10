@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10110.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -14,7 +15,7 @@ Script_1:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0043
     // "Hello![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10110_Text_Hello, 0x8011, 2, 0
 
 L_0043:
     WorkCmpConst 0x8021, 246
@@ -57,12 +58,12 @@ L_00BD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F4
     // "Welcome to the Technical Machine\ndepartment! May I help you?"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10110_Text_WelcomeTechnicalMachineDepartment, 0x8011, 2, 0
     VMJump L_0100
 
 L_00F4:
     // "Welcome!\nMay I help you?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10110_Text_WelcomeMayHelp, 0x8011, 2, 0
 
 L_0100:
     WorkSetConst 0x8024, 1
@@ -79,7 +80,7 @@ L_010C:
 
 L_0132:
     // "Is there anything else I may do\nfor you?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10110_Text_ThereAnythingElseMay, 0x8011, 2, 0
     WorkSetConst 0x8024, 1
     VMJump L_01D8
 
@@ -127,7 +128,7 @@ L_01D8:
 
 L_01DE:
     // "Please come again!"
-    ActorMsg MSGFILE_SCRIPT, 3, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10110_Text_PleaseComeAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x8025, 0
@@ -140,7 +141,7 @@ L_0202:
     WorkSetConst 0x8027, 0
     WorkSetConst 0x8028, 0
     // "Welcome to the\nExchange Service Corner![f000]븁\u0000\nWould you like to trade in your BP\nfor some fabulous prizes?"
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10110_Text_WelcomeExchangeServiceCorner, 0x8011, 2, 0
     YesNoWin 0x8026
     VMStackPush 0x8026
     VMStackPushConst 0
@@ -150,7 +151,7 @@ L_0202:
 
 L_023D:
     // "Please save some BP\nand come see us again."
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10110_Text_PleaseSaveSomeBp, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x8028, 0

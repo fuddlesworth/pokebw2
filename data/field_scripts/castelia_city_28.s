@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_28.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -33,7 +34,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CD
     // "Do you want to go up?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_WantGoUp, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -65,7 +66,7 @@ L_00F4:
 
 L_00FC:
     // "I need to check you.[f000]븁\u0000\nFrisk, frisk...\nFrisk, frisk... And one more frisk...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_NeedCheckFriskFrisk, 0, 0, 0
     ActorMsgClose
     ActorCmdWait
     VMStackPush 0x8021
@@ -89,14 +90,14 @@ L_014E:
 L_0156:
     ActorCmdWait
     // "You don't seem to have\nanything suspicious.[f000]븁\u0000\nOK! You can go.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_DontSeemHaveAnything, 0, 0, 0
     ActorMsgClose
     VMCall L_036F
     VMJump L_0188
 
 L_0172:
     // "OK! You can go."
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_OkCanGo, 0, 0, 0
     MsgWaitAdvance
     ActorMsgClose
     VMCall L_036F
@@ -117,7 +118,7 @@ L_0194:
 
 L_01B7:
     // "...OK. That's fine, then."
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_OkThatsFineThen, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -126,7 +127,7 @@ L_01C7:
 
 L_01CD:
     // "OK! You can go."
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_OkCanGo, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -148,7 +149,7 @@ Script_3:
 L_020C:
     ActorCmdWait
     // "Do you want to go up?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_WantGoUp, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -180,7 +181,7 @@ L_028E:
 
 L_0296:
     // "I need to check you.[f000]븁\u0000\nFrisk, frisk...\nFrisk, frisk... And one more frisk...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_NeedCheckFriskFrisk, 0, 0, 0
     ActorMsgClose
     ActorCmdWait
     VMStackPush 0x8021
@@ -204,14 +205,14 @@ L_02E8:
 L_02F0:
     ActorCmdWait
     // "You don't seem to have\nanything suspicious.[f000]븁\u0000\nOK! You can go.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_DontSeemHaveAnything, 0, 0, 0
     ActorMsgClose
     VMCall L_036F
     VMJump L_0322
 
 L_030C:
     // "OK! You can go."
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_OkCanGo, 0, 0, 0
     MsgWaitAdvance
     ActorMsgClose
     VMCall L_036F
@@ -232,7 +233,7 @@ L_032E:
 
 L_0351:
     // "...OK. That's fine, then.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_OkThatsFineThen_2, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 255, Movement_0474
     ActorCmdWait
@@ -343,7 +344,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm invited to a party, but the person\nin front of the elevator wants[f000]븀\u0000\nto pat me down.[f000]븁\u0000\nOr is it just my imagination?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_ImInvitedPartyBut, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -355,7 +356,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I talked with a lot of people upstairs.\nIt was fun!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_TalkedLotPeopleUpstairs, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -367,7 +368,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Where are you from?[f000]븁\u0000\nReally? You're from Aspertia City?\nIt's a great place![f000]븀\u0000\nThat outlook is fantastic!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity28_Text_WhereFromReallyYoure, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lacunosa_town_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -30,7 +31,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There are a lot of people in the world,\nand there are just as many different[f000]븀\u0000\ncharacteristics and ideas.[f000]븁\u0000\nI think I'd be really happy if I could\nmeet a lot of people and see the[f000]븀\u0000\ndifferences for myself!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown5_Text_ThereLotPeopleWorld, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -46,7 +47,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My work always keeps me very busy, so\nI'm thrilled if I can go home at night.[f000]븁\u0000\nI'm sorry to leave my wife lonely, but\nthat's the life of a powerful executive.[f000]븁\u0000\nOh, this is a souvenir from a business\ntrip. She does not seem to need it,[f000]븀\u0000\nso I will give it to you.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown5_Text_WorkAlwaysKeepsVery, 2, 0, 0
     ActorMsgClose
     Random 0x400f, 3
     VMStackPush 0x400f
@@ -87,7 +88,7 @@ L_0108:
 
 L_0128:
     // "Tomorrow it's work as always![f000]븁\u0000\nI'm a super businessman, aren't I?"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown5_Text_TomorrowItsWorkAlways, 2, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 2784
@@ -97,7 +98,7 @@ L_0142:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Tomorrow it's work as always![f000]븁\u0000\nI'm a super businessman, aren't I?"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown5_Text_TomorrowItsWorkAlways, 0, 0
     LastKeyWait
     ActorMsgClose
 

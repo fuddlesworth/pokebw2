@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/virbank_city_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -44,7 +45,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Listen! Challenge Poison-type Pokémon\nwith Poison-type Pokémon![f000]븀\u0000\nAt least, that's what Roxie told me.[f000]븁\u0000\nRoxie's a Gym Leader!\nShe plays an instrument. Pretty cool!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_ListenChallengePoisonType, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -62,13 +63,13 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C5
     // "The more Gym Badges you have,\nthe more items you can buy at a shop.[f000]븀\u0000\nI didn't know that!"
-    ActorMsg MSGFILE_SCRIPT, 1, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_MoreGymBadgesHave, 7, 0, 0
     VMJump L_00D8
 
 L_00C5:
     WordSetNumber 0, 0x8020, 1
     // "So you have [f000]Ȁ\u0001\u0000 Badges?[f000]븁\u0000\nOh! Then, you must be able to buy\na lot of items at a shop."
-    ActorMsg MSGFILE_SCRIPT, 2, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_HaveBadgesOhThen, 7, 0, 0
 
 L_00D8:
     LastKeyWait
@@ -82,7 +83,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hi! I have some questions for you![f000]븁\u0000\nIf you want to play, where do\nyou prefer: outside or at home?"
-    ActorMsg MSGFILE_SCRIPT, 3, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_HiHaveSomeQuestions, 8, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32784
     ListMenuAdd 11, 65535, 1
     ListMenuAdd 12, 65535, 2
@@ -112,7 +113,7 @@ L_0157:
 
 L_0170:
     // "I see! I see![f000]븁\u0000\nThen, which one are you interested in:\nthe thing everybody knows[f000]븀\u0000\nor the thing nobody knows?"
-    ActorMsg MSGFILE_SCRIPT, 4, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_SeeSeeThenWhich, 8, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32784
     ListMenuAdd 14, 65535, 1
     ListMenuAdd 15, 65535, 2
@@ -142,7 +143,7 @@ L_01DD:
 
 L_01F6:
     // "Oh, really?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_OhReally, 8, 2, 0
     VMStackPush 0x8008
     VMStackPushConst 3
     VMStackCmp CMP_EQ
@@ -152,7 +153,7 @@ L_01F6:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_023B
     // "In my view, you are a person with\ncommon sense!"
-    ActorMsg MSGFILE_SCRIPT, 6, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_ViewPersonCommonSense, 8, 2, 0
     UnityTowerCmd_02DA 0
     VMJump L_0319
 
@@ -166,7 +167,7 @@ L_023B:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0274
     // "I'd say you are quite active!"
-    ActorMsg MSGFILE_SCRIPT, 7, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_IdSayQuiteActive, 8, 2, 0
     UnityTowerCmd_02DA 1
     VMJump L_0319
 
@@ -180,7 +181,7 @@ L_0274:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02AD
     // "I'd say you are very curious!"
-    ActorMsg MSGFILE_SCRIPT, 8, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_IdSayVeryCurious, 8, 2, 0
     UnityTowerCmd_02DA 2
     VMJump L_0319
 
@@ -194,7 +195,7 @@ L_02AD:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02E6
     // "I'd say you are quite composed!"
-    ActorMsg MSGFILE_SCRIPT, 9, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_IdSayQuiteComposed, 8, 2, 0
     UnityTowerCmd_02DA 4
     VMJump L_0319
 
@@ -208,7 +209,7 @@ L_02E6:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0319
     // "I'd say you are quite relaxed!"
-    ActorMsg MSGFILE_SCRIPT, 10, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityPokemonCenter_Text_IdSayQuiteRelaxed, 8, 2, 0
     UnityTowerCmd_02DA 3
 
 L_0319:

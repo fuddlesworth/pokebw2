@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/victory_road_27.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -43,7 +44,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Thanks to my Pokémon,\nI've collected eight Gym Badges![f000]븁\u0000\nBut I'm too afraid to go further.\nI'm stuck at Victory Road."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VictoryRoad27_Text_ThanksPokemonIveCollected, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -55,7 +56,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "First of all, go through this long and\ndifficult Victory Road.[f000]븁\u0000\nThen, defeat even one of the\nElite Four.[f000]븁\u0000\nIncrease what you can do little by little,\nand get close to the Champion!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VictoryRoad27_Text_FirstAllGoThrough, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

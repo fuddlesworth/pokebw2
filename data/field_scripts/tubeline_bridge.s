@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/tubeline_bridge.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -34,7 +35,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This Tubeline Bridge was No. 1\nin the bridge rankings in Unova.[f000]븀\u0000\nThat means it's the sturdiest!"
-    ActorMsg MSGFILE_SCRIPT, 14, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_TubelineBridgeNo1, 0, 1, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -59,7 +60,7 @@ Script_5:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_021D
     // "Argh! Loud! It's way too noisy![f000]븁\u0000\nIt's all the trains! They never stop![f000]븁\u0000\nWhen the train runs below,\nit's unbearably noisy!"
-    ActorMsg MSGFILE_SCRIPT, 0, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_ArghLoudItsWay, 1, 0, 1
     MsgWaitAdvance
     Random 0x4002, 4
     VMStackPush 0x4002
@@ -67,7 +68,7 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F2
     // "To be more specific...\nThe noise level is about 70 decibels![f000]븁\u0000\nIt's as noisy as the main street\nin Castelia City[f000]븀\u0000\nwhen there are a lot of people!"
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_MoreSpecificNoiseLevel, 1, 0, 1
     MsgWaitAdvance
     VMJump L_0161
 
@@ -77,7 +78,7 @@ L_00F2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0119
     // "To be more specific...\nThe noise level is about 80 decibels![f000]븁\u0000\nIt's as noisy as loud people!"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_MoreSpecificNoiseLevel_2, 1, 0, 1
     MsgWaitAdvance
     VMJump L_0161
 
@@ -87,7 +88,7 @@ L_0119:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0140
     // "To be more specific...\nThe noise level is about 100 decibels![f000]븁\u0000\nIt's as noisy as the horn of\na truck right next to my ear!"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_MoreSpecificNoiseLevel_3, 1, 0, 1
     MsgWaitAdvance
     VMJump L_0161
 
@@ -97,7 +98,7 @@ L_0140:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0161
     // "To be more specific...\nThe noise level is about 120 decibels![f000]븁\u0000\nIt's as noisy as an engine of a plane\nin top gear!"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_MoreSpecificNoiseLevel_4, 1, 0, 1
     MsgWaitAdvance
 
 L_0161:
@@ -136,7 +137,7 @@ L_01D8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0207
     // "Oh, hey! Hey![f000]븁\u0000\nThat [f000]ā\u0001\u0000's Ability is\nSoundproof, isn't it?[f000]븁\u0000\nGreat! I'll catch my own [f000]ā\u0001\u0000\nand get rid of all this noise![f000]븁\u0000\nWait! What was that? I can't hear you!\nArgh! It's not getting any quieter![f000]븁\u0000\nEven though your [f000]ā\u0001\u0000\nwith the Soundproof Ability[f000]븀\u0000\nis right here, it's still so noisy.[f000]븁\u0000\n...[f000]븁\u0000\nCould it be?\nAm I the one making the most noise?"
-    ActorMsg MSGFILE_SCRIPT, 6, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_OhHeyHeyS, 1, 0, 1
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x4003, 1
@@ -144,7 +145,7 @@ L_01D8:
 
 L_0207:
     // "Argh! So loud! If we just had a Pokémon\nwith the Soundproof Ability, we could[f000]븀\u0000\nmake all this noise go away!"
-    ActorMsg MSGFILE_SCRIPT, 5, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_ArghLoudIfWe, 1, 0, 1
     LastKeyWait
     MsgWinCloseAll
 
@@ -154,7 +155,7 @@ L_0217:
 L_021D:
     WordSetPokeSpecies 0, 0x4185
     // "This is what I've discovered.[f000]븁\u0000\nWhen I speak in a low voice,\nI don't mind the train noise.[f000]븁\u0000\nI was the one being noisy, after all...[f000]븁\u0000\nThanks to you and your [f000]ā\u0001\u0000,\nnow I know. Thank you."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_WhatIveDiscoveredWhen, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -202,7 +203,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We were riding our motorbikes\nto our hearts' content...[f000]븁\u0000\nWe believed we could\nride forever and ever...[f000]븁\u0000\nYes, it's an infinite,\nlimitless, breakneck road...[f000]븁\u0000\nWith the breakneck team, Black Empoleon![f000]븁\u0000\nBack when I had a one-on-one\nbattle with [f000]Ā\u0001\u0001...[f000]븀\u0000\nthat was our golden age.[f000]븁\u0000\nIt was the age of gold."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_WeWereRidingOur, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02F1
@@ -211,7 +212,7 @@ L_02DD:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We were riding our motorbikes\nto our hearts' content...[f000]븁\u0000\nWe believed we could\nride forever and ever...[f000]븁\u0000\nYes, it's an infinite,\nlimitless, breakneck road...[f000]븁\u0000\nWith the breakneck team, Black Empoleon![f000]븁\u0000\nBack when I had a one-on-one\nbattle with the Trainer...[f000]븀\u0000\nthat was our golden age.[f000]븁\u0000\nIt was the age of gold."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_WeWereRidingOur_2, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -229,7 +230,7 @@ Script_8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03DF
     // "[f000]븉\u0001\u0002Oh... Oh...\nSo...thirsty...[f000]븁\u0000\nI met you on\nthe Driftveil Drawbridge...[f000]븁\u0000\nG-g-give me...\nFresh Water...?[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_OhOhThirstyMet, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -244,7 +245,7 @@ Script_8:
     SEPlay SEQ_SE_ARDEMO_01
     SEWait
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
     PlayerGetDir 0x8010
@@ -270,7 +271,7 @@ L_0391:
 
 L_03B7:
     // "[f000]븉\u0001\u0002But... You don't have Fresh Water...\nI appreciate the thought, though...[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_ButDontHaveFresh, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -279,7 +280,7 @@ L_03C5:
 
 L_03CB:
     // "[f000]븉\u0001\u0002Thank...[f000]븁\u0000\nWhat?\nOh...[f000]븁\u0000\nWithout Fresh Water...\nI can't run on bridges anymore.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_ThankWhatOhWithout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -292,7 +293,7 @@ L_03DF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0400
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TubelineBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10510.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -345,7 +346,7 @@ L_0517:
     WordSetPartyPokeSpecies 2, 0x802d
     WordSetPokeSpecies 1, 0x802c
     // "Trade [f000]ā\u0001\u0002 for [f000]ā\u0001\u0001?[f000]븁\u0000"
-    SystemMsg 120, 2
+    SystemMsg Global10510_Text_Trade, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010
@@ -359,7 +360,7 @@ L_0597:
 
 L_059D:
     // "That Pokémon can't be traded.[f000]븁\u0000"
-    SystemMsg 121, 2
+    SystemMsg Global10510_Text_PokemonCantTraded, 2
     InfoMsgClose
 
 L_05A5:
@@ -711,7 +712,7 @@ L_0B62:
     ActorCmdWait
     // "No! I'm not who you think![f000]븁\u0000\n...What?\nYou're [f000]Ā\u0001\u0000?[f000]븁\u0000\nI'm so sorry![f000]븁\u0000\nI thought you were someone else.[f000]븁\u0000\nWell, uh...\nIt's nice to meet you.[f000]븁\u0000\nI'm Yancy![f000]븁\u0000\nYou were different than I imagined,\nso I was a little surprised...[f000]븁\u0000\nAh ha ha...[f000]븁\u0000\n...[f000]븁\u0000\nI suppose so!\nWe can just talk normally![f000]븁\u0000\nHee hee![f000]븁\u0000"
     // "No! I'm not who you think![f000]븁\u0000\n...What?\nYou're [f000]Ā\u0001\u0000?[f000]븁\u0000\nI'm so sorry![f000]븁\u0000\nI thought you were someone else.[f000]븁\u0000\nWell, uh...\nI guess, um, nice to meet you![f000]븁\u0000\nI'm Curtis![f000]븁\u0000\nYou were different than I imagined,\nso I was a little surprised...[f000]븁\u0000\nAh ha ha...[f000]븁\u0000\n...[f000]븁\u0000\nI suppose so!\nWe can just talk normally![f000]븁\u0000"
-    ActorMsgGendered 1024, 110, 115, 0x8011, 0, 0
+    ActorMsgGendered 1024, Global10510_Text_NoImNotWho, Global10510_Text_NoImNotWho_2, 0x8011, 0, 0
     MsgWinCloseAll
     TrainerCardGetSex 0x803d
     SEPlay SEQ_SE_ARDEMO_01
@@ -721,7 +722,7 @@ L_0B62:
 
 L_0BA6:
     // "[f000]Ā\u0001\u0000 handed over\nYancy's Dropped Item![f000]븁\u0000"
-    SystemMsg 111, 2
+    SystemMsg Global10510_Text_HandedOverYancysDropped, 2
     VMJump L_0BD1
 
 L_0BB2:
@@ -731,7 +732,7 @@ L_0BB2:
 
 L_0BC5:
     // "[f000]Ā\u0001\u0000 handed over\nCurtis's Dropped Item![f000]븁\u0000"
-    SystemMsg 116, 2
+    SystemMsg Global10510_Text_HandedOverCurtissDropped, 2
     VMJump L_0BD1
 
 L_0BD1:
@@ -757,7 +758,7 @@ L_0C09:
 L_0C17:
     // "Thank you, [f000]Ā\u0001\u0000.[f000]븁\u0000\nI'm sorry I couldn't find\nthe time to pick it up earlier.[f000]븁\u0000\nBut I really enjoyed talking with you,\nso maybe I was a little lucky![f000]븁\u0000\nAh ha ha...[f000]븁\u0000\nUm... If you don't mind\ncan I still call you sometime?[f000]븁\u0000\n...[f000]븁\u0000\nPhew.\nI was really scared you might say no.[f000]븁\u0000"
     // "Thank you, [f000]Ā\u0001\u0000.[f000]븁\u0000\nI'm sorry I couldn't find\nthe time to pick it up earlier.[f000]븁\u0000\nBut I really enjoyed talking with you,\nso maybe I was a little lucky![f000]븁\u0000\nAh ha ha...[f000]븁\u0000\nUm... If you don't mind,\ncan I still call you sometime?[f000]븁\u0000\n...[f000]븁\u0000\nPhew.\nI was really scared you might say no![f000]븁\u0000"
-    ActorMsgGendered 1024, 112, 117, 0x8011, 0, 0
+    ActorMsgGendered 1024, Global10510_Text_ThankImSorryCouldnt, Global10510_Text_ThankImSorryCouldnt_2, 0x8011, 0, 0
     MsgWinCloseAll
     WorkCmpConst 0x803d, 0
     VMJumpIf CMP_EQ, L_0C3A
@@ -765,7 +766,7 @@ L_0C17:
 
 L_0C3A:
     // "Reregistered Yancy\nin the Xtransceiver![f000]븁\u0000"
-    SystemMsg 113, 2
+    SystemMsg Global10510_Text_ReregisteredYancyXtransceiver, 2
     VMJump L_0C65
 
 L_0C46:
@@ -775,7 +776,7 @@ L_0C46:
 
 L_0C59:
     // "Reregistered Curtis\nin the Xtransceiver![f000]븁\u0000"
-    SystemMsg 118, 2
+    SystemMsg Global10510_Text_ReregisteredCurtisXtransceiver, 2
     VMJump L_0C65
 
 L_0C65:
@@ -784,7 +785,7 @@ L_0C65:
     InfoMsgClose
     // "Can I ask you one more thing?[f000]븁\u0000\nI called you on the Xtransceiver\ntoo often, and Ma...[f000]븀\u0000\nI mean one of my coworkers...[f000]븀\u0000\ngot really mad at me...[f000]븁\u0000\nSo, [f000]Ā\u0001\u0000,\ncould you call me?[f000]븁\u0000\n...[f000]븁\u0000\nWhat? Really? Thanks...[f000]븁\u0000\n[f000]Ā\u0001\u0000, you're really nice.[f000]븁\u0000\nHee hee...[f000]븁\u0000\nI'm usually at work, and sometimes\nI have trouble picking up a signal...[f000]븁\u0000\nBut I'd like it if you check your\nXtransceiver often and give me a call...[f000]븁\u0000\nAh ha ha![f000]븁\u0000\nWell, I'll be heading home!\nGood-bye, [f000]Ā\u0001\u0000![f000]븁\u0000"
     // "Can I ask you one more thing?[f000]븁\u0000\nI called you on the Xtransceiver\ntoo often, and Ma...[f000]븀\u0000\nI mean one of my coworkers...[f000]븀\u0000\ngot really mad at me...[f000]븁\u0000\nSo, [f000]Ā\u0001\u0000,\ncould you call me?[f000]븁\u0000\n...[f000]븁\u0000\nWhat? Really? Thanks...[f000]븁\u0000\n[f000]Ā\u0001\u0000, you're really nice.[f000]븁\u0000\nI'm usually at work, and sometimes\nI have trouble picking up a signal...[f000]븁\u0000\nBut I'd like it if you check your\nXtransceiver often, and give me a call...[f000]븁\u0000\nAh ha ha![f000]븁\u0000\nWell, I'll be heading home!\nGood-bye, [f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsgGendered 1024, 114, 119, 0x8011, 0, 0
+    ActorMsgGendered 1024, Global10510_Text_CanAskOneMore, Global10510_Text_CanAskOneMore_2, 0x8011, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8010
     WorkCmpConst 0x8010, 3

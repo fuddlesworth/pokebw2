@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/reversal_mountain.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -52,7 +53,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Reversal Mountain Ahead"
-    MsgPlaceSign 0, 2
+    MsgPlaceSign ReversalMountain_Text_ReversalMountainAhead, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_2500.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -14,7 +15,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's lined with Pokémon picture books."
-    InfoMsg 0, 2
+    InfoMsg Global2500_Text_ItsLinedPokemonPicture, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -25,7 +26,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Are these books for Pokémon\nto read?"
-    InfoMsg 1, 2
+    InfoMsg Global2500_Text_TheseBooksPokemonRead, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -36,7 +37,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's chock full of Pokémon books and\nphoto collections."
-    InfoMsg 2, 2
+    InfoMsg Global2500_Text_ItsChockFullPokemon, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -47,7 +48,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "There are lots of Pokémon magazines![f000]븁\u0000\n“Pokémon Pal\"\n“Pokémon Handbook\"[f000]븀\u0000\n“Adorable Pokémon\""
-    InfoMsg 3, 2
+    InfoMsg Global2500_Text_ThereLotsPokemonMagazines, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -58,7 +59,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The trash can is empty."
-    InfoMsg 4, 2
+    InfoMsg Global2500_Text_TrashCanEmpty, 2
     LastKeyWait
     InfoMsgClose_0039
     RecordAdd 43, 1
@@ -71,7 +72,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The shelves are jammed with vibrant\nPokémon goods."
-    InfoMsg 5, 2
+    InfoMsg Global2500_Text_ShelvesJammedVibrantPokemon, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -82,7 +83,7 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It looks like a cabinet full of\nPokémon goods."
-    InfoMsg 6, 2
+    InfoMsg Global2500_Text_LooksLikeCabinetFull, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -93,7 +94,7 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Goods are arranged on the shelves in a\nvery orderly fashion."
-    InfoMsg 7, 2
+    InfoMsg Global2500_Text_GoodsArrangedShelvesVery, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents

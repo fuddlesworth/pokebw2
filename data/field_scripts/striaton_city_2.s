@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/striaton_city_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -194,7 +195,7 @@ L_02C1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Eeeooow! You're intense![f000]븁\u0000\nBattling together with you\ngot me all fired up, man![f000]븀\u0000\nCome battle again sometime!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_EeeooowYoureIntenseBattling, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0302
@@ -203,7 +204,7 @@ L_02EE:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You look like you'd be fun to\nbattle together with![f000]븀\u0000\nAll right! Team up with me tomorrow!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_LookLikeYoudFun, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -223,7 +224,7 @@ L_031B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Battling together with you helped\nme find new potential in myself.[f000]븀\u0000\nThat's what I think.[f000]븁\u0000\nI'd like it if you were to team up\nwith me tomorrow as well."
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_BattlingTogetherHelpedFind, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_035C
@@ -232,7 +233,7 @@ L_0348:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Losing made me realize something.[f000]븁\u0000\nIf I were to team up with you,\nour onslaught would be like a torrent!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_LosingMadeRealizeSomething, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -252,7 +253,7 @@ L_0375:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "...What a surprise.\nYou...are very strong.[f000]븁\u0000\nWould you team up with me again sometime?\nThere's still much I want to learn."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WhatSurpriseVeryStrong, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_03B6
@@ -261,7 +262,7 @@ L_03A2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "During the battle I was so\ntaken with your fighting style,[f000]븁\u0000\nI almost lost the timing for\ngiving my Pokémon directions![f000]븁\u0000\nNext time, I would like to\nteam up with you."
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_DuringBattleTakenFighting, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -284,13 +285,13 @@ L_03DB:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0402
     // "I'm Chili! My Fire-type Pokémon\nand I are too hot to handle![f000]븁\u0000\nWhat it boils down to is\nI want you to be my partner!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ImChiliFireType, 0, 0
     FlagSet 409
     VMJump L_040C
 
 L_0402:
     // "C'mon! What it boils down to is\nI want you to be my partner!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_CmonWhatBoilsDown, 0, 0
 
 L_040C:
     VMJump L_04A6
@@ -306,13 +307,13 @@ L_0425:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_044C
     // "I'm a Water-type specialist,\nand my name is Cress.[f000]븀\u0000\nPleased to make your acquaintance.[f000]븁\u0000\nYou there. Would you be so kind\nas to be my partner in a battle[f000]븀\u0000\nwith my siblings?"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ImWaterTypeSpecialist, 0, 0
     FlagSet 410
     VMJump L_0456
 
 L_044C:
     // "What do you think?\nWill you partner up with me[f000]븀\u0000\nand compete against my siblings?"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WhatThinkWillPartner, 0, 0
 
 L_0456:
     VMJump L_04A6
@@ -328,13 +329,13 @@ L_046F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0496
     // "Um. My name is Cilan.\nI like Grass-type Pokémon.[f000]븁\u0000\nWe were Gym Leaders, but\nin order to improve ourselves further,[f000]븀\u0000\nwe are working at this Restaurant[f000]븀\u0000\nand spending every day with Pokémon.[f000]븁\u0000\nHow about it? Would you team up with me\nand take part in a Double Battle?"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_UmNameCilanLike, 0, 0
     FlagSet 411
     VMJump L_04A0
 
 L_0496:
     // "How about it? Would you team up with me\nand take part in a Double Battle?"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HowAboutWouldTeam, 0, 0
 
 L_04A0:
     VMJump L_04A6
@@ -351,7 +352,7 @@ L_04A6:
 
 L_04D0:
     // "Yeeeeooow![f000]븁\u0000\nI'm the strongest of us brothers,\nand I'll make sure you win![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_YeeeeooowImStrongestUs, 0, 0
     VMJump L_0526
 
 L_04E0:
@@ -361,7 +362,7 @@ L_04E0:
 
 L_04F3:
     // "That's wonderful. With me, Cress,\nas your partner, victory is assured.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ThatsWonderfulCressPartner, 0, 0
     VMJump L_0526
 
 L_0503:
@@ -371,7 +372,7 @@ L_0503:
 
 L_0516:
     // "OK. If you're fine with me,\nI will put everything I have into[f000]븀\u0000\nbeing your partner in battle![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OkIfYoureFine, 0, 0
     VMJump L_0526
 
 L_0526:
@@ -435,7 +436,7 @@ L_066D:
 
 L_0690:
     // "That's that, then!\nI'm going to show you what[f000]븀\u0000\nme and my blazing Fire types can do![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ThatsThenImGoing, 0, 0
     MsgWinCloseAll
     ActorCmdExec 10, Movement_1D18
     ActorCmdExec 9, Movement_1D20
@@ -449,7 +450,7 @@ L_06BA:
 
 L_06CD:
     // "That is correct![f000]븁\u0000\nIt shall be I and my esteemed Water\ntypes that you must face in battle![f000]븁\u0000\nLet us begin, then![f000]븁\u0000\nEn garde, user of Grass-type Pokémon--\nCilan--and of Fire-type Pokémon--Chili![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_CorrectShallEsteemedWater, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_1D18
     ActorCmdExec 10, Movement_1D20
@@ -463,7 +464,7 @@ L_06F7:
 
 L_070A:
     // "OK... So, um,\nI'm Cilan, I like Grass-type Pokémon,[f000]븀\u0000\nand this is my partner here![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OkUmImCilan, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_1D18
     ActorCmdExec 10, Movement_1D20
@@ -561,7 +562,7 @@ L_087B:
     ActorCmdExec 10, Movement_0B48
     ActorCmdWait
     // "I was good, too,\nbut you aren't half bad![f000]븁\u0000\nHow about it,\nCilan and Cress?[f000]븁\u0000\nOut of the three of us,\nI'm the strongest Trainer, right?!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_GoodTooButArent, 0, 0
     VMJump L_08EF
 
 L_0895:
@@ -573,7 +574,7 @@ L_08A8:
     ActorCmdExec 9, Movement_0B48
     ActorCmdWait
     // "My attacks flow like water.[f000]븁\u0000\nYou were blessed with an\namazing partner."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_AttacksFlowLikeWater, 0, 0
     VMJump L_08EF
 
 L_08C2:
@@ -585,7 +586,7 @@ L_08D5:
     ActorCmdExec 11, Movement_0B78
     ActorCmdWait
     // "OK... So, um,\nI'm Cilan, I like Grass-type Pokémon,[f000]븀\u0000\nand this was my partner here!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OkUmImCilan_2, 0, 0
     VMJump L_08EF
 
 L_08EF:
@@ -644,7 +645,7 @@ L_096E:
 
 L_0A11:
     // "Eeeooow! You're intense![f000]븁\u0000\nBattling together with you\ngot me all fired up, man![f000]븀\u0000\nCome battle again sometime!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_EeeooowYoureIntenseBattling, 0, 0
     VMJump L_0A67
 
 L_0A21:
@@ -654,7 +655,7 @@ L_0A21:
 
 L_0A34:
     // "Battling together with you helped\nme find new potential in myself.[f000]븀\u0000\nThat's what I think.[f000]븁\u0000\nI'd like it if you were to team up\nwith me tomorrow as well."
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_BattlingTogetherHelpedFind, 0, 0
     VMJump L_0A67
 
 L_0A44:
@@ -664,7 +665,7 @@ L_0A44:
 
 L_0A57:
     // "...What a surprise.\nYou...are very strong.[f000]븁\u0000\nWould you team up with me again sometime?\nThere's still much I want to learn."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WhatSurpriseVeryStrong, 0, 0
     VMJump L_0A67
 
 L_0A67:
@@ -707,7 +708,7 @@ L_0AD2:
 
 L_0AE5:
     // "Aww, man!\nI was all fired up, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_AwwManAllFired, 0, 0
     VMJump L_0B3B
 
 L_0AF5:
@@ -717,7 +718,7 @@ L_0AF5:
 
 L_0B08:
     // "Oh, what's this?\nI'm amazed you turned me, Cress, down."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OhWhatsImAmazed, 0, 0
     VMJump L_0B3B
 
 L_0B18:
@@ -727,7 +728,7 @@ L_0B18:
 
 L_0B2B:
     // "...Ah, hmm. I must've timed...\nmy invitation poorly...[f000]븁\u0000\nTrue enough, I did want to...\nto have a Pokémon battle with you."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_AhHmmMustveTimed, 0, 0
     VMJump L_0B3B
 
 L_0B3B:
@@ -787,7 +788,7 @@ L_0BA4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Let us tell you why the Trio Badge\nno longer exists![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 45, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_LetUsTellWhy, 0, 0
     VMCall L_0DF8
     VMJump L_0C64
 
@@ -799,7 +800,7 @@ L_0C0C:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey! You've got the...\nOh yeah...[f000]븀\u0000\nThere's no Trio Badge now!"
-    ParentActorMsg MSGFILE_SCRIPT, 44, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HeyYouveGotOh, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 461
@@ -813,7 +814,7 @@ L_0C3D:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey! You've got the...\nOh yeah...[f000]븀\u0000\nThere's no Trio Badge now!"
-    ParentActorMsg MSGFILE_SCRIPT, 44, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HeyYouveGotOh, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -841,7 +842,7 @@ L_0C6A:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A day that's important to me, Cress...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 48, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_DayThatsImportantCress, 0, 0
     VMCall L_0DF8
     VMJump L_0D2A
 
@@ -853,7 +854,7 @@ L_0CD2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hope today is a special day for you."
-    ParentActorMsg MSGFILE_SCRIPT, 47, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HopeTodaySpecialDay, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 462
@@ -867,7 +868,7 @@ L_0D03:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hope today is a special day for you."
-    ParentActorMsg MSGFILE_SCRIPT, 47, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HopeTodaySpecialDay, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -895,7 +896,7 @@ L_0D30:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Well, why don't I tell you\nwhat happened...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 51, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WellWhyDontTell, 0, 0
     VMCall L_0DF8
     VMJump L_0DF0
 
@@ -907,7 +908,7 @@ L_0D98:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome to Striaton Restaurant![f000]븁\u0000\nThis place used to be a\nPokémon Gym, but a lot happened..."
-    ParentActorMsg MSGFILE_SCRIPT, 50, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WelcomeStriatonRestaurantPlace, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 463
@@ -921,7 +922,7 @@ L_0DC9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome to Striaton Restaurant![f000]븁\u0000\nThis place used to be a\nPokémon Gym, but a lot happened..."
-    ParentActorMsg MSGFILE_SCRIPT, 50, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WelcomeStriatonRestaurantPlace, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -946,7 +947,7 @@ Script_15:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E3B
     // "The unobtainable Trio Badge...[f000]븁\u0000\nNo! One day we will make the\nTrio Badge shine again!"
-    ActorMsg MSGFILE_SCRIPT, 46, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_UnobtainableTrioBadgeNo, 10, 0, 0
     VMJump L_0E7F
 
 L_0E3B:
@@ -955,7 +956,7 @@ L_0E3B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E60
     // "Part of my past I want to forget...\nNo, I mustn't forget it."
-    ActorMsg MSGFILE_SCRIPT, 49, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_PartPastWantForget, 9, 0, 0
     VMJump L_0E7F
 
 L_0E60:
@@ -964,7 +965,7 @@ L_0E60:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E7F
     // "Because of that day, we can\ntruly aim for the top!"
-    ActorMsg MSGFILE_SCRIPT, 52, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_BecauseDayWeCan, 11, 0, 0
 
 L_0E7F:
     LastKeyWait
@@ -980,7 +981,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello! I'm giving out water!"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HelloImGivingOut, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -992,7 +993,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome![f000]븁\u0000\nThis is a lively restaurant where\nyou can enjoy a show!"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WelcomeLivelyRestaurantWhere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1044,14 +1045,14 @@ L_0F31:
     ActorCmdExec 255, Movement_1D48
     ActorCmdWait
     // "Huh? Aren't you going to guess which\n[f000]ā\u0001\u0001 has the Big Mushroom?"
-    ActorMsg MSGFILE_SCRIPT, 53, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HuhArentGoingGuess, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_102E
     // "I see... Well, come talk to me\nif you change your mind![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 54, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_SeeWellComeTalk, 0, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 0, 9, 2, 0, 8, 0
     ActorCmdExec 1, Movement_1D08
@@ -1078,7 +1079,7 @@ L_0F31:
 
 L_102E:
     // "OK! Find the [f000]ā\u0001\u0001 that\nI asked you to follow!"
-    ActorMsg MSGFILE_SCRIPT, 34, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OkFindAskedFollow, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 0, 9, 2, 0, 8, 1
@@ -1128,7 +1129,7 @@ L_10C2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You want to see the [f000]ā\u0001\u0001 again?[f000]븁\u0000\nThere are a lot of preparations and\nsuch to make, so come back tomorrow!"
-    ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WantSeeAgainThere, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_11BF
@@ -1169,7 +1170,7 @@ L_1157:
 L_1162:
     DebugPrint 0x418e
     // "Will you come see Striaton Restaurant's\nfamous [f000]ā\u0001\u0001 show?"
-    ActorMsg MSGFILE_SCRIPT, 26, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WillComeSeeStriaton, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -1180,7 +1181,7 @@ L_1162:
 
 L_1195:
     // "That's too bad...\nI guarantee it's great, though."
-    ActorMsg MSGFILE_SCRIPT, 28, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ThatsTooBadGuarantee, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1191,7 +1192,7 @@ L_11AB:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "OK! Find the [f000]ā\u0001\u0001 that\nI asked you to follow!"
-    ParentActorMsg MSGFILE_SCRIPT, 34, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OkFindAskedFollow, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1202,7 +1203,7 @@ L_11BF:
 
 L_11C5:
     // "OK!\nI'm going to get all fired up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 27, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OkImGoingGet, 0, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 255, 11, 3, 0, 8, 1
     ActorCmdWait
@@ -1210,7 +1211,7 @@ L_11C5:
     ActorCmdExec 0, Movement_1DD0
     ActorCmdWait
     // "Ready all [f000]ā\u0001\u0001!\nEveryone, gather up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 29, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ReadyAllEveryoneGather, 0, 0, 1
     ActorMsgClose
     ActorCmdExec 0, Movement_1DD0
     VMSleep 10
@@ -1235,7 +1236,7 @@ L_11C5:
     EvCameraMoveTo 9688, 0, 0xdd000, 0xb8000, 0x1000f, 49152, 30
     EvCameraWait
     // "The [f000]ā\u0001\u0001 that I will have you\nfollow today is...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 30, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_WillHaveFollowToday, 0, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8023, 0
     Random 0x8023, 3
@@ -1248,7 +1249,7 @@ L_12B3:
     ActorCmdExec 1, Movement_1D70
     ActorCmdWait
     // "This--the [f000]ā\u0001\u0001 that's\nabsolutely raring to go![f000]븁\u0000\nIt's holding a [f000]ĉ\u0001\u0000!\nReady, set, go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 31, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_ThatsAbsolutelyRaringGo, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_1D88
     ActorCmdWait
@@ -1266,7 +1267,7 @@ L_12FC:
     ActorCmdExec 2, Movement_1D70
     ActorCmdWait
     // "This--the [f000]ā\u0001\u0001 with the\ncute round eyes![f000]븁\u0000\nIt's holding a [f000]ĉ\u0001\u0000!\nReady, set, go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 32, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_CuteRoundEyesIts, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_1D88
     ActorCmdWait
@@ -1284,7 +1285,7 @@ L_1345:
     ActorCmdExec 3, Movement_1D70
     ActorCmdWait
     // "This--the [f000]ā\u0001\u0001 with the\npretty tail![f000]븁\u0000\nIt's holding a [f000]ĉ\u0001\u0000!\nReady, set, go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_PrettyTailItsHolding, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 3, Movement_1D88
     ActorCmdWait
@@ -1504,7 +1505,7 @@ L_175C:
     ActorCmdExec 3, Movement_1E14
     ActorCmdWait
     // "OK! Find the [f000]ā\u0001\u0001 that\nI asked you to follow!"
-    ActorMsg MSGFILE_SCRIPT, 34, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OkFindAskedFollow, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     EvCameraMoveToDefault 30
@@ -1575,7 +1576,7 @@ L_1863:
     ActorCmdExec 0, Movement_1D28
     ActorCmdWait
     // "That [f000]ā\u0001\u0001 is holding\na [f000]ĉ\u0001\u0000, right?"
-    ActorMsg MSGFILE_SCRIPT, 35, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_HoldingRight, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -1647,7 +1648,7 @@ L_196A:
 L_1975:
     WordSetItemName 0, 87
     // "You are...\n...[f000]븀\u0000\ntotally correct![f000]븁\u0000\nReceive your prize, a [f000]ĉ\u0001\u0000,\nfrom that [f000]ā\u0001\u0001![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 36, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_TotallyCorrectReceivePrize, 0, 0, 0
     MsgWinCloseAll
     ActorAdd 13
     VMCall L_13E8
@@ -1704,7 +1705,7 @@ L_1A53:
 
 L_1A5E:
     // "You are...\n...[f000]븀\u0000\ninconceivably incorrect! I'm sorry...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 37, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_InconceivablyIncorrectImSorry, 0, 0, 0
     MsgWinCloseAll
     WorkCmpConst 0x400b, 10
     VMJumpIf CMP_EQ, L_1A7F
@@ -1772,7 +1773,7 @@ L_1B46:
 
 L_1B51:
     // "That marks the grand finale of\nour [f000]ā\u0001\u0001 show![f000]븀\u0000\nThank you, one and all![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_MarksGrandFinaleOur, 0, 0, 0
     MsgWinCloseAll
     WorkCmpConst 0x400b, 10
     VMJumpIf CMP_EQ, L_1B72
@@ -1842,7 +1843,7 @@ Script_10:
     ActorSetEyeToEye
     PVPlay 505, 0
     // "Waaatch!"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_Waaatch, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -1856,7 +1857,7 @@ Script_11:
     ActorSetEyeToEye
     PVPlay 505, 0
     // "Tch-hooog!"
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_TchHooog, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -1869,7 +1870,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh? This show doesn't\nfeature Patrat..."
-    ParentActorMsg MSGFILE_SCRIPT, 42, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_OhShowDoesntFeature, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1881,7 +1882,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Striaton City's triplets\nmake a fantastic combination![f000]븁\u0000\nThe user of Grass-type Pokémon, Cilan,\ncan pick the finest leaves.[f000]븁\u0000\nThe user of Water-type Pokémon, Cress,\ncan bring the finest water.[f000]븁\u0000\nThe user of Fire-type Pokémon, Chili, can\nheat water to the perfect temperature.[f000]븁\u0000\nNow I get it!\nThey can make the perfect tea!"
-    ParentActorMsg MSGFILE_SCRIPT, 43, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity2_Text_StriatonCitysTripletsMake, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1961,7 +1962,7 @@ Movement_1DB0:
     Move 49, 1
     MoveEnd
     // "Yeeeeooow![f000]븁\u0000\nI'm the strongest of us brothers,\nand I'll make sure you win![f000]븁\u0000"
-    CheckerMsg 1, 254, 0, 0
+    CheckerMsg StriatonCity2_Text_YeeeeooowImStrongestUs, 254, 0, 0
     VMStackMul
     VMHalt
     Move 33, 1

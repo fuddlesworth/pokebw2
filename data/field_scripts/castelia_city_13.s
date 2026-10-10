@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_13.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -162,7 +163,7 @@ L_0297:
 L_02AA:
     VMCall L_4BE7
     // "Then, when you finish the survey,\nplease come and report it to me.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 125, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ThenWhenFinishSurvey_2, 0x8011, 2, 0
     VMJump L_0306
 
 L_02C2:
@@ -296,7 +297,7 @@ L_0460:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0584
     // "Please choose a request on which\nyou are going to conduct a survey."
-    ActorMsg MSGFILE_SCRIPT, 22, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_PleaseChooseRequestWhich, 0x8011, 2, 0
     WorkGet 0x8008, 0x8025
     VMCall L_433B
     WorkGet 0x8024, 0x8010
@@ -3412,7 +3413,7 @@ L_2F26:
 L_2F28:
     SurveyGetCurrentQuestionID 0x804d
     // "What would you like to do today?"
-    ActorMsg MSGFILE_SCRIPT, 11, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WhatWouldLikeToday, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32784
     ListMenuAdd 12, 65535, 12
     VMStackPush 0x804d
@@ -4770,55 +4771,55 @@ L_4287:
 
 L_4298:
     // "What are people's favorite things?\nWhat is popular right now?[f000]븁\u0000\nHave you ever wondered about\nthese things?[f000]븁\u0000\nWelcome to Passerby Analytics HQ![f000]븁\u0000\nThis is where you can find\nall the answers.[f000]븁\u0000\n...You have good eyes.\nEyes full of curiosity.[f000]븁\u0000\n...Good! I will specially appoint you\nas a statistician![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WhatPeoplesFavoriteThings, 0x8011, 2, 0
     ActorMsgClose
     SEPlay SEQ_SE_SYS_82
     WordSetPlayerName 1
     // "[f000]Ā\u0001\u0001 was appointed\nas a statistician![f000]븁\u0000"
-    SystemMsg 7, 2
+    SystemMsg CasteliaCity13_Text_AppointedStatistician, 2
     InfoMsgClose
     WordSetPlayerName 1
     // "Statisticians have only one task!\nThey conduct requested surveys.[f000]븁\u0000\nFirst, you'll receive survey requests\nfrom me.[f000]븁\u0000\nThen, with the Survey Radar, you'll\nchoose the survey you want to conduct.[f000]븁\u0000\nThen, if you pass by a lot of people,\nthe radar will collect the information.[f000]븁\u0000\nOf course, we've prepared compensation\nfor the survey.[f000]븁\u0000\nStatistician [f000]Ā\u0001\u0001!\nI expect you to do a great job![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_StatisticiansHaveOnlyOne, 0x8011, 2, 0
     VMReturn
 
 L_42C6:
     WordSetPlayerName 1
     // "Statistician [f000]Ā\u0001\u0001,\ngood to see you![f000]븁\u0000\nAre you surveying people vigorously?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_StatisticianGoodSeeSurveying, 0x8011, 2, 0
     VMReturn
 
 L_42D7:
     // "You've finished all the requests.[f000]븁\u0000\nFrom now on, feel free to survey\nwhatever you want to know!"
-    ActorMsg MSGFILE_SCRIPT, 10, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_YouveFinishedAllRequests, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_42E9:
     // "You've already accepted a survey\nrequest![f000]븁\u0000\nTry your best to conduct the survey.\nOr do you want to cancel the survey?"
-    ActorMsg MSGFILE_SCRIPT, 24, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_YouveAlreadyAcceptedSurvey, 0x8011, 2, 0
     WorkSetConst 0x8008, 1
     VMCall L_017A
     VMReturn
 
 L_4303:
     // "You don't seem to have accepted\na survey request.[f000]븁\u0000\nPlease come back if you want\nto accept a request."
-    ActorMsg MSGFILE_SCRIPT, 197, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_DontSeemHaveAccepted, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_4315:
     // "I see...[f000]븁\u0000\nI'm lonely, so\nplease come visit me sometimes."
-    ActorMsg MSGFILE_SCRIPT, 260, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_SeeImLonelyPlease, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_4327:
     // "Accept a survey request, right?[f000]븁\u0000\nFirst, choose a survey method."
-    ActorMsg MSGFILE_SCRIPT, 16, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_AcceptSurveyRequestRight, 0x8011, 2, 0
     VMCall L_2F78
     VMReturn
 
@@ -4858,69 +4859,69 @@ L_43AD:
 
 L_43BB:
     // "Will you accept this survey request?"
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WillAcceptSurveyRequest, 0x8011, 2, 0
     WorkSetConst 0x8008, 0
     VMCall L_017A
     VMReturn
 
 L_43D5:
     // "Accept another request?"
-    ActorMsg MSGFILE_SCRIPT, 126, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_AcceptAnotherRequest, 0x8011, 2, 0
     WorkSetConst 0x8008, 0
     VMCall L_017A
     VMReturn
 
 L_43EF:
     // "OK...[f000]븁\u0000\nPlease come back again\nif you want to accept a request."
-    ActorMsg MSGFILE_SCRIPT, 23, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OkPleaseComeBack, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_4401:
     // "OK...[f000]븁\u0000\nPlease come back again if you\nwant to accept a request."
-    ActorMsg MSGFILE_SCRIPT, 26, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OkPleaseComeBack_2, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_4413:
     // "Then, when you finish the survey,\nplease come and report it to me."
-    ActorMsg MSGFILE_SCRIPT, 124, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ThenWhenFinishSurvey, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_4425:
     // "Then, please continue the survey."
-    ActorMsg MSGFILE_SCRIPT, 27, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ThenPleaseContinueSurvey, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_4437:
     // "You have finished the survey!\nPlease report the survey result.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 127, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_HaveFinishedSurveyPlease, 0x8011, 2, 0
     ActorMsgClose
     VMReturn
 
 L_4447:
     WordSetPlayerName 1
     // "It's an excellent survey![f000]븁\u0000\n[f000]Ā\u0001\u0001, you've come up to\nmy expectation.[f000]븁\u0000\nThis is the compensation for the survey.\nPlease accept this.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 244, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ItsExcellentSurveyYouve, 0x8011, 2, 0
     ActorMsgClose
     VMReturn
 
 L_445A:
     WordSetPlayerName 1
     // "This completes all the survey requests.\n[f000]Ā\u0001\u0001, well done![f000]븀\u0000\nI'm incredibly moved![f000]븁\u0000\nThis is a token of my appreciation.\nPlease accept this.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 258, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_CompletesAllSurveyRequests, 0x8011, 2, 0
     ActorMsgClose
     VMReturn
 
 L_446D:
     // "From now on, feel free to survey\nwhatever you want to know.[f000]븁\u0000\nI have high hopes for\nyour future success!"
-    ActorMsg MSGFILE_SCRIPT, 259, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_FromNowFeelFree, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -4928,32 +4929,32 @@ L_446D:
 L_447F:
     WordSetPlayerName 1
     // "I'm expecting great work\nfor the next survey, too![f000]븀\u0000\n[f000]Ā\u0001\u0001!"
-    ActorMsg MSGFILE_SCRIPT, 257, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ImExpectingGreatWork, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_4494:
     // "A head-count survey, right?[f000]븁\u0000\nThis is a survey to collect data for\na specified number of people.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_HeadCountSurveyRight, 0x8011, 2, 0
     VMReturn
 
 L_44A2:
     // "A timed survey, right?[f000]븁\u0000\nThis is a survey to collect data\nfor a specified time.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_TimedSurveyRightSurvey, 0x8011, 2, 0
     VMReturn
 
 L_44B0:
     WordSetPlayerName 1
     // "...Oh?[f000]븁\u0000\nYou've already got the data\nfor this survey![f000]븁\u0000\nI knew you could do it, [f000]Ā\u0001\u0001.\nPlease report the survey result to me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 99, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OhYouveAlreadyGot, 0x8011, 2, 0
     ActorMsgClose
     VMReturn
 
 L_44C3:
     WordSetPlayerName 1
     // "...Oh?[f000]븁\u0000\nYou've passed by so many people already!\nI knew you could do it, [f000]Ā\u0001\u0001.[f000]븁\u0000\nI think the current data is enough.\nPlease report the survey results to me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 75, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OhYouvePassedBy, 0x8011, 2, 0
     ActorMsgClose
     VMReturn
 
@@ -8341,7 +8342,7 @@ L_7301:
 
 L_730F:
     // "This is Passerby Analytics HQ.[f000]븁\u0000\nIf you want to join us,\nplease speak to the leader."
-    ActorMsg MSGFILE_SCRIPT, 261, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_PasserbyAnalyticsHqIf, 10, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -8349,48 +8350,48 @@ L_730F:
 L_7321:
     WordSetPlayerName 1
     // "Hi, [f000]Ā\u0001\u0001.\nAre you conducting a survey vigorously?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 262, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_HiConductingSurveyVigorously, 10, 2, 0
     VMReturn
 
 L_7332:
     // "Actually, I have a favor to ask you.[f000]븁\u0000\nI'm asking statisticians to answer\na questionnaire.[f000]븁\u0000\nOK, here we go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 264, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ActuallyHaveFavorAsk, 10, 2, 0
     VMReturn
 
 L_7340:
     // "I'd like to ask you to answer\na questionnaire again.[f000]븁\u0000\nWill you?"
-    ActorMsg MSGFILE_SCRIPT, 265, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_IdLikeAskAnswer, 10, 2, 0
     YesNoWin 0x8010
     VMReturn
 
 L_7352:
     // "All right.[f000]븁\u0000\nIf you change your mind,\nplease speak to me."
-    ActorMsg MSGFILE_SCRIPT, 266, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_AllRightIfChange, 10, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_7364:
     // "Oh? It looks like you've answered\nall the questionnaires.[f000]븁\u0000\nWould you like to reanswer\nthe questionnaires you did before?"
-    ActorMsg MSGFILE_SCRIPT, 267, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OhLooksLikeYouve, 10, 2, 0
     YesNoWin 0x8010
     VMReturn
 
 L_7376:
     // "Then, will you choose a questionnaire\nyou'd like to answer?"
-    ActorMsg MSGFILE_SCRIPT, 268, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ThenWillChooseQuestionnaire, 10, 2, 0
     VMCall L_6795
     VMReturn
 
 L_738A:
     // "Choose this questionnaire?"
-    ActorMsg MSGFILE_SCRIPT, 278, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ChooseQuestionnaire, 10, 2, 0
     YesNoWin 0x8010
     VMReturn
 
 L_739C:
     // "You can answer the questionnaires\nas many times as you want.[f000]븁\u0000\nIf you want to change your answers,\nplease let me know."
-    ActorMsg MSGFILE_SCRIPT, 279, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_CanAnswerQuestionnairesMany, 10, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -8761,34 +8762,34 @@ L_7878:
 
 L_7892:
     // "I see, I see...\nUh-huh.[f000]븁\u0000\nNext up...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 316, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_SeeSeeUhHuh, 10, 2, 0
     VMReturn
 
 L_78A0:
     // "I see, I see...\nUh-huh.[f000]븁\u0000\n...OK. That's it![f000]븁\u0000\nThank you.\nI got a useful questionnaire.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 317, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_SeeSeeUhHuh_2, 10, 2, 0
     VMReturn
 
 L_78AE:
     // "Oh, I will give this questionnaire sheet\nto you, too.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 318, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OhWillGiveQuestionnaire, 10, 2, 0
     ActorMsgClose
     VMReturn
 
 L_78BE:
     // "And... This is a thank-you gift\nfor answering the questionnaire.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 328, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ThankGiftAnsweringQuestionnaire, 10, 2, 0
     ActorMsgClose
     VMReturn
 
 L_78CE:
     // "This is the end of\nall the questionnaires.[f000]븁\u0000\nIt was fun to get to know you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 329, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_EndAllQuestionnairesFun, 10, 2, 0
     VMReturn
 
 L_78DC:
     // "You can answer the questionnaires\nas many times as you want, so[f000]븀\u0000\nif you want to change your answers,[f000]븀\u0000\nplease let me know."
-    ActorMsg MSGFILE_SCRIPT, 330, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_CanAnswerQuestionnairesMany_2, 10, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -8797,25 +8798,25 @@ L_78EE:
     VMCall L_6997
     WordSetNumber 1, 0x8010, 1
     // "Now, you have...\nthis many questionnaires left: [f000]Ȁ\u0001\u0001.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 331, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_NowHaveManyQuestionnaires, 10, 2, 0
     VMReturn
 
 L_7909:
     // "If you want to answer other\nquestionnaires, too, speak to me."
-    ActorMsg MSGFILE_SCRIPT, 332, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_IfWantAnswerOther, 10, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_791B:
     // "Excuse me, new statistician!\nPlease wait![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 263, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ExcuseNewStatisticianPlease, 10, 2, 0
     ActorMsgClose
     VMReturn
 
 L_792B:
     // "Since you're here, why don't you\nanswer other questionnaires, too?"
-    ActorMsg MSGFILE_SCRIPT, 333, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_SinceYoureHereWhy, 10, 2, 0
     YesNoWin 0x8010
     VMReturn
     .balign 4, 0
@@ -8858,7 +8859,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello!\nGreeting is important, isn't it?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 334, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_HelloGreetingImportantIsnt, 0x8011, 2, 0
     FlagGet 206, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -8866,12 +8867,12 @@ Script_4:
     VMJumpIf CMP_STACK, L_79D7
     FlagSet 206
     // "If you don't mind, would you tell me\nyour favorite greeting?"
-    ActorMsg MSGFILE_SCRIPT, 335, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_IfDontMindWould, 0x8011, 2, 0
     VMJump L_79E3
 
 L_79D7:
     // "If you don't mind, would you tell me\nyour favorite greeting again?"
-    ActorMsg MSGFILE_SCRIPT, 336, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_IfDontMindWould_2, 0x8011, 2, 0
 
 L_79E3:
     YesNoWin 0x8010
@@ -8880,7 +8881,7 @@ L_79E3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7A10
     // "Well, OK. See you again soon!\nLet's always have a cheerful greeting!"
-    ActorMsg MSGFILE_SCRIPT, 338, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WellOkSeeAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_7A4F
@@ -8893,14 +8894,14 @@ L_7A10:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7A3F
     // "Yes, it's a good greeting!\nIt cheers me up![f000]븁\u0000\nPlease feel free to come and say hi again!\nI look forward to seeing you again!"
-    ActorMsg MSGFILE_SCRIPT, 339, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_YesItsGoodGreeting, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_7A4F
 
 L_7A3F:
     // "Well, OK. See you again soon!\nLet's always have a cheerful greeting!"
-    ActorMsg MSGFILE_SCRIPT, 338, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WellOkSeeAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -8914,7 +8915,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello! Do you always have a feeling\nof gratitude?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 340, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_HelloAlwaysHaveFeeling, 0x8011, 2, 0
     FlagGet 207, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -8922,19 +8923,19 @@ Script_5:
     VMJumpIf CMP_STACK, L_7AB1
     FlagSet 207
     // "Oh, you dropped your Poké Ball.\nHere you are.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 341, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OhDroppedPokeBall, 0x8011, 2, 0
     ActorMsgClose
     WordSetPlayerName 1
     // "[f000]Ā\u0001\u0001 received a Poké Ball.[f000]븁\u0000"
-    SystemMsg 342, 2
+    SystemMsg CasteliaCity13_Text_ReceivedPokeBall, 2
     InfoMsgClose
     // "Please remember to thank someone\nwho helps you![f000]븁\u0000\nIt may sound trivial, but it's important.[f000]븁\u0000\nNow, will you tell me your\nfeeling of gratitude?"
-    ActorMsg MSGFILE_SCRIPT, 343, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_PleaseRememberThankSomeone, 0x8011, 2, 0
     VMJump L_7ABD
 
 L_7AB1:
     // "If you don't mind, will you show me your\nfeeling of gratitude again?"
-    ActorMsg MSGFILE_SCRIPT, 344, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_IfDontMindWill, 0x8011, 2, 0
 
 L_7ABD:
     YesNoWin 0x8010
@@ -8943,7 +8944,7 @@ L_7ABD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7AEA
     // "Well, OK. See you again soon!\nDon't forget a feeling of gratitude!"
-    ActorMsg MSGFILE_SCRIPT, 346, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WellOkSeeAgain_2, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_7B29
@@ -8956,14 +8957,14 @@ L_7AEA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7B19
     // "What a wonderful phrase!\nIt warms my heart.[f000]븁\u0000\nIf somebody helps you,\nshow your feelings of gratitude.[f000]븁\u0000\nI am sure they will appreciate\nyour feelings."
-    ActorMsg MSGFILE_SCRIPT, 347, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WhatWonderfulPhraseWarms, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_7B29
 
 L_7B19:
     // "Well, OK. See you again soon!\nDon't forget a feeling of gratitude!"
-    ActorMsg MSGFILE_SCRIPT, 346, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WellOkSeeAgain_2, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -8983,12 +8984,12 @@ Script_6:
     VMJumpIf CMP_STACK, L_7B66
     FlagSet 391
     // "When you're happy,\nwhat do you say?[f000]븁\u0000\nI say “Awesome!\"\nCould you teach me a new phrase?"
-    ActorMsg MSGFILE_SCRIPT, 372, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WhenYoureHappyWhat, 0x8011, 2, 0
     VMJump L_7B72
 
 L_7B66:
     // "Tell me something you just\nblurt out when you're happy!"
-    ActorMsg MSGFILE_SCRIPT, 373, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_TellSomethingJustBlurt, 0x8011, 2, 0
 
 L_7B72:
     YesNoWin 0x8010
@@ -8997,7 +8998,7 @@ L_7B72:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7B9F
     // "OK, then. See you next time.[f000]븁\u0000\nWhen you're happy, you have\nto express that joy, right?"
-    ActorMsg MSGFILE_SCRIPT, 375, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OkThenSeeNext, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_7BDE
@@ -9010,14 +9011,14 @@ L_7B9F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_7BCE
     // "What a wonderful phrase![f000]븁\u0000\nI registered it so I can\ninput it quickly in my[f000]븀\u0000\nTag Log comments!"
-    ActorMsg MSGFILE_SCRIPT, 376, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_WhatWonderfulPhraseRegistered, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_7BDE
 
 L_7BCE:
     // "OK, then. See you next time.[f000]븁\u0000\nWhen you're happy, you have\nto express that joy, right?"
-    ActorMsg MSGFILE_SCRIPT, 375, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_OkThenSeeNext, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -9376,7 +9377,7 @@ Script_16:
     VMJumpIf CMP_STACK, L_8056
     SEPlay SEQ_SE_FLD_41
     // "I'm from the Castelia Harlequin Hunt![f000]븁\u0000\nYou found the Passerby Analytics HQ\nHarlequin! All riiight!"
-    ParentActorMsg MSGFILE_SCRIPT, 383, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_ImFromCasteliaHarlequin, 0, 0
     FlagSet 313
     WorkAdd 0x40e2, 1
     SEWait
@@ -9386,7 +9387,7 @@ Script_16:
 
 L_8056:
     // "The statisticians research what's\npopular and what people like!"
-    ParentActorMsg MSGFILE_SCRIPT, 384, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity13_Text_StatisticiansResearchWhatsPopular, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

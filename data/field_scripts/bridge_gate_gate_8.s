@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/bridge_gate_gate_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -24,7 +25,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Marine Tube is just ahead.[f000]븁\u0000\nBut please wait for a little bit longer.\nJust a little bit..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate8_Text_MarineTubeJustAhead, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0075
@@ -33,7 +34,7 @@ L_0061:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Marine Tube is ahead!\nPlease enjoy the stunning scenery!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate8_Text_MarineTubeAheadPlease, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -47,7 +48,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I moved here just to be the first person\nto go through the Marine Tube."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate8_Text_MovedHereJustFirst, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -59,7 +60,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Marine Tube.[f000]븁\u0000\nIt's an undersea tunnel, so to speak.\nDo you know how such tunnels are made?[f000]븁\u0000\nIt's quite simple!\nThey're built on land[f000]븀\u0000\nand then sunk into the sea![f000]븁\u0000\nWithout Pokémon, the construction\nwould've been impossible."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate8_Text_MarineTubeItsUndersea, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -75,7 +76,7 @@ Script_5:
     ActorWalkRoute 1, 0x8021, 0x8022, 1, 4, 1
     ActorCmdWait
     // "Sorry, I'll be finished with the cleaning\nsoon. Please wait until then![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, BridgeGateGate8_Text_SorryIllFinishedCleaning, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_017C
     ActorWalkRoute 1, 18, 8, 1, 4, 0
@@ -107,7 +108,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a sign that explains\nthe Marine Tube.[f000]븁\u0000"
-    InfoMsg 5, 2
+    InfoMsg BridgeGateGate8_Text_ItsSignExplainsMarine, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait

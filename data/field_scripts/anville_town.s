@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/anville_town.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -104,7 +105,7 @@ Script_1:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0192
     // "Unfortunately, no train has\ncome here today.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_UnfortunatelyNoTrainHas, 0, 0
     MsgWinCloseAll
     VMJump L_0257
 
@@ -114,12 +115,12 @@ L_0192:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_01B5
     // "Oh, are you also curious about\nthat train?"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhAlsoCuriousAbout, 0, 0
     VMJump L_01BF
 
 L_01B5:
     // "See the train there?"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_SeeTrainThere, 0, 0
 
 L_01BF:
     YesNoWin 0x8010
@@ -132,12 +133,12 @@ L_01BF:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_01F9
     // "All righty!\nLet me explain![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_AllRightyLetExplain, 0, 0
     VMJump L_0203
 
 L_01F9:
     // "All righty!\nAll aboard![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_AllRightyAllAboard, 0, 0
 
 L_0203:
     MsgWinCloseAll
@@ -157,12 +158,12 @@ L_0228:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_024B
     // "Oh, that's a shame.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhThatsShame, 0, 0
     VMJump L_0255
 
 L_024B:
     // "Hahaha!\nYou're right.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_HahahaYoureRight, 0, 0
 
 L_0255:
     MsgWinCloseAll
@@ -515,13 +516,13 @@ Script_18:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0774
     // "Ah... I'm in trouble.[f000]븁\u0000\nI was so engrossed in my trip that I ran\nout of [f000]ĉ\u0001\u0000.[f000]븁\u0000\nLet me see...\nWill you trade your [f000]ȁ\u0001\u0001 [f000]ĉ\u0001\u0000[f000]븀\u0000\nfor my [f000]ȁ\u0001\u0003 [f000]ĉ\u0001\u0002?"
-    ParentActorMsg MSGFILE_SCRIPT, 51, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_AhImTroubleEngrossed, 0, 0
     WorkSetConst 0x400b, 111
     VMJump L_077E
 
 L_0774:
     // "Will you trade your [f000]ȁ\u0001\u0001 [f000]ĉ\u0001\u0000\nfor my [f000]ȁ\u0001\u0003 [f000]ĉ\u0001\u0002?"
-    ParentActorMsg MSGFILE_SCRIPT, 52, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_WillTrade, 0, 0
 
 L_077E:
     YesNoWin 0x8010
@@ -538,7 +539,7 @@ L_077E:
 
 L_07B8:
     // "...Uh-oh. You don't have\nenough [f000]ĉ\u0001\u0000s."
-    ParentActorMsg MSGFILE_SCRIPT, 56, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_UhOhDontHave, 0, 0
     VMJump L_0820
 
 L_07C8:
@@ -548,16 +549,16 @@ L_07C8:
 
 L_07DB:
     // "...Uh-oh. You don't have enough room for\nthe [f000]ĉ\u0001\u0002."
-    ParentActorMsg MSGFILE_SCRIPT, 57, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_UhOhDontHave_2, 0, 0
     VMJump L_0820
 
 L_07EB:
     // "Great, let's trade![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 53, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_GreatLetsTrade, 0, 0
     MsgWinCloseAll
     VMCall L_0898
     // "Hehe! It was a delightful trade,\nwasn't it?"
-    ParentActorMsg MSGFILE_SCRIPT, 55, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_HeheDelightfulTradeWasnt, 0, 0
     VMStackPushFlag 2453
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -569,7 +570,7 @@ L_0820:
 
 L_0826:
     // "Oh, that's a shame."
-    ParentActorMsg MSGFILE_SCRIPT, 54, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhThatsShame_2, 0, 0
 
 L_0830:
     LastKeyWait
@@ -607,7 +608,7 @@ L_0898:
     WordSetItemNameEx 2, 0x8021, 0x8023, 0
     MEPlay SEQ_ME_ITEM
     // "Gave the [f000]ĉ\u0001\u0000 in exchange for\nthe [f000]ĉ\u0001\u0002!"
-    SystemMsg 50, 0
+    SystemMsg AnvilleTown_Text_GaveExchange, 0
     MEWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -632,13 +633,13 @@ Script_19:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_092B
     // "I am a [f000]ĉ\u0001\u0000 collector![f000]븁\u0000\nYou, over there! Let's have a\nbusinesslike exchange.[f000]븁\u0000\nWill you trade your [f000]ȁ\u0001\u0001 [f000]ĉ\u0001\u0000 for\nmy [f000]ȁ\u0001\u0003 [f000]ĉ\u0001\u0002?"
-    ParentActorMsg MSGFILE_SCRIPT, 58, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_AmCollectorOverThere, 0, 0
     WorkSetConst 0x400c, 111
     VMJump L_0935
 
 L_092B:
     // "Will you trade your [f000]ȁ\u0001\u0001 [f000]ĉ\u0001\u0000\nfor my [f000]ȁ\u0001\u0003 [f000]ĉ\u0001\u0002?"
-    ParentActorMsg MSGFILE_SCRIPT, 59, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_WillTrade_2, 0, 0
 
 L_0935:
     YesNoWin 0x8010
@@ -655,7 +656,7 @@ L_0935:
 
 L_096F:
     // "Hah! You don't have\nany [f000]ĉ\u0001\u0000s."
-    ParentActorMsg MSGFILE_SCRIPT, 63, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_HahDontHaveAny, 0, 0
     VMJump L_09D7
 
 L_097F:
@@ -665,16 +666,16 @@ L_097F:
 
 L_0992:
     // "Hah! You don't have enough room for\nthe [f000]ĉ\u0001\u0002."
-    ParentActorMsg MSGFILE_SCRIPT, 64, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_HahDontHaveEnough, 0, 0
     VMJump L_09D7
 
 L_09A2:
     // "Excellent. Let's do business![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 60, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_ExcellentLetsBusiness, 0, 0
     MsgWinCloseAll
     VMCall L_0898
     // "Hah! It was a mutually beneficial trade!\nThis is a win-win relationship, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 62, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_HahMutuallyBeneficialTrade, 0, 0
     VMStackPushFlag 2453
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -686,7 +687,7 @@ L_09D7:
 
 L_09DD:
     // "Why? Do you think this is a bad deal?"
-    ParentActorMsg MSGFILE_SCRIPT, 61, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_WhyThinkBadDeal, 0, 0
 
 L_09E7:
     LastKeyWait
@@ -712,13 +713,13 @@ Script_20:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0A58
     // "With that face, I bet you have\nsomething I want.[f000]븁\u0000\nWill you trade your [f000]ȁ\u0001\u0001 [f000]ĉ\u0001\u0000 for\nmy [f000]ȁ\u0001\u0003 [f000]ĉ\u0001\u0002?"
-    ParentActorMsg MSGFILE_SCRIPT, 67, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_FaceBetHaveSomething, 0, 0
     WorkSetConst 0x400d, 111
     VMJump L_0A62
 
 L_0A58:
     // "Will you trade your [f000]ȁ\u0001\u0001 [f000]ĉ\u0001\u0000 for\nmy [f000]ȁ\u0001\u0003 [f000]ĉ\u0001\u0002?"
-    ParentActorMsg MSGFILE_SCRIPT, 68, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_WillTrade_3, 0, 0
 
 L_0A62:
     YesNoWin 0x8010
@@ -735,7 +736,7 @@ L_0A62:
 
 L_0A9C:
     // "Ooh-la-la!\nYou don't have enough [f000]ĉ\u0001\u0000s."
-    ParentActorMsg MSGFILE_SCRIPT, 72, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OohLaLaDont, 0, 0
     VMJump L_0B04
 
 L_0AAC:
@@ -745,16 +746,16 @@ L_0AAC:
 
 L_0ABF:
     // "Ooh-la-la! You don't have room for\nthe [f000]ĉ\u0001\u0002."
-    ParentActorMsg MSGFILE_SCRIPT, 73, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OohLaLaDont_2, 0, 0
     VMJump L_0B04
 
 L_0ACF:
     // "Yay!\nThen, let's trade![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 69, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_YayThenLetsTrade, 0, 0
     MsgWinCloseAll
     VMCall L_0898
     // "Ooh-la-la! This luster!\nI really like [f000]ĉ\u0001\u0000s.[f000]븁\u0000\nAn experienced person like me can tell\nthe difference of the luster of each one!"
-    ParentActorMsg MSGFILE_SCRIPT, 71, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OohLaLaLuster, 0, 0
     VMStackPushFlag 2453
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -766,7 +767,7 @@ L_0B04:
 
 L_0B0A:
     // "Oh, it seems I was mistaken..."
-    ParentActorMsg MSGFILE_SCRIPT, 70, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhSeemsMistaken, 0, 0
 
 L_0B14:
     LastKeyWait
@@ -787,13 +788,13 @@ L_0B1E:
     VMJumpIf CMP_STACK, L_0B56
     Cmd_0275 0, 11, 0
     // "The Funfest Mission\n“[f000]ŀ\u0001\u0000\"[f000]븀\u0000\nhas been added to the Entralink."
-    SystemMsg 65, 0
+    SystemMsg AnvilleTown_Text_FunfestMissionHasBeen, 0
     VMJump L_0B63
 
 L_0B56:
     Cmd_0275 0, 12, 0
     // "The Funfest Mission\n“[f000]ŀ\u0001\u0000\"[f000]븀\u0000\nhas been added to the Entralink."
-    SystemMsg 66, 0
+    SystemMsg AnvilleTown_Text_FunfestMissionHasBeen_2, 0
 
 L_0B63:
     SEWait
@@ -805,7 +806,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A beautiful tune is spreading\nthroughout the town..."
-    InfoMsg 0, 2
+    InfoMsg AnvilleTown_Text_BeautifulTuneSpreadingThroughout, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -817,7 +818,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The girl on the bridge...[f000]븁\u0000\nShe's playing a lullaby for all the\nsleeping trains of this town."
-    ParentActorMsg MSGFILE_SCRIPT, 86, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_GirlBridgeShesPlaying, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -829,7 +830,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Trains are so cooooool![f000]븁\u0000\nMy mom brought me, but now she's\ntaking pictures somewhere.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 79, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_TrainsCoooooolMomBrought, 0, 0
     MsgWinCloseAll
     ActorCmdExec 4, Movement_0F80
     ActorCmdWait
@@ -842,7 +843,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wanted to get a picture from\nthis angle![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 77, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_WantedGetPictureFrom, 0, 0
     MsgWinCloseAll
     ActorCmdExec 5, Movement_0F88
     ActorCmdWait
@@ -855,7 +856,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's so lively on weekends!\nOh, me? I came here to watch the trains."
-    ParentActorMsg MSGFILE_SCRIPT, 74, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_ItsLivelyWeekendsOh, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -867,7 +868,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You can trade lots of items.\nIt was surprisingly fun when I tried!"
-    ParentActorMsg MSGFILE_SCRIPT, 75, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_CanTradeLotsItems, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -879,7 +880,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What delicious air!"
-    ParentActorMsg MSGFILE_SCRIPT, 76, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_WhatDeliciousAir, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -891,7 +892,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The device that changes\nthe direction of trains[f000]븀\u0000\nis called a turntable!"
-    ParentActorMsg MSGFILE_SCRIPT, 78, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_DeviceChangesDirectionTrains, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -916,19 +917,19 @@ Script_16:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0CA8
     // "This is a rare weekend when there aren't\nany trains."
-    ParentActorMsg MSGFILE_SCRIPT, 82, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_RareWeekendWhenThere, 0, 0
     VMJump L_0CB2
 
 L_0CA8:
     // "They are full of people today, too.\nDo you also trade items?"
-    ParentActorMsg MSGFILE_SCRIPT, 81, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_TheyFullPeopleToday, 0, 0
 
 L_0CB2:
     VMJump L_0CC2
 
 L_0CB8:
     // "On weekends, a lot of people come here\nto watch the trains."
-    ParentActorMsg MSGFILE_SCRIPT, 80, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_WeekendsLotPeopleCome, 0, 0
 
 L_0CC2:
     LastKeyWait
@@ -946,7 +947,7 @@ Script_17:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0CF7
     // "Today all the train cars are resting!"
-    ParentActorMsg MSGFILE_SCRIPT, 85, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_TodayAllTrainCars, 0, 0
     VMJump L_0D38
 
 L_0CF7:
@@ -960,12 +961,12 @@ L_0CF7:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0D2E
     // "If there are a lot of people,\nI feel that the trains are happy!"
-    ParentActorMsg MSGFILE_SCRIPT, 84, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_IfThereLotPeople, 0, 0
     VMJump L_0D38
 
 L_0D2E:
     // "A lot of train cars have a rest here."
-    ParentActorMsg MSGFILE_SCRIPT, 83, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_LotTrainCarsHave, 0, 0
 
 L_0D38:
     LastKeyWait
@@ -978,7 +979,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a subway map of the Unova region.[f000]븁\u0000"
-    InfoMsg 88, 2
+    InfoMsg AnvilleTown_Text_ItsSubwayMapUnova, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -996,7 +997,7 @@ Script_7:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Anville Town\nRolling Out the Steel Rails"
-    MsgPlaceSign 87, 1
+    MsgPlaceSign AnvilleTown_Text_AnvilleTownRollingOut, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -1007,14 +1008,14 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A train to Nimbasa City is leaving\nthe station shortly.[f000]븁\u0000\nWould you like to board?"
-    ParentActorMsg MSGFILE_SCRIPT, 47, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_TrainNimbasaCityLeaving, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E4C
     // "Then, please get on the train and wait.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 48, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_ThenPleaseGetTrain, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8010
     VMStackPush 0x8010
@@ -1055,7 +1056,7 @@ L_0E22:
 
 L_0E4C:
     // "This is a quiet town!\nRelax and stay for a while."
-    ParentActorMsg MSGFILE_SCRIPT, 49, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_QuietTownRelaxStay, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1077,7 +1078,7 @@ Script_21:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0ECA
     // "Oh, Pansage...\nWhere could you be?[f000]븁\u0000\nWe went to the amusement park\nand saw a musical.[f000]븁\u0000\nBut when we were going home,\nPansage got on a different train![f000]븁\u0000\nI wonder where it is now..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhPansageWhereCould, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMStackPushFlag 864
@@ -1104,7 +1105,7 @@ L_0ECA:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0F33
     // "Oh! Pokémon Trainer![f000]븁\u0000\nYou looked for my\nPansage, didn't you?[f000]븁\u0000\nThank you so much.\nThis isn't much, but please take it."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhPokemonTrainerLooked, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -1115,7 +1116,7 @@ L_0ECA:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Oh, my silly Pansage.\nA person with green hair told me that[f000]븀\u0000\nPansage's dream is to become a[f000]븀\u0000\nrailroad conductor![f000]븁\u0000\nBut... That guy...\nCan he talk with Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhSillyPansagePerson, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 365
@@ -1127,7 +1128,7 @@ L_0F33:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0F54
     // "Oh, my silly Pansage.\nA person with green hair told me that[f000]븀\u0000\nPansage's dream is to become a[f000]븀\u0000\nrailroad conductor![f000]븁\u0000\nBut... That guy...\nCan he talk with Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_OhSillyPansagePerson, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1142,7 +1143,7 @@ Script_22:
     ActorSetEyeToEye
     PVPlay 511, 0
     // "Ook!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AnvilleTown_Text_Ook, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

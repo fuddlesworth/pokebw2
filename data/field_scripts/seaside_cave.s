@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/seaside_cave.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -21,7 +22,7 @@ Script_1:
 
 L_0041:
     // "Hm![f000]븁\u0000\nIf you want past here,\nyou have to defeat me,[f000]븀\u0000\nand my Roggenrola![f000]븀\u0000\nAnd we're as sturdy as rock![f000]븁\u0000\nBut, my Roggenrola and I\nonly battle strong Trainers.[f000]븁\u0000\nThat is my, and my Roggenrola's,\npolicy! It's as sturdy as rock!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SeasideCave_Text_HmIfWantPast, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -54,19 +55,19 @@ L_008C:
 
 L_00A8:
     // "Mmm![f000]븁\u0000\nMy Roggenrola and I\nhave been waiting for[f000]븀\u0000\na strong Trainer like you![f000]븁\u0000\nIf you want to pass, you must beat\nmy Roggenrola and me![f000]븁\u0000\nCan you defeat our rock-hard will?"
-    ActorMsg MSGFILE_SCRIPT, 1, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, SeasideCave_Text_MmmRoggenrolaHaveBeen, 12, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0137
     // "Just to let you know, my Roggenrola and\nI are the sturdiest things that were[f000]븀\u0000\never sturdy![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, SeasideCave_Text_JustLetKnowRoggenrola, 12, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_BLACK_BELT_ROCKY, 0, 0
     VMCall L_0149
     // "Mmm![f000]븁\u0000\nYour strength is the real thing![f000]븁\u0000\nMy Roggenrola and I must\nbecome even sturdier,[f000]븀\u0000\nso we're off to continue our training![f000]븁\u0000\nFarewell!"
-    ActorMsg MSGFILE_SCRIPT, 4, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, SeasideCave_Text_MmmStrengthRealThing, 12, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMSleep 15
@@ -85,7 +86,7 @@ L_00A8:
 
 L_0137:
     // "What a flimsy answer!"
-    ActorMsg MSGFILE_SCRIPT, 3, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, SeasideCave_Text_WhatFlimsyAnswer, 12, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -113,7 +114,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 524, 0
     // "Stur! Stur!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SeasideCave_Text_SturStur, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -127,7 +128,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 524, 0
     // "De deee!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SeasideCave_Text_DeDeee, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -141,7 +142,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 524, 0
     // "Rorooog!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SeasideCave_Text_Rorooog, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -161,7 +162,7 @@ Script_6:
 
 L_01FD:
     // "It's a big boulder, but it doesn't\nlook like a Pokémon can move it..."
-    SystemMsg 9, 2
+    SystemMsg SeasideCave_Text_ItsBigBoulderBut, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -172,7 +173,7 @@ L_0207:
 
 L_020D:
     // "Use the Colress Machine on the\nbig boulder?"
-    SystemMsg 10, 2
+    SystemMsg SeasideCave_Text_UseColressMachineBig, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -206,7 +207,7 @@ L_0286:
     WorkSetConst 0x8021, 0
     PVPlay 558, 0
     // "Crus chul!"
-    InfoMsg 11, 2
+    InfoMsg SeasideCave_Text_CrusChul, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -226,7 +227,7 @@ L_02CE:
 
 L_02D0:
     // "The Colress Machine broke..."
-    SystemMsg 12, 2
+    SystemMsg SeasideCave_Text_ColressMachineBroke, 2
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8022, 0

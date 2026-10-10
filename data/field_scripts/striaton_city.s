@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/striaton_city.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -70,7 +71,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Striaton City\nThree Stand Together as One!"
-    MsgPlaceSign 26, 1
+    MsgPlaceSign StriatonCity_Text_StriatonCityThreeStand, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -81,7 +82,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Dreamyard Ahead"
-    MsgPlaceSign 27, 2
+    MsgPlaceSign StriatonCity_Text_DreamyardAhead, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -92,7 +93,7 @@ Script_4:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainers' School\nBrush up on Pokémon knowledge!"
-    MsgPlaceSign 28, 2
+    MsgPlaceSign StriatonCity_Text_TrainersSchoolBrushUp, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -102,7 +103,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a well-kept flower bed.[f000]븁\u0000\nSomeone who loves plants\nmust be taking care of it."
-    InfoMsg 29, 2
+    InfoMsg StriatonCity_Text_ItsWellKeptFlower, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -184,7 +185,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Right now, the hot thing is\nStriaton City's Stunfisk nights![f000]븁\u0000\nA huge school of them gathers.\nIt's a sight that's hard to describe.[f000]븁\u0000\nYou have to be careful not to\nstep on them."
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_RightNowHotThing, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_028A
@@ -193,7 +194,7 @@ L_0276:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Recently, you can see Stunfisk\nin this pond when the sun goes down!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_RecentlyCanSeeStunfisk, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -204,7 +205,7 @@ L_0290:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Summer's so far away. I want to see\nagain the sight I saw that night."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_SummersFarAwayWant, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -219,7 +220,7 @@ Script_9:
     ActorSetEyeToEye
     PVPlay 618, 0
     // "Unn unnn?!"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_UnnUnnn, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -232,7 +233,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Well, I'll be!\nThose are some sparkling Gym Badges![f000]븁\u0000\nAnd you have eight of them, too![f000]븁\u0000\nThose Badges shine so brightly, it's like\nyou're gleaming as much as they are!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_WellIllThoseSome, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -244,7 +245,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I still haven't defeated the\nStriaton City Gym Leaders...[f000]븁\u0000\nBut that's all right.[f000]븁\u0000\nI'm going to become such a strong\nTrainer, they'll want to challenge me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_StillHaventDefeatedStriaton, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -256,7 +257,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If a Pokémon type and a move type are\nthe same, the move's power will increase![f000]븁\u0000\nIf the Pokémon is holding a gem of that\ntype, the move's power goes up yet more!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_IfPokemonTypeMove, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -268,7 +269,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "From the factory's once-busy days, many\ndreams still linger in the Dreamyard.[f000]븁\u0000\nA Pokémon led there by those dreams\nmay be somewhere about."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_FromFactorysOnceBusy, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -280,7 +281,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When I explain to someone what I learned\nat school, I'm more connected to people,[f000]븀\u0000\nthanks to Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_WhenExplainSomeoneWhat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -292,7 +293,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Technical Machines can be used\nover and over, right?[f000]븁\u0000\nI tried so many different things!\nIt's sure hard to decide, eh?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_TechnicalMachinesCanUsed, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -309,7 +310,7 @@ Script_16:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03AB
     // "Er... Um...[f000]븁\u0000\nGrass-type Pokémon are weak\nagainst Fire-type moves.[f000]븁\u0000\nThat's why Cilan has trouble\nwinning against Chili!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_ErUmGrassType, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_03F3
@@ -320,7 +321,7 @@ L_03AB:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D2
     // "Er... Um...[f000]븁\u0000\nWater-type Pokémon are weak\nagainst Grass-type moves.[f000]븁\u0000\nThat's why Cress has trouble\nwinning against Cilan."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_ErUmWaterType, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_03F3
@@ -331,7 +332,7 @@ L_03D2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03F3
     // "Um... Er...[f000]븁\u0000\nFire-type Pokémon are weak\nagainst Water-type moves.[f000]븁\u0000\nThat's why Chili has trouble\nwinning against Cress."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_UmErFireType, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -345,7 +346,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Gym is gone, but the Dreamyard still\nbustles with Trainers looking to improve!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_GymGoneButDreamyard, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -357,14 +358,14 @@ Script_18:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, my!\nYour Medal Box...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_OhMedalBox, 0, 0
     MedalGetMostCompleteCategory 0x8022
     VMStackPush 0x8022
     VMStackPushConst 4
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0452
     // "The gold Special Medals\nare particularly sparkly![f000]븁\u0000\nLife is special![f000]븁\u0000\nTreasure every day, and don't\npass a day the same way twice!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_GoldSpecialMedalsParticularly, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_04E8
@@ -375,7 +376,7 @@ L_0452:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0479
     // "The purple Challenge Medals\nare particularly sparkly![f000]븁\u0000\nLife is a challenge![f000]븁\u0000\nThe harder it is to do,\nthe more it's worth doing![f000]븁\u0000\nYou can feel happy when\nyou've grown as a person!"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_PurpleChallengeMedalsParticularly, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_04E8
@@ -386,7 +387,7 @@ L_0479:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04A0
     // "The blue Battle Medals\nare particularly sparkly![f000]븁\u0000\nIn life, you have to draw a line\nbetween black and white.[f000]븁\u0000\nCompete, aim for the top,\nand grow together!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_BlueBattleMedalsParticularly, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_04E8
@@ -397,7 +398,7 @@ L_04A0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04C7
     // "The pink Fun Medals\nare particularly sparkly![f000]븁\u0000\nLife is entertainment![f000]븁\u0000\nAlways have a smile on your face!\nThe one who has the most fun wins!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_PinkFunMedalsParticularly, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_04E8
@@ -408,7 +409,7 @@ L_04C7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04E8
     // "The orange Adventure Medals\nare particularly sparkly![f000]븁\u0000\nLife is an adventure![f000]븁\u0000\nNo matter how old you get,\ndon't lose your sense of adventure!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_OrangeAdventureMedalsParticularly, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -422,7 +423,7 @@ Script_19:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This is a delicious restaurant where\nyou can also enjoy Pokémon battles![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity_Text_DeliciousRestaurantWhereCan, 0, 0
     MsgWinCloseAll
     ActorCmdExec 23, Movement_0548
     ActorCmdWait

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_17.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -170,7 +171,7 @@ Script_5:
 L_01E7:
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 pressed the switch.[f000]븁\u0000\nThe roller coaster's path\nhas been changed!"
-    SystemMsg 10, 2
+    SystemMsg NimbasaCity17_Text_PressedSwitchRollerCoasters, 2
     LastKeyWait
     InfoMsgClose
     VMReturn
@@ -204,7 +205,7 @@ L_024B:
     ActorCmdExec 1, Movement_03B8
     ActorCmdWait
     // "Hey there!\nAre you cool riding a roller coaster?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_HeyThereCoolRiding, 1, 0, 0
     ActorMsgClose
     VMReturn
 
@@ -213,7 +214,7 @@ L_026D:
     ActorCmdExec 0, Movement_03B8
     ActorCmdWait
     // "Your roller-coaster ride is finally\nnearing its finale.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_RollerCoasterRideFinally, 0, 0, 0
     ActorMsgClose
     VMReturn
 
@@ -246,7 +247,7 @@ L_02E2:
     ActorCmdExec 1, Movement_03D0
     ActorCmdWait
     // "I'm going to overwhelm you with the speed\nI learned riding the roller coaster![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_ImGoingOverwhelmSpeed, 1, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_RICH_BOY_ROLAN, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -263,7 +264,7 @@ L_0325:
 
 L_032B:
     // "Your way of battling...\nIt's elegant! You've got style![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_WayBattlingItsElegant, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_03D8
     ActorCmdWait
@@ -275,7 +276,7 @@ L_0349:
     ActorCmdExec 0, Movement_03D0
     ActorCmdWait
     // "I'm also a Pokémon Trainer who was\ntoughened up by Ms. Elesa.[f000]븀\u0000\nI won't give up easily![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_ImAlsoPokemonTrainer, 0, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_LADY_COLETTE, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -292,7 +293,7 @@ L_038C:
 
 L_0392:
     // "It pleases me to be the opponent of a\nstrong and honorable Trainer like you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_PleasesOpponentStrongHonorable, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_03D8
     ActorCmdWait
@@ -329,7 +330,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you press the switches, the\nroller coaster's path will change."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_IfPressSwitchesRoller, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -341,7 +342,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "In other places, roller coasters\nare called jet coasters."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_OtherPlacesRollerCoasters, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -357,7 +358,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "So, I hear the Gym Leader\nlikes the thrill of this roller coaster."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_HearGymLeaderLikes, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_049B
@@ -366,7 +367,7 @@ L_0453:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh my! Did you come here\nlooking for the Gym Leader?[f000]븁\u0000\nI'm sorry, you just missed her.\nShe just left for the Gym.[f000]븁\u0000\nTake this for making it\nall the way here![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_OhDidComeHere, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -376,7 +377,7 @@ L_0453:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "So, I hear the Gym Leader\nlikes the thrill of this roller coaster."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_HearGymLeaderLikes, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 459
@@ -392,7 +393,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "To ride this roller coaster,\nthe first step is to get in the car.[f000]븁\u0000\nNext comes the platform!\nThere, you can change[f000]븀\u0000\nwhere the coaster is going![f000]븁\u0000\nSometimes you continue by riding\nthe cars of opponents you defeat.[f000]븀\u0000\nThat's how you aim for the back!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_RideRollerCoasterFirst, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -404,7 +405,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Elesa's really amazing![f000]븁\u0000\nUsually, you just remodel the Gym,\nbut she built a completely new one![f000]븁\u0000\nElesa's really amazing!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_ElesasReallyAmazingUsually, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -416,7 +417,7 @@ Script_18:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Faster! Faster!\nA speed boost makes you feel great!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity17_Text_FasterFasterSpeedBoost, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

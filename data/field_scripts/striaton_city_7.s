@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/striaton_city_7.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -17,7 +18,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh my! You have eight Gym Badges?!\nWhy, you must be very strong![f000]븁\u0000\nBut, I wonder what would separate\nTrainers who both have eight Badges..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_OhHaveEightGym, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -29,7 +30,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There's a model who I've been\na fan of for years![f000]븁\u0000\nHer name is Elesa,\nand her Pokémon are strong, too![f000]븁\u0000\nHuh? You've battled with her?\nYou're really something!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_TheresModelWhoIve, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -41,7 +42,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The GTS! It links the world from the\nsecond floor of a Pokémon Center![f000]븁\u0000\nThe full name of the GTS is the\nGlobal Trade Station![f000]븁\u0000\nNow in Driftveil City, you can find the\nPokémon World Tournament.[f000]븀\u0000\nIt's the PWT for short!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_GtsLinksWorldFrom, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -57,7 +58,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hi, hi!\nLet's play Pokémon rock-paper-scissors![f000]븁\u0000\nI'm really good at it!\nI've beaten all of my friends![f000]븀\u0000\nAre you ready?[f000]븁\u0000\nHere we go!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_HiHiLetsPlay, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32784
     ListMenuAdd 4, 65535, 0
     ListMenuAdd 5, 65535, 1
@@ -132,7 +133,7 @@ L_01BA:
 L_01D8:
     MsgWinCloseAll
     // "Shoot!"
-    ActorMsg MSGFILE_SCRIPT, 7, 3, 2, 1
+    ActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_Shoot, 3, 2, 1
     MsgWaitAdvance
     MsgWinCloseAll
     MultiMsg 0x8024, 0x8020, 0x8021, 1
@@ -141,17 +142,17 @@ L_01D8:
     MsgWinCloseNo 1
     MsgWinCloseNo 2
     // "Waaaah! I lost!\nMy win streak's over... Sniff...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_WaaaahLostWinStreaks, 2, 0
     MsgWinCloseAll
     Cmd_0275 0, 41, 0
     SEPlay SEQ_SE_FLD_133
     // "The Funfest Mission\n“[f000]ŀ\u0001\u0000\"[f000]븀\u0000\nhas been added to the Entralink!"
-    SystemMsg 9, 0
+    SystemMsg StriatonCity7_Text_FunfestMissionHasBeen, 0
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
     // "Until I figure out a way\nto win every time for sure,[f000]븀\u0000\nI won't play anymore!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_UntilFigureOutWay, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2455
@@ -161,7 +162,7 @@ L_0245:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Until I figure out a way\nto win every time for sure,[f000]븀\u0000\nI won't play anymore!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity7_Text_UntilFigureOutWay, 0, 0
     LastKeyWait
     ActorMsgClose
 

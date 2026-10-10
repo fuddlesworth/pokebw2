@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -19,12 +20,12 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_004D
     // "Professional athletes look so attractive\nduring a game!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_ProfessionalAthletesLookAttractive, 0, 0
     VMJump L_0057
 
 L_004D:
     // "We can tell how good these professionals\nare just by watching them practice."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_WeCanTellHow, 0, 0
 
 L_0057:
     LastKeyWait
@@ -43,7 +44,7 @@ Script_2:
 
 L_007C:
     // "I want to be a person who is good at\nfootball and Pokémon battles!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_WantPersonWhoGood, 0, 0
     VMJump L_00B9
 
 L_008C:
@@ -53,12 +54,12 @@ L_008C:
 
 L_009F:
     // "I want to be a person who is good at\nbaseball and Pokémon battles!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_WantPersonWhoGood_2, 0, 0
     VMJump L_00B9
 
 L_00AF:
     // "I want to be a person who is good at\nsoccer and Pokémon battles!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_WantPersonWhoGood_3, 0, 0
 
 L_00B9:
     LastKeyWait
@@ -72,7 +73,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "On the field, they play games in earnest!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_FieldTheyPlayGames, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -84,7 +85,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Just one ball can make people and\nPokémon smile.[f000]븁\u0000\nSports are wonderful things!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_JustOneBallCan, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -96,7 +97,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Eeeee! Turn this waaaaay!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_EeeeeTurnWaaaaay, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -108,7 +109,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There!\nThere, turn like that!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_ThereThereTurnLike, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -120,7 +121,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Following a ball right and left\nmakes me feel woozy."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_FollowingBallRightLeft, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -132,7 +133,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Yahooooooo!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity4_Text_Yahooooooo, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

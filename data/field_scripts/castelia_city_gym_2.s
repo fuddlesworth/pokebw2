@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_gym_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -105,14 +106,14 @@ L_013D:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0166
     // "How many discoveries have you made\nsince you started your adventure?[f000]븁\u0000\nWhen I was a kid, my innocent heart was\ncaptured by the beauty of[f000]븀\u0000\nBug-type Pokémon.[f000]븁\u0000\nI drew with them and battled with them,\nand after all this time, I continue[f000]븀\u0000\nto discover new things.[f000]븁\u0000\nA world shared with Pokémon is a world\nswarming with mysteries."
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityGym2_Text_HowManyDiscoveriesHave, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0176
 
 L_0166:
     // "Burgh: Hello!\nHow have you been?[f000]븁\u0000\nSo, now I'm working on\na piece with a Pokémon motif![f000]븀\u0000\nWell, I always do that, really.[f000]븁\u0000\nEvery now and then, I get artist's block.\nBut when I look at my Pokémon...[f000]븁\u0000\nI get filled with the urge to\ndraw, and I can't stop!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityGym2_Text_BurghHelloHowHave, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -123,7 +124,7 @@ L_0176:
 
 L_017C:
     // "Good work back there in the sewers.[f000]븁\u0000\nMy Bug-type Pokémon have been scurrying\nwith excitement about getting to[f000]븀\u0000\nbattle you.[f000]븁\u0000\nI'd say my Bug-type Pokémon are\npretty great![f000]븀\u0000\nC'mon, let me brag a little![f000]븁\u0000\nDwebble's round little eyes are cute!\nIt's resilient and reliable![f000]븁\u0000\nMy ace is Leavanny!\nIt's really the best![f000]븁\u0000\nI think it's so sweet how it makes clothes\nfor other Pokémon out of leaves.[f000]븁\u0000\nOf course, I'm really proud\nof all of my Pokémon![f000]븁\u0000\nWell now...\nLet's get right to it![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym2_Text_GoodWorkBackThere, 0, 0
     ActorMsgClose
     WorkSetConst 0x8021, 0
     GameGetDifficulty 0x8021
@@ -152,7 +153,7 @@ L_01E0:
 
 L_01E2:
     // "Oh hoo...\nYou are very strong indeed![f000]븁\u0000\nI guess it's no surprise I lost.[f000]븁\u0000\nHere! Take this Insect Badge!\nI think it'll suit you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym2_Text_OhHooVeryStrong, 0, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 2
     TrainerCardAddBadge 2
@@ -174,10 +175,10 @@ L_0228:
     MEWait
     WorkSetConst 0x8022, 0
     // "[f000]Ā\u0001\u0000 received the\nInsect Badge from Burgh.[f000]븁\u0000"
-    SystemMsg 2, 0
+    SystemMsg CasteliaCityGym2_Text_ReceivedInsectBadgeFrom, 0
     InfoMsgClose
     // "Ooh! The Insect Badge suits you even\nbetter than I thought it would![f000]븁\u0000\nIf you have three Badges,\nPokémon up to Lv. 40 will obey you,[f000]븀\u0000\nincluding traded Pokémon.[f000]븁\u0000\nAnd, uh, you know what,\nI'll also give you this.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym2_Text_OohInsectBadgeSuits, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -187,7 +188,7 @@ L_0228:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Struggle Bug also lowers the\nSp. Atk of the target that was damaged.[f000]븁\u0000\nI'm the best guy to tell you this.\nIt's the little things that count!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym2_Text_StruggleBugAlsoLowers, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 2416

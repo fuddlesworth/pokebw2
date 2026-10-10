@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10655.h"
 
 // Script plugin 6, from the zones that start its scripts
 
@@ -120,7 +121,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0197
     // "We're preparing a special tournament.\nPlease be patient a little longer."
-    ActorMsg MSGFILE_SCRIPT, 112, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WerePreparingSpecialTournament, 0x8011, 4, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01A3
@@ -150,7 +151,7 @@ Script_3:
 
 L_01D6:
     // "We're getting special tournaments ready.\nIt may take a while, so please be patient!"
-    ActorMsg MSGFILE_SCRIPT, 68, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WereGettingSpecialTournaments, 0x8011, 4, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -172,7 +173,7 @@ L_01EC:
     WorkSetConst 0x8029, 0
     WbtCmd_SetRound 0
     // "Welcome to the\nPokémon World Tournament![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WelcomePokemonWorldTournament, 0x8011, 4, 0
     WorkSetConst 0x8020, 1
 
 L_023E:
@@ -191,7 +192,7 @@ L_023E:
 
 L_0278:
     // "Will you participate?"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WillParticipate, 0x8011, 4, 0
     VMCall L_056D
     VMJump L_053A
 
@@ -394,7 +395,7 @@ L_0540:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_056B
     // "We hope to see you again!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WeHopeSeeAgain, 0x8011, 4, 0
     LastKeyWait
     MsgWinCloseAll
     WbtCmd_Free
@@ -434,7 +435,7 @@ L_05D4:
 
 L_05D6:
     // "Which tournament\nwill you participate in?"
-    ActorMsg MSGFILE_SCRIPT, 22, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WhichTournamentWillParticipate, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32803
     VMCall L_0616
     ListMenuAdd 38, 65535, 0
@@ -573,7 +574,7 @@ L_0805:
 
 L_0807:
     // "Which battle format\nwill you choose?"
-    ActorMsg MSGFILE_SCRIPT, 41, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WhichBattleFormatWill, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32803
     ListMenuAdd 44, 65535, 0
     ListMenuAdd 45, 65535, 1
@@ -633,7 +634,7 @@ L_08CC:
 
 L_08F6:
     // "You don't meet the conditions,\nso you can't participate.[f000]븁\u0000\nRules differ for each tournament.[f000]븁\u0000\nPlease check the Download Tournament\nrules before participating.[f000]븁\u0000"
-    SystemMsg 60, 2
+    SystemMsg Global10655_Text_DontMeetConditionsCant_11, 2
     MsgWinCloseAll
     VMJump L_096E
 
@@ -651,7 +652,7 @@ L_0904:
 L_093E:
     SystemMsg 0x8010, 2
     // "By the way, Eggs cannot participate![f000]븁\u0000"
-    SystemMsg 61, 2
+    SystemMsg Global10655_Text_ByWayEggsCannot, 2
     MsgWinCloseAll
     VMJump L_096E
 
@@ -681,21 +682,21 @@ L_0978:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_09E6
     // "A randomized draw will determine your\nPokémon team. The excitement builds!"
-    ActorMsg MSGFILE_SCRIPT, 66, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_RandomizedDrawWillDetermine, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32784
     ListMenuAdd 109, 65535, 0
     ListMenuAdd 110, 65535, 1
     ListMenuAdd 111, 65535, 2
     ListMenuShow
     // "The moment of truth!\nWhich Pokémon will you receive?[f000]븁\u0000\nCounting down...[f000]븁\u0000\n... ...\n... ...[f000]븁\u0000\nTa-da! Here they are![f000]븁\u0000\nThese are the Pokémon\navailable for rental![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 67, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_MomentTruthWhichPokemon, 0x8011, 4, 0
     MsgWinCloseAll
     WbtCmd_MakeRentalParty 0x8010
     VMJump L_09F4
 
 L_09E6:
     // "Please choose the Pokémon that\nwill participate.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 62, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_PleaseChoosePokemonWill, 0x8011, 4, 0
     MsgWinCloseAll
 
 L_09F4:
@@ -719,7 +720,7 @@ L_0A17:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A3E
     // "Your victory in the Unova Leaders\nTournament will enable you to participate[f000]븀\u0000\nin Leaders tournaments of more regions.[f000]븁\u0000\nGood luck to you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 78, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_VictoryUnovaLeadersTournament, 0x8011, 4, 0
 
 L_0A3E:
     Plugin6_Cmd1007 10, 0x8010
@@ -728,7 +729,7 @@ L_0A3E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A63
     // "I have an announcement to make![f000]븁\u0000\nWin all the regional Leaders tournaments,\nand you'll be able to participate in the[f000]븀\u0000\nWorld Leaders Tournament and the[f000]븀\u0000\nType Expert Tournament.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 79, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_HaveAnnouncementMakeWin, 0x8011, 4, 0
 
 L_0A63:
     Plugin6_Cmd1007 1, 0x8010
@@ -737,7 +738,7 @@ L_0A63:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A88
     // "One more win in the World Leaders\nTournament, and you'll be able to[f000]븀\u0000\nparticipate in the Champions Tournament.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 80, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_OneMoreWinWorld, 0x8011, 4, 0
 
 L_0A88:
     Plugin6_Cmd1007 13, 0x8010
@@ -746,7 +747,7 @@ L_0A88:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AAD
     // "When you win all the regional Leaders\ntournaments as well as the Rental[f000]븀\u0000\nTournament, you'll be able to participate[f000]븀\u0000\nin the Rental Master Tournament![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 81, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WhenWinAllRegional, 0x8011, 4, 0
 
 L_0AAD:
     Plugin6_Cmd1007 15, 0x8010
@@ -755,11 +756,11 @@ L_0AAD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AD2
     // "When you win all the regional Leaders\ntournaments as well as[f000]븀\u0000\nthe Mix Tournament,[f000]븁\u0000\nyou'll be able to participate in the\nMix Master Tournament![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 82, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WhenWinAllRegional_2, 0x8011, 4, 0
 
 L_0AD2:
     // "Done!\nYour registration is complete.[f000]븀\u0000\nRight this way, please.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 64, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_DoneRegistrationCompleteRight, 0x8011, 4, 0
     MsgWinCloseAll
     Plugin6_Cmd1016 0x8010
     VMStackPush 0x8010
@@ -804,7 +805,7 @@ Movement_0B60:
 
 L_0B68:
     // "Which tournament do you\nwant to know about?"
-    ActorMsg MSGFILE_SCRIPT, 5, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WhichTournamentWantKnow, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32803
     ListMenuAdd 37, 65535, 100
     VMCall L_0616
@@ -816,7 +817,7 @@ L_0B68:
 
 L_0BA8:
     // "There are four battle formats\nto a tournament:[f000]븀\u0000\nSingle, Double, Triple, and Rotation.[f000]븁\u0000\nSingle Battles need three Pokémon.[f000]븁\u0000\nDouble Battles need four Pokémon.[f000]븁\u0000\nTriple Battles need six Pokémon.[f000]븁\u0000\nRotation Battles need four Pokémon.[f000]븁\u0000\nTriple Battles and Rotation Battles\ngive you more points than other formats[f000]븀\u0000\nwhen you manage to win, so jump in![f000]븀\u0000\nIt's worthwhile to try these formats![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_ThereFourBattleFormats, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0BBA:
@@ -826,7 +827,7 @@ L_0BBA:
 
 L_0BCD:
     // "At last, the Driftveil Tournament!\nIn this tournament, anything goes.[f000]븁\u0000\nAny Pokémon with any held item\ncan participate.[f000]븁\u0000\nThe winner will be rewarded with BP.\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 113, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_LastDriftveilTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0BDF:
@@ -836,7 +837,7 @@ L_0BDF:
 
 L_0BF2:
     // "Driftveil Tournament is a tournament\nwhere anything goes.[f000]븁\u0000\nYou may use any Pokémon or\nheld items of your choice.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 25.[f000]븁\u0000\nThe winner will be rewarded\nwith BP.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_DriftveilTournamentTournamentWhere, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0C04:
@@ -846,7 +847,7 @@ L_0C04:
 
 L_0C17:
     // "Unova Leaders Tournament is a\ntournament in which Gym Leaders[f000]븀\u0000\nfrom Unova are participating.[f000]븁\u0000\nYou may use any Pokémon or\nheld items of your choice.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe winner will be rewarded\nwith BP.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_UnovaLeadersTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0C29:
@@ -856,7 +857,7 @@ L_0C29:
 
 L_0C3C:
     // "Kanto Leaders Tournament is a\ntournament in which Gym Leaders[f000]븀\u0000\nfrom Kanto are participating.[f000]븁\u0000\nYou may not have duplicate Pokémon\nor duplicate held items.[f000]븁\u0000\nThe item Soul Dew and the\nmove Sky Drop are banned.[f000]븁\u0000\nLegendary or mythical Pokémon\nmay not participate, either.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_KantoLeadersTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0C4E:
@@ -866,7 +867,7 @@ L_0C4E:
 
 L_0C61:
     // "Johto Leaders Tournament is a\ntournament in which Gym Leaders[f000]븀\u0000\nfrom Johto are participating.[f000]븁\u0000\nYou may not have duplicate Pokémon\nor duplicate held items.[f000]븁\u0000\nThe item Soul Dew and the\nmove Sky Drop are banned.[f000]븁\u0000\nLegendary or mythical Pokémon\nmay not participate, either.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_JohtoLeadersTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0C73:
@@ -876,7 +877,7 @@ L_0C73:
 
 L_0C86:
     // "Hoenn Leaders Tournament is a\ntournament in which Gym Leaders[f000]븀\u0000\nfrom Hoenn are participating.[f000]븁\u0000\nYou may not have duplicate Pokémon\nor duplicate held items.[f000]븁\u0000\nThe item Soul Dew and the\nmove Sky Drop are banned.[f000]븁\u0000\nLegendary or mythical Pokémon\nmay not participate, either.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_HoennLeadersTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0C98:
@@ -886,7 +887,7 @@ L_0C98:
 
 L_0CAB:
     // "Sinnoh Leaders Tournament is a\ntournament in which Gym Leaders[f000]븀\u0000\nfrom Sinnoh are participating.[f000]븁\u0000\nYou may not have duplicate Pokémon\nor duplicate held items.[f000]븁\u0000\nThe item Soul Dew and the\nmove Sky Drop are banned.[f000]븁\u0000\nLegendary or mythical Pokémon\nmay not participate, either.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_SinnohLeadersTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0CBD:
@@ -896,7 +897,7 @@ L_0CBD:
 
 L_0CD0:
     // "World Leaders Tournament is a\ntournament in which Gym Leaders[f000]븀\u0000\nfrom various regions are participating.[f000]븁\u0000\nYou may not have duplicate Pokémon\nor duplicate held items.[f000]븁\u0000\nThe item Soul Dew and the\nmove Sky Drop are banned.[f000]븁\u0000\nLegendary or mythical Pokémon\nmay not participate, either.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe winner of will be rewarded with BP,\ndepending on how many[f000]븀\u0000\nPokémon are left standing.[f000]븁\u0000\nAim for total victory! Good luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WorldLeadersTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0CE2:
@@ -906,7 +907,7 @@ L_0CE2:
 
 L_0CF5:
     // "Champions Tournament is a tournament\nin which only the Champions of the[f000]븀\u0000\nChampions can participate.[f000]븁\u0000\nYou may not have duplicate Pokémon\nor duplicate held items.[f000]븁\u0000\nThe item Soul Dew and the\nmove Sky Drop are banned.[f000]븁\u0000\nLegendary or mythical Pokémon\nmay not participate, either.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe winner will be rewarded with BP,\ndepending on how many Pokémon[f000]븀\u0000\nare left standing.[f000]븁\u0000\nAim for total victory! Good luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_ChampionsTournamentTournamentWhich, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0D07:
@@ -916,7 +917,7 @@ L_0D07:
 
 L_0D1A:
     // "Rental Master Tournament is a unique\ntournament where we prepare the[f000]븀\u0000\nPokémon with which you will battle.[f000]븁\u0000\nRental Pokémon will be randomly\nselected for you. They are more rare[f000]븀\u0000\nthan the ones in the Rental Tournament.[f000]븁\u0000\nTo make the battles more thrilling, the\nparticipants are Gym Leaders from[f000]븀\u0000\nvarious regions.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_RentalMasterTournamentUnique, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0D2C:
@@ -926,7 +927,7 @@ L_0D2C:
 
 L_0D3F:
     // "Mix Master Tournament is a unique\ntournament where you and your opponent[f000]븀\u0000\nswap Pokémon before battling.[f000]븁\u0000\nYou'll normally swap one Pokémon,\nbut you'll swap two in Triple Battles.[f000]븁\u0000\nSwapped Pokémon will be returned\nafter the battle, so don't be alarmed.[f000]븁\u0000\nFor these battles, all Pokémon\nwill be set to Level 50.[f000]븁\u0000\nThe participants in the Mix Master\nTournament are Unova Gym Leaders,[f000]븀\u0000\nso there will be rare Pokémon in the mix.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_MixMasterTournamentUnique, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0D51:
@@ -936,7 +937,7 @@ L_0D51:
 
 L_0D64:
     // "Type Expert Tournament is a tournament\nin which only Pokémon of a specific type[f000]븀\u0000\ncan participate.[f000]븁\u0000\nFor example, if you choose\nFire-type Expert Tournament, only[f000]븀\u0000\nFire-type Pokémon can participate.[f000]븁\u0000\nYou'll need different Pokémon\nof the same type.[f000]븁\u0000\nMake sure no two Pokémon are\nholding the same item.[f000]븁\u0000\nThe item Soul Dew and the\nmove Sky Drop are banned.[f000]븁\u0000\nLegendary or mythical Pokémon\nmay not participate, either.[f000]븁\u0000\nFor these battles, all Pokémon will be\nset to Level 50.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_TypeExpertTournamentTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0D76:
@@ -946,7 +947,7 @@ L_0D76:
 
 L_0D89:
     // "Rental Tournament is a unique tournament\nwhere we prepare the Pokémon with which[f000]븀\u0000\nyou will battle.[f000]븁\u0000\nRental Pokémon will be randomly selected\nfor you. So luck plays a big part![f000]븁\u0000\nThe winner will be rewarded\nwith BP.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_RentalTournamentUniqueTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0D9B:
@@ -956,7 +957,7 @@ L_0D9B:
 
 L_0DAE:
     // "Mix Tournament is a unique tournament\nwhere you and your opponent swap[f000]븀\u0000\nPokémon before battling.[f000]븁\u0000\nYou'll normally swap one Pokémon,\nbut you'll swap two in Triple Battles.[f000]븁\u0000\nSwapped Pokémon will be returned\nafter the battle, so don't be alarmed.[f000]븁\u0000\nFor these battles, all Pokémon will be\nset to Level 50.[f000]븁\u0000\nThe winner will be rewarded\nwith BP.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_MixTournamentUniqueTournament, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0DC0:
@@ -966,7 +967,7 @@ L_0DC0:
 
 L_0DD3:
     // "Download Tournament is a tournament\nthat you can download from the[f000]븀\u0000\nblack PC next to me.[f000]븁\u0000\nThe rules are different for\neach tournament.[f000]븁\u0000\nPlease check the detailed rules\nbefore participating.[f000]븁\u0000\nThe winner will be rewarded\nwith a little more BP than usual.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_DownloadTournamentTournamentCan, 0x8011, 4, 0
     VMJump L_0DEB
 
 L_0DE5:
@@ -977,7 +978,7 @@ L_0DEB:
 
 L_0DED:
     // "Which type of tournament\nwill you participate in?"
-    ActorMsg MSGFILE_SCRIPT, 40, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WhichTypeTournamentWill, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32803
     ListMenuAdd 83, 65535, 0
     ListMenuAdd 84, 65535, 9
@@ -1014,7 +1015,7 @@ L_0EAF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0ED8
     // "Huh?[f000]븁\u0000\nThere are no tournaments\nyou can participate in.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 43, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_HuhThereNoTournaments, 0x8011, 4, 0
     VMJump L_0EE0
 
 L_0ED8:
@@ -1057,7 +1058,7 @@ L_0F48:
 
 L_0F5F:
     // "You lost in the first round.\nKeep trying, and better luck next time![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 69, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_LostFirstRoundKeep, 0x8011, 4, 0
     VMCall L_10AC
     VMJump L_1009
 
@@ -1068,7 +1069,7 @@ L_0F77:
 
 L_0F8A:
     // "One more before the final round...\nI'm sure you'll do better next time![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 70, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_OneMoreBeforeFinal, 0x8011, 4, 0
     VMCall L_10AC
     VMJump L_1009
 
@@ -1079,7 +1080,7 @@ L_0FA2:
 
 L_0FB5:
     // "That was close.\nI'm sure you'll be the winner next time![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 71, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_CloseImSureYoull, 0x8011, 4, 0
     VMCall L_10AC
     VMJump L_1009
 
@@ -1092,7 +1093,7 @@ L_0FE0:
     WbtCmd_GetTournament 0x8021
     Plugin6_Cmd1044 0, 0x8021
     // "Congratulations on winning the\n[f000]Ļ\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 72, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_CongratulationsWinning, 0x8011, 4, 0
     VMCall L_1068
     VMCall L_115E
     WbtCmd_RecordWin
@@ -1100,7 +1101,7 @@ L_0FE0:
 
 L_1009:
     // "We hope to see you again!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WeHopeSeeAgain, 0x8011, 4, 0
     LastKeyWait
     MsgWinCloseAll
     WbtCmd_Free
@@ -1143,12 +1144,12 @@ L_1068:
     VMJumpIf CMP_STACK, L_10AA
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000, as a result of your victory,\nyou will be awarded Battle Points![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 75, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_ResultVictoryWillAwarded, 0x8011, 4, 0
     MsgWinCloseAll
     WordSetPlayerName 0
     WordSetNumber 1, 0x8010, 2
     // "[f000]Ā\u0001\u0000 received [f000]ȁ\u0001\u0001 BP!"
-    SystemMsg 76, 2
+    SystemMsg Global10655_Text_ReceivedBp, 2
     MEPlay SEQ_ME_BPGET
     MEWait
     MsgWaitAdvance
@@ -1159,7 +1160,7 @@ L_10AA:
 
 L_10AC:
     // "Thank you for your participation!\nPlease accept this consolation prize.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 77, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_ThankParticipationPleaseAccept, 0x8011, 4, 0
     MsgWinCloseAll
     Random 0x8010, 4
     WorkCmpConst 0x8010, 0
@@ -1400,7 +1401,7 @@ L_13DF:
     MedalDiscover 139
     MedalDiscover 140
     // "Wow, you can now participate in\nthe Leaders Tournaments![f000]븁\u0000\nLeaders Tournaments have\ndifferent battle rules.[f000]븁\u0000\nThe participants are all famous\nGym Leaders.[f000]븁\u0000\nYou'll be facing tougher opposition\nthan usual in these tournaments.[f000]븀\u0000\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 39, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_WowCanNowParticipate, 0x8011, 4, 0
 
 L_1414:
     Plugin6_Cmd1007 10, 0x8010
@@ -1411,7 +1412,7 @@ L_1414:
     MedalDiscover 141
     Plugin6_Cmd1044 0, 10
     // "You can now participate in the\n[f000]Ļ\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 73, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_CanNowParticipate, 0x8011, 4, 0
 
 L_1442:
     Plugin6_Cmd1007 13, 0x8010
@@ -1422,7 +1423,7 @@ L_1442:
     MedalDiscover 143
     Plugin6_Cmd1044 0, 13
     // "You can now participate in the\n[f000]Ļ\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 73, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_CanNowParticipate, 0x8011, 4, 0
 
 L_1470:
     Plugin6_Cmd1007 15, 0x8010
@@ -1433,7 +1434,7 @@ L_1470:
     MedalDiscover 144
     Plugin6_Cmd1044 0, 15
     // "You can now participate in the\n[f000]Ļ\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 73, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_CanNowParticipate, 0x8011, 4, 0
 
 L_149E:
     Plugin6_Cmd1007 2, 0x8010
@@ -1444,7 +1445,7 @@ L_149E:
     MedalDiscover 145
     Plugin6_Cmd1044 0, 2
     // "You can now participate in the\n[f000]Ļ\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 73, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_CanNowParticipate, 0x8011, 4, 0
 
 L_14CC:
     Plugin6_Cmd1006 1, 0x8010
@@ -1464,7 +1465,7 @@ L_14CC:
     MedalDiscover 142
     Plugin6_Cmd1044 0, 1
     // "You can now participate in the\n[f000]Ļ\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 73, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_CanNowParticipate, 0x8011, 4, 0
     VMJump L_1550
 
 L_1529:
@@ -1473,7 +1474,7 @@ L_1529:
     WorkSub 0x8029, 0x8010
     WordSetNumber 0, 0x8029, 2
     // "Oh, I almost forgot to share this news.[f000]븁\u0000\nYou'll be able to participate in the\nChampions Tournament after you win[f000]븀\u0000\nthe World Leaders Tournament[f000]븀\u0000\na certain number of times: [f000]Ȁ\u0001\u0000 more![f000]븁\u0000\nBest of luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 74, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10655_Text_OhAlmostForgotShare, 0x8011, 4, 0
 
 L_1550:
     VMReturn
@@ -1491,7 +1492,7 @@ L_156A:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1645
     // ""
-    SystemMsg 106, 2
+    SystemMsg Global10655_Text_Empty, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32814
     ListMenuAdd 100, 103, 100
     ListMenuAdd 101, 104, 101
@@ -1550,7 +1551,7 @@ L_1645:
 
 L_164B:
     // "Tournament Records\nwere accessed.[f000]븁\u0000"
-    SystemMsg 107, 2
+    SystemMsg Global10655_Text_TournamentRecordsWereAccessed, 2
     InfoMsgClose
     Plugin6_Cmd1050 0x8010
     VMStackPush 0x8010
@@ -1564,7 +1565,7 @@ L_1670:
 
 L_1672:
     // "The Tournament Download System\nwas accessed.[f000]븁\u0000"
-    SystemMsg 108, 2
+    SystemMsg Global10655_Text_TournamentDownloadSystemAccessed, 2
     InfoMsgClose
     WbtCmd_Download 0, 0x8010
     VMStackPush 0x8010

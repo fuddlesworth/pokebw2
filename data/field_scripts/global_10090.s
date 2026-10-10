@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10090.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -21,7 +22,7 @@ Script_1:
     PokecenPCOpen
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 booted up the PC.[f000]븁\u0000"
-    SystemMsg 0, 2
+    SystemMsg Global10090_Text_BootedUpPc, 2
 
 L_005F:
     VMStackPush 0x8020
@@ -29,7 +30,7 @@ L_005F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0226
     // "Which PC should be accessed?"
-    SystemMsg 1, 2
+    SystemMsg Global10090_Text_WhichPcShouldAccessed, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32804
     VMStackPush 0x8025
     VMStackPushConst 0
@@ -166,7 +167,7 @@ L_0242:
     FlagGet 249, 0x802b
     SEPlay SEQ_SE_PC_LOGIN
     // "The Pokémon Storage System\nwas accessed.[f000]븁\u0000"
-    SystemMsg 14, 2
+    SystemMsg Global10090_Text_PokemonStorageSystemAccessed, 2
     VMStackPush 0x802a
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -179,7 +180,7 @@ L_0242:
     MEPlay SEQ_ME_ACCE
     MEWait
     // "Congratulations![f000]븁\u0000\nWallpapers were added to commemorate\nyour victory against the Champion.[f000]븁\u0000"
-    SystemMsg 12, 2
+    SystemMsg Global10090_Text_CongratulationsWallpapersWereAdded, 2
     FlagSet 246
 
 L_02B2:
@@ -195,7 +196,7 @@ L_02B2:
     MEPlay SEQ_ME_ACCE
     MEWait
     // "Congratulations![f000]븁\u0000\nWallpapers were added to commemorate\nyour catching Kyurem.[f000]븁\u0000"
-    SystemMsg 13, 2
+    SystemMsg Global10090_Text_CongratulationsWallpapersWereAdded_2, 2
     FlagSet 247
 
 L_02EE:
@@ -207,7 +208,7 @@ L_02F4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0481
     // ""
-    SystemMsg 41, 2
+    SystemMsg Global10090_Text_Empty_9, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32808
     ListMenuAdd 15, 21, 15
     ListMenuAdd 16, 22, 16
@@ -326,7 +327,7 @@ L_04A1:
     SEPlay SEQ_SE_PC_LOGIN
     WordSetPlayerName 0
     // "Accessed [f000]Ā\u0001\u0000's PC.[f000]븁\u0000"
-    SystemMsg 27, 2
+    SystemMsg Global10090_Text_AccessedSPc, 2
     InfoMsgClose
     WorkSetConst 0x802c, 0
 
@@ -336,7 +337,7 @@ L_04C8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_059E
     // ""
-    SystemMsg 41, 2
+    SystemMsg Global10090_Text_Empty_9, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32813
     ListMenuAdd 28, 30, 28
     ListMenuAdd 29, 31, 29
@@ -401,7 +402,7 @@ L_059E:
 L_05B2:
     SEPlay SEQ_SE_PC_LOGIN
     // "Accessed Professor Juniper's PC.[f000]븁\u0000"
-    SystemMsg 39, 2
+    SystemMsg Global10090_Text_AccessedProfessorJunipersPc, 2
     RTCallGlobal 10382
     VMReturn
 
@@ -410,7 +411,7 @@ L_05C2:
     WorkSetConst 0x8030, 0
     SEPlay SEQ_SE_PC_LOGIN
     // "Accessed the Record System![f000]븁\u0000"
-    SystemMsg 35, 2
+    SystemMsg Global10090_Text_AccessedRecordSystem, 2
     InfoMsgClose
     VMStackPush 0x8023
     VMStackPushConst 1
@@ -429,7 +430,7 @@ L_0612:
 
 L_0618:
     // "Your Hall of Fame data is corrupted.[f000]븁\u0000\nIt will be fixed if you enter the\nHall of Fame again.[f000]븁\u0000"
-    SystemMsg 10, 2
+    SystemMsg Global10090_Text_HallFameDataCorrupted, 2
     InfoMsgClose
 
 L_0620:
@@ -440,7 +441,7 @@ L_0620:
 L_062E:
     SEPlay SEQ_SE_PC_LOGIN
     // "Accessed the Help System.[f000]븁\u0000"
-    SystemMsg 40, 2
+    SystemMsg Global10090_Text_AccessedHelpSystem, 2
     InfoMsgClose
     Cmd_0231 0x8010
     VMStackPush 0x8010

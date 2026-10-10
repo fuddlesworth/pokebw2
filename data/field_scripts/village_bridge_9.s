@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/village_bridge_9.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -22,7 +23,7 @@ Script_1:
     ActorCmdExec 0, Movement_00FC
     ActorCmdWait
     // "Eeek![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, VillageBridge9_Text_Eeek, 0, 1, 0
     MsgWinCloseAll
     EvCameraReturn 20
     ActorWalkRoute 0, 14, 9, 1, 4, 0
@@ -33,7 +34,7 @@ Script_1:
     ActorCmdExec 0, Movement_00EC
     ActorCmdWait
     // "I'm practicing.\nGet out!![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, VillageBridge9_Text_ImPracticingGetOut, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_00F4
     ActorCmdExec 255, Movement_00F4

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/gear_station_9.h"
 
 // Script plugin 1, from the zones that use this file
 
@@ -20,7 +21,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a subway map of the Unova region.[f000]븁\u0000"
-    InfoMsg 0, 2
+    InfoMsg GearStation9_Text_ItsSubwayMapUnova, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -37,7 +38,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This is the platform for the train to\nAnville Town."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GearStation9_Text_PlatformTrainAnvilleTown, 0, 0
     LastKeyWait
     ActorMsgClose
     VMHalt

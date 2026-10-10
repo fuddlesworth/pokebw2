@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/black_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -19,7 +20,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A town is something\nthat keeps changing..."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackGate_Text_TownSomethingKeepsChanging, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -31,7 +32,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Of course! When you compare\ndifferent things, it's natural to find[f000]븀\u0000\ngood points and bad points!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackGate_Text_CourseWhenCompareDifferent, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -43,7 +44,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Today, we're dancing for no reason. ♪\nSomeday, we'll disappear for no reason."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackGate_Text_TodayWereDancingNo_2, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

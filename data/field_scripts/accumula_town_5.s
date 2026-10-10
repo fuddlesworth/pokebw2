@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/accumula_town_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -39,7 +40,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Your Pokédex is full of\nweak Pokémon, strong Pokémon,[f000]븀\u0000\ncool Pokémon, cute Pokémon...[f000]븁\u0000\nAt any rate, there sure are lots\nof Pokémon in there!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown5_Text_PokedexFullWeakPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -51,7 +52,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The moment my Lillipup evolved into\nHerdier, my eyes started watering.[f000]븁\u0000\nI was just so happy somehow..."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown5_Text_MomentLillipupEvolvedInto, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -64,7 +65,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 507, 0
     // "Woo uff!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown5_Text_WooUff, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/abyssal_ruins_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -103,7 +104,7 @@ Script_7:
 Script_3:
     ActorsPauseAll
     // "It looks like you can climb down here![f000]븁\u0000\nWill you return to the lower floor?"
-    SystemMsg 5, 2
+    SystemMsg AbyssalRuins8_Text_LooksLikeCanClimb, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010

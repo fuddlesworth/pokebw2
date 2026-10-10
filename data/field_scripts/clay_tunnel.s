@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/clay_tunnel.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,7 +16,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sigh! We've been digging and\ndigging, but...[f000]븁\u0000\nWait a minute! Do you have a Pokémon\nthat's learned Rock Smash?"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_SighWeveBeenDigging, 0, 0
     MsgWaitAdvance
     PokePartyHasMoveAny 0x8020, 249
     VMStackPush 0x8020
@@ -23,7 +24,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0065
     // "Oh... It looks like none of your\nPokémon has learned Rock Smash..."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhLooksLikeNone, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01C6
@@ -33,7 +34,7 @@ L_0065:
     ActorCmdExec 8, Movement_022C
     ActorCmdWait
     // "All right! We can break all the rocks\nif we work together![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_AllRightWeCan, 0, 0
     MsgWinCloseAll
     ActorCmdExec 8, Movement_01D4
     VMSleep 5
@@ -63,7 +64,7 @@ L_0065:
     ActorCmdExec 6, Movement_01CC
     ActorCmdWait
     // "Hooray! All right! Now, the tunnel\nis connected to Twist Mountain![f000]븁\u0000\nI'll call the guy who's in charge of\nthe cart and go home![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_HoorayAllRightNow, 1, 0
     MsgWinCloseAll
     PlayerGetDir 0x8010
     WorkCmpConst 0x8010, 2
@@ -161,7 +162,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Dig, dig! Dig, dig! Dig, dig!\nDig, dig! Dig, dig! Dig, dig!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_DigDigDigDig, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -172,7 +173,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Dig, dig! Dig, dig! Dig, dig!\nDig, dig! Dig, dig! Dig, dig!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_DigDigDigDig, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -184,14 +185,14 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02CF
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     ActorCmdExec 16, Movement_0400
@@ -207,7 +208,7 @@ Script_4:
 
 L_02CF:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -221,14 +222,14 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_034A
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     ActorCmdExec 18, Movement_03E8
@@ -244,7 +245,7 @@ Script_5:
 
 L_034A:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -258,14 +259,14 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03C5
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     ActorCmdExec 17, Movement_0400
@@ -281,7 +282,7 @@ Script_6:
 
 L_03C5:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

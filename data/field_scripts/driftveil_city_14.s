@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_14.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey! Stunfisk! Panpour!\nMy dear precious Pokémon![f000]븀\u0000\nKick back and relax today!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity14_Text_HeyStunfiskPanpourDear, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -24,7 +25,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 515, 0
     // "Papur-pur!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity14_Text_PapurPur, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -38,7 +39,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 618, 0
     // "Stun!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity14_Text_Stun, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/skyarrow_bridge.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,7 +16,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello. Excuse me.[f000]븁\u0000\nI'm terribly sorry to ask, but\nwill you buy a bottle of Fresh Water[f000]븀\u0000\nfor $300?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_HelloExcuseImTerribly, 0, 2, 0
     MoneyWinDisp 31, 1
     YesNoWin 0x8010
     VMStackPush 0x8010
@@ -28,14 +29,14 @@ Script_1:
 L_0065:
     MoneyWinClose
     // "Yes, I know.\nI know![f000]븁\u0000\n$300 a bottle is expensive![f000]븁\u0000\nBut, if I don't sell this,\nI'll be in trouble...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_YesKnowKnow300, 0, 2, 0
     Random 0x4000, 5
     VMStackPush 0x4000
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009E
     // "My wife wants to buy a Bag\nfrom a really expensive brand...[f000]븁\u0000\nIf I don't buy it for her,\nour relationship might go sour...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_WifeWantsBuyBag, 0, 2, 0
     VMJump L_012C
 
 L_009E:
@@ -44,7 +45,7 @@ L_009E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C3
     // "I have a daughter who's a Trainer.[f000]븁\u0000\nIt's natural for a father to want to buy\na lot of things like new Ultra Balls and[f000]븀\u0000\nHyper Potions for his daughter...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_HaveDaughterWhosTrainer, 0, 2, 0
     VMJump L_012C
 
 L_00C3:
@@ -53,7 +54,7 @@ L_00C3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E8
     // "My son and his wife send me money,\nbut they can't send very much...[f000]븁\u0000\nI know I shouldn't rely on them,\nbut there is a lot going on.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_SonHisWifeSend, 0, 2, 0
     VMJump L_012C
 
 L_00E8:
@@ -62,7 +63,7 @@ L_00E8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_010D
     // "I want to buy some toys\nfor my adorable grandchildren.[f000]븁\u0000\nTheir tastes are quite expensive.\nBut I want to see their happy faces...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_WantBuySomeToys, 0, 2, 0
     VMJump L_012C
 
 L_010D:
@@ -71,11 +72,11 @@ L_010D:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012C
     // "I don't really have\nany special reasons...[f000]븁\u0000\nBut the full-course meal I ate\nyesterday was incredibly expensive![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_DontReallyHaveAny, 0, 2, 0
 
 L_012C:
     // "So, to help this old man...[f000]븁\u0000\nPlease buy my Fresh Water\nfor $300. Please."
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_HelpOldManPlease, 0, 2, 0
     MoneyWinDisp 31, 1
     YesNoWin 0x8010
     VMStackPush 0x8010
@@ -88,7 +89,7 @@ L_012C:
 L_0161:
     MoneyWinClose
     // "Sigh...[f000]븁\u0000\nWell, since you're stubborn,\nI'll stop asking.[f000]븁\u0000\nBut when you change your mind,\nplease come back anytime.[f000]븁\u0000\nI'll be selling Fresh Water\nfor $300 right here!"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_SighWellSinceYoure, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -106,7 +107,7 @@ L_0179:
     VMJumpIf CMP_STACK, L_01B2
     MoneyWinClose
     // "Y-you... $300...\nYou don't have it?![f000]븁\u0000\nI didn't say anything! Don't worry.\nYou don't have to buy Fresh Water."
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_Y300DontHave, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_021B
@@ -118,7 +119,7 @@ L_01B2:
     VMJumpIf CMP_STACK, L_01DD
     MoneyWinClose
     // "You... You can't carry any more\nFresh Water![f000]븁\u0000\nWow! You're a Fresh Water maniac!\nPlease buy it from me[f000]븀\u0000\nnext time you need some!"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_CantCarryAnyMore, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_021B
@@ -129,7 +130,7 @@ L_01DD:
     MoneyWinUpdate
     SEWait
     // "Thank you very much![f000]븁\u0000\nBuying Fresh Water for $300,\nwhich is more expensive than usual...[f000]븀\u0000\nWhat a generous person you are![f000]븁\u0000\nI'll never forget your kindness\nfor the rest of my life!"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_ThankVeryMuchBuying, 0, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     MoneyWinClose
@@ -149,7 +150,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The curve here is like...errrrk...\nand then when you pass the curve,[f000]븀\u0000\nwhoooosh, zoooom![f000]븁\u0000\n...Do you understand the dialect\nof Goldenrod City?"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_CurveHereLikeErrrrk, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -161,7 +162,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hmm! That man![f000]븁\u0000\nHe's standing right in the middle of\nthe Skyarrow Bridge... I think."
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_HmmManHesStanding, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -173,7 +174,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Good-bye, Castelia City...\nGood-bye, old me..."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_GoodByeCasteliaCity, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -189,7 +190,7 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_036F
     // "[f000]븉\u0001\u0002Oh... Oh...\nSo...thirsty...[f000]븁\u0000\nG-g-give me...\nFresh Water...?[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_OhOhThirstyG, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -204,7 +205,7 @@ Script_5:
     SEPlay SEQ_SE_ARDEMO_01
     SEWait
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8023, 0
@@ -233,7 +234,7 @@ L_0321:
 
 L_0347:
     // "[f000]븉\u0001\u0002But... You don't have Fresh Water...\nI appreciate the thought, though...[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_ButDontHaveFresh, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -242,7 +243,7 @@ L_0355:
 
 L_035B:
     // "[f000]븉\u0001\u0002Thank...[f000]븁\u0000\nWhat?\nOh...[f000]븁\u0000\nWithout Fresh Water...\nI can't run on bridges anymore.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_ThankWhatOhWithout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -255,7 +256,7 @@ L_036F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0396
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0431
@@ -266,7 +267,7 @@ L_0396:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0410
     // "Yay! I ran on all the bridges\nin the Unova region![f000]븁\u0000\nIt's all thanks to you!\nPlease! Accept these![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_YayRanAllBridges, 0, 0
     ItemCheckSpace ITEM_MOOMOO_MILK, 12, 0x8022
     VMStackPush 0x8022
     VMStackPushConst 1
@@ -285,7 +286,7 @@ L_0396:
 
 L_03FC:
     // "Oh... Your Bag is full."
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_OhBagFull, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -298,7 +299,7 @@ L_0410:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0431
     // "The bridge I like best for running\nis the Tubeline Bridge.[f000]븁\u0000\nI get to race the trains!\nThat gives me power!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, SkyarrowBridge_Text_BridgeLikeBestRunning, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

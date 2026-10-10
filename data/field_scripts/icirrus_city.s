@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/icirrus_city.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -88,7 +89,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Icirrus City\nSky Glittering with Flowers of Snow"
-    MsgPlaceSign 23, 1
+    MsgPlaceSign IcirrusCity_Text_IcirrusCitySkyGlittering, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -99,7 +100,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Fans of Everything Pokémon\nThe Pokémon Fan Club"
-    MsgPlaceSign 24, 2
+    MsgPlaceSign IcirrusCity_Text_FansEverythingPokemonPokemon, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -110,7 +111,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Former Icirrus City\nPokémon Gym"
-    MsgPlaceSign 25, 2
+    MsgPlaceSign IcirrusCity_Text_FormerIcirrusCityPokemon, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -122,7 +123,7 @@ Script_4:
     ActorSetEyeToEye
     // "The legendary Pokémon Reshiram\nshared its wisdom with the hero[f000]븀\u0000\nand defied foes with columns of fire.[f000]븁\u0000\nThe hero and that Pokémon were as\nclose as a parent and child.[f000]븁\u0000\nIt was indeed awe inspiring\nto see them!"
     // "The legendary Pokémon Zekrom\nshared its wisdom with the hero[f000]븀\u0000\nand defied foes with fierce lightning.[f000]븁\u0000\nThe hero and that Pokémon were as\nclose as a parent and child.[f000]븁\u0000\nIt was indeed awe inspiring\nto see them!"
-    ActorMsgVersioned 1024, 0, 1, 0, 0, 0
+    ActorMsgVersioned 1024, IcirrusCity_Text_LegendaryPokemonReshiramShared, IcirrusCity_Text_LegendaryPokemonZekromShared, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -134,7 +135,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Always, the tower looms,\ndisdainful of the wind and snow.[f000]븁\u0000\nPerhaps its presence is telling us\nnot to forget dreams and ideals..."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_AlwaysTowerLoomsDisdainful, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -147,7 +148,7 @@ Script_6:
     ActorSetEyeToEye
     // "The legendary Pokémon gave help\nto the hero who sought truth.[f000]븀\u0000\nBecause of that, a region was created.[f000]븁\u0000\nThen, when its physical form was lost,\nthe Pokémon became the Light Stone,[f000]븀\u0000\nwaiting patiently for a new hero.[f000]븁\u0000\nThe story I heard when I was little\nturned out to be true."
     // "The legendary Pokémon gave help\nto the hero who sought ideals.[f000]븀\u0000\nBecause of that, a region was created.[f000]븁\u0000\nThen, when its physical form was lost,\nthe Pokémon became the Dark Stone,[f000]븀\u0000\nwaiting patiently for a new hero.[f000]븁\u0000\nThe story I heard when I was little\nturned out to be true."
-    ActorMsgVersioned 1024, 3, 4, 2, 0, 0
+    ActorMsgVersioned 1024, IcirrusCity_Text_LegendaryPokemonGaveHelp, IcirrusCity_Text_LegendaryPokemonGaveHelp_2, 2, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -159,7 +160,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Brycen has been surrounded by\nIce-type Pokémon and has trained in the[f000]븀\u0000\nmartial arts ever since he was a child.[f000]븁\u0000\nHe's become an action star\nusing that experience!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_BrycenHasBeenSurrounded, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -171,7 +172,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Truth! Ideals!\nTwo dragons!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_TruthIdealsTwoDragons, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -183,7 +184,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When one is divided, ♪\nthe world will broaden. ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_WhenOneDividedWorld, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -195,7 +196,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Fused by splicers.\nDivided by splicers."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_FusedBySplicersDivided, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -207,7 +208,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Truth and ideals.\nMove forward hand in hand. ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_TruthIdealsMoveForward, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -225,7 +226,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When the wetlands freeze, it's slippery.\nI wonder how wetland Pokémon manage?"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_WhenWetlandsFreezeIts, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_029B
@@ -234,7 +235,7 @@ L_0287:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you walk in the wetlands, you might\nsurprise wild Pokémon into popping out!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_IfWalkWetlandsMight, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -288,13 +289,13 @@ L_0347:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0398
     // "You...\nCongratulations.[f000]븁\u0000\nGhetsis won't do anything anymore...[f000]븁\u0000\nNo, to be more precise,\nhe can't do anything anymore...[f000]븁\u0000\nThat's why we won't forgive you.\nBattle us!"
-    ActorMsg MSGFILE_SCRIPT, 12, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_CongratulationsGhetsisWontAnything, 10, 0, 0
     FlagSet 406
     VMJump L_03A4
 
 L_0398:
     // "Battle us!"
-    ActorMsg MSGFILE_SCRIPT, 13, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_BattleUs, 10, 0, 0
 
 L_03A4:
     YesNoWin 0x8010
@@ -304,7 +305,7 @@ L_03A4:
     VMJumpIf CMP_STACK, L_06C4
     VMCall L_070A
     // "I'll win! That is the only way\nto regain his lost heart![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_IllWinOnlyWay, 10, 0, 0
     MsgWinCloseAll
     ActorCmdExec 10, Movement_07C0
     ActorCmdWait
@@ -355,14 +356,14 @@ L_046A:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_068E
     // "What do you want?\nDo you want to keep battling?"
-    ActorMsg MSGFILE_SCRIPT, 16, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_WhatWantWantKeep, 11, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0658
     // "Battle for Ghetsis![f000]븁\u0000\nThat is the only proof\nthat I'm living now.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_BattleGhetsisOnlyProof, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_07C0
     ActorCmdWait
@@ -412,14 +413,14 @@ L_0567:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0632
     // "What do you want?\nDo you want to keep battling?"
-    ActorMsg MSGFILE_SCRIPT, 20, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_WhatWantWantKeep_2, 12, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_060C
     // "We, the Shadow Triad,\nwere, are, and will be the[f000]븀\u0000\nroyal servants of Ghetsis![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_WeShadowTriadWere, 12, 0, 0
     MsgWinCloseAll
     ActorCmdExec 12, Movement_07C0
     ActorCmdWait
@@ -445,7 +446,7 @@ L_05F4:
 
 L_060C:
     // "I see...[f000]븁\u0000\nWhen the season changes,\nI'll battle you.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_SeeWhenSeasonChanges_2, 12, 0, 0
     MsgWinCloseAll
     ActorCmdExec 12, Movement_0844
     ActorCmdWait
@@ -457,7 +458,7 @@ L_062C:
 
 L_0632:
     // "The next is me...[f000]븁\u0000\nBut you don't have enough Pokémon\nfor a Rotation Battle.[f000]븁\u0000\nI'll battle you when the season changes.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_NextButDontHave_2, 12, 0, 0
     MsgWinCloseAll
     ActorCmdExec 12, Movement_0844
     ActorCmdWait
@@ -469,7 +470,7 @@ L_0652:
 
 L_0658:
     // "I see...[f000]븁\u0000\nWhen the season changes,\nI'll battle you.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_SeeWhenSeasonChanges, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_0844
     ActorCmdExec 12, Movement_0844
@@ -484,7 +485,7 @@ L_0688:
 
 L_068E:
     // "The next is me...[f000]븁\u0000\nBut you don't have enough Pokémon\nfor a Triple Battle.[f000]븁\u0000\nI'll battle you when the season changes.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity_Text_NextButDontHave, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_0844
     ActorCmdExec 12, Movement_0844

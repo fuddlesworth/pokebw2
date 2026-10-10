@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/twist_mountain_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -8,7 +9,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a rock covered with ice.\nTouching it could make you freeze."
-    InfoMsg 0, 2
+    InfoMsg TwistMountain6_Text_ItsRockCoveredIce, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents

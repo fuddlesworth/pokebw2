@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_11.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -33,7 +34,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 11"
-    MsgPlaceSign 2, 3
+    MsgPlaceSign Route11_Text_Route11, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -44,7 +45,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Village Bridge Ahead"
-    MsgPlaceSign 3, 2
+    MsgPlaceSign Route11_Text_VillageBridgeAhead, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -88,7 +89,7 @@ L_0124:
     VMSleep 8
     PVPlay 640, 0
     // "Kikwaaaa!"
-    ScreamMsg 0, 1
+    ScreamMsg Route11_Text_Kikwaaaa, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -103,7 +104,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 640, 0
     // "Kikwaaaa!"
-    ScreamMsg 0, 1
+    ScreamMsg Route11_Text_Kikwaaaa, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -171,7 +172,7 @@ L_0241:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_025E
     // "Virizion ran off\ndown the road and vanished..."
-    SystemMsg 1, 0
+    SystemMsg Route11_Text_VirizionRanOffDown, 0
     LastKeyWait
     InfoMsgClose
 

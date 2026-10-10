@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10665.h"
 
 // Script plugin 7, from the only plugin whose commands it decodes with
 
@@ -173,7 +174,7 @@ L_0256:
     FadeWait
     WordSetPlayerName 1
     // "The Driftveil Tournament\nstarts now![f000]븁\u0000\nFirst-timer [f000]Ā\u0001\u0001 enters![f000]븁\u0000"
-    InfoMsg 5, 1
+    InfoMsg Global10665_Text_DriftveilTournamentStartsNow, 1
     InfoMsgClose_0039
     ActorCmdExec 255, Movement_0ADC
     ActorCmdWait
@@ -239,7 +240,7 @@ L_0436:
     Plugin7_Cmd1045 0
     WordSetPlayerName 1
     // "The first round!\n[f000]Ā\u0001\u0000 vs. [f000]Ā\u0001\u0001.[f000]븁\u0000"
-    InfoMsg 0, 1
+    InfoMsg Global10665_Text_FirstRoundVs, 1
     InfoMsgClose_0039
     SEPlay SEQ_SE_SW_WBT_16
     Plugin7_Cmd1052 0
@@ -270,7 +271,7 @@ L_0436:
     WordSetPlayerName 0
     SEPlay SEQ_SE_SW_WBT_02
     // "The winner of the first round is...\n[f000]Ā\u0001\u0000![f000]븁\u0000"
-    ScreamMsg 6, 1
+    ScreamMsg Global10665_Text_WinnerFirstRound, 1
     VMStackPush 0x8029
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -296,7 +297,7 @@ L_0519:
     Plugin7_Cmd1045 0
     SEPlay SEQ_SE_SW_WBT_02
     // "The winner of the first round is...\n[f000]Ā\u0001\u0000![f000]븁\u0000"
-    ScreamMsg 6, 1
+    ScreamMsg Global10665_Text_WinnerFirstRound, 1
     InfoMsgClose_0039
     Plugin7_Cmd1041 6, 251
     ActorMsgClose
@@ -309,7 +310,7 @@ L_0539:
 
 L_053D:
     // "Let's check out\nthe other matches![f000]븁\u0000\nTurn your attention to\nthe giant screen![f000]븁\u0000"
-    InfoMsg 8, 1
+    InfoMsg Global10665_Text_LetsCheckOutOther, 1
     InfoMsgClose_0039
     FadeOutBlack
     SEPlay SEQ_SE_SW_WBT_20
@@ -378,7 +379,7 @@ L_06BB:
     WordSetPlayerName 1
     VMSleep 30
     // "The second round!\n[f000]Ā\u0001\u0000 vs. [f000]Ā\u0001\u0001.[f000]븁\u0000"
-    InfoMsg 1, 1
+    InfoMsg Global10665_Text_SecondRoundVs, 1
     InfoMsgClose_0039
     SEPlay SEQ_SE_SW_WBT_16
     Plugin7_Cmd1052 0
@@ -410,7 +411,7 @@ L_06BB:
     WordSetPlayerName 0
     SEPlay SEQ_SE_SW_WBT_02
     // "The winner of the second round is...\n[f000]Ā\u0001\u0000![f000]븁\u0000"
-    ScreamMsg 7, 1
+    ScreamMsg Global10665_Text_WinnerSecondRound, 1
     VMStackPush 0x8029
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -439,7 +440,7 @@ L_07B2:
     Plugin7_Cmd1045 0
     SEPlay SEQ_SE_SW_WBT_02
     // "The winner of the second round is...\n[f000]Ā\u0001\u0000![f000]븁\u0000"
-    ScreamMsg 7, 1
+    ScreamMsg Global10665_Text_WinnerSecondRound, 1
     InfoMsgClose_0039
     SEPlay SEQ_SE_SW_WBT_17
     Plugin7_Cmd1056 2
@@ -454,7 +455,7 @@ L_07DE:
 
 L_07E0:
     // "Let's check out the other match\non the giant screen![f000]븁\u0000"
-    InfoMsg 40, 1
+    InfoMsg Global10665_Text_LetsCheckOutOther_2, 1
     InfoMsgClose_0039
     FadeOutBlack
     SEPlay SEQ_SE_SW_WBT_20
@@ -507,7 +508,7 @@ L_08B6:
     WbtCmd_GetTournament 0x8010
     Plugin7_Cmd1044 0, 0x8010
     // "[f000]Ļ\u0001\u0000!\nThe final round![f000]븀\u0000\nThe opponent is entering the arena![f000]븁\u0000"
-    InfoMsg 3, 1
+    InfoMsg Global10665_Text_FinalRoundOpponentEntering, 1
     InfoMsgClose_0039
     EvCameraMoveTo 3544, 0, 0xed000, 0x33000, 0x2001f, 0x108000, 60
     FadeEx 3, 0, 16, 2
@@ -556,7 +557,7 @@ L_09DE:
     Plugin7_Cmd1045 0
     WordSetPlayerName 1
     // "The final round!\n[f000]Ā\u0001\u0000 vs. [f000]Ā\u0001\u0001.[f000]븁\u0000"
-    InfoMsg 2, 1
+    InfoMsg Global10665_Text_FinalRoundVs, 1
     InfoMsgClose_0039
     SEPlay SEQ_SE_SW_WBT_16
     Plugin7_Cmd1052 0
@@ -666,7 +667,7 @@ Movement_0B08:
 
 L_0B14:
     // "The winner is...[f000]븁\u0000"
-    InfoMsg 4, 1
+    InfoMsg Global10665_Text_Winner, 1
     InfoMsgClose_0039
     VMSleep 30
     VMStackPush 0x8027
@@ -697,7 +698,7 @@ L_0B63:
     SEPlay SEQ_SE_SW_WBT_07
     SEPlay SEQ_SE_SW_WBT_03
     // "[f000]Ā\u0001\u0000!"
-    ScreamMsg 9, 1
+    ScreamMsg Global10665_Text_Empty, 1
     BGMPlay SEQ_BGM_WBT_FANFARE
     VMSleep 120
     MsgWaitAdvance
@@ -717,7 +718,7 @@ L_0BA7:
     WbtCmd_GetTournament 0x8010
     Plugin7_Cmd1044 0, 0x8010
     // "This concludes the\n[f000]Ļ\u0001\u0000![f000]븀\u0000\nSee you in the next tournament![f000]븁\u0000"
-    InfoMsg 10, 1
+    InfoMsg Global10665_Text_ConcludesSeeNextTournament, 1
     InfoMsgClose_0039
     VMSleep 60
     VMReturn
@@ -730,7 +731,7 @@ L_0BA7:
 L_0BDD:
     Plugin7_Cmd1031
     // "How strong are your Pokémon\nwhen they face your own party?[f000]븁\u0000\nLet's mix them![f000]븁\u0000"
-    ScreamMsg 43, 1
+    ScreamMsg Global10665_Text_HowStrongPokemonWhen, 1
     SEPlay SEQ_SE_SW_WBT_01
     VMSleep 30
     MsgWinCloseAll
@@ -743,7 +744,7 @@ L_0BDD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C38
     // "Let's swap another Pokémon![f000]븁\u0000"
-    ScreamMsg 52, 1
+    ScreamMsg Global10665_Text_LetsSwapAnotherPokemon, 1
     SEPlay SEQ_SE_SW_WBT_01
     VMSleep 30
     MsgWinCloseAll
@@ -760,7 +761,7 @@ L_0C3C:
     Plugin7_Cmd1045 0
     Plugin7_Cmd1034 1, 0x8030
     // "[f000]Ā\u0001\u0000 chose\n[f000]ā\u0001\u0001.[f000]븁\u0000"
-    SystemMsg 44, 1
+    SystemMsg Global10665_Text_Chose, 1
     WorkSetConst 0x802d, 1
 
 L_0C54:
@@ -770,7 +771,7 @@ L_0C54:
     VMJumpIf CMP_STACK, L_0CE9
     Plugin7_Cmd1029
     // "Select one Pokémon\nfrom the opponent's party."
-    SystemMsg 45, 1
+    SystemMsg Global10665_Text_SelectOnePokemonFrom, 1
     ListMenu_AnchorTopRight 31, 7, 0, 0, 32815
     Plugin7_Cmd1035
     ListMenuShow
@@ -785,7 +786,7 @@ L_0C54:
     Plugin7_Cmd1033 0x8031, 0x802f
     Plugin7_Cmd1034 0, 0x8031
     // "Are you OK with [f000]ā\u0001\u0000?"
-    SystemMsg 46, 1
+    SystemMsg Global10665_Text_Ok, 1
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -802,7 +803,7 @@ L_0CD7:
 
 L_0CDD:
     // "You've selected\nthat Pokémon already.[f000]븁\u0000"
-    SystemMsg 53, 1
+    SystemMsg Global10665_Text_YouveSelectedPokemonAlready, 1
 
 L_0CE3:
     VMJump L_0C54
@@ -810,7 +811,7 @@ L_0CE3:
 L_0CE9:
     InfoMsgClose
     // "Let's mix them![f000]븁\u0000"
-    ScreamMsg 50, 1
+    ScreamMsg Global10665_Text_LetsMixThem, 1
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0D80
     ActorCmdExec 255, Movement_0D78
@@ -830,7 +831,7 @@ L_0CE9:
     Plugin7_Cmd1045 2
     Plugin7_Cmd1034 3, 0x8031
     // "[f000]ā\u0001\u0001 from [f000]Ā\u0001\u0000's party\nand [f000]ā\u0001\u0003 from [f000]Ā\u0001\u0002's party[f000]븀\u0000\nhave been swapped.[f000]븁\u0000"
-    SystemMsg 51, 1
+    SystemMsg Global10665_Text_FromSPartyFrom, 1
     InfoMsgClose
     VMReturn
     .byte 0x28
@@ -890,7 +891,7 @@ L_0DA8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0DCA
     // "In this tough tournament, where\neverybody is expected to face a[f000]븀\u0000\ntough road, we just witnessed a[f000]븀\u0000\ntotal victory! Great![f000]븁\u0000"
-    ScreamMsg 42, 1
+    ScreamMsg Global10665_Text_ToughTournamentWhereEverybody, 1
     VMJump L_0DFB
 
 L_0DCA:
@@ -900,13 +901,13 @@ L_0DCA:
     VMJumpIf CMP_STACK, L_0DEF
     WordSetNumber 0, 0x8010, 1
     // "[f000]Ȁ\u0001\u0000 Pokémon left![f000]븁\u0000\nCan we still call this raw power?[f000]븁\u0000"
-    ScreamMsg 57, 1
+    ScreamMsg Global10665_Text_PokemonLeftCanWe, 1
     VMJump L_0DFB
 
 L_0DEF:
     WordSetNumber 0, 0x8010, 1
     // "Is this what they call raw power?\nA great victory with [f000]Ȁ\u0001\u0000 Pokémon left![f000]븁\u0000"
-    ScreamMsg 41, 1
+    ScreamMsg Global10665_Text_WhatTheyCallRaw, 1
 
 L_0DFB:
     VMReturn
@@ -1505,7 +1506,7 @@ L_16D1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_16FA
     // "It comes down to this match!\n[f000]Ā\u0001\u0000 enters![f000]븀\u0000\nThis would be the first title win![f000]븁\u0000"
-    InfoMsg 31, 1
+    InfoMsg Global10665_Text_ComesDownMatchEnters, 1
     VMJump L_17EA
 
 L_16FA:
@@ -1514,7 +1515,7 @@ L_16FA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1718
     // "There are two groups who participate\nin this tournament...[f000]븀\u0000\nThe ones who've won and those[f000]븀\u0000\nwho haven't.[f000]븁\u0000\nHere comes someone who has!\n[f000]Ā\u0001\u0000 enters![f000]븁\u0000"
-    InfoMsg 32, 1
+    InfoMsg Global10665_Text_ThereTwoGroupsWho, 1
     VMJump L_17EA
 
 L_1718:
@@ -1523,7 +1524,7 @@ L_1718:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_1736
     // "This Trainer has achieved over\n100 victories![f000]븁\u0000\nBut the pursuit for true strength\nbeyond mere numbers continues![f000]븁\u0000\nI present you [f000]Ā\u0001\u0000![f000]븁\u0000"
-    InfoMsg 39, 1
+    InfoMsg Global10665_Text_TrainerHasAchievedOver, 1
     VMJump L_17EA
 
 L_1736:
@@ -1532,7 +1533,7 @@ L_1736:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_1754
     // "The one who tasted many victories\nand witnessed many lose their battles.[f000]븁\u0000\nWhat is going through the mind of\nthis amazing Trainer?[f000]븀\u0000\n[f000]Ā\u0001\u0000 enters![f000]븁\u0000"
-    InfoMsg 38, 1
+    InfoMsg Global10665_Text_OneWhoTastedMany, 1
     VMJump L_17EA
 
 L_1754:
@@ -1541,7 +1542,7 @@ L_1754:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_1772
     // "Call down a storm!\nGenerate a cyclone![f000]븁\u0000\nHere comes the highflyer of\nthis tournament![f000]븀\u0000\n[f000]Ā\u0001\u0000![f000]븀\u0000\nYou are the eye of the typhoon![f000]븁\u0000"
-    InfoMsg 37, 1
+    InfoMsg Global10665_Text_CallDownStormGenerate, 1
     VMJump L_17EA
 
 L_1772:
@@ -1550,7 +1551,7 @@ L_1772:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_1790
     // "This Trainer makes the crowds go\nmad with excitement simply by[f000]븀\u0000\nparticipating in a tournament![f000]븁\u0000\n[f000]Ā\u0001\u0000 makes\na dramatic appearance![f000]븁\u0000"
-    InfoMsg 36, 1
+    InfoMsg Global10665_Text_TrainerMakesCrowdsGo, 1
     VMJump L_17EA
 
 L_1790:
@@ -1559,7 +1560,7 @@ L_1790:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_17AE
     // "We need both hands to count\nhow many times this Trainer has won[f000]븀\u0000\nthe tournament![f000]븁\u0000\nStarting to have the presence of\na winner, I should say![f000]븀\u0000\nCome on down! [f000]Ā\u0001\u0000![f000]븁\u0000"
-    InfoMsg 35, 1
+    InfoMsg Global10665_Text_WeNeedBothHands, 1
     VMJump L_17EA
 
 L_17AE:
@@ -1568,7 +1569,7 @@ L_17AE:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_17CC
     // "Recently winning a few times,\nthis Trainer is becoming popular[f000]븀\u0000\naround Driftveil City![f000]븀\u0000\nHere comes our [f000]Ā\u0001\u0000![f000]븁\u0000"
-    InfoMsg 34, 1
+    InfoMsg Global10665_Text_RecentlyWinningFewTimes, 1
     VMJump L_17EA
 
 L_17CC:
@@ -1577,7 +1578,7 @@ L_17CC:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_17EA
     // "Go all out![f000]븁\u0000\nGet another win,\n[f000]Ā\u0001\u0000![f000]븁\u0000"
-    InfoMsg 33, 1
+    InfoMsg Global10665_Text_GoAllOutGet, 1
     VMJump L_17EA
 
 L_17EA:

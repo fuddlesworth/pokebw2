@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/battle_subway.h"
 
 // Script plugin 1, from the zones that use this file
 
@@ -647,7 +648,7 @@ L_0A65:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AAB
     // "Would you like to save the last battle as\nyour Battle Video?"
-    SystemMsg 14, 2
+    SystemMsg BattleSubway_Text_WouldLikeSaveLast, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010
@@ -872,7 +873,7 @@ L_0D9C:
     BSubwayCmd_Tool 11, 0, 0, 32784
     WordSetNumber 1, 0x8010, 1
     // "Current winning streak: [f000]ȃ\u0001\u0000![f000]븁\u0000\nNext car: No. [f000]Ȁ\u0001\u0001.\nContinue to battle?"
-    SystemMsg 0, 2
+    SystemMsg BattleSubway_Text_CurrentWinningStreakNext, 2
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32784
     BSubwayCmd_Tool 355, 0, 0, 32822
     VMStackPush 0x8036
@@ -935,7 +936,7 @@ L_0EB9:
 
 L_0ECC:
     // "Save and quit the game?"
-    SystemMsg 6, 2
+    SystemMsg BattleSubway_Text_SaveQuitGame, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -948,7 +949,7 @@ L_0ECC:
     BSubwayCmd_Tool 202, 1, 0, 0
     Plugin1_Cmd1002
     // "Saving...\nDon't turn off the power."
-    SystemMsg 7, 2
+    SystemMsg BattleSubway_Text_SavingDontTurnOff, 2
     SaveDataWrite 0x8010
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -968,7 +969,7 @@ L_0F4B:
 
 L_0F5E:
     // "Cancel your challenge?"
-    SystemMsg 5, 2
+    SystemMsg BattleSubway_Text_CancelChallenge, 2
     BSubwayCmd_Tool 44, 1, 0, 32784
     InfoMsgClose
     VMStackPush 0x8010
@@ -1025,7 +1026,7 @@ L_101F:
     BSubwayCmd_Tool 11, 0, 0, 32784
     WordSetNumber 1, 0x8010, 1
     // "Current winning streak: [f000]ȃ\u0001\u0000![f000]븁\u0000\nNext car: No. [f000]Ȁ\u0001\u0001.\nContinue to battle?"
-    SystemMsg 0, 2
+    SystemMsg BattleSubway_Text_CurrentWinningStreakNext, 2
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32784
     BSubwayCmd_Tool 355, 0, 0, 32825
     VMStackPush 0x8039
@@ -1050,7 +1051,7 @@ L_10AE:
 
 L_10C9:
     // "Awaiting your friend's selection."
-    SystemMsg 9, 2
+    SystemMsg BattleSubway_Text_AwaitingFriendsSelection, 2
     BSubwayCmd_Tool 319, 0, 0, 0
     BSubwayCmd_Tool 402, 52, 0, 32800
     VMStackPush 0x8020
@@ -1090,7 +1091,7 @@ L_1168:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11BC
     // "You have chosen to retire from\nthis challenge."
-    SystemMsg 11, 2
+    SystemMsg BattleSubway_Text_HaveChosenRetireFrom, 2
     VMSleep 30
     BSubwayCmd_Tool 402, 54, 0, 32800
     InfoMsgClose
@@ -1132,7 +1133,7 @@ L_1215:
 
 L_1221:
     // "Cancel your challenge?"
-    SystemMsg 5, 2
+    SystemMsg BattleSubway_Text_CancelChallenge, 2
     BSubwayCmd_Tool 44, 1, 0, 32784
     InfoMsgClose
     VMStackPush 0x8010
@@ -1140,7 +1141,7 @@ L_1221:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1326
     // "Awaiting your friend's selection."
-    SystemMsg 9, 2
+    SystemMsg BattleSubway_Text_AwaitingFriendsSelection, 2
     BSubwayCmd_Tool 319, 0, 0, 0
     BSubwayCmd_Tool 402, 52, 0, 32800
     VMStackPush 0x8020
@@ -1176,7 +1177,7 @@ L_12B4:
 
 L_12E5:
     // "You have chosen to retire from\nthis challenge."
-    SystemMsg 11, 2
+    SystemMsg BattleSubway_Text_HaveChosenRetireFrom, 2
     VMSleep 30
     BSubwayCmd_Tool 402, 54, 0, 32800
     InfoMsgClose
@@ -1255,7 +1256,7 @@ L_142C:
     BSubwayCmd_Tool 320, 1, 227, 0
     BSubwayCmd_Tool 352, 0, 226, 0
     // "Communicating. Please stand by..."
-    SystemMsgAsync 15, 2
+    SystemMsgAsync BattleSubway_Text_CommunicatingPleaseStandBy, 2
     VMSleep 15
     BSubwayCmd_Tool 402, 53, 0, 32800
     MsgWinCloseAll
@@ -1389,7 +1390,7 @@ L_168B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_16CD
     // "Would you like to save the last battle as\nyour Battle Video?"
-    SystemMsg 14, 2
+    SystemMsg BattleSubway_Text_WouldLikeSaveLast, 2
     YesNoWin 0x803c
     InfoMsgClose
     VMStackPush 0x803c
@@ -1518,7 +1519,7 @@ L_1890:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_1904
     // "Communicating. Please stand by..."
-    SystemMsg 15, 2
+    SystemMsg BattleSubway_Text_CommunicatingPleaseStandBy, 2
     VMSleep 30
     BSubwayCmd_Tool 402, 53, 0, 32800
     MsgWinCloseAll
@@ -1556,7 +1557,7 @@ L_192A:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1990
     // "Delete your existing Battle Video and\nsave the last battle?"
-    SystemMsg 8, 2
+    SystemMsg BattleSubway_Text_DeleteExistingBattleVideo, 2
     BSubwayCmd_Tool 44, 1, 0, 32832
     InfoMsgClose
     VMStackPush 0x8040
@@ -1571,14 +1572,14 @@ L_1990:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_19D4
     // "Saving your Battle Video...\nDon't turn off the power."
-    SystemMsg 12, 2
+    SystemMsg BattleSubway_Text_SavingBattleVideoDont, 2
     VMSleep 1
     MsgSetLoadingSpinner 0
     BSubwayCmd_Tool 346, 0x8042, 0, 0
     InfoMsgClose
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000's battle has been saved as a\nBattle Video."
-    SystemMsg 13, 2
+    SystemMsg BattleSubway_Text_SBattleHasBeen, 2
     ABKeyWait
     InfoMsgClose
     BSubwayCmd_Tool 354, 1, 0, 0

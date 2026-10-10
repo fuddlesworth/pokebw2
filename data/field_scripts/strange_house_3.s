@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/strange_house_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -14,7 +15,7 @@ Script_1:
     ActorCmdWait
     VMSleep 8
     // "An everlasting dark dream...\nAn endless dream of darkness...[f000]븁\u0000\nDad, Mom, Abra...\nWhere are you...?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StrangeHouse3_Text_EverlastingDarkDreamEndless, 0, 0, 0
     MsgWinCloseAll
     VMSleep 16
     ActorCmdExec 0, Movement_00D8
@@ -30,7 +31,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The portrait has fallen..."
-    InfoMsg 1, 2
+    InfoMsg StrangeHouse3_Text_PortraitHasFallen, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -41,7 +42,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "No one saw it change, but now\nthe picture is hanging upside down..."
-    InfoMsg 2, 2
+    InfoMsg StrangeHouse3_Text_NoOneSawChange, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10270.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -20,7 +21,7 @@ Script_1:
 
 L_0049:
     // "Deoxys is reacting to the meteor...[f000]븁\u0000\nWould you like to bring the Deoxys\nin your party closer to the meteor?"
-    SystemMsg 0, 2
+    SystemMsg Global10270_Text_DeoxysReactingMeteorWould, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -43,7 +44,7 @@ L_00A0:
 
 L_00A6:
     // "Which Deoxys would you like to\nbring closer to the meteor?[f000]븁\u0000"
-    SystemMsg 1, 2
+    SystemMsg Global10270_Text_WhichDeoxysWouldLike, 2
     InfoMsgClose
     CallPokeSelect 0, 0x8010, 0x8020, 0
     VMStackPush 0x8010

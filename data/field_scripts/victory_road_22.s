@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/victory_road_22.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -37,7 +38,7 @@ Script_2:
     ActorCmdWait
     PVPlay 571, 0
     // "Kwaaaaan!"
-    ActorMsg MSGFILE_SCRIPT, 0, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad22_Text_Kwaaaaan, 9, 0, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -57,7 +58,7 @@ Script_5:
     ActorsPauseAll
     PVPlay 571, 0
     // "Kwaaaaan!"
-    ActorMsg MSGFILE_SCRIPT, 0, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad22_Text_Kwaaaaan, 9, 0, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -93,12 +94,12 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 571, 0
     // "Kwaaan!"
-    ActorMsg MSGFILE_SCRIPT, 1, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad22_Text_Kwaaan, 9, 0, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
     // "The Pokémon won't move.\nIt might be protecting something..."
-    SystemMsg 2, 2
+    SystemMsg VictoryRoad22_Text_PokemonWontMoveMight, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents

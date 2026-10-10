@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_22.h"
 
 // Script plugin 15, from the zones that use this file
 
@@ -13,7 +14,7 @@
 Script_1:
     ActorsPauseAll
     // "The one radiating such a\ntremendous presence before you[f000]븀\u0000\nis none other than Terrakion![f000]븁\u0000"
-    InfoMsg 2, 1
+    InfoMsg Route22_Text_OneRadiatingSuchTremendous, 1
     InfoMsgClose_0039
     ActorCmdExec 255, Movement_0550
     ActorCmdWait
@@ -99,7 +100,7 @@ L_0169:
 
 L_016F:
     // "Colress: It's been a long time.[f000]븁\u0000\nTerrakion is one of the three Pokémon\nwho protected Pokémon from[f000]븀\u0000\nthe flames of a human conflict![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route22_Text_ColressItsBeenLong, 7, 0, 0
     MsgWinCloseAll
     WorkCmpConst 0x8021, 727
     VMJumpIf CMP_EQ, L_0190
@@ -123,7 +124,7 @@ L_01BE:
 L_01CC:
     ActorCmdWait
     // "It seems likely that Terrakion has\npicked up the scent of danger that[f000]븀\u0000\nemanates from Team Plasma.[f000]븁\u0000\nIt's probably seeking a Pokémon\nTrainer who has the strength[f000]븀\u0000\nto stand up to them.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route22_Text_SeemsLikelyTerrakionHas, 7, 0, 0
     MsgWinCloseAll
     WorkCmpConst 0x8021, 727
     VMJumpIf CMP_EQ, L_01EF
@@ -147,20 +148,20 @@ L_021D:
 L_022B:
     ActorCmdWait
     // "It's very interesting indeed that\nTerrakion appeared before you![f000]븁\u0000\nThat aside, do you plan\nto confront Team Plasma?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route22_Text_ItsVeryInterestingIndeed, 7, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0264
     // "I see. If that's the case,\nyou must have the power to protect[f000]븀\u0000\nyour own Pokémon![f000]븁\u0000\nBeing protected by Pokémon\nalone doesn't make you a Trainer![f000]븁\u0000\nIt's because Trainers are strong,\nbecause they care about their Pokémon,[f000]븀\u0000\nthat these Pokémon can also be strong![f000]븁\u0000\nHere!\nThis is from me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route22_Text_SeeIfThatsCase, 7, 0, 0
     MsgWinCloseAll
     VMJump L_0272
 
 L_0264:
     // "I see!\nThat works as well.[f000]븁\u0000\nYou and your Pokémon\ncan proceed down your own path![f000]븁\u0000\nWhat you should do is care\nabout your Pokémon to bring out[f000]븀\u0000\ntheir power to its fullest potential![f000]븁\u0000\nHere!\nThis is from me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route22_Text_SeeWorksWellPokemon, 7, 0, 0
     MsgWinCloseAll
 
 L_0272:
@@ -193,7 +194,7 @@ L_02C1:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "This is a prototype of my device\nthat energizes Pokémon![f000]븁\u0000\nIt doesn't work on battling Pokémon,\nbut you may find it useful for something![f000]븁\u0000\nWell then, I wish you and your Pokémon\na safe journey![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route22_Text_PrototypeDeviceEnergizesPokemon, 7, 0, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -226,7 +227,7 @@ L_0394:
     ActorCmdWait
     EvCameraWait
     // "Now that I think about it![f000]븁\u0000\nIn the Seaside Cave on Route 21,\nI saw something that reminded[f000]븀\u0000\nme of when we met on Route 4.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route22_Text_NowThinkAboutSeaside, 7, 0, 0
     MsgWinCloseAll
     ActorCmdExec 7, Movement_05D8
     ActorCmdWait
@@ -275,7 +276,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 639, 0
     // "Gurooooohhh!"
-    ScreamMsg 0, 1
+    ScreamMsg Route22_Text_Gurooooohhh, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -335,7 +336,7 @@ L_0529:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0546
     // "Terrakion ran away past\nthe end of the route..."
-    SystemMsg 1, 2
+    SystemMsg Route22_Text_TerrakionRanAwayPast, 2
     MsgWaitAdvance
     InfoMsgClose
 
@@ -412,7 +413,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 22"
-    MsgPlaceSign 10, 3
+    MsgPlaceSign Route22_Text_Route22, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokemon_league.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -35,7 +36,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Pokémon League is a place where you\nboth pursue strength and express it.[f000]븁\u0000\nThe way to express it is simple...[f000]븁\u0000\nYou just have to beat the Elite Four and\nthe Champion![f000]븁\u0000\nYou can start your challenge by battling\nany of the Elite Four, and if you defeat[f000]븀\u0000\nthem all, you can challenge the Champion![f000]븁\u0000\nHowever! I warn you, once you start\nyour challenge, there's no turning back.[f000]븁\u0000\nIf you enter, you must keep battling\nuntil you defeat them all...[f000]븀\u0000\nor are defeated yourself."
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_PokemonLeaguePlaceWhere_2, 1, 1, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -47,7 +48,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Pokémon League is every Trainer's\ngreatest challenge![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_PokemonLeagueEveryTrainers, 0, 1, 0
     PlayerGetDir 0x8010
     VMStackPush 0x8010
     VMStackPushConst 3
@@ -59,7 +60,7 @@ Script_5:
 
 L_00AC:
     // "You might want to prepare here.\nBecause if you lose even once,[f000]븀\u0000\nyou have to start all over again!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_MightWantPrepareHere, 0, 1, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_01E8
@@ -86,14 +87,14 @@ L_00F9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0128
     // "The Pokémon League is a place where you\nboth pursue strength and express it.[f000]븁\u0000\nThe way to express it is simple...[f000]븁\u0000\nYou just have to beat the Elite Four and\nthe Champion![f000]븁\u0000\nYou can start your challenge by battling\nany of the Elite Four, and if you defeat[f000]븀\u0000\nthem all, you can challenge the Champion![f000]븁\u0000\nHowever! I warn you, once you start\nyour challenge, there's no turning back.[f000]븁\u0000\nYou must keep battling until you defeat\nthem all...or are defeated yourself.[f000]븁\u0000\nDo you want to go in?"
-    ActorMsg MSGFILE_SCRIPT, 0, 1, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_PokemonLeaguePlaceWhere, 1, 5, 0
     FlagSet 366
     HollowRivalCmd_0262 1, 39
     VMJump L_0134
 
 L_0128:
     // "Once you start your challenge,\nyou cannot leave until you win against all[f000]븀\u0000\nor lose! Do you want to go in?"
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_OnceStartChallengeCannot, 1, 5, 0
 
 L_0134:
     YesNoWin 0x8010
@@ -103,7 +104,7 @@ L_0134:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B7
     // "Then, proceed![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_ThenProceed, 1, 5, 0
     MsgWinCloseAll
     VMStackPush 0x8008
     VMStackPushConst 31
@@ -130,7 +131,7 @@ L_01A9:
 
 L_01B7:
     // "Don't neglect preparation![f000]븁\u0000\nGo through the entrance there, and\nprepare as much as possible. Make sure[f000]븀\u0000\nyour Pokémon are fully recovered![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague_Text_DontNeglectPreparationGo, 1, 5, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0234
     ActorCmdWait

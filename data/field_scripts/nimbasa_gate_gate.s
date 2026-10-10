@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_gate_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -17,7 +18,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There are performers gathering on\nRoute 5!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaGateGate_Text_TherePerformersGatheringRoute, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -29,7 +30,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wonder if the news on the bulletin\nboard is just someone's mutterings..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaGateGate_Text_WonderIfNewsBulletin, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

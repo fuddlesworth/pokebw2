@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/unity_tower_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -85,7 +86,7 @@ Script_8:
 L_0117:
     WorkSetConst 0x8022, 0
     // "Return to the entrance?"
-    ActorMsg MSGFILE_SCRIPT, 64, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, UnityTower3_Text_ReturnEntrance, 6, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     ListMenuAdd 65, 65535, 0
     ListMenuAdd 66, 65535, 1

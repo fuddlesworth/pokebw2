@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lentimas_town_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -25,7 +26,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This quiz is difficult.[f000]븁\u0000\n“What will happen when you press SELECT\nwhile you are checking the Town Map?\"[f000]븁\u0000\nI don't know, because I don't have one!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LentimasTown2_Text_QuizDifficultWhatWill, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

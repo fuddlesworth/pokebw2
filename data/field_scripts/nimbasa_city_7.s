@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_7.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -113,7 +114,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Everybody makes mistakes.[f000]븁\u0000\nBut goalkeepers cannot afford a mistake,\nbecause they cannot score goals to make[f000]븀\u0000\nup for it.[f000]븁\u0000\nIf one Pokémon on a team makes a\nmistake, however, the other Pokémon[f000]븀\u0000\nand their Trainer can cover for it!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_EverybodyMakesMistakesBut, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -125,7 +126,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If a Striker catches a teammate's eye,\nthey understand each other.[f000]븁\u0000\nA Pokémon and its Trainer are the same.\nDon't you agree?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_IfStrikerCatchesTeammates, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -137,7 +138,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Really strong Trainers thoroughly do\nwhatever they can do!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_ReallyStrongTrainersThoroughly, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -149,7 +150,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Soccer is beautiful and fun!\nPokémon are also beautiful and fun!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_SoccerBeautifulFunPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -161,7 +162,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Soccer with Pokémon is Pokémon soccer.\nThe abbreviation is...Poker?[f000]븀\u0000\nNo, wait, that's a fireplace tool.[f000]븀\u0000\nHow about Poccer?"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_SoccerPokemonPokemonSoccer, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -173,7 +174,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Throw a sound pass to a team member![f000]븁\u0000\nAfter that, to receive a sound pass,\nyou'll need to move swiftly."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_ThrowSoundPassTeam, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -185,7 +186,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Run! Run!\nJust think about running!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_RunRunJustThink, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -198,7 +199,7 @@ Script_9:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Squeeskwaa!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_Squeeskwaa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -212,7 +213,7 @@ Script_10:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Meep! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity7_Text_Meep, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

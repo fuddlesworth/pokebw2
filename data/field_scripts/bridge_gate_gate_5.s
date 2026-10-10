@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/bridge_gate_gate_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -19,7 +20,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "...I'm sorry.\nI ended up losing my uniform."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate5_Text_ImSorryEndedUp, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -31,7 +32,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I did my best to choose a Pokémon\nwho was both cute and strong!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate5_Text_DidBestChoosePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -43,7 +44,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My Minccino!\nMy grandpa caught it for me![f000]븀\u0000\nTail Slap is its specialty!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate5_Text_MinccinoGrandpaCaughtTail, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -56,7 +57,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 572, 0
     // "Chichino! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate5_Text_Chichino, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

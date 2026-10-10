@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/marine_tube.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0142
     // "[f000]븉\u0001\u0002Oh... Oh...\nSo...thirsty...[f000]븁\u0000\nI met you on Marvelous Bridge...[f000]븁\u0000\nG-g-give me...\nFresh Water...?[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_OhOhThirstyMet, 1, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -43,7 +44,7 @@ Script_2:
     SEPlay SEQ_SE_ARDEMO_01
     SEWait
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_RefreshedIm100Rehydrated, 1, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8025, 0
@@ -72,7 +73,7 @@ L_00F4:
 
 L_011A:
     // "[f000]븉\u0001\u0002But... You don't have Fresh Water...\nI appreciate the thought, though...[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_ButDontHaveFresh, 1, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -81,7 +82,7 @@ L_0128:
 
 L_012E:
     // "[f000]븉\u0001\u0002Thank...[f000]븁\u0000\nWhat?\nOh...[f000]븁\u0000\nWithout Fresh Water...\nI can't run on bridges anymore.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_ThankWhatOhWithout, 1, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -94,7 +95,7 @@ L_0142:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0163
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_RefreshedIm100Rehydrated, 1, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -124,7 +125,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This is what the undersea world\nlooks like![f000]븁\u0000\nI've never seen this before,\nbecause I can't swim![f000]븁\u0000\nI'd given up on seeing this.\nI'm so moved!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_WhatUnderseaWorldLooks, 1, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -136,7 +137,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This place is like a walk-through\naquarium, but isn't this a place[f000]븀\u0000\nfor Pokémon to see us?"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_PlaceLikeWalkThrough, 1, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -148,7 +149,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Wow!\nIt's an ocean trench![f000]븁\u0000\nSo deep!\nMaybe six miles deep?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_WowItsOceanTrench, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -160,7 +161,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That's right... It's deep...\nLove is infinitely deep..."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_ThatsRightItsDeep, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -172,7 +173,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Rain Dance is a move to use\nwith a feeling of yearning.[f000]븁\u0000\nAs for when to use it...[f000]븁\u0000\nSigh... What's wrong with me?\nI can't think of any gripping ideas.[f000]븁\u0000\nWith a condition like this,\nI can't explain well on TV."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 1, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_RainDanceMoveUse, 1, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -221,7 +222,7 @@ L_02AB:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0302
     // "Does your Pokémon have\na Poison Barb?[f000]븁\u0000\nWow! [f000]ā\u0001\u0000 has\na Poison Barb![f000]븁\u0000\nGood going. I think you can\nuse this well, too![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_DoesPokemonHavePoison_2, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -231,7 +232,7 @@ L_02AB:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Black Sludge! Few Pokémon\nlike to hold it, though.[f000]븁\u0000\nFYI, I'm the first fan of Roxie!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_BlackSludgeFewPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 389
@@ -239,7 +240,7 @@ L_02AB:
 
 L_0302:
     // "Does your Pokémon have\na Poison Barb?"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_DoesPokemonHavePoison, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -248,7 +249,7 @@ L_0310:
 
 L_0316:
     // "Black Sludge! Few Pokémon\nlike to hold it, though.[f000]븁\u0000\nFYI, I'm the first fan of Roxie!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MarineTube_Text_BlackSludgeFewPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

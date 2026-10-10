@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 4 Ahead"
-    MsgPlaceSign 8, 3
+    MsgPlaceSign CasteliaCity4_Text_Route4Ahead, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -39,7 +40,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Nimbasa City has\nthe Pokémon Musical.[f000]븁\u0000\nI've tried it several times.\nSigh. It never seems to go well.[f000]븁\u0000\nBut I'll keep trying until I get\nthe perfect Props for my Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity4_Text_NimbasaCityHasPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -52,7 +53,7 @@ Script_5:
     ActorSetEyeToEye
     // "Trainers and Pokémon make\nan amazing combination![f000]븁\u0000\nThey were responsible for\nexcavating the ruins on Route 4!"
     // "Trainers and Pokémon make\nan amazing combination![f000]븁\u0000\nThey were responsible for the row of\nbrand-new buildings on Route 4!"
-    ActorMsgVersioned 1024, 6, 7, 1, 0, 0
+    ActorMsgVersioned 1024, CasteliaCity4_Text_TrainersPokemonMakeAmazing, CasteliaCity4_Text_TrainersPokemonMakeAmazing_2, 1, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

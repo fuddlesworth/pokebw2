@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/iron_chamber.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -48,7 +49,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Iron Chamber"
-    InfoMsg 3, 2
+    InfoMsg IronChamber_Text_IronChamber, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -59,7 +60,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It protects this place\nwith the power of steel."
-    InfoMsg 4, 2
+    InfoMsg IronChamber_Text_ProtectsPlacePowerSteel, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -70,7 +71,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The Pokémon statue that exudes the\npower of steel started moving![f000]븁\u0000"
-    SystemMsg 0, 2
+    SystemMsg IronChamber_Text_PokemonStatueExudesPower, 2
     InfoMsgClose
     PlayerGetDir 0x8010
     WorkCmpConst 0x8010, 0
@@ -112,7 +113,7 @@ L_0130:
     ActorCmdWait
     PVPlay 379, 0
     // "Ji-ji-ze-ji-zoh..."
-    ScreamMsg 1, 2
+    ScreamMsg IronChamber_Text_JiJiZeJi, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -140,7 +141,7 @@ L_0174:
 
 L_0198:
     // "Registeel disappeared deep\ninto the ruins..."
-    SystemMsg 2, 2
+    SystemMsg IronChamber_Text_RegisteelDisappearedDeepInto, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_01C5

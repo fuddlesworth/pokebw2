@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokemon_league_11.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -43,7 +44,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "No matter how many times the Elite Four\ndefeat me...[f000]븁\u0000\nI'll keep moving forward\nwith my Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokemonLeague11_Text_NoMatterHowMany, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -55,7 +56,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Understand what type of Pokémon\neach of the Elite Four uses.[f000]븀\u0000\nThat is a shortcut for victory!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokemonLeague11_Text_UnderstandWhatTypePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

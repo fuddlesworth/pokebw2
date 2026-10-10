@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/accumula_town_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -43,7 +44,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm looking at my PC Boxes and\ngoing over my journey so far.[f000]븁\u0000\nYou know, remembering when I met this\nPokémon or where I caught that one.[f000]븁\u0000\n...Just mulling over things like that.[f000]븁\u0000\nMaybe I'll change my party Pokémon\nand go back to one of those places again."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTownPokemonCenter_Text_ImLookingPcBoxes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -55,7 +56,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh wow! A Pokédex!\nHey! How full is your Habitat List?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTownPokemonCenter_Text_OhWowPokedexHey, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

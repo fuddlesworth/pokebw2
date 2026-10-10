@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/relic_castle.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -24,7 +25,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There are two things I've learned\nabout quicksand![f000]븁\u0000\nIf you try to walk through the middle,\nyou'll fall.[f000]븁\u0000\nAnd if you try to run through it,\nyou'll fall."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RelicCastle_Text_ThereTwoThingsIve, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

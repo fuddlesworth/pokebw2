@@ -61,10 +61,12 @@ unless `--labels` gives names.
 ## Field scripts
 
 The field scripts, archive `a/0/5/6`, are built from source in `data/field_scripts/<file>.s`, with the macros in
-`include/asm/field_script.inc`. Both versions have the same archive. It holds a script file and a map script table
-for each zone, and the global scripts, which zones start by their IDs (from 2000 up). A script file starts with the
-offsets of its scripts, followed by the scripts and their movement data. A map script table lists the scripts that
-the zone runs at points such as its loading.
+`include/asm/field_script.inc`. Both versions have the same archive. It holds a script file and a map script table for
+each zone, and the global scripts, which zones start by their IDs (from 2000 up). A script file starts with the offsets
+of its scripts, followed by the scripts and their movement data. A map script table lists the scripts that the zone runs
+at points such as its loading. A script names the messages it shows by their IDs (see [Text](data.md#text)),
+`MsgPlaceSign 0x8021, BlackCity_Text_...`, and includes the header of their bank, `text/script/<bank>.h`; the comment
+above a command still gives the message.
 
 ```
 L_015C:

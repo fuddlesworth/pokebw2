@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_10.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -79,18 +80,18 @@ Script_2:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "Everyone, we've arrived at\nCastelia City![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_EveryoneWeveArrivedCastelia, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_02BC
     ActorCmdExec 255, Movement_02BC
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: So this is Castelia City...\nIt's much bigger than I'd heard![f000]븁\u0000\nBut, it doesn't matter![f000]븁\u0000\nI'm going to find Team Plasma\nno matter where they run![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_CasteliaCityItsMuch, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_02C4
     ActorCmdWait
     // "Oh yeah. [f000]Ā\u0001\u0000![f000]븁\u0000\nHere, let's register each other's\nXtransceiver number.[f000]븁\u0000\nWe didn't even need to in Aspertia.\nWe could see each other anytime![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_OhYeahHereLets, 1, 0, 0
     MsgWinCloseAll
     SEPlay SEQ_SE_SW_LC_NO
     SEWait
@@ -102,7 +103,7 @@ Script_2:
     ActorCmdWait
     EvCameraWait
     // "That's a strange ship.\nA sailing ship in this day and age?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_ThatsStrangeShipSailing, 1, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 56
     ActorCmdExec 1, Movement_0208
@@ -132,14 +133,14 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What can I do for you?\nWould you like to sail to Virbank City?"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_WhatCanWouldLike, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0263
     // "Of course!\nPlease, step this way![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_CoursePleaseStepWay, 0, 0, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -149,7 +150,7 @@ Script_1:
 
 L_0263:
     // "OK then! Please come talk to me\nwhenever you'd like to board!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_OkThenPleaseCome, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -217,7 +218,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When you just can't stand it anymore,\nscream at the ocean!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_WhenJustCantStand, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -233,7 +234,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That black sailing ship...\nWhat could it be?"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_BlackSailingShipWhat, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0370
@@ -242,7 +243,7 @@ L_035C:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That black sailing ship...\nWhat could it have been?"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity10_Text_BlackSailingShipWhat_2, 0, 0
     LastKeyWait
     ActorMsgClose
 

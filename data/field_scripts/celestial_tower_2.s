@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/celestial_tower_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -34,7 +35,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C0
     // "Professor Juniper: Hi there!\nHow were things with Skyla?[f000]븁\u0000\nOh? You still haven't\nearned the Gym Badge yet?[f000]븁\u0000\nWell, if that's the case,\nI'll keep up the field work[f000]븀\u0000\nuntil the plane is ready to fly.[f000]븁\u0000\nOh yeah!\nWhy don't you try using this?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_ProfessorJuniperHiThere, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -44,7 +45,7 @@ Script_2:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Professor Juniper: Giving that Lucky Egg\nto a Pokémon to hold increases the[f000]븀\u0000\namount of Exp. Points received in[f000]븀\u0000\nbattle a little bit![f000]븁\u0000\nHaving strong Pokémon will make\nit easier to fill your Pokédex pages!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_ProfessorJuniperGivingLucky, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkAdd 0x40c2, 1
@@ -60,7 +61,7 @@ L_00C0:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0250
     // "Professor Juniper: Celestial Tower...\nIt's a giant memorial...[f000]븁\u0000\nI wonder if this building was built\nin a place with many Ghost- and[f000]븀\u0000\nPsychic-type Pokémon or if those[f000]븀\u0000\nPokémon gathered here because it[f000]븀\u0000\nwas built.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_ProfessorJuniperCelestialTower_2, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8020
     VMStackPush 0x8020
@@ -96,7 +97,7 @@ L_0156:
 L_0171:
     ActorCmdWait
     // "Professor Juniper: Oh, right!\nHow were things with Skyla?[f000]븁\u0000\nOh my! You won the Jet Badge![f000]븁\u0000\nWell, the plane should be ready\nto fly, then![f000]븁\u0000\nThanks for coming to get me!\nTake this as thanks![f000]븀\u0000\nTry using it![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_ProfessorJuniperOhRight, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -106,9 +107,9 @@ L_0171:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Professor Juniper: Giving that Lucky Egg\nto a Pokémon to hold increases the[f000]븀\u0000\namount of Exp. Points received in[f000]븀\u0000\nbattle by a little bit![f000]븁\u0000\nHaving strong Pokémon will make\nit easier to fill your Pokédex pages![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_ProfessorJuniperGivingLucky_2, 0, 0
     // "OK! I'll be waiting for you\nin Mistralton City![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_OkIllWaitingMistralton, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
@@ -148,7 +149,7 @@ L_0250:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0271
     // "Professor Juniper: Celestial Tower...\nIt's a giant memorial...[f000]븁\u0000\nI wonder if this building was built\nin a place with many Ghost- and[f000]븀\u0000\nPsychic-type Pokémon or if those[f000]븀\u0000\nPokémon gathered here because it[f000]븀\u0000\nwas built."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_ProfessorJuniperCelestialTower, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -207,12 +208,12 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03AA
     // "You! You came here at the request of\nthe couple in Humilau City, didn't you?![f000]븁\u0000\nNo need for a reply!\nIf you want to ring the bell,[f000]븀\u0000\nyou'll have to battle with me![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_CameHereRequestCouple, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WAITRESS_JAN, 0, 0
     VMCall L_0409
     // "Win or lose...\nI'm a Waitress...[f000]븁\u0000\nI carry the customers' orders\nwith a heaping side of love..."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_WinLoseImWaitress, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x40ee, 2
@@ -246,7 +247,7 @@ L_03AA:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_03CB
     // "Win or lose...\nI'm a Waitress...[f000]븁\u0000\nI carry the customers' orders\nwith a heaping side of love..."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_WinLoseImWaitress, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -260,7 +261,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "At the very top of the Tower,\nthere's a big bell.[f000]븁\u0000\nI've heard that when you\nring it, it pleases the spirits."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_VeryTopTowerTheres, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -272,7 +273,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This is Celestial Tower, where Pokémon\nare laid to rest..."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower2_Text_CelestialTowerWherePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

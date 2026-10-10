@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/aspertia_city_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -51,7 +52,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]Ā\u0001\u0000, did you find\nthat lady called Bianca?[f000]븁\u0000\nI hope you get a Pokémon soon!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_DidFindLadyCalled, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01E1
@@ -69,7 +70,7 @@ L_00BD:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wish...[f000]븁\u0000\nI wish my big brother could go on a\njourney for his Pokémon, not for me."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_WishWishBigBrother, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01E1
@@ -87,7 +88,7 @@ L_0100:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, [f000]Ā\u0001\u0000!\nTake care of [f000]ā\u0001\u0001![f000]븁\u0000\nOnly Trainers can protect\ntheir own Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_OhTakeCareOnly, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01E1
@@ -113,7 +114,7 @@ L_0143:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]Ā\u0001\u0000![f000]븁\u0000\nLook![f000]븁\u0000\nLiepard looks so happy\nwhen I pet its head!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_LookLiepardLooksHappy, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01C1
@@ -122,7 +123,7 @@ L_01A9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Know what?\nMy big brother told me something.[f000]븁\u0000\nHe said to talk to the Liepard\ninside the Poké Ball lots and lots,[f000]븀\u0000\nlike I'm doing, until it remembers me![f000]븁\u0000\nAnd to pet it, even if it's just on\nthe outside of the Poké Ball!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_KnowWhatBigBrother, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 490
@@ -135,7 +136,7 @@ L_01C7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hi, [f000]Ā\u0001\u0000![f000]븁\u0000\nWow! It's [f000]ā\u0001\u0001![f000]븁\u0000\nYou know lots of other Pokémon, right?\nCool!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_HiWowItsKnow, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -155,7 +156,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 510, 0
     // "Preoooww... ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity4_Text_Preoooww, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -167,7 +168,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a map of the Unova region."
-    InfoMsg 8, 2
+    InfoMsg AspertiaCity4_Text_ItsMapUnovaRegion, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents

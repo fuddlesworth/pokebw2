@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -56,7 +57,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Studio Castelia"
-    MsgPlaceSign 22, 2
+    MsgPlaceSign CasteliaCity5_Text_StudioCastelia, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -67,7 +68,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Castelia's Famous Casteliacone"
-    MsgPlaceSign 23, 2
+    MsgPlaceSign CasteliaCity5_Text_CasteliasFamousCasteliacone, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -94,13 +95,13 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014F
     // "Wah ha ha ha![f000]븁\u0000\nThere's a rumor the new Champion\nloves our Casteliacones.[f000]븁\u0000\nAnd suddenly an avalanche of customers\nare screaming for our ice cream![f000]븁\u0000\nI'm screaming for joy! Eeeek!\nIt's the super-popular Casteliacone![f000]븀\u0000\nHow many do you want?"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_WahHaHaHa, 0, 0, 0
     FlagSet 292
     VMJump L_015B
 
 L_014F:
     // "The Champion loves them, too!\nA Casteliacone is a perfect[f000]븀\u0000\nsouvenir of Castelia City![f000]븁\u0000\nIt's $100.\nWould you like to buy one?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ChampionLovesThemToo, 0, 0, 0
 
 L_015B:
     VMJump L_0196
@@ -111,13 +112,13 @@ L_0161:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_018A
     // "Castelia City's Casteliacone\nis the perfect souvenir![f000]븁\u0000\nA while ago, our store\nwas really popular.[f000]븁\u0000\nRecently, however, we don't\nget as many customers as we used to.[f000]븁\u0000\nBut, whining won't accomplish anything.\nI just have to work hard to sell them![f000]븁\u0000\nWell then, how about a Casteliacone?[f000]븁\u0000\nIt's $100.\nWould you like to buy one?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_CasteliaCitysCasteliaconePerfect, 0, 0, 0
     FlagSet 291
     VMJump L_0196
 
 L_018A:
     // "A Casteliacone is a perfect\nsouvenir of Castelia City![f000]븁\u0000\nIt's $100.\nWould you like to buy one?"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_CasteliaconePerfectSouvenirCastelia, 0, 0, 0
 
 L_0196:
     MoneyWinDisp 31, 1
@@ -160,7 +161,7 @@ L_0209:
     VMJumpIf CMP_STACK, L_0263
     MoneyWinClose
     // "Thank you very much![f000]븁\u0000\n...Huh? Oh, dear!\nIt looks like you don't have enough[f000]븀\u0000\nmoney. Please come again sometime.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ThankVeryMuchHuh, 0, 2, 0
     MsgWinCloseAll
     VMJump L_02F5
 
@@ -171,7 +172,7 @@ L_0263:
     VMJumpIf CMP_STACK, L_028C
     MoneyWinClose
     // "Thank you very much![f000]븁\u0000\n...Huh? Oh, dear!\nIt looks like your Bag is full.[f000]븁\u0000\nPlease come again sometime.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ThankVeryMuchHuh_2, 0, 2, 0
     MsgWinCloseAll
     VMJump L_02F5
 
@@ -183,7 +184,7 @@ L_028C:
     RecordAdd 21, 1
     RecordAdd 22, 0x8025
     // "Thank you for your business!\nPlease come again![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ThankBusinessPleaseCome, 0, 2, 0
     MsgWinCloseAll
     MoneyWinClose
     VMStackPush 0x8000
@@ -215,14 +216,14 @@ L_02FB:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0336
     // "Even though you waited in line...\nWell, please come again, OK?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_EvenThoughWaitedLine, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0346
 
 L_0336:
     // "Even though you came to the store...\nWell, please come again, OK?"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_EvenThoughCameStore, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -231,7 +232,7 @@ L_0346:
 
 L_034C:
     // "You bought the last of\nour supply for today...[f000]븁\u0000\nPlease come again, OK?"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_BoughtLastOurSupply, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -274,7 +275,7 @@ Script_4:
     ActorCmdExec 255, Movement_0B7C
     ActorCmdWait
     // "Hmm? There's a shop that sells\nice cream here? Is it good?"
-    ActorMsg MSGFILE_SCRIPT, 13, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_HmmTheresShopSells, 1, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 1, 14, 18, 1, 8, 1
@@ -288,7 +289,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I rode the train and came clear\nfrom Anville Town to get one!"
-    ActorMsg MSGFILE_SCRIPT, 14, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_RodeTrainCameClear, 2, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0B84
@@ -302,7 +303,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Boy oh boy! If the Champion\nbuys them, too, these have to be cool!"
-    ActorMsg MSGFILE_SCRIPT, 15, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_BoyOhBoyIf, 3, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 3, Movement_0B8C
@@ -316,7 +317,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I can't wait to eat one!"
-    ActorMsg MSGFILE_SCRIPT, 16, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_CantWaitEatOne, 4, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 4, Movement_0B8C
@@ -330,7 +331,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My daughter asked me to get\nthem for her, but look at this line!"
-    ActorMsg MSGFILE_SCRIPT, 17, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_DaughterAskedGetThem, 5, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 5, Movement_0B8C
@@ -348,7 +349,7 @@ Script_9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F1
     // "Huh? Oh, here you can buy the dessert\nthat everyone in Castelia City[f000]븀\u0000\nis talking about![f000]븁\u0000\nAre you going to get in line?"
-    ActorMsg MSGFILE_SCRIPT, 18, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_HuhOhHereCan, 6, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -356,7 +357,7 @@ Script_9:
     VMJumpIf CMP_STACK, L_06DD
     WorkSetConst 0x40c8, 2
     // "The line gets reeeally long!\nBut, it's worth lining up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_LineGetsReeeallyLong, 6, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8021
@@ -433,7 +434,7 @@ L_055D:
 
 L_06DD:
     // "Yeah...\nThis line is way too long.[f000]븁\u0000\nBut, just between you and me,\nI hear the Champion loves them, too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_YeahLineWayToo, 6, 0, 0
     MsgWinCloseAll
 
 L_06EB:
@@ -441,7 +442,7 @@ L_06EB:
 
 L_06F1:
     // "Huh? Oh, here you can buy the dessert\nthat everyone in Castelia City[f000]븀\u0000\nis talking about![f000]븁\u0000\nBut it looks like I got the last one.\nThey're sold out for today![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_HuhOhHereCan_2, 6, 0, 0
     MsgWinCloseAll
 
 L_06FF:
@@ -462,7 +463,7 @@ Script_11:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0905
     // "Huh? Oh, here you can buy the dessert\nthat everyone in Castelia City[f000]븀\u0000\nis talking about![f000]븁\u0000\nAre you going to get in line?"
-    ActorMsg MSGFILE_SCRIPT, 18, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_HuhOhHereCan, 6, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -470,7 +471,7 @@ Script_11:
     VMJumpIf CMP_STACK, L_08F1
     WorkSetConst 0x40c8, 2
     // "The line gets reeeally long!\nBut, it's worth lining up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_LineGetsReeeallyLong, 6, 0, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_0B8C
     ActorCmdWait
@@ -532,7 +533,7 @@ Script_11:
 
 L_08F1:
     // "Yeah...\nThis line is way too long.[f000]븁\u0000\nBut, just between you and me,\nI hear the Champion loves them, too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_YeahLineWayToo, 6, 0, 0
     MsgWinCloseAll
 
 L_08FF:
@@ -540,7 +541,7 @@ L_08FF:
 
 L_0905:
     // "Huh? Oh, here you can buy the dessert\nthat everyone in Castelia City[f000]븀\u0000\nis talking about![f000]븁\u0000\nBut it looks like I got the last one.\nThey're sold out for today![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_HuhOhHereCan_2, 6, 0, 0
     MsgWinCloseAll
 
 L_0913:
@@ -560,13 +561,13 @@ Script_12:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_095F
     // "Wah ha ha ha![f000]븁\u0000\nThere's a rumor the new Champion\nloves our Casteliacones.[f000]븁\u0000\nAnd suddenly an avalanche of customers\nare screaming for our ice cream![f000]븁\u0000\nI'm screaming for joy! Eeeek!\nIt's the super-popular Casteliacone![f000]븀\u0000\nHow many do you want?"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_WahHaHaHa, 0, 0, 0
     FlagSet 292
     VMJump L_096B
 
 L_095F:
     // "The Champion loves them, too!\nA Casteliacone is a perfect[f000]븀\u0000\nsouvenir of Castelia City![f000]븁\u0000\nIt's $100.\nWould you like to buy one?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ChampionLovesThemToo, 0, 0, 0
 
 L_096B:
     MoneyWinDisp 31, 1
@@ -609,7 +610,7 @@ L_09DE:
     VMJumpIf CMP_STACK, L_0A38
     MoneyWinClose
     // "Thank you very much![f000]븁\u0000\n...Huh? Oh, dear!\nIt looks like you don't have enough[f000]븀\u0000\nmoney. Please come again sometime.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ThankVeryMuchHuh, 0, 2, 0
     MsgWinCloseAll
     VMJump L_0AA1
 
@@ -620,7 +621,7 @@ L_0A38:
     VMJumpIf CMP_STACK, L_0A61
     MoneyWinClose
     // "Thank you very much![f000]븁\u0000\n...Huh? Oh, dear!\nIt looks like your Bag is full.[f000]븁\u0000\nPlease come again sometime.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ThankVeryMuchHuh_2, 0, 2, 0
     MsgWinCloseAll
     VMJump L_0AA1
 
@@ -630,7 +631,7 @@ L_0A61:
     MoneyWinUpdate
     SEWait
     // "Thank you for your business!\nPlease come again![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_ThankBusinessPleaseCome, 0, 2, 0
     MsgWinCloseAll
     MoneyWinClose
     VMStackPush 0x8000
@@ -648,7 +649,7 @@ L_0AA1:
 L_0AA7:
     MoneyWinClose
     // "Even though you waited in line...\nWell, please come again, OK?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_EvenThoughWaitedLine, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -657,7 +658,7 @@ L_0AB9:
 
 L_0ABF:
     // "You bought the last of\nour supply for today...[f000]븁\u0000\nPlease come again, OK?"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity5_Text_BoughtLastOurSupply, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 

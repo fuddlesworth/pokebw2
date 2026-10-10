@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/victory_road_16.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -16,7 +17,7 @@ Script_1:
     SEWait
     BGMPlay SEQ_BGM_E_HUE
     // "Wait up![f000]븁\u0000"
-    InfoMsg 0, 2
+    InfoMsg VictoryRoad16_Text_WaitUp, 2
     InfoMsgClose_0039
     ActorCmdExec 255, Movement_018C
     ActorCmdWait
@@ -24,7 +25,7 @@ Script_1:
     ActorWalkRoute 251, 0x8021, 0x8022, 1, 8, 1
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: I'll battle with you\nbefore you take on the Pokémon League.[f000]븁\u0000\nThe more Pokémon battles you have,\nthe stronger you get, right?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad16_Text_IllBattleBeforeTake, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_016C
     ActorCmdWait
@@ -63,7 +64,7 @@ L_00E8:
     ActorCmdExec 251, Movement_017C
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: [f000]Ā\u0001\u0000![f000]븁\u0000\nThanks to you, I accomplished what\nI set out to do during my journey![f000]븁\u0000\nI wish I could've shown you\nmy little sister's huge smile![f000]븁\u0000\nThis is my thanks![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad16_Text_ThanksAccomplishedWhatSet, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_01AC
     ActorCmdWait
@@ -75,7 +76,7 @@ L_00E8:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "I think you're really amazing![f000]븁\u0000\nSo become the Champion![f000]븁\u0000\nGet the proof that you're a Trainer\nyour Pokémon can be proud of![f000]븁\u0000\nSee you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad16_Text_ThinkYoureReallyAmazing, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 21, 0x8022, 1, 8, 0
     ActorCmdWait

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -14,7 +15,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm very sorry.[f000]븁\u0000\nThe Pokémon World Tournament\nwill commence shortly,[f000]븀\u0000\nbut we're still preparing the area.[f000]븁\u0000\nOh, you don't have the Driftveil City\nGym Badge yet?[f000]븁\u0000\nIn that case, how about taking\non the Pokémon Gym first?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity8_Text_ImVerySorryPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -61,7 +62,7 @@ L_00BC:
 
 L_00E5:
     // "I'm very sorry.[f000]븁\u0000\nThe Pokémon World Tournament\nwill commence shortly,[f000]븀\u0000\nbut we're still preparing the area.[f000]븁\u0000\nOh, you don't have the Driftveil City\nGym Badge yet?[f000]븁\u0000\nIn that case, how about taking\non the Pokémon Gym first?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCity8_Text_ImVerySorryPokemon, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 255, Movement_01A0
@@ -100,7 +101,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you keep winning, you get BP!\nWhich is to say, you win Battle Points![f000]븁\u0000\nSo save up lots of BP, and exchange\nthem for great items!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity8_Text_IfKeepWinningGet, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -112,7 +113,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Pokémon World Tournament\nis ahead!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity8_Text_PokemonWorldTournamentAhead, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

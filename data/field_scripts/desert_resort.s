@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/desert_resort.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -10,7 +11,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Desert Resort Ahead\nIt's nicer than the average desert!"
-    MsgPlaceSign 2, 2
+    MsgPlaceSign DesertResort_Text_DesertResortAheadIts, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -21,7 +22,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Go through the gate, and just head\nstraight. That's how you get to[f000]븀\u0000\nthe Relic Castle."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DesertResort_Text_GoThroughGateJust, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -33,7 +34,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Desert Resort is vast, and\nthe Pokémon here are strong![f000]븀\u0000\nIt's an ideal place to test your skills!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DesertResort_Text_DesertResortVastPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

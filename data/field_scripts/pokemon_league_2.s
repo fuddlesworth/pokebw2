@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokemon_league_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -63,7 +64,7 @@ Script_3:
 L_00EC:
     SEPlay SEQ_SE_MESSAGE
     // "Words are engraved on the statue:[f000]븁\u0000\n“Four great warriors form\n this Pokémon League.[f000]븁\u0000\n To the southwest is one who\n does not fear the Ghost type.[f000]븁\u0000\n To the southeast is one who\n channels the power of the Fighting type.[f000]븁\u0000\n To the northwest is one who\n has mastered the Dark type.[f000]븁\u0000\n To the northeast is one who\n knows the mind of the Psychic type.[f000]븁\u0000\n If you can defeat these warriors with\n your courage and wisdom,[f000]븀\u0000\n you shall be led to the summit,[f000]븀\u0000\n where the strongest Champion awaits.\""
-    InfoMsg 0, 2
+    InfoMsg PokemonLeague2_Text_WordsEngravedStatueFour, 2
     LastKeyWait
     MsgWinCloseAll
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_12.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -10,7 +11,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 12"
-    MsgPlaceSign 0, 3
+    MsgPlaceSign Route12_Text_Route12, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -21,7 +22,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips!\n[f000]븁\u0000\nTry pressing SELECT while\norganizing your PC Box.[f000]븁\u0000\nIt'll let you move your Pokémon\naround more easily![f000]븁\u0000\nThe more Pokémon you deposit,\nthe more Boxes you'll have."
-    MsgPlaceSign 2, 0
+    MsgPlaceSign Route12_Text_TrainerTipsTryPressing, 0
     MsgPlaceSignClose
     FlagSet 2673
     FinishAllEvents
@@ -33,7 +34,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 12"
-    MsgPlaceSign 1, 3
+    MsgPlaceSign Route12_Text_Route12_2, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

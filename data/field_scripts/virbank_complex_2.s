@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/virbank_complex_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -51,14 +52,14 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey there, Trainer!\nIt looks like you've got energetic[f000]븀\u0000\nPokémon there with ya![f000]븁\u0000\nCan I ask a favor?[f000]븁\u0000\nI need to get the Workers\nin this complex fired up![f000]븁\u0000\nHow about it?\nHelp a guy out, will ya?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_HeyThereTrainerLooks, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F5
     // "Yeah! That's what I like to hear![f000]븁\u0000\nThere are some new Workers\nhere in the complex![f000]븁\u0000\nGo get those three raring to go!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_YeahThatsWhatLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 306
@@ -66,7 +67,7 @@ Script_1:
 
 L_00F5:
     // "Really? Nobody really wants\nanything enough anymore!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_ReallyNobodyReallyWants, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -114,7 +115,7 @@ L_01A6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "OK![f000]븁\u0000\nThe three new Workers are\nin different parts of the complex!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_OkThreeNewWorkers, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -132,7 +133,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01EF
     // "Working at this complex\nwas my dream...[f000]븁\u0000\nBut now that it's come true,\nI've got everything I want..."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_WorkingComplexDreamBut, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_025D
@@ -143,14 +144,14 @@ L_01EF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0216
     // "I came to this complex so\nmy Pokémon could accomplish a lot![f000]븁\u0000\nThat means that as a Trainer,\nI have to work like crazy!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_CameComplexPokemonCould, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_025D
 
 L_0216:
     // "Working at this complex\nwas my dream...[f000]븁\u0000\nBut now that it's come true,\nI've got everything I want...[f000]븁\u0000\nWhat? The foreman said so? OK, fine.\nWe just have to battle, right?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_WorkingComplexDreamBut_2, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_ISAAC, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -166,7 +167,7 @@ L_0249:
 
 L_024B:
     // "I came to this complex so\nmy Pokémon could accomplish a lot![f000]븁\u0000\nThat means that as a Trainer,\nI have to work like crazy!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_CameComplexPokemonCould, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 307
@@ -185,7 +186,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0292
     // "I'm happy just to be with\nmy awesome Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_ImHappyJustAwesome, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0300
@@ -196,14 +197,14 @@ L_0292:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B9
     // "I completely forgot![f000]븁\u0000\nIf I don't work really hard, my Pokémon\nwon't have a chance to shine![f000]븁\u0000\nAll riiight! Time to get to work!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_CompletelyForgotIfDont, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0300
 
 L_02B9:
     // "I'm happy just to be with\nmy awesome Pokémon![f000]븁\u0000\nWhat? A battle?\nI guess so... I'll play a bit.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_ImHappyJustAwesome_2, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_MITCHELL, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -219,7 +220,7 @@ L_02EC:
 
 L_02EE:
     // "I completely forgot![f000]븁\u0000\nIf I don't work really hard, my Pokémon\nwon't have a chance to shine![f000]븁\u0000\nAll riiight! Time to get to work!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_CompletelyForgotIfDont, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 308
@@ -238,7 +239,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0335
     // "Every day is the same..."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_EveryDaySame, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_03A3
@@ -249,14 +250,14 @@ L_0335:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035C
     // "It's OK if every day's the same\nwhen I'm working at this complex![f000]븀\u0000\nIt means there aren't any problems!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_ItsOkIfEvery, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_03A3
 
 L_035C:
     // "Every day is the same...[f000]븁\u0000\nI get bored when things don't change,\nso I don't mind battling you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_EveryDaySameGet, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_NATHAN, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -272,7 +273,7 @@ L_038F:
 
 L_0391:
     // "It's OK if every day's the same\nwhen I'm working at this complex![f000]븀\u0000\nIt means there aren't any problems!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_ItsOkIfEvery, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 309
@@ -291,7 +292,7 @@ Script_5:
 
 L_03C2:
     // "Heating crude oil separates\nit into many different components...[f000]븀\u0000\nThat's what this distillation tower is for![f000]븁\u0000\nIt's also known as a topper,\nbut I want to call it a distillation tower."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_HeatingCrudeOilSeparates, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 7, Movement_0850
@@ -326,7 +327,7 @@ L_0433:
 L_0441:
     ActorCmdWait
     // "Oh! My knowledge overflowed,\nand it was overheard!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_OhKnowledgeOverflowedOverheard, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkCmpConst 0x8010, 0
@@ -363,7 +364,7 @@ L_04C6:
 
 L_04D9:
     // "The smokestacks of the complex\nrise up into the sky.[f000]븁\u0000\nThat powerful silhouette\nis sure breathtaking, isn't it?[f000]븁\u0000\nBy the way, they're burning up\nwaste gas.[f000]븁\u0000\nRecently, they've found all sorts\nof uses for this gas, though."
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_SmokestacksComplexRiseUp, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 7, Movement_0850
@@ -398,7 +399,7 @@ L_054A:
 L_0558:
     ActorCmdWait
     // "Oh! You overheard some\nof my vast stock of knowledge!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_OhOverheardSomeVast, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkCmpConst 0x8010, 0
@@ -442,7 +443,7 @@ L_05F1:
 
 L_0604:
     // "Those gas holders are sure an\nexpression of harmony, aren't they?[f000]븁\u0000\nThere's a reason behind that shape.[f000]븁\u0000\nA sphere is best for withstanding\nthe tremendous pressure inside.[f000]븁\u0000\nIt would be nice if they would draw\na Pokémon on these gas holders, too."
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_ThoseGasHoldersSure, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     PlayerGetDir 0x8010
@@ -470,7 +471,7 @@ L_0658:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F6
     // "Oh! You overheard some\nof my breathtaking knowledge.[f000]븁\u0000\nAre you actually...interested\nin what I have to say?[f000]븁\u0000\nThat would mean I have\na complex buddy![f000]븁\u0000\nThat makes me really happy!\nWell then, take this with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_OhOverheardSomeBreathtaking, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ItemCheckSpace ITEM_ETHER, 1, 0x8010
@@ -505,7 +506,7 @@ L_06F0:
 
 L_06F6:
     // "I know a lot about the complex, right?[f000]븁\u0000\nI was even scouted by the foreman,\nbut I'm happy just looking at it!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_KnowLotAboutComplex, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMCall L_0716
@@ -636,14 +637,14 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh my! Why, you have a\nPokédex, don't you?[f000]븁\u0000\nI heard that the newest Pokédex\nhas an amazing function called[f000]븀\u0000\nthe Habitat List![f000]븁\u0000\nCould you use it to show me what kind\nof Pokémon live in this complex?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_OhWhyHavePokedex, 0, 0
     PokeDexCheckHabitatList 456, 0, 0, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08DE
     // "Amazing!\nThe Habitat List is filled up![f000]븁\u0000\nSo amazing! There are so many\nPokémon living in this complex![f000]븁\u0000\nHere, take these as thanks![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_AmazingHabitatListFilled, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -654,14 +655,14 @@ Script_7:
     VMStackPop 0x8000
     FlagSet 467
     // "If you fill up the Habitat Lists, you might\ncomplete the Pokédex before you know it!"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_IfFillUpHabitat, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_08EC
 
 L_08DE:
     // "Oh? You don't have the\nHabitat List for the complex[f000]븀\u0000\nfilled up yet..."
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_OhDontHaveHabitat, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -672,7 +673,7 @@ L_08F2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you fill up the Habitat Lists, you might\ncomplete the Pokédex before you know it!"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankComplex2_Text_IfFillUpHabitat, 0, 0
     LastKeyWait
     ActorMsgClose
 

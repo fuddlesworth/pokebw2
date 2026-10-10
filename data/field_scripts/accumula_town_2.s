@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/accumula_town_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,7 +16,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Listen up! You Trainers should always\nkeep a smile on your face![f000]븁\u0000\nIf you're not smiling, your Pokémon might\nfeel like something's wrong, you know?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_ListenUpTrainersShould, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -27,7 +28,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Which Pokémon should hold what item...[f000]븁\u0000\nThere's no right answer,\nso it's hard to decide.[f000]븁\u0000\nStill, I like spending time thinking\nit over."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_WhichPokemonShouldHold, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -39,7 +40,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Wow! A Pokémon!\nHow cool! I'm so jealous![f000]븁\u0000\nHa ha! Just kidding!\nI'm a Pokémon Trainer now![f000]븁\u0000\nJust like the Trainer from\nNuvema I met two years ago!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_WowPokemonHowCool, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -52,7 +53,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 515, 0
     // "Paaan!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_Paaan, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -93,23 +94,23 @@ L_00FA:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0131
     // "My Ambipom knows Nasty Plot![f000]븁\u0000\nI'll make your Excadrill really strong,\nso let's battle sometime, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_AmbipomKnowsNastyPlot, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01B1
 
 L_0131:
     // "The Excadrill I got from you\nhas become really strong![f000]븀\u0000\nI'm sure you'll be bowled over![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_ExcadrillGotFromHas, 0, 0
     // "Hey! If it's all right with you,\nwould you have a Pokémon battle with me?"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_HeyIfItsAll_2, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A3
     // "OK! Here we go![f000]븁\u0000\nWe'll have an actual match, so you can\nreally see how I've raised Excadrill![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_OkHereWeGo, 0, 0
     MsgWinCloseAll
     CallTradedPokemonBattle TRAINER_LASS_DIANA, 0, 0, 2
     TrainerBattleIsVictory 0x8010
@@ -130,7 +131,7 @@ L_0193:
 
 L_01A3:
     // "I get it...[f000]븁\u0000\nYou don't want to have battles\nall the time."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetDontWantHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -167,23 +168,23 @@ L_0209:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0240
     // "My Alakazam knows Psycho Cut![f000]븁\u0000\nI'll make your Hippowdon really\ntough, so let's battle sometime, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_AlakazamKnowsPsychoCut, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02C8
 
 L_0240:
     // "The Hippowdon I got from you\nhas become really strong![f000]븀\u0000\nI'm sure you'll be bowled over![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_HippowdonGotFromHas, 0, 0
     // "Hey! If it's all right with you,\nwould you have a Pokémon battle with me?"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_HeyIfItsAll_3, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02BA
     // "OK! Here we go![f000]븁\u0000\nI'll show you how well I've raised\nHippowdon by having a battle with you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_OkHereWeGo_2, 0, 0
     MsgWinCloseAll
     CallTradedPokemonBattle TRAINER_LASS_DIANA_2, 0, 0, 3
     TrainerBattleIsVictory 0x8010
@@ -200,14 +201,14 @@ L_02A0:
 L_02A2:
     FlagSet 434
     // "Hey! I'm so glad we were able\nto trade Pokémon and have a battle!"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_HeyImGladWe, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02C8
 
 L_02BA:
     // "I get it...[f000]븁\u0000\nYou don't want to have battles\nall the time."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetDontWantHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -216,7 +217,7 @@ L_02C8:
 
 L_02CE:
     // "Hey! I'm so glad we were able\nto trade Pokémon and have a battle!"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_HeyImGladWe, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -227,7 +228,7 @@ L_02DC:
 
 L_02E2:
     // "Hey! If it's all right with you,\nlet's trade![f000]븁\u0000\nI'll trade you my Ambipom\nfor your Excadrill!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_HeyIfItsAll, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -245,12 +246,12 @@ L_02E2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0373
     // "Great!\nThen, let's start the trade![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GreatThenLetsStart, 0, 0
     MsgWinCloseAll
     FieldTradeSavePokemon 0x8020, 2
     FieldTradeStart 29, 0x8020
     // "My Ambipom knows Nasty Plot![f000]븁\u0000\nI'll make your Excadrill really strong,\nso let's battle sometime, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_AmbipomKnowsNastyPlot, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 431
@@ -259,7 +260,7 @@ L_02E2:
 
 L_0373:
     // "I get it...\nThat's your trusty partner.[f000]븁\u0000\nIf you change your mind,\nlet's trade Pokémon, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetThatsTrustyPartner, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -268,7 +269,7 @@ L_0381:
 
 L_0387:
     // "I get it...\nThat's your trusty partner.[f000]븁\u0000\nIf you change your mind,\nlet's trade Pokémon, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetThatsTrustyPartner, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -277,7 +278,7 @@ L_0395:
 
 L_039B:
     // "I get it...\nThat's your trusty partner.[f000]븁\u0000\nIf you change your mind,\nlet's trade Pokémon, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetThatsTrustyPartner, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -286,7 +287,7 @@ L_03A9:
 
 L_03AB:
     // "Whew!\nThat was so fun![f000]븁\u0000\nHey! If it's all right with you,\ncould you give me a Hippowdon?[f000]븁\u0000\nI'll trade you my Alakazam!\nC'mon, let's trade Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_WhewFunHeyIf, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -304,12 +305,12 @@ L_03AB:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_043C
     // "Great!\nThen, let's start the trade![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GreatThenLetsStart_2, 0, 0
     MsgWinCloseAll
     FieldTradeSavePokemon 0x8020, 3
     FieldTradeStart 30, 0x8020
     // "My Alakazam knows Psycho Cut![f000]븁\u0000\nI'll make your Hippowdon really\ntough, so let's battle sometime, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_AlakazamKnowsPsychoCut, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 432
@@ -318,7 +319,7 @@ L_03AB:
 
 L_043C:
     // "I get it...\nThat's your trusty partner.[f000]븁\u0000\nIf you change your mind,\nlet's trade Pokémon, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetThatsTrustyPartner_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -327,7 +328,7 @@ L_044A:
 
 L_0450:
     // "I get it...\nThat's your trusty partner.[f000]븁\u0000\nIf you change your mind,\nlet's trade Pokémon, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetThatsTrustyPartner_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -336,7 +337,7 @@ L_045E:
 
 L_0464:
     // "I get it...\nThat's your trusty partner.[f000]븁\u0000\nIf you change your mind,\nlet's trade Pokémon, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown2_Text_GetThatsTrustyPartner_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

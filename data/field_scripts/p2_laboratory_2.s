@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/p2_laboratory_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -46,7 +47,7 @@ Script_4:
     WorkSetConst 0x408f, 2
     VMCall L_012A
     // "Battle the Scientist?"
-    SystemMsg 8, 0
+    SystemMsg P2Laboratory2_Text_BattleScientist, 0
     YesNoWin 0x8010
     InfoMsgClose
     VMCall L_020E
@@ -64,7 +65,7 @@ Script_1:
 
 L_00CA:
     // "So you want to battle me?!"
-    ActorMsg MSGFILE_SCRIPT, 14, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_WantBattle, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -83,7 +84,7 @@ L_00FB:
 
 L_010E:
     // "I've given you all of the Drives.\nUse them how you wish..."
-    ActorMsg MSGFILE_SCRIPT, 15, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_IveGivenAllDrives, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0124
@@ -101,23 +102,23 @@ L_012A:
     ActorCmdExec 0, Movement_03A8
     ActorCmdWait
     // "Oh, it's just a kid...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_OhItsJustKid, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_03BC
     ActorCmdExec 255, Movement_03A0
     ActorCmdWait
     // "You... It couldn't be...[f000]븁\u0000\nThe fact that you are here means you\ncame to learn about the secret[f000]븀\u0000\nof Genesect![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_CouldntFactHereMeans, 0, 0, 0
     ActorMsgClose
     EvCameraMoveTo 9688, 0, 0xed000, 0x68000, 0, 0x48000, 8
     ActorCmdExec 0, Movement_03CC
     ActorCmdWait
     EvCameraWait
     // "We, Team Plasma, revived Genesect from\na Fossil.[f000]븁\u0000\nThen we enhanced the Pokémon with the\npower of science![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_WeTeamPlasmaRevived, 0, 0, 0
     ActorMsgClose
     // "It is the strongest Pokémon in history!![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_StrongestPokemonHistory, 0, 0, 1
     ActorMsgClose
     EvCameraMoveToDefault 12
     ActorCmdExec 0, Movement_03CC
@@ -126,16 +127,16 @@ L_012A:
     EvCameraRebind
     EvCameraEnd
     // "But, our lord N was not interested in\nthis Genesect that was modified by the[f000]븀\u0000\npower of science![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_ButOurLordN, 0, 0, 0
     ActorMsgClose
     // "“Science damages the natural beauty\nof Pokémon! They're perfect beings!\"[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_ScienceDamagesNaturalBeauty, 0, 0, 1
     ActorMsgClose
     // "That's what he said...[f000]븁\u0000\nSo our research was halted, and this\nfacility was closed...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_ThatsWhatHeSaid, 0, 0, 0
     ActorMsgClose
     // "However!!\nThe Genesect research is all mine![f000]븁\u0000\nSo if you want to know Genesect's\nsecret, you'll have to beat me in battle![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_HoweverGenesectResearchAll, 0, 0, 1
     ActorMsgClose
     VMReturn
 
@@ -176,10 +177,10 @@ L_028B:
 
 L_0297:
     // "I've lost everything...[f000]븁\u0000\nI forgot my duty as a Scientist is\nto make the world happy.[f000]븁\u0000\nSo, this must be what I get for trying to\nmake a Pokémon into a tool for fighting...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_IveLostEverythingForgot, 0, 0, 0
     ActorMsgClose
     // "I'm going to wash my hands of this\nGenesect matter...[f000]븁\u0000\nI don't need this anymore...\nI'll give it to you.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_ImGoingWashHands, 0, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -189,12 +190,12 @@ L_0297:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "The item I just gave you was made\nfor Genesect.[f000]븁\u0000\nWhen it holds an item like this, it\nchanges the type of the move called[f000]븀\u0000\nTechno Blast, so it can always have[f000]븀\u0000\nan advantage.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_ItemJustGaveMade, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_03D4
     ActorCmdWait
     // "There was another one in my\nother pocket...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_ThereAnotherOneOther, 0, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -213,7 +214,7 @@ L_0297:
 
 L_0341:
     // "There sure are some very cowardly\nTrainers, aren't there!"
-    ActorMsg MSGFILE_SCRIPT, 13, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, P2Laboratory2_Text_ThereSureSomeVery, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -229,14 +230,14 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "There is a memo stuck to the\nside of the monitor.[f000]븁\u0000\nRead it?"
-    SystemMsg 16, 0
+    SystemMsg P2Laboratory2_Text_ThereMemoStuckSide, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0398
     // "“My lord N apparently rejected\nmy research...[f000]븀\u0000\nBut my research is necessary for[f000]븀\u0000\nTeam Plasma to reach its goal...[f000]븀\u0000\nThe strongest Pokémon...\"[f000]븁\u0000\nThe rest of the memo is torn and\nimpossible to read."
-    SystemMsg 17, 0
+    SystemMsg P2Laboratory2_Text_LordNApparentlyRejected, 0
     LastKeyWait
 
 L_0398:

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10450.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -29,7 +30,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome to the Pokémon Musical![f000]븁\u0000\nHere you can participate in\na musical alone.[f000]븁\u0000\nWould you like to participate?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WelcomePokemonMusicalHere, 0x8011, 2, 0
     VMCall L_0851
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -54,7 +55,7 @@ L_00BA:
 
 L_00DF:
     // "Great! Please walk this way![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_GreatPleaseWalkWay, 0x8011, 2, 0
     ActorMsgClose
     Cmd_02C5 5
     FunfestBGMReturn
@@ -94,7 +95,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome to the Pokémon Musical![f000]븁\u0000\nThis is a changing room for Dress Up only.\nWould you like to Dress Up your Pokémon?"
-    ActorMsg MSGFILE_SCRIPT, 56, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WelcomePokemonMusicalChanging, 0x8011, 2, 0
     VMCall L_0851
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -106,7 +107,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D0
     // "This way, please![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 57, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WayPlease, 0x8011, 2, 0
     ActorMsgClose
     FunfestBGMReturn
     VMCall L_0BC8
@@ -153,7 +154,7 @@ L_0206:
     WorkSetConst 0x8024, 0
     WorkSetConst 0x8025, 0
     // "Welcome to the Pokémon Musical![f000]븁\u0000\nHere you and your friends can\nperform together![f000]븁\u0000\nWould you like to participate?"
-    ActorMsg MSGFILE_SCRIPT, 43, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WelcomePokemonMusicalHere_2, 0x8011, 2, 0
     VMCall L_0851
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -184,7 +185,7 @@ L_026A:
 
 L_028B:
     // "Would you like to use\nInfrared Communication or[f000]븀\u0000\nDS Wireless Communications?"
-    ActorMsg MSGFILE_SCRIPT, 46, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WouldLikeUseInfrared, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32805
     ListMenuAdd 47, 65535, 0
     ListMenuAdd 48, 65535, 1
@@ -207,12 +208,12 @@ L_02E5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_030A
     // "Would you like to launch\nInfrared Communication and[f000]븀\u0000\nDS Wireless Communications?"
-    ActorMsg MSGFILE_SCRIPT, 50, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WouldLikeLaunchInfrared, 0x8011, 2, 0
     VMJump L_0316
 
 L_030A:
     // "Launch DS Wireless Communications?"
-    ActorMsg MSGFILE_SCRIPT, 52, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_LaunchDsWirelessCommunications, 0x8011, 2, 0
 
 L_0316:
     YesNoWin 0x8010
@@ -288,7 +289,7 @@ L_040F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0653
     // "One of you will become the leader.\nThat person will get to choose the show[f000]븀\u0000\nyou'll perform![f000]븁\u0000\nThe other members should select\n“Join group.\""
-    ActorMsg MSGFILE_SCRIPT, 51, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_OneWillBecomeLeader, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32804
     ListMenuAdd 39, 65535, 1
     ListMenuAdd 38, 65535, 0
@@ -346,7 +347,7 @@ L_0508:
     VMJumpIf CMP_STACK, L_0550
     Cmd_0167 11, 1, 0, 0
     // "Would you like to launch\nInfrared Communication and[f000]븀\u0000\nDS Wireless Communications?"
-    ActorMsg MSGFILE_SCRIPT, 50, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WouldLikeLaunchInfrared, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -383,7 +384,7 @@ L_05A4:
     VMJumpIf CMP_STACK, L_05F2
     Cmd_0167 11, 0, 0, 0
     // "Launch DS Wireless Communications?"
-    ActorMsg MSGFILE_SCRIPT, 52, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_LaunchDsWirelessCommunications, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -433,7 +434,7 @@ L_0653:
 
 L_0682:
     // "Thank you for waiting.\nThis way, please![f000]븂\u0001<"
-    ActorMsg MSGFILE_SCRIPT, 53, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_ThankWaitingWayPlease, 0x8011, 2, 0
     ActorMsgClose
     Cmd_0167 14, 10, 0, 0
     Cmd_02C5 5
@@ -558,7 +559,7 @@ L_0816:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0843
     // "Please visit us again."
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_PleaseVisitUsAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -612,7 +613,7 @@ L_08F9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A6C
     // "What would you like me to explain?"
-    ActorMsg MSGFILE_SCRIPT, 59, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WhatWouldLikeExplain, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32784
     ListMenuAdd 60, 65535, 0
     ListMenuAdd 62, 65535, 1
@@ -635,12 +636,12 @@ L_08F9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09A1
     // "Would you like to Dress Up your Pokémon?"
-    ActorMsg MSGFILE_SCRIPT, 58, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WouldLikeDressUp, 0x8011, 2, 0
     VMJump L_09AD
 
 L_09A1:
     // "Participate in the musical?"
-    ActorMsg MSGFILE_SCRIPT, 54, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_ParticipateMusical, 0x8011, 2, 0
 
 L_09AD:
     VMJump L_0A66
@@ -651,7 +652,7 @@ L_09B3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09D8
     // "The Pokémon Musical is a show where\nPokémon wearing Props perform on stage.[f000]븀\u0000\nAnyone can participate![f000]븁\u0000\nWe encourage all Trainers to show the\nworld how charming their Pokémon are![f000]븁\u0000\nThe audience is looking forward to seeing\nhow you Dress Up your Pokémon, and how[f000]븀\u0000\nyour Pokémon perform![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 61, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_PokemonMusicalShowWhere, 0x8011, 2, 0
     VMJump L_0A66
 
 L_09D8:
@@ -660,7 +661,7 @@ L_09D8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09FD
     // "You can join the musical from any of the\nthree reception areas.[f000]븁\u0000\nThe reception area in the center is for\nparticipating alone.[f000]븁\u0000\nWhen you participate alone, you will\nbe joined by other Trainers from around[f000]븀\u0000\nthe Unova region.[f000]븁\u0000\nIf you want to put on a musical with your\nfriends, go to the left reception area.[f000]븁\u0000\nYou'll be asked to pick a Leader who\nwill choose which show to perform,[f000]븀\u0000\nand the others will join the group.[f000]븁\u0000\nThe reception area to the right is where\nyou go to Dress Up only.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 63, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_CanJoinMusicalFrom, 0x8011, 2, 0
     VMJump L_0A66
 
 L_09FD:
@@ -669,7 +670,7 @@ L_09FD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A22
     // "The Pokémon that will participate in the\nmusical are chosen from your party at[f000]븀\u0000\nthe reception area.[f000]븁\u0000\nBecause of their shape, some Pokémon\nhave a hard time wearing certain Props.[f000]븁\u0000\nYou might want to try Dress Up in the\nchanging room first if you're worried![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 65, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_PokemonWillParticipateMusical, 0x8011, 2, 0
     VMJump L_0A66
 
 L_0A22:
@@ -678,7 +679,7 @@ L_0A22:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A47
     // "Oh, Dress Up is my favorite part! That's\nwhere you put the Props you've collected[f000]븀\u0000\non the Pokémon that will be performing.[f000]븁\u0000\nDepending on the Pokémon, you can put\nthe Props in different places.[f000]븁\u0000\nWhen you use Props that fit the theme of\nthe show you've chosen, the audience[f000]븀\u0000\nwill notice your Pokémon more![f000]븁\u0000\nSometimes a Prop that doesn't fit the\ntheme will also make your Pokémon[f000]븀\u0000\nstand out.[f000]븁\u0000\nIf you want to get an idea of how it's\ndone, you can watch how other people[f000]븀\u0000\nDress Up and then try it yourself![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 67, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_OhDressUpFavorite, 0x8011, 2, 0
     VMJump L_0A66
 
 L_0A47:
@@ -687,7 +688,7 @@ L_0A47:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A66
     // "You can choose which show to perform\nwhen you participate in the musical.[f000]븁\u0000\nThere is no need for Trainers to give\ncommands, but if your Pokémon is carrying[f000]븀\u0000\na Prop in its arms, it can use that Prop[f000]븀\u0000\nto show off and appeal to the audience.[f000]븁\u0000\nDepending on how you Dress Up your\nPokémon, the reactions from the audience[f000]븀\u0000\nwill change![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 69, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_CanChooseWhichShow, 0x8011, 2, 0
 
 L_0A66:
     VMJump L_08F9
@@ -706,7 +707,7 @@ L_0A74:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AA8
     // "I'm sorry, but you don't have an\neligible Pokémon in your party.[f000]븁\u0000\nPlease come back again with\ndifferent Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 44, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_ImSorryButDont, 0x8011, 2, 0
     WorkSetConst 0x8010, 0
     VMReturn
 
@@ -714,7 +715,7 @@ L_0AA8:
     WorkSetConst 0x802a, 0
     WorkSetConst 0x802b, 0
     // "Please choose the Pokémon that\nwill participate.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_PleaseChoosePokemonWill, 0x8011, 2, 0
     ActorMsgClose
     Cmd_016A 0x802b, 0x8021
     VMStackPush 0x802b
@@ -733,7 +734,7 @@ L_0AF1:
     WorkSetConst 0x802c, 0
     MusicalCmd_0165 14, 0, 0x802c
     // "Which show would you like\nto participate in?"
-    ActorMsg MSGFILE_SCRIPT, 3, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10450_Text_WhichShowWouldLike, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32784
     ListMenuAdd 29, 65535, 0
     ListMenuAdd 30, 65535, 1
@@ -837,7 +838,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Which show would you like\nto participate in?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10450_Text_WhichShowWouldLike, 0, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32784
     ListMenuAdd 29, 65535, 0
     ListMenuAdd 30, 65535, 1
@@ -878,7 +879,7 @@ L_0CF1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0D3D
     // "In fact, this person does not exist..."
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10450_Text_FactPersonDoesNot, 0, 0
     ABKeyWait
     ActorMsgClose
     VMJump L_0DE2
@@ -1017,7 +1018,7 @@ Script_17:
     WordSetMusicalInfo 1, 1, 0x8008
     MEPlay SEQ_ME_ACCE
     // "Received the [f000][ff00]\u0001\u0002[f000]Ċ\u0001\u0001[f000][ff00]\u0001\u0000!"
-    SystemMsg 26, 0
+    SystemMsg Global10450_Text_Received, 0
     MEWait
     MsgWaitAdvance
     VMStackPush 0x8009
@@ -1025,12 +1026,12 @@ Script_17:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0EFC
     // "[f000]Ā\u0001\u0000 put the [f000]Ċ\u0001\u0001\nin the [f000][ff00]\u0001\u0002Prop Case[f000][ff00]\u0001\u0000![f000]븁\u0000"
-    SystemMsg 28, 0
+    SystemMsg Global10450_Text_PutPropCase_2, 0
     VMJump L_0F04
 
 L_0EFC:
     // "[f000]Ā\u0001\u0000 put the [f000]Ċ\u0001\u0001\nin the [f000][ff00]\u0001\u0002Prop Case[f000][ff00]\u0001\u0000!"
-    SystemMsg 27, 0
+    SystemMsg Global10450_Text_PutPropCase, 0
     LastKeyWait
 
 L_0F04:

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -44,7 +45,7 @@ Script_22:
 
 L_00A1:
     // "Iris: Hey, c'mon![f000]븁\u0000\nThumb Pier is past here![f000]븁\u0000\nIf you mention a suspicious\nplace in Castelia City, the[f000]븀\u0000\nonly places that come to mind[f000]븀\u0000\nare Narrow Street and here![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_IrisHeyCmonThumb, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8023
     VMStackPushConst 11
@@ -82,7 +83,7 @@ Movement_0114:
 Script_9:
     ActorsPauseAll
     // "Iris: This way! This way!\nC'mon! Have a look![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_IrisWayWayCmon, 12, 0, 0
     MsgWinCloseAll
     ActorCmdExec 12, Movement_015C
     ActorCmdWait
@@ -255,7 +256,7 @@ L_0392:
 L_03CD:
     ActorCmdWait
     // "Welcome to Castelia City!!\nIt's the Castelia Harlequin Hunt![f000]븁\u0000\nI bet this is your first visit to\nCastelia City.[f000]븁\u0000\nThat's great!\nHere, have this Bicycle![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_WelcomeCasteliaCityIts, 11, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -265,7 +266,7 @@ L_03CD:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "The Castelia Harlequin Hunt's\nrules are simple![f000]븁\u0000\nAll you have to do is visit specific\nplaces and talk to the Harlequin there![f000]븀\u0000\nWhether you participate is up to you![f000]븀\u0000\nThe places to look are...[f000]븁\u0000\nThe Medal Office![f000]븁\u0000\nPasserby Analytics HQ![f000]븁\u0000\nAnd the Battle Company![f000]븁\u0000\nRide the Bicycle I gave\nyou, and go, go, go!"
-    ActorMsg MSGFILE_SCRIPT, 13, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_CasteliaHarlequinHuntsRules, 11, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8024
@@ -431,13 +432,13 @@ Script_21:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_07E7
     // "Free-for-all! It's the Castelia\nHarlequin Hunt! You haven't visited...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_FreeAllItsCastelia, 0, 0
     VMStackPush 0x40e2
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F6
     // "You still need to visit\nthis many places: Wow! Zero![f000]븁\u0000\nThat means you've completed\nthe Castelia Harlequin Hunt![f000]븁\u0000\nCongratulations!\nThis is a small commemorative gift![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_StillNeedVisitMany_2, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -447,7 +448,7 @@ Script_21:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "The Castelia Harlequin Hunt is a way\nto make more people love Castelia City![f000]븁\u0000\nThat's why we generously gave you a\nBicycle at the beginning. It's the best[f000]븀\u0000\nway to get around Castelia City![f000]븁\u0000\nKeep loving Castelia City![f000]븁\u0000\nCastelia City, Castelia City,\nCastelia City! ♪ Here we go! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40e2, 6
@@ -471,7 +472,7 @@ L_0702:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0750
     // "The Medal Office![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_MedalOffice, 11, 0, 0
     WorkAdd 0x8027, 1
     VMJump L_07C0
 
@@ -485,7 +486,7 @@ L_0750:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_078B
     // "Passerby Analytics HQ![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_PasserbyAnalyticsHq, 11, 0, 0
     WorkAdd 0x8027, 1
     VMJump L_07C0
 
@@ -499,7 +500,7 @@ L_078B:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_07C0
     // "The Battle Company![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_BattleCompany, 11, 0, 0
     WorkAdd 0x8027, 1
 
 L_07C0:
@@ -509,7 +510,7 @@ L_07C0:
 L_07CC:
     WordSetNumber 0, 0x8027, 1
     // "You still need to visit\nthis many places: [f000]Ȁ\u0001\u0000![f000]븁\u0000\nSo explore Castelia City, and enjoy\nthe Castelia Harlequin Hunt!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_StillNeedVisitMany, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -518,7 +519,7 @@ L_07E1:
 
 L_07E7:
     // "The Castelia Harlequin Hunt is a way\nto make more people love Castelia City![f000]븁\u0000\nThat's why we generously gave you a\nBicycle at the beginning. It's the best[f000]븀\u0000\nway to get around Castelia City![f000]븁\u0000\nKeep loving Castelia City![f000]븁\u0000\nCastelia City, Castelia City,\nCastelia City! ♪ Here we go! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -534,7 +535,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Castelia City\nA City of Grandeur"
-    MsgPlaceSign 21, 1
+    MsgPlaceSign CasteliaCity_Text_CasteliaCityCityGrandeur, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -545,7 +546,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Castelia City\nA City of Grandeur"
-    MsgPlaceSign 21, 2
+    MsgPlaceSign CasteliaCity_Text_CasteliaCityCityGrandeur, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -556,7 +557,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Ahead: Castelia Street\nOcean Side: Cruise Dock"
-    MsgPlaceSign 22, 2
+    MsgPlaceSign CasteliaCity_Text_AheadCasteliaStreetOcean, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -567,7 +568,7 @@ Script_4:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Ahead: Mode Street\nOcean Side: Prime Pier"
-    MsgPlaceSign 23, 2
+    MsgPlaceSign CasteliaCity_Text_AheadModeStreetOcean, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -578,7 +579,7 @@ Script_5:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Ahead: Narrow Street\nOcean Side: Unity Pier"
-    MsgPlaceSign 24, 2
+    MsgPlaceSign CasteliaCity_Text_AheadNarrowStreetOcean, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -589,7 +590,7 @@ Script_6:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Ahead: Pokémon Gym\nOcean Side: Liberty Pier"
-    MsgPlaceSign 25, 2
+    MsgPlaceSign CasteliaCity_Text_AheadPokemonGymOcean, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -600,7 +601,7 @@ Script_7:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Passerby Analytics HQ\n...People pass by as they walk along."
-    MsgPlaceSign 26, 2
+    MsgPlaceSign CasteliaCity_Text_PasserbyAnalyticsHqPeople, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -611,7 +612,7 @@ Script_8:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Battle Company\nTalented Trainers Welcome!"
-    MsgPlaceSign 27, 2
+    MsgPlaceSign CasteliaCity_Text_BattleCompanyTalentedTrainers, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -755,7 +756,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "To live surrounded by people,\ndo you have to grow to like everyone,[f000]븀\u0000\nor do you only have to like yourself?"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_LiveSurroundedByPeople, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -767,7 +768,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wonder what Castelia\nwas like before it got this big."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_WonderWhatCasteliaLike, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -779,7 +780,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's wonderful how the Pokémon\nand women here are so full of life!"
-    ActorMsg MSGFILE_SCRIPT, 9, 6, 1, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_ItsWonderfulHowPokemon, 6, 1, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -791,7 +792,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Battle Company needs\npeople for focus testing.[f000]븁\u0000\nTrainers who are confident in\ntheir abilities should come try it!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_BattleCompanyNeedsPeople, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -803,7 +804,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Seasons and trends always pass..."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_SeasonsTrendsAlwaysPass, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -815,7 +816,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "...When I fall asleep in my bed.[f000]븁\u0000\n...When my Pokémon's attack\nhits critically![f000]븁\u0000\nMy life is full of things\nthat bring me joy!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_WhenFallAsleepBed, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -827,7 +828,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm a battling Clerk ⑭!\nIf I don't give up, I'll win someday!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_ImBattlingClerkIf, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -839,7 +840,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Everyone's faces blend together!\nIs that because I'm tired?"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_EveryonesFacesBlendTogether, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -851,7 +852,7 @@ Script_18:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When you're tired, rest!\nDon't force yourself to be energetic!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_WhenYoureTiredRest, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -863,7 +864,7 @@ Script_19:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Should I change my Pokémon's moves\nor its held items?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity_Text_ShouldChangePokemonsMoves, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

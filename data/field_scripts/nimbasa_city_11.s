@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_11.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -107,7 +108,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A fight against your opponent can end in\nthe blink of an eye![f000]븁\u0000\nThe important thing is how much you\nprepare before the fight."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity11_Text_FightAgainstOpponentCan, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -119,7 +120,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I don't play basketball just because\nI'm tall.[f000]븁\u0000\nMaybe I grew tall because I wanted to\nplay basketball so badly?!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity11_Text_DontPlayBasketballJust, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -132,7 +133,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 559, 0
     // "Aaagy!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity11_Text_Aaagy, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

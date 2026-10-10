@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/celestial_tower_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -30,12 +31,12 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FF
     // "Not hearing the peal of the bell\nmeans no happily ever after...[f000]븀\u0000\nIf we keep it from ringing,[f000]븀\u0000\nthen those two will never find happiness.[f000]븁\u0000\nThat's why I can't let you\ngo one step further![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower4_Text_NotHearingPealBell, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_CLERK_F_LANA, 0, 0
     VMCall L_0126
     // "People who don't give any love\nshouldn't ask for any...[f000]븀\u0000\nfrom people or Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower4_Text_PeopleWhoDontGive, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x40ee, 4
@@ -69,7 +70,7 @@ L_00FF:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0120
     // "People who don't give any love\nshouldn't ask for any...[f000]븀\u0000\nfrom people or Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower4_Text_PeopleWhoDontGive, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

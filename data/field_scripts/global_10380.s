@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10380.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,7 +16,7 @@
 Script_1:
     WordSetPlayerName 0
     // "How is your Pokédex coming along?\nCan I see it?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_HowPokedexComingAlong, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -28,7 +29,7 @@ Script_1:
     VMJumpIf CMP_STACK, L_00A1
     VMCall L_0142
     // "Let me see...[f000]븁\u0000\nOh, you've caught [f000]Ȃ\u0001\u0000 Pokémon in the\nUnova region!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_LetSeeOhYouve_2, 0, 0
     MEPlay 0x8022
     MEWait
     MsgWaitAdvance
@@ -38,7 +39,7 @@ Script_1:
 L_00A1:
     VMCall L_0112
     // "Let me see...[f000]븁\u0000\nOh, you've seen [f000]Ȃ\u0001\u0000 Pokémon in the\nUnova region!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_LetSeeOhYouve, 0, 0
     MEPlay 0x8022
     MEWait
     MsgWaitAdvance
@@ -51,20 +52,20 @@ L_00C3:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00EE
     // "It seems like you are meeting Pokémon at\na good clip![f000]븁\u0000\nHere! This is a gift to thank you for all\nyour hard work![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 35, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_SeemsLikeMeetingPokemon_2, 0, 0
     ActorMsgClose
     VMCall L_03FA
 
 L_00EE:
     // "Keep up the good work!"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_KeepUpGoodWork, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0110
 
 L_0102:
     // "This Pokédex is full of memories from your\njourney. It's a treasure you can cherish[f000]븀\u0000\nfor your entire life."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_PokedexFullMemoriesFrom, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -300,7 +301,7 @@ L_0434:
     WorkSetConst 0x8001, 1
     RTCallGlobal 2805
     // "If you have a Permit,\nyou can go to the Nature Preserve[f000]븀\u0000\nfrom Mistralton City by plane![f000]븁\u0000\nGo check it out to see\nwhat kind of place it is![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 36, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_IfHavePermitCan, 0, 0
     FlagSet 136
 
 L_0452:
@@ -322,7 +323,7 @@ L_048C:
     WorkSetConst 0x8001, 1
     RTCallGlobal 2805
     // "If you have an Oval Charm,\nwe don't know why,[f000]븀\u0000\nbut you'll have a better chance to[f000]븀\u0000\nfind Eggs at the Pokémon Day Care![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 37, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_IfHaveOvalCharm, 0, 0
     FlagSet 137
 
 L_04AA:
@@ -344,7 +345,7 @@ L_04E4:
     WorkSetConst 0x8001, 1
     RTCallGlobal 2805
     // "If you have a Shiny Charm,\nwe don't know why, but you'll have a[f000]븀\u0000\nbetter chance to find Shiny Pokémon![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 38, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_IfHaveShinyCharm, 0, 0
     FlagSet 138
 
 L_0502:
@@ -353,7 +354,7 @@ L_0502:
 Script_2:
     WordSetPlayerName 0
     // "You're here to show me how your\nPokédex is coming along, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_YoureHereShowHow, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -362,7 +363,7 @@ Script_2:
     PokeDexGetEvaluationParams 1, 0x8020, 0x8021, 0x8022
     WordSetNumber 0, 0x8021, 3
     // "I see![f000]븁\u0000\nYou've caught [f000]Ȃ\u0001\u0000 Pokémon, then..."
-    ParentActorMsg MSGFILE_SCRIPT, 42, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_SeeYouveCaughtPokemon, 0, 0
     MEPlay 0x8022
     MEWait
     MsgWaitAdvance
@@ -374,7 +375,7 @@ Script_2:
     VMJumpIf CMP_STACK, L_057A
     MsgWaitAdvance
     // "Oh! We have a gift for you.\nMy daughter has it.[f000]븀\u0000\nGo speak to her and get it!"
-    ParentActorMsg MSGFILE_SCRIPT, 61, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_OhWeHaveGift, 0, 0
 
 L_057A:
     LastKeyWait
@@ -383,7 +384,7 @@ L_057A:
 
 L_0584:
     // "Oh, really...[f000]븁\u0000\nIf you want me to have a look at\nyour Pokédex, come here again!"
-    ParentActorMsg MSGFILE_SCRIPT, 43, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10380_Text_OhReallyIfWant, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -399,7 +400,7 @@ Script_3:
     PokeDexGetEvaluationParams 1, 0x8020, 0x8021, 0x8022
     WordSetNumber 0, 0x8021, 3
     // "I see![f000]븁\u0000\nYou've caught [f000]Ȃ\u0001\u0000 Pokémon, then..."
-    SystemMsg 42, 2
+    SystemMsg Global10380_Text_SeeYouveCaughtPokemon, 2
     MEPlay 0x8022
     MEWait
     MsgWaitAdvance
@@ -411,7 +412,7 @@ Script_3:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_05F3
     // "Oh! We have a gift for you.\nMy daughter has it.[f000]븀\u0000\nGo speak to her and get it!"
-    SystemMsg 61, 2
+    SystemMsg Global10380_Text_OhWeHaveGift, 2
     MsgWaitAdvance
 
 L_05F3:
@@ -424,7 +425,7 @@ L_05F9:
     VMJumpIf CMP_STACK, L_062C
     VMCall L_0142
     // "Let me see...[f000]븁\u0000\nOh, you've caught [f000]Ȃ\u0001\u0000 Pokémon in the\nUnova region!"
-    SystemMsg 2, 2
+    SystemMsg Global10380_Text_LetSeeOhYouve_2, 2
     MEPlay 0x8022
     MEWait
     MsgWaitAdvance
@@ -434,7 +435,7 @@ L_05F9:
 L_062C:
     VMCall L_0112
     // "Let me see...[f000]븁\u0000\nOh, you've seen [f000]Ȃ\u0001\u0000 Pokémon in the\nUnova region!"
-    SystemMsg 1, 2
+    SystemMsg Global10380_Text_LetSeeOhYouve, 2
     MEPlay 0x8022
     MEWait
     MsgWaitAdvance
@@ -447,7 +448,7 @@ L_0646:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0667
     // "It seems like you are meeting Pokémon at\na good clip![f000]븁\u0000\nI have something I want to give you!\nPlease come to the lab when you can."
-    SystemMsg 34, 2
+    SystemMsg Global10380_Text_SeemsLikeMeetingPokemon, 2
     MsgWaitAdvance
 
 L_0667:

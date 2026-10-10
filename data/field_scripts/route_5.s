@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -89,7 +90,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 5\nPerformer Street"
-    MsgPlaceSign 58, 3
+    MsgPlaceSign Route5_Text_Route5PerformerStreet, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -100,7 +101,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Driftveil Drawbridge"
-    MsgPlaceSign 59, 2
+    MsgPlaceSign Route5_Text_DriftveilDrawbridge, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -111,7 +112,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nThere are different Cases\nfor each type of item.[f000]븁\u0000\nItems are placed automatically in\nthe correct Case by their type.[f000]븁\u0000\nThe name of the Case tells you\nwhat type of items will be kept there.[f000]븁\u0000\nAlso, you can place anything in\nFree Space, no matter what it is.[f000]븁\u0000\nSo you can keep items you often use\nin one place."
-    MsgPlaceSign 60, 0
+    MsgPlaceSign Route5_Text_TrainerTipsThereDifferent, 0
     MsgPlaceSignClose
     FlagSet 2668
     FinishAllEvents
@@ -126,7 +127,7 @@ Script_18:
     SEWait
     // "Bianca: Heeey!"
     // "Bianca: Hey!"
-    ActorMsgGendered 1024, 45, 46, 251, 0, 0
+    ActorMsgGendered 1024, Route5_Text_BiancaHeeey, Route5_Text_BiancaHey, 251, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0E58
@@ -162,7 +163,7 @@ L_0211:
 
 L_022E:
     // "Nice timing!\nI was wanting to give you this!"
-    ActorMsg MSGFILE_SCRIPT, 47, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_NiceTimingWantingGive, 251, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -174,19 +175,19 @@ L_022E:
     VMStackPop 0x8000
     // "Ta-da![f000]븁\u0000\nIt's a Hidden Machine, Fly![f000]븁\u0000\nWhen you use this move outside of battle,\nyou can go to places you want to go,[f000]븀\u0000\nlike a Pokémon Center.[f000]븁\u0000\nBy the way, [f000]Ā\u0001\u0000,\ndo you know about Hidden Grottoes?"
     // "Ta-da![f000]븁\u0000\nIt's a Hidden Machine, Fly![f000]븁\u0000\nWhen you use this move outside of battle,\nyou can go to places you want to go,[f000]븀\u0000\nlike a Pokémon Center.[f000]븁\u0000\nBy the way, [f000]Ā\u0001\u0000,\ndo you know about Hidden Grottoes?"
-    ActorMsgGendered 1024, 48, 49, 251, 0, 0
+    ActorMsgGendered 1024, Route5_Text_TaDaItsHidden, Route5_Text_TaDaItsHidden_2, 251, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0295
     // "Great!\nYou might find one soon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 50, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_GreatMightFindOne, 251, 0, 0
     VMJump L_02A1
 
 L_0295:
     // "OK! Then I'll explain![f000]븁\u0000\nSometimes you can find a grotto\namong trees where Pokémon[f000]븀\u0000\nlike to hide.[f000]븁\u0000\nThat place is called a Hidden Grotto.\nMakes sense, right?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 51, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_OkThenIllExplain, 251, 0, 0
 
 L_02A1:
     MsgWinCloseAll
@@ -196,7 +197,7 @@ L_02A1:
     ActorCmdExec 251, Movement_0DF0
     ActorCmdWait
     // "Wait![f000]븁\u0000\n...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 52, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_Wait, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 372, 436, 1, 8, 1
     VMSleep 15
@@ -208,7 +209,7 @@ L_02A1:
     ActorCmdExec 251, Movement_0DF8
     ActorCmdWait
     // "Over there![f000]븁\u0000\nI heard something from that direction![f000]븁\u0000\nI have good ears.\nHey! Come with me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 53, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_OverThereHeardSomething, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_04B8
     VMSleep 5
@@ -223,17 +224,17 @@ L_02A1:
     ActorCmdExec 251, Movement_045C
     ActorCmdWait
     // "The sound is coming from\nsomewhere around here.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 54, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_SoundComingFromSomewhere, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_047C
     ActorCmdWait
     // "Wow! Here it is![f000]븁\u0000\nThere's a gap, and it looks like\nwe can fit through![f000]븁\u0000\nC'mon! Let's go have a look![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 55, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_WowHereTheresGap, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0DF0
     ActorCmdWait
     // "Look!\nYou've found a narrow path![f000]븁\u0000\nWill you follow it?"
-    SystemMsg 56, 2
+    SystemMsg Route5_Text_LookYouveFoundNarrow, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -245,7 +246,7 @@ L_02A1:
     ActorCmdExec 255, Movement_0E08
     ActorCmdWait
     // "This is too good to pass up! Let's go in![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 57, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_TooGoodPassUp, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0DF0
     ActorCmdExec 255, Movement_0DF0
@@ -347,7 +348,7 @@ L_0508:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'll keep gathering Berries. Come back\ntomorrow if you want more!"
-    ParentActorMsg MSGFILE_SCRIPT, 35, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_IllKeepGatheringBerries, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -421,12 +422,12 @@ L_0606:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_062B
     // "Hi, Trainer! Will you buy the Berries\nI gathered?[f000]븁\u0000\nFive [f000]ĉ\u0001\u0000 for just $200!\nYou want them. You'll buy them, right?"
-    ActorMsg MSGFILE_SCRIPT, 30, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_HiTrainerWillBuy, 0, 2, 0
     VMJump L_0637
 
 L_062B:
     // "I'll sell you five [f000]ĉ\u0001\u0000\nfor just $200.[f000]븀\u0000\nYou want them. You'll buy them, right?"
-    ActorMsg MSGFILE_SCRIPT, 36, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_IllSellFiveJust, 0, 2, 0
 
 L_0637:
     YesNoWin 0x8010
@@ -495,7 +496,7 @@ L_0714:
     VMJumpIf CMP_STACK, L_0745
     MoneyWinClose
     // "Oh! But your Bag is full!"
-    ActorMsg MSGFILE_SCRIPT, 33, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_OhButBagFull, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_08F8
@@ -507,7 +508,7 @@ L_0745:
     VMJumpIf CMP_STACK, L_0770
     MoneyWinClose
     // "Oh! But you don't have enough money."
-    ActorMsg MSGFILE_SCRIPT, 34, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_OhButDontHave, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_08F8
@@ -518,7 +519,7 @@ L_0770:
     MoneyWinUpdate
     SEWait
     // "Five [f000]ĉ\u0001\u0000 for $200!\nYou're a smart shopper![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 32, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_Five200YoureSmart, 0, 2, 0
     MsgWinCloseAll
     MoneyWinClose
     WorkCmpConst 0x4175, 0
@@ -612,7 +613,7 @@ L_08BC:
 
 L_08E2:
     // "I'll keep gathering Berries. Come back\ntomorrow if you want more!"
-    ActorMsg MSGFILE_SCRIPT, 35, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_IllKeepGatheringBerries, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     MoneyWinClose
@@ -624,7 +625,7 @@ L_08F8:
 L_08FE:
     MoneyWinClose
     // "Boo!\nAnd I went to all that trouble[f000]븀\u0000\nto gather Berries."
-    ActorMsg MSGFILE_SCRIPT, 31, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_BooWentAllTrouble, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -643,7 +644,7 @@ Script_5:
     VMJumpIf CMP_STACK, L_0959
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nNow, I'm having a Triple Battle\nwith the opponent in front of me!"
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nNow, I'm having a Rotation Battle\nwith the opponent in front of me!"
-    ActorMsgVersioned 1024, 0, 10, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_ImHeartbreakerNameCharles, Route5_Text_ImHeartbreakerNameCharles_6, 8, 0, 0
     LastKeyWait
     ActorMsgClose
     ActorCmdExec 8, Movement_0E48
@@ -659,7 +660,7 @@ L_0959:
     VMJumpIf CMP_STACK, L_09CD
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI wanted to get the attention of a girl\nI like, so I mastered a new style of[f000]븀\u0000\nPokémon battling called Triple Battle.[f000]븁\u0000\nWant to learn about it?"
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI wanted to get the attention of a girl\nI like, so I mastered a new style of[f000]븀\u0000\nPokémon battling called Rotation Battle.[f000]븁\u0000\nWant to learn about it?"
-    ActorMsgVersioned 1024, 1, 11, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_ImHeartbreakerNameCharles_2, Route5_Text_ImHeartbreakerNameCharles_7, 8, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -668,14 +669,14 @@ L_0959:
     FlagSet 281
     // "In Triple Battles, you send out three\nPokémon at a time and battle![f000]븁\u0000\nThe rules are simple: just make all of\nyour opponent's Pokémon faint.[f000]븁\u0000\nAnd that's a rough explanation\nof Triple Battles.[f000]븁\u0000"
     // "In Rotation Battles, you send out three\nPokémon at a time and battle![f000]븁\u0000\nOne Pokémon takes the lead position,\nand the other two stand on each side.[f000]븁\u0000\nThe trick is, each turn you can change\ntheir positions...[f000]븁\u0000\nAnd that's a rough explanation\nof Rotation Battles.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 3, 13, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_TripleBattlesSendOut, Route5_Text_RotationBattlesSendOut, 8, 0, 0
     VMCall L_09D9
     VMJump L_09C7
 
 L_09B5:
     // "Oh, man! Getting someone's attention is\nreally hard."
     // "Oh, man! Getting someone's attention is\nreally hard."
-    ActorMsgVersioned 1024, 2, 12, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_OhManGettingSomeones, Route5_Text_OhManGettingSomeones_2, 8, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -693,7 +694,7 @@ L_09D3:
 L_09D9:
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nHey! If you're a Trainer, how about a\nTriple Battle?"
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nHey! If you're a Trainer, how about a\nRotation Battle?"
-    ActorMsgVersioned 1024, 4, 14, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_ImHeartbreakerNameCharles_3, Route5_Text_ImHeartbreakerNameCharles_8, 8, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -707,7 +708,7 @@ L_09D9:
     VMJumpIf CMP_STACK, L_0A35
     // "I hate to burst your bubble when you're\nall fired up, but...[f000]븁\u0000\nIn Triple Battles, you need three or\nmore Pokémon to battle."
     // "I hate to burst your bubble when you're\nall fired up, but...[f000]븁\u0000\nIn Rotation Battles, you need three or\nmore Pokémon to battle."
-    ActorMsgVersioned 1024, 6, 16, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_HateBurstBubbleWhen, Route5_Text_HateBurstBubbleWhen_2, 8, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0C22
@@ -715,7 +716,7 @@ L_09D9:
 L_0A35:
     // "You've got a good attitude, don't you![f000]븁\u0000\nI'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI'm always at full throttle.[f000]븁\u0000"
     // "You've got a good attitude, don't you![f000]븁\u0000\nI'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI'm always at full throttle.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 5, 15, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_YouveGotGoodAttitude, Route5_Text_YouveGotGoodAttitude_2, 8, 0, 0
     ActorMsgClose
     VMCall L_0C42
     GameGetVersion 0x8023
@@ -755,12 +756,12 @@ L_0ACE:
 L_0AD0:
     // "Sheesh. That's embarrassing. Getting\nschooled when I was planning to teach.[f000]븁\u0000\nStill, you have potential![f000]븁\u0000\nYou have to understand your Pokémon\nto win in a Triple Battle.[f000]븁\u0000"
     // "Sheesh. That's embarrassing. Getting\nschooled when I was planning to teach.[f000]븁\u0000\nStill, you have potential![f000]븁\u0000\nYou have to understand your Pokémon\nto win in a Rotation Battle.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 8, 18, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_SheeshThatsEmbarrassingGetting, Route5_Text_SheeshThatsEmbarrassingGetting_2, 8, 0, 0
     ActorMsgClose
     VMCall L_0D4C
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nRiding a bike and becoming the wind fits\na bad boy like me.[f000]븁\u0000"
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nRiding a bike and becoming the wind fits a\nbad boy like me.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 9, 19, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_ImHeartbreakerNameCharles_5, Route5_Text_ImHeartbreakerNameCharles_10, 8, 0, 0
     ActorMsgClose
     VMCall L_0DB6
     VMSleep 30
@@ -778,7 +779,7 @@ L_0AD0:
     ActorCmdExec 17, Movement_0E08
     ActorCmdWait
     // "You were great![f000]븁\u0000\nCharles, too.\nHe was great to some extent, I guess![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 67, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route5_Text_WereGreatCharlesToo, 9, 0, 0
     MsgWinCloseAll
     MultiMsg 68, 3, 3, 1
     VMSleep 10
@@ -824,7 +825,7 @@ L_0C22:
 L_0C28:
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI have some advice for you.\nChallenge is the essence of life!"
     // "I'm a heartbreaker...\nMy name... Charles.[f000]븁\u0000\nI have some advice for you.[f000]븁\u0000\nChallenge is the essence of life!"
-    ActorMsgVersioned 1024, 7, 17, 8, 0, 0
+    ActorMsgVersioned 1024, Route5_Text_ImHeartbreakerNameCharles_4, Route5_Text_ImHeartbreakerNameCharles_9, 8, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1037,7 +1038,7 @@ Script_6:
     ActorCmdExec 9, Movement_0E10
     ActorCmdWait
     // "Am I going to lose to the heartbreaker?\nI have a girlfriend!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_AmGoingLoseHeartbreaker, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0F5F
@@ -1048,7 +1049,7 @@ L_0F41:
     ActorCmdExec 9, Movement_0E58
     ActorCmdWait
     // "You have four Gym Badges...\nYou might be able to defeat Charles![f000]븁\u0000\nPlease beat him for me!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_HaveFourGymBadges, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1062,7 +1063,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Because it's a battle, one person has\nto win and one person has to lose.[f000]븁\u0000\nI wish my boyfriend could just enjoy\nthe battle and not worry about losing.[f000]븀\u0000\nSometimes he gets too serious."
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_BecauseItsBattleOne, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1074,7 +1075,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There seems to be a lot to think about,\nbut it looks really fun!"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_ThereSeemsLotThink, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1086,7 +1087,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Battling with three Pokémon.\nThat itself makes me very excited!"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_BattlingThreePokemonItself, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1098,7 +1099,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Triple Battle and\nRotation Battle...[f000]븁\u0000\nThere are various styles of\nPokémon battling."
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_TripleBattleRotationBattle, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1110,7 +1111,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Trainer called Charles\nis quite tough to beat.[f000]븁\u0000\nIf you have four Gym Badges,\nyou might be a match for him."
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_TrainerCalledCharlesQuite, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1122,7 +1123,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There are so many different Pokémon,\nit's difficult to decide which ones[f000]븀\u0000\nto battle with."
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_ThereManyDifferentPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1134,7 +1135,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There are a lot of Pokémon.\nSo I like this!"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_ThereLotPokemonLike, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1146,7 +1147,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Looking at this kind of battle\nmakes me curious about the[f000]븀\u0000\nPokémon World Tournament.[f000]븀\u0000\nI hear it will be held in Driftveil City."
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_LookingKindBattleMakes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1158,7 +1159,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The drawbridge goes up\nwhen a ship needs to pass.[f000]븁\u0000\nThen, the Pokémon that are resting\non the bridge fly away all at once!"
-    ParentActorMsg MSGFILE_SCRIPT, 37, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_DrawbridgeGoesUpWhen, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1174,13 +1175,13 @@ Script_16:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1090
     // "Cheren: I heard that you met\na Pokémon Trainer called N.[f000]븁\u0000\nThat's not really why I'm here, though.\nWill you battle me?"
-    ParentActorMsg MSGFILE_SCRIPT, 61, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_CherenHeardMetPokemon, 0, 0
     FlagSet 435
     VMJump L_109A
 
 L_1090:
     // "Cheren: There's something I want\nto check by having a battle with you.[f000]븁\u0000\nHow about it?"
-    ParentActorMsg MSGFILE_SCRIPT, 62, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_CherenTheresSomethingWant, 0, 0
 
 L_109A:
     YesNoWin 0x8010
@@ -1190,7 +1191,7 @@ L_109A:
     VMJumpIf CMP_STACK, L_11DA
     Cmd_02B5 0, 1
     // "You remind me of [f000]Ā\u0001\u0001.\nThat makes me excited about[f000]븀\u0000\nthis Pokémon battle![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 63, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_RemindMakesExcitedAbout, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x802a, 0
     WorkSetConst 0x802b, 0
@@ -1239,9 +1240,9 @@ L_115B:
     ActorCmdExec 21, Movement_0DF8
     ActorCmdWait
     // "I talked with [f000]Ā\u0001\u0001 here before.[f000]븁\u0000\nWe all have our own brand of strength,\npeople and Pokémon both.[f000]븁\u0000\nThe strength to make our dreams\na reality, the strength to protect[f000]븀\u0000\nwhat we hold most dear...[f000]븀\u0000\nThat's what I said.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 65, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_TalkedHereBeforeWe, 0, 0
     // "I was thinking about how I hope N can see\nthe same thing...but during our battle,[f000]븀\u0000\nI came to understand something.[f000]븁\u0000\nDuring his journey, N also saw\nwhat we saw.[f000]븁\u0000\nIf I tell this story, [f000]Ā\u0001\u0001\nwill probably be happy.[f000]븁\u0000\nThank you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 66, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_ThinkingAboutHowHope, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8010
     VMStackPush 0x8010
@@ -1265,7 +1266,7 @@ L_11BA:
 
 L_11DA:
     // "Not interested?[f000]븁\u0000\nWell, I'll be here, so when you change\nyour mind, please come battle me."
-    ParentActorMsg MSGFILE_SCRIPT, 64, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_NotInterestedWellIll, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1290,7 +1291,7 @@ Script_19:
     VMJumpIf CMP_STACK, L_12C4
     TrainerBGMPlayPush TRAINER_MUSICIAN_PRESTON
     // "Hum fiercely! My battle song!\nBattle fiercely! My Pokémon![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_HumFiercelyBattleSong_2, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_MUSICIAN_PRESTON, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -1312,20 +1313,20 @@ L_1267:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12B0
     // "In battling you, I came to understand...[f000]븁\u0000\nYou're the best!\nHere! This is for you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_BattlingCameUnderstandYoure, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8008, 84
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "If you want your Pokémon to\nhold this Electric Guitar,[f000]븀\u0000\ngo to the Musical Theater![f000]븀\u0000\nCooler than cool!"
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_IfWantPokemonHold, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_12BE
 
 L_12B0:
     // "In battling you, I came to understand...[f000]븁\u0000\nYou're the best![f000]븁\u0000\nAfter all, you have the\nElectric Guitar Prop!"
-    ParentActorMsg MSGFILE_SCRIPT, 42, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_BattlingCameUnderstandYoure_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1334,7 +1335,7 @@ L_12BE:
 
 L_12C4:
     // "If you want your Pokémon to\nhold this Electric Guitar,[f000]븀\u0000\ngo to the Musical Theater![f000]븀\u0000\nCooler than cool!"
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_IfWantPokemonHold, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1345,7 +1346,7 @@ L_12D8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hum fiercely! My battle song!\nBattle fiercely! My Pokémon![f000]븁\u0000\nHuh?\nYou don't have a Prop Case, do you?[f000]븀\u0000\nThen I won't battle you!"
-    ParentActorMsg MSGFILE_SCRIPT, 38, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_HumFiercelyBattleSong, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1359,7 +1360,7 @@ Script_20:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "In hot summer, I want to cool down\nwith Water-type Pokémon.[f000]븁\u0000\nOn the other hand, in cold winter,\nI want to warm up with Fire-type Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 43, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_HotSummerWantCool, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1371,7 +1372,7 @@ Script_21:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A Pokémon you are proud of\nwins with your favorite move![f000]븁\u0000\nThat's when a Trainer definitely smiles."
-    ParentActorMsg MSGFILE_SCRIPT, 44, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route5_Text_PokemonProudWinsFavorite, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

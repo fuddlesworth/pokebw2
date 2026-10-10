@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10885.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -1901,7 +1902,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Tee hee hee... A Trainer who battles\nlooking for the password.[f000]븁\u0000\nEven if you win a battle,\nyou won't necessarily get the answer.[f000]븁\u0000\nYou might get something else, though."
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10885_Text_TeeHeeHeeTrainer, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -2103,7 +2104,7 @@ L_0AAA:
 
 L_0AB8:
     // "Team Plasma: I have what you want![f000]븁\u0000\nBut if you want it...\nYou know, don't you? Battle me![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10885_Text_TeamPlasmaHaveWhat, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8020
     VMStackPushConst 23
@@ -2118,7 +2119,7 @@ L_0AE5:
 L_0AED:
     VMCall L_0B4F
     // "Phew!\nYou're good![f000]븁\u0000\nI'll give you this, then![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 32, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10885_Text_PhewYoureGoodIll, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -2129,7 +2130,7 @@ L_0AED:
     VMStackPop 0x8000
     FlagSet 356
     // "With the Plasma Card,\nyou can enter the password![f000]븁\u0000\nDo the rest by yourself."
-    ParentActorMsg MSGFILE_SCRIPT, 36, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10885_Text_PlasmaCardCanEnter, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 354
@@ -2137,7 +2138,7 @@ L_0AED:
 
 L_0B3B:
     // "With the Plasma Card,\nyou can enter the password![f000]븁\u0000\nDo the rest by yourself."
-    ParentActorMsg MSGFILE_SCRIPT, 36, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10885_Text_PlasmaCardCanEnter, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

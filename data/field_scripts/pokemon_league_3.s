@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokemon_league_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Nothing happens!\nIt seems you can't go back until you win."
-    InfoMsg 0, 2
+    InfoMsg PokemonLeague3_Text_NothingHappensSeemsCant, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

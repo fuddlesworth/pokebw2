@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/clay_tunnel_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -9,14 +10,14 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel2_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0071
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel2_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     ActorCmdExec 7, Movement_00AC
@@ -32,7 +33,7 @@ Script_1:
 
 L_0071:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel2_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

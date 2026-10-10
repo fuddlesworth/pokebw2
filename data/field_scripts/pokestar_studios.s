@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokestar_studios.h"
 
 // Script plugin 10, from the zones that use this file
 
@@ -141,24 +142,24 @@ Script_3:
     EvCameraMoveTo 9688, 0, 0xed000, 0x1f8000, 0, 0x398000, 30
     EvCameraWait
     // "Hm... I see...\nThat kid sounds promising...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 26, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HmSeeKidSounds, 26, 0, 0
     MsgWinCloseAll
     // "Indeed... And that kid should\nbe here any moment![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_IndeedKidShouldHere, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0E60
     ActorCmdWait
     ActorCmdExec 0, Movement_0E88
     ActorCmdWait
     // "Oh!\nAnd look who should appear![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_OhLookWhoShould, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 26, Movement_0E60
     ActorWalkRoute 255, 31, 58, 1, 8, 0
     ActorCmdWait
     WordSetPlayerName 0
     // "Welcome...to Pokéstar Studios![f000]븁\u0000\nHey, [f000]Ā\u0001\u0000!\nWe've been waiting for you![f000]븁\u0000\nThis is our boss,\nMr. Stu Deeoh![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_WelcomePokestarStudiosHey, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0550
     ActorCmdWait
@@ -167,19 +168,19 @@ Script_3:
     ActorCmdExec 26, Movement_0E60
     ActorCmdWait
     // "Bonsoir! Hello!\nI'm Stu Deeoh! Charmed, I'm sure![f000]븁\u0000\nSo you must be [f000]Ā\u0001\u0000.\nWe were just talking about you![f000]븁\u0000\nI'd like to explain Pokéstar Studios,\nbut I need a little time to prepare![f000]븁\u0000\nI'm so sorry, dahling,\ncould you wait an eensy moment?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 26, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_BonsoirHelloImStu, 26, 3, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0DF8
     ActorCmdWait
     // "In the meantime, I'll show you around\nPokéstar Studios![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_MeantimeIllShowAround, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 26, Movement_0E70
     VMSleep 8
     ActorCmdExec 0, Movement_0E68
     ActorCmdWait
     // "Oh, that would be maaarvelous![f000]븁\u0000\nMovies! They're amazing![f000]븁\u0000\nPokéstar Studios inspires and\nmoves people all over the world![f000]븀\u0000\nYou can make sure [f000]Ā\u0001\u0000[f000]븀\u0000\nexperiences its many charms![f000]븁\u0000\nWell then, I absolutely must\nbe off and start my preparations![f000]븀\u0000\nI'll see you in a minute!"
-    ActorMsg MSGFILE_SCRIPT, 7, 26, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_OhWouldMaaarvelousMovies, 26, 3, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 26, 31, 45, 0, 4, 1
@@ -192,7 +193,7 @@ Script_3:
     ActorCmdExec 0, Movement_0E60
     ActorCmdWait
     // "That's my boss for you!\nWhat graceful footwork![f000]븁\u0000\nWell then, [f000]Ā\u0001\u0000,\ncome with me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ThatsBossWhatGraceful, 0, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 15
     EvCameraWait
@@ -209,7 +210,7 @@ Script_3:
     ActorCmdExec 0, Movement_0E60
     ActorCmdWait
     // "First, let me tell you briefly\nwhat Pokéstar Studios is all about![f000]븁\u0000\nPokéstar Studios was built for making\nfilms--it's a movie metropolis![f000]븁\u0000\nMany films are made and released\nright here![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_FirstLetTellBriefly, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0508
     VMSleep 4
@@ -220,7 +221,7 @@ Script_3:
     EvCameraMoveTo 5848, 0, 0xed000, 0x2d8000, 0x3b01f, 0x138000, 40
     EvCameraWait
     // "This is the theater![f000]븁\u0000\nOf course, this is where\nthe films are shown.[f000]븀\u0000\nMovie fans from all over[f000]븀\u0000\nalso gather here![f000]븁\u0000\nHow about we have a look inside?[f000]븁\u0000"
-    InfoMsg 10, 2
+    InfoMsg PokestarStudios_Text_TheaterCourseWhereFilms, 2
     InfoMsgClose_0039
     EvCameraMoveToDefault 40
     EvCameraWait
@@ -258,7 +259,7 @@ Script_33:
     EvCameraMoveTo 5592, 0, 0x105000, 0x148000, 0x3000f, 0x118000, 40
     EvCameraWait
     // "This is the filming studio![f000]븁\u0000\nThis is where Pokéstar Studios\nmovies are born![f000]븁\u0000\nWell now, come inside!\nMr. Deeoh should be waiting![f000]븁\u0000"
-    InfoMsg 11, 2
+    InfoMsg PokestarStudios_Text_FilmingStudioWherePokestar, 2
     InfoMsgClose_0039
     EvCameraMoveToDefault 40
     EvCameraWait
@@ -378,7 +379,7 @@ Script_4:
     ActorCmdWait
     WordSetPlayerName 0
     // "Hey! [f000]Ā\u0001\u0000!\nToday, Pokéstar Studios is having[f000]븀\u0000\na special ceremony![f000]븁\u0000\nMr. Stu Deeoh is waiting!\nCome with me, won't you?!"
-    ActorMsg MSGFILE_SCRIPT, 49, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HeyTodayPokestarStudios, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 0, 43, 27, 4, 8, 1
@@ -390,7 +391,7 @@ Script_4:
     ActorCmdExec 20, Movement_0E20
     ActorCmdWait
     // "[f000]Ā\u0001\u0000, congratulations![f000]븁\u0000\nToday is a special day for you\nand for Pokéstar Studios![f000]븁\u0000\nI treasure the time I've\nspent acting with you!"
-    ActorMsg MSGFILE_SCRIPT, 50, 20, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_CongratulationsTodaySpecialDay, 20, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0884
@@ -402,7 +403,7 @@ Script_4:
     ActorCmdExec 21, Movement_0E20
     ActorCmdWait
     // "Hey, [f000]Ā\u0001\u0000![f000]븁\u0000\nI'm honored to have\nbeen in a movie with you![f000]븁\u0000\nMe? You don't remember me?[f000]븁\u0000\nYou can't be serious!\nI was the UFO!"
-    ActorMsg MSGFILE_SCRIPT, 51, 21, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HeyImHonoredHave, 21, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0890
@@ -416,7 +417,7 @@ Script_4:
     ActorCmdExec 25, Movement_0E80
     ActorCmdWait
     // "If it isn't [f000]Ā\u0001\u0000!\nYou're too much! I'm so moved![f000]븀\u0000\nCongratulations and everything![f000]븁\u0000\nI-I'm so glad I was your\nfan, [f000]Ā\u0001\u0000!"
-    ActorMsg MSGFILE_SCRIPT, 52, 25, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_IfIsntYoureToo, 25, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_089C
@@ -424,7 +425,7 @@ Script_4:
     ActorCmdExec 255, Movement_08B0
     ActorCmdWait
     // "Acting with you...[f000]븁\u0000\nIt was pretty fun and a\ngood experience.[f000]븁\u0000\nComing clear out here\nwas worth it."
-    ActorMsg MSGFILE_SCRIPT, 53, 24, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ActingPrettyFunGood, 24, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_08C8
@@ -432,7 +433,7 @@ Script_4:
     ActorCmdExec 255, Movement_08C8
     ActorCmdWait
     // "I'm proud that I was\nable to make movies with you![f000]븁\u0000\nCongratulations, [f000]Ā\u0001\u0000!"
-    ActorMsg MSGFILE_SCRIPT, 54, 23, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ImProudAbleMake, 23, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_08D4
@@ -442,7 +443,7 @@ Script_4:
     ActorCmdExec 22, Movement_0E10
     ActorCmdWait
     // "How great, [f000]Ā\u0001\u0000![f000]븁\u0000\nNow listen!\nI was the director of your debut![f000]븁\u0000\nSo I'm almost like your parent!\nDon't forget to be grateful!"
-    ActorMsg MSGFILE_SCRIPT, 55, 22, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HowGreatNowListen, 22, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_08EC
@@ -452,7 +453,7 @@ Script_4:
     ActorCmdExec 22, Movement_08E0
     ActorCmdWait
     // "Hey, boss!\nWe're here!"
-    ActorMsg MSGFILE_SCRIPT, 56, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HeyBossWereHere, 0, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_08F4
@@ -465,22 +466,22 @@ Script_4:
     ActorCmdExec 26, Movement_0E60
     ActorCmdWait
     // "Hm...[f000]븁\u0000\n[f000]Ā\u0001\u0000,\ntoday's a day to be remembered.[f000]븁\u0000\nWhen I built this place,\nI made a wish and a promise.[f000]븁\u0000\nFor the day Pokéstar Studios\nwould grow until it was a temple[f000]븀\u0000\nof entertainment that would[f000]븀\u0000\namaze the whole world...[f000]븁\u0000\nAnd for the day that Pokéstar Studios\ncreated a new star worthy of it...[f000]븁\u0000\nI wouldn't build anything\non this platform.[f000]븁\u0000\nBut look...[f000]븁\u0000\nThere's a bronze statue here now.\nIn other words, my wish has come true,[f000]븀\u0000\nand I fulfilled my promise.[f000]븁\u0000\nThat's right, [f000]Ā\u0001\u0000...\nIt's all thanks to you!"
-    ActorMsg MSGFILE_SCRIPT, 57, 26, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HmTodaysDayRemembered, 26, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     // "Your acting excites the staff\nand the other actors...[f000]븁\u0000\nYour acting charms audiences...[f000]븁\u0000\nYou're amazing...[f000]븁\u0000\nBetter said...[f000]븁\u0000\nYou're the best..."
-    ActorMsg MSGFILE_SCRIPT, 58, 27, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ActingExcitesStaffOther, 27, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 26, Movement_0DF8
     ActorCmdWait
     // "[f000]Ā\u0001\u0000![f000]븁\u0000\nYou are the true star\nof Pokéstar Studios![f000]븁\u0000\nYou're the shooting star across\nthe night sky that is the silver screen!"
-    ActorMsg MSGFILE_SCRIPT, 59, 26, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_TrueStarPokestarStudios, 26, 2, 0
     MEPlay SEQ_ME_POKEWOOD
     MEWait
     MsgWaitAdvance
     // "So that's why we got this\nsmall gift for you."
-    ActorMsg MSGFILE_SCRIPT, 60, 26, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ThatsWhyWeGot, 26, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0E08
@@ -488,7 +489,7 @@ Script_4:
     ActorCmdExec 255, Movement_0E68
     ActorCmdWait
     // "Yessir, boss![f000]븁\u0000\nOK! [f000]Ā\u0001\u0000!\nCome this way!"
-    ActorMsg MSGFILE_SCRIPT, 61, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_YessirBossOkCome, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     RTReserveScript 2
@@ -589,7 +590,7 @@ L_0954:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Why, if it isn't [f000]Ā\u0001\u0000!\nI thought you were my AD![f000]븁\u0000\nA star as big as you\ncan be in one of my films![f000]븁\u0000\nWould you replace that Lillipup\nand play the Pokémon's part?"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_WhyIfIsntThought, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -610,7 +611,7 @@ Script_6:
     VMJumpIf CMP_STACK, L_09AE
     SEPlay SEQ_SE_MESSAGE
     // "Well now...[f000]븁\u0000\nI'd like to see a love story\njust like ours!"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_WellNowIdLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_09C0
@@ -618,7 +619,7 @@ Script_6:
 L_09AE:
     SEPlay SEQ_SE_MESSAGE
     // "Hm... What movie to see...[f000]븁\u0000\n[f000]Ā\u0001\u0000 is the one who\nalways acts really well, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HmWhatMovieSee, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -633,7 +634,7 @@ Script_7:
     ActorSetEyeToEye
     PVPlay 506, 0
     // "Bwoo! Bowoof!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_BwooBowoof, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -646,7 +647,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm a rookie assistant director.[f000]븁\u0000\nI love movies, but\nI'm not good at making them yet.[f000]븁\u0000\nThe director is really strict,\nand he's always getting mad at me.[f000]븁\u0000\nBut...[f000]븁\u0000\nWorking for him is teaching me a lot."
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ImRookieAssistantDirector, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -658,7 +659,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Special sets and movie props\nare stored inside![f000]븁\u0000\nBefore VFX became so advanced,\nwe actually had to make a lot of things!"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_SpecialSetsMovieProps, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -670,7 +671,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Man... That director's\ngoing off again...[f000]븁\u0000\nHis films may be pretty good,\nbut there's a fine line between[f000]븀\u0000\ngenius and insanity..."
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ManDirectorsGoingOff, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -682,7 +683,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Just looking at the posters is exciting!\nWhich movie should I watch today?"
-    ParentActorMsg MSGFILE_SCRIPT, 37, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_JustLookingPostersExciting, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -694,7 +695,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You're a Pokéstar Studios\nactor as well, right?[f000]븁\u0000\nA single line from an actor\ncan change an entire film![f000]븁\u0000\nMovie shoots are full of\npossibilities at Pokéstar Studios!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_YourePokestarStudiosActor, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -706,7 +707,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm rehearsing right now.[f000]븁\u0000\nIn order to make a good film,\ndoing a lot of work before the shoot[f000]븀\u0000\nis really important!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ImRehearsingRightNow, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -718,7 +719,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There's a dressing room\ninside this trailer.[f000]븁\u0000\nInside they're doing costume fitting,\nmakeup, and script checks![f000]븁\u0000\nI just finished changing!\nI'm going to give it my best today, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_TheresDressingRoomInside, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -735,7 +736,7 @@ Script_15:
     VMJumpIf CMP_STACK, L_0AE2
     SEPlay SEQ_SE_MESSAGE
     // "Hey, darling!\nWhat are we going to watch today?"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HeyDarlingWhatWe, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0AF4
@@ -743,7 +744,7 @@ Script_15:
 L_0AE2:
     SEPlay SEQ_SE_MESSAGE
     // "C'mon, darling!\nLet's watch one of [f000]Ā\u0001\u0000's[f000]븀\u0000\nmovies today!"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_CmonDarlingLetsWatch, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -763,7 +764,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello there! How about a portrait of one\nof Pokéstar Studios' famous stars?[f000]븁\u0000\nRight now...[f000]븁\u0000\nBrycen's is a hot ticket\nwith women and kids.[f000]븁\u0000\nSabrina's is extremely popular with guys![f000]븁\u0000\nHuh? I'm afraid we don't carry one\nof [f000]Ā\u0001\u0000."
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HelloThereHowAbout, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0B71
@@ -776,7 +777,7 @@ L_0B30:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Good day! How about a portrait of one of\nPokéstar Studios' famous stars?[f000]븁\u0000\nRight now...[f000]븁\u0000\nBrycen's is very popular with\nwomen and kids.[f000]븁\u0000\nSabrina's is extremely popular with guys![f000]븁\u0000\nHuh? We've started stocking portraits\nof [f000]Ā\u0001\u0000 recently, but the sales[f000]븀\u0000\nare nothing to write home about."
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_GoodDayHowAbout, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0B71
@@ -785,7 +786,7 @@ L_0B5D:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello there! How about a portrait of one\nof Pokéstar Studios' famous stars?[f000]븁\u0000\nRight now, the most popular is...[f000]븁\u0000\n[f000]Ā\u0001\u0000. There's no doubt about it!\nHey, has anyone ever mentioned[f000]븀\u0000\nyou look kinda like [f000]Ā\u0001\u0000?[f000]븁\u0000\nI'm really jealous!\nI wish I resembled a star like that."
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HelloThereHowAbout_2, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -805,7 +806,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Someday, I'm going to be in pictures,\nbecome a famous actor,[f000]븀\u0000\nand buy a mansion![f000]븁\u0000\nA really big mansion! A huge one!"
-    ParentActorMsg MSGFILE_SCRIPT, 32, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_SomedayImGoingPictures, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0BC1
@@ -814,7 +815,7 @@ L_0BAD:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh! It's the star who was in the movie\nI just watched--[f000]Ā\u0001\u0000![f000]븁\u0000\n[f000]Ā\u0001\u0000, you're a star,\nso you're living in a mansion, right?[f000]븀\u0000\nA really big one? A huge one?"
-    ParentActorMsg MSGFILE_SCRIPT, 33, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_OhItsStarWho, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -828,7 +829,7 @@ Script_18:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hear Pokéstar Studios\nmakes horror films as well.[f000]븁\u0000\nMan, who even watches kids'\nstuff like that anyway?!"
-    ParentActorMsg MSGFILE_SCRIPT, 34, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HearPokestarStudiosMakes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -840,7 +841,7 @@ Script_19:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey, I know him![f000]븁\u0000\nHe was the guy yelling “Mama!\"\nduring the movie with ghosts!"
-    ParentActorMsg MSGFILE_SCRIPT, 35, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HeyKnowHimHe, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -852,7 +853,7 @@ Script_20:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When I look at this from here,\nI feel like I've become a monster![f000]븁\u0000\nRoar![f000]븁\u0000\nHa ha ha..."
-    ParentActorMsg MSGFILE_SCRIPT, 36, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_WhenLookFromHere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -864,7 +865,7 @@ Script_21:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Brilliant actors come to Pokéstar Studios\nfrom all over the world to make movies![f000]븁\u0000\nThat's why the titles of movies are\nin so many different languages!"
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_BrilliantActorsComePokestar, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -876,7 +877,7 @@ Script_22:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Not just anybody can take part\nin filming at Pokéstar Studios.[f000]븁\u0000\nOnly Trainers approved by the owner\ncan participate."
-    ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_NotJustAnybodyCan, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -889,7 +890,7 @@ Script_23:
     ActorCmdExec 18, Movement_0E78
     ActorCmdWait
     // "Good grief...\nI've been waiting for three hours...[f000]븁\u0000\nHow long does it take\nto put on makeup anyway?"
-    ParentActorMsg MSGFILE_SCRIPT, 38, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_GoodGriefIveBeen, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -902,7 +903,7 @@ Script_24:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The captain of the illustrious guard\nprotecting the star Sabrina is me![f000]븁\u0000\nI rushed here when I heard she had\nmade a shocking debut as an actress.[f000]븁\u0000\nBut recently, I've been interested\nin a star named [f000]Ā\u0001\u0000!"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_CaptainIllustriousGuardProtecting, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -915,7 +916,7 @@ Script_25:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Recently, films starring\n[f000]Ā\u0001\u0000 are getting a lot of buzz.[f000]븁\u0000\n...Wait? [f000]Ā\u0001\u0000?\nI wish I had something for you to sign!"
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_RecentlyFilmsStarringGetting, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -928,7 +929,7 @@ Script_26:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ciao! Come va?\nAre you used to Pokéstar Studios yet?[f000]븁\u0000\nThe staff here is very international!\nIt's very exciting, isn't it?[f000]븁\u0000\nSee you during a shoot someday!\nBuona giornata!"
-    ParentActorMsg MSGFILE_SCRIPT, 42, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_CiaoComeVaUsed, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -941,7 +942,7 @@ Script_27:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "¡Todos me consideran\nuna niña prodigio de la actuación! ¡Por no[f000]븀\u0000\nhablar de que soy una auténtica estrella![f000]븁\u0000\n¡Mi popularidad y mi destreza como actriz\nestán a años luz de ti, principiante!"
-    ParentActorMsg MSGFILE_SCRIPT, 43, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_TodosConsideranUnaNi, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -954,7 +955,7 @@ Script_28:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Excuse me, I'm her manager.[f000]븁\u0000\nWhat she just said is,[f000]븁\u0000\n“People know me as a\nbrilliant child actress![f000]븀\u0000\nNot to mention I’m a top star![f000]븀\u0000\nMy popularity and acting skills[f000]븀\u0000\nare way beyond yours, rookie!\""
-    ParentActorMsg MSGFILE_SCRIPT, 44, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_ExcuseImHerManager, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -967,7 +968,7 @@ Script_29:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Guten Tag![f000]븁\u0000\nSince you've come to Pokéstar Studios,\nwe suit actors have been busy.[f000]븁\u0000\nBis bald!"
-    ParentActorMsg MSGFILE_SCRIPT, 45, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_GutenTagSinceYouve, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -980,7 +981,7 @@ Script_30:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey! It's [f000]Ā\u0001\u0000!\nC'mon, give me an autograph!"
-    ParentActorMsg MSGFILE_SCRIPT, 46, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HeyItsCmonGive, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -993,7 +994,7 @@ Script_31:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Why, [f000]Ā\u0001\u0000...[f000]븁\u0000\nLet me ask you dis... When will you do me\nda honor of being in one of my films?"
-    ParentActorMsg MSGFILE_SCRIPT, 47, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_WhyLetAskDis, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1006,7 +1007,7 @@ Script_32:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "¡Hola! ¿Qué tal?\nYou've become so famous![f000]븁\u0000\nEven me, the top star in my country,\ncan't compete with you in Unova!"
-    ParentActorMsg MSGFILE_SCRIPT, 48, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios_Text_HolaQueTalYouve, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -1017,7 +1018,7 @@ Script_34:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Pokéstar Studios Sound Stage\nNo public access!"
-    InfoMsg 62, 2
+    InfoMsg PokestarStudios_Text_PokestarStudiosSoundStage, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -1028,7 +1029,7 @@ Script_35:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "This fake building is so\ndetailed it looks real."
-    InfoMsg 63, 2
+    InfoMsg PokestarStudios_Text_FakeBuildingDetailedLooks, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -1039,7 +1040,7 @@ Script_36:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's filled with movie props\nfor shooting films."
-    InfoMsg 64, 2
+    InfoMsg PokestarStudios_Text_ItsFilledMovieProps, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -1050,7 +1051,7 @@ Script_37:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "This detailed model of the Royal Unova\nis a set for a movie."
-    InfoMsg 65, 2
+    InfoMsg PokestarStudios_Text_DetailedModelRoyalUnova, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -1061,7 +1062,7 @@ Script_38:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a set for a movie.[f000]븁\u0000\nIt's a model of the Skyarrow Bridge\ndone to 1/144 scale."
-    InfoMsg 66, 2
+    InfoMsg PokestarStudios_Text_ItsSetMovieIts, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

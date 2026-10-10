@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city_9.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -24,14 +25,14 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0142
     // "I love Tympole more than anyone!\nI'm a Tympole fanatic![f000]븁\u0000\nIf I just had one more Tympole,\nthey would sing together![f000]븁\u0000\nIf you have a Tympole with you,\nwould you show it to me?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_LoveTympoleMoreThan, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012E
     // "Thanks!\nCould you show me a Tympole, then?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_ThanksCouldShowTympole, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     CallPokeSelect 0, 0x8021, 0x8020, 0
@@ -50,12 +51,12 @@ Script_1:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0106
     // "I'm Tympole-xcited!!![f000]븁\u0000\nFinally!\nI have six Tympole in one place![f000]븁\u0000\nOK, Tympole!\nShow us those cute,[f000]븀\u0000\nlovely voices of yours!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_ImTympoleXcitedFinally, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMCall L_0225
     // "Aaaah! That was a wonderful choir![f000]븁\u0000\nMy love for Tympole\njust gets deeper and deeper![f000]븁\u0000\nIf it wasn't for you,\nI never would've heard that song![f000]븀\u0000\nReally, seriously, thanks![f000]븁\u0000\nIf you want to hear the Tympole's\nTympole song again sometime,[f000]븀\u0000\nbring a Tympole back to me, OK?"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_AaaahWonderfulChoirLove, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 338
@@ -63,7 +64,7 @@ Script_1:
 
 L_0106:
     // "That's not a Tympole, is it?\nToo bad!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_ThatsNotTympoleToo, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -72,7 +73,7 @@ L_0114:
 
 L_011A:
     // "OK... Can't do anything about that![f000]븁\u0000\nIf you catch a Tympole,\nshow it to me![f000]븀\u0000\nI'll let you hear a great song!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_OkCantAnythingAbout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -81,7 +82,7 @@ L_0128:
 
 L_012E:
     // "OK... Can't do anything about that![f000]븁\u0000\nIf you catch a Tympole,\nshow it to me![f000]븀\u0000\nI'll let you hear a great song!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_OkCantAnythingAbout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -90,14 +91,14 @@ L_013C:
 
 L_0142:
     // "Hmm? Would you like to hear\nthe cute, lovely voices of Tympole?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_HmmWouldLikeHear, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0211
     // "Thanks!\nCould you show me a Tympole, then?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_ThanksCouldShowTympole, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     CallPokeSelect 0, 0x8021, 0x8020, 0
@@ -116,12 +117,12 @@ L_0142:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01E9
     // "Come on, Tympole!\nLet's hear that harmony!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_ComeTympoleLetsHear, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMCall L_0225
     // "Oh my! Aren't Tympole just the cutest?[f000]븁\u0000\nNo matter how many times I hear\nthat song, it gets me right here![f000]븁\u0000\nMy love for Tympole gets\ndeeper and deeper!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_OhArentTympoleJust, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 338
@@ -129,7 +130,7 @@ L_0142:
 
 L_01E9:
     // "That's not a Tympole, is it?\nToo bad!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_ThatsNotTympoleToo, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -138,7 +139,7 @@ L_01F7:
 
 L_01FD:
     // "OK... Can't do anything about that![f000]븁\u0000\nIf you catch a Tympole,\nshow it to me![f000]븀\u0000\nI'll let you hear a great song!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_OkCantAnythingAbout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -147,7 +148,7 @@ L_020B:
 
 L_0211:
     // "OK... Can't do anything about that![f000]븁\u0000\nIf you catch a Tympole,\nshow it to me![f000]븀\u0000\nI'll let you hear a great song!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_OkCantAnythingAbout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -215,7 +216,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 535, 0
     // "Pi pi kiii!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_PiPiKiii, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -229,7 +230,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 535, 0
     // "Pun purin?"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_PunPurin, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -243,7 +244,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 535, 0
     // "Waah weeeen!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_WaahWeeeen, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -257,7 +258,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 535, 0
     // "Riiiibbbit. ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_Riiiibbbit, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -271,7 +272,7 @@ Script_6:
     ActorSetEyeToEye
     PVPlay 535, 0
     // "Croooak!!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity9_Text_Croooak, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

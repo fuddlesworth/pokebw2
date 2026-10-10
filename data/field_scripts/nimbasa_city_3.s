@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -158,12 +159,12 @@ L_022C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_024F
     // "There is a football game in\nBig Stadium now!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_ThereFootballGameBig, 0, 0
     VMJump L_0259
 
 L_024F:
     // "Football players are practicing in\nBig Stadium now.[f000]븁\u0000\nPeople can watch them practicing!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_FootballPlayersPracticingBig, 0, 0
 
 L_0259:
     VMJump L_02D2
@@ -179,12 +180,12 @@ L_0272:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0295
     // "There is a baseball game\nin Big Stadium now!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_ThereBaseballGameBig, 0, 0
     VMJump L_029F
 
 L_0295:
     // "Infielders are practicing\nin Big Stadium now.[f000]븁\u0000\nPeople can watch them practicing!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_InfieldersPracticingBigStadium, 0, 0
 
 L_029F:
     VMJump L_02D2
@@ -195,12 +196,12 @@ L_02A5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C8
     // "There is a soccer game\nin Big Stadium now!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_ThereSoccerGameBig, 0, 0
     VMJump L_02D2
 
 L_02C8:
     // "Soccer players are practicing\nin Big Stadium now![f000]븁\u0000\nPeople can watch them practicing!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_SoccerPlayersPracticingBig, 0, 0
 
 L_02D2:
     LastKeyWait
@@ -214,7 +215,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You sure look up to athletes when\nyou're a kid."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_SureLookUpAthletes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -226,7 +227,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm raising the same Pokémon as\nmy favorite athlete's Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_ImRaisingSamePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -243,7 +244,7 @@ Script_4:
 
 L_032F:
     // "When I throw a Poké Ball, I copy the\nthrowing form of a quarterback!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_WhenThrowPokeBall, 0, 0
     VMJump L_036C
 
 L_033F:
@@ -253,12 +254,12 @@ L_033F:
 
 L_0352:
     // "When I throw a Poké Ball, I copy the form\nof a pitcher!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_WhenThrowPokeBall_2, 0, 0
     VMJump L_036C
 
 L_0362:
     // "When I throw a Poké Ball, I copy the\nthrowing technique of a keeper!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_WhenThrowPokeBall_3, 0, 0
 
 L_036C:
     LastKeyWait
@@ -277,7 +278,7 @@ Script_5:
 
 L_0391:
     // "Ha ha! I am a football player![f000]븁\u0000\nI injured my hand, so I can't sign\nautographs! I'm sorry about that.[f000]븁\u0000\nSo, what does the autograph on your\nTrainer Card look like?"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_HaHaAmFootball, 0, 0
     VMJump L_03CE
 
 L_03A1:
@@ -287,12 +288,12 @@ L_03A1:
 
 L_03B4:
     // "Yeah! I am an Infielder![f000]븁\u0000\nI hurt my hand, so I can't write\nan autograph! Sorry![f000]븁\u0000\nSay, how did you sign your Trainer Card?"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_YeahAmInfielderHurt, 0, 0
     VMJump L_03CE
 
 L_03C4:
     // "Bwa ha ha! I am a Striker![f000]븁\u0000\nMy hand got hurt, so I won't be able\nto sign any autographs! Regrets![f000]븁\u0000\nWhat does your Trainer Card signature\nlook like?"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_BwaHaHaAm, 0, 0
 
 L_03CE:
     LastKeyWait
@@ -306,7 +307,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am sorry.[f000]븁\u0000\nBut you cannot go onto the field\nbecause a game is in progress."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_AmSorryButCannot, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -318,7 +319,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am sorry.[f000]븁\u0000\nBut you cannot go onto the field\nbecause a game is in progress."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_AmSorryButCannot_2, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -330,7 +331,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am sorry.[f000]븁\u0000\nBut you cannot go onto the field\nbecause a game is in progress."
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity3_Text_AmSorryButCannot_3, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

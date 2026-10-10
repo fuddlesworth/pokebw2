@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -60,12 +61,12 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C1
     // "Bianca: Heeey![f000]븁\u0000"
-    InfoMsg 0, 2
+    InfoMsg CasteliaGate_Text_BiancaHeeey, 2
     VMJump L_00C6
 
 L_00C1:
     // "Bianca: Hey there![f000]븁\u0000"
-    InfoMsg 1, 2
+    InfoMsg CasteliaGate_Text_BiancaHeyThere, 2
 
 L_00C6:
     MsgWinCloseAll
@@ -76,7 +77,7 @@ L_00C6:
     ActorCmdExec 255, Movement_0368
     ActorCmdWait
     // "When I saw you in the city,\nI just had to catch up with you![f000]븁\u0000\nHere, take this!\nThis is a Dowsing Machine![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_WhenSawCityJust, 2, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -86,12 +87,12 @@ L_00C6:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "You can use the Dowsing Machine\nto find places where items are hidden.[f000]븁\u0000\nIt's exciting to find an item while\nyou're looking for a Pokémon.[f000]븁\u0000\nOoh, good luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_CanUseDowsingMachine, 2, 0, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0340
     ActorCmdWait
     // "Oh![f000]븁\u0000\nIf you often use the Dowsing Machine,\nthe Habitat List, and so on,[f000]븀\u0000\nwhy don't you register them?[f000]븁\u0000\nEr...\nI think it's written in this book...[f000]븁\u0000\nI found it!\nOK. I'll read it.[f000]븁\u0000\n“You can use the registered item\njust by pressing the Y Button!\"[f000]븀\u0000\nSee? OK. Bye![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_OhIfOftenUse, 2, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 2, 5, 14, 1, 8, 0
     ActorCmdWait
@@ -112,7 +113,7 @@ Script_3:
     ActorSetEyeToEye
     // "The Pokémon Breeder on Route 4 past\nthis gate always challenges Trainers[f000]븀\u0000\nto battle when she sees them.[f000]븁\u0000\nJust what you expect from Route 4, which\nhas ruins. Discovery is so exciting!"
     // "The Pokémon Breeder on Route 4 past\nthis gate always challenges Trainers[f000]븀\u0000\nto battle when she sees them.[f000]븁\u0000\nJust what you expect from Route 4,\nwhich has a lot of buildings.[f000]븀\u0000\nChanges are so exciting!"
-    ActorMsgVersioned 1024, 5, 6, 1, 0, 0
+    ActorMsgVersioned 1024, CasteliaGate_Text_PokemonBreederRoute4, CasteliaGate_Text_PokemonBreederRoute4_2, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -124,7 +125,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Nimbasa City is at the end\nof Route 4."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_NimbasaCityEndRoute, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -140,13 +141,13 @@ Script_7:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_031F
     // "Free-for-all! It's the Castelia\nHarlequin Hunt! You haven't visited...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_FreeAllItsCastelia, 0, 0
     VMStackPush 0x40e2
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_022E
     // "You still need to visit\nthis many places: Wow! Zero![f000]븁\u0000\nThat means you've completed\nthe Castelia Harlequin Hunt![f000]븁\u0000\nCongratulations!\nThis is a small commemorative gift![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_StillNeedVisitMany_2, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -156,7 +157,7 @@ Script_7:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "The Castelia Harlequin Hunt is a way\nto make more people love Castelia City![f000]븁\u0000\nThat's why we generously gave you a\nBicycle at the beginning. It's the best[f000]븀\u0000\nway to get around Castelia City![f000]븁\u0000\nKeep loving Castelia City![f000]븁\u0000\nCastelia City, Castelia City,\nCastelia City! ♪ Here we go! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40e2, 6
@@ -180,7 +181,7 @@ L_023A:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0288
     // "The Medal Office![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_MedalOffice, 3, 0, 0
     WorkAdd 0x8024, 1
     VMJump L_02F8
 
@@ -194,7 +195,7 @@ L_0288:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02C3
     // "Passerby Analytics HQ![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_PasserbyAnalyticsHq, 3, 0, 0
     WorkAdd 0x8024, 1
     VMJump L_02F8
 
@@ -208,7 +209,7 @@ L_02C3:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02F8
     // "The Battle Company![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_BattleCompany, 3, 0, 0
     WorkAdd 0x8024, 1
 
 L_02F8:
@@ -218,7 +219,7 @@ L_02F8:
 L_0304:
     WordSetNumber 0, 0x8024, 1
     // "You still need to visit\nthis many places: [f000]Ȁ\u0001\u0000![f000]븁\u0000\nSo explore Castelia City, and enjoy\nthe Castelia Harlequin Hunt!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_StillNeedVisitMany, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -227,7 +228,7 @@ L_0319:
 
 L_031F:
     // "The Castelia Harlequin Hunt is a way\nto make more people love Castelia City![f000]븁\u0000\nThat's why we generously gave you a\nBicycle at the beginning. It's the best[f000]븀\u0000\nway to get around Castelia City![f000]븁\u0000\nKeep loving Castelia City![f000]븁\u0000\nCastelia City, Castelia City,\nCastelia City! ♪ Here we go! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaGate_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

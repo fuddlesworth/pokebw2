@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/dragonspiral_tower_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -12,7 +13,7 @@ Script_1:
     ActorSetEyeToEye
     // "Cedric Juniper: Two years ago...\nOn the top floor of this tower...[f000]븁\u0000\nOne lone man faced\na legendary Pokémon.[f000]븁\u0000\nHis name was N.[f000]븁\u0000\nHe sought Reshiram in order to\nunderstand the meaning of truth.[f000]븁\u0000\nI wonder if he succeeded\nin finding his own truth."
     // "Cedric Juniper: Two years ago...\nOn the top floor of this tower...[f000]븁\u0000\nOne lone man faced\na legendary Pokémon.[f000]븁\u0000\nHis name was N.[f000]븁\u0000\nHe sought Zekrom in order to\nunderstand his ideals.[f000]븁\u0000\nI wonder if he succeeded in\ndiscovering his ideals."
-    ActorMsgVersioned 1024, 1, 0, 1, 0, 0
+    ActorMsgVersioned 1024, DragonspiralTower2_Text_CedricJuniperTwoYears_2, DragonspiralTower2_Text_CedricJuniperTwoYears, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -22,7 +23,7 @@ Script_1:
 Script_2:
     ActorsPauseAll
     // "We still don't know anything about it.[f000]븁\u0000\nCould the Dragonspiral Tower somehow\nsymbolize ideals?[f000]븀\u0000\nCould it somehow represent truth?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower2_Text_WeStillDontKnow, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0248
     ActorCmdWait
@@ -39,28 +40,28 @@ Script_2:
 
 L_0089:
     // "Cedric Juniper: So you came\nhere as well![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower2_Text_CedricJuniperCameHere, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0240
     ActorCmdWait
     VMSleep 20
     // "It was two years ago...[f000]븁\u0000\nIn this tower, a certain man and\na certain Pokémon came face-to-face.[f000]븁\u0000\nThis man sought the truth\nso he could change the world.[f000]븁\u0000"
     // "It was two years ago...[f000]븁\u0000\nIn this tower, a certain man and\na certain Pokémon came face-to-face.[f000]븁\u0000\nThis man pursued his ideals\nso he could change the world.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 5, 4, 1, 0, 0
+    ActorMsgVersioned 1024, DragonspiralTower2_Text_TwoYearsAgoTower_2, DragonspiralTower2_Text_TwoYearsAgoTower, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0248
     ActorCmdWait
     // "That's right. This building\nrising serenely into the sky[f000]븀\u0000\nis the Dragonspiral Tower.[f000]븁\u0000\nIt has towered over this land\nsince before Unova was founded.[f000]븁\u0000\nOn the highest floor, the legendary\nDragon-type Pokémon was waiting for[f000]븀\u0000\nthe appearance of a person seeking[f000]븀\u0000\nthe truth...[f000]븁\u0000\nIt was exactly how the legends said\nit would be...[f000]븁\u0000"
     // "That's right. This building\nrising serenely into the sky[f000]븀\u0000\nis the Dragonspiral Tower.[f000]븁\u0000\nIt has towered over this land\nsince before Unova was founded.[f000]븁\u0000\nOn the highest floor, the legendary\nDragon-type Pokémon was waiting for[f000]븀\u0000\nthe appearance of a person seeking[f000]븀\u0000\nhis or her ideals...[f000]븁\u0000\nIt was exactly how the legends said\nit would be...[f000]븁\u0000"
-    ActorMsgVersioned 1024, 7, 6, 1, 0, 0
+    ActorMsgVersioned 1024, DragonspiralTower2_Text_ThatsRightBuildingRising_2, DragonspiralTower2_Text_ThatsRightBuildingRising, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0260
     ActorCmdWait
     // "Ah!\nThe Light Stone![f000]븁\u0000\nIf that's the case, you must\nbe headed to the top floor.[f000]븁\u0000\nChanging the world...[f000]븁\u0000\nThat's an outrageous idea,\nbut it is possible to change yourself.[f000]븀\u0000\n...As long as you seek the truth.[f000]븁\u0000"
     // "Ah!\nThe Dark Stone![f000]븁\u0000\nIf that's the case, you must\nbe headed to the top floor.[f000]븁\u0000\nChanging the world...[f000]븁\u0000\nThat's an outrageous idea,\nbut it is possible to change yourself.[f000]븀\u0000\n...As long as you pursue your ideals.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 9, 8, 1, 0, 0
+    ActorMsgVersioned 1024, DragonspiralTower2_Text_AhLightStoneIf, DragonspiralTower2_Text_AhDarkStoneIf, 1, 0, 0
     // "My! That conversation\nsure took a serious turn![f000]븁\u0000\nMaybe something light and sweet\nwould help balance things out![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower2_Text_ConversationSureTookSerious, 1, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -70,7 +71,7 @@ L_0089:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Be seeing you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower2_Text_Seeing, 1, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8021, 51
     VMStackPush 0x8020

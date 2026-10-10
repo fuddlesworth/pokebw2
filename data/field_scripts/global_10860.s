@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10860.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -9,11 +10,11 @@ Script_1:
     ActorsPauseAll
     MEPlay SEQ_ME_CALL
     // "The Xtransceiver is ringing!"
-    SystemMsg 0, 2
+    SystemMsg Global10860_Text_XtransceiverRinging, 2
     MEWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 picked up\nthe Xtransceiver.[f000]븁\u0000"
-    SystemMsg 1, 2
+    SystemMsg Global10860_Text_PickedUpXtransceiver, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait

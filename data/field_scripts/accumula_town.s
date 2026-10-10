@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/accumula_town.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -27,7 +28,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Accumula Town\nThe Fast-Growing Town!"
-    MsgPlaceSign 20, 1
+    MsgPlaceSign AccumulaTown_Text_AccumulaTownFastGrowing, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -123,14 +124,14 @@ L_01A9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D0
     // "What's this?[f000]븁\u0000\nYou and your Pokémon\nsomehow resemble one another![f000]븁\u0000\nI'm sure you came to look like\none another during all of the time[f000]븀\u0000\nyou spent together!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_WhatsPokemonSomehowResemble, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01DE
 
 L_01D0:
     // "What's this?[f000]븁\u0000\nYou and your Pokémon\nsomehow resemble one another!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_WhatsPokemonSomehowResemble_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -144,21 +145,21 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Do you like Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_LikePokemon, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0221
     // "Yes, yes, you have Pokémon with you,\nso I'm sure you do!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_YesYesHavePokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_022F
 
 L_0221:
     // "That so? Then why are you\non a journey with Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_ThenWhyJourneyPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -172,7 +173,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Now, I wonder which person\nwas the first person in the[f000]븀\u0000\nworld to get along with Pokémon..."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_NowWonderWhichPerson, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -184,7 +185,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "See my Audino?[f000]븁\u0000\nShe popped out of the\nswaying tall grass just to meet me!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_SeeAudinoShePopped, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -197,7 +198,7 @@ Script_7:
     ActorSetEyeToEye
     PVPlay 531, 0
     // "Di chee! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_DiChee, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -210,7 +211,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My cute little Foongus\nlooks just like a Poké Ball!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_CuteLittleFoongusLooks, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -222,7 +223,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This is a Foongus?"
-    InfoMsg 19, 2
+    InfoMsg AccumulaTown_Text_Foongus, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -242,14 +243,14 @@ Script_8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0308
     // "Sorry to bother you, but I like low\nplaces like this and little tiny things.[f000]븁\u0000\nTiny Pokémon are the most interesting![f000]븁\u0000\nI particularly like Pokémon that have a\nheight of eight inches or less.[f000]븁\u0000\nBy the way...\nDo you have any tiny Pokémon?[f000]븁\u0000\nIf you do, could you show me?"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_SorryBotherButLike, 0, 0
     MsgWaitAdvance
     FlagSet 333
     VMJump L_0314
 
 L_0308:
     // "Will you show me a tiny Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_WillShowTinyPokemon, 0, 0
     MsgWaitAdvance
 
 L_0314:
@@ -258,7 +259,7 @@ L_0314:
 
 L_0320:
     // "Thanks for showing me a tiny Pokémon!\nIt was super interesting![f000]븁\u0000\nI'd sure like it if you'd\nshow me one again tomorrow..."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_ThanksShowingTinyPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -437,7 +438,7 @@ L_05BD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0616
     // "Wow! Amazing!\n[f000]ā\u0001\u0000 is so tiny![f000]븁\u0000\nI wonder what it would feel like\nto become [f000]ā\u0001\u0000...[f000]븁\u0000\nI bet I'd get a way different outlook\non life...[f000]븁\u0000\nJust imagining it gets me excited!\nTiny things are super interesting!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_WowAmazingTinyWonder, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -448,7 +449,7 @@ L_05BD:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Thanks for showing me a tiny Pokémon!\nIt was super interesting![f000]븁\u0000\nI'd sure like it if you'd\nshow me one again tomorrow..."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_ThanksShowingTinyPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2766
@@ -456,7 +457,7 @@ L_05BD:
 
 L_0616:
     // "Hm...[f000]븁\u0000\nYou don't even have a teensy\nnumber of tiny Pokémon.[f000]븁\u0000\nI'd sure like to see a Pokémon\nthat's eight inches high or smaller..."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_HmDontEvenHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -476,14 +477,14 @@ Script_9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_066A
     // "You know what?![f000]븁\u0000\nI love high places like this,\nand really big things![f000]븁\u0000\nMy favorite Pokémon\nare big ones, too![f000]븁\u0000\nWhat I mean by big, you know,\nis being more than 17 feet tall![f000]븁\u0000\nC'mon! If you have a big\nPokémon, show it to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_KnowWhatLoveHigh, 0, 0
     MsgWaitAdvance
     FlagSet 334
     VMJump L_0676
 
 L_066A:
     // "Have you come to show me a big Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_HaveComeShowBig, 0, 0
     MsgWaitAdvance
 
 L_0676:
@@ -492,7 +493,7 @@ L_0676:
 
 L_0682:
     // "Big thanks for showing me a big Pokémon![f000]븁\u0000\nI'd be even more happy if you'd show me\none tomorrow, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_BigThanksShowingBig, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -641,7 +642,7 @@ L_08B0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0909
     // "Wow! Amazing!\n[f000]ā\u0001\u0000 is sooooo big![f000]븁\u0000\nRiding on top of [f000]ā\u0001\u0000\nwould be so much fun![f000]븁\u0000\nWhen you look from high places, you can\nsee rooftops and faraway mountains[f000]븀\u0000\nand other things you usually can't see.[f000]븁\u0000\nThat's why I like big things so much!"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_WowAmazingSoooooBig, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -652,7 +653,7 @@ L_08B0:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Big thanks for showing me a big Pokémon![f000]븁\u0000\nI'd be even more happy if you'd show me\none tomorrow, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_BigThanksShowingBig, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2767
@@ -660,7 +661,7 @@ L_08B0:
 
 L_0909:
     // "What?!\nNo big Pokémon for me?[f000]븁\u0000\nI wanna see a Pokémon\nbigger than 17 feet!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown_Text_WhatNoBigPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_17.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -8,7 +9,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 17\nBeware of rapidly flowing water!"
-    MsgPlaceSign 0, 3
+    MsgPlaceSign Route17_Text_Route17BewareRapidly, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

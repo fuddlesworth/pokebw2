@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/twist_mountain.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -10,7 +11,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Twist Mountain ahead.\nWatch out for wild Pokémon."
-    MsgPlaceSign 4, 2
+    MsgPlaceSign TwistMountain_Text_TwistMountainAheadWatch, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -25,7 +26,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm Marshal, one of the Elite Four![f000]븁\u0000\nYou look like you're a\nPokémon Trainer with potential,[f000]븀\u0000\nbut I can't let you into Twist Mountain![f000]븁\u0000\nThe inside collapsed,\nand you can't get through!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain_Text_ImMarshalOneElite, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 489
@@ -37,7 +38,7 @@ L_005B:
     PlayerGetDir 0x8010
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000![f000]븁\u0000\nOh, I see! So, you travel all around\nlike this and toughen yourself up, then."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain_Text_OhSeeTravelAll, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0288
@@ -45,7 +46,7 @@ L_005B:
     ActorCmdExec 255, Movement_02D0
     ActorCmdWait
     // "Well, I suppose you have\nmany battles ahead of you.[f000]븁\u0000\nPokémon battles as a Pokémon Trainer.[f000]븁\u0000\nBattles about how you\nshould live your life...[f000]븁\u0000\nYou'll lose sometimes,\nbut I think what matters[f000]븀\u0000\nis that you do things your own way.[f000]븁\u0000\nIf you surpass what you've done before,\nyou have bested yourself."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain_Text_WellSupposeHaveMany, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkCmpConst 0x8010, 2
@@ -68,7 +69,7 @@ L_00CE:
 L_00DC:
     ActorCmdWait
     // "Well then. I'll be waiting for\nyour challenge at the Pokémon League![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain_Text_WellThenIllWaiting, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_02B0
     ActorCmdWait
@@ -113,7 +114,7 @@ Script_3:
     ActorCmdExec 255, Movement_02C8
     ActorCmdWait
     // "I'm Marshal, one of the Elite Four![f000]븁\u0000\nYou look like you're a\nPokémon Trainer with potential,[f000]븀\u0000\nbut I can't let you into Twist Mountain![f000]븁\u0000\nThe inside collapsed,\nand you can't get through!"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain_Text_ImMarshalOneElite, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0298
@@ -129,7 +130,7 @@ L_01AD:
     ActorCmdWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000![f000]븁\u0000\nOh, I see! So, you travel all around\nlike this and toughen yourself up, then."
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain_Text_OhSeeTravelAll, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0274
@@ -137,13 +138,13 @@ L_01AD:
     ActorCmdExec 255, Movement_02E0
     ActorCmdWait
     // "Well, I suppose you have\nmany battles ahead of you.[f000]븁\u0000\nPokémon battles as a Pokémon Trainer.[f000]븁\u0000\nBattles about how you\nshould live your life...[f000]븁\u0000\nYou'll lose sometimes,\nbut I think what matters[f000]븀\u0000\nis that you do things your own way.[f000]븁\u0000\nIf you surpass what you've done before,\nyou have bested yourself."
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain_Text_WellSupposeHaveMany, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_02D8
     ActorCmdWait
     // "Well then. I'll be waiting for\nyour challenge at the Pokémon League![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain_Text_WellThenIllWaiting, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_02B0
     ActorCmdWait

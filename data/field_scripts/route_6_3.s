@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_6_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -17,7 +18,7 @@ Script_1:
     ActorSetEyeToEye
     // "Maybe I should go to\nCelestial Tower on Route 7.[f000]븁\u0000\nI have to ring the bell for my Petilil..."
     // "Maybe I should go to\nCelestial Tower on Route 7.[f000]븁\u0000\nI have to ring the bell for\nmy Cottonee..."
-    ActorMsgVersioned 1024, 0, 1, 2, 0, 0
+    ActorMsgVersioned 1024, Route63_Text_MaybeShouldGoCelestial, Route63_Text_MaybeShouldGoCelestial_2, 2, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -34,7 +35,7 @@ Script_2:
     VMJumpIf CMP_STACK, L_00B5
     // "Mister!\nHere, have this![f000]븁\u0000"
     // "Miss!\nHere, have this![f000]븁\u0000"
-    ActorMsgGendered 1024, 2, 3, 1, 0, 0
+    ActorMsgGendered 1024, Route63_Text_MisterHereHave, Route63_Text_MissHereHave, 1, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -44,7 +45,7 @@ Script_2:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Know what? When I gave my Minccino a\nShiny Stone, it evolved and became a[f000]븀\u0000\ndifferent Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route63_Text_KnowWhatWhenGave, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 383
@@ -52,7 +53,7 @@ Script_2:
 
 L_00B5:
     // "Know what? When I gave my Minccino a\nShiny Stone, it evolved and became a[f000]븀\u0000\ndifferent Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route63_Text_KnowWhatWhenGave, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -99,7 +100,7 @@ L_0144:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0199
     // "Oh, dear! Your Pokémon...\nSomehow, they don't seem well.[f000]븁\u0000\nYou should rest here for a little while.\nYou can't go anywhere when you're not[f000]븀\u0000\nfeeling well."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route63_Text_OhDearPokemonSomehow, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
@@ -110,14 +111,14 @@ L_0144:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "Good! Your Pokémon seem to be\nfull of energy!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route63_Text_GoodPokemonSeemFull, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01A7
 
 L_0199:
     // "Good! Your Pokémon seem to be\nfull of energy!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route63_Text_GoodPokemonSeemFull, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_11.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -19,7 +20,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E8
     // "Congratulations![f000]븁\u0000\nYou've defeated all the Trainers\non the ship![f000]븁\u0000\nPlease accept this prize.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_CongratulationsYouveDefeatedAll, 0, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8020, 0
     RTCGetWeekDay 0x8020
@@ -129,7 +130,7 @@ L_01C2:
 
 L_01E8:
     // "Thank you for sailing with us on the\nRoyal Unova.[f000]븁\u0000\nHave a nice day!"
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_ThankSailingUsRoyal, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x417b, 0
@@ -175,7 +176,7 @@ Script_2:
     VMJumpIf CMP_STACK, L_03FE
     MoneyWinDisp 31, 1
     // "Welcome to the Royal Unova![f000]븁\u0000\nThe scenery is exhilarating.\nThe battles are exciting.[f000]븁\u0000\nThe ticket is $1,000.\nWould you like to get on board?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_WelcomeRoyalUnovaScenery, 0, 2, 0
     WorkSetConst 0x8024, 0
 
 L_029A:
@@ -206,7 +207,7 @@ L_02E3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0366
     // "The power of the C-Gear will be turned\noff. Is that OK?"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_PowerCGearWill, 0, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -218,7 +219,7 @@ L_02E3:
 L_034E:
     MoneyWinClose
     // "Certainly.\nPlease come back again."
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_CertainlyPleaseComeBack, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -234,7 +235,7 @@ L_036C:
 L_0372:
     MoneyWinClose
     // "I'm sorry, you don't have enough money.\nPlease come back again."
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_ImSorryDontHave, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -259,7 +260,7 @@ L_03BC:
     MoneyWinClose
     WorkSetConst 0x8024, 1
     // "Certainly.\nPlease come back again."
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_CertainlyPleaseComeBack, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_03F2
@@ -268,7 +269,7 @@ L_03DA:
     MoneyWinClose
     WorkSetConst 0x8024, 1
     // "Certainly.\nPlease come back again."
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_CertainlyPleaseComeBack, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -280,7 +281,7 @@ L_03F8:
 
 L_03FE:
     // "The Royal Unova operates only in\nthe evening.[f000]븀\u0000\nPlease come back again."
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_RoyalUnovaOperatesOnly, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -289,7 +290,7 @@ L_040E:
 
 L_0414:
     // "We are closed for the day.\nPlease come again tomorrow."
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_WeClosedDayPlease, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -320,7 +321,7 @@ L_0450:
     FieldSubscreenDisable
     FunfestBGMReturn
     // "We are leaving the port shortly.\nBon voyage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_WeLeavingPortShortly, 0, 2, 0
     MsgWinCloseAll
     MoneyWinClose
     PlayerGetExState 0x8010
@@ -343,13 +344,13 @@ L_048B:
 
 L_04BD:
     // "The Royal Unova leaves once a day.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_RoyalUnovaLeavesOnce, 0, 2, 0
     // "The ship goes under a big bridge called\nthe Skyarrow Bridge in the Unova region,[f000]븀\u0000\nthen turns around at Marvelous Bridge[f000]븀\u0000\nand returns to Castelia City.[f000]븁\u0000\nWhen the whistle blows five times,\nit means we've arrived at the dock.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_ShipGoesUnderBig, 0, 2, 0
     // "From the deck of the world-famous Royal\nUnova, you can enjoy a spectacular view.[f000]븁\u0000\nAnd the passenger cabins are full of\nTrainers who love to battle.[f000]븁\u0000\nPlease enjoy both the view and\nthe battles![f000]븁\u0000\nNote that as C-Gears may affect radio\nsignals or instruments in the ship,[f000]븀\u0000\nwe ask that you refrain from using them.[f000]븀\u0000\nThank you.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_FromDeckWorldFamous, 0, 2, 0
     // "The ticket is $1,000.\nWould you like to get on board?"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity11_Text_Ticket1000Would, 0, 2, 0
     VMReturn
     .balign 4, 0
     Move 13, 1

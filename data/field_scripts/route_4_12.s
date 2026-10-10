@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_4_12.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -48,7 +49,7 @@ L_00A9:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00FE
     // "Hmm? Aren't you a bit tired?\nDon't be shy. Take a rest!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route412_Text_HmmArentBitTired, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
@@ -59,14 +60,14 @@ L_00A9:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "Oh! Both you and your Pokémon\nare full of energy!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route412_Text_OhBothPokemonFull, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_010C
 
 L_00FE:
     // "Oh! Both you and your Pokémon\nare full of energy!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route412_Text_OhBothPokemonFull, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -81,7 +82,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 524, 0
     // "Gellooo."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route412_Text_Gellooo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

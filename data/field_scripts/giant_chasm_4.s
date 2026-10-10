@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/giant_chasm_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -40,7 +41,7 @@ Script_1:
     ActorCmdExec 6, Movement_06DC
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Come here.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_ComeHere, 6, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 255, 25, 70, 1, 8, 0
     ActorCmdExec 6, Movement_06E4
@@ -48,7 +49,7 @@ Script_1:
     ActorCmdExec 255, Movement_06EC
     ActorCmdWait
     // "Wait a sec.[f000]븁\u0000\nHe said he wants to talk to them\nso his old allies won't get hurt.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_WaitSecHeSaid, 6, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_06D4
     ActorCmdExec 6, Movement_06D4
@@ -60,10 +61,10 @@ Script_1:
     ActorCmdWait
     EvCameraWait
     // "Rood: Aah! I will say it as many times\nas it takes until you understand![f000]븁\u0000\nGhetsis's real plan was\nto take over the Unova region![f000]븁\u0000\nLiberating Pokémon was nothing\nmore than an excuse![f000]븁\u0000\nIf anything, it would've made\nPokémon suffer![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_RoodAahWillSay, 2, 6, 0
     MsgWinCloseAll
     // "Team Plasma: Uh-huh, yeah.\nThat's a pretty speech, gramps![f000]븁\u0000\nYou fool![f000]븁\u0000\nWe're not going to listen\nto what a traitor has to say![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 4, 3, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_TeamPlasmaUhHuh, 4, 3, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 40
     EvCameraWait
@@ -72,12 +73,12 @@ Script_1:
     ActorCmdExec 6, Movement_04A4
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Well, that didn't work...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 6, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_WellDidntWork, 6, 6, 0
     MsgWinCloseAll
     ActorWalkRoute 6, 26, 69, 1, 8, 0
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Hey![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 6, 6, 1
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_Hey, 6, 6, 1
     ActorMsgClose
     ActorCmdExec 4, Movement_06F4
     ActorCmdExec 7, Movement_06FC
@@ -89,16 +90,16 @@ Script_1:
     ActorCmdExec 1, Movement_0540
     ActorCmdWait
     // "Let me through![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 6, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_LetThrough, 6, 6, 0
     MsgWinCloseAll
     // "Team Plasma: What are you saying?\nLooking to get hurt?[f000]븁\u0000"
-    InfoMsg 7, 1
+    InfoMsg GiantChasm4_Text_TeamPlasmaWhatSaying, 1
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: I'm going to get a\nstolen Pokémon back![f000]븁\u0000\nI'm not gonna listen to villains\nlike you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 6, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_ImGoingGetStolen, 6, 6, 0
     MsgWinCloseAll
     // "Rood!\nEx-Team Plasma![f000]븁\u0000\nWhy do you have\nPokémon by your sides?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 6, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_RoodExTeamPlasma, 6, 6, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_06FC
     VMSleep 8
@@ -106,10 +107,10 @@ Script_1:
     ActorCmdExec 1, Movement_06FC
     ActorCmdWait
     // "To protect what's important\nto you, right?[f000]븁\u0000\nEven if your precious Pokémon get hurt,\neven if your ideals are damaged,[f000]븀\u0000\nthe time to fight is NOW![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 6, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_ProtectWhatsImportantRight, 6, 6, 0
     MsgWinCloseAll
     // "Team Plasma: You're just a kid!\nQuit trying to act so cool![f000]븁\u0000\nWhatever! Nobody's getting\nclose to the Plasma Frigate![f000]븀\u0000\nWipe them ALL out![f000]븁\u0000"
-    InfoMsg 11, 1
+    InfoMsg GiantChasm4_Text_TeamPlasmaYoureJust, 1
     MsgWinCloseAll
     ActorWalkRoute 4, 28, 69, 1, 8, 0
     ActorWalkRoute 5, 28, 70, 1, 8, 0
@@ -121,7 +122,7 @@ Script_1:
     ActorCmdExec 255, Movement_06EC
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: [f000]Ā\u0001\u0000!\nAs usual, take the other one![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 6, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_UsualTakeOtherOne, 6, 5, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_06EC
     ActorWalkRoute 255, 26, 70, 1, 8, 0
@@ -131,7 +132,7 @@ Script_1:
     ActorWalkRoute 5, 27, 70, 1, 8, 0
     ActorCmdWait
     // "Team Plasma: Like he said![f000]븁\u0000\nWe're going to crush you\nalong with the traitors![f000]븁\u0000\nBecause Team Plasma exists\nto cause trouble![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 5, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_TeamPlasmaLikeHe, 5, 6, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_TEAM_PLASMA_GRUNT_46, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -161,7 +162,7 @@ L_02EE:
     ActorCmdExec 2, Movement_06EC
     ActorCmdWait
     // "Rood: Are your Pokémon OK?\nYou should take these with you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 2, 3, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_RoodPokemonOkShould, 2, 3, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -177,16 +178,16 @@ L_02EE:
     ActorCmdExec 2, Movement_06EC
     ActorCmdWait
     // "You, too.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 2, 3, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_Too, 2, 3, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Thanks...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 6, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_Thanks, 6, 5, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_06D4
     ActorCmdExec 255, Movement_06D4
     ActorCmdWait
     // "I'm passing through![f000]븁\u0000\nOh, it looks like their backup\nhas arrived.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 6, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_ImPassingThroughOh, 6, 5, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -200,21 +201,21 @@ L_02EE:
     ActorWalkRoute 1, 27, 65, 1, 8, 1
     ActorCmdWait
     // "Rood: At times like these,\nthose whose hearts weaken,[f000]븀\u0000\nthose whose determination falters,[f000]븀\u0000\ncan accomplish nothing![f000]븁\u0000\nTo save our old allies,\nto protect Unova,[f000]븀\u0000\nwe will fight![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 2, 3, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_RoodTimesLikeThese, 2, 3, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_06DC
     ActorCmdWait
     // "Both of you, go![f000]븁\u0000\nNo, just a moment...\n[f000]Ā\u0001\u0001, was it?[f000]븁\u0000\nAbout the Pokémon you're looking for...\nIn all likelihood, it is in the possession[f000]븀\u0000\nof the Shadow Triad--the dark warriors[f000]븀\u0000\nwho appear silently.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 2, 3, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_BothGoNoJust, 2, 3, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Got it![f000]븁\u0000\nIf I rescue it, that helps you guys\nabsolve your guilt, doesn't it?[f000]븀\u0000\nGuess I'll help you out![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 6, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_GotIfRescueHelps, 6, 5, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_0558
     ActorCmdExec 2, Movement_06D4
     ActorCmdWait
     // "Rood: At that time, I believed\nwe were on the side of justice.[f000]븁\u0000\nBy serving my king, N,\nI was going to make a world without war.[f000]븁\u0000\nBut I was conceited, and I couldn't\nsee the unhappiness we were causing.[f000]븁\u0000\nThat's why I can't let it happen again!"
-    ActorMsg MSGFILE_SCRIPT, 21, 2, 3, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_RoodTimeBelievedWe, 2, 3, 0
     MsgWaitAdvance
     MsgWinCloseAll
     EvCameraMoveToDefault 40
@@ -317,7 +318,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Rood: At that time, I believed\nwe were on the side of justice.[f000]븁\u0000\nBy serving my king, N,\nI was going to make a world without war.[f000]븁\u0000\nBut I was conceited, and I couldn't\nsee the unhappiness we were causing.[f000]븁\u0000\nThat's why I can't let it happen again!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_RoodTimeBelievedWe, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -328,7 +329,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Don't ignore Pokémon's feelings\nand separate them from their Trainers!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_DontIgnorePokemonsFeelings, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -339,7 +340,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Is this where you come to an\nunderstanding by trading blows?[f000]븀\u0000\nThis is what being young is, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_WhereComeUnderstandingBy, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -351,7 +352,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That's what I would expect from\nsomeone who binds their Pokémon[f000]븀\u0000\nwith Poké Balls!"
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_ThatsWhatWouldExpect, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -362,7 +363,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "We're going to conquer Unova and\nmake all the Pokémon ours![f000]븁\u0000\nThen our failure two years ago\nwon't matter anymore!"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_WereGoingConquerUnova, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -373,7 +374,7 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Oh! I can feel how strongly\nthis person feels![f000]븀\u0000\nI-it's making me doubt myself!"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_OhCanFeelHow, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -384,7 +385,7 @@ Script_10:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "That traitorous Sage!\nI'm going to pound him into a pulp!"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_TraitorousSageImGoing, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -396,7 +397,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What you're doing now is nothing\nmore than a futile struggle!"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_WhatYoureDoingNow, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -408,7 +409,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I don't care about you at all!\n'Cause you can't beat our boss![f000]븁\u0000\nI'll stay here and pound these traitors!"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_DontCareAboutAll, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -420,7 +421,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We're gonna freeze Unova solid\nand steal everyone's Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm4_Text_WereGonnaFreezeUnova, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

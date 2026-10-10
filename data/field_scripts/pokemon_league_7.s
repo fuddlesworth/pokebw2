@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokemon_league_7.h"
 
 // Script plugin 3, from the zones that use this file
 
@@ -77,13 +78,13 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0114
     // "Greetings, challenger.\nMy name is Marshal.[f000]븁\u0000\nI am the No. 1 pupil of my mentor, Alder.[f000]븁\u0000\nIn order to master the art of fighting,\nI've kept training.[f000]븁\u0000\nYou're also walking a similar path\nwith your Pokémon.[f000]븁\u0000\nIt is my intention to test you--to take\nyou to the limits of your strength. Kiai![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_GreetingsChallengerNameMarshal, 0, 1, 0
     MsgWinCloseAll
     VMJump L_0122
 
 L_0114:
     // "You look familiar...\nAh, yes. I met you at Twist Mountain.[f000]븁\u0000\nThe strength you are radiating\nis far greater now than before![f000]븁\u0000\nGreetings, challenger.\nMy name is Marshal.[f000]븁\u0000\nI am the No. 1 pupil of my mentor, Alder.[f000]븁\u0000\nIn order to master the art of fighting,\nI've kept training.[f000]븁\u0000\nYou're also walking a similar path\nwith your Pokémon.[f000]븁\u0000\nIt is my intention to test you--to take\nyou to the limits of your strength. Kiai![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_LookFamiliarAhYes, 0, 1, 0
     MsgWinCloseAll
 
 L_0122:
@@ -132,12 +133,12 @@ L_0186:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01DB
     // "Now... You have become the strongest\nTrainer in this Pokémon League.[f000]븁\u0000\nThe statue in the central chamber will\ntake you to the Champion's room."
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_NowHaveBecomeStrongest, 0, 1, 0
     VMJump L_01E7
 
 L_01DB:
     // "Whew! Well done![f000]븁\u0000\nAs your battles continue,\naim for even greater heights!"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_WhewWellDoneBattles, 0, 1, 0
 
 L_01E7:
     LastKeyWait
@@ -162,12 +163,12 @@ L_01F1:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0246
     // "Now... You have become the strongest\nTrainer in this Pokémon League.[f000]븁\u0000\nThe statue in the central chamber will\ntake you to the Champion's room."
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_NowHaveBecomeStrongest, 0, 1, 0
     VMJump L_0252
 
 L_0246:
     // "You are a strong challenger.[f000]븁\u0000\nWalk the path you believe in\nwith the Pokémon you believe in.[f000]븁\u0000\nThe other members of the Elite Four\nare far more powerful than I am.[f000]븁\u0000\nDo not underestimate them!"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_StrongChallengerWalkPath, 0, 1, 0
 
 L_0252:
     LastKeyWait
@@ -182,7 +183,7 @@ L_025C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_034C
     // "I thank you deeply for the chance for\nanother round of combat against you.[f000]븁\u0000\nIn myself, I seek to develop\nthe strength of a fighter.[f000]븁\u0000\nAnd shatter any weakness in myself![f000]븁\u0000\nPrevailing with the force of\nmy convictions![f000]븁\u0000\nVictory, decisive victory, is my intention!\nChallenger, here I come![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_ThankDeeplyChanceAnother, 0, 1, 0
     MsgWinCloseAll
     FlagSet 2409
     WorkSetConst 0x400a, 555
@@ -229,12 +230,12 @@ L_02E1:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0336
     // "The strength shown by you and your\nPokémon has deeply impressed me...[f000]븁\u0000\nPlease, continue to the next room\nto face the strongest Trainer[f000]븀\u0000\nof the Unova region!"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_StrengthShownByPokemon, 0, 1, 0
     VMJump L_0342
 
 L_0336:
     // "There are still many strong Trainers\nin this Pokémon League.[f000]븁\u0000\nYou should deepen your bonds with\nyour Pokémon by battling with them."
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_ThereStillManyStrong, 0, 1, 0
 
 L_0342:
     LastKeyWait
@@ -259,12 +260,12 @@ L_034C:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_03A1
     // "The strength shown by you and your\nPokémon has deeply impressed me...[f000]븁\u0000\nPlease, continue to the next room\nto face the strongest Trainer[f000]븀\u0000\nof the Unova region!"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_StrengthShownByPokemon, 0, 1, 0
     VMJump L_03AD
 
 L_03A1:
     // "During the days when I was young,\nI was wandering all the regions[f000]븀\u0000\nof the world.[f000]븁\u0000\nI was devoted only to training,\nin order to surpass my mentor.[f000]븁\u0000\nAnd when I felt so ashamed\ntwo years ago...[f000]븁\u0000\nMy Pokémon were always there for me.[f000]븁\u0000\nThat thought crossed my mind\neven though I was completely focused[f000]븀\u0000\non our battle...[f000]븁\u0000\nYou're a mysterious Trainer."
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague7_Text_DuringDaysWhenYoung, 0, 1, 0
 
 L_03AD:
     LastKeyWait

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_14.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -10,7 +11,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 14"
-    MsgPlaceSign 0, 3
+    MsgPlaceSign Route14_Text_Route14, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -21,7 +22,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips!\n[f000]븁\u0000\nThe maximum number of Boxes is now 24![f000]븁\u0000\nIn other words, you can store\n720 Pokémon!"
-    MsgPlaceSign 1, 0
+    MsgPlaceSign Route14_Text_TrainerTipsMaximumNumber, 0
     MsgPlaceSignClose
     FlagSet 2675
     FinishAllEvents
@@ -33,7 +34,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips!\n[f000]븁\u0000\nWhile you are using the Xtransceiver,\npress a direction on the +Control Pad.[f000]븁\u0000\nThe appearance of the screen will\nchange in varied ways!"
-    MsgPlaceSign 2, 0
+    MsgPlaceSign Route14_Text_TrainerTipsWhileUsing, 0
     MsgPlaceSignClose
     FlagSet 2676
     FinishAllEvents

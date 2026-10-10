@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10530.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -95,7 +96,7 @@ L_0143:
 L_0155:
     WorkSetConst 0x8025, 0
     // "Which channel will you watch?"
-    SystemMsg 188, 2
+    SystemMsg Global10530_Text_WhichChannelWillWatch, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32805
     ListMenuAdd 189, 65535, 1
     ListMenuAdd 190, 65535, 2
@@ -119,7 +120,7 @@ L_01B3:
 
 L_01BB:
     // "Keep watching?"
-    SystemMsg 193, 2
+    SystemMsg Global10530_Text_KeepWatching, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0

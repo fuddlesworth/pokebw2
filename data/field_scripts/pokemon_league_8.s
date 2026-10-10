@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokemon_league_8.h"
 
 // Script plugin 3, from the zones that use this file
 
@@ -75,7 +76,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CE
     // "It's me who appeared\nwhen the flower opened up.[f000]븁\u0000\nYou, standing over there...[f000]븁\u0000\nYou look like a Pokémon Trainer\nwith strength and kindness.[f000]븁\u0000\nWhat I look for in my opponent is\nsuperb strength...[f000]븁\u0000\nI'm counting on you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_ItsWhoAppearedWhen, 0, 1, 0
     MsgWinCloseAll
     FlagSet 2410
     WorkSetConst 0x400a, 555
@@ -122,12 +123,12 @@ L_0163:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01B8
     // "Somehow, you managed to defeat the\nentire Elite Four of the Pokémon League.[f000]븁\u0000\nCheck the statue in the center of the\nplaza for the way to the Champion's room."
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_SomehowManagedDefeatEntire, 0, 1, 0
     VMJump L_01C4
 
 L_01B8:
     // "You haven't faced all of the members\nof the Elite Four yet, have you?[f000]븁\u0000\nDon't concern yourself about me.\nGo on ahead."
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_HaventFacedAllMembers, 0, 1, 0
 
 L_01C4:
     LastKeyWait
@@ -152,12 +153,12 @@ L_01CE:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0223
     // "Somehow, you managed to defeat the\nentire Elite Four of the Pokémon League.[f000]븁\u0000\nCheck the statue in the center of the\nplaza for the way to the Champion's room."
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_SomehowManagedDefeatEntire, 0, 1, 0
     VMJump L_022F
 
 L_0223:
     // "Winning is important,\nbut what's more important is[f000]븀\u0000\nwhether I've done better this time.[f000]븁\u0000\nBecause if I can't surpass myself,\nI can't get close to my ideals.[f000]븁\u0000\nI want to improve and win more elegantly,\nso I invite you to be my opponent[f000]븀\u0000\nagain in the future, if you wish."
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_WinningImportantButWhats, 0, 1, 0
 
 L_022F:
     LastKeyWait
@@ -172,7 +173,7 @@ L_0239:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0329
     // "It's me who appeared\nwhen the flower opened up.[f000]븁\u0000\nYou who have been waiting...[f000]븁\u0000\nYou look like a Pokémon Trainer\nwith refined strength and[f000]븀\u0000\ndeepened kindness.[f000]븁\u0000\nWhat I look for in my opponent is\nsuperb strength...[f000]븁\u0000\nPlease unleash your power\nto the fullest![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_ItsWhoAppearedWhen_2, 0, 1, 0
     MsgWinCloseAll
     FlagSet 2410
     WorkSetConst 0x400a, 555
@@ -219,12 +220,12 @@ L_02BE:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0313
     // "You have defeated the\nPokémon League's Elite Four.[f000]븁\u0000\nYou have earned the right to\nproceed to the Champion's room.[f000]븁\u0000\nMaking an entrance is not the point.[f000]븁\u0000\nOnce you're there, you'll need to\nunleash your power to the fullest!"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_HaveDefeatedPokemonLeagues, 0, 1, 0
     VMJump L_031F
 
 L_0313:
     // "Alas! Even with the knowledge and skill\npassed down in my family of Trainers,[f000]븀\u0000\nI still can't win.[f000]븁\u0000\nThe reason I came here in the first place\nwas to encounter Trainers like you..."
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_AlasEvenKnowledgeSkill, 0, 1, 0
 
 L_031F:
     LastKeyWait
@@ -249,12 +250,12 @@ L_0329:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_037E
     // "You have defeated the\nPokémon League's Elite Four.[f000]븁\u0000\nYou have earned the right to\nproceed to the Champion's room.[f000]븁\u0000\nMaking an entrance is not the point.[f000]븁\u0000\nOnce you're there, you'll need to\nunleash your power to the fullest!"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_HaveDefeatedPokemonLeagues, 0, 1, 0
     VMJump L_038A
 
 L_037E:
     // "When I battle you,\nI can't help but smile...[f000]븁\u0000\nBecause I was able to improve myself,\nand because you're an excellent Trainer.[f000]븁\u0000\nI want to improve and win more elegantly,\nso I invite you to be my opponent[f000]븀\u0000\nagain in the future, if you wish."
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague8_Text_WhenBattleCantHelp, 0, 1, 0
 
 L_038A:
     LastKeyWait

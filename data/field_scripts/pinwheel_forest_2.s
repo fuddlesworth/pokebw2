@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pinwheel_forest_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -62,21 +63,21 @@ Script_4:
     ActorWalkRoute 251, 43, 32, 0, 4, 1
     ActorCmdWait
     // "Gorm: Boo![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 251, 4, 1
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_GormBoo, 251, 4, 1
     ActorMsgClose
     ActorCmdExec 255, Movement_01EC
     ActorCmdExec 21, Movement_01EC
     ActorCmdWait
     // "I am Gorm. I was once one\nof Team Plasma's Seven Sages.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 251, 4, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_AmGormOnceOne, 251, 4, 0
     MsgWinCloseAll
     // "Cheren: Team Plasma's finished.[f000]븁\u0000\nDespite that, you still haven't given up?\nAre you here planning something?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 21, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_CherenTeamPlasmasFinished, 21, 5, 0
     MsgWinCloseAll
     // "Gorm: Wait one moment!\nI have no plans to confront you.[f000]븁\u0000\nI don't mean to disappoint you,\nbut I doubt I'm a match for either[f000]븀\u0000\nof you in the first place...[f000]븁\u0000\nHm?\nWhat happened to your glasses?[f000]븁\u0000\nExcuse me, but that's not important.[f000]븁\u0000\nI learned of my old ally's recklessness,\nand I had come here to admonish him...[f000]븁\u0000\nBut the matter had already been\nresolved, and this place made me think...[f000]븁\u0000\nWhat did we believe in that made\nus try to steal the Dragon Skull?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 251, 4, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_GormWaitOneMoment, 251, 4, 0
     // "A man who has committed a mistake\nand doesn't correct it[f000]븀\u0000\nis committing another mistake.[f000]븁\u0000\nDo you understand what this means?[f000]븁\u0000\nAvoiding all mistakes is impossible,\nbut not fixing mistakes you've made--[f000]븀\u0000\nthat is truly foolish.[f000]븁\u0000\nThat being said, this doesn't\nreally concern you, does it?[f000]븁\u0000\nWell then, Trainers, may you and your\nPokémon be well.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 251, 4, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_ManWhoHasCommitted, 251, 4, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0210
     VMSleep 16
@@ -84,12 +85,12 @@ Script_4:
     ActorCmdExec 21, Movement_059C
     ActorCmdWait
     // "Cheren: You know...[f000]븁\u0000\nIf it wasn't for Ghetsis,\nhe might've chosen another path...[f000]븁\u0000\nOr maybe not. He was the one who\ndecided to follow Ghetsis, after all...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 21, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_CherenKnowIfWasnt, 21, 5, 0
     MsgWinCloseAll
     ActorCmdExec 21, Movement_0594
     ActorCmdWait
     // "That aside, thank you![f000]븁\u0000\nYour help made this\ninvestigation go smoothly.[f000]븁\u0000\nThis is my thanks!\nCome on, just take it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 21, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_AsideThankHelpMade, 21, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -99,7 +100,7 @@ Script_4:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "OK! Be seeing you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 21, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_OkSeeing, 21, 5, 0
     MsgWinCloseAll
     ActorCmdExec 21, Movement_0208
     ActorCmdWait
@@ -190,12 +191,12 @@ L_02D1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F6
     // "Cheren: Hey, nice timing![f000]븁\u0000\nI heard that Team Plasma was seen\nin Pinwheel Forest...[f000]븁\u0000\nCould you help me look for them?"
-    ActorMsg MSGFILE_SCRIPT, 0, 21, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_CherenHeyNiceTiming, 21, 1, 0
     VMJump L_0302
 
 L_02F6:
     // "Cheren: Team Plasma was seen inside\nPinwheel Forest...[f000]븁\u0000\nBut you already know that.\nWill you help me look for them?"
-    ActorMsg MSGFILE_SCRIPT, 4, 21, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_CherenTeamPlasmaSeen, 21, 1, 0
 
 L_0302:
     YesNoWin 0x8010
@@ -204,7 +205,7 @@ L_0302:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03A6
     // "Thank you![f000]븁\u0000\nThis is a good opportunity for me\nto see up close what you can really do.[f000]븀\u0000\nI suppose I'll follow your lead.[f000]븁\u0000\nLeave recovery to me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 21, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_ThankGoodOpportunitySee, 21, 1, 0
     MsgWinCloseAll
     PlayerGetExState 0x8010
     VMStackPush 0x8010
@@ -240,7 +241,7 @@ L_03A6:
     ActorCmdExec 21, Movement_053C
     ActorCmdWait
     // "We don't know how many there are,\nso splitting up doesn't seem like[f000]븀\u0000\na very good tactic.[f000]븁\u0000\nGot it! I'll wait here until\nyou're ready to go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 21, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_WeDontKnowHow, 21, 1, 0
     MsgWinCloseAll
     ActorCmdExec 21, Movement_057C
     ActorCmdExec 255, Movement_0554
@@ -257,14 +258,14 @@ L_03D8:
     ActorCmdExec 254, Movement_057C
     ActorCmdWait
     // "Cheren: Stop![f000]븁\u0000\nIf you go past here, we'll leave\nthe Pinwheel Forest.[f000]븁\u0000\nWe still haven't found Team Plasma,\nbut do you need to leave for a minute?"
-    ActorMsg MSGFILE_SCRIPT, 3, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_CherenStopIfGo, 254, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_046F
     // "We don't know how many there are,\nso splitting up doesn't seem like[f000]븀\u0000\na very good tactic.[f000]븁\u0000\nGot it! I'll wait here until\nyou're ready to go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_WeDontKnowHow, 254, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -283,7 +284,7 @@ L_03D8:
 
 L_046F:
     // "Thank you![f000]븁\u0000\nThis is a good opportunity for me\nto see up close what you can really do.[f000]븀\u0000\nI suppose I'll follow your lead.[f000]븁\u0000\nLeave recovery to me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_ThankGoodOpportunitySee, 254, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorCmdExec 255, Movement_055C
@@ -298,7 +299,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The legendary Pokémon...\nIs it true it was really beyond here?"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_LegendaryPokemonTrueReally, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 24, Movement_059C
@@ -312,7 +313,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm going to do a lap around Unova\nclockwise from Nimbasa City[f000]븀\u0000\nwithout healing my Pokémon![f000]븁\u0000\nIt's the Unova Spartan Marathon,\nand next time, I'm going to race!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_ImGoingLapAround, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -324,7 +325,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We're thinning trees to\nprotect the forest.[f000]븁\u0000\nThat's why we're having Pokémon\ncut down trees.[f000]븁\u0000\nWhen there are too many trees,\nthe whole forest gets weaker...[f000]븁\u0000\nThese trees are being cut down\nso the whole forest will thrive..."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_WereThinningTreesProtect, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -336,7 +337,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ah, wouldn't it be nice if the Pokémon\nliving in the forest liked the sunbeams[f000]븀\u0000\nfiltering through the leaves, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_AhWouldntNiceIf, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -347,7 +348,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The surface is covered with moss.\nTouching it feels good somehow."
-    InfoMsg 28, 2
+    InfoMsg PinwheelForest2_Text_SurfaceCoveredMossTouching, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -359,7 +360,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nA forest is likely to contain many\nwell-hidden items![f000]븁\u0000\nThey may be hard to find,\nso look carefully!"
-    MsgPlaceSign 29, 0
+    MsgPlaceSign PinwheelForest2_Text_TrainerTipsForestLikely, 0
     MsgPlaceSignClose
     FlagSet 2663
     FinishAllEvents
@@ -420,7 +421,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hi, Trainer.[f000]븁\u0000\nIf you have a Pokédex, could you show me\nyour Habitat List?[f000]븁\u0000\nI want to know about the Pokémon\nthat live in Pinwheel Forest.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_HiTrainerIfHave, 0, 0
     WorkSetConst 0x8025, 0
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8027, 0
@@ -440,7 +441,7 @@ Script_6:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0680
     // "Perfect!\nThis is my thanks![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_PerfectThanks, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -451,14 +452,14 @@ Script_6:
     VMStackPop 0x8000
     FlagSet 470
     // "Finding the Pokémon that can\nonly be found in the rustling grass[f000]븀\u0000\nis really amazing!"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_FindingPokemonCanOnly, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_068E
 
 L_0680:
     // "You still have many meetings\nwaiting for you...[f000]븁\u0000\nTell me when you've encountered\nall of the Pokémon in Pinwheel Forest."
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_StillHaveManyMeetings, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -469,7 +470,7 @@ L_0694:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Finding the Pokémon that can\nonly be found in the rustling grass[f000]븀\u0000\nis really amazing!"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest2_Text_FindingPokemonCanOnly, 0, 0
     LastKeyWait
     ActorMsgClose
 

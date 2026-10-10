@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_10.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -9,7 +10,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "       "
-    MsgPlaceSign 0, 3
+    MsgPlaceSign Route10_Text_Empty, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -20,7 +21,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "                          "
-    MsgPlaceSign 1, 2
+    MsgPlaceSign Route10_Text_Empty_2, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

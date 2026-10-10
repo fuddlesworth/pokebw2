@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/twist_mountain_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -24,7 +25,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When you walk on snow,\nyour feet sink deeper than usual.[f000]븁\u0000\nThe sensation is so powerful\nand gripping!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain2_Text_WhenWalkSnowFeet, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -41,7 +42,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Whiteness of snow hides impurities,\nand blackness of night conceals worries."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain2_Text_WhitenessSnowHidesImpurities, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_009C
@@ -50,7 +51,7 @@ L_0088:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "In winter, snow piles up\nall over Twist Mountain.[f000]븁\u0000\nIt gets totally white!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain2_Text_WinterSnowPilesUp, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -64,7 +65,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Twist and twist, twisting mountain. ♪\nSpiraling up like a fountain. ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain2_Text_TwistTwistTwistingMountain, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

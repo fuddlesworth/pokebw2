@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lentimas_town_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -44,7 +45,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A cool mind feels no heat!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LentimasTownPokemonCenter_Text_CoolMindFeelsNo, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -84,7 +85,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hmm?\nAre you going to check the volcano, too?[f000]븁\u0000\nThe volcano here is the same kind of\nvolcano as Stark Mountain in the[f000]븀\u0000\nSinnoh region."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LentimasTownPokemonCenter_Text_HmmGoingCheckVolcano, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

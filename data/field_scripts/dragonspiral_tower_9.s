@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/dragonspiral_tower_9.h"
 
 // Script plugin 14, from the zones that use this file
 
@@ -41,7 +42,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0160
     // "The Dark Stone...\nIt's trembling inside the Bag![f000]븁\u0000\nTake the Dark Stone\nout of the Bag?"
-    SystemMsg 0, 2
+    SystemMsg DragonspiralTower9_Text_DarkStoneItsTrembling, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -71,7 +72,7 @@ L_00E5:
     WorkSetConst 0x411b, 2
     WorkSetConst 0x4020, 365
     // "The Dark Stone draws in the aura of\nthe surroundings and converts it into[f000]븀\u0000\na powerful force, which is...now...[f000]븁\u0000\nBeing released!"
-    SystemMsg 1, 2
+    SystemMsg DragonspiralTower9_Text_DarkStoneDrawsAura, 2
     MsgWaitAdvance
     MsgWinCloseAll
     VMCall L_022D
@@ -84,7 +85,7 @@ L_013D:
     VMSleep 8
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 was pushed back\nby a mysterious force..."
-    SystemMsg 2, 2
+    SystemMsg DragonspiralTower9_Text_PushedBackByMysterious, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -93,7 +94,7 @@ L_015A:
 
 L_0160:
     // "The Light Stone...\nIt's trembling inside the Bag![f000]븁\u0000\nTake the Light Stone\nout of the Bag?"
-    SystemMsg 5, 2
+    SystemMsg DragonspiralTower9_Text_LightStoneItsTrembling, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -123,7 +124,7 @@ L_01B2:
     WorkSetConst 0x411b, 2
     WorkSetConst 0x4020, 364
     // "The Light Stone draws in the aura of\nthe surroundings and converts it into[f000]븀\u0000\na powerful force, which is...now...[f000]븁\u0000\nBeing released!"
-    SystemMsg 6, 2
+    SystemMsg DragonspiralTower9_Text_LightStoneDrawsAura, 2
     MsgWaitAdvance
     MsgWinCloseAll
     VMCall L_022D
@@ -136,7 +137,7 @@ L_020A:
     VMSleep 8
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 was pushed back\nby a mysterious force..."
-    SystemMsg 7, 2
+    SystemMsg DragonspiralTower9_Text_PushedBackByMysterious_2, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -234,7 +235,7 @@ L_033E:
     VMJumpIf CMP_STACK, L_0388
     PVPlay 644, 0
     // "Bazzazzazzash!"
-    ScreamMsg 3, 0
+    ScreamMsg DragonspiralTower9_Text_Bazzazzazzash, 0
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -244,7 +245,7 @@ L_033E:
 L_0388:
     PVPlay 643, 0
     // "Preeeeaah!"
-    ScreamMsg 8, 0
+    ScreamMsg DragonspiralTower9_Text_Preeeeaah, 0
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -295,14 +296,14 @@ L_041F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0446
     // "Zekrom went flying off somewhere..."
-    SystemMsg 4, 2
+    SystemMsg DragonspiralTower9_Text_ZekromWentFlyingOff, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0450
 
 L_0446:
     // "Reshiram went flying off somewhere..."
-    SystemMsg 9, 2
+    SystemMsg DragonspiralTower9_Text_ReshiramWentFlyingOff, 2
     LastKeyWait
     InfoMsgClose
 
@@ -338,12 +339,12 @@ L_04B4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04D9
     // "N: [f000]븉\u0001\u0001Zekrom has recognized\nyou as the new hero.[f000]븁\u0000\nThat's right! As a Trainer with a will\nstrong enough to change the world![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_NZekromHasRecognized, 251, 0, 0
     VMJump L_04E5
 
 L_04D9:
     // "N: [f000]븉\u0001\u0001Reshiram has recognized\nyou as the new hero.[f000]븁\u0000\nThat's right! As a Trainer with a will\nstrong enough to change the world![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_NReshiramHasRecognized, 251, 0, 0
 
 L_04E5:
     VMJump L_057F
@@ -359,12 +360,12 @@ L_04FE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0523
     // "N: [f000]븉\u0001\u0001You showed Zekrom\nthe strength of your Pokémon.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_NShowedZekromStrength, 251, 0, 0
     VMJump L_052F
 
 L_0523:
     // "N: [f000]븉\u0001\u0001You showed Reshiram\nthe strength of your Pokémon.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_NShowedReshiramStrength, 251, 0, 0
 
 L_052F:
     VMJump L_057F
@@ -380,24 +381,24 @@ L_0548:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_056D
     // "N: [f000]븉\u0001\u0001You're walking away from\na battle with Zekrom?[f000]븀\u0000\nWhat an amusing Trainer.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_NYoureWalkingAway, 251, 0, 0
     VMJump L_0579
 
 L_056D:
     // "N: [f000]븉\u0001\u0001You're walking away from\na battle with Reshiram?[f000]븀\u0000\nWhat an amusing Trainer.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_NYoureWalkingAway_2, 251, 0, 0
 
 L_0579:
     VMJump L_057F
 
 L_057F:
     // "[f000]븉\u0001\u0001I have something to tell you.[f000]븁\u0000\nGo to the Giant Chasm!\nKyurem has returned.[f000]븁\u0000\nThat's what my friend\nhas told me.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_HaveSomethingTellGo, 251, 0, 0
     MsgWinCloseAll
     VMSleep 20
     WordSetPlayerName 0
     // "[f000]븉\u0001\u0001[f000]Ā\u0001\u0000![f000]븁\u0000\nThe world that you desire\nfor Pokémon and humans...[f000]븁\u0000\nI look forward to seeing how\nfull of love that world is.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_WorldDesirePokemonHumans, 251, 0, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -408,7 +409,7 @@ L_057F:
     ActorCmdExec 251, Movement_0690
     ActorCmdWait
     // "[f000]븉\u0001\u0001Someday...[f000]븁\u0000\nPokémon and humans will be bound\ntogether without Poké Balls.[f000]븁\u0000\nThey will simply trust\nand help one another.[f000]븀\u0000\nMake that kind of world.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DragonspiralTower9_Text_SomedayPokemonHumansWill, 251, 0, 0
     MsgWinCloseAll
     EvCameraReturn 40
     ActorWalkRoute 251, 16, 23, 0, 8, 1

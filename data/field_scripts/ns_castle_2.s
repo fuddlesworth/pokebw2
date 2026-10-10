@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/ns_castle_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -69,26 +70,26 @@ L_00D1:
 
 L_00EE:
     // "N: [f000]븉\u0001\u0001You came...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_NCame, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_04F4
     ActorCmdWait
     // "[f000]븉\u0001\u0001This...[f000]븁\u0000\nThis is Team Plasma's castle.[f000]븁\u0000\nThe ruins of Ghetsis's dreams...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_TeamPlasmasCastleRuins, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_04EC
     ActorCmdWait
     // "[f000]븉\u0001\u0001The deepest chamber of this castle...[f000]븁\u0000\nIt's a place that holds a special\nmeaning to me...[f000]븀\u0000\nI have to face you there![f000]븁\u0000\nFollow me![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_DeepestChamberCastleIts, 0, 0, 0
     // "[f000]븉\u0001\u0001Actually...[f000]븁\u0000\nRather than just leading you there,\nI'd prefer to follow. That way, I can[f000]븀\u0000\nsee which path you choose and observe[f000]븀\u0000\nwhat catches your interest.[f000]븁\u0000\nSo, I ask this of you![f000]븁\u0000\nTake me to the deepest chamber\nof this castle![f000]븉\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_ActuallyRatherThanJust, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FF
     // "[f000]븉\u0001\u0001You lead and I'll follow![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_LeadIllFollow, 0, 0, 0
     MsgWinCloseAll
     PlayerGetExState 0x8010
     VMStackPush 0x8010
@@ -131,7 +132,7 @@ L_01F9:
 
 L_01FF:
     // "[f000]븉\u0001\u0001Fine...\nI'll be waiting here for you, then.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_FineIllWaitingHere, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_04B4
     ActorCmdWait
@@ -176,14 +177,14 @@ L_02A1:
 L_02B1:
     ActorCmdWait
     // "[f000]븉\u0001\u0001What?[f000]븁\u0000\nYou're leaving at a time like this?[f000]븁\u0000\nMy formula didn't account\nfor this variable...[f000]븉\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_WhatYoureLeavingTime, 254, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_033E
     // "[f000]븉\u0001\u0001Fine...\nI'll be waiting here for you, then.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_FineIllWaitingHere, 254, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -205,7 +206,7 @@ L_02B1:
 
 L_033E:
     // "[f000]븉\u0001\u0001Fine...\nThen take me to the deepest chamber.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_FineThenTakeDeepest, 254, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorCmdExec 255, Movement_04AC
@@ -251,7 +252,7 @@ L_03DF:
 L_03EF:
     ActorCmdWait
     // "[f000]븉\u0001\u0001There's nothing more of interest there.\nLet's keep moving.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_TheresNothingMoreInterest, 254, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorCmdExec 255, Movement_049C
@@ -266,7 +267,7 @@ Script_3:
     ActorCmdExec 255, Movement_04EC
     ActorCmdWait
     // "[f000]븉\u0001\u0001You lead and I'll follow![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle2_Text_LeadIllFollow, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001

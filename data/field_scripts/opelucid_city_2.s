@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,32 +29,32 @@ Script_3:
     ActorCmdExec 0, Movement_01A4
     ActorCmdWait
     // "Drayden: Let me tell you the story.\nIt's a long story, but listen closely.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity2_Text_DraydenLetTellStory, 0, 0, 0
     MsgWinCloseAll
     // "It was two years ago when the two\ndragon Pokémon were awakened.[f000]븁\u0000\nThe white dragon Pokémon, Reshiram,\nsought what is true, with the desire[f000]븀\u0000\nto usher in a new world of goodness.[f000]븁\u0000\nAnd the black dragon Pokémon, Zekrom,\npursued what is ideal, with the desire[f000]븀\u0000\nto usher in a new world of hope.[f000]븁\u0000\nReshiram and Zekrom\nwere once a single Pokémon.[f000]븁\u0000"
     // "It was two years ago when the two\ndragon Pokémon were awakened.[f000]븁\u0000\nThe black dragon Pokémon, Zekrom,\npursued what is ideal, with the desire[f000]븀\u0000\nto usher in a new world of hope.[f000]븁\u0000\nAnd the white dragon Pokémon, Reshiram,\nsought what is true, with the desire[f000]븀\u0000\nto usher in a new world of goodness.[f000]븁\u0000\nZekrom and Reshiram\nwere once a single Pokémon.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 2, 1, 0, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity2_Text_TwoYearsAgoWhen_2, OpelucidCity2_Text_TwoYearsAgoWhen, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_025C
     ActorCmdWait
     // "You may wonder why it split in two.[f000]븁\u0000\nThe single dragon Pokémon had helped the\ntwin heroes bring a new region into being.[f000]븁\u0000\nBut the twin heroes--the younger\nbrother who sought ideals and the older[f000]븀\u0000\nbrother who sought the truth--sundered[f000]븀\u0000\nthe region in two as they fought to see[f000]븀\u0000\nwhich of them was right.[f000]븁\u0000\nIn that desperate hour, the single\ndragon Pokémon split its body into a[f000]븀\u0000\nwhite Pokémon and a black Pokémon,[f000]븀\u0000\neven though ideals and truth[f000]븀\u0000\ndon't need to be in opposition![f000]븁\u0000"
     // "You may wonder why it split in two.[f000]븁\u0000\nThe single dragon Pokémon had helped the\ntwin heroes bring a new region into being.[f000]븁\u0000\nBut the twin heroes--the older brother\nwho sought the truth and the[f000]븀\u0000\nyounger brother who sought ideals--[f000]븀\u0000\nsundered the region in two as they[f000]븀\u0000\nfought to see which of them was right.[f000]븁\u0000\nIn that desperate hour, the single\ndragon Pokémon split its body into a[f000]븀\u0000\nblack Pokémon and a white Pokémon,[f000]븀\u0000\neven though ideals and truth[f000]븀\u0000\ndon't need to be in opposition![f000]븁\u0000"
-    ActorMsgVersioned 1024, 4, 3, 0, 0, 0
+    ActorMsgVersioned 1024, OpelucidCity2_Text_MayWonderWhySplit_2, OpelucidCity2_Text_MayWonderWhySplit, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0204
     ActorCmdWait
     // "As the story goes, a third\ndragon Pokémon, [f000][ff00]\u0001\u0002Kyurem[f000][ff00]\u0001\u0000,[f000]븀\u0000\nalso came into existence in that era.[f000]븁\u0000\nAnd there may be proof of this to be\nfound in a treasure passed down in my[f000]븀\u0000\nfamily for generations: the DNA Splicers.[f000]븁\u0000\nProfessor Juniper's research determined\nthat the materials in the splicers date[f000]븀\u0000\nback to the same era as the materials[f000]븀\u0000\nused in building the Dragonspiral Tower.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity2_Text_StoryGoesThirdDragon, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_026C
     ActorCmdWait
     // "Oh, the DNA Splicers\nare stored very safely.[f000]븁\u0000\nI guard them because I don't know\nwhat kind of power might lie within them.[f000]븁\u0000\nBut here's what's been bothering me...\nCould there be one more dragon Pokémon?[f000]븁\u0000\nEven if Kyurem really exists,\nwe don't know what kind of Pokémon it is.[f000]븁\u0000\nFor starters, the two Pokémon\nthe ancient Pokémon split into[f000]븀\u0000\nare both overwhelmingly powerful.[f000]븁\u0000\nSo if Kyurem exists, could it be just\na husk--a shell that was left over?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity2_Text_OhDnaSplicersStored, 0, 0, 0
     MsgWinCloseAll
     SEPlay SEQ_SE_SW_SOURYU_RUMBLE
     EvCameraShake 0, 1, 3, 6, 0, 0, 0, 0
     // "Boom![f000]븁\u0000"
-    ScreamMsg 7, 2
+    ScreamMsg OpelucidCity2_Text_Boom, 2
     MsgWinCloseAll
     FlagSet 2553
     BGMChangeMap
@@ -63,7 +64,7 @@ Script_3:
     ActorCmdExec 0, Movement_025C
     ActorCmdWait
     // "Drayden: Hm?[f000]븁\u0000\nWhat was that sound?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity2_Text_DraydenHmWhatSound, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_01BC
     ActorCmdExec 255, Movement_01B0
@@ -136,7 +137,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 610, 0
     // "Ax! Axew!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity2_Text_AxAxew, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

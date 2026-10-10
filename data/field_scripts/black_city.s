@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/black_city.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -88,7 +89,7 @@ Script_5:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Black City\nProsperous and Vibrant"
-    MsgPlaceSign 120, 1
+    MsgPlaceSign BlackCity_Text_BlackCityProsperousVibrant, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -104,7 +105,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Dave: People who've got it goin' on\nalways get what they want![f000]븁\u0000\nIf there's a Pokémon you want\nto catch, keep on goin' on![f000]븁\u0000\nYou gotta get whatcha want\nthe right way--honestly and thoroughly!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_DavePeopleWhoveGot, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01CE
@@ -121,7 +122,7 @@ L_016A:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Dave: There's a shop where those\nwho've got it goin' on go.[f000]븁\u0000\nI heard they got some\nnew items in recently."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_DaveTheresShopWhere, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01CE
@@ -134,7 +135,7 @@ L_01A7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Dave: Used to be a lot of thugs\nhangin' around here looking for cash.[f000]븀\u0000\nI drove most of them off![f000]븁\u0000\nYeah! That's right! Black City\ngot its peace on all because of me!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_DaveUsedLotThugs, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -153,7 +154,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Karenna: I heard strong people gather\nto train somewhere around here,[f000]븀\u0000\nso I brought my Pokémon![f000]븁\u0000\nYou're a Trainer too, right?\nLet's cheer each other on!"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_KarennaHeardStrongPeople, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0271
@@ -171,7 +172,7 @@ L_0207:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Karenna: You're [f000]Ā\u0001\u0000, right?[f000]븁\u0000\nIt sounds like you've conquered\na lot of the Black Tower![f000]븀\u0000\nI won't lose either!"
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_KarennaYoureRightSounds, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0271
@@ -185,7 +186,7 @@ L_0247:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Karenna: Congratulations on clearing\nthe Black Tower, [f000]Ā\u0001\u0000![f000]븀\u0000\nEveryone's talking about you![f000]븁\u0000\nI even heard the shops have new items\ncommemorating your victory!"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_KarennaCongratulationsClearingBlack, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -204,7 +205,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Marie: I came to Black City\nto write my thesis.[f000]븁\u0000\nThe theme of my research is\nPokémon that live in cities.[f000]븁\u0000\nI came to research the soothing\neffect Pokémon have on tired[f000]븀\u0000\nurban dwellers!"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_MarieCameBlackCity, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02D1
@@ -217,7 +218,7 @@ L_02AA:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Marie: I've finally organized\nthe research I've been[f000]븀\u0000\ndoing in Black City![f000]븁\u0000\nI knew the best way to relieve\nstress is to interact with Pokémon,[f000]븀\u0000\neven in the big city!"
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_MarieIveFinallyOrganized, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -236,7 +237,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Piper: I managed to get a job at one\nof the best companies in Black City,[f000]븀\u0000\nwhich is full of amazing businesses![f000]븁\u0000\nI'm going to work really hard\nand move up through the ranks!"
-    ParentActorMsg MSGFILE_SCRIPT, 72, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_PiperManagedGetJob, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_036E
@@ -253,7 +254,7 @@ L_030A:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Piper: I can't take it! I'm done!\nWaaah![f000]븁\u0000\nSigh... I keep making mistakes at work,\nI got dumped...[f000]븁\u0000\nI want to run away to White Forest\nand relax in the woods with Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 73, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_PiperCantTakeIm, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_036E
@@ -266,7 +267,7 @@ L_0347:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Piper: The other day, I solved\na big problem at work![f000]븀\u0000\nEveryone complimented me! ♪[f000]븁\u0000\nA lot has happened recently,\nbut I'm glad I stuck with my job![f000]븁\u0000\nI'll keep making money\nhere in Black City!"
-    ParentActorMsg MSGFILE_SCRIPT, 74, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_PiperOtherDaySolved, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -280,7 +281,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Eliza: I came to this town with\nthe desire to become rich and famous![f000]븁\u0000\nFirst, I'm going to clear the Black Tower\nfaster than anyone else[f000]븀\u0000\nand become really famous![f000]븁\u0000\n...What? You're kidding, right?\nYou cleared it already?[f000]븀\u0000\nNo! My plans are ruined!"
-    ParentActorMsg MSGFILE_SCRIPT, 88, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_ElizaCameTownDesire, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -297,7 +298,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Collin: There's something I want,\nbut it is never in stock at the shops.[f000]븁\u0000\nThe guy at one of the shops said they\nwould have it in stock soon.[f000]븀\u0000\nBut I just can't wait!"
-    ParentActorMsg MSGFILE_SCRIPT, 92, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_CollinTheresSomethingWant, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0427
@@ -314,7 +315,7 @@ L_03C3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Collin: Have you been to the shop?\nThey got a new item in stock![f000]븁\u0000\nBut it's still not the item I want...[f000]븁\u0000\nIf I don't get my hands on it soon,\nI'm going to be in a lot of trouble!"
-    ParentActorMsg MSGFILE_SCRIPT, 93, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_CollinHaveBeenShop, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0427
@@ -327,7 +328,7 @@ L_0400:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Collin: They finally got\nwhat I wanted in stock![f000]븀\u0000\nI've waited so long for this![f000]븁\u0000\n...Huh? What did I want?[f000]븁\u0000\nThat's kind of a nosy question!\nI'll never tell you!"
-    ParentActorMsg MSGFILE_SCRIPT, 94, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_CollinTheyFinallyGot, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -347,7 +348,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ken: Unova's Challenge...[f000]븁\u0000\nTrainers come from all over the\nworld to challenge the Black Tower.[f000]븁\u0000\nAre you taking it on too, [f000]Ā\u0001\u0000?[f000]븁\u0000\nA difficult battle lies ahead!\nTake some amazing Pokémon with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 96, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_KenUnovasChallengeTrainers, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_04C7
@@ -364,7 +365,7 @@ L_0463:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ken: I heard about your exploits in\nUnova's Challenge, the Black Tower![f000]븁\u0000\nBut don't get cocky!\nThe higher the area,[f000]븀\u0000\nthe odder the Trainers get...[f000]븁\u0000\nWell, that was my experience anyway.\nDo your best and aim for the top!"
-    ParentActorMsg MSGFILE_SCRIPT, 97, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_KenHeardAboutExploits, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_04C7
@@ -377,7 +378,7 @@ L_04A0:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ken: You finally overcame Unova's\nChallenge, the Black Tower![f000]븁\u0000\n[f000]Ā\u0001\u0000...\nYou are truly amazing![f000]븁\u0000\nI've tried many times myself,\nbut I failed every time,[f000]븀\u0000\nand before long, I gave up.[f000]븁\u0000\nI respect you for believing in\nyour Pokémon and yourself!"
-    ParentActorMsg MSGFILE_SCRIPT, 98, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_KenFinallyOvercameUnovas, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -396,7 +397,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Emi: When I'm not at my part-time job,\nI make piles of prize money by[f000]븀\u0000\nbattling in the Black Tower![f000]븁\u0000\nI'm glad I came here.\nI like quiet places, but...[f000]븁\u0000\nI couldn't make money like\nthis in White Forest."
-    ParentActorMsg MSGFILE_SCRIPT, 112, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_EmiWhenImNot, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0567
@@ -414,7 +415,7 @@ L_0500:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Emi: I hear you made it pretty\nfar up in the Black Tower?[f000]븁\u0000\nThat's really amazing!\nI couldn't get past the first area![f000]븁\u0000\nStill, I can make a lot of money\nthere, so I don't really mind."
-    ParentActorMsg MSGFILE_SCRIPT, 113, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_EmiHearMadePretty, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0567
@@ -427,7 +428,7 @@ L_0540:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Emi: Even if I'm making good money,\nI've never lived in the same place[f000]븀\u0000\nfor this long before...[f000]븁\u0000\nI've met a lot of people and\nfound some shops I really like.[f000]븁\u0000\nBut it's about time for me to leave.\nMaybe it would be nice to go to[f000]븀\u0000\nWhite Forest and relax for a while."
-    ParentActorMsg MSGFILE_SCRIPT, 114, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BlackCity_Text_EmiEvenIfIm, 0, 0
     LastKeyWait
     ActorMsgClose
 

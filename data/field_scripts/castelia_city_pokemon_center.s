@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -56,7 +57,7 @@ Script_4:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0130
     // "Wanna recover Pokémon?\nOh, soooooorry![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_WannaRecoverPokemonOh, 0, 0
     MsgWinCloseAll
     WorkCmpConst 0x8022, 0
     VMJumpIf CMP_EQ, L_00FB
@@ -83,7 +84,7 @@ L_012A:
 
 L_0130:
     // "Do you know Geonet?"
-    ActorMsg MSGFILE_SCRIPT, 9, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_KnowGeonet, 8, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -94,7 +95,7 @@ L_0130:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0179
     // "You! You, using Geonet!\nI'll tell you something good[f000]븀\u0000\nbecause you're great.[f000]븁\u0000\nWith the latest technology, we can trade\nPokémon with people far away![f000]븁\u0000\n...I know it sounds crazy,\nbut give it a try. You'll be surprised!"
-    ActorMsg MSGFILE_SCRIPT, 10, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_UsingGeonetIllTell, 8, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01CC
@@ -109,7 +110,7 @@ L_0179:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01B2
     // "Oh! You know Geonet!\nGreat, great![f000]븁\u0000\nThis is even greater, lemme tell ya![f000]븁\u0000\nIf you try Geonet, you can register\nthe place where you live!"
-    ActorMsg MSGFILE_SCRIPT, 11, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_OhKnowGeonetGreat, 8, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01CC
@@ -118,7 +119,7 @@ L_01B2:
     ActorCmdExec 8, Movement_01F8
     ActorCmdWait
     // "You see the globe on the second floor\nof this Pokémon Center?[f000]븁\u0000\nThat is Geonet.[f000]븁\u0000\nIf you check on Geonet, you can register\nthe place where you live!"
-    ActorMsg MSGFILE_SCRIPT, 12, 8, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_SeeGlobeSecondFloor, 8, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -210,7 +211,7 @@ L_02C9:
 
 L_02CF:
     // "I want to know\neveryone's favorite kind of Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_WantKnowEveryonesFavorite, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -222,13 +223,13 @@ L_02DF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0308
     // "Your favorite is that Egg, isn't it?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_FavoriteEggIsnt, 0, 0
     VMJump L_0317
 
 L_0308:
     WordSetPartyPokeSpecies 0, 0
     // "Your favorite is [f000]ā\u0001\u0000, isn't it?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_FavoriteIsnt, 0, 0
 
 L_0317:
     YesNoWin 0x8010
@@ -238,7 +239,7 @@ L_0317:
     VMJumpIf CMP_STACK, L_0342
     TrainerCardSetFavePokemon 0
     // "Yes, I was right! I thought so!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_YesRightThought, 0, 0
     VMJump L_0374
 
 L_0342:
@@ -247,13 +248,13 @@ L_0342:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0365
     // "...Oh? Your favorite really is that Egg,\nisn't it?"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_OhFavoriteReallyEgg, 0, 0
     VMJump L_0374
 
 L_0365:
     WordSetPartyPokeSpecies 0, 0
     // "What? Your favorite isn't [f000]ā\u0001\u0000?!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_WhatFavoriteIsnt, 0, 0
 
 L_0374:
     LastKeyWait
@@ -265,7 +266,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Fennel has moved to Castelia City![f000]븁\u0000\nFennel is a professor who is\nresearching about Pokémon Trainers!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_FennelHasMovedCastelia, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -278,7 +279,7 @@ Script_7:
     ActorSetEyeToEye
     PVPlay 531, 0
     // "Au-di-no?"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityPokemonCenter_Text_AuDiNo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

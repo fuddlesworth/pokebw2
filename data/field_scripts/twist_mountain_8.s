@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/twist_mountain_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ Script_1:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_007F
     // "It's a statue of a Pokémon.\nIt exudes tremendous power..."
-    SystemMsg 0, 2
+    SystemMsg TwistMountain8_Text_ItsStatuePokemonExudes, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0085
@@ -43,12 +44,12 @@ L_0085:
 
 L_008B:
     // "It's a statue of a Pokémon.\nIt exudes tremendous power...[f000]븁\u0000\n..."
-    SystemMsg 1, 2
+    SystemMsg TwistMountain8_Text_ItsStatuePokemonExudes_2, 2
     MsgWaitAdvance
     InfoMsgClose
     PVPlay 486, 0
     // "...Zut zutt!"
-    ScreamMsg 2, 2
+    ScreamMsg TwistMountain8_Text_ZutZutt, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -85,7 +86,7 @@ L_00F8:
 
 L_0118:
     // "Regigigas disappeared\nsomewhere into the passage..."
-    SystemMsg 3, 2
+    SystemMsg TwistMountain8_Text_RegigigasDisappearedSomewhereInto, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0128
@@ -98,7 +99,7 @@ Script_2:
     WordSetPlayerName 0
     SEPlay SEQ_SE_MESSAGE
     // "[f000]Ā\u0001\u0000 read the\nengraved writing...[f000]븁\u0000\n“A body of rock.\nTo summon the king,[f000]븀\u0000\nsuch a thing must be obtained...\""
-    InfoMsg 4, 2
+    InfoMsg TwistMountain8_Text_ReadEngravedWritingBody, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -110,7 +111,7 @@ Script_3:
     WordSetPlayerName 0
     SEPlay SEQ_SE_MESSAGE
     // "[f000]Ā\u0001\u0000 read the\nengraved writing...[f000]븁\u0000\n“A body of ice.\nTo summon the king,[f000]븀\u0000\nsuch a thing must be obtained...\""
-    InfoMsg 5, 2
+    InfoMsg TwistMountain8_Text_ReadEngravedWritingBody_2, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -122,7 +123,7 @@ Script_4:
     WordSetPlayerName 0
     SEPlay SEQ_SE_MESSAGE
     // "[f000]Ā\u0001\u0000 read the\nengraved writing...[f000]븁\u0000\n“A body of steel.\nTo summon the king,[f000]븀\u0000\nsuch a thing must be obtained...\""
-    InfoMsg 6, 2
+    InfoMsg TwistMountain8_Text_ReadEngravedWritingBody_3, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents

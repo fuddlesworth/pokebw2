@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lacunosa_town_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -69,7 +70,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "True, nobody goes outside at night\nand it's very peaceful...[f000]븁\u0000\nBut it's all because of\na terrifying Pokémon.[f000]븁\u0000\nI'm not sure how I feel about that."
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_TrueNobodyGoesOutside, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_00F8
@@ -78,7 +79,7 @@ L_00E4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I don't have anything to do ever since\nI took a post here.[f000]븁\u0000\nSince nobody goes outside at night,\nit's very peaceful."
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_DontHaveAnythingEver, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -92,14 +93,14 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Every Gym Badge tells the story\nof a hard-won victory against[f000]븀\u0000\na worthy opponent.[f000]븁\u0000\nI can look at a Gym Badge and\ntell you that story.[f000]븁\u0000\nCan I see one of your Gym Badges?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_EveryGymBadgeTells, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013F
     // "OK. You don't have to show me anything.\nI'm sure your memories are all you need!"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_OkDontHaveShow, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0164
@@ -123,7 +124,7 @@ L_0164:
 L_016A:
     WorkSetConst 0x8022, 0
     // "Which Badge's story\nwould you like to hear?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_WhichBadgesStoryWould, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32802
     TrainerCardHasBadge 0x8010, 0
     VMStackPush 0x8010
@@ -200,7 +201,7 @@ L_028D:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_02D2
     // "OK. You don't have to show me anything.\nI'm sure your memories are all you need!"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_OkDontHaveShow, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x8021, 0
@@ -213,7 +214,7 @@ L_02D2:
 
 L_02E5:
     // "You got the Basic Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotBasicBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_02F7:
@@ -223,7 +224,7 @@ L_02F7:
 
 L_030A:
     // "You got the Toxic Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotToxicBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_031C:
@@ -233,7 +234,7 @@ L_031C:
 
 L_032F:
     // "You got the Insect Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotInsectBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_0341:
@@ -243,7 +244,7 @@ L_0341:
 
 L_0354:
     // "You got the Bolt Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotBoltBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_0366:
@@ -253,7 +254,7 @@ L_0366:
 
 L_0379:
     // "You got the Quake Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotQuakeBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_038B:
@@ -263,7 +264,7 @@ L_038B:
 
 L_039E:
     // "You got the Jet Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotJetBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_03B0:
@@ -273,7 +274,7 @@ L_03B0:
 
 L_03C3:
     // "You got the Legend Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotLegendBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_03D5:
@@ -283,7 +284,7 @@ L_03D5:
 
 L_03E8:
     // "You got the Wave Badge with...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_GotWaveBadge, 0x8011, 2, 0
     VMJump L_03FA
 
 L_03FA:
@@ -294,7 +295,7 @@ L_03FA:
 
 L_0413:
     // "[f000]ā\u0001\u0000.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_Empty, 0x8011, 2, 0
     VMJump L_04DE
 
 L_0425:
@@ -304,7 +305,7 @@ L_0425:
 
 L_0438:
     // "[f000]ā\u0001\u0000 and [f000]ā\u0001\u0001.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_And, 0x8011, 2, 0
     VMJump L_04DE
 
 L_044A:
@@ -314,7 +315,7 @@ L_044A:
 
 L_045D:
     // "[f000]ā\u0001\u0000, [f000]ā\u0001\u0001, and\n[f000]ā\u0001\u0002.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_And_2, 0x8011, 2, 0
     VMJump L_04DE
 
 L_046F:
@@ -324,7 +325,7 @@ L_046F:
 
 L_0482:
     // "[f000]ā\u0001\u0000, [f000]ā\u0001\u0001,\n[f000]ā\u0001\u0002, and [f000]ā\u0001\u0003.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_And_3, 0x8011, 2, 0
     VMJump L_04DE
 
 L_0494:
@@ -334,7 +335,7 @@ L_0494:
 
 L_04A7:
     // "[f000]ā\u0001\u0000, [f000]ā\u0001\u0001,\n[f000]ā\u0001\u0002, [f000]ā\u0001\u0003, and[f000]븀\u0000\n[f000]ā\u0001\u0004.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_And_4, 0x8011, 2, 0
     VMJump L_04DE
 
 L_04B9:
@@ -344,12 +345,12 @@ L_04B9:
 
 L_04CC:
     // "[f000]ā\u0001\u0000, [f000]ā\u0001\u0001,\n[f000]ā\u0001\u0002, [f000]ā\u0001\u0003,[f000]븀\u0000\n[f000]ā\u0001\u0004, and [f000]ā\u0001\u0005.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_And_5, 0x8011, 2, 0
     VMJump L_04DE
 
 L_04DE:
     // "Want to show me another Gym Badge?"
-    ActorMsg MSGFILE_SCRIPT, 17, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTownPokemonCenter_Text_WantShowAnotherGym, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1

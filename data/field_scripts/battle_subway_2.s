@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/battle_subway_2.h"
 
 // Script plugin 1, from the zones that use this file
 
@@ -72,7 +73,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01AB
     // "What would you like to do?"
-    ActorMsg MSGFILE_SCRIPT, 15, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_WhatWouldLike, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32784
     ListMenuAdd 16, 65535, 0
     ListMenuAdd 17, 65535, 1
@@ -195,7 +196,7 @@ L_02BB:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F0
     // "The selection was canceled."
-    ActorMsg MSGFILE_SCRIPT, 31, 0x8024, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_SelectionCanceled, 0x8024, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -208,7 +209,7 @@ L_02F0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_031F
     // "The selection was canceled."
-    ActorMsg MSGFILE_SCRIPT, 31, 0x8008, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_SelectionCanceled, 0x8008, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -234,7 +235,7 @@ L_031F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0391
     // "The selection was canceled."
-    ActorMsg MSGFILE_SCRIPT, 31, 0x8024, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_SelectionCanceled, 0x8024, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -245,7 +246,7 @@ L_0391:
     BSubwayCmd_Tool 322, 0, 0, 0
     BSubwayCmd_Tool 316, 0, 0, 0
     // "Saving...\nDon't turn off the power."
-    SystemMsg 2, 2
+    SystemMsg BattleSubway2_Text_SavingDontTurnOff, 2
     SaveDataWrite 0x8010
     MsgWinCloseAll
     RecordAdd 48, 1
@@ -274,7 +275,7 @@ L_03F4:
 
 L_0438:
     // "Communicating. Please stand by..."
-    SystemMsg 118, 2
+    SystemMsg BattleSubway2_Text_CommunicatingPleaseStandBy, 2
     BSubwayCmd_Tool 319, 0, 0, 0
     BSubwayCmd_Tool 402, 100, 0, 32802
     VMStackPush 0x8022
@@ -327,7 +328,7 @@ L_050E:
 
 L_0510:
     // "“Return to Nimbasa City\" was chosen, so\nyour challenge[f000]븀\u0000\nwill end for now."
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_ReturnNimbasaCityChosen, 0, 0
     VMSleep 30
     MsgWinCloseAll
     VMCall L_1718
@@ -352,7 +353,7 @@ L_056F:
     WorkGet 0x8025, 0x8010
     VMSleep 30
     // "Awaiting your friend's response..."
-    SystemMsg 19, 2
+    SystemMsg BattleSubway2_Text_AwaitingFriendsResponse, 2
     BSubwayCmd_Tool 402, 106, 0, 32802
     VMStackPush 0x8022
     VMStackPushConst 0
@@ -412,12 +413,12 @@ L_066E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0693
     // "The challenge was interrupted."
-    ActorMsg MSGFILE_SCRIPT, 30, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_ChallengeInterrupted, 0x8011, 2, 0
     VMJump L_069F
 
 L_0693:
     // "The selection was canceled."
-    ActorMsg MSGFILE_SCRIPT, 31, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_SelectionCanceled, 0x8011, 2, 0
 
 L_069F:
     LastKeyWait
@@ -441,7 +442,7 @@ L_06D2:
     RTCallGlobal 10346
     WorkGet 0x8025, 0x8010
     // "Awaiting your friend's response..."
-    SystemMsg 19, 2
+    SystemMsg BattleSubway2_Text_AwaitingFriendsResponse, 2
     BSubwayCmd_Tool 402, 109, 0, 32802
     VMStackPush 0x8022
     VMStackPushConst 0
@@ -501,12 +502,12 @@ L_07D5:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_07FA
     // "The challenge was interrupted."
-    ActorMsg MSGFILE_SCRIPT, 30, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_ChallengeInterrupted, 0x8011, 2, 0
     VMJump L_0806
 
 L_07FA:
     // "The selection was canceled."
-    ActorMsg MSGFILE_SCRIPT, 31, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_SelectionCanceled, 0x8011, 2, 0
 
 L_0806:
     LastKeyWait
@@ -559,7 +560,7 @@ L_08B1:
     WorkGet 0x8009, 0x8026
     RTCallGlobal 10348
     // "Awaiting your friend's response..."
-    SystemMsgAsync 19, 2
+    SystemMsgAsync BattleSubway2_Text_AwaitingFriendsResponse, 2
     BSubwayCmd_Tool 402, 112, 0, 32802
     VMSleep 15
     MsgWinCloseAll
@@ -573,7 +574,7 @@ L_08B1:
 
 L_090D:
     // "The challenge was interrupted."
-    ActorMsg MSGFILE_SCRIPT, 30, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_ChallengeInterrupted, 0x8011, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -591,7 +592,7 @@ L_091F:
 
 L_094C:
     // "Saving...\nDon't turn off the power."
-    SystemMsg 2, 2
+    SystemMsg BattleSubway2_Text_SavingDontTurnOff, 2
     WorkSetConst 0x4176, 4
     WorkSetConst 0x4178, 1
     BSubwayCmd_Tool 21, 0, 0, 32803
@@ -666,7 +667,7 @@ L_0A7C:
 L_0A9E:
     WorkSetConst 0x8027, 0
     // "Do you want to return to Nimbasa City?"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_WantReturnNimbasaCity, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -677,7 +678,7 @@ L_0A9E:
 
 L_0AC9:
     // "Well then, we'll return to Nimbasa City.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_WellThenWellReturn, 0, 0
     MsgWinCloseAll
     BSubwayCmd_Tool 331, 0, 0, 32807
     VMStackPush 0x8027
@@ -698,7 +699,7 @@ L_0AF8:
 
 L_0B20:
     // "Awaiting your friend's response..."
-    SystemMsg 19, 2
+    SystemMsg BattleSubway2_Text_AwaitingFriendsResponse, 2
     BSubwayCmd_Tool 319, 0, 0, 0
     BSubwayCmd_Tool 402, 100, 0, 32802
     VMStackPush 0x8022
@@ -940,13 +941,13 @@ L_0ECD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0FFE
     // "Congratulations![f000]븁\u0000\nYou had a seven-win streak and\nbrilliantly beat the Subway Boss![f000]븁\u0000\nTo commemorate this,\nI present you with these Battle Points.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_CongratulationsHadSevenWin, 0x802e, 2, 0
     MsgWinCloseAll
     BSubwayCmd_Tool 313, 0, 0, 32816
     WordSetPlayerName 0
     WordSetNumber 1, 0x8030, 2
     // "[f000]Ā\u0001\u0000 received [f000]ȁ\u0001\u0001 BP!"
-    SystemMsg 0, 2
+    SystemMsg BattleSubway2_Text_ReceivedBp, 2
     MEPlay SEQ_ME_BPGET
     MEWait
     MsgWaitAdvance
@@ -957,7 +958,7 @@ L_0ECD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0FF8
     // "Also, to commemorate this, I give you\nthis trophy.[f000]븁\u0000\nPlease display it in your home!"
-    ActorMsg MSGFILE_SCRIPT, 8, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_AlsoCommemorateGiveTrophy, 0x802e, 2, 0
     MEPlay SEQ_ME_HYOUKA6
     MEWait
     MsgWaitAdvance
@@ -1004,13 +1005,13 @@ L_0FF8:
 
 L_0FFE:
     // "Congratulations![f000]븁\u0000\nYou had a seven-win streak and\nbrilliantly beat the Subway Boss![f000]븁\u0000\nTo commemorate this,\nI present you with these Battle Points.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_CongratulationsHadSevenWin, 0x802e, 2, 0
     MsgWinCloseAll
     BSubwayCmd_Tool 313, 0, 0, 32816
     WordSetPlayerName 0
     WordSetNumber 1, 0x8030, 2
     // "[f000]Ā\u0001\u0000 received [f000]ȁ\u0001\u0001 BP!"
-    SystemMsg 0, 2
+    SystemMsg BattleSubway2_Text_ReceivedBp, 2
     MEPlay SEQ_ME_BPGET
     MEWait
     MsgWaitAdvance
@@ -1032,7 +1033,7 @@ L_0FFE:
 
 L_1080:
     // "And, [f000]Ā\u0001\u0000, now you have earned\nthe right to challenge[f000]븀\u0000\nthe Super Single Train![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_NowHaveEarnedRight, 0x802e, 2, 0
     VMJump L_1101
 
 L_1092:
@@ -1042,7 +1043,7 @@ L_1092:
 
 L_10A5:
     // "And, [f000]Ā\u0001\u0000, now you have earned\nthe right to challenge[f000]븀\u0000\nthe Super Double Train![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_NowHaveEarnedRight_2, 0x802e, 2, 0
     VMJump L_1101
 
 L_10B7:
@@ -1052,7 +1053,7 @@ L_10B7:
 
 L_10CA:
     // "And, [f000]Ā\u0001\u0000, now you have earned\nthe right to challenge[f000]븀\u0000\nthe Super Multi Train![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_NowHaveEarnedRight_3, 0x802e, 2, 0
     VMJump L_1101
 
 L_10DC:
@@ -1062,7 +1063,7 @@ L_10DC:
 
 L_10EF:
     // "And, [f000]Ā\u0001\u0000, now you have earned\nthe right to challenge[f000]븀\u0000\nthe Super Multi Train![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_NowHaveEarnedRight_3, 0x802e, 2, 0
     VMJump L_1101
 
 L_1101:
@@ -1074,13 +1075,13 @@ L_110D:
 
 L_1113:
     // "Congratulations! You've successfully\nreached a seven-win streak![f000]븁\u0000\nSince you've won seven in a row,\nI present you with these Battle Points![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_CongratulationsYouveSuccessfullyReached, 0x802e, 2, 0
     MsgWinCloseAll
     BSubwayCmd_Tool 313, 0, 0, 32816
     WordSetPlayerName 0
     WordSetNumber 1, 0x8030, 2
     // "[f000]Ā\u0001\u0000 received [f000]ȁ\u0001\u0001 BP!"
-    SystemMsg 0, 2
+    SystemMsg BattleSubway2_Text_ReceivedBp, 2
     MEPlay SEQ_ME_BPGET
     MEWait
     MsgWaitAdvance
@@ -1100,7 +1101,7 @@ L_1113:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11AA
     // "And, [f000]Ā\u0001\u0000, now you have earned\nthe right to challenge[f000]븀\u0000\nthe Super Multi Train![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_NowHaveEarnedRight_3, 0x802e, 2, 0
     MsgWinCloseAll
     BSubwayCmd_Tool 15, 0x8023, 0, 0
 
@@ -1123,11 +1124,11 @@ L_11AA:
     WordSetPlayerName 0
     WordSetNumber 1, 0x8021, 2
     // "[f000]Ā\u0001\u0000, you have been promoted\nto Rank [f000]ȁ\u0001\u0001![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_HaveBeenPromotedRank, 0x802e, 2, 0
 
 L_1217:
     // "Would you like to send these results\nusing Nintendo WFC?"
-    ActorMsg MSGFILE_SCRIPT, 22, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_WouldLikeSendThese, 0x802e, 2, 0
     YesNoWin 0x8010
     MsgWinCloseAll
     VMStackPush 0x8010
@@ -1161,14 +1162,14 @@ L_1288:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12B5
     // "Saving...\nDon't turn off the power."
-    SystemMsg 2, 2
+    SystemMsg BattleSubway2_Text_SavingDontTurnOff, 2
     SaveDataWrite 0x8010
     MsgWinCloseAll
     RTCallGlobal 10344
 
 L_12B5:
     // "Saving your record data...\nDon't turn off the power."
-    SystemMsg 1, 2
+    SystemMsg BattleSubway2_Text_SavingRecordDataDont, 2
     SaveDataWrite 0x8010
     InfoMsgClose
     VMStackPush 0x4179
@@ -1176,7 +1177,7 @@ L_12B5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12E6
     // "Please enjoy your time here.[f000]븁\u0000\nIf you would like to continue your\nchallenge or go back to Nimbasa City,[f000]븀\u0000\nplease talk to me."
-    ActorMsg MSGFILE_SCRIPT, 9, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_PleaseEnjoyTimeHere, 0x802e, 2, 0
     VMJump L_139F
 
 L_12E6:
@@ -1186,7 +1187,7 @@ L_12E6:
 
 L_12F9:
     // "This is the end of the Single Train line.[f000]븁\u0000\nWhen you want to return to Nimbasa City,\nplease talk to me again.[f000]븁\u0000\nPlease enjoy your time here."
-    ActorMsg MSGFILE_SCRIPT, 10, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_EndSingleTrainLine, 0x802e, 2, 0
     VMJump L_139F
 
 L_130B:
@@ -1196,7 +1197,7 @@ L_130B:
 
 L_131E:
     // "This is the end of the Double Train line.[f000]븁\u0000\nWhen you want to return to Nimbasa City,\nplease talk to me again.[f000]븁\u0000\nPlease enjoy your time here."
-    ActorMsg MSGFILE_SCRIPT, 11, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_EndDoubleTrainLine, 0x802e, 2, 0
     VMJump L_139F
 
 L_1330:
@@ -1206,7 +1207,7 @@ L_1330:
 
 L_1343:
     // "This is the end of the Multi Train line.[f000]븁\u0000\nWhen you want to return to Nimbasa City,\nplease talk to me again.[f000]븁\u0000\nPlease enjoy your time here."
-    ActorMsg MSGFILE_SCRIPT, 12, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_EndMultiTrainLine, 0x802e, 2, 0
     VMJump L_139F
 
 L_1355:
@@ -1216,7 +1217,7 @@ L_1355:
 
 L_1368:
     // "This is the end of the Multi Train line.[f000]븁\u0000\nWhen you want to return to Nimbasa City,\nplease talk to me again.[f000]븁\u0000\nPlease enjoy your time here."
-    ActorMsg MSGFILE_SCRIPT, 12, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_EndMultiTrainLine, 0x802e, 2, 0
     VMJump L_139F
 
 L_137A:
@@ -1226,7 +1227,7 @@ L_137A:
 
 L_138D:
     // "This is the end of the Wi-Fi Train line.[f000]븁\u0000\nWhen you want to return to Nimbasa City,\nplease talk to me again.[f000]븁\u0000\nPlease enjoy your time here."
-    ActorMsg MSGFILE_SCRIPT, 29, 0x802e, 2, 0
+    ActorMsg MSGFILE_SCRIPT, BattleSubway2_Text_EndWiFiTrain, 0x802e, 2, 0
     VMJump L_139F
 
 L_139F:
@@ -1549,7 +1550,7 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a subway map of the Unova region.[f000]븁\u0000"
-    InfoMsg 117, 2
+    InfoMsg BattleSubway2_Text_ItsSubwayMapUnova, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait

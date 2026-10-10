@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/reversal_mountain_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -49,14 +50,14 @@ L_0094:
     ActorCmdWait
     // "Bianca: Heeey! [f000]Ā\u0001\u0000![f000]븁\u0000"
     // "Bianca: Hi there, [f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsgGendered 1024, 0, 1, 13, 0, 0
+    ActorMsgGendered 1024, ReversalMountain4_Text_BiancaHeeey, ReversalMountain4_Text_BiancaHiThere, 13, 0, 0
     // "Um, you know what?[f000]븁\u0000\nThere's something I want to investigate\nhere in Reversal Mountain.[f000]븁\u0000\nBut the wild Pokémon here are really\ntough, and I'm having trouble with them![f000]븁\u0000\nCould you come with me? Please?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 13, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_UmKnowWhatTheres, 13, 0, 0
     MsgWinCloseAll
     ActorCmdExec 13, Movement_0550
     ActorCmdWait
     // "Oh! Don't worry![f000]븁\u0000\nI'll take care of healing\nour Pokémon, OK?[f000]븁\u0000\nReady? Let's go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 13, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_OhDontWorryIll, 13, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0500
     ActorCmdWait
@@ -93,7 +94,7 @@ L_0157:
     ActorCmdExec 13, Movement_01D4
     ActorCmdWait
     // "There's still something I want to\nlook for in Reversal Mountain.[f000]븀\u0000\nCome with me![f000]븁\u0000\nDon't worry. I'll take care of healing\nour Pokémon, OK?[f000]븁\u0000\nOK, here we go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 13, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_TheresStillSomethingWant, 13, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0500
     ActorCmdWait
@@ -132,7 +133,7 @@ Script_4:
     WordSetPlayerName 0
     VMCall L_038F
     // "Oh! I want to do a little\nmore looking around.[f000]븀\u0000\nWant to split up for now?"
-    ActorMsg MSGFILE_SCRIPT, 13, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_OhWantLittleMore, 254, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -143,7 +144,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0241
     // "OK, then![f000]븁\u0000\nI want to do a little more research\nabout where Heatran might be![f000]븁\u0000\nThank you for coming with me!\nBe careful on the rest of your journey![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_OkThenWantLittle, 254, 0, 0
     WorkSetConst 0x4120, 3
     FlagSet 959
     FlagReset 960
@@ -151,7 +152,7 @@ Script_4:
 
 L_0241:
     // "Oh, OK![f000]븁\u0000\nI want to do a little more\ninvestigating about Heatran.[f000]븁\u0000\nHeatran is a very rarely seen Pokémon,\nso if I find out more about it,[f000]븀\u0000\nProfessor Juniper will be really happy![f000]븁\u0000\nThanks for helping me!\nBe careful on your journey![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_OhOkWantLittle, 254, 0, 0
     FlagReset 959
 
 L_0251:
@@ -181,7 +182,7 @@ L_02B8:
 
 L_02BE:
     // "OK! Then let's do a little more\nlooking around![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_OkThenLetsLittle, 254, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorCmdExec 255, Movement_0500
@@ -227,7 +228,7 @@ L_0355:
     ActorCmdWait
     // "Oh! [f000]Ā\u0001\u0000![f000]븁\u0000\nHere! This is the place!\nLet's look around a little![f000]븁\u0000"
     // "Oh! [f000]Ā\u0001\u0000![f000]븁\u0000\nHere! This is the place!\nLet's look around a little![f000]븁\u0000"
-    ActorMsgGendered 1024, 4, 5, 254, 0, 0
+    ActorMsgGendered 1024, ReversalMountain4_Text_OhHerePlaceLets, ReversalMountain4_Text_OhHerePlaceLets_2, 254, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x4121, 2
     FinishAllEvents
@@ -239,7 +240,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Reversal Mountain... I wonder...\nCould a Magma Stone be in there?[f000]븁\u0000\nHave you heard of it?\nThey say a Magma Stone was found[f000]븀\u0000\nin a volcano in the distant Sinnoh region.[f000]븁\u0000\nApparently, it had something\nto do with Heatran!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_ReversalMountainWonderCould, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -300,14 +301,14 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You strike me as the type\nwho fills out the Habitat List![f000]븁\u0000\nC'mon, tell me what kind of Pokémon\nlive in Reversal Mountain![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_StrikeTypeWhoFills, 0, 0
     PokeDexCheckHabitatList 461, 0, 0, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04C1
     // "Huh! That's amazing.\nSo these Pokémon live here, then![f000]븁\u0000\nThanks for showing me something good!\nLet me pay you back with this![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_HuhThatsAmazingThese, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -318,14 +319,14 @@ Script_7:
     VMStackPop 0x8000
     FlagSet 469
     // "False Swipe leaves a Pokémon\nwith 1 HP when it would have fainted.[f000]븁\u0000\nIt's a very restrained move.[f000]븁\u0000\nIt's a great TM to use for catching\nPokémon and filling out the Habitat List!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_FalseSwipeLeavesPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_04CF
 
 L_04C1:
     // "Oh... Still looking into it, huh?[f000]븁\u0000\nSome of the Pokémon are on the\noutside of Reversal Mountain as well."
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_OhStillLookingInto, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -336,7 +337,7 @@ L_04D5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "False Swipe leaves a Pokémon\nwith 1 HP when it would have fainted.[f000]븁\u0000\nIt's a very restrained move.[f000]븁\u0000\nIt's a great TM to use for catching\nPokémon and filling out the Habitat List!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ReversalMountain4_Text_FalseSwipeLeavesPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
 

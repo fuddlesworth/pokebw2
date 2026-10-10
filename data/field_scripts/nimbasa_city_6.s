@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -112,7 +113,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "To be good at something, you have to do\nit repeatedly, day after day after day."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_GoodSomethingHaveRepeatedly, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -124,7 +125,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When I was a kid, I played catch with\nmy Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_WhenKidPlayedCatch, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -136,7 +137,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's not bad to grow up.[f000]븁\u0000\nBut it's bad to forget what it felt like\nto be a child."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_ItsNotBadGrow, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -148,7 +149,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I have baseball, and I have Pokémon...\nHow happy I am!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_HaveBaseballHavePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -160,7 +161,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you don't swing a bat, you can't hit\na ball.[f000]븁\u0000\nIf you don't do things, you won't fail...\nbut you won't succeed, either."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_IfDontSwingBat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -172,7 +173,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I give 100 percent of my energy all the\ntime! That is the only thing I can do."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_Give100PercentEnergy, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -184,7 +185,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What I brag about is my bat!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_WhatBragAboutBat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -197,7 +198,7 @@ Script_9:
     ActorSetEyeToEye
     PVPlay 507, 0
     // "Bwoof!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity6_Text_Bwoof, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

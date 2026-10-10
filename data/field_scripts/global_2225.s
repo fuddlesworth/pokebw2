@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_2225.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -10,7 +11,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello, hello!\nI am the official Name Rater![f000]븁\u0000\nWant me to rate the nicknames\nof your Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2225_Text_HelloHelloAmOfficial, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -29,7 +30,7 @@ L_004D:
 
 L_0053:
     // "Which Pokémon's nickname\nshould I critique?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2225_Text_WhichPokemonsNicknameShould, 0, 0
     ActorMsgClose
     CallPokeSelect 0, 0x8010, 0x8020, 0
     VMStackPush 0x8010
@@ -68,7 +69,7 @@ L_00BB:
 
 L_00EB:
     // "Hmmm. [f000]Ă\u0001\u0000, is it?[f000]븁\u0000\nThat sounds good! It's a very “you\"\nsort of name.[f000]븁\u0000\nBut if you'd like to change it, I can help\nyou do that. How about it?"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2225_Text_HmmmSoundsGoodIts, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -79,7 +80,7 @@ L_00EB:
 
 L_0118:
     // "Excellent! What would you like\nthe new nickname to be?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2225_Text_ExcellentWhatWouldLike, 0, 0
     ActorMsgClose
     VMCall L_012C
 

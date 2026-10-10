@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pledge_grove.h"
 
 // Script plugin 16, from the zones that use this file
 
@@ -15,11 +16,11 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0074
     // "Three sharp marks are deeply\ncut into the rock."
-    InfoMsg 0, 2
+    InfoMsg PledgeGrove_Text_ThreeSharpMarksDeeply, 2
     MsgWaitAdvance
     WordSetPartyPokeName 0, 0x8020
     // "[f000]Ă\u0001\u0000 seems to want to get out of\nthe Poké Ball![f000]븁\u0000\nWill you let it out?"
-    InfoMsg 1, 2
+    InfoMsg PledgeGrove_Text_SeemsWantGetOut, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -31,7 +32,7 @@ Script_1:
 
 L_0065:
     // "The Poké Ball has stopped moving..."
-    InfoMsg 2, 2
+    InfoMsg PledgeGrove_Text_PokeBallHasStopped, 2
     LastKeyWait
     InfoMsgClose_0039
 
@@ -40,7 +41,7 @@ L_006E:
 
 L_0074:
     // "Three sharp marks are deeply\ncut into the rock."
-    InfoMsg 0, 2
+    InfoMsg PledgeGrove_Text_ThreeSharpMarksDeeply, 2
     LastKeyWait
     InfoMsgClose_0039
 
@@ -95,7 +96,7 @@ L_0083:
 
 L_0160:
     // "The determination carved into the rock\nby Cobalion, Virizion, and Terrakion[f000]븀\u0000\nreminded [f000]Ă\u0001\u0000 of Secret Sword!"
-    SystemMsg 3, 2
+    SystemMsg PledgeGrove_Text_DeterminationCarvedIntoRock, 2
     MsgWaitAdvance
     WorkGet 0x8000, 0x8020
     WorkSetConst 0x8001, 548
@@ -141,7 +142,7 @@ L_0227:
     EvCameraMoveTo 7768, 0, 0xed000, 0xf8000, 45056, 0xbb000, 40
     EvCameraWait
     // "What?\n[f000]Ă\u0001\u0000 is...[f000]븁\u0000"
-    InfoMsg 10, 2
+    InfoMsg PledgeGrove_Text_What, 2
     InfoMsgClose_0039
     Plugin16_Cmd1003
     FadeEx 12, 0, 16, 4
@@ -156,7 +157,7 @@ L_0227:
     PVWait
     PokePartySetForme 0x8020, 1
     // "[f000]Ă\u0001\u0000 has resolved to battle\nand has changed into Resolute Form!"
-    InfoMsg 11, 2
+    InfoMsg PledgeGrove_Text_HasResolvedBattleHas, 2
     LastKeyWait
     InfoMsgClose_0039
     EvCameraReturn 30
@@ -181,7 +182,7 @@ L_02C5:
     VMJumpIf CMP_STACK, L_030F
     WordSetPartyPokeName 0, 0x8021
     // "[f000]Ă\u0001\u0000 remembered the move\nSecret Sword!"
-    SystemMsg 9, 0
+    SystemMsg PledgeGrove_Text_RememberedMoveSecretSword, 0
     MEPlay SEQ_ME_LVUP
     MEWait
     MsgWaitAdvance
@@ -224,7 +225,7 @@ L_037E:
 
 L_0380:
     // "Give up on remembering the\nmove Secret Sword?"
-    SystemMsg 5, 0
+    SystemMsg PledgeGrove_Text_GiveUpRememberingMove, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -232,7 +233,7 @@ L_0380:
     VMJumpIf CMP_STACK, L_03B2
     WordSetPartyPokeName 0, 0x8021
     // "[f000]Ă\u0001\u0000 did not remember the\nmove Secret Sword.[f000]븁\u0000"
-    SystemMsg 6, 0
+    SystemMsg PledgeGrove_Text_DidNotRememberMove, 0
     InfoMsgClose
     WorkSetConst 0x8026, 1
     VMReturn
@@ -245,7 +246,7 @@ L_03BA:
     WorkSetConst 0x8026, 0
     WordSetPartyPokeName 0, 0x8021
     // "But [f000]Ă\u0001\u0000 can't know more\nthan four moves.[f000]븁\u0000\nDelete an existing move to make\nroom for Secret Sword?[f000]븁\u0000"
-    SystemMsg 4, 0
+    SystemMsg PledgeGrove_Text_ButCantKnowMore, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -266,7 +267,7 @@ L_0405:
     PokePartyGetMove 0x8024, 0x8021, 0x8023
     WordSetMoveName 1, 0x8024
     // "Is it OK to forget the\nmove [f000]ć\u0001\u0001?"
-    SystemMsg 7, 0
+    SystemMsg PledgeGrove_Text_OkForgetMove, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -279,9 +280,9 @@ L_0431:
     WordSetPartyPokeName 0, 0x8021
     WordSetMoveName 1, 0x8024
     // "1, [f000]븂\u0001\u00142, and[f000]븂\u0001\u0014... [f000]븂\u0001\u0014... [f000]븂\u0001\u0014... Ta-da![f000]븅\u0001\u0003[f000]븆\u0001\u0002[f000]븇\u0000[f000]븄\u0000[f000]븁\u0000\n[f000]Ă\u0001\u0000 forgot how to\nuse [f000]ć\u0001\u0001.[f000]븁\u0000\nAnd...[f000]븁\u0000"
-    SystemMsg 8, 0
+    SystemMsg PledgeGrove_Text_12TaDa, 0
     // "[f000]Ă\u0001\u0000 remembered the move\nSecret Sword!"
-    SystemMsg 9, 0
+    SystemMsg PledgeGrove_Text_RememberedMoveSecretSword, 0
     MEPlay SEQ_ME_LVUP
     MEWait
     MsgWaitAdvance

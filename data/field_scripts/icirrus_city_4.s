@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/icirrus_city_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -72,7 +73,7 @@ L_0105:
     ActorCmdExec 0, Movement_0400
     ActorCmdWait
     // "Wye: Hi!\nThis way, pleeeeease![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeHiWayPleeeeease, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_040C
     ActorCmdExec 255, Movement_0418
@@ -83,18 +84,18 @@ L_0105:
     ActorCmdExec 0, Movement_0424
     ActorCmdWait
     // "Wye: Exciting! Thrilling! Zippy! Chilling!\nIt's “Pep Quiz\"![f000]븁\u0000\nToday's challenger is--this person![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeExcitingThrillingZippy, 0, 0, 0
     ActorMsgClose
     // "Aha: Hiya, welcome![f000]븁\u0000\n“Pep Quiz\" starts NOW![f000]븁\u0000\nAnswer lots of quizzy questions,\nand watch your brain get brainier![f000]븁\u0000\nLet's start...with...a question![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaHiyaWelcomePep, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 2, Movement_044C
     ActorCmdWait
     // "Ditoh: Good luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_DitohGoodLuck, 2, 0, 0
     ActorMsgClose
     // "Aha: A question![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaQuestion, 1, 0, 0
     MEPlay SEQ_ME_QUIZ
     MEWait
     ActorMsg MSGFILE_SCRIPT, 0x8025, 1, 0, 0
@@ -102,22 +103,22 @@ L_0105:
     ActorCmdExec 0, Movement_0454
     ActorCmdWait
     // "Wye: Oh, my! It's tremendously difficult!\nCan the challenger answer this?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeOhItsTremendously, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 2, Movement_0488
     ActorCmdWait
     // "Ditoh: H-i-n-t! H-i-n-t![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_DitohHNT, 2, 0, 0
     ActorMsgClose
     // "Aha: Oh-oh. The audience\nis asking for a hint![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaOhOhAudience, 1, 0, 0
     ActorMsgClose
     // "Wye: OK.\nI'll give you a hint![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeOkIllGive, 0, 0, 0
     ActorMsg MSGFILE_SCRIPT, 0x8026, 0, 0, 0
     ActorMsgClose
     // "Aha: Ha ha, this is a good hint!\nChallenger, please answer![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaHaHaGood, 1, 0, 0
     ActorMsg MSGFILE_SCRIPT, 0x8025, 1, 0, 0
     ActorMsgClose
     FadeOutBlackQ
@@ -149,20 +150,20 @@ L_0280:
     SEPlay SEQ_SE_FLD_41
     SEWait
     // "Aha: Woo-hoo!\nThat is c-o-r-r-e-c-t![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaWooHooC, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_0498
     ActorCmdWait
     // "Wye: You go! Yeah, you do![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeGoYeah, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 2, Movement_0488
     ActorCmdWait
     // "Ditoh: Yeah! Yeah! Good hustle![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_DitohYeahYeahGood, 2, 0, 0
     ActorMsgClose
     // "Aha: Congratulations![f000]븁\u0000\nNow--THIS is a prize.\nIt's an Antidote![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaCongratulationsNowPrize, 1, 0, 0
     ActorMsgClose
     WorkSetConst 0x8024, 18
     VMJump L_0349
@@ -171,20 +172,20 @@ L_02F1:
     SEPlay SEQ_SE_FLD_42
     SEWait
     // "Aha: Oh, no. Too bad!\nThat's not right, 'cause you are wrong![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaOhNoToo, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_04A0
     ActorCmdWait
     // "Wye: Aww... Sadness...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeAwwSadness, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 2, Movement_0488
     ActorCmdWait
     // "Ditoh: Good hustle!\nGustle! Gustle![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_DitohGoodHustleGustle, 2, 0, 0
     ActorMsgClose
     // "Aha: Yeah, you gustle![f000]븁\u0000\nHere ya go... Take this memento.\nIt's a Parlyz Heal![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaYeahGustleHere, 1, 0, 0
     ActorMsgClose
     WorkSetConst 0x8024, 22
 
@@ -203,7 +204,7 @@ L_0349:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Wye: Exciting! Thrilling! Zippy! Chilling!\nThat's “Pep Quiz\"![f000]븁\u0000\nSee ya tomorrow!"
-    ActorMsg MSGFILE_SCRIPT, 18, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeExcitingThrillingZippy_2, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     BGMChangeMap
@@ -216,7 +217,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Wye: I want to be on TV soon!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_WyeWantTvSoon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -228,7 +229,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Aha: Do you like quiz shows?"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_AhaLikeQuizShows, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -240,7 +241,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ditoh: Gussssssssstle!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity4_Text_DitohGussssssssstle, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

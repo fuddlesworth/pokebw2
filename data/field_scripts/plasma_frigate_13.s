@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_13.h"
 
 // Script plugin 12, from the zones that use this file
 
@@ -136,17 +137,17 @@ Script_16:
     ActorCmdExec 9, Movement_0BC4
     ActorCmdWait
     // "Team Plasma: At last, we meet again![f000]븁\u0000\nRemember me? Formerly of Team Plasma?\nI've been waiting for you.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_TeamPlasmaLastWe, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0BF4
     ActorCmdWait
     // "Gah! Spying is such a rotten job.\nI contacted Rood of the Seven Sages,[f000]븀\u0000\nbut nobody showed up to help me.[f000]븁\u0000\nI can't stand it. Everybody around me is\nalways saying bad stuff about Lord N.[f000]븁\u0000\nBut Lord N learned the error of his ways\nand changed course to a better path.[f000]븁\u0000\nYet they call him a betrayer!\nPeople really stink sometimes.[f000]븁\u0000\nThey selfishly counted on him, and\nnow they selfishly make a big fuss[f000]븀\u0000\nabout being betrayed.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_GahSpyingSuchRotten, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0BFC
     ActorCmdWait
     // "Oh! I nearly forgot to tell you!\nThis floor is a maze of pipes.[f000]븁\u0000\nYou've got to step on switches\nto connect or disconnect the pipes.[f000]븁\u0000\nIt's a good thing you can walk\non the pipes.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_OhNearlyForgotTell, 9, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x4103, 2
     FinishAllEvents
@@ -158,7 +159,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You know what troubles me...[f000]븁\u0000\nHow come all of us who were in\nTeam Plasma together--thinking we[f000]븀\u0000\nknew what was right--are now divided[f000]븀\u0000\ninto former Team Plasma members and[f000]븀\u0000\ncontinuing Team Plasma members,[f000]븀\u0000\nboth with opposing points of view?[f000]븁\u0000\nWhere's the line between friend and foe?\nI spend a lot of time asking myself that.[f000]븁\u0000\nAs for you, on this floor, you'll need\nto deactivate barriers to continue on.[f000]븀\u0000\nDeactivate them by stepping on switches.[f000]븁\u0000\nMove around by stepping on warp panels,\nand you'll find four switches."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_KnowWhatTroublesHow, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -170,7 +171,7 @@ Script_41:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Zinzolin: Beaten again?![f000]븁\u0000\nNo matter!\nTeam Plasma will get the last laugh!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_ZinzolinBeatenAgainNo, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -185,7 +186,7 @@ Script_18:
     EvCameraMoveTo 9688, 0, 0xed000, 0xf8000, 0, 0xaf000, 28
     EvCameraWait
     // "Zinzolin: The device is indestructible![f000]븁\u0000\nYou will never be able to release Kyurem![f000]븁\u0000"
-    InfoMsg 9, 2
+    InfoMsg PlasmaFrigate13_Text_ZinzolinDeviceIndestructibleWill, 2
     MsgWinCloseAll
     ActorAdd 10
     BGMPlayPush SEQ_BGM_E_7_SAGE
@@ -199,7 +200,7 @@ Script_18:
     EvCameraEnd
     ActorCmdWait
     // "You don't have the sense to know\nwhen to quit, it seems.[f000]븁\u0000\nIt's an act of mercy on my part\nto bring this to an end now![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_DontHaveSenseKnow, 10, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_TEAM_PLASMA_ZINZOLIN_2, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -218,7 +219,7 @@ L_02FA:
     ActorCmdExec 10, Movement_0328
     ActorCmdWait
     // "Zinzolin: Beaten again?![f000]븁\u0000\nNo matter!\nTeam Plasma will get the last laugh!"
-    ActorMsg MSGFILE_SCRIPT, 11, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_ZinzolinBeatenAgainNo, 10, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x4105, 1
@@ -238,7 +239,7 @@ Script_19:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It looks like it controls the\ntemperature inside the ship."
-    SystemMsg 12, 2
+    SystemMsg PlasmaFrigate13_Text_LooksLikeControlsTemperature, 2
     VMStackPushFlag 909
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -258,7 +259,7 @@ L_0365:
     VMJumpIf CMP_STACK, L_0389
     PVPlay 646, 0
     // "Haahra..."
-    InfoMsg 14, 2
+    InfoMsg PlasmaFrigate13_Text_Haahra, 2
     PVWait
     LastKeyWait
     MsgWinCloseAll
@@ -272,7 +273,7 @@ Script_20:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a device to control\nthe ship's energy system."
-    SystemMsg 13, 2
+    SystemMsg PlasmaFrigate13_Text_ItsDeviceControlShips, 2
     VMStackPushFlag 909
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -292,7 +293,7 @@ L_03BC:
     VMJumpIf CMP_STACK, L_03E0
     PVPlay 646, 0
     // "Haahra..."
-    InfoMsg 14, 2
+    InfoMsg PlasmaFrigate13_Text_Haahra, 2
     PVWait
     LastKeyWait
     MsgWinCloseAll
@@ -310,7 +311,7 @@ Script_24:
     ActorCmdExec 255, Movement_0BEC
     ActorCmdWait
     // "Humph! If you intend to continue,\nstep on the other warp panel.[f000]븁\u0000\nKeep in mind that you're going\nto get beaten up if you do!"
-    ActorMsg MSGFILE_SCRIPT, 15, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_HumphIfIntendContinue, 11, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 11, Movement_0C04
@@ -328,7 +329,7 @@ Script_25:
     ActorCmdExec 255, Movement_0BEC
     ActorCmdWait
     // "What?! You beat Colress?![f000]븁\u0000\nWaaah! I pretended to be strong,\nbut I don't have any Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_WhatBeatColressWaaah, 11, 0, 0
     MsgWinCloseAll
     VMCall L_04BB
     FinishAllEvents
@@ -344,7 +345,7 @@ Script_26:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Humph! If you intend to continue,\nstep on the other warp panel.[f000]븁\u0000\nKeep in mind that you're going\nto get beaten up if you do!"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_HumphIfIntendContinue, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_04B5
@@ -354,7 +355,7 @@ L_0493:
     ActorCmdExec 11, Movement_0C0C
     ActorCmdWait
     // "What?! You beat Colress?![f000]븁\u0000\nWaaah! I pretended to be strong,\nbut I don't have any Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_WhatBeatColressWaaah, 11, 0, 0
     MsgWinCloseAll
     VMCall L_04BB
 
@@ -396,7 +397,7 @@ Script_21:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, poor Kyurem. Ghetsis's device\ncruelly forced it to work.[f000]븁\u0000\nIt must have felt terrible."
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_OhPoorKyuremGhetsiss, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -408,7 +409,7 @@ Script_22:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Plasma Frigate is a ship designed\nto be ecological. It runs on[f000]븀\u0000\nKyurem's ice energy and solar panels.[f000]븁\u0000\nYou've got to keep the environment in\nmind when ruling a region like Unova."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_PlasmaFrigateShipDesigned, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -420,7 +421,7 @@ Script_23:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Colress doesn't know N.\nI wonder how he'll react if he meets him."
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate13_Text_ColressDoesntKnowN, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -456,7 +457,7 @@ Script_12:
     WorkSetConst 0x40f5, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
-    InfoMsg 3, 2
+    InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -501,7 +502,7 @@ L_0614:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_066C
     // "All barriers were deactivated,\nand you can proceed now."
-    InfoMsg 4, 2
+    InfoMsg PlasmaFrigate13_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -515,7 +516,7 @@ Script_13:
     WorkSetConst 0x40f6, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
-    InfoMsg 3, 2
+    InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -560,7 +561,7 @@ L_06D0:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0728
     // "All barriers were deactivated,\nand you can proceed now."
-    InfoMsg 4, 2
+    InfoMsg PlasmaFrigate13_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -574,7 +575,7 @@ Script_14:
     WorkSetConst 0x40f7, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
-    InfoMsg 3, 2
+    InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -619,7 +620,7 @@ L_078C:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_07E4
     // "All barriers were deactivated,\nand you can proceed now."
-    InfoMsg 4, 2
+    InfoMsg PlasmaFrigate13_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -633,7 +634,7 @@ Script_15:
     WorkSetConst 0x40f8, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "A barrier was deactivated!"
-    InfoMsg 3, 2
+    InfoMsg PlasmaFrigate13_Text_BarrierDeactivated, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -678,7 +679,7 @@ L_0848:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_08A0
     // "All barriers were deactivated,\nand you can proceed now."
-    InfoMsg 4, 2
+    InfoMsg PlasmaFrigate13_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -753,7 +754,7 @@ Script_11:
     ActorCmdWait
     SEWait
     // "Be careful!\nThe barriers are electrified!"
-    InfoMsg 20, 2
+    InfoMsg PlasmaFrigate13_Text_CarefulBarriersElectrified, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

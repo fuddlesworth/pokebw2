@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_13_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hope a new winner\nhas emerged in the PWT!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_HopeNewWinnerHas, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -23,7 +24,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'd like to go to Pokéstar Studios.\nI haven't been there in a while.[f000]븁\u0000\nI'm a fan of Mr. Stu Deeoh.\nI wish he would be in a movie."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_IdLikeGoPokestar, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -39,14 +40,14 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This Pokémon used to deliver\nMail to everyone![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_PokemonUsedDeliverMail, 0, 0
     GameGetVersion 0x8010
     VMStackPush 0x8010
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B8
     // "I know! I'll give you the Power Lens\nthis Pokémon brought me![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_KnowIllGivePower, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -59,7 +60,7 @@ Script_2:
 
 L_00B8:
     // "I know! I'll give you the Power Band\nthis Pokémon brought me![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_KnowIllGivePower_2, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -71,7 +72,7 @@ L_00B8:
 
 L_00E4:
     // "It doesn't matter to this Pokémon even\nif it doesn't battle very well!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_DoesntMatterPokemonEven, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 304
@@ -81,7 +82,7 @@ L_00FC:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It doesn't matter to this Pokémon even\nif it doesn't battle very well!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_DoesntMatterPokemonEven, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -96,7 +97,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 278, 0
     // "Wree wreek!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route132_Text_WreeWreek, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

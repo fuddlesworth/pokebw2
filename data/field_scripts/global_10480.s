@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10480.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -19,7 +20,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0051
     // "Hi! I am a humble Maid![f000]븁\u0000\nMy master has a big heart to match his\nbig belly. He's a gourmet![f000]븁\u0000\nSo I am looking for ingredients that will\nmake his heart jump for joy![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HiAmHumbleMaid, 0, 0
     FlagSet 225
 
 L_0051:
@@ -30,7 +31,7 @@ L_0051:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0172
     // "Sniff, sniff... Sniff, sniff...[f000]븁\u0000\nOh, that aroma! It smells so gourmet![f000]븁\u0000\nDo you have a wonderful ingredient in\nyour Bag?[f000]븀\u0000\nWould you consider selling it to me?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_SniffSniffSniffSniff, 0, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -44,7 +45,7 @@ L_0051:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B7
     // "Aww... Well, that's OK.[f000]븁\u0000\nIf you find a gourmet ingredient for me,\nplease let me know!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_AwwWellThatsOk, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_016C
@@ -56,7 +57,7 @@ L_00B7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E6
     // "Hmm... This is not quite what I'm\nlooking for.[f000]븁\u0000\nI don't think my master will be satisfied\nwith such a smell..."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HmmNotQuiteWhat, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_016C
@@ -66,7 +67,7 @@ L_00E6:
     WordSetLoadItemCollectorPrice 0x8020, 0, 1, 8
     WordSetItemName 0, 0x8020
     // "Oh, it smells so good![f000]븁\u0000\nThat [f000]ĉ\u0001\u0000 of yours is a very\nrare ingredient indeed![f000]븁\u0000\nWould you take $[f000]ȇ\u0001\u0001 for it?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10480_Text_OhSmellsGoodYours, 0, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -77,7 +78,7 @@ L_00E6:
     ItemCollectorSell 0x8020, 0
     MoneyWinUpdate
     // "Turned over the [f000]ĉ\u0001\u0000 and\nreceived $[f000]ȇ\u0001\u0001!"
-    SystemMsg 3, 2
+    SystemMsg Global10480_Text_TurnedOverReceived, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -85,7 +86,7 @@ L_00E6:
     ItemSub 0x8020, 1, 0x8024
     MoneyWinClose
     // "Merci! Thank you!![f000]븁\u0000\nWith this, I can create a superb menu.\nMy master will be so surprised!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_MerciThankCanCreate, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_016C
@@ -93,7 +94,7 @@ L_00E6:
 L_015C:
     MoneyWinClose
     // "Aww... Well, that's OK.[f000]븁\u0000\nIf you find a gourmet ingredient for me,\nplease let me know!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_AwwWellThatsOk, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -102,7 +103,7 @@ L_016C:
 
 L_0172:
     // "Sniff, sniff... Sniff, sniff...[f000]븁\u0000\nWell, I don't smell anything interesting\nin your Bag.[f000]븁\u0000\nBut if you find a gourmet ingredient,\nplease let me know!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_SniffSniffSniffSniff_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -128,7 +129,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01DF
     // "Ore, ore, ore...\nOres that I adore![f000]븁\u0000\nAh, this is where you should laugh...[f000]븁\u0000\nAnyway... I will pay you well for\nrare ores.[f000]븁\u0000\nAnd not just ores! Stones, gems,\nshards...anything mineral! I love it all![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_OreOreOreOres, 0, 0
     FlagSet 226
 
 L_01DF:
@@ -139,7 +140,7 @@ L_01DF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0300
     // "Don't you have an adorable ore\nthat shakes my core?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_DontHaveAdorableOre, 0, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -153,7 +154,7 @@ L_01DF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0245
     // "Hmmm. My core won't change.\nI hope you sell it to me someday."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HmmmCoreWontChange, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02FA
@@ -165,7 +166,7 @@ L_0245:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0274
     // "Huh? What on earth is this?[f000]븁\u0000\nYou can't shake my core\nwith an ore so poor!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HuhWhatEarthCant, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02FA
@@ -175,7 +176,7 @@ L_0274:
     WordSetLoadItemCollectorPrice 0x8025, 1, 1, 8
     WordSetItemName 0, 0x8025
     // "Oh, I do adore the ores![f000]븁\u0000\nThat [f000]ĉ\u0001\u0000, it's shaking me!\nWill you sell it for $[f000]ȇ\u0001\u0001?"
-    ActorMsg MSGFILE_SCRIPT, 10, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10480_Text_OhAdoreOresIts, 7, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -186,7 +187,7 @@ L_0274:
     ItemCollectorSell 0x8025, 1
     MoneyWinUpdate
     // "Turned over the [f000]ĉ\u0001\u0000\nand received $[f000]ȇ\u0001\u0001!"
-    SystemMsg 11, 2
+    SystemMsg Global10480_Text_TurnedOverReceived_2, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -194,7 +195,7 @@ L_0274:
     ItemSub 0x8025, 1, 0x8029
     MoneyWinClose
     // "The deal is done!\nI've scored an ore I can adore!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_DealDoneIveScored, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02FA
@@ -202,7 +203,7 @@ L_0274:
 L_02EA:
     MoneyWinClose
     // "Hmmm. My core won't change.\nI hope you sell it to me someday."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HmmmCoreWontChange, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -212,7 +213,7 @@ L_02FA:
 L_0300:
     MoneyWinClose
     // "Don't you have an adorable ore\nthat shakes my core?[f000]븁\u0000\nHmmmm. You don't seem to have it.\nCome back again."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_DontHaveAdorableOre_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -239,7 +240,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0375
     // "As you can see,\nI am an ultrarich billionaire![f000]븁\u0000\nAnd as you can see,\nmy hobby is to collect rare items![f000]븁\u0000\nIn fact, this outfit is ultra expensive\nand rare.[f000]븀\u0000\nCan you see it? Can you?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_CanSeeAmUltrarich, 0, 0
     FlagSet 227
 
 L_0375:
@@ -258,7 +259,7 @@ L_0375:
     WordSetLoadItemCollectorPrice 0x802a, 2, 1, 8
     WordSetItemName 0, 0x802a
     // "Actually, it's...\nIt's a rare treasure, Relic Crown![f000]븁\u0000\nI was told it was at the innermost part\nof the Abyssal Ruins![f000]븁\u0000\nI think it is understandable that you\nwant to treasure it, but will you sell it[f000]븀\u0000\nto me for $[f000]ȇ\u0001\u0001? Will you?"
-    ActorMsg MSGFILE_SCRIPT, 23, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10480_Text_ActuallyItsItsRare, 0, 2, 0
     YesNoWin 0x8010
     FlagSet 233
     VMStackPush 0x8010
@@ -270,7 +271,7 @@ L_0375:
     ItemCollectorSell 0x802a, 2
     MoneyWinUpdate
     // "Turned over the [f000]ĉ\u0001\u0000\nand received $[f000]ȇ\u0001\u0001!"
-    SystemMsg 19, 2
+    SystemMsg Global10480_Text_TurnedOverReceived_3, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -278,7 +279,7 @@ L_0375:
     ItemSub 0x802a, 1, 0x802e
     MoneyWinClose
     // "I got a very good item!\nDon't you think it's great? Don't you?"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_GotVeryGoodItem, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_043B
@@ -286,7 +287,7 @@ L_0375:
 L_042B:
     MoneyWinClose
     // "If you ever change your mind,\nwill you sell me the rare item? Will you?"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_IfEverChangeMind, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -323,7 +324,7 @@ L_0477:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05AA
     // "There's something that this billionaire\nwants to get his hands on, even if it[f000]븀\u0000\nmeans spending a lot of money.[f000]븁\u0000\nDo you have such a rare item?\nDo you?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_TheresSomethingBillionaireWants, 0, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -337,7 +338,7 @@ L_0477:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04EF
     // "If you ever change your mind,\nwill you sell me the rare item? Will you?"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_IfEverChangeMind, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_05A4
@@ -349,7 +350,7 @@ L_04EF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_051E
     // "This is slightly different.\nDon't you think so, too? Don't you?"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_SlightlyDifferentDontThink, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_05A4
@@ -359,7 +360,7 @@ L_051E:
     WordSetLoadItemCollectorPrice 0x802f, 2, 1, 8
     WordSetItemName 0, 0x802f
     // "That [f000]ĉ\u0001\u0000!! Will you sell it to me\nfor $[f000]ȇ\u0001\u0001? Will you?"
-    ActorMsg MSGFILE_SCRIPT, 18, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10480_Text_WillSellWill, 0, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -370,7 +371,7 @@ L_051E:
     ItemCollectorSell 0x802f, 2
     MoneyWinUpdate
     // "Turned over the [f000]ĉ\u0001\u0000\nand received $[f000]ȇ\u0001\u0001!"
-    SystemMsg 19, 2
+    SystemMsg Global10480_Text_TurnedOverReceived_3, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -378,7 +379,7 @@ L_051E:
     ItemSub 0x802f, 1, 0x8033
     MoneyWinClose
     // "I got a very good item!\nDon't you think it's great? Don't you?"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_GotVeryGoodItem, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_05A4
@@ -386,7 +387,7 @@ L_051E:
 L_0594:
     MoneyWinClose
     // "If you ever change your mind,\nwill you sell me the rare item? Will you?"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_IfEverChangeMind, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -395,7 +396,7 @@ L_05A4:
 
 L_05AA:
     // "There's something that this billionaire\nwants to get his hands on, even if it[f000]븀\u0000\nmeans spending a lot of money.[f000]븁\u0000\nDo you have such a rare item?\nDo you?[f000]븁\u0000\nGrrr! You don't have a rare item,\ndo you?"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_TheresSomethingBillionaireWants_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -419,7 +420,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0613
     // "Hey, check it out. I've got a sweet deal\nfor ya![f000]븁\u0000\nYou know how Pokémon like to hide behind\nstones or rocks, yeah?[f000]븁\u0000\nSometimes they hide cool stuff, too.[f000]븁\u0000\nIf you find something cool behind a rock,\nyou should bring it to me.[f000]븁\u0000\nI'll make it worth your while.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HeyCheckOutIve, 0, 0
     FlagSet 251
 
 L_0613:
@@ -430,7 +431,7 @@ L_0613:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0734
     // "What's up?\nDid you find something cool for me?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_WhatsUpDidFind, 0, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -444,7 +445,7 @@ L_0613:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0679
     // "Hey, come see me if you find something\ncool, got it?[f000]븁\u0000\nI'll make it worth your while."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HeyComeSeeIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_072E
@@ -456,7 +457,7 @@ L_0679:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06A8
     // "Nope, this is no good. Not worth my while."
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_NopeNoGoodNot, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_072E
@@ -466,7 +467,7 @@ L_06A8:
     WordSetLoadItemCollectorPrice 0x8034, 3, 1, 8
     WordSetItemName 0, 0x8034
     // "Hey, nice! Let me check out\nthat [f000]ĉ\u0001\u0000...[f000]븁\u0000\nI'll give you $[f000]ȇ\u0001\u0001 for it.\nWhaddaya say?"
-    ActorMsg MSGFILE_SCRIPT, 27, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10480_Text_HeyNiceLetCheck, 0, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -477,7 +478,7 @@ L_06A8:
     ItemCollectorSell 0x8034, 3
     MoneyWinUpdate
     // "Turned over the [f000]ĉ\u0001\u0000\nand received $[f000]ȇ\u0001\u0001!"
-    SystemMsg 28, 2
+    SystemMsg Global10480_Text_TurnedOverReceived_4, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -485,7 +486,7 @@ L_06A8:
     ItemSub 0x8034, 1, 0x8038
     MoneyWinClose
     // "Hey, thanks![f000]븁\u0000\nI bet I can sell this to a collector for\nway more than I just gave you.[f000]븁\u0000\nHa! That's business for ya!"
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HeyThanksBetCan, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_072E
@@ -493,7 +494,7 @@ L_06A8:
 L_071E:
     MoneyWinClose
     // "Hey, come see me if you find something\ncool, got it?[f000]븁\u0000\nI'll make it worth your while."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HeyComeSeeIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -502,7 +503,7 @@ L_072E:
 
 L_0734:
     // "What's up?\nDid you find something cool for me?[f000]븁\u0000\n...Nope, nothing cool in your Bag.\nOh well. Maybe next time!"
-    ParentActorMsg MSGFILE_SCRIPT, 32, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_WhatsUpDidFind_2, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -528,7 +529,7 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07A1
     // "I work on a farm in Mistralton City.\nSo I need lots of Mulch! So much Mulch![f000]븁\u0000\nYou're a Pokémon Trainer, right? Do you\nknow much about Hidden Grottoes?[f000]븁\u0000\nYou can sometimes find Mulch\ndeep inside Hidden Grottoes![f000]븀\u0000\nLots of Mulch! So much Mulch![f000]븁\u0000\nMulch is great!\nI have much love for Mulch![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 33, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_WorkFarmMistraltonCity, 0, 0
     FlagSet 332
 
 L_07A1:
@@ -539,7 +540,7 @@ L_07A1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08C2
     // "You have Mulch, don't you?\nHow much Mulch?[f000]븀\u0000\nWill you show it to me?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 34, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_HaveMulchDontHow, 0, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -553,7 +554,7 @@ L_07A1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0807
     // "Mulch is important for farms and fields!\nMulch helps things grow so much![f000]븁\u0000\nIf you find Mulch, even if it's not much,\nplease bring it to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_MulchImportantFarmsFields, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_08BC
@@ -565,7 +566,7 @@ L_0807:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0836
     // "Sniff, sniff, sniff...\nThis doesn't smell right![f000]븁\u0000\nIf it's not Mulch, I can't buy it.\nNothing excites me as much as Mulch!"
-    ParentActorMsg MSGFILE_SCRIPT, 38, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_SniffSniffSniffDoesnt, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_08BC
@@ -575,7 +576,7 @@ L_0836:
     WordSetLoadItemCollectorPrice 0x8039, 4, 1, 8
     WordSetItemName 0, 0x8039
     // "Sniff, sniff, sniff... This smell...\nIt's [f000]ĉ\u0001\u0000, isn't it?[f000]븁\u0000\nI'll pay this much for that Mulch:\n$[f000]ȇ\u0001\u0001. How about it?"
-    ActorMsg MSGFILE_SCRIPT, 35, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10480_Text_SniffSniffSniffSmell, 7, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -586,7 +587,7 @@ L_0836:
     ItemCollectorSell 0x8039, 4
     MoneyWinUpdate
     // "Turned over the [f000]ĉ\u0001\u0000\nand received $[f000]ȇ\u0001\u0001!"
-    SystemMsg 36, 2
+    SystemMsg Global10480_Text_TurnedOverReceived_5, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -594,7 +595,7 @@ L_0836:
     ItemSub 0x8039, 1, 0x803d
     MoneyWinClose
     // "Sniff, sniff, sniff...\nThis Mulch has an exquisite smell![f000]븀\u0000\nSo much aroma! So much excitement!"
-    ParentActorMsg MSGFILE_SCRIPT, 37, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_SniffSniffSniffMulch, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_08BC
@@ -602,7 +603,7 @@ L_0836:
 L_08AC:
     MoneyWinClose
     // "Mulch is important for farms and fields!\nMulch helps things grow so much![f000]븁\u0000\nIf you find Mulch, even if it's not much,\nplease bring it to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_MulchImportantFarmsFields, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -612,7 +613,7 @@ L_08BC:
 L_08C2:
     MoneyWinClose
     // "Sniff, sniff, sniff...\nI don't smell anything.[f000]븁\u0000\nYou don't have Mulch, do you?\nBring me some next time![f000]븀\u0000\nBring me a lot! I need so much Mulch!"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10480_Text_SniffSniffSniffDont, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

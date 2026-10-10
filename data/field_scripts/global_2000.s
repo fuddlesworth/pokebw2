@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10520.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -37,7 +38,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_009B
     // "First, let's restore your Pokémon\nto full health."
-    ActorMsg MSGFILE_SCRIPT, 19, 0x8011, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10520_Text_FirstLetsRestorePokemon, 0x8011, 0, 0
     VMCall L_0144
     ActorMsgClose
 
@@ -58,12 +59,12 @@ L_009B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F5
     // "Please visit a Pokémon Center when your\nPokémon's HP goes down.[f000]븁\u0000\nIf you're planning to travel any\ndistance, you should stock up on Potions[f000]븀\u0000\nat a Poké Mart.[f000]븁\u0000\nGood luck, Trainer!"
-    ActorMsg MSGFILE_SCRIPT, 20, 0x8011, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10520_Text_PleaseVisitPokemonCenter, 0x8011, 0, 0
     VMJump L_0101
 
 L_00F5:
     // "There! All happy and healthy![f000]븁\u0000\nGood luck and take care!"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10520_Text_ThereAllHappyHealthy, 0x8011, 0, 0
 
 L_0101:
     LastKeyWait
@@ -162,7 +163,7 @@ L_01DC:
     SaveDataGetStatus 0x8026, 0x8027, 0x8028
     FieldSubscreenChange 0
     // "Would you like to save the game?"
-    SystemMsg 2, 2
+    SystemMsg Global10520_Text_WouldLikeSaveGame, 2
     YesNoWin 0x8029
     VMStackPush 0x8029
     VMStackPushConst 0
@@ -185,7 +186,7 @@ L_0247:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_028A
     // "There is already a saved game file.\nIt is impossible to save.[f000]븁\u0000\nPlease refer to the Instruction\nBooklet for details.[f000]븁\u0000\nPress Up + SELECT + B Button on\nthe title screen if you want to erase[f000]븀\u0000\nthe current saved game file.[f000]븁\u0000"
-    SystemMsg 9, 2
+    SystemMsg Global10520_Text_ThereAlreadySavedGame_2, 2
     InfoMsgClose
     WorkSetConst 0x8025, 0
 
@@ -200,7 +201,7 @@ L_028A:
 
 L_02B0:
     // "Saving...\nDon't turn off the power."
-    SystemMsgAsync 4, 2
+    SystemMsgAsync Global10520_Text_SavingDontTurnOff, 2
     VMJump L_02DB
 
 L_02BC:
@@ -210,7 +211,7 @@ L_02BC:
 
 L_02CF:
     // "Saving a lot of data...\nDon't turn off the power."
-    SystemMsgAsync 10, 2
+    SystemMsgAsync Global10520_Text_SavingLotDataDont, 2
     VMJump L_02DB
 
 L_02DB:
@@ -226,7 +227,7 @@ L_02DB:
     SEPlay SEQ_SE_SAVE
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 saved the game."
-    SystemMsg 5, 2
+    SystemMsg Global10520_Text_SavedGame, 2
     MsgWaitAdvance
     InfoMsgClose
     WorkSetConst 0x8000, 0
@@ -234,7 +235,7 @@ L_02DB:
 
 L_031B:
     // "Save error.[f000]븁\u0000"
-    SystemMsg 7, 2
+    SystemMsg Global10520_Text_SaveError, 2
     InfoMsgClose
     WorkSetConst 0x8000, 1
 
@@ -274,7 +275,7 @@ L_038D:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D9
     // "It looks like you are connecting\nwith somebody. Is it OK to disconnect?"
-    SystemMsg 15, 2
+    SystemMsg Global10520_Text_LooksLikeConnectingSomebody, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -286,7 +287,7 @@ L_038D:
 
 L_03C7:
     // "Ending communication.\nPlease wait."
-    SystemMsg 16, 2
+    SystemMsg Global10520_Text_EndingCommunicationPleaseWait, 2
     GameCommDisconnect 0x8000
     InfoMsgClose
     VMJump L_03DD
@@ -299,7 +300,7 @@ L_03DD:
 
 Script_6:
     // "Wireless communications are turned OFF.\nTurn wireless communications ON[f000]븀\u0000\nin the System Settings.[f000]븀\u0000\nError code: 50699[f000]븁\u0000"
-    SystemMsg 22, 2
+    SystemMsg Global10520_Text_WirelessCommunicationsTurnedOff, 2
     InfoMsgClose
     RTEndGlobal
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/twist_mountain_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you look for something in an empty\nplace like this, you can discover things!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IfLookSomethingEmpty, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_024B
@@ -45,7 +46,7 @@ L_006A:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you look for something in an empty\nplace like this, you can discover things![f000]븁\u0000\nLike this Fossil I just found! Take this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IfLookSomethingEmpty_2, 2, 0, 0
     ActorMsgClose
     Random 0x400f, 7
     VMStackPush 0x400f
@@ -142,7 +143,7 @@ L_01FD:
 
 L_021D:
     // "If you come again tomorrow, you might be\nable to find a Fossil of your own.[f000]븀\u0000\nSo come on out and play if ya want!"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IfComeAgainTomorrow, 2, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 2747
@@ -152,7 +153,7 @@ L_0237:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you come again tomorrow, you might be\nable to find a Fossil of your own.[f000]븀\u0000\nSo come on out and play if ya want!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IfComeAgainTomorrow, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -174,7 +175,7 @@ Script_3:
     VMJumpIf CMP_STACK, L_02EA
     WorkSetConst 0x40fe, 1
     // "Hello!\nI'm a Heavy Machinery Pro![f000]븁\u0000\nAnd... You!\nDo you like construction trucks?"
-    ActorMsg MSGFILE_SCRIPT, 3, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HelloImHeavyMachinery, 7, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
@@ -187,13 +188,13 @@ L_02A7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02D0
     // "What? Sorry, I couldn't hear you.[f000]븁\u0000\nI'll ask you again!\nDo you like construction trucks?"
-    ActorMsg MSGFILE_SCRIPT, 5, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_WhatSorryCouldntHear, 7, 2, 0
     YesNoWin 0x8010
     VMJump L_02A7
 
 L_02D0:
     // "Oh! I knew it!\nConstruction trucks are cool, right?[f000]븁\u0000\nNow, I'll give you a quiz![f000]븁\u0000\nThere are five questions in total!\nIf you answer all of them correctly,[f000]븀\u0000\nI may give you a present!"
-    ActorMsg MSGFILE_SCRIPT, 4, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_OhKnewConstructionTrucks, 7, 2, 0
     MsgWaitAdvance
     VMCall L_046C
     VMJump L_0466
@@ -212,7 +213,7 @@ L_02EA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0336
     // "Yay, a future Heavy Machinery Pro![f000]븁\u0000\nIf you come see me again tomorrow,\nI'll give you the next question.[f000]븀\u0000\nSee you then!"
-    ActorMsg MSGFILE_SCRIPT, 34, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_YayFutureHeavyMachinery, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0408
@@ -223,14 +224,14 @@ L_0336:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035F
     // "If you come back tomorrow,\nyou can give that question another try.[f000]븁\u0000\nI'll be waiting for you!"
-    ActorMsg MSGFILE_SCRIPT, 35, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IfComeBackTomorrow, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0408
 
 L_035F:
     // "Hi! I've been waiting for you!\nOK. Let's get started!"
-    ActorMsg MSGFILE_SCRIPT, 6, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HiIveBeenWaiting, 7, 2, 0
     MsgWaitAdvance
     WorkCmpConst 0x40fe, 1
     VMJumpIf CMP_EQ, L_0380
@@ -291,14 +292,14 @@ L_040E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0456
     // "I'll tell Mr. Medal about your talent\nas a Heavy Machinery Pro."
-    ActorMsg MSGFILE_SCRIPT, 37, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IllTellMrMedal, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0466
 
 L_0456:
     // "I'm so happy that I witnessed the\ncrowning of a Heavy Machinery Pro[f000]븀\u0000\nof a new generation!"
-    ActorMsg MSGFILE_SCRIPT, 38, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_ImHappyWitnessedCrowning, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -309,7 +310,7 @@ L_0466:
 
 L_046C:
     // "Construction Truck Quiz!\nFor short: TruQ![f000]븁\u0000\nNow, here's the question![f000]븁\u0000\nWhich place is famous for\nan old rusty crane truck?"
-    ActorMsg MSGFILE_SCRIPT, 7, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_ConstructionTruckQuizShort, 7, 2, 0
     MsgWaitAdvance
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32801
     ListMenuAdd 8, 65535, 0
@@ -322,7 +323,7 @@ L_046C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04D8
     // "...[f000]븁\u0000\nCorrect!\nWell done![f000]븁\u0000\nYou're sharp!"
-    ActorMsg MSGFILE_SCRIPT, 32, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2769
@@ -331,7 +332,7 @@ L_046C:
 
 L_04D8:
     // "...[f000]븁\u0000\nHmm... Close!\nToo bad![f000]븁\u0000\nBut you were on the right track!"
-    ActorMsg MSGFILE_SCRIPT, 33, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2770
@@ -341,7 +342,7 @@ L_04EC:
 
 L_04EE:
     // "Construction Truck Quiz!\nFor short: TruQ![f000]븁\u0000\nNow, here's the question![f000]븁\u0000\nThe trucks that run on Route 4\ncome in three different colors:[f000]븀\u0000\nred, blue, and...what?"
-    ActorMsg MSGFILE_SCRIPT, 12, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_ConstructionTruckQuizShort_2, 7, 2, 0
     MsgWaitAdvance
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32801
     ListMenuAdd 13, 65535, 0
@@ -354,7 +355,7 @@ L_04EE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_055A
     // "...[f000]븁\u0000\nCorrect!\nWell done![f000]븁\u0000\nYou're sharp!"
-    ActorMsg MSGFILE_SCRIPT, 32, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2769
@@ -363,7 +364,7 @@ L_04EE:
 
 L_055A:
     // "...[f000]븁\u0000\nHmm... Close!\nToo bad![f000]븁\u0000\nBut you were on the right track!"
-    ActorMsg MSGFILE_SCRIPT, 33, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2770
@@ -373,7 +374,7 @@ L_056E:
 
 L_0570:
     // "Construction Truck Quiz!\nFor short: TruQ![f000]븁\u0000\nNow, here's the question![f000]븁\u0000\nWhich question is this?"
-    ActorMsg MSGFILE_SCRIPT, 17, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_ConstructionTruckQuizShort_3, 7, 2, 0
     MsgWaitAdvance
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32801
     ListMenuAdd 18, 65535, 0
@@ -386,7 +387,7 @@ L_0570:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05DC
     // "...[f000]븁\u0000\nCorrect!\nWell done![f000]븁\u0000\nYou're sharp!"
-    ActorMsg MSGFILE_SCRIPT, 32, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2769
@@ -395,7 +396,7 @@ L_0570:
 
 L_05DC:
     // "...[f000]븁\u0000\nHmm... Close!\nToo bad![f000]븁\u0000\nBut you were on the right track!"
-    ActorMsg MSGFILE_SCRIPT, 33, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2770
@@ -405,7 +406,7 @@ L_05F0:
 
 L_05F2:
     // "Construction Truck Quiz!\nFor short: TruQ![f000]븁\u0000\nNow, here's the question![f000]븁\u0000\nWhich Gym has a yellow drill car?"
-    ActorMsg MSGFILE_SCRIPT, 22, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_ConstructionTruckQuizShort_4, 7, 2, 0
     MsgWaitAdvance
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32801
     ListMenuAdd 23, 65535, 0
@@ -418,7 +419,7 @@ L_05F2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_065E
     // "...[f000]븁\u0000\nCorrect!\nWell done![f000]븁\u0000\nYou're sharp!"
-    ActorMsg MSGFILE_SCRIPT, 32, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2769
@@ -427,7 +428,7 @@ L_05F2:
 
 L_065E:
     // "...[f000]븁\u0000\nHmm... Close!\nToo bad![f000]븁\u0000\nBut you were on the right track!"
-    ActorMsg MSGFILE_SCRIPT, 33, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2770
@@ -437,7 +438,7 @@ L_0672:
 
 L_0674:
     // "Construction Truck Quiz!\nFor short: TruQ![f000]븁\u0000\nNow, here's the question![f000]븁\u0000\nHow many bulldozers\nare there in Twist Mountain?"
-    ActorMsg MSGFILE_SCRIPT, 27, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_ConstructionTruckQuizShort_5, 7, 2, 0
     MsgWaitAdvance
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32801
     ListMenuAdd 28, 65535, 0
@@ -450,13 +451,13 @@ L_0674:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0700
     // "...[f000]븁\u0000\nCorrect!\nWell done![f000]븁\u0000\nYou're sharp!"
-    ActorMsg MSGFILE_SCRIPT, 32, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_CorrectWellDoneYoure, 7, 2, 0
     MsgWaitAdvance
     // "Wow! You're amazing!\nYou got a perfect score on the TruQ![f000]븁\u0000\nI thought of those questions with\nall my might, you know![f000]븁\u0000\nYou are a true Heavy Machinery Pro...[f000]븁\u0000\nYes! You're a Heavy Machinery Pro\nrecognized by a wandering judge[f000]븀\u0000\nfrom the Medal Office, which is me!"
-    ActorMsg MSGFILE_SCRIPT, 36, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_WowYoureAmazingGot, 7, 2, 0
     MsgWaitAdvance
     // "I'll tell Mr. Medal about your talent\nas a Heavy Machinery Pro."
-    ActorMsg MSGFILE_SCRIPT, 37, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_IllTellMrMedal, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     MedalGive 99
@@ -466,7 +467,7 @@ L_0674:
 
 L_0700:
     // "...[f000]븁\u0000\nHmm... Close!\nToo bad![f000]븁\u0000\nBut you were on the right track!"
-    ActorMsg MSGFILE_SCRIPT, 33, 7, 2, 0
+    ActorMsg MSGFILE_SCRIPT, TwistMountain5_Text_HmmCloseTooBad, 7, 2, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2770

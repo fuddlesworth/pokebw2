@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -105,12 +106,12 @@ L_0165:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0188
     // "There is a tennis match\nin Small Court now!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_ThereTennisMatchSmall, 0, 0
     VMJump L_0192
 
 L_0188:
     // "Tennis players are practicing\nin Small Court now![f000]븁\u0000\nPeople can watch them practicing!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_TennisPlayersPracticingSmall, 0, 0
 
 L_0192:
     VMJump L_01C5
@@ -121,12 +122,12 @@ L_0198:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BB
     // "There is a basketball game\nin Small Court now!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_ThereBasketballGameSmall, 0, 0
     VMJump L_01C5
 
 L_01BB:
     // "Basketball players are practicing\nin Small Court now![f000]븁\u0000\nPeople can watch them practicing!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_BasketballPlayersPracticingSmall, 0, 0
 
 L_01C5:
     LastKeyWait
@@ -157,7 +158,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am sorry.[f000]븁\u0000\nBut you cannot enter the court\nbecause a game is in progress."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_AmSorryButCannot, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -169,7 +170,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am sorry.[f000]븁\u0000\nBut you cannot enter the court\nbecause a game is in progress."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_AmSorryButCannot_2, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -181,7 +182,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am sorry.[f000]븁\u0000\nBut you cannot enter the court\nbecause a game is in progress."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_AmSorryButCannot_3, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -193,7 +194,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We love sports.\nWatching games is great, but we enjoy[f000]븀\u0000\nwatching practices, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_WeLoveSportsWatching, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -205,7 +206,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "New styles of basketball and tennis\ncreated by people and Pokémon...[f000]븀\u0000\nThese may be advanced forms of sports."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_NewStylesBasketballTennis, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -217,7 +218,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you speak to athletes during a\npractice, they may challenge you to a[f000]븀\u0000\nPokémon battle!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_IfSpeakAthletesDuring, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -234,12 +235,12 @@ Script_10:
 
 L_02C7:
     // "First-rank Smashers are waiting for you\nin the court with their Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_FirstRankSmashersWaiting, 0, 0
     VMJump L_02E1
 
 L_02D7:
     // "First-rank Hoopsters are waiting for you\nin the court with their Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity8_Text_FirstRankHoopstersWaiting, 0, 0
 
 L_02E1:
     LastKeyWait

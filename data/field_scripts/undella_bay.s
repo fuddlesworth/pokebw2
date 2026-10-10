@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/undella_bay.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -63,7 +64,7 @@ Script_2:
     VMJumpIf CMP_STACK, L_011C
     PVPlay 593, 0
     // "Jelliiii!"
-    ScreamMsg 0, 2
+    ScreamMsg UndellaBay_Text_Jelliiii, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -82,7 +83,7 @@ L_011C:
     VMJumpIf CMP_STACK, L_0166
     PVPlay 593, 0
     // "Jeeelliii. ♪"
-    ScreamMsg 2, 2
+    ScreamMsg UndellaBay_Text_Jeeelliii, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -131,7 +132,7 @@ L_01D0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F7
     // "Jellicent dove down into\nthe depths of the ocean..."
-    SystemMsg 1, 2
+    SystemMsg UndellaBay_Text_JellicentDoveDownInto, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0214
@@ -142,7 +143,7 @@ L_01F7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0214
     // "Jellicent dove down into\nthe depths of the ocean..."
-    SystemMsg 3, 2
+    SystemMsg UndellaBay_Text_JellicentDoveDownInto_2, 2
     LastKeyWait
     InfoMsgClose
 
@@ -158,11 +159,11 @@ Script_3:
     ActorsPauseAll
     MEPlay SEQ_ME_CALL
     // "The Xtransceiver is ringing."
-    SystemMsg 4, 2
+    SystemMsg UndellaBay_Text_XtransceiverRinging, 2
     MEWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 picked up the Xtransceiver.[f000]븁\u0000"
-    SystemMsg 5, 2
+    SystemMsg UndellaBay_Text_PickedUpXtransceiver, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait

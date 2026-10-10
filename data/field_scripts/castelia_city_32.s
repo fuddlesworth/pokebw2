@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_32.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -23,12 +24,12 @@ Script_4:
     ActorCmdExec 4, Movement_03F8
     ActorCmdWait
     // "Hey! This is our secret spot![f000]븁\u0000\nYou can't come waltzin' in\nhere like you own the place![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_HeyOurSecretSpot, 4, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_ROUGHNECK_RICKY, 0, 0
     VMCall L_0382
     // "You aren't one of us...\nBut I don't mind tough Trainers."
-    ActorMsg MSGFILE_SCRIPT, 1, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_ArentOneUsBut, 4, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x4147, 1
@@ -53,7 +54,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I recognize toughness when I see it.\nSo you're one of us now!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_RecognizeToughnessWhenSee, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0111
@@ -62,7 +63,7 @@ L_00FD:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you beat all three of us, maybe\nwe will let you be in our group."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_IfBeatAllThree, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -81,7 +82,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You're our leader now, and Tina's\nthe second in command![f000]븀\u0000\nAll right! Let's dance!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_YoureOurLeaderNow, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_018B
@@ -94,7 +95,7 @@ L_014C:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We've always stuck together!\nI'm not going to trust some outsider!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_WeveAlwaysStuckTogether, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_018B
@@ -121,7 +122,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "New buildings create old places.[f000]븁\u0000\nGot it?\nEven Castelia City has an underbelly."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_NewBuildingsCreateOld, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0205
@@ -134,7 +135,7 @@ L_01CC:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you want to battle me, you'll\nhave to defeat Jean-Paul first!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_IfWantBattleYoull, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0205
@@ -151,12 +152,12 @@ L_0205:
 
 L_020B:
     // "This worn-out lot is our paradise![f000]븁\u0000\nWe're not gonna let some stranger\ncome in and trash the place![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_WornOutLotOur, 3, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_DANCER_JEAN_PAUL, 0, 0
     VMCall L_0382
     // "What's with you anyway?!\nYour fighting has a tight rhythm.[f000]븀\u0000\nI was groovin' with it before I knew it!"
-    ActorMsg MSGFILE_SCRIPT, 5, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_WhatsAnywayFightingHas, 3, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 3, Movement_03CC
@@ -171,12 +172,12 @@ L_020B:
 
 L_0265:
     // "You made my crew cry![f000]븁\u0000\nI'm gonna pay you back in spades![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_MadeCrewCryIm, 2, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_GUITARIST_TINA, 0, 0
     VMCall L_0382
     // "People like you deserve a Medal...[f000]븁\u0000\nOK. I've decided.\nYou're the new boss of this area!"
-    ActorMsg MSGFILE_SCRIPT, 9, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity32_Text_PeopleLikeDeserveMedal, 2, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 2, Movement_03E4

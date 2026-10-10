@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10635.h"
 
 // Script plugin 13, from the zones that start its scripts
 
@@ -144,7 +145,7 @@ Script_3:
     BMReleaseHandle 0x8029
     WordSetPlayerName 0
     // "Alder: [f000]Ā\u0001\u0000![f000]븁\u0000\nAs for the newly opened Pokémon Gym\nin Aspertia City, I heard a new[f000]븀\u0000\nGym Leader has arrived there.[f000]븁\u0000\nYou should go and test how\nstrong you've become![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 61, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10635_Text_AlderNewlyOpenedPokemon, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_07E0
     ActorCmdWait
@@ -170,7 +171,7 @@ Script_3:
 
 L_0299:
     // "I know this is sudden,\nbut nice to meet you![f000]븁\u0000\nNow, don't say anything.\nJust take this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10635_Text_KnowSuddenButNice, 1, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -180,15 +181,15 @@ L_0299:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "That is a Medal Box![f000]븁\u0000\nAnd, people call me\nMr. Medal![f000]븁\u0000\n...By the way, do you know a competition\ncalled the Medal Rally?"
-    ActorMsg MSGFILE_SCRIPT, 12, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10635_Text_MedalBoxPeopleCall, 1, 0, 0
     YesNoWin 0x8010
     // "Whether you know it or not,\nI'll explain it to you![f000]븁\u0000\nThe Medal Rally is an event\nthat evaluates various activities[f000]븀\u0000\nof Trainers.[f000]븁\u0000\nSo...in commemoration of your\nparticipation, please take this Medal![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10635_Text_WhetherKnowNotIll, 1, 0, 0
     ActorMsgClose
     WorkSetConst 0x8020, 0
     VMCall L_0771
     // "And here's some help for the Medal Rally!\nI'll give you Hint Medals, too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10635_Text_HeresSomeHelpMedal, 1, 0, 0
     ActorMsgClose
     MedalDiscoverInitial
     MedalGetCount 1, 0x8022
@@ -199,17 +200,17 @@ L_0299:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_032F
     // "[f000]Ā\u0001\u0000 received\n[f000]Ȃ\u0001\u0001 [f000][ff00]\u0001\u0002Hint Medals[f000][ff00]\u0001\u0000![f000]븁\u0000"
-    SystemMsg 9, 0
+    SystemMsg Global10635_Text_ReceivedHintMedals, 0
     VMJump L_0335
 
 L_032F:
     // "[f000]Ā\u0001\u0000 received\na [f000][ff00]\u0001\u0002Hint Medal[f000][ff00]\u0001\u0000![f000]븁\u0000"
-    SystemMsg 10, 0
+    SystemMsg Global10635_Text_ReceivedHintMedal, 0
 
 L_0335:
     InfoMsgClose
     // "For your information,\nyou can get Medals if you meet[f000]븀\u0000\ntheir conditions.[f000]븁\u0000\nGo to a Pokémon Center,\nand you can get Medals from me[f000]븀\u0000\none after another![f000]븁\u0000\nFirst, please use your Medal Box and\ncheck the inside![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10635_Text_InformationCanGetMedals, 1, 0, 0
     ActorMsgClose
     VMReturn
     .balign 4, 0
@@ -246,7 +247,7 @@ L_0391:
 L_03A4:
     WordSetPlaceName 0, 28
     // "We'll have an award ceremony\nat the Medal Rally Office[f000]븀\u0000\nin [f000]ą\u0001\u0000.[f000]븁\u0000\nSo, please come to the office!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_WellHaveAwardCeremony, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0486
@@ -259,7 +260,7 @@ L_03BD:
 L_03D0:
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000. Finally,\nyou've come this far.[f000]븁\u0000\nWell, to honor the best and ultimate\nachievement, we'll have an extravagant[f000]븀\u0000\nevent at the Medal Rally Office![f000]븁\u0000\nYo! You're the best!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_FinallyYouveComeFar, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0486
@@ -282,7 +283,7 @@ L_03FA:
     WordSetPlayerName 0
     WordSetPlaceName 1, 28
     // "Oh! [f000]Ā\u0001\u0000!\nGreat! Really great![f000]븁\u0000\nYou know what? Just now\nyou passed the checkpoint[f000]븀\u0000\nthe Medal Rally Office set[f000]븀\u0000\nand reached the goal![f000]븁\u0000\nSo, we'll have an award ceremony\nat the Medal Rally Office[f000]븀\u0000\nin [f000]ą\u0001\u0001.[f000]븁\u0000\nSo, please come to the office!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_OhGreatReallyGreat, 0, 0
     VMJump L_0447
 
 L_0441:
@@ -325,7 +326,7 @@ L_0490:
 L_04AA:
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000. I've been waiting for you!\nYou're doing terrific![f000]븀\u0000\nHere's a new Medal![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_IveBeenWaitingYoure, 0, 0
     ActorMsgClose
     PokemonCenterCmd_FindEarnedMedal 0x8010, 0x8020
     VMStackPush 0x8010
@@ -343,7 +344,7 @@ L_04DE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_050F
     // "And! I have another Medal\nI want to give! Please! Please![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_HaveAnotherMedalWant, 0, 0
     ActorMsgClose
     VMCall L_0771
     PokemonCenterCmd_FindEarnedMedal 0x8010, 0x8020
@@ -364,7 +365,7 @@ L_052B:
     WordSetPlayerName 0
     WordSetNumber 1, 0x8010, 3
     // "Hmm... [f000]Ā\u0001\u0000![f000]븁\u0000\nI'd like you to collect more Medals.\nSo, I'll give you Hint Medals![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_HmmIdLikeCollect, 0, 0
     ActorMsgClose
     MedalGetCount 0, 0x8022
     WordSetPlayerName 0
@@ -374,12 +375,12 @@ L_052B:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_056F
     // "[f000]Ā\u0001\u0000 received\n[f000]Ȃ\u0001\u0001 [f000][ff00]\u0001\u0002Hint Medals[f000][ff00]\u0001\u0000![f000]븁\u0000"
-    SystemMsg 9, 0
+    SystemMsg Global10635_Text_ReceivedHintMedals, 0
     VMJump L_0575
 
 L_056F:
     // "[f000]Ā\u0001\u0000 received\na [f000][ff00]\u0001\u0002Hint Medal[f000][ff00]\u0001\u0000![f000]븁\u0000"
-    SystemMsg 10, 0
+    SystemMsg Global10635_Text_ReceivedHintMedal, 0
 
 L_0575:
     InfoMsgClose
@@ -390,7 +391,7 @@ L_0575:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_059D
     // "Well... I don't have any more Hint Medals\nI can give to you.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_WellDontHaveAny, 0, 0
 
 L_059D:
     VMReturn
@@ -406,7 +407,7 @@ L_059F:
 L_05BA:
     WordSetPlayerName 0
     // "Wow! [f000]Ā\u0001\u0000.\nYou collected a lot of Medals![f000]븁\u0000\nI'll upgrade your Medal Box.[f000]븁\u0000\nAiya! Yah![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_WowCollectedLotMedals, 0, 0
     ActorMsgClose
 
 L_05C9:
@@ -418,13 +419,13 @@ L_05C9:
     MedalGetCount 7, 0x8021
     WordSetMedalRank 1, 0x8021
     // "[f000]Ā\u0001\u0000's Medal Box\nhas been upgraded to[f000]븀\u0000\n[f000][ff00]\u0001\u0002[f000]Ķ\u0001\u0001[f000][ff00]\u0001\u0000 Rank!"
-    SystemMsg 19, 0
+    SystemMsg Global10635_Text_SMedalBoxHas, 0
     MEPlay SEQ_ME_MD_FAN01
     MEWait
     MsgWaitAdvance
     InfoMsgClose
     // "In commemoration of the upgrade,\nI'll give you a Medal, as well![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_CommemorationUpgradeIllGive, 0, 0
     ActorMsgClose
     WorkCmpConst 0x8021, 1
     VMJumpIf CMP_EQ, L_0619
@@ -472,7 +473,7 @@ L_0688:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06B3
     // "A further upgrade for you!\nHaaah! Yaaah![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_FurtherUpgradeHaaahYaaah, 0, 0
     ActorMsgClose
 
 L_06B3:
@@ -513,7 +514,7 @@ L_0708:
     WorkSetConst 0x409e, 4
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000. Finally,\nyou've come this far.[f000]븁\u0000\nWell, to honor the best and ultimate\nachievement, we'll have an extravagant[f000]븀\u0000\nevent at the Medal Rally Office![f000]븁\u0000\nYo! You're the best!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_FinallyYouveComeFar, 0, 0
     VMReturn
 
 L_0735:
@@ -523,14 +524,14 @@ L_0735:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0759
     // "Well, good luck with getting a new Medal!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_WellGoodLuckGetting, 0, 0
     VMReturn
 
 L_0759:
     MedalGetCount 4, 0x8023
     WordSetNumber 0, 0x8023, 3
     // "Well, aim to receive [f000]Ȃ\u0001\u0000 Medals!\nGood luck!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10635_Text_WellAimReceiveMedals, 0, 0
     VMReturn
 
 L_0771:
@@ -542,7 +543,7 @@ L_0771:
     WordSetPlayerName 0
     WordSetMedalName 1, 0x8020
     // "[f000]Ā\u0001\u0000 obtained\nthe [f000][ff00]\u0001\u0002[f000]ĵ\u0001\u0001[f000][ff00]\u0001\u0000 Medal.[f000]븁\u0000"
-    SystemMsg 22, 0
+    SystemMsg Global10635_Text_ObtainedMedal, 0
     InfoMsgClose
     VMReturn
     .balign 4, 0

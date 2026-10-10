@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/reversal_mountain_7.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -12,7 +13,7 @@ Script_1:
     WordSetPlayerName 0
     VMCall L_0138
     // "Oh! Undella Town is right through here!\nI want to keep looking around a bit more.[f000]븁\u0000\nWhat do you want to do?\nShould we say bye for now?"
-    ActorMsg MSGFILE_SCRIPT, 0, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain7_Text_OhUndellaTownRight, 254, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -23,12 +24,12 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_006F
     // "OK, then! I want to do a little more\nresearch about Heatran anyway![f000]븁\u0000\nThank you for coming with me!\nBe careful on the rest of your journey![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain7_Text_OkThenWantLittle, 254, 0, 0
     VMJump L_007B
 
 L_006F:
     // "OK, then![f000]븁\u0000\nI want to do a little more research\nabout where Heatran might be![f000]븁\u0000\nThank you for coming with me!\nBe careful on the rest of your journey![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain7_Text_OkThenWantLittle_2, 254, 0, 0
 
 L_007B:
     MsgWinCloseAll
@@ -61,7 +62,7 @@ L_00AE:
 
 L_00F8:
     // "OK! Then, let's look around a bit more![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain7_Text_OkThenLetsLook, 254, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorCmdExec 255, Movement_01FC
@@ -78,7 +79,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Reversal Mountain... I wonder...\nCould a Magma Stone be in there?[f000]븁\u0000\nHave you heard of it?\nThey say a Magma Stone was found[f000]븀\u0000\nin a volcano in the distant Sinnoh region.[f000]븁\u0000\nApparently, it had something\nto do with Heatran!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ReversalMountain7_Text_ReversalMountainWonderCould, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

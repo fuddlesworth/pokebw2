@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/liberty_garden_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -44,7 +45,7 @@ Script_3:
 Script_4:
     ActorsPauseAll
     // "Victini seems to want to get out\nof the Poké Ball...[f000]븀\u0000\nWill you let it out?[f000]븁\u0000"
-    InfoMsg 0, 1
+    InfoMsg LibertyGarden3_Text_VictiniSeemsWantGet, 1
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -58,7 +59,7 @@ Script_4:
     ActorNew 4, 8, 1, 251, 125, 0
     PVPlay 494, 0
     // "Ta-ta-ta-tah!"
-    ActorMsg MSGFILE_SCRIPT, 1, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LibertyGarden3_Text_TaTaTaTah, 251, 0, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -82,7 +83,7 @@ Script_4:
     ActorCmdWait
     PVPlay 494, 0
     // "Ta-ta-ta-tah!"
-    ActorMsg MSGFILE_SCRIPT, 1, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LibertyGarden3_Text_TaTaTaTah, 251, 0, 0
     MsgWaitAdvance
     PVWait
     MsgWinCloseAll
@@ -94,7 +95,7 @@ Script_4:
     PVWait
     ActorDelete 251
     // "Victini has returned to its Poké Ball\nwith an air of satisfaction."
-    InfoMsg 2, 1
+    InfoMsg LibertyGarden3_Text_VictiniHasReturnedIts, 1
     LastKeyWait
     MsgWinCloseAll
     EvCameraReturn 20
@@ -106,7 +107,7 @@ Script_4:
 
 L_019F:
     // "Victini seems lonely\nin the Poké Ball..."
-    InfoMsg 3, 1
+    InfoMsg LibertyGarden3_Text_VictiniSeemsLonelyPoke, 1
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x400a, 0

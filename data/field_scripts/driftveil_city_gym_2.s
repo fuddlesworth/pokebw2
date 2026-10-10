@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_gym_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -30,7 +31,7 @@ Script_3:
     ActorCmdExec 255, Movement_01A8
     ActorCmdWait
     // "Clay: Good dancers are crucial\nfer puttin' on a good show![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym2_Text_ClayGoodDancersCrucial, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0168
     VMSleep 20
@@ -61,7 +62,7 @@ Script_1:
     WordSetPlayerName 0
     SEPlay SEQ_SE_FLD_61
     // "[f000]Ā\u0001\u0000 pressed the\nswitch on the elevator!"
-    InfoMsg 2, 2
+    InfoMsg DriftveilCityGym2_Text_PressedSwitchElevator, 2
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -87,12 +88,12 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_013B
     // "Driftveil Pokémon Gym[f000]븁\u0000\nGym Leader: Clay\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0001"
-    InfoMsg 3, 2
+    InfoMsg DriftveilCityGym2_Text_DriftveilPokemonGymGym, 2
     VMJump L_0140
 
 L_013B:
     // "Driftveil Pokémon Gym[f000]븁\u0000\nGym Leader: Clay\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000, [f000]Ā\u0001\u0001"
-    InfoMsg 4, 2
+    InfoMsg DriftveilCityGym2_Text_DriftveilPokemonGymGym_2, 2
 
 L_0140:
     LastKeyWait
@@ -106,7 +107,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome to the Driftveil Pokémon Gym![f000]븁\u0000\nIn this Gym, elevators are provided for\nyour use."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym2_Text_WelcomeDriftveilPokemonGym, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

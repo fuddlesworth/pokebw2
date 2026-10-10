@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_10.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -110,7 +111,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pokémon tennis is wonderful![f000]븁\u0000\nPlayers are never alone.\nTheir Pokémon are always with them!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity10_Text_PokemonTennisWonderfulPlayers, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -122,7 +123,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Tennis is all about rackets and balls.\nThere's nothing profound about it."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity10_Text_TennisAllAboutRackets, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -134,7 +135,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am a ball boy who collects\ntennis balls.[f000]븁\u0000\nYou are a Pokémon Trainer who\ncollects Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity10_Text_AmBallBoyWho, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -146,7 +147,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "To become ball boys,\nwe gotta practice."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity10_Text_BecomeBallBoysWe, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -159,7 +160,7 @@ Script_6:
     ActorSetEyeToEye
     PVPlay 506, 0
     // "Woowoof!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity10_Text_Woowoof, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -173,7 +174,7 @@ Script_7:
     ActorSetEyeToEye
     PVPlay 506, 0
     // "Yap!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity10_Text_Yap, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

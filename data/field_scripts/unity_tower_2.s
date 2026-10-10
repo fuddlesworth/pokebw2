@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/unity_tower_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -43,14 +44,14 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello, and welcome to Unity Tower!\nWould you like to go upstairs?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_HelloWelcomeUnityTower, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0141
     // "Please select a floor.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_PleaseSelectFloor, 0, 0
     ActorMsgClose
     FadeOutBlackQ
     FadeWait
@@ -64,7 +65,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F5
     // "Please come again."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_PleaseComeAgain, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_013B
@@ -72,7 +73,7 @@ Script_1:
 L_00F5:
     UnityTowerSetFloor 0x8022, 0x8021
     // "Indeed.\nPlease step inside the elevator.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_IndeedPleaseStepInside, 0, 0
     ActorMsgClose
     VMCall L_06C5
     WorkSetConst 0x417e, 1
@@ -93,7 +94,7 @@ L_013B:
 
 L_0141:
     // "Please come again."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_PleaseComeAgain, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -107,7 +108,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This is Unity Tower.[f000]븁\u0000\nTrainers from all over the world cross\nborders and oceans to gather here.[f000]븁\u0000\nVisit whichever floor you like![f000]븁\u0000\nThe more people you know worldwide,\nthe more floors you can visit.[f000]븁\u0000\nPlease enjoy all that we have to offer!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_UnityTowerTrainersFrom, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -122,7 +123,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Right now, the number of visitors in\nUnity Tower is [f000]ȁ\u0001\u000b."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_RightNowNumberVisitors, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -137,7 +138,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Wow! So you like\n[f000]ď\u0001\u0006, then!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_WowLikeThen, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -149,7 +150,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Awesome! The ceiling is sooo high![f000]븁\u0000\nI wonder how many of me\nyou'd have to stack up to reach it?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_AwesomeCeilingSoooHigh, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -161,7 +162,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Coming to Unity Tower always\ngets me excited![f000]븁\u0000\nBeing here always reminds me of how big\nthe world really is!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower2_Text_ComingUnityTowerAlways, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -347,7 +348,7 @@ Script_8:
     ActorCmdExec 4, Movement_0BC0
     ActorCmdWait
     // "Hey, you over there!\nCome here for a second.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 26, 4, 6, 0
+    ActorMsg MSGFILE_SCRIPT, UnityTower2_Text_HeyOverThereCome, 4, 6, 0
     ActorMsgClose
     ActorCmdExec 4, Movement_0BC8
     ActorCmdExec 255, Movement_0BD4
@@ -357,7 +358,7 @@ Script_8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04AE
     // "You're a new face.\nIs this your first time here?[f000]븁\u0000\nUnity Tower is the place where\nTrainers come from all over the world.[f000]븁\u0000\nThat's why I work hard every day doing\nsecurity checks to protect those[f000]븀\u0000\nyoung Trainers.[f000]븁\u0000\nDon't loiter around here\nand cause trouble.[f000]븀\u0000\n...'Kay, you can pass.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, UnityTower2_Text_YoureNewFaceFirst, 4, 0, 0
     ActorMsgClose
     WorkSetConst 0x4086, 1
     VMJump L_06AF

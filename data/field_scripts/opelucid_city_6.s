@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -43,7 +44,7 @@ L_007A:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BE
     // "You know what? I'm a huge musical fan! ♪[f000]븁\u0000\nI want people all over the world\nto enjoy musicals. ♪"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatImHuge_2, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_021C
@@ -54,14 +55,14 @@ L_00BE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E7
     // "You know what? I'm a huge musical fan! ♪[f000]븁\u0000\nIf you come see me again tomorrow,\nI'll give you a different Prop! ♪"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatImHuge, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_021C
 
 L_00E7:
     // "Know what? I am a huge musical fan! ♪[f000]븁\u0000\nOh, you have a Prop Case! You must be\na huge musical fan, too! ♪[f000]븁\u0000\nWould you like a new Prop to use\nin the musical?"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatAmHuge_2, 0, 0, 0
     WorkSetConst 0x8020, 0
     YesNoWin 0x8020
     VMStackPush 0x8020
@@ -69,7 +70,7 @@ L_00E7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_020C
     // "I am so glad! ♪ You are also a huge\nmusical fan! ♪[f000]븁\u0000\nYou should try putting various Props\non your Pokémon! That would be fun. ♪[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_AmGladAlsoHuge, 0, 0, 0
     ActorMsgClose
     WorkSetConst 0x8021, 0
     VMStackPush 0x4001
@@ -80,7 +81,7 @@ L_00E7:
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "You know what? I'm a huge musical fan! ♪[f000]븁\u0000\nIf you come see me again tomorrow,\nI'll give you a different Prop! ♪"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatImHuge, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0202
@@ -94,7 +95,7 @@ L_015D:
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "You know what? I'm a huge musical fan! ♪[f000]븁\u0000\nIf you come see me again tomorrow,\nI'll give you a different Prop! ♪"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatImHuge, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0202
@@ -108,7 +109,7 @@ L_0196:
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "You know what? I'm a huge musical fan! ♪[f000]븁\u0000\nIf you come see me again tomorrow,\nI'll give you a different Prop! ♪"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatImHuge, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0202
@@ -122,7 +123,7 @@ L_01CF:
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "You know what? I'm a huge musical fan! ♪[f000]븁\u0000\nI want people all over the world\nto enjoy musicals. ♪"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatImHuge_2, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -132,7 +133,7 @@ L_0202:
 
 L_020C:
     // "What?[f000]븁\u0000\nDon't you know how cute Pokémon\nwith Props are?!"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_WhatDontKnowHow, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -141,7 +142,7 @@ L_021C:
 
 L_0222:
     // "Know what? I am a huge musical fan! ♪[f000]븁\u0000\nWhat's this? What's this, what's this? ♪[f000]븁\u0000\nOh, you don't have a Prop Case![f000]븁\u0000\nWhy don't you go watch the musical\nin Nimbasa City?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatAmHuge, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -157,7 +158,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you have a lot of Props, it makes you\nwant to put them on Pokémon.[f000]븁\u0000\nIf you put Props on Pokémon, it makes\nyou want to participate in a musical![f000]븁\u0000\nDon't you agree?"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_IfHaveLotProps, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -169,7 +170,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Know what? I hear there is a Prop\nyou can get on your birthday!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity6_Text_KnowWhatHearThere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

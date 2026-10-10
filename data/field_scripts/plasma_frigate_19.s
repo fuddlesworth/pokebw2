@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_19.h"
 
 // Script plugin 12, from the zones that use this file
 
@@ -10,7 +11,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Saying yes only so you won't\nhurt another person's feelings...[f000]븀\u0000\nThat is not true kindness.[f000]븁\u0000\nTeam Plasma didn't have true kindness.\nNot even me..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate19_Text_SayingYesOnlyWont, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

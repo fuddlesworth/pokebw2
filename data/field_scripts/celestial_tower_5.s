@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/celestial_tower_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -19,12 +20,12 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F0
     // "I can't believe those\nthree down there lost...[f000]븁\u0000\nEven so, you're not getting past me![f000]븁\u0000\nYou're fighting for that couple,\nand I'm fighting for myself![f000]븀\u0000\nYou know which is stronger, right?![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower5_Text_CantBelieveThoseThree, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_MAID_TAMMY, 0, 0
     VMCall L_0117
     // "I see...[f000]븁\u0000\nWe were thinking only about ourselves.\nWe sure weren't thinking about the[f000]븀\u0000\nPokémon at our sides, were we?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower5_Text_SeeWeWereThinking, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x40ee, 5
@@ -63,7 +64,7 @@ L_00F0:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0111
     // "I see...[f000]븁\u0000\nWe were thinking only about ourselves.\nWe sure weren't thinking about the[f000]븀\u0000\nPokémon at our sides, were we?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower5_Text_SeeWeWereThinking, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

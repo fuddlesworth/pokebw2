@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10325.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -18,13 +19,13 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0059
     // "Pokémon Trades help you connect with\nthe world![f000]븀\u0000\nThe world will be bigger![f000]븁\u0000\nIf you trade Pokémon with many people,\nyou will be happy![f000]븁\u0000\nBecause I will give you something good![f000]븁\u0000\nSo, Trainer, have you traded Pokémon\nwith many people?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10325_Text_PokemonTradesHelpConnect, 0, 0
     FlagSet 132
     VMJump L_0063
 
 L_0059:
     // "Hello, Trainer![f000]븁\u0000\nHave you traded Pokémon with\nmany people?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10325_Text_HelloTrainerHaveTraded, 0, 0
 
 L_0063:
     YesNoWin 0x8010
@@ -53,9 +54,9 @@ L_0098:
 L_00A8:
     WorkSetConst 0x8026, 0
     // "Oh, wonderful.[f000]븁\u0000\nThen, let me check how many people you\nhave traded Pokémon with.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10325_Text_OhWonderfulThenLet, 0, 0
     // "...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10325_Text_Empty, 0, 0
     Cmd_0226 0x8021
     WordSetNumber 0, 0x8021, 2
     VMStackPush 0x8021

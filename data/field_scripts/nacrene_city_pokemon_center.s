@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nacrene_city_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -44,7 +45,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Pokémon with me right now are the\nones that, out of all those I've met so[f000]븀\u0000\nfar, I've taken a particular shine to!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCityPokemonCenter_Text_PokemonRightNowOnes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -56,7 +57,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hear that the bones in the museum\nwere found in Twist Mountain.[f000]븁\u0000\nThe word is you can find a lot of\nother Fossils there, too."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCityPokemonCenter_Text_HearBonesMuseumWere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -68,7 +69,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Phew! I just read all the articles\nin Help on the PC!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCityPokemonCenter_Text_PhewJustReadAll, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

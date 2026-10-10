@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10100.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -36,7 +37,7 @@ L_0047:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E
     // "Sorry, we're getting things ready.\nPlease come back later."
-    ActorMsg MSGFILE_SCRIPT, 7, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_SorryWereGettingThings, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -48,14 +49,14 @@ L_007E:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00A9
     // "You have at least one Pokémon\nthat can't be taken."
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_HaveLeastOnePokemon, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_00A9:
     // "Welcome to the Pokémon Wi-Fi Club![f000]븁\u0000\nWould you like to use\nNintendo Wi-Fi Connection?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_WelcomePokemonWiFi, 0x8011, 4, 0
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 1
 
@@ -80,7 +81,7 @@ L_00F9:
 
 L_010C:
     // "At any Wi-Fi Club, you may play using\nNintendo Wi-Fi Connection.[f000]븁\u0000\nBy doing so, you may trade or battle with\nfriends you have registered in your[f000]븀\u0000\nPal Pad.[f000]븁\u0000\nCheck the monitor inside the room to find\nother people to play with.[f000]븁\u0000\nOr you may play with your friends\nby talking to them directly.[f000]븁\u0000\nWould you like to use\nNintendo Wi-Fi Connection?"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_AnyWiFiClub, 0x8011, 4, 0
     WorkSetConst 0x8023, 0
     VMJump L_0206
 
@@ -111,7 +112,7 @@ L_016E:
 
 L_0181:
     // "Please do visit again."
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_PleaseVisitAgain, 0x8011, 4, 0
     WorkSetConst 0x8023, 12
     VMJump L_0206
 
@@ -122,7 +123,7 @@ L_0199:
 
 L_01AC:
     // "Communication error."
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_CommunicationError, 0x8011, 4, 0
     WorkSetConst 0x8023, 12
     VMJump L_0206
 
@@ -204,13 +205,13 @@ L_02CC:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F3
     // "...Oh?[f000]븁\u0000\nI'm sorry, but you don't have any\nfriends registered in your Pal Pad.[f000]븁\u0000\nThe Wi-Fi Club cannot be used if\nno friends are in your Pal Pad.[f000]븁\u0000\nPlease register friends in your\nPal Pad, and then come back.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_OhImSorryBut_2, 0x8011, 4, 0
     WorkSetConst 0x8020, 10
     VMReturn
 
 L_02F3:
     // "...Oh?[f000]븁\u0000\nI'm sorry, but you don't have any\nfriends registered in your Pal Pad.[f000]븁\u0000\nThe Wi-Fi Club cannot be used if\nno friends are in your Pal Pad.[f000]븁\u0000\nWould you like to get your own\nFriend Code at least?[f000]Ȁ\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_OhImSorryBut, 0x8011, 4, 0
     YesNoWin 0x8026
     VMStackPush 0x8026
     VMStackPushConst 0
@@ -233,7 +234,7 @@ L_033C:
     WorkSetConst 0x802a, 0
     WorkSetConst 0x802b, 0
     // "Would you like to launch\nNintendo WFC?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_WouldLikeLaunchNintendo, 0x8011, 4, 0
     YesNoWin 0x8029
     VMStackPush 0x8029
     VMStackPushConst 1
@@ -290,7 +291,7 @@ L_041E:
     Cmd_02C5 26
     FunfestBGMReturn
     // "Right this way, please.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10100_Text_RightWayPlease, 0x8011, 4, 0
     ActorMsgClose
     PokePartyRecoverAll
     RTCallGlobal 2105

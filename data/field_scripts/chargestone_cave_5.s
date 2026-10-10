@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/chargestone_cave_5.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -19,7 +20,7 @@ Script_1:
     ActorCmdExec 0, Movement_04D8
     ActorCmdWait
     // "N: [f000]븉\u0001\u0001Thank you, my friend.[f000]븁\u0000\nReturn to the peaceful\nlife you lived before.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_NThankFriendReturn, 0, 1, 0
     MsgWinCloseAll
     VMSleep 30
     ActorCmdExec 1, Movement_0528
@@ -30,7 +31,7 @@ Script_1:
     ActorCmdExec 1, Movement_04D0
     ActorCmdWait
     // "Grunt: Lord N.\nWhy are you releasing your Pokémon?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_GruntLordNWhy, 1, 0, 0
     MsgWinCloseAll
     VMSleep 30
     ActorCmdExec 0, Movement_0570
@@ -39,24 +40,24 @@ Script_1:
     ActorCmdWait
     VMSleep 30
     // "N: [f000]븉\u0001\u0001I can't...[f000]븁\u0000\nI just can't keep Pokémon\nconfined in Poké Balls![f000]븁\u0000\nAlso, if they stay with their Trainers,\nPokémon will battle,[f000]븀\u0000\nand they will be hurt...[f000]븁\u0000\nEven if it is for changing the\nworld to protect Pokémon...[f000]븁\u0000\nIt's too hard for me to put\nthem through such pain...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_NCantJustCant, 0, 1, 0
     MsgWinCloseAll
     // "Grunt: But...[f000]븁\u0000\nEver since we were young,\nwe've caught Pokémon and[f000]븀\u0000\nmade them battle.[f000]븁\u0000\nThat's just how the world\nworks, isn't it?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_GruntButEverSince, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0518
     ActorCmdWait
     ActorCmdExec 0, Movement_0568
     ActorCmdWait
     // "N: [f000]븉\u0001\u0001Who decided that catching Pokémon\nand making them battle each other[f000]븀\u0000\nis how the world works?[f000]븁\u0000\nThat wasn't how things were\nbefore Poké Balls were invented...[f000]븁\u0000\nThe rules that govern\nthis world are wrong![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_NWhoDecidedCatching, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0530
     ActorCmdWait
     ActorCmdExec 1, Movement_0578
     ActorCmdWait
     // "Grunt: Th-that's true...[f000]븁\u0000\nWell, I guess I'll let\nmy Pokémon go, then.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_GruntThThatsTrue, 1, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 1, 9, 17, 1, 8, 0
     ActorCmdWait
@@ -64,12 +65,12 @@ Script_1:
     ActorCmdWait
     // "N: [f000]븉\u0001\u0001Not yet!\nThe world hasn't changed yet![f000]븁\u0000\nThe time to free your Pokémon\nwill be when I befriend the Unova region's[f000]븀\u0000\nlegendary Dragon-type Pokémon,[f000]븀\u0000\nsurpass the Champion,[f000]븀\u0000\nand become the hero![f000]븉\u0001\u0000[f000]븁\u0000"
     // "N: [f000]븉\u0001\u0001Not yet!\nThe world hasn't changed yet![f000]븁\u0000\nThe time to free your Pokémon\nwill be when I befriend the Unova region's[f000]븀\u0000\nlegendary Dragon-type Pokémon,[f000]븀\u0000\nsurpass the Champion,[f000]븀\u0000\nand become the hero![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 7, 6, 0, 1, 0
+    ActorMsgVersioned 1024, ChargestoneCave5_Text_NNotYetWorld_2, ChargestoneCave5_Text_NNotYetWorld, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0518
     ActorCmdWait
     // "Grunt: Well then, I'll\nhead to the next destination.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_GruntWellThenIll, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0590
     VMSleep 8
@@ -77,18 +78,18 @@ Script_1:
     ActorCmdWait
     ActorDelete 1
     // "[f000]븉\u0001\u0001I will separate Pokémon and people, and\nblack and white will be clearly distinct![f000]븁\u0000\nOnly then will Pokémon become\nperfect beings![f000]븁\u0000\nBut then why...[f000]븁\u0000\nWhy did those Pokémon\nseem so sad to leave me?[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_WillSeparatePokemonPeople, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_05A0
     ActorCmdWait
     Cmd_02B5 0, 0
     // "[f000]븉\u0001\u0001[f000]Ā\u0001\u0000![f000]븁\u0000\nIs it because of that Trainer\nthat my heart wavers now?[f000]븁\u0000\nWere the words of the Pokémon\nin Accumula Town really true?[f000]븁\u0000\nDoes that mean [f000]Ā\u0001\u0000\nis an ideal Trainer?[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_BecauseTrainerHeartWavers, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_05AC
     ActorCmdWait
     // "[f000]븉\u0001\u0001The cries of the suffering\nPokémon filling that room...[f000]븁\u0000\nThe borderline between Pokémon\nand humans...[f000]븁\u0000\nI exist on that line.\nI live in the margins between everyone,[f000]븀\u0000\nso I will save them![f000]븀\u0000\nI will change the world![f000]븁\u0000\nAnd to that end, I must\nfight to the finish with [f000]Ā\u0001\u0000![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, ChargestoneCave5_Text_CriesSufferingPokemonFilling, 0, 1, 0
     MsgWinCloseAll
     ActorWalkRoute 0, 16, 13, 1, 8, 1
     EvCameraMoveTo 9688, 0, 0xed000, 0x98000, 0x67000, 0x138000, 30

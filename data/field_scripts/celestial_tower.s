@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/celestial_tower.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ Script_2:
     ActorsPauseAll
     WordSetPlayerName 0
     // "It's the Celestial Tower bell...\nWill you ring the bell?"
-    InfoMsg 3, 2
+    InfoMsg CelestialTower_Text_ItsCelestialTowerBell, 2
     SEPlay SEQ_SE_MESSAGE
     YesNoWin 0x8010
     VMStackPush 0x8010
@@ -46,7 +47,7 @@ L_0095:
     Cmd_0240 64, 30
     SEPlay SEQ_SE_FLD_151
     // "[f000]Ā\u0001\u0000 rang the bell..."
-    InfoMsg 4, 2
+    InfoMsg CelestialTower_Text_RangBell, 2
     WorkSetConst 0x8023, 0
     BMCreateHandleByGPos 0x8023, 8, 16, 7
     BMHndAudioVisualAnmPlay 0x8023, 0
@@ -55,7 +56,7 @@ L_0095:
     SEWait
     Cmd_0241 60
     // "The sound of the bell\nreverberates through the area..."
-    InfoMsg 5, 2
+    InfoMsg CelestialTower_Text_SoundBellReverberatesThrough, 2
     LastKeyWait
     InfoMsgClose_0039
     VMStackPush 0x40ee
@@ -69,7 +70,7 @@ L_00EA:
 
 L_00F0:
     // "The bell was left untouched..."
-    InfoMsg 7, 2
+    InfoMsg CelestialTower_Text_BellLeftUntouched, 2
     LastKeyWait
     InfoMsgClose_0039
 
@@ -82,7 +83,7 @@ L_00F9:
 Script_3:
     ActorsPauseAll
     // "A mysterious presence can be felt here!\nCheck the surrounding area?"
-    SystemMsg 0, 2
+    SystemMsg CelestialTower_Text_MysteriousPresenceCanFelt, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -94,7 +95,7 @@ Script_3:
     VMSleep 30
     PVPlay 481, 0
     // "Kyauun!"
-    InfoMsg 1, 2
+    InfoMsg CelestialTower_Text_Kyauun, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -132,7 +133,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 481, 0
     // "Kyauun!"
-    ScreamMsg 1, 2
+    ScreamMsg CelestialTower_Text_Kyauun, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -170,7 +171,7 @@ L_0229:
 
 L_0249:
     // "Mesprit went flying off somewhere..."
-    SystemMsg 2, 2
+    SystemMsg CelestialTower_Text_MespritWentFlyingOff, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0259

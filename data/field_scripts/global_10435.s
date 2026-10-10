@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10435.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -14,7 +15,7 @@ Script_1:
     WordSetPlayerName 0
     WordSetPassPowerName 2, 0x8020
     // "[f000]Ā\u0001\u0000 used the Pass Power\n“[f000]Ĝ\u0001\u0002!\"[f000]븁\u0000"
-    SystemMsg 0, 2
+    SystemMsg Global10435_Text_UsedPassPower, 2
     InfoMsgClose
     Cmd_01DF
     WorkAdd 0x8021, 8

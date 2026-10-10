@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/mistralton_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -51,7 +52,7 @@ L_007E:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_00B7
     // "I wonder what Professor Juniper\nis up to?[f000]븁\u0000\nI did promise her a ride in my plane..."
-    ActorMsg MSGFILE_SCRIPT, 4, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_WonderWhatProfessorJuniper, 3, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_00F0
@@ -62,14 +63,14 @@ L_00B7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E0
     // "Two things that are both really fun:\nflying my own plane and having my[f000]븀\u0000\nPokémon take me places using Fly!"
-    ActorMsg MSGFILE_SCRIPT, 5, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_TwoThingsBothReally, 3, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_00F0
 
 L_00E0:
     // "Skyla: Are you and your Pokémon well?\nOur battle together was a ton of fun.[f000]븁\u0000\nWhenever my Pokémon think of our battle,\nthey want to start training again.[f000]븁\u0000\nIt might be a cool idea to take my plane\nand go on a training trip together!"
-    ActorMsg MSGFILE_SCRIPT, 6, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_SkylaPokemonWellOur, 3, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -80,7 +81,7 @@ L_00F0:
 
 L_00F6:
     // "Hee-hee!\nI've been waiting for you.[f000]븁\u0000\nYou're a tough Trainer who can face the\nwind and not get blown off your feet![f000]븁\u0000\nI'm kinda excited about this battle!\nWhy don't you and I have some fun?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_HeeHeeIveBeen, 0, 0
     ActorMsgClose
     WorkSetConst 0x8020, 0
     GameGetDifficulty 0x8020
@@ -109,7 +110,7 @@ L_015A:
 
 L_015C:
     // "You're an amazing Pokémon Trainer.[f000]븁\u0000\nMy Pokémon and I are happy\nbecause for the first time in quite a[f000]븀\u0000\nwhile--about two years, I'd say--we[f000]븀\u0000\ncould fight with our full strength.[f000]븁\u0000\nThis is an official League Gym Badge.\nBut this is just a stepping-stone.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_YoureAmazingPokemonTrainer, 0, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 5
     TrainerCardAddBadge 5
@@ -131,10 +132,10 @@ L_01A2:
     MEWait
     WorkSetConst 0x8021, 0
     // "[f000]Ā\u0001\u0000 received the\nJet Badge from Skyla.[f000]븁\u0000"
-    SystemMsg 2, 0
+    SystemMsg MistraltonCityGym_Text_ReceivedJetBadgeFrom, 0
     InfoMsgClose
     // "Wow, hot stuff![f000]븁\u0000\nWith that many Gym Badges,\nPokémon up to Lv. 70 will obey you.[f000]븁\u0000\nAlso, I want you to have this TM\nso that you'll always remember[f000]븀\u0000\nthis Pokémon battle.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_WowHotStuffMany, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -144,7 +145,7 @@ L_01A2:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "I wonder what Professor Juniper\nis up to?[f000]븁\u0000\nI did promise her a ride in my plane..."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_WonderWhatProfessorJuniper, 0, 0
     LastKeyWait
     ActorMsgClose
     VMStackPush 0x40c2
@@ -192,7 +193,7 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02DD
     // "Ow...[f000]븁\u0000\nOh, I'm sorry![f000]븁\u0000\nAllow me to apologize by giving you this\nFresh Water! Take it, please.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_OwOhImSorry, 5, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -212,7 +213,7 @@ L_02DD:
     ActorCmdWait
     VMCall L_034C
     // "This Gym is a wind tunnel![f000]븁\u0000\nWhen the propellers in back start\nspinning quickly, you'll be blown[f000]븀\u0000\naway like a certain someone just was![f000]븁\u0000\nWhen you think the wind will blow,\nstay hidden behind a wall[f000]븀\u0000\nand wait for it to stop.[f000]븁\u0000\nBy the way, Flying-type Pokémon have\nmore weaknesses than you might expect,[f000]븀\u0000\nincluding to Rock-, Electric-, and[f000]븀\u0000\nIce-type moves![f000]븁\u0000"
-    InfoMsg 9, 2
+    InfoMsg MistraltonCityGym_Text_GymWindTunnelWhen_2, 2
     MsgWinCloseAll
     VMCall L_036A
     WorkSetConst 0x409f, 1
@@ -262,14 +263,14 @@ Script_6:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03AD
     // "This Gym is a wind tunnel![f000]븁\u0000\nWhen the propellers in back start\nspinning quickly, you'll be blown[f000]븀\u0000\naway like a certain someone just was![f000]븁\u0000\nWhen you think the wind will blow,\nstay hidden behind a wall[f000]븀\u0000\nand wait for it to stop.[f000]븁\u0000\nBy the way, Flying-type Pokémon have\nmore weaknesses than you might expect,[f000]븀\u0000\nincluding to Rock-, Electric-, and[f000]븀\u0000\nIce-type moves!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_GymWindTunnelWhen, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_03BB
 
 L_03AD:
     // "Letting yourself be blown away is almost\nlike being hit by a Pokémon move![f000]븀\u0000\nIt's kinda fun![f000]븁\u0000\nOh, yeah! Congrats on defeating\nthe Gym Leader!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCityGym_Text_LettingYourselfBlownAway, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -289,7 +290,7 @@ Script_7:
     VMJumpIf CMP_STACK, L_03F4
     WordSetPlayerName 0
     // "Mistralton Pokémon Gym[f000]븁\u0000\nGym Leader: Skyla\nCertified Trainers:"
-    InfoMsg 11, 2
+    InfoMsg MistraltonCityGym_Text_MistraltonPokemonGymGym, 2
     VMJump L_0420
 
 L_03F4:
@@ -299,14 +300,14 @@ L_03F4:
     VMJumpIf CMP_STACK, L_0415
     WordSetPlayerName 0
     // "Mistralton Pokémon Gym[f000]븁\u0000\nGym Leader: Skyla\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000"
-    InfoMsg 12, 2
+    InfoMsg MistraltonCityGym_Text_MistraltonPokemonGymGym_2, 2
     VMJump L_0420
 
 L_0415:
     WordSetLoadRivalName 1
     WordSetPlayerName 0
     // "Mistralton Pokémon Gym[f000]븁\u0000\nGym Leader: Skyla\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000, [f000]Ā\u0001\u0001"
-    InfoMsg 13, 2
+    InfoMsg MistraltonCityGym_Text_MistraltonPokemonGymGym_3, 2
 
 L_0420:
     LastKeyWait

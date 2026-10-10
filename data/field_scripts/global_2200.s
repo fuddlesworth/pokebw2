@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_2200.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -40,7 +41,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_017C
     // "Ah, it's you![f000]븁\u0000\nWe were raising your Pokémon,\nand my goodness, were we surprised![f000]븁\u0000\nYour Pokémon was holding an Egg![f000]븁\u0000\nWe don't know how it got there,\nbut your Pokémon had it.[f000]븁\u0000\nYou do want it, don't you?"
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_AhItsWeWere, 0x8011, 2, 0
     YesNoWin 0x8021
     VMStackPush 0x8021
     VMStackPushConst 0
@@ -51,7 +52,7 @@ Script_1:
 
 L_00D2:
     // "I really will keep it.\nYou do want this Egg, yes?"
-    ActorMsg MSGFILE_SCRIPT, 10, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_ReallyWillKeepWant, 0x8011, 2, 0
     YesNoWin 0x8021
     VMStackPush 0x8021
     VMStackPushConst 0
@@ -73,19 +74,19 @@ L_00FB:
     WordSetPlayerName 0
     MEPlay SEQ_ME_TAMAGO_GET
     // "[f000]Ā\u0001\u0000 received the Egg from\nthe Day-Care Man."
-    SystemMsg 7, 0
+    SystemMsg Global2200_Text_ReceivedEggFromDay, 0
     MEWait
     MsgWaitAdvance
     InfoMsgClose
     // "You take good care of it."
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_TakeGoodCare, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_015E
 
 L_014E:
     // "You have no room for it right now...\nCome back when you've made room."
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_HaveNoRoomRight, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -95,7 +96,7 @@ L_015E:
 L_0164:
     DayCareResetSeed
     // "Well then, I'll hang on to it.\nThanks!"
-    ActorMsg MSGFILE_SCRIPT, 11, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_WellThenIllHang, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -108,7 +109,7 @@ L_017C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A5
     // "I'm the Day-Care Man.[f000]븁\u0000\nWe take care of the precious Pokémon\nof other Trainers.[f000]븁\u0000\nIf you'd like us to raise your\nPokémon, have a word with my wife."
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_ImDayCareMan, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01D9
@@ -120,7 +121,7 @@ L_01A5:
     VMJumpIf CMP_STACK, L_01D3
     WordSetDaycarePokeName 0, 0
     // "Glad you came!\nYour [f000]Ă\u0001\u0000's doing just fine."
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_GladCameSDoing, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01D9
@@ -220,7 +221,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_032D
     // "Ah, there you are!\nMy husband was looking for you."
-    ActorMsg MSGFILE_SCRIPT, 15, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_AhThereHusbandLooking, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0427
@@ -232,13 +233,13 @@ L_032D:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035C
     // "I'm the Day-Care Lady.\nWe can raise Pokémon for you.[f000]븁\u0000\nWould you like us to raise\nyour Pokémon?"
-    ActorMsg MSGFILE_SCRIPT, 12, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_ImDayCareLady, 0x8011, 2, 0
     FlagSet 105
     VMJump L_0368
 
 L_035C:
     // "I'm the Day-Care Lady.[f000]븁\u0000\nWe can raise Pokémon for you.\nWhat do you want to do today?"
-    ActorMsg MSGFILE_SCRIPT, 13, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_ImDayCareLady_2, 0x8011, 2, 0
 
 L_0368:
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32813
@@ -284,7 +285,7 @@ L_03EF:
 
 L_040F:
     // "Very good.\nCome again."
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_VeryGoodComeAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0425
@@ -323,7 +324,7 @@ L_048D:
     PokeVoicePlay 0x8030, 0x8031
     WordSetPartyPokeName 0, 0x802e
     // "Fine, we'll raise your [f000]Ă\u0001\u0000\nfor a while.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_FineWellRaiseWhile, 0x8011, 2, 0
     DayCareDeposit 0x802e
     RecordAdd 24, 1
     WorkSetConst 0x8022, 2
@@ -358,7 +359,7 @@ L_0504:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_053C
     // "You can't leave your only Pokémon\nwith me! How would you battle?[f000]븁\u0000\nCome back another time."
-    ActorMsg MSGFILE_SCRIPT, 16, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_CantLeaveOnlyPokemon, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -374,14 +375,14 @@ L_053C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_057A
     // "Huh? Now, now.[f000]븁\u0000\nIf you leave that Pokémon with\nme, you'll be left with just one.[f000]븁\u0000\nYou will be better off if you catch\nsome more, if I do say so myself."
-    ActorMsg MSGFILE_SCRIPT, 28, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_HuhNowNowIf, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_057A:
     // "Which Pokémon should we raise\nfor you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_WhichPokemonShouldWe, 0x8011, 2, 0
     ActorMsgClose
     VMCall L_0433
     WorkCmpConst 0x8022, 0
@@ -390,7 +391,7 @@ L_057A:
 
 L_05A1:
     // "Very good.\nCome again."
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_VeryGoodComeAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -403,7 +404,7 @@ L_05B9:
 
 L_05CC:
     // "Now, now.\nThat is merely an Egg!"
-    ActorMsg MSGFILE_SCRIPT, 18, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_NowNowMerelyEgg, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -420,7 +421,7 @@ L_05F7:
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0639
     // "We can raise two of your Pokémon.\nWould you like us to raise another?"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_WeCanRaiseTwo, 0x8011, 2, 0
     YesNoWin 0x8021
     VMStackPush 0x8021
     VMStackPushConst 1
@@ -442,7 +443,7 @@ L_0645:
 
 L_064B:
     // "Come back for it later."
-    ActorMsg MSGFILE_SCRIPT, 20, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_ComeBackLater, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x8033, 0
@@ -527,13 +528,13 @@ L_078B:
     WordSetDaycarePokeName 0, 0x8034
     WordSetNumber 1, 0x8036, 2
     // "By level, your [f000]ā\u0001\u0000 has\ngrown by about [f000]ȁ\u0001\u0001.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_ByLevelHasGrown, 0x8011, 2, 0
 
 L_07C2:
     WordSetDaycarePokeName 0, 0x8034
     WordSetNumber 1, 0x8037, 5
     // "If you want your [f000]ā\u0001\u0000 back,\nit will cost $[f000]Ȅ\u0001\u0001.[f000]븀\u0000\nDo you want it back?"
-    ActorMsg MSGFILE_SCRIPT, 24, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_IfWantBackWill, 0x8011, 2, 0
     YesNoWin 0x8021
     VMStackPush 0x8021
     VMStackPushConst 1
@@ -574,7 +575,7 @@ L_083B:
     WordSetDaycarePokeName 0, 0x8034
     WordSetPlayerName 1
     // "[f000]Ā\u0001\u0001 took [f000]ā\u0001\u0000 back\nfrom the Day-Care Lady.[f000]븁\u0000"
-    SystemMsg 26, 2
+    SystemMsg Global2200_Text_TookBackFromDay, 2
     InfoMsgClose
     DayCareWithdraw 0x8034
     WorkSetConst 0x8023, 2
@@ -602,7 +603,7 @@ Movement_08B8:
 L_08D4:
     WorkSetConst 0x803d, 0
     // "You have energetic Pokémon.\nDo you want your Pokémon back?"
-    ActorMsg MSGFILE_SCRIPT, 22, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_HaveEnergeticPokemonWant, 0x8011, 2, 0
     WorkSetConst 0x803d, 1
 
 L_08EC:
@@ -619,7 +620,7 @@ L_08EC:
 
 L_0924:
     // "You don't have enough money..."
-    ActorMsg MSGFILE_SCRIPT, 25, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_DontHaveEnoughMoney, 0x8011, 2, 0
     LastKeyWait
     WorkSetConst 0x803d, 0
     VMJump L_0A15
@@ -631,7 +632,7 @@ L_093E:
 
 L_0951:
     // "You have no room for it right now...\nCome back when you've made room."
-    ActorMsg MSGFILE_SCRIPT, 9, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_HaveNoRoomRight, 0x8011, 2, 0
     LastKeyWait
     WorkSetConst 0x803d, 0
     VMJump L_0A15
@@ -643,7 +644,7 @@ L_096B:
 
 L_097E:
     // "Very good.\nCome again."
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_VeryGoodComeAgain, 0x8011, 2, 0
     LastKeyWait
     WorkSetConst 0x803d, 0
     VMJump L_0A15
@@ -659,21 +660,21 @@ L_09AB:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09D8
     // "Very good.\nCome again."
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_VeryGoodComeAgain, 0x8011, 2, 0
     LastKeyWait
     WorkSetConst 0x803d, 0
     VMJump L_0A0F
 
 L_09D8:
     // "Do you want to take back the other\none, too?"
-    ActorMsg MSGFILE_SCRIPT, 27, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_WantTakeBackOther, 0x8011, 2, 0
     YesNoWin 0x8021
     VMStackPush 0x8021
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A0F
     // "Very good.\nCome again."
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global2200_Text_VeryGoodComeAgain, 0x8011, 2, 0
     LastKeyWait
     WorkSetConst 0x803d, 0
 

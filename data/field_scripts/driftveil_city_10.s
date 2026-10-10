@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_10.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -37,7 +38,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Balloon! Balloon! Balloon!\nXtransceiver minigames![f000]븁\u0000\nMy elegant hobby is\nminigames on the Xtransceiver!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity10_Text_BalloonBalloonBalloonXtransceiver, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

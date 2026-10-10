@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/white_forest_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -42,7 +43,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Do you enjoy spending time\nin undisturbed nature?[f000]븁\u0000\nOr do you prefer nature sculpted into\na shape that pleases people?[f000]븁\u0000\nWhich suits you better?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForestPokemonCenter_Text_EnjoySpendingTimeUndisturbed, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

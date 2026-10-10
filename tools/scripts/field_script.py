@@ -24,6 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from gen_constants import header_text  # noqa: E402
 from gen_constants import ordered_files  # noqa: E402
+from text_ids import message_numbers  # noqa: E402
 from msgdata import read_msgdata  # noqa: E402
 from narc import read_narc  # noqa: E402
 
@@ -268,11 +269,14 @@ def script_header(data: bytes) -> tuple[list[int], int, bool] | None:
 
 class ScriptFile:
     def __init__(self, data: bytes, base: dict[int, Command], plugin: dict[str, dict[int, Command]] | None,
-                 constants: dict | None = None, messages=None):
+                 constants: dict | None = None, messages=None, message_ids=None):
         self.data = data
         self.constants = constants or {}
         # A function from (text file or None for the script's own, message ID) to the text, for comments
         self.messages = messages
+        # A function from the same to the message's bank and ID name (text_ids.py), and the banks named so far
+        self.message_ids = message_ids
+        self.banks: set[str] = set()
         self.base = base
         self.plugin = plugin or {"": {}}
         self.instructions: dict[int, tuple[Command, list[int], int]] = {}
@@ -449,10 +453,16 @@ class ScriptFile:
                 parts = []
                 field = pos + 2
                 out.extend(self.message_comments(command, args))
+                text_file = self.command_text_file(command, args)
                 for i, (kind, value) in enumerate(zip(command.kinds, args)):
                     field += SIZES[kind]
                     if i in command.references:
                         parts.append(target(value, field))
+                    elif command.meanings[i] == "message" and self.message_ids and not VARS_START <= value < VARS_END:
+                        named = self.message_ids(text_file, value)
+                        if named:
+                            self.banks.add(named[0])
+                        parts.append(named[1] if named else self.format_value(kind, "message", value))
                     else:
                         parts.append(self.format_value(kind, command.meanings[i], value))
                 text = ", ".join(parts)
@@ -490,14 +500,19 @@ class ScriptFile:
             return f"{value:#x}"
         return str(value)
 
+    @staticmethod
+    def command_text_file(command: Command, args: list[int]) -> int | None:
+        """The text file of a command's messages, when it names one other than the script's own."""
+        for meaning, value in zip(command.meanings, args):
+            if meaning == "message_file" and value != MSGFILE_SCRIPT:
+                return value
+        return None
+
     def message_comments(self, command: Command, args: list[int]) -> list[str]:
         """Returns the text of the messages that a command shows, as comments."""
         if self.messages is None:
             return []
-        text_file = None
-        for meaning, value in zip(command.meanings, args):
-            if meaning == "message_file" and value != MSGFILE_SCRIPT:
-                text_file = value
+        text_file = self.command_text_file(command, args)
         comments = []
         for meaning, value in zip(command.meanings, args):
             if meaning == "message" and not VARS_START <= value < VARS_END:
@@ -672,6 +687,21 @@ def main():
             lines = text_cache[text_file]
             return lines[message] if message < len(lines) else None
         return lookup
+
+    # The IDs of the script message files' messages, from data/text/script/ (text_ids.py), by file and message
+    bank_paths = ordered_files("script_text_banks", "SCRIPT_TEXT_", Path("data/text/script"), ".txt")
+    id_cache: dict[int, dict[int, str]] = {}
+
+    def ids_for(index):
+        def lookup(text_file, message):
+            text_file = text_of.get(index) if text_file is None else text_file
+            if text_file is None or text_file >= len(bank_paths):
+                return None
+            if text_file not in id_cache:
+                id_cache[text_file] = {n: name for name, n in message_numbers(bank_paths[text_file])}
+            name = id_cache[text_file].get(message)
+            return (bank_paths[text_file].stem, name) if name else None
+        return lookup
     args.output.mkdir(parents=True, exist_ok=True)
     stats = collections.Counter()
     for index, data in enumerate(files):
@@ -683,9 +713,11 @@ def main():
             if number is not None:
                 lines.append(f"// Script plugin {number}, from {how}")
                 lines.append("")
-            script = ScriptFile(data, base, plugins.get(number), constants, messages_for(index))
+            script = ScriptFile(data, base, plugins.get(number), constants, messages_for(index), ids_for(index))
             names = [f"Script_{i + 1}" for i in range(len(entries))]
             lines.append(script.disassemble(entries, header_end, terminated, names).rstrip("\n"))
+            # The headers of the message IDs the scripts name
+            lines[1:1] = [f'#include "text/script/{bank}.h"' for bank in sorted(script.banks)]
             stats["script"] += 1
             stats["raw bytes"] += sum(1 for line in lines[-1].split("\n") if line.startswith("    .byte"))
         else:

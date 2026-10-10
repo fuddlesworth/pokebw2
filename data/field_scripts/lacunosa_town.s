@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lacunosa_town.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -118,7 +119,7 @@ L_01DD:
 L_0219:
     WordSetPlayerName 0
     // "Professor Juniper: Hi there, [f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 6, 0x8025, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperHiThere, 6, 0x8025, 0
     MsgWinCloseAll
     VMStackPush 0x8021
     VMStackPushConst 667
@@ -175,10 +176,10 @@ L_02E7:
 
 L_0301:
     // "Bianca: Hee hee![f000]븁\u0000\nI used Fly, so it looks like\nI beat you here.[f000]븁\u0000\nThanks for your help\nin Reversal Mountain![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BiancaHeeHeeUsed, 9, 0, 0
     MsgWinCloseAll
     // "Professor Juniper: If you go straight\npast Lacunosa Town, you'll reach[f000]븀\u0000\nOpelucid City![f000]븁\u0000\nBut before you go, there's something\nI want you two to hear.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 6, 0x8025, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperIfGo, 6, 0x8025, 0
     MsgWinCloseAll
     VMStackPush 0x8021
     VMStackPushConst 667
@@ -193,10 +194,10 @@ L_033E:
 L_0346:
     ActorCmdWait
     // "Bianca: What is it?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BiancaWhat, 9, 0, 0
     MsgWinCloseAll
     // "Professor Juniper: You'll know soon\nenough. Hurry now![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 6, 0x8025, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperYoullKnow, 6, 0x8025, 0
     MsgWinCloseAll
     RTCGetDayPart 0x8023
     VMStackPush 0x8023
@@ -241,7 +242,7 @@ L_03F2:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_046F
     // "Professor Juniper: This is the place![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperPlace, 6, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 6, 652, 170, 1, 8, 1
     ActorCmdWait
@@ -259,14 +260,14 @@ L_03F2:
 
 L_046F:
     // "You must be the ones who want to hear\nthat old tale about Lacunosa Town."
-    ActorMsg MSGFILE_SCRIPT, 5, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_MustOnesWhoWant, 251, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     // "Professor Juniper: That's right.\nPlease tell us.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperThatsRight, 6, 0, 0
     MsgWinCloseAll
     // "All right, my dearies.\nPlease come in.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_AllRightDeariesPlease, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0F8C
     ActorCmdWait
@@ -304,14 +305,14 @@ Script_4:
     ActorWalkRoute 255, 653, 170, 1, 8, 1
     ActorCmdWait
     // "Professor Juniper: Wasn't that\nan interesting folktale?[f000]븁\u0000\nThe Pokémon's true identity may be\nunknown, but the power mentioned[f000]븀\u0000\nin the story is incredible![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 6, 1, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperWasntInteresting, 6, 1, 0
     MsgWinCloseAll
     // "Bianca: I know...[f000]븁\u0000\nThe power to freeze everything around it\ncould even rival the power of the[f000]븀\u0000\nlegendary Dragon-type Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BiancaKnowPowerFreeze, 9, 0, 0
     MsgWinCloseAll
     // "Yes, Bianca.[f000]븁\u0000\nIt's almost like Reshiram, who scorched\nUnova with blazing fire long ago.[f000]븁\u0000"
     // "Yes, Bianca.[f000]븁\u0000\nIt's almost like Zekrom, who scorched\nUnova with intense lightning long ago.[f000]븁\u0000"
-    ActorMsgVersioned 1024, 12, 11, 6, 1, 0
+    ActorMsgVersioned 1024, LacunosaTown_Text_YesBiancaItsAlmost_2, LacunosaTown_Text_YesBiancaItsAlmost, 6, 1, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_0F84
     VMSleep 8
@@ -320,7 +321,7 @@ Script_4:
     WordSetPlayerName 0
     // "By the way, [f000]Ā\u0001\u0000,\ndo you remember the story of Reshiram?"
     // "By the way, [f000]Ā\u0001\u0000,\ndo you remember the story of Zekrom?"
-    ActorMsgVersioned 1024, 14, 13, 6, 1, 0
+    ActorMsgVersioned 1024, LacunosaTown_Text_ByWayRememberStory_2, LacunosaTown_Text_ByWayRememberStory, 6, 1, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -328,7 +329,7 @@ Script_4:
     VMJumpIf CMP_STACK, L_05BB
     // "So you remember I told you a little\nabout it in Lentimas Town![f000]븁\u0000\nReshiram is a legendary Dragon-type\nPokémon that lends its power to the[f000]븀\u0000\nperson it recognizes as a hero who[f000]븀\u0000\nseeks truth.[f000]븁\u0000\nIt has a white body, and it can send\nforth ferocious flames![f000]븁\u0000"
     // "I told you a little about it in\nLentimas Town, remember?[f000]븁\u0000\nZekrom is a legendary Dragon-type\nPokémon that lends its power to the[f000]븀\u0000\nperson it recognizes as a hero[f000]븀\u0000\npursuing ideals.[f000]븁\u0000\nIt has a black body, and it can\nunleash fearsome lightning![f000]븁\u0000"
-    ActorMsgVersioned 1024, 17, 15, 6, 1, 0
+    ActorMsgVersioned 1024, LacunosaTown_Text_RememberToldLittleAbout, LacunosaTown_Text_ToldLittleAboutLentimas, 6, 1, 0
     MsgWinCloseAll
     VMJump L_05CE
 
@@ -336,7 +337,7 @@ L_05BB:
     WordSetPlayerName 0
     // "Oh, [f000]Ā\u0001\u0000...[f000]븁\u0000\nI even told you a little about\nit in Lentimas Town.[f000]븁\u0000\nReshiram is a legendary Dragon-type\nPokémon that lends its power to the[f000]븀\u0000\nperson it recognizes as a hero who[f000]븀\u0000\nseeks truth.[f000]븁\u0000\nIt has a white body, and it can send\nforth ferocious flames![f000]븁\u0000"
     // "Oh, [f000]Ā\u0001\u0000...[f000]븁\u0000\nI even told you a little about\nit in Lentimas Town.[f000]븁\u0000\nZekrom is a legendary Dragon-type\nPokémon that lends its power to the[f000]븀\u0000\nperson it recognizes as a hero[f000]븀\u0000\npursuing ideals.[f000]븁\u0000\nIt has a black body, and it can\nunleash fearsome lightning![f000]븁\u0000"
-    ActorMsgVersioned 1024, 18, 16, 6, 1, 0
+    ActorMsgVersioned 1024, LacunosaTown_Text_OhEvenToldLittle_2, LacunosaTown_Text_OhEvenToldLittle, 6, 1, 0
     MsgWinCloseAll
 
 L_05CE:
@@ -345,7 +346,7 @@ L_05CE:
     ActorCmdExec 6, Movement_0F94
     ActorCmdWait
     // "Bianca: Professor, do you think\nthere's a connection between[f000]븀\u0000\nthe Pokémon from the old story[f000]븀\u0000\nand the legendary Dragon-type Pokémon?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BiancaProfessorThinkTheres, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_0FCC
     ActorCmdWait
@@ -354,22 +355,22 @@ L_05CE:
     ActorCmdWait
     VMSleep 30
     // "Professor Juniper: The meteorite.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 6, 1, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperMeteorite, 6, 1, 0
     MsgWinCloseAll
     // "Bianca: The meteorite?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BiancaMeteorite, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_0FC4
     ActorCmdWait
     // "Reshiram was revived from a\nrock called the Light Stone.[f000]븁\u0000\nLet's suppose the meteorite\nfrom the story and this stone[f000]븀\u0000\nare one and the same...[f000]븁\u0000\nTake into account that elements\nfrom the same era were found in[f000]븀\u0000\nDragonspiral Tower, where Reshiram was,[f000]븀\u0000\nand in the Giant Chasm...[f000]븁\u0000\nIt doesn't prove anything, but it\ncould be a piece of the puzzle.[f000]븁\u0000\nLet's not write it off as a\ncoincidence just yet...[f000]븁\u0000"
     // "Zekrom was revived from a\nrock called the Dark Stone.[f000]븁\u0000\nLet's suppose the meteorite\nfrom the story and this stone[f000]븀\u0000\nare one and the same...[f000]븁\u0000\nTake into account that elements\nfrom the same era were found in[f000]븀\u0000\nDragonspiral Tower, where Zekrom was,[f000]븀\u0000\nand in the Giant Chasm...[f000]븁\u0000\nIt doesn't prove anything, but it\ncould be a piece of the puzzle.[f000]븁\u0000\nLet's not write it off as a\ncoincidence just yet...[f000]븁\u0000"
-    ActorMsgVersioned 1024, 23, 22, 6, 1, 0
+    ActorMsgVersioned 1024, LacunosaTown_Text_ReshiramRevivedFromRock, LacunosaTown_Text_ZekromRevivedFromRock, 6, 1, 0
     MsgWinCloseAll
     // "Bianca: If your theories are true,\nit should be a really strong Pokémon.[f000]븁\u0000\nWhat kind of a reason would there be\nfor it to come out only at night?[f000]븁\u0000\nLike, if, like, it doesn't like sunlight\nor something like that...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BiancaIfTheoriesTrue, 9, 0, 0
     MsgWinCloseAll
     // "Until we look into it more deeply, it would\nbe hard to say anything about that.[f000]븁\u0000\nNow that I think about it, the name\n“Lacunosa\" could be derived from[f000]븀\u0000\nlacunosus clouds, which are clouds[f000]븀\u0000\nthat resemble a net or a fence.[f000]븁\u0000\nI wonder if the name is related to\nthe part of the story where they[f000]븀\u0000\nbuilt walls to protect the town[f000]븀\u0000\nfrom that Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 25, 6, 1, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_UntilWeLookInto, 6, 1, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0F84
     VMSleep 8
@@ -377,12 +378,12 @@ L_05CE:
     ActorCmdWait
     WordSetPlayerName 0
     // "Sorry, I rambled on a bit, didn't I?[f000]븁\u0000\n[f000]Ā\u0001\u0000, could you ask Drayden\nabout this, if you get a chance?[f000]븁\u0000\nI'm going to do a little fieldwork.\nBianca, help out, OK![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 26, 6, 1, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_SorryRambledBitDidnt, 6, 1, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0F8C
     ActorCmdWait
     // "Bianca: Sure thing![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 27, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BiancaSureThing, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_0F60
     ActorCmdWait
@@ -394,12 +395,12 @@ L_05CE:
     ActorCmdExec 255, Movement_0F94
     ActorCmdWait
     // "Oh, just so you know, Opelucid City's\nmayor, Drayden, wrestles with his[f000]븀\u0000\nPokémon to toughen them up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 28, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_OhJustKnowOpelucid, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0F94
     ActorCmdWait
     // "Professor Juniper, wait up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 29, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ProfessorJuniperWaitUp, 9, 0, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_0F6C
     ActorCmdWait
@@ -426,21 +427,21 @@ Script_16:
 L_0748:
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Are you ready to pitch in?\nOK, let's go!"
-    ActorMsg MSGFILE_SCRIPT, 35, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ReadyPitchOkLets, 12, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0788
     // "[f000]Ā\u0001\u0001: Just to let you know...[f000]븁\u0000\nYou're about to feel my rage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_JustLetKnowYoure, 12, 0, 0
     MsgWinCloseAll
     VMCall L_0B09
     VMJump L_07A2
 
 L_0788:
     // "[f000]Ā\u0001\u0001: Got it!\nGo get ready and then come back here![f000]븁\u0000\nBeing careful against opponents\nlike these isn't a bad thing!"
-    ActorMsg MSGFILE_SCRIPT, 34, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GotGoGetReady, 12, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 12, Movement_0F84
@@ -477,7 +478,7 @@ L_0802:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Are you ready to pitch in?\nOK, let's go!"
-    ActorMsg MSGFILE_SCRIPT, 35, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ReadyPitchOkLets, 12, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -492,14 +493,14 @@ L_0802:
 
 L_0845:
     // "[f000]Ā\u0001\u0001: Just to let you know...[f000]븁\u0000\nYou're about to feel my rage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_JustLetKnowYoure, 12, 0, 0
     MsgWinCloseAll
     VMCall L_0B09
     VMJump L_0881
 
 L_085F:
     // "[f000]Ā\u0001\u0001: Got it!\nGo get ready and then come back here![f000]븁\u0000\nBeing careful against opponents\nlike these isn't a bad thing!"
-    ActorMsg MSGFILE_SCRIPT, 34, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GotGoGetReady, 12, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 12, Movement_0F84
@@ -568,7 +569,7 @@ L_0940:
 L_095B:
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: What's up?[f000]븁\u0000\nHave you seen Team Plasma\nanywhere around here?[f000]븀\u0000\nI heard a rumor to that effect...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 30, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_WhatsUpHaveSeen, 12, 0, 0
     MsgWinCloseAll
     BGMPlay SEQ_BGM_E_PLASMA
     ActorCmdExec 10, Movement_0F74
@@ -582,7 +583,7 @@ L_095B:
     ActorCmdWait
     EvCameraWait
     // "Zinzolin: Oh, for crying out loud...\nThis is troublesome indeed,[f000]븀\u0000\nmy curious Trainers.[f000]븁\u0000\nPerhaps I should satiate\nyour curiosity somewhat.[f000]븁\u0000\nThe reason I am still part\nof Team Plasma is this:[f000]븁\u0000\nI want to know how the world will change.[f000]븁\u0000\nListen. Pokémon are nature.\nPoké Balls are civilization.[f000]븁\u0000\nHumans who are used to civilization\ndon't relinquish it easily.[f000]븁\u0000\nOf course, both nature and\ncivilization are important.[f000]븁\u0000\nBut what will happen to a world\ntaken over by Team Plasma?[f000]븁\u0000\nPeople will be forced to throw out\nPoké Balls--a product of civilization.[f000]븁\u0000\nI want to know what that looks like!\nAnd I want to enjoy it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 31, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ZinzolinOhCryingOut, 10, 2, 0
     MsgWinCloseAll
     ActorWalkRoute 12, 647, 186, 1, 4, 0
     ActorCmdWait
@@ -593,14 +594,14 @@ L_095B:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Shut your mouth.[f000]븁\u0000\nAll I want is to get back\na stolen Pokémon![f000]븁\u0000\n[f000]Ā\u0001\u0000! Give me a hand!\nYou ready?"
-    ActorMsg MSGFILE_SCRIPT, 32, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ShutMouthAllWant, 12, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A31
     // "[f000]Ā\u0001\u0001: Just to let you know...[f000]븁\u0000\nYou're about to feel my rage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_JustLetKnowYoure, 12, 0, 0
     MsgWinCloseAll
     EvCameraReturn 30
     EvCameraWait
@@ -611,7 +612,7 @@ L_095B:
 
 L_0A31:
     // "[f000]Ā\u0001\u0001: Got it!\nGo get ready and then come back here![f000]븁\u0000\nBeing careful against opponents\nlike these isn't a bad thing!"
-    ActorMsg MSGFILE_SCRIPT, 34, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GotGoGetReady, 12, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     EvCameraReturn 30
@@ -647,21 +648,21 @@ L_0AA9:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Are you ready to pitch in?\nOK, let's go!"
-    ActorMsg MSGFILE_SCRIPT, 35, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ReadyPitchOkLets, 12, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AEB
     // "[f000]Ā\u0001\u0001: Just to let you know...[f000]븁\u0000\nYou're about to feel my rage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_JustLetKnowYoure, 12, 0, 0
     MsgWinCloseAll
     VMCall Script_6
     VMJump L_0B05
 
 L_0AEB:
     // "[f000]Ā\u0001\u0001: Got it!\nGo get ready and then come back here![f000]븁\u0000\nBeing careful against opponents\nlike these isn't a bad thing!"
-    ActorMsg MSGFILE_SCRIPT, 34, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GotGoGetReady, 12, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 12, Movement_0F84
@@ -739,10 +740,10 @@ L_0C15:
 L_0C1F:
     VMCall L_0CB0
     // "Team Plasma: What's with these two?\nI'm battling alongside Zinzolin![f000]븀\u0000\nThis shouldn't be happening![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 36, 11, 1, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_TeamPlasmaWhatsThese, 11, 1, 0
     MsgWinCloseAll
     // "Zinzolin: These Trainers remind me\nof that one from two years ago.[f000]븁\u0000\nMore important, we must continue\nour search.[f000]븁\u0000\nLike that scientist said,\nit might be in Opelucid City![f000]븁\u0000\nWe'll play with you again later![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 37, 10, 2, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ZinzolinTheseTrainersRemind, 10, 2, 0
     MsgWinCloseAll
     VMSleep 15
     ActorWalkRoute 10, 637, 186, 1, 4, 0
@@ -754,7 +755,7 @@ L_0C1F:
     FlagSet 785
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Get back here![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 12, 0, 1
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GetBackHere, 12, 0, 1
     ActorMsgClose
     ActorWalkRoute 12, 638, 186, 1, 4, 0
     ActorCmdWait
@@ -793,7 +794,7 @@ Script_7:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Lacunosa Town\nMethodical and Orderly for Safety"
-    MsgPlaceSign 44, 1
+    MsgPlaceSign LacunosaTown_Text_LacunosaTownMethodicalOrderly, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -805,14 +806,14 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Do you want to hear that old tale\nof Lacunosa Town again?[f000]븁\u0000\nIt always takes me a little time\nto tell it."
-    ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_WantHearOldTale, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0DA2
     // "There's a great big hole behind\nthis town.[f000]븁\u0000\nA long time ago, a huge meteorite fell\nfrom the sky and made the big hole.[f000]븁\u0000\nA very scary monster was hiding\ninside the meteorite![f000]븁\u0000\nPeople say the monster appeared in the\nvillage at night, with a freezing wind,[f000]븀\u0000\nand it stole away people and Pokémon...[f000]븁\u0000\nSo the villagers built big walls to keep\nthe monster out and made a rule that[f000]븀\u0000\nno one could go out after dark.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_TheresGreatBigHole, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0F7C
     ActorCmdWait
@@ -835,14 +836,14 @@ L_0D84:
 
 L_0D8E:
     // "Whether you believe it or not\nis up to you...[f000]븁\u0000\nBut even now, the people of this town\nstay inside after dark.[f000]븁\u0000\nThe old stories and legends\ncontinue to influence our lives."
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_WhetherBelieveNotUp, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0DB0
 
 L_0DA2:
     // "Oh, fine, fine.\nCome back again when you have time."
-    ParentActorMsg MSGFILE_SCRIPT, 42, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_OhFineFineCome, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -856,7 +857,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome to Lacunosa Town.[f000]븁\u0000\nIn this town, people live as methodically\nas clockwork from morning to night.[f000]븁\u0000\nIf you live your life soaking up sunlight,\nyou can sleep very well at night."
-    ParentActorMsg MSGFILE_SCRIPT, 43, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_WelcomeLacunosaTownTown, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -868,7 +869,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The big scary monster that\ncomes out at night is[f000]븀\u0000\na Pokémon, right?[f000]븁\u0000\nIt must be a really scary Pokémon\nif everyone believes the legend[f000]븀\u0000\nand follows these rules..."
-    ParentActorMsg MSGFILE_SCRIPT, 45, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_BigScaryMonsterComes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -884,7 +885,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My grandma's stories were\nreally about Kyurem, it seems.[f000]븁\u0000\nI guess old stories sometimes\nhave a kernel of truth to them."
-    ParentActorMsg MSGFILE_SCRIPT, 47, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GrandmasStoriesWereReally, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0E31
@@ -893,7 +894,7 @@ L_0E1D:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My granny loves old stories![f000]븁\u0000\nI'm always having to listen\nto her really, really long stories."
-    ParentActorMsg MSGFILE_SCRIPT, 46, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GrannyLovesOldStories, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -907,7 +908,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "There are a lot of people in the world,\nand there are just as many different[f000]븀\u0000\ncharacteristics and ideas."
-    ParentActorMsg MSGFILE_SCRIPT, 48, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ThereLotPeopleWorld, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -923,7 +924,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "So the reason nobody goes outside\nat night and it's so peaceful[f000]븀\u0000\nis because of a Pokémon?[f000]븀\u0000\nI don't know how to feel about that!"
-    ParentActorMsg MSGFILE_SCRIPT, 50, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_ReasonNobodyGoesOutside, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0E96
@@ -932,7 +933,7 @@ L_0E82:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I don't have anything to do ever since\nI took a post here.[f000]븁\u0000\nSince nobody goes outside at night,\nit's very peaceful."
-    ParentActorMsg MSGFILE_SCRIPT, 49, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_DontHaveAnythingEver, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -947,7 +948,7 @@ Script_14:
     ActorSetEyeToEye
     PVPlay 572, 0
     // "Gahoo! Gahoo!"
-    ParentActorMsg MSGFILE_SCRIPT, 51, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_GahooGahoo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -960,7 +961,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My Pokémon just runs around on its own.\nMaybe it doesn't need a Trainer?"
-    ParentActorMsg MSGFILE_SCRIPT, 52, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown_Text_PokemonJustRunsAround, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

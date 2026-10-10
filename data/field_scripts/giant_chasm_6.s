@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/giant_chasm_6.h"
 
 // Script plugin 14, from the zones that use this file
 
@@ -87,7 +88,7 @@ L_0143:
     VMSleep 10
     BGMPlay SEQ_BGM_E_NEW_G_CIS
     // "Ghetsis: The Giant Chasm![f000]븁\u0000\nThis is the spot where\nKyurem's power resonates.[f000]븁\u0000\nHere, Kyurem can use the\nfull extent of its power[f000]븀\u0000\nand easily cover all of Unova in ice![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisGiantChasmSpot, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06AC
     VMSleep 76
@@ -95,7 +96,7 @@ L_0143:
     SEWait
     ActorCmdWait
     // "Kyurem, come![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_KyuremCome, 0, 0, 0
     MsgWinCloseAll
     PlayFieldEffect 109
     ActorSetGPos 2, 14, 0, 16, 1
@@ -104,12 +105,12 @@ L_0143:
     FadeExWait
     PVPlay 646, 0
     // "Haaahraaan!"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_Haaahraaan, 2, 5, 0
     PVWait
     MsgWaitAdvance
     ActorMsgClose
     // "Ghetsis: I have a memory that\nhas continued to haunt me.[f000]븀\u0000\nJust one.[f000]븁\u0000\nThat unpleasant look in your eyes\nreminds me of it.[f000]븁\u0000\nThat aside, this is my gift to you\nto show my respect for making[f000]븀\u0000\nit this far.[f000]븁\u0000\nI'll freeze you solid right here\nso you can watch my glorious ascent![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisHaveMemoryHas, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06BC
     VMSleep 30
@@ -117,11 +118,11 @@ L_0143:
     SEWait
     ActorCmdWait
     // "Kyurem!\nGlaciate![f000]븁\u0000"
-    ScreamMsg 4, 1
+    ScreamMsg GiantChasm6_Text_KyuremGlaciate, 1
     InfoMsgClose_0039
     PVPlay 646, 0
     // "Haahraa!"
-    ScreamMsg 5, 2
+    ScreamMsg GiantChasm6_Text_Haahraa, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -139,12 +140,12 @@ L_0143:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_025D
     // "[f000]븉\u0001\u0001[f000][ff00]\u0001\u0002Zekrom!\nFusion Bolt!![f000]븉\u0001\u0000[f000][ff00]\u0001\u0000"
-    ScreamMsg 6, 2
+    ScreamMsg GiantChasm6_Text_ZekromFusionBolt, 2
     VMJump L_0262
 
 L_025D:
     // "[f000]븉\u0001\u0001[f000][ff00]\u0001\u0001Reshiram!\nFusion Flare!![f000][ff00]\u0001\u0000[f000]븉\u0001\u0000"
-    ScreamMsg 7, 2
+    ScreamMsg GiantChasm6_Text_ReshiramFusionFlare, 2
 
 L_0262:
     VMSleep 60
@@ -167,7 +168,7 @@ L_0293:
     EvCameraMoveTo 9688, 0, 0xed000, 0xf8000, 0, 0x108000, 20
     EvCameraWait
     // "Ghetsis: So you came...[f000]븁\u0000\nThe freak without a human heart...\nN![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisCameFreakWithout, 0, 0, 0
     MsgWinCloseAll
     BGMPlay SEQ_BGM_EV_GIANTHOLE_01
     FlagSet 2556
@@ -206,7 +207,7 @@ L_0350:
     VMSleep 7
     // "N: [f000]븉\u0001\u0001Reshiram told me\nKyurem is suffering![f000]븁\u0000\nI can't allow selfish humans\nto make Pokémon suffer![f000]븁\u0000\nAnd I like Unova.[f000]븁\u0000\nIt's the place that taught me\nhow to live as a human...[f000]븁\u0000\nIt's the place that made me notice the\nharmony between Pokémon and humans[f000]븀\u0000\nliving together...[f000]븁\u0000\nI will protect the Pokémon\nand humans who live here![f000]븉\u0001\u0000[f000]븁\u0000"
     // "N: [f000]븉\u0001\u0001Zekrom told me\nKyurem is suffering![f000]븁\u0000\nI can't allow selfish humans\nto make Pokémon suffer![f000]븁\u0000\nAnd I like Unova.[f000]븁\u0000\nIt's the place that taught me\nhow to live as a human...[f000]븁\u0000\nIt's the place that made me notice the\nharmony between Pokémon and humans[f000]븀\u0000\nliving together...[f000]븁\u0000\nI will protect the Pokémon\nand humans who live here![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 10, 9, 4, 2, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_NReshiramToldKyurem, GiantChasm6_Text_NZekromToldKyurem, 4, 2, 0
     MsgWinCloseAll
     VMStackPush 0x8020
     VMStackPushConst 23
@@ -214,7 +215,7 @@ L_0350:
     VMJumpIf CMP_STACK, L_03A2
     PVPlay 644, 0
     // "Bazzazzazzash!"
-    ScreamMsg 11, 2
+    ScreamMsg GiantChasm6_Text_Bazzazzazzash, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -223,17 +224,17 @@ L_0350:
 L_03A2:
     PVPlay 643, 0
     // "Preeeeaah!"
-    ScreamMsg 12, 2
+    ScreamMsg GiantChasm6_Text_Preeeeaah, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
 
 L_03B3:
     // "Ghetsis: Excellent!\nThat was a moving expression[f000]븀\u0000\nof your determination![f000]븁\u0000\nSo the education I provided\nto make you king wasn't[f000]븀\u0000\na complete waste, then![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisExcellentMovingExpression, 0, 1, 0
     MsgWinCloseAll
     // "But I still haven't forgotten that even\nthough I was kind enough to find you[f000]븀\u0000\nwhen you were living in the forest with[f000]븀\u0000\nPokémon, and take you in, and care[f000]븀\u0000\nfor you, in the end you were selfish[f000]븀\u0000\nand disrupted my plans.[f000]븁\u0000\nI was supposed to use your\nabilities to rule Unova![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_ButStillHaventForgotten, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_1190
     ActorCmdWait
@@ -242,14 +243,14 @@ L_03B3:
     ActorCmdWait
     // "But I'll forgive you for that as well.[f000]븁\u0000\nReshiram, which you were kind enough\nto bring with you, can melt ice![f000]븁\u0000\nNow you've saved me the work\nof searching for it![f000]븁\u0000\nWell, actually, I knew you'd appear\nif we fired ice missiles into Opelucid City[f000]븀\u0000\nand you noticed the change![f000]븁\u0000"
     // "But I'll forgive you for that as well.[f000]븁\u0000\nZekrom, which you were kind enough\nto bring with you, can shatter ice![f000]븁\u0000\nNow you've saved me the work\nof searching for it![f000]븁\u0000\nWell, actually, I knew you'd appear\nif we fired ice missiles into Opelucid City[f000]븀\u0000\nand you noticed the change![f000]븁\u0000"
-    ActorMsgVersioned 1024, 16, 15, 0, 1, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_ButIllForgiveWell_2, GiantChasm6_Text_ButIllForgiveWell, 0, 1, 0
     MsgWinCloseAll
     // "N: [f000]븉\u0001\u0001That's an ugly formula!\nIt won't work![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 4, 2, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_NThatsUglyFormula, 4, 2, 0
     MsgWinCloseAll
     BGMFadeOutAll 12
     // "Ghetsis: Oh, but it will![f000]븁\u0000\nIf I use these![f000]븁\u0000\nThe DNA Splicers![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisOhButWill, 0, 1, 0
     MsgWinCloseAll
     BGMPlay SEQ_BGM_EV_GIANTHOLE_02
     EvCameraMoveTo 9688, 0, 0xed000, 0xf8000, 0, 0xf0000, 35
@@ -325,11 +326,11 @@ L_0544:
     VMSleep 18
     // "N: [f000]븉\u0001\u0001?![f000]븁\u0000\nR-Reshiram!![f000]븉\u0001\u0000[f000]븁\u0000"
     // "N: [f000]븉\u0001\u0001?![f000]븁\u0000\nZ-Zekrom![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 20, 19, 4, 2, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_NRReshiram, GiantChasm6_Text_NZZekrom, 4, 2, 0
     MsgWinCloseAll
     // "Kyurem!\nAbsorb Reshiram![f000]븀\u0000\nUse Absofusion![f000]븁\u0000"
     // "Kyurem!\nAbsorb Zekrom![f000]븀\u0000\nUse Absofusion![f000]븁\u0000"
-    ActorMsgVersioned 1024, 22, 21, 0, 1, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_KyuremAbsorbReshiramUse, GiantChasm6_Text_KyuremAbsorbZekromUse, 0, 1, 0
     MsgWinCloseAll
     FadeOutBlackQ
     BGMPush 6
@@ -373,19 +374,19 @@ L_05D7:
     BGMPop 0, 60
     FadeWait
     // "N: [f000]븉\u0001\u0001...![f000]븁\u0000\nI never would have believed that\nPokémon could fuse together...[f000]븀\u0000\nThat there was a formula like this...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_NNeverWouldHave, 4, 0, 0
     MsgWinCloseAll
     // "Ghetsis: You fool...[f000]븁\u0000\nLast time, I was going to use\nyou to capture people's hearts[f000]븀\u0000\nand minds to rule them![f000]븁\u0000\nBut this time, I'm simply going to use\noverwhelming power and rule[f000]븀\u0000\nwith an iron fist![f000]븁\u0000\nDo you understand?\nIf you had simply become king,[f000]븀\u0000\nUnova would have remained beautiful![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisFoolLastTime, 0, 0, 0
     MsgWinCloseAll
     VMSleep 8
     // "Come now, Trainer.\nThis time no one will save you![f000]븁\u0000\nBut to make things interesting,\nI'll give you a chance.[f000]븁\u0000\nLet's see if you can stop\nTHIS Kyurem![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 25, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_ComeNowTrainerTime, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_11A0
     ActorCmdWait
     // "What's this?\nYour Poké Balls are trembling.[f000]븁\u0000\nCould your Pokémon\nbe shaking with rage?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 26, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_WhatsPokeBallsTrembling, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06D4
     VMSleep 25
@@ -393,7 +394,7 @@ L_05D7:
     SEWait
     ActorCmdWait
     // "No!\nThat's not possible![f000]븁\u0000\nSimple tools don't have emotion\nor thought![f000]븁\u0000\nCome!\nChallenge Kyurem![f000]븁\u0000\nJust so you know,\ncatching it is impossible![f000]븁\u0000\nMy cane emits signals that disrupt\nthe function of all Poké Balls![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 27, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_NoThatsNotPossible, 0, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 10
     EvCameraWait
@@ -433,13 +434,13 @@ L_06EC:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0710
     // "Bazzash!"
-    ScreamMsg 33, 2
+    ScreamMsg GiantChasm6_Text_Bazzash, 2
     PVPlay 644, 0
     VMJump L_071B
 
 L_0710:
     // "Preeeeaah!"
-    ScreamMsg 34, 2
+    ScreamMsg GiantChasm6_Text_Preeeeaah_2, 2
     PVPlay 643, 0
 
 L_071B:
@@ -448,7 +449,7 @@ L_071B:
     InfoMsgClose_0039
     PVPlay 646, 0
     // "Haaahraaan!"
-    ScreamMsg 35, 5
+    ScreamMsg GiantChasm6_Text_Haaahraaan_2, 5
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -457,12 +458,12 @@ L_071B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0750
     // "Kyurem and Zekrom\nwere separated!"
-    InfoMsg 36, 2
+    InfoMsg GiantChasm6_Text_KyuremZekromWereSeparated, 2
     VMJump L_0755
 
 L_0750:
     // "Kyurem and Reshiram\nwere separated!"
-    InfoMsg 37, 2
+    InfoMsg GiantChasm6_Text_KyuremReshiramWereSeparated, 2
 
 L_0755:
     MsgWaitAdvance
@@ -472,11 +473,11 @@ L_0755:
     ActorCmdWait
     // "Ghetsis: I can't believe it!\nThe White Kyurem I went to[f000]븀\u0000\nall the trouble of preparing![f000]븁\u0000\nHow irritating![f000]븁\u0000\nNow I have to go recapture\nKyurem, don't I?[f000]븁\u0000\nBut first, I'll take down this disgusting\nTrainer with my own hand![f000]븁\u0000\nThis time I WILL succeed!\nNo matter what they try,[f000]븀\u0000\nno one will be able to stop me![f000]븁\u0000"
     // "Ghetsis: I can't believe it!\nThe Black Kyurem I went to[f000]븀\u0000\nall the trouble of preparing![f000]븁\u0000\nHow irritating![f000]븁\u0000\nNow I have to go recapture\nKyurem, don't I?[f000]븁\u0000\nBut first, I'll take down this disgusting\nTrainer with my own hand![f000]븁\u0000\nThis time I WILL succeed!\nNo matter what they try,[f000]븀\u0000\nno one will be able to stop me![f000]븁\u0000"
-    ActorMsgVersioned 1024, 39, 38, 0, 5, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_GhetsisCantBelieveWhite, GiantChasm6_Text_GhetsisCantBelieveBlack, 0, 5, 0
     MsgWinCloseAll
     WordSetPlayerName 0
     // "N: [f000]븉\u0001\u0001...![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 42, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_N, 4, 0, 0
     MsgWinCloseAll
     SEPlay SEQ_SE_FLD_176
     PokePartyRecoverAll
@@ -544,7 +545,7 @@ L_0868:
     ActorCmdWait
     // "Ghetsis: I'll take down this\ndisgusting Trainer with my own hand![f000]븁\u0000\nThis time I WILL succeed!\nNo matter what they try,[f000]븀\u0000\nno one will be able to stop me![f000]븁\u0000"
     // "Ghetsis: I'll take down this\ndisgusting Trainer with my own hand![f000]븁\u0000\nThis time I WILL succeed!\nNo matter what they try,[f000]븀\u0000\nno one will be able to stop me![f000]븁\u0000"
-    ActorMsgVersioned 1024, 41, 40, 0, 5, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_GhetsisIllTakeDown_2, GiantChasm6_Text_GhetsisIllTakeDown, 0, 5, 0
     MsgWinCloseAll
     VMCall L_08D4
     FinishAllEvents
@@ -609,33 +610,33 @@ L_0943:
     ActorCmdExec 5, Movement_0C6C
     ActorCmdWait
     // "Ghetsis: How can this be?[f000]븁\u0000\nI'm the creator of Team Plasma!\nI'm perfect![f000]븁\u0000\nI'm the absolute ruler\nwho will change the world![f000]븁\u0000\nAnd I've lost to some unknown\nTrainer not once, but TWICE?![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 43, 5, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisHowCanIm, 5, 5, 0
     MsgWinCloseAll
     ActorCmdExec 5, Movement_0C58
     ActorCmdWait
     // "I can't accept this!\nThis isn't possible![f000]븁\u0000\nI can't be bested by\nfools who can't even[f000]븀\u0000\nuse Pokémon correctly![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 44, 5, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_CantAcceptIsntPossible, 5, 5, 0
     MsgWinCloseAll
     BGMPlay SEQ_BGM_EV_GIANTHOLE_03
     // "N: [f000]븉\u0001\u0001It's hard to call you this, but...[f000]븁\u0000\nFather!\nPlease understand.[f000]븁\u0000\nPokémon are not tools.[f000]븁\u0000\nPokémon and humans take\neach other to greater heights.[f000]븀\u0000\nThey are our wonderful partners.[f000]븁\u0000\nSome humans understand this.[f000]븁\u0000\nWhy can't you?[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 45, 4, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_NItsHardCall, 4, 6, 0
     MsgWinCloseAll
     ActorCmdExec 5, Movement_1178
     ActorCmdWait
     // "Ghetsis: Shut your mouth![f000]븁\u0000\nShut up! Shut up! Shut UP![f000]븁\u0000\nDon't talk like a person, you freak!\nNo real person could talk to Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 46, 5, 5, 1
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisShutMouthShut, 5, 5, 1
     MsgWinCloseAll
     ActorNew 18, 17, 1, 251, 182, 0
     ActorCmdExec 251, Movement_0C7C
     ActorCmdWait
     // "Shadow Triad: Lord Ghetsis has...\nlost control...[f000]븁\u0000\nWe'll take it from here...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 47, 251, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_ShadowTriadLordGhetsis, 251, 5, 0
     MsgWinCloseAll
     // "N: [f000]븉\u0001\u0001OK...[f000]븁\u0000\nWithout Father,\nTeam Plasma is...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 48, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_NOkWithoutFather, 4, 0, 0
     MsgWinCloseAll
     // "Shadow Triad: Farewell...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 49, 251, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_ShadowTriadFarewell, 251, 5, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_1178
     ActorCmdWait
@@ -651,7 +652,7 @@ L_0943:
     ActorCmdExec 255, Movement_1180
     ActorCmdWait
     // "N: [f000]븉\u0001\u0001On behalf of everyone...[f000]븁\u0000\nThank you.[f000]븁\u0000\nKyurem is fine.[f000]븁\u0000\nNow, it has lost its power,\nbut it will come here again.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 50, 4, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_NBehalfEveryoneThank, 4, 6, 0
     MsgWinCloseAll
     ActorCmdExec 4, Movement_1180
     ActorCmdWait
@@ -661,7 +662,7 @@ L_0943:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A63
     // "Bazzash!"
-    InfoMsg 51, 1
+    InfoMsg GiantChasm6_Text_Bazzash_2, 1
     PVPlay 644, 0
     PVWait
     MsgWaitAdvance
@@ -670,7 +671,7 @@ L_0943:
 
 L_0A63:
     // "Preeeeaah!"
-    InfoMsg 52, 1
+    InfoMsg GiantChasm6_Text_Preeeeaah_3, 1
     PVPlay 643, 0
     PVWait
     MsgWaitAdvance
@@ -681,7 +682,7 @@ L_0A74:
     ActorCmdWait
     // "N: [f000]븉\u0001\u0001Reshiram says thank you as well![f000]븁\u0000\nThat's right...\nI can talk with Pokémon.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "N: [f000]븉\u0001\u0001Zekrom says thank you as well![f000]븁\u0000\nThat's right...\nI can talk with Pokémon.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 54, 53, 4, 6, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_NReshiramSaysThank, GiantChasm6_Text_NZekromSaysThank, 4, 6, 0
     MsgWinCloseAll
     ActorCmdExec 4, Movement_1190
     ActorCmdWait
@@ -695,24 +696,24 @@ L_0A74:
     VMJumpIf CMP_STACK, L_0AD7
     Cmd_02B5 0, 1
     // "[f000]븉\u0001\u0001On that day two years ago, [f000]Ā\u0001\u0001\nand Alder taught me something...[f000]븁\u0000\nBy accepting different ideas, this world\ncreates a chemical reaction...[f000]븁\u0000\nSo I met many different Pokémon\nand people and heard so much...[f000]븁\u0000\nAnd that's how my world\nquietly grew bigger...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 56, 4, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_DayTwoYearsAgo_2, 4, 6, 0
     VMJump L_0AE3
 
 L_0AD7:
     // "[f000]븉\u0001\u0001On that day two years ago, a certain\nTrainer and Alder taught me something...[f000]븁\u0000\nBy accepting different ideas, this world\ncreates a chemical reaction...[f000]븁\u0000\nSo I met many different Pokémon\nand people and heard so much...[f000]븁\u0000\nAnd that's how my world\nquietly grew bigger...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 55, 4, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_DayTwoYearsAgo, 4, 6, 0
 
 L_0AE3:
     // "[f000]븉\u0001\u0001By being with Pokémon, humans\ncan continue toward new horizons.[f000]븁\u0000\nBy being with humans, Pokémon\ncan exhibit their true power.[f000]븁\u0000\nThat's what Reshiram taught me:\nthe truth for Pokémon and me.[f000]븁\u0000\nAnd someday both truth and ideals\nwill come together...[f000]븁\u0000\nThen Pokémon and humans will be\nfree from the oppression of Poké Balls.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001By being with Pokémon, humans\ncan continue toward new horizons.[f000]븁\u0000\nBy being with humans, Pokémon\ncan exhibit their true power.[f000]븁\u0000\nThat's what Zekrom taught me:\nthe ideal for Pokémon and me.[f000]븁\u0000\nAnd someday both ideals and truth\nwill come together...[f000]븁\u0000\nThen Pokémon and humans will be\nfree from the oppression of Poké Balls.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 58, 57, 4, 6, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_ByBeingPokemonHumans_2, GiantChasm6_Text_ByBeingPokemonHumans, 4, 6, 0
     MsgWinCloseAll
     ActorCmdExec 4, Movement_1140
     ActorCmdWait
     WordSetPlayerName 0
     // "[f000]븉\u0001\u0001You![f000]븁\u0000\nWhat are you and your Pokémon\nstriving for?[f000]븁\u0000\nYou should head to the Pokémon League\nand put your truths to the test![f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001You![f000]븁\u0000\nWhat are you and your Pokémon\nstriving for?[f000]븁\u0000\nYou should head to the Pokémon League\nand put your ideals to the test![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 60, 59, 4, 6, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_WhatPokemonStrivingShould_2, GiantChasm6_Text_WhatPokemonStrivingShould, 4, 6, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 4
     ActorCmdExec 4, Movement_0C9C
@@ -738,33 +739,33 @@ L_0AE3:
     ActorCmdExec 11, Movement_1190
     ActorCmdWait
     // "Team Plasma's ship flew away...\nIs it over?"
-    ActorMsg MSGFILE_SCRIPT, 70, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_TeamPlasmasShipFlew, 11, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0BBD
     // "I see...\nSo it's finally over.[f000]븁\u0000\nMore importantly, you rescued\nKyurem from Team Plasma, right?[f000]븀\u0000\nYou're really something![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 71, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_SeeItsFinallyOver, 11, 0, 0
     VMJump L_0BC9
 
 L_0BBD:
     // "I suppose... You have to be the one\nwho decides when it's over.[f000]븁\u0000\nMore importantly, you rescued\nKyurem from Team Plasma, right?[f000]븀\u0000\nYou're really something![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 72, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_SupposeHaveOneWho, 11, 0, 0
 
 L_0BC9:
     MsgWinCloseAll
     ActorCmdExec 11, Movement_1180
     ActorCmdWait
     // "I'm...gonna make sure Purrloin\ngets back to my sister![f000]븁\u0000\nStill can't take it out of\nthe Poké Ball yet, though...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 73, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_ImGonnaMakeSure, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_0CA8
     ActorCmdWait
     // "What are you gonna do?[f000]븁\u0000\n...\n...[f000]븁\u0000\nHe said go to the Pokémon League?\nThat's a good idea![f000]븁\u0000\nI mean, now you're the\nstrongest in Unova, right?[f000]븀\u0000\nGo prove it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 74, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_WhatGonnaHeSaid, 11, 0, 0
     // "Do you remember where we first\nmet up in the Giant Chasm?[f000]븁\u0000\nIf you follow the path from there,\nit goes out onto Route 23.[f000]븁\u0000\nVictory Road and the Pokémon League\nare just past there!"
-    ActorMsg MSGFILE_SCRIPT, 75, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_RememberWhereWeFirst, 11, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagReset 364
@@ -828,7 +829,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ghetsis: Come now![f000]븁\u0000\nI want to see your face at the moment\nyou lose all hope![f000]븁\u0000\nBattle to protect Unova![f000]븁\u0000\nI've prepared the finest stage, and\nit's wasted on a bit player like you![f000]븀\u0000\nLose and go down in flames!"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_GhetsisComeNowWant, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -841,7 +842,7 @@ Script_5:
     ActorSetEyeToEye
     // "N: [f000]븉\u0001\u0001It's faint, but I can hear my friend.\nI can hear Reshiram's voice.[f000]븀\u0000\nIt says they can be separated again![f000]븁\u0000\nI beg you!\nPlease save my friend![f000]븁\u0000\nAnd all of Unova's\nPokémon and humans...[f000]븉\u0001\u0000"
     // "N: [f000]븉\u0001\u0001It's faint, but I can hear my friend.\nI can hear Zekrom's voice.[f000]븀\u0000\nIt says they can be separated again![f000]븁\u0000\nI beg you!\nPlease save my friend![f000]븁\u0000\nAnd all of Unova's\nPokémon and humans...[f000]븉\u0001\u0000"
-    ActorMsgVersioned 1024, 29, 28, 4, 0, 0
+    ActorMsgVersioned 1024, GiantChasm6_Text_NItsFaintBut_2, GiantChasm6_Text_NItsFaintBut, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -853,7 +854,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Do you remember where we first\nmet up in the Giant Chasm?[f000]븁\u0000\nIf you follow the path from there,\nit goes out onto Route 23.[f000]븁\u0000\nVictory Road and the Pokémon League\nare just past there!"
-    ParentActorMsg MSGFILE_SCRIPT, 75, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_RememberWhereWeFirst, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -887,7 +888,7 @@ L_0D29:
     ActorCmdExec 1, Movement_0EE0
     ActorCmdWait
     // "Bazzakyurom!"
-    ScreamMsg 31, 2
+    ScreamMsg GiantChasm6_Text_Bazzakyurom, 2
     PVPlay 646, 2
     PVWait
     MsgWaitAdvance
@@ -899,7 +900,7 @@ L_0DA5:
     ActorCmdExec 1, Movement_0ED8
     ActorCmdWait
     // "Preeeahkyuram!"
-    ScreamMsg 32, 2
+    ScreamMsg GiantChasm6_Text_Preeeahkyuram, 2
     PVPlay 646, 1
     PVWait
     MsgWaitAdvance
@@ -995,7 +996,7 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's the cane Ghetsis was holding.[f000]븁\u0000\nWas he controlling Kyurem with it?"
-    InfoMsg 63, 2
+    InfoMsg GiantChasm6_Text_ItsCaneGhetsisHolding, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -1024,7 +1025,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     PVPlay 646, 0
     // "Haaahraaan!"
-    ScreamMsg 61, 1
+    ScreamMsg GiantChasm6_Text_Haaahraaan_3, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -1077,7 +1078,7 @@ L_0FDC:
 
 L_0FFC:
     // "Kyurem vanished into the darkness\nof the cave..."
-    SystemMsg 62, 0
+    SystemMsg GiantChasm6_Text_KyuremVanishedIntoDarkness, 0
     MsgWaitAdvance
     InfoMsgClose
     VMJump L_100C
@@ -1106,10 +1107,10 @@ L_102B:
     ActorCmdWait
     WordSetPlayerName 0
     // "Cheren: [f000]Ā\u0001\u0000!\nThat was Kyurem just now, right?[f000]븁\u0000\nSo that's the legendary Pokémon\nTeam Plasma, or should I say Ghetsis,[f000]븀\u0000\nwas using...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 64, 9, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_CherenKyuremJustNow, 9, 6, 0
     MsgWinCloseAll
     // "Bianca: [f000]Ā\u0001\u0000, you're amazing!\nYou've met so many Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 65, 10, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_BiancaYoureAmazingYouve, 10, 4, 0
     VMStackPushFlag 388
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -1118,20 +1119,20 @@ L_102B:
     ActorCmdExec 10, Movement_1198
     ActorCmdWait
     // "Hey now! Your Pokédex should be\npretty full, right?[f000]븁\u0000\nI'm sure Professor Juniper will\nbe really happy if you show her![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 66, 10, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_HeyNowPokedexShould, 10, 4, 0
     VMJump L_10BF
 
 L_10B3:
     // "You showed Professor Juniper\nyour Pokédex, didn't you?[f000]븁\u0000\nShe told me about how\nhappy she was![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 67, 10, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_ShowedProfessorJuniperPokedex, 10, 4, 0
 
 L_10BF:
     MsgWinCloseAll
     // "Cheren: I'm sure she was![f000]븁\u0000\nIn Unova, actually in the whole world,\nthere are still many Pokémon[f000]븀\u0000\nthat are waiting to meet you, though![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 68, 9, 6, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_CherenImSureShe, 9, 6, 0
     MsgWinCloseAll
     // "Bianca: Still...\nHow many Pokémon[f000]븀\u0000\ncould there be in all?[f000]븁\u0000\nI think I'll go back to Nuvema Town\nand ask Professor Juniper![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 69, 10, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm6_Text_BiancaStillHowMany, 10, 4, 0
     MsgWinCloseAll
     ActorWalkRoute 9, 15, 25, 0, 8, 0
     VMSleep 4

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_23_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -38,7 +39,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 612, 0
     // "Gwwwooooo!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route233_Text_Gwwwooooo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

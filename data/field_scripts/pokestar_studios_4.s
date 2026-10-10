@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokestar_studios_4.h"
 
 // Script plugin 10, from the zones that use this file
 
@@ -52,7 +53,7 @@ Script_24:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Movies are wonderful!\nThey get two thumbs up!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios4_Text_MoviesWonderfulTheyGet, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -64,7 +65,7 @@ Script_25:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The records set by Pokéstar Studios\nmovies are left on this board!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PokestarStudios4_Text_RecordsSetByPokestar, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

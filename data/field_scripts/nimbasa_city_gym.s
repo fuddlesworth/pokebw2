@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -164,7 +165,7 @@ L_0269:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02A3
     // "A shining example of a Trainer...[f000]븁\u0000\nSince that's what you are, you should\nbe able to collect all the Gym Badges[f000]븀\u0000\nand reach the Pokémon League![f000]븁\u0000\nThen, you and your Pokémon\nwill shine even brighter!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_ShiningExampleTrainerSince, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02D8
@@ -175,14 +176,14 @@ L_02A3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02CA
     // "I want my relationship with my Pokémon\nto be less like sun and moon[f000]븀\u0000\nand more like two blazing suns![f000]븁\u0000\nThere'd be no limit to how bright\nwe could shine!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WantRelationshipPokemonLess, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02D8
 
 L_02CA:
     // "What my Pokémon want to do\nand what I want to do...[f000]븀\u0000\nWhen they are the same...[f000]븁\u0000\nWe have more than twice\nthe energy to shine!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WhatPokemonWantWhat, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -191,7 +192,7 @@ L_02D8:
 
 L_02DE:
     // "Elesa: A model always has to make\nother people's dreams a reality[f000]븀\u0000\nwithout losing sight of herself.[f000]븁\u0000\nIt's similar for Trainers and Pokémon.\nTrainers have to give everything they[f000]븀\u0000\nhave to make their Pokémon feel like[f000]븀\u0000\nthey can win, no matter the situation.[f000]븁\u0000\nWhen I realized that, modeling\nbecame that much more fun."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_ElesaModelAlwaysHas, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -202,7 +203,7 @@ L_02EC:
 
 L_02F2:
     // "Welcome to the main stage![f000]븁\u0000\nMy beloved Pokémon\nand your Pokémon shall compete![f000]븁\u0000\nWe're going to see whose\nstar shines brightest![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 4, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WelcomeMainStageBeloved, 4, 2, 0
     ActorMsgClose
     WorkSetConst 0x8020, 0
     GameGetDifficulty 0x8020
@@ -241,7 +242,7 @@ L_0398:
 
 L_039A:
     // "Well...[f000]븁\u0000\nNow, you...you're an even more wonderful\nTrainer than I expected.[f000]븁\u0000\nYour sweet fighting style\nswept me off my feet![f000]븀\u0000\nTake this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 4, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WellNowYoureEven, 4, 2, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 3
     TrainerCardAddBadge 3
@@ -264,10 +265,10 @@ L_03DF:
     Cmd_025F 2
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 received the\nBolt Badge from Elesa![f000]븁\u0000"
-    SystemMsg 2, 2
+    SystemMsg NimbasaCityGym_Text_ReceivedBoltBadgeFrom, 2
     InfoMsgClose
     // "If you have four Badges, including this\nBolt Badge, Pokémon up to Lv. 50,[f000]븀\u0000\nincluding traded Pokémon, will obey you.[f000]븁\u0000\nAlso, here's this move I like.\nFeel free to use it, um, if you want to.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 4, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_IfHaveFourBadges, 4, 2, 0
     ActorMsgClose
     Cmd_025F 0
     VMStackPush 0x8000
@@ -279,7 +280,7 @@ L_03DF:
     VMStackPop 0x8000
     Cmd_025F 2
     // "Volt Switch lets the Pokémon switch with\na different Pokémon after attacking.[f000]븁\u0000\nOf course, if you don't have another\nPokémon in your party, you can't switch."
-    ActorMsg MSGFILE_SCRIPT, 4, 4, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_VoltSwitchLetsPokemon, 4, 2, 0
     MsgWaitAdvance
     ActorMsgClose
     EvCameraMoveToDefault 30
@@ -345,7 +346,7 @@ L_0518:
 
 L_0522:
     // "Welcome to the Nimbasa Gym![f000]븁\u0000\nA stylish Pokémon battle and\nfashion show created by Pokémon[f000]븀\u0000\nand Trainers is starting now![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WelcomeNimbasaGymStylish, 2, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_BEAUTY_NIKOLA, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -473,7 +474,7 @@ L_06E1:
 
 L_06EB:
     // "Are you beautiful as a Trainer?\nSurprise me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_BeautifulTrainerSurprise, 3, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_BEAUTY_FLEMING, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -601,7 +602,7 @@ L_08AA:
 
 L_08B4:
     // "The show is coming to its finale.\nNow, I'll see if you are worthy[f000]븀\u0000\nto stand on the same stage as Elesa![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_ShowComingItsFinale, 0, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_BEAUTY_AMP_RE, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -1067,7 +1068,7 @@ L_0F26:
     ActorCmdExec 255, Movement_1264
     ActorCmdWait
     // "Wait![f000]븁\u0000\nPlease walk with us.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WaitPleaseWalkUs, 4, 0, 0
     ActorMsgClose
     WorkSetConst 0x8028, 0
     WorkSetConst 0x8029, 0
@@ -1188,7 +1189,7 @@ L_1193:
 
 L_11A5:
     // "A shining example of a Trainer...[f000]븁\u0000\nSince that's what you are, you should\nbe able to collect all the Gym Badges[f000]븀\u0000\nand reach the Pokémon League![f000]븁\u0000\nThen, you and your Pokémon\nwill shine even brighter!"
-    ActorMsg MSGFILE_SCRIPT, 8, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_ShiningExampleTrainerSince, 4, 0, 0
     LastKeyWait
     ActorMsgClose
     Cmd_025F 0
@@ -1283,7 +1284,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Isn't this Gym beautiful when it's lit up?[f000]븁\u0000\nThe Pokémon also look beautiful\nin this lighting!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_IsntGymBeautifulWhen, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_12C7
@@ -1292,7 +1293,7 @@ L_12B3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You and your Pokémon\nsparkle and shine!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_PokemonSparkleShine, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1310,7 +1311,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ms. Elesa is strong and beautiful...[f000]븁\u0000\nDon't make the mistake of thinking\nshe's the same as us."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_MsElesaStrongBeautiful, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1310
@@ -1319,7 +1320,7 @@ L_12FC:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Beauty isn't just about looks.[f000]븁\u0000\nStrength is a part of beauty,\nboth for you and for Elesa."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_BeautyIsntJustAbout, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1337,7 +1338,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Being able to see a match between\na challenger and Elesa this close...[f000]븁\u0000\nThat makes even us gleam with joy!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_BeingAbleSeeMatch, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_1359
@@ -1346,7 +1347,7 @@ L_1345:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That was a beautiful Pokémon battle\nyou and Elesa had![f000]븁\u0000\nI was captivated by it!\nWhat an absolutely marvelous show!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_BeautifulPokemonBattleElesa, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1369,7 +1370,7 @@ Script_10:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_13D7
     // "What do you think? Surprised, right?[f000]븁\u0000\nThis Gym is, speaking frankly, a glittering\nfashion show and a dazzling stage![f000]븁\u0000\nWell, for now, I'll give you this![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WhatThinkSurprisedRight, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -1379,7 +1380,7 @@ Script_10:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "In this Pokémon Gym, we'll have you\nproceed by defeating the Trainers waiting[f000]븀\u0000\non the catwalk![f000]븁\u0000\nBy the way, Electric-type Pokémon don't\ndo well against Ground-type moves...[f000]븁\u0000\nOh![f000]븁\u0000\nBut Ground-type moves don't work\nagainst a Pokémon called Emolga,[f000]븀\u0000\nso please be careful!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_PokemonGymWellHave, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 110
@@ -1387,7 +1388,7 @@ Script_10:
 
 L_13D7:
     // "In this Pokémon Gym, we'll have you\nproceed by defeating the Trainers waiting[f000]븀\u0000\non the catwalk![f000]븁\u0000\nBy the way, Electric-type Pokémon don't\ndo well against Ground-type moves...[f000]븁\u0000\nOh![f000]븁\u0000\nBut Ground-type moves don't work\nagainst a Pokémon called Emolga,[f000]븀\u0000\nso please be careful!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_PokemonGymWellHave, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1396,7 +1397,7 @@ L_13E5:
 
 L_13EB:
     // "Elesa uses sparkling, bright\nElectric-type attacks![f000]븁\u0000\nBut the combination of you and your\nPokémon shone even brighter![f000]븁\u0000\nWhy, you're...you're...\na supermodel![f000]븁\u0000\nWell, no. You're just a really good\nTrainer with great Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_ElesaUsesSparklingBright, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1417,7 +1418,7 @@ Script_14:
     ActorCmdExec 1, Movement_1274
     ActorCmdWait
     // "What do you think? Surprised, right?[f000]븁\u0000\nThis Gym is, speaking frankly, a glittering\nfashion show and a dazzling stage![f000]븁\u0000\nWell, for now, I'll give you this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_WhatThinkSurprisedRight, 1, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -1427,7 +1428,7 @@ Script_14:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "In this Pokémon Gym, we'll have you\nproceed by defeating the Trainers waiting[f000]븀\u0000\non the catwalk![f000]븁\u0000\nBy the way, Electric-type Pokémon don't\ndo well against Ground-type moves...[f000]븁\u0000\nOh![f000]븁\u0000\nBut Ground-type moves don't work\nagainst a Pokémon called Emolga,[f000]븀\u0000\nso please be careful!"
-    ActorMsg MSGFILE_SCRIPT, 20, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NimbasaCityGym_Text_PokemonGymWellHave, 1, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 1, 17, 58, 0, 8, 1
@@ -1451,7 +1452,7 @@ Script_11:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_14CF
     // "Nimbasa City Pokémon Gym[f000]븁\u0000\nLeader: Elesa\nCertified Trainers:"
-    InfoMsg 22, 2
+    InfoMsg NimbasaCityGym_Text_NimbasaCityPokemonGym, 2
     VMJump L_14F2
 
 L_14CF:
@@ -1460,12 +1461,12 @@ L_14CF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_14ED
     // "Nimbasa City Pokémon Gym[f000]븁\u0000\nLeader: Elesa\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000"
-    InfoMsg 23, 2
+    InfoMsg NimbasaCityGym_Text_NimbasaCityPokemonGym_2, 2
     VMJump L_14F2
 
 L_14ED:
     // "Nimbasa City Pokémon Gym[f000]븁\u0000\nLeader: Elesa\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000, [f000]Ā\u0001\u0001"
-    InfoMsg 24, 2
+    InfoMsg NimbasaCityGym_Text_NimbasaCityPokemonGym_3, 2
 
 L_14F2:
     LastKeyWait

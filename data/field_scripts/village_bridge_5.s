@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/village_bridge_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -12,7 +13,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wonder if veteran Pokémon raise\nor train young Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge5_Text_WonderIfVeteranPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -24,7 +25,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wish somebody would raise me like this.\nWith three meals and a nap every day."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge5_Text_WishSomebodyWouldRaise, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -36,7 +37,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Follow me, Ducklett!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge5_Text_FollowDucklett, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -49,7 +50,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 552, 0
     // "Buuuurp!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge5_Text_Buuuurp, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -63,7 +64,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 580, 0
     // "Quak!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge5_Text_Quak, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

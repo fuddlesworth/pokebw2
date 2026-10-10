@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_9.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ L_004F:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00F7
     // "Hello, hello!\nWould you like to go to Unity Tower?"
-    ActorMsg MSGFILE_SCRIPT, 0, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity9_Text_HelloHelloWouldLike, 1, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32801
     ListMenuAdd 5, 65535, 0
     ListMenuAdd 6, 65535, 1
@@ -50,12 +51,12 @@ L_00B6:
 
 L_00C9:
     // "Unity Tower is a place where Trainers\ngather from all over the world![f000]븁\u0000\nIf you have friends who live far away,\nyou may be able to have a merry reunion![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity9_Text_UnityTowerPlaceWhere, 1, 2, 0
     VMJump L_00F1
 
 L_00DB:
     // "Please come again!"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity9_Text_PleaseComeAgain, 1, 2, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8020, 555
@@ -68,7 +69,7 @@ L_00F7:
 
 L_00FD:
     // "Hello! This is the ship for Unity Tower."
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity9_Text_HelloShipUnityTower, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -81,7 +82,7 @@ L_010D:
 
 L_011F:
     // "One person will be on board!\nPlease get on board![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity9_Text_OnePersonWillBoard, 1, 2, 0
     MsgWinCloseAll
     PlayerGetExState 0x8010
     VMStackPush 0x8010

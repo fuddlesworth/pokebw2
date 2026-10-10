@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10490.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -37,7 +38,7 @@ L_003E:
     VMJumpIf CMP_STACK, L_0069
     WordSetLoadEntreeForestPkmName 0x8011, 0
     // "[f000]ā\u0001\u0000 is\nmoving around energetically!"
-    SystemMsg 0, 0
+    SystemMsg Global10490_Text_MovingAroundEnergetically, 0
     LastKeyWait
     InfoMsgClose
     VMReturn
@@ -56,7 +57,7 @@ L_0069:
     WordSetLoadEntreeForestPkmName 0x8011, 0
     WordSetPlayerName 1
     // "[f000]ā\u0001\u0000 looks happy\nto meet [f000]Ā\u0001\u0001![f000]븁\u0000"
-    SystemMsg 1, 0
+    SystemMsg Global10490_Text_LooksHappyMeet, 0
     VMCall L_011F
     VMReturn
 
@@ -64,9 +65,9 @@ L_00B2:
     WordSetLoadEntreeForestPkmName 0x8011, 0
     WordSetPlayerName 1
     // "[f000]ā\u0001\u0000 seems to want\nto join [f000]Ā\u0001\u0001's party...[f000]븁\u0000"
-    SystemMsg 2, 2
+    SystemMsg Global10490_Text_SeemsWantJoinS, 2
     // "Would you like to add\nthe Pokémon to your party?"
-    SystemMsg 3, 2
+    SystemMsg Global10490_Text_WouldLikeAddPokemon, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010
@@ -103,7 +104,7 @@ L_011F:
     VMJumpIf CMP_STACK, L_01A8
     WordSetLoadEntreeForestPkmName 0x8011, 0
     // "Would you like [f000]ā\u0001\u0000\nto move to the Forest Clearing?"
-    SystemMsg 6, 2
+    SystemMsg Global10490_Text_WouldLikeMoveForest, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010
@@ -117,7 +118,7 @@ L_011F:
     VMJumpIf CMP_STACK, L_018E
     WordSetLoadEntreeForestPkmName 0x8011, 0
     // "There's no more room in the Forest\nClearing, so [f000]ā\u0001\u0000 could not move!"
-    SystemMsg 7, 2
+    SystemMsg Global10490_Text_TheresNoMoreRoom_2, 2
     LastKeyWait
     InfoMsgClose
     VMReturn
@@ -126,7 +127,7 @@ L_011F:
 L_018E:
     VMCall L_0214
     // "[f000]ā\u0001\u0000 moved to\nthe Forest Clearing![f000]븁\u0000"
-    SystemMsg 9, 0
+    SystemMsg Global10490_Text_MovedForestClearing, 0
     InfoMsgClose
     MapChangeEntreeForest 9
     VMReturn
@@ -137,7 +138,7 @@ L_01A2:
 L_01A8:
     WordSetLoadEntreeForestPkmName 0x8011, 0
     // "Would you like [f000]ā\u0001\u0000\nto move to the Deepest Clearing?"
-    SystemMsg 4, 2
+    SystemMsg Global10490_Text_WouldLikeMoveDeepest, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010
@@ -151,7 +152,7 @@ L_01A8:
     VMJumpIf CMP_STACK, L_01FE
     WordSetLoadEntreeForestPkmName 0x8011, 0
     // "There's no more room in the Deepest\nClearing, so [f000]ā\u0001\u0000 could not move!"
-    SystemMsg 5, 2
+    SystemMsg Global10490_Text_TheresNoMoreRoom, 2
     LastKeyWait
     InfoMsgClose
     VMReturn
@@ -160,7 +161,7 @@ L_01A8:
 L_01FE:
     VMCall L_0214
     // "[f000]ā\u0001\u0000 moved to\nthe Deepest Clearing![f000]븁\u0000"
-    SystemMsg 8, 0
+    SystemMsg Global10490_Text_MovedDeepestClearing, 0
     InfoMsgClose
     MapChangeEntreeForest 9
     VMReturn

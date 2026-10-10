@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pokemon_league_9.h"
 
 // Script plugin 3, from the zones that use this file
 
@@ -21,7 +22,7 @@ Script_1:
     VMJumpIf CMP_STACK, L_0093
     VMSleep 30
     // "Welcome, challenger![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague9_Text_WelcomeChallenger, 0, 1, 0
     MsgWinCloseAll
     Plugin3_Cmd1017
     Plugin3_Cmd1019 0
@@ -31,7 +32,7 @@ Script_1:
     ActorCmdExec 0, Movement_044C
     ActorCmdWait
     // "I've been waiting for this!"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague9_Text_IveBeenWaiting, 0, 1, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x4001, 1
@@ -39,7 +40,7 @@ Script_1:
 
 L_0093:
     // "Whaa?!\nWhere are you going?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague9_Text_WhaaWhereGoing, 0, 1, 0
     MsgWinCloseAll
 
 L_00A1:
@@ -99,7 +100,7 @@ L_013E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01FF
     // "Know what?[f000]븁\u0000\nI really look forward to having\nserious battles with strong Trainers![f000]븁\u0000\nI mean, come on! The Trainers who\nmake it here are Trainers who desire[f000]븀\u0000\nvictory with every fiber of their being![f000]븁\u0000\nAnd they are battling alongside\nPokémon that have been through[f000]븀\u0000\ncountless difficult battles![f000]븁\u0000\nIf I battle with people like that,\nnot only will I get stronger,[f000]븀\u0000\nmy Pokémon will, too![f000]븁\u0000\nAnd we'll get to know\neach other even better![f000]븁\u0000\nOK! Brace yourself![f000]븁\u0000\nI'm Iris, the Pokémon League Champion,\nand I'm going to defeat you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague9_Text_KnowWhatReallyLook, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_04D4
     ActorCmdExec 255, Movement_04CC
@@ -135,7 +136,7 @@ L_01F9:
 
 L_01FF:
     // "The Trainers who come here\nare Trainers who desire victory[f000]븀\u0000\nwith every fiber of their being![f000]븁\u0000\nAnd they are battling alongside\nPokémon that have been through[f000]븀\u0000\ncountless difficult battles![f000]븁\u0000\nIf I battle with people like that,\nnot only will I get stronger,[f000]븀\u0000\nmy Pokémon will, too![f000]븁\u0000\nAnd we'll get to know\neach other even better![f000]븁\u0000\nOK! Brace yourself![f000]븁\u0000\nI'm Iris, the Pokémon League Champion,\nand I'm going to defeat you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague9_Text_TrainersWhoComeHere, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_04D4
     ActorCmdExec 255, Movement_04CC
@@ -169,7 +170,7 @@ L_027D:
 L_027F:
     VMSleep 8
     // "Iris: I'm upset I couldn't win![f000]븁\u0000\nBut you know what?\nMore than that, I'm happy![f000]븁\u0000\nI mean, come on.\nBy having a serious battle,[f000]븀\u0000\nyou and your Pokémon,[f000]븀\u0000\nand me and my Pokémon,[f000]븀\u0000\nwe all got to know one another[f000]븀\u0000\nbetter than before![f000]븁\u0000\nYep, we sure did!\nOK, let's go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 1, 0
+    ActorMsg MSGFILE_SCRIPT, PokemonLeague9_Text_IrisImUpsetCouldnt, 0, 1, 0
     MsgWinCloseAll
     EvCameraReturn 60
     ActorCmdExec 0, Movement_049C
@@ -196,7 +197,7 @@ L_027F:
     ActorCmdWait
     // "OK! Go on ahead! Hurry![f000]븁\u0000"
     // "OK! Go on ahead! Hurry![f000]븁\u0000"
-    ActorMsgGendered 1024, 5, 6, 0, 1, 0
+    ActorMsgGendered 1024, PokemonLeague9_Text_OkGoAheadHurry, PokemonLeague9_Text_OkGoAheadHurry_2, 0, 1, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_048C
     VMSleep 2

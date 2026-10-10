@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -20,7 +21,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "                                                                                             "
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGate_Text_Empty, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -32,7 +33,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "                                                    "
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGate_Text_Empty_2, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

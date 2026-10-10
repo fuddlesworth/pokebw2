@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_4_9.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -20,7 +21,7 @@ Script_1:
     ActorSetEyeToEye
     PokePartyGetCount 0x8020, 1
     // "Hi! I'll mimic a Pokémon's sound!\nPlease listen!"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_HiIllMimicPokemons, 0, 2, 0
     VMStackPush 0x8020
     VMStackPushConst 2
     VMStackCmp CMP_GE
@@ -35,7 +36,7 @@ Script_1:
 
 L_0098:
     // "It's just like the real Pokémon.\nWon't you listen to me?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_ItsJustLikeReal, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -45,7 +46,7 @@ L_00A8:
 L_00AE:
     MsgWaitAdvance
     // "...You have way too few Pokémon!\nI can't give you a quiz like this."
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_HaveWayTooFew, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -78,7 +79,7 @@ L_011A:
 
 L_0120:
     // "OK. I'll mimic the sound of\nthe Pokémon you're with..."
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_OkIllMimicSound, 0, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMSleep 8
@@ -87,7 +88,7 @@ L_0120:
     DebugPrint 0x8026
     VMSleep 8
     // "I mimicked one of your party Pokémon.\nWhich Pokémon was it?"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_MimickedOnePartyPokemon, 0, 2, 0
     MsgWaitAdvance
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32809
     PokePartyGetCount 0x8020, 0
@@ -242,7 +243,7 @@ L_035C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03F4
     // "Correct![f000]븁\u0000\nYou can recognize the sound of\nPokémon you always hear, right?[f000]븁\u0000\nThank you for playing with me.\nThis is a small gift from me!"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_CorrectCanRecognizeSound, 0, 2, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -257,7 +258,7 @@ L_035C:
 
 L_03F4:
     // "Correct![f000]븁\u0000\nOf course, you won't mistake\nthe sound of your partner Pokémon!"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_CorrectCourseWontMistake, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -267,7 +268,7 @@ L_0404:
 L_040A:
     WordSetPartyPokeSpecies 0, 0x8026
     // "Close! Too bad! I'm sad!\nThat was [f000]ā\u0001\u0000!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Route49_Text_CloseTooBadIm, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 

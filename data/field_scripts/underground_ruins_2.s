@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/underground_ruins_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -44,7 +45,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Chamber of the one that joins\nthe sun in protecting this place."
-    InfoMsg 0, 2
+    InfoMsg UndergroundRuins2_Text_ChamberOneJoinsSun, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -55,7 +56,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Two answers are needed to\nfind the true path.[f000]븁\u0000\nCourageous one,\nlet me tell you the answer I know.[f000]븁\u0000\nCheck the ground six steps down and\n● steps right of the eyeball.[f000]븁\u0000\nThe other answer can only be found\nwhen the moon is in the sky."
-    InfoMsg 1, 2
+    InfoMsg UndergroundRuins2_Text_TwoAnswersNeededFind, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -66,7 +67,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The world is split into two:\nday and night...black and white..."
-    InfoMsg 2, 2
+    InfoMsg UndergroundRuins2_Text_WorldSplitIntoTwo, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -77,7 +78,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The protectors were born\nout of rock, ice, and magma..."
-    InfoMsg 3, 2
+    InfoMsg UndergroundRuins2_Text_ProtectorsWereBornOut, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents

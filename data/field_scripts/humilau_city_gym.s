@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/humilau_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -27,7 +28,7 @@ L_0051:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0080
     // "Uihaa!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_Uihaa, 0, 0, 0
     MsgWaitAdvance
     ActorMsgClose
     VMCall L_0250
@@ -35,7 +36,7 @@ L_0051:
 
 L_0080:
     // "Waves can be rough or calm,\nbut it's still the same sea![f000]븁\u0000\nEh, there're lots of ways\nto look at the same thing!"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_WavesCanRoughCalm, 0, 0, 0
     MsgWaitAdvance
     ActorMsgClose
     VMCall L_0250
@@ -47,7 +48,7 @@ L_0096:
 
 L_009C:
     // "Sup! Here already, huh?[f000]븁\u0000\nYou look strong!\nShoots! Let's start![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_SupHereAlreadyHuh, 0, 0
     ActorMsgClose
     WorkSetConst 0x8023, 0
     GameGetDifficulty 0x8023
@@ -76,7 +77,7 @@ L_0100:
 
 L_0102:
     // "Marlon: You don't just look\nstrong, you're strong fo' reals![f000]븁\u0000\nEh, I was swept away, too![f000]븁\u0000\nOh yeah, yo. I was so surprised that\nI forgot! I gotta give this to you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_MarlonDontJustLook, 0, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 7
     TrainerCardAddBadge 7
@@ -98,10 +99,10 @@ L_0148:
     MEWait
     WorkSetConst 0x8024, 0
     // "[f000]Ā\u0001\u0000 received the Wave Badge\nfrom Marlon![f000]븁\u0000"
-    SystemMsg 2, 0
+    SystemMsg HumilauCityGym_Text_ReceivedWaveBadgeFrom, 0
     InfoMsgClose
     // "That's the Wave Badge,\nthe Unova region's new[f000]븀\u0000\nGym Badge! Pretty sweet, right?[f000]븁\u0000\nNow you got all eight Badges,\nso you can be tight with any Pokémon![f000]븁\u0000\nOh yeah, got a TM for you, too![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_ThatsWaveBadgeUnova, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -111,9 +112,9 @@ L_0148:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "So Scald sometimes burns\nthe target, 'K.[f000]븁\u0000\nOh, and you can even use\nit when you're all frozen and[f000]븀\u0000\nchillin' and stuff![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_ScaldSometimesBurnsTarget, 0, 0
     // "Shoots! I'm off then!\nHope it's useful![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_ShootsImOffThen, 0, 0
     ActorMsgClose
     TrainerFlagSet TRAINER_ACE_TRAINER_DOYLE
     TrainerFlagSet TRAINER_ACE_TRAINER_ENZIO
@@ -199,7 +200,7 @@ Script_4:
     ActorCmdExec 255, Movement_04A4
     ActorCmdWait
     // "If you're looking for the Gym Leader,\nhe went swimming off into the ocean[f000]븀\u0000\nyelling about the sea![f000]븁\u0000\nPlease look for him if you'd like."
-    ActorMsg MSGFILE_SCRIPT, 8, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_IfYoureLookingGym, 7, 0, 0
     MsgWaitAdvance
     ActorMsgClose
     ActorCmdExec 7, Movement_04A4
@@ -223,7 +224,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you're looking for the Gym Leader,\nhe went swimming off into the ocean[f000]븀\u0000\nyelling about the sea![f000]븁\u0000\nPlease look for him if you'd like."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_IfYoureLookingGym, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_03EF
@@ -241,7 +242,7 @@ L_034B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This Gym may feel like a resort,\nbut the Gym Leader's no picnic![f000]븁\u0000\nThis is a present from me.\nPlease focus and prepare![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_GymMayFeelLike, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -251,7 +252,7 @@ L_034B:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "In Humilau's Pokémon Gym,\nyou proceed by hopping on the lily pads[f000]븀\u0000\nand sliding across the water's surface.[f000]븁\u0000\nHere's another piece of advice![f000]븁\u0000\nWater-type Pokémon really don't\nlike Electric- or Grass-type moves![f000]븁\u0000\nBut I'm sure the Gym Leader\nhas planned for that!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_HumilausPokemonGymProceed, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 117
@@ -261,7 +262,7 @@ L_03C1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "In Humilau's Pokémon Gym,\nyou proceed by hopping on the lily pads[f000]븀\u0000\nand sliding across the water's surface.[f000]븁\u0000\nHere's another piece of advice![f000]븁\u0000\nWater-type Pokémon really don't\nlike Electric- or Grass-type moves![f000]븁\u0000\nBut I'm sure the Gym Leader\nhas planned for that!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_HumilausPokemonGymProceed, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -272,7 +273,7 @@ L_03DB:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Marlon's swimming around, isn't he..."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCityGym_Text_MarlonsSwimmingAroundIsnt, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -292,12 +293,12 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0425
     // "Humilau City Pokémon Gym[f000]븁\u0000\nGym Leader: Marlon\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0001"
-    InfoMsg 12, 2
+    InfoMsg HumilauCityGym_Text_HumilauCityPokemonGym, 2
     VMJump L_042A
 
 L_0425:
     // "Humilau City Pokémon Gym[f000]븁\u0000\nGym Leader: Marlon\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000, [f000]Ā\u0001\u0001"
-    InfoMsg 13, 2
+    InfoMsg HumilauCityGym_Text_HumilauCityPokemonGym_2, 2
 
 L_042A:
     LastKeyWait

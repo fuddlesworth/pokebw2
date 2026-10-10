@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_7_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,10 +16,10 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Long ago, I was a sharp-lookin' young\nman, and my wife was a fine-lookin' girl.[f000]븀\u0000\nThis is a story from way back then.[f000]븁\u0000\nRight around here, a certain Pokémon\ntaught Tornadus and Thundurus a lesson.[f000]븁\u0000\nFor about 30 years after that, those\ntwo Pokémon kept it calm and quiet.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route73_Text_LongAgoSharpLookin, 1, 0, 0
     MsgWinCloseAll
     // "Those two Pokémon were quieted\nby a Pokémon known as Landorus.[f000]븁\u0000\nI remember hearin' that there's a\nshrine built in honor of Landorus[f000]븀\u0000\nsomewhere on Route 14."
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route73_Text_ThoseTwoPokemonWere, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_00D5
@@ -27,28 +28,28 @@ L_0051:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Long ago, I was a sharp-lookin' young\nman, and my wife was a fine-lookin' girl.[f000]븀\u0000\nThis is a story from way back then.[f000]븁\u0000\nRight around here, a certain Pokémon\ntaught Tornadus and Thundurus a lesson.[f000]븁\u0000\nFor about 30 years after that, those\ntwo Pokémon kept it calm and quiet.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route73_Text_LongAgoSharpLookin_2, 1, 0, 0
     // "I'll show them to you.\nThis is Tornadus.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route73_Text_IllShowThemTornadus, 1, 0, 0
     MsgWinCloseAll
     CallPokemonPreview 641, 0, 0, 0
     PokeDexRegist 0, 641
     // "And this is Thundurus![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route73_Text_Thundurus, 1, 0, 0
     MsgWinCloseAll
     CallPokemonPreview 642, 0, 0, 0
     PokeDexRegist 0, 642
     // "Tornadus and Thundurus have been\nregistered in the Pokédex."
-    SystemMsg 6, 0
+    SystemMsg Route73_Text_TornadusThundurusHaveBeen, 0
     MsgWaitAdvance
     InfoMsgClose
     // "The Pokémon who quieted the others\nis known as Landorus.[f000]븁\u0000\nFeast yer eyes![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route73_Text_PokemonWhoQuietedOthers, 1, 0, 0
     MsgWinCloseAll
     CallPokemonPreview 645, 0, 0, 0
     PokeDexRegist 0, 645
     // "Landorus has been registered\nin the Pokédex."
-    SystemMsg 8, 0
+    SystemMsg Route73_Text_LandorusHasBeenRegistered, 0
     MsgWaitAdvance
     InfoMsgClose
     FlagSet 485
@@ -63,7 +64,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "In the Unova region, you see,\nthere's a Pokémon called Thundurus[f000]븀\u0000\nthat causes thunder, and another called[f000]븀\u0000\nTornadus that causes heavy rain.[f000]븁\u0000\nThey fly around the region lettin' wild\nwinds loose while the rain pounds and[f000]븀\u0000\nthe lightnin' crashes.[f000]븁\u0000\nThey ruin the crops I work so hard\nto raise."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route73_Text_UnovaRegionSeeTheres, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -75,7 +76,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I saw them![f000]븁\u0000\nTheir appearances were totally\ndifferent, but they must be Landorus,[f000]븀\u0000\nTornadus, and Thundurus!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route73_Text_SawThemTheirAppearances, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -120,7 +121,7 @@ L_0193:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_01E6
     // "Oh, dear. Your Pokémon team...\nIt seems a bit sluggish.[f000]븁\u0000\nRest for just a moment now![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route73_Text_OhDearPokemonTeam, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -130,14 +131,14 @@ L_0193:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "Walking on the raised walkways is\nmore tiring than you think, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route73_Text_WalkingRaisedWalkwaysMore, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01F4
 
 L_01E6:
     // "Walking on the raised walkways is\nmore tiring than you think, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route73_Text_WalkingRaisedWalkwaysMore, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

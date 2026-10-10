@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_7.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -12,7 +13,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Café Sonata"
-    MsgPlaceSign 13, 2
+    MsgPlaceSign CasteliaCity7_Text_CafeSonata, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -24,7 +25,7 @@ Script_2:
     WorkSetConst 0x8021, 0
     PlayerGetGPos 0x8020, 0x8021
     // "Where did I put those sunglasses?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 3, 1
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity7_Text_WhereDidPutThose, 0, 3, 1
     ActorMsgClose
     WorkCmpConst 0x8020, 14
     VMJumpIf CMP_EQ, L_0065
@@ -82,7 +83,7 @@ L_0111:
 
 L_0129:
     // "Ah, I found them.[f000]븁\u0000\nAnd you've really got to have more\nlight to see your way by.[f000]븁\u0000\nTake this--it'll help you see in\ndark places.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity7_Text_AhFoundThemYouve, 0, 3, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -92,7 +93,7 @@ L_0129:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "If you use the move Flash, the accuracy\nof the opponent's moves goes down.[f000]븁\u0000\nWhen you use it twice, the rate to get\nhit by a move will be about half.[f000]븁\u0000\n'Cause it means more light![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity7_Text_IfUseMoveFlash, 0, 3, 0
     MsgWinCloseAll
     WorkCmpConst 0x8020, 15
     VMJumpIf CMP_EQ, L_0178
@@ -198,7 +199,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02D9
     // "Meow!\nHow did you find me?![f000]븁\u0000\nYou are something else!\nSo, I'm going to give you something. This![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity7_Text_MeowHowDidFind, 0, 3, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -208,7 +209,7 @@ Script_3:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "If you use the move Flash, the accuracy\nof the opponent's moves goes down.[f000]븁\u0000\nWhen you use it twice, the rate to get\nhit by a move will be about half.[f000]븁\u0000\n'Cause it means more light!"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity7_Text_IfUseMoveFlash_2, 0, 3, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x4137, 1
@@ -216,7 +217,7 @@ Script_3:
 
 L_02D9:
     // "If you use the move Flash, the accuracy\nof the opponent's moves goes down.[f000]븁\u0000\nWhen you use it twice, the rate to get\nhit by a move will be about half.[f000]븁\u0000\n'Cause it means more light!"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity7_Text_IfUseMoveFlash_2, 0, 3, 0
     LastKeyWait
     MsgWinCloseAll
 

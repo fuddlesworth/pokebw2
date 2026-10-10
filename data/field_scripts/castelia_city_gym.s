@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -249,7 +250,7 @@ Script_6:
     ActorCmdExec 0, Movement_03B8
     ActorCmdWait
     // "When the cocoon breaks open,\nthe one that pops out is--moi![f000]븁\u0000\nOn that note, have a battle with moi![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_WhenCocoonBreaksOpen, 0, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_HARLEQUIN_JACK, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -266,7 +267,7 @@ L_0385:
 
 L_038B:
     // "Hiding makes battle instincts dull,\nyou know.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_HidingMakesBattleInstincts, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_03C4
     ActorCmdWait
@@ -296,7 +297,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hiding makes battle instincts dull,\nyou know."
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_HidingMakesBattleInstincts_2, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -317,7 +318,7 @@ Script_8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_046A
     // "Clyde: Hello! You're probably\ntired from wandering all over[f000]븀\u0000\nthe crowded streets of Castelia City[f000]븀\u0000\nlooking for Team Plasma and[f000]븀\u0000\nthe Gym Leader.[f000]븁\u0000\nSo, here,\nI'll give you this![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_ClydeHelloYoureProbably, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -327,7 +328,7 @@ Script_8:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "The theme of this Gym\nis none other than cocoons![f000]븁\u0000\nYou head upward by going inside\nthe cocoons and traveling[f000]븀\u0000\nup the threads![f000]븁\u0000\nThe threads are definitely\nconnected to Burgh...eventually!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_ThemeGymNoneOther, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 109
@@ -335,7 +336,7 @@ Script_8:
 
 L_046A:
     // "The theme of this Gym\nis none other than cocoons![f000]븁\u0000\nYou head upward by going inside\nthe cocoons and traveling[f000]븀\u0000\nup the threads![f000]븁\u0000\nThe threads are definitely\nconnected to Burgh...eventually!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_ThemeGymNoneOther, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -344,7 +345,7 @@ L_0478:
 
 L_047E:
     // "Wow! That's amazing![f000]븁\u0000\nYou swatted aside our Gym Leader\nBurgh's tricky attacks...[f000]븁\u0000\nI can barely imagine how much\nstronger you're going to get!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCityGym_Text_WowThatsAmazingSwatted, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -365,7 +366,7 @@ Script_9:
     VMJumpIf CMP_STACK, L_04C5
     WordSetPlayerName 0
     // "Castelia Pokémon Gym[f000]븁\u0000\nGym Leader: Burgh\nCertified Trainers:"
-    InfoMsg 8, 2
+    InfoMsg CasteliaCityGym_Text_CasteliaPokemonGymGym, 2
     VMJump L_04E8
 
 L_04C5:
@@ -374,12 +375,12 @@ L_04C5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04E3
     // "Castelia Pokémon Gym[f000]븁\u0000\nGym Leader: Burgh\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000"
-    InfoMsg 9, 2
+    InfoMsg CasteliaCityGym_Text_CasteliaPokemonGymGym_2, 2
     VMJump L_04E8
 
 L_04E3:
     // "Castelia Pokémon Gym[f000]븁\u0000\nGym Leader: Burgh\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000, [f000]Ā\u0001\u0001"
-    InfoMsg 10, 2
+    InfoMsg CasteliaCityGym_Text_CasteliaPokemonGymGym_3, 2
 
 L_04E8:
     LastKeyWait

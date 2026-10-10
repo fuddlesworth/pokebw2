@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/bridge_gate_gate_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -25,7 +26,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When you've crossed\nall of the bridges in Unova,[f000]븀\u0000\nsomething really cool will appear![f000]븁\u0000\nIf I spread this rumor, I wonder\nif it'll become an urban legend..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate3_Text_WhenYouveCrossedAll, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -37,7 +38,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Some Trainers take a Pokémon\ncalled Rotom into the storeroom[f000]븀\u0000\nof Shopping Mall Nine.[f000]븀\u0000\nI wonder what they're doing..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate3_Text_SomeTrainersTakePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -53,7 +54,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Halt![f000]븁\u0000\nThe Tubeline Bridge is currently\nundergoing a test to see how[f000]븀\u0000\nmany people it can hold![f000]븁\u0000\nThat's right! I can't let any\nmore people in right now!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate3_Text_HaltTubelineBridgeCurrently, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_00C4
@@ -62,7 +63,7 @@ L_00B0:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The results of the test showed that\n4,934 people can be on the[f000]븀\u0000\nTubeline Bridge at one time."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate3_Text_ResultsTestShowed4, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -96,7 +97,7 @@ L_0101:
 
 L_012A:
     // "Halt![f000]븁\u0000\nThe Tubeline Bridge is currently\nundergoing a test to see how[f000]븀\u0000\nmany people it can hold![f000]븁\u0000\nThat's right! I can't let any\nmore people in right now![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, BridgeGateGate3_Text_HaltTubelineBridgeCurrently_2, 2, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_018C
     VMSleep 8

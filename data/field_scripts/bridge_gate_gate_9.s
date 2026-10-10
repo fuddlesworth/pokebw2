@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/bridge_gate_gate_9.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "How was it?\nFor Pokémon under the ocean,[f000]븀\u0000\nthe world looks like that, doesn't it?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate9_Text_HowPokemonUnderOcean, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -23,7 +24,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The path is to see rather than to move."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate9_Text_PathSeeRatherThan, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -62,7 +63,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a sign that explains\nthe Marine Tube.[f000]븁\u0000"
-    InfoMsg 4, 2
+    InfoMsg BridgeGateGate9_Text_ItsSignExplainsMarine, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait

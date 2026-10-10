@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/bridge_gate_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -24,7 +25,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello! If you cross the Skyarrow Bridge\nfrom this side, you will reach[f000]븀\u0000\nPinwheel Forest and Nacrene City."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_HelloIfCrossSkyarrow, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -40,7 +41,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I walked so far! My legs are sore!\n...Um, you don't have to look."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_WalkedFarLegsSore, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_009B
@@ -49,7 +50,7 @@ L_0087:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Skyarrow Bridge has\nbeen around for a long time."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_SkyarrowBridgeHasBeen, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -63,7 +64,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We're inspecting the Skyarrow Bridge\nto make sure it's strong enough.[f000]븁\u0000\nThis is the first inspection in a few\nyears, so it may take a while.[f000]븀\u0000\nPlease wait. Thank you."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_WereInspectingSkyarrowBridge, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -97,7 +98,7 @@ L_00FE:
 
 L_0127:
     // "Please wait to cross.[f000]븁\u0000\nWe're inspecting the Skyarrow Bridge\nto make sure it's strong enough.[f000]븁\u0000\nThis is the first inspection in a few\nyears, so it may take a while.[f000]븀\u0000\nThank you for your patience.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_PleaseWaitCrossWere, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_036C
     VMSleep 8
@@ -144,13 +145,13 @@ Script_7:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_032C
     // "Free-for-all! It's the Castelia\nHarlequin Hunt! You haven't visited...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_FreeAllItsCastelia, 0, 0
     VMStackPush 0x40e2
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_023B
     // "You still need to visit\nthis many places: Wow! Zero![f000]븁\u0000\nThat means you've completed\nthe Castelia Harlequin Hunt![f000]븁\u0000\nCongratulations!\nThis is a small commemorative gift![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_StillNeedVisitMany_2, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -160,7 +161,7 @@ Script_7:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "The Castelia Harlequin Hunt is a way\nto make more people love Castelia City![f000]븁\u0000\nThat's why we generously gave you a\nBicycle at the beginning. It's the best[f000]븀\u0000\nway to get around Castelia City![f000]븁\u0000\nKeep loving Castelia City![f000]븁\u0000\nCastelia City, Castelia City,\nCastelia City! ♪ Here we go! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40e2, 6
@@ -184,7 +185,7 @@ L_0247:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0295
     // "The Medal Office![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_MedalOffice, 4, 0, 0
     WorkAdd 0x8023, 1
     VMJump L_0305
 
@@ -198,7 +199,7 @@ L_0295:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_02D0
     // "Passerby Analytics HQ![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_PasserbyAnalyticsHq, 4, 0, 0
     WorkAdd 0x8023, 1
     VMJump L_0305
 
@@ -212,7 +213,7 @@ L_02D0:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0305
     // "The Battle Company![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_BattleCompany, 4, 0, 0
     WorkAdd 0x8023, 1
 
 L_0305:
@@ -222,7 +223,7 @@ L_0305:
 L_0311:
     WordSetNumber 0, 0x8023, 1
     // "You still need to visit\nthis many places: [f000]Ȁ\u0001\u0000![f000]븁\u0000\nSo explore Castelia City, and enjoy\nthe Castelia Harlequin Hunt!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_StillNeedVisitMany, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -231,7 +232,7 @@ L_0326:
 
 L_032C:
     // "The Castelia Harlequin Hunt is a way\nto make more people love Castelia City![f000]븁\u0000\nThat's why we generously gave you a\nBicycle at the beginning. It's the best[f000]븀\u0000\nway to get around Castelia City![f000]븁\u0000\nKeep loving Castelia City![f000]븁\u0000\nCastelia City, Castelia City,\nCastelia City! ♪ Here we go! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, BridgeGateGate_Text_CasteliaHarlequinHuntWay, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

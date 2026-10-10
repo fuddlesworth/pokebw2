@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/ns_castle_4.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -109,7 +110,7 @@ L_015A:
 
 L_0187:
     // "[f000]븉\u0001\u0001I want you to go inside.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle4_Text_WantGoInside, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8022
     VMStackPush 0x8024
@@ -138,7 +139,7 @@ L_01BC:
     ActorSetGPos 0, 0x8021, 0, 0x8022, 2
     ActorDelete 254
     // "[f000]븉\u0001\u0001This is our destination...\nGo inside.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle4_Text_OurDestinationGoInside, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0240
     ActorCmdWait

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/humilau_city_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -20,7 +21,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0061
     // "The flat part of Stunfisk is\nvery charming, isn't it?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_FlatPartStunfiskVery, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01E3
@@ -35,7 +36,7 @@ L_0061:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01B2
     // "The flat part of Stunfisk is\nvery charming, isn't it?[f000]븁\u0000\nDo you know other Water-type Pokémon\nwith a slender body?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_FlatPartStunfiskVery_2, 0, 0
     MsgWaitAdvance
     PokePartyGetCount 0x8020, 0
 
@@ -71,7 +72,7 @@ L_00EA:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_015B
     // "Oh!\nThe heart-shaped Pokémon![f000]븁\u0000\nWow! It's called Luvdisc!\nGreat! So slender!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_OhHeartShapedPokemon, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -82,7 +83,7 @@ L_00EA:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Stunfisk and Luvdisc both\nhave slender bodies![f000]븁\u0000\nBut whether it is vertically slender\nor horizontally slender[f000]븀\u0000\ngives a different impression!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_StunfiskLuvdiscBothHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 342
@@ -98,17 +99,17 @@ L_015B:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_019E
     // "Oh!\nThe heart-shaped Pokémon![f000]븁\u0000\nWow! It's called Luvdisc!\nGreat! So slender!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_OhHeartShapedPokemon, 0, 0
     MsgWaitAdvance
     // "Oh? Your Bag is full of\nHeart Scales![f000]븁\u0000\nCome visit me again\nwith Luvdisc!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_OhBagFullHeart, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01AC
 
 L_019E:
     // "The Pokémon's name starts with “L\"\nand it looks like a heart! I think."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_PokemonsNameStartsL, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -125,7 +126,7 @@ L_01B2:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_01E3
     // "Stunfisk and Luvdisc both\nhave slender bodies![f000]븁\u0000\nBut whether it is vertically slender\nor horizontally slender[f000]븀\u0000\ngives a different impression!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_StunfiskLuvdiscBothHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -139,7 +140,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you sleep on Stunfisk,\nits electricity relaxes the body!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_IfSleepStunfiskIts, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -152,7 +153,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 618, 0
     // "Stuun!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity5_Text_Stuun, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

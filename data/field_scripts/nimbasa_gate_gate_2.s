@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_gate_gate_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -46,7 +47,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Two years ago, a Pokémon\ncalled Zoroark was hiding it's lair[f000]븀\u0000\nin the Lostlorn Forest on Route 16."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaGateGate2_Text_TwoYearsAgoPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -58,7 +59,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This way leads to Route 16\nand Marvelous Bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaGateGate2_Text_WayLeadsRoute16, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

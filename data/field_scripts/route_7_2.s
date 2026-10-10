@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_7_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -33,14 +34,14 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007E
     // "Trading Pokémon lets you get to know\nother Trainers!"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route72_Text_TradingPokemonLetsGet, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0155
 
 L_007E:
     // "Kid! Have you caught any Emolga?[f000]븁\u0000\nIf you have, would you trade your\nEmolga for my Gigalith?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route72_Text_KidHaveCaughtAny, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -61,11 +62,11 @@ L_007E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0119
     // "OK! Let's start our Pokémon trade![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route72_Text_OkLetsStartOur, 0, 0
     MsgWinCloseAll
     FieldTradeStart 26, 0x8020
     // "Oh! Oh! What a cute Pokémon!\nPlease cherish Gigalith, too."
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route72_Text_OhOhWhatCute, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 256
@@ -73,7 +74,7 @@ L_007E:
 
 L_0119:
     // "Hey! Come on, now!\nI want to trade for an Emolga..."
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route72_Text_HeyComeNowWant, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -82,7 +83,7 @@ L_0129:
 
 L_012F:
     // "I see... Well, come talk to me again if you\nchange your mind!"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route72_Text_SeeWellComeTalk, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -91,7 +92,7 @@ L_013F:
 
 L_0145:
     // "I see... Well, come talk to me again if you\nchange your mind!"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route72_Text_SeeWellComeTalk, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -108,7 +109,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Watching Pokémon play together\nmakes me really happy..."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route72_Text_WatchingPokemonPlayTogether, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -126,7 +127,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 546, 0
     // "Fwoo-ooo-ooosh..."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route72_Text_FwooOooOoosh, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -137,7 +138,7 @@ L_01C4:
     ActorSetEyeToEye
     PVPlay 548, 0
     // "Tralalala! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route72_Text_Tralalala, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -158,7 +159,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 546, 0
     // "Cotttooon. ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route72_Text_Cotttooon, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -169,7 +170,7 @@ L_0221:
     ActorSetEyeToEye
     PVPlay 548, 0
     // "Peti peti!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route72_Text_PetiPeti, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

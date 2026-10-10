@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/musical_theater_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -23,7 +24,7 @@ L_0048:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0074
     // "Good job![f000]븁\u0000\nIt was a musical with some very\nexciting moments![f000]븁\u0000\nBy the way, I received comments for you\nfrom the audience.[f000]븁\u0000\nI am quite pleased.\nI will give them to you in order.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_GoodJobMusicalSome, 3, 0, 0
     VMJump L_00D1
 
 L_0074:
@@ -33,7 +34,7 @@ L_0074:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00A0
     // "Good job!\nThe Pokémon were in total sync![f000]븁\u0000\nIt was the best musical ever! I am the\nowner, but even I was greatly moved.[f000]븁\u0000\nSince it's the best musical ever seen,\nwe have received many comments from[f000]븀\u0000\nthe audience![f000]븁\u0000\nThere are comments for everyone,\nso let me give them to you in order![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_GoodJobPokemonWere, 3, 0, 0
     VMJump L_00D1
 
 L_00A0:
@@ -42,12 +43,12 @@ L_00A0:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00C5
     // "Hmmm... Good job!\nIt was a great musical![f000]븁\u0000\nIn fact, I've received comments for you\nfrom the audience![f000]븁\u0000\nI am really pleased.\nI will give them to you in order![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_HmmmGoodJobGreat, 3, 0, 0
     VMJump L_00D1
 
 L_00C5:
     // "Good job!\nIt was quite an interesting musical![f000]븁\u0000\nI've received comments for you\nfrom the audience![f000]븁\u0000\nWell, I am so pleased.\nI will give them to you in order![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_GoodJobQuiteInteresting, 3, 0, 0
 
 L_00D1:
     ActorMsgClose
@@ -289,12 +290,12 @@ L_03EA:
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0438
     // "[f000]Ā\u0001\u0000's Dress Up performance\nwas very [f000]ģ\u0001\u0001![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_SDressUpPerformance, 3, 0, 0
     VMJump L_0444
 
 L_0438:
     // "[f000]Ā\u0001\u0000's Dress Up performance\nwas very distinctive![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_SDressUpPerformance_2, 3, 0, 0
 
 L_0444:
     MusicalCmd_0165 33, 0x8024, 0x8022
@@ -305,7 +306,7 @@ L_0444:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0480
     // "In this musical, it's not an\noverstatement to say that [f000]Ā\u0001\u0000's[f000]븀\u0000\nPokémon was the lead role.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_MusicalItsNotOverstatement, 3, 0, 0
     VMJump L_0520
 
 L_0480:
@@ -314,7 +315,7 @@ L_0480:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_04A5
     // "The Pokémon used Props to convey such\nabundant expression, just as if they[f000]븀\u0000\nwere actors![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_PokemonUsedPropsConvey, 3, 0, 0
     VMJump L_0520
 
 L_04A5:
@@ -323,7 +324,7 @@ L_04A5:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_04CA
     // "Watching your Pokémon's sharp moves,\nI also felt [f000]ģ\u0001\u0001![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_WatchingPokemonsSharpMoves, 3, 0, 0
     VMJump L_0520
 
 L_04CA:
@@ -332,7 +333,7 @@ L_04CA:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_04EF
     // "Your Pokémon played its role very well.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_PokemonPlayedItsRole, 3, 0, 0
     VMJump L_0520
 
 L_04EF:
@@ -341,12 +342,12 @@ L_04EF:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0514
     // "It looked like your Pokémon was making an\neffort to live up to your expectations.[f000]븁\u0000\nI will support your Pokémon on the side![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_LookedLikePokemonMaking, 3, 0, 0
     VMJump L_0520
 
 L_0514:
     // "It was not highly noticeable...\nBut I liked it! Keep it up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_NotHighlyNoticeableBut, 3, 0, 0
 
 L_0520:
     ActorMsgClose
@@ -392,30 +393,30 @@ L_05C8:
     WordSetMusicalInfo 2, 0, 0
     WordSetMusicalInfo 3, 1, 0x8023
     // "Welcome to the musical!\nI'm very pleased with your participation![f000]븁\u0000\nParticipants for this musical are:[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_WelcomeMusicalImVery, 3, 0, 0
     Cmd_0167 14, 111, 0, 0
     WordSetMusicalInfo 6, 2, 0
     WordSetMusicalInfo 5, 3, 0
     // "[f000]Ā\u0001\u0003 will participate\nwith [f000]ā\u0001\u0002![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_WillParticipate, 3, 0, 0
     Cmd_0167 14, 112, 0, 0
     WordSetMusicalInfo 6, 2, 1
     WordSetMusicalInfo 5, 3, 1
     // "[f000]Ā\u0001\u0003 will participate\nwith [f000]ā\u0001\u0002![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_WillParticipate, 3, 0, 0
     Cmd_0167 14, 113, 0, 0
     WordSetMusicalInfo 6, 2, 2
     WordSetMusicalInfo 5, 3, 2
     // "[f000]Ā\u0001\u0003 will participate\nwith [f000]ā\u0001\u0002![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_WillParticipate, 3, 0, 0
     Cmd_0167 14, 114, 0, 0
     WordSetMusicalInfo 6, 2, 3
     WordSetMusicalInfo 5, 3, 3
     // "[f000]Ā\u0001\u0003 will participate\nwith [f000]ā\u0001\u0002![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_WillParticipate, 3, 0, 0
     Cmd_0167 14, 115, 0, 0
     // "And the show you'll be performing\nis [f000]Ģ\u0001\u0000.[f000]븁\u0000\nThat is a popular show\namong [f000]ĳ\u0001\u0001.[f000]븁\u0000\nWell, without further ado...\nLet's play Dress Up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_ShowYoullPerformingPopular, 2, 0, 0
     ActorMsgClose
     Cmd_0167 14, 11, 0, 0
     Cmd_0167 20, 0, 0, 0x8010
@@ -450,7 +451,7 @@ Script_4:
 
 L_0703:
     // "I guess everyone is ready.\nLet's go up on stage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_GuessEveryoneReadyLets, 3, 0, 0
     ActorMsgClose
     Cmd_0167 17, 0, 0, 0
     FadeOutBlackQ
@@ -519,7 +520,7 @@ L_0813:
     WorkSetConst 0x8024, 5
     VMCall L_00D5
     // "Thank you very much for participating in\nthe musical today![f000]븁\u0000\nPlease join another musical again!\nHave a great day![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater2_Text_ThankVeryMuchParticipating, 3, 0, 0
     Cmd_0167 20, 0, 0, 0x8010
     ActorMsgClose
     Cmd_0167 14, 142, 0, 0

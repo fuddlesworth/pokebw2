@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10310.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -15,12 +16,12 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0043
     // "If you'd like, I could judge the\nintriguing potential of your Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_IfYoudLikeCould, 0, 0
     VMJump L_0051
 
 L_0043:
     // "You can call me the Judge.[f000]븁\u0000\nHeh heh, that's actually not my real\nname, but it's what everyone calls me.[f000]븁\u0000\nIt's because of this weird power I have.\nIt's a gift, really.[f000]븁\u0000\nI can discern--judge, you might say--the\noverall potential of individual Pokémon.[f000]븁\u0000\nIf you'd like, I could judge the\nintriguing potential of your Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_CanCallJudgeHeh, 0, 0
     FlagSet 252
 
 L_0051:
@@ -37,7 +38,7 @@ L_005F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_008C
     // "...Oh?\nYou don't need me to judge. I get it."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_OhDontNeedJudge, 0, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -49,7 +50,7 @@ L_008C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B5
     // "Judge an Egg?!\nThat's a tall order even for me!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_JudgeEggThatsTall, 0, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -61,7 +62,7 @@ L_00B5:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_00E0
     // "I see, I see...[f000]븁\u0000\nThis Pokémon's potential is\ndecent all around.[f000]븁\u0000\nThat's my determination, and it's final.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_SeeSeePokemonsPotential, 0, 0
     VMJump L_0130
 
 L_00E0:
@@ -70,7 +71,7 @@ L_00E0:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0103
     // "I see, I see...[f000]븁\u0000\nThis Pokémon's potential is\nabove average overall.[f000]븁\u0000\nThat's my determination, and it's final.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_SeeSeePokemonsPotential_2, 0, 0
     VMJump L_0130
 
 L_0103:
@@ -79,12 +80,12 @@ L_0103:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0126
     // "I see, I see...[f000]븁\u0000\nThis Pokémon has\nrelatively superior potential overall.[f000]븁\u0000\nThat's my determination, and it's final.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_SeeSeePokemonHas, 0, 0
     VMJump L_0130
 
 L_0126:
     // "I see, I see...[f000]븁\u0000\nThis Pokémon has\noutstanding potential overall.[f000]븁\u0000\nThat's my determination, and it's final.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_SeeSeePokemonHas_2, 0, 0
 
 L_0130:
     PokePartyGetIV 0x8020, 1, 0x8022
@@ -96,7 +97,7 @@ L_0130:
     VMJumpIf CMP_STACK, L_0169
     WorkSetConst 0x8021, 0
     // "Incidentally, I would say the best\npotential lies in its HP.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_IncidentallyWouldSayBest, 0, 0
 
 L_0169:
     PokePartyGetIV 0x8020, 3, 0x8010
@@ -109,12 +110,12 @@ L_0169:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A7
     // "Incidentally, I would say the best\npotential lies in its Attack stat.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_IncidentallyWouldSayBest_2, 0, 0
     VMJump L_01B1
 
 L_01A7:
     // "And its Attack stat\nis also good.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_ItsAttackStatAlso, 0, 0
 
 L_01B1:
     WorkSetConst 0x8021, 0
@@ -130,12 +131,12 @@ L_01B7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F5
     // "Incidentally, I would say the best\npotential lies in its Defense stat.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_IncidentallyWouldSayBest_3, 0, 0
     VMJump L_01FF
 
 L_01F5:
     // "I see. Its Defense stat\nis also good.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_SeeItsDefenseStat, 0, 0
 
 L_01FF:
     WorkSetConst 0x8021, 0
@@ -151,12 +152,12 @@ L_0205:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0243
     // "Incidentally, I would say the best\npotential lies in its Sp. Atk stat.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_IncidentallyWouldSayBest_4, 0, 0
     VMJump L_024D
 
 L_0243:
     // "Its Sp. Atk stat\nis equally good.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_ItsSpAtkStat, 0, 0
 
 L_024D:
     WorkSetConst 0x8021, 0
@@ -172,12 +173,12 @@ L_0253:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0291
     // "Incidentally, I would say the best\npotential lies in its Sp. Def stat.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_IncidentallyWouldSayBest_5, 0, 0
     VMJump L_029B
 
 L_0291:
     // "Its Sp. Def stat\nis good as well.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_ItsSpDefStat, 0, 0
 
 L_029B:
     WorkSetConst 0x8021, 0
@@ -193,12 +194,12 @@ L_02A1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02DF
     // "Incidentally, I would say the best\npotential lies in its Speed stat.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_IncidentallyWouldSayBest_6, 0, 0
     VMJump L_02E9
 
 L_02DF:
     // "Well, its Speed stat\nis also good.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_WellItsSpeedStat, 0, 0
 
 L_02E9:
     WorkSetConst 0x8021, 0
@@ -209,7 +210,7 @@ L_02EF:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0312
     // "It's rather decent in that regard.\nThat's how I judged it."
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_ItsRatherDecentRegard, 0, 0
     VMJump L_0362
 
 L_0312:
@@ -218,7 +219,7 @@ L_0312:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0335
     // "It's very good in that regard.\nThat's how I judged it."
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_ItsVeryGoodRegard, 0, 0
     VMJump L_0362
 
 L_0335:
@@ -227,12 +228,12 @@ L_0335:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0358
     // "It's fantastic in that regard.\nThat's how I judged it."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_ItsFantasticRegardThats, 0, 0
     VMJump L_0362
 
 L_0358:
     // "It can't be better in that regard.\nThat's how I judged it."
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10310_Text_CantBetterRegardThats, 0, 0
 
 L_0362:
     LastKeyWait

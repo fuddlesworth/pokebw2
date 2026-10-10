@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -119,11 +120,11 @@ Script_6:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01CE
     // "Always aim for the top,\nlike a dragon taking flight![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_AlwaysAimTopLike, 0, 0
     MsgWinCloseAll
     VMCall L_0133
     // "Trainers far stronger than I\nwait for you above![f000]븁\u0000\nThe ones on the right\nemphasize attack.[f000]븁\u0000\nThe ones on the left\nemphasize defense.[f000]븁\u0000\nReturn to the dragon's head,\nand step on the glowing triangle.[f000]븀\u0000\nThen, choose either right or left!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TrainersFarStrongerThan, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMStackPush 0x40cf
@@ -137,7 +138,7 @@ L_01C8:
 
 L_01CE:
     // "Trainers far stronger than I\nwait for you above![f000]븁\u0000\nThe ones on the right\nemphasize attack.[f000]븁\u0000\nThe ones on the left\nemphasize defense.[f000]븁\u0000\nReturn to the dragon's head,\nand step on the glowing triangle.[f000]븀\u0000\nThen, choose either right or left!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TrainersFarStrongerThan, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -165,14 +166,14 @@ Script_7:
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0248
     // "If you want to battle with me,\nbring three or more healthy[f000]븀\u0000\nPokémon with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_IfWantBattleBring, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0283
 
 L_0248:
     // "Triple Battles![f000]븁\u0000\nIt's a combination that raises\nthree Pokémon's destructive power![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TripleBattlesItsCombination, 0, 0
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
@@ -184,7 +185,7 @@ L_0248:
 
 L_0275:
     // "You are strong enough to challenge\nMayor Drayden![f000]븁\u0000\nYou have the power to unleash the\nfull force of your deep desire to win!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_StrongEnoughChallengeMayor, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -193,7 +194,7 @@ L_0283:
 
 L_0289:
     // "You are strong enough to challenge\nMayor Drayden![f000]븁\u0000\nYou have the power to unleash the\nfull force of your deep desire to win!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_StrongEnoughChallengeMayor, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -222,14 +223,14 @@ Script_8:
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0309
     // "If you plan on battling with me,\nbring three or more healthy[f000]븀\u0000\nPokémon with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_IfPlanBattlingBring, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0344
 
 L_0309:
     // "In Rotation Battles, how the three\nPokémon follow one another is key.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_RotationBattlesHowThree, 0, 0
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
@@ -241,7 +242,7 @@ L_0309:
 
 L_0336:
     // "A battle between you and Mayor\nDrayden must be stirring![f000]븁\u0000\nYou must desire victory\nmore than anything! Now, go!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_BattleBetweenMayorDrayden, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -250,7 +251,7 @@ L_0344:
 
 L_034A:
     // "A battle between you and Mayor\nDrayden must be stirring![f000]븁\u0000\nYou must desire victory\nmore than anything! Now, go!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_BattleBetweenMayorDrayden, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -273,7 +274,7 @@ Script_10:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03D8
     // "Defense is everything![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_DefenseEverything, 0, 0
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
@@ -285,14 +286,14 @@ Script_10:
 
 L_03C4:
     // "The Trainers that wait above\nhave different fighting styles.[f000]븁\u0000\nThe one on the right fights\nonly Triple Battles.[f000]븁\u0000\nThe one on the left fights\nonly Rotation Battles.[f000]븁\u0000\nChoose the style of battle\nyou're better at![f000]븁\u0000\nRemember, they won't even battle you\nif you don't have three or more[f000]븀\u0000\nPokémon with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TrainersWaitAboveHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_03E6
 
 L_03D8:
     // "The Trainers that wait above\nhave different fighting styles.[f000]븁\u0000\nThe one on the right fights\nonly Triple Battles.[f000]븁\u0000\nThe one on the left fights\nonly Rotation Battles.[f000]븁\u0000\nChoose the style of battle\nyou're better at![f000]븁\u0000\nRemember, they won't even battle you\nif you don't have three or more[f000]븀\u0000\nPokémon with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TrainersWaitAboveHave, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -314,7 +315,7 @@ Script_9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0460
     // "Offense is everything![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_OffenseEverything, 0, 0
     MsgWinCloseAll
     VMCall L_0133
     Cmd_02A6
@@ -326,14 +327,14 @@ Script_9:
 
 L_044C:
     // "As for the Trainers above me...[f000]븁\u0000\nThe one on the right fights\nonly Triple Battles.[f000]븁\u0000\nThe one on the left fights\nonly Rotation Battles.[f000]븁\u0000\nChoose the style of battle\nthat fits you better![f000]븁\u0000\nRemember, they won't even battle you\nif you don't have three or more[f000]븀\u0000\nPokémon with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TrainersAboveOneRight, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_046E
 
 L_0460:
     // "As for the Trainers above me...[f000]븁\u0000\nThe one on the right fights\nonly Triple Battles.[f000]븁\u0000\nThe one on the left fights\nonly Rotation Battles.[f000]븁\u0000\nChoose the style of battle\nthat fits you better![f000]븁\u0000\nRemember, they won't even battle you\nif you don't have three or more[f000]븀\u0000\nPokémon with you!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_TrainersAboveOneRight, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -360,7 +361,7 @@ Script_15:
 
 L_04BF:
     // "Welcome to the Opelucid City Gym![f000]븁\u0000\nHere's some Fresh Water. Stay hydrated![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_WelcomeOpelucidCityGym, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -371,7 +372,7 @@ L_04BF:
     VMStackPop 0x8000
     VMCall L_0588
     // "How do you like these dragon statues?[f000]븁\u0000\nThis Gym is the only place in Unova\nwith statues this size![f000]븁\u0000\nClimb on the dragon's head and aim\nfor the top of the other dragon, where[f000]븀\u0000\nDrayden, the Gym Leader, is waiting![f000]븁\u0000\nDragon-type Pokémon are his specialty.[f000]븁\u0000\nJust between you and me, Dragon types\nare weak to Ice-type moves as well as to[f000]븀\u0000\nmoves of their own type, meaning Dragon."
-    InfoMsg 21, 2
+    InfoMsg OpelucidCityGym_Text_HowLikeTheseDragon, 2
     VMCall L_05A6
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -401,14 +402,14 @@ Script_11:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0574
     // "How do you like these dragon statues?[f000]븁\u0000\nThis Gym is the only place in Unova\nwith statues this size![f000]븁\u0000\nClimb on the dragon's head and aim\nfor the top of the other dragon, where[f000]븀\u0000\nDrayden, the Gym Leader, is waiting![f000]븁\u0000\nDragon-type Pokémon are his specialty.[f000]븁\u0000\nJust between you and me, Dragon types\nare weak to Ice-type moves as well as to[f000]븀\u0000\nmoves of their own type, meaning Dragon."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_HowLikeTheseDragon, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0582
 
 L_0574:
     // "You defeated the Gym Leader!\nCongratulations![f000]븁\u0000\nThe collision of the two dragon statues\nhad quite an impact! Like something out[f000]븀\u0000\nof a Pokéstar Studios film!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_DefeatedGymLeaderCongratulations, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -449,12 +450,12 @@ Script_12:
     VMJumpIf CMP_STACK, L_060C
     Cmd_02B5 0, 2
     // "Welcome. Thank you for coming. I am the\nOpelucid Pokémon Gym Leader, Drayden.[f000]븁\u0000\nAs the mayor, I've given everything\nto developing the city.[f000]븁\u0000\nAs a Trainer, I've simply been pursuing\ngreater strength.[f000]븁\u0000\nBut what I'm searching for now is a young\nTrainer who can show me a bright future.[f000]븁\u0000\nPerhaps you can show me that future,\nthe way [f000]Ā\u0001\u0002 and Iris have?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_WelcomeThankComingAm_2, 0, 0
     VMJump L_0616
 
 L_060C:
     // "Welcome. Thank you for coming. I am the\nOpelucid Pokémon Gym Leader, Drayden.[f000]븁\u0000\nAs the mayor, I've given everything\nto developing the city.[f000]븁\u0000\nAs a Trainer, I've simply been pursuing\ngreater strength.[f000]븁\u0000\nBut what I'm searching for now is a young\nTrainer who can show me a bright future.[f000]븁\u0000\nPerhaps you can show me that future,\nthe way Iris has?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_WelcomeThankComingAm, 0, 0
 
 L_0616:
     ActorMsgClose
@@ -485,7 +486,7 @@ L_0670:
 
 L_0672:
     // "Wonderful.[f000]븁\u0000\nI'm grateful that we had a chance\nto meet and battle.[f000]븁\u0000\nIt reminded me that Pokémon battles\nare about working with others[f000]븀\u0000\nto meet our challenges together.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_WonderfulImGratefulWe, 0, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 6
     TrainerCardAddBadge 6
@@ -509,10 +510,10 @@ L_06B7:
     WorkSetConst 0x802e, 0
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 received the Legend Badge\nfrom Drayden![f000]븁\u0000"
-    SystemMsg 15, 0
+    SystemMsg OpelucidCityGym_Text_ReceivedLegendBadgeFrom, 0
     InfoMsgClose
     // "Well, now. You've obtained seven of\nthe Gym Badges in Unova.[f000]븁\u0000\nThat means Pokémon up to Lv. 80,\nincluding those received in trades,[f000]븀\u0000\nwill follow your commands obediently.[f000]븁\u0000\nI also want you to have this.\nIt's a TM I'm particularly fond of.[f000]븁\u0000\nIt's called Dragon Tail.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_WellNowYouveObtained, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -522,9 +523,9 @@ L_06B7:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Dragon Tail is a move that returns the\ndamaged Pokémon to its Poké Ball.[f000]븁\u0000\nIn other words, it switches your\nopponent's Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_DragonTailMoveReturns, 0, 0
     // "Professor Juniper asked me to tell you\nabout the legendary Dragon-type Pokémon[f000]븀\u0000\nthat created Unova.[f000]븁\u0000\nPlease wait outside."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_ProfessorJuniperAskedTell, 0, 0
     LastKeyWait
     ActorMsgClose
     TrainerFlagSet TRAINER_VETERAN_LUCIUS
@@ -539,7 +540,7 @@ L_06B7:
 
 L_073A:
     // "It is not the passage of time that\ncauses Pokémon and people to age.[f000]븁\u0000\nWhen the energy that flows in their\nheart dries up, that's when they get old.[f000]븁\u0000\nThe heart's energy is powered by\ntruth, ideals, or maybe dreams...[f000]븁\u0000\nNo doubt it changes depending on\nwhat you most hope for in life."
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCityGym_Text_NotPassageTimeCauses, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -576,12 +577,12 @@ Script_14:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07B1
     // "Opelucid Pokémon Gym[f000]븁\u0000\nGym Leader: Drayden\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0001"
-    InfoMsg 23, 2
+    InfoMsg OpelucidCityGym_Text_OpelucidPokemonGymGym, 2
     VMJump L_07B6
 
 L_07B1:
     // "Opelucid Pokémon Gym[f000]븁\u0000\nGym Leader: Drayden\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000, [f000]Ā\u0001\u0001"
-    InfoMsg 24, 2
+    InfoMsg OpelucidCityGym_Text_OpelucidPokemonGymGym_2, 2
 
 L_07B6:
     LastKeyWait

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_7000.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -210,7 +211,7 @@ Script_4:
 L_02DF:
     WordSetItemNameEx 0, 0x8008, 2, 0
     // "Too bad! There is no more room for\n[f000]ĉ\u0001\u0000![f000]븁\u0000"
-    SystemMsg 7, 0
+    SystemMsg Global7000_Text_TooBadThereNo, 0
     InfoMsgClose
     VMReturn
 
@@ -222,7 +223,7 @@ Script_5:
 L_02FB:
     WordSetItemNameEx 0, 0x8008, 2, 0
     // "Too bad! There is no more room for\n[f000]ĉ\u0001\u0000!"
-    SystemMsg 8, 0
+    SystemMsg Global7000_Text_TooBadThereNo_2, 0
     LastKeyWait
     InfoMsgClose
     VMReturn
@@ -282,7 +283,7 @@ L_03C2:
     WordSetItemNameWithArticle 1, 0x8008
     WordSetTMMoveName 2, 0x8008
     // "[f000]Ā\u0001\u0000 obtained\n[f000]ĉ\u0001\u0001 [f000]ć\u0001\u0002!"
-    SystemMsg 3, 0
+    SystemMsg Global7000_Text_Obtained_3, 0
     VMJump L_0417
 
 L_03DB:
@@ -295,14 +296,14 @@ L_03EE:
     WordSetPlayerName 0
     WordSetItemName 1, 0x8008
     // "[f000]Ā\u0001\u0000 obtained the [f000][ff00]\u0001\u0002[f000]ĉ\u0001\u0001[f000][ff00]\u0001\u0000!"
-    SystemMsg 1, 0
+    SystemMsg Global7000_Text_Obtained_2, 0
     VMJump L_0417
 
 L_0406:
     WordSetPlayerName 0
     WordSetItemNameEx 1, 0x8008, 0x8009, 1
     // "[f000]Ā\u0001\u0000 obtained [f000][ff00]\u0001\u0002[f000]ĉ\u0001\u0001[f000][ff00]\u0001\u0000!"
-    SystemMsg 0, 0
+    SystemMsg Global7000_Text_Obtained, 0
 
 L_0417:
     VMReturn
@@ -318,7 +319,7 @@ L_0432:
     WordSetItemNameWithArticle 1, 0x8008
     WordSetTMMoveName 2, 0x8008
     // "[f000]Ā\u0001\u0000 found\n[f000]ĉ\u0001\u0001 [f000]ć\u0001\u0002!"
-    SystemMsg 6, 0
+    SystemMsg Global7000_Text_Found_3, 0
     VMJump L_0487
 
 L_044B:
@@ -331,14 +332,14 @@ L_045E:
     WordSetPlayerName 0
     WordSetItemName 1, 0x8008
     // "[f000]Ā\u0001\u0000 found [f000][ff00]\u0001\u0002[f000]ĉ\u0001\u0001[f000][ff00]\u0001\u0000!"
-    SystemMsg 4, 0
+    SystemMsg Global7000_Text_Found, 0
     VMJump L_0487
 
 L_0476:
     WordSetPlayerName 0
     WordSetItemNameEx 1, 0x8008, 0x8009, 1
     // "[f000]Ā\u0001\u0000 found [f000][ff00]\u0001\u0002[f000]ĉ\u0001\u0001[f000][ff00]\u0001\u0000!"
-    SystemMsg 5, 0
+    SystemMsg Global7000_Text_Found_2, 0
 
 L_0487:
     VMReturn
@@ -348,7 +349,7 @@ L_0489:
     WordSetItemNameEx 1, 0x8008, 0x8009, 0
     WordSetItemPocketName 2, 0x8008
     // "[f000]Ā\u0001\u0000 put the [f000]ĉ\u0001\u0001 in the\n[f000][ff00]\u0001\u0002[f000]Ē\u0001\u0002[f000][ff00]\u0001\u0000 Case."
-    SystemMsg 11, 0
+    SystemMsg Global7000_Text_PutCase_2, 0
     LastKeyWait
     InfoMsgClose
     VMReturn
@@ -358,7 +359,7 @@ L_04A5:
     WordSetItemNameEx 1, 0x8008, 0x8009, 0
     WordSetItemPocketName 2, 0x8008
     // "[f000]Ā\u0001\u0000 put the [f000]ĉ\u0001\u0001 in the\n[f000][ff00]\u0001\u0002[f000]Ē\u0001\u0002[f000][ff00]\u0001\u0000 Case.[f000]븁\u0000"
-    SystemMsg 10, 0
+    SystemMsg Global7000_Text_PutCase, 0
     InfoMsgClose
     VMReturn
 
@@ -473,7 +474,7 @@ Script_13:
     MEWait
     MsgWaitAdvance
     // "Too bad! The Bag is full!\n[f000]Ā\u0001\u0000 gave up the hidden item."
-    SystemMsg 14, 0
+    SystemMsg Global7000_Text_TooBadBagFull, 0
     LastKeyWait
     InfoMsgClose
     VMJump L_066C
@@ -486,9 +487,9 @@ L_063B:
     WordSetItemName 1, 0x8000
     WordSetItemPocketName 2, 0x8008
     // "[f000]Ā\u0001\u0000 put the [f000]ĉ\u0001\u0001 in the\n[f000][ff00]\u0001\u0002[f000]Ē\u0001\u0002[f000][ff00]\u0001\u0000 Case.[f000]븁\u0000"
-    SystemMsg 10, 0
+    SystemMsg Global7000_Text_PutCase, 0
     // "You find a note on the item.[f000]븁\u0000\n“Please make good use of this item on\nyour adventure! Sincerely, [f000]Ā\u0001\u0003\"[f000]븁\u0000\nIt looks like [f000]Ā\u0001\u0003 hid the item."
-    SystemMsg 13, 0
+    SystemMsg Global7000_Text_FindNoteItemPlease, 0
     LastKeyWait
 
 L_066C:
@@ -513,7 +514,7 @@ Script_16:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06CB
     // "Too bad! There's no more\nroom for the [f000]ĉ\u0001\u0001![f000]븀\u0000\nGave up on taking the [f000]ĉ\u0001\u0001!"
-    SystemMsg 16, 0
+    SystemMsg Global7000_Text_TooBadTheresNo, 0
     VMJump L_072D
 
 L_06CB:
@@ -531,7 +532,7 @@ L_06F0:
     WordSetItemNameEx 1, 0x8024, 0x8025, 0
     WordSetNumber 2, 0x8025, 3
     // "[f000]Ā\u0001\u0000 obtained\n[f000]Ȃ\u0001\u0002 [f000][ff00]\u0001\u0002[f000]ĉ\u0001\u0001[f000][ff00]\u0001\u0000!"
-    SystemMsg 15, 0
+    SystemMsg Global7000_Text_Obtained_4, 0
     MEWait
     VMStackPush 0x8028
     VMStackPushConst 1
@@ -568,7 +569,7 @@ Script_17:
     ItemAdd 0x8029, 1, 0x8010
     VMCall L_030F
     // "The Funfest Mission score\nwent up by one![f000]븁\u0000"
-    SystemMsg 18, 0
+    SystemMsg Global7000_Text_FunfestMissionScoreWent, 0
     VMStackPush 0x802a
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -615,7 +616,7 @@ L_0831:
     WordSetItemNameEx 1, 0x8008, 0x8009, 0
     WordSetNumber 2, 0x8009, 1
     // "[f000]Ā\u0001\u0000 obtained\n[f000]Ȁ\u0001\u0002 [f000]ĉ\u0001\u0001!"
-    SystemMsg 19, 0
+    SystemMsg Global7000_Text_Obtained_5, 0
     MEWait
     MsgWaitAdvance
     VMCall L_04A5

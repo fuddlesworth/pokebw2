@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -71,7 +72,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hotels now line Driftveil.[f000]븁\u0000\nI guess Driftveil's heartbreaker,\nCharles, isn't the big attraction now..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityPokemonCenter_Text_HotelsNowLineDriftveil, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

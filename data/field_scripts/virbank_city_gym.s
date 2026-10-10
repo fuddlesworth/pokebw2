@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/virbank_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -81,7 +82,7 @@ L_0101:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0150
     // "This is a Pokémon Gym, and\nit's also a rock club![f000]븁\u0000\nThe Gym Leader and the others\nare practicing inside, but please[f000]븀\u0000\nfeel free to challenge all of them![f000]븁\u0000\nOh! You'll need to stay hydrated.\nHere you go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym_Text_PokemonGymItsAlso, 0, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -185,14 +186,14 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0275
     // "The Trainers in this Pokémon Gym\nall use Poison-type Pokémon![f000]븁\u0000\nGrass- and Bug-type attacks\ndon't work well against Poison types,[f000]븀\u0000\nso be careful![f000]븁\u0000\nAlso, if your Pokémon are poisoned,\ntheir HP will keep decreasing. Watch out![f000]븁\u0000\nAnd you should know that Poison-type\nPokémon can't be poisoned!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankCityGym_Text_TrainersPokemonGymAll, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0283
 
 L_0275:
     // "The shining Gym Badge is important\nbecause you and your Pokémon[f000]븀\u0000\nwon it together![f000]븀\u0000\nPlease remember that always!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankCityGym_Text_ShiningGymBadgeImportant, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -212,7 +213,7 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B9
     // "Virbank City Pokémon Gym[f000]븁\u0000\nLeader: Roxie\nCertified Trainers:"
-    InfoMsg 3, 2
+    InfoMsg VirbankCityGym_Text_VirbankCityPokemonGym, 2
     VMJump L_02DC
 
 L_02B9:
@@ -221,12 +222,12 @@ L_02B9:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_02D7
     // "Virbank City Pokémon Gym[f000]븁\u0000\nLeader: Roxie\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000, [f000]Ā\u0001\u0001"
-    InfoMsg 5, 2
+    InfoMsg VirbankCityGym_Text_VirbankCityPokemonGym_3, 2
     VMJump L_02DC
 
 L_02D7:
     // "Virbank City Pokémon Gym[f000]븁\u0000\nLeader: Roxie\nCertified Trainers:[f000]븀\u0000\n[f000]Ā\u0001\u0000"
-    InfoMsg 4, 2
+    InfoMsg VirbankCityGym_Text_VirbankCityPokemonGym_2, 2
 
 L_02DC:
     LastKeyWait
@@ -239,7 +240,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "I can sing!\nWanted: The rest of a band!"
-    InfoMsg 6, 2
+    InfoMsg VirbankCityGym_Text_CanSingWantedRest, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

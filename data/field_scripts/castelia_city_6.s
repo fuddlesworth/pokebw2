@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -18,7 +19,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "GAME FREAK"
-    MsgPlaceSign 0, 2
+    MsgPlaceSign CasteliaCity6_Text_GameFreak, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

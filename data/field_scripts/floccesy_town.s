@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/floccesy_town.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -65,9 +66,9 @@ Script_3:
 L_00F5:
     WordSetPlayerName 0
     // "Alder: Oh, that's right! [f000]Ā\u0001\u0000,\nare your Pokémon well?[f000]븁\u0000\nYour Pokémon are always doing\ntheir best for you, the Trainer,[f000]븀\u0000\nso you must always be kind to them![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_AlderOhThatsRight, 0, 0, 0
     // "My house is just a little farther![f000]븁\u0000\nStop by the Pokémon Center\nfirst if you'd like![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_HouseJustLittleFarther, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0140
     ActorCmdWait
@@ -102,17 +103,17 @@ Script_4:
 
 L_0187:
     // "Alder: Hey, this way!\nShall we start training?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_AlderHeyWayShall, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0734
     ActorCmdWait
     // "By the way...why are you\nholding two Town Maps?[f000]븁\u0000\n...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_ByWayWhyHolding, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_072C
     ActorCmdWait
     // "Oh ho!\nIt's your friend's Town Map, is it?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_OhHoItsFriends, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x4030
     VMStackPushConst 1
@@ -134,7 +135,7 @@ L_0201:
 
 L_0206:
     // "Your friend is the one with\nthe [f000]ā\u0001\u0000, isn't he?[f000]븁\u0000\nIt just so happens, he was training\nhis Pokémon on Route 20...[f000]븁\u0000\nWell, if that's the case, you should\ngo give him the Town Map first![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_FriendOneIsntHe, 0, 0, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -143,7 +144,7 @@ L_0206:
     ActorCmdWait
     EvCameraWait
     // "Just follow this road.\nIt goes to Route 20![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_JustFollowRoadGoes, 0, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 40
     ActorWalkRoute 0, 111, 669, 1, 8, 0
@@ -188,7 +189,7 @@ L_02C3:
 L_02E6:
     ActorCmdWait
     // "Just follow this road.\nIt goes to Route 20![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_JustFollowRoadGoes, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_06DC
     VMSleep 8
@@ -200,7 +201,7 @@ L_02E6:
 
 L_0312:
     // "Alder: Oh! It looks like you've\ndelivered the Town Map to your friend![f000]븁\u0000\nHrm...[f000]븁\u0000\nYou were only gone a moment,\nbut you and your Pokémon have grown.[f000]븁\u0000\nWhy, I could almost mistake you\nfor someone else![f000]븁\u0000\nWell then. Instead of training you,\nI would like you and your Pokémon[f000]븀\u0000\nto give me a hand![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_AlderOhLooksLike, 0, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 0, 107, 662, 1, 8, 0
     VMSleep 16
@@ -261,12 +262,12 @@ Script_17:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0423
     // "Bianca: Heeey![f000]븁\u0000"
-    InfoMsg 22, 2
+    InfoMsg FloccesyTown_Text_BiancaHeeey, 2
     VMJump L_0428
 
 L_0423:
     // "Bianca: Hey there![f000]븁\u0000"
-    InfoMsg 23, 2
+    InfoMsg FloccesyTown_Text_BiancaHeyThere, 2
 
 L_0428:
     MsgWinCloseAll
@@ -279,21 +280,21 @@ L_0428:
     ActorWalkRoute 251, 0x8022, 0x8023, 1, 8, 1
     ActorCmdWait
     // "I'm sorry![f000]븁\u0000\nI forgot to upgrade the Pokédex\nthat I gave you![f000]븁\u0000\nI'm going to add the Habitat List!\nIt's an amazing feature![f000]븁\u0000\nI'm just going to borrow your\nPokédex for a second![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_ImSorryForgotUpgrade, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_06DC
     ActorCmdWait
     SEPlay SEQ_SE_SW_ZKN_KAIHOU
     // "[f000]Ā\u0001\u0000's Pokédex\nwas upgraded!"
-    SystemMsg 25, 0
+    SystemMsg FloccesyTown_Text_SPokedexUpgraded, 0
     SEWait
     MsgWaitAdvance
     InfoMsgClose
     PokeDexEnableHabitatList
     // "With the Habitat List, you can check\nwhich Pokémon are in the area![f000]븁\u0000\nIt's a mode in the Pokédex![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 26, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_HabitatListCanCheck, 251, 0, 0
     // "To use it, open up the Pokédex\nand tap the Habitat List button[f000]븀\u0000\non the lower left of the Touch Screen![f000]븁\u0000\nNext, pick the area you want to see![f000]븁\u0000\nYou can see all the Pokémon that live in\nthat area. It even tells you which ones[f000]븀\u0000\nyou've already caught![f000]븁\u0000\nWould you like to hear\nmy explanation again?"
-    ActorMsg MSGFILE_SCRIPT, 27, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_UseOpenUpPokedex, 251, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -308,7 +309,7 @@ L_04BF:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_04E8
     // "To use it, open up the Pokédex\nand tap the Habitat List button[f000]븀\u0000\non the lower left of the Touch Screen![f000]븁\u0000\nNext, pick the area you want to see![f000]븁\u0000\nYou can see all the Pokémon that live in\nthat area. It even tells you which ones[f000]븀\u0000\nyou've already caught![f000]븁\u0000\nWould you like to hear\nmy explanation again?"
-    ActorMsg MSGFILE_SCRIPT, 27, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_UseOpenUpPokedex, 251, 0, 0
     YesNoWin 0x8025
     VMJump L_04BF
 
@@ -320,7 +321,7 @@ L_04EE:
     ActorCmdExec 251, Movement_072C
     ActorCmdWait
     // "I have a tip for you![f000]븁\u0000\nWhen you're walking down\na path, you'll sometimes see[f000]븀\u0000\nrustling grass![f000]븀\u0000\nIf you go to that spot...[f000]븁\u0000\nWell, I'll let the rest\nbe a surprise![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 28, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_HaveTipWhenYoure, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_070C
     ActorCmdWait
@@ -328,7 +329,7 @@ L_04EE:
     ActorCmdExec 251, Movement_0724
     ActorCmdWait
     // "Filling up the Pokédex will\nmake your world bigger![f000]븁\u0000\nSo go to many different places\nand meet many different Pokémon, OK?[f000]븁\u0000\nSee you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 29, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_FillingUpPokedexWill, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 113, 662, 1, 8, 0
     VMSleep 16
@@ -349,7 +350,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Just follow this road.\nIt goes right to Route 20![f000]븁\u0000\nI'll be waiting here until you\ndeliver the Town Map!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_JustFollowRoadGoes_2, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -361,7 +362,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "People always think the past\nor the future would be so wonderful.[f000]븁\u0000\nBut the great time we're\nspending with Pokémon[f000]븀\u0000\nis right now!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_PeopleAlwaysThinkPast, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -373,7 +374,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I always save a record of my adventure,\nso I don't forget what I've done so far![f000]븀\u0000\nIt's a good idea for any Trainer!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_AlwaysSaveRecordAdventure, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -385,7 +386,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You see, in Floccesy Ranch,\nwild Pokémon might surprise you![f000]븁\u0000\nAt times like that, only your\nown Pokémon can help you out!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_SeeFloccesyRanchWild, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -397,7 +398,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "In the morning, my Pokémon come\nto wake me up when they're hungry.[f000]븁\u0000\nAt night, my Pokémon get tired\nfrom playing and take up the whole bed![f000]븁\u0000\nOh! It fills me with so much joy!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_MorningPokemonComeWake, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -409,7 +410,7 @@ Script_13:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Floccesy Town\nProphecy Flocks Here"
-    MsgPlaceSign 20, 1
+    MsgPlaceSign FloccesyTown_Text_FloccesyTownProphecyFlocks, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -420,7 +421,7 @@ Script_15:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "It's an old clock tower..."
-    MsgPlaceSign 21, 2
+    MsgPlaceSign FloccesyTown_Text_ItsOldClockTower, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -431,21 +432,21 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Are you happy you're\nable to train Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_HappyYoureAbleTrain, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0665
     // "Right?!\nMe too!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_RightToo, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0673
 
 L_0665:
     // "Huh? But you're traveling\nwith Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_HuhButYoureTraveling, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -459,21 +460,21 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Want to know what Alder taught me?"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_WantKnowWhatAlder, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06B6
     // "He said the Pokémon you throw out at\nthe start of battle is the one[f000]븀\u0000\nin the upper-left slot in your party![f000]븁\u0000\nThat's why I put a Pokémon I want\nto make stronger or a Pokémon that's[f000]븀\u0000\nalready tough in that spot!"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_HeSaidPokemonThrow, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_06C4
 
 L_06B6:
     // "You're being too bashful!\nIt's a good opportunity! Ask away!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown_Text_YoureBeingTooBashful, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

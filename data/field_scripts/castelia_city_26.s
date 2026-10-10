@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_26.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -46,7 +47,7 @@ L_00B0:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am a Pokémon fanatic.\nI am famous in Castelia, too![f000]븁\u0000\nOh, look!\nYou have a Pokédex![f000]븁\u0000\nHow many Pokémon\nhave you found so far?[f000]븁\u0000\n...\n[f000]Ȃ\u0001\u0000 Pokémon![f000]븁\u0000\nIf you have 40 Pokémon or more,\nI'll give you something good!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity26_Text_AmPokemonFanaticAm, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -60,7 +61,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I've been thinking about starting\na new business...[f000]븁\u0000\nBut it's quite a chore."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity26_Text_IveBeenThinkingAbout, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -72,7 +73,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Don't you think a service that teaches\nPokémon moves would be successful?[f000]븁\u0000\nWhat?\nThere are already people who do that?"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity26_Text_DontThinkServiceTeaches, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -84,7 +85,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What kinds of Abilities do\nyour Pokémon have?"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity26_Text_WhatKindsAbilitiesPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -96,7 +97,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My Patrat's Ability is Run Away![f000]븁\u0000\nIt can always get away\nfrom wild Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity26_Text_PatratsAbilityRunAway, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -108,7 +109,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hmmm! Fantastic! Excellent!\nBurgh's paintings are magnificent!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity26_Text_HmmmFantasticExcellentBurghs, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -121,7 +122,7 @@ Script_7:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Squeak!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity26_Text_Squeak, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

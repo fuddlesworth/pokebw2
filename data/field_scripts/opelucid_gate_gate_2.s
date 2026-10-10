@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_gate_gate_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -17,7 +18,7 @@ Script_2:
     ActorSetEyeToEye
     // "Trainer who came to Opelucid City! Hello![f000]븁\u0000\nTrainer who is going to Route 11!\nPlease come again!"
     // "Trainer who came to Opelucid City! Hello![f000]븁\u0000\nTrainer who is going to Route 11!\nPlease come again!"
-    ActorMsgVersioned 1024, 0, 1, 0, 0, 0
+    ActorMsgVersioned 1024, OpelucidGateGate2_Text_TrainerWhoCameOpelucid, OpelucidGateGate2_Text_TrainerWhoCameOpelucid_2, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/victory_road_26.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -21,7 +22,7 @@ Script_2:
     ActorsPauseAll
     PVPlay 571, 0
     // "Kwaaaaan!"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad26_Text_Kwaaaaan, 0, 0, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll

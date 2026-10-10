@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10535.h"
 
 // Script plugin 14, from the zones that start its scripts
 
@@ -69,7 +70,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]븉\u0001\u0001I remember...[f000]븁\u0000\nThis is the place where Anthea and\nConcordia took care of me as a human.[f000]븁\u0000\nThe Seven Sages all taught\nme many different things...[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10535_Text_RememberPlaceWhereAnthea, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_010D
@@ -78,7 +79,7 @@ L_00F9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]븉\u0001\u0001I...want to see things no one can see.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10535_Text_WantSeeThingsNo, 0, 0
     LastKeyWait
     ActorMsgClose
 

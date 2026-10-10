@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10130.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -22,7 +23,7 @@
 Script_1:
     ActorsPauseAll
     // "Repel's effect wore off!"
-    SystemMsg 0, 2
+    SystemMsg Global10130_Text_RepelsEffectWoreOff, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents
@@ -33,7 +34,7 @@ Script_15:
     ActorsPauseAll
     WorkSetConst 0x8021, 0
     // "Repel's effect wore off!\nUse another?"
-    SystemMsg 1, 2
+    SystemMsg Global10130_Text_RepelsEffectWoreOff_2, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -43,7 +44,7 @@ Script_15:
     WordSetPlayerName 0
     WordSetItemName 1, 0x8021
     // "[f000]Ā\u0001\u0000 used the\n[f000]ĉ\u0001\u0001!"
-    SystemMsg 2, 2
+    SystemMsg Global10130_Text_Used, 2
     LastKeyWait
 
 L_0093:
@@ -56,7 +57,7 @@ L_0093:
 Script_2:
     ActorsPauseAll
     // "There appears to be nothing here..."
-    SystemMsg 3, 2
+    SystemMsg Global10130_Text_ThereAppearsNothingHere, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents
@@ -66,7 +67,7 @@ Script_2:
 Script_3:
     ActorsPauseAll
     // "The sweet scent faded for\nsome reason..."
-    SystemMsg 4, 2
+    SystemMsg Global10130_Text_SweetScentFadedSome, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents
@@ -92,7 +93,7 @@ Script_4:
 Script_5:
     ActorsPauseAll
     // "Landed a Pokémon![f000]븁\u0000"
-    SystemMsg 5, 2
+    SystemMsg Global10130_Text_LandedPokemon, 2
     InfoMsgClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -101,7 +102,7 @@ Script_5:
 Script_6:
     ActorsPauseAll
     // "Not even a nibble...[f000]븁\u0000"
-    SystemMsg 6, 2
+    SystemMsg Global10130_Text_NotEvenNibble, 2
     InfoMsgClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -110,7 +111,7 @@ Script_6:
 Script_7:
     ActorsPauseAll
     // "Reeled it in too quickly![f000]븁\u0000"
-    SystemMsg 7, 2
+    SystemMsg Global10130_Text_ReeledTooQuickly, 2
     InfoMsgClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -119,7 +120,7 @@ Script_7:
 Script_8:
     ActorsPauseAll
     // "Reeled it in too late![f000]븁\u0000"
-    SystemMsg 8, 2
+    SystemMsg Global10130_Text_ReeledTooLate, 2
     InfoMsgClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -129,7 +130,7 @@ Script_9:
     ActorsPauseAll
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 warped to the Entralink![f000]븁\u0000"
-    SystemMsg 9, 2
+    SystemMsg Global10130_Text_WarpedEntralink, 2
     InfoMsgClose
     PlayerGetExState 0x8010
     VMStackPush 0x8010
@@ -147,7 +148,7 @@ Script_10:
     ActorsPauseAll
     WordSetPlayerName 0
     // "Participating in an ongoing mission\nat the Entralink![f000]븁\u0000\nYou'll return here after the mission.[f000]븁\u0000\nYou will warp to another person's\nEntralink to participate in the mission![f000]븁\u0000"
-    SystemMsg 13, 2
+    SystemMsg Global10130_Text_ParticipatingOngoingMissionEntralink, 2
     InfoMsgClose
     PlayerGetExState 0x8010
     VMStackPush 0x8010
@@ -164,7 +165,7 @@ L_0193:
 Script_11:
     ActorsPauseAll
     // "You can't warp to the Entralink here!"
-    SystemMsg 10, 2
+    SystemMsg Global10130_Text_CantWarpEntralinkHere, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents
@@ -174,7 +175,7 @@ Script_11:
 Script_12:
     ActorsPauseAll
     // "You can't warp because there is a\nmission going on at the Entralink."
-    SystemMsg 11, 2
+    SystemMsg Global10130_Text_CantWarpBecauseThere, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents
@@ -184,7 +185,7 @@ Script_12:
 Script_13:
     ActorsPauseAll
     // "You can't warp to the Entralink because\nyou are connecting with someone."
-    SystemMsg 12, 2
+    SystemMsg Global10130_Text_CantWarpEntralinkBecause, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents
@@ -194,7 +195,7 @@ Script_13:
 Script_14:
     ActorsPauseAll
     // "The connection has been lost."
-    SystemMsg 14, 2
+    SystemMsg Global10130_Text_ConnectionHasBeenLost, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents
@@ -204,7 +205,7 @@ Script_14:
 Script_16:
     ActorsPauseAll
     // "You can't warp to the Entralink\nif you have someone with you."
-    SystemMsg 15, 2
+    SystemMsg Global10130_Text_CantWarpEntralinkIf, 2
     LastKeyWait
     InfoMsgClose
     FinishAllEvents

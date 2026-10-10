@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10330.h"
 
 // Script plugin 1, from the zones that start its scripts
 
@@ -916,7 +917,7 @@ L_0E58:
 
 L_0E83:
     // "Communicating. Please stand by..."
-    SystemMsgAsync 102, 2
+    SystemMsgAsync Global10330_Text_CommunicatingPleaseStandBy, 2
     BSubwayCmd_Tool 330, 1, 0, 0
     BSubwayCmd_Tool 319, 0, 0, 0
     BSubwayCmd_Tool 402, 9, 0, 32806
@@ -963,7 +964,7 @@ L_0F38:
     VMCall L_3151
     MsgWinCloseAll
     // "Communicating. Please stand by..."
-    SystemMsgAsync 102, 2
+    SystemMsgAsync Global10330_Text_CommunicatingPleaseStandBy, 2
     VMSleep 15
     BSubwayCmd_Tool 402, 10, 0, 32806
     MsgWinCloseAll
@@ -1054,7 +1055,7 @@ L_10D3:
     VMCall L_3151
     MsgWinCloseAll
     // "Communicating. Please stand by..."
-    SystemMsgAsync 102, 2
+    SystemMsgAsync Global10330_Text_CommunicatingPleaseStandBy, 2
     VMSleep 15
     BSubwayCmd_Tool 402, 8, 0, 32806
     MsgWinCloseAll
@@ -1182,7 +1183,7 @@ L_12E5:
     VMCall L_2D3B
     VMCall L_1DB2
     // "Communicating. Please stand by..."
-    SystemMsgAsync 102, 2
+    SystemMsgAsync Global10330_Text_CommunicatingPleaseStandBy, 2
     VMSleep 15
     BSubwayCmd_Tool 402, 3, 0, 32806
     MsgWinCloseAll
@@ -1450,7 +1451,7 @@ L_1738:
 L_173E:
     BSubwayCmd_Tool 4, 0, 0, 0
     // "Saving...\nDon't turn off the power."
-    SystemMsg 41, 2
+    SystemMsg Global10330_Text_SavingDontTurnOff, 2
     SaveDataWrite 0x8010
     MsgWinCloseAll
     WorkSetConst 0x8008, 42
@@ -1524,7 +1525,7 @@ L_1877:
 
 L_1881:
     // "Saving...\nDon't turn off the power."
-    SystemMsg 44, 2
+    SystemMsg Global10330_Text_SavingDontTurnOff_2, 2
     SaveDataWrite 0x8010
     MsgWinCloseAll
     VMStackPush 0x8020
@@ -2729,7 +2730,7 @@ L_29D1:
 
 L_29E5:
     // "Please select the Pokémon you wish\nto enter.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 31, 0x8008, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10330_Text_PleaseSelectPokemonWish, 0x8008, 2, 0
     MsgWinCloseAll
     BSubwayCmd_Tool 356, 0, 0, 32802
     VMStackPush 0x8022
@@ -2937,7 +2938,7 @@ L_2D29:
 
 L_2D3B:
     // "Saving...\nDon't turn off the power."
-    SystemMsg 86, 2
+    SystemMsg Global10330_Text_SavingDontTurnOff_3, 2
     SaveDataWrite 0x8022
     MsgWinCloseAll
     VMReturn
@@ -3354,7 +3355,7 @@ Script_18:
     WorkGet 0x803b, 0x8008
     // "What kinds of Pokémon\nshould I enter?"
     // "What kinds of Pokémon\nshould I enter?"
-    ActorMsgGendered 1024, 104, 103, 0x803b, 2, 0
+    ActorMsgGendered 1024, Global10330_Text_WhatKindsPokemonShould_2, Global10330_Text_WhatKindsPokemonShould, 0x803b, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32784
     ListMenuAdd 71, 65535, 0
     ListMenuAdd 72, 65535, 1
@@ -3368,7 +3369,7 @@ L_333E:
     BSubwayCmd_Tool 314, 0, 0, 0
     // "OK. I'll focus on Attack!\nLet's show them we are the best pair![f000]븁\u0000"
     // "OK.\nI'll focus on Attack![f000]븁\u0000"
-    ActorMsgGendered 1024, 77, 74, 0x803b, 2, 0
+    ActorMsgGendered 1024, Global10330_Text_OkIllFocusAttack_2, Global10330_Text_OkIllFocusAttack, 0x803b, 2, 0
     WorkSetConst 0x8010, 1
     VMJump L_33B7
 
@@ -3381,7 +3382,7 @@ L_3375:
     BSubwayCmd_Tool 314, 1, 0, 0
     // "OK. I'll focus on Defense!\nLet's show them we are the best pair![f000]븁\u0000"
     // "OK.\nI'll focus on Defense![f000]븁\u0000"
-    ActorMsgGendered 1024, 78, 75, 0x803b, 2, 0
+    ActorMsgGendered 1024, Global10330_Text_OkIllFocusDefense_2, Global10330_Text_OkIllFocusDefense, 0x803b, 2, 0
     WorkSetConst 0x8010, 1
     VMJump L_33B7
 
@@ -3389,7 +3390,7 @@ L_3399:
     BSubwayCmd_Tool 314, 2, 0, 0
     // "OK. I'll focus on a balance between\nAttack and Defense.[f000]븀\u0000\nLet's show them we are the best pair![f000]븁\u0000"
     // "OK. I'll focus on a balance between\nAttack and Defense![f000]븁\u0000"
-    ActorMsgGendered 1024, 79, 76, 0x803b, 2, 0
+    ActorMsgGendered 1024, Global10330_Text_OkIllFocusBalance_2, Global10330_Text_OkIllFocusBalance, 0x803b, 2, 0
     WorkSetConst 0x8010, 1
 
 L_33B7:
@@ -3423,7 +3424,7 @@ L_3416:
 L_3420:
     WordSetPokeSpecies 0, 0x8022
     // "Both Trainers have chosen the\nPokémon [f000]ā\u0001\u0000.[f000]븁\u0000\nPlease confer with the other Trainer\nand choose different Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 62, 0x8008, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10330_Text_BothTrainersHaveChosen, 0x8008, 2, 0
     VMJump L_3461
 
 L_3437:
@@ -3432,7 +3433,7 @@ L_3437:
     BSubwayCmd_Tool 336, 1, 0, 32802
     WordSetPokeSpecies 1, 0x8022
     // "Both Trainers have chosen the Pokémon\n[f000]ā\u0001\u0000 and [f000]ā\u0001\u0001.[f000]븁\u0000\nPlease confer with the other Trainer\nand choose different Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 63, 0x8008, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10330_Text_BothTrainersHaveChosen_2, 0x8008, 2, 0
 
 L_3461:
     MsgWinCloseAll

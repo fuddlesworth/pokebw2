@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_1.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -52,7 +53,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 1"
-    MsgPlaceSign 5, 3
+    MsgPlaceSign Route1_Text_Route1, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -63,7 +64,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 1"
-    MsgPlaceSign 6, 3
+    MsgPlaceSign Route1_Text_Route1_2, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -74,7 +75,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nMake an effort to talk to all the\npeople you meet during your journey![f000]븁\u0000\nChances are they will have something\nuseful to tell you."
-    MsgPlaceSign 7, 0
+    MsgPlaceSign Route1_Text_TrainerTipsMakeEffort, 0
     MsgPlaceSignClose
     FlagSet 2664
     FinishAllEvents
@@ -120,7 +121,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Two years ago, [f000]Ā\u0001\u0000, a Trainer\nfrom Nuvema did some amazing things,[f000]븀\u0000\nincluding battling Team Plasma[f000]븀\u0000\nand saving Unova![f000]븁\u0000\nI was the one who told that Trainer that\nwild Pokémon are hiding in the tall grass.[f000]븁\u0000\nAnd that you can battle\nor capture wild Pokémon there![f000]븁\u0000\nSo, you could say that I'm one\nof the people who saved Unova, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route1_Text_TwoYearsAgoTrainer_2, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01AF
@@ -129,7 +130,7 @@ L_019B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Two years ago, a Trainer from Nuvema\ndid some amazing things, including[f000]븀\u0000\nbattling Team Plasma and saving Unova![f000]븁\u0000\nI was the one who told that Trainer that\nwild Pokémon are hiding in the tall grass.[f000]븁\u0000\nAnd that you can battle\nor capture wild Pokémon there![f000]븁\u0000\nSo, you could say that I'm one\nof the people who saved Unova, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route1_Text_TwoYearsAgoTrainer, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -143,7 +144,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'd like to land all of the\nPokémon beyond here, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route1_Text_IdLikeLandAll, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -162,7 +163,7 @@ Script_7:
 
 L_0204:
     // "Bianca: Heeey![f000]븁\u0000"
-    InfoMsg 8, 1
+    InfoMsg Route1_Text_BiancaHeeey, 1
     VMJump L_022D
 
 L_020F:
@@ -172,7 +173,7 @@ L_020F:
 
 L_0222:
     // "Bianca: Hi there![f000]븁\u0000"
-    InfoMsg 9, 1
+    InfoMsg Route1_Text_BiancaHiThere, 1
     VMJump L_022D
 
 L_022D:
@@ -301,13 +302,13 @@ L_03E3:
     ActorCmdExec 251, Movement_0628
     ActorCmdWait
     // "I have fond memories of this place...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route1_Text_HaveFondMemoriesPlace, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_05D8
     ActorCmdWait
     Cmd_02B5 0, 1
     // "One day...[f000]븁\u0000\n[f000]Ā\u0001\u0001, Cheren, and I\nall gathered right here and took[f000]븀\u0000\nthe first step of our adventure.[f000]븁\u0000\nIt's a very special spot.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route1_Text_OneDayCherenAll, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 789, 731, 1, 8, 0
     VMSleep 15
@@ -317,13 +318,13 @@ L_03E3:
     ActorCmdExec 251, Movement_05E0
     ActorCmdWait
     // "Bianca: Hey, [f000]Ā\u0001\u0001![f000]븁\u0000\nLet's all take our first step\non Route 1 together![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route1_Text_BiancaHeyLetsAll, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_05D0
     ActorCmdExec 251, Movement_05D0
     ActorCmdWait
     // "One, two![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route1_Text_OneTwo, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0598
     ActorCmdExec 251, Movement_0598
@@ -335,7 +336,7 @@ L_03E3:
     ActorCmdWait
     Cmd_02B5 0, 1
     // "Ha ha! That's what I said.[f000]븁\u0000\nHey, while we're here,\nhave a Pokémon battle with me![f000]븁\u0000\nTalking about [f000]Ā\u0001\u0001 put me\nin the mood for a Pokémon battle![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route1_Text_HaHaThatsWhat, 251, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 0
@@ -382,7 +383,7 @@ L_054B:
 L_054D:
     Cmd_02B5 0, 1
     // "Tee-hee! You're so tough!\nYou're just like [f000]Ā\u0001\u0001![f000]븁\u0000\nOK![f000]븁\u0000\nI just have to remember what\nI felt like back then and work hard, too![f000]븁\u0000\nThanks!\nSee you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route1_Text_TeeHeeYoureTough, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 789, 721, 4, 8, 1
     VMSleep 20

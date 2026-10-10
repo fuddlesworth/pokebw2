@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/mistralton_city_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -46,7 +47,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sweets, lovely Sweet Hearts! ♪\nCheck feelings between two people.[f000]븁\u0000\nIf you are a great match, you can\nget sweet on Sweet Hearts! ♪[f000]븀\u0000\nMeltingly sweet Sweet Hearts! ♪[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 34, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_SweetsLovelySweetHearts, 1, 0, 0
     VMStackPush 0x802a
     VMStackPushConst 2
     VMStackCmp CMP_EQ
@@ -91,13 +92,13 @@ L_0117:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0180
     // "I'm in a special mood today![f000]븁\u0000\nWould you trade me five Sweet Hearts\nfor a Heart Scale?"
-    ActorMsg MSGFILE_SCRIPT, 36, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_ImSpecialMoodToday, 1, 0, 0
     VMCall L_0266
     VMJump L_0192
 
 L_0180:
     // "Oh, uh, you?\nYou have Sweet Hearts![f000]븁\u0000\nWill you trade 10 Sweet Hearts\nfor my Heart Scale?"
-    ActorMsg MSGFILE_SCRIPT, 35, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OhUhHaveSweet, 1, 0, 0
     VMCall L_01C6
 
 L_0192:
@@ -105,7 +106,7 @@ L_0192:
 
 L_0198:
     // "Oh, uh, you?\nYou have Sweet Hearts![f000]븁\u0000\nWill you trade 10 Sweet Hearts\nfor my Heart Scale?"
-    ActorMsg MSGFILE_SCRIPT, 35, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OhUhHaveSweet, 1, 0, 0
     VMCall L_01C6
 
 L_01AA:
@@ -113,7 +114,7 @@ L_01AA:
 
 L_01B0:
     // "If you bring a lot of Sweet Hearts,\nI will trade you for something happy!"
-    ActorMsg MSGFILE_SCRIPT, 37, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_IfBringLotSweet, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -133,7 +134,7 @@ L_01C6:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0206
     // "Oh... What a pity.\nWhat a great pity![f000]븁\u0000\nYou must have a lot of\nHeart Scales already."
-    ActorMsg MSGFILE_SCRIPT, 39, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OhWhatPityWhat, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_024E
@@ -142,10 +143,10 @@ L_0206:
     ActorCmdExec 1, Movement_0860
     ActorCmdWait
     // "Yaaaay!\nI have a lot of your heart![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_YaaaayHaveLotHeart, 1, 0, 0
     MsgWinCloseAll
     // "Gave the Sweet Hearts and received\na Heart Scale in return.[f000]븁\u0000"
-    SystemMsg 41, 0
+    SystemMsg MistraltonCity3_Text_GaveSweetHeartsReceived, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -161,7 +162,7 @@ L_024E:
 
 L_0254:
     // "OK...\nAww...that's too bad."
-    ActorMsg MSGFILE_SCRIPT, 40, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkAwwThatsToo, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -179,7 +180,7 @@ L_0266:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02A6
     // "Oh... What a pity.\nWhat a great pity![f000]븁\u0000\nYou must have a lot of\nHeart Scales already."
-    ActorMsg MSGFILE_SCRIPT, 39, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OhWhatPityWhat, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02EE
@@ -188,10 +189,10 @@ L_02A6:
     ActorCmdExec 1, Movement_0860
     ActorCmdWait
     // "Yaaaay!\nI have a lot of your heart![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_YaaaayHaveLotHeart, 1, 0, 0
     MsgWinCloseAll
     // "Gave the Sweet Hearts and received\na Heart Scale in return.[f000]븁\u0000"
-    SystemMsg 41, 0
+    SystemMsg MistraltonCity3_Text_GaveSweetHeartsReceived, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -207,7 +208,7 @@ L_02EE:
 
 L_02F4:
     // "OK...\nAww...that's too bad."
-    ActorMsg MSGFILE_SCRIPT, 40, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkAwwThatsToo, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -256,7 +257,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Professor Juniper is researching\nPokémon at Celestial Tower,[f000]븀\u0000\nwhich is at the end of Route 7.[f000]븁\u0000\nPay attention to the signs\nso you don't get lost on the way."
-    ActorMsg MSGFILE_SCRIPT, 0, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_ProfessorJuniperResearchingPokemon, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0524
@@ -273,13 +274,13 @@ L_03B9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03FB
     // "Looks like the Professor's reached a\nstopping point in her investigation.[f000]븁\u0000\nReady to hop aboard my plane?"
-    ActorMsg MSGFILE_SCRIPT, 1, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_LooksLikeProfessorsReached, 4, 0, 0
     FlagSet 290
     VMJump L_0407
 
 L_03FB:
     // "Are you ready to get aboard the plane?\nThe sky is calling!"
-    ActorMsg MSGFILE_SCRIPT, 4, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_ReadyGetAboardPlane, 4, 0, 0
 
 L_0407:
     YesNoWin 0x8010
@@ -288,13 +289,13 @@ L_0407:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0514
     // "Hee-hee!\nReady for takeoff!"
-    ActorMsg MSGFILE_SCRIPT, 2, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HeeHeeReadyTakeoff, 4, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0840
     ActorCmdWait
     // "OK, Skyla, we're ready.\nPlease take us to Lentimas Town![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkSkylaWereReady, 2, 0, 0
     MsgWinCloseAll
     FlagReset 769
     SEPlay SEQ_SE_KAIDAN
@@ -326,13 +327,13 @@ L_04BA:
     ActorCmdExec 2, Movement_0850
     ActorCmdWait
     // "Bianca: Waaaaaaaaaaait![f000]븁\u0000\nYou guys! Wait, wait, wait, wait!\nHff...pff...I want to fly, too![f000]븁\u0000\nI want to do some research\nin Reversal Mountain...hff...pff...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_BiancaWaaaaaaaaaaaitGuysWait, 3, 0, 0
     MsgWinCloseAll
     // "Professor Juniper: Bianca, you're here?[f000]븁\u0000\nYou're starting to show the dedication\nof a serious researcher these days![f000]븁\u0000\nOK, everyone, off we go to Lentimas Town![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 2, 1, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_ProfessorJuniperBiancaYoure, 2, 1, 0
     MsgWinCloseAll
     // "Skyla: Hee-hee!\nLooks like everyone's here![f000]븁\u0000\nFinally, it's time to fly\nthe Unova skies![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 4, 1, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_SkylaHeeHeeLooks, 4, 1, 0
     MsgWinCloseAll
     VMCall L_07D6
     FlagSet 767
@@ -345,7 +346,7 @@ L_04BA:
 
 L_0514:
     // "Roger!\nCome talk to me when you're ready."
-    ActorMsg MSGFILE_SCRIPT, 3, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_RogerComeTalkWhen, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -359,7 +360,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Professor Juniper: Hi there!\nLooks like I kept you waiting! Sorry...[f000]븁\u0000\nShall we give Skyla her chance to\nshow us her piloting skills?"
-    ActorMsg MSGFILE_SCRIPT, 5, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_ProfessorJuniperHiThere, 2, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -381,7 +382,7 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_059A
     // "Hrmph! You there!\nDo you have the Ace Pilot Medal?[f000]븁\u0000\nWe Pilots figure that's the coolest\nMedal of them all, so I thought a[f000]븀\u0000\ncool customer like you might have it!"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HrmphThereHaveAce, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 375
@@ -389,7 +390,7 @@ Script_5:
 
 L_059A:
     // "If you get the Ace Pilot Medal,\nplease come show it to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_IfGetAcePilot, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -406,7 +407,7 @@ L_05AE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05EC
     // "Ooh! Is that it? Shiny![f000]븁\u0000\nTh-the Ace Pilot Medal...[f000]븁\u0000\nBrimming with adventure,\nshimmering like the sky--[f000]븀\u0000\nthe Ace Pilot Medal![f000]븁\u0000\nSo cool.\nThank you for letting me see it!"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OohShinyThAce, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 376
@@ -414,7 +415,7 @@ L_05AE:
 
 L_05EC:
     // "“Ace Pilot\"...\nThere's a splendid sound to that.[f000]븁\u0000\nHere's to you and your Pokémon\nfor flying freely through the skies![f000]븁\u0000\nFor my part, I'll keep working on\nmy skills as an airplane pilot!"
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_AcePilotTheresSplendid, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -433,7 +434,7 @@ Script_6:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0637
     // "Hello!\nThis is Mistralton Cargo Service.[f000]븁\u0000\n“Deliver a lot of cargo quickly!\"[f000]븁\u0000\nWe can also carry passengers now,\nbut that's up to the Gym Leader."
-    ActorMsg MSGFILE_SCRIPT, 10, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HelloMistraltonCargoService, 6, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_07D0
@@ -445,21 +446,21 @@ L_0637:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06A5
     // "Hello!\nThis is Mistralton Cargo Service.[f000]븁\u0000\n“Deliver a lot of cargo quickly!\"\nWould you like to board the flight[f000]븀\u0000\nto Lentimas Town?"
-    ActorMsg MSGFILE_SCRIPT, 11, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HelloMistraltonCargoService_2, 6, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_068F
     // "OK. We will contact Skyla,\nso please board the plane and wait.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkWeWillContact, 6, 2, 0
     MsgWinCloseAll
     VMCall L_07F6
     VMJump L_069F
 
 L_068F:
     // "OK!\nFeel free to fly with us anytime!"
-    ActorMsg MSGFILE_SCRIPT, 13, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkFeelFreeFly, 6, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -476,12 +477,12 @@ L_06A5:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0737
     // "This is Mistralton Cargo Service.\n“Deliver a lot of cargo quickly!\"[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_MistraltonCargoServiceDeliver, 6, 2, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_0858
     ActorCmdWait
     // "Oh!\nThat's a Permit![f000]븁\u0000\nThat lets you enter the\nNature Preserve, which is far,[f000]븀\u0000\nfar away from the Unova region![f000]븁\u0000\nWould you like to go to the\nNature Preserve, then?"
-    ActorMsg MSGFILE_SCRIPT, 15, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OhThatsPermitLets, 6, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -489,14 +490,14 @@ L_06A5:
     VMJumpIf CMP_STACK, L_0721
     FlagSet 421
     // "OK. We will contact Skyla,\nso please board the plane and wait.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkWeWillContact, 6, 2, 0
     MsgWinCloseAll
     VMCall L_0816
     VMJump L_0731
 
 L_0721:
     // "OK!\nFeel free to fly with us anytime!"
-    ActorMsg MSGFILE_SCRIPT, 13, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkFeelFreeFly, 6, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -505,7 +506,7 @@ L_0731:
 
 L_0737:
     // "“Deliver a lot of cargo quickly!\"\nThis is Mistralton Cargo Service.[f000]븁\u0000\nWhere would you like to fly?"
-    ActorMsg MSGFILE_SCRIPT, 16, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_DeliverLotCargoQuickly, 6, 2, 0
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32801
     ListMenuAdd 17, 65535, 0
     ListMenuAdd 18, 65535, 1
@@ -516,7 +517,7 @@ L_0737:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0793
     // "OK. We will contact Skyla,\nso please board the plane and wait.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkWeWillContact, 6, 2, 0
     MsgWinCloseAll
     VMCall L_07F6
     VMJump L_07D0
@@ -527,14 +528,14 @@ L_0793:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07C0
     // "OK. We will contact Skyla,\nso please board the plane and wait.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkWeWillContact, 6, 2, 0
     MsgWinCloseAll
     VMCall L_0816
     VMJump L_07D0
 
 L_07C0:
     // "OK!\nFeel free to fly with us anytime!"
-    ActorMsg MSGFILE_SCRIPT, 13, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OkFeelFreeFly, 6, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -612,7 +613,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When you use the move Fly,\nyou can return to a Pokémon Center[f000]븀\u0000\nyou've already visited."
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_WhenUseMoveFly, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -624,7 +625,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you don't know a lot about the\nstructure of planes, how can you[f000]븀\u0000\nmaintain them?[f000]븁\u0000\nPokémon battling is the same.[f000]븁\u0000\nThe more you know about Pokémon,\nthe more you can win!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_IfDontKnowLot, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -637,7 +638,7 @@ Script_9:
     ActorSetEyeToEye
     PVPlay 572, 0
     // "Chulululuwa!"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_Chulululuwa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -654,14 +655,14 @@ Script_10:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09A2
     // "Hey!\nDo you have any Flying- or[f000]븀\u0000\nPsychic-type Pokémon with you?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HeyHaveAnyFlying, 0, 0
     VMCall L_09BC
     VMStackPush 0x8027
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_098E
     // "Oh!\n[f000]ā\u0001\u0000 is with you![f000]븁\u0000\nWould you help me get some luggage\nthat's too high for me to reach?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_OhWouldHelpGet, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 4
     FadeExWait
@@ -669,7 +670,7 @@ Script_10:
     FadeEx 3, 16, 0, 4
     FadeExWait
     // "Here's a little something to\nthank you for helping me![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HeresLittleSomethingThank, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -679,7 +680,7 @@ Script_10:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Having Pokémon with you\ncan be a big help sometimes, eh?"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HavingPokemonCanBig, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 472
@@ -687,7 +688,7 @@ Script_10:
 
 L_098E:
     // "That's too bad.[f000]븁\u0000\nI need a Flying- or Psychic-type\nPokémon to help me out."
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_ThatsTooBadNeed, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -698,7 +699,7 @@ L_09A2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Having Pokémon with you\ncan be a big help sometimes, eh?"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCity3_Text_HavingPokemonCanBig, 0, 0
     LastKeyWait
     ActorMsgClose
 

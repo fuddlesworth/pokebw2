@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_15.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -18,7 +19,7 @@
 Script_1:
     ActorsPauseAll
     // "This is Battle Company.\nResearch and Development of Items!"
-    InfoMsg 22, 2
+    InfoMsg CasteliaCity15_Text_BattleCompanyResearchDevelopment, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -28,7 +29,7 @@ Script_1:
 Script_2:
     ActorsPauseAll
     // "Burgh's signature is scrawled in the\ncorner of the painting."
-    InfoMsg 23, 2
+    InfoMsg CasteliaCity15_Text_BurghsSignatureScrawledCorner, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -40,7 +41,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome![f000]븁\u0000\nIf you use the elevator, please use the\nbuttons on the door or next to the door."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_WelcomeIfUseElevator, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -52,7 +53,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Every morning, my Pokémon wakes me\nwith Uproar, so I always look like[f000]븀\u0000\na wreck.[f000]븁\u0000\nBut I appreciate its good intentions.\nI'll work my hardest to provide for it[f000]븀\u0000\ntoday, as always."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_EveryMorningPokemonWakes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -68,7 +69,7 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02E9
     // "That thing you have is a Pokédex,\nisn't it?[f000]븁\u0000\nWow! Coooooool! You collect Pokémon!\nOK! I'll help you.[f000]븁\u0000\nWhich Pokémon did you choose at the\nbeginning of your journey?"
-    ActorMsg MSGFILE_SCRIPT, 6, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_ThingHavePokedexIsnt, 2, 2, 0
     WorkSetConst 0x8024, 0
 
 L_00C7:
@@ -87,14 +88,14 @@ L_00C7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_019B
     // "Do you have Snivy?"
-    ActorMsg MSGFILE_SCRIPT, 15, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_HaveSnivy, 2, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0189
     // "You have Snivy! Then I will give you this![f000]븁\u0000\nWhen you have your Pokémon hold it, it\ncan raise the power of Grass-type moves![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_HaveSnivyThenWill, 2, 2, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -105,7 +106,7 @@ L_00C7:
     VMStackPop 0x8000
     FlagSet 361
     // "A lot of items have effects when Pokémon\nhold them, so be on the lookout for[f000]븀\u0000\nthese items![f000]븁\u0000\nWell, work hard to fill up your Pokédex!\nGood luck!"
-    ActorMsg MSGFILE_SCRIPT, 10, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_LotItemsHaveEffects, 2, 2, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8024, 1
@@ -113,7 +114,7 @@ L_00C7:
 
 L_0189:
     // "Then, what is the Pokémon you chose\nat the beginning of your journey?"
-    ActorMsg MSGFILE_SCRIPT, 18, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_ThenWhatPokemonChose, 2, 2, 0
 
 L_0195:
     VMJump L_02DD
@@ -124,14 +125,14 @@ L_019B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0231
     // "Do you have Oshawott?"
-    ActorMsg MSGFILE_SCRIPT, 16, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_HaveOshawott, 2, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_021F
     // "You have Oshawott! Then I will give\nyou this![f000]븁\u0000\nWhen you have your Pokémon hold it, it\ncan raise the power of Water-type moves![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_HaveOshawottThenWill, 2, 2, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -142,7 +143,7 @@ L_019B:
     VMStackPop 0x8000
     FlagSet 361
     // "A lot of items have effects when Pokémon\nhold them, so be on the lookout for[f000]븀\u0000\nthese items![f000]븁\u0000\nWell, work hard to fill up your Pokédex!\nGood luck!"
-    ActorMsg MSGFILE_SCRIPT, 10, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_LotItemsHaveEffects, 2, 2, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8024, 1
@@ -150,7 +151,7 @@ L_019B:
 
 L_021F:
     // "Then, what is the Pokémon you chose\nat the beginning of your journey?"
-    ActorMsg MSGFILE_SCRIPT, 18, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_ThenWhatPokemonChose, 2, 2, 0
 
 L_022B:
     VMJump L_02DD
@@ -161,14 +162,14 @@ L_0231:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C7
     // "Do you have Tepig?"
-    ActorMsg MSGFILE_SCRIPT, 17, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_HaveTepig, 2, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B5
     // "You have Tepig! Then I will give you this![f000]븁\u0000\nWhen you have your Pokémon hold it, it\ncan raise the power of Fire-type moves![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_HaveTepigThenWill, 2, 2, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -179,7 +180,7 @@ L_0231:
     VMStackPop 0x8000
     FlagSet 361
     // "A lot of items have effects when Pokémon\nhold them, so be on the lookout for[f000]븀\u0000\nthese items![f000]븁\u0000\nWell, work hard to fill up your Pokédex!\nGood luck!"
-    ActorMsg MSGFILE_SCRIPT, 10, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_LotItemsHaveEffects, 2, 2, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8024, 1
@@ -187,14 +188,14 @@ L_0231:
 
 L_02B5:
     // "Then, what is the Pokémon you chose\nat the beginning of your journey?"
-    ActorMsg MSGFILE_SCRIPT, 18, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_ThenWhatPokemonChose, 2, 2, 0
 
 L_02C1:
     VMJump L_02DD
 
 L_02C7:
     // "If you want to tell me, please speak\nto me!"
-    ActorMsg MSGFILE_SCRIPT, 19, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_IfWantTellPlease, 2, 2, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8024, 1
@@ -207,7 +208,7 @@ L_02E3:
 
 L_02E9:
     // "A lot of items have effects when Pokémon\nhold them, so be on the lookout for[f000]븀\u0000\nthese items![f000]븁\u0000\nWell, work hard to fill up your Pokédex!\nGood luck!"
-    ActorMsg MSGFILE_SCRIPT, 10, 2, 2, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_LotItemsHaveEffects, 2, 2, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -221,7 +222,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am a janitorial man. ♪\nI make everything spick and span. ♪[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_AmJanitorialManMake, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -239,9 +240,9 @@ Script_7:
     ActorCmdExec 3, Movement_047C
     ActorCmdWait
     // "People who work in this building have\nPokémon battles, not opinion battles.[f000]븁\u0000\nYou appear to be strong, but if you go\nupstairs, please be extra careful.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_PeopleWhoWorkBuilding, 3, 0, 0
     // "Oh, yes! If you'd like, you should\nhave your Pokémon hold this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_OhYesIfYoud, 3, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -251,9 +252,9 @@ Script_7:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "That's the Exp. Share![f000]븁\u0000\nA Pokémon holding an Exp. Share gets\nsome of the Exp. Points from every[f000]븀\u0000\nbattle, even if it's not involved.[f000]븁\u0000\nIt may be useful for\nraising weak Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_ThatsExpSharePokemon, 3, 0, 0
     // "I am a janitorial man. ♪\nI make everything spick and span. ♪[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_AmJanitorialManMake, 3, 0, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -332,7 +333,7 @@ Script_8:
     VMJumpIf CMP_STACK, L_04DB
     SEPlay SEQ_SE_FLD_41
     // "I'm from the Castelia Harlequin Hunt![f000]븁\u0000\nYou found the Battle Company\nHarlequin! All riiight!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_ImFromCasteliaHarlequin, 0, 0
     FlagSet 314
     WorkAdd 0x40e2, 1
     SEWait
@@ -342,7 +343,7 @@ Script_8:
 
 L_04DB:
     // "Battle Company develops many\ndifferent items for Pokémon and Trainers!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity15_Text_BattleCompanyDevelopsMany, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

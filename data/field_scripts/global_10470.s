@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10470.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -18,7 +19,7 @@ Script_2:
     SEPlay SEQ_SE_FLD_68
     SEWait
     // "Click![f000]븁\u0000\nThe sound reverberates."
-    InfoMsg 0, 2
+    InfoMsg Global10470_Text_ClickSoundReverberates, 2
     LastKeyWait
     InfoMsgClose_0039
     FlagReset 215
@@ -37,7 +38,7 @@ Script_3:
     SEPlay SEQ_SE_FLD_153
     SEWait
     // "A dull sound came from far away."
-    InfoMsg 1, 2
+    InfoMsg Global10470_Text_DullSoundCameFrom, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -50,7 +51,7 @@ Script_4:
     EvCameraShake 5, 0, 3, 8, 1, 0, 1, 5
     SEWait
     // "A dull sound echoed."
-    InfoMsg 2, 2
+    InfoMsg Global10470_Text_DullSoundEchoed, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -63,7 +64,7 @@ Script_5:
     EvCameraShake 8, 0, 3, 15, 1, 0, 1, 5
     SEWait
     // "The dull sound is close!"
-    InfoMsg 3, 2
+    InfoMsg Global10470_Text_DullSoundClose, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents
@@ -73,7 +74,7 @@ Script_5:
 Script_6:
     ActorsPauseAll
     // "It's a torrent of water!"
-    InfoMsg 4, 2
+    InfoMsg Global10470_Text_ItsTorrentWater, 2
     LastKeyWait
     InfoMsgClose_0039
     SEPlay SEQ_SE_FLD_156
@@ -102,7 +103,7 @@ Script_7:
     ActorCmdWait
     SEWait
     // "The wall moved, and you can proceed now!"
-    InfoMsg 5, 2
+    InfoMsg Global10470_Text_WallMovedCanProceed, 2
     LastKeyWait
     InfoMsgClose_0039
     FlagSet 215
@@ -126,7 +127,7 @@ Script_8:
     ActorCmdWait
     SEWait
     // "The wall moved, and you can proceed now!"
-    InfoMsg 5, 2
+    InfoMsg Global10470_Text_WallMovedCanProceed, 2
     LastKeyWait
     InfoMsgClose_0039
     FlagSet 214

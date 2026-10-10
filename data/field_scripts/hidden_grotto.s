@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/hidden_grotto.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -172,14 +173,14 @@ Script_6:
     ActorCmdExec 251, Movement_02D8
     ActorCmdWait
     // "Hey, a Pokémon![f000]븁\u0000\nA Pokémon that hides in a place\nlike this might be pretty amazing![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HiddenGrotto_Text_HeyPokemonPokemonHides, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_02F0
     VMSleep 8
     ActorCmdExec 255, Movement_02E8
     ActorCmdWait
     // "Amazing! This is a huge discovery!\nAn incredible find![f000]븁\u0000\nI'll go check a lot of other trees\nto see if there are more Hidden Grottoes![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HiddenGrotto_Text_AmazingHugeDiscoveryIncredible, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 15, 23, 1, 8, 1
     VMSleep 25

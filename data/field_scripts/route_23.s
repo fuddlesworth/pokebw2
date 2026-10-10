@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_23.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -26,7 +27,7 @@ L_004D:
 Script_2:
     ActorsPauseAll
     // "A mysterious presence can be felt here!\nCheck the surrounding area?"
-    SystemMsg 0, 2
+    SystemMsg Route23_Text_MysteriousPresenceCanFelt, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -47,7 +48,7 @@ L_009B:
     VMSleep 30
     PVPlay 482, 0
     // "Kyuuun!"
-    InfoMsg 1, 1
+    InfoMsg Route23_Text_Kyuuun, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -76,7 +77,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 482, 0
     // "Kyuuun!"
-    ScreamMsg 1, 2
+    ScreamMsg Route23_Text_Kyuuun, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -114,7 +115,7 @@ L_0171:
 
 L_0191:
     // "Azelf went flying off somewhere..."
-    SystemMsg 2, 2
+    SystemMsg Route23_Text_AzelfWentFlyingOff, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_01A1

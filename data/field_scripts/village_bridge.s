@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/village_bridge.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -39,7 +40,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Village Bridge"
-    MsgPlaceSign 32, 3
+    MsgPlaceSign VillageBridge_Text_VillageBridge, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -50,7 +51,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Village Bridge"
-    MsgPlaceSign 32, 3
+    MsgPlaceSign VillageBridge_Text_VillageBridge, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -61,7 +62,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Village Bridge Restaurant\nVillage Sandwiches are our specialty!"
-    MsgPlaceSign 33, 2
+    MsgPlaceSign VillageBridge_Text_VillageBridgeRestaurantVillage, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -82,7 +83,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Derleth: Fweet fweet...\nFweeeeeet fweet fweet..."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_DerlethFweetFweetFweeeeeet, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0137
@@ -92,7 +93,7 @@ L_011F:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Derleth: Fwee... Fwee...\nFffweeet fweet..."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_DerlethFweeFweeFffweeet, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -108,7 +109,7 @@ L_013D:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Derleth: What is piercing my mind is\na sad sound.[f000]븁\u0000\nWhat is piercing my heart is\na cold night wind."
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_DerlethWhatPiercingMind, 0, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x400a, 1
@@ -119,7 +120,7 @@ L_0174:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Derleth: The only things that come out\nof my mouth are my whistle tunes and[f000]븀\u0000\ncomplaints about my life.[f000]븁\u0000\nThis bridge is a meeting place for people\nlike me who like to complain."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_DerlethOnlyThingsCome, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -143,7 +144,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Aickman: How about this? This sound!\nDoesn't it get to your heart? Your mind?"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_AickmanHowAboutSound, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01F6
@@ -153,7 +154,7 @@ L_01DE:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Aickman: This is my best friend, my pal.\nIt knows all my sorrow, all my tears."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_AickmanBestFriendPal, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -169,7 +170,7 @@ L_01FC:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Aickman: I know my sound doesn't fit\nthis city, this town.[f000]븁\u0000\nBut I... I cannot change\nmy life, my style."
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_AickmanKnowSoundDoesnt, 0, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x400b, 1
@@ -180,7 +181,7 @@ L_0233:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Aickman: Y-you have great sparkles...\nSparkles in your eyes.[f000]븁\u0000\nPlease make our hopes, our dreams,\ncome true for us.[f000]븁\u0000\nGo grab the glory--go take on the world!"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_AickmanYHaveGreat, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -204,7 +205,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Russo: La la la la la..."
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_RussoLaLaLa, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02B5
@@ -214,7 +215,7 @@ L_029D:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Russo: Testing...\nCheck one, check two, check, check, yup."
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_RussoTestingCheckOne, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -230,7 +231,7 @@ L_02BB:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Russo: Ahem, ahem!\nNow, something's not quite right.[f000]븁\u0000\nThis here microphone's all screwy.\nI can sing real good, promise!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_RussoAhemAhemNow, 0, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x400c, 1
@@ -241,7 +242,7 @@ L_02F2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Russo: Now, you're the first person in an\nawful long time who's hung around to[f000]븀\u0000\nlisten and hear what I was singin' about.[f000]븁\u0000\nMuch obliged!"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_RussoNowYoureFirst, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -264,7 +265,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Koontz: Singing gives life to my spirit.\nWill you listen to the voice of my spirit?"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_KoontzSingingGivesLife, 0, 0
     LastKeyWait
     ActorMsgClose
     ISSSwitchEnable 4
@@ -274,7 +275,7 @@ L_035C:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Koontz: Oh, you want to listen to my song\nafter all! Yes!"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_KoontzOhWantListen, 0, 0
     LastKeyWait
     ActorMsgClose
     ISSSwitchEnable 4
@@ -291,7 +292,7 @@ L_037A:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Koontz: Huh? Are you leaving already?\nI am always here."
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_KoontzHuhLeavingAlready, 0, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x400d, 1
@@ -302,7 +303,7 @@ L_03B1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Koontz: My song...\nDon't you like it?"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_KoontzSongDontLike, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -316,7 +317,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I've steadily extended my win streak\nfor two years... And now it's over...[f000]븁\u0000\nBut I have a strong will.\nI declare that I'll try again[f000]븀\u0000\nto have a 1,000-win streak![f000]븁\u0000\nI won't battle you next time, though.\nYou'll just break my streak."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_IveSteadilyExtendedWin, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -456,20 +457,20 @@ L_05A4:
 L_05B2:
     ActorCmdWait
     // "Wait! Waaait![f000]븁\u0000\nI've been waiting for this day!\nYou're the 1,000th opponent![f000]븁\u0000\nI've got a 999-win streak.\nBe my battle opponent!"
-    ActorMsg MSGFILE_SCRIPT, 1, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VillageBridge_Text_WaitWaaaitIveBeen, 8, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0719
     // "Gwa ha ha!\nEven though you're just a fledgling,[f000]븀\u0000\nyou'll still be my 1,000th win in a row![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VillageBridge_Text_GwaHaHaEven, 8, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_GENTLEMAN_STONEWALL, 0, 0
     VMCall L_03EB
     WorkSetConst 0x40d4, 1
     // "I've steadily extended my win streak\nfor two years... And now it's over...[f000]븁\u0000\nBut I have a strong will.\nI declare that I'll try again[f000]븀\u0000\nto have a 1,000-win streak![f000]븁\u0000\nI won't battle you next time, though.\nYou'll just break my streak."
-    ActorMsg MSGFILE_SCRIPT, 4, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VillageBridge_Text_IveSteadilyExtendedWin, 8, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     PlayerGetRailPos 0x8023, 0x8024, 0x8025
@@ -549,7 +550,7 @@ L_0711:
 
 L_0719:
     // "I understand. I've got a 999-win streak!\nIt's natural to be intimidated.[f000]븁\u0000\nBut I can't let you go further\nunless you battle me![f000]븁\u0000\nAnd there's definitely no way around me.\nNope. You shouldn't use Surf[f000]븀\u0000\nto cross the river, for example."
-    ActorMsg MSGFILE_SCRIPT, 3, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VillageBridge_Text_UnderstandIveGot999, 8, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     PlayerGetDir 0x8010
@@ -696,7 +697,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My favorite thing nowadays\nis to compete in the PWT!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_FavoriteThingNowadaysCompete, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -708,7 +709,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Practice as if it were a real game! Play\nin a real game as if it were a practice!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_PracticeIfWereReal, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -720,7 +721,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'll cross all the bridges\nin the Unova region![f000]븁\u0000\nEven the Marine Tube from Undella Town!\nHmm! I am so looking forward to it!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_IllCrossAllBridges, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -732,7 +733,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I tried to ask for directions, but\nit turned out I was talking to a[f000]븀\u0000\nPokémon Trainer![f000]븁\u0000\nYou need to be careful, too."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_TriedAskDirectionsBut, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -748,7 +749,7 @@ Script_13:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A87
     // "[f000]븉\u0001\u0002Oh... Oh...\nSo...thirsty...[f000]븁\u0000\nI met you on\nthe Tubeline Bridge...[f000]븁\u0000\nG-g-give me...\nFresh Water...?[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_OhOhThirstyMet, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -763,7 +764,7 @@ Script_13:
     SEPlay SEQ_SE_ARDEMO_01
     SEWait
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x8026, 0
@@ -792,7 +793,7 @@ L_0A39:
 
 L_0A5F:
     // "[f000]븉\u0001\u0002But... You don't have Fresh Water...\nI appreciate the thought, though...[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_ButDontHaveFresh, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -801,7 +802,7 @@ L_0A6D:
 
 L_0A73:
     // "[f000]븉\u0001\u0002Thank...[f000]븁\u0000\nWhat?\nOh...[f000]븁\u0000\nWithout Fresh Water...\nI can't run on bridges anymore.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_ThankWhatOhWithout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -814,7 +815,7 @@ L_0A87:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AA8
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -1031,7 +1032,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Keep somebody's secret.\nOtherwise, your secret will be out."
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_KeepSomebodysSecretOtherwise, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0D68
@@ -1069,7 +1070,7 @@ L_0D54:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hear a sound from somewhere.\nSometimes it sounds sad.[f000]븀\u0000\nSometimes it sounds a little goofy...[f000]븀\u0000\nDo you think it could be a ghost?"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge_Text_HearSoundFromSomewhere, 0, 0
     LastKeyWait
     ActorMsgClose
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/striaton_city_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -38,7 +39,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Whatever your age, you can have Pokémon\nbattles if you have Pokémon by your side.[f000]븁\u0000\nIf you use the Internet,\nthere are many people to battle!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity5_Text_WhateverAgeCanHave, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -50,7 +51,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "After many battles, you start to see\nmore deeply and understand things.[f000]븁\u0000\nThat's why I know exactly what\nmy husband is thinking!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity5_Text_AfterManyBattlesStart, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

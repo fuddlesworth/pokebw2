@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city_10.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,7 +16,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pursuing ideals...\nWhat does that really mean?[f000]븁\u0000\nYou see, there was this guy called N,\nwho the legendary Pokémon Zekrom[f000]븀\u0000\nrecognized as the hero..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity10_Text_PursuingIdealsWhatDoes, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0057
@@ -24,7 +25,7 @@ L_0043:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pursuing truth...\nWhat does that really mean?[f000]븁\u0000\nYou see, there was this guy called N,\nwho the legendary Pokémon Reshiram[f000]븀\u0000\nrecognized as the hero..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity10_Text_PursuingTruthWhatDoes, 0, 0
     LastKeyWait
     ActorMsgClose
 

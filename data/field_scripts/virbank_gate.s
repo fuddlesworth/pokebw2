@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/virbank_gate.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -29,12 +30,12 @@ Script_5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0077
     // "Hello!\nOh, you...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankGate_Text_HelloOh, 0, 0, 0
     VMJump L_007C
 
 L_0077:
     // "Hello!\nOh, you...[f000]븁\u0000"
-    InfoMsg 0, 1
+    InfoMsg VirbankGate_Text_HelloOh, 1
 
 L_007C:
     MsgWinCloseAll
@@ -57,12 +58,12 @@ L_009F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00EA
     // "You are with one Pokémon!\nYou love [f000]ā\u0001\u0000 very much, right?[f000]븁\u0000\nBut are you OK?\nYou'll be in trouble when you encounter[f000]븀\u0000\nPokémon that [f000]ā\u0001\u0000 is weak against.[f000]븁\u0000\nHere! I'll give you these,\nso you can have more Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankGate_Text_OnePokemonLoveVery, 0, 0, 0
     VMJump L_00F6
 
 L_00EA:
     // "You are with [f000]Ȁ\u0001\u0001 Pokémon.[f000]븁\u0000\nBut if you have more Pokémon,\nyour journey should be even more fun![f000]븁\u0000\nHere! I'll give you these,\nso why don't you catch more Pokémon?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankGate_Text_PokemonButIfHave, 0, 0, 0
 
 L_00F6:
     MsgWinCloseAll
@@ -74,7 +75,7 @@ L_00F6:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "You know what they say.\nCheerful company shortens the miles!"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankGate_Text_KnowWhatTheySay, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x4151, 1
@@ -87,7 +88,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You know what they say.\nCheerful company shortens the miles!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankGate_Text_KnowWhatTheySay, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -99,7 +100,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Do you know about Audino, the Pokémon\nwho hide in rustling grass?[f000]븁\u0000\nI wonder why Audino give other Pokémon\nso many Exp. Points."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankGate_Text_KnowAboutAudinoPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -111,7 +112,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When we walk, grass rustles!\nIt's Pokémon hide-and-seek!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankGate_Text_WhenWeWalkGrass, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/village_bridge_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -25,7 +26,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This bread will have tons of Honey.\nI'll call it Honey Bread![f000]븁\u0000\nI want to bake it soon, but I'm busy\nmaking Village Sandwiches."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_BreadWillHaveTons, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0289
@@ -43,13 +44,13 @@ L_0077:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00BD
     // "Oh!\nYou're a newcomer, aren't you?[f000]븁\u0000\nThen, let's battle without saying a word!\nAre you ready?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_OhYoureNewcomerArent, 0, 0
     FlagSet 456
     VMJump L_00C7
 
 L_00BD:
     // "Let's battle without saying a word!\nAre you ready?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_LetsBattleWithoutSaying, 0, 0
 
 L_00C7:
     YesNoWin 0x8010
@@ -58,7 +59,7 @@ L_00C7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01C9
     // "All right![f000]븁\u0000\nI want to bake tasty bread\nfor strong Pokémon![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_AllRightWantBake, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_BAKER_CHRIS, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -79,10 +80,10 @@ L_0117:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B5
     // "Wow, what a Trainer![f000]븁\u0000\nYou understand and trust your Pokémon.\nThat's why you got this result!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_WowWhatTrainerUnderstand, 0, 0
     MsgWaitAdvance
     // "I have a favor to ask\nof such a wonderful Trainer![f000]븁\u0000\nI'm planning to bake bread\nwith tons of Honey![f000]븁\u0000\nWould you show me a Pokémon\nwith the Honey Gather Ability?"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_HaveFavorAskSuch, 0, 0
     VMCall L_028F
     VMStackPush 0x8023
     VMStackPushConst 1
@@ -93,7 +94,7 @@ L_0117:
     ActorCmdExec 0, Movement_03C8
     ActorCmdWait
     // "This [f000]ā\u0001\u0000\nwill gather Honey![f000]븁\u0000\nThank you!\nThis gift is a token of my gratitude![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_WillGatherHoneyThank, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -103,7 +104,7 @@ L_0117:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "This bread will have tons of Honey.\nI'll call it Honey Bread![f000]븁\u0000\nI want to bake it soon, but I'm busy\nmaking Village Sandwiches."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_BreadWillHaveTons, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 457
@@ -118,7 +119,7 @@ L_01AF:
 
 L_01B5:
     // "Wow, what a Trainer![f000]븁\u0000\nYou understand and trust your Pokémon.\nThat's why you got this result!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_WowWhatTrainerUnderstand, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -127,7 +128,7 @@ L_01C3:
 
 L_01C9:
     // "Uh-oh... That's fine.\nWhen you change your mind, come back!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_UhOhThatsFine, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -140,10 +141,10 @@ L_01DD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_027B
     // "Wow, what a Trainer![f000]븁\u0000\nYou understand and trust your Pokémon.\nThat's why you got this result!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_WowWhatTrainerUnderstand, 0, 0
     MsgWaitAdvance
     // "I have a favor to ask\nof such a wonderful Trainer![f000]븁\u0000\nI'm planning to bake bread\nwith tons of Honey![f000]븁\u0000\nWould you show me a Pokémon\nwith the Honey Gather Ability?"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_HaveFavorAskSuch, 0, 0
     VMCall L_028F
     VMStackPush 0x8023
     VMStackPushConst 1
@@ -154,7 +155,7 @@ L_01DD:
     ActorCmdExec 0, Movement_03C8
     ActorCmdWait
     // "This [f000]ā\u0001\u0000\nwill gather Honey![f000]븁\u0000\nThank you!\nThis gift is a token of my gratitude![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_WillGatherHoneyThank_2, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -164,7 +165,7 @@ L_01DD:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "This bread will have tons of Honey.\nI'll call it Honey Bread![f000]븁\u0000\nI want to bake it soon, but I'm busy\nmaking Village Sandwiches."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_BreadWillHaveTons, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 457
@@ -179,7 +180,7 @@ L_0275:
 
 L_027B:
     // "Wow, what a Trainer![f000]븁\u0000\nYou understand and trust your Pokémon.\nThat's why you got this result!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_WowWhatTrainerUnderstand, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -226,7 +227,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm totally hooked on Village Sandwiches![f000]븁\u0000\nI come here every day to eat them!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_ImTotallyHookedVillage, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -238,7 +239,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pokémon make the most adorable\nfaces when they bite into sandwiches!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_PokemonMakeMostAdorable, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -250,7 +251,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm so happy to be able to eat\nwith my Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_ImHappyAbleEat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -263,7 +264,7 @@ Script_6:
     ActorSetEyeToEye
     PVPlay 572, 0
     // "Myu myuweee."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_MyuMyuweee, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -277,7 +278,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Skwee weep..."
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_SkweeWeep, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -291,7 +292,7 @@ Script_7:
     ActorSetEyeToEye
     PVPlay 552, 0
     // "Kroooko!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge3_Text_Kroooko, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

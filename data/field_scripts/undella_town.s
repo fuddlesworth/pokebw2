@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/undella_town.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -247,7 +248,7 @@ Script_4:
     ActorNew 0x8021, 307, 1, 251, 291, 0
     BGMPlay SEQ_BGM_E_HUE
     // "[f000]Ā\u0001\u0001: Wait up![f000]븁\u0000"
-    InfoMsg 0, 2
+    InfoMsg UndellaTown_Text_WaitUp, 2
     ActorCmdExec 255, Movement_0B14
     ActorCmdWait
     InfoMsgClose_0039
@@ -255,7 +256,7 @@ Script_4:
     ActorWalkRoute 251, 0x8021, 0x8022, 1, 8, 0
     ActorCmdWait
     // "Let's see how well we've\nraised our Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_LetsSeeHowWell, 251, 0, 0
     MsgWinCloseAll
     VMStackPush 0x4030
     VMStackPushConst 0
@@ -289,17 +290,17 @@ L_0440:
 
 L_0442:
     // "[f000]Ā\u0001\u0001: Great![f000]븁\u0000\nIf we're this strong, Team Plasma will\nrun screaming when they see us![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_GreatIfWereStrong, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0B24
     ActorCmdWait
     // "I won't let 'em get away, though![f000]븁\u0000\nHer Purrloin...\nI'll get it back for sure![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WontLetEmGet, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0B0C
     ActorCmdWait
     // "So, [f000]Ā\u0001\u0000!\nKeep helping me out![f000]븁\u0000\nAlso, continue to work hard\non the Pokédex![f000]븁\u0000\nYou're the one who was officially\nasked to complete it, after all![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepHelpingOutAlso, 251, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8021
     VMStackPushConst 752
@@ -340,11 +341,11 @@ Script_12:
     ActorsPauseAll
     MEPlay SEQ_ME_CALL
     // "The Xtransceiver is ringing."
-    SystemMsg 33, 2
+    SystemMsg UndellaTown_Text_XtransceiverRinging, 2
     MEWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 picked up the Xtransceiver.[f000]븁\u0000"
-    SystemMsg 34, 2
+    SystemMsg UndellaTown_Text_PickedUpXtransceiver, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -361,7 +362,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Undellaaaaa!"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_Undellaaaaa, 0, 0, 1
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -378,7 +379,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Cynthia is participating in the\nPokémon World Tournament![f000]븀\u0000\nI have to cheer for her!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_CynthiaParticipatingPokemonWorld, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_058A
@@ -387,7 +388,7 @@ L_0576:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Pokémon World Tournament...\nI wonder if Cynthia will participate, too."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_PokemonWorldTournamentWonder, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -401,7 +402,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Riches moved far away,\nand it's a little bit lonelier around here."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_RichesMovedFarAway, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -413,7 +414,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The sunlight is strong...[f000]븁\u0000\nDepending on the Pokémon, that can be\neither an advantage or a disadvantage.[f000]븁\u0000\nStrong sunlight makes Fire-type moves\nstronger and Water-type moves weaker."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_SunlightStrongDependingPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -425,7 +426,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Yaaaay! Yaaay!\nUndella Town!!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_YaaaayYaaayUndellaTown, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -437,7 +438,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "We're starting construction to\nfurther develop Undella's resorts.[f000]븁\u0000\nWe just connected to the volcano,\nand we're in awe of nature's power!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WereStartingConstructionFurther, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -449,7 +450,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sometimes Jellicent\nfloat into Undella Bay.[f000]븀\u0000\nThey have a reputation for[f000]븀\u0000\nbeing a little...unusual."
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_SometimesJellicentFloatInto, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -461,7 +462,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Undella Town\nA Town of Rippling Waves"
-    MsgPlaceSign 19, 1
+    MsgPlaceSign UndellaTown_Text_UndellaTownTownRippling, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -472,7 +473,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Marine Tube Ahead\nThe Walk-Through Aquarium"
-    MsgPlaceSign 21, 2
+    MsgPlaceSign UndellaTown_Text_MarineTubeAheadWalk, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -483,7 +484,7 @@ Script_14:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Reversal Mountain Ahead"
-    MsgPlaceSign 20, 2
+    MsgPlaceSign UndellaTown_Text_ReversalMountainAhead, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -500,7 +501,7 @@ Script_10:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0800
     // "[f000]Ā\u0001\u0001: What?![f000]븁\u0000\nIt isn't like I came here because\nI heard rumors about Cynthia[f000]븀\u0000\nbeing here and I wanted to challenge[f000]븀\u0000\nher or anything...[f000]븁\u0000\nI was interested in the Abyssal Ruins![f000]븁\u0000\nSee! Here's proof! You can have it![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WhatIsntLikeCame, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -513,16 +514,16 @@ Script_10:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: It's Dive![f000]븁\u0000\nIf you have a Pokémon that knows it,\nyou can dive to the ocean floor.[f000]븁\u0000\nIf it wasn't for you, I wouldn't have\nfound my sister's Purrloin...[f000]븀\u0000\nOr should I say her Liepard...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_ItsDiveIfHave, 0, 0
     // "OK! [f000]Ā\u0001\u0000![f000]븁\u0000\nLet's see who are Aspertia's\nstrongest Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_OkLetsSeeWho, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07E6
     // "Go get 'em, guys![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_GoGetEmGuys, 0, 0
     MsgWinCloseAll
     VMStackPush 0x4030
     VMStackPushConst 0
@@ -558,7 +559,7 @@ L_0763:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: [f000]Ā\u0001\u0000...[f000]븁\u0000\nI'm really glad you're my friend![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_ImReallyGladYoure, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8022
@@ -589,7 +590,7 @@ L_07E6:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "What's the deal?\nDon't act all cool."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WhatsDealDontAct, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -600,14 +601,14 @@ L_0800:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "OK! [f000]Ā\u0001\u0000![f000]븁\u0000\nLet's see who are Aspertia's\nstrongest Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_OkLetsSeeWho, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0921
     // "Go get 'em, guys![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_GoGetEmGuys, 0, 0
     MsgWinCloseAll
     VMStackPush 0x4030
     VMStackPushConst 0
@@ -643,7 +644,7 @@ L_089E:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: [f000]Ā\u0001\u0000...[f000]븁\u0000\nI'm really glad you're my friend![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_ImReallyGladYoure, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8022
@@ -674,7 +675,7 @@ L_0921:
     WordSetPlayerName 0
     WordSetLoadRivalName 1
     // "What's the deal?\nDon't act all cool."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WhatsDealDontAct, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -766,15 +767,15 @@ L_0A6E:
 L_0A84:
     ActorCmdWait
     // "Zinzolin: Mmm, it's so warm here.[f000]븁\u0000\nLet me get to the point.[f000]븁\u0000\nI have papers that\nLord Ghetsis left behind.[f000]븁\u0000\nWith these, you can read the ancient\nscripts in the Abyssal Ruins.[f000]븁\u0000\nAs my own small, little way to atone\nfor my sins, I'll read them to you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_ZinzolinMmmItsWarm, 7, 0, 0
     MsgWinCloseAll
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 is now able to read\nthe Abyssal Ruins script!"
-    SystemMsg 23, 2
+    SystemMsg UndellaTown_Text_NowAbleReadAbyssal, 2
     MsgWaitAdvance
     InfoMsgClose
     // "Just to make sure you know,\nyou reach the Abyssal Ruins[f000]븀\u0000\nby using Dive in Undella Bay.[f000]븁\u0000\nAnd you must write down the\nciphers you find in the[f000]븀\u0000\nAbyssal Ruins by yourself."
-    ActorMsg MSGFILE_SCRIPT, 24, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, UndellaTown_Text_JustMakeSureKnow, 7, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMStackPush 0x418f
@@ -846,7 +847,7 @@ L_0B61:
 
 L_0B74:
     // "Just to make sure you know,\nyou reach the Abyssal Ruins[f000]븀\u0000\nby using Dive in Undella Bay.[f000]븁\u0000\nAnd you must write down the\nciphers you find in the[f000]븀\u0000\nAbyssal Ruins by yourself."
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_JustMakeSureKnow, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0D80
@@ -858,9 +859,9 @@ L_0B88:
 
 L_0B9B:
     // "According to Lord Ghetsis's papers,\nthe ancient peoples read in the[f000]븀\u0000\nopposite direction to how we read now.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_AccordingLordGhetsissPapers, 0, 0
     // "Keep searching![f000]븁\u0000\nYou need to write down the\nAbyssal Ruins ciphers."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0D80
@@ -872,9 +873,9 @@ L_0BB9:
 
 L_0BCC:
     // "This is what was written\nin the papers...[f000]븁\u0000\nIf you reach the second floor,\nread by shifting one letter.[f000]븁\u0000\nIf you reach the third floor,\nread by shifting two letters.[f000]븁\u0000\nWhat I mean by “shifting\" is replacing\na letter with the previous[f000]븀\u0000\nletter in the alphabet.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WhatWrittenPapersIf, 0, 0
     // "Keep searching![f000]븁\u0000\nYou need to write down the\nAbyssal Ruins ciphers."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0D80
@@ -886,11 +887,11 @@ L_0BEA:
 
 L_0BFD:
     // "What?!\nYou made it even further, you say?[f000]븁\u0000\nAnd what kind of ciphers were there?[f000]븁\u0000\n...\n...[f000]븁\u0000\nAhem... Oh, yes, now I see.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WhatMadeEvenFurther, 0, 0
     // "The king must be the presence that\nstopped the war and united the people.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KingMustPresenceStopped, 0, 0
     // "Keep searching![f000]븁\u0000\nYou need to write down the\nAbyssal Ruins ciphers."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x418f, 5
@@ -903,9 +904,9 @@ L_0C2B:
 
 L_0C3E:
     // "The king must be the presence that\nstopped the war and united the people.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KingMustPresenceStopped, 0, 0
     // "Keep searching![f000]븁\u0000\nYou need to write down the\nAbyssal Ruins ciphers."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0D80
@@ -917,11 +918,11 @@ L_0C5C:
 
 L_0C6F:
     // "What?!\nYou made it even further, you say?[f000]븁\u0000\nAnd what kind of ciphers were there?[f000]븁\u0000\n...\n...[f000]븁\u0000\nAhem... Oh, yes, now I see.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WhatMadeEvenFurther, 0, 0
     // "The king could see the future\nand talk to all living things.[f000]븀\u0000\nHe united the people.[f000]븁\u0000\nIf that is the truth,\nhe was just like the hero![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KingCouldSeeFuture, 0, 0
     // "Keep searching![f000]븁\u0000\nYou need to write down the\nAbyssal Ruins ciphers."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x418f, 7
@@ -934,9 +935,9 @@ L_0C9D:
 
 L_0CB0:
     // "The king could see the future\nand talk to all living things.[f000]븀\u0000\nHe united the people.[f000]븁\u0000\nIf that is the truth,\nhe was just like the hero![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KingCouldSeeFuture, 0, 0
     // "Keep searching![f000]븁\u0000\nYou need to write down the\nAbyssal Ruins ciphers."
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_KeepSearchingNeedWrite, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0D80
@@ -948,9 +949,9 @@ L_0CCE:
 
 L_0CE1:
     // "What?!\nYou made it even further, you say?[f000]븁\u0000\nAnd what kind of ciphers were there?[f000]븁\u0000\n...\n...[f000]븁\u0000\nAhem... Oh, yes, now I see.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_WhatMadeEvenFurther, 0, 0
     // "There are some characters I can't\nrecognize, but based on the context...[f000]븁\u0000\nAn extremely wonderful king\nwas laid to rest in those ruins.[f000]븁\u0000\nIf that king has descendants,\nmaybe those special powers[f000]븀\u0000\nwere passed down...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_ThereSomeCharactersCant, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -960,7 +961,7 @@ L_0CE1:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Now that I've learned everything\nI wanted to know about the[f000]븀\u0000\nAbyssal Ruins, I take my leave.[f000]븁\u0000\nYou are my enemy,\nbut your accomplishments and skill[f000]븀\u0000\nmake you a worthwhile enemy. Adieu![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 32, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndellaTown_Text_NowIveLearnedEverything, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8022

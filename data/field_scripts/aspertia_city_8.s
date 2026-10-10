@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/aspertia_city_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -13,7 +14,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My flaky fortune-telling says that\nyou'll meet a Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_FlakyFortuneTellingSays, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_00CB
@@ -30,7 +31,7 @@ L_0039:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00A9
     // "Oh! You already have a Gym Badge![f000]븁\u0000\nThis is a present from me!\nI hope it helps you out![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_OhAlreadyHaveGym, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -40,7 +41,7 @@ L_0039:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "The Ultra Ball is really good.\nIt performs much better[f000]븀\u0000\nthan a regular Poké Ball!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_UltraBallReallyGood, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 277
@@ -48,7 +49,7 @@ L_0039:
 
 L_00A9:
     // "Going to the next town was a big\nadventure when I was a kid![f000]븁\u0000\nOh yeah! Here, I'll give you something\nI always used to take with me back then![f000]븁\u0000\nUm... Now, where is it?\nI'll look for it! Sorry!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_GoingNextTownBig, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -57,7 +58,7 @@ L_00B7:
 
 L_00BD:
     // "The Ultra Ball is really good.\nIt performs much better[f000]븀\u0000\nthan a regular Poké Ball!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_UltraBallReallyGood, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -75,7 +76,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wonder if there's a Pokémon that was\ndropped on the ground somewhere..."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_WonderIfTheresPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0114
@@ -84,7 +85,7 @@ L_0100:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's the worst when you find the Pokémon\nyou were looking for and you don't[f000]븀\u0000\nhave any Poké Balls."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AspertiaCity8_Text_ItsWorstWhenFind, 0, 0
     LastKeyWait
     ActorMsgClose
 

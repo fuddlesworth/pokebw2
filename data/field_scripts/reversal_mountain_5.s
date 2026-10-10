@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/reversal_mountain_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -54,7 +55,7 @@ L_00A5:
     ActorCmdWait
     EvCameraWait
     // "What is this place?\nIt feels very strange.[f000]븁\u0000\nCould this be the place where\nReversal Mountain started from--the[f000]븀\u0000\nlair of the Pokémon Heatran?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain5_Text_WhatPlaceFeelsVery, 254, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 32
     ActorWalkRoute 254, 0x8021, 18, 0, 8, 0
@@ -78,7 +79,7 @@ L_0136:
 L_0146:
     ActorCmdWait
     // "Heatran is a Pokémon with\nmagma-like blood flowing through it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, ReversalMountain5_Text_HeatranPokemonMagmaLike, 254, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x4121, 3
     FinishAllEvents
@@ -88,7 +89,7 @@ L_0146:
 Script_2:
     ActorsPauseAll
     // "The Magma Stone is reacting\nto something...[f000]븀\u0000\nWill you set it down here?"
-    SystemMsg 2, 2
+    SystemMsg ReversalMountain5_Text_MagmaStoneReactingSomething, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -100,7 +101,7 @@ Script_2:
     WorkSetConst 0x4074, 2
     PVPlay 485, 0
     // "Gwogobo gwobobobo!"
-    InfoMsg 3, 1
+    InfoMsg ReversalMountain5_Text_GwogoboGwobobobo, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -125,7 +126,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 485, 0
     // "Gwogobo gwobobobo!"
-    ScreamMsg 3, 2
+    ScreamMsg ReversalMountain5_Text_GwogoboGwobobobo, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -170,7 +171,7 @@ L_0263:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0280
     // "Heatran vanished into the\ndepths of the volcano..."
-    SystemMsg 4, 2
+    SystemMsg ReversalMountain5_Text_HeatranVanishedIntoDepths, 2
     LastKeyWait
     InfoMsgClose
 

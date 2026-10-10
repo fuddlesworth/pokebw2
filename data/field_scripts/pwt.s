@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pwt.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -116,7 +117,7 @@ L_018D:
 L_01B8:
     ActorCmdWait
     // "Clay: Here we are![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_ClayHereWe, 7, 0, 0
     MsgWinCloseAll
     ActorCmdExec 6, Movement_08BC
     ActorCmdExec 7, Movement_08BC
@@ -126,7 +127,7 @@ L_01B8:
     EvCameraWait
     ActorCmdWait
     // "Whaddya think?\nGreat buildin', huh?[f000]븁\u0000\nHere's where the Pokémon World\nTournament takes place![f000]븀\u0000\nAin't she purty?[f000]븁\u0000\nFollow me, tads![f000]븁\u0000"
-    InfoMsg 1, 2
+    InfoMsg Pwt_Text_WhaddyaThinkGreatBuildin, 2
     InfoMsgClose_0039
     EvCameraMoveToDefault 40
     EvCameraWait
@@ -202,7 +203,7 @@ Script_2:
     ActorCmdWait
     WordSetPlayerName 0
     // "Cheren: I barely recognized\nyou and [f000]Ā\u0001\u0000.[f000]븁\u0000\nYou two are way different from when\nwe battled in Aspertia City![f000]븁\u0000\nTraveling with Pokémon makes\neveryone grow so much...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_CherenBarelyRecognizedTwo, 8, 0, 0
     ActorNew 186, 470, 2, 251, 293, 0
     ActorCmdExec 251, Movement_04BC
     VMSleep 48
@@ -214,16 +215,16 @@ Script_2:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: What was that just now?![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_WhatJustNow, 6, 0, 0
     MsgWinCloseAll
     ActorCmdExec 8, Movement_08CC
     ActorCmdExec 255, Movement_08BC
     ActorCmdWait
     // "I'm going after him!\n[f000]Ā\u0001\u0000, come with me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_ImGoingAfterHim, 6, 0, 0
     MsgWinCloseAll
     // "Stop.[f000]븁\u0000"
-    InfoMsg 5, 1
+    InfoMsg Pwt_Text_Stop, 1
     MsgWinCloseAll
     SEPlay SEQ_SE_KAIDAN
     ActorAdd 9
@@ -235,10 +236,10 @@ Script_2:
     ActorCmdExec 8, Movement_08BC
     ActorCmdWait
     // "Colress: There's no reason\nfor you to stick your necks into[f000]븀\u0000\nsomething so dangerous![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_ColressTheresNoReason, 9, 0, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: The Pokémon I'm looking\nfor--my little sister's Purrloin--it[f000]븀\u0000\nmight be with them![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_PokemonImLookingLittle, 6, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 6, 196, 480, 1, 4, 1
     VMSleep 12
@@ -248,7 +249,7 @@ Script_2:
     ActorCmdExec 255, Movement_08BC
     ActorCmdWait
     // "Cheren: I'm going, too![f000]븁\u0000\nI've got his back![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_CherenImGoingToo, 8, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 8, 196, 480, 1, 8, 1
     VMSleep 24
@@ -259,7 +260,7 @@ Script_2:
     ActorCmdExec 255, Movement_08BC
     ActorCmdWait
     // "Colress: I don't understand.\nThat's not courage, it's recklessness![f000]븁\u0000\nDoes he think anything is possible simply\nbecause he has Pokémon with him?[f000]븁\u0000\nNo, no...\nThat's not possible.[f000]븁\u0000\nAll Trainers and Pokémon are bound\nto one another by Poké Balls...[f000]븁\u0000\nThen maybe it is this bond that will allow\nTrainers to overcome the impossible if[f000]븀\u0000\nthey trust their partner Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_ColressDontUnderstandThats, 9, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 10
     EvCameraWait
@@ -328,7 +329,7 @@ Script_3:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: The Shadow Triad?\nWhat's their deal, anyway![f000]븁\u0000\nAAAAH!\nTeam Plasma! Where did you vanish to![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_ShadowTriadWhatsTheir, 6, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 6, 196, 476, 1, 4, 1
     ActorCmdWait
@@ -336,13 +337,13 @@ Script_3:
     ActorCmdExec 8, Movement_08D4
     ActorCmdWait
     // "Cheren: The Shadow Triad...[f000]븁\u0000\nWith their superhuman powers, they\ncan immobilize people and then disappear![f000]븁\u0000\nBut I'm more concerned with what\nZinzolin said...[f000]븁\u0000\n“Once again, we will use the\nlegendary Dragon-type Pokémon[f000]븀\u0000\nand we will rule the Unova region!\"[f000]븀\u0000\nWhat could that mean?[f000]븁\u0000\nThe legendary Dragon-type Pokémon\nReshiram and Zekrom[f000]븀\u0000\naren't in Unova anymore...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_CherenShadowTriadTheir, 8, 0, 0
     MsgWinCloseAll
     ActorCmdExec 8, Movement_05BC
     ActorCmdWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000.[f000]븁\u0000\nThere's something I want to look into,\nso I'm going to head to Route 6![f000]븁\u0000\nBe careful out there![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt_Text_TheresSomethingWantLook, 8, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 8, 197, 476, 1, 8, 1
     ActorCmdWait
@@ -380,7 +381,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Colress: Trust...\nIt's too much of an unknown factor.[f000]븁\u0000\nBut if believing in your Pokémon\ngives you the courage to stand up[f000]븀\u0000\nto Team Plasma...[f000]븁\u0000\nAnd the courage to help your friends...[f000]븁\u0000\nThen follow them south to the dock!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_ColressTrustItsToo, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -420,7 +421,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Water Pledge,\nFire Pledge,[f000]븀\u0000\nand Grass Pledge.[f000]븁\u0000\nWhen combinations of these\nthree moves are used in battle,[f000]븀\u0000\nspecial things happen!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_WaterPledgeFirePledge, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -432,7 +433,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My husband can teach some Pokémon the\nultimate moves! I'll tell you their names.[f000]븁\u0000\nThe blazing Fire-type Pokémon:\nCharizard, Typhlosion, Blaziken,[f000]븀\u0000\nInfernape, and Emboar![f000]븁\u0000\nThe restless Water-type Pokémon:\nBlastoise, Feraligatr, Swampert,[f000]븀\u0000\nEmpoleon, and Samurott![f000]븁\u0000\nThe quiet Grass-type Pokémon:\nVenusaur, Meganium, Sceptile,[f000]븀\u0000\nTorterra, and Serperior!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_HusbandCanTeachSome, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -444,7 +445,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What kind of Trainers will come?\nWhat kind of battle will it be?"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_WhatKindTrainersWill, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -456,7 +457,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When battling in front of people,\nit's well known that you should stand[f000]븀\u0000\nyour ground and not dance around.[f000]븁\u0000\nBut I can't resist moves that groove,\nlike Petal Dance, Quiver Dance,[f000]븀\u0000\nFiery Dance, and Dragon Dance.[f000]븁\u0000\nAnd on rare occasions, even Lunar Dance!"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_WhenBattlingFrontPeople, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -468,7 +469,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The crowd will go wild for my Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_CrowdWillGoWild, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -480,7 +481,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Isn't it wonderful how people\nchallenging themselves helps[f000]븀\u0000\nbring the world together!"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_IsntWonderfulHowPeople, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -492,7 +493,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A ship's only really a ship when\nit's crossing an ocean.[f000]븀\u0000\nDocked ships sure look lonely."
-    ParentActorMsg MSGFILE_SCRIPT, 34, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_ShipsOnlyReallyShip, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -504,7 +505,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That cave down there\nis the Relic Passage![f000]븁\u0000\nIt was recently discovered,\nbut amazingly, it's...[f000]븁\u0000\nWait? Where was it\nconnected to again?"
-    ParentActorMsg MSGFILE_SCRIPT, 33, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_CaveDownThereRelic, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -516,7 +517,7 @@ Script_18:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "The Pokémon World Tournament\naka the PWT[f000]븀\u0000\nCall it what you like!"
-    MsgPlaceSign 36, 2
+    MsgPlaceSign Pwt_Text_PokemonWorldTournamentAka, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -531,13 +532,13 @@ Script_14:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0779
     // "When a Pokémon learns the move\nHidden Power, somehow I can tell[f000]븀\u0000\nwhat type that move will be![f000]븁\u0000\nShould I tell you what type of\nHidden Power your Pokémon will learn?"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_WhenPokemonLearnsMove, 0, 0
     FlagSet 135
     VMJump L_0783
 
 L_0779:
     // "Now that I'm aware of my hidden power,\nI can tell you what type of Hidden Power[f000]븀\u0000\nyour Pokémon will learn![f000]븀\u0000\nDo you want to know?"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_NowImAwareHidden, 0, 0
 
 L_0783:
     YesNoWin 0x8010
@@ -546,7 +547,7 @@ L_0783:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07AA
     // "If you want to know, ask me, and I'll\nactivate my hidden power for you!"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_IfWantKnowAsk, 0, 0
     VMJump L_07B2
 
 L_07AA:
@@ -568,7 +569,7 @@ L_07BC:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07EB
     // "If you want to know, ask me, and I'll\nactivate my hidden power for you!"
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_IfWantKnowAsk, 0, 0
     VMReturn
 
 L_07EB:
@@ -578,7 +579,7 @@ L_07EB:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0810
     // "It's not possible for an Egg to use\nHidden Power!"
-    ParentActorMsg MSGFILE_SCRIPT, 31, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_ItsNotPossibleEgg, 0, 0
     VMReturn
 
 L_0810:
@@ -588,7 +589,7 @@ L_0810:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0835
     // "I'm sorry, but this Pokémon can't learn\nto use Hidden Power."
-    ParentActorMsg MSGFILE_SCRIPT, 32, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_ImSorryButPokemon, 0, 0
     VMReturn
 
 L_0835:
@@ -600,12 +601,12 @@ L_0835:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0869
     // "The type of this Pokémon's\nHidden Power is [f000]ă\u0001\u0000!"
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_TypePokemonsHiddenPower, 0, 0
     VMJump L_0873
 
 L_0869:
     // "If this Pokémon were to learn\nHidden Power, the move's type[f000]븀\u0000\nwould be [f000]ă\u0001\u0000!"
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt_Text_IfPokemonWereLearn, 0, 0
 
 L_0873:
     VMReturn

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/relic_castle_23.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -8,7 +9,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     PVPlay 637, 0
     // "Vraahhbrbrbr!"
-    ScreamMsg 0, 2
+    ScreamMsg RelicCastle23_Text_Vraahhbrbrbr, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -56,7 +57,7 @@ L_0094:
 
 L_00B4:
     // "Volcarona quietly flew away..."
-    SystemMsg 1, 2
+    SystemMsg RelicCastle23_Text_VolcaronaQuietlyFlewAway, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_00C4

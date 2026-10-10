@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_16.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -42,12 +43,12 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00F5
     // "Oh! A company tour?\nAnyway, let's have a battle![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_OhCompanyTourAnyway, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_CLERK_M_CLEMENS, 0, 0
     VMCall L_0109
     // "What power! I'm moved,\nso I'll give you this present!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_WhatPowerImMoved, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -58,7 +59,7 @@ Script_2:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "A Quick Ball makes it easier to catch a\nPokémon if you use it at the very[f000]븀\u0000\nbeginning of a battle."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_QuickBallMakesEasier, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 210
@@ -66,7 +67,7 @@ Script_2:
 
 L_00F5:
     // "A Quick Ball makes it easier to catch a\nPokémon if you use it at the very[f000]븀\u0000\nbeginning of a battle."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_QuickBallMakesEasier, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -99,12 +100,12 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01A7
     // "Did you come for Pokémon practice?\nI'll be happy to help you out![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_DidComePokemonPractice, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_CLERK_M_WARREN, 0, 0
     VMCall L_0109
     // "With skills like that,\nyou can get the most out of these!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_SkillsLikeCanGet, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -115,7 +116,7 @@ Script_3:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "A Timer Ball makes it easier to catch\na Pokémon you've been battling[f000]븀\u0000\nfor a long time!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_TimerBallMakesEasier, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 362
@@ -123,7 +124,7 @@ Script_3:
 
 L_01A7:
     // "A Timer Ball makes it easier to catch\na Pokémon you've been battling[f000]븀\u0000\nfor a long time!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity16_Text_TimerBallMakesEasier, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

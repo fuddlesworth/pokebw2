@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/opelucid_city_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -33,14 +34,14 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00FE
     // "Mimicking somebody is fun, isn't it?[f000]븁\u0000\nDo you want to find the one who\nmimics me among my friends?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_MimickingSomebodyFunIsnt, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E0
     // "OK! Here goes!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_OkHereGoes, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0718
@@ -51,7 +52,7 @@ Script_1:
 
 L_00E0:
     // "I see..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_See, 0, 0
     LastKeyWait
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0718
@@ -62,7 +63,7 @@ L_00F8:
 
 L_00FE:
     // "Who mimicked me?\nSpeak to that person."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_WhoMimickedSpeakPerson, 0, 0
     LastKeyWait
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0718
@@ -202,7 +203,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm not a mimicker.\nBut mimicking is fun."
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_ImNotMimickerBut, 0, 0
     LastKeyWait
     MsgWinCloseAll
     PlayerGetDir 0x8024
@@ -223,7 +224,7 @@ L_039B:
     VMJumpIf CMP_STACK, L_046B
     SEPlay SEQ_SE_MESSAGE
     // "Did that friend mimic me?"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_DidFriendMimic, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -234,12 +235,12 @@ L_039B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03FA
     // "Correct![f000]븁\u0000\nTrainer, you're great!\nDo you want to try again?"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_CorrectTrainerYoureGreat, 0, 0, 0
     VMJump L_0406
 
 L_03FA:
     // "Hmmm... Too bad.\nDo you want to try again?"
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_HmmmTooBadWant, 0, 0, 0
 
 L_0406:
     WorkSetConst 0x4000, 0
@@ -249,7 +250,7 @@ L_0406:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0445
     // "OK! Here goes!"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_OkHereGoes, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x4000, 1
@@ -258,7 +259,7 @@ L_0406:
 
 L_0445:
     // "I see..."
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_See, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -267,7 +268,7 @@ L_0455:
 
 L_045B:
     // "Which of my friends\nmimicked me?"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_WhichFriendsMimicked, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -285,7 +286,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I want to cherish my originality."
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_WantCherishOriginality, 0, 0
     LastKeyWait
     MsgWinCloseAll
     PlayerGetDir 0x8024
@@ -306,7 +307,7 @@ L_04C1:
     VMJumpIf CMP_STACK, L_0591
     SEPlay SEQ_SE_MESSAGE
     // "Did that friend mimic me?"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_DidFriendMimic, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -317,12 +318,12 @@ L_04C1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0520
     // "Correct![f000]븁\u0000\nTrainer, you're great!\nDo you want to try again?"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_CorrectTrainerYoureGreat, 0, 0, 0
     VMJump L_052C
 
 L_0520:
     // "Hmmm... Too bad.\nDo you want to try again?"
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_HmmmTooBadWant, 0, 0, 0
 
 L_052C:
     WorkSetConst 0x4000, 0
@@ -332,7 +333,7 @@ L_052C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_056B
     // "OK! Here goes!"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_OkHereGoes, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x4000, 1
@@ -341,7 +342,7 @@ L_052C:
 
 L_056B:
     // "I see..."
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_See, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -350,7 +351,7 @@ L_057B:
 
 L_0581:
     // "Which of my friends\nmimicked me?"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_WhichFriendsMimicked, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -368,7 +369,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's nicer to be mimicked\nthan to mimic somebody!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_ItsNicerMimickedThan, 0, 0
     LastKeyWait
     MsgWinCloseAll
     PlayerGetDir 0x8024
@@ -389,7 +390,7 @@ L_05E7:
     VMJumpIf CMP_STACK, L_06B7
     SEPlay SEQ_SE_MESSAGE
     // "Did that friend mimic me?"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_DidFriendMimic, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -400,12 +401,12 @@ L_05E7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0646
     // "Correct![f000]븁\u0000\nTrainer, you're great!\nDo you want to try again?"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_CorrectTrainerYoureGreat, 0, 0, 0
     VMJump L_0652
 
 L_0646:
     // "Hmmm... Too bad.\nDo you want to try again?"
-    ActorMsg MSGFILE_SCRIPT, 10, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_HmmmTooBadWant, 0, 0, 0
 
 L_0652:
     WorkSetConst 0x4000, 0
@@ -415,7 +416,7 @@ L_0652:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0691
     // "OK! Here goes!"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_OkHereGoes, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x4000, 1
@@ -424,7 +425,7 @@ L_0652:
 
 L_0691:
     // "I see..."
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_See, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -433,7 +434,7 @@ L_06A1:
 
 L_06A7:
     // "Which of my friends\nmimicked me?"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_WhichFriendsMimicked, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -447,7 +448,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You can use the target's\nlast move during a battle.[f000]븁\u0000\nThat is Mimic![f000]븁\u0000\nMy Galvantula is charming,\neven though it won't learn Mimic!"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_CanUseTargetsLast, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -460,7 +461,7 @@ Script_6:
     ActorSetEyeToEye
     PVPlay 596, 0
     // "Bzzz... Zzz..."
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, OpelucidCity5_Text_BzzzZzz, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

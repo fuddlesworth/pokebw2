@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nature_preserve.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -21,7 +22,7 @@ Script_1:
     ActorSetEyeToEye
     PVPlay 612, 0
     // "Gwaooooogh!"
-    ScreamMsg 0, 2
+    ScreamMsg NaturePreserve_Text_Gwaooooogh, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -61,7 +62,7 @@ L_00A1:
 
 L_00C1:
     // "The dark Haxorus vanished\ninto the preserve..."
-    SystemMsg 1, 2
+    SystemMsg NaturePreserve_Text_DarkHaxorusVanishedInto, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_00D1
@@ -76,14 +77,14 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's a hop, skip, and a jump by my plane!\nWant to go back to Mistralton City?"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NaturePreserve_Text_ItsHopSkipJump, 0, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012A
     // "OK! Let's hit the runway![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NaturePreserve_Text_OkLetsHitRunway, 0, 2, 0
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait
@@ -93,7 +94,7 @@ Script_2:
 
 L_012A:
     // "Roger!\nTalk to me when you're ready!"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NaturePreserve_Text_RogerTalkWhenYoure, 0, 2, 0
     LastKeyWait
     MsgWinCloseAll
 

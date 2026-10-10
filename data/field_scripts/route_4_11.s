@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_4_11.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -38,7 +39,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Every Monday, Pokémon fly here\nfrom somewhere."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route411_Text_EveryMondayPokemonFly, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -50,7 +51,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If Pokémon are released\nand demonstrate their true skills...[f000]븁\u0000\nWill we be used by Pokémon\nand battle for them someday...?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route411_Text_IfPokemonReleasedDemonstrate, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

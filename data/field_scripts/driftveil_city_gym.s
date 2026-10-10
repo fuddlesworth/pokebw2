@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_gym.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -66,7 +67,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02E9
     // "Harrumph! Kept me waitin', didn't ya, kid?[f000]븁\u0000\nAll right, time to see what\nya can do![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HarrumphKeptWaitinDidnt, 7, 0, 0
     ActorMsgClose
     WorkSetConst 0x8021, 0
     GameGetDifficulty 0x8021
@@ -95,7 +96,7 @@ L_0149:
 
 L_014B:
     // "Phew...\nYou're really somethin'![f000]븁\u0000\nLi'l whippersnapper Trainers\nwho pack a real punch keep[f000]븀\u0000\nshowin' up one after another.[f000]븁\u0000\nMrmph.\nHere! Take this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_PhewYoureReallySomethin, 7, 0, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 4
     TrainerCardAddBadge 4
@@ -117,10 +118,10 @@ L_0190:
     WorkSetConst 0x8022, 0
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 received the Quake Badge\nfrom Clay![f000]븁\u0000"
-    SystemMsg 2, 0
+    SystemMsg DriftveilCityGym_Text_ReceivedQuakeBadgeFrom, 0
     InfoMsgClose
     // "So this is yer fifth Badge, huh?[f000]븁\u0000\nIf that's so, Pokémon up to Lv. 60\nwill obey ya.[f000]븁\u0000\nHere!\nTake this, too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_YerFifthBadgeHuh, 7, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -161,7 +162,7 @@ L_0237:
 L_0245:
     ActorCmdWait
     // "Well, I suppose...\nCome thisaway![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_WellSupposeComeThisaway, 7, 0, 0
     ActorMsgClose
     ActorCmdExec 7, Movement_06A4
     WorkCmpConst 0x8010, 0
@@ -207,14 +208,14 @@ L_02E9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0312
     // "Clay: Mrrmph! You, huh?\nRemember what I done told ya?[f000]븁\u0000\nIf ya think ya can go, go wherever,\nand if ya think ya can do somethin',[f000]븀\u0000\nkeep doin' it.[f000]븁\u0000\nDo things how ya want!\nDecide yer own limits."
-    ActorMsg MSGFILE_SCRIPT, 6, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_ClayMrrmphHuhRemember, 7, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0322
 
 L_0312:
     // "I don't know how much potential ya got,\nbut if ya think ya can go, go wherever,[f000]븀\u0000\nand if ya think ya can do somethin',[f000]븀\u0000\nkeep doin' it.[f000]븁\u0000\nDo things how ya want!\nDecide yer own limits."
-    ActorMsg MSGFILE_SCRIPT, 4, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DontKnowHowMuch, 7, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -237,7 +238,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03A0
     // "Welcome to the Driftveil Gym!\nThis is for you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_WelcomeDriftveilGym, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -247,7 +248,7 @@ Script_3:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Gym Leader Clay uses\nGround-type Pokémon![f000]븁\u0000\nWell, just between you and me,\nGround-type Pokémon aren't good against[f000]븀\u0000\nWater-type attacks.[f000]븁\u0000\nThey also don't like Grass-\nor Ice-type attacks![f000]븁\u0000\nOh, and in this Gym, the area you\nwalk on will light up.[f000]븁\u0000\nWhere you've been is a hint\nfor where you need to go!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_GymLeaderClayUses, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 111
@@ -255,7 +256,7 @@ Script_3:
 
 L_03A0:
     // "Gym Leader Clay uses\nGround-type Pokémon![f000]븁\u0000\nWell, just between you and me,\nGround-type Pokémon aren't good against[f000]븀\u0000\nWater-type attacks.[f000]븁\u0000\nThey also don't like Grass-\nor Ice-type attacks![f000]븁\u0000\nOh, and in this Gym, the area you\nwalk on will light up.[f000]븁\u0000\nWhere you've been is a hint\nfor where you need to go!"
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_GymLeaderClayUses, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -264,7 +265,7 @@ L_03AE:
 
 L_03B4:
     // "Every now and again, I hope you look at\nthe Quake Badge you won here and[f000]븀\u0000\nremember your battle with Clay!"
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_EveryNowAgainHope, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -341,7 +342,7 @@ L_04B0:
     SEPlay SEQ_SE_MESSAGE
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 pressed the\nswitch on the elevator!"
-    InfoMsg 24, 2
+    InfoMsg DriftveilCityGym_Text_PressedSwitchElevator, 2
     MsgWaitAdvance
     MsgWinCloseAll
     VMReturn
@@ -439,7 +440,7 @@ Script_8:
     WordSetPlayerName 0
     SEPlay SEQ_SE_FLD_61
     // "[f000]Ā\u0001\u0000 pressed the\nswitch on the elevator!"
-    InfoMsg 24, 2
+    InfoMsg DriftveilCityGym_Text_PressedSwitchElevator, 2
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -547,7 +548,7 @@ Script_11:
     TrainerBGMPlayPush TRAINER_WORKER_NOEL
     ActorCmdWait
     // "My Pokémon dig because they\nbelieve they're gonna find something,[f000]븀\u0000\nand they battle because they believe[f000]븀\u0000\nthey're gonna win![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_PokemonDigBecauseThey, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_NOEL, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -563,7 +564,7 @@ L_07A8:
 
 L_07AA:
     // "Clay's awesome!\nHe can just tell if minerals will be there![f000]븁\u0000\nGot it? Another way to say it is\nthat Clay will be wherever[f000]븀\u0000\nthere are oodles of ores!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_ClaysAwesomeHeCan, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40b9, 1
@@ -573,7 +574,7 @@ L_07C4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Clay's awesome!\nHe can just tell if minerals will be there![f000]븁\u0000\nGot it? Another way to say it is\nthat Clay will be wherever[f000]븀\u0000\nthere are oodles of ores!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_ClaysAwesomeHeCan, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -633,7 +634,7 @@ L_088C:
     ActorCmdExec 255, Movement_0714
     ActorCmdWait
     // "My Pokémon dig because they\nbelieve they're gonna find something,[f000]븀\u0000\nand they battle because they believe[f000]븀\u0000\nthey're gonna win![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_PokemonDigBecauseThey, 6, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_NOEL, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -649,7 +650,7 @@ L_08CD:
 
 L_08CF:
     // "Clay's awesome!\nHe can just tell if minerals will be there![f000]븁\u0000\nGot it? Another way to say it is\nthat Clay will be wherever[f000]븀\u0000\nthere are oodles of ores!"
-    ActorMsg MSGFILE_SCRIPT, 8, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_ClaysAwesomeHeCan, 6, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40b9, 1
@@ -671,7 +672,7 @@ Script_12:
     TrainerBGMPlayPush TRAINER_WORKER_TAVARIUS
     ActorCmdWait
     // "The one you meet when you get on this\nconveyor is none other than me![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_OneMeetWhenGet, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_TAVARIUS, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -687,7 +688,7 @@ L_0953:
 
 L_0955:
     // "Have you used the elevator?[f000]븁\u0000\nIf you get on the elevator,\nyou can figure out where you[f000]븀\u0000\nhaven't been, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HaveUsedElevatorIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40ba, 1
@@ -697,7 +698,7 @@ L_096F:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Have you used the elevator?[f000]븁\u0000\nIf you get on the elevator,\nyou can figure out where you[f000]븀\u0000\nhaven't been, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HaveUsedElevatorIf, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -730,7 +731,7 @@ L_09D4:
     ActorCmdExec 255, Movement_070C
     ActorCmdWait
     // "The one you meet when you get on this\nconveyor is none other than me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_OneMeetWhenGet, 1, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_TAVARIUS, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -746,7 +747,7 @@ L_0A15:
 
 L_0A17:
     // "Have you used the elevator?[f000]븁\u0000\nIf you get on the elevator,\nyou can figure out where you[f000]븀\u0000\nhaven't been, right?"
-    ActorMsg MSGFILE_SCRIPT, 10, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HaveUsedElevatorIf, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40ba, 1
@@ -768,7 +769,7 @@ Script_13:
     TrainerBGMPlayPush TRAINER_WORKER_TIBOR
     ActorCmdWait
     // "I have a riddle for you!\nDo you know what is distant but close?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HaveRiddleKnowWhat, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_TIBOR, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -784,7 +785,7 @@ L_0A9B:
 
 L_0A9D:
     // "Something distant but close...[f000]븁\u0000\nI'm talking about Clay, who is near here\nbut is rather reserved.[f000]븁\u0000\nSorry... I think you were expecting\nsomething more interesting!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_SomethingDistantButClose, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bb, 1
@@ -794,7 +795,7 @@ L_0AB7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Something distant but close...[f000]븁\u0000\nI'm talking about Clay, who is near here\nbut is rather reserved.[f000]븁\u0000\nSorry... I think you were expecting\nsomething more interesting!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_SomethingDistantButClose, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -811,7 +812,7 @@ Script_20:
     ActorCmdExec 255, Movement_0704
     ActorCmdWait
     // "I have a riddle for you!\nDo you know what is distant but close?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HaveRiddleKnowWhat, 2, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_TIBOR, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -827,7 +828,7 @@ L_0B20:
 
 L_0B22:
     // "Something distant but close...[f000]븁\u0000\nI'm talking about Clay, who is near here\nbut is rather reserved.[f000]븁\u0000\nSorry... I think you were expecting\nsomething more interesting!"
-    ActorMsg MSGFILE_SCRIPT, 16, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_SomethingDistantButClose, 2, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bb, 1
@@ -847,7 +848,7 @@ Script_14:
     TrainerBGMPlayPush TRAINER_WORKER_NIEL
     ActorCmdWait
     // "Just because you work hard doesn't\nmean you're gonna get what you want![f000]븁\u0000\nBut if you don't work hard,\nthere are many things you can't do.[f000]븁\u0000\nLet me show you how tough\nmy hard work has made me![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_JustBecauseWorkHard, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_NIEL, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -863,7 +864,7 @@ L_0B9A:
 
 L_0B9C:
     // "Driftveil City's Pokémon Gym is soaked in\nthe sweat and tears of the Pokémon that[f000]븀\u0000\nworked so hard to dig it out of the rock.[f000]븀\u0000\nSo...well...it smells kinda funny!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DriftveilCitysPokemonGym, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bc, 1
@@ -873,7 +874,7 @@ L_0BB6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Driftveil City's Pokémon Gym is soaked in\nthe sweat and tears of the Pokémon that[f000]븀\u0000\nworked so hard to dig it out of the rock.[f000]븀\u0000\nSo...well...it smells kinda funny!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DriftveilCitysPokemonGym, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -890,7 +891,7 @@ Script_21:
     ActorCmdExec 3, Movement_06F4
     ActorCmdWait
     // "Just because you work hard doesn't\nmean you're gonna get what you want![f000]븁\u0000\nBut if you don't work hard,\nthere are many things you can't do.[f000]븁\u0000\nLet me show you how tough\nmy hard work has made me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_JustBecauseWorkHard, 3, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_NIEL, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -906,7 +907,7 @@ L_0C1F:
 
 L_0C21:
     // "Driftveil City's Pokémon Gym is soaked in\nthe sweat and tears of the Pokémon that[f000]븀\u0000\nworked so hard to dig it out of the rock.[f000]븀\u0000\nSo...well...it smells kinda funny!"
-    ActorMsg MSGFILE_SCRIPT, 12, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DriftveilCitysPokemonGym, 3, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bc, 1
@@ -926,7 +927,7 @@ Script_15:
     TrainerBGMPlayPush TRAINER_WORKER_PASQUAL
     ActorCmdWait
     // "Me and my Pokémon are\nprofessional tunnelers![f000]븁\u0000\nMy Pokémon can't be outdug\nor outburrowed! We have no rival![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_PokemonProfessionalTunnelersPokemon, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_PASQUAL, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -942,7 +943,7 @@ L_0C99:
 
 L_0C9B:
     // "Drilbur and Excadrill know the move\nDrill Run![f000]븁\u0000\nWhen I order them to use that move,\nI get all wound up!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DrilburExcadrillKnowMove, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bd, 1
@@ -952,7 +953,7 @@ L_0CB5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Drilbur and Excadrill know the move\nDrill Run![f000]븁\u0000\nWhen I order them to use that move,\nI get all wound up!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DrilburExcadrillKnowMove, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -969,7 +970,7 @@ Script_22:
     ActorCmdExec 255, Movement_070C
     ActorCmdWait
     // "Me and my Pokémon are\nprofessional tunnelers![f000]븁\u0000\nMy Pokémon can't be outdug\nor outburrowed! We have no rival![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_PokemonProfessionalTunnelersPokemon, 4, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_PASQUAL, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -985,7 +986,7 @@ L_0D1E:
 
 L_0D20:
     // "Drilbur and Excadrill know the move\nDrill Run![f000]븁\u0000\nWhen I order them to use that move,\nI get all wound up!"
-    ActorMsg MSGFILE_SCRIPT, 14, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_DrilburExcadrillKnowMove, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bd, 1
@@ -1005,7 +1006,7 @@ Script_16:
     TrainerBGMPlayPush TRAINER_WORKER_MAYNARD
     ActorCmdWait
     // "Here in the darkness...[f000]븁\u0000\nI proceeded step by step\nwhile feeling my Pokémon's every breath![f000]븁\u0000\nI'll show you the power of the bonds\nmy Pokémon and I built in this way![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HereDarknessProceededStep, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_MAYNARD, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -1021,7 +1022,7 @@ L_0D98:
 
 L_0D9A:
     // "Isn't darkness great?[f000]븁\u0000\nIt's the space of dreams where\nyou don't know what's even there!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_IsntDarknessGreatIts, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40be, 1
@@ -1031,7 +1032,7 @@ L_0DB4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Isn't darkness great?[f000]븁\u0000\nIt's the space of dreams where\nyou don't know what's even there!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_IsntDarknessGreatIts, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1048,7 +1049,7 @@ Script_23:
     ActorCmdExec 255, Movement_0704
     ActorCmdWait
     // "Here in the darkness...[f000]븁\u0000\nI proceeded step by step\nwhile feeling my Pokémon's every breath![f000]븁\u0000\nI'll show you the power of the bonds\nmy Pokémon and I built in this way![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_HereDarknessProceededStep, 5, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_MAYNARD, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -1064,7 +1065,7 @@ L_0E1D:
 
 L_0E1F:
     // "Isn't darkness great?[f000]븁\u0000\nIt's the space of dreams where\nyou don't know what's even there!"
-    ActorMsg MSGFILE_SCRIPT, 18, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_IsntDarknessGreatIts, 5, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40be, 1
@@ -1084,7 +1085,7 @@ Script_17:
     TrainerBGMPlayPush TRAINER_WORKER_FRIEDRICH
     ActorCmdWait
     // "When I say dig,\nyou say, “How low?\"[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_WhenSayDigSay, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_FRIEDRICH, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -1100,7 +1101,7 @@ L_0E97:
 
 L_0E99:
     // "Life is filled with pitfalls!\nIf you fall in, do your best to crawl out!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_LifeFilledPitfallsIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bf, 1
@@ -1110,7 +1111,7 @@ L_0EB3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Life is filled with pitfalls!\nIf you fall in, do your best to crawl out!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_LifeFilledPitfallsIf, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -1127,7 +1128,7 @@ Script_24:
     ActorCmdExec 8, Movement_06FC
     ActorCmdWait
     // "When I say dig,\nyou say, “How low?\"[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_WhenSayDigSay, 8, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_WORKER_FRIEDRICH, 0, 0
     TrainerBattleIsVictory 0x8010
@@ -1143,7 +1144,7 @@ L_0F1C:
 
 L_0F1E:
     // "Life is filled with pitfalls!\nIf you fall in, do your best to crawl out!"
-    ActorMsg MSGFILE_SCRIPT, 20, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, DriftveilCityGym_Text_LifeFilledPitfallsIf, 8, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40bf, 1

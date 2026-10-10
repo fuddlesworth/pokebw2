@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_drawbridge.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,13 +16,13 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sometimes, above the bridge, you can\nsee the shadows of bird Pokémon, right?[f000]븁\u0000\nTheir feathers drift to the ground here![f000]븁\u0000\nAnd when you try to pick them up,\noccasionally you'll run into a Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_SometimesAboveBridgeCan, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     Cmd_0275 0, 14, 0
     SEPlay SEQ_SE_FLD_133
     // "The Funfest Mission\n“[f000]ŀ\u0001\u0000\"[f000]븀\u0000\nhas been added to the Entralink!"
-    SystemMsg 1, 0
+    SystemMsg DriftveilDrawbridge_Text_FunfestMissionHasBeen, 0
     SEWait
     LastKeyWait
     MsgWinCloseAll
@@ -32,7 +33,7 @@ L_005C:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sometimes, above the bridge, you can\nsee the shadows of bird Pokémon, right?[f000]븁\u0000\nTheir feathers drift to the ground here![f000]븁\u0000\nAnd when you try to pick them up,\noccasionally you'll run into a Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_SometimesAboveBridgeCan, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -46,7 +47,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Driftveil City is famous for this\ndrawbridge, the PWT, and of course,[f000]븀\u0000\nthe heartbreaker, Charles."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_DriftveilCityFamousDrawbridge, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -62,7 +63,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wonder if the people who made\nthis drawbridge were with Charizard."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_WonderIfPeopleWho, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_014A
@@ -78,7 +79,7 @@ L_00C1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Driftveil Drawbridge...\nIt's also known as the Charizard Bridge![f000]븁\u0000\nBecause the raised drawbridge looks like\nthe Pokémon called Charizard.[f000]븁\u0000\n...But, I've never seen Charizard,\nso I don't know..."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_DriftveilDrawbridgeItsAlso, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_014A
@@ -87,11 +88,11 @@ L_0102:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Driftveil Drawbridge...\nIt's also known as the Charizard Bridge![f000]븁\u0000\nBecause the raised drawbridge looks like\nthe Pokémon called Charizard.[f000]븁\u0000\n...But, I've never seen Charizard,\nso I don't know...[f000]븁\u0000\n...What?!\nAre you with Charizard?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_DriftveilDrawbridgeItsAlso_2, 0, 0
     MsgWinCloseAll
     VMCall L_0150
     // "Wow! Awesome!\nYeah, I think it looks like Charizard.[f000]븁\u0000\nThanks! As a token of my appreciation,\nplease accept this![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_WowAwesomeYeahThink, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -159,7 +160,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02D0
     // "[f000]븉\u0001\u0002Panting... Panting...\nI'm...thirsty...[f000]븁\u0000\nI met you on the Skyarrow Bridge...[f000]븁\u0000\nG-g-give me...\nFresh Water...?[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_PantingPantingImThirsty, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -174,7 +175,7 @@ Script_4:
     SEPlay SEQ_SE_ARDEMO_01
     SEWait
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
     PlayerGetDir 0x8010
@@ -200,7 +201,7 @@ L_0282:
 
 L_02A8:
     // "[f000]븉\u0001\u0002But... You don't have Fresh Water...\nI appreciate the thought, though...[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_ButDontHaveFresh, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -209,7 +210,7 @@ L_02B6:
 
 L_02BC:
     // "[f000]븉\u0001\u0002Thank...[f000]븁\u0000\nWhat?\nOh...[f000]븁\u0000\nWithout Fresh Water...\nI can't run on bridges anymore.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_ThankWhatOhWithout, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -222,7 +223,7 @@ L_02D0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02F1
     // "Refreshed!![f000]븁\u0000\nI'm 100% rehydrated!\nI feel better now! Thank you![f000]븁\u0000\nI'll dash to the next bridge!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilDrawbridge_Text_RefreshedIm100Rehydrated, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

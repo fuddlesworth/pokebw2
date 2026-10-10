@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/white_forest.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -103,7 +104,7 @@ Script_4:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "White Forest\nPeople and Nature in Harmony"
-    MsgPlaceSign 126, 1
+    MsgPlaceSign WhiteForest_Text_WhiteForestPeopleNature, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -347,7 +348,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Silvia: Ommm...[f000]븁\u0000\nOh! I'm sorry! I was sunbathing, and my\nmind went blank, like I was meditating...[f000]븀\u0000\nOmmm...[f000]븁\u0000\nIsn't the weather great?\nWould you like to “om\" with me?"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_SilviaOmmmOhIm, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_05C9
@@ -364,7 +365,7 @@ L_0565:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Silvia: W-wow! Did you see that?[f000]븁\u0000\nThat lazybones store owner put\nnew items in the shop![f000]븀\u0000\nHe's had the same old stuff[f000]븀\u0000\non display forever![f000]븁\u0000\nHmmm...[f000]븁\u0000\nIt's fine as long as it doesn't\nrain, I guess."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_SilviaWWowDid, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_05C9
@@ -377,7 +378,7 @@ L_05A2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Silvia: While I was just standing around\nand watching Pokémon play,[f000]븀\u0000\nI started to feel so happy and peaceful![f000]븁\u0000\nI hope tomorrow is a pleasant\nday just like today!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_SilviaWhileJustStanding, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -396,7 +397,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Robbie: My big brother is working\nin the shop, but he thinks putting[f000]븀\u0000\nnew goods out is too much trouble.[f000]븁\u0000\nSo go explore a hollow or something,\nand check back later."
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RobbieBigBrotherWorking, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0669
@@ -413,7 +414,7 @@ L_0602:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Robbie: Amazing! My brother\nfinally put some new items[f000]븀\u0000\nin the shop he's working at.[f000]븁\u0000\nHe's the type who can do\nanything if he wants to!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RobbieAmazingBrotherFinally, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0669
@@ -427,7 +428,7 @@ L_063F:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Robbie: My brother is just\nraring to go lately![f000]븁\u0000\nHe keeps putting all sorts of\nnew products in the store![f000]븁\u0000\nHe said he was inspired by a\nTrainer named [f000]Ā\u0001\u0000[f000]븀\u0000\nwho became the best Trainer[f000]븀\u0000\nin the White Treehollow!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RobbieBrotherJustRaring, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -447,7 +448,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ryder: Recently in Unova's Challenge--\nthe White Treehollow--[f000]븀\u0000\ntalented Trainers are falling[f000]븀\u0000\none after another.[f000]븁\u0000\nApparently, a Trainer named\n[f000]Ā\u0001\u0000 is on a rampage.[f000]븁\u0000\nThat's not you, is it? I want to have\na match with that Trainer sometime."
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RyderRecentlyUnovasChallenge, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_06CC
@@ -460,7 +461,7 @@ L_06A5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ryder: You're [f000]Ā\u0001\u0000?!\nYou're the best in the White Treehollow![f000]븁\u0000\nThat's incredible. I'm still\nhaving problems with the first area...[f000]븁\u0000\nGive me some tips later, all right?"
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RyderYoureYoureBest, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -479,7 +480,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Carlos: In White Forest, everyone\nshares the gathered Berries.[f000]븁\u0000\nI picked some extra ones\nfor the older folks."
-    ParentActorMsg MSGFILE_SCRIPT, 48, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_CarlosWhiteForestEveryone, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_076C
@@ -496,7 +497,7 @@ L_0705:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Carlos: Living here every day,\neating Berries, makes me miss[f000]븀\u0000\nthe exciting and exotic food[f000]븀\u0000\nyou can get in the city sometimes.[f000]븁\u0000\nMaybe it's time again to go on\na quest for delicious food.[f000]븀\u0000\nIt's been a while."
-    ParentActorMsg MSGFILE_SCRIPT, 49, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_CarlosLivingHereEvery, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_076C
@@ -510,7 +511,7 @@ L_0742:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Carlos: When I went to the shop\nto prepare for my trip,[f000]븀\u0000\nI noticed the selection[f000]븀\u0000\nof items has gotten much better.[f000]븁\u0000\nBut the guy in the shop was saying\nhe can't lose to [f000]Ā\u0001\u0000.[f000]븀\u0000\nWhat could he have been talking about?"
-    ParentActorMsg MSGFILE_SCRIPT, 50, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_CarlosWhenWentShop, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -529,7 +530,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Gene: A hollow has suddenly appeared in\nthe white tree! That tree is really[f000]븀\u0000\nimportant to us here in White Forest![f000]븁\u0000\nInvestigators and Trainers\nhave come out of the woodwork,[f000]븀\u0000\nbut we locals will be the ones[f000]븀\u0000\nwho make it to the lowest floor!"
-    ParentActorMsg MSGFILE_SCRIPT, 68, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_GeneHollowHasSuddenly, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_080F
@@ -547,7 +548,7 @@ L_07A5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Gene: Hey, [f000]Ā\u0001\u0000![f000]븁\u0000\nI heard the news!\nYou made it really deep[f000]븀\u0000\ninto the hollow, didn't you?[f000]븁\u0000\nHurry and get to the lowest level\nfor me--I'm about to give up!"
-    ParentActorMsg MSGFILE_SCRIPT, 69, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_GeneHeyHeardNews, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_080F
@@ -561,7 +562,7 @@ L_07E5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Gene: On behalf of everyone in the\nforest, I want to congratulate you[f000]븀\u0000\non becoming the top Trainer of[f000]븀\u0000\nthe White Treehollow![f000]븁\u0000\nCongratulations!\nThat was a major accomplishment!"
-    ParentActorMsg MSGFILE_SCRIPT, 70, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_GeneBehalfEveryoneForest, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -580,7 +581,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Miho: Waah! I'm so bored![f000]븁\u0000\nI just got here, but I can't\nhandle living like this[f000]븀\u0000\nwhere there's nothing to do![f000]븁\u0000\nI miss the neon so much!"
-    ParentActorMsg MSGFILE_SCRIPT, 76, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_MihoWaahImBored, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_08AC
@@ -597,7 +598,7 @@ L_0848:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Miho: Since I've moved here,\nmy skin has become so smooth![f000]븁\u0000\nI wonder if it's because I'm\neating fresh-picked Berries every day.[f000]븁\u0000\nNature is so amazing!\nHooray for nature!"
-    ParentActorMsg MSGFILE_SCRIPT, 77, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_MihoSinceIveMoved, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_08AC
@@ -610,7 +611,7 @@ L_0885:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Miho: Lying on my back in a meadow\nand idly watching the sun sink[f000]븀\u0000\nbehind the trees...[f000]븁\u0000\nIt's these simple, ordinary things\nthat are the most fun in this place![f000]븀\u0000\nThe people here taught me that!"
-    ParentActorMsg MSGFILE_SCRIPT, 78, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_MihoLyingBackMeadow, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -629,7 +630,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Rosaline: Oh no! This is no good at all...\nEvery day, I just nap away,[f000]븀\u0000\nand now I'm really rusty![f000]븁\u0000\nOK! OK! I'm going to get back\ninto fighting shape by training[f000]븀\u0000\nin the White Treehollow!"
-    ParentActorMsg MSGFILE_SCRIPT, 104, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RosalineOhNoNo, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_094C
@@ -646,7 +647,7 @@ L_08E5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Rosaline: I'm also taking on the\nWhite Treehollow![f000]븁\u0000\nThere are nothing but strange\nTrainers inside![f000]븁\u0000\nBut everyone in there\nis really tough!"
-    ParentActorMsg MSGFILE_SCRIPT, 105, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RosalineImAlsoTaking, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_094C
@@ -660,7 +661,7 @@ L_0922:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Rosaline: I went back to basics and\nwas training at the White Treehollow.[f000]븁\u0000\nIt made me remember the simple\njoys of Pokémon battling, the way[f000]븀\u0000\nI felt when I'd just started my journey.[f000]븁\u0000\n[f000]Ā\u0001\u0000, did you find anything\nimportant when you were battling there?"
-    ParentActorMsg MSGFILE_SCRIPT, 106, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_RosalineWentBackBasics, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -675,7 +676,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Grace: So you're [f000]Ā\u0001\u0000, then?[f000]븁\u0000\nMy grandson was all excited about\nthis amazing Trainer, so I finally[f000]븀\u0000\ncame to see for myself![f000]븁\u0000\nI thought you'd look scary, but...\nActually, you're quite a cutie!"
-    ParentActorMsg MSGFILE_SCRIPT, 116, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_GraceYoureThenGrandson, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -688,7 +689,7 @@ Script_17:
     ActorSetEyeToEye
     PVPlay 518, 0
     // "Muwaaaan!"
-    ParentActorMsg MSGFILE_SCRIPT, 120, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_Muwaaaan, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -702,7 +703,7 @@ Script_18:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Squee?"
-    ParentActorMsg MSGFILE_SCRIPT, 121, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_Squee, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -716,7 +717,7 @@ Script_19:
     ActorSetEyeToEye
     PVPlay 548, 0
     // "Lill lill..."
-    ParentActorMsg MSGFILE_SCRIPT, 122, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_LillLill, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -730,7 +731,7 @@ Script_20:
     ActorSetEyeToEye
     PVPlay 531, 0
     // "Pololo."
-    ParentActorMsg MSGFILE_SCRIPT, 123, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_Pololo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -744,7 +745,7 @@ Script_21:
     ActorSetEyeToEye
     PVPlay 619, 0
     // "Fooo!"
-    ParentActorMsg MSGFILE_SCRIPT, 124, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_Fooo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -758,7 +759,7 @@ Script_22:
     ActorSetEyeToEye
     PVPlay 524, 0
     // "Lola rolaa."
-    ParentActorMsg MSGFILE_SCRIPT, 125, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteForest_Text_LolaRolaa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_city_22.h"
 
 // Script plugin 16, from the zones that use this file
 
@@ -40,7 +41,7 @@ L_008E:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_020D
     // "The scent you brought me reminded me of\na long-ago melody from the fringes of my[f000]븀\u0000\nsepia-toned memories.[f000]븁\u0000\nIt was a song my mother loved...\nIt makes me feel so nostalgic.[f000]븁\u0000\nWould you like to hear the melody?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ScentBroughtRemindedLong, 0, 0
     ActorMsgClose
     BGMPlay SEQ_BGM_SILENCE_FIELD
     VMCall L_0254
@@ -51,7 +52,7 @@ L_008E:
     VMCall L_0270
     WordSetPartyPokeName 0, 0x8022
     // "[f000]Ă\u0001\u0000 popped out of\nthe Poké Ball![f000]븁\u0000"
-    InfoMsg 23, 2
+    InfoMsg CasteliaCity22_Text_PoppedOutPokeBall, 2
     InfoMsgClose_0039
     VMCall L_02ED
     BGMPlay SEQ_BGM_E_INISHIE
@@ -87,7 +88,7 @@ L_008E:
     VMJumpIf CMP_STACK, L_019B
     WordSetPartyPokeName 0, 0x8022
     // "[f000]Ă\u0001\u0000 remembered the\nRelic Song it had forgotten![f000]븁\u0000"
-    SystemMsg 5, 2
+    SystemMsg CasteliaCity22_Text_RememberedRelicSongHad, 2
     InfoMsgClose
 
 L_019B:
@@ -112,7 +113,7 @@ L_01D6:
 
 L_01F9:
     // "When you came through the door,\nI remembered the melody![f000]븁\u0000\nAnd the Pokémon that had forgotten how\nto dance began to step lightly once more![f000]븁\u0000\nYou are the inspiration.\nYou are a mysterious child..."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_WhenCameThroughDoor, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0213
@@ -180,7 +181,7 @@ L_02CA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02EB
     // "My mother once told me of a Pokémon that\nplayed a melody and danced so lightly[f000]븀\u0000\nthat it filled people's hearts with joy.[f000]븁\u0000\nThen sorrow darkened the entire world,\nand the Pokémon's melody was lost...[f000]븁\u0000\nAt the same time, somewhere,\nsome red shoes were lost...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_MotherOnceToldPokemon, 0, 0
     VMSleep 8
 
 L_02EB:
@@ -217,7 +218,7 @@ L_0335:
     VMReturn
     PlayerGetGPos 0x8020, 0x8021
     // "When you came through the door,\nI remembered the melody![f000]븁\u0000\nAnd the Pokémon that had forgotten how\nto dance began to step lightly once more![f000]븁\u0000\nYou are the inspiration.\nYou are a mysterious child..."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_WhenCameThroughDoor, 0, 0
     MsgWaitAdvance
     ActorMsgClose
     VMReturn
@@ -342,7 +343,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I've been letting my tired mind relax\nin this café this whole time..."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_IveBeenLettingTired, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -354,7 +355,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Listen to him playing guitar...\nI went back to the home I'd left behind,[f000]븀\u0000\nand my mother cried tears of joy...[f000]븀\u0000\nThat's mothers for you."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ListenHimPlayingGuitar, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -370,7 +371,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You can't change your family,\nbut you can change how you[f000]븀\u0000\ninteract with one another.[f000]븁\u0000\nStill, that said..."
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_CantChangeFamilyBut, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_05D5
@@ -383,19 +384,19 @@ L_0563:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Thanks to you and Meloetta,\nmemories of my birthplace...[f000]븀\u0000\nmemories of when I was little...[f000]븀\u0000\nmemories of singing together after[f000]븀\u0000\nwe finished gathering Berries...[f000]븀\u0000\nAll these memories came flooding back.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ThanksMeloettaMemoriesBirthplace, 4, 0, 0
     MsgWinCloseAll
     Cmd_0275 0, 44, 0
     SEPlay SEQ_SE_FLD_133
     // "The Funfest Mission\n“[f000]ŀ\u0001\u0000\"[f000]븀\u0000\nhas been added to the Entralink."
-    SystemMsg 18, 0
+    SystemMsg CasteliaCity22_Text_FunfestMissionHasBeen, 0
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
     FlagSet 2557
     WorkSetConst 0x400a, 2
     // "I'm going to have fun gathering Berries\nwith the people living in the countryside[f000]븀\u0000\nand the Pokémon I've met here in[f000]븀\u0000\nCastelia City![f000]븁\u0000\nOf course, I'll be humming\nMeloetta's tune while I gather them!"
-    ActorMsg MSGFILE_SCRIPT, 19, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ImGoingHaveFun, 4, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_05D5
@@ -404,7 +405,7 @@ L_05C1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm going to have fun gathering Berries\nwith the people living in the countryside[f000]븀\u0000\nand the Pokémon I've met here in[f000]븀\u0000\nCastelia City![f000]븁\u0000\nOf course, I'll be humming\nMeloetta's tune while I gather them!"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ImGoingHaveFun, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -452,18 +453,18 @@ L_0640:
     ActorCmdExec 255, Movement_0458
     ActorCmdWait
     // "Thanks to you and Meloetta,\nmemories of my birthplace...[f000]븀\u0000\nmemories of when I was little...[f000]븀\u0000\nmemories of singing together after[f000]븀\u0000\nwe finished gathering Berries...[f000]븀\u0000\nAll these memories came flooding back.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ThanksMeloettaMemoriesBirthplace, 4, 0, 0
     MsgWinCloseAll
     Cmd_0275 0, 44, 0
     SEPlay SEQ_SE_FLD_133
     // "The Funfest Mission\n“[f000]ŀ\u0001\u0000\"[f000]븀\u0000\nhas been added to the Entralink."
-    SystemMsg 18, 0
+    SystemMsg CasteliaCity22_Text_FunfestMissionHasBeen, 0
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
     FlagSet 2557
     // "I'm going to have fun gathering Berries\nwith the people living in the countryside[f000]븀\u0000\nand the Pokémon I've met here in[f000]븀\u0000\nCastelia City![f000]븁\u0000\nOf course, I'll be humming\nMeloetta's tune while I gather them!"
-    ActorMsg MSGFILE_SCRIPT, 19, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaCity22_Text_ImGoingHaveFun, 4, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 4, 2, 8, 0, 8, 0

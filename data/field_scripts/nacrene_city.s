@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nacrene_city.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -44,7 +45,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Nacrene City\nA Pearl of a Place"
-    MsgPlaceSign 11, 1
+    MsgPlaceSign NacreneCity_Text_NacreneCityPearlPlace, 1
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -55,7 +56,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Café Warehouse[f000]븁\u0000\n\nTry our delicious specials\non Wednesdays and Saturdays!"
-    MsgPlaceSign 12, 2
+    MsgPlaceSign NacreneCity_Text_CafeWarehouseTryOur, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -66,7 +67,7 @@ Script_4:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Nacrene Museum"
-    MsgPlaceSign 13, 2
+    MsgPlaceSign NacreneCity_Text_NacreneMuseum, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -77,7 +78,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "These old textile storehouses\nare being reused as studios.[f000]븁\u0000\nHow innovative![f000]븁\u0000\nNew ideas create new values, don't they!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_TheseOldTextileStorehouses, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -89,7 +90,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey, Trainer! Step inside for a moment!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_HeyTrainerStepInside, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -101,7 +102,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You see, I believed it would become\npopular because it was a storehouse!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_SeeBelievedWouldBecome, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -113,7 +114,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The rail line was abandoned, and\nthe storehouses went unused...[f000]븁\u0000\nThen young people with artistic\naspirations started renting them[f000]븀\u0000\ncheaply as art studios.[f000]븁\u0000\nIf people hadn't been so creative,\nPokémon might be living here now."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_RailLineAbandonedStorehouses, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -125,7 +126,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My accordion's heavy!\nIt weighs over 20 pounds."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_AccordionsHeavyWeighsOver, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -137,7 +138,7 @@ Script_12:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What do you call a storehouse\nyou can't find? A where-house!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_WhatCallStorehouseCant, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -149,7 +150,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "How many houses could a warehouse\nwear if a warehouse could wear houses?"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_HowManyHousesCould, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -161,7 +162,7 @@ Script_17:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Walking on abandoned railroad tracks...\nEveryone does it sometimes, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_WalkingAbandonedRailroadTracks, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -173,7 +174,7 @@ Script_18:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I was just collecting the Pokémon\nI like, and before I knew it, I had six!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_JustCollectingPokemonLike, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -185,7 +186,7 @@ Script_19:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The one trying to draw\nSmeargle's move Sketch is me!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_OneTryingDrawSmeargles, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -195,7 +196,7 @@ Script_19:
 Script_5:
     ActorsPauseAll
     // "A mysterious presence can be felt here!\nCheck the surrounding area?"
-    SystemMsg 0, 2
+    SystemMsg NacreneCity_Text_MysteriousPresenceCanFelt, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -216,7 +217,7 @@ L_0241:
     VMSleep 30
     PVPlay 480, 0
     // "Kyouuuun!"
-    InfoMsg 1, 1
+    InfoMsg NacreneCity_Text_Kyouuuun, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -245,7 +246,7 @@ Script_6:
     ActorSetEyeToEye
     PVPlay 480, 0
     // "Kyouuuun!"
-    ScreamMsg 1, 2
+    ScreamMsg NacreneCity_Text_Kyouuuun, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -283,7 +284,7 @@ L_0317:
 
 L_0337:
     // "Uxie went flying off somewhere..."
-    SystemMsg 2, 2
+    SystemMsg NacreneCity_Text_UxieWentFlyingOff, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0347
@@ -310,7 +311,7 @@ Script_14:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Nacrene Museum\nExhibit Schedule"
-    InfoMsg 14, 2
+    InfoMsg NacreneCity_Text_NacreneMuseumExhibitSchedule, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -321,7 +322,7 @@ Script_15:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Special Exhibit\nThat Pokémon's dormant form!"
-    InfoMsg 15, 2
+    InfoMsg NacreneCity_Text_SpecialExhibitPokemonsDormant, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -334,7 +335,7 @@ Script_16:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I heard there's a café in [f000]Ĺ\u0001\u0000\nwhere Pokémon can eat![f000]븁\u0000\nMaybe I should go try it and see how it\ncompares to Café Warehouse!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity_Text_HeardTheresCafeWhere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

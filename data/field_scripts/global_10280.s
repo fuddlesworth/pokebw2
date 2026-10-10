@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10280.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -12,7 +13,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I am researching Pokémon Fossils here.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10280_Text_AmResearchingPokemonFossils, 0, 0
     VMStackPush 0x417a
     VMStackPushConst 0
     VMStackCmp CMP_NE
@@ -27,7 +28,7 @@ L_004F:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00A7
     // "You have a Fossil, don't you?\nShall I turn it back into a Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10280_Text_HaveFossilDontShall, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -88,7 +89,7 @@ L_011B:
     WorkSetConst 0x8024, 0
     WorkSetConst 0x8025, 0
     // "Which Fossil should I turn back\ninto a Pokémon?"
-    ActorMsg MSGFILE_SCRIPT, 2, 6, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10280_Text_WhichFossilShouldTurn, 6, 2, 0
     WorkSetConst 0x8022, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32804
     WorkSetConst 0x8025, 99
@@ -205,7 +206,7 @@ L_031D:
 L_031F:
     WordSetItemName 0, 0x8022
     // "OK, then![f000]븁\u0000\nI'll turn that [f000]ĉ\u0001\u0000\nback into a Pokémon for you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10280_Text_OkThenIllTurn, 0, 0
     ActorMsgClose
     ItemSub 0x8022, 1, 0x8010
     RecordAdd 89, 1
@@ -224,7 +225,7 @@ L_0368:
     WorkSetConst 0x8027, 0
     WordSetPokeSpecies 0, 0x8023
     // "The Fossil you gave me turned back into\na Pokémon![f000]븁\u0000\nThis is [f000]ā\u0001\u0000!\nPlease take good care of it.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10280_Text_FossilGaveTurnedBack, 0, 0
     PokePartyGetCount 0x8027, 0
     VMStackPush 0x8027
     VMStackPushConst 6
@@ -241,14 +242,14 @@ L_03B4:
     WordSetPokeSpecies 1, 0x8023
     MEPlay SEQ_ME_POKEGET
     // "[f000]Ā\u0001\u0000 received\n[f000]ā\u0001\u0001!"
-    SystemMsg 7, 2
+    SystemMsg Global10280_Text_Received, 2
     MEWait
     MsgWaitAdvance
     InfoMsgClose
     PokePartyAdd 0x8010, 0x8023, 0, 25
     WordSetPokeSpecies 0, 0x8023
     // "Would you like to give a nickname to the\nnewly received [f000]ā\u0001\u0000?"
-    SystemMsg 8, 2
+    SystemMsg Global10280_Text_WouldLikeGiveNickname, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010

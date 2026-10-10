@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lacunosa_town_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -66,27 +67,27 @@ Script_3:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0113
     // "You must be the ones who want to hear\nthat old tale about Lacunosa Town.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_MustOnesWhoWant, 0, 0, 0
     MsgWinCloseAll
     // "Professor Juniper: That's right.\nPlease tell us.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_ProfessorJuniperThatsRight, 1, 0, 0
     MsgWinCloseAll
 
 L_0113:
     // "Behind Lacunosa Town,\nthere's a mighty big hole.[f000]븁\u0000\nHave you heard of the Giant Chasm?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_BehindLacunosaTownTheres, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0320
     VMSleep 3
     ActorCmdExec 255, Movement_0318
     ActorCmdWait
     // "Bianca: Oh, I've heard that around the\nGiant Chasm, there have been brief[f000]븀\u0000\ntemperature readings of -58° F![f000]븁\u0000\nThat's what Cheren told me, anyway![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_BiancaOhIveHeard, 2, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0318
     ActorCmdWait
     // "Professor Juniper: The road is blocked,\nso we can't get there right now...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_ProfessorJuniperRoadBlocked, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0328
     ActorCmdExec 2, Movement_0328
@@ -94,24 +95,24 @@ L_0113:
     ActorCmdExec 255, Movement_0328
     ActorCmdWait
     // "A long, long time ago, the\nGiant Chasm was created when[f000]븀\u0000\na big meteorite fell from the sky.[f000]븁\u0000\nA really scary Pokémon was\nhidden inside that meteorite...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_LongLongTimeAgo, 0, 0, 0
     MsgWinCloseAll
     // "Professor Juniper: A meteorite...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_ProfessorJuniperMeteorite, 1, 0, 0
     MsgWinCloseAll
     // "When darkness falls over the land,\nthis Pokémon appears.[f000]븀\u0000\nA frigid wind follows it.[f000]븁\u0000\nIt freezes everything around\nand eats people and Pokémon...[f000]븁\u0000\nThat's why everyone was afraid.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_WhenDarknessFallsOver, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_0338
     ActorCmdWait
     // "Bianca: The Pokémon ate p-people?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 2, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_BiancaPokemonAteP, 2, 0, 0
     MsgWinCloseAll
     // "So our ancestors surrounded the town\nwith walls, to prevent the Pokémon[f000]븀\u0000\nfrom getting inside the town.[f000]븁\u0000\nAlso, a rule was made forbidding\nanyone to go outside after dark.[f000]븁\u0000\n...And that's the end of the old tale![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_OurAncestorsSurroundedTown, 0, 0, 0
     MsgWinCloseAll
     // "Professor Juniper: A fascinating story!\nI'll add it to my research records.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_ProfessorJuniperFascinatingStory, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0318
     VMSleep 8
@@ -119,7 +120,7 @@ L_0113:
     ActorCmdExec 255, Movement_0350
     ActorCmdWait
     // "Everyone, we should be going.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_EveryoneWeShouldGoing, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_02EC
     ActorCmdExec 2, Movement_0300
@@ -149,28 +150,28 @@ Script_4:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_0284
     // "That's sure a scary-sounding Pokémon,\neven in an old folktale."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_ThatsSureScarySounding, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02C7
 
 L_0284:
     // "Zzz... Zzz...[f000]븁\u0000\n...Wh-what?\nWhat do you want, now?[f000]븁\u0000\nDid you pick now to listen to my stories?"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_ZzzZzzWhWhat, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02B9
     // "Mmm... OK, I'll tell you...[f000]븁\u0000\nBehind our Lacunosa Town,\nthere's a big hole in the ground.[f000]븁\u0000\nThat hole, way in the past...[f000]븁\u0000\nAaaahhh, I'm so tired...[f000]븁\u0000\nThat hole, there was a...a big...\ncrashed down...inside was...[f000]븁\u0000\nbig, scary...really scary...[f000]븁\u0000\nZzz... Zzz... Zzz..."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_MmmOkIllTell, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_02C7
 
 L_02B9:
     // "Aaaahhh... Oh, I should...\nOK, I'll sleep, then...[f000]븁\u0000\nGoodni... Zzz...\nZzz... Zzz..."
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_AaaahhhOhShouldOk, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -184,7 +185,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My grandma loves old stories![f000]븁\u0000\nI'm always having to listen\nto her really long stories.[f000]븁\u0000\nBut sometimes if it's night, she'll\nfall asleep right in the middle of a story.[f000]븁\u0000\nIt's OK, though. She's not only healthy,\nshe's a free-spirited grandma, too!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown3_Text_GrandmaLovesOldStories, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/dreamyard.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -55,7 +56,7 @@ Script_4:
     VMJumpIf CMP_STACK, L_00CA
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 2
+    InfoMsg Dreamyard_Text_Shuaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -64,7 +65,7 @@ Script_4:
 L_00CA:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 2
+    InfoMsg Dreamyard_Text_Huaaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -85,7 +86,7 @@ L_00DB:
     VMJumpIf CMP_STACK, L_0149
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 2
+    InfoMsg Dreamyard_Text_Shuaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -94,7 +95,7 @@ L_00DB:
 L_0149:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 2
+    InfoMsg Dreamyard_Text_Huaaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -120,7 +121,7 @@ Script_5:
     VMJumpIf CMP_STACK, L_01BA
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 1
+    InfoMsg Dreamyard_Text_Shuaaan, 1
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -129,7 +130,7 @@ Script_5:
 L_01BA:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 1
+    InfoMsg Dreamyard_Text_Huaaaan, 1
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -156,7 +157,7 @@ Script_6:
     VMJumpIf CMP_STACK, L_0235
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 1
+    InfoMsg Dreamyard_Text_Shuaaan, 1
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -165,7 +166,7 @@ Script_6:
 L_0235:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 1
+    InfoMsg Dreamyard_Text_Huaaaan, 1
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -216,7 +217,7 @@ Script_7:
     VMJumpIf CMP_STACK, L_0325
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 2
+    InfoMsg Dreamyard_Text_Shuaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -225,7 +226,7 @@ Script_7:
 L_0325:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 2
+    InfoMsg Dreamyard_Text_Huaaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -267,7 +268,7 @@ Script_8:
     VMJumpIf CMP_STACK, L_03E4
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 2
+    InfoMsg Dreamyard_Text_Shuaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -276,7 +277,7 @@ Script_8:
 L_03E4:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 2
+    InfoMsg Dreamyard_Text_Huaaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -313,7 +314,7 @@ L_0459:
     VMJumpIf CMP_STACK, L_049F
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 2
+    InfoMsg Dreamyard_Text_Shuaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -322,7 +323,7 @@ L_0459:
 L_049F:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 2
+    InfoMsg Dreamyard_Text_Huaaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -362,7 +363,7 @@ Script_9:
     VMJumpIf CMP_STACK, L_0548
     PVPlay 381, 0
     // "Shuaaan!"
-    InfoMsg 0, 2
+    InfoMsg Dreamyard_Text_Shuaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -371,7 +372,7 @@ Script_9:
 L_0548:
     PVPlay 380, 0
     // "Huaaaan!"
-    InfoMsg 3, 2
+    InfoMsg Dreamyard_Text_Huaaaan, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -389,7 +390,7 @@ L_0559:
     VMJumpIf CMP_STACK, L_05BB
     PVPlay 381, 0
     // "Shuaaaann!"
-    ScreamMsg 1, 2
+    ScreamMsg Dreamyard_Text_Shuaaaann, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -399,7 +400,7 @@ L_0559:
 L_05BB:
     PVPlay 380, 0
     // "Huaaaaann!"
-    ScreamMsg 4, 2
+    ScreamMsg Dreamyard_Text_Huaaaaann, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -452,14 +453,14 @@ L_065F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0686
     // "Latios flew off into\nthe distant sky..."
-    SystemMsg 2, 2
+    SystemMsg Dreamyard_Text_LatiosFlewOffInto, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0690
 
 L_0686:
     // "Latias flew off into\nthe distant sky..."
-    SystemMsg 5, 2
+    SystemMsg Dreamyard_Text_LatiasFlewOffInto, 2
     LastKeyWait
     InfoMsgClose
 

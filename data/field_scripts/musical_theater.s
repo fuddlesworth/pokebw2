@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/musical_theater.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -52,13 +53,13 @@ Script_11:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01EA
     // "Hmm... Have we met\nbefore?[f000]븀\u0000\nNever mind. I must be imagining things.[f000]븁\u0000\nI'm the owner of this theater.\nPleasure to meet you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HmmHaveWeMet, 11, 0, 0
     MsgWinCloseAll
     VMSleep 16
     ActorCmdExec 11, Movement_0484
     ActorCmdWait
     // "Whoa!\nYou have no ordinary aura.[f000]븁\u0000\nIt resembles that of a superstar\nwho attracts a lot of attention.[f000]븁\u0000\nBy the way, do you know\nwhat Dress Up is?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 39, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_WhoaHaveNoOrdinary, 11, 0, 0
     WorkSetConst 0x8022, 0
     YesNoWin 0x8022
     VMStackPush 0x8022
@@ -66,12 +67,12 @@ Script_11:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0122
     // "That makes it easy!\nHere's a Prop Case for you.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 40, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_MakesEasyHeresProp, 11, 0, 0
     VMJump L_012E
 
 L_0122:
     // "In Dress Up, we use Props to make\nyour Pokémon fashionable and glamorous![f000]븁\u0000\nTo get you started, here's a Prop Case![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 41, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_DressUpWeUse, 11, 0, 0
 
 L_012E:
     WorkSetConst 0x8022, 0
@@ -81,17 +82,17 @@ L_012E:
     ActorCmdWait
     Cmd_02B5 1, 0
     // "You know what? I'll give you this\nProp Case![f000]븁\u0000\nIt contains all the Props our superstar\n[f000]Ā\u0001\u0000 used to have.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 42, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_KnowWhatIllGive, 11, 0, 0
     MsgWinCloseAll
     // "Would you like a set of Props that are\nthe same as the ones [f000]Ā\u0001\u0000 used?"
-    SystemMsg 55, 0
+    SystemMsg MusicalTheater_Text_WouldLikeSetProps, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D6
     // "You can receive this set of Props\nonly once. Do you want it?"
-    SystemMsg 56, 0
+    SystemMsg MusicalTheater_Text_CanReceiveSetProps, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -100,7 +101,7 @@ L_012E:
     MsgWinCloseAll
     WorkSetConst 0x4087, 1
     // "Oh, you!\nYou remind me of...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 53, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OhRemind, 11, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     RTReserveScript 1
@@ -126,13 +127,13 @@ L_01E4:
 
 L_01EA:
     // "Hello! How do you do?[f000]븁\u0000\nI'm the owner of this theater.\nPleasure to meet you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HelloHowImOwner, 11, 0, 0
     MsgWinCloseAll
     VMSleep 16
     ActorCmdExec 11, Movement_0484
     ActorCmdWait
     // "Ooh! I must say that you seem like\na phenomenal Trainer![f000]븁\u0000\nWhat do we do here? We use Props to make\nyour Pokémon fashionable and glamorous![f000]븁\u0000\nDo you want to join in and play Dress Up?\nTo get you started, here's a Prop Case![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OohMustSaySeem, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_04F0
     ActorCmdWait
@@ -146,7 +147,7 @@ L_01EA:
     ActorCmdExec 11, Movement_0504
     ActorCmdWait
     // "This Prop Case lets you store Props for\ndecorating your Pokémon![f000]븁\u0000\nFirst off, you need to pick a Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_PropCaseLetsStore, 11, 0, 0
     MsgWinCloseAll
     VMCall L_026E
 
@@ -169,7 +170,7 @@ L_026E:
     ActorCmdExec 11, Movement_0484
     ActorCmdWait
     // "Aw, I'm sorry, but that Pokémon can't\nplay Dress Up. Please choose a[f000]븀\u0000\ndifferent Pokémon next time.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_AwImSorryBut, 11, 0, 0
     VMJump L_02BE
 
 L_02B8:
@@ -179,7 +180,7 @@ L_02BE:
     WorkSetConst 0x8023, 0
     Cmd_0167 1, 0, 0, 0
     // "If you have a Pokémon that can play\nDress Up, you can participate in the[f000]븀\u0000\nPokémon Musical![f000]븁\u0000\nWould you please join us?\nThe receptionist can explain everything.[f000]븁\u0000\nLet us say a brief farewell!\nI eagerly anticipate seeing you on stage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_IfHavePokemonCan, 11, 0, 0
     MsgWinCloseAll
     ActorCmdExec 11, Movement_0514
     ActorCmdWait
@@ -189,7 +190,7 @@ L_02BE:
 
 L_02FA:
     // "Are you sure?[f000]븁\u0000\nPlease talk to me again if you want a set\nof Props that are the same as the[f000]븀\u0000\nones [f000]Ā\u0001\u0000 used!"
-    ActorMsg MSGFILE_SCRIPT, 48, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_SurePleaseTalkAgain, 11, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 11, Movement_04F0
@@ -204,7 +205,7 @@ L_02FA:
     ActorCmdExec 11, Movement_0504
     ActorCmdWait
     // "This Prop Case lets you store Props for\ndecorating your Pokémon![f000]븁\u0000\nFirst off, you need to pick a Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_PropCaseLetsStore, 11, 0, 0
     MsgWinCloseAll
     VMReturn
 
@@ -223,7 +224,7 @@ L_035A:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0394
     // "Now, now. Don't be like that.\nPlease reconsider and select a Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_NowNowDontLike, 11, 0, 0
     MsgWinCloseAll
 
 L_0394:
@@ -231,7 +232,7 @@ L_0394:
 
 L_039A:
     // "Then... It's time to play Dress Up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_ThenItsTimePlay, 11, 0, 0
     MsgWinCloseAll
     FadeOutBlackQ
     BGMPush 6
@@ -248,12 +249,12 @@ L_039A:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03EE
     // "Hmm, I guess I get it! You are expressing\nyour Pokémon's innate charm by choosing[f000]븀\u0000\nnot to decorate it![f000]븁\u0000\nHonestly, though, I think using Props\nwould be better received in this musical.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HmmGuessGetExpressing, 11, 0, 0
     VMJump L_03FA
 
 L_03EE:
     // "Wow! You have the talent! You did a\nfantastic job coordinating everything![f000]븀\u0000\nUtterly charming![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_WowHaveTalentDid, 11, 0, 0
 
 L_03FA:
     WorkSetConst 0x8025, 0
@@ -266,7 +267,7 @@ Script_17:
     FadeInBlackQ
     FadeWait
     // "Mmm, that takes me back!"
-    ActorMsg MSGFILE_SCRIPT, 54, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_MmmTakesBack, 11, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 11, Movement_04F0
@@ -282,7 +283,7 @@ Script_17:
     ActorCmdWait
     MusicalCmd_02B7 0x8026
     // "I hope you'll be the superstar of a\nnew generation![f000]븁\u0000\nIt's time to play Dress Up![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 43, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HopeYoullSuperstarNew, 11, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x404b, 1
     VMCall L_026E
@@ -360,14 +361,14 @@ Script_12:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_055E
     // "There is a Musical Photo saved from\nlast time![f000]븁\u0000"
-    InfoMsg 27, 2
+    InfoMsg MusicalTheater_Text_ThereMusicalPhotoSaved, 2
     MsgWinCloseAll
     MusicalCmd_0163 0, 2
     VMJump L_0567
 
 L_055E:
     // "You can hang Musical Photos from your\nprevious shows here."
-    InfoMsg 28, 2
+    InfoMsg MusicalTheater_Text_CanHangMusicalPhotos, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -380,7 +381,7 @@ Script_14:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Musical Theater\nProps + Music + Dance = Moving Spectacle!"
-    InfoMsg 34, 2
+    InfoMsg MusicalTheater_Text_MusicalTheaterPropsMusic, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -392,7 +393,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When you play Dress Up, matching the\nshow you're performing in is im-por-tant![f000]븁\u0000\nIf it's a good match, you can win the\nhearts of the audience![f000]븀\u0000\nYou'll be sure to attract attention.[f000]븁\u0000\nIf you're going to get on stage,\nit's a waste if you don't stand out!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_WhenPlayDressUp, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -404,7 +405,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pokémon Props each have their own image:\ncool, cute, elegant, or quirky.[f000]븁\u0000\nBefore you play Dress Up, take a moment\nto think about the image you prefer."
-    ParentActorMsg MSGFILE_SCRIPT, 22, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_PokemonPropsEachHave, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -416,7 +417,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm not trying to brag, but we're\nrather rich.[f000]븁\u0000\nWhen you say rich people, you think\nmusical. It's a matter of taste, I guess."
-    ParentActorMsg MSGFILE_SCRIPT, 23, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_ImNotTryingBrag, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -428,7 +429,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Know what? When there are cute Pokémon,\nmy eyes are glued to the stage!"
-    ParentActorMsg MSGFILE_SCRIPT, 29, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_KnowWhatWhenThere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -440,7 +441,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Originally, people performed in this\nMusical Theater.[f000]븁\u0000\nOne time, a Pokémon wandered up on\nstage and started imitating the actors.[f000]븁\u0000\nEverybody thought it was sensational!\nTa-daaa! The Pokémon Musical was born."
-    ParentActorMsg MSGFILE_SCRIPT, 30, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OriginallyPeoplePerformedMusical, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -472,9 +473,9 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06AE
     // "Hmm...[f000]븁\u0000\nYour aura is definitely similar\nto that of the superstar who[f000]븀\u0000\nattracted a lot of attention.[f000]븁\u0000\nHere is a present for you![f000]븁\u0000\nThese are the same Props that\n[f000]Ā\u0001\u0000 used to have.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 44, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HmmAuraDefinitelySimilar, 11, 0, 0
     // "Oh, you!\nYou remind me of...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 53, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OhRemind, 11, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     RTReserveScript 1
@@ -484,17 +485,17 @@ Script_1:
 
 L_06AE:
     // "Hmm...[f000]븁\u0000\nYour aura is definitely similar\nto that of the superstar who[f000]븀\u0000\nattracted a lot of attention.[f000]븁\u0000\nHere is a present for you![f000]븁\u0000\nThese are the same Props that\n[f000]Ā\u0001\u0000 used to have.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 44, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HmmAuraDefinitelySimilar, 11, 0, 0
     MsgWinCloseAll
     // "Would you like a set of Props that are\nthe same as the ones [f000]Ā\u0001\u0000 used?"
-    SystemMsg 55, 0
+    SystemMsg MusicalTheater_Text_WouldLikeSetProps, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0738
     // "You can receive this set of Props\nonly once. Do you want it?"
-    SystemMsg 56, 0
+    SystemMsg MusicalTheater_Text_CanReceiveSetProps, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -502,7 +503,7 @@ L_06AE:
     VMJumpIf CMP_STACK, L_0720
     MsgWinCloseAll
     // "Oh, you!\nYou remind me of...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 53, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OhRemind, 11, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     RTReserveScript 1
@@ -513,7 +514,7 @@ L_06AE:
 L_0720:
     MsgWinCloseAll
     // "Are you sure?[f000]븁\u0000\nPlease talk to me again if you want a set\nof Props that are the same as the[f000]븀\u0000\nones [f000]Ā\u0001\u0000 used!"
-    ActorMsg MSGFILE_SCRIPT, 48, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_SurePleaseTalkAgain, 11, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -523,7 +524,7 @@ L_0732:
 L_0738:
     MsgWinCloseAll
     // "Are you sure?[f000]븁\u0000\nPlease talk to me again if you want a set\nof Props that are the same as the[f000]븀\u0000\nones [f000]Ā\u0001\u0000 used!"
-    ActorMsg MSGFILE_SCRIPT, 48, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_SurePleaseTalkAgain, 11, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -555,25 +556,25 @@ Script_18:
     WordSetPlayerName 0
     MEPlay SEQ_ME_KEYITEM
     // "[f000]Ā\u0001\u0000 received\na set of Props![f000]븁\u0000"
-    SystemMsg 46, 0
+    SystemMsg MusicalTheater_Text_ReceivedSetProps, 0
     MEWait
     InfoMsgClose
     // "Mmm, that takes me back!"
-    ActorMsg MSGFILE_SCRIPT, 54, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_MmmTakesBack, 11, 0, 0
     MsgWaitAdvance
     // "I believe you'll find a good use\nfor these Props![f000]븁\u0000\nI hope you'll enjoy the musical!"
-    ActorMsg MSGFILE_SCRIPT, 45, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_BelieveYoullFindGood, 11, 0, 0
     VMJump L_07EE
 
 L_07C8:
     // "Mmm, that takes me back!"
-    ActorMsg MSGFILE_SCRIPT, 54, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_MmmTakesBack, 11, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 11, Movement_0484
     ActorCmdWait
     // "Oh my![f000]븁\u0000\nYou already have all the Props\nthe superstar used to have.[f000]븁\u0000\nI knew you were something!"
-    ActorMsg MSGFILE_SCRIPT, 49, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OhAlreadyHaveAll, 11, 0, 0
 
 L_07EE:
     LastKeyWait
@@ -608,7 +609,7 @@ L_0804:
     VMJumpIf CMP_STACK, L_0893
     WorkSetConst 0x802c, 1
     // "Happy birthday!\nI've got this festive Prop to give you![f000]븁\u0000\nIt's a cake from me, the owner![f000]븁\u0000\nOf course, this is a Prop, so you should\nattach it to your Pokémon and not eat it.[f000]븁\u0000\nBy the way, even if today isn't your\nbirthday, I won't take it back![f000]븁\u0000\nWhy?\nBecause I'm the owner![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HappyBirthdayIveGot, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8008, 24
     WorkSetConst 0x8009, 0
@@ -637,13 +638,13 @@ L_08AB:
     VMJumpIf CMP_STACK, L_0921
     WorkSetConst 0x802c, 1
     // "Wait! Please, wait![f000]븁\u0000\nYou participated in a musical\nwith your friends, right?[f000]븁\u0000\nI felt like you opened up new possibilities\nfor musicals![f000]븁\u0000\nThat's why I feel impelled to give you\nthis present! Please accept it![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_WaitPleaseWaitParticipated, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8008, 67
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "I eagerly anticipate seeing you\non stage again!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_EagerlyAnticipateSeeingStage, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -664,13 +665,13 @@ L_0921:
     VMJumpIf CMP_STACK, L_0998
     WorkSetConst 0x802c, 1
     // "Your continued participation makes me\na happy owner![f000]븁\u0000\nYou're attracting a lot of attention as\nan up-and-coming stylist.[f000]븁\u0000\nOf course, I'm watching you closely,\nas well.[f000]븁\u0000\nPlease accept this as a token of\nmy appreciation.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_ContinuedParticipationMakesHappy, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8008, 55
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "Ah, I eagerly anticipate seeing you\non stage again![f000]븁\u0000\n...Actually, it feels like I've said this\nline before.[f000]븁\u0000\nWell, that's OK. Because I'm the owner!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_AhEagerlyAnticipateSeeing, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -691,13 +692,13 @@ L_0998:
     VMJumpIf CMP_STACK, L_0A0F
     WorkSetConst 0x802c, 1
     // "Seeing your continued participation\nmakes me a happy owner.[f000]븁\u0000\nApparently, some audience members have\nbeen calling you a top stylist as of late![f000]븁\u0000\nBest of all... How impressive am I for\nrecognizing your talent?[f000]븁\u0000\nPlease accept this as a token of\nmy gratitude![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_SeeingContinuedParticipationMakes, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8008, 82
     WorkSetConst 0x8009, 1
     RTCallGlobal 10466
     // "I hope you continue to enjoy the musical!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_HopeContinueEnjoyMusical, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -707,7 +708,7 @@ L_0A0F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A30
     // "We really want you to participate in\nthe musical![f000]븁\u0000\nI apologize in advance if any of our\nProps don't suit some kinds of Pokémon.[f000]븁\u0000\nPokémon are individuals, after all!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_WeReallyWantParticipate, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -721,7 +722,7 @@ Script_7:
     ActorSetEyeToEye
     PVPlay 552, 0
     // "Gwah!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_Gwah, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -741,7 +742,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It is such a treat when Trainers have\nplayed Dress Up with their Pokémon[f000]븀\u0000\nwith such charming results."
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_SuchTreatWhenTrainers, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0AD9
@@ -754,7 +755,7 @@ L_0A98:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Your Pokémon are wonderful!\nI'm always watching them.[f000]븁\u0000\nI hope you can keep entertaining us with\nyour performances."
-    ParentActorMsg MSGFILE_SCRIPT, 25, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_PokemonWonderfulImAlways, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0AD9
@@ -763,7 +764,7 @@ L_0AC5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I always make sure to watch the\nshows you participate in![f000]븁\u0000\nEven from the perspective of a rich\nman like me, the Pokémon Musical[f000]븀\u0000\nis impressive![f000]븁\u0000\nIt's unparalleled entertainment!"
-    ParentActorMsg MSGFILE_SCRIPT, 26, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_AlwaysMakeSureWatch, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -788,7 +789,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Great work! I saw your Pokémon up\nthere today![f000]븁\u0000\nOverall, totally [f000]ģ\u0001\u0000![f000]븁\u0000\nThe [f000]ģ\u0001\u0001 Prop\nwas a great accent.[f000]븁\u0000\nI noticed that your [f000]ģ\u0001\u0002\nfactor was a bit subdued today.[f000]븁\u0000\nOK! I'm not going to lose!"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_GreatWorkSawPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 242
@@ -798,7 +799,7 @@ L_0B38:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I want to make Pokémon more glamorous\nthan ever before, so I'm researching the[f000]븀\u0000\nstyles others use when playing Dress Up."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_WantMakePokemonMore, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -809,7 +810,7 @@ L_0B52:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I want to make Pokémon more glamorous\nthan ever before, so I'm researching the[f000]븀\u0000\nstyles others use when playing Dress Up."
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_WantMakePokemonMore, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -851,7 +852,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The seats are beyond this entrance,\nbut I think you belong on the[f000]븀\u0000\nspectacular stage!"
-    ParentActorMsg MSGFILE_SCRIPT, 35, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_SeatsBeyondEntranceBut, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -873,7 +874,7 @@ Script_16:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C44
     // "There used to be a Trainer\nwho performed wonderful shows.[f000]븀\u0000\nI was a big fan back then.[f000]븁\u0000\nI wonder if we'll ever see\nanother superstar like that..."
-    ParentActorMsg MSGFILE_SCRIPT, 50, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_ThereUsedTrainerWho, 0, 0
     VMJump L_0C87
 
 L_0C44:
@@ -887,12 +888,12 @@ L_0C44:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0C7D
     // "Oh, you seem a bit like [f000]Ā\u0001\u0000!\nI was a big fan a while ago.[f000]븁\u0000\nYou still lack a certain charisma\ncompared to [f000]Ā\u0001\u0000, though."
-    ParentActorMsg MSGFILE_SCRIPT, 51, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OhSeemBitLike, 0, 0
     VMJump L_0C87
 
 L_0C7D:
     // "Oh, you are as wonderful an entertainer\nas [f000]Ā\u0001\u0000![f000]븁\u0000\nI'm a big fan of you now!\nThank you for a wonderful show!"
-    ParentActorMsg MSGFILE_SCRIPT, 52, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MusicalTheater_Text_OhWonderfulEntertainerIm, 0, 0
 
 L_0C87:
     LastKeyWait

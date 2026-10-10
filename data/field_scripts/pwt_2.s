@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pwt_2.h"
 
 // Script plugin 6, from the zones that use this file
 
@@ -51,27 +52,27 @@ Script_8:
     ActorCmdExec 5, Movement_0508
     ActorCmdWait
     // "Clay: This time, I'm gonna have ya\nparticipate in the Driftveil Tournament.[f000]븁\u0000\nAnything goes in this here tournament![f000]븁\u0000\nEight people will be participatin', and if\nya win three times, yer the champion![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 13, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_ClayTimeImGonna, 13, 0, 0
     MsgWinCloseAll
     ActorCmdExec 14, Movement_04BC
     ActorCmdWait
     // "Cheren: Why did you call me, too?\nI'm busy looking into something![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_CherenWhyDidCall, 14, 0, 0
     MsgWinCloseAll
     ActorCmdExec 13, Movement_04C4
     ActorCmdWait
     // "Clay: Ya know somethin', Cheren.\nThe one who's gotta show everyone[f000]븀\u0000\nwhat Pokémon battlin' means--is you.[f000]븁\u0000\nAnd yer pal ain't here, either![f000]븁\u0000\nI'm countin' on the power of youth,\n'cause everyone likes[f000]븀\u0000\nup-and-comin' stars![f000]븁\u0000\nOK! Whenever yer ready,\nget on over to reception![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 13, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_ClayYaKnowSomethin, 13, 0, 0
     MsgWinCloseAll
     // "Cheren: Man oh man...\nYou never change, Clay.[f000]븁\u0000\nBut the tournament itself\ndoes look pretty fun![f000]븁\u0000\nOK!\nI'll go register![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 14, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_CherenManOhMan, 14, 0, 0
     MsgWinCloseAll
     ActorCmdExec 14, Movement_04E4
     VMSleep 8
     ActorCmdExec 13, Movement_04CC
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Me, too![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_Too, 5, 0, 0
     MsgWinCloseAll
     ActorCmdExec 5, Movement_04C4
     VMSleep 3
@@ -79,7 +80,7 @@ Script_8:
     ActorCmdWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000. C'mon! Let's have some fun.\nWe'll battle, plain and simple![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 5, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_CmonLetsHaveSome, 5, 0, 0
     MsgWinCloseAll
     ActorCmdExec 5, Movement_0518
     VMSleep 8
@@ -107,7 +108,7 @@ Script_12:
     ActorWalkRoute 255, 15, 9, 1, 8, 0
     ActorCmdWait
     // "Clay: An outstandin' battle, runts![f000]븁\u0000\nNow everybody's gonna want to\njoin in on this here tournament[f000]븀\u0000\nan' show their stuff![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 13, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_ClayOutstandinBattleRunts, 13, 0, 0
     MsgWinCloseAll
     FlagReset 894
     ActorAdd 16
@@ -121,7 +122,7 @@ Script_12:
     ActorCmdWait
     WordSetPlayerName 0
     // "Roxie: Hey! You two![f000]븁\u0000\nHaven't you got any wild and crazy\nPokémon battles to show me?![f000]븁\u0000\nGuess I'll have to enter the\ntournament myself and rock the[f000]븀\u0000\naudience right outta their seats![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 16, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_RoxieHeyTwoHavent, 16, 0, 0
     MsgWinCloseAll
     ActorCmdExec 16, Movement_053C
     VMSleep 24
@@ -133,7 +134,7 @@ Script_12:
     ActorCmdExec 14, Movement_04CC
     ActorCmdWait
     // "Clay: See what I mean?\nPeople are pourin' in already![f000]븁\u0000\nIf the strongest Trainers from\nall over join in, it'll raise up[f000]븀\u0000\neverybody's level of skill![f000]븁\u0000\nAn' then, li'l ol' Driftveil City\nwill grow even more and make[f000]븀\u0000\na heap of money![f000]븁\u0000\nSo keep on bustin' those battles\nand rilin' everybody up! See ya![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 13, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Pwt2_Text_ClaySeeWhatMean, 13, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 13, 15, 19, 1, 8, 1
     VMSleep 8
@@ -165,7 +166,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Clay: Whenever yer ready,\nget on over to reception!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_ClayWheneverYerReady, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -177,7 +178,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Colress: By having battles with\nmany Trainers, I can bring out[f000]븀\u0000\nPokémon's abilities![f000]븁\u0000\nEventually, as I continue to battle,\nthe truth of my theory[f000]븀\u0000\nwill be evident to all!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_ColressByHavingBattles, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -191,7 +192,7 @@ Script_13:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Cheren: The Unova Gym Leaders\nwill probably participate in order[f000]븀\u0000\nto improve their skills."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_CherenUnovaGymLeaders, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -205,7 +206,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]Ā\u0001\u0001: Aww...[f000]븁\u0000\nI wanted to win the tournament\nthe first time I participated!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_AwwWantedWinTournament, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -217,7 +218,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Someday, I'll be a famous guy![f000]븁\u0000\nBut for now, I'm just a spectator here."
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_SomedayIllFamousGuy, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -229,7 +230,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Many Trainers from far away will come\nto participate!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_ManyTrainersFromFar, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -241,7 +242,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Clay is awesome![f000]븁\u0000\nI heard he started all this to encourage\nDriftveil City's development!"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_ClayAwesomeHeardHe, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -253,7 +254,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Two years ago, this was\nthe Cold Storage area!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_TwoYearsAgoCold, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -265,7 +266,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That's the Pokémon World Tournament\nfor you! It's packed with spectators!"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_ThatsPokemonWorldTournament, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -277,7 +278,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's crazy popular! This is what\npacked to the rafters means!"
-    ParentActorMsg MSGFILE_SCRIPT, 18, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_ItsCrazyPopularWhat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -289,7 +290,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What can I do when\neverything's sold out?"
-    ParentActorMsg MSGFILE_SCRIPT, 19, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_WhatCanWhenEverythings, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -301,7 +302,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's the Pokémon World Tournament!\nIt's all in the name![f000]븁\u0000\nTrainers have gathered\nfrom all over the world!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_ItsPokemonWorldTournament, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -313,7 +314,7 @@ Script_18:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello there, Trainer.\nLet me fill you in about Battle Points.[f000]븁\u0000\nBattle Points, also known as BP, are\npoints you get for winning streaks in[f000]븀\u0000\neither Nimbasa City's Battle Subway[f000]븀\u0000\nor this tournament.[f000]븁\u0000\nWin a lot, save up lots of points, and\nyou can exchange them for useful items!"
-    ParentActorMsg MSGFILE_SCRIPT, 21, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Pwt2_Text_HelloThereTrainerLet, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

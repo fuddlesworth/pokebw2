@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/floccesy_town_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The biggest city in Unova is Castelia![f000]븁\u0000\nI want to take the ship from Virbank\nand go play there!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown3_Text_BiggestCityUnovaCastelia, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -23,7 +24,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "On a sunny day, my Patrat's fur\ngets all fluffy![f000]븀\u0000\nI can't help wanting to pet it!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown3_Text_SunnyDayPatratsFur, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -36,7 +37,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Skuwaaa!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyTown3_Text_Skuwaaa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -15,7 +16,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 8"
-    MsgPlaceSign 8, 3
+    MsgPlaceSign Route8_Text_Route8, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -26,7 +27,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Tubeline Bridge\nUnova's famous railway bridge"
-    MsgPlaceSign 10, 2
+    MsgPlaceSign Route8_Text_TubelineBridgeUnovasFamous, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -37,7 +38,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips!\n[f000]븁\u0000\nPress SELECT to change the location\nof items in the Bag![f000]븁\u0000\nPoink!"
-    MsgPlaceSign 9, 0
+    MsgPlaceSign Route8_Text_TrainerTipsPressSelect, 0
     MsgPlaceSignClose
     FlagSet 2671
     FinishAllEvents
@@ -54,13 +55,13 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B6
     // "That's right.[f000]븁\u0000\nI find rocks, and then\nI give them to people...[f000]븀\u0000\nThat's my simple life.[f000]븀\u0000\nYou rock...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_ThatsRightFindRocks, 0, 0
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00E8
     // "Here, I'll give you the Damp Rock\nI found this morning.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_HereIllGiveDamp, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -77,7 +78,7 @@ L_00E8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_012D
     // "Here, I'll give you the Heat Rock\nI found this afternoon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_HereIllGiveHeat, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -94,7 +95,7 @@ L_012D:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0172
     // "Here, I'll give you the Smooth Rock\nI found this evening.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_HereIllGiveSmooth, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -107,7 +108,7 @@ L_012D:
 
 L_0172:
     // "Here, I'll give you the Icy Rock\nI found tonight.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_HereIllGiveIcy, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -119,7 +120,7 @@ L_0172:
 
 L_019E:
     // "Yeah, yeah...[f000]븁\u0000\nIf you like rocks, come back tomorrow...\nRoll in at a different time, if possible.[f000]븀\u0000\nI'll be here, I pumice."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_YeahYeahIfLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2749
@@ -127,7 +128,7 @@ L_019E:
 
 L_01B6:
     // "Yeah, yeah...[f000]븁\u0000\nIf you like rocks, come back tomorrow...\nRoll in at a different time, if possible.[f000]븀\u0000\nI'll be here, I pumice."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_YeahYeahIfLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -146,7 +147,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey there, Pokémon Trainer![f000]븁\u0000\nI'm a member of the Hip Waders![f000]븁\u0000\nJust as the name suggests,\nwe're a fishing team![f000]븁\u0000\nIf you want to learn more, come on\nover to my house on Village Bridge![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route8_Text_HeyTherePokemonTrainer, 1, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8022
@@ -170,7 +171,7 @@ L_024A:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey there, Pokémon Trainer![f000]븁\u0000\nI'm a member of the Hip Waders![f000]븁\u0000\nOh, you don't have a fishing rod...[f000]븁\u0000\nMaybe I'll go invite Professor Juniper\nin Nuvema Town instead..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route8_Text_HeyTherePokemonTrainer_2, 0, 0
     LastKeyWait
     ActorMsgClose
 

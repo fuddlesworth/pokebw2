@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10685.h"
 
 // Script plugin 8, from the only plugin whose commands it decodes with
 
@@ -153,7 +154,7 @@ L_0257:
     WorkSetConst 0x803a, 0
     WorkSetConst 0x803b, 0
     // ""
-    SystemMsg 1487, 2
+    SystemMsg Global10685_Text_Empty_253, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32800
     ListMenuAdd 174, 235, 0
     Plugin8_Cmd1002 6, 0x803a
@@ -232,7 +233,7 @@ L_03B1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03F7
     // "There is no room for a new building.[f000]븁\u0000\nPlease choose a building\nto be replaced.[f000]븁\u0000"
-    SystemMsg 260, 2
+    SystemMsg Global10685_Text_ThereNoRoomNew_2, 2
     InfoMsgClose
     JoinAvenueStoreStart
     Plugin8Ov60_Cmd1011 1, 3, 0, 0x8029, 0x802a, 0x802b, 0x802c, 0x802d
@@ -273,14 +274,14 @@ L_0462:
     FadeInBlack
     FadeWait
     // "...!![f000]븁\u0000"
-    SystemMsg 246, 2
+    SystemMsg Global10685_Text_Empty_41, 2
     MEPlay SEQ_ME_AVENUE_01
     // "A nice [f000]Ł\u0001\u0000 called\n[f000]ĸ\u0001\u0001[f000]븀\u0000\nwas built!"
-    SystemMsg 247, 2
+    SystemMsg Global10685_Text_NiceCalledBuilt, 2
     MEWait
     MsgWaitAdvance
     // "Let's visit\n[f000]ĸ\u0001\u0001![f000]븁\u0000"
-    SystemMsg 248, 2
+    SystemMsg Global10685_Text_LetsVisit, 2
     InfoMsgClose
     VMCall L_17BC
     WorkCmpConst 0x802e, 0
@@ -372,7 +373,7 @@ L_05CF:
     ActorMsg MSGFILE_SCRIPT, 0x8024, 0x8023, 2, 0
     ActorMsgClose
     // "Please choose an assistant\nto be replaced.[f000]븁\u0000"
-    SystemMsg 261, 2
+    SystemMsg Global10685_Text_PleaseChooseAssistantReplaced, 2
     InfoMsgClose
     JoinAvenueStoreStart
     Plugin8Ov60_Cmd1011 1, 1, 0, 0x8029, 0x802a, 0x802b, 0x802c, 0x802d
@@ -436,7 +437,7 @@ L_06FE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0965
     // "What do you want to hear?"
-    SystemMsg 275, 2
+    SystemMsg Global10685_Text_WhatWantHear, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32800
     Plugin8_Cmd1002 15, 0x8026
     VMStackPush 0x8026
@@ -687,7 +688,7 @@ L_0B0B:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0B66
     // "To celebrate the building of so many\nwonderful shops, all the shops decided[f000]븀\u0000\nto have a promotion![f000]븁\u0000\nIt lasts for 7 days!\nCheck out all the shops!"
-    SystemMsg 277, 2
+    SystemMsg Global10685_Text_CelebrateBuildingManyWonderful, 2
     LastKeyWait
     InfoMsgClose
 
@@ -711,7 +712,7 @@ L_0B86:
     Plugin8_Cmd1007 0, 254, 0, 0
     Plugin8_Cmd1007 1, 0, 0x802c, 1
     // "[f000]Ā\u0001\u0000 has come to\n[f000]ĸ\u0001\u0001![f000]븁\u0000"
-    SystemMsg 266, 2
+    SystemMsg Global10685_Text_HasCome, 2
     Plugin8_Cmd1024 0x802c, 0, 0x8036, 0x8037
     Plugin8_Cmd1002 60, 0x8026
     Plugin8_Cmd1031 27, 0x8027
@@ -834,7 +835,7 @@ L_0D9C:
     Plugin8_Cmd1007 0, 0, 0x802c, 2
     Plugin8_Cmd1007 6, 0, 0x802c, 3
     // "[f000]Ā\u0001\u0002: [f000]ķ\u0001\u0003[f000]븁\u0000"
-    SystemMsg 267, 2
+    SystemMsg Global10685_Text_Empty_48, 2
     Plugin8_Cmd1007 0, 254, 0, 0
     Plugin8_Cmd1007 6, 254, 0, 4
     Plugin8_Cmd1003 60, 0x8043
@@ -873,7 +874,7 @@ L_0E5C:
     WorkSetConst 0x8038, 1
     WordSetNumber 5, 0x8034, 5
     // "[f000]ĸ\u0001\u0001's\npopularity went up by [f000]Ȃ\u0001\u0005 points![f000]븁\u0000"
-    SystemMsg 269, 2
+    SystemMsg Global10685_Text_SPopularityWentUp, 2
     SEWait
     SEPlay SEQ_SE_SW_JA_EXP
     SEWait
@@ -884,14 +885,14 @@ L_0E5C:
 
 L_0EC4:
     // "...!![f000]븂\u0001<"
-    SystemMsg 262, 2
+    SystemMsg Global10685_Text_Empty_45, 2
     MEPlay SEQ_ME_AVENUE_01
     // "[f000]ĸ\u0001\u0001 reached\nRank [f000]Ȃ\u0001\u0006!"
-    SystemMsg 263, 2
+    SystemMsg Global10685_Text_ReachedRank, 2
     MEWait
     MsgWaitAdvance
     // "[f000]ĸ\u0001\u0001 has\nupgraded services![f000]븁\u0000"
-    SystemMsg 279, 2
+    SystemMsg Global10685_Text_HasUpgradedServices, 2
     VMJump L_0F61
 
 L_0EE4:
@@ -901,10 +902,10 @@ L_0EE4:
 
 L_0EF7:
     // "...!![f000]븂\u0001<"
-    SystemMsg 262, 2
+    SystemMsg Global10685_Text_Empty_45, 2
     MEPlay SEQ_ME_AVENUE_01
     // "[f000]ĸ\u0001\u0001 reached\nRank [f000]Ȃ\u0001\u0006!"
-    SystemMsg 263, 2
+    SystemMsg Global10685_Text_ReachedRank, 2
     MEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -923,12 +924,12 @@ L_0EF7:
     Plugin8_Cmd1007 1, 0, 0x802c, 0
     MEPlay SEQ_ME_AVENUE_02
     // "[f000]ĸ\u0001\u0001\nis now [f000]ĸ\u0001\u0000!"
-    SystemMsg 276, 2
+    SystemMsg Global10685_Text_Now, 2
     MEWait
     MsgWaitAdvance
     Plugin8_Cmd1007 1, 0, 0x802c, 1
     // "[f000]ĸ\u0001\u0001 has\nupgraded services![f000]븁\u0000"
-    SystemMsg 279, 2
+    SystemMsg Global10685_Text_HasUpgradedServices, 2
     VMJump L_0F61
 
 L_0F61:
@@ -1009,7 +1010,7 @@ L_10B2:
     Plugin8_Cmd1007 8, 255, 0, 0
     WordSetNumber 7, 0x8034, 5
     // "[f000]Ĺ\u0001\u0000's\npopularity went up by [f000]ȃ\u0001\u0007 points![f000]븁\u0000"
-    SystemMsg 270, 2
+    SystemMsg Global10685_Text_SPopularityWentUp_2, 2
     SEWait
     SEPlay SEQ_SE_SW_JA_EXP
     SEWait
@@ -1032,10 +1033,10 @@ L_10B2:
     Plugin8_Cmd1037 0
     WordSetNumber 8, 0x8046, 4
     // "...!![f000]븂\u0001<"
-    SystemMsg 271, 2
+    SystemMsg Global10685_Text_Empty_50, 2
     MEPlay SEQ_ME_AVENUE_02
     // "[f000]Ĺ\u0001\u0000 reached\nRank [f000]ȃ\u0001\b!"
-    SystemMsg 272, 2
+    SystemMsg Global10685_Text_ReachedRank_2, 2
     MEWait
     MsgWaitAdvance
     VMStackPush 0x8045
@@ -1048,7 +1049,7 @@ L_10B2:
     VMJumpIf CMP_STACK, L_11AF
     Plugin8_Cmd1007 12, 255, 0, 2
     // "This place's reputation as\n“[f000]ł\u0001\u0002\"[f000]븀\u0000\nis spreading![f000]븁\u0000"
-    SystemMsg 274, 2
+    SystemMsg Global10685_Text_PlacesReputationSpreading, 2
 
 L_11AF:
     VMStackPush 0x8045
@@ -1061,7 +1062,7 @@ L_11AF:
     VMJumpIf CMP_STACK, L_11E8
     Plugin8_Cmd1007 4, 255, 0, 0
     // "...Oh?[f000]븁\u0000\nThe owner is here![f000]븁\u0000\nGo to [f000]ĺ\u0001\u0000's office.[f000]븁\u0000"
-    SystemMsg 278, 2
+    SystemMsg Global10685_Text_OhOwnerHereGo, 2
     WorkSetConst 0x4119, 1
 
 L_11E8:
@@ -1799,7 +1800,7 @@ L_1E39:
     FadeWait
     MEPlay SEQ_ME_AVENUE_01
     // "Changed into\n[f000]ĸ\u0001\u0000!"
-    SystemMsg 255, 2
+    SystemMsg Global10685_Text_ChangedInto, 2
     MEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -2680,7 +2681,7 @@ L_2C4D:
     MoneyWinUpdate
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 paid\n$[f000]ȅ\u0001\u0001![f000]븁\u0000"
-    SystemMsg 258, 2
+    SystemMsg Global10685_Text_Paid, 2
     InfoMsgClose
     MoneyWinClose
     VMReturn
@@ -3020,7 +3021,7 @@ Script_5:
     ActorMsg MSGFILE_SCRIPT, 0x8024, 0x8023, 2, 0
     ActorMsgClose
     // "            "
-    SystemMsg 203, 2
+    SystemMsg Global10685_Text_Empty_31, 2
     WorkSetConst 0x8021, 1
 
 L_3248:
@@ -3041,7 +3042,7 @@ L_3274:
 
 L_328D:
     // "            "
-    SystemMsg 203, 2
+    SystemMsg Global10685_Text_Empty_31, 2
     InfoMsgClose
     Plugin8_Cmd1001
     MapChangeWarp ZONE_JOIN_AVENUE, 42, 52, 1
@@ -3645,7 +3646,7 @@ L_3BEA:
 L_3BF2:
     WorkSetConst 0x8056, 0
     // ""
-    SystemMsg 1487, 2
+    SystemMsg Global10685_Text_Empty_253, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32800
     ListMenuAdd 174, 235, 0
     Plugin8_Cmd1002 6, 0x8056
@@ -3832,7 +3833,7 @@ Script_11:
     Plugin8_Cmd1029 0x8023, 0, 0x8023
     Plugin8_Cmd1007 8, 255, 0, 0
     // "I love [f000]Ĺ\u0001\u0000![f000]븁\u0000\nI love people in this avenue, too![f000]븁\u0000\nThat's why I'm checking\neveryone's history.[f000]븁\u0000\nWhose history do you want to know?"
-    ActorMsg MSGFILE_SCRIPT, 1722, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10685_Text_LoveLovePeopleAvenue, 0x8023, 2, 0
     VMCall L_412C
     VMStackPush 0x8020
     VMStackPushConst 65534
@@ -3841,7 +3842,7 @@ Script_11:
     WorkGet 0x802e, 0x8020
     Plugin8_Cmd1007 0, 0, 0x802e, 0
     // "Then, I'll tell\nas much of [f000]Ā\u0001\u0000's history[f000]븀\u0000\nas I know.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1723, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10685_Text_ThenIllTellMuch, 0x8023, 2, 0
     Plugin8_Cmd1035 0x802e, 0, 0x8024
     ActorMsg MSGFILE_SCRIPT, 0x8024, 0x8023, 2, 0
     Plugin8_Cmd1035 0x802e, 1, 0x8024
@@ -3853,7 +3854,7 @@ Script_11:
     Plugin8_Cmd1035 0x802e, 5, 0x8024
     ActorMsg MSGFILE_SCRIPT, 0x8024, 0x8023, 2, 0
     // "That is [f000]Ā\u0001\u0000's history.[f000]븁\u0000\nDo you want to know more\nabout [f000]Ā\u0001\u0000?"
-    ActorMsg MSGFILE_SCRIPT, 1734, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10685_Text_SHistoryWantKnow, 0x8023, 2, 0
     YesNoWin 0x8027
     VMStackPush 0x8027
     VMStackPushConst 0
@@ -3868,14 +3869,14 @@ Script_11:
     Plugin8_Cmd1035 0x802e, 9, 0x8024
     ActorMsg MSGFILE_SCRIPT, 0x8024, 0x8023, 2, 0
     // "On [f000]Ā\u0001\u0000's\nJoin Avenue...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1744, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10685_Text_SJoinAvenue, 0x8023, 2, 0
     Plugin8_Cmd1035 0x802e, 10, 0x8026
     VMStackPush 0x8026
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_409B
     // "I don't know what kind of shops\nthey are...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1748, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10685_Text_DontKnowWhatKind, 0x8023, 2, 0
     VMJump L_40FC
 
 L_409B:
@@ -3902,7 +3903,7 @@ L_40FC:
     Plugin8_Cmd1013 0
     Plugin8_Cmd1007 8, 255, 0, 0
     // "I love [f000]Ĺ\u0001\u0000![f000]븁\u0000\nI love people in this avenue, too![f000]븁\u0000\nI'll keep watching this avenue forever.[f000]븁\u0000\nPlease speak to me again!"
-    ActorMsg MSGFILE_SCRIPT, 1749, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10685_Text_LoveLovePeopleAvenue_2, 0x8023, 2, 0
     LastKeyWait
     ActorMsgClose
     WorkSetConst 0x805b, 0
@@ -4159,7 +4160,7 @@ L_450F:
 
 L_4517:
     // ""
-    SystemMsg 1487, 2
+    SystemMsg Global10685_Text_Empty_253, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32800
     ListMenuAdd 174, 235, 0
     ListMenuAdd 183, 244, 7
@@ -4233,7 +4234,7 @@ L_4619:
 
 L_4621:
     // ""
-    SystemMsg 1487, 2
+    SystemMsg Global10685_Text_Empty_253, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32800
     ListMenuAdd 176, 237, 2
     ListMenuAdd 183, 244, 7
@@ -4298,7 +4299,7 @@ L_46F9:
 
 L_4701:
     // ""
-    SystemMsg 1487, 2
+    SystemMsg Global10685_Text_Empty_253, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32800
     ListMenuAdd 176, 237, 0
     Plugin8_Cmd1031 22, 0x8026

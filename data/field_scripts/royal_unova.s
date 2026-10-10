@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/royal_unova.h"
 
 // Script plugin 2, from the zones that use this file
 
@@ -66,7 +67,7 @@ Script_1:
     ActorsPauseAll
     SEWait
     // "Thank you for sailing with us.[f000]븁\u0000\nThis cruise ship will arrive\nin Castelia City shortly.[f000]븁\u0000"
-    SystemMsg 67, 2
+    SystemMsg RoyalUnova_Text_ThankSailingUsCruise, 2
     InfoMsgClose
     PleasureBoatCmd_StopClock
     FadeOutBlack
@@ -94,7 +95,7 @@ Script_2:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_01AD
     // "The number of Trainers aboard the\nRoyal Unova today is [f000]Ȁ\u0001\u0003.[f000]븀\u0000\nYou... Congratulations![f000]븁\u0000\nYou've won against every Trainer\non the ship![f000]븁\u0000\nThe ship is nearing the port.\nWould you like to get off the ship?"
-    ParentActorMsg MSGFILE_SCRIPT, 66, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_NumberTrainersAboardRoyal, 0, 0
     VMJump L_01DA
 
 L_01AD:
@@ -103,12 +104,12 @@ L_01AD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01D0
     // "The number of Trainers on the\nRoyal Unova today is [f000]Ȁ\u0001\u0003.[f000]븁\u0000\nThe ship is nearing the port.\nWould you like to get off the ship?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_NumberTrainersRoyalUnova_2, 0, 0
     VMJump L_01DA
 
 L_01D0:
     // "The number of Trainers on the\nRoyal Unova today is [f000]Ȁ\u0001\u0003.[f000]븀\u0000\nAnd you've won against [f000]Ȁ\u0001\u0004.[f000]븁\u0000\nThe ship is nearing the port.\nWould you like to get off the ship?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_NumberTrainersRoyalUnova, 0, 0
 
 L_01DA:
     YesNoWin 0x8010
@@ -117,7 +118,7 @@ L_01DA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_020F
     // "Certainly. Just a moment, please.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 62, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_CertainlyJustMomentPlease, 0, 0
     ActorMsgClose
     PleasureBoatCmd_StopClock
     FadeOutBlack
@@ -127,7 +128,7 @@ L_01DA:
 
 L_020F:
     // "Certainly.\nPlease continue to have a great time!"
-    ParentActorMsg MSGFILE_SCRIPT, 63, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_CertainlyPleaseContinueHave, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -145,13 +146,13 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0252
     // "There are a lot of cabins in this big ship!\nI would like to give you advice 'cause[f000]븀\u0000\nyou need help finding Trainers![f000]븁\u0000\nDo you want to listen to my hint?"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_ThereLotCabinsBig, 0, 0
     FlagSet 228
     VMJump L_025C
 
 L_0252:
     // "Do you want to know a hint\nabout looking for Trainers?"
-    ParentActorMsg MSGFILE_SCRIPT, 61, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_WantKnowHintAbout, 0, 0
 
 L_025C:
     YesNoWin 0x8010
@@ -170,7 +171,7 @@ L_025C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C0
     // "Today...[f000]븁\u0000\nThe number of people on the starboard\nside is [f000]Ȁ\u0001\u0001, and...none on the port side."
-    ParentActorMsg MSGFILE_SCRIPT, 58, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_TodayNumberPeopleStarboard, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02F5
@@ -181,14 +182,14 @@ L_02C0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02E7
     // "Today...[f000]븁\u0000\nThe number of people on the port side is\n[f000]Ȁ\u0001\u0000, and...none on the starboard side."
-    ParentActorMsg MSGFILE_SCRIPT, 59, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_TodayNumberPeoplePort, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_02F5
 
 L_02E7:
     // "Today...[f000]븁\u0000\nAs for people, we have [f000]Ȁ\u0001\u0000 on the\nport side and [f000]Ȁ\u0001\u0001 on the starboard side."
-    ParentActorMsg MSGFILE_SCRIPT, 57, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_TodayPeopleWeHave, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -197,7 +198,7 @@ L_02F5:
 
 L_02FB:
     // "If you're so inclined, speak to me.\nI will give you a hint anytime."
-    ParentActorMsg MSGFILE_SCRIPT, 60, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_IfYoureInclinedSpeak, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -211,7 +212,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Some guests like to tell really long\nstories, and they just keep talking[f000]븀\u0000\nuntil they hear a whistle!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_SomeGuestsLikeTell, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -223,7 +224,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Royal Unova's renowned observation\ndeck is just ahead."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_RoyalUnovasRenownedObservation, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -241,7 +242,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you’re looking in the cabins with\nblue doors for someone to battle,[f000]븀\u0000\nyou’ll find only one Trainer there today."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_IfYoureLookingCabins, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_039D
@@ -251,7 +252,7 @@ L_0382:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It seems the number of Trainers in the\ncabins with blue doors today is [f000]Ȁ\u0001\u0002."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_SeemsNumberTrainersCabins, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -265,7 +266,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's running on the ocean!\nWhat a peculiar thing to see!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_ItsRunningOceanWhat, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -277,7 +278,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I can't make up my mind whether to go to\nthe observation deck or battle some[f000]븀\u0000\nTrainers in the cabins."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_CantMakeUpMind, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -289,7 +290,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm running with the rhythm of the waves,\nbut it's a real challenge!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_ImRunningRhythmWaves, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -301,7 +302,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Having battles on the ship and seeing\nthe scenery from the deck...[f000]븀\u0000\nThis ship is the best!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_HavingBattlesShipSeeing, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -313,7 +314,7 @@ Script_11:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I've been wondering which cabin to enter\nthis whole time!"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_IveBeenWonderingWhich, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -524,7 +525,7 @@ L_0693:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_06D2
     // "Won against every Trainer on the ship!"
-    SystemMsg 64, 2
+    SystemMsg RoyalUnova_Text_WonAgainstEveryTrainer, 2
     LastKeyWait
     InfoMsgClose
 
@@ -593,7 +594,7 @@ Script_28:
     SEPlay SEQ_SE_FLD_78
     SEWait
     // "Thank you for sailing with us.[f000]븁\u0000\nThis cruise ship will arrive\nin Castelia City shortly.[f000]븁\u0000"
-    SystemMsg 67, 2
+    SystemMsg RoyalUnova_Text_ThankSailingUsCruise, 2
     InfoMsgClose
     PleasureBoatCmd_StopClock
     FadeOutBlack
@@ -620,7 +621,7 @@ Script_29:
     ActorCmdWait
     WordSetNumber 3, 0x802d, 1
     // "Thank you very much for sailing with us\non the Royal Unova.[f000]븁\u0000\nThe number of Trainers aboard the\nRoyal Unova today is [f000]Ȁ\u0001\u0003.[f000]븀\u0000\nPlease enjoy the trip.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 65, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, RoyalUnova_Text_ThankVeryMuchSailing, 0, 0, 0
     ActorMsgClose
     WorkSetConst 0x802d, 0
     FadeOutBlackQ

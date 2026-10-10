@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/pinwheel_forest.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Yo! Traveling Trainer![f000]븁\u0000\nBring a strong Pokémon\nto smash the challenge rock!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest_Text_YoTravelingTrainerBring, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -23,7 +24,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Forest paths were created by\nthe Pokémon that often walk there.[f000]븁\u0000\nIf you walk the paths, sometimes\nyou can feel like a Pokémon yourself."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PinwheelForest_Text_ForestPathsWereCreated, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -42,7 +43,7 @@ Script_1:
 
 L_006F:
     // "It's a challenge rock."
-    InfoMsg 4, 2
+    InfoMsg PinwheelForest_Text_ItsChallengeRock, 2
     LastKeyWait
     InfoMsgClose_0039
 
@@ -82,7 +83,7 @@ L_00AE:
     VMJumpIf CMP_STACK, L_017C
     WordSetPartyPokeName 0, 0x8022
     // "It's a challenge rock.[f000]븁\u0000\nWould you like to have [f000]Ă\u0001\u0000\nsmash the rock?"
-    InfoMsg 2, 2
+    InfoMsg PinwheelForest_Text_ItsChallengeRockWould, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -90,7 +91,7 @@ L_00AE:
     VMJumpIf CMP_STACK, L_0168
     WordSetPartyPokeName 0, 0x8022
     // "[f000]Ă\u0001\u0000 tried to smash the\nchallenge rock.[f000]븁\u0000\nA piece of the rock broke away![f000]븁\u0000"
-    InfoMsg 3, 2
+    InfoMsg PinwheelForest_Text_TriedSmashChallengeRock, 2
     InfoMsgClose_0039
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -130,7 +131,7 @@ L_0194:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01B0
     // "It's a challenge rock."
-    InfoMsg 4, 2
+    InfoMsg PinwheelForest_Text_ItsChallengeRock, 2
     LastKeyWait
     InfoMsgClose_0039
 
@@ -142,7 +143,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Pinwheel Forest\nDid you remember to pack an Antidote?"
-    MsgPlaceSign 5, 3
+    MsgPlaceSign PinwheelForest_Text_PinwheelForestDidRemember, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

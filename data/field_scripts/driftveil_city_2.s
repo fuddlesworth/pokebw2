@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -9,7 +10,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Welcome to the Driftveil Chateau Hotel.\nWe're currently all booked up,[f000]븀\u0000\nbut feel free to enjoy the ambiance."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity2_Text_WelcomeDriftveilChateauHotel, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

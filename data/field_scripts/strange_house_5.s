@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/strange_house_5.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -99,7 +100,7 @@ L_0162:
 L_0170:
     ActorCmdWait
     // "Oh... The Lunar Wing...\nI can't take it now...[f000]븀\u0000\nBut it'll be OK...[f000]븁\u0000\nPlease return the wing\nto the Pokémon...[f000]븁\u0000\nI was waiting on the bridge\nso I could return it myself...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, StrangeHouse5_Text_OhLunarWingCant, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_0220
     ActorCmdWait

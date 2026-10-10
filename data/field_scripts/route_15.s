@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_15.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 15"
-    MsgPlaceSign 0, 3
+    MsgPlaceSign Route15_Text_Route15, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -22,7 +23,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 15"
-    MsgPlaceSign 1, 3
+    MsgPlaceSign Route15_Text_Route15_2, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -33,7 +34,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Poké Transfer Lab\nWhat's Poké Transfer? Come find out!"
-    MsgPlaceSign 2, 2
+    MsgPlaceSign Route15_Text_PokeTransferLabWhats, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -44,7 +45,7 @@ Script_4:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Marvelous Bridge\nTruly marvelous! And also a bridge!"
-    MsgPlaceSign 3, 2
+    MsgPlaceSign Route15_Text_MarvelousBridgeTrulyMarvelous, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

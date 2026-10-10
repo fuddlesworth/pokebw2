@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/accumula_town_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -31,14 +32,14 @@ L_005F:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Shall I play a song I like for you?"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_ShallPlaySongLike, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C1
     // "Hee hee!\nListen closely, then!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_HeeHeeListenClosely, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0480
@@ -48,7 +49,7 @@ L_005F:
 
 L_00C1:
     // "Alas. That's unfortunate...\nIf you change your mind, let me know!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_AlasThatsUnfortunateIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -58,7 +59,7 @@ L_00CF:
 L_00D5:
     SEPlay SEQ_SE_MESSAGE
     // "She's absorbed in her performance!"
-    InfoMsg 11, 2
+    InfoMsg AccumulaTown8_Text_ShesAbsorbedHerPerformance, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -99,9 +100,9 @@ L_014F:
 
 L_015B:
     // "Playing the piano isn't much fun lately...[f000]븁\u0000\nMaybe what I need is to hear a cry\nwith a wonderful melody.[f000]븀\u0000\nThat might get my imagination going.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_PlayingPianoIsntMuch, 0, 0
     // "Do you know about this?[f000]븁\u0000\nA Pokémon called Kricketot has a cry\nthat sounds like an instrument![f000]븀\u0000\nI'd sure like to hear it sometime."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_KnowAboutPokemonCalled, 0, 0
     VMStackPush 0x8026
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -114,7 +115,7 @@ L_015B:
     ActorCmdWait
     VMSleep 8
     // "The cry of that Kricketot with you...[f000]븁\u0000\nDedelee dun dun dun dum! ♪\nIt sounds just like a xylophone![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_CryKricketotDedeleeDun, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0480
     ActorCmdWait
@@ -149,7 +150,7 @@ L_020F:
 L_021D:
     ActorCmdWait
     // "One more thing...[f000]븁\u0000\nIf I could hear just one more cry,\nmy heart would flutter and my fingers[f000]븀\u0000\nwould dance over the keys!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_OneMoreThingIf, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x4107, 1
@@ -192,7 +193,7 @@ L_02A4:
 
 L_02B0:
     // "I hear a Pokémon called Whismur\nhas a very quiet cry.[f000]븁\u0000\nIf I knew what it sounded like,\nI could play perfect pianissimo!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_HearPokemonCalledWhismur, 0, 0
     VMStackPush 0x8026
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -205,7 +206,7 @@ L_02B0:
     ActorCmdWait
     VMSleep 8
     // "The cry of that Whismur with you...[f000]븁\u0000\nIt's wonderfully pianissimo!\nIt reverberates like a sweet murmur!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_CryWhismurItsWonderfully, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0480
@@ -246,9 +247,9 @@ L_0374:
 L_0382:
     ActorCmdWait
     // "Thanks to you and your Pokémon,\nmy mind is overflowing with melodies![f000]븁\u0000\nI can play the piano again![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_ThanksPokemonMindOverflowing, 0, 0
     // "This is a token of my appreciation for\nyour getting me out of my slump. Thanks!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_TokenAppreciationGettingOut, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPush 0x8000
@@ -278,14 +279,14 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Do you want to listen to my drum?"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_WantListenDrum, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0432
     // "My! Heart!\nAs long as my heart beats![f000]븀\u0000\nI will keep! On! Drumming!!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_HeartLongHeartBeats, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0488
@@ -295,7 +296,7 @@ Script_2:
 
 L_0432:
     // "...I thought so."
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_Thought, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -305,7 +306,7 @@ L_0440:
 L_0446:
     SEPlay SEQ_SE_MESSAGE
     // "He is concentrating on his performance!"
-    InfoMsg 15, 2
+    InfoMsg AccumulaTown8_Text_HeConcentratingHisPerformance, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -320,7 +321,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 572, 0
     // "Chip kwip!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, AccumulaTown8_Text_ChipKwip, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

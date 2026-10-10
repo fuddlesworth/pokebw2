@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nacrene_city_9.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -9,7 +10,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Burgh used this warehouse up until\nfour years ago.[f000]븁\u0000\nWhen Burgh gets artist's block,\nhe comes back here to Nacrene City!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity9_Text_BurghUsedWarehouseUp, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -21,7 +22,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Burgh is an artist.\nHe's also the Gym Leader in Castelia City.[f000]븁\u0000\nWe want to be like him![f000]븁\u0000\nI'll never stop admiring him![f000]븁\u0000\nYup, I'm only going to keep on admiring!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity9_Text_BurghArtistHesAlso, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

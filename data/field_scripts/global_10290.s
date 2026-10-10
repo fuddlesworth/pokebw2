@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10290.h"
 
 // Script plugin 4, from the zones that start its scripts
 
@@ -36,14 +37,14 @@ L_004E:
     VMJumpIf CMP_STACK, L_0083
     FlagSet 123
     // "...So! You![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_SoYou, 0, 0, 0
     // "You are a fantastic Pokémon Trainer![f000]븁\u0000\nWill you participate in the great\nexperiment of the century?[f000]븁\u0000\nYou need two DS systems to use\nPoké Transfer![f000]븁\u0000\nWe will conduct the experiment with\nanother DS. Is that OK?"
-    ActorMsg MSGFILE_SCRIPT, 34, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_FantasticPokemonTrainerWill, 0, 0, 0
     VMJump L_008F
 
 L_0083:
     // "Hey, le Trainer fantastique! Want to be\npart of the experiment of the century?[f000]븁\u0000\nYou need two DS systems to play with\nPoké Transfer![f000]븁\u0000\nDo you have a second DS system that you\ncan use?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_HeyLeTrainerFantastique, 0, 0, 0
 
 L_008F:
     YesNoWin 0x8010
@@ -59,7 +60,7 @@ L_008F:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0187
     // "OK! But just remember! ¡Muy importante![f000]븁\u0000\nOnce you bring a Pokémon here, you can't\nsend it back. Do you still want to do it?"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_OkButJustRemember, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -77,7 +78,7 @@ L_008F:
 
 L_0119:
     // "DS Wireless Communications will\nbe launched."
-    SystemMsg 4, 0
+    SystemMsg Global10290_Text_DsWirelessCommunicationsWill, 0
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010
@@ -188,7 +189,7 @@ L_0261:
 L_0276:
     FunfestBGMReturn
     // "OK, OK. Come here. Stand right there![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_OkOkComeHere, 0, 0, 0
     ActorMsgClose
     VMCall L_0460
     WorkSetConst 0x408d, 1
@@ -217,13 +218,13 @@ L_02DD:
     VMJumpIf CMP_STACK, L_0308
     VMCall L_039D
     // "I put the Pokémon you caught\nin your PC Box.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_PutPokemonCaughtPc, 0, 0, 0
     VMJump L_039B
 
 L_0308:
     WorkSetConst 0x8025, 0
     // "Great! Molto bene![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_GreatMoltoBene, 0, 0, 0
     VMStackPush 0x8024
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -261,7 +262,7 @@ L_039B:
 
 L_039D:
     // "Ugh...\nThere seems to be a communication error.[f000]븁\u0000\nI'm afraid you have to try it again![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_UghThereSeemsCommunication, 0, 0, 0
     VMReturn
 
 L_03AB:
@@ -329,7 +330,7 @@ L_0460:
     ActorCmdExec 0, Movement_0534
     ActorCmdWait
     // "Well, let's begin! Allons-y![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_WellLetsBeginAllons, 0, 0, 0
     ActorMsgClose
     FadeOutBlackQ
     FadeWait
@@ -417,20 +418,20 @@ L_05B4:
 L_05BC:
     ActorCmdWait
     // "Hi, hello![f000]븁\u0000\nYou came here.\nThat means you are a visitor?[f000]븁\u0000\nHuh? No?\nYou came all the way here?[f000]븁\u0000\nAh, you are a Trainer?\nAre you in the middle of your journey?[f000]븁\u0000\nAh, this is your Trainer Card?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_HiHelloCameHere, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_08D8
     ActorCmdWait
     // "W-w-what? You!\nYou have all the Gym Badges?![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 1, 0, 1
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_WWWhatHave, 1, 0, 1
     ActorMsgClose
     // "Great!\nYou may be able to...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 20, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_GreatMayAble, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_08E0
     ActorCmdWait
     // "Professor Paaaaaark![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_ProfessorPaaaaaark, 1, 0, 0
     ActorMsgClose
     VMStackPush 0x8028
     VMStackPushConst 9
@@ -439,7 +440,7 @@ L_05BC:
     ActorCmdExec 1, Movement_085C
     ActorCmdWait
     // "Quick, quick![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_QuickQuick, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_0894
     ActorCmdExec 255, Movement_0834
@@ -453,7 +454,7 @@ L_064B:
     ActorCmdExec 1, Movement_0870
     ActorCmdWait
     // "Quick, quick![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_QuickQuick, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_0894
     ActorCmdExec 255, Movement_0844
@@ -463,7 +464,7 @@ L_068C:
     ActorCmdExec 1, Movement_0884
     ActorCmdWait
     // "Quick, quick![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_QuickQuick, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_0894
     ActorCmdExec 255, Movement_0854
@@ -471,51 +472,51 @@ L_068C:
 L_06B4:
     ActorCmdWait
     // "Oh, there you are![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_OhThere, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_08D0
     ActorCmdWait
     // "Professor![f000]븁\u0000\nDo you have a minute?\nI think you do. Listen![f000]븁\u0000\nThis kid is a Trainer who has all the\nGym Badges. All of them![f000]븁\u0000\nI am sure this Trainer can operate it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_ProfessorHaveMinuteThink, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_08A0
     ActorCmdWait
     ActorCmdExec 255, Movement_08B8
     ActorCmdWait
     // "I have told you many times.[f000]븁\u0000\nThis invention is great indeed, but\nwithout a professional Trainer...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 25, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_HaveToldManyTimes, 0, 4, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_08D8
     ActorCmdWait
     ActorCmdExec 0, Movement_08E8
     ActorCmdWait
     // "What? You have the Gym Badges?\nALL of them?![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 26, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_WhatHaveGymBadges, 0, 0, 1
     ActorMsgClose
     // "Fantastic![f000]븁\u0000\nFantastico![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 27, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_FantasticFantastico, 0, 0, 1
     ActorMsgClose
     // "Yahoooooooooooooooo![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 28, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_Yahoooooooooooooooo, 0, 0, 1
     ActorMsgClose
     ActorCmdExec 0, Movement_08F4
     ActorCmdWait
     // "What a great day! Great! Unbelievable!\nHi, I am Professor Andrew Park![f000]븁\u0000\nYou!\nEr...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 29, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_WhatGreatDayGreat, 0, 0, 0
     ActorMsgClose
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 30, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_Empty_2, 1, 0, 0
     ActorMsgClose
     // "[f000]Ā\u0001\u0000! Are you willing to\nparticipate in an ambitious experiment[f000]븀\u0000\nthat will make history?[f000]븁\u0000\nThis device is called Poké Transfer.[f000]븁\u0000\nIt connects...blah blah blah...\n...called DS system...meanwhile...[f000]븁\u0000\n...blah blah...of molecules...and then...\n...while evoking...blah blah...[f000]븁\u0000\n...ergo, energy particles will...\n...blah blah...and if the frequency...[f000]븁\u0000\n...as you see...with faraway Pokémon...\n...the Alpha waves...blah blah...[f000]븁\u0000\n...following which...reach convergence...\n...blah blah...spectacular results![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 31, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_WillingParticipateAmbitiousExperiment, 0, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_08C0
     ActorCmdWait
     ActorCmdExec 255, Movement_08C8
     ActorCmdWait
     // "To put it more simply, if you use this\ndevice, you may be able to bring Pokémon[f000]븀\u0000\nhere from other regions.[f000]븁\u0000\nBut just for safety's sake, the Pokémon\nyou're transferring shouldn't be holding[f000]븀\u0000\nanything! So make sure to take their[f000]븀\u0000\nitems first.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 32, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10290_Text_PutMoreSimplyIf, 1, 0, 0
     ActorMsgClose
     ActorCmdExec 1, Movement_08D0
     ActorCmdExec 255, Movement_08D0
@@ -527,7 +528,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Your Pokémon can't be holding items when\nyou transfer them. It's safer that way.[f000]븁\u0000\nIn rare cases, there are Pokémon that\ncannot be transferred, but[f000]븀\u0000\nProfessor Park will explain it to you."
-    ParentActorMsg MSGFILE_SCRIPT, 35, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10290_Text_PokemonCantHoldingItems, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -539,7 +540,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "With this research of mine, I also want to\nhave an impact on people in the future...[f000]븀\u0000\npeople living 100 or 200 years from now!"
-    ParentActorMsg MSGFILE_SCRIPT, 36, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10290_Text_ResearchMineAlsoWant, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -551,7 +552,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Here, we are monitoring Poké Transfer.[f000]븁\u0000\nWe're keeping a careful eye to make sure\nall the Pokémon have safe travels!"
-    ParentActorMsg MSGFILE_SCRIPT, 37, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10290_Text_HereWeMonitoringPoke, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

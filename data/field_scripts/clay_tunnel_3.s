@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/clay_tunnel_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -14,14 +15,14 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0085
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     ActorCmdExec 8, Movement_037C
@@ -37,7 +38,7 @@ Script_1:
 
 L_0085:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -51,14 +52,14 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0100
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     ActorCmdExec 13, Movement_037C
@@ -74,7 +75,7 @@ Script_2:
 
 L_0100:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -88,14 +89,14 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0197
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     ActorCmdExec 9, Movement_0394
@@ -115,7 +116,7 @@ Script_3:
 
 L_0197:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -129,14 +130,14 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_022E
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     ActorCmdExec 12, Movement_0394
@@ -156,7 +157,7 @@ Script_4:
 
 L_022E:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -170,14 +171,14 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02C5
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     ActorCmdExec 10, Movement_037C
@@ -197,7 +198,7 @@ Script_5:
 
 L_02C5:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -211,14 +212,14 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, Trainer!\nWant to ride this mining cart?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhTrainerWantRide, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_035C
     // "Oh!\nLet's go by mining cart![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhLetsGoBy, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     ActorCmdExec 11, Movement_0394
@@ -238,7 +239,7 @@ Script_6:
 
 L_035C:
     // "Oh! Anytime you'd like to ride it,\ntalk to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, ClayTunnel3_Text_OhAnytimeYoudLike, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10105.h"
 
 // Script plugin 13, from the only plugin whose commands it decodes with
 
@@ -39,7 +40,7 @@ L_0047:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0084
     // "Sorry, we're getting things ready.\nPlease come back later."
-    ActorMsg MSGFILE_SCRIPT, 6, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_SorryWereGettingThings, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -51,14 +52,14 @@ L_0084:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_00AF
     // "You have at least one Pokémon\nthat can't be taken in."
-    ActorMsg MSGFILE_SCRIPT, 7, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_HaveLeastOnePokemon, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
 
 L_00AF:
     // "Welcome to the Global Terminal![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WelcomeGlobalTerminal, 0x8011, 4, 0
     WorkSetConst 0x8023, 0
     WorkSetConst 0x8024, 1
 
@@ -73,7 +74,7 @@ L_00C7:
 
 L_00ED:
     // "Would you like to use\nNintendo Wi-Fi Connection?"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeUseNintendo, 0x8011, 4, 0
     VMCall L_02B5
     WorkGet 0x8023, 0x8020
     VMJump L_0295
@@ -90,12 +91,12 @@ L_011E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_014B
     // "In the Global Terminal, you can battle or\ntrade Pokémon with Pokémon fans from[f000]븀\u0000\naround the world by connecting to[f000]븀\u0000\nNintendo Wi-Fi Connection.[f000]븁\u0000\nFor details, please listen to the\nexplanation at each facility.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_GlobalTerminalCanBattle, 0x8011, 4, 0
     VMJump L_0157
 
 L_014B:
     // "In the Global Terminal, you can\ntrade Pokémon with Pokémon fans from[f000]븀\u0000\naround the world by connecting to[f000]븀\u0000\nNintendo Wi-Fi Connection.[f000]븁\u0000\nFor details, please listen to the\nexplanation at each facility.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 97, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_GlobalTerminalCanTrade, 0x8011, 4, 0
 
 L_0157:
     WorkSetConst 0x8023, 0
@@ -148,7 +149,7 @@ L_01F7:
 
 L_020A:
     // "Please do visit again."
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_PleaseVisitAgain, 0x8011, 4, 0
     WorkSetConst 0x8023, 12
     VMJump L_0295
 
@@ -159,7 +160,7 @@ L_0222:
 
 L_0235:
     // "Communication error."
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_CommunicationError, 0x8011, 4, 0
     WorkSetConst 0x8023, 12
     VMJump L_0295
 
@@ -269,7 +270,7 @@ L_03C4:
 
 L_03EA:
     // "Would you like to take the\nRandom Matchup challenge?"
-    ActorMsg MSGFILE_SCRIPT, 53, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeTakeRandom, 0x8011, 4, 0
     VMCall L_056F
     WorkGet 0x802d, 0x8020
     VMJump L_0555
@@ -399,7 +400,7 @@ L_05C5:
     WorkSetConst 0x8031, 0
     WorkSetConst 0x8032, 0
     // "A Random Matchup is a battle with other\nPokémon fans from around the world.[f000]븁\u0000\nThere are five kinds of Random Matchups:\nSingle, Double, Triple, Rotation,[f000]븀\u0000\nand Launcher.[f000]븁\u0000\nAlso, Random Matchups have two modes:\nFree mode and Rating mode.[f000]븁\u0000\nIn Free mode, everyone can participate\nin battles freely.[f000]븁\u0000\nIn Rating mode, you may participate in\nbattles after you set Game Sync, access[f000]븀\u0000\nthe Pokémon Global Link website with your[f000]븀\u0000\ncomputer, and register your[f000]븀\u0000\nGame Sync ID.[f000]븁\u0000\nhttp://www.pokemon-gl.com/\n(Pokémon Global Link)[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 57, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_RandomMatchupBattleOther, 0x8011, 4, 0
     WorkSetConst 0x8031, 1
 
 L_05E9:
@@ -408,7 +409,7 @@ L_05E9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06DB
     // "Would you like to know more details?"
-    ActorMsg MSGFILE_SCRIPT, 58, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeKnowMore, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32816
     ListMenuAdd 59, 65535, 0
     ListMenuAdd 60, 65535, 1
@@ -422,7 +423,7 @@ L_05E9:
 
 L_064E:
     // "Free mode is for casual battles against\nother Pokémon fans around the world.[f000]븁\u0000\nFeel free to challenge it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 63, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_FreeModeCasualBattles, 0x8011, 4, 0
     VMJump L_06D5
 
 L_0660:
@@ -432,7 +433,7 @@ L_0660:
 
 L_0673:
     // "Rating mode is recommended for those who\nwant to master battles.[f000]븁\u0000\nWhen communication is established, you\nare likely to battle against a person with[f000]븀\u0000\na similar Rating.[f000]븁\u0000\nYour Rating starts at 1500. When you win,\nit goes up. When you lose, it goes down.[f000]븁\u0000\nSo the higher your Rating is, the\nstronger you are as a Trainer![f000]븁\u0000\nThere's one thing you should be careful\nabout in Rating mode.[f000]븁\u0000\nYour record and Rating will be erased if\nyou connect to Nintendo Wi-Fi Connection[f000]븀\u0000\nwith a different DS System.[f000]븁\u0000\nSo please be careful if you switch![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 64, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_RatingModeRecommendedThose, 0x8011, 4, 0
     VMJump L_06D5
 
 L_0685:
@@ -442,7 +443,7 @@ L_0685:
 
 L_0698:
     // "There are several special rules\nfor Random Matchups.[f000]븁\u0000\nAny Pokémon higher than Lv. 50 will be\nset to that level for the battle.[f000]븁\u0000\nPokémon nicknames won't be used.[f000]븁\u0000\nYou have a limited time to choose Pokémon\nfor a battle and to give orders to your[f000]븀\u0000\nPokémon during the battle.[f000]븁\u0000\nDon't exceed the time limit,\nor your Pokémon and its moves[f000]븀\u0000\nwill be chosen for you![f000]븁\u0000\nThere's also a time limit on the battle.[f000]븁\u0000\nThe winner will be determined when time\nruns out, even if both sides still have[f000]븀\u0000\nPokémon standing.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 65, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_ThereSeveralSpecialRules, 0x8011, 4, 0
     VMJump L_06D5
 
 L_06AA:
@@ -452,7 +453,7 @@ L_06AA:
 
 L_06BD:
     // "Be aware that if the system is turned\noff or loses power during a[f000]븀\u0000\nWi-Fi Competition or a Random Matchup,[f000]븀\u0000\nyou cannot participate in a competition[f000]븀\u0000\nor a Random Matchup again for one hour.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_AwareIfSystemTurned, 0x8011, 4, 0
     VMJump L_06D5
 
 L_06CF:
@@ -482,7 +483,7 @@ L_06F5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_074D
     // "Since the system was turned off or lost\npower during a Wi-Fi Competition or[f000]븀\u0000\na Random Matchup, you cannot participate[f000]븀\u0000\nin a competition or a Random Matchup[f000]븀\u0000\nfor one hour.[f000]븁\u0000\nPlease come back again\nafter one hour has passed."
-    ActorMsg MSGFILE_SCRIPT, 98, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_SinceSystemTurnedOff, 0x8011, 4, 0
     WorkSetConst 0x8020, 251
     VMReturn
     VMJump L_0753
@@ -501,7 +502,7 @@ L_0753:
 
 L_0774:
     // "Which Battle would you like\nto choose?"
-    ActorMsg MSGFILE_SCRIPT, 66, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WhichBattleWouldLike, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32819
     ListMenuAdd 67, 65535, 0
     ListMenuAdd 68, 65535, 1
@@ -698,7 +699,7 @@ L_0AC6:
 
 L_0AD9:
     // "You may trade Pokémon with other\nPokémon fans from around the world with[f000]븀\u0000\nGlobal Trade.[f000]븁\u0000\nGlobal Trade has two forms: GTS and\nGTS Negotiations.[f000]븁\u0000\nPlease be careful, because each has a\ndifferent way of trading.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_MayTradePokemonOther, 0x8011, 4, 0
     WorkSetConst 0x803b, 0
     VMJump L_0BCF
 
@@ -774,7 +775,7 @@ L_0BD5:
 L_0BE9:
     WorkSetConst 0x803d, 0
     // "Would you like to make a Global Trade?"
-    ActorMsg MSGFILE_SCRIPT, 15, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeMakeGlobal, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32829
     ListMenuAdd 17, 65535, 1
     ListMenuAdd 18, 65535, 2
@@ -888,7 +889,7 @@ L_0D8D:
 L_0DA1:
     WorkSetConst 0x8041, 0
     // "Would you like to make a GTS trade?"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeMakeGts, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32833
     ListMenuAdd 22, 65535, 2
     ListMenuAdd 23, 65535, 1
@@ -912,7 +913,7 @@ L_0E03:
     WorkSetConst 0x8042, 0
     WorkSetConst 0x8043, 0
     // "You may trade Pokémon in two ways when\nusing GTS.[f000]븁\u0000\nYou may offer a Pokémon for trade\nor search among offered Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 25, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_MayTradePokemonTwo, 0x8011, 4, 0
     WorkSetConst 0x8043, 1
 
 L_0E21:
@@ -921,7 +922,7 @@ L_0E21:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0EB9
     // "Should I describe things in\ngreater detail?"
-    ActorMsg MSGFILE_SCRIPT, 26, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_ShouldDescribeThingsGreater, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32834
     ListMenuAdd 29, 65535, 0
     ListMenuAdd 30, 65535, 1
@@ -932,7 +933,7 @@ L_0E21:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0E88
     // "You will be asked to put up the\nPokémon you are offering to trade.[f000]븁\u0000\nAt that time, you will be asked what\nPokémon you would like in return.[f000]븁\u0000\nIf another player offers your desired\nPokémon in return for your offered[f000]븀\u0000\nPokémon, the trade will go through.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 27, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WillAskedPutUp, 0x8011, 4, 0
     VMJump L_0EB3
 
 L_0E88:
@@ -941,7 +942,7 @@ L_0E88:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0EAD
     // "You may search among the Pokémon\nthat are offered by other Trainers.[f000]븁\u0000\nThey will all identify what Pokémon\ntheir Trainers want back in return.[f000]븁\u0000\nIf you find one that you want, you\nmust provide us with the kind of[f000]븀\u0000\nPokémon wanted in return.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 28, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_MaySearchAmongPokemon, 0x8011, 4, 0
     VMJump L_0EB3
 
 L_0EAD:
@@ -971,7 +972,7 @@ L_0ECD:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0F22
     // "Uh-oh![f000]븁\u0000\nI'm sorry, but your party and all your\nPC Boxes are full.[f000]븁\u0000\nTo use the GTS, you must have\nroom in your party or in a PC Box.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 94, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_UhOhImSorry, 0x8011, 4, 0
     WorkSetConst 0x8020, 255
     VMReturn
 
@@ -982,7 +983,7 @@ L_0F22:
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_0F4F
     // "Uh-oh![f000]븁\u0000\nYou need at least two Pokémon in your\nparty to use the GTS.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 95, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_UhOhNeedLeast, 0x8011, 4, 0
     WorkSetConst 0x8020, 255
     VMReturn
 
@@ -1069,7 +1070,7 @@ L_1061:
 
 L_1087:
     // "Would you like to start\nPokémon GTS Negotiations?"
-    ActorMsg MSGFILE_SCRIPT, 32, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeStartPokemon, 0x8011, 4, 0
     VMCall L_119D
     WorkGet 0x8048, 0x8020
     VMJump L_1183
@@ -1168,7 +1169,7 @@ L_11F3:
     WorkSetConst 0x804b, 0
     WorkSetConst 0x804c, 0
     // "In GTS Negotiations, you set the trading\nconditions based on what kinds of[f000]븀\u0000\nPokémon you'd like to trade.[f000]븁\u0000\nIf you find a person with matching\nconditions, you may proceed to a[f000]븀\u0000\nNegotiation Trade with that person.[f000]븁\u0000\nIn order to trade, you need to have two\nor more Pokémon in your party.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 36, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_GtsNegotiationsSetTrading, 0x8011, 4, 0
     WorkSetConst 0x804c, 1
 
 L_1211:
@@ -1177,7 +1178,7 @@ L_1211:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_12A9
     // "Should I describe things in\ngreater detail?"
-    ActorMsg MSGFILE_SCRIPT, 37, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_ShouldDescribeThingsGreater_2, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32843
     ListMenuAdd 40, 65535, 0
     ListMenuAdd 41, 65535, 1
@@ -1188,7 +1189,7 @@ L_1211:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1278
     // "In a Negotiation Trade, each person\noffers three Pokémon to trade.[f000]븁\u0000\nThen, each person will choose one of the\nother person's three Pokémon.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_NegotiationTradeEachPerson, 0x8011, 4, 0
     VMJump L_12A3
 
 L_1278:
@@ -1197,7 +1198,7 @@ L_1278:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_129D
     // "You can set three conditions in a\nNegotiation Trade: the level of Pokémon[f000]븀\u0000\nto trade, the Pokémon you want to[f000]븀\u0000\nreceive, and the Pokémon up for offer.[f000]븁\u0000\nYou may trade with a person whose\nconditions match yours, or choose[f000]븀\u0000\nTrade Rendezvous to try another trade[f000]븀\u0000\nwith a previous trading partner.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 39, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_CanSetThreeConditions, 0x8011, 4, 0
     VMJump L_12A3
 
 L_129D:
@@ -1221,7 +1222,7 @@ L_12BD:
     VMStackCmp CMP_LT
     VMJumpIf CMP_STACK, L_12F6
     // "Uh-oh![f000]븁\u0000\nYou need at least two Pokémon in your\nparty to use GTS Negotiations.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 96, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_UhOhNeedLeast_2, 0x8011, 4, 0
     WorkSetConst 0x8020, 255
     VMReturn
 
@@ -1300,7 +1301,7 @@ L_13F6:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_149A
     // "Would you like to view or upload\nMusical Photos?"
-    ActorMsg MSGFILE_SCRIPT, 48, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeViewUpload_2, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32847
     ListMenuAdd 50, 65535, 0
     ListMenuAdd 51, 65535, 1
@@ -1321,7 +1322,7 @@ L_1463:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1488
     // "With Musical Photos, you may post a photo\nyou took at the Pokémon Musical in[f000]븀\u0000\nNimbasa City by using the Vs. Recorder.[f000]븁\u0000\nYou may also view photos taken by other\npeople, sorted by the Pokémon you like.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 49, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_MusicalPhotosMayPost, 0x8011, 4, 0
     VMJump L_1494
 
 L_1488:
@@ -1347,7 +1348,7 @@ L_14BA:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_155E
     // "Would you like to view or upload\nBattle Videos?"
-    ActorMsg MSGFILE_SCRIPT, 43, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_WouldLikeViewUpload, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32849
     ListMenuAdd 45, 65535, 0
     ListMenuAdd 46, 65535, 1
@@ -1368,7 +1369,7 @@ L_1527:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_154C
     // "With Battle Videos, you may post a\nBattle Video you took with your[f000]븀\u0000\nVs. Recorder or view Battle Videos from[f000]븀\u0000\nother Trainers.[f000]븁\u0000\nYou may search the Battle Videos by\nPokémon, battle facility, ranking, etc.[f000]븁\u0000\nThe Battle Video you post will be assigned\na 12-digit code.[f000]븁\u0000\nYour friends may view your Battle Video\nby entering this 12-digit code here.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 44, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_BattleVideosMayPost, 0x8011, 4, 0
     VMJump L_1558
 
 L_154C:
@@ -1447,7 +1448,7 @@ L_1636:
 
 L_1656:
     // "Right this way, please.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10105_Text_RightWayPlease, 0x8011, 4, 0
     ActorMsgClose
     RTCallGlobal 2105
     FieldSetNextZoneHere

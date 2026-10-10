@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10785.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -104,18 +105,18 @@ L_0106:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Waaah! Waaaaah!\nI got lost! Waaaah![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_WaaahWaaaaahGotLost, 0, 0
     MsgWinCloseAll
     // "Showed him your Town Map![f000]븁\u0000"
-    SystemMsg 2, 0
+    SystemMsg Global10785_Text_ShowedHimTownMap, 0
     MsgWinCloseAll
     // "...\n...Sniff. Thank you.[f000]븀\u0000\nNow I know where my home is...[f000]븁\u0000\nI'll go home![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_SniffThankNowKnow, 0, 0
     MsgWinCloseAll
     FunfestMissionBroadcast 30, 0
     VMCall L_00E6
     // "The boy went home..."
-    SystemMsg 4, 0
+    SystemMsg Global10785_Text_BoyWentHome, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -128,14 +129,14 @@ L_0144:
     FunfestGetGenericInfo 0, 0x8024
     WordSetItemName 0, 0x8024
     // "Waaah! Waaah!\n[f000]ĉ\u0001\u0000! I want one![f000]븀\u0000\nGive one to me!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_WaaahWaaahWantOne, 0, 0
     YesNoWin 0x8025
     VMStackPush 0x8025
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0192
     // "Stingy! You're stingy!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_StingyYoureStingy, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -147,21 +148,21 @@ L_0192:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BD
     // "You don't have one!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_DontHaveOne, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
 
 L_01BD:
     // "Yay!\nThank you![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_YayThank, 0, 0
     MsgWinCloseAll
     FunfestMissionBroadcast 31, 0x8024
     // "Gave the [f000]ĉ\u0001\u0000 to him.[f000]븁\u0000"
-    SystemMsg 9, 0
+    SystemMsg Global10785_Text_GaveHim, 0
     MsgWinCloseAll
     // "I'll take good care of it![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_IllTakeGoodCare, 0, 0
     MsgWinCloseAll
     VMCall L_00E6
     WorkSetConst 0x8025, 0
@@ -258,7 +259,7 @@ L_035E:
     FunfestMissionBroadcast 32, 0
     MEPlay SEQ_ME_ITEM
     // "Gave the [f000]ĉ\u0001\u0000 in exchange for\nthe [f000]ĉ\u0001\u0001!"
-    SystemMsg 11, 0
+    SystemMsg Global10785_Text_GaveExchange, 0
     MEWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -398,7 +399,7 @@ L_0567:
     SEPlay SEQ_SE_SYS_22
     MoneyWinUpdate
     // "Bought the [f000]ĉ\u0001\u0000\nfor $[f000]ȅ\u0001\u0001."
-    SystemMsg 33, 2
+    SystemMsg Global10785_Text_Bought, 2
     SEWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -421,7 +422,7 @@ L_05B3:
     VMJumpIf CMP_STACK, L_05E8
     FunfestMissionBroadcast 40, 0
     // "Yay!\nYou lose."
-    ParentActorMsg MSGFILE_SCRIPT, 53, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_YayLose, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -429,7 +430,7 @@ L_05B3:
 L_05E8:
     FunfestMissionBroadcast 34, 0
     // "Whaa. I lost...\nYou won![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 54, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_WhaaLostWon, 0, 0
     MsgWinCloseAll
     VMCall L_00E6
     VMReturn
@@ -442,7 +443,7 @@ L_0602:
     WorkSetConst 0x8035, 0
     WorkSetConst 0x8036, 0
     // "Hi!\nPlay rock-paper-scissors![f000]븁\u0000\nRock, paper, scissors..."
-    ParentActorMsg MSGFILE_SCRIPT, 49, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_HiPlayRockPaper, 2, 0
     WorkSetConst 0x8031, 1
 
 L_0636:
@@ -462,12 +463,12 @@ L_0636:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0692
     // "Shoot!"
-    ScreamMsg 50, 2
+    ScreamMsg Global10785_Text_Shoot, 2
     VMJump L_0697
 
 L_0692:
     // "Shoot!"
-    ScreamMsg 52, 2
+    ScreamMsg Global10785_Text_Shoot_2, 2
 
 L_0697:
     WorkGet 0x8021, 0x8034
@@ -506,7 +507,7 @@ L_0708:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0731
     // "Rock, paper, scissors..."
-    ParentActorMsg MSGFILE_SCRIPT, 51, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_RockPaperScissors, 2, 0
     WorkSetConst 0x8032, 1
     VMJump L_075A
 
@@ -622,7 +623,7 @@ L_08DE:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "OK, here's the question![f000]븁\u0000\nPlease remember the names\nof these Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 62, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_OkHeresQuestionPlease, 2, 0
     FunfestGetPokemonQuizInfo 0x8040, 0x8041, 0x8042
     WorkSetConst 0x803f, 0
 
@@ -635,7 +636,7 @@ L_0926:
     WordSetPokeSpecies 0, 0x8044
     PVPlay 0x8044, 0
     // "[f000]ā\u0001\u0000!"
-    ParentActorMsg MSGFILE_SCRIPT, 56, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_Empty_2, 2, 0
     PVWait
     MsgWaitAdvance
     WorkAdd 0x803f, 1
@@ -646,7 +647,7 @@ L_0964:
     WorkAdd 0x8043, 1
     WordSetNumber 6, 0x8043, 2
     // "Now!\nWhat is the name of the Pokémon[f000]븀\u0000\nin position [f000]ȁ\u0001\u0006?"
-    ParentActorMsg MSGFILE_SCRIPT, 63, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_NowWhatNamePokemon, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 0, 32830
     WorkSetConst 0x803f, 0
 
@@ -669,7 +670,7 @@ L_09C2:
     VMJumpIf CMP_STACK, L_09ED
     FunfestMissionBroadcast 41, 0
     // "Too bad! Incorrect!"
-    ParentActorMsg MSGFILE_SCRIPT, 64, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_TooBadIncorrect, 2, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -677,9 +678,9 @@ L_09C2:
 L_09ED:
     FunfestMissionBroadcast 35, 0
     // "Correct!\nExcellent![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 65, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_CorrectExcellent, 2, 0
     // "Then, see you again somewhere...\nGood-bye![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 66, 2, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_ThenSeeAgainSomewhere, 2, 0
     MsgWinCloseAll
     VMCall L_00E6
     WorkSetConst 0x8044, 0
@@ -743,7 +744,7 @@ L_0AFF:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hello!\nIt's a present for Pokémon Trainers![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 85, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_HelloItsPresentPokemon, 0, 0
     FunfestGetGenericInfo 0, 0x8048
     ItemCheckSpace 0x8048, 1, 0x8010
     VMStackPush 0x8010
@@ -752,7 +753,7 @@ L_0AFF:
     VMJumpIf CMP_STACK, L_0B4E
     WordSetItemNameEx 0, 0x8048, 2, 0
     // "Oh, you don't have enough room\nfor [f000]ĉ\u0001\u0000!"
-    ParentActorMsg MSGFILE_SCRIPT, 87, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_OhDontHaveEnough, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMReturn
@@ -767,7 +768,7 @@ L_0B4E:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "When tired, taking a rest is best for\nboth Pokémon and Trainers.[f000]븁\u0000\nPlease visit Pokémon Centers![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 86, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_WhenTiredTakingRest, 0, 0
     MsgWinCloseAll
     FunfestMissionBroadcast 37, 0x8048
     VMCall L_00E6
@@ -779,14 +780,14 @@ L_0B90:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pokémon Trainers!\nHello![f000]븁\u0000\nIt's a bit sudden, but I have a question.\nDo you know this Pokémon?[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 88, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_PokemonTrainersHelloIts, 0, 0
     MsgWinCloseAll
     FunfestGetGenericInfo 0, 0x8049
     PVPlay 0x8049, 0
     CallPokemonPreview 0x8049, 0, 0, 0
     PVWait
     // "Please answer with the name of\nthis Pokémon.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 89, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_PleaseAnswerNamePokemon, 0, 0
     MsgWinCloseAll
     CallWordSetPokeNameInput 0x8049, 0, 0x8010
     VMStackPush 0x8010
@@ -799,13 +800,13 @@ L_0B90:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0C10
     // "Hmmm...\nWas it a bit difficult?"
-    ParentActorMsg MSGFILE_SCRIPT, 90, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_HmmmBitDifficult, 0, 0
     VMJump L_0C20
 
 L_0C10:
     SEPlay SEQ_SE_FLD_42
     // "Ah, that's too bad!\nIt's not [f000]ā\u0001\u0000!"
-    ParentActorMsg MSGFILE_SCRIPT, 91, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_AhThatsTooBad, 0, 0
     SEWait
 
 L_0C20:
@@ -816,10 +817,10 @@ L_0C20:
 L_0C26:
     SEPlay SEQ_SE_FLD_41
     // "Correct!\nThe name is [f000]ā\u0001\u0000![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 92, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_CorrectName, 0, 0
     SEWait
     // "Then, see you again somewhere.\nBye![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 93, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10785_Text_ThenSeeAgainSomewhere_2, 0, 0
     MsgWinCloseAll
     FunfestMissionBroadcast 38, 0
     VMCall L_00E6

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nuvema_town_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -16,14 +17,14 @@ Script_4:
     EvCameraMoveTo 9688, 0, 0xed000, 0x68000, 0, 0x58000, 40
     EvCameraWait
     // "Welcome home, dear.[f000]븁\u0000\nDid you find the friend you\nwere looking for?[f000]븁\u0000\nWasn't his name something like N?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_WelcomeHomeDearDid, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0288
     ActorCmdWait
     ActorCmdExec 0, Movement_02A0
     ActorCmdWait
     // "Huh...?[f000]븁\u0000\nExcuse me![f000]븁\u0000\nHow embarrassing!\nMistaking a visitor for my own child![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_HuhExcuseHowEmbarrassing, 0, 0, 0
     MsgWinCloseAll
     EvCameraReturn 30
     ActorWalkRoute 0, 6, 9, 0, 8, 1
@@ -37,23 +38,23 @@ Script_4:
     WordSetPlayerName 0
     // "You're [f000]Ā\u0001\u0000?"
     // "You're [f000]Ā\u0001\u0000?"
-    ActorMsgGendered 1024, 2, 3, 0, 0, 0
+    ActorMsgGendered 1024, NuvemaTown2_Text_Youre, NuvemaTown2_Text_Youre_2, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00C6
     // "I knew it!\nYou look just like her![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_KnewLookJustLike, 0, 0, 0
     VMJump L_00D2
 
 L_00C6:
     // "Come now! Don't say that!\nMy eyes are actually quite sharp![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_ComeNowDontSay, 0, 0, 0
 
 L_00D2:
     // "I know your mom![f000]븁\u0000\nI met her when she was working\nat the Pokémon Center[f000]븀\u0000\nand I was a Trainer.[f000]븁\u0000\nThat's right! How are your Pokémon?[f000]븁\u0000\nYou're always welcome to let\nthem rest here!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_KnowMomMetHer, 0, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     ActorWalkRoute 0, 6, 5, 0, 8, 1
@@ -74,7 +75,7 @@ Script_1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0161
     // "My, now how are your Pokémon?\nLet them rest here for a moment![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_NowHowPokemonLet, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -102,7 +103,7 @@ L_016D:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0196
     // "Great! You and your Pokémon\nlook raring to go!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_GreatPokemonLookRaring, 0, 0
     VMJump L_021C
 
 L_0196:
@@ -111,7 +112,7 @@ L_0196:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_01B9
     // "Pokémon work so hard to help you out![f000]븁\u0000\nBe sure to be kind to them, OK!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_PokemonWorkHardHelp, 0, 0
     VMJump L_021C
 
 L_01B9:
@@ -120,7 +121,7 @@ L_01B9:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_01DC
     // "No news is good news they say.[f000]븁\u0000\nBeing happy about something\nlike that is a little difficult though.[f000]븁\u0000\nBeing a parent is tough."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_NoNewsGoodNews, 0, 0
     VMJump L_021C
 
 L_01DC:
@@ -129,7 +130,7 @@ L_01DC:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_01FF
     // "Maybe I should go on a journey\nto go find my child![f000]븁\u0000\nOh, but I would feel really bad\nif they stopped by while I was gone."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_MaybeShouldGoJourney, 0, 0
     VMJump L_021C
 
 L_01FF:
@@ -138,7 +139,7 @@ L_01FF:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_021C
     // "I sure wish you two could meet!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_SureWishTwoCould, 0, 0
 
 L_021C:
     LastKeyWait
@@ -153,7 +154,7 @@ Script_2:
     FadeWait
     WordSetPlayerName 0
     // "                                                                        "
-    ActorMsg MSGFILE_SCRIPT, 13, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_Empty, 0, 0, 0
     FadeEx 3, 0, 16, 2
     FadeExWait
     ActorMsgClose
@@ -163,7 +164,7 @@ Script_2:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "                                                                                                                                                                                                                     "
-    ActorMsg MSGFILE_SCRIPT, 14, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NuvemaTown2_Text_Empty_2, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

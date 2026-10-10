@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/underground_ruins.h"
 
 // Script plugin 16, from the zones that use this file
 
@@ -297,7 +298,7 @@ Script_6:
     VMJumpIf CMP_STACK, L_047E
     SEPlay SEQ_SE_MESSAGE
     // "An old switch is at your feet!\nStep on it?"
-    InfoMsg 2, 2
+    InfoMsg UndergroundRuins_Text_OldSwitchFeetStep, 2
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -321,13 +322,13 @@ Script_6:
     FadeEx 3, 16, 0, 4
     FadeExWait
     // "A loud, heavy sound echoed\non the other side of the door..."
-    InfoMsg 3, 2
+    InfoMsg UndergroundRuins_Text_LoudHeavySoundEchoed, 2
     WorkSetConst 0x4001, 1
     VMJump L_047A
 
 L_0475:
     // "Nothing seems to happen..."
-    InfoMsg 4, 2
+    InfoMsg UndergroundRuins_Text_NothingSeemsHappen, 2
 
 L_047A:
     LastKeyWait
@@ -354,7 +355,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What is going on\nwith this door?[f000]븁\u0000\nIt leads to a different place\ndepending on whether the[f000]븀\u0000\nsun is up or not!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndergroundRuins_Text_WhatGoingDoorLeads, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_04DD
@@ -363,7 +364,7 @@ L_04C9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What is going on\nwith this door?[f000]븁\u0000\nIt leads to a different place\ndepending on whether the[f000]븀\u0000\nmoon is out or not!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UndergroundRuins_Text_WhatGoingDoorLeads_2, 0, 0
     LastKeyWait
     ActorMsgClose
 

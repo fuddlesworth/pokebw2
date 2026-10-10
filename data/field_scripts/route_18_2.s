@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_18_2.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -41,7 +42,7 @@ L_0086:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00D9
     // "Wait! Wait![f000]븁\u0000\nAren't your Pokémon a bit tired?\nHere, don't be shy! Let them rest![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route182_Text_WaitWaitArentPokemon, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -51,14 +52,14 @@ L_0086:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "Your Pokémon are so energetic!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route182_Text_PokemonEnergetic, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_00E7
 
 L_00D9:
     // "Your Pokémon are so energetic!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route182_Text_PokemonEnergetic, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_20.h"
 
 // Script plugin 12, from the zones that use this file
 
@@ -11,7 +12,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ah. I slept very well![f000]븁\u0000\nYou're wearing strange clothes.\nAre you new here?[f000]븁\u0000\nAny bed in this room is available.\nFeel free to use them if you're tired!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, PlasmaFrigate20_Text_AhSleptVeryWell, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -23,14 +24,14 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     WordSetPlayerName 0
     // "The bed looks nice and comfortable.\nWill you take a quick rest?"
-    SystemMsg 1, 0
+    SystemMsg PlasmaFrigate20_Text_BedLooksNiceComfortable, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_007C
     // "[f000]Ā\u0001\u0000 hopped into bed and\nfell asleep...[f000]븁\u0000"
-    SystemMsg 2, 0
+    SystemMsg PlasmaFrigate20_Text_HoppedIntoBedFell, 0
     InfoMsgClose
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -40,7 +41,7 @@ Script_2:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "[f000]Ā\u0001\u0000 and the Pokémon\ntook a nap and regained energy!"
-    SystemMsg 3, 0
+    SystemMsg PlasmaFrigate20_Text_PokemonTookNapRegained, 0
     LastKeyWait
 
 L_007C:

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_4_14.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -18,7 +19,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm very particular about a\nPokémon's Speed!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_ImVeryParticularAbout, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -59,11 +60,11 @@ L_00C8:
 
 L_00CC:
     // "I'm very particular about a\nPokémon's Attack!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_ImVeryParticularAbout_2, 0, 0
     MsgWaitAdvance
     WordSetNumber 1, 0x4187, 3
     // "That's why... You![f000]븁\u0000\nDo you have a Pokémon whose Attack\nstat is the same as or higher than [f000]Ȃ\u0001\u0001?"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_ThatsWhyHavePokemon, 0, 0
     MsgWaitAdvance
     PokePartyGetCount 0x8022, 0
 
@@ -145,7 +146,7 @@ L_0216:
     ActorCmdExec 1, Movement_0310
     ActorCmdWait
     // "Your [f000]ā\u0001\u0000!\nIt truly has the Attack stat I like![f000]븁\u0000\nI'm very happy!\nI'll give you lots of these![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_TrulyHasAttackStat, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -155,7 +156,7 @@ L_0216:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Various Attacks. ♪\nVarious Pokémon. ♪[f000]븁\u0000\nI don't know why, but I feel happy!\nCome back again tomorrow."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_VariousAttacksVariousPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2772
@@ -170,7 +171,7 @@ L_0279:
     ActorCmdExec 1, Movement_0310
     ActorCmdWait
     // "Your [f000]ā\u0001\u0000!\nI like its Attack stat![f000]븁\u0000\nI'm so happy, so I'll give you this![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_LikeItsAttackStat, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -180,7 +181,7 @@ L_0279:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "Various Attacks. ♪\nVarious Pokémon. ♪[f000]븁\u0000\nI don't know why, but I feel happy!\nCome back again tomorrow."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_VariousAttacksVariousPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2772
@@ -191,7 +192,7 @@ L_02DC:
     ActorCmdExec 1, Movement_0310
     ActorCmdWait
     // "That's quite all right! Good things about\nPokémon are not just Attack stats.[f000]븁\u0000\nBut, today I just feel like meeting\na Pokémon whose Attack stat is[f000]븀\u0000\nhigher than [f000]Ȃ\u0001\u0001."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_ThatsQuiteAllRight, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -200,7 +201,7 @@ L_02F6:
 
 L_02FC:
     // "Various Attacks. ♪\nVarious Pokémon. ♪[f000]븁\u0000\nI don't know why, but I feel happy!\nCome back again tomorrow."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route414_Text_VariousAttacksVariousPokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

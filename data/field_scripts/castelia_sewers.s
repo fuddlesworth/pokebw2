@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/castelia_sewers.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -65,14 +66,14 @@ L_0094:
 
 L_00DB:
     // "[f000]Ā\u0001\u0001: [f000]Ā\u0001\u0000!\nI need you to get tougher![f000]븁\u0000\nEven I'm going to have trouble\ntaking them on all by myself...[f000]븁\u0000\nAnyway, it's OK!\nI'll take care of healing our Pokémon![f000]븁\u0000\nI'm counting on you, [f000]Ā\u0001\u0000!\nAre you ready to go?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_NeedGetTougherEven, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0251
     // "[f000]Ā\u0001\u0001: OK!\nLet's find Team Plasma![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_OkLetsFindTeam, 0, 0, 0
     MsgWinCloseAll
     PlayerGetExState 0x8010
     VMStackPush 0x8010
@@ -154,7 +155,7 @@ L_0241:
 
 L_0251:
     // "[f000]Ā\u0001\u0001: C'mon!\nHurry up and get ready![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_CmonHurryUpGet, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_08D0
     ActorCmdWait
@@ -190,14 +191,14 @@ L_02C7:
 L_02D7:
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: I suppose.\nGoing to step outside for a minute?"
-    ActorMsg MSGFILE_SCRIPT, 3, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_SupposeGoingStepOutside, 254, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_036A
     // "[f000]Ā\u0001\u0001: C'mon!\nHurry up and get ready![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_CmonHurryUpGet, 254, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     ActorWalkRoute 254, 81, 20, 1, 8, 0
@@ -220,7 +221,7 @@ L_02D7:
 
 L_036A:
     // "[f000]Ā\u0001\u0001: OK!\nLet's find Team Plasma![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_OkLetsFindTeam, 254, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorCmdExec 255, Movement_08D8
@@ -248,32 +249,32 @@ Script_3:
     EvCameraWait
     WordSetPlayerName 0
     // "Hey![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 254, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_Hey, 254, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0908
     ActorCmdExec 2, Movement_0908
     ActorCmdWait
     // "Team Plasma: What do you want?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 1, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_TeamPlasmaWhatWant, 1, 3, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Team Plasma!\nYou villains![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_TeamPlasmaVillains, 254, 4, 0
     MsgWinCloseAll
     // "Team Plasma: What?\nDon't treat us like villains![f000]븁\u0000\nAnd don't interfere with our\nplans to liberate Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 1, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_TeamPlasmaWhatDont, 1, 3, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Liberate? Ha!\nYou're just ordinary Pokémon thieves![f000]븁\u0000\nAnd what's more, you use those\nstolen Pokémon like they're tools![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_LiberateHaYoureJust, 254, 4, 0
     MsgWinCloseAll
     // "Team Plasma: Shaddap!\nHand over your Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 1, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_TeamPlasmaShaddapHand, 1, 3, 0
     MsgWinCloseAll
     ActorCmdExec 254, Movement_0918
     VMSleep 4
     ActorCmdExec 255, Movement_0910
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Let's do this, [f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_Lets, 254, 4, 0
     MsgWinCloseAll
     ActorCmdExec 254, Movement_0900
     ActorCmdExec 255, Movement_0900
@@ -322,7 +323,7 @@ L_0529:
 
 L_052B:
     // "Team Plasma: They're really tough![f000]븁\u0000\nBut whatever!\nWe've got the Pokémon we need![f000]븀\u0000\nNow, we flee![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 1, 3, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_TeamPlasmaTheyreReally, 1, 3, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0854
     VMSleep 4
@@ -334,10 +335,10 @@ L_052B:
     ActorDelete 1
     ActorDelete 2
     // "[f000]Ā\u0001\u0001: Tch!\nThey run away like Patrat![f000]븁\u0000\nOK! Let's go farther inside!\nThere might be more in there![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_TchTheyRunAway, 254, 4, 0
     MsgWinCloseAll
     // "???: I don't think that's\nnecessary, you two.[f000]븁\u0000"
-    InfoMsg 20, 1
+    InfoMsg CasteliaSewers_Text_DontThinkThatsNecessary, 1
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0920
     ActorCmdExec 254, Movement_0920
@@ -350,25 +351,25 @@ L_052B:
     ActorCmdExec 20, Movement_0908
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Could you be\nGym Leader Burgh?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_CouldGymLeaderBurgh, 254, 4, 0
     MsgWinCloseAll
     // "Burgh: Yessir! One and the same!\nI'm Burgh.[f000]븁\u0000\nAnd there was no one suspicious\nbeyond here![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 20, 5, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_BurghYessirOneSame, 20, 5, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Is that...so?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_IsThatSo, 254, 4, 0
     MsgWinCloseAll
     // "Burgh: Yes indeedy![f000]븁\u0000\nI'm concerned about\nTeam Plasma as well.[f000]븁\u0000\nMore importantly, shall\nwe leave this place?[f000]븁\u0000\nFor some reason,\nthis sewer is bugging me.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 20, 5, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_BurghYesIndeedyIm, 20, 5, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Huh...[f000]븁\u0000\nDidn't you and the other Gym Leaders\nfight Team Plasma two years ago?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 25, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_HuhDidntOtherGym, 254, 4, 0
     MsgWinCloseAll
     ActorCmdExec 254, Movement_0918
     ActorCmdExec 255, Movement_0910
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Thanks for your help.\nHere, use this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 26, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_ThanksHelpHereUse, 254, 4, 0
     MsgWinCloseAll
     ActorCmdExec 254, Movement_08D0
     ActorCmdWait
@@ -380,7 +381,7 @@ L_052B:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "I'll find those other\nTeam Plasma punks![f000]븁\u0000\nI... I'll never forgive Pokémon thieves!\nNo way![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 27, 254, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_IllFindThoseOther, 254, 4, 0
     MsgWinCloseAll
     ActorCmdExec 254, Movement_0894
     VMSleep 8
@@ -389,10 +390,10 @@ L_052B:
     ActorWalkRoute 20, 50, 8, 0, 8, 0
     ActorCmdWait
     // "Burgh: He's gone...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 28, 20, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_BurghHesGone, 20, 4, 0
     MsgWinCloseAll
     // "???: You there![f000]븁\u0000"
-    InfoMsg 29, 1
+    InfoMsg CasteliaSewers_Text_There, 1
     InfoMsgClose_0039
     ActorCmdExec 255, Movement_0920
     VMSleep 4
@@ -409,7 +410,7 @@ L_052B:
     ActorCmdExec 19, Movement_08A0
     ActorCmdWait
     // "That was an excellent demonstration\nof battling. The way you brought out[f000]븀\u0000\nthe power of your Pokémon against[f000]븀\u0000\nan opponent like Team Plasma...[f000]븁\u0000\nAstounding. Simply astounding.\nInteresting as well. I see...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 30, 19, 5, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_ExcellentDemonstrationBattlingWay, 19, 5, 0
     MsgWinCloseAll
     ActorCmdExec 19, Movement_08A8
     VMSleep 40
@@ -419,14 +420,14 @@ L_052B:
     ActorCmdExec 20, Movement_0928
     ActorCmdWait
     // "Burgh: Who...was that?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 31, 20, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_BurghWho, 20, 4, 0
     MsgWinCloseAll
     ActorCmdExec 20, Movement_0918
     VMSleep 4
     ActorCmdExec 255, Movement_0910
     ActorCmdWait
     // "Well. No matter.\nWhat are you going to do?[f000]븁\u0000\nYou can stay here\nand train your Pokémon.[f000]븁\u0000\nOr maybe you should come\nchallenge me, the Gym Leader![f000]븁\u0000\nBe seeing you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 32, 20, 4, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_WellNoMatterWhat, 20, 4, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 32
     ActorCmdExec 20, Movement_08B4
@@ -466,7 +467,7 @@ Script_5:
     ActorCmdExec 255, Movement_0900
     ActorCmdWait
     // "Waitasecond![f000]븁\u0000\nI dropped something here!\nJust wait until I find it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 34, 21, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_WaitasecondDroppedSomethingHere_2, 21, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorCmdExec 21, Movement_0918
@@ -482,7 +483,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Waitasecond![f000]븁\u0000\nI dropped something here!\nJust wait until I find it!"
-    ParentActorMsg MSGFILE_SCRIPT, 33, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_WaitasecondDroppedSomethingHere, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -494,7 +495,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Phew...\nI finally made it back here.[f000]븁\u0000\nAre you going farther inside?\nThere's nothing in there but Trainers."
-    ParentActorMsg MSGFILE_SCRIPT, 35, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CasteliaSewers_Text_PhewFinallyMadeBack, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

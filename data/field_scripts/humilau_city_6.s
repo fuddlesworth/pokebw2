@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/humilau_city_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -29,7 +30,7 @@ L_0051:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "But if you change your mind,\nI don't mind asking you to walk[f000]븀\u0000\nwith my Mienfoo again."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_ButIfChangeMind, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_032A
@@ -46,7 +47,7 @@ L_007E:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Hey, you!\nWould you walk with my dear Mienfoo?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_HeyWouldWalkDear, 1, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -54,7 +55,7 @@ L_007E:
     VMJumpIf CMP_STACK, L_01CD
     WorkSetConst 0x400e, 0
     // "Oh my!\nYou're very understanding![f000]븁\u0000\nWonderful. Please walk a lot\nwith my cute Mienfoo![f000]븁\u0000\nBut...\nPlease don't go out of this house![f000]븁\u0000\nIt's dangerous outside.\nAll right. Take good care of my Mienfoo![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_OhYoureVeryUnderstanding, 1, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8020
     WorkCmpConst 0x8020, 0
@@ -111,7 +112,7 @@ L_016F:
 
 L_01CD:
     // "Oh my![f000]븁\u0000\nYou turned down my request.\nYou're mean.[f000]븁\u0000\nSome people say that I should walk\nmy Mienfoo myself.[f000]븁\u0000\nBut, it's impossible, because I've never\ncarried anything heavier than[f000]븀\u0000\na Poké Ball![f000]븁\u0000\n...But if you change your mind,\nI don't mind asking you to walk[f000]븀\u0000\nmy Mienfoo again."
-    ActorMsg MSGFILE_SCRIPT, 2, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_OhTurnedDownRequest, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -131,7 +132,7 @@ L_01E3:
     ActorSetEyeToEye
     WorkSetConst 0x8025, 0
     // "You've just started walking.\nPlease walk more![f000]븁\u0000\n...Whaaat?[f000]븁\u0000\nYou're not going to say\nyou will quit in the middle of[f000]븀\u0000\nwalking my cute Mienfoo, are you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_YouveJustStartedWalking, 1, 4, 0
     ListMenu_AnchorTopRight 31, 5, 0, 1, 32805
     ListMenuAdd 6, 65535, 0
     ListMenuAdd 7, 65535, 1
@@ -141,7 +142,7 @@ L_01E3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0296
     // "Oh my!\nWhat's the matter with you?[f000]븁\u0000\nIt looks like my cute Mienfoo still\nwants to walk![f000]븁\u0000\nIn that case, I can't give you a\nthank-you gift.[f000]븁\u0000\n...But if you change your mind,\nI don't mind asking you to walk[f000]븀\u0000\nwith my Mienfoo again.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_OhWhatsMatterLooks, 1, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -159,7 +160,7 @@ L_01E3:
 
 L_0296:
     // "Of course![f000]븁\u0000\nPlease walk my cute Mienfoo\nuntil it is totally satisfied."
-    ActorMsg MSGFILE_SCRIPT, 8, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_CoursePleaseWalkCute, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -170,7 +171,7 @@ L_02AC:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh my![f000]븁\u0000\nMy cute Mienfoo\nlooks very tough now.[f000]븁\u0000\nThank you very much\nfor walking my Mienfoo.[f000]븁\u0000\nI'll give this to you\nas a token of my appreciation.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_OhCuteMienfooLooks, 1, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -188,7 +189,7 @@ L_02AC:
     VMStackPop 0x8000
     VMCall L_0330
     // "Please walk my cute Mienfoo again!"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_PleaseWalkCuteMienfoo, 1, 0, 0
     LastKeyWait
     MsgWinCloseAll
     PedometerEnd
@@ -492,7 +493,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 619, 0
     // "...Yeep?"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_Yeep, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -511,7 +512,7 @@ L_076F:
     ActorSetEyeToEye
     PVPlay 619, 0
     // "Yeeeep. ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 17, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_Yeeeep, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -530,7 +531,7 @@ L_07B4:
     ActorSetEyeToEye
     PVPlay 619, 0
     // "Yeep!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_Yeep_2, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -548,7 +549,7 @@ L_07F9:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_0835
     // "The steps of the Mienfoo walking\nwith [f000]Ā\u0001\u0000 are somewhat clumsy."
-    SystemMsg 22, 2
+    SystemMsg HumilauCity6_Text_StepsMienfooWalkingSomewhat, 2
     PVWait
     LastKeyWait
     MsgWinCloseAll
@@ -560,7 +561,7 @@ L_0835:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_085A
     // "The steps of the Mienfoo walking\nwith [f000]Ā\u0001\u0000 are still clumsy."
-    SystemMsg 21, 2
+    SystemMsg HumilauCity6_Text_StepsMienfooWalkingStill, 2
     PVWait
     LastKeyWait
     MsgWinCloseAll
@@ -572,7 +573,7 @@ L_085A:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_087F
     // "The steps of the Mienfoo walking\nwith [f000]Ā\u0001\u0000 are getting smooth."
-    SystemMsg 20, 2
+    SystemMsg HumilauCity6_Text_StepsMienfooWalkingGetting, 2
     PVWait
     LastKeyWait
     MsgWinCloseAll
@@ -584,7 +585,7 @@ L_087F:
     VMStackCmp CMP_LE
     VMJumpIf CMP_STACK, L_08A4
     // "The steps of the Mienfoo walking\nwith [f000]Ā\u0001\u0000 are light!"
-    SystemMsg 19, 2
+    SystemMsg HumilauCity6_Text_StepsMienfooWalkingLight, 2
     PVWait
     LastKeyWait
     MsgWinCloseAll
@@ -592,7 +593,7 @@ L_087F:
 
 L_08A4:
     // "The steps of the Mienfoo walking\nwith [f000]Ā\u0001\u0000 are very light![f000]븁\u0000\nMienfoo seems to be\nsatisfied with the walk!"
-    SystemMsg 18, 2
+    SystemMsg HumilauCity6_Text_StepsMienfooWalkingVery, 2
     PVWait
     LastKeyWait
     MsgWinCloseAll
@@ -610,7 +611,7 @@ Script_3:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08DF
     // "Is this a home video?\nMienfoo is in it!"
-    SystemMsg 23, 2
+    SystemMsg HumilauCity6_Text_HomeVideoMienfoo, 2
     LastKeyWait
     MsgWinCloseAll
     VMJump L_091A
@@ -620,14 +621,14 @@ L_08DF:
     ActorCmdWait
     SEPlay SEQ_SE_SYS_58
     // "Hey, you!"
-    ScreamMsg 11, 2
+    ScreamMsg HumilauCity6_Text_Hey, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose_0039
     ActorCmdExec 255, Movement_0A60
     ActorCmdWait
     // "What are you doing?[f000]븁\u0000\nIn front of my very eyes,\nyou disrupt Mienfoo's walk...[f000]븁\u0000\nOn top of that, you got engrossed\nin watching TV.[f000]븀\u0000\nWhat nerve![f000]븁\u0000\nStop taking a break, and walk\nmy Mienfoo![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_WhatDoingFrontVery, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 1, Movement_0A60
     ActorCmdWait
@@ -645,7 +646,7 @@ Script_4:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0949
     // "A somewhat expensive-looking...\nbut ordinary trash can."
-    SystemMsg 24, 2
+    SystemMsg HumilauCity6_Text_SomewhatExpensiveLookingBut, 2
     LastKeyWait
     MsgWinCloseAll
     VMJump L_09A2
@@ -655,7 +656,7 @@ L_0949:
     ActorCmdWait
     SEPlay SEQ_SE_SYS_58
     // "Hey, you!"
-    ScreamMsg 11, 2
+    ScreamMsg HumilauCity6_Text_Hey, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -663,7 +664,7 @@ L_0949:
     ActorCmdExec 255, Movement_0A68
     ActorCmdWait
     // "What are you doing?[f000]븁\u0000\nYou have the audacity to check\nthe trash can in my house.[f000]븁\u0000\nIt's not good for the education of\nmy Mienfoo.[f000]븁\u0000\nNo matter how many times you check,\nthe trash can is empty![f000]븁\u0000\nPlease focus on walking![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 13, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_WhatDoingHaveAudacity, 1, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 1, 6, 3, 1, 8, 0
     ActorCmdWait
@@ -681,7 +682,7 @@ Script_5:
     ActorCmdExec 1, Movement_0A40
     ActorCmdWait
     // "Hey, you!"
-    ScreamMsg 11, 2
+    ScreamMsg HumilauCity6_Text_Hey, 2
     SEWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -689,7 +690,7 @@ Script_5:
     ActorCmdExec 255, Movement_0A58
     ActorCmdWait
     // "What are you doing?[f000]븁\u0000\nI can understand very well\nthat my Mienfoo is so cute[f000]븀\u0000\nthat you want to take it out,[f000]븀\u0000\nbut you can't do that![f000]븁\u0000\nIt's dangerous outside![f000]븁\u0000\nWill you take responsibility\nif my Mienfoo gets hurt?[f000]븁\u0000\nPlease walk INSIDE the room![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, HumilauCity6_Text_WhatDoingCanUnderstand, 1, 0, 0
     MsgWinCloseAll
     ActorPairSetMoveEnable 1
     ActorWalkRoute 1, 6, 3, 1, 8, 0

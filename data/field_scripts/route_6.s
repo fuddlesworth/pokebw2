@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_6.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -68,7 +69,7 @@ L_00E1:
 L_00F7:
     ActorCmdWait
     // "Cheren: Oh, [f000]Ā\u0001\u0000.\nCan you come with me for a moment?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_CherenOhCanCome, 8, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 8, 135, 370, 1, 8, 0
     ActorWalkRoute 255, 135, 371, 1, 8, 0
@@ -130,7 +131,7 @@ Script_5:
     ActorNew 110, 353, 1, 251, 369, 0
     PVPlay 638, 0
     // "Kawbraa!"
-    ScreamMsg 1, 1
+    ScreamMsg Route6_Text_Kawbraa, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -153,7 +154,7 @@ L_020E:
     SEWait
     VMSleep 30
     // "Kawbraa!"
-    ActorMsg MSGFILE_SCRIPT, 1, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_Kawbraa, 251, 0, 0
     PVPlay 638, 0
     PVWait
     MsgWaitAdvance
@@ -196,33 +197,33 @@ L_02EA:
 L_02F2:
     ActorCmdWait
     // "Rood: That Pokémon...?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 10, 6, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_RoodPokemon, 10, 6, 0
     MsgWinCloseAll
     // "Elderly Man: It's the legendary Pokémon\ncalled Cobalion![f000]븁\u0000\nI told you the story the other\nday, right?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 9, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_ElderlyManItsLegendary, 9, 4, 0
     MsgWinCloseAll
     // "Rood: Oh, Cobalion!\nWhat a noble presence![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 10, 6, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_RoodOhCobalionWhat, 10, 6, 0
     MsgWinCloseAll
     // "Elderly Man: They say the three Pokémon\nCobalion, Virizion, and Terrakion[f000]븀\u0000\nfought against people to protect[f000]븀\u0000\nPokémon from the war those[f000]븀\u0000\npeople started...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 9, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_ElderlyManTheySay, 9, 4, 0
     // "When people fight, there's no peace for\nPokémon, either.[f000]븁\u0000\nThe three legends learned that\nthe deeds of humans could lead[f000]븀\u0000\nto dire consequences for their world.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 9, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_WhenPeopleFightTheres, 9, 4, 0
     MsgWinCloseAll
     ActorCmdExec 9, Movement_04DC
     ActorCmdWait
     // "But... Why did it show up\nin front of people?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 9, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_ButWhyDidShow, 9, 4, 0
     // "Is it patrolling the Unova region\nto protect Pokémon because it fears for[f000]븀\u0000\ntheir safety after the commotion caused[f000]븀\u0000\nby Team Plasma two years ago?[f000]븁\u0000\nOr does it sense a new problem...?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 9, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_PatrollingUnovaRegionProtect, 9, 4, 0
     MsgWinCloseAll
     // "Rood: Unforgivable...[f000]븁\u0000\nSo the reach of Ghetsis's ambition\nand malice is growing ever wider and[f000]븀\u0000\nwarping the lives of all it touches...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 10, 6, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_RoodUnforgivableReachGhetsiss, 10, 6, 0
     MsgWinCloseAll
     ActorCmdExec 10, Movement_047C
     ActorCmdWait
     // "Did Cobalion appear in front of you\nmerely by accident?[f000]븁\u0000\nOr to plead with you to solve a problem?[f000]븁\u0000\nUnlike Lord N, I don't have the ability\nto understand the minds of Pokémon.[f000]븁\u0000\nTherefore, I don't know\nwhat that Pokémon is thinking.[f000]븁\u0000\nBut if you can befriend Cobalion,\nit will be a great asset to you[f000]븀\u0000\non your journey."
-    ActorMsg MSGFILE_SCRIPT, 10, 10, 6, 0
+    ActorMsg MSGFILE_SCRIPT, Route6_Text_DidCobalionAppearFront, 10, 6, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 773
@@ -247,7 +248,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Not just people and Pokémon...[f000]븁\u0000\nIt's best for all creatures to accept\nand trust one another..."
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route6_Text_NotJustPeoplePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -259,7 +260,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Did Cobalion appear in front of you\nmerely by accident?[f000]븁\u0000\nOr to plead with you to solve a problem?[f000]븁\u0000\nUnlike Lord N, I don't have the ability\nto understand the minds of Pokémon.[f000]븁\u0000\nTherefore, I don't know\nwhat that Pokémon is thinking.[f000]븁\u0000\nBut if you can befriend Cobalion,\nit will be a great asset to you[f000]븀\u0000\non your journey."
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route6_Text_DidCobalionAppearFront, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -271,7 +272,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Water Absorb and Dry Skin.[f000]븁\u0000\nPokémon with those Abilities love\nWater-type moves and rainy weather. ♪[f000]븁\u0000\nThe Gym Leader in Aspertia City\nis very familiar with Pokémon Abilities,[f000]븀\u0000\nisn't he?[f000]븁\u0000\nOh, do you know him? Then you can ask him\nabout Abilities through the Xtransceiver!"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route6_Text_WaterAbsorbDrySkin, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -283,7 +284,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Chargestone Cave is great![f000]븁\u0000\nThe Ferroseed I met here\nwere absolutely adorable!"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route6_Text_ChargestoneCaveGreatFerroseed, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -295,7 +296,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 6"
-    MsgPlaceSign 14, 3
+    MsgPlaceSign Route6_Text_Route6, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -306,7 +307,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nYou can register certain items with\nthe Y Button to use them easily![f000]븁\u0000\nLook for a square check box beside\nthe name of a Key Item."
-    MsgPlaceSign 15, 0
+    MsgPlaceSign Route6_Text_TrainerTipsCanRegister, 0
     MsgPlaceSignClose
     FlagSet 2669
     FinishAllEvents
@@ -318,7 +319,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Researching the Year's Seasons:\nThe Season Research Lab"
-    MsgPlaceSign 16, 2
+    MsgPlaceSign Route6_Text_ResearchingYearsSeasonsSeason, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

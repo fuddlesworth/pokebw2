@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/abyssal_ruins_5.h"
 
 // Script plugin 5, from the zones that use this file
 
@@ -252,14 +253,14 @@ Script_19:
 L_030B:
     SEPlay SEQ_SE_MESSAGE
     // "HOJLFWBSCOPPH[f000]븁\u0000"
-    Cmd_0230 19, 0
+    Cmd_0230 AbyssalRuins5_Text_Hojlfwbscopph, 0
     VMStackPush 0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0330
     MsgPlaceSignClose
     // "GNIKEVARBNOOG"
-    MsgPlaceSign 41, 0
+    MsgPlaceSign AbyssalRuins5_Text_Gnikevarbnoog, 0
 
 L_0330:
     MsgPlaceSignClose
@@ -276,14 +277,14 @@ L_0338:
     VMJumpIf CMP_STACK, L_03B2
     SEPlay SEQ_SE_MESSAGE
     // "HOJLFWBSCOPPH[f000]븁\u0000"
-    Cmd_0230 19, 0
+    Cmd_0230 AbyssalRuins5_Text_Hojlfwbscopph, 0
     VMStackPush 0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0370
     MsgPlaceSignClose
     // "GNIKEVARBNOOG"
-    MsgPlaceSign 41, 0
+    MsgPlaceSign AbyssalRuins5_Text_Gnikevarbnoog, 0
 
 L_0370:
     MsgPlaceSignClose
@@ -294,7 +295,7 @@ L_0370:
     ActorCmdWait
     SEWait
     // "The wall moved, and you can proceed now!"
-    SystemMsg 20, 2
+    SystemMsg AbyssalRuins5_Text_WallMovedCanProceed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x4094, 1
@@ -303,14 +304,14 @@ L_0370:
 L_03B2:
     SEPlay SEQ_SE_MESSAGE
     // "UTPMTUFHHOJLPO"
-    Cmd_0230 18, 0
+    Cmd_0230 AbyssalRuins5_Text_Utpmtufhhojlpo, 0
     VMStackPush 0x418f
     VMStackPushConst 2
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_03D7
     MsgPlaceSignClose
     // "TSOLSTEGGNIKON"
-    MsgPlaceSign 40, 0
+    MsgPlaceSign AbyssalRuins5_Text_Tsolsteggnikon, 0
 
 L_03D7:
     LastKeyWait
@@ -328,7 +329,7 @@ Movement_03E0:
 Script_20:
     ActorsPauseAll
     // "It looks like you can climb up here![f000]븁\u0000\nWill you proceed to the upper floor?"
-    SystemMsg 21, 2
+    SystemMsg AbyssalRuins5_Text_LooksLikeCanClimb, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010

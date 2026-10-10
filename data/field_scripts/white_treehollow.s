@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/white_treehollow.h"
 
 // Script plugin 9, from the zones that use this file
 
@@ -14,7 +15,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What? That Trainer named Benga is\nAlder's grandson?[f000]븁\u0000\nI should ask Alder in Floccesy Town\nto train me, too."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, WhiteTreehollow_Text_WhatTrainerNamedBenga, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

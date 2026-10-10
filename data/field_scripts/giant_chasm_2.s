@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/giant_chasm_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -52,7 +53,7 @@ Script_7:
     ActorCmdExec 255, Movement_02FC
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: You're already here, huh?[f000]븁\u0000\nAnyone who tries to block us\nwill go running away with[f000]븀\u0000\ntheir tail between their legs![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_YoureAlreadyHereHuh, 9, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 10, 60, 41, 1, 8, 1
     VMSleep 8
@@ -63,10 +64,10 @@ Script_7:
     ActorCmdExec 255, Movement_0304
     ActorCmdWait
     // "Hey, it's good! We're all set here![f000]븁\u0000"
-    InfoMsg 3, 2
+    InfoMsg GiantChasm2_Text_HeyItsGoodWere, 2
     MsgWinCloseAll
     // "It's finally time!\nC'mon! Let's go![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_ItsFinallyTimeCmon, 6, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 6, 61, 45, 1, 8, 1
     ActorWalkRoute 11, 61, 45, 1, 8, 0
@@ -82,23 +83,23 @@ Script_7:
     ActorCmdExec 255, Movement_0304
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: You're all alone now...\nSo, which one of us are you gonna tackle?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 9, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_YoureAllAloneNow, 9, 5, 0
     MsgWinCloseAll
     ActorCmdExec 10, Movement_0324
     ActorCmdWait
     ActorCmdExec 10, Movement_02FC
     ActorCmdWait
     // "Oi! It's me! Me!\nThe ex-Team Plasma guy![f000]븀\u0000\nThe one Rood asked to be a spy![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 10, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_OiItsExTeam, 10, 4, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Oh, yeah...\nI remember you.[f000]븁\u0000\nBeing ex-Team Plasma\nis really rough, eh?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 9, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_OhYeahRememberBeing, 9, 5, 0
     MsgWinCloseAll
     // "You know, N was so nice to Pokémon...[f000]븁\u0000\nAnd all I wanted to do was protect\nPokémon from bad people...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 10, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_KnowNNicePokemon, 10, 4, 0
     MsgWinCloseAll
     // "[f000]Ā\u0001\u0001: Well, I suppose...[f000]븁\u0000\nIf we don't crush Team Plasma, then\nguys like you and that N guy[f000]븀\u0000\nwill always be treated like villains.[f000]븁\u0000\nOK!\nI'm outta here, [f000]Ā\u0001\u0000![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 9, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_WellSupposeIfWe, 9, 5, 0
     MsgWinCloseAll
     ActorWalkRoute 9, 61, 51, 1, 4, 1
     VMSleep 12
@@ -107,7 +108,7 @@ Script_7:
     ActorCmdExec 10, Movement_02FC
     ActorCmdWait
     // "Oh, thank you.\nThat's so nice.[f000]븁\u0000\nEven if we said it was for Pokémon, in the\nend, we were doing what we wanted to do.[f000]븁\u0000\nPlease excuse me.\nThere's still something I have to do![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 10, 4, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_OhThankThatsNice, 10, 4, 0
     MsgWinCloseAll
     ActorWalkRoute 10, 60, 51, 1, 8, 1
     ActorCmdWait
@@ -130,10 +131,10 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "How long does “wait until everyone\nelse arrives\" mean, exactly?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 11, 3, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_HowLongDoesWait, 11, 3, 0
     MsgWinCloseAll
     // "The area past here is important![f000]븁\u0000\nThe people heading to Route 21\nare definitely important, but we have[f000]븀\u0000\nan important role as well!"
-    ActorMsg MSGFILE_SCRIPT, 1, 6, 5, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_AreaPastHereImportant, 6, 5, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -145,7 +146,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, thank you.\nThat's so nice.[f000]븁\u0000\nEven if we said it was for Pokémon, in the\nend, we were doing what we wanted to do.[f000]븁\u0000\nPlease excuse me.\nThere's still something I have to do![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_OhThankThatsNice, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -156,7 +157,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "We're standing watch here\nso our allies don't go AWOL!"
-    ActorMsg MSGFILE_SCRIPT, 11, 7, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_WereStandingWatchHere, 7, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -167,7 +168,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "None shall pass!\nSages' orders!"
-    ActorMsg MSGFILE_SCRIPT, 12, 8, 0, 0
+    ActorMsg MSGFILE_SCRIPT, GiantChasm2_Text_NoneShallPassSages, 8, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

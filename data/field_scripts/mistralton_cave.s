@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/mistralton_cave.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -22,7 +23,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I heard there was a legendary Pokémon\nin Mistralton Cave..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, MistraltonCave_Text_HeardThereLegendaryPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

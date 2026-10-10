@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -265,7 +266,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Nimbasa City Pokémon Gym\nLeader: Elesa[f000]븀\u0000\nThe Shining Beauty"
-    MsgPlaceSign 8, 2
+    MsgPlaceSign NimbasaCity2_Text_NimbasaCityPokemonGym, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -276,7 +277,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "The Shining Roller Coaster\nFormer Nimbasa City Pokémon Gym"
-    MsgPlaceSign 16, 2
+    MsgPlaceSign NimbasaCity2_Text_ShiningRollerCoasterFormer, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -325,7 +326,7 @@ L_04A4:
 
 L_04BB:
     // "The Xtransceiver you found is ringing."
-    SystemMsg 4, 2
+    SystemMsg NimbasaCity2_Text_XtransceiverFoundRinging, 2
     VMJump L_04E6
 
 L_04C7:
@@ -335,7 +336,7 @@ L_04C7:
 
 L_04DA:
     // "The Xtransceiver you found is ringing."
-    SystemMsg 6, 2
+    SystemMsg NimbasaCity2_Text_XtransceiverFoundRinging_2, 2
     VMJump L_04E6
 
 L_04E6:
@@ -347,7 +348,7 @@ L_04E6:
 
 L_04FE:
     // "[f000]Ā\u0001\u0000 picked up\nthe Xtransceiver.[f000]븁\u0000"
-    SystemMsg 5, 2
+    SystemMsg NimbasaCity2_Text_PickedUpXtransceiver, 2
     VMJump L_0529
 
 L_050A:
@@ -357,7 +358,7 @@ L_050A:
 
 L_051D:
     // "[f000]Ā\u0001\u0000 picked up\nthe Xtransceiver.[f000]븁\u0000"
-    SystemMsg 7, 2
+    SystemMsg NimbasaCity2_Text_PickedUpXtransceiver_2, 2
     VMJump L_0529
 
 L_0529:
@@ -410,7 +411,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's a shining, sparkling, bright\nfashion show!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_ItsShiningSparklingBright, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -422,7 +423,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I hear that a Clown's makeup\nincludes a teardrop mark."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_HearClownsMakeupIncludes, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -434,7 +435,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A roller coaster and a Ferris wheel!\nWhich one should I ride first?!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_RollerCoasterFerrisWheel, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -446,7 +447,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Ah ah ah ah aaah! ♪[f000]븁\u0000\nWh-what should I talk about\non my first date..."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_AhAhAhAh, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -458,7 +459,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, this guy! Even in the amusement\npark, he does nothing but play guitar...[f000]븁\u0000\nHow cool! He loves music from\nthe bottom of his heart!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_OhGuyEvenAmusement, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -470,7 +471,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "What's that? Uh, I dunno. Audino?"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_WhatsUhDunnoAudino, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -482,7 +483,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "A famous TV star came here\nfor a shoot recently! ♪[f000]븁\u0000\nIt's that one who's always on TV.[f000]븁\u0000\nOne thing I noticed while watching\nthe shoot is that star spends a lot[f000]븀\u0000\nof time on the Xtransceiver![f000]븁\u0000\nThe entire break it was talk, talk,\ntalk, laugh, laugh, laugh! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_FamousTvStarCame, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -495,7 +496,7 @@ Script_11:
     ActorSetEyeToEye
     PVPlay 531, 0
     // "Chuuu! ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 13, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_Chuuu, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -509,7 +510,7 @@ Script_12:
     ActorSetEyeToEye
     PVPlay 559, 0
     // "Uuugh!"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_Uuugh, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -522,7 +523,7 @@ Script_14:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh? Are you a challenger perhaps?[f000]븁\u0000\nI'm very sorry,\nthe Gym Leader is out right now...[f000]븁\u0000\nI know where she went though.[f000]븁\u0000\nShe should be in the building where\nyou can ride the roller coaster.[f000]븁\u0000\nIt's by the entrance\nto this amusement park."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_OhChallengerPerhapsIm, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -534,7 +535,7 @@ Script_15:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The best part of riding a roller coaster\nis screaming your heart out!"
-    ParentActorMsg MSGFILE_SCRIPT, 15, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCity2_Text_BestPartRidingRoller, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

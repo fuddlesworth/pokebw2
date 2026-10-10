@@ -1,4 +1,6 @@
 #include "asm/field_script.inc"
+#include "text/script/black_city_4.h"
+#include "text/script/global_10405.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -516,13 +518,13 @@ Data_03D0:
     VMNop
     VMStackAdd
     // "                                            "
-    ParentActorMsg 7, 0, 0, 65535
+    ParentActorMsg 7, BlackCity4_Text_Empty, 0, 65535
 
 L_03E6:
     SEPlay SEQ_SE_MESSAGE
     VMCall L_045C
     // "Which floor would you like to go to?"
-    SystemMsg 14, 2
+    SystemMsg Global10405_Text_WhichFloorWouldLike, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32784
     ElevatorBuildListMenu
     ListMenuAdd 0, 65535, 255

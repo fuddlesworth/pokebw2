@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_2100.h"
 
 // Script plugin 13, from the zones that start its scripts
 
@@ -289,7 +290,7 @@ L_03A8:
 L_03CB:
     WordSetPlayerName 0
     // "Great to see you, [f000]Ā\u0001\u0000!\nYou want the usual, right?"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_GreatSeeWantUsual, 0, 0
 
 L_03D8:
     YesNoWin 0x8022
@@ -312,7 +313,7 @@ L_040A:
     ActorCmdExec 255, Movement_05A8
     ActorCmdWait
     // "OK, I'll take your Pokémon for\na few seconds."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_OkIllTakePokemon, 0, 0
     VMCall L_0625
     PokePartyRecoverAll
     RecordAdd 11, 1
@@ -332,14 +333,14 @@ L_040A:
     VMJumpIf CMP_STACK, L_0491
     FlagSet 101
     // "Oh... It looks like your Pokémon may be\ninfected with the Pokérus.[f000]븁\u0000\nLittle is known about the Pokérus,\nexcept that it is a microscopic life-form[f000]븀\u0000\nthat attaches to Pokémon.[f000]븁\u0000\nWhile infected, Pokémon are said to\ngrow exceptionally well."
-    ParentActorMsg MSGFILE_SCRIPT, 12, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_OhLooksLikePokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_04A1
 
 L_0491:
     // "Thank you for waiting.[f000]븁\u0000\nWe've restored your Pokémon\nto full health.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_ThankWaitingWeveRestored, 0, 0
     VMCall L_0578
 
 L_04A1:
@@ -370,7 +371,7 @@ L_04E3:
 
 L_0500:
     // "Good morning! Welcome to\nthe Pokémon Center.[f000]븁\u0000\nWe restore your tired Pokémon\nto full health.[f000]븁\u0000\nWould you like to rest your Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_GoodMorningWelcomePokemon, 0, 0
     VMJump L_0570
 
 L_0510:
@@ -380,7 +381,7 @@ L_0510:
 
 L_0523:
     // "Hello, and welcome to\nthe Pokémon Center.[f000]븁\u0000\nWe restore your tired Pokémon\nto full health.[f000]븁\u0000\nWould you like to rest your Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_HelloWelcomePokemonCenter_2, 0, 0
     VMJump L_0570
 
 L_0533:
@@ -394,7 +395,7 @@ L_0533:
 
 L_0560:
     // "Hello, and welcome to\nthe Pokémon Center.[f000]븁\u0000\nWe restore your tired Pokémon\nto full health.[f000]븁\u0000\nWould you like to rest your Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_HelloWelcomePokemonCenter, 0, 0
     VMJump L_0570
 
 L_0570:
@@ -405,7 +406,7 @@ L_0578:
     ActorCmdExec 0x8011, Movement_0594
     ActorCmdWait
     // "We hope to see you again!"
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_WeHopeSeeAgain, 0, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -430,13 +431,13 @@ Movement_05B0:
 
 L_05B8:
     // "Hello, and welcome to\nthe Pokémon Center.[f000]븁\u0000\nWe restore your tired Pokémon\nto full health.[f000]븁\u0000\nWould you like to...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_HelloWelcomePokemonCenter_3, 0, 0
     ActorCmdExec 0x8011, Movement_05E0
     ActorCmdWait
     ActorMsgClose
     WordSetPlayerName 0
     // "Th-that Trainer Card!\nThat wonderful shade! That sparkle![f000]븁\u0000\nI've seen several Trainers with\nSilver Trainer Cards already...[f000]븁\u0000\nBut you're the first to top them all with\nthat impressive Trainer Card.[f000]븁\u0000\nOh, [f000]Ā\u0001\u0000, may I please heal\nyour Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_ThTrainerCardWonderful, 0, 0
     VMReturn
     .balign 4, 0
 
@@ -446,19 +447,19 @@ Movement_05E0:
 
 L_05E8:
     // "Welcome to the Pokémon Center.[f000]븁\u0000\nHey! Is today your birthday?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_WelcomePokemonCenterHey, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0619
     // "Happy birthday![f000]븁\u0000\nPlease keep visiting the Pokémon Center\nfor many years to come.[f000]븁\u0000\nNow, would you like to rest\nyour Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_HappyBirthdayPleaseKeep, 0, 0
     VMJump L_0623
 
 L_0619:
     // "It isn't? Oh, I must have been confused.[f000]븁\u0000\nWould you like to rest your Pokémon?"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_IsntOhMustHave, 0, 0
 
 L_0623:
     VMReturn
@@ -506,7 +507,7 @@ Script_2:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_06C1
     // "I am sorry...\nYou can't enter the Union Room yet.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_AmSorryCantEnter, 0x8011, 4, 0
 
 L_06C1:
     VMStackPush 0x802d
@@ -514,7 +515,7 @@ L_06C1:
     VMStackCmp CMP_GT
     VMJumpIf CMP_STACK, L_06E0
     // "You have at least one Pokémon\nthat can't be taken in.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_HaveLeastOnePokemon, 0x8011, 4, 0
 
 L_06E0:
     VMStackPush 0x802a
@@ -526,7 +527,7 @@ L_06E0:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0797
     // "Welcome to the Pokémon Wireless\nClub Union Room.[f000]븁\u0000\nYou may interact directly with\nmany Trainers here.[f000]븁\u0000\nWould you like to enter the room?"
-    ActorMsg MSGFILE_SCRIPT, 13, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_WelcomePokemonWirelessClub, 0x8011, 4, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32814
     ListMenuAdd 18, 65535, 18
     ListMenuAdd 20, 65535, 20
@@ -565,7 +566,7 @@ L_0797:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07D3
     // "The Trainers in the Union Room\nwill be those players around you[f000]븀\u0000\nwho have also entered the room.[f000]븁\u0000\nYou may trade your Pokémon here\nor have battles for two or four.[f000]븁\u0000\nAlso, you may exchange Eggs\nor draw pictures with other players.[f000]븁\u0000\nYou may also chat with other\nplayers in the room.[f000]븁\u0000\nOr you may locate friends in the room\nby touching their spoken words.[f000]븁\u0000\nWould you like to enter the room?"
-    ActorMsg MSGFILE_SCRIPT, 14, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_TrainersUnionRoomWill, 0x8011, 4, 0
     YesNoWin 0x802e
     VMStackPush 0x802e
     VMStackPushConst 0
@@ -599,7 +600,7 @@ L_0809:
     VMJumpIf CMP_STACK, L_0846
     WordSetTrainerClassName 0, 0x8009
     // "Wait, Trainer![f000]븁\u0000\nYour title on your Trainer Card\nis still just “Pokémon Trainer,\" isn't it?[f000]븁\u0000\nIf you change your title, you can easily\nproject your image to others when you[f000]븀\u0000\ngreet them in the Union Room.[f000]븁\u0000\nLet's see...\nHow about [f000]Ď\u0001\u0000?[f000]븀\u0000\nWhat do you think?[f000]븁\u0000\nThat is the impression I got from you.\nFirst, let's change your title.[f000]븁\u0000\nIf you don't like the new one, you can\nchange it by selecting your Trainer Card.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_WaitTrainerTitleTrainer, 0x8011, 4, 0
 
 L_0846:
     VMStackPush 0x802b
@@ -607,7 +608,7 @@ L_0846:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0882
     // "DS Wireless Communications\nwill be launched."
-    ActorMsg MSGFILE_SCRIPT, 15, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_DsWirelessCommunicationsWill, 0x8011, 4, 0
     YesNoWin 0x802e
     VMStackPush 0x802e
     VMStackPushConst 1
@@ -672,7 +673,7 @@ L_0947:
     Cmd_02C5 16
     FunfestBGMReturn
     // "I hope you enjoy your time in\nthe Union Room.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_HopeEnjoyTimeUnion, 0x8011, 4, 0
     ActorMsgClose
     VMCall L_09CD
     PokePartyRecoverAll
@@ -686,7 +687,7 @@ L_097E:
     VMStackCmp CMP_NE
     VMJumpIf CMP_STACK, L_09A1
     // "Please do visit again."
-    ActorMsg MSGFILE_SCRIPT, 17, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_PleaseVisitAgain, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
 
@@ -934,7 +935,7 @@ Script_9:
 
 L_0C99:
     // "It seems you can't use it yet."
-    InfoMsg 24, 2
+    InfoMsg Global2100_Text_SeemsCantUseYet, 2
     LastKeyWait
     InfoMsgClose_0039
 
@@ -952,7 +953,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh?\nYou're...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 27, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_OhYoure, 0, 0
     MsgWinCloseAll
     RTGetZoneID 0x4192
     FadeOutBlack
@@ -965,7 +966,7 @@ L_0CED:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ParentActorMsg MSGFILE_SCRIPT, 28, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -984,7 +985,7 @@ Script_11:
 
 L_0D20:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0D32:
@@ -994,7 +995,7 @@ L_0D32:
 
 L_0D45:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0D57:
@@ -1004,7 +1005,7 @@ L_0D57:
 
 L_0D6A:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 12, 0, 0
     VMJump L_0FF1
 
 L_0D7C:
@@ -1014,7 +1015,7 @@ L_0D7C:
 
 L_0D8F:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0DA1:
@@ -1024,7 +1025,7 @@ L_0DA1:
 
 L_0DB4:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 10, 0, 0
     VMJump L_0FF1
 
 L_0DC6:
@@ -1034,7 +1035,7 @@ L_0DC6:
 
 L_0DD9:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0DEB:
@@ -1044,7 +1045,7 @@ L_0DEB:
 
 L_0DFE:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0E10:
@@ -1054,7 +1055,7 @@ L_0E10:
 
 L_0E23:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 12, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 12, 0, 0
     VMJump L_0FF1
 
 L_0E35:
@@ -1064,7 +1065,7 @@ L_0E35:
 
 L_0E48:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 6, 0, 0
     VMJump L_0FF1
 
 L_0E5A:
@@ -1074,7 +1075,7 @@ L_0E5A:
 
 L_0E6D:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 9, 0, 0
     VMJump L_0FF1
 
 L_0E7F:
@@ -1084,7 +1085,7 @@ L_0E7F:
 
 L_0E92:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 9, 0, 0
     VMJump L_0FF1
 
 L_0EA4:
@@ -1094,7 +1095,7 @@ L_0EA4:
 
 L_0EB7:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0EC9:
@@ -1104,7 +1105,7 @@ L_0EC9:
 
 L_0EDC:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0EEE:
@@ -1114,7 +1115,7 @@ L_0EEE:
 
 L_0F01:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 10, 0, 0
     VMJump L_0FF1
 
 L_0F13:
@@ -1124,7 +1125,7 @@ L_0F13:
 
 L_0F26:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 10, 0, 0
     VMJump L_0FF1
 
 L_0F38:
@@ -1134,7 +1135,7 @@ L_0F38:
 
 L_0F4B:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 9, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 9, 0, 0
     VMJump L_0FF1
 
 L_0F5D:
@@ -1144,7 +1145,7 @@ L_0F5D:
 
 L_0F70:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0F82:
@@ -1154,7 +1155,7 @@ L_0F82:
 
 L_0F95:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0FA7:
@@ -1164,7 +1165,7 @@ L_0FA7:
 
 L_0FBA:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 11, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 11, 0, 0
     VMJump L_0FF1
 
 L_0FCC:
@@ -1174,7 +1175,7 @@ L_0FCC:
 
 L_0FDF:
     // "Sorry...[f000]븁\u0000\nWhen I saw you,\nI just started talking for some reason."
-    ActorMsg MSGFILE_SCRIPT, 28, 6, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_SorryWhenSawJust, 6, 0, 0
     VMJump L_0FF1
 
 L_0FF1:
@@ -1199,7 +1200,7 @@ L_100F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1052
     // "I'm sorry![f000]븁\u0000\nYour system's power was turned\noff during a Random Matchup![f000]븁\u0000\nYou will not be able to participate\nin a Random Matchup[f000]븀\u0000\nor Wi-Fi Competition for an hour.[f000]븁\u0000\nPlease come back later.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 29, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global2100_Text_ImSorrySystemsPower, 0x8011, 4, 0
     ActorMsgClose
     VMJump L_108F
 
@@ -1212,11 +1213,11 @@ L_1052:
     Plugin13_Cmd1009 0x803b
     WordSetPlayerName 0
     // "In honor of your achievement in battle,\nI present you with these Battle Points![f000]븁\u0000"
-    SystemMsg 30, 2
+    SystemMsg Global2100_Text_HonorAchievementBattlePresent, 2
     WordSetNumber 1, 0x803b, 2
     MEPlay SEQ_ME_BPGET
     // "[f000]Ā\u0001\u0000 received [f000]ȁ\u0001\u0001 BP!"
-    SystemMsg 31, 2
+    SystemMsg Global2100_Text_ReceivedBp, 2
     MEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -1224,7 +1225,7 @@ L_1052:
 L_108F:
     Plugin13_Cmd1008 4, 0
     // "Saving...\nDon't turn off the power."
-    SystemMsg 32, 2
+    SystemMsg Global2100_Text_SavingDontTurnOff, 2
     VMSleep 1
     MsgSetLoadingSpinner 0
     SaveDataWrite 0x803b

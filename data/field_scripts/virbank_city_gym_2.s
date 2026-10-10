@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/virbank_city_gym_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -94,7 +95,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     WordSetPlayerName 0
     // "It's too loud!\nShe can't hear your voice!"
-    InfoMsg 0, 2
+    InfoMsg VirbankCityGym2_Text_ItsTooLoudShe, 2
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01CD
@@ -120,14 +121,14 @@ L_0188:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01BD
     // "Your Pokémon WANTED this win![f000]븁\u0000\nKeep on going on like this,\nand do all sorts of stuff!"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_PokemonWantedWinKeep, 0, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_01CD
 
 L_01BD:
     // "Using the Pokémon I like and\ngetting through to people with[f000]븀\u0000\nthe music I like is who I am![f000]븁\u0000\nIf you can do what you enjoy\nin the way you want, then great![f000]븁\u0000\nJust be sure not to cause\nanyone any trouble!"
-    ActorMsg MSGFILE_SCRIPT, 8, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_UsingPokemonLikeGetting, 0, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -138,7 +139,7 @@ L_01CD:
 
 L_01D3:
     // "Get ready! I'm gonna knock\nsome sense outta ya![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 1
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_GetReadyImGonna, 0, 0, 1
     MsgWinCloseAll
     WorkSetConst 0x8024, 0
     GameGetDifficulty 0x8024
@@ -204,7 +205,7 @@ L_02B4:
     Cmd_0291 1
     Cmd_0291 2
     // "Sigh!\nWhat are you doing losing, Roxie?![f000]븁\u0000\nWell...\nI guess that means you're strong![f000]븁\u0000\nThis stinks,\nbut I gave it everything I had, and[f000]븀\u0000\nI feel revitalized and refreshed now![f000]븁\u0000\nHere!\nProof that you beat me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_SighWhatDoingLosing, 4, 0, 0
     ActorMsgClose
     TrainerCardSaveGymVictoryParty 1
     TrainerCardAddBadge 1
@@ -226,10 +227,10 @@ L_030E:
     MEWait
     WorkSetConst 0x8025, 0
     // "[f000]Ā\u0001\u0000 received the\nToxic Badge from Roxie![f000]븁\u0000"
-    SystemMsg 3, 0
+    SystemMsg VirbankCityGym2_Text_ReceivedToxicBadgeFrom, 0
     InfoMsgClose
     // "Two Badges![f000]븁\u0000\nNow Pokémon up to Lv. 30,\neven Pokémon you got in trades,[f000]븀\u0000\nwill realize how good you are[f000]븀\u0000\nand won't ignore your commands![f000]븁\u0000\nAlso, here!\nUse this TM![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_TwoBadgesNowPokemon, 4, 0, 0
     ActorMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -239,7 +240,7 @@ L_030E:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "TM09 is Venoshock!\nIt covers the target in[f000]븀\u0000\na special poisonous liquid![f000]븁\u0000\nEven better, if your target's already\npoisoned, it does double damage![f000]븀\u0000\nHeh heh! It almost packs too much[f000]븀\u0000\nof a punch!"
-    ActorMsg MSGFILE_SCRIPT, 5, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_Tm09VenoshockCoversTarget, 4, 0, 0
     LastKeyWait
     ActorMsgClose
     TrainerFlagSet TRAINER_ROUGHNECK_NICKY
@@ -256,7 +257,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Your Pokémon WANTED this win![f000]븁\u0000\nKeep on going on like this,\nand do all sorts of stuff!"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_PokemonWantedWinKeep, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -394,7 +395,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "That's a Gym Leader for you!\nShe really brings out the charms[f000]븀\u0000\nof her Pokémon![f000]븁\u0000\nBut she's too wrapped up\nin what she's doing here..."
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_ThatsGymLeaderShe, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -406,7 +407,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm running the PA![f000]븁\u0000\nI balance the sound in the venue\nso it's easy to hear![f000]븁\u0000\nAre you a Trainer?[f000]븁\u0000\nSo does that mean you're thinking about\nthe type balance of the Pokémon in[f000]븀\u0000\nyour party?"
-    ParentActorMsg MSGFILE_SCRIPT, 11, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_ImRunningPaBalance, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -435,7 +436,7 @@ L_05B0:
     ActorCmdExec 255, Movement_077C
     ActorCmdWait
     // "Hey you![f000]븁\u0000\nI felt like you were something special\nduring your battle with Roxie.[f000]븁\u0000\nPlease come with me to Pokéstar Studios![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_HeyFeltLikeWere, 3, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8026
     VMStackPushConst 3
@@ -477,7 +478,7 @@ L_0649:
 
 L_0653:
     // "You're going to Pokéstar Studios?![f000]븁\u0000\nOH! I forgot! The old man!\nI have to get him back to work[f000]븀\u0000\nas captain![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 4, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VirbankCityGym2_Text_YoureGoingPokestarStudios, 4, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8026
     VMStackPushConst 3

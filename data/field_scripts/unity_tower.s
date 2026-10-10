@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/unity_tower.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -25,14 +26,14 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Return to Castelia City?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower_Text_ReturnCasteliaCity, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0100
     // "Well then, please board the ship![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower_Text_WellThenPleaseBoard, 0, 0
     MsgWinCloseAll
     PlayerGetExState 0x8010
     VMStackPush 0x8010
@@ -78,7 +79,7 @@ L_00DE:
 
 L_0100:
     // "Please board the ship\nat your convenience."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, UnityTower_Text_PleaseBoardShipConvenience, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

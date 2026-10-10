@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/icirrus_city_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -129,7 +130,7 @@ L_01AF:
 
 L_01B5:
     // "Well, since you came all the way here...[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_WellSinceCameAll, 0, 0
     MsgWinCloseAll
     FadeOutBlack
     RTReserveScript 1
@@ -143,7 +144,7 @@ Script_16:
     FadeInBlackQ
     FadeWait
     // "I'm grateful for everyone's support..."
-    ActorMsg MSGFILE_SCRIPT, 6, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_ImGratefulEveryonesSupport, 10, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     VMStackPushFlag 464
@@ -160,7 +161,7 @@ L_020C:
 
 L_0218:
     // "Brycen: In the past, when I was hurt and\ndepressed, Alder shared this with me...[f000]븁\u0000\nThere is strength in being with other\npeople and Pokémon.[f000]븁\u0000\nReceiving their support makes\nyou stronger.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_BrycenPastWhenHurt, 10, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8020
     WorkCmpConst 0x8020, 0
@@ -201,7 +202,7 @@ L_02A0:
 L_02AE:
     ActorCmdWait
     // "I worked as a Gym Leader,\nand I came to understand[f000]븀\u0000\nwhat he meant by that.[f000]븁\u0000\nMy desire became to strengthen\nthis relationship that makes everyone[f000]븀\u0000\nstronger--the relationship between[f000]븀\u0000\npeople and Pokémon.[f000]븁\u0000\nBy focusing on the path of an actor,\nI want to make everyone think[f000]븀\u0000\nthat living together with Pokémon[f000]븀\u0000\nis exciting and wonderful.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_WorkedGymLeaderCame, 10, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8020
     WorkCmpConst 0x8020, 0
@@ -242,7 +243,7 @@ L_0338:
 L_0346:
     ActorCmdWait
     // "Teaching is being taught...\nExcuse me, it's time for training.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 10, 0, 0
+    ActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_TeachingBeingTaughtExcuse, 10, 0, 0
     MsgWinCloseAll
     VMStackPush 0x4047
     VMStackPushConst 0
@@ -289,7 +290,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "So cool, isn't it?[f000]븁\u0000\nThat strong figure standing\nthere in the background!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_CoolIsntStrongFigure, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0427
@@ -298,7 +299,7 @@ L_0413:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Oh, I'm so sorry.[f000]븁\u0000\nBrycen decided to try to\nreturn to his acting roots.[f000]븁\u0000\nCurrently, he's working hard at\nPokéstar Studios!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, IcirrusCity2_Text_OhImSorryBrycen, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -311,7 +312,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "Former Icirrus City\nPokémon Gym"
-    InfoMsg 7, 2
+    InfoMsg IcirrusCity2_Text_FormerIcirrusCityPokemon, 2
     LastKeyWait
     InfoMsgClose_0039
     FinishAllEvents

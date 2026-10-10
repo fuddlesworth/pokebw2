@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10400.h"
 
     ScriptEntry Script_1
     ScriptEntriesEnd
@@ -16,7 +17,7 @@ Script_1:
     WorkSetConst 0x8023, 1
     MoneyWinDisp 31, 1
     // "It's a vending machine.\nWhich drink would you like?"
-    SystemMsg 0, 2
+    SystemMsg Global10400_Text_ItsVendingMachineWhich, 2
     WorkSetConst 0x8024, 0
 
 L_004E:
@@ -35,7 +36,7 @@ L_004E:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00B1
     // "Decided not to buy a drink."
-    SystemMsg 4, 2
+    SystemMsg Global10400_Text_DecidedNotBuyDrink, 2
     WorkSetConst 0x8023, 0
     VMJump L_0157
 
@@ -45,7 +46,7 @@ L_00B1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_00D6
     // "Decided not to buy a drink."
-    SystemMsg 4, 2
+    SystemMsg Global10400_Text_DecidedNotBuyDrink, 2
     WorkSetConst 0x8023, 0
     VMJump L_0157
 
@@ -111,7 +112,7 @@ L_01A1:
     MoneyWinUpdate
     WordSetItemName 0, 0x8021
     // "A [f000]ĉ\u0001\u0000 dropped down![f000]븁\u0000"
-    SystemMsg 1, 2
+    SystemMsg Global10400_Text_DroppedDown, 2
     InfoMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -136,7 +137,7 @@ L_01A1:
     SEWait
     WordSetItemName 0, 0x8021
     // "Bonus! Another [f000]ĉ\u0001\u0000\ndropped down.[f000]븁\u0000"
-    SystemMsg 2, 2
+    SystemMsg Global10400_Text_BonusAnotherDroppedDown, 2
     InfoMsgClose
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -149,12 +150,12 @@ L_01A1:
 
 L_026E:
     // "Would you like to buy another one?"
-    SystemMsg 5, 2
+    SystemMsg Global10400_Text_WouldLikeBuyAnother, 2
     VMJump L_0286
 
 L_027A:
     // "Not enough money..."
-    SystemMsg 3, 2
+    SystemMsg Global10400_Text_NotEnoughMoney, 2
     WorkSetConst 0x8023, 0
 
 L_0286:

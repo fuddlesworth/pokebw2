@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/ns_castle_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -33,28 +34,28 @@ Script_11:
     ActorCmdWait
     EvCameraWait
     // "N: [f000]븉\u0001\u0001This place...\nwas my entire world...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle3_Text_NPlaceEntireWorld, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 9, 16, 0, 8, 0
     ActorCmdWait
     // "[f000]븉\u0001\u0001When I was little, I was abandoned\ndeep in the woods.[f000]븁\u0000\nThe ones who took me in and raised me\nwere the Pokémon who lived there.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle3_Text_WhenLittleAbandonedDeep, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_028C
     ActorCmdWait
     // "[f000]븉\u0001\u0001Then, one day, a man appeared\nbefore me, claiming to be my father.[f000]븁\u0000\nThat...was Ghetsis.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle3_Text_ThenOneDayMan, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_015C
     ActorCmdWait
     // "[f000]븉\u0001\u0001The things he gave me were...\nthe name “Harmonia\"...[f000]븁\u0000\nthe knowledge a king would need...[f000]븁\u0000\nPokémon with their hearts shut so very\ntightly I couldn't even talk to them...[f000]븁\u0000\nand this room...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle3_Text_ThingsHeGaveWere, 251, 0, 0
     MsgWinCloseAll
     VMSleep 8
     ActorCmdExec 251, Movement_0174
     ActorCmdWait
     // "[f000]븉\u0001\u0001I'll be outside...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle3_Text_IllOutside, 251, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 40
     ActorWalkRoute 251, 8, 20, 0, 8, 0
@@ -96,7 +97,7 @@ Script_1:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a slightly dirty basketball.\nThe name “Harmonia\" is written on it."
-    InfoMsg 5, 2
+    InfoMsg NsCastle3_Text_ItsSlightlyDirtyBasketball, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -107,7 +108,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a home-style basketball hoop.\nIt's been knocked over."
-    InfoMsg 6, 2
+    InfoMsg NsCastle3_Text_ItsHomeStyleBasketball, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -118,7 +119,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a toy box, but its contents\nhave spilled out."
-    InfoMsg 7, 2
+    InfoMsg NsCastle3_Text_ItsToyBoxBut, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -129,7 +130,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The rubber of these wheels\nhas rotted away."
-    InfoMsg 8, 2
+    InfoMsg NsCastle3_Text_RubberTheseWheelsHas, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -140,7 +141,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "A halfpipe for skateboards...[f000]븁\u0000\nIt has Pokémon scratch marks\non it here and there..."
-    InfoMsg 9, 2
+    InfoMsg NsCastle3_Text_HalfpipeSkateboardsHasPokemon, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -151,7 +152,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "An art panel with a\nprinted geometric pattern."
-    InfoMsg 10, 2
+    InfoMsg NsCastle3_Text_ArtPanelPrintedGeometric, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -162,7 +163,7 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "This panel has a dart stuck in it."
-    InfoMsg 11, 2
+    InfoMsg NsCastle3_Text_PanelHasDartStuck, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -173,7 +174,7 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a set of trains and tracks.\nIt hasn't been touched in a long time."
-    InfoMsg 12, 2
+    InfoMsg NsCastle3_Text_ItsSetTrainsTracks, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -184,7 +185,7 @@ Script_9:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "This toy box has been tipped over."
-    InfoMsg 13, 2
+    InfoMsg NsCastle3_Text_ToyBoxHasBeen, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

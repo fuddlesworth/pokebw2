@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/village_bridge_7.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -42,7 +43,7 @@ L_008A:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00DD
     // "Oh, your Pokémon look pretty tired.\nDon't be shy. Take a nice long rest![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge7_Text_OhPokemonLookPretty, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -52,14 +53,14 @@ L_008A:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "Both you and your Pokémon are healthy\nand energetic![f000]븁\u0000\nIf you get tired, please talk to me.\nI'll let you take a nice long rest."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge7_Text_BothPokemonHealthyEnergetic, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_00EB
 
 L_00DD:
     // "Both you and your Pokémon are healthy\nand energetic![f000]븁\u0000\nIf you get tired, please talk to me.\nI'll let you take a nice long rest."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge7_Text_BothPokemonHealthyEnergetic, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -79,7 +80,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 575, 0
     // "Gothoo. ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, VillageBridge7_Text_Gothoo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

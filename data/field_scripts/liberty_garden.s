@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/liberty_garden.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -95,7 +96,7 @@ Script_13:
 
 L_0182:
     // "Professor Juniper: Oh?\nVictini![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 14, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_ProfessorJuniperOhVictini, 251, 0, 0
     VMJump L_01DE
 
 L_0194:
@@ -105,7 +106,7 @@ L_0194:
 
 L_01A7:
     // "Professor Juniper: Oh?\nYour Pokédex...[f000]븁\u0000\nYou've caught Victini![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_ProfessorJuniperOhPokedex, 251, 0, 0
     VMJump L_01DE
 
 L_01B9:
@@ -115,7 +116,7 @@ L_01B9:
 
 L_01CC:
     // "Professor Juniper: Oh?\nYour Pokédex...[f000]븁\u0000\nYou've seen Victini![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 16, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_ProfessorJuniperOhPokedex_2, 251, 0, 0
     VMJump L_01DE
 
 L_01DE:
@@ -124,12 +125,12 @@ L_01DE:
     ActorCmdWait
     VMSleep 30
     // "In the Unova Pokédex, Victini was\nassigned a special number: zero.[f000]븁\u0000\nI've heard the special number was\nassigned in the hope that Victini's power[f000]븀\u0000\nto bring victory would be shared with the[f000]븀\u0000\nTrainer who travels with this Pokédex...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 17, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_UnovaPokedexVictiniAssigned, 251, 0, 0
     MsgWinCloseAll
     ActorCmdExec 251, Movement_04BC
     ActorCmdWait
     // "How do you relate to Pokémon?[f000]븁\u0000\nAs you fill your Pokédex,\nyou'll find your own answer.[f000]븁\u0000\nThat's what I'm hoping for.\nSee you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 251, 0, 0
+    ActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_HowRelatePokemonFill, 251, 0, 0
     MsgWinCloseAll
     ActorWalkRoute 251, 298, 762, 0, 8, 1
     VMSleep 20
@@ -170,14 +171,14 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Do you want to go back to Castelia City?"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_WantGoBackCastelia, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02E6
     // "We are just about to leave, so please\nget on board and wait a moment.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_WeJustAboutLeave, 0, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_04BC
     VMSleep 8
@@ -193,7 +194,7 @@ Script_1:
 
 L_02E6:
     // "Just come talk to me when you want\nto return to Castelia City!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_JustComeTalkWhen, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -207,7 +208,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Somehow, coming here gives me power!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_SomehowComingHereGives, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -225,7 +226,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Have you heard about this?[f000]븁\u0000\nA rich person was protecting\na Pokémon from bad people here!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_HaveHeardAboutRich, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0363
@@ -234,7 +235,7 @@ L_034F:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Have you heard about this?[f000]븁\u0000\nA rich person was protecting\na Pokémon from bad people here!"
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_HaveHeardAboutRich_2, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -248,7 +249,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I wonder how the Pokémon felt\nwhile it was in that room...[f000]븀\u0000\nIt must have been lonely for a long time."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_WonderHowPokemonFelt, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -284,7 +285,7 @@ L_03CF:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Th...that... Your Pokémon...\nIs that the Victory Pokémon, Victini?![f000]븁\u0000\nIs it true?\nHave you just kept winning and winning[f000]븀\u0000\nwith Victini's help?[f000]븁\u0000\nI wish I had your luck..."
-    ParentActorMsg MSGFILE_SCRIPT, 8, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_ThPokemonVictoryPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0410
@@ -293,7 +294,7 @@ L_03FC:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The Victory Pokémon, Victini...[f000]븁\u0000\nThey say it can give its Trainer\nincredible power.[f000]븁\u0000\nI wonder who has access\nto that power now..."
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_VictoryPokemonVictiniThey, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -307,7 +308,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Pokémon follow their Trainers'\norders without question.[f000]븁\u0000\nAnd yet, some people try\nto make Pokémon do bad things!"
-    ParentActorMsg MSGFILE_SCRIPT, 9, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_PokemonFollowTheirTrainers, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -319,7 +320,7 @@ Script_7:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Nowadays, there aren't as many tourists\nvisiting here. It's boring...[f000]븁\u0000\nBut if the alternative is guys like\nTeam Plasma, I'm OK with being bored!"
-    ParentActorMsg MSGFILE_SCRIPT, 10, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LibertyGarden_Text_NowadaysThereArentMany, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -331,7 +332,7 @@ Script_8:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Two hundred years ago, an ultra-rich\nfamily bought this island.\nThey named it Liberty Garden.\n\nIt's a place where people and Pokémon\ncan live freely."
-    MsgPlaceSign 11, 2
+    MsgPlaceSign LibertyGarden_Text_TwoHundredYearsAgo, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -342,7 +343,7 @@ Script_9:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Dock 2\nTo board the tour boat, go to Dock 1."
-    MsgPlaceSign 12, 2
+    MsgPlaceSign LibertyGarden_Text_Dock2BoardTour, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -353,7 +354,7 @@ Script_10:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "This lighthouse shines with the light\nof freedom.[f000]븁\u0000\nOnly authorized personnel may enter."
-    MsgPlaceSign 13, 2
+    MsgPlaceSign LibertyGarden_Text_LighthouseShinesLightFreedom, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/victory_road.h"
 
 // Script plugin 11, from the zones that use this file
 
@@ -215,7 +216,7 @@ Script_2:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 0
     // "Basic Badge confirmed!"
-    SystemMsg 10, 2
+    SystemMsg VictoryRoad_Text_BasicBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40e4, 2
@@ -227,7 +228,7 @@ Script_3:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 1
     // "Toxic Badge confirmed!"
-    SystemMsg 11, 2
+    SystemMsg VictoryRoad_Text_ToxicBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40e5, 2
@@ -239,7 +240,7 @@ Script_4:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 2
     // "Insect Badge confirmed!"
-    SystemMsg 12, 2
+    SystemMsg VictoryRoad_Text_InsectBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40e6, 2
@@ -251,7 +252,7 @@ Script_5:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 3
     // "Bolt Badge confirmed!"
-    SystemMsg 13, 2
+    SystemMsg VictoryRoad_Text_BoltBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40e7, 2
@@ -263,7 +264,7 @@ Script_6:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 4
     // "Quake Badge confirmed!"
-    SystemMsg 14, 2
+    SystemMsg VictoryRoad_Text_QuakeBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40e8, 2
@@ -275,7 +276,7 @@ Script_7:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 5
     // "Jet Badge confirmed!"
-    SystemMsg 15, 2
+    SystemMsg VictoryRoad_Text_JetBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40e9, 2
@@ -287,7 +288,7 @@ Script_8:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 6
     // "Legend Badge confirmed!"
-    SystemMsg 16, 2
+    SystemMsg VictoryRoad_Text_LegendBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40ea, 2
@@ -299,7 +300,7 @@ Script_9:
     ActorsPauseAll
     BadgeGateCmd_PlayCheck 7
     // "Wave Badge confirmed!"
-    SystemMsg 17, 2
+    SystemMsg VictoryRoad_Text_WaveBadgeConfirmed, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x40eb, 2
@@ -375,30 +376,30 @@ Script_11:
     ActorCmdWait
     EvCameraWait
     // "N: [f000]븉\u0001\u0001You came...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad_Text_NCame, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06DC
     ActorCmdWait
     // "[f000]븉\u0001\u0001The Pokémon League is\njust past Victory Road.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad_Text_PokemonLeagueJustPast, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06EC
     ActorCmdWait
     // "[f000]븉\u0001\u0001Pokémon battles do nothing\nmore than hurt Pokémon...[f000]븁\u0000\nThat's how I understood it,\nand that's why I hated battles.[f000]븁\u0000\nBut it's not that simple.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad_Text_PokemonBattlesNothingMore, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06BC
     ActorCmdWait
     ActorCmdExec 0, Movement_06CC
     ActorCmdWait
     // "[f000]븉\u0001\u0001Pokémon battles decide\nwinners and losers, it's true.[f000]븁\u0000\nYet they do so much more.[f000]븁\u0000\nYour Pokémon! You!\nYour opponents! And their Pokémon![f000]븁\u0000\nEveryone can see what wonderful\nthings the others have to contribute![f000]븁\u0000\nThat's right! Accepting different ideas--\ndifferent beings--changes the world[f000]븀\u0000\nlike a chemical reaction![f000]븁\u0000\nPokémon battles are like a catalyst:\na small component that leads to[f000]븀\u0000\nbig changes![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad_Text_PokemonBattlesDecideWinners, 0, 0, 0
     // "[f000]븉\u0001\u0001My friend Reshiram taught me that...[f000]븁\u0000\nAnd it's the formula I've\nderived from traveling the world.[f000]븁\u0000\nI want you to think for\nyourself about what it means.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001My friend Zekrom taught me that...[f000]븁\u0000\nAnd it's the formula I've derived\nfrom traveling the world.[f000]븁\u0000\nI want you to think for\nyourself about what it means.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 5, 4, 0, 0, 0
+    ActorMsgVersioned 1024, VictoryRoad_Text_FriendReshiramTaughtIts, VictoryRoad_Text_FriendZekromTaughtIts, 0, 0, 0
     VMCall L_05F8
     // "[f000]븉\u0001\u0001Here!\nTake this with you![f000]븁\u0000\nThe new Victory Road has areas that\nare only accessible with Waterfall.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad_Text_HereTakeNewVictory, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06CC
     ActorCmdWait
@@ -411,7 +412,7 @@ Script_11:
     VMStackPop 0x8000
     // "[f000]븉\u0001\u0001Yes!\nIf it's your Pokémon and you...[f000]븁\u0000\nYou will get past the Pokémon League\nand recognize your own truth![f000]븁\u0000\nThat's what I see in store for you![f000]븁\u0000"
     // "[f000]븉\u0001\u0001Yes!\nIf it's your Pokémon and you...[f000]븁\u0000\nYou will get past the Pokémon League\nand recognize your own ideals![f000]븁\u0000\nThat's what I see in store for you![f000]븁\u0000"
-    ActorMsgVersioned 1024, 9, 8, 0, 0, 0
+    ActorMsgVersioned 1024, VictoryRoad_Text_YesIfItsPokemon_2, VictoryRoad_Text_YesIfItsPokemon, 0, 0, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 30
     ActorWalkRoute 0, 81, 56, 1, 8, 0
@@ -465,7 +466,7 @@ L_0667:
     ActorCmdExec 0, Movement_0698
     ActorCmdWait
     // "[f000]븉\u0001\u0001What's this?\nWhy, you're the...[f000]븁\u0000\nYou're the [f000]ā\u0001\u0000 that helped me\nthat time, aren't you?[f000]븀\u0000\nHey, thanks![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, VictoryRoad_Text_WhatsWhyYoureYoure, 0, 0, 0
     MsgWinCloseAll
 
 L_0694:
@@ -516,7 +517,7 @@ Script_12:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Badge Check Gate Ahead"
-    MsgPlaceSign 18, 2
+    MsgPlaceSign VictoryRoad_Text_BadgeCheckGateAhead, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -527,7 +528,7 @@ Script_13:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "The Pokémon League\nis through this tunnel!"
-    MsgPlaceSign 19, 2
+    MsgPlaceSign VictoryRoad_Text_PokemonLeagueThroughTunnel, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll

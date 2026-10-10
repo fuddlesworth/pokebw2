@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/lacunosa_town_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -32,7 +33,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "When I think about it,\nmy Pokémon is much stronger than me...[f000]븁\u0000\nPoké Balls are sure amazing."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown2_Text_WhenThinkAboutPokemon, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -45,7 +46,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 572, 0
     // "Gahoohoo..."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown2_Text_Gahoohoo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -58,7 +59,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This is Lacunosa Town. Here, everyone\nlives according to the rules, from the[f000]븀\u0000\nmoment they awaken to the time they[f000]븀\u0000\ngo to sleep."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown2_Text_LacunosaTownHereEveryone, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -70,7 +71,7 @@ Script_5:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The scary monster that comes out of\nthe big hole at night is actually[f000]븀\u0000\na Pokémon right?[f000]븁\u0000\nAdults were just saying\nthat to frighten children, huh?"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, LacunosaTown2_Text_ScaryMonsterComesOut, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_13_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -13,7 +14,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I'm really annoyed by what\nTeam Plasma said in the past.[f000]븁\u0000\nSo, I live with Pokémon\nwithout putting them in Poké Balls![f000]븁\u0000\nBut Panpour doesn't\nlisten to me at all..."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route133_Text_ImReallyAnnoyedBy, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -26,7 +27,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 515, 0
     // "Chatttteeeer!!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route133_Text_Chatttteeeer, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -39,7 +40,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "The creation of Poké Balls made it\npossible for everyone to be with Pokémon.[f000]븁\u0000\nYes, everyone..."
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route133_Text_CreationPokeBallsMade, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

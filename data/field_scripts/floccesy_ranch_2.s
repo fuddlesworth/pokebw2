@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/floccesy_ranch_2.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -87,7 +88,7 @@ Script_3:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Oh! Nice!\nYou've come here to toughen up![f000]븁\u0000\nAll right! Let's see how much\nstronger you've become! Come at me![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OhNiceYouveCome, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x4030
     VMStackPushConst 0
@@ -124,16 +125,16 @@ L_021F:
 L_0221:
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Not bad...[f000]븁\u0000\nYou're thinking about how to bring out\nyour Pokémon's strength.[f000]븁\u0000\nI should be able to count\non you for backup![f000]븁\u0000\nWhat are you doing here anyway?[f000]븁\u0000\nHuh?\nA Town Map?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_NotBadYoureThinking, 0, 0, 0
     MsgWinCloseAll
     WordSetPlayerName 0
     SEPlay SEQ_SE_ARDEMO_01
     // "[f000]Ā\u0001\u0000 handed over\nthe Town Map![f000]븁\u0000"
-    SystemMsg 2, 0
+    SystemMsg FloccesyRanch2_Text_HandedOverTownMap, 0
     InfoMsgClose
     SEWait
     // "[f000]Ā\u0001\u0001: Tch...\nShe didn't have to do that...[f000]븁\u0000\nThanks to you, too. We just left,\nand you've already helped me out.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_TchSheDidntHave, 0, 0, 0
     MsgWinCloseAll
     FlagReset 727
     ActorAdd 2
@@ -148,20 +149,20 @@ L_0221:
     ActorCmdExec 0, Movement_0F3C
     ActorCmdWait
     // "???: I thought it was lively around here!\nYou were having a Pokémon battle, huh?[f000]븀\u0000\nIsn't it nice to be young![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 1, 6, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_ThoughtLivelyAroundHere, 1, 6, 0
     MsgWinCloseAll
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Who are you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_Who, 0, 4, 0
     MsgWinCloseAll
     // "???: Who am I?[f000]븁\u0000\nI'm the owner of this ranch!\nAnd this is my wife![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 1, 6, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_WhoAmImOwner, 1, 6, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     ActorWalkRoute 2, 43, 45, 1, 8, 0
     ActorCmdWait
     // "Wife: After a Pokémon battle, you\nshould heal your Pokémon's HP, right?[f000]븀\u0000\nHere, I'll give you this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_WifeAfterPokemonBattle, 2, 5, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -175,7 +176,7 @@ L_0221:
     ActorCmdExec 2, Movement_0F34
     ActorCmdWait
     // "And one for you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_One, 2, 5, 0
     MsgWinCloseAll
     VMSleep 12
     ActorWalkRoute 2, 44, 45, 1, 8, 1
@@ -183,16 +184,16 @@ L_0221:
     ActorCmdExec 2, Movement_0F34
     ActorCmdWait
     // "It's nice to have Potions when\nyou're far away from a Pokémon Center.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 9, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_ItsNiceHavePotions, 2, 5, 0
     MsgWinCloseAll
     // "Owner: By the way, you didn't happen\nto see a Herdier around here, did you?[f000]븁\u0000\nI can't figure out where it went.[f000]븁\u0000\nOur two Herdier are always together\nand this is the first time one has[f000]븀\u0000\nwandered off, so I'm a little worried...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 10, 1, 6, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OwnerByWayDidnt, 1, 6, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0F44
     ActorCmdWait
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: You're a little worried?\nAre you KIDDING me?![f000]븁\u0000\nYour Pokémon might be lost forever![f000]븁\u0000\nWhatever! I'll look!\n[f000]Ā\u0001\u0000! Help out![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 4, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_YoureLittleWorriedKidding, 0, 4, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0F34
     ActorCmdExec 0, Movement_040C
@@ -201,10 +202,10 @@ L_0221:
     ActorCmdExec 255, Movement_0F3C
     ActorCmdWait
     // "Owner: Why did he get so mad?[f000]븁\u0000\nI think it's probably just\nplaying somewhere in the ranch.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 1, 6, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OwnerWhyDidHe, 1, 6, 0
     MsgWinCloseAll
     // "Wife: I wonder...[f000]븁\u0000\nBy the way, dear, if your Pokémon\nget hurt, let me know.[f000]븀\u0000\nI'll make them feel better for you!"
-    ActorMsg MSGFILE_SCRIPT, 13, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_WifeWonderByWay, 2, 5, 0
     LastKeyWait
     MsgWinCloseAll
     ActorSetGPos 0, 25, 2, 44, 0
@@ -240,7 +241,7 @@ Script_4:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: Did Herdier...\nwander somewhere back here?[f000]븁\u0000\nLet's have a look![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_DidHerdierWanderSomewhere, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8021
     VMStackPushConst 21
@@ -306,7 +307,7 @@ L_0541:
     ActorCmdExec 255, Movement_0F34
     ActorCmdWait
     // "Oh! Here! I'll share something\ngood with you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OhHereIllShare, 0, 0, 0
     MsgWinCloseAll
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -317,14 +318,14 @@ L_0541:
     VMStackPop 0x8000
     WordSetLoadRivalName 1
     // "If your Pokémon is paralyzed,\nuse one of these on it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 19, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_IfPokemonParalyzedUse, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_05E0
     ActorCmdWait
     ActorCmdExec 0, Movement_0F3C
     ActorCmdWait
     // "Still, Pokémon don't just wander\noff on their own.[f000]븁\u0000\nIn a worst-case scenario,\nit might be involved in some trouble!"
-    ActorMsg MSGFILE_SCRIPT, 20, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_StillPokemonDontJust, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     WorkSetConst 0x40a7, 3
@@ -357,7 +358,7 @@ Script_6:
     ActorsPauseAll
     PVPlay 507, 0
     // "Yawrp!"
-    InfoMsg 21, 2
+    InfoMsg FloccesyRanch2_Text_Yawrp, 2
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -389,7 +390,7 @@ L_0665:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "Did you hear that just now?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 22, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_DidHearJustNow, 0, 0, 0
     MsgWinCloseAll
     PlayerGetGPos 0x8021, 0x8022
     VMStackPush 0x8022
@@ -407,7 +408,7 @@ L_06A7:
     ActorCmdExec 255, Movement_0F3C
     ActorCmdWait
     // "I'll check this area![f000]븁\u0000\nYou go deeper in the grove\nand look![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 23, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_IllCheckAreaGo, 0, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x40a7, 4
     FinishAllEvents
@@ -445,35 +446,35 @@ Script_7:
     EvCameraWait
     PVPlay 507, 0
     // "Herdier: Yaarrrp..."
-    ActorMsg MSGFILE_SCRIPT, 25, 3, 3, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_HerdierYaarrrp, 3, 3, 0
     PVWait
     MsgWaitAdvance
     ActorMsgClose
     WordSetLoadRivalName 1
     // "[f000]Ā\u0001\u0001: That cry!\nYou found it![f000]븁\u0000\nWhat a relief![f000]븁\u0000\nOK, I'll go call its Trainer,\nso you stay here with it![f000]븁\u0000"
-    InfoMsg 26, 1
+    InfoMsg FloccesyRanch2_Text_CryFoundWhatRelief, 1
     MsgWinCloseAll
     ActorCmdExec 16, Movement_0F2C
     ActorWalkRoute 0, 42, 12, 1, 4, 0
     ActorCmdWait
     // "???: Tch...\nYou little pest![f000]븁\u0000\nI'm a member of a group that strikes\nfear into the hearts of those who[f000]븀\u0000\nstand before it: Team Plasma![f000]븁\u0000\nEver heard of it?"
-    ActorMsg MSGFILE_SCRIPT, 27, 16, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_TchLittlePestIm, 16, 5, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07B3
     // "That's right! We're the righteous group\nthat tried to conquer Unova two years[f000]븀\u0000\nback in order to liberate Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 28, 16, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_ThatsRightWereRighteous, 16, 5, 0
     VMJump L_07BF
 
 L_07B3:
     // "Really? We're the righteous group\nthat tried to conquer Unova two years[f000]븀\u0000\nback in order to liberate Pokémon![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 29, 16, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_ReallyWereRighteousGroup, 16, 5, 0
 
 L_07BF:
     // "Whatever...[f000]븁\u0000\nFools will never understand us...[f000]븁\u0000\nStill...[f000]븁\u0000\nFirst I got lost chasing Herdier...\nand now some nosy kid caught me![f000]븁\u0000\nAll of this is your fault!\nTake this![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 30, 16, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_WhateverFoolsWillNever, 16, 5, 0
     MsgWinCloseAll
     ActorNew 51, 20, 1, 251, 110, 0
     VMSleep 4
@@ -491,7 +492,7 @@ L_07BF:
     VMStackPop 0x8001
     VMStackPop 0x8000
     // "OK! I'll use this opportunity\nto retreat for now![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 31, 16, 5, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OkIllUseOpportunity, 16, 5, 0
     MsgWinCloseAll
     EvCameraMoveToDefault 32
     ActorCmdExec 16, Movement_09B4
@@ -506,7 +507,7 @@ L_07BF:
     EvCameraEnd
     PVPlay 507, 0
     // "Yap! Bwoof!"
-    ActorMsg MSGFILE_SCRIPT, 32, 3, 3, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_YapBwoof, 3, 3, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -520,14 +521,14 @@ L_07BF:
     ActorCmdWait
     WordSetLoadRivalName 1
     // "Owner: Herdier![f000]븁\u0000\nWhat made you come all\nthe way back here?[f000]븁\u0000\nWell, at any rate, I'm really grateful\nfor your help, you two![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 1, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OwnerHerdierWhatMade, 1, 0, 0
     MsgWinCloseAll
     ActorCmdExec 3, Movement_0A8C
     VMSleep 48
     ActorCmdExec 0, Movement_0F3C
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: You're awfully calm\nabout this![f000]븁\u0000\nYour Pokémon might have\nbeen gone for good![f000]븁\u0000\nTake better care of it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 34, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_YoureAwfullyCalmAbout, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0A04
     VMSleep 8
@@ -540,7 +541,7 @@ L_07BF:
     ActorCmdExec 1, Movement_0F24
     ActorCmdWait
     // "Owner: Hmm...\nI wonder if something happened to him...[f000]븁\u0000\nIt's like he's afraid of\nlosing Pokémon...[f000]븁\u0000\nCome on, Herdier!\nEveryone's waiting! Let's go home![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 35, 1, 4, 0
+    ActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OwnerHmmWonderIf, 1, 4, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 4
     ActorCmdExec 1, Movement_0AEC
@@ -690,7 +691,7 @@ Script_8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Herdier, where did you go?"
-    ParentActorMsg MSGFILE_SCRIPT, 14, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_HerdierWhereDidGo, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0BAF
@@ -703,7 +704,7 @@ L_0B2E:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Wow, this ranch is really big!"
-    ParentActorMsg MSGFILE_SCRIPT, 16, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_WowRanchReallyBig, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0BAF
@@ -716,7 +717,7 @@ L_0B5B:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Still, Pokémon don't just wander\noff on their own.[f000]븁\u0000\nIn a worst-case scenario,\nit might be involved in some trouble!"
-    ParentActorMsg MSGFILE_SCRIPT, 20, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_StillPokemonDontJust, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0BAF
@@ -729,7 +730,7 @@ L_0B88:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Look deeper in the grove!"
-    ParentActorMsg MSGFILE_SCRIPT, 24, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_LookDeeperGrove, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -751,7 +752,7 @@ Script_9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Owner: Thanks! It's all thanks\nto you and your Pokémon![f000]븁\u0000\nYou're really great! Hey, is that it?\nDid Alder train you?"
-    ParentActorMsg MSGFILE_SCRIPT, 36, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OwnerThanksItsAll, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 482
@@ -769,7 +770,7 @@ L_0BF8:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "This ranch started when a fence\nwas made to protect Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 37, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_RanchStartedWhenFence, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0C49
@@ -778,7 +779,7 @@ L_0C35:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Owner: It is strange for Herdier\nto wander off on its own.[f000]븁\u0000\nIt always plays with the other\none or works on the ranch..."
-    ParentActorMsg MSGFILE_SCRIPT, 38, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_OwnerStrangeHerdierWander, 0, 0
     LastKeyWait
     ActorMsgClose
 
@@ -800,7 +801,7 @@ Script_10:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You and your Pokémon\nfound Herdier! Great!"
-    ParentActorMsg MSGFILE_SCRIPT, 41, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_PokemonFoundHerdierGreat, 0, 0
     LastKeyWait
     ActorMsgClose
     FlagSet 268
@@ -843,7 +844,7 @@ L_0D10:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0D5B
     // "You and your Pokémon\nlook a little worn out...[f000]븁\u0000\nRest here a minute--you won't\nget anywhere all tired like that![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 40, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_PokemonLookLittleWorn, 0, 0
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
     FadeExWait
@@ -857,7 +858,7 @@ L_0D10:
 
 L_0D5B:
     // "Yup! You and your Pokémon\nare full of energy!"
-    ParentActorMsg MSGFILE_SCRIPT, 39, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_YupPokemonFullEnergy, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -877,7 +878,7 @@ Script_11:
     ActorSetEyeToEye
     PVPlay 507, 0
     // "Ba woof! Bawoof!"
-    ParentActorMsg MSGFILE_SCRIPT, 44, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_BaWoofBawoof, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -895,7 +896,7 @@ Script_12:
     ActorSetEyeToEye
     PVPlay 507, 0
     // "Bawoof! Ba woof!"
-    ParentActorMsg MSGFILE_SCRIPT, 43, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_BawoofBaWoof, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -906,7 +907,7 @@ L_0DE8:
     ActorSetEyeToEye
     PVPlay 507, 0
     // "Herdier: Bawoo..."
-    ParentActorMsg MSGFILE_SCRIPT, 42, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_HerdierBawoo, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -922,7 +923,7 @@ Script_13:
     ActorSetEyeToEye
     PVPlay 179, 0
     // "Baaah!"
-    ParentActorMsg MSGFILE_SCRIPT, 45, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_Baaah, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -936,7 +937,7 @@ Script_14:
     ActorSetEyeToEye
     PVPlay 179, 0
     // "Baa!"
-    ParentActorMsg MSGFILE_SCRIPT, 46, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_Baa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -950,7 +951,7 @@ Script_15:
     ActorSetEyeToEye
     PVPlay 179, 0
     // "Baawn!"
-    ParentActorMsg MSGFILE_SCRIPT, 47, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_Baawn, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -964,7 +965,7 @@ Script_16:
     ActorSetEyeToEye
     PVPlay 179, 0
     // "Baa baa!"
-    ParentActorMsg MSGFILE_SCRIPT, 48, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_BaaBaa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -978,7 +979,7 @@ Script_17:
     ActorSetEyeToEye
     PVPlay 179, 0
     // "Baa haa!"
-    ParentActorMsg MSGFILE_SCRIPT, 49, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_BaaHaa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -992,7 +993,7 @@ Script_18:
     ActorSetEyeToEye
     PVPlay 179, 0
     // "Ba baaa!"
-    ParentActorMsg MSGFILE_SCRIPT, 50, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, FloccesyRanch2_Text_BaBaaa, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

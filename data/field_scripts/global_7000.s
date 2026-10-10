@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_7000.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -4075,7 +4076,7 @@ L_2FEB:
     WordSetItemNameEx 1, 0x8008, 0x8009, 0
     WordSetItemPocketName 2, 0x8008
     // "[f000]Ā\u0001\u0000 put the [f000]ĉ\u0001\u0001 in the\n[f000][ff00]\u0001\u0002[f000]Ē\u0001\u0002[f000][ff00]\u0001\u0000 Case."
-    SystemMsg 11, 2
+    SystemMsg Global7000_Text_PutCase_2, 2
     LastKeyWait
     WorkSetConst 0x8010, 1
     InfoMsgClose
@@ -4092,14 +4093,14 @@ L_3020:
     WordSetItemNameWithArticle 1, 0x8008
     WordSetTMMoveName 2, 0x8008
     // "[f000]Ā\u0001\u0000 found\n[f000]ĉ\u0001\u0001 [f000]ć\u0001\u0002!"
-    SystemMsg 6, 2
+    SystemMsg Global7000_Text_Found_3, 2
     VMReturn
 
 L_3035:
     WordSetPlayerName 0
     WordSetItemNameEx 1, 0x8008, 0x8009, 1
     // "[f000]Ā\u0001\u0000 found [f000][ff00]\u0001\u0002[f000]ĉ\u0001\u0001[f000][ff00]\u0001\u0000!"
-    SystemMsg 5, 2
+    SystemMsg Global7000_Text_Found_2, 2
     VMReturn
 
 L_3048:
@@ -4107,7 +4108,7 @@ L_3048:
     MsgWaitAdvance
     WordSetItemNameEx 0, 0x8008, 2, 0
     // "Too bad! There is no more room for\n[f000]ĉ\u0001\u0000!"
-    SystemMsg 8, 2
+    SystemMsg Global7000_Text_TooBadThereNo_2, 2
     LastKeyWait
     InfoMsgClose
     WorkSetConst 0x8010, 0

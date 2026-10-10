@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/driftveil_city_9.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -11,7 +12,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sometimes you can learn about\nPokémon moves and items[f000]븀\u0000\non TV programs."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity9_Text_SometimesCanLearnAbout, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -23,7 +24,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Some Pokémon evolve by trade![f000]븁\u0000\nCool, right?\nWhy do they evolve?!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity9_Text_SomePokemonEvolveBy, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -36,7 +37,7 @@ Script_3:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Queak, queak!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity9_Text_QueakQueak, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -49,7 +50,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "You might be able to learn something\nif you check out battles between people[f000]븀\u0000\nwho are stronger than you."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, DriftveilCity9_Text_MightAbleLearnSomething, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents

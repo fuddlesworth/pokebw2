@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_13.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -16,7 +17,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 13"
-    MsgPlaceSign 5, 3
+    MsgPlaceSign Route13_Text_Route13, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -27,7 +28,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 13"
-    MsgPlaceSign 6, 3
+    MsgPlaceSign Route13_Text_Route13_2, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -38,7 +39,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips!\n[f000]븁\u0000\nChange your type on the Trainer Card\nto change how other players see you.[f000]븁\u0000\nYou'll look different to others in the\nUnion Room and the Tag Log![f000]븁\u0000\nMatch it with your introduction or\ncharacter to show your individuality!"
-    MsgPlaceSign 7, 0
+    MsgPlaceSign Route13_Text_TrainerTipsChangeType, 0
     MsgPlaceSignClose
     FlagSet 2674
     FinishAllEvents
@@ -64,7 +65,7 @@ Script_4:
 L_00CB:
     PVPlay 638, 0
     // "Kawbraa!"
-    ScreamMsg 0, 1
+    ScreamMsg Route13_Text_Kawbraa, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -83,7 +84,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 638, 0
     // "Kawbraa!"
-    ScreamMsg 0, 1
+    ScreamMsg Route13_Text_Kawbraa, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -144,7 +145,7 @@ L_01CC:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E9
     // "Cobalion ran away\nbeyond the road..."
-    SystemMsg 1, 2
+    SystemMsg Route13_Text_CobalionRanAwayBeyond, 2
     LastKeyWait
     InfoMsgClose
 
@@ -162,11 +163,11 @@ Script_6:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0238
     // "What am I doing?\nI'm hunting for TREASURE![f000]븁\u0000\nTreasure hunting is fun. Sometimes things\nare buried in the sand dunes.[f000]븁\u0000\nActually, I just found something![f000]븁\u0000\nBut it's the same one as I found before,\nso I will give this to you.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route13_Text_WhatAmDoingIm, 0, 0
     MsgWinCloseAll
     VMCall L_0289
     // "I'll be hunting for treasure here\ntomorrow, too.[f000]븁\u0000\nI may find something, so if you have\ntime, stop by.[f000]븁\u0000\nI don't find as many things\nas I used to, though..."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route13_Text_IllHuntingTreasureHere, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2738
@@ -179,11 +180,11 @@ L_0238:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0275
     // "I just found a treasure.[f000]븁\u0000\nBut it's the same one as I found before,\nso I'll give you this one.[f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route13_Text_JustFoundTreasureBut, 0, 0
     MsgWinCloseAll
     VMCall L_0289
     // "I'll be hunting for treasure here\ntomorrow, too.[f000]븁\u0000\nI may find something, so if you have\ntime, stop by.[f000]븁\u0000\nI don't find as many things\nas I used to, though..."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route13_Text_IllHuntingTreasureHere, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 2738
@@ -191,7 +192,7 @@ L_0238:
 
 L_0275:
     // "I'll be hunting for treasure here\ntomorrow, too.[f000]븁\u0000\nI may find something, so if you have\ntime, stop by.[f000]븁\u0000\nI don't find as many things\nas I used to, though..."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route13_Text_IllHuntingTreasureHere, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

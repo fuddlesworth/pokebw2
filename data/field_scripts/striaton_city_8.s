@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/striaton_city_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "I've trained only Fire-type Pokémon,\n'cause they're my favorites![f000]븁\u0000\nThey don't do well against Water-, Rock-,\nor Ground-type Pokémon and moves.[f000]븁\u0000\nBut thinking about how to compensate\nfor that is one of the fun things[f000]븀\u0000\nabout being a Trainer."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity8_Text_IveTrainedOnlyFire, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -40,7 +41,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sometimes I look through my PC Box and\npick out an interesting Pokémon to raise![f000]븁\u0000\nThere are so many things you never\nknow until you raise a certain Pokémon."
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity8_Text_SometimesLookThroughPc, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -53,7 +54,7 @@ Script_4:
     ActorSetEyeToEye
     PVPlay 504, 0
     // "Skreee!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity8_Text_Skreee, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -72,7 +73,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 546, 0
     // "Fwee-oosh!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity8_Text_FweeOosh, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -83,7 +84,7 @@ L_00DE:
     ActorSetEyeToEye
     PVPlay 548, 0
     // "Fwee lee lee... ♪"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, StriatonCity8_Text_FweeLeeLee, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

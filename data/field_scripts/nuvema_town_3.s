@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nuvema_town_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -64,7 +65,7 @@ Script_2:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a Wii console!\nIt has a Wii Remote!"
-    SystemMsg 0, 2
+    SystemMsg NuvemaTown3_Text_ItsWiiConsoleHas, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -75,7 +76,7 @@ Script_3:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a shiny flat-screen television\nthat someone has been polishing..."
-    InfoMsg 1, 2
+    InfoMsg NuvemaTown3_Text_ItsShinyFlatScreen, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -86,7 +87,7 @@ Script_4:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "This PC doesn't look like it's\nbeen used in a while..."
-    SystemMsg 3, 2
+    SystemMsg NuvemaTown3_Text_PcDoesntLookLike, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -97,7 +98,7 @@ Script_5:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "The sheets on the bed don't have\na single wrinkle."
-    SystemMsg 2, 2
+    SystemMsg NuvemaTown3_Text_SheetsBedDontHave, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -108,7 +109,7 @@ Script_6:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's an award for completing\nthe Unova Pokédex!"
-    InfoMsg 4, 2
+    InfoMsg NuvemaTown3_Text_ItsAwardCompletingUnova, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -119,7 +120,7 @@ Script_7:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's an award for completing\nthe National Mode Pokédex!"
-    InfoMsg 5, 2
+    InfoMsg NuvemaTown3_Text_ItsAwardCompletingNational, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -130,7 +131,7 @@ Script_8:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a trophy proving you defeated\nthe Single Master in the Battle Subway!"
-    InfoMsg 6, 2
+    InfoMsg NuvemaTown3_Text_ItsTrophyProvingDefeated, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -141,7 +142,7 @@ Script_9:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a trophy proving you defeated\nthe Double Master in the Battle Subway!"
-    InfoMsg 7, 2
+    InfoMsg NuvemaTown3_Text_ItsTrophyProvingDefeated_2, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents
@@ -152,7 +153,7 @@ Script_10:
     ActorsPauseAll
     SEPlay SEQ_SE_MESSAGE
     // "It's a trophy for defeating\nthe Multi Master in the Battle Subway!"
-    InfoMsg 8, 2
+    InfoMsg NuvemaTown3_Text_ItsTrophyDefeatingMulti, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

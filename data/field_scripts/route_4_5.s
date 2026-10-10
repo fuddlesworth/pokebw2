@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_4_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -10,7 +11,7 @@ Script_1:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Sandstorms are terrible![f000]븁\u0000\nBut Rock-, Ground-, and\nSteel-type Pokémon can weather[f000]븀\u0000\na sandstorm without damage."
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_SandstormsTerribleButRock, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -23,7 +24,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 524, 0
     // "Ggggggrrr!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_Ggggggrrr, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose
@@ -41,14 +42,14 @@ Script_3:
     VMJumpIf CMP_STACK, L_0083
     WordSetLoadPastTradePkmName 0, 0
     // "[f000]Ă\u0001\u0000! [f000]Ă\u0001\u0000!\nThe nickname you gave to the Pokémon!"
-    ParentActorMsg MSGFILE_SCRIPT, 7, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_NicknameGavePokemon, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_0156
 
 L_0083:
     // "I want to trade your Cottonee\nfor my Petilil!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_WantTradeCottoneePetilil, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -70,11 +71,11 @@ L_0083:
     VMJumpIf CMP_STACK, L_0120
     FieldTradeSavePokemon 0x8020, 0
     // "Pokémon trade!\nPokémon trade![f000]븁\u0000\nPokémon come and go\nvia Infrared Connection![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_PokemonTradePokemonTrade, 0, 0
     MsgWinCloseAll
     FieldTradeStart 24, 0x8020
     // "They were your Cottonee and\nmy Petilil.[f000]븁\u0000\nBut now they are your Petilil and\nmy Cottonee!"
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_TheyWereCottoneePetilil, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 412
@@ -82,7 +83,7 @@ L_0083:
 
 L_0120:
     // "The Pokémon I want is Cottonee."
-    ParentActorMsg MSGFILE_SCRIPT, 5, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_PokemonWantCottonee, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -91,7 +92,7 @@ L_012E:
 
 L_0134:
     // "I see...[f000]븁\u0000\nThen, next time."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_SeeThenNextTime, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -100,7 +101,7 @@ L_0142:
 
 L_0148:
     // "I see...[f000]븁\u0000\nThen, next time."
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route45_Text_SeeThenNextTime, 0, 0
     LastKeyWait
     MsgWinCloseAll
 

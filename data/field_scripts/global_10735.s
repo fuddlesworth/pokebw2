@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10735.h"
 
 // Script plugin 9, from the zones that start its scripts
 
@@ -153,7 +154,7 @@ L_025B:
     Plugin9_Cmd1016 0, 0
     EvCameraWait
     // "Where would you like to go to?"
-    SystemMsg 133, 2
+    SystemMsg Global10735_Text_WhereWouldLikeGo, 2
     Plugin9_Cmd1004 0x8035
     Plugin9_Cmd1006 0x8021
     Plugin9_Cmd1024 0, 0x8021, 0x8033
@@ -258,7 +259,7 @@ L_043B:
 
 L_0457:
     // "If you return to the lobby, you will\nquit your challenge of this area.[f000]븁\u0000\nWould you like to return to the lobby?[f000]븁\u0000"
-    SystemMsg 138, 2
+    SystemMsg Global10735_Text_IfReturnLobbyWill, 2
     YesNoWin 0x8010
     InfoMsgClose
     VMStackPush 0x8010
@@ -347,12 +348,12 @@ L_0586:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_05BB
     // "Welcome![f000]븁\u0000\nThis is Unova's Challenge--\nthe Black Tower![f000]븁\u0000\nPlease, let me know what you would\nlike to do."
-    ActorMsg MSGFILE_SCRIPT, 94, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_WelcomeUnovasChallengeBlack, 0x8011, 4, 0
     VMJump L_05C7
 
 L_05BB:
     // "Hey! Welcome! Welcome![f000]븁\u0000\nThis is Unova's Challenge--\nthe White Treehollow![f000]븁\u0000\nWhat would you like to do today?"
-    ActorMsg MSGFILE_SCRIPT, 112, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyWelcomeWelcomeUnovas, 0x8011, 4, 0
 
 L_05C7:
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32823
@@ -375,16 +376,16 @@ L_0610:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0644
     // "This facility was made to provide a\nplace where Trainers could come to[f000]븀\u0000\nfocus on training.[f000]븁\u0000\nInside, you will find many other\nTrainers who also came to this facility[f000]븀\u0000\nto challenge themselves.[f000]븁\u0000\nWhen you run into another Trainer,\nthey will surely challenge you to[f000]븀\u0000\na battle.[f000]븁\u0000\nDefeat all of the Trainers that block\nyour way to complete an area.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 98, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_FacilityMadeProvidePlace, 0x8011, 4, 0
     // "In order to complete an area, you must\nfind the Boss Trainer of the area and[f000]븀\u0000\ndefeat him or her in battle.[f000]븁\u0000\nBy defeating the Boss Trainer, you can\nadvance on to the next area.[f000]븁\u0000\nIf you'd like, you can simply battle with\nother Trainers to improve your skills.[f000]븁\u0000\nYou can also focus on finding the Boss\nTrainer to complete the area.[f000]븁\u0000\nSo how about it? Would you like to\nchallenge yourself and find out just[f000]븀\u0000\nhow strong you really are?[f000]븁\u0000\nA word of warning: once you enter the\nfacility, usage of items inside your[f000]븀\u0000\nBag is prohibited.[f000]븁\u0000\nWe thank you for your cooperation.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 99, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_OrderCompleteAreaMust, 0x8011, 4, 0
     VMJump L_065C
 
 L_0644:
     // "This facility was made so that you\nTrainers can come and train to your[f000]븀\u0000\nheart's content.[f000]븁\u0000\nInside, you'll find lots of other\nTrainers who also came here to[f000]븀\u0000\nchallenge themselves.[f000]븁\u0000\nWhen you run into another Trainer,\nthey'll surely challenge you to a battle.[f000]븁\u0000\nDefeat all of the Trainers that are in\nyour way to complete an area.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 116, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_FacilityMadeTrainersCan, 0x8011, 4, 0
     // "If you want to complete an area, you've\ngot to find and defeat the Boss Trainer[f000]븀\u0000\nof that area.[f000]븁\u0000\nBy defeating the Boss Trainer, you can\nadvance on to the next area.[f000]븁\u0000\nIf you want, you can simply battle with\nother Trainers to improve your skills.[f000]븁\u0000\nYou can also focus on finding the Boss\nTrainer to complete the area.[f000]븁\u0000\nWell, what are you waiting for? Get in\nthere and test your strength![f000]븁\u0000\nThere's a ton of powerful\nTrainers inside![f000]븁\u0000\nOh yeah! Once you're inside, you can't\nuse any of the items in your Bag.[f000]븀\u0000\nDon't you forget it![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 117, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_IfWantCompleteArea, 0x8011, 4, 0
 
 L_065C:
     WorkSetConst 0x8010, 1
@@ -401,12 +402,12 @@ L_067B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06A0
     // "Which area would you like to challenge?"
-    ActorMsg MSGFILE_SCRIPT, 95, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_WhichAreaWouldLike, 0x8011, 4, 0
     VMJump L_06AC
 
 L_06A0:
     // "Which area do you want to challenge?"
-    ActorMsg MSGFILE_SCRIPT, 113, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_WhichAreaWantChallenge, 0x8011, 4, 0
 
 L_06AC:
     VMCall L_075B
@@ -424,12 +425,12 @@ L_06D1:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06F6
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8011, 4, 0
     VMJump L_0702
 
 L_06F6:
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8011, 4, 0
 
 L_0702:
     LastKeyWait
@@ -446,12 +447,12 @@ L_0718:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_073D
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8011, 4, 0
     VMJump L_0749
 
 L_073D:
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8011, 4, 0
 
 L_0749:
     LastKeyWait
@@ -507,12 +508,12 @@ L_07DD:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_082F
     // "Would you like to challenge this area?"
-    ActorMsg MSGFILE_SCRIPT, 96, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_WouldLikeChallengeArea, 0x8011, 4, 0
     VMJump L_083B
 
 L_082F:
     // "Do you want to challenge this area?"
-    ActorMsg MSGFILE_SCRIPT, 114, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_WantChallengeArea, 0x8011, 4, 0
 
 L_083B:
     YesNoWin 0x8010
@@ -537,12 +538,12 @@ L_087B:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08A0
     // "We will recover your Pokémon before\nyou begin your challenge."
-    ActorMsg MSGFILE_SCRIPT, 101, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_WeWillRecoverPokemon, 0x8011, 4, 0
     VMJump L_08AC
 
 L_08A0:
     // "We'll recover your Pokémon before\nyou start your challenge."
-    ActorMsg MSGFILE_SCRIPT, 119, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_WellRecoverPokemonBefore, 0x8011, 4, 0
 
 L_08AC:
     PokePartyRecoverAll
@@ -553,12 +554,12 @@ L_08AC:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08D9
     // "Are you all ready to go?\nGood luck to you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 97, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_AllReadyGoGood, 0x8011, 4, 0
     VMJump L_08E5
 
 L_08D9:
     // "You look all ready to go!\nBest of luck in there![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 115, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_LookAllReadyGo, 0x8011, 4, 0
 
 L_08E5:
     ActorMsgClose
@@ -695,14 +696,14 @@ L_0B37:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B60
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0B70
 
 L_0B60:
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
 
@@ -715,14 +716,14 @@ L_0B76:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0B9F
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0BAF
 
 L_0B9F:
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8011, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8011, 4, 0
     LastKeyWait
     ActorMsgClose
 
@@ -968,26 +969,26 @@ L_0F7F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_101D
     // "[f000]Ā\u0001\u0000! Excuse me![f000]븁\u0000\nWe keep this a secret from the general\npublic, but this facility contains some[f000]븀\u0000\nvery special areas.[f000]븁\u0000\nAreas 6 and beyond are these\nspecial areas![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 104, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ExcuseWeKeepSecret, 0x8023, 2, 0
     EvCameraMoveTo 9688, 0, 0xed000, 0xb5000, 0, 0x39000, 30
     // "Did you notice this elevator?[f000]븁\u0000\nRide this elevator if you want to\nchallenge Areas 6 and beyond.[f000]븁\u0000\nBut, be careful! Areas 6 and beyond\nare outside of our administration.[f000]븁\u0000\nWe don't actually know what kind of\nTrainers are in there...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 105, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_DidNoticeElevatorRide, 0x8023, 2, 0
     // "Furthermore, it's rumored that Areas 6\nand beyond contain more floors per[f000]븀\u0000\narea than the earlier areas.[f000]븁\u0000\nIf you can't find the Trainer you're\nlooking for, try a different floor.[f000]븁\u0000\nJust use the elevator to move between\nthe floors of an area.[f000]븁\u0000\nAnyway, if you're thinking about\nchallenging Areas 6 and beyond, make[f000]븀\u0000\nsure you've trained your Pokémon[f000]븀\u0000\nsufficiently and are fully prepared![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 106, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_FurthermoreItsRumoredAreas, 0x8023, 2, 0
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8023, 4, 0
     VMJump L_1065
 
 L_101D:
     // "Hey! [f000]Ā\u0001\u0000![f000]븁\u0000\nI'm letting you in on a secret here, but\nthis facility actually contains some very[f000]븀\u0000\nspecial areas.[f000]븁\u0000\nI'm talking about Areas 6 and beyond![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 122, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyImLettingSecret, 0x8023, 2, 0
     EvCameraMoveTo 9688, 0, 0xed000, 0xb5000, 0, 0x39000, 30
     // "Did you ever wonder about this elevator?[f000]븁\u0000\nTake a ride on it if you want to\nchallenge Areas 6 and beyond.[f000]븁\u0000\nBut, be careful! Areas 6 and beyond\nare outside of our administration.[f000]븁\u0000\nWe don't actually know what kind of\nTrainers are in there...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 123, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_DidEverWonderAbout, 0x8023, 2, 0
     // "Furthermore, it's rumored that Areas 6\nand beyond contain more floors per[f000]븀\u0000\narea than the earlier areas.[f000]븁\u0000\nIf you can't find the Trainer you're\nlooking for, try a different floor.[f000]븁\u0000\nJust use the elevator to move between\nthe floors of an area.[f000]븁\u0000\nAnyway, if you're thinking about\nchallenging Areas 6 and beyond, make[f000]븀\u0000\nsure you've trained your Pokémon[f000]븀\u0000\nsufficiently and are fully prepared![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 124, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_FurthermoreItsRumoredAreas_2, 0x8023, 2, 0
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8023, 4, 0
 
 L_1065:
     MsgWaitAdvance
@@ -1049,12 +1050,12 @@ L_1103:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_112E
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8023, 2, 0
     VMJump L_113A
 
 L_112E:
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8023, 2, 0
 
 L_113A:
     LastKeyWait
@@ -1082,12 +1083,12 @@ L_1148:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_119E
     // "Excuse me, [f000]Ā\u0001\u0000.\nYou've decided to quit, then?[f000]븁\u0000\nI am quite sorry about this, but I'm\nafraid I have to take back the prize[f000]븀\u0000\nmoney you won during your challenge.[f000]븁\u0000\nThe total amount comes to $[f000]Ȇ\u0001\u0001.[f000]븁\u0000\nI wish you better luck next time!"
-    ActorMsg MSGFILE_SCRIPT, 110, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ExcuseYouveDecidedQuit, 0x8023, 4, 0
     VMJump L_11AA
 
 L_119E:
     // "Hey! [f000]Ā\u0001\u0000!\nYou quit, eh?[f000]븁\u0000\nI'm sorry it's got to be like this, but\nI have to take back the prize money[f000]븀\u0000\nyou won during your challenge.[f000]븁\u0000\nThe total comes out to $[f000]Ȇ\u0001\u0001.[f000]븁\u0000\nBetter luck next time, huh?"
-    ActorMsg MSGFILE_SCRIPT, 128, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyQuitEhIm, 0x8023, 4, 0
 
 L_11AA:
     VMJump L_11E1
@@ -1098,12 +1099,12 @@ L_11B0:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_11D5
     // "So, you've decided to quit, [f000]Ā\u0001\u0000?[f000]븁\u0000\nToo bad, but better luck next time!"
-    ActorMsg MSGFILE_SCRIPT, 111, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_YouveDecidedQuitToo, 0x8023, 4, 0
     VMJump L_11E1
 
 L_11D5:
     // "[f000]Ā\u0001\u0000! You quit?[f000]븁\u0000\nToo bad, but better luck next time!"
-    ActorMsg MSGFILE_SCRIPT, 129, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_QuitTooBadBut, 0x8023, 4, 0
 
 L_11E1:
     VMJump L_1218
@@ -1114,12 +1115,12 @@ L_11E7:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_120C
     // "[f000]Ā\u0001\u0000! Excuse me!\nAre you OK?[f000]븁\u0000\nIt's too bad things didn't work out,\nbut better luck next time!"
-    ActorMsg MSGFILE_SCRIPT, 109, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ExcuseOkItsToo, 0x8023, 4, 0
     VMJump L_1218
 
 L_120C:
     // "Hey! [f000]Ā\u0001\u0000!\nYou OK?[f000]븁\u0000\nIt's too bad things didn't work out,\nbut better luck next time!"
-    ActorMsg MSGFILE_SCRIPT, 127, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyOkItsToo, 0x8023, 4, 0
 
 L_1218:
     LastKeyWait
@@ -1202,12 +1203,12 @@ L_1366:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_13B5
     // "[f000]봂\u0000Black Tower\n[f000]봂\u0000Area [f000]ȁ\u0001\u0000: [f000]ȁ\u0001\u0001F"
-    SystemMsg 489, 2
+    SystemMsg Global10735_Text_BlackTowerAreaF, 2
     VMJump L_13BB
 
 L_13B5:
     // "[f000]봂\u0000White Treehollow\n[f000]봂\u0000Area [f000]ȁ\u0001\u0000: B[f000]ȁ\u0001\u0001"
-    SystemMsg 488, 2
+    SystemMsg Global10735_Text_WhiteTreehollowAreaB, 2
 
 L_13BB:
     VMCall L_26B6
@@ -1317,12 +1318,12 @@ L_14EE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_1553
     // "Hey, newcomer. You finally made it.\nI've been waiting for you.[f000]븁\u0000\nYou know what you have to do to\nopen that gate, right?[f000]븁\u0000\nLet's get this started, then!\nI'll determine whether you have the[f000]븀\u0000\nstrength to face the Boss Trainer[f000]븀\u0000\nor not![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 490, 0x8011, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyNewcomerFinallyMade, 0x8011, 0, 0
     VMJump L_155F
 
 L_1553:
     // "Hey, newcomer. You finally made it.\nI've been waiting for you.[f000]븁\u0000\nYou know what you have to do to\nopen that gate, right?[f000]븁\u0000\nLet's get this started, then!\nI'll determine whether you have the[f000]븀\u0000\nstrength to face the Boss Trainer[f000]븀\u0000\nor not![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 491, 0x8011, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyNewcomerFinallyMade_2, 0x8011, 0, 0
 
 L_155F:
     VMJump L_1577
@@ -1357,12 +1358,12 @@ L_158F:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_15E1
     // "I lost! You're pretty good![f000]븁\u0000\nWith that kind of strength, you\nshould be OK![f000]븁\u0000\nI'll open the gate for you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 500, 0x8011, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_LostYourePrettyGood, 0x8011, 0, 0
     VMJump L_15ED
 
 L_15E1:
     // "I lost...\nYou're pretty good, you know?[f000]븁\u0000\nWith that kind of strength, you\nshould be OK![f000]븁\u0000\nI'll open the gate for you![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 501, 0x8011, 0, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_LostYourePrettyGood_2, 0x8011, 0, 0
 
 L_15ED:
     VMJump L_1605
@@ -2135,12 +2136,12 @@ L_2214:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_226F
     // "[f000]Ā\u0001\u0000! Excuse me![f000]븁\u0000\nCongratulations on completing Area [f000]ȁ\u0001\u0001![f000]븁\u0000\nPlease accept this prize in honor of\nyour accomplishment![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 102, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ExcuseCongratulationsCompletingArea, 0x8023, 2, 0
     VMJump L_227B
 
 L_226F:
     // "Hey! [f000]Ā\u0001\u0000![f000]븁\u0000\nLooks like you completed Area [f000]ȁ\u0001\u0001![f000]븁\u0000\nHere's a prize to commemorate\nyour success![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 120, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyLooksLikeCompleted, 0x8023, 2, 0
 
 L_227B:
     ActorMsgClose
@@ -2184,24 +2185,24 @@ L_22F5:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_235A
     // "[f000]Ā\u0001\u0000! Excuse me![f000]븁\u0000\n...All of the areas? Can that be true?[f000]븁\u0000\nIncredible!\nCongratulations![f000]븁\u0000\nTo commemorate your conquering the\nareas, please accept this prize![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 107, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ExcuseAllAreasCan, 0x8023, 2, 0
     ActorMsgClose
     VMCall L_22AB
     // "Please continue aiming to become\nthe top Trainer in the land! Good luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 108, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_PleaseContinueAimingBecome, 0x8023, 2, 0
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8023, 4, 0
     VMJump L_2386
 
 L_235A:
     // "Hey! [f000]Ā\u0001\u0000![f000]븁\u0000\n...All of the areas? Can that be true?[f000]븁\u0000\nYou sure know how to impress!\nCongratulations![f000]븁\u0000\nTo commemorate your conquering the\nareas, please accept this prize![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 125, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_HeyAllAreasCan, 0x8023, 2, 0
     ActorMsgClose
     VMCall L_22AB
     // "Don't get complacent, though![f000]븁\u0000\nKeep on aiming to become the top Trainer\nin the land![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 126, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_DontGetComplacentThough, 0x8023, 2, 0
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8023, 4, 0
 
 L_2386:
     VMJump L_23C3
@@ -2213,12 +2214,12 @@ L_238C:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_23B7
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8023, 2, 0
     VMJump L_23C3
 
 L_23B7:
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8023, 2, 0
 
 L_23C3:
     LastKeyWait
@@ -2235,16 +2236,16 @@ L_23C9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_240F
     // "In addition, you will now be able to\nchallenge Area [f000]ȁ\u0001\u0000![f000]븁\u0000\nWe look forward to your continued\nsuccess in future challenges.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 103, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_AdditionWillNowAble, 0x8023, 2, 0
     // "Thank you. Please come again."
-    ActorMsg MSGFILE_SCRIPT, 100, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ThankPleaseComeAgain, 0x8023, 4, 0
     VMJump L_2427
 
 L_240F:
     // "Oh yeah, you can also challenge\nArea [f000]ȁ\u0001\u0000 now![f000]븁\u0000\nGood luck in your future challenges.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 121, 0x8023, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_OhYeahCanAlso, 0x8023, 2, 0
     // "You come back, now."
-    ActorMsg MSGFILE_SCRIPT, 118, 0x8023, 4, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_ComeBackNow, 0x8023, 4, 0
 
 L_2427:
     LastKeyWait
@@ -2643,12 +2644,12 @@ L_2986:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_29D6
     // "The real battle awaits you.[f000]븁\u0000\nThe Boss Trainer is the strongest\nTrainer in this area.[f000]븁\u0000\nThe Boss Trainer is to the west\nof here.[f000]븁\u0000\nGo through the gate, and give it\nyour best!"
-    ActorMsg MSGFILE_SCRIPT, 510, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_RealBattleAwaitsBoss, 0x8011, 2, 0
     VMJump L_29E2
 
 L_29D6:
     // "The real battle awaits you.[f000]븁\u0000\nThe Boss Trainer is the strongest\nTrainer in this area.[f000]븁\u0000\nThe Boss Trainer is to the west\nof here.[f000]븁\u0000\nGo through the gate, and give it\nyour best!"
-    ActorMsg MSGFILE_SCRIPT, 511, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10735_Text_RealBattleAwaitsBoss_2, 0x8011, 2, 0
 
 L_29E2:
     VMJump L_29F4

@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10390.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -37,7 +38,7 @@ L_004D:
     VMJumpIf CMP_STACK, L_007C
     DebugPrint 0x8010
     // "I've given you all the Dream Remnants.[f000]븁\u0000\nNext time your Pokémon dreams, come\nback and see me again."
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10390_Text_IveGivenAllDream, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -45,7 +46,7 @@ L_004D:
 L_007C:
     WordSetPlayerName 0
     // "This is a remnant of your\nPokémon's dream.[f000]븀\u0000\nHere, take it.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10390_Text_RemnantPokemonsDreamHere, 0x8011, 2, 0
     ActorMsgClose
     DreamWorldCmd_01DC 1, 0x8010
     VMStackPush 0x8010
@@ -54,7 +55,7 @@ L_007C:
     VMJumpIf CMP_STACK, L_00C2
     MEPlay SEQ_ME_ITEM
     // "[f000]Ā\u0001\u0000 received\nthe item(s)!"
-    SystemMsg 3, 0
+    SystemMsg Global10390_Text_ReceivedItemS, 0
     MEWait
     MsgWaitAdvance
     InfoMsgClose
@@ -76,13 +77,13 @@ L_00E1:
     VMJumpIf CMP_STACK, L_0112
     DreamWorldCmd_01DC 5, 0x8010
     // "You have no more room in your Bag\nfor [f000]ĉ\u0001\u0000. If you remove some,[f000]븀\u0000\nI'll give you the rest.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10390_Text_HaveNoMoreRoom, 0x8011, 2, 0
     WorkAdd 0x8010, 1
     VMJump L_00E1
 
 L_0112:
     // "When your Pokémon has another dream,\ncome back and see me again."
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10390_Text_WhenPokemonHasAnother, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMReturn

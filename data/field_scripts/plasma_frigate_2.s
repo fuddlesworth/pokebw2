@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/plasma_frigate_2.h"
 
 // Script plugin 12, from the zones that use this file
 
@@ -95,12 +96,12 @@ Script_9:
     ActorWalkRoute 255, 11, 12, 1, 8, 0
     ActorCmdWait
     // "Team Plasma: Who are you?[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 0, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_TeamPlasmaWho, 2, 5, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_02B0
     ActorCmdWait
     // "[f000]Ā\u0001\u0001: Just to let you know...\nYou're about to feel my rage![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 1, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_JustLetKnowYoure, 0, 6, 0
     MsgWinCloseAll
     VMStackPush 0x4030
     VMStackPushConst 0
@@ -123,10 +124,10 @@ L_0195:
 L_019F:
     VMCall L_060F
     // "Team Plasma: Ugh!\nWe have to tell the others.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 2, 5, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_TeamPlasmaUghWe, 2, 5, 0
     MsgWinCloseAll
     // "Team Plasma: Oh no!\nWe have to protect the switches![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 1, 3, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_TeamPlasmaOhNo, 1, 3, 0
     MsgWinCloseAll
     ActorCmdExec 2, Movement_06C0
     ActorCmdExec 1, Movement_06C8
@@ -144,19 +145,19 @@ L_019F:
     ActorDelete 2
     SEWait
     // "[f000]Ā\u0001\u0001: They didn't have\nPurrloin with them![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 6, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_TheyDidntHavePurrloin, 0, 6, 0
     MsgWinCloseAll
     ActorCmdExec 255, Movement_06B0
     ActorCmdExec 0, Movement_06B0
     ActorCmdWait
     // "Barriers, huh...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_BarriersHuh, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_06C0
     ActorCmdExec 255, Movement_06C8
     ActorCmdWait
     // "The Team Plasma member was saying...[f000]븁\u0000\nOh, I got it. We should press the\nswitches to deactivate the barriers![f000]븁\u0000\n[f000]Ā\u0001\u0000! Let's split up and\nlook for them![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 6, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, PlasmaFrigate2_Text_TeamPlasmaMemberSaying, 0, 0, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_02E4
     VMSleep 4
@@ -213,7 +214,7 @@ Script_4:
     WorkSetConst 0x40f5, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
-    InfoMsg 7, 2
+    InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -258,7 +259,7 @@ L_0352:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_03AA
     // "All the barriers were deactivated,\nand now you can proceed!"
-    InfoMsg 8, 2
+    InfoMsg PlasmaFrigate2_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -272,7 +273,7 @@ Script_5:
     WorkSetConst 0x40f6, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
-    InfoMsg 7, 2
+    InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -317,7 +318,7 @@ L_040E:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0466
     // "All the barriers were deactivated,\nand now you can proceed!"
-    InfoMsg 8, 2
+    InfoMsg PlasmaFrigate2_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -331,7 +332,7 @@ Script_6:
     WorkSetConst 0x40f7, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
-    InfoMsg 7, 2
+    InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -376,7 +377,7 @@ L_04CA:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_0522
     // "All the barriers were deactivated,\nand now you can proceed!"
-    InfoMsg 8, 2
+    InfoMsg PlasmaFrigate2_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -390,7 +391,7 @@ Script_7:
     WorkSetConst 0x40f8, 1
     SEPlay SEQ_SE_SW_PLAZMASHIP_04
     // "From behind the wall,\nyou heard the sound[f000]븀\u0000\nof a barrier being deactivated!"
-    InfoMsg 7, 2
+    InfoMsg PlasmaFrigate2_Text_FromBehindWallHeard, 2
     VMStackPush 0x40f5
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -435,7 +436,7 @@ L_0586:
     VMStackCmp CMP_AND
     VMJumpIf CMP_STACK, L_05DE
     // "All the barriers were deactivated,\nand now you can proceed!"
-    InfoMsg 8, 2
+    InfoMsg PlasmaFrigate2_Text_AllBarriersWereDeactivated, 2
     LastKeyWait
     MsgWinCloseAll
 
@@ -453,7 +454,7 @@ Script_1:
     ActorCmdWait
     SEWait
     // "Be careful!\nThe barriers are electrified!"
-    InfoMsg 9, 2
+    InfoMsg PlasmaFrigate2_Text_CarefulBarriersElectrified, 2
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

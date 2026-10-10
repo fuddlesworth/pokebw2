@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10395.h"
 
 // Script plugin 13, from the zones that start its scripts
 
@@ -99,7 +100,7 @@ L_0139:
     VMJumpIf CMP_STACK, L_0166
     DebugPrint 0x8010
     // "I haven't received any other gifts\nfor you.[f000]븁\u0000\nWe look forward to your next visit."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10395_Text_HaventReceivedAnyOther, 0, 0
     LastKeyWait
     ActorMsgClose
     VMReturn
@@ -113,7 +114,7 @@ L_0166:
 
 L_0180:
     // "Good morning. You must be [f000]Ā\u0001\u0000.[f000]븁\u0000\nI've received a Mystery Gift for you.\nHere you go![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10395_Text_GoodMorningMustIve, 0, 0
     VMJump L_01BD
 
 L_0190:
@@ -123,12 +124,12 @@ L_0190:
 
 L_01A3:
     // "Good day. You must be [f000]Ā\u0001\u0000.[f000]븁\u0000\nI've received a Mystery Gift for you.\nHere you go![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10395_Text_GoodDayMustIve, 0, 0
     VMJump L_01BD
 
 L_01B3:
     // "Good evening. You must be [f000]Ā\u0001\u0000.[f000]븁\u0000\nI've received a Mystery Gift for you.\nHere you go![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10395_Text_GoodEveningMustIve, 0, 0
 
 L_01BD:
     ActorMsgClose
@@ -140,7 +141,7 @@ L_01BD:
     VMCall L_0208
     Cmd_02C5 29
     // "We look forward to your next visit."
-    ParentActorMsg MSGFILE_SCRIPT, 4, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Global10395_Text_WeLookForwardNext, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0206

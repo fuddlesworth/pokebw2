@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nimbasa_city_pokemon_center.h"
 
 // Script plugin 13, from the zones that use this file
 
@@ -72,7 +73,7 @@ Script_4:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "My beauteous Minccino!\nI met it on Route 5.[f000]븁\u0000\nI'm pretty sure it will be popular\nin musicals!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityPokemonCenter_Text_BeauteousMinccinoMetRoute, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -85,7 +86,7 @@ Script_5:
     ActorSetEyeToEye
     PVPlay 572, 0
     // "Chulululucha!"
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NimbasaCityPokemonCenter_Text_Chulululucha, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

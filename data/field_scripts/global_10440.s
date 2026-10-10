@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/global_10440.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -28,7 +29,7 @@ Script_1:
     VMStackCmp CMP_OR
     VMJumpIf CMP_STACK, L_0087
     // "See you again."
-    ActorMsg MSGFILE_SCRIPT, 3, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_SeeAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_008D
@@ -99,12 +100,12 @@ L_0145:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0193
     // "The master returns! Would you like to\nchallenge a Battle Test?"
-    ActorMsg MSGFILE_SCRIPT, 1, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_MasterReturnsWouldLike, 0x8011, 2, 0
     VMJump L_019F
 
 L_0193:
     // "I will judge your battles in a\nBattle Test![f000]븁\u0000\nWhat would you like to do?"
-    ActorMsg MSGFILE_SCRIPT, 0, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_WillJudgeBattlesBattle, 0x8011, 2, 0
 
 L_019F:
     VMStackPush 0x8020
@@ -141,7 +142,7 @@ L_0215:
 
 L_023A:
     // "I am sorry...[f000]븁\u0000\nIt may be too early for you to challenge\na Battle Test.[f000]븁\u0000\nPlease come back after you finish\nyour journey and build your strength."
-    ActorMsg MSGFILE_SCRIPT, 2, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_AmSorryMayToo, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -185,7 +186,7 @@ L_02B9:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_02DC
     // "See you again."
-    ActorMsg MSGFILE_SCRIPT, 3, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_SeeAgain, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -195,7 +196,7 @@ L_02DC:
 
 L_02E0:
     // "You will take a Battle Test using\nthree Pokémon for Single Battles[f000]븀\u0000\nand four Pokémon for Double Battles.[f000]븁\u0000\nYou may not use duplicate Pokémon or\nduplicate held items.[f000]븁\u0000\nFor these battles, all Pokémon will be\nset to Lv. 50.[f000]븁\u0000\nYou will battle against five Trainers in a\nrow, and I will be your judge.[f000]븁\u0000\nWhat would you like to do?"
-    ActorMsg MSGFILE_SCRIPT, 23, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_WillTakeBattleTest, 0x8011, 2, 0
     VMReturn
 
 L_02EE:
@@ -210,7 +211,7 @@ L_02EE:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_03E4
     // "Which challenge would you like,\nSingle or Double?"
-    ActorMsg MSGFILE_SCRIPT, 4, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_WhichChallengeWouldLike, 0x8011, 2, 0
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32809
     ListMenuAdd 33, 65535, 0
     ListMenuAdd 34, 65535, 1
@@ -287,7 +288,7 @@ L_0444:
 L_044A:
     TrialHousePrepareParty 0x802c
     // "Then, let's begin.[f000]븁\u0000\nPlease bear in mind that once you start\nthe challenge, you will face five battles[f000]븀\u0000\nwithout a break.[f000]븁\u0000\nNow, please choose the Pokémon you would\nlike to battle with.[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 5, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_ThenLetsBeginPlease, 0x8011, 2, 0
     ActorMsgClose
     Cmd_01B0 0x802b, 0x802a
     VMStackPush 0x802a
@@ -332,7 +333,7 @@ L_04E8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0507
     // "Saving...\nDon't turn off the power."
-    SystemMsgAsync 6, 2
+    SystemMsgAsync Global10440_Text_SavingDontTurnOff, 2
     TrialHouseSaveData 1
     InfoMsgClose
 
@@ -341,7 +342,7 @@ L_0507:
     Cmd_02C5 4
     FunfestBGMReturn
     // "Now, the Battle Test begins!\nPlease go inside![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_NowBattleTestBegins, 0x8011, 2, 0
     ActorMsgClose
     ActorCmdExec 0, Movement_09C8
     ActorCmdWait
@@ -366,7 +367,7 @@ L_0507:
     WorkSetConst 0x8032, 0
     TrialHouseGetBattleTestRank 0x8030
     // "All right.[f000]븁\u0000\nI will tell you the result of your\nBattle Test.[f000]븁\u0000\nThe test result is...[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 8, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_AllRightWillTell, 0x8011, 2, 0
     ActorMsgClose
     Cmd_01DD 3, 0, 0
     TrialHouseCalcPointsStars 0x802f, 0x8031
@@ -505,7 +506,7 @@ L_0762:
     WorkAdd 0x8034, 1
     WordSetNumber 0, 0x8034, 1
     // "You will be facing opponent No. [f000]Ȁ\u0001\u0000.\nGood luck![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 24, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_WillFacingOpponentNo, 0x8011, 2, 0
     ActorMsgClose
     ActorCmdExec 255, Movement_0A54
     ActorCmdExec 0, Movement_0A5C
@@ -525,7 +526,7 @@ L_07B5:
 
 L_07DE:
     // "Would you like to download\na special Battle Test?"
-    ActorMsg MSGFILE_SCRIPT, 17, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_WouldLikeDownloadSpecial, 0x8011, 2, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
@@ -542,7 +543,7 @@ L_07DE:
 
 L_0824:
     // "Communicating... Don't turn off the\npower. Press the B Button to cancel."
-    SystemMsgAsync 29, 2
+    SystemMsgAsync Global10440_Text_CommunicatingDontTurnOff, 2
     VMSleep 1
     MsgSetLoadingSpinner 0
     TrialHouseCmd_01F0 0x8010
@@ -552,7 +553,7 @@ L_0824:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0865
     // "Hmm... I don't see anything\nto download...[f000]븁\u0000\nWhat would you like to do?"
-    ActorMsg MSGFILE_SCRIPT, 18, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_HmmDontSeeAnything, 0x8011, 2, 0
     WorkSetConst 0x8020, 1
     VMReturn
     VMJump L_08B9
@@ -563,7 +564,7 @@ L_0865:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0892
     // "You seem to have taken all of the\ncurrent Battle Tests already.[f000]븁\u0000\nWhat would you like to do?"
-    ActorMsg MSGFILE_SCRIPT, 26, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_SeemHaveTakenAll, 0x8011, 2, 0
     WorkSetConst 0x8020, 1
     VMReturn
     VMJump L_08B9
@@ -574,7 +575,7 @@ L_0892:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_08B9
     // "The download was canceled."
-    ActorMsg MSGFILE_SCRIPT, 50, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_DownloadCanceled, 0x8011, 2, 0
     WorkSetConst 0x8020, 1
     VMReturn
 
@@ -597,7 +598,7 @@ L_08EE:
     WorkSetConst 0x8036, 0
     WorkSetConst 0x8035, 0
     // "Would you like to challenge right away?"
-    ActorMsg MSGFILE_SCRIPT, 21, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_WouldLikeChallengeRight, 0x8011, 2, 0
     YesNoWin 0x8010
     ActorMsgClose
     VMStackPush 0x8010
@@ -610,7 +611,7 @@ L_08EE:
 
 L_093D:
     // "OK. See you later.\nI've been waiting for you!"
-    ActorMsg MSGFILE_SCRIPT, 22, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, Global10440_Text_OkSeeLaterIve, 0x8011, 2, 0
     LastKeyWait
     ActorMsgClose
 
@@ -731,7 +732,7 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0AB1
     // "There is no test result to display now."
-    SystemMsgAsync 27, 2
+    SystemMsgAsync Global10440_Text_ThereNoTestResult, 2
     LastKeyWait
     InfoMsgClose
     VMJump L_0B70
@@ -756,7 +757,7 @@ L_0AD6:
 
 L_0AFB:
     // "Which test result would you like to see?"
-    SystemMsgAsync 28, 2
+    SystemMsgAsync Global10440_Text_WhichTestResultWould, 2
     ListMenu_AnchorTopRight 31, 1, 0, 1, 32784
     ListMenuAdd 36, 65535, 0
     ListMenuAdd 37, 65535, 1

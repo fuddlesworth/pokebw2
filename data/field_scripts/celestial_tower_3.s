@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/celestial_tower_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -32,12 +33,12 @@ Script_2:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0107
     // "I'm invincible now!\n'Cause I'm full of hate![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_ImInvincibleNowCause, 0, 0
     MsgWinCloseAll
     CallTrainerBattle TRAINER_NURSERY_AIDE_ILSE, 0, 0
     VMCall L_01AB
     // "Why... How come?[f000]븁\u0000\nAll I wanted to do was raise the same\nPokémon as he did and battle together!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_WhyHowComeAll, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     WorkSetConst 0x40ee, 3
@@ -71,7 +72,7 @@ L_0107:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_0128
     // "Why... How come?[f000]븁\u0000\nAll I wanted to do was raise the same\nPokémon as he did and battle together!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_WhyHowComeAll, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -91,7 +92,7 @@ Script_3:
     VMJumpIf CMP_STACK, L_0197
     TrainerBGMPlayPush TRAINER_SCHOOL_KID_ALBERTA
     // "Thanks to my little Litwick's light,\nmy victory is coming into view![f000]븁\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_ThanksLittleLitwicksLight, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_SCHOOL_KID_ALBERTA, 0, 0
     VMCall L_01AB
@@ -101,14 +102,14 @@ Script_3:
     FlagReset 828
     TrainerFlagSet TRAINER_SCHOOL_KID_ALBERTA
     // "Losing a battle is so draining.\nI feel really burned out somehow."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_LosingBattleDrainingFeel, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_01A5
 
 L_0197:
     // "Losing a battle is so draining.\nI feel really burned out somehow."
-    ParentActorMsg MSGFILE_SCRIPT, 3, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_LosingBattleDrainingFeel, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -144,7 +145,7 @@ Script_4:
     ActorCmdExec 255, Movement_024C
     ActorCmdWait
     // "Thanks to my little Litwick's light,\nmy victory is coming into view![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 2, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_ThanksLittleLitwicksLight, 3, 0, 0
     ActorMsgClose
     CallTrainerBattle TRAINER_SCHOOL_KID_ALBERTA, 0, 0
     VMCall L_01AB
@@ -154,7 +155,7 @@ Script_4:
     FlagReset 828
     TrainerFlagSet TRAINER_SCHOOL_KID_ALBERTA
     // "Losing a battle is so draining.\nI feel really burned out somehow."
-    ActorMsg MSGFILE_SCRIPT, 3, 3, 0, 0
+    ActorMsg MSGFILE_SCRIPT, CelestialTower3_Text_LosingBattleDrainingFeel, 3, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FinishAllEvents

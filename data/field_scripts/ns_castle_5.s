@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/ns_castle_5.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -89,7 +90,7 @@ Script_1:
     ActorSetGPos 0, 16, 0, 48, 0
     BGMPlay SEQ_BGM_E_N_SWAN
     // "[f000]븉\u0001\u0001That's the place![f000]븉\u0001\u0000[f000]븁\u0000"
-    InfoMsg 0, 2
+    InfoMsg NsCastle5_Text_ThatsPlace, 2
     MsgWinCloseAll
     ActorCmdExec 255, Movement_0A90
     ActorCmdWait
@@ -125,9 +126,9 @@ L_01BD:
 L_01CF:
     // "[f000]븉\u0001\u0001It was two years ago.[f000]븁\u0000\nFor the sake of Pokémon...[f000]븁\u0000\nFor my world of truth...[f000]븁\u0000\nI put my beliefs on the line\nand battled a certain Trainer![f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001It was two years ago.[f000]븁\u0000\nFor the sake of Pokémon...[f000]븁\u0000\nFor my ideal world...[f000]븁\u0000\nI put my beliefs on the line\nand battled a certain Trainer![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 2, 1, 0, 0, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_TwoYearsAgoSake_2, NsCastle5_Text_TwoYearsAgoSake, 0, 0, 0
     // "[f000]븉\u0001\u0001And I lost...[f000]븁\u0000\nBut at the same time,\nI learned something important.[f000]븁\u0000\nTo make the world better,\nyou must accept different ideas![f000]븁\u0000\nI learned that this is the formula\nfor changing the world.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 3, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_LostButSameTime, 0, 0, 0
     MsgWinCloseAll
     EvCameraInit
     EvCameraUnbind
@@ -194,10 +195,10 @@ L_02E8:
     ActorCmdWait
     ActorSetGPos 255, 16, 0, 36, 1
     // "[f000]븉\u0001\u0001Accepting different ideas...[f000]븁\u0000\nI want to see if you're a Trainer whose\nheart is strong enough to do that.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 4, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_AcceptingDifferentIdeasWant, 0, 3, 0
     // "[f000]븉\u0001\u0001Reshiram, come![f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001Zekrom, come![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 6, 5, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_ReshiramCome, NsCastle5_Text_ZekromCome, 0, 3, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0AA0
     ActorCmdWait
@@ -208,7 +209,7 @@ L_02E8:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0360
     // "Shaaaaaak!"
-    ScreamMsg 7, 1
+    ScreamMsg NsCastle5_Text_Shaaaaaak, 1
     PVPlay 644, 0
     PVWait
     MsgWaitAdvance
@@ -217,7 +218,7 @@ L_02E8:
 
 L_0360:
     // "Baaaaaaaahn!"
-    ScreamMsg 8, 1
+    ScreamMsg NsCastle5_Text_Baaaaaaaahn, 1
     PVPlay 643, 0
     PVWait
     MsgWaitAdvance
@@ -228,7 +229,7 @@ L_0371:
     ActorCmdWait
     // "[f000]븉\u0001\u0001Reshiram also wants to know\nwhich truths you seek[f000]븀\u0000\nand how good a Trainer you are.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001Zekrom also wants to know\nwhat ideals you seek[f000]븀\u0000\nand how good a Trainer you are.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 10, 9, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_ReshiramAlsoWantsKnow, NsCastle5_Text_ZekromAlsoWantsKnow, 0, 3, 0
     ActorSetGPos 255, 16, 0, 38, 0
     ActorCmdExec 255, Movement_046C
     ActorCmdWait
@@ -347,7 +348,7 @@ L_04E9:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "[f000]븉\u0001\u0001Go to Dragonspiral Tower.[f000]븁\u0000\nI will...[f000]븁\u0000\nI'll search for that Trainer\nI battled two years ago.[f000]븁\u0000\nAnd...[f000]븁\u0000\nI plan to say thank you.[f000]븉\u0001\u0000"
-    ParentActorMsg MSGFILE_SCRIPT, 32, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NsCastle5_Text_GoDragonspiralTowerWill, 0, 0
     LastKeyWait
     ActorMsgClose
     VMJump L_0530
@@ -370,7 +371,7 @@ Script_6:
     VMJumpIf CMP_STACK, L_0566
     PVPlay 644, 0
     // "Shaaaaaak!"
-    ScreamMsg 7, 2
+    ScreamMsg NsCastle5_Text_Shaaaaaak, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -379,7 +380,7 @@ Script_6:
 L_0566:
     PVPlay 643, 0
     // "Baaaaaaaahn!"
-    ScreamMsg 8, 2
+    ScreamMsg NsCastle5_Text_Baaaaaaaahn, 2
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -391,14 +392,14 @@ L_0577:
 
 L_057D:
     // "[f000]븉\u0001\u0001Battle with me.\nAre you prepared?[f000]븉\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 11, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_BattlePrepared, 0, 0, 0
     YesNoWin 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_060F
     // "[f000]븉\u0001\u0001Show me the depth\nof your determination![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 12, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_ShowDepthDetermination, 0, 0, 0
     MsgWinCloseAll
     GameGetVersion 0x8023
     VMStackPush 0x8023
@@ -407,7 +408,7 @@ L_057D:
     VMJumpIf CMP_STACK, L_05E4
     PVPlay 644, 0
     // "Bazzazzazzash!"
-    ScreamMsg 13, 1
+    ScreamMsg NsCastle5_Text_Bazzazzazzash, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -417,7 +418,7 @@ L_057D:
 L_05E4:
     PVPlay 643, 0
     // "Preeeeaah!"
-    ScreamMsg 14, 1
+    ScreamMsg NsCastle5_Text_Preeeeaah, 1
     PVWait
     MsgWaitAdvance
     InfoMsgClose_0039
@@ -430,7 +431,7 @@ L_05FD:
 
 L_060F:
     // "[f000]븉\u0001\u0001I'm ready whenever you are!\nI'll wait as long as it takes![f000]븉\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 15, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_ImReadyWheneverIll, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMStackPush 0x400f
@@ -453,10 +454,10 @@ L_0646:
     WordSetPlayerName 0
     // "[f000]븉\u0001\u0001Reshiram and I were defeated.[f000]븁\u0000\nYour feelings,\nyour desire to pursue ideals--[f000]븀\u0000\nthat's what surpassed us.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001Zekrom and I were defeated.[f000]븁\u0000\nYour feelings,\nyour desire to know the truth--[f000]븀\u0000\nthat's what surpassed us.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 17, 16, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_ReshiramWereDefeatedFeelings, NsCastle5_Text_ZekromWereDefeatedFeelings, 0, 3, 0
     TrainerCardGetSex 0x8025
     // "[f000]븉\u0001\u0001Battling with you reminded\nme of two years ago...[f000]븁\u0000\nIt may just be a little,\nbut I know you better...[f000]븀\u0000\nThat's how I feel.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 18, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_BattlingRemindedTwoYears, 0, 3, 0
     MsgWinCloseAll
     ActorCmdExec 0, Movement_0AA0
     ActorCmdWait
@@ -466,13 +467,13 @@ L_0646:
     VMJumpIf CMP_STACK, L_069A
     // "[f000]븉\u0001\u0001And Reshiram...\nThank you for everything.[f000]븁\u0000\nMy journey with you\nhas been truly wonderful![f000]븁\u0000\nFrom now on, I want you to use\nyour power to help this Trainer[f000]븀\u0000\nrealize his dreams.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001And Zekrom...\nThank you for everything.[f000]븁\u0000\nMy journey with you\nhas been truly wonderful![f000]븁\u0000\nFrom now on, I want you to use\nyour power to help this Trainer[f000]븀\u0000\nrealize his dreams.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 21, 19, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_ReshiramThankEverythingJourney, NsCastle5_Text_ZekromThankEverythingJourney, 0, 3, 0
     VMJump L_06A8
 
 L_069A:
     // "[f000]븉\u0001\u0001And Reshiram...\nThank you for everything you've done.[f000]븁\u0000\nMy journey with you\nhas been truly wonderful![f000]븁\u0000\nFrom now on, I want you to use\nyour power to help this Trainer[f000]븀\u0000\nrealize her dreams.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001And Zekrom...\nThank you for everything.[f000]븁\u0000\nMy journey with you\nhas been truly wonderful![f000]븁\u0000\nFrom now on, I want you to use\nyour power to help this Trainer[f000]븀\u0000\nrealize her dreams.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 22, 20, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_ReshiramThankEverythingYouve, NsCastle5_Text_ZekromThankEverythingJourney_2, 0, 3, 0
 
 L_06A8:
     MsgWinCloseAll
@@ -483,7 +484,7 @@ L_06A8:
     VMJumpIf CMP_STACK, L_06DF
     PVPlay 644, 0
     // "Bazz..."
-    ActorMsg MSGFILE_SCRIPT, 23, 1, 5, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_Bazz, 1, 5, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -492,7 +493,7 @@ L_06A8:
 L_06DF:
     PVPlay 643, 0
     // "Pree..."
-    ActorMsg MSGFILE_SCRIPT, 24, 1, 5, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_Pree, 1, 5, 0
     PVWait
     MsgWaitAdvance
     MsgWinCloseAll
@@ -502,9 +503,9 @@ L_06F7:
     ActorCmdWait
     // "[f000]븉\u0001\u0001I know. I'll miss you, too...[f000]븁\u0000\nBut your task is to help\nhumans who seek the truth.[f000]븁\u0000\nI've learned so much from you.[f000]븁\u0000\nI'll do my best to tell everyone\nelse what I learned on my own.[f000]븁\u0000\nI'll be OK!\nI can talk to Pokémon![f000]븁\u0000\nI'll become the bridge\nbetween Pokémon and humans![f000]븀\u0000\nThat's my truth![f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001I know. I'll miss you, too...[f000]븁\u0000\nBut your task is to help\nhumans who seek ideals.[f000]븁\u0000\nI've learned so much from you.[f000]븁\u0000\nI'll do my best to tell everyone\nelse what I learned on my own.[f000]븁\u0000\nI'll be OK!\nI can talk to Pokémon![f000]븁\u0000\nI'll become the bridge\nbetween Pokémon and humans![f000]븀\u0000\nThat's my ideal![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 26, 25, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_KnowIllMissToo_2, NsCastle5_Text_KnowIllMissToo, 0, 3, 0
     // "[f000]븉\u0001\u0001So...[f000]븁\u0000\nRest well...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 27, 0, 3, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_RestWell, 0, 3, 0
     MsgWinCloseAll
     FadeEx 12, 0, 16, 4
     FadeExWait
@@ -533,7 +534,7 @@ L_0766:
     ActorCmdWait
     // "[f000]븉\u0001\u0001[f000]Ā\u0001\u0000![f000]븁\u0000\nI'll entrust you\nwith this Light Stone![f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001[f000]Ā\u0001\u0000![f000]븁\u0000\nI'll entrust you\nwith this Dark Stone![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 29, 28, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_IllEntrustLightStone, NsCastle5_Text_IllEntrustDarkStone, 0, 3, 0
     MsgWinCloseAll
     VMStackPush 0x8023
     VMStackPushConst 23
@@ -560,7 +561,7 @@ L_07DF:
 L_07FF:
     // "[f000]븉\u0001\u0001Take that Light Stone\nto Dragonspiral Tower![f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001Take that Dark Stone\nto Dragonspiral Tower![f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 31, 30, 0, 3, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_TakeLightStoneDragonspiral, NsCastle5_Text_TakeDarkStoneDragonspiral, 0, 3, 0
     MsgWinCloseAll
     BGMChangeMap
     EvCameraMoveToDefault 24
@@ -579,12 +580,12 @@ L_0833:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0858
     // "N: [f000]븉\u0001\u0001How surprising...\nI didn't expect you'd come here.[f000]븁\u0000\nWell, that is the formula for\nunderstanding other Trainers,[f000]븀\u0000\nafter all...[f000]븀\u0000\nYou're OK with a Pokémon battle, right?[f000]븉\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 33, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_NHowSurprisingDidnt, 0, 0, 0
     VMJump L_0864
 
 L_0858:
     // "[f000]븉\u0001\u0001Your Pokémon are saying they\nwant to battle with my friend...[f000]븁\u0000\nWhat would you like to do?\nWill you have a Pokémon battle with me?[f000]븉\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 39, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_PokemonSayingTheyWant, 0, 0, 0
 
 L_0864:
     YesNoWin 0x8010
@@ -593,7 +594,7 @@ L_0864:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09AA
     // "[f000]븉\u0001\u0001Good...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 34, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_Good, 0, 0, 0
     MsgWinCloseAll
     WorkSetConst 0x8028, 0
     RTCGetSeason 0x8028
@@ -631,10 +632,10 @@ L_0911:
     VMCall L_09C0
     // "[f000]븉\u0001\u0001I remember something Reshiram\ntold me once...[f000]븁\u0000\nReshiram and Zekrom\nare searching for new possibilities[f000]븀\u0000\nby walking alongside humans...[f000]븁\u0000\nMeanwhile, those that live in the wild\ntry to better themselves[f000]븀\u0000\nwithout relying on anyone else.[f000]븁\u0000\nThere are many different Pokémon...[f000]븁\u0000\nAnd their different ways of living...\nThat is the true freedom of Pokémon.[f000]븀\u0000\nThat is what connects Pokémon to us.[f000]븉\u0001\u0000[f000]븁\u0000"
     // "[f000]븉\u0001\u0001I remember something Zekrom\ntold me once...[f000]븁\u0000\nZekrom and Reshiram\nare searching for new possibilities[f000]븀\u0000\nby walking alongside humans...[f000]븁\u0000\nMeanwhile, those that live in the wild\ntry to better themselves[f000]븀\u0000\nwithout relying on anyone else.[f000]븁\u0000\nThere are many different Pokémon...[f000]븁\u0000\nAnd their different ways of living...\nThat is the true freedom of Pokémon.[f000]븀\u0000\nThat is what connects Pokémon to us.[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsgVersioned 1024, 36, 35, 0, 0, 0
+    ActorMsgVersioned 1024, NsCastle5_Text_RememberSomethingReshiramTold, NsCastle5_Text_RememberSomethingZekromTold, 0, 0, 0
     MsgWinCloseAll
     // "[f000]븉\u0001\u0001I will set off on another journey.[f000]븁\u0000\nThere are still many Pokémon\nin the world I should talk to.[f000]븁\u0000\nAnd there is also a Trainer\nI want to tell how I feel...[f000]븉\u0001\u0000[f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 37, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_WillSetOffAnother, 0, 0, 0
     MsgWinCloseAll
     PlayerGetDir 0x8020
     VMStackPush 0x8020
@@ -663,7 +664,7 @@ L_0976:
 
 L_09AA:
     // "[f000]븉\u0001\u0001Very well...\nYou're free to choose that, too.[f000]븉\u0001\u0000"
-    ActorMsg MSGFILE_SCRIPT, 38, 0, 0, 0
+    ActorMsg MSGFILE_SCRIPT, NsCastle5_Text_VeryWellYoureFree, 0, 0, 0
     LastKeyWait
     MsgWinCloseAll
     FlagSet 486

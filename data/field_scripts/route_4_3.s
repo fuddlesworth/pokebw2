@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_4_3.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -48,7 +49,7 @@ L_00A9:
     VMStackCmp CMP_GE
     VMJumpIf CMP_STACK, L_00FE
     // "What? Are you worn out?\nOK! Then rest here for a minute!"
-    ParentActorMsg MSGFILE_SCRIPT, 1, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route43_Text_WhatWornOutOk, 0, 0
     MsgWaitAdvance
     MsgWinCloseAll
     FadeEx 3, 0, 16, 2
@@ -59,14 +60,14 @@ L_00A9:
     FadeEx 3, 16, 0, 2
     FadeExWait
     // "If you are that full of energy, you can\ngo anywhere, even in a sandstorm!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route43_Text_IfFullEnergyCan, 0, 0
     LastKeyWait
     MsgWinCloseAll
     VMJump L_010C
 
 L_00FE:
     // "If you are that full of energy, you can\ngo anywhere, even in a sandstorm!"
-    ParentActorMsg MSGFILE_SCRIPT, 0, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route43_Text_IfFullEnergyCan, 0, 0
     LastKeyWait
     MsgWinCloseAll
 
@@ -81,7 +82,7 @@ Script_2:
     ActorSetEyeToEye
     PVPlay 552, 0
     // "Glugluglug!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route43_Text_Glugluglug, 0, 0
     PVWait
     LastKeyWait
     ActorMsgClose

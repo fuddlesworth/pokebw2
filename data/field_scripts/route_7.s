@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/route_7.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -17,7 +18,7 @@ Script_1:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Route 7"
-    MsgPlaceSign 3, 3
+    MsgPlaceSign Route7_Text_Route7, 3
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -28,7 +29,7 @@ Script_2:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Celestial Tower\nA place of rest for innocent spirits"
-    MsgPlaceSign 4, 2
+    MsgPlaceSign Route7_Text_CelestialTowerPlaceRest, 2
     MsgPlaceSignClose
     FinishAllEvents
     ActorsUnpauseAll
@@ -39,7 +40,7 @@ Script_3:
     FunfestMissionBroadcast 17, 0
     SEPlay SEQ_SE_MESSAGE
     // "Trainer Tips![f000]븁\u0000\n\nThe number of Exp. Points you get\nafter a battle is based on levels.[f000]븁\u0000\nWhen your Pokémon is weaker than\nits opponent, it will get more.[f000]븁\u0000\nBut if your Pokémon is stronger,\nit won't get as many."
-    MsgPlaceSign 5, 0
+    MsgPlaceSign Route7_Text_TrainerTipsNumberExp, 0
     MsgPlaceSignClose
     FlagSet 2670
     FinishAllEvents
@@ -51,7 +52,7 @@ Script_6:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "If you stand still on the raised walkway,\nyou'll fall off!"
-    ParentActorMsg MSGFILE_SCRIPT, 2, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, Route7_Text_IfStandStillRaised, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -62,11 +63,11 @@ Script_5:
     ActorsPauseAll
     MEPlay SEQ_ME_CALL
     // "The Xtransceiver is ringing."
-    SystemMsg 0, 2
+    SystemMsg Route7_Text_XtransceiverRinging, 2
     MEWait
     WordSetPlayerName 0
     // "[f000]Ā\u0001\u0000 picked up the Xtransceiver.[f000]븁\u0000"
-    SystemMsg 1, 2
+    SystemMsg Route7_Text_PickedUpXtransceiver, 2
     MsgWinCloseAll
     FadeOutBlackQ
     FadeWait

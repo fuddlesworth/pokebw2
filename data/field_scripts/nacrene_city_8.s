@@ -1,4 +1,5 @@
 #include "asm/field_script.inc"
+#include "text/script/nacrene_city_8.h"
 
     ScriptEntry Script_1
     ScriptEntry Script_2
@@ -26,7 +27,7 @@ Script_2:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "Dire Hit? In Unova, it's called Dire Hit.\nHuh? No difference?"
-    ParentActorMsg MSGFILE_SCRIPT, 6, 0, 0
+    ParentActorMsg MSGFILE_SCRIPT, NacreneCity8_Text_DireHitUnovaIts, 0, 0
     LastKeyWait
     ActorMsgClose
     FinishAllEvents
@@ -38,7 +39,7 @@ Script_3:
     SEPlay SEQ_SE_MESSAGE
     ActorSetEyeToEye
     // "It's been two years since I opened for\nbusiness, and thanks to everyone,[f000]븀\u0000\nI'm doing great![f000]븁\u0000"
-    ActorMsg MSGFILE_SCRIPT, 7, 0x8011, 2, 0
+    ActorMsg MSGFILE_SCRIPT, NacreneCity8_Text_ItsBeenTwoYears, 0x8011, 2, 0
     VMStackPush 0x8000
     VMStackPush 0x8001
     WorkSet 0x8000, 14
