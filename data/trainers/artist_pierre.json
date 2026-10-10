@@ -1,0 +1,21 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ARTIST",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 12,
+    "reward": "ITEM_ULTRA_BALL",
+    "party": [
+        {
+            "species": "SPECIES_SMEARGLE",
+            "form": 0,
+            "level": 62,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_FIRE_BLAST", "MOVE_BLIZZARD", "MOVE_THUNDER", "MOVE_HURRICANE" ]
+        }
+    ]
+}

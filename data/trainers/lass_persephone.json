@@ -1,0 +1,20 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_LASS",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [],
+    "heals": false,
+    "money": 4,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_LIEPARD",
+            "form": 0,
+            "level": 24,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

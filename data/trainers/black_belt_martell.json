@@ -1,0 +1,30 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_BLACK_BELT",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK" ],
+    "heals": false,
+    "money": 8,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_PINSIR",
+            "form": 0,
+            "level": 54,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 2,
+            "moves": [ "MOVE_X_SCISSOR", "MOVE_SUPERPOWER", "MOVE_BULLDOZE", "MOVE_THRASH" ]
+        },
+        {
+            "species": "SPECIES_HERACROSS",
+            "form": 0,
+            "level": 54,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 2,
+            "moves": [ "MOVE_MEGAHORN", "MOVE_CLOSE_COMBAT", "MOVE_ROCK_SLIDE", "MOVE_AERIAL_ACE" ]
+        }
+    ]
+}

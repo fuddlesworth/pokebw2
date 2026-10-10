@@ -1,0 +1,21 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PARASOL_LADY",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 8,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_CASTFORM",
+            "form": 0,
+            "level": 40,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_SUNNY_DAY", "MOVE_HYDRO_PUMP", "MOVE_FIRE_BLAST", "MOVE_BLIZZARD" ]
+        }
+    ]
+}

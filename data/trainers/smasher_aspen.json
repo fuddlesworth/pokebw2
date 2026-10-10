@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_SMASHER",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 25,
+    "reward": "ITEM_HYPER_POTION",
+    "party": [
+        {
+            "species": "SPECIES_WHIMSICOTT",
+            "form": 0,
+            "level": 47,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_LILLIGANT",
+            "form": 0,
+            "level": 47,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

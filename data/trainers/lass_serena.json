@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_LASS",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK" ],
+    "heals": false,
+    "money": 4,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_LILLIPUP",
+            "form": 0,
+            "level": 9,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_PATRAT",
+            "form": 0,
+            "level": 9,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

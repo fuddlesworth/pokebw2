@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_HOOLIGANS",
+    "battle_style": "BTL_STYLE_DOUBLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_TAG_STRATEGY" ],
+    "heals": false,
+    "money": 16,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_COTTONEE",
+            "form": 0,
+            "level": 21,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_PETILIL",
+            "form": 0,
+            "level": 21,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ACE_TRAINER_M",
+    "battle_style": "BTL_STYLE_TRIPLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT", "AI_FLAG_TAG_STRATEGY" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_SANDSLASH",
+            "form": 0,
+            "level": 33,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_UNFEZANT",
+            "form": 0,
+            "level": 33,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_KLINK",
+            "form": 0,
+            "level": 33,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

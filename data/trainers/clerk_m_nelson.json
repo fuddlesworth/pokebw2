@@ -1,0 +1,52 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_CLERK_M_66",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 10,
+    "reward": "ITEM_ULTRA_BALL",
+    "party": [
+        {
+            "species": "SPECIES_YANMA",
+            "form": 0,
+            "level": 58,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_LEDIAN",
+            "form": 0,
+            "level": 58,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_KRICKETUNE",
+            "form": 0,
+            "level": 58,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SCIZOR",
+            "form": 0,
+            "level": 58,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SCOLIPEDE",
+            "form": 0,
+            "level": 58,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

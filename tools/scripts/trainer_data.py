@@ -1,128 +1,144 @@
 #!/usr/bin/env python3
-"""Write the trainers (archive a/0/9/1) and their parties (a/0/9/2) as editable sources, one file per trainer that
-holds both, with the macros of include/asm/trainer.inc. The build assembles each file's two sections back into the two
-archives and checks that they match.
+"""The trainers in data/trainers/, one JSON file per trainer with its party, as pokeplatinum's res/trainers/data/: dump
+writes them from the ROM once, and pack builds the trainer (a/0/9/1) and party (a/0/9/2) archives from them, which the
+build does.
 
-    trainer_data.py extract/b2_us/files data/trainers
+    trainer_data.py dump extract/b2_us/files data/trainers
+    trainer_data.py pack data/trainers TRAINERS PARTIES
 
-Files are named after the trainer's index and name, and say its class, from the game's text.
+Each trainer is data/trainers/<trainer>.json, named after its constant (smasher_elena.json for
+TRAINER_SMASHER_ELENA), and the archives have them in the order of data/constants/trainers.txt. TRAINER_NONE has no
+file: its entries are the empty placeholder the game has, a 16-byte record and a 6-byte party. trainer.schema.json
+describes each field.
 """
 import argparse
-import re
 import struct
+import sys
 from pathlib import Path
 
-from make_constants import identifier
-from msgdata import read_archive_file
-from narc import read_narc
-from gen_constants import constant_names, header_text, name
+sys.path.insert(0, str(Path(__file__).parent))
+from datajson import DataError, label, load, load_schema, name, value, write  # noqa: E402
+from gen_constants import load as load_list  # noqa: E402
+from narc import read_narc, write_narc  # noqa: E402
 
-TRAINER_SIZE = 20
-# Files of the system message archive (a/0/0/2) with the trainers' names and their classes' names
-TRAINER_NAMES = 382
-CLASS_NAMES = 383
-STYLES = {0: "BTL_STYLE_SINGLE", 1: "BTL_STYLE_DOUBLE", 2: "BTL_STYLE_TRIPLE", 3: "BTL_STYLE_ROTATION"}
-PARTY_KINDS = {0: "0", 1: "PARTY_MOVES", 2: "PARTY_ITEMS", 3: "PARTY_MOVES | PARTY_ITEMS"}
-
-
-def ai_flag_names(flags: int) -> str:
-    names = {}
-    for match in re.finditer(r"^#define (AI_FLAG_\w+) \(1 << (\d+)\)$", header_text("constants/tr_ai.h"), re.M):
-        names[int(match.group(2))] = match.group(1)
-    parts = [names.get(bit, f"(1 << {bit})") for bit in range(32) if flags >> bit & 1]
-    return " | ".join(parts) if parts else "0"
+TRAINER = struct.Struct("<4B4HIBBH")
+assert TRAINER.size == 20
+MON = struct.Struct("<4BHH")
+NONE_TRAINER, NONE_PARTY = bytes(16), bytes(6)
+PARTY_MOVES, PARTY_ITEMS = 1, 2
 
 
-def write_trainer(trainer: bytes, party: bytes, names: dict, title: str, class_name: str) -> str:
-    kind, class_, style, count = trainer[0:4]
-    items = struct.unpack_from("<4H", trainer, 4)
-    ai, heals, money, reward = struct.unpack_from("<IBBH", trainer, 0xC)
-    args = [f"class={name(names['class'], class_)}"]
-    if kind:
-        args.append(f"party={PARTY_KINDS[kind]}")
-    if style:
-        args.append(f"style={STYLES[style]}")
-    args += [f"item{i + 1}={name(names['item'], item)}" for i, item in enumerate(items) if item]
-    if ai:
-        args.append(f"ai={ai_flag_names(ai)}")
-    if heals:
-        args.append(f"heals={heals}")
-    args.append(f"money={money}")
-    if reward:
-        args.append(f"reward={name(names['item'], reward)}")
-    lines = ['#include "asm/trainer.inc"', "", f"// {class_name} {title}", f"    Trainer {', '.join(args)}"]
+def file_name(trainer: str) -> str:
+    return trainer.removeprefix("TRAINER_").lower() + ".json"
 
-    size = 8 + (2 if kind & 2 else 0) + (8 if kind & 1 else 0)
-    if len(party) != size * count:
-        raise ValueError(f"{title}: a party of {len(party)} bytes for {count} Pokémon of {size}")
+
+def ordered_trainers() -> list[str]:
+    trainers = sorted(load_list("trainers").items(), key=lambda item: item[1])
+    if [v for _, v in trainers] != list(range(len(trainers))) or trainers[0][0] != "TRAINER_NONE":
+        sys.exit("trainers.txt doesn't number the trainers from TRAINER_NONE = 0 in order")
+    return [trainer for trainer, _ in trainers]
+
+
+def trainer_json(trainer: bytes, party: bytes) -> dict:
+    kind, class_, style, count, *items, ai, heals, money, reward = TRAINER.unpack(trainer)
+    size = MON.size + (2 if kind & PARTY_ITEMS else 0) + (8 if kind & PARTY_MOVES else 0)
+    if len(party) != size * count or heals > 1:
+        raise ValueError("unexpected trainer record")
+    mons = []
     for i in range(count):
         entry = party[size * i:size * (i + 1)]
-        difficulty, gender_ability, level, pad, species, form = struct.unpack_from("<4BHH", entry, 0)
+        difficulty, gender_ability, level, pad, species, form = MON.unpack_from(entry)
         if pad:
-            raise ValueError(f"{title}: padding byte {pad}")
-        mon = [f"level={level}", f"species={name(names['species'], species)}"]
-        if form:
-            mon.append(f"form={form}")
-        if difficulty:
-            mon.append(f"difficulty={difficulty}")
-        if gender_ability & 0xF:
-            mon.append(f"gender={gender_ability & 0xF}")
-        if gender_ability >> 4:
-            mon.append(f"ability={gender_ability >> 4}")
-        offset = 8
-        if kind & 2:
-            item = struct.unpack_from("<H", entry, offset)[0]
-            if item:
-                mon.append(f"item={name(names['item'], item)}")
+            raise ValueError("party padding byte set")
+        mon = {"species": name("SPECIES_", species), "form": form, "level": level, "difficulty": difficulty,
+               "gender": gender_ability & 0xF, "ability": gender_ability >> 4}
+        offset = MON.size
+        if kind & PARTY_ITEMS:
+            mon["item"] = name("ITEM_", struct.unpack_from("<H", entry, offset)[0])
             offset += 2
-        if kind & 1:
-            moves = struct.unpack_from("<4H", entry, offset)
-            mon += [f"move{j + 1}={name(names['move'], m)}" for j, m in enumerate(moves) if m]
-        lines.append(f"    PartyMon {', '.join(mon)}")
-    lines += ["    PartyEnd", ""]
-    return "\n".join(lines)
+        if kind & PARTY_MOVES:
+            mon["moves"] = [name("MOVE_", m) for m in struct.unpack_from("<4H", entry, offset) if m]
+        mons.append(mon)
+    return {
+        "$schema": "trainer.schema.json",
+        "class": name("TRAINER_CLASS_", class_),
+        "battle_style": name("BTL_STYLE_", style),
+        "items": [name("ITEM_", item) for item in items if item],
+        "ai_flags": [name("AI_FLAG_", 1 << bit) for bit in range(32) if ai >> bit & 1],
+        "heals": bool(heals),
+        "money": money,
+        "reward": name("ITEM_", reward),
+        "party": mons,
+    }
 
 
-def write_empty(trainer: bytes, party: bytes) -> str:
-    return "\n".join([
-        "// No trainer: the record of ID 0, which is shorter than the others",
-        '    .section .trainer, "a"',
-        f"    .space {len(trainer)}",
-        '    .section .party, "a"',
-        f"    .space {len(party)}",
-        "",
-    ])
+def dump(files: Path, output: Path):
+    trainers = read_narc((files / "a/0/9/1").read_bytes())
+    parties = read_narc((files / "a/0/9/2").read_bytes())
+    names = ordered_trainers()
+    if not len(trainers) == len(parties) == len(names) or (trainers[0], parties[0]) != (NONE_TRAINER, NONE_PARTY):
+        sys.exit("the archives don't have one entry per trainer of trainers.txt, from the empty TRAINER_NONE")
+    for trainer_name, trainer, party in list(zip(names, trainers, parties))[1:]:
+        write(output / file_name(trainer_name), trainer_json(trainer, party))
+    print(f"wrote {len(trainers) - 1} trainers to {output}")
+
+
+def trainer_bytes(data: dict, where: str) -> tuple[bytes, bytes]:
+    party = data["party"]
+    has_items = {"item" in mon for mon in party}
+    has_moves = {"moves" in mon for mon in party}
+    if len(has_items) > 1 or len(has_moves) > 1:
+        raise DataError(f"{where}: either every Pokémon of the party has an item, or none; the same for moves")
+    kind = (PARTY_ITEMS if True in has_items else 0) | (PARTY_MOVES if True in has_moves else 0)
+    items = [value(item, where) for item in data["items"]] + [0] * (4 - len(data["items"]))
+    ai = 0
+    for flag in data["ai_flags"]:
+        ai |= value(flag, where)
+    record = TRAINER.pack(kind, value(data["class"], where), value(data["battle_style"], where), len(party), *items,
+                          ai, data["heals"], data["money"], value(data["reward"], where))
+    entries = []
+    for mon in party:
+        entry = MON.pack(mon["difficulty"], mon["gender"] | mon["ability"] << 4, mon["level"], 0,
+                         value(mon["species"], where), mon["form"])
+        if kind & PARTY_ITEMS:
+            entry += struct.pack("<H", value(mon["item"], where))
+        if kind & PARTY_MOVES:
+            moves = [value(move, where) for move in mon["moves"]]
+            entry += struct.pack("<4H", *moves, *[0] * (4 - len(moves)))
+        entries.append(entry)
+    return record, b"".join(entries)
+
+
+def pack(root: Path, trainers_output: Path, parties_output: Path):
+    schema = load_schema(root / "trainer.schema.json")
+    trainers, parties = [NONE_TRAINER], [NONE_PARTY]
+    for trainer_name in ordered_trainers()[1:]:
+        path = root / file_name(trainer_name)
+        record, party = trainer_bytes(load(path, schema), label(path))
+        trainers.append(record)
+        parties.append(party)
+    for output, members in ((trainers_output, trainers), (parties_output, parties)):
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_bytes(write_narc(members))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("files", type=Path, help="the extracted files/ directory")
-    parser.add_argument("output", type=Path)
+    commands = parser.add_subparsers(dest="command", required=True)
+    dump_parser = commands.add_parser("dump", help="write data/trainers/ from the extracted files")
+    dump_parser.add_argument("files", type=Path, help="the extracted files/ directory")
+    dump_parser.add_argument("output", type=Path)
+    pack_parser = commands.add_parser("pack", help="build the trainer and party archives from data/trainers/")
+    pack_parser.add_argument("root", type=Path)
+    pack_parser.add_argument("outputs", type=Path, nargs=2, metavar="ARCHIVE", help="the trainer and party archives")
     args = parser.parse_args()
-
-    trainers = read_narc((args.files / "a/0/9/1").read_bytes())
-    parties = read_narc((args.files / "a/0/9/2").read_bytes())
-    trainer_names = read_archive_file(args.files / "a/0/0/2", TRAINER_NAMES)
-    class_names = read_archive_file(args.files / "a/0/0/2", CLASS_NAMES)
-    names = {
-        "species": constant_names("species.h", "SPECIES_"),
-        "item": constant_names("items.h", "ITEM_"),
-        "move": constant_names("moves.h", "MOVE_"),
-        "class": constant_names("trainer_classes.h", "TRAINER_CLASS_"),
-    }
-    args.output.mkdir(parents=True, exist_ok=True)
-    for index, (trainer, party) in enumerate(zip(trainers, parties, strict=True)):
-        if len(trainer) != TRAINER_SIZE:
-            if any(trainer) or any(party):
-                raise SystemExit(f"trainer {index} is {len(trainer)} bytes and not empty")
-            (args.output / f"{index:04d}_none.s").write_text(write_empty(trainer, party))
-            continue
-        title = trainer_names[index]
-        stem = identifier(title).lower() or "unnamed"
-        class_name = class_names[trainer[1]].replace("⒆⒇", "Pkmn")
-        text = write_trainer(trainer, party, names, title, class_name)
-        (args.output / f"{index:04d}_{stem}.s").write_text(text)
-    print(f"wrote {len(trainers)} files to {args.output}")
+    if args.command == "dump":
+        dump(args.files, args.output)
+        return
+    try:
+        pack(args.root, *args.outputs)
+    except DataError as error:
+        sys.exit(f"error: {error}")
 
 
 if __name__ == "__main__":

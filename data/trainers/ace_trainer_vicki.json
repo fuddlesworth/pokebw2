@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ACE_TRAINER_F",
+    "battle_style": "BTL_STYLE_ROTATION",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_STOUTLAND",
+            "form": 0,
+            "level": 33,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_KROKOROK",
+            "form": 0,
+            "level": 33,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_FERROSEED",
+            "form": 0,
+            "level": 33,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

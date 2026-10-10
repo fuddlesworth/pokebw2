@@ -1,0 +1,52 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_YOUNGSTER",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 4,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_BEEDRILL",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_VOLBEAT",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_DUSTOX",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_MOTHIM",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SCOLIPEDE",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

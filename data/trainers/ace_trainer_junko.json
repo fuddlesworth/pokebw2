@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ACE_TRAINER_F",
+    "battle_style": "BTL_STYLE_TRIPLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT", "AI_FLAG_TAG_STRATEGY" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_BASCULIN",
+            "form": 0,
+            "level": 39,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_LILLIGANT",
+            "form": 0,
+            "level": 39,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_GLIGAR",
+            "form": 0,
+            "level": 39,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ROUGHNECK",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 6,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_GRIMER",
+            "form": 0,
+            "level": 14,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_POUND", "MOVE_POISON_GAS", "MOVE_DISABLE" ]
+        },
+        {
+            "species": "SPECIES_KOFFING",
+            "form": 0,
+            "level": 14,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_TACKLE", "MOVE_ASSURANCE", "MOVE_POISON_GAS" ]
+        }
+    ]
+}

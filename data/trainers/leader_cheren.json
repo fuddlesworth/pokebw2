@@ -1,0 +1,30 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_LEADER_CHEREN",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_POTION" ],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 30,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_PATRAT",
+            "form": 0,
+            "level": 11,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 2,
+            "moves": [ "MOVE_WORK_UP", "MOVE_BITE", "MOVE_TACKLE" ]
+        },
+        {
+            "species": "SPECIES_LILLIPUP",
+            "form": 0,
+            "level": 13,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 1,
+            "moves": [ "MOVE_WORK_UP", "MOVE_BITE", "MOVE_TACKLE" ]
+        }
+    ]
+}

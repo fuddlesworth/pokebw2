@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_HOOPSTER",
+    "battle_style": "BTL_STYLE_TRIPLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT", "AI_FLAG_TAG_STRATEGY" ],
+    "heals": false,
+    "money": 25,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_ELEKID",
+            "form": 0,
+            "level": 42,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_ELECTABUZZ",
+            "form": 0,
+            "level": 42,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_ELEKID",
+            "form": 0,
+            "level": 42,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

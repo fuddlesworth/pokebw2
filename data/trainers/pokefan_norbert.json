@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_POKEFAN_M",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_SUPER_POTION" ],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 16,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_GROWLITHE",
+            "form": 0,
+            "level": 21,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 2
+        },
+        {
+            "species": "SPECIES_SANDSHREW",
+            "form": 0,
+            "level": 21,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

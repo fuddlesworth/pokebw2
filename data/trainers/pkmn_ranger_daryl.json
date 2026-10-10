@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PKMN_RANGER_M",
+    "battle_style": "BTL_STYLE_ROTATION",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_SITRUS_BERRY",
+    "party": [
+        {
+            "species": "SPECIES_JOLTEON",
+            "form": 0,
+            "level": 39,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_GALVANTULA",
+            "form": 0,
+            "level": 39,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_NOSEPASS",
+            "form": 0,
+            "level": 39,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 1
+        }
+    ]
+}

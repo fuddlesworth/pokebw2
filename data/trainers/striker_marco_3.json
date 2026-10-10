@@ -1,0 +1,20 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_STRIKER",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 25,
+    "reward": "ITEM_SUPER_POTION",
+    "party": [
+        {
+            "species": "SPECIES_BOLDORE",
+            "form": 0,
+            "level": 34,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

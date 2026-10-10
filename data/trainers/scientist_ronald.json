@@ -1,0 +1,20 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_SCIENTIST_M_52",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_X_ATTACK" ],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 12,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_MAGNETON",
+            "form": 0,
+            "level": 30,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 2
+        }
+    ]
+}

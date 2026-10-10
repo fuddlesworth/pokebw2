@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_POKEFAN_F",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_FULL_RESTORE" ],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 16,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_MEOWTH",
+            "form": 0,
+            "level": 60,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_GLAMEOW",
+            "form": 0,
+            "level": 60,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_LIEPARD",
+            "form": 0,
+            "level": 60,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

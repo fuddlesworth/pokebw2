@@ -135,8 +135,6 @@ def library_of(source: Path) -> tuple[str, list[str]] | None:
 ARCHIVES = {
     "a/0/1/2": "data/zones",  # Zone headers, see tools/scripts/zone_data.py
     "a/0/5/6": "data/field_scripts",  # Field scripts, see tools/scripts/field_script.py
-    "a/0/9/1": ("data/trainers", ".trainer"),  # Trainers, see tools/scripts/trainer_data.py
-    "a/0/9/2": ("data/trainers", ".party"),  # Their parties, from the same files
     "a/1/2/7": "data/encounters",  # Wild encounters, see tools/scripts/encounter_data.py
     "a/1/6/9": "data/tr_ai",  # Trainer AI scripts, see tools/scripts/tr_ai_script.py
 }
@@ -147,6 +145,7 @@ DATA_PACKS = [
     # Species data, level-up moves, evolutions, baby species and experience tables
     ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7"]),
     ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"]),  # Move data
+    ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2"]),  # Trainers and their parties
 ]
 DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py"]
 

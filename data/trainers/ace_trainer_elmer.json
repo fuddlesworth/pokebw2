@@ -1,0 +1,30 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ACE_TRAINER_M",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_ZWEILOUS",
+            "form": 0,
+            "level": 55,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_DRAGON_PULSE", "MOVE_BODY_SLAM", "MOVE_THIEF", "MOVE_TORMENT" ]
+        },
+        {
+            "species": "SPECIES_EELEKTROSS",
+            "form": 0,
+            "level": 55,
+            "difficulty": 100,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_WILD_CHARGE", "MOVE_FLAMETHROWER", "MOVE_CRUNCH", "MOVE_CRUSH_CLAW" ]
+        }
+    ]
+}

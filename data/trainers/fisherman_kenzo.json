@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_FISHERMAN",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 8,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_FRILLISH",
+            "form": 0,
+            "level": 44,
+            "difficulty": 0,
+            "gender": 1,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_FRILLISH",
+            "form": 0,
+            "level": 44,
+            "difficulty": 0,
+            "gender": 2,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_FRILLISH",
+            "form": 0,
+            "level": 44,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

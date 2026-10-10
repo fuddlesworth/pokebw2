@@ -1,0 +1,44 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_YOUNGSTER",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 4,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_KARRABLAST",
+            "form": 0,
+            "level": 37,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SHELMET",
+            "form": 0,
+            "level": 37,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_JOLTIK",
+            "form": 0,
+            "level": 37,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SCOLIPEDE",
+            "form": 0,
+            "level": 37,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

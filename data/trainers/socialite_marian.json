@@ -1,0 +1,20 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_SOCIALITE",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 50,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_LOPUNNY",
+            "form": 0,
+            "level": 39,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

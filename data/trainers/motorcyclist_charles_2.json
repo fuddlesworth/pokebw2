@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_MOTORCYCLIST",
+    "battle_style": "BTL_STYLE_TRIPLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT", "AI_FLAG_TAG_STRATEGY" ],
+    "heals": false,
+    "money": 8,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_TIRTOUGA",
+            "form": 0,
+            "level": 26,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SIGILYPH",
+            "form": 0,
+            "level": 26,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_ARCHEN",
+            "form": 0,
+            "level": 26,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

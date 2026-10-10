@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PILOT",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_DUCKLETT",
+            "form": 0,
+            "level": 36,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SWOOBAT",
+            "form": 0,
+            "level": 36,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

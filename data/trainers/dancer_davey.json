@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_DANCER",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 8,
+    "reward": "ITEM_ULTRA_BALL",
+    "party": [
+        {
+            "species": "SPECIES_MR_MIME",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_MR_MIME",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

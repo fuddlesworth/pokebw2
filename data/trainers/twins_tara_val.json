@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_TWINS",
+    "battle_style": "BTL_STYLE_DOUBLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_TAG_STRATEGY" ],
+    "heals": false,
+    "money": 4,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_COTTONEE",
+            "form": 0,
+            "level": 20,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_PETILIL",
+            "form": 0,
+            "level": 20,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

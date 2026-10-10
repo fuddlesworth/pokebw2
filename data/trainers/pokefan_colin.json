@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_POKEFAN_M",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_MAX_POTION" ],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 16,
+    "reward": "ITEM_MAX_POTION",
+    "party": [
+        {
+            "species": "SPECIES_SLOWPOKE",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SLOWBRO",
+            "form": 0,
+            "level": 61,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PKMN_TRAINER_RIVAL",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_TARGET_HP" ],
+    "heals": false,
+    "money": 25,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_OSHAWOTT",
+            "form": 0,
+            "level": 8,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_TACKLE", "MOVE_TAIL_WHIP" ]
+        }
+    ]
+}

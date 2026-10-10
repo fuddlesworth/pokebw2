@@ -1,0 +1,20 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_NURSE",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_FULL_HEAL" ],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": true,
+    "money": 10,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_LEAVANNY",
+            "form": 0,
+            "level": 35,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

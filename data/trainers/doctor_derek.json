@@ -1,0 +1,20 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_DOCTOR",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_FULL_HEAL", "ITEM_HYPER_POTION" ],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": true,
+    "money": 15,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_SWOOBAT",
+            "form": 0,
+            "level": 38,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PRESCHOOLER_M",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [],
+    "heals": false,
+    "money": 1,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_SUNFLORA",
+            "form": 0,
+            "level": 34,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

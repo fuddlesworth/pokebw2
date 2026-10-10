@@ -26,7 +26,7 @@ format and can write them again.
 | `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
 | `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
-| `a/0/9/1`, `a/0/9/2` | `data/trainers/` | Trainers and their parties | `tools/scripts/trainer_data.py` |
+| `a/0/9/1`, `a/0/9/2` | `data/trainers/` (JSON) | Trainers and their parties | `tools/scripts/trainer_data.py` |
 | `a/1/2/7` | `data/encounters/` | Wild encounters | `tools/scripts/encounter_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
@@ -205,34 +205,50 @@ versions have the same move data. A move's name and description are still in the
 
 ## Trainers
 
-A trainer is an entry of `a/0/9/1` and its party the entry of `a/0/9/2` with the same ID. Both come from one file,
-`data/trainers/NNNN_name.s`, named after the trainer's ID and name: the file's `.trainer` section goes into the first
-archive and its `.party` section into the second (`ARCHIVES` names the section of each).
+Each trainer is `data/trainers/<trainer>.json`, named after its constant (`elite_four_shauntal.json` for
+`TRAINER_ELITE_FOUR_SHAUNTAL`), as pokeplatinum's `res/trainers/data/`. It holds the trainer's record (`a/0/9/1`) and
+its party (`a/0/9/2`), and `tools/scripts/trainer_data.py pack` builds both archives in the order of
+`data/constants/trainers.txt`. `data/trainers/trainer.schema.json` documents each field.
 
+```json
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ELITE_FOUR_SHAUNTAL",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [ "ITEM_FULL_RESTORE" ],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 30,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_COFAGRIGUS",
+            "form": 0,
+            "level": 56,
+            "difficulty": 200,
+            "gender": 0,
+            "ability": 1,
+            "item": "ITEM_NONE",
+            "moves": [ "MOVE_WILL_O_WISP", ... ]
+        },
+        ...
+    ]
+}
 ```
-#include "asm/trainer.inc"
 
-// Elite Four Shauntal
-    Trainer class=TRAINER_CLASS_ELITE_FOUR_SHAUNTAL, party=PARTY_MOVES | PARTY_ITEMS, item1=ITEM_FULL_RESTORE, ai=AI_FLAG_BASIC | AI_FLAG_EVAL_ATTACK | AI_FLAG_EXPERT, money=30
-    PartyMon level=56, species=SPECIES_COFAGRIGUS, difficulty=200, ability=1, move1=MOVE_WILL_O_WISP, ...
-    ...
-    PartyMon level=58, species=SPECIES_CHANDELURE, difficulty=250, ability=2, item=ITEM_SITRUS_BERRY, ...
-    PartyEnd
-```
-
-The macros take keyword arguments, and leave out the ones that are 0. `party` says what each party entry holds besides
-the Pokémon: `PARTY_MOVES`, `PARTY_ITEMS`, both, or neither, in which case a Pokémon gets the moves of its level and
-no item. `PartyEnd` counts the party for the trainer record. `style` is the battle style (`BTL_STYLE_*`), `ai` the
+A party either gives every Pokémon an `item` or none, and `moves` or none; the packer sets the record's party kind
+(`PARTY_ITEMS`, `PARTY_MOVES`) from that, and a Pokémon without moves gets the moves of its level. `ai_flags` are the
 trainer AI scripts to run (`AI_FLAG_*`, see [Scripts](scripts.md)), `money` a multiplier of the prize money and
 `reward` an item given after the battle. A Pokémon's `difficulty` sets its individual values, and `gender` and
 `ability` pick them when not 0. `class` is a `TRAINER_CLASS_*` from `data/constants/trainer_classes.txt`, named after
 the class's name; where several classes share one, after their only trainer, their sex or their ID, as
-`TRAINER_CLASS_SCHOOL_KID_F` (`make_constants.py --trainer-classes`). Both versions have the same trainers.
+`TRAINER_CLASS_SCHOOL_KID_F` (`make_constants.py --trainer-classes`). `TRAINER_NONE` has no file: the packer writes
+the empty placeholder the game has for it. Both versions have the same trainers.
 
-Each trainer's ID, the number of its file, is a `TRAINER_*` from `data/constants/trainers.txt`, which the field
-scripts use: its class and name, as `TRAINER_YOUNGSTER_JIMMY`, without the class for the story characters, whose
-class is Pokémon Trainer (`TRAINER_CHEREN`), and numbered from `_2` where a class and name repeat, as for rematches
-(`make_constants.py --trainers`).
+Each trainer's constant in `data/constants/trainers.txt`, which the field scripts use, is its class and name, as
+`TRAINER_YOUNGSTER_JIMMY`, without the class for the story characters, whose class is Pokémon Trainer
+(`TRAINER_CHEREN`), and numbered from `_2` where a class and name repeat, as for rematches (`make_constants.py
+--trainers`). To add a trainer, add its constant to the end of the list and its file.
 
 ## Wild encounters
 

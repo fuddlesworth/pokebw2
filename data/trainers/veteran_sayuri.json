@@ -1,0 +1,48 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_VETERAN_F",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 20,
+    "reward": "ITEM_PP_MAX",
+    "party": [
+        {
+            "species": "SPECIES_RELICANTH",
+            "form": 0,
+            "level": 63,
+            "difficulty": 200,
+            "gender": 0,
+            "ability": 1,
+            "moves": [ "MOVE_DOUBLE_EDGE", "MOVE_ANCIENT_POWER", "MOVE_WATERFALL", "MOVE_BLIZZARD" ]
+        },
+        {
+            "species": "SPECIES_MAGCARGO",
+            "form": 0,
+            "level": 63,
+            "difficulty": 200,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_FIRE_BLAST", "MOVE_STONE_EDGE", "MOVE_GYRO_BALL", "MOVE_EARTHQUAKE" ]
+        },
+        {
+            "species": "SPECIES_GLACEON",
+            "form": 0,
+            "level": 63,
+            "difficulty": 200,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_BLIZZARD", "MOVE_RETURN", "MOVE_ICE_SHARD", "MOVE_SHADOW_BALL" ]
+        },
+        {
+            "species": "SPECIES_DRAGONITE",
+            "form": 0,
+            "level": 63,
+            "difficulty": 200,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_OUTRAGE", "MOVE_WING_ATTACK", "MOVE_WATERFALL", "MOVE_FIRE_PUNCH" ]
+        }
+    ]
+}

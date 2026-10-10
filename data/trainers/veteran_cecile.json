@@ -1,0 +1,30 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_VETERAN_F",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT", "AI_FLAG_TAG_STRATEGY" ],
+    "heals": false,
+    "money": 20,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_MANDIBUZZ",
+            "form": 0,
+            "level": 55,
+            "difficulty": 150,
+            "gender": 0,
+            "ability": 1,
+            "moves": [ "MOVE_PUNISHMENT", "MOVE_BONE_RUSH", "MOVE_SWAGGER", "MOVE_U_TURN" ]
+        },
+        {
+            "species": "SPECIES_ARCHEOPS",
+            "form": 0,
+            "level": 55,
+            "difficulty": 150,
+            "gender": 0,
+            "ability": 0,
+            "moves": [ "MOVE_ACROBATICS", "MOVE_U_TURN", "MOVE_CRUNCH", "MOVE_SANDSTORM" ]
+        }
+    ]
+}

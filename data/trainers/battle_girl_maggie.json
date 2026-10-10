@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_BATTLE_GIRL",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK" ],
+    "heals": false,
+    "money": 8,
+    "reward": "ITEM_NONE",
+    "party": [
+        {
+            "species": "SPECIES_MEDICHAM",
+            "form": 0,
+            "level": 62,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_HITMONLEE",
+            "form": 0,
+            "level": 62,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_MIENSHAO",
+            "form": 0,
+            "level": 62,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

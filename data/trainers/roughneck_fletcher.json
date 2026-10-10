@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_ROUGHNECK",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC" ],
+    "heals": false,
+    "money": 6,
+    "reward": "ITEM_DUSK_BALL",
+    "party": [
+        {
+            "species": "SPECIES_MIGHTYENA",
+            "form": 0,
+            "level": 60,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SKUNTANK",
+            "form": 0,
+            "level": 60,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_CRAWDAUNT",
+            "form": 0,
+            "level": 60,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

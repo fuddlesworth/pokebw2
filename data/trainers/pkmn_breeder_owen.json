@@ -1,0 +1,60 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PKMN_BREEDER_M",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 8,
+    "reward": "ITEM_RARE_CANDY",
+    "party": [
+        {
+            "species": "SPECIES_BONSLY",
+            "form": 0,
+            "level": 57,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_WOOPER",
+            "form": 0,
+            "level": 57,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_MUNCHLAX",
+            "form": 0,
+            "level": 57,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SANDSHREW",
+            "form": 0,
+            "level": 57,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_WYNAUT",
+            "form": 0,
+            "level": 57,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_SPOINK",
+            "form": 0,
+            "level": 57,
+            "difficulty": 0,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}

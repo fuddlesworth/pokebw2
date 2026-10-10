@@ -1,0 +1,28 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PKMN_RANGER_F",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_CHERI_BERRY",
+    "party": [
+        {
+            "species": "SPECIES_BUDEW",
+            "form": 0,
+            "level": 25,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 1
+        },
+        {
+            "species": "SPECIES_ROSELIA",
+            "form": 0,
+            "level": 25,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 1
+        }
+    ]
+}

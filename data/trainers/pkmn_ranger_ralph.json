@@ -1,0 +1,36 @@
+{
+    "$schema": "trainer.schema.json",
+    "class": "TRAINER_CLASS_PKMN_RANGER_M",
+    "battle_style": "BTL_STYLE_SINGLE",
+    "items": [],
+    "ai_flags": [ "AI_FLAG_BASIC", "AI_FLAG_EVAL_ATTACK", "AI_FLAG_EXPERT" ],
+    "heals": false,
+    "money": 15,
+    "reward": "ITEM_LUM_BERRY",
+    "party": [
+        {
+            "species": "SPECIES_ELECTRIKE",
+            "form": 0,
+            "level": 62,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 1
+        },
+        {
+            "species": "SPECIES_FARFETCHD",
+            "form": 0,
+            "level": 62,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 0
+        },
+        {
+            "species": "SPECIES_RAPIDASH",
+            "form": 0,
+            "level": 62,
+            "difficulty": 50,
+            "gender": 0,
+            "ability": 0
+        }
+    ]
+}
