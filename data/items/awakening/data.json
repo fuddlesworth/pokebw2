@@ -14,7 +14,7 @@
     "important": false,
     "registrable": false,
     "field_pocket": "BAG_POCKET_MEDICINE",
-    "battle_pocket": 8,
+    "battle_pocket": [ "BATTLE_POCKET_STATUS_RESTORE" ],
     "field_func": 1,
     "battle_func": 2,
     "kind": 0,

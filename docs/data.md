@@ -295,7 +295,7 @@ builds the archive in the order of `data/constants/items.txt`, and `data/items/i
     "hold_effect": "HOLD_EFFECT_NONE",
     ...
     "field_pocket": "BAG_POCKET_MEDICINE",
-    "battle_pocket": 4,
+    "battle_pocket": [ "BATTLE_POCKET_HP_PP_RESTORE" ],
     ...
     "effects": {
         "sleep_heal": false,
@@ -310,10 +310,10 @@ builds the archive in the order of `data/constants/items.txt`, and `data/items/i
 
 The price is in tens of Pokédollars, which `PML_ItemGetParam` multiplies by 10. An item has either a single `value` or
 `effects`, what it does used on a Pokémon (`ItemParams`); the packer sets the record's work type from which. The pocket
-outside battle is a `BAG_POCKET_*`, and the battle bag's pockets are bits for balls (1), battle items (2), HP and PP
-restoring (4) and status healing (8). An item's article is "a" or "an" by its first letter unless `name_article` says
-otherwise ("an HP Up", "the Leftovers", none for Honey). The 20 unused items, named "???", have constants of their own,
-as `ITEM_UNUSED_113`. Both versions have the same item data.
+outside battle is a `BAG_POCKET_*`, and its battle bag pockets are a list of `BATTLE_POCKET_*` flags. An item's article
+is "a" or "an" by its first letter unless `name_article` says otherwise ("an HP Up", "the Leftovers", none for Honey).
+The 20 unused items, named "???", have constants of their own, as `ITEM_UNUSED_113`. Both versions have the same item
+data.
 
 ## Abilities, types, trainer classes, natures and places
 

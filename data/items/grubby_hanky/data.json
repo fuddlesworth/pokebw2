@@ -14,7 +14,7 @@
     "important": true,
     "registrable": false,
     "field_pocket": "BAG_POCKET_KEY_ITEMS",
-    "battle_pocket": 0,
+    "battle_pocket": [],
     "field_func": 0,
     "battle_func": 0,
     "kind": 0,

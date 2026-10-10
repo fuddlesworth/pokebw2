@@ -49,8 +49,8 @@
             "description": "The bag pocket outside battle, a BAG_POCKET_* constant"
         },
         "battle_pocket": {
-            "type": "integer", "minimum": 0, "maximum": 31,
-            "description": "The pockets of the battle bag it is in, as bits, 0 for none: 1 balls (Master Ball), 2 battle items (X Attack), 4 HP and PP restoring (Potion), 8 status healing (Cheri Berry)"
+            "type": "array", "items": { "type": [ "string", "integer" ], "x-constant": "BATTLE_POCKET_", "minimum": 0 },
+            "description": "The pockets of the battle bag it is in, BATTLE_POCKET_* constants; none for an item that isn't used in battle"
         },
         "field_func": { "$ref": "#/$defs/u8", "description": "What using it outside battle does, by number" },
         "battle_func": { "$ref": "#/$defs/u8", "description": "What using it in battle does, by number" },

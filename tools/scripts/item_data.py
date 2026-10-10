@@ -91,7 +91,7 @@ def item_json(record: bytes) -> dict:
         "important": bool(bits >> 5 & 1),
         "registrable": bool(bits >> 6 & 1),
         "field_pocket": name("BAG_POCKET_", bits >> 7 & 0xF),
-        "battle_pocket": bits >> 11,
+        "battle_pocket": [name("BATTLE_POCKET_", 1 << bit) for bit in range(5) if bits >> 11 >> bit & 1],
         "field_func": field_func,
         "battle_func": battle_func,
         "kind": kind,
@@ -137,7 +137,7 @@ def item_bytes(data: dict, where: str) -> bytes:
         raise DataError(f"{where}: an item has either value or effects")
     gift_type = NO_TYPE if data["natural_gift_type"] is None else value(data["natural_gift_type"], where)
     bits = (gift_type | data["important"] << 5 | data["registrable"] << 6 | value(data["field_pocket"], where) << 7
-            | data["battle_pocket"] << 11)
+            | sum(value(pocket, where) for pocket in data["battle_pocket"]) << 11)
     if "value" in data:
         work_type, work = WORK_VALUE, bytes([data["value"]]) + bytes(RECORD_SIZE - HEADER.size - 1)
     else:

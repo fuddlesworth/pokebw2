@@ -14,7 +14,7 @@
     "important": true,
     "registrable": false,
     "field_pocket": "BAG_POCKET_TMS_HMS",
-    "battle_pocket": 0,
+    "battle_pocket": [],
     "field_func": 6,
     "battle_func": 0,
     "kind": 0,
