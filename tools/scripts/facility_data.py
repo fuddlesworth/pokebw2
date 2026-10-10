@@ -32,10 +32,15 @@ from text_sources import to_json  # noqa: E402
 SET = struct.Struct("<5HBBHH")
 STATS = ["hp", "attack", "defense", "speed", "special_attack", "special_defense"]
 DATA_DIR = ROOT / "data/facilities"
-# Each facility: its trainers' and Pokémon archives, the system message files of its trainers' names and messages, and
-# how many messages a trainer has. The Battle Subway's are also the Trial House's (func_ov012_02162864)
+# Each facility: its trainers' and Pokémon archives, the system message files of its trainers' names and messages, how
+# many messages a trainer has (0 for none), and whether the names are stored compressed. The Battle Subway's are also
+# the Trial House's (func_ov012_02162864); the Black Tower's, White Treehollow in White 2, are the trainers' archive
+# that func_ov127_021efeec reads, 0x106, and the Pokémon's, 0x105, with names from file 0x35
 FACILITIES = {
-    "battle_subway": {"trainers": "a/2/1/2", "pokemon": "a/2/1/1", "names": 15, "messages": 376, "per_trainer": 3},
+    "battle_subway": {"trainers": "a/2/1/2", "pokemon": "a/2/1/1", "names": 15, "messages": 376, "per_trainer": 3,
+                      "compressed_names": False},
+    "black_tower": {"trainers": "a/2/6/2", "pokemon": "a/2/6/1", "names": 53, "messages": None, "per_trainer": 0,
+                    "compressed_names": True},
 }
 
 
@@ -69,8 +74,8 @@ def dump(files: Path, output: Path, facility: str):
         count[stem] = count.get(stem, 0) + 1
         set_names.append(f"{stem}_{count[stem]}")
         write(root / "pokemon" / f"{set_names[-1]}.json", set_json(data))
-    names = message_lines(files / "a/0/0/2", config["names"])
-    messages = message_lines(files / "a/0/0/2", config["messages"])
+    names = [line.removeprefix("\\c") for line in message_lines(files / "a/0/0/2", config["names"])]
+    messages = message_lines(files / "a/0/0/2", config["messages"]) if config["per_trainer"] else []
     per = config["per_trainer"]
     trainer_names = []
     count = {}
@@ -82,8 +87,9 @@ def dump(files: Path, output: Path, facility: str):
         trainer = {"$schema": "../../facility.schema.json", "class": class_name,
                    "pokemon": [set_names[pick] for pick in picks]}
         if index < len(names):
-            trainer = {"$schema": trainer.pop("$schema"), "name": to_json(names[index]), **trainer,
-                       "messages": [to_json(m) for m in messages[per * index:per * (index + 1)]]}
+            trainer = {"$schema": trainer.pop("$schema"), "name": to_json(names[index]), **trainer}
+            if per:
+                trainer["messages"] = [to_json(m) for m in messages[per * index:per * (index + 1)]]
         base = (str(class_name).removeprefix("TRAINER_CLASS_").lower() + "_" +
                 (identifier(names[index]).lower() if index < len(names) else str(index)))
         count[base] = count.get(base, 0) + 1
@@ -134,12 +140,13 @@ def pack(facility: str, trainers_output: Path, pokemon_output: Path):
 def text_lines(facility: str, kind: str) -> list[str]:
     """The names or messages of a facility's trainers that have them, which come first, for the text."""
     trainers, _ = load_facility(facility)
+    prefix = "\\c" if FACILITIES[facility]["compressed_names"] and kind == "names" else ""
     lines = []
     for trainer_name, data in trainers:
         if "name" not in data:
             break
         lines += [data["name"]] if kind == "names" else data["messages"]
-    return lines
+    return [prefix + line for line in lines]
 
 
 def main():

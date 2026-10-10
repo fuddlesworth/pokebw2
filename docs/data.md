@@ -32,6 +32,7 @@ format and can write them again.
 | `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
 | `a/1/6/3` | `data/trades/` (JSON) | In-game trades | `tools/scripts/trade_data.py` |
 | `a/2/1/2`, `a/2/1/1` | `data/facilities/battle_subway/` (JSON) | Battle Subway and Trial House trainers and Pokémon | `tools/scripts/facility_data.py` |
+| `a/2/6/2`, `a/2/6/1` | `data/facilities/black_tower/` (JSON) | Black Tower and White Treehollow trainers and Pokémon | `tools/scripts/facility_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
@@ -124,6 +125,7 @@ Egg and Bad Egg after the species' names:
 | `0037_trade_names.txt` | `\from{trades.names}` | Each trade's `nickname` and `trainer_name` |
 | `0015_battle_subway_trainer_names.txt` | `\from{facilities.battle_subway.names}` | Each Battle Subway trainer's `name` |
 | `0376_battle_subway_trainer_messages.txt` | `\from{facilities.battle_subway.messages}` | Each one's three `messages` |
+| `0053_black_tower_trainer_names.txt` | `\from{facilities.black_tower.names}` | Each Black Tower trainer's `name` |
 | `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
 | `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
@@ -452,11 +454,16 @@ name and messages, which the text takes (see [Text](#text)); `pokemon/<set>.json
 lists both in archive order. `tools/scripts/facility_data.py pack` builds the facility's trainers and Pokémon
 archives, and `data/facilities/facility.schema.json` and `set.schema.json` document the fields.
 
-`FACILITIES` in `facility_data.py` says which archives and message files are a facility's. So far that is the Battle
-Subway (`a/2/1/2` and `a/2/1/1`, whose trainers' names are system message file 15 and their three messages each file
-376), which the Trial House also uses (`func_ov012_02162864`). The other facilities' archives, of the Pokémon World
-Tournament and the Black Tower and White Treehollow among them, have the same formats but aren't tied to their code
-yet. Both versions have the same facility data.
+`FACILITIES` in `facility_data.py` says which archives and message files are a facility's: the Battle Subway (`a/2/1/2`
+and `a/2/1/1`, whose trainers' names are system message file 15 and their three messages each file 376), which the Trial
+House also uses (`func_ov012_02162864`), and the Black Tower, White Treehollow in White 2 (`a/2/6/2` and `a/2/6/1`,
+which `func_ov127_021efeec` reads, with the trainers' names in file 53, stored compressed, and no messages). The Pokémon
+World Tournament's archives have the same formats but aren't tied to their code yet. Both versions have the same
+facility data.
+
+Unlike a regular trainer (see [Trainers](#trainers)), a facility trainer has no party of its own: the game picks some of
+its sets at random, and the facility sets the level and IVs. The sets are a pool that many trainers share, which is why
+they are files of their own that trainers name.
 
 ## Zone events
 

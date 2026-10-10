@@ -154,6 +154,9 @@ DATA_PACKS = [
     # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
     ("tools/scripts/facility_data.py", "data/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
      ["data/facilities"]),
+    # The Black Tower, White Treehollow in White 2
+    ("tools/scripts/facility_data.py", "data/facilities/black_tower", ["a/2/6/2", "a/2/6/1"], False,
+     ["data/facilities"]),
     # The zones' events, at the numbers of their entities files, which the zone headers give
     ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False, ["data/zones"]),
 ]
