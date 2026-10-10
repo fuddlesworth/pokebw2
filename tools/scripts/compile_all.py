@@ -17,7 +17,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from configure import CC_FLAGS, INCLUDE_DIRS, MWCC_VERSION, VERSIONS, download_tools, library_of  # noqa: E402
+from configure import (CC_FLAGS, GENERATED_INCLUDE_DIR, INCLUDE_DIRS, MWCC_VERSION, VERSIONS,  # noqa: E402
+                       download_tools, library_of)
+from gen_constants import generate  # noqa: E402
 
 TOOLS = ROOT / "tools"
 
@@ -43,6 +45,17 @@ def compile_file(source: Path, version: str, out_dir: Path) -> tuple[Path, str] 
     return None
 
 
+def generate_constants():
+    """Writes the constant headers of data/constants/, as ninja does, since the sources include them."""
+    out_dir = ROOT / GENERATED_INCLUDE_DIR / "constants"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for source in sorted((ROOT / "data" / "constants").glob("*.txt")):
+        header = out_dir / source.with_suffix(".h").name
+        text = generate(source)
+        if not header.exists() or header.read_text() != text:
+            header.write_text(text)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--version", choices=VERSIONS, action="append", help="version to compile, default every one")
@@ -50,6 +63,7 @@ def main():
     args = parser.parse_args()
 
     download_tools(TOOLS)
+    generate_constants()
     sources = sorted(p.relative_to(ROOT) for pattern in ("src/**/*.c", "lib/*/src/**/*.c") for p in ROOT.glob(pattern))
     versions = args.version or list(VERSIONS)
     with tempfile.TemporaryDirectory() as tmp, ThreadPoolExecutor(args.jobs) as pool:
