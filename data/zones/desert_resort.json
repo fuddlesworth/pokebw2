@@ -4,8 +4,8 @@
     "npc_cache": 3,
     "area": 22,
     "matrix": 0,
-    "scripts": 314,
-    "text": 215,
+    "scripts": "SCRIPTS_DESERT_RESORT",
+    "text": "SCRIPT_TEXT_DESERT_RESORT",
     "bgm": {
         "spring": "SEQ_BGM_R_C_SP",
         "summer": "SEQ_BGM_R_C_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": "ENCOUNTERS_DESERT_RESORT",
     "enc_slot": 5,
-    "entities": 206,
     "parent": "ZONE_DESERT_RESORT",
     "place": "PLACE_DESERT_RESORT",
     "place_display": 1,

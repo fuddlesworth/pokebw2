@@ -19,6 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from gen_constants import header_text  # noqa: E402
+from gen_constants import ordered_files  # noqa: E402
 from narc import read_narc  # noqa: E402
 
 # Commands, in ID order: the macro name, the parameters with their kinds, and what the command does. The names follow
@@ -249,8 +250,6 @@ RESULTS = {
     "LoadSpecies": "species",
 }
 # The scripts, in archive order, which is the bit of the AI flag that runs each (AI_FLAG_* in constants/tr_ai.h)
-SCRIPTS = ["basic", "eval_attack", "expert", "setup_first_turn", "target_hp", "fusion_moves", "baton_pass",
-           "tag_strategy", "check_hp", "weather", "harassment", "roaming_pokemon", "safari", "catch_tutorial"]
 # Commands after which the script doesn't continue: jump, end and jump_by_move_effect
 NO_FALLTHROUGH = {76, 77, 115}
 REFERENCES = ("jump", "list", "table")
@@ -628,12 +627,13 @@ def main():
         args.output.mkdir(parents=True, exist_ok=True)
         constants = load_constants()
         labels = json.loads(args.labels.read_text()) if args.labels else {}
+        # The files are named after their constants in data/constants/tr_ai_scripts.txt, in its order
+        paths = ordered_files("tr_ai_scripts", "TR_AI_SCRIPT_", args.output, ".s")
         for i, data in enumerate(read_narc(args.archive.read_bytes())):
             names = {int(offset): name for offset, name in labels.get(str(i), {}).items()}
             script = Script(data, f"TrAI{i:02d}", constants, names)
             text = f'#include "asm/tr_ai.inc"\n\n{script.disassemble()}'
-            name = SCRIPTS[i] if i < len(SCRIPTS) else "unknown"
-            (args.output / f"{i:02d}_{name}.s").write_text(text)
+            (args.output / paths[i].name).write_text(text)
 
 
 if __name__ == "__main__":

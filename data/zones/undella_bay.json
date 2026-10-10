@@ -4,8 +4,8 @@
     "npc_cache": 13,
     "area": 70,
     "matrix": 0,
-    "scripts": 480,
-    "text": 305,
+    "scripts": "SCRIPTS_UNDELLA_BAY",
+    "text": "SCRIPT_TEXT_UNDELLA_BAY",
     "bgm": {
         "spring": "SEQ_BGM_R_E_SP",
         "summer": "SEQ_BGM_R_E_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": "ENCOUNTERS_UNDELLA_BAY",
     "enc_slot": 5,
-    "entities": 296,
     "parent": "ZONE_UNDELLA_BAY",
     "place": "PLACE_UNDELLA_BAY",
     "place_display": 1,

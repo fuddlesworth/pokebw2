@@ -9,6 +9,7 @@ Each zone is data/zones/<zone>.json, named after its constant (black_city.json f
 single entry holds the 615 headers in the order of data/constants/zones.txt. zone.schema.json describes each field.
 """
 import argparse
+import json
 import struct
 import sys
 from pathlib import Path
@@ -38,19 +39,19 @@ def ordered_zones() -> list[str]:
 
 
 def zone_json(header: bytes) -> dict:
+    # The entities file is the zone's events, data/events/<zone>.json, at its place in data/events/order.json
     (map_type, npc_cache, area, matrix, scripts, init_scripts, text, *rest) = HEADER.unpack(header)
     bgm, (encounters, entities, parent, place, env, flags, cam_bound, icon, fly_x, fly_y, fly_z) = rest[:4], rest[4:]
     data = {"$schema": "zone.schema.json", "map_type": map_type, "npc_cache": npc_cache, "area": area,
-            "matrix": matrix, "scripts": scripts}
+            "matrix": matrix, "scripts": name("SCRIPTS_", scripts)}
     if init_scripts != scripts + 1:
-        data["init_scripts"] = init_scripts
+        data["init_scripts"] = name("SCRIPTS_", init_scripts)
     table = encounters & 0x1FFF
     data.update({
-        "text": text,
+        "text": name("SCRIPT_TEXT_", text),
         "bgm": name("SEQ_", bgm[0]) if len(set(bgm)) == 1 else dict(zip(SEASONS, (name("SEQ_", s) for s in bgm))),
         "encounters": None if table == NO_ENCOUNTERS else name("ENCOUNTERS_", table),
         "enc_slot": encounters >> 13,
-        "entities": entities,
         "parent": name("ZONE_", parent),
         "place": name("PLACE_", place & 0x3FF),
         "place_display": place >> 10,
@@ -78,7 +79,7 @@ def dump(files: Path, output: Path):
     print(f"wrote {len(zones)} zones to {output}")
 
 
-def zone_bytes(data: dict, where: str) -> bytes:
+def zone_bytes(data: dict, entities: int, where: str) -> bytes:
     bgm = data["bgm"]
     seasons = [value(bgm[s], where) for s in SEASONS] if isinstance(bgm, dict) else [value(bgm, where)] * 4
     encounters = NO_ENCOUNTERS if data["encounters"] is None else value(data["encounters"], where)
@@ -86,9 +87,9 @@ def zone_bytes(data: dict, where: str) -> bytes:
     for flag, bit in FLAGS:
         flags |= data.get(flag, flag == "flag11") << bit
     return HEADER.pack(
-        data["map_type"], data["npc_cache"], data["area"], data["matrix"], data["scripts"],
-        data.get("init_scripts", data["scripts"] + 1), data["text"], *seasons, encounters | data["enc_slot"] << 13,
-        data["entities"], value(data["parent"], where), value(data["place"], where) | data["place_display"] << 10,
+        data["map_type"], data["npc_cache"], data["area"], data["matrix"], value(data["scripts"], where),
+        value(data.get("init_scripts", value(data["scripts"], where) + 1), where), value(data["text"], where),
+        *seasons, encounters | data["enc_slot"] << 13, entities, value(data["parent"], where), value(data["place"], where) | data["place_display"] << 10,
         data["weather"] | data["projection"] << 6 | data["camera"] << 9, flags, data["cam_bound"],
         data["name_icon"] | data["easy_level"] << 13, data["fly"]["x"], data["fly"]["y"], data["fly"]["z"],
     )
@@ -96,10 +97,13 @@ def zone_bytes(data: dict, where: str) -> bytes:
 
 def pack(root: Path, output: Path):
     schema = load_schema(root / "zone.schema.json")
+    events = json.loads((root.parent / "events" / "order.json").read_text())
     headers = []
     for zone in ordered_zones():
         path = root / file_name(zone)
-        headers.append(zone_bytes(load(path, schema), label(path)))
+        if zone not in events:
+            raise DataError(f"data/events/order.json: {zone} isn't in it")
+        headers.append(zone_bytes(load(path, schema), events.index(zone), label(path)))
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(write_narc([b"".join(headers)]))
 

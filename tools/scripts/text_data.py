@@ -3,9 +3,12 @@
 editable text files, one per message file, with one message per line. The build packs the text files back into the
 archives and checks that they match.
 
-    text_data.py unpack extract/b2_us/files/a/0/0/2 data/text/system   # writes 0000.txt, 0001.txt, ... or keeps the
-                                                                         # names of the files there, NNNN_name.txt
+    text_data.py unpack extract/b2_us/files/a/0/0/2 data/text/system
     text_data.py pack data/text/system build/b2_us/files/a/0/0/2
+
+The files are named after the constants of their archive's list (TEXT_LISTS): a system message file after its
+TEXT_BANK_* in data/constants/text_banks.txt, as species_names.txt, and a script message file after its SCRIPT_TEXT_*
+in script_text_banks.txt, as black_city.txt; the list gives their order.
 
 The text is UTF-8. In it:
 
@@ -31,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from msgdata import COMPRESSED, CONTROL, LINE_END, NEWLINE, decompress, decrypt  # noqa: E402
 from datajson import DataError  # noqa: E402
+from gen_constants import ordered_files  # noqa: E402
 from narc import read_narc, write_narc  # noqa: E402
 from text_sources import expand  # noqa: E402
 
@@ -159,6 +163,15 @@ def unpack_file(data: bytes) -> str:
     return "".join(line + "\n" for line in lines)
 
 
+# The constant list that names each directory's files, by the directory's name, and the prefix of its constants
+TEXT_LISTS = {"system": ("text_banks", "TEXT_BANK_"), "script": ("script_text_banks", "SCRIPT_TEXT_")}
+
+
+def text_files(directory: Path) -> list[Path]:
+    list_name, prefix = TEXT_LISTS[directory.name]
+    return ordered_files(list_name, prefix, directory, ".txt")
+
+
 def message_lines(archive: Path, number: int) -> list[str]:
     """Returns the messages of a file of a text archive as lines of a text file, without the padding line."""
     lines = unpack_file(read_narc(archive.read_bytes())[number]).split("\n")[:-1]
@@ -216,11 +229,11 @@ def main():
     if args.command == "unpack":
         args.output.mkdir(parents=True, exist_ok=True)
         files = read_narc(args.archive.read_bytes())
-        # Keep the names of files that are already there, NNNN_name.txt
-        existing = {int(p.name[:4]): p for p in args.output.glob("[0-9][0-9][0-9][0-9]*.txt")}
+        paths = text_files(args.output)
+        if len(paths) != len(files):
+            raise SystemExit(f"{len(files)} files in the archive and {len(paths)} in its list")
         kept = []
-        for index, data in enumerate(files):
-            path = existing.get(index, args.output / f"{index:04d}.txt")
+        for path, data in zip(paths, files):
             # A file that takes messages from the data in JSON would get them twice
             if path.exists() and any(FROM.fullmatch(line) for line in path.read_text(encoding="utf-8").split("\n")):
                 kept.append(path.name)
@@ -230,9 +243,7 @@ def main():
         if kept:
             print(f"kept {', '.join(kept)}, which take messages from the data in JSON")
     else:
-        sources = sorted(args.directory.glob("*.txt"), key=lambda p: int(p.name[:4]))
-        if [int(p.name[:4]) for p in sources] != list(range(len(sources))):
-            raise SystemExit(f"{args.directory}: the files must be numbered 0000 on without gaps, NNNN_name.txt")
+        sources = text_files(args.directory)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         try:
             files = [pack_file(s.read_text(encoding="utf-8")) for s in sources]

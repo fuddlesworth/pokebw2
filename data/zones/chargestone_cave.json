@@ -4,8 +4,8 @@
     "npc_cache": 7,
     "area": 34,
     "matrix": 0,
-    "scripts": 388,
-    "text": 252,
+    "scripts": "SCRIPTS_CHARGESTONE_CAVE",
+    "text": "SCRIPT_TEXT_CHARGESTONE_CAVE",
     "bgm": {
         "spring": "SEQ_BGM_R_D_SP",
         "summer": "SEQ_BGM_R_D_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": null,
     "enc_slot": 6,
-    "entities": 243,
     "parent": "ZONE_CHARGESTONE_CAVE",
     "place": "PLACE_CHARGESTONE_CAVE",
     "place_display": 1,

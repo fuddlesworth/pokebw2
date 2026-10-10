@@ -82,8 +82,8 @@ named only when the code shows what it is, and the list holds only those, each w
 ## Text
 
 `a/0/0/2` (system messages) and `a/0/0/3` (script messages) hold the game's text, one message file per entry. Their
-sources are `data/text/system/NNNN.txt` and `data/text/script/NNNN.txt`, UTF-8, with one message per line, so the
-line number (from 0) is the message's ID:
+sources are `data/text/system/<file>.txt` and `data/text/script/<file>.txt`, UTF-8, with one message per line, so
+the line number (from 0) is the message's ID:
 
 ```
 Listen up!\nThere's nothing wrong with making money!{be01}\nBut there are wrong ways to do it...
@@ -108,44 +108,46 @@ Egg and Bad Egg after the species' names:
 
 | File | Line | Messages |
 | --- | --- | --- |
-| `0090_species_names.txt` | `\from{species.name}` | Each species' `name` |
-| `0486_species_names_upper.txt` | `\from{species.name_upper}` | The same in capitals |
-| `0483_species_names_with_article.txt` | `\from{species.name_with_article}` | The same with "a" or "an" (`name_article` where the first letter doesn't tell) |
-| `0464_species_categories.txt` | `\from{species.pokedex.category}` | Each species' `pokedex.category` |
-| `0442_pokedex_entries.txt`, `0451_pokedex_heights.txt`, `0471_pokedex_weights.txt` | `\from{species.pokedex.entry}`, `\from{species.pokedex.forms.entry}` (and `height`, `weight`) | Each species' `pokedex.entry`, an empty line, then its alternate forms' `pokedex.forms`, in species order |
-| `0458_species_names_en.txt` to `0494_pokedex_weights_ja.txt` | `\from{species.pokedex.<language>.name}` and the like | The other languages' `pokedex.languages`: names, categories, entries, heights and weights |
-| `0403_move_names.txt` | `\from{moves.name}` | Each move's `name` |
-| `0488_move_names_upper.txt` | `\from{moves.name_upper}` | The same in capitals |
-| `0402_btl_main.txt` | `\from{moves.description}` | Each move's `description` |
-| `0064_item_names.txt` | `\from{items.name}` | Each item's `name` |
-| `0481_item_names_with_article.txt` | `\from{items.name_with_article}` | The same with its article (`name_article`, or the whole `name_with_article` where it isn't written as the others) |
-| `0482_item_names_plural.txt` | `\from{items.name_plural}` | Each item's `name_plural` |
-| `0063_item_descriptions.txt` | `\from{items.description}` | Each item's `description` |
-| `0374_ability_names.txt` | `\from{abilities.name}` | Each ability's `name` |
-| `0375_ability_descriptions.txt` | `\from{abilities.description}` | Each ability's `description` |
-| `0398_type_names.txt` | `\from{types.name}` | Each type's `name` |
-| `0037_trade_names.txt` | `\from{trades.names}` | Each trade's `nickname` and `trainer_name` |
-| `0015_battle_subway_trainer_names.txt` | `\from{facilities.battle_subway.names}` | Each Battle Subway trainer's `name` |
-| `0376_battle_subway_trainer_messages.txt` | `\from{facilities.battle_subway.messages}` | Each one's three `messages` |
-| `0053_black_tower_trainer_names.txt` | `\from{facilities.black_tower.names}` | Each Black Tower trainer's `name` |
-| `0383_trainer_class_names.txt`, `0485_trainer_class_names_with_article.txt` | `\from{trainer_classes.name}`, `\from{trainer_classes.name_with_article}` | Each trainer class's `name` and `name_with_article` |
-| `0027_natures.txt` | `\from{natures.name}` | Each nature's `name` |
-| `0109_place_names.txt` | `\from{places.name}` | Each place's `name` |
-| `0487_ability_names_upper.txt` | `\from{abilities.name_upper}` | Each ability's `name` in capitals, from ability 1 |
-| `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
-| `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
+| `species_names.txt` | `\from{species.name}` | Each species' `name` |
+| `species_names_upper.txt` | `\from{species.name_upper}` | The same in capitals |
+| `species_names_with_article.txt` | `\from{species.name_with_article}` | The same with "a" or "an" (`name_article` where the first letter doesn't tell) |
+| `species_categories.txt` | `\from{species.pokedex.category}` | Each species' `pokedex.category` |
+| `pokedex_entries.txt`, `pokedex_heights.txt`, `pokedex_weights.txt` | `\from{species.pokedex.entry}`, `\from{species.pokedex.forms.entry}` (and `height`, `weight`) | Each species' `pokedex.entry`, an empty line, then its alternate forms' `pokedex.forms`, in species order |
+| `species_names_en.txt` to `pokedex_weights_ja.txt` | `\from{species.pokedex.<language>.name}` and the like | The other languages' `pokedex.languages`: names, categories, entries, heights and weights |
+| `move_names.txt` | `\from{moves.name}` | Each move's `name` |
+| `move_names_upper.txt` | `\from{moves.name_upper}` | The same in capitals |
+| `btl_main_13.txt` | `\from{moves.description}` | Each move's `description` |
+| `item_names.txt` | `\from{items.name}` | Each item's `name` |
+| `item_names_with_article.txt` | `\from{items.name_with_article}` | The same with its article (`name_article`, or the whole `name_with_article` where it isn't written as the others) |
+| `item_names_plural.txt` | `\from{items.name_plural}` | Each item's `name_plural` |
+| `item_descriptions.txt` | `\from{items.description}` | Each item's `description` |
+| `ability_names.txt` | `\from{abilities.name}` | Each ability's `name` |
+| `ability_descriptions.txt` | `\from{abilities.description}` | Each ability's `description` |
+| `type_names.txt` | `\from{types.name}` | Each type's `name` |
+| `trade_names.txt` | `\from{trades.names}` | Each trade's `nickname` and `trainer_name` |
+| `battle_subway_trainer_names.txt` | `\from{facilities.battle_subway.names}` | Each Battle Subway trainer's `name` |
+| `battle_subway_trainer_messages.txt` | `\from{facilities.battle_subway.messages}` | Each one's three `messages` |
+| `black_tower_trainer_names.txt` | `\from{facilities.black_tower.names}` | Each Black Tower trainer's `name` |
+| `trainer_class_names.txt`, `trainer_class_names_with_article.txt` | `\from{trainer_classes.name}`, `\from{trainer_classes.name_with_article}` | Each trainer class's `name` and `name_with_article` |
+| `natures.txt` | `\from{natures.name}` | Each nature's `name` |
+| `place_names.txt` | `\from{places.name}` | Each place's `name` |
+| `ability_names_upper.txt` | `\from{abilities.name_upper}` | Each ability's `name` in capitals, from ability 1 |
+| `trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
+| `trainer_msg_load_2.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
 In the JSON, a line break is a real one (`"\n"` in the JSON) rather than `\n`; control codes and other escapes are as
 in the text files. The other languages' Pokédex entries and categories, which the game keeps for older species, stay
 text.
 
-The game encrypts each message with a key that depends on its ID, which `text_data.py` applies when packing. Files are
-numbered by their ID in the archive, `NNNN_name.txt`, and named where something says what they are for: a script message
-file after the place of the zone whose header names it (`0003_black_city.txt`), and a system message file after what it
-holds, which the word set function that loads it or its contents show (`0403_move_names.txt`, `0027_natures.txt`), or
-else after the source file or function that loads it (`0004_delete_save.txt`). The others keep their number until they
-are known (`0001.txt`). `text_data.py unpack` keeps the names of the files it writes over. Both versions have the same
-text.
+The game encrypts each message with a key that depends on its ID, which `text_data.py` applies when packing. The files
+are named after their constants, which give their order in the archive: a system message file after its `TEXT_BANK_*` in
+`data/constants/text_banks.txt` (`species_names.txt` for `TEXT_BANK_SPECIES_NAMES`), and a script message file after its
+`SCRIPT_TEXT_*` in `script_text_banks.txt`, which names a zone's after the zone (`black_city.txt`) and a global script
+file's after its first script ID (`global_10885.txt`). A system message file is named after what it holds, which the
+word set function that loads it or its contents show (`move_names.txt`, `natures.txt`), or else after the source file or
+function that loads it (`delete_save.txt`); the others keep their number until they are known (`0001.txt`), as
+`TEXT_BANK_0001`. To rename one, rename its constant with `rename_constant.py`, which renames the file. Both versions
+have the same text.
 
 ## Species
 

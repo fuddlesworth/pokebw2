@@ -5,7 +5,7 @@
     "type": "object",
     "additionalProperties": false,
     "required": [
-        "map_type", "npc_cache", "area", "matrix", "scripts", "text", "bgm", "encounters", "enc_slot", "entities",
+        "map_type", "npc_cache", "area", "matrix", "scripts", "text", "bgm", "encounters", "enc_slot",
         "parent", "place", "place_display", "weather", "projection", "camera", "transition", "battle_bg", "cycling",
         "escape_rope", "fly_from", "cycle_surf_bgm", "entralink_warp", "cam_bound", "name_icon", "easy_level", "fly"
     ],
@@ -15,12 +15,18 @@
         "npc_cache": { "$ref": "#/$defs/u8", "description": "The NPC info cache index" },
         "area": { "$ref": "#/$defs/u16", "description": "The area: its textures and buildings" },
         "matrix": { "$ref": "#/$defs/u16", "description": "The map matrix" },
-        "scripts": { "$ref": "#/$defs/u16", "description": "The zone's field script file, in data/field_scripts/" },
-        "init_scripts": {
-            "$ref": "#/$defs/u16",
-            "description": "Left out, as in every zone, it is the script file after scripts; nothing reads it"
+        "scripts": {
+            "type": "string", "x-constant": "SCRIPTS_",
+            "description": "The zone's field script file, a SCRIPTS_* constant, data/field_scripts/<name>.s"
         },
-        "text": { "$ref": "#/$defs/u16", "description": "The zone's script message file, in data/text/script/" },
+        "init_scripts": {
+            "type": "string", "x-constant": "SCRIPTS_",
+            "description": "Left out, as in every zone, it is the script file after scripts, the zone's SCRIPTS_INIT_*; nothing reads it"
+        },
+        "text": {
+            "type": "string", "x-constant": "SCRIPT_TEXT_",
+            "description": "The zone's script message file, a SCRIPT_TEXT_* constant, data/text/script/<name>.txt"
+        },
         "bgm": {
             "description": "The music (SEQ_*), or an object with the music of each season",
             "anyOf": [
@@ -45,7 +51,6 @@
             "type": "integer", "minimum": 0, "maximum": 7,
             "description": "The zone's 3-bit slot in a save word, 6 for none"
         },
-        "entities": { "$ref": "#/$defs/u16", "description": "The zone's entities file" },
         "parent": { "type": "string", "x-constant": "ZONE_", "description": "The zone this one belongs to, a ZONE_* constant" },
         "place": {
             "type": "string", "x-constant": "PLACE_",

@@ -7,10 +7,10 @@ from the ROM once, and pack builds the archive of the zones' entities (a/1/2/6) 
 
 A zone's events are data/events/<zone>.json, named after its constant: its background events, such as signs
 (ZoneBGEntity), its NPCs (ZoneNPC), its warps (ZoneWarp), its triggers (ZoneTrigger), and its init scripts, a map
-script table that LoadZoneEntities finds after them. Each is at a grid position or on a rail. A zone's header names its
-entities file by number (entities in data/zones/), and the archive has each zone's events at that number; the numbers
-in data/events/placeholders.json, which no zone uses, hold the game's 4-byte placeholder. events.schema.json describes
-each field.
+script table that LoadZoneEntities finds after them. Each is at a grid position or on a rail. data/events/order.json
+lists the zones in the order of the archive, which isn't the zones' own, with null where the archive has the game's
+4-byte placeholder; zone_data.py gives each zone's header the number of its events from it. events.schema.json
+describes each field.
 """
 import argparse
 import json
@@ -20,7 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from datajson import DataError, id_name, label, load, load_schema, name, value, write  # noqa: E402
-from gen_constants import load as load_list  # noqa: E402
+from gen_constants import ordered_names  # noqa: E402
 from narc import read_narc, write_narc  # noqa: E402
 
 BG = struct.Struct("<HHHH12s")
@@ -35,18 +35,21 @@ def file_name(zone: str) -> str:
     return zone.removeprefix("ZONE_").lower() + ".json"
 
 
-def zone_files() -> dict[int, str]:
-    """The zone whose events each entities file is, by the file's number, from the zone headers."""
-    first: dict[int, str] = {}
-    for zone, number in load_list("zones").items():
-        first.setdefault(number, zone)
-    files = {}
-    for zone in first.values():
-        number = json.loads((Path(__file__).parents[2] / "data/zones" / file_name(zone)).read_text())["entities"]
-        if number in files:
-            raise DataError(f"{files[number]} and {zone} have the same entities file, {number}")
-        files[number] = zone
-    return files
+def zone_files_from_rom(files: Path) -> dict[int, str]:
+    """The zone whose events each entities file is, by the file's number, from the ROM's zone headers."""
+    (headers,) = read_narc((files / "a/0/1/2").read_bytes())
+    zones = ordered_names("zones")
+    return {struct.unpack_from("<H", headers, 0x30 * i + 0x16)[0]: zone for i, zone in enumerate(zones)}
+
+
+def events_order(root: Path) -> list[str | None]:
+    """The zones whose events the entities archive has, in its order, from order.json; null for a placeholder."""
+    order = json.loads((root / "order.json").read_text())
+    zones = set(ordered_names("zones"))
+    named = [zone for zone in order if zone is not None]
+    if len(set(named)) != len(named) or set(named) != zones:
+        raise DataError("data/events/order.json: every zone is in it once")
+    return order
 
 
 def var_name(var: int):
@@ -133,19 +136,17 @@ def events_json(data: bytes) -> dict:
 
 def dump(files: Path, output: Path):
     members = read_narc((files / "a/1/2/6").read_bytes())
-    zones = zone_files()
-    placeholders = []
+    zones = zone_files_from_rom(files)
     for number, member in enumerate(members):
         if number not in zones:
             if member != PLACEHOLDER:
                 sys.exit(f"entities file {number} belongs to no zone and isn't the placeholder")
-            placeholders.append(number)
             continue
         events = events_json(member)
         if events_bytes(events, "") != member:
             sys.exit(f"entities file {number} doesn't pack back as it was")
         write(output / file_name(zones[number]), events)
-    write(output / "placeholders.json", placeholders)
+    write(output / "order.json", [zones.get(number) for number in range(len(members))])
     print(f"wrote {len(zones)} zones' events to {output}")
 
 
@@ -203,19 +204,12 @@ def events_bytes(events: dict, where: str) -> bytes:
 
 def pack(root: Path, output: Path):
     schema = load_schema(root / "events.schema.json")
-    zones = zone_files()
-    placeholders = set(json.loads((root / "placeholders.json").read_text()))
-    count = max(zones.keys() | placeholders) + 1
     members = []
-    for number in range(count):
-        if number in placeholders:
-            if number in zones:
-                raise DataError(f"placeholders.json: {zones[number]} has entities file {number}")
+    for zone in events_order(root):
+        if zone is None:
             members.append(PLACEHOLDER)
             continue
-        if number not in zones:
-            raise DataError(f"no zone has entities file {number}, and placeholders.json doesn't list it")
-        path = root / file_name(zones[number])
+        path = root / file_name(zone)
         members.append(events_bytes(load(path, schema), label(path)))
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(write_narc(members))

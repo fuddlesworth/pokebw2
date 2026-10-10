@@ -4,8 +4,8 @@
     "npc_cache": 4,
     "area": 22,
     "matrix": 0,
-    "scripts": 658,
-    "text": 541,
+    "scripts": "SCRIPTS_ROUTE_5",
+    "text": "SCRIPT_TEXT_ROUTE_5",
     "bgm": {
         "spring": "SEQ_BGM_R_C_SP",
         "summer": "SEQ_BGM_R_C_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": "ENCOUNTERS_ROUTE_5",
     "enc_slot": 1,
-    "entities": 498,
     "parent": "ZONE_ROUTE_5",
     "place": "PLACE_ROUTE_5",
     "place_display": 1,

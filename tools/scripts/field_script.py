@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from gen_constants import header_text  # noqa: E402
+from gen_constants import ordered_files  # noqa: E402
 from msgdata import read_msgdata  # noqa: E402
 from narc import read_narc  # noqa: E402
 
@@ -648,6 +649,10 @@ def main():
 
     base, plugins, plugin_zones, global_scripts = load_commands()
     files = read_narc((args.extract / ARCHIVE).read_bytes())
+    # The files are named after their constants in data/constants/field_scripts.txt, in its order
+    paths = ordered_files("field_scripts", "SCRIPTS_", args.output, ".s")
+    if len(paths) != len(files):
+        sys.exit(f"{len(files)} files in the archive and {len(paths)} in field_scripts.txt")
     zones = read_narc((args.extract / ZONE_ARCHIVE).read_bytes())[0]
     plugin_of = plugin_of_files(files, zones, base, plugins, plugin_zones, global_scripts)
     constants = load_constants()
@@ -691,7 +696,7 @@ def main():
             else:
                 stats["map scripts"] += 1
             lines.append(text.rstrip("\n"))
-        (args.output / f"{index:04d}.s").write_text("\n".join(lines) + "\n")
+        (args.output / paths[index].name).write_text("\n".join(lines) + "\n")
     print(dict(stats))
 
 

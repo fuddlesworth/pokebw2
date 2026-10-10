@@ -4,8 +4,8 @@
     "npc_cache": 18,
     "area": 214,
     "matrix": 0,
-    "scripts": 888,
-    "text": 314,
+    "scripts": "SCRIPTS_FLOCCESY_RANCH",
+    "text": "SCRIPT_TEXT_FLOCCESY_RANCH",
     "bgm": {
         "spring": "SEQ_BGM_SW_R_19_SP",
         "summer": "SEQ_BGM_SW_R_19_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": "ENCOUNTERS_FLOCCESY_RANCH",
     "enc_slot": 6,
-    "entities": 305,
     "parent": "ZONE_FLOCCESY_RANCH",
     "place": "PLACE_FLOCCESY_RANCH",
     "place_display": 1,

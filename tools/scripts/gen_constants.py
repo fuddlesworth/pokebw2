@@ -35,6 +35,22 @@ def parse(path: Path) -> dict[str, int]:
     return names
 
 
+def ordered_names(name: str) -> list[str]:
+    """Returns the constants of a list in value order, the first of each value, which must run from 0 without gaps."""
+    first: dict[int, str] = {}
+    for constant, number in load(name).items():
+        first.setdefault(number, constant)
+    if sorted(first) != list(range(len(first))):
+        sys.exit(f"{name}.txt doesn't number its constants from 0 without gaps")
+    return [first[number] for number in range(len(first))]
+
+
+def ordered_files(name: str, prefix: str, directory: Path, suffix: str) -> list[Path]:
+    """Returns the files named after a list's constants, <constant less the prefix, in lower case><suffix>, in the
+    list's order: the order of the archive they make."""
+    return [directory / (constant.removeprefix(prefix).lower() + suffix) for constant in ordered_names(name)]
+
+
 def load(name: str) -> dict[str, int]:
     """Returns the constants of data/constants/<name>.txt, for the scripts."""
     return parse(LISTS_DIR / f"{name}.txt")

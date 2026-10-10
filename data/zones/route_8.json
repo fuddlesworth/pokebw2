@@ -4,8 +4,8 @@
     "npc_cache": 9,
     "area": 42,
     "matrix": 0,
-    "scripts": 690,
-    "text": 557,
+    "scripts": "SCRIPTS_ROUTE_8",
+    "text": "SCRIPT_TEXT_ROUTE_8",
     "bgm": {
         "spring": "SEQ_BGM_R_D_SP",
         "summer": "SEQ_BGM_R_D_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": "ENCOUNTERS_ROUTE_8",
     "enc_slot": 3,
-    "entities": 514,
     "parent": "ZONE_ROUTE_8",
     "place": "PLACE_ROUTE_8",
     "place_display": 1,

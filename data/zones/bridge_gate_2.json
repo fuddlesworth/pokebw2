@@ -4,8 +4,8 @@
     "npc_cache": 24,
     "area": 316,
     "matrix": 137,
-    "scripts": 502,
-    "text": 417,
+    "scripts": "SCRIPTS_BRIDGE_GATE_2",
+    "text": "SCRIPT_TEXT_BRIDGE_GATE_2",
     "bgm": {
         "spring": "SEQ_BGM_R_B_SP",
         "summer": "SEQ_BGM_GATE",
@@ -14,7 +14,6 @@
     },
     "encounters": null,
     "enc_slot": 6,
-    "entities": 397,
     "parent": "ZONE_SKYARROW_BRIDGE",
     "place": "PLACE_BRIDGE_GATE",
     "place_display": 0,

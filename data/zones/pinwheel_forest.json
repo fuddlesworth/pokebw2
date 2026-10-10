@@ -4,8 +4,8 @@
     "npc_cache": 2,
     "area": 10,
     "matrix": 0,
-    "scripts": 308,
-    "text": 212,
+    "scripts": "SCRIPTS_PINWHEEL_FOREST",
+    "text": "SCRIPT_TEXT_PINWHEEL_FOREST",
     "bgm": {
         "spring": "SEQ_BGM_R_B_SP",
         "summer": "SEQ_BGM_R_B_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": "ENCOUNTERS_PINWHEEL_FOREST",
     "enc_slot": 3,
-    "entities": 203,
     "parent": "ZONE_PINWHEEL_FOREST",
     "place": "PLACE_PINWHEEL_FOREST",
     "place_display": 1,

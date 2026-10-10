@@ -11,6 +11,7 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --encounters extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trades extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --places
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --files
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused, and are named after their ID, as
@@ -283,6 +284,53 @@ def place_names(archive: Path) -> dict[int, str]:
     return names
 
 
+def file_names() -> dict[str, dict[int, str]]:
+    """Returns the names of the field script files and of the system and script text banks, from what uses them: a
+    zone's scripts and map scripts (init) file and its text bank after the zone, a global script file and its text bank
+    after the first script ID of its range, and the rest after the names of their text files, or their numbers."""
+    import json
+
+    root = Path(__file__).parents[2]
+    zone_files = {}
+    for path in (root / "data/zones").glob("*.json"):
+        if path.name.endswith("schema.json"):
+            continue
+        zone = json.loads(path.read_text())
+        zone_files[path.stem] = (zone["scripts"], zone.get("init_scripts", zone["scripts"] + 1), zone["text"])
+    scripts: dict[int, str] = {}
+    script_text: dict[int, str] = {}
+    for zone, (file, init, text) in zone_files.items():
+        scripts[file] = f"SCRIPTS_{zone.upper()}"
+        scripts[init] = f"SCRIPTS_INIT_{zone.upper()}"
+        script_text[text] = f"SCRIPT_TEXT_{zone.upper()}"
+    for entry in json.loads((root / "tools/scripts/field_commands.json").read_text())["global_scripts"]:
+        scripts[entry["file"]] = f"SCRIPTS_GLOBAL_{entry['first']}"
+        script_text.setdefault(entry["text_file"], f"SCRIPT_TEXT_GLOBAL_{entry['first']}")
+    field_scripts = sorted(int(path.stem[:4]) for path in (root / "data/field_scripts").glob("*.s"))
+    for number in field_scripts:
+        scripts.setdefault(number, f"SCRIPTS_{number:04d}")
+
+    def by_file_names(directory: Path, prefix: str, names: dict[int, str]) -> dict[int, str]:
+        count: dict[str, int] = {}
+        for name_ in names.values():
+            count[name_] = 1
+        for path in sorted(directory.glob("*.txt")):
+            number = int(path.name[:4])
+            if number in names:
+                continue
+            stem = path.stem[5:]
+            base = f"{prefix}{stem.upper()}" if stem else f"{prefix}{number:04d}"
+            count[base] = count.get(base, 0) + 1
+            names[number] = base if count[base] == 1 else f"{base}_{count[base]}"
+        return dict(sorted(names.items()))
+
+    return {
+        "field_scripts": dict(sorted(scripts.items())),
+        "script_text_banks": by_file_names(root / "data/text/script", "SCRIPT_TEXT_", script_text),
+        "text_banks": by_file_names(root / "data/text/system", "TEXT_BANK_", {}),
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -296,6 +344,9 @@ def main():
                         help="write only this list of the game's text, such as natures, since the lists are edited "
                              "by hand after")
     parser.add_argument("--places", action="store_true", help="write only places.txt, from the place names")
+    parser.add_argument("--files", action="store_true",
+                        help="write only field_scripts.txt, script_text_banks.txt and text_banks.txt, from the zones, "
+                             "the global scripts and the names of the files in data/")
     parser.add_argument("--trades", type=Path, metavar="EXTRACT",
                         help="write only trades.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--encounters", type=Path, metavar="EXTRACT",
@@ -315,6 +366,18 @@ def main():
     if args.encounters:
         write_list(args.output / "encounters.txt", encounter_names(args.encounters),
                    "Wild encounter tables, by the place of the first zone that has them, numbered where places repeat")
+    if args.files:
+        descriptions = {
+            "field_scripts": "Field script files: each zone's scripts and map scripts, by the zone, and the global "
+                             "scripts, by the first script ID of their range",
+            "script_text_banks": "Script message files (text archive a/0/0/3): each zone's, by the zone, the global "
+                                 "scripts', and the others by their names or numbers",
+            "text_banks": "System message files (text archive a/0/0/2), by what they hold, or by their numbers until "
+                          "that is known",
+        }
+        for list_name, names in file_names().items():
+            write_list(args.output / f"{list_name}.txt", names, descriptions[list_name])
+        return
     if args.places:
         write_list(args.output / "places.txt", place_names(args.archive),
                    "Places, the place names that zone headers name, numbered where names repeat")

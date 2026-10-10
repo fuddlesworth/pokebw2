@@ -18,6 +18,8 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).parent.resolve()
+sys.path.insert(0, str(ROOT / "tools" / "scripts"))
+from gen_constants import ordered_files  # noqa: E402
 
 VERSIONS = {
     "b2_us": {"sha1": "e51e6dfb8678a3d19dcd2a10691b96a569ca0abb", "rom": "pokeblack2_us.nds", "defines": ["BLACK2"]},
@@ -136,6 +138,9 @@ ARCHIVES = {
     "a/1/6/9": "data/tr_ai",  # Trainer AI scripts, see tools/scripts/tr_ai_script.py
 }
 
+# The constant list that names and orders each assembled archive's files, and the prefix of its constants
+ARCHIVE_LISTS = {"a/0/5/6": ("field_scripts", "SCRIPTS_"), "a/1/6/9": ("tr_ai_scripts", "TR_AI_SCRIPT_")}
+
 # Archives packed from JSON (and CSV) data by a script's pack command: the script, its data directory, the archives it
 # writes, in the order it takes them, and whether it packs each version apart, which passes it the version's name
 # (black2 or white2); and any other data directories it reads. The data's constants come from the lists and headers,
@@ -149,7 +154,8 @@ DATA_PACKS = [
     # Trainers, their parties, and the table of their messages with its offsets
     ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
-    ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False),  # Zone headers
+    # Zone headers, which give each zone the number of its events in data/events/order.json
+    ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False, ["data/events"]),
     ("tools/scripts/trade_data.py", "data/trades", ["a/1/6/3"], False),  # In-game trades
     # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
     ("tools/scripts/facility_data.py", "data/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
@@ -165,8 +171,8 @@ DATA_PACKS = [
     ("tools/scripts/facility_data.py", "data/facilities/pwt_masters", ["a/2/5/5", "a/2/5/6", "a/2/5/4"], False,
      ["data/facilities"]),
     ("tools/scripts/facility_data.py", "data/facilities/pwt_rental", ["a/2/5/7"], False, ["data/facilities"]),
-    # The zones' events, at the numbers of their entities files, which the zone headers give
-    ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False, ["data/zones"]),
+    # The zones' events, in the order of data/events/order.json
+    ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False),
 ]
 # What every packer reads besides its data: the scripts, and the move tutors' tables, which name the species data's
 # tutor bits (tools/scripts/species_data.py)
@@ -377,7 +383,8 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     checks = []
     for path, source_dir in ARCHIVES.items():
         members = []
-        for source in sorted(Path(source_dir).glob("*.s")):
+        for source in ordered_files(*ARCHIVE_LISTS[path], ROOT / source_dir, ".s"):
+            source = source.relative_to(ROOT)
             obj = build_dir / source.with_suffix(".o")
             n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines},
                     order_only=["constants_headers"])

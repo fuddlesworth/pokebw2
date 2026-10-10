@@ -4,8 +4,8 @@
     "npc_cache": 15,
     "area": 86,
     "matrix": 0,
-    "scripts": 294,
-    "text": 166,
+    "scripts": "SCRIPTS_UNITY_TOWER",
+    "text": "SCRIPT_TEXT_UNITY_TOWER",
     "bgm": {
         "spring": "SEQ_BGM_R_C_SP",
         "summer": "SEQ_BGM_R_C_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": null,
     "enc_slot": 6,
-    "entities": 160,
     "parent": "ZONE_UNITY_TOWER",
     "place": "PLACE_UNITY_TOWER",
     "place_display": 1,

@@ -4,8 +4,8 @@
     "npc_cache": 8,
     "area": 38,
     "matrix": 0,
-    "scripts": 396,
-    "text": 256,
+    "scripts": "SCRIPTS_TWIST_MOUNTAIN",
+    "text": "SCRIPT_TEXT_TWIST_MOUNTAIN",
     "bgm": {
         "spring": "SEQ_BGM_R_D_SP",
         "summer": "SEQ_BGM_R_D_SU",
@@ -14,7 +14,6 @@
     },
     "encounters": null,
     "enc_slot": 5,
-    "entities": 247,
     "parent": "ZONE_TWIST_MOUNTAIN",
     "place": "PLACE_TWIST_MOUNTAIN",
     "place_display": 1,
