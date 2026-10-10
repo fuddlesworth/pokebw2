@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Chatot",
-    "category": "Music Note Pokémon",
-    "pokedex_entry": "Its tongue is just like a human's.\nAs a result, it can cleverly mimic\nhuman speech.",
+    "pokedex": {
+        "category": "Music Note Pokémon",
+        "entry": "Its tongue is just like a human's.\nAs a result, it can cleverly mimic\nhuman speech.",
+        "height": "1'08\"",
+        "weight": "4.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Chatot",
+                "category": "Music Note Pokémon",
+                "entry": "Its tongue is just like a human's.\nAs a result, it can cleverly mimic\nhuman speech.",
+                "height": "1'08\"",
+                "weight": "4.2 lbs."
+            },
+            "fr": {
+                "name": "Pijako",
+                "category": "Pokémon Note Musique",
+                "entry": "Sa langue comparable à celle\nde l'homme lui permet d'imiter\nhabilement le langage humain.",
+                "height": "0,5 m",
+                "weight": "1,9 kg"
+            },
+            "de": {
+                "name": "Plaudagei",
+                "category": "Musiknote",
+                "entry": "Seine Zunge ähnelt der eines Menschen.\nDaher kann es die menschliche Sprache\ngut nachahmen.",
+                "height": "0,5 m",
+                "weight": "1,9 kg"
+            },
+            "it": {
+                "name": "Chatot",
+                "category": "Pokémon Musicale",
+                "entry": "La sua lingua è uguale a quella degli\nuomini. Gli riesce quindi facile imitare\nla voce umana.",
+                "height": "0,5 m",
+                "weight": "1,9 kg"
+            },
+            "ko": {
+                "name": "페라페",
+                "category": "음표포켓몬",
+                "entry": "혀는 인간의 것을 똑 닮았다.\n그 때문에 인간이 하는 말을\n능숙하게 흉내 낼 수 있다.",
+                "height": "0.5 m",
+                "weight": "1.9 kg"
+            },
+            "es": {
+                "name": "Chatot",
+                "category": "Pokémon Corchea",
+                "entry": "Su lengua es como la de cualquier\npersona, así que puede imitar muy\nbien el habla humana.",
+                "height": "0,5 m",
+                "weight": "1,9 kg"
+            },
+            "ja": {
+                "name": "ペラップ",
+                "category": "おんぷポケモン",
+                "entry": "ベロは\\x{3000}にんげんのものに\\x{3000}そっくり。\nそのため\\x{3000}にんげんの\\x{3000}はなすことばを\nじょうずに\\x{3000}まねることが\\x{3000}できる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 76,
         "attack": 65,

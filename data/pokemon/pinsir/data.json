@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pinsir",
-    "category": "Stag Beetle Pokémon",
-    "pokedex_entry": "It grips prey with its powerful\npincers and will not let go\nuntil the prey is torn in half.",
+    "pokedex": {
+        "category": "Stag Beetle Pokémon",
+        "entry": "It grips prey with its powerful\npincers and will not let go\nuntil the prey is torn in half.",
+        "height": "4'11\"",
+        "weight": "121.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pinsir",
+                "category": "Stag Beetle Pokémon",
+                "entry": "It grips prey with its pincers\nuntil the prey is torn in half.\nWhat it can't tear, it tosses far.",
+                "height": "4'11\"",
+                "weight": "121.3 lbs."
+            },
+            "fr": {
+                "name": "Scarabrute",
+                "category": "Pokémon Scarabée",
+                "entry": "Il serre les proies dans ses pinces\npour les trancher en deux. S'il n'y\narrive pas, il les jette au loin.",
+                "height": "1,5 m",
+                "weight": "55,0 kg"
+            },
+            "de": {
+                "name": "Pinsir",
+                "category": "Kneifkäfer",
+                "entry": "Es hält seine Beute mit seiner Zange\nfest und teilt sie dann. Was es nicht\nteilen kann, wirft es fort.",
+                "height": "1,5 m",
+                "weight": "55,0 kg"
+            },
+            "it": {
+                "name": "Pinsir",
+                "category": "Pokémon Cervolante",
+                "entry": "Afferra la preda con le pinze e non\nla molla finché non l'ha tranciata.\nSe non ci riesce, la scaglia via.",
+                "height": "1,5 m",
+                "weight": "55,0 kg"
+            },
+            "ko": {
+                "name": "쁘사이저",
+                "category": "뿔집게포켓몬",
+                "entry": "2개의 뿔로 먹이를 끼워 조각날\n때까지 놓지 않는다. 조각나지\n않으면 저편으로 세게 내던진다.",
+                "height": "1.5 m",
+                "weight": "55.0 kg"
+            },
+            "es": {
+                "name": "Pinsir",
+                "category": "Pokémon Escarabajo",
+                "entry": "Atrapa presas con sus pinzas hasta que\nlas parte en dos. Lanza lejos lo que no\npuede quebrar.",
+                "height": "1,5 m",
+                "weight": "55,0 kg"
+            },
+            "ja": {
+                "name": "カイロス",
+                "category": "くわがたポケモン",
+                "entry": "\\x{ff12}ほんの\\x{3000}ツノで\\x{3000}えものを\\x{3000}はさんで\nちぎれるまで\\x{3000}はなさない。ちぎれない\nときは\\x{3000}かなたまで\\x{3000}なげとばすのだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 125,

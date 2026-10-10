@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Zebstrika",
-    "category": "Thunderbolt Pokémon",
-    "pokedex_entry": "When this ill-tempered Pokémon\nruns wild, it shoots lightning\nfrom its mane in all directions.",
+    "pokedex": {
+        "category": "Thunderbolt Pokémon",
+        "entry": "When this ill-tempered Pokémon\nruns wild, it shoots lightning\nfrom its mane in all directions.",
+        "height": "5'03\"",
+        "weight": "175.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "らいでんポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 100,

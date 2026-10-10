@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Aron",
-    "category": "Iron Armor Pokémon",
-    "pokedex_entry": "In order to build up its steel body,\nit eats iron ore. This pesky Pokémon\nis known to eat railroad tracks.",
+    "pokedex": {
+        "category": "Iron Armor Pokémon",
+        "entry": "In order to build up its steel body,\nit eats iron ore. This pesky Pokémon\nis known to eat railroad tracks.",
+        "height": "1'04\"",
+        "weight": "132.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Aron",
+                "category": "Iron Armor Pokémon",
+                "entry": "It usually lives deep in mountains.\nHowever, hunger may drive it to\neat railroad tracks and cars.",
+                "height": "1'04\"",
+                "weight": "132.3 lbs."
+            },
+            "fr": {
+                "name": "Galekid",
+                "category": "Pokémon Armurfer",
+                "entry": "Il vit habituellement au cœur des\nmontagnes. Affamé, il dévore\nparfois des rails et des voitures.",
+                "height": "0,4 m",
+                "weight": "60,0 kg"
+            },
+            "de": {
+                "name": "Stollunior",
+                "category": "Eisenpanzer",
+                "entry": "Normalerweise lebt es in dunklen\nBergen. Ist es hungrig, frisst es\nauch Eisenbahnschienen und Autos.",
+                "height": "0,4 m",
+                "weight": "60,0 kg"
+            },
+            "it": {
+                "name": "Aron",
+                "category": "Pokémon Corazza",
+                "entry": "Vive generalmente sui monti ma, spinto\ndalla fame, scende per cibarsi di\nbinari ferroviari e automobili.",
+                "height": "0,4 m",
+                "weight": "60,0 kg"
+            },
+            "ko": {
+                "name": "가보리",
+                "category": "철갑옷포켓몬",
+                "entry": "평소에는 산 속에서 살고 있지만\n배가 고프면 산기슭에 나타나\n선로나 차를 먹어 버린다.",
+                "height": "0.4 m",
+                "weight": "60.0 kg"
+            },
+            "es": {
+                "name": "Aron",
+                "category": "Pokémon Cor. Férrea",
+                "entry": "Suele vivir en lugares inaccesibles\nde las montañas, pero el hambre\nlo empuja a comer raíles y coches.",
+                "height": "0,4 m",
+                "weight": "60,0 kg"
+            },
+            "ja": {
+                "name": "ココドラ",
+                "category": "てつヨロイポケモン",
+                "entry": "ふだんは\\x{3000}やまおくで\\x{3000}くらしているが\nおなかが\\x{3000}すくと\\x{3000}ふもとに\\x{3000}あらわれ\nせんろや\\x{3000}くるまを\\x{3000}たべてしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 70,

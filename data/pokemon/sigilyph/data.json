@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sigilyph",
-    "category": "Avianoid Pokémon",
-    "pokedex_entry": "The guardians of an ancient city, they\nalways fly the same route while\nkeeping watch for invaders.",
+    "pokedex": {
+        "category": "Avianoid Pokémon",
+        "entry": "The guardians of an ancient city, they\nalways fly the same route while\nkeeping watch for invaders.",
+        "height": "4'07\"",
+        "weight": "30.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "とりもどきポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 72,
         "attack": 58,

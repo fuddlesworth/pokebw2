@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Barboach",
-    "category": "Whiskers Pokémon",
-    "pokedex_entry": "Its slimy body is hard to grasp. In\none region, it is said to have been\nborn from hardened mud.",
+    "pokedex": {
+        "category": "Whiskers Pokémon",
+        "entry": "Its slimy body is hard to grasp. In\none region, it is said to have been\nborn from hardened mud.",
+        "height": "1'04\"",
+        "weight": "4.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Barboach",
+                "category": "Whiskers Pokémon",
+                "entry": "Its slimy body is hard to grasp. In\none region, it is said to have been\nborn from hardened mud.",
+                "height": "1'04\"",
+                "weight": "4.2 lbs."
+            },
+            "fr": {
+                "name": "Barloche",
+                "category": "Pokémon Barbillon",
+                "entry": "Son corps glissant est difficile à\nattraper. On dit qu'il a été créé\ndans de la boue solidifiée.",
+                "height": "0,4 m",
+                "weight": "1,9 kg"
+            },
+            "de": {
+                "name": "Schmerbe",
+                "category": "Barthaar",
+                "entry": "Sein schlanker Körper ist schwer zu\ngreifen. Man vermutet, es sei aus\ngehärtetem Schlamm entstanden.",
+                "height": "0,4 m",
+                "weight": "1,9 kg"
+            },
+            "it": {
+                "name": "Barboach",
+                "category": "Pokémon Baffetti",
+                "entry": "Il suo viscido corpo è difficile da\nafferrare. In una regione si dice\nche sia nato da fango indurito.",
+                "height": "0,4 m",
+                "weight": "1,9 kg"
+            },
+            "ko": {
+                "name": "미꾸리",
+                "category": "수염물고기포켓몬",
+                "entry": "미끈미끈한 몸은 잡기 어렵다.\n어떤 지방에서는 진흙이 굳어져서\n미꾸리가 생겨났다고 전해진다.",
+                "height": "0.4 m",
+                "weight": "1.9 kg"
+            },
+            "es": {
+                "name": "Barboach",
+                "category": "Pokémon Bigotudo",
+                "entry": "Su escurridizo cuerpo es difícil de\nagarrar. En cierta región se dice\nque ha nacido de barro endurecido.",
+                "height": "0,4 m",
+                "weight": "1,9 kg"
+            },
+            "ja": {
+                "name": "ドジョッチ",
+                "category": "ひげうおポケモン",
+                "entry": "ぬるぬるの\\x{3000}からだは\\x{3000}つかみにくい。\nある\\x{3000}ちほうでは\\x{3000}どろが\\x{3000}かたまって\nドジョッチが\\x{3000}うまれたと\\x{3000}いわれる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 48,

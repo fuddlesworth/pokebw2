@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Jynx",
-    "category": "Human Shape Pokémon",
-    "pokedex_entry": "Its cries sound like human speech.\nHowever, it is impossible to tell\nwhat it is trying to say.",
+    "pokedex": {
+        "category": "Human Shape Pokémon",
+        "entry": "Its cries sound like human speech.\nHowever, it is impossible to tell\nwhat it is trying to say.",
+        "height": "4'07\"",
+        "weight": "89.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Jynx",
+                "category": "Human Shape Pokémon",
+                "entry": "Its cries sound like human speech.\nHowever, it is impossible to tell\nwhat it is trying to say.",
+                "height": "4'07\"",
+                "weight": "89.5 lbs."
+            },
+            "fr": {
+                "name": "Lippoutou",
+                "category": "Pokémon Humanoïde",
+                "entry": "Son cri ressemble à des paroles\nhumaines. Mais nul n'est jamais\nparvenu à les comprendre.",
+                "height": "1,4 m",
+                "weight": "40,6 kg"
+            },
+            "de": {
+                "name": "Rossana",
+                "category": "Humanotyp",
+                "entry": "Sein Ruf klingt wie menschliche Sprache.\nTrotzdem ist nicht zu verstehen,\nwas es sagt.",
+                "height": "1,4 m",
+                "weight": "40,6 kg"
+            },
+            "it": {
+                "name": "Jynx",
+                "category": "Pokémon Umanoide",
+                "entry": "Le sue grida ricordano il linguaggio\numano, ma è impossibile capire\nil significato delle sue parole.",
+                "height": "1,4 m",
+                "weight": "40,6 kg"
+            },
+            "ko": {
+                "name": "루주라",
+                "category": "인간형태포켓몬",
+                "entry": "울음소리는 마치 인간의\n말처럼 들리지만\n의미는 전혀 이해할 수 없다.",
+                "height": "1.4 m",
+                "weight": "40.6 kg"
+            },
+            "es": {
+                "name": "Jynx",
+                "category": "Pokémon F. Humana",
+                "entry": "Sus gritos se parecen al lenguaje\nhumano, pero es imposible\nentender lo que dice.",
+                "height": "1,4 m",
+                "weight": "40,6 kg"
+            },
+            "ja": {
+                "name": "ルージュラ",
+                "category": "ひとがたポケモン",
+                "entry": "なきごえは\\x{3000}まるで\\x{3000}にんげんの\nことばのように\\x{3000}きこえるが\nいみは\\x{3000}まったく\\x{3000}りかいできない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 50,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Probopass",
-    "category": "Compass Pokémon",
-    "pokedex_entry": "It freely controls three units\ncalled Mini-Noses using\nmagnetic force.",
+    "pokedex": {
+        "category": "Compass Pokémon",
+        "entry": "It freely controls three units\ncalled Mini-Noses using\nmagnetic force.",
+        "height": "4'07\"",
+        "weight": "749.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Probopass",
+                "category": "Compass Pokémon",
+                "entry": "It freely controls three small\nunits called Mini-Noses using\nmagnetic force.",
+                "height": "4'07\"",
+                "weight": "749.6 lbs."
+            },
+            "fr": {
+                "name": "Tarinorme",
+                "category": "Pokémon Boussole",
+                "entry": "Il utilise sa force magnétique pour\ndiriger trois petites unités\nappelées Mini-nez.",
+                "height": "1,4 m",
+                "weight": "340,0 kg"
+            },
+            "de": {
+                "name": "Voluminas",
+                "category": "Kompass",
+                "entry": "Es steuert drei kleine Einheiten\nmithilfe von starkem Magnetismus.\nMan nennt sie Mininasen.",
+                "height": "1,4 m",
+                "weight": "340,0 kg"
+            },
+            "it": {
+                "name": "Probopass",
+                "category": "Pokémon Bussola",
+                "entry": "Controlla tre piccole unità, dette\nMininasi, usando la forza magnetica.",
+                "height": "1,4 m",
+                "weight": "340,0 kg"
+            },
+            "ko": {
+                "name": "대코파스",
+                "category": "콤파스포켓몬",
+                "entry": "꼬마코파스라고 불리는 작은\n3개의 유닛을 자력으로\n자유자재로 조종한다.",
+                "height": "1.4 m",
+                "weight": "340.0 kg"
+            },
+            "es": {
+                "name": "Probopass",
+                "category": "Pokémon Brújula",
+                "entry": "Con el magnetismo que emana,\ncontrola tres pequeñas unidades\nllamadas Mini-Narices.",
+                "height": "1,4 m",
+                "weight": "340,0 kg"
+            },
+            "ja": {
+                "name": "ダイノーズ",
+                "category": "コンパスポケモン",
+                "entry": "チビノーズと\\x{3000}よばれる\\x{3000}ちいさな\n\\x{ff13}つの\\x{3000}ユニットを\\x{3000}じりょくで\nじゆうじざいに\\x{3000}あやつっている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 55,

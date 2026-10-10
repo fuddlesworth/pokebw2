@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Seedot",
-    "category": "Acorn Pokémon",
-    "pokedex_entry": "When it dangles from a tree\nbranch, it looks just like an acorn.\nIt enjoys scaring other Pokémon.",
+    "pokedex": {
+        "category": "Acorn Pokémon",
+        "entry": "When it dangles from a tree\nbranch, it looks just like an acorn.\nIt enjoys scaring other Pokémon.",
+        "height": "1'08\"",
+        "weight": "8.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Seedot",
+                "category": "Acorn Pokémon",
+                "entry": "When it dangles from a tree\nbranch, it looks just like an acorn.\nIt enjoys scaring other Pokémon.",
+                "height": "1'08\"",
+                "weight": "8.8 lbs."
+            },
+            "fr": {
+                "name": "Grainipiot",
+                "category": "Pokémon Gland",
+                "entry": "Il ressemble à un gland pendu à\nune branche. Il adore effrayer\nles autres Pokémon.",
+                "height": "0,5 m",
+                "weight": "4,0 kg"
+            },
+            "de": {
+                "name": "Samurzel",
+                "category": "Eichelnuss",
+                "entry": "Es sieht aus wie eine Eichel, die am\nBaum hängt. Es liebt es, andere\nPokémon zu erschrecken.",
+                "height": "0,5 m",
+                "weight": "4,0 kg"
+            },
+            "it": {
+                "name": "Seedot",
+                "category": "Pokémon Ghianda",
+                "entry": "Quando si attacca a un ramo, sembra\nuna vera ghianda. Si diverte a\nspaventare gli altri Pokémon.",
+                "height": "0,5 m",
+                "weight": "4,0 kg"
+            },
+            "ko": {
+                "name": "도토링",
+                "category": "도토리포켓몬",
+                "entry": "가지에 매달려 있으면 나무열매와\n똑 닮았다. 쪼아먹으려 한\n포켓몬을 놀래주며 좋아한다.",
+                "height": "0.5 m",
+                "weight": "4.0 kg"
+            },
+            "es": {
+                "name": "Seedot",
+                "category": "Pokémon Bellota",
+                "entry": "Cuando cuelga de las ramas,\nparece una bellota. Le encanta\nasustar a otros Pokémon.",
+                "height": "0,5 m",
+                "weight": "4,0 kg"
+            },
+            "ja": {
+                "name": "タネボー",
+                "category": "どんぐりポケモン",
+                "entry": "えだに\\x{3000}ぶらさがっていると\nきのみに\\x{3000}そっくり。ついばもうとした\nポケモンを\\x{3000}おどろかせて\\x{3000}よろこぶ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 40,

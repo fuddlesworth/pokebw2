@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pidgeotto",
-    "category": "Bird Pokémon",
-    "pokedex_entry": "It flies over its wide territory in\nsearch of prey, downing it\nwith its highly developed claws.",
+    "pokedex": {
+        "category": "Bird Pokémon",
+        "entry": "It flies over its wide territory in\nsearch of prey, downing it\nwith its highly developed claws.",
+        "height": "3'07\"",
+        "weight": "66.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pidgeotto",
+                "category": "Bird Pokémon",
+                "entry": "It flies over its wide territory in\nsearch of prey, downing it\nwith its highly developed claws.",
+                "height": "3'07\"",
+                "weight": "66.1 lbs."
+            },
+            "fr": {
+                "name": "Roucoups",
+                "category": "Pokémon Oiseau",
+                "entry": "Il survole son vaste territoire en\nquête d'une proie avant de fondre\nsur elle toutes griffes en avant.",
+                "height": "1,1 m",
+                "weight": "30,0 kg"
+            },
+            "de": {
+                "name": "Tauboga",
+                "category": "Vogel",
+                "entry": "Auf der Suche nach Nahrung, die es\nmit scharfen Krallen schlägt, fliegt es\ndurch riesiges Territorium.",
+                "height": "1,1 m",
+                "weight": "30,0 kg"
+            },
+            "it": {
+                "name": "Pidgeotto",
+                "category": "Pokémon Uccello",
+                "entry": "Sorvola il suo ampio territorio a caccia\ndi prede, afferrandole con i suoi artigli\naffilati.",
+                "height": "1,1 m",
+                "weight": "30,0 kg"
+            },
+            "ko": {
+                "name": "피죤",
+                "category": "새포켓몬",
+                "entry": "넓은 영역을 날아다니며\n먹이를 찾는다. 발달한 발톱으로\n먹이를 꼼짝 못하게 한다.",
+                "height": "1.1 m",
+                "weight": "30.0 kg"
+            },
+            "es": {
+                "name": "Pidgeotto",
+                "category": "Pokémon Pájaro",
+                "entry": "Sobrevuela su extenso territorio\nen busca de presas y ataca con\nsus poderosas garras.",
+                "height": "1,1 m",
+                "weight": "30,0 kg"
+            },
+            "ja": {
+                "name": "ピジョン",
+                "category": "とりポケモン",
+                "entry": "ひろい\\x{3000}なわばりを\\x{3000}とびまわりながら\nえものを\\x{3000}さがす。はったつした\nあしの\\x{3000}ツメで\\x{3000}えものを\\x{3000}しとめる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 63,
         "attack": 60,

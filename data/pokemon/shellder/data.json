@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shellder",
-    "category": "Bivalve Pokémon",
-    "pokedex_entry": "It swims backward by opening and\nclosing its two shells. Its large\ntongue is always kept hanging out.",
+    "pokedex": {
+        "category": "Bivalve Pokémon",
+        "entry": "It swims backward by opening and\nclosing its two shells. Its large\ntongue is always kept hanging out.",
+        "height": "1'00\"",
+        "weight": "8.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shellder",
+                "category": "Bivalve Pokémon",
+                "entry": "It swims backward by opening and\nclosing its two shells. Its large\ntongue is always kept hanging out.",
+                "height": "1'00\"",
+                "weight": "8.8 lbs."
+            },
+            "fr": {
+                "name": "Kokiyas",
+                "category": "Pokémon Bivalve",
+                "entry": "Il nage à reculons en ouvrant et en\nrefermant ses deux coquilles. Il\nlaisse traîner sa large langue.",
+                "height": "0,3 m",
+                "weight": "4,0 kg"
+            },
+            "de": {
+                "name": "Muschas",
+                "category": "Muschel",
+                "entry": "Es schwimmt rückwärts, indem es\nseine Schale öffnet und schließt.\nEs zeigt immer seine breite Zunge.",
+                "height": "0,3 m",
+                "weight": "4,0 kg"
+            },
+            "it": {
+                "name": "Shellder",
+                "category": "Pokémon Bivalve",
+                "entry": "Nuota all'indietro aprendo e chiudendo\nle due valve. La lingua è sempre fuori\na penzoloni.",
+                "height": "0,3 m",
+                "weight": "4,0 kg"
+            },
+            "ko": {
+                "name": "셀러",
+                "category": "두조개포켓몬",
+                "entry": "2장의 껍질을 여닫아서\n뒤쪽으로 헤엄친다. 어떤 때든\n큰 혀는 항상 내어놓는다.",
+                "height": "0.3 m",
+                "weight": "4.0 kg"
+            },
+            "es": {
+                "name": "Shellder",
+                "category": "Pokémon Bivalvo",
+                "entry": "Nada hacia atrás abriendo y cerrando\nsu concha. Su gran lengua siempre\nqueda colgando.",
+                "height": "0,3 m",
+                "weight": "4,0 kg"
+            },
+            "ja": {
+                "name": "シェルダー",
+                "category": "\\x{ff12}まいがいポケモン",
+                "entry": "\\x{ff12}まいの\\x{3000}カラを\\x{3000}あけしめすることで\nうしろむきに\\x{3000}およぐ。どんなときでも\nおおきな\\x{3000}ベロは\\x{3000}だしっぱなし。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 65,

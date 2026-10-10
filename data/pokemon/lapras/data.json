@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lapras",
-    "category": "Transport Pokémon",
-    "pokedex_entry": "Able to understand human speech\nand very intelligent, it loves to swim\nin the sea with people on its back.",
+    "pokedex": {
+        "category": "Transport Pokémon",
+        "entry": "Able to understand human speech\nand very intelligent, it loves to swim\nin the sea with people on its back.",
+        "height": "8'02\"",
+        "weight": "485.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lapras",
+                "category": "Transport Pokémon",
+                "entry": "It loves crossing the sea with\npeople and Pokémon on its back.\nIt understands human speech.",
+                "height": "8'02\"",
+                "weight": "485.0 lbs."
+            },
+            "fr": {
+                "name": "Lokhlass",
+                "category": "Pokémon Transport",
+                "entry": "Il aime naviguer en portant des\nhumains et des Pokémon sur son\ndos. Il comprend le langage humain.",
+                "height": "2,5 m",
+                "weight": "220,0 kg"
+            },
+            "de": {
+                "name": "Lapras",
+                "category": "Transport",
+                "entry": "Es liebt es, das Meer mit Pokémon und\nMenschen auf dem Rücken zu überqueren.\nEs versteht die Menschen.",
+                "height": "2,5 m",
+                "weight": "220,0 kg"
+            },
+            "it": {
+                "name": "Lapras",
+                "category": "Pokémon Trasporto",
+                "entry": "Ama attraversare il mare con persone\ne Pokémon sul suo dorso.\nCapisce il linguaggio umano.",
+                "height": "2,5 m",
+                "weight": "220,0 kg"
+            },
+            "ko": {
+                "name": "라프라스",
+                "category": "탈것포켓몬",
+                "entry": "사람이나 포켓몬을 등에 태워\n바다를 건너는 것을 매우 좋아한다.\n사람의 말을 이해할 수 있다.",
+                "height": "2.5 m",
+                "weight": "220.0 kg"
+            },
+            "es": {
+                "name": "Lapras",
+                "category": "Pokémon Transporte",
+                "entry": "Le encanta surcar los mares con gente\ny Pokémon en su lomo. Entiende\nel lenguaje humano.",
+                "height": "2,5 m",
+                "weight": "220,0 kg"
+            },
+            "ja": {
+                "name": "ラプラス",
+                "category": "のりものポケモン",
+                "entry": "ひとや\\x{3000}ポケモンを\\x{3000}せなかに\\x{3000}のせて\nうみを\\x{3000}わたることが\\x{3000}だいすき。\nひとの\\x{3000}ことばを\\x{3000}りかいできる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 130,
         "attack": 85,

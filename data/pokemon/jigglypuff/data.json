@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Jigglypuff",
-    "category": "Balloon Pokémon",
-    "pokedex_entry": "Looking into its cute, round eyes makes\nit start singing a song so pleasant\nlisteners can't help but fall asleep.",
+    "pokedex": {
+        "category": "Balloon Pokémon",
+        "entry": "Looking into its cute, round eyes makes\nit start singing a song so pleasant\nlisteners can't help but fall asleep.",
+        "height": "1'08\"",
+        "weight": "12.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Jigglypuff",
+                "category": "Balloon Pokémon",
+                "entry": "When it wavers its big, round\neyes, it begins singing a lullaby\nthat makes everyone drowsy.",
+                "height": "1'08\"",
+                "weight": "12.1 lbs."
+            },
+            "fr": {
+                "name": "Rondoudou",
+                "category": "Pokémon Bouboule",
+                "entry": "Lorsqu'il roule ses grands yeux\nronds, il entonne une berceuse\nqui endort son auditoire.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "de": {
+                "name": "Pummeluff",
+                "category": "Ballon",
+                "entry": "Sobald es mit seinen großen, runden\nAugen rollt, fängt es an, ein Lied\nzu singen und jeder schläft ein.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "it": {
+                "name": "Jigglypuff",
+                "category": "Pokémon Pallone",
+                "entry": "Muove le pupille e comincia a cantare\nuna ninnananna che fa addormentare\nchiunque l'ascolti.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "ko": {
+                "name": "푸린",
+                "category": "풍선포켓몬",
+                "entry": "동그란 눈동자가 흔들릴 때\n누구나 잠이 오게 되는\n자장가를 부르기 시작한다.",
+                "height": "0.5 m",
+                "weight": "5.5 kg"
+            },
+            "es": {
+                "name": "Jigglypuff",
+                "category": "Pokémon Globo",
+                "entry": "Cuando mueve sus grandes ojos\nredondos, comienza a cantar\nuna nana que duerme al enemigo.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "ja": {
+                "name": "プリン",
+                "category": "ふうせんポケモン",
+                "entry": "つぶらな\\x{3000}ひとみが\\x{3000}ゆれるとき\nだれもが\\x{3000}ねむくなってしまう\nこもりうたを\\x{3000}うたいはじめる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 115,
         "attack": 45,

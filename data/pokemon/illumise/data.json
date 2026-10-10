@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Illumise",
-    "category": "Firefly Pokémon",
-    "pokedex_entry": "With its sweet aroma, it guides\nVolbeat to draw signs with light in\nthe night sky.",
+    "pokedex": {
+        "category": "Firefly Pokémon",
+        "entry": "With its sweet aroma, it guides\nVolbeat to draw signs with light in\nthe night sky.",
+        "height": "2'00\"",
+        "weight": "39.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Illumise",
+                "category": "Firefly Pokémon",
+                "entry": "With its sweet aroma, it guides\nVolbeat to draw signs with light in\nthe night sky.",
+                "height": "2'00\"",
+                "weight": "39.0 lbs."
+            },
+            "fr": {
+                "name": "Lumivole",
+                "category": "Pokémon Luciole",
+                "entry": "Il utilise son doux parfum pour aider\nMuciole à décrire des arabesques\ndans le ciel nocturne.",
+                "height": "0,6 m",
+                "weight": "17,7 kg"
+            },
+            "de": {
+                "name": "Illumise",
+                "category": "Libelle",
+                "entry": "Sein süßer Duft leitet Volbeat an,\nZeichen aus Licht an den\nNachthimmel zu malen.",
+                "height": "0,6 m",
+                "weight": "17,7 kg"
+            },
+            "it": {
+                "name": "Illumise",
+                "category": "Pokémon Lucciola",
+                "entry": "Con il suo dolce aroma dirige il volo\ndi Volbeat, che disegna figure luminose\nnel cielo stellato.",
+                "height": "0,6 m",
+                "weight": "17,7 kg"
+            },
+            "ko": {
+                "name": "네오비트",
+                "category": "반딧불포켓몬",
+                "entry": "달콤한 향기로 볼비트를\n유도해서 밤하늘에\n빛의 사인을 그린다.",
+                "height": "0.6 m",
+                "weight": "17.7 kg"
+            },
+            "es": {
+                "name": "Illumise",
+                "category": "Pokémon Luciérnaga",
+                "entry": "Su suave aroma guía a Volbeat\npara que haga señales luminosas\nen el cielo nocturno.",
+                "height": "0,6 m",
+                "weight": "17,7 kg"
+            },
+            "ja": {
+                "name": "イルミーゼ",
+                "category": "ほたるポケモン",
+                "entry": "あまい\\x{3000}かおりで\\x{3000}バルビートを\nゆうどうして\\x{3000}よぞらに\nひかりの\\x{3000}サインを\\x{3000}えがく。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff17}\\x{ff0e}\\x{ff17}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 47,

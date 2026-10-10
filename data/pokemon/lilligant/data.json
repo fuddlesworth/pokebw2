@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lilligant",
-    "category": "Flowering Pokémon",
-    "pokedex_entry": "The fragrance of the garland on its head\nhas a relaxing effect, but taking\ncare of it is very difficult.",
+    "pokedex": {
+        "category": "Flowering Pokémon",
+        "entry": "The fragrance of the garland on its head\nhas a relaxing effect, but taking\ncare of it is very difficult.",
+        "height": "3'07\"",
+        "weight": "35.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "はなかざりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 60,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Elekid",
-    "category": "Electric Pokémon",
-    "pokedex_entry": "Spinning its arms around\nto generate electricity makes the area\nbetween its horns shine light blue.",
+    "pokedex": {
+        "category": "Electric Pokémon",
+        "entry": "Spinning its arms around\nto generate electricity makes the area\nbetween its horns shine light blue.",
+        "height": "2'00\"",
+        "weight": "51.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Elekid",
+                "category": "Electric Pokémon",
+                "entry": "A weak electric current flows\nbetween its horns. Sticking a hand\nthere shocks the unwary.",
+                "height": "2'00\"",
+                "weight": "51.8 lbs."
+            },
+            "fr": {
+                "name": "Élekid",
+                "category": "Pokémon Électrique",
+                "entry": "Un faible courant électrique circule\nentre ses cornes. Attention à ne\npas y mettre la main!",
+                "height": "0,6 m",
+                "weight": "23,5 kg"
+            },
+            "de": {
+                "name": "Elekid",
+                "category": "Elektro",
+                "entry": "Ein schwacher Stromfluss fließt\nzwischen seinen Hörnern. Die\nHände sollte man davon fernhalten.",
+                "height": "0,6 m",
+                "weight": "23,5 kg"
+            },
+            "it": {
+                "name": "Elekid",
+                "category": "Pokémon Elettrico",
+                "entry": "Una debole corrente elettrica scorre\ntra le sue corna. Chi vi passa una mano\nrimane fulminato.",
+                "height": "0,6 m",
+                "weight": "23,5 kg"
+            },
+            "ko": {
+                "name": "에레키드",
+                "category": "전류포켓몬",
+                "entry": "뿔 사이에는 약하지만\n전기가 흐르고 있기 때문에 무심코\n손을 넣으면 감전되어 버린다.",
+                "height": "0.6 m",
+                "weight": "23.5 kg"
+            },
+            "es": {
+                "name": "Elekid",
+                "category": "Pokémon Eléctrico",
+                "entry": "Entre sus cuernos pasa una débil\ncorriente eléctrica. Quien ponga\nahí la mano se dará un calambrazo.",
+                "height": "0,6 m",
+                "weight": "23,5 kg"
+            },
+            "ja": {
+                "name": "エレキッド",
+                "category": "でんきポケモン",
+                "entry": "ツノの\\x{3000}あいだには\\x{3000}よわいけれど\nでんきが\\x{3000}ながれているので\\x{3000}うっかり\nてを\\x{3000}いれると\\x{3000}しびれてしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff13}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 63,

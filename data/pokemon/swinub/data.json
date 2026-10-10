@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Swinub",
-    "category": "Pig Pokémon",
-    "pokedex_entry": "Rooting the tip of its snout\ninto the ground, it searches for food.\nSometimes it even digs up a hot spring.",
+    "pokedex": {
+        "category": "Pig Pokémon",
+        "entry": "Rooting the tip of its snout\ninto the ground, it searches for food.\nSometimes it even digs up a hot spring.",
+        "height": "1'04\"",
+        "weight": "14.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Swinub",
+                "category": "Pig Pokémon",
+                "entry": "It has a very sensitive nose. It\ncan locate mushrooms, berries, and\neven hot springs buried under ice.",
+                "height": "1'04\"",
+                "weight": "14.3 lbs."
+            },
+            "fr": {
+                "name": "Marcacrin",
+                "category": "Pokémon Cochon",
+                "entry": "Son nez très sensible détecte\nchampignons, Baies et sources\nchaudes enfouis sous la glace.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "de": {
+                "name": "Quiekel",
+                "category": "Ferkel",
+                "entry": "Verfügt über eine äußerst sensible\nNase, die Pilze, Beeren und selbst\nheiße Quellen unter dem Eis findet.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "it": {
+                "name": "Swinub",
+                "category": "Pokémon Maiale",
+                "entry": "Grazie al suo olfatto sviluppato trova\nfunghi, bacche e persino sorgenti termali\nsotto al ghiaccio.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "ko": {
+                "name": "꾸꾸리",
+                "category": "산돼지포켓몬",
+                "entry": "냄새에 민감하여 얼음 밑에\n파묻힌 버섯이나 나무열매 이외에\n온천까지도 찾아낸다.",
+                "height": "0.4 m",
+                "weight": "6.5 kg"
+            },
+            "es": {
+                "name": "Swinub",
+                "category": "Pokémon Cerdo",
+                "entry": "Tiene una nariz muy sensible. Puede\nlocalizar setas, bayas y hasta aguas\ntermales bajo el hielo.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "ja": {
+                "name": "ウリムー",
+                "category": "いのぶたポケモン",
+                "entry": "においに\\x{3000}びんかんで\\x{3000}こおりのしたに\nうもれた\\x{3000}キノコや\\x{3000}きのみの\\x{3000}ほかに\nおんせんさえも\\x{3000}さぐりあててしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 50,

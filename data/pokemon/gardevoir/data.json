@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gardevoir",
-    "category": "Embrace Pokémon",
-    "pokedex_entry": "To protect its Trainer, it will\nexpend all its psychic power\nto create a small black hole.",
+    "pokedex": {
+        "category": "Embrace Pokémon",
+        "entry": "To protect its Trainer, it will\nexpend all its psychic power\nto create a small black hole.",
+        "height": "5'03\"",
+        "weight": "106.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gardevoir",
+                "category": "Embrace Pokémon",
+                "entry": "To protect its Trainer, it will\nexpend all its psychic power\nto create a small black hole.",
+                "height": "5'03\"",
+                "weight": "106.7 lbs."
+            },
+            "fr": {
+                "name": "Gardevoir",
+                "category": "Pokémon Étreinte",
+                "entry": "Prêt à tout pour protéger son\nDresseur, il peut créer un mini trou\nnoir par sa seule force mentale.",
+                "height": "1,6 m",
+                "weight": "48,4 kg"
+            },
+            "de": {
+                "name": "Guardevoir",
+                "category": "Umarmung",
+                "entry": "Erzeugt ein kleines schwarzes Loch\nmithilfe all seiner Psycho-Kräfte,\num seinen Trainer zu schützen.",
+                "height": "1,6 m",
+                "weight": "48,4 kg"
+            },
+            "it": {
+                "name": "Gardevoir",
+                "category": "Pokémon Abbraccio",
+                "entry": "Quando il suo Allenatore è in pericolo\nusa tutto il suo potere psichico per\ncreare un piccolo buco nero.",
+                "height": "1,6 m",
+                "weight": "48,4 kg"
+            },
+            "ko": {
+                "name": "가디안",
+                "category": "포용포켓몬",
+                "entry": "트레이너를 지키기 위해서라면\n사이코 파워를 모두 써서 작은\n블랙홀을 만들어 낸다.",
+                "height": "1.6 m",
+                "weight": "48.4 kg"
+            },
+            "es": {
+                "name": "Gardevoir",
+                "category": "Pokémon Envolvente",
+                "entry": "Para proteger a su Entrenador,\nemplea todo su poder psíquico en\ncrear un pequeño agujero negro.",
+                "height": "1,6 m",
+                "weight": "48,4 kg"
+            },
+            "ja": {
+                "name": "サーナイト",
+                "category": "ほうようポケモン",
+                "entry": "トレーナーを\\x{3000}まもるためなら\nサイコパワーを\\x{3000}つかいきり\\x{3000}ちいさな\nブラックホールを\\x{3000}つくりだす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff18}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 68,
         "attack": 65,

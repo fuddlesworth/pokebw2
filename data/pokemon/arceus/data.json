@@ -1,26 +1,145 @@
 {
     "$schema": "../species.schema.json",
     "name": "Arceus",
-    "category": "Alpha Pokémon",
-    "pokedex_entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-    "form_pokedex_entries": [
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
-        "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world."
-    ],
+    "pokedex": {
+        "category": "Alpha Pokémon",
+        "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+        "height": "10'06\"",
+        "weight": "705.5 lbs.",
+        "forms": [
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            {
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Arceus",
+                "category": "Alpha Pokémon",
+                "entry": "It is said to have emerged from an\negg in a place where there was\nnothing, then shaped the world.",
+                "height": "10'06\"",
+                "weight": "705.5 lbs."
+            },
+            "fr": {
+                "name": "Arceus",
+                "category": "Pokémon Alpha",
+                "entry": "On dit que son œuf a éclos dans\nle néant et qu'il est à l'origine\nde la création du monde.",
+                "height": "3,2 m",
+                "weight": "320,0 kg"
+            },
+            "de": {
+                "name": "Arceus",
+                "category": "Alpha",
+                "entry": "Man sagt, es sei im Nichts aus\neinem Ei geschlüpft und\nhabe dann die Welt geformt.",
+                "height": "3,2 m",
+                "weight": "320,0 kg"
+            },
+            "it": {
+                "name": "Arceus",
+                "category": "Pokémon Primevo",
+                "entry": "Si dice che sia nato da un uovo in mezzo\nal nulla e che poi abbia dato origine\nal mondo.",
+                "height": "3,2 m",
+                "weight": "320,0 kg"
+            },
+            "ko": {
+                "name": "아르세우스",
+                "category": "창조포켓몬",
+                "entry": "아무것도 없는 곳에 있던\n알에서 깨어나 세계를\n만들었다고 여겨진다.",
+                "height": "3.2 m",
+                "weight": "320.0 kg"
+            },
+            "es": {
+                "name": "Arceus",
+                "category": "Pokémon Alfa",
+                "entry": "Se dice que surgió de un huevo en\nun lugar en el que no había nada.\nY luego dio forma al mundo.",
+                "height": "3,2 m",
+                "weight": "320,0 kg"
+            },
+            "ja": {
+                "name": "アルセウス",
+                "category": "そうぞうポケモン",
+                "entry": "なにも\\x{3000}ない\\x{3000}ばしょに\\x{3000}あった\nタマゴのなかから\\x{3000}すがたを\\x{3000}あらわし\nせかいを\\x{3000}うみだしたと\\x{3000}されている。",
+                "height": "\\x{ff13}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 120,
         "attack": 120,

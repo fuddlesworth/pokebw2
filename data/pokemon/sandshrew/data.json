@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sandshrew",
-    "category": "Mouse Pokémon",
-    "pokedex_entry": "It digs deep burrows to live in.\nWhen in danger, it rolls up its\nbody to withstand attacks.",
+    "pokedex": {
+        "category": "Mouse Pokémon",
+        "entry": "It digs deep burrows to live in.\nWhen in danger, it rolls up its\nbody to withstand attacks.",
+        "height": "2'00\"",
+        "weight": "26.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sandshrew",
+                "category": "Mouse Pokémon",
+                "entry": "To protect itself from attackers,\nit curls up into a ball. It lives in\narid regions with minimal rainfall.",
+                "height": "2'00\"",
+                "weight": "26.5 lbs."
+            },
+            "fr": {
+                "name": "Sabelette",
+                "category": "Pokémon Souris",
+                "entry": "Il vit sur des terres arides épargnées\npar la pluie. Il se roule en boule pour\nse protéger.",
+                "height": "0,6 m",
+                "weight": "12,0 kg"
+            },
+            "de": {
+                "name": "Sandan",
+                "category": "Maus",
+                "entry": "Es lebt in trockenen Regionen mit\nwenig Regen. Es rollt sich ein,\num sich vor Gegnern zu schützen.",
+                "height": "0,6 m",
+                "weight": "12,0 kg"
+            },
+            "it": {
+                "name": "Sandshrew",
+                "category": "Pokémon Topo",
+                "entry": "Vive in zone aride con precipitazioni\nminime. Si arrotola come se fosse\nuna palla per difendersi dai nemici.",
+                "height": "0,6 m",
+                "weight": "12,0 kg"
+            },
+            "ko": {
+                "name": "모래두지",
+                "category": "쥐포켓몬",
+                "entry": "비가 거의 내리지 않는\n건조한 토지에 서식한다.\n몸을 둥글게 말아서 몸을 보호한다.",
+                "height": "0.6 m",
+                "weight": "12.0 kg"
+            },
+            "es": {
+                "name": "Sandshrew",
+                "category": "Pokémon Ratón",
+                "entry": "Vive en zonas áridas donde casi no\nllueve. Se enrosca formando una bola\npara defenderse.",
+                "height": "0,6 m",
+                "weight": "12,0 kg"
+            },
+            "ja": {
+                "name": "サンド",
+                "category": "ねずみポケモン",
+                "entry": "あめが\\x{3000}ほとんど\\x{3000}ふらない\nかんそうした\\x{3000}とちに\\x{3000}せいそく。\nからだを\\x{3000}まるめて\\x{3000}みを\\x{3000}まもる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 75,

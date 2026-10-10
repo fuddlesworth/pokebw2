@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Qwilfish",
-    "category": "Balloon Pokémon",
-    "pokedex_entry": "It shoots the poison spines on its\nbody in all directions. Its round\nform makes it a poor swimmer.",
+    "pokedex": {
+        "category": "Balloon Pokémon",
+        "entry": "It shoots the poison spines on its\nbody in all directions. Its round\nform makes it a poor swimmer.",
+        "height": "1'08\"",
+        "weight": "8.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Qwilfish",
+                "category": "Balloon Pokémon",
+                "entry": "It shoots the poison spines on its\nbody in all directions. Its round\nform makes it a poor swimmer.",
+                "height": "1'08\"",
+                "weight": "8.6 lbs."
+            },
+            "fr": {
+                "name": "Qwilfish",
+                "category": "Pokémon Bouboule",
+                "entry": "Il envoie ses piquants empoisonnés\nà la ronde. Sa forme sphérique en\nfait un piètre nageur.",
+                "height": "0,5 m",
+                "weight": "3,9 kg"
+            },
+            "de": {
+                "name": "Baldorfish",
+                "category": "Ballon",
+                "entry": "Es verschießt die giftigen Stacheln\nseines Körpers in alle Richtungen.\nEs ist kein guter Schwimmer.",
+                "height": "0,5 m",
+                "weight": "3,9 kg"
+            },
+            "it": {
+                "name": "Qwilfish",
+                "category": "Pokémon Pallone",
+                "entry": "Spara i suoi aculei velenosi in tutte\nle direzioni. Essendo un po' tondetto,\nnon è un gran nuotatore.",
+                "height": "0,5 m",
+                "weight": "3,9 kg"
+            },
+            "ko": {
+                "name": "침바루",
+                "category": "풍선포켓몬",
+                "entry": "전신의 독침을\n사방팔방으로 쏘아댄다.\n둥근 몸은 헤엄치는데 서투르다.",
+                "height": "0.5 m",
+                "weight": "3.9 kg"
+            },
+            "es": {
+                "name": "Qwilfish",
+                "category": "Pokémon Globo",
+                "entry": "Lanza púas venenosas en todas\ndirecciones. Debido a su forma\nredonda, es muy mal nadador.",
+                "height": "0,5 m",
+                "weight": "3,9 kg"
+            },
+            "ja": {
+                "name": "ハリーセン",
+                "category": "ふうせんポケモン",
+                "entry": "ぜんしんの\\x{3000}どくバリを\nしほうはっぽうに\\x{3000}うちだす。\nまるい\\x{3000}からだは\\x{3000}およぎが\\x{3000}にがて。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 95,

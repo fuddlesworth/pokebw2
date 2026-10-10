@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Dratini",
-    "category": "Dragon Pokémon",
-    "pokedex_entry": "It is called the “Mirage Pokémon\"\nbecause so few have seen it.\nIts shed skin has been found.",
+    "pokedex": {
+        "category": "Dragon Pokémon",
+        "entry": "It is called the “Mirage Pokémon\"\nbecause so few have seen it.\nIts shed skin has been found.",
+        "height": "5'11\"",
+        "weight": "7.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Dratini",
+                "category": "Dragon Pokémon",
+                "entry": "It is called the “Mirage Pokémon\"\nbecause so few have seen it.\nIts shed skin has been found.",
+                "height": "5'11\"",
+                "weight": "7.3 lbs."
+            },
+            "fr": {
+                "name": "Minidraco",
+                "category": "Pokémon Dragon",
+                "entry": "On l'appelle “Pokémon mirage\"\nen raison de sa rareté. On a\ndécouvert sa mue.",
+                "height": "1,8 m",
+                "weight": "3,3 kg"
+            },
+            "de": {
+                "name": "Dratini",
+                "category": "Drache",
+                "entry": "Man nennt es „Illusion-Pokémon“,\ndenn nur wenige haben es gesehen.\nNur seine Haut wurde oft gefunden.",
+                "height": "1,8 m",
+                "weight": "3,3 kg"
+            },
+            "it": {
+                "name": "Dratini",
+                "category": "Pokémon Drago",
+                "entry": "Detto “Pokémon miraggio\" perché\nè stato avvistato da pochi. È facile\ntrovare la sua pelle della muta.",
+                "height": "1,8 m",
+                "weight": "3,3 kg"
+            },
+            "ko": {
+                "name": "미뇽",
+                "category": "드래곤포켓몬",
+                "entry": "목격자가 적기 때문에\n환상의 포켓몬이라고 불리고 있다.\n탈피한 껍질이 발견되고 있다.",
+                "height": "1.8 m",
+                "weight": "3.3 kg"
+            },
+            "es": {
+                "name": "Dratini",
+                "category": "Pokémon Dragón",
+                "entry": "Se le llama el Pokémon Espejismo\nporque son muy pocos los que lo\nhan visto. Se encontró su muda.",
+                "height": "1,8 m",
+                "weight": "3,3 kg"
+            },
+            "ja": {
+                "name": "ミニリュウ",
+                "category": "ドラゴンポケモン",
+                "entry": "もくげきしゃが\\x{3000}すくないために\nまぼろしのポケモンと\\x{3000}よばれていた。\nだっぴした\\x{3000}かわが\\x{3000}みつかっている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 41,
         "attack": 64,

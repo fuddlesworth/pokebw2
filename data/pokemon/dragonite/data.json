@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Dragonite",
-    "category": "Dragon Pokémon",
-    "pokedex_entry": "It is said to make its home\nsomewhere in the sea. It guides\ncrews of shipwrecks to shore.",
+    "pokedex": {
+        "category": "Dragon Pokémon",
+        "entry": "It is said to make its home\nsomewhere in the sea. It guides\ncrews of shipwrecks to shore.",
+        "height": "7'03\"",
+        "weight": "463.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Dragonite",
+                "category": "Dragon Pokémon",
+                "entry": "It is said to make its home\nsomewhere in the sea. It guides\ncrews of shipwrecks to shore.",
+                "height": "7'03\"",
+                "weight": "463.0 lbs."
+            },
+            "fr": {
+                "name": "Dracolosse",
+                "category": "Pokémon Dragon",
+                "entry": "On raconte qu'il vit quelque part\nen mer. Il guide les équipages\nnaufragés jusqu'à la terre ferme.",
+                "height": "2,2 m",
+                "weight": "210,0 kg"
+            },
+            "de": {
+                "name": "Dragoran",
+                "category": "Drache",
+                "entry": "Man sagt, es lebe in den Meeren.\nEs bringt Schiffbrüchige sicher an Land.",
+                "height": "2,2 m",
+                "weight": "210,0 kg"
+            },
+            "it": {
+                "name": "Dragonite",
+                "category": "Pokémon Drago",
+                "entry": "Si dice che faccia la sua tana da qualche\nparte nel mare. Porta a riva le vittime di\nnaufragi.",
+                "height": "2,2 m",
+                "weight": "210,0 kg"
+            },
+            "ko": {
+                "name": "망나뇽",
+                "category": "드래곤포켓몬",
+                "entry": "넓은 바다의 어딘가에 거처가\n있다고 전해진다. 난파한\n배를 육지까지 이끌어 준다.",
+                "height": "2.2 m",
+                "weight": "210.0 kg"
+            },
+            "es": {
+                "name": "Dragonite",
+                "category": "Pokémon Dragón",
+                "entry": "Se dice que vive en algún lugar del mar.\nGuía a las tripulaciones de los barcos\nhundidos a la costa.",
+                "height": "2,2 m",
+                "weight": "210,0 kg"
+            },
+            "ja": {
+                "name": "カイリュー",
+                "category": "ドラゴンポケモン",
+                "entry": "ひろい\\x{3000}うみの\\x{3000}どこかに\\x{3000}すみかが\nあると\\x{3000}いわれている。なんぱした\nふねを\\x{3000}りくまで\\x{3000}みちびいてくれる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 91,
         "attack": 134,

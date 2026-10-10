@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Caterpie",
-    "category": "Worm Pokémon",
-    "pokedex_entry": "It releases a stench from its red\nantenna to repel enemies. It\ngrows by molting repeatedly.",
+    "pokedex": {
+        "category": "Worm Pokémon",
+        "entry": "It releases a stench from its red\nantenna to repel enemies. It\ngrows by molting repeatedly.",
+        "height": "1'00\"",
+        "weight": "6.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Caterpie",
+                "category": "Worm Pokémon",
+                "entry": "It releases a stench from its red\nantenna to repel enemies. It\ngrows by molting repeatedly.",
+                "height": "1'00\"",
+                "weight": "6.4 lbs."
+            },
+            "fr": {
+                "name": "Chenipan",
+                "category": "Pokémon Ver",
+                "entry": "Ses antennes rouges libèrent une\npuanteur qui repousse l'ennemi.\nIl grandit par mues régulières.",
+                "height": "0,3 m",
+                "weight": "2,9 kg"
+            },
+            "de": {
+                "name": "Raupy",
+                "category": "Wurm",
+                "entry": "Seine roten Antennen sondern einen\nGestank ab, der Feinde verjagt.\nEs wächst, indem es sich häutet.",
+                "height": "0,3 m",
+                "weight": "2,9 kg"
+            },
+            "it": {
+                "name": "Caterpie",
+                "category": "Pokémon Baco",
+                "entry": "Dalle antenne rosse emana un puzzo che\nrespinge il nemico. Cresce cambiando\npiù volte la pelle.",
+                "height": "0,3 m",
+                "weight": "2,9 kg"
+            },
+            "ko": {
+                "name": "캐터피",
+                "category": "애벌레포켓몬",
+                "entry": "빨간 더듬이로부터 냄새를\n내어 상대를 쫓아 버린다.\n탈피를 반복하여 자라게 된다.",
+                "height": "0.3 m",
+                "weight": "2.9 kg"
+            },
+            "es": {
+                "name": "Caterpie",
+                "category": "Pokémon Gusano",
+                "entry": "Su antena roja desprende un gran\nhedor para repeler a los enemigos.\nCrece mudándose repetidamente.",
+                "height": "0,3 m",
+                "weight": "2,9 kg"
+            },
+            "ja": {
+                "name": "キャタピー",
+                "category": "いもむしポケモン",
+                "entry": "あかい\\x{3000}しょっかくから\\x{3000}においを\nだして\\x{3000}てきを\\x{3000}おいはらう。\nだっぴを\\x{3000}くりかえし\\x{3000}おおきくなる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 30,

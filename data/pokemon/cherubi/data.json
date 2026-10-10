@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cherubi",
-    "category": "Cherry Pokémon",
-    "pokedex_entry": "The small ball is not only filled with\nnutrients, it is also tasty. Starly\ntry to peck it off.",
+    "pokedex": {
+        "category": "Cherry Pokémon",
+        "entry": "The small ball is not only filled with\nnutrients, it is also tasty. Starly\ntry to peck it off.",
+        "height": "1'04\"",
+        "weight": "7.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Cherubi",
+                "category": "Cherry Pokémon",
+                "entry": "The small ball is not only filled with\nnutrients, it is also tasty. Starly\ntry to peck it off.",
+                "height": "1'04\"",
+                "weight": "7.3 lbs."
+            },
+            "fr": {
+                "name": "Ceribou",
+                "category": "Pokémon Cerise",
+                "entry": "Sa petite boule rose est nutritive\net délicieuse. Les Étourmi en\nraffolent.",
+                "height": "0,4 m",
+                "weight": "3,3 kg"
+            },
+            "de": {
+                "name": "Kikugi",
+                "category": "Kirsche",
+                "entry": "Der kleine Ball ist nicht nur voller\nNährstoffe, sondern auch schmackhaft.\nStaralili pickt oft danach.",
+                "height": "0,4 m",
+                "weight": "3,3 kg"
+            },
+            "it": {
+                "name": "Cherubi",
+                "category": "Pokémon Ciliegia",
+                "entry": "La pallina, oltre a contenere sostanze\nnutritive, è molto gustosa. Starly\ncerca spesso di beccarla.",
+                "height": "0,4 m",
+                "weight": "3,3 kg"
+            },
+            "ko": {
+                "name": "체리버",
+                "category": "버찌포켓몬",
+                "entry": "작은 구슬에는 영양이\n가득할 뿐 아니라 맛도 있어서\n찌르꼬에게 쪼이거나 한다.",
+                "height": "0.4 m",
+                "weight": "3.3 kg"
+            },
+            "es": {
+                "name": "Cherubi",
+                "category": "Pokémon Cereza",
+                "entry": "Esta pequeña esfera está llena de\nnutrientes y está tan rica que los\nStarly siempre intentan comérsela.",
+                "height": "0,4 m",
+                "weight": "3,3 kg"
+            },
+            "ja": {
+                "name": "チェリンボ",
+                "category": "さくらんぼポケモン",
+                "entry": "ちいさな\\x{3000}たまには\\x{3000}えいようが\nつまっているだけでなく\\x{3000}おいしいので\nムックルに\\x{3000}ついばまれたりする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 35,

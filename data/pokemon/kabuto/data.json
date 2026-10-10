@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Kabuto",
-    "category": "Shellfish Pokémon",
-    "pokedex_entry": "It is thought to have inhabited\nbeaches 300 million years ago.\nIt is protected by a stiff shell.",
+    "pokedex": {
+        "category": "Shellfish Pokémon",
+        "entry": "It is thought to have inhabited\nbeaches 300 million years ago.\nIt is protected by a stiff shell.",
+        "height": "1'08\"",
+        "weight": "25.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Kabuto",
+                "category": "Shellfish Pokémon",
+                "entry": "It is thought to have inhabited\nbeaches 300 million years ago.\nIt is protected by a stiff shell.",
+                "height": "1'08\"",
+                "weight": "25.4 lbs."
+            },
+            "fr": {
+                "name": "Kabuto",
+                "category": "Pokémon Carapace",
+                "entry": "On pense qu'il peuplait les plages\nil y a 300 millions d'années. Il est\nprotégé par une coquille robuste.",
+                "height": "0,5 m",
+                "weight": "11,5 kg"
+            },
+            "de": {
+                "name": "Kabuto",
+                "category": "Schaltier",
+                "entry": "Man geht davon aus, dass dieses\nPokémon vor 300 Millionen Jahren\ndie Strände bevölkerte.",
+                "height": "0,5 m",
+                "weight": "11,5 kg"
+            },
+            "it": {
+                "name": "Kabuto",
+                "category": "Pokémon Crostaceo",
+                "entry": "Si ritiene che vivesse sulle spiagge\n300 milioni di anni fa. È protetto da\nuna conchiglia robusta.",
+                "height": "0,5 m",
+                "weight": "11,5 kg"
+            },
+            "ko": {
+                "name": "투구",
+                "category": "껍질포켓몬",
+                "entry": "3억 년 전에 모래 해변에서\n살고 있었던 것으로 추측된다.\n단단한 껍질이 몸을 보호한다.",
+                "height": "0.5 m",
+                "weight": "11.5 kg"
+            },
+            "es": {
+                "name": "Kabuto",
+                "category": "Pokémon Marisco",
+                "entry": "Se cree que habitó las playas hace\n300 millones de años. Se protege\ncon una dura concha.",
+                "height": "0,5 m",
+                "weight": "11,5 kg"
+            },
+            "ja": {
+                "name": "カブト",
+                "category": "こうらポケモン",
+                "entry": "\\x{ff13}おくねんまえの\\x{3000}すなはまで\nくらしていたと\\x{3000}かんがえられている。\nかたい\\x{3000}カラが\\x{3000}みを\\x{3000}まもる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 80,

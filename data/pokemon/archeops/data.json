@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Archeops",
-    "category": "First Bird Pokémon",
-    "pokedex_entry": "It runs better than it flies.\nIt takes off into the sky by\nrunning at a speed of 25 mph.",
+    "pokedex": {
+        "category": "First Bird Pokémon",
+        "entry": "It runs better than it flies.\nIt takes off into the sky by\nrunning at a speed of 25 mph.",
+        "height": "4'07\"",
+        "weight": "70.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "さいこどりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 140,

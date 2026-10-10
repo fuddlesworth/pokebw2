@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Porygon",
-    "category": "Virtual Pokémon",
-    "pokedex_entry": "A man-made Pokémon created using\nadvanced scientific means. It can\nmove freely in cyberspace.",
+    "pokedex": {
+        "category": "Virtual Pokémon",
+        "entry": "A man-made Pokémon created using\nadvanced scientific means. It can\nmove freely in cyberspace.",
+        "height": "2'07\"",
+        "weight": "80.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Porygon",
+                "category": "Virtual Pokémon",
+                "entry": "A man-made Pokémon created using\nadvanced scientific means. It can\nmove freely in cyberspace.",
+                "height": "2'07\"",
+                "weight": "80.5 lbs."
+            },
+            "fr": {
+                "name": "Porygon",
+                "category": "Pokémon Virtuel",
+                "entry": "Ce Pokémon créé par des\nscientifiques peut arpenter\nlibrement le cyberespace.",
+                "height": "0,8 m",
+                "weight": "36,5 kg"
+            },
+            "de": {
+                "name": "Porygon",
+                "category": "Virtuell",
+                "entry": "Ein von Menschen erschaffenes Pokémon,\ndas sich frei im künstlichen Raum\nbewegen kann.",
+                "height": "0,8 m",
+                "weight": "36,5 kg"
+            },
+            "it": {
+                "name": "Porygon",
+                "category": "Pokémon Virtuale",
+                "entry": "Un Pokémon creato dall'uomo con\nmetodi scientifici avanzatissimi. Si\nmuove liberamente nel ciberspazio.",
+                "height": "0,8 m",
+                "weight": "36,5 kg"
+            },
+            "ko": {
+                "name": "폴리곤",
+                "category": "가상포켓몬",
+                "entry": "최고의 과학력으로\n만들어진 인공 포켓몬이다.\n전자 공간을 이동할 수 있다.",
+                "height": "0.8 m",
+                "weight": "36.5 kg"
+            },
+            "es": {
+                "name": "Porygon",
+                "category": "Pokémon Virtual",
+                "entry": "Un Pokémon creado por el hombre\ncon avanzados medios tecnológicos.\nPuede viajar por el ciberespacio.",
+                "height": "0,8 m",
+                "weight": "36,5 kg"
+            },
+            "ja": {
+                "name": "ポリゴン",
+                "category": "バーチャルポケモン",
+                "entry": "さいこうの\\x{3000}かがくりょくで\nうみだされた\\x{3000}じんこうの\\x{3000}ポケモン。\nでんしくうかんを\\x{3000}いどうできる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 60,

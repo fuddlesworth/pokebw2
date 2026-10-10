@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Torterra",
-    "category": "Continent Pokémon",
-    "pokedex_entry": "Some Pokémon are born on a\nTorterra's back and spend their\nentire life there.",
+    "pokedex": {
+        "category": "Continent Pokémon",
+        "entry": "Some Pokémon are born on a\nTorterra's back and spend their\nentire life there.",
+        "height": "7'03\"",
+        "weight": "683.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Torterra",
+                "category": "Continent Pokémon",
+                "entry": "Some Pokémon are born on a\nTorterra's back and spend their\nentire life there.",
+                "height": "7'03\"",
+                "weight": "683.4 lbs."
+            },
+            "fr": {
+                "name": "Torterra",
+                "category": "Pokémon Continent",
+                "entry": "Certains petits Pokémon peuvent\nnaître sur son dos et y passer\ntoute leur vie.",
+                "height": "2,2 m",
+                "weight": "310,0 kg"
+            },
+            "de": {
+                "name": "Chelterrar",
+                "category": "Kontinent",
+                "entry": "Manche Pokémon werden auf dem Rücken\neines Chelterrar geboren und\nverbringen ihr ganzes Leben dort.",
+                "height": "2,2 m",
+                "weight": "310,0 kg"
+            },
+            "it": {
+                "name": "Torterra",
+                "category": "Pokémon Continente",
+                "entry": "Sul dorso di Torterra nascono Pokémon\nche vi trascorrono tutta la vita.",
+                "height": "2,2 m",
+                "weight": "310,0 kg"
+            },
+            "ko": {
+                "name": "토대부기",
+                "category": "대륙포켓몬",
+                "entry": "토대부기 등에서 태어나\n토대부기 등에서 일생을\n다하는 포켓몬도 있다.",
+                "height": "2.2 m",
+                "weight": "310.0 kg"
+            },
+            "es": {
+                "name": "Torterra",
+                "category": "Pokémon Continente",
+                "entry": "Algunos Pokémon nacen en la espalda\nde un Torterra y pasan allí toda su vida.",
+                "height": "2,2 m",
+                "weight": "310,0 kg"
+            },
+            "ja": {
+                "name": "ドダイトス",
+                "category": "たいりくポケモン",
+                "entry": "ドダイトスの\\x{3000}せなかで\\x{3000}うまれて\nドダイトスの\\x{3000}せなかで\\x{3000}いっしょうを\nまっとうする\\x{3000}ポケモンも\\x{3000}いる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 109,

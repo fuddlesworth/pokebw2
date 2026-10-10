@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Slowbro",
-    "category": "Hermit Crab Pokémon",
-    "pokedex_entry": "Though usually dim witted, it\nseems to become inspired if the\nShellder on its tail bites down.",
+    "pokedex": {
+        "category": "Hermit Crab Pokémon",
+        "entry": "Though usually dim witted, it\nseems to become inspired if the\nShellder on its tail bites down.",
+        "height": "5'03\"",
+        "weight": "173.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Slowbro",
+                "category": "Hermit Crab Pokémon",
+                "entry": "Though usually dim witted, it\nseems to become inspired if the\nShellder on its tail bites down.",
+                "height": "5'03\"",
+                "weight": "173.1 lbs."
+            },
+            "fr": {
+                "name": "Flagadoss",
+                "category": "Pokémon Symbiose",
+                "entry": "Ce grand benêt connaît des éclairs\nde lucidité lorsque le Kokiyas de sa\nqueue se met à mordre.",
+                "height": "1,6 m",
+                "weight": "78,5 kg"
+            },
+            "de": {
+                "name": "Lahmus",
+                "category": "Symbiose",
+                "entry": "Ein begriffsstutziges Pokémon.\nBeißt das Muschas am Schweif zu,\nscheint es Intelligenz zu gewinnen.",
+                "height": "1,6 m",
+                "weight": "78,5 kg"
+            },
+            "it": {
+                "name": "Slowbro",
+                "category": "Pokémon Paguro",
+                "entry": "Non è molto perspicace, ma sembra\naguzzare l'ingegno se lo Shellder\nche ha sulla coda lo morde.",
+                "height": "1,6 m",
+                "weight": "78,5 kg"
+            },
+            "ko": {
+                "name": "야도란",
+                "category": "기생포켓몬",
+                "entry": "멍하게 있는 야도란이지만\n셀러가 강하게 꼬리를 물 때\n무언가가 번뜩이는 듯하다.",
+                "height": "1.6 m",
+                "weight": "78.5 kg"
+            },
+            "es": {
+                "name": "Slowbro",
+                "category": "Pokémon Ermitaño",
+                "entry": "Normalmente se muestra torpe, aunque\nespabila si el Shellder de su cola le\nmuerde.",
+                "height": "1,6 m",
+                "weight": "78,5 kg"
+            },
+            "ja": {
+                "name": "ヤドラン",
+                "category": "やどかりポケモン",
+                "entry": "ぼんやりしている\\x{3000}ヤドランだが\nシェルダーが\\x{3000}つよく\\x{3000}しっぽを\nかむとき\\x{3000}なにかが\\x{3000}ひらめくらしい。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff18}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 75,

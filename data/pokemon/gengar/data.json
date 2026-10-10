@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gengar",
-    "category": "Shadow Pokémon",
-    "pokedex_entry": "The leer that floats in darkness\nbelongs to a Gengar delighting in\ncasting curses on people.",
+    "pokedex": {
+        "category": "Shadow Pokémon",
+        "entry": "The leer that floats in darkness\nbelongs to a Gengar delighting in\ncasting curses on people.",
+        "height": "4'11\"",
+        "weight": "89.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gengar",
+                "category": "Shadow Pokémon",
+                "entry": "The leer that floats in darkness\nbelongs to a Gengar delighting in\ncasting curses on people.",
+                "height": "4'11\"",
+                "weight": "89.3 lbs."
+            },
+            "fr": {
+                "name": "Ectoplasma",
+                "category": "Pokémon Ombre",
+                "entry": "Si vous croisez un regard\ninquiétant qui perce la nuit,\nc'est sûrement un Ectoplasma.",
+                "height": "1,5 m",
+                "weight": "40,5 kg"
+            },
+            "de": {
+                "name": "Gengar",
+                "category": "Schatten",
+                "entry": "Der heimtückische Blick im Dunkel\ngehört einem Gengar, das sich freut,\nFlüche auszustoßen.",
+                "height": "1,5 m",
+                "weight": "40,5 kg"
+            },
+            "it": {
+                "name": "Gengar",
+                "category": "Pokémon Ombra",
+                "entry": "Si aggira nel buio con lo sguardo perfido\ne si diverte a lanciare maledizioni.",
+                "height": "1,5 m",
+                "weight": "40,5 kg"
+            },
+            "ko": {
+                "name": "팬텀",
+                "category": "그림자포켓몬",
+                "entry": "어둠에 떠있는 웃는 얼굴의\n정체는 사람에게 저주를 걸고\n기뻐하는 팬텀이다.",
+                "height": "1.5 m",
+                "weight": "40.5 kg"
+            },
+            "es": {
+                "name": "Gengar",
+                "category": "Pokémon Sombra",
+                "entry": "Esa mirada fija que flota en la oscuridad\nes de algún Gengar que disfruta\nmaldiciendo a la gente.",
+                "height": "1,5 m",
+                "weight": "40,5 kg"
+            },
+            "ja": {
+                "name": "ゲンガー",
+                "category": "シャドーポケモン",
+                "entry": "くらやみに\\x{3000}うかぶ\\x{3000}えがおの\nしょうたいは\\x{3000}ひとに\\x{3000}のろいを\nかけて\\x{3000}よろこぶ\\x{3000}ゲンガーだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 65,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Aerodactyl",
-    "category": "Fossil Pokémon",
-    "pokedex_entry": "A Pokémon that roamed the skies\nin the dinosaur era. Its teeth are\nlike saw blades.",
+    "pokedex": {
+        "category": "Fossil Pokémon",
+        "entry": "A Pokémon that roamed the skies\nin the dinosaur era. Its teeth are\nlike saw blades.",
+        "height": "5'11\"",
+        "weight": "130.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Aerodactyl",
+                "category": "Fossil Pokémon",
+                "entry": "A Pokémon that roamed the skies\nin the dinosaur era. Its teeth are\nlike saw blades.",
+                "height": "5'11\"",
+                "weight": "130.1 lbs."
+            },
+            "fr": {
+                "name": "Ptéra",
+                "category": "Pokémon Fossile",
+                "entry": "Un Pokémon qui arpentait le ciel\nau temps des dinosaures. Ses\ncrocs sont pareils à des scies.",
+                "height": "1,8 m",
+                "weight": "59,0 kg"
+            },
+            "de": {
+                "name": "Aerodactyl",
+                "category": "Fossil",
+                "entry": "Dieses Pokémon flog zu Zeiten der\nDinosaurier am Himmel. Seine Zähne\nsind wie Sägeblätter.",
+                "height": "1,8 m",
+                "weight": "59,0 kg"
+            },
+            "it": {
+                "name": "Aerodactyl",
+                "category": "Pokémon Fossile",
+                "entry": "Un Pokémon che vagava nei cieli\nnell'era dei dinosauri. Le sue zanne\nsono affilate come lame.",
+                "height": "1,8 m",
+                "weight": "59,0 kg"
+            },
+            "ko": {
+                "name": "프테라",
+                "category": "화석포켓몬",
+                "entry": "공룡 시대의 넓은 하늘을\n날아다녔던 포켓몬이다.\n톱 같은 이빨을 가지고 있다.",
+                "height": "1.8 m",
+                "weight": "59.0 kg"
+            },
+            "es": {
+                "name": "Aerodactyl",
+                "category": "Pokémon Fósil",
+                "entry": "Este Pokémon surcó los cielos\nen la época de los dinosaurios.\nSus colmillos son muy afilados.",
+                "height": "1,8 m",
+                "weight": "59,0 kg"
+            },
+            "ja": {
+                "name": "プテラ",
+                "category": "かせきポケモン",
+                "entry": "きょうりゅうじだいの\\x{3000}おおぞらを\nとびまわっていた\\x{3000}ポケモン。\nのこぎりのような\\x{3000}キバを\\x{3000}もつ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff19}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 105,

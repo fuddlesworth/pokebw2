@@ -1,9 +1,70 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shellos",
-    "category": "Sea Slug Pokémon",
-    "pokedex_entry": "Beware of pushing strongly on\nits squishy body, as it makes a\nmysterious purple fluid ooze out.",
-    "form_pokedex_entries": [ "Beware of pushing strongly on\nits squishy body, as it makes a\nmysterious purple fluid ooze out." ],
+    "pokedex": {
+        "category": "Sea Slug Pokémon",
+        "entry": "Beware of pushing strongly on\nits squishy body, as it makes a\nmysterious purple fluid ooze out.",
+        "height": "1'00\"",
+        "weight": "13.9 lbs.",
+        "forms": [
+            {
+                "entry": "Beware of pushing strongly on\nits squishy body, as it makes a\nmysterious purple fluid ooze out.",
+                "height": "1'00\"",
+                "weight": "13.9 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Shellos",
+                "category": "Sea Slug Pokémon",
+                "entry": "Beware of pushing strongly on\nits squishy body, as it makes a\nmysterious purple fluid ooze out.",
+                "height": "1'00\"",
+                "weight": "13.9 lbs."
+            },
+            "fr": {
+                "name": "Sancoki",
+                "category": "Pokémon Aqualimace",
+                "entry": "Un étrange liquide mauve s'échappe\nde son corps, ne lui appuyez pas\ndessus.",
+                "height": "0,3 m",
+                "weight": "6,3 kg"
+            },
+            "de": {
+                "name": "Schalellos",
+                "category": "Seeschnecke",
+                "entry": "Nicht seinen Körper zusammendrücken,\nsonst sickert eine seltsame lilafarbene\nFlüssigkeit aus!",
+                "height": "0,3 m",
+                "weight": "6,3 kg"
+            },
+            "it": {
+                "name": "Shellos",
+                "category": "Pokémon Lumacomare",
+                "entry": "Se si esercita una forte pressione\nsul suo corpo, ne fuoriesce un\nmisterioso liquido viola.",
+                "height": "0,3 m",
+                "weight": "6,3 kg"
+            },
+            "ko": {
+                "name": "깝질무",
+                "category": "갯민숭달팽이포켓몬",
+                "entry": "부드러운 몸을 강하게 누르면\n보랏빛이 나는 정체불명의 액체가\n배어 나오므로 주의가 필요하다.",
+                "height": "0.3 m",
+                "weight": "6.3 kg"
+            },
+            "es": {
+                "name": "Shellos",
+                "category": "Pokémon Babosa Mar.",
+                "entry": "No hay que apretarle muy fuerte,\nya que, si lo haces, secreta un\nmisterioso fluido morado.",
+                "height": "0,3 m",
+                "weight": "6,3 kg"
+            },
+            "ja": {
+                "name": "カラナクシ",
+                "category": "ウミウシポケモン",
+                "entry": "やわらかい\\x{3000}からだを\\x{3000}つよくおすと\nむらさきいろの\\x{3000}なぞの\\x{3000}えきたいが\nにじみでるので\\x{3000}ようちゅうい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 76,
         "attack": 48,

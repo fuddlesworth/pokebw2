@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Amoonguss",
-    "category": "Mushroom Pokémon",
-    "pokedex_entry": "It moves the caps on both arms\nand does a dance to lure prey.\nIt prefers damp places.",
+    "pokedex": {
+        "category": "Mushroom Pokémon",
+        "entry": "It moves the caps on both arms\nand does a dance to lure prey.\nIt prefers damp places.",
+        "height": "2'00\"",
+        "weight": "23.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "きのこポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 114,
         "attack": 85,

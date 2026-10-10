@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Venomoth",
-    "category": "Poison Moth Pokémon",
-    "pokedex_entry": "It flutters its wings to scatter\ndustlike scales. The scales leach\ntoxins if they contact skin.",
+    "pokedex": {
+        "category": "Poison Moth Pokémon",
+        "entry": "It flutters its wings to scatter\ndustlike scales. The scales leach\ntoxins if they contact skin.",
+        "height": "4'11\"",
+        "weight": "27.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Venomoth",
+                "category": "Poison Moth Pokémon",
+                "entry": "It flutters its wings to scatter\ndustlike scales. The scales leach\ntoxins if they contact skin.",
+                "height": "4'11\"",
+                "weight": "27.6 lbs."
+            },
+            "fr": {
+                "name": "Aéromite",
+                "category": "Pokémon Papipoison",
+                "entry": "Il répand ses écailles poudreuses\nen battant des ailes. Elles sont\ntoxiques au toucher.",
+                "height": "1,5 m",
+                "weight": "12,5 kg"
+            },
+            "de": {
+                "name": "Omot",
+                "category": "Giftmotte",
+                "entry": "Es schlägt mit den Flügeln, um\nstaubartige Schuppen abzusondern.\nDiese geben bei Kontakt Gift ab.",
+                "height": "1,5 m",
+                "weight": "12,5 kg"
+            },
+            "it": {
+                "name": "Venomoth",
+                "category": "Pokémon Velentarma",
+                "entry": "Sbattendo le ali sparge una polvere\nvelenosa a contatto con la pelle.",
+                "height": "1,5 m",
+                "weight": "12,5 kg"
+            },
+            "ko": {
+                "name": "도나리",
+                "category": "독나방포켓몬",
+                "entry": "날개를 쳐서 날개 가루를 흩뿌린다.\n날개 가루가 몸에 붙으면\n독 성분이 피부에 스며든다.",
+                "height": "1.5 m",
+                "weight": "12.5 kg"
+            },
+            "es": {
+                "name": "Venomoth",
+                "category": "Pokémon Polilla V.",
+                "entry": "Agita las alas para dispersar un polvillo\nde escamas que libera toxinas si toca\nla piel.",
+                "height": "1,5 m",
+                "weight": "12,5 kg"
+            },
+            "ja": {
+                "name": "モルフォン",
+                "category": "どくがポケモン",
+                "entry": "はばたいて\\x{3000}りんぷんを\\x{3000}まきちらす。\nりんぷんが\\x{3000}からだに\\x{3000}つくと\\x{3000}どくの\nせいぶんが\\x{3000}ひふに\\x{3000}しみこんでくる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 65,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Weedle",
-    "category": "Hairy Bug Pokémon",
-    "pokedex_entry": "It eats its weight in leaves every\nday. It fends off attackers with\nthe needle on its head.",
+    "pokedex": {
+        "category": "Hairy Bug Pokémon",
+        "entry": "It eats its weight in leaves every\nday. It fends off attackers with\nthe needle on its head.",
+        "height": "1'00\"",
+        "weight": "7.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Weedle",
+                "category": "Hairy Bug Pokémon",
+                "entry": "It eats its weight in leaves every\nday. It fends off attackers with\nthe needle on its head.",
+                "height": "1'00\"",
+                "weight": "7.1 lbs."
+            },
+            "fr": {
+                "name": "Aspicot",
+                "category": "Pokémon Insectopic",
+                "entry": "Il mange chaque jour son poids en\nfeuilles. Il utilise l'aiguillon sur sa\ntête pour repousser l'ennemi.",
+                "height": "0,3 m",
+                "weight": "3,2 kg"
+            },
+            "de": {
+                "name": "Hornliu",
+                "category": "Raupe",
+                "entry": "Es frisst täglich sein Gewicht in\nBlättern. Die Nadel auf seinem Kopf\ndient der Verteidigung.",
+                "height": "0,3 m",
+                "weight": "3,2 kg"
+            },
+            "it": {
+                "name": "Weedle",
+                "category": "Pokémon Millepiedi",
+                "entry": "Divora ogni giorno una quantità di foglie\npari al suo peso. Respinge i nemici con\nl'aculeo sulla testa.",
+                "height": "0,3 m",
+                "weight": "3,2 kg"
+            },
+            "ko": {
+                "name": "뿔충이",
+                "category": "송충이포켓몬",
+                "entry": "매일 자신과 똑같은 무게의\n잎사귀를 먹는다. 머리의 침으로\n달려드는 상대를 물리친다.",
+                "height": "0.3 m",
+                "weight": "3.2 kg"
+            },
+            "es": {
+                "name": "Weedle",
+                "category": "Pokémon Oruga",
+                "entry": "Come el equivalente a su peso en\nhojas todos los días. Se defiende\ncon el aguijón de su cabeza.",
+                "height": "0,3 m",
+                "weight": "3,2 kg"
+            },
+            "ja": {
+                "name": "ビードル",
+                "category": "けむしポケモン",
+                "entry": "まいにち\\x{3000}じぶんと\\x{3000}おなじ\\x{3000}おもさの\nはっぱを\\x{3000}たべる。あたまの\\x{3000}ハリで\nおそってきた\\x{3000}てきを\\x{3000}げきたい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 35,

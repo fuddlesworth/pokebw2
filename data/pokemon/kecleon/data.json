@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Kecleon",
-    "category": "Color Swap Pokémon",
-    "pokedex_entry": "It can freely change its body's\ncolor. The zigzag pattern on its\nbelly doesn't change, however.",
+    "pokedex": {
+        "category": "Color Swap Pokémon",
+        "entry": "It can freely change its body's\ncolor. The zigzag pattern on its\nbelly doesn't change, however.",
+        "height": "3'03\"",
+        "weight": "48.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Kecleon",
+                "category": "Color Swap Pokémon",
+                "entry": "It can freely change its body's\ncolor. The zigzag pattern on its\nbelly doesn't change, however.",
+                "height": "3'03\"",
+                "weight": "48.5 lbs."
+            },
+            "fr": {
+                "name": "Kecleon",
+                "category": "Pokémon Multicolor",
+                "entry": "Il change de couleur à volonté,\nmais le motif en zigzag qui orne\nson ventre reste le même.",
+                "height": "1,0 m",
+                "weight": "22,0 kg"
+            },
+            "de": {
+                "name": "Kecleon",
+                "category": "Farbenspiel",
+                "entry": "Es kann nach Belieben seine Farbe\nändern. Nur das gezackte Muster\nauf seinem Bauch bleibt gleich.",
+                "height": "1,0 m",
+                "weight": "22,0 kg"
+            },
+            "it": {
+                "name": "Kecleon",
+                "category": "Pokémon Mutacolore",
+                "entry": "Può mutare il colore del corpo a\npiacimento. Tuttavia, il motivo a zigzag\nsul suo ventre non cambia.",
+                "height": "1,0 m",
+                "weight": "22,0 kg"
+            },
+            "ko": {
+                "name": "켈리몬",
+                "category": "색변화포켓몬",
+                "entry": "몸의 색을 자유롭게 바꾸는\n능력을 가지고 있다. 배에 있는\n톱날 무늬만은 바뀌지 않는다.",
+                "height": "1.0 m",
+                "weight": "22.0 kg"
+            },
+            "es": {
+                "name": "Kecleon",
+                "category": "Pokémon Camaleónico",
+                "entry": "Puede mudar el color de su cuerpo\na voluntad, pero el dibujo en zigzag\nde su panza nunca desaparece.",
+                "height": "1,0 m",
+                "weight": "22,0 kg"
+            },
+            "ja": {
+                "name": "カクレオン",
+                "category": "いろへんげポケモン",
+                "entry": "からだの\\x{3000}いろを\\x{3000}じゆうに\\x{3000}かえる\nのうりょくを\\x{3000}もつ。おなかにある\nギザギザもよう\\x{3000}だけは\\x{3000}かわらない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 90,

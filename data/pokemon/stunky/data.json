@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Stunky",
-    "category": "Skunk Pokémon",
-    "pokedex_entry": "It sprays a foul fluid from its\nrear. Its stench spreads over a\nmile radius, driving Pokémon away.",
+    "pokedex": {
+        "category": "Skunk Pokémon",
+        "entry": "It sprays a foul fluid from its\nrear. Its stench spreads over a\nmile radius, driving Pokémon away.",
+        "height": "1'04\"",
+        "weight": "42.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Stunky",
+                "category": "Skunk Pokémon",
+                "entry": "It sprays a foul fluid from its\nrear. Its stench spreads over a\nmile radius, driving Pokémon away.",
+                "height": "1'04\"",
+                "weight": "42.3 lbs."
+            },
+            "fr": {
+                "name": "Moufouette",
+                "category": "Pokémon Moufette",
+                "entry": "Son derrière propulse un fluide\nnauséabond qui peut faire fuir les\nPokémon dans un rayon de 2 km.",
+                "height": "0,4 m",
+                "weight": "19,2 kg"
+            },
+            "de": {
+                "name": "Skunkapuh",
+                "category": "Stinktier",
+                "entry": "Versprüht eine Substanz aus seinem\nHinterleib, die in einem großen\nRadius andere Pokémon fernhält.",
+                "height": "0,4 m",
+                "weight": "19,2 kg"
+            },
+            "it": {
+                "name": "Stunky",
+                "category": "Pokémon Moffetta",
+                "entry": "Emette un fluido puzzolente dal\nposteriore. Il tanfo si sparge per 2 km\ne tiene lontani i Pokémon.",
+                "height": "0,4 m",
+                "weight": "19,2 kg"
+            },
+            "ko": {
+                "name": "스컹뿡",
+                "category": "스컹크포켓몬",
+                "entry": "엉덩이에서 뿜어지는 역한 분비액의\n냄새는 범위 2km까지 멀리 퍼져\n주변의 포켓몬이 자리를 뜨게 한다.",
+                "height": "0.4 m",
+                "weight": "19.2 kg"
+            },
+            "es": {
+                "name": "Stunky",
+                "category": "Pokémon Mofeta",
+                "entry": "Expulsa un fluido maloliente por sus\ncuartos traseros. El hedor repele\nPokémon en un radio de 2 km.",
+                "height": "0,4 m",
+                "weight": "19,2 kg"
+            },
+            "ja": {
+                "name": "スカンプー",
+                "category": "スカンクポケモン",
+                "entry": "おしりからとばす\\x{3000}くさい\\x{3000}しるの\nにおいは\\x{3000}はんけい\\x{ff12}キロに\\x{3000}ひろがり\nまわりの\\x{3000}ポケモンは\\x{3000}いなくなる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 63,
         "attack": 63,

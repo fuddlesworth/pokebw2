@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Monferno",
-    "category": "Playful Pokémon",
-    "pokedex_entry": "It skillfully controls the intensity\nof the fire on its tail to keep its\nfoes at an ideal distance.",
+    "pokedex": {
+        "category": "Playful Pokémon",
+        "entry": "It skillfully controls the intensity\nof the fire on its tail to keep its\nfoes at an ideal distance.",
+        "height": "2'11\"",
+        "weight": "48.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Monferno",
+                "category": "Playful Pokémon",
+                "entry": "It skillfully controls the intensity\nof the fire on its tail to keep its\nfoes at an ideal distance.",
+                "height": "2'11\"",
+                "weight": "48.5 lbs."
+            },
+            "fr": {
+                "name": "Chimpenfeu",
+                "category": "Pokémon Garnement",
+                "entry": "Il contrôle habilement l'intensité\nde la flamme de sa queue pour tenir\nses adversaires à distance.",
+                "height": "0,9 m",
+                "weight": "22,0 kg"
+            },
+            "de": {
+                "name": "Panpyro",
+                "category": "Verspielt",
+                "entry": "Es kontrolliert die Stärke des Feuers\nauf seinem Schweif geschickt,\num Gegner auf Distanz zu halten.",
+                "height": "0,9 m",
+                "weight": "22,0 kg"
+            },
+            "it": {
+                "name": "Monferno",
+                "category": "Pokémon Briccone",
+                "entry": "Controlla abilmente l'intensità delle\nfiamme sulla sua coda per tenere\ni nemici alla distanza ideale.",
+                "height": "0,9 m",
+                "weight": "22,0 kg"
+            },
+            "ko": {
+                "name": "파이숭이",
+                "category": "개구쟁이포켓몬",
+                "entry": "꼬리 불꽃의 세기를\n잘 컨트롤하여 자신에게\n맞는 거리를 두고 싸운다.",
+                "height": "0.9 m",
+                "weight": "22.0 kg"
+            },
+            "es": {
+                "name": "Monferno",
+                "category": "Pokémon Juguetón",
+                "entry": "Controla hábilmente la intensidad\ndel fuego de su cola para mantener\nal enemigo a una distancia ideal.",
+                "height": "0,9 m",
+                "weight": "22,0 kg"
+            },
+            "ja": {
+                "name": "モウカザル",
+                "category": "やんちゃポケモン",
+                "entry": "しっぽの\\x{3000}ほのおの\\x{3000}いきおいを\nうまく\\x{3000}コントロールして\\x{3000}じぶんの\nとくいな\\x{3000}まあいで\\x{3000}たたかうのだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 64,
         "attack": 78,

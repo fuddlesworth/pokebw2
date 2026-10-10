@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Murkrow",
-    "category": "Darkness Pokémon",
-    "pokedex_entry": "If spotted, it will lure an unwary\nperson into chasing it then lose\nthe pursuer on mountain trails.",
+    "pokedex": {
+        "category": "Darkness Pokémon",
+        "entry": "If spotted, it will lure an unwary\nperson into chasing it then lose\nthe pursuer on mountain trails.",
+        "height": "1'08\"",
+        "weight": "4.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Murkrow",
+                "category": "Darkness Pokémon",
+                "entry": "If spotted, it will lure an unwary\nperson into chasing it, then lose\nthe pursuer on mountain trails.",
+                "height": "1'08\"",
+                "weight": "4.6 lbs."
+            },
+            "fr": {
+                "name": "Cornèbre",
+                "category": "Pokémon Obscurité",
+                "entry": "Quand il est en danger, il tente de\nsemer ses poursuivants dans les\nchemins montagneux.",
+                "height": "0,5 m",
+                "weight": "2,1 kg"
+            },
+            "de": {
+                "name": "Kramurx",
+                "category": "Finsternis",
+                "entry": "Wird es entdeckt, lockt es seinen\nVerfolger auf eine Jagd in die\nBerge, wo es ihn dann abschüttelt.",
+                "height": "0,5 m",
+                "weight": "2,1 kg"
+            },
+            "it": {
+                "name": "Murkrow",
+                "category": "Pokémon Oscurità",
+                "entry": "Se individuato, cerca di farsi\ninseguire, per poi far perdere le\nsue tracce su sentieri di montagna.",
+                "height": "0,5 m",
+                "weight": "2,1 kg"
+            },
+            "ko": {
+                "name": "니로우",
+                "category": "어둠포켓몬",
+                "entry": "니로우를 발견했을 때\n조심성 없이 따라가면\n길을 잃고 산중에 혼자 남게 된다.",
+                "height": "0.5 m",
+                "weight": "2.1 kg"
+            },
+            "es": {
+                "name": "Murkrow",
+                "category": "Pokémon Oscuridad",
+                "entry": "Si algún incauto logra detectarlo,\nse verá abocado a perseguirlo\nhasta perderse en las montañas.",
+                "height": "0,5 m",
+                "weight": "2,1 kg"
+            },
+            "ja": {
+                "name": "ヤミカラス",
+                "category": "くらやみポケモン",
+                "entry": "ヤミカラスを\\x{3000}みかけて\\x{3000}ふよういに\nあとを\\x{3000}つけていくと\\x{3000}まよわされ\nやまみちに\\x{3000}おいてけぼりに\\x{3000}される。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff11}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 85,

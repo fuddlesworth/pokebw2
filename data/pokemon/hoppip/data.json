@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hoppip",
-    "category": "Cottonweed Pokémon",
-    "pokedex_entry": "It drifts on winds. It is said that\nwhen Hoppip gather in fields and\nmountains, spring is on the way.",
+    "pokedex": {
+        "category": "Cottonweed Pokémon",
+        "entry": "It drifts on winds. It is said that\nwhen Hoppip gather in fields and\nmountains, spring is on the way.",
+        "height": "1'04\"",
+        "weight": "1.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hoppip",
+                "category": "Cottonweed Pokémon",
+                "entry": "It drifts on winds. It is said that\nwhen Hoppip gather in fields and\nmountains, spring is on the way.",
+                "height": "1'04\"",
+                "weight": "1.1 lbs."
+            },
+            "fr": {
+                "name": "Granivol",
+                "category": "Pokémon Pissenlit",
+                "entry": "Il dérive avec le vent. Sa présence\nen nombre dans les champs et les\nmontagnes annonce le printemps.",
+                "height": "0,4 m",
+                "weight": "0,5 kg"
+            },
+            "de": {
+                "name": "Hoppspross",
+                "category": "Löwenzahn",
+                "entry": "Es reitet auf dem Wind. Man sagt,\nwenn sich Hoppspross versammeln,\nkommt der Frühling bald.",
+                "height": "0,4 m",
+                "weight": "0,5 kg"
+            },
+            "it": {
+                "name": "Hoppip",
+                "category": "Pokémon Gramigna",
+                "entry": "Giunge sospinto dai venti. Si dice che\nquando Hoppip appare su campi e monti,\nla primavera sia in arrivo.",
+                "height": "0,4 m",
+                "weight": "0,5 kg"
+            },
+            "ko": {
+                "name": "통통코",
+                "category": "솜풀포켓몬",
+                "entry": "바람에 날려 떠다닌다.\n산과 들에 통통코가 모여들면\n봄이 찾아온다고 전해진다.",
+                "height": "0.4 m",
+                "weight": "0.5 kg"
+            },
+            "es": {
+                "name": "Hoppip",
+                "category": "Pokémon Algadón",
+                "entry": "Flotan en el aire. Se dice que, cuando\nlos Hoppip se reúnen, es que\nla primavera está al caer.",
+                "height": "0,4 m",
+                "weight": "0,5 kg"
+            },
+            "ja": {
+                "name": "ハネッコ",
+                "category": "わたくさポケモン",
+                "entry": "かぜに\\x{3000}ながされて\\x{3000}ただよう。\nのやまに\\x{3000}ハネッコが\\x{3000}あつまりだすと\nはるが\\x{3000}おとずれると\\x{3000}いわれている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 35,

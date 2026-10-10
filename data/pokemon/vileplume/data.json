@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vileplume",
-    "category": "Flower Pokémon",
-    "pokedex_entry": "Its petals are the largest in the\nworld. As it walks, it scatters\nextremely allergenic pollen.",
+    "pokedex": {
+        "category": "Flower Pokémon",
+        "entry": "Its petals are the largest in the\nworld. As it walks, it scatters\nextremely allergenic pollen.",
+        "height": "3'11\"",
+        "weight": "41.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Vileplume",
+                "category": "Flower Pokémon",
+                "entry": "Its petals are the largest in the\nworld. As it walks, it scatters\nextremely allergenic pollen.",
+                "height": "3'11\"",
+                "weight": "41.0 lbs."
+            },
+            "fr": {
+                "name": "Rafflesia",
+                "category": "Pokémon Fleur",
+                "entry": "Ses pétales sont les plus grands\ndu monde. Il marche en répandant\nun pollen extrêmement allergène.",
+                "height": "1,2 m",
+                "weight": "18,6 kg"
+            },
+            "de": {
+                "name": "Giflor",
+                "category": "Blume",
+                "entry": "Es besitzt die größten Blätter der Welt.\nEs verteilt beim Gehen Pollen, die\nschreckliche Allergien auslösen.",
+                "height": "1,2 m",
+                "weight": "18,6 kg"
+            },
+            "it": {
+                "name": "Vileplume",
+                "category": "Pokémon Fiore",
+                "entry": "I suoi petali sono i più grandi al mondo.\nMentre cammina diffonde un polline che\ncausa allergie.",
+                "height": "1,2 m",
+                "weight": "18,6 kg"
+            },
+            "ko": {
+                "name": "라플레시아",
+                "category": "꽃포켓몬",
+                "entry": "세계에서 꽃잎이 제일 크다.\n심한 알레르기를 일으킬\n독 꽃가루를 흩뿌리며 걷는다.",
+                "height": "1.2 m",
+                "weight": "18.6 kg"
+            },
+            "es": {
+                "name": "Vileplume",
+                "category": "Pokémon Flor",
+                "entry": "Sus pétalos son los más grandes del\nmundo. Cuando anda, desprende\nun terrible polen alergénico.",
+                "height": "1,2 m",
+                "weight": "18,6 kg"
+            },
+            "ja": {
+                "name": "ラフレシア",
+                "category": "フラワーポケモン",
+                "entry": "はなびらの\\x{3000}おおきさは\\x{3000}せかいいち。\nひどい\\x{3000}アレルギーを\\x{3000}ひきおこす\nどくかふんを\\x{3000}ばらまいて\\x{3000}あるく。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff18}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 80,

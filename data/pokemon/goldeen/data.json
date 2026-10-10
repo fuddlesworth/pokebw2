@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Goldeen",
-    "category": "Goldfish Pokémon",
-    "pokedex_entry": "Though it appears very elegant\nwhen swimming with fins unfurled, it\ncan jab powerfully with its horn.",
+    "pokedex": {
+        "category": "Goldfish Pokémon",
+        "entry": "Though it appears very elegant\nwhen swimming with fins unfurled, it\ncan jab powerfully with its horn.",
+        "height": "2'00\"",
+        "weight": "33.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Goldeen",
+                "category": "Goldfish Pokémon",
+                "entry": "Though it appears very elegant\nwhen swimming with fins unfurled, it\ncan jab powerfully with its horn.",
+                "height": "2'00\"",
+                "weight": "33.1 lbs."
+            },
+            "fr": {
+                "name": "Poissirène",
+                "category": "Pokémon Poisson",
+                "entry": "Malgré son élégance quand il\nnage, ses coups de corne sont\nredoutables.",
+                "height": "0,6 m",
+                "weight": "15,0 kg"
+            },
+            "de": {
+                "name": "Goldini",
+                "category": "Goldfisch",
+                "entry": "Mit ausgebreiteten Flossen wirkt es\nsehr elegant. Kann allerdings auch\nheftig mit seinem Horn zustoßen.",
+                "height": "0,6 m",
+                "weight": "15,0 kg"
+            },
+            "it": {
+                "name": "Goldeen",
+                "category": "Pokémon Pescerosso",
+                "entry": "Anche se è molto elegante quando nuota\na pinne spiegate, può infliggere colpi\npotenti con il suo corno.",
+                "height": "0,6 m",
+                "weight": "15,0 kg"
+            },
+            "ko": {
+                "name": "콘치",
+                "category": "금붕어포켓몬",
+                "entry": "아름다운 지느러미를 살랑거리며\n헤엄치는 모습은 매우 화려하지만\n뿔의 공격은 강력하다.",
+                "height": "0.6 m",
+                "weight": "15.0 kg"
+            },
+            "es": {
+                "name": "Goldeen",
+                "category": "Pokémon Pez Color",
+                "entry": "Resulta muy elegante cuando nada con\nlas aletas desplegadas, pero causa\nestragos con su cuerno.",
+                "height": "0,6 m",
+                "weight": "15,0 kg"
+            },
+            "ja": {
+                "name": "トサキント",
+                "category": "きんぎょポケモン",
+                "entry": "きれいな\\x{3000}ひれを\\x{3000}たなびかせ\nおよぐ\\x{3000}すがたは\\x{3000}とても\\x{3000}かれいだが\nツノの\\x{3000}ひとつきは\\x{3000}きょうりょく。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 67,

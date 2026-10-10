@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Salamence",
-    "category": "Dragon Pokémon",
-    "pokedex_entry": "As a result of its long-held dream\nof flying, its cellular structure\nchanged, and wings grew out.",
+    "pokedex": {
+        "category": "Dragon Pokémon",
+        "entry": "As a result of its long-held dream\nof flying, its cellular structure\nchanged, and wings grew out.",
+        "height": "4'11\"",
+        "weight": "226.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Salamence",
+                "category": "Dragon Pokémon",
+                "entry": "As a result of its long-held dream\nof flying, its cellular structure\nchanged, and wings grew out.",
+                "height": "4'11\"",
+                "weight": "226.2 lbs."
+            },
+            "fr": {
+                "name": "Drattak",
+                "category": "Pokémon Dragon",
+                "entry": "À force de rêver de pouvoir voler,\nsa structure cellulaire a évolué\net il s'est vu pousser des ailes.",
+                "height": "1,5 m",
+                "weight": "102,6 kg"
+            },
+            "de": {
+                "name": "Brutalanda",
+                "category": "Drache",
+                "entry": "Seine Zellstruktur änderte sich,\nes wuchsen ihm Flügel, da es immer\ndavon träumte, fliegen zu können.",
+                "height": "1,5 m",
+                "weight": "102,6 kg"
+            },
+            "it": {
+                "name": "Salamence",
+                "category": "Pokémon Drago",
+                "entry": "Il suo forte desiderio di volare ha\nprovocato una mutazione cellulare\ne gli sono spuntate le ali.",
+                "height": "1,5 m",
+                "weight": "102,6 kg"
+            },
+            "ko": {
+                "name": "보만다",
+                "category": "드래곤포켓몬",
+                "entry": "하늘을 나는 것을 계속\n바라왔던 결과 몸의 세포가\n변화해서 날개가 자라났다.",
+                "height": "1.5 m",
+                "weight": "102.6 kg"
+            },
+            "es": {
+                "name": "Salamence",
+                "category": "Pokémon Dragón",
+                "entry": "Siempre soñó con volar, por lo que\nsu estructura celular cambió y le\ncrecieron alas.",
+                "height": "1,5 m",
+                "weight": "102,6 kg"
+            },
+            "ja": {
+                "name": "ボーマンダ",
+                "category": "ドラゴンポケモン",
+                "entry": "そらを\\x{3000}とぶことを\\x{3000}ねがいつづけた\nけっか\\x{3000}からだの\\x{3000}さいぼうが\nへんかして\\x{3000}つばさが\\x{3000}はえてきた。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff12}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 135,

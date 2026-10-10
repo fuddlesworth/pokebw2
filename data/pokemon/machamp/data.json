@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Machamp",
-    "category": "Superpower Pokémon",
-    "pokedex_entry": "Its four muscled arms slam foes\nwith powerful punches and chops\nat blinding speed.",
+    "pokedex": {
+        "category": "Superpower Pokémon",
+        "entry": "Its four muscled arms slam foes\nwith powerful punches and chops\nat blinding speed.",
+        "height": "5'03\"",
+        "weight": "286.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Machamp",
+                "category": "Superpower Pokémon",
+                "entry": "Its four muscled arms slam foes\nwith powerful punches and chops\nat blinding speed.",
+                "height": "5'03\"",
+                "weight": "286.6 lbs."
+            },
+            "fr": {
+                "name": "Mackogneur",
+                "category": "Pokémon Colosse",
+                "entry": "La puissance et la rapidité de ses\nquatre bras puissants font des\nravages sur ses adversaires.",
+                "height": "1,6 m",
+                "weight": "130,0 kg"
+            },
+            "de": {
+                "name": "Machomei",
+                "category": "Kraftprotz",
+                "entry": "Es erwischt Gegner mit harten\nSchlägen seiner kräftigen Arme und\nhackt mit enormer Geschwindigkeit.",
+                "height": "1,6 m",
+                "weight": "130,0 kg"
+            },
+            "it": {
+                "name": "Machamp",
+                "category": "Pokémon Megaforza",
+                "entry": "Grazie alle sue quattro muscolose\nbraccia tira pugni e colpi a una\nvelocità impressionante.",
+                "height": "1,6 m",
+                "weight": "130,0 kg"
+            },
+            "ko": {
+                "name": "괴력몬",
+                "category": "괴력포켓몬",
+                "entry": "4개의 힘센 팔은\n눈에 보이지 않을 정도로 빠르게\n펀치와 당수를 날린다.",
+                "height": "1.6 m",
+                "weight": "130.0 kg"
+            },
+            "es": {
+                "name": "Machamp",
+                "category": "Pokémon Superpoder",
+                "entry": "Tiene cuatro musculosos brazos con\nlos que golpea y destroza al enemigo\na una velocidad increíble.",
+                "height": "1,6 m",
+                "weight": "130,0 kg"
+            },
+            "ja": {
+                "name": "カイリキー",
+                "category": "かいりきポケモン",
+                "entry": "\\x{ff14}ほんの\\x{3000}ちからづよい\\x{3000}うでは\nめにも\\x{3000}とまらぬ\\x{3000}はやさで\nパンチや\\x{3000}チョップを\\x{3000}たたきこむ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff13}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 130,

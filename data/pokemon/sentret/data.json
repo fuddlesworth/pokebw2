@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sentret",
-    "category": "Scout Pokémon",
-    "pokedex_entry": "It has a very nervous nature.\nIt stands up high on its tail so it\ncan scan wide areas.",
+    "pokedex": {
+        "category": "Scout Pokémon",
+        "entry": "It has a very nervous nature.\nIt stands up high on its tail so it\ncan scan wide areas.",
+        "height": "2'07\"",
+        "weight": "13.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sentret",
+                "category": "Scout Pokémon",
+                "entry": "It has a very nervous nature.\nIt stands up high on its tail so it\ncan scan wide areas.",
+                "height": "2'07\"",
+                "weight": "13.2 lbs."
+            },
+            "fr": {
+                "name": "Fouinette",
+                "category": "Pokémon Espion",
+                "entry": "Ce Pokémon très nerveux\nprend appui sur sa queue pour\nobserver ses alentours.",
+                "height": "0,8 m",
+                "weight": "6,0 kg"
+            },
+            "de": {
+                "name": "Wiesor",
+                "category": "Späher",
+                "entry": "Ein sehr nervöses Pokémon.\nEs steht auf seinem Schweif und\nbetrachtet seine Umgebung ganz genau.",
+                "height": "0,8 m",
+                "weight": "6,0 kg"
+            },
+            "it": {
+                "name": "Sentret",
+                "category": "Pokémon Esplorante",
+                "entry": "Ha un'indole alquanto nervosa. Sta ritto\nsulla punta della coda per riuscire a\nsorvegliare ampie aree.",
+                "height": "0,8 m",
+                "weight": "6,0 kg"
+            },
+            "ko": {
+                "name": "꼬리선",
+                "category": "망보기포켓몬",
+                "entry": "매우 신경질적인 성격이다.\n멀리까지 볼 수 있도록\n꼬리를 써서 발돋움한다.",
+                "height": "0.8 m",
+                "weight": "6.0 kg"
+            },
+            "es": {
+                "name": "Sentret",
+                "category": "Pokémon Explorador",
+                "entry": "Es de naturaleza nerviosa. Se alza sobre\nsu cola para otear grandes extensiones.",
+                "height": "0,8 m",
+                "weight": "6,0 kg"
+            },
+            "ja": {
+                "name": "オタチ",
+                "category": "みはりポケモン",
+                "entry": "とても\\x{3000}しんけいしつな\\x{3000}せいかく。\nとおくまで\\x{3000}みわたせるように\nしっぽを\\x{3000}つかって\\x{3000}せのびをする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 46,

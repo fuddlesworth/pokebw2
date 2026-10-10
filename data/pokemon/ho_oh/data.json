@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ho-Oh",
-    "category": "Rainbow Pokémon",
-    "pokedex_entry": "Its feathers are in seven colors.\nIt is said that anyone seeing it is\npromised eternal happiness.",
+    "pokedex": {
+        "category": "Rainbow Pokémon",
+        "entry": "Its feathers are in seven colors.\nIt is said that anyone seeing it is\npromised eternal happiness.",
+        "height": "12'06\"",
+        "weight": "438.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ho-Oh",
+                "category": "Rainbow Pokémon",
+                "entry": "Its feathers are in seven colors.\nIt is said that anyone seeing it is\npromised eternal happiness.",
+                "height": "12'06\"",
+                "weight": "438.7 lbs."
+            },
+            "fr": {
+                "name": "Ho-Oh",
+                "category": "Pokémon Arcenciel",
+                "entry": "Ses plumes possèdent sept couleurs.\nOn prétend que sa vue apporte la\njoie éternelle.",
+                "height": "3,8 m",
+                "weight": "199,0 kg"
+            },
+            "de": {
+                "name": "Ho-Oh",
+                "category": "Regenbogen",
+                "entry": "Seine Federn besitzen 7 Farben.\nMan sagt, dass demjenigen, der es\nsieht, ewiges Glück beschieden ist.",
+                "height": "3,8 m",
+                "weight": "199,0 kg"
+            },
+            "it": {
+                "name": "Ho-Oh",
+                "category": "Pokémon Arcobaleno",
+                "entry": "Le sue piume sono di sette colori.\nSi dice che chiunque lo veda sarà\nper sempre felice.",
+                "height": "3,8 m",
+                "weight": "199,0 kg"
+            },
+            "ko": {
+                "name": "칠색조",
+                "category": "무지개색포켓몬",
+                "entry": "무지개색 날개를 가지고 있다.\n칠색조를 본 사람은 영원한\n행복이 약속된다고 한다.",
+                "height": "3.8 m",
+                "weight": "199.0 kg"
+            },
+            "es": {
+                "name": "Ho-Oh",
+                "category": "Pokémon Arco Iris",
+                "entry": "Su plumaje tiene siete colores.\nSe dice que verlo proporciona\nfelicidad eterna.",
+                "height": "3,8 m",
+                "weight": "199,0 kg"
+            },
+            "ja": {
+                "name": "ホウオウ",
+                "category": "にじいろポケモン",
+                "entry": "なないろの\\x{3000}つばさを\\x{3000}もつ。\nホウオウを\\x{3000}みた\\x{3000}ものは\\x{3000}えいえんの\nしあわせが\\x{3000}やくそくされるという。",
+                "height": "\\x{ff13}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff19}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 106,
         "attack": 130,

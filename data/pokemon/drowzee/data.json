@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Drowzee",
-    "category": "Hypnosis Pokémon",
-    "pokedex_entry": "It can tell what people are\ndreaming by sniffing with its big\nnose. It loves fun dreams.",
+    "pokedex": {
+        "category": "Hypnosis Pokémon",
+        "entry": "It can tell what people are\ndreaming by sniffing with its big\nnose. It loves fun dreams.",
+        "height": "3'03\"",
+        "weight": "71.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Drowzee",
+                "category": "Hypnosis Pokémon",
+                "entry": "It can tell what people are\ndreaming by sniffing with its big\nnose. It loves fun dreams.",
+                "height": "3'03\"",
+                "weight": "71.4 lbs."
+            },
+            "fr": {
+                "name": "Soporifik",
+                "category": "Pokémon Hypnose",
+                "entry": "Son grand nez lui permet de lire\nles rêves d'autrui. Il adore les\nsonges amusants.",
+                "height": "1,0 m",
+                "weight": "32,4 kg"
+            },
+            "de": {
+                "name": "Traumato",
+                "category": "Hypnose",
+                "entry": "Mit seiner großen Nase kann es die\nTräume anderer erkennen.\nEs liebt lustige Träume.",
+                "height": "1,0 m",
+                "weight": "32,4 kg"
+            },
+            "it": {
+                "name": "Drowzee",
+                "category": "Pokémon Ipnosi",
+                "entry": "Riesce ad indovinare cosa sognano\nle persone annusandole con il suo\ngrande naso. Ama i sogni divertenti.",
+                "height": "1,0 m",
+                "weight": "32,4 kg"
+            },
+            "ko": {
+                "name": "슬리프",
+                "category": "최면포켓몬",
+                "entry": "튀어나온 코를 실룩샐룩 거리면\n꾸고 있는 꿈을 안다고 한다.\n즐거운 꿈을 매우 좋아한다.",
+                "height": "1.0 m",
+                "weight": "32.4 kg"
+            },
+            "es": {
+                "name": "Drowzee",
+                "category": "Pokémon Hipnosis",
+                "entry": "Puede oler los sueños de la gente\ncon su gran nariz. Le encantan\nlos sueños divertidos.",
+                "height": "1,0 m",
+                "weight": "32,4 kg"
+            },
+            "ja": {
+                "name": "スリープ",
+                "category": "さいみんポケモン",
+                "entry": "つきでた\\x{3000}はなを\\x{3000}ひくひくさせると\nみている\\x{3000}ユメが\\x{3000}わかるという。\nだいこうぶつは\\x{3000}たのしい\\x{3000}ユメだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 48,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Palpitoad",
-    "category": "Vibration Pokémon",
-    "pokedex_entry": "It lives in the water and on land.\nIt uses its long, sticky tongue\nto immobilize its opponents.",
+    "pokedex": {
+        "category": "Vibration Pokémon",
+        "entry": "It lives in the water and on land.\nIt uses its long, sticky tongue\nto immobilize its opponents.",
+        "height": "2'07\"",
+        "weight": "37.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "しんどうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 65,

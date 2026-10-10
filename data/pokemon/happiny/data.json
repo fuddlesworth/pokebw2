@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Happiny",
-    "category": "Playhouse Pokémon",
-    "pokedex_entry": "It likes to carry around a small\nrock. It may wander around others'\nfeet and cause them to stumble.",
+    "pokedex": {
+        "category": "Playhouse Pokémon",
+        "entry": "It likes to carry around a small\nrock. It may wander around others'\nfeet and cause them to stumble.",
+        "height": "2'00\"",
+        "weight": "53.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Happiny",
+                "category": "Playhouse Pokémon",
+                "entry": "It likes to carry around a small\nrock. It may wander around others'\nfeet and cause them to stumble.",
+                "height": "2'00\"",
+                "weight": "53.8 lbs."
+            },
+            "fr": {
+                "name": "Ptiravi",
+                "category": "Pokémon Maisonjouet",
+                "entry": "Ce Pokémon ne se sépare jamais de\nson petit caillou et a tendance à\ntraîner dans les pieds des gens.",
+                "height": "0,6 m",
+                "weight": "24,4 kg"
+            },
+            "de": {
+                "name": "Wonneira",
+                "category": "Spielhaus",
+                "entry": "Hat immer einen kleinen Felsen bei sich.\nWandelt zwischen den Füßen anderer,\nwas diese stolpern lässt.",
+                "height": "0,6 m",
+                "weight": "24,4 kg"
+            },
+            "it": {
+                "name": "Happiny",
+                "category": "Pokémon Ovettino",
+                "entry": "Gli piace trasportare una piccola roccia.\nA volte cammina tra i piedi degli altri,\nfacendoli inciampare.",
+                "height": "0,6 m",
+                "weight": "24,4 kg"
+            },
+            "ko": {
+                "name": "핑복",
+                "category": "소꿉놀이포켓몬",
+                "entry": "작은 돌 껴안기를 좋아한다.\n상대의 발치를 빙빙 돌다 그만\n넘어지게 만드는 일도 있다.",
+                "height": "0.6 m",
+                "weight": "24.4 kg"
+            },
+            "es": {
+                "name": "Happiny",
+                "category": "Pokémon Casita",
+                "entry": "Se pasea por ahí con una roquita.\nA veces se cuela entre los pies de\nlos demás y hace que tropiecen.",
+                "height": "0,6 m",
+                "weight": "24,4 kg"
+            },
+            "ja": {
+                "name": "ピンプク",
+                "category": "ままごとポケモン",
+                "entry": "ちいさないしを\\x{3000}かかえるのが\\x{3000}すき。\nあいての\\x{3000}あしもとを\\x{3000}あるきまわって\nついつい\\x{3000}ころばすことも\\x{3000}ある。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff14}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 5,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Chingling",
-    "category": "Bell Pokémon",
-    "pokedex_entry": "There is an orb inside its mouth.\nWhen it hops, the orb bounces all\nover and makes a ringing sound.",
+    "pokedex": {
+        "category": "Bell Pokémon",
+        "entry": "There is an orb inside its mouth.\nWhen it hops, the orb bounces all\nover and makes a ringing sound.",
+        "height": "0'08\"",
+        "weight": "1.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Chingling",
+                "category": "Bell Pokémon",
+                "entry": "There is an orb inside its mouth.\nWhen it hops, the orb bounces all\nover and makes a ringing sound.",
+                "height": "0'08\"",
+                "weight": "1.3 lbs."
+            },
+            "fr": {
+                "name": "Korillon",
+                "category": "Pokémon Clochette",
+                "entry": "Quand il sautille, l'orbe qu'il a\ndans la bouche s'agite et tinte\ncomme une cloche.",
+                "height": "0,2 m",
+                "weight": "0,6 kg"
+            },
+            "de": {
+                "name": "Klingplim",
+                "category": "Glöckchen",
+                "entry": "In seinem Maul befindet sich\neine Kugel, die beim Hopsen ein\nklingelndes Geräusch erzeugt.",
+                "height": "0,2 m",
+                "weight": "0,6 kg"
+            },
+            "it": {
+                "name": "Chingling",
+                "category": "Pokémon Sonaglio",
+                "entry": "Ha una sfera nella gola. Quando saltella,\nla sfera si muove emettendo dei trilli.",
+                "height": "0,2 m",
+                "weight": "0,6 kg"
+            },
+            "ko": {
+                "name": "랑딸랑",
+                "category": "방울포켓몬",
+                "entry": "뛰어오르면 입 안에 있는\n구슬이 사방에 반사되어\n방울 같은 음색을 만들어 낸다.",
+                "height": "0.2 m",
+                "weight": "0.6 kg"
+            },
+            "es": {
+                "name": "Chingling",
+                "category": "Pokémon Campana",
+                "entry": "Tiene una esfera en la boca.\nCuando salta, la esfera rebota\ny emite un zumbido.",
+                "height": "0,2 m",
+                "weight": "0,6 kg"
+            },
+            "ja": {
+                "name": "リーシャン",
+                "category": "すずポケモン",
+                "entry": "とびはねると\\x{3000}くちのなかにある\nたまが\\x{3000}あちこちに\\x{3000}はんしゃして\nすずのような\\x{3000}ねいろと\\x{3000}なる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 30,

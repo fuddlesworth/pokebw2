@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Spearow",
-    "category": "Tiny Bird Pokémon",
-    "pokedex_entry": "It flaps its small wings busily to\nfly. Using its beak, it searches\nin grass for prey.",
+    "pokedex": {
+        "category": "Tiny Bird Pokémon",
+        "entry": "It flaps its small wings busily to\nfly. Using its beak, it searches\nin grass for prey.",
+        "height": "1'00\"",
+        "weight": "4.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Spearow",
+                "category": "Tiny Bird Pokémon",
+                "entry": "It flaps its small wings busily to\nfly. Using its beak, it searches\nin grass for prey.",
+                "height": "1'00\"",
+                "weight": "4.4 lbs."
+            },
+            "fr": {
+                "name": "Piafabec",
+                "category": "Pokémon Minoiseau",
+                "entry": "Il fait battre vigoureusement ses\npetites ailes pour voler et cherche\nà manger dans l'herbe avec le bec.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "de": {
+                "name": "Habitak",
+                "category": "Kleinvogel",
+                "entry": "Im Flug schlägt es eifrig mit den\nFlügeln. Mit seinem Schnabel\nsucht es im Gras nach Beute.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "it": {
+                "name": "Spearow",
+                "category": "Pokémon Uccellino",
+                "entry": "Sbatte con foga le sue alette per\nsollevarsi in volo. Cerca le prede\nbeccando nell'erba.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ko": {
+                "name": "깨비참",
+                "category": "아기새포켓몬",
+                "entry": "작은 날개를 쉴 새 없이 쳐서\n날아오른다. 풀밭에 있는\n먹이를 부리로 찾아낸다.",
+                "height": "0.3 m",
+                "weight": "2.0 kg"
+            },
+            "es": {
+                "name": "Spearow",
+                "category": "Pokémon Pajarito",
+                "entry": "Agita continuamente sus alitas\npara volar. Busca presas entre\nla hierba con su pico.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ja": {
+                "name": "オニスズメ",
+                "category": "ことりポケモン",
+                "entry": "ちいさな\\x{3000}つばさを\\x{3000}いそがしく\nはばたかせて\\x{3000}とぶ。くさむらにいる\nえものを\\x{3000}くちばしで\\x{3000}さがしだす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 60,

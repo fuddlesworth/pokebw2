@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lombre",
-    "category": "Jolly Pokémon",
-    "pokedex_entry": "It has a mischievous spirit. If it\nspots an angler, it will tug on the\nfishing line to interfere.",
+    "pokedex": {
+        "category": "Jolly Pokémon",
+        "entry": "It has a mischievous spirit. If it\nspots an angler, it will tug on the\nfishing line to interfere.",
+        "height": "3'11\"",
+        "weight": "71.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lombre",
+                "category": "Jolly Pokémon",
+                "entry": "It has a mischievous spirit. If it\nspots an angler, it will tug on the\nfishing line to interfere.",
+                "height": "3'11\"",
+                "weight": "71.6 lbs."
+            },
+            "fr": {
+                "name": "Lombre",
+                "category": "Pokémon Jovial",
+                "entry": "C'est un mauvais plaisantin. Quand\nil repère un pêcheur, il tire sur sa\nligne pour le déranger.",
+                "height": "1,2 m",
+                "weight": "32,5 kg"
+            },
+            "de": {
+                "name": "Lombrero",
+                "category": "Frohmut",
+                "entry": "Es hat ein spitzbübisches Wesen.\nSieht es einen Angler, zieht es an\nder Angelschnur, um ihn zu ärgern.",
+                "height": "1,2 m",
+                "weight": "32,5 kg"
+            },
+            "it": {
+                "name": "Lombre",
+                "category": "Pokémon Giocoso",
+                "entry": "È un po' dispettoso. Se vede un\npescatore, gli tira la lenza solo\nper dargli fastidio.",
+                "height": "1,2 m",
+                "weight": "32,5 kg"
+            },
+            "ko": {
+                "name": "로토스",
+                "category": "명랑함포켓몬",
+                "entry": "낚시꾼을 발견하면\n물속에서 낚싯줄을 잡아당겨\n방해하며 좋아하는 장난꾸러기다.",
+                "height": "1.2 m",
+                "weight": "32.5 kg"
+            },
+            "es": {
+                "name": "Lombre",
+                "category": "Pokémon Alegre",
+                "entry": "Tiene carácter travieso. Si ve\nun pescador, tira del anzuelo\npara confundirlo.",
+                "height": "1,2 m",
+                "weight": "32,5 kg"
+            },
+            "ja": {
+                "name": "ハスブレロ",
+                "category": "ようきポケモン",
+                "entry": "つりびとを\\x{3000}みつけると\nすいちゅうから\\x{3000}つりいとを\\x{3000}ひっぱり\nジャマして\\x{3000}よろこぶ\\x{3000}いたずらもの。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 50,

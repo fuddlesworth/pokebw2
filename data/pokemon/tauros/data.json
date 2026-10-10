@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tauros",
-    "category": "Wild Bull Pokémon",
-    "pokedex_entry": "Once it takes aim at its foe, it\nmakes a headlong charge. It is\nfamous for its violent nature.",
+    "pokedex": {
+        "category": "Wild Bull Pokémon",
+        "entry": "Once it takes aim at its foe, it\nmakes a headlong charge. It is\nfamous for its violent nature.",
+        "height": "4'07\"",
+        "weight": "194.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Tauros",
+                "category": "Wild Bull Pokémon",
+                "entry": "Once it takes aim at its foe, it\nmakes a headlong charge. It is\nfamous for its violent nature.",
+                "height": "4'07\"",
+                "weight": "194.9 lbs."
+            },
+            "fr": {
+                "name": "Tauros",
+                "category": "Pokémon Buffle",
+                "entry": "Après avoir choisi sa cible, il fonce\ndessus tête baissée. Il est réputé\npour sa nature violente.",
+                "height": "1,4 m",
+                "weight": "88,4 kg"
+            },
+            "de": {
+                "name": "Tauros",
+                "category": "Wildbulle",
+                "entry": "Sobald es einen Gegner ins Visier\ngenommen hat, rennt es mit dem\nKopf voran auf ihn zu.",
+                "height": "1,4 m",
+                "weight": "88,4 kg"
+            },
+            "it": {
+                "name": "Tauros",
+                "category": "Pokémon Torobrado",
+                "entry": "Dopo aver puntato il nemico, lo\ncarica a testa bassa.\nÈ noto per la sua indole violenta.",
+                "height": "1,4 m",
+                "weight": "88,4 kg"
+            },
+            "ko": {
+                "name": "켄타로스",
+                "category": "성난소포켓몬",
+                "entry": "노리는 먹이를 포착하면\n일직선으로 돌진한다.\n난폭한 성격으로 유명하다.",
+                "height": "1.4 m",
+                "weight": "88.4 kg"
+            },
+            "es": {
+                "name": "Tauros",
+                "category": "Pokémon Toro Bravo",
+                "entry": "Cuando elige una presa, ataca sin\npensárselo. Este Pokémon es\nfamoso por su carácter violento.",
+                "height": "1,4 m",
+                "weight": "88,4 kg"
+            },
+            "ja": {
+                "name": "ケンタロス",
+                "category": "あばれうしポケモン",
+                "entry": "えものに\\x{3000}ねらいを\\x{3000}さだめると\nいっちょくせんに\\x{3000}とっしんする。\nあらっぽい\\x{3000}せいかくで\\x{3000}ゆうめい。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff18}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 100,

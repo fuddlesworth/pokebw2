@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Virizion",
-    "category": "Grassland Pokémon",
-    "pokedex_entry": "Legends say this Pokémon\nconfounded opponents with\nits swift movements.",
+    "pokedex": {
+        "category": "Grassland Pokémon",
+        "entry": "Legends say this Pokémon\nconfounded opponents with\nits swift movements.",
+        "height": "6'07\"",
+        "weight": "440.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "そうげんポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 91,
         "attack": 90,

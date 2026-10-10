@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Latios",
-    "category": "Eon Pokémon",
-    "pokedex_entry": "A highly intelligent Pokémon.\nBy folding back its wings in flight,\nit can overtake jet planes.",
+    "pokedex": {
+        "category": "Eon Pokémon",
+        "entry": "A highly intelligent Pokémon.\nBy folding back its wings in flight,\nit can overtake jet planes.",
+        "height": "6'07\"",
+        "weight": "132.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Latios",
+                "category": "Eon Pokémon",
+                "entry": "A highly intelligent Pokémon.\nBy folding back its wings in flight,\nit can overtake jet planes.",
+                "height": "6'07\"",
+                "weight": "132.3 lbs."
+            },
+            "fr": {
+                "name": "Latios",
+                "category": "Pokémon Éon",
+                "entry": "Un Pokémon très intelligent. Il\npeut voler plus vite qu'un avion à\nréaction en repliant ses ailes.",
+                "height": "2,0 m",
+                "weight": "60,0 kg"
+            },
+            "de": {
+                "name": "Latios",
+                "category": "Äon",
+                "entry": "Ein hochintelligentes Pokémon. Wenn\nes im Flug seine Flügel nach hinten\nlegt, ist es schneller als ein Jet.",
+                "height": "2,0 m",
+                "weight": "60,0 kg"
+            },
+            "it": {
+                "name": "Latios",
+                "category": "Pokémon Eone",
+                "entry": "Pokémon molto intelligente. Ripiegando\nindietro le ali, riesce a volare più veloce\ndi un jet.",
+                "height": "2,0 m",
+                "weight": "60,0 kg"
+            },
+            "ko": {
+                "name": "라티오스",
+                "category": "무한포켓몬",
+                "entry": "높은 지능을 가진 포켓몬이다.\n팔을 접어 날면 제트기를\n추월할 만큼 빠르다.",
+                "height": "2.0 m",
+                "weight": "60.0 kg"
+            },
+            "es": {
+                "name": "Latios",
+                "category": "Pokémon Eón",
+                "entry": "Es un Pokémon muy inteligente. Puede\nadelantar a aviones a reacción plegando\nlas alas.",
+                "height": "2,0 m",
+                "weight": "60,0 kg"
+            },
+            "ja": {
+                "name": "ラティオス",
+                "category": "むげんポケモン",
+                "entry": "たかい\\x{3000}ちのうを\\x{3000}もつ\\x{3000}ポケモン。\nうでを\\x{3000}おりたたんで\\x{3000}とべば\nジェットきを\\x{3000}おいこす\\x{3000}スピードだ。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 90,

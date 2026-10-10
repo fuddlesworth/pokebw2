@@ -1,37 +1,200 @@
 {
     "$schema": "../species.schema.json",
     "name": "Unown",
-    "category": "Symbol Pokémon",
-    "pokedex_entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-    "form_pokedex_entries": [
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
-        "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge."
-    ],
+    "pokedex": {
+        "category": "Symbol Pokémon",
+        "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+        "height": "1'08\"",
+        "weight": "11.0 lbs.",
+        "forms": [
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            {
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Unown",
+                "category": "Symbol Pokémon",
+                "entry": "When alone, nothing happens.\nHowever, if there are two or more,\nan odd power is said to emerge.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            "fr": {
+                "name": "Zarbi",
+                "category": "Pokémon Symbolique",
+                "entry": "Quand il est seul, il ne se passe\nrien... Mais en groupe, il semble\nhabité par un mystérieux pouvoir.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "de": {
+                "name": "Icognito",
+                "category": "Symbol",
+                "entry": "Sind sie zu zweit oder mehr, entsteht\neine eigentümliche Kraft. So sagt man\nzumindest.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "it": {
+                "name": "Unown",
+                "category": "Pokémon Simbolo",
+                "entry": "Un solo esemplare non produce alcun\neffetto, ma se ce ne sono due o più,\nemerge uno strano potere.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "ko": {
+                "name": "안농",
+                "category": "심볼포켓몬",
+                "entry": "혼자 있으면 아무 일도 일어나지\n않지만 두 마리 이상 있게 되면\n어떤 힘이 생긴다고 한다.",
+                "height": "0.5 m",
+                "weight": "5.0 kg"
+            },
+            "es": {
+                "name": "Unown",
+                "category": "Pokémon Símbolo",
+                "entry": "Si están en solitario, no pasa nada;\npero si se juntan dos o más, se\ndice que surge un extraño poder.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "ja": {
+                "name": "アンノーン",
+                "category": "シンボルポケモン",
+                "entry": "\\x{ff11}ぴきで\\x{3000}いても\\x{3000}なにも\\x{3000}おきないが\n\\x{ff12}ひき\\x{3000}いじょうで\\x{3000}ならぶと\nなにかの\\x{3000}ちからが\\x{3000}めばえるという。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 48,
         "attack": 72,

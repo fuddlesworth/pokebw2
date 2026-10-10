@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Nidorina",
-    "category": "Poison Pin Pokémon",
-    "pokedex_entry": "When it senses danger, it raises\nall the barbs on its body. These\nbarbs grow slower than Nidorino's.",
+    "pokedex": {
+        "category": "Poison Pin Pokémon",
+        "entry": "When it senses danger, it raises\nall the barbs on its body. These\nbarbs grow slower than Nidorino's.",
+        "height": "2'07\"",
+        "weight": "44.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Nidorina",
+                "category": "Poison Pin Pokémon",
+                "entry": "When it senses danger, it raises\nall the barbs on its body. These\nbarbs grow slower than Nidorino's.",
+                "height": "2'07\"",
+                "weight": "44.1 lbs."
+            },
+            "fr": {
+                "name": "Nidorina",
+                "category": "Pokémon Vénépic",
+                "entry": "Ce Pokémon dresse ses piquants\nen cas de danger. Ils poussent\nmoins vite que ceux de Nidorino.",
+                "height": "0,8 m",
+                "weight": "20,0 kg"
+            },
+            "de": {
+                "name": "Nidorina",
+                "category": "Giftdorn",
+                "entry": "Bei Gefahr fährt es die Widerhaken\nam Körper aus. Diese wachsen\nlangsamer als die von Nidorino.",
+                "height": "0,8 m",
+                "weight": "20,0 kg"
+            },
+            "it": {
+                "name": "Nidorina",
+                "category": "Pokémon Velenago",
+                "entry": "Quando avverte il pericolo, rizza\ngli aculei, che fuoriescono più\nlentamente di quelli di Nidorino.",
+                "height": "0,8 m",
+                "weight": "20,0 kg"
+            },
+            "ko": {
+                "name": "니드리나",
+                "category": "독침포켓몬",
+                "entry": "위험을 느끼면 전신의 가시를\n곤두세운다. 니드리노에 비해서\n가시의 성장이 느리다.",
+                "height": "0.8 m",
+                "weight": "20.0 kg"
+            },
+            "es": {
+                "name": "Nidorina",
+                "category": "Pokémon Pin Veneno",
+                "entry": "Saca las púas de su cuerpo si siente\npeligro. Sus púas crecen más despacio\nque las de Nidorino.",
+                "height": "0,8 m",
+                "weight": "20,0 kg"
+            },
+            "ja": {
+                "name": "ニドリーナ",
+                "category": "どくばりポケモン",
+                "entry": "きけんを\\x{3000}かんじると\\x{3000}ぜんしんの\nトゲを\\x{3000}さかだてる。ニドリーノに\nくらべて\\x{3000}トゲの\\x{3000}そだちが\\x{3000}おそい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 62,

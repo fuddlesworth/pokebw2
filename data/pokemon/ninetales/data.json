@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ninetales",
-    "category": "Fox Pokémon",
-    "pokedex_entry": "Each of its nine tails is imbued\nwith supernatural power, and it\ncan live for a thousand years.",
+    "pokedex": {
+        "category": "Fox Pokémon",
+        "entry": "Each of its nine tails is imbued\nwith supernatural power, and it\ncan live for a thousand years.",
+        "height": "3'07\"",
+        "weight": "43.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ninetales",
+                "category": "Fox Pokémon",
+                "entry": "Its nine tails are said to be\nimbued with a mystic power.\nIt can live for a thousand years.",
+                "height": "3'07\"",
+                "weight": "43.9 lbs."
+            },
+            "fr": {
+                "name": "Feunard",
+                "category": "Pokémon Renard",
+                "entry": "On raconte que ses neuf queues\ndétiennent un pouvoir mystique.\nIl peut vivre pendant mille ans.",
+                "height": "1,1 m",
+                "weight": "19,9 kg"
+            },
+            "de": {
+                "name": "Vulnona",
+                "category": "Fuchs",
+                "entry": "Seine neun Schweife sollen\nmystische Kräfte besitzen.\nEs kann tausend Jahre leben.",
+                "height": "1,1 m",
+                "weight": "19,9 kg"
+            },
+            "it": {
+                "name": "Ninetales",
+                "category": "Pokémon Volpe",
+                "entry": "Si dice che le sue nove code posseggano\nun potere magico. Vive anche 1000 anni.",
+                "height": "1,1 m",
+                "weight": "19,9 kg"
+            },
+            "ko": {
+                "name": "나인테일",
+                "category": "여우포켓몬",
+                "entry": "9개의 꼬리에는 신비한 힘이\n깃들어 있다고 전해진다.\n천 년을 살 수 있는 듯하다.",
+                "height": "1.1 m",
+                "weight": "19.9 kg"
+            },
+            "es": {
+                "name": "Ninetales",
+                "category": "Pokémon Zorro",
+                "entry": "Se dice que sus nueve colas están\nrevestidas de poder místico.\nPuede vivir 1000 años.",
+                "height": "1,1 m",
+                "weight": "19,9 kg"
+            },
+            "ja": {
+                "name": "キュウコン",
+                "category": "きつねポケモン",
+                "entry": "\\x{ff19}ほんの\\x{3000}しっぽには\\x{3000}しんぴてきな\nちからが\\x{3000}やどっていると\\x{3000}つたわる。\n\\x{ff11}\\x{ff10}\\x{ff10}\\x{ff10}ねん\\x{3000}いきつづけるらしい。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 73,
         "attack": 76,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Corphish",
-    "category": "Ruffian Pokémon",
-    "pokedex_entry": "No matter how dirty the water\nin the river, it will adapt and thrive.\nIt has a strong will to survive.",
+    "pokedex": {
+        "category": "Ruffian Pokémon",
+        "entry": "No matter how dirty the water\nin the river, it will adapt and thrive.\nIt has a strong will to survive.",
+        "height": "2'00\"",
+        "weight": "25.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Corphish",
+                "category": "Ruffian Pokémon",
+                "entry": "Its hardy vitality enables it to\nadapt to any environment. Its\npincers will never release prey.",
+                "height": "2'00\"",
+                "weight": "25.4 lbs."
+            },
+            "fr": {
+                "name": "Écrapince",
+                "category": "Pokémon Brute",
+                "entry": "Sa nature robuste lui permet de\nvivre sur n'importe quel terrain.\nSes pinces ne lâchent jamais prise.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "de": {
+                "name": "Krebscorps",
+                "category": "Grobian",
+                "entry": "Ein robustes Pokémon, das sich jeder\nUmgebung anpassen kann. Seine\nZangen geben keine Beute frei.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "it": {
+                "name": "Corphish",
+                "category": "Pokémon Birbone",
+                "entry": "La sua grande vitalità gli permette di\nadattarsi ad ogni habitat. Le sue chele\nnon rilasciano mai la preda.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "ko": {
+                "name": "가재군",
+                "category": "건달포켓몬",
+                "entry": "어떤 환경에도 적응하는\n강한 생명력의 소유자다.\n집은 먹이는 놓치지 않는다.",
+                "height": "0.6 m",
+                "weight": "11.5 kg"
+            },
+            "es": {
+                "name": "Corphish",
+                "category": "Pokémon Rufián",
+                "entry": "Su organismo le permite adaptarse\na cualquier entorno. Sus pinzas\nnunca sueltan a su presa.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "ja": {
+                "name": "ヘイガニ",
+                "category": "ごろつきポケモン",
+                "entry": "どんな\\x{3000}かんきょうにも\\x{3000}てきおうする\nつよい\\x{3000}せいめいりょくの\\x{3000}もちぬし。\nはさんだ\\x{3000}えものは\\x{3000}はなさない。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 43,
         "attack": 80,

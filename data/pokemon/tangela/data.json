@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tangela",
-    "category": "Vine Pokémon",
-    "pokedex_entry": "Many writhing vines cover it,\nso its true identity remains unknown.\nThe blue vines grow its whole life long.",
+    "pokedex": {
+        "category": "Vine Pokémon",
+        "entry": "Many writhing vines cover it,\nso its true identity remains unknown.\nThe blue vines grow its whole life long.",
+        "height": "3'03\"",
+        "weight": "77.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Tangela",
+                "category": "Vine Pokémon",
+                "entry": "The blue vines shrouding its body\nare covered in a growth of fine\nhair. It is known to be ticklish.",
+                "height": "3'03\"",
+                "weight": "77.2 lbs."
+            },
+            "fr": {
+                "name": "Saquedeneu",
+                "category": "Pokémon Vigne",
+                "entry": "Il se cache derrière des lianes\nbleues recouvertes d'un fin duvet.\nIl est chatouilleux.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "de": {
+                "name": "Tangela",
+                "category": "Ranke",
+                "entry": "Die blauen Ranken an seinem Körper\nsind von feinen Haaren bedeckt.\nEs gilt zudem als kitzlig.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "it": {
+                "name": "Tangela",
+                "category": "Pokémon Liana",
+                "entry": "Le liane blu che nascondono il suo\ncorpo sono rivestite di peli sottili.\nSi dice che soffra il solletico.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "ko": {
+                "name": "덩쿠리",
+                "category": "넝쿨포켓몬",
+                "entry": "전신을 뒤덮은 파란 덩굴에는\n아주 세밀한 털이 나있어\n만지면 매우 간지럽다.",
+                "height": "1.0 m",
+                "weight": "35.0 kg"
+            },
+            "es": {
+                "name": "Tangela",
+                "category": "Pokémon Enredadera",
+                "entry": "Las lianas azules que envuelven\nsu cuerpo están cubiertas de vello.\nSe dice que tiene cosquillas.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "ja": {
+                "name": "モンジャラ",
+                "category": "ツルじょうポケモン",
+                "entry": "ぜんしんを\\x{3000}おおう\\x{3000}あおいツルには\nさらに\\x{3000}こまかな\\x{3000}けがはえていて\nさわると\\x{3000}とても\\x{3000}くすぐったい。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 55,

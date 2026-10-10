@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Drifloon",
-    "category": "Balloon Pokémon",
-    "pokedex_entry": "These Pokémon are called the\n“Signpost for Wandering Spirits.\"\nChildren holding them sometimes vanish.",
+    "pokedex": {
+        "category": "Balloon Pokémon",
+        "entry": "These Pokémon are called the\n“Signpost for Wandering Spirits.\"\nChildren holding them sometimes vanish.",
+        "height": "1'04\"",
+        "weight": "2.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Drifloon",
+                "category": "Balloon Pokémon",
+                "entry": "Because of the way it floats\naimlessly, an old folktale calls it a\n“Signpost for Wandering Spirits.\"",
+                "height": "1'04\"",
+                "weight": "2.6 lbs."
+            },
+            "fr": {
+                "name": "Baudrive",
+                "category": "Pokémon Bouboule",
+                "entry": "Sa façon de flotter sans but au\ngré du vent lui a valu le surnom\nde “bouée des esprits égarés\".",
+                "height": "0,4 m",
+                "weight": "1,2 kg"
+            },
+            "de": {
+                "name": "Driftlon",
+                "category": "Ballon",
+                "entry": "Laut einer alten Volkssage nennt man\nes den „Wegweiser für umherstreifende\nGeister“.",
+                "height": "0,4 m",
+                "weight": "1,2 kg"
+            },
+            "it": {
+                "name": "Drifloon",
+                "category": "Pokémon Pallone",
+                "entry": "Fluttua qua e là senza motivo e per\nquesto una leggenda lo definisce\n“Guida degli spiriti vaganti\".",
+                "height": "0,4 m",
+                "weight": "1,2 kg"
+            },
+            "ko": {
+                "name": "흔들풍손",
+                "category": "풍선포켓몬",
+                "entry": "정처없이 떠있는 모습에서\n길잃은 영혼의 이정표라고\n전해지는 옛날이야기도 있다.",
+                "height": "0.4 m",
+                "weight": "1.2 kg"
+            },
+            "es": {
+                "name": "Drifloon",
+                "category": "Pokémon Globo",
+                "entry": "Por esa forma que tiene de flotar\nsin rumbo, en un cuento se le apodó\nGlobo Aeroerrático.",
+                "height": "0,4 m",
+                "weight": "1,2 kg"
+            },
+            "ja": {
+                "name": "フワンテ",
+                "category": "ふうせんポケモン",
+                "entry": "あてもなく\\x{3000}うかぶ\\x{3000}ようすから\nまよえる\\x{3000}たましいの\\x{3000}みちしるべ\\x{3000}と\nつたえる\\x{3000}むかしばなしも\\x{3000}ある。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 50,

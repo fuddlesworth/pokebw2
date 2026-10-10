@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Clefairy",
-    "category": "Fairy Pokémon",
-    "pokedex_entry": "On nights with a full moon, Clefairy\ngather from all over and dance.\nBathing in moonlight makes them float.",
+    "pokedex": {
+        "category": "Fairy Pokémon",
+        "entry": "On nights with a full moon, Clefairy\ngather from all over and dance.\nBathing in moonlight makes them float.",
+        "height": "2'00\"",
+        "weight": "16.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Clefairy",
+                "category": "Fairy Pokémon",
+                "entry": "It is said that happiness will come\nto those who see a gathering of\nClefairy dancing under a full moon.",
+                "height": "2'00\"",
+                "weight": "16.5 lbs."
+            },
+            "fr": {
+                "name": "Mélofée",
+                "category": "Pokémon Fée",
+                "entry": "On dit que ceux qui voient danser\nun groupe de Mélofée sous la pleine\nlune connaîtront un grand bonheur.",
+                "height": "0,6 m",
+                "weight": "7,5 kg"
+            },
+            "de": {
+                "name": "Piepi",
+                "category": "Fee",
+                "entry": "Eine Ansammlung von Piepi bei\nVollmond tanzen zu sehen,\nsoll Freude verheißen.",
+                "height": "0,6 m",
+                "weight": "7,5 kg"
+            },
+            "it": {
+                "name": "Clefairy",
+                "category": "Pokémon Fata",
+                "entry": "Si dice che vedere un gruppo di Clefairy\nballare con la luna piena sia di ottimo\nauspicio.",
+                "height": "0,6 m",
+                "weight": "7,5 kg"
+            },
+            "ko": {
+                "name": "삐삐",
+                "category": "요정포켓몬",
+                "entry": "보름달 밤에 삐삐가 모여\n춤을 추는 모습을 보면\n행복해진다고 전해진다.",
+                "height": "0.6 m",
+                "weight": "7.5 kg"
+            },
+            "es": {
+                "name": "Clefairy",
+                "category": "Pokémon Hada",
+                "entry": "Se dice que la felicidad llegará a quien\nvea a un grupo de Clefairy bailando a\nla luz de la luna llena.",
+                "height": "0,6 m",
+                "weight": "7,5 kg"
+            },
+            "ja": {
+                "name": "ピッピ",
+                "category": "ようせいポケモン",
+                "entry": "まんげつのよる\\x{3000}ピッピが\\x{3000}あつまって\nダンスを\\x{3000}おどるようすを\\x{3000}みると\nしあわせに\\x{3000}なれると\\x{3000}いわれている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 45,

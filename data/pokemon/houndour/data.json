@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Houndour",
-    "category": "Dark Pokémon",
-    "pokedex_entry": "It is smart enough to hunt in\npacks. It uses a variety of cries\nfor communicating with others.",
+    "pokedex": {
+        "category": "Dark Pokémon",
+        "entry": "It is smart enough to hunt in\npacks. It uses a variety of cries\nfor communicating with others.",
+        "height": "2'00\"",
+        "weight": "23.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Houndour",
+                "category": "Dark Pokémon",
+                "entry": "It is smart enough to hunt in\npacks. It uses a variety of cries\nfor communicating with others.",
+                "height": "2'00\"",
+                "weight": "23.8 lbs."
+            },
+            "fr": {
+                "name": "Malosse",
+                "category": "Pokémon Sombre",
+                "entry": "Il est assez évolué pour chasser\nen meute et communiquer par\ndes séries de cris modulés.",
+                "height": "0,6 m",
+                "weight": "10,8 kg"
+            },
+            "de": {
+                "name": "Hunduster",
+                "category": "Hades",
+                "entry": "Es jagt in Rudeln und kommuniziert\nüber eine ganze Reihe von Rufen mit\nanderen Hunduster.",
+                "height": "0,6 m",
+                "weight": "10,8 kg"
+            },
+            "it": {
+                "name": "Houndour",
+                "category": "Pokémon Buio",
+                "entry": "Va a caccia in branchi e comunica con\ngli altri emettendo una varietà di versi.",
+                "height": "0,6 m",
+                "weight": "10,8 kg"
+            },
+            "ko": {
+                "name": "델빌",
+                "category": "다크포켓몬",
+                "entry": "수많은 울음소리를 가려 써서\n동료들과 의사소통을 하며\n사냥을 하는 지능을 가지고 있다.",
+                "height": "0.6 m",
+                "weight": "10.8 kg"
+            },
+            "es": {
+                "name": "Houndour",
+                "category": "Pokémon Siniestro",
+                "entry": "Tiene suficiente inteligencia para\ncazar en manada. Se comunica\ncon los demás a través de gritos.",
+                "height": "0,6 m",
+                "weight": "10,8 kg"
+            },
+            "ja": {
+                "name": "デルビル",
+                "category": "ダークポケモン",
+                "entry": "さまざまな\\x{3000}なきごえを\\x{3000}つかいわけ\nなかまと\\x{3000}コミュニケーションしながら\nかりを\\x{3000}おこなう\\x{3000}かしこさをもつ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 60,

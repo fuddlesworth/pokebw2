@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Porygon2",
-    "category": "Virtual Pokémon",
-    "pokedex_entry": "It was upgraded to enable the\nexploration of other planets.\nHowever, it failed to measure up.",
+    "pokedex": {
+        "category": "Virtual Pokémon",
+        "entry": "It was upgraded to enable the\nexploration of other planets.\nHowever, it failed to measure up.",
+        "height": "2'00\"",
+        "weight": "71.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Porygon2",
+                "category": "Virtual Pokémon",
+                "entry": "It was upgraded to enable the\nexploration of other planets.\nHowever, it failed to measure up.",
+                "height": "2'00\"",
+                "weight": "71.6 lbs."
+            },
+            "fr": {
+                "name": "Porygon2",
+                "category": "Pokémon Virtuel",
+                "entry": "Il a subi une mise à jour censée lui\npermettre d'explorer d'autres\nplanètes... C'est un échec.",
+                "height": "0,6 m",
+                "weight": "32,5 kg"
+            },
+            "de": {
+                "name": "Porygon2",
+                "category": "Virtuell",
+                "entry": "Wurde zur Erforschung anderer\nPlaneten weiterentwickelt. Diesem\nAnspruch wurde es nicht gerecht.",
+                "height": "0,6 m",
+                "weight": "32,5 kg"
+            },
+            "it": {
+                "name": "Porygon2",
+                "category": "Pokémon Virtuale",
+                "entry": "È stato potenziato per consentire\nl'esplorazione di altri pianeti.\nTuttavia, non ha avuto successo.",
+                "height": "0,6 m",
+                "weight": "32,5 kg"
+            },
+            "ko": {
+                "name": "폴리곤2",
+                "category": "가상포켓몬",
+                "entry": "행성개발을 할 수 있도록\n버전 업되었지만\n아직은 힘든 듯하다.",
+                "height": "0.6 m",
+                "weight": "32.5 kg"
+            },
+            "es": {
+                "name": "Porygon2",
+                "category": "Pokémon Virtual",
+                "entry": "Fue mejorado para posibilitar\nla exploración de otros planetas.\nPero no estaba a la altura.",
+                "height": "0,6 m",
+                "weight": "32,5 kg"
+            },
+            "ja": {
+                "name": "ポリゴン\\x{ff12}",
+                "category": "バーチャルポケモン",
+                "entry": "わくせい\\x{3000}かいはつが\\x{3000}できるように\nバージョンアップ\\x{3000}されたのだが\nまだまだ\\x{3000}むずかしかった\\x{3000}ようだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 80,

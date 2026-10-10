@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Duosion",
-    "category": "Mitosis Pokémon",
-    "pokedex_entry": "When their two divided brains\nthink the same thoughts,\ntheir psychic power is maximized.",
+    "pokedex": {
+        "category": "Mitosis Pokémon",
+        "entry": "When their two divided brains\nthink the same thoughts,\ntheir psychic power is maximized.",
+        "height": "2'00\"",
+        "weight": "17.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ぶんかつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 40,

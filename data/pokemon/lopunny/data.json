@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lopunny",
-    "category": "Rabbit Pokémon",
-    "pokedex_entry": "Extremely cautious,\nit quickly bounds off\nwhen it senses danger.",
+    "pokedex": {
+        "category": "Rabbit Pokémon",
+        "entry": "Extremely cautious,\nit quickly bounds off\nwhen it senses danger.",
+        "height": "3'11\"",
+        "weight": "73.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lopunny",
+                "category": "Rabbit Pokémon",
+                "entry": "The ears appear to be delicate. If\nthey are touched roughly, it kicks\nwith its graceful legs.",
+                "height": "3'11\"",
+                "weight": "73.4 lbs."
+            },
+            "fr": {
+                "name": "Lockpin",
+                "category": "Pokémon Lapin",
+                "entry": "Il est capable de décocher de\npuissants coups de pied si on\ntouche à ses délicates oreilles.",
+                "height": "1,2 m",
+                "weight": "33,3 kg"
+            },
+            "de": {
+                "name": "Schlapor",
+                "category": "Hase",
+                "entry": "Es hat sehr empfindliche Ohren.\nFasst man sie zu rau an, wird es mit\nseinen grazilen Beinen zutreten.",
+                "height": "1,2 m",
+                "weight": "33,3 kg"
+            },
+            "it": {
+                "name": "Lopunny",
+                "category": "Pokémon Coniglio",
+                "entry": "Ha delle orecchie molto delicate. Se le si\ntocca con forza, scalcia con le sue\ngraziose gambe.",
+                "height": "1,2 m",
+                "weight": "33,3 kg"
+            },
+            "ko": {
+                "name": "이어롭",
+                "category": "토끼포켓몬",
+                "entry": "귀가 아주 민감한 부위이므로\n상냥하고 정중하게 만지지 않으면\n그 매끈한 다리에 채이게 된다.",
+                "height": "1.2 m",
+                "weight": "33.3 kg"
+            },
+            "es": {
+                "name": "Lopunny",
+                "category": "Pokémon Conejo",
+                "entry": "Sus orejas son muy delicadas. Si\nalguien las toca con brusquedad,\nrecibirá una espléndida patada.",
+                "height": "1,2 m",
+                "weight": "33,3 kg"
+            },
+            "ja": {
+                "name": "ミミロップ",
+                "category": "うさぎポケモン",
+                "entry": "みみは\\x{3000}とても\\x{3000}デリケートらしく\nやさしく\\x{3000}ていねいに\\x{3000}さわらないと\nしなやかな\\x{3000}あしで\\x{3000}けられてしまう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff13}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 76,

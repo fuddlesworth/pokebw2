@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Steelix",
-    "category": "Iron Snake Pokémon",
-    "pokedex_entry": "The iron it ingested with the soil it\nswallowed transformed its body and\nmade it harder than diamonds.",
+    "pokedex": {
+        "category": "Iron Snake Pokémon",
+        "entry": "The iron it ingested with the soil it\nswallowed transformed its body and\nmade it harder than diamonds.",
+        "height": "30'02\"",
+        "weight": "881.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Steelix",
+                "category": "Iron Snake Pokémon",
+                "entry": "It is thought its body transformed\nas a result of iron accumulating\ninternally from swallowing soil.",
+                "height": "30'02\"",
+                "weight": "881.8 lbs."
+            },
+            "fr": {
+                "name": "Steelix",
+                "category": "Pokémon Serpenfer",
+                "entry": "On pense que son corps s'est\ntransformé à cause du fer contenu\ndans la terre dont il se nourrit.",
+                "height": "9,2 m",
+                "weight": "400,0 kg"
+            },
+            "de": {
+                "name": "Stahlos",
+                "category": "Stahlboa",
+                "entry": "Man glaubt, dass sich sein Körper\naufgrund des Schluckens von\neisenhaltiger Erde verwandelt habe.",
+                "height": "9,2 m",
+                "weight": "400,0 kg"
+            },
+            "it": {
+                "name": "Steelix",
+                "category": "Pokémon Ferroserpe",
+                "entry": "Si dice che si sia trasformato a causa del\nferro contenuto nella terra che mangia.",
+                "height": "9,2 m",
+                "weight": "400,0 kg"
+            },
+            "ko": {
+                "name": "강철톤",
+                "category": "철뱀포켓몬",
+                "entry": "흙과 함께 삼킨 강철이 축적되어\n몸이 변화한 것이라 생각된다.",
+                "height": "9.2 m",
+                "weight": "400.0 kg"
+            },
+            "es": {
+                "name": "Steelix",
+                "category": "Pokémon Serpférrea",
+                "entry": "Se cree que su cuerpo se ha ido\ntransformando desde dentro por el\nhierro que acumula comiendo tierra.",
+                "height": "9,2 m",
+                "weight": "400,0 kg"
+            },
+            "ja": {
+                "name": "ハガネール",
+                "category": "てつへびポケモン",
+                "entry": "つちと\\x{3000}いっしょに\\x{3000}のみこんだ\nはがねが\\x{3000}たまっていって\\x{3000}からだが\nへんかしたとも\\x{3000}かんがえられる。",
+                "height": "\\x{ff19}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff10}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 85,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Haunter",
-    "category": "Gas Pokémon",
-    "pokedex_entry": "It likes to lurk in the dark and tap\nshoulders with a gaseous hand. Its\ntouch causes endless shuddering.",
+    "pokedex": {
+        "category": "Gas Pokémon",
+        "entry": "It likes to lurk in the dark and tap\nshoulders with a gaseous hand. Its\ntouch causes endless shuddering.",
+        "height": "5'03\"",
+        "weight": "0.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Haunter",
+                "category": "Gas Pokémon",
+                "entry": "It likes to lurk in the dark and tap\nshoulders with a gaseous hand. Its\ntouch causes endless shuddering.",
+                "height": "5'03\"",
+                "weight": "0.2 lbs."
+            },
+            "fr": {
+                "name": "Spectrum",
+                "category": "Pokémon Gaz",
+                "entry": "Il adore se tapir dans l'ombre et\nfaire frissonner ses proies en leur\ntouchant l'épaule.",
+                "height": "1,6 m",
+                "weight": "0,1 kg"
+            },
+            "de": {
+                "name": "Alpollo",
+                "category": "Gas",
+                "entry": "Lauert in der Dunkelheit. Die\nBerührung seiner gasförmigen\nHand erzeugt endloses Schaudern.",
+                "height": "1,6 m",
+                "weight": "0,1 kg"
+            },
+            "it": {
+                "name": "Haunter",
+                "category": "Pokémon Gas",
+                "entry": "Adora tendere agguati in luoghi bui.\nIl suo tocco causa brividi incontenibili.",
+                "height": "1,6 m",
+                "weight": "0,1 kg"
+            },
+            "ko": {
+                "name": "고우스트",
+                "category": "가스포켓몬",
+                "entry": "어둠을 틈타 가스로 된 손을 뻗쳐\n사람의 어깨를 두드리기 좋아한다.\n그 손에 닿으면 떨림이 멈추지 않는다.",
+                "height": "1.6 m",
+                "weight": "0.1 kg"
+            },
+            "es": {
+                "name": "Haunter",
+                "category": "Pokémon Gas",
+                "entry": "Le gusta acechar en la oscuridad y tocar\nel hombro a sus víctimas, que se quedan\ntemblando para siempre.",
+                "height": "1,6 m",
+                "weight": "0,1 kg"
+            },
+            "ja": {
+                "name": "ゴースト",
+                "category": "ガスじょうポケモン",
+                "entry": "くらやみにまぎれ\\x{3000}ガスのてを\\x{3000}のばし\nひとのかたを\\x{3000}たたくのが\\x{3000}すき。\nさわられると\\x{3000}ふるえが\\x{3000}とまらない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff11}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 50,

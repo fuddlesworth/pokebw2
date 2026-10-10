@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Musharna",
-    "category": "Drowsing Pokémon",
-    "pokedex_entry": "The dream mist coming from its forehead\nchanges into many different colors\ndepending on the dream that was eaten.",
+    "pokedex": {
+        "category": "Drowsing Pokémon",
+        "entry": "The dream mist coming from its forehead\nchanges into many different colors\ndepending on the dream that was eaten.",
+        "height": "3'07\"",
+        "weight": "133.4 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ゆめうつつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 116,
         "attack": 55,

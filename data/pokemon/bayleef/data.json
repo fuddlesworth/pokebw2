@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bayleef",
-    "category": "Leaf Pokémon",
-    "pokedex_entry": "The buds that ring its neck give\noff a spicy aroma that perks\npeople up.",
+    "pokedex": {
+        "category": "Leaf Pokémon",
+        "entry": "The buds that ring its neck give\noff a spicy aroma that perks\npeople up.",
+        "height": "3'11\"",
+        "weight": "34.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Bayleef",
+                "category": "Leaf Pokémon",
+                "entry": "The buds that ring its neck give\noff a spicy aroma that perks\npeople up.",
+                "height": "3'11\"",
+                "weight": "34.8 lbs."
+            },
+            "fr": {
+                "name": "Macronium",
+                "category": "Pokémon Feuille",
+                "entry": "Le collier de bourgeons à son cou\nrépand un arôme épicé qui vous\ndonne du tonus.",
+                "height": "1,2 m",
+                "weight": "15,8 kg"
+            },
+            "de": {
+                "name": "Lorblatt",
+                "category": "Laub",
+                "entry": "Die Knospen an seinem Hals\ngeben ein würziges Aroma ab,\ndas andere aufheitert.",
+                "height": "1,2 m",
+                "weight": "15,8 kg"
+            },
+            "it": {
+                "name": "Bayleef",
+                "category": "Pokémon Foglia",
+                "entry": "Le foglie attorno al suo collo emanano\nun aroma speziato dall'effetto\nenergizzante.",
+                "height": "1,2 m",
+                "weight": "15,8 kg"
+            },
+            "ko": {
+                "name": "베이리프",
+                "category": "잎사귀포켓몬",
+                "entry": "목 주위의 봉오리로부터 풍기는\n향긋한 향기는 향기를\n맡은 사람을 힘이 나게 한다.",
+                "height": "1.2 m",
+                "weight": "15.8 kg"
+            },
+            "es": {
+                "name": "Bayleef",
+                "category": "Pokémon Hoja",
+                "entry": "Su cuello desprende un dulce aroma\nque anima a quien lo huele.",
+                "height": "1,2 m",
+                "weight": "15,8 kg"
+            },
+            "ja": {
+                "name": "ベイリーフ",
+                "category": "はっぱポケモン",
+                "entry": "くびまわりの\\x{3000}つぼみから\\x{3000}におう\nスパイシーな\\x{3000}かおりは\nかいだ\\x{3000}ひとを\\x{3000}げんきに\\x{3000}させる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 62,

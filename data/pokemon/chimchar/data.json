@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Chimchar",
-    "category": "Chimp Pokémon",
-    "pokedex_entry": "It is very agile. Before going to\nsleep, it extinguishes the flame\non its tail to prevent fires.",
+    "pokedex": {
+        "category": "Chimp Pokémon",
+        "entry": "It is very agile. Before going to\nsleep, it extinguishes the flame\non its tail to prevent fires.",
+        "height": "1'08\"",
+        "weight": "13.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Chimchar",
+                "category": "Chimp Pokémon",
+                "entry": "It is very agile. Before going to\nsleep, it extinguishes the flame\non its tail to prevent fires.",
+                "height": "1'08\"",
+                "weight": "13.7 lbs."
+            },
+            "fr": {
+                "name": "Ouisticram",
+                "category": "Pokémon Chimpanzé",
+                "entry": "Il est très agile. Il fait toujours\nattention d'éteindre la flamme de\nsa queue avant de se coucher.",
+                "height": "0,5 m",
+                "weight": "6,2 kg"
+            },
+            "de": {
+                "name": "Panflam",
+                "category": "Schimpanse",
+                "entry": "Dieses flinke Pokémon löscht vor dem\nSchlafengehen die Flamme auf seinem\nSchweif, um Feuer zu verhindern.",
+                "height": "0,5 m",
+                "weight": "6,2 kg"
+            },
+            "it": {
+                "name": "Chimchar",
+                "category": "Pokémon Scimpanzé",
+                "entry": "È molto agile. Prima di addormentarsi\nspegne la fiamma sulla coda per\nscongiurare il rischio di incendi.",
+                "height": "0,5 m",
+                "weight": "6,2 kg"
+            },
+            "ko": {
+                "name": "불꽃숭이",
+                "category": "꼬마원숭이포켓몬",
+                "entry": "매우 몸놀림이 가벼운 포켓몬이다.\n주변이 불에 타지 않도록 꼬리의\n불꽃을 끈 다음에 잠든다.",
+                "height": "0.5 m",
+                "weight": "6.2 kg"
+            },
+            "es": {
+                "name": "Chimchar",
+                "category": "Pokémon Chimpancé",
+                "entry": "Es muy ágil. Antes de dormir apaga\nla llama de su cola para no\nprovocar un incendio.",
+                "height": "0,5 m",
+                "weight": "6,2 kg"
+            },
+            "ja": {
+                "name": "ヒコザル",
+                "category": "こざるポケモン",
+                "entry": "とても\\x{3000}みがるな\\x{3000}ポケモン。\nまわりが\\x{3000}もえないように\\x{3000}おしりの\nほのおを\\x{3000}けしてから\\x{3000}ねむる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 44,
         "attack": 58,

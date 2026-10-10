@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Whismur",
-    "category": "Whisper Pokémon",
-    "pokedex_entry": "Usually, its cries are like quiet\nmurmurs. If frightened, it shrieks\nat the same volume as a jet plane.",
+    "pokedex": {
+        "category": "Whisper Pokémon",
+        "entry": "Usually, its cries are like quiet\nmurmurs. If frightened, it shrieks\nat the same volume as a jet plane.",
+        "height": "2'00\"",
+        "weight": "35.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Whismur",
+                "category": "Whisper Pokémon",
+                "entry": "Usually, its cries are like quiet\nmurmurs. If frightened, it shrieks\nat the same volume as a jet plane.",
+                "height": "2'00\"",
+                "weight": "35.9 lbs."
+            },
+            "fr": {
+                "name": "Chuchmur",
+                "category": "Pokémon Chuchoteur",
+                "entry": "En temps normal, son cri est pareil\nà un murmure. Effrayé, il atteint le\nvolume d'un avion à réaction.",
+                "height": "0,6 m",
+                "weight": "16,3 kg"
+            },
+            "de": {
+                "name": "Flurmel",
+                "category": "Flüster",
+                "entry": "Normalerweise klingen seine Rufe\nwie Gemurmel. Hat es aber Angst,\nist es so laut wie ein Flugzeug.",
+                "height": "0,6 m",
+                "weight": "16,3 kg"
+            },
+            "it": {
+                "name": "Whismur",
+                "category": "Pokémon Sussurro",
+                "entry": "Di solito ha una voce molto tenue, ma se\nsi spaventa, emette un suono assordante\nquanto un jet.",
+                "height": "0,6 m",
+                "weight": "16,3 kg"
+            },
+            "ko": {
+                "name": "소곤룡",
+                "category": "속삭임포켓몬",
+                "entry": "평소에는 속삭이는 듯한\n울음소리를 낸다. 불안해지면\n제트기와 같은 음량으로 울어댄다.",
+                "height": "0.6 m",
+                "weight": "16.3 kg"
+            },
+            "es": {
+                "name": "Whismur",
+                "category": "Pokémon Susurro",
+                "entry": "Suele murmurar a un volumen casi\ninaudible, pero cuando se asusta\ngrita con el volumen de un reactor.",
+                "height": "0,6 m",
+                "weight": "16,3 kg"
+            },
+            "ja": {
+                "name": "ゴニョニョ",
+                "category": "ささやきポケモン",
+                "entry": "ふだんは\\x{3000}ささやくような\\x{3000}なきごえ。\nふあんになると\\x{3000}ジェットきと\\x{3000}おなじ\nおんりょうで\\x{3000}なきつづける。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff16}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 64,
         "attack": 51,

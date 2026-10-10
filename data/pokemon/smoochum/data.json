@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Smoochum",
-    "category": "Kiss Pokémon",
-    "pokedex_entry": "It tests everything by touching\nwith its lips, which remember\nwhat it likes and dislikes.",
+    "pokedex": {
+        "category": "Kiss Pokémon",
+        "entry": "It tests everything by touching\nwith its lips, which remember\nwhat it likes and dislikes.",
+        "height": "1'04\"",
+        "weight": "13.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Smoochum",
+                "category": "Kiss Pokémon",
+                "entry": "It tests everything by touching\nwith its lips, which remember\nwhat it likes and dislikes.",
+                "height": "1'04\"",
+                "weight": "13.2 lbs."
+            },
+            "fr": {
+                "name": "Lippouti",
+                "category": "Pokémon Bisou",
+                "entry": "Il goûte à tout du bout des lèvres.\nElles gardent en mémoire ses\ngoûts et ses dégoûts.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "de": {
+                "name": "Kussilla",
+                "category": "Kuss",
+                "entry": "Dieses Pokémon berührt alles mit den\nLippen. Diese merken sich, was es mag\nund nicht mag.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "it": {
+                "name": "Smoochum",
+                "category": "Pokémon Bacio",
+                "entry": "Analizza tutto con le labbra e con esse\nriesce a memorizzare ciò che gli piace e\nciò che non gli piace.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "ko": {
+                "name": "뽀뽀라",
+                "category": "뽀뽀포켓몬",
+                "entry": "무엇이든 입술로 건드려보고\n확인한다. 좋아하는 것도 싫어하는\n것도 입술이 기억하고 있다.",
+                "height": "0.4 m",
+                "weight": "6.0 kg"
+            },
+            "es": {
+                "name": "Smoochum",
+                "category": "Pokémon Beso",
+                "entry": "Analiza todo tocándolo con los\nlabios. Así puede recordar las\ncosas que le gustan y disgustan.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "ja": {
+                "name": "ムチュール",
+                "category": "くちづけポケモン",
+                "entry": "なんでも\\x{3000}くちびるで\\x{3000}ふれてみて\nたしかめる。すきな\\x{3000}ものも\\x{3000}きらいな\nものも\\x{3000}くちびるが\\x{3000}おぼえている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 30,

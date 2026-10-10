@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Wingull",
-    "category": "Seagull Pokémon",
-    "pokedex_entry": "It makes its nest on sheer cliffs.\nRiding the sea breeze, it glides\nup into the expansive skies.",
+    "pokedex": {
+        "category": "Seagull Pokémon",
+        "entry": "It makes its nest on sheer cliffs.\nRiding the sea breeze, it glides\nup into the expansive skies.",
+        "height": "2'00\"",
+        "weight": "20.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Wingull",
+                "category": "Seagull Pokémon",
+                "entry": "It soars high in the sky, riding on\nupdrafts like a glider. It carries\nfood tucked in its bill.",
+                "height": "2'00\"",
+                "weight": "20.9 lbs."
+            },
+            "fr": {
+                "name": "Goélise",
+                "category": "Pokémon Mouette",
+                "entry": "Il utilise les courants ascendants\npour planer en altitude. Son bec lui\nsert à transporter la nourriture.",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "de": {
+                "name": "Wingull",
+                "category": "Seemöwe",
+                "entry": "Es nutzt Aufwinde, um hoch oben in\nden Lüften zu schweben. Es trägt\nFutter in seinem Schnabel umher.",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "it": {
+                "name": "Wingull",
+                "category": "Pokémon Gabbiano",
+                "entry": "Si fa trasportare ad alta quota dalle\ncorrenti ascensionali.\nTrasporta il cibo nel becco.",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "ko": {
+                "name": "갈모매",
+                "category": "괭이갈매기포켓몬",
+                "entry": "상승 기류를 타고\n글라이더처럼 넓은 하늘을 돌며\n부리로 집은 먹이를 운반한다.",
+                "height": "0.6 m",
+                "weight": "9.5 kg"
+            },
+            "es": {
+                "name": "Wingull",
+                "category": "Pokémon Gaviota",
+                "entry": "Aprovecha las corrientes ascendentes\npara ganar altura. Suele llevar comida\nen el pico.",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "ja": {
+                "name": "キャモメ",
+                "category": "うみねこポケモン",
+                "entry": "じょうしょう\\x{3000}きりゅうに\\x{3000}のって\nグライダーのように\\x{3000}おおぞらを\\x{3000}まい\nくちばしに\\x{3000}はさんだ\\x{3000}エサをはこぶ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 30,

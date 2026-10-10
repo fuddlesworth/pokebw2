@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Charmander",
-    "category": "Lizard Pokémon",
-    "pokedex_entry": "The fire on the tip of its tail is a\nmeasure of its life. If healthy,\nits tail burns intensely.",
+    "pokedex": {
+        "category": "Lizard Pokémon",
+        "entry": "The fire on the tip of its tail is a\nmeasure of its life. If healthy,\nits tail burns intensely.",
+        "height": "2'00\"",
+        "weight": "18.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Charmander",
+                "category": "Lizard Pokémon",
+                "entry": "The fire on the tip of its tail is a\nmeasure of its life. If healthy,\nits tail burns intensely.",
+                "height": "2'00\"",
+                "weight": "18.7 lbs."
+            },
+            "fr": {
+                "name": "Salamèche",
+                "category": "Pokémon Lézard",
+                "entry": "La flamme de sa queue symbolise sa\nvitalité. Elle est intense quand il\nest en bonne santé.",
+                "height": "0,6 m",
+                "weight": "8,5 kg"
+            },
+            "de": {
+                "name": "Glumanda",
+                "category": "Echse",
+                "entry": "Lodert die Flamme auf seiner\nSchweifspitze hell, ist Glumanda gesund.",
+                "height": "0,6 m",
+                "weight": "8,5 kg"
+            },
+            "it": {
+                "name": "Charmander",
+                "category": "Pokémon Lucertola",
+                "entry": "La fiamma sulla punta della coda indica\nla sua vitalità. Se sta bene, la fiamma\nè più ardente.",
+                "height": "0,6 m",
+                "weight": "8,5 kg"
+            },
+            "ko": {
+                "name": "파이리",
+                "category": "도롱뇽포켓몬",
+                "entry": "파이리 꼬리의 불꽃은\n생명의 등불이다. 건강할 때는\n불꽃도 강하게 타오른다.",
+                "height": "0.6 m",
+                "weight": "8.5 kg"
+            },
+            "es": {
+                "name": "Charmander",
+                "category": "Pokémon Lagartija",
+                "entry": "La llama de la punta de su cola indica\nsu salud. Si Charmander está sano,\narderá con más fuerza.",
+                "height": "0,6 m",
+                "weight": "8,5 kg"
+            },
+            "ja": {
+                "name": "ヒトカゲ",
+                "category": "とかげポケモン",
+                "entry": "ヒトカゲの\\x{3000}しっぽの\\x{3000}ほのおは\nいのちの\\x{3000}ともしび。げんきな\\x{3000}ときは\nほのおも\\x{3000}ちからづよく\\x{3000}もえあがる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 39,
         "attack": 52,

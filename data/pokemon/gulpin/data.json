@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gulpin",
-    "category": "Stomach Pokémon",
-    "pokedex_entry": "Almost all its body is its stomach.\nIts harsh digestive juices quickly\ndissolve anything it swallows.",
+    "pokedex": {
+        "category": "Stomach Pokémon",
+        "entry": "Almost all its body is its stomach.\nIts harsh digestive juices quickly\ndissolve anything it swallows.",
+        "height": "1'04\"",
+        "weight": "22.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gulpin",
+                "category": "Stomach Pokémon",
+                "entry": "Almost all its body is its stomach.\nIts harsh digestive juices quickly\ndissolve anything it swallows.",
+                "height": "1'04\"",
+                "weight": "22.7 lbs."
+            },
+            "fr": {
+                "name": "Gloupti",
+                "category": "Pokémon Estomac",
+                "entry": "Il est principalement composé d'un\nestomac dont les sucs digestifs\ndissolvent tout ce qu'il avale.",
+                "height": "0,4 m",
+                "weight": "10,3 kg"
+            },
+            "de": {
+                "name": "Schluppuck",
+                "category": "Magen",
+                "entry": "Sein Körper besteht fast nur aus Magen.\nSeine starken Verdauungssäfte\nzersetzen alles sehr schnell.",
+                "height": "0,4 m",
+                "weight": "10,3 kg"
+            },
+            "it": {
+                "name": "Gulpin",
+                "category": "Pokémon Stomaco",
+                "entry": "La maggior parte del suo corpo è\nstomaco. I suoi succhi gastrici\ndissolvono subito ciò che ingerisce.",
+                "height": "0,4 m",
+                "weight": "10,3 kg"
+            },
+            "ko": {
+                "name": "꼴깍몬",
+                "category": "밥통포켓몬",
+                "entry": "몸 대부분이 위다.\n강력한 위액으로 삼킨\n것을 순식간에 소화한다.",
+                "height": "0.4 m",
+                "weight": "10.3 kg"
+            },
+            "es": {
+                "name": "Gulpin",
+                "category": "Pokémon Estómago",
+                "entry": "Casi todo su cuerpo es estómago.\nSus potentes jugos gástricos\ndisuelven rápido cualquier cosa.",
+                "height": "0,4 m",
+                "weight": "10,3 kg"
+            },
+            "ja": {
+                "name": "ゴクリン",
+                "category": "いぶくろポケモン",
+                "entry": "からだの\\x{3000}ほとんどが\\x{3000}いぶくろ。\nきょうりょくな\\x{3000}いえきで\\x{3000}のみこんだ\nものを\\x{3000}たちまち\\x{3000}しょうかする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 43,

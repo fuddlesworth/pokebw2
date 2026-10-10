@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hypno",
-    "category": "Hypnosis Pokémon",
-    "pokedex_entry": "Seeing its swinging pendulum can\ninduce sleep in three seconds,\neven in someone who just woke up.",
+    "pokedex": {
+        "category": "Hypnosis Pokémon",
+        "entry": "Seeing its swinging pendulum can\ninduce sleep in three seconds,\neven in someone who just woke up.",
+        "height": "5'03\"",
+        "weight": "166.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hypno",
+                "category": "Hypnosis Pokémon",
+                "entry": "Seeing its swinging pendulum can\ninduce sleep in three seconds,\neven in someone who just woke up.",
+                "height": "5'03\"",
+                "weight": "166.7 lbs."
+            },
+            "fr": {
+                "name": "Hypnomade",
+                "category": "Pokémon Hypnose",
+                "entry": "La vue de son pendule oscillant\nendort en trois secondes, même\nquand on vient de se réveiller.",
+                "height": "1,6 m",
+                "weight": "75,6 kg"
+            },
+            "de": {
+                "name": "Hypno",
+                "category": "Hypnose",
+                "entry": "Ein Blick auf das Pendel versetzt\neinen in 3 Sekunden in Schlaf,\nselbst wenn man gar nicht müde ist.",
+                "height": "1,6 m",
+                "weight": "75,6 kg"
+            },
+            "it": {
+                "name": "Hypno",
+                "category": "Pokémon Ipnosi",
+                "entry": "Con il suo pendolo fa addormentare\nchiunque nel giro di tre secondi,\nanche chi si è appena svegliato.",
+                "height": "1,6 m",
+                "weight": "75,6 kg"
+            },
+            "ko": {
+                "name": "슬리퍼",
+                "category": "최면포켓몬",
+                "entry": "눈앞에서 추를 흔들면\n방금 깨어난 사람도\n3초 후에는 잠들어 버린다.",
+                "height": "1.6 m",
+                "weight": "75.6 kg"
+            },
+            "es": {
+                "name": "Hypno",
+                "category": "Pokémon Hipnosis",
+                "entry": "Mirar su péndulo puede inducir al sueño\nen tres segundos, incluso si acabas\nde despertarte.",
+                "height": "1,6 m",
+                "weight": "75,6 kg"
+            },
+            "ja": {
+                "name": "スリーパー",
+                "category": "さいみんポケモン",
+                "entry": "ふりこを\\x{3000}めのまえで\\x{3000}ゆらされると\nたったいま\\x{3000}めざめたばかりの\\x{3000}ひとも\n\\x{ff13}びょうごには\\x{3000}ねむってしまう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff15}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 73,

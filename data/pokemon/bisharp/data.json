@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bisharp",
-    "category": "Sword Blade Pokémon",
-    "pokedex_entry": "This pitiless Pokémon commands a group\nof Pawniard to hound prey into immobility.\nIt then moves in to finish the prey off.",
+    "pokedex": {
+        "category": "Sword Blade Pokémon",
+        "entry": "This pitiless Pokémon commands a group\nof Pawniard to hound prey into immobility.\nIt then moves in to finish the prey off.",
+        "height": "5'03\"",
+        "weight": "154.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "とうじんポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 125,

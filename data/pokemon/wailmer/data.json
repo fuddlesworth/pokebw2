@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Wailmer",
-    "category": "Ball Whale Pokémon",
-    "pokedex_entry": "It eats one ton of food every day.\nIt plays by shooting stored seawater\nout its blowholes with great force.",
+    "pokedex": {
+        "category": "Ball Whale Pokémon",
+        "entry": "It eats one ton of food every day.\nIt plays by shooting stored seawater\nout its blowholes with great force.",
+        "height": "6'07\"",
+        "weight": "286.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Wailmer",
+                "category": "Ball Whale Pokémon",
+                "entry": "On sunny days, it lands on beaches\nto bounce like a ball and play.\nIt spouts water from its nose.",
+                "height": "6'07\"",
+                "weight": "286.6 lbs."
+            },
+            "fr": {
+                "name": "Wailmer",
+                "category": "Pokémon Baleinboule",
+                "entry": "Par beau temps, il se pose sur les\nplages pour jouer et rebondir. Il\nexpulse de l'eau par son évent.",
+                "height": "2,0 m",
+                "weight": "130,0 kg"
+            },
+            "de": {
+                "name": "Wailmer",
+                "category": "Kugelwal",
+                "entry": "An sonnigen Tagen trifft man diese\nPokémon an Stränden, wo sie wie\nBälle herumhüpfen.",
+                "height": "2,0 m",
+                "weight": "130,0 kg"
+            },
+            "it": {
+                "name": "Wailmer",
+                "category": "Pokémon Balenottero",
+                "entry": "In giornate soleggiate, gioca\nrimbalzando sulla spiaggia.\nSpruzza acqua dalle narici.",
+                "height": "2,0 m",
+                "weight": "130,0 kg"
+            },
+            "ko": {
+                "name": "고래왕자",
+                "category": "둥근고래포켓몬",
+                "entry": "맑은 날에는 모래 해변에 올라가\n공처럼 튀면서 논다.\n코에서 물을 뿜어 올린다.",
+                "height": "2.0 m",
+                "weight": "130.0 kg"
+            },
+            "es": {
+                "name": "Wailmer",
+                "category": "Pokémon Ballenabola",
+                "entry": "En días soleados se tumba en las playas\npara jugar y botar como una pelota.\nLanza agua por la nariz.",
+                "height": "2,0 m",
+                "weight": "130,0 kg"
+            },
+            "ja": {
+                "name": "ホエルコ",
+                "category": "たまくじらポケモン",
+                "entry": "はれた\\x{3000}ひは\\x{3000}すなはまに\\x{3000}あがり\nボールのように\\x{3000}はずんで\\x{3000}あそぶ。\nはなから\\x{3000}みずを\\x{3000}ふきあげる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff13}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 130,
         "attack": 70,

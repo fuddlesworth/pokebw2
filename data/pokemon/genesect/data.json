@@ -1,14 +1,39 @@
 {
     "$schema": "../species.schema.json",
     "name": "Genesect",
-    "category": "Paleozoic Pokémon",
-    "pokedex_entry": "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
-    "form_pokedex_entries": [
-        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
-        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
-        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
-        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back."
-    ],
+    "pokedex": {
+        "category": "Paleozoic Pokémon",
+        "entry": "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+        "height": "4'11\"",
+        "weight": "181.9 lbs.",
+        "forms": [
+            {
+                "entry": "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+                "height": "4'11\"",
+                "weight": "181.9 lbs."
+            },
+            {
+                "entry": "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+                "height": "4'11\"",
+                "weight": "181.9 lbs."
+            },
+            {
+                "entry": "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+                "height": "4'11\"",
+                "weight": "181.9 lbs."
+            },
+            {
+                "entry": "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+                "height": "4'11\"",
+                "weight": "181.9 lbs."
+            }
+        ],
+        "languages": {
+            "ja": {
+                "category": "こせいだいポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 71,
         "attack": 120,

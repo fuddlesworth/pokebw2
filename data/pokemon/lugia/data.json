@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lugia",
-    "category": "Diving Pokémon",
-    "pokedex_entry": "It sleeps in a deep-sea trench.\nIf it flaps its wings, it is said to\ncause a 40-day storm.",
+    "pokedex": {
+        "category": "Diving Pokémon",
+        "entry": "It sleeps in a deep-sea trench.\nIf it flaps its wings, it is said to\ncause a 40-day storm.",
+        "height": "17'01\"",
+        "weight": "476.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lugia",
+                "category": "Diving Pokémon",
+                "entry": "It sleeps in a deep-sea trench.\nIf it flaps its wings, it is said to\ncause a 40-day storm.",
+                "height": "17'01\"",
+                "weight": "476.2 lbs."
+            },
+            "fr": {
+                "name": "Lugia",
+                "category": "Pokémon Plongeon",
+                "entry": "Il dort dans une faille des grands\nfonds. Ses battements d'ailes\ngénèrent une tempête de 40 jours.",
+                "height": "5,2 m",
+                "weight": "216,0 kg"
+            },
+            "de": {
+                "name": "Lugia",
+                "category": "Taucher",
+                "entry": "Es schläft in einem Tiefseegraben.\nSchwingt es seine Flügel, entsteht\nein Sturm, der 40 Tage dauert.",
+                "height": "5,2 m",
+                "weight": "216,0 kg"
+            },
+            "it": {
+                "name": "Lugia",
+                "category": "Pokémon Immersione",
+                "entry": "Dorme in una fossa negli abissi marini.\nCon un battito d'ali provoca una\ntempesta di 40 giorni.",
+                "height": "5,2 m",
+                "weight": "216,0 kg"
+            },
+            "ko": {
+                "name": "루기아",
+                "category": "잠수포켓몬",
+                "entry": "깊은 해구의 밑바닥에서 잠잔다.\n루기아가 날개를 치면 40일 동안\n폭풍우가 계속된다고 전해진다.",
+                "height": "5.2 m",
+                "weight": "216.0 kg"
+            },
+            "es": {
+                "name": "Lugia",
+                "category": "Pokémon Buceo",
+                "entry": "Duerme en una dorsal marina.\nSi bate sus alas, puede causar\ntormentas de 40 días.",
+                "height": "5,2 m",
+                "weight": "216,0 kg"
+            },
+            "ja": {
+                "name": "ルギア",
+                "category": "せんすいポケモン",
+                "entry": "ふかい\\x{3000}かいこうの\\x{3000}そこで\\x{3000}ねむる。\nルギアが\\x{3000}はばたくと\\x{3000}\\x{ff14}\\x{ff10}にち\nあらしが\\x{3000}つづくと\\x{3000}いわれている。",
+                "height": "\\x{ff15}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff11}\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 106,
         "attack": 90,

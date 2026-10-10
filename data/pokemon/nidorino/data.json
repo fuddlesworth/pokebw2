@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Nidorino",
-    "category": "Poison Pin Pokémon",
-    "pokedex_entry": "It has a violent disposition and\nstabs foes with its horn, which\noozes poison upon impact.",
+    "pokedex": {
+        "category": "Poison Pin Pokémon",
+        "entry": "It has a violent disposition and\nstabs foes with its horn, which\noozes poison upon impact.",
+        "height": "2'11\"",
+        "weight": "43.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Nidorino",
+                "category": "Poison Pin Pokémon",
+                "entry": "It has a violent disposition and\nstabs foes with its horn, which\noozes poison upon impact.",
+                "height": "2'11\"",
+                "weight": "43.0 lbs."
+            },
+            "fr": {
+                "name": "Nidorino",
+                "category": "Pokémon Vénépic",
+                "entry": "D'un tempérament violent, il\nempale l'ennemi sur sa corne\nqui distille un poison puissant.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "de": {
+                "name": "Nidorino",
+                "category": "Giftdorn",
+                "entry": "Es ist aggressiv und greift seine\nGegner mit dem Horn an, welches\nbei Berührung Gift absondert.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "it": {
+                "name": "Nidorino",
+                "category": "Pokémon Velenago",
+                "entry": "Ha un temperamento violento e infilza\ni nemici con il corno, che, all'impatto,\nrilascia veleno.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "ko": {
+                "name": "니드리노",
+                "category": "독침포켓몬",
+                "entry": "기질이 거친 포켓몬이다.\n상대를 깊이 찌른 충격으로\n뿔에서 맹독이 배어 나온다.",
+                "height": "0.9 m",
+                "weight": "19.5 kg"
+            },
+            "es": {
+                "name": "Nidorino",
+                "category": "Pokémon Pin Veneno",
+                "entry": "Se muestra violento y ataca a\nlos enemigos con un cuerno\nque desprende veneno.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "ja": {
+                "name": "ニドリーノ",
+                "category": "どくばりポケモン",
+                "entry": "きしょうが\\x{3000}あらい\\x{3000}ポケモン。\nあいてに\\x{3000}つきさした\\x{3000}しょうげきで\nツノから\\x{3000}もうどくが\\x{3000}にじみでる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 61,
         "attack": 72,

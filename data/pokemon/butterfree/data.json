@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Butterfree",
-    "category": "Butterfly Pokémon",
-    "pokedex_entry": "It loves the honey of flowers and\ncan locate flower patches that\nhave even tiny amounts of pollen.",
+    "pokedex": {
+        "category": "Butterfly Pokémon",
+        "entry": "It loves the honey of flowers and\ncan locate flower patches that\nhave even tiny amounts of pollen.",
+        "height": "3'07\"",
+        "weight": "70.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Butterfree",
+                "category": "Butterfly Pokémon",
+                "entry": "It loves the honey of flowers and\ncan locate flower patches that\nhave even tiny amounts of pollen.",
+                "height": "3'07\"",
+                "weight": "70.5 lbs."
+            },
+            "fr": {
+                "name": "Papilusion",
+                "category": "Pokémon Papillon",
+                "entry": "Il raffole du nectar des fleurs. Il\nest capable de repérer la plus\npetite quantité de pollen.",
+                "height": "1,1 m",
+                "weight": "32,0 kg"
+            },
+            "de": {
+                "name": "Smettbo",
+                "category": "Falter",
+                "entry": "Es liebt Blütenhonig. Es findet\nselbst Blumen, die sehr wenig\nPollen haben.",
+                "height": "1,1 m",
+                "weight": "32,0 kg"
+            },
+            "it": {
+                "name": "Butterfree",
+                "category": "Pokémon Farfalla",
+                "entry": "Adora il nettare dei fiori e riesce a\nlocalizzare i campi in cui si trova\nanche una minima quantità di polline.",
+                "height": "1,1 m",
+                "weight": "32,0 kg"
+            },
+            "ko": {
+                "name": "버터플",
+                "category": "나비포켓몬",
+                "entry": "꽃의 꿀을 매우 좋아한다.\n약간의 꽃가루만으로 꽃밭이\n있는 장소를 찾아낼 수 있다.",
+                "height": "1.1 m",
+                "weight": "32.0 kg"
+            },
+            "es": {
+                "name": "Butterfree",
+                "category": "Pokémon Mariposa",
+                "entry": "Adora el néctar de las flores.\nPuede localizar hasta las más\npequeñas cantidades de polen.",
+                "height": "1,1 m",
+                "weight": "32,0 kg"
+            },
+            "ja": {
+                "name": "バタフリー",
+                "category": "ちょうちょポケモン",
+                "entry": "はなの\\x{3000}ミツが\\x{3000}だいこうぶつ。\nわずかな\\x{3000}かふんで\\x{3000}はなばたけの\nばしょを\\x{3000}さがしだすことが\\x{3000}できる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 45,

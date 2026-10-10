@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Spheal",
-    "category": "Clap Pokémon",
-    "pokedex_entry": "They can't swim well yet,\nand they move much faster by rolling.\nWhen they're happy, they clap fins.",
+    "pokedex": {
+        "category": "Clap Pokémon",
+        "entry": "They can't swim well yet,\nand they move much faster by rolling.\nWhen they're happy, they clap fins.",
+        "height": "2'07\"",
+        "weight": "87.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Spheal",
+                "category": "Clap Pokémon",
+                "entry": "It rolls across ice floes to reach\nshore because its body is poorly\nshaped for swimming.",
+                "height": "2'07\"",
+                "weight": "87.1 lbs."
+            },
+            "fr": {
+                "name": "Obalie",
+                "category": "Pokémon Clap Clap",
+                "entry": "Il gagne la côte en roulant sur les\nblocs de glace car sa morphologie\nn'est pas adaptée à la nage.",
+                "height": "0,8 m",
+                "weight": "39,5 kg"
+            },
+            "de": {
+                "name": "Seemops",
+                "category": "Applaus",
+                "entry": "Es rollt über Eisschollen, um Land\nzu erreichen, da sein Körper zum\nSchwimmen nicht geeignet ist.",
+                "height": "0,8 m",
+                "weight": "39,5 kg"
+            },
+            "it": {
+                "name": "Spheal",
+                "category": "Pokémon Rotolante",
+                "entry": "Poiché il suo corpo non è adatto al\nnuoto, rotola su lastre di ghiaccio\nper raggiungere la riva.",
+                "height": "0,8 m",
+                "weight": "39,5 kg"
+            },
+            "ko": {
+                "name": "대굴레오",
+                "category": "손뼉포켓몬",
+                "entry": "유빙의 위를 데굴데굴\n굴러서 해안에 다다른다.\n헤엄치기에는 불편한 체형이다.",
+                "height": "0.8 m",
+                "weight": "39.5 kg"
+            },
+            "es": {
+                "name": "Spheal",
+                "category": "Pokémon Aplauso",
+                "entry": "Rueda por los témpanos de hielo\nhasta la orilla, ya que su cuerpo\nno está bien adaptado para nadar.",
+                "height": "0,8 m",
+                "weight": "39,5 kg"
+            },
+            "ja": {
+                "name": "タマザラシ",
+                "category": "てたたきポケモン",
+                "entry": "りゅうひょうの\\x{3000}うえを\\x{3000}コロコロと\nころがって\\x{3000}かいがんに\\x{3000}たどりつく。\nおよぐには\\x{3000}ふべんな\\x{3000}たいけい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 40,

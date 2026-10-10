@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Golduck",
-    "category": "Duck Pokémon",
-    "pokedex_entry": "When its forehead shines mysteriously,\nGolduck can use the full extent\nof its power.",
+    "pokedex": {
+        "category": "Duck Pokémon",
+        "entry": "When its forehead shines mysteriously,\nGolduck can use the full extent\nof its power.",
+        "height": "5'07\"",
+        "weight": "168.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Golduck",
+                "category": "Duck Pokémon",
+                "entry": "It is seen swimming dynamically and\nelegantly using its well-developed\nlimbs and flippers.",
+                "height": "5'07\"",
+                "weight": "168.9 lbs."
+            },
+            "fr": {
+                "name": "Akwakwak",
+                "category": "Pokémon Canard",
+                "entry": "Ses membres palmés et son corps\nparfaitement adapté font de lui\nun nageur exceptionnel.",
+                "height": "1,7 m",
+                "weight": "76,6 kg"
+            },
+            "de": {
+                "name": "Entoron",
+                "category": "Ente",
+                "entry": "Die gut ausgeprägten Flossen\nermöglichen einen sowohl eleganten\nals auch dynamischen Schwimmstil.",
+                "height": "1,7 m",
+                "weight": "76,6 kg"
+            },
+            "it": {
+                "name": "Golduck",
+                "category": "Pokémon Papero",
+                "entry": "Grazie alle sue poderose zampe palmate,\nnuota velocemente e con eleganza.",
+                "height": "1,7 m",
+                "weight": "76,6 kg"
+            },
+            "ko": {
+                "name": "골덕",
+                "category": "오리포켓몬",
+                "entry": "손바닥의 발달한 물갈퀴를 써서\n다이내믹하게, 그리고 품위있게\n헤엄치는 모습을 볼 수 있다.",
+                "height": "1.7 m",
+                "weight": "76.6 kg"
+            },
+            "es": {
+                "name": "Golduck",
+                "category": "Pokémon Pato",
+                "entry": "Sus desarrolladas extremidades y aletas\nle permiten nadar de forma elegante.",
+                "height": "1,7 m",
+                "weight": "76,6 kg"
+            },
+            "ja": {
+                "name": "ゴルダック",
+                "category": "あひるポケモン",
+                "entry": "てのひらの\\x{3000}はったつした\\x{3000}みずかきを\nつかって\\x{3000}ダイナミックに\\x{3000}そして\nゆうがに\\x{3000}およぐ\\x{3000}すがたをみかける。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff16}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 82,

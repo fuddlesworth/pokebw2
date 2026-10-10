@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hariyama",
-    "category": "Arm Thrust Pokémon",
-    "pokedex_entry": "It loves to match power with\nbig-bodied Pokémon. It can knock a\ntruck flying with its arm thrusts.",
+    "pokedex": {
+        "category": "Arm Thrust Pokémon",
+        "entry": "It loves to match power with\nbig-bodied Pokémon. It can knock a\ntruck flying with its arm thrusts.",
+        "height": "7'07\"",
+        "weight": "559.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hariyama",
+                "category": "Arm Thrust Pokémon",
+                "entry": "It loves to match power with\nbig-bodied Pokémon. It can knock a\ntruck flying with its arm thrusts.",
+                "height": "7'07\"",
+                "weight": "559.5 lbs."
+            },
+            "fr": {
+                "name": "Hariyama",
+                "category": "Pokémon Cogneur",
+                "entry": "Il aime mesurer sa force à celle des\nplus grands Pokémon. Ses coups de\npaume peuvent projeter un camion.",
+                "height": "2,3 m",
+                "weight": "253,8 kg"
+            },
+            "de": {
+                "name": "Hariyama",
+                "category": "Armwurf",
+                "entry": "Es liebt das Kräftemessen mit großen\nPokémon. Mit seinem Armwurf kann\nes LKW durch die Luft werfen.",
+                "height": "2,3 m",
+                "weight": "253,8 kg"
+            },
+            "it": {
+                "name": "Hariyama",
+                "category": "Pokémon Sberletese",
+                "entry": "Ama confrontarsi con Pokémon grossi.\nCon uno dei suo schiaffi, può far\nprendere il volo a un camion.",
+                "height": "2,3 m",
+                "weight": "253,8 kg"
+            },
+            "ko": {
+                "name": "하리뭉",
+                "category": "손바닥치기포켓몬",
+                "entry": "몸집이 큰 포켓몬들과 힘겨루는\n것을 매우 좋아한다. 손바닥치기로\n트럭을 멀리 날려 버린다.",
+                "height": "2.3 m",
+                "weight": "253.8 kg"
+            },
+            "es": {
+                "name": "Hariyama",
+                "category": "Pokémon Empuje",
+                "entry": "Le encanta enfrentarse a Pokémon\ngrandes y probar su fuerza. Sus\nbrazos pueden derribar un camión.",
+                "height": "2,3 m",
+                "weight": "253,8 kg"
+            },
+            "ja": {
+                "name": "ハリテヤマ",
+                "category": "つっぱりポケモン",
+                "entry": "からだの\\x{3000}おおきな\\x{3000}ポケモンたちと\nちからくらべをすることが\\x{3000}だいすき。\nはりてで\\x{3000}トラックを\\x{3000}ふっとばす。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff15}\\x{ff13}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 144,
         "attack": 120,

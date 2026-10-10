@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hitmonlee",
-    "category": "Kicking Pokémon",
-    "pokedex_entry": "Its legs can stretch double.\nFirst-time foes are startled by\nits extensible reach.",
+    "pokedex": {
+        "category": "Kicking Pokémon",
+        "entry": "Its legs can stretch double.\nFirst-time foes are startled by\nits extensible reach.",
+        "height": "4'11\"",
+        "weight": "109.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hitmonlee",
+                "category": "Kicking Pokémon",
+                "entry": "Its legs can stretch double.\nFirst-time foes are startled by\nits extensible reach.",
+                "height": "4'11\"",
+                "weight": "109.8 lbs."
+            },
+            "fr": {
+                "name": "Kicklee",
+                "category": "Pokémon Latteur",
+                "entry": "Ses pattes élastiques s'allongent, ce\nqui ne manque jamais de surprendre\nau premier combat.",
+                "height": "1,5 m",
+                "weight": "49,8 kg"
+            },
+            "de": {
+                "name": "Kicklee",
+                "category": "Kicker",
+                "entry": "Seine Beine können die doppelte\nLänge annehmen. Gegner, die das\nnicht wissen, erschrecken.",
+                "height": "1,5 m",
+                "weight": "49,8 kg"
+            },
+            "it": {
+                "name": "Hitmonlee",
+                "category": "Pokémon Tiracalci",
+                "entry": "I suoi arti inferiori si allungano del\ndoppio, il che sbalordisce i nemici\nche lo vedono per la prima volta.",
+                "height": "1,5 m",
+                "weight": "49,8 kg"
+            },
+            "ko": {
+                "name": "시라소몬",
+                "category": "킥포켓몬",
+                "entry": "발이 두 배 길이로 늘어난다.\n처음 싸운 상대는\n그 길이에 놀란다.",
+                "height": "1.5 m",
+                "weight": "49.8 kg"
+            },
+            "es": {
+                "name": "Hitmonlee",
+                "category": "Pokémon Patada",
+                "entry": "Sus piernas se extienden hasta doblar\nsu longitud para sorprender a\nenemigos desprevenidos.",
+                "height": "1,5 m",
+                "weight": "49,8 kg"
+            },
+            "ja": {
+                "name": "サワムラー",
+                "category": "キックポケモン",
+                "entry": "あしが\\x{3000}\\x{ff12}ばいの\\x{3000}ながさに\\x{3000}のびる。\nはじめて\\x{3000}たたかう\\x{3000}あいては\nその\\x{3000}まあいの\\x{3000}ひろさに\\x{3000}おどろく。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff19}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 120,

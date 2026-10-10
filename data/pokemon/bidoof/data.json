@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bidoof",
-    "category": "Plump Mouse Pokémon",
-    "pokedex_entry": "A comparison revealed that\nBidoof's front teeth grow at\nthe same rate as Rattata's.",
+    "pokedex": {
+        "category": "Plump Mouse Pokémon",
+        "entry": "A comparison revealed that\nBidoof's front teeth grow at\nthe same rate as Rattata's.",
+        "height": "1'08\"",
+        "weight": "44.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Bidoof",
+                "category": "Plump Mouse Pokémon",
+                "entry": "A comparison revealed that\nBidoof's front teeth grow at\nthe same rate as Rattata's.",
+                "height": "1'08\"",
+                "weight": "44.1 lbs."
+            },
+            "fr": {
+                "name": "Keunotor",
+                "category": "Pokémon Souridodue",
+                "entry": "Une étude a montré que les dents\ndu Keunotor poussaient aussi\nvite que celles du Rattata.",
+                "height": "0,5 m",
+                "weight": "20,0 kg"
+            },
+            "de": {
+                "name": "Bidiza",
+                "category": "Dickmaus",
+                "entry": "Ein Vergleich zeigte, dass die\nVorderzähne von Bidiza und\nRattfratz gleich schnell wachsen.",
+                "height": "0,5 m",
+                "weight": "20,0 kg"
+            },
+            "it": {
+                "name": "Bidoof",
+                "category": "Pokémon Topaffuto",
+                "entry": "Uno studio ha rivelato che gli incisivi di\nBidoof crescono allo stesso ritmo di\nquelli di Rattata.",
+                "height": "0,5 m",
+                "weight": "20,0 kg"
+            },
+            "ko": {
+                "name": "비버니",
+                "category": "둥글쥐포켓몬",
+                "entry": "비버니와 꼬렛의 앞니 어느 쪽이\n빨리 길게 자라는가\n비교한 결과 무승부였다.",
+                "height": "0.5 m",
+                "weight": "20.0 kg"
+            },
+            "es": {
+                "name": "Bidoof",
+                "category": "Pokémon Gran Ratón",
+                "entry": "Un estudio comparativo reveló que\nlos incisivos de Bidoof crecen a la\nmisma velocidad que los de Rattata.",
+                "height": "0,5 m",
+                "weight": "20,0 kg"
+            },
+            "ja": {
+                "name": "ビッパ",
+                "category": "まるねずみポケモン",
+                "entry": "ビッパと\\x{3000}コラッタの\\x{3000}まえば\nどちらが\\x{3000}のびるのが\\x{3000}はやいのか\nくらべたところ\\x{3000}ひきわけ\\x{3000}だった。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 59,
         "attack": 45,

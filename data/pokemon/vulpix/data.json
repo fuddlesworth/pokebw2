@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vulpix",
-    "category": "Fox Pokémon",
-    "pokedex_entry": "As each tail grows, its fur becomes\nmore lustrous. When held, it feels\nslightly warm.",
+    "pokedex": {
+        "category": "Fox Pokémon",
+        "entry": "As each tail grows, its fur becomes\nmore lustrous. When held, it feels\nslightly warm.",
+        "height": "2'00\"",
+        "weight": "21.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Vulpix",
+                "category": "Fox Pokémon",
+                "entry": "It controls balls of fire. As it\ngrows, its six tails split from\ntheir tips to make more tails.",
+                "height": "2'00\"",
+                "weight": "21.8 lbs."
+            },
+            "fr": {
+                "name": "Goupix",
+                "category": "Pokémon Renard",
+                "entry": "Il envoie des boules de feu. Avec\nl'âge, ses six queues en forment de\nnouvelles.",
+                "height": "0,6 m",
+                "weight": "9,9 kg"
+            },
+            "de": {
+                "name": "Vulpix",
+                "category": "Fuchs",
+                "entry": "Es beherrscht Feuerbälle.\nWährend es wächst, teilen sich seine\nsechs Schweife, um weitere zu bilden.",
+                "height": "0,6 m",
+                "weight": "9,9 kg"
+            },
+            "it": {
+                "name": "Vulpix",
+                "category": "Pokémon Volpe",
+                "entry": "Controlla palle infuocate. Via via che\ncresce, dalle sue sei code se ne\ngenerano delle altre.",
+                "height": "0,6 m",
+                "weight": "9,9 kg"
+            },
+            "ko": {
+                "name": "식스테일",
+                "category": "여우포켓몬",
+                "entry": "불꽃의 구슬을 조종한다.\n성장하면 6개의 꼬리는\n끝이 갈라져서 한층 더 늘어난다.",
+                "height": "0.6 m",
+                "weight": "9.9 kg"
+            },
+            "es": {
+                "name": "Vulpix",
+                "category": "Pokémon Zorro",
+                "entry": "Controla bolas de fuego. A medida que\ncrece, sus seis colas se multiplican.",
+                "height": "0,6 m",
+                "weight": "9,9 kg"
+            },
+            "ja": {
+                "name": "ロコン",
+                "category": "きつねポケモン",
+                "entry": "ほのおの\\x{3000}たまを\\x{3000}あやつる。\nせいちょうすると\\x{3000}\\x{ff16}ほんの\\x{3000}しっぽは\nさきが\\x{3000}わかれて\\x{3000}さらに\\x{3000}ふえる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 38,
         "attack": 41,

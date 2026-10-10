@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hydreigon",
-    "category": "Brutal Pokémon",
-    "pokedex_entry": "It responds to movement by attacking.\nThis scary, three-headed Pokémon\ndevours everything in its path!",
+    "pokedex": {
+        "category": "Brutal Pokémon",
+        "entry": "It responds to movement by attacking.\nThis scary, three-headed Pokémon\ndevours everything in its path!",
+        "height": "5'11\"",
+        "weight": "352.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "きょうぼうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 92,
         "attack": 105,

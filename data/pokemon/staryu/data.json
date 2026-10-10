@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Staryu",
-    "category": "Star Shape Pokémon",
-    "pokedex_entry": "As long as its red core remains,\nit can regenerate its body instantly,\neven if it's torn apart.",
+    "pokedex": {
+        "category": "Star Shape Pokémon",
+        "entry": "As long as its red core remains,\nit can regenerate its body instantly,\neven if it's torn apart.",
+        "height": "2'07\"",
+        "weight": "76.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Staryu",
+                "category": "Star Shape Pokémon",
+                "entry": "If its body is torn, it can grow\nback if the red core remains.\nThe core flashes at midnight.",
+                "height": "2'07\"",
+                "weight": "76.1 lbs."
+            },
+            "fr": {
+                "name": "Stari",
+                "category": "Pokémon Étoile",
+                "entry": "Même amoché, son corps se régénère\ntant que le noyau rouge est intact.\nLe noyau s'illumine à minuit.",
+                "height": "0,8 m",
+                "weight": "34,5 kg"
+            },
+            "de": {
+                "name": "Sterndu",
+                "category": "Sternform",
+                "entry": "Wird sein Körper verletzt,\nkann es sich regenerieren,\nsofern der rote Kern intakt ist.",
+                "height": "0,8 m",
+                "weight": "34,5 kg"
+            },
+            "it": {
+                "name": "Staryu",
+                "category": "Pokémon Stella",
+                "entry": "Se il corpo è lacerato, si rigenera\nse il nucleo rosso è ancora intatto.\nIl nucleo brilla a mezzanotte.",
+                "height": "0,8 m",
+                "weight": "34,5 kg"
+            },
+            "ko": {
+                "name": "별가사리",
+                "category": "별포켓몬",
+                "entry": "빨간 핵이 있는 한, 몸이\n조각나도 바로 재생한다.\n한밤중에 핵이 반짝거린다.",
+                "height": "0.8 m",
+                "weight": "34.5 kg"
+            },
+            "es": {
+                "name": "Staryu",
+                "category": "Pokémon Estrellada",
+                "entry": "Puede recuperar las extremidades que\npierde si mantiene intacto su núcleo\nrojo, que brilla en la noche.",
+                "height": "0,8 m",
+                "weight": "34,5 kg"
+            },
+            "ja": {
+                "name": "ヒトデマン",
+                "category": "ほしがたポケモン",
+                "entry": "あかい\\x{3000}コアが\\x{3000}あるかぎり\\x{3000}からだが\nちぎれても\\x{3000}すぐに\\x{3000}さいせいする。\nまよなか\\x{3000}コアが\\x{3000}てんめつする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff14}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 45,

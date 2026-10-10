@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Palkia",
-    "category": "Spatial Pokémon",
-    "pokedex_entry": "A legendary Pokémon of Sinnoh.\nIt is said that space becomes more\nstable with Palkia's every breath.",
+    "pokedex": {
+        "category": "Spatial Pokémon",
+        "entry": "A legendary Pokémon of Sinnoh.\nIt is said that space becomes more\nstable with Palkia's every breath.",
+        "height": "13'09\"",
+        "weight": "740.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Palkia",
+                "category": "Spatial Pokémon",
+                "entry": "A legendary Pokémon of Sinnoh.\nIt is said that space becomes more\nstable with Palkia's every breath.",
+                "height": "13'09\"",
+                "weight": "740.8 lbs."
+            },
+            "fr": {
+                "name": "Palkia",
+                "category": "Pokémon Espace",
+                "entry": "On dit que la stabilité de l'espace\nest maintenue par le souffle de ce\nPokémon légendaire de Sinnoh.",
+                "height": "4,2 m",
+                "weight": "336,0 kg"
+            },
+            "de": {
+                "name": "Palkia",
+                "category": "Räumlich",
+                "entry": "Ein Legendäres Pokémon aus der\nSinnoh-Region. Mit dem Atem von\nPalkia wird das Universum stabiler.",
+                "height": "4,2 m",
+                "weight": "336,0 kg"
+            },
+            "it": {
+                "name": "Palkia",
+                "category": "Pokémon Spazio",
+                "entry": "Pokémon leggendario della regione di\nSinnoh. Si dice che lo spazio diventi\npiù stabile al suo respiro.",
+                "height": "4,2 m",
+                "weight": "336,0 kg"
+            },
+            "ko": {
+                "name": "펄기아",
+                "category": "공간포켓몬",
+                "entry": "펄기아는 호흡을 할 때마다\n공간을 안정시킨다고 여겨지는\n신오지방의 전설 포켓몬이다.",
+                "height": "4.2 m",
+                "weight": "336.0 kg"
+            },
+            "es": {
+                "name": "Palkia",
+                "category": "Pokémon Espacial",
+                "entry": "Un Pokémon legendario de Sinnoh.\nSe dice que el espacio se vuelve más\nestable con cada respiración suya.",
+                "height": "4,2 m",
+                "weight": "336,0 kg"
+            },
+            "ja": {
+                "name": "パルキア",
+                "category": "くうかんポケモン",
+                "entry": "パルキアが\\x{3000}こきゅうを\\x{3000}するたびに\nくうかんは\\x{3000}あんていすると\\x{3000}される\nシンオウの\\x{3000}でんせつの\\x{3000}ポケモン。",
+                "height": "\\x{ff14}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff13}\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 120,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bulbasaur",
-    "category": "Seed Pokémon",
-    "pokedex_entry": "For some time after its birth, it\ngrows by gaining nourishment from\nthe seed on its back.",
+    "pokedex": {
+        "category": "Seed Pokémon",
+        "entry": "For some time after its birth, it\ngrows by gaining nourishment from\nthe seed on its back.",
+        "height": "2'04\"",
+        "weight": "15.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Bulbasaur",
+                "category": "Seed Pokémon",
+                "entry": "For some time after its birth, it\ngrows by gaining nourishment from\nthe seed on its back.",
+                "height": "2'04\"",
+                "weight": "15.2 lbs."
+            },
+            "fr": {
+                "name": "Bulbizarre",
+                "category": "Pokémon Graine",
+                "entry": "Au matin de sa vie, la graine sur\nson dos lui fournit les éléments\ndont il a besoin pour grandir.",
+                "height": "0,7 m",
+                "weight": "6,9 kg"
+            },
+            "de": {
+                "name": "Bisasam",
+                "category": "Samen",
+                "entry": "Nach der Geburt nimmt es für eine\nWeile Nährstoffe über den Samen\nauf seinem Rücken auf.",
+                "height": "0,7 m",
+                "weight": "6,9 kg"
+            },
+            "it": {
+                "name": "Bulbasaur",
+                "category": "Pokémon Seme",
+                "entry": "Dopo la nascita, cresce traendo\nnutrimento dal seme piantato\nsul suo dorso.",
+                "height": "0,7 m",
+                "weight": "6,9 kg"
+            },
+            "ko": {
+                "name": "이상해씨",
+                "category": "씨앗포켓몬",
+                "entry": "태어나서부터 얼마 동안은\n등의 씨앗으로부터 영양을\n공급받아 크게 성장한다.",
+                "height": "0.7 m",
+                "weight": "6.9 kg"
+            },
+            "es": {
+                "name": "Bulbasaur",
+                "category": "Pokémon Semilla",
+                "entry": "Después de nacer, crece alimentándose\nde la semilla de su lomo.",
+                "height": "0,7 m",
+                "weight": "6,9 kg"
+            },
+            "ja": {
+                "name": "フシギダネ",
+                "category": "たねポケモン",
+                "entry": "うまれてから\\x{3000}しばらくの\\x{3000}あいだは\nせなかの\\x{3000}タネから\\x{3000}えいようを\nもらって\\x{3000}おおきく\\x{3000}そだつ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 49,

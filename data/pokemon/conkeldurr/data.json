@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Conkeldurr",
-    "category": "Muscular Pokémon",
-    "pokedex_entry": "Rather than rely on force,\nthey master moves that utilize the\ncentrifugal force of spinning concrete.",
+    "pokedex": {
+        "category": "Muscular Pokémon",
+        "entry": "Rather than rely on force,\nthey master moves that utilize the\ncentrifugal force of spinning concrete.",
+        "height": "4'07\"",
+        "weight": "191.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "きんこつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 105,
         "attack": 140,

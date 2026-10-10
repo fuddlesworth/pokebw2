@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Doduo",
-    "category": "Twin Bird Pokémon",
-    "pokedex_entry": "The brains in its two heads appear\nto communicate emotions to each\nother with a telepathic power.",
+    "pokedex": {
+        "category": "Twin Bird Pokémon",
+        "entry": "The brains in its two heads appear\nto communicate emotions to each\nother with a telepathic power.",
+        "height": "4'07\"",
+        "weight": "86.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Doduo",
+                "category": "Twin Bird Pokémon",
+                "entry": "The brains in its two heads appear\nto communicate emotions to each\nother with a telepathic power.",
+                "height": "4'07\"",
+                "weight": "86.4 lbs."
+            },
+            "fr": {
+                "name": "Doduo",
+                "category": "Pokémon Duoiseau",
+                "entry": "Ses deux cerveaux semblent\ncommuniquer leurs émotions\ngrâce à un lien télépathique.",
+                "height": "1,4 m",
+                "weight": "39,2 kg"
+            },
+            "de": {
+                "name": "Dodu",
+                "category": "Duovogel",
+                "entry": "Die Gehirne der beiden Köpfe\nkommunizieren ihre Gefühle\nüber Telepathie.",
+                "height": "1,4 m",
+                "weight": "39,2 kg"
+            },
+            "it": {
+                "name": "Doduo",
+                "category": "Pokémon Biuccello",
+                "entry": "I suoi due cervelli si comunicano\nle emozioni grazie ai poteri telepatici.",
+                "height": "1,4 m",
+                "weight": "39,2 kg"
+            },
+            "ko": {
+                "name": "두두",
+                "category": "쌍둥이새포켓몬",
+                "entry": "두 머리에 각각 존재하는 뇌는\n텔레파시같은 힘으로\n의사를 맞춰나가는 듯하다.",
+                "height": "1.4 m",
+                "weight": "39.2 kg"
+            },
+            "es": {
+                "name": "Doduo",
+                "category": "Pokémon Ave Gemela",
+                "entry": "Parece que los cerebros de sus dos\ncabezas se comunican por telepatía.",
+                "height": "1,4 m",
+                "weight": "39,2 kg"
+            },
+            "ja": {
+                "name": "ドードー",
+                "category": "ふたごどりポケモン",
+                "entry": "\\x{ff12}つの\\x{3000}あたまの\\x{3000}のうみそは\nテレパシーのような\\x{3000}ちからで\nきもちを\\x{3000}つうじあわせているらしい。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff19}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 85,

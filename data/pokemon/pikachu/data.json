@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pikachu",
-    "category": "Mouse Pokémon",
-    "pokedex_entry": "It occasionally uses an electric\nshock to recharge a fellow Pikachu\nthat is in a weakened state.",
+    "pokedex": {
+        "category": "Mouse Pokémon",
+        "entry": "It occasionally uses an electric\nshock to recharge a fellow Pikachu\nthat is in a weakened state.",
+        "height": "1'04\"",
+        "weight": "13.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pikachu",
+                "category": "Mouse Pokémon",
+                "entry": "It occasionally uses an electric\nshock to recharge a fellow Pikachu\nthat is in a weakened state.",
+                "height": "1'04\"",
+                "weight": "13.2 lbs."
+            },
+            "fr": {
+                "name": "Pikachu",
+                "category": "Pokémon Souris",
+                "entry": "Il lui arrive de remettre d'aplomb\nun Pikachu allié en lui envoyant\nune décharge électrique.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "de": {
+                "name": "Pikachu",
+                "category": "Maus",
+                "entry": "Es verwendet hin und wieder\nElektrizität, um ein anderes,\ngeschwächtes Pikachu aufzuladen.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "it": {
+                "name": "Pikachu",
+                "category": "Pokémon Topo",
+                "entry": "Di tanto in tanto ricarica gli altri\nPikachu indeboliti usando una\nscarica elettrica.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "ko": {
+                "name": "피카츄",
+                "category": "쥐포켓몬",
+                "entry": "약해진 동료 피카츄에게\n전기를 흘려보내 쇼크를 줘서\n힘을 나눠주는 때도 있다.",
+                "height": "0.4 m",
+                "weight": "6.0 kg"
+            },
+            "es": {
+                "name": "Pikachu",
+                "category": "Pokémon Ratón",
+                "entry": "A veces utiliza la electricidad de\nsus mejillas para recargar a un\nPikachu amigo que esté débil.",
+                "height": "0,4 m",
+                "weight": "6,0 kg"
+            },
+            "ja": {
+                "name": "ピカチュウ",
+                "category": "ねずみポケモン",
+                "entry": "よわった\\x{3000}なかまの\\x{3000}ピカチュウに\nでんきをながし\\x{3000}ショックをあたえて\nげんきを\\x{3000}わけることも\\x{3000}ある。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 55,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Donphan",
-    "category": "Armor Pokémon",
-    "pokedex_entry": "It attacks by curling up then\nrolling into its foe. It can blow\napart a house in one hit.",
+    "pokedex": {
+        "category": "Armor Pokémon",
+        "entry": "It attacks by curling up then\nrolling into its foe. It can blow\napart a house in one hit.",
+        "height": "3'07\"",
+        "weight": "264.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Donphan",
+                "category": "Armor Pokémon",
+                "entry": "It attacks by curling up, then\nrolling into its foe. It can blow\napart a house in one hit.",
+                "height": "3'07\"",
+                "weight": "264.6 lbs."
+            },
+            "fr": {
+                "name": "Donphan",
+                "category": "Pokémon Armure",
+                "entry": "Il attaque en se roulant en boule\npour percuter l'ennemi. Il peut\nabattre une maison d'un seul coup.",
+                "height": "1,1 m",
+                "weight": "120,0 kg"
+            },
+            "de": {
+                "name": "Donphan",
+                "category": "Panzer",
+                "entry": "Wenn es angreift, rollt es sich\nzusammen und auf den Gegner zu.\nEs kann Häuser zum Einsturz bringen.",
+                "height": "1,1 m",
+                "weight": "120,0 kg"
+            },
+            "it": {
+                "name": "Donphan",
+                "category": "Pokémon Armatura",
+                "entry": "Si arrotola a palla e attacca il nemico.\nRiesce ad abbattere una casa con\nun solo colpo.",
+                "height": "1,1 m",
+                "weight": "120,0 kg"
+            },
+            "ko": {
+                "name": "코리갑",
+                "category": "갑옷포켓몬",
+                "entry": "몸을 웅크려 회전하면서\n돌진하며 공격한다. 민가를\n일격에 조각조각 날려버린다.",
+                "height": "1.1 m",
+                "weight": "120.0 kg"
+            },
+            "es": {
+                "name": "Donphan",
+                "category": "Pokémon Coraza",
+                "entry": "Se enrolla sobre sí mismo y se\nlanza rodando contra el enemigo.\nPuede derribar casas de un golpe.",
+                "height": "1,1 m",
+                "weight": "120,0 kg"
+            },
+            "ja": {
+                "name": "ドンファン",
+                "category": "よろいポケモン",
+                "entry": "からだを\\x{3000}まるめて\\x{3000}かいてんしながら\nとっしんする\\x{3000}こうげき。いちげきで\nみんかを\\x{3000}ばらばらに\\x{3000}ふきとばす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 120,

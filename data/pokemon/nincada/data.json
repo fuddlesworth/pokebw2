@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Nincada",
-    "category": "Trainee Pokémon",
-    "pokedex_entry": "It grows underground, sensing\nits surroundings using antennae\ninstead of its virtually blind eyes.",
+    "pokedex": {
+        "category": "Trainee Pokémon",
+        "entry": "It grows underground, sensing\nits surroundings using antennae\ninstead of its virtually blind eyes.",
+        "height": "1'08\"",
+        "weight": "12.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Nincada",
+                "category": "Trainee Pokémon",
+                "entry": "It grows underground, sensing\nits surroundings using antennae\ninstead of its virtually blind eyes.",
+                "height": "1'08\"",
+                "weight": "12.1 lbs."
+            },
+            "fr": {
+                "name": "Ningale",
+                "category": "Pokémon Apprenti",
+                "entry": "Il grandit sous terre et se repère\ngrâce à ses antennes car ses\nyeux sont quasiment aveugles.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "de": {
+                "name": "Nincada",
+                "category": "Vorbereiter",
+                "entry": "Es wächst unterirdisch heran und nimmt\nseine Umgebung mit Antennen wahr, da\nes nahezu blind ist.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "it": {
+                "name": "Nincada",
+                "category": "Pokémon Novizio",
+                "entry": "Cresce sottoterra e, poiché è quasi\ncieco, usa le antenne per sondare\nciò che lo circonda.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "ko": {
+                "name": "토중몬",
+                "category": "신참포켓몬",
+                "entry": "땅밑에서 성장한다.\n거의 보이지 않는 눈 대신\n더듬이로 상황을 살핀다.",
+                "height": "0.5 m",
+                "weight": "5.5 kg"
+            },
+            "es": {
+                "name": "Nincada",
+                "category": "Pokémon Aprendiz",
+                "entry": "Crece bajo tierra y explora el entorno\ncon sus antenas porque casi no ve\ncon sus ojos.",
+                "height": "0,5 m",
+                "weight": "5,5 kg"
+            },
+            "ja": {
+                "name": "ツチニン",
+                "category": "したづみポケモン",
+                "entry": "じめんの\\x{3000}したで\\x{3000}せいちょうする。\nほとんど\\x{3000}みえない\\x{3000}めの\\x{3000}かわりに\nしょっかくで\\x{3000}ようすを\\x{3000}さぐる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 31,
         "attack": 45,

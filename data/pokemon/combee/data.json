@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Combee",
-    "category": "Tiny Bee Pokémon",
-    "pokedex_entry": "This Pokémon is a set of three.\nWhen they sleep, they gather up\nand form a giant hive of 100 Combee.",
+    "pokedex": {
+        "category": "Tiny Bee Pokémon",
+        "entry": "This Pokémon is a set of three.\nWhen they sleep, they gather up\nand form a giant hive of 100 Combee.",
+        "height": "1'00\"",
+        "weight": "12.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Combee",
+                "category": "Tiny Bee Pokémon",
+                "entry": "The trio is together from birth.\nIt constantly gathers honey from\nflowers to please Vespiquen.",
+                "height": "1'00\"",
+                "weight": "12.1 lbs."
+            },
+            "fr": {
+                "name": "Apitrini",
+                "category": "Pokémon Miniabeille",
+                "entry": "Ce trio inséparable depuis la\nnaissance récolte du miel\npour satisfaire Apireine.",
+                "height": "0,3 m",
+                "weight": "5,5 kg"
+            },
+            "de": {
+                "name": "Wadribie",
+                "category": "Kleinbiene",
+                "entry": "Dieses Trio ist von Geburt an\nzusammen. Fleißig bringt es\nBlütenhonig zu Honweisel.",
+                "height": "0,3 m",
+                "weight": "5,5 kg"
+            },
+            "it": {
+                "name": "Combee",
+                "category": "Pokémon Apetta",
+                "entry": "Il trio è insieme dalla nascita. È sempre\nimpegnato a portare il nettare dei fiori\na Vespiquen.",
+                "height": "0,3 m",
+                "weight": "5,5 kg"
+            },
+            "ko": {
+                "name": "세꿀버리",
+                "category": "꼬마벌포켓몬",
+                "entry": "태어났을 때부터 3마리가 함께한다.\n비퀸을 기쁘게 하기 위해\n항상 꽃의 꿀을 모으고 있다.",
+                "height": "0.3 m",
+                "weight": "5.5 kg"
+            },
+            "es": {
+                "name": "Combee",
+                "category": "Pokémon Abejita",
+                "entry": "El trío se forma al nacer y se pasa\nla vida recogiendo miel de las flores\npara satisfacer a Vespiquen.",
+                "height": "0,3 m",
+                "weight": "5,5 kg"
+            },
+            "ja": {
+                "name": "ミツハニー",
+                "category": "はちのこポケモン",
+                "entry": "うまれたときから\\x{3000}\\x{ff13}びき\\x{3000}いっしょ。\nビークインに\\x{3000}よろこんでもらうため\nいつも\\x{3000}はなのミツを\\x{3000}あつめている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 30,

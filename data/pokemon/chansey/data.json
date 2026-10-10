@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Chansey",
-    "category": "Egg Pokémon",
-    "pokedex_entry": "A kindly Pokémon that lays highly\nnutritious eggs and shares them\nwith injured Pokémon or people.",
+    "pokedex": {
+        "category": "Egg Pokémon",
+        "entry": "A kindly Pokémon that lays highly\nnutritious eggs and shares them\nwith injured Pokémon or people.",
+        "height": "3'07\"",
+        "weight": "76.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Chansey",
+                "category": "Egg Pokémon",
+                "entry": "A kindly Pokémon that lays highly\nnutritious eggs and shares them\nwith injured Pokémon or people.",
+                "height": "3'07\"",
+                "weight": "76.3 lbs."
+            },
+            "fr": {
+                "name": "Leveinard",
+                "category": "Pokémon Œuf",
+                "entry": "Ce Pokémon très serviable distribue\nses œufs hautement nutritifs aux\nhumains et Pokémon blessés.",
+                "height": "1,1 m",
+                "weight": "34,6 kg"
+            },
+            "de": {
+                "name": "Chaneira",
+                "category": "Ei",
+                "entry": "Ein freundliches Pokémon, das seine\nnahrhaften Eier mit verletzten Pokémon\nund Menschen teilt.",
+                "height": "1,1 m",
+                "weight": "34,6 kg"
+            },
+            "it": {
+                "name": "Chansey",
+                "category": "Pokémon Uovo",
+                "entry": "Un Pokémon altruista che depone uova\nmolto nutrienti. Le condivide con\npersone o Pokémon feriti.",
+                "height": "1,1 m",
+                "weight": "34,6 kg"
+            },
+            "ko": {
+                "name": "럭키",
+                "category": "알포켓몬",
+                "entry": "상처입은 포켓몬이나 사람이 있으면\n영양 만점의 알을 낳아\n나눠주는 상냥한 포켓몬이다.",
+                "height": "1.1 m",
+                "weight": "34.6 kg"
+            },
+            "es": {
+                "name": "Chansey",
+                "category": "Pokémon Huevo",
+                "entry": "Un generoso Pokémon que pone huevos\nmuy nutritivos y los da a personas o\nPokémon heridos.",
+                "height": "1,1 m",
+                "weight": "34,6 kg"
+            },
+            "ja": {
+                "name": "ラッキー",
+                "category": "たまごポケモン",
+                "entry": "きずついた\\x{3000}ポケモンや\\x{3000}ひとがいると\nえいようまんてんの\\x{3000}タマゴをうみ\nわけあたえる\\x{3000}やさしい\\x{3000}ポケモン。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff14}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 250,
         "attack": 5,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Riolu",
-    "category": "Emanation Pokémon",
-    "pokedex_entry": "It uses the shapes of auras,\nwhich change according to emotion,\nto communicate with others.",
+    "pokedex": {
+        "category": "Emanation Pokémon",
+        "entry": "It uses the shapes of auras,\nwhich change according to emotion,\nto communicate with others.",
+        "height": "2'04\"",
+        "weight": "44.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Riolu",
+                "category": "Emanation Pokémon",
+                "entry": "It has the peculiar power of being\nable to see emotions such as joy\nand rage in the form of waves.",
+                "height": "2'04\"",
+                "weight": "44.5 lbs."
+            },
+            "fr": {
+                "name": "Riolu",
+                "category": "Pokémon Émanation",
+                "entry": "Il a la faculté unique de visualiser\nles émotions telles que la joie ou\nla colère sous forme d'ondes.",
+                "height": "0,7 m",
+                "weight": "20,2 kg"
+            },
+            "de": {
+                "name": "Riolu",
+                "category": "Wellenspiel",
+                "entry": "Es hat die eigenartige Fähigkeit,\nGefühle wie Freude oder Wut in\nWellenform zu sehen.",
+                "height": "0,7 m",
+                "weight": "20,2 kg"
+            },
+            "it": {
+                "name": "Riolu",
+                "category": "Pokémon Emanazione",
+                "entry": "È in grado di vedere emozioni come rabbia\ne gioia sotto forma di onde. Si tratta di\nun potere unico.",
+                "height": "0,7 m",
+                "weight": "20,2 kg"
+            },
+            "ko": {
+                "name": "리오르",
+                "category": "파문포켓몬",
+                "entry": "기쁨과 분노 등의 감정을\n물결의 형태로 만들어 분별하는\n이상한 힘을 지녔다.",
+                "height": "0.7 m",
+                "weight": "20.2 kg"
+            },
+            "es": {
+                "name": "Riolu",
+                "category": "Pokémon Emanación",
+                "entry": "Tiene un poder peculiar: puede ver\nemociones como el odio y la alegría\nen forma de ondas.",
+                "height": "0,7 m",
+                "weight": "20,2 kg"
+            },
+            "ja": {
+                "name": "リオル",
+                "category": "はもんポケモン",
+                "entry": "よろこびや\\x{3000}いかりと\\x{3000}いった\nかんじょうを\\x{3000}なみのかたち\\x{3000}として\nみわける\\x{3000}ふしぎなちからを\\x{3000}もつ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 70,

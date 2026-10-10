@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Beautifly",
-    "category": "Butterfly Pokémon",
-    "pokedex_entry": "Despite its looks, it is aggressive.\nIt jabs with its long, thin mouth if\ndisturbed while collecting pollen.",
+    "pokedex": {
+        "category": "Butterfly Pokémon",
+        "entry": "Despite its looks, it is aggressive.\nIt jabs with its long, thin mouth if\ndisturbed while collecting pollen.",
+        "height": "3'03\"",
+        "weight": "62.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Beautifly",
+                "category": "Butterfly Pokémon",
+                "entry": "Despite its looks, it is aggressive.\nIt jabs with its long, thin mouth if\ndisturbed while collecting pollen.",
+                "height": "3'03\"",
+                "weight": "62.6 lbs."
+            },
+            "fr": {
+                "name": "Charmillon",
+                "category": "Pokémon Papillon",
+                "entry": "Malgré les apparences, il est très\nagressif et attaque avec sa trompe\nquand on le dérange.",
+                "height": "1,0 m",
+                "weight": "28,4 kg"
+            },
+            "de": {
+                "name": "Papinella",
+                "category": "Falter",
+                "entry": "Stört man es, während es Pollen sucht,\nstößt es mit seinem langen, dünnen\nMund zu.",
+                "height": "1,0 m",
+                "weight": "28,4 kg"
+            },
+            "it": {
+                "name": "Beautifly",
+                "category": "Pokémon Farfalla",
+                "entry": "Malgrado l'aspetto, è feroce. Se\ndisturbato in cerca di polline, attacca\ncon la bocca lunga e sottile.",
+                "height": "1,0 m",
+                "weight": "28,4 kg"
+            },
+            "ko": {
+                "name": "뷰티플라이",
+                "category": "나비포켓몬",
+                "entry": "보기와는 다르게 공격적이며\n꽃가루 모으기를 방해하면\n가늘고 긴 입으로 찌른다.",
+                "height": "1.0 m",
+                "weight": "28.4 kg"
+            },
+            "es": {
+                "name": "Beautifly",
+                "category": "Pokémon Mariposa",
+                "entry": "Aunque no lo parece, es un Pokémon\nagresivo. Si se le molesta cuando\nrecoge polen, atacará.",
+                "height": "1,0 m",
+                "weight": "28,4 kg"
+            },
+            "ja": {
+                "name": "アゲハント",
+                "category": "ちょうちょポケモン",
+                "entry": "みために\\x{3000}よらず\\x{3000}こうげきてきで\nかふんあつめの\\x{3000}じゃまを\\x{3000}すると\nほそながい\\x{3000}くちを\\x{3000}つきさしてくる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff18}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 70,

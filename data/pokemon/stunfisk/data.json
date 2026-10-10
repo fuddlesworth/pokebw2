@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Stunfisk",
-    "category": "Trap Pokémon",
-    "pokedex_entry": "When its opponent can't be paralyzed,\nit contorts itself with unexpected speed\nand flops away.",
+    "pokedex": {
+        "category": "Trap Pokémon",
+        "entry": "When its opponent can't be paralyzed,\nit contorts itself with unexpected speed\nand flops away.",
+        "height": "2'04\"",
+        "weight": "24.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "トラップポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 109,
         "attack": 66,

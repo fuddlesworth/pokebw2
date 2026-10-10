@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Garchomp",
-    "category": "Mach Pokémon",
-    "pokedex_entry": "It is said that when one runs at\nhigh speed, its wings create blades\nof wind that can fell nearby trees.",
+    "pokedex": {
+        "category": "Mach Pokémon",
+        "entry": "It is said that when one runs at\nhigh speed, its wings create blades\nof wind that can fell nearby trees.",
+        "height": "6'03\"",
+        "weight": "209.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Garchomp",
+                "category": "Mach Pokémon",
+                "entry": "It is said that when one runs at\nhigh speed, its wings create blades\nof wind that can fell nearby trees.",
+                "height": "6'03\"",
+                "weight": "209.4 lbs."
+            },
+            "fr": {
+                "name": "Carchacrok",
+                "category": "Pokémon Supersonic",
+                "entry": "On dit que lancé à pleine vitesse,\nil crée des lames de vent avec ses\nailes pouvant trancher un arbre.",
+                "height": "1,9 m",
+                "weight": "95,0 kg"
+            },
+            "de": {
+                "name": "Knakrack",
+                "category": "Rasanz",
+                "entry": "Die schnelle Bewegung seiner Flügel\nerzeugt regelrechte Klingen des\nWindes, die Bäume fällen können.",
+                "height": "1,9 m",
+                "weight": "95,0 kg"
+            },
+            "it": {
+                "name": "Garchomp",
+                "category": "Pokémon Mach",
+                "entry": "Si dice che quando vola, le sue ali creino\nraffiche di vento in grado di abbattere\ngli alberi vicini.",
+                "height": "1,9 m",
+                "weight": "95,0 kg"
+            },
+            "ko": {
+                "name": "한카리아스",
+                "category": "마하포켓몬",
+                "entry": "고속으로 달려나가면 날개는\n공기의 칼날을 만들어내어\n주변의 나무는 절단 나게 된다.",
+                "height": "1.9 m",
+                "weight": "95.0 kg"
+            },
+            "es": {
+                "name": "Garchomp",
+                "category": "Pokémon Mach",
+                "entry": "Se dice que, cuando va a velocidad\nmáxima, sus alas crean cuchillas de\nviento que talan cualquier árbol.",
+                "height": "1,9 m",
+                "weight": "95,0 kg"
+            },
+            "ja": {
+                "name": "ガブリアス",
+                "category": "マッハポケモン",
+                "entry": "こうそくで\\x{3000}かけぬけると\\x{3000}つばさは\nくうきの\\x{3000}やいばを\\x{3000}うみだし\nまわりのきは\\x{3000}せつだん\\x{3000}されている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 108,
         "attack": 130,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Victreebel",
-    "category": "Flycatcher Pokémon",
-    "pokedex_entry": "It pools in its mouth a fluid with\na honey-like scent, which is really\nan acid that dissolves anything.",
+    "pokedex": {
+        "category": "Flycatcher Pokémon",
+        "entry": "It pools in its mouth a fluid with\na honey-like scent, which is really\nan acid that dissolves anything.",
+        "height": "5'07\"",
+        "weight": "34.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Victreebel",
+                "category": "Flycatcher Pokémon",
+                "entry": "It pools in its mouth a fluid with\na honeylike scent, which is really\nan acid that dissolves anything.",
+                "height": "5'07\"",
+                "weight": "34.2 lbs."
+            },
+            "fr": {
+                "name": "Empiflor",
+                "category": "Pokémon Carnivore",
+                "entry": "Sa bouche sécrète un fluide à\nl'odeur de miel, qui s'avère être\nun acide extrêmement corrosif.",
+                "height": "1,7 m",
+                "weight": "15,5 kg"
+            },
+            "de": {
+                "name": "Sarzenia",
+                "category": "Fliegentot",
+                "entry": "In seinem Maul sammelt sich eine\nFlüssigkeit, die nach Honig riecht,\nin Wahrheit aber ätzend ist.",
+                "height": "1,7 m",
+                "weight": "15,5 kg"
+            },
+            "it": {
+                "name": "Victreebel",
+                "category": "Pokémon Moschivoro",
+                "entry": "Tiene in bocca un liquido dall'aroma\nsimile al miele, che in realtà è un\nacido altamente corrosivo.",
+                "height": "1,7 m",
+                "weight": "15,5 kg"
+            },
+            "ko": {
+                "name": "우츠보트",
+                "category": "파리잡이포켓몬",
+                "entry": "꿀같은 향기의 액체를\n입에 모아두고 있지만 그것은\n무엇이든 녹이는 용해액이다.",
+                "height": "1.7 m",
+                "weight": "15.5 kg"
+            },
+            "es": {
+                "name": "Victreebel",
+                "category": "Pokémon Matamoscas",
+                "entry": "Su boca segrega un fluido de olor\nparecido a la miel: un potente ácido\nque disuelve cualquier cosa.",
+                "height": "1,7 m",
+                "weight": "15,5 kg"
+            },
+            "ja": {
+                "name": "ウツボット",
+                "category": "ハエとりポケモン",
+                "entry": "ミツのような\\x{3000}かおりの\\x{3000}えきたいを\nくちに\\x{3000}ためているが\\x{3000}それは\nなんでも\\x{3000}とかす\\x{3000}ようかいえきだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 105,

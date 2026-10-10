@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Azumarill",
-    "category": "Aqua Rabbit Pokémon",
-    "pokedex_entry": "Its long ears are superb sensors.\nIt can distinguish the movements of\nthings in water and tell what they are.",
+    "pokedex": {
+        "category": "Aqua Rabbit Pokémon",
+        "entry": "Its long ears are superb sensors.\nIt can distinguish the movements of\nthings in water and tell what they are.",
+        "height": "2'07\"",
+        "weight": "62.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Azumarill",
+                "category": "Aqua Rabbit Pokémon",
+                "entry": "It can spend all day in water,\nsince it can inhale and store\na large volume of air.",
+                "height": "2'07\"",
+                "weight": "62.8 lbs."
+            },
+            "fr": {
+                "name": "Azumarill",
+                "category": "Pokémon Aqualapin",
+                "entry": "Ses poumons peuvent contenir\nassez d'air pour lui permettre de\npasser une journée sous l'eau.",
+                "height": "0,8 m",
+                "weight": "28,5 kg"
+            },
+            "de": {
+                "name": "Azumarill",
+                "category": "Aquahase",
+                "entry": "Kann den ganzen Tag im Wasser\nverbringen, da es jede Menge\nLuft einatmen und speichern kann.",
+                "height": "0,8 m",
+                "weight": "28,5 kg"
+            },
+            "it": {
+                "name": "Azumarill",
+                "category": "Pokémon Acquniglio",
+                "entry": "Può rimanere a lungo in acqua poiché è\nin grado di inalare e immagazzinare molta\naria.",
+                "height": "0,8 m",
+                "weight": "28,5 kg"
+            },
+            "ko": {
+                "name": "마릴리",
+                "category": "물토끼포켓몬",
+                "entry": "하루 온종일 물속에서\n지낼 수 있는 것은 공기를 실컷\n들이마셔 모아두기 때문이다.",
+                "height": "0.8 m",
+                "weight": "28.5 kg"
+            },
+            "es": {
+                "name": "Azumarill",
+                "category": "Pokémon Conejoagua",
+                "entry": "Puede pasarse todo el día en el agua\nporque puede tragar y almacenar\nun gran volumen de aire.",
+                "height": "0,8 m",
+                "weight": "28,5 kg"
+            },
+            "ja": {
+                "name": "マリルリ",
+                "category": "みずうさぎポケモン",
+                "entry": "いちにちじゅう\\x{3000}みずの\\x{3000}なかで\nすごせるのは\\x{3000}くうきを\\x{3000}たっぷり\nすいこんで\\x{3000}ためておけるからだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff18}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 50,

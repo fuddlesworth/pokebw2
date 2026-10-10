@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Magby",
-    "category": "Live Coal Pokémon",
-    "pokedex_entry": "It's small, but its body temperature\nis over 1,100 degrees F. Embers escape\nits mouth and nose when it breathes.",
+    "pokedex": {
+        "category": "Live Coal Pokémon",
+        "entry": "It's small, but its body temperature\nis over 1,100 degrees F. Embers escape\nits mouth and nose when it breathes.",
+        "height": "2'04\"",
+        "weight": "47.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Magby",
+                "category": "Live Coal Pokémon",
+                "entry": "Its magma-like blood circulates\nthroughout its body. Its body's\nheat can top 1,100 degrees F.",
+                "height": "2'04\"",
+                "weight": "47.2 lbs."
+            },
+            "fr": {
+                "name": "Magby",
+                "category": "Pokémon Charbon",
+                "entry": "Son sang est chaud comme du magma\net la température de son corps\npeut atteindre 600 °C.",
+                "height": "0,7 m",
+                "weight": "21,4 kg"
+            },
+            "de": {
+                "name": "Magby",
+                "category": "Glutherd",
+                "entry": "Durch seinen Körper fließt\nmagmaartiges Blut. Die Körpertemperatur\nkann auf ca. 600 Grad steigen.",
+                "height": "0,7 m",
+                "weight": "21,4 kg"
+            },
+            "it": {
+                "name": "Magby",
+                "category": "Pokémon Carbonvivo",
+                "entry": "Il suo sangue assomiglia al magma.\nLa sua temperatura corporea raggiunge\ni 600°C.",
+                "height": "0,7 m",
+                "weight": "21,4 kg"
+            },
+            "ko": {
+                "name": "마그비",
+                "category": "불씨포켓몬",
+                "entry": "마그마 같은 혈액이\n체내에 흐르고 있기 때문에\n체온은 600도나 된다.",
+                "height": "0.7 m",
+                "weight": "21.4 kg"
+            },
+            "es": {
+                "name": "Magby",
+                "category": "Pokémon Ascuas",
+                "entry": "Su sangre es como magma y su\ntemperatura corporal puede\nalcanzar los 600°.",
+                "height": "0,7 m",
+                "weight": "21,4 kg"
+            },
+            "ja": {
+                "name": "ブビィ",
+                "category": "ひだねポケモン",
+                "entry": "マグマのような\\x{3000}けつえきが\nたいないに\\x{3000}ながれているため\nたいおんは\\x{3000}\\x{ff16}\\x{ff10}\\x{ff10}どにも\\x{3000}なる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 75,

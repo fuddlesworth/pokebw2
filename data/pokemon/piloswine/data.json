@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Piloswine",
-    "category": "Swine Pokémon",
-    "pokedex_entry": "With its excellent sense of smell,\nit's even able to find mushrooms that\nare buried under frozen ground.",
+    "pokedex": {
+        "category": "Swine Pokémon",
+        "entry": "With its excellent sense of smell,\nit's even able to find mushrooms that\nare buried under frozen ground.",
+        "height": "3'07\"",
+        "weight": "123.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Piloswine",
+                "category": "Swine Pokémon",
+                "entry": "Covered by a shaggy coat, it is\nstrong against the cold. Its tusks\nof ice thicken when it snows.",
+                "height": "3'07\"",
+                "weight": "123.0 lbs."
+            },
+            "fr": {
+                "name": "Cochignon",
+                "category": "Pokémon Porc",
+                "entry": "Il est protégé du froid mordant par\nson épais manteau de fourrure. Ses\ncornes sont formées de glace.",
+                "height": "1,1 m",
+                "weight": "55,8 kg"
+            },
+            "de": {
+                "name": "Keifel",
+                "category": "Schwein",
+                "entry": "Schützt sich mit seinem dicken Fell\nvor der Kälte. Seine Stoßzähne aus\nEis werden dicker, wenn es schneit.",
+                "height": "1,1 m",
+                "weight": "55,8 kg"
+            },
+            "it": {
+                "name": "Piloswine",
+                "category": "Pokémon Suino",
+                "entry": "Il suo fitto pelo lo protegge dal freddo.\nHa zanne di ghiaccio che si ispessiscono\nquando nevica.",
+                "height": "1,1 m",
+                "weight": "55,8 kg"
+            },
+            "ko": {
+                "name": "메꾸리",
+                "category": "멧돼지포켓몬",
+                "entry": "긴 털에 뒤덮여 있기에\n추위에도 강하며 얼음 이빨은\n눈이 내리면 더욱 두꺼워진다.",
+                "height": "1.1 m",
+                "weight": "55.8 kg"
+            },
+            "es": {
+                "name": "Piloswine",
+                "category": "Pokémon Puerco",
+                "entry": "Su tupido pelaje le protege del\nfrío. Sus colmillos de hielo se\nendurecen cuando nieva.",
+                "height": "1,1 m",
+                "weight": "55,8 kg"
+            },
+            "ja": {
+                "name": "イノムー",
+                "category": "いのししポケモン",
+                "entry": "ながい\\x{3000}たいもうに\\x{3000}おおわれていて\nさむさに\\x{3000}つよく\\x{3000}こおりの\\x{3000}キバは\nゆきがふると\\x{3000}さらに\\x{3000}ふとくなる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff15}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 100,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Venonat",
-    "category": "Insect Pokémon",
-    "pokedex_entry": "Its big eyes are actually clusters\nof tiny eyes. At night, its kind is\ndrawn by light.",
+    "pokedex": {
+        "category": "Insect Pokémon",
+        "entry": "Its big eyes are actually clusters\nof tiny eyes. At night, its kind is\ndrawn by light.",
+        "height": "3'03\"",
+        "weight": "66.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Venonat",
+                "category": "Insect Pokémon",
+                "entry": "Its big eyes are actually clusters\nof tiny eyes. At night, its kind is\ndrawn by light.",
+                "height": "3'03\"",
+                "weight": "66.1 lbs."
+            },
+            "fr": {
+                "name": "Mimitoss",
+                "category": "Pokémon Vermine",
+                "entry": "Ses grands yeux sont en fait des\namas d'yeux minuscules. La nuit,\nil est attiré par la lumière.",
+                "height": "1,0 m",
+                "weight": "30,0 kg"
+            },
+            "de": {
+                "name": "Bluzuk",
+                "category": "Insekt",
+                "entry": "Seine großen Augen bestehen aus\nvielen kleinen Augen. Nachts wird\nes von Licht angezogen.",
+                "height": "1,0 m",
+                "weight": "30,0 kg"
+            },
+            "it": {
+                "name": "Venonat",
+                "category": "Pokémon Insetto",
+                "entry": "I suoi grandi occhi sono in realtà\nun insieme di tanti piccoli occhi.\nDi notte, è attirato dalla luce.",
+                "height": "1,0 m",
+                "weight": "30,0 kg"
+            },
+            "ko": {
+                "name": "콘팡",
+                "category": "곤충포켓몬",
+                "entry": "작은 눈이 많이 모여\n큰 눈을 이루고 있다.\n밤이 되면 불빛을 향해 모여든다.",
+                "height": "1.0 m",
+                "weight": "30.0 kg"
+            },
+            "es": {
+                "name": "Venonat",
+                "category": "Pokémon Insecto",
+                "entry": "Sus grandes ojos son en realidad grupos\nde ojos diminutos. Por la noche se\nsiente atraído por la luz.",
+                "height": "1,0 m",
+                "weight": "30,0 kg"
+            },
+            "ja": {
+                "name": "コンパン",
+                "category": "こんちゅうポケモン",
+                "entry": "ちいさな\\x{3000}めが\\x{3000}たくさん\\x{3000}あつまって\nおおきな\\x{3000}めに\\x{3000}なっている。\nよるになると\\x{3000}あかりに\\x{3000}あつまる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 55,

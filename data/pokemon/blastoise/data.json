@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Blastoise",
-    "category": "Shellfish Pokémon",
-    "pokedex_entry": "The jets of water it spouts from\nthe rocket cannons on its shell\ncan punch through thick steel.",
+    "pokedex": {
+        "category": "Shellfish Pokémon",
+        "entry": "The jets of water it spouts from\nthe rocket cannons on its shell\ncan punch through thick steel.",
+        "height": "5'03\"",
+        "weight": "188.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Blastoise",
+                "category": "Shellfish Pokémon",
+                "entry": "The jets of water it spouts from\nthe rocket cannons on its shell\ncan punch through thick steel.",
+                "height": "5'03\"",
+                "weight": "188.5 lbs."
+            },
+            "fr": {
+                "name": "Tortank",
+                "category": "Pokémon Carapace",
+                "entry": "Les trombes d'eau projetées par\nles canons de sa carapace peuvent\npercer le métal le plus résistant.",
+                "height": "1,6 m",
+                "weight": "85,5 kg"
+            },
+            "de": {
+                "name": "Turtok",
+                "category": "Panzer",
+                "entry": "Der Wasserstrahl, der aus den\nWasserdüsen schießt, kann sogar\nStahlwände durchdringen.",
+                "height": "1,6 m",
+                "weight": "85,5 kg"
+            },
+            "it": {
+                "name": "Blastoise",
+                "category": "Pokémon Crostaceo",
+                "entry": "I getti d'acqua lanciati dai cannoni sul\nsuo guscio riescono a perforare\npersino l'acciaio.",
+                "height": "1,6 m",
+                "weight": "85,5 kg"
+            },
+            "ko": {
+                "name": "거북왕",
+                "category": "껍질포켓몬",
+                "entry": "등껍질의 로켓포로부터 뿜어내는\n수류는 두꺼운 철판도\n한 번에 꿰뚫는 파괴력이 있다.",
+                "height": "1.6 m",
+                "weight": "85.5 kg"
+            },
+            "es": {
+                "name": "Blastoise",
+                "category": "Pokémon Marisco",
+                "entry": "Los chorros de agua que lanza\npor los tubos de su caparazón\npueden atravesar el acero.",
+                "height": "1,6 m",
+                "weight": "85,5 kg"
+            },
+            "ja": {
+                "name": "カメックス",
+                "category": "こうらポケモン",
+                "entry": "こうらの\\x{3000}ロケットほうから\\x{3000}ふきだす\nすいりゅうは\\x{3000}ぶあつい\\x{3000}てっぱんも\nいっぱつで\\x{3000}つらぬく\\x{3000}はかいりょく。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 79,
         "attack": 83,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Trapinch",
-    "category": "Ant Pit Pokémon",
-    "pokedex_entry": "It makes an inescapable conical pit\nand lies in wait at the bottom\nfor prey to come tumbling down.",
+    "pokedex": {
+        "category": "Ant Pit Pokémon",
+        "entry": "It makes an inescapable conical pit\nand lies in wait at the bottom\nfor prey to come tumbling down.",
+        "height": "2'04\"",
+        "weight": "33.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Trapinch",
+                "category": "Ant Pit Pokémon",
+                "entry": "It makes a conical pit in desert\nsand and lies in wait at the bottom\nfor prey to come tumbling down.",
+                "height": "2'04\"",
+                "weight": "33.1 lbs."
+            },
+            "fr": {
+                "name": "Kraknoix",
+                "category": "Pokémon Piégeur",
+                "entry": "Il creuse un trou conique dans le\nsable du désert et se terre en\nattendant qu'une proie trébuche.",
+                "height": "0,7 m",
+                "weight": "15,0 kg"
+            },
+            "de": {
+                "name": "Knacklion",
+                "category": "Ameisenlöwe",
+                "entry": "Es baut im Wüstensand eine Fallgrube,\nsetzt sich in ihr auf den Boden und\nwartet auf Beute.",
+                "height": "0,7 m",
+                "weight": "15,0 kg"
+            },
+            "it": {
+                "name": "Trapinch",
+                "category": "Pokémon Trappola",
+                "entry": "Scava fosse coniche nella sabbia del\ndeserto e attende che le prede cadano\nin trappola.",
+                "height": "0,7 m",
+                "weight": "15,0 kg"
+            },
+            "ko": {
+                "name": "톱치",
+                "category": "개미지옥포켓몬",
+                "entry": "사막에 만든 원뿔형의\n구멍 밑바닥에서 먹이가 빠져\n떨어지는 것을 계속 기다린다.",
+                "height": "0.7 m",
+                "weight": "15.0 kg"
+            },
+            "es": {
+                "name": "Trapinch",
+                "category": "Pokémon Hormigaleón",
+                "entry": "Cava fosas cóncavas en el desierto\ny espera en el fondo a que las\npresas caigan en ellas.",
+                "height": "0,7 m",
+                "weight": "15,0 kg"
+            },
+            "ja": {
+                "name": "ナックラー",
+                "category": "ありじごくポケモン",
+                "entry": "さばくに\\x{3000}つくった\\x{3000}すりばちがたの\nあなの\\x{3000}そこで\\x{3000}えものが\\x{3000}はまって\nおちてくるのを\\x{3000}まちつづける。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 100,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Garbodor",
-    "category": "Trash Heap Pokémon",
-    "pokedex_entry": "Consuming garbage makes\nnew kinds of poison gases\nand liquids inside their bodies.",
+    "pokedex": {
+        "category": "Trash Heap Pokémon",
+        "entry": "Consuming garbage makes\nnew kinds of poison gases\nand liquids inside their bodies.",
+        "height": "6'03\"",
+        "weight": "236.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ゴミすてばポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 95,

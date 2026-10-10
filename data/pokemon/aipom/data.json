@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Aipom",
-    "category": "Long Tail Pokémon",
-    "pokedex_entry": "It lives high among the treetops.\nIt can use its tail as freely and\ncleverly as its hands.",
+    "pokedex": {
+        "category": "Long Tail Pokémon",
+        "entry": "It lives high among the treetops.\nIt can use its tail as freely and\ncleverly as its hands.",
+        "height": "2'07\"",
+        "weight": "25.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Aipom",
+                "category": "Long Tail Pokémon",
+                "entry": "It lives high among the treetops.\nIt can use its tail as freely and\ncleverly as its hands.",
+                "height": "2'07\"",
+                "weight": "25.4 lbs."
+            },
+            "fr": {
+                "name": "Capumain",
+                "category": "Pokémon Longqueue",
+                "entry": "Sa queue est aussi agile que ses\nmains. Il vit en haut des grands\narbres.",
+                "height": "0,8 m",
+                "weight": "11,5 kg"
+            },
+            "de": {
+                "name": "Griffel",
+                "category": "Langschweif",
+                "entry": "Lebt in den Baumwipfeln. Kann seinen\nSchweif genauso gut wie seine Hände\nverwenden.",
+                "height": "0,8 m",
+                "weight": "11,5 kg"
+            },
+            "it": {
+                "name": "Aipom",
+                "category": "Pokémon Lungacoda",
+                "entry": "Vive sulla cima degli alberi. Con la coda\npuò fare di tutto, come se fosse una\nmano.",
+                "height": "0,8 m",
+                "weight": "11,5 kg"
+            },
+            "ko": {
+                "name": "에이팜",
+                "category": "긴꼬리포켓몬",
+                "entry": "꼬리를 능숙하게 사용하여\n손보다 자유자재로 움직이며\n높은 나무 위에서 지낸다.",
+                "height": "0.8 m",
+                "weight": "11.5 kg"
+            },
+            "es": {
+                "name": "Aipom",
+                "category": "Pokémon Cola Larga",
+                "entry": "Vive en las copas de los árboles.\nPuede usar su cola como si fuera\nuna mano más.",
+                "height": "0,8 m",
+                "weight": "11,5 kg"
+            },
+            "ja": {
+                "name": "エイパム",
+                "category": "おながポケモン",
+                "entry": "てよりも\\x{3000}じゆうじざいに\\x{3000}うごく\nしっぽを\\x{3000}たくみに\\x{3000}あやつりながら\nたかい\\x{3000}きのうえで\\x{3000}くらしている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 70,

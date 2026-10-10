@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Jirachi",
-    "category": "Wish Pokémon",
-    "pokedex_entry": "It is said to have the ability to\ngrant any wish for just one week\nevery thousand years.",
+    "pokedex": {
+        "category": "Wish Pokémon",
+        "entry": "It is said to have the ability to\ngrant any wish for just one week\nevery thousand years.",
+        "height": "1'00\"",
+        "weight": "2.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Jirachi",
+                "category": "Wish Pokémon",
+                "entry": "It is said to have the ability to\ngrant any wish for just one week\nevery thousand years.",
+                "height": "1'00\"",
+                "weight": "2.4 lbs."
+            },
+            "fr": {
+                "name": "Jirachi",
+                "category": "Pokémon Souhait",
+                "entry": "On raconte qu'une fois tous les\nmille ans, il a la capacité d'exaucer\ntous les vœux durant une semaine.",
+                "height": "0,3 m",
+                "weight": "1,1 kg"
+            },
+            "de": {
+                "name": "Jirachi",
+                "category": "Wünscher",
+                "entry": "Man sagt, es kann alle tausend Jahre\nfür eine Woche jeden Wunsch erfüllen.",
+                "height": "0,3 m",
+                "weight": "1,1 kg"
+            },
+            "it": {
+                "name": "Jirachi",
+                "category": "Pokémon Desiderio",
+                "entry": "Ha l'abilità di realizzare ogni desiderio,\nma soltanto per una settimana ogni 1000\nanni.",
+                "height": "0,3 m",
+                "weight": "1,1 kg"
+            },
+            "ko": {
+                "name": "지라치",
+                "category": "희망사항포켓몬",
+                "entry": "1000년 중 7일 동안만 깨어나\n모든 소원을 이루어주는\n능력을 발휘한다고 한다.",
+                "height": "0.3 m",
+                "weight": "1.1 kg"
+            },
+            "es": {
+                "name": "Jirachi",
+                "category": "Pokémon Deseo",
+                "entry": "Se dice que puede otorgar cualquier\ndeseo durante una semana cada\n1000 años.",
+                "height": "0,3 m",
+                "weight": "1,1 kg"
+            },
+            "ja": {
+                "name": "ジラーチ",
+                "category": "ねがいごとポケモン",
+                "entry": "\\x{ff11}\\x{ff10}\\x{ff10}\\x{ff10}ねんかんで\\x{3000}\\x{ff17}にちだけ\nめを\\x{3000}さまし\\x{3000}どんな\\x{3000}ねがいごとでも\nかなえる\\x{3000}ちからを\\x{3000}つかうという。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 100,

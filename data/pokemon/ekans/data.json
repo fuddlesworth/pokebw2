@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ekans",
-    "category": "Snake Pokémon",
-    "pokedex_entry": "It sneaks through grass without\nmaking a sound and strikes\nunsuspecting prey from behind.",
+    "pokedex": {
+        "category": "Snake Pokémon",
+        "entry": "It sneaks through grass without\nmaking a sound and strikes\nunsuspecting prey from behind.",
+        "height": "6'07\"",
+        "weight": "15.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ekans",
+                "category": "Snake Pokémon",
+                "entry": "It sneaks through grass without\nmaking a sound and strikes\nunsuspecting prey from behind.",
+                "height": "6'07\"",
+                "weight": "15.2 lbs."
+            },
+            "fr": {
+                "name": "Abo",
+                "category": "Pokémon Serpent",
+                "entry": "Il se faufile dans l'herbe sans un\nbruit et frappe dans le dos quand\nsa proie s'y attend le moins.",
+                "height": "2,0 m",
+                "weight": "6,9 kg"
+            },
+            "de": {
+                "name": "Rettan",
+                "category": "Schlange",
+                "entry": "Es bewegt sich ohne einen Laut\ndurch das Gras und greift seine\nahnungslose Beute von hinten an.",
+                "height": "2,0 m",
+                "weight": "6,9 kg"
+            },
+            "it": {
+                "name": "Ekans",
+                "category": "Pokémon Serpente",
+                "entry": "Striscia nell'erba senza fare il minimo\nrumore e colpisce alle spalle le prede\nignare del pericolo.",
+                "height": "2,0 m",
+                "weight": "6,9 kg"
+            },
+            "ko": {
+                "name": "아보",
+                "category": "뱀포켓몬",
+                "entry": "소리를 전혀 내지 않고 풀밭\n속을 나아간다. 방심하고 있는\n먹이를 배후에서 덮친다.",
+                "height": "2.0 m",
+                "weight": "6.9 kg"
+            },
+            "es": {
+                "name": "Ekans",
+                "category": "Pokémon Serpiente",
+                "entry": "Se mueve por la hierba en silencio\ny sorprende a sus presas atacando\npor detrás.",
+                "height": "2,0 m",
+                "weight": "6,9 kg"
+            },
+            "ja": {
+                "name": "アーボ",
+                "category": "へびポケモン",
+                "entry": "おとを\\x{3000}まったく\\x{3000}たてずに\\x{3000}くさちの\nなかを\\x{3000}すすむ。ゆだんしている\nえものに\\x{3000}はいごから\\x{3000}おそいかかる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 60,

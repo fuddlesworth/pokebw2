@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Altaria",
-    "category": "Humming Pokémon",
-    "pokedex_entry": "On sunny days, it flies freely through\nthe sky and blends into the clouds.\nIt sings in a beautiful soprano.",
+    "pokedex": {
+        "category": "Humming Pokémon",
+        "entry": "On sunny days, it flies freely through\nthe sky and blends into the clouds.\nIt sings in a beautiful soprano.",
+        "height": "3'07\"",
+        "weight": "45.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Altaria",
+                "category": "Humming Pokémon",
+                "entry": "If it bonds with a person, it will\ngently envelop the friend with its\nsoft wings, then hum.",
+                "height": "3'07\"",
+                "weight": "45.4 lbs."
+            },
+            "fr": {
+                "name": "Altaria",
+                "category": "Pokémon Virevolteur",
+                "entry": "Il aime enlacer ses amis dans ses\nailes cotonneuses et ronronner.",
+                "height": "1,1 m",
+                "weight": "20,6 kg"
+            },
+            "de": {
+                "name": "Altaria",
+                "category": "Summsel",
+                "entry": "Freundet es sich mit jemandem an,\nhüllt es den Freund sanft mit den\nFlügeln ein und singt dann.",
+                "height": "1,1 m",
+                "weight": "20,6 kg"
+            },
+            "it": {
+                "name": "Altaria",
+                "category": "Pokémon Canterino",
+                "entry": "Se lega con una persona, la avvolge\nnelle sue soffici ali e poi inizia a\ncanticchiare.",
+                "height": "1,1 m",
+                "weight": "20,6 kg"
+            },
+            "ko": {
+                "name": "파비코리",
+                "category": "허밍포켓몬",
+                "entry": "마음이 서로 통한 사람이 있으면\n부드럽고 아름다운 날개로\n살짝 감싸고 허밍을 한다.",
+                "height": "1.1 m",
+                "weight": "20.6 kg"
+            },
+            "es": {
+                "name": "Altaria",
+                "category": "Pokémon Cantor",
+                "entry": "Si establece un vínculo con una persona,\nla envuelve con sus alas y le canta\nen susurros.",
+                "height": "1,1 m",
+                "weight": "20,6 kg"
+            },
+            "ja": {
+                "name": "チルタリス",
+                "category": "ハミングポケモン",
+                "entry": "こころが\\x{3000}かよいあった\\x{3000}ひとがいると\nやわらかく\\x{3000}うつくしい\\x{3000}はねで\nそっと\\x{3000}つつみこみ\\x{3000}ハミングする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 70,

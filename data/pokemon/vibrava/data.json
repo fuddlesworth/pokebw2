@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vibrava",
-    "category": "Vibration Pokémon",
-    "pokedex_entry": "The ultrasonic waves it generates\nby rubbing its two wings together\ncause severe headaches.",
+    "pokedex": {
+        "category": "Vibration Pokémon",
+        "entry": "The ultrasonic waves it generates\nby rubbing its two wings together\ncause severe headaches.",
+        "height": "3'07\"",
+        "weight": "33.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Vibrava",
+                "category": "Vibration Pokémon",
+                "entry": "It violently shudders its wings,\ngenerating ultrasonic waves to\ninduce headaches in people.",
+                "height": "3'07\"",
+                "weight": "33.7 lbs."
+            },
+            "fr": {
+                "name": "Vibraninf",
+                "category": "Pokémon Vibration",
+                "entry": "Ses violents battements d'ailes\ngénèrent des vagues d'ultrasons\nqui donnent mal au crâne.",
+                "height": "1,1 m",
+                "weight": "15,3 kg"
+            },
+            "de": {
+                "name": "Vibrava",
+                "category": "Vibration",
+                "entry": "Es schlägt wild mit den Flügeln.\nSo entstehen Ultraschallwellen,\ndie Kopfschmerzen verursachen.",
+                "height": "1,1 m",
+                "weight": "15,3 kg"
+            },
+            "it": {
+                "name": "Vibrava",
+                "category": "Pokémon Vibrazione",
+                "entry": "Fa vibrare violentemente le ali\ngenerando onde ultrasoniche che\nprovocano il mal di testa.",
+                "height": "1,1 m",
+                "weight": "15,3 kg"
+            },
+            "ko": {
+                "name": "비브라바",
+                "category": "진동포켓몬",
+                "entry": "날개를 격하게 진동시켜서\n초음파를 낸다. 사람도\n두통을 일으킬 정도로 강력하다.",
+                "height": "1.1 m",
+                "weight": "15.3 kg"
+            },
+            "es": {
+                "name": "Vibrava",
+                "category": "Pokémon Vibrante",
+                "entry": "Agita violentamente sus alas para\ncrear ondas ultrasónicas que\nprovocan dolores de cabeza.",
+                "height": "1,1 m",
+                "weight": "15,3 kg"
+            },
+            "ja": {
+                "name": "ビブラーバ",
+                "category": "しんどうポケモン",
+                "entry": "はねを\\x{3000}はげしく\\x{3000}しんどうさせて\nちょうおんぱを\\x{3000}だす。にんげんも\nずつうを\\x{3000}おこすほど\\x{3000}きょうりょく。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 70,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Kingdra",
-    "category": "Dragon Pokémon",
-    "pokedex_entry": "It lives in caves on the seafloor\nand creates giant whirlpools\nevery time it moves.",
+    "pokedex": {
+        "category": "Dragon Pokémon",
+        "entry": "It lives in caves on the seafloor\nand creates giant whirlpools\nevery time it moves.",
+        "height": "5'11\"",
+        "weight": "335.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Kingdra",
+                "category": "Dragon Pokémon",
+                "entry": "It lives in caves on the seafloor\nand creates giant whirlpools\nevery time it moves.",
+                "height": "5'11\"",
+                "weight": "335.1 lbs."
+            },
+            "fr": {
+                "name": "Hyporoi",
+                "category": "Pokémon Dragon",
+                "entry": "Chacun de ses déplacements provoque\ndes tourbillons. Il vit dans les grottes\nsous-marines.",
+                "height": "1,8 m",
+                "weight": "152,0 kg"
+            },
+            "de": {
+                "name": "Seedraking",
+                "category": "Drache",
+                "entry": "Es lebt in Höhlen auf dem Meeresgrund.\nJedes Mal, wenn es sich bewegt,\nentsteht ein Strudel.",
+                "height": "1,8 m",
+                "weight": "152,0 kg"
+            },
+            "it": {
+                "name": "Kingdra",
+                "category": "Pokémon Drago",
+                "entry": "Vive in caverne sui fondali marini e crea\nvortici giganteschi ogni volta che si\nmuove.",
+                "height": "1,8 m",
+                "weight": "152,0 kg"
+            },
+            "ko": {
+                "name": "킹드라",
+                "category": "드래곤포켓몬",
+                "entry": "해저동굴에 살고 있다.\n킹드라가 움직이면\n거대한 소용돌이가 생겨난다.",
+                "height": "1.8 m",
+                "weight": "152.0 kg"
+            },
+            "es": {
+                "name": "Kingdra",
+                "category": "Pokémon Dragón",
+                "entry": "Vive en cavernas del fondo marino\ny crea grandes remolinos cuando\nse mueve.",
+                "height": "1,8 m",
+                "weight": "152,0 kg"
+            },
+            "ja": {
+                "name": "キングドラ",
+                "category": "ドラゴンポケモン",
+                "entry": "かいていどうくつに\\x{3000}すんでいる。\nキングドラが\\x{3000}みうごきすると\nきょだいな\\x{3000}うずしおが\\x{3000}うまれる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 95,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Metagross",
-    "category": "Iron Leg Pokémon",
-    "pokedex_entry": "With four linked brains, it's more\nintelligent than a supercomputer, and\nit uses calculations to analyze foes.",
+    "pokedex": {
+        "category": "Iron Leg Pokémon",
+        "entry": "With four linked brains, it's more\nintelligent than a supercomputer, and\nit uses calculations to analyze foes.",
+        "height": "5'03\"",
+        "weight": "1212.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Metagross",
+                "category": "Iron Leg Pokémon",
+                "entry": "Metang combined to form it.\nWith four brains, it has the\nintelligence of a supercomputer.",
+                "height": "5'03\"",
+                "weight": "1212.5 lbs."
+            },
+            "fr": {
+                "name": "Métalosse",
+                "category": "Pokémon Pattefer",
+                "entry": "Il est né de la fusion de plusieurs\nMétang. Ses quatre cerveaux en\nfont l'égal d'un superordinateur.",
+                "height": "1,6 m",
+                "weight": "550,0 kg"
+            },
+            "de": {
+                "name": "Metagross",
+                "category": "Eisenfuß",
+                "entry": "Mehrere Metang bilden dieses Pokémon.\nMit seinen vier Gehirnen besitzt es die\nIntelligenz eines Supercomputers.",
+                "height": "1,6 m",
+                "weight": "550,0 kg"
+            },
+            "it": {
+                "name": "Metagross",
+                "category": "Pokémon Ferrarto",
+                "entry": "È formato dalla fusione di due Metang.\nHa quattro cervelli e l'intelligenza di\nun supercomputer.",
+                "height": "1,6 m",
+                "weight": "550,0 kg"
+            },
+            "ko": {
+                "name": "메타그로스",
+                "category": "무쇠다리포켓몬",
+                "entry": "메탕구가 합체해서 생겨났다.\n4개의 뇌를 가진 메타그로스는\n슈퍼컴퓨터 수준의 지능이다.",
+                "height": "1.6 m",
+                "weight": "550.0 kg"
+            },
+            "es": {
+                "name": "Metagross",
+                "category": "Pokémon Pata Hierro",
+                "entry": "Está formado por varios Metang.\nCon cuatro cerebros, tiene la\ninteligencia de un superordenador.",
+                "height": "1,6 m",
+                "weight": "550,0 kg"
+            },
+            "ja": {
+                "name": "メタグロス",
+                "category": "てつあしポケモン",
+                "entry": "メタングが\\x{3000}がったいして\\x{3000}うまれた。\n\\x{ff14}つの\\x{3000}のうを\\x{3000}もつ\\x{3000}メタグロスは\nスーパーコンピュータなみの\\x{3000}ちのう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff15}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 135,

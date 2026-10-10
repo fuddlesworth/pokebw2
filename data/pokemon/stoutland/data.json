@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Stoutland",
-    "category": "Big-Hearted Pokémon",
-    "pokedex_entry": "Being wrapped in its long fur is so\ncomfortable that a person would be fine\neven overnight on a wintry mountain.",
+    "pokedex": {
+        "category": "Big-Hearted Pokémon",
+        "entry": "Being wrapped in its long fur is so\ncomfortable that a person would be fine\neven overnight on a wintry mountain.",
+        "height": "3'11\"",
+        "weight": "134.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "かんだいポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 100,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Emolga",
-    "category": "Sky Squirrel Pokémon",
-    "pokedex_entry": "It glides on its outstretched membrane\nwhile shocking foes with the electricity\nstored in the pouches on its cheeks.",
+    "pokedex": {
+        "category": "Sky Squirrel Pokémon",
+        "entry": "It glides on its outstretched membrane\nwhile shocking foes with the electricity\nstored in the pouches on its cheeks.",
+        "height": "1'04\"",
+        "weight": "11.0 lbs.",
+        "languages": {
+            "ja": {
+                "category": "モモンガポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 75,

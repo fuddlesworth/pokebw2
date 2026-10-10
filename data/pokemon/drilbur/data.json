@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Drilbur",
-    "category": "Mole Pokémon",
-    "pokedex_entry": "By spinning its body, it can dig\nstraight through the ground\nat a speed of 30 mph.",
+    "pokedex": {
+        "category": "Mole Pokémon",
+        "entry": "By spinning its body, it can dig\nstraight through the ground\nat a speed of 30 mph.",
+        "height": "1'00\"",
+        "weight": "18.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "もぐらポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 85,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ledyba",
-    "category": "Five Star Pokémon",
-    "pokedex_entry": "It is so timid, it can't move if it\nisn't with a swarm of others. It\nconveys its feelings with scent.",
+    "pokedex": {
+        "category": "Five Star Pokémon",
+        "entry": "It is so timid, it can't move if it\nisn't with a swarm of others. It\nconveys its feelings with scent.",
+        "height": "3'03\"",
+        "weight": "23.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ledyba",
+                "category": "Five Star Pokémon",
+                "entry": "It is so timid, it can't move if it\nisn't with a swarm of others. It\nconveys its feelings with scent.",
+                "height": "3'03\"",
+                "weight": "23.8 lbs."
+            },
+            "fr": {
+                "name": "Coxy",
+                "category": "Pokémon 5 Étoiles",
+                "entry": "Il est si timide qu'il ne se déplace\nqu'au milieu d'un essaim. Il exprime\nses émotions par l'odeur.",
+                "height": "1,0 m",
+                "weight": "10,8 kg"
+            },
+            "de": {
+                "name": "Ledyba",
+                "category": "Fünf-Punkt",
+                "entry": "Es ist so scheu, dass es sich\nnur dann bewegt, wenn es sich\nin einem Schwarm befindet.",
+                "height": "1,0 m",
+                "weight": "10,8 kg"
+            },
+            "it": {
+                "name": "Ledyba",
+                "category": "Pokémon Pentastra",
+                "entry": "È tanto timido da non muoversi se non è\nin gruppo. Trasmette le sue emozioni\nemanando una fragranza.",
+                "height": "1,0 m",
+                "weight": "10,8 kg"
+            },
+            "ko": {
+                "name": "레디바",
+                "category": "별다섯포켓몬",
+                "entry": "무리를 짓지 않으면 불안해서\n움직일 수 없을 정도로 겁쟁이다.\n냄새로 서로의 마음을 전한다.",
+                "height": "1.0 m",
+                "weight": "10.8 kg"
+            },
+            "es": {
+                "name": "Ledyba",
+                "category": "Pokémon 5estrellas",
+                "entry": "Es tan temeroso que no se mueve si no\nes en grupo. Comunica sus sentimientos\ncon olores.",
+                "height": "1,0 m",
+                "weight": "10,8 kg"
+            },
+            "ja": {
+                "name": "レディバ",
+                "category": "いつつぼしポケモン",
+                "entry": "むれを\\x{3000}つくらないと\\x{3000}ふあんで\nうごけなくなるほど\\x{3000}おくびょう。\nにおいで\\x{3000}きもちを\\x{3000}つたえあう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 20,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pelipper",
-    "category": "Water Bird Pokémon",
-    "pokedex_entry": "Skimming the water's surface, it dips\nits large bill in the sea, scoops up food\nand water, and carries it.",
+    "pokedex": {
+        "category": "Water Bird Pokémon",
+        "entry": "Skimming the water's surface, it dips\nits large bill in the sea, scoops up food\nand water, and carries it.",
+        "height": "3'11\"",
+        "weight": "61.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pelipper",
+                "category": "Water Bird Pokémon",
+                "entry": "It is a messenger of the skies,\ncarrying small Pokémon and\neggs to safety in its bill.",
+                "height": "3'11\"",
+                "weight": "61.7 lbs."
+            },
+            "fr": {
+                "name": "Bekipan",
+                "category": "Pokémon Oiseaudo",
+                "entry": "Ce messager du ciel transporte\npetits Pokémon et œufs dans son\nbec en toute sécurité.",
+                "height": "1,2 m",
+                "weight": "28,0 kg"
+            },
+            "de": {
+                "name": "Pelipper",
+                "category": "Wasservogel",
+                "entry": "Ein Bote der Lüfte. Bringt Eier\nund kleine Pokémon in seinem\nSchnabel in Sicherheit.",
+                "height": "1,2 m",
+                "weight": "28,0 kg"
+            },
+            "it": {
+                "name": "Pelipper",
+                "category": "Pokémon Alacquatico",
+                "entry": "È un corriere dei cieli e porta uova e\npiccoli Pokémon nel suo enorme becco.",
+                "height": "1,2 m",
+                "weight": "28,0 kg"
+            },
+            "ko": {
+                "name": "패리퍼",
+                "category": "물새포켓몬",
+                "entry": "입속에 작은 포켓몬이나\n알을 넣고 안전한 장소로\n전해주는 하늘의 운반자.",
+                "height": "1.2 m",
+                "weight": "28.0 kg"
+            },
+            "es": {
+                "name": "Pelipper",
+                "category": "Pokémon Ave Agua",
+                "entry": "Transporta a pequeños Pokémon y\nhuevos en su pico hasta lugares\nseguros.",
+                "height": "1,2 m",
+                "weight": "28,0 kg"
+            },
+            "ja": {
+                "name": "ペリッパー",
+                "category": "みずどりポケモン",
+                "entry": "くちのなかに\\x{3000}ちいさなポケモンや\nタマゴをいれて\\x{3000}あんぜんな\\x{3000}ばしょに\nとどけてくれる\\x{3000}そらの\\x{3000}はこびや。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 50,

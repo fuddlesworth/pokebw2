@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Machop",
-    "category": "Superpower Pokémon",
-    "pokedex_entry": "Though small in stature, it is\npowerful enough to easily heft and\nthrow a number of Geodude at once.",
+    "pokedex": {
+        "category": "Superpower Pokémon",
+        "entry": "Though small in stature, it is\npowerful enough to easily heft and\nthrow a number of Geodude at once.",
+        "height": "2'07\"",
+        "weight": "43.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Machop",
+                "category": "Superpower Pokémon",
+                "entry": "Though small in stature, it is\npowerful enough to easily heft and\nthrow a number of Geodude at once.",
+                "height": "2'07\"",
+                "weight": "43.0 lbs."
+            },
+            "fr": {
+                "name": "Machoc",
+                "category": "Pokémon Colosse",
+                "entry": "Malgré sa petite taille, sa force\nlui permet de soulever plusieurs\nRacaillou à la fois.",
+                "height": "0,8 m",
+                "weight": "19,5 kg"
+            },
+            "de": {
+                "name": "Machollo",
+                "category": "Kraftprotz",
+                "entry": "Obwohl von kleiner Statur, ist es\nkräftig genug, mehrere Kleinstein\nzu hieven und dann zu werfen.",
+                "height": "0,8 m",
+                "weight": "19,5 kg"
+            },
+            "it": {
+                "name": "Machop",
+                "category": "Pokémon Megaforza",
+                "entry": "Nonostante sia piccolo, riesce a\nsollevare e lanciare più Geodude\ncontemporaneamente.",
+                "height": "0,8 m",
+                "weight": "19,5 kg"
+            },
+            "ko": {
+                "name": "알통몬",
+                "category": "괴력포켓몬",
+                "entry": "작은 몸집이지만 힘이 세다.\n꼬마돌쯤은 몇 마리라도 한꺼번에\n가뿐히 들어올려서 날려버린다.",
+                "height": "0.8 m",
+                "weight": "19.5 kg"
+            },
+            "es": {
+                "name": "Machop",
+                "category": "Pokémon Superpoder",
+                "entry": "No alcanza mucha altura, pero tiene\nfuerza suficiente para levantar y\nderribar a varios Geodude a la vez.",
+                "height": "0,8 m",
+                "weight": "19,5 kg"
+            },
+            "ja": {
+                "name": "ワンリキー",
+                "category": "かいりきポケモン",
+                "entry": "こがらな\\x{3000}からだだけど\\x{3000}ちからもち。\nイシツブテなら\\x{3000}なんびきも\\x{3000}まとめて\nかるがると\\x{3000}もちあげ\\x{3000}なげとばす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 80,

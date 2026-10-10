@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Camerupt",
-    "category": "Eruption Pokémon",
-    "pokedex_entry": "The volcanoes on its back have a\nmajor eruption every 10 years--or\nwhenever it becomes really angry.",
+    "pokedex": {
+        "category": "Eruption Pokémon",
+        "entry": "The volcanoes on its back have a\nmajor eruption every 10 years--or\nwhenever it becomes really angry.",
+        "height": "6'03\"",
+        "weight": "485.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Camerupt",
+                "category": "Eruption Pokémon",
+                "entry": "It has volcanoes on its back. If\nmagma builds up in its body, it\nshudders, then erupts violently.",
+                "height": "6'03\"",
+                "weight": "485.0 lbs."
+            },
+            "fr": {
+                "name": "Camérupt",
+                "category": "Pokémon Éruption",
+                "entry": "Il porte des volcans sur son dos.\nQuand le magma remonte, il\nfrissonne et entre en éruption.",
+                "height": "1,9 m",
+                "weight": "220,0 kg"
+            },
+            "de": {
+                "name": "Camerupt",
+                "category": "Ausbruch",
+                "entry": "Auf seinem Rücken befinden sich Vulkane.\nMagma bildet sich in seinem Körper, das\nirgendwann ausbricht.",
+                "height": "1,9 m",
+                "weight": "220,0 kg"
+            },
+            "it": {
+                "name": "Camerupt",
+                "category": "Pokémon Eruzione",
+                "entry": "Ha dei vulcani sul dorso. Se il magma nel\nsuo corpo aumenta, trema e poi erutta\nviolentemente.",
+                "height": "1,9 m",
+                "weight": "220,0 kg"
+            },
+            "ko": {
+                "name": "폭타",
+                "category": "분화포켓몬",
+                "entry": "등에 화산을 가진 포켓몬이다.\n체내의 마그마가 불어나면\n흔들린 뒤에 대폭발을 한다.",
+                "height": "1.9 m",
+                "weight": "220.0 kg"
+            },
+            "es": {
+                "name": "Camerupt",
+                "category": "Pokémon Erupción",
+                "entry": "Tiene volcanes en el lomo. Si el\nmagma se acumula en su cuerpo,\nse sacude y estalla con violencia.",
+                "height": "1,9 m",
+                "weight": "220,0 kg"
+            },
+            "ja": {
+                "name": "バクーダ",
+                "category": "ふんかポケモン",
+                "entry": "せなかに\\x{3000}かざんを\\x{3000}もつ\\x{3000}ポケモン。\nたいないの\\x{3000}マグマが\\x{3000}ふえると\nふるえた\\x{3000}あとに\\x{3000}だいばくはつする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 100,

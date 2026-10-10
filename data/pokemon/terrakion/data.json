@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Terrakion",
-    "category": "Cavern Pokémon",
-    "pokedex_entry": "Spoken of in legend, this Pokémon used\nits phenomenal power to destroy a castle\nin its effort to protect Pokémon.",
+    "pokedex": {
+        "category": "Cavern Pokémon",
+        "entry": "Spoken of in legend, this Pokémon used\nits phenomenal power to destroy a castle\nin its effort to protect Pokémon.",
+        "height": "6'03\"",
+        "weight": "573.2 lbs.",
+        "languages": {
+            "ja": {
+                "category": "がんくつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 91,
         "attack": 129,

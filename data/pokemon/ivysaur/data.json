@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ivysaur",
-    "category": "Seed Pokémon",
-    "pokedex_entry": "When the bud on its back starts\nswelling, a sweet aroma wafts to\nindicate the flower's coming bloom.",
+    "pokedex": {
+        "category": "Seed Pokémon",
+        "entry": "When the bud on its back starts\nswelling, a sweet aroma wafts to\nindicate the flower's coming bloom.",
+        "height": "3'03\"",
+        "weight": "28.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ivysaur",
+                "category": "Seed Pokémon",
+                "entry": "When the bud on its back starts\nswelling, a sweet aroma wafts to\nindicate the flower's coming bloom.",
+                "height": "3'03\"",
+                "weight": "28.7 lbs."
+            },
+            "fr": {
+                "name": "Herbizarre",
+                "category": "Pokémon Graine",
+                "entry": "Lorsque le bourgeon sur son dos\néclot, il répand un doux parfum\npour célébrer sa floraison.",
+                "height": "1,0 m",
+                "weight": "13,0 kg"
+            },
+            "de": {
+                "name": "Bisaknosp",
+                "category": "Samen",
+                "entry": "Sobald die Knospe auf seinem Rücken\nein süßes Aroma abgibt, steht die\nBlüte kurz bevor.",
+                "height": "1,0 m",
+                "weight": "13,0 kg"
+            },
+            "it": {
+                "name": "Ivysaur",
+                "category": "Pokémon Seme",
+                "entry": "Quando il bocciolo che ha sul dorso\nsi gonfia, emana un dolce profumo.\nÈ indice dell'imminente fioritura.",
+                "height": "1,0 m",
+                "weight": "13,0 kg"
+            },
+            "ko": {
+                "name": "이상해풀",
+                "category": "씨앗포켓몬",
+                "entry": "등의 봉오리가 부풀어오르면\n달콤한 냄새가 감돌기 시작한다.\n큰 꽃이 필 조짐이다.",
+                "height": "1.0 m",
+                "weight": "13.0 kg"
+            },
+            "es": {
+                "name": "Ivysaur",
+                "category": "Pokémon Semilla",
+                "entry": "Cuando el capullo de su lomo se hincha,\ndesprende un dulce aroma para indicar\nel florecimiento.",
+                "height": "1,0 m",
+                "weight": "13,0 kg"
+            },
+            "ja": {
+                "name": "フシギソウ",
+                "category": "たねポケモン",
+                "entry": "せなかの\\x{3000}つぼみが\\x{3000}ふくらみだすと\nあまい\\x{3000}においが\\x{3000}ただよいはじめる。\nたいりんの\\x{3000}はなが\\x{3000}さく\\x{3000}まえぶれ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff13}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 62,

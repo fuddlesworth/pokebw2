@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Archen",
-    "category": "First Bird Pokémon",
-    "pokedex_entry": "It was revived from an ancient fossil.\nNot able to fly, it lived in treetops and\nhopped from one branch to another.",
+    "pokedex": {
+        "category": "First Bird Pokémon",
+        "entry": "It was revived from an ancient fossil.\nNot able to fly, it lived in treetops and\nhopped from one branch to another.",
+        "height": "1'08\"",
+        "weight": "20.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "さいこどりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 112,

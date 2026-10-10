@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Carracosta",
-    "category": "Prototurtle Pokémon",
-    "pokedex_entry": "It could knock out a foe with a slap from\none of its developed front appendages\nand chew it up, shell or bones and all.",
+    "pokedex": {
+        "category": "Prototurtle Pokémon",
+        "entry": "It could knock out a foe with a slap from\none of its developed front appendages\nand chew it up, shell or bones and all.",
+        "height": "3'11\"",
+        "weight": "178.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "こだいがめポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 74,
         "attack": 108,

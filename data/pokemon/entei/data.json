@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Entei",
-    "category": "Volcano Pokémon",
-    "pokedex_entry": "It is said that when it roars, a\nvolcano erupts somewhere around\nthe globe.",
+    "pokedex": {
+        "category": "Volcano Pokémon",
+        "entry": "It is said that when it roars, a\nvolcano erupts somewhere around\nthe globe.",
+        "height": "6'11\"",
+        "weight": "436.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Entei",
+                "category": "Volcano Pokémon",
+                "entry": "It is said that when it roars, a\nvolcano erupts somewhere around\nthe globe.",
+                "height": "6'11\"",
+                "weight": "436.5 lbs."
+            },
+            "fr": {
+                "name": "Entei",
+                "category": "Pokémon Volcan",
+                "entry": "On raconte qu'à chaque fois qu'il\nrugit, un volcan entre en éruption\nquelque part.",
+                "height": "2,1 m",
+                "weight": "198,0 kg"
+            },
+            "de": {
+                "name": "Entei",
+                "category": "Vulkan",
+                "entry": "Man sagt, wenn es brüllt, bricht\nirgendwo in der Welt ein Vulkan aus.",
+                "height": "2,1 m",
+                "weight": "198,0 kg"
+            },
+            "it": {
+                "name": "Entei",
+                "category": "Pokémon Vulcano",
+                "entry": "Si dice che quando emette il suo verso,\nda qualche parte nel mondo un vulcano\nstia eruttando.",
+                "height": "2,1 m",
+                "weight": "198,0 kg"
+            },
+            "ko": {
+                "name": "앤테이",
+                "category": "화산포켓몬",
+                "entry": "앤테이가 울부짖으면\n세계 어딘가의 화산이\n분화한다고 전해진다.",
+                "height": "2.1 m",
+                "weight": "198.0 kg"
+            },
+            "es": {
+                "name": "Entei",
+                "category": "Pokémon Volcán",
+                "entry": "Se dice que, cuando ruge, un volcán\nentra en erupción en algún punto\ndel globo.",
+                "height": "2,1 m",
+                "weight": "198,0 kg"
+            },
+            "ja": {
+                "name": "エンテイ",
+                "category": "かざんポケモン",
+                "entry": "エンテイが\\x{3000}ほえると\nせかいの\\x{3000}どこかの\\x{3000}かざんが\nふんかすると\\x{3000}いわれている。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 115,
         "attack": 115,

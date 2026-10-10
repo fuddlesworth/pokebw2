@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Poliwhirl",
-    "category": "Tadpole Pokémon",
-    "pokedex_entry": "The spiral pattern on its belly\nsubtly undulates. Staring at it\ngradually causes drowsiness.",
+    "pokedex": {
+        "category": "Tadpole Pokémon",
+        "entry": "The spiral pattern on its belly\nsubtly undulates. Staring at it\ngradually causes drowsiness.",
+        "height": "3'03\"",
+        "weight": "44.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Poliwhirl",
+                "category": "Tadpole Pokémon",
+                "entry": "The spiral pattern on its belly\nsubtly undulates. Staring at it\ngradually causes drowsiness.",
+                "height": "3'03\"",
+                "weight": "44.1 lbs."
+            },
+            "fr": {
+                "name": "Têtarte",
+                "category": "Pokémon Têtard",
+                "entry": "La spirale qui orne son ventre ondule\ndoucement. Celui qui la fixe est saisi\nd'une étrange torpeur.",
+                "height": "1,0 m",
+                "weight": "20,0 kg"
+            },
+            "de": {
+                "name": "Quaputzi",
+                "category": "Kaulquappe",
+                "entry": "Das Spiralmuster auf seinem Bauch\ndreht sich langsam. Starrt man\ndarauf, wird einem schwindelig.",
+                "height": "1,0 m",
+                "weight": "20,0 kg"
+            },
+            "it": {
+                "name": "Poliwhirl",
+                "category": "Pokémon Girino",
+                "entry": "Il disegno spiraliforme sulla pancia\nondeggia leggermente. Chi lo fissa,\npiano piano si assopisce.",
+                "height": "1,0 m",
+                "weight": "20,0 kg"
+            },
+            "ko": {
+                "name": "슈륙챙이",
+                "category": "올챙이포켓몬",
+                "entry": "배의 소용돌이는 미묘하게\n꾸불거리므로 바라보고 있으면\n점점 잠이 오게 된다.",
+                "height": "1.0 m",
+                "weight": "20.0 kg"
+            },
+            "es": {
+                "name": "Poliwhirl",
+                "category": "Pokémon Renacuajo",
+                "entry": "El dibujo espiral de su pecho ondea\nlevemente. Si se mira fijamente,\nprovoca somnolencia.",
+                "height": "1,0 m",
+                "weight": "20,0 kg"
+            },
+            "ja": {
+                "name": "ニョロゾ",
+                "category": "おたまポケモン",
+                "entry": "おなかの\\x{3000}うずまきは\\x{3000}びみょうに\nうねっているので\\x{3000}みつめていると\nだんだん\\x{3000}ねむくなってしまう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 65,

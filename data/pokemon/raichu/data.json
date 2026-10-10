@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Raichu",
-    "category": "Mouse Pokémon",
-    "pokedex_entry": "Its tail discharges electricity into\nthe ground, protecting it from\ngetting shocked.",
+    "pokedex": {
+        "category": "Mouse Pokémon",
+        "entry": "Its tail discharges electricity into\nthe ground, protecting it from\ngetting shocked.",
+        "height": "2'07\"",
+        "weight": "66.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Raichu",
+                "category": "Mouse Pokémon",
+                "entry": "Its tail discharges electricity into\nthe ground, protecting it from\ngetting shocked.",
+                "height": "2'07\"",
+                "weight": "66.1 lbs."
+            },
+            "fr": {
+                "name": "Raichu",
+                "category": "Pokémon Souris",
+                "entry": "Il se protège des décharges grâce\nà sa queue qui dissipe l'électricité\ndans le sol.",
+                "height": "0,8 m",
+                "weight": "30,0 kg"
+            },
+            "de": {
+                "name": "Raichu",
+                "category": "Maus",
+                "entry": "Es entlädt Elektrizität in den Boden,\num sich auf diese Weise vor\nelektrischen Schlägen zu schützen.",
+                "height": "0,8 m",
+                "weight": "30,0 kg"
+            },
+            "it": {
+                "name": "Raichu",
+                "category": "Pokémon Topo",
+                "entry": "La sua coda scarica elettricità a terra,\nproteggendolo dalle scosse elettriche.",
+                "height": "0,8 m",
+                "weight": "30,0 kg"
+            },
+            "ko": {
+                "name": "라이츄",
+                "category": "쥐포켓몬",
+                "entry": "꼬리가 어스 역할을 하여\n전기를 지면으로 흘려보내\n자신은 감전되거나 하지 않는다.",
+                "height": "0.8 m",
+                "weight": "30.0 kg"
+            },
+            "es": {
+                "name": "Raichu",
+                "category": "Pokémon Ratón",
+                "entry": "Su cola descarga electricidad al suelo,\ny eso le protege de los calambrazos.",
+                "height": "0,8 m",
+                "weight": "30,0 kg"
+            },
+            "ja": {
+                "name": "ライチュウ",
+                "category": "ねずみポケモン",
+                "entry": "しっぽが\\x{3000}アースの\\x{3000}やくめをはたして\nでんきを\\x{3000}じめんに\\x{3000}にがすので\nじぶんじしんは\\x{3000}しびれたりしない。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 90,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Liepard",
-    "category": "Cruel Pokémon",
-    "pokedex_entry": "Their beautiful form comes from\nthe muscles they have developed.\nThey run silently in the night.",
+    "pokedex": {
+        "category": "Cruel Pokémon",
+        "entry": "Their beautiful form comes from\nthe muscles they have developed.\nThey run silently in the night.",
+        "height": "3'07\"",
+        "weight": "82.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "れいこくポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 64,
         "attack": 88,

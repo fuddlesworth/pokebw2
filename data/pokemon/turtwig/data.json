@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Turtwig",
-    "category": "Tiny Leaf Pokémon",
-    "pokedex_entry": "The shell on its back is made of\nsoil. On a very healthy Turtwig,\nthe shell should feel moist.",
+    "pokedex": {
+        "category": "Tiny Leaf Pokémon",
+        "entry": "The shell on its back is made of\nsoil. On a very healthy Turtwig,\nthe shell should feel moist.",
+        "height": "1'04\"",
+        "weight": "22.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Turtwig",
+                "category": "Tiny Leaf Pokémon",
+                "entry": "The shell on its back is made of\nsoil. On a very healthy Turtwig,\nthe shell should feel moist.",
+                "height": "1'04\"",
+                "weight": "22.5 lbs."
+            },
+            "fr": {
+                "name": "Tortipouss",
+                "category": "Pokémon Minifeuille",
+                "entry": "La coquille sur son dos est faite de\nterre. Plus il est en bonne santé,\nplus elle est humide.",
+                "height": "0,4 m",
+                "weight": "10,2 kg"
+            },
+            "de": {
+                "name": "Chelast",
+                "category": "Winziglaub",
+                "entry": "Der Panzer auf seinem Rücken besteht\naus Erdreich. Bei gesunden Chelast ist\nder Panzer feucht.",
+                "height": "0,4 m",
+                "weight": "10,2 kg"
+            },
+            "it": {
+                "name": "Turtwig",
+                "category": "Pokémon Fogliolina",
+                "entry": "Il guscio sulla sua schiena è fatto di\nterra. Se un Turtwig è in forma, il suo\nguscio è umido.",
+                "height": "0,4 m",
+                "weight": "10,2 kg"
+            },
+            "ko": {
+                "name": "모부기",
+                "category": "어린잎포켓몬",
+                "entry": "흙으로 만들어진 등껍질을\n만져보아 적당히 젖어 있다면\n그 모부기는 매우 건강한 것이다.",
+                "height": "0.4 m",
+                "weight": "10.2 kg"
+            },
+            "es": {
+                "name": "Turtwig",
+                "category": "Pokémon Hojita",
+                "entry": "La concha de su espalda es de\ntierra. Si está sano, la concha de\nTurtwig debería estar húmeda.",
+                "height": "0,4 m",
+                "weight": "10,2 kg"
+            },
+            "ja": {
+                "name": "ナエトル",
+                "category": "わかばポケモン",
+                "entry": "つちで\\x{3000}できた\\x{3000}せなかの\\x{3000}こうらを\nさわって\\x{3000}ほどよく\\x{3000}しめっていたなら\nその\\x{3000}ナエトルは\\x{3000}とても\\x{3000}げんきだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 68,

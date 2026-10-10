@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tentacool",
-    "category": "Jellyfish Pokémon",
-    "pokedex_entry": "Because its body is almost entirely\ncomposed of water, it shrivels up if\nit is washed ashore.",
+    "pokedex": {
+        "category": "Jellyfish Pokémon",
+        "entry": "Because its body is almost entirely\ncomposed of water, it shrivels up if\nit is washed ashore.",
+        "height": "2'11\"",
+        "weight": "100.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Tentacool",
+                "category": "Jellyfish Pokémon",
+                "entry": "Because its body is almost entirely\ncomposed of water, it shrivels up if\nit is washed ashore.",
+                "height": "2'11\"",
+                "weight": "100.3 lbs."
+            },
+            "fr": {
+                "name": "Tentacool",
+                "category": "Pokémon Mollusque",
+                "entry": "Presque entièrement composé d'eau,\nson corps a tendance à se dessécher\nsur la terre ferme.",
+                "height": "0,9 m",
+                "weight": "45,5 kg"
+            },
+            "de": {
+                "name": "Tentacha",
+                "category": "Qualle",
+                "entry": "Wird es an Land geschwemmt,\nvertrocknet es schnell, da es\nfast völlig aus Wasser besteht.",
+                "height": "0,9 m",
+                "weight": "45,5 kg"
+            },
+            "it": {
+                "name": "Tentacool",
+                "category": "Pokémon Medusa",
+                "entry": "Dato che il suo corpo è quasi\ninteramente composto d'acqua,\nse si arena si avvizzisce subito.",
+                "height": "0,9 m",
+                "weight": "45,5 kg"
+            },
+            "ko": {
+                "name": "왕눈해",
+                "category": "해파리포켓몬",
+                "entry": "몸 대부분이 수분이어서\n파도에 밀려 모래 해변에\n올려지면 바싹 말라버린다.",
+                "height": "0.9 m",
+                "weight": "45.5 kg"
+            },
+            "es": {
+                "name": "Tentacool",
+                "category": "Pokémon Medusa",
+                "entry": "Como su cuerpo se compone casi en\nexclusiva de agua, se reseca si sale\nde ella.",
+                "height": "0,9 m",
+                "weight": "45,5 kg"
+            },
+            "ja": {
+                "name": "メノクラゲ",
+                "category": "くらげポケモン",
+                "entry": "からだの\\x{3000}ほとんどが\\x{3000}みずなので\nなみに\\x{3000}ながされ\\x{3000}すなはまに\nうちあげられると\\x{3000}ひからびてしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 40,

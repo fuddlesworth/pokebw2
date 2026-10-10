@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cofagrigus",
-    "category": "Coffin Pokémon",
-    "pokedex_entry": "Grave robbers who mistake them\nfor real coffins and get too close\nend up trapped inside their bodies.",
+    "pokedex": {
+        "category": "Coffin Pokémon",
+        "entry": "Grave robbers who mistake them\nfor real coffins and get too close\nend up trapped inside their bodies.",
+        "height": "5'07\"",
+        "weight": "168.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "かんおけポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 58,
         "attack": 50,

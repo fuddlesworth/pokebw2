@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Swanna",
-    "category": "White Bird Pokémon",
-    "pokedex_entry": "Despite their elegant appearance,\nthey can flap their wings strongly\nand fly for thousands of miles.",
+    "pokedex": {
+        "category": "White Bird Pokémon",
+        "entry": "Despite their elegant appearance,\nthey can flap their wings strongly\nand fly for thousands of miles.",
+        "height": "4'03\"",
+        "weight": "53.4 lbs.",
+        "languages": {
+            "ja": {
+                "category": "しらとりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 87,

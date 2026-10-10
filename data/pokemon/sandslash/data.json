@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sandslash",
-    "category": "Mouse Pokémon",
-    "pokedex_entry": "The spikes on its body are made\nup of its hardened hide. It rolls up\nand attacks foes with its spikes.",
+    "pokedex": {
+        "category": "Mouse Pokémon",
+        "entry": "The spikes on its body are made\nup of its hardened hide. It rolls up\nand attacks foes with its spikes.",
+        "height": "3'03\"",
+        "weight": "65.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sandslash",
+                "category": "Mouse Pokémon",
+                "entry": "It curls up, then rolls into foes\nwith its back. Its sharp spines\ninflict severe damage.",
+                "height": "3'03\"",
+                "weight": "65.0 lbs."
+            },
+            "fr": {
+                "name": "Sablaireau",
+                "category": "Pokémon Souris",
+                "entry": "Il se met en boule pour percuter\nl'ennemi. Ses épines aiguisées\nfont beaucoup de dégâts.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "de": {
+                "name": "Sandamer",
+                "category": "Maus",
+                "entry": "Es rollt sich zusammen und rollt\ndann auf Gegner zu, die durch\nseine Stacheln Schaden nehmen.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "it": {
+                "name": "Sandslash",
+                "category": "Pokémon Topo",
+                "entry": "Si arrotola come una palla e rotola sul\ndorso verso i nemici. Gli aculei aguzzi\nprovocano gravi danni.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "ko": {
+                "name": "고지",
+                "category": "쥐포켓몬",
+                "entry": "몸을 둥글게 말아서 등으로\n몸통박치기한다. 날카로운\n가시들이 큰 데미지를 준다.",
+                "height": "1.0 m",
+                "weight": "29.5 kg"
+            },
+            "es": {
+                "name": "Sandslash",
+                "category": "Pokémon Ratón",
+                "entry": "Se hace una bola y se lanza rodando\nhacia los enemigos para clavarles\nsus afiladas púas.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "ja": {
+                "name": "サンドパン",
+                "category": "ねずみポケモン",
+                "entry": "からだを\\x{3000}まるめて\\x{3000}せなかから\nたいあたり。するどい\\x{3000}トゲトゲが\nおおきな\\x{3000}ダメージを\\x{3000}あたえる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 100,

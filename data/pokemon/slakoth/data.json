@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Slakoth",
-    "category": "Slacker Pokémon",
-    "pokedex_entry": "If it eats just three leaves in a day,\nit is satisfied. Other than that,\nit sleeps for 20 hours a day.",
+    "pokedex": {
+        "category": "Slacker Pokémon",
+        "entry": "If it eats just three leaves in a day,\nit is satisfied. Other than that,\nit sleeps for 20 hours a day.",
+        "height": "2'07\"",
+        "weight": "52.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Slakoth",
+                "category": "Slacker Pokémon",
+                "entry": "It spends nearly all its time in a\nday sprawled out. Just seeing it\nmakes one drowsy.",
+                "height": "2'07\"",
+                "weight": "52.9 lbs."
+            },
+            "fr": {
+                "name": "Parecool",
+                "category": "Pokémon Flâneur",
+                "entry": "Il passe le plus clair de son temps\naffalé. Rien qu'à le voir, on a\nenvie de bâiller.",
+                "height": "0,8 m",
+                "weight": "24,0 kg"
+            },
+            "de": {
+                "name": "Bummelz",
+                "category": "Faulpelz",
+                "entry": "Es verbringt fast den ganzen Tag\nmit Faulenzen und Schlafen. Selbst\nsein Anblick macht bereits müde.",
+                "height": "0,8 m",
+                "weight": "24,0 kg"
+            },
+            "it": {
+                "name": "Slakoth",
+                "category": "Pokémon Ozioso",
+                "entry": "Passa quasi tutto il tempo sdraiato.\nSoltanto a guardarlo si prova\nsonnolenza.",
+                "height": "0,8 m",
+                "weight": "24,0 kg"
+            },
+            "ko": {
+                "name": "게을로",
+                "category": "게으름뱅이포켓몬",
+                "entry": "하루 동안 대부분의 시간을\n누워 뒹굴며 지낸다. 그 모습을\n보고 있으면 졸음이 밀려온다.",
+                "height": "0.8 m",
+                "weight": "24.0 kg"
+            },
+            "es": {
+                "name": "Slakoth",
+                "category": "Pokémon Gandul",
+                "entry": "Pasa la mayor parte del día\nrepanchingado. Entra sueño\nsolo de verlo.",
+                "height": "0,8 m",
+                "weight": "24,0 kg"
+            },
+            "ja": {
+                "name": "ナマケロ",
+                "category": "なまけものポケモン",
+                "entry": "\\x{ff11}にちのうち\\x{3000}ほとんどの\\x{3000}じかんを\nねころがって\\x{3000}すごす。その\\x{3000}ようすを\nみていると\\x{3000}ねむけに\\x{3000}おそわれる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 60,

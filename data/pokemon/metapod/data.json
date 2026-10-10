@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Metapod",
-    "category": "Cocoon Pokémon",
-    "pokedex_entry": "A steel-hard shell protects its\ntender body. It quietly endures\nhardships while awaiting evolution.",
+    "pokedex": {
+        "category": "Cocoon Pokémon",
+        "entry": "A steel-hard shell protects its\ntender body. It quietly endures\nhardships while awaiting evolution.",
+        "height": "2'04\"",
+        "weight": "21.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Metapod",
+                "category": "Cocoon Pokémon",
+                "entry": "A steel-hard shell protects its\ntender body. It quietly endures\nhardships while awaiting evolution.",
+                "height": "2'04\"",
+                "weight": "21.8 lbs."
+            },
+            "fr": {
+                "name": "Chrysacier",
+                "category": "Pokémon Cocon",
+                "entry": "Son corps frêle est protégé par sa\ncarapace d'acier. Il encaisse les\ncoups durs en attendant d'évoluer.",
+                "height": "0,7 m",
+                "weight": "9,9 kg"
+            },
+            "de": {
+                "name": "Safcon",
+                "category": "Kokon",
+                "entry": "Der stahlharte Panzer schützt\nseinen zarten Körper. Es wartet\ngeduldig auf seine Entwicklung.",
+                "height": "0,7 m",
+                "weight": "9,9 kg"
+            },
+            "it": {
+                "name": "Metapod",
+                "category": "Pokémon Bozzolo",
+                "entry": "Ha una corazza dura come l'acciaio che\nprotegge il suo fragile corpo. Attende\nimmobile di evolversi.",
+                "height": "0,7 m",
+                "weight": "9,9 kg"
+            },
+            "ko": {
+                "name": "단데기",
+                "category": "번데기포켓몬",
+                "entry": "강철같이 단단한 껍질로\n부드러운 몸을 보호하고 있다.\n진화할 때까지 가만히 참고 있다.",
+                "height": "0.7 m",
+                "weight": "9.9 kg"
+            },
+            "es": {
+                "name": "Metapod",
+                "category": "Pokémon Capullo",
+                "entry": "Su frágil cuerpo está recubierto\nde una coraza dura como el acero.\nPermanece quieto en su desarrollo.",
+                "height": "0,7 m",
+                "weight": "9,9 kg"
+            },
+            "ja": {
+                "name": "トランセル",
+                "category": "さなぎポケモン",
+                "entry": "こうてつのように\\x{3000}かたい\\x{3000}カラで\nやわらかい\\x{3000}なかみを\\x{3000}まもっている。\nしんかするまで\\x{3000}じっと\\x{3000}たえている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 20,

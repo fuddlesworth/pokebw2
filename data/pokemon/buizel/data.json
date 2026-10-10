@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Buizel",
-    "category": "Sea Weasel Pokémon",
-    "pokedex_entry": "It inflates the flotation sac around\nits neck and pokes its head out of\nthe water to see what is going on.",
+    "pokedex": {
+        "category": "Sea Weasel Pokémon",
+        "entry": "It inflates the flotation sac around\nits neck and pokes its head out of\nthe water to see what is going on.",
+        "height": "2'04\"",
+        "weight": "65.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Buizel",
+                "category": "Sea Weasel Pokémon",
+                "entry": "It spins its two tails like a screw\nto propel itself through water. The\ntails also slice clinging seaweed.",
+                "height": "2'04\"",
+                "weight": "65.0 lbs."
+            },
+            "fr": {
+                "name": "Mustébouée",
+                "category": "Pokémon Aquabelette",
+                "entry": "Il utilise ses deux queues comme\nune hélice pour se propulser sous\nl'eau et trancher les algues.",
+                "height": "0,7 m",
+                "weight": "29,5 kg"
+            },
+            "de": {
+                "name": "Bamelin",
+                "category": "Meereswiesel",
+                "entry": "Dreht seine zwei Schweife wie eine\nSchraube, um schnell zu schwimmen,\nund zum Zerschneiden von Algen.",
+                "height": "0,7 m",
+                "weight": "29,5 kg"
+            },
+            "it": {
+                "name": "Buizel",
+                "category": "Pokémon Maridonnola",
+                "entry": "Usa le sue due code come eliche per\nspostarsi nell'acqua e con esse taglia\nanche le alghe che s'impigliano.",
+                "height": "0,7 m",
+                "weight": "29,5 kg"
+            },
+            "ko": {
+                "name": "브이젤",
+                "category": "바다족제비포켓몬",
+                "entry": "꼬리를 스크루처럼 돌려서\n수중을 헤엄치는 것뿐만 아니라\n엉겨 붙는 해초도 자를 수 있다.",
+                "height": "0.7 m",
+                "weight": "29.5 kg"
+            },
+            "es": {
+                "name": "Buizel",
+                "category": "Pokémon Nutria Mar.",
+                "entry": "Para impulsarse por el agua, gira\nsus dos colas como una hélice. Así\ntambién corta las algas del camino.",
+                "height": "0,7 m",
+                "weight": "29,5 kg"
+            },
+            "ja": {
+                "name": "ブイゼル",
+                "category": "うみイタチポケモン",
+                "entry": "しっぽを\\x{3000}スクリューのように\\x{3000}まわし\nすいちゅうを\\x{3000}およぐだけでなく\nまとわりつく\\x{3000}かいそうも\\x{3000}きれる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 65,

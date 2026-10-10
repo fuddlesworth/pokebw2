@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mienfoo",
-    "category": "Martial Arts Pokémon",
-    "pokedex_entry": "It takes pride in the speed at which it\ncan use moves. What it loses in power,\nit makes up for in quantity.",
+    "pokedex": {
+        "category": "Martial Arts Pokémon",
+        "entry": "It takes pride in the speed at which it\ncan use moves. What it loses in power,\nit makes up for in quantity.",
+        "height": "2'11\"",
+        "weight": "44.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ぶじゅつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 85,

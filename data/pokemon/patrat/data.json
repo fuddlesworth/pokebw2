@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Patrat",
-    "category": "Scout Pokémon",
-    "pokedex_entry": "Extremely cautious, one of them\nwill always be on the lookout, but it\nwon't notice a foe coming from behind.",
+    "pokedex": {
+        "category": "Scout Pokémon",
+        "entry": "Extremely cautious, one of them\nwill always be on the lookout, but it\nwon't notice a foe coming from behind.",
+        "height": "1'08\"",
+        "weight": "25.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "みはりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 55,

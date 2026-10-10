@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shinx",
-    "category": "Flash Pokémon",
-    "pokedex_entry": "The extension and contraction of\nits muscles generates electricity.\nIt glows when in trouble.",
+    "pokedex": {
+        "category": "Flash Pokémon",
+        "entry": "The extension and contraction of\nits muscles generates electricity.\nIt glows when in trouble.",
+        "height": "1'08\"",
+        "weight": "20.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shinx",
+                "category": "Flash Pokémon",
+                "entry": "The extension and contraction of\nits muscles generates electricity.\nIt glows when in trouble.",
+                "height": "1'08\"",
+                "weight": "20.9 lbs."
+            },
+            "fr": {
+                "name": "Lixy",
+                "category": "Pokémon Flash",
+                "entry": "Ses muscles génèrent un courant\nélectrique lorsqu'ils travaillent.\nIl s'illumine en cas de danger.",
+                "height": "0,5 m",
+                "weight": "9,5 kg"
+            },
+            "de": {
+                "name": "Sheinux",
+                "category": "Flacker",
+                "entry": "Es erzeugt Elektrizität durch das\nStrecken und Zusammenziehen seiner\nMuskeln. Bei Bedrohung glüht es.",
+                "height": "0,5 m",
+                "weight": "9,5 kg"
+            },
+            "it": {
+                "name": "Shinx",
+                "category": "Pokémon Baleno",
+                "entry": "Produce elettricità contraendo e\nrilassando i muscoli. Quando si sente\nminacciato si illumina.",
+                "height": "0,5 m",
+                "weight": "9,5 kg"
+            },
+            "ko": {
+                "name": "꼬링크",
+                "category": "섬광포켓몬",
+                "entry": "몸을 움직일 때마다 근육이 늘어났다\n줄어들었다 하여 전기가 발생한다.\n궁지에 몰리면 몸이 빛난다.",
+                "height": "0.5 m",
+                "weight": "9.5 kg"
+            },
+            "es": {
+                "name": "Shinx",
+                "category": "Pokémon Flash",
+                "entry": "La extensión y contracción de sus\nmúsculos genera electricidad.\nBrilla cuando está en peligro.",
+                "height": "0,5 m",
+                "weight": "9,5 kg"
+            },
+            "ja": {
+                "name": "コリンク",
+                "category": "せんこうポケモン",
+                "entry": "からだを\\x{3000}うごかすたびに\\x{3000}きんにくが\nのびちぢみして\\x{3000}でんきが\\x{3000}うまれる。\nピンチになると\\x{3000}からだが\\x{3000}かがやく。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 65,

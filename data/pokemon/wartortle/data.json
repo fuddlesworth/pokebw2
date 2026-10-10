@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Wartortle",
-    "category": "Turtle Pokémon",
-    "pokedex_entry": "It is said to live 10,000 years.\nIts furry tail is popular as a\nsymbol of longevity.",
+    "pokedex": {
+        "category": "Turtle Pokémon",
+        "entry": "It is said to live 10,000 years.\nIts furry tail is popular as a\nsymbol of longevity.",
+        "height": "3'03\"",
+        "weight": "49.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Wartortle",
+                "category": "Turtle Pokémon",
+                "entry": "It is said to live 10,000 years.\nIts furry tail is popular as a\nsymbol of longevity.",
+                "height": "3'03\"",
+                "weight": "49.6 lbs."
+            },
+            "fr": {
+                "name": "Carabaffe",
+                "category": "Pokémon Tortue",
+                "entry": "On prétend qu'il vit 10 000 ans.\nSa queue duveteuse est un\nsymbole de longévité populaire.",
+                "height": "1,0 m",
+                "weight": "22,5 kg"
+            },
+            "de": {
+                "name": "Schillok",
+                "category": "Kröte",
+                "entry": "Man sagt, es werde 10 000 Jahre alt.\nSein buschiger Schweif ist ein Symbol\nfür langes Leben.",
+                "height": "1,0 m",
+                "weight": "22,5 kg"
+            },
+            "it": {
+                "name": "Wartortle",
+                "category": "Pokémon Tartaruga",
+                "entry": "Pare che viva 10.000 anni. Ha la coda\nricoperta da una folta pelliccia, indice\ndi longevità.",
+                "height": "1,0 m",
+                "weight": "22,5 kg"
+            },
+            "ko": {
+                "name": "어니부기",
+                "category": "거북포켓몬",
+                "entry": "만년의 수명을 가지고 있다고들\n말한다. 치렁치렁한 꼬리는\n장수의 상징으로써 인기가 있다.",
+                "height": "1.0 m",
+                "weight": "22.5 kg"
+            },
+            "es": {
+                "name": "Wartortle",
+                "category": "Pokémon Tortuga",
+                "entry": "Se dice que vive 10 000 años.\nSu peluda cola es un símbolo\nde longevidad.",
+                "height": "1,0 m",
+                "weight": "22,5 kg"
+            },
+            "ja": {
+                "name": "カメール",
+                "category": "かめポケモン",
+                "entry": "いちまんねんの\\x{3000}じゅみょうを\\x{3000}もつと\nいわれている。ふさふさの\\x{3000}しっぽは\nながいきの\\x{3000}シンボルとして\\x{3000}にんき。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 59,
         "attack": 63,

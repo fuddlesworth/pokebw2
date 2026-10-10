@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pidgeot",
-    "category": "Bird Pokémon",
-    "pokedex_entry": "By flapping its wings with all its\nmight, Pidgeot can make a gust of\nwind capable of bending tall trees.",
+    "pokedex": {
+        "category": "Bird Pokémon",
+        "entry": "By flapping its wings with all its\nmight, Pidgeot can make a gust of\nwind capable of bending tall trees.",
+        "height": "4'11\"",
+        "weight": "87.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pidgeot",
+                "category": "Bird Pokémon",
+                "entry": "By flapping its wings with all its\nmight, Pidgeot can make a gust of\nwind capable of bending tall trees.",
+                "height": "4'11\"",
+                "weight": "87.1 lbs."
+            },
+            "fr": {
+                "name": "Roucarnage",
+                "category": "Pokémon Oiseau",
+                "entry": "En battant des ailes de toutes ses\nforces, Roucarnage génère une\nrafale à en déraciner les arbres.",
+                "height": "1,5 m",
+                "weight": "39,5 kg"
+            },
+            "de": {
+                "name": "Tauboss",
+                "category": "Vogel",
+                "entry": "Schlägt Tauboss mit ganzer Kraft\nseine Flügel, beugen sich selbst\ngroße Bäume durch den Windstoß.",
+                "height": "1,5 m",
+                "weight": "39,5 kg"
+            },
+            "it": {
+                "name": "Pidgeot",
+                "category": "Pokémon Uccello",
+                "entry": "Sbattendo le ali a più non posso, Pidgeot\ncrea un vento tanto forte da piegare\nalberi possenti.",
+                "height": "1,5 m",
+                "weight": "39,5 kg"
+            },
+            "ko": {
+                "name": "피죤투",
+                "category": "새포켓몬",
+                "entry": "피죤투가 힘껏 날개를 치면\n큰 나무도 휠 정도의\n강풍을 일으킨다.",
+                "height": "1.5 m",
+                "weight": "39.5 kg"
+            },
+            "es": {
+                "name": "Pidgeot",
+                "category": "Pokémon Pájaro",
+                "entry": "Aleteando con toda su fuerza, Pidgeot\ncrea corrientes de aire capaces de\ndoblar grandes árboles.",
+                "height": "1,5 m",
+                "weight": "39,5 kg"
+            },
+            "ja": {
+                "name": "ピジョット",
+                "category": "とりポケモン",
+                "entry": "ピジョットが\\x{3000}ちからいっぱい\nはばたくと\\x{3000}たいぼくも\\x{3000}しなるほどの\nきょうふうを\\x{3000}まきおこす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 83,
         "attack": 80,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vespiquen",
-    "category": "Beehive Pokémon",
-    "pokedex_entry": "It houses its colony in cells in its body\nand releases various pheromones to\nmake those grubs do its bidding.",
+    "pokedex": {
+        "category": "Beehive Pokémon",
+        "entry": "It houses its colony in cells in its body\nand releases various pheromones to\nmake those grubs do its bidding.",
+        "height": "3'11\"",
+        "weight": "84.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Vespiquen",
+                "category": "Beehive Pokémon",
+                "entry": "It releases various pheromones\nto make the grubs in its body do\nits bidding while fighting foes.",
+                "height": "3'11\"",
+                "weight": "84.9 lbs."
+            },
+            "fr": {
+                "name": "Apireine",
+                "category": "Pokémon Ruche",
+                "entry": "Ce Pokémon utilise des phéromones\npour donner des ordres de combat\naux larves dans son abdomen.",
+                "height": "1,2 m",
+                "weight": "38,5 kg"
+            },
+            "de": {
+                "name": "Honweisel",
+                "category": "Bienenstock",
+                "entry": "Um anzulocken, verströmt es\nunterschiedliche Botenstoffe,\nwährend es Gegner bekämpft.",
+                "height": "1,2 m",
+                "weight": "38,5 kg"
+            },
+            "it": {
+                "name": "Vespiquen",
+                "category": "Pokémon Alveare",
+                "entry": "Rilascia vari feromoni per farsi obbedire\ndalle larve che trasporta mentre\ncombatte.",
+                "height": "1,2 m",
+                "weight": "38,5 kg"
+            },
+            "ko": {
+                "name": "비퀸",
+                "category": "벌집포켓몬",
+                "entry": "수많은 페로몬을 내어\n몸통에 있는 아기들을\n자유자재로 조종하여 상대랑 싸운다.",
+                "height": "1.2 m",
+                "weight": "38.5 kg"
+            },
+            "es": {
+                "name": "Vespiquen",
+                "category": "Pokémon Colmena",
+                "entry": "Libera feromonas para hacer que\nlas larvas de su panal hagan lo\nque diga cuando combate.",
+                "height": "1,2 m",
+                "weight": "38,5 kg"
+            },
+            "ja": {
+                "name": "ビークイン",
+                "category": "はちのすポケモン",
+                "entry": "さまざまな\\x{3000}フェロモンを\\x{3000}だして\nどうたいに\\x{3000}いる\\x{3000}こどもたちを\nじざいにあやつり\\x{3000}てきとたたかう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff18}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 80,

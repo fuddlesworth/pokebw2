@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Eelektrik",
-    "category": "EleFish Pokémon",
-    "pokedex_entry": "It wraps itself around its prey and\nparalyzes it with electricity from the\nround spots on its sides. Then it chomps.",
+    "pokedex": {
+        "category": "EleFish Pokémon",
+        "entry": "It wraps itself around its prey and\nparalyzes it with electricity from the\nround spots on its sides. Then it chomps.",
+        "height": "3'11\"",
+        "weight": "48.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "でんきうおポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 85,

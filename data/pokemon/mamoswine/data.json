@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mamoswine",
-    "category": "Twin Tusk Pokémon",
-    "pokedex_entry": "When the temperature rose at\nthe end of the ice age, most\nMamoswine disappeared.",
+    "pokedex": {
+        "category": "Twin Tusk Pokémon",
+        "entry": "When the temperature rose at\nthe end of the ice age, most\nMamoswine disappeared.",
+        "height": "8'02\"",
+        "weight": "641.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mamoswine",
+                "category": "Twin Tusk Pokémon",
+                "entry": "A frozen one was dug up from\nsoil dating back 10,000 years. It\nwoke up to much amazement.",
+                "height": "8'02\"",
+                "weight": "641.5 lbs."
+            },
+            "fr": {
+                "name": "Mammochon",
+                "category": "Pokémon Deudéfenses",
+                "entry": "On a libéré un spécimen de sa prison\nglacée au bout de 10 000 ans.\nIl n'en revenait pas.",
+                "height": "2,5 m",
+                "weight": "291,0 kg"
+            },
+            "de": {
+                "name": "Mamutel",
+                "category": "Doppelstoßzahn",
+                "entry": "Ein eingefrorenes Exemplar wurde\naus 10 000 Jahre altem Erdreich\nausgegraben. Es wachte sogar auf!",
+                "height": "2,5 m",
+                "weight": "291,0 kg"
+            },
+            "it": {
+                "name": "Mamoswine",
+                "category": "Pokémon Duezanne",
+                "entry": "Un esemplare congelato risalente a\n10.000 anni fa si è risvegliato tra\nlo stupore generale.",
+                "height": "2,5 m",
+                "weight": "291,0 kg"
+            },
+            "ko": {
+                "name": "맘모꾸리",
+                "category": "2개송곳니포켓몬",
+                "entry": "1만 년 전의 땅에서 얼어붙은\n맘모꾸리가 발견되었고\n눈까지 떴기에 소동이 벌어졌다.",
+                "height": "2.5 m",
+                "weight": "291.0 kg"
+            },
+            "es": {
+                "name": "Mamoswine",
+                "category": "Pokémon 2colmillos",
+                "entry": "Se encontró un ejemplar congelado\nhace 10 000 años en una excavación.\n¡Y se despertó!",
+                "height": "2,5 m",
+                "weight": "291,0 kg"
+            },
+            "ja": {
+                "name": "マンムー",
+                "category": "\\x{ff12}ほんキバポケモン",
+                "entry": "\\x{ff11}まんねん\\x{3000}まえの\\x{3000}じめんから\nこおりづけの\\x{3000}マンムーが\\x{3000}みつかり\nしかも\\x{3000}めざめたので\\x{3000}さわがれた。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff19}\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 110,
         "attack": 130,

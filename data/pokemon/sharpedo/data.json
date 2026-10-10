@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sharpedo",
-    "category": "Brutal Pokémon",
-    "pokedex_entry": "Its fangs rip through sheet iron.\nIt swims at 75 mph and is known as\n“The Bully of the Sea.\"",
+    "pokedex": {
+        "category": "Brutal Pokémon",
+        "entry": "Its fangs rip through sheet iron.\nIt swims at 75 mph and is known as\n“The Bully of the Sea.\"",
+        "height": "5'11\"",
+        "weight": "195.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sharpedo",
+                "category": "Brutal Pokémon",
+                "entry": "Its fangs rip through sheet iron.\nIt swims at 75 mph and is known as\n“The Bully of the Sea.\"",
+                "height": "5'11\"",
+                "weight": "195.8 lbs."
+            },
+            "fr": {
+                "name": "Sharpedo",
+                "category": "Pokémon Brutal",
+                "entry": "Ses crocs lacèrent des feuilles\nd'acier. Il nage à 120 km/h. On\nl'appelle “tyran des mers\".",
+                "height": "1,8 m",
+                "weight": "88,8 kg"
+            },
+            "de": {
+                "name": "Tohaido",
+                "category": "Brutal",
+                "entry": "Seine Zähne durchdringen sogar Eisen.\nEs schwimmt mit 120 km/h und wird\n„Tyrann des Meeres“ genannt.",
+                "height": "1,8 m",
+                "weight": "88,8 kg"
+            },
+            "it": {
+                "name": "Sharpedo",
+                "category": "Pokémon Brutale",
+                "entry": "Con le sue zanne può spezzare il ferro.\nNuota a 120 km/h. È noto come\nil “Tiranno del mare\".",
+                "height": "1,8 m",
+                "weight": "88,8 kg"
+            },
+            "ko": {
+                "name": "샤크니아",
+                "category": "난폭포켓몬",
+                "entry": "철판도 물어 찢는 이빨을 가지며\n헤엄치는 속도는 시속 120km다.\n별명은 바다의 건달이다.",
+                "height": "1.8 m",
+                "weight": "88.8 kg"
+            },
+            "es": {
+                "name": "Sharpedo",
+                "category": "Pokémon Voraz",
+                "entry": "Con sus colmillos puede atravesar\nel acero. Nada a 120 km/h.\nLe llaman el Terror de los Mares.",
+                "height": "1,8 m",
+                "weight": "88,8 kg"
+            },
+            "ja": {
+                "name": "サメハダー",
+                "category": "きょうぼうポケモン",
+                "entry": "てっぱんも\\x{3000}かみちぎる\\x{3000}キバを\\x{3000}もち\nおよぐ\\x{3000}そくどは\\x{3000}じそく\\x{ff11}\\x{ff12}\\x{ff10}キロ。\nべつめいは\\x{3000}うみのギャング。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff18}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 120,

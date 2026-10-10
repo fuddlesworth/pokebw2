@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mankey",
-    "category": "Pig Monkey Pokémon",
-    "pokedex_entry": "It lives in treetop colonies.\nIf one becomes enraged, the whole\ncolony rampages for no reason.",
+    "pokedex": {
+        "category": "Pig Monkey Pokémon",
+        "entry": "It lives in treetop colonies.\nIf one becomes enraged, the whole\ncolony rampages for no reason.",
+        "height": "1'08\"",
+        "weight": "61.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mankey",
+                "category": "Pig Monkey Pokémon",
+                "entry": "It lives in treetop colonies.\nIf one becomes enraged, the whole\ncolony rampages for no reason.",
+                "height": "1'08\"",
+                "weight": "61.7 lbs."
+            },
+            "fr": {
+                "name": "Férosinge",
+                "category": "Pokémon Porsinge",
+                "entry": "Ils vivent en colonies sylvestres.\nQuand un Férosinge s'énerve, toute\nla colonie suit son exemple.",
+                "height": "0,5 m",
+                "weight": "28,0 kg"
+            },
+            "de": {
+                "name": "Menki",
+                "category": "Schw./ Affe",
+                "entry": "Es lebt mit anderen in Baumkronen. Wird\neines von ihnen wütend, werden alle\nanderen auch wütend.",
+                "height": "0,5 m",
+                "weight": "28,0 kg"
+            },
+            "it": {
+                "name": "Mankey",
+                "category": "Pokémon Suinpanzé",
+                "entry": "Vive in colonie sugli alberi. Se uno\nsi adira, l'intera colonia comincia a\nagire violentemente senza motivo.",
+                "height": "0,5 m",
+                "weight": "28,0 kg"
+            },
+            "ko": {
+                "name": "망키",
+                "category": "돈숭이포켓몬",
+                "entry": "나무 위에서 생활하고 있다.\n무리 중 1마리가 화내기 시작하면\n모두 아무 의미도 없이 난동부린다.",
+                "height": "0.5 m",
+                "weight": "28.0 kg"
+            },
+            "es": {
+                "name": "Mankey",
+                "category": "Pokémon Mono Cerdo",
+                "entry": "Vive en colonias en los árboles. Si uno\nse enfada, el resto de la manada ataca\nsin motivo.",
+                "height": "0,5 m",
+                "weight": "28,0 kg"
+            },
+            "ja": {
+                "name": "マンキー",
+                "category": "ぶたざるポケモン",
+                "entry": "きのうえで\\x{3000}せいかつしている。\nむれの\\x{3000}\\x{ff11}ぴきが\\x{3000}おこりはじめると\nぜんいんが\\x{3000}いみもなく\\x{3000}あばれだす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 80,

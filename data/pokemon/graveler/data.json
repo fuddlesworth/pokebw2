@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Graveler",
-    "category": "Rock Pokémon",
-    "pokedex_entry": "It rolls on mountain paths to move.\nOnce it builds momentum, no Pokémon\ncan stop it without difficulty.",
+    "pokedex": {
+        "category": "Rock Pokémon",
+        "entry": "It rolls on mountain paths to move.\nOnce it builds momentum, no Pokémon\ncan stop it without difficulty.",
+        "height": "3'03\"",
+        "weight": "231.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Graveler",
+                "category": "Rock Pokémon",
+                "entry": "It rolls on mountain paths to move.\nOnce it builds momentum, no Pokémon\ncan stop it without difficulty.",
+                "height": "3'03\"",
+                "weight": "231.5 lbs."
+            },
+            "fr": {
+                "name": "Gravalanch",
+                "category": "Pokémon Roche",
+                "entry": "Il dévale les montagnes pour se\ndéplacer. Une fois qu'il a pris tout\nson élan, dur dur de l'arrêter!",
+                "height": "1,0 m",
+                "weight": "105,0 kg"
+            },
+            "de": {
+                "name": "Georok",
+                "category": "Gestein",
+                "entry": "Rollt auf Bergpfaden, um sich\nfortzubewegen. Hat es erst mal Schwung\ngeholt, kann man es kaum bremsen.",
+                "height": "1,0 m",
+                "weight": "105,0 kg"
+            },
+            "it": {
+                "name": "Graveler",
+                "category": "Pokémon Roccia",
+                "entry": "Si sposta rotolando per i sentieri di\nmontagna. Quando prende velocità,\nè quasi impossibile fermarlo.",
+                "height": "1,0 m",
+                "weight": "105,0 kg"
+            },
+            "ko": {
+                "name": "데구리",
+                "category": "암석포켓몬",
+                "entry": "산길을 굴러서 이동한다.\n기세가 극에 오르면 어떤\n포켓몬도 이를 멈출 수 없다.",
+                "height": "1.0 m",
+                "weight": "105.0 kg"
+            },
+            "es": {
+                "name": "Graveler",
+                "category": "Pokémon Roca",
+                "entry": "Se desplaza rodando por caminos de\nmontaña. Cuando coge velocidad, es\ndifícil frenar su avance.",
+                "height": "1,0 m",
+                "weight": "105,0 kg"
+            },
+            "ja": {
+                "name": "ゴローン",
+                "category": "がんせきポケモン",
+                "entry": "やまみちを\\x{3000}ころがって\\x{3000}いどう。\nいきおいが\\x{3000}ついてくると\\x{3000}どんな\nポケモンでも\\x{3000}とめるのは\\x{3000}たいへん。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 95,

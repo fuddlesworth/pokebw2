@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gothorita",
-    "category": "Manipulate Pokémon",
-    "pokedex_entry": "According to many old tales, it creates\nfriends for itself by controlling\nsleeping children on starry nights.",
+    "pokedex": {
+        "category": "Manipulate Pokémon",
+        "entry": "According to many old tales, it creates\nfriends for itself by controlling\nsleeping children on starry nights.",
+        "height": "2'04\"",
+        "weight": "39.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "あやつりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 45,

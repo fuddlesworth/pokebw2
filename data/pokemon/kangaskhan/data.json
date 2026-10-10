@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Kangaskhan",
-    "category": "Parent Pokémon",
-    "pokedex_entry": "It raises its offspring in its belly\npouch. It lets the baby out to\nplay only when it feels safe.",
+    "pokedex": {
+        "category": "Parent Pokémon",
+        "entry": "It raises its offspring in its belly\npouch. It lets the baby out to\nplay only when it feels safe.",
+        "height": "7'03\"",
+        "weight": "176.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Kangaskhan",
+                "category": "Parent Pokémon",
+                "entry": "It raises its offspring in its belly\npouch. It lets the baby out to\nplay only when it feels safe.",
+                "height": "7'03\"",
+                "weight": "176.4 lbs."
+            },
+            "fr": {
+                "name": "Kangourex",
+                "category": "Pokémon Maternel",
+                "entry": "Il élève ses petits dans sa poche\nventrale. Il attend d'être en lieu\nsûr pour les laisser jouer dehors.",
+                "height": "2,2 m",
+                "weight": "80,0 kg"
+            },
+            "de": {
+                "name": "Kangama",
+                "category": "Muttertier",
+                "entry": "Sein Nachwuchs wächst in seinem\nBeutel heran. Nur wenn es sicher ist,\ndarf das Junge aus dem Beutel.",
+                "height": "2,2 m",
+                "weight": "80,0 kg"
+            },
+            "it": {
+                "name": "Kangaskhan",
+                "category": "Pokémon Genitore",
+                "entry": "Tiene il cucciolo nel marsupio che ha\nsulla pancia e lo lascia uscire solo\nquando non ci sono pericoli.",
+                "height": "2,2 m",
+                "weight": "80,0 kg"
+            },
+            "ko": {
+                "name": "캥카",
+                "category": "가족포켓몬",
+                "entry": "배의 주머니에서 새끼를 키운다.\n안전할 때만 새끼를\n주머니에서 꺼내어 놀게 한다.",
+                "height": "2.2 m",
+                "weight": "80.0 kg"
+            },
+            "es": {
+                "name": "Kangaskhan",
+                "category": "Pokémon Padres",
+                "entry": "Lleva a su cría en la bolsa de su panza.\nSolo deja que su cría salga a jugar\ncuando no siente peligro.",
+                "height": "2,2 m",
+                "weight": "80,0 kg"
+            },
+            "ja": {
+                "name": "ガルーラ",
+                "category": "おやこポケモン",
+                "entry": "おなかの\\x{3000}ふくろで\\x{3000}こそだてをする。\nあんぜんな\\x{3000}ときだけ\\x{3000}こどもを\nふくろから\\x{3000}だして\\x{3000}あそばせる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 105,
         "attack": 95,

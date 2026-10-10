@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Krabby",
-    "category": "River Crab Pokémon",
-    "pokedex_entry": "It lives in burrows dug on sandy\nbeaches. Its pincers fully grow\nback if they are broken in battle.",
+    "pokedex": {
+        "category": "River Crab Pokémon",
+        "entry": "It lives in burrows dug on sandy\nbeaches. Its pincers fully grow\nback if they are broken in battle.",
+        "height": "1'04\"",
+        "weight": "14.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Krabby",
+                "category": "River Crab Pokémon",
+                "entry": "It lives in burrows dug on sandy\nbeaches. Its pincers fully grow\nback if they are broken in battle.",
+                "height": "1'04\"",
+                "weight": "14.3 lbs."
+            },
+            "fr": {
+                "name": "Krabby",
+                "category": "Pokémon Doux Crabe",
+                "entry": "Il creuse son terrier sur des plages\nsablonneuses. Ses pinces repoussent\nsi on les brise.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "de": {
+                "name": "Krabby",
+                "category": "Krabbe",
+                "entry": "Es lebt in Höhlen am Strand.\nSeine Scheren wachsen nach,\nwenn es sie im Kampf verliert.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "it": {
+                "name": "Krabby",
+                "category": "Pokémon Granchio",
+                "entry": "Vive in buche scavate sulle spiagge\nsabbiose. Le sue chele ricrescono\nse si spezzano nella lotta.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "ko": {
+                "name": "크랩",
+                "category": "게포켓몬",
+                "entry": "모래 해변에 구멍을 파서 산다.\n집게는 싸울 때 떨어져 나가도\n다시 자라나 원래대로 돌아온다.",
+                "height": "0.4 m",
+                "weight": "6.5 kg"
+            },
+            "es": {
+                "name": "Krabby",
+                "category": "Pokémon Cangrejo",
+                "entry": "Vive en madrigueras excavadas en playas\narenosas. Sus pinzas vuelven a crecer\nsi se rompen.",
+                "height": "0,4 m",
+                "weight": "6,5 kg"
+            },
+            "ja": {
+                "name": "クラブ",
+                "category": "さわがにポケモン",
+                "entry": "すなはまに\\x{3000}あなを\\x{3000}ほって\\x{3000}くらす。\nハサミは\\x{3000}たたかいで\\x{3000}とれても\nまた\\x{3000}はえてきて\\x{3000}もとどおり。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 105,

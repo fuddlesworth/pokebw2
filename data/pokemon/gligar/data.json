@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gligar",
-    "category": "FlyScorpion Pokémon",
-    "pokedex_entry": "It clamps on to its chosen prey then\njabs the stinger on its tail into the\nprey while it's stunned with surprise.",
+    "pokedex": {
+        "category": "FlyScorpion Pokémon",
+        "entry": "It clamps on to its chosen prey then\njabs the stinger on its tail into the\nprey while it's stunned with surprise.",
+        "height": "3'07\"",
+        "weight": "142.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gligar",
+                "category": "FlyScorpion Pokémon",
+                "entry": "It glides as if sliding. It startles\nfoes by clamping on to their faces,\nthen jabs with its poison stinger.",
+                "height": "3'07\"",
+                "weight": "142.9 lbs."
+            },
+            "fr": {
+                "name": "Scorplane",
+                "category": "Pokémon Scorpivol",
+                "entry": "Il fend l'air et fond sur sa proie\npour s'agripper à son visage et\nla frapper avec son dard.",
+                "height": "1,1 m",
+                "weight": "64,8 kg"
+            },
+            "de": {
+                "name": "Skorgla",
+                "category": "Flugskorpi",
+                "entry": "Erschreckt Gegner, indem es sich\nan ihre Gesichter klammert und dann\nmit einem giftigen Stachel angreift.",
+                "height": "1,1 m",
+                "weight": "64,8 kg"
+            },
+            "it": {
+                "name": "Gligar",
+                "category": "Pokémon Aliscorpio",
+                "entry": "Vola planando nell'aria. Sorprende\ni nemici aggrappandosi al loro volto,\npoi inietta il suo veleno.",
+                "height": "1,1 m",
+                "weight": "64,8 kg"
+            },
+            "ko": {
+                "name": "글라이거",
+                "category": "날전갈포켓몬",
+                "entry": "하늘을 미끄러지듯 날아와서\n얼굴에 들러붙어 놀라게 한 뒤에\n독침으로 공격해온다.",
+                "height": "1.1 m",
+                "weight": "64.8 kg"
+            },
+            "es": {
+                "name": "Gligar",
+                "category": "Pokémon Escorpiala",
+                "entry": "Se desliza y sorprende a sus enemigos\nlanzándose directamente a la cara para\nclavarles su aguijón.",
+                "height": "1,1 m",
+                "weight": "64,8 kg"
+            },
+            "ja": {
+                "name": "グライガー",
+                "category": "とびさそりポケモン",
+                "entry": "そらを\\x{3000}すべるように\\x{3000}とんできて\nかおに\\x{3000}はりつき\\x{3000}おどろかせてから\nどくバリで\\x{3000}こうげき\\x{3000}してくる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff14}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 75,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Zangoose",
-    "category": "Cat Ferret Pokémon",
-    "pokedex_entry": "It's Seviper's archrival. To threaten\nthose it encounters, it fans out\nthe claws on its front paws.",
+    "pokedex": {
+        "category": "Cat Ferret Pokémon",
+        "entry": "It's Seviper's archrival. To threaten\nthose it encounters, it fans out\nthe claws on its front paws.",
+        "height": "4'03\"",
+        "weight": "88.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Zangoose",
+                "category": "Cat Ferret Pokémon",
+                "entry": "It has feuded with Seviper for\nmany generations. Its sharp claws\nare its biggest weapons.",
+                "height": "4'03\"",
+                "weight": "88.8 lbs."
+            },
+            "fr": {
+                "name": "Mangriff",
+                "category": "Pokémon Chat Furet",
+                "entry": "C'est le rival de Séviper depuis\ndes générations. Ses griffes\naiguisées sont son meilleur atout.",
+                "height": "1,3 m",
+                "weight": "40,3 kg"
+            },
+            "de": {
+                "name": "Sengo",
+                "category": "Frettkatz",
+                "entry": "Seit Generationen ist es mit\nVipitis verfeindet. Seine scharfen\nKlauen sind seine stärksten Waffen.",
+                "height": "1,3 m",
+                "weight": "40,3 kg"
+            },
+            "it": {
+                "name": "Zangoose",
+                "category": "Pokémon Furogatto",
+                "entry": "Da generazioni, è acerrimo nemico di\nSeviper. Gli artigli aguzzi sono le sue\narmi più potenti.",
+                "height": "1,3 m",
+                "weight": "40,3 kg"
+            },
+            "ko": {
+                "name": "쟝고",
+                "category": "고양이족제비포켓몬",
+                "entry": "몇 대에 걸쳐서\n세비퍼와 싸워왔다.\n날카로운 발톱이 최대의 무기다.",
+                "height": "1.3 m",
+                "weight": "40.3 kg"
+            },
+            "es": {
+                "name": "Zangoose",
+                "category": "Pokémon Gato Hurón",
+                "entry": "Hace muchos años que se enfrenta\na Seviper. Su arma más eficaz son\nsus zarpas afiladas.",
+                "height": "1,3 m",
+                "weight": "40,3 kg"
+            },
+            "ja": {
+                "name": "ザングース",
+                "category": "ネコイタチポケモン",
+                "entry": "なんせだいにも\\x{3000}わたって\nハブネークと\\x{3000}たたかってきた。\nするどい\\x{3000}ツメが\\x{3000}さいだいの\\x{3000}ぶき。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 73,
         "attack": 115,

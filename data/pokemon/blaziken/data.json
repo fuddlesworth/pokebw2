@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Blaziken",
-    "category": "Blaze Pokémon",
-    "pokedex_entry": "Flames spout from its wrists,\nenveloping its knuckles. Its\npunches scorch its foes.",
+    "pokedex": {
+        "category": "Blaze Pokémon",
+        "entry": "Flames spout from its wrists,\nenveloping its knuckles. Its\npunches scorch its foes.",
+        "height": "6'03\"",
+        "weight": "114.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Blaziken",
+                "category": "Blaze Pokémon",
+                "entry": "Flames spout from its wrists,\nenveloping its knuckles. Its\npunches scorch its foes.",
+                "height": "6'03\"",
+                "weight": "114.6 lbs."
+            },
+            "fr": {
+                "name": "Braségali",
+                "category": "Pokémon Ardent",
+                "entry": "Des flammes fusent de ses\npoignets et ses coups brûlent\nl'ennemi.",
+                "height": "1,9 m",
+                "weight": "52,0 kg"
+            },
+            "de": {
+                "name": "Lohgock",
+                "category": "Großbrand",
+                "entry": "Aus seinen Handgelenken kommt\nFeuer, das seine Knöchel umhüllt.\nSchläge verbrennen den Gegner.",
+                "height": "1,9 m",
+                "weight": "52,0 kg"
+            },
+            "it": {
+                "name": "Blaziken",
+                "category": "Pokémon Vampe",
+                "entry": "Le fiamme che fuoriescono dai suoi polsi\ngli avvolgono i pugni. Quando colpisce\nil nemico, lo scotta.",
+                "height": "1,9 m",
+                "weight": "52,0 kg"
+            },
+            "ko": {
+                "name": "번치코",
+                "category": "맹화포켓몬",
+                "entry": "손목에서 뿜어낸 불꽃으로\n주먹을 둘러싼 펀치는\n상대를 까맣게 태워 버린다.",
+                "height": "1.9 m",
+                "weight": "52.0 kg"
+            },
+            "es": {
+                "name": "Blaziken",
+                "category": "Pokémon Llameante",
+                "entry": "Sus puños están envueltos en llamas.\nCon sus golpes puede quemar a sus\nrivales.",
+                "height": "1,9 m",
+                "weight": "52,0 kg"
+            },
+            "ja": {
+                "name": "バシャーモ",
+                "category": "もうかポケモン",
+                "entry": "てくびから\\x{3000}ふきだした\\x{3000}ほのおで\nこぶしを\\x{3000}つつみこんだ\\x{3000}パンチは\nあいてを\\x{3000}くろこげに\\x{3000}してしまう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 120,

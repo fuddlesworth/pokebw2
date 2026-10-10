@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Seadra",
-    "category": "Dragon Pokémon",
-    "pokedex_entry": "Its spines provide protection.\nIts fins and bones are prized as\ntraditional-medicine ingredients.",
+    "pokedex": {
+        "category": "Dragon Pokémon",
+        "entry": "Its spines provide protection.\nIts fins and bones are prized as\ntraditional-medicine ingredients.",
+        "height": "3'11\"",
+        "weight": "55.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Seadra",
+                "category": "Dragon Pokémon",
+                "entry": "Its spines provide protection.\nIts fins and bones are prized as\ntraditional medicine ingredients.",
+                "height": "3'11\"",
+                "weight": "55.1 lbs."
+            },
+            "fr": {
+                "name": "Hypocéan",
+                "category": "Pokémon Dragon",
+                "entry": "Son épine dorsale le protège.\nSes os et ses nageoires sont très\nprisés en médecine traditionnelle.",
+                "height": "1,2 m",
+                "weight": "25,0 kg"
+            },
+            "de": {
+                "name": "Seemon",
+                "category": "Drache",
+                "entry": "Seine Stacheln schützen es.\nSeine Flossen und Knochen werden bei\nder Herstellung von Medizin verwendet.",
+                "height": "1,2 m",
+                "weight": "25,0 kg"
+            },
+            "it": {
+                "name": "Seadra",
+                "category": "Pokémon Drago",
+                "entry": "Si difende con gli aculei. Pinne\ne ossa sono comunemente usati\nnella medicina tradizionale.",
+                "height": "1,2 m",
+                "weight": "25,0 kg"
+            },
+            "ko": {
+                "name": "시드라",
+                "category": "드래곤포켓몬",
+                "entry": "가시가 상대로부터 몸을 지킨다.\n지느러미와 뼈가 한약의\n재료로써 귀하게 쓰인다.",
+                "height": "1.2 m",
+                "weight": "25.0 kg"
+            },
+            "es": {
+                "name": "Seadra",
+                "category": "Pokémon Dragón",
+                "entry": "Se protege con sus púas. Sus aletas\ny huesos son muy valorados por\nla medicina tradicional.",
+                "height": "1,2 m",
+                "weight": "25,0 kg"
+            },
+            "ja": {
+                "name": "シードラ",
+                "category": "ドラゴンポケモン",
+                "entry": "トゲが\\x{3000}てきから\\x{3000}みを\\x{3000}まもる。\nひれや\\x{3000}ホネが\\x{3000}かんぽうやくの\nざいりょうとして\\x{3000}ちょうほうされる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 65,

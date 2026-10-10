@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Samurott",
-    "category": "Formidable Pokémon",
-    "pokedex_entry": "In the time it takes a foe to blink,\nit can draw and sheathe the seamitars\nattached to its front legs.",
+    "pokedex": {
+        "category": "Formidable Pokémon",
+        "entry": "In the time it takes a foe to blink,\nit can draw and sheathe the seamitars\nattached to its front legs.",
+        "height": "4'11\"",
+        "weight": "208.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "かんろくポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 100,

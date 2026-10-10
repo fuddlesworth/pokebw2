@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Finneon",
-    "category": "Wing Fish Pokémon",
-    "pokedex_entry": "The line running down its side can\nstore sunlight. It shines vividly at\nnight.",
+    "pokedex": {
+        "category": "Wing Fish Pokémon",
+        "entry": "The line running down its side can\nstore sunlight. It shines vividly at\nnight.",
+        "height": "1'04\"",
+        "weight": "15.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Finneon",
+                "category": "Wing Fish Pokémon",
+                "entry": "The line running down its side can\nstore sunlight. It shines vividly at\nnight.",
+                "height": "1'04\"",
+                "weight": "15.4 lbs."
+            },
+            "fr": {
+                "name": "Écayon",
+                "category": "Pokémon Poisson Ailé",
+                "entry": "La ligne qui fait le tour de son\ncorps stocke l'énergie solaire\net brille dans la nuit.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "de": {
+                "name": "Finneon",
+                "category": "Flügelfisch",
+                "entry": "Die Linie an seiner Seite kann\nSonnenlicht speichern. Nachts\nleuchtet es sehr intensiv.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "it": {
+                "name": "Finneon",
+                "category": "Pokémon Pescealato",
+                "entry": "La linea che contorna il suo corpo\nimmagazzina la luce solare. Di notte\nsi illumina di una luce splendente.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "ko": {
+                "name": "형광어",
+                "category": "비어포켓몬",
+                "entry": "몸의 옆쪽에 있는 줄에\n태양빛을 모아둘 수 있다.\n밤이 되면 아름답게 빛난다.",
+                "height": "0.4 m",
+                "weight": "7.0 kg"
+            },
+            "es": {
+                "name": "Finneon",
+                "category": "Pokémon Pez Ala",
+                "entry": "La línea que le recorre el costado\npuede almacenar luz solar. Brilla\ncon mucha fuerza por la noche.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "ja": {
+                "name": "ケイコウオ",
+                "category": "はねうおポケモン",
+                "entry": "からだの\\x{3000}よこがわにある\\x{3000}ラインは\nたいようのひかりを\\x{3000}ためておける。\nよるになると\\x{3000}あざやかに\\x{3000}かがやく。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 49,
         "attack": 49,

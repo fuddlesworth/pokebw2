@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Beheeyem",
-    "category": "Cerebral Pokémon",
-    "pokedex_entry": "Apparently, it communicates by flashing\nits three fingers, but those patterns\nhaven't been decoded.",
+    "pokedex": {
+        "category": "Cerebral Pokémon",
+        "entry": "Apparently, it communicates by flashing\nits three fingers, but those patterns\nhaven't been decoded.",
+        "height": "3'03\"",
+        "weight": "76.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ブレインポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 75,

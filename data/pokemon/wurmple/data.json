@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Wurmple",
-    "category": "Worm Pokémon",
-    "pokedex_entry": "Often targeted by bird Pokémon,\nit desperately resists by releasing\npoison from its tail spikes.",
+    "pokedex": {
+        "category": "Worm Pokémon",
+        "entry": "Often targeted by bird Pokémon,\nit desperately resists by releasing\npoison from its tail spikes.",
+        "height": "1'00\"",
+        "weight": "7.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Wurmple",
+                "category": "Worm Pokémon",
+                "entry": "Often targeted by bird Pokémon,\nit desperately resists by releasing\npoison from its tail spikes.",
+                "height": "1'00\"",
+                "weight": "7.9 lbs."
+            },
+            "fr": {
+                "name": "Chenipotte",
+                "category": "Pokémon Ver",
+                "entry": "Cible favorite des Pokémon Oiseaux,\nil tente de se protéger avec ses\népines venimeuses.",
+                "height": "0,3 m",
+                "weight": "3,6 kg"
+            },
+            "de": {
+                "name": "Waumpel",
+                "category": "Wurm",
+                "entry": "Es wird oft von Vogel-Pokémon\nangegriffen, wehrt sich aber mit\nGift aus seinen Schwanzspitzen.",
+                "height": "0,3 m",
+                "weight": "3,6 kg"
+            },
+            "it": {
+                "name": "Wurmple",
+                "category": "Pokémon Baco",
+                "entry": "Viene spesso attaccato dai Pokémon\nuccello. Si difende emettendo veleno\ndagli aculei che ha sulla coda.",
+                "height": "0,3 m",
+                "weight": "3,6 kg"
+            },
+            "ko": {
+                "name": "개무소",
+                "category": "애벌레포켓몬",
+                "entry": "새 포켓몬에게 자주 표적이 되지만\n엉덩이의 가시에서 독을 내서\n필사적으로 저항한다.",
+                "height": "0.3 m",
+                "weight": "3.6 kg"
+            },
+            "es": {
+                "name": "Wurmple",
+                "category": "Pokémon Gusano",
+                "entry": "Es el blanco favorito de muchos\nPokémon pájaro. Se defiende con\nel veneno de las púas de su cola.",
+                "height": "0,3 m",
+                "weight": "3,6 kg"
+            },
+            "ja": {
+                "name": "ケムッソ",
+                "category": "いもむしポケモン",
+                "entry": "とりポケモンに\\x{3000}よく\\x{3000}ねらわれるが\nおしりの\\x{3000}トゲから\\x{3000}どくをだし\nひっしになって\\x{3000}ていこうする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 45,

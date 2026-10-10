@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Boldore",
-    "category": "Ore Pokémon",
-    "pokedex_entry": "When it is healthy, its core sticks out.\nAlways facing the same way, it swiftly\nmoves front to back and left to right.",
+    "pokedex": {
+        "category": "Ore Pokémon",
+        "entry": "When it is healthy, its core sticks out.\nAlways facing the same way, it swiftly\nmoves front to back and left to right.",
+        "height": "2'11\"",
+        "weight": "224.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "こうせきポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 105,

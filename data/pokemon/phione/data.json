@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Phione",
-    "category": "Sea Drifter Pokémon",
-    "pokedex_entry": "It drifts in warm seas. It always\nreturns to where it was born, no\nmatter how far it may have drifted.",
+    "pokedex": {
+        "category": "Sea Drifter Pokémon",
+        "entry": "It drifts in warm seas. It always\nreturns to where it was born, no\nmatter how far it may have drifted.",
+        "height": "1'04\"",
+        "weight": "6.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Phione",
+                "category": "Sea Drifter Pokémon",
+                "entry": "It drifts in warm seas. It always\nreturns to where it was born, no\nmatter how far it may have drifted.",
+                "height": "1'04\"",
+                "weight": "6.8 lbs."
+            },
+            "fr": {
+                "name": "Phione",
+                "category": "Pokémon Dérivenmer",
+                "entry": "Ce Pokémon des mers chaudes\nrevient toujours à son lieu de\nnaissance, peu importe la distance.",
+                "height": "0,4 m",
+                "weight": "3,1 kg"
+            },
+            "de": {
+                "name": "Phione",
+                "category": "Seedrift",
+                "entry": "Lässt sich in warmen Meeren\ntreiben, kehrt aber immer an\nden Platz seiner Geburt zurück.",
+                "height": "0,4 m",
+                "weight": "3,1 kg"
+            },
+            "it": {
+                "name": "Phione",
+                "category": "Pokémon Oceanbondo",
+                "entry": "Si sposta nei mari caldi. Torna sempre\ndove è nato, anche se si trova molto\nlontano.",
+                "height": "0,4 m",
+                "weight": "3,1 kg"
+            },
+            "ko": {
+                "name": "피오네",
+                "category": "해양포켓몬",
+                "entry": "따뜻한 바다를 떠돌고 있다.\n아무리 먼 곳으로 흘러가도\n태어난 장소로 반드시 돌아온다.",
+                "height": "0.4 m",
+                "weight": "3.1 kg"
+            },
+            "es": {
+                "name": "Phione",
+                "category": "Pokémon Marino",
+                "entry": "Va a la deriva por mares cálidos.\nSiempre vuelve a donde nació, por\nmucho que se haya alejado.",
+                "height": "0,4 m",
+                "weight": "3,1 kg"
+            },
+            "ja": {
+                "name": "フィオネ",
+                "category": "かいようポケモン",
+                "entry": "あたたかい\\x{3000}うみを\\x{3000}ただよっている。\nどんな\\x{3000}とおくに\\x{3000}ながされても\nうまれた\\x{3000}ばしょに\\x{3000}かならずもどる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff11}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 80,

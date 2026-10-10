@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Minun",
-    "category": "Cheering Pokémon",
-    "pokedex_entry": "It cheers on friends. If its\nfriends are losing, its body lets\noff more and more sparks.",
+    "pokedex": {
+        "category": "Cheering Pokémon",
+        "entry": "It cheers on friends. If its\nfriends are losing, its body lets\noff more and more sparks.",
+        "height": "1'04\"",
+        "weight": "9.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Minun",
+                "category": "Cheering Pokémon",
+                "entry": "It cheers on friends. If its\nfriends are losing, its body lets\noff more and more sparks.",
+                "height": "1'04\"",
+                "weight": "9.3 lbs."
+            },
+            "fr": {
+                "name": "Négapi",
+                "category": "Pokémon Acclameur",
+                "entry": "Il encourage ses amis. Son corps\nproduit plus d'étincelles quand il\nest en mauvaise posture.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "de": {
+                "name": "Minun",
+                "category": "Jubel",
+                "entry": "Es feuert Freunde an. Sind diese im\nBegriff zu verlieren, gibt sein Körper\nimmer mehr Funken ab.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "it": {
+                "name": "Minun",
+                "category": "Pokémon Incitamento",
+                "entry": "Incoraggia gli amici e, se questi perdono,\nil suo corpo emette una maggiore\nquantità di scintille.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "ko": {
+                "name": "마이농",
+                "category": "응원포켓몬",
+                "entry": "동료를 응원하는 습성이 있다.\n질 것 같아지면 몸에서 내는\n스파크의 수가 점점 늘어난다.",
+                "height": "0.4 m",
+                "weight": "4.2 kg"
+            },
+            "es": {
+                "name": "Minun",
+                "category": "Pokémon Ánimo",
+                "entry": "Le gusta animar a sus amigos.\nSi pierden, su cuerpo suelta\ncada vez más chispas.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "ja": {
+                "name": "マイナン",
+                "category": "おうえんポケモン",
+                "entry": "なかまを\\x{3000}おうえんする\\x{3000}しゅうせい。\nまけそうになると\\x{3000}からだから\\x{3000}だす\nひばなの\\x{3000}かずが\\x{3000}どんどん\\x{3000}ふえる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 40,

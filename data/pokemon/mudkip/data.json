@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mudkip",
-    "category": "Mud Fish Pokémon",
-    "pokedex_entry": "To alert it, the fin on its head\nsenses the flow of water. It has\nthe strength to heft boulders.",
+    "pokedex": {
+        "category": "Mud Fish Pokémon",
+        "entry": "To alert it, the fin on its head\nsenses the flow of water. It has\nthe strength to heft boulders.",
+        "height": "1'04\"",
+        "weight": "16.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mudkip",
+                "category": "Mud Fish Pokémon",
+                "entry": "To alert it, the fin on its head\nsenses the flow of water. It has\nthe strength to heft boulders.",
+                "height": "1'04\"",
+                "weight": "16.8 lbs."
+            },
+            "fr": {
+                "name": "Gobou",
+                "category": "Pokémon Poissonboue",
+                "entry": "Il analyse le courant grâce à la\nnageoire sur sa tête. Il est assez\nfort pour soulever des rochers.",
+                "height": "0,4 m",
+                "weight": "7,6 kg"
+            },
+            "de": {
+                "name": "Hydropi",
+                "category": "Lehmhüpfer",
+                "entry": "Die Flosse auf seinem Kopf prüft\ndie Strömung des Wassers. Dieses\nPokémon kann Felsen heben.",
+                "height": "0,4 m",
+                "weight": "7,6 kg"
+            },
+            "it": {
+                "name": "Mudkip",
+                "category": "Pokémon Fango Pesce",
+                "entry": "Con la pinna sulla testa percepisce\ni movimenti dell'acqua e sta in guardia.\nRiesce a sollevare rocce.",
+                "height": "0,4 m",
+                "weight": "7,6 kg"
+            },
+            "ko": {
+                "name": "물짱이",
+                "category": "늪물고기포켓몬",
+                "entry": "머리의 지느러미로 물의 흐름을\n느껴 주위의 상황을 파악한다.\n바위를 들어올릴 정도로 힘이 세다.",
+                "height": "0.4 m",
+                "weight": "7.6 kg"
+            },
+            "es": {
+                "name": "Mudkip",
+                "category": "Pokémon Pez Lodo",
+                "entry": "La aleta de su cabeza detecta las\ncorrientes de agua y los peligros.\nTiene fuerza para levantar rocas.",
+                "height": "0,4 m",
+                "weight": "7,6 kg"
+            },
+            "ja": {
+                "name": "ミズゴロウ",
+                "category": "ぬまうおポケモン",
+                "entry": "あたまの\\x{3000}ひれで\\x{3000}みずの\\x{3000}ながれを\nかんじて\\x{3000}まわりの\\x{3000}ようすを\\x{3000}しる。\nいわを\\x{3000}もちあげる\\x{3000}ちからもち。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 70,

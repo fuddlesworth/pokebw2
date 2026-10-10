@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Teddiursa",
-    "category": "Little Bear Pokémon",
-    "pokedex_entry": "It lets honey soak into its paws\nso it can lick them all the time.\nEvery set of paws tastes unique.",
+    "pokedex": {
+        "category": "Little Bear Pokémon",
+        "entry": "It lets honey soak into its paws\nso it can lick them all the time.\nEvery set of paws tastes unique.",
+        "height": "2'00\"",
+        "weight": "19.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Teddiursa",
+                "category": "Little Bear Pokémon",
+                "entry": "It lets honey soak into its paws\nso it can lick them all the time.\nEvery set of paws tastes unique.",
+                "height": "2'00\"",
+                "weight": "19.4 lbs."
+            },
+            "fr": {
+                "name": "Teddiursa",
+                "category": "Pokémon Mini Ours",
+                "entry": "Il baigne ses griffes dans le miel\npour les lécher. Chaque paire\nde pattes a un goût unique.",
+                "height": "0,6 m",
+                "weight": "8,8 kg"
+            },
+            "de": {
+                "name": "Teddiursa",
+                "category": "Kleinbär",
+                "entry": "Es lässt Honig in seine Pranken\neindringen, so dass es immer\nwelchen dabeihat.",
+                "height": "0,6 m",
+                "weight": "8,8 kg"
+            },
+            "it": {
+                "name": "Teddiursa",
+                "category": "Pokémon Orsetto",
+                "entry": "Si impregna le zampe di miele per poterle\nleccare in continuazione. Ogni assaggio\nha un sapore unico.",
+                "height": "0,6 m",
+                "weight": "8,8 kg"
+            },
+            "ko": {
+                "name": "깜지곰",
+                "category": "아기곰포켓몬",
+                "entry": "달콤한 꿀을 손바닥에\n배어들게 해서 항상 핥고 있다.\n깜지곰에 따라 맛이 다르다.",
+                "height": "0.6 m",
+                "weight": "8.8 kg"
+            },
+            "es": {
+                "name": "Teddiursa",
+                "category": "Pokémon Osito",
+                "entry": "Deja que la miel se le pegue a las\ngarras para lamerla más tarde.\nCada una de ellas sabe diferente.",
+                "height": "0,6 m",
+                "weight": "8,8 kg"
+            },
+            "ja": {
+                "name": "ヒメグマ",
+                "category": "こぐまポケモン",
+                "entry": "あまい\\x{3000}ミツを\\x{3000}てのひらに\nしみこませて\\x{3000}いつも\\x{3000}なめている。\nヒメグマによって\\x{3000}あじが\\x{3000}ちがう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 80,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bibarel",
-    "category": "Beaver Pokémon",
-    "pokedex_entry": "A river dammed by Bibarel will\nnever overflow its banks, which\nis appreciated by people nearby.",
+    "pokedex": {
+        "category": "Beaver Pokémon",
+        "entry": "A river dammed by Bibarel will\nnever overflow its banks, which\nis appreciated by people nearby.",
+        "height": "3'03\"",
+        "weight": "69.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Bibarel",
+                "category": "Beaver Pokémon",
+                "entry": "A river dammed by Bibarel will\nnever overflow its banks, which\nis appreciated by people nearby.",
+                "height": "3'03\"",
+                "weight": "69.4 lbs."
+            },
+            "fr": {
+                "name": "Castorno",
+                "category": "Pokémon Castor",
+                "entry": "Les digues insubmersibles qu'il\nconstruit font le bonheur des\nhabitants proches.",
+                "height": "1,0 m",
+                "weight": "31,5 kg"
+            },
+            "de": {
+                "name": "Bidifas",
+                "category": "Biber",
+                "entry": "Ein von Bidifas eingedämmter Fluss\ntritt niemals über seine Ufer.\nDafür sind die Anrainer dankbar.",
+                "height": "1,0 m",
+                "weight": "31,5 kg"
+            },
+            "it": {
+                "name": "Bibarel",
+                "category": "Pokémon Castoro",
+                "entry": "Un fiume in cui Bibarel ha costruito\nuna diga non straripa mai, cosa molto\napprezzata da chi ci vive vicino.",
+                "height": "1,0 m",
+                "weight": "31,5 kg"
+            },
+            "ko": {
+                "name": "비버통",
+                "category": "비버포켓몬",
+                "entry": "비버통이 댐을 만든 강은\n범람하는 일이 없기에\n근처의 사람들로부터 감사를 받는다.",
+                "height": "1.0 m",
+                "weight": "31.5 kg"
+            },
+            "es": {
+                "name": "Bibarel",
+                "category": "Pokémon Castor",
+                "entry": "Un río en el que un Bibarel cree\nuna presa jamás se desbordará.\nPor esa razón la gente los aprecia.",
+                "height": "1,0 m",
+                "weight": "31,5 kg"
+            },
+            "ja": {
+                "name": "ビーダル",
+                "category": "ビーバーポケモン",
+                "entry": "ビーダルが\\x{3000}ダムを\\x{3000}つくった\nかわは\\x{3000}はんらん\\x{3000}することがないので\nちかくの\\x{3000}ひとから\\x{3000}かんしゃされる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 79,
         "attack": 85,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mightyena",
-    "category": "Bite Pokémon",
-    "pokedex_entry": "It chases down prey in a pack.\nIt will never disobey the commands\nof a skilled Trainer.",
+    "pokedex": {
+        "category": "Bite Pokémon",
+        "entry": "It chases down prey in a pack.\nIt will never disobey the commands\nof a skilled Trainer.",
+        "height": "3'03\"",
+        "weight": "81.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mightyena",
+                "category": "Bite Pokémon",
+                "entry": "It chases down prey in a pack.\nIt will never disobey the commands\nof a skilled Trainer.",
+                "height": "3'03\"",
+                "weight": "81.6 lbs."
+            },
+            "fr": {
+                "name": "Grahyèna",
+                "category": "Pokémon Morsure",
+                "entry": "Il traque ses proies en groupe.\nIl ne désobéira jamais aux\nordres d'un bon Dresseur.",
+                "height": "1,0 m",
+                "weight": "37,0 kg"
+            },
+            "de": {
+                "name": "Magnayen",
+                "category": "Biss",
+                "entry": "Es jagt seine Beute im Rudel.\nDen Befehlen eines erfahrenen\nTrainers wird es stets folgen.",
+                "height": "1,0 m",
+                "weight": "37,0 kg"
+            },
+            "it": {
+                "name": "Mightyena",
+                "category": "Pokémon Morso",
+                "entry": "Caccia le prede in branco. Non\ndisobbedisce mai agli ordini di\nun Allenatore abile.",
+                "height": "1,0 m",
+                "weight": "37,0 kg"
+            },
+            "ko": {
+                "name": "그라에나",
+                "category": "물어뜯기포켓몬",
+                "entry": "무리를 이루어 먹이를 바싹\n몰아넣는다. 우수한 트레이너의\n명령에는 절대로 거역하지 않는다.",
+                "height": "1.0 m",
+                "weight": "37.0 kg"
+            },
+            "es": {
+                "name": "Mightyena",
+                "category": "Pokémon Mordisco",
+                "entry": "Ataca a sus presas en manada.\nNunca desobedece las órdenes\nde un Entrenador avezado.",
+                "height": "1,0 m",
+                "weight": "37,0 kg"
+            },
+            "ja": {
+                "name": "グラエナ",
+                "category": "かみつきポケモン",
+                "entry": "むれで\\x{3000}えものを\\x{3000}おいつめる。\nすぐれた\\x{3000}トレーナーの\\x{3000}めいれいには\nぜったいに\\x{3000}さからわない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff17}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 90,

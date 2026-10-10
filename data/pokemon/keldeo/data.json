@@ -1,11 +1,24 @@
 {
     "$schema": "../species.schema.json",
     "name": "Keldeo",
-    "category": "Colt Pokémon",
-    "pokedex_entry": "When it is resolute, its body fills\nwith power and it becomes swifter.\nIts jumps are then too fast to follow.",
-    "form_pokedex_entries": [
-        "When it is resolute, its body fills\nwith power and it becomes swifter.\nIts jumps are then too fast to follow."
-    ],
+    "pokedex": {
+        "category": "Colt Pokémon",
+        "entry": "When it is resolute, its body fills\nwith power and it becomes swifter.\nIts jumps are then too fast to follow.",
+        "height": "4'07\"",
+        "weight": "106.9 lbs.",
+        "forms": [
+            {
+                "entry": "When it is resolute, its body fills\nwith power and it becomes swifter.\nIts jumps are then too fast to follow.",
+                "height": "4'07\"",
+                "weight": "106.9 lbs."
+            }
+        ],
+        "languages": {
+            "ja": {
+                "category": "わかごまポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 91,
         "attack": 72,

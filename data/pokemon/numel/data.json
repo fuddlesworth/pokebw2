@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Numel",
-    "category": "Numb Pokémon",
-    "pokedex_entry": "The magma in its body reaches\n2,200 degrees F. Its hump gets smaller\nwhen it uses Fire-type moves.",
+    "pokedex": {
+        "category": "Numb Pokémon",
+        "entry": "The magma in its body reaches\n2,200 degrees F. Its hump gets smaller\nwhen it uses Fire-type moves.",
+        "height": "2'04\"",
+        "weight": "52.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Numel",
+                "category": "Numb Pokémon",
+                "entry": "Its humped back stores intensely\nhot magma. In rain, the magma\ncools, slowing its movement.",
+                "height": "2'04\"",
+                "weight": "52.9 lbs."
+            },
+            "fr": {
+                "name": "Chamallot",
+                "category": "Pokémon Engourdi",
+                "entry": "Son dos bossu renferme une lave\nbouillonnante. Elle refroidit par\ntemps de pluie, ce qui le ralentit.",
+                "height": "0,7 m",
+                "weight": "24,0 kg"
+            },
+            "de": {
+                "name": "Camaub",
+                "category": "Taubheit",
+                "entry": "In seinem Rücken speichert es sehr\nheißes Magma. Regnet es, kühlt das\nMagma ab und es wird langsamer.",
+                "height": "0,7 m",
+                "weight": "24,0 kg"
+            },
+            "it": {
+                "name": "Numel",
+                "category": "Pokémon Torpore",
+                "entry": "Nella gobba accumula magma. Quando\npiove, il magma si indurisce e il Pokémon\ndiventa più lento.",
+                "height": "0,7 m",
+                "weight": "24,0 kg"
+            },
+            "ko": {
+                "name": "둔타",
+                "category": "둔감포켓몬",
+                "entry": "이글거리는 마그마를 등의\n혹에 모으고 있다. 비를 맞으면\n마그마가 식어 움직임이 둔해진다.",
+                "height": "0.7 m",
+                "weight": "24.0 kg"
+            },
+            "es": {
+                "name": "Numel",
+                "category": "Pokémon Torpe",
+                "entry": "En su joroba almacena magma ardiente\nque se enfría cuando llueve\ny lo ralentiza.",
+                "height": "0,7 m",
+                "weight": "24,0 kg"
+            },
+            "ja": {
+                "name": "ドンメル",
+                "category": "どんかんポケモン",
+                "entry": "しゃくねつの\\x{3000}マグマを\\x{3000}せなかの\nコブに\\x{3000}ためている。あめに\\x{3000}あたると\nマグマが\\x{3000}ひえて\\x{3000}うごきが\\x{3000}にぶる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 60,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mandibuzz",
-    "category": "Bone Vulture Pokémon",
-    "pokedex_entry": "They fly in circles around the sky.\nWhen they spot prey, they attack and\ncarry it back to their nest with ease.",
+    "pokedex": {
+        "category": "Bone Vulture Pokémon",
+        "entry": "They fly in circles around the sky.\nWhen they spot prey, they attack and\ncarry it back to their nest with ease.",
+        "height": "3'11\"",
+        "weight": "87.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ほねわしポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 110,
         "attack": 65,

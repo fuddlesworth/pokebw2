@@ -1,9 +1,24 @@
 {
     "$schema": "../species.schema.json",
     "name": "Basculin",
-    "category": "Hostile Pokémon",
-    "pokedex_entry": "Red- and blue-striped Basculin are\nvery violent and always fighting.\nThey are also remarkably tasty.",
-    "form_pokedex_entries": [ "Red- and blue-striped Basculin are\nvery violent and always fighting.\nThey are also remarkably tasty." ],
+    "pokedex": {
+        "category": "Hostile Pokémon",
+        "entry": "Red- and blue-striped Basculin are\nvery violent and always fighting.\nThey are also remarkably tasty.",
+        "height": "3'03\"",
+        "weight": "39.7 lbs.",
+        "forms": [
+            {
+                "entry": "Red- and blue-striped Basculin are\nvery violent and always fighting.\nThey are also remarkably tasty.",
+                "height": "3'03\"",
+                "weight": "39.7 lbs."
+            }
+        ],
+        "languages": {
+            "ja": {
+                "category": "らんぼうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 92,

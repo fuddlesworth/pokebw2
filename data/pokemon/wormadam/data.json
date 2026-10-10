@@ -1,12 +1,75 @@
 {
     "$schema": "../species.schema.json",
     "name": "Wormadam",
-    "category": "Bagworm Pokémon",
-    "pokedex_entry": "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
-    "form_pokedex_entries": [
-        "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
-        "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations."
-    ],
+    "pokedex": {
+        "category": "Bagworm Pokémon",
+        "entry": "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
+        "height": "1'08\"",
+        "weight": "14.3 lbs.",
+        "forms": [
+            {
+                "entry": "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
+                "height": "1'08\"",
+                "weight": "14.3 lbs."
+            },
+            {
+                "entry": "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
+                "height": "1'08\"",
+                "weight": "14.3 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Wormadam",
+                "category": "Bagworm Pokémon",
+                "entry": "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
+                "height": "1'08\"",
+                "weight": "14.3 lbs."
+            },
+            "fr": {
+                "name": "Cheniselle",
+                "category": "Pokémon Ver Caché",
+                "entry": "À l'évolution, son corps absorbe\nles matériaux à proximité et peut\nainsi présenter divers aspects.",
+                "height": "0,5 m",
+                "weight": "6,5 kg"
+            },
+            "de": {
+                "name": "Burmadame",
+                "category": "Beutelwurm",
+                "entry": "Es nimmt während der Entwicklung\nDinge aus der Umgebung auf, daher\ngibt es viele Variationen von ihm.",
+                "height": "0,5 m",
+                "weight": "6,5 kg"
+            },
+            "it": {
+                "name": "Wormadam",
+                "category": "Pokémon Larva",
+                "entry": "Quando si evolve assorbe i materiali che\nha intorno. Per questo motivo ne\nesistono molte varianti.",
+                "height": "0,5 m",
+                "weight": "6,5 kg"
+            },
+            "ko": {
+                "name": "도롱마담",
+                "category": "도롱이벌레포켓몬",
+                "entry": "진화할 때 주변에 있는\n재료를 몸에 둘러싸기 위해\n많은 바리에이션이 있다.",
+                "height": "0.5 m",
+                "weight": "6.5 kg"
+            },
+            "es": {
+                "name": "Wormadam",
+                "category": "Pokémon Larva",
+                "entry": "Cuando evoluciona, incorpora a su\ncuerpo los materiales del entorno.\nPor eso hay muchas variantes.",
+                "height": "0,5 m",
+                "weight": "6,5 kg"
+            },
+            "ja": {
+                "name": "ミノマダム",
+                "category": "みのむしポケモン",
+                "entry": "しんかするとき\\x{3000}まわりにある\nざいりょうを\\x{3000}からだに\\x{3000}とりこむため\nおおくの\\x{3000}バリエーションが\\x{3000}ある。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 59,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ferrothorn",
-    "category": "Thorn Pod Pokémon",
-    "pokedex_entry": "By swinging around its three\nspiky feelers and shooting spikes,\nit can obliterate an opponent.",
+    "pokedex": {
+        "category": "Thorn Pod Pokémon",
+        "entry": "By swinging around its three\nspiky feelers and shooting spikes,\nit can obliterate an opponent.",
+        "height": "3'03\"",
+        "weight": "242.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "とげだまポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 74,
         "attack": 94,

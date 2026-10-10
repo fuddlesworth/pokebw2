@@ -1,12 +1,75 @@
 {
     "$schema": "../species.schema.json",
     "name": "Burmy",
-    "category": "Bagworm Pokémon",
-    "pokedex_entry": "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
-    "form_pokedex_entries": [
-        "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
-        "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak."
-    ],
+    "pokedex": {
+        "category": "Bagworm Pokémon",
+        "entry": "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
+        "height": "0'08\"",
+        "weight": "7.5 lbs.",
+        "forms": [
+            {
+                "entry": "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
+                "height": "0'08\"",
+                "weight": "7.5 lbs."
+            },
+            {
+                "entry": "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
+                "height": "0'08\"",
+                "weight": "7.5 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Burmy",
+                "category": "Bagworm Pokémon",
+                "entry": "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
+                "height": "0'08\"",
+                "weight": "7.5 lbs."
+            },
+            "fr": {
+                "name": "Cheniti",
+                "category": "Pokémon Ver Caché",
+                "entry": "Nul ne sait comment il y parvient,\nmais il arrive toujours à se former\nune cape, où qu'il soit.",
+                "height": "0,2 m",
+                "weight": "3,4 kg"
+            },
+            "de": {
+                "name": "Burmy",
+                "category": "Beutelwurm",
+                "entry": "Es erschafft sich immer irgendwie\neinen schützenden Umhang, selbst\nwenn es kaum Materialien findet.",
+                "height": "0,2 m",
+                "weight": "3,4 kg"
+            },
+            "it": {
+                "name": "Burmy",
+                "category": "Pokémon Larva",
+                "entry": "Anche se dove nasce non ci sono\nmateriali per fare bozzoli, si ritrova\nsempre coperto da un manto.",
+                "height": "0,2 m",
+                "weight": "3,4 kg"
+            },
+            "ko": {
+                "name": "도롱충이",
+                "category": "도롱이벌레포켓몬",
+                "entry": "몸을 둘러쌀 재료가 없는\n장소에서 태어나도 도롱충이는\n어느새 도롱이를 걸치고 있다.",
+                "height": "0.2 m",
+                "weight": "3.4 kg"
+            },
+            "es": {
+                "name": "Burmy",
+                "category": "Pokémon Larva",
+                "entry": "Aunque nazca en un lugar en el que\nno haya muchos materiales, siempre\nconsigue crearse un caparazón.",
+                "height": "0,2 m",
+                "weight": "3,4 kg"
+            },
+            "ja": {
+                "name": "ミノムッチ",
+                "category": "みのむしポケモン",
+                "entry": "からだをつつむ\\x{3000}ざいりょうが\\x{3000}ない\nばしょで\\x{3000}うまれても\\x{3000}ミノムッチは\nいつのまにか\\x{3000}ミノを\\x{3000}まとっている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 29,

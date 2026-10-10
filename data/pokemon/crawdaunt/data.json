@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Crawdaunt",
-    "category": "Rogue Pokémon",
-    "pokedex_entry": "Loving to battle, this Pokémon pinches\nall Pokémon that enter its territory\nwith its pincers and throws them out.",
+    "pokedex": {
+        "category": "Rogue Pokémon",
+        "entry": "Loving to battle, this Pokémon pinches\nall Pokémon that enter its territory\nwith its pincers and throws them out.",
+        "height": "3'07\"",
+        "weight": "72.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Crawdaunt",
+                "category": "Rogue Pokémon",
+                "entry": "It is a ruffian that uses its\npincers to pick up and toss out\nother Pokémon from its pond.",
+                "height": "3'07\"",
+                "weight": "72.3 lbs."
+            },
+            "fr": {
+                "name": "Colhomard",
+                "category": "Pokémon Crapule",
+                "entry": "C'est un voyou qui utilise ses\npinces pour chasser les autres\nPokémon hors de sa mare.",
+                "height": "1,1 m",
+                "weight": "32,8 kg"
+            },
+            "de": {
+                "name": "Krebutack",
+                "category": "Schlingel",
+                "entry": "Dieser Grobian ergreift andere Pokémon\nmit seinen Scheren und wirft sie aus\nseinem Teich.",
+                "height": "1,1 m",
+                "weight": "32,8 kg"
+            },
+            "it": {
+                "name": "Crawdaunt",
+                "category": "Pokémon Canaglia",
+                "entry": "Pokémon violento che afferra il nemico\ncon le chele e lo scaraventa fuori dal\nsuo stagno.",
+                "height": "1,1 m",
+                "weight": "32,8 kg"
+            },
+            "ko": {
+                "name": "가재장군",
+                "category": "불량배포켓몬",
+                "entry": "연못에 사는 다른 포켓몬을\n집게로 집어들어 연못 밖으로\n내던져버리는 난동꾼이다.",
+                "height": "1.1 m",
+                "weight": "32.8 kg"
+            },
+            "es": {
+                "name": "Crawdaunt",
+                "category": "Pokémon Granuja",
+                "entry": "Este malandrín usa sus pinzas para\natosigar y expulsar a los otros\nPokémon que viven en su estanque.",
+                "height": "1,1 m",
+                "weight": "32,8 kg"
+            },
+            "ja": {
+                "name": "シザリガー",
+                "category": "ならずものポケモン",
+                "entry": "いけに\\x{3000}すむ\\x{3000}ほかの\\x{3000}ポケモンを\nハサミで\\x{3000}つまみあげ\\x{3000}いけの\\x{3000}そとへ\nほうりだしてしまう\\x{3000}あばれんぼう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 63,
         "attack": 120,

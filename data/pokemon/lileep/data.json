@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lileep",
-    "category": "Sea Lily Pokémon",
-    "pokedex_entry": "It lived on the seafloor 100\nmillion years ago and was\nreanimated scientifically.",
+    "pokedex": {
+        "category": "Sea Lily Pokémon",
+        "entry": "It lived on the seafloor 100\nmillion years ago and was\nreanimated scientifically.",
+        "height": "3'03\"",
+        "weight": "52.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lileep",
+                "category": "Sea Lily Pokémon",
+                "entry": "It lived on the seafloor 100\nmillion years ago and was\nreanimated scientifically.",
+                "height": "3'03\"",
+                "weight": "52.5 lbs."
+            },
+            "fr": {
+                "name": "Lilia",
+                "category": "Pokémon Lis d'Eau",
+                "entry": "Il vivait au fond de la mer il y a\n100 millions d'années. La science\na permis de le ressusciter.",
+                "height": "1,0 m",
+                "weight": "23,8 kg"
+            },
+            "de": {
+                "name": "Liliep",
+                "category": "Seeanemone",
+                "entry": "Vor 100 Millionen Jahren lebte dieses\nPokémon auf dem Meeresgrund.\nDie Wissenschaft belebte es neu.",
+                "height": "1,0 m",
+                "weight": "23,8 kg"
+            },
+            "it": {
+                "name": "Lileep",
+                "category": "Pokémon Fiordimare",
+                "entry": "Viveva sul fondo marino 100 milioni di anni\nfa ed è stato rigenerato in laboratorio.",
+                "height": "1,0 m",
+                "weight": "23,8 kg"
+            },
+            "ko": {
+                "name": "릴링",
+                "category": "바다나리포켓몬",
+                "entry": "약 1억 년 전의 해저에서\n살고 있던 고대의 포켓몬이다.\n과학의 힘으로 부활했다.",
+                "height": "1.0 m",
+                "weight": "23.8 kg"
+            },
+            "es": {
+                "name": "Lileep",
+                "category": "Pokémon Lila Mar",
+                "entry": "Vivió en los fondos marinos hace\nunos 100 millones de años y fue\nrecreado científicamente.",
+                "height": "1,0 m",
+                "weight": "23,8 kg"
+            },
+            "ja": {
+                "name": "リリーラ",
+                "category": "ウミユリポケモン",
+                "entry": "およそ\\x{3000}\\x{ff11}おくねんまえの\\x{3000}かいていで\nくらしていた\\x{3000}こだいの\\x{3000}ポケモン。\nかがくの\\x{3000}ちからで\\x{3000}ふっかつした。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff13}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 66,
         "attack": 41,

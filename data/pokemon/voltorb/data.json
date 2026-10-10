@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Voltorb",
-    "category": "Ball Pokémon",
-    "pokedex_entry": "It looks just like a Poké Ball.\nIt is dangerous because it may\nelectrocute or explode on contact.",
+    "pokedex": {
+        "category": "Ball Pokémon",
+        "entry": "It looks just like a Poké Ball.\nIt is dangerous because it may\nelectrocute or explode on contact.",
+        "height": "1'08\"",
+        "weight": "22.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Voltorb",
+                "category": "Ball Pokémon",
+                "entry": "It looks just like a Poké Ball.\nIt is dangerous because it may\nelectrocute or explode on touch.",
+                "height": "1'08\"",
+                "weight": "22.9 lbs."
+            },
+            "fr": {
+                "name": "Voltorbe",
+                "category": "Pokémon Balle",
+                "entry": "Il ressemble à une Poké Ball. Ce\nPokémon dangereux peut exploser\nou s'électrifier au toucher.",
+                "height": "0,5 m",
+                "weight": "10,4 kg"
+            },
+            "de": {
+                "name": "Voltobal",
+                "category": "Ball",
+                "entry": "Sieht aus wie ein Pokéball. Es ist\ngefährlich, da es bei Berührung\nexplodieren kann.",
+                "height": "0,5 m",
+                "weight": "10,4 kg"
+            },
+            "it": {
+                "name": "Voltorb",
+                "category": "Pokémon Ball",
+                "entry": "Sembra una Poké Ball. Toccandolo si\nrischia di prendere la scossa e di\nfarlo esplodere.",
+                "height": "0,5 m",
+                "weight": "10,4 kg"
+            },
+            "ko": {
+                "name": "찌리리공",
+                "category": "볼포켓몬",
+                "entry": "몬스터볼과 똑 닮았다.\n잘못해서 만지면 감전되거나\n때로는 폭발하므로 위험하다.",
+                "height": "0.5 m",
+                "weight": "10.4 kg"
+            },
+            "es": {
+                "name": "Voltorb",
+                "category": "Pokémon Bola",
+                "entry": "Parece una Poké Ball. Es muy peligroso,\nya que puede lanzar descargas o\nexplotar si se toca.",
+                "height": "0,5 m",
+                "weight": "10,4 kg"
+            },
+            "ja": {
+                "name": "ビリリダマ",
+                "category": "ボールポケモン",
+                "entry": "モンスターボールに\\x{3000}そっくり。\nまちがって\\x{3000}さわると\\x{3000}かんでんしたり\nときには\\x{3000}ばくはつするので\\x{3000}きけん。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 30,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pineco",
-    "category": "Bagworm Pokémon",
-    "pokedex_entry": "It looks just like a pinecone.\nIts shell protects it from bird\nPokémon that peck it by mistake.",
+    "pokedex": {
+        "category": "Bagworm Pokémon",
+        "entry": "It looks just like a pinecone.\nIts shell protects it from bird\nPokémon that peck it by mistake.",
+        "height": "2'00\"",
+        "weight": "15.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pineco",
+                "category": "Bagworm Pokémon",
+                "entry": "It looks just like a pinecone.\nIts shell protects it from bird\nPokémon that peck it by mistake.",
+                "height": "2'00\"",
+                "weight": "15.9 lbs."
+            },
+            "fr": {
+                "name": "Pomdepik",
+                "category": "Pokémon Ver Caché",
+                "entry": "Il ressemble à une pomme de pin.\nSa carapace le protège des Pokémon\nOiseaux qui le picorent par erreur.",
+                "height": "0,6 m",
+                "weight": "7,2 kg"
+            },
+            "de": {
+                "name": "Tannza",
+                "category": "Beutelwurm",
+                "entry": "Es sieht aus wie ein Tannenzapfen.\nSeine Schale schützt es vor Vogel-\nPokémon, die an ihm picken wollen.",
+                "height": "0,6 m",
+                "weight": "7,2 kg"
+            },
+            "it": {
+                "name": "Pineco",
+                "category": "Pokémon Larva",
+                "entry": "Ha l'aspetto di una pigna. Il suo guscio\nlo protegge dai Pokémon uccello che lo\nbeccano per errore.",
+                "height": "0,6 m",
+                "weight": "7,2 kg"
+            },
+            "ko": {
+                "name": "피콘",
+                "category": "도롱이벌레포켓몬",
+                "entry": "나무열매와 똑 닮았다. 실수로\n새 포켓몬에게 쪼이기도 하지만\n단단한 껍질이 몸을 보호하고 있다.",
+                "height": "0.6 m",
+                "weight": "7.2 kg"
+            },
+            "es": {
+                "name": "Pineco",
+                "category": "Pokémon Larva",
+                "entry": "Es como una piña piñonera. Su\ncoraza lo protege de los pájaros\nque lo picotean por error.",
+                "height": "0,6 m",
+                "weight": "7,2 kg"
+            },
+            "ja": {
+                "name": "クヌギダマ",
+                "category": "みのむしポケモン",
+                "entry": "きのみに\\x{3000}そっくり。まちがわれて\nとりポケモンに\\x{3000}つつかれてしまうが\nかたい\\x{3000}カラで\\x{3000}まもられている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 65,

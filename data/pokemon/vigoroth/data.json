@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vigoroth",
-    "category": "Wild Monkey Pokémon",
-    "pokedex_entry": "Its heartbeat is fast and\nits blood so agitated that\nit can't sit still for one second.",
+    "pokedex": {
+        "category": "Wild Monkey Pokémon",
+        "entry": "Its heartbeat is fast and\nits blood so agitated that\nit can't sit still for one second.",
+        "height": "4'07\"",
+        "weight": "102.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Vigoroth",
+                "category": "Wild Monkey Pokémon",
+                "entry": "Its heart beats at a tenfold\ntempo, so it cannot sit still for\neven a moment.",
+                "height": "4'07\"",
+                "weight": "102.5 lbs."
+            },
+            "fr": {
+                "name": "Vigoroth",
+                "category": "Pokémon Turbusinge",
+                "entry": "Son cœur bat dix fois plus vite que\nla normale, c'est pourquoi il ne\ntient pas en place.",
+                "height": "1,4 m",
+                "weight": "46,5 kg"
+            },
+            "de": {
+                "name": "Muntier",
+                "category": "Wildaffe",
+                "entry": "Sein Herz schlägt schneller als das\nanderer Lebewesen. Daher kann es\nnicht für einen Moment still sitzen.",
+                "height": "1,4 m",
+                "weight": "46,5 kg"
+            },
+            "it": {
+                "name": "Vigoroth",
+                "category": "Pokémon Indocile",
+                "entry": "Il suo cuore batte 10 volte più\nvelocemente del normale. Non sta\nfermo neanche un momento.",
+                "height": "1,4 m",
+                "weight": "46,5 kg"
+            },
+            "ko": {
+                "name": "발바로",
+                "category": "성난원숭이포켓몬",
+                "entry": "심장 박동이 10배 빠르게\n고동치고 있기 때문에\n한시도 가만히 있질 못한다.",
+                "height": "1.4 m",
+                "weight": "46.5 kg"
+            },
+            "es": {
+                "name": "Vigoroth",
+                "category": "Pokémon Mono Feroz",
+                "entry": "Su corazón late a un ritmo diez\nveces más rápido de lo normal.\nNo se está quieto ni un instante.",
+                "height": "1,4 m",
+                "weight": "46,5 kg"
+            },
+            "ja": {
+                "name": "ヤルキモノ",
+                "category": "あばれザルポケモン",
+                "entry": "しんぞうが\\x{3000}\\x{ff11}\\x{ff10}ばいの\\x{3000}テンポで\nこどう\\x{3000}しているため\nひとときも\\x{3000}じっとしていられない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 80,

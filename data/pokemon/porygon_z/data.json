@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Porygon-Z",
-    "category": "Virtual Pokémon",
-    "pokedex_entry": "Its programming was modified to\nenable work in alien dimensions.\nIt did not work as planned.",
+    "pokedex": {
+        "category": "Virtual Pokémon",
+        "entry": "Its programming was modified to\nenable work in alien dimensions.\nIt did not work as planned.",
+        "height": "2'11\"",
+        "weight": "75.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Porygon-Z",
+                "category": "Virtual Pokémon",
+                "entry": "Its programming was modified to\nenable work in alien dimensions.\nIt did not work as planned.",
+                "height": "2'11\"",
+                "weight": "75.0 lbs."
+            },
+            "fr": {
+                "name": "Porygon-Z",
+                "category": "Pokémon Virtuel",
+                "entry": "Il a été modifié pour être capable\nde travailler dans des dimensions\nparallèles, mais c'est un échec.",
+                "height": "0,9 m",
+                "weight": "34,0 kg"
+            },
+            "de": {
+                "name": "Porygon-Z",
+                "category": "Virtuell",
+                "entry": "Es wurde umprogrammiert, um in\naußerirdischen Dimensionen arbeiten\nzu können. Leider schlug das fehl.",
+                "height": "0,9 m",
+                "weight": "34,0 kg"
+            },
+            "it": {
+                "name": "Porygon-Z",
+                "category": "Pokémon Virtuale",
+                "entry": "È stato riprogrammato per il lavoro in\ndimensioni sconosciute, ma pare non\nfunzionare correttamente.",
+                "height": "0,9 m",
+                "weight": "34,0 kg"
+            },
+            "ko": {
+                "name": "폴리곤Z",
+                "category": "가상포켓몬",
+                "entry": "다른 차원에서도 활약할 수 있도록\n프로그램을 수정했지만\n바라는 대로는 되지 않았다.",
+                "height": "0.9 m",
+                "weight": "34.0 kg"
+            },
+            "es": {
+                "name": "Porygon-Z",
+                "category": "Pokémon Virtual",
+                "entry": "Se modificó su programación para que\npudiera trabajar en dimensiones\nalienígenas. Pero no funcionó.",
+                "height": "0,9 m",
+                "weight": "34,0 kg"
+            },
+            "ja": {
+                "name": "ポリゴン\\x{ff3a}",
+                "category": "バーチャルポケモン",
+                "entry": "いじげんでも\\x{3000}かつやく\\x{3000}できるよう\nプログラムを\\x{3000}しゅうせい\\x{3000}したが\nねらいどおりには\\x{3000}いかなかった。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 80,

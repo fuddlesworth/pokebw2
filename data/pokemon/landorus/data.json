@@ -1,11 +1,24 @@
 {
     "$schema": "../species.schema.json",
     "name": "Landorus",
-    "category": "Abundance Pokémon",
-    "pokedex_entry": "From the forces of lightning and wind,\nit creates energy to give nutrients to\nthe soil and make the land abundant.",
-    "form_pokedex_entries": [
-        "From the forces of lightning and wind,\nit creates energy to give nutrients to\nthe soil and make the land abundant."
-    ],
+    "pokedex": {
+        "category": "Abundance Pokémon",
+        "entry": "From the forces of lightning and wind,\nit creates energy to give nutrients to\nthe soil and make the land abundant.",
+        "height": "4'11\"",
+        "weight": "149.9 lbs.",
+        "forms": [
+            {
+                "entry": "From the forces of lightning and wind,\nit creates energy to give nutrients to\nthe soil and make the land abundant.",
+                "height": "4'03\"",
+                "weight": "149.9 lbs."
+            }
+        ],
+        "languages": {
+            "ja": {
+                "category": "ほうじょうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 89,
         "attack": 125,

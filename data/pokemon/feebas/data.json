@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Feebas",
-    "category": "Fish Pokémon",
-    "pokedex_entry": "It is a shabby and ugly Pokémon.\nHowever, it is very hardy and\ncan survive on little water.",
+    "pokedex": {
+        "category": "Fish Pokémon",
+        "entry": "It is a shabby and ugly Pokémon.\nHowever, it is very hardy and\ncan survive on little water.",
+        "height": "2'00\"",
+        "weight": "16.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Feebas",
+                "category": "Fish Pokémon",
+                "entry": "It is a shabby and ugly Pokémon.\nHowever, it is very hardy and\ncan survive on little water.",
+                "height": "2'00\"",
+                "weight": "16.3 lbs."
+            },
+            "fr": {
+                "name": "Barpau",
+                "category": "Pokémon Poisson",
+                "entry": "Ce Pokémon a peut-être un physique\ndisgracieux, mais il est robuste et\npeut survivre dans très peu d'eau.",
+                "height": "0,6 m",
+                "weight": "7,4 kg"
+            },
+            "de": {
+                "name": "Barschwa",
+                "category": "Fisch",
+                "entry": "Ein schäbiges, ja sogar hässliches\nPokémon. Dafür ist es abgehärtet\nund überlebt mit wenig Wasser.",
+                "height": "0,6 m",
+                "weight": "7,4 kg"
+            },
+            "it": {
+                "name": "Feebas",
+                "category": "Pokémon Pesce",
+                "entry": "È un Pokémon brutto e sciatto. Tuttavia,\nè molto resistente e sopravvive in\npochissima acqua.",
+                "height": "0,6 m",
+                "weight": "7,4 kg"
+            },
+            "ko": {
+                "name": "빈티나",
+                "category": "물고기포켓몬",
+                "entry": "볼품없고 못생긴 포켓몬이지만\n강인한 생명력을 가져\n약간의 물만 있어도 살아남는다.",
+                "height": "0.6 m",
+                "weight": "7.4 kg"
+            },
+            "es": {
+                "name": "Feebas",
+                "category": "Pokémon Pez",
+                "entry": "Su apariencia deja bastante que\ndesear, pero es muy resistente y\npuede sobrevivir con poca agua.",
+                "height": "0,6 m",
+                "weight": "7,4 kg"
+            },
+            "ja": {
+                "name": "ヒンバス",
+                "category": "さかなポケモン",
+                "entry": "みすぼらしく\\x{3000}みにくい\\x{3000}ポケモンだが\nしぶとい\\x{3000}せいめいりょくを\\x{3000}もち\nわずかな\\x{3000}みずだけでも\\x{3000}いきのびる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 20,
         "attack": 15,

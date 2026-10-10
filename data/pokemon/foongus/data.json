@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Foongus",
-    "category": "Mushroom Pokémon",
-    "pokedex_entry": "It lures Pokémon with its pattern\nthat looks just like a Poké Ball\nthen releases poison spores.",
+    "pokedex": {
+        "category": "Mushroom Pokémon",
+        "entry": "It lures Pokémon with its pattern\nthat looks just like a Poké Ball\nthen releases poison spores.",
+        "height": "0'08\"",
+        "weight": "2.2 lbs.",
+        "languages": {
+            "ja": {
+                "category": "きのこポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 69,
         "attack": 55,

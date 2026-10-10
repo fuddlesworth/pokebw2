@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Larvitar",
-    "category": "Rock Skin Pokémon",
-    "pokedex_entry": "Born deep underground, it comes\naboveground and becomes a pupa once it\nhas finished eating the surrounding soil.",
+    "pokedex": {
+        "category": "Rock Skin Pokémon",
+        "entry": "Born deep underground, it comes\naboveground and becomes a pupa once it\nhas finished eating the surrounding soil.",
+        "height": "2'00\"",
+        "weight": "158.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Larvitar",
+                "category": "Rock Skin Pokémon",
+                "entry": "A Pokémon that eats soil. Once it\nhas eaten a large mountain, it\ngoes to sleep so it can grow.",
+                "height": "2'00\"",
+                "weight": "158.7 lbs."
+            },
+            "fr": {
+                "name": "Embrylex",
+                "category": "Pokémon Peaupierre",
+                "entry": "Un Pokémon qui se nourrit de terre.\nAprès avoir dévoré une montagne,\nil s'endort pour grandir.",
+                "height": "0,6 m",
+                "weight": "72,0 kg"
+            },
+            "de": {
+                "name": "Larvitar",
+                "category": "Felshaut",
+                "entry": "Dieses Pokémon frisst das Erdreich.\nHat es einen Berg verspeist,\nschläft es ein, um zu wachsen.",
+                "height": "0,6 m",
+                "weight": "72,0 kg"
+            },
+            "it": {
+                "name": "Larvitar",
+                "category": "Pokémon Peldisasso",
+                "entry": "Pokémon che mangia la terra. Dopo aver\nmangiato un'intera montagna, va a\ndormire per poter crescere.",
+                "height": "0,6 m",
+                "weight": "72,0 kg"
+            },
+            "ko": {
+                "name": "애버라스",
+                "category": "바위표면포켓몬",
+                "entry": "흙을 먹는 포켓몬이다.\n큰 산을 다 먹어치우면\n성장을 위해 잠자기 시작한다.",
+                "height": "0.6 m",
+                "weight": "72.0 kg"
+            },
+            "es": {
+                "name": "Larvitar",
+                "category": "Pokémon Piel Roca",
+                "entry": "Este Pokémon come tierra. Cuando se\ncome una montaña, se echa a dormir\npara crecer.",
+                "height": "0,6 m",
+                "weight": "72,0 kg"
+            },
+            "ja": {
+                "name": "ヨーギラス",
+                "category": "いわはだポケモン",
+                "entry": "つちを\\x{3000}たべる\\x{3000}ポケモン。\nおおきな\\x{3000}やまを\\x{3000}たいらげると\nせいちょうのため\\x{3000}ねむりはじめる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 64,

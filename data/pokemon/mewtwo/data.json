@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mewtwo",
-    "category": "Genetic Pokémon",
-    "pokedex_entry": "A Pokémon created by recombining\nMew's genes. It's said to have the\nmost savage heart among Pokémon.",
+    "pokedex": {
+        "category": "Genetic Pokémon",
+        "entry": "A Pokémon created by recombining\nMew's genes. It's said to have the\nmost savage heart among Pokémon.",
+        "height": "6'07\"",
+        "weight": "269.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mewtwo",
+                "category": "Genetic Pokémon",
+                "entry": "A Pokémon created by recombining\nMew's genes. It's said to have the\nmost savage heart among Pokémon.",
+                "height": "6'07\"",
+                "weight": "269.0 lbs."
+            },
+            "fr": {
+                "name": "Mewtwo",
+                "category": "Pokémon Génétique",
+                "entry": "Un Pokémon conçu en réorganisant\nles gènes de Mew. On raconte qu'il\ns'agit du Pokémon le plus féroce.",
+                "height": "2,0 m",
+                "weight": "122,0 kg"
+            },
+            "de": {
+                "name": "Mewtu",
+                "category": "Genmutant",
+                "entry": "Die Gene von Mew wurden neu\nangeordnet, wodurch dieses Pokémon\nentstand. Es hat ein wildes Herz.",
+                "height": "2,0 m",
+                "weight": "122,0 kg"
+            },
+            "it": {
+                "name": "Mewtwo",
+                "category": "Pokémon Genetico",
+                "entry": "Un Pokémon creato usando i geni di Mew.\nSi dice che fra i Pokémon sia quello con\nl'animo più crudele.",
+                "height": "2,0 m",
+                "weight": "122,0 kg"
+            },
+            "ko": {
+                "name": "뮤츠",
+                "category": "유전포켓몬",
+                "entry": "뮤의 유전자를 재구성해서\n만들어졌다. 포켓몬 중에서 가장\n난폭한 마음을 가지고 있다고 한다.",
+                "height": "2.0 m",
+                "weight": "122.0 kg"
+            },
+            "es": {
+                "name": "Mewtwo",
+                "category": "Pokémon Genético",
+                "entry": "Pokémon creado por recombinación\ngenética de Mew. Se dice que es\nel más salvaje de los Pokémon.",
+                "height": "2,0 m",
+                "weight": "122,0 kg"
+            },
+            "ja": {
+                "name": "ミュウツー",
+                "category": "いでんしポケモン",
+                "entry": "ミュウの\\x{3000}いでんしを\\x{3000}くみかえて\nうみだされた。ポケモンで\\x{3000}いちばん\nきょうぼうな\\x{3000}こころを\\x{3000}もつという。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 106,
         "attack": 110,

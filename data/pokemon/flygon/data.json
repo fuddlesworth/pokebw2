@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Flygon",
-    "category": "Mystic Pokémon",
-    "pokedex_entry": "Known as “The Desert Spirit,\"\nthis Pokémon hides in the sandstorms\nit causes by beating its wings.",
+    "pokedex": {
+        "category": "Mystic Pokémon",
+        "entry": "Known as “The Desert Spirit,\"\nthis Pokémon hides in the sandstorms\nit causes by beating its wings.",
+        "height": "6'07\"",
+        "weight": "180.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Flygon",
+                "category": "Mystic Pokémon",
+                "entry": "It whips up sandstorms with\npowerful flaps of its wings. It is\nknown as “The Desert Spirit.\"",
+                "height": "6'07\"",
+                "weight": "180.8 lbs."
+            },
+            "fr": {
+                "name": "Libégon",
+                "category": "Pokémon Mystique",
+                "entry": "Son puissant battement d'ailes\nprovoque des tempêtes de sable.\nOn l'appelle “esprit du désert\".",
+                "height": "2,0 m",
+                "weight": "82,0 kg"
+            },
+            "de": {
+                "name": "Libelldra",
+                "category": "Mystik",
+                "entry": "Mit mächtigem Flügelschlag ver-\nursacht es einen Sandsturm. Es wird\n„Geist der Wüste“ genannt.",
+                "height": "2,0 m",
+                "weight": "82,0 kg"
+            },
+            "it": {
+                "name": "Flygon",
+                "category": "Pokémon Magico",
+                "entry": "Genera tempeste di sabbia con il battito\ndelle ali. È detto anche “Spirito\nprimordiale del deserto\".",
+                "height": "2,0 m",
+                "weight": "82,0 kg"
+            },
+            "ko": {
+                "name": "플라이곤",
+                "category": "혼령포켓몬",
+                "entry": "강렬한 날개를 쳐서\n모래바람을 일으킨다.\n사막의 정령이라고 불린다.",
+                "height": "2.0 m",
+                "weight": "82.0 kg"
+            },
+            "es": {
+                "name": "Flygon",
+                "category": "Pokémon Místico",
+                "entry": "Levanta tormentas de arena con\nsus alas. Se le conoce como\nel Alma del Desierto.",
+                "height": "2,0 m",
+                "weight": "82,0 kg"
+            },
+            "ja": {
+                "name": "フライゴン",
+                "category": "せいれいポケモン",
+                "entry": "きょうれつな\\x{3000}ハネの\\x{3000}はばたきで\nすなあらしを\\x{3000}おこす。\nさばくのせいれい\\x{3000}と\\x{3000}よばれる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 100,

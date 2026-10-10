@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Granbull",
-    "category": "Fairy Pokémon",
-    "pokedex_entry": "It is timid in spite of its looks.\nIf it becomes enraged, however,\nit will strike with its huge fangs.",
+    "pokedex": {
+        "category": "Fairy Pokémon",
+        "entry": "It is timid in spite of its looks.\nIf it becomes enraged, however,\nit will strike with its huge fangs.",
+        "height": "4'07\"",
+        "weight": "107.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Granbull",
+                "category": "Fairy Pokémon",
+                "entry": "It is timid in spite of its looks.\nIf it becomes enraged, however,\nit will strike with its huge fangs.",
+                "height": "4'07\"",
+                "weight": "107.4 lbs."
+            },
+            "fr": {
+                "name": "Granbull",
+                "category": "Pokémon Fée",
+                "entry": "En dépit des apparences, c'est un\ngrand timide. Quand il s'énerve, il\nmord de ses énormes crocs.",
+                "height": "1,4 m",
+                "weight": "48,7 kg"
+            },
+            "de": {
+                "name": "Granbull",
+                "category": "Fee",
+                "entry": "Es ist trotz seines Äußeren schüchtern.\nWird es wütend, schnappt es mit seinen\nFängen zu.",
+                "height": "1,4 m",
+                "weight": "48,7 kg"
+            },
+            "it": {
+                "name": "Granbull",
+                "category": "Pokémon Fata",
+                "entry": "Malgrado il suo aspetto, è molto timido.\nSe si arrabbia, tuttavia, colpisce con\nle sue enormi zanne.",
+                "height": "1,4 m",
+                "weight": "48,7 kg"
+            },
+            "ko": {
+                "name": "그랑블루",
+                "category": "요정포켓몬",
+                "entry": "얼굴에 어울리지 않게 겁이 많다.\n그러나 한번 화내기 시작하면\n큰 이빨로 반격한다.",
+                "height": "1.4 m",
+                "weight": "48.7 kg"
+            },
+            "es": {
+                "name": "Granbull",
+                "category": "Pokémon Hada",
+                "entry": "A pesar de su aspecto, es muy\ntímido. Sin embargo, cuando se\nenfada, ataca con sus colmillos.",
+                "height": "1,4 m",
+                "weight": "48,7 kg"
+            },
+            "ja": {
+                "name": "グランブル",
+                "category": "ようせいポケモン",
+                "entry": "かおに\\x{3000}にあわず\\x{3000}おくびょう。\nしかし\\x{3000}ひとたび\\x{3000}おこりはじめると\nおおきな\\x{3000}キバで\\x{3000}はんげきする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff18}\\x{ff0e}\\x{ff17}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 120,

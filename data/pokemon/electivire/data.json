@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Electivire",
-    "category": "Thunderbolt Pokémon",
-    "pokedex_entry": "The instant it presses the tips of its\ntails onto an opponent, it sends over\n20,000 volts of electricity into the foe.",
+    "pokedex": {
+        "category": "Thunderbolt Pokémon",
+        "entry": "The instant it presses the tips of its\ntails onto an opponent, it sends over\n20,000 volts of electricity into the foe.",
+        "height": "5'11\"",
+        "weight": "305.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Electivire",
+                "category": "Thunderbolt Pokémon",
+                "entry": "Heedless of enemy attacks, it\ncloses in, shoves its tails onto the\nfoe, then looses high voltage.",
+                "height": "5'11\"",
+                "weight": "305.6 lbs."
+            },
+            "fr": {
+                "name": "Élekable",
+                "category": "Pokémon Foudrélec",
+                "entry": "Encaissant les attaques, il vient\ntoucher l'ennemi de ses queues\net lui inflige une forte décharge.",
+                "height": "1,8 m",
+                "weight": "138,6 kg"
+            },
+            "de": {
+                "name": "Elevoltek",
+                "category": "Donnerkeil",
+                "entry": "Berührt seinen Gegner mit seinen\nbeiden Schweifspitzen und entlädt\ndann starke Elektrizität.",
+                "height": "1,8 m",
+                "weight": "138,6 kg"
+            },
+            "it": {
+                "name": "Electivire",
+                "category": "Pokémon Saetta",
+                "entry": "Incurante degli attacchi nemici, si\navvicina, tocca il nemico con le code e\nrilascia una scarica elettrica.",
+                "height": "1,8 m",
+                "weight": "138,6 kg"
+            },
+            "ko": {
+                "name": "에레키블",
+                "category": "뇌전포켓몬",
+                "entry": "상대의 공격을 신경 쓰지 않고\n다가서서는 꼬리를 들이대어\n고압의 전류를 흘린다.",
+                "height": "1.8 m",
+                "weight": "138.6 kg"
+            },
+            "es": {
+                "name": "Electivire",
+                "category": "Pokémon Rayo",
+                "entry": "Ignora los ataques del enemigo y se\nacerca para clavarle las colas y\ndarle una descarga de alto voltaje.",
+                "height": "1,8 m",
+                "weight": "138,6 kg"
+            },
+            "ja": {
+                "name": "エレキブル",
+                "category": "らいでんポケモン",
+                "entry": "あいての\\x{3000}こうげきを\\x{3000}きにせず\nちかづいては\\x{3000}しっぽを\\x{3000}おしつけて\nこうあつの\\x{3000}でんりゅうを\\x{3000}ながす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff13}\\x{ff18}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 123,

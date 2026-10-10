@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shelmet",
-    "category": "Snail Pokémon",
-    "pokedex_entry": "When it and Karrablast are together,\nand both receive electrical stimulation,\nthey both evolve.",
+    "pokedex": {
+        "category": "Snail Pokémon",
+        "entry": "When it and Karrablast are together,\nand both receive electrical stimulation,\nthey both evolve.",
+        "height": "1'04\"",
+        "weight": "17.0 lbs.",
+        "languages": {
+            "ja": {
+                "category": "マイマイポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 40,

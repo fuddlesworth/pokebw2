@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Simisear",
-    "category": "Ember Pokémon",
-    "pokedex_entry": "When it gets excited, embers rise\nfrom its head and tail and it gets hot.\nFor some reason, it loves sweets.",
+    "pokedex": {
+        "category": "Ember Pokémon",
+        "entry": "When it gets excited, embers rise\nfrom its head and tail and it gets hot.\nFor some reason, it loves sweets.",
+        "height": "3'03\"",
+        "weight": "61.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ひのこポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 98,

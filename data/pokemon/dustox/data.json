@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Dustox",
-    "category": "Poison Moth Pokémon",
-    "pokedex_entry": "Toxic powder is scattered with each\nflap. At night, it is known to strip\nleaves off trees lining boulevards.",
+    "pokedex": {
+        "category": "Poison Moth Pokémon",
+        "entry": "Toxic powder is scattered with each\nflap. At night, it is known to strip\nleaves off trees lining boulevards.",
+        "height": "3'11\"",
+        "weight": "69.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Dustox",
+                "category": "Poison Moth Pokémon",
+                "entry": "Toxic powder is scattered with each\nflap. At night, it is known to strip\nleaves off trees lining boulevards.",
+                "height": "3'11\"",
+                "weight": "69.7 lbs."
+            },
+            "fr": {
+                "name": "Papinox",
+                "category": "Pokémon Papipoison",
+                "entry": "Il disperse un nuage de poudre\ntoxique à chaque coup d'aile. Il\naime les feuilles d'arbres urbains.",
+                "height": "1,2 m",
+                "weight": "31,6 kg"
+            },
+            "de": {
+                "name": "Pudox",
+                "category": "Giftmotte",
+                "entry": "Es streut mit jedem Flügelschlag\ngiftiges Pulver. Nachts entfernt es\ndie Blätter von Bäumen an Alleen.",
+                "height": "1,2 m",
+                "weight": "31,6 kg"
+            },
+            "it": {
+                "name": "Dustox",
+                "category": "Pokémon Velentarma",
+                "entry": "Rilascia una polvere tossica dalle ali.\nDi notte divora le foglie degli alberi\nlungo i viali.",
+                "height": "1,2 m",
+                "weight": "31,6 kg"
+            },
+            "ko": {
+                "name": "독케일",
+                "category": "독나방포켓몬",
+                "entry": "날개를 칠 때마다 독가루가 흩날린다.\n밤중에 가로수 잎을 어지르며 먹어대는\n일도 있다.",
+                "height": "1.2 m",
+                "weight": "31.6 kg"
+            },
+            "es": {
+                "name": "Dustox",
+                "category": "Pokémon Polilla V.",
+                "entry": "Bate las alas para esparcir polvo\ntóxico. De noche se come las hojas\nde los árboles de las avenidas.",
+                "height": "1,2 m",
+                "weight": "31,6 kg"
+            },
+            "ja": {
+                "name": "ドクケイル",
+                "category": "どくがポケモン",
+                "entry": "はばたくたびに\\x{3000}どくのこなが\\x{3000}まう。\nよるの\\x{3000}あいだに\\x{3000}がいろじゅの\nはっぱを\\x{3000}くいちらかすことも\\x{3000}ある。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 50,

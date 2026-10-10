@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Infernape",
-    "category": "Flame Pokémon",
-    "pokedex_entry": "It uses unique fighting moves with\nfire on its hands and feet. It will\ntake on any opponent.",
+    "pokedex": {
+        "category": "Flame Pokémon",
+        "entry": "It uses unique fighting moves with\nfire on its hands and feet. It will\ntake on any opponent.",
+        "height": "3'11\"",
+        "weight": "121.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Infernape",
+                "category": "Flame Pokémon",
+                "entry": "It uses unique fighting moves with\nfire on its hands and feet. It will\ntake on any opponent.",
+                "height": "3'11\"",
+                "weight": "121.3 lbs."
+            },
+            "fr": {
+                "name": "Simiabraz",
+                "category": "Pokémon Flamme",
+                "entry": "Ses techniques de combat inédites\nà base de pieds et poings enflammés\nsont redoutables.",
+                "height": "1,2 m",
+                "weight": "55,0 kg"
+            },
+            "de": {
+                "name": "Panferno",
+                "category": "Flamme",
+                "entry": "Es verwendet einzigartige Attacken\nmit dem Feuer an seinen Händen und\nFüßen. Stellt sich jedem Gegner.",
+                "height": "1,2 m",
+                "weight": "55,0 kg"
+            },
+            "it": {
+                "name": "Infernape",
+                "category": "Pokémon Fiamma",
+                "entry": "Con mani e piedi infuocati, usa mosse di\nlotta speciali. Affronta qualsiasi nemico.",
+                "height": "1,2 m",
+                "weight": "55,0 kg"
+            },
+            "ko": {
+                "name": "초염몽",
+                "category": "화염포켓몬",
+                "entry": "손발에 불꽃을 두르는\n독특한 격투 기술을 써서\n어떤 상대라도 맞서 싸운다.",
+                "height": "1.2 m",
+                "weight": "55.0 kg"
+            },
+            "es": {
+                "name": "Infernape",
+                "category": "Pokémon Llama",
+                "entry": "Utiliza movimientos de combate\núnicos con fuego en manos y pies.\nSe enfrenta a cualquier enemigo.",
+                "height": "1,2 m",
+                "weight": "55,0 kg"
+            },
+            "ja": {
+                "name": "ゴウカザル",
+                "category": "かえんポケモン",
+                "entry": "てあしに\\x{3000}ほのおを\\x{3000}まとった\nどくとくの\\x{3000}かくとうわざを\\x{3000}つかい\nどんな\\x{3000}あいてにも\\x{3000}たちむかう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 76,
         "attack": 104,

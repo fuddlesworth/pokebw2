@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Octillery",
-    "category": "Jet Pokémon",
-    "pokedex_entry": "It has a tendency to want to be in holes.\nIt prefers rock crags or pots and\nsprays ink from them before attacking.",
+    "pokedex": {
+        "category": "Jet Pokémon",
+        "entry": "It has a tendency to want to be in holes.\nIt prefers rock crags or pots and\nsprays ink from them before attacking.",
+        "height": "2'11\"",
+        "weight": "62.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Octillery",
+                "category": "Jet Pokémon",
+                "entry": "It loves to lurk inside holes in\nrocks. It sometimes sprays ink on\nprey by sticking out only its mouth.",
+                "height": "2'11\"",
+                "weight": "62.8 lbs."
+            },
+            "fr": {
+                "name": "Octillery",
+                "category": "Pokémon Jet",
+                "entry": "Il adore se cacher dans les\nfissures de la roche. Il crache\nparfois de l'encre sur ses proies.",
+                "height": "0,9 m",
+                "weight": "28,5 kg"
+            },
+            "de": {
+                "name": "Octillery",
+                "category": "Hochdruck",
+                "entry": "Es lauert gern in den Löchern von\nFelsen, um vorbeischwimmende\nBeute mit Tinte zu bespritzen.",
+                "height": "0,9 m",
+                "weight": "28,5 kg"
+            },
+            "it": {
+                "name": "Octillery",
+                "category": "Pokémon Jet",
+                "entry": "Adora nascondersi nelle spaccature\ndelle rocce. A volte allunga la bocca\ne sputa inchiostro sulle prede.",
+                "height": "0,9 m",
+                "weight": "28,5 kg"
+            },
+            "ko": {
+                "name": "대포무노",
+                "category": "분사포켓몬",
+                "entry": "바위굴에 파고드는 것을 좋아한다.\n그대로 입만 내놓고 먹이에\n먹물을 뿜는 일도 있다.",
+                "height": "0.9 m",
+                "weight": "28.5 kg"
+            },
+            "es": {
+                "name": "Octillery",
+                "category": "Pokémon Reactor",
+                "entry": "Le gusta acechar desde agujeros\nen las rocas. Escupe tinta a sus\npresas asomando solo la boca.",
+                "height": "0,9 m",
+                "weight": "28,5 kg"
+            },
+            "ja": {
+                "name": "オクタン",
+                "category": "ふんしゃポケモン",
+                "entry": "いわあなに\\x{3000}もぐりこむのが\\x{3000}すき。\nそのまま\\x{3000}くちだけだして\\x{3000}えものに\nスミを\\x{3000}ふきかけることも\\x{3000}ある。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff18}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 105,

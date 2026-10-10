@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shroomish",
-    "category": "Mushroom Pokémon",
-    "pokedex_entry": "It spouts poison spores from the\ntop of its head. These spores\ncause pain all over if inhaled.",
+    "pokedex": {
+        "category": "Mushroom Pokémon",
+        "entry": "It spouts poison spores from the\ntop of its head. These spores\ncause pain all over if inhaled.",
+        "height": "1'04\"",
+        "weight": "9.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shroomish",
+                "category": "Mushroom Pokémon",
+                "entry": "It spouts poison spores from the\ntop of its head. These spores\ncause pain all over if inhaled.",
+                "height": "1'04\"",
+                "weight": "9.9 lbs."
+            },
+            "fr": {
+                "name": "Balignon",
+                "category": "Pokémon Champignon",
+                "entry": "Le sommet de sa tête libère des\nspores empoisonnées. Il est\ndangereux de les inhaler.",
+                "height": "0,4 m",
+                "weight": "4,5 kg"
+            },
+            "de": {
+                "name": "Knilz",
+                "category": "Pilz",
+                "entry": "Es setzt an seinem Kopf Giftsporen frei.\nWerden diese eingeatmet, verursachen\nsie Schmerzen.",
+                "height": "0,4 m",
+                "weight": "4,5 kg"
+            },
+            "it": {
+                "name": "Shroomish",
+                "category": "Pokémon Fungo",
+                "entry": "Sparge spore tossiche dalla sommità\ndel capo. Se inalate, queste spore\nprovocano dolore in tutto il corpo.",
+                "height": "0,4 m",
+                "weight": "4,5 kg"
+            },
+            "ko": {
+                "name": "버섯꼬",
+                "category": "버섯포켓몬",
+                "entry": "머리의 정수리에서 독 포자를\n뿜어낸다. 포자를 들이마시면\n몸의 마디마디가 아파진다.",
+                "height": "0.4 m",
+                "weight": "4.5 kg"
+            },
+            "es": {
+                "name": "Shroomish",
+                "category": "Pokémon Hongo",
+                "entry": "Lanza esporas venenosas desde\nla parte superior de la cabeza.\nInhalarlas es muy doloroso.",
+                "height": "0,4 m",
+                "weight": "4,5 kg"
+            },
+            "ja": {
+                "name": "キノココ",
+                "category": "きのこポケモン",
+                "entry": "あたまの\\x{3000}てっぺんから\\x{3000}どくほうしを\nふきだす。ほうしを\\x{3000}すいこむと\nからだの\\x{3000}ふしぶしが\\x{3000}いたくなる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 40,

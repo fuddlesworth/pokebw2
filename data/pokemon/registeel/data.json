@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Registeel",
-    "category": "Iron Pokémon",
-    "pokedex_entry": "Tempered by pressure underground\nover tens of thousands of years,\nits body cannot be scratched.",
+    "pokedex": {
+        "category": "Iron Pokémon",
+        "entry": "Tempered by pressure underground\nover tens of thousands of years,\nits body cannot be scratched.",
+        "height": "6'03\"",
+        "weight": "451.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Registeel",
+                "category": "Iron Pokémon",
+                "entry": "Tempered by pressure underground\nover tens of thousands of years,\nits body cannot be scratched.",
+                "height": "6'03\"",
+                "weight": "451.9 lbs."
+            },
+            "fr": {
+                "name": "Registeel",
+                "category": "Pokémon Fer",
+                "entry": "Son corps invulnérable fut forgé\npar la pression souterraine durant\ndes dizaines de milliers d'années.",
+                "height": "1,9 m",
+                "weight": "205,0 kg"
+            },
+            "de": {
+                "name": "Registeel",
+                "category": "Eisen",
+                "entry": "Im Laufe der Jahrtausende, die es\nunterirdisch lebte, wurde sein\nKörper durch Druck und Wärme hart.",
+                "height": "1,9 m",
+                "weight": "205,0 kg"
+            },
+            "it": {
+                "name": "Registeel",
+                "category": "Pokémon Ferro",
+                "entry": "La pressione subita sottoterra per\ndecine di migliaia di anni ha reso il suo\ncorpo resistentissimo.",
+                "height": "1,9 m",
+                "weight": "205,0 kg"
+            },
+            "ko": {
+                "name": "레지스틸",
+                "category": "쇠철포켓몬",
+                "entry": "몇 만년 동안 지하의 압력에 의해서\n단련된 금속의 몸은\n상처 하나 입지 않는다.",
+                "height": "1.9 m",
+                "weight": "205.0 kg"
+            },
+            "es": {
+                "name": "Registeel",
+                "category": "Pokémon Hierro",
+                "entry": "Su cuerpo ha estado sometido a la\npresión subterránea durante miles\nde años y no puede arañarse.",
+                "height": "1,9 m",
+                "weight": "205,0 kg"
+            },
+            "ja": {
+                "name": "レジスチル",
+                "category": "くろがねポケモン",
+                "entry": "なんまんねんも\\x{3000}ちかの\\x{3000}あつりょくで\nきたえられた\\x{3000}きんぞくの\\x{3000}ボディは\nきずひとつ\\x{3000}つかない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 75,

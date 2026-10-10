@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mime Jr.",
-    "category": "Mime Pokémon",
-    "pokedex_entry": "It mimics the expressions and\nmotions of those it sees to\nunderstand the feelings of others.",
+    "pokedex": {
+        "category": "Mime Pokémon",
+        "entry": "It mimics the expressions and\nmotions of those it sees to\nunderstand the feelings of others.",
+        "height": "2'00\"",
+        "weight": "28.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mime Jr.",
+                "category": "Mime Pokémon",
+                "entry": "It mimics the expressions and\nmotions of those it sees to\nunderstand the feelings of others.",
+                "height": "2'00\"",
+                "weight": "28.7 lbs."
+            },
+            "fr": {
+                "name": "Mime Jr.",
+                "category": "Pokémon Mime",
+                "entry": "Il imite les mouvements et les\nexpressions des autres pour\ncomprendre leurs sentiments.",
+                "height": "0,6 m",
+                "weight": "13,0 kg"
+            },
+            "de": {
+                "name": "Pantimimi",
+                "category": "Mime",
+                "entry": "Ahmt die Bewegungen und\nGesichtsausdrücke anderer nach,\num ihre Gefühle besser zu verstehen.",
+                "height": "0,6 m",
+                "weight": "13,0 kg"
+            },
+            "it": {
+                "name": "Mime Jr.",
+                "category": "Pokémon Mimo",
+                "entry": "Imita i movimenti e le espressioni\ndi coloro che vede per capire\ni sentimenti degli altri.",
+                "height": "0,6 m",
+                "weight": "13,0 kg"
+            },
+            "ko": {
+                "name": "흉내내",
+                "category": "따라하기포켓몬",
+                "entry": "눈에 보이는 상대의 얼굴이나\n움직임의 흉내를 내는 것으로\n어떤 기분인지 알려고 한다.",
+                "height": "0.6 m",
+                "weight": "13.0 kg"
+            },
+            "es": {
+                "name": "Mime Jr.",
+                "category": "Pokémon Mimo",
+                "entry": "Cuando tiene a alguien delante, imita\nsu expresión y movimientos para\nentender sus sentimientos.",
+                "height": "0,6 m",
+                "weight": "13,0 kg"
+            },
+            "ja": {
+                "name": "マネネ",
+                "category": "マイムポケモン",
+                "entry": "めにみえる\\x{3000}あいての\\x{3000}かおや\nうごきの\\x{3000}モノマネを\\x{3000}することで\nどんな\\x{3000}きもちか\\x{3000}わかろうとする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff13}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 20,
         "attack": 25,

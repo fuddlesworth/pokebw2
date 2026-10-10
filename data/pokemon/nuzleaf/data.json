@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Nuzleaf",
-    "category": "Wily Pokémon",
-    "pokedex_entry": "The sound of its grass flute makes\nits listeners uneasy. It lives deep\nin forests.",
+    "pokedex": {
+        "category": "Wily Pokémon",
+        "entry": "The sound of its grass flute makes\nits listeners uneasy. It lives deep\nin forests.",
+        "height": "3'03\"",
+        "weight": "61.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Nuzleaf",
+                "category": "Wily Pokémon",
+                "entry": "The sound of its grass flute makes\nits listeners uneasy. It lives deep\nin forests.",
+                "height": "3'03\"",
+                "weight": "61.7 lbs."
+            },
+            "fr": {
+                "name": "Pifeuil",
+                "category": "Pokémon Malin",
+                "entry": "Le son de sa flûte d'herbe\ndéstabilise l'auditeur. Il vit au\nplus profond des forêts.",
+                "height": "1,0 m",
+                "weight": "28,0 kg"
+            },
+            "de": {
+                "name": "Blanas",
+                "category": "Hinterlist",
+                "entry": "Der Ton seiner Grasflöte beunruhigt die,\ndie ihn hören. Es lebt tief in den\nWäldern.",
+                "height": "1,0 m",
+                "weight": "28,0 kg"
+            },
+            "it": {
+                "name": "Nuzleaf",
+                "category": "Pokémon Scaltro",
+                "entry": "Il fischio del suo flauto di foglia mette\na disagio chi lo sente.\nVive nelle foreste più fitte.",
+                "height": "1,0 m",
+                "weight": "28,0 kg"
+            },
+            "ko": {
+                "name": "잎새코",
+                "category": "꾀부리기포켓몬",
+                "entry": "잎새코가 연주하는 풀피리의\n음색은 사람을 불안하게 만든다.\n숲 속에서 살고 있다.",
+                "height": "1.0 m",
+                "weight": "28.0 kg"
+            },
+            "es": {
+                "name": "Nuzleaf",
+                "category": "Pokémon Astuto",
+                "entry": "Cuando usa la hoja de su cabeza\ncomo flauta, asusta a la gente. Vive\nen lo más profundo de los bosques.",
+                "height": "1,0 m",
+                "weight": "28,0 kg"
+            },
+            "ja": {
+                "name": "コノハナ",
+                "category": "いじわるポケモン",
+                "entry": "コノハナが\\x{3000}かなでる\\x{3000}くさぶえの\nねいろは\\x{3000}ひとを\\x{3000}ふあんにさせる。\nもりの\\x{3000}おくに\\x{3000}すんでいる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 70,

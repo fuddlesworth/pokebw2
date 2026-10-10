@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mantine",
-    "category": "Kite Pokémon",
-    "pokedex_entry": "If it builds up enough speed swimming, it\ncan fly over 300 feet out of the water\nfrom the surface of the ocean.",
+    "pokedex": {
+        "category": "Kite Pokémon",
+        "entry": "If it builds up enough speed swimming, it\ncan fly over 300 feet out of the water\nfrom the surface of the ocean.",
+        "height": "6'11\"",
+        "weight": "485.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mantine",
+                "category": "Kite Pokémon",
+                "entry": "While elegantly swimming in the sea,\nit ignores Remoraid that cling to\nits fins seeking food scraps.",
+                "height": "6'11\"",
+                "weight": "485.0 lbs."
+            },
+            "fr": {
+                "name": "Démanta",
+                "category": "Pokémon Cervolant",
+                "entry": "Il ignore royalement les Rémoraid\nqui s'accrochent à ses nageoires\npour manger les restes qu'il sème.",
+                "height": "2,1 m",
+                "weight": "220,0 kg"
+            },
+            "de": {
+                "name": "Mantax",
+                "category": "Flugrochen",
+                "entry": "Zieht elegant durch die Meere und\nignoriert dabei Remoraid,\ndie an seinen Flossen haften.",
+                "height": "2,1 m",
+                "weight": "220,0 kg"
+            },
+            "it": {
+                "name": "Mantine",
+                "category": "Pokémon Aquilone",
+                "entry": "Nuota in mare con eleganza e ignora\ni Remoraid che gli si attaccano alle\npinne in cerca di avanzi di cibo.",
+                "height": "2,1 m",
+                "weight": "220,0 kg"
+            },
+            "ko": {
+                "name": "만타인",
+                "category": "연포켓몬",
+                "entry": "유연하게 바다를 헤엄칠 때\n먹다 남은 음식을 노린 총어가\n지느러미에 달라붙지만 신경 안 쓴다.",
+                "height": "2.1 m",
+                "weight": "220.0 kg"
+            },
+            "es": {
+                "name": "Mantine",
+                "category": "Pokémon Milano",
+                "entry": "Nada con gran elegancia e ignora a\nlos Remoraid que se aferran a sus\naletas buscando restos de comida.",
+                "height": "2,1 m",
+                "weight": "220,0 kg"
+            },
+            "ja": {
+                "name": "マンタイン",
+                "category": "カイトポケモン",
+                "entry": "ゆうぜんと\\x{3000}うみを\\x{3000}およぐうちに\nたべのこしを\\x{3000}ねらった\\x{3000}テッポウオが\nひれに\\x{3000}くっつくが\\x{3000}きにしていない。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 40,

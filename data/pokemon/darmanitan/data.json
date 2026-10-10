@@ -1,11 +1,24 @@
 {
     "$schema": "../species.schema.json",
     "name": "Darmanitan",
-    "category": "Blazing Pokémon",
-    "pokedex_entry": "When one is injured in a fierce battle,\nit hardens into a stone-like form.\nThen it meditates and sharpens its mind.",
-    "form_pokedex_entries": [
-        "When one is injured in a fierce battle,\nit hardens into a stone-like form.\nThen it meditates and sharpens its mind."
-    ],
+    "pokedex": {
+        "category": "Blazing Pokémon",
+        "entry": "When one is injured in a fierce battle,\nit hardens into a stone-like form.\nThen it meditates and sharpens its mind.",
+        "height": "4'03\"",
+        "weight": "204.8 lbs.",
+        "forms": [
+            {
+                "entry": "When one is injured in a fierce battle,\nit hardens into a stone-like form.\nThen it meditates and sharpens its mind.",
+                "height": "4'03\"",
+                "weight": "204.8 lbs."
+            }
+        ],
+        "languages": {
+            "ja": {
+                "category": "えんじょうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 105,
         "attack": 140,

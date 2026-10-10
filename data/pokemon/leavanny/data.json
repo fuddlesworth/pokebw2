@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Leavanny",
-    "category": "Nurturing Pokémon",
-    "pokedex_entry": "Upon finding a small Pokémon, it weaves\nclothing for it from leaves by using the\nsticky silk secreted from its mouth.",
+    "pokedex": {
+        "category": "Nurturing Pokémon",
+        "entry": "Upon finding a small Pokémon, it weaves\nclothing for it from leaves by using the\nsticky silk secreted from its mouth.",
+        "height": "3'11\"",
+        "weight": "45.2 lbs.",
+        "languages": {
+            "ja": {
+                "category": "こそだてポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 103,

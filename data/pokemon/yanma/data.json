@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Yanma",
-    "category": "Clear Wing Pokémon",
-    "pokedex_entry": "By flapping its wings at high speed,\nit can fly freely through the air.\nEven sudden stops are no problem.",
+    "pokedex": {
+        "category": "Clear Wing Pokémon",
+        "entry": "By flapping its wings at high speed,\nit can fly freely through the air.\nEven sudden stops are no problem.",
+        "height": "3'11\"",
+        "weight": "83.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Yanma",
+                "category": "Clear Wing Pokémon",
+                "entry": "It can hover in one spot by\nflapping its wings at high speed. It\nflits about to guard its territory.",
+                "height": "3'11\"",
+                "weight": "83.8 lbs."
+            },
+            "fr": {
+                "name": "Yanma",
+                "category": "Pokémon Translaile",
+                "entry": "La vitesse de ses ailes lui permet\nun vol stationnaire. Il surveille\nainsi tout son territoire.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "de": {
+                "name": "Yanma",
+                "category": "Libelle",
+                "entry": "Schwebt auf der Stelle durch das\nschnelle Schlagen seiner Flügel.\nHat ein Auge auf sein Territorium.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "it": {
+                "name": "Yanma",
+                "category": "Pokémon Alachiara",
+                "entry": "Può fermarsi a mezz'aria sbattendo\nvelocemente le ali. Vola di qua e di\nlà per difendere il suo territorio.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "ko": {
+                "name": "왕자리",
+                "category": "얇은날개포켓몬",
+                "entry": "날개를 고속으로 퍼덕여\n공중에서 정지한 채로\n자신의 영역을 감시한다.",
+                "height": "1.2 m",
+                "weight": "38.0 kg"
+            },
+            "es": {
+                "name": "Yanma",
+                "category": "Pokémon Ala Clara",
+                "entry": "Puede mantenerse en un punto fijo\ndel aire agitando mucho las alas.\nVigila su territorio sobrevolándolo.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "ja": {
+                "name": "ヤンヤンマ",
+                "category": "うすばねポケモン",
+                "entry": "ハネを\\x{3000}こうそくで\\x{3000}はためかせて\nくうちゅうで\\x{3000}ていし\\x{3000}しながら\nじぶんの\\x{3000}なわばりを\\x{3000}みはっている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 65,

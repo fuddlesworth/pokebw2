@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vaporeon",
-    "category": "Bubble Jet Pokémon",
-    "pokedex_entry": "Its cell composition is similar to water\nmolecules. As a result, it can't be seen\nwhen it melts away into water.",
+    "pokedex": {
+        "category": "Bubble Jet Pokémon",
+        "entry": "Its cell composition is similar to water\nmolecules. As a result, it can't be seen\nwhen it melts away into water.",
+        "height": "3'03\"",
+        "weight": "63.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Vaporeon",
+                "category": "Bubble Jet Pokémon",
+                "entry": "Its cell composition is similar\nto water molecules. As a result,\nit can melt away into water.",
+                "height": "3'03\"",
+                "weight": "63.9 lbs."
+            },
+            "fr": {
+                "name": "Aquali",
+                "category": "Pokémon Bulleur",
+                "entry": "Sa composition moléculaire est\nproche de celle de l'eau, ce qui\nlui permet de se liquéfier.",
+                "height": "1,0 m",
+                "weight": "29,0 kg"
+            },
+            "de": {
+                "name": "Aquana",
+                "category": "Blubblase",
+                "entry": "Seine Zellstruktur ist der von\nWassermolekülen ähnlich. Daher\nkann es mit Wasser eins werden.",
+                "height": "1,0 m",
+                "weight": "29,0 kg"
+            },
+            "it": {
+                "name": "Vaporeon",
+                "category": "Pokémon Bollajet",
+                "entry": "La sua composizione cellulare è simile\na quella delle molecole d'acqua e si può\nsciogliere in essa.",
+                "height": "1,0 m",
+                "weight": "29,0 kg"
+            },
+            "ko": {
+                "name": "샤미드",
+                "category": "거품뿜기포켓몬",
+                "entry": "몸의 세포 구조가\n물 분자와 닮았기 때문에\n물에 녹을 수도 있다.",
+                "height": "1.0 m",
+                "weight": "29.0 kg"
+            },
+            "es": {
+                "name": "Vaporeon",
+                "category": "Pokémon Burbuja",
+                "entry": "Su composición celular es similar a\nla de las moléculas de agua, por eso\nse mimetiza tan bien con ella.",
+                "height": "1,0 m",
+                "weight": "29,0 kg"
+            },
+            "ja": {
+                "name": "シャワーズ",
+                "category": "あわはきポケモン",
+                "entry": "からだの\\x{3000}さいぼうの\\x{3000}つくりが\nみずの\\x{3000}ぶんしに\\x{3000}にているので\nみずに\\x{3000}とけることも\\x{3000}できる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff19}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 130,
         "attack": 65,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Escavalier",
-    "category": "Cavalry Pokémon",
-    "pokedex_entry": "Wearing the shell covering they stole\nfrom Shelmet, they defend themselves\nand attack with two lances.",
+    "pokedex": {
+        "category": "Cavalry Pokémon",
+        "entry": "Wearing the shell covering they stole\nfrom Shelmet, they defend themselves\nand attack with two lances.",
+        "height": "3'03\"",
+        "weight": "72.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "きへいポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 135,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sceptile",
-    "category": "Forest Pokémon",
-    "pokedex_entry": "The leaves that grow on its arms\ncan slice down thick trees. It is\nwithout peer in jungle combat.",
+    "pokedex": {
+        "category": "Forest Pokémon",
+        "entry": "The leaves that grow on its arms\ncan slice down thick trees. It is\nwithout peer in jungle combat.",
+        "height": "5'07\"",
+        "weight": "115.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sceptile",
+                "category": "Forest Pokémon",
+                "entry": "The leaves that grow on its arms\ncan slice down thick trees. It is\nwithout peer in jungle combat.",
+                "height": "5'07\"",
+                "weight": "115.1 lbs."
+            },
+            "fr": {
+                "name": "Jungko",
+                "category": "Pokémon Forêt",
+                "entry": "Les feuilles sur ses bras peuvent\ntrancher des troncs épais. C'est\nle meilleur combattant des jungles.",
+                "height": "1,7 m",
+                "weight": "52,2 kg"
+            },
+            "de": {
+                "name": "Gewaldro",
+                "category": "Dschungel",
+                "entry": "Die Blätter an seinen Armen können dicke\nBäume fällen. Im Dschungelkampf gibt es\nkein stärkeres Pokémon.",
+                "height": "1,7 m",
+                "weight": "52,2 kg"
+            },
+            "it": {
+                "name": "Sceptile",
+                "category": "Pokémon Foresta",
+                "entry": "Le foglie che crescono sulle sue braccia\ntagliano anche grandi alberi.\nNel suo habitat, è imbattibile.",
+                "height": "1,7 m",
+                "weight": "52,2 kg"
+            },
+            "ko": {
+                "name": "나무킹",
+                "category": "밀림포켓몬",
+                "entry": "팔에 자란 잎사귀는 큰 나무도\n싹둑 베어 넘어뜨리는 정도다.\n밀림의 싸움에서는 무적이다.",
+                "height": "1.7 m",
+                "weight": "52.2 kg"
+            },
+            "es": {
+                "name": "Sceptile",
+                "category": "Pokémon Monte",
+                "entry": "Las hojas de sus brazos pueden\ncortar gruesos árboles. Invencible\nen los combates en la jungla.",
+                "height": "1,7 m",
+                "weight": "52,2 kg"
+            },
+            "ja": {
+                "name": "ジュカイン",
+                "category": "みつりんポケモン",
+                "entry": "うでに\\x{3000}はえた\\x{3000}はっぱは\\x{3000}たいぼくも\nすっぱり\\x{3000}きりたおす\\x{3000}きれあじ。\nみつりんの\\x{3000}たたかいでは\\x{3000}むてき。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff12}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 85,

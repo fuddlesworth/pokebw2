@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Heatran",
-    "category": "Lava Dome Pokémon",
-    "pokedex_entry": "Its body is made of rugged steel.\nHowever, it is partially melted in\nspots because of its own heat.",
+    "pokedex": {
+        "category": "Lava Dome Pokémon",
+        "entry": "Its body is made of rugged steel.\nHowever, it is partially melted in\nspots because of its own heat.",
+        "height": "5'07\"",
+        "weight": "948.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Heatran",
+                "category": "Lava Dome Pokémon",
+                "entry": "Its body is made of rugged steel.\nHowever, it is partially melted in\nspots because of its own heat.",
+                "height": "5'07\"",
+                "weight": "948.0 lbs."
+            },
+            "fr": {
+                "name": "Heatran",
+                "category": "Pokémon Caldeira",
+                "entry": "Son corps est composé d'acier brut\ndont certaines parties ont fondu\nà cause de sa propre chaleur.",
+                "height": "1,7 m",
+                "weight": "430,0 kg"
+            },
+            "de": {
+                "name": "Heatran",
+                "category": "Lavadom",
+                "entry": "Sein Körper besteht aus Stahl,\nhat aber aufgrund der eigenen\nTemperatur geschmolzene Stellen.",
+                "height": "1,7 m",
+                "weight": "430,0 kg"
+            },
+            "it": {
+                "name": "Heatran",
+                "category": "Pokémon Cratere",
+                "entry": "Il suo corpo è fatto d'acciaio. Tuttavia,\nin alcune parti è sciolto a causa del suo\nstesso calore.",
+                "height": "1,7 m",
+                "weight": "430,0 kg"
+            },
+            "ko": {
+                "name": "히드런",
+                "category": "화구포켓몬",
+                "entry": "단단한 강철의 몸이지만\n자신이 내는 고열 때문에\n여기저기 녹아내리고 있다.",
+                "height": "1.7 m",
+                "weight": "430.0 kg"
+            },
+            "es": {
+                "name": "Heatran",
+                "category": "Pokémon Domo Lava",
+                "entry": "Su cuerpo es de rugoso acero, pero\nsu propio calor corporal lo ha\nderretido en algunos puntos.",
+                "height": "1,7 m",
+                "weight": "430,0 kg"
+            },
+            "ja": {
+                "name": "ヒードラン",
+                "category": "かこうポケモン",
+                "entry": "がんじょうな\\x{3000}はがねの\\x{3000}からだだが\nじぶんが\\x{3000}はっする\\x{3000}こうねつの\\x{3000}ため\nところどころ\\x{3000}とけてしまっている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff13}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 91,
         "attack": 90,

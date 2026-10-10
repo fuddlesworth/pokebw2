@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Snorunt",
-    "category": "Snow Hat Pokémon",
-    "pokedex_entry": "It is said that several Snorunt\ngather under giant leaves and\nlive together in harmony.",
+    "pokedex": {
+        "category": "Snow Hat Pokémon",
+        "entry": "It is said that several Snorunt\ngather under giant leaves and\nlive together in harmony.",
+        "height": "2'04\"",
+        "weight": "37.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Snorunt",
+                "category": "Snow Hat Pokémon",
+                "entry": "It is said that several Snorunt\ngather under giant leaves and\nlive together in harmony.",
+                "height": "2'04\"",
+                "weight": "37.0 lbs."
+            },
+            "fr": {
+                "name": "Stalgamin",
+                "category": "Pokémon Capuche",
+                "entry": "On dit que des groupes entiers de\nStalgamin vivent en harmonie\nsous des feuilles gigantesques.",
+                "height": "0,7 m",
+                "weight": "16,8 kg"
+            },
+            "de": {
+                "name": "Schneppke",
+                "category": "Schneehut",
+                "entry": "Gerüchten zufolge sammeln sich\nSchneppke unter riesigen Blättern\nund leben dort friedlich zusammen.",
+                "height": "0,7 m",
+                "weight": "16,8 kg"
+            },
+            "it": {
+                "name": "Snorunt",
+                "category": "Pokémon Cappelneve",
+                "entry": "Si dice che gli Snorunt vivano in armonia\nriuniti sotto gigantesche foglie.",
+                "height": "0,7 m",
+                "weight": "16,8 kg"
+            },
+            "ko": {
+                "name": "눈꼬마",
+                "category": "눈우산포켓몬",
+                "entry": "커다란 잎사귀 아래서\n여러 마리의 눈꼬마가 모여\n사이좋게 살고 있다고 한다.",
+                "height": "0.7 m",
+                "weight": "16.8 kg"
+            },
+            "es": {
+                "name": "Snorunt",
+                "category": "Pokémon Gorro Nieve",
+                "entry": "Se dice que se reúnen en grupos\nbajo hojas gigantescas y viven\nallí en total armonía.",
+                "height": "0,7 m",
+                "weight": "16,8 kg"
+            },
+            "ja": {
+                "name": "ユキワラシ",
+                "category": "ゆきかさポケモン",
+                "entry": "おおきな\\x{3000}はっぱの\\x{3000}したに\nすうひきの\\x{3000}ユキワラシが\\x{3000}あつまり\nなかよく\\x{3000}くらしているという。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff16}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 50,

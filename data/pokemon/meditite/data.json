@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Meditite",
-    "category": "Meditate Pokémon",
-    "pokedex_entry": "It always trains deep in mountains.\nIt levitates when it heightens its\nspiritual power through meditation.",
+    "pokedex": {
+        "category": "Meditate Pokémon",
+        "entry": "It always trains deep in mountains.\nIt levitates when it heightens its\nspiritual power through meditation.",
+        "height": "2'00\"",
+        "weight": "24.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Meditite",
+                "category": "Meditate Pokémon",
+                "entry": "It always trains deep in mountains.\nIt levitates when it heightens its\nspiritual power through meditation.",
+                "height": "2'00\"",
+                "weight": "24.7 lbs."
+            },
+            "fr": {
+                "name": "Méditikka",
+                "category": "Pokémon Méditation",
+                "entry": "Son entraînement d'ermite lui\npermet de léviter par le seul\npouvoir de la méditation.",
+                "height": "0,6 m",
+                "weight": "11,2 kg"
+            },
+            "de": {
+                "name": "Meditie",
+                "category": "Meditation",
+                "entry": "Trainiert tief in den Bergen. Erhöht\nes seine spirituelle Kraft durch\nMeditation, kann es schweben.",
+                "height": "0,6 m",
+                "weight": "11,2 kg"
+            },
+            "it": {
+                "name": "Meditite",
+                "category": "Pokémon Meditazione",
+                "entry": "Si allena in montagna per elevare il suo\npotere spirituale. Con la meditazione\nriesce a levitare.",
+                "height": "0,6 m",
+                "weight": "11,2 kg"
+            },
+            "ko": {
+                "name": "요가랑",
+                "category": "명상포켓몬",
+                "entry": "평상시는 깊은 산속에서 수행한다.\n명상을 하고 정신력을\n높이면 몸이 떠오른다.",
+                "height": "0.6 m",
+                "weight": "11.2 kg"
+            },
+            "es": {
+                "name": "Meditite",
+                "category": "Pokémon Meditador",
+                "entry": "Se entrena en la profundidad de las\nmontañas. Cuando aumenta su poder\nespiritual con meditación, levita.",
+                "height": "0,6 m",
+                "weight": "11,2 kg"
+            },
+            "ja": {
+                "name": "アサナン",
+                "category": "めいそうポケモン",
+                "entry": "いつもは\\x{3000}やまおくで\\x{3000}しゅぎょう。\nめいそうをして\\x{3000}せいしんりょくを\nたかめると\\x{3000}からだが\\x{3000}うかびあがる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 40,

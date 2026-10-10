@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mothim",
-    "category": "Moth Pokémon",
-    "pokedex_entry": "While it loves floral honey, it won't\ngather any itself. Instead, it\nplots to steal some from Combee.",
+    "pokedex": {
+        "category": "Moth Pokémon",
+        "entry": "While it loves floral honey, it won't\ngather any itself. Instead, it\nplots to steal some from Combee.",
+        "height": "2'11\"",
+        "weight": "51.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mothim",
+                "category": "Moth Pokémon",
+                "entry": "While it loves floral honey, it won't\ngather any itself. Instead, it\nplots to steal some from Combee.",
+                "height": "2'11\"",
+                "weight": "51.4 lbs."
+            },
+            "fr": {
+                "name": "Papilord",
+                "category": "Pokémon Phalène",
+                "entry": "Il adore le nectar des fleurs mais\nn'en récolte pas lui-même.\nIl préfère en voler à un Apitrini.",
+                "height": "0,9 m",
+                "weight": "23,3 kg"
+            },
+            "de": {
+                "name": "Moterpel",
+                "category": "Motte",
+                "entry": "Es liebt Honig, sammelt ihn aber\nnicht, sondern stiehlt den Honig,\nder von Wadribie gesammelt wurde.",
+                "height": "0,9 m",
+                "weight": "23,3 kg"
+            },
+            "it": {
+                "name": "Mothim",
+                "category": "Pokémon Falena",
+                "entry": "Anche se ama il nettare dei fiori, non lo\nraccoglie. Preferisce rubarlo ai Combee.",
+                "height": "0,9 m",
+                "weight": "23,3 kg"
+            },
+            "ko": {
+                "name": "나메일",
+                "category": "나방포켓몬",
+                "entry": "꽃의 꿀을 제일 좋아하지만\n자신은 모으지 않고 세꿀버리로부터\n가로챌 생각만 한다.",
+                "height": "0.9 m",
+                "weight": "23.3 kg"
+            },
+            "es": {
+                "name": "Mothim",
+                "category": "Pokémon Polilla",
+                "entry": "Le gusta la miel de flores, pero no\nle gusta recogerla. Se dedica a\nrobársela a Combee.",
+                "height": "0,9 m",
+                "weight": "23,3 kg"
+            },
+            "ja": {
+                "name": "ガーメイル",
+                "category": "ミノガポケモン",
+                "entry": "はなのミツが\\x{3000}だいすきだが\nじぶんでは\\x{3000}あつめず\\x{3000}ミツハニーから\nよこどり\\x{3000}ばかりを\\x{3000}かんがえている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff13}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 94,

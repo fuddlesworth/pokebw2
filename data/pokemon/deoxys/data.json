@@ -1,13 +1,80 @@
 {
     "$schema": "../species.schema.json",
     "name": "Deoxys",
-    "category": "DNA Pokémon",
-    "pokedex_entry": "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
-    "form_pokedex_entries": [
-        "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
-        "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
-        "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon."
-    ],
+    "pokedex": {
+        "category": "DNA Pokémon",
+        "entry": "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
+        "height": "5'07\"",
+        "weight": "134.0 lbs.",
+        "forms": [
+            {
+                "entry": "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
+                "height": "5'07\"",
+                "weight": "134.0 lbs."
+            },
+            {
+                "entry": "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
+                "height": "5'07\"",
+                "weight": "134.0 lbs."
+            },
+            {
+                "entry": "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
+                "height": "5'07\"",
+                "weight": "134.0 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Deoxys",
+                "category": "DNA Pokémon",
+                "entry": "An alien virus that fell to earth\non a meteor underwent a DNA\nmutation to become this Pokémon.",
+                "height": "5'07\"",
+                "weight": "134.0 lbs."
+            },
+            "fr": {
+                "name": "Deoxys",
+                "category": "Pokémon ADN",
+                "entry": "Il vient d'un virus extraterrestre\narrivé avec une météorite et ayant\nsubi une mutation génétique.",
+                "height": "1,7 m",
+                "weight": "60,8 kg"
+            },
+            "de": {
+                "name": "Deoxys",
+                "category": "DNS",
+                "entry": "Ein außerirdischer Virus kam mit einem\nMeteor auf die Erde. Seine DNA mutierte.\nSo entstand Deoxys.",
+                "height": "1,7 m",
+                "weight": "60,8 kg"
+            },
+            "it": {
+                "name": "Deoxys",
+                "category": "Pokémon DNA",
+                "entry": "È il risultato della mutazione genetica\ndi un virus alieno, giunto sulla terra\ncon un meteorite.",
+                "height": "1,7 m",
+                "weight": "60,8 kg"
+            },
+            "ko": {
+                "name": "테오키스",
+                "category": "DNA포켓몬",
+                "entry": "운석에 붙어 있던\n우주 바이러스의 DNA가\n변이하여 생겨난 포켓몬이다.",
+                "height": "1.7 m",
+                "weight": "60.8 kg"
+            },
+            "es": {
+                "name": "Deoxys",
+                "category": "Pokémon ADN",
+                "entry": "Surgió a raíz de la mutación de\nADN de un virus alienígena que\ncayó a la Tierra en un meteorito.",
+                "height": "1,7 m",
+                "weight": "60,8 kg"
+            },
+            "ja": {
+                "name": "デオキシス",
+                "category": "\\x{ff24}\\x{ff2e}\\x{ff21}ポケモン",
+                "entry": "いんせきに\\x{3000}ふちゃくしていた\nうちゅうウイルスの\\x{3000}\\x{ff24}\\x{ff2e}\\x{ff21}が\nへんいして\\x{3000}うまれた\\x{3000}ポケモン。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 150,

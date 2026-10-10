@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Plusle",
-    "category": "Cheering Pokémon",
-    "pokedex_entry": "It cheers on friends with pom-poms\nmade of sparks. It drains power\nfrom telephone poles.",
+    "pokedex": {
+        "category": "Cheering Pokémon",
+        "entry": "It cheers on friends with pom-poms\nmade of sparks. It drains power\nfrom telephone poles.",
+        "height": "1'04\"",
+        "weight": "9.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Plusle",
+                "category": "Cheering Pokémon",
+                "entry": "It cheers on friends with pom-poms\nmade of sparks. It drains power\nfrom telephone poles.",
+                "height": "1'04\"",
+                "weight": "9.3 lbs."
+            },
+            "fr": {
+                "name": "Posipi",
+                "category": "Pokémon Acclameur",
+                "entry": "Il absorbe l'énergie des poteaux\nélectriques et encourage ses amis\navec des pompons d'étincelles.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "de": {
+                "name": "Plusle",
+                "category": "Jubel",
+                "entry": "Es feuert Freunde mit Pompons an,\ndie aus Funken bestehen. Es holt\nsich Energie aus Telegrafenmasten.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "it": {
+                "name": "Plusle",
+                "category": "Pokémon Incitamento",
+                "entry": "Incoraggia gli amici con un vivace\nscoppiettio di scintille. Assorbe\nelettricità dai pali telefonici.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "ko": {
+                "name": "플러시",
+                "category": "응원포켓몬",
+                "entry": "스파크를 톡톡 만들어\n동료를 응원한다.\n전신주에서 전기를 흡수한다.",
+                "height": "0.4 m",
+                "weight": "4.2 kg"
+            },
+            "es": {
+                "name": "Plusle",
+                "category": "Pokémon Ánimo",
+                "entry": "Anima a sus compañeros con\npompones de chispas. Roba\nenergía de los postes telefónicos.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "ja": {
+                "name": "プラスル",
+                "category": "おうえんポケモン",
+                "entry": "ひばなの\\x{3000}ボンボンを\\x{3000}つくって\nなかまを\\x{3000}おうえんする。\nでんちゅうから\\x{3000}でんきを\\x{3000}すいとる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 50,

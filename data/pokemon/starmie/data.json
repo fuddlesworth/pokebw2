@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Starmie",
-    "category": "Mysterious Pokémon",
-    "pokedex_entry": "Its core shines in many colors\nand sends radio signals into space\nto communicate with something.",
+    "pokedex": {
+        "category": "Mysterious Pokémon",
+        "entry": "Its core shines in many colors\nand sends radio signals into space\nto communicate with something.",
+        "height": "3'07\"",
+        "weight": "176.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Starmie",
+                "category": "Mysterious Pokémon",
+                "entry": "At the center of its body is a red\ncore, which sends mysterious\nradio signals into the night sky.",
+                "height": "3'07\"",
+                "weight": "176.4 lbs."
+            },
+            "fr": {
+                "name": "Staross",
+                "category": "Pokémon Mystérieux",
+                "entry": "Un noyau rouge trône en son centre.\nIl envoie des signaux radio mystérieux\nvers le ciel nocturne.",
+                "height": "1,1 m",
+                "weight": "80,0 kg"
+            },
+            "de": {
+                "name": "Starmie",
+                "category": "Mysteriös",
+                "entry": "In der Körpermitte befindet sich\nein roter Kern, der mysteriöse\nRadiowellen in die Nacht sendet.",
+                "height": "1,1 m",
+                "weight": "80,0 kg"
+            },
+            "it": {
+                "name": "Starmie",
+                "category": "Pokémon Misterioso",
+                "entry": "Al centro del corpo ha un nucleo\nrosso che diffonde misteriosi\nsegnali radio nel cielo notturno.",
+                "height": "1,1 m",
+                "weight": "80,0 kg"
+            },
+            "ko": {
+                "name": "아쿠스타",
+                "category": "수수께끼포켓몬",
+                "entry": "몸의 중심에 있는 빨간\n핵에서 밤하늘을 향해\n알 수 없는 전파를 발신한다.",
+                "height": "1.1 m",
+                "weight": "80.0 kg"
+            },
+            "es": {
+                "name": "Starmie",
+                "category": "Pokémon Misterioso",
+                "entry": "El centro de su cuerpo alberga\nun órgano que emite extrañas\nseñales de radio en la noche.",
+                "height": "1,1 m",
+                "weight": "80,0 kg"
+            },
+            "ja": {
+                "name": "スターミー",
+                "category": "なぞのポケモン",
+                "entry": "からだの\\x{3000}ちゅうしんにある\\x{3000}あかい\nコアから\\x{3000}よぞらに\\x{3000}むかって\nなぞの\\x{3000}でんぱを\\x{3000}はっしんしている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 75,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tranquill",
-    "category": "Wild Pigeon Pokémon",
-    "pokedex_entry": "No matter where in the world it goes,\nit knows where its nest is, so it\nnever gets separated from its Trainer.",
+    "pokedex": {
+        "category": "Wild Pigeon Pokémon",
+        "entry": "No matter where in the world it goes,\nit knows where its nest is, so it\nnever gets separated from its Trainer.",
+        "height": "2'00\"",
+        "weight": "33.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "のばとポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 62,
         "attack": 77,

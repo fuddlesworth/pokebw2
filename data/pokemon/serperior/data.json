@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Serperior",
-    "category": "Regal Pokémon",
-    "pokedex_entry": "It only gives its all against strong\nopponents who are not fazed by the\nglare from Serperior's noble eyes.",
+    "pokedex": {
+        "category": "Regal Pokémon",
+        "entry": "It only gives its all against strong\nopponents who are not fazed by the\nglare from Serperior's noble eyes.",
+        "height": "10'10\"",
+        "weight": "138.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ロイヤルポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 75,

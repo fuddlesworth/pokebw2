@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Rampardos",
-    "category": "Head Butt Pokémon",
-    "pokedex_entry": "If two were to smash their heads\ntogether, their foot-thick skulls\nwould keep them from fainting.",
+    "pokedex": {
+        "category": "Head Butt Pokémon",
+        "entry": "If two were to smash their heads\ntogether, their foot-thick skulls\nwould keep them from fainting.",
+        "height": "5'03\"",
+        "weight": "226.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Rampardos",
+                "category": "Head Butt Pokémon",
+                "entry": "If two were to smash their heads\ntogether, their foot-thick skulls\nwould keep them from fainting.",
+                "height": "5'03\"",
+                "weight": "226.0 lbs."
+            },
+            "fr": {
+                "name": "Charkos",
+                "category": "Pokémon Coud'Boule",
+                "entry": "Quand deux Charkos se rentrent\ndedans, leur crâne extrêmement\népais les empêche de s'assommer.",
+                "height": "1,6 m",
+                "weight": "102,5 kg"
+            },
+            "de": {
+                "name": "Rameidon",
+                "category": "Kopfstoß",
+                "entry": "Schlagen zwei von ihnen mit den\nKöpfen zusammen, verhindern ihre\ndicken Schädel eine Ohnmacht.",
+                "height": "1,6 m",
+                "weight": "102,5 kg"
+            },
+            "it": {
+                "name": "Rampardos",
+                "category": "Pokémon Cranioso",
+                "entry": "Anche se si prendono a testate, due\nRampardos non vanno KO perché il loro\ncranio è molto spesso.",
+                "height": "1,6 m",
+                "weight": "102,5 kg"
+            },
+            "ko": {
+                "name": "램펄드",
+                "category": "박치기포켓몬",
+                "entry": "머리로 격렬하게 치고받아도\n두개골은 두께가 30cm나 되기에\n기절하거나 하지 않는다.",
+                "height": "1.6 m",
+                "weight": "102.5 kg"
+            },
+            "es": {
+                "name": "Rampardos",
+                "category": "Pokémon Cabezazo",
+                "entry": "Su cráneo es de 30 cm de grosor.\nSi dos de ellos se dan un cabezazo,\nno les ocurrirá nada.",
+                "height": "1,6 m",
+                "weight": "102,5 kg"
+            },
+            "ja": {
+                "name": "ラムパルド",
+                "category": "ずつきポケモン",
+                "entry": "あたまを\\x{3000}はげしく\\x{3000}ぶつけあっても\nずがいこつは\\x{3000}あつさ\\x{3000}\\x{ff13}\\x{ff10}センチも\nあるので\\x{3000}きぜつ\\x{3000}したりしない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 97,
         "attack": 165,

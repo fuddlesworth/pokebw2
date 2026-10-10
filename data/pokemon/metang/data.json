@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Metang",
-    "category": "Iron Claw Pokémon",
-    "pokedex_entry": "It is formed by two Beldum joining\ntogether. Its two brains are linked,\namplifying its psychic power.",
+    "pokedex": {
+        "category": "Iron Claw Pokémon",
+        "entry": "It is formed by two Beldum joining\ntogether. Its two brains are linked,\namplifying its psychic power.",
+        "height": "3'11\"",
+        "weight": "446.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Metang",
+                "category": "Iron Claw Pokémon",
+                "entry": "It is formed by two Beldum joining\ntogether. Its steel body won't be\nscratched if it collides with a jet.",
+                "height": "3'11\"",
+                "weight": "446.4 lbs."
+            },
+            "fr": {
+                "name": "Métang",
+                "category": "Pokémon Pincefer",
+                "entry": "Il est formé de deux Terhal\nsoudés. Son corps de fer résiste à\nun choc avec un avion à réaction.",
+                "height": "1,2 m",
+                "weight": "202,5 kg"
+            },
+            "de": {
+                "name": "Metang",
+                "category": "Eisenklaue",
+                "entry": "Das Pokémon besteht aus zwei Tanhel.\nEs bekommt selbst dann keinen Kratzer,\nwenn ein Jet es streift.",
+                "height": "1,2 m",
+                "weight": "202,5 kg"
+            },
+            "it": {
+                "name": "Metang",
+                "category": "Pokémon Ferrunghia",
+                "entry": "È sorto dalla fusione di due Beldum.\nIl suo corpo d'acciaio non viene scalfito\nneanche se urta un jet.",
+                "height": "1,2 m",
+                "weight": "202,5 kg"
+            },
+            "ko": {
+                "name": "메탕구",
+                "category": "철발톱포켓몬",
+                "entry": "2마리의 메탕이 합체했다.\n강철의 몸은 제트기와\n충돌해도 상처입지 않는다.",
+                "height": "1.2 m",
+                "weight": "202.5 kg"
+            },
+            "es": {
+                "name": "Metang",
+                "category": "Pokémon Garrahierro",
+                "entry": "Lo forman dos Beldum unidos. Puede\nchocarse con un avión sin que su\ncuerpo de acero sufra ni un rasguño.",
+                "height": "1,2 m",
+                "weight": "202,5 kg"
+            },
+            "ja": {
+                "name": "メタング",
+                "category": "てつツメポケモン",
+                "entry": "\\x{ff12}ひきの\\x{3000}ダンバルが\\x{3000}がったいした。\nはがねの\\x{3000}ボディは\\x{3000}ジェットきと\nしょうとつしても\\x{3000}きずつかない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 75,

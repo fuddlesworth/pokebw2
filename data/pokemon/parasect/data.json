@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Parasect",
-    "category": "Mushroom Pokémon",
-    "pokedex_entry": "A mushroom grown larger than the\nhost's body controls Parasect.\nIt scatters poisonous spores.",
+    "pokedex": {
+        "category": "Mushroom Pokémon",
+        "entry": "A mushroom grown larger than the\nhost's body controls Parasect.\nIt scatters poisonous spores.",
+        "height": "3'03\"",
+        "weight": "65.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Parasect",
+                "category": "Mushroom Pokémon",
+                "entry": "A mushroom grown larger than the\nhost's body controls Parasect.\nIt scatters poisonous spores.",
+                "height": "3'03\"",
+                "weight": "65.0 lbs."
+            },
+            "fr": {
+                "name": "Parasect",
+                "category": "Pokémon Champignon",
+                "entry": "Un champignon parasite plus gros\nque Parasect contrôle son corps.\nIl répand des spores empoisonnées.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "de": {
+                "name": "Parasek",
+                "category": "Pilz",
+                "entry": "Parasek wird von einem Pilz, der größer\nals das Pokémon ist, kontrolliert. Er\ngibt Giftsporen ab.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "it": {
+                "name": "Parasect",
+                "category": "Pokémon Fungo",
+                "entry": "Parasect è controllato da un fungo\nancora più grosso del suo corpo.\nDiffonde spore velenose.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "ko": {
+                "name": "파라섹트",
+                "category": "버섯포켓몬",
+                "entry": "몸보다 큰 버섯이\n파라섹트를 조종하고 있다.\n독 포자를 여기저기 뿌린다.",
+                "height": "1.0 m",
+                "weight": "29.5 kg"
+            },
+            "es": {
+                "name": "Parasect",
+                "category": "Pokémon Hongo",
+                "entry": "Parasect está dominado por una seta\nparásita mayor que él. Dispersa\nesporas venenosas.",
+                "height": "1,0 m",
+                "weight": "29,5 kg"
+            },
+            "ja": {
+                "name": "パラセクト",
+                "category": "きのこポケモン",
+                "entry": "からだよりも\\x{3000}おおきな\\x{3000}キノコが\nパラセクトを\\x{3000}あやつっている。\nどくの\\x{3000}ほうしを\\x{3000}ばらまく。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 95,

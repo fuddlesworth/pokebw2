@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Haxorus",
-    "category": "Axe Jaw Pokémon",
-    "pokedex_entry": "Its tusks are incredibly destructive.\nThey can easily slice through a thick,\nsturdy steel column every time.",
+    "pokedex": {
+        "category": "Axe Jaw Pokémon",
+        "entry": "Its tusks are incredibly destructive.\nThey can easily slice through a thick,\nsturdy steel column every time.",
+        "height": "5'11\"",
+        "weight": "232.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "あごオノポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 76,
         "attack": 147,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Yanmega",
-    "category": "Ogre Darner Pokémon",
-    "pokedex_entry": "It prefers to battle by biting\napart foes' heads instantly\nwhile flying by at high speed.",
+    "pokedex": {
+        "category": "Ogre Darner Pokémon",
+        "entry": "It prefers to battle by biting\napart foes' heads instantly\nwhile flying by at high speed.",
+        "height": "6'03\"",
+        "weight": "113.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Yanmega",
+                "category": "Ogre Darner Pokémon",
+                "entry": "Its jaw power is incredible. It is\nadept at biting apart foes while\nflying by at high speed.",
+                "height": "6'03\"",
+                "weight": "113.5 lbs."
+            },
+            "fr": {
+                "name": "Yanmega",
+                "category": "Pokémon Libellogre",
+                "entry": "Doté de mandibules à la force\ncolossale, il excelle pour mordre\nses ennemis en plein vol.",
+                "height": "1,9 m",
+                "weight": "51,5 kg"
+            },
+            "de": {
+                "name": "Yanmega",
+                "category": "Agrion",
+                "entry": "Die Kraft seines Kiefers ist unglaublich.\nEs kann daher aus dem Flug heraus hart\nzubeißen.",
+                "height": "1,9 m",
+                "weight": "51,5 kg"
+            },
+            "it": {
+                "name": "Yanmega",
+                "category": "Pokémon Libellorco",
+                "entry": "La forza della sua mascella è incredibile.\nTrancia i nemici mentre vola\na grande velocità.",
+                "height": "1,9 m",
+                "weight": "51,5 kg"
+            },
+            "ko": {
+                "name": "메가자리",
+                "category": "깨비잠자리포켓몬",
+                "entry": "턱의 힘은 엄청나다.\n고속으로 날아서 스치는 순간\n상대를 물어뜯는 것이 특기다.",
+                "height": "1.9 m",
+                "weight": "51.5 kg"
+            },
+            "es": {
+                "name": "Yanmega",
+                "category": "Pokémon Libélula",
+                "entry": "Pasa volando a gran velocidad al\nlado de sus enemigos y los destroza\ncon su potente mandíbula.",
+                "height": "1,9 m",
+                "weight": "51,5 kg"
+            },
+            "ja": {
+                "name": "メガヤンマ",
+                "category": "オニトンボポケモン",
+                "entry": "あごの\\x{3000}ちからは\\x{3000}けたはずれ。\nこうそくで\\x{3000}とんで\\x{3000}すれちがいざまに\nあいてを\\x{3000}かみちぎるのが\\x{3000}とくい。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 86,
         "attack": 76,

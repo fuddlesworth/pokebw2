@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Dodrio",
-    "category": "Triple Bird Pokémon",
-    "pokedex_entry": "When Doduo evolves into this odd\nbreed, one of its heads splits into\ntwo. It runs at nearly 40 mph.",
+    "pokedex": {
+        "category": "Triple Bird Pokémon",
+        "entry": "When Doduo evolves into this odd\nbreed, one of its heads splits into\ntwo. It runs at nearly 40 mph.",
+        "height": "5'11\"",
+        "weight": "187.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Dodrio",
+                "category": "Triple Bird Pokémon",
+                "entry": "When Doduo evolves into this odd\nbreed, one of its heads splits into\ntwo. It runs at nearly 40 mph.",
+                "height": "5'11\"",
+                "weight": "187.8 lbs."
+            },
+            "fr": {
+                "name": "Dodrio",
+                "category": "Pokémon Trioiseau",
+                "entry": "Quand Doduo connaît cette étrange\névolution, l'une de ses têtes se\ndédouble. Il atteint les 60 km/h.",
+                "height": "1,8 m",
+                "weight": "85,2 kg"
+            },
+            "de": {
+                "name": "Dodri",
+                "category": "Trivogel",
+                "entry": "Entwickelt sich Dodu, teilt sich\neiner der Köpfe in zwei. Es kann\nsich mit 60 km/h fortbewegen.",
+                "height": "1,8 m",
+                "weight": "85,2 kg"
+            },
+            "it": {
+                "name": "Dodrio",
+                "category": "Pokémon Triuccello",
+                "entry": "Quando Doduo si evolve in questo strano\nessere, una delle due teste si divide a\nmetà. Corre a 60 km/h.",
+                "height": "1,8 m",
+                "weight": "85,2 kg"
+            },
+            "ko": {
+                "name": "두트리오",
+                "category": "세쌍둥이새포켓몬",
+                "entry": "진화할 때 두두의 머리 중 한쪽이\n분열되는 희귀종.\n시속 60km 이상으로 달린다.",
+                "height": "1.8 m",
+                "weight": "85.2 kg"
+            },
+            "es": {
+                "name": "Dodrio",
+                "category": "Pokémon Ave Triple",
+                "entry": "Cuando un Doduo evoluciona, una\nde sus cabezas se divide en dos.\nCorre a unos 60 km/h.",
+                "height": "1,8 m",
+                "weight": "85,2 kg"
+            },
+            "ja": {
+                "name": "ドードリオ",
+                "category": "みつごどりポケモン",
+                "entry": "しんかのときに\\x{3000}ドードーの\\x{3000}あたまの\nどちらかが\\x{3000}ぶんれつした\\x{3000}ちんしゅ。\nじそく\\x{ff16}\\x{ff10}キロいじょうで\\x{3000}はしる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff15}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 110,

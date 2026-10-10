@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Grotle",
-    "category": "Grove Pokémon",
-    "pokedex_entry": "It knows where pure water wells\nup. It carries fellow Pokémon there\non its back.",
+    "pokedex": {
+        "category": "Grove Pokémon",
+        "entry": "It knows where pure water wells\nup. It carries fellow Pokémon there\non its back.",
+        "height": "3'07\"",
+        "weight": "213.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Grotle",
+                "category": "Grove Pokémon",
+                "entry": "It knows where pure water wells\nup. It carries fellow Pokémon there\non its back.",
+                "height": "3'07\"",
+                "weight": "213.8 lbs."
+            },
+            "fr": {
+                "name": "Boskara",
+                "category": "Pokémon Bosquet",
+                "entry": "Il sait d'instinct où trouver une\nsource d'eau pure. Il y transporte\nd'autres Pokémon sur son dos.",
+                "height": "1,1 m",
+                "weight": "97,0 kg"
+            },
+            "de": {
+                "name": "Chelcarain",
+                "category": "Hain",
+                "entry": "Es weiß, wo es reinstes Quellwasser\nfinden kann. Trägt andere Pokémon\nauf seinem Rücken dorthin.",
+                "height": "1,1 m",
+                "weight": "97,0 kg"
+            },
+            "it": {
+                "name": "Grotle",
+                "category": "Pokémon Boschetto",
+                "entry": "Sa come trovare sorgenti incontaminate,\ndove porta i Pokémon amici tenendoli\nsulla schiena.",
+                "height": "1,1 m",
+                "weight": "97,0 kg"
+            },
+            "ko": {
+                "name": "수풀부기",
+                "category": "나무숲포켓몬",
+                "entry": "깨끗한 물이 솟아나는 장소를\n알고 있어서 동료 포켓몬을\n등에 태우고 그곳까지 데려다준다.",
+                "height": "1.1 m",
+                "weight": "97.0 kg"
+            },
+            "es": {
+                "name": "Grotle",
+                "category": "Pokémon Arboleda",
+                "entry": "Sabe dónde encontrar manantiales\nde agua pura y lleva a los Pokémon\namigos hasta allí en su lomo.",
+                "height": "1,1 m",
+                "weight": "97,0 kg"
+            },
+            "ja": {
+                "name": "ハヤシガメ",
+                "category": "こだちポケモン",
+                "entry": "きれいな\\x{3000}みずが\\x{3000}わきでる\\x{3000}ばしょを\nしっていて\\x{3000}なかまの\\x{3000}ポケモンを\nせなかに\\x{3000}のせて\\x{3000}そこまで\\x{3000}はこぶ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff17}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 89,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Victini",
-    "category": "Victory Pokémon",
-    "pokedex_entry": "When it shares the infinite energy\nit creates, that being's entire\nbody will be overflowing with power.",
+    "pokedex": {
+        "category": "Victory Pokémon",
+        "entry": "When it shares the infinite energy\nit creates, that being's entire\nbody will be overflowing with power.",
+        "height": "1'04\"",
+        "weight": "8.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "しょうりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 100,

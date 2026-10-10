@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vullaby",
-    "category": "Diapered Pokémon",
-    "pokedex_entry": "Their wings are too tiny to allow them to\nfly. They guard their posteriors with\nbones that were gathered by Mandibuzz.",
+    "pokedex": {
+        "category": "Diapered Pokémon",
+        "entry": "Their wings are too tiny to allow them to\nfly. They guard their posteriors with\nbones that were gathered by Mandibuzz.",
+        "height": "1'08\"",
+        "weight": "19.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "おむつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 55,

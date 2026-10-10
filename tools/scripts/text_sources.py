@@ -145,16 +145,29 @@ def trainer_messages() -> list[str]:
     return [to_line(message["text"]) for name in message_order() for message in trainers()[name]["messages"]]
 
 
-def form_entry_lines() -> list[str]:
+def pokedex_lines(path: list[str]) -> list[str]:
+    """species.pokedex.<field>, species.pokedex.forms.<field>, species.pokedex.<language>.<field> and
+    species.pokedex.<language>.forms.<field>: a field of every species' Pokédex text, of their alternate forms', in
+    species order, of the species that have it in a language, which come first, or of their forms in the language."""
     lines = []
     for i, data in enumerate(species()):
-        entries = data.get("form_pokedex_entries", [])
-        # SPECIES_NONE has a count of 0
-        alternate_forms = max(data["forms"]["count"] - 1, 0)
-        if len(entries) != alternate_forms:
-            raise DataError(f"species {i}: form_pokedex_entries has {len(entries)} entries for {alternate_forms} "
-                            "alternate forms")
-        lines += [to_line(entry) for entry in entries]
+        pokedex = field(data, "pokedex", f"species {i}")
+        if path[0] == "forms":
+            # SPECIES_NONE has a count of 0
+            alternate_forms = max(data["forms"]["count"] - 1, 0)
+            forms = pokedex.get("forms", [])
+            if len(forms) != alternate_forms:
+                raise DataError(f"species {i}: pokedex.forms has {len(forms)} forms for {alternate_forms} alternate forms")
+            lines += [to_line(form[path[1]]) for form in forms]
+        elif len(path) == 1:
+            lines.append(to_line(field(pokedex, path[0], f"species {i}: pokedex")))
+        elif path[1] == "forms":
+            lines += [to_line(form[path[2]]) for form in pokedex["languages"].get(path[0], {}).get("forms", [])]
+        else:
+            language = pokedex["languages"].get(path[0], {})
+            if path[1] not in language:
+                break
+            lines.append(to_line(language[path[1]]))
     return lines
 
 
@@ -168,9 +181,7 @@ SOURCES = {
     # From species 1: SPECIES_NONE's line is empty
     "species.name_with_article": lambda: [f"{{bd01}}{article(data)} {{ff00:255}}{to_line(data['name'])}"
                                           for data in species()[1:]],
-    "species.category": lambda: species_lines("category"),
-    "species.pokedex_entry": lambda: species_lines("pokedex_entry"),
-    "species.form_pokedex_entries": lambda: form_entry_lines(),
+
     "moves.name": lambda: [to_line(data["name"]) for data in moves()],
     "moves.name_upper": lambda: [upper(to_line(data["name"])) for data in moves()],
     "moves.description": lambda: [to_line(data["description"]) for data in moves()],
@@ -203,6 +214,8 @@ def facility_lines(source: str) -> list[str] | None:
 
 
 def expand(source: str) -> list[str]:
+    if source.startswith("species.pokedex."):
+        return pokedex_lines(source.split(".")[2:])
     lines = facility_lines(source)
     if lines is not None:
         return lines

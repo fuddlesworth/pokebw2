@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shedinja",
-    "category": "Shed Pokémon",
-    "pokedex_entry": "A discarded bug shell that came to\nlife. Peering into the crack on its\nback is said to steal one's spirit.",
+    "pokedex": {
+        "category": "Shed Pokémon",
+        "entry": "A discarded bug shell that came to\nlife. Peering into the crack on its\nback is said to steal one's spirit.",
+        "height": "2'07\"",
+        "weight": "2.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shedinja",
+                "category": "Shed Pokémon",
+                "entry": "A discarded bug shell that came to\nlife. Peering into the crack on its\nback is said to steal one's spirit.",
+                "height": "2'07\"",
+                "weight": "2.6 lbs."
+            },
+            "fr": {
+                "name": "Munja",
+                "category": "Pokémon Exuvie",
+                "entry": "Une carapace d'insecte laissée à\nl'abandon. On dit qu'il vole l'âme\nde celui qui regarde à l'intérieur.",
+                "height": "0,8 m",
+                "weight": "1,2 kg"
+            },
+            "de": {
+                "name": "Ninjatom",
+                "category": "Häutung",
+                "entry": "Ein weggeworfener Käferpanzer,\nder zum Leben erwachte. Schaut man\nhinein, stiehlt es einem die Seele.",
+                "height": "0,8 m",
+                "weight": "1,2 kg"
+            },
+            "it": {
+                "name": "Shedinja",
+                "category": "Pokémon Cambiapelle",
+                "entry": "È nato dal guscio vuoto di un insetto.\nPare che chi spia nella fessura sul suo\ndorso perda l'anima.",
+                "height": "0,8 m",
+                "weight": "1,2 kg"
+            },
+            "ko": {
+                "name": "껍질몬",
+                "category": "허물포켓몬",
+                "entry": "허물 속으로 영혼이 들어갔다.\n등에 난 틈새로 들여다보면\n영혼을 빼앗겨버린다고 한다.",
+                "height": "0.8 m",
+                "weight": "1.2 kg"
+            },
+            "es": {
+                "name": "Shedinja",
+                "category": "Pokémon Muda",
+                "entry": "Es el caparazón de un bicho que\ncobró vida. Si alguien lo mira por\nla espalda, le robará el alma.",
+                "height": "0,8 m",
+                "weight": "1,2 kg"
+            },
+            "ja": {
+                "name": "ヌケニン",
+                "category": "ぬけがらポケモン",
+                "entry": "ぬけがらが\\x{3000}たましいを\\x{3000}やどした。\nせなかの\\x{3000}すきまから\\x{3000}のぞきこむと\nたましいを\\x{3000}すわれてしまうらしい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 1,
         "attack": 90,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Igglybuff",
-    "category": "Balloon Pokémon",
-    "pokedex_entry": "Its body has a faintly sweet scent\nand is bouncy and soft. If it bounces\neven once, it cannot stop.",
+    "pokedex": {
+        "category": "Balloon Pokémon",
+        "entry": "Its body has a faintly sweet scent\nand is bouncy and soft. If it bounces\neven once, it cannot stop.",
+        "height": "1'00\"",
+        "weight": "2.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Igglybuff",
+                "category": "Balloon Pokémon",
+                "entry": "It has a soft and bouncy body.\nOnce it starts bouncing, it\nbecomes impossible to stop.",
+                "height": "1'00\"",
+                "weight": "2.2 lbs."
+            },
+            "fr": {
+                "name": "Toudoudou",
+                "category": "Pokémon Bouboule",
+                "entry": "Son corps est doux et élastique.\nQuand il commence à rebondir,\non ne peut plus l'arrêter.",
+                "height": "0,3 m",
+                "weight": "1,0 kg"
+            },
+            "de": {
+                "name": "Fluffeluff",
+                "category": "Ballon",
+                "entry": "Es hat einen weichen, elastischen\nKörper. Hat es einmal angefangen\nzu hüpfen, ist es nicht zu stoppen.",
+                "height": "0,3 m",
+                "weight": "1,0 kg"
+            },
+            "it": {
+                "name": "Igglybuff",
+                "category": "Pokémon Pallone",
+                "entry": "Ha un corpo morbido ed elastico. Quando\ncomincia a saltellare è praticamente\nimpossibile fermarlo.",
+                "height": "0,3 m",
+                "weight": "1,0 kg"
+            },
+            "ko": {
+                "name": "푸푸린",
+                "category": "풍선포켓몬",
+                "entry": "부드럽고 탄력성 있는\n몸은 한번 튀면\n전혀 멈출 수 없게 되어 버린다.",
+                "height": "0.3 m",
+                "weight": "1.0 kg"
+            },
+            "es": {
+                "name": "Igglybuff",
+                "category": "Pokémon Globo",
+                "entry": "Su cuerpo es suave y está hinchado.\nCuando empieza a botar, no puede parar.",
+                "height": "0,3 m",
+                "weight": "1,0 kg"
+            },
+            "ja": {
+                "name": "ププリン",
+                "category": "ふうせんポケモン",
+                "entry": "やわらかく\\x{3000}だんりょくせいのある\nからだは\\x{3000}いちど\\x{3000}はずむと\nぜんぜん\\x{3000}とまれなくなってしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 30,

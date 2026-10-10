@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Starly",
-    "category": "Starling Pokémon",
-    "pokedex_entry": "Because they are weak individually,\nthey form groups. However, they\nbicker if the group grows too big.",
+    "pokedex": {
+        "category": "Starling Pokémon",
+        "entry": "Because they are weak individually,\nthey form groups. However, they\nbicker if the group grows too big.",
+        "height": "1'00\"",
+        "weight": "4.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Starly",
+                "category": "Starling Pokémon",
+                "entry": "Because they are weak individually,\nthey form groups. However, they\nbicker if the group grows too big.",
+                "height": "1'00\"",
+                "weight": "4.4 lbs."
+            },
+            "fr": {
+                "name": "Étourmi",
+                "category": "Pokémon Étourneau",
+                "entry": "La faiblesse des Étourmi les force\nà vivre en groupe, mais ils se\nchamaillent souvent.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "de": {
+                "name": "Staralili",
+                "category": "Star",
+                "entry": "Einzeln sind sie schwach. Daher bilden\nsie Gruppen. Werden diese jedoch zu\ngroß, zanken sie sich.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "it": {
+                "name": "Starly",
+                "category": "Pokémon Storno",
+                "entry": "Da soli sono deboli, quindi si muovono\nin gruppo. Tuttavia, se sono troppi\nfiniscono per litigare.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ko": {
+                "name": "찌르꼬",
+                "category": "찌르레기포켓몬",
+                "entry": "무리를 만드는 것으로 한 마리로는\n약하다는 단점을 커버하고 있지만\n무리가 커지면 다투기 시작한다.",
+                "height": "0.3 m",
+                "weight": "2.0 kg"
+            },
+            "es": {
+                "name": "Starly",
+                "category": "Pokémon Estornino",
+                "entry": "Son débiles individualmente, por eso\nforman grupos. Pero, si el grupo\ncrece demasiado, se pelean.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ja": {
+                "name": "ムックル",
+                "category": "むくどりポケモン",
+                "entry": "むれを\\x{3000}つくることで\\x{3000}\\x{ff11}ぴきでの\nよわさを\\x{3000}カバーしあっているが\nむれが\\x{3000}おおきくなると\\x{3000}もめだす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 55,

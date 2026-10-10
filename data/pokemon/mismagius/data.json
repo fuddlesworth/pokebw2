@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mismagius",
-    "category": "Magical Pokémon",
-    "pokedex_entry": "Its cry sounds like an incantation.\nIt is said the cry may rarely be\nimbued with happiness-giving power.",
+    "pokedex": {
+        "category": "Magical Pokémon",
+        "entry": "Its cry sounds like an incantation.\nIt is said the cry may rarely be\nimbued with happiness-giving power.",
+        "height": "2'11\"",
+        "weight": "9.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mismagius",
+                "category": "Magical Pokémon",
+                "entry": "Its cry sounds like an incantation.\nIt is said the cry may rarely be\nimbued with happiness-giving power.",
+                "height": "2'11\"",
+                "weight": "9.7 lbs."
+            },
+            "fr": {
+                "name": "Magirêve",
+                "category": "Pokémon Magique",
+                "entry": "Pareil à une incantation magique,\nson cri n'est que très rarement\nsource de joie.",
+                "height": "0,9 m",
+                "weight": "4,4 kg"
+            },
+            "de": {
+                "name": "Traunmagil",
+                "category": "Magisch",
+                "entry": "Sein Ruf ähnelt einer Beschwörung.\nMan sagt, dass er manchmal über die\nKraft verfüge, glücklich zu machen.",
+                "height": "0,9 m",
+                "weight": "4,4 kg"
+            },
+            "it": {
+                "name": "Mismagius",
+                "category": "Pokémon Stregone",
+                "entry": "I suoi versi sembrano incantesimi. Pare\nche a volte contengano un potere che\nporta felicità.",
+                "height": "0,9 m",
+                "weight": "4,4 kg"
+            },
+            "ko": {
+                "name": "무우마직",
+                "category": "매지컬포켓몬",
+                "entry": "주문 같은 울음소리지만\n가끔 상대를 행복하게 만드는\n효과도 감춰져 있다고 한다.",
+                "height": "0.9 m",
+                "weight": "4.4 kg"
+            },
+            "es": {
+                "name": "Mismagius",
+                "category": "Pokémon Mágico",
+                "entry": "Sus gritos parecen cánticos. Se dice\nque, en alguna rara ocasión, han\nimbuido felicidad a quien los oía.",
+                "height": "0,9 m",
+                "weight": "4,4 kg"
+            },
+            "ja": {
+                "name": "ムウマージ",
+                "category": "マジカルポケモン",
+                "entry": "じゅもんのような\\x{3000}なきごえだが\nまれに\\x{3000}あいてを\\x{3000}しあわせにする\nこうかも\\x{3000}ひめているという。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 60,

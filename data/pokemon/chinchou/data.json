@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Chinchou",
-    "category": "Angler Pokémon",
-    "pokedex_entry": "It discharges positive and\nnegative electricity from its\nantenna tips to shock its foes.",
+    "pokedex": {
+        "category": "Angler Pokémon",
+        "entry": "It discharges positive and\nnegative electricity from its\nantenna tips to shock its foes.",
+        "height": "1'08\"",
+        "weight": "26.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Chinchou",
+                "category": "Angler Pokémon",
+                "entry": "It discharges positive and\nnegative electricity from its\nantenna tips to shock its foes.",
+                "height": "1'08\"",
+                "weight": "26.5 lbs."
+            },
+            "fr": {
+                "name": "Loupio",
+                "category": "Pokémon Poisson",
+                "entry": "Il envoie des décharges électriques\npositives et négatives du bout des\nantennes pour paralyser sa proie.",
+                "height": "0,5 m",
+                "weight": "12,0 kg"
+            },
+            "de": {
+                "name": "Lampi",
+                "category": "Angler",
+                "entry": "Über seine Antennen entlädt es\nElektrizität, mit der es seinen\nGegnern einen Schlag versetzt.",
+                "height": "0,5 m",
+                "weight": "12,0 kg"
+            },
+            "it": {
+                "name": "Chinchou",
+                "category": "Pokémon Pescatore",
+                "entry": "Dalle antenne emette scariche elettriche\npositive e negative con le quali colpisce\ni nemici.",
+                "height": "0,5 m",
+                "weight": "12,0 kg"
+            },
+            "ko": {
+                "name": "초라기",
+                "category": "아귀포켓몬",
+                "entry": "플러스와 마이너스의 전기를\n촉수의 끝에서 흘려보낸다.\n적을 감전시켜 버린다.",
+                "height": "0.5 m",
+                "weight": "12.0 kg"
+            },
+            "es": {
+                "name": "Chinchou",
+                "category": "Pokémon Rape",
+                "entry": "Libera cargas eléctricas positivas y\nnegativas con sus antenas para\naturdir a sus enemigos.",
+                "height": "0,5 m",
+                "weight": "12,0 kg"
+            },
+            "ja": {
+                "name": "チョンチー",
+                "category": "あんこうポケモン",
+                "entry": "プラスと\\x{3000}マイナスの\\x{3000}でんきを\nしょくしゅの\\x{3000}さきから\\x{3000}ながす。\nてきを\\x{3000}かんでんさせてしまうのだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 38,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Leafeon",
-    "category": "Verdant Pokémon",
-    "pokedex_entry": "With cells similar to those of plants,\nit performs photosynthesis inside its\nbody and creates pure air.",
+    "pokedex": {
+        "category": "Verdant Pokémon",
+        "entry": "With cells similar to those of plants,\nit performs photosynthesis inside its\nbody and creates pure air.",
+        "height": "3'03\"",
+        "weight": "56.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Leafeon",
+                "category": "Verdant Pokémon",
+                "entry": "It basically does not fight. With\ncells similar to those of plants, it\ncan perform photosynthesis.",
+                "height": "3'03\"",
+                "weight": "56.2 lbs."
+            },
+            "fr": {
+                "name": "Phyllali",
+                "category": "Pokémon Verdoyant",
+                "entry": "Il utilise la photosynthèse comme\nune plante et a aussi tendance à\néviter le combat à tout prix.",
+                "height": "1,0 m",
+                "weight": "25,5 kg"
+            },
+            "de": {
+                "name": "Folipurba",
+                "category": "Unreif",
+                "entry": "Mit seiner pflanzenähnlichen Zell-\nstruktur betreibt es Photosynthese.\nEs kämpft eigentlich nie.",
+                "height": "1,0 m",
+                "weight": "25,5 kg"
+            },
+            "it": {
+                "name": "Leafeon",
+                "category": "Pokémon Rigoglioso",
+                "entry": "Rifugge le lotte. Ha una struttura\ncellulare simile a quella delle piante,\nperciò usa la fotosintesi.",
+                "height": "1,0 m",
+                "weight": "25,5 kg"
+            },
+            "ko": {
+                "name": "리피아",
+                "category": "심록포켓몬",
+                "entry": "기본적으로 다투지 않는다.\n세포가 식물에 가깝게 되어\n체내에서 광합성을 할 수 있다.",
+                "height": "1.0 m",
+                "weight": "25.5 kg"
+            },
+            "es": {
+                "name": "Leafeon",
+                "category": "Pokémon Verdor",
+                "entry": "Prácticamente no combate. Sus\ncélulas parecidas a las vegetales\nle permiten hacer la fotosíntesis.",
+                "height": "1,0 m",
+                "weight": "25,5 kg"
+            },
+            "ja": {
+                "name": "リーフィア",
+                "category": "しんりょくポケモン",
+                "entry": "きほんてきに\\x{3000}あらそわない。\nさいぼうが\\x{3000}しょくぶつに\\x{3000}ちかくなり\nたいないで\\x{3000}こうごうせいが\\x{3000}できる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 110,

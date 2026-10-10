@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Snivy",
-    "category": "Grass Snake Pokémon",
-    "pokedex_entry": "Being exposed to sunlight makes\nits movements swifter. It uses\nvines more adeptly than its hands.",
+    "pokedex": {
+        "category": "Grass Snake Pokémon",
+        "entry": "Being exposed to sunlight makes\nits movements swifter. It uses\nvines more adeptly than its hands.",
+        "height": "2'00\"",
+        "weight": "17.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "くさへびポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 45,

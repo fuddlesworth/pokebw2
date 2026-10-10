@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shieldon",
-    "category": "Shield Pokémon",
-    "pokedex_entry": "It is outstandingly armored. As a\nresult, it can eat grass and\nberries without having to fight.",
+    "pokedex": {
+        "category": "Shield Pokémon",
+        "entry": "It is outstandingly armored. As a\nresult, it can eat grass and\nberries without having to fight.",
+        "height": "1'08\"",
+        "weight": "125.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shieldon",
+                "category": "Shield Pokémon",
+                "entry": "It is outstandingly armored. As a\nresult, it can eat grass and\nberries without having to fight.",
+                "height": "1'08\"",
+                "weight": "125.7 lbs."
+            },
+            "fr": {
+                "name": "Dinoclier",
+                "category": "Pokémon Bouclier",
+                "entry": "Il est si bien protégé qu'il peut\ndéguster Baies et herbe fraîche\nsans craindre de prédateurs.",
+                "height": "0,5 m",
+                "weight": "57,0 kg"
+            },
+            "de": {
+                "name": "Schilterus",
+                "category": "Schutzschild",
+                "entry": "Es ist sehr gut gepanzert und muss\ndaher während des Essens von Gras\nund Beeren keinen Kampf fürchten.",
+                "height": "0,5 m",
+                "weight": "57,0 kg"
+            },
+            "it": {
+                "name": "Shieldon",
+                "category": "Pokémon Schermo",
+                "entry": "Ha una corazza molto spessa. Di\nconseguenza può procurarsi erba\ne bacche senza dover combattere.",
+                "height": "0,5 m",
+                "weight": "57,0 kg"
+            },
+            "ko": {
+                "name": "방패톱스",
+                "category": "실드포켓몬",
+                "entry": "뛰어난 방어력을 지녔다.\n그 덕분에 특별히 다투는 일도 없이\n풀이나 나무열매를 먹으며 지낸다.",
+                "height": "0.5 m",
+                "weight": "57.0 kg"
+            },
+            "es": {
+                "name": "Shieldon",
+                "category": "Pokémon Escudo",
+                "entry": "Gracias a su imponente protección\nfacial, puede comer hierba y bayas\ndonde quiera sin que le molesten.",
+                "height": "0,5 m",
+                "weight": "57,0 kg"
+            },
+            "ja": {
+                "name": "タテトプス",
+                "category": "シールドポケモン",
+                "entry": "ばつぐんの\\x{3000}ぼうぎょりょくを\\x{3000}もつ。\nそのため\\x{3000}とくに\\x{3000}あらそうこともなく\nくさや\\x{3000}きのみを\\x{3000}たべて\\x{3000}すごす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff17}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 42,

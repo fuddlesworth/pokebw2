@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Budew",
-    "category": "Bud Pokémon",
-    "pokedex_entry": "Sensitive to changing temperatures,\nthe bud blooms when it's warm,\nreleasing toxic pollen.",
+    "pokedex": {
+        "category": "Bud Pokémon",
+        "entry": "Sensitive to changing temperatures,\nthe bud blooms when it's warm,\nreleasing toxic pollen.",
+        "height": "0'08\"",
+        "weight": "2.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Budew",
+                "category": "Bud Pokémon",
+                "entry": "Sensitive to changing temperature,\nthe bud is said to bloom when it\nfeels the sun's warm touch.",
+                "height": "0'08\"",
+                "weight": "2.6 lbs."
+            },
+            "fr": {
+                "name": "Rozbouton",
+                "category": "Pokémon Bourgeon",
+                "entry": "Il est sensible aux variations de\ntempérature et on dit qu'il fleurit\nquand il sent la chaleur du soleil.",
+                "height": "0,2 m",
+                "weight": "1,2 kg"
+            },
+            "de": {
+                "name": "Knospi",
+                "category": "Knospe",
+                "entry": "Sensibel gegenüber Wetter-\nveränderungen. Spürt es die Wärme\nder Sonne, erblüht seine Knospe.",
+                "height": "0,2 m",
+                "weight": "1,2 kg"
+            },
+            "it": {
+                "name": "Budew",
+                "category": "Pokémon Germoglio",
+                "entry": "La sua gemma, sensibile agli sbalzi di\ntemperatura, si schiude quando avverte\ni caldi raggi del sole.",
+                "height": "0,2 m",
+                "weight": "1,2 kg"
+            },
+            "ko": {
+                "name": "꼬몽울",
+                "category": "꽃봉오리포켓몬",
+                "entry": "온도 변화에 민감하여\n따뜻한 햇볕을 느끼면\n반드시 꽃봉오리를 피운다고 한다.",
+                "height": "0.2 m",
+                "weight": "1.2 kg"
+            },
+            "es": {
+                "name": "Budew",
+                "category": "Pokémon Brote",
+                "entry": "Es muy sensible a los cambios de\ntemperatura. Se dice que si le da\nel sol, su capullo florece.",
+                "height": "0,2 m",
+                "weight": "1,2 kg"
+            },
+            "ja": {
+                "name": "スボミー",
+                "category": "つぼみポケモン",
+                "entry": "おんどの\\x{3000}へんかに\\x{3000}びんかんで\nあたたかい\\x{3000}ひざしを\\x{3000}かんじるとき\nつぼみは\\x{3000}かならず\\x{3000}ひらくという。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 30,

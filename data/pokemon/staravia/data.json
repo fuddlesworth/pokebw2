@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Staravia",
-    "category": "Starling Pokémon",
-    "pokedex_entry": "Recognizing their own weakness,\nthey always live in a group. When\nalone, a Staravia cries noisily.",
+    "pokedex": {
+        "category": "Starling Pokémon",
+        "entry": "Recognizing their own weakness,\nthey always live in a group. When\nalone, a Staravia cries noisily.",
+        "height": "2'00\"",
+        "weight": "34.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Staravia",
+                "category": "Starling Pokémon",
+                "entry": "Recognizing their own weakness,\nthey always live in a group. When\nalone, a Staravia cries noisily.",
+                "height": "2'00\"",
+                "weight": "34.2 lbs."
+            },
+            "fr": {
+                "name": "Étourvol",
+                "category": "Pokémon Étourneau",
+                "entry": "Conscient de sa propre faiblesse,\nil vit toujours en groupe, piaillant\nbruyamment quand il est seul.",
+                "height": "0,6 m",
+                "weight": "15,5 kg"
+            },
+            "de": {
+                "name": "Staravia",
+                "category": "Star",
+                "entry": "Staravia verbergen ihre Schwäche\nin Gruppen. Sind sie allein, kann man\nsie an ihren lauten Rufen erkennen.",
+                "height": "0,6 m",
+                "weight": "15,5 kg"
+            },
+            "it": {
+                "name": "Staravia",
+                "category": "Pokémon Storno",
+                "entry": "Conscio della propria debolezza, vive\nin gruppo. Quando è da solo, Staravia\nemette forti versi.",
+                "height": "0,6 m",
+                "weight": "15,5 kg"
+            },
+            "ko": {
+                "name": "찌르버드",
+                "category": "찌르레기포켓몬",
+                "entry": "자신의 약함을 잘 알고 있기에\n항상 무리를 지어 살고 있다.\n혼자가 되면 요란하게 운다.",
+                "height": "0.6 m",
+                "weight": "15.5 kg"
+            },
+            "es": {
+                "name": "Staravia",
+                "category": "Pokémon Estornino",
+                "entry": "Son conscientes de su debilidad, así\nque siempre viven en grupo. Si se\nencuentran solos, lloran a gritos.",
+                "height": "0,6 m",
+                "weight": "15,5 kg"
+            },
+            "ja": {
+                "name": "ムクバード",
+                "category": "むくどりポケモン",
+                "entry": "じぶんの\\x{3000}よわさを\\x{3000}わきまえており\nいつも\\x{3000}むれで\\x{3000}くらしている。\nいっぴきになると\\x{3000}やかましく\\x{3000}なく。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 75,

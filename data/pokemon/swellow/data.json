@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Swellow",
-    "category": "Swallow Pokémon",
-    "pokedex_entry": "It circles the sky in search of\nprey. When it spots one, it dives\nsteeply to catch the prey.",
+    "pokedex": {
+        "category": "Swallow Pokémon",
+        "entry": "It circles the sky in search of\nprey. When it spots one, it dives\nsteeply to catch the prey.",
+        "height": "2'04\"",
+        "weight": "43.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Swellow",
+                "category": "Swallow Pokémon",
+                "entry": "It circles the sky in search of\nprey. When it spots one, it dives\nsteeply to catch the prey.",
+                "height": "2'04\"",
+                "weight": "43.7 lbs."
+            },
+            "fr": {
+                "name": "Hélédelle",
+                "category": "Pokémon Hirondelle",
+                "entry": "Il vole en cercle en quête d'une\nproie. Dès qu'il l'a repérée, il fond\nsur elle en un éclair.",
+                "height": "0,7 m",
+                "weight": "19,8 kg"
+            },
+            "de": {
+                "name": "Schwalboss",
+                "category": "Schwalbe",
+                "entry": "Es fliegt auf der Suche nach Beute\nständig umher. Findet es Beute,\nstürzt es sich im Sturzflug auf sie.",
+                "height": "0,7 m",
+                "weight": "19,8 kg"
+            },
+            "it": {
+                "name": "Swellow",
+                "category": "Pokémon Rondine",
+                "entry": "Vola in tondo alla ricerca di prede.\nQuando ne avvista una, si lancia\nin picchiata per catturarla.",
+                "height": "0,7 m",
+                "weight": "19,8 kg"
+            },
+            "ko": {
+                "name": "스왈로",
+                "category": "제비포켓몬",
+                "entry": "상공을 선회하면서\n먹이를 찾으면 거꾸로\n급강하하여 잡는다.",
+                "height": "0.7 m",
+                "weight": "19.8 kg"
+            },
+            "es": {
+                "name": "Swellow",
+                "category": "Pokémon Buche",
+                "entry": "Vuela en círculos en busca de presas.\nCuando ve una, se lanza sin dudarlo.",
+                "height": "0,7 m",
+                "weight": "19,8 kg"
+            },
+            "ja": {
+                "name": "オオスバメ",
+                "category": "ツバメポケモン",
+                "entry": "じょうくうを\\x{3000}せんかいしながら\nえものを\\x{3000}さがし\\x{3000}まっさかさまに\nきゅうこうかして\\x{3000}つかまえる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 85,

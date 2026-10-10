@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Nidoran⑭",
-    "category": "Poison Pin Pokémon",
-    "pokedex_entry": "It scans its surroundings by\nraising its ears out of the grass.\nIts toxic horn is for protection.",
+    "pokedex": {
+        "category": "Poison Pin Pokémon",
+        "entry": "It scans its surroundings by\nraising its ears out of the grass.\nIts toxic horn is for protection.",
+        "height": "1'08\"",
+        "weight": "19.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Nidoran⑭",
+                "category": "Poison Pin Pokémon",
+                "entry": "It scans its surroundings by\nraising its ears out of the grass.\nIts toxic horn is for protection.",
+                "height": "1'08\"",
+                "weight": "19.8 lbs."
+            },
+            "fr": {
+                "name": "Nidoran⑭",
+                "category": "Pokémon Vénépic",
+                "entry": "Il jauge le terrain en laissant\nses oreilles dépasser de l'herbe.\nIl se défend avec sa corne toxique.",
+                "height": "0,5 m",
+                "weight": "9,0 kg"
+            },
+            "de": {
+                "name": "Nidoran⑭",
+                "category": "Giftdorn",
+                "entry": "Es untersucht die Umgebung, indem\nes die Ohren spitzt und lauscht. Sein\ngiftiges Horn schützt es.",
+                "height": "0,5 m",
+                "weight": "9,0 kg"
+            },
+            "it": {
+                "name": "Nidoran⑭",
+                "category": "Pokémon Velenago",
+                "entry": "Esamina l'ambiente circostante tendendo\nle orecchie fuori dall'erba. Si protegge\ncon il corno velenoso.",
+                "height": "0,5 m",
+                "weight": "9,0 kg"
+            },
+            "ko": {
+                "name": "니드런⑭",
+                "category": "독침포켓몬",
+                "entry": "풀밭 위로 귀만 내어\n주위의 낌새를 살핀다.\n맹독의 뿔로 몸을 보호한다.",
+                "height": "0.5 m",
+                "weight": "9.0 kg"
+            },
+            "es": {
+                "name": "Nidoran⑭",
+                "category": "Pokémon Pin Veneno",
+                "entry": "Saca las orejas por encima de la hierba\npara explorar el territorio.\nLe protege su cuerno venenoso.",
+                "height": "0,5 m",
+                "weight": "9,0 kg"
+            },
+            "ja": {
+                "name": "ニドラン♂",
+                "category": "どくばりポケモン",
+                "entry": "くさむらの\\x{3000}うえに\\x{3000}みみだけ\\x{3000}だして\nまわりの\\x{3000}けはいを\\x{3000}さぐる。\nもうどくの\\x{3000}ツノで\\x{3000}みを\\x{3000}まもる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 46,
         "attack": 57,

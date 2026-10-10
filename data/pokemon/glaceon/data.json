@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Glaceon",
-    "category": "Fresh Snow Pokémon",
-    "pokedex_entry": "It lowers its body heat to freeze its\nfur. The hairs then become like needles\nit can fire.",
+    "pokedex": {
+        "category": "Fresh Snow Pokémon",
+        "entry": "It lowers its body heat to freeze its\nfur. The hairs then become like needles\nit can fire.",
+        "height": "2'07\"",
+        "weight": "57.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Glaceon",
+                "category": "Fresh Snow Pokémon",
+                "entry": "By controlling its body heat, it can\nfreeze the atmosphere around it\nto make a diamond-dust flurry.",
+                "height": "2'07\"",
+                "weight": "57.1 lbs."
+            },
+            "fr": {
+                "name": "Givrali",
+                "category": "Pokémon Poudreuse",
+                "entry": "Il ajuste la température de son\ncorps pour créer un vent de glace\nen gelant l'air qui l'entoure.",
+                "height": "0,8 m",
+                "weight": "25,9 kg"
+            },
+            "de": {
+                "name": "Glaziola",
+                "category": "Neuschnee",
+                "entry": "Erzeugt ein Diamantstaubgestöber durch\ndas Einfrieren der Luft um sich herum.",
+                "height": "0,8 m",
+                "weight": "25,9 kg"
+            },
+            "it": {
+                "name": "Glaceon",
+                "category": "Pokémon Nevefresca",
+                "entry": "Modificando la temperatura del corpo,\ncongela l'aria e crea folate di cristalli\ndi ghiaccio.",
+                "height": "0,8 m",
+                "weight": "25,9 kg"
+            },
+            "ko": {
+                "name": "글레이시아",
+                "category": "신설포켓몬",
+                "entry": "체온을 컨트롤하는 것으로\n주위의 공기를 얼려서\n다이아몬드 더스트를 날린다.",
+                "height": "0.8 m",
+                "weight": "25.9 kg"
+            },
+            "es": {
+                "name": "Glaceon",
+                "category": "Pokémon Nievefresca",
+                "entry": "Controla su temperatura corporal\npara congelar el ambiente y causar\nráfagas de nieve en polvo.",
+                "height": "0,8 m",
+                "weight": "25,9 kg"
+            },
+            "ja": {
+                "name": "グレイシア",
+                "category": "しんせつポケモン",
+                "entry": "たいおんを\\x{3000}コントロールすることで\nしゅういの\\x{3000}くうきを\\x{3000}こおらせて\nダイヤモンドダストを\\x{3000}ふらせる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff15}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 60,

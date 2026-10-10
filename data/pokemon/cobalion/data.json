@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cobalion",
-    "category": "Iron Will Pokémon",
-    "pokedex_entry": "It has a body and heart of steel.\nIt worked with its allies to punish\npeople when they hurt Pokémon.",
+    "pokedex": {
+        "category": "Iron Will Pokémon",
+        "entry": "It has a body and heart of steel.\nIt worked with its allies to punish\npeople when they hurt Pokémon.",
+        "height": "6'11\"",
+        "weight": "551.2 lbs.",
+        "languages": {
+            "ja": {
+                "category": "てっしんポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 91,
         "attack": 90,

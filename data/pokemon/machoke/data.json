@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Machoke",
-    "category": "Superpower Pokémon",
-    "pokedex_entry": "It happily carries heavy cargo to\ntoughen up. It willingly does hard\nwork for people.",
+    "pokedex": {
+        "category": "Superpower Pokémon",
+        "entry": "It happily carries heavy cargo to\ntoughen up. It willingly does hard\nwork for people.",
+        "height": "4'11\"",
+        "weight": "155.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Machoke",
+                "category": "Superpower Pokémon",
+                "entry": "It happily carries heavy cargo to\ntoughen up. It willingly does hard\nwork for people.",
+                "height": "4'11\"",
+                "weight": "155.4 lbs."
+            },
+            "fr": {
+                "name": "Machopeur",
+                "category": "Pokémon Colosse",
+                "entry": "Il soulève les plus lourdes charges\navec plaisir et facilité. Il donne un\ncoup de main tout en s'entraînant!",
+                "height": "1,5 m",
+                "weight": "70,5 kg"
+            },
+            "de": {
+                "name": "Maschock",
+                "category": "Kraftprotz",
+                "entry": "Es hievt gern schwere Ladung,\num so zu trainieren. Es hilft auch\ngern anderen bei harter Arbeit.",
+                "height": "1,5 m",
+                "weight": "70,5 kg"
+            },
+            "it": {
+                "name": "Machoke",
+                "category": "Pokémon Megaforza",
+                "entry": "Sposta di buon grado carichi pesanti\nper rinforzarsi e gli piace dare\nuna mano alle persone.",
+                "height": "1,5 m",
+                "weight": "70,5 kg"
+            },
+            "ko": {
+                "name": "근육몬",
+                "category": "괴력포켓몬",
+                "entry": "몸을 단련하고자 기분 좋게\n무거운 짐을 날라주기에\n사람을 대신하여 힘을 쓰는 일을 한다.",
+                "height": "1.5 m",
+                "weight": "70.5 kg"
+            },
+            "es": {
+                "name": "Machoke",
+                "category": "Pokémon Superpoder",
+                "entry": "Levanta pesos descomunales para\nmantenerse en forma y usa su fuerza\npara ayudar a las personas.",
+                "height": "1,5 m",
+                "weight": "70,5 kg"
+            },
+            "ja": {
+                "name": "ゴーリキー",
+                "category": "かいりきポケモン",
+                "entry": "からだを\\x{3000}きたえるために\\x{3000}よろこんで\nおもい\\x{3000}にもつを\\x{3000}はこぶので\nひとのかわりに\\x{3000}ちからしごとをする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 100,

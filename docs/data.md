@@ -111,8 +111,9 @@ Egg and Bad Egg after the species' names:
 | `0090_species_names.txt` | `\from{species.name}` | Each species' `name` |
 | `0486_species_names_upper.txt` | `\from{species.name_upper}` | The same in capitals |
 | `0483_species_names_with_article.txt` | `\from{species.name_with_article}` | The same with "a" or "an" (`name_article` where the first letter doesn't tell) |
-| `0464_species_categories.txt` | `\from{species.category}` | Each species' `category` |
-| `0442_pokedex_entries.txt` | `\from{species.pokedex_entry}`, `\from{species.form_pokedex_entries}` | Each species' `pokedex_entry`, an empty entry, then the alternate forms' `form_pokedex_entries` in species order |
+| `0464_species_categories.txt` | `\from{species.pokedex.category}` | Each species' `pokedex.category` |
+| `0442_pokedex_entries.txt`, `0451_pokedex_heights.txt`, `0471_pokedex_weights.txt` | `\from{species.pokedex.entry}`, `\from{species.pokedex.forms.entry}` (and `height`, `weight`) | Each species' `pokedex.entry`, an empty line, then its alternate forms' `pokedex.forms`, in species order |
+| `0458_species_names_en.txt` to `0494_pokedex_weights_ja.txt` | `\from{species.pokedex.<language>.name}` and the like | The other languages' `pokedex.languages`: names, categories, entries, heights and weights |
 | `0403_move_names.txt` | `\from{moves.name}` | Each move's `name` |
 | `0488_move_names_upper.txt` | `\from{moves.name_upper}` | The same in capitals |
 | `0402_btl_main.txt` | `\from{moves.description}` | Each move's `description` |
@@ -154,8 +155,19 @@ documents each field.
 {
     "$schema": "../species.schema.json",
     "name": "Bulbasaur",
-    "category": "Seed Pokémon",
-    "pokedex_entry": "For some time after its birth, it\ngrows by gaining nourishment from\nthe seed on its back.",
+    "pokedex": {
+        "category": "Seed Pokémon",
+        "entry": "For some time after its birth, it\ngrows by gaining nourishment from\nthe seed on its back.",
+        "height": "2'04\"",
+        "weight": "15.2 lbs.",
+        "languages": {
+            "fr": {
+                "name": "Bulbizarre",
+                ...
+            },
+            ...
+        }
+    },
     "base_stats": {
         "hp": 45,
         ...
@@ -217,9 +229,12 @@ nothing names. Both versions have the same species data.
 
 To add a species, add its constant to the end of `species.txt` and its directory with a `data.json`; to add a form with
 a record of its own, add its `form_<n>.json` and its line to `forms.json`, and count it in the species' `forms`. A
-species' name, category and Pokédex entry, and the entries of its alternate forms (`form_pokedex_entries`, one for each
-form after the first, Unown's and Arceus' too), go into the text (see [Text](#text)); its sprites and cry aren't built
-from source yet.
+species' name and its `pokedex` go into the text (see [Text](#text)): its category, entry, and height and weight as the
+Pokédex shows them, which are text the game keeps apart from the record's numbers (the weights are rounded by hand, so
+they can't be computed from them); its alternate forms' (`forms`, one for each form after the first, Unown's and Arceus'
+too); and `languages`, the text the game keeps in English, French, German, Italian, Korean, Spanish and Japanese for the
+species up to Arceus, which a Pokémon from a game in that language shows, with Giratina's and Shaymin's alternate forms'
+sizes, and the Japanese category of every species. Its sprites and cry aren't built from source yet.
 
 ## Moves
 

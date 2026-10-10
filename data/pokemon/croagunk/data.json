@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Croagunk",
-    "category": "Toxic Mouth Pokémon",
-    "pokedex_entry": "Inflating its poison sacs, it fills the\narea with an odd sound and hits\nflinching opponents with a poison jab.",
+    "pokedex": {
+        "category": "Toxic Mouth Pokémon",
+        "entry": "Inflating its poison sacs, it fills the\narea with an odd sound and hits\nflinching opponents with a poison jab.",
+        "height": "2'04\"",
+        "weight": "50.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Croagunk",
+                "category": "Toxic Mouth Pokémon",
+                "entry": "It rarely fights fairly, but that is\nstrictly to ensure survival. It is\npopular as a mascot.",
+                "height": "2'04\"",
+                "weight": "50.7 lbs."
+            },
+            "fr": {
+                "name": "Cradopaud",
+                "category": "Pokémon Toxique",
+                "entry": "Son instinct de survie le pousse à\nne pas se battre dans les règles.\nC'est une mascotte populaire.",
+                "height": "0,7 m",
+                "weight": "23,0 kg"
+            },
+            "de": {
+                "name": "Glibunkel",
+                "category": "Giftmund",
+                "entry": "Aufgrund seines starken Überlebens-\ndrangs kämpft es selten fair. Beliebt\nals Maskottchen.",
+                "height": "0,7 m",
+                "weight": "23,0 kg"
+            },
+            "it": {
+                "name": "Croagunk",
+                "category": "Pokémon Inveieleno",
+                "entry": "Combatte spesso slealmente, ma lo fa per\nsopravvivere. È molto apprezzato come\nmascotte.",
+                "height": "0,7 m",
+                "weight": "23,0 kg"
+            },
+            "ko": {
+                "name": "삐딱구리",
+                "category": "독설포켓몬",
+                "entry": "정정당당하게 싸우는 일은\n드물지만 그것도 살아남기 위함이다.\n마스코트로서 인기가 높다.",
+                "height": "0.7 m",
+                "weight": "23.0 kg"
+            },
+            "es": {
+                "name": "Croagunk",
+                "category": "Pokémon Boca Tóxica",
+                "entry": "Rara vez combate limpio, pero es\npara asegurar su supervivencia.\nEs muy popular como mascota.",
+                "height": "0,7 m",
+                "weight": "23,0 kg"
+            },
+            "ja": {
+                "name": "グレッグル",
+                "category": "どくづきポケモン",
+                "entry": "せいせいどうどうと\\x{3000}たたかうことは\nすくないが\\x{3000}それも\\x{3000}いきのびるため。\nマスコットとして\\x{3000}にんきが\\x{3000}たかい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff13}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 48,
         "attack": 61,

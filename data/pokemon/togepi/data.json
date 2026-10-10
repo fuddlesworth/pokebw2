@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Togepi",
-    "category": "Spike Ball Pokémon",
-    "pokedex_entry": "It transforms the kindness and joy\nof others into happiness, which it\nstores in its shell.",
+    "pokedex": {
+        "category": "Spike Ball Pokémon",
+        "entry": "It transforms the kindness and joy\nof others into happiness, which it\nstores in its shell.",
+        "height": "1'00\"",
+        "weight": "3.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Togepi",
+                "category": "Spike Ball Pokémon",
+                "entry": "It transforms the kindness and joy\nof others into happiness, which it\nstores in its shell.",
+                "height": "1'00\"",
+                "weight": "3.3 lbs."
+            },
+            "fr": {
+                "name": "Togepi",
+                "category": "Pokémon Balle Pic",
+                "entry": "Il transforme les émotions\npositives des autres en bonheur\nqu'il stocke dans sa coquille.",
+                "height": "0,3 m",
+                "weight": "1,5 kg"
+            },
+            "de": {
+                "name": "Togepi",
+                "category": "Zackenball",
+                "entry": "Wandelt die Güte und Freude anderer\nin Glücksgefühle um, die es in seinem\nPanzer speichert.",
+                "height": "0,3 m",
+                "weight": "1,5 kg"
+            },
+            "it": {
+                "name": "Togepi",
+                "category": "Pokémon Pallapunte",
+                "entry": "Trasforma la gentilezza e la gioia degli\naltri in felicità, che immagazzina nel\nsuo guscio.",
+                "height": "0,3 m",
+                "weight": "1,5 kg"
+            },
+            "ko": {
+                "name": "토게피",
+                "category": "바늘알포켓몬",
+                "entry": "모두가 느낀 상냥함과\n기쁨을 행복으로 바꾼다.\n껍질 안에는 행복이 가득.",
+                "height": "0.3 m",
+                "weight": "1.5 kg"
+            },
+            "es": {
+                "name": "Togepi",
+                "category": "Pokémon Bolaclavos",
+                "entry": "Transforma la bondad y la alegría\nde los demás en felicidad y\nla almacena en su cascarón.",
+                "height": "0,3 m",
+                "weight": "1,5 kg"
+            },
+            "ja": {
+                "name": "トゲピー",
+                "category": "はりたまポケモン",
+                "entry": "みんなの\\x{3000}かんじた\\x{3000}やさしさや\nうれしさを\\x{3000}しあわせに\\x{3000}かえている。\nカラのなかは\\x{3000}しあわせ\\x{3000}ばかりだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 20,

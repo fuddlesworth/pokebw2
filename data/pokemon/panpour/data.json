@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Panpour",
-    "category": "Spray Pokémon",
-    "pokedex_entry": "The water stored inside the tuft\non its head is full of nutrients.\nIt waters plants with it using its tail.",
+    "pokedex": {
+        "category": "Spray Pokémon",
+        "entry": "The water stored inside the tuft\non its head is full of nutrients.\nIt waters plants with it using its tail.",
+        "height": "2'00\"",
+        "weight": "29.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "みずかけポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 53,

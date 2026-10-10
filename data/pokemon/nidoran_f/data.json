@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Nidoran⑮",
-    "category": "Poison Pin Pokémon",
-    "pokedex_entry": "While it does not prefer to fight,\neven one drop of the poison it\nsecretes from barbs can be fatal.",
+    "pokedex": {
+        "category": "Poison Pin Pokémon",
+        "entry": "While it does not prefer to fight,\neven one drop of the poison it\nsecretes from barbs can be fatal.",
+        "height": "1'04\"",
+        "weight": "15.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Nidoran⑮",
+                "category": "Poison Pin Pokémon",
+                "entry": "While it does not prefer to fight,\neven one drop of the poison it\nsecretes from barbs can be fatal.",
+                "height": "1'04\"",
+                "weight": "15.4 lbs."
+            },
+            "fr": {
+                "name": "Nidoran⑮",
+                "category": "Pokémon Vénépic",
+                "entry": "Bien qu'il rechigne à se battre, une\ngoutte du poison sécrété par ses\npiquants peut s'avérer fatale.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "de": {
+                "name": "Nidoran⑮",
+                "category": "Giftdorn",
+                "entry": "Es mag keine Kämpfe. Ein einziger\nTropfen des Gifts aus seinen\nWiderhaken hat eine fatale Wirkung.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "it": {
+                "name": "Nidoran⑮",
+                "category": "Pokémon Velenago",
+                "entry": "Non ama combattere, ma anche una\nsola goccia del veleno che secerne\ndagli aculei può essere fatale.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "ko": {
+                "name": "니드런⑮",
+                "category": "독침포켓몬",
+                "entry": "싸움을 좋아하지 않는 성격이다.\n독침에서 분비된 독은\n한 방울만 맞아도 생명을 빼앗긴다.",
+                "height": "0.4 m",
+                "weight": "7.0 kg"
+            },
+            "es": {
+                "name": "Nidoran⑮",
+                "category": "Pokémon Pin Veneno",
+                "entry": "Aunque no le gusta luchar, una sola gota\ndel veneno de sus púas puede resultar\nfatal.",
+                "height": "0,4 m",
+                "weight": "7,0 kg"
+            },
+            "ja": {
+                "name": "ニドラン♀",
+                "category": "どくばりポケモン",
+                "entry": "たたかいを\\x{3000}このまない\\x{3000}せいかく。\nどくバリから\\x{3000}ぶんぴつされる\\x{3000}どくは\nひとしずくでも\\x{3000}いのちとりだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 47,

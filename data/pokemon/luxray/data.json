@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Luxray",
-    "category": "Gleam Eyes Pokémon",
-    "pokedex_entry": "It can see clearly through walls\nto track down its prey and seek\nits lost young.",
+    "pokedex": {
+        "category": "Gleam Eyes Pokémon",
+        "entry": "It can see clearly through walls\nto track down its prey and seek\nits lost young.",
+        "height": "4'07\"",
+        "weight": "92.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Luxray",
+                "category": "Gleam Eyes Pokémon",
+                "entry": "It can see clearly through walls\nto track down its prey and seek\nits lost young.",
+                "height": "4'07\"",
+                "weight": "92.6 lbs."
+            },
+            "fr": {
+                "name": "Luxray",
+                "category": "Pokémon Brillœil",
+                "entry": "Il est capable de voir à travers\nles murs pour chasser des proies\nou retrouver ses petits égarés.",
+                "height": "1,4 m",
+                "weight": "42,0 kg"
+            },
+            "de": {
+                "name": "Luxtra",
+                "category": "Glühauge",
+                "entry": "Es kann durch Wände sehen und\nspürt auf diese Weise Beute und\nverlorengegangene Junge auf.",
+                "height": "1,4 m",
+                "weight": "42,0 kg"
+            },
+            "it": {
+                "name": "Luxray",
+                "category": "Pokémon Occhiluce",
+                "entry": "Vede attraverso le pareti per\nindividuare le prede e i suoi cuccioli\nsmarriti.",
+                "height": "1,4 m",
+                "weight": "42,0 kg"
+            },
+            "ko": {
+                "name": "렌트라",
+                "category": "안광포켓몬",
+                "entry": "벽 저편이라도 볼 수 있는 힘으로\n도망친 먹이를 쫓는 것 이외에도\n미아가 된 아이를 찾기도 한다.",
+                "height": "1.4 m",
+                "weight": "42.0 kg"
+            },
+            "es": {
+                "name": "Luxray",
+                "category": "Pokémon Chispa Ojos",
+                "entry": "Puede ver claramente a través de las\nparedes para buscar a sus presas\no a sus crías.",
+                "height": "1,4 m",
+                "weight": "42,0 kg"
+            },
+            "ja": {
+                "name": "レントラー",
+                "category": "がんこうポケモン",
+                "entry": "かべのむこうも\\x{3000}みえる\\x{3000}ちからで\nにげた\\x{3000}えものを\\x{3000}おいつめるほかにも\nまいごの\\x{3000}こどもを\\x{3000}さがしたりする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 120,

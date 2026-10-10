@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Banette",
-    "category": "Marionette Pokémon",
-    "pokedex_entry": "A doll that became a Pokémon over\nits grudge of being thrown away. It\nseeks the child who disowned it.",
+    "pokedex": {
+        "category": "Marionette Pokémon",
+        "entry": "A doll that became a Pokémon over\nits grudge of being thrown away. It\nseeks the child who disowned it.",
+        "height": "3'07\"",
+        "weight": "27.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Banette",
+                "category": "Marionette Pokémon",
+                "entry": "A doll that became a Pokémon over\nits grudge from being junked. It\nseeks the child that disowned it.",
+                "height": "3'07\"",
+                "weight": "27.6 lbs."
+            },
+            "fr": {
+                "name": "Branette",
+                "category": "Pokémon Marionnette",
+                "entry": "Une poupée mue par la tristesse qui\nla ronge depuis qu'on l'a délaissée.\nElle recherche son propriétaire.",
+                "height": "1,1 m",
+                "weight": "12,5 kg"
+            },
+            "de": {
+                "name": "Banette",
+                "category": "Marionette",
+                "entry": "Dieses Pokémon war eine Puppe, die\nweggeworfen wurde. Es sucht nun\ndas Kind, das dies getan hat.",
+                "height": "1,1 m",
+                "weight": "12,5 kg"
+            },
+            "it": {
+                "name": "Banette",
+                "category": "Pokémon Marionetta",
+                "entry": "Un peluche divenuto Pokémon per la\nrabbia di essere stato buttato via da un\nbimbo, di cui è alla ricerca.",
+                "height": "1,1 m",
+                "weight": "12,5 kg"
+            },
+            "ko": {
+                "name": "다크펫",
+                "category": "봉제인형포켓몬",
+                "entry": "버려진 인형에 원념이\n깃들어 포켓몬이 되었다.\n자신을 버린 아이를 찾고 있다.",
+                "height": "1.1 m",
+                "weight": "12.5 kg"
+            },
+            "es": {
+                "name": "Banette",
+                "category": "Pokémon Marioneta",
+                "entry": "Este muñeco se convirtió en un Pokémon\ncuando lo tiraron a la basura.\nBusca a su antiguo dueño.",
+                "height": "1,1 m",
+                "weight": "12,5 kg"
+            },
+            "ja": {
+                "name": "ジュペッタ",
+                "category": "ぬいぐるみポケモン",
+                "entry": "すてられた\\x{3000}ぬいぐるみに\\x{3000}おんねんが\nやどり\\x{3000}ポケモンになった。じぶんを\nすてた\\x{3000}こどもを\\x{3000}さがしている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 64,
         "attack": 115,

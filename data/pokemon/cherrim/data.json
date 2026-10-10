@@ -1,9 +1,70 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cherrim",
-    "category": "Blossom Pokémon",
-    "pokedex_entry": "If it senses strong sunlight, it\nopens its folded petals to absorb\nthe sun's rays with its whole body.",
-    "form_pokedex_entries": [ "If it senses strong sunlight, it\nopens its folded petals to absorb\nthe sun's rays with its whole body." ],
+    "pokedex": {
+        "category": "Blossom Pokémon",
+        "entry": "If it senses strong sunlight, it\nopens its folded petals to absorb\nthe sun's rays with its whole body.",
+        "height": "1'08\"",
+        "weight": "20.5 lbs.",
+        "forms": [
+            {
+                "entry": "If it senses strong sunlight, it\nopens its folded petals to absorb\nthe sun's rays with its whole body.",
+                "height": "1'08\"",
+                "weight": "20.5 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Cherrim",
+                "category": "Blossom Pokémon",
+                "entry": "If it senses strong sunlight, it\nopens its folded petals to absorb\nthe sun's rays with its whole body.",
+                "height": "1'08\"",
+                "weight": "20.5 lbs."
+            },
+            "fr": {
+                "name": "Ceriflor",
+                "category": "Pokémon Floraison",
+                "entry": "Sous un grand soleil, il ouvre\nses pétales pour en absorber\nles rayons.",
+                "height": "0,5 m",
+                "weight": "9,3 kg"
+            },
+            "de": {
+                "name": "Kinoso",
+                "category": "Blüte",
+                "entry": "Spürt es Sonnenlicht, öffnet es\nseine Blütenblätter und nimmt die\nEnergie der Sonnenstrahlen auf.",
+                "height": "0,5 m",
+                "weight": "9,3 kg"
+            },
+            "it": {
+                "name": "Cherrim",
+                "category": "Pokémon Bocciolo",
+                "entry": "Quando splende il sole, ama aprire\ni suoi petali per assorbire i raggi\nsolari con tutto il corpo.",
+                "height": "0,5 m",
+                "weight": "9,3 kg"
+            },
+            "ko": {
+                "name": "체리꼬",
+                "category": "벚꽃포켓몬",
+                "entry": "강한 햇살을 느끼면\n움츠려 있던 꽃잎을 펼쳐\n전신으로 햇빛을 받는다.",
+                "height": "0.5 m",
+                "weight": "9.3 kg"
+            },
+            "es": {
+                "name": "Cherrim",
+                "category": "Pokémon Floración",
+                "entry": "Cuando detecta luz solar fuerte,\ndespliega los pétalos y absorbe\ntodos los rayos posibles.",
+                "height": "0,5 m",
+                "weight": "9,3 kg"
+            },
+            "ja": {
+                "name": "チェリム",
+                "category": "サクラポケモン",
+                "entry": "つよい\\x{3000}ひざしを\\x{3000}かんじとると\nとざしていた\\x{3000}はなびらを\\x{3000}ひろげ\nぜんしんで\\x{3000}にっこうを\\x{3000}あびる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 60,

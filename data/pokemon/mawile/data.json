@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mawile",
-    "category": "Deceiver Pokémon",
-    "pokedex_entry": "Attached to its head is a huge\nset of jaws formed by horns.\nIt can chew through iron beams.",
+    "pokedex": {
+        "category": "Deceiver Pokémon",
+        "entry": "Attached to its head is a huge\nset of jaws formed by horns.\nIt can chew through iron beams.",
+        "height": "2'00\"",
+        "weight": "25.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mawile",
+                "category": "Deceiver Pokémon",
+                "entry": "Attached to its head is a huge\nset of jaws formed by horns.\nIt can chew through iron beams.",
+                "height": "2'00\"",
+                "weight": "25.4 lbs."
+            },
+            "fr": {
+                "name": "Mysdibule",
+                "category": "Pokémon Trompeur",
+                "entry": "Ses cornes forment une grande\nmâchoire attachée à sa tête. Elle\npeut broyer des barres de fer.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "de": {
+                "name": "Flunkifer",
+                "category": "Schwindler",
+                "entry": "Auf seinem Kopf befindet sich ein\nriesiger Kiefer, der aus Hörnern\nbesteht. Er kann Eisen zermalmen.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "it": {
+                "name": "Mawile",
+                "category": "Pokémon Inganno",
+                "entry": "Le sue due enormi mandibole sono corna\ntrasformate. Con esse può masticare\npersino travi di ferro.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "ko": {
+                "name": "입치트",
+                "category": "배반포켓몬",
+                "entry": "뿔이 변형되어 생긴\n큰 턱이 머리에 달려 있다.\n철골을 물어서 끊어 버린다.",
+                "height": "0.6 m",
+                "weight": "11.5 kg"
+            },
+            "es": {
+                "name": "Mawile",
+                "category": "Pokémon Tramposo",
+                "entry": "Las grandes fauces de su cabeza\nestán formadas por cuernos.\nPuede romper el hierro con ellas.",
+                "height": "0,6 m",
+                "weight": "11,5 kg"
+            },
+            "ja": {
+                "name": "クチート",
+                "category": "あざむきポケモン",
+                "entry": "ツノが\\x{3000}へんけいして\\x{3000}できた\nおおあごが\\x{3000}あたまに\\x{3000}ついている。\nてっこつを\\x{3000}かみきってしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 85,

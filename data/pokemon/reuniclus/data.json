@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Reuniclus",
-    "category": "Multiplying Pokémon",
-    "pokedex_entry": "They use psychic power to control their\narms, which are made of a special liquid.\nThey can crush boulders psychically.",
+    "pokedex": {
+        "category": "Multiplying Pokémon",
+        "entry": "They use psychic power to control their\narms, which are made of a special liquid.\nThey can crush boulders psychically.",
+        "height": "3'03\"",
+        "weight": "44.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ぞうふくポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 110,
         "attack": 65,

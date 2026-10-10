@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ampharos",
-    "category": "Light Pokémon",
-    "pokedex_entry": "The tip of its tail shines so brightly it\ncan be used to send sea-navigation\nbeacons to distant foreign shores.",
+    "pokedex": {
+        "category": "Light Pokémon",
+        "entry": "The tip of its tail shines so brightly it\ncan be used to send sea-navigation\nbeacons to distant foreign shores.",
+        "height": "4'07\"",
+        "weight": "135.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ampharos",
+                "category": "Light Pokémon",
+                "entry": "The tip of its tail shines brightly.\nIn the olden days, people sent\nsignals using the tail's light.",
+                "height": "4'07\"",
+                "weight": "135.6 lbs."
+            },
+            "fr": {
+                "name": "Pharamp",
+                "category": "Pokémon Lumière",
+                "entry": "Le bout de sa queue brille avec\nintensité. Jadis, on s'en servait\npour envoyer des signaux.",
+                "height": "1,4 m",
+                "weight": "61,5 kg"
+            },
+            "de": {
+                "name": "Ampharos",
+                "category": "Leuchte",
+                "entry": "Seine Schweifspitze leuchtet hell.\nIn alten Zeiten hat man mit seiner\nHilfe Lichtsignale gegeben.",
+                "height": "1,4 m",
+                "weight": "61,5 kg"
+            },
+            "it": {
+                "name": "Ampharos",
+                "category": "Pokémon Luce",
+                "entry": "La punta della sua coda brilla. In\npassato, le persone si inviavano\nsegnali usando la luce della coda.",
+                "height": "1,4 m",
+                "weight": "61,5 kg"
+            },
+            "ko": {
+                "name": "전룡",
+                "category": "라이트포켓몬",
+                "entry": "꼬리 끝에 빛이 반짝인다.\n옛날 사람들은 이 불빛을\n써서 신호를 주고받았다.",
+                "height": "1.4 m",
+                "weight": "61.5 kg"
+            },
+            "es": {
+                "name": "Ampharos",
+                "category": "Pokémon Luz",
+                "entry": "La punta de su cola brilla. Antiguamente\nla gente enviaba señales con ella.",
+                "height": "1,4 m",
+                "weight": "61,5 kg"
+            },
+            "ja": {
+                "name": "デンリュウ",
+                "category": "ライトポケモン",
+                "entry": "しっぽの\\x{3000}さきが\\x{3000}ひかりかがやく。\nむかしの\\x{3000}ひとたちは\\x{3000}その\\x{3000}あかりを\nつかって\\x{3000}あいずを\\x{3000}おくりあった。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 75,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Azelf",
-    "category": "Willpower Pokémon",
-    "pokedex_entry": "When Azelf flew, people gained the\ndetermination to do things.\nIt was the birth of willpower.",
+    "pokedex": {
+        "category": "Willpower Pokémon",
+        "entry": "When Azelf flew, people gained the\ndetermination to do things.\nIt was the birth of willpower.",
+        "height": "1'00\"",
+        "weight": "0.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Azelf",
+                "category": "Willpower Pokémon",
+                "entry": "When Azelf flew, people gained the\ndetermination to do things.\nIt was the birth of willpower.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            },
+            "fr": {
+                "name": "Créfadet",
+                "category": "Pokémon Volonté",
+                "entry": "Quand il prit son envol, les hommes\nacquirent la détermination.\nLa volonté était née.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "de": {
+                "name": "Tobutz",
+                "category": "Willenskraft",
+                "entry": "Als Tobutz flog, erlangten\nMenschen die Entschlossenheit.\nEs war die Geburt der Willenskraft.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "it": {
+                "name": "Azelf",
+                "category": "Pokémon Volontà",
+                "entry": "Al volo di Azelf, gli uomini impararono\nla determinazione nelle azioni. In tal\nmodo nacque la volontà.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "ko": {
+                "name": "아그놈",
+                "category": "의지포켓몬",
+                "entry": "아그놈이 날아다님으로써\n사람들에게 뭔가를 하기 위한\n결의가 생겨나게 되었다.",
+                "height": "0.3 m",
+                "weight": "0.3 kg"
+            },
+            "es": {
+                "name": "Azelf",
+                "category": "Pokémon Voluntad",
+                "entry": "Voló, y los humanos lograron la\ndeterminación para hacer cosas.\nAsí nació la voluntad.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "ja": {
+                "name": "アグノム",
+                "category": "いしポケモン",
+                "entry": "アグノムが\\x{3000}とびまわったことで\nひとびとに\\x{3000}なにかを\\x{3000}するための\nけつい\\x{3000}というものが\\x{3000}うまれた。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 125,

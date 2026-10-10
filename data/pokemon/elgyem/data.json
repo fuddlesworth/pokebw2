@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Elgyem",
-    "category": "Cerebral Pokémon",
-    "pokedex_entry": "Rumors of its origin are linked to a UFO\ncrash site in the desert 50 years ago.",
+    "pokedex": {
+        "category": "Cerebral Pokémon",
+        "entry": "Rumors of its origin are linked to a UFO\ncrash site in the desert 50 years ago.",
+        "height": "1'08\"",
+        "weight": "19.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ブレインポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 55,

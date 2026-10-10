@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cryogonal",
-    "category": "Crystallizing Pokémon",
-    "pokedex_entry": "They are composed of ice crystals.\nThey capture prey with chains of ice,\nfreezing the prey at -148° F.",
+    "pokedex": {
+        "category": "Crystallizing Pokémon",
+        "entry": "They are composed of ice crystals.\nThey capture prey with chains of ice,\nfreezing the prey at -148° F.",
+        "height": "3'07\"",
+        "weight": "326.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "けっしょうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 50,

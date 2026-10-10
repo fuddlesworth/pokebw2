@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Durant",
-    "category": "Iron Ant Pokémon",
-    "pokedex_entry": "Individuals each play different roles in\ndriving Heatmor, their natural predator,\naway from their colony.",
+    "pokedex": {
+        "category": "Iron Ant Pokémon",
+        "entry": "Individuals each play different roles in\ndriving Heatmor, their natural predator,\naway from their colony.",
+        "height": "1'00\"",
+        "weight": "72.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "てつアリポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 58,
         "attack": 109,

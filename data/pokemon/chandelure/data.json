@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Chandelure",
-    "category": "Luring Pokémon",
-    "pokedex_entry": "The spirits burned up in its\nominous flame lose their way\nand wander this world forever.",
+    "pokedex": {
+        "category": "Luring Pokémon",
+        "entry": "The spirits burned up in its\nominous flame lose their way\nand wander this world forever.",
+        "height": "3'03\"",
+        "weight": "75.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "いざないポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 55,

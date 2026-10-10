@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Spinda",
-    "category": "Spot Panda Pokémon",
-    "pokedex_entry": "No two Spinda have the same\npattern of spots. Its tottering\nstep fouls the aim of foes.",
+    "pokedex": {
+        "category": "Spot Panda Pokémon",
+        "entry": "No two Spinda have the same\npattern of spots. Its tottering\nstep fouls the aim of foes.",
+        "height": "3'07\"",
+        "weight": "11.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Spinda",
+                "category": "Spot Panda Pokémon",
+                "entry": "No two Spinda have the same\npattern of spots. Its tottering\nstep fouls the aim of foes.",
+                "height": "3'07\"",
+                "weight": "11.0 lbs."
+            },
+            "fr": {
+                "name": "Spinda",
+                "category": "Pokémon Panda Tache",
+                "entry": "Les motifs sur leur fourrure sont\npropres à chaque Spinda. Son pas\nchancelant le rend difficile à viser.",
+                "height": "1,1 m",
+                "weight": "5,0 kg"
+            },
+            "de": {
+                "name": "Pandir",
+                "category": "Punkt-Panda",
+                "entry": "Das Muster eines Pandir ist wie ein\nFingerabdruck. Sein Taumeln senkt\ndie gegnerische Zielsicherheit.",
+                "height": "1,1 m",
+                "weight": "5,0 kg"
+            },
+            "it": {
+                "name": "Spinda",
+                "category": "Pokémon Macchipanda",
+                "entry": "Non ci sono due Spinda con lo stesso\nmotivo maculato. Il suo passo\nbarcollante confonde i nemici.",
+                "height": "1,1 m",
+                "weight": "5,0 kg"
+            },
+            "ko": {
+                "name": "얼루기",
+                "category": "얼룩팬더포켓몬",
+                "entry": "똑같은 얼룩무늬의 얼루기는\n없다. 휘청휘청거리는 걸음걸이로\n상대의 노림수를 피한다.",
+                "height": "1.1 m",
+                "weight": "5.0 kg"
+            },
+            "es": {
+                "name": "Spinda",
+                "category": "Pokémon Panda Topos",
+                "entry": "No hay dos Spinda que tengan\nidénticos pelajes. Su tambaleo\nal bailar confunde a los rivales.",
+                "height": "1,1 m",
+                "weight": "5,0 kg"
+            },
+            "ja": {
+                "name": "パッチール",
+                "category": "ぶちパンダポケモン",
+                "entry": "おなじ\\x{3000}ブチもようの\\x{3000}パッチールは\nいない。フラフラした\\x{3000}あしどりで\nあいての\\x{3000}ねらいを\\x{3000}はずす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 60,

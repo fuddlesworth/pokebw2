@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bagon",
-    "category": "Rock Head Pokémon",
-    "pokedex_entry": "Dreaming of one day flying, it\npractices by leaping off cliffs\nevery day.",
+    "pokedex": {
+        "category": "Rock Head Pokémon",
+        "entry": "Dreaming of one day flying, it\npractices by leaping off cliffs\nevery day.",
+        "height": "2'00\"",
+        "weight": "92.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Bagon",
+                "category": "Rock Head Pokémon",
+                "entry": "Dreaming of one day flying, it\npractices by leaping off cliffs\nevery day.",
+                "height": "2'00\"",
+                "weight": "92.8 lbs."
+            },
+            "fr": {
+                "name": "Draby",
+                "category": "Pokémon Tête de Roc",
+                "entry": "Il rêve de pouvoir voler un jour.\nPour l'heure, il s'entraîne en\nsautant du haut des falaises.",
+                "height": "0,6 m",
+                "weight": "42,1 kg"
+            },
+            "de": {
+                "name": "Kindwurm",
+                "category": "Steinhaupt",
+                "entry": "Es träumt davon, eines Tages\nfliegen zu können und springt daher\njeden Tag von hohen Klippen.",
+                "height": "0,6 m",
+                "weight": "42,1 kg"
+            },
+            "it": {
+                "name": "Bagon",
+                "category": "Pokémon Rocciotesta",
+                "entry": "Sogna di poter volare un giorno e,\npertanto, si allena regolarmente\ngettandosi da alture.",
+                "height": "0,6 m",
+                "weight": "42,1 kg"
+            },
+            "ko": {
+                "name": "아공이",
+                "category": "돌머리포켓몬",
+                "entry": "넓은 하늘을 나는 것을 꿈꾸며\n매일 나는 연습을 하려고\n절벽에서 뛰어내린다.",
+                "height": "0.6 m",
+                "weight": "42.1 kg"
+            },
+            "es": {
+                "name": "Bagon",
+                "category": "Pokémon Cabeza Roca",
+                "entry": "Sueña con volar algún día, por lo que\nsiempre practica saltando desde\nacantilados.",
+                "height": "0,6 m",
+                "weight": "42,1 kg"
+            },
+            "ja": {
+                "name": "タツベイ",
+                "category": "いしあたまポケモン",
+                "entry": "おおぞらを\\x{3000}とぶことを\\x{3000}ゆめみて\nまいにち\\x{3000}とぶ\\x{3000}れんしゅうのために\nがけから\\x{3000}とびおりている。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff12}\\x{ff0e}\\x{ff11}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 75,

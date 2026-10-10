@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Koffing",
-    "category": "Poison Gas Pokémon",
-    "pokedex_entry": "Toxic gas is held within its thin,\nballoon-shaped body, so it can\ncause massive explosions.",
+    "pokedex": {
+        "category": "Poison Gas Pokémon",
+        "entry": "Toxic gas is held within its thin,\nballoon-shaped body, so it can\ncause massive explosions.",
+        "height": "2'00\"",
+        "weight": "2.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Koffing",
+                "category": "Poison Gas Pokémon",
+                "entry": "Lighter-than-air gases in its body\nkeep it aloft. The gases not only\nsmell, they are also explosive.",
+                "height": "2'00\"",
+                "weight": "2.2 lbs."
+            },
+            "fr": {
+                "name": "Smogo",
+                "category": "Pokémon Gaz Mortel",
+                "entry": "Il flotte en retenant des gaz plus\nlégers que l'air. Ceux-ci sont\nexplosifs, en plus d'être fétides.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "de": {
+                "name": "Smogon",
+                "category": "Giftwolke",
+                "entry": "Gase, die leichter als Luft sind,\nlassen es schweben. Diese Gase\nstinken und sind explosiv.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "it": {
+                "name": "Koffing",
+                "category": "Pokémon Velenuvola",
+                "entry": "Fluttua a mezz'aria grazie ai gas che ha\nin corpo. Questi sono maleodoranti e\naltamente esplosivi.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "ko": {
+                "name": "또가스",
+                "category": "독가스포켓몬",
+                "entry": "공기보다도 가벼운 가스를\n몸에 모아서 떠 있다. 가스는\n냄새나는 데다가 폭발도 한다.",
+                "height": "0.6 m",
+                "weight": "1.0 kg"
+            },
+            "es": {
+                "name": "Koffing",
+                "category": "Pokémon Gas Veneno",
+                "entry": "Los gases de su cuerpo le permiten\nflotar. Estos gases, además de oler\nmal, también son explosivos.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "ja": {
+                "name": "ドガース",
+                "category": "どくガスポケモン",
+                "entry": "くうきよりも\\x{3000}かるい\\x{3000}ガスを\nからだに\\x{3000}ためて\\x{3000}うかんでいる。\nガスは\\x{3000}くさいうえに\\x{3000}ばくはつする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 65,

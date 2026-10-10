@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Horsea",
-    "category": "Dragon Pokémon",
-    "pokedex_entry": "It makes its nest in the shade of\ncorals. If it senses danger, it\nspits murky ink and flees.",
+    "pokedex": {
+        "category": "Dragon Pokémon",
+        "entry": "It makes its nest in the shade of\ncorals. If it senses danger, it\nspits murky ink and flees.",
+        "height": "1'04\"",
+        "weight": "17.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Horsea",
+                "category": "Dragon Pokémon",
+                "entry": "It makes its nest in the shade of\ncorals. If it senses danger, it\nspits murky ink and flees.",
+                "height": "1'04\"",
+                "weight": "17.6 lbs."
+            },
+            "fr": {
+                "name": "Hypotrempe",
+                "category": "Pokémon Dragon",
+                "entry": "Il niche à l'ombre du corail. Quand\nil se sent menacé, il disparaît\ndans un nuage d'encre opaque.",
+                "height": "0,4 m",
+                "weight": "8,0 kg"
+            },
+            "de": {
+                "name": "Seeper",
+                "category": "Drache",
+                "entry": "Im Schatten von Korallen legt es\nsein Nest an. Bei Gefahr versprüht\nes Tinte und flieht.",
+                "height": "0,4 m",
+                "weight": "8,0 kg"
+            },
+            "it": {
+                "name": "Horsea",
+                "category": "Pokémon Drago",
+                "entry": "Crea la sua tana all'ombra dei coralli.\nSe avverte un pericolo, spruzza\ninchiostro nero e fugge.",
+                "height": "0,4 m",
+                "weight": "8,0 kg"
+            },
+            "ko": {
+                "name": "쏘드라",
+                "category": "드래곤포켓몬",
+                "entry": "산호의 그늘에 거처를 만든다.\n위험을 느끼면 입에서\n새까만 먹물을 내뿜고 도망간다.",
+                "height": "0.4 m",
+                "weight": "8.0 kg"
+            },
+            "es": {
+                "name": "Horsea",
+                "category": "Pokémon Dragón",
+                "entry": "Hace su nido entre los corales. Si se\nsiente en peligro, escupe tinta y huye.",
+                "height": "0,4 m",
+                "weight": "8,0 kg"
+            },
+            "ja": {
+                "name": "タッツー",
+                "category": "ドラゴンポケモン",
+                "entry": "サンゴの\\x{3000}かげに\\x{3000}すみかを\\x{3000}つくる。\nきけんを\\x{3000}かんじると\\x{3000}くちから\nまっくろい\\x{3000}スミを\\x{3000}はいて\\x{3000}にげる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 40,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gurdurr",
-    "category": "Muscular Pokémon",
-    "pokedex_entry": "With strengthened bodies,\nthey skillfully wield steel beams\nto take down buildings.",
+    "pokedex": {
+        "category": "Muscular Pokémon",
+        "entry": "With strengthened bodies,\nthey skillfully wield steel beams\nto take down buildings.",
+        "height": "3'11\"",
+        "weight": "88.2 lbs.",
+        "languages": {
+            "ja": {
+                "category": "きんこつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 105,

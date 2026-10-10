@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Walrein",
-    "category": "Ice Break Pokémon",
-    "pokedex_entry": "Not only does its thick blubber keep it\nwarm, it also protects it from attacks.\nIt shatters ice with its prized tusks.",
+    "pokedex": {
+        "category": "Ice Break Pokémon",
+        "entry": "Not only does its thick blubber keep it\nwarm, it also protects it from attacks.\nIt shatters ice with its prized tusks.",
+        "height": "4'07\"",
+        "weight": "332.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Walrein",
+                "category": "Ice Break Pokémon",
+                "entry": "It shatters ice with its big tusks.\nIts thick blubber repels not only\nthe cold, but also enemy attacks.",
+                "height": "4'07\"",
+                "weight": "332.0 lbs."
+            },
+            "fr": {
+                "name": "Kaimorse",
+                "category": "Pokémon Brise Glace",
+                "entry": "Il brise la glace avec ses grosses\ndéfenses. Sa graisse le protège du\nfroid, mais aussi des attaques.",
+                "height": "1,4 m",
+                "weight": "150,6 kg"
+            },
+            "de": {
+                "name": "Walraisa",
+                "category": "Eisbrecher",
+                "entry": "Mit seinen Stoßzähnen bricht es\ndurch Eis. Eine Speckschicht\nschützt es vor Kälte und Angriffen.",
+                "height": "1,4 m",
+                "weight": "150,6 kg"
+            },
+            "it": {
+                "name": "Walrein",
+                "category": "Pokémon Spaccagelo",
+                "entry": "Frantuma il ghiaccio con le zanne.\nLo spesso strato adiposo respinge\nil freddo e gli attacchi nemici.",
+                "height": "1,4 m",
+                "weight": "150,6 kg"
+            },
+            "ko": {
+                "name": "씨카이저",
+                "category": "얼음깨기포켓몬",
+                "entry": "큰 얼음을 이빨로 부순다.\n두꺼운 지방은 추위뿐만 아니라\n상대의 공격도 이겨낸다.",
+                "height": "1.4 m",
+                "weight": "150.6 kg"
+            },
+            "es": {
+                "name": "Walrein",
+                "category": "Pokémon Rompehielo",
+                "entry": "Rompe el hielo con sus colmillos.\nSu gruesa capa de grasa le protege\ndel frío y de los enemigos.",
+                "height": "1,4 m",
+                "weight": "150,6 kg"
+            },
+            "ja": {
+                "name": "トドゼルガ",
+                "category": "こおりわりポケモン",
+                "entry": "おおきな\\x{3000}こおりを\\x{3000}キバで\\x{3000}くだく。\nあつい\\x{3000}しぼうは\\x{3000}さむさだけでなく\nてきの\\x{3000}こうげきも\\x{3000}はねかえす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 110,
         "attack": 80,

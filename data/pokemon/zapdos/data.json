@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Zapdos",
-    "category": "Electric Pokémon",
-    "pokedex_entry": "A legendary Pokémon that is said\nto live in thunderclouds. It freely\ncontrols lightning bolts.",
+    "pokedex": {
+        "category": "Electric Pokémon",
+        "entry": "A legendary Pokémon that is said\nto live in thunderclouds. It freely\ncontrols lightning bolts.",
+        "height": "5'03\"",
+        "weight": "116.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Zapdos",
+                "category": "Electric Pokémon",
+                "entry": "A legendary Pokémon that is said\nto live in thunderclouds. It freely\ncontrols lightning bolts.",
+                "height": "5'03\"",
+                "weight": "116.0 lbs."
+            },
+            "fr": {
+                "name": "Électhor",
+                "category": "Pokémon Électrique",
+                "entry": "Un Pokémon Oiseau légendaire dont\non dit qu'il vit dans les nuages\nd'orage. Il contrôle la foudre.",
+                "height": "1,6 m",
+                "weight": "52,6 kg"
+            },
+            "de": {
+                "name": "Zapdos",
+                "category": "Elektro",
+                "entry": "Ein Legendäres Vogel-Pokémon,\ndas in Gewitterwolken leben soll.\nEs kontrolliert Blitze.",
+                "height": "1,6 m",
+                "weight": "52,6 kg"
+            },
+            "it": {
+                "name": "Zapdos",
+                "category": "Pokémon Elettrico",
+                "entry": "Un Pokémon uccello leggendario.\nSi dice che viva tra le nubi\ntemporalesche. Controlla i fulmini.",
+                "height": "1,6 m",
+                "weight": "52,6 kg"
+            },
+            "ko": {
+                "name": "썬더",
+                "category": "전기포켓몬",
+                "entry": "번개 구름 안에 있다고\n전해지는 전설의 포켓몬이다.\n번개를 자유로이 조종한다.",
+                "height": "1.6 m",
+                "weight": "52.6 kg"
+            },
+            "es": {
+                "name": "Zapdos",
+                "category": "Pokémon Eléctrico",
+                "entry": "Legendario Pokémon pájaro del que\nse dice que vive en los nubarrones.\nControla los rayos eléctricos.",
+                "height": "1,6 m",
+                "weight": "52,6 kg"
+            },
+            "ja": {
+                "name": "サンダー",
+                "category": "でんげきポケモン",
+                "entry": "かみなりぐもの\\x{3000}なかに\\x{3000}いると\nいわれる\\x{3000}でんせつの\\x{3000}ポケモン。\nカミナリを\\x{3000}じざいに\\x{3000}あやつる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff12}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 90,

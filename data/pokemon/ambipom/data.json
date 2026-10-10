@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ambipom",
-    "category": "Long Tail Pokémon",
-    "pokedex_entry": "Split into two, the tails are so\nadept at handling and doing things,\nAmbipom rarely uses its hands.",
+    "pokedex": {
+        "category": "Long Tail Pokémon",
+        "entry": "Split into two, the tails are so\nadept at handling and doing things,\nAmbipom rarely uses its hands.",
+        "height": "3'11\"",
+        "weight": "44.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ambipom",
+                "category": "Long Tail Pokémon",
+                "entry": "Split into two, the tails are so\nadept at handling and doing things,\nAmbipom rarely uses its hands.",
+                "height": "3'11\"",
+                "weight": "44.8 lbs."
+            },
+            "fr": {
+                "name": "Capidextre",
+                "category": "Pokémon Longqueue",
+                "entry": "Ses queues jumelles sont si agiles\net efficaces qu'il ne se sert que\ntrès rarement de ses bras.",
+                "height": "1,2 m",
+                "weight": "20,3 kg"
+            },
+            "de": {
+                "name": "Ambidiffel",
+                "category": "Langschweif",
+                "entry": "Es ist mit seinen beiden Schweifen\nso geschickt, dass es seine Hände\nnur noch selten gebraucht.",
+                "height": "1,2 m",
+                "weight": "20,3 kg"
+            },
+            "it": {
+                "name": "Ambipom",
+                "category": "Pokémon Lungacoda",
+                "entry": "È talmente abile nel maneggiare gli\noggetti con le sue due code che\nsolo raramente usa le mani.",
+                "height": "1,2 m",
+                "weight": "20,3 kg"
+            },
+            "ko": {
+                "name": "겟핸보숭",
+                "category": "긴꼬리포켓몬",
+                "entry": "2개로 나뉜 꼬리를\n능숙하게 사용할 수 있어서\n거의 손을 쓰지 않게 됐다.",
+                "height": "1.2 m",
+                "weight": "20.3 kg"
+            },
+            "es": {
+                "name": "Ambipom",
+                "category": "Pokémon Cola Larga",
+                "entry": "Tiene dos colas muy útiles y hábiles\npara manejar cosas, así que rara\nvez utiliza las manos.",
+                "height": "1,2 m",
+                "weight": "20,3 kg"
+            },
+            "ja": {
+                "name": "エテボース",
+                "category": "おながポケモン",
+                "entry": "\\x{ff12}ほんに\\x{3000}わかれた\\x{3000}しっぽは\nいろんなことが\\x{3000}きように\\x{3000}できるので\nほとんど\\x{3000}てを\\x{3000}つかわなくなった。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 100,

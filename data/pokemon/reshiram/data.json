@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Reshiram",
-    "category": "Vast White Pokémon",
-    "pokedex_entry": "This legendary Pokémon can scorch\nthe world with fire. It helps those\nwho want to build a world of truth.",
+    "pokedex": {
+        "category": "Vast White Pokémon",
+        "entry": "This legendary Pokémon can scorch\nthe world with fire. It helps those\nwho want to build a world of truth.",
+        "height": "10'06\"",
+        "weight": "727.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "はくようポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 120,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Stantler",
-    "category": "Big Horn Pokémon",
-    "pokedex_entry": "Staring at its antlers creates\nan odd sensation as if one were\nbeing drawn into their centers.",
+    "pokedex": {
+        "category": "Big Horn Pokémon",
+        "entry": "Staring at its antlers creates\nan odd sensation as if one were\nbeing drawn into their centers.",
+        "height": "4'07\"",
+        "weight": "157.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Stantler",
+                "category": "Big Horn Pokémon",
+                "entry": "Staring at its antlers creates\nan odd sensation as if one were\nbeing drawn into their centers.",
+                "height": "4'07\"",
+                "weight": "157.0 lbs."
+            },
+            "fr": {
+                "name": "Cerfrousse",
+                "category": "Pokémon Maxi Corne",
+                "entry": "Quiconque observe ses antennes\nressent une sensation étrange,\ncomme si leur centre l'attirait.",
+                "height": "1,4 m",
+                "weight": "71,2 kg"
+            },
+            "de": {
+                "name": "Damhirplex",
+                "category": "Vielender",
+                "entry": "Starrt man auf sein Geweih,\nbekommt man das seltsame Gefühl,\nin dessen Mitte gezogen zu werden.",
+                "height": "1,4 m",
+                "weight": "71,2 kg"
+            },
+            "it": {
+                "name": "Stantler",
+                "category": "Pokémon Grancorno",
+                "entry": "Chi fissa le sue corna riceve una strana\nsensazione, quasi come se venisse\nrisucchiato.",
+                "height": "1,4 m",
+                "weight": "71,2 kg"
+            },
+            "ko": {
+                "name": "노라키",
+                "category": "큰뿔포켓몬",
+                "entry": "뿔을 응시하고 있으면 원의\n중심에 빨려 들어가는 것 같은\n이상한 기분이 든다.",
+                "height": "1.4 m",
+                "weight": "71.2 kg"
+            },
+            "es": {
+                "name": "Stantler",
+                "category": "Pokémon Grancuerno",
+                "entry": "Mirar a su cornamenta provoca\nuna extraña sensación de\npérdida de equilibrio.",
+                "height": "1,4 m",
+                "weight": "71,2 kg"
+            },
+            "ja": {
+                "name": "オドシシ",
+                "category": "おおツノポケモン",
+                "entry": "ツノを\\x{3000}みつめていると\\x{3000}わっかの\nちゅうしんに\\x{3000}すいこまれそうな\nふしぎな\\x{3000}きぶんに\\x{3000}なってしまう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 73,
         "attack": 95,

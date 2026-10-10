@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Vanillite",
-    "category": "Fresh Snow Pokémon",
-    "pokedex_entry": "Theoretically, this Pokémon formed from\nicicles bathed in energy from the morning\nsun. Their breath is -58° F.",
+    "pokedex": {
+        "category": "Fresh Snow Pokémon",
+        "entry": "Theoretically, this Pokémon formed from\nicicles bathed in energy from the morning\nsun. Their breath is -58° F.",
+        "height": "1'04\"",
+        "weight": "12.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "しんせつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 36,
         "attack": 50,

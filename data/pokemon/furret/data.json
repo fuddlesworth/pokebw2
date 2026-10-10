@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Furret",
-    "category": "Long Body Pokémon",
-    "pokedex_entry": "The mother puts its offspring to\nsleep by curling up around them.\nIt corners foes with speed.",
+    "pokedex": {
+        "category": "Long Body Pokémon",
+        "entry": "The mother puts its offspring to\nsleep by curling up around them.\nIt corners foes with speed.",
+        "height": "5'11\"",
+        "weight": "71.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Furret",
+                "category": "Long Body Pokémon",
+                "entry": "The mother puts its offspring to\nsleep by curling up around them.\nIt corners foes with speed.",
+                "height": "5'11\"",
+                "weight": "71.6 lbs."
+            },
+            "fr": {
+                "name": "Fouinar",
+                "category": "Pokémon Allongé",
+                "entry": "La femelle s'enroule autour des\npetits pour les bercer. Il accule\nl'ennemi grâce à sa vitesse.",
+                "height": "1,8 m",
+                "weight": "32,5 kg"
+            },
+            "de": {
+                "name": "Wiesenior",
+                "category": "Langleib",
+                "entry": "Es rollt sich um seine Jungen,\nwenn diese schlafen sollen.\nGegnern begegnet es mit Schnelligkeit.",
+                "height": "1,8 m",
+                "weight": "32,5 kg"
+            },
+            "it": {
+                "name": "Furret",
+                "category": "Pokémon Lungocorpo",
+                "entry": "Si addormenta avvolto nell'esile corpo\ndella madre. Mette all'angolo i nemici\ncon movimenti rapidi.",
+                "height": "1,8 m",
+                "weight": "32,5 kg"
+            },
+            "ko": {
+                "name": "다꼬리",
+                "category": "긴몸통포켓몬",
+                "entry": "엄마 포켓몬이 가늘고 긴 몸으로\n새끼를 감싸 안아 재운다. 빠른\n움직임으로 상대를 몰아붙인다.",
+                "height": "1.8 m",
+                "weight": "32.5 kg"
+            },
+            "es": {
+                "name": "Furret",
+                "category": "Pokémon Alargado",
+                "entry": "Acurruca a sus crías para que duerman.\nAcorrala a los enemigos con su enorme\nvelocidad.",
+                "height": "1,8 m",
+                "weight": "32,5 kg"
+            },
+            "ja": {
+                "name": "オオタチ",
+                "category": "どうながポケモン",
+                "entry": "ははおやは\\x{3000}ほそながい\\x{3000}からだで\nこどもを\\x{3000}つつみこみ\\x{3000}ねむらせる。\nはやい\\x{3000}うごきで\\x{3000}てきを\\x{3000}おいこむ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 76,

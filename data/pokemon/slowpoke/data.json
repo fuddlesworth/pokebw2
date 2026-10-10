@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Slowpoke",
-    "category": "Dopey Pokémon",
-    "pokedex_entry": "Although slow, it is skilled at\nfishing with its tail. It does not\nfeel pain if its tail is bitten.",
+    "pokedex": {
+        "category": "Dopey Pokémon",
+        "entry": "Although slow, it is skilled at\nfishing with its tail. It does not\nfeel pain if its tail is bitten.",
+        "height": "3'11\"",
+        "weight": "79.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Slowpoke",
+                "category": "Dopey Pokémon",
+                "entry": "Although slow, it is skilled at\nfishing with its tail. It does not\nfeel pain if its tail is bitten.",
+                "height": "3'11\"",
+                "weight": "79.4 lbs."
+            },
+            "fr": {
+                "name": "Ramoloss",
+                "category": "Pokémon Crétin",
+                "entry": "Bien que lent, c'est un pêcheur\nadroit qui utilise sa queue. Elle\nest insensible aux morsures.",
+                "height": "1,2 m",
+                "weight": "36,0 kg"
+            },
+            "de": {
+                "name": "Flegmon",
+                "category": "Schnarcher",
+                "entry": "Es ist langsam, hat aber ein Talent,\nmit seinem Schweif zu fischen.\nBeißt etwas an, tut es ihm nicht weh.",
+                "height": "1,2 m",
+                "weight": "36,0 kg"
+            },
+            "it": {
+                "name": "Slowpoke",
+                "category": "Pokémon Ronfone",
+                "entry": "Anche se è lento, è abile a pescare con\nla coda. Non avverte alcun dolore se\ngliela mordono.",
+                "height": "1,2 m",
+                "weight": "36,0 kg"
+            },
+            "ko": {
+                "name": "야돈",
+                "category": "얼간이포켓몬",
+                "entry": "움직임은 느리지만 꼬리를 사용하는\n낚시가 특기다. 둔감하므로\n꼬리를 물려도 아프지 않다.",
+                "height": "1.2 m",
+                "weight": "36.0 kg"
+            },
+            "es": {
+                "name": "Slowpoke",
+                "category": "Pokémon Atontado",
+                "entry": "A pesar de su lentitud, tiene una gran\nhabilidad para pescar con la cola, que\nes insensible al dolor.",
+                "height": "1,2 m",
+                "weight": "36,0 kg"
+            },
+            "ja": {
+                "name": "ヤドン",
+                "category": "まぬけポケモン",
+                "entry": "うごきは\\x{3000}のろいが\\x{3000}しっぽを\\x{3000}つかう\nつりが\\x{3000}とくい。どんかんなので\nしっぽを\\x{3000}かまれても\\x{3000}いたくない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 65,

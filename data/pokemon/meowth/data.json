@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Meowth",
-    "category": "Scratch Cat Pokémon",
-    "pokedex_entry": "It is nocturnal in nature. If it\nspots something shiny, its eyes\nglitter brightly.",
+    "pokedex": {
+        "category": "Scratch Cat Pokémon",
+        "entry": "It is nocturnal in nature. If it\nspots something shiny, its eyes\nglitter brightly.",
+        "height": "1'04\"",
+        "weight": "9.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Meowth",
+                "category": "Scratch Cat Pokémon",
+                "entry": "It is nocturnal in nature. If it\nspots something shiny, its eyes\nglitter brightly.",
+                "height": "1'04\"",
+                "weight": "9.3 lbs."
+            },
+            "fr": {
+                "name": "Miaouss",
+                "category": "Pokémon Chadégout",
+                "entry": "Son regard s'anime à la vue\nd'un objet brillant. C'est un\nPokémon nocturne.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "de": {
+                "name": "Mauzi",
+                "category": "Katze",
+                "entry": "Ein nachtaktives Pokémon. Sieht\nes etwas Schimmerndes, fangen\nseine Augen an zu glänzen.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "it": {
+                "name": "Meowth",
+                "category": "Pokémon Graffimiao",
+                "entry": "È un Pokémon attivo di notte. Se nota\nqualcosa di luccicante, i suoi occhi\ncominciano a brillare.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "ko": {
+                "name": "나옹",
+                "category": "요괴고양이포켓몬",
+                "entry": "한밤중에 움직이는 습성이 있다.\n반짝반짝 빛나는 것을 발견하면\n그에 못지 않게 눈동자가 반짝인다.",
+                "height": "0.4 m",
+                "weight": "4.2 kg"
+            },
+            "es": {
+                "name": "Meowth",
+                "category": "Pokémon Gato Araña",
+                "entry": "Es de naturaleza nocturna.\nLe atraen los objetos brillantes.",
+                "height": "0,4 m",
+                "weight": "4,2 kg"
+            },
+            "ja": {
+                "name": "ニャース",
+                "category": "ばけねこポケモン",
+                "entry": "よなかに\\x{3000}こうどうする\\x{3000}しゅうせい。\nきらきら\\x{3000}ひかるものを\\x{3000}みつけると\nまけないくらい\\x{3000}ひとみが\\x{3000}かがやく。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 45,

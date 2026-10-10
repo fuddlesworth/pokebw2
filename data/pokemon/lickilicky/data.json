@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lickilicky",
-    "category": "Licking Pokémon",
-    "pokedex_entry": "Their saliva contains lots of components\nthat can dissolve anything. The numbness\ncaused by their lick does not dissipate.",
+    "pokedex": {
+        "category": "Licking Pokémon",
+        "entry": "Their saliva contains lots of components\nthat can dissolve anything. The numbness\ncaused by their lick does not dissipate.",
+        "height": "5'07\"",
+        "weight": "308.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lickilicky",
+                "category": "Licking Pokémon",
+                "entry": "The long tongue is always soggy\nwith slobber. The saliva contains\na solvent that causes numbness.",
+                "height": "5'07\"",
+                "weight": "308.6 lbs."
+            },
+            "fr": {
+                "name": "Coudlangue",
+                "category": "Pokémon Lécheur",
+                "entry": "Sa longue langue est couverte en\npermanence d'une épaisse couche\nde bave anesthésiante.",
+                "height": "1,7 m",
+                "weight": "140,0 kg"
+            },
+            "de": {
+                "name": "Schlurplek",
+                "category": "Schlecker",
+                "entry": "Die lange Zunge ist immer feucht.\nIhr Speichel enthält eine Substanz,\ndie Taubheit hervorrufen kann.",
+                "height": "1,7 m",
+                "weight": "140,0 kg"
+            },
+            "it": {
+                "name": "Lickilicky",
+                "category": "Pokémon Linguaccia",
+                "entry": "La sua lunga lingua è sempre umida.\nLa saliva contiene un solvente che\ncausa intorpidimento.",
+                "height": "1,7 m",
+                "weight": "140,0 kg"
+            },
+            "ko": {
+                "name": "내룸벨트",
+                "category": "핥기포켓몬",
+                "entry": "긴 혀는 항상 타액에 젖어 있다.\n타액에는 물질을 녹이는 성분이\n포함돼 있어 만지면 마비된다.",
+                "height": "1.7 m",
+                "weight": "140.0 kg"
+            },
+            "es": {
+                "name": "Lickilicky",
+                "category": "Pokémon Lametazo",
+                "entry": "Su larga lengua está siempre llena\nde babas. El contacto con su saliva\ncausa entumecimiento.",
+                "height": "1,7 m",
+                "weight": "140,0 kg"
+            },
+            "ja": {
+                "name": "ベロベルト",
+                "category": "なめまわしポケモン",
+                "entry": "ながいしたは\\x{3000}いつも\\x{3000}だえきまみれ。\nだえきには\\x{3000}ものをとかす\\x{3000}せいぶんが\nふくまれており\\x{3000}さわると\\x{3000}しびれる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 110,
         "attack": 85,

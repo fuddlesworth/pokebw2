@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Accelgor",
-    "category": "Shell Out Pokémon",
-    "pokedex_entry": "When its body dries out, it weakens.\nSo it wraps a membrane around itself\nfor protection while it spits poison.",
+    "pokedex": {
+        "category": "Shell Out Pokémon",
+        "entry": "When its body dries out, it weakens.\nSo it wraps a membrane around itself\nfor protection while it spits poison.",
+        "height": "2'07\"",
+        "weight": "55.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "からぬけポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 70,

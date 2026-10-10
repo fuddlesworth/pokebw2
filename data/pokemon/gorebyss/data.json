@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gorebyss",
-    "category": "South Sea Pokémon",
-    "pokedex_entry": "It lives at the bottom of the sea.\nIn the springtime, its pink body\nturns more vivid for some reason.",
+    "pokedex": {
+        "category": "South Sea Pokémon",
+        "entry": "It lives at the bottom of the sea.\nIn the springtime, its pink body\nturns more vivid for some reason.",
+        "height": "5'11\"",
+        "weight": "49.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gorebyss",
+                "category": "South Sea Pokémon",
+                "entry": "It lives at the bottom of the sea.\nIn the springtime, its pink body\nturns more vivid for some reason.",
+                "height": "5'11\"",
+                "weight": "49.8 lbs."
+            },
+            "fr": {
+                "name": "Rosabyss",
+                "category": "Pokémon Mer du Sud",
+                "entry": "Au printemps, son corps rose se\nfait plus vif sans que l'on sache\npourquoi. Il vit au fond de la mer.",
+                "height": "1,8 m",
+                "weight": "22,6 kg"
+            },
+            "de": {
+                "name": "Saganabyss",
+                "category": "Südsee",
+                "entry": "Es lebt auf dem Grund des Meeres.\nIm Frühling wirkt die Farbe seines\nKörpers viel kräftiger.",
+                "height": "1,8 m",
+                "weight": "22,6 kg"
+            },
+            "it": {
+                "name": "Gorebyss",
+                "category": "Pokémon Sudmarino",
+                "entry": "Vive sui fondali marini. In primavera\nil suo corpo rosato diventa più vivido\nper chissà quale motivo.",
+                "height": "1,8 m",
+                "weight": "22,6 kg"
+            },
+            "ko": {
+                "name": "분홍장이",
+                "category": "남해포켓몬",
+                "entry": "바다의 밑바닥에 살고 있지만\n봄이 되면 몸의 분홍색이\n웬일인지 선명하게 물든다.",
+                "height": "1.8 m",
+                "weight": "22.6 kg"
+            },
+            "es": {
+                "name": "Gorebyss",
+                "category": "Pokémon Mar Del Sur",
+                "entry": "Vive en el fondo del mar. En\nprimavera, su cuerpo rosado\nadquiere colores más vivos.",
+                "height": "1,8 m",
+                "weight": "22,6 kg"
+            },
+            "ja": {
+                "name": "サクラビス",
+                "category": "なんかいポケモン",
+                "entry": "うみの\\x{3000}そこで\\x{3000}くらしているが\nはるになると\\x{3000}からだの\\x{3000}ピンクいろが\nなぜか\\x{3000}あざやかに\\x{3000}いろづく。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 84,

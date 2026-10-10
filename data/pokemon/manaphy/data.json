@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Manaphy",
-    "category": "Seafaring Pokémon",
-    "pokedex_entry": "It is born with a wondrous power\nthat lets it bond with any kind of\nPokémon.",
+    "pokedex": {
+        "category": "Seafaring Pokémon",
+        "entry": "It is born with a wondrous power\nthat lets it bond with any kind of\nPokémon.",
+        "height": "1'00\"",
+        "weight": "3.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Manaphy",
+                "category": "Seafaring Pokémon",
+                "entry": "It is born with a wondrous power\nthat lets it bond with any kind of\nPokémon.",
+                "height": "1'00\"",
+                "weight": "3.1 lbs."
+            },
+            "fr": {
+                "name": "Manaphy",
+                "category": "Pokémon Voyagenmer",
+                "entry": "Il est né avec le pouvoir incroyable\nde créer des liens avec n'importe\nquel Pokémon.",
+                "height": "0,3 m",
+                "weight": "1,4 kg"
+            },
+            "de": {
+                "name": "Manaphy",
+                "category": "Seefahrer",
+                "entry": "Es wird mit einer wundersamen Kraft\ngeboren, die eine Bindung zu jedem\nanderen Pokémon möglich macht.",
+                "height": "0,3 m",
+                "weight": "1,4 kg"
+            },
+            "it": {
+                "name": "Manaphy",
+                "category": "Pokémon Oceandante",
+                "entry": "Dispone di un potere innato che lo fa\nlegare con qualsiasi specie di Pokémon.",
+                "height": "0,3 m",
+                "weight": "1,4 kg"
+            },
+            "ko": {
+                "name": "마나피",
+                "category": "회유포켓몬",
+                "entry": "태어났을 때부터 가지고 있는\n이상한 힘을 쓰면 어떤 포켓몬과도\n마음이 서로 통하게 된다.",
+                "height": "0.3 m",
+                "weight": "1.4 kg"
+            },
+            "es": {
+                "name": "Manaphy",
+                "category": "Pokémon Náutico",
+                "entry": "Nace con un maravilloso poder que\nle permite establecer vínculos con\ncualquier tipo de Pokémon.",
+                "height": "0,3 m",
+                "weight": "1,4 kg"
+            },
+            "ja": {
+                "name": "マナフィ",
+                "category": "かいゆうポケモン",
+                "entry": "うまれたときから\\x{3000}そなわっている\nふしぎな\\x{3000}ちからを\\x{3000}つかうと\\x{3000}どんな\nポケモンとも\\x{3000}こころが\\x{3000}かよいあう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 100,

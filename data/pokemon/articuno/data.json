@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Articuno",
-    "category": "Freeze Pokémon",
-    "pokedex_entry": "A legendary bird Pokémon.\nIt can create blizzards by\nfreezing moisture in the air.",
+    "pokedex": {
+        "category": "Freeze Pokémon",
+        "entry": "A legendary bird Pokémon.\nIt can create blizzards by\nfreezing moisture in the air.",
+        "height": "5'07\"",
+        "weight": "122.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Articuno",
+                "category": "Freeze Pokémon",
+                "entry": "A legendary bird Pokémon.\nIt can create blizzards by\nfreezing moisture in the air.",
+                "height": "5'07\"",
+                "weight": "122.1 lbs."
+            },
+            "fr": {
+                "name": "Artikodin",
+                "category": "Pokémon Glaciaire",
+                "entry": "Un Pokémon Oiseau légendaire.\nIl peut provoquer des blizzards\nen gelant l'humidité de l'air.",
+                "height": "1,7 m",
+                "weight": "55,4 kg"
+            },
+            "de": {
+                "name": "Arktos",
+                "category": "Eis",
+                "entry": "Ein Legendäres Vogel-Pokémon.\nEs kann Blizzards verursachen,\nindem es Feuchtigkeit gefriert.",
+                "height": "1,7 m",
+                "weight": "55,4 kg"
+            },
+            "it": {
+                "name": "Articuno",
+                "category": "Pokémon Gelo",
+                "entry": "Un Pokémon uccello leggendario.\nRiesce a creare bufere di neve\ncongelando l'umidità dell'aria.",
+                "height": "1,7 m",
+                "weight": "55,4 kg"
+            },
+            "ko": {
+                "name": "프리져",
+                "category": "냉동포켓몬",
+                "entry": "전설의 새 포켓몬이다.\n공기 중의 수분을 얼려\n눈보라를 만들어 낼 수 있다.",
+                "height": "1.7 m",
+                "weight": "55.4 kg"
+            },
+            "es": {
+                "name": "Articuno",
+                "category": "Pokémon Congelar",
+                "entry": "Legendario Pokémon pájaro capaz\nde generar ventiscas congelando\nla humedad del aire.",
+                "height": "1,7 m",
+                "weight": "55,4 kg"
+            },
+            "ja": {
+                "name": "フリーザー",
+                "category": "れいとうポケモン",
+                "entry": "でんせつの\\x{3000}とりポケモン。\nくうきちゅうの\\x{3000}すいぶんを\\x{3000}こおらせ\nふぶきを\\x{3000}つくりだすことが\\x{3000}できる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff15}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 85,

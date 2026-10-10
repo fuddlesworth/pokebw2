@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Exeggutor",
-    "category": "Coconut Pokémon",
-    "pokedex_entry": "It is called “The Walking Jungle.\"\nIf a head grows too big, it falls\noff and becomes an Exeggcute.",
+    "pokedex": {
+        "category": "Coconut Pokémon",
+        "entry": "It is called “The Walking Jungle.\"\nIf a head grows too big, it falls\noff and becomes an Exeggcute.",
+        "height": "6'07\"",
+        "weight": "264.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Exeggutor",
+                "category": "Coconut Pokémon",
+                "entry": "It is called “The Walking Jungle.\"\nIf a head grows too big, it falls\noff and becomes an Exeggcute.",
+                "height": "6'07\"",
+                "weight": "264.6 lbs."
+            },
+            "fr": {
+                "name": "Noadkoko",
+                "category": "Pokémon Fruitpalme",
+                "entry": "On l'appelle “jungle sur pattes\".\nSi une tête devient trop grosse,\nelle tombe et produit un Noeunoeuf.",
+                "height": "2,0 m",
+                "weight": "120,0 kg"
+            },
+            "de": {
+                "name": "Kokowei",
+                "category": "Palmfrucht",
+                "entry": "Man nennt es den „Laufenden Dschungel“.\nWird ein Kopf zu groß, fällt er ab\nund wird zu einem Owei.",
+                "height": "2,0 m",
+                "weight": "120,0 kg"
+            },
+            "it": {
+                "name": "Exeggutor",
+                "category": "Pokémon Nocecocco",
+                "entry": "Noto come “Giungla in moto\". Se\nuna testa diventa troppo grande,\ncade e si trasforma in Exeggcute.",
+                "height": "2,0 m",
+                "weight": "120,0 kg"
+            },
+            "ko": {
+                "name": "나시",
+                "category": "야자열매포켓몬",
+                "entry": "걸어다니는 열대 우림이라고\n불린다. 크게 자란 머리 중 하나가\n땅에 떨어지면 아라리가 된다.",
+                "height": "2.0 m",
+                "weight": "120.0 kg"
+            },
+            "es": {
+                "name": "Exeggutor",
+                "category": "Pokémon Coco",
+                "entry": "Se le llama la Selva Andante. Si una\ncabeza crece demasiado, se cae\ny forma un Exeggcute.",
+                "height": "2,0 m",
+                "weight": "120,0 kg"
+            },
+            "ja": {
+                "name": "ナッシー",
+                "category": "やしのみポケモン",
+                "entry": "あるく\\x{3000}ねったいうりんと\\x{3000}よばれる。\nおおきくなった\\x{3000}あたまの\\x{3000}ひとつが\nじめんに\\x{3000}おちると\\x{3000}タマタマになる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 95,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Latias",
-    "category": "Eon Pokémon",
-    "pokedex_entry": "Its body is covered with a down\nthat can refract light in such a\nway that it becomes invisible.",
+    "pokedex": {
+        "category": "Eon Pokémon",
+        "entry": "Its body is covered with a down\nthat can refract light in such a\nway that it becomes invisible.",
+        "height": "4'07\"",
+        "weight": "88.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Latias",
+                "category": "Eon Pokémon",
+                "entry": "Its body is covered with a down\nthat can refract light in such a\nway that it becomes invisible.",
+                "height": "4'07\"",
+                "weight": "88.2 lbs."
+            },
+            "fr": {
+                "name": "Latias",
+                "category": "Pokémon Éon",
+                "entry": "Son corps est recouvert d'un\nduvet qui reflète la lumière\net le rend invisible.",
+                "height": "1,4 m",
+                "weight": "40,0 kg"
+            },
+            "de": {
+                "name": "Latias",
+                "category": "Äon",
+                "entry": "Sein Körper ist mit Daunen bedeckt,\ndie das Licht so brechen, dass das\nPokémon unsichtbar wird.",
+                "height": "1,4 m",
+                "weight": "40,0 kg"
+            },
+            "it": {
+                "name": "Latias",
+                "category": "Pokémon Eone",
+                "entry": "Questo Pokémon ha il corpo ricoperto di\npiume che riflettono la luce e lo rendono\ninvisibile.",
+                "height": "1,4 m",
+                "weight": "40,0 kg"
+            },
+            "ko": {
+                "name": "라티아스",
+                "category": "무한포켓몬",
+                "entry": "빛을 굴절시키는 깃털로\n전신을 둘러싸 모습을 보이지\n않게 하는 능력을 가지고 있다.",
+                "height": "1.4 m",
+                "weight": "40.0 kg"
+            },
+            "es": {
+                "name": "Latias",
+                "category": "Pokémon Eón",
+                "entry": "Su cuerpo está cubierto de un plumón\nque refleja la luz de forma que se\nvuelve invisible.",
+                "height": "1,4 m",
+                "weight": "40,0 kg"
+            },
+            "ja": {
+                "name": "ラティアス",
+                "category": "むげんポケモン",
+                "entry": "ひかりを\\x{3000}くっせつさせる\\x{3000}うもうで\nぜんしんを\\x{3000}つつみこみ\\x{3000}すがたを\nみえなくする\\x{3000}のうりょくを\\x{3000}もつ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 80,

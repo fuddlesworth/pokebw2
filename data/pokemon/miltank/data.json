@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Miltank",
-    "category": "Milk Cow Pokémon",
-    "pokedex_entry": "It is said that kids who drink\nMiltank's milk grow up to become\nhearty, healthy adults.",
+    "pokedex": {
+        "category": "Milk Cow Pokémon",
+        "entry": "It is said that kids who drink\nMiltank's milk grow up to become\nhearty, healthy adults.",
+        "height": "3'11\"",
+        "weight": "166.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Miltank",
+                "category": "Milk Cow Pokémon",
+                "entry": "It is said that kids who drink\nMiltank's milk grow up to become\nhearty, healthy adults.",
+                "height": "3'11\"",
+                "weight": "166.4 lbs."
+            },
+            "fr": {
+                "name": "Écrémeuh",
+                "category": "Pokémon Vachalait",
+                "entry": "On raconte que les enfants élevés\nau lait d'Écrémeuh deviennent des\nadultes braves et robustes.",
+                "height": "1,2 m",
+                "weight": "75,5 kg"
+            },
+            "de": {
+                "name": "Miltank",
+                "category": "Milchkuh",
+                "entry": "Man sagt, dass Kinder, die Miltanks\nMilch trinken, zu gesunden\nErwachsenen heranwachsen.",
+                "height": "1,2 m",
+                "weight": "75,5 kg"
+            },
+            "it": {
+                "name": "Miltank",
+                "category": "Pokémon Bovino",
+                "entry": "Si dice che se un bambino beve il latte\ndi Miltank crescerà bene e da adulto\nsarà sano e buono.",
+                "height": "1,2 m",
+                "weight": "75,5 kg"
+            },
+            "ko": {
+                "name": "밀탱크",
+                "category": "젖소포켓몬",
+                "entry": "밀탱크의 우유를 마시고\n자란 아이는 건강하고\n강인한 어른이 된다고 한다.",
+                "height": "1.2 m",
+                "weight": "75.5 kg"
+            },
+            "es": {
+                "name": "Miltank",
+                "category": "Pokémon Lechera",
+                "entry": "Se dice que, si un niño bebe leche\nde Miltank, crecerá y se convertirá\nen un adulto sano y campechano.",
+                "height": "1,2 m",
+                "weight": "75,5 kg"
+            },
+            "ja": {
+                "name": "ミルタンク",
+                "category": "ちちうしポケモン",
+                "entry": "ミルタンクの\\x{3000}ミルクを\\x{3000}のんで\nそだった\\x{3000}こどもは\\x{3000}けんこうで\nたくましい\\x{3000}おとなに\\x{3000}なるという。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 80,

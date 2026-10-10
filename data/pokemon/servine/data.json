@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Servine",
-    "category": "Grass Snake Pokémon",
-    "pokedex_entry": "When it gets dirty, its leaves\ncan't be used in photosynthesis,\nso it always keeps itself clean.",
+    "pokedex": {
+        "category": "Grass Snake Pokémon",
+        "entry": "When it gets dirty, its leaves\ncan't be used in photosynthesis,\nso it always keeps itself clean.",
+        "height": "2'07\"",
+        "weight": "35.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "くさへびポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 60,

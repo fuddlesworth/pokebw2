@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Poochyena",
-    "category": "Bite Pokémon",
-    "pokedex_entry": "A Pokémon with a persistent\nnature, it chases its chosen prey\nuntil the prey becomes exhausted.",
+    "pokedex": {
+        "category": "Bite Pokémon",
+        "entry": "A Pokémon with a persistent\nnature, it chases its chosen prey\nuntil the prey becomes exhausted.",
+        "height": "1'08\"",
+        "weight": "30.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Poochyena",
+                "category": "Bite Pokémon",
+                "entry": "A Pokémon with a persistent\nnature, it chases its chosen prey\nuntil the prey becomes exhausted.",
+                "height": "1'08\"",
+                "weight": "30.0 lbs."
+            },
+            "fr": {
+                "name": "Medhyèna",
+                "category": "Pokémon Morsure",
+                "entry": "Un Pokémon très obstiné qui\npoursuit sa proie jusqu'à ce\nqu'elle soit épuisée.",
+                "height": "0,5 m",
+                "weight": "13,6 kg"
+            },
+            "de": {
+                "name": "Fiffyen",
+                "category": "Biss",
+                "entry": "Ein beharrliches Pokémon, das seine\nBeute jagt, bis diese erschöpft ist.",
+                "height": "0,5 m",
+                "weight": "13,6 kg"
+            },
+            "it": {
+                "name": "Poochyena",
+                "category": "Pokémon Morso",
+                "entry": "Pokémon di natura ostinata. Insegue\nla preda prescelta finché questa non\nè esausta.",
+                "height": "0,5 m",
+                "weight": "13,6 kg"
+            },
+            "ko": {
+                "name": "포챠나",
+                "category": "물어뜯기포켓몬",
+                "entry": "집요한 성격의 포켓몬이다.\n점찍은 먹이가 기진맥진\n지칠 때까지 뒤쫓아간다.",
+                "height": "0.5 m",
+                "weight": "13.6 kg"
+            },
+            "es": {
+                "name": "Poochyena",
+                "category": "Pokémon Mordisco",
+                "entry": "Es muy persistente. Si se fija en\nuna presa, no la dejará hasta que\ncaiga agotada.",
+                "height": "0,5 m",
+                "weight": "13,6 kg"
+            },
+            "ja": {
+                "name": "ポチエナ",
+                "category": "かみつきポケモン",
+                "entry": "しつこい\\x{3000}せいかくの\\x{3000}ポケモン。\nめをつけた\\x{3000}えものが\\x{3000}ヘトヘトに\nつかれるまで\\x{3000}おいかけまわす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff13}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 55,

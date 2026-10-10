@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Persian",
-    "category": "Classy Cat Pokémon",
-    "pokedex_entry": "A very haughty Pokémon. Among\nfans, the size of the jewel in its\nforehead is a topic of much talk.",
+    "pokedex": {
+        "category": "Classy Cat Pokémon",
+        "entry": "A very haughty Pokémon. Among\nfans, the size of the jewel in its\nforehead is a topic of much talk.",
+        "height": "3'03\"",
+        "weight": "70.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Persian",
+                "category": "Classy Cat Pokémon",
+                "entry": "A very haughty Pokémon. Among\nfans, the size of the jewel in its\nforehead is a topic of much talk.",
+                "height": "3'03\"",
+                "weight": "70.5 lbs."
+            },
+            "fr": {
+                "name": "Persian",
+                "category": "Pokémon Chadeville",
+                "entry": "Un Pokémon très snob. La taille du\njoyau qui orne son front alimente\nbien des débats parmi ses fans.",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "de": {
+                "name": "Snobilikat",
+                "category": "Rassekatze",
+                "entry": "Ein sehr stolzes Pokémon.\nFür Fans ist die Größe des Juwels auf\nseiner Stirn Anlass für Diskussionen.",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "it": {
+                "name": "Persian",
+                "category": "Pokémon Nobilgatto",
+                "entry": "Un Pokémon molto altezzoso. I fan\nparlano spesso delle dimensioni del\ngioiello che ha sulla testa.",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "ko": {
+                "name": "페르시온",
+                "category": "샴고양이포켓몬",
+                "entry": "자존심이 센 포켓몬이다.\n마니아 사이에서는 이마의\n보석 크기가 화제가 된다.",
+                "height": "1.0 m",
+                "weight": "32.0 kg"
+            },
+            "es": {
+                "name": "Persian",
+                "category": "Pokémon Gato Fino",
+                "entry": "Es un Pokémon muy arrogante.\nEl tamaño de la joya de su frente\nda mucho que hablar.",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "ja": {
+                "name": "ペルシアン",
+                "category": "シャムネコポケモン",
+                "entry": "きぐらいが\\x{3000}たかい\\x{3000}ポケモン。\nマニアの\\x{3000}あいだでは\\x{3000}ひたいの\nほうせきの\\x{3000}サイズが\\x{3000}わだいになる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 70,

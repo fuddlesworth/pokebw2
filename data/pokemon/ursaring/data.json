@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ursaring",
-    "category": "Hibernator Pokémon",
-    "pokedex_entry": "In its territory, it leaves\nscratches on trees that bear\ndelicious berries or fruits.",
+    "pokedex": {
+        "category": "Hibernator Pokémon",
+        "entry": "In its territory, it leaves\nscratches on trees that bear\ndelicious berries or fruits.",
+        "height": "5'11\"",
+        "weight": "277.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ursaring",
+                "category": "Hibernator Pokémon",
+                "entry": "In its territory, it leaves\nscratches on trees that bear\ndelicious berries or fruits.",
+                "height": "5'11\"",
+                "weight": "277.3 lbs."
+            },
+            "fr": {
+                "name": "Ursaring",
+                "category": "Pokémon Hibernant",
+                "entry": "Il marque de ses griffes les arbres\nde son territoire qui portent des\nBaies ou des fruits.",
+                "height": "1,8 m",
+                "weight": "125,8 kg"
+            },
+            "de": {
+                "name": "Ursaring",
+                "category": "Schläfer",
+                "entry": "Es durchstreift sein Revier und\nmarkiert Bäume, die Früchte\noder Beeren tragen, mit Kratzern.",
+                "height": "1,8 m",
+                "weight": "125,8 kg"
+            },
+            "it": {
+                "name": "Ursaring",
+                "category": "Pokémon Letargo",
+                "entry": "Nel suo territorio, lascia graffi sugli\nalberi che hanno bacche o frutti\ndeliziosi.",
+                "height": "1,8 m",
+                "weight": "125,8 kg"
+            },
+            "ko": {
+                "name": "링곰",
+                "category": "동면포켓몬",
+                "entry": "영역 내에 있는 맛있는 나무열매나\n과일이 열리는 나무에는\n발톱으로 흔적을 남긴다.",
+                "height": "1.8 m",
+                "weight": "125.8 kg"
+            },
+            "es": {
+                "name": "Ursaring",
+                "category": "Pokémon Hibernante",
+                "entry": "Marca con arañazos los árboles de\nsu territorio que dan bayas y frutas.",
+                "height": "1,8 m",
+                "weight": "125,8 kg"
+            },
+            "ja": {
+                "name": "リングマ",
+                "category": "とうみんポケモン",
+                "entry": "なわばりにある\\x{3000}おいしい\\x{3000}きのみや\nくだものの\\x{3000}なる\\x{3000}き\\x{3000}には\nツメで\\x{3000}きずあとを\\x{3000}つける。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff15}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 130,

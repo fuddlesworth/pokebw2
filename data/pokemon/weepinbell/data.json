@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Weepinbell",
-    "category": "Flycatcher Pokémon",
-    "pokedex_entry": "A Pokémon that appears to be a\nplant. It captures unwary prey by\ndousing them with a toxic powder.",
+    "pokedex": {
+        "category": "Flycatcher Pokémon",
+        "entry": "A Pokémon that appears to be a\nplant. It captures unwary prey by\ndousing them with a toxic powder.",
+        "height": "3'03\"",
+        "weight": "14.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Weepinbell",
+                "category": "Flycatcher Pokémon",
+                "entry": "A Pokémon that appears to be a\nplant. It captures unwary prey by\ndousing them with a toxic powder.",
+                "height": "3'03\"",
+                "weight": "14.1 lbs."
+            },
+            "fr": {
+                "name": "Boustiflor",
+                "category": "Pokémon Carnivore",
+                "entry": "Un Pokémon végétal. Il capture les\nproies étourdies en les endormant\nà l'aide d'une poudre toxique.",
+                "height": "1,0 m",
+                "weight": "6,4 kg"
+            },
+            "de": {
+                "name": "Ultrigaria",
+                "category": "Fliegentot",
+                "entry": "Ein Pokémon, das wie eine Pflanze\naussieht. Es fängt Beute, indem es\ngiftigen Puder darüber verteilt.",
+                "height": "1,0 m",
+                "weight": "6,4 kg"
+            },
+            "it": {
+                "name": "Weepinbell",
+                "category": "Pokémon Moschivoro",
+                "entry": "Questo Pokémon sembra una pianta.\nCattura le prede con una polvere\ntossica.",
+                "height": "1,0 m",
+                "weight": "6,4 kg"
+            },
+            "ko": {
+                "name": "우츠동",
+                "category": "파리잡이포켓몬",
+                "entry": "식물과 똑 닮은 포켓몬이다.\n방심해서 가까이 다가온 먹이에게\n독가루를 뿌려서 잡는다.",
+                "height": "1.0 m",
+                "weight": "6.4 kg"
+            },
+            "es": {
+                "name": "Weepinbell",
+                "category": "Pokémon Matamoscas",
+                "entry": "Este Pokémon parece una planta.\nCaptura a sus presas usando polvo\ntóxico cuando están desprevenidas.",
+                "height": "1,0 m",
+                "weight": "6,4 kg"
+            },
+            "ja": {
+                "name": "ウツドン",
+                "category": "ハエとりポケモン",
+                "entry": "しょくぶつに\\x{3000}そっくりな\\x{3000}ポケモン。\nゆだんして\\x{3000}ちかよってきた\\x{3000}えものに\nどくのこなを\\x{3000}あびせて\\x{3000}つかまえる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 90,

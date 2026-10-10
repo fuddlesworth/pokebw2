@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Volbeat",
-    "category": "Firefly Pokémon",
-    "pokedex_entry": "It communicates with others by\nlighting up its rear at night. It\nloves Illumise's sweet aroma.",
+    "pokedex": {
+        "category": "Firefly Pokémon",
+        "entry": "It communicates with others by\nlighting up its rear at night. It\nloves Illumise's sweet aroma.",
+        "height": "2'04\"",
+        "weight": "39.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Volbeat",
+                "category": "Firefly Pokémon",
+                "entry": "It communicates with others by\nlighting up its rear at night. It\nloves Illumise's sweet aroma.",
+                "height": "2'04\"",
+                "weight": "39.0 lbs."
+            },
+            "fr": {
+                "name": "Muciole",
+                "category": "Pokémon Luciole",
+                "entry": "Il communique avec ses pairs en\nallumant son postérieur la nuit. Il\nadore le doux parfum de Lumivole.",
+                "height": "0,7 m",
+                "weight": "17,7 kg"
+            },
+            "de": {
+                "name": "Volbeat",
+                "category": "Libelle",
+                "entry": "Es kommuniziert mit anderen, indem\nes sein Hinterteil zum Leuchten bringt.\nEs liebt Illumises Duft.",
+                "height": "0,7 m",
+                "weight": "17,7 kg"
+            },
+            "it": {
+                "name": "Volbeat",
+                "category": "Pokémon Lucciola",
+                "entry": "Di notte comunica con gli altri illuminando\nla sua coda. Ama il dolce aroma di\nIllumise.",
+                "height": "0,7 m",
+                "weight": "17,7 kg"
+            },
+            "ko": {
+                "name": "볼비트",
+                "category": "반딧불포켓몬",
+                "entry": "밤이 되면 엉덩이를 빛나게 해\n동료와 대화한다. 네오비트가\n내는 달콤한 향기를 매우 좋아한다.",
+                "height": "0.7 m",
+                "weight": "17.7 kg"
+            },
+            "es": {
+                "name": "Volbeat",
+                "category": "Pokémon Luciérnaga",
+                "entry": "Se comunica con otros iluminando\nsu cola por la noche. Le encanta\nel suave aroma de Illumise.",
+                "height": "0,7 m",
+                "weight": "17,7 kg"
+            },
+            "ja": {
+                "name": "バルビート",
+                "category": "ほたるポケモン",
+                "entry": "よるになると\\x{3000}おしりを\\x{3000}ひからせ\nなかまと\\x{3000}かいわする。イルミーゼの\nだす\\x{3000}あまい\\x{3000}かおりが\\x{3000}だいすき。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff17}\\x{ff0e}\\x{ff17}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 73,

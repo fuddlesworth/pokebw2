@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Golurk",
-    "category": "Automaton Pokémon",
-    "pokedex_entry": "Golurk were created to protect\npeople and Pokémon.\nThey run on a mysterious energy.",
+    "pokedex": {
+        "category": "Automaton Pokémon",
+        "entry": "Golurk were created to protect\npeople and Pokémon.\nThey run on a mysterious energy.",
+        "height": "9'02\"",
+        "weight": "727.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ゴーレムポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 89,
         "attack": 124,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Politoed",
-    "category": "Frog Pokémon",
-    "pokedex_entry": "It gathers groups of others as\ntheir leader. Its cries make\nPoliwag obey.",
+    "pokedex": {
+        "category": "Frog Pokémon",
+        "entry": "It gathers groups of others as\ntheir leader. Its cries make\nPoliwag obey.",
+        "height": "3'07\"",
+        "weight": "74.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Politoed",
+                "category": "Frog Pokémon",
+                "entry": "It gathers groups of others as\ntheir leader. Its cries make\nPoliwag obey.",
+                "height": "3'07\"",
+                "weight": "74.7 lbs."
+            },
+            "fr": {
+                "name": "Tarpaud",
+                "category": "Pokémon Grenouille",
+                "entry": "Il rassemble ses pairs pour les\ncommander. Il utilise son cri\npour diriger Ptitard.",
+                "height": "1,1 m",
+                "weight": "33,9 kg"
+            },
+            "de": {
+                "name": "Quaxo",
+                "category": "Frosch",
+                "entry": "Es versammelt andere Pokémon\num sich herum und führt sie an.\nQuapsel gehorchen seinem Ruf.",
+                "height": "1,1 m",
+                "weight": "33,9 kg"
+            },
+            "it": {
+                "name": "Politoed",
+                "category": "Pokémon Rana",
+                "entry": "Ama radunare gruppi e atteggiarsi\na capogruppo.\nI suoi versi richiamano Poliwag.",
+                "height": "1,1 m",
+                "weight": "33,9 kg"
+            },
+            "ko": {
+                "name": "왕구리",
+                "category": "개구리포켓몬",
+                "entry": "왕구리를 리더로 해서 그룹이\n만들어진다. 왕구리의 울음소리가\n발챙이들을 따르게 한다.",
+                "height": "1.1 m",
+                "weight": "33.9 kg"
+            },
+            "es": {
+                "name": "Politoed",
+                "category": "Pokémon Rana",
+                "entry": "Agrupa a otros Pokémon para liderarlos.\nLos Poliwag obedecen su voz.",
+                "height": "1,1 m",
+                "weight": "33,9 kg"
+            },
+            "ja": {
+                "name": "ニョロトノ",
+                "category": "かえるポケモン",
+                "entry": "ニョロトノを\\x{3000}リーダーに\\x{3000}グループが\nつくられる。ニョロトノの\\x{3000}なきごえが\nニョロモたちを\\x{3000}したがわせる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff13}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 75,

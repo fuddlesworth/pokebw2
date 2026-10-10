@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Grimer",
-    "category": "Sludge Pokémon",
-    "pokedex_entry": "Born from sludge, these Pokémon now\ngather in polluted places and increase\nthe bacteria in their bodies.",
+    "pokedex": {
+        "category": "Sludge Pokémon",
+        "entry": "Born from sludge, these Pokémon now\ngather in polluted places and increase\nthe bacteria in their bodies.",
+        "height": "2'11\"",
+        "weight": "66.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Grimer",
+                "category": "Sludge Pokémon",
+                "entry": "It was born when sludge in a dirty\nstream was exposed to the moon's\nX-rays. It appears among filth.",
+                "height": "2'11\"",
+                "weight": "66.1 lbs."
+            },
+            "fr": {
+                "name": "Tadmorv",
+                "category": "Pokémon Dégueu",
+                "entry": "Il est né d'un torrent de boue\nexposé aux rayons X de la lune.\nIl vit dans les ordures.",
+                "height": "0,9 m",
+                "weight": "30,0 kg"
+            },
+            "de": {
+                "name": "Sleima",
+                "category": "Schlamm",
+                "entry": "Es wurde geboren, als Schlamm von\nden Strahlen des Mondes getroffen\nwurde. Es erscheint, wo Unrat ist.",
+                "height": "0,9 m",
+                "weight": "30,0 kg"
+            },
+            "it": {
+                "name": "Grimer",
+                "category": "Pokémon Melma",
+                "entry": "Nacque quando il fango di un fiume sudicio\nfu esposto ai raggi X della luna. Vive\nnella sporcizia.",
+                "height": "0,9 m",
+                "weight": "30,0 kg"
+            },
+            "ko": {
+                "name": "질퍽이",
+                "category": "진흙포켓몬",
+                "entry": "시궁창의 진흙이 달로부터의\nX선을 쬐어 태어났다.\n더러운 장소에서 나타난다.",
+                "height": "0.9 m",
+                "weight": "30.0 kg"
+            },
+            "es": {
+                "name": "Grimer",
+                "category": "Pokémon Lodo",
+                "entry": "Emergió del lodo que se formó en agua\ncontaminada expuesta a los rayos X\nlunares. Vive en la basura.",
+                "height": "0,9 m",
+                "weight": "30,0 kg"
+            },
+            "ja": {
+                "name": "ベトベター",
+                "category": "ヘドロポケモン",
+                "entry": "どぶがわの\\x{3000}ヘドロが\\x{3000}つきからの\nエックスせんを\\x{3000}あびて\\x{3000}うまれた。\nきたない\\x{3000}ばしょに\\x{3000}あらわれる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 80,

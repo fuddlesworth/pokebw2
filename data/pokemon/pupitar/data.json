@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pupitar",
-    "category": "Hard Shell Pokémon",
-    "pokedex_entry": "This pupa flies around wildly\nby venting with great force the\ngas pressurized inside its body.",
+    "pokedex": {
+        "category": "Hard Shell Pokémon",
+        "entry": "This pupa flies around wildly\nby venting with great force the\ngas pressurized inside its body.",
+        "height": "3'11\"",
+        "weight": "335.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pupitar",
+                "category": "Hard Shell Pokémon",
+                "entry": "Its body is as hard as bedrock.\nBy venting pressurized gas, it can\nlaunch itself like a rocket.",
+                "height": "3'11\"",
+                "weight": "335.1 lbs."
+            },
+            "fr": {
+                "name": "Ymphect",
+                "category": "Pokémon Carapadure",
+                "entry": "Son corps est dur comme la pierre\nsouterraine. Il file comme une\nfusée en expulsant des gaz.",
+                "height": "1,2 m",
+                "weight": "152,0 kg"
+            },
+            "de": {
+                "name": "Pupitar",
+                "category": "Hartschale",
+                "entry": "Sein Körper ist hart wie Fels.\nEs lässt mit Hochdruck Gas ab, um wie\neine Rakete nach oben zu schießen.",
+                "height": "1,2 m",
+                "weight": "152,0 kg"
+            },
+            "it": {
+                "name": "Pupitar",
+                "category": "Pokémon Guscioduro",
+                "entry": "Il suo corpo è duro come la roccia.\nRiesce a muoversi come un razzo\nespellendo gas con tutta forza.",
+                "height": "1,2 m",
+                "weight": "152,0 kg"
+            },
+            "ko": {
+                "name": "데기라스",
+                "category": "탄환포켓몬",
+                "entry": "암반 같은 단단한 몸이다.\n압축한 가스를 분사해서\n마치 로켓같이 날아간다.",
+                "height": "1.2 m",
+                "weight": "152.0 kg"
+            },
+            "es": {
+                "name": "Pupitar",
+                "category": "Pokémon Caparazón",
+                "entry": "Su cuerpo es duro como la roca.\nSe autopropulsa como un cohete\nsoltando los gases de su interior.",
+                "height": "1,2 m",
+                "weight": "152,0 kg"
+            },
+            "ja": {
+                "name": "サナギラス",
+                "category": "だんがんポケモン",
+                "entry": "がんばんのような\\x{3000}かたい\\x{3000}からだ。\nあっしゅくした\\x{3000}ガスを\\x{3000}ふんしゃして\nまるで\\x{3000}ロケットのように\\x{3000}とびだす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 84,

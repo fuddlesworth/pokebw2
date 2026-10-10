@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Weavile",
-    "category": "Sharp Claw Pokémon",
-    "pokedex_entry": "They communicate by clawing\nsigns in boulders and work\ntogether to surround enemies.",
+    "pokedex": {
+        "category": "Sharp Claw Pokémon",
+        "entry": "They communicate by clawing\nsigns in boulders and work\ntogether to surround enemies.",
+        "height": "3'07\"",
+        "weight": "75.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Weavile",
+                "category": "Sharp Claw Pokémon",
+                "entry": "Evolution made it even more\ndevious. It communicates by clawing\nsigns in boulders.",
+                "height": "3'07\"",
+                "weight": "75.0 lbs."
+            },
+            "fr": {
+                "name": "Dimoret",
+                "category": "Pokémon Grifacérée",
+                "entry": "L'évolution l'a rendu encore plus\nretors. Il communique en griffant\ndes signes dans les pierres.",
+                "height": "1,1 m",
+                "weight": "34,0 kg"
+            },
+            "de": {
+                "name": "Snibunna",
+                "category": "Stichklaue",
+                "entry": "Wird durch Entwicklung noch\nverschlagener. Kommuniziert\ndurch in Felsen gekratzte Zeichen.",
+                "height": "1,1 m",
+                "weight": "34,0 kg"
+            },
+            "it": {
+                "name": "Weavile",
+                "category": "Pokémon Lamartigli",
+                "entry": "L'evoluzione lo ha reso ancora più\nsubdolo. Comunica incidendo segni\nnei massi.",
+                "height": "1,1 m",
+                "weight": "34,0 kg"
+            },
+            "ko": {
+                "name": "포푸니라",
+                "category": "갈고리손톱포켓몬",
+                "entry": "진화한 후 더욱 약삭빨라져\n발톱으로 돌에 사인을 새겨\n커뮤니케이션을 시도하고 있다.",
+                "height": "1.1 m",
+                "weight": "34.0 kg"
+            },
+            "es": {
+                "name": "Weavile",
+                "category": "Pokémon Garra Filo",
+                "entry": "Su carácter se volvió aún más vil\ncon la evolución. Se comunica\nmarcando rocas con sus garras.",
+                "height": "1,1 m",
+                "weight": "34,0 kg"
+            },
+            "ja": {
+                "name": "マニューラ",
+                "category": "かぎづめポケモン",
+                "entry": "しんかして\\x{3000}さらに\\x{3000}ずるがしこくなり\nツメで\\x{3000}いしに\\x{3000}サインをつけて\nコミュニケーションを\\x{3000}はかっている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 120,

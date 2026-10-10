@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Roselia",
-    "category": "Thorn Pokémon",
-    "pokedex_entry": "It uses the different poisons in each\nhand separately when it attacks. The\nstronger its aroma, the healthier it is.",
+    "pokedex": {
+        "category": "Thorn Pokémon",
+        "entry": "It uses the different poisons in each\nhand separately when it attacks. The\nstronger its aroma, the healthier it is.",
+        "height": "1'00\"",
+        "weight": "4.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Roselia",
+                "category": "Thorn Pokémon",
+                "entry": "The more healthy the Roselia, the\nmore pleasant its flowers' aroma.\nIts scent deeply relaxes people.",
+                "height": "1'00\"",
+                "weight": "4.4 lbs."
+            },
+            "fr": {
+                "name": "Rosélia",
+                "category": "Pokémon Épine",
+                "entry": "Plus le Rosélia est en bonne santé\net plus son parfum est agréable et\nrelaxant pour son entourage.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "de": {
+                "name": "Roselia",
+                "category": "Dorn",
+                "entry": "Je gesünder das Roselia, desto\nangenehmer das Aroma seiner Blume,\ndas Menschen so sehr entspannt.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "it": {
+                "name": "Roselia",
+                "category": "Pokémon Spina",
+                "entry": "Più in forma è, più piacevole è il profumo\ndei suoi fiori. Questa fragranza rilassa\nle persone.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ko": {
+                "name": "로젤리아",
+                "category": "가시포켓몬",
+                "entry": "건강한 로젤리아일수록 꽃에서\n좋은 향기를 자아내어 냄새를\n맡은 사람을 안정시켜 준다.",
+                "height": "0.3 m",
+                "weight": "2.0 kg"
+            },
+            "es": {
+                "name": "Roselia",
+                "category": "Pokémon Espina",
+                "entry": "Si goza de mejor salud, el aroma\nde sus flores será más agradable.\nEs un aroma que relaja a la gente.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ja": {
+                "name": "ロゼリア",
+                "category": "いばらポケモン",
+                "entry": "げんきな\\x{3000}ロゼリアほど\\x{3000}はなから\nいい\\x{3000}かおりを\\x{3000}かもしだし\\x{3000}かいだ\nひとを\\x{3000}とても\\x{3000}リラックスさせる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 60,

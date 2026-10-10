@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Purrloin",
-    "category": "Devious Pokémon",
-    "pokedex_entry": "Their cute act is a ruse. They trick\npeople and steal their valuables\njust to see the looks on their faces.",
+    "pokedex": {
+        "category": "Devious Pokémon",
+        "entry": "Their cute act is a ruse. They trick\npeople and steal their valuables\njust to see the looks on their faces.",
+        "height": "1'04\"",
+        "weight": "22.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "しょうわるポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 41,
         "attack": 50,

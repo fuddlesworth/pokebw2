@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lucario",
-    "category": "Aura Pokémon",
-    "pokedex_entry": "By reading the auras of all things,\nit can tell how others are feeling\nfrom over half a mile away.",
+    "pokedex": {
+        "category": "Aura Pokémon",
+        "entry": "By reading the auras of all things,\nit can tell how others are feeling\nfrom over half a mile away.",
+        "height": "3'11\"",
+        "weight": "119.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lucario",
+                "category": "Aura Pokémon",
+                "entry": "A well-trained one can sense auras\nto identify and take in the feelings\nof creatures over half a mile away.",
+                "height": "3'11\"",
+                "weight": "119.0 lbs."
+            },
+            "fr": {
+                "name": "Lucario",
+                "category": "Pokémon Aura",
+                "entry": "Un spécimen bien entraîné peut\nsentir et identifier les émotions de\nquelqu'un à plus d'un kilomètre.",
+                "height": "1,2 m",
+                "weight": "54,0 kg"
+            },
+            "de": {
+                "name": "Lucario",
+                "category": "Aura",
+                "entry": "Ist es trainiert, spürt es Auren,\num Gefühle entfernter Kreaturen\nzu erkennen und aufzunehmen.",
+                "height": "1,2 m",
+                "weight": "54,0 kg"
+            },
+            "it": {
+                "name": "Lucario",
+                "category": "Pokémon Aura",
+                "entry": "Se ben addestrato, Lucario riesce a\nidentificare e a percepire le emozioni\ndi creature lontane 1 km.",
+                "height": "1,2 m",
+                "weight": "54,0 kg"
+            },
+            "ko": {
+                "name": "루카리오",
+                "category": "파동포켓몬",
+                "entry": "단련된 루카리오는 파동을\n써서 1km 앞에 누가 있는지\n어떤 기분인지까지도 안다.",
+                "height": "1.2 m",
+                "weight": "54.0 kg"
+            },
+            "es": {
+                "name": "Lucario",
+                "category": "Pokémon Aura",
+                "entry": "Si se ha entrenado bien, puede\npercibir auras e identificar y\nasimilar sentimientos a 1 km.",
+                "height": "1,2 m",
+                "weight": "54,0 kg"
+            },
+            "ja": {
+                "name": "ルカリオ",
+                "category": "はどうポケモン",
+                "entry": "きたえられた\\x{3000}ルカリオは\\x{3000}はどうを\nつかい\\x{3000}\\x{ff11}キロさきに\\x{3000}だれがいるのか\nどんなきもちか\\x{3000}さえも\\x{3000}わかる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 110,

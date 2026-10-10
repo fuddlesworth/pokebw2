@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Skuntank",
-    "category": "Skunk Pokémon",
-    "pokedex_entry": "It attacks by spraying a horribly\nsmelly fluid from the tip of its tail.\nAttacks from above confound it.",
+    "pokedex": {
+        "category": "Skunk Pokémon",
+        "entry": "It attacks by spraying a horribly\nsmelly fluid from the tip of its tail.\nAttacks from above confound it.",
+        "height": "3'03\"",
+        "weight": "83.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Skuntank",
+                "category": "Skunk Pokémon",
+                "entry": "It attacks by spraying a horribly\nsmelly fluid from the tip of its tail.\nAttacks from above confound it.",
+                "height": "3'03\"",
+                "weight": "83.8 lbs."
+            },
+            "fr": {
+                "name": "Moufflair",
+                "category": "Pokémon Moufette",
+                "entry": "Il attaque en projetant un liquide\nfétide du bout de sa queue. Mieux\nvaut l'attaquer par les airs.",
+                "height": "1,0 m",
+                "weight": "38,0 kg"
+            },
+            "de": {
+                "name": "Skuntank",
+                "category": "Stinktier",
+                "entry": "Greift mit einer Substanz aus der\nSpitze seines Schweifs an.\nAngriffe von oben verblüffen es.",
+                "height": "1,0 m",
+                "weight": "38,0 kg"
+            },
+            "it": {
+                "name": "Skuntank",
+                "category": "Pokémon Moffetta",
+                "entry": "Attacca spruzzando un fluido puzzolente\ndalla punta della coda. Gli attacchi\ndall'alto lo confondono.",
+                "height": "1,0 m",
+                "weight": "38,0 kg"
+            },
+            "ko": {
+                "name": "스컹탱크",
+                "category": "스컹크포켓몬",
+                "entry": "꼬리 끝에서 심한 냄새의 액체를\n날려 공격하지만 위에서\n공격을 받게 되면 당황한다.",
+                "height": "1.0 m",
+                "weight": "38.0 kg"
+            },
+            "es": {
+                "name": "Skuntank",
+                "category": "Pokémon Mofeta",
+                "entry": "Ataca emitiendo un fluido maloliente\npor la punta de su cola.\nLos ataques aéreos le confunden.",
+                "height": "1,0 m",
+                "weight": "38,0 kg"
+            },
+            "ja": {
+                "name": "スカタンク",
+                "category": "スカンクポケモン",
+                "entry": "しっぽの\\x{3000}さきから\\x{3000}ひどい\\x{3000}においの\nえきたいを\\x{3000}とばして\\x{3000}こうげきするが\nうえから\\x{3000}ねらわれると\\x{3000}とまどう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 103,
         "attack": 93,

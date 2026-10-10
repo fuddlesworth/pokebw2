@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Krookodile",
-    "category": "Intimidation Pokémon",
-    "pokedex_entry": "Very violent Pokémon, they try\nto clamp down on anything that\nmoves in front of their eyes.",
+    "pokedex": {
+        "category": "Intimidation Pokémon",
+        "entry": "Very violent Pokémon, they try\nto clamp down on anything that\nmoves in front of their eyes.",
+        "height": "4'11\"",
+        "weight": "212.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "いかくポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 117,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lickitung",
-    "category": "Licking Pokémon",
-    "pokedex_entry": "Being licked by its long, saliva-covered\ntongue leaves a tingling sensation.\nExtending its tongue retracts its tail.",
+    "pokedex": {
+        "category": "Licking Pokémon",
+        "entry": "Being licked by its long, saliva-covered\ntongue leaves a tingling sensation.\nExtending its tongue retracts its tail.",
+        "height": "3'11\"",
+        "weight": "144.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lickitung",
+                "category": "Licking Pokémon",
+                "entry": "When it extends its over-six-foot-\nlong tongue, its tail quivers. There\nis a possibility they are connected.",
+                "height": "3'11\"",
+                "weight": "144.4 lbs."
+            },
+            "fr": {
+                "name": "Excelangue",
+                "category": "Pokémon Lécheur",
+                "entry": "Quand il déploie sa langue de près\nde deux mètres, sa queue s'agite.\nElles seraient reliées entre elles.",
+                "height": "1,2 m",
+                "weight": "65,5 kg"
+            },
+            "de": {
+                "name": "Schlurp",
+                "category": "Schlecker",
+                "entry": "Streckt es seine ca. zwei Meter\nlange Zunge, zittert sein Schweif.\nSie scheinen verbunden zu sein.",
+                "height": "1,2 m",
+                "weight": "65,5 kg"
+            },
+            "it": {
+                "name": "Lickitung",
+                "category": "Pokémon Linguaccia",
+                "entry": "Quando estende la sua lingua, lunga\nquasi due metri, gli trema la coda.\nÈ possibile che siano collegate.",
+                "height": "1,2 m",
+                "weight": "65,5 kg"
+            },
+            "ko": {
+                "name": "내루미",
+                "category": "핥기포켓몬",
+                "entry": "2미터나 되는 혀를 내밀면\n꼬리가 흔들리므로 이 둘은\n이어져 있을 가능성이 있다.",
+                "height": "1.2 m",
+                "weight": "65.5 kg"
+            },
+            "es": {
+                "name": "Lickitung",
+                "category": "Pokémon Lametazo",
+                "entry": "Cuando extiende la lengua, que mide\ndos metros, se le agita la cola.\nPuede que estén conectadas.",
+                "height": "1,2 m",
+                "weight": "65,5 kg"
+            },
+            "ja": {
+                "name": "ベロリンガ",
+                "category": "なめまわしポケモン",
+                "entry": "\\x{ff12}メートルもある\\x{3000}したを\\x{3000}のばすと\nしっぽが\\x{3000}ふるえるので\\x{3000}このふたつは\nつながっている\\x{3000}かのうせいが\\x{3000}ある。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 55,

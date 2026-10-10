@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Prinplup",
-    "category": "Penguin Pokémon",
-    "pokedex_entry": "Because every Prinplup considers\nitself to be the most important,\nthey can never form a group.",
+    "pokedex": {
+        "category": "Penguin Pokémon",
+        "entry": "Because every Prinplup considers\nitself to be the most important,\nthey can never form a group.",
+        "height": "2'07\"",
+        "weight": "50.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Prinplup",
+                "category": "Penguin Pokémon",
+                "entry": "Because every Prinplup considers\nitself to be the most important,\nthey can never form a group.",
+                "height": "2'07\"",
+                "weight": "50.7 lbs."
+            },
+            "fr": {
+                "name": "Prinplouf",
+                "category": "Pokémon Pingouin",
+                "entry": "La fierté du Prinplouf est si\ngrande qu'il lui est impossible\nde vivre en groupe.",
+                "height": "0,8 m",
+                "weight": "23,0 kg"
+            },
+            "de": {
+                "name": "Pliprin",
+                "category": "Pinguin",
+                "entry": "Jedes Pliprin geht davon aus, dass es\ndas wichtigste ist. Daher können sie\nkeine Gruppen bilden.",
+                "height": "0,8 m",
+                "weight": "23,0 kg"
+            },
+            "it": {
+                "name": "Prinplup",
+                "category": "Pokémon Pinguino",
+                "entry": "Poiché ogni esemplare si considera il più\nimportante, i Prinplup non riescono mai\na creare un gruppo.",
+                "height": "0,8 m",
+                "weight": "23,0 kg"
+            },
+            "ko": {
+                "name": "팽태자",
+                "category": "펭귄포켓몬",
+                "entry": "팽태자들은 모두 자신이 제일\n훌륭하다고 생각하기 때문에\n무리를 만드는 것은 불가능하다.",
+                "height": "0.8 m",
+                "weight": "23.0 kg"
+            },
+            "es": {
+                "name": "Prinplup",
+                "category": "Pokémon Pingüino",
+                "entry": "Como cada uno se considera\nel más importante, jamás\npodrán formar un grupo.",
+                "height": "0,8 m",
+                "weight": "23,0 kg"
+            },
+            "ja": {
+                "name": "ポッタイシ",
+                "category": "ペンギンポケモン",
+                "entry": "どの\\x{3000}ポッタイシも\\x{3000}じぶんが\nいちばん\\x{3000}えらいと\\x{3000}かんがえるため\nむれを\\x{3000}つくることは\\x{3000}ふかのうだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff13}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 64,
         "attack": 66,

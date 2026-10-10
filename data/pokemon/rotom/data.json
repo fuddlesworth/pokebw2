@@ -1,15 +1,90 @@
 {
     "$schema": "../species.schema.json",
     "name": "Rotom",
-    "category": "Plasma Pokémon",
-    "pokedex_entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
-    "form_pokedex_entries": [
-        "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
-        "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
-        "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
-        "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
-        "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief."
-    ],
+    "pokedex": {
+        "category": "Plasma Pokémon",
+        "entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
+        "height": "1'00\"",
+        "weight": "0.7 lbs.",
+        "forms": [
+            {
+                "entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            },
+            {
+                "entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            },
+            {
+                "entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            },
+            {
+                "entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            },
+            {
+                "entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Rotom",
+                "category": "Plasma Pokémon",
+                "entry": "Its electric-like body can enter\nsome kinds of machines and take\ncontrol in order to make mischief.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            },
+            "fr": {
+                "name": "Motisma",
+                "category": "Pokémon Plasma",
+                "entry": "Son corps parcouru d'électricité\nlui permet de prendre le contrôle\nde certains appareils ménagers.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "de": {
+                "name": "Rotom",
+                "category": "Plasma",
+                "entry": "Es kann mit seinem Körper in\nelektrische Geräte eindringen\nund dann für Chaos sorgen.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "it": {
+                "name": "Rotom",
+                "category": "Pokémon Plasma",
+                "entry": "Il suo corpo elettrico può introdursi\nin alcuni apparecchi, prendendone\nil controllo e creando caos.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "ko": {
+                "name": "로토무",
+                "category": "플라스마포켓몬",
+                "entry": "전기 같은 몸은 일부 기계에\n들어갈 수 있다. 그리고\n그 몸으로 장난을 친다.",
+                "height": "0.3 m",
+                "weight": "0.3 kg"
+            },
+            "es": {
+                "name": "Rotom",
+                "category": "Pokémon Plasma",
+                "entry": "Con su cuerpo eléctrico puede\ninfiltrarse en algunas máquinas\npara controlarlas y causar daños.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "ja": {
+                "name": "ロトム",
+                "category": "プラズマポケモン",
+                "entry": "でんきのような\\x{3000}からだは\\x{3000}いちぶの\nきかいに\\x{3000}はいりこむことが\\x{3000}できる。\nそして\\x{3000}そのからだで\\x{3000}いたずらする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 50,

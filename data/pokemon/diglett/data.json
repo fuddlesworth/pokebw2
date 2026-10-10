@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Diglett",
-    "category": "Mole Pokémon",
-    "pokedex_entry": "A Pokémon that lives underground.\nBecause of its dark habitat, it is\nrepelled by bright sunlight.",
+    "pokedex": {
+        "category": "Mole Pokémon",
+        "entry": "A Pokémon that lives underground.\nBecause of its dark habitat, it is\nrepelled by bright sunlight.",
+        "height": "0'08\"",
+        "weight": "1.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Diglett",
+                "category": "Mole Pokémon",
+                "entry": "A Pokémon that lives underground.\nBecause of its dark habitat, it is\nrepelled by bright sunlight.",
+                "height": "0'08\"",
+                "weight": "1.8 lbs."
+            },
+            "fr": {
+                "name": "Taupiqueur",
+                "category": "Pokémon Taupe",
+                "entry": "Un Pokémon qui vit sous terre.\nHabitué aux souterrains, il fuit la\nlumière du jour.",
+                "height": "0,2 m",
+                "weight": "0,8 kg"
+            },
+            "de": {
+                "name": "Digda",
+                "category": "Maulwurf",
+                "entry": "Dieses Pokémon lebt unterirdisch.\nDa es an Dunkelheit gewöhnt ist,\nschreckt helles Licht es ab.",
+                "height": "0,2 m",
+                "weight": "0,8 kg"
+            },
+            "it": {
+                "name": "Diglett",
+                "category": "Pokémon Talpa",
+                "entry": "Un Pokémon che vive sottoterra.\nPoiché è abituato a vivere al buio,\nnon sopporta la luce solare.",
+                "height": "0,2 m",
+                "weight": "0,8 kg"
+            },
+            "ko": {
+                "name": "디그다",
+                "category": "두더지포켓몬",
+                "entry": "땅속에서 살고 있는 포켓몬이다.\n어두운 지하에 있기 때문에\n밝은 태양을 싫어한다.",
+                "height": "0.2 m",
+                "weight": "0.8 kg"
+            },
+            "es": {
+                "name": "Diglett",
+                "category": "Pokémon Topo",
+                "entry": "Este Pokémon vive a oscuras bajo tierra,\npor lo que la luz solar le espanta.",
+                "height": "0,2 m",
+                "weight": "0,8 kg"
+            },
+            "ja": {
+                "name": "ディグダ",
+                "category": "もぐらポケモン",
+                "entry": "ちちゅうで\\x{3000}くらしている\\x{3000}ポケモン。\nくらい\\x{3000}ちかに\\x{3000}いるため\nあかるい\\x{3000}たいようが\\x{3000}にがて。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 10,
         "attack": 55,

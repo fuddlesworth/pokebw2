@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gloom",
-    "category": "Weed Pokémon",
-    "pokedex_entry": "The honey it drools from its mouth\nsmells so atrocious, it can curl\nnoses more than a mile away.",
+    "pokedex": {
+        "category": "Weed Pokémon",
+        "entry": "The honey it drools from its mouth\nsmells so atrocious, it can curl\nnoses more than a mile away.",
+        "height": "2'07\"",
+        "weight": "19.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gloom",
+                "category": "Weed Pokémon",
+                "entry": "The honey it drools from its mouth\nsmells so atrocious, it can curl\nnoses more than a mile away.",
+                "height": "2'07\"",
+                "weight": "19.0 lbs."
+            },
+            "fr": {
+                "name": "Ortide",
+                "category": "Pokémon Racine",
+                "entry": "L'odeur du nectar de sa bouche est\nsi répugnante qu'elle agresse les\nnarines à deux kilomètres.",
+                "height": "0,8 m",
+                "weight": "8,6 kg"
+            },
+            "de": {
+                "name": "Duflor",
+                "category": "Unkraut",
+                "entry": "Der Honig, den es abgibt, riecht so\nentsetzlich, dass sich sogar Nasen\nin 2 km Entfernung rümpfen.",
+                "height": "0,8 m",
+                "weight": "8,6 kg"
+            },
+            "it": {
+                "name": "Gloom",
+                "category": "Pokémon Malerba",
+                "entry": "Il fluido che fuoriesce dalla sua bocca\nè così puzzolente che si sente anche\na 2 km di distanza.",
+                "height": "0,8 m",
+                "weight": "8,6 kg"
+            },
+            "ko": {
+                "name": "냄새꼬",
+                "category": "잡초포켓몬",
+                "entry": "입에서 흘러내리는 꿀은\n2km 떨어져 있어도 코가\n비뚤어질 정도의 심한 악취가 난다.",
+                "height": "0.8 m",
+                "weight": "8.6 kg"
+            },
+            "es": {
+                "name": "Gloom",
+                "category": "Pokémon Hierbajo",
+                "entry": "La miel que emana de su boca posee\nun hedor capaz de derribar enemigos\na 2 km de distancia.",
+                "height": "0,8 m",
+                "weight": "8,6 kg"
+            },
+            "ja": {
+                "name": "クサイハナ",
+                "category": "ざっそうポケモン",
+                "entry": "くちから\\x{3000}たれている\\x{3000}ミツは\n\\x{ff12}キロ\\x{3000}はなれていても\\x{3000}はなが\nまがるほど\\x{3000}もうれつに\\x{3000}くさい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 65,

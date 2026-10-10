@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "―――――",
-    "category": "????? Pokémon",
-    "pokedex_entry": "",
+    "pokedex": {
+        "category": "????? Pokémon",
+        "entry": "",
+        "height": "???'??\"",
+        "weight": "????.? lbs.",
+        "languages": {
+            "en": {
+                "name": "-----",
+                "category": "????? Pokémon",
+                "entry": "",
+                "height": "???'??\"",
+                "weight": "????.? lbs."
+            },
+            "fr": {
+                "name": "-----",
+                "category": "Pokémon ?????",
+                "entry": "",
+                "height": "???,? m",
+                "weight": "???,? kg"
+            },
+            "de": {
+                "name": "-----",
+                "category": "?????",
+                "entry": "",
+                "height": "???,? m",
+                "weight": "???,? kg"
+            },
+            "it": {
+                "name": "-----",
+                "category": "Pokémon ?????",
+                "entry": "",
+                "height": "???,? m",
+                "weight": "???,? kg"
+            },
+            "ko": {
+                "name": "-----",
+                "category": "?????포켓몬",
+                "entry": "",
+                "height": "???.? m",
+                "weight": "???.? kg"
+            },
+            "es": {
+                "name": "-----",
+                "category": "Pokémon (?)",
+                "entry": "",
+                "height": "???,? m",
+                "weight": "???,? kg"
+            },
+            "ja": {
+                "name": "―――――",
+                "category": "\\x{ff1f}\\x{ff1f}\\x{ff1f}\\x{ff1f}\\x{ff1f}ポケモン",
+                "entry": "",
+                "height": "\\x{ff1f}\\x{ff1f}\\x{ff1f}\\x{ff0e}\\x{ff1f}\\x{ff4d}",
+                "weight": "\\x{ff1f}\\x{ff1f}\\x{ff1f}\\x{ff0e}\\x{ff1f}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 0,
         "attack": 0,

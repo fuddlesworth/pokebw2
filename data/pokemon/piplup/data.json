@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Piplup",
-    "category": "Penguin Pokémon",
-    "pokedex_entry": "A poor walker, it often falls down.\nHowever, its strong pride makes it\npuff up its chest without a care.",
+    "pokedex": {
+        "category": "Penguin Pokémon",
+        "entry": "A poor walker, it often falls down.\nHowever, its strong pride makes it\npuff up its chest without a care.",
+        "height": "1'04\"",
+        "weight": "11.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Piplup",
+                "category": "Penguin Pokémon",
+                "entry": "A poor walker, it often falls down.\nHowever, its strong pride makes it\npuff up its chest without a care.",
+                "height": "1'04\"",
+                "weight": "11.5 lbs."
+            },
+            "fr": {
+                "name": "Tiplouf",
+                "category": "Pokémon Pingouin",
+                "entry": "Malgré sa démarche maladroite et\nses pertes d'équilibre, il bombe\ntoujours fièrement le torse.",
+                "height": "0,4 m",
+                "weight": "5,2 kg"
+            },
+            "de": {
+                "name": "Plinfa",
+                "category": "Pinguin",
+                "entry": "Es fällt leider oft hin. Allerdings\nist es sehr stolz und so rappelt es\nsich immer wieder ohne Sorge auf.",
+                "height": "0,4 m",
+                "weight": "5,2 kg"
+            },
+            "it": {
+                "name": "Piplup",
+                "category": "Pokémon Pinguino",
+                "entry": "Quando cammina risulta goffo e cade\nspesso. Poiché è molto orgoglioso,\ncontinua come se nulla fosse.",
+                "height": "0,4 m",
+                "weight": "5,2 kg"
+            },
+            "ko": {
+                "name": "팽도리",
+                "category": "펭귄포켓몬",
+                "entry": "걷는 것이 서툴러서 넘어질 때도\n있지만 프라이드가 높은 팽도리는\n신경 쓰지 않고 당당하게 가슴을 편다.",
+                "height": "0.4 m",
+                "weight": "5.2 kg"
+            },
+            "es": {
+                "name": "Piplup",
+                "category": "Pokémon Pingüino",
+                "entry": "No se le da bien lo de andar, se cae\nmucho. Pero su orgullo le hace\nsacar pecho como si nada.",
+                "height": "0,4 m",
+                "weight": "5,2 kg"
+            },
+            "ja": {
+                "name": "ポッチャマ",
+                "category": "ペンギンポケモン",
+                "entry": "あるくのは\\x{3000}にがてで\\x{3000}こけたりするが\nポッチャマの\\x{3000}プライドは\\x{3000}たかく\nきにせず\\x{3000}どうどうと\\x{3000}むねを\\x{3000}はる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 53,
         "attack": 51,

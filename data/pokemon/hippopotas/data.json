@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hippopotas",
-    "category": "Hippo Pokémon",
-    "pokedex_entry": "It shuts its nostrils tight then\ntravels through sand as if walking.\nThey form colonies of around 10.",
+    "pokedex": {
+        "category": "Hippo Pokémon",
+        "entry": "It shuts its nostrils tight then\ntravels through sand as if walking.\nThey form colonies of around 10.",
+        "height": "2'07\"",
+        "weight": "109.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hippopotas",
+                "category": "Hippo Pokémon",
+                "entry": "It shuts its nostrils tight then\ntravels through sand as if walking.\nThey form colonies of around ten.",
+                "height": "2'07\"",
+                "weight": "109.1 lbs."
+            },
+            "fr": {
+                "name": "Hippopotas",
+                "category": "Pokémon Hippo",
+                "entry": "Il peut obturer ses narines et\ntraverser le sable comme un ver.\nIl vit en colonies de 10 individus.",
+                "height": "0,8 m",
+                "weight": "49,5 kg"
+            },
+            "de": {
+                "name": "Hippopotas",
+                "category": "Flusspferd",
+                "entry": "Es schließt seine Nasenlöcher und\nreist dann durch den Sand. Bildet\nKolonien mit einer Größe von ca. 10.",
+                "height": "0,8 m",
+                "weight": "49,5 kg"
+            },
+            "it": {
+                "name": "Hippopotas",
+                "category": "Pokémon Ippo",
+                "entry": "Chiude le narici e poi si sposta\nattraverso la sabbia. Vive in gruppi\ndi 10.",
+                "height": "0,8 m",
+                "weight": "49,5 kg"
+            },
+            "ko": {
+                "name": "히포포타스",
+                "category": "하마포켓몬",
+                "entry": "콧구멍을 꽉 막고\n모래 속을 마치 걷듯이 다닌다.\n10마리 정도의 무리로 생활한다.",
+                "height": "0.8 m",
+                "weight": "49.5 kg"
+            },
+            "es": {
+                "name": "Hippopotas",
+                "category": "Pokémon Hipo",
+                "entry": "Cierra la nariz y luego atraviesa la\narena con total tranquilidad. Suele\nformar colonias de diez individuos.",
+                "height": "0,8 m",
+                "weight": "49,5 kg"
+            },
+            "ja": {
+                "name": "ヒポポタス",
+                "category": "カバポケモン",
+                "entry": "はなの\\x{3000}あなを\\x{3000}ぴたりと\\x{3000}とじてから\nすなのなかを\\x{3000}あるくように\\x{3000}すすむ。\n\\x{ff11}\\x{ff10}ぴきていどの\\x{3000}むれで\\x{3000}くらす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 68,
         "attack": 72,

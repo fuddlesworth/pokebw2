@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lotad",
-    "category": "Water Weed Pokémon",
-    "pokedex_entry": "It looks like an aquatic plant and\nserves as a ferry to Pokémon\nthat can't swim.",
+    "pokedex": {
+        "category": "Water Weed Pokémon",
+        "entry": "It looks like an aquatic plant and\nserves as a ferry to Pokémon\nthat can't swim.",
+        "height": "1'08\"",
+        "weight": "5.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lotad",
+                "category": "Water Weed Pokémon",
+                "entry": "It looks like an aquatic plant and\nserves as a ferry to Pokémon\nthat can't swim.",
+                "height": "1'08\"",
+                "weight": "5.7 lbs."
+            },
+            "fr": {
+                "name": "Nénupiot",
+                "category": "Pokémon Aquaplante",
+                "entry": "Il ressemble à une plante aquatique\net fait la navette pour les Pokémon\nqui ne savent pas nager.",
+                "height": "0,5 m",
+                "weight": "2,6 kg"
+            },
+            "de": {
+                "name": "Loturzel",
+                "category": "Wasserlinse",
+                "entry": "Es sieht aus wie eine Wasserpflanze.\nEs dient den Pokémon, die nicht\nschwimmen können, als Fähre.",
+                "height": "0,5 m",
+                "weight": "2,6 kg"
+            },
+            "it": {
+                "name": "Lotad",
+                "category": "Pokémon Alga",
+                "entry": "Sembra una pianta acquatica e viene\nusato come traghetto dai Pokémon\nche non sanno nuotare.",
+                "height": "0,5 m",
+                "weight": "2,6 kg"
+            },
+            "ko": {
+                "name": "연꽃몬",
+                "category": "개구리밥포켓몬",
+                "entry": "수초를 똑 닮은 포켓몬이다.\n헤엄을 못 치는 포켓몬을 잎사귀에\n태워 건너편 물가까지 운반한다.",
+                "height": "0.5 m",
+                "weight": "2.6 kg"
+            },
+            "es": {
+                "name": "Lotad",
+                "category": "Pokémon Alga",
+                "entry": "Parece una planta acuática. Hace\nde ferry para los Pokémon que no\nsaben nadar.",
+                "height": "0,5 m",
+                "weight": "2,6 kg"
+            },
+            "ja": {
+                "name": "ハスボー",
+                "category": "うきくさポケモン",
+                "entry": "みずくさに\\x{3000}そっくりな\\x{3000}ポケモン。\nおよげない\\x{3000}ポケモンを\\x{3000}はっぱに\nのせて\\x{3000}むこうぎしまで\\x{3000}はこぶ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 30,

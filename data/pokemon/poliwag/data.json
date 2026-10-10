@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Poliwag",
-    "category": "Tadpole Pokémon",
-    "pokedex_entry": "Its skin is so thin, its internal\norgans are visible. It has trouble\nwalking on its newly grown feet.",
+    "pokedex": {
+        "category": "Tadpole Pokémon",
+        "entry": "Its skin is so thin, its internal\norgans are visible. It has trouble\nwalking on its newly grown feet.",
+        "height": "2'00\"",
+        "weight": "27.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Poliwag",
+                "category": "Tadpole Pokémon",
+                "entry": "Its skin is so thin, its internal\norgans are visible. It has trouble\nwalking on its newly grown feet.",
+                "height": "2'00\"",
+                "weight": "27.3 lbs."
+            },
+            "fr": {
+                "name": "Ptitard",
+                "category": "Pokémon Têtard",
+                "entry": "Sa peau est si mince qu'on voit\nses organes internes. Il tient\nà peine sur ses nouveaux pieds.",
+                "height": "0,6 m",
+                "weight": "12,4 kg"
+            },
+            "de": {
+                "name": "Quapsel",
+                "category": "Kaulquappe",
+                "entry": "Seine Haut ist so dünn, dass man die\ninneren Organe sehen kann. Es hat\nSchwierigkeiten beim Laufen.",
+                "height": "0,6 m",
+                "weight": "12,4 kg"
+            },
+            "it": {
+                "name": "Poliwag",
+                "category": "Pokémon Girino",
+                "entry": "La sua pelle è così sottile che si\nintravedono gli organi. Cammina a\nfatica sulle zampe poco sviluppate.",
+                "height": "0,6 m",
+                "weight": "12,4 kg"
+            },
+            "ko": {
+                "name": "발챙이",
+                "category": "올챙이포켓몬",
+                "entry": "내장이 들여다보일 정도로\n피부가 얇다. 막 자란\n다리는 걷는 것이 서투르다.",
+                "height": "0.6 m",
+                "weight": "12.4 kg"
+            },
+            "es": {
+                "name": "Poliwag",
+                "category": "Pokémon Renacuajo",
+                "entry": "Su piel es tan fina que permite ver\nsus órganos. Le cuesta andar\ncon sus nuevas patas.",
+                "height": "0,6 m",
+                "weight": "12,4 kg"
+            },
+            "ja": {
+                "name": "ニョロモ",
+                "category": "おたまポケモン",
+                "entry": "ないぞうが\\x{3000}すけて\\x{3000}みえるほど\nひふが\\x{3000}うすい。はえたばかりの\nあしは\\x{3000}あるくことが\\x{3000}にがて。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 50,

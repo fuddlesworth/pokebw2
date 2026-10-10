@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mesprit",
-    "category": "Emotion Pokémon",
-    "pokedex_entry": "When Mesprit flew, people learned\nthe joy and sadness of living.\nIt was the birth of emotions.",
+    "pokedex": {
+        "category": "Emotion Pokémon",
+        "entry": "When Mesprit flew, people learned\nthe joy and sadness of living.\nIt was the birth of emotions.",
+        "height": "1'00\"",
+        "weight": "0.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mesprit",
+                "category": "Emotion Pokémon",
+                "entry": "When Mesprit flew, people learned\nthe joy and sadness of living.\nIt was the birth of emotions.",
+                "height": "1'00\"",
+                "weight": "0.7 lbs."
+            },
+            "fr": {
+                "name": "Créfollet",
+                "category": "Pokémon Émotion",
+                "entry": "Quand il prit son envol, les hommes\napprirent à ressentir la joie et la\npeine. L'émotion était née.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "de": {
+                "name": "Vesprit",
+                "category": "Emotion",
+                "entry": "Als Vesprit flog, lernten Menschen\nGlück und Trauer des Lebens kennen.\nDie Geburt der Gefühle.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "it": {
+                "name": "Mesprit",
+                "category": "Pokémon Emozione",
+                "entry": "Al volo di Mesprit, gli uomini conobbero\nle gioie e i dolori della vita. In tal modo\nnacquero le emozioni.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "ko": {
+                "name": "엠라이트",
+                "category": "감정포켓몬",
+                "entry": "엠라이트가 날아다님으로써\n사람들에게 삶의 기쁨, 슬픔\n이라는 것이 생겨나게 되었다.",
+                "height": "0.3 m",
+                "weight": "0.3 kg"
+            },
+            "es": {
+                "name": "Mesprit",
+                "category": "Pokémon Sensorio",
+                "entry": "Voló, y los humanos aprendieron\nsobre la felicidad y la tristeza de\nvivir. Así nacieron las emociones.",
+                "height": "0,3 m",
+                "weight": "0,3 kg"
+            },
+            "ja": {
+                "name": "エムリット",
+                "category": "かんじょうポケモン",
+                "entry": "エムリットが\\x{3000}とびまわったことで\nひとびとに\\x{3000}いきるときの\\x{3000}よろこび\nかなしみ\\x{3000}というものが\\x{3000}うまれた。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 105,

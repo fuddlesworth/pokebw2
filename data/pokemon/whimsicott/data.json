@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Whimsicott",
-    "category": "Windveiled Pokémon",
-    "pokedex_entry": "They appear along with whirlwinds. They\npull pranks, such as moving furniture\nand leaving balls of cotton in homes.",
+    "pokedex": {
+        "category": "Windveiled Pokémon",
+        "entry": "They appear along with whirlwinds. They\npull pranks, such as moving furniture\nand leaving balls of cotton in homes.",
+        "height": "2'04\"",
+        "weight": "14.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "かぜかくれポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 67,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Axew",
-    "category": "Tusk Pokémon",
-    "pokedex_entry": "Its large tusks have a tendency to\nbreak, but each time they grow back,\nthey grow in harder and sturdier.",
+    "pokedex": {
+        "category": "Tusk Pokémon",
+        "entry": "Its large tusks have a tendency to\nbreak, but each time they grow back,\nthey grow in harder and sturdier.",
+        "height": "2'00\"",
+        "weight": "39.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "キバポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 46,
         "attack": 87,

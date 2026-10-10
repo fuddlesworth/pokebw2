@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Geodude",
-    "category": "Rock Pokémon",
-    "pokedex_entry": "At rest, it looks just like a rock.\nCarelessly stepping on it will make\nit swing its fists angrily.",
+    "pokedex": {
+        "category": "Rock Pokémon",
+        "entry": "At rest, it looks just like a rock.\nCarelessly stepping on it will make\nit swing its fists angrily.",
+        "height": "1'04\"",
+        "weight": "44.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Geodude",
+                "category": "Rock Pokémon",
+                "entry": "At rest, it looks just like a rock.\nCarelessly stepping on it will make\nit swing its fists angrily.",
+                "height": "1'04\"",
+                "weight": "44.1 lbs."
+            },
+            "fr": {
+                "name": "Racaillou",
+                "category": "Pokémon Roche",
+                "entry": "Au repos, rien ne le distingue d'un\nvulgaire caillou. Malheur à ceux qui\nlui marchent dessus par mégarde!",
+                "height": "0,4 m",
+                "weight": "20,0 kg"
+            },
+            "de": {
+                "name": "Kleinstein",
+                "category": "Gestein",
+                "entry": "Ruhend sieht es fast wie ein Felsen aus.\nTritt man auf Kleinstein, wird es wütend\nmit den Fäusten wirbeln.",
+                "height": "0,4 m",
+                "weight": "20,0 kg"
+            },
+            "it": {
+                "name": "Geodude",
+                "category": "Pokémon Roccia",
+                "entry": "Quando riposa sembra un sasso. Se viene\ncalpestato, si infuria e agita i pugni.",
+                "height": "0,4 m",
+                "weight": "20,0 kg"
+            },
+            "ko": {
+                "name": "꼬마돌",
+                "category": "암석포켓몬",
+                "entry": "움직이지 않고 있으면 돌멩이로\n착각하여 무심코 밟게 되는데\n그러면 주먹을 휘두르며 화를 낸다.",
+                "height": "0.4 m",
+                "weight": "20.0 kg"
+            },
+            "es": {
+                "name": "Geodude",
+                "category": "Pokémon Roca",
+                "entry": "En reposo parece una roca normal,\npero responde agitando los puños\ncon agresividad si se pisa por error.",
+                "height": "0,4 m",
+                "weight": "20,0 kg"
+            },
+            "ja": {
+                "name": "イシツブテ",
+                "category": "がんせきポケモン",
+                "entry": "じっとしていると\\x{3000}いしころ\\x{3000}にしか\nみえないので\\x{3000}つい\\x{3000}ふみつけると\nげんこつを\\x{3000}ふりまわして\\x{3000}おこる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 80,

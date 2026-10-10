@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gothita",
-    "category": "Fixation Pokémon",
-    "pokedex_entry": "It stares intently at everything.\nIt can become so obsessed with\nwatching that it doesn't notice attacks.",
+    "pokedex": {
+        "category": "Fixation Pokémon",
+        "entry": "It stares intently at everything.\nIt can become so obsessed with\nwatching that it doesn't notice attacks.",
+        "height": "1'04\"",
+        "weight": "12.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ぎょうしポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 30,

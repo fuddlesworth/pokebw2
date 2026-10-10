@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Heatmor",
-    "category": "Anteater Pokémon",
-    "pokedex_entry": "It draws in air through its tail,\ntransforms it into fire, and uses it like\na tongue. It melts Durant and eats them.",
+    "pokedex": {
+        "category": "Anteater Pokémon",
+        "entry": "It draws in air through its tail,\ntransforms it into fire, and uses it like\na tongue. It melts Durant and eats them.",
+        "height": "4'07\"",
+        "weight": "127.9 lbs.",
+        "languages": {
+            "ja": {
+                "category": "アリクイポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 97,

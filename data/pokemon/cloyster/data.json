@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cloyster",
-    "category": "Bivalve Pokémon",
-    "pokedex_entry": "It fights by keeping its shell\ntightly shut for protection and\nby shooting spikes to repel foes.",
+    "pokedex": {
+        "category": "Bivalve Pokémon",
+        "entry": "It fights by keeping its shell\ntightly shut for protection and\nby shooting spikes to repel foes.",
+        "height": "4'11\"",
+        "weight": "292.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Cloyster",
+                "category": "Bivalve Pokémon",
+                "entry": "It fights by keeping its shell\ntightly shut for protection and\nby shooting spikes to repel foes.",
+                "height": "4'11\"",
+                "weight": "292.1 lbs."
+            },
+            "fr": {
+                "name": "Crustabri",
+                "category": "Pokémon Bivalve",
+                "entry": "Il se défend en fermant sa coquille\net projette des piquants qui\nrepoussent ses agresseurs.",
+                "height": "1,5 m",
+                "weight": "132,5 kg"
+            },
+            "de": {
+                "name": "Austos",
+                "category": "Muschel",
+                "entry": "Im Kampf schließt es seine Schale,\num sich zu schützen. Es schießt mit\nStacheln auf seine Gegner.",
+                "height": "1,5 m",
+                "weight": "132,5 kg"
+            },
+            "it": {
+                "name": "Cloyster",
+                "category": "Pokémon Bivalve",
+                "entry": "Quando lotta si protegge tenendo\nla conchiglia chiusa e spara punte\nper respingere i nemici.",
+                "height": "1,5 m",
+                "weight": "132,5 kg"
+            },
+            "ko": {
+                "name": "파르셀",
+                "category": "두조개포켓몬",
+                "entry": "껍질을 잘 닫아 몸을\n보호하면서 가시를 날려\n상대를 물리치는 전법을 쓴다.",
+                "height": "1.5 m",
+                "weight": "132.5 kg"
+            },
+            "es": {
+                "name": "Cloyster",
+                "category": "Pokémon Bivalvo",
+                "entry": "En la lucha se protege cerrando\nsu concha y lanzando pinchos\na sus oponentes.",
+                "height": "1,5 m",
+                "weight": "132,5 kg"
+            },
+            "ja": {
+                "name": "パルシェン",
+                "category": "\\x{ff12}まいがいポケモン",
+                "entry": "カラを\\x{3000}しっかりと\\x{3000}とじて\\x{3000}みを\nまもりながら\\x{3000}トゲを\\x{3000}とばして\nてきを\\x{3000}げきたいする\\x{3000}せんぽう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 95,

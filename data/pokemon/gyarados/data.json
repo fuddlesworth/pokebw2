@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gyarados",
-    "category": "Atrocious Pokémon",
-    "pokedex_entry": "Once it begins to rampage, a\nGyarados will burn everything\ndown, even in a harsh storm.",
+    "pokedex": {
+        "category": "Atrocious Pokémon",
+        "entry": "Once it begins to rampage, a\nGyarados will burn everything\ndown, even in a harsh storm.",
+        "height": "21'04\"",
+        "weight": "518.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gyarados",
+                "category": "Atrocious Pokémon",
+                "entry": "Once it begins to rampage, a\nGyarados will burn everything\ndown, even in a harsh storm.",
+                "height": "21'04\"",
+                "weight": "518.1 lbs."
+            },
+            "fr": {
+                "name": "Léviator",
+                "category": "Pokémon Terrifiant",
+                "entry": "Quand il se laisse emporter par la\nrage, il ne se calme qu'après avoir\ndétruit tout ce qui l'entoure.",
+                "height": "6,5 m",
+                "weight": "235,0 kg"
+            },
+            "de": {
+                "name": "Garados",
+                "category": "Grausam",
+                "entry": "Wütet ein Garados, wird es alles\nniederbrennen. Dies geschieht\nselbst während eines Sturms.",
+                "height": "6,5 m",
+                "weight": "235,0 kg"
+            },
+            "it": {
+                "name": "Gyarados",
+                "category": "Pokémon Atroce",
+                "entry": "Quando va su tutte le furie,\nGyarados brucia ogni cosa, anche\nnel mezzo di un violento temporale.",
+                "height": "6,5 m",
+                "weight": "235,0 kg"
+            },
+            "ko": {
+                "name": "갸라도스",
+                "category": "흉악포켓몬",
+                "entry": "한 번 난동부리기 시작한 갸라도스는\n태풍이 사납게 휘몰아쳐도\n어떤 것이든 다 태워버린다.",
+                "height": "6.5 m",
+                "weight": "235.0 kg"
+            },
+            "es": {
+                "name": "Gyarados",
+                "category": "Pokémon Atrocidad",
+                "entry": "Cuando empieza a agitarse, puede\nquemarlo todo, incluso en medio\nde la más violenta tormenta.",
+                "height": "6,5 m",
+                "weight": "235,0 kg"
+            },
+            "ja": {
+                "name": "ギャラドス",
+                "category": "きょうあくポケモン",
+                "entry": "いちど\\x{3000}あばれだした\\x{3000}ギャラドスは\nあらしが\\x{3000}ふきすさんでいようとも\nどんなものでも\\x{3000}やきつくしてしまう。",
+                "height": "\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff13}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 125,

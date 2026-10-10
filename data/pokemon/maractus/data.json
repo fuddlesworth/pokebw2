@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Maractus",
-    "category": "Cactus Pokémon",
-    "pokedex_entry": "When it moves rhythmically,\nit makes a sound similar to maracas,\nmaking the surprised Pokémon flee.",
+    "pokedex": {
+        "category": "Cactus Pokémon",
+        "entry": "When it moves rhythmically,\nit makes a sound similar to maracas,\nmaking the surprised Pokémon flee.",
+        "height": "3'03\"",
+        "weight": "61.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "サボテンポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 86,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Combusken",
-    "category": "Young Fowl Pokémon",
-    "pokedex_entry": "Its kicking mastery lets it loose\n10 kicks per second. It emits\nsharp cries to intimidate foes.",
+    "pokedex": {
+        "category": "Young Fowl Pokémon",
+        "entry": "Its kicking mastery lets it loose\n10 kicks per second. It emits\nsharp cries to intimidate foes.",
+        "height": "2'11\"",
+        "weight": "43.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Combusken",
+                "category": "Young Fowl Pokémon",
+                "entry": "Its kicking mastery lets it loose\n10 kicks per second. It emits\nsharp cries to intimidate foes.",
+                "height": "2'11\"",
+                "weight": "43.0 lbs."
+            },
+            "fr": {
+                "name": "Galifeu",
+                "category": "Pokémon Poulet",
+                "entry": "Ce maître du coup de pied peut donner\n10 coups par seconde. Ses cris aigus\nintimident l'ennemi.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "de": {
+                "name": "Jungglut",
+                "category": "Kleinhahn",
+                "entry": "Es kann 10 Tritte pro Sekunde austeilen.\nEs gibt schrille Schreie von sich,\num Gegner einzuschüchtern.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "it": {
+                "name": "Combusken",
+                "category": "Pokémon Rampollo",
+                "entry": "Possiede l'abilità di sferrare anche\n10 calci al secondo. Emette urla\nstrazianti per intimorire i nemici.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "ko": {
+                "name": "영치코",
+                "category": "꼬마닭포켓몬",
+                "entry": "1초에 킥을 10번 날릴 정도로\n발을 사용하는 기술에 능하다.\n날카로운 울음소리로 위협한다.",
+                "height": "0.9 m",
+                "weight": "19.5 kg"
+            },
+            "es": {
+                "name": "Combusken",
+                "category": "Pokémon Ave Corral",
+                "entry": "Su habilidad le permite dar diez patadas\npor segundo. Lanza potentes gritos\npara intimidar.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "ja": {
+                "name": "ワカシャモ",
+                "category": "わかどりポケモン",
+                "entry": "\\x{ff11}びょうかんに\\x{3000}キックを\\x{3000}\\x{ff11}\\x{ff10}ぱつ\nくりだす\\x{3000}あしわざの\\x{3000}もちぬし。\nするどい\\x{3000}なきごえで\\x{3000}いかくする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 85,

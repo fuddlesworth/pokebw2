@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Quilava",
-    "category": "Volcano Pokémon",
-    "pokedex_entry": "It intimidates foes with the heat\nof its flames. The fire burns more\nstrongly when it readies to fight.",
+    "pokedex": {
+        "category": "Volcano Pokémon",
+        "entry": "It intimidates foes with the heat\nof its flames. The fire burns more\nstrongly when it readies to fight.",
+        "height": "2'11\"",
+        "weight": "41.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Quilava",
+                "category": "Volcano Pokémon",
+                "entry": "It intimidates foes with the heat\nof its flames. The fire burns more\nstrongly when it readies to fight.",
+                "height": "2'11\"",
+                "weight": "41.9 lbs."
+            },
+            "fr": {
+                "name": "Feurisson",
+                "category": "Pokémon Volcan",
+                "entry": "La chaleur de ses flammes intimide\nl'ennemi. Elles s'intensifient\nlorsqu'il se prépare à combattre.",
+                "height": "0,9 m",
+                "weight": "19,0 kg"
+            },
+            "de": {
+                "name": "Igelavar",
+                "category": "Vulkan",
+                "entry": "Es bedroht seine Gegner mit der\nHitze seiner Flammen. Ist es\nkampfbereit, lodern sie stärker.",
+                "height": "0,9 m",
+                "weight": "19,0 kg"
+            },
+            "it": {
+                "name": "Quilava",
+                "category": "Pokémon Vulcano",
+                "entry": "Intimorisce i nemici con il calore delle\nsue fiamme. Se è pronto a lottare,\nle vampate sono più ardenti.",
+                "height": "0,9 m",
+                "weight": "19,0 kg"
+            },
+            "ko": {
+                "name": "마그케인",
+                "category": "화산포켓몬",
+                "entry": "불꽃의 열로 상대를 위협한다.\n싸울 태세가 되면\n불꽃의 기세가 강해진다.",
+                "height": "0.9 m",
+                "weight": "19.0 kg"
+            },
+            "es": {
+                "name": "Quilava",
+                "category": "Pokémon Volcán",
+                "entry": "Intimida a sus enemigos con el calor de\nsus llamas. Arde con mayor fuerza\ncuando va a luchar.",
+                "height": "0,9 m",
+                "weight": "19,0 kg"
+            },
+            "ja": {
+                "name": "マグマラシ",
+                "category": "かざんポケモン",
+                "entry": "ほのおの\\x{3000}ねつで\\x{3000}あいてを\\x{3000}いかく。\nたたかう\\x{3000}たいせいになると\nほのおの\\x{3000}いきおいが\\x{3000}ます。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 58,
         "attack": 64,

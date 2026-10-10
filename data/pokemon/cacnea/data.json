@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cacnea",
-    "category": "Cactus Pokémon",
-    "pokedex_entry": "By storing water in its body, this\ndesert dweller can survive for 30\ndays without water.",
+    "pokedex": {
+        "category": "Cactus Pokémon",
+        "entry": "By storing water in its body, this\ndesert dweller can survive for 30\ndays without water.",
+        "height": "1'04\"",
+        "weight": "113.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Cacnea",
+                "category": "Cactus Pokémon",
+                "entry": "By storing water in its body, this\ndesert dweller can survive for 30\ndays without water.",
+                "height": "1'04\"",
+                "weight": "113.1 lbs."
+            },
+            "fr": {
+                "name": "Cacnea",
+                "category": "Pokémon Cactus",
+                "entry": "En stockant l'eau dans son corps,\ncet habitant du désert peut\nsurvivre 30 jours sans boire.",
+                "height": "0,4 m",
+                "weight": "51,3 kg"
+            },
+            "de": {
+                "name": "Tuska",
+                "category": "Kaktus",
+                "entry": "Dieser Wüstenbewohner speichert\nWasser in seinem Körper. So kann\ner 30 Tage ohne Wasser überleben.",
+                "height": "0,4 m",
+                "weight": "51,3 kg"
+            },
+            "it": {
+                "name": "Cacnea",
+                "category": "Pokémon Cactus",
+                "entry": "Immagazzina acqua nel corpo e riesce\na sopravvivere nel deserto senz'acqua\nanche per 30 giorni.",
+                "height": "0,4 m",
+                "weight": "51,3 kg"
+            },
+            "ko": {
+                "name": "선인왕",
+                "category": "선인장포켓몬",
+                "entry": "사막에 서식한다. 체내에\n수분을 모아 물을 마시지\n않고도 30일간 살 수 있다.",
+                "height": "0.4 m",
+                "weight": "51.3 kg"
+            },
+            "es": {
+                "name": "Cacnea",
+                "category": "Pokémon Cactus",
+                "entry": "Habita en el desierto. Aguanta 30 días\nsin agua gracias a la que almacena\nen su cuerpo.",
+                "height": "0,4 m",
+                "weight": "51,3 kg"
+            },
+            "ja": {
+                "name": "サボネア",
+                "category": "サボテンポケモン",
+                "entry": "さばくに\\x{3000}せいそく。たいないに\nすいぶんを\\x{3000}ためることで\\x{3000}みずを\nのまずに\\x{3000}\\x{ff13}\\x{ff10}にちかん\\x{3000}いきられる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff11}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 85,

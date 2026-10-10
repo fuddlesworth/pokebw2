@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Golett",
-    "category": "Automaton Pokémon",
-    "pokedex_entry": "Ancient science fashioned this\nPokémon from clay. It's been\nactive for thousands of years.",
+    "pokedex": {
+        "category": "Automaton Pokémon",
+        "entry": "Ancient science fashioned this\nPokémon from clay. It's been\nactive for thousands of years.",
+        "height": "3'03\"",
+        "weight": "202.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ゴーレムポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 59,
         "attack": 74,

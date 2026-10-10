@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Magnemite",
-    "category": "Magnet Pokémon",
-    "pokedex_entry": "The electromagnetic waves emitted by\nthe units at the sides of its head expel\nantigravity, which allows it to float.",
+    "pokedex": {
+        "category": "Magnet Pokémon",
+        "entry": "The electromagnetic waves emitted by\nthe units at the sides of its head expel\nantigravity, which allows it to float.",
+        "height": "1'00\"",
+        "weight": "13.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Magnemite",
+                "category": "Magnet Pokémon",
+                "entry": "The faster the units at its sides\nrotate, the greater the magnetic\nforce they generate.",
+                "height": "1'00\"",
+                "weight": "13.2 lbs."
+            },
+            "fr": {
+                "name": "Magnéti",
+                "category": "Pokémon Magnétique",
+                "entry": "Plus la rotation de ses extrémités\nest rapide, plus la force du champ\nmagnétique qu'il génère est grande.",
+                "height": "0,3 m",
+                "weight": "6,0 kg"
+            },
+            "de": {
+                "name": "Magnetilo",
+                "category": "Magnet",
+                "entry": "Je schneller sich die Vorrichtungen\nan seinen Seiten drehen, desto höher\ndie erzeugte magnetische Kraft.",
+                "height": "0,3 m",
+                "weight": "6,0 kg"
+            },
+            "it": {
+                "name": "Magnemite",
+                "category": "Pokémon Calamita",
+                "entry": "Gli elementi laterali, ruotando,\ngenerano forza magnetica, che\ncresce all'aumentare della velocità.",
+                "height": "0,3 m",
+                "weight": "6,0 kg"
+            },
+            "ko": {
+                "name": "코일",
+                "category": "자석포켓몬",
+                "entry": "좌우에 있는 유닛을\n고속으로 회전시킬수록\n그 자력이 강해진다.",
+                "height": "0.3 m",
+                "weight": "6.0 kg"
+            },
+            "es": {
+                "name": "Magnemite",
+                "category": "Pokémon Imán",
+                "entry": "Cuanto más rápido rotan las unidades\nlaterales, mayor fuerza magnética\ngeneran.",
+                "height": "0,3 m",
+                "weight": "6,0 kg"
+            },
+            "ja": {
+                "name": "コイル",
+                "category": "じしゃくポケモン",
+                "entry": "さゆうにある\\x{3000}ユニットを\nこうそくで\\x{3000}かいてん\\x{3000}させるほどに\nだせる\\x{3000}じりょくが\\x{3000}つよくなる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 25,
         "attack": 35,

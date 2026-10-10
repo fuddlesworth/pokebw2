@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Torkoal",
-    "category": "Coal Pokémon",
-    "pokedex_entry": "It burns coal inside its shell for\nenergy. It blows out black soot if\nit is endangered.",
+    "pokedex": {
+        "category": "Coal Pokémon",
+        "entry": "It burns coal inside its shell for\nenergy. It blows out black soot if\nit is endangered.",
+        "height": "1'08\"",
+        "weight": "177.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Torkoal",
+                "category": "Coal Pokémon",
+                "entry": "It burns coal inside its shell for\nenergy. It blows out black soot if\nit is endangered.",
+                "height": "1'08\"",
+                "weight": "177.2 lbs."
+            },
+            "fr": {
+                "name": "Chartor",
+                "category": "Pokémon Charbon",
+                "entry": "Il tire son énergie du charbon qu'il\nbrûle dans sa carapace et crache\nde la suie noire en cas de danger.",
+                "height": "0,5 m",
+                "weight": "80,4 kg"
+            },
+            "de": {
+                "name": "Qurtel",
+                "category": "Kohle",
+                "entry": "In seinem Panzer verbrennt es\nKohle und gewinnt daraus Energie.\nBei Gefahr sondert es Ruß ab.",
+                "height": "0,5 m",
+                "weight": "80,4 kg"
+            },
+            "it": {
+                "name": "Torkoal",
+                "category": "Pokémon Carbone",
+                "entry": "Genera energia bruciando carbone\nall'interno della corazza. Se è in\npericolo, emette fuliggine scura.",
+                "height": "0,5 m",
+                "weight": "80,4 kg"
+            },
+            "ko": {
+                "name": "코터스",
+                "category": "석탄포켓몬",
+                "entry": "등껍질 속에 석탄을 태워서\n에너지로 사용한다. 위급할\n때는 까만 그을음을 뿜어낸다.",
+                "height": "0.5 m",
+                "weight": "80.4 kg"
+            },
+            "es": {
+                "name": "Torkoal",
+                "category": "Pokémon Carbón",
+                "entry": "Quema carbón en su caparazón\npara obtener energía. Si le atacan,\necha un denso humo negro.",
+                "height": "0,5 m",
+                "weight": "80,4 kg"
+            },
+            "ja": {
+                "name": "コータス",
+                "category": "せきたんポケモン",
+                "entry": "こうらの\\x{3000}なかで\\x{3000}せきたんを\\x{3000}もやし\nエネルギーに\\x{3000}している。ピンチの\nときは\\x{3000}くろい\\x{3000}ススを\\x{3000}ふきだす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 85,

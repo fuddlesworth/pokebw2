@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Galvantula",
-    "category": "EleSpider Pokémon",
-    "pokedex_entry": "It creates barriers from electrified silk\nthat stun foes. This works as a weapon\nas well as a defense.",
+    "pokedex": {
+        "category": "EleSpider Pokémon",
+        "entry": "It creates barriers from electrified silk\nthat stun foes. This works as a weapon\nas well as a defense.",
+        "height": "2'07\"",
+        "weight": "31.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "でんきグモポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 77,

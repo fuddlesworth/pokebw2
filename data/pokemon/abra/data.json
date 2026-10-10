@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Abra",
-    "category": "Psi Pokémon",
-    "pokedex_entry": "Using its psychic power is such a\nstrain on its brain that it needs\nto sleep for 18 hours a day.",
+    "pokedex": {
+        "category": "Psi Pokémon",
+        "entry": "Using its psychic power is such a\nstrain on its brain that it needs\nto sleep for 18 hours a day.",
+        "height": "2'11\"",
+        "weight": "43.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Abra",
+                "category": "Psi Pokémon",
+                "entry": "Using its psychic power is such a\nstrain on its brain that it needs\nto sleep for 18 hours a day.",
+                "height": "2'11\"",
+                "weight": "43.0 lbs."
+            },
+            "fr": {
+                "name": "Abra",
+                "category": "Pokémon Psy",
+                "entry": "L'utilisation de ses pouvoirs\nmentaux le fatigue tellement\nqu'il dort 18 heures par jour.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "de": {
+                "name": "Abra",
+                "category": "Psi",
+                "entry": "Der Einsatz seiner Psycho-Kräfte\nkostet so viel Energie, dass es\n18 Stunden am Tag schlafen muss.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "it": {
+                "name": "Abra",
+                "category": "Pokémon Psico",
+                "entry": "L'utilizzo dei suoi poteri psichici è così\nstancante da costringerlo a dormire\n18 ore al giorno.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "ko": {
+                "name": "캐이시",
+                "category": "초능력포켓몬",
+                "entry": "초능력을 쓴 뒤에는\n뇌가 지쳐버리기 때문에\n하루에 18시간이나 잔다.",
+                "height": "0.9 m",
+                "weight": "19.5 kg"
+            },
+            "es": {
+                "name": "Abra",
+                "category": "Pokémon Psi",
+                "entry": "Sus poderes psíquicos causan un\ndesgaste tan grande para su mente\nque precisa dormir 18 horas al día.",
+                "height": "0,9 m",
+                "weight": "19,5 kg"
+            },
+            "ja": {
+                "name": "ケーシィ",
+                "category": "ねんりきポケモン",
+                "entry": "ちょうのうりょくを\\x{3000}つかったあとは\nのうみそが\\x{3000}つかれてしまうので\n\\x{ff11}にちに\\x{3000}\\x{ff11}\\x{ff18}じかんも\\x{3000}ねむるのだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 25,
         "attack": 20,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Treecko",
-    "category": "Wood Gecko Pokémon",
-    "pokedex_entry": "The soles of its feet are covered\nby countless tiny spikes, enabling\nit to walk on walls and ceilings.",
+    "pokedex": {
+        "category": "Wood Gecko Pokémon",
+        "entry": "The soles of its feet are covered\nby countless tiny spikes, enabling\nit to walk on walls and ceilings.",
+        "height": "1'08\"",
+        "weight": "11.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Treecko",
+                "category": "Wood Gecko Pokémon",
+                "entry": "The soles of its feet are covered\nby countless tiny spikes, enabling\nit to walk on walls and ceilings.",
+                "height": "1'08\"",
+                "weight": "11.0 lbs."
+            },
+            "fr": {
+                "name": "Arcko",
+                "category": "Pokémon Bois Gecko",
+                "entry": "Ses plantes de pieds sont couvertes\nd'épines lui permettant de marcher\nau mur et au plafond.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "de": {
+                "name": "Geckarbor",
+                "category": "Waldgecko",
+                "entry": "Seine Fußsohlen sind mit kleinen\nStacheln bedeckt, so dass es\nan Wänden und Decken Halt findet.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "it": {
+                "name": "Treecko",
+                "category": "Pokémon Legnogeco",
+                "entry": "Le piante dei suoi piedi sono piene di\nuncini che gli permettono di camminare\nsu muri e soffitti.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "ko": {
+                "name": "나무지기",
+                "category": "숲도마뱀포켓몬",
+                "entry": "발바닥에는 작은 가시가\n많이 달렸기 때문에 벽이나\n천장을 걸을 수 있다.",
+                "height": "0.5 m",
+                "weight": "5.0 kg"
+            },
+            "es": {
+                "name": "Treecko",
+                "category": "Pokémon Geco Bosque",
+                "entry": "Las plantas de sus pies tienen\npúas diminutas que le permiten\nandar por paredes y techos.",
+                "height": "0,5 m",
+                "weight": "5,0 kg"
+            },
+            "ja": {
+                "name": "キモリ",
+                "category": "もりトカゲポケモン",
+                "entry": "あしの\\x{3000}うらには\\x{3000}ちいさな\\x{3000}トゲが\nたくさん\\x{3000}ついているので\\x{3000}かべや\nてんじょうを\\x{3000}あるくことが\\x{3000}できる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 45,

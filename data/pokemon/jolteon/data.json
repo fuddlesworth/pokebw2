@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Jolteon",
-    "category": "Lightning Pokémon",
-    "pokedex_entry": "By storing electricity in its body,\nit can shoot its bristlelike fur\nlike a barrage of missiles.",
+    "pokedex": {
+        "category": "Lightning Pokémon",
+        "entry": "By storing electricity in its body,\nit can shoot its bristlelike fur\nlike a barrage of missiles.",
+        "height": "2'07\"",
+        "weight": "54.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Jolteon",
+                "category": "Lightning Pokémon",
+                "entry": "If agitated, it uses electricity to\nstraighten out its fur and launch\nit in small bunches.",
+                "height": "2'07\"",
+                "weight": "54.0 lbs."
+            },
+            "fr": {
+                "name": "Voltali",
+                "category": "Pokémon Orage",
+                "entry": "Face au danger, il fait appel à\nl'électricité pour dresser ses\npoils et lancer des décharges.",
+                "height": "0,8 m",
+                "weight": "24,5 kg"
+            },
+            "de": {
+                "name": "Blitza",
+                "category": "Blitz",
+                "entry": "Bringt man es aus der Ruhe, verwendet\nes Elektrizität, um kleine Knäuel seines\nFells abzufeuern.",
+                "height": "0,8 m",
+                "weight": "24,5 kg"
+            },
+            "it": {
+                "name": "Jolteon",
+                "category": "Pokémon Luminoso",
+                "entry": "Quando si agita, usa l'elettricità\nper rizzare i peli e scagliarli in\npiccoli nugoli.",
+                "height": "0,8 m",
+                "weight": "24,5 kg"
+            },
+            "ko": {
+                "name": "쥬피썬더",
+                "category": "번개포켓몬",
+                "entry": "감정이 날카로워지면\n전기를 띠고 곤두선 털을\n몇 가닥이든 날린다.",
+                "height": "0.8 m",
+                "weight": "24.5 kg"
+            },
+            "es": {
+                "name": "Jolteon",
+                "category": "Pokémon Relámpago",
+                "entry": "Si se agita, usa electricidad para\nconvertir su pelaje en afiladísimas\npúas y dispararlas en racimos.",
+                "height": "0,8 m",
+                "weight": "24,5 kg"
+            },
+            "ja": {
+                "name": "サンダース",
+                "category": "かみなりポケモン",
+                "entry": "かんじょうが\\x{3000}たかぶると\nでんきを\\x{3000}おびて\\x{3000}まっすぐになった\nたいもうを\\x{3000}なんぼんも\\x{3000}とばす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff14}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 65,

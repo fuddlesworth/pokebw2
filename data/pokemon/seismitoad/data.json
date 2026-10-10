@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Seismitoad",
-    "category": "Vibration Pokémon",
-    "pokedex_entry": "By putting power into its bumps,\nit creates vibrations and increases\nthe power of its punches.",
+    "pokedex": {
+        "category": "Vibration Pokémon",
+        "entry": "By putting power into its bumps,\nit creates vibrations and increases\nthe power of its punches.",
+        "height": "4'11\"",
+        "weight": "136.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "しんどうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 105,
         "attack": 85,

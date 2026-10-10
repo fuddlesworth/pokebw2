@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hitmonchan",
-    "category": "Punching Pokémon",
-    "pokedex_entry": "The arm-twisting punches it throws\npulverize even concrete. It rests\nafter three minutes of fighting.",
+    "pokedex": {
+        "category": "Punching Pokémon",
+        "entry": "The arm-twisting punches it throws\npulverize even concrete. It rests\nafter three minutes of fighting.",
+        "height": "4'07\"",
+        "weight": "110.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hitmonchan",
+                "category": "Punching Pokémon",
+                "entry": "The arm-twisting punches it throws\npulverize even concrete. It rests\nafter three minutes of fighting.",
+                "height": "4'07\"",
+                "weight": "110.7 lbs."
+            },
+            "fr": {
+                "name": "Tygnon",
+                "category": "Pokémon Puncheur",
+                "entry": "Même le béton cède sous ses\npoings dévastateurs. Au combat, il\ns'essouffle au bout de 3 minutes.",
+                "height": "1,4 m",
+                "weight": "50,2 kg"
+            },
+            "de": {
+                "name": "Nockchan",
+                "category": "Puncher",
+                "entry": "Die Schläge, die es austeilt, können\nBeton pulverisieren. Es muss sich im\nKampf alle 3 Minuten ausruhen.",
+                "height": "1,4 m",
+                "weight": "50,2 kg"
+            },
+            "it": {
+                "name": "Hitmonchan",
+                "category": "Pokémon Tirapugni",
+                "entry": "Sferra pugni così potenti da\npolverizzare persino il cemento.\nSi riposa dopo tre minuti di lotta.",
+                "height": "1,4 m",
+                "weight": "50,2 kg"
+            },
+            "ko": {
+                "name": "홍수몬",
+                "category": "펀치포켓몬",
+                "entry": "팔을 비틀며 날리는 펀치는\n콘크리트도 부스러뜨린다.\n3분 싸우면 잠시 쉰다.",
+                "height": "1.4 m",
+                "weight": "50.2 kg"
+            },
+            "es": {
+                "name": "Hitmonchan",
+                "category": "Pokémon Puñetazo",
+                "entry": "Los potentes golpes de sus brazos\npueden pulverizar el hormigón.\nDescansa tras luchar tres minutos.",
+                "height": "1,4 m",
+                "weight": "50,2 kg"
+            },
+            "ja": {
+                "name": "エビワラー",
+                "category": "パンチポケモン",
+                "entry": "うでを\\x{3000}ねじりながら\\x{3000}くりだす\nパンチは\\x{3000}コンクリートも\\x{3000}ふんさい。\n\\x{ff13}ぷん\\x{3000}たたかうと\\x{3000}ひとやすみする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 105,

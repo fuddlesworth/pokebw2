@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Makuhita",
-    "category": "Guts Pokémon",
-    "pokedex_entry": "It toughens its body by slamming\ninto thick trees. Many snapped\ntrees can be found near its nest.",
+    "pokedex": {
+        "category": "Guts Pokémon",
+        "entry": "It toughens its body by slamming\ninto thick trees. Many snapped\ntrees can be found near its nest.",
+        "height": "3'03\"",
+        "weight": "190.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Makuhita",
+                "category": "Guts Pokémon",
+                "entry": "It toughens its body by slamming\ninto thick trees. Many snapped\ntrees can be found near its nest.",
+                "height": "3'03\"",
+                "weight": "190.5 lbs."
+            },
+            "fr": {
+                "name": "Makuhita",
+                "category": "Pokémon Tenace",
+                "entry": "Il fortifie son corps en fonçant\nsur des arbres épais. Son nid est\nentouré d'arbres abattus.",
+                "height": "1,0 m",
+                "weight": "86,4 kg"
+            },
+            "de": {
+                "name": "Makuhita",
+                "category": "Courage",
+                "entry": "Es stärkt seinen Körper, indem es\ngegen Bäume rennt. In seiner Nähe\nfinden sich viele umgekippte Bäume.",
+                "height": "1,0 m",
+                "weight": "86,4 kg"
+            },
+            "it": {
+                "name": "Makuhita",
+                "category": "Pokémon Coraggio",
+                "entry": "Si rinforza sbattendo contro enormi\nalberi. Vicino alla sua tana si trovano\nparecchi alberi abbattuti.",
+                "height": "1,0 m",
+                "weight": "86,4 kg"
+            },
+            "ko": {
+                "name": "마크탕",
+                "category": "근성포켓몬",
+                "entry": "굵은 나무줄기에 부딪혀\n몸을 단련한다. 거처 주변에는\n꺾여버린 나무가 많이 있다.",
+                "height": "1.0 m",
+                "weight": "86.4 kg"
+            },
+            "es": {
+                "name": "Makuhita",
+                "category": "Pokémon Valiente",
+                "entry": "Endurece su cuerpo golpeando grandes\nárboles. Cerca de su hogar suele haber\nárboles golpeados.",
+                "height": "1,0 m",
+                "weight": "86,4 kg"
+            },
+            "ja": {
+                "name": "マクノシタ",
+                "category": "こんじょうポケモン",
+                "entry": "ふとい\\x{3000}きのみきに\\x{3000}ぶつかって\nからだを\\x{3000}きたえる。すみかの\\x{3000}そばは\nへしおられた\\x{3000}きが\\x{3000}たくさんある。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff16}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 72,
         "attack": 60,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ninjask",
-    "category": "Ninja Pokémon",
-    "pokedex_entry": "Because it moves so quickly, it\nsometimes becomes unseeable. It\ncongregates around tree sap.",
+    "pokedex": {
+        "category": "Ninja Pokémon",
+        "entry": "Because it moves so quickly, it\nsometimes becomes unseeable. It\ncongregates around tree sap.",
+        "height": "2'07\"",
+        "weight": "26.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ninjask",
+                "category": "Ninja Pokémon",
+                "entry": "Because it moves so quickly, it\nsometimes becomes unseeable. It\ncongregates around tree sap.",
+                "height": "2'07\"",
+                "weight": "26.5 lbs."
+            },
+            "fr": {
+                "name": "Ninjask",
+                "category": "Pokémon Ninja",
+                "entry": "Il bouge si vite que l'œil a parfois du\nmal à le suivre. Ils se regroupent près\nde la sève des arbres.",
+                "height": "0,8 m",
+                "weight": "12,0 kg"
+            },
+            "de": {
+                "name": "Ninjask",
+                "category": "Ninja",
+                "entry": "Es bewegt sich so schnell, dass es\nmanchmal unsichtbar zu sein scheint.\nEs liebt Baumsaft.",
+                "height": "0,8 m",
+                "weight": "12,0 kg"
+            },
+            "it": {
+                "name": "Ninjask",
+                "category": "Pokémon Ninja",
+                "entry": "Si muove così in fretta da risultare quasi\ninvisibile. Lo si vede in gruppo attorno\nagli alberi ricchi di linfa.",
+                "height": "0,8 m",
+                "weight": "12,0 kg"
+            },
+            "ko": {
+                "name": "아이스크",
+                "category": "시노비포켓몬",
+                "entry": "매우 고속으로 움직이므로\n모습이 보이지 않게 될 때가 있다.\n수액에 모여든다.",
+                "height": "0.8 m",
+                "weight": "12.0 kg"
+            },
+            "es": {
+                "name": "Ninjask",
+                "category": "Pokémon Ninja",
+                "entry": "Se mueve tan rápido que a veces\nresulta invisible. Le atrae la savia\nde los árboles.",
+                "height": "0,8 m",
+                "weight": "12,0 kg"
+            },
+            "ja": {
+                "name": "テッカニン",
+                "category": "しのびポケモン",
+                "entry": "あまりに\\x{3000}こうそくで\\x{3000}うごくため\nすがたが\\x{3000}みえなくなる\\x{3000}ことがある。\nじゅえきに\\x{3000}あつまってくる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 61,
         "attack": 90,

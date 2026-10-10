@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Exploud",
-    "category": "Loud Noise Pokémon",
-    "pokedex_entry": "Its howls can be heard over six\nmiles away. It emits all sorts of\nnoises from the ports on its body.",
+    "pokedex": {
+        "category": "Loud Noise Pokémon",
+        "entry": "Its howls can be heard over six\nmiles away. It emits all sorts of\nnoises from the ports on its body.",
+        "height": "4'11\"",
+        "weight": "185.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Exploud",
+                "category": "Loud Noise Pokémon",
+                "entry": "Its howls can be heard over six\nmiles away. It emits all sorts of\nnoises from the ports on its body.",
+                "height": "4'11\"",
+                "weight": "185.2 lbs."
+            },
+            "fr": {
+                "name": "Brouhabam",
+                "category": "Pokémon Bruit Sourd",
+                "entry": "Son hurlement s'entend à 10 km à la\nronde. Ses orifices émettent toutes\nsortes de bruits.",
+                "height": "1,5 m",
+                "weight": "84,0 kg"
+            },
+            "de": {
+                "name": "Krawumms",
+                "category": "Krach",
+                "entry": "Sein Heulen hört man in 10 km\nEntfernung. Es gibt alle Arten\nvon Geräuschen von sich.",
+                "height": "1,5 m",
+                "weight": "84,0 kg"
+            },
+            "it": {
+                "name": "Exploud",
+                "category": "Pokémon Fragore",
+                "entry": "Le sue urla si sentono a 10 km di\ndistanza. Emette diversi suoni dalle\nnumerose aperture del suo corpo.",
+                "height": "1,5 m",
+                "weight": "84,0 kg"
+            },
+            "ko": {
+                "name": "폭음룡",
+                "category": "소음포켓몬",
+                "entry": "폭음룡이 멀리 짖으면 10km\n전방까지 닿는다. 몸 곳곳의\n구멍에서 갖가지 소리를 낸다.",
+                "height": "1.5 m",
+                "weight": "84.0 kg"
+            },
+            "es": {
+                "name": "Exploud",
+                "category": "Pokémon Escandaloso",
+                "entry": "Su aullido se puede oír a 10 km.\nEmite todo tipo de sonidos desde\nlos tubos de su cuerpo.",
+                "height": "1,5 m",
+                "weight": "84,0 kg"
+            },
+            "ja": {
+                "name": "バクオング",
+                "category": "そうおんポケモン",
+                "entry": "バクオングの\\x{3000}とおぼえは\\x{3000}\\x{ff11}\\x{ff10}キロ\nさきまで\\x{3000}とどく。からだじゅうの\nあなから\\x{3000}さまざまな\\x{3000}おとを\\x{3000}だす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 104,
         "attack": 91,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cresselia",
-    "category": "Lunar Pokémon",
-    "pokedex_entry": "On nights around the quarter moon,\nthe aurora from its tail extends\nand undulates beautifully.",
+    "pokedex": {
+        "category": "Lunar Pokémon",
+        "entry": "On nights around the quarter moon,\nthe aurora from its tail extends\nand undulates beautifully.",
+        "height": "4'11\"",
+        "weight": "188.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Cresselia",
+                "category": "Lunar Pokémon",
+                "entry": "On nights around the quarter moon,\nthe aurora from its tail extends\nand undulates beautifully.",
+                "height": "4'11\"",
+                "weight": "188.7 lbs."
+            },
+            "fr": {
+                "name": "Cresselia",
+                "category": "Pokémon Lunaire",
+                "entry": "Les nuits où le premier croissant\nde lune est visible, l'arc de sa\nqueue se déploie de façon superbe.",
+                "height": "1,5 m",
+                "weight": "85,6 kg"
+            },
+            "de": {
+                "name": "Cresselia",
+                "category": "Lunar",
+                "entry": "In Nächten mit zunehmendem Mond\nstreckt sich das Licht von seinem\nSchweif und wellt sich wunderschön.",
+                "height": "1,5 m",
+                "weight": "85,6 kg"
+            },
+            "it": {
+                "name": "Cresselia",
+                "category": "Pokémon Falcato",
+                "entry": "Nelle notti di quarto di luna, l'aurora\ndella sua coda si spande e ondeggia\nin modo splendido.",
+                "height": "1,5 m",
+                "weight": "85,6 kg"
+            },
+            "ko": {
+                "name": "크레세리아",
+                "category": "초승달포켓몬",
+                "entry": "초승달에 가까운 밤일수록\n꼬리에서 뻗어나는 오로라가\n길고 아름다워진다.",
+                "height": "1.5 m",
+                "weight": "85.6 kg"
+            },
+            "es": {
+                "name": "Cresselia",
+                "category": "Pokémon Lunar",
+                "entry": "En las noches de media luna, la\naurora de su cola se extiende y\nondea más hermosa que nunca.",
+                "height": "1,5 m",
+                "weight": "85,6 kg"
+            },
+            "ja": {
+                "name": "クレセリア",
+                "category": "みかづきポケモン",
+                "entry": "みかづきに\\x{3000}ちかい\\x{3000}よるほど\nしっぽから\\x{3000}のびる\\x{3000}オーロラは\nながく\\x{3000}うつくしくなる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff15}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 120,
         "attack": 70,

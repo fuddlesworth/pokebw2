@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Empoleon",
-    "category": "Emperor Pokémon",
-    "pokedex_entry": "If anyone were to hurt its pride,\nit would slash them with wings that\ncan cleave through an ice floe.",
+    "pokedex": {
+        "category": "Emperor Pokémon",
+        "entry": "If anyone were to hurt its pride,\nit would slash them with wings that\ncan cleave through an ice floe.",
+        "height": "5'07\"",
+        "weight": "186.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Empoleon",
+                "category": "Emperor Pokémon",
+                "entry": "If anyone were to hurt its pride,\nit would slash them with wings that\ncan cleave through an ice floe.",
+                "height": "5'07\"",
+                "weight": "186.3 lbs."
+            },
+            "fr": {
+                "name": "Pingoléon",
+                "category": "Pokémon Empereur",
+                "entry": "S'il voit son honneur bafoué, il\nest capable de faire des ravages\navec ses ailes tranchantes.",
+                "height": "1,7 m",
+                "weight": "84,5 kg"
+            },
+            "de": {
+                "name": "Impoleon",
+                "category": "Kaiser",
+                "entry": "Würde jemand seine Ehre verletzen,\nso würde es mit Flügeln angreifen,\ndie Eis zerschneiden können.",
+                "height": "1,7 m",
+                "weight": "84,5 kg"
+            },
+            "it": {
+                "name": "Empoleon",
+                "category": "Pokémon Imperatore",
+                "entry": "Chi osa ferirlo nell'orgoglio, viene\ncolpito dalle sue ali tanto possenti\nda fendere un banco di ghiaccio.",
+                "height": "1,7 m",
+                "weight": "84,5 kg"
+            },
+            "ko": {
+                "name": "엠페르트",
+                "category": "황제포켓몬",
+                "entry": "프라이드를 건드리는 자는\n유빙까지도 절단하는\n날개로 두 동강을 낸다.",
+                "height": "1.7 m",
+                "weight": "84.5 kg"
+            },
+            "es": {
+                "name": "Empoleon",
+                "category": "Pokémon Emperador",
+                "entry": "Si alguien hiere su orgullo, le desgarra\ncon unas alas que podrían cortar\nun témpano de hielo.",
+                "height": "1,7 m",
+                "weight": "84,5 kg"
+            },
+            "ja": {
+                "name": "エンペルト",
+                "category": "こうていポケモン",
+                "entry": "プライドを\\x{3000}きずつける\\x{3000}ものは\nりゅうひょうをも\\x{3000}せつだんする\nつばさで\\x{3000}まっぷたつに\\x{3000}する。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff14}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 84,
         "attack": 86,

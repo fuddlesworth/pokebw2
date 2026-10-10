@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gabite",
-    "category": "Cave Pokémon",
-    "pokedex_entry": "It loves sparkly things. It seeks\ntreasures in caves and hoards the\nloot in its nest.",
+    "pokedex": {
+        "category": "Cave Pokémon",
+        "entry": "It loves sparkly things. It seeks\ntreasures in caves and hoards the\nloot in its nest.",
+        "height": "4'07\"",
+        "weight": "123.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gabite",
+                "category": "Cave Pokémon",
+                "entry": "It loves sparkly things. It seeks\ntreasures in caves and hoards the\nloot in its nest.",
+                "height": "4'07\"",
+                "weight": "123.5 lbs."
+            },
+            "fr": {
+                "name": "Carmache",
+                "category": "Pokémon Caverne",
+                "entry": "Toujours à la recherche d'objets\nbrillants, il arpente les grottes\npour constituer son butin.",
+                "height": "1,4 m",
+                "weight": "56,0 kg"
+            },
+            "de": {
+                "name": "Knarksel",
+                "category": "Höhle",
+                "entry": "Es liebt funkelnde Dinge und sucht\nnach Schätzen in Höhlen, die es\ndann in seinem Nest hortet.",
+                "height": "1,4 m",
+                "weight": "56,0 kg"
+            },
+            "it": {
+                "name": "Gabite",
+                "category": "Pokémon Grotta",
+                "entry": "Adora gli oggetti luccicanti. Va a caccia\ndi tesori nelle grotte e li trasporta\nnel suo nido.",
+                "height": "1,4 m",
+                "weight": "56,0 kg"
+            },
+            "ko": {
+                "name": "한바이트",
+                "category": "동굴포켓몬",
+                "entry": "반짝반짝 빛나는 것을\n아주 좋아하기에 동굴 안에서 발견한\n보물을 자신의 둥지에 모아둔다.",
+                "height": "1.4 m",
+                "weight": "56.0 kg"
+            },
+            "es": {
+                "name": "Gabite",
+                "category": "Pokémon Cueva",
+                "entry": "Le gustan las cosas brillantes.\nBusca tesoros en cuevas y se\nlleva el botín a su nido.",
+                "height": "1,4 m",
+                "weight": "56,0 kg"
+            },
+            "ja": {
+                "name": "ガバイト",
+                "category": "ほらあなポケモン",
+                "entry": "ひかりかがやく\\x{3000}ものが\\x{3000}だいすきで\nどうくつの\\x{3000}なかで\\x{3000}みつけた\nたからを\\x{3000}じぶんのすに\\x{3000}ためこむ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 68,
         "attack": 90,

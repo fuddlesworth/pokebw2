@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Rhyperior",
-    "category": "Drill Pokémon",
-    "pokedex_entry": "It can launch a rock held in its\nhand like a missile by tightening\nthen expanding muscles instantly.",
+    "pokedex": {
+        "category": "Drill Pokémon",
+        "entry": "It can launch a rock held in its\nhand like a missile by tightening\nthen expanding muscles instantly.",
+        "height": "7'10\"",
+        "weight": "623.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Rhyperior",
+                "category": "Drill Pokémon",
+                "entry": "It can launch a rock held in its\nhand like a missile by tightening\nthen expanding muscles instantly.",
+                "height": "7'10\"",
+                "weight": "623.5 lbs."
+            },
+            "fr": {
+                "name": "Rhinastoc",
+                "category": "Pokémon Perceur",
+                "entry": "Il peut lancer des pierres à une\nvitesse saisissante en bandant et\nrelâchant ses muscles en un éclair.",
+                "height": "2,4 m",
+                "weight": "282,8 kg"
+            },
+            "de": {
+                "name": "Rihornior",
+                "category": "Bohrer",
+                "entry": "Kann durch augenblickliche\nMuskelbewegungen einen Felsen in seiner\nHand wie ein Geschoss abfeuern.",
+                "height": "2,4 m",
+                "weight": "282,8 kg"
+            },
+            "it": {
+                "name": "Rhyperior",
+                "category": "Pokémon Trapano",
+                "entry": "Può gettare una roccia che tiene in\nmano come un missile contraendo ed\nestendendo velocemente i muscoli.",
+                "height": "2,4 m",
+                "weight": "282,8 kg"
+            },
+            "ko": {
+                "name": "거대코뿌리",
+                "category": "드릴포켓몬",
+                "entry": "근육에 힘을 모아\n순간적으로 부풀리는 것으로\n손에 넣은 돌을 분출시킬 수 있다.",
+                "height": "2.4 m",
+                "weight": "282.8 kg"
+            },
+            "es": {
+                "name": "Rhyperior",
+                "category": "Pokémon Taladro",
+                "entry": "Si tensa y expande los músculos muy\nrápido, puede disparar las rocas\nque tenga en la mano como misiles.",
+                "height": "2,4 m",
+                "weight": "282,8 kg"
+            },
+            "ja": {
+                "name": "ドサイドン",
+                "category": "ドリルポケモン",
+                "entry": "きんにくを\\x{3000}ちからを\\x{3000}こめて\nしゅんかんてきに\\x{3000}ふくらませることで\nてにした\\x{3000}いしを\\x{3000}ふんしゅつできる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff18}\\x{ff12}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 115,
         "attack": 140,

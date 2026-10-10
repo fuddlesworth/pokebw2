@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sewaddle",
-    "category": "Sewing Pokémon",
-    "pokedex_entry": "Since this Pokémon makes its own\nclothes out of leaves, it is a popular\nmascot for fashion designers.",
+    "pokedex": {
+        "category": "Sewing Pokémon",
+        "entry": "Since this Pokémon makes its own\nclothes out of leaves, it is a popular\nmascot for fashion designers.",
+        "height": "1'00\"",
+        "weight": "5.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "さいほうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 53,

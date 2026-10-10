@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lumineon",
-    "category": "Neon Pokémon",
-    "pokedex_entry": "It crawls along the seafloor using\nits long front fins like legs. It\ncompetes for food with Lanturn.",
+    "pokedex": {
+        "category": "Neon Pokémon",
+        "entry": "It crawls along the seafloor using\nits long front fins like legs. It\ncompetes for food with Lanturn.",
+        "height": "3'11\"",
+        "weight": "52.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lumineon",
+                "category": "Neon Pokémon",
+                "entry": "It crawls along the seafloor using\nits long front fins like legs. It\ncompetes for food with Lanturn.",
+                "height": "3'11\"",
+                "weight": "52.9 lbs."
+            },
+            "fr": {
+                "name": "Luminéon",
+                "category": "Pokémon Néon",
+                "entry": "Il rampe au fond de l'océan grâce\naux nageoires de son torse.\nLe Lanturn est son rival.",
+                "height": "1,2 m",
+                "weight": "24,0 kg"
+            },
+            "de": {
+                "name": "Lumineon",
+                "category": "Neon",
+                "entry": "Kriecht mit seinen langen\nVorderflossen über den Meeresboden.\nKonkurriert mit Lanturn um Futter.",
+                "height": "1,2 m",
+                "weight": "24,0 kg"
+            },
+            "it": {
+                "name": "Lumineon",
+                "category": "Pokémon Neon",
+                "entry": "Si sposta sui fondali con le lunghe pinne\nanteriori. Lanturn è suo rivale nella\nricerca del cibo.",
+                "height": "1,2 m",
+                "weight": "24,0 kg"
+            },
+            "ko": {
+                "name": "네오라이트",
+                "category": "네온포켓몬",
+                "entry": "긴 지느러미를 다리처럼\n써서 해저를 기어다닌다.\n랜턴과 먹이다툼을 한다.",
+                "height": "1.2 m",
+                "weight": "24.0 kg"
+            },
+            "es": {
+                "name": "Lumineon",
+                "category": "Pokémon Neón",
+                "entry": "Se arrastra por el fondo marino\ncon sus largas aletas frontales.\nCompite con Lanturn por la comida.",
+                "height": "1,2 m",
+                "weight": "24,0 kg"
+            },
+            "ja": {
+                "name": "ネオラント",
+                "category": "ネオンポケモン",
+                "entry": "ながい\\x{3000}ひれを\\x{3000}あしのように\nつかって\\x{3000}かいていを\\x{3000}はっている。\nランターンと\\x{3000}えものを\\x{3000}とりあう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 69,
         "attack": 69,

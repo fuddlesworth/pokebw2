@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Ledian",
-    "category": "Five Star Pokémon",
-    "pokedex_entry": "It uses starlight as energy. When\nmore stars appear at night, the\npatterns on its back grow larger.",
+    "pokedex": {
+        "category": "Five Star Pokémon",
+        "entry": "It uses starlight as energy. When\nmore stars appear at night, the\npatterns on its back grow larger.",
+        "height": "4'07\"",
+        "weight": "78.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Ledian",
+                "category": "Five Star Pokémon",
+                "entry": "It uses starlight as energy. When\nmore stars appear at night, the\npatterns on its back grow larger.",
+                "height": "4'07\"",
+                "weight": "78.5 lbs."
+            },
+            "fr": {
+                "name": "Coxyclaque",
+                "category": "Pokémon 5 Étoiles",
+                "entry": "Il tire sa force de la lumière des\nétoiles. Plus il y en a et plus ses\nmotifs dorsaux sont grands.",
+                "height": "1,4 m",
+                "weight": "35,6 kg"
+            },
+            "de": {
+                "name": "Ledian",
+                "category": "Fünf-Punkt",
+                "entry": "Es zieht Energie aus dem Licht der\nSterne. Je mehr Sterne zu sehen sind,\ndesto größer ist sein Muster.",
+                "height": "1,4 m",
+                "weight": "35,6 kg"
+            },
+            "it": {
+                "name": "Ledian",
+                "category": "Pokémon Pentastra",
+                "entry": "La luce delle stelle è la sua fonte\nd'energia. Un cielo più stellato fa\ningrandire i disegni sul suo dorso.",
+                "height": "1,4 m",
+                "weight": "35,6 kg"
+            },
+            "ko": {
+                "name": "레디안",
+                "category": "별다섯포켓몬",
+                "entry": "별빛을 에너지로 쓴다.\n밤하늘의 별의 수가 늘어나면\n등의 무늬가 커진다.",
+                "height": "1.4 m",
+                "weight": "35.6 kg"
+            },
+            "es": {
+                "name": "Ledian",
+                "category": "Pokémon 5estrellas",
+                "entry": "Se nutre de la luz de las estrellas.\nCuanto más estrellada es la noche,\nmás crecen los dibujos de su lomo.",
+                "height": "1,4 m",
+                "weight": "35,6 kg"
+            },
+            "ja": {
+                "name": "レディアン",
+                "category": "いつつぼしポケモン",
+                "entry": "ほしあかりを\\x{3000}エネルギーにする。\nよぞらの\\x{3000}ほしの\\x{3000}かずが\\x{3000}ふえると\nせなかの\\x{3000}もようが\\x{3000}おおきくなる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff15}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 35,

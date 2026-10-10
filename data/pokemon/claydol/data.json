@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Claydol",
-    "category": "Clay Doll Pokémon",
-    "pokedex_entry": "This mysterious Pokémon started life\nas an ancient clay figurine made over\n20,000 years ago.",
+    "pokedex": {
+        "category": "Clay Doll Pokémon",
+        "entry": "This mysterious Pokémon started life\nas an ancient clay figurine made over\n20,000 years ago.",
+        "height": "4'11\"",
+        "weight": "238.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Claydol",
+                "category": "Clay Doll Pokémon",
+                "entry": "An ancient clay figurine that came\nto life as a Pokémon from exposure\nto a mysterious ray of light.",
+                "height": "4'11\"",
+                "weight": "238.1 lbs."
+            },
+            "fr": {
+                "name": "Kaorine",
+                "category": "Pokémon Poupargile",
+                "entry": "Une ancienne figurine d'argile qui\ns'est animée suite à son exposition\nà un rayon de lumière étrange.",
+                "height": "1,5 m",
+                "weight": "108,0 kg"
+            },
+            "de": {
+                "name": "Lepumentas",
+                "category": "Lehmpuppe",
+                "entry": "Eine antike Lehmstatue, die durch ein\nmysteriöses Licht zum Leben erwacht ist.",
+                "height": "1,5 m",
+                "weight": "108,0 kg"
+            },
+            "it": {
+                "name": "Claydol",
+                "category": "Pokémon Argilla",
+                "entry": "Pokémon nato da un'antica statuetta\nd'argilla portata in vita da misteriose\nradiazioni.",
+                "height": "1,5 m",
+                "weight": "108,0 kg"
+            },
+            "ko": {
+                "name": "점토도리",
+                "category": "토우포켓몬",
+                "entry": "고대의 진흙인형이 괴이한\n광선을 쬐어 생명이 깃들면서\n포켓몬이 되었다.",
+                "height": "1.5 m",
+                "weight": "108.0 kg"
+            },
+            "es": {
+                "name": "Claydol",
+                "category": "Pokémon Muñ. Barro",
+                "entry": "Este Pokémon es una vieja figurilla\nde barro que cobró vida mediante la\nexposición a extraños rayos de luz.",
+                "height": "1,5 m",
+                "weight": "108,0 kg"
+            },
+            "ja": {
+                "name": "ネンドール",
+                "category": "どぐうポケモン",
+                "entry": "こだいの\\x{3000}どろにんぎょうが\nかいこうせんを\\x{3000}あびたことで\nいのちが\\x{3000}やどり\\x{3000}ポケモンとなった。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 70,

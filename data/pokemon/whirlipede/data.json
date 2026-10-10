@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Whirlipede",
-    "category": "Curlipede Pokémon",
-    "pokedex_entry": "Storing energy for evolution, it sits.\nBut, when predators approach, it\nmoves to stab them with poison spikes.",
+    "pokedex": {
+        "category": "Curlipede Pokémon",
+        "entry": "Storing energy for evolution, it sits.\nBut, when predators approach, it\nmoves to stab them with poison spikes.",
+        "height": "3'11\"",
+        "weight": "129.0 lbs.",
+        "languages": {
+            "ja": {
+                "category": "まゆムカデポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 55,

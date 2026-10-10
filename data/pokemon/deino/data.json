@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Deino",
-    "category": "Irate Pokémon",
-    "pokedex_entry": "Lacking sight, it's unaware of its\nsurroundings, so it bumps into things\nand eats anything that moves.",
+    "pokedex": {
+        "category": "Irate Pokémon",
+        "entry": "Lacking sight, it's unaware of its\nsurroundings, so it bumps into things\nand eats anything that moves.",
+        "height": "2'07\"",
+        "weight": "38.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "そぼうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 52,
         "attack": 65,

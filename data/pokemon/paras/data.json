@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Paras",
-    "category": "Mushroom Pokémon",
-    "pokedex_entry": "Mushrooms named tochukaso grow\non its back. They grow along\nwith the host Paras.",
+    "pokedex": {
+        "category": "Mushroom Pokémon",
+        "entry": "Mushrooms named tochukaso grow\non its back. They grow along\nwith the host Paras.",
+        "height": "1'00\"",
+        "weight": "11.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Paras",
+                "category": "Mushroom Pokémon",
+                "entry": "Mushrooms named tochukaso grow\non its back. They grow along\nwith the host Paras.",
+                "height": "1'00\"",
+                "weight": "11.9 lbs."
+            },
+            "fr": {
+                "name": "Paras",
+                "category": "Pokémon Champignon",
+                "entry": "Des champignons appelés “tochukaso\"\npoussent sur son dos. Ils évoluent\navec le Paras hôte.",
+                "height": "0,3 m",
+                "weight": "5,4 kg"
+            },
+            "de": {
+                "name": "Paras",
+                "category": "Pilz",
+                "entry": "Auf seinem Rücken wachsen Pilze,\ndie Tochukaso. Sie nehmen an Größe zu,\nwenn Paras wächst.",
+                "height": "0,3 m",
+                "weight": "5,4 kg"
+            },
+            "it": {
+                "name": "Paras",
+                "category": "Pokémon Fungo",
+                "entry": "Ha sul dorso dei funghi chiamati\ntochukaso, che crescono insieme\nal Paras su cui si trovano.",
+                "height": "0,3 m",
+                "weight": "5,4 kg"
+            },
+            "ko": {
+                "name": "파라스",
+                "category": "버섯포켓몬",
+                "entry": "동충하초라고 불리는\n버섯을 등에 기르고 있다.\n파라스와 함께 크게 자란다.",
+                "height": "0.3 m",
+                "weight": "5.4 kg"
+            },
+            "es": {
+                "name": "Paras",
+                "category": "Pokémon Hongo",
+                "entry": "En el lomo de Paras crecen unas setas\nparasitarias llamadas “tochukaso\".",
+                "height": "0,3 m",
+                "weight": "5,4 kg"
+            },
+            "ja": {
+                "name": "パラス",
+                "category": "きのこポケモン",
+                "entry": "とうちゅうかそうと\\x{3000}よばれる\nキノコを\\x{3000}せなかに\\x{3000}はやしている。\nパラスと\\x{3000}ともに\\x{3000}おおきく\\x{3000}そだつ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff14}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 70,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gliscor",
-    "category": "Fang Scorp Pokémon",
-    "pokedex_entry": "It dances silently through the sky.\nWhen it approaches prey, it can\nland a critical hit in an instant.",
+    "pokedex": {
+        "category": "Fang Scorp Pokémon",
+        "entry": "It dances silently through the sky.\nWhen it approaches prey, it can\nland a critical hit in an instant.",
+        "height": "6'07\"",
+        "weight": "93.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gliscor",
+                "category": "Fang Scorp Pokémon",
+                "entry": "If it succeeds in catching even a\nfaint breeze properly, it can circle\nthe globe without flapping once.",
+                "height": "6'07\"",
+                "weight": "93.7 lbs."
+            },
+            "fr": {
+                "name": "Scorvol",
+                "category": "Pokémon Scorpicroc",
+                "entry": "Le plus petit courant d'air peut lui\ndonner assez d'élan pour faire le\ntour du monde sans un coup d'aile.",
+                "height": "2,0 m",
+                "weight": "42,5 kg"
+            },
+            "de": {
+                "name": "Skorgro",
+                "category": "Zahnskorpi",
+                "entry": "Erwischt es auch nur ein Lüftchen\nauf die richtige Weise, kann es ohne\nFlügelschlag den Erdball umkreisen.",
+                "height": "2,0 m",
+                "weight": "42,5 kg"
+            },
+            "it": {
+                "name": "Gliscor",
+                "category": "Pokémon Scorpidente",
+                "entry": "Se incontra una corrente d'aria, anche\ndebole, riesce a sorvolare il globo senza\nmai sbattere le ali.",
+                "height": "2,0 m",
+                "weight": "42,5 kg"
+            },
+            "ko": {
+                "name": "글라이온",
+                "category": "송곳니전갈포켓몬",
+                "entry": "적절히 바람의 흐름을 잘 타면\n한 번도 날개 치는 일 없이\n이 별을 일주할 수 있다.",
+                "height": "2.0 m",
+                "weight": "42.5 kg"
+            },
+            "es": {
+                "name": "Gliscor",
+                "category": "Pokémon Colmicorpio",
+                "entry": "Si da con una corriente de aire\nbuena, por mínima que sea, puede\ndar la vuelta al globo sin aletear.",
+                "height": "2,0 m",
+                "weight": "42,5 kg"
+            },
+            "ja": {
+                "name": "グライオン",
+                "category": "キバさそりポケモン",
+                "entry": "わずかな\\x{3000}かぜのながれに\\x{3000}うまく\nのると\\x{3000}いちども\\x{3000}はばたくことなく\nこのほしを\\x{3000}いっしゅう\\x{3000}できる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 95,

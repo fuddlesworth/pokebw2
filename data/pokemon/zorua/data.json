@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Zorua",
-    "category": "Tricky Fox Pokémon",
-    "pokedex_entry": "It changes so it looks just\nlike its foe, tricks it, and then\nuses that opportunity to flee.",
+    "pokedex": {
+        "category": "Tricky Fox Pokémon",
+        "entry": "It changes so it looks just\nlike its foe, tricks it, and then\nuses that opportunity to flee.",
+        "height": "2'04\"",
+        "weight": "27.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "わるぎつねポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 65,

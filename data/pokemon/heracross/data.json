@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Heracross",
-    "category": "Single Horn Pokémon",
-    "pokedex_entry": "No matter how heavy its opponents,\nit flings them far away\nwith its prized horn.",
+    "pokedex": {
+        "category": "Single Horn Pokémon",
+        "entry": "No matter how heavy its opponents,\nit flings them far away\nwith its prized horn.",
+        "height": "4'11\"",
+        "weight": "119.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Heracross",
+                "category": "Single Horn Pokémon",
+                "entry": "It loves sweet honey. To keep all\nthe honey to itself, it hurls rivals\naway with its prized horn.",
+                "height": "4'11\"",
+                "weight": "119.0 lbs."
+            },
+            "fr": {
+                "name": "Scarhino",
+                "category": "Pokémon Unicorne",
+                "entry": "Il défend vaillamment sa réserve de\nmiel personnelle à grand renfort\nde coups de corne.",
+                "height": "1,5 m",
+                "weight": "54,0 kg"
+            },
+            "de": {
+                "name": "Skaraborn",
+                "category": "Einzelhorn",
+                "entry": "Es liebt süßen Honig. Um den ganzen\nHonig für sich zu haben, schleudert\nes Rivalen mit seinem Horn davon.",
+                "height": "1,5 m",
+                "weight": "54,0 kg"
+            },
+            "it": {
+                "name": "Heracross",
+                "category": "Pokémon Monocorno",
+                "entry": "È ghiotto di miele e per non farselo\nrubare usa il suo possente corno\nper scagliare lontano i nemici.",
+                "height": "1,5 m",
+                "weight": "54,0 kg"
+            },
+            "ko": {
+                "name": "헤라크로스",
+                "category": "외뿔포켓몬",
+                "entry": "달콤한꿀을 아주 좋아해서\n혼자 독차지하기 위하여 자랑스런 뿔을\n써서 상대를 내동댕이친다.",
+                "height": "1.5 m",
+                "weight": "54.0 kg"
+            },
+            "es": {
+                "name": "Heracross",
+                "category": "Pokémon Unicornio",
+                "entry": "Le encanta la miel y usa su cuerno\npara voltear a cualquiera que se\nacerque a ella.",
+                "height": "1,5 m",
+                "weight": "54,0 kg"
+            },
+            "ja": {
+                "name": "ヘラクロス",
+                "category": "\\x{ff11}ぽんヅノポケモン",
+                "entry": "あまいミツが\\x{3000}だいすきで\nひとりじめ\\x{3000}するため\\x{3000}じまんのツノを\nつかって\\x{3000}あいてを\\x{3000}ぶんなげる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 125,

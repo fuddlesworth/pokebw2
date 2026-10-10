@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Primeape",
-    "category": "Pig Monkey Pokémon",
-    "pokedex_entry": "It grows angry if you see its eyes\nand gets angrier if you run. If you\nbeat it, it gets even madder.",
+    "pokedex": {
+        "category": "Pig Monkey Pokémon",
+        "entry": "It grows angry if you see its eyes\nand gets angrier if you run. If you\nbeat it, it gets even madder.",
+        "height": "3'03\"",
+        "weight": "70.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Primeape",
+                "category": "Pig Monkey Pokémon",
+                "entry": "It grows angry if you see its eyes\nand gets angrier if you run. If you\nbeat it, it gets even madder.",
+                "height": "3'03\"",
+                "weight": "70.5 lbs."
+            },
+            "fr": {
+                "name": "Colossinge",
+                "category": "Pokémon Porsinge",
+                "entry": "Il grogne quand on le toise, rugit\nquand on s'enfuit et devient fou\nde rage quand on le frappe.",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "de": {
+                "name": "Rasaff",
+                "category": "Schw./ Affe",
+                "entry": "Siehst du ihm in die Augen, wird es\nwütend. Rennst du weg, wird es\nnoch wütender. Ärgerst du es...",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "it": {
+                "name": "Primeape",
+                "category": "Pokémon Suinpanzé",
+                "entry": "Se lo guardi fisso negli occhi, si adira.\nSe corri, s'infuria. Se poi lo sconfiggi,\ns'arrabbia ancor di più.",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "ko": {
+                "name": "성원숭",
+                "category": "돈숭이포켓몬",
+                "entry": "시선을 마주치기만 해도 화내고\n도망치면 또 화내고\n때려눕혀도 계속 화를 낸다.",
+                "height": "1.0 m",
+                "weight": "32.0 kg"
+            },
+            "es": {
+                "name": "Primeape",
+                "category": "Pokémon Mono Cerdo",
+                "entry": "Se molesta si le miras a los ojos.\nSe enfada si corres.\nSe enfurece si le golpeas.",
+                "height": "1,0 m",
+                "weight": "32,0 kg"
+            },
+            "ja": {
+                "name": "オコリザル",
+                "category": "ぶたざるポケモン",
+                "entry": "しせんが\\x{3000}あっただけで\\x{3000}おこり\nにげだしたら\\x{3000}また\\x{3000}おこり\nたたきのめしても\\x{3000}まだ\\x{3000}おこる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 105,

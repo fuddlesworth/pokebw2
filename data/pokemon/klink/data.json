@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Klink",
-    "category": "Gear Pokémon",
-    "pokedex_entry": "Two bodies comprise a fixed pair.\nThey spin around each other\nto generate energy.",
+    "pokedex": {
+        "category": "Gear Pokémon",
+        "entry": "Two bodies comprise a fixed pair.\nThey spin around each other\nto generate energy.",
+        "height": "1'00\"",
+        "weight": "46.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "はぐるまポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 55,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Blissey",
-    "category": "Happiness Pokémon",
-    "pokedex_entry": "The eggs it lays are filled with\nhappiness. Eating even one bite\nwill bring a smile to anyone.",
+    "pokedex": {
+        "category": "Happiness Pokémon",
+        "entry": "The eggs it lays are filled with\nhappiness. Eating even one bite\nwill bring a smile to anyone.",
+        "height": "4'11\"",
+        "weight": "103.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Blissey",
+                "category": "Happiness Pokémon",
+                "entry": "The eggs it lays are filled with\nhappiness. Eating even one bite\nwill bring a smile to anyone.",
+                "height": "4'11\"",
+                "weight": "103.2 lbs."
+            },
+            "fr": {
+                "name": "Leuphorie",
+                "category": "Pokémon Bonheur",
+                "entry": "Les œufs que pond Leuphorie sont\nun concentré de bonheur dont une\nbouchée suffit à apporter la joie.",
+                "height": "1,5 m",
+                "weight": "46,8 kg"
+            },
+            "de": {
+                "name": "Heiteira",
+                "category": "Freude",
+                "entry": "Eier, die es legt, stecken voller\nFröhlichkeit. Schon ein Bissen\nerzeugt ein breites Lächeln.",
+                "height": "1,5 m",
+                "weight": "46,8 kg"
+            },
+            "it": {
+                "name": "Blissey",
+                "category": "Pokémon Felicità",
+                "entry": "Le uova che depone sono piene di\nfelicità. Un assaggio rende chiunque\nallegro.",
+                "height": "1,5 m",
+                "weight": "46,8 kg"
+            },
+            "ko": {
+                "name": "해피너스",
+                "category": "행복포켓몬",
+                "entry": "해피너스가 낳은 알에는\n행복이 담겨 있어서 한입 먹으면\n누구든지 웃음 띤 얼굴이 된다.",
+                "height": "1.5 m",
+                "weight": "46.8 kg"
+            },
+            "es": {
+                "name": "Blissey",
+                "category": "Pokémon Felicidad",
+                "entry": "Los huevos que pone están llenos\nde felicidad. Solo con probar un\npoquito de uno, cualquiera sonríe.",
+                "height": "1,5 m",
+                "weight": "46,8 kg"
+            },
+            "ja": {
+                "name": "ハピナス",
+                "category": "しあわせポケモン",
+                "entry": "ハピナスの\\x{3000}うむ\\x{3000}タマゴには\nしあわせが\\x{3000}つまっていて\\x{3000}ひとくち\nたべると\\x{3000}だれでも\\x{3000}えがおになれる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff16}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 255,
         "attack": 10,

@@ -1,9 +1,70 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gastrodon",
-    "category": "Sea Slug Pokémon",
-    "pokedex_entry": "Long ago, its entire back was\nshielded with a sturdy shell. There\nare traces of it left in its cells.",
-    "form_pokedex_entries": [ "Long ago, its entire back was\nshielded with a sturdy shell. There\nare traces of it left in its cells." ],
+    "pokedex": {
+        "category": "Sea Slug Pokémon",
+        "entry": "Long ago, its entire back was\nshielded with a sturdy shell. There\nare traces of it left in its cells.",
+        "height": "2'11\"",
+        "weight": "65.9 lbs.",
+        "forms": [
+            {
+                "entry": "Long ago, its entire back was\nshielded with a sturdy shell. There\nare traces of it left in its cells.",
+                "height": "2'11\"",
+                "weight": "65.9 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Gastrodon",
+                "category": "Sea Slug Pokémon",
+                "entry": "Long ago, its entire back was\nshielded with a sturdy shell. There\nare traces of it left in its cells.",
+                "height": "2'11\"",
+                "weight": "65.9 lbs."
+            },
+            "fr": {
+                "name": "Tritosor",
+                "category": "Pokémon Aqualimace",
+                "entry": "Ses gènes ont démontré qu'il avait\njadis une carapace couvrant la\ntotalité de son dos.",
+                "height": "0,9 m",
+                "weight": "29,9 kg"
+            },
+            "de": {
+                "name": "Gastrodon",
+                "category": "Seeschnecke",
+                "entry": "Vor langer Zeit hatte es einen\nfesten Panzer. Mittlerweile sind\nnur noch Spuren davon vorhanden.",
+                "height": "0,9 m",
+                "weight": "29,9 kg"
+            },
+            "it": {
+                "name": "Gastrodon",
+                "category": "Pokémon Lumacomare",
+                "entry": "In passato portava sulla schiena\nun robusto carapace. Ne rimangono\ntracce nelle sue cellule.",
+                "height": "0,9 m",
+                "weight": "29,9 kg"
+            },
+            "ko": {
+                "name": "트리토돈",
+                "category": "갯민숭달팽이포켓몬",
+                "entry": "옛날에는 튼튼한 껍질로\n등 전체를 두르고 있었다.\n세포에 그 흔적이 있다.",
+                "height": "0.9 m",
+                "weight": "29.9 kg"
+            },
+            "es": {
+                "name": "Gastrodon",
+                "category": "Pokémon Babosa Mar.",
+                "entry": "Hace mucho tiempo tenía todo el\nlomo cubierto con una concha. Aún\nhay trazas de ella en sus células.",
+                "height": "0,9 m",
+                "weight": "29,9 kg"
+            },
+            "ja": {
+                "name": "トリトドン",
+                "category": "ウミウシポケモン",
+                "entry": "むかしは\\x{3000}じょうぶな\\x{3000}カラで\nせなか\\x{3000}ぜんたいを\\x{3000}おおっていた。\nさいぼうに\\x{3000}その\\x{3000}なごりが\\x{3000}ある。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff19}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 111,
         "attack": 83,

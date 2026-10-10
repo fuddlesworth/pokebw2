@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Charizard",
-    "category": "Flame Pokémon",
-    "pokedex_entry": "It is said that Charizard's fire\nburns hotter if it has\nexperienced harsh battles.",
+    "pokedex": {
+        "category": "Flame Pokémon",
+        "entry": "It is said that Charizard's fire\nburns hotter if it has\nexperienced harsh battles.",
+        "height": "5'07\"",
+        "weight": "199.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Charizard",
+                "category": "Flame Pokémon",
+                "entry": "It is said that Charizard's fire\nburns hotter if it has\nexperienced harsh battles.",
+                "height": "5'07\"",
+                "weight": "199.5 lbs."
+            },
+            "fr": {
+                "name": "Dracaufeu",
+                "category": "Pokémon Flamme",
+                "entry": "On raconte que la flamme du\nDracaufeu s'intensifie après\nun combat difficile.",
+                "height": "1,7 m",
+                "weight": "90,5 kg"
+            },
+            "de": {
+                "name": "Glurak",
+                "category": "Flamme",
+                "entry": "Man sagt, Gluraks Feuer lodert stärker,\nwenn es harte Kämpfe überstanden hat.",
+                "height": "1,7 m",
+                "weight": "90,5 kg"
+            },
+            "it": {
+                "name": "Charizard",
+                "category": "Pokémon Fiamma",
+                "entry": "Pare che la temperatura della fiamma\ndi Charizard aumenti dopo che ha\naffrontato dure lotte.",
+                "height": "1,7 m",
+                "weight": "90,5 kg"
+            },
+            "ko": {
+                "name": "리자몽",
+                "category": "화염포켓몬",
+                "entry": "힘든 싸움을 경험한\n리자몽일수록 불꽃 온도가\n높아진다고 전해진다.",
+                "height": "1.7 m",
+                "weight": "90.5 kg"
+            },
+            "es": {
+                "name": "Charizard",
+                "category": "Pokémon Llama",
+                "entry": "Se dice que el fuego de Charizard\narde con más fuerza si ha vivido\nduras batallas.",
+                "height": "1,7 m",
+                "weight": "90,5 kg"
+            },
+            "ja": {
+                "name": "リザードン",
+                "category": "かえんポケモン",
+                "entry": "くるしい\\x{3000}たたかいを\\x{3000}けいけんした\nリザードンほど\\x{3000}ほのおの\\x{3000}おんどが\nたかくなると\\x{3000}いわれている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 78,
         "attack": 84,

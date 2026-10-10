@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lampent",
-    "category": "Lamp Pokémon",
-    "pokedex_entry": "The spirits it absorbs fuel its baleful\nfire. It hangs around hospitals waiting\nfor people to pass on.",
+    "pokedex": {
+        "category": "Lamp Pokémon",
+        "entry": "The spirits it absorbs fuel its baleful\nfire. It hangs around hospitals waiting\nfor people to pass on.",
+        "height": "2'00\"",
+        "weight": "28.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ランプポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 40,

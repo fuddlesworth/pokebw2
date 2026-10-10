@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Feraligatr",
-    "category": "Big Jaw Pokémon",
-    "pokedex_entry": "It usually moves slowly, but it\ngoes at blinding speed when it\nattacks and bites prey.",
+    "pokedex": {
+        "category": "Big Jaw Pokémon",
+        "entry": "It usually moves slowly, but it\ngoes at blinding speed when it\nattacks and bites prey.",
+        "height": "7'07\"",
+        "weight": "195.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Feraligatr",
+                "category": "Big Jaw Pokémon",
+                "entry": "It usually moves slowly, but it\ngoes at blinding speed when it\nattacks and bites prey.",
+                "height": "7'07\"",
+                "weight": "195.8 lbs."
+            },
+            "fr": {
+                "name": "Aligatueur",
+                "category": "Pokémon Mâchoire",
+                "entry": "Ce Pokémon à l'air pataud est\ncapable d'attaquer à la vitesse\nde l'éclair pour mordre sa proie.",
+                "height": "2,3 m",
+                "weight": "88,8 kg"
+            },
+            "de": {
+                "name": "Impergator",
+                "category": "Großmaul",
+                "entry": "Eigentlich bewegt es sich\nlangsam, doch seine Beute\ngreift es blitzschnell an.",
+                "height": "2,3 m",
+                "weight": "88,8 kg"
+            },
+            "it": {
+                "name": "Feraligatr",
+                "category": "Pokémon Mascellone",
+                "entry": "Di solito si muove lentamente, ma quando\nattacca e morde la preda si muove ad una\nvelocità incredibile.",
+                "height": "2,3 m",
+                "weight": "88,8 kg"
+            },
+            "ko": {
+                "name": "장크로다일",
+                "category": "큰턱포켓몬",
+                "entry": "평소에는 느긋하게 움직이지만\n먹이를 물 때에는 눈에 보이지\n않는 엄청난 스피드를 낸다.",
+                "height": "2.3 m",
+                "weight": "88.8 kg"
+            },
+            "es": {
+                "name": "Feraligatr",
+                "category": "Pokémon Fauces",
+                "entry": "Se suele mover lento, pero alcanza\nvelocidades de vértigo al atacar y\nmorder a sus enemigos.",
+                "height": "2,3 m",
+                "weight": "88,8 kg"
+            },
+            "ja": {
+                "name": "オーダイル",
+                "category": "おおあごポケモン",
+                "entry": "ふだんは\\x{3000}ゆっくりとした\\x{3000}うごきだが\nえものに\\x{3000}かみつくときは\nめにも\\x{3000}とまらない\\x{3000}スピードだ。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff18}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 105,

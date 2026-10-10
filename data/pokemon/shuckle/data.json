@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shuckle",
-    "category": "Mold Pokémon",
-    "pokedex_entry": "The berries stored in its\nvaselike shell eventually\nbecome a thick, pulpy juice.",
+    "pokedex": {
+        "category": "Mold Pokémon",
+        "entry": "The berries stored in its\nvaselike shell eventually\nbecome a thick, pulpy juice.",
+        "height": "2'00\"",
+        "weight": "45.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shuckle",
+                "category": "Mold Pokémon",
+                "entry": "It stores berries in its shell.\nThe berries eventually ferment to\nbecome delicious juices.",
+                "height": "2'00\"",
+                "weight": "45.2 lbs."
+            },
+            "fr": {
+                "name": "Caratroc",
+                "category": "Pokémon Pourri",
+                "entry": "Il stocke des Baies sous sa\ncarapace. Elles fermentent et\nproduisent des jus délicieux.",
+                "height": "0,6 m",
+                "weight": "20,5 kg"
+            },
+            "de": {
+                "name": "Pottrott",
+                "category": "Schimmel",
+                "entry": "In seiner Schale bewahrt es\nBeeren auf. Diese fermentieren\nzu einem leckeren Saft.",
+                "height": "0,6 m",
+                "weight": "20,5 kg"
+            },
+            "it": {
+                "name": "Shuckle",
+                "category": "Pokémon Muffa",
+                "entry": "Conserva nel guscio delle bacche che,\nquando fermentano, si trasformano\nin un succo delizioso.",
+                "height": "0,6 m",
+                "weight": "20,5 kg"
+            },
+            "ko": {
+                "name": "단단지",
+                "category": "발효포켓몬",
+                "entry": "등껍질 속에 나무열매를 모은다.\n그 사이 열매는 발효해서\n맛있는 주스가 된다.",
+                "height": "0.6 m",
+                "weight": "20.5 kg"
+            },
+            "es": {
+                "name": "Shuckle",
+                "category": "Pokémon Moho",
+                "entry": "Almacena bayas en su caparazón,\nque más tarde fermentan para\nproducir deliciosos zumos.",
+                "height": "0,6 m",
+                "weight": "20,5 kg"
+            },
+            "ja": {
+                "name": "ツボツボ",
+                "category": "はっこうポケモン",
+                "entry": "こうらの\\x{3000}なかに\\x{3000}きのみを\\x{3000}ためる。\nそのうち\\x{3000}きのみは\\x{3000}はっこうして\nおいしい\\x{3000}ジュースに\\x{3000}なるのだ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 20,
         "attack": 10,

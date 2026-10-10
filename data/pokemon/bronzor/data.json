@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bronzor",
-    "category": "Bronze Pokémon",
-    "pokedex_entry": "They are found in ancient tombs.\nThe patterns on their backs are\nsaid to be imbued with mysterious power.",
+    "pokedex": {
+        "category": "Bronze Pokémon",
+        "entry": "They are found in ancient tombs.\nThe patterns on their backs are\nsaid to be imbued with mysterious power.",
+        "height": "1'08\"",
+        "weight": "133.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Bronzor",
+                "category": "Bronze Pokémon",
+                "entry": "There are researchers who believe\nthis Pokémon reflected like a mirror\nin the distant past.",
+                "height": "1'08\"",
+                "weight": "133.4 lbs."
+            },
+            "fr": {
+                "name": "Archéomire",
+                "category": "Pokémon Bronze",
+                "entry": "Certains scientifiques soutiennent\nque ce Pokémon était jadis aussi\nréfléchissant qu'un miroir.",
+                "height": "0,5 m",
+                "weight": "60,5 kg"
+            },
+            "de": {
+                "name": "Bronzel",
+                "category": "Bronze",
+                "entry": "Manche Forscher glauben, dass\ndieses Pokémon in der Vergangenheit\nwie ein Spiegel reflektierte.",
+                "height": "0,5 m",
+                "weight": "60,5 kg"
+            },
+            "it": {
+                "name": "Bronzor",
+                "category": "Pokémon Bronzo",
+                "entry": "Secondo alcuni ricercatori, in passato\nquesto Pokémon rifletteva come\nuno specchio.",
+                "height": "0,5 m",
+                "weight": "60,5 kg"
+            },
+            "ko": {
+                "name": "동미러",
+                "category": "청동포켓몬",
+                "entry": "오랜 옛날의 동미러는\n거울처럼 반사하고 있었다고\n생각하는 연구자도 있다.",
+                "height": "0.5 m",
+                "weight": "60.5 kg"
+            },
+            "es": {
+                "name": "Bronzor",
+                "category": "Pokémon Bronce",
+                "entry": "Algunos investigadores creen\nque, antiguamente, este Pokémon\nreflejaba las cosas como un espejo.",
+                "height": "0,5 m",
+                "weight": "60,5 kg"
+            },
+            "ja": {
+                "name": "ドーミラー",
+                "category": "せいどうポケモン",
+                "entry": "おおむかしの\\x{3000}ドーミラーは\nかがみのように\\x{3000}はんしゃしていたと\nかんがえる\\x{3000}けんきゅうかも\\x{3000}いる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 57,
         "attack": 24,

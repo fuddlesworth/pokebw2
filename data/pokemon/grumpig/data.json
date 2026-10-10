@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Grumpig",
-    "category": "Manipulate Pokémon",
-    "pokedex_entry": "It uses black pearls to amplify its\npsychic power. It does a strange\ndance to control foes' minds.",
+    "pokedex": {
+        "category": "Manipulate Pokémon",
+        "entry": "It uses black pearls to amplify its\npsychic power. It does a strange\ndance to control foes' minds.",
+        "height": "2'11\"",
+        "weight": "157.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Grumpig",
+                "category": "Manipulate Pokémon",
+                "entry": "It uses black pearls to amplify its\npsycho-power. It does an odd\ndance to gain control over foes.",
+                "height": "2'11\"",
+                "weight": "157.6 lbs."
+            },
+            "fr": {
+                "name": "Groret",
+                "category": "Pokémon Magouilleur",
+                "entry": "Les perles noires amplifient ses\npouvoirs psy. Sa danse étrange lui\npermet de contrôler ses ennemis.",
+                "height": "0,9 m",
+                "weight": "71,5 kg"
+            },
+            "de": {
+                "name": "Groink",
+                "category": "Manipulator",
+                "entry": "Mit schwarzen Perlen verstärkt es\nseine Psycho-Kräfte. Mit einem\nTanz kontrolliert es seine Gegner.",
+                "height": "0,9 m",
+                "weight": "71,5 kg"
+            },
+            "it": {
+                "name": "Grumpig",
+                "category": "Pokémon Raggiro",
+                "entry": "Usa perle nere per amplificare i suoi\npoteri psichici. Con una danza acquisisce\ncontrollo sul nemico.",
+                "height": "0,9 m",
+                "weight": "71,5 kg"
+            },
+            "ko": {
+                "name": "피그킹",
+                "category": "조작포켓몬",
+                "entry": "흑진주로 사이코 파워를\n증폭시킨다. 이상한 스텝으로\n상대의 마음을 조종한다.",
+                "height": "0.9 m",
+                "weight": "71.5 kg"
+            },
+            "es": {
+                "name": "Grumpig",
+                "category": "Pokémon Manipulador",
+                "entry": "Usa perlas negras para potenciar\nsus poderes psíquicos. Con su\nraro baile controla a los rivales.",
+                "height": "0,9 m",
+                "weight": "71,5 kg"
+            },
+            "ja": {
+                "name": "ブーピッグ",
+                "category": "あやつりポケモン",
+                "entry": "くろしんじゅで\\x{3000}サイコパワーを\nぞうふくさせる。ふしぎな\\x{3000}ステップで\nあいての\\x{3000}こころを\\x{3000}あやつる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 45,

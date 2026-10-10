@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Zoroark",
-    "category": "Illusion Fox Pokémon",
-    "pokedex_entry": "Stories say those who tried\nto catch Zoroark were trapped\nin an illusion and punished.",
+    "pokedex": {
+        "category": "Illusion Fox Pokémon",
+        "entry": "Stories say those who tried\nto catch Zoroark were trapped\nin an illusion and punished.",
+        "height": "5'03\"",
+        "weight": "178.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ばけぎつねポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 105,

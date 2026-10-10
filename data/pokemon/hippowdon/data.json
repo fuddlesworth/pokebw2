@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hippowdon",
-    "category": "Heavyweight Pokémon",
-    "pokedex_entry": "It is surprisingly quick to anger.\nIt holds its mouth agape as a\ndisplay of its strength.",
+    "pokedex": {
+        "category": "Heavyweight Pokémon",
+        "entry": "It is surprisingly quick to anger.\nIt holds its mouth agape as a\ndisplay of its strength.",
+        "height": "6'07\"",
+        "weight": "661.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hippowdon",
+                "category": "Heavyweight Pokémon",
+                "entry": "It is surprisingly quick to anger.\nIt holds its mouth agape as a\ndisplay of its strength.",
+                "height": "6'07\"",
+                "weight": "661.4 lbs."
+            },
+            "fr": {
+                "name": "Hippodocus",
+                "category": "Pokémon Poids Lourd",
+                "entry": "Facilement irritable, il ouvre ses\nmâchoires au maximum pour intimider\nses adversaires.",
+                "height": "2,0 m",
+                "weight": "300,0 kg"
+            },
+            "de": {
+                "name": "Hippoterus",
+                "category": "Schwergewicht",
+                "entry": "Es wird überraschend schnell wütend.\nAls Zeichen seiner Stärke sperrt es\nsein Maul auf.",
+                "height": "2,0 m",
+                "weight": "300,0 kg"
+            },
+            "it": {
+                "name": "Hippowdon",
+                "category": "Pokémon Grandepeso",
+                "entry": "Si infuria molto facilmente. Per mostrare\nla sua forza tiene la bocca spalancata.",
+                "height": "2,0 m",
+                "weight": "300,0 kg"
+            },
+            "ko": {
+                "name": "하마돈",
+                "category": "중량포켓몬",
+                "entry": "의외로 화를 잘 내는 포켓몬으로\n입을 크게 벌리는 것으로\n주변에 자신의 강함을 어필한다.",
+                "height": "2.0 m",
+                "weight": "300.0 kg"
+            },
+            "es": {
+                "name": "Hippowdon",
+                "category": "Pokémon Peso Pesado",
+                "entry": "Mantiene la boca abierta para mostrar\nsu fuerza. Se enfada con sorprendente\nrapidez.",
+                "height": "2,0 m",
+                "weight": "300,0 kg"
+            },
+            "ja": {
+                "name": "カバルドン",
+                "category": "じゅうりょうポケモン",
+                "entry": "いがいと\\x{3000}おこりっぽい\\x{3000}ポケモンで\nくちを\\x{3000}おおきく\\x{3000}あけることで\nまわりに\\x{3000}つよさを\\x{3000}アピールする。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff10}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 108,
         "attack": 112,

@@ -1,12 +1,29 @@
 {
     "$schema": "../species.schema.json",
     "name": "Kyurem",
-    "category": "Boundary Pokémon",
-    "pokedex_entry": "This legendary ice Pokémon waits for\na hero to fill in the missing parts\nof its body with truth or ideals.",
-    "form_pokedex_entries": [
-        "This legendary ice Pokémon waits for\na hero to fill in the missing parts\nof its body with truth or ideals.",
-        "This legendary ice Pokémon waits for\na hero to fill in the missing parts\nof its body with truth or ideals."
-    ],
+    "pokedex": {
+        "category": "Boundary Pokémon",
+        "entry": "This legendary ice Pokémon waits for\na hero to fill in the missing parts\nof its body with truth or ideals.",
+        "height": "9'10\"",
+        "weight": "716.5 lbs.",
+        "forms": [
+            {
+                "entry": "This legendary ice Pokémon waits for\na hero to fill in the missing parts\nof its body with truth or ideals.",
+                "height": "11'10\"",
+                "weight": "716.5 lbs."
+            },
+            {
+                "entry": "This legendary ice Pokémon waits for\na hero to fill in the missing parts\nof its body with truth or ideals.",
+                "height": "10'10\"",
+                "weight": "716.5 lbs."
+            }
+        ],
+        "languages": {
+            "ja": {
+                "category": "きょうかいポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 125,
         "attack": 130,

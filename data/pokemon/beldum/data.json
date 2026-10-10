@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Beldum",
-    "category": "Iron Ball Pokémon",
-    "pokedex_entry": "Its cells are all magnetic,\nand it communicates with others\nby using magnetic pulses.",
+    "pokedex": {
+        "category": "Iron Ball Pokémon",
+        "entry": "Its cells are all magnetic,\nand it communicates with others\nby using magnetic pulses.",
+        "height": "2'00\"",
+        "weight": "209.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Beldum",
+                "category": "Iron Ball Pokémon",
+                "entry": "It converses with others by using\nmagnetic pulses. In a swarm, they\nmove in perfect unison.",
+                "height": "2'00\"",
+                "weight": "209.9 lbs."
+            },
+            "fr": {
+                "name": "Terhal",
+                "category": "Pokémon Boulefer",
+                "entry": "Il dialogue avec les siens par\nimpulsions magnétiques. En bande,\nils se déplacent à l'unisson.",
+                "height": "0,6 m",
+                "weight": "95,2 kg"
+            },
+            "de": {
+                "name": "Tanhel",
+                "category": "Eisenkugel",
+                "entry": "Es kommuniziert mit anderen durch\nmagnetische Impulse. Im Schwarm\nbilden sie eine perfekte Einheit.",
+                "height": "0,6 m",
+                "weight": "95,2 kg"
+            },
+            "it": {
+                "name": "Beldum",
+                "category": "Pokémon Ferrosfera",
+                "entry": "Comunica con i suoi simili mediante onde\nmagnetiche. I gruppi di Beldum si muovono\nin perfetta sintonia.",
+                "height": "0,6 m",
+                "weight": "95,2 kg"
+            },
+            "ko": {
+                "name": "메탕",
+                "category": "철공포켓몬",
+                "entry": "자력의 파장으로 동료와\n대화한다. 무리가 된 메탕은\n한치의 흐트러짐 없이 움직인다.",
+                "height": "0.6 m",
+                "weight": "95.2 kg"
+            },
+            "es": {
+                "name": "Beldum",
+                "category": "Pokémon Bola Hierro",
+                "entry": "Se comunican mediante pulsos\nmagnéticos. Cuando van en\ngrupos, se mueven al unísono.",
+                "height": "0,6 m",
+                "weight": "95,2 kg"
+            },
+            "ja": {
+                "name": "ダンバル",
+                "category": "てっきゅうポケモン",
+                "entry": "じりょくの\\x{3000}はちょうで\\x{3000}なかまと\nかいわする。むれになった\\x{3000}ダンバルは\nいっしみだれぬ\\x{3000}うごきを\\x{3000}する。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff15}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 55,

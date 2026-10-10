@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Simisage",
-    "category": "Thorn Monkey Pokémon",
-    "pokedex_entry": "It strikes its enemies with\na thorn-covered tail.\nThe leaf on its head is bitter.",
+    "pokedex": {
+        "category": "Thorn Monkey Pokémon",
+        "entry": "It strikes its enemies with\na thorn-covered tail.\nThe leaf on its head is bitter.",
+        "height": "3'07\"",
+        "weight": "67.2 lbs.",
+        "languages": {
+            "ja": {
+                "category": "とげざるポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 98,

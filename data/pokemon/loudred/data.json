@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Loudred",
-    "category": "Big Voice Pokémon",
-    "pokedex_entry": "The shock waves from its cries can\ntip over trucks. It stamps its\nfeet to power up.",
+    "pokedex": {
+        "category": "Big Voice Pokémon",
+        "entry": "The shock waves from its cries can\ntip over trucks. It stamps its\nfeet to power up.",
+        "height": "3'03\"",
+        "weight": "89.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Loudred",
+                "category": "Big Voice Pokémon",
+                "entry": "The shock waves from its cries can\ntip over trucks. It stamps its\nfeet to power up.",
+                "height": "3'03\"",
+                "weight": "89.3 lbs."
+            },
+            "fr": {
+                "name": "Ramboum",
+                "category": "Pokémon Grosse Voix",
+                "entry": "L'onde de choc provoquée par son\ncri peut renverser un camion. Il\ntrépigne pour augmenter sa force.",
+                "height": "1,0 m",
+                "weight": "40,5 kg"
+            },
+            "de": {
+                "name": "Krakeelo",
+                "category": "Lauthals",
+                "entry": "Die Schockwellen, die durch sein\nRufen entstehen, können einen\nLKW umkippen.",
+                "height": "1,0 m",
+                "weight": "40,5 kg"
+            },
+            "it": {
+                "name": "Loudred",
+                "category": "Pokémon Vocione",
+                "entry": "Le onde d'urto dei suoi versi ribaltano\nanche i camion. Pesta i piedi per\naccumulare energia.",
+                "height": "1,0 m",
+                "weight": "40,5 kg"
+            },
+            "ko": {
+                "name": "노공룡",
+                "category": "큰목소리포켓몬",
+                "entry": "큰 소리의 충격파로\n트럭을 뒤집어 버린다.\n발을 쿵쾅거리며 파워를 올린다.",
+                "height": "1.0 m",
+                "weight": "40.5 kg"
+            },
+            "es": {
+                "name": "Loudred",
+                "category": "Pokémon Chillón",
+                "entry": "Las ondas de sus gritos pueden\nvoltear un camión. Patea el suelo\npara ganar potencia.",
+                "height": "1,0 m",
+                "weight": "40,5 kg"
+            },
+            "ja": {
+                "name": "ドゴーム",
+                "category": "おおごえポケモン",
+                "entry": "おおごえの\\x{3000}しょうげきはで\nトラックを\\x{3000}ひっくりかえしてしまう。\nあしを\\x{3000}ふみならして\\x{3000}パワーアップ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 84,
         "attack": 71,

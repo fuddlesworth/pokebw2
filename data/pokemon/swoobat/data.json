@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Swoobat",
-    "category": "Courting Pokémon",
-    "pokedex_entry": "It shakes its tail vigorously when it\nemits ultrasonic waves strong enough\nto reduce concrete to rubble.",
+    "pokedex": {
+        "category": "Courting Pokémon",
+        "entry": "It shakes its tail vigorously when it\nemits ultrasonic waves strong enough\nto reduce concrete to rubble.",
+        "height": "2'11\"",
+        "weight": "23.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "きゅうあいポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 67,
         "attack": 57,

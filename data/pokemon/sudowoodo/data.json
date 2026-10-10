@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sudowoodo",
-    "category": "Imitation Pokémon",
-    "pokedex_entry": "To avoid being attacked, it does\nnothing but mimic a tree. It hates\nwater and flees from rain.",
+    "pokedex": {
+        "category": "Imitation Pokémon",
+        "entry": "To avoid being attacked, it does\nnothing but mimic a tree. It hates\nwater and flees from rain.",
+        "height": "3'11\"",
+        "weight": "83.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sudowoodo",
+                "category": "Imitation Pokémon",
+                "entry": "To avoid being attacked, it does\nnothing but mimic a tree. It hates\nwater and flees from rain.",
+                "height": "3'11\"",
+                "weight": "83.8 lbs."
+            },
+            "fr": {
+                "name": "Simularbre",
+                "category": "Pokémon Imitation",
+                "entry": "Il prend l'apparence d'un arbre\npour éviter les attaques, mais il\ndéteste l'eau et fuit la pluie.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "de": {
+                "name": "Mogelbaum",
+                "category": "Imitation",
+                "entry": "Um einen Angriff zu vermeiden, ahmt\nes einen Baum nach. Es hasst zudem\nWasser und flieht vor Regen.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "it": {
+                "name": "Sudowoodo",
+                "category": "Pokémon Imitazione",
+                "entry": "Evita gli attacchi nemici rimanendo\nimmobile e camuffandosi da albero.\nOdia l'acqua e rifugge la pioggia.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "ko": {
+                "name": "꼬지모",
+                "category": "흉내포켓몬",
+                "entry": "공격받지 않기 위해 필사적으로\n나무 흉내를 내며, 물을 싫어하여\n비가 올 때는 어딘가로 사라진다.",
+                "height": "1.2 m",
+                "weight": "38.0 kg"
+            },
+            "es": {
+                "name": "Sudowoodo",
+                "category": "Pokémon Imitación",
+                "entry": "Para evitar que le ataquen, se limita\na imitar un árbol. Odia el agua y\nhuye de la lluvia.",
+                "height": "1,2 m",
+                "weight": "38,0 kg"
+            },
+            "ja": {
+                "name": "ウソッキー",
+                "category": "まねポケモン",
+                "entry": "こうげき\\x{3000}されないように\\x{3000}ひたすら\nきのまねをしているが\\x{3000}みずはにがてで\nあめになると\\x{3000}どこかに\\x{3000}にげだす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 100,

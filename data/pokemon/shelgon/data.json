@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shelgon",
-    "category": "Endurance Pokémon",
-    "pokedex_entry": "Within its rugged shell, its cells\nhave begun changing. The shell\npeels off the instant it evolves.",
+    "pokedex": {
+        "category": "Endurance Pokémon",
+        "entry": "Within its rugged shell, its cells\nhave begun changing. The shell\npeels off the instant it evolves.",
+        "height": "3'07\"",
+        "weight": "243.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shelgon",
+                "category": "Endurance Pokémon",
+                "entry": "Within its rugged shell, its cells\nhave begun changing. The shell\npeels off the instant it evolves.",
+                "height": "3'07\"",
+                "weight": "243.6 lbs."
+            },
+            "fr": {
+                "name": "Drackhaus",
+                "category": "Pokémon Endurant",
+                "entry": "Ses cellules ont commencé à changer\ndans sa robuste coquille. Il la perd\nen évoluant.",
+                "height": "1,1 m",
+                "weight": "110,5 kg"
+            },
+            "de": {
+                "name": "Draschel",
+                "category": "Durchsteher",
+                "entry": "Die Zellen seines Panzers fingen an,\nsich zu verändern. Er fällt ab,\nsobald sich das Pokémon entwickelt.",
+                "height": "1,1 m",
+                "weight": "110,5 kg"
+            },
+            "it": {
+                "name": "Shelgon",
+                "category": "Pokémon Resistenza",
+                "entry": "Nella sua dura corazza le cellule hanno\ncominciato a cambiare.\nQuando si evolve, la corazza cade.",
+                "height": "1,1 m",
+                "weight": "110,5 kg"
+            },
+            "ko": {
+                "name": "쉘곤",
+                "category": "인내포켓몬",
+                "entry": "단단한 껍질 안은 세포가\n변화를 시작하고 있다. 진화하는\n순간에 껍질이 벗겨져 떨어진다.",
+                "height": "1.1 m",
+                "weight": "110.5 kg"
+            },
+            "es": {
+                "name": "Shelgon",
+                "category": "Pokémon Resistencia",
+                "entry": "Las células han empezado a cambiar\ndentro de su dura concha, que se\nsepara cuando evoluciona.",
+                "height": "1,1 m",
+                "weight": "110,5 kg"
+            },
+            "ja": {
+                "name": "コモルー",
+                "category": "にんたいポケモン",
+                "entry": "かたい\\x{3000}カラの\\x{3000}なかでは\\x{3000}さいぼうが\nへんかを\\x{3000}はじめている。しんかする\nしゅんかんに\\x{3000}カラが\\x{3000}はがれおちる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 95,

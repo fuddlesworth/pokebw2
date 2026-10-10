@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Nidoking",
-    "category": "Drill Pokémon",
-    "pokedex_entry": "One swing of its mighty tail can\nsnap a telephone pole as if it were\na matchstick.",
+    "pokedex": {
+        "category": "Drill Pokémon",
+        "entry": "One swing of its mighty tail can\nsnap a telephone pole as if it were\na matchstick.",
+        "height": "4'07\"",
+        "weight": "136.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Nidoking",
+                "category": "Drill Pokémon",
+                "entry": "One swing of its mighty tail can\nsnap a telephone pole as if it were\na matchstick.",
+                "height": "4'07\"",
+                "weight": "136.7 lbs."
+            },
+            "fr": {
+                "name": "Nidoking",
+                "category": "Pokémon Perceur",
+                "entry": "Un coup de sa puissante queue\npeut briser un poteau téléphonique\ncomme une allumette.",
+                "height": "1,4 m",
+                "weight": "62,0 kg"
+            },
+            "de": {
+                "name": "Nidoking",
+                "category": "Bohrer",
+                "entry": "Ein Schlag mit seinem gewaltigen\nSchweif kann einen Telegrafenmasten\nknicken wie ein Streichholz.",
+                "height": "1,4 m",
+                "weight": "62,0 kg"
+            },
+            "it": {
+                "name": "Nidoking",
+                "category": "Pokémon Trapano",
+                "entry": "Con un solo colpo della potente coda\npuò abbattere un palo del telefono\ncome se fosse un fiammifero.",
+                "height": "1,4 m",
+                "weight": "62,0 kg"
+            },
+            "ko": {
+                "name": "니드킹",
+                "category": "드릴포켓몬",
+                "entry": "꼬리의 일격은 전신주를\n마치 성냥개비 다루듯이\n두 동강으로 꺾어 버린다.",
+                "height": "1.4 m",
+                "weight": "62.0 kg"
+            },
+            "es": {
+                "name": "Nidoking",
+                "category": "Pokémon Taladro",
+                "entry": "Un golpe de su poderosa cola puede\npartir un poste de teléfono como si\nfuese una cerilla.",
+                "height": "1,4 m",
+                "weight": "62,0 kg"
+            },
+            "ja": {
+                "name": "ニドキング",
+                "category": "ドリルポケモン",
+                "entry": "しっぽの\\x{3000}いちげきは\\x{3000}でんちゅうを\nまるで\\x{3000}マッチぼうのように\nまっぷたつに\\x{3000}へしおってしまう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 81,
         "attack": 92,

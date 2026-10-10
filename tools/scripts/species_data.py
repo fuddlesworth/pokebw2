@@ -44,6 +44,18 @@ GROWTH_RATES = "growth_rates.csv"
 # Files of the system messages (a/0/0/2) with the species' names, names with an article, categories and Pokédex
 # entries, one line per species from SPECIES_NONE
 NAMES, NAMES_WITH_ARTICLE, CATEGORIES, POKEDEX_ENTRIES = 90, 483, 464, 442
+# The Pokédex's heights and weights as it shows them, a line per species, an empty one, then the alternate forms'
+HEIGHTS, WEIGHTS = 451, 471
+# The Pokédex text the game keeps in other languages, for the species up to Arceus (LANGUAGE_SPECIES), which a Pokémon
+# from a game in that language shows: each language's files of names, categories, entries, heights and weights. The
+# heights and weights end with LANGUAGE_FORMS' first alternate forms; the Japanese categories are of every species
+LANGUAGES = {
+    "en": (458, 465, 444, 452, 472), "fr": (459, 466, 445, 453, 473), "de": (460, 467, 446, 454, 474),
+    "it": (461, 468, 447, 455, 475), "ko": (462, 469, 448, 456, 476), "es": (463, 470, 449, 457, 477),
+    "ja": (492, 493, 490, 491, 494),
+}
+LANGUAGE_SPECIES = 494
+LANGUAGE_FORMS = ["SPECIES_GIRATINA", "SPECIES_SHAYMIN"]
 RECORD = struct.Struct("<6B2BBBH3H10BHHBBHHH4I5I")
 assert RECORD.size == 0x4C
 STATS = ["hp", "attack", "defense", "speed", "special_attack", "special_defense"]
@@ -184,10 +196,12 @@ def dump(files: Path, output: Path):
         return data
 
     text = files / "a/0/0/2"
-    names, with_article, categories, entries = (message_lines(text, n) for n in
-                                                (NAMES, NAMES_WITH_ARTICLE, CATEGORIES, POKEDEX_ENTRIES))
-    # After the species' Pokédex entries, an empty one and then the alternate forms', in species order
-    form_entries = iter(entries[len(species) + 1:])
+    names, with_article, categories, entries, heights, weights = (
+        message_lines(text, n) for n in (NAMES, NAMES_WITH_ARTICLE, CATEGORIES, POKEDEX_ENTRIES, HEIGHTS, WEIGHTS))
+    # After the species' entries, heights and weights, an empty one and then the alternate forms', in species order
+    form_lines = len(species) + 1
+    languages = {language: [message_lines(text, n) for n in files_] for language, files_ in LANGUAGES.items()}
+    language_forms = {name_: i for i, name_ in enumerate(LANGUAGE_FORMS)}
     for name_, index in species:
         data = entry(index)
         if egg_moves[index]:
@@ -198,11 +212,27 @@ def dump(files: Path, output: Path):
         # SPECIES_NONE's line is empty
         if index and f"{{bd01}}{article(species_text)} {{ff00:255}}{names[index]}" != with_article[index]:
             species_text["name_article"] = with_article[index].removeprefix("{bd01}").split(" ")[0]
-        species_text["category"] = to_json(categories[index])
-        species_text["pokedex_entry"] = to_json(entries[index])
+        pokedex = {"category": to_json(categories[index]), "entry": to_json(entries[index]),
+                   "height": to_json(heights[index]), "weight": to_json(weights[index])}
         if data["forms"]["count"] > 1:
-            species_text["form_pokedex_entries"] = [to_json(next(form_entries))
-                                                    for _ in range(data["forms"]["count"] - 1)]
+            pokedex["forms"] = []
+            for _ in range(data["forms"]["count"] - 1):
+                pokedex["forms"].append({"entry": to_json(entries[form_lines]), "height": to_json(heights[form_lines]),
+                                         "weight": to_json(weights[form_lines])})
+                form_lines += 1
+        pokedex["languages"] = {}
+        for language, (l_names, l_categories, l_entries, l_heights, l_weights) in languages.items():
+            if index < LANGUAGE_SPECIES:
+                block = {"name": to_json(l_names[index]), "category": to_json(l_categories[index]),
+                         "entry": to_json(l_entries[index]), "height": to_json(l_heights[index]),
+                         "weight": to_json(l_weights[index])}
+                if name_ in language_forms:
+                    line = LANGUAGE_SPECIES + language_forms[name_]
+                    block["forms"] = [{"height": to_json(l_heights[line]), "weight": to_json(l_weights[line])}]
+                pokedex["languages"][language] = block
+            elif index < len(l_categories):
+                pokedex["languages"][language] = {"category": to_json(l_categories[index])}
+        species_text["pokedex"] = pokedex
         schema = {"$schema": data.pop("$schema")}
         write(output / directory(name_) / "data.json", {**schema, **species_text, **data})
     for index in range(len(species), form_start):

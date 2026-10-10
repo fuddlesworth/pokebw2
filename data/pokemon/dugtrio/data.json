@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Dugtrio",
-    "category": "Mole Pokémon",
-    "pokedex_entry": "Its three heads move alternately,\ndriving it through tough soil to\ndepths of over 60 miles.",
+    "pokedex": {
+        "category": "Mole Pokémon",
+        "entry": "Its three heads move alternately,\ndriving it through tough soil to\ndepths of over 60 miles.",
+        "height": "2'04\"",
+        "weight": "73.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Dugtrio",
+                "category": "Mole Pokémon",
+                "entry": "Its three heads move alternately,\ndriving it through tough soil to\ndepths of over 60 miles.",
+                "height": "2'04\"",
+                "weight": "73.4 lbs."
+            },
+            "fr": {
+                "name": "Triopikeur",
+                "category": "Pokémon Taupe",
+                "entry": "Ses trois têtes creusent le sol à\ntour de rôle. Il peut atteindre des\nprofondeurs de 100 kilomètres.",
+                "height": "0,7 m",
+                "weight": "33,3 kg"
+            },
+            "de": {
+                "name": "Digdri",
+                "category": "Maulwurf",
+                "entry": "Die drei Köpfe bewegen sich abwechselnd,\num sich durch harte Erde in Tiefen von\nbis zu 100 km zu graben.",
+                "height": "0,7 m",
+                "weight": "33,3 kg"
+            },
+            "it": {
+                "name": "Dugtrio",
+                "category": "Pokémon Talpa",
+                "entry": "Le sue tre teste si muovono a turno\nper scavare nel duro suolo fino ad\nuna profondità di 100 km.",
+                "height": "0,7 m",
+                "weight": "33,3 kg"
+            },
+            "ko": {
+                "name": "닥트리오",
+                "category": "두더지포켓몬",
+                "entry": "3개의 머리가 교차하며 움직여서\n아무리 딱딱한 지층이라도\n지하 100km까지 파들어 간다.",
+                "height": "0.7 m",
+                "weight": "33.3 kg"
+            },
+            "es": {
+                "name": "Dugtrio",
+                "category": "Pokémon Topo",
+                "entry": "Sus tres cabezas se mueven por turnos\npara excavar la tierra a una profundidad\nde unos 100 km.",
+                "height": "0,7 m",
+                "weight": "33,3 kg"
+            },
+            "ja": {
+                "name": "ダグトリオ",
+                "category": "もぐらポケモン",
+                "entry": "\\x{ff13}つの\\x{3000}あたまが\\x{3000}たがいちがいに\nうごいて\\x{3000}どんなに\\x{3000}かたい\\x{3000}ちそうも\nちか\\x{ff11}\\x{ff10}\\x{ff10}キロまで\\x{3000}ほりすすむ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff13}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 80,

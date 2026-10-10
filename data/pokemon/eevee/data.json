@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Eevee",
-    "category": "Evolution Pokémon",
-    "pokedex_entry": "Thanks to its unstable genetic makeup,\nthis special Pokémon conceals many\ndifferent possible evolutions.",
+    "pokedex": {
+        "category": "Evolution Pokémon",
+        "entry": "Thanks to its unstable genetic makeup,\nthis special Pokémon conceals many\ndifferent possible evolutions.",
+        "height": "1'00\"",
+        "weight": "14.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Eevee",
+                "category": "Evolution Pokémon",
+                "entry": "Because its genetic makeup is\nirregular, it quickly changes its\nform due to a variety of causes.",
+                "height": "1'00\"",
+                "weight": "14.3 lbs."
+            },
+            "fr": {
+                "name": "Évoli",
+                "category": "Pokémon Évolutif",
+                "entry": "Son ADN particulier lui permet de\ns'adapter très rapidement à son\nenvironnement.",
+                "height": "0,3 m",
+                "weight": "6,5 kg"
+            },
+            "de": {
+                "name": "Evoli",
+                "category": "Evolution",
+                "entry": "Aufgrund einer genetischen Anomalie\nkann es sehr schnell seine Form\nverändern.",
+                "height": "0,3 m",
+                "weight": "6,5 kg"
+            },
+            "it": {
+                "name": "Eevee",
+                "category": "Pokémon Evoluzione",
+                "entry": "È dotato di un corredo genetico\ninstabile e, per cause diverse, può\nassumere altre forme rapidamente.",
+                "height": "0,3 m",
+                "weight": "6,5 kg"
+            },
+            "ko": {
+                "name": "이브이",
+                "category": "진화포켓몬",
+                "entry": "유전자가 불규칙하기 때문에\n여러 가지 이유에 의해 바로\n모습의 형태가 바뀐다.",
+                "height": "0.3 m",
+                "weight": "6.5 kg"
+            },
+            "es": {
+                "name": "Eevee",
+                "category": "Pokémon Evolución",
+                "entry": "Su composición genética es algo\nirregular, por eso cambia de forma\nmuy rápido y por diversas causas.",
+                "height": "0,3 m",
+                "weight": "6,5 kg"
+            },
+            "ja": {
+                "name": "イーブイ",
+                "category": "しんかポケモン",
+                "entry": "いでんしが\\x{3000}ふきそくなため\nさまざまな\\x{3000}りゆうに\\x{3000}よって\\x{3000}すぐに\nすがたかたちが\\x{3000}かわってしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 55,

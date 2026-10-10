@@ -1,9 +1,24 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tornadus",
-    "category": "Cyclone Pokémon",
-    "pokedex_entry": "In every direction it flies,\ncreating winds so powerful,\nthey blow everything away.",
-    "form_pokedex_entries": [ "In every direction it flies,\ncreating winds so powerful,\nthey blow everything away." ],
+    "pokedex": {
+        "category": "Cyclone Pokémon",
+        "entry": "In every direction it flies,\ncreating winds so powerful,\nthey blow everything away.",
+        "height": "4'11\"",
+        "weight": "138.9 lbs.",
+        "forms": [
+            {
+                "entry": "In every direction it flies,\ncreating winds so powerful,\nthey blow everything away.",
+                "height": "4'07\"",
+                "weight": "138.9 lbs."
+            }
+        ],
+        "languages": {
+            "ja": {
+                "category": "せんぷうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 79,
         "attack": 115,

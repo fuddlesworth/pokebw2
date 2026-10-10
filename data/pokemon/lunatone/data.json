@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lunatone",
-    "category": "Meteorite Pokémon",
-    "pokedex_entry": "The phase of the moon apparently\nhas some effect on its power.\nIt's active on the night of a full moon.",
+    "pokedex": {
+        "category": "Meteorite Pokémon",
+        "entry": "The phase of the moon apparently\nhas some effect on its power.\nIt's active on the night of a full moon.",
+        "height": "3'03\"",
+        "weight": "370.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lunatone",
+                "category": "Meteorite Pokémon",
+                "entry": "Because it turns active on nights\nof the full moon, it is said to have\nsome link to the lunar phases.",
+                "height": "3'03\"",
+                "weight": "370.4 lbs."
+            },
+            "fr": {
+                "name": "Séléroc",
+                "category": "Pokémon Météorite",
+                "entry": "On suppose qu'il est lié au cycle\nlunaire, car il ne sort que les\nsoirs de pleine lune.",
+                "height": "1,0 m",
+                "weight": "168,0 kg"
+            },
+            "de": {
+                "name": "Lunastein",
+                "category": "Meteorit",
+                "entry": "Da es in Vollmondnächten aktiv wird,\nsagt man ihm nach, mit den Mondphasen\nin Verbindung zu stehen.",
+                "height": "1,0 m",
+                "weight": "168,0 kg"
+            },
+            "it": {
+                "name": "Lunatone",
+                "category": "Pokémon Meteorite",
+                "entry": "Diventa attivo nelle notti di luna piena,\npertanto si dice che abbia qualche\nlegame con le fasi lunari.",
+                "height": "1,0 m",
+                "weight": "168,0 kg"
+            },
+            "ko": {
+                "name": "루나톤",
+                "category": "별똥별포켓몬",
+                "entry": "보름달의 밤이 되면 활발하게\n활동하기 때문에 달의 변화와\n관계 있다고 전해진다.",
+                "height": "1.0 m",
+                "weight": "168.0 kg"
+            },
+            "es": {
+                "name": "Lunatone",
+                "category": "Pokémon Meteorito",
+                "entry": "Se piensa que está muy influido\npor las fases lunares, ya que solo\nactúa en noches de luna llena.",
+                "height": "1,0 m",
+                "weight": "168,0 kg"
+            },
+            "ja": {
+                "name": "ルナトーン",
+                "category": "いんせきポケモン",
+                "entry": "まんげつの\\x{3000}よるになると\\x{3000}かっぱつに\nかつどうするため\\x{3000}つきの\\x{3000}みちかけと\nかんけいしていると\\x{3000}いわれている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff16}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 55,

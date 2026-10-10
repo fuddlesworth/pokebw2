@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Krokorok",
-    "category": "Desert Croc Pokémon",
-    "pokedex_entry": "Protected by thin membranes, their eyes\ncan see even in the dead of night.\nThey live in groups of a few individuals.",
+    "pokedex": {
+        "category": "Desert Croc Pokémon",
+        "entry": "Protected by thin membranes, their eyes\ncan see even in the dead of night.\nThey live in groups of a few individuals.",
+        "height": "3'03\"",
+        "weight": "73.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "さばくワニポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 82,

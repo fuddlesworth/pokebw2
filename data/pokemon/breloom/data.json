@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Breloom",
-    "category": "Mushroom Pokémon",
-    "pokedex_entry": "Its short arms stretch when it\nthrows punches. Its technique is\nequal to that of pro boxers.",
+    "pokedex": {
+        "category": "Mushroom Pokémon",
+        "entry": "Its short arms stretch when it\nthrows punches. Its technique is\nequal to that of pro boxers.",
+        "height": "3'11\"",
+        "weight": "86.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Breloom",
+                "category": "Mushroom Pokémon",
+                "entry": "Its short arms stretch when it\nthrows punches. Its technique is\nequal to that of pro boxers.",
+                "height": "3'11\"",
+                "weight": "86.4 lbs."
+            },
+            "fr": {
+                "name": "Chapignon",
+                "category": "Pokémon Champignon",
+                "entry": "Ses petits bras s'étendent quand il\ndonne un coup de poing. Son talent\négale celui d'un boxeur pro.",
+                "height": "1,2 m",
+                "weight": "39,2 kg"
+            },
+            "de": {
+                "name": "Kapilz",
+                "category": "Pilz",
+                "entry": "Seine kurzen Arme dehnen sich aus,\nwenn es zuschlägt. Seine Technik\nähnelt der von Profi-Boxern.",
+                "height": "1,2 m",
+                "weight": "39,2 kg"
+            },
+            "it": {
+                "name": "Breloom",
+                "category": "Pokémon Fungo",
+                "entry": "Tirando pugni, i suoi cortissimi arti\nsi allungano. Usa una tecnica simile\na quella dei pugili professionisti.",
+                "height": "1,2 m",
+                "weight": "39,2 kg"
+            },
+            "ko": {
+                "name": "버섯모",
+                "category": "버섯포켓몬",
+                "entry": "짧은 팔은 펀치를 날릴 때\n쑤-욱 늘어난다. 프로 복서를\n압도하는 기술을 가지고 있다.",
+                "height": "1.2 m",
+                "weight": "39.2 kg"
+            },
+            "es": {
+                "name": "Breloom",
+                "category": "Pokémon Hongo",
+                "entry": "Sus cortos brazos se expanden\ncuando da puñetazos. Tiene una\ntécnica pugilística muy depurada.",
+                "height": "1,2 m",
+                "weight": "39,2 kg"
+            },
+            "ja": {
+                "name": "キノガッサ",
+                "category": "きのこポケモン",
+                "entry": "みじかい\\x{3000}うでは\\x{3000}パンチを\\x{3000}だすとき\nぐーんと\\x{3000}のびる。プロボクサー\nかおまけの\\x{3000}テクニックを\\x{3000}もつ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff19}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 130,

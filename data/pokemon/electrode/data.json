@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Electrode",
-    "category": "Ball Pokémon",
-    "pokedex_entry": "It is known to drift on winds if it\nis bloated to bursting with stored\nelectricity.",
+    "pokedex": {
+        "category": "Ball Pokémon",
+        "entry": "It is known to drift on winds if it\nis bloated to bursting with stored\nelectricity.",
+        "height": "3'11\"",
+        "weight": "146.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Electrode",
+                "category": "Ball Pokémon",
+                "entry": "It is known to drift on winds if it\nis bloated to bursting with stored\nelectricity.",
+                "height": "3'11\"",
+                "weight": "146.8 lbs."
+            },
+            "fr": {
+                "name": "Électrode",
+                "category": "Pokémon Balle",
+                "entry": "Il se laisse porter par les vents\nlorsque son corps est gonflé\nd'électricité à en éclater.",
+                "height": "1,2 m",
+                "weight": "66,6 kg"
+            },
+            "de": {
+                "name": "Lektrobal",
+                "category": "Ball",
+                "entry": "Es lässt sich vom Wind treiben,\nwenn es so voller Elektrizität ist,\ndass es fast explodiert.",
+                "height": "1,2 m",
+                "weight": "66,6 kg"
+            },
+            "it": {
+                "name": "Electrode",
+                "category": "Pokémon Ball",
+                "entry": "Quando ha accumulato elettricità fino\nquasi a scoppiare, si fa trasportare\ndal vento.",
+                "height": "1,2 m",
+                "weight": "66,6 kg"
+            },
+            "ko": {
+                "name": "붐볼",
+                "category": "볼포켓몬",
+                "entry": "전기 에너지를 너무 모아서\n팽팽히 부풀어오른 붐볼이\n바람에 날려오는 경우가 있다.",
+                "height": "1.2 m",
+                "weight": "66.6 kg"
+            },
+            "es": {
+                "name": "Electrode",
+                "category": "Pokémon Bola",
+                "entry": "Se lo lleva el viento si se hincha\ncon la electricidad que almacena.",
+                "height": "1,2 m",
+                "weight": "66,6 kg"
+            },
+            "ja": {
+                "name": "マルマイン",
+                "category": "ボールポケモン",
+                "entry": "でんきエネルギーを\\x{3000}ためすぎて\nぱんぱんに\\x{3000}ふくらんだ\\x{3000}マルマインが\nかぜに\\x{3000}ながされてくることが\\x{3000}ある。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff16}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 50,

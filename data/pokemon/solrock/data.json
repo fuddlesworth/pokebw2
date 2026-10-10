@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Solrock",
-    "category": "Meteorite Pokémon",
-    "pokedex_entry": "Solar energy is the source of its power,\nso it is strong during the daytime.\nWhen it spins, its body shines.",
+    "pokedex": {
+        "category": "Meteorite Pokémon",
+        "entry": "Solar energy is the source of its power,\nso it is strong during the daytime.\nWhen it spins, its body shines.",
+        "height": "3'11\"",
+        "weight": "339.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Solrock",
+                "category": "Meteorite Pokémon",
+                "entry": "A new Pokémon species, rumored\nto be from the sun. It gives off\nlight while spinning.",
+                "height": "3'11\"",
+                "weight": "339.5 lbs."
+            },
+            "fr": {
+                "name": "Solaroc",
+                "category": "Pokémon Météorite",
+                "entry": "Le bruit court que cette nouvelle\nespèce vient du soleil. Il produit\nde la lumière en tournoyant.",
+                "height": "1,2 m",
+                "weight": "154,0 kg"
+            },
+            "de": {
+                "name": "Sonnfel",
+                "category": "Meteorit",
+                "entry": "Eine neue Pokémon-Spezies, von der\nman annimmt, sie käme von der Sonne.\nSie strahlt Licht ab.",
+                "height": "1,2 m",
+                "weight": "154,0 kg"
+            },
+            "it": {
+                "name": "Solrock",
+                "category": "Pokémon Meteorite",
+                "entry": "Nuova specie di Pokémon che si dice\nprovenga dal sole. Emana luce roteando\nvorticosamente.",
+                "height": "1,2 m",
+                "weight": "154,0 kg"
+            },
+            "ko": {
+                "name": "솔록",
+                "category": "별똥별포켓몬",
+                "entry": "태양의 분신이라는 소문이 도는\n신종 포켓몬이다. 몸을\n회전시켜 빛을 발한다.",
+                "height": "1.2 m",
+                "weight": "154.0 kg"
+            },
+            "es": {
+                "name": "Solrock",
+                "category": "Pokémon Meteorito",
+                "entry": "Una nueva especie de Pokémon\nque se rumorea procede del Sol.\nEmite luz al girar.",
+                "height": "1,2 m",
+                "weight": "154,0 kg"
+            },
+            "ja": {
+                "name": "ソルロック",
+                "category": "いんせきポケモン",
+                "entry": "たいようの\\x{3000}ぶんしんと\\x{3000}うわさされる\nしんしゅの\\x{3000}ポケモン。からだを\nかいてんさせて\\x{3000}ひかりを\\x{3000}はなつ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff15}\\x{ff14}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 95,

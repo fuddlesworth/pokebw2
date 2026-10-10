@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tropius",
-    "category": "Fruit Pokémon",
-    "pokedex_entry": "It flies by flapping its broad leaves\nand gives the sweet, delicious\nfruit around its neck to children.",
+    "pokedex": {
+        "category": "Fruit Pokémon",
+        "entry": "It flies by flapping its broad leaves\nand gives the sweet, delicious\nfruit around its neck to children.",
+        "height": "6'07\"",
+        "weight": "220.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Tropius",
+                "category": "Fruit Pokémon",
+                "entry": "Delicious fruits grew out from\naround its neck because it always\nate the same kind of fruit.",
+                "height": "6'07\"",
+                "weight": "220.5 lbs."
+            },
+            "fr": {
+                "name": "Tropius",
+                "category": "Pokémon Fruit",
+                "entry": "À force de toujours manger le même\nfruit succulent, il en pousse à la\nbase de son cou.",
+                "height": "2,0 m",
+                "weight": "100,0 kg"
+            },
+            "de": {
+                "name": "Tropius",
+                "category": "Obst",
+                "entry": "Isst immer dieselbe Art köstlicher\nFrüchte. Mittlerweile wachsen sie\nsogar schon aus seinem Hals.",
+                "height": "2,0 m",
+                "weight": "100,0 kg"
+            },
+            "it": {
+                "name": "Tropius",
+                "category": "Pokémon Frutto",
+                "entry": "Poiché era solito mangiare frutti\ndeliziosi, questi hanno cominciato\na crescergli attorno al collo.",
+                "height": "2,0 m",
+                "weight": "100,0 kg"
+            },
+            "ko": {
+                "name": "트로피우스",
+                "category": "후르츠포켓몬",
+                "entry": "항상 같은 과일만 먹었더니\n목 주변에 매우 맛있는\n열매가 열렸다.",
+                "height": "2.0 m",
+                "weight": "100.0 kg"
+            },
+            "es": {
+                "name": "Tropius",
+                "category": "Pokémon Fruto",
+                "entry": "Como solo comía un tipo de fruta,\nal final acabó creciéndole en el\ncuello.",
+                "height": "2,0 m",
+                "weight": "100,0 kg"
+            },
+            "ja": {
+                "name": "トロピウス",
+                "category": "フルーツポケモン",
+                "entry": "いつも\\x{3000}おなじ\\x{3000}くだものばかり\nたべていたら\\x{3000}のどもとに\\x{3000}とても\nおいしい\\x{3000}くだものが\\x{3000}はえてきた。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 99,
         "attack": 68,

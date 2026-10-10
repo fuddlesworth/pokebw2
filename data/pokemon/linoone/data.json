@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Linoone",
-    "category": "Rushing Pokémon",
-    "pokedex_entry": "It charges prey at speeds over\n60 mph. However, because it can\nonly run straight, it often fails.",
+    "pokedex": {
+        "category": "Rushing Pokémon",
+        "entry": "It charges prey at speeds over\n60 mph. However, because it can\nonly run straight, it often fails.",
+        "height": "1'08\"",
+        "weight": "71.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Linoone",
+                "category": "Rushing Pokémon",
+                "entry": "It charges prey at speeds over\n60 mph. However, because it can\nonly run straight, it often fails.",
+                "height": "1'08\"",
+                "weight": "71.6 lbs."
+            },
+            "fr": {
+                "name": "Linéon",
+                "category": "Pokémon Fonceur",
+                "entry": "Il fonce sur sa proie à plus de 100 km/h.\nMais il ne peut pas dévier sa course\net loupe souvent sa cible.",
+                "height": "0,5 m",
+                "weight": "32,5 kg"
+            },
+            "de": {
+                "name": "Geradaks",
+                "category": "Sprinter",
+                "entry": "Es stürzt sich mit 100 km/h auf Beute.\nAber es kann nur geradeaus laufen\nund die Jagd misslingt oft.",
+                "height": "0,5 m",
+                "weight": "32,5 kg"
+            },
+            "it": {
+                "name": "Linoone",
+                "category": "Pokémon Sfrecciante",
+                "entry": "Carica la preda ad una velocità di\n100 km/h. Ma dal momento che va\nsolo dritto, sbaglia spesso.",
+                "height": "0,5 m",
+                "weight": "32,5 kg"
+            },
+            "ko": {
+                "name": "직구리",
+                "category": "돌진포켓몬",
+                "entry": "시속 100km로 먹이를\n덮치지만 똑바로밖에 달릴 수\n없어서 실패할 때도 많다.",
+                "height": "0.5 m",
+                "weight": "32.5 kg"
+            },
+            "es": {
+                "name": "Linoone",
+                "category": "Pokémon Lanzado",
+                "entry": "Carga contra sus enemigos a más\nde 100 km/h. Como solo va en línea\nrecta, falla a menudo.",
+                "height": "0,5 m",
+                "weight": "32,5 kg"
+            },
+            "ja": {
+                "name": "マッスグマ",
+                "category": "とっしんポケモン",
+                "entry": "じそく\\x{ff11}\\x{ff10}\\x{ff10}キロで\\x{3000}えものに\nおそいかかるが\\x{3000}まっすぐにしか\nはしれないので\\x{3000}しっぱいも\\x{3000}おおい。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 78,
         "attack": 70,

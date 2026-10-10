@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gallade",
-    "category": "Blade Pokémon",
-    "pokedex_entry": "When trying to protect someone,\nit extends its elbows as if they\nwere swords and fights savagely.",
+    "pokedex": {
+        "category": "Blade Pokémon",
+        "entry": "When trying to protect someone,\nit extends its elbows as if they\nwere swords and fights savagely.",
+        "height": "5'03\"",
+        "weight": "114.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gallade",
+                "category": "Blade Pokémon",
+                "entry": "When trying to protect someone,\nit extends its elbows as if they\nwere swords and fights savagely.",
+                "height": "5'03\"",
+                "weight": "114.6 lbs."
+            },
+            "fr": {
+                "name": "Gallame",
+                "category": "Pokémon Lame",
+                "entry": "Toujours prêt à protéger son prochain,\nil se bat férocement avec ses coudes\nen forme d'épées.",
+                "height": "1,6 m",
+                "weight": "52,0 kg"
+            },
+            "de": {
+                "name": "Galagladi",
+                "category": "Klinge",
+                "entry": "Will es beschützen, streckt es seine\nEllbogen zu etwas Schwertähnlichem\nund kämpft auf wilde Art.",
+                "height": "1,6 m",
+                "weight": "52,0 kg"
+            },
+            "it": {
+                "name": "Gallade",
+                "category": "Pokémon Lama",
+                "entry": "Quando protegge qualcuno estende\ni gomiti come se fossero spade e\ncombatte furiosamente.",
+                "height": "1,6 m",
+                "weight": "52,0 kg"
+            },
+            "ko": {
+                "name": "엘레이드",
+                "category": "검포켓몬",
+                "entry": "누군가를 지키려고 할 때는\n팔꿈치를 늘여서 칼처럼\n변화시키고 격렬하게 싸운다.",
+                "height": "1.6 m",
+                "weight": "52.0 kg"
+            },
+            "es": {
+                "name": "Gallade",
+                "category": "Pokémon Cuchilla",
+                "entry": "Cuando quiere proteger a alguien,\nextiende los codos como si fueran\nespadas y lucha con fiereza.",
+                "height": "1,6 m",
+                "weight": "52,0 kg"
+            },
+            "ja": {
+                "name": "エルレイド",
+                "category": "やいばポケモン",
+                "entry": "だれかを\\x{3000}まもろうと\\x{3000}したとき\nひじをのばし\\x{3000}かたなのように\nへんか\\x{3000}させて\\x{3000}はげしく\\x{3000}たたかう。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 68,
         "attack": 125,

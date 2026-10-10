@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cyndaquil",
-    "category": "Fire Mouse Pokémon",
-    "pokedex_entry": "It has a timid nature. If it is\nstartled, the flames on its back\nburn more vigorously.",
+    "pokedex": {
+        "category": "Fire Mouse Pokémon",
+        "entry": "It has a timid nature. If it is\nstartled, the flames on its back\nburn more vigorously.",
+        "height": "1'08\"",
+        "weight": "17.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Cyndaquil",
+                "category": "Fire Mouse Pokémon",
+                "entry": "It has a timid nature. If it is\nstartled, the flames on its back\nburn more vigorously.",
+                "height": "1'08\"",
+                "weight": "17.4 lbs."
+            },
+            "fr": {
+                "name": "Héricendre",
+                "category": "Pokémon Souris Feu",
+                "entry": "Ce Pokémon est un grand timide.\nLes flammes sur son dos s'intensifient\nlorsqu'il prend peur.",
+                "height": "0,5 m",
+                "weight": "7,9 kg"
+            },
+            "de": {
+                "name": "Feurigel",
+                "category": "Feuermaus",
+                "entry": "Erschrickt sich dieses scheue\nPokémon, lodern die Flammen\nauf seinem Rücken kräftiger.",
+                "height": "0,5 m",
+                "weight": "7,9 kg"
+            },
+            "it": {
+                "name": "Cyndaquil",
+                "category": "Pokémon Fuocotopo",
+                "entry": "È riservato per natura. Se viene\nspaventato, le fiamme sul suo dorso\nbruciano ardentemente.",
+                "height": "0,5 m",
+                "weight": "7,9 kg"
+            },
+            "ko": {
+                "name": "브케인",
+                "category": "불쥐포켓몬",
+                "entry": "겁쟁이 같은 성격이다.\n놀라면 등의 불꽃이\n한층 더 강하게 타오른다.",
+                "height": "0.5 m",
+                "weight": "7.9 kg"
+            },
+            "es": {
+                "name": "Cyndaquil",
+                "category": "Pokémon Ratónfuego",
+                "entry": "Es un Pokémon muy tímido. Si se asusta,\nlas llamas de su lomo arden con más\nfuerza.",
+                "height": "0,5 m",
+                "weight": "7,9 kg"
+            },
+            "ja": {
+                "name": "ヒノアラシ",
+                "category": "ひねずみポケモン",
+                "entry": "おくびょうな\\x{3000}せいかく。\nおどろくと\\x{3000}せなかの\\x{3000}ほのおが\nいちだんと\\x{3000}つよく\\x{3000}もえあがる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 39,
         "attack": 52,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Spinarak",
-    "category": "String Spit Pokémon",
-    "pokedex_entry": "It sets a trap by spinning a web\nwith thin but strong silk. It waits\nmotionlessly for prey to arrive.",
+    "pokedex": {
+        "category": "String Spit Pokémon",
+        "entry": "It sets a trap by spinning a web\nwith thin but strong silk. It waits\nmotionlessly for prey to arrive.",
+        "height": "1'08\"",
+        "weight": "18.7 lbs.",
+        "languages": {
+            "en": {
+                "name": "Spinarak",
+                "category": "String Spit Pokémon",
+                "entry": "It sets a trap by spinning a web\nwith thin but strong silk. It waits\nmotionlessly for prey to arrive.",
+                "height": "1'08\"",
+                "weight": "18.7 lbs."
+            },
+            "fr": {
+                "name": "Mimigal",
+                "category": "Pokémon Crache Fil",
+                "entry": "Il tisse une toile fine mais solide\npour poser des pièges et se poste\ndans l'attente d'une proie.",
+                "height": "0,5 m",
+                "weight": "8,5 kg"
+            },
+            "de": {
+                "name": "Webarak",
+                "category": "Fadenwurf",
+                "entry": "Es baut eine Falle, indem es ein\nNetz mit dünner, starker Seide\nspinnt. Es wartet still auf Beute.",
+                "height": "0,5 m",
+                "weight": "8,5 kg"
+            },
+            "it": {
+                "name": "Spinarak",
+                "category": "Pokémon Tela",
+                "entry": "Tesse una trappola con un filo di seta,\nsottile ma robusto. Attende la preda\nsenza muoversi.",
+                "height": "0,5 m",
+                "weight": "8,5 kg"
+            },
+            "ko": {
+                "name": "페이검",
+                "category": "실뿜기포켓몬",
+                "entry": "가늘고 튼튼한 실을\n둘러쳐서 덫을 설치한다. 먹이가\n걸릴 때까지 가만히 기다린다.",
+                "height": "0.5 m",
+                "weight": "8.5 kg"
+            },
+            "es": {
+                "name": "Spinarak",
+                "category": "Pokémon Escupesoga",
+                "entry": "Pone trampas tejiendo una red\nde seda fina y resistente y luego\nespera inmóvil a su presa.",
+                "height": "0,5 m",
+                "weight": "8,5 kg"
+            },
+            "ja": {
+                "name": "イトマル",
+                "category": "いとはきポケモン",
+                "entry": "ほそくて\\x{3000}じょうぶな\\x{3000}いとを\nはりめぐらして\\x{3000}わなを\\x{3000}しかける。\nえものが\\x{3000}かかるまで\\x{3000}じっと\\x{3000}まつ。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 40,
         "attack": 60,

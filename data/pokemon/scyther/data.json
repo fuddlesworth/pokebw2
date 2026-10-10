@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Scyther",
-    "category": "Mantis Pokémon",
-    "pokedex_entry": "The sharp scythes on its forearms\nbecome increasingly sharp by\ncutting through hard objects.",
+    "pokedex": {
+        "category": "Mantis Pokémon",
+        "entry": "The sharp scythes on its forearms\nbecome increasingly sharp by\ncutting through hard objects.",
+        "height": "4'11\"",
+        "weight": "123.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Scyther",
+                "category": "Mantis Pokémon",
+                "entry": "The sharp scythes on its forearms\nbecome increasingly sharp by\ncutting through hard objects.",
+                "height": "4'11\"",
+                "weight": "123.5 lbs."
+            },
+            "fr": {
+                "name": "Insécateur",
+                "category": "Pokémon Mante",
+                "entry": "À force de trancher des objets\nsolides, les faux de ses bras\nsont très aiguisées.",
+                "height": "1,5 m",
+                "weight": "56,0 kg"
+            },
+            "de": {
+                "name": "Sichlor",
+                "category": "Mantis",
+                "entry": "Die scharfen Sensen an den Unterarmen\nwerden durch das Schneiden\nharter Objekte noch schärfer.",
+                "height": "1,5 m",
+                "weight": "56,0 kg"
+            },
+            "it": {
+                "name": "Scyther",
+                "category": "Pokémon Mantide",
+                "entry": "Le falci sulle sue zampe anteriori\ndiventano sempre più affilate man\nmano che tranciano oggetti duri.",
+                "height": "1,5 m",
+                "weight": "56,0 kg"
+            },
+            "ko": {
+                "name": "스라크",
+                "category": "버마재비포켓몬",
+                "entry": "양손의 날카로운 낫은\n단단한 것을 자르면 자를수록\n더욱더 날카로워진다.",
+                "height": "1.5 m",
+                "weight": "56.0 kg"
+            },
+            "es": {
+                "name": "Scyther",
+                "category": "Pokémon Mantis",
+                "entry": "Las cortantes guadañas de sus\nantebrazos se vuelven más afiladas\ncada vez que cortan objetos duros.",
+                "height": "1,5 m",
+                "weight": "56,0 kg"
+            },
+            "ja": {
+                "name": "ストライク",
+                "category": "かまきりポケモン",
+                "entry": "りょうての\\x{3000}するどい\\x{3000}カマは\nかたいものを\\x{3000}きればきるほど\nさらに\\x{3000}きれあじを\\x{3000}ましていく。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff16}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 110,

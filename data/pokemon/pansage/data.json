@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pansage",
-    "category": "Grass Monkey Pokémon",
-    "pokedex_entry": "It's good at finding berries and gathers\nthem from all over. It's kind enough\nto share them with friends.",
+    "pokedex": {
+        "category": "Grass Monkey Pokémon",
+        "entry": "It's good at finding berries and gathers\nthem from all over. It's kind enough\nto share them with friends.",
+        "height": "2'00\"",
+        "weight": "23.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "くさざるポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 53,

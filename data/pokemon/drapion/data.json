@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Drapion",
-    "category": "Ogre Scorp Pokémon",
-    "pokedex_entry": "It takes pride in its strength.\nEven though it can tear foes apart,\nit finishes them off with powerful poison.",
+    "pokedex": {
+        "category": "Ogre Scorp Pokémon",
+        "entry": "It takes pride in its strength.\nEven though it can tear foes apart,\nit finishes them off with powerful poison.",
+        "height": "4'03\"",
+        "weight": "135.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Drapion",
+                "category": "Ogre Scorp Pokémon",
+                "entry": "Possessing a sturdy build, it takes\npride in its strength, taking down\nfoes without using toxins.",
+                "height": "4'03\"",
+                "weight": "135.6 lbs."
+            },
+            "fr": {
+                "name": "Drascore",
+                "category": "Pokémon Scorpogre",
+                "entry": "Fier et robuste, il met un point\nd'honneur à battre ses adversaires\nsans utiliser de poison.",
+                "height": "1,3 m",
+                "weight": "61,5 kg"
+            },
+            "de": {
+                "name": "Piondragi",
+                "category": "Ogerskorpion",
+                "entry": "Es ist sehr stolz auf seine Stärke\nund besiegt Gegner auch ohne die\nVerwendung seines Gifts.",
+                "height": "1,3 m",
+                "weight": "61,5 kg"
+            },
+            "it": {
+                "name": "Drapion",
+                "category": "Pokémon Scorpiaccio",
+                "entry": "Dotato di una costituzione robusta, va\norgoglioso della sua forza e abbatte\ni nemici senza usare tossine.",
+                "height": "1,3 m",
+                "weight": "61,5 kg"
+            },
+            "ko": {
+                "name": "드래피온",
+                "category": "요괴전갈포켓몬",
+                "entry": "맹독을 쓰지 않고 자부하는\n힘만으로도 상대를 박살 낼 수\n있는 튼튼한 힘의 소유자다.",
+                "height": "1.3 m",
+                "weight": "61.5 kg"
+            },
+            "es": {
+                "name": "Drapion",
+                "category": "Pokémon Escorpiogro",
+                "entry": "Tiene una complexión muy fuerte\nde la que se enorgullece. Derriba\na sus enemigos sin usar toxinas.",
+                "height": "1,3 m",
+                "weight": "61,5 kg"
+            },
+            "ja": {
+                "name": "ドラピオン",
+                "category": "ばけさそりポケモン",
+                "entry": "もうどくを\\x{3000}つかわなくても\\x{3000}じまんの\nちからで\\x{3000}あいてを\\x{3000}バラバラにする\nがんじょうな\\x{3000}からだの\\x{3000}もちぬし。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 90,

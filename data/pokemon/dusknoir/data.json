@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Dusknoir",
-    "category": "Gripper Pokémon",
-    "pokedex_entry": "It is said to take lost spirits\ninto its pliant body and guide\nthem home.",
+    "pokedex": {
+        "category": "Gripper Pokémon",
+        "entry": "It is said to take lost spirits\ninto its pliant body and guide\nthem home.",
+        "height": "7'03\"",
+        "weight": "235.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Dusknoir",
+                "category": "Gripper Pokémon",
+                "entry": "It is said to take lost spirits\ninto its pliant body and guide\nthem home.",
+                "height": "7'03\"",
+                "weight": "235.0 lbs."
+            },
+            "fr": {
+                "name": "Noctunoir",
+                "category": "Pokémon Mainpince",
+                "entry": "Son corps se replie sur lui-même\npour emprisonner les esprits\nperdus et les ramener chez eux.",
+                "height": "2,2 m",
+                "weight": "106,6 kg"
+            },
+            "de": {
+                "name": "Zwirrfinst",
+                "category": "Greifer",
+                "entry": "Man sagt, dass es verlorene\nSeelen in seinem biegsamen\nKörper nach Hause geleite.",
+                "height": "2,2 m",
+                "weight": "106,6 kg"
+            },
+            "it": {
+                "name": "Dusknoir",
+                "category": "Pokémon Pinza",
+                "entry": "Si dice che accolga gli spiriti smarriti\nnel suo corpo flessibile per riportarli\na casa.",
+                "height": "2,2 m",
+                "weight": "106,6 kg"
+            },
+            "ko": {
+                "name": "야느와르몽",
+                "category": "움켜쥠포켓몬",
+                "entry": "탄력 있는 몸 안에\n갈 곳 없는 영혼을 가두어\n저승으로 데려간다고 전해진다.",
+                "height": "2.2 m",
+                "weight": "106.6 kg"
+            },
+            "es": {
+                "name": "Dusknoir",
+                "category": "Pokémon Grilletes",
+                "entry": "Se dice que recoge en su cuerpo\nflexible a los espíritus extraviados\ny los guía hasta casa.",
+                "height": "2,2 m",
+                "weight": "106,6 kg"
+            },
+            "ja": {
+                "name": "ヨノワール",
+                "category": "てづかみポケモン",
+                "entry": "だんりょくのある\\x{3000}からだの\\x{3000}なかに\nいきばのない\\x{3000}たましいを\\x{3000}とりこんで\nあのよに\\x{3000}つれていくと\\x{3000}いわれる。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff16}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 100,

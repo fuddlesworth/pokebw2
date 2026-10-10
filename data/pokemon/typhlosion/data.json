@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Typhlosion",
-    "category": "Volcano Pokémon",
-    "pokedex_entry": "It attacks using blasts of fire.\nIt creates heat shimmers with\nintense fire to hide itself.",
+    "pokedex": {
+        "category": "Volcano Pokémon",
+        "entry": "It attacks using blasts of fire.\nIt creates heat shimmers with\nintense fire to hide itself.",
+        "height": "5'07\"",
+        "weight": "175.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Typhlosion",
+                "category": "Volcano Pokémon",
+                "entry": "It attacks using blasts of fire.\nIt creates heat shimmers with\nintense fire to hide itself.",
+                "height": "5'07\"",
+                "weight": "175.3 lbs."
+            },
+            "fr": {
+                "name": "Typhlosion",
+                "category": "Pokémon Volcan",
+                "entry": "Il attaque en projetant des flammes.\nIl se dissimule derrière les vagues\nde chaleur qu'il produit.",
+                "height": "1,7 m",
+                "weight": "79,5 kg"
+            },
+            "de": {
+                "name": "Tornupto",
+                "category": "Vulkan",
+                "entry": "Es greift seine Gegner mit Feuer an.\nDabei entsteht ein Hitzeflimmern, in\ndem es sich versteckt.",
+                "height": "1,7 m",
+                "weight": "79,5 kg"
+            },
+            "it": {
+                "name": "Typhlosion",
+                "category": "Pokémon Vulcano",
+                "entry": "Attacca usando fiamme esplosive. Si cela\nin una scintillante nube di calore creata\ndalle fiamme roventi.",
+                "height": "1,7 m",
+                "weight": "79,5 kg"
+            },
+            "ko": {
+                "name": "블레이범",
+                "category": "화산포켓몬",
+                "entry": "불꽃 폭풍으로 공격한다.\n작열하는 불꽃으로 아지랑이를\n만들어 내어 모습을 감춘다.",
+                "height": "1.7 m",
+                "weight": "79.5 kg"
+            },
+            "es": {
+                "name": "Typhlosion",
+                "category": "Pokémon Volcán",
+                "entry": "Ataca con llamaradas. Con ellas crea\nreflejos de calor para ocultarse.",
+                "height": "1,7 m",
+                "weight": "79,5 kg"
+            },
+            "ja": {
+                "name": "バクフーン",
+                "category": "かざんポケモン",
+                "entry": "ほのおの\\x{3000}ばくふうで\\x{3000}こうげき。\nしゃくねつの\\x{3000}ほのおで\\x{3000}かげろうを\nつくりだし\\x{3000}すがたを\\x{3000}かくす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 78,
         "attack": 84,

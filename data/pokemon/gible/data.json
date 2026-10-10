@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gible",
-    "category": "Land Shark Pokémon",
-    "pokedex_entry": "It attacks using its huge mouth.\nWhile its attacks are powerful, it\nhurts itself out of clumsiness, too.",
+    "pokedex": {
+        "category": "Land Shark Pokémon",
+        "entry": "It attacks using its huge mouth.\nWhile its attacks are powerful, it\nhurts itself out of clumsiness, too.",
+        "height": "2'04\"",
+        "weight": "45.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gible",
+                "category": "Land Shark Pokémon",
+                "entry": "It attacks using its huge mouth.\nWhile its attacks are powerful, it\nhurts itself out of clumsiness, too.",
+                "height": "2'04\"",
+                "weight": "45.2 lbs."
+            },
+            "fr": {
+                "name": "Griknot",
+                "category": "Pokémon Terrequin",
+                "entry": "Malgré sa maladresse, son énorme\ngueule lui permet de lancer des\nattaques puissantes.",
+                "height": "0,7 m",
+                "weight": "20,5 kg"
+            },
+            "de": {
+                "name": "Kaumalat",
+                "category": "Landhai",
+                "entry": "Greift mit seinem riesigen Maul an.\nObwohl seine Angriffe mächtig sind,\nverletzt es sich dabei auch selbst.",
+                "height": "0,7 m",
+                "weight": "20,5 kg"
+            },
+            "it": {
+                "name": "Gible",
+                "category": "Pokémon Squaloterra",
+                "entry": "Attacca con la sua enorme bocca. È\nforte, ma molto maldestro e spesso\nsi danneggia da solo.",
+                "height": "0,7 m",
+                "weight": "20,5 kg"
+            },
+            "ko": {
+                "name": "딥상어동",
+                "category": "육지상어포켓몬",
+                "entry": "큰 입으로 하는 공격은 위력이\n충분하지만 아직은 잘 싸우지\n못해서 자신도 상처를 입는다.",
+                "height": "0.7 m",
+                "weight": "20.5 kg"
+            },
+            "es": {
+                "name": "Gible",
+                "category": "Pokémon Terrascualo",
+                "entry": "Ataca usando su enorme boca y, con\nlo torpe que es, también se suele\ndañar con sus potentes ataques.",
+                "height": "0,7 m",
+                "weight": "20,5 kg"
+            },
+            "ja": {
+                "name": "フカマル",
+                "category": "りくザメポケモン",
+                "entry": "おおぐちを\\x{3000}つかった\\x{3000}こうげきは\nいりょく\\x{3000}じゅうぶんだが\\x{3000}まだ\nうまくたたかえず\\x{3000}じぶんもきずつく。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 58,
         "attack": 70,

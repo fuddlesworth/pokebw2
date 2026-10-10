@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Milotic",
-    "category": "Tender Pokémon",
-    "pokedex_entry": "Its lovely scales are described as\nrainbow colored. They change color\ndepending on the viewing angle.",
+    "pokedex": {
+        "category": "Tender Pokémon",
+        "entry": "Its lovely scales are described as\nrainbow colored. They change color\ndepending on the viewing angle.",
+        "height": "20'04\"",
+        "weight": "357.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Milotic",
+                "category": "Tender Pokémon",
+                "entry": "Its lovely scales are described as\nrainbow colored. They change color\ndepending on the viewing angle.",
+                "height": "20'04\"",
+                "weight": "357.1 lbs."
+            },
+            "fr": {
+                "name": "Milobellus",
+                "category": "Pokémon Tendre",
+                "entry": "Ses splendides écailles aux couleurs\nde l'arc-en-ciel changent de teinte\nselon l'angle de vue.",
+                "height": "6,2 m",
+                "weight": "162,0 kg"
+            },
+            "de": {
+                "name": "Milotic",
+                "category": "Zartheit",
+                "entry": "Seine Schuppen sind regenbogenfarben.\nDie jeweiligen Farben verändern sich\nje nach Blickwinkel.",
+                "height": "6,2 m",
+                "weight": "162,0 kg"
+            },
+            "it": {
+                "name": "Milotic",
+                "category": "Pokémon Tenerezza",
+                "entry": "Le sue bellissime scaglie hanno i colori\ndell'arcobaleno, che cambiano a seconda\ndell'angolazione.",
+                "height": "6,2 m",
+                "weight": "162,0 kg"
+            },
+            "ko": {
+                "name": "밀로틱",
+                "category": "사랑포켓몬",
+                "entry": "무지개색이라고 전해지는 아름다운\n비늘은 보는 방향을 바꾸면\n여러 가지 색으로 변화한다.",
+                "height": "6.2 m",
+                "weight": "162.0 kg"
+            },
+            "es": {
+                "name": "Milotic",
+                "category": "Pokémon Tierno",
+                "entry": "Sus preciosas escamas tienen todos\nlos colores del arcoíris y cambian\nde color según el ángulo de visión.",
+                "height": "6,2 m",
+                "weight": "162,0 kg"
+            },
+            "ja": {
+                "name": "ミロカロス",
+                "category": "いつくしみポケモン",
+                "entry": "にじいろと\\x{3000}いわれる\\x{3000}きれいな\nウロコは\\x{3000}みるほうこうを\\x{3000}かえると\nさまざまな\\x{3000}いろに\\x{3000}へんかする。",
+                "height": "\\x{ff16}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff16}\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 95,
         "attack": 60,

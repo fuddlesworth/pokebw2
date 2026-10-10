@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Grovyle",
-    "category": "Wood Gecko Pokémon",
-    "pokedex_entry": "It lives in dense jungles. While\nclosing in on its prey, it leaps\nfrom branch to branch.",
+    "pokedex": {
+        "category": "Wood Gecko Pokémon",
+        "entry": "It lives in dense jungles. While\nclosing in on its prey, it leaps\nfrom branch to branch.",
+        "height": "2'11\"",
+        "weight": "47.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Grovyle",
+                "category": "Wood Gecko Pokémon",
+                "entry": "It lives in dense jungles. While\nclosing in on its prey, it leaps\nfrom branch to branch.",
+                "height": "2'11\"",
+                "weight": "47.6 lbs."
+            },
+            "fr": {
+                "name": "Massko",
+                "category": "Pokémon Bois Gecko",
+                "entry": "Il vit dans les jungles denses.\nIl saute de branche en branche\npour approcher de sa proie.",
+                "height": "0,9 m",
+                "weight": "21,6 kg"
+            },
+            "de": {
+                "name": "Reptain",
+                "category": "Waldgecko",
+                "entry": "Es lebt im dichten Dschungel.\nEs springt von Ast zu Ast,\nwenn es sich einer Beute nähert.",
+                "height": "0,9 m",
+                "weight": "21,6 kg"
+            },
+            "it": {
+                "name": "Grovyle",
+                "category": "Pokémon Legnogeco",
+                "entry": "Vive in giungle fitte. Si avvicina alle\nprede saltando di ramo in ramo.",
+                "height": "0,9 m",
+                "weight": "21,6 kg"
+            },
+            "ko": {
+                "name": "나무돌이",
+                "category": "숲도마뱀포켓몬",
+                "entry": "밀림에 서식한다.\n가지에서 가지로 뛰어 옮겨가며\n이동해서 먹이에 접근한다.",
+                "height": "0.9 m",
+                "weight": "21.6 kg"
+            },
+            "es": {
+                "name": "Grovyle",
+                "category": "Pokémon Geco Bosque",
+                "entry": "Vive en selvas frondosas. Salta de\nrama en rama para acercarse a\nsus presas.",
+                "height": "0,9 m",
+                "weight": "21,6 kg"
+            },
+            "ja": {
+                "name": "ジュプトル",
+                "category": "もりトカゲポケモン",
+                "entry": "みつりんに\\x{3000}せいそくする。\nえだから\\x{3000}えだへ\\x{3000}とびうつりながら\nいどうして\\x{3000}えものに\\x{3000}せっきんする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 65,

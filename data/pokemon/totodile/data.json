@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Totodile",
-    "category": "Big Jaw Pokémon",
-    "pokedex_entry": "It has the habit of biting anything\nwith its developed jaws. Even its\nTrainer needs to be careful.",
+    "pokedex": {
+        "category": "Big Jaw Pokémon",
+        "entry": "It has the habit of biting anything\nwith its developed jaws. Even its\nTrainer needs to be careful.",
+        "height": "2'00\"",
+        "weight": "20.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Totodile",
+                "category": "Big Jaw Pokémon",
+                "entry": "It has the habit of biting anything\nwith its developed jaws. Even its\nTrainer needs to be careful.",
+                "height": "2'00\"",
+                "weight": "20.9 lbs."
+            },
+            "fr": {
+                "name": "Kaiminus",
+                "category": "Pokémon Mâchoire",
+                "entry": "Il broie tout ce qu'il trouve avec\nses mâchoires puissantes. Même\nson Dresseur doit s'en méfier.",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "de": {
+                "name": "Karnimani",
+                "category": "Großmaul",
+                "entry": "Es hat die Angewohnheit, nach allem\nzu schnappen, was es sieht. Selbst\nseine Trainer müssen aufpassen.",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "it": {
+                "name": "Totodile",
+                "category": "Pokémon Mascellone",
+                "entry": "Ha l'abitudine di mordere ogni cosa con\nle potenti mandibole. Neppure il suo\nAllenatore è al sicuro!",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "ko": {
+                "name": "리아코",
+                "category": "큰턱포켓몬",
+                "entry": "발달된 턱을 갖고 있어 무엇이든\n물어버리는 습성이 있다.\n트레이너도 주의가 필요하다.",
+                "height": "0.6 m",
+                "weight": "9.5 kg"
+            },
+            "es": {
+                "name": "Totodile",
+                "category": "Pokémon Fauces",
+                "entry": "Tiene costumbre de morderlo todo\ncon sus poderosas fauces, incluso\nEntrenadores.",
+                "height": "0,6 m",
+                "weight": "9,5 kg"
+            },
+            "ja": {
+                "name": "ワニノコ",
+                "category": "おおあごポケモン",
+                "entry": "はったつした\\x{3000}あごを\\x{3000}もち\nなんにでも\\x{3000}かみつく\\x{3000}しゅうせい。\nトレーナーも\\x{3000}ちゅういが\\x{3000}ひつよう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 65,

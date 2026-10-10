@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Snorlax",
-    "category": "Sleeping Pokémon",
-    "pokedex_entry": "When its belly is full, it becomes\ntoo lethargic to even lift a finger,\nso it is safe to bounce on its belly.",
+    "pokedex": {
+        "category": "Sleeping Pokémon",
+        "entry": "When its belly is full, it becomes\ntoo lethargic to even lift a finger,\nso it is safe to bounce on its belly.",
+        "height": "6'11\"",
+        "weight": "1014.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Snorlax",
+                "category": "Sleeping Pokémon",
+                "entry": "When its belly is full, it becomes\ntoo lethargic to even lift a finger,\nso it is safe to bounce on its belly.",
+                "height": "6'11\"",
+                "weight": "1014.1 lbs."
+            },
+            "fr": {
+                "name": "Ronflex",
+                "category": "Pokémon Pionceur",
+                "entry": "Une fois le ventre plein, il est trop\namorphe pour lever le petit doigt.\nSautez sur son ventre!",
+                "height": "2,1 m",
+                "weight": "460,0 kg"
+            },
+            "de": {
+                "name": "Relaxo",
+                "category": "Tagträumer",
+                "entry": "Ist sein Magen voll, wird es sehr\nlethargisch. Nun kann man problemlos\nauf seinem Bauch umherspringen.",
+                "height": "2,1 m",
+                "weight": "460,0 kg"
+            },
+            "it": {
+                "name": "Snorlax",
+                "category": "Pokémon Sonno",
+                "entry": "Quando ha la pancia piena diventa\ntroppo pigro per muoversi e si può\nsaltargli sopra senza pericolo.",
+                "height": "2,1 m",
+                "weight": "460,0 kg"
+            },
+            "ko": {
+                "name": "잠만보",
+                "category": "졸음포켓몬",
+                "entry": "배가 부르면 손가락 하나를\n움직이는 것조차 귀찮아하므로\n배에 올라타도 괜찮다.",
+                "height": "2.1 m",
+                "weight": "460.0 kg"
+            },
+            "es": {
+                "name": "Snorlax",
+                "category": "Pokémon Dormir",
+                "entry": "Cuando tiene la tripa llena, no puede\nni mover un dedo. En ese momento\nde letargo, puedes saltar en su tripa.",
+                "height": "2,1 m",
+                "weight": "460,0 kg"
+            },
+            "ja": {
+                "name": "カビゴン",
+                "category": "いねむりポケモン",
+                "entry": "まんぷくになると\\x{3000}ゆびすら\nうごかすのが\\x{3000}めんどうに\\x{3000}なるので\nおなかに\\x{3000}のっても\\x{3000}だいじょうぶ。",
+                "height": "\\x{ff12}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff16}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 160,
         "attack": 110,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Croconaw",
-    "category": "Big Jaw Pokémon",
-    "pokedex_entry": "Once it bites down, it won't let go\nuntil it loses its fangs. New fangs\nquickly grow into place.",
+    "pokedex": {
+        "category": "Big Jaw Pokémon",
+        "entry": "Once it bites down, it won't let go\nuntil it loses its fangs. New fangs\nquickly grow into place.",
+        "height": "3'07\"",
+        "weight": "55.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Croconaw",
+                "category": "Big Jaw Pokémon",
+                "entry": "Once it bites down, it won't let go\nuntil it loses its fangs. New fangs\nquickly grow into place.",
+                "height": "3'07\"",
+                "weight": "55.1 lbs."
+            },
+            "fr": {
+                "name": "Crocrodil",
+                "category": "Pokémon Mâchoire",
+                "entry": "Quand il mord, il ne lâche pas prise\navant que ses crocs se brisent.\nIls repoussent par la suite.",
+                "height": "1,1 m",
+                "weight": "25,0 kg"
+            },
+            "de": {
+                "name": "Tyracroc",
+                "category": "Großmaul",
+                "entry": "Hat es einmal zugebissen, lässt\nes erst los, wenn es seine Zähne\nverliert, die schnell nachwachsen.",
+                "height": "1,1 m",
+                "weight": "25,0 kg"
+            },
+            "it": {
+                "name": "Croconaw",
+                "category": "Pokémon Mascellone",
+                "entry": "Quando azzanna il nemico, non molla\nla presa finché non gli cadono le zanne,\nche però ricrescono subito.",
+                "height": "1,1 m",
+                "weight": "25,0 kg"
+            },
+            "ko": {
+                "name": "엘리게이",
+                "category": "큰턱포켓몬",
+                "entry": "한번 물면 이빨이\n빠질 때까지 절대 놓지 않는다.\n빠진 이빨은 바로 자라난다.",
+                "height": "1.1 m",
+                "weight": "25.0 kg"
+            },
+            "es": {
+                "name": "Croconaw",
+                "category": "Pokémon Fauces",
+                "entry": "Cuando muerde algo, no lo suelta hasta\nque pierde sus colmillos. Estos se\nregeneran rápidamente.",
+                "height": "1,1 m",
+                "weight": "25,0 kg"
+            },
+            "ja": {
+                "name": "アリゲイツ",
+                "category": "おおあごポケモン",
+                "entry": "いちど\\x{3000}かみつくと\\x{3000}キバが\nぬけるまで\\x{3000}ぜったいに\\x{3000}はなさない。\nぬけた\\x{3000}キバは\\x{3000}すぐに\\x{3000}はえてくる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 80,

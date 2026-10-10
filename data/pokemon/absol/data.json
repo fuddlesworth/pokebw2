@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Absol",
-    "category": "Disaster Pokémon",
-    "pokedex_entry": "It appears from deep in the mountains\nto warn people about upcoming disasters\nit has sensed with its horn.",
+    "pokedex": {
+        "category": "Disaster Pokémon",
+        "entry": "It appears from deep in the mountains\nto warn people about upcoming disasters\nit has sensed with its horn.",
+        "height": "3'11\"",
+        "weight": "103.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Absol",
+                "category": "Disaster Pokémon",
+                "entry": "Rumored to sense disasters with its\nhorn, it became a target. It fled\ndeep into the mountains.",
+                "height": "3'11\"",
+                "weight": "103.6 lbs."
+            },
+            "fr": {
+                "name": "Absol",
+                "category": "Pokémon Désastre",
+                "entry": "La capacité de sa corne à sentir\nles catastrophes ayant trop attiré\nl'attention sur lui, il vit reclus.",
+                "height": "1,2 m",
+                "weight": "47,0 kg"
+            },
+            "de": {
+                "name": "Absol",
+                "category": "Desaster",
+                "entry": "Man glaubt, es ahne mit seinen\nHörnern Katastrophen voraus.\nAus Angst floh es in die Berge.",
+                "height": "1,2 m",
+                "weight": "47,0 kg"
+            },
+            "it": {
+                "name": "Absol",
+                "category": "Pokémon Catastrofe",
+                "entry": "Si dice che sia in grado di prevedere\ni disastri con il suo corno. Si è rifugiato\nsulle montagne.",
+                "height": "1,2 m",
+                "weight": "47,0 kg"
+            },
+            "ko": {
+                "name": "앱솔",
+                "category": "재난포켓몬",
+                "entry": "뿔이 불행을 감지한다는\n소문이 돌아 표적이 되었기에\n산속으로 모습을 감췄다.",
+                "height": "1.2 m",
+                "weight": "47.0 kg"
+            },
+            "es": {
+                "name": "Absol",
+                "category": "Pokémon Catástrofe",
+                "entry": "Cuando se supo que presentía los\ndesastres con su cuerno, tuvo que\nbuscar refugio en las montañas.",
+                "height": "1,2 m",
+                "weight": "47,0 kg"
+            },
+            "ja": {
+                "name": "アブソル",
+                "category": "わざわいポケモン",
+                "entry": "ツノが\\x{3000}わざわいを\\x{3000}かんちすると\nうわさされ\\x{3000}ねらわれたため\nやまおくに\\x{3000}すがたを\\x{3000}けした。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff17}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 130,

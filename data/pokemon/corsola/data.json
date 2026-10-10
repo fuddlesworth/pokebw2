@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Corsola",
-    "category": "Coral Pokémon",
-    "pokedex_entry": "They prefer unpolluted southern seas.\nTheir coral branches lose their color\nand deteriorate in dirty water.",
+    "pokedex": {
+        "category": "Coral Pokémon",
+        "entry": "They prefer unpolluted southern seas.\nTheir coral branches lose their color\nand deteriorate in dirty water.",
+        "height": "2'00\"",
+        "weight": "11.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Corsola",
+                "category": "Coral Pokémon",
+                "entry": "Many live in the clean seas of the\nsouth. They apparently can't live\nin polluted waters.",
+                "height": "2'00\"",
+                "weight": "11.0 lbs."
+            },
+            "fr": {
+                "name": "Corayon",
+                "category": "Pokémon Corail",
+                "entry": "On en trouve beaucoup dans les mers\nclaires du sud. On dirait qu'il ne peut\npas vivre en eau polluée.",
+                "height": "0,6 m",
+                "weight": "5,0 kg"
+            },
+            "de": {
+                "name": "Corasonn",
+                "category": "Koralle",
+                "entry": "Viele von ihnen leben in den sauberen\nSeen im Süden. In verschmutzten\nkönnen sie nicht leben.",
+                "height": "0,6 m",
+                "weight": "5,0 kg"
+            },
+            "it": {
+                "name": "Corsola",
+                "category": "Pokémon Corallo",
+                "entry": "Vivono numerosi nei limpidi mari del sud.\nPare che non riescano a sopravvivere\nnelle acque inquinate.",
+                "height": "0,6 m",
+                "weight": "5,0 kg"
+            },
+            "ko": {
+                "name": "코산호",
+                "category": "산호포켓몬",
+                "entry": "남쪽의 깨끗한 바다에는\n많은 코산호가 있다.\n더러워진 바다에서는 살 수 없다.",
+                "height": "0.6 m",
+                "weight": "5.0 kg"
+            },
+            "es": {
+                "name": "Corsola",
+                "category": "Pokémon Coral",
+                "entry": "Muchos viven en los cristalinos\nmares del sur. Son incapaces\nde vivir en aguas contaminadas.",
+                "height": "0,6 m",
+                "weight": "5,0 kg"
+            },
+            "ja": {
+                "name": "サニーゴ",
+                "category": "さんごポケモン",
+                "entry": "みなみの\\x{3000}きれいな\\x{3000}うみには\nたくさんの\\x{3000}サニーゴが\\x{3000}いる。\nよごれた\\x{3000}うみでは\\x{3000}いきられない。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 55,

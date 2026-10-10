@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Frillish",
-    "category": "Floating Pokémon",
-    "pokedex_entry": "If its veil-like arms stun and wrap\na foe, that foe will be dragged miles\nbelow the surface, never to return.",
+    "pokedex": {
+        "category": "Floating Pokémon",
+        "entry": "If its veil-like arms stun and wrap\na foe, that foe will be dragged miles\nbelow the surface, never to return.",
+        "height": "3'11\"",
+        "weight": "72.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ふゆうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 40,

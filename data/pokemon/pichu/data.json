@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Pichu",
-    "category": "Tiny Mouse Pokémon",
-    "pokedex_entry": "The electric sacs in its cheeks are\nsmall. If even a little electricity\nleaks, it becomes shocked.",
+    "pokedex": {
+        "category": "Tiny Mouse Pokémon",
+        "entry": "The electric sacs in its cheeks are\nsmall. If even a little electricity\nleaks, it becomes shocked.",
+        "height": "1'00\"",
+        "weight": "4.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Pichu",
+                "category": "Tiny Mouse Pokémon",
+                "entry": "The electric sacs in its cheeks are\nsmall. If even a little electricity\nleaks, it becomes shocked.",
+                "height": "1'00\"",
+                "weight": "4.4 lbs."
+            },
+            "fr": {
+                "name": "Pichu",
+                "category": "Pokémon Minisouris",
+                "entry": "Les poches électriques de ses\njoues sont encore petites, mais\nrisquent de l'électrocuter.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "de": {
+                "name": "Pichu",
+                "category": "Babymaus",
+                "entry": "Tritt auch nur eine geringe Menge\nElektrizität aus seinen Backen aus,\nbekommt es einen Schlag.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "it": {
+                "name": "Pichu",
+                "category": "Pokémon Topino",
+                "entry": "Le sacche elettriche sulle sue guance\nsono piccole. Se fuoriesce elettricità,\nresta fulminato.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ko": {
+                "name": "피츄",
+                "category": "아기쥐포켓몬",
+                "entry": "볼의 전기 주머니가 작아서\n조금이라도 전기가 넘치게 되면\n자기 자신이 감전되어 버린다.",
+                "height": "0.3 m",
+                "weight": "2.0 kg"
+            },
+            "es": {
+                "name": "Pichu",
+                "category": "Pokémon Ratoncito",
+                "entry": "Las bolsas de electricidad de sus\nmejillas son muy pequeñas. La mínima\nfuga le provoca una descarga.",
+                "height": "0,3 m",
+                "weight": "2,0 kg"
+            },
+            "ja": {
+                "name": "ピチュー",
+                "category": "こねずみポケモン",
+                "entry": "ほほの\\x{3000}でんきぶくろは\\x{3000}ちいさく\nちょっとでも\\x{3000}でんきが\\x{3000}あふれると\nじぶんじしんが\\x{3000}しびれてしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 20,
         "attack": 40,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shuppet",
-    "category": "Puppet Pokémon",
-    "pokedex_entry": "It feeds on the dark emotions of\nsadness and hatred, which make it\ngrow steadily stronger.",
+    "pokedex": {
+        "category": "Puppet Pokémon",
+        "entry": "It feeds on the dark emotions of\nsadness and hatred, which make it\ngrow steadily stronger.",
+        "height": "2'00\"",
+        "weight": "5.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Shuppet",
+                "category": "Puppet Pokémon",
+                "entry": "It loves vengeful emotions and\nhangs in rows under the eaves of\nhouses where vengeful people live.",
+                "height": "2'00\"",
+                "weight": "5.1 lbs."
+            },
+            "fr": {
+                "name": "Polichombr",
+                "category": "Pokémon Poupée",
+                "entry": "Il aime le goût de la vengeance.\nIls vivent en rangs sous les\ngouttières des gens vindicatifs.",
+                "height": "0,6 m",
+                "weight": "2,3 kg"
+            },
+            "de": {
+                "name": "Shuppet",
+                "category": "Puppe",
+                "entry": "Es liebt Rachegefühle. Diese Pokémon\nhängen sich an Dachrinnen von Häusern,\nin denen Rachsüchtige leben.",
+                "height": "0,6 m",
+                "weight": "2,3 kg"
+            },
+            "it": {
+                "name": "Shuppet",
+                "category": "Pokémon Pupazzo",
+                "entry": "Si annida sotto le grondaie di case dove\nvive gente che cova sentimenti di\nvendetta, che lui adora.",
+                "height": "0,6 m",
+                "weight": "2,3 kg"
+            },
+            "ko": {
+                "name": "어둠대신",
+                "category": "인형포켓몬",
+                "entry": "원망하는 감정을 매우 좋아한다.\n원한을 가지고 있는 사람이 사는 집\n처마 밑에 죽 매달려 있다.",
+                "height": "0.6 m",
+                "weight": "2.3 kg"
+            },
+            "es": {
+                "name": "Shuppet",
+                "category": "Pokémon Títere",
+                "entry": "Les atraen los sentimientos de\nrencor y celos. Suelen vivir cerca\nde las casas de gente vengativa.",
+                "height": "0,6 m",
+                "weight": "2,3 kg"
+            },
+            "ja": {
+                "name": "カゲボウズ",
+                "category": "にんぎょうポケモン",
+                "entry": "うらみの\\x{3000}かんじょうが\\x{3000}だいすき。\nうらみを\\x{3000}もつ\\x{3000}ひとが\\x{3000}すむ\\x{3000}いえの\nのきしたに\\x{3000}ずらりと\\x{3000}ぶらさがる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff13}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 44,
         "attack": 75,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cascoon",
-    "category": "Cocoon Pokémon",
-    "pokedex_entry": "It never forgets any attack it\nendured while in the cocoon.\nAfter evolution, it seeks payback.",
+    "pokedex": {
+        "category": "Cocoon Pokémon",
+        "entry": "It never forgets any attack it\nendured while in the cocoon.\nAfter evolution, it seeks payback.",
+        "height": "2'04\"",
+        "weight": "25.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Cascoon",
+                "category": "Cocoon Pokémon",
+                "entry": "It never forgets any attack it\nendured while in the cocoon.\nAfter evolution, it seeks payback.",
+                "height": "2'04\"",
+                "weight": "25.4 lbs."
+            },
+            "fr": {
+                "name": "Blindalys",
+                "category": "Pokémon Cocon",
+                "entry": "Rancunier, il n'oublie aucune des\nattaques subies dans le cocon et\nse venge une fois qu'il a évolué.",
+                "height": "0,7 m",
+                "weight": "11,5 kg"
+            },
+            "de": {
+                "name": "Panekon",
+                "category": "Kokon",
+                "entry": "Es vergisst keinen Angriff, den es\nim Kokon erdulden musste. Nach\nder Entwicklung sinnt es auf Rache.",
+                "height": "0,7 m",
+                "weight": "11,5 kg"
+            },
+            "it": {
+                "name": "Cascoon",
+                "category": "Pokémon Bozzolo",
+                "entry": "Non dimentica mai gli attacchi subiti\ndentro il bozzolo. Dopo l'evoluzione\ncerca di vendicarsi.",
+                "height": "0,7 m",
+                "weight": "11,5 kg"
+            },
+            "ko": {
+                "name": "카스쿤",
+                "category": "번데기포켓몬",
+                "entry": "고치에 들어가 있는 사이에\n받은 공격은 진화해도\n잊지 않고 반드시 앙갚음한다.",
+                "height": "0.7 m",
+                "weight": "11.5 kg"
+            },
+            "es": {
+                "name": "Cascoon",
+                "category": "Pokémon Capullo",
+                "entry": "Jamás olvida a quienes lo atacaron\nmientras estaba en su capullo.\nCuando evoluciona, busca venganza.",
+                "height": "0,7 m",
+                "weight": "11,5 kg"
+            },
+            "ja": {
+                "name": "マユルド",
+                "category": "さなぎポケモン",
+                "entry": "マユに\\x{3000}こもっている\\x{3000}あいだに\nうけた\\x{3000}こうげきは\\x{3000}しんかしても\nわすれずに\\x{3000}かならず\\x{3000}しかえしする。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 35,

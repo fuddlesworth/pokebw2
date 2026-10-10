@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tyrogue",
-    "category": "Scuffle Pokémon",
-    "pokedex_entry": "It is famous for its eagerness to\nfight and always nurses injuries\nfrom challenging larger foes.",
+    "pokedex": {
+        "category": "Scuffle Pokémon",
+        "entry": "It is famous for its eagerness to\nfight and always nurses injuries\nfrom challenging larger foes.",
+        "height": "2'04\"",
+        "weight": "46.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Tyrogue",
+                "category": "Scuffle Pokémon",
+                "entry": "It is famous for its eagerness to\nfight and always nurses injuries\nfrom challenging larger foes.",
+                "height": "2'04\"",
+                "weight": "46.3 lbs."
+            },
+            "fr": {
+                "name": "Debugant",
+                "category": "Pokémon Bagarreur",
+                "entry": "Il est réputé pour sa combativité.\nIl se blesse toujours en défiant\ndes ennemis plus grands.",
+                "height": "0,7 m",
+                "weight": "21,0 kg"
+            },
+            "de": {
+                "name": "Rabauz",
+                "category": "Racker",
+                "entry": "Es ist bekannt für seine\nKampfbegierde. Es erholt sich\nständig von Verletzungen.",
+                "height": "0,7 m",
+                "weight": "21,0 kg"
+            },
+            "it": {
+                "name": "Tyrogue",
+                "category": "Pokémon Baruffa",
+                "entry": "È famoso per la sua brama di lotta.\nSubisce sempre ferite dai nemici\npiù forti di lui che sfida.",
+                "height": "0,7 m",
+                "weight": "21,0 kg"
+            },
+            "ko": {
+                "name": "배루키",
+                "category": "싸움포켓몬",
+                "entry": "툭하면 싸우려 드는 것으로\n유명하다. 자신보다 큰 상대에게\n도전하므로 상처가 끊이지 않는다.",
+                "height": "0.7 m",
+                "weight": "21.0 kg"
+            },
+            "es": {
+                "name": "Tyrogue",
+                "category": "Pokémon Peleón",
+                "entry": "Famoso por su disposición a la\nlucha. Siempre tiene heridas por\nluchar con enemigos más grandes.",
+                "height": "0,7 m",
+                "weight": "21,0 kg"
+            },
+            "ja": {
+                "name": "バルキー",
+                "category": "けんかポケモン",
+                "entry": "けんかっぱやいことで\\x{3000}ゆうめい。\nじぶんよりも\\x{3000}おおきな\\x{3000}あいてに\nいどみかかるので\\x{3000}きずが\\x{3000}たえない。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 35,

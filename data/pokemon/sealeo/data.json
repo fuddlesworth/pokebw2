@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sealeo",
-    "category": "Ball Roll Pokémon",
-    "pokedex_entry": "Be it Spheal or Poké Ball, it will spin\nany round object on its nose\nwith the greatest of ease.",
+    "pokedex": {
+        "category": "Ball Roll Pokémon",
+        "entry": "Be it Spheal or Poké Ball, it will spin\nany round object on its nose\nwith the greatest of ease.",
+        "height": "3'07\"",
+        "weight": "193.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sealeo",
+                "category": "Ball Roll Pokémon",
+                "entry": "It habitually spins things on its\nnose. By doing so, it learns\ntextures and odors.",
+                "height": "3'07\"",
+                "weight": "193.1 lbs."
+            },
+            "fr": {
+                "name": "Phogleur",
+                "category": "Pokémon Roule Boule",
+                "entry": "Il fait souvent tourner des objets\nsur son museau pour connaître\nleur odeur et leur texture.",
+                "height": "1,1 m",
+                "weight": "87,6 kg"
+            },
+            "de": {
+                "name": "Seejong",
+                "category": "Spielball",
+                "entry": "Es balanciert Dinge auf seiner Nase.\nDabei lernt es etwas über die\nBeschaffenheit und den Geruch.",
+                "height": "1,1 m",
+                "weight": "87,6 kg"
+            },
+            "it": {
+                "name": "Sealeo",
+                "category": "Pokémon Rotapalla",
+                "entry": "Fa roteare oggetti sul naso per\ncontrollarne l'odore e la consistenza.",
+                "height": "1,1 m",
+                "weight": "87,6 kg"
+            },
+            "ko": {
+                "name": "씨레오",
+                "category": "공돌리기포켓몬",
+                "entry": "무엇이든 코 위에서 돌리는\n버릇을 가지고 있다. 돌리면서\n냄새나 감촉을 기억한다.",
+                "height": "1.1 m",
+                "weight": "87.6 kg"
+            },
+            "es": {
+                "name": "Sealeo",
+                "category": "Pokémon Rodabola",
+                "entry": "Suele hacer girar objetos en su nariz.\nDe esta forma aprende texturas\ny olores.",
+                "height": "1,1 m",
+                "weight": "87,6 kg"
+            },
+            "ja": {
+                "name": "トドグラー",
+                "category": "たままわしポケモン",
+                "entry": "なんでも\\x{3000}はなの\\x{3000}うえで\\x{3000}まわす\nクセを\\x{3000}もつ。まわしながら\\x{3000}においや\nかんしょくを\\x{3000}おぼえるのだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff17}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 60,

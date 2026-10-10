@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Noctowl",
-    "category": "Owl Pokémon",
-    "pokedex_entry": "Its eyes are specially developed\nto enable it to see clearly even in\nmurky darkness and minimal light.",
+    "pokedex": {
+        "category": "Owl Pokémon",
+        "entry": "Its eyes are specially developed\nto enable it to see clearly even in\nmurky darkness and minimal light.",
+        "height": "5'03\"",
+        "weight": "89.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Noctowl",
+                "category": "Owl Pokémon",
+                "entry": "Its eyes are specially developed\nto enable it to see clearly even in\nmurky darkness and minimal light.",
+                "height": "5'03\"",
+                "weight": "89.9 lbs."
+            },
+            "fr": {
+                "name": "Noarfang",
+                "category": "Pokémon Hibou",
+                "entry": "Ses yeux sont capables de voir\ndistinctement même quand il fait\ntrès sombre.",
+                "height": "1,6 m",
+                "weight": "40,8 kg"
+            },
+            "de": {
+                "name": "Noctuh",
+                "category": "Eule",
+                "entry": "Seine Augen sind so gut entwickelt,\ndass es selbst in tiefster Dunkelheit\nnoch klar sehen kann.",
+                "height": "1,6 m",
+                "weight": "40,8 kg"
+            },
+            "it": {
+                "name": "Noctowl",
+                "category": "Pokémon Gufo",
+                "entry": "Ha una vista acutissima, che gli permette\ndi vedere anche nel buio più profondo e\ncon la luce più fioca.",
+                "height": "1,6 m",
+                "weight": "40,8 kg"
+            },
+            "ko": {
+                "name": "야부엉",
+                "category": "부엉이포켓몬",
+                "entry": "특수한 구조의 두 눈은\n약간의 빛만 있으면\n어둠 속에서도 낮처럼 볼 수 있다.",
+                "height": "1.6 m",
+                "weight": "40.8 kg"
+            },
+            "es": {
+                "name": "Noctowl",
+                "category": "Pokémon Búho",
+                "entry": "Tiene los ojos muy desarrollados y\npuede ver con increíble claridad\nen la oscuridad más densa.",
+                "height": "1,6 m",
+                "weight": "40,8 kg"
+            },
+            "ja": {
+                "name": "ヨルノズク",
+                "category": "ふくろうポケモン",
+                "entry": "とくしゅな\\x{3000}つくりの\\x{3000}りょうめは\nわずかな\\x{3000}ひかりさえ\\x{3000}あれば\nくらやみでも\\x{3000}ひるのように\\x{3000}みえる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 50,

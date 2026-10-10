@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Druddigon",
-    "category": "Cave Pokémon",
-    "pokedex_entry": "It runs through the narrow tunnels\nformed by Excadrill and Onix.\nIt uses its sharp claws to catch prey.",
+    "pokedex": {
+        "category": "Cave Pokémon",
+        "entry": "It runs through the narrow tunnels\nformed by Excadrill and Onix.\nIt uses its sharp claws to catch prey.",
+        "height": "5'03\"",
+        "weight": "306.4 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ほらあなポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 77,
         "attack": 120,

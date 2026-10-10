@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Flareon",
-    "category": "Flame Pokémon",
-    "pokedex_entry": "Inhaled air is carried to its flame sac,\nheated, and exhaled as fire\nthat reaches over 3,000 degrees F.",
+    "pokedex": {
+        "category": "Flame Pokémon",
+        "entry": "Inhaled air is carried to its flame sac,\nheated, and exhaled as fire\nthat reaches over 3,000 degrees F.",
+        "height": "2'11\"",
+        "weight": "55.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Flareon",
+                "category": "Flame Pokémon",
+                "entry": "Inhaled air is heated in the flame\nsac in its body to an intense fire\nover 3,000 degrees Fahrenheit.",
+                "height": "2'11\"",
+                "weight": "55.1 lbs."
+            },
+            "fr": {
+                "name": "Pyroli",
+                "category": "Pokémon Flamme",
+                "entry": "L'air qu'il inspire est chauffé par\nla glande enflammée de son corps,\natteignant les 1 700 °C.",
+                "height": "0,9 m",
+                "weight": "25,0 kg"
+            },
+            "de": {
+                "name": "Flamara",
+                "category": "Feuer",
+                "entry": "Eingeatmete Luft wird in einem\nFlammensack in seinem Körper\nauf ca. 1 700 Grad erhitzt.",
+                "height": "0,9 m",
+                "weight": "25,0 kg"
+            },
+            "it": {
+                "name": "Flareon",
+                "category": "Pokémon Fiamma",
+                "entry": "La sacca ardente dentro il suo\ncorpo infiamma l'aria che respira,\nche supera i 1650°C.",
+                "height": "0,9 m",
+                "weight": "25,0 kg"
+            },
+            "ko": {
+                "name": "부스터",
+                "category": "불꽃포켓몬",
+                "entry": "들이마신 숨은 체내에 있는\n불꽃 주머니에서 1700도까지\n달궈져 불꽃이 된다.",
+                "height": "0.9 m",
+                "weight": "25.0 kg"
+            },
+            "es": {
+                "name": "Flareon",
+                "category": "Pokémon Llama",
+                "entry": "Calienta el aire que inhala en su saca\nde fuego y lo lleva a más de 1700°\nde temperatura.",
+                "height": "0,9 m",
+                "weight": "25,0 kg"
+            },
+            "ja": {
+                "name": "ブースター",
+                "category": "ほのおポケモン",
+                "entry": "すいこんだ\\x{3000}いきは\\x{3000}たいないの\nほのおぶくろで\\x{3000}\\x{ff11}\\x{ff17}\\x{ff10}\\x{ff10}どに\\x{3000}まで\nねっせられて\\x{3000}ほのおと\\x{3000}なる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 130,

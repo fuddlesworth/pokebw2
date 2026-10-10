@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Minccino",
-    "category": "Chinchilla Pokémon",
-    "pokedex_entry": "Minccino greet each other\nby grooming one another\nthoroughly with their tails.",
+    "pokedex": {
+        "category": "Chinchilla Pokémon",
+        "entry": "Minccino greet each other\nby grooming one another\nthoroughly with their tails.",
+        "height": "1'04\"",
+        "weight": "12.8 lbs.",
+        "languages": {
+            "ja": {
+                "category": "チンチラポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 50,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gastly",
-    "category": "Gas Pokémon",
-    "pokedex_entry": "Born from gases, anyone would\nfaint if engulfed by its gaseous\nbody, which contains poison.",
+    "pokedex": {
+        "category": "Gas Pokémon",
+        "entry": "Born from gases, anyone would\nfaint if engulfed by its gaseous\nbody, which contains poison.",
+        "height": "4'03\"",
+        "weight": "0.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Gastly",
+                "category": "Gas Pokémon",
+                "entry": "Born from gases, anyone would\nfaint if engulfed by its gaseous\nbody, which contains poison.",
+                "height": "4'03\"",
+                "weight": "0.2 lbs."
+            },
+            "fr": {
+                "name": "Fantominus",
+                "category": "Pokémon Gaz",
+                "entry": "Son corps composé de gaz toxique\npourrait asphyxier n'importe qui\nen quelques secondes.",
+                "height": "1,3 m",
+                "weight": "0,1 kg"
+            },
+            "de": {
+                "name": "Nebulak",
+                "category": "Gas",
+                "entry": "Eingehüllt in seinen gasförmigen,\nGift enthaltenden Körper würde\njeder in Ohnmacht fallen.",
+                "height": "1,3 m",
+                "weight": "0,1 kg"
+            },
+            "it": {
+                "name": "Gastly",
+                "category": "Pokémon Gas",
+                "entry": "Generato da sostanze gassose, fa\nperdere i sensi a chiunque respiri\ni gas tossici di cui è costituito.",
+                "height": "1,3 m",
+                "weight": "0,1 kg"
+            },
+            "ko": {
+                "name": "고오스",
+                "category": "가스포켓몬",
+                "entry": "가스에서 태어난 생명체다.\n독을 포함한 가스로 된 몸에\n둘러싸이면 누구든지 기절한다.",
+                "height": "1.3 m",
+                "weight": "0.1 kg"
+            },
+            "es": {
+                "name": "Gastly",
+                "category": "Pokémon Gas",
+                "entry": "Nació a partir de gases venenosos que\nasfixiarían a cualquiera que se viera\nenvuelto en ellos.",
+                "height": "1,3 m",
+                "weight": "0,1 kg"
+            },
+            "ja": {
+                "name": "ゴース",
+                "category": "ガスじょうポケモン",
+                "entry": "ガスから\\x{3000}うまれた\\x{3000}せいめいたい。\nどくをふくんだ\\x{3000}ガスの\\x{3000}からだに\nつつまれると\\x{3000}だれでも\\x{3000}きぜつする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff10}\\x{ff0e}\\x{ff11}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 35,

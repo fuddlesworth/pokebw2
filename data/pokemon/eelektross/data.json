@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Eelektross",
-    "category": "EleFish Pokémon",
-    "pokedex_entry": "It latches on to prey with its sucker\nmouth, sinking in its fangs and shocking\nthe prey with powerful electricity.",
+    "pokedex": {
+        "category": "EleFish Pokémon",
+        "entry": "It latches on to prey with its sucker\nmouth, sinking in its fangs and shocking\nthe prey with powerful electricity.",
+        "height": "6'11\"",
+        "weight": "177.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "でんきうおポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 115,

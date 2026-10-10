@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Seel",
-    "category": "Sea Lion Pokémon",
-    "pokedex_entry": "The colder it gets, the better it feels.\nIt joyfully swims around oceans so cold\nthat they are filled with floating ice.",
+    "pokedex": {
+        "category": "Sea Lion Pokémon",
+        "entry": "The colder it gets, the better it feels.\nIt joyfully swims around oceans so cold\nthat they are filled with floating ice.",
+        "height": "3'07\"",
+        "weight": "198.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Seel",
+                "category": "Sea Lion Pokémon",
+                "entry": "A Pokémon that lives on icebergs.\nIt swims in the sea using the point\non its head to break up ice.",
+                "height": "3'07\"",
+                "weight": "198.4 lbs."
+            },
+            "fr": {
+                "name": "Otaria",
+                "category": "Pokémon Otarie",
+                "entry": "Un habitant des icebergs.\nEn mer, il utilise la corne sur\nsa tête pour briser la banquise.",
+                "height": "1,1 m",
+                "weight": "90,0 kg"
+            },
+            "de": {
+                "name": "Jurob",
+                "category": "Seehund",
+                "entry": "Dieses Pokémon lebt auf Eisbergen.\nEs schwimmt im Eiswasser und bricht\ndas Eis mithilfe seines Horns.",
+                "height": "1,1 m",
+                "weight": "90,0 kg"
+            },
+            "it": {
+                "name": "Seel",
+                "category": "Pokémon Otaria",
+                "entry": "Pokémon che vive sugli iceberg.\nNuota spaccando il ghiaccio con\nla punta che ha sulla testa.",
+                "height": "1,1 m",
+                "weight": "90,0 kg"
+            },
+            "ko": {
+                "name": "쥬쥬",
+                "category": "강치포켓몬",
+                "entry": "빙산에 사는 포켓몬이다.\n머리의 뾰족하게 돌출된 부분으로\n얼음을 깨고 바다를 헤엄친다.",
+                "height": "1.1 m",
+                "weight": "90.0 kg"
+            },
+            "es": {
+                "name": "Seel",
+                "category": "Pokémon León Mar.",
+                "entry": "Este Pokémon vive en icebergs. Nada en\nel mar y usa el cuerno de su cabeza para\nromper el hielo.",
+                "height": "1,1 m",
+                "weight": "90,0 kg"
+            },
+            "ja": {
+                "name": "パウワウ",
+                "category": "あしかポケモン",
+                "entry": "ひょうざんで\\x{3000}くらす\\x{3000}ポケモン。\nあたまの\\x{3000}とがった\\x{3000}でっぱりで\nこおりを\\x{3000}わって\\x{3000}うみを\\x{3000}およぐ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff19}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 45,

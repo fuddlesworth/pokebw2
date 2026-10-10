@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Zweilous",
-    "category": "Hostile Pokémon",
-    "pokedex_entry": "The two heads do not get along.\nWhichever head eats more than\nthe other gets to be the leader.",
+    "pokedex": {
+        "category": "Hostile Pokémon",
+        "entry": "The two heads do not get along.\nWhichever head eats more than\nthe other gets to be the leader.",
+        "height": "4'07\"",
+        "weight": "110.2 lbs.",
+        "languages": {
+            "ja": {
+                "category": "らんぼうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 72,
         "attack": 85,

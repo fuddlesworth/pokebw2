@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Delcatty",
-    "category": "Prim Pokémon",
-    "pokedex_entry": "The reason it does not have a nest\nis that it simply searches for a clean,\ncomfortable place then sleeps there.",
+    "pokedex": {
+        "category": "Prim Pokémon",
+        "entry": "The reason it does not have a nest\nis that it simply searches for a clean,\ncomfortable place then sleeps there.",
+        "height": "3'07\"",
+        "weight": "71.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Delcatty",
+                "category": "Prim Pokémon",
+                "entry": "It is highly popular among female\nTrainers for its sublime fur.\nIt does not keep a nest.",
+                "height": "3'07\"",
+                "weight": "71.9 lbs."
+            },
+            "fr": {
+                "name": "Delcatty",
+                "category": "Pokémon Guindé",
+                "entry": "Les femmes Dresseurs raffolent\nde sa sublime fourrure. Il ne\npossède pas de nid.",
+                "height": "1,1 m",
+                "weight": "32,6 kg"
+            },
+            "de": {
+                "name": "Enekoro",
+                "category": "Eingebildet",
+                "entry": "Dieses Pokémon ist bei weiblichen\nTrainern aufgrund seines Fells beliebt.",
+                "height": "1,1 m",
+                "weight": "32,6 kg"
+            },
+            "it": {
+                "name": "Delcatty",
+                "category": "Pokémon Finezza",
+                "entry": "Ha successo fra gli Allenatori di sesso\nfemminile per la sua bellissima pelliccia.\nNon ha una tana fissa.",
+                "height": "1,1 m",
+                "weight": "32,6 kg"
+            },
+            "ko": {
+                "name": "델케티",
+                "category": "새침떼기포켓몬",
+                "entry": "아름다운 털을 가지고 있어서 여성\n트레이너들에게 매우 인기있다.\n정해진 거처를 갖고 있지 않다.",
+                "height": "1.1 m",
+                "weight": "32.6 kg"
+            },
+            "es": {
+                "name": "Delcatty",
+                "category": "Pokémon Cursi",
+                "entry": "Tiene mucho éxito entre las\nEntrenadoras por su suave pelaje.\nNo vive en un sitio fijo.",
+                "height": "1,1 m",
+                "weight": "32,6 kg"
+            },
+            "ja": {
+                "name": "エネコロロ",
+                "category": "おすましポケモン",
+                "entry": "うつくしい\\x{3000}けなみを\\x{3000}もち\nじょせいトレーナーに\\x{3000}だいにんき。\nきまった\\x{3000}すみかを\\x{3000}もたない。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff12}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 65,

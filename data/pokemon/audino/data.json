@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Audino",
-    "category": "Hearing Pokémon",
-    "pokedex_entry": "Using the feelers on its ears,\nit can tell how someone is feeling\nor when an egg might hatch.",
+    "pokedex": {
+        "category": "Hearing Pokémon",
+        "entry": "Using the feelers on its ears,\nit can tell how someone is feeling\nor when an egg might hatch.",
+        "height": "3'07\"",
+        "weight": "68.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ヒヤリングポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 103,
         "attack": 60,

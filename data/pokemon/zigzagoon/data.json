@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Zigzagoon",
-    "category": "TinyRaccoon Pokémon",
-    "pokedex_entry": "It walks in zigzag fashion. It is\ngood at finding items in the\ngrass and even in the ground.",
+    "pokedex": {
+        "category": "TinyRaccoon Pokémon",
+        "entry": "It walks in zigzag fashion. It is\ngood at finding items in the\ngrass and even in the ground.",
+        "height": "1'04\"",
+        "weight": "38.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Zigzagoon",
+                "category": "TinyRaccoon Pokémon",
+                "entry": "It walks in zigzag fashion. It is\ngood at finding items in the\ngrass and even in the ground.",
+                "height": "1'04\"",
+                "weight": "38.6 lbs."
+            },
+            "fr": {
+                "name": "Zigzaton",
+                "category": "Pokémon Petit Raton",
+                "entry": "Il marche en zigzaguant et n'a\npas son pareil pour trouver des\nobjets dans l'herbe ou sous terre.",
+                "height": "0,4 m",
+                "weight": "17,5 kg"
+            },
+            "de": {
+                "name": "Zigzachs",
+                "category": "Kleindachs",
+                "entry": "Es läuft im Zickzack. Es hat das\nTalent, Items im Gras, aber auch\nim Boden, zu finden.",
+                "height": "0,4 m",
+                "weight": "17,5 kg"
+            },
+            "it": {
+                "name": "Zigzagoon",
+                "category": "Pokémon Procione",
+                "entry": "Avanza a zigzag. È bravo a trovare\nstrumenti nell'erba e sul terreno.",
+                "height": "0,4 m",
+                "weight": "17,5 kg"
+            },
+            "ko": {
+                "name": "지그제구리",
+                "category": "앙증너구리포켓몬",
+                "entry": "지그재그로 걸어서 풀숲이나\n땅에 묻혀 있는 보물을\n찾아내는 것이 특기인 포켓몬이다.",
+                "height": "0.4 m",
+                "weight": "17.5 kg"
+            },
+            "es": {
+                "name": "Zigzagoon",
+                "category": "Pokémon Mapachito",
+                "entry": "Se mueve en zigzag. Se le da bien\nencontrar objetos ocultos en la hierba\ne incluso enterrados.",
+                "height": "0,4 m",
+                "weight": "17,5 kg"
+            },
+            "ja": {
+                "name": "ジグザグマ",
+                "category": "まめだぬきポケモン",
+                "entry": "ジグザグに\\x{3000}あるいて\\x{3000}くさかげや\nじめんに\\x{3000}うまっている\\x{3000}たからものを\nみつけるのが\\x{3000}とくいな\\x{3000}ポケモン。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff17}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 38,
         "attack": 30,

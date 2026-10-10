@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Anorith",
-    "category": "Old Shrimp Pokémon",
-    "pokedex_entry": "A Pokémon ancestor that was\nreanimated from a fossil. It lived\nin the sea and hunted with claws.",
+    "pokedex": {
+        "category": "Old Shrimp Pokémon",
+        "entry": "A Pokémon ancestor that was\nreanimated from a fossil. It lived\nin the sea and hunted with claws.",
+        "height": "2'04\"",
+        "weight": "27.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Anorith",
+                "category": "Old Shrimp Pokémon",
+                "entry": "A Pokémon ancestor that was\nreanimated from a fossil. It lived\nin the sea and hunted with claws.",
+                "height": "2'04\"",
+                "weight": "27.6 lbs."
+            },
+            "fr": {
+                "name": "Anorith",
+                "category": "Pokémon Crustage",
+                "entry": "Un ancêtre Pokémon réanimé à partir\nd'un fossile. Il vivait en mer et\nchassait avec ses pinces.",
+                "height": "0,7 m",
+                "weight": "12,5 kg"
+            },
+            "de": {
+                "name": "Anorith",
+                "category": "Krebssenior",
+                "entry": "Ein Vorfahre der Pokémon, der aus einem\nFossil neu belebt wurde. Es lebte im Meer\nund jagte mit Klauen.",
+                "height": "0,7 m",
+                "weight": "12,5 kg"
+            },
+            "it": {
+                "name": "Anorith",
+                "category": "Pokémon Primaceo",
+                "entry": "Un antico Pokémon rigenerato da\nun fossile. Viveva nel mare e catturava\nle prede con gli artigli.",
+                "height": "0,7 m",
+                "weight": "12,5 kg"
+            },
+            "ko": {
+                "name": "아노딥스",
+                "category": "고대새우포켓몬",
+                "entry": "화석에서 부활한 포켓몬의\n조상 중 하나. 바다에서 살고\n발톱으로 먹이를 잡는다.",
+                "height": "0.7 m",
+                "weight": "12.5 kg"
+            },
+            "es": {
+                "name": "Anorith",
+                "category": "Pokémon Camarón",
+                "entry": "Este Pokémon fue recreado a partir\nde restos fósiles. Vivía en el mar y\ncazaba con sus pinzas.",
+                "height": "0,7 m",
+                "weight": "12,5 kg"
+            },
+            "ja": {
+                "name": "アノプス",
+                "category": "むかしエビポケモン",
+                "entry": "かせきから\\x{3000}ふっかつした\\x{3000}ポケモンの\nせんぞの\\x{3000}いっしゅ。うみで\\x{3000}くらし\nツメで\\x{3000}えものを\\x{3000}つかまえる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 95,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Raikou",
-    "category": "Thunder Pokémon",
-    "pokedex_entry": "It is said to have fallen with\nlightning. It can fire thunderbolts\nfrom the rain clouds on its back.",
+    "pokedex": {
+        "category": "Thunder Pokémon",
+        "entry": "It is said to have fallen with\nlightning. It can fire thunderbolts\nfrom the rain clouds on its back.",
+        "height": "6'03\"",
+        "weight": "392.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Raikou",
+                "category": "Thunder Pokémon",
+                "entry": "It is said to have fallen with\nlightning. It can fire thunderbolts\nfrom the rain clouds on its back.",
+                "height": "6'03\"",
+                "weight": "392.4 lbs."
+            },
+            "fr": {
+                "name": "Raikou",
+                "category": "Pokémon Foudre",
+                "entry": "On prétend qu'il est tombé avec la\nfoudre. Il peut lancer des éclairs\ngrâce aux nuages sur son dos.",
+                "height": "1,9 m",
+                "weight": "178,0 kg"
+            },
+            "de": {
+                "name": "Raikou",
+                "category": "Donner",
+                "entry": "Dieses Pokémon ist der personifizierte\nBlitz. Es kann aus den Wolken über\nseinem Rücken Blitze schleudern.",
+                "height": "1,9 m",
+                "weight": "178,0 kg"
+            },
+            "it": {
+                "name": "Raikou",
+                "category": "Pokémon Tuono",
+                "entry": "Pare che sia caduto con un fulmine.\nPuò scagliare saette dalle nuvole\ndi pioggia che ha sul dorso.",
+                "height": "1,9 m",
+                "weight": "178,0 kg"
+            },
+            "ko": {
+                "name": "라이코",
+                "category": "우뢰포켓몬",
+                "entry": "번개와 함께 떨어졌다고\n전해진다. 등의 비구름에서\n번개를 뿜어낼 수 있다.",
+                "height": "1.9 m",
+                "weight": "178.0 kg"
+            },
+            "es": {
+                "name": "Raikou",
+                "category": "Pokémon Trueno",
+                "entry": "Dicen que apareció con un relámpago.\nPuede lanzar rayos desde las nubes\nde su lomo.",
+                "height": "1,9 m",
+                "weight": "178,0 kg"
+            },
+            "ja": {
+                "name": "ライコウ",
+                "category": "いかずちポケモン",
+                "entry": "カミナリと\\x{3000}ともに\\x{3000}おちてきたと\nいわれている。せなかの\\x{3000}あまぐもから\nカミナリを\\x{3000}うちだすことが\\x{3000}できる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff17}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 90,
         "attack": 85,

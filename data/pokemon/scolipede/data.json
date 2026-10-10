@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Scolipede",
-    "category": "Megapede Pokémon",
-    "pokedex_entry": "It clasps its prey with the claws\non its neck until it stops moving.\nThen it finishes it off with deadly poison.",
+    "pokedex": {
+        "category": "Megapede Pokémon",
+        "entry": "It clasps its prey with the claws\non its neck until it stops moving.\nThen it finishes it off with deadly poison.",
+        "height": "8'02\"",
+        "weight": "442.0 lbs.",
+        "languages": {
+            "ja": {
+                "category": "メガムカデポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 90,

@@ -20,11 +20,33 @@
             "enum": [ "a", "an" ],
             "description": "The article of the name where it isn't \"an\" before a vowel and \"a\" before anything else, as for Uxie"
         },
-        "category": { "type": "string", "description": "The Pokédex category, such as \"Seed Pokémon\". Species only" },
-        "pokedex_entry": { "type": "string", "description": "The Pokédex entry, with its line breaks. Species only" },
-        "form_pokedex_entries": {
-            "type": "array", "items": { "type": "string" },
-            "description": "The Pokédex entries of the species' alternate forms, one for each form after the first (forms.count - 1), including forms that only change the sprite, as Unown's. The text takes them after the species' entries with \\from{species.form_pokedex_entries}"
+        "pokedex": {
+            "type": "object", "additionalProperties": false, "required": [ "category", "entry", "height", "weight", "languages" ],
+            "description": "The species' Pokédex text, which the text files take with \\from{species.pokedex.<field>} and the like. Species only",
+            "properties": {
+                "category": { "type": "string", "description": "The category, such as \"Seed Pokémon\"" },
+                "entry": { "type": "string", "description": "The entry, with its line breaks" },
+                "height": { "type": "string", "description": "The height as the Pokédex shows it; the record's height is the number the game uses" },
+                "weight": { "type": "string", "description": "The weight as the Pokédex shows it, rounded as the game's text has it; the record's weight is the number the game uses" },
+                "forms": {
+                    "type": "array",
+                    "description": "The alternate forms' entries, heights and weights, one for each form after the first (forms.count - 1), Unown's and Arceus' too",
+                    "items": {
+                        "type": "object", "additionalProperties": false, "required": [ "entry", "height", "weight" ],
+                        "properties": { "entry": { "type": "string" }, "height": { "type": "string" }, "weight": { "type": "string" } }
+                    }
+                },
+                "languages": {
+                    "type": "object", "additionalProperties": false,
+                    "description": "The Pokédex text the game keeps in other languages, which a Pokémon from a game in that language shows: for the species up to Arceus, and the Japanese category of every species. The heights and weights of Giratina's and Shaymin's alternate forms follow the species' in the files, as their forms",
+                    "properties": {
+                        "en": { "$ref": "#/$defs/language" }, "fr": { "$ref": "#/$defs/language" },
+                        "de": { "$ref": "#/$defs/language" }, "it": { "$ref": "#/$defs/language" },
+                        "ko": { "$ref": "#/$defs/language" }, "es": { "$ref": "#/$defs/language" },
+                        "ja": { "$ref": "#/$defs/language" }
+                    }
+                }
+            }
         },
         "base_stats": { "$ref": "#/$defs/stats", "description": "Base stats, 0 to 255 each" },
         "types": {
@@ -148,6 +170,20 @@
         }
     },
     "$defs": {
+        "language": {
+            "type": "object", "additionalProperties": false,
+            "properties": {
+                "name": { "type": "string" }, "category": { "type": "string" }, "entry": { "type": "string" },
+                "height": { "type": "string" }, "weight": { "type": "string" },
+                "forms": {
+                    "type": "array",
+                    "items": {
+                        "type": "object", "additionalProperties": false, "required": [ "height", "weight" ],
+                        "properties": { "height": { "type": "string" }, "weight": { "type": "string" } }
+                    }
+                }
+            }
+        },
         "u8": { "type": "integer", "minimum": 0, "maximum": 255 },
         "u16": { "type": "integer", "minimum": 0, "maximum": 65535 },
         "stats": {

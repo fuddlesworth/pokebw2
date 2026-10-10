@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Roserade",
-    "category": "Bouquet Pokémon",
-    "pokedex_entry": "Luring prey with a sweet scent, it\nuses poison whips on its arms\nto poison, bind, and finish off the prey.",
+    "pokedex": {
+        "category": "Bouquet Pokémon",
+        "entry": "Luring prey with a sweet scent, it\nuses poison whips on its arms\nto poison, bind, and finish off the prey.",
+        "height": "2'11\"",
+        "weight": "32.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Roserade",
+                "category": "Bouquet Pokémon",
+                "entry": "Each of its hands contains\ndifferent toxins, but both hands\ncan jab with near-fatal power.",
+                "height": "2'11\"",
+                "weight": "32.0 lbs."
+            },
+            "fr": {
+                "name": "Roserade",
+                "category": "Pokémon Bouquet",
+                "entry": "Ses mains contenant chacune des\ntoxines différentes sont capables\nd'asséner de puissants coups.",
+                "height": "0,9 m",
+                "weight": "14,5 kg"
+            },
+            "de": {
+                "name": "Roserade",
+                "category": "Blumenstrauß",
+                "entry": "Es kann mit beiden Händen\nverheerend angreifen. Seine Hände\nenthalten unterschiedliche Gifte.",
+                "height": "0,9 m",
+                "weight": "14,5 kg"
+            },
+            "it": {
+                "name": "Roserade",
+                "category": "Pokémon Floreale",
+                "entry": "Le due diverse tossine sulle mani di\nRoserade hanno un effetto quasi letale\nquando il Pokémon colpisce.",
+                "height": "0,9 m",
+                "weight": "14,5 kg"
+            },
+            "ko": {
+                "name": "로즈레이드",
+                "category": "부케포켓몬",
+                "entry": "양손의 독 성분은\n각각 다른 종류지만\n어느 쪽에 찔려도 치명적이다.",
+                "height": "0.9 m",
+                "weight": "14.5 kg"
+            },
+            "es": {
+                "name": "Roserade",
+                "category": "Pokémon Ramillete",
+                "entry": "Cada una de sus manos contiene\ntoxinas diferentes, pero ambas\ntienen un poder casi mortífero.",
+                "height": "0,9 m",
+                "weight": "14,5 kg"
+            },
+            "ja": {
+                "name": "ロズレイド",
+                "category": "ブーケポケモン",
+                "entry": "りょうての\\x{3000}どくの\\x{3000}せいぶんは\nそれぞれ\\x{3000}ちがう\\x{3000}しゅるいだが\nどっちを\\x{3000}さされても\\x{3000}しにかける。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff14}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 70,

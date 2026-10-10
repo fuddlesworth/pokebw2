@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Cubchoo",
-    "category": "Chill Pokémon",
-    "pokedex_entry": "Their snot is a barometer of health.\nWhen healthy, their snot is sticky and\nthe power of their ice moves increases.",
+    "pokedex": {
+        "category": "Chill Pokémon",
+        "entry": "Their snot is a barometer of health.\nWhen healthy, their snot is sticky and\nthe power of their ice moves increases.",
+        "height": "1'08\"",
+        "weight": "18.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ひょうけつポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 70,

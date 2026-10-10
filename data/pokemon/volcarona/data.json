@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Volcarona",
-    "category": "Sun Pokémon",
-    "pokedex_entry": "Thought to be an embodiment of the sun,\nit appeared during a bitterly cold winter\nand saved Pokémon from freezing.",
+    "pokedex": {
+        "category": "Sun Pokémon",
+        "entry": "Thought to be an embodiment of the sun,\nit appeared during a bitterly cold winter\nand saved Pokémon from freezing.",
+        "height": "5'03\"",
+        "weight": "101.4 lbs.",
+        "languages": {
+            "ja": {
+                "category": "たいようポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 60,

@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Woobat",
-    "category": "Bat Pokémon",
-    "pokedex_entry": "The heart-shaped mark left on a body\nafter a Woobat has been attached to it\nis said to bring good fortune.",
+    "pokedex": {
+        "category": "Bat Pokémon",
+        "entry": "The heart-shaped mark left on a body\nafter a Woobat has been attached to it\nis said to bring good fortune.",
+        "height": "1'04\"",
+        "weight": "4.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "こうもりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 45,

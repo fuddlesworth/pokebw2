@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tentacruel",
-    "category": "Jellyfish Pokémon",
-    "pokedex_entry": "It extends its 80 tentacles to\nform an encircling poisonous net\nthat is difficult to escape.",
+    "pokedex": {
+        "category": "Jellyfish Pokémon",
+        "entry": "It extends its 80 tentacles to\nform an encircling poisonous net\nthat is difficult to escape.",
+        "height": "5'03\"",
+        "weight": "121.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Tentacruel",
+                "category": "Jellyfish Pokémon",
+                "entry": "It extends its 80 tentacles to\nform an encircling poisonous net\nthat is difficult to escape.",
+                "height": "5'03\"",
+                "weight": "121.3 lbs."
+            },
+            "fr": {
+                "name": "Tentacruel",
+                "category": "Pokémon Mollusque",
+                "entry": "Ses 80 tentacules lui permettent\nd'emprisonner ses adversaires\ndans un redoutable filet venimeux.",
+                "height": "1,6 m",
+                "weight": "55,0 kg"
+            },
+            "de": {
+                "name": "Tentoxa",
+                "category": "Qualle",
+                "entry": "Durch das Strecken seiner 80 Tentakel\nerzeugt es ein giftiges Netz, dem man\nkaum entrinnen kann.",
+                "height": "1,6 m",
+                "weight": "55,0 kg"
+            },
+            "it": {
+                "name": "Tentacruel",
+                "category": "Pokémon Medusa",
+                "entry": "Estende i suoi 80 tentacoli per creare\nuna rete velenosa da cui è difficilissimo\nliberarsi.",
+                "height": "1,6 m",
+                "weight": "55,0 kg"
+            },
+            "ko": {
+                "name": "독파리",
+                "category": "해파리포켓몬",
+                "entry": "80개의 촉수를 길게 뻗어\n독의 포위망을 만들어 낸다.\n붙잡히면 도망치기 어렵다.",
+                "height": "1.6 m",
+                "weight": "55.0 kg"
+            },
+            "es": {
+                "name": "Tentacruel",
+                "category": "Pokémon Medusa",
+                "entry": "Extiende sus 80 tentáculos para\nformar una red venenosa de la\nque es muy difícil escapar.",
+                "height": "1,6 m",
+                "weight": "55,0 kg"
+            },
+            "ja": {
+                "name": "ドククラゲ",
+                "category": "くらげポケモン",
+                "entry": "\\x{ff18}\\x{ff10}ぽんの\\x{3000}しょくしゅを\\x{3000}のばして\nどくの\\x{3000}ほういもうを\\x{3000}つくりだす。\nつかまると\\x{3000}にげるのは\\x{3000}むずかしい。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 70,

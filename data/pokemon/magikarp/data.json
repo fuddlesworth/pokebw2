@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Magikarp",
-    "category": "Fish Pokémon",
-    "pokedex_entry": "A Magikarp living for many years\ncan leap a mountain using Splash.\nThe move remains useless, though.",
+    "pokedex": {
+        "category": "Fish Pokémon",
+        "entry": "A Magikarp living for many years\ncan leap a mountain using Splash.\nThe move remains useless, though.",
+        "height": "2'11\"",
+        "weight": "22.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Magikarp",
+                "category": "Fish Pokémon",
+                "entry": "A Magikarp living for many years\ncan leap a mountain using Splash.\nThe move remains useless, though.",
+                "height": "2'11\"",
+                "weight": "22.0 lbs."
+            },
+            "fr": {
+                "name": "Magicarpe",
+                "category": "Pokémon Poisson",
+                "entry": "Un vénérable Magicarpe peut\nfranchir une montagne en utilisant\nTrempette. Mais c'est tout...",
+                "height": "0,9 m",
+                "weight": "10,0 kg"
+            },
+            "de": {
+                "name": "Karpador",
+                "category": "Fisch",
+                "entry": "Ein älteres Karpador kann mit\nPlatscher Berge überspringen. Die\nAttacke ist trotzdem eher nutzlos.",
+                "height": "0,9 m",
+                "weight": "10,0 kg"
+            },
+            "it": {
+                "name": "Magikarp",
+                "category": "Pokémon Pesce",
+                "entry": "Un Magikarp di una certa età può\nsaltare una montagna con Splash,\nche però è una mossa inutile.",
+                "height": "0,9 m",
+                "weight": "10,0 kg"
+            },
+            "ko": {
+                "name": "잉어킹",
+                "category": "물고기포켓몬",
+                "entry": "오래 산 잉어킹은 튀어오르기로\n산도 넘을 수 있지만 기술의\n위력은 여전히 약하다.",
+                "height": "0.9 m",
+                "weight": "10.0 kg"
+            },
+            "es": {
+                "name": "Magikarp",
+                "category": "Pokémon Pez",
+                "entry": "Si vive mucho, puede llegar a saltar\nmontañas con Salpicadura, pero el\nmovimiento no sirve para nada más.",
+                "height": "0,9 m",
+                "weight": "10,0 kg"
+            },
+            "ja": {
+                "name": "コイキング",
+                "category": "さかなポケモン",
+                "entry": "ながねん\\x{3000}いきた\\x{3000}コイキングは\nはねるだけで\\x{3000}やまをも\\x{3000}こえるが\nわざのいりょくは\\x{3000}よわいまま。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 20,
         "attack": 10,

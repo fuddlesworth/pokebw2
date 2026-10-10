@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Whiscash",
-    "category": "Whiskers Pokémon",
-    "pokedex_entry": "It is extremely protective of its\nterritory. If any foe approaches,\nit attacks using vicious tremors.",
+    "pokedex": {
+        "category": "Whiskers Pokémon",
+        "entry": "It is extremely protective of its\nterritory. If any foe approaches,\nit attacks using vicious tremors.",
+        "height": "2'11\"",
+        "weight": "52.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Whiscash",
+                "category": "Whiskers Pokémon",
+                "entry": "It is extremely protective of its\nterritory. If any foe approaches,\nit attacks using vicious tremors.",
+                "height": "2'11\"",
+                "weight": "52.0 lbs."
+            },
+            "fr": {
+                "name": "Barbicha",
+                "category": "Pokémon Barbillon",
+                "entry": "Il défend férocement son territoire\nen déclenchant des secousses\nterribles.",
+                "height": "0,9 m",
+                "weight": "23,6 kg"
+            },
+            "de": {
+                "name": "Welsar",
+                "category": "Barthaar",
+                "entry": "Es bewacht sein Territorium.\nNähert sich ein Gegner, greift es\nmit heftigen Erschütterungen an.",
+                "height": "0,9 m",
+                "weight": "23,6 kg"
+            },
+            "it": {
+                "name": "Whiscash",
+                "category": "Pokémon Baffetti",
+                "entry": "Ha un senso del territorio molto\nsviluppato. Se un nemico si avvicina,\nscatena forti terremoti.",
+                "height": "0,9 m",
+                "weight": "23,6 kg"
+            },
+            "ko": {
+                "name": "메깅",
+                "category": "수염물고기포켓몬",
+                "entry": "영역 의식이 매우 강하여\n외부의 적이 다가오면 격렬하게\n지면을 울리며 덤벼든다.",
+                "height": "0.9 m",
+                "weight": "23.6 kg"
+            },
+            "es": {
+                "name": "Whiscash",
+                "category": "Pokémon Bigotudo",
+                "entry": "Protege su territorio por encima\nde todo. Si se acerca un enemigo,\nataca con violentas sacudidas.",
+                "height": "0,9 m",
+                "weight": "23,6 kg"
+            },
+            "ja": {
+                "name": "ナマズン",
+                "category": "ひげうおポケモン",
+                "entry": "なわばりいしきが\\x{3000}とても\\x{3000}つよく\nがいてきが\\x{3000}ちかづくと\\x{3000}はげしく\nじめんを\\x{3000}ゆらして\\x{3000}おそいかかる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff13}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 110,
         "attack": 78,

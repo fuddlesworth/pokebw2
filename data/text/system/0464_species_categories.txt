@@ -1,2 +1,2 @@
-\from{species.category}
+\from{species.pokedex.category}
 \pad{aa}

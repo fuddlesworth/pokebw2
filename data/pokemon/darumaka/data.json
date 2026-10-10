@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Darumaka",
-    "category": "Zen Charm Pokémon",
-    "pokedex_entry": "When it sleeps, it pulls its limbs\ninto its body and its internal fire\ngoes down to 1,100° F.",
+    "pokedex": {
+        "category": "Zen Charm Pokémon",
+        "entry": "When it sleeps, it pulls its limbs\ninto its body and its internal fire\ngoes down to 1,100° F.",
+        "height": "2'00\"",
+        "weight": "82.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "だるまポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 90,

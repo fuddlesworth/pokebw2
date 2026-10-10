@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Glalie",
-    "category": "Face Pokémon",
-    "pokedex_entry": "It prevents prey from escaping by\ninstantaneously freezing moisture\nin the air.",
+    "pokedex": {
+        "category": "Face Pokémon",
+        "entry": "It prevents prey from escaping by\ninstantaneously freezing moisture\nin the air.",
+        "height": "4'11\"",
+        "weight": "565.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Glalie",
+                "category": "Face Pokémon",
+                "entry": "It prevents prey from escaping by\ninstantaneously freezing moisture\nin the air.",
+                "height": "4'11\"",
+                "weight": "565.5 lbs."
+            },
+            "fr": {
+                "name": "Oniglali",
+                "category": "Pokémon Face",
+                "entry": "Il empêche ses proies de prendre\nla fuite en gelant instantanément\nl'humidité de l'air.",
+                "height": "1,5 m",
+                "weight": "256,5 kg"
+            },
+            "de": {
+                "name": "Firnontor",
+                "category": "Antlitz",
+                "entry": "Es verhindert, dass Beute flieht,\nindem es die Feuchtigkeit in der\nLuft augenblicklich einfriert.",
+                "height": "1,5 m",
+                "weight": "256,5 kg"
+            },
+            "it": {
+                "name": "Glalie",
+                "category": "Pokémon Tuttomuso",
+                "entry": "Impedisce alla preda di scappare\ncongelando all'istante l'umidità\nnell'aria.",
+                "height": "1,5 m",
+                "weight": "256,5 kg"
+            },
+            "ko": {
+                "name": "얼음귀신",
+                "category": "얼굴포켓몬",
+                "entry": "공기 중의 수분을\n일순간에 얼려버리는 것으로\n먹이가 도망치지 못하게 한다.",
+                "height": "1.5 m",
+                "weight": "256.5 kg"
+            },
+            "es": {
+                "name": "Glalie",
+                "category": "Pokémon Cara",
+                "entry": "Impide que sus presas se escapen\ncongelando la humedad del aire en\nun instante.",
+                "height": "1,5 m",
+                "weight": "256,5 kg"
+            },
+            "ja": {
+                "name": "オニゴーリ",
+                "category": "がんめんポケモン",
+                "entry": "くうきちゅうの\\x{3000}すいぶんを\nいっしゅんで\\x{3000}こおらせることで\nえものが\\x{3000}にげられないように\\x{3000}する。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff15}\\x{ff16}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 80,

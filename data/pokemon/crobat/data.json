@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Crobat",
-    "category": "Bat Pokémon",
-    "pokedex_entry": "Having four wings allows it to fly more\nquickly and quietly so it can sneak up\non prey without its noticing.",
+    "pokedex": {
+        "category": "Bat Pokémon",
+        "entry": "Having four wings allows it to fly more\nquickly and quietly so it can sneak up\non prey without its noticing.",
+        "height": "5'11\"",
+        "weight": "165.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Crobat",
+                "category": "Bat Pokémon",
+                "entry": "The transformation of its legs into\nwings made it better at flying, but\nmore clumsy at walking.",
+                "height": "5'11\"",
+                "weight": "165.3 lbs."
+            },
+            "fr": {
+                "name": "Nostenfer",
+                "category": "Pokémon Chovsouris",
+                "entry": "La transformation de ses pattes en\nailes a certes amélioré sa capacité\nà voler, mais pas à marcher.",
+                "height": "1,8 m",
+                "weight": "75,0 kg"
+            },
+            "de": {
+                "name": "Iksbat",
+                "category": "Fledermaus",
+                "entry": "Die Umwandlung seiner Beine in\nSchwingen wirkte sich positiv aufs\nFliegen aus. Das Laufen litt eher.",
+                "height": "1,8 m",
+                "weight": "75,0 kg"
+            },
+            "it": {
+                "name": "Crobat",
+                "category": "Pokémon Pipistrello",
+                "entry": "La trasformazione delle sue zampe in ali\nlo ha reso più leggiadro in volo ma più\ngoffo a terra.",
+                "height": "1,8 m",
+                "weight": "75,0 kg"
+            },
+            "ko": {
+                "name": "크로뱃",
+                "category": "박쥐포켓몬",
+                "entry": "양쪽 다리도 날개가 됨으로써\n날기에는 능숙해진 반면\n걷는 것은 형편없어졌다.",
+                "height": "1.8 m",
+                "weight": "75.0 kg"
+            },
+            "es": {
+                "name": "Crobat",
+                "category": "Pokémon Murciélago",
+                "entry": "La transformación de sus patas traseras\nen alas mejoró su vuelo, pero anda\nmuy mal.",
+                "height": "1,8 m",
+                "weight": "75,0 kg"
+            },
+            "ja": {
+                "name": "クロバット",
+                "category": "こうもりポケモン",
+                "entry": "りょうあしも\\x{3000}はねに\\x{3000}なったことで\nとぶのが\\x{3000}うまくなったかわりに\nあるいたりするのは\\x{3000}へたになった。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 90,

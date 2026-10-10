@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Swadloon",
-    "category": "Leaf-Wrapped Pokémon",
-    "pokedex_entry": "Preferring dark, damp places,\nit spends the entire day eating\nfallen leaves that lie around it.",
+    "pokedex": {
+        "category": "Leaf-Wrapped Pokémon",
+        "entry": "Preferring dark, damp places,\nit spends the entire day eating\nfallen leaves that lie around it.",
+        "height": "1'08\"",
+        "weight": "16.1 lbs.",
+        "languages": {
+            "ja": {
+                "category": "はごもりポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 63,

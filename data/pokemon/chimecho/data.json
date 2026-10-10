@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Chimecho",
-    "category": "Wind Chime Pokémon",
-    "pokedex_entry": "Its cries echo inside its hollow\nbody to emerge as beautiful notes\nfor startling and repelling foes.",
+    "pokedex": {
+        "category": "Wind Chime Pokémon",
+        "entry": "Its cries echo inside its hollow\nbody to emerge as beautiful notes\nfor startling and repelling foes.",
+        "height": "2'00\"",
+        "weight": "2.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Chimecho",
+                "category": "Wind Chime Pokémon",
+                "entry": "Its cries echo inside its hollow\nbody to emerge as beautiful notes\nfor startling and repelling foes.",
+                "height": "2'00\"",
+                "weight": "2.2 lbs."
+            },
+            "fr": {
+                "name": "Éoko",
+                "category": "Pokémon Carillon",
+                "entry": "Ses cris se répercutent dans son\ncorps creux avant d'exploser en\nnotes mélodieuses et saisissantes.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "de": {
+                "name": "Palimpalim",
+                "category": "Windspiel",
+                "entry": "Es ruft ein Echo in seinen Körper,\ndas in Form wunderschöner Noten\nempordringt und Gegner erschreckt.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "it": {
+                "name": "Chimecho",
+                "category": "Pokémon Vencampana",
+                "entry": "I suoi versi riecheggiano dentro il corpo\nvuoto e fuoriescono per sorprendere e\nrespingere i nemici.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "ko": {
+                "name": "치렁",
+                "category": "풍경포켓몬",
+                "entry": "울음소리는 몸의 공동에서\n메아리쳐 아름다운 음색이 되어\n상대를 놀래켜 쫓아 버린다.",
+                "height": "0.6 m",
+                "weight": "1.0 kg"
+            },
+            "es": {
+                "name": "Chimecho",
+                "category": "Pokémon Sonido Aire",
+                "entry": "Sus gritos resuenan en su cuerpo\nhueco y emergen como hermosas\nnotas que aturden a los enemigos.",
+                "height": "0,6 m",
+                "weight": "1,0 kg"
+            },
+            "ja": {
+                "name": "チリーン",
+                "category": "ふうりんポケモン",
+                "entry": "なきごえは\\x{3000}からだの\\x{3000}くうどうで\nひびきあって\\x{3000}きれいな\\x{3000}ねいろになり\nてきをおどろかせ\\x{3000}おいはらっていた。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 65,
         "attack": 50,

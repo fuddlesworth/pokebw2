@@ -1,9 +1,112 @@
 {
     "$schema": "../species.schema.json",
     "name": "Shaymin",
-    "category": "Gratitude Pokémon",
-    "pokedex_entry": "The flowers all over its body burst\ninto bloom if it is lovingly hugged\nand senses gratitude.",
-    "form_pokedex_entries": [ "The flowers all over its body burst\ninto bloom if it is lovingly hugged\nand senses gratitude." ],
+    "pokedex": {
+        "category": "Gratitude Pokémon",
+        "entry": "The flowers all over its body burst\ninto bloom if it is lovingly hugged\nand senses gratitude.",
+        "height": "0'08\"",
+        "weight": "4.6 lbs.",
+        "forms": [
+            {
+                "entry": "The flowers all over its body burst\ninto bloom if it is lovingly hugged\nand senses gratitude.",
+                "height": "1'04\"",
+                "weight": "11.5 lbs."
+            }
+        ],
+        "languages": {
+            "en": {
+                "name": "Shaymin",
+                "category": "Gratitude Pokémon",
+                "entry": "The flowers all over its body burst\ninto bloom if it is lovingly hugged\nand senses gratitude.",
+                "height": "0'08\"",
+                "weight": "4.6 lbs.",
+                "forms": [
+                    {
+                        "height": "1'04\"",
+                        "weight": "11.5 lbs."
+                    }
+                ]
+            },
+            "fr": {
+                "name": "Shaymin",
+                "category": "Pokémon Gratitude",
+                "entry": "Les fleurs qui couvrent son corps\ns'ouvrent quand il est câliné avec\namour et perçoit de la gratitude.",
+                "height": "0,2 m",
+                "weight": "2,1 kg",
+                "forms": [
+                    {
+                        "height": "0,4 m",
+                        "weight": "5,2 kg"
+                    }
+                ]
+            },
+            "de": {
+                "name": "Shaymin",
+                "category": "Dankbarkeit",
+                "entry": "Wird es umarmt, empfindet es\nDankbarkeit, was wiederum dazu\nführt, dass seine Blumen blühen.",
+                "height": "0,2 m",
+                "weight": "2,1 kg",
+                "forms": [
+                    {
+                        "height": "0,4 m",
+                        "weight": "5,2 kg"
+                    }
+                ]
+            },
+            "it": {
+                "name": "Shaymin",
+                "category": "Pokémon Gratitudine",
+                "entry": "I fiori che lo ricoprono sbocciano se\nviene abbracciato con affetto e\nsi sente apprezzato.",
+                "height": "0,2 m",
+                "weight": "2,1 kg",
+                "forms": [
+                    {
+                        "height": "0,4 m",
+                        "weight": "5,2 kg"
+                    }
+                ]
+            },
+            "ko": {
+                "name": "쉐이미",
+                "category": "감사포켓몬",
+                "entry": "사람에게 부드럽게 껴안아져\n감사의 마음을 느끼면\n전신의 꽃이 피어난다.",
+                "height": "0.2 m",
+                "weight": "2.1 kg",
+                "forms": [
+                    {
+                        "height": "0.4 m",
+                        "weight": "5.2 kg"
+                    }
+                ]
+            },
+            "es": {
+                "name": "Shaymin",
+                "category": "Pokémon Gratitud",
+                "entry": "Todas las flores de su cuerpo florecen\nsi se le abraza con amor y percibe\ngratitud.",
+                "height": "0,2 m",
+                "weight": "2,1 kg",
+                "forms": [
+                    {
+                        "height": "0,4 m",
+                        "weight": "5,2 kg"
+                    }
+                ]
+            },
+            "ja": {
+                "name": "シェイミ",
+                "category": "かんしゃポケモン",
+                "entry": "ひとに\\x{3000}やさしく\\x{3000}だきしめられ\nありがとうの\\x{3000}きもちを\\x{3000}かんじると\nぜんしんの\\x{3000}はなが\\x{3000}ひらきだす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff0e}\\x{ff11}\\x{ff4b}\\x{ff47}",
+                "forms": [
+                    {
+                        "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                        "weight": "\\x{ff15}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+                    }
+                ]
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 100,

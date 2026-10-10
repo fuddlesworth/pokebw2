@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Darkrai",
-    "category": "Pitch-Black Pokémon",
-    "pokedex_entry": "To protect itself, it afflicts those\naround it with nightmares. However,\nit means no harm.",
+    "pokedex": {
+        "category": "Pitch-Black Pokémon",
+        "entry": "To protect itself, it afflicts those\naround it with nightmares. However,\nit means no harm.",
+        "height": "4'11\"",
+        "weight": "111.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Darkrai",
+                "category": "Pitch-Black Pokémon",
+                "entry": "To protect itself, it afflicts those\naround it with nightmares. However,\nit means no harm.",
+                "height": "4'11\"",
+                "weight": "111.3 lbs."
+            },
+            "fr": {
+                "name": "Darkrai",
+                "category": "Pokémon Noirtotal",
+                "entry": "Menacé, ce Pokémon se protège\nen créant des cauchemars dans\nl'esprit de ses ennemis.",
+                "height": "1,5 m",
+                "weight": "50,5 kg"
+            },
+            "de": {
+                "name": "Darkrai",
+                "category": "Dunkelnacht",
+                "entry": "Verursacht bei in der Nähe Stehenden\nAlpträume. Dies tut es aber nur, um sich\nzu schützen.",
+                "height": "1,5 m",
+                "weight": "50,5 kg"
+            },
+            "it": {
+                "name": "Darkrai",
+                "category": "Pokémon Neropesto",
+                "entry": "Per proteggersi, riempie di incubi\nla mente di chi gli sta intorno.\nTuttavia, non è di indole malvagia.",
+                "height": "1,5 m",
+                "weight": "50,5 kg"
+            },
+            "ko": {
+                "name": "다크라이",
+                "category": "암흑포켓몬",
+                "entry": "자신을 지키기 위해 주변의 사람이나\n포켓몬에게 악몽을 꾸게 하지만\n다크라이는 나쁜 뜻이 있는 게 아니다.",
+                "height": "1.5 m",
+                "weight": "50.5 kg"
+            },
+            "es": {
+                "name": "Darkrai",
+                "category": "Pokémon Oscuridad",
+                "entry": "Para protegerse, causa pesadillas a\nlos que le rodean. Pero no lo hace\ncon intención de hacer daño.",
+                "height": "1,5 m",
+                "weight": "50,5 kg"
+            },
+            "ja": {
+                "name": "ダークライ",
+                "category": "あんこくポケモン",
+                "entry": "じぶんを\\x{3000}まもるために\\x{3000}まわりの\nひとや\\x{3000}ポケモンに\\x{3000}あくむをみせるが\nダークライに\\x{3000}わるぎは\\x{3000}ないのだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 90,

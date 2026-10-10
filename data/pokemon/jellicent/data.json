@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Jellicent",
-    "category": "Floating Pokémon",
-    "pokedex_entry": "Its body is mostly seawater.\nIt's said there's a castle of ships\nJellicent have sunk on the seafloor.",
+    "pokedex": {
+        "category": "Floating Pokémon",
+        "entry": "Its body is mostly seawater.\nIt's said there's a castle of ships\nJellicent have sunk on the seafloor.",
+        "height": "7'03\"",
+        "weight": "297.6 lbs.",
+        "languages": {
+            "ja": {
+                "category": "ふゆうポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 60,

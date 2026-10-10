@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Lanturn",
-    "category": "Light Pokémon",
-    "pokedex_entry": "Lanturn's light can shine up from\ngreat depths. It is nicknamed\n“The Deep-Sea Star.\"",
+    "pokedex": {
+        "category": "Light Pokémon",
+        "entry": "Lanturn's light can shine up from\ngreat depths. It is nicknamed\n“The Deep-Sea Star.\"",
+        "height": "3'11\"",
+        "weight": "49.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Lanturn",
+                "category": "Light Pokémon",
+                "entry": "Lanturn's light can shine up from\ngreat depths. It is nicknamed\n“The Deep-Sea Star.\"",
+                "height": "3'11\"",
+                "weight": "49.6 lbs."
+            },
+            "fr": {
+                "name": "Lanturn",
+                "category": "Pokémon Lumière",
+                "entry": "La lumière de Lanturn surgit des\nprofondeurs. On le surnomme\n“étoile des profondeurs\".",
+                "height": "1,2 m",
+                "weight": "22,5 kg"
+            },
+            "de": {
+                "name": "Lanturn",
+                "category": "Leuchte",
+                "entry": "Lanturns Licht kann aus großen\nTiefen heraufscheinen. Man nennt\nes auch „Tiefseestern“.",
+                "height": "1,2 m",
+                "weight": "22,5 kg"
+            },
+            "it": {
+                "name": "Lanturn",
+                "category": "Pokémon Luce",
+                "entry": "La sua luce è visibile anche quando si\ntrova in profondità. È soprannominato\n“Stella degli abissi\".",
+                "height": "1,2 m",
+                "weight": "22,5 kg"
+            },
+            "ko": {
+                "name": "랜턴",
+                "category": "라이트포켓몬",
+                "entry": "심해를 헤엄치는 랜턴의\n불빛은 수면까지 다다른다.\n심해의 별이라고 불리고 있다.",
+                "height": "1.2 m",
+                "weight": "22.5 kg"
+            },
+            "es": {
+                "name": "Lanturn",
+                "category": "Pokémon Luz",
+                "entry": "La luz de Lanturn se puede ver\ndesde lo más profundo.\nSe le llama la Estrella de Alta Mar.",
+                "height": "1,2 m",
+                "weight": "22,5 kg"
+            },
+            "ja": {
+                "name": "ランターン",
+                "category": "ライトポケモン",
+                "entry": "しんかいを\\x{3000}およぐ\\x{3000}ランターンの\nあかりは\\x{3000}すいめんまで\\x{3000}とどく。\nしんかいのほし\\x{3000}と\\x{3000}よばれている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff12}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 125,
         "attack": 58,

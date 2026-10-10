@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Watchog",
-    "category": "Lookout Pokémon",
-    "pokedex_entry": "Using luminescent matter, it\nmakes its eyes and body glow\nand stuns attacking opponents.",
+    "pokedex": {
+        "category": "Lookout Pokémon",
+        "entry": "Using luminescent matter, it\nmakes its eyes and body glow\nand stuns attacking opponents.",
+        "height": "3'07\"",
+        "weight": "59.5 lbs.",
+        "languages": {
+            "ja": {
+                "category": "けいかいポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 85,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Arbok",
-    "category": "Cobra Pokémon",
-    "pokedex_entry": "The pattern on its belly is for\nintimidation. It constricts foes\nwhile they are frozen in fear.",
+    "pokedex": {
+        "category": "Cobra Pokémon",
+        "entry": "The pattern on its belly is for\nintimidation. It constricts foes\nwhile they are frozen in fear.",
+        "height": "11'06\"",
+        "weight": "143.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Arbok",
+                "category": "Cobra Pokémon",
+                "entry": "The pattern on its belly is for\nintimidation. It constricts foes\nwhile they are frozen in fear.",
+                "height": "11'06\"",
+                "weight": "143.3 lbs."
+            },
+            "fr": {
+                "name": "Arbok",
+                "category": "Pokémon Cobra",
+                "entry": "Il utilise la marque sur son ventre\npour intimider l'ennemi. Il étouffe\nl'ennemi pétrifié par la peur.",
+                "height": "3,5 m",
+                "weight": "65,0 kg"
+            },
+            "de": {
+                "name": "Arbok",
+                "category": "Kobra",
+                "entry": "Das Muster auf seinem Bauch\nschüchtert Gegner ein. Sind sie vor\nAngst erstarrt, umklammert es sie.",
+                "height": "3,5 m",
+                "weight": "65,0 kg"
+            },
+            "it": {
+                "name": "Arbok",
+                "category": "Pokémon Cobra",
+                "entry": "Prima paralizza i nemici con il\nterrificante disegno che ha sul\nventre, poi gli si avvinghia intorno.",
+                "height": "3,5 m",
+                "weight": "65,0 kg"
+            },
+            "ko": {
+                "name": "아보크",
+                "category": "코브라포켓몬",
+                "entry": "배의 무늬로 상대를 위협한다.\n무늬에 겁을 먹고 움직일 수 없게 된\n사이에 몸으로 조인다.",
+                "height": "3.5 m",
+                "weight": "65.0 kg"
+            },
+            "es": {
+                "name": "Arbok",
+                "category": "Pokémon Cobra",
+                "entry": "Arbok intimida a sus presas con el dibujo\nde su panza y luego las asfixia con su\ncuerpo.",
+                "height": "3,5 m",
+                "weight": "65,0 kg"
+            },
+            "ja": {
+                "name": "アーボック",
+                "category": "コブラポケモン",
+                "entry": "おなかの\\x{3000}もようで\\x{3000}てきを\\x{3000}いかく。\nもように\\x{3000}おびえて\\x{3000}うごけなくなった\nすきに\\x{3000}からだで\\x{3000}しめつける。",
+                "height": "\\x{ff13}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff16}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 85,

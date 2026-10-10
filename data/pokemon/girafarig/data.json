@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Girafarig",
-    "category": "Long Neck Pokémon",
-    "pokedex_entry": "The head on its tail contains a\nsmall brain. It can instinctively\nfight even while facing backward.",
+    "pokedex": {
+        "category": "Long Neck Pokémon",
+        "entry": "The head on its tail contains a\nsmall brain. It can instinctively\nfight even while facing backward.",
+        "height": "4'11\"",
+        "weight": "91.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Girafarig",
+                "category": "Long Neck Pokémon",
+                "entry": "The head on its tail contains a\nsmall brain. It can instinctively\nfight even while facing backward.",
+                "height": "4'11\"",
+                "weight": "91.5 lbs."
+            },
+            "fr": {
+                "name": "Girafarig",
+                "category": "Pokémon Long-Cou",
+                "entry": "La tête qu'il a sur la queue dispose\nde son propre cerveau et lui\npermet de couvrir ses arrières.",
+                "height": "1,5 m",
+                "weight": "41,5 kg"
+            },
+            "de": {
+                "name": "Girafarig",
+                "category": "Langhals",
+                "entry": "Es kann sich in beide Richtungen\nverteidigen, da der Kopf auf seinem\nSchweif ein kleines Gehirn besitzt.",
+                "height": "1,5 m",
+                "weight": "41,5 kg"
+            },
+            "it": {
+                "name": "Girafarig",
+                "category": "Pokémon Lungocollo",
+                "entry": "Sulla coda ha una testa con un piccolo\ncervello. Riesce a lottare anche se\nil nemico è alle sue spalle.",
+                "height": "1,5 m",
+                "weight": "41,5 kg"
+            },
+            "ko": {
+                "name": "키링키",
+                "category": "긴목포켓몬",
+                "entry": "꼬리의 머리에도 작은\n뇌가 있어서 뒤를 향한 채로도\n본능적으로 싸울 수 있다.",
+                "height": "1.5 m",
+                "weight": "41.5 kg"
+            },
+            "es": {
+                "name": "Girafarig",
+                "category": "Pokémon Grancuello",
+                "entry": "La cabeza de su cola también tiene\nun pequeño cerebro, así que puede\ncombatir por delante o por detrás.",
+                "height": "1,5 m",
+                "weight": "41,5 kg"
+            },
+            "ja": {
+                "name": "キリンリキ",
+                "category": "くびながポケモン",
+                "entry": "しっぽの\\x{3000}あたまにも\\x{3000}ちいさな\nのうがあり\\x{3000}うしろを\\x{3000}むいたままでも\nほんのうで\\x{3000}たたかうことが\\x{3000}できる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 80,

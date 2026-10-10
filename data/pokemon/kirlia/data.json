@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Kirlia",
-    "category": "Emotion Pokémon",
-    "pokedex_entry": "If its Trainer becomes happy, it\noverflows with energy, dancing\njoyously while spinning about.",
+    "pokedex": {
+        "category": "Emotion Pokémon",
+        "entry": "If its Trainer becomes happy, it\noverflows with energy, dancing\njoyously while spinning about.",
+        "height": "2'07\"",
+        "weight": "44.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Kirlia",
+                "category": "Emotion Pokémon",
+                "entry": "If its Trainer becomes happy, it\noverflows with energy, dancing\njoyously while spinning about.",
+                "height": "2'07\"",
+                "weight": "44.5 lbs."
+            },
+            "fr": {
+                "name": "Kirlia",
+                "category": "Pokémon Émotion",
+                "entry": "Quand il sent la joie de son\nDresseur, il se met à danser,\ndébordant d'énergie.",
+                "height": "0,8 m",
+                "weight": "20,2 kg"
+            },
+            "de": {
+                "name": "Kirlia",
+                "category": "Emotion",
+                "entry": "Ist sein Trainer glücklich,\ntanzt es in einem Schwall\nvon Energie fröhlich umher.",
+                "height": "0,8 m",
+                "weight": "20,2 kg"
+            },
+            "it": {
+                "name": "Kirlia",
+                "category": "Pokémon Emozione",
+                "entry": "Quando il suo Allenatore si sente felice,\ntrabocca di energia e inizia a ballare\ngirando su se stesso.",
+                "height": "0,8 m",
+                "weight": "20,2 kg"
+            },
+            "ko": {
+                "name": "킬리아",
+                "category": "감정포켓몬",
+                "entry": "트레이너가 기뻐하면\n킬리아에게 에너지가 넘쳐나서\n기쁜 듯이 빙글빙글 춤춘다.",
+                "height": "0.8 m",
+                "weight": "20.2 kg"
+            },
+            "es": {
+                "name": "Kirlia",
+                "category": "Pokémon Sensorio",
+                "entry": "Si su Entrenador está contento,\nse llena de energía y baila de\nforma alegre dando giros.",
+                "height": "0,8 m",
+                "weight": "20,2 kg"
+            },
+            "ja": {
+                "name": "キルリア",
+                "category": "かんじょうポケモン",
+                "entry": "トレーナーが\\x{3000}よろこぶと\nキルリアに\\x{3000}エネルギーが\\x{3000}みちあふれ\nたのしそうに\\x{3000}くるくると\\x{3000}おどる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff12}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 38,
         "attack": 35,

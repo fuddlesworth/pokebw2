@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Buneary",
-    "category": "Rabbit Pokémon",
-    "pokedex_entry": "By extending its rolled-up ears\nand striking the ground, it can\nbound so high it surprises itself.",
+    "pokedex": {
+        "category": "Rabbit Pokémon",
+        "entry": "By extending its rolled-up ears\nand striking the ground, it can\nbound so high it surprises itself.",
+        "height": "1'04\"",
+        "weight": "12.1 lbs.",
+        "languages": {
+            "en": {
+                "name": "Buneary",
+                "category": "Rabbit Pokémon",
+                "entry": "Its ears are always rolled up. They\ncan be forcefully extended to\nshatter even a large boulder.",
+                "height": "1'04\"",
+                "weight": "12.1 lbs."
+            },
+            "fr": {
+                "name": "Laporeille",
+                "category": "Pokémon Lapin",
+                "entry": "Ses oreilles repliées se déroulent\navec une force capable de briser\nun gros rocher.",
+                "height": "0,4 m",
+                "weight": "5,5 kg"
+            },
+            "de": {
+                "name": "Haspiror",
+                "category": "Hase",
+                "entry": "Seine Ohren sind immer aufgerollt.\nMit ihnen kann es selbst große\nFelsbrocken zertrümmern.",
+                "height": "0,4 m",
+                "weight": "5,5 kg"
+            },
+            "it": {
+                "name": "Buneary",
+                "category": "Pokémon Coniglio",
+                "entry": "Le sue orecchie sono sempre arrotolate.\nPuò estenderle con forza per\ndistruggere qualsiasi cosa.",
+                "height": "0,4 m",
+                "weight": "5,5 kg"
+            },
+            "ko": {
+                "name": "이어롤",
+                "category": "토끼포켓몬",
+                "entry": "항상 말고 있는 귀를\n힘껏 늘리면 커다란\n바위도 간단히 부순다.",
+                "height": "0.4 m",
+                "weight": "5.5 kg"
+            },
+            "es": {
+                "name": "Buneary",
+                "category": "Pokémon Conejo",
+                "entry": "Lleva las orejas enrolladas. Cuando\nlas extiende, golpea con tal fuerza\nque incluso puede romper rocas.",
+                "height": "0,4 m",
+                "weight": "5,5 kg"
+            },
+            "ja": {
+                "name": "ミミロル",
+                "category": "うさぎポケモン",
+                "entry": "いつも\\x{3000}まるめている\\x{3000}みみを\nいきおいよく\\x{3000}のばすと\\x{3000}おおきな\nいわも\\x{3000}かんたんに\\x{3000}こわせる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 66,

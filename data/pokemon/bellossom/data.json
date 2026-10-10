@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Bellossom",
-    "category": "Flower Pokémon",
-    "pokedex_entry": "When the heavy rainfall season\nends, it is drawn out by warm\nsunlight to dance in the open.",
+    "pokedex": {
+        "category": "Flower Pokémon",
+        "entry": "When the heavy rainfall season\nends, it is drawn out by warm\nsunlight to dance in the open.",
+        "height": "1'04\"",
+        "weight": "12.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Bellossom",
+                "category": "Flower Pokémon",
+                "entry": "When the heavy rainfall season\nends, it is drawn out by warm\nsunlight to dance in the open.",
+                "height": "1'04\"",
+                "weight": "12.8 lbs."
+            },
+            "fr": {
+                "name": "Joliflor",
+                "category": "Pokémon Fleur",
+                "entry": "À la fin de la saison des pluies,\nil sort danser en plein air,\nattiré par la chaleur du soleil.",
+                "height": "0,4 m",
+                "weight": "5,8 kg"
+            },
+            "de": {
+                "name": "Blubella",
+                "category": "Blume",
+                "entry": "Sobald die Regenzeit vorbei ist, wird es\nvon der warmen Sonne nach draußen\ngezogen, wo es tanzt.",
+                "height": "0,4 m",
+                "weight": "5,8 kg"
+            },
+            "it": {
+                "name": "Bellossom",
+                "category": "Pokémon Fiore",
+                "entry": "Quando finisce la stagione delle piogge,\nlo si vede danzare sotto i caldi raggi del\nsole.",
+                "height": "0,4 m",
+                "weight": "5,8 kg"
+            },
+            "ko": {
+                "name": "아르코",
+                "category": "꽃포켓몬",
+                "entry": "장마의 계절이 끝나면\n따뜻한 햇살에 이끌려나온\n아르코가 춤추기 시작한다.",
+                "height": "0.4 m",
+                "weight": "5.8 kg"
+            },
+            "es": {
+                "name": "Bellossom",
+                "category": "Pokémon Flor",
+                "entry": "Cuando acaba la estación de las lluvias,\nsale al sol e inicia una peculiar danza.",
+                "height": "0,4 m",
+                "weight": "5,8 kg"
+            },
+            "ja": {
+                "name": "キレイハナ",
+                "category": "フラワーポケモン",
+                "entry": "おおあめの\\x{3000}きせつが\\x{3000}おわると\nあたたかい\\x{3000}ひざしに\\x{3000}さそわれた\nキレイハナが\\x{3000}おどりはじめる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 75,
         "attack": 80,

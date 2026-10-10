@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Carvanha",
-    "category": "Savage Pokémon",
-    "pokedex_entry": "They swarm any foe that invades\ntheir territory. Their sharp fangs\ncan tear out boat hulls.",
+    "pokedex": {
+        "category": "Savage Pokémon",
+        "entry": "They swarm any foe that invades\ntheir territory. Their sharp fangs\ncan tear out boat hulls.",
+        "height": "2'07\"",
+        "weight": "45.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Carvanha",
+                "category": "Savage Pokémon",
+                "entry": "They swarm any foe that invades\ntheir territory. Their sharp fangs\ncan tear out boat hulls.",
+                "height": "2'07\"",
+                "weight": "45.9 lbs."
+            },
+            "fr": {
+                "name": "Carvanha",
+                "category": "Pokémon Féroce",
+                "entry": "Il attaque en banc quand on menace\nson territoire. Ses dents aiguisées\npeuvent couler un navire.",
+                "height": "0,8 m",
+                "weight": "20,8 kg"
+            },
+            "de": {
+                "name": "Kanivanha",
+                "category": "Gnadenlos",
+                "entry": "Sie begegnen jedem Gegner, der in\nihr Revier eindringt, im Schwarm. Ihre\nZähne durchdringen alles.",
+                "height": "0,8 m",
+                "weight": "20,8 kg"
+            },
+            "it": {
+                "name": "Carvanha",
+                "category": "Pokémon Feroce",
+                "entry": "Attacca in branco chi invade il suo\nterritorio. Le zanne aguzze lacerano\nanche gli scafi delle navi.",
+                "height": "0,8 m",
+                "weight": "20,8 kg"
+            },
+            "ko": {
+                "name": "샤프니아",
+                "category": "사나움포켓몬",
+                "entry": "영역에 침입한 상대를 집단으로\n공격한다. 날카로운 이빨은\n보트의 밑바닥도 물어뜯는다.",
+                "height": "0.8 m",
+                "weight": "20.8 kg"
+            },
+            "es": {
+                "name": "Carvanha",
+                "category": "Pokémon Feroz",
+                "entry": "Rodean a los enemigos que osan\ninvadir su territorio. Sus afilados\ncolmillos dañan los barcos.",
+                "height": "0,8 m",
+                "weight": "20,8 kg"
+            },
+            "ja": {
+                "name": "キバニア",
+                "category": "どうもうポケモン",
+                "entry": "なわばりに\\x{3000}はいってきた\\x{3000}あいてを\nしゅうだんで\\x{3000}こうげき。するどい\nキバは\\x{3000}ボートの\\x{3000}そこも\\x{3000}かみきる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 45,
         "attack": 90,

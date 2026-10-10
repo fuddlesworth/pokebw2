@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Wailord",
-    "category": "Float Whale Pokémon",
-    "pokedex_entry": "It can sometimes knock out opponents\nwith the shock created by breaching and\ncrashing its big body onto the water.",
+    "pokedex": {
+        "category": "Float Whale Pokémon",
+        "entry": "It can sometimes knock out opponents\nwith the shock created by breaching and\ncrashing its big body onto the water.",
+        "height": "47'07\"",
+        "weight": "877.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Wailord",
+                "category": "Float Whale Pokémon",
+                "entry": "The biggest of all Pokémon.\nIt can dive to a depth of almost\n10,000 feet on only one breath.",
+                "height": "47'07\"",
+                "weight": "877.4 lbs."
+            },
+            "fr": {
+                "name": "Wailord",
+                "category": "Pokémon Cachabouée",
+                "entry": "Le plus grand des Pokémon. Il peut\nplonger à une profondeur de\n3 000 m en retenant son souffle.",
+                "height": "14,5 m",
+                "weight": "398,0 kg"
+            },
+            "de": {
+                "name": "Wailord",
+                "category": "Flutwal",
+                "entry": "Das größte Pokémon. Es kann mit\nnur einem Atemzug in Tiefen bis\n3 000 Meter tauchen.",
+                "height": "14,5 m",
+                "weight": "398,0 kg"
+            },
+            "it": {
+                "name": "Wailord",
+                "category": "Pokémon Megabalena",
+                "entry": "Il Pokémon più grande che esista.\nDopo aver inalato aria, si immerge a\nuna profondità di 3000 metri.",
+                "height": "14,5 m",
+                "weight": "398,0 kg"
+            },
+            "ko": {
+                "name": "고래왕",
+                "category": "뜸고래포켓몬",
+                "entry": "제일 큰 포켓몬이다.\n숨을 들이쉬지 않고 3000m의\n깊이까지 잠수할 수 있다.",
+                "height": "14.5 m",
+                "weight": "398.0 kg"
+            },
+            "es": {
+                "name": "Wailord",
+                "category": "Pokémon Ballenaflot",
+                "entry": "Es el más grande de los Pokémon.\nPuede nadar a una profundidad de\n3000 m aguantando la respiración.",
+                "height": "14,5 m",
+                "weight": "398,0 kg"
+            },
+            "ja": {
+                "name": "ホエルオー",
+                "category": "うきくじらポケモン",
+                "entry": "いちばん\\x{3000}おおきい\\x{3000}ポケモン。\nいきつぎせずに\\x{3000}\\x{ff13}\\x{ff10}\\x{ff10}\\x{ff10}メートルの\nふかさまで\\x{3000}もぐることが\\x{3000}できる。",
+                "height": "\\x{ff11}\\x{ff14}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff19}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 170,
         "attack": 90,

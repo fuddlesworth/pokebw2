@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Omastar",
-    "category": "Spiral Pokémon",
-    "pokedex_entry": "It is thought that this Pokémon\nbecame extinct because its spiral\nshell grew too large.",
+    "pokedex": {
+        "category": "Spiral Pokémon",
+        "entry": "It is thought that this Pokémon\nbecame extinct because its spiral\nshell grew too large.",
+        "height": "3'03\"",
+        "weight": "77.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Omastar",
+                "category": "Spiral Pokémon",
+                "entry": "It is thought that this Pokémon\nbecame extinct because its spiral\nshell grew too large.",
+                "height": "3'03\"",
+                "weight": "77.2 lbs."
+            },
+            "fr": {
+                "name": "Amonistar",
+                "category": "Pokémon Spirale",
+                "entry": "On pense que ce Pokémon a disparu\nparce que sa coquille en spirale\nétait devenue trop grosse.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "de": {
+                "name": "Amoroso",
+                "category": "Spirale",
+                "entry": "Man geht davon aus, dass das Pokémon\nausgestorben ist, weil seine\nspiralförmige Schale zu groß wurde.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "it": {
+                "name": "Omastar",
+                "category": "Pokémon Spirale",
+                "entry": "Si pensa che questo Pokémon si\nsia estinto perché la sua conchiglia\na spirale è cresciuta troppo.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "ko": {
+                "name": "암스타",
+                "category": "소용돌이포켓몬",
+                "entry": "나선형의 껍질이 너무\n커져 버린 것이 원인으로\n멸종했다고 여겨지고 있다.",
+                "height": "1.0 m",
+                "weight": "35.0 kg"
+            },
+            "es": {
+                "name": "Omastar",
+                "category": "Pokémon Espiral",
+                "entry": "Se cree que este Pokémon se extinguió\nporque su concha espiral creció\ndemasiado.",
+                "height": "1,0 m",
+                "weight": "35,0 kg"
+            },
+            "ja": {
+                "name": "オムスター",
+                "category": "うずまきポケモン",
+                "entry": "らせんじょうの\\x{3000}カラが\\x{3000}おおきく\nなりすぎたことが\\x{3000}げんいんで\nぜつめつしたと\\x{3000}かんがえられている。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 60,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Swampert",
-    "category": "Mud Fish Pokémon",
-    "pokedex_entry": "It can swim while towing a large\nship. It bashes down foes with a\nswing of its thick arms.",
+    "pokedex": {
+        "category": "Mud Fish Pokémon",
+        "entry": "It can swim while towing a large\nship. It bashes down foes with a\nswing of its thick arms.",
+        "height": "4'11\"",
+        "weight": "180.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Swampert",
+                "category": "Mud Fish Pokémon",
+                "entry": "It can swim while towing a large\nship. It bashes down foes with a\nswing of its thick arms.",
+                "height": "4'11\"",
+                "weight": "180.6 lbs."
+            },
+            "fr": {
+                "name": "Laggron",
+                "category": "Pokémon Poissonboue",
+                "entry": "Il peut traîner un grand bateau en\nnageant. Il assomme l'ennemi d'un\ngrand coup de ses bras épais.",
+                "height": "1,5 m",
+                "weight": "81,9 kg"
+            },
+            "de": {
+                "name": "Sumpex",
+                "category": "Lehmhüpfer",
+                "entry": "Es kann im Schwimmen ein großes\nSchiff ziehen. Seine Gegner schlägt\nes mit Schlägen seiner Arme zurück.",
+                "height": "1,5 m",
+                "weight": "81,9 kg"
+            },
+            "it": {
+                "name": "Swampert",
+                "category": "Pokémon Fango Pesce",
+                "entry": "Nuotando riesce a trainare una grande\nnave. Con le braccia vigorose abbatte\ni nemici in un sol colpo.",
+                "height": "1,5 m",
+                "weight": "81,9 kg"
+            },
+            "ko": {
+                "name": "대짱이",
+                "category": "늪물고기포켓몬",
+                "entry": "큰 배를 끌며 헤엄치는\n파워의 소유자이다. 굵은 팔을\n한 번 휘둘러 상대를 때려눕힌다.",
+                "height": "1.5 m",
+                "weight": "81.9 kg"
+            },
+            "es": {
+                "name": "Swampert",
+                "category": "Pokémon Pez Lodo",
+                "entry": "Puede nadar y arrastrar un barco\ngrande. Golpea a sus enemigos\ncon sus gruesos brazos.",
+                "height": "1,5 m",
+                "weight": "81,9 kg"
+            },
+            "ja": {
+                "name": "ラグラージ",
+                "category": "ぬまうおポケモン",
+                "entry": "おおがたせんを\\x{3000}ひっぱって\\x{3000}およぐ\nパワーの\\x{3000}もちぬし。ふとい\\x{3000}うでの\nひとふりで\\x{3000}あいてを\\x{3000}たたきのめす。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff15}\\x{ff4d}",
+                "weight": "\\x{ff18}\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 100,
         "attack": 110,

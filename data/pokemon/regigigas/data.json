@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Regigigas",
-    "category": "Colossal Pokémon",
-    "pokedex_entry": "It is said to have made Pokémon\nthat look like itself from a special\nice mountain, rocks, and magma.",
+    "pokedex": {
+        "category": "Colossal Pokémon",
+        "entry": "It is said to have made Pokémon\nthat look like itself from a special\nice mountain, rocks, and magma.",
+        "height": "12'02\"",
+        "weight": "925.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Regigigas",
+                "category": "Colossal Pokémon",
+                "entry": "It is said to have made Pokémon\nthat look like itself from a special\nice mountain, rocks, and magma.",
+                "height": "12'02\"",
+                "weight": "925.9 lbs."
+            },
+            "fr": {
+                "name": "Regigigas",
+                "category": "Pokémon Prodigieux",
+                "entry": "On dit qu'il a créé des Pokémon\nà son image à partir de glace,\nde roche et de magma.",
+                "height": "3,7 m",
+                "weight": "420,0 kg"
+            },
+            "de": {
+                "name": "Regigigas",
+                "category": "Kolossal",
+                "entry": "Man sagt, es habe Pokémon aus\neinem Eisberg, Felsen und Magma\nnach seinem Abbild geschaffen.",
+                "height": "3,7 m",
+                "weight": "420,0 kg"
+            },
+            "it": {
+                "name": "Regigigas",
+                "category": "Pokémon Colossale",
+                "entry": "Si dice che abbia creato dei Pokémon\nsimili a sé usando una montagna\nghiacciata, rocce e magma.",
+                "height": "3,7 m",
+                "weight": "420,0 kg"
+            },
+            "ko": {
+                "name": "레지기가스",
+                "category": "거대포켓몬",
+                "entry": "특수한 빙산이나 암석,\n마그마에서 자신의 모습과 닮은\n포켓몬을 만들었다고 전해진다.",
+                "height": "3.7 m",
+                "weight": "420.0 kg"
+            },
+            "es": {
+                "name": "Regigigas",
+                "category": "Pokémon Colosal",
+                "entry": "Se dice que usó rocas, magma y un hielo\nespecial de montaña para crear Pokémon\ncon su aspecto.",
+                "height": "3,7 m",
+                "weight": "420,0 kg"
+            },
+            "ja": {
+                "name": "レジギガス",
+                "category": "きょだいポケモン",
+                "entry": "とくしゅな\\x{3000}ひょうざんや\\x{3000}がんせき\nマグマから\\x{3000}じぶんの\\x{3000}すがたに\\x{3000}にた\nポケモンを\\x{3000}つくったと\\x{3000}いわれる。",
+                "height": "\\x{ff13}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 110,
         "attack": 160,

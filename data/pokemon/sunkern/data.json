@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Sunkern",
-    "category": "Seed Pokémon",
-    "pokedex_entry": "It suddenly falls out of the sky in\nthe morning. Knowing it's weak, it\nsimply feeds until it evolves.",
+    "pokedex": {
+        "category": "Seed Pokémon",
+        "entry": "It suddenly falls out of the sky in\nthe morning. Knowing it's weak, it\nsimply feeds until it evolves.",
+        "height": "1'00\"",
+        "weight": "4.0 lbs.",
+        "languages": {
+            "en": {
+                "name": "Sunkern",
+                "category": "Seed Pokémon",
+                "entry": "It suddenly falls out of the sky in\nthe morning. A year after a cold\nsummer, their population explodes.",
+                "height": "1'00\"",
+                "weight": "4.0 lbs."
+            },
+            "fr": {
+                "name": "Tournegrin",
+                "category": "Pokémon Graine",
+                "entry": "Il tombe du ciel sans crier gare en\nmatinée. On en croise énormément\nl'année suivant un été froid.",
+                "height": "0,3 m",
+                "weight": "1,8 kg"
+            },
+            "de": {
+                "name": "Sonnkern",
+                "category": "Samen",
+                "entry": "Morgens fällt es plötzlich aus dem\nHimmel. War der Sommer kalt,\nexplodiert seine Population.",
+                "height": "0,3 m",
+                "weight": "1,8 kg"
+            },
+            "it": {
+                "name": "Sunkern",
+                "category": "Pokémon Seme",
+                "entry": "Cade improvvisamente giù dal cielo\nal mattino. Dopo un'estate fredda,\nla popolazione di Sunkern esplode.",
+                "height": "0,3 m",
+                "weight": "1,8 kg"
+            },
+            "ko": {
+                "name": "해너츠",
+                "category": "씨앗포켓몬",
+                "entry": "어느 날 아침 갑자기 떨어진다.\n여름이 추웠던 다음해에는\n수가 폭발적으로 늘어난다.",
+                "height": "0.3 m",
+                "weight": "1.8 kg"
+            },
+            "es": {
+                "name": "Sunkern",
+                "category": "Pokémon Semilla",
+                "entry": "Cae de repente del cielo por las\nmañanas. Los años de veranos\nsuaves, su número se multiplica.",
+                "height": "0,3 m",
+                "weight": "1,8 kg"
+            },
+            "ja": {
+                "name": "ヒマナッツ",
+                "category": "たねポケモン",
+                "entry": "あるあさ\\x{3000}とつぜん\\x{3000}ふってくる。\nなつが\\x{3000}さむかった\\x{3000}つぎの\\x{3000}としは\nかずが\\x{3000}ばくはつてきに\\x{3000}ふえる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff13}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 30,
         "attack": 30,

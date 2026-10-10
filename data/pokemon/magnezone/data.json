@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Magnezone",
-    "category": "Magnet Area Pokémon",
-    "pokedex_entry": "Sometimes the magnetism emitted by\nMagnezone is too strong, making them\nattract each other so they cannot move.",
+    "pokedex": {
+        "category": "Magnet Area Pokémon",
+        "entry": "Sometimes the magnetism emitted by\nMagnezone is too strong, making them\nattract each other so they cannot move.",
+        "height": "3'11\"",
+        "weight": "396.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Magnezone",
+                "category": "Magnet Area Pokémon",
+                "entry": "A group tried to use scientific\nmeans to make Magnezone evolve,\nbut their efforts ended in failure.",
+                "height": "3'11\"",
+                "weight": "396.8 lbs."
+            },
+            "fr": {
+                "name": "Magnézone",
+                "category": "Pokémon Aimant",
+                "entry": "Des scientifiques ont essayé de\nfaire évoluer un Magnézone en\nlaboratoire, mais ce fut un échec.",
+                "height": "1,2 m",
+                "weight": "180,0 kg"
+            },
+            "de": {
+                "name": "Magnezone",
+                "category": "Magnetgebiet",
+                "entry": "Versuche, Magnezone auf\nwissenschaftliche Weise zur Entwicklung\nzu bringen, schlugen fehl.",
+                "height": "1,2 m",
+                "weight": "180,0 kg"
+            },
+            "it": {
+                "name": "Magnezone",
+                "category": "Pokémon Magnetico",
+                "entry": "Alcuni hanno provato a farlo evolvere\nartificialmente, ma l'esperimento non\nè andato a buon fine.",
+                "height": "1,2 m",
+                "weight": "180,0 kg"
+            },
+            "ko": {
+                "name": "자포코일",
+                "category": "자기장포켓몬",
+                "entry": "자포코일을 과학력으로\n진화시키려 시도해 보려는\n집단이 있었지만 실패했다.",
+                "height": "1.2 m",
+                "weight": "180.0 kg"
+            },
+            "es": {
+                "name": "Magnezone",
+                "category": "Pokémon Magnético",
+                "entry": "Un grupo de investigadores intentó\nprovocar su evolución por medios\nartificiales, pero fracasó.",
+                "height": "1,2 m",
+                "weight": "180,0 kg"
+            },
+            "ja": {
+                "name": "ジバコイル",
+                "category": "じばポケモン",
+                "entry": "ジバコイルを\\x{3000}かがくりょくで\nしんか\\x{3000}させようと\\x{3000}こころみる\nしゅうだんが\\x{3000}いたが\\x{3000}しっぱいした。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff12}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff18}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 70,

@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Snover",
-    "category": "Frost Tree Pokémon",
-    "pokedex_entry": "Seemingly curious about people,\nthey gather around footsteps they\nfind on snowy mountains.",
+    "pokedex": {
+        "category": "Frost Tree Pokémon",
+        "entry": "Seemingly curious about people,\nthey gather around footsteps they\nfind on snowy mountains.",
+        "height": "3'03\"",
+        "weight": "111.3 lbs.",
+        "languages": {
+            "en": {
+                "name": "Snover",
+                "category": "Frost Tree Pokémon",
+                "entry": "Seemingly curious about people,\nthey gather around footsteps they\nfind on snowy mountains.",
+                "height": "3'03\"",
+                "weight": "111.3 lbs."
+            },
+            "fr": {
+                "name": "Blizzi",
+                "category": "Pokémon Arbregelé",
+                "entry": "Curieux de rencontrer des gens, ils\nse rassemblent autour des traces\nde pas trouvées dans la montagne.",
+                "height": "1,0 m",
+                "weight": "50,5 kg"
+            },
+            "de": {
+                "name": "Shnebedeck",
+                "category": "Frostbaum",
+                "entry": "Neugierig auf Menschen, versammeln\nsie sich bei Fußspuren, die sie auf\nverschneiten Bergen finden.",
+                "height": "1,0 m",
+                "weight": "50,5 kg"
+            },
+            "it": {
+                "name": "Snover",
+                "category": "Pokémon Albergelo",
+                "entry": "Gli uomini lo incuriosiscono molto. Si\nraduna in gruppi attorno alle impronte\nsulle montagne innevate.",
+                "height": "1,0 m",
+                "weight": "50,5 kg"
+            },
+            "ko": {
+                "name": "눈쓰개",
+                "category": "얼음나무포켓몬",
+                "entry": "인간에게 흥미가 있는지\n설산에서 발자국을 발견하면\n그 주변에 모여든다.",
+                "height": "1.0 m",
+                "weight": "50.5 kg"
+            },
+            "es": {
+                "name": "Snover",
+                "category": "Pokémon Árbol Nieve",
+                "entry": "Siente mucha curiosidad por los\nhumanos. Si uno encuentra huellas\nen la nieve, acuden todos a mirar.",
+                "height": "1,0 m",
+                "weight": "50,5 kg"
+            },
+            "ja": {
+                "name": "ユキカブリ",
+                "category": "じゅひょうポケモン",
+                "entry": "にんげんに\\x{3000}きょうみが\\x{3000}あるのか\nゆきやまで\\x{3000}あしあとを\\x{3000}みつけると\nそのまわりに\\x{3000}あつまってくる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff15}\\x{ff10}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 60,
         "attack": 62,

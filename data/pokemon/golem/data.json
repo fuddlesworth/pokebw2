@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Golem",
-    "category": "Megaton Pokémon",
-    "pokedex_entry": "Even dynamite can't harm its hard,\nboulder-like body. It sheds its hide\njust once a year.",
+    "pokedex": {
+        "category": "Megaton Pokémon",
+        "entry": "Even dynamite can't harm its hard,\nboulder-like body. It sheds its hide\njust once a year.",
+        "height": "4'07\"",
+        "weight": "661.4 lbs.",
+        "languages": {
+            "en": {
+                "name": "Golem",
+                "category": "Megaton Pokémon",
+                "entry": "Even dynamite can't harm its hard,\nboulderlike body. It sheds its hide\njust once a year.",
+                "height": "4'07\"",
+                "weight": "661.4 lbs."
+            },
+            "fr": {
+                "name": "Grolem",
+                "category": "Pokémon Titanesque",
+                "entry": "Aucun explosif ne pourrait entamer\nsa carapace de pierre. Il mue une\nfois par an.",
+                "height": "1,4 m",
+                "weight": "300,0 kg"
+            },
+            "de": {
+                "name": "Geowaz",
+                "category": "Urgestein",
+                "entry": "Selbst Sprengstoff kann seinem\nharten Körper nichts anhaben.\nHäutet sich nur einmal jährlich.",
+                "height": "1,4 m",
+                "weight": "300,0 kg"
+            },
+            "it": {
+                "name": "Golem",
+                "category": "Pokémon Megatone",
+                "entry": "Muta il guscio solo una volta all'anno.\nNeanche la dinamite può scalfire il suo\ncorpo durissimo.",
+                "height": "1,4 m",
+                "weight": "300,0 kg"
+            },
+            "ko": {
+                "name": "딱구리",
+                "category": "메가톤포켓몬",
+                "entry": "암석 같은 단단한 몸은\n다이너마이트로도 상처를\n입힐 수 없다. 1년에 1번 탈피한다.",
+                "height": "1.4 m",
+                "weight": "300.0 kg"
+            },
+            "es": {
+                "name": "Golem",
+                "category": "Pokémon Megatón",
+                "entry": "Ni siquiera la dinamita puede dañar\nsu cuerpo rocoso. Muda la piel\nuna vez al año.",
+                "height": "1,4 m",
+                "weight": "300,0 kg"
+            },
+            "ja": {
+                "name": "ゴローニャ",
+                "category": "メガトンポケモン",
+                "entry": "がんせきの\\x{3000}ような\\x{3000}かたい\\x{3000}からだは\nダイナマイトでも\\x{3000}きずつかない。\n\\x{ff11}ねんに\\x{3000}\\x{ff11}どだけ\\x{3000}だっぴする。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff10}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 110,

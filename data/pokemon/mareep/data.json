@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Mareep",
-    "category": "Wool Pokémon",
-    "pokedex_entry": "When cold weather increases static\nelectricity, its wool doubles in size\nand the tip of its tail glows slightly.",
+    "pokedex": {
+        "category": "Wool Pokémon",
+        "entry": "When cold weather increases static\nelectricity, its wool doubles in size\nand the tip of its tail glows slightly.",
+        "height": "2'00\"",
+        "weight": "17.2 lbs.",
+        "languages": {
+            "en": {
+                "name": "Mareep",
+                "category": "Wool Pokémon",
+                "entry": "Its fluffy coat swells to double\nwhen static electricity builds up.\nTouching it can be shocking.",
+                "height": "2'00\"",
+                "weight": "17.2 lbs."
+            },
+            "fr": {
+                "name": "Wattouat",
+                "category": "Pokémon Laine",
+                "entry": "Sa laine fournie enfle lorsqu'il\naccumule de l'électricité statique.\nSon contact peut choquer.",
+                "height": "0,6 m",
+                "weight": "7,8 kg"
+            },
+            "de": {
+                "name": "Voltilamm",
+                "category": "Wolle",
+                "entry": "Sein weiches Fell wird doppelt so dick,\nwenn sich Elektrizität aufbaut.",
+                "height": "0,6 m",
+                "weight": "7,8 kg"
+            },
+            "it": {
+                "name": "Mareep",
+                "category": "Pokémon Lana",
+                "entry": "Se il manto è carico d'elettricità, le sue\ndimensioni raddoppiano e può dare\nla scossa.",
+                "height": "0,6 m",
+                "weight": "7,8 kg"
+            },
+            "ko": {
+                "name": "메리프",
+                "category": "솜털포켓몬",
+                "entry": "푹신푹신한 털은 정전기가\n쌓이면 2배로 부풀어 오른다.\n만지면 감전되어 버린다.",
+                "height": "0.6 m",
+                "weight": "7.8 kg"
+            },
+            "es": {
+                "name": "Mareep",
+                "category": "Pokémon Lana",
+                "entry": "Su pelaje lanudo dobla su volumen\nal acumular electricidad estática.\nTocarlo puede dar calambre.",
+                "height": "0,6 m",
+                "weight": "7,8 kg"
+            },
+            "ja": {
+                "name": "メリープ",
+                "category": "わたげポケモン",
+                "entry": "ふわふわの\\x{3000}たいもうは\\x{3000}せいでんきが\nたまると\\x{3000}\\x{ff12}ばいに\\x{3000}ふくらむ。\nさわると\\x{3000}かんでんしてしまう。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff16}\\x{ff4d}",
+                "weight": "\\x{ff17}\\x{ff0e}\\x{ff18}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 40,

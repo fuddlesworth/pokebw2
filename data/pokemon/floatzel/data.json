@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Floatzel",
-    "category": "Sea Weasel Pokémon",
-    "pokedex_entry": "It is a common sight around\nfishing ports. It is known to\nrescue people and carry off prey.",
+    "pokedex": {
+        "category": "Sea Weasel Pokémon",
+        "entry": "It is a common sight around\nfishing ports. It is known to\nrescue people and carry off prey.",
+        "height": "3'07\"",
+        "weight": "73.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Floatzel",
+                "category": "Sea Weasel Pokémon",
+                "entry": "It is a common sight around\nfishing ports. It is known to\nrescue people and carry off prey.",
+                "height": "3'07\"",
+                "weight": "73.9 lbs."
+            },
+            "fr": {
+                "name": "Mustéflott",
+                "category": "Pokémon Aquabelette",
+                "entry": "Il chasse souvent près des ports\nde pêche où il sauve parfois les\ngens tombés à la mer.",
+                "height": "1,1 m",
+                "weight": "33,5 kg"
+            },
+            "de": {
+                "name": "Bojelin",
+                "category": "Meereswiesel",
+                "entry": "Man findet es oft in der Nähe von Häfen.\nRettet dort Menschen, schleppt aber\nauch Beute hinfort.",
+                "height": "1,1 m",
+                "weight": "33,5 kg"
+            },
+            "it": {
+                "name": "Floatzel",
+                "category": "Pokémon Maridonnola",
+                "entry": "Si vede spesso vicino ai porti dove\nsi pesca. Porta in salvo le persone\ne trascina via le prede.",
+                "height": "1,1 m",
+                "weight": "33,5 kg"
+            },
+            "ko": {
+                "name": "플로젤",
+                "category": "바다족제비포켓몬",
+                "entry": "어촌에서 많이 발견되고\n물에 빠진 사람을 구하거나\n잡은 먹이를 운반한다.",
+                "height": "1.1 m",
+                "weight": "33.5 kg"
+            },
+            "es": {
+                "name": "Floatzel",
+                "category": "Pokémon Nutria Mar.",
+                "entry": "Se le ve en los puertos pesqueros,\nayudando a rescatar a personas o\ntrasladando presas.",
+                "height": "1,1 m",
+                "weight": "33,5 kg"
+            },
+            "ja": {
+                "name": "フローゼル",
+                "category": "うみイタチポケモン",
+                "entry": "りょうしまちに\\x{3000}おおく\\x{3000}みられ\nおぼれた\\x{3000}ひとを\\x{3000}たすけたり\nとった\\x{3000}えものを\\x{3000}はこんでいる。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff11}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff13}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 85,
         "attack": 105,

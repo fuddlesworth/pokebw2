@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Hitmontop",
-    "category": "Handstand Pokémon",
-    "pokedex_entry": "It fights while spinning like a top.\nThe centrifugal force boosts its\ndestructive power by 10.",
+    "pokedex": {
+        "category": "Handstand Pokémon",
+        "entry": "It fights while spinning like a top.\nThe centrifugal force boosts its\ndestructive power by 10.",
+        "height": "4'07\"",
+        "weight": "105.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Hitmontop",
+                "category": "Handstand Pokémon",
+                "entry": "It fights while spinning like a top.\nThe centrifugal force boosts its\ndestructive power by ten.",
+                "height": "4'07\"",
+                "weight": "105.8 lbs."
+            },
+            "fr": {
+                "name": "Kapoera",
+                "category": "Pokémon Poirier",
+                "entry": "Il combat en tournoyant comme une\ntoupie. La force centrifuge décuple\nsa puissance destructrice.",
+                "height": "1,4 m",
+                "weight": "48,0 kg"
+            },
+            "de": {
+                "name": "Kapoera",
+                "category": "Kopfstand",
+                "entry": "Es kämpft, während es sich wie ein\nKreisel dreht. Die Zentrifugalkraft\nerhöht die Kampfkraft um 10.",
+                "height": "1,4 m",
+                "weight": "48,0 kg"
+            },
+            "it": {
+                "name": "Hitmontop",
+                "category": "Pokémon Verticale",
+                "entry": "Combatte mentre gira come una trottola.\nLa forza centrifuga decuplica il suo\npotere distruttivo.",
+                "height": "1,4 m",
+                "weight": "48,0 kg"
+            },
+            "ko": {
+                "name": "카포에라",
+                "category": "물구나무포켓몬",
+                "entry": "팽이처럼 회전하면서\n싸운다. 원심력의 파워로\n파괴력은 10배다.",
+                "height": "1.4 m",
+                "weight": "48.0 kg"
+            },
+            "es": {
+                "name": "Hitmontop",
+                "category": "Pokémon Boca Abajo",
+                "entry": "Gira a gran velocidad al luchar.\nLa fuerza centrífuga multiplica\nsu poder de destrucción por diez.",
+                "height": "1,4 m",
+                "weight": "48,0 kg"
+            },
+            "ja": {
+                "name": "カポエラー",
+                "category": "さかだちポケモン",
+                "entry": "コマのように\\x{3000}かいてんしながら\nたたかう。えんしんりょくの\\x{3000}パワーで\nはかいりょくは\\x{3000}\\x{ff11}\\x{ff10}ばいだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff14}\\x{ff4d}",
+                "weight": "\\x{ff14}\\x{ff18}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 95,

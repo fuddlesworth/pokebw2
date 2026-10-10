@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Tynamo",
-    "category": "EleFish Pokémon",
-    "pokedex_entry": "One alone can emit only a trickle of\nelectricity, so a group of them gathers\nto unleash a powerful electric shock.",
+    "pokedex": {
+        "category": "EleFish Pokémon",
+        "entry": "One alone can emit only a trickle of\nelectricity, so a group of them gathers\nto unleash a powerful electric shock.",
+        "height": "0'08\"",
+        "weight": "0.7 lbs.",
+        "languages": {
+            "ja": {
+                "category": "でんきうおポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 35,
         "attack": 55,

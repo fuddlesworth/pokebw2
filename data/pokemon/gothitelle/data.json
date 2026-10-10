@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Gothitelle",
-    "category": "Astral Body Pokémon",
-    "pokedex_entry": "It can see the future from the movement\nof the stars. When it learns its\nTrainer's life span, it cries in sadness.",
+    "pokedex": {
+        "category": "Astral Body Pokémon",
+        "entry": "It can see the future from the movement\nof the stars. When it learns its\nTrainer's life span, it cries in sadness.",
+        "height": "4'11\"",
+        "weight": "97.0 lbs.",
+        "languages": {
+            "ja": {
+                "category": "てんたいポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 55,

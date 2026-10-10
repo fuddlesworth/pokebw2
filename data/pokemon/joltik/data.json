@@ -1,8 +1,17 @@
 {
     "$schema": "../species.schema.json",
     "name": "Joltik",
-    "category": "Attaching Pokémon",
-    "pokedex_entry": "Since it can't generate its own\nelectricity, it sticks onto large-bodied\nPokémon and absorbs static electricity.",
+    "pokedex": {
+        "category": "Attaching Pokémon",
+        "entry": "Since it can't generate its own\nelectricity, it sticks onto large-bodied\nPokémon and absorbs static electricity.",
+        "height": "0'04\"",
+        "weight": "1.3 lbs.",
+        "languages": {
+            "ja": {
+                "category": "くっつきポケモン"
+            }
+        }
+    },
     "base_stats": {
         "hp": 50,
         "attack": 47,

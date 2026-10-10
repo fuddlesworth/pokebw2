@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Rhydon",
-    "category": "Drill Pokémon",
-    "pokedex_entry": "Standing on its hind legs freed its\nforelegs and made it smarter. It is\nvery forgetful, however.",
+    "pokedex": {
+        "category": "Drill Pokémon",
+        "entry": "Standing on its hind legs freed its\nforelegs and made it smarter. It is\nvery forgetful, however.",
+        "height": "6'03\"",
+        "weight": "264.6 lbs.",
+        "languages": {
+            "en": {
+                "name": "Rhydon",
+                "category": "Drill Pokémon",
+                "entry": "Standing on its hind legs freed its\nforelegs and made it smarter. It is\nvery forgetful, however.",
+                "height": "6'03\"",
+                "weight": "264.6 lbs."
+            },
+            "fr": {
+                "name": "Rhinoféros",
+                "category": "Pokémon Perceur",
+                "entry": "La station debout a libéré ses\npattes avant et l'a rendu plus\nintelligent, mais il est distrait.",
+                "height": "1,9 m",
+                "weight": "120,0 kg"
+            },
+            "de": {
+                "name": "Rizeros",
+                "category": "Bohrer",
+                "entry": "Das Stehen auf den Hinterbeinen\nhat es klüger gemacht. Leider ist\nes aber auch sehr vergesslich.",
+                "height": "1,9 m",
+                "weight": "120,0 kg"
+            },
+            "it": {
+                "name": "Rhydon",
+                "category": "Pokémon Trapano",
+                "entry": "Alzandosi sulle zampe posteriori, è\ndiventato più sagace. Tuttavia, è\nmolto smemorato.",
+                "height": "1,9 m",
+                "weight": "120,0 kg"
+            },
+            "ko": {
+                "name": "코뿌리",
+                "category": "드릴포켓몬",
+                "entry": "뒷발만으로 서게 되어\n앞발이 자유로워졌기에 지능이\n발달했지만 건망증이 심하다.",
+                "height": "1.9 m",
+                "weight": "120.0 kg"
+            },
+            "es": {
+                "name": "Rhydon",
+                "category": "Pokémon Taladro",
+                "entry": "Al ponerse en pie, liberó dos patas\ny eso desarrolló su inteligencia.\nPero se le olvidan las cosas.",
+                "height": "1,9 m",
+                "weight": "120,0 kg"
+            },
+            "ja": {
+                "name": "サイドン",
+                "category": "ドリルポケモン",
+                "entry": "うしろあしだけで\\x{3000}たつようになり\nまえあしが\\x{3000}じゆうになって\\x{3000}ちのうが\nはったつしたが\\x{3000}ものわすればかりだ。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff19}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff12}\\x{ff10}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 105,
         "attack": 130,

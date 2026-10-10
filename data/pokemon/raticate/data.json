@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Raticate",
-    "category": "Mouse Pokémon",
-    "pokedex_entry": "With its long fangs, this surprisingly\nviolent Pokémon can gnaw away\neven thick concrete with ease.",
+    "pokedex": {
+        "category": "Mouse Pokémon",
+        "entry": "With its long fangs, this surprisingly\nviolent Pokémon can gnaw away\neven thick concrete with ease.",
+        "height": "2'04\"",
+        "weight": "40.8 lbs.",
+        "languages": {
+            "en": {
+                "name": "Raticate",
+                "category": "Mouse Pokémon",
+                "entry": "It whittles its constantly growing\nfangs by gnawing on hard things.\nIt can chew apart cinder walls.",
+                "height": "2'04\"",
+                "weight": "40.8 lbs."
+            },
+            "fr": {
+                "name": "Rattatac",
+                "category": "Pokémon Souris",
+                "entry": "Il grignote sans cesse pour apaiser\nla poussée de ses crocs. Il peut\ntranspercer un mur de parpaings.",
+                "height": "0,7 m",
+                "weight": "18,5 kg"
+            },
+            "de": {
+                "name": "Rattikarl",
+                "category": "Maus",
+                "entry": "Es wetzt seine ständig wachsenden\nZähne an harten Dingen. Es kann\nWände aus Beton zernagen.",
+                "height": "0,7 m",
+                "weight": "18,5 kg"
+            },
+            "it": {
+                "name": "Raticate",
+                "category": "Pokémon Topo",
+                "entry": "Si affila le zanne in perenne crescita\nrosicchiando cose dure. Riesce a\nfrantumare persino i muri.",
+                "height": "0,7 m",
+                "weight": "18,5 kg"
+            },
+            "ko": {
+                "name": "레트라",
+                "category": "쥐포켓몬",
+                "entry": "계속 자라는 앞니를 갈아내려고\n딱딱한 것을 갉는 습성이 있다.\n벽돌로 된 벽도 갉아서 부순다.",
+                "height": "0.7 m",
+                "weight": "18.5 kg"
+            },
+            "es": {
+                "name": "Raticate",
+                "category": "Pokémon Ratón",
+                "entry": "Lima sus colmillos royendo objetos\nduros. Con ellos puede destruir\nincluso paredes de hormigón.",
+                "height": "0,7 m",
+                "weight": "18,5 kg"
+            },
+            "ja": {
+                "name": "ラッタ",
+                "category": "ねずみポケモン",
+                "entry": "のびつづける\\x{3000}まえばを\\x{3000}けずるため\nかたい\\x{3000}ものを\\x{3000}かじる\\x{3000}しゅうせい。\nブロックべいも\\x{3000}かじって\\x{3000}こわす。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff17}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff18}\\x{ff0e}\\x{ff15}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 55,
         "attack": 81,

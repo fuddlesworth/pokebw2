@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Rhyhorn",
-    "category": "Spikes Pokémon",
-    "pokedex_entry": "Its powerful tackles can destroy\nanything. However, it is too\nslow witted to help people work.",
+    "pokedex": {
+        "category": "Spikes Pokémon",
+        "entry": "Its powerful tackles can destroy\nanything. However, it is too\nslow witted to help people work.",
+        "height": "3'03\"",
+        "weight": "253.5 lbs.",
+        "languages": {
+            "en": {
+                "name": "Rhyhorn",
+                "category": "Spikes Pokémon",
+                "entry": "Its powerful tackles can destroy\nanything. However, it is too\nslow witted to help people work.",
+                "height": "3'03\"",
+                "weight": "253.5 lbs."
+            },
+            "fr": {
+                "name": "Rhinocorne",
+                "category": "Pokémon Piquant",
+                "entry": "Ses puissantes charges pourraient\ndémolir n'importe quel bâtiment.\nDommage qu'il soit stupide.",
+                "height": "1,0 m",
+                "weight": "115,0 kg"
+            },
+            "de": {
+                "name": "Rihorn",
+                "category": "Stachler",
+                "entry": "Seine mächtigen Tackles zerstören alles.\nLeider ist es aber nicht das hellste\nLicht im Lampengeschäft.",
+                "height": "1,0 m",
+                "weight": "115,0 kg"
+            },
+            "it": {
+                "name": "Rhyhorn",
+                "category": "Pokémon Punzoni",
+                "entry": "Con i suoi potenti attacchi distrugge\nqualsiasi cosa. Non è abbastanza\nsagace da aiutare le persone.",
+                "height": "1,0 m",
+                "weight": "115,0 kg"
+            },
+            "ko": {
+                "name": "뿔카노",
+                "category": "뿔포켓몬",
+                "entry": "무엇이든 몸통박치기로 부숴버리는\n힘센 장사지만 머리가 나빠서\n사람의 일을 도우는 것은 무리다.",
+                "height": "1.0 m",
+                "weight": "115.0 kg"
+            },
+            "es": {
+                "name": "Rhyhorn",
+                "category": "Pokémon Clavos",
+                "entry": "Puede destruir cualquier cosa con sus\npotentes placajes. Le falta inteligencia\npara ser de utilidad.",
+                "height": "1,0 m",
+                "weight": "115,0 kg"
+            },
+            "ja": {
+                "name": "サイホーン",
+                "category": "とげとげポケモン",
+                "entry": "なんでも\\x{3000}たいあたりで\\x{3000}こわせる\nちからもちだが\\x{3000}あたまが\\x{3000}わるいので\nひとのしごとを\\x{3000}てつだうのは\\x{3000}むり。",
+                "height": "\\x{ff11}\\x{ff0e}\\x{ff10}\\x{ff4d}",
+                "weight": "\\x{ff11}\\x{ff11}\\x{ff15}\\x{ff0e}\\x{ff10}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 80,
         "attack": 85,

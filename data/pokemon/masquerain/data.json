@@ -1,8 +1,63 @@
 {
     "$schema": "../species.schema.json",
     "name": "Masquerain",
-    "category": "Eyeball Pokémon",
-    "pokedex_entry": "Its antennae have eye patterns\non them. Its four wings enable it\nto hover and fly in any direction.",
+    "pokedex": {
+        "category": "Eyeball Pokémon",
+        "entry": "Its antennae have eye patterns\non them. Its four wings enable it\nto hover and fly in any direction.",
+        "height": "2'07\"",
+        "weight": "7.9 lbs.",
+        "languages": {
+            "en": {
+                "name": "Masquerain",
+                "category": "Eyeball Pokémon",
+                "entry": "Its antennae have eye patterns\non them. Its four wings enable it\nto hover and fly in any direction.",
+                "height": "2'07\"",
+                "weight": "7.9 lbs."
+            },
+            "fr": {
+                "name": "Maskadra",
+                "category": "Pokémon Boule Œil",
+                "entry": "Des motifs en forme d'yeux ornent\nses antennes. Ses 4 ailes l'aident\nà voler dans toutes les directions.",
+                "height": "0,8 m",
+                "weight": "3,6 kg"
+            },
+            "de": {
+                "name": "Maskeregen",
+                "category": "Auge",
+                "entry": "Seine Antenne besitzt ein Augenmuster.\nSeine vier Flügel erlauben es,\nin alle Richtungen zu fliegen.",
+                "height": "0,8 m",
+                "weight": "3,6 kg"
+            },
+            "it": {
+                "name": "Masquerain",
+                "category": "Pokémon Occhi",
+                "entry": "Le sue antenne presentano un motivo ad\nocchi. Con le quattro ali riesce a volar\nin ogni direzione.",
+                "height": "0,8 m",
+                "weight": "3,6 kg"
+            },
+            "ko": {
+                "name": "비나방",
+                "category": "안구포켓몬",
+                "entry": "눈알 모양의 더듬이를 가지고 있다.\n4장의 날개로 떠올라\n전후좌우로 움직일 수 있다.",
+                "height": "0.8 m",
+                "weight": "3.6 kg"
+            },
+            "es": {
+                "name": "Masquerain",
+                "category": "Pokémon Globocular",
+                "entry": "Sus antenas tienen dibujos de ojos,\nmientras que sus alas le permiten\nvolar en cualquier dirección.",
+                "height": "0,8 m",
+                "weight": "3,6 kg"
+            },
+            "ja": {
+                "name": "アメモース",
+                "category": "めだまポケモン",
+                "entry": "めだまもようの\\x{3000}しょっかくを\\x{3000}もつ。\n\\x{ff14}まいの\\x{3000}はねで\\x{3000}うかびあがり\nぜんごさゆうに\\x{3000}うごくことができる。",
+                "height": "\\x{ff10}\\x{ff0e}\\x{ff18}\\x{ff4d}",
+                "weight": "\\x{ff13}\\x{ff0e}\\x{ff16}\\x{ff4b}\\x{ff47}"
+            }
+        }
+    },
     "base_stats": {
         "hp": 70,
         "attack": 60,
