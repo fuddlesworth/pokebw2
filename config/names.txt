@@ -1844,6 +1844,11 @@ overlays/ov035 0x0217ed70 ElScoreboard_Create
 overlays/ov035 0x0217ee00 ElScoreboard_Free
 overlays/ov035 0x0217ee08 ElScoreboard_Update
 overlays/ov035 0x0217ee2c ElScoreboard_UploadPalette
+overlays/ov035 0x0217f52c sScoreboardPalette0
+overlays/ov035 0x0217f534 sScoreboardPalette1
+overlays/ov035 0x0217f53c sScoreboardPalette2
+overlays/ov035 0x0217f544 sScoreboardPalette3
+overlays/ov035 0x0217f5d4 sScoreboardPalettes
 overlays/ov036 0x0219a6dc FieldPlayer_GetSex
 overlays/ov036 0x0219b7a8 FieldPlayerGrid_Create
 overlays/ov036 0x0219b80c FieldPlayerGrid_Free

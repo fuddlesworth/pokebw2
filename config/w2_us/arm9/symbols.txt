@@ -8080,7 +8080,7 @@ DEFAULT_LOOKAT kind:data(any) addr:0x02093e14
 data_02093e0c kind:data(any) addr:0x02093e38
 obj_char_lut kind:data(any) addr:0x02093e48
 pltt_type_lut kind:data(any) addr:0x02093e50
-data_02093e70 kind:data(any) addr:0x02093e70
+data_02093e44 kind:data(any) addr:0x02093e70
 data_02093e48 kind:data(any) addr:0x02093e74
 data_02093e4c kind:data(any) addr:0x02093e78
 data_02093e54 kind:data(any) addr:0x02093e80

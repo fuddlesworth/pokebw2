@@ -40,7 +40,7 @@ def main():
     args = parser.parse_args()
 
     python = sys.executable
-    scripts = ROOT / "tools" / "scripts"
+    scripts = ROOT / "tools" / "decomp"
     for version in VERSIONS:
         config = ROOT / "config" / version
         files = saved_files(config)
@@ -53,11 +53,15 @@ def main():
             delinks.write_text(delinks.read_text().rstrip("\n") + "\n\n" + entries)
 
     other = next(v for v in VERSIONS if v != PRIMARY)
-    run(python, str(scripts / "version_map.py"), PRIMARY, other, "-o", "build/version_map.tsv",
-        "--symbols-output", "build/version_map_symbols.tsv")
+    (ROOT / "build").mkdir(exist_ok=True)
+    version_map = (python, str(scripts / "version_map.py"), PRIMARY, other, "-o", "build/version_map.tsv",
+                   "--symbols-output", "build/version_map_symbols.tsv")
+    run(*version_map)
     run(python, str(scripts / "import_swan.py"), str(args.swan), "--primary", PRIMARY, "--other", other,
         "--map", "build/version_map.tsv", "--symbols-map", "build/version_map_symbols.tsv")
     run(python, str(scripts / "config_fixes.py"), "apply")
+    # The fixes add symbols, which the names in config/names.txt need paired across versions
+    run(*version_map)
     run(python, str(scripts / "rename_symbol.py"), "--apply")
 
 
