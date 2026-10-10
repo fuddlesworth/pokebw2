@@ -292,7 +292,6 @@ data_ov137_021f55cc kind:data(any) addr:0x021f55cc
 data_ov137_021f55e0 kind:data(any) addr:0x021f55e0
 data_ov137_021f55e2 kind:data(any) addr:0x021f55e2
 data_ov137_021f5608 kind:data(any) addr:0x021f5608
-data_ov137_021f5688 kind:data(any) addr:0x021f5688
 data_ov137_021f568c kind:data(any) addr:0x021f568c
 data_ov137_021f5690 kind:data(any) addr:0x021f5690
 data_ov137_021f5692 kind:data(any) addr:0x021f5692
@@ -316,3 +315,4 @@ data_ov137_021f58e8 kind:data(any) addr:0x021f58e8
 data_ov137_021f5900 kind:bss addr:0x021f5900
 data_ov137_021f5948 kind:bss addr:0x021f5948
 RESORT_FIELD_SCENE_ANGLE kind:data(any) addr:0x021f52ac
+data_ov137_021f5688 kind:data(any) addr:0x021f5688
