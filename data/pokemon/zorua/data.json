@@ -114,6 +114,16 @@
             "MOVE_TRICK",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_DETECT",
+            "MOVE_CAPTIVATE",
+            "MOVE_DARK_PULSE",
+            "MOVE_SNATCH",
+            "MOVE_MEMENTO",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_EXTRASENSORY",
+            "MOVE_COUNTER"
         ]
     },
     "evolutions": [

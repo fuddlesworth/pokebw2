@@ -128,6 +128,19 @@
             "MOVE_SNATCH",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FIRE_FANG",
+            "MOVE_THUNDER_FANG",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_PURSUIT",
+            "MOVE_IRON_TAIL",
+            "MOVE_POISON_TAIL",
+            "MOVE_SNATCH",
+            "MOVE_METAL_CLAW",
+            "MOVE_GLARE",
+            "MOVE_SUCKER_PUNCH"
         ]
     },
     "evolutions": [],

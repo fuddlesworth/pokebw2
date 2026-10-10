@@ -52,7 +52,8 @@
             [ 7, "MOVE_HARDEN" ]
         ],
         "by_tm": [],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_ELECTROWEB" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_ELECTROWEB" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

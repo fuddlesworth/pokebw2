@@ -120,6 +120,21 @@
             "MOVE_RECYCLE",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_TAKE_DOWN",
+            "MOVE_AMNESIA",
+            "MOVE_FORESIGHT",
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_BEAT_UP",
+            "MOVE_WISH",
+            "MOVE_MAGIC_COAT",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_MIRROR_COAT",
+            "MOVE_RAZOR_WIND",
+            "MOVE_SKILL_SWAP",
+            "MOVE_SECRET_POWER",
+            "MOVE_MEAN_LOOK"
         ]
     },
     "evolutions": [],

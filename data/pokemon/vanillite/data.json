@@ -96,6 +96,16 @@
             "MOVE_ICY_WIND",
             "MOVE_SNORE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_WATER_PULSE",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_IMPRISON",
+            "MOVE_AUTOTOMIZE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_MAGNET_RISE",
+            "MOVE_ICE_SHARD",
+            "MOVE_POWDER_SNOW"
         ]
     },
     "evolutions": [

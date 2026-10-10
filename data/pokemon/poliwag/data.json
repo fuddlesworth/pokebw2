@@ -87,7 +87,22 @@
             "HM05",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_ENDEAVOR", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_ENDEAVOR", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_MIST",
+            "MOVE_SPLASH",
+            "MOVE_BUBBLE_BEAM",
+            "MOVE_HAZE",
+            "MOVE_MIND_READER",
+            "MOVE_WATER_SPORT",
+            "MOVE_ICE_BALL",
+            "MOVE_MUD_SHOT",
+            "MOVE_REFRESH",
+            "MOVE_ENDEAVOR",
+            "MOVE_ENCORE",
+            "MOVE_ENDURE",
+            "MOVE_WATER_PULSE"
+        ]
     },
     "evolutions": [
         {

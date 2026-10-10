@@ -136,6 +136,18 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_WISH",
+            "MOVE_HEAL_BELL",
+            "MOVE_LUCKY_CHANT",
+            "MOVE_ENCORE",
+            "MOVE_BESTOW",
+            "MOVE_SWEET_KISS",
+            "MOVE_YAWN",
+            "MOVE_SLEEP_TALK",
+            "MOVE_HEALING_WISH",
+            "MOVE_AMNESIA"
         ]
     },
     "evolutions": [],

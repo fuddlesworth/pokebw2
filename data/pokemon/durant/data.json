@@ -105,6 +105,14 @@
             "MOVE_SNORE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SCREECH",
+            "MOVE_ENDURE",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_BATON_PASS",
+            "MOVE_THUNDER_FANG",
+            "MOVE_FAINT_ATTACK"
         ]
     },
     "evolutions": [],

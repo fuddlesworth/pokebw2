@@ -91,6 +91,18 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STOCKPILE",
+            "MOVE_SWALLOW",
+            "MOVE_SPIT_UP",
+            "MOVE_CURSE",
+            "MOVE_SLACK_OFF",
+            "MOVE_BODY_SLAM",
+            "MOVE_SAND_TOMB",
+            "MOVE_REVENGE",
+            "MOVE_SLEEP_TALK",
+            "MOVE_WHIRLWIND"
         ]
     },
     "evolutions": [

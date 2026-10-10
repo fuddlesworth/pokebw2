@@ -88,6 +88,19 @@
             "MOVE_ROLE_PLAY",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_RAPID_SPIN",
+            "MOVE_HI_JUMP_KICK",
+            "MOVE_MACH_PUNCH",
+            "MOVE_MIND_READER",
+            "MOVE_HELPING_HAND",
+            "MOVE_COUNTER",
+            "MOVE_VACUUM_WAVE",
+            "MOVE_BULLET_PUNCH",
+            "MOVE_ENDURE",
+            "MOVE_PURSUIT",
+            "MOVE_FEINT"
         ]
     },
     "evolutions": [

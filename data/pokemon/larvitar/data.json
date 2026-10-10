@@ -109,6 +109,20 @@
             "MOVE_OUTRAGE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PURSUIT",
+            "MOVE_STOMP",
+            "MOVE_OUTRAGE",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_CURSE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_ASSURANCE",
+            "MOVE_IRON_HEAD",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_IRON_TAIL"
         ]
     },
     "evolutions": [

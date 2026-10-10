@@ -106,6 +106,22 @@
             "MOVE_WORRY_SEED",
             "MOVE_SPITE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_GRASS_WHISTLE",
+            "MOVE_ACID",
+            "MOVE_TEETER_DANCE",
+            "MOVE_DYNAMIC_PUNCH",
+            "MOVE_COUNTER",
+            "MOVE_LOW_KICK",
+            "MOVE_SMELLING_SALT",
+            "MOVE_MAGICAL_LEAF",
+            "MOVE_SEED_BOMB",
+            "MOVE_NASTY_PLOT",
+            "MOVE_DISABLE",
+            "MOVE_BLOCK",
+            "MOVE_WORRY_SEED",
+            "MOVE_SWITCHEROO"
         ]
     },
     "evolutions": [

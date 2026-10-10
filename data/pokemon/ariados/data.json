@@ -103,7 +103,8 @@
             "MOVE_ELECTROWEB",
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

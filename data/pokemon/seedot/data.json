@@ -91,6 +91,20 @@
             "MOVE_WORRY_SEED",
             "MOVE_SPITE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_LEECH_SEED",
+            "MOVE_AMNESIA",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_RAZOR_WIND",
+            "MOVE_TAKE_DOWN",
+            "MOVE_WORRY_SEED",
+            "MOVE_NASTY_PLOT",
+            "MOVE_POWER_SWAP",
+            "MOVE_DEFOG",
+            "MOVE_FOUL_PLAY",
+            "MOVE_BEAT_UP",
+            "MOVE_BULLET_SEED"
         ]
     },
     "evolutions": [

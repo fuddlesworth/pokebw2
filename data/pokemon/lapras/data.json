@@ -113,6 +113,21 @@
             "MOVE_HEAL_BELL",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FORESIGHT",
+            "MOVE_TICKLE",
+            "MOVE_REFRESH",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_CURSE",
+            "MOVE_SLEEP_TALK",
+            "MOVE_HORN_DRILL",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_WHIRLPOOL",
+            "MOVE_FISSURE",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_AVALANCHE",
+            "MOVE_FUTURE_SIGHT"
         ]
     },
     "evolutions": [],

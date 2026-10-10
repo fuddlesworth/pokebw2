@@ -108,6 +108,17 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_MEGA_PUNCH",
+            "MOVE_BLOCK",
+            "MOVE_HAMMER_ARM",
+            "MOVE_FLAIL",
+            "MOVE_CURSE",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_ENDURE",
+            "MOVE_AUTOTOMIZE"
         ]
     },
     "evolutions": [

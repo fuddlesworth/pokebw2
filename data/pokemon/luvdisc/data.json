@@ -87,7 +87,18 @@
             "HM05",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_BOUNCE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BOUNCE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_SPLASH",
+            "MOVE_SUPERSONIC",
+            "MOVE_WATER_SPORT",
+            "MOVE_MUD_SPORT",
+            "MOVE_CAPTIVATE",
+            "MOVE_AQUA_RING",
+            "MOVE_AQUA_JET",
+            "MOVE_HEAL_PULSE",
+            "MOVE_BRINE"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": null,

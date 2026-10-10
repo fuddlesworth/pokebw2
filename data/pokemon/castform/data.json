@@ -96,7 +96,16 @@
             "TM87",
             "TM90"
         ],
-        "by_tutor": [ "MOVE_LAST_RESORT", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_TAILWIND", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_LAST_RESORT", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_TAILWIND", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_LUCKY_CHANT",
+            "MOVE_DISABLE",
+            "MOVE_AMNESIA",
+            "MOVE_OMINOUS_WIND",
+            "MOVE_HEX",
+            "MOVE_CLEAR_SMOG"
+        ]
     },
     "evolutions": [],
     "regional_dex_number": 163,

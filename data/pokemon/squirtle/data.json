@@ -102,6 +102,22 @@
             "MOVE_IRON_TAIL",
             "MOVE_SNORE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_MIRROR_COAT",
+            "MOVE_HAZE",
+            "MOVE_MIST",
+            "MOVE_FORESIGHT",
+            "MOVE_FLAIL",
+            "MOVE_REFRESH",
+            "MOVE_MUD_SPORT",
+            "MOVE_YAWN",
+            "MOVE_MUDDY_WATER",
+            "MOVE_FAKE_OUT",
+            "MOVE_AQUA_RING",
+            "MOVE_AQUA_JET",
+            "MOVE_WATER_SPOUT",
+            "MOVE_BRINE"
         ]
     },
     "evolutions": [

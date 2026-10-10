@@ -54,7 +54,8 @@
             [ 29, "MOVE_BUG_BUZZ" ]
         ],
         "by_tm": [],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_SNORE", "MOVE_TAILWIND", "MOVE_ENDEAVOR" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_SNORE", "MOVE_TAILWIND", "MOVE_ENDEAVOR" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

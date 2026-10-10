@@ -98,7 +98,20 @@
             "HM04",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_IRON_DEFENSE", "MOVE_SUPERPOWER", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_KNOCK_OFF", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_IRON_DEFENSE", "MOVE_SUPERPOWER", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_KNOCK_OFF", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_HAZE",
+            "MOVE_AMNESIA",
+            "MOVE_FLAIL",
+            "MOVE_SLAM",
+            "MOVE_KNOCK_OFF",
+            "MOVE_TICKLE",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_AGILITY",
+            "MOVE_ENDURE",
+            "MOVE_CHIP_AWAY",
+            "MOVE_BIDE"
+        ]
     },
     "evolutions": [
         {

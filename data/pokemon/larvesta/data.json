@@ -99,6 +99,15 @@
             "MOVE_HEAT_WAVE",
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STRING_SHOT",
+            "MOVE_HARDEN",
+            "MOVE_FORESIGHT",
+            "MOVE_ENDURE",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_MORNING_SUN",
+            "MOVE_MAGNET_RISE"
         ]
     },
     "evolutions": [

@@ -117,6 +117,22 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_ENCORE",
+            "MOVE_ASSIST",
+            "MOVE_DISABLE",
+            "MOVE_BATON_PASS",
+            "MOVE_WISH",
+            "MOVE_TRICK",
+            "MOVE_SMELLING_SALT",
+            "MOVE_FAKE_OUT",
+            "MOVE_ROLE_PLAY",
+            "MOVE_PSYCHO_CUT",
+            "MOVE_FAKE_TEARS",
+            "MOVE_RAPID_SPIN",
+            "MOVE_ICY_WIND",
+            "MOVE_WATER_PULSE"
         ]
     },
     "evolutions": [],

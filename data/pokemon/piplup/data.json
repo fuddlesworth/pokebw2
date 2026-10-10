@@ -102,6 +102,21 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_DOUBLE_HIT",
+            "MOVE_SUPERSONIC",
+            "MOVE_YAWN",
+            "MOVE_MUD_SPORT",
+            "MOVE_MUD_SLAP",
+            "MOVE_SNORE",
+            "MOVE_FLAIL",
+            "MOVE_AGILITY",
+            "MOVE_AQUA_RING",
+            "MOVE_HYDRO_PUMP",
+            "MOVE_FEATHER_DANCE",
+            "MOVE_BIDE",
+            "MOVE_ICY_WIND"
         ]
     },
     "evolutions": [

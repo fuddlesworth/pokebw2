@@ -90,6 +90,22 @@
             "MOVE_SNORE",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_REVERSAL",
+            "MOVE_BIDE",
+            "MOVE_PRESENT",
+            "MOVE_ENCORE",
+            "MOVE_DOUBLE_SLAP",
+            "MOVE_WISH",
+            "MOVE_CHARGE",
+            "MOVE_FAKE_OUT",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_TICKLE",
+            "MOVE_FLAIL",
+            "MOVE_ENDURE",
+            "MOVE_LUCKY_CHANT",
+            "MOVE_BESTOW"
         ]
     },
     "evolutions": [

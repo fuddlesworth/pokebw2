@@ -106,6 +106,16 @@
             "MOVE_SNORE",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_COPYCAT",
+            "MOVE_DETECT",
+            "MOVE_AIR_SLASH",
+            "MOVE_ASSURANCE",
+            "MOVE_BRINE",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_TRUMP_CARD",
+            "MOVE_SCREECH"
         ]
     },
     "evolutions": [

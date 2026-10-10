@@ -110,6 +110,18 @@
             "MOVE_ENDEAVOR",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_COUNTER",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_REVERSAL",
+            "MOVE_ENDURE",
+            "MOVE_RAZOR_WIND",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_ENDEAVOR",
+            "MOVE_IRON_TAIL",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_HARDEN"
         ]
     },
     "evolutions": [

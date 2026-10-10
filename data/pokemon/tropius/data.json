@@ -107,6 +107,20 @@
             "MOVE_WORRY_SEED",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HEADBUTT",
+            "MOVE_SLAM",
+            "MOVE_RAZOR_WIND",
+            "MOVE_LEECH_SEED",
+            "MOVE_NATURE_POWER",
+            "MOVE_LEAF_STORM",
+            "MOVE_SYNTHESIS",
+            "MOVE_CURSE",
+            "MOVE_LEAF_BLADE",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_BULLET_SEED",
+            "MOVE_NATURAL_GIFT"
         ]
     },
     "evolutions": [],

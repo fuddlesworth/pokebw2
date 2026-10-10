@@ -106,6 +106,16 @@
             "MOVE_ENDEAVOR",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STOMP",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_HEADBUTT",
+            "MOVE_SKULL_BASH",
+            "MOVE_MUD_SHOT",
+            "MOVE_MUD_SLAP",
+            "MOVE_IRON_HEAD",
+            "MOVE_AMNESIA"
         ]
     },
     "evolutions": [],

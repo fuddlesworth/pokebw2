@@ -96,6 +96,18 @@
             "MOVE_HEAL_BELL",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_TAKE_DOWN",
+            "MOVE_BODY_SLAM",
+            "MOVE_SCREECH",
+            "MOVE_ODOR_SLEUTH",
+            "MOVE_CHARGE",
+            "MOVE_FLATTER",
+            "MOVE_SAND_ATTACK",
+            "MOVE_IRON_TAIL",
+            "MOVE_AFTER_YOU",
+            "MOVE_AGILITY"
         ]
     },
     "evolutions": [

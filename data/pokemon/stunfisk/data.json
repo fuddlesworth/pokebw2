@@ -109,6 +109,17 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SHOCK_WAVE",
+            "MOVE_EARTH_POWER",
+            "MOVE_YAWN",
+            "MOVE_SLEEP_TALK",
+            "MOVE_ASTONISH",
+            "MOVE_CURSE",
+            "MOVE_SPITE",
+            "MOVE_SPARK",
+            "MOVE_PAIN_SPLIT"
         ]
     },
     "evolutions": [],

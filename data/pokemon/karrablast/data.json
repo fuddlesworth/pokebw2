@@ -87,7 +87,17 @@
             "TM90",
             "HM01"
         ],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_SNORE", "MOVE_KNOCK_OFF", "MOVE_GIGA_DRAIN", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_SNORE", "MOVE_KNOCK_OFF", "MOVE_GIGA_DRAIN", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_MEGAHORN",
+            "MOVE_PURSUIT",
+            "MOVE_COUNTER",
+            "MOVE_HORN_ATTACK",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_BUG_BITE",
+            "MOVE_SCREECH",
+            "MOVE_KNOCK_OFF"
+        ]
     },
     "evolutions": [
         {

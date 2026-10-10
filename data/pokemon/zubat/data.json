@@ -101,6 +101,21 @@
             "MOVE_ROOST",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_QUICK_ATTACK",
+            "MOVE_PURSUIT",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_GUST",
+            "MOVE_WHIRLWIND",
+            "MOVE_CURSE",
+            "MOVE_NASTY_PLOT",
+            "MOVE_HYPNOSIS",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_BRAVE_BIRD",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_STEEL_WING",
+            "MOVE_DEFOG"
         ]
     },
     "evolutions": [

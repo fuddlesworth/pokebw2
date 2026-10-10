@@ -115,7 +115,8 @@
             "MOVE_KNOCK_OFF",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

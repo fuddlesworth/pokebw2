@@ -95,6 +95,18 @@
             "MOVE_HELPING_HAND",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FAKE_TEARS",
+            "MOVE_CHARM",
+            "MOVE_HELPING_HAND",
+            "MOVE_WORRY_SEED",
+            "MOVE_WAKE_UP_SLAP",
+            "MOVE_SEED_BOMB",
+            "MOVE_BULLET_SEED",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_DRAIN_PUNCH"
         ]
     },
     "evolutions": [

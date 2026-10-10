@@ -22,7 +22,7 @@ format and can write them again.
 | `a/0/0/2` | `data/text/system/` | System messages | `tools/scripts/text_data.py` |
 | `a/0/0/3` | `data/text/script/` | Script messages | `tools/scripts/text_data.py` |
 | `a/0/1/2` | `data/zones/` (JSON) | Zone headers | `tools/scripts/zone_data.py` |
-| `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species | `tools/scripts/species_data.py` |
+| `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0`, `a/1/2/4` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species, egg moves | `tools/scripts/species_data.py` |
 | `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
 | `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
 | `a/0/2/4` | `data/items/` (JSON) | Item data | `tools/scripts/item_data.py` |
@@ -133,9 +133,10 @@ text.
 ## Species
 
 Each species has a directory in `data/pokemon/`, named after its constant (`bulbasaur/` for `SPECIES_BULBASAUR`), as
-pokeplatinum's `res/pokemon/`. Its `data.json` holds everything the game keeps about it in four archives: its record of
+pokeplatinum's `res/pokemon/`. Its `data.json` holds everything the game keeps about it in five archives: its record of
 the species data (`a/0/1/6`, the 0x4c bytes that `PML_PersonalGetParam` reads), its level-up moves (`a/0/1/8`), its
-evolutions (`a/0/1/9`) and its baby species (`a/0/2/0`). `data/pokemon/species.schema.json` documents each field.
+evolutions (`a/0/1/9`), its baby species (`a/0/2/0`) and its egg moves (`a/1/2/4`). `data/pokemon/species.schema.json`
+documents each field.
 
 ```json
 {
@@ -158,6 +159,7 @@ evolutions (`a/0/1/9`) and its baby species (`a/0/2/0`). `data/pokemon/species.s
             ...
         ],
         "by_tm": [ "TM06", "TM09", ... ],
+        "egg_moves": [ "MOVE_SKULL_BASH", "MOVE_CHARM", "MOVE_PETAL_DANCE", ... ],
         "by_tutor": [ "MOVE_GRASS_PLEDGE", "MOVE_SEED_BOMB", "MOVE_BIND", ... ]
     },
     "evolutions": [

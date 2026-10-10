@@ -99,6 +99,17 @@
             "MOVE_SKY_ATTACK",
             "MOVE_ROOST",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ENCORE",
+            "MOVE_NIGHT_SHADE",
+            "MOVE_AGILITY",
+            "MOVE_NASTY_PLOT",
+            "MOVE_SUPERSONIC",
+            "MOVE_STEEL_WING",
+            "MOVE_SLEEP_TALK",
+            "MOVE_DEFOG",
+            "MOVE_AIR_CUTTER"
         ]
     },
     "evolutions": [],

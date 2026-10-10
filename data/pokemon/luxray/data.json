@@ -92,7 +92,8 @@
             "TM95",
             "HM04"
         ],
-        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_MAGNET_RISE", "MOVE_SUPERPOWER", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_MAGNET_RISE", "MOVE_SUPERPOWER", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

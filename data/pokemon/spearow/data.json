@@ -93,6 +93,19 @@
             "MOVE_SKY_ATTACK",
             "MOVE_ROOST",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FAINT_ATTACK",
+            "MOVE_SCARY_FACE",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_TRI_ATTACK",
+            "MOVE_ASTONISH",
+            "MOVE_SKY_ATTACK",
+            "MOVE_WHIRLWIND",
+            "MOVE_UPROAR",
+            "MOVE_FEATHER_DANCE",
+            "MOVE_STEEL_WING",
+            "MOVE_RAZOR_WIND"
         ]
     },
     "evolutions": [

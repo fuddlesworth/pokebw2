@@ -107,6 +107,20 @@
             "MOVE_SPITE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PURSUIT",
+            "MOVE_SLAM",
+            "MOVE_SPITE",
+            "MOVE_BEAT_UP",
+            "MOVE_POISON_FANG",
+            "MOVE_SCARY_FACE",
+            "MOVE_POISON_TAIL",
+            "MOVE_DISABLE",
+            "MOVE_SWITCHEROO",
+            "MOVE_IRON_TAIL",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_SNATCH"
         ]
     },
     "evolutions": [

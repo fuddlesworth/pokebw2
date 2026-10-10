@@ -110,7 +110,8 @@
             "MOVE_ROOST",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": [ "MOVE_STEEL_WING", "MOVE_MEAN_LOOK", "MOVE_ROOST", "MOVE_SCARY_FACE", "MOVE_KNOCK_OFF", "MOVE_FAKE_TEARS" ]
     },
     "evolutions": [
         {

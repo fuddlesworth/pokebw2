@@ -114,6 +114,21 @@
             "MOVE_WORRY_SEED",
             "MOVE_WONDER_ROOM",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HYPNOSIS",
+            "MOVE_PSYBEAM",
+            "MOVE_FORESIGHT",
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_CROSS_CHOP",
+            "MOVE_REFRESH",
+            "MOVE_CONFUSE_RAY",
+            "MOVE_YAWN",
+            "MOVE_MUD_BOMB",
+            "MOVE_ENCORE",
+            "MOVE_SECRET_POWER",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SYNCHRONOISE"
         ]
     },
     "evolutions": [

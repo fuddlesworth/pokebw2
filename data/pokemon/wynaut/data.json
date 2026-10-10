@@ -57,7 +57,8 @@
             [ 15, "MOVE_DESTINY_BOND" ]
         ],
         "by_tm": [],
-        "by_tutor": []
+        "by_tutor": [],
+        "egg_moves": []
     },
     "evolutions": [
         {

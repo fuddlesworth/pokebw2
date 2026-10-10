@@ -97,7 +97,8 @@
             "MOVE_GASTRO_ACID",
             "MOVE_WORRY_SEED",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

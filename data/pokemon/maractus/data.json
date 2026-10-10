@@ -103,6 +103,16 @@
             "MOVE_HELPING_HAND",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BULLET_SEED",
+            "MOVE_BOUNCE",
+            "MOVE_WORRY_SEED",
+            "MOVE_LEECH_SEED",
+            "MOVE_SEED_BOMB",
+            "MOVE_WOOD_HAMMER",
+            "MOVE_SPIKES",
+            "MOVE_GRASS_WHISTLE"
         ]
     },
     "evolutions": [],

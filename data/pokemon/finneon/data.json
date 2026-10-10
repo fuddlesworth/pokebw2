@@ -98,6 +98,19 @@
             "MOVE_SNORE",
             "MOVE_TAILWIND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SWEET_KISS",
+            "MOVE_CHARM",
+            "MOVE_FLAIL",
+            "MOVE_AQUA_TAIL",
+            "MOVE_SPLASH",
+            "MOVE_PSYBEAM",
+            "MOVE_TICKLE",
+            "MOVE_AGILITY",
+            "MOVE_BRINE",
+            "MOVE_AURORA_BEAM",
+            "MOVE_SIGNAL_BEAM"
         ]
     },
     "evolutions": [

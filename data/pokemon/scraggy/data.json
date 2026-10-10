@@ -126,6 +126,19 @@
             "MOVE_SPITE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_COUNTER",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_DETECT",
+            "MOVE_FAKE_OUT",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_AMNESIA",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_ZEN_HEADBUTT"
         ]
     },
     "evolutions": [

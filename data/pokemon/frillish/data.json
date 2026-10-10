@@ -108,7 +108,8 @@
             "MOVE_SPITE",
             "MOVE_TRICK",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": [ "MOVE_ACID_ARMOR", "MOVE_CONFUSE_RAY", "MOVE_PAIN_SPLIT", "MOVE_MIST", "MOVE_RECOVER", "MOVE_CONSTRICT" ]
     },
     "evolutions": [
         {

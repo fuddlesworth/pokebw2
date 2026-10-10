@@ -129,6 +129,21 @@
             "MOVE_ENDEAVOR",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STOMP",
+            "MOVE_FORESIGHT",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_DISABLE",
+            "MOVE_COUNTER",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_ENDEAVOR",
+            "MOVE_HAMMER_ARM",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_TRUMP_CARD",
+            "MOVE_UPROAR",
+            "MOVE_CIRCLE_THROW"
         ]
     },
     "evolutions": [],

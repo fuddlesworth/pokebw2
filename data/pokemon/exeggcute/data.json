@@ -106,6 +106,21 @@
             "MOVE_WORRY_SEED",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_SYNTHESIS",
+            "MOVE_MOONLIGHT",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_INGRAIN",
+            "MOVE_CURSE",
+            "MOVE_NATURE_POWER",
+            "MOVE_LUCKY_CHANT",
+            "MOVE_LEAF_STORM",
+            "MOVE_POWER_SWAP",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_SKILL_SWAP",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_BLOCK"
         ]
     },
     "evolutions": [

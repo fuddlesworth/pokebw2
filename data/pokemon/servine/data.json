@@ -109,7 +109,8 @@
             "MOVE_WORRY_SEED",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [
         {

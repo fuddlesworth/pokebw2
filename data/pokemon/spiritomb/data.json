@@ -108,6 +108,16 @@
             "MOVE_WONDER_ROOM",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_DESTINY_BOND",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_SMOKE_SCREEN",
+            "MOVE_IMPRISON",
+            "MOVE_GRUDGE",
+            "MOVE_SHADOW_SNEAK",
+            "MOVE_CAPTIVATE",
+            "MOVE_NIGHTMARE"
         ]
     },
     "evolutions": [],

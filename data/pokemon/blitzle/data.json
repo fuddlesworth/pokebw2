@@ -86,7 +86,18 @@
             "TM90",
             "TM93"
         ],
-        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_MAGNET_RISE", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_MAGNET_RISE", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_ME_FIRST",
+            "MOVE_TAKE_DOWN",
+            "MOVE_SAND_ATTACK",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_SCREECH",
+            "MOVE_RAGE",
+            "MOVE_ENDURE",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_SHOCK_WAVE"
+        ]
     },
     "evolutions": [
         {

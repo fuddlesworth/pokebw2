@@ -119,7 +119,8 @@
             "MOVE_WORRY_SEED",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 218,

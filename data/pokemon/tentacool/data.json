@@ -104,6 +104,19 @@
             "MOVE_KNOCK_OFF",
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_AURORA_BEAM",
+            "MOVE_MIRROR_COAT",
+            "MOVE_RAPID_SPIN",
+            "MOVE_HAZE",
+            "MOVE_CONFUSE_RAY",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ACUPRESSURE",
+            "MOVE_MUDDY_WATER",
+            "MOVE_BUBBLE",
+            "MOVE_AQUA_RING",
+            "MOVE_TICKLE"
         ]
     },
     "evolutions": [

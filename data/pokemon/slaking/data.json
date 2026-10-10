@@ -125,7 +125,8 @@
             "MOVE_SNORE",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 278,

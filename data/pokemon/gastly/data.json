@@ -115,6 +115,20 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_PSYWAVE",
+            "MOVE_PERISH_SONG",
+            "MOVE_HAZE",
+            "MOVE_ASTONISH",
+            "MOVE_GRUDGE",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_DISABLE",
+            "MOVE_SCARY_FACE",
+            "MOVE_CLEAR_SMOG",
+            "MOVE_SMOG"
         ]
     },
     "evolutions": [

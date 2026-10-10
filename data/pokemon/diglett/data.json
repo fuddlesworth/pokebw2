@@ -92,7 +92,22 @@
             "TM94",
             "HM01"
         ],
-        "by_tutor": [ "MOVE_UPROAR", "MOVE_EARTH_POWER", "MOVE_SNORE", "MOVE_STEALTH_ROCK", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_UPROAR", "MOVE_EARTH_POWER", "MOVE_SNORE", "MOVE_STEALTH_ROCK", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_FAINT_ATTACK",
+            "MOVE_SCREECH",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_PURSUIT",
+            "MOVE_BEAT_UP",
+            "MOVE_UPROAR",
+            "MOVE_MUD_BOMB",
+            "MOVE_ASTONISH",
+            "MOVE_REVERSAL",
+            "MOVE_HEADBUTT",
+            "MOVE_ENDURE",
+            "MOVE_FINAL_GAMBIT",
+            "MOVE_MEMENTO"
+        ]
     },
     "evolutions": [
         {

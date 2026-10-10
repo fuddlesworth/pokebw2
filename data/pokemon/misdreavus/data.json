@@ -116,6 +116,20 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_SCREECH",
+            "MOVE_DESTINY_BOND",
+            "MOVE_IMPRISON",
+            "MOVE_MEMENTO",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_SHADOW_SNEAK",
+            "MOVE_CURSE",
+            "MOVE_SPITE",
+            "MOVE_OMINOUS_WIND",
+            "MOVE_NASTY_PLOT",
+            "MOVE_SKILL_SWAP",
+            "MOVE_WONDER_ROOM"
         ]
     },
     "evolutions": [

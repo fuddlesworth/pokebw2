@@ -53,7 +53,8 @@
             [ 30, "MOVE_FLAIL" ]
         ],
         "by_tm": [],
-        "by_tutor": [ "MOVE_BOUNCE" ]
+        "by_tutor": [ "MOVE_BOUNCE" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

@@ -116,6 +116,18 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ANCIENT_POWER",
+            "MOVE_BELLY_DRUM",
+            "MOVE_SCREECH",
+            "MOVE_SKULL_BASH",
+            "MOVE_PERISH_SONG",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_IRON_HEAD",
+            "MOVE_DETECT",
+            "MOVE_ENDURE",
+            "MOVE_CHIP_AWAY"
         ]
     },
     "evolutions": [

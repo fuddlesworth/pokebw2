@@ -100,6 +100,19 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BUBBLE_BEAM",
+            "MOVE_AURORA_BEAM",
+            "MOVE_RAPID_SPIN",
+            "MOVE_FLAIL",
+            "MOVE_KNOCK_OFF",
+            "MOVE_CONFUSE_RAY",
+            "MOVE_MUD_SHOT",
+            "MOVE_ICY_WIND",
+            "MOVE_SCREECH",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_FORESIGHT"
         ]
     },
     "evolutions": [

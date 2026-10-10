@@ -102,6 +102,23 @@
             "MOVE_AFTER_YOU",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HOWL",
+            "MOVE_SCARY_FACE",
+            "MOVE_BODY_SLAM",
+            "MOVE_ROLLOUT",
+            "MOVE_DEFENSE_CURL",
+            "MOVE_STOMP",
+            "MOVE_YAWN",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_MUD_BOMB",
+            "MOVE_HEAT_WAVE",
+            "MOVE_STOCKPILE",
+            "MOVE_SWALLOW",
+            "MOVE_SPIT_UP",
+            "MOVE_ENDURE",
+            "MOVE_IRON_HEAD"
         ]
     },
     "evolutions": [

@@ -121,7 +121,8 @@
             "MOVE_KNOCK_OFF",
             "MOVE_ROLE_PLAY",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 199,

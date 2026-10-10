@@ -99,6 +99,20 @@
             "MOVE_IRON_TAIL",
             "MOVE_SNORE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_WATER_SPORT",
+            "MOVE_STOCKPILE",
+            "MOVE_SWALLOW",
+            "MOVE_SPIT_UP",
+            "MOVE_YAWN",
+            "MOVE_CURSE",
+            "MOVE_FISSURE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_AQUA_RING",
+            "MOVE_ROLLOUT",
+            "MOVE_SLEEP_TALK",
+            "MOVE_WATER_PULSE"
         ]
     },
     "evolutions": [

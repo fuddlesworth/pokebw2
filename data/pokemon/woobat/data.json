@@ -121,6 +121,17 @@
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_CHARM",
+            "MOVE_KNOCK_OFF",
+            "MOVE_FAKE_TEARS",
+            "MOVE_SUPERSONIC",
+            "MOVE_SYNCHRONOISE",
+            "MOVE_STORED_POWER",
+            "MOVE_ROOST",
+            "MOVE_FLATTER",
+            "MOVE_HELPING_HAND"
         ]
     },
     "evolutions": [

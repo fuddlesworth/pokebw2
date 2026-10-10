@@ -99,7 +99,8 @@
             "MOVE_SPITE",
             "MOVE_TRICK",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 192,

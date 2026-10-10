@@ -99,7 +99,8 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_GASTRO_ACID",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 158,

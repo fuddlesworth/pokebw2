@@ -111,6 +111,17 @@
             "MOVE_HELPING_HAND",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SWEET_SCENT",
+            "MOVE_KNOCK_OFF",
+            "MOVE_HELPING_HAND",
+            "MOVE_ACUPRESSURE",
+            "MOVE_SAND_TOMB",
+            "MOVE_MUD_SLAP",
+            "MOVE_ACID",
+            "MOVE_ROCK_BLAST",
+            "MOVE_FINAL_GAMBIT"
         ]
     },
     "evolutions": [],

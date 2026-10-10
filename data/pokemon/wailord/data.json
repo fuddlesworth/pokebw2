@@ -108,7 +108,8 @@
             "MOVE_HYPER_VOICE",
             "MOVE_SNORE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 241,

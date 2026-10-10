@@ -99,6 +99,18 @@
             "MOVE_SNORE",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HYDRO_PUMP",
+            "MOVE_THRASH",
+            "MOVE_DRAGON_RAGE",
+            "MOVE_TWISTER",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_FIRE_FANG",
+            "MOVE_DRAGON_RUSH",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_ENDURE",
+            "MOVE_DEFENSE_CURL"
         ]
     },
     "evolutions": [

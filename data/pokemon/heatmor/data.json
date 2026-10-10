@@ -113,6 +113,18 @@
             "MOVE_RECYCLE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PURSUIT",
+            "MOVE_WRAP",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_CURSE",
+            "MOVE_BODY_SLAM",
+            "MOVE_HEAT_WAVE",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_TICKLE",
+            "MOVE_SLEEP_TALK"
         ]
     },
     "evolutions": [],

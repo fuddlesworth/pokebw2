@@ -106,6 +106,18 @@
             "MOVE_SPITE",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FIRE_FANG",
+            "MOVE_THUNDER_FANG",
+            "MOVE_ICE_FANG",
+            "MOVE_DOUBLE_HIT",
+            "MOVE_ASTONISH",
+            "MOVE_EARTH_POWER",
+            "MOVE_SCREECH",
+            "MOVE_HEAD_SMASH",
+            "MOVE_ASSURANCE",
+            "MOVE_DARK_PULSE"
         ]
     },
     "evolutions": [

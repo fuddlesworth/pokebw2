@@ -97,6 +97,19 @@
             "MOVE_PAIN_SPLIT",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ACID_ARMOR",
+            "MOVE_HEAT_WAVE",
+            "MOVE_CURSE",
+            "MOVE_SMOKE_SCREEN",
+            "MOVE_MEMENTO",
+            "MOVE_STOCKPILE",
+            "MOVE_SPIT_UP",
+            "MOVE_SWALLOW",
+            "MOVE_ROLLOUT",
+            "MOVE_INFERNO",
+            "MOVE_EARTH_POWER"
         ]
     },
     "evolutions": [

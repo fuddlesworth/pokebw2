@@ -108,7 +108,8 @@
             "MOVE_ROOST",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [
         {

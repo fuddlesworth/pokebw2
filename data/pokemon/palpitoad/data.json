@@ -99,7 +99,8 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [
         {

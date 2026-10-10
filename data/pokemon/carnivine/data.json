@@ -101,6 +101,19 @@
             "MOVE_GASTRO_ACID",
             "MOVE_WORRY_SEED",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SLEEP_POWDER",
+            "MOVE_STUN_SPORE",
+            "MOVE_RAZOR_LEAF",
+            "MOVE_SLAM",
+            "MOVE_SYNTHESIS",
+            "MOVE_MAGICAL_LEAF",
+            "MOVE_LEECH_SEED",
+            "MOVE_WORRY_SEED",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_RAGE_POWDER",
+            "MOVE_GRASS_WHISTLE"
         ]
     },
     "evolutions": [],

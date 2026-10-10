@@ -104,6 +104,20 @@
             "MOVE_SNORE",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_COVET",
+            "MOVE_BITE",
+            "MOVE_FAKE_TEARS",
+            "MOVE_DEFENSE_CURL",
+            "MOVE_ROLLOUT",
+            "MOVE_FLATTER",
+            "MOVE_FLAIL",
+            "MOVE_IRON_TAIL",
+            "MOVE_TAIL_WHIP",
+            "MOVE_FOLLOW_ME",
+            "MOVE_CHARGE",
+            "MOVE_BESTOW"
         ]
     },
     "evolutions": [],

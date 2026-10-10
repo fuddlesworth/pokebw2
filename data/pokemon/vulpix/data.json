@@ -107,6 +107,21 @@
             "MOVE_PAIN_SPLIT",
             "MOVE_SPITE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FAINT_ATTACK",
+            "MOVE_HYPNOSIS",
+            "MOVE_FLAIL",
+            "MOVE_SPITE",
+            "MOVE_DISABLE",
+            "MOVE_HOWL",
+            "MOVE_HEAT_WAVE",
+            "MOVE_FLARE_BLITZ",
+            "MOVE_EXTRASENSORY",
+            "MOVE_POWER_SWAP",
+            "MOVE_SECRET_POWER",
+            "MOVE_HEX",
+            "MOVE_TAIL_SLAP"
         ]
     },
     "evolutions": [

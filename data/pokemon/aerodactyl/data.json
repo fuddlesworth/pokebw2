@@ -120,6 +120,17 @@
             "MOVE_ROOST",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_WHIRLWIND",
+            "MOVE_PURSUIT",
+            "MOVE_FORESIGHT",
+            "MOVE_STEEL_WING",
+            "MOVE_DRAGON_BREATH",
+            "MOVE_CURSE",
+            "MOVE_ASSURANCE",
+            "MOVE_ROOST",
+            "MOVE_TAILWIND"
         ]
     },
     "evolutions": [],

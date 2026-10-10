@@ -119,6 +119,20 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_BARRIER",
+            "MOVE_ASSIST",
+            "MOVE_ROLE_PLAY",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_ICE_PUNCH",
+            "MOVE_NASTY_PLOT",
+            "MOVE_FLATTER",
+            "MOVE_PSYCHO_CUT",
+            "MOVE_GUARD_SWAP",
+            "MOVE_SECRET_POWER",
+            "MOVE_SKILL_SWAP"
         ]
     },
     "evolutions": [

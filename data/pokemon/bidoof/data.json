@@ -105,6 +105,20 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_QUICK_ATTACK",
+            "MOVE_WATER_SPORT",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_FURY_SWIPES",
+            "MOVE_DEFENSE_CURL",
+            "MOVE_ROLLOUT",
+            "MOVE_ODOR_SLEUTH",
+            "MOVE_AQUA_TAIL",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_SLEEP_TALK",
+            "MOVE_ENDURE",
+            "MOVE_SKULL_BASH"
         ]
     },
     "evolutions": [

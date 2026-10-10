@@ -95,6 +95,15 @@
             "MOVE_ROOST",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STEEL_WING",
+            "MOVE_BRINE",
+            "MOVE_GUST",
+            "MOVE_AIR_CUTTER",
+            "MOVE_MIRROR_MOVE",
+            "MOVE_ME_FIRST",
+            "MOVE_LUCKY_CHANT"
         ]
     },
     "evolutions": [

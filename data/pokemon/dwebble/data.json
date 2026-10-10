@@ -106,6 +106,16 @@
             "MOVE_KNOCK_OFF",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ENDURE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_SAND_TOMB",
+            "MOVE_COUNTER",
+            "MOVE_CURSE",
+            "MOVE_SPIKES",
+            "MOVE_BLOCK"
         ]
     },
     "evolutions": [

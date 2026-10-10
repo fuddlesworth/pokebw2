@@ -112,6 +112,21 @@
             "MOVE_SPITE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FIRE_SPIN",
+            "MOVE_RAGE",
+            "MOVE_PURSUIT",
+            "MOVE_COUNTER",
+            "MOVE_SPITE",
+            "MOVE_REVERSAL",
+            "MOVE_BEAT_UP",
+            "MOVE_FIRE_FANG",
+            "MOVE_THUNDER_FANG",
+            "MOVE_NASTY_PLOT",
+            "MOVE_PUNISHMENT",
+            "MOVE_FEINT",
+            "MOVE_SUCKER_PUNCH"
         ]
     },
     "evolutions": [

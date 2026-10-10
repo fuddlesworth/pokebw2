@@ -118,6 +118,19 @@
             "MOVE_MAGIC_ROOM",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_SPITE",
+            "MOVE_DISABLE",
+            "MOVE_BITE",
+            "MOVE_EXTRASENSORY",
+            "MOVE_THRASH",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_MEGAHORN",
+            "MOVE_MUD_SPORT",
+            "MOVE_RAGE",
+            "MOVE_ME_FIRST"
         ]
     },
     "evolutions": [],

@@ -99,6 +99,16 @@
             "MOVE_KNOCK_OFF",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_RAPID_SPIN",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SCREECH",
+            "MOVE_SAND_ATTACK",
+            "MOVE_CROSS_POISON",
+            "MOVE_CURSE",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_WATER_PULSE"
         ]
     },
     "evolutions": [

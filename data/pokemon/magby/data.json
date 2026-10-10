@@ -100,6 +100,20 @@
             "MOVE_HEAT_WAVE",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_KARATE_CHOP",
+            "MOVE_MEGA_PUNCH",
+            "MOVE_BARRIER",
+            "MOVE_SCREECH",
+            "MOVE_CROSS_CHOP",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_MACH_PUNCH",
+            "MOVE_DYNAMIC_PUNCH",
+            "MOVE_FLARE_BLITZ",
+            "MOVE_BELLY_DRUM",
+            "MOVE_IRON_TAIL",
+            "MOVE_FOCUS_ENERGY"
         ]
     },
     "evolutions": [

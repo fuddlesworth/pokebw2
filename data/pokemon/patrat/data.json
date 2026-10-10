@@ -104,6 +104,15 @@
             "MOVE_HELPING_HAND",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FORESIGHT",
+            "MOVE_IRON_TAIL",
+            "MOVE_SCREECH",
+            "MOVE_ASSURANCE",
+            "MOVE_PURSUIT",
+            "MOVE_REVENGE",
+            "MOVE_FLAIL"
         ]
     },
     "evolutions": [

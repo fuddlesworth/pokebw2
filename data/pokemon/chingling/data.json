@@ -109,6 +109,16 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_DISABLE",
+            "MOVE_CURSE",
+            "MOVE_HYPNOSIS",
+            "MOVE_WISH",
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_RECOVER",
+            "MOVE_STORED_POWER",
+            "MOVE_SKILL_SWAP"
         ]
     },
     "evolutions": [

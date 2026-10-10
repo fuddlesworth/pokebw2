@@ -75,7 +75,21 @@
             "HM05",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_ICY_WIND", "MOVE_DRAGON_PULSE", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_ICY_WIND", "MOVE_DRAGON_PULSE", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_MIRROR_COAT",
+            "MOVE_DRAGON_BREATH",
+            "MOVE_MUD_SPORT",
+            "MOVE_HYPNOSIS",
+            "MOVE_CONFUSE_RAY",
+            "MOVE_MIST",
+            "MOVE_HAZE",
+            "MOVE_TICKLE",
+            "MOVE_BRINE",
+            "MOVE_IRON_TAIL",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_CAPTIVATE"
+        ]
     },
     "evolutions": [
         {

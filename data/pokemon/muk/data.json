@@ -118,7 +118,8 @@
             "MOVE_PAIN_SPLIT",
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 65,

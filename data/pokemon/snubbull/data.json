@@ -121,6 +121,22 @@
             "MOVE_SNORE",
             "MOVE_HEAL_BELL",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_METRONOME",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_PRESENT",
+            "MOVE_CRUNCH",
+            "MOVE_HEAL_BELL",
+            "MOVE_SNORE",
+            "MOVE_SMELLING_SALT",
+            "MOVE_CLOSE_COMBAT",
+            "MOVE_ICE_FANG",
+            "MOVE_FIRE_FANG",
+            "MOVE_THUNDER_FANG",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_MIMIC"
         ]
     },
     "evolutions": [

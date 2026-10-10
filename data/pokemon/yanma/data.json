@@ -97,6 +97,18 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_ROOST",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_WHIRLWIND",
+            "MOVE_REVERSAL",
+            "MOVE_LEECH_LIFE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_SILVER_WIND",
+            "MOVE_FEINT",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_PURSUIT",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_SECRET_POWER"
         ]
     },
     "evolutions": [

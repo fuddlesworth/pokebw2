@@ -101,6 +101,17 @@
             "MOVE_HELPING_HAND",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SELFDESTRUCT",
+            "MOVE_HEADBUTT",
+            "MOVE_HARDEN",
+            "MOVE_DEFENSE_CURL",
+            "MOVE_ROLLOUT",
+            "MOVE_SAND_TOMB",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_CURSE",
+            "MOVE_ENDURE"
         ]
     },
     "evolutions": [

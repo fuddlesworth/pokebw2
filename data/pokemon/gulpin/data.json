@@ -102,6 +102,15 @@
             "MOVE_GASTRO_ACID",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ACID_ARMOR",
+            "MOVE_SMOG",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_CURSE",
+            "MOVE_DESTINY_BOND",
+            "MOVE_MUD_SLAP",
+            "MOVE_GUNK_SHOT"
         ]
     },
     "evolutions": [

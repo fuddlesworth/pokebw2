@@ -80,7 +80,24 @@
             "HM03",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_EARTH_POWER", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_PAIN_SPLIT", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_EARTH_POWER", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_PAIN_SPLIT", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_COUNTER",
+            "MOVE_MIRROR_COAT",
+            "MOVE_STOCKPILE",
+            "MOVE_SWALLOW",
+            "MOVE_SPIT_UP",
+            "MOVE_YAWN",
+            "MOVE_MEMENTO",
+            "MOVE_CURSE",
+            "MOVE_AMNESIA",
+            "MOVE_FISSURE",
+            "MOVE_TRUMP_CARD",
+            "MOVE_SLUDGE",
+            "MOVE_CLEAR_SMOG",
+            "MOVE_BRINE",
+            "MOVE_MIST"
+        ]
     },
     "evolutions": [
         {

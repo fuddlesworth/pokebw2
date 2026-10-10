@@ -99,6 +99,19 @@
             "MOVE_SNORE",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HOWL",
+            "MOVE_SAND_ATTACK",
+            "MOVE_MUD_SLAP",
+            "MOVE_LICK",
+            "MOVE_CHARM",
+            "MOVE_ENDURE",
+            "MOVE_YAWN",
+            "MOVE_PURSUIT",
+            "MOVE_FIRE_FANG",
+            "MOVE_THUNDER_FANG",
+            "MOVE_ICE_FANG"
         ]
     },
     "evolutions": [

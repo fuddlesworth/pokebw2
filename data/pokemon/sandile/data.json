@@ -111,6 +111,18 @@
             "MOVE_SNATCH",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_PURSUIT",
+            "MOVE_UPROAR",
+            "MOVE_FIRE_FANG",
+            "MOVE_THUNDER_FANG",
+            "MOVE_BEAT_UP",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_COUNTER",
+            "MOVE_MEAN_LOOK"
         ]
     },
     "evolutions": [

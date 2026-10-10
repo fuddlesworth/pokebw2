@@ -110,6 +110,22 @@
             "MOVE_ROLE_PLAY",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FAINT_ATTACK",
+            "MOVE_DETECT",
+            "MOVE_FORESIGHT",
+            "MOVE_HELPING_HAND",
+            "MOVE_CROSS_CHOP",
+            "MOVE_REVENGE",
+            "MOVE_DYNAMIC_PUNCH",
+            "MOVE_COUNTER",
+            "MOVE_WAKE_UP_SLAP",
+            "MOVE_BULLET_PUNCH",
+            "MOVE_FEINT",
+            "MOVE_WIDE_GUARD",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_CHIP_AWAY"
         ]
     },
     "evolutions": [

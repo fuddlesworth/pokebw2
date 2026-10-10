@@ -114,6 +114,20 @@
             "MOVE_MAGIC_ROOM",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_HAZE",
+            "MOVE_DRILL_PECK",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_STEEL_WING",
+            "MOVE_FEATHER_DANCE",
+            "MOVE_REFRESH",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_SYNCHRONOISE",
+            "MOVE_ROOST",
+            "MOVE_SKILL_SWAP"
         ]
     },
     "evolutions": [

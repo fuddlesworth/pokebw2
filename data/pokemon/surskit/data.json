@@ -83,7 +83,18 @@
             "TM87",
             "TM90"
         ],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_SIGNAL_BEAM", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_GIGA_DRAIN", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_SIGNAL_BEAM", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_GIGA_DRAIN", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_FORESIGHT",
+            "MOVE_MUD_SHOT",
+            "MOVE_PSYBEAM",
+            "MOVE_HYDRO_PUMP",
+            "MOVE_MIND_READER",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_BUG_BITE",
+            "MOVE_AQUA_JET",
+            "MOVE_ENDURE"
+        ]
     },
     "evolutions": [
         {

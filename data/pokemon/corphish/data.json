@@ -108,6 +108,19 @@
             "MOVE_SPITE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_MUD_SPORT",
+            "MOVE_ENDEAVOR",
+            "MOVE_BODY_SLAM",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SUPERPOWER",
+            "MOVE_METAL_CLAW",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_TRUMP_CARD",
+            "MOVE_CHIP_AWAY",
+            "MOVE_DOUBLE_EDGE"
         ]
     },
     "evolutions": [

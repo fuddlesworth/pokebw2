@@ -88,7 +88,21 @@
             "TM95",
             "HM04"
         ],
-        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_MAGNET_RISE", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_MAGNET_RISE", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_ICE_FANG",
+            "MOVE_FIRE_FANG",
+            "MOVE_THUNDER_FANG",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_HOWL",
+            "MOVE_TAKE_DOWN",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_SHOCK_WAVE",
+            "MOVE_SWIFT",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_HELPING_HAND"
+        ]
     },
     "evolutions": [
         {

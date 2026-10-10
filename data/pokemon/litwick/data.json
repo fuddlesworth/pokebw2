@@ -110,6 +110,15 @@
             "MOVE_SPITE",
             "MOVE_TRICK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ACID_ARMOR",
+            "MOVE_HEAT_WAVE",
+            "MOVE_HAZE",
+            "MOVE_ENDURE",
+            "MOVE_CAPTIVATE",
+            "MOVE_ACID",
+            "MOVE_CLEAR_SMOG"
         ]
     },
     "evolutions": [

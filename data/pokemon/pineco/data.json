@@ -104,6 +104,19 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PIN_MISSILE",
+            "MOVE_FLAIL",
+            "MOVE_SWIFT",
+            "MOVE_COUNTER",
+            "MOVE_SAND_TOMB",
+            "MOVE_REVENGE",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_TOXIC_SPIKES",
+            "MOVE_POWER_TRICK",
+            "MOVE_ENDURE",
+            "MOVE_STEALTH_ROCK"
         ]
     },
     "evolutions": [

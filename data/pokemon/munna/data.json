@@ -115,6 +115,17 @@
             "MOVE_WONDER_ROOM",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_SLEEP_TALK",
+            "MOVE_SECRET_POWER",
+            "MOVE_BARRIER",
+            "MOVE_MAGIC_COAT",
+            "MOVE_HELPING_HAND",
+            "MOVE_BATON_PASS",
+            "MOVE_SWIFT",
+            "MOVE_CURSE",
+            "MOVE_SONIC_BOOM"
         ]
     },
     "evolutions": [

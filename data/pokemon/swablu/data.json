@@ -101,6 +101,18 @@
             "MOVE_ROOST",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_AGILITY",
+            "MOVE_HAZE",
+            "MOVE_PURSUIT",
+            "MOVE_RAGE",
+            "MOVE_FEATHER_DANCE",
+            "MOVE_DRAGON_RUSH",
+            "MOVE_POWER_SWAP",
+            "MOVE_ROOST",
+            "MOVE_HYPER_VOICE",
+            "MOVE_STEEL_WING"
         ]
     },
     "evolutions": [

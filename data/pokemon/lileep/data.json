@@ -100,6 +100,17 @@
             "MOVE_WORRY_SEED",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BARRIER",
+            "MOVE_RECOVER",
+            "MOVE_MIRROR_COAT",
+            "MOVE_WRING_OUT",
+            "MOVE_TICKLE",
+            "MOVE_CURSE",
+            "MOVE_MEGA_DRAIN",
+            "MOVE_ENDURE",
+            "MOVE_STEALTH_ROCK"
         ]
     },
     "evolutions": [

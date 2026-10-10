@@ -107,6 +107,20 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_MAGNITUDE",
+            "MOVE_SKULL_BASH",
+            "MOVE_WATER_SPORT",
+            "MOVE_AMNESIA",
+            "MOVE_SLEEP_TALK",
+            "MOVE_AQUA_TAIL",
+            "MOVE_SNORE",
+            "MOVE_MUD_SLAP",
+            "MOVE_MUDDY_WATER",
+            "MOVE_MUD_SHOT",
+            "MOVE_BRINE",
+            "MOVE_ZEN_HEADBUTT"
         ]
     },
     "evolutions": [],

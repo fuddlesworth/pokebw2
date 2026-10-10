@@ -98,6 +98,17 @@
             "MOVE_AFTER_YOU",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_NATURAL_GIFT",
+            "MOVE_CHARM",
+            "MOVE_ENDURE",
+            "MOVE_INGRAIN",
+            "MOVE_WORRY_SEED",
+            "MOVE_GRASS_WHISTLE",
+            "MOVE_SWEET_SCENT",
+            "MOVE_BIDE",
+            "MOVE_HEALING_WISH"
         ]
     },
     "evolutions": [

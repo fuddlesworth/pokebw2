@@ -106,6 +106,21 @@
             "MOVE_HELPING_HAND",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BODY_SLAM",
+            "MOVE_CRUNCH",
+            "MOVE_THRASH",
+            "MOVE_FIRE_SPIN",
+            "MOVE_HOWL",
+            "MOVE_HEAT_WAVE",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_FLARE_BLITZ",
+            "MOVE_MORNING_SUN",
+            "MOVE_COVET",
+            "MOVE_IRON_TAIL",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_CLOSE_COMBAT"
         ]
     },
     "evolutions": [

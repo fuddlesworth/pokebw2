@@ -88,7 +88,19 @@
             "TM93",
             "HM04"
         ],
-        "by_tutor": [ "MOVE_BOUNCE", "MOVE_LOW_KICK", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BOUNCE", "MOVE_LOW_KICK", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_FLAME_WHEEL",
+            "MOVE_THRASH",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_HYPNOSIS",
+            "MOVE_CHARM",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_HORN_DRILL",
+            "MOVE_MORNING_SUN",
+            "MOVE_LOW_KICK",
+            "MOVE_CAPTIVATE"
+        ]
     },
     "evolutions": [
         {

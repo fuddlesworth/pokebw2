@@ -103,6 +103,16 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BULLET_SEED",
+            "MOVE_LEECH_SEED",
+            "MOVE_SPIKES",
+            "MOVE_WORRY_SEED",
+            "MOVE_SEED_BOMB",
+            "MOVE_GRAVITY",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_STEALTH_ROCK"
         ]
     },
     "evolutions": [

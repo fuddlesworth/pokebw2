@@ -102,7 +102,8 @@
             "MOVE_AFTER_YOU",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 108,

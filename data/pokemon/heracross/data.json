@@ -113,6 +113,17 @@
             "MOVE_KNOCK_OFF",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HARDEN",
+            "MOVE_BIDE",
+            "MOVE_FLAIL",
+            "MOVE_REVENGE",
+            "MOVE_PURSUIT",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_SEISMIC_TOSS",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_MEGAHORN"
         ]
     },
     "evolutions": [],

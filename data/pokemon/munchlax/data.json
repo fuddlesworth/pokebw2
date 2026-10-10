@@ -122,6 +122,19 @@
             "MOVE_RECYCLE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_LICK",
+            "MOVE_CHARM",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_CURSE",
+            "MOVE_WHIRLWIND",
+            "MOVE_PURSUIT",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_COUNTER",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_AFTER_YOU",
+            "MOVE_SELFDESTRUCT"
         ]
     },
     "evolutions": [

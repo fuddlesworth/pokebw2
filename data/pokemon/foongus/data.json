@@ -97,6 +97,16 @@
             "MOVE_WORRY_SEED",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_GASTRO_ACID",
+            "MOVE_GROWTH",
+            "MOVE_POISON_POWDER",
+            "MOVE_STUN_SPORE",
+            "MOVE_ROLLOUT",
+            "MOVE_DEFENSE_CURL",
+            "MOVE_ENDURE",
+            "MOVE_BODY_SLAM"
         ]
     },
     "evolutions": [

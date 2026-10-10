@@ -111,7 +111,8 @@
             "MOVE_WORRY_SEED",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

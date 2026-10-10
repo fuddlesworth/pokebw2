@@ -86,7 +86,15 @@
             "TM90",
             "TM94"
         ],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_SNORE", "MOVE_ENDEAVOR", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_IRON_DEFENSE", "MOVE_SNORE", "MOVE_ENDEAVOR", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_TWINEEDLE",
+            "MOVE_PIN_MISSILE",
+            "MOVE_TOXIC_SPIKES",
+            "MOVE_SPIKES",
+            "MOVE_TAKE_DOWN",
+            "MOVE_ROCK_CLIMB"
+        ]
     },
     "evolutions": [
         {

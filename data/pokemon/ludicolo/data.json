@@ -105,7 +105,8 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_DRAIN_PUNCH",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

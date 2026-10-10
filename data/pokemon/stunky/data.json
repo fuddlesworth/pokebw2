@@ -96,7 +96,21 @@
             "TM95",
             "HM01"
         ],
-        "by_tutor": [ "MOVE_FOUL_PLAY", "MOVE_DARK_PULSE", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SNATCH", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_FOUL_PLAY", "MOVE_DARK_PULSE", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SNATCH", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_PURSUIT",
+            "MOVE_LEER",
+            "MOVE_SMOG",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_CRUNCH",
+            "MOVE_SCARY_FACE",
+            "MOVE_ASTONISH",
+            "MOVE_PUNISHMENT",
+            "MOVE_HAZE",
+            "MOVE_IRON_TAIL",
+            "MOVE_FOUL_PLAY",
+            "MOVE_FLAME_BURST"
+        ]
     },
     "evolutions": [
         {

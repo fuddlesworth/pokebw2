@@ -108,6 +108,17 @@
             "MOVE_AFTER_YOU",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_IRON_TAIL",
+            "MOVE_TAIL_WHIP",
+            "MOVE_AQUA_TAIL",
+            "MOVE_MUD_SLAP",
+            "MOVE_KNOCK_OFF",
+            "MOVE_FAKE_TEARS",
+            "MOVE_SLEEP_TALK",
+            "MOVE_ENDURE",
+            "MOVE_FLAIL"
         ]
     },
     "evolutions": [

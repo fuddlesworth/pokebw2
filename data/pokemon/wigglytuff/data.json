@@ -124,7 +124,8 @@
             "MOVE_SNATCH",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 283,

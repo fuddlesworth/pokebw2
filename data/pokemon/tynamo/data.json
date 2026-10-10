@@ -54,7 +54,8 @@
             [ 1, "MOVE_CHARGE_BEAM" ]
         ],
         "by_tm": [],
-        "by_tutor": [ "MOVE_MAGNET_RISE" ]
+        "by_tutor": [ "MOVE_MAGNET_RISE" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

@@ -101,6 +101,20 @@
             "MOVE_HELPING_HAND",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_GRASS_WHISTLE",
+            "MOVE_ENCORE",
+            "MOVE_LEECH_SEED",
+            "MOVE_NATURE_POWER",
+            "MOVE_CURSE",
+            "MOVE_HELPING_HAND",
+            "MOVE_INGRAIN",
+            "MOVE_SWEET_SCENT",
+            "MOVE_ENDURE",
+            "MOVE_BIDE",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_MORNING_SUN"
         ]
     },
     "evolutions": [

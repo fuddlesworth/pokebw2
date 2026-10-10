@@ -104,7 +104,8 @@
             "MOVE_WORRY_SEED",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

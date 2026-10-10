@@ -118,6 +118,21 @@
             "MOVE_HELPING_HAND",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PRESENT",
+            "MOVE_REVERSAL",
+            "MOVE_SEISMIC_TOSS",
+            "MOVE_ENDURE",
+            "MOVE_CURSE",
+            "MOVE_HELPING_HAND",
+            "MOVE_SLEEP_TALK",
+            "MOVE_DIZZY_PUNCH",
+            "MOVE_HAMMER_ARM",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_PUNISHMENT",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_HEART_STAMP"
         ]
     },
     "evolutions": [],

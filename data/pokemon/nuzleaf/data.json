@@ -111,7 +111,8 @@
             "MOVE_WORRY_SEED",
             "MOVE_SPITE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [
         {

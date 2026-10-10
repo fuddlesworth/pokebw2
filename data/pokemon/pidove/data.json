@@ -95,6 +95,15 @@
             "MOVE_SKY_ATTACK",
             "MOVE_ROOST",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STEEL_WING",
+            "MOVE_HYPNOSIS",
+            "MOVE_UPROAR",
+            "MOVE_BESTOW",
+            "MOVE_WISH",
+            "MOVE_MORNING_SUN",
+            "MOVE_LUCKY_CHANT"
         ]
     },
     "evolutions": [

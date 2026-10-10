@@ -104,6 +104,21 @@
             "MOVE_WORRY_SEED",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SCREECH",
+            "MOVE_COUNTER",
+            "MOVE_PSYBEAM",
+            "MOVE_FLAIL",
+            "MOVE_SWEET_SCENT",
+            "MOVE_PURSUIT",
+            "MOVE_METAL_CLAW",
+            "MOVE_BUG_BITE",
+            "MOVE_CROSS_POISON",
+            "MOVE_AGILITY",
+            "MOVE_ENDURE",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_LEECH_SEED"
         ]
     },
     "evolutions": [

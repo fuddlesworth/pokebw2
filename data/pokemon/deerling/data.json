@@ -101,6 +101,17 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_WORRY_SEED",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FAKE_TEARS",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_SYNTHESIS",
+            "MOVE_WORRY_SEED",
+            "MOVE_ODOR_SLEUTH",
+            "MOVE_AGILITY",
+            "MOVE_SLEEP_TALK",
+            "MOVE_BATON_PASS",
+            "MOVE_GRASS_WHISTLE"
         ]
     },
     "evolutions": [

@@ -106,6 +106,20 @@
             "MOVE_WORRY_SEED",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FLAIL",
+            "MOVE_CONFUSION",
+            "MOVE_MEGA_DRAIN",
+            "MOVE_AMNESIA",
+            "MOVE_LEECH_SEED",
+            "MOVE_NATURE_POWER",
+            "MOVE_ENDEAVOR",
+            "MOVE_LEAF_STORM",
+            "MOVE_POWER_SWAP",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_RAGE_POWDER",
+            "MOVE_NATURAL_GIFT"
         ]
     },
     "evolutions": [

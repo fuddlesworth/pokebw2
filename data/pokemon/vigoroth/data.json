@@ -117,7 +117,8 @@
             "MOVE_ICY_WIND",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [
         {

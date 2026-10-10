@@ -100,7 +100,8 @@
             "MOVE_SNORE",
             "MOVE_SPITE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": [ "MOVE_HYDRO_PUMP", "MOVE_DOUBLE_EDGE", "MOVE_THRASH", "MOVE_ANCIENT_POWER", "MOVE_SWIFT", "MOVE_BRINE" ]
     },
     "evolutions": [
         {

@@ -108,6 +108,23 @@
             "MOVE_ROOST",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STEEL_WING",
+            "MOVE_FORESIGHT",
+            "MOVE_MIRROR_MOVE",
+            "MOVE_GUST",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_FLAIL",
+            "MOVE_FEATHER_DANCE",
+            "MOVE_CURSE",
+            "MOVE_COVET",
+            "MOVE_MUD_SLAP",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_LEAF_BLADE",
+            "MOVE_REVENGE",
+            "MOVE_ROOST",
+            "MOVE_TRUMP_CARD"
         ]
     },
     "evolutions": [],

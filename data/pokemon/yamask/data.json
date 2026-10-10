@@ -109,6 +109,16 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_MEMENTO",
+            "MOVE_FAKE_TEARS",
+            "MOVE_NASTY_PLOT",
+            "MOVE_ENDURE",
+            "MOVE_HEAL_BLOCK",
+            "MOVE_IMPRISON",
+            "MOVE_NIGHTMARE",
+            "MOVE_DISABLE"
         ]
     },
     "evolutions": [

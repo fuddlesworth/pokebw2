@@ -109,6 +109,23 @@
             "MOVE_DRAIN_PUNCH",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_CROSS_CHOP",
+            "MOVE_DETECT",
+            "MOVE_BITE",
+            "MOVE_MIND_READER",
+            "MOVE_SKY_UPPERCUT",
+            "MOVE_HI_JUMP_KICK",
+            "MOVE_AGILITY",
+            "MOVE_VACUUM_WAVE",
+            "MOVE_CRUNCH",
+            "MOVE_LOW_KICK",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_BLAZE_KICK",
+            "MOVE_BULLET_PUNCH",
+            "MOVE_FOLLOW_ME",
+            "MOVE_CIRCLE_THROW"
         ]
     },
     "evolutions": [

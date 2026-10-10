@@ -121,6 +121,16 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_TELEPORT",
+            "MOVE_DISABLE",
+            "MOVE_ASTONISH",
+            "MOVE_POWER_SWAP",
+            "MOVE_GUARD_SWAP",
+            "MOVE_BARRIER",
+            "MOVE_NASTY_PLOT",
+            "MOVE_SKILL_SWAP"
         ]
     },
     "evolutions": [

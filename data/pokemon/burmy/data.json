@@ -54,7 +54,8 @@
             [ 20, "MOVE_HIDDEN_POWER" ]
         ],
         "by_tm": [],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_ELECTROWEB", "MOVE_SNORE" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_ELECTROWEB", "MOVE_SNORE" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

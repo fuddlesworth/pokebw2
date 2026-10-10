@@ -105,6 +105,18 @@
             "MOVE_HELPING_HAND",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_COVET",
+            "MOVE_BODY_SLAM",
+            "MOVE_THRASH",
+            "MOVE_MAGNITUDE",
+            "MOVE_SUPERPOWER",
+            "MOVE_CURSE",
+            "MOVE_ENDEAVOR",
+            "MOVE_YAWN",
+            "MOVE_SLEEP_TALK",
+            "MOVE_HEAVY_SLAM"
         ]
     },
     "evolutions": [

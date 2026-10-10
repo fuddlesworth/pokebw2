@@ -116,6 +116,16 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_NIGHT_SHADE",
+            "MOVE_ASTONISH",
+            "MOVE_CONFUSE_RAY",
+            "MOVE_ACID_ARMOR",
+            "MOVE_TRICK",
+            "MOVE_IMPRISON",
+            "MOVE_SECRET_POWER",
+            "MOVE_ASTONISH"
         ]
     },
     "evolutions": [

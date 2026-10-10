@@ -105,6 +105,21 @@
             "MOVE_HEAT_WAVE",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BELLY_DRUM",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_BITE",
+            "MOVE_OUTRAGE",
+            "MOVE_BEAT_UP",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_CRUNCH",
+            "MOVE_DRAGON_RUSH",
+            "MOVE_METAL_CLAW",
+            "MOVE_FLARE_BLITZ",
+            "MOVE_COUNTER",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_FOCUS_PUNCH"
         ]
     },
     "evolutions": [

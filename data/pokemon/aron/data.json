@@ -108,6 +108,19 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ENDEAVOR",
+            "MOVE_BODY_SLAM",
+            "MOVE_STOMP",
+            "MOVE_SMELLING_SALT",
+            "MOVE_CURSE",
+            "MOVE_SCREECH",
+            "MOVE_IRON_HEAD",
+            "MOVE_DRAGON_RUSH",
+            "MOVE_HEAD_SMASH",
+            "MOVE_SUPERPOWER",
+            "MOVE_STEALTH_ROCK"
         ]
     },
     "evolutions": [

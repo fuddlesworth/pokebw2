@@ -108,6 +108,18 @@
             "MOVE_KNOCK_OFF",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BITE",
+            "MOVE_TAIL_WHIP",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_SAND_ATTACK",
+            "MOVE_FAKE_TEARS",
+            "MOVE_ASSURANCE",
+            "MOVE_FLAIL",
+            "MOVE_SNATCH",
+            "MOVE_WAKE_UP_SLAP",
+            "MOVE_LAST_RESORT"
         ]
     },
     "evolutions": [

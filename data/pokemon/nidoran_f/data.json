@@ -93,7 +93,22 @@
             "HM01",
             "HM04"
         ],
-        "by_tutor": [ "MOVE_SUPER_FANG", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SUPER_FANG", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_SUPERSONIC",
+            "MOVE_DISABLE",
+            "MOVE_TAKE_DOWN",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_CHARM",
+            "MOVE_COUNTER",
+            "MOVE_BEAT_UP",
+            "MOVE_PURSUIT",
+            "MOVE_SKULL_BASH",
+            "MOVE_IRON_TAIL",
+            "MOVE_POISON_TAIL",
+            "MOVE_ENDURE",
+            "MOVE_CHIP_AWAY"
+        ]
     },
     "evolutions": [
         {

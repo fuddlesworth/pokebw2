@@ -107,6 +107,20 @@
             "MOVE_KNOCK_OFF",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PRESENT",
+            "MOVE_AMNESIA",
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_BELLY_DRUM",
+            "MOVE_PERISH_SONG",
+            "MOVE_SUPERSONIC",
+            "MOVE_AQUA_JET",
+            "MOVE_SUPERPOWER",
+            "MOVE_REFRESH",
+            "MOVE_BODY_SLAM",
+            "MOVE_WATER_SPORT",
+            "MOVE_MUDDY_WATER"
         ]
     },
     "evolutions": [

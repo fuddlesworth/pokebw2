@@ -111,6 +111,20 @@
             "MOVE_SNORE",
             "MOVE_KNOCK_OFF",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FAINT_ATTACK",
+            "MOVE_SCREECH",
+            "MOVE_SAND_ATTACK",
+            "MOVE_SLASH",
+            "MOVE_CONFUSE_RAY",
+            "MOVE_WHIRLWIND",
+            "MOVE_AGILITY",
+            "MOVE_PURSUIT",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_IRON_TAIL",
+            "MOVE_TWINEEDLE",
+            "MOVE_POISON_TAIL"
         ]
     },
     "evolutions": [

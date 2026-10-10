@@ -110,6 +110,17 @@
             "MOVE_HEAT_WAVE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SLEEP_TALK",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_ENDURE",
+            "MOVE_HAMMER_ARM",
+            "MOVE_TAKE_DOWN",
+            "MOVE_FLAME_WHEEL",
+            "MOVE_ENCORE",
+            "MOVE_YAWN"
         ]
     },
     "evolutions": [

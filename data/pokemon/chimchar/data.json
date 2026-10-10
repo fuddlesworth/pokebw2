@@ -116,6 +116,22 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FIRE_PUNCH",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_ENCORE",
+            "MOVE_HEAT_WAVE",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_HELPING_HAND",
+            "MOVE_FAKE_OUT",
+            "MOVE_BLAZE_KICK",
+            "MOVE_COUNTER",
+            "MOVE_ASSIST",
+            "MOVE_QUICK_GUARD",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_SUBMISSION"
         ]
     },
     "evolutions": [

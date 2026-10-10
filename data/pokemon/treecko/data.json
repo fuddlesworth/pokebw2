@@ -105,6 +105,23 @@
             "MOVE_WORRY_SEED",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_CRUNCH",
+            "MOVE_MUD_SPORT",
+            "MOVE_ENDEAVOR",
+            "MOVE_LEECH_SEED",
+            "MOVE_DRAGON_BREATH",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_WORRY_SEED",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_GRASS_WHISTLE",
+            "MOVE_SYNTHESIS",
+            "MOVE_MAGICAL_LEAF",
+            "MOVE_LEAF_STORM",
+            "MOVE_RAZOR_WIND",
+            "MOVE_BULLET_SEED",
+            "MOVE_NATURAL_GIFT"
         ]
     },
     "evolutions": [

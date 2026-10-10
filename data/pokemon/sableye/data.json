@@ -131,6 +131,18 @@
             "MOVE_WONDER_ROOM",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_RECOVER",
+            "MOVE_MOONLIGHT",
+            "MOVE_NASTY_PLOT",
+            "MOVE_FLATTER",
+            "MOVE_FEINT",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_TRICK",
+            "MOVE_CAPTIVATE",
+            "MOVE_MEAN_LOOK",
+            "MOVE_METAL_BURST"
         ]
     },
     "evolutions": [],

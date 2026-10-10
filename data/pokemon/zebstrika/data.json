@@ -93,7 +93,8 @@
             "TM93",
             "TM94"
         ],
-        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_MAGNET_RISE", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_MAGNET_RISE", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 148,

@@ -110,6 +110,17 @@
             "MOVE_KNOCK_OFF",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FURY_ATTACK",
+            "MOVE_FLAIL",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_CLOSE_COMBAT",
+            "MOVE_FEINT",
+            "MOVE_ME_FIRST",
+            "MOVE_BUG_BITE",
+            "MOVE_SUPERPOWER"
         ]
     },
     "evolutions": [],

@@ -103,7 +103,8 @@
             "MOVE_SNORE",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": [ "MOVE_WISH", "MOVE_SING", "MOVE_SWEET_KISS", "MOVE_DISCHARGE", "MOVE_LUCKY_CHANT" ]
     },
     "evolutions": [],
     "regional_dex_number": null,

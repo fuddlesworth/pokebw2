@@ -109,6 +109,16 @@
             "MOVE_AFTER_YOU",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ERUPTION",
+            "MOVE_ENDURE",
+            "MOVE_SLEEP_TALK",
+            "MOVE_YAWN",
+            "MOVE_FISSURE",
+            "MOVE_SKULL_BASH",
+            "MOVE_FLAME_BURST",
+            "MOVE_CLEAR_SMOG"
         ]
     },
     "evolutions": [],

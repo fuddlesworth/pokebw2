@@ -115,6 +115,19 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_CRUNCH",
+            "MOVE_THRASH",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_LEER",
+            "MOVE_SLAM",
+            "MOVE_STOMP",
+            "MOVE_WHIRLWIND",
+            "MOVE_HAMMER_ARM",
+            "MOVE_CURSE",
+            "MOVE_IRON_TAIL",
+            "MOVE_IRON_HEAD"
         ]
     },
     "evolutions": [

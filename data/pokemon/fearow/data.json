@@ -99,7 +99,8 @@
             "MOVE_SKY_ATTACK",
             "MOVE_ROOST",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

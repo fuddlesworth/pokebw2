@@ -140,8 +140,9 @@ ARCHIVES = {
 # writes, in the order it takes them, and whether it packs each version apart, which passes it the version's name
 # (black2 or white2). The data's constants come from the lists and headers, so those are inputs too.
 DATA_PACKS = [
-    # Species data, level-up moves, evolutions, baby species and experience tables
-    ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7"], False),
+    # Species data, level-up moves, evolutions, baby species, experience tables and egg moves
+    ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7", "a/1/2/4"],
+     False),
     ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"], False),  # Move data
     ("tools/scripts/item_data.py", "data/items", ["a/0/2/4"], False),  # Item data
     # Trainers, their parties, and the table of their messages with its offsets

@@ -122,7 +122,8 @@
             "MOVE_WORRY_SEED",
             "MOVE_WONDER_ROOM",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 29,

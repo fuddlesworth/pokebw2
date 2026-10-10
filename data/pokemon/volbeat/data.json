@@ -107,6 +107,15 @@
             "MOVE_HELPING_HAND",
             "MOVE_TRICK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BATON_PASS",
+            "MOVE_SILVER_WIND",
+            "MOVE_TRICK",
+            "MOVE_ENCORE",
+            "MOVE_BUG_BUZZ",
+            "MOVE_DIZZY_PUNCH",
+            "MOVE_SEISMIC_TOSS"
         ]
     },
     "evolutions": [],

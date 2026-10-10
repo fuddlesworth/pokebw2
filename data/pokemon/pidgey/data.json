@@ -85,7 +85,18 @@
             "TM90",
             "HM02"
         ],
-        "by_tutor": [ "MOVE_UPROAR", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_TAILWIND", "MOVE_ROOST", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_UPROAR", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_TAILWIND", "MOVE_ROOST", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_PURSUIT",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_FORESIGHT",
+            "MOVE_STEEL_WING",
+            "MOVE_AIR_CUTTER",
+            "MOVE_AIR_SLASH",
+            "MOVE_BRAVE_BIRD",
+            "MOVE_UPROAR",
+            "MOVE_DEFOG"
+        ]
     },
     "evolutions": [
         {

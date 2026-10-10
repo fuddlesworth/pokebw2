@@ -101,6 +101,21 @@
             "MOVE_ICY_WIND",
             "MOVE_SNORE",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_AURORA_BEAM",
+            "MOVE_OCTAZOOKA",
+            "MOVE_SUPERSONIC",
+            "MOVE_HAZE",
+            "MOVE_SCREECH",
+            "MOVE_ROCK_BLAST",
+            "MOVE_SNORE",
+            "MOVE_FLAIL",
+            "MOVE_WATER_SPOUT",
+            "MOVE_MUD_SHOT",
+            "MOVE_SWIFT",
+            "MOVE_ACID_SPRAY",
+            "MOVE_WATER_PULSE"
         ]
     },
     "evolutions": [

@@ -120,6 +120,15 @@
             "MOVE_SNATCH",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_REVENGE",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_PURSUIT",
+            "MOVE_HEADBUTT",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_PSYCHO_CUT",
+            "MOVE_MEAN_LOOK"
         ]
     },
     "evolutions": [

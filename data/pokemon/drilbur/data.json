@@ -103,6 +103,16 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_IRON_DEFENSE",
+            "MOVE_RAPID_SPIN",
+            "MOVE_EARTH_POWER",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_METAL_SOUND",
+            "MOVE_SUBMISSION",
+            "MOVE_SKULL_BASH",
+            "MOVE_ROCK_CLIMB"
         ]
     },
     "evolutions": [

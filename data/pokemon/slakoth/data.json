@@ -107,6 +107,19 @@
             "MOVE_SNORE",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PURSUIT",
+            "MOVE_SLASH",
+            "MOVE_BODY_SLAM",
+            "MOVE_SNORE",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_CURSE",
+            "MOVE_SLEEP_TALK",
+            "MOVE_HAMMER_ARM",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_AFTER_YOU",
+            "MOVE_TICKLE"
         ]
     },
     "evolutions": [

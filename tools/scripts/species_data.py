@@ -3,11 +3,11 @@
 dump writes them from the ROM once, and pack builds the archives from them, which the build does.
 
     species_data.py dump extract/b2_us/files data/pokemon
-    species_data.py pack data/pokemon PERSONAL LEVELUP EVOLUTIONS BABIES GROWTH
+    species_data.py pack data/pokemon PERSONAL LEVELUP EVOLUTIONS BABIES GROWTH EGG_MOVES
 
 A record holds what the game keeps in four archives: the species data (a/0/1/6), its level-up moves (a/0/1/8), its
-evolutions (a/0/1/9) and its baby species (a/0/2/0). species.schema.json describes each field. The records are, in
-order:
+evolutions (a/0/1/9) and its baby species (a/0/2/0), and a species' file its egg moves too (a/1/2/4).
+species.schema.json describes each field. The records are, in order:
 
 - the species of data/constants/species.txt, in data/pokemon/<species>/data.json, from SPECIES_NONE in none/;
 - the extra records, which no species' forms point at, in data/pokemon/extra/<record>.json, in order of their numbers;
@@ -16,6 +16,9 @@ order:
 
 The species data archive ends with the Unova Pokédex numbers of the species and extra records, which their files hold
 as regional_dex_number; the baby species archive has no entries for the forms.
+
+A species' egg moves (a/1/2/4, one entry per species, a count and the moves) are its learnset's egg_moves;
+SPECIES_NONE's entry is empty, so its file has none, and forms and extra records have none.
 
 The experience tables of the growth rates (a/0/1/7) are data/pokemon/growth_rates.csv: a row per level from 0 to 100
 and a column per table, in archive order, each headed by its GROWTH_* constant. The two tables after the growth rates
@@ -153,6 +156,7 @@ def dump(files: Path, output: Path):
     levelup = read_narc((files / "a/0/1/8").read_bytes())
     evolutions = read_narc((files / "a/0/1/9").read_bytes())
     babies = read_narc((files / "a/0/2/0").read_bytes())
+    egg_moves = read_narc((files / "a/1/2/4").read_bytes())
     *records, table = personal
     dex = struct.unpack(f"<{len(table) // 2}H", table)
     species = sorted(load_list("species").items(), key=lambda item: item[1])
@@ -184,6 +188,10 @@ def dump(files: Path, output: Path):
                                                 (NAMES, NAMES_WITH_ARTICLE, CATEGORIES, POKEDEX_ENTRIES))
     for name_, index in species:
         data = entry(index)
+        if egg_moves[index]:
+            count = struct.unpack_from("<H", egg_moves[index])[0]
+            moves = struct.unpack_from(f"<{count}H", egg_moves[index], 2)
+            data["learnset"]["egg_moves"] = [name("MOVE_", move) for move in moves]
         species_text = {"name": to_json(names[index])}
         # SPECIES_NONE's line is empty
         if index and f"{{bd01}}{article(species_text)} {{ff00:255}}{names[index]}" != with_article[index]:
@@ -273,7 +281,8 @@ def record_bytes(data: dict, first_form: int, tutors_by_bit: list[list[str]], wh
 def pack(root: Path, outputs: list[Path]):
     schema = load_schema(root / "species.schema.json")
     files, with_babies, first_forms = record_files(root)
-    personal, levelup, evolutions, babies, dex = [], [], [], [], []
+    species_count = len(load_list("species"))
+    personal, levelup, evolutions, babies, dex, egg_moves = [], [], [], [], [], []
     tutors_by_bit = tutor_moves()
     for index, path in enumerate(files):
         where = label(path)
@@ -289,13 +298,19 @@ def pack(root: Path, outputs: list[Path]):
         entries = [(value(e["method"], where), value(e["param"], where), value(e["species"], where))
                    for e in data["evolutions"]]
         evolutions.append(b"".join(struct.pack("<3H", *e) for e in entries + [(0, 0, 0)] * (EVOLUTIONS - len(entries))))
+        if index < species_count:
+            moves = [value(move, where) for move in data["learnset"].get("egg_moves", [])]
+            empty = "egg_moves" not in data["learnset"]
+            egg_moves.append(b"" if empty else struct.pack(f"<H{len(moves)}H", len(moves), *moves))
+        elif "egg_moves" in data["learnset"]:
+            raise DataError(f"{where}: only a species has egg_moves, not a form or an extra record")
         if index < with_babies:
             babies.append(struct.pack("<H", value(data["baby_species"], where)))
             number = data["regional_dex_number"]
             dex.append(NOT_IN_DEX if number is None else number)
     personal.append(struct.pack(f"<{len(dex)}H", *dex))
     growth = growth_tables(root / GROWTH_RATES)
-    for output, members in zip(outputs, (personal, levelup, evolutions, babies, growth)):
+    for output, members in zip(outputs, (personal, levelup, evolutions, babies, growth, egg_moves)):
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_bytes(write_narc(members))
 
@@ -306,11 +321,11 @@ def main():
     dump_parser = commands.add_parser("dump", help="write data/pokemon/ from the extracted files")
     dump_parser.add_argument("files", type=Path, help="the extracted files/ directory")
     dump_parser.add_argument("output", type=Path)
-    pack_parser = commands.add_parser("pack", help="build the five archives from data/pokemon/")
+    pack_parser = commands.add_parser("pack", help="build the six archives from data/pokemon/")
     pack_parser.add_argument("root", type=Path)
-    pack_parser.add_argument("outputs", type=Path, nargs=5, metavar="ARCHIVE",
-                             help="the species data, level-up moves, evolutions, baby species and experience table "
-                                  "archives")
+    pack_parser.add_argument("outputs", type=Path, nargs=6, metavar="ARCHIVE",
+                             help="the species data, level-up moves, evolutions, baby species, experience table and "
+                                  "egg move archives")
     args = parser.parse_args()
     if args.command == "dump":
         dump(args.files, args.output)

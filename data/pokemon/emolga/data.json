@@ -104,6 +104,17 @@
             "MOVE_ROOST",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ROOST",
+            "MOVE_IRON_TAIL",
+            "MOVE_ASTONISH",
+            "MOVE_AIR_SLASH",
+            "MOVE_SHOCK_WAVE",
+            "MOVE_CHARM",
+            "MOVE_COVET",
+            "MOVE_TICKLE",
+            "MOVE_BATON_PASS"
         ]
     },
     "evolutions": [],

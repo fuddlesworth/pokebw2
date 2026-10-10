@@ -91,7 +91,20 @@
             "HM05",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HELPING_HAND", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_TWISTER",
+            "MOVE_HYDRO_PUMP",
+            "MOVE_HAZE",
+            "MOVE_SLAM",
+            "MOVE_MUD_SPORT",
+            "MOVE_MIRROR_COAT",
+            "MOVE_WATER_SPORT",
+            "MOVE_SPLASH",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_WIDE_GUARD",
+            "MOVE_AMNESIA"
+        ]
     },
     "evolutions": [
         {

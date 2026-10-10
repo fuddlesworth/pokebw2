@@ -93,6 +93,16 @@
             "MOVE_SNORE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_WATER_PULSE",
+            "MOVE_REFRESH",
+            "MOVE_MUD_SPORT",
+            "MOVE_MUD_BOMB",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SNORE",
+            "MOVE_MIST",
+            "MOVE_EARTH_POWER"
         ]
     },
     "evolutions": [

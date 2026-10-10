@@ -123,7 +123,8 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
-        ]
+        ],
+        "egg_moves": [ "MOVE_MIRROR_COAT", "MOVE_UPROAR", "MOVE_MIRACLE_EYE", "MOVE_CAPTIVATE", "MOVE_MEAN_LOOK", "MOVE_DARK_PULSE" ]
     },
     "evolutions": [
         {

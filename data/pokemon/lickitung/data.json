@@ -122,6 +122,19 @@
             "MOVE_SNORE",
             "MOVE_KNOCK_OFF",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BELLY_DRUM",
+            "MOVE_MAGNITUDE",
+            "MOVE_BODY_SLAM",
+            "MOVE_CURSE",
+            "MOVE_SMELLING_SALT",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SNORE",
+            "MOVE_AMNESIA",
+            "MOVE_HAMMER_ARM",
+            "MOVE_MUDDY_WATER",
+            "MOVE_ZEN_HEADBUTT"
         ]
     },
     "evolutions": [

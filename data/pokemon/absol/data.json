@@ -136,6 +136,22 @@
             "MOVE_SPITE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BATON_PASS",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_MAGIC_COAT",
+            "MOVE_CURSE",
+            "MOVE_MEAN_LOOK",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_PUNISHMENT",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_ASSURANCE",
+            "MOVE_ME_FIRST",
+            "MOVE_MEGAHORN",
+            "MOVE_HEX",
+            "MOVE_PERISH_SONG"
         ]
     },
     "evolutions": [],

@@ -111,6 +111,19 @@
             "MOVE_DRAIN_PUNCH",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_ENDURE",
+            "MOVE_COUNTER",
+            "MOVE_COMET_PUNCH",
+            "MOVE_FORESIGHT",
+            "MOVE_SMELLING_SALT",
+            "MOVE_DETECT",
+            "MOVE_WIDE_GUARD",
+            "MOVE_FORCE_PALM",
+            "MOVE_REVERSAL",
+            "MOVE_MACH_PUNCH"
         ]
     },
     "evolutions": [

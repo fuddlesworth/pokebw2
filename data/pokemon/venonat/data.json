@@ -93,6 +93,19 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_BATON_PASS",
+            "MOVE_SCREECH",
+            "MOVE_GIGA_DRAIN",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_AGILITY",
+            "MOVE_MORNING_SUN",
+            "MOVE_TOXIC_SPIKES",
+            "MOVE_BUG_BITE",
+            "MOVE_SECRET_POWER",
+            "MOVE_SKILL_SWAP",
+            "MOVE_RAGE_POWDER"
         ]
     },
     "evolutions": [

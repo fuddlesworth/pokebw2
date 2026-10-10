@@ -53,7 +53,8 @@
             [ 15, "MOVE_BUG_BITE" ]
         ],
         "by_tm": [],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_ELECTROWEB" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_ELECTROWEB" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

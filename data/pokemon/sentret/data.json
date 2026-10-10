@@ -114,6 +114,20 @@
             "MOVE_HELPING_HAND",
             "MOVE_TRICK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_PURSUIT",
+            "MOVE_SLASH",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_REVERSAL",
+            "MOVE_TRICK",
+            "MOVE_ASSIST",
+            "MOVE_LAST_RESORT",
+            "MOVE_CHARM",
+            "MOVE_COVET",
+            "MOVE_NATURAL_GIFT",
+            "MOVE_IRON_TAIL"
         ]
     },
     "evolutions": [

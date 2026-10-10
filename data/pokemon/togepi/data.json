@@ -114,6 +114,20 @@
             "MOVE_TRICK",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PRESENT",
+            "MOVE_MIRROR_MOVE",
+            "MOVE_PECK",
+            "MOVE_FORESIGHT",
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_NASTY_PLOT",
+            "MOVE_PSYCHO_SHIFT",
+            "MOVE_LUCKY_CHANT",
+            "MOVE_EXTRASENSORY",
+            "MOVE_SECRET_POWER",
+            "MOVE_STORED_POWER",
+            "MOVE_MORNING_SUN"
         ]
     },
     "evolutions": [

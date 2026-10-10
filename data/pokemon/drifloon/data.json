@@ -112,6 +112,17 @@
             "MOVE_RECYCLE",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_MEMENTO",
+            "MOVE_BODY_SLAM",
+            "MOVE_DESTINY_BOND",
+            "MOVE_DISABLE",
+            "MOVE_HAZE",
+            "MOVE_HYPNOSIS",
+            "MOVE_WEATHER_BALL",
+            "MOVE_CLEAR_SMOG",
+            "MOVE_DEFOG"
         ]
     },
     "evolutions": [

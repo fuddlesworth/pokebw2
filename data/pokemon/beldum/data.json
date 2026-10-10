@@ -51,7 +51,8 @@
             [ 1, "MOVE_TAKE_DOWN" ]
         ],
         "by_tm": [],
-        "by_tutor": [ "MOVE_IRON_HEAD", "MOVE_IRON_DEFENSE", "MOVE_ZEN_HEADBUTT" ]
+        "by_tutor": [ "MOVE_IRON_HEAD", "MOVE_IRON_DEFENSE", "MOVE_ZEN_HEADBUTT" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

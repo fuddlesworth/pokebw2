@@ -122,6 +122,21 @@
             "MOVE_SPITE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_COUNTER",
+            "MOVE_SCREECH",
+            "MOVE_PURSUIT",
+            "MOVE_AGILITY",
+            "MOVE_SPITE",
+            "MOVE_SLAM",
+            "MOVE_DOUBLE_SLAP",
+            "MOVE_BEAT_UP",
+            "MOVE_FAKE_OUT",
+            "MOVE_COVET",
+            "MOVE_BOUNCE",
+            "MOVE_REVENGE",
+            "MOVE_SWITCHEROO"
         ]
     },
     "evolutions": [

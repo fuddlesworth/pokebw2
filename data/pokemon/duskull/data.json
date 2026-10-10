@@ -109,6 +109,17 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_IMPRISON",
+            "MOVE_DESTINY_BOND",
+            "MOVE_PAIN_SPLIT",
+            "MOVE_GRUDGE",
+            "MOVE_MEMENTO",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_OMINOUS_WIND",
+            "MOVE_DARK_PULSE",
+            "MOVE_SKILL_SWAP"
         ]
     },
     "evolutions": [

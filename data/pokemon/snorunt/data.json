@@ -84,7 +84,18 @@
             "TM87",
             "TM90"
         ],
-        "by_tutor": [ "MOVE_BLOCK", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_SPITE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BLOCK", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_SPITE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_BLOCK",
+            "MOVE_SPIKES",
+            "MOVE_ROLLOUT",
+            "MOVE_DISABLE",
+            "MOVE_BIDE",
+            "MOVE_WEATHER_BALL",
+            "MOVE_AVALANCHE",
+            "MOVE_HEX",
+            "MOVE_FAKE_TEARS"
+        ]
     },
     "evolutions": [
         {

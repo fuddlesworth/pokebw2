@@ -113,6 +113,16 @@
             "MOVE_TRICK",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PAY_DAY",
+            "MOVE_FOUL_PLAY",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_FAKE_TEARS",
+            "MOVE_CHARM",
+            "MOVE_ENCORE",
+            "MOVE_YAWN",
+            "MOVE_COVET"
         ]
     },
     "evolutions": [

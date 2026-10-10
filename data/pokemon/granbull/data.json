@@ -130,7 +130,8 @@
             "MOVE_HEAL_BELL",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

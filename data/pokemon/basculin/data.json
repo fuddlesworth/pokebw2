@@ -98,6 +98,17 @@
             "MOVE_SNORE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SWIFT",
+            "MOVE_BUBBLE_BEAM",
+            "MOVE_MUD_SHOT",
+            "MOVE_MUDDY_WATER",
+            "MOVE_AGILITY",
+            "MOVE_WHIRLPOOL",
+            "MOVE_RAGE",
+            "MOVE_BRINE",
+            "MOVE_REVENGE"
         ]
     },
     "evolutions": [],

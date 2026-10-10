@@ -89,7 +89,19 @@
             "HM05",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_BOUNCE", "MOVE_EARTH_POWER", "MOVE_ICY_WIND", "MOVE_AQUA_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BOUNCE", "MOVE_EARTH_POWER", "MOVE_ICY_WIND", "MOVE_AQUA_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_THRASH",
+            "MOVE_WHIRLPOOL",
+            "MOVE_SPARK",
+            "MOVE_HYDRO_PUMP",
+            "MOVE_FLAIL",
+            "MOVE_TAKE_DOWN",
+            "MOVE_DRAGON_DANCE",
+            "MOVE_EARTH_POWER",
+            "MOVE_MUD_SHOT",
+            "MOVE_MUDDY_WATER"
+        ]
     },
     "evolutions": [
         {

@@ -101,6 +101,24 @@
             "MOVE_SNORE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_REFRESH",
+            "MOVE_UPROAR",
+            "MOVE_CURSE",
+            "MOVE_STOMP",
+            "MOVE_ICE_BALL",
+            "MOVE_MIRROR_COAT",
+            "MOVE_COUNTER",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_WHIRLPOOL",
+            "MOVE_BITE",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_MUD_BOMB",
+            "MOVE_YAWN",
+            "MOVE_SLUDGE",
+            "MOVE_AVALANCHE",
+            "MOVE_WIDE_GUARD"
         ]
     },
     "evolutions": [

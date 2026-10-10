@@ -103,7 +103,8 @@
             "MOVE_PAIN_SPLIT",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": [ "MOVE_PAIN_SPLIT", "MOVE_REFRESH", "MOVE_TICKLE", "MOVE_MIRROR_COAT", "MOVE_MIST", "MOVE_ENDURE" ]
     },
     "evolutions": [],
     "regional_dex_number": 182,

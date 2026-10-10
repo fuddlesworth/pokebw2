@@ -89,7 +89,23 @@
             "TM93",
             "HM01"
         ],
-        "by_tutor": [ "MOVE_FIRE_PLEDGE", "MOVE_COVET", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_FIRE_PLEDGE", "MOVE_COVET", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_FURY_SWIPES",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_REVERSAL",
+            "MOVE_THRASH",
+            "MOVE_FORESIGHT",
+            "MOVE_COVET",
+            "MOVE_HOWL",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_FLARE_BLITZ",
+            "MOVE_EXTRASENSORY",
+            "MOVE_NATURE_POWER",
+            "MOVE_FLAME_BURST"
+        ]
     },
     "evolutions": [
         {

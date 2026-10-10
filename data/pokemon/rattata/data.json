@@ -107,6 +107,19 @@
             "MOVE_SNORE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SCREECH",
+            "MOVE_FLAME_WHEEL",
+            "MOVE_FURY_SWIPES",
+            "MOVE_BITE",
+            "MOVE_COUNTER",
+            "MOVE_REVERSAL",
+            "MOVE_UPROAR",
+            "MOVE_LAST_RESORT",
+            "MOVE_ME_FIRST",
+            "MOVE_REVENGE",
+            "MOVE_FINAL_GAMBIT"
         ]
     },
     "evolutions": [

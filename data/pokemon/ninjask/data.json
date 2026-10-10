@@ -105,7 +105,8 @@
             "MOVE_ROOST",
             "MOVE_SPITE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

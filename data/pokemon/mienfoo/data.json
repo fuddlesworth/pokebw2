@@ -115,6 +115,16 @@
             "MOVE_DRAIN_PUNCH",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ENDURE",
+            "MOVE_VITAL_THROW",
+            "MOVE_BATON_PASS",
+            "MOVE_SMELLING_SALT",
+            "MOVE_LOW_KICK",
+            "MOVE_FEINT",
+            "MOVE_ME_FIRST",
+            "MOVE_KNOCK_OFF"
         ]
     },
     "evolutions": [

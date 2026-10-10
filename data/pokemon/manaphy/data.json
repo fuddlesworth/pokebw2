@@ -110,7 +110,8 @@
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

@@ -102,6 +102,21 @@
             "MOVE_KNOCK_OFF",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BUBBLE_BEAM",
+            "MOVE_AURORA_BEAM",
+            "MOVE_SLAM",
+            "MOVE_SUPERSONIC",
+            "MOVE_HAZE",
+            "MOVE_SPIKES",
+            "MOVE_KNOCK_OFF",
+            "MOVE_WRING_OUT",
+            "MOVE_TOXIC_SPIKES",
+            "MOVE_MUDDY_WATER",
+            "MOVE_BIDE",
+            "MOVE_WATER_PULSE",
+            "MOVE_WHIRLPOOL"
         ]
     },
     "evolutions": [

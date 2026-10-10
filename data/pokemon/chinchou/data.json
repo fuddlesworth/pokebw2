@@ -93,7 +93,19 @@
             "HM05",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HEAL_BELL", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SIGNAL_BEAM", "MOVE_BOUNCE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_HEAL_BELL", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_FLAIL",
+            "MOVE_SCREECH",
+            "MOVE_AMNESIA",
+            "MOVE_PSYBEAM",
+            "MOVE_WHIRLPOOL",
+            "MOVE_AGILITY",
+            "MOVE_MIST",
+            "MOVE_SHOCK_WAVE",
+            "MOVE_BRINE",
+            "MOVE_WATER_PULSE"
+        ]
     },
     "evolutions": [
         {

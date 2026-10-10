@@ -108,6 +108,20 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HEADBUTT",
+            "MOVE_SCARY_FACE",
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_DOUBLE_EDGE",
+            "MOVE_ROCK_BLAST",
+            "MOVE_BODY_SLAM",
+            "MOVE_SCREECH",
+            "MOVE_CURSE",
+            "MOVE_FISSURE",
+            "MOVE_COUNTER",
+            "MOVE_STEALTH_ROCK",
+            "MOVE_WIDE_GUARD"
         ]
     },
     "evolutions": [

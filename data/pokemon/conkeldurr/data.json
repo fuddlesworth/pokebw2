@@ -117,7 +117,8 @@
             "MOVE_DRAIN_PUNCH",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": 75,

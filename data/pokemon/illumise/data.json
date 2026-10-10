@@ -105,6 +105,16 @@
             "MOVE_ROOST",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BATON_PASS",
+            "MOVE_SILVER_WIND",
+            "MOVE_GROWTH",
+            "MOVE_ENCORE",
+            "MOVE_BUG_BUZZ",
+            "MOVE_CAPTIVATE",
+            "MOVE_FAKE_TEARS",
+            "MOVE_CONFUSE_RAY"
         ]
     },
     "evolutions": [],

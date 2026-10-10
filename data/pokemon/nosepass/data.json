@@ -111,7 +111,8 @@
             "MOVE_PAIN_SPLIT",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": [ "MOVE_MAGNITUDE", "MOVE_ROLLOUT", "MOVE_DOUBLE_EDGE", "MOVE_BLOCK", "MOVE_STEALTH_ROCK", "MOVE_ENDURE" ]
     },
     "evolutions": [
         {

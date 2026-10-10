@@ -102,6 +102,22 @@
             "MOVE_SNORE",
             "MOVE_AFTER_YOU",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_BODY_SLAM",
+            "MOVE_ANCIENT_POWER",
+            "MOVE_CURSE",
+            "MOVE_MUD_SPORT",
+            "MOVE_STOCKPILE",
+            "MOVE_SWALLOW",
+            "MOVE_SPIT_UP",
+            "MOVE_COUNTER",
+            "MOVE_ENCORE",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_RECOVER",
+            "MOVE_AFTER_YOU",
+            "MOVE_SLEEP_TALK",
+            "MOVE_ACID_SPRAY"
         ]
     },
     "evolutions": [

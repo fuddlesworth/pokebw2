@@ -139,6 +139,20 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_HYPNOSIS",
+            "MOVE_MIMIC",
+            "MOVE_FAKE_OUT",
+            "MOVE_TRICK",
+            "MOVE_CONFUSE_RAY",
+            "MOVE_WAKE_UP_SLAP",
+            "MOVE_TEETER_DANCE",
+            "MOVE_NASTY_PLOT",
+            "MOVE_POWER_SPLIT",
+            "MOVE_MAGIC_ROOM",
+            "MOVE_ICY_WIND"
         ]
     },
     "evolutions": [],

@@ -135,7 +135,8 @@
             "MOVE_MAGIC_ROOM",
             "MOVE_OUTRAGE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

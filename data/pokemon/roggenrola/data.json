@@ -96,6 +96,16 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_MAGNITUDE",
+            "MOVE_CURSE",
+            "MOVE_AUTOTOMIZE",
+            "MOVE_ROCK_TOMB",
+            "MOVE_LOCK_ON",
+            "MOVE_HEAVY_SLAM",
+            "MOVE_TAKE_DOWN",
+            "MOVE_GRAVITY"
         ]
     },
     "evolutions": [

@@ -100,6 +100,17 @@
             "MOVE_SNORE",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_TAKE_DOWN",
+            "MOVE_SNORE",
+            "MOVE_EXTRASENSORY",
+            "MOVE_SMELLING_SALT",
+            "MOVE_SMOKE_SCREEN",
+            "MOVE_ENDEAVOR",
+            "MOVE_HAMMER_ARM",
+            "MOVE_FAKE_TEARS",
+            "MOVE_CIRCLE_THROW"
         ]
     },
     "evolutions": [

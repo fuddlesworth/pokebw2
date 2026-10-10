@@ -96,7 +96,8 @@
             "HM02",
             "HM04"
         ],
-        "by_tutor": [ "MOVE_SUPERPOWER", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_TAILWIND", "MOVE_ROOST", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_SUPERPOWER", "MOVE_SNORE", "MOVE_HEAT_WAVE", "MOVE_TAILWIND", "MOVE_ROOST", "MOVE_SLEEP_TALK" ],
+        "egg_moves": []
     },
     "evolutions": [
         {

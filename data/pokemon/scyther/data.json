@@ -97,7 +97,19 @@
             "TM94",
             "HM01"
         ],
-        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_SNORE", "MOVE_KNOCK_OFF", "MOVE_TAILWIND", "MOVE_ROOST", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_BUG_BITE", "MOVE_SNORE", "MOVE_KNOCK_OFF", "MOVE_TAILWIND", "MOVE_ROOST", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_COUNTER",
+            "MOVE_BATON_PASS",
+            "MOVE_RAZOR_WIND",
+            "MOVE_REVERSAL",
+            "MOVE_ENDURE",
+            "MOVE_SILVER_WIND",
+            "MOVE_BUG_BUZZ",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_DEFOG",
+            "MOVE_STEEL_WING"
+        ]
     },
     "evolutions": [
         {

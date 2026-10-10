@@ -87,7 +87,21 @@
             "HM03",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_IRON_DEFENSE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_IRON_DEFENSE", "MOVE_ICY_WIND", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_BUBBLE_BEAM",
+            "MOVE_TAKE_DOWN",
+            "MOVE_BARRIER",
+            "MOVE_RAPID_SPIN",
+            "MOVE_SCREECH",
+            "MOVE_ICICLE_SPEAR",
+            "MOVE_MUD_SHOT",
+            "MOVE_ROCK_BLAST",
+            "MOVE_WATER_PULSE",
+            "MOVE_AQUA_RING",
+            "MOVE_AVALANCHE",
+            "MOVE_TWINEEDLE"
+        ]
     },
     "evolutions": [
         {

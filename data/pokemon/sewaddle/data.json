@@ -95,6 +95,17 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_WORRY_SEED",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_SILVER_WIND",
+            "MOVE_SCREECH",
+            "MOVE_RAZOR_WIND",
+            "MOVE_MIND_READER",
+            "MOVE_AGILITY",
+            "MOVE_ME_FIRST",
+            "MOVE_BATON_PASS",
+            "MOVE_CAMOUFLAGE",
+            "MOVE_AIR_SLASH"
         ]
     },
     "evolutions": [

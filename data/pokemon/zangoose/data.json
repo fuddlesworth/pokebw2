@@ -124,6 +124,21 @@
             "MOVE_GIGA_DRAIN",
             "MOVE_ENDEAVOR",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FLAIL",
+            "MOVE_DOUBLE_KICK",
+            "MOVE_RAZOR_WIND",
+            "MOVE_COUNTER",
+            "MOVE_CURSE",
+            "MOVE_FURY_SWIPES",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_METAL_CLAW",
+            "MOVE_DOUBLE_HIT",
+            "MOVE_DISABLE",
+            "MOVE_IRON_TAIL",
+            "MOVE_FINAL_GAMBIT",
+            "MOVE_FEINT"
         ]
     },
     "evolutions": [],

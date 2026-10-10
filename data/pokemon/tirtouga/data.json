@@ -109,6 +109,17 @@
             "MOVE_SNORE",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_WATER_PULSE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROCK_THROW",
+            "MOVE_SLAM",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_FLAIL",
+            "MOVE_WHIRLPOOL",
+            "MOVE_BODY_SLAM",
+            "MOVE_BIDE"
         ]
     },
     "evolutions": [

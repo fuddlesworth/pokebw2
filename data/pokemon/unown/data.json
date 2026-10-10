@@ -51,7 +51,8 @@
             [ 1, "MOVE_HIDDEN_POWER" ]
         ],
         "by_tm": [],
-        "by_tutor": []
+        "by_tutor": [],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

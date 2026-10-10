@@ -98,6 +98,19 @@
             "MOVE_ELECTROWEB",
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PSYBEAM",
+            "MOVE_DISABLE",
+            "MOVE_SONIC_BOOM",
+            "MOVE_BATON_PASS",
+            "MOVE_PURSUIT",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_TOXIC_SPIKES",
+            "MOVE_TWINEEDLE",
+            "MOVE_ELECTROWEB",
+            "MOVE_RAGE_POWDER",
+            "MOVE_NIGHT_SLASH"
         ]
     },
     "evolutions": [

@@ -110,6 +110,17 @@
             "MOVE_HELPING_HAND",
             "MOVE_TRICK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_CHARM",
+            "MOVE_PURSUIT",
+            "MOVE_TICKLE",
+            "MOVE_TRICK",
+            "MOVE_HELPING_HAND",
+            "MOVE_MUD_SLAP",
+            "MOVE_SLEEP_TALK",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_SIMPLE_BEAM"
         ]
     },
     "evolutions": [

@@ -109,6 +109,20 @@
             "MOVE_PAIN_SPLIT",
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_HAZE",
+            "MOVE_MEAN_LOOK",
+            "MOVE_LICK",
+            "MOVE_IMPRISON",
+            "MOVE_CURSE",
+            "MOVE_SHADOW_PUNCH",
+            "MOVE_SHADOW_SNEAK",
+            "MOVE_STOCKPILE",
+            "MOVE_SWALLOW",
+            "MOVE_SPIT_UP",
+            "MOVE_SCARY_FACE",
+            "MOVE_ACID_SPRAY"
         ]
     },
     "evolutions": [

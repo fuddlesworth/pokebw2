@@ -103,6 +103,19 @@
             "MOVE_DRAIN_PUNCH",
             "MOVE_ROOST",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_PSYBEAM",
+            "MOVE_BIDE",
+            "MOVE_SILVER_WIND",
+            "MOVE_BUG_BUZZ",
+            "MOVE_SCREECH",
+            "MOVE_ENCORE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_BUG_BITE",
+            "MOVE_FOCUS_PUNCH",
+            "MOVE_DRAIN_PUNCH",
+            "MOVE_DIZZY_PUNCH"
         ]
     },
     "evolutions": [

@@ -100,6 +100,18 @@
             "MOVE_SNORE",
             "MOVE_GIGA_DRAIN",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FOCUS_ENERGY",
+            "MOVE_QUICK_ATTACK",
+            "MOVE_GUST",
+            "MOVE_FLAIL",
+            "MOVE_FURY_CUTTER",
+            "MOVE_MUD_SHOT",
+            "MOVE_ENDURE",
+            "MOVE_EARTH_POWER",
+            "MOVE_BUG_BITE",
+            "MOVE_SIGNAL_BEAM"
         ]
     },
     "evolutions": [

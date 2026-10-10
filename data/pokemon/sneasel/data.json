@@ -123,6 +123,22 @@
             "MOVE_SPITE",
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_COUNTER",
+            "MOVE_SPITE",
+            "MOVE_FORESIGHT",
+            "MOVE_BITE",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_FAKE_OUT",
+            "MOVE_DOUBLE_HIT",
+            "MOVE_PUNISHMENT",
+            "MOVE_PURSUIT",
+            "MOVE_ICE_SHARD",
+            "MOVE_ICE_PUNCH",
+            "MOVE_ASSIST",
+            "MOVE_AVALANCHE",
+            "MOVE_FEINT"
         ]
     },
     "evolutions": [

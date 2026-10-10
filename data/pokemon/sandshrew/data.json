@@ -110,6 +110,18 @@
             "MOVE_KNOCK_OFF",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_FLAIL",
+            "MOVE_COUNTER",
+            "MOVE_RAPID_SPIN",
+            "MOVE_METAL_CLAW",
+            "MOVE_CRUSH_CLAW",
+            "MOVE_NIGHT_SLASH",
+            "MOVE_MUD_SHOT",
+            "MOVE_ENDURE",
+            "MOVE_CHIP_AWAY",
+            "MOVE_ROCK_CLIMB"
         ]
     },
     "evolutions": [

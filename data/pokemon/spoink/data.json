@@ -114,6 +114,18 @@
             "MOVE_SNATCH",
             "MOVE_SLEEP_TALK",
             "MOVE_SKILL_SWAP"
+        ],
+        "egg_moves": [
+            "MOVE_FUTURE_SIGHT",
+            "MOVE_EXTRASENSORY",
+            "MOVE_TRICK",
+            "MOVE_ZEN_HEADBUTT",
+            "MOVE_AMNESIA",
+            "MOVE_MIRROR_COAT",
+            "MOVE_SKILL_SWAP",
+            "MOVE_WHIRLWIND",
+            "MOVE_LUCKY_CHANT",
+            "MOVE_ENDURE"
         ]
     },
     "evolutions": [

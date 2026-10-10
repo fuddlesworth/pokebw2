@@ -118,7 +118,8 @@
             "MOVE_ROLE_PLAY",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,

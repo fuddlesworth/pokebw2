@@ -92,7 +92,22 @@
             "HM05",
             "HM06"
         ],
-        "by_tutor": [ "MOVE_ICE_PUNCH", "MOVE_ICY_WIND", "MOVE_AQUA_TAIL", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ]
+        "by_tutor": [ "MOVE_ICE_PUNCH", "MOVE_ICY_WIND", "MOVE_AQUA_TAIL", "MOVE_IRON_TAIL", "MOVE_SNORE", "MOVE_SLEEP_TALK" ],
+        "egg_moves": [
+            "MOVE_MUD_SLAP",
+            "MOVE_HEADBUTT",
+            "MOVE_FURY_SWIPES",
+            "MOVE_SLASH",
+            "MOVE_ODOR_SLEUTH",
+            "MOVE_DOUBLE_SLAP",
+            "MOVE_FURY_CUTTER",
+            "MOVE_BATON_PASS",
+            "MOVE_AQUA_TAIL",
+            "MOVE_AQUA_RING",
+            "MOVE_ME_FIRST",
+            "MOVE_SWITCHEROO",
+            "MOVE_TAIL_SLAP"
+        ]
     },
     "evolutions": [
         {

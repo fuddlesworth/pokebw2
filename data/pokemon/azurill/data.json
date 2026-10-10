@@ -93,6 +93,18 @@
             "MOVE_KNOCK_OFF",
             "MOVE_HELPING_HAND",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_ENCORE",
+            "MOVE_SING",
+            "MOVE_REFRESH",
+            "MOVE_SLAM",
+            "MOVE_TICKLE",
+            "MOVE_FAKE_TEARS",
+            "MOVE_BODY_SLAM",
+            "MOVE_WATER_SPORT",
+            "MOVE_SOAK",
+            "MOVE_MUDDY_WATER"
         ]
     },
     "evolutions": [

@@ -117,6 +117,15 @@
             "MOVE_ENDEAVOR",
             "MOVE_STEALTH_ROCK",
             "MOVE_SLEEP_TALK"
+        ],
+        "egg_moves": [
+            "MOVE_STEEL_WING",
+            "MOVE_DEFOG",
+            "MOVE_DRAGON_PULSE",
+            "MOVE_HEAD_SMASH",
+            "MOVE_KNOCK_OFF",
+            "MOVE_EARTH_POWER",
+            "MOVE_BITE"
         ]
     },
     "evolutions": [

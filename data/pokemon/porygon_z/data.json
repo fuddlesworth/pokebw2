@@ -119,7 +119,8 @@
             "MOVE_WONDER_ROOM",
             "MOVE_RECYCLE",
             "MOVE_SLEEP_TALK"
-        ]
+        ],
+        "egg_moves": []
     },
     "evolutions": [],
     "regional_dex_number": null,
