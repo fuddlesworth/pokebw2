@@ -12,20 +12,23 @@ It builds the following ROMs:
 ## Status
 
 Both ROMs rebuild byte for byte from the same source tree, and everything not yet in C is still delinked code.
-<!-- progress -->
-44.39% of the code matches (1,701,470 of 3,832,642 bytes), with 20,183 of 41,672 functions, and 574 of 957 source files are complete.
-<!-- /progress -->
+[decomp.dev](https://decomp.dev/fuddlesworth/pokebw2) tracks the progress of both versions from CI's report on every
+push to main.
 
-![Progress](docs/progress.svg)
+[![Code](https://decomp.dev/fuddlesworth/pokebw2.svg?mode=shield&measure=code&label=Code)](https://decomp.dev/fuddlesworth/pokebw2)
+[![Functions](https://decomp.dev/fuddlesworth/pokebw2.svg?mode=shield&measure=functions&label=Functions)](https://decomp.dev/fuddlesworth/pokebw2)
+[![Files](https://decomp.dev/fuddlesworth/pokebw2.svg?mode=shield&measure=complete_units&label=Complete%20files)](https://decomp.dev/fuddlesworth/pokebw2)
+
+[![Progress](https://decomp.dev/fuddlesworth/pokebw2.svg)](https://decomp.dev/fuddlesworth/pokebw2)
 
 Each rectangle is a source file, or a stretch of code not yet split into files, sized by its code: green when it
-matches, and from grey to blue as it gets closer, as on [decomp.dev](https://decomp.dev). The trainer AI and field
-scripts are built from source, see [Scripts](docs/scripts.md).
+matches, and from grey to blue as it gets closer.
 
 - 41,423 functions found by [dsd](https://github.com/AetiasHax/ds-decomp) in the ARM9, its 344 overlays, ITCM, DTCM, and the two TWL autoloads.
 - 8,152 functions and 573 data symbols have real names, imported from [swan](docs/code-organization.md#names).
 - The DSi-only LTD module in ARM9i is decompressed, analyzed and linked like the other modules. The ARM7i program is
   only extracted (decrypted) and rebuilt.
+- The trainer AI and field scripts are built from source, see [Scripts](docs/scripts.md).
 
 ## Setup
 
