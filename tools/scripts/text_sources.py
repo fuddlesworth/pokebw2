@@ -211,6 +211,7 @@ SOURCES = {
     # From ability 1: ABILITY_NONE's name in capitals isn't its name's
     "abilities.name_upper": lambda: [upper(to_line(data["name"])) for data in abilities()[1:]],
     "types.name": lambda: [to_line(data["name"]) for data in types()],
+    "types.name_upper": lambda: [upper(to_line(data["name"])) for data in types()],
     "trainer_classes.name": lambda: [("\\c" if data.get("compress_name") else "") + to_line(data["name"])
                                      for data in trainer_classes()],
     "trainer_classes.name_with_article": lambda: [to_line(data["name_with_article"]) for data in trainer_classes()],

@@ -201,7 +201,8 @@ def message_ids(prefix: str, messages: list[str]) -> list[str]:
     """IDs for messages, from their first words, numbered from _2 where they repeat."""
     ids, count = [], {}
     for message in messages:
-        text = re.sub(r"\\x\{[^}]*\}|\{[^}]*\}|\\[nc]|\\.", " ", message).replace("é", "e").replace("’", "'")
+        text = re.sub(r"\\x\{[^}]*\}|\{[^}]*\}|\\[nc]|\\.", " ", message)
+        text = text.replace("é", "e").replace("É", "E").replace("’", "'")
         words = [w.replace("'", "") for w in re.findall(r"[A-Za-z0-9][A-Za-z0-9']*", text)]
         words = [w for w in words if w.lower() not in STOP_WORDS] or words
         base = prefix + ("".join(w[:1].upper() + w[1:].lower() for w in words[:4]) or "Empty")

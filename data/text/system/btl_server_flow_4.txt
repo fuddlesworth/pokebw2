@@ -1,7 +1,7 @@
 BtlServerFlow4_Text_Name = NAME
 BtlServerFlow4_Text_Empty =
 BtlServerFlow4_Text_Nature = NATURE
-BtlServerFlow4_Text_PokDex = POKÉDEX
+BtlServerFlow4_Text_Pokedex = POKÉDEX
 BtlServerFlow4_Text_Money = MONEY
 BtlServerFlow4_Text_IdNo = ID No.
 BtlServerFlow4_Text_Time = TIME
@@ -12,7 +12,7 @@ BtlServerFlow4_Text_LinkBattles = LINK BATTLES
 BtlServerFlow4_Text_LinkBattleWins = LINK BATTLE WINS
 BtlServerFlow4_Text_LinkBattleLosses = LINK BATTLE LOSSES
 BtlServerFlow4_Text_LinkTrades = LINK TRADES
-BtlServerFlow4_Text_WildPokMonEncounters = WILD POKÉMON ENCOUNTERS
+BtlServerFlow4_Text_WildPokemonEncounters = WILD POKÉMON ENCOUNTERS
 BtlServerFlow4_Text_TrainersBattled = TRAINERS BATTLED
 BtlServerFlow4_Text_PeoplePassedBy = PEOPLE PASSED BY
 BtlServerFlow4_Text_FeelingChecks = FEELING CHECKS

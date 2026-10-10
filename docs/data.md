@@ -136,6 +136,7 @@ Egg and Bad Egg after the species' names:
 | `ability_names.txt` | `\from{abilities.name}` | Each ability's `name` |
 | `ability_descriptions.txt` | `\from{abilities.description}` | Each ability's `description` |
 | `type_names.txt` | `\from{types.name}` | Each type's `name` |
+| `type_names_upper.txt` | `\from{types.name_upper}` | The same in capitals, the easy chat's types |
 | `trade_names.txt` | `\from{trades.names}` | Each trade's `nickname` and `trainer_name` |
 | `battle_subway_trainer_names.txt` | `\from{facilities.battle_subway.names}` | Each Battle Subway trainer's `name` |
 | `battle_subway_trainer_messages.txt` | `\from{facilities.battle_subway.messages}` | Each one's three `messages` |
@@ -160,8 +161,23 @@ word set function that loads it or its contents show (`move_names.txt`, `natures
 function that loads it (`delete_save.txt`); the others keep their number until they are known (`0001.txt`), as
 `TEXT_BANK_0001`. To rename one, rename its constant with `rename_constant.py`, which renames the file, its message IDs
 and its header with it (`TEXT_BANK_0377` to `TEXT_BANK_TOWN_MAP` made `Bank0377_Text_FlyWhere` `TownMap_Text_FlyWhere`).
-Both versions have the same text. The code names a message file by its constant too: `GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE,
-TEXT_BANK_TRADE_NAMES, heapId)`, from `constants/text_banks.h` and `constants/script_text_banks.h`.
+Both versions have the same text. The code names a message file by its constant too: `GFL_MsgSysLoadData(FALSE,
+ARCID_SYSTEM_MESSAGE, TEXT_BANK_TRADE_NAMES, heapId)`, from `constants/text_banks.h` and `constants/script_text_banks.h`.
+
+### Easy chat words
+
+The easy chat (PMS) words that fill trainers' sentences and the mail are messages of thirteen files, numbered across them
+in order (`pms_word.c`): the species' capitalized names up to the Bad Egg, the moves', the types' and the abilities',
+then the words of `pms_words_trainer.txt`, `pms_words_people.txt`, `pms_words_greetings.txt`,
+`pms_words_lifestyle.txt`, `pms_words_feelings.txt`, `pms_words_term.txt`, `pms_words_connection.txt`,
+`pms_words_animated.txt` and `pms_words_voice.txt`, the input screen's categories of the same names
+(`pms_categories.txt`). `tools/scripts/pms_words.py` makes `constants/pms_words.h` from them: each category's index,
+first word and count (`PMS_WORD_CATEGORY_GREETINGS`, `PMS_WORD_FIRST_GREETINGS`, `PMS_WORD_COUNT_GREETINGS`), a
+species', move's, type's or ability's word by its constant (`PMS_WORD_SPECIES(SPECIES_PIKACHU)`,
+`PMS_WORD_MOVE(MOVE_THUNDERBOLT)`), and every other word by its category and message ID (`PMS_WORD_GREETINGS_HELLO`
+for `PmsWordsGreetings_Text_Hello`; rename a word by its ID). The input screen's lists of words by category and by
+initial (`pms_input_data.c`) and the code's other words use these names, so a word added to a file renumbers the words
+after it everywhere; the input screen's lists are still edited by hand to offer it.
 
 ## Species
 

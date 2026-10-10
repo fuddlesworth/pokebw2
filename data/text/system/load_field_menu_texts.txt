@@ -1,6 +1,6 @@
 LoadFieldMenuTexts_Text_Empty =     \x{ffff}
-LoadFieldMenuTexts_Text_PokDex = POKÉDEX
-LoadFieldMenuTexts_Text_PokMon = POKÉMON
+LoadFieldMenuTexts_Text_Pokedex = POKÉDEX
+LoadFieldMenuTexts_Text_Pokemon = POKÉMON
 LoadFieldMenuTexts_Text_Bag = BAG
 LoadFieldMenuTexts_Text_Empty_2 =     \x{ffff}
 LoadFieldMenuTexts_Text_Save = SAVE

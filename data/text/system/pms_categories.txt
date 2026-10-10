@@ -1,4 +1,4 @@
-PmsCategories_Text_PokMon = POKÉMON
+PmsCategories_Text_Pokemon = POKÉMON
 PmsCategories_Text_Stats = STATS
 PmsCategories_Text_Move = MOVE
 PmsCategories_Text_Trainer = TRAINER

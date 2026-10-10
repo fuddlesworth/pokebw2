@@ -20,6 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.resolve()
 sys.path.insert(0, str(ROOT / "tools" / "scripts"))
 from gen_constants import ordered_files  # noqa: E402
+from pms_words import CATEGORIES as PMS_WORD_CATEGORIES  # noqa: E402
 
 VERSIONS = {
     "b2_us": {"sha1": "e51e6dfb8678a3d19dcd2a10691b96a569ca0abb", "rom": "pokeblack2_us.nds", "defines": ["BLACK2"]},
@@ -592,6 +593,12 @@ def main():
             n.build([header], "text_ids", [source.relative_to(ROOT)],
                     implicit=[*text_tools, *(from_data if uses_data else [])])
             constant_headers.append(header)
+    # The easy chat words, numbered across their categories' message files (tools/scripts/pms_words.py)
+    n.rule("pms_words", "$python tools/scripts/pms_words.py $out", "Generating $out", restat="1")
+    pms_words_header = Path(GENERATED_INCLUDE_DIR) / "constants" / "pms_words.h"
+    n.build([pms_words_header], "pms_words", [f"data/text/system/{file}.txt" for _, file, _ in PMS_WORD_CATEGORIES],
+            implicit=["tools/scripts/pms_words.py", *text_tools, *from_data])
+    constant_headers.append(pms_words_header)
     n.build(["constants_headers"], "phony", constant_headers)
 
     checks, configs = [], []

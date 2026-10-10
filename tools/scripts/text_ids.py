@@ -17,6 +17,15 @@ from text_sources import expand  # noqa: E402
 
 
 def message_numbers(path: Path) -> list[tuple[str, int]]:
+    return count_messages(path)[0]
+
+
+def message_count(path: Path) -> int:
+    """The number of messages in the file, counting the ones its \\from lines stand for."""
+    return count_messages(path)[1]
+
+
+def count_messages(path: Path) -> tuple[list[tuple[str, int]], int]:
     numbers = []
     index = 0
     for line in path.read_text(encoding="utf-8").split("\n")[:-1]:
@@ -28,7 +37,7 @@ def message_numbers(path: Path) -> list[tuple[str, int]]:
         if message_id is not None:
             numbers.append((message_id, index))
             index += 1
-    return numbers
+    return numbers, index
 
 
 def header(path: Path) -> str:

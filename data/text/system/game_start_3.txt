@@ -1,5 +1,5 @@
-GameStart3_Text_UnovaPokDex = UNOVA POKÉDEX
-GameStart3_Text_NationalPokDex = NATIONAL POKÉDEX
+GameStart3_Text_UnovaPokedex = UNOVA POKÉDEX
+GameStart3_Text_NationalPokedex = NATIONAL POKÉDEX
 GameStart3_Text_Seen = SEEN
 GameStart3_Text_Obtained = OBTAINED
 GameStart3_Text_SearchResults = SEARCH RESULTS
