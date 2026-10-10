@@ -28,6 +28,7 @@
 #include "system/rtc.h"
 #include "system/version.h"
 #include "system/wordset.h"
+#include "text/system/gym_insect.h"
 
 struct GimmickGateMessageList {
     u8 count;
@@ -608,7 +609,7 @@ void func_ov104_021ef43c(GimmickGateWork *work) {
         placeName = GFL_MsgDataLoadStrbufNew(placeMessages, ZoneData_GetPlaceNameID(list.zones[i]));
         weatherName = GFL_MsgDataLoadStrbufNew(weatherMessages, sWeatherMessages[weather]);
         formatSet = GFL_WordSetSystemCreate(2, 0x100, work->heapId);
-        template = GFL_MsgDataLoadStrbufNew(weatherMessages, 0xc0);
+        template = GFL_MsgDataLoadStrbufNew(weatherMessages, GymInsect_Text_Empty_57);
         formatted = GFL_StrBufCreate(0x40, work->heapId);
         func_0202437c(formatSet, 0, placeName, 0, 1, 0);
         func_0202437c(formatSet, 1, weatherName, 0, 1, 0);

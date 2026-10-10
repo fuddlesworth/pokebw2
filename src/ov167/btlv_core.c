@@ -28,6 +28,7 @@
 #include "nitro/hw.h"
 #include "pml/waza.h"
 #include "system/gf_font.h"
+#include "text/system/btlv_core.h"
 
 // The procedure each display command starts
 typedef struct BtlvCmdEntry {
@@ -445,7 +446,7 @@ BOOL func_ov167_021cea24(BtlvCore *core, s32 *seq, void *work) {
         break;
     case 12:
         if (func_ov167_021d02e8(core)) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, 0, core->strbuf);
+            GFL_MsgDataLoadStrbuf(wk->msgData, BtlvCore_Text_JustHaveUsePoke, core->strbuf);
             func_ov167_021d0308(core, core->strbuf, 0, NULL);
             wk->wait = 60;
             (*seq)++;
@@ -465,7 +466,7 @@ BOOL func_ov167_021cea24(BtlvCore *core, s32 *seq, void *work) {
         break;
     case 15:
         if (func_ov167_021cf73c(core)) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, 1, core->strbuf);
+            GFL_MsgDataLoadStrbuf(wk->msgData, BtlvCore_Text_BiancaUsedPokeBall, core->strbuf);
             func_ov167_021d0308(core, core->strbuf, 0, NULL);
             func_ov169_06899e5c(core->unk1C4);
             (*seq)++;

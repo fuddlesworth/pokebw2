@@ -33,6 +33,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/version.h"
+#include "text/system/title_16.h"
 
 // The title screen: a 3D scene under a camera that follows a curve, with 2D layers over it. The main engine draws to
 // VRAM D through the display capture, blending each frame with the last for a motion blur, and shows VRAM D.
@@ -512,7 +513,7 @@ static void TitleBG_Init(TitleBG *bg, HeapID heapId) {
     bg->printQueue = func_02021998(heapId);
     bg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_16, heapId);
     bg->strbuf = GFL_StrBufCreate(64, heapId);
-    GFL_MsgDataLoadStrbuf(bg->msgData, 1, bg->strbuf);
+    GFL_MsgDataLoadStrbuf(bg->msgData, Title16_Text_Empty_2, bg->strbuf);
     width = GFL_FontGetBlockWidth(bg->strbuf, bg->font, 0);
     func_02021c7c(bg->printQueue, bg->bitmap, 128 - width / 2, 0, bg->strbuf, bg->font, PRINT_COLOR(1, 2, 0));
     bg->unk10 = TRUE;

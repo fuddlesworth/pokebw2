@@ -31,6 +31,7 @@
 #include "system/str_tool.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "text/system/0411.h"
 
 // The Pokémon World Tournament's win record: the player, their total of wins, and a list of the wins in each
 // tournament that is open. The name is ours, after the ROM's "win_record_graphic.c", which draws it
@@ -827,7 +828,7 @@ static void WinRecord_PrintTotal(WinRecordWork *wk) {
     StrBuf *format;
     StrBuf *number;
 
-    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], 34);
+    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], Bank0411_Text_Name);
     WinRecord_Print(wk, 1, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
@@ -835,14 +836,14 @@ static void WinRecord_PrintTotal(WinRecordWork *wk) {
     textCopy(wk->param->playerInfo->name, name);
     func_0202437c(wk->wordSet, 0, name, 0, 1, 2);
     strbuf = GFL_StrBufCreate(64, wk->heapId);
-    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], 32);
+    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], Bank0411_Text_Empty_3);
     GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
     WinRecord_Print(wk, 2, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(format);
     GFL_StrBufFree(name);
     GFL_StrBufFree(strbuf);
 
-    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], 33);
+    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], Bank0411_Text_TotalWins);
     WinRecord_Print(wk, 3, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
@@ -850,7 +851,7 @@ static void WinRecord_PrintTotal(WinRecordWork *wk) {
     GFL_WordSetFormatNumber(number, wk->totalWins, 4, 1, TRUE);
     func_0202437c(wk->wordSet, 0, number, 0, 1, 2);
     strbuf = GFL_StrBufCreate(64, wk->heapId);
-    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], 2);
+    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], Bank0411_Text_Empty_2);
     GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
     WinRecord_Print(wk, 4, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(format);
@@ -1175,7 +1176,7 @@ static void WinRecord_PrintItemAt(WinRecordWork *wk, PrintWindow *window, PrintQ
     GFL_WordSetFormatNumber(number, wk->wins[wk->items[index]], 4, 1, TRUE);
     func_0202437c(wk->wordSet, 0, number, 0, 1, 2);
     strbuf = GFL_StrBufCreate(64, wk->heapId);
-    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], 2);
+    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], Bank0411_Text_Empty_2);
     GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
     PrintWindow_Print(window, queue, columns[1], y, strbuf, wk->font, color);
     GFL_StrBufFree(number);

@@ -32,6 +32,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "text/system/btl_pokeparam_box_main_save_init.h"
 
 // The PC box's Pokémon search: lists to pick a species by its first letter, a nature, an ability by its first letter,
 // the sex, the held item and the markings that the box's Pokémon are filtered by. Names are ours
@@ -1821,9 +1822,9 @@ static void func_ov255_021d5bc4(BoxSearchWork *wk) {
         wk->strings[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, data_ov255_021d8f10[i]);
     }
     if (wk->param->param->mode == 2) {
-        wk->strings[8] = GFL_MsgDataLoadStrbufNew(wk->msgData, 112);
+        wk->strings[8] = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_OrganizeBoxEs);
     } else {
-        wk->strings[8] = GFL_MsgDataLoadStrbufNew(wk->msgData, 113);
+        wk->strings[8] = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_BattleBox_2);
     }
     wk->strbuf = GFL_StrBufCreate(128, wk->heapId);
 }
@@ -2078,7 +2079,7 @@ static void func_ov255_021d6250(BoxSearchWork *wk, u32 ability) {
     StrBuf *str;
 
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[WINDOW_INFO]), 0);
-    fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, 145);
+    fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_PleaseChooseAbilityAbility);
     loadAbilityNameToStrbuf(wk->wordSet, 0, ability);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, fmt);
     PrintWindow_Print(&wk->printWindows[WINDOW_INFO], wk->printQueue, 1, 0, wk->strbuf, wk->font,
@@ -2101,10 +2102,10 @@ static void func_ov255_021d6308(BoxSearchWork *wk, u32 species) {
     PML_PersonalFree(personal);
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[WINDOW_INFO]), 0);
     if (type1 != type2) {
-        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, 117);
+        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_PleaseChoosePokemonName);
         loadTypeTextToStrbuf(wk->wordSet, 2, type2);
     } else {
-        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, 118);
+        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_PleaseChoosePokemonName_2);
     }
     WordSet_LoadSpeciesName(wk->wordSet, 0, (u16)species);
     loadTypeTextToStrbuf(wk->wordSet, 1, type1);

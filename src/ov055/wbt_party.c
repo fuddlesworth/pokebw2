@@ -15,6 +15,7 @@
 #include "nitro/os.h"
 #include "pml/met_data.h"
 #include "pml/poke_party.h"
+#include "text/system/scrcmd_bsubway_wbt_party.h"
 
 // A Pokémon of the Battle Subway's Pokémon arc
 typedef struct {
@@ -339,7 +340,7 @@ void func_ov055_021e713c(WbtSystem *sys, u32 a1, PlayerInfo *playerInfo, u16 pla
     name = GFL_StrBufCreate(14, heapId);
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_WBT_PARTY, heapId);
     if (msgData != NULL) {
-        GFL_MsgDataLoadStrbuf(msgData, 18, name);
+        GFL_MsgDataLoadStrbuf(msgData, ScrcmdBsubwayWbtParty_Text_Empty, name);
         GFL_MsgDataFree(msgData);
     }
     for (i = 0; i < 6; i++) {

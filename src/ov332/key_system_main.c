@@ -27,6 +27,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "text/script/global_10520.h"
 
 // Unova Link's proc: the BG, actors and windows that every part shares, and the main menu that leads to the Key
 // System, Memory Link and the Nintendo 3DS Link with Pokémon Dream Radar
@@ -327,7 +328,7 @@ void KeySystem_SeqWirelessOff(KeySystemSeq *seq, int *state, void *work) {
     case 0:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, HEAPID_KEY_SYSTEM);
-        str = GFL_MsgDataLoadStrbufNew(msgData, 22);
+        str = GFL_MsgDataLoadStrbufNew(msgData, Global10520_Text_WirelessCommunicationsTurnedOff);
         KeySystemMsgWin_PrintStr(wk->msgWin, str, KEY_SYSTEM_MSG_STREAM);
         GFL_StrBufFree(str);
         GFL_MsgDataFree(msgData);

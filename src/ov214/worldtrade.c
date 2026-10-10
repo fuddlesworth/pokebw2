@@ -30,6 +30,7 @@
 #include "system/time_icon.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "text/system/0415.h"
 #include "worldtrade_local.h"
 
 // The Global Trade Station's proc: its work, the screens it switches between, and the graphics, menus and helpers
@@ -336,8 +337,8 @@ void WorldTrade_TouchWinYesNoMakeEx(WorldTradeWork *wk, int y, int cgx, int pale
         AppTaskMenuInit init;
 
         sys_memset(&init, 0, sizeof(AppTaskMenuInit));
-        items[0].str = GFL_MsgDataLoadStrbufNew(wk->msgManager, 0x3f);
-        items[1].str = GFL_MsgDataLoadStrbufNew(wk->msgManager, 0x40);
+        items[0].str = GFL_MsgDataLoadStrbufNew(wk->msgManager, Bank0415_Text_Yes);
+        items[1].str = GFL_MsgDataLoadStrbufNew(wk->msgManager, Bank0415_Text_No);
         init.heapId = HEAPID_WORLDTRADE;
         init.itemCount = 2;
         init.items = items;

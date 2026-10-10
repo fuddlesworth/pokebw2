@@ -50,6 +50,7 @@
 #include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/ringtone_sys.h"
+#include "text/system/ability_handlers_btl_main.h"
 
 // The first mon ID of each client
 static const u8 data_ov167_021d6c24[4] = { 0, 12, 6, 18 };
@@ -1116,7 +1117,7 @@ BOOL func_ov167_0219b160(BtlMainModule *mainModule, s32 *state) {
                     if (i != mainModule->playerClientId && setup->unkDD_2) {
                         j = 0;
                         msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, mainModule->heapId);
-                        strBuf = GFL_MsgDataLoadStrbufNew(msgData, 0x19);
+                        strBuf = GFL_MsgDataLoadStrbufNew(msgData, AbilityHandlersBtlMain_Text_Kuro);
                         GFL_MsgDataFree(msgData);
                         str = GFL_StrBufGetStringPtr(strBuf);
                         for (; j < 15 && j < GFL_StrBufGetCharCount(strBuf); j++) {
@@ -1127,7 +1128,7 @@ BOOL func_ov167_0219b160(BtlMainModule *mainModule, s32 *state) {
                         copyTrainerName(mainModule->trainers[i].playerInfo, name);
                         GFL_StrBufFree(mainModule->trainers[i].name);
                         msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, mainModule->heapId);
-                        mainModule->trainers[i].name = GFL_MsgDataLoadStrbufNew(msgData, 0x19);
+                        mainModule->trainers[i].name = GFL_MsgDataLoadStrbufNew(msgData, AbilityHandlersBtlMain_Text_Kuro);
                         GFL_MsgDataFree(msgData);
                     }
                     func_ov167_0219dfa8(mainModule, i, mainModule->trainers[i].playerInfo);

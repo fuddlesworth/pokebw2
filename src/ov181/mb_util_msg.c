@@ -21,6 +21,7 @@
 #include "system/printsys.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
+#include "text/script/global_10520.h"
 
 // The messages, windows and menus of the DS Download Play parent (mb_util_msg.c): one message window that prints
 // through a stream or a print queue, the yes/no menus, and the frame of the field's talk window when overlay 36 is
@@ -426,7 +427,7 @@ void MBUtilMsg_PrintNoWireless(MBUtilMsg *msg, s32 wait) {
         msg->strbuf = NULL;
     }
     GFL_BitmapFill(BmpWin_GetBitmap(msg->window), 15);
-    msg->strbuf = GFL_MsgDataLoadStrbufNew(msgData, 0x16);
+    msg->strbuf = GFL_MsgDataLoadStrbufNew(msgData, Global10520_Text_WirelessCommunicationsTurnedOff);
     msg->stream = func_02022268(msg->window, 0, 0, msg->strbuf, msg->font, wait, msg->tcbManager, 2, msg->heapId, 15);
     BmpWin_DrawFrame(msg->window, TRUE, 1, 13);
     GFL_MsgDataFree(msgData);

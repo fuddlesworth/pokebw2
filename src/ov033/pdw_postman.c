@@ -32,6 +32,7 @@
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "system/wordset.h"
+#include "text/script/global_10390.h"
 
 #define MYSTERY_GIFT_DELIVERY_MAN_OBJ_CODE 0x46
 
@@ -90,7 +91,7 @@ void func_ov033_02177a60(PdwPostmanItemWindow *work) {
     for (i = 0; i < work->count; i++) {
         GFL_MsgDataLoadStrbuf(messages, work->items[i].item, work->first);
         func_ov036_02187c4c(work->window, 0, 14 * i, work->first);
-        GFL_MsgDataLoadStrbuf(work->messages, 5, work->first);
+        GFL_MsgDataLoadStrbuf(work->messages, Global10390_Text_X, work->first);
         WordSetNumber(work->wordSet, 0, work->items[i].quantity, 2, 1, 1);
         GFL_WordSetFormatStrbuf(work->wordSet, work->second, work->first);
         func_ov036_02187c4c(work->window, 0x6c, 14 * i, work->second);

@@ -12,6 +12,7 @@
 #include "gfl/str.h"
 #include "gfl/tcb.h"
 #include "system/printsys.h"
+#include "text/system/btl_server_flow_title.h"
 
 // The detail screen's head bar, on BG 5 at the top of the sub screen: the title of the page, which slides in and out
 
@@ -174,7 +175,7 @@ static void ZukanDetailHeadbar_PrintTitle(ZukanDetailHeadbar *headbar) {
         bitmap = GFL_G2DIOLoadBitmap(ARCID_ZUKAN_GRA, 14, FALSE, headbar->heapId);
         GFL_BitmapCopy(bitmap, headbar->bitmap);
         GFL_BitmapFree(bitmap);
-        strbuf = GFL_MsgDataLoadStrbufNew(headbar->msgData, 179 + headbar->title);
+        strbuf = GFL_MsgDataLoadStrbufNew(headbar->msgData, BtlServerFlowTitle_Text_Info + headbar->title);
         func_02021c7c(headbar->printQueue, headbar->bitmap, 24, 5, strbuf, headbar->font, PRINT_COLOR(15, 14, 0));
         GFL_StrBufFree(strbuf);
         headbar->transferPending = TRUE;

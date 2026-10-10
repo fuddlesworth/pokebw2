@@ -53,6 +53,7 @@
 #include "system/text_speed.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "text/system/startmenu_gfl_net_err_disp_message.h"
 
 // The DS Download Play parent (mb_parent_sys.c): sends a program to another system by DS Download Play and stores the
 // Pokémon it sends back. The Poké Transfer Lab starts it to bring Pokémon over from the Gen 4 games, and the start
@@ -747,7 +748,7 @@ static void MBParent_DrawTopScreen(MBParentWork *wk) {
     GFL_ArcToolFree(arc);
     window = BmpWin_CreateDynamic(bg, 1, 4, 30, 8, 7, TRUE);
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_STARTMENU_GFL_NET_ERR_DISP_MESSAGE, wk->heapId);
-    strbuf = GFL_MsgDataLoadStrbufNew(msgData, 1);
+    strbuf = GFL_MsgDataLoadStrbufNew(msgData, StartmenuGflNetErrDispMessage_Text_CommunicationErrorPleaseTurn);
     GFL_BitmapFill(BmpWin_GetBitmap(window), 7);
     GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(window), 0, 0, strbuf, MBUtilMsg_GetFont(wk->msg), 0x1167);
     BmpWin_FlushChar(window);

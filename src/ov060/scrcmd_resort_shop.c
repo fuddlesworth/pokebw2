@@ -43,6 +43,7 @@
 #include "system/text_speed.h"
 #include "system/vm.h"
 #include "system/wordset.h"
+#include "text/script/scrcmd_resort_shop.h"
 
 // The Join Avenue's shops (plugin 8's command 1000 while this overlay takes overlay 59's place). The command opens a
 // menu over the field: mode 0 is a shop's items, mode 1 the four records, and mode 2 the order of the records (sub
@@ -521,8 +522,8 @@ static void func_ov060_021e5d34(GameSystem *gsys, ResortShopWork *wk, u8 mode, u
 }
 
 static void func_ov060_021e5d60(ResortShopWork *wk) {
-    wk->priceFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, 13);
-    wk->boughtLabel = GFL_MsgDataLoadStrbufNew(wk->msgData, 14);
+    wk->priceFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty);
+    wk->boughtLabel = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty_2);
 }
 
 static u32 func_ov060_021e5d84(ResortShopWork *wk) {
@@ -1077,7 +1078,7 @@ static void func_ov060_021e6a28(ResortShopWork *wk, u8 mode, u8 subMode) {
         a = func_020385a8(record, 21, NULL);
         b = func_020385a8(record, 22, NULL);
         c = func_020385a8(record, 23, NULL);
-        labelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, 35);
+        labelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty_10);
         descriptionFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, n + 37);
         gender = func_020385a8(record, 2, NULL);
         func_020385a8(record, 4, name);
@@ -1151,7 +1152,7 @@ static void func_ov060_021e6d94(ResortShopWork *wk, u8 mode, u8 subMode) {
     wk->options = ListMenuCore_CreateOptionList(wk->entryCount + 1, wk->heapId);
     for (i = 0; i < wk->entryCount; i++) {
         void *record = wk->entries[i].person;
-        StrBuf *labelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, 35);
+        StrBuf *labelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty_10);
         StrBuf *descriptionFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, i + 37);
         u8 gender = func_020385a8(record, 2, NULL);
         u16 a = func_020385a8(record, 21, NULL);
@@ -1387,7 +1388,7 @@ static void func_ov060_021e76d0(ResortShopWork *wk) {
 }
 
 static void func_ov060_021e7750(ResortShopWork *wk) {
-    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, 26);
+    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Money);
 
     GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[0]), 0, 0, strbuf, wk->font, PRINT_COLOR(15, 2, 15));
     GFL_StrBufFree(strbuf);
@@ -1406,7 +1407,7 @@ static void func_ov060_021e77a8(ResortShopWork *wk) {
 
 // The player's money
 static void func_ov060_021e77d4(ResortShopWork *wk) {
-    StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, 27);
+    StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty_6);
     StrBuf *strbuf = GFL_StrBufCreate(10, wk->heapId);
     GFLBitmap *bitmap;
 
@@ -1422,7 +1423,7 @@ static void func_ov060_021e77d4(ResortShopWork *wk) {
 
 // How many of the item the bag holds
 static void func_ov060_021e786c(ResortShopWork *wk, u16 item) {
-    StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, 29);
+    StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Bag);
     StrBuf *strbuf = GFL_StrBufCreate(20, wk->heapId);
     GFLBitmap *bitmap;
 
@@ -1713,7 +1714,7 @@ static void func_ov060_021e8190(ResortShopWork *wk, ResortPersonData *data, u32 
     StrBuf *label = GFL_StrBufCreate(64, wk->heapId);
     StrBuf *name = func_ov137_021f4930(wk->shops, data, flag, wk->heapId);
     StrBuf *description = func_ov060_021e8040(wk, person);
-    StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, 36);
+    StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty_11);
     u8 gender = joinAveTextHandler(person, 2, NULL);
 
     WordSetNumber(wk->wordSet, 1, index + 1, 1, NUM_PAD_NONE, 1);

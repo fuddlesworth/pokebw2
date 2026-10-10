@@ -39,6 +39,7 @@
 #include "system/pms_word.h"
 #include "system/pmsi_param.h"
 #include "system/printsys.h"
+#include "text/system/pms_input.h"
 
 // The phrase select: a list of the saved phrases on plates, from which the trainer card picks its greeting, or opens
 // the phrase input to edit one. Named descriptively, after its graphics' "pms_select_graphic.c". The names are ours
@@ -894,7 +895,7 @@ static BOOL PMSSelect_FlushWindow(PrintQueue *queue, BmpWin *window, BOOL *flush
 }
 
 static void PMSSelect_DrawNewPlate(PMSSelectWork *wk, u8 line, u8 index, BOOL active) {
-    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, 17);
+    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, PmsInput_Text_AddNewMessages);
     u16 color;
 
     PMSSelect_BGDrawPlate(&wk->bg, line, 6, active);

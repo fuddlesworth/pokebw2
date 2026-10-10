@@ -45,6 +45,7 @@
 #include "system/palanm.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "text/system/0021.h"
 
 // An actor slot; the second word is never touched
 typedef struct {
@@ -2496,11 +2497,11 @@ static void BtlvInput_DrawMoveTiles(BtlvInput *work, const BtlvInputMoveParam *p
     int i;
 
     nameBuf = GFL_StrBufCreate(16, work->heapId);
-    nameFmt = GFL_MsgDataLoadStrbufNew(work->msgData, 0);
-    ppLabel = GFL_MsgDataLoadStrbufNew(work->msgData, 1);
+    nameFmt = GFL_MsgDataLoadStrbufNew(work->msgData, Bank0021_Text_Empty);
+    ppLabel = GFL_MsgDataLoadStrbufNew(work->msgData, Bank0021_Text_Pp);
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     ppBuf = GFL_StrBufCreate(16, work->heapId);
-    ppFmt = GFL_MsgDataLoadStrbufNew(work->msgData, 2);
+    ppFmt = GFL_MsgDataLoadStrbufNew(work->msgData, Bank0021_Text_Empty_2);
     func_0204bfd4(work->moveUnit, FALSE);
 
     for (i = 0; i < 4; i++) {
@@ -2683,7 +2684,7 @@ static void BtlvInput_DrawRecorderCount(BtlvInput *work, const BtlvInputRecorder
 
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     buf = GFL_StrBufCreate(8, work->heapId);
-    fmt = GFL_MsgDataLoadStrbufNew(work->msgData, 6);
+    fmt = GFL_MsgDataLoadStrbufNew(work->msgData, Bank0021_Text_Empty_6);
     GFL_TextRndGetGlobalColors(&letter, &shadow, &background);
     GFL_TextRndUpdateColorIndexLUT(9, 10, 0);
     WordSetNumber(wordSet, 0, param->unk8, 3, 2, TRUE);
@@ -2696,7 +2697,7 @@ static void BtlvInput_DrawRecorderCount(BtlvInput *work, const BtlvInputRecorder
     GFL_WordSetFormatStrbuf(wordSet, buf, fmt);
     GFL_TextRendererDrawToBitmap(work->msgBitmap, 96, 8, buf, work->font);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 0);
-    label = GFL_MsgDataLoadStrbufNew(work->msgData, 7);
+    label = GFL_MsgDataLoadStrbufNew(work->msgData, Bank0021_Text_Empty_7);
     GFL_TextRendererDrawToBitmap(work->msgBitmap, 124, 8, label, work->font);
     GFL_StrBufFree(label);
     GFL_TextRndUpdateColorIndexLUT(letter, shadow, background);
@@ -3004,7 +3005,7 @@ static void BtlvInput_CreateStruggleActor(BtlvInput *work) {
     func_0204c488(work->actor21c, 20);
 
     strbuf = GFL_StrBufCreate(16, work->heapId);
-    src = GFL_MsgDataLoadStrbufNew(work->msgData, 0);
+    src = GFL_MsgDataLoadStrbufNew(work->msgData, Bank0021_Text_Empty);
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     bitmap = GFL_BitmapCreate(14, 4, 0x20, work->heapId);
     GFL_BitmapFill(bitmap, 0);
@@ -3336,7 +3337,7 @@ static void BtlvInput_PrintLauncherPoints(BtlvInput *work, BtlvInputCommandParam
     }
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     strbuf = GFL_StrBufCreate(6, work->heapId);
-    src = GFL_MsgDataLoadStrbufNew(work->msgData, 8);
+    src = GFL_MsgDataLoadStrbufNew(work->msgData, Bank0021_Text_Empty_8);
     GFL_TextRndGetGlobalColors(&letter, &shadow, &background);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 0);
     WordSetNumber(wordSet, 0, param->launcherPoints, 2, 0, TRUE);

@@ -52,6 +52,7 @@
 #include "system/palanm.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "text/system/btl_pokeparam_box_main_save_init.h"
 
 // The PC box's graphics setup, the moves of Pokémon between the boxes and the party, and the frames and buttons that
 // slide in and out. Names are ours
@@ -436,10 +437,10 @@ void Box2Main_ExitMsg(Box2SysWork *syswk) {
 }
 
 void Box2Main_InitYesNo(Box2SysWork *syswk) {
-    syswk->app->yesNoItems[0].str = GFL_MsgDataLoadStrbufNew(syswk->app->msgData, 110);
+    syswk->app->yesNoItems[0].str = GFL_MsgDataLoadStrbufNew(syswk->app->msgData, BtlPokeparamBoxMainSaveInit_Text_Yes);
     syswk->app->yesNoItems[0].color = 0x39e3;
     syswk->app->yesNoItems[0].type = 0;
-    syswk->app->yesNoItems[1].str = GFL_MsgDataLoadStrbufNew(syswk->app->msgData, 111);
+    syswk->app->yesNoItems[1].str = GFL_MsgDataLoadStrbufNew(syswk->app->msgData, BtlPokeparamBoxMainSaveInit_Text_No_2);
     syswk->app->yesNoItems[1].color = 0x39e3;
     syswk->app->yesNoItems[1].type = 0;
     syswk->app->yesNoRes = AppTaskMenuRes_Create(0, 8, syswk->app->font, syswk->app->printQueue, HEAPID_BOX2_APP);

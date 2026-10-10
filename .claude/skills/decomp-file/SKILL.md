@@ -46,6 +46,8 @@ order you write them.
   `HEAPID_*` and the like.
   A message file is a `TEXT_BANK_*` (system messages) or `SCRIPT_TEXT_*` (script messages), never its number:
   `GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_NAMES, heapId)`.
+  A message is its ID from the bank's header, `text/system/<bank>.h`, never its line number:
+  `GFL_MsgDataLoadStrbufNew(msgData, YesNo_Text_Yes)`.
 
 ## 4. Write the C
 

@@ -25,6 +25,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "text/system/btl_pokeparam_2.h"
 
 // Overlay 209's mus_shot_photo.c: the photo of a musical's finale on the main screen, the four Pokémon in the props
 // they wore, under spotlights, with the date and the program's title
@@ -324,7 +325,7 @@ static void MusShotPhoto_InitText(MusShotPhoto *photo) {
     str = GFL_StrBufCreate(128, photo->heapId);
     wordSet = GFL_WordSetSystemCreateDefault(photo->heapId);
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_2, photo->heapId);
-    format = GFL_MsgDataLoadStrbufNew(msgData, 0);
+    format = GFL_MsgDataLoadStrbufNew(msgData, BtlPokeparam2_Text_Empty);
     WordSetNumber(wordSet, 0, photo->shot->year, 2, 2, TRUE);
     WordSetNumber(wordSet, 1, photo->shot->month, 2, 2, TRUE);
     WordSetNumber(wordSet, 2, photo->shot->day, 2, 2, TRUE);
