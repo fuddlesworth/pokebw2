@@ -2,7 +2,8 @@
 #define POKEBW2_APP_POKEMON_TRADE_LOCAL_H
 
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
+#include "app/ui/touchbar.h"
 #include "app/pokemon_trade.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"

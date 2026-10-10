@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
 #include "app/zukan_detail.h"
 #include "app/zukan_info.h"
 #include "constants/arc.h"
@@ -153,7 +153,7 @@ static BOOL ZukanDetailInfo_Init(ZukanDetailProcSys *sys, int *seq, void *param_
     ZukanDetailInfoParam *param = param_;
     ZukanDetailInfoWork *wk;
 
-    GFL_OvlLoad(OVERLAY_139);
+    GFL_OvlLoad(OVERLAY_APP_UI);
     GFL_OvlLoad(OVERLAY_ZUKAN_INFO);
     wk = ZukanDetailProcSys_AllocWork(sys, sizeof(ZukanDetailInfoWork), param->heapId);
     sys_memset(wk, 0, sizeof(ZukanDetailInfoWork));
@@ -191,7 +191,7 @@ static BOOL ZukanDetailInfo_Exit(ZukanDetailProcSys *sys, int *seq, void *param_
     GFL_TCBRemove(wk->vblankTcb);
     ZukanDetailProcSys_FreeWork(sys);
     GFL_OvlUnload(OVERLAY_ZUKAN_INFO);
-    GFL_OvlUnload(OVERLAY_139);
+    GFL_OvlUnload(OVERLAY_APP_UI);
     return TRUE;
 }
 

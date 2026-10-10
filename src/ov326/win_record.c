@@ -1,5 +1,7 @@
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
+#include "app/ui/print_msg.h"
+#include "app/ui/frame_list.h"
 #include "app/win_record.h"
 #include "app/win_record_graphic.h"
 #include "constants/arc.h"
@@ -369,7 +371,7 @@ static const s16 sWinRecordTournaments[WIN_RECORD_TOURNAMENT_COUNT] = {
 static BOOL WinRecord_Init(GameProc *proc, u32 *state, void *param, void *work) {
     WinRecordWork *wk;
 
-    GFL_OvlLoad(OVERLAY_139);
+    GFL_OvlLoad(OVERLAY_APP_UI);
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_WBT_RECORD, 0x30000);
     wk = GFL_ProcInitSubsystem(proc, sizeof(WinRecordWork), HEAPID_WBT_RECORD);
     sys_memset(wk, 0, sizeof(WinRecordWork));
@@ -416,7 +418,7 @@ static BOOL WinRecord_Exit(GameProc *proc, u32 *state, void *param, void *work) 
     heapId = wk->heapId;
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(heapId);
-    GFL_OvlUnload(OVERLAY_139);
+    GFL_OvlUnload(OVERLAY_APP_UI);
     return TRUE;
 }
 

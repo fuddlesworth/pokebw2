@@ -1,6 +1,7 @@
 #include "app/pms_select.h"
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
+#include "app/ui/touchbar.h"
 #include "app/pms_input.h"
 #include "app/pms_select_graphic.h"
 #include "constants/arc.h"
@@ -198,7 +199,7 @@ static BOOL PMSSelect_Init(GameProc *proc, u32 *state, void *param, void *work) 
     PMSSelectWork *wk;
     PMSSelectParam *selectParam = param;
 
-    GFL_OvlLoad(OVERLAY_139);
+    GFL_OvlLoad(OVERLAY_APP_UI);
     GFXRegSetMasterBrightness(REG_MASTER_BRIGHT_ADDR, -16);
     GFXRegSetMasterBrightness(REG_DB_MASTER_BRIGHT_ADDR, -16);
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_PMS_SELECT, 0x1c000);
@@ -229,7 +230,7 @@ static BOOL PMSSelect_Exit(GameProc *proc, u32 *state, void *param, void *work) 
     GFL_FontFree(wk->font);
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(HEAPID_PMS_SELECT);
-    GFL_OvlUnload(OVERLAY_139);
+    GFL_OvlUnload(OVERLAY_APP_UI);
     return TRUE;
 }
 
@@ -323,7 +324,7 @@ static BOOL PMSSelect_Main(GameProc *proc, u32 *state, void *param, void *work) 
         break;
     case SEQ_INPUT_RELEASE:
         PMSSelect_ReleaseScreen(wk);
-        GFL_OvlUnload(OVERLAY_139);
+        GFL_OvlUnload(OVERLAY_APP_UI);
         PMSSelect_SetSeq(state, wk, SEQ_INPUT_CALL);
         return FALSE;
     case SEQ_INPUT_CALL:
@@ -333,7 +334,7 @@ static BOOL PMSSelect_Main(GameProc *proc, u32 *state, void *param, void *work) 
         return FALSE;
     case SEQ_INPUT_RETURN:
         if (running != TRUE && PMSSelect_SeqInputReturn(&wk->subSeq, wk)) {
-            GFL_OvlLoad(OVERLAY_139);
+            GFL_OvlLoad(OVERLAY_APP_UI);
             PMSSelect_SetupScreen(wk);
             PMSSelect_SetSeq(state, wk, SEQ_TOUCHBAR_ON);
         }

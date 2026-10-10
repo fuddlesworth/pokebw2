@@ -1,5 +1,6 @@
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
+#include "app/ui/yesno_menu.h"
 #include "app/p_status.h"
 #include "battle/b_app_tool.h"
 #include "battle/b_plist_main.h"
@@ -790,7 +791,7 @@ static void ShinkaDemo_InitGraphics(ShinkaDemoParam *param, ShinkaDemoWork *wk) 
 
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_SHINKA_DEMO_GRAPHIC, 0x70000);
     wk->graphicHeapId = HEAPID_SHINKA_DEMO_GRAPHIC;
-    GFL_OvlLoad(OVERLAY_139);
+    GFL_OvlLoad(OVERLAY_APP_UI);
     for (i = 0; i <= 7; i++) {
         GFL_BGSysSetBGEnabled(i, FALSE);
     }
@@ -849,7 +850,7 @@ static void ShinkaDemo_FreeGraphics(ShinkaDemoParam *param, ShinkaDemoWork *wk) 
     GFL_FontFree(wk->font);
     ShinkaDemoGraphic_FreeSubBG(wk->graphic);
     ShinkaDemoGraphic_Free(wk->graphic);
-    GFL_OvlUnload(OVERLAY_139);
+    GFL_OvlUnload(OVERLAY_APP_UI);
     GFL_HeapDelete(HEAPID_SHINKA_DEMO_GRAPHIC);
 }
 

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "app/ov139.h"
+#include "app/ui/touchbar.h"
 #include "app/pokemon_trade_local.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"

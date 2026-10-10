@@ -2,7 +2,9 @@
 #include "app/box2_main.h"
 #include "app/box_search.h"
 #include "app/box_search_graphic.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
+#include "app/ui/touchbar.h"
+#include "app/ui/frame_list.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -477,7 +479,7 @@ static BOOL func_ov255_021d3b64(GameProc *proc, u32 *state, void *param, void *w
     BoxSearchParam *searchParam = param;
     BoxSearchWork *wk;
 
-    GFL_OvlLoad(OVERLAY_139);
+    GFL_OvlLoad(OVERLAY_APP_UI);
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_BOX_SEARCH, 0x30000);
     wk = GFL_ProcInitSubsystem(proc, sizeof(BoxSearchWork), HEAPID_BOX_SEARCH);
     sys_memset(wk, 0, sizeof(BoxSearchWork));
@@ -526,7 +528,7 @@ static BOOL func_ov255_021d3c90(GameProc *proc, u32 *state, void *param, void *w
     heapId = wk->heapId;
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(heapId);
-    GFL_OvlUnload(OVERLAY_139);
+    GFL_OvlUnload(OVERLAY_APP_UI);
     return TRUE;
 }
 

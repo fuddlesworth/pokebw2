@@ -1,5 +1,6 @@
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
+#include "app/ui/frame_list.h"
 #include "app/t_download.h"
 #include "app/t_download/t_download_graphic.h"
 #include "app/t_download/t_download_local.h"
@@ -122,7 +123,7 @@ static void (*sTDownloadModeMains[T_DOWNLOAD_MODE_COUNT])(TDownloadWork *wk) = {
 static BOOL TDownload_Init(GameProc *proc, u32 *state, void *param, void *work) {
     TDownloadWork *wk;
 
-    GFL_OvlLoad(OVERLAY_139);
+    GFL_OvlLoad(OVERLAY_APP_UI);
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_WBT_RECORD, 0x40000);
     wk = GFL_ProcInitSubsystem(proc, sizeof(TDownloadWork), HEAPID_WBT_RECORD);
     sys_memset(wk, 0, sizeof(TDownloadWork));
@@ -167,7 +168,7 @@ static BOOL TDownload_Exit(GameProc *proc, u32 *state, void *param, void *work) 
     heapId = wk->heapId;
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(heapId);
-    GFL_OvlUnload(OVERLAY_139);
+    GFL_OvlUnload(OVERLAY_APP_UI);
     return TRUE;
 }
 

@@ -1,5 +1,6 @@
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/ui_scene.h"
+#include "app/ui/touchbar.h"
 #include "app/pokemon_trade_local.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
@@ -2762,7 +2763,7 @@ static PokemonTradeWork *PokemonTrade_CreateWork(GameProc *proc, u32 heapSize) {
 
 static BOOL PokemonTrade_Init(GameProc *proc, u32 *state, PokemonTradeParam *param, PokemonTradeWork *wk, int type) {
     if (type < 5) {
-        GFL_OvlLoad(OVERLAY_139);
+        GFL_OvlLoad(OVERLAY_APP_UI);
         GFL_OvlLoad(OVERLAY_ID(189));
     }
     if (type == 0 || type == 4) {
@@ -3023,7 +3024,7 @@ static BOOL PokemonTrade_ProcExit(GameProc *proc, u32 *state, void *param, void 
     GFL_HeapDelete(HEAPID_POKEMON_TRADE);
     if (type < 5) {
         GFL_OvlUnload(OVERLAY_ID(189));
-        GFL_OvlUnload(OVERLAY_139);
+        GFL_OvlUnload(OVERLAY_APP_UI);
     }
     if (type == 0 || type == 4) {
         GFL_OvlUnload(OVERLAY_ID(192));

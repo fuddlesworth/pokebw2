@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/frame_list.h"
 #include "app/unova_link.h"
 #include "constants/arc.h"
 #include "constants/sound.h"

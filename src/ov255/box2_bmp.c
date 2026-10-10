@@ -3,7 +3,7 @@
 #include "app/box2_bmp.h"
 #include "app/box2_main.h"
 #include "app/box2_obj.h"
-#include "app/ov139.h"
+#include "app/ui/print_msg.h"
 #include "constants/arc.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"

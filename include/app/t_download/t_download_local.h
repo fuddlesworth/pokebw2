@@ -2,7 +2,7 @@
 #define POKEBW2_APP_T_DOWNLOAD_T_DOWNLOAD_LOCAL_H
 
 #include "types.h"
-#include "app/ov139.h"
+#include "app/ui/frame_list.h"
 #include "app/t_download/t_download_graphic.h"
 #include "field/wbt.h"
 #include "gfl/clact.h"
