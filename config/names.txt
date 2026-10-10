@@ -2374,6 +2374,9 @@ overlays/ov131 0x021eec80 RailSlipdown_Create
 overlays/ov131 0x021eed18 RailSlipdown_Delete
 overlays/ov131 0x021eed2c RailSlipdown_IsDone
 overlays/ov131 0x021eed3c RailSlipdown_Task
+overlays/ov139 0x0219a2a4 PrintStrAligned
+overlays/ov139 0x0219a2ec PrintFraction
+overlays/ov139 0x0219a410 GetStrWidthForAlign
 overlays/ov142 0x021998c0 ItemMenu_SetState
 overlays/ov142 0x021998dc ItemMenu_RedrawList
 overlays/ov142 0x021998f4 ItemMenu_UpdateList

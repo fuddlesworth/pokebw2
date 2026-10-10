@@ -803,7 +803,7 @@ static void WinRecord_InitWindows(WinRecordWork *wk) {
 }
 
 static void WinRecord_Print(WinRecordWork *wk, int window, int x, int y, const StrBuf *strbuf, u32 align, u16 color) {
-    func_ov139_0219a2a4(&wk->windows[window], wk->printQueue, x, y, strbuf, wk->font, color, align);
+    PrintStrAligned(&wk->windows[window], wk->printQueue, x, y, strbuf, wk->font, color, align);
 }
 
 static void WinRecord_ExitWindows(WinRecordWork *wk) {

@@ -411,8 +411,8 @@ static void func_ov255_021ce870(Box2SysWork *syswk, u32 index, u32 msgId, u16 fr
     }
 
     str = GFL_MsgDataLoadStrbufNew(syswk->app->msgData, msgId);
-    func_ov139_0219a2a4(&syswk->app->windows[index], syswk->app->printQueue, width * 8 / 2, 4, str,
-                        syswk->app->font, color, 2);
+    PrintStrAligned(&syswk->app->windows[index], syswk->app->printQueue, width * 8 / 2, 4, str,
+                        syswk->app->font, color, PRINT_ALIGN_CENTER);
     GFL_StrBufFree(str);
 }
 
