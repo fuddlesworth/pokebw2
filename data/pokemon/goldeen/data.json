@@ -1,0 +1,97 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 45,
+        "attack": 67,
+        "defense": 60,
+        "speed": 63,
+        "special_attack": 35,
+        "special_defense": 50
+    },
+    "types": [ "TYPE_WATER", "TYPE_WATER" ],
+    "catch_rate": 225,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 1,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_WATER_2", "EGG_GROUP_WATER_2" ],
+    "abilities": [ "ABILITY_SWIFT_SWIM", "ABILITY_WATER_VEIL" ],
+    "hidden_ability": "ABILITY_LIGHTNINGROD",
+    "flee_rate": 90,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_RED",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 64,
+    "height": 6,
+    "weight": 150,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_PECK" ],
+            [ 1, "MOVE_TAIL_WHIP" ],
+            [ 1, "MOVE_WATER_SPORT" ],
+            [ 7, "MOVE_SUPERSONIC" ],
+            [ 11, "MOVE_HORN_ATTACK" ],
+            [ 17, "MOVE_WATER_PULSE" ],
+            [ 21, "MOVE_FLAIL" ],
+            [ 27, "MOVE_AQUA_RING" ],
+            [ 31, "MOVE_FURY_ATTACK" ],
+            [ 37, "MOVE_WATERFALL" ],
+            [ 41, "MOVE_HORN_DRILL" ],
+            [ 47, "MOVE_AGILITY" ],
+            [ 51, "MOVE_SOAK" ],
+            [ 57, "MOVE_MEGAHORN" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM07",
+            "TM10",
+            "TM13",
+            "TM14",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM27",
+            "TM32",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM55",
+            "TM84",
+            "TM87",
+            "TM90",
+            "HM03",
+            "HM05",
+            "HM06"
+        ],
+        "tutors": [ "0x00000000", "0x00000190", "0x00000c00", "0x00000006", "0x00002000" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 33,
+            "species": "SPECIES_SEAKING"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_GOLDEEN"
+}

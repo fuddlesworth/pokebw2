@@ -134,11 +134,6 @@ def library_of(source: Path) -> tuple[str, list[str]] | None:
 # archives whose entries go together, such as a trainer and its party, and come from the same file.
 ARCHIVES = {
     "a/0/1/2": "data/zones",  # Zone headers, see tools/scripts/zone_data.py
-    "a/0/1/6": "data/personal",  # Species data, see tools/scripts/personal_data.py
-    "a/0/1/8": "data/levelup_moves",  # Level-up moves, see tools/scripts/species_tables.py
-    "a/0/1/7": "data/growth_rates",  # Experience tables, see tools/scripts/species_tables.py
-    "a/0/1/9": "data/evolutions",  # Evolutions, see tools/scripts/species_tables.py
-    "a/0/2/0": "data/baby_species",  # Baby species, see tools/scripts/species_tables.py
     "a/0/2/1": "data/moves",  # Move data, see tools/scripts/move_data.py
     "a/0/5/6": "data/field_scripts",  # Field scripts, see tools/scripts/field_script.py
     "a/0/9/1": ("data/trainers", ".trainer"),  # Trainers, see tools/scripts/trainer_data.py
@@ -146,6 +141,14 @@ ARCHIVES = {
     "a/1/2/7": "data/encounters",  # Wild encounters, see tools/scripts/encounter_data.py
     "a/1/6/9": "data/tr_ai",  # Trainer AI scripts, see tools/scripts/tr_ai_script.py
 }
+
+# Archives packed from JSON (and CSV) data by a script's pack command: the script, its data directory, and the archives
+# it writes, in the order it takes them. The data's constants come from the lists and headers, so those are inputs too.
+DATA_PACKS = [
+    # Species data, level-up moves, evolutions, baby species and experience tables
+    ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7"]),
+]
+DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py"]
 
 # Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order
@@ -339,7 +342,8 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     files_dir = build_dir / "files"
     files_ok = stamp_dir / "files.ok"
     n.build([files_ok], "files_tree", [], implicit=[extract_dir / "config.yaml", "tools/scripts/files_tree.py"],
-            variables={"source": str(extract_dir / "files"), "output": str(files_dir), "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES])})
+            variables={"source": str(extract_dir / "files"), "output": str(files_dir),
+                       "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES, *(a for _, _, pack in DATA_PACKS for a in pack)])})
     archives = []
     checks = []
     assembled = set()
@@ -365,6 +369,22 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
         checks.append(archive)
         if matching:
             checks.append(archive_ok)
+
+    constant_sources = sorted(str(p.relative_to(ROOT)) for p in [*(ROOT / "data" / "constants").glob("*.txt"),
+                                                                  *(ROOT / "include" / "constants").glob("*.h")])
+    for script, data_dir, paths in DATA_PACKS:
+        outputs = [files_dir / path for path in paths]
+        sources = sorted(str(p.relative_to(ROOT)) for p in (ROOT / data_dir).rglob("*") if p.is_file())
+        n.build(outputs, "data_pack", sources, implicit=[script, *DATA_PACK_TOOLS, *constant_sources],
+                order_only=[files_ok], variables={"script": script, "dir": data_dir})
+        for path, archive in zip(paths, outputs):
+            archive_ok = stamp_dir / "files" / f"{path.replace('/', '_')}.ok"
+            n.build([archive_ok], "check_file", [archive], implicit=[extract_dir / "config.yaml"],
+                    variables={"original": str(extract_dir / "files" / path)})
+            archives.append(archive)
+            checks.append(archive)
+            if matching:
+                checks.append(archive_ok)
 
     for path, source_dir in TEXT_ARCHIVES.items():
         archive = files_dir / path
@@ -485,6 +505,7 @@ def main():
     n.rule("objcopy_bin", f"{shlex.quote(llvm_objcopy)} -O binary $sections $in $out", "Converting $in")
     n.rule("narc", "$python tools/scripts/narc.py pack $out $in", "Packing $out")
     n.rule("text_pack", "$python tools/scripts/text_data.py pack $dir $out", "Packing $out")
+    n.rule("data_pack", "$python $script pack $dir $out", "Packing $dir")
     n.rule("check_file", "cmp $in $original && mkdir -p $$(dirname $out) && touch $out", "Checking $in")
     n.rule("files_tree", "$python tools/scripts/files_tree.py $source $output $built --stamp $out",
            "Linking the files of $output")

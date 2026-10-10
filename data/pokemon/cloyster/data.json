@@ -1,0 +1,89 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 50,
+        "attack": 95,
+        "defense": 180,
+        "speed": 70,
+        "special_attack": 85,
+        "special_defense": 45
+    },
+    "types": [ "TYPE_WATER", "TYPE_ICE" ],
+    "catch_rate": 60,
+    "evolution_stage": 2,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 2,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_PEARL",
+        "rare": "ITEM_BIG_PEARL",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_SLOW",
+    "egg_groups": [ "EGG_GROUP_WATER_3", "EGG_GROUP_WATER_3" ],
+    "abilities": [ "ABILITY_SHELL_ARMOR", "ABILITY_SKILL_LINK" ],
+    "hidden_ability": "ABILITY_OVERCOAT",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_PURPLE",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 184,
+    "height": 15,
+    "weight": 1325,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_TOXIC_SPIKES" ],
+            [ 1, "MOVE_WITHDRAW" ],
+            [ 1, "MOVE_SUPERSONIC" ],
+            [ 1, "MOVE_PROTECT" ],
+            [ 1, "MOVE_AURORA_BEAM" ],
+            [ 13, "MOVE_SPIKE_CANNON" ],
+            [ 28, "MOVE_SPIKES" ],
+            [ 52, "MOVE_ICICLE_CRASH" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM07",
+            "TM10",
+            "TM13",
+            "TM14",
+            "TM15",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM27",
+            "TM32",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM64",
+            "TM66",
+            "TM68",
+            "TM79",
+            "TM84",
+            "TM87",
+            "TM90",
+            "HM03",
+            "HM06"
+        ],
+        "tutors": [ "0x00000000", "0x00000010", "0x00000440", "0x00000002", "0x00002000" ]
+    },
+    "evolutions": [],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_SHELLDER"
+}

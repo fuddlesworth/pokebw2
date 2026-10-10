@@ -1,0 +1,104 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 75,
+        "attack": 38,
+        "defense": 38,
+        "speed": 67,
+        "special_attack": 56,
+        "special_defense": 56
+    },
+    "types": [ "TYPE_WATER", "TYPE_ELECTRIC" ],
+    "catch_rate": 190,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 1,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_DEEP_SEA_SCALE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_SLOW",
+    "egg_groups": [ "EGG_GROUP_WATER_2", "EGG_GROUP_WATER_2" ],
+    "abilities": [ "ABILITY_VOLT_ABSORB", "ABILITY_ILLUMINATE" ],
+    "hidden_ability": "ABILITY_WATER_ABSORB",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BLUE",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 66,
+    "height": 5,
+    "weight": 120,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_SUPERSONIC" ],
+            [ 1, "MOVE_BUBBLE" ],
+            [ 6, "MOVE_THUNDER_WAVE" ],
+            [ 9, "MOVE_FLAIL" ],
+            [ 12, "MOVE_CONFUSE_RAY" ],
+            [ 17, "MOVE_WATER_GUN" ],
+            [ 20, "MOVE_SPARK" ],
+            [ 23, "MOVE_TAKE_DOWN" ],
+            [ 28, "MOVE_ELECTRO_BALL" ],
+            [ 31, "MOVE_BUBBLE_BEAM" ],
+            [ 34, "MOVE_SIGNAL_BEAM" ],
+            [ 39, "MOVE_DISCHARGE" ],
+            [ 42, "MOVE_AQUA_RING" ],
+            [ 45, "MOVE_HYDRO_PUMP" ],
+            [ 50, "MOVE_CHARGE" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM07",
+            "TM10",
+            "TM13",
+            "TM14",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM24",
+            "TM25",
+            "TM27",
+            "TM32",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM55",
+            "TM57",
+            "TM70",
+            "TM72",
+            "TM73",
+            "TM87",
+            "TM90",
+            "TM93",
+            "HM03",
+            "HM05",
+            "HM06"
+        ],
+        "tutors": [ "0x00000000", "0x00000110", "0x00000400", "0x00000042", "0x00002000" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 27,
+            "species": "SPECIES_LANTURN"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_CHINCHOU"
+}

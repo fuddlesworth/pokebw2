@@ -1,0 +1,100 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 40,
+        "attack": 40,
+        "defense": 40,
+        "speed": 20,
+        "special_attack": 70,
+        "special_defense": 40
+    },
+    "types": [ "TYPE_FIRE", "TYPE_FIRE" ],
+    "catch_rate": 190,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 1,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_AMORPHOUS", "EGG_GROUP_AMORPHOUS" ],
+    "abilities": [ "ABILITY_MAGMA_ARMOR", "ABILITY_FLAME_BODY" ],
+    "hidden_ability": "ABILITY_WEAK_ARMOR",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_RED",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 50,
+    "height": 7,
+    "weight": 350,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_YAWN" ],
+            [ 1, "MOVE_SMOG" ],
+            [ 5, "MOVE_EMBER" ],
+            [ 10, "MOVE_ROCK_THROW" ],
+            [ 14, "MOVE_HARDEN" ],
+            [ 19, "MOVE_RECOVER" ],
+            [ 23, "MOVE_FLAME_BURST" ],
+            [ 28, "MOVE_ANCIENT_POWER" ],
+            [ 32, "MOVE_AMNESIA" ],
+            [ 37, "MOVE_LAVA_PLUME" ],
+            [ 41, "MOVE_ROCK_SLIDE" ],
+            [ 46, "MOVE_BODY_SLAM" ],
+            [ 50, "MOVE_FLAMETHROWER" ],
+            [ 55, "MOVE_EARTH_POWER" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM16",
+            "TM17",
+            "TM21",
+            "TM27",
+            "TM32",
+            "TM33",
+            "TM35",
+            "TM38",
+            "TM39",
+            "TM42",
+            "TM43",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM50",
+            "TM59",
+            "TM61",
+            "TM80",
+            "TM87",
+            "TM90",
+            "TM94"
+        ],
+        "tutors": [ "0x00000000", "0x00000000", "0x00000044", "0x00000212", "0x00002008" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 38,
+            "species": "SPECIES_MAGCARGO"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_SLUGMA"
+}

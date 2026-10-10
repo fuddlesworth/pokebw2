@@ -15,7 +15,7 @@ from pathlib import Path
 from make_constants import identifier
 from msgdata import read_archive_file
 from narc import read_narc
-from personal_data import constant_names, name
+from gen_constants import constant_names, name
 
 TABLE_SIZE = 0xE8
 GROUPS = [("GrassEncounters", 12), ("DarkGrassEncounters", 12), ("ShakingGrassEncounters", 12),

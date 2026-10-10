@@ -1,0 +1,103 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 60,
+        "attack": 65,
+        "defense": 70,
+        "speed": 40,
+        "special_attack": 85,
+        "special_defense": 75
+    },
+    "types": [ "TYPE_GRASS", "TYPE_POISON" ],
+    "catch_rate": 120,
+    "evolution_stage": 2,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 2,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_GRASS", "EGG_GROUP_GRASS" ],
+    "abilities": [ "ABILITY_CHLOROPHYLL", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_STENCH",
+    "flee_rate": 60,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BLUE",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 138,
+    "height": 8,
+    "weight": 86,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_ABSORB" ],
+            [ 1, "MOVE_SWEET_SCENT" ],
+            [ 1, "MOVE_ACID" ],
+            [ 5, "MOVE_SWEET_SCENT" ],
+            [ 9, "MOVE_ACID" ],
+            [ 13, "MOVE_POISON_POWDER" ],
+            [ 15, "MOVE_STUN_SPORE" ],
+            [ 17, "MOVE_SLEEP_POWDER" ],
+            [ 23, "MOVE_MEGA_DRAIN" ],
+            [ 29, "MOVE_LUCKY_CHANT" ],
+            [ 35, "MOVE_NATURAL_GIFT" ],
+            [ 41, "MOVE_MOONLIGHT" ],
+            [ 47, "MOVE_GIGA_DRAIN" ],
+            [ 53, "MOVE_PETAL_DANCE" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM09",
+            "TM10",
+            "TM11",
+            "TM17",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM32",
+            "TM36",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM53",
+            "TM56",
+            "TM70",
+            "TM75",
+            "TM86",
+            "TM87",
+            "TM90",
+            "HM01"
+        ],
+        "tutors": [ "0x00000000", "0x00000040", "0x00000000", "0x00000c0a", "0x0000200b" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_LEAF_STONE",
+            "species": "SPECIES_VILEPLUME"
+        },
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_SUN_STONE",
+            "species": "SPECIES_BELLOSSOM"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_ODDISH"
+}

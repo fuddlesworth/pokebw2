@@ -1,0 +1,108 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 50,
+        "attack": 53,
+        "defense": 48,
+        "speed": 64,
+        "special_attack": 53,
+        "special_defense": 48
+    },
+    "types": [ "TYPE_GRASS", "TYPE_GRASS" ],
+    "catch_rate": 190,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 1,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_ORAN_BERRY",
+        "rare": "ITEM_OCCA_BERRY",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 31,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_FIELD", "EGG_GROUP_FIELD" ],
+    "abilities": [ "ABILITY_GLUTTONY", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_OVERGROW",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_GREEN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 63,
+    "height": 6,
+    "weight": 105,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_SCRATCH" ],
+            [ 4, "MOVE_LEER" ],
+            [ 7, "MOVE_LICK" ],
+            [ 10, "MOVE_VINE_WHIP" ],
+            [ 13, "MOVE_FURY_SWIPES" ],
+            [ 16, "MOVE_LEECH_SEED" ],
+            [ 19, "MOVE_BITE" ],
+            [ 22, "MOVE_SEED_BOMB" ],
+            [ 25, "MOVE_TORMENT" ],
+            [ 28, "MOVE_FLING" ],
+            [ 31, "MOVE_ACROBATICS" ],
+            [ 34, "MOVE_GRASS_KNOT" ],
+            [ 37, "MOVE_RECYCLE" ],
+            [ 40, "MOVE_NATURAL_GIFT" ],
+            [ 43, "MOVE_CRUNCH" ]
+        ],
+        "by_tm": [
+            "TM01",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM12",
+            "TM17",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM39",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM46",
+            "TM47",
+            "TM48",
+            "TM53",
+            "TM56",
+            "TM62",
+            "TM65",
+            "TM66",
+            "TM70",
+            "TM83",
+            "TM86",
+            "TM87",
+            "TM90",
+            "TM94",
+            "HM01"
+        ],
+        "tutors": [ "0x00000000", "0x00000e42", "0x00010000", "0x0000042e", "0x00002512" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_LEAF_STONE",
+            "species": "SPECIES_SIMISAGE"
+        }
+    ],
+    "regional_dex_number": 37,
+    "baby_species": "SPECIES_PANSAGE"
+}

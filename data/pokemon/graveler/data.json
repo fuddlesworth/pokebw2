@@ -1,0 +1,111 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 55,
+        "attack": 95,
+        "defense": 115,
+        "speed": 35,
+        "special_attack": 45,
+        "special_defense": 45
+    },
+    "types": [ "TYPE_ROCK", "TYPE_GROUND" ],
+    "catch_rate": 120,
+    "evolution_stage": 2,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 2,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_EVERSTONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 15,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_MINERAL", "EGG_GROUP_MINERAL" ],
+    "abilities": [ "ABILITY_ROCK_HEAD", "ABILITY_STURDY" ],
+    "hidden_ability": "ABILITY_SAND_VEIL",
+    "flee_rate": 60,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BROWN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 137,
+    "height": 10,
+    "weight": 1050,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_TACKLE" ],
+            [ 1, "MOVE_DEFENSE_CURL" ],
+            [ 1, "MOVE_MUD_SPORT" ],
+            [ 1, "MOVE_ROCK_POLISH" ],
+            [ 4, "MOVE_MUD_SPORT" ],
+            [ 8, "MOVE_ROCK_POLISH" ],
+            [ 11, "MOVE_ROCK_THROW" ],
+            [ 15, "MOVE_MAGNITUDE" ],
+            [ 18, "MOVE_ROLLOUT" ],
+            [ 22, "MOVE_ROCK_BLAST" ],
+            [ 27, "MOVE_SMACK_DOWN" ],
+            [ 31, "MOVE_SELFDESTRUCT" ],
+            [ 36, "MOVE_BULLDOZE" ],
+            [ 42, "MOVE_STEALTH_ROCK" ],
+            [ 47, "MOVE_EARTHQUAKE" ],
+            [ 53, "MOVE_EXPLOSION" ],
+            [ 58, "MOVE_DOUBLE_EDGE" ],
+            [ 64, "MOVE_STONE_EDGE" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM17",
+            "TM21",
+            "TM23",
+            "TM26",
+            "TM27",
+            "TM28",
+            "TM31",
+            "TM32",
+            "TM35",
+            "TM37",
+            "TM38",
+            "TM39",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM56",
+            "TM59",
+            "TM64",
+            "TM69",
+            "TM71",
+            "TM74",
+            "TM78",
+            "TM80",
+            "TM87",
+            "TM90",
+            "TM94",
+            "HM04"
+        ],
+        "tutors": [ "0x00000000", "0x00003000", "0x00000146", "0x00000002", "0x00003000" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_TRADE",
+            "param": 0,
+            "species": "SPECIES_GOLEM"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_GEODUDE"
+}

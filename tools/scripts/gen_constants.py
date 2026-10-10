@@ -9,6 +9,7 @@ hex). `#` starts a comment. The build generates the headers from the lists (see 
 the lists through load() here, so C code, data files and tools all share the same names.
 """
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -68,6 +69,28 @@ def header_text(header: str) -> str:
     if path.parent == Path("constants") and (LISTS_DIR / f"{path.stem}.txt").exists():
         return generate(LISTS_DIR / f"{path.stem}.txt")
     return (LISTS_DIR.parents[1] / "include" / header).read_text()
+
+
+def constant_names(header: str, prefix: str) -> dict[int, str]:
+    """Returns the first name of each value of the constants with a prefix in a constants header."""
+    names = {}
+    for match in re.finditer(rf"^#define ({prefix}\w+) (0x[0-9a-fA-F]+|\d+)(?:\s*//.*)?$",
+                             header_text(f"constants/{header}"), re.MULTILINE):
+        names.setdefault(int(match.group(2), 0), match.group(1))
+    return names
+
+
+def flag_names(header: str, prefix: str, flags: int) -> str:
+    """Returns flags as an OR of the constants with a prefix, defined as (1 << N) in a constants header."""
+    names = {}
+    for match in re.finditer(rf"^#define ({prefix}\w+) \(1 << (\d+)\)", header_text(f"constants/{header}"), re.M):
+        names[int(match.group(2))] = match.group(1)
+    parts = [names.get(bit, f"(1 << {bit})") for bit in range(32) if flags >> bit & 1]
+    return " | ".join(parts) if parts else "0"
+
+
+def name(names: dict[int, str], value: int) -> str:
+    return names.get(value, str(value))
 
 
 def write_header(source: Path, output: Path):

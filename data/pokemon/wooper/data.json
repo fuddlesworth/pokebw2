@@ -1,0 +1,104 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 55,
+        "attack": 45,
+        "defense": 45,
+        "speed": 15,
+        "special_attack": 25,
+        "special_defense": 25
+    },
+    "types": [ "TYPE_WATER", "TYPE_GROUND" ],
+    "catch_rate": 255,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 1,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_WATER_1", "EGG_GROUP_FIELD" ],
+    "abilities": [ "ABILITY_DAMP", "ABILITY_WATER_ABSORB" ],
+    "hidden_ability": "ABILITY_UNAWARE",
+    "flee_rate": 120,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BLUE",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 42,
+    "height": 4,
+    "weight": 85,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_WATER_GUN" ],
+            [ 1, "MOVE_TAIL_WHIP" ],
+            [ 5, "MOVE_MUD_SPORT" ],
+            [ 9, "MOVE_MUD_SHOT" ],
+            [ 15, "MOVE_SLAM" ],
+            [ 19, "MOVE_MUD_BOMB" ],
+            [ 23, "MOVE_AMNESIA" ],
+            [ 29, "MOVE_YAWN" ],
+            [ 33, "MOVE_EARTHQUAKE" ],
+            [ 37, "MOVE_RAIN_DANCE" ],
+            [ 43, "MOVE_MIST" ],
+            [ 43, "MOVE_HAZE" ],
+            [ 47, "MOVE_MUDDY_WATER" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM07",
+            "TM10",
+            "TM13",
+            "TM14",
+            "TM17",
+            "TM18",
+            "TM20",
+            "TM21",
+            "TM26",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM34",
+            "TM36",
+            "TM37",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM55",
+            "TM70",
+            "TM78",
+            "TM87",
+            "TM90",
+            "TM94",
+            "HM03",
+            "HM05",
+            "HM06"
+        ],
+        "tutors": [ "0x00000000", "0x00004000", "0x00010c04", "0x00000002", "0x00002008" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 20,
+            "species": "SPECIES_QUAGSIRE"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_WOOPER"
+}

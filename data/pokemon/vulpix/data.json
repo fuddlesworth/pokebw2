@@ -1,0 +1,106 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 38,
+        "attack": 41,
+        "defense": 40,
+        "speed": 65,
+        "special_attack": 50,
+        "special_defense": 65
+    },
+    "types": [ "TYPE_FIRE", "TYPE_FIRE" ],
+    "catch_rate": 190,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 1,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_RAWST_BERRY",
+        "rare": "ITEM_RAWST_BERRY",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 191,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_FIELD", "EGG_GROUP_FIELD" ],
+    "abilities": [ "ABILITY_FLASH_FIRE", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_DROUGHT",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BROWN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 60,
+    "height": 6,
+    "weight": 99,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_EMBER" ],
+            [ 4, "MOVE_TAIL_WHIP" ],
+            [ 7, "MOVE_ROAR" ],
+            [ 10, "MOVE_QUICK_ATTACK" ],
+            [ 12, "MOVE_FIRE_SPIN" ],
+            [ 15, "MOVE_CONFUSE_RAY" ],
+            [ 18, "MOVE_IMPRISON" ],
+            [ 20, "MOVE_FAINT_ATTACK" ],
+            [ 23, "MOVE_FLAME_BURST" ],
+            [ 26, "MOVE_WILL_O_WISP" ],
+            [ 28, "MOVE_HEX" ],
+            [ 31, "MOVE_PAYBACK" ],
+            [ 34, "MOVE_FLAMETHROWER" ],
+            [ 36, "MOVE_SAFEGUARD" ],
+            [ 39, "MOVE_EXTRASENSORY" ],
+            [ 42, "MOVE_FIRE_BLAST" ],
+            [ 44, "MOVE_GRUDGE" ],
+            [ 47, "MOVE_CAPTIVATE" ],
+            [ 50, "MOVE_INFERNO" ]
+        ],
+        "by_tm": [
+            "TM05",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM17",
+            "TM20",
+            "TM21",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM35",
+            "TM38",
+            "TM42",
+            "TM43",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM50",
+            "TM53",
+            "TM59",
+            "TM61",
+            "TM66",
+            "TM77",
+            "TM87",
+            "TM90"
+        ],
+        "tutors": [ "0x00000000", "0x00000002", "0x00013008", "0x00000232", "0x00002004" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_FIRE_STONE",
+            "species": "SPECIES_NINETALES"
+        }
+    ],
+    "regional_dex_number": 248,
+    "baby_species": "SPECIES_VULPIX"
+}

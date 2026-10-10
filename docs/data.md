@@ -1,25 +1,29 @@
 # Game data
 
 The game keeps most of its data in NARC archives under `files/a/`, one numbered file per entry. The archives that are
-built from source have their entries in `data/`, one source file per entry, in archive order, assembled with the
-macros in `include/asm/`. `configure.py` lists them in `ARCHIVES`; the build assembles the files, packs the archive
-in their order and checks that it matches the original, so editing an entry is as easy as editing its file, and the
-matching build proves that the sources say exactly what the ROM holds.
+built from source have their sources in `data/`, and the build packs each archive from them and checks that it matches
+the original, so editing an entry is as easy as editing its file, and the matching build proves that the sources say
+exactly what the ROM holds. The sources come in two kinds:
 
-The sources go through the C preprocessor, so they use the same constants as the C code (see
-[Constant lists](#constant-lists)). Each archive has a script that wrote its sources from the original, which
-documents the format and can write them again.
+- **JSON data**, as pokeplatinum's `res/`: one file per entity, such as `data/pokemon/bulbasaur/data.json`, with a
+  JSON schema beside it that documents every field and that editors use for completion and checking. A script packs
+  the archives from the files (`DATA_PACKS` in `configure.py`), validating each file against its schema and naming
+  the file and field of any mistake. Files are ordered by the constant lists, not by their names, so adding an entry
+  is adding its constant and its file.
+- **Assembly**, for the scripts and the data not moved to JSON yet: one source file per entry, in archive order,
+  assembled with the macros in `include/asm/` (`ARCHIVES` in `configure.py`).
+
+Both use the same constants as the C code (see [Constant lists](#constant-lists)): the JSON by name, the assembly
+through the C preprocessor. Each archive has a script that wrote its sources from the original, which documents the
+format and can write them again.
 
 | Archive | Sources | Contents | Script |
 | --- | --- | --- | --- |
 | `a/0/0/2` | `data/text/system/` | System messages | `tools/scripts/text_data.py` |
 | `a/0/0/3` | `data/text/script/` | Script messages | `tools/scripts/text_data.py` |
 | `a/0/1/2` | `data/zones/` | Zone headers | `tools/scripts/zone_data.py` |
-| `a/0/1/6` | `data/personal/` | Species data | `tools/scripts/personal_data.py` |
-| `a/0/1/7` | `data/growth_rates/` | Experience tables of the growth rates | `tools/scripts/species_tables.py` |
-| `a/0/1/8` | `data/levelup_moves/` | Moves learned by leveling up | `tools/scripts/species_tables.py` |
-| `a/0/1/9` | `data/evolutions/` | Evolutions | `tools/scripts/species_tables.py` |
-| `a/0/2/0` | `data/baby_species/` | Baby species | `tools/scripts/species_tables.py` |
+| `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species | `tools/scripts/species_data.py` |
+| `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
 | `a/0/2/1` | `data/moves/` | Move data | `tools/scripts/move_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
 | `a/0/9/1`, `a/0/9/2` | `data/trainers/` | Trainers and their parties | `tools/scripts/trainer_data.py` |
@@ -95,82 +99,73 @@ after what it holds, which the word set function that loads it or its contents s
 `0027_natures.txt`), or else after the source file or function that loads it (`0004_delete_save.txt`). The others keep their number until they are known (`0001.txt`). `text_data.py unpack` keeps
 the names of the files it writes over. Both versions have the same text.
 
-## Species data
+## Species
 
-`a/0/1/6` holds one 0x4c-byte record per species and form, which `PML_PersonalGetParam` reads field by field. Its
-sources are `data/personal/NNNN_name.s`, numbered by record:
+Each species has a directory in `data/pokemon/`, named after its constant (`bulbasaur/` for `SPECIES_BULBASAUR`), as
+pokeplatinum's `res/pokemon/`. Its `data.json` holds everything the game keeps about it in four archives: its record of
+the species data (`a/0/1/6`, the 0x4c bytes that `PML_PersonalGetParam` reads), its level-up moves (`a/0/1/8`), its
+evolutions (`a/0/1/9`) and its baby species (`a/0/2/0`). `data/pokemon/species.schema.json` documents each field.
 
-- 0 is empty, and 1 to 649 are the species by national Pokédex number.
-- 685 to 708 are alternate forms, such as `0685_deoxys_form1.s`. A species' `Forms` field gives the record of its
-  first alternate form, the offset of its forms' sprites and its number of forms; species whose forms only differ
-  in looks, such as Unown, have no records of their own.
-- 650 to 684 are records that no species' `Forms` field points at, kept as `NNNN_extra.s` until their use is known.
-- 709 is a table of 16-bit values, 999 for none, whose meaning isn't known yet.
-
-```
-#include "asm/personal.inc"
-
-// SPECIES_BULBASAUR
-    BaseStats 45, 49, 49, 45, 65, 65
-    Types TYPE_GRASS, TYPE_POISON
-    CatchRate 45
-    EvolutionStage 1
-    EvYields 0, 0, 0, 0, 1, 0
-    HeldItems ITEM_NONE, ITEM_NONE, ITEM_NONE
-    GenderRatio 31
-    HatchCycles 20
-    BaseFriendship 70
-    GrowthRate GROWTH_MEDIUM_SLOW
-    EggGroups EGG_GROUP_MONSTER, EGG_GROUP_GRASS
-    Abilities ABILITY_OVERGROW, ABILITY_NONE, ABILITY_CHLOROPHYLL
+```json
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 45,
+        ...
+    },
+    "types": [ "TYPE_GRASS", "TYPE_POISON" ],
+    "abilities": [ "ABILITY_OVERGROW", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_CHLOROPHYLL",
     ...
-    Machines TM06, TM09, TM10, ..., HM01, HM04
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_TACKLE" ],
+            [ 3, "MOVE_GROWL" ],
+            ...
+        ],
+        "by_tm": [ "TM06", "TM09", ... ],
+        "tutors": [ "0x00000001", "0x00000040", "0x00000000", "0x0000040f", "0x00002002" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 16,
+            "species": "SPECIES_IVYSAUR"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_BULBASAUR"
+}
 ```
 
-Each macro writes one field, so a file uses every macro once, in the order of `include/asm/personal.inc`, which
-documents the fields. Stats are in the order HP, Attack, Defense, Speed, Sp. Atk, Sp. Def, as the record keeps them.
-`Machines` lists the TMs and HMs the species can learn; the tutor moves are still bit masks. Three flags are named
-after the species that have them, as `include/asm/personal.inc` explains: `underground` (Diglett and Dugtrio, tested
-by the battle animations), `asymmetric` (species that don't look the same mirrored, such as Kingler and Absol) and
-`palette_forms` (Arceus, whose forms only change its palette). Both versions have the same species data.
+`tools/scripts/species_data.py pack` builds the archives, one entry per record, in this order:
 
-## Evolutions and level-up moves
+- The species of `data/constants/species.txt`, from `SPECIES_NONE` (`none/`, an empty record) to Genesect.
+- The extra records, `data/pokemon/extra/<record>.json`, which no species' forms point at, kept until their use is
+  known. Some look like unused species, such as a Steel and Flying one with 600 base stats.
+- The alternate forms that have records of their own, `data/pokemon/<species>/form_<n>.json`, in the order of
+  `data/pokemon/forms.json`. The packer sets each species' first form record from it, so a species' `forms` only
+  gives the number of forms and where their sprites start. Species whose forms only differ in looks, such as Unown,
+  have no form records.
 
-`a/0/1/9` and `a/0/1/8` hold one entry per species record, so their sources in `data/evolutions/` and
-`data/levelup_moves/` are numbered and named as `data/personal/`'s.
+The baby species archive stops before the forms, which have no `baby_species`. The species data archive ends with a
+table of the species' and extra records' Unova Pokédex numbers, which their files hold as `regional_dex_number`: its 301
+numbers match the game's Unova Pokédex, from #000 for Victini to #300. The TMs and HMs a species learns are named; the
+tutor moves are still bit masks. Three flags are named after the species that have them: `underground` (Diglett and
+Dugtrio, tested by the battle animations), `asymmetric` (species that don't look the same mirrored, such as Kingler
+and Absol) and `palette_forms` (Arceus, whose forms only change its palette).
 
-```
-#include "asm/evolution.inc"
+Evolutions are a method (`EVO_METHOD_*`), its parameter, and the species evolved into, at most seven. The parameter
+depends on the method: a level, an item, a move, a species, or another value such as the beauty needed. The level-up
+moves are in the order the game checks them, by level.
 
-// SPECIES_EEVEE
-    Evolution EVO_METHOD_LEVEL_MOSS_ROCK, 0, SPECIES_LEAFEON
-    Evolution EVO_METHOD_ITEM, ITEM_THUNDERSTONE, SPECIES_JOLTEON
-    Evolution EVO_METHOD_FRIENDSHIP_DAY, 0, SPECIES_ESPEON
-    ...
-    EvolutionsEnd
-```
+The experience tables (`a/0/1/7`) are `data/pokemon/growth_rates.csv`, a row per level from 0 to 100 and a column per
+table, headed by its `GROWTH_*` constant; the two after the six rates, headed `EXTRA`, are copies of the first that
+nothing names. Both versions have the same species data.
 
-An evolution is a method (`EVO_METHOD_*`), its parameter, and the species it evolves into. The parameter depends on
-the method: a level, an item, a move, a species, or another value such as the beauty needed. A species has at most
-seven, and `EvolutionsEnd` fills the rest.
-
-```
-#include "asm/levelup_moves.inc"
-
-// SPECIES_PIKACHU
-    LevelUpMove 1, MOVE_GROWL
-    LevelUpMove 1, MOVE_THUNDER_SHOCK
-    LevelUpMove 5, MOVE_TAIL_WHIP
-    ...
-    LevelUpMovesEnd
-```
-
-The moves are in the order the game checks them, by level.
-
-The baby species (`a/0/2/0`, `data/baby_species/`) are one more such table: the species that hatches from an egg of
-each species, its first stage (`BabySpecies SPECIES_BULBASAUR` for Venusaur). The experience tables (`a/0/1/7`,
-`data/growth_rates/`) are one per growth rate, `GROWTH_*` in order, with `Level N, EXP` for each level from 0 to 100;
-the two after the six rates are copies of the first that nothing names.
+To add a species, add its constant to the end of `species.txt` and its directory with a `data.json`; to add a form
+with a record of its own, add its `form_<n>.json` and its line to `forms.json`, and count it in the species' `forms`.
+The sprites, cries and names that the other archives hold aren't built from source yet.
 
 ## Move data
 

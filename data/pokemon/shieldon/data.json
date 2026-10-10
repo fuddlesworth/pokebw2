@@ -1,0 +1,110 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 30,
+        "attack": 42,
+        "defense": 118,
+        "speed": 30,
+        "special_attack": 42,
+        "special_defense": 88
+    },
+    "types": [ "TYPE_ROCK", "TYPE_STEEL" ],
+    "catch_rate": 45,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 1,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 31,
+    "hatch_cycles": 30,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_ERRATIC",
+    "egg_groups": [ "EGG_GROUP_MONSTER", "EGG_GROUP_MONSTER" ],
+    "abilities": [ "ABILITY_STURDY", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_SOUNDPROOF",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_GRAY",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 70,
+    "height": 5,
+    "weight": 570,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_TACKLE" ],
+            [ 1, "MOVE_PROTECT" ],
+            [ 6, "MOVE_TAUNT" ],
+            [ 10, "MOVE_METAL_SOUND" ],
+            [ 15, "MOVE_TAKE_DOWN" ],
+            [ 19, "MOVE_IRON_DEFENSE" ],
+            [ 24, "MOVE_SWAGGER" ],
+            [ 28, "MOVE_ANCIENT_POWER" ],
+            [ 33, "MOVE_ENDURE" ],
+            [ 37, "MOVE_METAL_BURST" ],
+            [ 42, "MOVE_IRON_HEAD" ],
+            [ 46, "MOVE_HEAVY_SLAM" ]
+        ],
+        "by_tm": [
+            "TM05",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM12",
+            "TM13",
+            "TM14",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM23",
+            "TM24",
+            "TM25",
+            "TM26",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM35",
+            "TM37",
+            "TM38",
+            "TM39",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM59",
+            "TM69",
+            "TM71",
+            "TM78",
+            "TM80",
+            "TM87",
+            "TM90",
+            "TM91",
+            "TM94",
+            "HM04"
+        ],
+        "tutors": [ "0x00000000", "0x00000020", "0x00010064", "0x00000002", "0x00003000" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 30,
+            "species": "SPECIES_BASTIODON"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_SHIELDON"
+}

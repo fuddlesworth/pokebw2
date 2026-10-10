@@ -11,7 +11,7 @@ from pathlib import Path
 
 from msgdata import read_archive_file
 from narc import read_narc
-from personal_data import constant_names, name
+from gen_constants import constant_names, name
 
 HEADER_SIZE = 0x30
 PLACE_NAMES = 109

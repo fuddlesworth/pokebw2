@@ -183,7 +183,7 @@ def zone_names(extract: Path) -> dict[int, str]:
     gets the place name and what it is; and the rest are numbered from _2 in ID order. A zone whose place name is a
     placeholder is named after its ID."""
     from narc import read_narc
-    from personal_data import constant_names
+    from gen_constants import constant_names
 
     files = extract / "files"
     (data,) = read_narc((files / "a/0/1/2").read_bytes())

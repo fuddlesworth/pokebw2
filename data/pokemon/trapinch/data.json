@@ -1,0 +1,103 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 45,
+        "attack": 100,
+        "defense": 45,
+        "speed": 10,
+        "special_attack": 45,
+        "special_defense": 45
+    },
+    "types": [ "TYPE_GROUND", "TYPE_GROUND" ],
+    "catch_rate": 255,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 1,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_SOFT_SAND",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_BUG", "EGG_GROUP_BUG" ],
+    "abilities": [ "ABILITY_HYPER_CUTTER", "ABILITY_ARENA_TRAP" ],
+    "hidden_ability": "ABILITY_SHEER_FORCE",
+    "flee_rate": 120,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BROWN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 58,
+    "height": 7,
+    "weight": 150,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_BITE" ],
+            [ 4, "MOVE_SAND_ATTACK" ],
+            [ 7, "MOVE_FAINT_ATTACK" ],
+            [ 10, "MOVE_SAND_TOMB" ],
+            [ 13, "MOVE_MUD_SLAP" ],
+            [ 17, "MOVE_BIDE" ],
+            [ 21, "MOVE_BULLDOZE" ],
+            [ 25, "MOVE_ROCK_SLIDE" ],
+            [ 29, "MOVE_DIG" ],
+            [ 34, "MOVE_CRUNCH" ],
+            [ 39, "MOVE_EARTH_POWER" ],
+            [ 44, "MOVE_SANDSTORM" ],
+            [ 49, "MOVE_HYPER_BEAM" ],
+            [ 55, "MOVE_EARTHQUAKE" ],
+            [ 61, "MOVE_FEINT" ],
+            [ 67, "MOVE_SUPERPOWER" ],
+            [ 73, "MOVE_FISSURE" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM17",
+            "TM21",
+            "TM22",
+            "TM26",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM37",
+            "TM39",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM76",
+            "TM78",
+            "TM80",
+            "TM87",
+            "TM90",
+            "TM94",
+            "HM04"
+        ],
+        "tutors": [ "0x00000000", "0x00000011", "0x00000104", "0x00000402", "0x00002000" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 35,
+            "species": "SPECIES_VIBRAVA"
+        }
+    ],
+    "regional_dex_number": 121,
+    "baby_species": "SPECIES_TRAPINCH"
+}

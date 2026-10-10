@@ -1,0 +1,111 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 64,
+        "attack": 66,
+        "defense": 68,
+        "speed": 50,
+        "special_attack": 81,
+        "special_defense": 76
+    },
+    "types": [ "TYPE_WATER", "TYPE_WATER" ],
+    "catch_rate": 45,
+    "evolution_stage": 2,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 2,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 31,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_WATER_1", "EGG_GROUP_FIELD" ],
+    "abilities": [ "ABILITY_TORRENT", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_DEFIANT",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BLUE",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 142,
+    "height": 8,
+    "weight": 230,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_TACKLE" ],
+            [ 1, "MOVE_GROWL" ],
+            [ 4, "MOVE_GROWL" ],
+            [ 8, "MOVE_BUBBLE" ],
+            [ 11, "MOVE_WATER_SPORT" ],
+            [ 15, "MOVE_PECK" ],
+            [ 16, "MOVE_METAL_CLAW" ],
+            [ 19, "MOVE_BUBBLE_BEAM" ],
+            [ 24, "MOVE_BIDE" ],
+            [ 28, "MOVE_FURY_ATTACK" ],
+            [ 33, "MOVE_BRINE" ],
+            [ 37, "MOVE_WHIRLPOOL" ],
+            [ 42, "MOVE_MIST" ],
+            [ 46, "MOVE_DRILL_PECK" ],
+            [ 51, "MOVE_HYDRO_PUMP" ]
+        ],
+        "by_tm": [
+            "TM01",
+            "TM06",
+            "TM07",
+            "TM10",
+            "TM13",
+            "TM14",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM27",
+            "TM28",
+            "TM31",
+            "TM32",
+            "TM39",
+            "TM40",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM49",
+            "TM55",
+            "TM56",
+            "TM60",
+            "TM65",
+            "TM86",
+            "TM87",
+            "TM88",
+            "TM90",
+            "TM94",
+            "HM01",
+            "HM03",
+            "HM04",
+            "HM05",
+            "HM06"
+        ],
+        "tutors": [ "0x00000004", "0x00000012", "0x00000400", "0x00000002", "0x00003000" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 36,
+            "species": "SPECIES_EMPOLEON"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_PIPLUP"
+}

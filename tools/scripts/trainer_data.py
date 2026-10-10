@@ -15,8 +15,7 @@ from pathlib import Path
 from make_constants import identifier
 from msgdata import read_archive_file
 from narc import read_narc
-from gen_constants import header_text
-from personal_data import constant_names, name
+from gen_constants import constant_names, header_text, name
 
 TRAINER_SIZE = 20
 # Files of the system message archive (a/0/0/2) with the trainers' names and their classes' names

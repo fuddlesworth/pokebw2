@@ -1,0 +1,103 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 35,
+        "attack": 35,
+        "defense": 40,
+        "speed": 50,
+        "special_attack": 35,
+        "special_defense": 55
+    },
+    "types": [ "TYPE_GRASS", "TYPE_FLYING" ],
+    "catch_rate": 255,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 1
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_FAIRY", "EGG_GROUP_GRASS" ],
+    "abilities": [ "ABILITY_CHLOROPHYLL", "ABILITY_LEAF_GUARD" ],
+    "hidden_ability": "ABILITY_INFILTRATOR",
+    "flee_rate": 90,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_PINK",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 50,
+    "height": 4,
+    "weight": 5,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_SPLASH" ],
+            [ 4, "MOVE_SYNTHESIS" ],
+            [ 7, "MOVE_TAIL_WHIP" ],
+            [ 10, "MOVE_TACKLE" ],
+            [ 12, "MOVE_POISON_POWDER" ],
+            [ 14, "MOVE_STUN_SPORE" ],
+            [ 16, "MOVE_SLEEP_POWDER" ],
+            [ 19, "MOVE_BULLET_SEED" ],
+            [ 22, "MOVE_LEECH_SEED" ],
+            [ 25, "MOVE_MEGA_DRAIN" ],
+            [ 28, "MOVE_ACROBATICS" ],
+            [ 31, "MOVE_RAGE_POWDER" ],
+            [ 34, "MOVE_COTTON_SPORE" ],
+            [ 37, "MOVE_U_TURN" ],
+            [ 40, "MOVE_WORRY_SEED" ],
+            [ 43, "MOVE_GIGA_DRAIN" ],
+            [ 46, "MOVE_BOUNCE" ],
+            [ 49, "MOVE_MEMENTO" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM17",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM32",
+            "TM33",
+            "TM40",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM53",
+            "TM62",
+            "TM70",
+            "TM75",
+            "TM77",
+            "TM86",
+            "TM87",
+            "TM89",
+            "TM90"
+        ],
+        "tutors": [ "0x00000000", "0x00000140", "0x00000000", "0x0000040a", "0x00002012" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 18,
+            "species": "SPECIES_SKIPLOOM"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_HOPPIP"
+}

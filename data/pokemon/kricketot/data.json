@@ -1,0 +1,65 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 37,
+        "attack": 25,
+        "defense": 41,
+        "speed": 25,
+        "special_attack": 25,
+        "special_defense": 41
+    },
+    "types": [ "TYPE_BUG", "TYPE_BUG" ],
+    "catch_rate": 255,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 1,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_METRONOME",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 15,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_BUG", "EGG_GROUP_BUG" ],
+    "abilities": [ "ABILITY_SHED_SKIN", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_RUN_AWAY",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_RED",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 39,
+    "height": 3,
+    "weight": 22,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_GROWL" ],
+            [ 1, "MOVE_BIDE" ],
+            [ 6, "MOVE_STRUGGLE_BUG" ],
+            [ 16, "MOVE_BUG_BITE" ]
+        ],
+        "by_tm": [],
+        "tutors": [ "0x00000000", "0x00000801", "0x00000000", "0x00000002", "0x00000100" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL",
+            "param": 10,
+            "species": "SPECIES_KRICKETUNE"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_KRICKETOT"
+}

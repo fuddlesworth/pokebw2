@@ -9,7 +9,7 @@ import struct
 from pathlib import Path
 
 from narc import read_narc
-from personal_data import constant_names, flag_names, name
+from gen_constants import constant_names, flag_names, name
 
 RECORD_SIZE = 0x24
 

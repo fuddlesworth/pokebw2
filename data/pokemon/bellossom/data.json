@@ -1,0 +1,88 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 75,
+        "attack": 80,
+        "defense": 85,
+        "speed": 50,
+        "special_attack": 90,
+        "special_defense": 100
+    },
+    "types": [ "TYPE_GRASS", "TYPE_GRASS" ],
+    "catch_rate": 45,
+    "evolution_stage": 3,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 3
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_GRASS", "EGG_GROUP_GRASS" ],
+    "abilities": [ "ABILITY_CHLOROPHYLL", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_HEALER",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_GREEN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 216,
+    "height": 4,
+    "weight": 58,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_LEAF_BLADE" ],
+            [ 1, "MOVE_MEGA_DRAIN" ],
+            [ 1, "MOVE_SWEET_SCENT" ],
+            [ 1, "MOVE_STUN_SPORE" ],
+            [ 1, "MOVE_SUNNY_DAY" ],
+            [ 23, "MOVE_MAGICAL_LEAF" ],
+            [ 53, "MOVE_LEAF_STORM" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM09",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM17",
+            "TM20",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM32",
+            "TM36",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM53",
+            "TM56",
+            "TM68",
+            "TM70",
+            "TM75",
+            "TM86",
+            "TM87",
+            "TM90",
+            "HM01"
+        ],
+        "tutors": [ "0x00000000", "0x00000840", "0x00000000", "0x00000c0a", "0x0000200b" ]
+    },
+    "evolutions": [],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_ODDISH"
+}

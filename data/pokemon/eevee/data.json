@@ -1,0 +1,125 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 55,
+        "attack": 55,
+        "defense": 50,
+        "speed": 55,
+        "special_attack": 45,
+        "special_defense": 65
+    },
+    "types": [ "TYPE_NORMAL", "TYPE_NORMAL" ],
+    "catch_rate": 45,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 1
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 31,
+    "hatch_cycles": 35,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_FIELD", "EGG_GROUP_FIELD" ],
+    "abilities": [ "ABILITY_RUN_AWAY", "ABILITY_ADAPTABILITY" ],
+    "hidden_ability": "ABILITY_ANTICIPATION",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BROWN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 65,
+    "height": 3,
+    "weight": 65,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_HELPING_HAND" ],
+            [ 1, "MOVE_TACKLE" ],
+            [ 1, "MOVE_TAIL_WHIP" ],
+            [ 5, "MOVE_SAND_ATTACK" ],
+            [ 9, "MOVE_GROWL" ],
+            [ 13, "MOVE_QUICK_ATTACK" ],
+            [ 17, "MOVE_BITE" ],
+            [ 21, "MOVE_COVET" ],
+            [ 25, "MOVE_TAKE_DOWN" ],
+            [ 29, "MOVE_CHARM" ],
+            [ 33, "MOVE_BATON_PASS" ],
+            [ 37, "MOVE_DOUBLE_EDGE" ],
+            [ 41, "MOVE_LAST_RESORT" ],
+            [ 45, "MOVE_TRUMP_CARD" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM27",
+            "TM28",
+            "TM30",
+            "TM32",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM49",
+            "TM67",
+            "TM83",
+            "TM87",
+            "TM90"
+        ],
+        "tutors": [ "0x00000000", "0x00000002", "0x00018080", "0x00000042", "0x00002010" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_LEVEL_MOSS_ROCK",
+            "param": 0,
+            "species": "SPECIES_LEAFEON"
+        },
+        {
+            "method": "EVO_METHOD_LEVEL_ICE_ROCK",
+            "param": 0,
+            "species": "SPECIES_GLACEON"
+        },
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_THUNDERSTONE",
+            "species": "SPECIES_JOLTEON"
+        },
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_WATER_STONE",
+            "species": "SPECIES_VAPOREON"
+        },
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_FIRE_STONE",
+            "species": "SPECIES_FLAREON"
+        },
+        {
+            "method": "EVO_METHOD_FRIENDSHIP_DAY",
+            "param": 0,
+            "species": "SPECIES_ESPEON"
+        },
+        {
+            "method": "EVO_METHOD_FRIENDSHIP_NIGHT",
+            "param": 0,
+            "species": "SPECIES_UMBREON"
+        }
+    ],
+    "regional_dex_number": 91,
+    "baby_species": "SPECIES_EEVEE"
+}

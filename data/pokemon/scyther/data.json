@@ -1,0 +1,108 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 70,
+        "attack": 110,
+        "defense": 80,
+        "speed": 105,
+        "special_attack": 55,
+        "special_defense": 80
+    },
+    "types": [ "TYPE_BUG", "TYPE_FLYING" ],
+    "catch_rate": 45,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 1,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 25,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_BUG", "EGG_GROUP_BUG" ],
+    "abilities": [ "ABILITY_SWARM", "ABILITY_TECHNICIAN" ],
+    "hidden_ability": "ABILITY_STEADFAST",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_GREEN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 100,
+    "height": 15,
+    "weight": 560,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_VACUUM_WAVE" ],
+            [ 1, "MOVE_QUICK_ATTACK" ],
+            [ 1, "MOVE_LEER" ],
+            [ 5, "MOVE_FOCUS_ENERGY" ],
+            [ 9, "MOVE_PURSUIT" ],
+            [ 13, "MOVE_FALSE_SWIPE" ],
+            [ 17, "MOVE_AGILITY" ],
+            [ 21, "MOVE_WING_ATTACK" ],
+            [ 25, "MOVE_FURY_CUTTER" ],
+            [ 29, "MOVE_SLASH" ],
+            [ 33, "MOVE_RAZOR_WIND" ],
+            [ 37, "MOVE_DOUBLE_TEAM" ],
+            [ 41, "MOVE_X_SCISSOR" ],
+            [ 45, "MOVE_NIGHT_SLASH" ],
+            [ 49, "MOVE_DOUBLE_HIT" ],
+            [ 53, "MOVE_AIR_SLASH" ],
+            [ 57, "MOVE_SWORDS_DANCE" ],
+            [ 61, "MOVE_FEINT" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM16",
+            "TM17",
+            "TM18",
+            "TM20",
+            "TM21",
+            "TM27",
+            "TM31",
+            "TM32",
+            "TM40",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM46",
+            "TM48",
+            "TM54",
+            "TM68",
+            "TM75",
+            "TM76",
+            "TM81",
+            "TM87",
+            "TM89",
+            "TM90",
+            "TM94",
+            "HM01"
+        ],
+        "tutors": [ "0x00000000", "0x00000001", "0x00000000", "0x00001086", "0x00002000" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_TRADE_WITH_ITEM",
+            "param": "ITEM_METAL_COAT",
+            "species": "SPECIES_SCIZOR"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_SCYTHER"
+}

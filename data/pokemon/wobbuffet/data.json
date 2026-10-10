@@ -1,0 +1,59 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 190,
+        "attack": 33,
+        "defense": 58,
+        "speed": 33,
+        "special_attack": 33,
+        "special_defense": 58
+    },
+    "types": [ "TYPE_PSYCHIC", "TYPE_PSYCHIC" ],
+    "catch_rate": 45,
+    "evolution_stage": 2,
+    "ev_yields": {
+        "hp": 2,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_FAST",
+    "egg_groups": [ "EGG_GROUP_AMORPHOUS", "EGG_GROUP_AMORPHOUS" ],
+    "abilities": [ "ABILITY_SHADOW_TAG", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_TELEPATHY",
+    "flee_rate": 60,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BLUE",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 142,
+    "height": 13,
+    "weight": 285,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_COUNTER" ],
+            [ 1, "MOVE_MIRROR_COAT" ],
+            [ 1, "MOVE_SAFEGUARD" ],
+            [ 1, "MOVE_DESTINY_BOND" ]
+        ],
+        "by_tm": [],
+        "tutors": [ "0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x00000000" ]
+    },
+    "evolutions": [],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_WYNAUT"
+}

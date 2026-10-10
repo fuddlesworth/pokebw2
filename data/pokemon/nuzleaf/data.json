@@ -1,0 +1,111 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 70,
+        "attack": 70,
+        "defense": 40,
+        "speed": 60,
+        "special_attack": 60,
+        "special_defense": 40
+    },
+    "types": [ "TYPE_GRASS", "TYPE_DARK" ],
+    "catch_rate": 120,
+    "evolution_stage": 2,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 2,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 15,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_FIELD", "EGG_GROUP_GRASS" ],
+    "abilities": [ "ABILITY_CHLOROPHYLL", "ABILITY_EARLY_BIRD" ],
+    "hidden_ability": "ABILITY_PICKPOCKET",
+    "flee_rate": 60,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BROWN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 119,
+    "height": 10,
+    "weight": 280,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_RAZOR_LEAF" ],
+            [ 1, "MOVE_POUND" ],
+            [ 3, "MOVE_HARDEN" ],
+            [ 7, "MOVE_GROWTH" ],
+            [ 13, "MOVE_NATURE_POWER" ],
+            [ 19, "MOVE_FAKE_OUT" ],
+            [ 25, "MOVE_TORMENT" ],
+            [ 31, "MOVE_FAINT_ATTACK" ],
+            [ 37, "MOVE_RAZOR_WIND" ],
+            [ 43, "MOVE_SWAGGER" ],
+            [ 49, "MOVE_EXTRASENSORY" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM17",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM28",
+            "TM30",
+            "TM31",
+            "TM32",
+            "TM39",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM46",
+            "TM47",
+            "TM48",
+            "TM53",
+            "TM54",
+            "TM56",
+            "TM63",
+            "TM64",
+            "TM66",
+            "TM67",
+            "TM70",
+            "TM75",
+            "TM77",
+            "TM80",
+            "TM86",
+            "TM87",
+            "TM90",
+            "TM94",
+            "TM95",
+            "HM01",
+            "HM04"
+        ],
+        "tutors": [ "0x00000000", "0x00000240", "0x00001008", "0x0000040a", "0x00002006" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_ITEM",
+            "param": "ITEM_LEAF_STONE",
+            "species": "SPECIES_SHIFTRY"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_SEEDOT"
+}

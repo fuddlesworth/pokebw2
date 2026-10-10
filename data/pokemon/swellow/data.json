@@ -1,0 +1,92 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 60,
+        "attack": 85,
+        "defense": 60,
+        "speed": 125,
+        "special_attack": 50,
+        "special_defense": 50
+    },
+    "types": [ "TYPE_NORMAL", "TYPE_FLYING" ],
+    "catch_rate": 45,
+    "evolution_stage": 2,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 2,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_CHARTI_BERRY",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 15,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_FLYING", "EGG_GROUP_FLYING" ],
+    "abilities": [ "ABILITY_GUTS", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_SCRAPPY",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_BLUE",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 151,
+    "height": 7,
+    "weight": 198,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_PLUCK" ],
+            [ 1, "MOVE_PECK" ],
+            [ 1, "MOVE_GROWL" ],
+            [ 1, "MOVE_FOCUS_ENERGY" ],
+            [ 1, "MOVE_QUICK_ATTACK" ],
+            [ 4, "MOVE_FOCUS_ENERGY" ],
+            [ 8, "MOVE_QUICK_ATTACK" ],
+            [ 13, "MOVE_WING_ATTACK" ],
+            [ 19, "MOVE_DOUBLE_TEAM" ],
+            [ 28, "MOVE_ENDEAVOR" ],
+            [ 38, "MOVE_AERIAL_ACE" ],
+            [ 49, "MOVE_AGILITY" ],
+            [ 61, "MOVE_AIR_SLASH" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM27",
+            "TM32",
+            "TM40",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM46",
+            "TM48",
+            "TM49",
+            "TM68",
+            "TM83",
+            "TM87",
+            "TM88",
+            "TM89",
+            "TM90",
+            "HM02"
+        ],
+        "tutors": [ "0x00000000", "0x00000000", "0x00000000", "0x00001192", "0x00002100" ]
+    },
+    "evolutions": [],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_TAILLOW"
+}

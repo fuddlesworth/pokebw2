@@ -1,0 +1,101 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 45,
+        "attack": 30,
+        "defense": 50,
+        "speed": 45,
+        "special_attack": 65,
+        "special_defense": 50
+    },
+    "types": [ "TYPE_PSYCHIC", "TYPE_PSYCHIC" ],
+    "catch_rate": 120,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 1,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_COLBUR_BERRY",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 25,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_FAST",
+    "egg_groups": [ "EGG_GROUP_UNDISCOVERED", "EGG_GROUP_UNDISCOVERED" ],
+    "abilities": [ "ABILITY_LEVITATE", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_NONE",
+    "flee_rate": 120,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_YELLOW",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 57,
+    "height": 2,
+    "weight": 6,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_WRAP" ],
+            [ 6, "MOVE_GROWL" ],
+            [ 9, "MOVE_ASTONISH" ],
+            [ 14, "MOVE_CONFUSION" ],
+            [ 17, "MOVE_UPROAR" ],
+            [ 22, "MOVE_LAST_RESORT" ],
+            [ 25, "MOVE_ENTRAINMENT" ]
+        ],
+        "by_tm": [
+            "TM03",
+            "TM04",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM12",
+            "TM16",
+            "TM17",
+            "TM18",
+            "TM19",
+            "TM20",
+            "TM21",
+            "TM27",
+            "TM29",
+            "TM30",
+            "TM32",
+            "TM33",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM49",
+            "TM57",
+            "TM70",
+            "TM73",
+            "TM77",
+            "TM85",
+            "TM86",
+            "TM87",
+            "TM90",
+            "TM92"
+        ],
+        "tutors": [ "0x00000000", "0x00000810", "0x0000a491", "0x00000047", "0x00006c30" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_FRIENDSHIP_NIGHT",
+            "param": 0,
+            "species": "SPECIES_CHIMECHO"
+        }
+    ],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_CHINGLING"
+}

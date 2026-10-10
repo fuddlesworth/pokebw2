@@ -1,0 +1,101 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 90,
+        "attack": 30,
+        "defense": 15,
+        "speed": 15,
+        "special_attack": 40,
+        "special_defense": 20
+    },
+    "types": [ "TYPE_NORMAL", "TYPE_NORMAL" ],
+    "catch_rate": 170,
+    "evolution_stage": 1,
+    "ev_yields": {
+        "hp": 1,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 191,
+    "hatch_cycles": 10,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_FAST",
+    "egg_groups": [ "EGG_GROUP_UNDISCOVERED", "EGG_GROUP_UNDISCOVERED" ],
+    "abilities": [ "ABILITY_CUTE_CHARM", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_FRIEND_GUARD",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_PINK",
+    "asymmetric": true,
+    "palette_forms": false,
+    "base_exp": 42,
+    "height": 3,
+    "weight": 10,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_SING" ],
+            [ 1, "MOVE_CHARM" ],
+            [ 5, "MOVE_DEFENSE_CURL" ],
+            [ 9, "MOVE_POUND" ],
+            [ 13, "MOVE_SWEET_KISS" ],
+            [ 17, "MOVE_COPYCAT" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM16",
+            "TM17",
+            "TM18",
+            "TM20",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM28",
+            "TM29",
+            "TM30",
+            "TM32",
+            "TM33",
+            "TM35",
+            "TM38",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM49",
+            "TM56",
+            "TM59",
+            "TM70",
+            "TM73",
+            "TM77",
+            "TM83",
+            "TM85",
+            "TM86",
+            "TM87",
+            "TM90",
+            "TM93"
+        ],
+        "tutors": [ "0x00000000", "0x00000902", "0x00008491", "0x00000262", "0x00002510" ]
+    },
+    "evolutions": [
+        {
+            "method": "EVO_METHOD_FRIENDSHIP",
+            "param": 0,
+            "species": "SPECIES_JIGGLYPUFF"
+        }
+    ],
+    "regional_dex_number": 281,
+    "baby_species": "SPECIES_IGGLYBUFF"
+}

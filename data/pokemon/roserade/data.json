@@ -1,0 +1,88 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 60,
+        "attack": 70,
+        "defense": 55,
+        "speed": 90,
+        "special_attack": 125,
+        "special_defense": 105
+    },
+    "types": [ "TYPE_GRASS", "TYPE_POISON" ],
+    "catch_rate": 75,
+    "evolution_stage": 3,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 3,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_POISON_BARB",
+        "very_rare": "ITEM_ABSORB_BULB"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_FAIRY", "EGG_GROUP_GRASS" ],
+    "abilities": [ "ABILITY_NATURAL_CURE", "ABILITY_POISON_POINT" ],
+    "hidden_ability": "ABILITY_TECHNICIAN",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_GREEN",
+    "asymmetric": true,
+    "palette_forms": false,
+    "base_exp": 227,
+    "height": 9,
+    "weight": 145,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_WEATHER_BALL" ],
+            [ 1, "MOVE_POISON_STING" ],
+            [ 1, "MOVE_MEGA_DRAIN" ],
+            [ 1, "MOVE_MAGICAL_LEAF" ],
+            [ 1, "MOVE_SWEET_SCENT" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM09",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM30",
+            "TM32",
+            "TM36",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM53",
+            "TM68",
+            "TM70",
+            "TM75",
+            "TM77",
+            "TM84",
+            "TM86",
+            "TM87",
+            "TM90",
+            "HM01"
+        ],
+        "tutors": [ "0x00000000", "0x00000042", "0x00000000", "0x0000040a", "0x00002002" ]
+    },
+    "evolutions": [],
+    "regional_dex_number": 135,
+    "baby_species": "SPECIES_BUDEW"
+}

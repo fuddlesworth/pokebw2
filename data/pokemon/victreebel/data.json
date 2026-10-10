@@ -1,0 +1,91 @@
+{
+    "$schema": "../species.schema.json",
+    "base_stats": {
+        "hp": 80,
+        "attack": 105,
+        "defense": 65,
+        "speed": 70,
+        "special_attack": 100,
+        "special_defense": 60
+    },
+    "types": [ "TYPE_GRASS", "TYPE_POISON" ],
+    "catch_rate": 45,
+    "evolution_stage": 3,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 3,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "underground": false,
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE",
+        "very_rare": "ITEM_NONE"
+    },
+    "gender_ratio": 127,
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "growth_rate": "GROWTH_MEDIUM_SLOW",
+    "egg_groups": [ "EGG_GROUP_GRASS", "EGG_GROUP_GRASS" ],
+    "abilities": [ "ABILITY_CHLOROPHYLL", "ABILITY_NONE" ],
+    "hidden_ability": "ABILITY_GLUTTONY",
+    "flee_rate": 0,
+    "forms": {
+        "count": 1,
+        "sprite_offset": 0
+    },
+    "color": "COLOR_GREEN",
+    "asymmetric": false,
+    "palette_forms": false,
+    "base_exp": 216,
+    "height": 17,
+    "weight": 155,
+    "learnset": {
+        "by_level": [
+            [ 1, "MOVE_STOCKPILE" ],
+            [ 1, "MOVE_SWALLOW" ],
+            [ 1, "MOVE_SPIT_UP" ],
+            [ 1, "MOVE_VINE_WHIP" ],
+            [ 1, "MOVE_SLEEP_POWDER" ],
+            [ 1, "MOVE_SWEET_SCENT" ],
+            [ 1, "MOVE_RAZOR_LEAF" ],
+            [ 27, "MOVE_LEAF_TORNADO" ],
+            [ 47, "MOVE_LEAF_STORM" ],
+            [ 47, "MOVE_LEAF_BLADE" ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM09",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM17",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM32",
+            "TM33",
+            "TM36",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM46",
+            "TM48",
+            "TM53",
+            "TM68",
+            "TM70",
+            "TM75",
+            "TM86",
+            "TM87",
+            "TM90",
+            "HM01"
+        ],
+        "tutors": [ "0x00000000", "0x00000041", "0x00000000", "0x0000040f", "0x00002003" ]
+    },
+    "evolutions": [],
+    "regional_dex_number": null,
+    "baby_species": "SPECIES_BELLSPROUT"
+}
