@@ -66,7 +66,7 @@ GSyncDownload *GSyncDownload_Create(HeapID heapId, u32 size) {
 
 void GSyncDownload_Free(GSyncDownload *dl) {
     if (_pDLWork != NULL) {
-        func_ov011_0215205c(NULL, NULL);
+        DWCRap_SetEventFunc(NULL, NULL);
         GFL_HeapFree(dl->buffer);
         GFL_HeapFree(dl);
         _pDLWork = NULL;
@@ -94,7 +94,7 @@ BOOL GSyncDownload_Init(GSyncDownload *dl) {
     if (!func_ov189_021a5674(GSyncDownload_OnNdEvent, "IRAO", "WX9x7Zh6J3aBC4zQ")) {
         return FALSE;
     }
-    func_ov011_0215205c(GSyncDownload_OnDwcEvent, dl);
+    DWCRap_SetEventFunc(GSyncDownload_OnDwcEvent, dl);
     return TRUE;
 }
 

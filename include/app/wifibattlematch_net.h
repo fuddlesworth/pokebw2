@@ -17,4 +17,7 @@ BOOL func_ov260_021bb21c(WifiBattleMatchNet *net, PokeParty *party);
 // Copies the other player's team into party, and then is TRUE, once it has arrived
 BOOL func_ov260_021bb25c(WifiBattleMatchNet *net, PokeParty *party);
 
+// Which a Wi-Fi library error of the right range is passed to
+void func_ov260_021bec44(void);
+
 #endif // POKEBW2_APP_WIFIBATTLEMATCH_NET_H

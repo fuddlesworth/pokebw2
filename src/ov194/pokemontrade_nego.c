@@ -98,7 +98,7 @@ static void func_ov194_021bdb1c(PokemonTradeWork *wk);
 static void func_ov194_021bdb64(PokemonTradeWork *wk);
 static void func_ov194_021bdba8(PokemonTradeWork *wk);
 static void func_ov194_021bdc50(PokemonTradeWork *wk);
-static void func_ov194_021bdca4(void *work, int a1, int code);
+static void func_ov194_021bdca4(void *work, int a1, int code, int error);
 static void func_ov194_021bdcc4(PokemonTradeWork *wk);
 static void func_ov194_021bde60(PokemonTradeWork *wk);
 static void func_ov194_021bdf10(PokemonTradeWork *wk);
@@ -1233,19 +1233,19 @@ static void func_ov194_021bdc50(PokemonTradeWork *wk) {
     if (func_02042be8(handle, TRADE_NET_CMD_CHECK_RESULT, 1, &wk->checkResult)) {
         func_02040624(func_02040440(), 0x15, 8);
         if (wk->type == 2) {
-            func_ov011_021516a0(FALSE);
+            DWCRap_SetMic(FALSE);
         }
         PokemonTrade_SetState(wk, func_ov194_021bdba8);
     }
 }
 
-static void func_ov194_021bdca4(void *work, int a1, int code) {
+static void func_ov194_021bdca4(void *work, int a1, int code, int error) {
     PokemonTradeWork *wk = work;
     if (wk->unk0 != NULL) {
         func_ov189_0219d124(wk->unk0);
         func_ov189_0219d1f0(wk->unk0);
         wk->unk0 = NULL;
-        func_ov011_02152158();
+        DWCRapCommon_EndSubHeap();
     }
 }
 
@@ -1314,8 +1314,8 @@ static void func_ov194_021bdcc4(PokemonTradeWork *wk) {
         func_ov189_0219d384(wk->unk0);
         func_ov189_0219d1f0(wk->unk0);
         wk->unk0 = NULL;
-        func_ov011_02152158();
-        func_ov011_02152040(NULL, NULL);
+        DWCRapCommon_EndSubHeap();
+        DWCRap_SetErrorFunc(NULL, NULL);
     }
 }
 
@@ -1323,9 +1323,9 @@ static void func_ov194_021bdcc4(PokemonTradeWork *wk) {
 static void func_ov194_021bde60(PokemonTradeWork *wk) {
     int i;
     int count = 0;
-    func_ov011_021520a0(13, 0x10000, wk->heapId);
+    DWCRapCommon_SetSubHeap(13, 0x10000, wk->heapId);
     wk->unk0 = func_ov189_0219d1b8(wk->heapId, func_02008bdc(wk->myInfo), wk->param->buffer);
-    func_ov011_02152040(func_ov194_021bdca4, wk);
+    DWCRap_SetErrorFunc(func_ov194_021bdca4, wk);
     for (i = 0; i < 3; i++) {
         if (func_ov194_021b774c((u8 *)wk->negoPkm[1][i])) {
             count++;
@@ -1361,7 +1361,7 @@ static void func_ov194_021bdf10(PokemonTradeWork *wk) {
 static void func_ov194_021bdf70(PokemonTradeWork *wk) {
     GFL_WipeSet(4, 0, 0, 0, 6, 1, wk->heapId);
     if (wk->type == 2) {
-        func_ov011_021516a0(TRUE);
+        DWCRap_SetMic(TRUE);
     }
     PokemonTrade_SetState(wk, func_ov194_021bdf10);
 }

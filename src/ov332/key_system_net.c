@@ -67,7 +67,7 @@ static void KeySystemNet_Receive(int netId, int size, const void *data, void *wo
 static BOOL KeySystemNet_CanRequest(KeySystemNet *net, u32 request);
 static void KeySystemNet_Stop(KeySystemNet *net);
 static void KeySystemNet_OnError(KeySystemNet *net);
-static void KeySystemNet_OnWifiError(void *work, int a1, int code);
+static void KeySystemNet_OnWifiError(void *work, int a1, int code, int error);
 
 static const NetCommand sKeySystemNetCommands[] = {
     { KeySystemNet_Receive, NULL },
@@ -172,7 +172,7 @@ void KeySystemNet_SetMode(KeySystemNet *net, u32 mode) {
             break;
         case KEY_SYSTEM_NET_MODE_WIFI:
             GFL_OvlLoad(OVERLAY_ID(189));
-            func_ov011_02152040(KeySystemNet_OnWifiError, net);
+            DWCRap_SetErrorFunc(KeySystemNet_OnWifiError, net);
             break;
         }
     }
@@ -840,7 +840,7 @@ static void KeySystemNet_Stop(KeySystemNet *net) {
         }
         break;
     case KEY_SYSTEM_NET_MODE_WIFI:
-        func_ov011_02152040(NULL, NULL);
+        DWCRap_SetErrorFunc(NULL, NULL);
         if (net->http != NULL) {
             func_ov189_0219d124(net->http);
             func_ov189_0219d1f0(net->http);
@@ -857,7 +857,7 @@ static void KeySystemNet_OnError(KeySystemNet *net) {
     }
 }
 
-static void KeySystemNet_OnWifiError(void *work, int a1, int code) {
+static void KeySystemNet_OnWifiError(void *work, int a1, int code, int error) {
     KeySystemNet *net = work;
 
     if (code == 3 || code == 6) {

@@ -137,7 +137,7 @@ static BOOL WifiBattleMatchList_Main(GameProc *proc, u32 *state, void *param, vo
                 wk->status.forceExit = TRUE;
             }
         } else {
-            switch (func_ov011_02152404(1, 1)) {
+            switch (DWCRapCommon_CheckError(1, 1)) {
             case 0:
             case 3:
                 break;
@@ -347,7 +347,7 @@ static void WifiBattleMatchExchange_InitWifi(WifiBattleMatchExchangeWork *wk, Wi
 static BOOL WifiBattleMatchExchange_MainWifi(WifiBattleMatchExchangeWork *wk, WifiBattleMatchExchangeParam *param,
                                              u32 *state) {
     if (func_02042788()) {
-        switch (func_ov011_02152404(1, 1)) {
+        switch (DWCRapCommon_CheckError(1, 1)) {
         case 0:
             break;
         case 1:
