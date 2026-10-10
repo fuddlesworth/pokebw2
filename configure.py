@@ -406,6 +406,13 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     return [modules_ok, rom_ok, *checks, *compiled], dsd_configs
 
 
+def write_compile_flags():
+    """Writes compile_flags.txt, with which clangd checks the code as 32-bit ARM, with the build's include path."""
+    flags = ["--target=armv5te-none-eabi", "-ffreestanding", *(f"-I{d}" for d in INCLUDE_DIRS), "-std=c99",
+             "-DBLACK2"]
+    (ROOT / "compile_flags.txt").write_text("\n".join(flags) + "\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("versions", nargs="*", choices=[[], *VERSIONS],
@@ -534,6 +541,7 @@ def main():
     n.default(["check", "objdiff.json"])
 
     (ROOT / "build.ninja").write_text(n.out.getvalue())
+    write_compile_flags()
     fixes = ", with the bugs fixed" if args.bugfix else ""
     shifted = f", with the code shifted by {args.shift:#x} bytes" if args.shift else ""
     print(f"Wrote build.ninja for {', '.join(versions)}{fixes}{shifted}, now run ninja")

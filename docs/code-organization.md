@@ -69,8 +69,9 @@ every section.
   such as `ResortNPC` in `resort_npc.c`, and structs with the same layout and purpose are one type.
 
 `ninja format` formats `src/`, `include/` and `lib/` with clang-format, using `.clang-format`; prefer running
-`clang-format -i` on the files you changed, since clang-format releases disagree. `compile_flags.txt` makes
-clangd check the code as 32-bit ARM.
+`clang-format -i` on the files you changed, since clang-format releases disagree. `compile_flags.txt`, which
+`configure.py` writes with the build's include path, makes clangd check the code as 32-bit ARM; the generated constant
+headers only exist after a build.
 
 ## Names
 

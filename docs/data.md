@@ -63,6 +63,11 @@ The game has no names for its event flags and variables, so `flags.txt` (`EVENT_
 (`EVENT_WORK_*`) only hold the ones named so far, each with its value. Name one there when the code or a script shows
 what it does, then write the field scripts again (`field_script.py disasm`), so that they use the name.
 
+The members of an archive that the code loads by number get a list of their own, `narc_<archive>.txt`, as pret's
+`.naix` names: the archive's name, then what the member is, then the kind of file, from its magic, such as
+`NARC_INTRO_PROFESSOR_NCLR` in `narc_intro.txt`. The archives have no file names (one of 308 does), so a member is
+named only when the code shows what it is, and the list holds only those, each with its value.
+
 ## Text
 
 `a/0/0/2` (system messages) and `a/0/0/3` (script messages) hold the game's text, one message file per entry. Their
