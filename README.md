@@ -107,7 +107,9 @@ to the original bytes. Matching is checked per function with [objdiff](https://g
 ## Contributing
 
 Contributions are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) has the workflow and the rules. CI compiles every C
-file for both versions; matching is checked locally by `ninja`, since it needs the ROMs.
+file for both versions. On pushes to main and on pull requests from branches of this repository, it also builds both
+ROMs from private copies, checks them byte for byte, and uploads the progress reports that decomp.dev reads. Pull
+requests from forks can't reach the ROMs, so run `ninja` locally before opening one.
 
 ## License
 

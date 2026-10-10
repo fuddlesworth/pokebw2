@@ -21,6 +21,9 @@ The current C mismatches and attempted translations still in assembly are tracke
 `ninja progress` prints how much of the game matches, from the report at `build/b2_us/report.json`.
 `tools/scripts/progress_image.py` draws that report as decomp.dev's treemap, `docs/progress.svg`, and rewrites the
 progress line of the README. Both are committed, so run it after `ninja progress` when a batch of work is done.
+CI's `build.yml` builds each version on every push to main and uploads its report as the artifact `b2_us_report` or
+`w2_us_report`, which decomp.dev reads. `objdiff_config.py` gives each unit progress categories, which become
+decomp.dev's separate bars: ARM9 main or the overlays, and the game's code or each library of `lib/`.
 
 `tools/scripts/add_source_file.py` adds a source file to both versions' `delinks.txt`, with White 2's ranges taken
 from the version map. `tools/scripts/compiler_probe.py src/... --compilers 1.1 --show-diff 1.1` compiles a file and
