@@ -14,17 +14,17 @@ jobs:
   build:
     name: Build ${{ matrix.version }}
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
       matrix:
         version: [b2_us, w2_us]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Checkout base ROMs
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: fuddlesworth/pokebw2-roms
           ssh-key: ${{ secrets.ROMS_DEPLOY_KEY }}
@@ -40,12 +40,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y ninja-build clang llvm
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
       - name: Cache tools
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             tools/wibo
@@ -62,7 +62,7 @@ jobs:
           ninja report
 
       - name: Upload report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.version }}_report
           path: build/${{ matrix.version }}/report.json
