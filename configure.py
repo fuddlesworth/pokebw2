@@ -138,7 +138,8 @@ ARCHIVES = {
 
 # Archives packed from JSON (and CSV) data by a script's pack command: the script, its data directory, the archives it
 # writes, in the order it takes them, and whether it packs each version apart, which passes it the version's name
-# (black2 or white2). The data's constants come from the lists and headers, so those are inputs too.
+# (black2 or white2); and any other data directories it reads. The data's constants come from the lists and headers,
+# so those are inputs too.
 DATA_PACKS = [
     # Species data, level-up moves, evolutions, baby species, experience tables and egg moves
     ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7", "a/1/2/4"],
@@ -149,6 +150,8 @@ DATA_PACKS = [
     ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
     ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False),  # Zone headers
+    # The zones' events, at the numbers of their entities files, which the zone headers give
+    ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False, ["data/zones"]),
 ]
 # What every packer reads besides its data: the scripts, and the move tutors' tables, which name the species data's
 # tutor bits (tools/scripts/species_data.py)
@@ -349,7 +352,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     files_ok = stamp_dir / "files.ok"
     n.build([files_ok], "files_tree", [], implicit=[extract_dir / "config.yaml", "tools/scripts/files_tree.py"],
             variables={"source": str(extract_dir / "files"), "output": str(files_dir),
-                       "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES, *(a for _, _, pack, _ in DATA_PACKS for a in pack)])})
+                       "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES, *(a for _, _, pack, *_ in DATA_PACKS for a in pack)])})
     archives = []
     checks = []
     for path, source_dir in ARCHIVES.items():
@@ -373,9 +376,10 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
 
     constant_sources = sorted(str(p.relative_to(ROOT)) for p in [*(ROOT / "data" / "constants").glob("*.txt"),
                                                                   *(ROOT / "include" / "constants").glob("*.h")])
-    for script, data_dir, paths, per_version in DATA_PACKS:
+    for script, data_dir, paths, per_version, *other_dirs in DATA_PACKS:
         outputs = [files_dir / path for path in paths]
-        sources = sorted(str(p.relative_to(ROOT)) for p in (ROOT / data_dir).rglob("*") if p.is_file())
+        sources = sorted(str(p.relative_to(ROOT)) for d in [data_dir, *(other_dirs[0] if other_dirs else [])]
+                         for p in (ROOT / d).rglob("*") if p.is_file())
         game = VERSIONS[version]["defines"][0].lower() if per_version else ""
         n.build(outputs, "data_pack", sources, implicit=[script, *DATA_PACK_TOOLS, *constant_sources],
                 order_only=[files_ok], variables={"script": script, "dir": data_dir, "game": game})
@@ -560,7 +564,7 @@ def main():
 
     # The data directories too: adding, removing or renaming a file changes its directory's time, so the build lists
     # the data files again
-    source_dirs = [d for _, d, _, _ in DATA_PACKS] + list(ARCHIVES.values())
+    source_dirs = [d for _, d, *_ in DATA_PACKS] + list(ARCHIVES.values())
     source_dirs += list(TEXT_ARCHIVES.values()) + ["data/constants"]
     data_dirs = sorted({str(p.relative_to(ROOT)) for d in source_dirs for p in [ROOT / d, *(ROOT / d).rglob("*")]
                         if p.is_dir()})

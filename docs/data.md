@@ -28,6 +28,7 @@ format and can write them again.
 | `a/0/2/4` | `data/items/` (JSON) | Item data | `tools/scripts/item_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
 | `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `data/trainers/` (JSON) | Trainers, their parties, and the table of their messages | `tools/scripts/trainer_data.py` |
+| `a/1/2/6` | `data/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/scripts/event_data.py` |
 | `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
@@ -414,3 +415,53 @@ A header names the zone's map, its scripts and script messages, its music (`SEQ_
 encounter table (an `ENCOUNTERS_*` constant, or null), the zone it belongs to, its place name, its default weather and
 camera, its battle background, what it allows (cycling, Escape Rope, flying from it), and where flying lands. Both
 versions have the same zone headers.
+
+## Zone events
+
+Each zone's events are `data/events/<zone>.json`, named after its constant, as pokeplatinum's `res/field/events/`:
+the zone's entities file (`a/1/2/6`), which `LoadZoneEntities` reads. It has the zone's background events, such as
+signs, its NPCs, its warps, its triggers and its init scripts, and `data/events/events.schema.json` documents each
+field, with swan's names and layouts (`include/field/zone.h`, `include/field/field_actor.h`).
+
+```json
+{
+    "$schema": "events.schema.json",
+    "bg_events": [
+        {
+            "script": 5,
+            "condition": 0,
+            "direction": 6,
+            "grid": {
+                "x": 47,
+                ...
+            }
+        },
+        ...
+    ],
+    "npcs": [ ... ],
+    "warps": [
+        {
+            "zone": "ZONE_BLACK_CITY_POKEMON_CENTER",
+            "warp": 0,
+            ...
+        },
+        ...
+    ],
+    "triggers": [ ... ],
+    "init_scripts": [
+        {
+            "type": 2,
+            "script": 1
+        },
+        ...
+    ]
+}
+```
+
+An event is at a `grid` position or, in a zone with rails, a `rail` one. A warp names the zone it leads to and the
+warp of that zone it arrives at; an NPC's spawn flag and a trigger's variable are written by name where the constant
+lists have one. The init scripts are a map script table (see [Scripts](scripts.md)): a script by when it runs, or, for
+type 1, conditions on variables. A zone's header gives the number of its entities file (`entities` in
+`data/zones/`), and `tools/scripts/event_data.py pack` puts each zone's events at that number; the numbers in
+`data/events/placeholders.json`, which no zone uses, hold the game's 4-byte placeholder. Both versions have the same
+events.
