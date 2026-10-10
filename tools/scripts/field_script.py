@@ -22,6 +22,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+from gen_constants import header_text  # noqa: E402
 from msgdata import read_msgdata  # noqa: E402
 from narc import read_narc  # noqa: E402
 
@@ -29,7 +30,6 @@ TABLE = Path(__file__).with_name("field_commands.json")
 ARCHIVE = "files/a/0/5/6"
 ZONE_ARCHIVE = "files/a/0/1/2"
 MESSAGE_ARCHIVE = "files/a/0/0/3"
-INCLUDE = Path(__file__).resolve().parents[2] / "include"
 # The headers the scripts include, and the constants they give for each meaning of an argument
 CONSTANTS = {
     "comparison": ("constants/field_script.h", "CMP_(?!STACK)"),
@@ -133,7 +133,7 @@ def load_constants() -> dict[str, dict[int, str]]:
     constants = {}
     for meaning, (header, prefix) in CONSTANTS.items():
         names = {}
-        for match in re.finditer(rf"^#define ({prefix}\w*) (\w+)", (INCLUDE / header).read_text(), re.MULTILINE):
+        for match in re.finditer(rf"^#define ({prefix}\w*) (\w+)", header_text(header), re.MULTILINE):
             names.setdefault(int(match[2], 0), match[1])
         constants[meaning] = names
     return constants

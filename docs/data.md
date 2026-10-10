@@ -6,8 +6,9 @@ macros in `include/asm/`. `configure.py` lists them in `ARCHIVES`; the build ass
 in their order and checks that it matches the original, so editing an entry is as easy as editing its file, and the
 matching build proves that the sources say exactly what the ROM holds.
 
-The sources go through the C preprocessor, so they use the same constants as the C code (`include/constants/`). Each
-archive has a script that wrote its sources from the original, which documents the format and can write them again.
+The sources go through the C preprocessor, so they use the same constants as the C code (see
+[Constant lists](#constant-lists)). Each archive has a script that wrote its sources from the original, which
+documents the format and can write them again.
 
 | Archive | Sources | Contents | Script |
 | --- | --- | --- | --- |
@@ -27,6 +28,28 @@ archive has a script that wrote its sources from the original, which documents t
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
 `TEXT_ARCHIVES`.
+
+## Constant lists
+
+The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences and
+trainer classes, are lists in `data/constants/`, one name per line. They are the source of truth: to add or rename one,
+edit its list. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`, which
+is on the include path, so the C code, the data sources and the scripts all use the same names, and the generated header
+can never disagree with its list. A line is a constant's full name, which takes the previous value plus one, or
+`NAME = value` (decimal or `0x` hex); `#` starts a comment.
+
+```
+# Species, by national Pokédex number (bootstrapped from the ROM by make_constants.py)
+SPECIES_NONE = 0
+SPECIES_BULBASAUR
+SPECIES_IVYSAUR
+```
+
+`tools/scripts/gen_constants.py` writes the headers, and its `load()` and `header_text()` give the scripts the same
+constants without a build. The lists were written once from the game's own text, and from the sound archive's symbols,
+by `tools/scripts/make_constants.py`, which can write them again; constants the game has no text for, such as
+`ITEM_LAST` or `TYPE_NULL`, were added by hand. Constants whose names come from the code rather than from the game's
+data, such as the battle and field script constants, stay hand-written headers in `include/constants/`.
 
 ## Text
 
@@ -189,7 +212,7 @@ the Pokémon: `PARTY_MOVES`, `PARTY_ITEMS`, both, or neither, in which case a Po
 no item. `PartyEnd` counts the party for the trainer record. `style` is the battle style (`BTL_STYLE_*`), `ai` the
 trainer AI scripts to run (`AI_FLAG_*`, see [Scripts](scripts.md)), `money` a multiplier of the prize money and
 `reward` an item given after the battle. A Pokémon's `difficulty` sets its individual values, and `gender` and
-`ability` pick them when not 0. `class` is a `TRAINER_CLASS_*` from `include/constants/trainer_classes.h`, named after
+`ability` pick them when not 0. `class` is a `TRAINER_CLASS_*` from `data/constants/trainer_classes.txt`, named after
 the class's name; where several classes share one, after their only trainer, their sex or their ID, as
 `TRAINER_CLASS_SCHOOL_KID_F` (`make_constants.py --trainer-classes`). Both versions have the same trainers.
 

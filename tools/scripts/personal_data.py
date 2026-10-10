@@ -13,27 +13,26 @@ import re
 import struct
 from pathlib import Path
 
+from gen_constants import header_text
 from narc import read_narc
 
-ROOT = Path(__file__).resolve().parents[2]
-CONSTANTS = ROOT / "include" / "constants"
 RECORD_SIZE = 0x4C
 SPECIES_COUNT = 650
 
 
 def constant_names(header: str, prefix: str) -> dict[int, str]:
-    """Returns the first name of each value of the constants with a prefix in a header of include/constants."""
+    """Returns the first name of each value of the constants with a prefix in a constants header."""
     names = {}
     for match in re.finditer(rf"^#define ({prefix}\w+) (0x[0-9a-fA-F]+|\d+)(?:\s*//.*)?$",
-                             (CONSTANTS / header).read_text(), re.MULTILINE):
+                             header_text(f"constants/{header}"), re.MULTILINE):
         names.setdefault(int(match.group(2), 0), match.group(1))
     return names
 
 
 def flag_names(header: str, prefix: str, flags: int) -> str:
-    """Returns flags as an OR of the constants with a prefix, defined as (1 << N) in a header of include/constants."""
+    """Returns flags as an OR of the constants with a prefix, defined as (1 << N) in a constants header."""
     names = {}
-    for match in re.finditer(rf"^#define ({prefix}\w+) \(1 << (\d+)\)", (CONSTANTS / header).read_text(), re.M):
+    for match in re.finditer(rf"^#define ({prefix}\w+) \(1 << (\d+)\)", header_text(f"constants/{header}"), re.M):
         names[int(match.group(2))] = match.group(1)
     parts = [names.get(bit, f"(1 << {bit})") for bit in range(32) if flags >> bit & 1]
     return " | ".join(parts) if parts else "0"

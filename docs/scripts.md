@@ -25,11 +25,12 @@ which the macros encode relative to the end of the argument. The Load commands s
 and the other comparisons test. Commands that behave differently from Gen 4's have a comment in the macros, and the
 commands that do nothing here are named `DummyNN` after their ID, as pokeplatinum does.
 
-Scripts go through the C preprocessor, so they use the same constants as the C code. `include/constants/` holds
+Scripts go through the C preprocessor, so they use the same constants as the C code. The constant headers hold
 only `#define`s for this reason. The constants come from:
 
-- The game's text, for moves, abilities, items, species and types, by `tools/scripts/make_constants.py`, which reads
-  it with `tools/scripts/msgdata.py`.
+- The lists in `data/constants/`, for moves, abilities, items, species, types and sounds, which the build turns into
+  headers (see [Constant lists](data.md#constant-lists)). They were written from the game's text by
+  `tools/scripts/make_constants.py`, which reads it with `tools/scripts/msgdata.py`.
 - pokeplatinum, for the move effects and held item effects that Gen 4 has, whose IDs this game keeps. Gen 5's move
   effects are named after their first move.
 - The move data, for move categories and the conditions that moves inflict.
@@ -37,7 +38,7 @@ only `#define`s for this reason. The constants come from:
   as pokeplatinum's, its values show which constant is which.
 
 ```sh
-python3 tools/scripts/make_constants.py extract/b2_us/files/a/0/0/2 include/constants
+python3 tools/scripts/make_constants.py extract/b2_us/files/a/0/0/2 data/constants
 ```
 
 `ninja` assembles each script with `clang`, converts it to a binary with `llvm-objcopy`, packs the binaries with

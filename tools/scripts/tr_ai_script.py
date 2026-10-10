@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+from gen_constants import header_text  # noqa: E402
 from narc import read_narc  # noqa: E402
 
 # Commands, in ID order: the macro name, the parameters with their kinds, and what the command does. The names follow
@@ -182,7 +183,6 @@ COMMANDS = [
     ("IfAttackEqualToSpAttack", [("battler", "battler"), ("jump", "jump")], ""),
 ]
 
-INCLUDE = Path(__file__).resolve().parent.parent.parent / "include"
 # The headers that the scripts include, and the prefix of the constants for each kind of value
 CONSTANTS = {
     "battler": ("constants/tr_ai.h", "AI_BATTLER_"),
@@ -261,7 +261,7 @@ def load_constants() -> dict[str, dict[int, str]]:
     constants = {}
     for kind, (header, prefix) in CONSTANTS.items():
         names = {}
-        for match in re.finditer(rf"^#define ({prefix}\w*) (\d+)$", (INCLUDE / header).read_text(), re.MULTILINE):
+        for match in re.finditer(rf"^#define ({prefix}\w*) (\d+)$", header_text(header), re.MULTILINE):
             names.setdefault(int(match[2]), match[1])
         constants[kind] = names
     constants["bool"] = BOOLEANS

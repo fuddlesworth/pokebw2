@@ -44,8 +44,9 @@ every section.
   A layout is defined once: two files that need the same struct share it through the owner's header, and a partial
   layout with padding is still the one definition.
 - Headers are grouped like the game's code: `system/` (game system, game data, events), `field/`, `save/`, `gfl/`
-  (Game Freak's library), `pml/` (Pokémon data), `battle/`, `demo/` and `constants/`. The libraries' headers are in
-  `lib/`, as `lib/nitro/include/nitro/`, `lib/nnsys/include/nnsys/`, `lib/spl/include/spl/`,
+  (Game Freak's library), `pml/` (Pokémon data), `battle/`, `demo/` and `constants/`, whose ID lists, such as species
+  and items, are generated from `data/constants/` (see [Constant lists](data.md#constant-lists)). The libraries'
+  headers are in `lib/`, as `lib/nitro/include/nitro/`, `lib/nnsys/include/nnsys/`, `lib/spl/include/spl/`,
   `lib/dsprot/include/dsprot/`, `lib/dwc/include/dwc/` (Nintendo's Wi-Fi Connection library) and
   `lib/dpw/include/dpw/` (the Global Trade Station's server library).
   A header is named after the original file that owns its declarations, or after swan's header for it, such as

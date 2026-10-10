@@ -15,7 +15,8 @@ from pathlib import Path
 from make_constants import identifier
 from msgdata import read_archive_file
 from narc import read_narc
-from personal_data import CONSTANTS, constant_names, name
+from gen_constants import header_text
+from personal_data import constant_names, name
 
 TRAINER_SIZE = 20
 # Files of the system message archive (a/0/0/2) with the trainers' names and their classes' names
@@ -27,7 +28,7 @@ PARTY_KINDS = {0: "0", 1: "PARTY_MOVES", 2: "PARTY_ITEMS", 3: "PARTY_MOVES | PAR
 
 def ai_flag_names(flags: int) -> str:
     names = {}
-    for match in re.finditer(r"^#define (AI_FLAG_\w+) \(1 << (\d+)\)$", (CONSTANTS / "tr_ai.h").read_text(), re.M):
+    for match in re.finditer(r"^#define (AI_FLAG_\w+) \(1 << (\d+)\)$", header_text("constants/tr_ai.h"), re.M):
         names[int(match.group(2))] = match.group(1)
     parts = [names.get(bit, f"(1 << {bit})") for bit in range(32) if flags >> bit & 1]
     return " | ".join(parts) if parts else "0"

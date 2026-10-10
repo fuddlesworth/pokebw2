@@ -114,9 +114,12 @@ def file_flags(source: Path, flags: list[str]) -> list[str]:
 
 
 LIBRARIES = load_libraries()
-# Header search path of every source file, the game's and the libraries': the game's headers and each library's public
-# headers. A library's private headers sit beside its sources.
-INCLUDE_DIRS = ["include", *(p.relative_to(ROOT).as_posix() for p in sorted(LIB_DIR.glob("*/include")))]
+# Header search path of every source file, the game's and the libraries': the game's headers, each library's public
+# headers, and the headers the build generates from the constant lists in data/constants/ (see
+# tools/scripts/gen_constants.py). A library's private headers sit beside its sources.
+GENERATED_INCLUDE_DIR = "build/include/generated"
+INCLUDE_DIRS = ["include", *(p.relative_to(ROOT).as_posix() for p in sorted(LIB_DIR.glob("*/include"))),
+                GENERATED_INCLUDE_DIR]
 
 
 def library_of(source: Path) -> tuple[str, list[str]] | None:
@@ -323,7 +326,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
             library = library_of(source)
             if library:
                 variables["flags"] = " ".join(library[1])
-            n.build([obj], rule, [source], variables=variables)
+            n.build([obj], rule, [source], variables=variables, order_only=["constants_headers"])
             compiled.append(obj)
         objects.append(f["object_to_link"])
 
@@ -347,7 +350,8 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
         for source in sorted(Path(source_dir).glob("*.s")):
             obj = build_dir / source.with_suffix(".o")
             if obj not in assembled:
-                n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines})
+                n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines},
+                        order_only=["constants_headers"])
                 assembled.add(obj)
             member = obj.with_name(f"{obj.stem}{section or ''}.bin")
             n.build([member], "objcopy_bin", [obj], variables={"sections": f"-j {section}" if section else ""})
@@ -388,7 +392,8 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     # Context files for decomp.me scratches, made by objdiff
     for obj in compiled:
         source = obj.relative_to(build_dir).with_suffix(".c")
-        n.build([obj.with_suffix(f".ctx{source.suffix}")], "ctx", [source], variables={"defines": defines})
+        n.build([obj.with_suffix(f".ctx{source.suffix}")], "ctx", [source], variables={"defines": defines},
+                order_only=["constants_headers"])
 
     # Progress report, compares every delinked object with its compiled counterpart
     report = build_dir / "report.json"
@@ -494,6 +499,18 @@ def main():
     n.rule("configure", f"$python configure.py {' '.join(configure_args)}", "Reconfiguring", generator="1")
     # Formats the sources and headers in place with clang-format and .clang-format
     n.rule("format", "clang-format -i $in", "Formatting")
+
+    # The constant headers are generated from the committed lists in data/constants/, so that the C code, the data
+    # files and the scripts share one source of truth, and a mod only edits the list. Compiles depend on them
+    # order-only; the depfiles rebuild what includes a changed header. A header that comes out the same is not rewritten,
+    # and restat keeps its users from recompiling.
+    n.rule("gen_constants", "$python tools/scripts/gen_constants.py $in $out", "Generating $out", restat="1")
+    constant_headers = []
+    for source in sorted((ROOT / "data" / "constants").glob("*.txt")):
+        header = Path(GENERATED_INCLUDE_DIR) / "constants" / source.with_suffix(".h").name
+        n.build([header], "gen_constants", [source.relative_to(ROOT)], implicit=["tools/scripts/gen_constants.py"])
+        constant_headers.append(header)
+    n.build(["constants_headers"], "phony", constant_headers)
 
     checks, configs = [], []
     for version in versions:
