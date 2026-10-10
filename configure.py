@@ -142,8 +142,8 @@ ARCHIVES = {
 # so those are inputs too.
 DATA_PACKS = [
     # Species data, level-up moves, evolutions, baby species, experience tables and egg moves
-    ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7", "a/1/2/4"],
-     False),
+    ("tools/scripts/species_data.py", "data/pokemon",
+     ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7", "a/1/2/4"], False),
     ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"], False),  # Move data
     ("tools/scripts/item_data.py", "data/items", ["a/0/2/4"], False),  # Item data
     # Trainers, their parties, and the table of their messages with its offsets
@@ -158,6 +158,9 @@ DATA_PACKS = [
 DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py",
                    "tools/scripts/text_sources.py", "tools/scripts/text_data.py", "tools/scripts/msgdata.py",
                    "src/ov036/scrcmd_shop.c"]
+
+# The data in JSON that the text takes messages from, with \from{...} lines (tools/scripts/text_sources.py)
+TEXT_DATA_DIRS = ["data/pokemon", "data/moves", "data/items", "data/trainers", "data/abilities", "data/types"]
 
 # Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order
@@ -352,7 +355,8 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     files_ok = stamp_dir / "files.ok"
     n.build([files_ok], "files_tree", [], implicit=[extract_dir / "config.yaml", "tools/scripts/files_tree.py"],
             variables={"source": str(extract_dir / "files"), "output": str(files_dir),
-                       "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES, *(a for _, _, pack, *_ in DATA_PACKS for a in pack)])})
+                       "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES,
+                                          *(a for _, _, pack, *_ in DATA_PACKS for a in pack)])})
     archives = []
     checks = []
     for path, source_dir in ARCHIVES.items():
@@ -393,8 +397,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
                 checks.append(archive_ok)
 
     # The text takes some of its messages from the data in JSON, with \from{...} lines (tools/scripts/text_sources.py)
-    text_data_sources = sorted(str(p.relative_to(ROOT)) for d in ("data/pokemon", "data/moves", "data/items", "data/trainers")
-                               for p in (ROOT / d).rglob("*.json"))
+    text_data_sources = sorted(str(p.relative_to(ROOT)) for d in TEXT_DATA_DIRS for p in (ROOT / d).rglob("*.json"))
     for path, source_dir in TEXT_ARCHIVES.items():
         archive = files_dir / path
         n.build([archive], "text_pack", sorted(Path(source_dir).glob("*.txt")),
@@ -539,8 +542,8 @@ def main():
 
     # The constant headers are generated from the committed lists in data/constants/, so that the C code, the data
     # files and the scripts share one source of truth, and a mod only edits the list. Compiles depend on them
-    # order-only; the depfiles rebuild what includes a changed header. A header that comes out the same is not rewritten,
-    # and restat keeps its users from recompiling.
+    # order-only; the depfiles rebuild what includes a changed header. A header that comes out the same is not
+    # rewritten, and restat keeps its users from recompiling.
     n.rule("gen_constants", "$python tools/scripts/gen_constants.py $in $out", "Generating $out", restat="1")
     constant_headers = []
     for source in sorted((ROOT / "data" / "constants").glob("*.txt")):

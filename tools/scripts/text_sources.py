@@ -12,7 +12,7 @@ from functools import cache
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from datajson import ROOT, DataError  # noqa: E402
+from datajson import ROOT, DataError, load, load_schema  # noqa: E402
 from gen_constants import load as load_list  # noqa: E402
 
 
@@ -67,6 +67,24 @@ def moves() -> list[dict]:
 @cache
 def items() -> list[dict]:
     return [read(ROOT / "data/items" / name.removeprefix("ITEM_").lower() / "data.json") for name in ordered("items")]
+
+
+@cache
+def abilities() -> list[dict]:
+    return validated("abilities", "data/abilities", "ABILITY_", "ability.schema.json")
+
+
+@cache
+def types() -> list[dict]:
+    # TYPE_NULL, the type of a typeless move, has no name
+    return validated("types", "data/types", "TYPE_", "type.schema.json", skip={"TYPE_NULL"})
+
+
+def validated(list_name: str, directory: str, prefix: str, schema_name: str, skip=frozenset()) -> list[dict]:
+    """The files of data that only the text uses, which nothing else validates, in the order of their list."""
+    schema = load_schema(ROOT / directory / schema_name)
+    return [load(ROOT / directory / (name.removeprefix(prefix).lower() + ".json"), schema)
+            for name in ordered(list_name) if name not in skip]
 
 
 @cache
@@ -142,6 +160,9 @@ SOURCES = {
     "items.name_with_article": lambda: [item_with_article(data) for data in items()[1:]],
     "items.name_plural": lambda: [to_line(data["name_plural"]) for data in items()[1:]],
     "items.description": lambda: [to_line(data["description"]) for data in items()],
+    "abilities.name": lambda: [to_line(data["name"]) for data in abilities()],
+    "abilities.description": lambda: [to_line(data["description"]) for data in abilities()],
+    "types.name": lambda: [to_line(data["name"]) for data in types()],
     "trainers.name": lambda: [("\\c" if data.get("compress_name", True) else "") + to_line(data["name"])
                               for data in trainers().values()],
     "trainers.messages": trainer_messages,

@@ -116,6 +116,9 @@ Egg and Bad Egg after the species' names:
 | `0481_item_names_with_article.txt` | `\from{items.name_with_article}` | The same with its article (`name_article`, or the whole `name_with_article` where it isn't written as the others) |
 | `0482_item_names_plural.txt` | `\from{items.name_plural}` | Each item's `name_plural` |
 | `0063_item_descriptions.txt` | `\from{items.description}` | Each item's `description` |
+| `0374_ability_names.txt` | `\from{abilities.name}` | Each ability's `name` |
+| `0375_ability_descriptions.txt` | `\from{abilities.description}` | Each ability's `description` |
+| `0398_type_names.txt` | `\from{types.name}` | Each type's `name` |
 | `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
 | `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
@@ -283,6 +286,14 @@ are the bag's: 0 items, 1 medicine, 2 TMs and HMs, 3 berries and 4 key items out
 balls (1), battle items (2), HP and PP restoring (4) and status healing (8). An item's article is "a" or "an" by its
 first letter unless `name_article` says otherwise ("an HP Up", "the Leftovers", none for Honey). The 20 unused items,
 named "???", have constants of their own, as `ITEM_UNUSED_113`. Both versions have the same item data.
+
+## Abilities and types
+
+An ability's text is `data/abilities/<ability>.json`, its name and description, and a type's `data/types/<type>.json`,
+its name, named after their constants and in the order of their lists. What they do is the code's, so they have no
+archive: only the text takes them (see [Text](#text)), and `tools/scripts/text_sources.py` validates them against
+`ability.schema.json` and `type.schema.json`. `TYPE_NULL`, the type of a typeless move, has no name and no file.
+`tools/scripts/ability_type_data.py` wrote them from the game's text.
 
 ## Trainers
 

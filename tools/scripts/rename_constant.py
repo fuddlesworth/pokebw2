@@ -25,6 +25,8 @@ NAMED_DATA = [
     ("species", "data/pokemon", "SPECIES_", "/"),
     ("moves", "data/moves", "MOVE_", "/"),
     ("items", "data/items", "ITEM_", "/"),
+    ("abilities", "data/abilities", "ABILITY_", ".json"),
+    ("types", "data/types", "TYPE_", ".json"),
     ("trainers", "data/trainers", "TRAINER_", ".json"),
     ("encounters", "data/encounters", "ENCOUNTERS_", ".json"),
     ("zones", "data/zones", "ZONE_", ".json"),
