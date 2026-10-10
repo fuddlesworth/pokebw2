@@ -294,7 +294,7 @@ builds the archive in the order of `data/constants/items.txt`, and `data/items/i
     "price": 30,
     "hold_effect": "HOLD_EFFECT_NONE",
     ...
-    "field_pocket": 1,
+    "field_pocket": "BAG_POCKET_MEDICINE",
     "battle_pocket": 4,
     ...
     "effects": {
@@ -309,11 +309,11 @@ builds the archive in the order of `data/constants/items.txt`, and `data/items/i
 ```
 
 The price is in tens of Pokédollars, which `PML_ItemGetParam` multiplies by 10. An item has either a single `value` or
-`effects`, what it does used on a Pokémon (`ItemParams`); the packer sets the record's work type from which. The pockets
-are the bag's: 0 items, 1 medicine, 2 TMs and HMs, 3 berries and 4 key items outside battle, and in battle bits for
-balls (1), battle items (2), HP and PP restoring (4) and status healing (8). An item's article is "a" or "an" by its
-first letter unless `name_article` says otherwise ("an HP Up", "the Leftovers", none for Honey). The 20 unused items,
-named "???", have constants of their own, as `ITEM_UNUSED_113`. Both versions have the same item data.
+`effects`, what it does used on a Pokémon (`ItemParams`); the packer sets the record's work type from which. The pocket
+outside battle is a `BAG_POCKET_*`, and the battle bag's pockets are bits for balls (1), battle items (2), HP and PP
+restoring (4) and status healing (8). An item's article is "a" or "an" by its first letter unless `name_article` says
+otherwise ("an HP Up", "the Leftovers", none for Honey). The 20 unused items, named "???", have constants of their own,
+as `ITEM_UNUSED_113`. Both versions have the same item data.
 
 ## Abilities, types, trainer classes, natures and places
 
@@ -456,9 +456,9 @@ and the code that reads it.
 ```
 
 A header names the zone's map, its scripts and script messages, its music (`SEQ_*`, or one for each season), its wild
-encounter table (an `ENCOUNTERS_*` constant, or null), the zone it belongs to, its place (`PLACE_*`), its default weather and
-camera, its battle background, what it allows (cycling, Escape Rope, flying from it), and where flying lands. Both
-versions have the same zone headers.
+encounter table (an `ENCOUNTERS_*` constant, or null), the zone it belongs to, its place (`PLACE_*`), its default
+weather and camera, its battle background, what it allows (cycling, Escape Rope, flying from it), and where flying
+lands. Both versions have the same zone headers.
 
 ## In-game trades
 
@@ -539,10 +539,11 @@ field, with swan's names and layouts (`include/field/zone.h`, `include/field/fie
 }
 ```
 
-An event is at a `grid` position or, in a zone with rails, a `rail` one. A warp names the zone it leads to and the
-warp of that zone it arrives at; an NPC's spawn flag and a trigger's variable are written by name where the constant
-lists have one. The init scripts are a map script table (see [Scripts](scripts.md)): a script by when it runs, or, for
-type 1, conditions on variables. A zone's header gives the number of its entities file (`entities` in
-`data/zones/`), and `tools/scripts/event_data.py pack` puts each zone's events at that number; the numbers in
+An event is at a `grid` position or, in a zone with rails, a `rail` one. A warp names the zone it leads to and the warp
+of that zone it arrives at, and an NPC the direction it faces (`DIR_*`). An NPC's spawn flag and a trigger's variable
+are written by name where the constant lists have one, and otherwise as their IDs in hex, as `"0x4176"`, as IDs are
+read; a file can write any ID that way. The init scripts are a map script table (see [Scripts](scripts.md)): a script by
+when it runs, or, for type 1, conditions on variables. A zone's header gives the number of its entities file (`entities`
+in `data/zones/`), and `tools/scripts/event_data.py pack` puts each zone's events at that number; the numbers in
 `data/events/placeholders.json`, which no zone uses, hold the game's 4-byte placeholder. Both versions have the same
 events.
