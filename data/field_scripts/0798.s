@@ -239,7 +239,7 @@ L_02E2:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0387
-    FieldTradeCheck 0x8022, 29, 0x8020
+    FieldTradeCheck 0x8022, TRADE_AMBIPOM, 0x8020
     VMStackPush 0x8022
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -298,7 +298,7 @@ L_03AB:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0450
-    FieldTradeCheck 0x8022, 30, 0x8020
+    FieldTradeCheck 0x8022, TRADE_ALAKAZAM, 0x8020
     VMStackPush 0x8022
     VMStackPushConst 0
     VMStackCmp CMP_EQ

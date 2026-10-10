@@ -9,6 +9,7 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trainers extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --zones extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --encounters extract/b2_us
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trades extract/b2_us
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused, and are named after their ID, as
@@ -31,6 +32,7 @@ TABLES = [
     # The lines after the national Pokédex name eggs and other things that are not species
     ("species.txt", "SPECIES", 90, 650, "Species, by national Pokédex number"),
     ("types.txt", "TYPE", 398, None, "Types"),
+    ("natures.txt", "NATURE", 27, None, "Natures"),
 ]
 
 # Names for the IDs whose text is not a name, or is shared with another ID. The item descriptions tell them apart.
@@ -251,6 +253,21 @@ def encounter_names(extract: Path) -> dict[int, str]:
     return names
 
 
+def trade_names(extract: Path) -> dict[int, str]:
+    """Returns the name of each in-game trade, after the species it offers, numbered from _2 where they repeat."""
+    from gen_constants import load
+    from narc import read_narc
+
+    species = {number: name for name, number in reversed(load("species").items())}
+    names: dict[int, str] = {}
+    count: dict[str, int] = {}
+    for i, offer in enumerate(read_narc((extract / "files/a/1/6/3").read_bytes())):
+        base = "TRADE_" + species[struct.unpack_from("<I", offer, 4)[0]].removeprefix("SPECIES_")
+        count[base] = count.get(base, 0) + 1
+        names[i] = base if count[base] == 1 else f"{base}_{count[base]}"
+    return names
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -260,6 +277,11 @@ def main():
                         help="write only trainer_classes.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--trainers", type=Path, metavar="EXTRACT",
                         help="write only trainers.txt, from an extracted version such as extract/b2_us")
+    parser.add_argument("--only", metavar="LIST",
+                        help="write only this list of the game's text, such as natures, since the lists are edited "
+                             "by hand after")
+    parser.add_argument("--trades", type=Path, metavar="EXTRACT",
+                        help="write only trades.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--encounters", type=Path, metavar="EXTRACT",
                         help="write only encounters.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--zones", type=Path, metavar="EXTRACT",
@@ -277,12 +299,17 @@ def main():
     if args.encounters:
         write_list(args.output / "encounters.txt", encounter_names(args.encounters),
                    "Wild encounter tables, by the place of the first zone that has them, numbered where places repeat")
-    if args.trainer_classes or args.trainers or args.zones or args.encounters:
+    if args.trades:
+        write_list(args.output / "trades.txt", trade_names(args.trades),
+                   "In-game trades, by the species offered, numbered where they repeat")
+    if args.trainer_classes or args.trainers or args.zones or args.encounters or args.trades:
         return
-    if args.sdat:
+    if args.sdat and not args.only:
         write_sound_list(args.output / "sound.txt", args.sdat.read_bytes())
 
     for list_file, prefix, file, count, description in TABLES:
+        if args.only and list_file != f"{args.only}.txt":
+            continue
         lines = read_archive_file(args.archive, file)[:count]
         overrides = OVERRIDES.get(prefix, {})
         names = {}

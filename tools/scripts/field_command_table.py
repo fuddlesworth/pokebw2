@@ -194,6 +194,7 @@ SINKS = {
     ("EventMapChangeDiveIn_Create", 1): "zone", ("EventMapChangeWarpPad_Create", 2): "zone",
     ("EventEntralinkWarpIn_Create", 1): "zone", ("EventMapChangeFakeWarp_Create", 2): "zone",
     ("EventMapChangeEnding_Create", 2): "zone",
+    ("FieldTradeInput_Create", 1): "trade",
 }
 
 

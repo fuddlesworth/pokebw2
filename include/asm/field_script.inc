@@ -7,6 +7,7 @@
 #include "constants/moves.h"
 #include "constants/sound.h"
 #include "constants/species.h"
+#include "constants/trades.h"
 #include "constants/trainers.h"
 #include "constants/types.h"
 #include "constants/vars.h"

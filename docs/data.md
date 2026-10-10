@@ -30,6 +30,7 @@ format and can write them again.
 | `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `data/trainers/` (JSON) | Trainers, their parties, and the table of their messages | `tools/scripts/trainer_data.py` |
 | `a/1/2/6` | `data/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/scripts/event_data.py` |
 | `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
+| `a/1/6/3` | `data/trades/` (JSON) | In-game trades | `tools/scripts/trade_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
@@ -38,13 +39,13 @@ The text archives are packed by `text_data.py` from text files rather than assem
 ## Constant lists
 
 The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences, trainer
-classes, trainers, zones, wild encounter tables, event flags and event variables, are lists in `data/constants/`, one
-name per line. They are the source of truth: to add one, add it to its list, and to rename one, use
-`tools/scripts/rename_constant.py OLD NEW`, which renames its uses too, and its data file where the data is named after
-it. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`, which is on the
-include path, so the C code, the data sources and the scripts all use the same names, and the generated header can never
-disagree with its list. A line is a constant's full name, which takes the previous value plus one, or `NAME = value`
-(decimal or `0x` hex); `#` starts a comment.
+classes, trainers, zones, wild encounter tables, in-game trades, natures, event flags and event variables, are lists in
+`data/constants/`, one name per line. They are the source of truth: to add one, add it to its list, and to rename one,
+use `tools/scripts/rename_constant.py OLD NEW`, which renames its uses too, and its data file where the data is named
+after it. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`, which is on
+the include path, so the C code, the data sources and the scripts all use the same names, and the generated header can
+never disagree with its list. A line is a constant's full name, which takes the previous value plus one, or `NAME =
+value` (decimal or `0x` hex); `#` starts a comment.
 
 ```
 # Species, by national Pokédex number (bootstrapped from the ROM by make_constants.py)
@@ -119,6 +120,7 @@ Egg and Bad Egg after the species' names:
 | `0374_ability_names.txt` | `\from{abilities.name}` | Each ability's `name` |
 | `0375_ability_descriptions.txt` | `\from{abilities.description}` | Each ability's `description` |
 | `0398_type_names.txt` | `\from{types.name}` | Each type's `name` |
+| `0037_trade_names.txt` | `\from{trades.names}` | Each trade's `nickname` and `trainer_name` |
 | `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
 | `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
 
@@ -426,6 +428,17 @@ A header names the zone's map, its scripts and script messages, its music (`SEQ_
 encounter table (an `ENCOUNTERS_*` constant, or null), the zone it belongs to, its place name, its default weather and
 camera, its battle background, what it allows (cycling, Escape Rope, flying from it), and where flying lands. Both
 versions have the same zone headers.
+
+## In-game trades
+
+Each in-game trade is `data/trades/<trade>.json`, named after its constant in `data/constants/trades.txt`, which names
+the trades after the species they offer (`petilil.json` for `TRADE_PETILIL`). It holds the offer that
+`EventFieldTrade_CreatePkm` makes the Pokémon from (`a/1/6/3`, `FieldTradeOfferData` in `include/field/fld_trade.h`)
+and the Pokémon's nickname and trainer's name, which the text takes (see [Text](#text)).
+`tools/scripts/trade_data.py pack` builds the archive in the order of the list, numbering each offer and its two
+names' message IDs from its place, and `data/trades/trade.schema.json` documents each field: the IVs, nature and sex
+are null for random ones. The field scripts name the trades they start, as `FieldTradeCheck 0x8022, TRADE_GIGALITH,
+0x8020`. Both versions have the same trades.
 
 ## Zone events
 

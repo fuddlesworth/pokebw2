@@ -3381,6 +3381,11 @@
     "var",
     "any",
     "any"
+   ],
+   "meanings": [
+    null,
+    "trade",
+    null
    ]
   },
   "449": {
@@ -5105,6 +5110,10 @@
    "args": [
     "var",
     "any"
+   ],
+   "meanings": [
+    null,
+    "trade"
    ]
   },
   "706": {

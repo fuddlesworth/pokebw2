@@ -27,6 +27,7 @@ NAMED_DATA = [
     ("items", "data/items", "ITEM_", "/"),
     ("abilities", "data/abilities", "ABILITY_", ".json"),
     ("types", "data/types", "TYPE_", ".json"),
+    ("trades", "data/trades", "TRADE_", ".json"),
     ("trainers", "data/trainers", "TRAINER_", ".json"),
     ("encounters", "data/encounters", "ENCOUNTERS_", ".json"),
     ("zones", "data/zones", "ZONE_", ".json"),

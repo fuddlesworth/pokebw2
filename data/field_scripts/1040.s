@@ -63,7 +63,7 @@ L_0083:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0134
     WorkSetConst 0x8022, 0
-    FieldTradeCheck 0x8022, 24, 0x8020
+    FieldTradeCheck 0x8022, TRADE_PETILIL, 0x8020
     VMStackPush 0x8022
     VMStackPushConst 0
     VMStackCmp CMP_EQ

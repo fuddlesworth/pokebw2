@@ -88,6 +88,11 @@ def validated(list_name: str, directory: str, prefix: str, schema_name: str, ski
 
 
 @cache
+def trades() -> list[dict]:
+    return [read(ROOT / "data/trades" / (name.removeprefix("TRADE_").lower() + ".json")) for name in ordered("trades")]
+
+
+@cache
 def trainers() -> dict[str, dict]:
     """The trainers' files by constant, in the order of trainers.txt, without TRAINER_NONE, which has none."""
     return {name: read(ROOT / "data/trainers" / (name.removeprefix("TRAINER_").lower() + ".json"))
@@ -163,6 +168,8 @@ SOURCES = {
     "abilities.name": lambda: [to_line(data["name"]) for data in abilities()],
     "abilities.description": lambda: [to_line(data["description"]) for data in abilities()],
     "types.name": lambda: [to_line(data["name"]) for data in types()],
+    # Two lines per trade, its nickname and its trainer's name, the message IDs trade_data.py gives it
+    "trades.names": lambda: [to_line(data[key]) for data in trades() for key in ("nickname", "trainer_name")],
     "trainers.name": lambda: [("\\c" if data.get("compress_name", True) else "") + to_line(data["name"])
                               for data in trainers().values()],
     "trainers.messages": trainer_messages,

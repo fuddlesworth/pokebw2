@@ -150,6 +150,7 @@ DATA_PACKS = [
     ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
     ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False),  # Zone headers
+    ("tools/scripts/trade_data.py", "data/trades", ["a/1/6/3"], False),  # In-game trades
     # The zones' events, at the numbers of their entities files, which the zone headers give
     ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False, ["data/zones"]),
 ]
@@ -160,7 +161,8 @@ DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py"
                    "src/ov036/scrcmd_shop.c"]
 
 # The data in JSON that the text takes messages from, with \from{...} lines (tools/scripts/text_sources.py)
-TEXT_DATA_DIRS = ["data/pokemon", "data/moves", "data/items", "data/trainers", "data/abilities", "data/types"]
+TEXT_DATA_DIRS = ["data/pokemon", "data/moves", "data/items", "data/trainers", "data/abilities", "data/types",
+                  "data/trades"]
 
 # Text archives built from source, by tools/scripts/text_data.py: each maps its path under files/ to the directory of its
 # message files, one text file each, in archive order

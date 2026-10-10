@@ -43,6 +43,7 @@ CONSTANTS = {
     "sound": ("constants/sound.h", "SEQ_"),
     "trainer": ("constants/trainers.h", "TRAINER_"),
     "zone": ("constants/zones.h", "ZONE_"),
+    "trade": ("constants/trades.h", "TRADE_"),
     "flag": ("constants/flags.h", "EVENT_FLAG_"),
     # Not a meaning: the names of the event work variables, wherever an argument takes a variable
     "var": ("constants/vars.h", "EVENT_WORK_"),
