@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You may not find treasure by digging, but\nyou've still made a new road in the end.{be01}\nAugh, you caught me saying something\nmushy! Battle will hide my shame!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Phew...\nThat was enough for me to overlook it."
         },
         {

@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You bothered to come all the way here?{be01}\nGood! I will reward your hard work by\nbattling with all of my strength!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "A battle with a good Trainer fills my heart\nwith warmth."
         },
         {

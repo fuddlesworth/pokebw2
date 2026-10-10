@@ -6,6 +6,7 @@
 #include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/trainer_classes.h"
+#include "constants/trainer_messages.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
@@ -29,10 +30,6 @@
 #define TRMSG_BATTLE_INST_START_FILE 51
 #define TRMSG_BATTLE_INST_LOSE_FILE 50
 
-// The messages a Battle Institute trainer has
-#define TRMSG_START 0
-#define TRMSG_LOSE 1
-#define TRMSG_WIN 8
 
 // The Battle Institute's trainers' records: the trainers from 620 to 639 share one, and all the others another
 #define TRDATA_BATTLE_INST_GROUP_START 620

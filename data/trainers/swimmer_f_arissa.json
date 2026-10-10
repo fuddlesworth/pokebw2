@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Seeing a Pokémon use its best moves\nagainst another Pokémon{be00}\nis really an adventure!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The adventure is over already."
         },
         {

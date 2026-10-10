@@ -43,11 +43,11 @@
             "text": "A Rotation Battle is a battle using\nthree Pokémon!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "In Rotation Battles, it's also important\nto know when NOT to rotate.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I've been training for Rotation Battles for\ntwo years now, but it's still not enough..."
         },
         {

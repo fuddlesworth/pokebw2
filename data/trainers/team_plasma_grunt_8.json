@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I tried to use the same combination as\nyou, and yet..."
         }
     ]

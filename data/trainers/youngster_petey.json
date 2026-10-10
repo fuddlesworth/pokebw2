@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Feel this boiling spirit!\nMy Patrat is gonna amaze you!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh, this wilting spirit...\nIt wasn't supposed to end this way..."
         },
         {

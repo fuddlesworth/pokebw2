@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The sounds of gently crashing waves...\nThe smell of salt in the air...{be00}\nAnd a battle with a Trainer{be00}\nin the prime of youth!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Simply excellent!\nThat's what being young is all about!"
         },
         {

@@ -32,7 +32,7 @@
             "text": "The two of us make an amazing\ncombination! Let's battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Sola: Our amazing combination\nhad no impact on you!{be01}\nAna: I can't believe it! We should\nhave been perfect, but we lost!"
         },
         {

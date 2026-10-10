@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "When you embark on a journey, you\ndiscover many joys...{be00}\nWhat will I discover fighting you?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The joy of victory and sorrow of defeat--\nboth gone in an instant..."
         },
         {

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I just won a battle back there, so I'm\nfeeling good!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh, whatever!\nI'm in a terrible mood now!"
         },
         {

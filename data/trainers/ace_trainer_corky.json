@@ -40,11 +40,11 @@
             "text": "The magic number is three! You need\nthree healthy Pokémon who can fight!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Behold the destructive force created\nby my three prized Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your combined force as a team is greater\nthan ours!"
         },
         {

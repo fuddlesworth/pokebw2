@@ -40,11 +40,11 @@
             "text": "If only you had three Pokémon that were\nready for battle!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Oh! You look pretty good!\nLet's play some pickup!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "That's game!\nYou totally crushed me."
         },
         {

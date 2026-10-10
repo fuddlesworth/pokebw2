@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My training will never betray me. After\ntraining this much, I am certain to win!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...How can that be?\nEven after I trained so much!"
         },
         {

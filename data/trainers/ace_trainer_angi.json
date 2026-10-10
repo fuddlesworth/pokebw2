@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "To battle in a high-up place...{be01}\nThis is the perfect situation for\nan Ace Trainer such as I!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "To tell the truth...\nI'm actually afraid of heights..."
         },
         {

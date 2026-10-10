@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You need a Nurse's help?{be01}\nSure, if you can win against me,\nI'll make your Pokémon healthy!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Come on!\nYour team is really healthy!"
         },
         {

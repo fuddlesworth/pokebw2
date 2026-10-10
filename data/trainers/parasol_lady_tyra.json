@@ -43,11 +43,11 @@
             "text": "Triple Battles use three Pokémon!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "If you turn a parasol around,\nit's like a flower blossoming in the rain!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Whee! I'll spin around my parasol and send\nsome water droplets flying your way!"
         },
         {

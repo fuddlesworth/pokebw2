@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Let me tell you about the strength\nof the team you create when{be00}\nyou put a strong Pokémon at the core.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...You taught me!\nYou are great!"
         },
         {

@@ -32,7 +32,7 @@
             "text": "We'll put together our power to fight!\nTwo is better than one!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Rae: You're even more in sync than we are!{be01}\nUla: Boo-hoo-hooo! We lost!"
         },
         {

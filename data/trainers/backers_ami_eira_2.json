@@ -32,7 +32,7 @@
             "text": "Hit a home run!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ami: We're slammed.{be01}\nEira: I'm going home."
         },
         {

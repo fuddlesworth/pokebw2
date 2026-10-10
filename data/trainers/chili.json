@@ -42,7 +42,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Chili: Augh! You got me!\nYou and your Pokémon are on fire!"
         }
     ]

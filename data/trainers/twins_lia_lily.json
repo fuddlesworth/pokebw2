@@ -32,7 +32,7 @@
             "text": "Two Pokémon!{be01}\nStrong and strong come together\nto become...very strong!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Lia: Wahh! My Pokémon can't fight\nany longer?{be01}\nLily: Uh oh... My Pokémon isn't\nlooking so well..."
         },
         {

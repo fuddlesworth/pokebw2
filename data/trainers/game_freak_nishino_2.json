@@ -72,7 +72,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ah... I see...\nThat was quite well thought out."
         }
     ]

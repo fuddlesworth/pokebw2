@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I love raised walkways!{be01}\nBalancing is fun,\nso I often come here to play.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I lost,\nbut I won't stop!"
         },
         {

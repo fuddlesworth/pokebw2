@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "It's not just our outfits that have\nchanged around here!{be01}\nWe're not living for the Pokémon anymore,\nbut for ourselves!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Whyyyy...?"
         },
         {

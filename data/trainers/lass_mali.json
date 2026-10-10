@@ -52,11 +52,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Now dance gracefully!\nBring forth your beautiful moves!{be00}\nLet us perform, my lovely Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Even though they lost,\nmy Pokémon are still cute!"
         },
         {

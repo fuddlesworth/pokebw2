@@ -108,9 +108,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1268,
+            "flag": "0x04f4",
             "script": 7168,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -127,9 +127,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1262,
+            "flag": "0x04ee",
             "script": 7162,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -148,7 +148,7 @@
             "type": 1,
             "flag": 0,
             "script": 3472,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 4, 0, 0 ],
             "area": {
                 "width": 0,
@@ -167,7 +167,7 @@
             "type": 1,
             "flag": 0,
             "script": 3471,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 3, 0, 0 ],
             "area": {
                 "width": 0,
@@ -186,7 +186,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -205,7 +205,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -224,7 +224,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -243,7 +243,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -262,7 +262,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -281,7 +281,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -300,7 +300,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

@@ -32,7 +32,7 @@
             "text": "Olé, olé, oléeee!\nThis is the fan song I wrote!{be01}\nThe Pokémon listening to this song\ntry harder than usual!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Kay: Olé, olé...\nHuh? It's over.{be01}\nAli: You are very strong!"
         },
         {

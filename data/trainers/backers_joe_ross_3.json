@@ -32,7 +32,7 @@
             "text": "Whoosh! Whoosh!\nI can fight like that!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Joe: Fffffft...\nFffffft, fffffft... The ball needs air.{be01}\nRoss: Faaaault!\nI missed a serve!"
         },
         {

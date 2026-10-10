@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The forest is full of little hollows and\nhillocks, and walking in it is so fun!{be01}\nAnd you know, having Pokémon battles is\neven more fun!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your Pokémon are soooo cool!"
         },
         {

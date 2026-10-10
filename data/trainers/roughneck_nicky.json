@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Get in my way, and I'll knock you out!\nStay out of my way...and I'll knock{be00}\nyou out, too!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I'm the one who got knocked out!\nThat was exhilarating!"
         },
         {

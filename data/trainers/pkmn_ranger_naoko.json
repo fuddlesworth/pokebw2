@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Surprised? That's when I'll make my move!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Just as I'd expect!\nYou're ready for anything, aren't you?"
         },
         {

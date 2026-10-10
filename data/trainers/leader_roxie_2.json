@@ -50,7 +50,7 @@
             "text": "It's not over yet! Time to turn\nthis show around for a victory!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Wait!\nI was right in the middle of the chorus!"
         }
     ]

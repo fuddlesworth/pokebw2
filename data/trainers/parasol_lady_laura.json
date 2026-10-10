@@ -21,11 +21,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "A woman standing alone with a parasol\nin one hand at the beach...{be00}\nHi... Please have a battle with me.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The parasol can block ultraviolet rays,\nbut it can't block moves..."
         },
         {

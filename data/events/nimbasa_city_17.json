@@ -7,9 +7,9 @@
             "model": 17,
             "movement": 15,
             "type": 0,
-            "flag": 896,
+            "flag": "0x0380",
             "script": 9,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -26,9 +26,9 @@
             "model": 13,
             "movement": 15,
             "type": 0,
-            "flag": 895,
+            "flag": "0x037f",
             "script": 8,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -47,7 +47,7 @@
             "type": 0,
             "flag": 0,
             "script": 15,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -66,7 +66,7 @@
             "type": 0,
             "flag": 0,
             "script": 16,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -85,7 +85,7 @@
             "type": 0,
             "flag": 0,
             "script": 18,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 2,
@@ -104,7 +104,7 @@
             "type": 0,
             "flag": 0,
             "script": 17,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 1,
@@ -136,7 +136,7 @@
     "triggers": [
         {
             "script": 2,
-            "var": 16395,
+            "var": "0x400b",
             "value": 0,
             "type": 0,
             "grid": {
@@ -150,7 +150,7 @@
         },
         {
             "script": 3,
-            "var": 16396,
+            "var": "0x400c",
             "value": 0,
             "type": 0,
             "grid": {
@@ -164,7 +164,7 @@
         },
         {
             "script": 4,
-            "var": 16397,
+            "var": "0x400d",
             "value": 0,
             "type": 0,
             "grid": {
@@ -178,7 +178,7 @@
         },
         {
             "script": 5,
-            "var": 16398,
+            "var": "0x400e",
             "value": 0,
             "type": 0,
             "grid": {

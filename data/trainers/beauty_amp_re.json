@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The show is approaching its grand finale,\nbut first I need to check if you've got{be00}\nwhat it takes to stand on the same{be00}\nstage as Elesa!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Such strength and beauty!{be01}\nYou've got what it takes to\nshare the stage with Elesa!"
         },
         {

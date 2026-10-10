@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Pokémon Trainers nurture friendship\nwith their battles!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "This feeling of defeat...\nis like a bottomless swamp..."
         },
         {

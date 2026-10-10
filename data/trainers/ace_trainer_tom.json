@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "An Ace Trainer like me has pride,\nso I won't lose!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I could not protect my pride.\nI'm mortified!"
         },
         {

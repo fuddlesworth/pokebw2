@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey! It's me! It's me!\nI am the best Pilot in Unova!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You! You are daring!\nBe my apprentice!"
         },
         {

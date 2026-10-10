@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Welcome!{be01}\nWould you like a cold drink\nwith your Pokémon battle?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "That was a wonderful battle.\nBravo!"
         },
         {

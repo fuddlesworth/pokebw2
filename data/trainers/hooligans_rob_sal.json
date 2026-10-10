@@ -32,7 +32,7 @@
             "text": "Hey, hey!\nWe'll take care of you!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Rob: My...my cute little Pokémon!{be01}\nSal: My baby lost!"
         },
         {

@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "...Are you sure you want someone like me?\nOne moping around in a place like this?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "If only he was also as strong as you are..."
         },
         {

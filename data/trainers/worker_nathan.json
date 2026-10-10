@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Speaking of which, it's been quite some time\nsince I last had a Pokémon battle."
         }
     ]

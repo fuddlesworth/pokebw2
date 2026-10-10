@@ -32,7 +32,7 @@
             "text": "If you win, I will tell you\nwhy I like basketball!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Kat: Come on!{be01}\nPhae: Look! Even though we lost,\nthe ball is still spinning!"
         },
         {

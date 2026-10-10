@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'm proud of my Pokémon, which\nI raised with love and care!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Looks like I lost to you in the\nlove-and-care department... You're amazing!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "O Trainer, embarking on the path to\nVictory Road!{be01}\nWon't you show me your true power?!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You didn't have to show me quite that\nmuch power..."
         },
         {

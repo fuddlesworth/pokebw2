@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I am not running now,\nbut I usually barrel through{be00}\nas quickly as I can!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I have not crossed\nthe finish line of victory!"
         },
         {

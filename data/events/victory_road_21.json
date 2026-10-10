@@ -148,9 +148,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1314,
+            "flag": "0x0522",
             "script": 7214,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -167,9 +167,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1307,
+            "flag": "0x051b",
             "script": 7207,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

@@ -21,11 +21,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "It's “The Waving Weaving Walk\"--\nWawalk for short!{be01}\nI wonder what kind of Pokémon\nwe'll meet today?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your Pokémon have good Abilities,\ndon't they?"
         },
         {

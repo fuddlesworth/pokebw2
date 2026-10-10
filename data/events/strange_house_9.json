@@ -9,7 +9,7 @@
             "type": 1,
             "flag": 0,
             "script": 3391,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 3, 0, 0 ],
             "area": {
                 "width": 0,

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You're getting annoyed by the Plasma\nFrigate's gimmicks, aren't you?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Arghhhh!\nI'm so super annoyed!"
         },
         {

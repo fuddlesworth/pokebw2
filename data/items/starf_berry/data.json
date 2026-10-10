@@ -13,7 +13,7 @@
     "natural_gift_type": "TYPE_PSYCHIC",
     "important": false,
     "registrable": false,
-    "field_pocket": 3,
+    "field_pocket": "BAG_POCKET_BERRIES",
     "battle_pocket": 0,
     "field_func": 8,
     "battle_func": 0,

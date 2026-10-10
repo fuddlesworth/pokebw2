@@ -13,7 +13,7 @@
     "natural_gift_type": null,
     "important": true,
     "registrable": false,
-    "field_pocket": 2,
+    "field_pocket": "BAG_POCKET_TMS_HMS",
     "battle_pocket": 0,
     "field_func": 6,
     "battle_func": 0,

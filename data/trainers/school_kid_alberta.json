@@ -21,7 +21,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ahhh! I've got my precious Litwick, so how\ncould I possibly lose?"
         }
     ]

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Even Socialites enjoy sports,\nin a very elegant way!{be01}\nA Pokémon battle is\na sport in a way!{be00}\nLet's fight elegantly!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "O-ho-ho!\nI lost so elegantly."
         },
         {

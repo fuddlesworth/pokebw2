@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I've been waiting for this!\nWaiting for this very moment!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I had been waiting for such a strong Trainer\nas yourself!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Those footsteps I have heard drawing\nnear... I have been waiting for you!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I knew as soon as I heard your footfalls\nthat you were a force to be reckoned with!"
         },
         {

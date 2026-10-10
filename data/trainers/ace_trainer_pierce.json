@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "One, you are a Pokémon Trainer.\nTwo, I am an Ace Trainer.{be01}\nPut them together, and it's obvious that\nwe are going to battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "One, you won!\nTwo, I lost..."
         },
         {

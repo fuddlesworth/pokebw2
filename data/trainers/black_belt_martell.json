@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "All right! You look like an opponent who\nwill really highlight my weaknesses!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Now I see my faults clearly! If I can work\non them, I'll be even stronger!"
         },
         {

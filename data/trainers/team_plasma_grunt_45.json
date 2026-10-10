@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What a blunder to have made\nin front of Zinzolin..."
         }
     ]

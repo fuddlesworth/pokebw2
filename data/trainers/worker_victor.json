@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "See the combination of my cool Ice-type\nPokémon and my hot fighting spirit!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It looks like you can also make an\nice-and-heat combination!"
         },
         {

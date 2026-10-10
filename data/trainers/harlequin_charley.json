@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Sports and juggling are the same.\nYou must entertain the audience!{be00}\nI will show you the fruits of my practice.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "While I am having a Pokémon battle,\nI catch 10 balls!"
         },
         {

@@ -44,11 +44,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Backpackers are exactly what they\nsound like.{be01}\nThey set out on the road with only\nthe packs on their backs and the Pokémon{be00}\nin their Poké Balls!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I wish I could pack some wins in my\nbackpack, too..."
         },
         {

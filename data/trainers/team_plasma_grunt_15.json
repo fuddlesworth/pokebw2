@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hi there! I'm a Pokémon thief by trade!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hmph!\nI missed my chance to grab your Pokémon!"
         },
         {

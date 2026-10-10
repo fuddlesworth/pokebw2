@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey! Trainer!{be01}\nI will strike you from above.\nMy attack has a height!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "That's right.\nThe Pokémon do the fighting, not me..."
         },
         {

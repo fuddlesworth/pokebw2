@@ -32,7 +32,7 @@
             "text": "I love to watch professionals play!\nYaaaay! I won't lose, either!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ai: What?\nDid we lose...?{be01}\nCiel: Ouch... I knew watching a game and\nplaying it are different!"
         },
         {

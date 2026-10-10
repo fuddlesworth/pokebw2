@@ -39,7 +39,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It doesn't bother us a bit if Pokémon\nwin or lose."
         }
     ]

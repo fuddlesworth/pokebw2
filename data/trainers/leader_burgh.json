@@ -50,7 +50,7 @@
             "text": "Mmm... I've got a bad feeling about this!\nCould I be in trouble?"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hmm... It's over!\nYou're incredible!"
         }
     ]

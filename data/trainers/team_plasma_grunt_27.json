@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "How about we see how well I can use this\nPokémon I got!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Plasmaaaa!\n...Hmph! No good, huh?"
         },
         {

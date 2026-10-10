@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "No matter how desperately I try to scoop\nup the sand, it flows through my fingers.{be00}\nIt's kind of sad somehow...{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Victory slips away...\nYes, just like the sand..."
         },
         {

@@ -42,7 +42,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Cress: Lose? Me?\nI don't believe this!"
         }
     ]

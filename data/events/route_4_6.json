@@ -9,7 +9,7 @@
             "type": 0,
             "flag": 0,
             "script": 1,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -28,7 +28,7 @@
             "type": 0,
             "flag": 0,
             "script": 2,
-            "direction": 3,
+            "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 2,
@@ -45,9 +45,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1151,
+            "flag": "0x047f",
             "script": 7051,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

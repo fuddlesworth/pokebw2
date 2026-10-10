@@ -32,7 +32,7 @@
             "text": "Boom-boom-badum! Ha! Boom-boom-badum!\nListen to the fans' drumbeat!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Les: Thank you for listening to the beat\nof our spirit!{be01}\nWeb: Thank you for listening to the yell\nof our spirit!"
         },
         {

@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey, Trainer! Let's have a refreshing\nbattle and blow away all my troubles!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You guys...\nYou feel like an unbeatable combination."
         },
         {

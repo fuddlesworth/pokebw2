@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You sure are unlucky to have\nrun into someone as strong as me!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I guess it was I who was unlucky\nto have run into you!"
         },
         {

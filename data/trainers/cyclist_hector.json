@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "When I'm riding my Bicycle, don't\nyou think I look stronger?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The cool breeze in my face stopped!\nSo did my Bicycle!"
         },
         {

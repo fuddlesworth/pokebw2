@@ -36,7 +36,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The three Pokémon you picked...\nThey gave me a run for my money!"
         }
     ]

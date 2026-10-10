@@ -33,11 +33,14 @@
                     "movement": { "$ref": "#/$defs/u16", "description": "How it moves, its move code" },
                     "type": { "$ref": "#/$defs/u16", "description": "What kind of event it is, such as a trainer" },
                     "flag": {
-                        "type": [ "string", "integer" ], "x-constant": "EVENT_FLAG_", "minimum": 0, "maximum": 65535,
-                        "description": "Its spawn flag (swan's spawnFlag), an EVENT_FLAG_* constant or a number"
+                        "type": [ "string", "integer" ], "x-constant": "EVENT_FLAG_", "x-hex": true, "minimum": 0, "maximum": 65535,
+                        "description": "Its spawn flag (swan's spawnFlag): an EVENT_FLAG_* constant, or the flag's ID in hex, as \"0x03d0\", or 0 for none"
                     },
                     "script": { "$ref": "#/$defs/u16", "description": "The script it runs" },
-                    "direction": { "$ref": "#/$defs/u16" },
+                    "direction": {
+                        "type": [ "string", "integer" ], "x-constant": "DIR_", "minimum": 0, "maximum": 65535,
+                        "description": "The direction it faces, a DIR_* constant"
+                    },
                     "params": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/u16" } },
                     "area": {
                         "type": "object", "additionalProperties": false, "required": [ "width", "height" ],
@@ -152,8 +155,8 @@
         "s16": { "type": "integer", "minimum": -32768, "maximum": 32767 },
         "s32": { "type": "integer", "minimum": -2147483648, "maximum": 2147483647 },
         "var": {
-            "type": [ "string", "integer" ], "x-constant": "EVENT_WORK_", "minimum": 0, "maximum": 65535,
-            "description": "An event variable, an EVENT_WORK_* constant or a number"
+            "type": [ "string", "integer" ], "x-constant": "EVENT_WORK_", "x-hex": true, "minimum": 0, "maximum": 65535,
+            "description": "An event variable, from 0x4000: an EVENT_WORK_* constant, or its ID in hex, as \"0x4176\"; or a smaller number"
         },
         "bg_grid": {
             "type": "object", "additionalProperties": false, "required": [ "x", "y", "z" ],

@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Heavy labor is a breeze when you let a\nPsychic-type Pokémon take care of it!{be01}\nNow I can slack off and take it easy!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh, I see... If a Trainer starts slacking,\nit'll be his or her Pokémon that suffer."
         },
         {

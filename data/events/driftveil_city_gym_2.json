@@ -40,7 +40,7 @@
             "type": 0,
             "flag": 0,
             "script": 5,
-            "direction": 3,
+            "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

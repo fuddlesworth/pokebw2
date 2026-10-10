@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Our battle will surely be worth a\npage in the book of your journey!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "If only I could have won, I would have\nbeen able to make an impression on you!"
         },
         {

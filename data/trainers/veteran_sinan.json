@@ -39,11 +39,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I came here because this place feels\nquite nostalgic to me...{be01}\nBut now I'd rather battle with you than\nstroll down memory lane!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I see... So that's it.\nI used to also be that focused long ago."
         },
         {

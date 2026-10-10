@@ -25,9 +25,9 @@
         "tough": 0
     },
     "held_item": "ITEM_RAGE_CANDY_BAR",
-    "trainer_gender": 1,
+    "trainer_gender": "GENDER_FEMALE",
     "unk54": 0,
     "region": 2,
     "wanted_species": "SPECIES_PIKACHU",
-    "wanted_sex": 2
+    "wanted_sex": "GENDER_UNKNOWN"
 }

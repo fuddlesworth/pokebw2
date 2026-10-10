@@ -32,7 +32,7 @@
             "text": "I mainly play on offense.\nMy friend is mainly defense.{be01}\nI will show you the teamwork\nof football fans!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Cam: The teamwork of your Pokémon\nis outstanding!{be01}\nAbby: I'm super impressed!"
         },
         {

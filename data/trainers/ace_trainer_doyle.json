@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "How do you like riding on leaves?{be01}\nIf you manage to beat me, I'll teach\nyou something good. You'll see!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I lost? Now I just want to climb aboard\na leaf and be swept away somewhere..."
         },
         {

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey! What kinds of great Pokémon\nhave you caught?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ho ho!\nThese are some impressive Pokémon!"
         },
         {

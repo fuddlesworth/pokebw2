@@ -32,7 +32,7 @@
             "text": "Hey, hey, what have we here, boys?{be01}\nYou have good Pokémon.\nLet me see!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Jim: Ah, I get it!\nThat's what you call friendship, huh?{be01}\nCas: Huh? You're saying the friendship\nbetween us bad dudes isn't good enough?"
         },
         {

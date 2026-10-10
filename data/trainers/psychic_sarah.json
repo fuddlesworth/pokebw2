@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "...I still want to fight!{be01}\nThe wandering spirits are\nstill commanding me!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hah... Hah...\nThe spirit just left me."
         },
         {

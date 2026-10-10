@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I will use Team Plasma's science to bring\nout my Pokémon's greatest power!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Why are you strong? You're just a normal\nperson...not even that! You're just a kid!"
         },
         {

@@ -64,7 +64,7 @@
             "text": "Ohhh, that's it! I'll go all out if it'll get\nme a win!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You and your Pokémon are\nboth excellent and elegant.{be01}\nTo have been able to battle against\nsuch a splendid team...{be01}\nMy Pokémon and I learned a lot!\nI offer you my thanks."
         }
     ]

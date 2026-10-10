@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Haaah... Whoooosh...\nHaaah... Whoooosh...{be01}\nOK! After deep-breathing exercises\ncomes the time for a Pokémon battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "All that I can do now is sigh in sorrow..."
         },
         {

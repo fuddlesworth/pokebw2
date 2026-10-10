@@ -44,11 +44,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I love Bug-type Pokémon, and I love\nbug catching!{be01}\nOf course I looove Pokémon battles, too!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I won't lose to anyone when it comes to bug\ncatching, yet I..."
         },
         {

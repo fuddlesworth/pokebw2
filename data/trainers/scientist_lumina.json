@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The sewer and this Relic Passage...{be01}\nIs it really simple coincidence that they\nexist so close to each other?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "No, there must be a reason why...\nOh! When did I lose?"
         },
         {

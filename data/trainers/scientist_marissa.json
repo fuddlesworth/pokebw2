@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I shall uncover the mechanism behind\nTrainer and Pokémon relationships!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Why are Pokémon able to understand\ntheir Trainer's orders?"
         },
         {

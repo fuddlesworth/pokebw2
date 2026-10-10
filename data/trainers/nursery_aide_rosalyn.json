@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hear the cry of my heart!{be01}\n“Everyone, SIT DOWN and SHUT UP!\"{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hah... Hah... Hah... I feel a bit better now\nthat I've let that out."
         },
         {

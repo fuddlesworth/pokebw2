@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hi, hi! Trainer!{be01}\nI will let you see\nwhat kind of Pokémon I have!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oooh, quit bugging me!"
         },
         {

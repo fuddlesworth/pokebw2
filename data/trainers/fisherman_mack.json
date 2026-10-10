@@ -60,11 +60,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "If I don't live with my Pokémon, a\nFisherman like me won't be able to fish.{be00}\nI won't be able to battle either!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Right now I just feel like we're so lucky to\nhave Pokémon!"
         },
         {

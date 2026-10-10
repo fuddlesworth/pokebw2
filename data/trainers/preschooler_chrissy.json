@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Roar!{be01}\nI'm a Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Quit it!{be01}\nI'm not really a Pokémon!"
         },
         {

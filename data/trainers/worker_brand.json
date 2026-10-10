@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Keep on digging! We'll keep digging until\nwe reach the underworld!{be01}\nHey, you! If I beat you in battle, you've\ngot to help with the digging!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Urk!\nYou don't pull your punches!"
         },
         {

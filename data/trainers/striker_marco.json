@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I have great footwork with the ball.\nPoké Balls, too. See?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "After I let Pokémon out of\nPoké Balls... Well, I am still practicing..."
         },
         {

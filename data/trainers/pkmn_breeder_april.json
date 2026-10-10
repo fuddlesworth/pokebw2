@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Going through trials is the best for\ngrowing stronger!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You were the perfect trial!\nI mean, come on, you're so strong!"
         },
         {

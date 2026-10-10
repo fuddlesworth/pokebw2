@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from datajson import DataError, label, load, load_schema, name, value, write  # noqa: E402
+from datajson import DataError, id_name, label, load, load_schema, name, value, write  # noqa: E402
 from gen_constants import load as load_list  # noqa: E402
 from narc import read_narc, write_narc  # noqa: E402
 
@@ -50,7 +50,8 @@ def zone_files() -> dict[int, str]:
 
 
 def var_name(var: int):
-    return name("EVENT_WORK_", var) if var >= 0x4000 else var
+    """A variable by its name, or in hex; a smaller ID is a number"""
+    return id_name("EVENT_WORK_", var) if var >= 0x4000 else var
 
 
 # Dumping
@@ -105,7 +106,8 @@ def events_json(data: bytes) -> dict:
         (uid, model, movement, kind, flag, script, direction, param0, param1, param2, width, height, is_rail,
          union) = NPC.unpack_from(data, pos)
         events["npcs"].append({"id": uid, "model": model, "movement": movement, "type": kind,
-                               "flag": name("EVENT_FLAG_", flag), "script": script, "direction": direction,
+                               "flag": id_name("EVENT_FLAG_", flag), "script": script,
+                               "direction": name("DIR_", direction),
                                "params": [param0, param1, param2], "area": {"width": width, "height": height},
                                **grid_or_rail(is_rail, union, *NPC_POSITION)})
         pos += NPC.size
@@ -185,7 +187,7 @@ def events_bytes(events: dict, where: str) -> bytes:
     for npc in events["npcs"]:
         is_rail, union = position_bytes(npc, NPC_POSITION, 8, where)
         records += NPC.pack(npc["id"], npc["model"], npc["movement"], npc["type"], value(npc["flag"], where),
-                            npc["script"], npc["direction"], *npc["params"], npc["area"]["width"],
+                            npc["script"], value(npc["direction"], where), *npc["params"], npc["area"]["width"],
                             npc["area"]["height"], is_rail, union)
     for warp in events["warps"]:
         is_rail, union = position_bytes(warp, WARP_POSITION, 12, where)

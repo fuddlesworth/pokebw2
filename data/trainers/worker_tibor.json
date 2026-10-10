@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The distance between winning and coming\nclose to winning is so close, yet so far!"
         }
     ]

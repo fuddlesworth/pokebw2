@@ -48,7 +48,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "That's right... We can't force Pokémon to\nbattle out of hatred..."
         }
     ]

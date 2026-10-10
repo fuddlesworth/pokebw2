@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey there!\nHave you seen any intruders?{be01}\nWait, you're not...?!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What an audacious Trainer you are, to waltz\nright into our Plasma Frigate!"
         },
         {

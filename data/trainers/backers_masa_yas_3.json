@@ -32,7 +32,7 @@
             "text": "Look at this buff body!\nAnd the Pokémon that support it!{be01}\nLet's have a Pokémon battle\nto show off my greatness!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Masa: The greatness of basketball...\nI think you got it.{be01}\nYas: Shall we curl up\nlike balls?"
         },
         {

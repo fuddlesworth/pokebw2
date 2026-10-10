@@ -7,9 +7,9 @@
             "model": 294,
             "movement": 13,
             "type": 1,
-            "flag": 976,
+            "flag": "0x03d0",
             "script": 3437,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 1, 0, 0 ],
             "area": {
                 "width": 0,
@@ -86,7 +86,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16713,
+                    "var": "0x4149",
                     "value": 1,
                     "script": 1
                 }

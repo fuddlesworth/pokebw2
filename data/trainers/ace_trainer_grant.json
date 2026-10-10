@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I keep a tally of all of the times that I\nhave won or lost up until today.{be01}\nIf I battle against you, I wonder which\nnumber will be increased.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "So my number of losses went up..."
         },
         {

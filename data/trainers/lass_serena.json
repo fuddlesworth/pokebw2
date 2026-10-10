@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "For knowledge to truly become your own,\nyou've got to test it out for yourself!"
         }
     ]

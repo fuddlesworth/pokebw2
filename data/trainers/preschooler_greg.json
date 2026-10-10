@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Teacher?{be01}\nOh, you're not Teacher!\nYou're a Trainer!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The tall grass is too...tall!"
         },
         {

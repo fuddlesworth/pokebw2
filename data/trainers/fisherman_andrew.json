@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "OK! Good catch! Good catch!\nMy next catch will be called victory!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The victory that got away\nwas thiiiiiiiiiis big!"
         },
         {

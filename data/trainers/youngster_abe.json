@@ -36,7 +36,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ugh!\nI can't take much more of this..."
         }
     ]

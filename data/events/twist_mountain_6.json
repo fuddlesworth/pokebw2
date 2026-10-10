@@ -268,9 +268,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1345,
+            "flag": "0x0541",
             "script": 7245,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

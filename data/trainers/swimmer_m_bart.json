@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I've been challenging the Pokémon Gyms\nall across the world!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I couldn't defeat them all, but I learned\na lot at the Gyms and became stronger!"
         },
         {

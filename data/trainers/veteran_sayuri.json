@@ -48,11 +48,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Wow, you have a lot of Badges.\nLet me see your skills!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "That fighting style reminds me\nof the old days!"
         },
         {

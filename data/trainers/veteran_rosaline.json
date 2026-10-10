@@ -39,11 +39,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Let me show you the Pokémon that I\nmet by fate!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The Pokémon that you've met are quite\nformidable, aren't they?"
         },
         {

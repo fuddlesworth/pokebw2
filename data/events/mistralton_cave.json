@@ -200,7 +200,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -219,7 +219,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -238,7 +238,7 @@
             "type": 0,
             "flag": 0,
             "script": 10000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -257,7 +257,7 @@
             "type": 1,
             "flag": 0,
             "script": 3680,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 4, 0, 0 ],
             "area": {
                 "width": 0,
@@ -276,7 +276,7 @@
             "type": 1,
             "flag": 0,
             "script": 3681,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 5, 0, 0 ],
             "area": {
                 "width": 0,
@@ -293,9 +293,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1179,
+            "flag": "0x049b",
             "script": 7079,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -312,9 +312,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1180,
+            "flag": "0x049c",
             "script": 7080,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -331,9 +331,9 @@
             "model": 32,
             "movement": 0,
             "type": 0,
-            "flag": 644,
+            "flag": "0x0284",
             "script": 2,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

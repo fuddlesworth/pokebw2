@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "If you win against me,\nI will give you something good{be00}\nfrom this backpack!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You are great!\nAnd strong!"
         },
         {

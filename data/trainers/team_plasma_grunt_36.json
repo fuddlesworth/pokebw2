@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "In my own way, I'm a strong part of this\nTeam Plasma group!{be00}\nPeople call me the Bisharp woman!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Great plans are\nalways interrupted."
         },
         {

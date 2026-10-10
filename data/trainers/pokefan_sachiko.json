@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hee hee! Hey, you! Check out\nmy Pokémon before you go!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What brilliant Pokémon!\nThank you for the battle!"
         },
         {

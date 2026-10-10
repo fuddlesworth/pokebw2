@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Just three more people!{be01}\nI won't leave this spot till I win against\nthree more people!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Whoa!\nYour Pokémon were amazing!!"
         },
         {

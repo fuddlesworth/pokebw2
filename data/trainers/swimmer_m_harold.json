@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I trained with Marlon,\nthe Gym Leader of Humilau City!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I still have room to improve!\nThanks for teaching me a lesson!"
         },
         {

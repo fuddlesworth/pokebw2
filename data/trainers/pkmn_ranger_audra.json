@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I choose a move, and\nmy Pokémon will do the move.{be01}\nIn a moment, that move will\nreach your Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I lost, but during the battle,\nwe were connected. Right?"
         },
         {

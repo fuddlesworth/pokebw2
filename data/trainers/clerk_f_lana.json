@@ -57,7 +57,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What... Can it be that love is even stronger\nthan hatred?"
         }
     ]

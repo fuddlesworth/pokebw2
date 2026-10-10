@@ -260,7 +260,7 @@
             "type": 0,
             "flag": 0,
             "script": 2000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -279,7 +279,7 @@
             "type": 0,
             "flag": 0,
             "script": 4,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -298,7 +298,7 @@
             "type": 0,
             "flag": 0,
             "script": 5,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -317,7 +317,7 @@
             "type": 0,
             "flag": 0,
             "script": 0,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -336,7 +336,7 @@
             "type": 0,
             "flag": 0,
             "script": 0,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -410,7 +410,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": 16651,
+            "var": "0x410b",
             "value": 0,
             "type": 0,
             "grid": {
@@ -440,7 +440,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16698,
+                    "var": "0x413a",
                     "value": 1,
                     "script": 11
                 }

@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Let's see you take a powerful attack\nfrom veteran Workers like us!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "We've trained by doing physical work.\nSo even when we lose, we're powerful!"
         },
         {

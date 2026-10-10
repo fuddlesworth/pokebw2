@@ -32,7 +32,7 @@
             "text": "Watching a practice makes you feel\nthat you are stronger, too,{be00}\ndoesn't it?{be00}\nSo let's have a battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hawk: ...I could not\ndo it well at all.{be01}\nDar: ...I could not\ndo it right at all."
         },
         {

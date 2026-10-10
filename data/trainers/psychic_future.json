@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hrmm... You're strong, aren't you?{be01}\nIt's kind of tough when you know that\nbefore you even start to fight.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Urk! It's almost as if I didn't have ESP...\nI can't do anything against you."
         },
         {

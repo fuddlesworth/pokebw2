@@ -48,11 +48,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I've asked myself if it really is natural\nfor Pokémon to live with people.{be01}\nI still haven't come up with an answer.{be01}\nBut we can still battle together!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "All sorts of feelings are stirred up\nby battling."
         },
         {

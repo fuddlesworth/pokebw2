@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'm the one who patrols Pinwheel Forest\nfrom one end to the other!{be00}\nA battle here is a piece of cake!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What a huge mistake to lose\na battle in Pinwheel Forest!"
         },
         {

@@ -57,11 +57,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey there, young Trainer!{be01}\nIf you're unsure about something,\nI'll happily act as your opponent!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Excellent!\nThis was a defeat I can't disagree with!"
         },
         {

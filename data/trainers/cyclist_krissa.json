@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Ting-a-ling-ling. ♪\nFull-speed attack, coming your way!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ting-a-ling-ling. ♪\nTing.♪ Ting-a-ling-ling. ♪"
         },
         {

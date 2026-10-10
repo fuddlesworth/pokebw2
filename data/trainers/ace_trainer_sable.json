@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The thing about water is that it's\nalways changing...{be01}\nFrom the piercing strength of a jet,\nto the crushing power of a wave...{be00}\nThat's what I'm about to show you!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What strength...{be01}\nYou're just as strong as Marlon...or\nperhaps even stronger...?!"
         },
         {

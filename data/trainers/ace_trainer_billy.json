@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Why don't you prove to me how much you\nand your Pokémon are capable of!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You are capable of far more than we are!\nThat has certainly been proven!"
         },
         {

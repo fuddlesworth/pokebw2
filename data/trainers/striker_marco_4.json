@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey, check this!\nTrap and...shoot!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hmm... My Pokémon don't come out any\nstronger even if I give the ball momentum?"
         },
         {

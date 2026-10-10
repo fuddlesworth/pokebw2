@@ -7,9 +7,9 @@
             "model": 229,
             "movement": 0,
             "type": 0,
-            "flag": 800,
+            "flag": "0x0320",
             "script": 1,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -28,7 +28,7 @@
             "type": 0,
             "flag": 0,
             "script": 2,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 2,
@@ -77,7 +77,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16601,
+                    "var": "0x40d9",
                     "value": 1,
                     "script": 3
                 }

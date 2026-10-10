@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Challenging the Pokémon League, huh?{be01}\nIt's no wonder you might feel a bit\nnervous, but you've just got to believe{be00}\nin your Pokémon and do it!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Am I really going to be all right with only\nthis trifling power...?"
         },
         {

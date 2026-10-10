@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I've found a strong-looking Trainer\nduring my patrol!{be00}\nGo, Sigilyph!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It is just as I had thought!\nA monstrously strong Trainer!"
         },
         {

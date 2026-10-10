@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "A battle on a raised walkway!\nThat's kind of cool.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Losing is uncool.\nNo, no, you are cool."
         },
         {

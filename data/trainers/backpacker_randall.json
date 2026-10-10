@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "First, one big last gulp...{be01}\nHold your breath!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Puaaahhh!\n...Holding your breath is really tough!"
         },
         {

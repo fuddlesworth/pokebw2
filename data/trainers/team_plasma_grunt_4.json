@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Don't let it go to your head...\nBut you put up a good fight, kid!"
         }
     ]

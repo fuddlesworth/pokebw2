@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ahhh, that was fun!\nBut now I've got to get back to cleaning!"
         }
     ]

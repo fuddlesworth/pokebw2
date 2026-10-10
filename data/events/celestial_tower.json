@@ -28,9 +28,9 @@
             "model": 4630,
             "movement": 0,
             "type": 0,
-            "flag": 919,
+            "flag": "0x0397",
             "script": 4,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -62,7 +62,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": 16663,
+            "var": "0x4117",
             "value": 1,
             "type": 0,
             "grid": {

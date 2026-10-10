@@ -32,7 +32,7 @@
             "text": "I will accept my friend's pain as my own,\nand the move I will choose is this!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The love for your Pokémon that permeates\nevery cell of your body. I accept it!"
         }
     ]

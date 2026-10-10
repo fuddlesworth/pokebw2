@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "OK, I decided!\nIf I win against you,{be00}\nI will be a Gym Leader!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ummmm...\nMaybe I'm not ready to be a Gym Leader?"
         },
         {

@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "A heated battle is good, but get too hot\nand you might end up getting burned!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Amazing...\nI think I got a bit singed."
         },
         {

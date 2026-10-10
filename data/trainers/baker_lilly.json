@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I bet athletes are not satisfied\nwith their games.{be01}\nThat's how I feel\nwhen I watch them.{be01}\nThe reason? If you win against me,\nI will tell you why!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Are you pleased with your victory?\nOr are you unsatisfied?"
         },
         {

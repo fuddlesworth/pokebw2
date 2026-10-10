@@ -21,11 +21,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "What's a kid like you doing\nwandering around these parts?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "To have bested an officer like me...\nWhat kind of kid are you?!"
         },
         {

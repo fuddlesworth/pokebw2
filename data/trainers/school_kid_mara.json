@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I need to research the Exp. Points of\nPokémon for my homework assignment!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It's not fair to use moves\nI wasn't expecting!"
         },
         {

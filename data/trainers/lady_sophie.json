@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You!\nYou are a fan of that person.{be01}\nI can tell!\nBut that person is mine!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh no, oh why?\nI am sorry..."
         },
         {

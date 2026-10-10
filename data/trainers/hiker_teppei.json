@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Cute Pokémon or tough Pokémon...{be01}\nWhich kind do you go for?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "See, I like the cutely tough ones!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Together, my Pokémon and I\nare the world's strongest!!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Wow! I didn't think anyone could\ncatch my blazing fastball!"
         },
         {

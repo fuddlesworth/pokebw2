@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "When I win, and even when the impossible\nhappens and I lose, I analyze every one{be00}\nof my battles to grow stronger.{be01}\nDo you really think you can beat\nsomeone like me?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I want to ride away on my Pokémon\nso that I might ponder why I lost..."
         },
         {

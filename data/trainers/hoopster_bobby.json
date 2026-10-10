@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'm still a rookie, but someday\nI will be a great player!{be01}\nI'll improve by having a lot\nof Pokémon battles!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ugh!\nI missed the rebound!"
         },
         {

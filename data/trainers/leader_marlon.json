@@ -50,7 +50,7 @@
             "text": "Awww, dude... I know I'm about done,\nbut I'm still just so pumped up!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You totally rocked that!\nYou're raising some wicked Pokémon.{be00}\nYou got this Trainer thing down!"
         }
     ]

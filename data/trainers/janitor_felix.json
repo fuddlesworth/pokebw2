@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Cleaning actually takes a lot\nof strength...{be01}\nIn other words, I've been training real\nhard by doing all this cleaning!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oops! Who cares about winning or losing!\nThat spot over there is what's on my mind!"
         },
         {

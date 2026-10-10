@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "That pressure I felt from you just now...\nWhat was that?!"
         }
     ]

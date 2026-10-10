@@ -288,9 +288,9 @@
             "model": 293,
             "movement": 0,
             "type": 0,
-            "flag": 976,
+            "flag": "0x03d0",
             "script": 10889,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 2, 0, 0 ],
             "area": {
                 "width": 0,
@@ -307,9 +307,9 @@
             "model": 294,
             "movement": 0,
             "type": 0,
-            "flag": 976,
+            "flag": "0x03d0",
             "script": 1,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

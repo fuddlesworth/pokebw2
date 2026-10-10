@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You can learn all sorts of things from\na long day spent fishing.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "No matter what the outcome of a battle,\nyour Pokémon will never leave your side."
         },
         {

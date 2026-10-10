@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Shorts and Pokémon!\nThis is the ultimate combination!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It's not my Pokémon's fault!\nIt's not my shorts' fault either!"
         },
         {

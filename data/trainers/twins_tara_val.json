@@ -32,7 +32,7 @@
             "text": "Aynshunt!\nIt's aynshunt!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Tara: Wahh! But it's aynshunt!{be01}\nVal: No, it's a roo-in!"
         },
         {

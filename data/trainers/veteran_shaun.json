@@ -66,11 +66,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "These Pokémon were born\non the same day and raised together!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh!\nYou're pretty good!"
         },
         {

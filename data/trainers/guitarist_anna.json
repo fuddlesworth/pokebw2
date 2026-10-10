@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "All right, let me introduce you\nto the other super-cool and cute{be00}\nmember of my band!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "If we don't recruit more members,\nthe sound won't have enough depth."
         },
         {

@@ -32,7 +32,7 @@
             "text": "Oh!{be01}\nAthletes are looking over this way!\nLet's have a battle to impress them.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Masa: Agghhh!\nWe showed them an embarrassing scene.{be01}\nYas: Hurrah! Hurrah!\nMy Pokémon! What...?"
         },
         {

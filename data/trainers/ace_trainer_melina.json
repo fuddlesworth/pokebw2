@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "It is said that water will not grow\nstagnant as long as it keeps flowing...{be00}\nSo as long as I keep moving onward...{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I won't give up, even if I am defeated!\nThat toughness is the pride of an{be00}\nAce Trainer!"
         },
         {

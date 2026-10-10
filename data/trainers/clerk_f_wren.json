@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My darling is working here.\nHow about that? Are you envious?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "My darling is seriously the best.\nHe puts athletes to shame."
         },
         {

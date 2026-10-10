@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Tcha! That all you got?\nGuess it's enough..."
         }
     ]

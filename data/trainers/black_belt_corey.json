@@ -40,11 +40,11 @@
             "text": "If you had three Pokémon, then we could\ndo a Rotation Battle!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I will read your mind and predict your\nevery move!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your moves...\nThey are entirely unpredictable!"
         },
         {

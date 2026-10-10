@@ -97,7 +97,7 @@ def dump(files: Path, output: Path):
         trainer, kind = struct.unpack_from("<HH", table, 4 * i)
         if trainer not in messages:
             order.append(names[trainer])
-        messages.setdefault(trainer, []).append({"type": kind, "text": to_json(line)})
+        messages.setdefault(trainer, []).append({"type": name("TRMSG_", kind), "text": to_json(line)})
     for index, (trainer_name, trainer, party) in enumerate(zip(names, trainers, parties)):
         if index == 0:
             continue
@@ -146,7 +146,7 @@ def message_tables() -> tuple[bytes, bytes]:
     for trainer_name in message_order():
         offsets[ids[trainer_name]] = len(table)
         for message in trainer_files()[trainer_name]["messages"]:
-            table += struct.pack("<HH", ids[trainer_name], message["type"])
+            table += struct.pack("<HH", ids[trainer_name], value(message["type"], trainer_name))
     return table, struct.pack(f"<{len(offsets)}H", *offsets)
 
 

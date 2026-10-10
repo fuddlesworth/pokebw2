@@ -15,7 +15,7 @@
     },
     "ability_slot": 0,
     "nature": "NATURE_MODEST",
-    "sex": 0,
+    "sex": "GENDER_MALE",
     "trainer_id": 71256,
     "contest": {
         "cool": 0,
@@ -25,9 +25,9 @@
         "tough": 0
     },
     "held_item": "ITEM_POWER_WEIGHT",
-    "trainer_gender": 0,
+    "trainer_gender": "GENDER_MALE",
     "unk54": 0,
     "region": 2,
     "wanted_species": "SPECIES_PETILIL",
-    "wanted_sex": 2
+    "wanted_sex": "GENDER_UNKNOWN"
 }

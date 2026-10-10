@@ -30,7 +30,7 @@
             "type": 0,
             "flag": 0,
             "script": 1,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -47,9 +47,9 @@
             "model": 314,
             "movement": 0,
             "type": 0,
-            "flag": 945,
+            "flag": "0x03b1",
             "script": 4,
-            "direction": 3,
+            "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -68,7 +68,7 @@
             "type": 0,
             "flag": 0,
             "script": 2,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 1,
@@ -87,7 +87,7 @@
             "type": 0,
             "flag": 0,
             "script": 3,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

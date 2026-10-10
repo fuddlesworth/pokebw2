@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Fights have their own rhythms!{be01}\nI wonder whose Pokémon\ncan fight rhythmically.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your Pokémon!\nTheir movements are right on the beat!"
         },
         {

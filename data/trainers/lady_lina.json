@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You there!{be01}\nI've become bored, so I shall\nlet you entertain me!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Well, you certainly know how to entertain.\nI thank you for your time."
         },
         {

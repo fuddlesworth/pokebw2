@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey, hey, hey!\nIt's all because of havin' love for{be00}\nPokémon, right?{be01}\nYeah, you know what I mean.\nCome on! I'm gonna have you battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Man, your love for your Pokémon hit me\nlike a ton of bricks!"
         },
         {

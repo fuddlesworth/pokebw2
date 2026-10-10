@@ -28,7 +28,7 @@
             "text": "I've just got to trust my\npartner to pull off this move!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I couldn't achieve victory for my partner...\nI won't let myself forget this frustration!"
         }
     ]

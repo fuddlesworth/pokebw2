@@ -50,7 +50,7 @@
             "text": "As a Gym Leader, I aim to be a wall for\nyou to overcome!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "This! This is what a real\nPokémon battle is!"
         }
     ]

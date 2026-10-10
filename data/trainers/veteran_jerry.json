@@ -32,7 +32,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Such energy on the offense...\nYou are truly without equal!"
         }
     ]

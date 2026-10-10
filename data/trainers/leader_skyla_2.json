@@ -60,7 +60,7 @@
             "text": "Never give up! To do so is an insult to the\nPokémon who fight for you!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I won't forget this battle!\nI'm glad that I could fight against you!"
         }
     ]

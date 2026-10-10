@@ -60,7 +60,7 @@
             "text": "We will put everything on the line for this\nmove! Right, partner?!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...Phew!\nYou're really something!"
         }
     ]

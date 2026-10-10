@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Starting yesterday, I decided\nto become a bad dude!{be00}\nNow people will know I'm strong!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I guess I can't just up and decide to be\na bad dude... It's tougher than I thought!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Pokémon Trainers are nothing more than\nrestraints on the legs of their Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What?! You can actually draw out the power\nof your Pokémon?!"
         },
         {

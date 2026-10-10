@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Argh! Lame! Stupid! Fool! Plasmaaaa!"
         }
     ]

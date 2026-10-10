@@ -9,7 +9,7 @@
             "type": 0,
             "flag": 0,
             "script": 2,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -28,7 +28,7 @@
             "type": 0,
             "flag": 0,
             "script": 2000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -47,7 +47,7 @@
             "type": 0,
             "flag": 0,
             "script": 2000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -66,7 +66,7 @@
             "type": 0,
             "flag": 0,
             "script": 2000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -101,7 +101,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16665,
+                    "var": "0x4119",
                     "value": 1,
                     "script": 3
                 }

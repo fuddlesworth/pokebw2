@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I've got to reach my quota.\nThat's why I'm challenging you.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ohhh... I lost, but I've also come up with\na brilliant proposal!"
         },
         {

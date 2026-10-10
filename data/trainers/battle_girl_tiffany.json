@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Oh! A person!\nI haven't met another person in so long!{be01}\nYou're a Trainer, aren't you?!\nThen let's battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Huh? Maybe my instincts have grown dull\nafter so long...?"
         },
         {

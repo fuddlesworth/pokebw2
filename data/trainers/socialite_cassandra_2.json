@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What great Pokémon you have!\nThanks so much! I had a great time!"
         }
     ]

@@ -84,7 +84,7 @@
             "text": "I really want a happy ending this time!\nI hate endings that leave a bitter taste."
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Wow. I'm stunned.{be01}\nFor all the words I know, I can't figure out\nhow to say this... Putting my feelings{be00}\ninto words would just be a trap.{be01}\nAll I will say is I feel you're even greater\nthan I thought!"
         }
     ]

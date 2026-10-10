@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Huh? Your Pokémon...\nThey escaped from Poké Transfer?!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Sooorry!\nI took you for someone else!"
         },
         {

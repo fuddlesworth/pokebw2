@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You! So you're a Trainer who fights\nwhile believing in your Pokémon, are you?"
         }
     ]

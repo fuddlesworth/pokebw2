@@ -32,7 +32,7 @@
             "text": "L-E-T-S-G-O! Let's go! Let's go!{be01}\nWe cheer on any Trainer who tries\nhis or her best!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "May: Go, go, Pokémon!\nMal: Fight, fight, Trainer!"
         },
         {

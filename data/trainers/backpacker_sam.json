@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "If you want to know what I've got in my\nbackpack, why don't you try to beat me!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Whoaaa!\nI'm going to be buried!"
         },
         {

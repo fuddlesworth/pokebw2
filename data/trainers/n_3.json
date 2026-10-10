@@ -84,7 +84,7 @@
             "text": "You've got to value this time that you\nhave to get to know each other!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your Pokémon are happy...\nThey are happy to be with you."
         }
     ]

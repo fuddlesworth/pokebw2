@@ -21,7 +21,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I am Emmet.{be01}\nI lost together with Ingo.{be01}\nYour combination is\nthe best. Perfect!{be00}\nYou're verrrrry strong Trainers.{be01}"
         }
     ]

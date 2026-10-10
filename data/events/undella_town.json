@@ -278,9 +278,9 @@
             "model": 20,
             "movement": 0,
             "type": 0,
-            "flag": 678,
+            "flag": "0x02a6",
             "script": 5,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -297,9 +297,9 @@
             "model": 30,
             "movement": 0,
             "type": 0,
-            "flag": 678,
+            "flag": "0x02a6",
             "script": 6,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -316,9 +316,9 @@
             "model": 65,
             "movement": 3,
             "type": 0,
-            "flag": 678,
+            "flag": "0x02a6",
             "script": 7,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 2,
@@ -335,9 +335,9 @@
             "model": 84,
             "movement": 0,
             "type": 0,
-            "flag": 678,
+            "flag": "0x02a6",
             "script": 8,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -354,9 +354,9 @@
             "model": 9,
             "movement": 20,
             "type": 0,
-            "flag": 678,
+            "flag": "0x02a6",
             "script": 9,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 2,
@@ -373,9 +373,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1226,
+            "flag": "0x04ca",
             "script": 7126,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -392,9 +392,9 @@
             "model": 291,
             "movement": 0,
             "type": 0,
-            "flag": 944,
+            "flag": "0x03b0",
             "script": 10,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -411,9 +411,9 @@
             "model": 192,
             "movement": 0,
             "type": 0,
-            "flag": 979,
+            "flag": "0x03d3",
             "script": 11,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -432,7 +432,7 @@
             "type": 0,
             "flag": 0,
             "script": 13,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -451,7 +451,7 @@
             "type": 0,
             "flag": 0,
             "script": 15,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -567,7 +567,7 @@
     "triggers": [
         {
             "script": 4,
-            "var": 16589,
+            "var": "0x40cd",
             "value": 0,
             "type": 0,
             "grid": {
@@ -581,7 +581,7 @@
         },
         {
             "script": 10860,
-            "var": 16682,
+            "var": "0x412a",
             "value": 1,
             "type": 0,
             "grid": {
@@ -595,7 +595,7 @@
         },
         {
             "script": 12,
-            "var": 16710,
+            "var": "0x4146",
             "value": 1,
             "type": 0,
             "grid": {
@@ -609,7 +609,7 @@
         },
         {
             "script": 12,
-            "var": 16710,
+            "var": "0x4146",
             "value": 1,
             "type": 0,
             "grid": {
@@ -623,7 +623,7 @@
         },
         {
             "script": 12,
-            "var": 16710,
+            "var": "0x4146",
             "value": 1,
             "type": 0,
             "grid": {

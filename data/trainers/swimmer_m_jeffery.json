@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Grrrmmm... All I do lately is grumble...{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Mrrr... Mmmrrr...\nShould I try to mumble “I lost\"?"
         },
         {

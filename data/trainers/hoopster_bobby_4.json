@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I've always played games,\nbut now I want to be the best player!{be01}\nI will practice with a lot of\nPokémon battles!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "UGHH! I missed the basket!\nI was blocked!!"
         },
         {

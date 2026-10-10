@@ -40,11 +40,11 @@
             "text": "In a Rotation Battle, you will battle\nusing three Pokémon!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "It's a Rotation Battle!\nWill you go right? Will you go left?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Is it just a lack of experience that makes\nme unsure which way to rotate?"
         },
         {

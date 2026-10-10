@@ -6,7 +6,7 @@
     "triggers": [
         {
             "script": 10495,
-            "var": 16737,
+            "var": "0x4161",
             "value": 0,
             "type": 2,
             "grid": {
@@ -20,7 +20,7 @@
         },
         {
             "script": 10496,
-            "var": 16737,
+            "var": "0x4161",
             "value": 0,
             "type": 3,
             "grid": {

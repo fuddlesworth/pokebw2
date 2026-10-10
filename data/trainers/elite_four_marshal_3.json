@@ -74,7 +74,7 @@
             "text": "Everything comes down to this next move!\nI'll use the last bit of my strength!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "There is no single strongest Pokémon\nor sole best combination...{be01}\nThat's why it is difficult\nto keep winning.{be01}\nHowever, I think a heart that desires\nstrength and strives to grow{be00}\nstronger is a precious ideal.{be01}\nThat is why I respect you--\nbecause you have these things."
         }
     ]

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Someone sent me a ticket, so I came.\nBut there's no game going on!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I have a lot of work to do.\nWhat am I doing here?"
         },
         {

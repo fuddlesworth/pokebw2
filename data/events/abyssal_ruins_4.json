@@ -21,7 +21,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": 16394,
+            "var": "0x400a",
             "value": 0,
             "type": 0,
             "rail": {

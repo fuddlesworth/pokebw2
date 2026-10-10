@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I, Black Belt Rich, will never turn my\nback and run!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...Ugh!\nSometimes you must retreat to win!"
         },
         {

@@ -48,11 +48,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Two years ago I parted ways with\nmy Pokémon...{be01}\nYet in my heart, I've never stopped being\na Pokémon Trainer!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "This is the type of defeat that only a\nPokémon Trainer can experience!"
         },
         {

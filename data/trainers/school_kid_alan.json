@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Watch a game\nduring a study break!{be01}\nHave a battle\nduring a game break!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Gah!\nThis is so not relaxing!"
         },
         {

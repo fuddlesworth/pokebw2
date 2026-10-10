@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Pokémon and Poké Balls\nare my real friends!{be01}\nJoin the training of\nour Pokémon Eleven!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Aghhhhh! I'm still such a rookie!\nI have more than enough guts, though!"
         },
         {

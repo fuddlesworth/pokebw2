@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Something about you reminds me of that\nTrainer from two years ago...{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Yes, that mix of kindness and power is just\nlike that Trainer!"
         },
         {

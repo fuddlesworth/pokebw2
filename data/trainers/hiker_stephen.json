@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "When I look down from a high place,\nI feel very good!{be01}\nPokémon battles are the same!\nI will fight looking down from the heights!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You're great!\nI can't help but look up to you!"
         },
         {

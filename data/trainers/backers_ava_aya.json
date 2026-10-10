@@ -32,7 +32,7 @@
             "text": "After watching a football game, we want\nto get rowdy ourselves!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ava: You defeated us so soundly\nthat even I feel refreshed!{be01}\nAya: I cheered as best I could..."
         },
         {

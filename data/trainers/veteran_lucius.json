@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The fierce energy I feel from you...\nIt is just like that of a soaring dragon!"
         }
     ]

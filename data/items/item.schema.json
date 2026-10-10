@@ -45,8 +45,8 @@
         "important": { "type": "boolean", "description": "A key item, which can't be sold or tossed" },
         "registrable": { "type": "boolean", "description": "Whether it can be registered to the Y button" },
         "field_pocket": {
-            "type": "integer", "minimum": 0, "maximum": 15,
-            "description": "The bag pocket outside battle, in the order of system message file 65: 0 items, 1 medicine, 2 TMs and HMs, 3 berries, 4 key items"
+            "type": "string", "x-constant": "BAG_POCKET_",
+            "description": "The bag pocket outside battle, a BAG_POCKET_* constant"
         },
         "battle_pocket": {
             "type": "integer", "minimum": 0, "maximum": 31,

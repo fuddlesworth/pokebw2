@@ -60,11 +60,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "To raise healthy Pokémon, you need\nto keep their minds and bodies active,{be00}\nwatching games and having battles!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It's so frustrating to lose!\nBut it's also important to learn from it."
         },
         {

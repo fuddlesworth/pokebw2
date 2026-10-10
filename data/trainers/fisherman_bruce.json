@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "When it comes to fishing, I'll do anything\nand go anywhere to learn more!{be01}\nThat's why I'll be asking you for\nthis battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You and your Pokémon make a pretty strong\nteam, huh?"
         },
         {

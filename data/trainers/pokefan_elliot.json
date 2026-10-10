@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I will unveil my Pokémon to you!\nThey are the best in the world!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your Pokémon are also cute,\nbut my Pokémon are charming!"
         },
         {

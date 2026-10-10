@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "This is called the battle train!\nAll aboard!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You're the nonstop express line! I'm the\nlocal line that stops at every station..."
         },
         {

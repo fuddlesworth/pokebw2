@@ -32,7 +32,7 @@
             "text": "I get excited just by\ncoming to Small Court!!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Joe: I got super excited!{be01}\nRoss: What a thrill!\nIt's taking my breath away!"
         },
         {

@@ -43,11 +43,11 @@
             "text": "What's this? You don't seem to have\nthree healthy Pokémon."
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I may have been a Trainer for a very long\ntime, but I haven't gotten rusty!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I couldn't battle the way I pictured it in\nmy head..."
         },
         {

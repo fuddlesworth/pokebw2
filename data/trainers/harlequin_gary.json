@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You thought you could get\nthrough here? Think again!{be01}\nOr so you thought!\nI'm just blocking your way!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "My, my...\nAren't you a bit too strong?"
         },
         {

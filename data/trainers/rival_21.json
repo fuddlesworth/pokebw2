@@ -80,7 +80,7 @@
             "text": "Like I'd lose to you!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "This bitter...yet refreshing feeling."
         }
     ]

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "If Team Plasma takes over the world,\nthere should be fewer Pokémon injured.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Grr... Tell me! Please!\nJust what is a Pokémon battle?!"
         },
         {

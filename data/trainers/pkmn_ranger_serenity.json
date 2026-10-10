@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "We are totally in sync!{be01}\nUsing our amazing connection,\nI will teach you all about Rangers!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "In fact, we learned\nall about you!"
         },
         {

@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Is that a Pokédex?!{be01}\nI'd love it if you would show me\nlots of different kinds of Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...!\nI've never seen a Pokémon like that."
         },
         {

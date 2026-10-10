@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'll use my psychic powers to release my\nPokémon from its Poké Ball!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Well, that didn't go the way I wanted it to!"
         },
         {

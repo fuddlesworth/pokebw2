@@ -21,11 +21,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I come to bear upon you now like a dragon\nfrom above...!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Salamence... Even in defeat, you are the\nmost noble of Pokémon."
         },
         {

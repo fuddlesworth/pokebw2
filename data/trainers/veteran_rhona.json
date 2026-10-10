@@ -32,7 +32,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Such defense...\nIt is beyond comparison!"
         }
     ]

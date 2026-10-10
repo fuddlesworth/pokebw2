@@ -32,7 +32,7 @@
             "text": "I want to play tennis\nlike a strong athlete!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Joe: A no-point game\nagainst you 'cause you're strong...{be01}\nRoss: A no-point game\n'cause we could not win at all!"
         },
         {

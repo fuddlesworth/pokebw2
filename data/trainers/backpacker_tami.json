@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "A desert is like one giant sandbox, right?\nSo come on, let's let our Pokémon play!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Since this is for play, whoever has the most\nfun is the winner!"
         },
         {

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Doctor! Is there a Doctor\nin the audience?{be01}\nYes, I am a Doctor.\nLet's get into a battle.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh! My Pokémon is all worn out!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I was taught by Master Cheren himself\nhow to battle with Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Nooo way!\nYou're stronger than Master Cheren?!"
         },
         {

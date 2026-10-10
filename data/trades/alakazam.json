@@ -15,7 +15,7 @@
     },
     "ability_slot": 0,
     "nature": "NATURE_TIMID",
-    "sex": 0,
+    "sex": "GENDER_MALE",
     "trainer_id": 82610,
     "contest": {
         "cool": 0,
@@ -25,9 +25,9 @@
         "tough": 0
     },
     "held_item": "ITEM_LUM_BERRY",
-    "trainer_gender": 1,
+    "trainer_gender": "GENDER_FEMALE",
     "unk54": 0,
     "region": 2,
     "wanted_species": "SPECIES_HIPPOWDON",
-    "wanted_sex": 2
+    "wanted_sex": "GENDER_UNKNOWN"
 }

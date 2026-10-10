@@ -30,7 +30,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Is this what it means to face reality?"
         }
     ]

@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I don't mind losing, but I\nfeel sorry for my Pokémon..."
         }
     ]

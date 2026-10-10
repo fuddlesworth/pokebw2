@@ -32,7 +32,7 @@
             "text": "We're best friends!\nOur Pokémon are best friends, too!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ally: Even if we lose...{be01}\nAmy: ...We'll still be best friends!"
         },
         {

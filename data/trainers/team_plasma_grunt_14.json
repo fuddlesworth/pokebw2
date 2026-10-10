@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Aren't you pretty confident, waltzing\nright into the enemy's stronghold!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Argh! No wonder you're so confident with\nthat kind of strength!"
         },
         {

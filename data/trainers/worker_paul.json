@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Even after we finish constructing this\ntunnel, my Drill Pokémon won't ever stop!{be00}\nThey can't be stopped!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You stopped my Drill Pokémon?!"
         },
         {

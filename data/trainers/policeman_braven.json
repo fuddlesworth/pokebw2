@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Ah, that smell?{be01}\nMy Herdier here seems to say that\nyou've got a dangerous smell about you!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I see... Your strength is\ncertainly quite dangerous..."
         },
         {

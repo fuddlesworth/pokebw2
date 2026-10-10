@@ -74,7 +74,7 @@
             "text": "Even in a tough situation like this,\nthere must be a way to triumph!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Where there's a winner,\nthere's also a loser.{be01}\nIt's pathetic to make a big deal out\nof losing if you weren't prepared.{be01}\nIf you're a true Pokémon battler,\nyou'll reflect upon your loss and{be00}\nthink about how to win next time!"
         }
     ]

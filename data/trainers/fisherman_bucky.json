@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "If I just dangle this fishing line here, it\nlooks like I'm doing something, right?{be01}\nTruth is, I'm not doing a single thing!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I got caught up in it...\nCaught by my own bait..."
         },
         {

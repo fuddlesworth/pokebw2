@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "City Pokémon or\nPokémon that live in the forest...{be00}\nWhich do you prefer?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I love both kinds of Pokémon,\nbut I don't like losing!"
         },
         {

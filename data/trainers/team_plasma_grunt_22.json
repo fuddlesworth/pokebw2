@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Even if we don't have our hero anymore,\nwe still won't lose!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Plasmaaaa!\nGlory to Team Plasma!"
         },
         {

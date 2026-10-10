@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "And to think of all the walls we've broken\ndown up until now... To hit a wall like this..."
         }
     ]

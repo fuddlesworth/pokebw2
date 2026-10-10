@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Oh my, what a young Trainer.\nIf it's all right, why don't we battle?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "There at the end, I nearly called out my\nlate Pokémon's name..."
         },
         {

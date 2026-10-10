@@ -44,11 +44,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Fishing is a perfectly respectable sport!\nWhy isn't there a fishing stadium?!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...Of course, fishing is fun\nwhen you enjoy it in nature.{be01}"
         },
         {

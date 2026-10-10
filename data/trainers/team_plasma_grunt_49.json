@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You people! Don't get cocky just because\nyou've got Pokémon!{be01}\nWe've got Pokémon, too!\nPokémon that we've stolen from all over!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What makes your Pokémon so different\nfrom mine?"
         },
         {

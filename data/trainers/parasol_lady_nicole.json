@@ -21,11 +21,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Pouring rain... ♪\nFighting Pokémon... ♪{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ah, hear the sad melody\nof a total defeat..."
         },
         {

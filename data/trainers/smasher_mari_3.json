@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "No matter how fast the ball is moving,\nit doesn't escape my vision!{be00}\nNothing gets past me!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your strength has been preserved\nin my mind's eye!"
         },
         {

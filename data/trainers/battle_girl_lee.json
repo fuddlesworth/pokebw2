@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I test the challenge rock\nwith my fist every day!{be01}\nIt is important to make steady progress,\nlittle by little.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I still have not\ntried hard enough!"
         },
         {

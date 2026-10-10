@@ -48,11 +48,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "It has been two years since I secluded\nmyself here on Twist Mountain...{be01}\nNow I will take this chance to test the\nresults of my training!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Even the most intense training does not\nnecessarily guarantee victory..."
         },
         {

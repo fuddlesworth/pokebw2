@@ -25,9 +25,9 @@
         "tough": 0
     },
     "held_item": "ITEM_LAVA_COOKIE",
-    "trainer_gender": 0,
+    "trainer_gender": "GENDER_MALE",
     "unk54": 0,
     "region": 2,
     "wanted_species": "SPECIES_PIKACHU",
-    "wanted_sex": 2
+    "wanted_sex": "GENDER_UNKNOWN"
 }

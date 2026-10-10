@@ -9,7 +9,7 @@
             "type": 1,
             "flag": 0,
             "script": 3390,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 5, 0, 0 ],
             "area": {
                 "width": 3,

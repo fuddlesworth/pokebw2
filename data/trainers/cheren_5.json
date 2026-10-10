@@ -80,7 +80,7 @@
             "text": "My Pokémon and I will\nput all our energy into this battle!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Thank you.\nYou are really great."
         }
     ]

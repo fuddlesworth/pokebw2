@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "...You look tough.{be01}\nAll right! My Pokémon are burning for\na fight against a tough opponent!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Arg!\nI wasn't able to give good orders."
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Onward, my friends!\nMy Bug-type Pokémon swarm!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Pretty cool, huh?\nMy Bug-type Pokémon are the best!"
         },
         {

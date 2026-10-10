@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "When Pokémon Trainers meet,\nwhat we do is, of course,{be00}\nengage in a Pokémon battle, don't we?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh no...\nI'm pathetic..."
         },
         {

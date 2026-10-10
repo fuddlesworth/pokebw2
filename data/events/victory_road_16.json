@@ -35,7 +35,7 @@
     "triggers": [
         {
             "script": 1,
-            "var": 16676,
+            "var": "0x4124",
             "value": 0,
             "type": 0,
             "grid": {

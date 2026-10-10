@@ -39,11 +39,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The people who pass by here\nhave such different moods!{be01}\nIt's fun to watch, and even more fun\nto fight against them!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Mwa haha!\nIt's fun!"
         },
         {

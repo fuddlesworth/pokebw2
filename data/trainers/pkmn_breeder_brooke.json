@@ -60,11 +60,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The Pokémon I raised are\nas good as professionals!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The Pokémon you raised\nare great, too!"
         },
         {

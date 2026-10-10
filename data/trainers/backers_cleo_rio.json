@@ -32,7 +32,7 @@
             "text": "Rio and I are of one mind!{be01}\nThat's why you're going to have to\nuse two Pokémon against us!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Cleo: Wow, what a surprise!\nRio: Wow, what a surprise!"
         },
         {

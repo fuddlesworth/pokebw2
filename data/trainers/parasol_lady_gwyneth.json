@@ -21,11 +21,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Games in the rain look extra tough,\ndon't they?{be01}\nI wonder what Pokémon battles\nin rain are like.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Well, this place is indoors,\nso they don't get rained out."
         },
         {

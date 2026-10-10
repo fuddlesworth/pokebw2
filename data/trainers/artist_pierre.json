@@ -21,11 +21,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The ideal movement of living things,\nsuch pure beauty!{be01}\nAh, let me behold them!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I saw their beauty up close!"
         },
         {

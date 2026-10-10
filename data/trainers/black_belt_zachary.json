@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Oh no, I won't let a precious training\npartner get away that easily!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "A battle against a Trainer really is the\nbest training!"
         },
         {

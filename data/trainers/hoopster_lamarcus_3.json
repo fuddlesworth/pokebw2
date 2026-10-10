@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey! Trainer!{be01}\nCheck out my long shot!\nI've got serious range!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "No one can beat me when it comes to taking\na long shot, but I still have a lot to learn{be00}\nwhen it comes to Pokémon battles!"
         },
         {

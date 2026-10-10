@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My Psychic-type Pokémon\njust started making noises.{be01}\nIs that because we're in the ruins...\nor is it because of you?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "So...strong!\nWho are you?!"
         },
         {

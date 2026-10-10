@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Oh! To think that you would deliberately\nseek me out for a battle!{be01}\nI'm so tickled that I won't hold\nanything back as a reward!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What oppressive force...\nWhat a Trainer!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You can't get by with just beauty!\nYou need to be a strong Trainer, too!{be01}\nDon't get captivated by the magnificent\nbeauty of our battling style!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...Strong and beautiful!\nYou captivated me!"
         },
         {

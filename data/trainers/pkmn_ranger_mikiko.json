@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I hold no grudge, whether I win or lose.{be01}\nThe point of battle is to train\nmy Pokémon, after all.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...Awww!\nBut I really wanted to win!"
         },
         {

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You can tell how much your opponent\nwants to fight by looking into his or her{be00}\neyes, don't you think?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Wow! I could really tell\nthat you wanted to win!"
         },
         {

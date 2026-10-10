@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Shift gears and Bob's your uncle!\nYou'll be going full speed in no time!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "No matter how I shift gears, it looks like\nI'll never be able to match your speed!"
         },
         {

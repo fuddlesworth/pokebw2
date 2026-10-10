@@ -31,8 +31,8 @@
             "description": "A NATURE_* constant, or null for a random one"
         },
         "sex": {
-            "type": [ "integer", "null" ], "minimum": 0, "maximum": 254,
-            "description": "The sex PML_GenPID gives the Pokémon, or null for a random one"
+            "type": [ "string", "null" ], "x-constant": "GENDER_",
+            "description": "The sex PML_GenPID gives the Pokémon, a GENDER_* constant, or null for a random one"
         },
         "trainer_id": { "$ref": "#/$defs/u32", "description": "Its original trainer's ID" },
         "contest": {
@@ -44,11 +44,11 @@
             }
         },
         "held_item": { "type": "string", "x-constant": "ITEM_" },
-        "trainer_gender": { "type": "integer", "minimum": 0, "maximum": 1, "description": "Its original trainer's gender" },
+        "trainer_gender": { "type": "string", "x-constant": "GENDER_", "description": "Its original trainer's gender" },
         "unk54": { "$ref": "#/$defs/u32" },
         "region": { "$ref": "#/$defs/u32", "description": "Its region (PKM_PARAM_REGION), 2 in every trade of this version" },
         "wanted_species": { "type": "string", "x-constant": "SPECIES_", "description": "The species asked for" },
-        "wanted_sex": { "$ref": "#/$defs/u32", "description": "The sex asked for" }
+        "wanted_sex": { "type": "string", "x-constant": "GENDER_", "description": "The sex asked for, a GENDER_* constant" }
     },
     "$defs": {
         "u32": { "type": "integer", "minimum": 0, "maximum": 4294967295 },

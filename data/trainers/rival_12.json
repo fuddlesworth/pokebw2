@@ -47,7 +47,7 @@
             "text": "I'm counting on you!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I couldn't even draw out my team's\nreal strength... How pathetic!"
         }
     ]

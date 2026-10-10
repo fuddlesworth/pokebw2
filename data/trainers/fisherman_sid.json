@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Check out my lively Pokémon, which\nI've gathered from all around the{be00}\nUnova region!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Mmm hmm! Looks like you are\neven more lively and fresh!"
         },
         {

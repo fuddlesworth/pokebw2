@@ -43,11 +43,11 @@
             "text": "I would love it if you would join me in\na Rotation Battle."
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Your Pokémon and your strategy!\nI'll be taking notes on both!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Now that I am a Veteran, I find there is\nso much more to learn..."
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I travel the world because\nI'm looking for danger!{be00}\nAre you dangerous, Trainer?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You're so dangerous that I was in\ndanger of giving up the match!"
         },
         {

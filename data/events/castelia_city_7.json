@@ -20,7 +20,7 @@
             "type": 0,
             "flag": 0,
             "script": 3,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -39,7 +39,7 @@
             "type": 0,
             "flag": 0,
             "script": 5,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -58,7 +58,7 @@
             "type": 0,
             "flag": 0,
             "script": 4,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -132,7 +132,7 @@
     "triggers": [
         {
             "script": 2,
-            "var": 16695,
+            "var": "0x4137",
             "value": 0,
             "type": 0,
             "grid": {

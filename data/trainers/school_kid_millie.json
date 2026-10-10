@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hi, hi! Trainer!{be01}\nPlease show me what kinds of Pokémon\nyou are training!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Great, great! I didn't know\nthat way to raise Pokémon!"
         },
         {

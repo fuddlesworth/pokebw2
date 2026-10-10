@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Wh-wh-wh-wh-wh-wh-what is this?!\nP-P-P-P-P-P-Plasmaaaa!"
         }
     ]

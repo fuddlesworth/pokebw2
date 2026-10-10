@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "When it comes to handling the ball, leave\nit to me! Same goes for Poké Balls!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh! I guess being a skilled ball handler\ndoesn't have much to do with battles!"
         },
         {

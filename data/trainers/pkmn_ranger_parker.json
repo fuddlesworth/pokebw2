@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Knowing oneself, knowing the other,\nand knowing the surroundings...{be00}\nThat's a Ranger!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Knowing your opponent is a difficult feat!"
         },
         {

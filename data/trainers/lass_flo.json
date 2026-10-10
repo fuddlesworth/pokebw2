@@ -40,11 +40,11 @@
             "text": "I'll be your opponent, but only\nif you have three or more Pokémon{be00}\nthat are ready for battle!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "We go three against three in\nTriple Battles...{be01}\nAre you ready?\nI am! Let's go!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What?! I never even considered\nlosing before going into battle!"
         },
         {

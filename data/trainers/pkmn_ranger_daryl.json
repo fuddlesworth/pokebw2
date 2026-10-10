@@ -40,11 +40,11 @@
             "text": "If you've got three or more Pokémon\nready for battle, let's have a{be00}\nRotation Battle!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Forming a team of three Pokémon that can\nwork well together is key in a{be00}\nRotation Battle! Let's begin!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh no! The way I positioned my\nPokémon was terrible!"
         },
         {

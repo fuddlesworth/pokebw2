@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My Pokémon is stronger than the wind.\nIt's my pride and joy!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It may be stronger than the wind, but my\nPokémon isn't as strong as yours."
         },
         {

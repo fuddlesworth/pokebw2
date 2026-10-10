@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Check out my Alomomola! It took\nme 100 Poké Balls to catch it!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I guess the number of Poké Balls I used to\ncatch my Pokémon doesn't mean much in{be00}\na battle..."
         },
         {

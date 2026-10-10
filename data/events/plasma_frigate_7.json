@@ -7,9 +7,9 @@
             "model": 293,
             "movement": 0,
             "type": 0,
-            "flag": 837,
+            "flag": "0x0345",
             "script": 1,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -26,9 +26,9 @@
             "model": 293,
             "movement": 5,
             "type": 0,
-            "flag": 998,
+            "flag": "0x03e6",
             "script": 6,
-            "direction": 3,
+            "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -45,9 +45,9 @@
             "model": 293,
             "movement": 5,
             "type": 0,
-            "flag": 997,
+            "flag": "0x03e5",
             "script": 7,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -64,9 +64,9 @@
             "model": 293,
             "movement": 20,
             "type": 4,
-            "flag": 976,
+            "flag": "0x03d0",
             "script": 3800,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 2, 14, 0 ],
             "area": {
                 "width": 1,
@@ -83,9 +83,9 @@
             "model": 294,
             "movement": 20,
             "type": 4,
-            "flag": 976,
+            "flag": "0x03d0",
             "script": 3801,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 2, 14, 0 ],
             "area": {
                 "width": 1,
@@ -102,9 +102,9 @@
             "model": 293,
             "movement": 20,
             "type": 4,
-            "flag": 976,
+            "flag": "0x03d0",
             "script": 3812,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 2, 14, 0 ],
             "area": {
                 "width": 1,
@@ -121,9 +121,9 @@
             "model": 294,
             "movement": 20,
             "type": 4,
-            "flag": 976,
+            "flag": "0x03d0",
             "script": 3802,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 2, 14, 0 ],
             "area": {
                 "width": 1,
@@ -140,9 +140,9 @@
             "model": 291,
             "movement": 0,
             "type": 0,
-            "flag": 1036,
+            "flag": "0x040c",
             "script": 2000,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -371,7 +371,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16639,
+                    "var": "0x40ff",
                     "value": 1,
                     "script": 5
                 }

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "POWER!!!{be01}\nWith my ripped muscles,\nI will overcome everything!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I still don't have\nenough muscles...?!"
         },
         {

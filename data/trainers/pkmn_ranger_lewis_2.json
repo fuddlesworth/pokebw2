@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I can feel the energy that overflows\nfrom the earth!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I really felt the energy that overflowed\nfrom your Pokémon!"
         },
         {

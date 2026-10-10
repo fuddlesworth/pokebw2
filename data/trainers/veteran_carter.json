@@ -43,11 +43,11 @@
             "text": "Triple Battle is a new kind of battle\nwith three Pokémon!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "OK! I will show you the results\nof my daily workouts!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The result of my daily workout...\ndidn't really show up.{be01}"
         },
         {

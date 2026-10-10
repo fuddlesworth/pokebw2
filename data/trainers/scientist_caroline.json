@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'm a researcher studying about the\nsmell here!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "If I were to express this disappointment in\nscent, I'd put it on par with a Gloom."
         },
         {

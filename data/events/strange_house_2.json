@@ -508,9 +508,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1211,
+            "flag": "0x04bb",
             "script": 7111,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -527,9 +527,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1213,
+            "flag": "0x04bd",
             "script": 7113,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

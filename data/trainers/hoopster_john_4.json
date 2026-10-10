@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Young Trainer!\nAre you getting enough exercise?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "After you're done exercising,\ndon't forget to rehydrate yourself!"
         },
         {

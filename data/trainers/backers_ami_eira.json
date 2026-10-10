@@ -32,7 +32,7 @@
             "text": "Which do you like better,\nbaseball or football?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ami: The game ended\nbefore I knew what was going on.{be01}\nEira: The combination play of you\nand your Pokémon is great!"
         },
         {

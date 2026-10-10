@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Phew! I'll at least let my Pokémon take\nit easy on their days off!"
         }
     ]

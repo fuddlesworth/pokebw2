@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You've been caught by a powerful hook,\nwhich is me!{be01}\nI'll have a battle with you using\nmy freshly caught Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I just can't help but flop about!\nFlip flop flip flop flip!"
         },
         {

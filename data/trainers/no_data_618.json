@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "This Pokémon battle... It will forever\ncommemorate my visit to Castelia City!"
         }
     ]

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The amount you sweat is a good\nindicator of how youthful you are!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I don't care if I lose. I'm still young!\nThat was a good sweat!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I love sports and Pokémon most of all.{be01}\nHow about a battle?\nThey used to call me the Cleaner!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I could not stop all\nof your Pokémon's attacks..."
         },
         {

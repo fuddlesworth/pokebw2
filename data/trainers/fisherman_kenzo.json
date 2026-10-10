@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'll have a battle with you using\nmy freshly caught Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I had no idea how my Pokémon would fight.\nI mean, I caught them just a moment ago!"
         },
         {

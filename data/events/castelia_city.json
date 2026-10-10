@@ -238,9 +238,9 @@
             "model": 355,
             "movement": 69,
             "type": 0,
-            "flag": 751,
+            "flag": "0x02ef",
             "script": 2000,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -259,7 +259,7 @@
             "type": 0,
             "flag": 0,
             "script": 10,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 1,
@@ -278,7 +278,7 @@
             "type": 0,
             "flag": 0,
             "script": 17,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -297,7 +297,7 @@
             "type": 0,
             "flag": 0,
             "script": 16,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -316,7 +316,7 @@
             "type": 0,
             "flag": 0,
             "script": 19,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -335,7 +335,7 @@
             "type": 0,
             "flag": 0,
             "script": 11,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -354,7 +354,7 @@
             "type": 0,
             "flag": 0,
             "script": 12,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 1,
@@ -373,7 +373,7 @@
             "type": 0,
             "flag": 0,
             "script": 13,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -392,7 +392,7 @@
             "type": 0,
             "flag": 0,
             "script": 18,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -411,7 +411,7 @@
             "type": 0,
             "flag": 0,
             "script": 14,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -430,7 +430,7 @@
             "type": 0,
             "flag": 0,
             "script": 15,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -449,7 +449,7 @@
             "type": 0,
             "flag": 0,
             "script": 21,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -466,9 +466,9 @@
             "model": 355,
             "movement": 69,
             "type": 0,
-            "flag": 1030,
+            "flag": "0x0406",
             "script": 2000,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -766,7 +766,7 @@
     "triggers": [
         {
             "script": 9,
-            "var": 16561,
+            "var": "0x40b1",
             "value": 2,
             "type": 0,
             "rail": {
@@ -780,7 +780,7 @@
         },
         {
             "script": 22,
-            "var": 16561,
+            "var": "0x40b1",
             "value": 1,
             "type": 0,
             "rail": {
@@ -794,7 +794,7 @@
         },
         {
             "script": 22,
-            "var": 16561,
+            "var": "0x40b1",
             "value": 1,
             "type": 0,
             "rail": {
@@ -808,7 +808,7 @@
         },
         {
             "script": 22,
-            "var": 16561,
+            "var": "0x40b1",
             "value": 1,
             "type": 0,
             "rail": {
@@ -826,7 +826,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16610,
+                    "var": "0x40e2",
                     "value": 1,
                     "script": 20
                 }

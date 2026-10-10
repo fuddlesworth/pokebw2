@@ -40,11 +40,11 @@
             "text": "A Triple Battle is a special battle you\ncan hold using three Pokémon!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Behold the strength I have perfected\nthrough Triple Battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "How could this be...\nI thought I'd perfected it..."
         },
         {

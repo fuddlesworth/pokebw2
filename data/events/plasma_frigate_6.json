@@ -128,9 +128,9 @@
             "model": 291,
             "movement": 0,
             "type": 0,
-            "flag": 854,
+            "flag": "0x0356",
             "script": 9,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -147,9 +147,9 @@
             "model": 182,
             "movement": 0,
             "type": 0,
-            "flag": 848,
+            "flag": "0x0350",
             "script": 6,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -166,9 +166,9 @@
             "model": 308,
             "movement": 0,
             "type": 0,
-            "flag": 854,
+            "flag": "0x0356",
             "script": 10,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -185,9 +185,9 @@
             "model": 182,
             "movement": 0,
             "type": 0,
-            "flag": 848,
+            "flag": "0x0350",
             "script": 8,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -204,9 +204,9 @@
             "model": 301,
             "movement": 0,
             "type": 0,
-            "flag": 847,
+            "flag": "0x034f",
             "script": 2000,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -223,9 +223,9 @@
             "model": 182,
             "movement": 0,
             "type": 0,
-            "flag": 848,
+            "flag": "0x0350",
             "script": 7,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -257,7 +257,7 @@
     "triggers": [
         {
             "script": 1,
-            "var": 16399,
+            "var": "0x400f",
             "value": 0,
             "type": 0,
             "grid": {
@@ -271,7 +271,7 @@
         },
         {
             "script": 11,
-            "var": 16641,
+            "var": "0x4101",
             "value": 1,
             "type": 0,
             "grid": {
@@ -301,7 +301,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16628,
+                    "var": "0x40f4",
                     "value": 1,
                     "script": 5
                 }

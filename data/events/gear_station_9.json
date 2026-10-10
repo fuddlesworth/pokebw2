@@ -20,7 +20,7 @@
             "type": 0,
             "flag": 0,
             "script": 10340,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -39,7 +39,7 @@
             "type": 0,
             "flag": 0,
             "script": 4,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -71,7 +71,7 @@
     "triggers": [
         {
             "script": 10341,
-            "var": 16399,
+            "var": "0x400f",
             "value": 0,
             "type": 0,
             "grid": {

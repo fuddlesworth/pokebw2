@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "A lake that spreads beneath the earth...\nAnd the Hiker who waits beside it!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You have seized victory with ease,\nyoung Trainer..."
         },
         {

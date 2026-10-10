@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "A young Trainer! It's important for the\nyoung to get lots of exercise, isn't it?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "A healthy sweat...\nBoy, I am glad that I am an athlete!"
         },
         {

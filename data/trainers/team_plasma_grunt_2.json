@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Intruder sighted!{be01}\nI'll have you know that the Pokémon I'm\nabout to use was stolen from a child!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "...What a weak Pokémon.\nI'll just have to go steal some better ones!"
         },
         {

@@ -40,11 +40,11 @@
             "text": "A Triple Battle is a three-against-three\nPokémon battle!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Heh heh! I wonder what would happen if I\nhad all three Pokémon attack at once?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I couldn't pick a target to focus on...\nOr, rather, you never let me pick one!"
         },
         {

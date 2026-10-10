@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "What? A battle at a place like this?\nWait! Everybody is watching us!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Well, thanks to you,\nI overcame my stage fright."
         },
         {

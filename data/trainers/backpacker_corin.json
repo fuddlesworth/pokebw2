@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I've got lots of items in my backpack!\nI'll use them well to secure victory!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "When you have too many moves and items, you\ncan actually end up a bit overwhelmed..."
         },
         {

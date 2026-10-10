@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Let us conduct some Pokémon research.\nYes, let us show each other our Pokémon.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Mm, mm! A new discovery and an\never-deepening mystery..."
         },
         {

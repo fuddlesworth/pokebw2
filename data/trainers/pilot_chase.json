@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "If you can beat me, you'll be able\nto face the Gym Leader...{be01}\nYou're too careless if you think that!\nDon't let your guard down yet!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "How could this be?!\nI wasn't being careless at all!"
         },
         {

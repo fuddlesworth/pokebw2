@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I may look like a regular Clerk ⑮, but\nin fact I am a glamorous female spy!{be00}\nCan you feel it? How strong I am?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh! This spy has failed her mission!"
         },
         {

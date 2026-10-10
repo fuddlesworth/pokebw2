@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "These Pokémon usually help me bake.\nToday, they'll help me battle you!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh, my! Battling sure is much\nmore difficult than baking!"
         },
         {

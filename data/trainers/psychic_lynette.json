@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "You... Who are you?{be01}\nThere is another person here besides me?\nWe don't need any Trainers here!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "So you are a normal person...\nA normal ⒆⒇ Trainer..."
         },
         {

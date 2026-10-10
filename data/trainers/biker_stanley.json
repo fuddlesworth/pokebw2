@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "A motorcycle in the desert!\nDoesn't get much more wild than this, eh?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Motorcycles aren't compatible with sand.\nI'm not compatible with you!"
         },
         {

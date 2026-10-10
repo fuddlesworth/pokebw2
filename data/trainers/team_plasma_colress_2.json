@@ -32,7 +32,7 @@
             "text": "If-if I'd believed more, could I have\ndrawn out my Pokémon's power?"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The bonds between us... Does the fact that\nwe can't see them make them more real?"
         }
     ]

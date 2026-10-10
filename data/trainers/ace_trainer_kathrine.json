@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Oh my! My Pokémon really seem raring\nto go today!{be01}\nSo I guess that means I'll be asking you\nfor a battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It seems my Pokémon weren't\nas ready as I thought!"
         },
         {

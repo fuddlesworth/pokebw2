@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My partner and I have been through a\nlot together! Here we go!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I won't let consecutive losses get me down!\nThat's my policy!"
         },
         {

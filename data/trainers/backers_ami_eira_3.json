@@ -32,7 +32,7 @@
             "text": "Hey, you!{be01}\nDon't smile at my favorite player.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ami: Argh! We lost,\nand it's your fault.{be01}\nEira: You should try harder.\nDon't drag me down."
         },
         {

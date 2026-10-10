@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I get it! So a Pokémon's strength really has\na lot to do with its Trainer, doesn't it?"
         }
     ]

@@ -32,7 +32,7 @@
             "text": "The bond of football fans\nis stronger than any tackle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hawk: The bond between you and\nyour Pokémon is strong, too!{be01}\nDar: This feeling will go well past\nthe goal line..."
         },
         {

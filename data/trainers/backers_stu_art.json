@@ -32,7 +32,7 @@
             "text": "OK!\nTomorrow will be a home run!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Stu: We lost! Time to walk off...{be01}\nArt: Farewell! You won..."
         },
         {

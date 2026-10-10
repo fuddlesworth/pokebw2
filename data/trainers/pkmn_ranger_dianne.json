@@ -40,11 +40,11 @@
             "text": "If you've got three or more Pokémon\nready for battle, let's have a{be00}\nTriple Battle!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The power of three come together as one!\nLet's have a Triple Battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Everyone coming together as one...\nWhat great teamwork that was!"
         },
         {

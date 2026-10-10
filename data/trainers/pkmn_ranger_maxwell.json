@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "We step now into a new world...\nWhat kind of dangers await?{be01}\nWill you be able to make it through?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Well, shoot!\nKeep going then!"
         },
         {

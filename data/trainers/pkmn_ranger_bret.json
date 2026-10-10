@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Keep going with the momentum!\nReady, set...fight!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What's with this still calm?\nI couldn't win with just momentum?"
         },
         {

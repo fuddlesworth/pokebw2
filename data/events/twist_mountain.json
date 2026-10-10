@@ -68,9 +68,9 @@
             "model": 95,
             "movement": 0,
             "type": 0,
-            "flag": 668,
+            "flag": "0x029c",
             "script": 2,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -102,7 +102,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": 16699,
+            "var": "0x413b",
             "value": 0,
             "type": 0,
             "grid": {

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'm going to go ahead and say it:\nPlasmaaaa!!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Do-over!\nCome on, let me have a do-over!"
         },
         {

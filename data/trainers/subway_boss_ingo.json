@@ -21,7 +21,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Bravo!!{be01}\nWhat you showed us is\nthe spark of Trainers.{be01}\nHowever, let me say just one thing.{be01}\nPlease move on to an even greater goal.{be01}"
         }
     ]

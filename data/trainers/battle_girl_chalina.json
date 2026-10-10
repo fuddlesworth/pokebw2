@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Life is all about overcoming hurdles!\nCould you be a hurdle for me?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I couldn't overcome the hurdle you\npresented to me..."
         },
         {

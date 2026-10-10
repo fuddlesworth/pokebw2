@@ -70,7 +70,7 @@
             "text": "I'm more psyched than I've ever been!\nI can still go on!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "So this is what it means to draw forth the\npower hidden in your Pokémon!"
         }
     ]

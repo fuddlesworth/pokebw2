@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I am good at backstroke,\nfreestyle, butterfly...{be00}\nAnd, of course, Pokémon battles!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Did I just lose a Pokémon battle,\neven though I'm so good at them??"
         },
         {

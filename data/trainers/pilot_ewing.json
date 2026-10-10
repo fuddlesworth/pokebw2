@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Sometimes you need to be bold,\nwhile other times you need to be careful.{be01}\nYou'll have to react accordingly if you\ndon't want to be blocked by the traps{be00}\nin this Gym!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I couldn't block your path...\nYou're an impressive Trainer!"
         },
         {

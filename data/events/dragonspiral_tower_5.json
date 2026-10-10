@@ -7,9 +7,9 @@
             "model": 110,
             "movement": 69,
             "type": 0,
-            "flag": 1333,
+            "flag": "0x0535",
             "script": 7233,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -26,9 +26,9 @@
             "model": 110,
             "movement": 69,
             "type": 0,
-            "flag": 1335,
+            "flag": "0x0537",
             "script": 7235,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

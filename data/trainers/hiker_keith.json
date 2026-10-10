@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hold up! Did you know this path was\nsupposedly made ages and ages ago?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "S-sorry...\nI just got so excited..."
         },
         {

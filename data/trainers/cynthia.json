@@ -74,7 +74,7 @@
             "text": "You haven't won yet! I won't let\nsuch a fun battle end so easily!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "My heart is pounding so hard because I had\nsuch a heated battle with you.{be01}\nYou are a really great Trainer!!"
         }
     ]

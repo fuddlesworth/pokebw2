@@ -75,7 +75,7 @@
             "text": "Uh...at a time like this,\nI am supposed to do...what?"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Thank you for having a battle with me!\nIt was a lot of fun!"
         }
     ]

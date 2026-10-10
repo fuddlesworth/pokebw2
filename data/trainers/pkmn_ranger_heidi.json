@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I want to drag people here\nand have them enlist as Pokémon Rangers.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Wow! Electrifying!\nYou are so goooood!"
         },
         {

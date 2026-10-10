@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hold up, youngster!\nA battle will help you warm up!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hah! Battling gets me so warm that I'm\neven sweating!"
         },
         {

@@ -32,7 +32,7 @@
             "text": "Hey, you!\nDo you know what offside means?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Kay: What we just saw is offside!\nI bet it's offside!{be01}\nAli: B... Baaaaah!\nI won't tell you anymore!"
         },
         {

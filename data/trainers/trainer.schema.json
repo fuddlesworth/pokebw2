@@ -36,8 +36,8 @@
                 "type": "object", "additionalProperties": false, "required": [ "type", "text" ],
                 "properties": {
                     "type": {
-                        "type": "integer", "minimum": 0, "maximum": 65535,
-                        "description": "When the trainer says it: 0 before the battle, 1 when it loses, 8 when it wins (TRMSG_* in tr_tool.c), and other moments by number"
+                        "type": [ "string", "integer" ], "x-constant": "TRMSG_", "minimum": 0, "maximum": 65535,
+                        "description": "When the trainer says it: TRMSG_START before the battle, TRMSG_LOSE when it loses, TRMSG_WIN when it wins, and other moments by number"
                     },
                     "text": { "type": "string", "description": "The message, with its line breaks" }
                 }

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey there!{be01}\nThink you can overcome\nmy tricky dribbling style?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hey! Come on, watch me!\nI was dribbling this whole time!"
         },
         {

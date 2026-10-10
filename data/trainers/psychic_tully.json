@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'll borrow this ruin's power to...power\nup my own psychic...powers!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "So I couldn't just expect that to make my\nPokémon more powerful, too..."
         },
         {

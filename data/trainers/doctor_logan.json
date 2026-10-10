@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I am a Doctor!{be01}\nIf you have Pokémon in bad shape...\nLet me see your Pokémon in battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your strength is fathomless!\nI am deeply impressed."
         },
         {

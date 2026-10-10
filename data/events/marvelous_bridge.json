@@ -100,7 +100,7 @@
             "type": 0,
             "flag": 0,
             "script": 2,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -117,9 +117,9 @@
             "model": 20,
             "movement": 3,
             "type": 0,
-            "flag": 862,
+            "flag": "0x035e",
             "script": 3,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -136,9 +136,9 @@
             "model": 347,
             "movement": 0,
             "type": 0,
-            "flag": 897,
+            "flag": "0x0381",
             "script": 5,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -155,9 +155,9 @@
             "model": 15,
             "movement": 0,
             "type": 0,
-            "flag": 1027,
+            "flag": "0x0403",
             "script": 2000,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -176,7 +176,7 @@
             "type": 0,
             "flag": 0,
             "script": 7,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -222,7 +222,7 @@
     "triggers": [
         {
             "script": 4,
-            "var": 16499,
+            "var": "0x4073",
             "value": 1,
             "type": 0,
             "grid": {
@@ -236,7 +236,7 @@
         },
         {
             "script": 8,
-            "var": 16719,
+            "var": "0x414f",
             "value": 1,
             "type": 0,
             "grid": {
@@ -250,7 +250,7 @@
         },
         {
             "script": 8,
-            "var": 16719,
+            "var": "0x414f",
             "value": 1,
             "type": 0,
             "grid": {

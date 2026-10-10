@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I have a request for you!\nPlease battle me!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I'm mad that I lost, but I'm happy that\nmy Pokémon got some good experience!"
         },
         {

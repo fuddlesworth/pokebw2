@@ -52,11 +52,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I always lose...{be01}\nBut I just want to see my Pokémon use\ntheir moves and do their best!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Phew...\nYour Pokémon... That was amazing!"
         },
         {

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I wonder if there are great children\nwho will become stars someday{be00}\nwho are now just kids at my preschool.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You are also quite brilliant, but\nreal stars are cool."
         },
         {

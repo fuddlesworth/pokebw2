@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Let's train!\nWe'll get stronger with our Pokémon!{be01}\nThen we can challenge the Gyms in places\nlike Opelucid City and Humilau City!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Not yet! I still haven't shared my true\nstrength with you!"
         },
         {

@@ -84,7 +84,7 @@
             "text": "Good! That strength is good!\nBut I'm going to send it back at you!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "After the battle, a fresh wind\nblew through my heart..."
         }
     ]

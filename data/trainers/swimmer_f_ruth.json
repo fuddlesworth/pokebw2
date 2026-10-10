@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I learned all the good points of my\nClamperl and Shellder by swimming{be00}\nwith Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What a fresh Trainer!\nReally fresh, fresh!"
         },
         {

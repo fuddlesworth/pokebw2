@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hello there, young Trainer.\nPlease, battle with me for a spell.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "My oh my...\nToo bad. Looks like I lost."
         },
         {

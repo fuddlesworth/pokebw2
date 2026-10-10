@@ -29,7 +29,7 @@
             "text": "We're still OK!\nWe can keep going!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It can't be!{be01}\nHow could I have lost?\nI need to apologize to my partner..."
         }
     ]

@@ -39,7 +39,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Have you gotten even stronger than you\nwere in Lacunosa Town?{be00}\nHow, in such a brief amount of time..."
         }
     ]

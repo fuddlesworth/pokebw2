@@ -20,7 +20,7 @@
             "type": 0,
             "flag": 0,
             "script": 5,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -39,7 +39,7 @@
             "type": 0,
             "flag": 0,
             "script": 6,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -58,7 +58,7 @@
             "type": 0,
             "flag": 0,
             "script": 7,
-            "direction": 3,
+            "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -75,9 +75,9 @@
             "model": 8,
             "movement": 0,
             "type": 0,
-            "flag": 654,
+            "flag": "0x028e",
             "script": 10391,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -96,7 +96,7 @@
             "type": 0,
             "flag": 0,
             "script": 10,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -115,7 +115,7 @@
             "type": 0,
             "flag": 0,
             "script": 9,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -147,22 +147,22 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16461,
+                    "var": "0x404d",
                     "value": 0,
                     "script": 8
                 },
                 {
-                    "var": 16461,
+                    "var": "0x404d",
                     "value": 2,
                     "script": 12
                 },
                 {
-                    "var": 16461,
+                    "var": "0x404d",
                     "value": 3,
                     "script": 11
                 },
                 {
-                    "var": 16461,
+                    "var": "0x404d",
                     "value": 5,
                     "script": 13
                 }

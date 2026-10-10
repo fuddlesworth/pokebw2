@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Stupid intruders!\nI'm gonna blast you into space!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "But...aren't I one of Team Plasma's stars?"
         },
         {

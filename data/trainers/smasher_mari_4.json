@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My pinpoint smash is as accurate as\nthreading a string through a needle!{be00}\nThink you can handle it?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You happily handle any kind of attack!\nWhat a big heart you have!"
         },
         {

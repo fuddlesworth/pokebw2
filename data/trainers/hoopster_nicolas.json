@@ -40,11 +40,11 @@
             "text": "You don't even have three healthy\nPokémon? That's just odd!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Fooling you fair and square!\nThat's what we call a trick play!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What the hoops?\nI was the one who was tricked!"
         },
         {

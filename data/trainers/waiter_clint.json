@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Cheering makes us\nthirsty. Right?{be01}\nIf you can win against me,\nI'll give you a drink!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "The battle made me\neven thirstier!"
         },
         {

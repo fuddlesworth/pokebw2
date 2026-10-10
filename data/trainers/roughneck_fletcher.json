@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey, hey, did you see that? Awesome!\nA lot of famous people from TV are here!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Athletes are all coooool.\nI want to be like them."
         },
         {

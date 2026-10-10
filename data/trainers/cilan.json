@@ -42,7 +42,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Cilan: ...Huh.\nLooks like my timing was, um, off?"
         }
     ]

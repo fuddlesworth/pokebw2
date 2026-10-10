@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "...When I am here, I feel like I might\nbe crushed by sorrow.{be01}\nYou there...\nLet us have a bout!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "This bout...\nI will not forget it..."
         },
         {

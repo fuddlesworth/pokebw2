@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Oh! I haven't seen you before!\nWould you mind sparring with me?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Wow! Astounding! For one so young,\nyou're quite impressive, indeed!"
         },
         {

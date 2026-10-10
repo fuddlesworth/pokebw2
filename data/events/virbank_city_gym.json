@@ -40,7 +40,7 @@
             "type": 0,
             "flag": 0,
             "script": 4,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -86,7 +86,7 @@
     "triggers": [
         {
             "script": 3,
-            "var": 16554,
+            "var": "0x40aa",
             "value": 0,
             "type": 0,
             "grid": {

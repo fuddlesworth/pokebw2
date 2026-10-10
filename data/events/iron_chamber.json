@@ -28,9 +28,9 @@
             "model": 352,
             "movement": 0,
             "type": 0,
-            "flag": 923,
+            "flag": "0x039b",
             "script": 6,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,

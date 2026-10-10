@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My gorgeous Pokémon and I have come\nto frolic about Relic Castle! Here, take{be00}\na look at my Pokémon!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Your strength is quite high class, indeed!"
         },
         {

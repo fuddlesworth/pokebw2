@@ -50,7 +50,7 @@
             "text": "My blood burns with even more fire at this\nage! I've still got some fight in me!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "This bitterness that floods me after\na defeat...{be01}\nThe heart that does not succumb to such a\nfeeling is filled with energy and life!"
         }
     ]

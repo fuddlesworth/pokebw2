@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "This cave is full of rocks\ngenerating electricity!{be00}\nThe electricity is charging me up!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Yowch, a lightning spark!"
         },
         {

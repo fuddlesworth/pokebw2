@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "What's this? A visitor? Ooh, I'm so happy\nto meet someone else here!{be01}\nCould I ask you to be my opponent in a\nlong-awaited Pokémon battle?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It's all well and good fighting wild Pokémon,\nbut there is a certain thrill to be found in{be00}\nbattling against another Trainer!"
         },
         {

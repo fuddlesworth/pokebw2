@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Join our team!{be01}\nActually, I will force you\nto join our team!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Our team doesn't need a Trainer\nwho is quite that strong!"
         },
         {

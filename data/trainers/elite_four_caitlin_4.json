@@ -84,7 +84,7 @@
             "text": "I will control my emotions and use them\nas energy to help me obtain victory!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "As impressive as always...{be01}\nNo. You and your Pokémon were even\nmore elegant and excellent than before!{be01}\nTo have been able to battle against\nsuch a splendid team...{be01}\nMy Pokémon and I learned so much!\nI offer you my thanks.{be00}\nPlease battle me again sometime."
         }
     ]

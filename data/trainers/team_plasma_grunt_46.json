@@ -30,7 +30,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh! Plasmaaaa!\nGlory to Team Plasma!"
         }
     ]

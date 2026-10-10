@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What?! How could I have lost in a\ntype matchup like this?"
         }
     ]

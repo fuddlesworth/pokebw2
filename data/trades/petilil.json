@@ -15,7 +15,7 @@
     },
     "ability_slot": 1,
     "nature": "NATURE_TIMID",
-    "sex": 1,
+    "sex": "GENDER_FEMALE",
     "trainer_id": 65217,
     "contest": {
         "cool": 0,
@@ -25,9 +25,9 @@
         "tough": 0
     },
     "held_item": "ITEM_POWER_ANKLET",
-    "trainer_gender": 1,
+    "trainer_gender": "GENDER_FEMALE",
     "unk54": 0,
     "region": 2,
     "wanted_species": "SPECIES_COTTONEE",
-    "wanted_sex": 2
+    "wanted_sex": "GENDER_UNKNOWN"
 }

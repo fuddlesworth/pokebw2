@@ -30,11 +30,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey, since you worked so hard to get\nhere, how about I be your opponent?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Thanks a bunch.\nIt was a lot of fun!"
         },
         {

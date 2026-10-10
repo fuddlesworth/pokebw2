@@ -7,9 +7,9 @@
             "model": 249,
             "movement": 3,
             "type": 0,
-            "flag": 960,
+            "flag": "0x03c0",
             "script": 2,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 3,
@@ -55,7 +55,7 @@
     "triggers": [
         {
             "script": 1,
-            "var": 16672,
+            "var": "0x4120",
             "value": 2,
             "type": 0,
             "grid": {

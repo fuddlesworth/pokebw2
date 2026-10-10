@@ -48,11 +48,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Twist Mountain's number one tactician!\nThat's me!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Maybe I shouldn't have been satisfied with\njust being number one in Twist Mountain...?"
         },
         {

@@ -32,7 +32,7 @@
             "text": "Watching people practicing\nmakes me want to get moving, too!{be01}\nSoooooo, let's practice\nPokémon battles.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Masa: I laugh even though\nwe lost because it was fun!{be01}\nYas: Ah! I didn't cheer enough\nfor our Pokémon."
         },
         {

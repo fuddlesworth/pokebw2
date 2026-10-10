@@ -84,7 +84,7 @@
             "text": "No! Not yet!\nNo! We can fight on!!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Aghhhh...\nI did my best, but we lost..."
         }
     ]

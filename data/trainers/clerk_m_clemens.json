@@ -20,7 +20,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I get it! Ohhh, I really get it!\nBut then... So that's how it is!"
         }
     ]

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Turn around, and it's my turn. ♪\nTurn around, and it's your turn.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Turn around, turn around, turn around...\nThen turn around some more!"
         },
         {

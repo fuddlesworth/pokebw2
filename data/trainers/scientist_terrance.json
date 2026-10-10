@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "The fact that you are here means...\nthat you are also part of the sewer?!{be00}\nAll right! Then I will survey you, too!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Huh...? Where am I?\nWho are you?"
         },
         {

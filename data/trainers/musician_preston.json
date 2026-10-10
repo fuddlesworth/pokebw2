@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Whatever the case, it's best to\ntry something for yourself!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Hmm... I guess strumming instead of tapping\nwould have been best..."
         },
         {

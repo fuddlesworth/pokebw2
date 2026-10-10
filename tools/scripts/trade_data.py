@@ -53,15 +53,15 @@ def trade_json(offer: bytes, index: int, names: list[str]) -> dict:
         "ivs": {stat: random_or(iv) for stat, iv in zip(STATS, ivs)},
         "ability_slot": ability,
         "nature": None if nature == RANDOM else name("NATURE_", nature),
-        "sex": random_or(sex),
+        "sex": None if sex == RANDOM else name("GENDER_", sex),
         "trainer_id": trainer_id,
         "contest": dict(zip(CONTEST, contest)),
         "held_item": name("ITEM_", item),
-        "trainer_gender": gender,
+        "trainer_gender": name("GENDER_", gender),
         "unk54": unk54,
         "region": region,
         "wanted_species": name("SPECIES_", wanted),
-        "wanted_sex": wanted_sex,
+        "wanted_sex": name("GENDER_", wanted_sex),
     }
 
 
@@ -83,10 +83,11 @@ def trade_bytes(data: dict, index: int, where: str) -> bytes:
     return OFFER.pack(
         index, value(data["species"], where), data["form"], data["level"],
         *(or_random(data["ivs"][stat]) for stat in STATS), data["ability_slot"],
-        RANDOM if data["nature"] is None else value(data["nature"], where), or_random(data["sex"]),
+        RANDOM if data["nature"] is None else value(data["nature"], where),
+        RANDOM if data["sex"] is None else value(data["sex"], where),
         data["trainer_id"], *(data["contest"][c] for c in CONTEST), value(data["held_item"], where),
-        data["trainer_gender"], data["unk54"], data["region"], value(data["wanted_species"], where),
-        data["wanted_sex"], 2 * index, 2 * index + 1,
+        value(data["trainer_gender"], where), data["unk54"], data["region"], value(data["wanted_species"], where),
+        value(data["wanted_sex"], where), 2 * index, 2 * index + 1,
     )
 
 

@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My great loves in life are...\nMountains! Food! Pokémon!{be00}\nBut food deserves to go in there twice!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Oh, ho ho!\nYou got me!"
         },
         {

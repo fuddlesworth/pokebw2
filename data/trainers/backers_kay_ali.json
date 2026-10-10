@@ -32,7 +32,7 @@
             "text": "Watching athletes practice with Pokémon\nmade me want to have a Pokémon battle.{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Kay: Great!\nYou are like a professional!{be01}\nAli: How did you know?"
         },
         {

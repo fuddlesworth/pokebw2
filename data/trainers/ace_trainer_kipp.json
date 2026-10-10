@@ -40,11 +40,11 @@
             "text": "I'm trying to get better\nat Rotation Battles!{be01}\nI'll battle you if you have three or\nmore Pokémon ready for battle!"
         },
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Let me test what fighting style\nis more effective!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "What are you, some kind\nof Rotation Battle genius?"
         },
         {

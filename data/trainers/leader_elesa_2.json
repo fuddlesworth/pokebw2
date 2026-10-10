@@ -60,7 +60,7 @@
             "text": "I've got to overcome this situation!\nI can't let my fans down!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You shocked me through and through!\nYou melted my heart!"
         }
     ]

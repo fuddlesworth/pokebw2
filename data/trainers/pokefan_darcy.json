@@ -52,11 +52,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Did you see today's game?{be01}\nThere was some great ballhandling by\nplayers and Pokémon!{be01}\nThe excitement gets me pumped\nfor a battle!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I lost, but I am still excited!"
         },
         {

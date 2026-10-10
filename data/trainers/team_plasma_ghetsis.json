@@ -80,7 +80,7 @@
             "text": "What's this?!\nThis is nothing like I expected!"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Could it be?!{be01}\nMy plans for complete and total world\ndomination foiled yet again?{be01}\nNo!{be01}\nIt mustn't be!{be01}\nI couldn't have been defeated by some\nrandom Trainer from who knows where!"
         }
     ]

@@ -18,9 +18,9 @@
             "model": 73,
             "movement": 0,
             "type": 0,
-            "flag": 656,
+            "flag": "0x0290",
             "script": 1,
-            "direction": 0,
+            "direction": "DIR_UP",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -37,9 +37,9 @@
             "model": 110,
             "movement": 0,
             "type": 0,
-            "flag": 1477,
+            "flag": "0x05c5",
             "script": 7377,
-            "direction": 1,
+            "direction": "DIR_DOWN",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -74,7 +74,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16527,
+                    "var": "0x408f",
                     "value": 1,
                     "script": 4
                 }

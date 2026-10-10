@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'm planning on transferring a Pokémon\nusing Poké Transfer.{be00}\nBut before I do...{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Phew... I should have just transferred\nmy Pokémon after all, huh?"
         },
         {

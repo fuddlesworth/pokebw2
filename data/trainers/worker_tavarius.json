@@ -36,7 +36,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Looks like the conveyor brought\nin a strong Trainer like you!"
         }
     ]

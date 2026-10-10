@@ -66,10 +66,21 @@ def name(prefix: str, value: int) -> str | int:
     return names(prefix).get(value, value)
 
 
+def id_name(prefix: str, value: int) -> str | int:
+    """Returns an ID's constant with a prefix, or else the ID in hex, as "0x4176", as IDs are read; 0 stays 0."""
+    found = name(prefix, value)
+    return found if isinstance(found, str) or not value else f"{value:#06x}"
+
+
+HEX = re.compile(r"0x[0-9a-fA-F]+")
+
+
 def value(item: str | int, where: str) -> int:
-    """Returns the value of a number or a constant's name."""
+    """Returns the value of a number, a number in hex ("0x4176") or a constant's name."""
     if isinstance(item, int) and not isinstance(item, bool):
         return item
+    if isinstance(item, str) and HEX.fullmatch(item):
+        return int(item, 16)
     if isinstance(item, str) and item in constants():
         return constants()[item]
     raise DataError(f"{where}: {item!r} is not a number or a known constant")
@@ -136,7 +147,8 @@ def validate(data, schema: dict, where: str, root: dict | None = None):
         if "pattern" in schema and not re.search(schema["pattern"], data):
             raise DataError(f"{at}{data!r} does not match {schema['pattern']}")
         prefix = schema.get("x-constant")
-        if prefix and not (data.startswith(prefix) and data in constants()):
+        if prefix and not (data.startswith(prefix) and data in constants()) and not (
+                schema.get("x-hex") and HEX.fullmatch(data)):
             raise DataError(f"{at}{data!r} is not a known {prefix}* constant")
 
 

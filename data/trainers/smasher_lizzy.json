@@ -20,11 +20,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My serve is 120 miles per hour!{be01}\nThat's the kind of killer attack I'm\nabout to show you!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Ohhh, I wanted to continue the rally just a\nlittle bit longer!"
         },
         {

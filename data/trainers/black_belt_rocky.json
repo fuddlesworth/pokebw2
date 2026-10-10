@@ -48,7 +48,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "Strength that goes beyond mere Abilities...\nYou there! You're a real tough one, huh!"
         }
     ]

@@ -13,7 +13,7 @@
     "natural_gift_type": null,
     "important": true,
     "registrable": true,
-    "field_pocket": 4,
+    "field_pocket": "BAG_POCKET_KEY_ITEMS",
     "battle_pocket": 0,
     "field_func": 27,
     "battle_func": 0,

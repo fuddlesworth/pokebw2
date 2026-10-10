@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "Hey there!{be01}\nWhat do you think of this ball?\nI polished it until it shined!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "I may have lost the battle, but no one\ncan beat me when it comes to shining balls!"
         },
         {

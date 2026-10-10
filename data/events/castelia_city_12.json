@@ -9,7 +9,7 @@
             "type": 0,
             "flag": 0,
             "script": 3,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -26,9 +26,9 @@
             "model": 355,
             "movement": 0,
             "type": 0,
-            "flag": 753,
+            "flag": "0x02f1",
             "script": 2,
-            "direction": 2,
+            "direction": "DIR_LEFT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -45,9 +45,9 @@
             "model": 291,
             "movement": 0,
             "type": 0,
-            "flag": 754,
+            "flag": "0x02f2",
             "script": 2000,
-            "direction": 3,
+            "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -66,7 +66,7 @@
             "type": 0,
             "flag": 0,
             "script": 8,
-            "direction": 3,
+            "direction": "DIR_RIGHT",
             "params": [ 0, 0, 0 ],
             "area": {
                 "width": 0,
@@ -126,7 +126,7 @@
     "triggers": [
         {
             "script": 6,
-            "var": 16562,
+            "var": "0x40b2",
             "value": 3,
             "type": 0,
             "grid": {
@@ -140,7 +140,7 @@
         },
         {
             "script": 7,
-            "var": 16562,
+            "var": "0x40b2",
             "value": 3,
             "type": 0,
             "grid": {
@@ -166,7 +166,7 @@
             "type": 1,
             "conditions": [
                 {
-                    "var": 16562,
+                    "var": "0x40b2",
                     "value": 1,
                     "script": 1
                 }

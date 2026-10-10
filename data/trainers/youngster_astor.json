@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My Pokémon are gonna steam you out!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "We haven't lost in terms of dampness...\nI'm gonna keep believing that!"
         },
         {

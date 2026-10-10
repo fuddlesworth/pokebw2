@@ -36,11 +36,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "My Pokémon and I spend so much time\ntogether, we don't need words{be00}\nto understand one another.{be01}\nDo you think you can win against us?{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "You can understand each other\nvery well, too!"
         },
         {

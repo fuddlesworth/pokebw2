@@ -28,7 +28,7 @@
     ],
     "messages": [
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "There's nothing left for me to say after a\nbeating like that!"
         }
     ]

@@ -28,11 +28,11 @@
     ],
     "messages": [
         {
-            "type": 0,
+            "type": "TRMSG_START",
             "text": "I'll battle Pokémon even if I can't find\na pulse!{be01}"
         },
         {
-            "type": 1,
+            "type": "TRMSG_LOSE",
             "text": "It wasn't just a pulse I couldn't find...\nI couldn't get the prize either..."
         },
         {
