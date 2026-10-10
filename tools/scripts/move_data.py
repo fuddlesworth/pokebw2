@@ -1,87 +1,129 @@
 #!/usr/bin/env python3
-"""Write the move data (archive a/0/2/1) as editable sources, one file per move, with the macros of
-include/asm/move_data.inc. The build assembles them back into the archive and checks that it matches.
+"""The move data in data/moves/, one JSON file per move, as pokeplatinum's res/moves/: dump writes them from the ROM
+once, and pack builds the archive (a/0/2/1) from them, which the build does.
 
-    move_data.py extract/b2_us/files/a/0/2/1 data/moves
+    move_data.py dump extract/b2_us/files data/moves
+    move_data.py pack data/moves ARCHIVE
+
+Each move is data/moves/<move>/data.json, named after its constant (pound/ for MOVE_POUND), and the archive has them
+in the order of data/constants/moves.txt. move.schema.json describes each field.
 """
 import argparse
 import struct
+import sys
 from pathlib import Path
 
-from narc import read_narc
-from gen_constants import constant_names, flag_names, name
+sys.path.insert(0, str(Path(__file__).parent))
+from datajson import DataError, constants, label, load, load_schema, name, value, write  # noqa: E402
+from gen_constants import load as load_list  # noqa: E402
+from narc import read_narc, write_narc  # noqa: E402
 
-RECORD_SIZE = 0x24
+RECORD = struct.Struct("<6BbBH6BHbbB3B3b3B2sI")
+assert RECORD.size == 0x24
+MARKER = b"SS"
 
 
-def write_record(record: bytes, names: dict[str, dict[int, str]], title: str) -> str:
+def directory(move: str) -> str:
+    return move.removeprefix("MOVE_").lower()
+
+
+def ordered_moves() -> list[str]:
+    moves = sorted(load_list("moves").items(), key=lambda item: item[1])
+    if [v for _, v in moves] != list(range(len(moves))):
+        sys.exit("moves.txt doesn't number the moves from 0 in order")
+    return [move for move, _ in moves]
+
+
+def stat_names() -> dict[int, str]:
+    return {v: k for k, v in reversed(constants().items()) if k.startswith("BATTLEMON_") and k.endswith("_STAGE")}
+
+
+def move_json(record: bytes) -> dict:
     (type_, quality, category, power, accuracy, pp, priority, hits, condition, chance, duration, min_turns, max_turns,
-     crit, flinch, effect, drain, heal, target) = struct.unpack_from("<6BbBH6BHbbB", record, 0)
-    stats = record[0x15:0x18]
-    stages = struct.unpack_from("<3b", record, 0x18)
-    chances = record[0x1B:0x1E]
-    marker = record[0x1E:0x20]
-    flags = struct.unpack_from("<I", record, 0x20)[0]
-    if marker != b"SS":
-        raise ValueError(f"{title}: no SS marker")
+     crit, flinch, effect, drain, heal, target, *rest) = RECORD.unpack(record)
+    stats, stages, chances, marker, flags = rest[0:3], rest[3:6], rest[6:9], rest[9], rest[10]
+    if marker != MARKER:
+        raise ValueError("no SS marker")
+    changes = [{"stat": stat_names().get(stats[i], stats[i]), "stages": stages[i], "chance": chances[i]}
+               for i in range(3)]
+    while changes and not (stats[len(changes) - 1] or stages[len(changes) - 1] or chances[len(changes) - 1]):
+        changes.pop()
+    return {
+        "$schema": "../move.schema.json",
+        "type": name("TYPE_", type_),
+        "quality": name("MOVE_QUALITY_", quality),
+        "category": name("MOVE_CATEGORY_", category),
+        "power": power,
+        "accuracy": accuracy,
+        "pp": pp,
+        "priority": priority,
+        "hits": {"min": hits & 0xF, "max": hits >> 4},
+        "inflicts": {"condition": name("CONDITION_", condition), "chance": chance, "duration": duration,
+                     "min_turns": min_turns, "max_turns": max_turns},
+        "crit_stage": crit,
+        "flinch_chance": flinch,
+        "effect": name("BATTLE_EFFECT_", effect),
+        "drain": drain,
+        "heal": heal,
+        "target": name("MOVE_TARGET_", target),
+        "stat_changes": changes,
+        "flags": [name("MOVE_FLAG_", 1 << bit) for bit in range(32) if flags >> bit & 1],
+    }
 
-    changes = []
-    for i in range(3):
-        if stats[i] or stages[i] or chances[i]:
-            changes.append(f"stat{i + 1}={name(names['stat'], stats[i])}, stages{i + 1}={stages[i]}, "
-                           f"chance{i + 1}={chances[i]}")
-    lines = [
-        '#include "asm/move_data.inc"',
-        "",
-        f"// {title}",
-        f"    Type {name(names['type'], type_)}",
-        f"    Quality {name(names['quality'], quality)}",
-        f"    Category {name(names['category'], category)}",
-        f"    Power {power}",
-        f"    Accuracy {accuracy}",
-        f"    PP {pp}",
-        f"    Priority {priority}",
-        f"    Hits {hits & 0xF}, {hits >> 4}",
-        f"    Inflicts {name(names['condition'], condition) if condition else 0}, {chance}, {duration}, {min_turns}, "
-        f"{max_turns}",
-        f"    CritStage {crit}",
-        f"    FlinchChance {flinch}",
-        f"    Effect {name(names['effect'], effect)}",
-        f"    DrainHeal {drain}, {heal}",
-        f"    Target {name(names['target'], target)}",
-        f"    StatChanges {', '.join(changes)}".rstrip(),
-        "    Marker",
-        f"    Flags {flag_names('battle.h', 'MOVE_FLAG_', flags)}",
-        "",
-    ]
-    return "\n".join(lines)
+
+def dump(files: Path, output: Path):
+    members = read_narc((files / "a/0/2/1").read_bytes())
+    moves = ordered_moves()
+    if len(members) != len(moves):
+        sys.exit(f"{len(members)} moves in the archive and {len(moves)} in moves.txt")
+    for move, member in zip(moves, members):
+        write(output / directory(move) / "data.json", move_json(member))
+    print(f"wrote {len(members)} moves to {output}")
+
+
+def move_bytes(data: dict, where: str) -> bytes:
+    inflicts = data["inflicts"]
+    changes = data["stat_changes"] + [{"stat": 0, "stages": 0, "chance": 0}] * (3 - len(data["stat_changes"]))
+    flags = 0
+    for flag in data["flags"]:
+        flags |= value(flag, where)
+    return RECORD.pack(
+        value(data["type"], where), value(data["quality"], where), value(data["category"], where), data["power"],
+        data["accuracy"], data["pp"], data["priority"], data["hits"]["min"] | data["hits"]["max"] << 4,
+        value(inflicts["condition"], where), inflicts["chance"], inflicts["duration"], inflicts["min_turns"],
+        inflicts["max_turns"], data["crit_stage"], data["flinch_chance"], value(data["effect"], where), data["drain"],
+        data["heal"], value(data["target"], where), *(value(c["stat"], where) for c in changes),
+        *(c["stages"] for c in changes), *(c["chance"] for c in changes), MARKER, flags,
+    )
+
+
+def pack(root: Path, output: Path):
+    schema = load_schema(root / "move.schema.json")
+    members = []
+    for move in ordered_moves():
+        path = root / directory(move) / "data.json"
+        members.append(move_bytes(load(path, schema), label(path)))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_bytes(write_narc(members))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("archive", type=Path)
-    parser.add_argument("output", type=Path)
+    commands = parser.add_subparsers(dest="command", required=True)
+    dump_parser = commands.add_parser("dump", help="write data/moves/ from the extracted files")
+    dump_parser.add_argument("files", type=Path, help="the extracted files/ directory")
+    dump_parser.add_argument("output", type=Path)
+    pack_parser = commands.add_parser("pack", help="build the move data archive from data/moves/")
+    pack_parser.add_argument("root", type=Path)
+    pack_parser.add_argument("output", type=Path)
     args = parser.parse_args()
-
-    members = read_narc(args.archive.read_bytes())
-    names = {
-        "move": constant_names("moves.h", "MOVE_"),
-        "type": constant_names("types.h", "TYPE_"),
-        "category": constant_names("battle.h", "MOVE_CATEGORY_"),
-        "target": constant_names("battle.h", "MOVE_TARGET_"),
-        "quality": constant_names("battle.h", "MOVE_QUALITY_"),
-        "condition": constant_names("battle.h", "CONDITION_"),
-        "effect": constant_names("move_effects.h", "BATTLE_EFFECT_"),
-        "stat": {k: v for k, v in constant_names("battle.h", "BATTLEMON_").items() if v.endswith("_STAGE")},
-    }
-    args.output.mkdir(parents=True, exist_ok=True)
-    for index, member in enumerate(members):
-        if len(member) != RECORD_SIZE:
-            raise SystemExit(f"move {index} is {len(member)} bytes")
-        move = names["move"].get(index, f"MOVE_{index}")
-        path = args.output / f"{index:04d}_{move.removeprefix('MOVE_').lower()}.s"
-        path.write_text(write_record(member, names, move))
-    print(f"wrote {len(members)} files to {args.output}")
+    if args.command == "dump":
+        dump(args.files, args.output)
+        return
+    try:
+        pack(args.root, args.output)
+    except DataError as error:
+        sys.exit(f"error: {error}")
 
 
 if __name__ == "__main__":

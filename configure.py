@@ -134,7 +134,6 @@ def library_of(source: Path) -> tuple[str, list[str]] | None:
 # archives whose entries go together, such as a trainer and its party, and come from the same file.
 ARCHIVES = {
     "a/0/1/2": "data/zones",  # Zone headers, see tools/scripts/zone_data.py
-    "a/0/2/1": "data/moves",  # Move data, see tools/scripts/move_data.py
     "a/0/5/6": "data/field_scripts",  # Field scripts, see tools/scripts/field_script.py
     "a/0/9/1": ("data/trainers", ".trainer"),  # Trainers, see tools/scripts/trainer_data.py
     "a/0/9/2": ("data/trainers", ".party"),  # Their parties, from the same files
@@ -147,6 +146,7 @@ ARCHIVES = {
 DATA_PACKS = [
     # Species data, level-up moves, evolutions, baby species and experience tables
     ("tools/scripts/species_data.py", "data/pokemon", ["a/0/1/6", "a/0/1/8", "a/0/1/9", "a/0/2/0", "a/0/1/7"]),
+    ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"]),  # Move data
 ]
 DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py"]
 

@@ -24,7 +24,7 @@ format and can write them again.
 | `a/0/1/2` | `data/zones/` | Zone headers | `tools/scripts/zone_data.py` |
 | `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species | `tools/scripts/species_data.py` |
 | `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
-| `a/0/2/1` | `data/moves/` | Move data | `tools/scripts/move_data.py` |
+| `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
 | `a/0/9/1`, `a/0/9/2` | `data/trainers/` | Trainers and their parties | `tools/scripts/trainer_data.py` |
 | `a/1/2/7` | `data/encounters/` | Wild encounters | `tools/scripts/encounter_data.py` |
@@ -167,40 +167,41 @@ To add a species, add its constant to the end of `species.txt` and its directory
 with a record of its own, add its `form_<n>.json` and its line to `forms.json`, and count it in the species' `forms`.
 The sprites, cries and names that the other archives hold aren't built from source yet.
 
-## Move data
+## Moves
 
-`a/0/2/1` holds one 0x24-byte record per move, by move ID, which `PML_MoveGetParamCore` reads. Its sources are
-`data/moves/NNNN_name.s`, with the macros of `include/asm/move_data.inc`, again one per field and in its order:
+Each move has a directory in `data/moves/`, named after its constant (`thunderbolt/` for `MOVE_THUNDERBOLT`), whose
+`data.json` is its record of the move data (`a/0/2/1`, the 0x24 bytes that `PML_MoveGetParamCore` reads).
+`tools/scripts/move_data.py pack` builds the archive in the order of `data/constants/moves.txt`, and
+`data/moves/move.schema.json` documents each field.
 
+```json
+{
+    "$schema": "../move.schema.json",
+    "type": "TYPE_ELECTRIC",
+    "quality": "MOVE_QUALITY_DAMAGE_INFLICT",
+    "category": "MOVE_CATEGORY_SPECIAL",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 15,
+    ...
+    "inflicts": {
+        "condition": "CONDITION_PARALYSIS",
+        "chance": 10,
+        ...
+    },
+    "effect": "BATTLE_EFFECT_PARALYZE_HIT",
+    "target": "MOVE_TARGET_SELECTED",
+    "stat_changes": [],
+    "flags": [ "MOVE_FLAG_PROTECT", "MOVE_FLAG_MIRROR_MOVE" ]
+}
 ```
-#include "asm/move_data.inc"
 
-// MOVE_THUNDERBOLT
-    Type TYPE_ELECTRIC
-    Quality MOVE_QUALITY_DAMAGE_INFLICT
-    Category MOVE_CATEGORY_SPECIAL
-    Power 95
-    Accuracy 100
-    PP 15
-    Priority 0
-    Hits 0, 0
-    Inflicts CONDITION_PARALYSIS, 10, 1, 0, 0
-    CritStage 0
-    FlinchChance 0
-    Effect BATTLE_EFFECT_PARALYZE_HIT
-    DrainHeal 0, 0
-    Target MOVE_TARGET_SELECTED
-    StatChanges
-    Marker
-    Flags MOVE_FLAG_PROTECT | MOVE_FLAG_MIRROR_MOVE
-```
-
-`Effect` is the battle effect the move runs (`BATTLE_EFFECT_*`), and `Inflicts` the condition it inflicts with its
-chance and duration. `StatChanges` takes up to three changes as `statN=`, `stagesN=` and `chanceN=`, with the stats
-of `BATTLEMON_*_STAGE`. `Quality` is the class of the move's effect (`MOVE_QUALITY_*`), `Target` which Pokémon it
-targets (`MOVE_TARGET_*`) and `Flags` its properties (`MOVE_FLAG_*`), such as contact, sound or being blocked by
-Protect; `include/constants/battle.h` names each after the moves that have it. Both versions have the same move
-data.
+`effect` is the battle effect the move runs (`BATTLE_EFFECT_*`), and `inflicts` the condition it inflicts with its
+chance and duration. `stat_changes` holds up to three changes of the stats of `BATTLEMON_*_STAGE`. `quality` is the
+class of the move's effect (`MOVE_QUALITY_*`), `target` which Pokémon it targets (`MOVE_TARGET_*`) and `flags` its
+properties (`MOVE_FLAG_*`), such as contact, sound or being blocked by Protect; `include/constants/battle.h` names
+each after the moves that have it. The record's "SS" marker, which every move has, is written by the packer. Both
+versions have the same move data. A move's name and description are still in the text archives.
 
 ## Trainers
 
