@@ -157,6 +157,14 @@ DATA_PACKS = [
     # The Black Tower, White Treehollow in White 2
     ("tools/scripts/facility_data.py", "data/facilities/black_tower", ["a/2/6/2", "a/2/6/1"], False,
      ["data/facilities"]),
+    # The Pokémon World Tournament's three pools of trainers, each with the single sets' archive, and its rental sets
+    ("tools/scripts/facility_data.py", "data/facilities/pwt_regular", ["a/2/4/9", "a/2/5/0", "a/2/4/8"], False,
+     ["data/facilities"]),
+    ("tools/scripts/facility_data.py", "data/facilities/pwt_leaders", ["a/2/5/2", "a/2/5/3", "a/2/5/1"], False,
+     ["data/facilities"]),
+    ("tools/scripts/facility_data.py", "data/facilities/pwt_masters", ["a/2/5/5", "a/2/5/6", "a/2/5/4"], False,
+     ["data/facilities"]),
+    ("tools/scripts/facility_data.py", "data/facilities/pwt_rental", ["a/2/5/7"], False, ["data/facilities"]),
     # The zones' events, at the numbers of their entities files, which the zone headers give
     ("tools/scripts/event_data.py", "data/events", ["a/1/2/6"], False, ["data/zones"]),
 ]

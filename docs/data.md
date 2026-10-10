@@ -33,6 +33,7 @@ format and can write them again.
 | `a/1/6/3` | `data/trades/` (JSON) | In-game trades | `tools/scripts/trade_data.py` |
 | `a/2/1/2`, `a/2/1/1` | `data/facilities/battle_subway/` (JSON) | Battle Subway and Trial House trainers and Pokémon | `tools/scripts/facility_data.py` |
 | `a/2/6/2`, `a/2/6/1` | `data/facilities/black_tower/` (JSON) | Black Tower and White Treehollow trainers and Pokémon | `tools/scripts/facility_data.py` |
+| `a/2/4/8` to `a/2/5/7` | `data/facilities/pwt_*/` (JSON) | Pokémon World Tournament trainers, Pokémon and rental Pokémon | `tools/scripts/facility_data.py` |
 | `a/1/6/9` | `data/tr_ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/scripts/tr_ai_script.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
@@ -456,9 +457,15 @@ archives, and `data/facilities/facility.schema.json` and `set.schema.json` docum
 
 `FACILITIES` in `facility_data.py` says which archives and message files are a facility's: the Battle Subway (`a/2/1/2`
 and `a/2/1/1`, whose trainers' names are system message file 15 and their three messages each file 376), which the Trial
-House also uses (`func_ov012_02162864`), and the Black Tower, White Treehollow in White 2 (`a/2/6/2` and `a/2/6/1`,
-which `func_ov127_021efeec` reads, with the trainers' names in file 53, stored compressed, and no messages). The Pokémon
-World Tournament's archives have the same formats but aren't tied to their code yet. Both versions have the same
+House also uses (`func_ov012_02162864`); the Black Tower, White Treehollow in White 2 (`a/2/6/2` and `a/2/6/1`, which
+`func_ov127_021efeec` reads, with the trainers' names in file 53, stored compressed, and no messages); and the Pokémon
+World Tournament. Its tournaments each pick one of three pools of trainers by `WbtTournamentInfo`'s `unk5`, from the
+base archives 248, 251 and 254 (`wbt_tool.c`): `pwt_regular` (Driftveil, Download, Rental and Mix), `pwt_leaders` (the
+Unova, Kanto, Johto, Hoenn and Sinnoh Leaders) and `pwt_masters` (Champions, World Leaders, Type Expert, Rental Master
+and Mix Master). A pool's base archive gives each trainer a `single_set`, which `func_ov134_021f0258` uses when the
+entrant's `unk0_7` is set, the next its sets to pick from, and the one after the sets. The pools' trainers have no names
+in the text and their first field isn't a class (2 for all but the first), so it is `unk0` and they are numbered.
+`pwt_rental` is the tournament's rental sets (`a/2/5/7`, `wbt_party.c`), with no trainers. Both versions have the same
 facility data.
 
 Unlike a regular trainer (see [Trainers](#trainers)), a facility trainer has no party of its own: the game picks some of
