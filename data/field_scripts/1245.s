@@ -295,7 +295,7 @@ L_041E:
     PokePartyRecoverAll
     RTCallGlobal 2105
     FieldSetNextZoneHere
-    FlagSet 2405
+    FlagSet EVENT_FLAG_CONTINUE_SCRIPT
     NetConnectWiFiClub
     RTCallGlobal 2106
     WorkSetConst 0x8020, 13

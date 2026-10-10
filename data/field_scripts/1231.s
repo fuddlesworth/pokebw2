@@ -677,7 +677,7 @@ L_0947:
     VMCall L_09CD
     PokePartyRecoverAll
     FieldSetNextZoneHere
-    FlagSet 2405
+    FlagSet EVENT_FLAG_CONTINUE_SCRIPT
     MapChangeUnionRoom
 
 L_097E:
@@ -709,7 +709,7 @@ L_09CD:
     WorkSetConst 0x8030, 0
     WorkSetConst 0x8031, 0
     WorkSetConst 0x8032, 0
-    WorkSetConst 0x4041, 1
+    WorkSetConst EVENT_WORK_CONTINUE_SCRIPT, 1
     PlayerGetGPos 0x802f, 0x8030
     WorkSub 0x8030, 3
     BMCreateHandleByGPos 0x8031, 5, 0x802f, 0x8030
@@ -799,8 +799,8 @@ L_0ADA:
     WorkSetConst 0x8037, 0
     WorkSetConst 0x8038, 0
     WorkSetConst 0x8039, 0
-    WorkSetConst 0x4041, 0
-    FlagReset 2405
+    WorkSetConst EVENT_WORK_CONTINUE_SCRIPT, 0
+    FlagReset EVENT_FLAG_CONTINUE_SCRIPT
     PlayerGetGPos 0x8034, 0x8035
     WorkAdd 0x8035, 3
     ActorFindByGPos 0x8036, 0x8010, 0x8034, 3, 0x8035

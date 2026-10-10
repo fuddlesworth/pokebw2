@@ -2,6 +2,7 @@
 #include "constants/arc.h"
 #include "constants/flags.h"
 #include "constants/sound.h"
+#include "constants/vars.h"
 #include "constants/zones.h"
 #include "dsprot/dsprot.h"
 #include "field/event_3d_demo.h"

@@ -31,13 +31,13 @@ The text archives are packed by `text_data.py` from text files rather than assem
 
 ## Constant lists
 
-The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences,
-trainer classes, trainers and zones, are lists in `data/constants/`, one name per line. They are the source of truth:
-to add one, add it to its list, and to rename one, use `tools/scripts/rename_constant.py OLD NEW`, which renames its
-uses too. The build generates a header from each list, `constants/<list>.h` in
+The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences, trainer
+classes, trainers, zones, event flags and event variables, are lists in `data/constants/`, one name per line. They are
+the source of truth: to add one, add it to its list, and to rename one, use `tools/scripts/rename_constant.py OLD NEW`,
+which renames its uses too. The build generates a header from each list, `constants/<list>.h` in
 `build/include/generated/`, which is on the include path, so the C code, the data sources and the scripts all use the
-same names, and the generated header can never disagree with its list. A line is a constant's full name, which takes
-the previous value plus one, or `NAME = value` (decimal or `0x` hex); `#` starts a comment.
+same names, and the generated header can never disagree with its list. A line is a constant's full name, which takes the
+previous value plus one, or `NAME = value` (decimal or `0x` hex); `#` starts a comment.
 
 ```
 # Species, by national Pokédex number (bootstrapped from the ROM by make_constants.py)
@@ -58,6 +58,10 @@ gets what it is (`ZONE_ASPERTIA_CITY_POKEMON_CENTER`, `ZONE_ASPERTIA_CITY_GYM`);
 ID order (`ZONE_CASTELIA_CITY_12`). The code names a few itself, such as `ZONE_VICTORY_ROAD`, the one Escape Rope
 leads out of (`ZONE_OVERRIDES` in `make_constants.py --zones`). A numbered zone is a placeholder: when its map shows
 what it is, rename it.
+
+The game has no names for its event flags and variables, so `flags.txt` (`EVENT_FLAG_*`) and `vars.txt`
+(`EVENT_WORK_*`) only hold the ones named so far, each with its value. Name one there when the code or a script shows
+what it does, then write the field scripts again (`field_script.py disasm`), so that they use the name.
 
 ## Text
 

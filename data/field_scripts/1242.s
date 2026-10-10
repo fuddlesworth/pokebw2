@@ -268,7 +268,7 @@ L_03E3:
     PokePartyRecoverAll
     FieldSetTeleportZone 18
     FieldSetNextZone 428, 2, 13, 0, 5
-    FlagSet 2405
+    FlagSet EVENT_FLAG_CONTINUE_SCRIPT
     VMStackPushFlag 679
     VMStackPushConst 1
     VMStackCmp CMP_EQ

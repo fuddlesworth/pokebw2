@@ -1,0 +1,3 @@
+# Event work variables, from 0x4000, which the game has no names for: each is named once the code or a script shows
+# what it is
+EVENT_WORK_CONTINUE_SCRIPT = 0x4041

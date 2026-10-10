@@ -43,6 +43,9 @@ CONSTANTS = {
     "sound": ("constants/sound.h", "SEQ_"),
     "trainer": ("constants/trainers.h", "TRAINER_"),
     "zone": ("constants/zones.h", "ZONE_"),
+    "flag": ("constants/flags.h", "EVENT_FLAG_"),
+    # Not a meaning: the names of the event work variables, wherever an argument takes a variable
+    "var": ("constants/vars.h", "EVENT_WORK_"),
 }
 ZONE_TEXT = 10  # offset of the text file in a zone header
 ZONE_SIZE = 48
@@ -478,7 +481,7 @@ class ScriptFile:
 
     def format_value(self, kind: str, meaning: str | None, value: int) -> str:
         if kind in ("any", "var") and VARS_START <= value < VARS_END:
-            return f"{value:#06x}"
+            return self.constants["var"].get(value, f"{value:#06x}")
         if meaning and value in self.constants.get(meaning, {}):
             return self.constants[meaning][value]
         if kind == "u32" and value >= 0x10000:

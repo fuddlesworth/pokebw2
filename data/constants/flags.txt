@@ -1,0 +1,3 @@
+# Event flags, which the game has no names for: each is named once the code or a script shows what it is
+EVENT_FLAG_RUNNING_SHOES = 0x963
+EVENT_FLAG_CONTINUE_SCRIPT = 0x965

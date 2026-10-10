@@ -595,8 +595,8 @@ L_0915:
     Plugin13_Cmd1008 4, 1
     RTGetZoneID 0x8039
     FieldSetNextZone 0x8039, 1, 10, 65535, 1
-    FlagSet 2405
-    WorkSetConst 0x4041, 1
+    FlagSet EVENT_FLAG_CONTINUE_SCRIPT
+    WorkSetConst EVENT_WORK_CONTINUE_SCRIPT, 1
     Cmd_02ED 0, 0
     VMStackPush 0x8000
     VMStackPush 0x8001
@@ -618,8 +618,8 @@ L_0915:
     VMJumpIf CMP_STACK, L_09B0
     WorkSetConst 0x8020, 255
     PokemonCenterCmd_ClearMatchInProgress
-    FlagReset 2405
-    WorkSetConst 0x4041, 0
+    FlagReset EVENT_FLAG_CONTINUE_SCRIPT
+    WorkSetConst EVENT_WORK_CONTINUE_SCRIPT, 0
     Plugin13_Cmd1008 4, 0
     Cmd_02ED 1, 0
     VMReturn
@@ -635,8 +635,8 @@ L_09B0:
     VMJumpIf CMP_STACK, L_09FB
     WorkSetConst 0x8020, 255
     PokemonCenterCmd_ClearMatchInProgress
-    FlagReset 2405
-    WorkSetConst 0x4041, 0
+    FlagReset EVENT_FLAG_CONTINUE_SCRIPT
+    WorkSetConst EVENT_WORK_CONTINUE_SCRIPT, 0
     Plugin13_Cmd1008 4, 0
     Cmd_02ED 1, 0
     VMReturn
@@ -649,8 +649,8 @@ L_09FB:
     VMJumpIf CMP_STACK, L_0A2E
     WorkSetConst 0x8020, 252
     PokemonCenterCmd_ClearMatchInProgress
-    FlagReset 2405
-    WorkSetConst 0x4041, 0
+    FlagReset EVENT_FLAG_CONTINUE_SCRIPT
+    WorkSetConst EVENT_WORK_CONTINUE_SCRIPT, 0
     Plugin13_Cmd1008 4, 0
     Cmd_02ED 1, 0
     VMReturn
@@ -1451,7 +1451,7 @@ L_1656:
     ActorMsgClose
     RTCallGlobal 2105
     FieldSetNextZoneHere
-    FlagSet 2405
+    FlagSet EVENT_FLAG_CONTINUE_SCRIPT
     VMReturn
 
 L_1670:
