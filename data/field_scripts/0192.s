@@ -483,7 +483,7 @@ L_072F:
     FlagSet 715
     FlagSet 706
     RTReserveScript 1
-    MapChangeWarp 104, 7, 25, 0
+    MapChangeWarp ZONE_DRIFTVEIL_CITY_6, 7, 25, 0
     VMReturn
     .balign 4, 0
 

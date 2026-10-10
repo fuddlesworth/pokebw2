@@ -93,7 +93,7 @@ Script_3:
     ActorCmdExec 255, Movement_0A54
     ActorCmdWait
     EvCameraWait
-    MapChangeWarp 478, 7, 14, 0
+    MapChangeWarp ZONE_WHITE_TREEHOLLOW, 7, 14, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -42,6 +42,7 @@ CONSTANTS = {
     "type": ("constants/types.h", "TYPE_"),
     "sound": ("constants/sound.h", "SEQ_"),
     "trainer": ("constants/trainers.h", "TRAINER_"),
+    "zone": ("constants/zones.h", "ZONE_"),
 }
 ZONE_TEXT = 10  # offset of the text file in a zone header
 ZONE_SIZE = 48

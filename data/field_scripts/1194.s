@@ -150,7 +150,7 @@ Script_1:
     RTReserveScript 15
     EvCameraRebind
     EvCameraEnd
-    MapChangeCore 7, 11, 0, 3, 0
+    MapChangeCore ZONE_STRIATON_CITY_2, 11, 0, 3, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

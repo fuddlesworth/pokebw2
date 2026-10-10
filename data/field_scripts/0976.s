@@ -8,7 +8,7 @@
 Script_1:
     ActorsPauseAll
     VMCall L_0042
-    MapChangeCore 29, 4, 20, 13, 1
+    MapChangeCore ZONE_CASTELIA_CITY_GYM, 4, 20, 13, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -16,7 +16,7 @@ Script_1:
 Script_2:
     ActorsPauseAll
     VMCall L_0042
-    MapChangeCore 29, 8, 0, 4, 2
+    MapChangeCore ZONE_CASTELIA_CITY_GYM, 8, 0, 4, 2
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

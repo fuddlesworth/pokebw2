@@ -651,7 +651,7 @@ L_083D:
 L_086E:
     PleasureBoatCmd_Free
     RTReserveScript 1
-    MapChangeCore 39, 19, 0, 16, 2
+    MapChangeCore ZONE_CASTELIA_CITY_11, 19, 0, 16, 2
     VMReturn
     .balign 4, 0
 

@@ -180,7 +180,7 @@ L_0293:
     EvCameraEnd
     FlagReset 886
     FlagReset 888
-    MapChangeCore 604, 15, 0, 21, 0
+    MapChangeCore ZONE_GIANT_CHASM_6, 15, 0, 21, 0
     EvCameraInit
     EvCameraUnbind
     EvCameraMoveTo 9816, 0, 0xed000, 0xf8000, 0, 0x12c000, 1

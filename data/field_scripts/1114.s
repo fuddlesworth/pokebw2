@@ -543,11 +543,11 @@ Script_1:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_07F5
-    MapChangeWarpPad 561, 4, 10, 32801
+    MapChangeWarpPad ZONE_PLASMA_FRIGATE_10, 4, 10, 32801
     VMJump L_07FF
 
 L_07F5:
-    MapChangeWarpPad 564, 4, 10, 32801
+    MapChangeWarpPad ZONE_PLASMA_FRIGATE_13, 4, 10, 32801
 
 L_07FF:
     FinishAllEvents

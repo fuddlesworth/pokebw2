@@ -136,7 +136,7 @@ Script_1:
     RTReserveScript 19
     EvCameraRebind
     EvCameraEnd
-    MapChangeCore 17, 12, 3, 6, 0
+    MapChangeCore ZONE_NACRENE_CITY_2, 12, 3, 6, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

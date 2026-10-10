@@ -440,7 +440,7 @@ L_07F8:
     FlagSet 710
     MapReplaceSetEvent 4, 0, 0
     RTReserveScript 3
-    MapChangeWarp 191, 197, 491, 0
+    MapChangeWarp ZONE_PWT, 197, 491, 0
     VMJump L_08AF
 
 L_0852:
@@ -1047,7 +1047,7 @@ L_1053:
     ActorCmdExec 255, Movement_139C
     ActorCmdWait
     RTReserveScript 6
-    MapChangeWarp 563, 11, 15, 1
+    MapChangeWarp ZONE_PLASMA_FRIGATE_12, 11, 15, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -1087,7 +1087,7 @@ L_10E7:
     ActorCmdExec 255, Movement_139C
     ActorCmdWait
     RTReserveScript 9
-    MapChangeWarp 553, 11, 15, 1
+    MapChangeWarp ZONE_PLASMA_FRIGATE_2, 11, 15, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

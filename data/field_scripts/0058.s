@@ -123,11 +123,11 @@ Script_3:
     VMStackPushConst 14
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01E3
-    MapChangeCore 488, 15, 65535, 20, 0
+    MapChangeCore ZONE_CASTELIA_CITY_GYM_2, 15, 65535, 20, 0
     VMJump L_01EF
 
 L_01E3:
-    MapChangeCore 488, 9, 65535, 13, 0
+    MapChangeCore ZONE_CASTELIA_CITY_GYM_2, 9, 65535, 13, 0
 
 L_01EF:
     FadeInBlackQ

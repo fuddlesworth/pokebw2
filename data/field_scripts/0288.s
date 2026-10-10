@@ -215,7 +215,7 @@ L_027F:
     Plugin3_Cmd1020 255
     Plugin3_Cmd1020 251
     RTReserveScript 1
-    MapChangeWarp 145, 8, 19, 0
+    MapChangeWarp ZONE_POKEMON_LEAGUE_10, 8, 19, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

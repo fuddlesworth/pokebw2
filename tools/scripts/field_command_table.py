@@ -188,6 +188,12 @@ SINKS = {
     ("EventMEPlay_Create", 1): "sound", ("GFL_SndBGMIsPlaying", 0): "sound",
     ("TrainerData_GetParam", 0): "trainer", ("TrainerFlagGet", 1): "trainer", ("setTrainerBattleFlag", 1): "trainer",
     ("clearTrainerBattleFlag", 1): "trainer", ("TrainerMsg_Load", 1): "trainer",
+    ("EventMapChangeWarp_CreateGrid", 2): "zone", ("EventMapChangeWarp_CreateRail", 2): "zone",
+    ("EventMapChange_CreateRail", 2): "zone", ("EventMapChange_CreateGrid", 3): "zone",
+    ("EventMapChange_CreateGridDefault", 2): "zone", ("EventMapChangeQuicksand_Create", 3): "zone",
+    ("EventMapChangeDiveIn_Create", 1): "zone", ("EventMapChangeWarpPad_Create", 2): "zone",
+    ("EventEntralinkWarpIn_Create", 1): "zone", ("EventMapChangeFakeWarp_Create", 2): "zone",
+    ("EventMapChangeEnding_Create", 2): "zone",
 }
 
 

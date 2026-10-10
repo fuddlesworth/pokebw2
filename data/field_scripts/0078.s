@@ -338,7 +338,7 @@ L_048B:
     WorkSetConst 0x417b, 0
     FlagSet 2744
     RTReserveScript 29
-    MapChangeWarp 52, 29, 29, 0
+    MapChangeWarp ZONE_ROYAL_UNOVA, 29, 29, 0
     VMReturn
 
 L_04BD:

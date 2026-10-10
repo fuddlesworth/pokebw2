@@ -134,7 +134,7 @@ Script_1:
     RTReserveScript 17
     EvCameraRebind
     EvCameraEnd
-    MapChangeCore 104, 7, 0, 25, 0
+    MapChangeCore ZONE_DRIFTVEIL_CITY_6, 7, 0, 25, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

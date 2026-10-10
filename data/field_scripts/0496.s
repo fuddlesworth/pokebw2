@@ -146,7 +146,7 @@ L_01B9:
     FadeOutBlack
     FadeWait
     RTReserveScript 10
-    MapChangeCore 247, 42, 3, 24, 1
+    MapChangeCore ZONE_ABYSSAL_RUINS_7, 42, 3, 24, 1
     VMJump L_0279
 
 L_01E3:

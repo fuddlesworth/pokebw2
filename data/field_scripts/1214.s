@@ -104,7 +104,7 @@ Script_1:
     VMJump L_0201
 
 L_01EF:
-    MapChangeCore 8, 3, 0, 13, 0
+    MapChangeCore ZONE_STRIATON_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0201:
@@ -113,7 +113,7 @@ L_0201:
     VMJump L_0226
 
 L_0214:
-    MapChangeCore 20, 3, 0, 13, 0
+    MapChangeCore ZONE_NACRENE_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0226:
@@ -122,7 +122,7 @@ L_0226:
     VMJump L_024B
 
 L_0239:
-    MapChangeCore 41, 3, 0, 13, 0
+    MapChangeCore ZONE_CASTELIA_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_024B:
@@ -131,7 +131,7 @@ L_024B:
     VMJump L_0270
 
 L_025E:
-    MapChangeCore 65, 3, 0, 13, 0
+    MapChangeCore ZONE_NIMBASA_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0270:
@@ -140,7 +140,7 @@ L_0270:
     VMJump L_0295
 
 L_0283:
-    MapChangeCore 99, 3, 0, 13, 0
+    MapChangeCore ZONE_DRIFTVEIL_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0295:
@@ -149,7 +149,7 @@ L_0295:
     VMJump L_02BA
 
 L_02A8:
-    MapChangeCore 109, 3, 0, 13, 0
+    MapChangeCore ZONE_MISTRALTON_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_02BA:
@@ -158,7 +158,7 @@ L_02BA:
     VMJump L_02DF
 
 L_02CD:
-    MapChangeCore 115, 3, 0, 13, 0
+    MapChangeCore ZONE_ICIRRUS_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_02DF:
@@ -167,7 +167,7 @@ L_02DF:
     VMJump L_0304
 
 L_02F2:
-    MapChangeCore 122, 3, 0, 13, 0
+    MapChangeCore ZONE_OPELUCID_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0304:
@@ -176,7 +176,7 @@ L_0304:
     VMJump L_0329
 
 L_0317:
-    MapChangeCore 146, 3, 0, 13, 0
+    MapChangeCore ZONE_POKEMON_LEAGUE_11, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0329:
@@ -185,7 +185,7 @@ L_0329:
     VMJump L_034E
 
 L_033C:
-    MapChangeCore 1, 3, 0, 13, 0
+    MapChangeCore ZONE_BLACK_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_034E:
@@ -194,7 +194,7 @@ L_034E:
     VMJump L_0373
 
 L_0361:
-    MapChangeCore 425, 3, 0, 13, 0
+    MapChangeCore ZONE_WHITE_FOREST_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0373:
@@ -203,7 +203,7 @@ L_0373:
     VMJump L_0398
 
 L_0386:
-    MapChangeCore 435, 3, 0, 13, 0
+    MapChangeCore ZONE_ASPERTIA_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0398:
@@ -212,7 +212,7 @@ L_0398:
     VMJump L_03BD
 
 L_03AB:
-    MapChangeCore 454, 3, 0, 13, 0
+    MapChangeCore ZONE_VIRBANK_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_03BD:
@@ -221,7 +221,7 @@ L_03BD:
     VMJump L_03E2
 
 L_03D0:
-    MapChangeCore 472, 3, 0, 13, 0
+    MapChangeCore ZONE_HUMILAU_CITY_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_03E2:
@@ -230,7 +230,7 @@ L_03E2:
     VMJump L_0407
 
 L_03F5:
-    MapChangeCore 398, 3, 0, 13, 0
+    MapChangeCore ZONE_ACCUMULA_TOWN_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0407:
@@ -239,7 +239,7 @@ L_0407:
     VMJump L_042C
 
 L_041A:
-    MapChangeCore 407, 3, 0, 13, 0
+    MapChangeCore ZONE_LACUNOSA_TOWN_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_042C:
@@ -248,7 +248,7 @@ L_042C:
     VMJump L_0451
 
 L_043F:
-    MapChangeCore 413, 3, 0, 13, 0
+    MapChangeCore ZONE_UNDELLA_TOWN_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0451:
@@ -257,7 +257,7 @@ L_0451:
     VMJump L_0476
 
 L_0464:
-    MapChangeCore 443, 3, 0, 13, 0
+    MapChangeCore ZONE_FLOCCESY_TOWN_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_0476:
@@ -266,7 +266,7 @@ L_0476:
     VMJump L_049B
 
 L_0489:
-    MapChangeCore 460, 3, 0, 13, 0
+    MapChangeCore ZONE_LENTIMAS_TOWN_POKEMON_CENTER, 3, 0, 13, 0
     VMJump L_04C0
 
 L_049B:
@@ -275,7 +275,7 @@ L_049B:
     VMJump L_04C0
 
 L_04AE:
-    MapChangeCore 602, 3, 0, 13, 0
+    MapChangeCore ZONE_VICTORY_ROAD_27, 3, 0, 13, 0
     VMJump L_04C0
 
 L_04C0:

@@ -2778,7 +2778,7 @@ L_2DD0:
     ActorMsgClose
     WorkSetConst 0x413a, 1
     FlagSet 2545
-    MapChangeWarp 490, 15, 70, 0
+    MapChangeWarp ZONE_JOIN_AVENUE, 15, 70, 0
     WorkSetConst 0x8021, 0
 
 L_2E15:
@@ -2891,7 +2891,7 @@ L_2FEC:
     FadeOutBlackQ
     FadeWait
     PlayerGetGPos 0x8050, 0x8051
-    MapChangeCore 490, 0, 0, 0, 0
+    MapChangeCore ZONE_JOIN_AVENUE, 0, 0, 0, 0
     EvCameraInit
     EvCameraUnbind
     VMCall L_179C
@@ -2914,11 +2914,11 @@ L_2FEC:
     VMStackPushConst 10
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_3070
-    MapChangeCore 491, 10, 0, 11, 3
+    MapChangeCore ZONE_JOIN_AVENUE_2, 10, 0, 11, 3
     VMJump L_307C
 
 L_3070:
-    MapChangeCore 491, 12, 0, 11, 2
+    MapChangeCore ZONE_JOIN_AVENUE_2, 12, 0, 11, 2
 
 L_307C:
     VMJump L_30B3
@@ -2928,11 +2928,11 @@ L_3082:
     VMStackPushConst 10
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_30A7
-    MapChangeCore 491, 11, 0, 10, 1
+    MapChangeCore ZONE_JOIN_AVENUE_2, 11, 0, 10, 1
     VMJump L_30B3
 
 L_30A7:
-    MapChangeCore 491, 11, 0, 12, 0
+    MapChangeCore ZONE_JOIN_AVENUE_2, 11, 0, 12, 0
 
 L_30B3:
     ActorFindByGPos 0x8023, 0x8026, 11, 0, 11
@@ -3044,7 +3044,7 @@ L_328D:
     SystemMsg 203, 2
     InfoMsgClose
     Plugin8_Cmd1001
-    MapChangeWarp 490, 42, 52, 1
+    MapChangeWarp ZONE_JOIN_AVENUE, 42, 52, 1
     WorkSetConst 0x8021, 0
     VMJump L_3353
 
@@ -3056,7 +3056,7 @@ L_32AD:
 L_32C0:
     InfoMsgClose
     Plugin8_Cmd1001
-    MapChangeWarp 490, 31, 39, 1
+    MapChangeWarp ZONE_JOIN_AVENUE, 31, 39, 1
     WorkSetConst 0x8021, 0
     VMJump L_3353
 
@@ -3068,7 +3068,7 @@ L_32DA:
 L_32ED:
     InfoMsgClose
     Plugin8_Cmd1001
-    MapChangeWarp 490, 31, 27, 1
+    MapChangeWarp ZONE_JOIN_AVENUE, 31, 27, 1
     WorkSetConst 0x8021, 0
     VMJump L_3353
 
@@ -3080,7 +3080,7 @@ L_3307:
 L_331A:
     InfoMsgClose
     Plugin8_Cmd1001
-    MapChangeWarp 490, 31, 15, 1
+    MapChangeWarp ZONE_JOIN_AVENUE, 31, 15, 1
     WorkSetConst 0x8021, 0
     VMJump L_3353
 
@@ -4425,7 +4425,7 @@ L_48D6:
     Plugin8_Cmd1030 18, 0
     Plugin8_Cmd1028 3, 4
     Plugin8_Cmd1028 3, 5
-    MapChangeWarp 326, 430, 490, 0
+    MapChangeWarp ZONE_ROUTE_4, 430, 490, 0
     WorkSetConst 0x8021, 0
 
 L_4917:
@@ -4439,7 +4439,7 @@ L_491D:
 L_4930:
     WorkSetConst 0x413a, 1
     FlagSet 2545
-    MapChangeWarp 490, 15, 70, 0
+    MapChangeWarp ZONE_JOIN_AVENUE, 15, 70, 0
     WorkSetConst 0x8021, 0
     VMJump L_4956
 

@@ -958,7 +958,7 @@ Script_10:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 607, 9, 0, 19, 1
+    MapChangeCore ZONE_CHARGESTONE_CAVE_5, 9, 0, 19, 1
     VMJump L_0D01
 
 L_0CED:

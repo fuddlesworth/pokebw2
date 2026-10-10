@@ -2724,7 +2724,7 @@ L_29D1:
     FadeOutBlackQ
     FadeWait
     ActorCmdWait
-    MapChangeCore 75, 7, 0, 4, 0
+    MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
     VMReturn
 
 L_29E5:
@@ -3501,7 +3501,7 @@ L_3528:
     VMCall L_3571
     FadeOutBlackQ
     FadeWait
-    MapChangeCore 418, 22, 0, 54, 2
+    MapChangeCore ZONE_ANVILLE_TOWN, 22, 0, 54, 2
     FadeInBlackQ
     FadeWait
     CallPlaceNameDisp
@@ -3581,6 +3581,6 @@ Script_13:
 Script_14:
     FadeOutBlackQ
     FadeWait
-    MapChangeCore 75, 7, 0, 4, 0
+    MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
     VMHalt
     .balign 4, 0

@@ -194,7 +194,7 @@ L_0242:
     Call3DDemo 13, 0
     FieldOpen
     RTReserveScript 5
-    MapChangeCore 463, 798, 65531, 242, 3
+    MapChangeCore ZONE_ROUTE_21, 798, 65531, 242, 3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

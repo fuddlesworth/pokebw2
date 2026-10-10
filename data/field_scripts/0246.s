@@ -85,11 +85,11 @@ Script_3:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0179
-    MapChangeWarp 120, 418, 162, 1
+    MapChangeWarp ZONE_OPELUCID_CITY, 418, 162, 1
     VMJump L_0183
 
 L_0179:
-    MapChangeWarp 120, 418, 164, 1
+    MapChangeWarp ZONE_OPELUCID_CITY, 418, 164, 1
 
 L_0183:
     WorkSetConst 0x8020, 0

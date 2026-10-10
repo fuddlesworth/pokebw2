@@ -88,7 +88,7 @@ Script_2:
     FadeOutBlackQ
     FadeWait
     RTReserveScript 11
-    MapChangeCore 111, 14, 0, 19, 1
+    MapChangeCore ZONE_MISTRALTON_CITY_3, 14, 0, 19, 1
     VMJump L_013A
 
 L_012A:

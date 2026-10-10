@@ -102,7 +102,7 @@ Script_1:
     RTReserveScript 30
     EvCameraRebind
     EvCameraEnd
-    MapChangeCore 120, 418, 0, 170, 0
+    MapChangeCore ZONE_OPELUCID_CITY, 418, 0, 170, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -956,7 +956,7 @@ L_0D8C:
     ActorCmdExec 255, Movement_0E84
     ActorCmdWait
     RTReserveScript 3
-    MapChangeWarp 435, 7, 19, 0
+    MapChangeWarp ZONE_ASPERTIA_CITY_POKEMON_CENTER, 7, 19, 0
     EvCameraRebind
     EvCameraEnd
     FlagSet 745
@@ -1852,7 +1852,7 @@ Script_30:
     FadeOutBlack
     RTReserveScript 17
     FadeWait
-    MapChangeCore 428, 14, 0, 3, 0
+    MapChangeCore ZONE_ASPERTIA_CITY_2, 14, 0, 3, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

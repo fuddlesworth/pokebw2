@@ -146,7 +146,7 @@ L_01B8:
     FlagSet 713
     FlagSet 1000
     RTReserveScript 8
-    MapChangeWarp 192, 15, 26, 0
+    MapChangeWarp ZONE_PWT_2, 15, 26, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

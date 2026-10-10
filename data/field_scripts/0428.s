@@ -16,7 +16,7 @@ Script_1:
     EvCameraWait
     EvCameraEnd
     RTReserveScript 7
-    MapChangeCore 136, 32, 0, 60, 0
+    MapChangeCore ZONE_POKEMON_LEAGUE, 32, 0, 60, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

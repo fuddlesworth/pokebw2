@@ -154,7 +154,7 @@ Script_1:
     RTReserveScript 16
     EvCameraRebind
     EvCameraEnd
-    MapChangeCore 114, 17, 0, 15, 0
+    MapChangeCore ZONE_ICIRRUS_CITY_2, 17, 0, 15, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

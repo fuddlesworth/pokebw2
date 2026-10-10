@@ -187,7 +187,7 @@ Script_1:
     FadeOutBlackQ
     FadeWait
     SEPlay SEQ_SE_VDEMO_02
-    MapChangeRail 36, 0, 2, 11, 3
+    MapChangeRail ZONE_CASTELIA_CITY_8, 0, 2, 11, 3
     SEWait
     VMJump L_02F4
 

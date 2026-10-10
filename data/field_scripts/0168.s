@@ -141,11 +141,11 @@ Script_5:
     VMStackPushConst 5
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_01F4
-    MapChangeWarpPad 87, 6, 25, 0
+    MapChangeWarpPad ZONE_NIMBASA_CITY_11, 6, 25, 0
     VMJump L_01FE
 
 L_01F4:
-    MapChangeWarpPad 86, 6, 25, 0
+    MapChangeWarpPad ZONE_NIMBASA_CITY_10, 6, 25, 0
 
 L_01FE:
     FinishAllEvents

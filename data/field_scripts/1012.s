@@ -202,7 +202,7 @@ Script_4:
     FlagSet 948
     FlagReset 951
     RTReserveScript 2
-    MapChangeCore 507, 27, 0, 14, 2
+    MapChangeCore ZONE_CLAY_TUNNEL_2, 27, 0, 14, 2
     VMJump L_02DD
 
 L_02CF:
@@ -239,7 +239,7 @@ Script_5:
     FlagSet 950
     FlagReset 956
     RTReserveScript 7
-    MapChangeCore 508, 19, 0, 35, 1
+    MapChangeCore ZONE_CLAY_TUNNEL_3, 19, 0, 35, 1
     VMJump L_0358
 
 L_034A:
@@ -276,7 +276,7 @@ Script_6:
     FlagSet 949
     FlagReset 957
     RTReserveScript 7
-    MapChangeCore 508, 56, 0, 84, 1
+    MapChangeCore ZONE_CLAY_TUNNEL_3, 56, 0, 84, 1
     VMJump L_03D3
 
 L_03C5:

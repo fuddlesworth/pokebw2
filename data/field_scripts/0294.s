@@ -72,7 +72,7 @@ L_00DE:
     FadeOutBlackQ
     FadeWait
     SEPlay SEQ_SE_VDEMO_02
-    MapChangeCore 37, 12, 0, 11, 3
+    MapChangeCore ZONE_CASTELIA_CITY_9, 12, 0, 11, 3
     SEWait
     VMJump L_010E
 

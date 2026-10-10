@@ -460,7 +460,7 @@ Script_9:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 599, 6, 0, 5, 1
+    MapChangeCore ZONE_UNDELLA_TOWN_5, 6, 0, 5, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -484,7 +484,7 @@ Script_20:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 599, 6, 0, 5, 1
+    MapChangeCore ZONE_UNDELLA_TOWN_5, 6, 0, 5, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

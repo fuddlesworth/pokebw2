@@ -430,7 +430,7 @@ Script_23:
 Script_4:
     ActorsPauseAll
     PlayerGetDir 0x8021
-    MapChangeWarpPad 554, 11, 5, 32801
+    MapChangeWarpPad ZONE_PLASMA_FRIGATE_3, 11, 5, 32801
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -438,7 +438,7 @@ Script_4:
 Script_5:
     ActorsPauseAll
     PlayerGetDir 0x8021
-    MapChangeWarpPad 555, 7, 14, 32801
+    MapChangeWarpPad ZONE_PLASMA_FRIGATE_4, 7, 14, 32801
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -446,7 +446,7 @@ Script_5:
 Script_6:
     ActorsPauseAll
     PlayerGetDir 0x8021
-    MapChangeWarpPad 557, 8, 9, 32801
+    MapChangeWarpPad ZONE_PLASMA_FRIGATE_6, 8, 9, 32801
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

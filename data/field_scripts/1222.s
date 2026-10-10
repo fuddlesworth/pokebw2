@@ -19,7 +19,7 @@ Script_2:
     ActorCmdWait
     FadeWait
     RTReserveScript 5
-    MapChangeCore 565, 15, 0, 0, 1
+    MapChangeCore ZONE_UNDERGROUND_RUINS, 15, 0, 0, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

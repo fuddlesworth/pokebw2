@@ -70,7 +70,7 @@ Script_3:
     ActorCmdExec 255, Movement_0578
     ActorCmdWait
     EvCameraWait
-    MapChangeWarp 479, 7, 14, 0
+    MapChangeWarp ZONE_BLACK_TOWER, 7, 14, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

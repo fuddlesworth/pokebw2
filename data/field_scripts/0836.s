@@ -1050,7 +1050,7 @@ L_0E22:
     VMSleep 15
     SEPlay SEQ_SE_BDEMO_02
     VMSleep 30
-    MapChangeCore 74, 16, 0, 14, 1
+    MapChangeCore ZONE_GEAR_STATION_9, 16, 0, 14, 1
     VMJump L_0E5A
 
 L_0E4C:

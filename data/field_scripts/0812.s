@@ -293,7 +293,7 @@ L_04F1:
     ActorCmdWait
     RTReserveScript 3
     FlagSet 780
-    MapChangeWarp 409, 6, 9, 0
+    MapChangeWarp ZONE_LACUNOSA_TOWN_3, 6, 9, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

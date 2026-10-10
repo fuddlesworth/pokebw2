@@ -1723,12 +1723,10 @@ void GameData_UpdateEscapeRopeZone(GameData *gameData, const ZoneSpawnInfo *spaw
             GameData_SetEscapeRopeZone(gameData, &escapeRopeSpawn);
         }
     }
-    // Zone 0x9e is part of the Desert Resort
-    if (now->zoneId == 0x9e && GetZoneFlagsEnableEscapeRope(spawn->zoneId)) {
+    if (now->zoneId == ZONE_DESERT_RESORT_2 && GetZoneFlagsEnableEscapeRope(spawn->zoneId)) {
         GameData_SetEscapeRopeZone(gameData, remember);
     }
-    // Zone 0x28 is part of Castelia City
-    if (now->zoneId == 0x28 && spawn->zoneId == ZONE_CASTELIA_SEWERS) {
+    if (now->zoneId == ZONE_CASTELIA_CITY_12 && spawn->zoneId == ZONE_CASTELIA_SEWERS) {
         GameData_SetEscapeRopeZone(gameData, remember);
     }
 }

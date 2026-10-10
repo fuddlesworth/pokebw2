@@ -297,7 +297,7 @@ Script_6:
 
 Script_7:
     ActorsPauseAll
-    MapChangeWarpPad 137, 31, 48, 0
+    MapChangeWarpPad ZONE_POKEMON_LEAGUE_2, 31, 48, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

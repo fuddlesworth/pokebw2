@@ -137,7 +137,7 @@ L_0161:
 
 L_01C0:
     RTReserveScript 2
-    MapChangeCore 609, 15, 0, 61, 0
+    MapChangeCore ZONE_UNDERGROUND_RUINS_2, 15, 0, 61, 0
     VMJump L_028A
 
 L_01D6:
@@ -147,7 +147,7 @@ L_01D6:
 
 L_01E9:
     RTReserveScript 2
-    MapChangeCore 610, 15, 0, 61, 0
+    MapChangeCore ZONE_UNDERGROUND_RUINS_3, 15, 0, 61, 0
     VMJump L_028A
 
 L_01FF:
@@ -157,7 +157,7 @@ L_01FF:
 
 L_0212:
     RTReserveScript 3
-    MapChangeCore 611, 15, 0, 61, 0
+    MapChangeCore ZONE_ROCK_PEAK_CHAMBER, 15, 0, 61, 0
     VMJump L_028A
 
 L_0228:
@@ -167,7 +167,7 @@ L_0228:
 
 L_023B:
     RTReserveScript 3
-    MapChangeCore 612, 15, 0, 61, 0
+    MapChangeCore ZONE_ICEBERG_CHAMBER, 15, 0, 61, 0
     VMJump L_028A
 
 L_0251:
@@ -177,12 +177,12 @@ L_0251:
 
 L_0264:
     RTReserveScript 3
-    MapChangeCore 613, 15, 0, 61, 0
+    MapChangeCore ZONE_IRON_CHAMBER, 15, 0, 61, 0
     VMJump L_028A
 
 L_027A:
     RTReserveScript 2
-    MapChangeCore 609, 15, 0, 61, 0
+    MapChangeCore ZONE_UNDERGROUND_RUINS_2, 15, 0, 61, 0
 
 L_028A:
     FinishAllEvents

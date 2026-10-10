@@ -235,7 +235,7 @@ Script_3:
     ActorCmdExec 255, Movement_0500
     ActorCmdWait
     WorkSetConst 0x410a, 2
-    MapChangeWarp 574, 15, 31, 0
+    MapChangeWarp ZONE_POKESTAR_STUDIOS_4, 15, 31, 0
     RTReserveScript 10867
     FinishAllEvents
     ActorsUnpauseAll
@@ -272,7 +272,7 @@ Script_33:
     ActorCmdWait
     FlagSet 2440
     RTReserveScript 10819
-    MapChangeWarp 568, 14, 21, 0
+    MapChangeWarp ZONE_POKESTAR_STUDIOS_3, 14, 21, 0
     WorkSetConst 0x410a, 3
     WorkSetConst 0x40ac, 4
     FlagReset 724
@@ -492,7 +492,7 @@ Script_4:
     LastKeyWait
     MsgWinCloseAll
     RTReserveScript 2
-    MapChangeWarp 586, 11, 16, 3
+    MapChangeWarp ZONE_POKESTAR_STUDIOS_5, 11, 16, 3
     FlagSet 458
     FlagSet 995
     WorkSetConst 0x8024, 0

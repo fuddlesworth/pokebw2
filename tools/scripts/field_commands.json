@@ -1686,6 +1686,12 @@
     "u16",
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null,
+    null,
+    null
    ]
   },
   "191": {
@@ -1696,6 +1702,12 @@
     "u16",
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null,
+    null,
+    null
    ]
   },
   "192": {
@@ -1707,6 +1719,13 @@
     "u16",
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null,
+    null,
+    null,
+    null
    ]
   },
   "193": {
@@ -1716,6 +1735,11 @@
     "u16",
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null,
+    null
    ]
   },
   "194": {
@@ -1726,6 +1750,12 @@
     "u16",
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null,
+    null,
+    null
    ]
   },
   "195": {
@@ -1742,6 +1772,13 @@
     "u16",
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null,
+    null,
+    null,
+    null
    ]
   },
   "197": {
@@ -4370,6 +4407,13 @@
     "u16",
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null,
+    null,
+    null,
+    null
    ]
   },
   "584": {
@@ -4734,6 +4778,10 @@
    "args": [
     "u16",
     "u16"
+   ],
+   "meanings": [
+    "zone",
+    null
    ]
   },
   "651": {

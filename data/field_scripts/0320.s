@@ -7,14 +7,14 @@
 
 Script_1:
     ActorsPauseAll
-    MapChangeQuicksand 161, 15, 11
+    MapChangeQuicksand ZONE_RELIC_CASTLE_2, 15, 11
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
 
 Script_2:
     ActorsPauseAll
-    MapChangeQuicksand 161, 10, 10
+    MapChangeQuicksand ZONE_RELIC_CASTLE_2, 10, 10
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

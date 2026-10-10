@@ -160,7 +160,7 @@ L_0242:
     MapReplaceSetEvent 6, 1, 1
     WorkSetConst 0x4106, 2
     RTReserveScript 7
-    MapChangeCore 463, 797, 65531, 241, 3
+    MapChangeCore ZONE_ROUTE_21, 797, 65531, 241, 3
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -105,7 +105,7 @@ L_012E:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 606, 14, 0, 15, 1
+    MapChangeCore ZONE_MUSICAL_THEATER_3, 14, 0, 15, 1
     VMJump L_01D0
 
 L_01C2:
@@ -479,7 +479,7 @@ Script_1:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 606, 14, 0, 15, 1
+    MapChangeCore ZONE_MUSICAL_THEATER_3, 14, 0, 15, 1
     VMJump L_074A
 
 L_06AE:
@@ -507,7 +507,7 @@ L_06AE:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 606, 14, 0, 15, 1
+    MapChangeCore ZONE_MUSICAL_THEATER_3, 14, 0, 15, 1
     VMJump L_0732
 
 L_0720:

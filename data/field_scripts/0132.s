@@ -43,7 +43,7 @@ Script_4:
     ActorCmdWait
     RTReserveScript 7
     LensFlareRequest
-    MapChangeWarp 62, 422, 459, 1
+    MapChangeWarp ZONE_NIMBASA_CITY, 422, 459, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

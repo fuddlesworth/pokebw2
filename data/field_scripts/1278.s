@@ -84,7 +84,7 @@ L_0139:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0168
-    MapChangeWarp 192, 14, 0, 1
+    MapChangeWarp ZONE_PWT_2, 14, 0, 1
     VMJump L_0185
 
 L_0168:
@@ -92,7 +92,7 @@ L_0168:
     VMStackPushConst 2
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0185
-    MapChangeWarp 192, 16, 0, 1
+    MapChangeWarp ZONE_PWT_2, 16, 0, 1
 
 L_0185:
     VMReturn
@@ -111,7 +111,7 @@ Script_2:
     EvCameraMoveTo 2008, 0, 0xfd000, 0x172000, 0x2001f, 0xe7000, 1
     EvCameraWait
     VMCall L_053D
-    MapChangeWarp 192, 15, 0, 1
+    MapChangeWarp ZONE_PWT_2, 15, 0, 1
     EvCameraEnd
     RTReserveScript 10658
     FinishAllEvents
@@ -141,7 +141,7 @@ L_0234:
     VMCall L_0B14
 
 L_0240:
-    MapChangeWarp 192, 15, 0, 1
+    MapChangeWarp ZONE_PWT_2, 15, 0, 1
     EvCameraEnd
     RTReserveScript 10658
     FinishAllEvents

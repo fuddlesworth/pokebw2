@@ -7,6 +7,7 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --sdat extract/b2_us/files/swan_sound_data.sdat
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trainer-classes extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trainers extract/b2_us
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --zones extract/b2_us
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused and get no constant.
@@ -167,6 +168,63 @@ def trainer_names(extract: Path) -> dict[int, str]:
     return names
 
 
+# Zones whose names the code shows, which the zone headers alone don't: the Victory Road that Escape Rope leads out
+# of (the zones from 214 are Black and White's), and the Union Room, whose place name is a placeholder
+ZONE_OVERRIDES = {0x1A6: "UNION_ROOM", 0x23D: "VICTORY_ROAD"}
+# Music that tells what a zone is, for the zones that share a place name
+ZONE_KINDS = {"SEQ_BGM_POKECEN": "POKEMON_CENTER", "SEQ_BGM_GATE": "GATE", "SEQ_BGM_LABO": "LAB"}
+ZONE_HEADER_SIZE = 0x30
+PLACE_NAMES = 109
+
+
+def zone_names(extract: Path) -> dict[int, str]:
+    """Returns the name of each zone, after its place name. Of the zones that share a place name, the one the player
+    can fly from, or else the first, gets the place name alone; a Pokémon Center, gate, lab or gym, told by its music,
+    gets the place name and what it is; and the rest are numbered from _2 in ID order. A zone whose place name is a
+    placeholder is named after its ID."""
+    from narc import read_narc
+    from personal_data import constant_names
+
+    files = extract / "files"
+    (data,) = read_narc((files / "a/0/1/2").read_bytes())
+    places = read_archive_file(files / "a/0/0/2", PLACE_NAMES)
+    sequences = constant_names("sound.h", "SEQ_")
+    zones = []
+    for zone in range(len(data) // ZONE_HEADER_SIZE):
+        fields = struct.unpack_from("<BBHHHHH4HHHHHHHHHiii", data, ZONE_HEADER_SIZE * zone)
+        spring, place, flags = fields[7], fields[14] & 0x3FF, fields[16]
+        text = places[place]
+        zones.append((zone, identifier(text) if "[" not in text else "", sequences.get(spring, ""), flags >> 13 & 1))
+
+    names = {zone: f"ZONE_{name}" for zone, name in ZONE_OVERRIDES.items()}
+    groups: dict[str, list] = {}
+    for zone in zones:
+        if zone[0] not in names:
+            if zone[1]:
+                groups.setdefault(zone[1], []).append(zone)
+            else:
+                names[zone[0]] = f"ZONE_{zone[0]}"
+    taken = set(names.values())
+    for place, group in groups.items():
+        rest = list(group)
+        if f"ZONE_{place}" not in taken:
+            flying = [zone for zone in group if zone[3]]
+            main = flying[0] if len(flying) == 1 else group[0]
+            names[main[0]] = f"ZONE_{place}"
+            rest.remove(main)
+        count: dict[str, int] = {}
+        for zone, _, sequence, _ in rest:
+            kind = ZONE_KINDS.get(sequence) or ("GYM" if "_GYM" in sequence else "")
+            base = f"ZONE_{place}_{kind}" if kind else f"ZONE_{place}"
+            count[base] = count.get(base, 0) + 1
+            # The place name alone is the main zone's, so the other zones start at _2
+            number = count[base] + (0 if kind else 1)
+            names[zone] = base if number == 1 else f"{base}_{number}"
+    if len(set(names.values())) != len(names):
+        sys.exit("two zones have the same name")
+    return dict(sorted(names.items()))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -176,6 +234,8 @@ def main():
                         help="write only trainer_classes.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--trainers", type=Path, metavar="EXTRACT",
                         help="write only trainers.txt, from an extracted version such as extract/b2_us")
+    parser.add_argument("--zones", type=Path, metavar="EXTRACT",
+                        help="write only zones.txt, from an extracted version such as extract/b2_us")
     args = parser.parse_args()
     if args.trainer_classes:
         names = {c: f"TRAINER_CLASS_{name}" for c, name in trainer_class_names(args.trainer_classes).items()}
@@ -183,7 +243,10 @@ def main():
     if args.trainers:
         write_list(args.output / "trainers.txt", trainer_names(args.trainers),
                    "Trainers, by class and name, numbered where they repeat")
-    if args.trainer_classes or args.trainers:
+    if args.zones:
+        write_list(args.output / "zones.txt", zone_names(args.zones),
+                   "Zones, by place name, then by what they are or numbered where places repeat")
+    if args.trainer_classes or args.trainers or args.zones:
         return
     if args.sdat:
         write_sound_list(args.output / "sound.txt", args.sdat.read_bytes())

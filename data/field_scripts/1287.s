@@ -133,7 +133,7 @@ Script_3:
     ActorWalkRoute 255, 15, 17, 1, 8, 1
     FadeWait
     ActorCmdWait
-    MapChangeCore 566, 45, 3, 18, 1
+    MapChangeCore ZONE_POKESTAR_STUDIOS, 45, 3, 18, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -685,7 +685,7 @@ L_0B07:
     ActorMsgClose
     WorkSetConst 0x413a, 1
     FlagSet 2545
-    MapChangeWarp 490, 15, 70, 0
+    MapChangeWarp ZONE_JOIN_AVENUE, 15, 70, 0
     VMReturn
 
 L_0B4D:

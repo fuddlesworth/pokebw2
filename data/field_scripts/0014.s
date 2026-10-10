@@ -934,7 +934,7 @@ L_0DF8:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 597, 7, 0, 3, 1
+    MapChangeCore ZONE_STRIATON_CITY_10, 7, 0, 3, 1
     VMReturn
 
 Script_15:

@@ -72,7 +72,7 @@ Script_3:
     Call3DDemo 26, 0
     FieldOpen
     RTReserveScript 3
-    MapChangeCore 38, 12, 0, 10, 2
+    MapChangeCore ZONE_CASTELIA_CITY_10, 12, 0, 10, 2
     VMJump L_00F0
 
 L_00E0:
@@ -130,7 +130,7 @@ L_017E:
     FieldOpen
     ActorDelete 3
     MapReplaceSetEvent 3, 1, 1
-    MapChangeCore 38, 12, 0, 10, 2
+    MapChangeCore ZONE_CASTELIA_CITY_10, 12, 0, 10, 2
     FlagSet 722
     WorkSetConst 0x40ae, 1
     VMJump L_01D6

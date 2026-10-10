@@ -89,7 +89,7 @@ L_00F7:
     WorkSetConst 0x40c9, 2
     FlagSet 772
     RTReserveScript 3
-    MapChangeWarp 332, 6, 9, 0
+    MapChangeWarp ZONE_ROUTE_6_2, 6, 9, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

@@ -779,7 +779,7 @@ L_0B11:
     FadeOutBlack
     ActorCmdWait
     FadeWait
-    MapChangeCore 193, 31, 0, 15, 2
+    MapChangeCore ZONE_PWT_3, 31, 0, 15, 2
     RTReserveScript 10665
     Cmd_02C5 23
     Cmd_01DD 9, 0x8021, 0

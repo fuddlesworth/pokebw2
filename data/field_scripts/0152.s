@@ -253,7 +253,7 @@ L_0391:
     FlagSet 604
     FlagSet 605
     WorkSetConst 0x4179, 0
-    MapChangeCore 75, 7, 0, 4, 0
+    MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
     WorkSetConst 0x8024, 0
     VMReturn
     .balign 4, 0
@@ -649,7 +649,7 @@ L_0A48:
     FlagSet 604
     FlagSet 605
     WorkSetConst 0x4179, 0
-    MapChangeCore 75, 7, 0, 4, 0
+    MapChangeCore ZONE_BATTLE_SUBWAY, 7, 0, 4, 0
     WorkSetConst 0x8026, 0
     WorkSetConst 0x8025, 0
     VMReturn
@@ -1463,7 +1463,7 @@ L_1776:
     VMJump L_17AF
 
 L_179D:
-    MapChangeCore 67, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_2, 11, 0, 15, 3
     VMJump L_18E3
 
 L_17AF:
@@ -1472,7 +1472,7 @@ L_17AF:
     VMJump L_17D4
 
 L_17C2:
-    MapChangeCore 68, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_3, 11, 0, 15, 3
     VMJump L_18E3
 
 L_17D4:
@@ -1481,7 +1481,7 @@ L_17D4:
     VMJump L_17F9
 
 L_17E7:
-    MapChangeCore 69, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_4, 11, 0, 15, 3
     VMJump L_18E3
 
 L_17F9:
@@ -1490,7 +1490,7 @@ L_17F9:
     VMJump L_181E
 
 L_180C:
-    MapChangeCore 70, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_5, 11, 0, 15, 3
     VMJump L_18E3
 
 L_181E:
@@ -1499,7 +1499,7 @@ L_181E:
     VMJump L_1843
 
 L_1831:
-    MapChangeCore 71, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_6, 11, 0, 15, 3
     VMJump L_18E3
 
 L_1843:
@@ -1508,7 +1508,7 @@ L_1843:
     VMJump L_1868
 
 L_1856:
-    MapChangeCore 71, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_6, 11, 0, 15, 3
     VMJump L_18E3
 
 L_1868:
@@ -1517,7 +1517,7 @@ L_1868:
     VMJump L_188D
 
 L_187B:
-    MapChangeCore 72, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_7, 11, 0, 15, 3
     VMJump L_18E3
 
 L_188D:
@@ -1526,7 +1526,7 @@ L_188D:
     VMJump L_18B2
 
 L_18A0:
-    MapChangeCore 72, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_7, 11, 0, 15, 3
     VMJump L_18E3
 
 L_18B2:
@@ -1535,11 +1535,11 @@ L_18B2:
     VMJump L_18D7
 
 L_18C5:
-    MapChangeCore 73, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_8, 11, 0, 15, 3
     VMJump L_18E3
 
 L_18D7:
-    MapChangeCore 67, 11, 0, 15, 3
+    MapChangeCore ZONE_GEAR_STATION_2, 11, 0, 15, 3
 
 L_18E3:
     BSubwayCmd_Tool 202, 100, 0, 0

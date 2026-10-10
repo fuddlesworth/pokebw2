@@ -549,11 +549,11 @@ L_08BC:
     VMStackPushConst 23
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_090F
-    MapChangeCore 120, 418, 0, 162, 1
+    MapChangeCore ZONE_OPELUCID_CITY, 418, 0, 162, 1
     VMJump L_091B
 
 L_090F:
-    MapChangeCore 120, 418, 0, 164, 1
+    MapChangeCore ZONE_OPELUCID_CITY, 418, 0, 164, 1
 
 L_091B:
     FinishAllEvents
@@ -1689,7 +1689,7 @@ Script_13:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 601, 9, 0, 9, 1
+    MapChangeCore ZONE_OPELUCID_CITY_12, 9, 0, 9, 1
     VMJump L_1C2F
 
 L_1B34:
@@ -2067,7 +2067,7 @@ L_2030:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 601, 9, 0, 9, 1
+    MapChangeCore ZONE_OPELUCID_CITY_12, 9, 0, 9, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -2098,7 +2098,7 @@ Script_33:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 601, 9, 0, 9, 1
+    MapChangeCore ZONE_OPELUCID_CITY_12, 9, 0, 9, 1
     WorkSetConst 0x8029, 0
     FinishAllEvents
     ActorsUnpauseAll

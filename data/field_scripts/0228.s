@@ -134,7 +134,7 @@ L_01B5:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 600, 6, 0, 3, 1
+    MapChangeCore ZONE_FLOCCESY_TOWN_5, 6, 0, 3, 1
     WorkSetConst 0x4047, 1
     VMReturn
 

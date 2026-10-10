@@ -81,11 +81,11 @@ L_0157:
     VMStackPushConst 1
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0180
-    MapChangeCore 77, 14, 0, 16, 0
+    MapChangeCore ZONE_MUSICAL_THEATER, 14, 0, 16, 0
     VMJump L_018C
 
 L_0180:
-    MapChangeCore 77, 17, 0, 4, 0
+    MapChangeCore ZONE_MUSICAL_THEATER, 17, 0, 4, 0
 
 L_018C:
     FinishAllEvents

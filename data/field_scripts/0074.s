@@ -126,7 +126,7 @@ L_01B7:
     Call3DDemo 4, 0
     FieldOpen
     RTReserveScript 1
-    MapChangeCore 147, 407, 0, 762, 2
+    MapChangeCore ZONE_UNITY_TOWER, 407, 0, 762, 2
     VMReturn
     .balign 4, 0
 

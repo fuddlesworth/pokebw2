@@ -198,7 +198,7 @@ L_02B1:
     SEStop
     SEPlay SEQ_SE_FLD_59
     RTReserveScript 3
-    MapChangeCore 98, 6, 0, 4, 1
+    MapChangeCore ZONE_DRIFTVEIL_CITY_GYM_2, 6, 0, 4, 1
     VMJump L_0322
 
 L_02E9:
@@ -447,7 +447,7 @@ Script_8:
     Cmd_018D 1
     FadeWait
     RTReserveScript 2
-    MapChangeCore 98, 8, 0, 4, 0
+    MapChangeCore ZONE_DRIFTVEIL_CITY_GYM_2, 8, 0, 4, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

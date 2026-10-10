@@ -69,7 +69,7 @@ Script_1:
     Cmd_018E 1
     FadeWait
     RTReserveScript 2
-    MapChangeCore 97, 12, 0, 87, 0
+    MapChangeCore ZONE_DRIFTVEIL_CITY_GYM, 12, 0, 87, 0
 
 L_0105:
     FinishAllEvents

@@ -178,7 +178,7 @@ L_023B:
     FadeOutBlack
     FadeWait
     RTReserveScript 7
-    MapChangeCore 247, 12, 3, 20, 3
+    MapChangeCore ZONE_ABYSSAL_RUINS_7, 12, 3, 20, 3
     VMJump L_02FB
 
 L_0265:
@@ -279,7 +279,7 @@ L_03A1:
     FadeOutBlack
     FadeWait
     RTReserveScript 7
-    MapChangeCore 247, 12, 3, 32, 3
+    MapChangeCore ZONE_ABYSSAL_RUINS_7, 12, 3, 32, 3
     VMJump L_0461
 
 L_03CB:
@@ -449,7 +449,7 @@ L_05BB:
     FadeOutBlack
     FadeWait
     RTReserveScript 21
-    MapChangeCore 245, 81, 3, 75, 1
+    MapChangeCore ZONE_ABYSSAL_RUINS_5, 81, 3, 75, 1
     VMJump L_067B
 
 L_05E5:

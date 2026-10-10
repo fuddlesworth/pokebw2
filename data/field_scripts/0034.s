@@ -200,7 +200,7 @@ L_02C7:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 598, 5, 1, 4, 1
+    MapChangeCore ZONE_NACRENE_CITY_11, 5, 1, 4, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt
@@ -224,7 +224,7 @@ Script_20:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 598, 5, 1, 4, 1
+    MapChangeCore ZONE_NACRENE_CITY_11, 5, 1, 4, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

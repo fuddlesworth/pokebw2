@@ -80,7 +80,7 @@ L_00F5:
     SEPlay SEQ_SE_FLD_23
     FadeOutBlackQ
     FadeWait
-    MapChangeCore 149, 10, 0, 5, 1
+    MapChangeCore ZONE_UNITY_TOWER_3, 10, 0, 5, 1
     FadeInBlackQ
     FadeWait
     VMSleep 60

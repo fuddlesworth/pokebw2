@@ -32,8 +32,9 @@ The text archives are packed by `text_data.py` from text files rather than assem
 ## Constant lists
 
 The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences,
-trainer classes and trainers, are lists in `data/constants/`, one name per line. They are the source of truth: to add
-or rename one, edit its list. The build generates a header from each list, `constants/<list>.h` in
+trainer classes, trainers and zones, are lists in `data/constants/`, one name per line. They are the source of truth:
+to add one, add it to its list, and to rename one, use `tools/scripts/rename_constant.py OLD NEW`, which renames its
+uses too. The build generates a header from each list, `constants/<list>.h` in
 `build/include/generated/`, which is on the include path, so the C code, the data sources and the scripts all use the
 same names, and the generated header can never disagree with its list. A line is a constant's full name, which takes
 the previous value plus one, or `NAME = value` (decimal or `0x` hex); `#` starts a comment.
@@ -50,6 +51,13 @@ constants without a build. The lists were written once from the game's own text,
 by `tools/scripts/make_constants.py`, which can write them again; constants the game has no text for, such as
 `ITEM_LAST` or `TYPE_NULL`, were added by hand. Constants whose names come from the code rather than from the game's
 data, such as the battle and field script constants, stay hand-written headers in `include/constants/`.
+
+Zones are named after their place name, which most zones share with others: the one the player can fly from, or else
+the first, gets the place name alone (`ZONE_CASTELIA_CITY`); a Pokémon Center, gate, lab or gym, told by its music,
+gets what it is (`ZONE_ASPERTIA_CITY_POKEMON_CENTER`, `ZONE_ASPERTIA_CITY_GYM`); and the rest are numbered from `_2` in
+ID order (`ZONE_CASTELIA_CITY_12`). The code names a few itself, such as `ZONE_VICTORY_ROAD`, the one Escape Rope
+leads out of (`ZONE_OVERRIDES` in `make_constants.py --zones`). A numbered zone is a placeholder: when its map shows
+what it is, rename it.
 
 ## Text
 

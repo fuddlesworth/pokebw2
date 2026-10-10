@@ -780,7 +780,7 @@ L_0C19:
     Plugin8_Cmd1008 1, 3, 3
     WorkSetConst 0x413a, 2
     FlagReset 2545
-    MapChangeCore 491, 8, 0, 8, 1
+    MapChangeCore ZONE_JOIN_AVENUE_2, 8, 0, 8, 1
     FadeInWhite
     FadeWait
     WorkSetConst 0x802c, 0

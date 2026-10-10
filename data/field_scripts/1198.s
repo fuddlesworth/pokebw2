@@ -104,7 +104,7 @@ Script_1:
     RTReserveScript 10
     EvCameraRebind
     EvCameraEnd
-    MapChangeCore 107, 78, 0, 271, 0
+    MapChangeCore ZONE_MISTRALTON_CITY, 78, 0, 271, 0
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

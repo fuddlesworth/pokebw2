@@ -289,7 +289,7 @@ L_03F1:
 L_03F7:
     ActorCmdExec 255, Movement_0418
     ActorCmdWait
-    MapChangeWarp 568, 14, 11, 1
+    MapChangeWarp ZONE_POKESTAR_STUDIOS_3, 14, 11, 1
     VMReturn
     .balign 4, 0
 
@@ -491,7 +491,7 @@ L_06CE:
     FlagReset 914
     FlagSet 915
     FlagSet 963
-    MapChangeWarp 567, 15, 16, 0
+    MapChangeWarp ZONE_POKESTAR_STUDIOS_2, 15, 16, 0
     VMReturn
 
 Movement_06F0:
@@ -687,7 +687,7 @@ L_0969:
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_09A7
     MsgWinCloseAll
-    MapChangeWarp 574, 9, 11, 0
+    MapChangeWarp ZONE_POKESTAR_STUDIOS_4, 9, 11, 0
     WorkSetConst 0x8022, 0
     VMJump L_09AD
 

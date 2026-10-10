@@ -110,7 +110,7 @@ Script_8:
     Call3DDemo 25, 0
     FieldOpen
     RTReserveScript 11
-    MapChangeCore 111, 14, 0, 19, 1
+    MapChangeCore ZONE_MISTRALTON_CITY_3, 14, 0, 19, 1
     VMJump L_01C1
 
 L_01B3:

@@ -82,7 +82,7 @@ Script_16:
     FadeOutBlack
     RTReserveScript 1
     FadeWait
-    MapChangeCore 603, 7, 0, 18, 1
+    MapChangeCore ZONE_DRIFTVEIL_CITY_17, 7, 0, 18, 1
     FinishAllEvents
     ActorsUnpauseAll
     VMHalt

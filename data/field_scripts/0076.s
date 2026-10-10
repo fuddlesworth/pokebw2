@@ -144,7 +144,7 @@ Script_1:
     FadeOutBlackQ
     FadeWait
     RTReserveScript 5
-    MapChangeCore 452, 6, 0, 5, 1
+    MapChangeCore ZONE_VIRBANK_CITY_5, 6, 0, 5, 1
     VMJump L_0273
 
 L_0263:

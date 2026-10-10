@@ -550,7 +550,7 @@ L_07D6:
     Call3DDemo 24, 0
     FieldOpen
     RTReserveScript 9
-    MapChangeCore 458, 617, 65531, 305, 2
+    MapChangeCore ZONE_LENTIMAS_TOWN, 617, 65531, 305, 2
     VMReturn
 
 L_07F6:
@@ -560,7 +560,7 @@ L_07F6:
     Call3DDemo 24, 0
     FieldOpen
     RTReserveScript 9
-    MapChangeCore 458, 616, 65531, 305, 1
+    MapChangeCore ZONE_LENTIMAS_TOWN, 616, 65531, 305, 1
     VMReturn
 
 L_0816:
@@ -570,7 +570,7 @@ L_0816:
     Call3DDemo 24, 0
     FieldOpen
     RTReserveScript 3
-    MapChangeCore 584, 21, 0, 31, 0
+    MapChangeCore ZONE_NATURE_PRESERVE, 21, 0, 31, 0
     VMReturn
     .balign 4, 0
     Move 35, 1

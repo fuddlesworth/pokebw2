@@ -174,7 +174,7 @@ L_0251:
     ActorCmdExec 255, Movement_0508
     ActorCmdWait
     RTReserveScript 1
-    MapChangeWarp 531, 29, 4, 2
+    MapChangeWarp ZONE_REVERSAL_MOUNTAIN_2, 29, 4, 2
 
 L_02B8:
     VMJump L_02DC

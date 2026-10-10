@@ -84,7 +84,7 @@ L_00C0:
     FieldClose
     Call3DDemo 10, 0
     FieldOpen
-    MapChangeCore 235, 295, 1, 748, 3
+    MapChangeCore ZONE_LIBERTY_GARDEN, 295, 1, 748, 3
     VMJump L_0123
 
 L_010D:
