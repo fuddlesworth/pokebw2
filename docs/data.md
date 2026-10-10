@@ -9,7 +9,7 @@ exactly what the ROM holds. The sources come in two kinds:
   JSON schema beside it that documents every field and that editors use for completion and checking. A script packs
   the archives from the files (`DATA_PACKS` in `configure.py`), validating each file against its schema and naming
   the file and field of any mistake. Files are ordered by the constant lists, not by their names, so adding an entry
-  is adding its constant and its file.
+  is adding its constant and its file; the build notices new, removed and renamed files by itself.
 - **Assembly**, for the scripts and the data not moved to JSON yet: one source file per entry, in archive order,
   assembled with the macros in `include/asm/` (`ARCHIVES` in `configure.py`).
 
@@ -21,7 +21,7 @@ format and can write them again.
 | --- | --- | --- | --- |
 | `a/0/0/2` | `data/text/system/` | System messages | `tools/scripts/text_data.py` |
 | `a/0/0/3` | `data/text/script/` | Script messages | `tools/scripts/text_data.py` |
-| `a/0/1/2` | `data/zones/` | Zone headers | `tools/scripts/zone_data.py` |
+| `a/0/1/2` | `data/zones/` (JSON) | Zone headers | `tools/scripts/zone_data.py` |
 | `a/0/1/6`, `a/0/1/8`, `a/0/1/9`, `a/0/2/0` | `data/pokemon/` (JSON) | Species data, level-up moves, evolutions, baby species | `tools/scripts/species_data.py` |
 | `a/0/1/7` | `data/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/scripts/species_data.py` |
 | `a/0/2/1` | `data/moves/` (JSON) | Move data | `tools/scripts/move_data.py` |
@@ -38,10 +38,11 @@ The text archives are packed by `text_data.py` from text files rather than assem
 The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences, trainer
 classes, trainers, zones, wild encounter tables, event flags and event variables, are lists in `data/constants/`, one
 name per line. They are the source of truth: to add one, add it to its list, and to rename one, use
-`tools/scripts/rename_constant.py OLD NEW`, which renames its uses too. The build generates a header from each list,
-`constants/<list>.h` in `build/include/generated/`, which is on the include path, so the C code, the data sources and
-the scripts all use the same names, and the generated header can never disagree with its list. A line is a constant's
-full name, which takes the previous value plus one, or `NAME = value` (decimal or `0x` hex); `#` starts a comment.
+`tools/scripts/rename_constant.py OLD NEW`, which renames its uses too, and its data file where the data is named after
+it. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`, which is on the
+include path, so the C code, the data sources and the scripts all use the same names, and the generated header can never
+disagree with its list. A line is a constant's full name, which takes the previous value plus one, or `NAME = value`
+(decimal or `0x` hex); `#` starts a comment.
 
 ```
 # Species, by national Pokédex number (bootstrapped from the ROM by make_constants.py)
@@ -297,16 +298,28 @@ list and its file, and name it in a zone's header.
 
 ## Zone headers
 
-`a/0/1/2` holds one 0x30-byte header per zone, all 615 in a single entry, so their source is one file,
-`data/zones/0000_zone_headers.s`, with a `ZoneHeader` line per zone in order and the place's name in a comment:
+Each zone's header is `data/zones/<zone>.json`, named after its constant (`aspertia_city_gym.json` for
+`ZONE_ASPERTIA_CITY_GYM`). `tools/scripts/zone_data.py pack` puts the 615 headers, 0x30 bytes each, into the single
+entry of `a/0/1/2` in the order of `data/constants/zones.txt`, and `data/zones/zone.schema.json` documents each field
+and the code that reads it.
 
-```
-// Zone 1: Black City
-    ZoneHeader map_type=16, npc_cache=24, area=283, matrix=13, scripts=2, text=4, bgm=SEQ_BGM_POKECEN, ...
+```json
+{
+    "$schema": "zone.schema.json",
+    "map_type": 16,
+    ...
+    "scripts": 2,
+    "text": 4,
+    "bgm": "SEQ_BGM_POKECEN",
+    "encounters": null,
+    "parent": "ZONE_BLACK_CITY",
+    ...
+    "fly_from": false,
+    ...
+}
 ```
 
-A header names the zone's map, its scripts and script messages, its music for each season (`SEQ_*`, or `bgm` for all
-four), its wild encounters (the number of a `data/encounters/` file), its place name, its default weather and camera,
-its battle background, what it allows (cycling, Escape Rope, flying from it), and where flying lands.
-`include/asm/zone_header.inc` describes each argument and the code that reads it. Arguments left out take the value
-most zones have. Both versions have the same zone headers.
+A header names the zone's map, its scripts and script messages, its music (`SEQ_*`, or one for each season), its wild
+encounter table (an `ENCOUNTERS_*` constant, or null), the zone it belongs to, its place name, its default weather and
+camera, its battle background, what it allows (cycling, Escape Rope, flying from it), and where flying lands. Both
+versions have the same zone headers.

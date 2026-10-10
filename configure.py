@@ -133,7 +133,6 @@ def library_of(source: Path) -> tuple[str, list[str]] | None:
 # the directory of its members, one assembly file each, in archive order; or to the directory and a section, for two
 # archives whose entries go together, such as a trainer and its party, and come from the same file.
 ARCHIVES = {
-    "a/0/1/2": "data/zones",  # Zone headers, see tools/scripts/zone_data.py
     "a/0/5/6": "data/field_scripts",  # Field scripts, see tools/scripts/field_script.py
     "a/1/6/9": "data/tr_ai",  # Trainer AI scripts, see tools/scripts/tr_ai_script.py
 }
@@ -147,6 +146,7 @@ DATA_PACKS = [
     ("tools/scripts/move_data.py", "data/moves", ["a/0/2/1"], False),  # Move data
     ("tools/scripts/trainer_data.py", "data/trainers", ["a/0/9/1", "a/0/9/2"], False),  # Trainers and their parties
     ("tools/scripts/encounter_data.py", "data/encounters", ["a/1/2/7"], True),  # Wild encounters
+    ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False),  # Zone headers
 ]
 DATA_PACK_TOOLS = ["tools/scripts/datajson.py", "tools/scripts/gen_constants.py", "tools/scripts/narc.py"]
 
@@ -554,8 +554,15 @@ def main():
     n.build(["report"], "phony", [Path("build") / objdiff_version / "report.json"])
     n.build(["progress"], "phony", [f"{objdiff_version}_progress"])
 
+    # The data directories too: adding, removing or renaming a file changes its directory's time, so the build lists
+    # the data files again
+    source_dirs = [d for _, d, _, _ in DATA_PACKS] + [d if isinstance(d, str) else d[0] for d in ARCHIVES.values()]
+    source_dirs += list(TEXT_ARCHIVES.values()) + ["data/constants"]
+    data_dirs = sorted({str(p.relative_to(ROOT)) for d in source_dirs for p in [ROOT / d, *(ROOT / d).rglob("*")]
+                        if p.is_dir()})
     n.build(["build.ninja"], "configure", ["configure.py"],
-            implicit=[*configs, *(str(p.relative_to(ROOT)) for p in sorted(LIB_DIR.glob("*/library.toml")))])
+            implicit=[*configs, *(str(p.relative_to(ROOT)) for p in sorted(LIB_DIR.glob("*/library.toml"))),
+                      *data_dirs])
     sources = sorted(str(p.relative_to(ROOT)) for pattern in ("src/**/*.c", "lib/*/src/**/*.[ch]", "include/**/*.h",
                                                                "lib/*/include/**/*.h") for p in ROOT.glob(pattern))
     n.build(["format"], "format", sources)

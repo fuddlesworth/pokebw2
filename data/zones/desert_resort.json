@@ -1,0 +1,39 @@
+{
+    "$schema": "zone.schema.json",
+    "map_type": 0,
+    "npc_cache": 3,
+    "area": 22,
+    "matrix": 0,
+    "scripts": 314,
+    "text": 215,
+    "bgm": {
+        "spring": "SEQ_BGM_R_C_SP",
+        "summer": "SEQ_BGM_R_C_SU",
+        "autumn": "SEQ_BGM_R_C_AU",
+        "winter": "SEQ_BGM_R_C_WI"
+    },
+    "encounters": "ENCOUNTERS_DESERT_RESORT",
+    "enc_slot": 5,
+    "entities": 206,
+    "parent": "ZONE_DESERT_RESORT",
+    "place": 34,
+    "place_display": 1,
+    "weather": 3,
+    "projection": 0,
+    "camera": 0,
+    "transition": 0,
+    "battle_bg": 10,
+    "cycling": true,
+    "escape_rope": false,
+    "fly_from": true,
+    "cycle_surf_bgm": true,
+    "entralink_warp": true,
+    "cam_bound": 0,
+    "name_icon": 15,
+    "easy_level": 2,
+    "fly": {
+        "x": 371,
+        "y": 0,
+        "z": 499
+    }
+}

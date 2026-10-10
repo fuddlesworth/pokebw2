@@ -1,72 +1,126 @@
 #!/usr/bin/env python3
-"""Write the zone headers (archive a/0/1/2) as an editable source, one ZoneHeader line per zone, with the macro of
-include/asm/zone_header.inc. The archive holds all 615 headers in one member, so they are one file. The build
-assembles it back and checks that it matches.
+"""The zone headers in data/zones/, one JSON file per zone: dump writes them from the ROM once, and pack builds the
+archive (a/0/1/2) from them, which the build does.
 
-    zone_data.py extract/b2_us/files data/zones
+    zone_data.py dump extract/b2_us/files data/zones
+    zone_data.py pack data/zones ARCHIVE
+
+Each zone is data/zones/<zone>.json, named after its constant (black_city.json for ZONE_BLACK_CITY). The archive's
+single entry holds the 615 headers in the order of data/constants/zones.txt. zone.schema.json describes each field.
 """
 import argparse
 import struct
+import sys
 from pathlib import Path
 
-from msgdata import read_archive_file
-from narc import read_narc
-from gen_constants import constant_names, name
+sys.path.insert(0, str(Path(__file__).parent))
+from datajson import DataError, label, load, load_schema, name, value, write  # noqa: E402
+from gen_constants import load as load_list  # noqa: E402
+from narc import read_narc, write_narc  # noqa: E402
 
-HEADER_SIZE = 0x30
-PLACE_NAMES = 109
-# Values most zones have, which the macro takes when an argument is left out
-DEFAULTS = {"encounters": 0x1FFF, "flag11": 1, "cam_bound": 0xFFFF}
+HEADER = struct.Struct("<BBHHHHH4HHHHHHHHHiii")
+assert HEADER.size == 0x30
+SEASONS = ["spring", "summer", "autumn", "winter"]
+NO_ENCOUNTERS = 0x1FFF
+FLAGS = [("cycling", 10), ("flag11", 11), ("escape_rope", 12), ("fly_from", 13), ("cycle_surf_bgm", 14),
+         ("entralink_warp", 15)]
 
 
-def zone_line(header: bytes, sequences: dict[int, str]) -> str:
-    (map_type, npc_cache, area, matrix, scripts, init_scripts, text, spring, summer, autumn, winter, enc, entities,
-     parent, place, env, flags, cam_bound, icon, fly_x, fly_y, fly_z) = struct.unpack("<BBHHHHH4HHHHHHHHHiii", header)
-    fields = {
-        "map_type": map_type, "npc_cache": npc_cache, "area": area, "matrix": matrix, "scripts": scripts,
-        "text": text,
-    }
+def file_name(zone: str) -> str:
+    return zone.removeprefix("ZONE_").lower() + ".json"
+
+
+def ordered_zones() -> list[str]:
+    zones = sorted(load_list("zones").items(), key=lambda item: item[1])
+    if [v for _, v in zones] != list(range(len(zones))):
+        sys.exit("zones.txt doesn't number the zones from 0 in order")
+    return [zone for zone, _ in zones]
+
+
+def zone_json(header: bytes) -> dict:
+    (map_type, npc_cache, area, matrix, scripts, init_scripts, text, *rest) = HEADER.unpack(header)
+    bgm, (encounters, entities, parent, place, env, flags, cam_bound, icon, fly_x, fly_y, fly_z) = rest[:4], rest[4:]
+    data = {"$schema": "zone.schema.json", "map_type": map_type, "npc_cache": npc_cache, "area": area,
+            "matrix": matrix, "scripts": scripts}
     if init_scripts != scripts + 1:
-        fields["init_scripts"] = init_scripts
-    if spring == summer == autumn == winter:
-        fields["bgm"] = name(sequences, spring)
-    else:
-        fields.update(bgm_spring=name(sequences, spring), bgm_summer=name(sequences, summer),
-                      bgm_autumn=name(sequences, autumn), bgm_winter=name(sequences, winter))
-    fields.update(
-        encounters=enc & 0x1FFF, enc_slot=enc >> 13, entities=entities, parent=parent, place=place & 0x3FF,
-        place_display=place >> 10, weather=env & 0x3F, projection=env >> 6 & 7, camera=env >> 9,
-        transition=flags & 0x1F, battle_bg=flags >> 5 & 0x1F, cycling=flags >> 10 & 1, flag11=flags >> 11 & 1,
-        escape_rope=flags >> 12 & 1, fly_from=flags >> 13 & 1, cycle_surf_bgm=flags >> 14 & 1,
-        entralink_warp=flags >> 15, cam_bound=cam_bound, name_icon=icon & 0x1FFF, easy_level=icon >> 13,
-        fly_x=fly_x, fly_y=fly_y, fly_z=fly_z,
+        data["init_scripts"] = init_scripts
+    table = encounters & 0x1FFF
+    data.update({
+        "text": text,
+        "bgm": name("SEQ_", bgm[0]) if len(set(bgm)) == 1 else dict(zip(SEASONS, (name("SEQ_", s) for s in bgm))),
+        "encounters": None if table == NO_ENCOUNTERS else name("ENCOUNTERS_", table),
+        "enc_slot": encounters >> 13,
+        "entities": entities,
+        "parent": name("ZONE_", parent),
+        "place": place & 0x3FF,
+        "place_display": place >> 10,
+        "weather": env & 0x3F,
+        "projection": env >> 6 & 7,
+        "camera": env >> 9,
+        "transition": flags & 0x1F,
+        "battle_bg": flags >> 5 & 0x1F,
+    })
+    for flag, bit in FLAGS:
+        if flag != "flag11" or not flags >> bit & 1:
+            data[flag] = bool(flags >> bit & 1)
+    data.update({"cam_bound": cam_bound, "name_icon": icon & 0x1FFF, "easy_level": icon >> 13,
+                 "fly": {"x": fly_x, "y": fly_y, "z": fly_z}})
+    return data
+
+
+def dump(files: Path, output: Path):
+    (data,) = read_narc((files / "a/0/1/2").read_bytes())
+    zones = ordered_zones()
+    if len(data) != HEADER.size * len(zones):
+        sys.exit(f"{len(data) // HEADER.size} zone headers and {len(zones)} zones in zones.txt")
+    for i, zone in enumerate(zones):
+        write(output / file_name(zone), zone_json(data[HEADER.size * i:HEADER.size * (i + 1)]))
+    print(f"wrote {len(zones)} zones to {output}")
+
+
+def zone_bytes(data: dict, where: str) -> bytes:
+    bgm = data["bgm"]
+    seasons = [value(bgm[s], where) for s in SEASONS] if isinstance(bgm, dict) else [value(bgm, where)] * 4
+    encounters = NO_ENCOUNTERS if data["encounters"] is None else value(data["encounters"], where)
+    flags = data["transition"] | data["battle_bg"] << 5
+    for flag, bit in FLAGS:
+        flags |= data.get(flag, flag == "flag11") << bit
+    return HEADER.pack(
+        data["map_type"], data["npc_cache"], data["area"], data["matrix"], data["scripts"],
+        data.get("init_scripts", data["scripts"] + 1), data["text"], *seasons, encounters | data["enc_slot"] << 13,
+        data["entities"], value(data["parent"], where), data["place"] | data["place_display"] << 10,
+        data["weather"] | data["projection"] << 6 | data["camera"] << 9, flags, data["cam_bound"],
+        data["name_icon"] | data["easy_level"] << 13, data["fly"]["x"], data["fly"]["y"], data["fly"]["z"],
     )
-    args = []
-    for key, value in fields.items():
-        if isinstance(value, str) or value != DEFAULTS.get(key, 0) or key in ("scripts", "text"):
-            shown = f"{value:#x}" if key in ("encounters", "cam_bound") and isinstance(value, int) else value
-            args.append(f"{key}={shown}")
-    return f"    ZoneHeader {', '.join(args)}"
+
+
+def pack(root: Path, output: Path):
+    schema = load_schema(root / "zone.schema.json")
+    headers = []
+    for zone in ordered_zones():
+        path = root / file_name(zone)
+        headers.append(zone_bytes(load(path, schema), label(path)))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_bytes(write_narc([b"".join(headers)]))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("files", type=Path, help="the extracted files/ directory")
-    parser.add_argument("output", type=Path)
+    commands = parser.add_subparsers(dest="command", required=True)
+    dump_parser = commands.add_parser("dump", help="write data/zones/ from the extracted files")
+    dump_parser.add_argument("files", type=Path, help="the extracted files/ directory")
+    dump_parser.add_argument("output", type=Path)
+    pack_parser = commands.add_parser("pack", help="build the zone header archive from data/zones/")
+    pack_parser.add_argument("root", type=Path)
+    pack_parser.add_argument("output", type=Path)
     args = parser.parse_args()
-
-    (data,) = read_narc((args.files / "a/0/1/2").read_bytes())
-    places = read_archive_file(args.files / "a/0/0/2", PLACE_NAMES)
-    sequences = constant_names("sound.h", "SEQ_")
-    lines = ['#include "asm/zone_header.inc"', ""]
-    for zone in range(len(data) // HEADER_SIZE):
-        header = data[HEADER_SIZE * zone:HEADER_SIZE * (zone + 1)]
-        place = struct.unpack_from("<H", header, 0x1A)[0] & 0x3FF
-        lines.append(f"// Zone {zone}: {places[place] if place < len(places) else place}")
-        lines.append(zone_line(header, sequences))
-    args.output.mkdir(parents=True, exist_ok=True)
-    (args.output / "0000_zone_headers.s").write_text("\n".join(lines) + "\n")
-    print(f"wrote {len(data) // HEADER_SIZE} zones to {args.output}")
+    if args.command == "dump":
+        dump(args.files, args.output)
+        return
+    try:
+        pack(args.root, args.output)
+    except DataError as error:
+        sys.exit(f"error: {error}")
 
 
 if __name__ == "__main__":
