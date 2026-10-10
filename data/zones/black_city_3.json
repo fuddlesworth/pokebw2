@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 3,
     "parent": "ZONE_BLACK_CITY",
-    "place": 50,
+    "place": "PLACE_BLACK_CITY",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

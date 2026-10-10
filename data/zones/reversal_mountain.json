@@ -11,7 +11,7 @@
     "enc_slot": 2,
     "entities": 309,
     "parent": "ZONE_REVERSAL_MOUNTAIN",
-    "place": 132,
+    "place": "PLACE_REVERSAL_MOUNTAIN",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

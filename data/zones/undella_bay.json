@@ -16,7 +16,7 @@
     "enc_slot": 5,
     "entities": 296,
     "parent": "ZONE_UNDELLA_BAY",
-    "place": 71,
+    "place": "PLACE_UNDELLA_BAY",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

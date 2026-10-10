@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 55,
     "parent": "ZONE_CASTELIA_CITY",
-    "place": 46,
+    "place": "PLACE_ROYAL_UNOVA",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

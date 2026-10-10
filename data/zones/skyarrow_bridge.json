@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 395,
     "parent": "ZONE_SKYARROW_BRIDGE",
-    "place": 64,
+    "place": "PLACE_SKYARROW_BRIDGE",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

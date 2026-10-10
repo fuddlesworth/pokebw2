@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 205,
     "parent": "ZONE_PINWHEEL_FOREST",
-    "place": 55,
+    "place": "PLACE_RUMINATION_FIELD",
     "place_display": 0,
     "weather": 0,
     "projection": 1,

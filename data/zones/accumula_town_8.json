@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 582,
     "parent": "ZONE_ACCUMULA_TOWN",
-    "place": 5,
+    "place": "PLACE_ACCUMULA_TOWN",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

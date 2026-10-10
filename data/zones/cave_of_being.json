@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 392,
     "parent": "ZONE_CAVE_OF_BEING",
-    "place": 142,
+    "place": "PLACE_CAVE_OF_BEING",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

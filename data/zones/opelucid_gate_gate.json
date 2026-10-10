@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 145,
     "parent": "ZONE_ROUTE_10",
-    "place": 111,
+    "place": "PLACE_OPELUCID_GATE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

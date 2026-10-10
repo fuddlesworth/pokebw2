@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 614,
     "parent": "ZONE_WHITE_FOREST",
-    "place": 51,
+    "place": "PLACE_WHITE_FOREST",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

@@ -86,6 +86,11 @@ def trainer_classes() -> list[dict]:
 
 
 @cache
+def places() -> list[dict]:
+    return validated("places", "data/places", "PLACE_", "place.schema.json")
+
+
+@cache
 def natures() -> list[dict]:
     return validated("natures", "data/natures", "NATURE_", "nature.schema.json")
 
@@ -210,6 +215,7 @@ SOURCES = {
                                      for data in trainer_classes()],
     "trainer_classes.name_with_article": lambda: [to_line(data["name_with_article"]) for data in trainer_classes()],
     "natures.name": lambda: [to_line(data["name"]) for data in natures()],
+    "places.name": lambda: [to_line(data["name"]) for data in places()],
     # Two lines per trade, its nickname and its trainer's name, the message IDs trade_data.py gives it
     "trades.names": lambda: [to_line(data[key]) for data in trades() for key in ("nickname", "trainer_name")],
     "trainers.name": lambda: [("\\c" if data.get("compress_name", True) else "") + to_line(data["name"])

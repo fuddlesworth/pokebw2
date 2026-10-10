@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 158,
     "parent": "ZONE_POKEMON_LEAGUE",
-    "place": 44,
+    "place": "PLACE_POKEMON_LEAGUE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

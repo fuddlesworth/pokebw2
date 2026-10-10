@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 550,
     "parent": "ZONE_POKE_TRANSFER_LAB",
-    "place": 60,
+    "place": "PLACE_POKE_TRANSFER_LAB",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

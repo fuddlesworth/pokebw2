@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 124,
     "parent": "ZONE_MISTRALTON_CITY",
-    "place": 11,
+    "place": "PLACE_MISTRALTON_CITY",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 468,
     "parent": "ZONE_ROUTE_14_GATE",
-    "place": 101,
+    "place": "PLACE_ROUTE_14_2",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

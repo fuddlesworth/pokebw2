@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 240,
     "parent": "ZONE_PWT",
-    "place": 36,
+    "place": "PLACE_PWT",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

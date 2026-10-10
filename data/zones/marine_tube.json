@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 411,
     "parent": "ZONE_MARINE_TUBE",
-    "place": 144,
+    "place": "PLACE_MARINE_TUBE",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

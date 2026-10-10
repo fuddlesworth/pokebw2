@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 561,
     "parent": "ZONE_ROUTE_20",
-    "place": 145,
+    "place": "PLACE_VIRBANK_GATE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 302,
     "parent": "ZONE_ABYSSAL_RUINS",
-    "place": 116,
+    "place": "PLACE_ABYSSAL_RUINS",
     "place_display": 0,
     "weather": 0,
     "projection": 1,

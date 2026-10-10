@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 393,
     "parent": "ZONE_HIDDEN_GROTTO",
-    "place": 143,
+    "place": "PLACE_HIDDEN_GROTTO",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

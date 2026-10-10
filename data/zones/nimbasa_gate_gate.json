@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 95,
     "parent": "ZONE_ROUTE_5",
-    "place": 110,
+    "place": "PLACE_NIMBASA_GATE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

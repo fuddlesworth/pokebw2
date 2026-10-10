@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 459,
     "parent": "ZONE_MARVELOUS_BRIDGE_GATE",
-    "place": 92,
+    "place": "PLACE_MARVELOUS_BRIDGE_2",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

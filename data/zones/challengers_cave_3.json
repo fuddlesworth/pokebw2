@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 523,
     "parent": "ZONE_CHALLENGERS_CAVE",
-    "place": 59,
+    "place": "PLACE_CHALLENGERS_CAVE",
     "place_display": 0,
     "weather": 0,
     "projection": 1,

@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 181,
     "parent": "ZONE_VIRBANK_CITY",
-    "place": 118,
+    "place": "PLACE_VIRBANK_CITY",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

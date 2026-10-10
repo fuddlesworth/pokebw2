@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 66,
     "parent": "ZONE_NIMBASA_CITY",
-    "place": 9,
+    "place": "PLACE_NIMBASA_CITY",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

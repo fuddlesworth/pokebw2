@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 279,
     "parent": "ZONE_VICTORY_ROAD_2",
-    "place": 73,
+    "place": "PLACE_TRIAL_CHAMBER",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

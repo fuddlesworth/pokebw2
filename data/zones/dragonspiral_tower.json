@@ -16,7 +16,7 @@
     "enc_slot": 6,
     "entities": 255,
     "parent": "ZONE_DRAGONSPIRAL_TOWER",
-    "place": 39,
+    "place": "PLACE_DRAGONSPIRAL_TOWER",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

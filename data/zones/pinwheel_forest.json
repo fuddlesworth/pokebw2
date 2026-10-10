@@ -16,7 +16,7 @@
     "enc_slot": 3,
     "entities": 203,
     "parent": "ZONE_PINWHEEL_FOREST",
-    "place": 33,
+    "place": "PLACE_PINWHEEL_FOREST",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

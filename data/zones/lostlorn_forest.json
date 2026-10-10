@@ -11,7 +11,7 @@
     "enc_slot": 3,
     "entities": 554,
     "parent": "ZONE_LOSTLORN_FOREST",
-    "place": 72,
+    "place": "PLACE_LOSTLORN_FOREST",
     "place_display": 1,
     "weather": 0,
     "projection": 0,

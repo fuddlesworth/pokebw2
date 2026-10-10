@@ -11,7 +11,7 @@
     "enc_slot": 2,
     "entities": 244,
     "parent": "ZONE_CHARGESTONE_CAVE",
-    "place": 37,
+    "place": "PLACE_CHARGESTONE_CAVE",
     "place_display": 3,
     "weather": 0,
     "projection": 1,

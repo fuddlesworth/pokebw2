@@ -16,7 +16,7 @@
     "enc_slot": 5,
     "entities": 206,
     "parent": "ZONE_DESERT_RESORT",
-    "place": 34,
+    "place": "PLACE_DESERT_RESORT",
     "place_display": 1,
     "weather": 3,
     "projection": 0,

@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 379,
     "parent": "ZONE_WHITE_TREEHOLLOW",
-    "place": 140,
+    "place": "PLACE_BLACK_TOWER",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 112,
     "parent": "ZONE_DRIFTVEIL_CITY",
-    "place": 10,
+    "place": "PLACE_DRIFTVEIL_CITY",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

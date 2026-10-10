@@ -16,7 +16,7 @@
     "enc_slot": 6,
     "entities": 291,
     "parent": "ZONE_LIBERTY_GARDEN",
-    "place": 62,
+    "place": "PLACE_LIBERTY_GARDEN",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

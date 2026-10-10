@@ -52,7 +52,7 @@ def zone_json(header: bytes) -> dict:
         "enc_slot": encounters >> 13,
         "entities": entities,
         "parent": name("ZONE_", parent),
-        "place": place & 0x3FF,
+        "place": name("PLACE_", place & 0x3FF),
         "place_display": place >> 10,
         "weather": env & 0x3F,
         "projection": env >> 6 & 7,
@@ -88,7 +88,7 @@ def zone_bytes(data: dict, where: str) -> bytes:
     return HEADER.pack(
         data["map_type"], data["npc_cache"], data["area"], data["matrix"], data["scripts"],
         data.get("init_scripts", data["scripts"] + 1), data["text"], *seasons, encounters | data["enc_slot"] << 13,
-        data["entities"], value(data["parent"], where), data["place"] | data["place_display"] << 10,
+        data["entities"], value(data["parent"], where), value(data["place"], where) | data["place_display"] << 10,
         data["weather"] | data["projection"] << 6 | data["camera"] << 9, flags, data["cam_bound"],
         data["name_icon"] | data["easy_level"] << 13, data["fly"]["x"], data["fly"]["y"], data["fly"]["z"],
     )

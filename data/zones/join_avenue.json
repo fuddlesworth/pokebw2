@@ -11,7 +11,7 @@
     "enc_slot": 5,
     "entities": 197,
     "parent": "ZONE_JOIN_AVENUE",
-    "place": 121,
+    "place": "PLACE_JOIN_AVENUE",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

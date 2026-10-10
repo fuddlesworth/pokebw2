@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 15,
     "parent": "ZONE_STRIATON_CITY",
-    "place": 6,
+    "place": "PLACE_STRIATON_CITY",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

@@ -42,13 +42,13 @@ The text archives are packed by `text_data.py` from text files rather than assem
 ## Constant lists
 
 The ID constants that name the game's data, such as species, moves, abilities, items, types, sound sequences, trainer
-classes, trainers, zones, wild encounter tables, in-game trades, natures, event flags and event variables, are lists in
-`data/constants/`, one name per line. They are the source of truth: to add one, add it to its list, and to rename one,
-use `tools/scripts/rename_constant.py OLD NEW`, which renames its uses too, and its data file where the data is named
-after it. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`, which is on
-the include path, so the C code, the data sources and the scripts all use the same names, and the generated header can
-never disagree with its list. A line is a constant's full name, which takes the previous value plus one, or `NAME =
-value` (decimal or `0x` hex); `#` starts a comment.
+classes, trainers, zones, wild encounter tables, in-game trades, natures, places, event flags and event variables, are
+lists in `data/constants/`, one name per line. They are the source of truth: to add one, add it to its list, and to
+rename one, use `tools/scripts/rename_constant.py OLD NEW`, which renames its uses too, and its data file where the data
+is named after it. The build generates a header from each list, `constants/<list>.h` in `build/include/generated/`,
+which is on the include path, so the C code, the data sources and the scripts all use the same names, and the generated
+header can never disagree with its list. A line is a constant's full name, which takes the previous value plus one, or
+`NAME = value` (decimal or `0x` hex); `#` starts a comment.
 
 ```
 # Species, by national Pokédex number (bootstrapped from the ROM by make_constants.py)
@@ -130,6 +130,7 @@ Egg and Bad Egg after the species' names:
 | `0053_black_tower_trainer_names.txt` | `\from{facilities.black_tower.names}` | Each Black Tower trainer's `name` |
 | `0383_trainer_class_names.txt`, `0485_trainer_class_names_with_article.txt` | `\from{trainer_classes.name}`, `\from{trainer_classes.name_with_article}` | Each trainer class's `name` and `name_with_article` |
 | `0027_natures.txt` | `\from{natures.name}` | Each nature's `name` |
+| `0109_place_names.txt` | `\from{places.name}` | Each place's `name` |
 | `0487_ability_names_upper.txt` | `\from{abilities.name_upper}` | Each ability's `name` in capitals, from ability 1 |
 | `0382_trainer_names.txt` | `\from{trainers.name}` | Each trainer's `name` |
 | `0381_trainer_msg_load.txt` | `\from{trainers.messages}` | Each trainer's `messages`, in the order of the trainer message table |
@@ -314,14 +315,17 @@ balls (1), battle items (2), HP and PP restoring (4) and status healing (8). An 
 first letter unless `name_article` says otherwise ("an HP Up", "the Leftovers", none for Honey). The 20 unused items,
 named "???", have constants of their own, as `ITEM_UNUSED_113`. Both versions have the same item data.
 
-## Abilities, types, trainer classes and natures
+## Abilities, types, trainer classes, natures and places
 
 An ability's text is `data/abilities/<ability>.json`, its name and description, and a type's `data/types/<type>.json`,
 its name, named after their constants and in the order of their lists. What they do is the code's, so they have no
 archive: only the text takes them (see [Text](#text)), and `tools/scripts/text_sources.py` validates them against
 `ability.schema.json` and `type.schema.json`. `TYPE_NULL`, the type of a typeless move, has no name and no file. A
 trainer class's text, `data/trainer_classes/<class>.json`, is its name and its name with an article, which the game
-writes by hand ("a Twin" for Twins, none for the Gym Leaders), and a nature's, `data/natures/<nature>.json`, its name.
+writes by hand ("a Twin" for Twins, none for the Gym Leaders), a nature's, `data/natures/<nature>.json`, its name,
+and a place's, `data/places/<place>.json`, its name. Zone headers name their place by its constant in
+`data/constants/places.txt` (`PLACE_ASPERTIA_CITY`), which `make_constants.py --places` named after the place names,
+numbering the ones that repeat, as the second copies of Unova's places.
 `tools/scripts/list_text_data.py` wrote them all from the game's text.
 
 ## Trainers
@@ -452,7 +456,7 @@ and the code that reads it.
 ```
 
 A header names the zone's map, its scripts and script messages, its music (`SEQ_*`, or one for each season), its wild
-encounter table (an `ENCOUNTERS_*` constant, or null), the zone it belongs to, its place name, its default weather and
+encounter table (an `ENCOUNTERS_*` constant, or null), the zone it belongs to, its place (`PLACE_*`), its default weather and
 camera, its battle background, what it allows (cycling, Escape Rope, flying from it), and where flying lands. Both
 versions have the same zone headers.
 

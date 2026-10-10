@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 16,
     "parent": "ZONE_NACRENE_CITY",
-    "place": 7,
+    "place": "PLACE_NACRENE_CITY",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

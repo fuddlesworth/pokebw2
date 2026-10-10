@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 476,
     "parent": "ZONE_ROUTE_2",
-    "place": 106,
+    "place": "PLACE_ACCUMULA_GATE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

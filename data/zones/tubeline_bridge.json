@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 400,
     "parent": "ZONE_TUBELINE_BRIDGE",
-    "place": 66,
+    "place": "PLACE_TUBELINE_BRIDGE",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

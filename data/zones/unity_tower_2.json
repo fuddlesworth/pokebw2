@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 161,
     "parent": "ZONE_UNITY_TOWER",
-    "place": 52,
+    "place": "PLACE_UNITY_TOWER",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

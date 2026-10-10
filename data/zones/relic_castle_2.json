@@ -11,7 +11,7 @@
     "enc_slot": 2,
     "entities": 210,
     "parent": "ZONE_RELIC_CASTLE",
-    "place": 35,
+    "place": "PLACE_RELIC_CASTLE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

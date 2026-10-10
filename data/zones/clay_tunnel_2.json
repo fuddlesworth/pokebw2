@@ -11,7 +11,7 @@
     "enc_slot": 2,
     "entities": 370,
     "parent": "ZONE_CLAY_TUNNEL",
-    "place": 137,
+    "place": "PLACE_CLAY_TUNNEL",
     "place_display": 1,
     "weather": 0,
     "projection": 0,

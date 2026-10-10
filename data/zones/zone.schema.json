@@ -48,8 +48,8 @@
         "entities": { "$ref": "#/$defs/u16", "description": "The zone's entities file" },
         "parent": { "type": "string", "x-constant": "ZONE_", "description": "The zone this one belongs to, a ZONE_* constant" },
         "place": {
-            "type": "integer", "minimum": 0, "maximum": 1023,
-            "description": "The place name, a line of system message file 109"
+            "type": "string", "x-constant": "PLACE_",
+            "description": "The place, a PLACE_* constant, whose name data/places/ has"
         },
         "place_display": { "type": "integer", "minimum": 0, "maximum": 63, "description": "How the place name is shown" },
         "weather": { "type": "integer", "minimum": 0, "maximum": 63, "description": "The default weather" },

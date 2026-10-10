@@ -16,7 +16,7 @@
     "enc_slot": 6,
     "entities": 294,
     "parent": "ZONE_P2_LABORATORY",
-    "place": 63,
+    "place": "PLACE_P2_LABORATORY",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

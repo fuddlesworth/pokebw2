@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 202,
     "parent": "ZONE_DREAMYARD",
-    "place": 32,
+    "place": "PLACE_DREAMYARD",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

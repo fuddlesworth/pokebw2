@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 472,
     "parent": "ZONE_UNDELLA_TOWN_GATE",
-    "place": 105,
+    "place": "PLACE_UNDELLA_TOWN_2",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

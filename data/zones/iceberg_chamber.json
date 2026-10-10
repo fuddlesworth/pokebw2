@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 376,
     "parent": "ZONE_CLAY_TUNNEL",
-    "place": 151,
+    "place": "PLACE_ICEBERG_CHAMBER",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

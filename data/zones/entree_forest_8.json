@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 443,
     "parent": "ZONE_ENTRALINK",
-    "place": 75,
+    "place": "PLACE_ENTREE_FOREST",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

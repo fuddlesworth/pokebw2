@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 583,
     "parent": "ZONE_LACUNOSA_TOWN",
-    "place": 41,
+    "place": "PLACE_LACUNOSA_TOWN",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

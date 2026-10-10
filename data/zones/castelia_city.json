@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 28,
     "parent": "ZONE_CASTELIA_CITY",
-    "place": 8,
+    "place": "PLACE_CASTELIA_CITY",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

@@ -11,7 +11,7 @@
     "enc_slot": 2,
     "entities": 367,
     "parent": "ZONE_RELIC_PASSAGE",
-    "place": 136,
+    "place": "PLACE_RELIC_PASSAGE",
     "place_display": 1,
     "weather": 0,
     "projection": 0,

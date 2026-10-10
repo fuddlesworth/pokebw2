@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 570,
     "parent": "ZONE_NUVEMA_TOWN",
-    "place": 4,
+    "place": "PLACE_NUVEMA_TOWN",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

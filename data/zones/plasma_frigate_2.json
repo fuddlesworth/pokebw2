@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 345,
     "parent": "ZONE_PLASMA_FRIGATE",
-    "place": 135,
+    "place": "PLACE_PLASMA_FRIGATE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

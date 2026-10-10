@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 454,
     "parent": "ZONE_TWIST_MOUNTAIN_GATE",
-    "place": 86,
+    "place": "PLACE_TWIST_MOUNTAIN_2",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

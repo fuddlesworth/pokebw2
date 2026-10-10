@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 600,
     "parent": "ZONE_FLOCCESY_TOWN",
-    "place": 122,
+    "place": "PLACE_FLOCCESY_TOWN",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

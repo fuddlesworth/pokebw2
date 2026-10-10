@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 167,
     "parent": "ZONE_ASPERTIA_CITY",
-    "place": 117,
+    "place": "PLACE_ASPERTIA_CITY",
     "place_display": 1,
     "weather": 0,
     "projection": 0,

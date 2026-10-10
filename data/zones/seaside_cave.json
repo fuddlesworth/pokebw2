@@ -11,7 +11,7 @@
     "enc_slot": 2,
     "entities": 390,
     "parent": "ZONE_SEASIDE_CAVE",
-    "place": 141,
+    "place": "PLACE_SEASIDE_CAVE",
     "place_display": 1,
     "weather": 0,
     "projection": 0,

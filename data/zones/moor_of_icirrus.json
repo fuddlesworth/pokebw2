@@ -11,7 +11,7 @@
     "enc_slot": 3,
     "entities": 515,
     "parent": "ZONE_MOOR_OF_ICIRRUS",
-    "place": 57,
+    "place": "PLACE_MOOR_OF_ICIRRUS",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

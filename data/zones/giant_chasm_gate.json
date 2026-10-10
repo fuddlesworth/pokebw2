@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 456,
     "parent": "ZONE_GIANT_CHASM_GATE",
-    "place": 88,
+    "place": "PLACE_GIANT_CHASM_2",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

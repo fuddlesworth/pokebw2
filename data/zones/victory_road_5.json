@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 267,
     "parent": "ZONE_VICTORY_ROAD_2",
-    "place": 40,
+    "place": "PLACE_VICTORY_ROAD",
     "place_display": 0,
     "weather": 0,
     "projection": 1,

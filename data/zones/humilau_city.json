@@ -11,7 +11,7 @@
     "enc_slot": 3,
     "entities": 183,
     "parent": "ZONE_HUMILAU_CITY",
-    "place": 119,
+    "place": "PLACE_HUMILAU_CITY",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

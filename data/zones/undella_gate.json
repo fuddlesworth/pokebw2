@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 541,
     "parent": "ZONE_ROUTE_13",
-    "place": 107,
+    "place": "PLACE_UNDELLA_GATE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

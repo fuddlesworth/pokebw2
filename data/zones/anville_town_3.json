@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 597,
     "parent": "ZONE_ANVILLE_TOWN",
-    "place": 43,
+    "place": "PLACE_ANVILLE_TOWN",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

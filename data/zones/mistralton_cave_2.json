@@ -11,7 +11,7 @@
     "enc_slot": 2,
     "entities": 503,
     "parent": "ZONE_MISTRALTON_CAVE",
-    "place": 54,
+    "place": "PLACE_MISTRALTON_CAVE",
     "place_display": 0,
     "weather": 0,
     "projection": 1,

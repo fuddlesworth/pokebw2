@@ -5,8 +5,8 @@ once:
     list_text_data.py extract/b2_us/files data
 
 data/abilities/<ability>.json has an ability's name and description, data/types/<type>.json a type's name,
-data/trainer_classes/<class>.json a trainer class's name and name with its article, and data/natures/<nature>.json a
-nature's name, named after their constants. They have no archive of their own: the text files take them with
+data/trainer_classes/<class>.json a trainer class's name and name with its article, data/natures/<nature>.json a
+nature's name, and data/places/<place>.json a place's name, named after their constants. They have no archive of their own: the text files take them with
 \\from{abilities.name} and the like (see text_sources.py), which validates them against their schemas.
 """
 import argparse
@@ -22,6 +22,7 @@ from text_sources import ordered, to_json  # noqa: E402
 # classes' names and names with their articles, and the natures' names
 ABILITY_NAMES, ABILITY_DESCRIPTIONS, TYPE_NAMES = 374, 375, 398
 CLASS_NAMES, CLASS_NAMES_WITH_ARTICLE, NATURE_NAMES = 383, 485, 27
+PLACE_NAMES = 109
 
 
 def main():
@@ -49,8 +50,12 @@ def main():
     for i, nature in enumerate(ordered("natures")):
         write(args.output / "natures" / f"{nature.removeprefix('NATURE_').lower()}.json",
               {"$schema": "nature.schema.json", "name": to_json(natures[i])})
-    print(f"wrote {len(names)} abilities, {len(type_names)} types, {len(class_names)} trainer classes and "
-          f"{len(natures)} natures to {args.output}")
+    places = message_lines(text, PLACE_NAMES)
+    for i, place in enumerate(ordered("places")):
+        write(args.output / "places" / f"{place.removeprefix('PLACE_').lower()}.json",
+              {"$schema": "place.schema.json", "name": to_json(places[i])})
+    print(f"wrote {len(names)} abilities, {len(type_names)} types, {len(class_names)} trainer classes, "
+          f"{len(natures)} natures and {len(places)} places to {args.output}")
 
 
 if __name__ == "__main__":

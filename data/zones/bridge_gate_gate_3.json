@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 518,
     "parent": "ZONE_ROUTE_9",
-    "place": 114,
+    "place": "PLACE_BRIDGE_GATE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

@@ -16,7 +16,7 @@
     "enc_slot": 1,
     "entities": 477,
     "parent": "ZONE_ROUTE_3",
-    "place": 16,
+    "place": "PLACE_ROUTE_3",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

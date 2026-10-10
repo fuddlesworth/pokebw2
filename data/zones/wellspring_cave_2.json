@@ -11,7 +11,7 @@
     "enc_slot": 4,
     "entities": 481,
     "parent": "ZONE_WELLSPRING_CAVE",
-    "place": 53,
+    "place": "PLACE_WELLSPRING_CAVE",
     "place_display": 0,
     "weather": 0,
     "projection": 1,

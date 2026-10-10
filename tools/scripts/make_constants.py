@@ -10,6 +10,7 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --zones extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --encounters extract/b2_us
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --trades extract/b2_us
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --places
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused, and are named after their ID, as
@@ -268,6 +269,20 @@ def trade_names(extract: Path) -> dict[int, str]:
     return names
 
 
+def place_names(archive: Path) -> dict[int, str]:
+    """Returns the name of each place, after its name in the text, numbered from _2 where names repeat; a place whose
+    name is a placeholder or made of codes is named after its number, but the first is PLACE_NONE."""
+    names: dict[int, str] = {0: "PLACE_NONE"}
+    count: dict[str, int] = {}
+    for i, text in enumerate(read_archive_file(archive, PLACE_NAMES)):
+        if i == 0:
+            continue
+        base = f"PLACE_{identifier(text)}" if re.fullmatch(r"[\w .'’é-]+", text) else f"PLACE_{i}"
+        count[base] = count.get(base, 0) + 1
+        names[i] = base if count[base] == 1 else f"{base}_{count[base]}"
+    return names
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -280,6 +295,7 @@ def main():
     parser.add_argument("--only", metavar="LIST",
                         help="write only this list of the game's text, such as natures, since the lists are edited "
                              "by hand after")
+    parser.add_argument("--places", action="store_true", help="write only places.txt, from the place names")
     parser.add_argument("--trades", type=Path, metavar="EXTRACT",
                         help="write only trades.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--encounters", type=Path, metavar="EXTRACT",
@@ -299,6 +315,10 @@ def main():
     if args.encounters:
         write_list(args.output / "encounters.txt", encounter_names(args.encounters),
                    "Wild encounter tables, by the place of the first zone that has them, numbered where places repeat")
+    if args.places:
+        write_list(args.output / "places.txt", place_names(args.archive),
+                   "Places, the place names that zone headers name, numbered where names repeat")
+        return
     if args.trades:
         write_list(args.output / "trades.txt", trade_names(args.trades),
                    "In-game trades, by the species offered, numbered where they repeat")

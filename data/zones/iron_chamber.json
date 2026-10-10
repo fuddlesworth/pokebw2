@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 377,
     "parent": "ZONE_CLAY_TUNNEL",
-    "place": 152,
+    "place": "PLACE_IRON_CHAMBER",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

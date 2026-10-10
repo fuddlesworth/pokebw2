@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 200,
     "parent": "ZONE_UNION_ROOM",
-    "place": 0,
+    "place": "PLACE_NONE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 546,
     "parent": "ZONE_ABUNDANT_SHRINE",
-    "place": 70,
+    "place": "PLACE_ABUNDANT_SHRINE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

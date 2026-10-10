@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 424,
     "parent": "ZONE_NS_CASTLE",
-    "place": 45,
+    "place": "PLACE_NS_CASTLE",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

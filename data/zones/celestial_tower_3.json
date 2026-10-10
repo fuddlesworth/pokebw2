@@ -11,7 +11,7 @@
     "enc_slot": 5,
     "entities": 508,
     "parent": "ZONE_CELESTIAL_TOWER_2",
-    "place": 56,
+    "place": "PLACE_CELESTIAL_TOWER",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

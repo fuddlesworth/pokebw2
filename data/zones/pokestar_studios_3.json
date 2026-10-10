@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 194,
     "parent": "ZONE_POKESTAR_STUDIOS",
-    "place": 120,
+    "place": "PLACE_POKESTAR_STUDIOS",
     "place_display": 0,
     "weather": 0,
     "projection": 0,

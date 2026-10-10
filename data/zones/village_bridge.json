@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 401,
     "parent": "ZONE_VILLAGE_BRIDGE",
-    "place": 67,
+    "place": "PLACE_VILLAGE_BRIDGE",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

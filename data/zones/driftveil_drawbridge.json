@@ -11,7 +11,7 @@
     "enc_slot": 0,
     "entities": 399,
     "parent": "ZONE_DRIFTVEIL_DRAWBRIDGE",
-    "place": 65,
+    "place": "PLACE_DRIFTVEIL_DRAWBRIDGE",
     "place_display": 1,
     "weather": 0,
     "projection": 1,

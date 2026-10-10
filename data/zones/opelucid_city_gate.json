@@ -11,7 +11,7 @@
     "enc_slot": 6,
     "entities": 449,
     "parent": "ZONE_OPELUCID_CITY_GATE",
-    "place": 80,
+    "place": "PLACE_OPELUCID_CITY_2",
     "place_display": 1,
     "weather": 0,
     "projection": 1,
