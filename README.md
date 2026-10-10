@@ -51,7 +51,8 @@ matches, and from grey to blue as it gets closer.
    - [`ds-rom`](https://github.com/fuddlesworth/ds-rom/tree/dsi-hybrid): DSi header, digests, modcrypt, TWL autoloads
      and DSi banners.
    - [`ds-decomp`](https://github.com/fuddlesworth/ds-decomp/tree/dsi-hybrid): TWL entrypoint, DS Protect and Thumb
-     jump table fixes, and the ARM9i LTD module.
+     jump table fixes, the ARM9i LTD module with its sections and DSP images, overlays that run from VRAM, and
+     `ldr pc` veneers.
 
    ```sh
    python3 configure.py

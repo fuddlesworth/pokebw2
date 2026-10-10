@@ -645,7 +645,7 @@ prints the tables below from the configs and the ROM:
 | `btl_server_cmd.c` | `0x021b0a1c`–`0x021b1674` | 19 | partial | descriptive |
 | `btl_pokeparam.c` | `0x021ba584`–`0x021bc6bc` | 154 | partial | string at `0x021daf7c` |
 | `battle_event.c` | `0x021bc6bc`–`0x021bd054` | 46 | partial | descriptive |
-| `btl_calc.c` | `0x021bd054`–`0x021bdaf8` | 58 | partial | string at `0x021daf94` |
+| `btl_calc.c` | `0x021bd054`–`0x021bdaf8` | 58 | complete | string at `0x021daf94` |
 | `battle_action.c` | `0x021bdaf8`–`0x021bdcac` | 17 | complete | descriptive |
 | `ability_handlers.c` | `0x021bdcac`–`0x021c26ec` | 442 | partial | descriptive |
 | `battle_condition.c` | `0x021ce158`–`0x021ce520` | 20 | complete | descriptive |

@@ -93,7 +93,7 @@ func_02005aa8 kind:function(thumb,size=0x4c) addr:0x02005aa8
 func_02005af4 kind:function(thumb,size=0x6c) addr:0x02005af4
 func_02005b60 kind:function(thumb,size=0x20) addr:0x02005b60
 GFL_SndInit kind:function(thumb,size=0x44) addr:0x02005b80
-func_02005bc4 kind:function(arm,size=0x4) addr:0x02005bc4
+func_02005bc4 kind:function(arm,size=0x8) addr:0x02005bc4
 GFL_SndInitCore kind:function(thumb,size=0x4c) addr:0x02005bcc
 GFL_SndUpdate kind:function(thumb,size=0x58) addr:0x02005c18
 GFL_SndDestroyHeap kind:function(thumb,size=0x10) addr:0x02005c70
@@ -188,7 +188,7 @@ getResIDFunc kind:function(thumb,size=0x58) addr:0x02006c70
 getWaveInfoFunc kind:function(thumb,size=0x8c) addr:0x02006cc8
 PokeVoice_CreateChatterInfo kind:function(thumb,size=0x10) addr:0x02006d54
 setupMic kind:function(thumb,size=0x80) addr:0x02006d64
-func_02006de4 kind:function(arm,size=0x4) addr:0x02006de4
+func_02006de4 kind:function(arm,size=0x8) addr:0x02006de4
 ampOffFreeBlocks kind:function(thumb,size=0x20) addr:0x02006dec
 func_02006e0c kind:function(thumb,size=0x30) addr:0x02006e0c
 func_02006e3c kind:function(thumb,size=0x18) addr:0x02006e3c
@@ -7309,8 +7309,8 @@ func_0207c6a4 kind:function(thumb,size=0x18) addr:0x0207c6d0
 func_0207c6bc kind:function(thumb,size=0x14) addr:0x0207c6e8
 OS_GetLowEntropyData kind:function(thumb,size=0xa4) addr:0x0207c6fc
 sys_exit kind:function(thumb,size=0x58) addr:0x0207c7a0
-func_0207c7cc kind:function(arm,size=0x4) addr:0x0207c7f8
-func_0207c7d4 kind:function(arm,size=0x4) addr:0x0207c800
+func_0207c7cc kind:function(arm,size=0x8) addr:0x0207c7f8
+func_0207c7d4 kind:function(arm,size=0x8) addr:0x0207c800
 abort kind:function(thumb,size=0xc) addr:0x0207c808
 cp15_halt kind:function(arm,size=0xc) addr:0x0207c814
 func_0207c7f4 kind:function(thumb,size=0xa) addr:0x0207c820
@@ -7332,7 +7332,7 @@ func_0207cca4 kind:function(thumb,size=0x50) addr:0x0207ccd0
 func_0207ccf4 kind:function(thumb,size=0x24) addr:0x0207cd20
 func_0207cd18 kind:function(thumb,size=0x8) addr:0x0207cd44
 func_0207cd20 kind:function(thumb,size=0x2d0) addr:0x0207cd4c
-func_0207cff0 kind:function(arm,size=0x4) addr:0x0207d01c
+func_0207cff0 kind:function(arm,size=0x8) addr:0x0207d01c
 func_0207cff8 kind:function(thumb,size=0x46) addr:0x0207d024
 func_0207d040 kind:function(thumb,size=0xc) addr:0x0207d06c
 func_0207d04c kind:function(arm,size=0x18) addr:0x0207d078
@@ -7602,9 +7602,8 @@ func_02082560 kind:function(thumb,size=0x3a) addr:0x0208258c
 func_0208259c kind:function(thumb,size=0x48) addr:0x020825c8
 func_020825e4 kind:function(thumb,size=0x8) addr:0x02082610
 func_020825ec kind:function(thumb,size=0x14) addr:0x02082618
-func_02082600 kind:function(arm,size=0x4) addr:0x0208262c
-func_02082604 kind:function(thumb,size=0x20) addr:0x02082630
-.L_02082634 kind:label(thumb) addr:0x02082634
+func_02082600 kind:function(arm,size=0x8) addr:0x0208262c
+func_02082608 kind:function(thumb,size=0x1c) addr:0x02082634
 func_02082624 kind:function(thumb,size=0x28) addr:0x02082650
 func_0208264c kind:function(thumb,size=0xa4) addr:0x02082678
 func_020826f0 kind:function(thumb,size=0x34) addr:0x0208271c
@@ -7624,7 +7623,7 @@ func_02082850 kind:function(thumb,size=0x1c) addr:0x0208287c
 func_0208286c kind:function(thumb,size=0x2) addr:0x02082898
 dsi27696F9 kind:function(arm,size=0xc) addr:0x0208289c
 func_0208287c kind:function(thumb,size=0x28) addr:0x020828a8
-func_020828a4 kind:function(arm,size=0x4) addr:0x020828d0
+func_020828a4 kind:function(arm,size=0x8) addr:0x020828d0
 exit kind:function(arm,size=0x1c) addr:0x020828d8
 atexit kind:function(arm,size=0xcc) addr:0x020828f4
 nan kind:function(arm,size=0x18) addr:0x020829c0
@@ -9036,10 +9035,6 @@ data_02120407_w2_us kind:bss addr:0x02120407
 data_021205c0_w2_us kind:bss addr:0x021205c0
 data_02120623_w2_us kind:bss addr:0x02120623
 data_02120c06_w2_us kind:bss addr:0x02120c06
-data_02121c21_w2_us kind:bss addr:0x02121c21
-data_02122201_w2_us kind:bss addr:0x02122201
-data_02122203_w2_us kind:bss addr:0x02122203
-data_02122207_w2_us kind:bss addr:0x02122207
 data_02130007_w2_us kind:bss addr:0x02130007
 data_02130090_w2_us kind:bss addr:0x02130090
 data_02130103_w2_us kind:bss addr:0x02130103
@@ -9294,6 +9289,9 @@ data_0214c170 kind:bss addr:0x0214c1b0
 data_0214c178 kind:bss addr:0x0214c1b8
 data_0214c17c kind:bss addr:0x0214c1bc
 data_0214c180 kind:bss addr:0x0214c1c0
+data_0214c1a8 kind:bss addr:0x0214c1e8
+data_0214c1ac kind:bss addr:0x0214c1ec
+data_0214c1b0 kind:bss addr:0x0214c1f0
 data_0214c1d8 kind:bss addr:0x0214c218
 data_0214c1dc kind:bss addr:0x0214c21c
 data_0214c1e0 kind:bss addr:0x0214c220

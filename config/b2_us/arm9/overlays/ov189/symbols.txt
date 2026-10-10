@@ -867,7 +867,6 @@ data_ov189_021b0681 kind:bss addr:0x021b0681 ambiguous
 data_ov189_021b0905 kind:bss addr:0x021b0905 ambiguous
 data_ov189_021b0d03 kind:bss addr:0x021b0d03 ambiguous
 data_ov189_021b0fdc kind:bss addr:0x021b0fdc ambiguous
-data_ov189_021b2200 kind:bss addr:0x021b2200 ambiguous
 data_ov189_021b26bc kind:bss addr:0x021b26bc ambiguous
 data_ov189_021b2860 kind:bss addr:0x021b2860
 data_ov189_021b2868 kind:bss addr:0x021b2868

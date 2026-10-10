@@ -67,7 +67,17 @@ Black 2 is an NDS/DSi hybrid built with the TWL-SDK, which differs from DS-only 
   the original values, which stay valid as long as the secure area is unchanged.
 - The DSi-only LTD ("limited") module is compressed inside ARM9i and loaded to `0x02700000` in DSi mode. ARM9 main
   calls into it. Extraction splits ARM9i into this module (`dsi/ltd_autoload_0.bin`), and the build links, recompresses
-  and reinserts it.
+  and reinserts it. It has two code regions, which dsd since v0.12.1-dsi.3 lays out as:
+  - `.text`: the module's own ARM code, TwlSDK's DSi libraries.
+  - `.rodata`: two COFF images for the DSi's Teak DSP. dsd gives each a byte-array symbol, so that their words are not
+    taken for pointers.
+  - `.ctor`: the empty static initializer table, a zero, that the autoload list points to.
+  - `.ltdmain`, from the next 32-byte boundary: Thumb code that calls main's SDK through linker veneers, such as the
+    NDMA functions (`MI_IsNDmaBusy` at `0x02768234`). It seems to be the DSi-only code of main's library files. The
+    section's name is a guess, after the SDK's LTDMAIN.
+  - `.data` and `.bss`.
+- Overlay 169 runs from VRAM, at `0x06898020`. Its code is analyzed like any other overlay's since dsd v0.12.1-dsi.3;
+  before, dsd took a branch outside main memory for data and had all of it as `.rodata`.
 
 ## Shifting
 
@@ -90,9 +100,7 @@ addresses, such as `0x02020100`. The words that point at no symbol (`--all`) are
 
 ## Known gaps
 
-- dsd only finds 253 functions in the LTD module's 437 KB. Its layout, with code after the static initializers,
-  does not fit dsd's section heuristics yet.
-- 3 calls, all in the LTD module (`0x02768298`, `0x0276934c` and `0x02769578`), lead to functions dsd did not
-  discover there, and got placeholder symbols (`func_..._unk`). The two in overlay 11 were Thumb functions whose
-  second instruction is a `b`, which dsd before v0.12.1-dsi.2 took for ARM and split (AetiasHax/ds-decomp#81); they
-  are fixed in `config/fixes.txt`, as overlays 167 and 194's were.
+dsd's analysis has no known gaps left in this ROM. The calls from overlays 167, 11 and 257 into overlay 169 and the LTD
+module can't link as the original's yet, but that is the linker's doing: the original has a veneer for every call, and
+`mwldarm` makes one per target (see
+[Matching, but not linkable as is](nonmatching-functions.md#matching-but-not-linkable-as-is)).

@@ -138,8 +138,14 @@ def apply_fix(version: str, module: str, addr: int, action: str, argument: str):
         path = config_dir(version, module) / "symbols.txt"
         lines = path.read_text().splitlines()
         line = f"{name} kind:function({mode},size={size}) addr:{addr:#010x}"
-        # Already there under any name: rename_symbol.py may have renamed it since the fix was recorded
-        if any(l.endswith(f" kind:function({mode},size={size}) addr:{addr:#010x}") for l in lines):
+        # Already there under any name: rename_symbol.py may have renamed it since the fix was recorded. Under the name
+        # dsd generates, dsd found it itself, so it takes the fix's name
+        existing = next((i for i, l in enumerate(lines)
+                         if l.endswith(f" kind:function({mode},size={size}) addr:{addr:#010x}")), None)
+        if existing is not None:
+            if re.fullmatch(r"func_(?:ov\d{3}_)?[0-9a-f]{8}", lines[existing].split()[0]):
+                lines[existing] = line
+                path.write_text("\n".join(lines) + "\n")
             return
         lines = [l for l in lines if not (m := SYMBOL_ADDR_RE.search(l)) or int(m.group(1), 16) != addr]
         before = [i for i, l in enumerate(lines) if "kind:function" in l and (m := SYMBOL_ADDR_RE.search(l))

@@ -46,6 +46,7 @@ src/ov167/battle_event.c:
     .bss        start:0x021db194 end:0x021dd844
 
 src/ov167/btl_calc.c:
+    complete
     .text       start:0x021bd054 end:0x021bdaf8
     .rodata     start:0x021d74a0 end:0x021d7624
     .data       start:0x021daf94 end:0x021dafa0

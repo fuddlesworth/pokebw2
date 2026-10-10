@@ -181,7 +181,7 @@ the original code is linked until they match. The differences are the same in bo
 | `src/ov167/btl_main.c` | `func_ov167_0219cd3c` | `0x0219cd3c` / `0x0219cd7c` | Same size, 258 bytes: registers and stack slots. The original keeps the first loop's counter in `r4` and the mon ID in `r5`, where ours swaps them, puts its slots 4 bytes lower, and keeps `monId * 4` on the stack (`sp+0x2c`) in the second loop, where ours keeps it in `r6`. A pointer to the client's `BattleParty` and one `s32 i` for both loops give the original's size (with `u32 i` and `u32 j` ours was 4 bytes larger); the declaration orders were tried. |
 | `src/ov167/btl_main.c` | `func_ov167_0219d188` | `0x0219d188` / `0x0219d1c8` | Same size, 7 bytes: ours stores `pos` to `[sp]` at entry, the original after copying it to r4 and setting up the call's argument, just before the call. All declaration orders (with `mainModule` last, 10 bytes to 7), loop forms (`pos--`, `i--`, `for`), an inline helper, an inner block and an `int pos` (worse) tried. |
 | `src/ov167/btl_main.c` | `func_ov167_0219dc10` | `0x0219dc10` / `0x0219dc50` | Same size, 20 bytes: stack slots only. The value the original keeps at `sp+0x18` is at `sp+4` in ours, which moves the four slots between them up by 4. Clearing `maxHP` before `hp` gives the original's size and its truncations of the client index (a `u32` index was tried). |
-| `src/ov167/btl_pokeparam.c` | `CopyBatonPassParams` | `0x021bbdc8` / `0x021bbe08` | The original keeps the condition's offset (`i * 4`) in `r7` across the call to overlay 169, and the flag constants in `r4`; ours recomputes the offset. Nested `if`s, `CheckCondition` and an `s32` index don't change it. The call goes through a linker veneer to overlay 169, whose code dsd takes for data, so the file can't be complete until that overlay is analyzed anyway. |
+| `src/ov167/btl_pokeparam.c` | `CopyBatonPassParams` | `0x021bbdc8` / `0x021bbe08` | The original keeps the condition's offset (`i * 4`) in `r7` across the call to overlay 169, and the flag constants in `r4`; ours recomputes the offset. Nested `if`s, `CheckCondition` and an `s32` index don't change it. The call goes through a linker veneer to overlay 169, so like the other files that call it, the file can't link as the original until the build gives every call its own veneer (below). |
 | `src/ov167/btl_pokeparam.c` | `func_ov167_021bb864` | `0x021bb864` / `0x021bb8a4` | Four bytes larger in the original: it keeps the address of the conditions array on the stack and the `cured` pointer in a register, ours the other way round, in a frame of `0x18` bytes against `0x14`. A `u32` count of turns, a local pointer to the conditions and the declaration orders tried. |
 | `src/ov167/btl_server_flow.c` | `func_ov167_0219f588` | `0x0219f588` / `0x0219f5c8` | `0xd4` bytes versus `0xd2`: the original keeps the `u8` result in the first stack slot and writes it between the two queue position stores without reloading it; ours reloads it before the second store. Declaration orders, a `BOOL` result, a local for the queue and `BtlServerCmdQueue_Init` tried. |
 | `src/ov167/btl_server_flow.c` | `func_ov167_0219fb3c` | `0x0219fb3c` / `0x0219fb7c` | `0x124` bytes versus `0x138`: the original keeps the index and the second state on the stack and the entry in `r6`, where ours keeps them in registers. The packed sort key matches in shape; every order of its four fields, an entry pointer and separate state variables tried. |
@@ -344,13 +344,8 @@ the original code is linked until they match. The differences are the same in bo
   `0x021d83e8`, the event handler tables) isn't written yet: the functions still name the tables through `extern`s
   in `battle/btl_ability.h`, as `item_handlers.c` and `move_handlers.c` no longer do. It also calls overlay 169,
   like them (below).
-- Overlay 169 runs from VRAM (`0x06898020`) and dsd has all of it as `.rodata`. Its 16-byte Thumb stubs, such as
-  `func_ov169_0689ca54` and `func_ov169_0689ca74` (`ldr r1, =table; ldr r3, =func; movs r2, #n; bx r3`), can be declared
-  with `config_fixes.py add-function` and their `+1` data symbols removed, which gives the calls to them a symbol to
-  link to. A function with a branch can't: dsd refuses it (`branch outside of program`), since the overlay has no code
-  section. A `kind:label(thumb)` symbol at the function, beside the `+1` data symbol, does link, but the linker then
-  takes the overlay's bytes after it for Thumb code: the pointers to them get bit 0 set and the overlay grows by 12
-  bytes, so overlays 167 to 169 no longer match.
+- Overlay 169 runs from VRAM (`0x06898020`). dsd took all of it for `.rodata` until v0.12.1-dsi.3, which analyzes its
+  1298 functions, so the calls into it have functions to link to.
 - The calls from overlay 167 to overlay 169 can't come out as the original's, whatever dsd does with overlay 169. The
   original has a veneer for every call: all 402 long-branch veneers in overlay 167 (a Thumb `bx pc`, then the ARM
   `ldr ip, [pc]`, `bx ip` and the target's address) have exactly one caller each, as do those of overlays 11 and 257,
@@ -363,10 +358,6 @@ the original code is linked until they match. The differences are the same in bo
   veneers, a file that calls overlay 169 links as the original only if it calls each of its targets once, and no
   complete file linked before it in the overlay calls them: the linker then puts each veneer right after the calling
   function, as the original has it.
-- All 56 functions of `src/ov167/btl_calc.c` match in both versions (the other two of its 58 symbols are that
-  veneer), but it calls overlay 169 once, `func_ov169_0689cb6c` in `func_ov167_021bd624`, through the veneer at
-  `0x021bd648`. Linked against the label above, the linker puts its veneer at that address too, so only overlay 169's
-  missing code symbols keep its functions from linking.
 - `src/ov167/btl_client.c`'s `.rodata` has the original's sections and sizes, but in its shared section the two 8-byte
   message tables (`sEscapeMessages` and `sTrainerHintMsgs`) and the two 20-byte ones (`sAudienceLeave` and
   `sWeatherStartTable`) come out swapped. Moving the top-level tables doesn't change it, so the size sort also sees the
@@ -389,11 +380,11 @@ the original code is linked until they match. The differences are the same in bo
   `0x021ac84c`, and `CommonMoveTargetChangeToMe` (`src/ov167/ability_handlers.c`) lost the two-byte Thumb NOP after
   it to zero padding. Check both when their files are completed.
 
-- `src/ov257/camera_system.c` matches in both versions, but it links only once the DSi module's NDMA functions are
-  known to dsd: `func_02768234` (`MI_IsNDmaBusy`), `func_02768270`, `func_02768378` and `func_02769080` have no symbols
-  in `ltd_autoload_0`. The original reaches them through linker veneers in the middle of the file, which dsd took
-  for functions (`func_ov257_02199c9c`, ARM `ldr pc, [pc, #-4]`, and `func_ov257_02199ca4`, Thumb `bx pc`), so the
-  veneers' placement has to come out as the original's too.
+- `src/ov257/camera_system.c` matches in both versions, and since dsd v0.12.1-dsi.3 the DSi module's NDMA functions
+  that it calls, such as `func_02768234` (`MI_IsNDmaBusy`), have symbols. It still can't link as the original: the
+  original reaches them and main's functions through a veneer for every call, in the middle of the file, and the
+  linker makes one per target (above), so overlay 257 comes out 0x120 bytes shorter, and overlays 8 and 17, which
+  point into its data, follow.
 
 ## Keeping this list current
 
