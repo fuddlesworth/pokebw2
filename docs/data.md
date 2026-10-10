@@ -10,8 +10,8 @@ exactly what the ROM holds. The sources come in two kinds:
   the archives from the files (`DATA_PACKS` in `configure.py`), validating each file against its schema and naming
   the file and field of any mistake. Files are ordered by the constant lists, not by their names, so adding an entry
   is adding its constant and its file; the build notices new, removed and renamed files by itself.
-- **Assembly**, for the scripts and the data not moved to JSON yet: one source file per entry, in archive order,
-  assembled with the macros in `include/asm/` (`ARCHIVES` in `configure.py`).
+- **Assembly**, for the field and trainer AI scripts, which are code more than data, as pret keeps them: one source
+  file per entry, in archive order, assembled with the macros in `include/asm/` (`ARCHIVES` in `configure.py`).
 
 Both use the same constants as the C code (see [Constant lists](#constant-lists)): the JSON by name, the assembly
 through the C preprocessor. Each archive has a script that wrote its sources from the original, which documents the

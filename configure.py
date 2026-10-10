@@ -129,9 +129,8 @@ def library_of(source: Path) -> tuple[str, list[str]] | None:
     return (library[0], file_flags(source, library[1])) if library else None
 
 
-# Archives built from source, which replace their extracted counterparts in the ROM. Each maps its path under files/ to
-# the directory of its members, one assembly file each, in archive order; or to the directory and a section, for two
-# archives whose entries go together, such as a trainer and its party, and come from the same file.
+# Archives assembled from source, which replace their extracted counterparts in the ROM: the scripts. Each maps its path
+# under files/ to the directory of its members, one assembly file each, in archive order.
 ARCHIVES = {
     "a/0/5/6": "data/field_scripts",  # Field scripts, see tools/scripts/field_script.py
     "a/1/6/9": "data/tr_ai",  # Trainer AI scripts, see tools/scripts/tr_ai_script.py
@@ -346,19 +345,14 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
                        "built": " ".join([*ARCHIVES, *TEXT_ARCHIVES, *(a for _, _, pack, _ in DATA_PACKS for a in pack)])})
     archives = []
     checks = []
-    assembled = set()
-    for path, spec in ARCHIVES.items():
-        # A directory, or a directory and the section of its files that this archive takes
-        source_dir, section = (spec, None) if isinstance(spec, str) else spec
+    for path, source_dir in ARCHIVES.items():
         members = []
         for source in sorted(Path(source_dir).glob("*.s")):
             obj = build_dir / source.with_suffix(".o")
-            if obj not in assembled:
-                n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines},
-                        order_only=["constants_headers"])
-                assembled.add(obj)
-            member = obj.with_name(f"{obj.stem}{section or ''}.bin")
-            n.build([member], "objcopy_bin", [obj], variables={"sections": f"-j {section}" if section else ""})
+            n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines},
+                    order_only=["constants_headers"])
+            member = obj.with_suffix(".bin")
+            n.build([member], "objcopy_bin", [obj])
             members.append(member)
         archive = files_dir / path
         n.build([archive], "narc", members, implicit=["tools/scripts/narc.py"], order_only=[files_ok])
@@ -503,7 +497,7 @@ def main():
     # Scripts go through the C preprocessor, so that they can include the constant headers
     n.rule("as", f"{shlex.quote(clang)} --target=armv5te-none-eabi -x assembler-with-cpp -c $as_includes $defines "
            "-MD -MF $dep -o $out $in", "Assembling $in", depfile="$dep", deps="gcc")
-    n.rule("objcopy_bin", f"{shlex.quote(llvm_objcopy)} -O binary $sections $in $out", "Converting $in")
+    n.rule("objcopy_bin", f"{shlex.quote(llvm_objcopy)} -O binary $in $out", "Converting $in")
     n.rule("narc", "$python tools/scripts/narc.py pack $out $in", "Packing $out")
     n.rule("text_pack", "$python tools/scripts/text_data.py pack $dir $out", "Packing $out")
     n.rule("data_pack", "$python $script pack $dir $game $out", "Packing $dir")
@@ -556,7 +550,7 @@ def main():
 
     # The data directories too: adding, removing or renaming a file changes its directory's time, so the build lists
     # the data files again
-    source_dirs = [d for _, d, _, _ in DATA_PACKS] + [d if isinstance(d, str) else d[0] for d in ARCHIVES.values()]
+    source_dirs = [d for _, d, _, _ in DATA_PACKS] + list(ARCHIVES.values())
     source_dirs += list(TEXT_ARCHIVES.values()) + ["data/constants"]
     data_dirs = sorted({str(p.relative_to(ROOT)) for d in source_dirs for p in [ROOT / d, *(ROOT / d).rglob("*")]
                         if p.is_dir()})

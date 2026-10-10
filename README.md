@@ -77,7 +77,7 @@ scripts are built from source, see [Scripts](docs/scripts.md).
 | `src/gfl/`, `src/system/` | Decompiled C of the ARM9 main module, by library like the headers, such as `src/gfl/heap.c` |
 | `lib/<name>/` | Libraries built apart from the game with their own compiler (`library.toml`), headers and sources, such as `lib/spl/` |
 | `include/` | Headers shared by the C code, see [Code organization](docs/code-organization.md) |
-| `data/` | Scripts and data assembled into the ROM's files, see [Game data](docs/data.md) and [Scripts](docs/scripts.md) |
+| `data/` | The game's data as JSON, one file per species, move, trainer, zone and encounter table, the constant lists, the text, and the scripts, all built into the ROM's files; see [Game data](docs/data.md) and [Scripts](docs/scripts.md) |
 | `include/asm/` | Macros for the scripts |
 | `tools/scripts/` | Helper scripts, such as `romdiff.py` to compare two ROMs region by region |
 | `docs/` | The documentation listed below |
