@@ -71,14 +71,14 @@ static void func_ov194_021bfba4(ResSprite *sprite) {
     if (sprite->actor != NULL) {
         func_0204c108(sprite->actor);
         sprite->actor = NULL;
-        func_ov139_02199a44(&sprite->res);
+        UIObjRes_Free(&sprite->res);
     }
 }
 
 // A type icon of the Pokémon: its first type (0) or its second (1)
 static void func_ov194_021bfbc0(ResSprite *sprite, PartyPkm *pkm, int index, ClActUnit *unit, int x, int y,
                                 u32 vramType, HeapID heapId) {
-    Ov139ObjResSetup param;
+    UIObjResSetup param;
     u8 type = PokeParty_GetParam(pkm, PKM_PARAM_TYPE1 + index, NULL);
     param.vramType = vramType;
     param.flags = 0;
@@ -90,8 +90,8 @@ static void func_ov194_021bfbc0(ResSprite *sprite, PartyPkm *pkm, int index, ClA
     param.paletteOffset = 8;
     param.paletteStart = 0;
     param.paletteCount = 3;
-    func_ov139_021999c8(&sprite->res, &param, unit, heapId);
-    sprite->actor = func_ov139_02199a5c(&sprite->res, unit, x, y, 0, heapId);
+    UIObjRes_Load(&sprite->res, &param, unit, heapId);
+    sprite->actor = UIObjRes_CreateActor(&sprite->res, unit, x, y, 0, heapId);
     func_0204c378(sprite->actor, func_0202d7e8(type), 1);
 }
 
@@ -99,14 +99,14 @@ static void func_ov194_021bfc50(ResSprite *sprite) {
     if (sprite->actor != NULL) {
         func_0204c108(sprite->actor);
         sprite->actor = NULL;
-        func_ov139_02199a44(&sprite->res);
+        UIObjRes_Free(&sprite->res);
     }
 }
 
 // The icon of the Poké Ball the Pokémon was caught in
 static void func_ov194_021bfc6c(ResSprite *sprite, PartyPkm *pkm, ClActUnit *unit, int x, int y, u32 vramType,
                                 HeapID heapId, u32 plttOffset) {
-    Ov139ObjResSetup param;
+    UIObjResSetup param;
     u32 ball = PokeParty_GetParam(pkm, PKM_PARAM_POKEBALL, NULL);
     func_ov194_021bfc50(sprite);
     param.vramType = vramType;
@@ -119,8 +119,8 @@ static void func_ov194_021bfc6c(ResSprite *sprite, PartyPkm *pkm, ClActUnit *uni
     param.paletteOffset = plttOffset;
     param.paletteStart = 0;
     param.paletteCount = 1;
-    func_ov139_021999c8(&sprite->res, &param, unit, heapId);
-    sprite->actor = func_ov139_02199a5c(&sprite->res, unit, x, y, 0, heapId);
+    UIObjRes_Load(&sprite->res, &param, unit, heapId);
+    sprite->actor = UIObjRes_CreateActor(&sprite->res, unit, x, y, 0, heapId);
 }
 
 // Opens the message window with wk->strbuf, printed a character at a time or all at once
@@ -567,7 +567,7 @@ void func_ov194_021c0b6c(PokemonTradeWork *wk, PartyPkm *pkm) {
         wk->unk11F9 = 1;
         GFL_VBlankTCBAdd(func_ov194_021c189c, wk, 0);
     }
-    func_ov139_02199d18(wk->touchBar, 1, TRUE);
+    TouchBar_SetIconVisible(wk->touchBar, 1, TRUE);
 }
 
 // The page of the Pokémon's summary on the lower screen: its stats (0) or its moves (1)
@@ -856,7 +856,7 @@ AppTaskMenuWin *func_ov194_021c1788(PokemonTradeWork *wk, u32 msg) {
     wk->menuWin = AppTaskMenuWin_CreateEx(wk->taskMenuRes, &wk->menuItems[0], 8, 21, 16, 3, 0, 1, wk->heapId);
     GFL_StrBufFree(wk->menuItems[0].str);
     func_0204c124(wk->actors[2], FALSE);
-    func_ov139_02199d18(wk->touchBar, 8, FALSE);
+    TouchBar_SetIconVisible(wk->touchBar, 8, FALSE);
     return wk->menuWin;
 }
 
@@ -869,7 +869,7 @@ void func_ov194_021c1820(PokemonTradeWork *wk, BOOL showActor, BOOL showButton) 
         func_0204c124(wk->actors[2], TRUE);
     }
     if (showButton) {
-        func_ov139_02199d18(wk->touchBar, 8, func_ov194_021bc098(wk));
+        TouchBar_SetIconVisible(wk->touchBar, 8, func_ov194_021bc098(wk));
     }
     if (wk->menuWin != NULL) {
         AppTaskMenuWin_Free(wk->menuWin);

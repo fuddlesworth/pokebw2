@@ -38,7 +38,7 @@ typedef struct {
     HeapID heapId;
     BoxSearchParam *param;
     BoxSearchGraphic *graphic;
-    Ov139TouchBar *touchBar;
+    TouchBar *touchBar;
     Font *font;
     PokeDexSave *pokedex;
     PrintQueue *printQueue;
@@ -52,11 +52,11 @@ typedef struct {
     StrBuf *strings[BOX_SEARCH_STRING_COUNT];
     BmpWin *windows[BOX_SEARCH_WINDOW_COUNT];
     PrintWindow printWindows[BOX_SEARCH_WINDOW_COUNT];
-    Ov139List *list;
+    FrameList *list;
     // How many rows of the list show, and how many items it has
     u16 listRows;
     u16 listCount;
-    Ov139ObjRes objRes[3];
+    UIObjRes objRes[3];
     ClActor *actors[BOX_SEARCH_ACTOR_COUNT];
     CursorMove *cursorMove;
     // The group of species or abilities chosen by first letter, from 1, and the group within it

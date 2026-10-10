@@ -91,14 +91,14 @@ typedef void (*PokemonTradeState)(PokemonTradeWork *wk);
 
 // Overlay 139's OBJ resources, and the actor made of them
 typedef struct {
-    Ov139ObjRes res;
+    UIObjRes res;
     ClActor *actor;
 } ResSprite;
 
 // The icons of a Pokémon's six markings in the summary, then of its rare and Pokérus flags, all made from one set of
 // overlay 139's resources
 typedef struct {
-    Ov139ObjRes res;
+    UIObjRes res;
     BOOL loaded;
     ClActor *icons[8];
 } TradeMarkIcons;
@@ -273,7 +273,7 @@ struct PokemonTradeWork {
     ResSprite infoIcons[3];
     // The icons of the summary's markings and of its rare and Pokérus flags
     TradeMarkIcons markIcons;
-    Ov139TouchBar *touchBar;
+    TouchBar *touchBar;
     ClActUnit *clactUnit;
     TCB *vblankTcb;
     // The Pokémon icons of the twelve columns of the strip that are set up, five to a column: their characters, their

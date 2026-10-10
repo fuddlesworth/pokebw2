@@ -900,10 +900,10 @@ static void TDownload_InitReceived(TDownloadWork *wk) {
     GFL_BGSysSetBGEnabled(2, FALSE);
     wk->flags &= ~T_DOWNLOAD_FLAG_LIST_PRINTED;
     func_ov326_021a16e8(wk, wk->mode);
-    if (func_ov139_0219b294(wk->list) == FALSE) {
+    if (FrameList_Draw(wk->list) == FALSE) {
         wk->flags |= T_DOWNLOAD_FLAG_LIST_PRINTED;
     }
-    func_ov139_0219ccb0(wk->list, 7);
+    FrameList_SetShownRows(wk->list, 7);
     func_ov326_021a1104(wk, T_DOWNLOAD_ACTOR_OBJ, 2, TRUE);
     func_ov326_021a1a78(wk, FALSE);
     if (wk->listCount <= 6) {
@@ -1027,7 +1027,7 @@ static void TDownload_Received(TDownloadWork *wk) {
         wk->seq = 100;
     case 5:
         if (!(wk->flags & T_DOWNLOAD_FLAG_LIST_PRINTED)) {
-            if (func_ov139_0219b294(wk->list) == FALSE) {
+            if (FrameList_Draw(wk->list) == FALSE) {
                 wk->flags |= T_DOWNLOAD_FLAG_LIST_PRINTED;
                 wk->seq = wk->seqAfterList;
                 GFL_BGSysSetBGEnabled(2, TRUE);

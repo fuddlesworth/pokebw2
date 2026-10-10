@@ -12,13 +12,49 @@
 // Load it with GFL_OvlLoad(OVERLAY_APP_UI) before using any of them
 #define OVERLAY_APP_UI OVERLAY_ID(139)
 
-// ui_scene.c: The OBJ resources of a set of files, and where to load them from
+// ui_scene.c: A scene steps through a table of steps, each with callbacks for its parts. A callback that returns a
+// BOOL says whether its part is done; the steps go on to the step set with UIScene_SetNext, or end with UI_SCENE_END
+typedef struct UIScene UIScene;
+
+// The next step that ends the scene
+#define UI_SCENE_END 0xfffe
+
+typedef BOOL (*UISceneFunc)(UIScene *scene, void *param);
+typedef void (*UISceneHook)(UIScene *scene, void *param);
+
+typedef struct {
+    UISceneFunc begin;
+    UISceneHook enter;
+    UISceneFunc run;
+    UISceneHook leave;
+    UISceneFunc end;
+} UISceneStep;
+
+struct UIScene {
+    const UISceneStep *steps;
+    void *param;
+    u16 step;
+    u16 next;
+    u8 flag;
+    u8 state;
+    u8 counter;
+};
+
+UIScene *UIScene_Create(HeapID heapId, const UISceneStep *steps, u8 flag, u16 first, void *param);
+void UIScene_Free(UIScene *scene);
+// Runs the current step, and returns TRUE once the scene has ended
+BOOL UIScene_Main(UIScene *scene);
+void UIScene_SetNext(UIScene *scene, u16 next);
+u8 UIScene_GetCounter(UIScene *scene);
+void UIScene_IncCounter(UIScene *scene);
+
+// The OBJ resources of a set of files, and where to load them from
 typedef struct {
     u32 chars;
     u32 palette;
     u32 cellAnims;
     u32 vramType;
-} Ov139ObjRes;
+} UIObjRes;
 
 typedef struct {
     u32 vramType;
@@ -32,11 +68,11 @@ typedef struct {
     u8 paletteOffset;
     u8 paletteStart;
     u8 paletteCount;
-} Ov139ObjResSetup;
+} UIObjResSetup;
 
-void func_ov139_021999c8(Ov139ObjRes *res, const Ov139ObjResSetup *setup, ClActUnit *unit, HeapID heapId);
-void func_ov139_02199a44(Ov139ObjRes *res);
+void UIObjRes_Load(UIObjRes *res, UIObjResSetup *setup, ClActUnit *unit, HeapID heapId);
+void UIObjRes_Free(UIObjRes *res);
 // Creates an actor of the resources at (x, y), playing an animation
-ClActor *func_ov139_02199a5c(Ov139ObjRes *res, ClActUnit *unit, u8 x, u8 y, u8 anim, HeapID heapId);
+ClActor *UIObjRes_CreateActor(UIObjRes *res, ClActUnit *unit, u8 x, u8 y, u8 anim, HeapID heapId);
 
 #endif // POKEBW2_APP_UI_UI_SCENE_H
