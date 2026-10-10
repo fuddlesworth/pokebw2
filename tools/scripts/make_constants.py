@@ -13,6 +13,7 @@ generates the headers from them with gen_constants.py.
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --places
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --files
     make_constants.py extract/b2_us/files/a/0/0/2 data/constants --flags
+    make_constants.py extract/b2_us/files/a/0/0/2 data/constants --map-matrices extract/b2_us
 
 Names are the English names in upper case, with words split at spaces, hyphens and capitals inside a word, so that
 "ThunderPunch" becomes MOVE_THUNDER_PUNCH. Items named "???" are unused, and are named after their ID, as
@@ -366,6 +367,35 @@ def var_names(named: dict[int, str]) -> dict[int, str]:
     return {var: named.get(var, f"EVENT_WORK_{var:#06x}") for var in range(VARS, VARS + VAR_COUNT)}
 
 
+def map_matrix_names(extract: Path) -> dict[int, str]:
+    """Returns the name of each map matrix: the overworld's, which give each cell's zone, MAP_MATRIX_OVERWORLD, and
+    the others after the first zone whose header names them, or else their number."""
+    from narc import read_narc
+
+    files = extract / "files"
+    (headers,) = read_narc((files / "a/0/1/2").read_bytes())
+    count = len(read_narc((files / "a/0/0/9").read_bytes()))
+    zones = {number: zone for zone, number in reversed(load_zone_list().items())}
+    first: dict[int, str] = {}
+    for z in range(len(headers) // ZONE_HEADER_SIZE):
+        matrix = struct.unpack_from("<H", headers, ZONE_HEADER_SIZE * z + 4)[0]
+        # A zone named after its number keeps its prefix, so as not to read as a matrix's number
+        zone = zones[z].removeprefix("ZONE_")
+        first.setdefault(matrix, f"ZONE_{zone}" if zone.isdigit() else zone)
+    names = {m: f"MAP_MATRIX_{first[m]}" if m in first else f"MAP_MATRIX_{m}" for m in range(count)}
+    # The matrices that give each cell's zone are the overworld's, which many zones share
+    overworld = [m for m, data in enumerate(read_narc((files / "a/0/0/9").read_bytes())) if data[0] == 1]
+    for i, m in enumerate(overworld):
+        names[m] = "MAP_MATRIX_OVERWORLD" if i == 0 else f"MAP_MATRIX_OVERWORLD_{i + 1}"
+    return names
+
+
+def load_zone_list() -> dict[str, int]:
+    from gen_constants import load
+
+    return load("zones")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("archive", type=Path, help="the system message archive, files/a/0/0/2")
@@ -379,6 +409,8 @@ def main():
                         help="write only this list of the game's text, such as natures, since the lists are edited "
                              "by hand after")
     parser.add_argument("--places", action="store_true", help="write only places.txt, from the place names")
+    parser.add_argument("--map-matrices", type=Path, metavar="EXTRACT",
+                        help="write only map_matrices.txt, from an extracted version such as extract/b2_us")
     parser.add_argument("--flags", action="store_true",
                         help="write only flags.txt and vars.txt, every flag and variable, keeping the names they have")
     parser.add_argument("--files", action="store_true",
@@ -403,6 +435,10 @@ def main():
     if args.encounters:
         write_list(args.output / "encounters.txt", encounter_names(args.encounters),
                    "Wild encounter tables, by the place of the first zone that has them, numbered where places repeat")
+    if args.map_matrices:
+        write_list(args.output / "map_matrices.txt", map_matrix_names(args.map_matrices),
+                   "Map matrices: the overworld's, and the others by the first zone whose header names them, or their number")
+        return
     if args.flags:
         from gen_constants import load
 

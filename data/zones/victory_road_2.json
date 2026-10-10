@@ -3,7 +3,7 @@
     "map_type": 12,
     "npc_cache": 24,
     "area": 58,
-    "matrix": 162,
+    "matrix": "MAP_MATRIX_VICTORY_ROAD_2",
     "scripts": "SCRIPTS_VICTORY_ROAD_2",
     "text": "SCRIPT_TEXT_VICTORY_ROAD_2",
     "bgm": "SEQ_BGM_D_CHAMPROAD",

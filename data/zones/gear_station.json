@@ -3,7 +3,7 @@
     "map_type": 7,
     "npc_cache": 24,
     "area": 330,
-    "matrix": 101,
+    "matrix": "MAP_MATRIX_GEAR_STATION",
     "scripts": "SCRIPTS_GEAR_STATION",
     "text": "SCRIPT_TEXT_GEAR_STATION",
     "bgm": "SEQ_BGM_GEAR_STATION",

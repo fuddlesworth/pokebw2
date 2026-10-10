@@ -3,7 +3,7 @@
     "map_type": 6,
     "npc_cache": 24,
     "area": 324,
-    "matrix": 88,
+    "matrix": "MAP_MATRIX_UNION_ROOM",
     "scripts": "SCRIPTS_UNION_ROOM",
     "text": "SCRIPT_TEXT_UNION_ROOM",
     "bgm": "SEQ_BGM_POKECEN",

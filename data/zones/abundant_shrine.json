@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 194,
-    "matrix": 190,
+    "matrix": "MAP_MATRIX_ABUNDANT_SHRINE",
     "scripts": "SCRIPTS_ABUNDANT_SHRINE",
     "text": "SCRIPT_TEXT_ABUNDANT_SHRINE",
     "bgm": "SEQ_BGM_D_06",

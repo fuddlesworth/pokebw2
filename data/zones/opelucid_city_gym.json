@@ -3,7 +3,7 @@
     "map_type": 23,
     "npc_cache": 24,
     "area": 312,
-    "matrix": 66,
+    "matrix": "MAP_MATRIX_OPELUCID_CITY_GYM",
     "scripts": "SCRIPTS_OPELUCID_CITY_GYM",
     "text": "SCRIPT_TEXT_OPELUCID_CITY_GYM",
     "bgm": "SEQ_BGM_DRAGON_GYM_01",

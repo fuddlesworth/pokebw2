@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 332,
-    "matrix": 312,
+    "matrix": "MAP_MATRIX_SEASIDE_CAVE",
     "scripts": "SCRIPTS_SEASIDE_CAVE",
     "text": "SCRIPT_TEXT_SEASIDE_CAVE",
     "bgm": "SEQ_BGM_D_02",

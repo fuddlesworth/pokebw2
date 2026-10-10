@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 293,
-    "matrix": 23,
+    "matrix": "MAP_MATRIX_CHARGESTONE_CAVE_2",
     "scripts": "SCRIPTS_CHARGESTONE_CAVE_2",
     "text": "SCRIPT_TEXT_CHARGESTONE_CAVE_2",
     "bgm": "SEQ_BGM_D_02",

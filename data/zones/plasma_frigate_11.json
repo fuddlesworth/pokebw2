@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 278,
-    "matrix": 348,
+    "matrix": "MAP_MATRIX_PLASMA_FRIGATE_11",
     "scripts": "SCRIPTS_PLASMA_FRIGATE_11",
     "text": "SCRIPT_TEXT_PLASMA_FRIGATE_11",
     "bgm": "SEQ_BGM_SW_D_27_F_AJITO",

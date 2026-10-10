@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 283,
-    "matrix": 13,
+    "matrix": "MAP_MATRIX_BLACK_CITY_POKEMON_CENTER",
     "scripts": "SCRIPTS_NACRENE_CITY_POKEMON_CENTER",
     "text": "SCRIPT_TEXT_NACRENE_CITY_POKEMON_CENTER",
     "bgm": "SEQ_BGM_POKECEN",

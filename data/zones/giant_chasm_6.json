@@ -3,7 +3,7 @@
     "map_type": 28,
     "npc_cache": 24,
     "area": 332,
-    "matrix": 397,
+    "matrix": "MAP_MATRIX_GIANT_CHASM_6",
     "scripts": "SCRIPTS_GIANT_CHASM_6",
     "text": "SCRIPT_TEXT_GIANT_CHASM_6",
     "bgm": "SEQ_BGM_D_05",

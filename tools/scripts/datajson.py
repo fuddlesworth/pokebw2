@@ -191,6 +191,6 @@ def dumps(data, indent: int = 0, width: int = 120) -> str:
     return "[\n" + ",\n".join(items) + "\n" + " " * indent + "]"
 
 
-def write(path: Path, data):
+def write(path: Path, data, width: int = 120):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(dumps(data) + "\n")
+    path.write_text(dumps(data, width=width) + "\n")

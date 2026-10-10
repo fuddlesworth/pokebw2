@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 242,
-    "matrix": 380,
+    "matrix": "MAP_MATRIX_POKESTAR_STUDIOS",
     "scripts": "SCRIPTS_POKESTAR_STUDIOS",
     "text": "SCRIPT_TEXT_POKESTAR_STUDIOS",
     "bgm": "SEQ_BGM_PW_LAND",

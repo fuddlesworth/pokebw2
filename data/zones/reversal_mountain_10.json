@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 388,
-    "matrix": 328,
+    "matrix": "MAP_MATRIX_REVERSAL_MOUNTAIN_10",
     "scripts": "SCRIPTS_REVERSAL_MOUNTAIN_10",
     "text": "SCRIPT_TEXT_REVERSAL_MOUNTAIN_10",
     "bgm": "SEQ_BGM_SW_D_24_W",

@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 347,
-    "matrix": 355,
+    "matrix": "MAP_MATRIX_STRANGE_HOUSE_10",
     "scripts": "SCRIPTS_STRANGE_HOUSE_10",
     "text": "SCRIPT_TEXT_STRANGE_HOUSE_10",
     "bgm": "SEQ_BGM_SW_D_25",

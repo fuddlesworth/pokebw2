@@ -3,7 +3,7 @@
     "map_type": 14,
     "npc_cache": 24,
     "area": 186,
-    "matrix": 1,
+    "matrix": "MAP_MATRIX_CASTELIA_CITY_2",
     "scripts": "SCRIPTS_CASTELIA_CITY_2",
     "text": "SCRIPT_TEXT_CASTELIA_CITY_2",
     "bgm": "SEQ_BGM_C_03",

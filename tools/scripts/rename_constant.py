@@ -32,6 +32,7 @@ NAMED_DATA = [
     ("natures", "data/natures", "NATURE_", ".json"),
     ("places", "data/places", "PLACE_", ".json"),
     ("field_scripts", "data/field_scripts", "SCRIPTS_", ".s"),
+    ("map_matrices", "data/map_matrices", "MAP_MATRIX_", ".json"),
     ("tr_ai_scripts", "data/tr_ai", "TR_AI_SCRIPT_", ".s"),
     ("text_banks", "data/text/system", "TEXT_BANK_", ".txt"),
     ("script_text_banks", "data/text/script", "SCRIPT_TEXT_", ".txt"),

@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 368,
-    "matrix": 287,
+    "matrix": "MAP_MATRIX_WHITE_TREEHOLLOW_5",
     "scripts": "SCRIPTS_WHITE_TREEHOLLOW_5",
     "text": "SCRIPT_TEXT_WHITE_TREEHOLLOW_5",
     "bgm": "SEQ_BGM_MUGEN_D_W",

@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 90,
-    "matrix": 189,
+    "matrix": "MAP_MATRIX_CELESTIAL_TOWER",
     "scripts": "SCRIPTS_CELESTIAL_TOWER",
     "text": "SCRIPT_TEXT_CELESTIAL_TOWER",
     "bgm": "SEQ_BGM_D_05",

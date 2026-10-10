@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 332,
-    "matrix": 298,
+    "matrix": "MAP_MATRIX_RELIC_PASSAGE",
     "scripts": "SCRIPTS_RELIC_PASSAGE",
     "text": "SCRIPT_TEXT_RELIC_PASSAGE",
     "bgm": "SEQ_BGM_D_02",

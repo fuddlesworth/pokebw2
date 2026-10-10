@@ -3,7 +3,7 @@
     "map_type": 26,
     "npc_cache": 24,
     "area": 353,
-    "matrix": 375,
+    "matrix": "MAP_MATRIX_JOIN_AVENUE_2",
     "scripts": "SCRIPTS_JOIN_AVENUE_2",
     "text": "SCRIPT_TEXT_JOIN_AVENUE_2",
     "bgm": "SEQ_BGM_REZO_RIZO",

@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 389,
-    "matrix": 336,
+    "matrix": "MAP_MATRIX_HUMILAU_CITY_GYM",
     "scripts": "SCRIPTS_HUMILAU_CITY_GYM",
     "text": "SCRIPT_TEXT_HUMILAU_CITY_GYM",
     "bgm": "SEQ_BGM_WATER_GYM_01",

@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 302,
-    "matrix": 56,
+    "matrix": "MAP_MATRIX_CASTELIA_CITY_GYM",
     "scripts": "SCRIPTS_CASTELIA_CITY_GYM",
     "text": "SCRIPT_TEXT_CASTELIA_CITY_GYM",
     "bgm": "SEQ_BGM_INSECT_GYM_01",

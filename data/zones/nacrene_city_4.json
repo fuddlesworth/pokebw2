@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 390,
-    "matrix": 378,
+    "matrix": "MAP_MATRIX_NACRENE_CITY_4",
     "scripts": "SCRIPTS_NACRENE_CITY_4",
     "text": "SCRIPT_TEXT_NACRENE_CITY_4",
     "bgm": "SEQ_BGM_C_02",

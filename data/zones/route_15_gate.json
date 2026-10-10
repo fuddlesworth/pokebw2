@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 78,
-    "matrix": 175,
+    "matrix": "MAP_MATRIX_OVERWORLD_2",
     "scripts": "SCRIPTS_ROUTE_15_GATE",
     "text": "SCRIPT_TEXT_ROUTE_15_GATE",
     "bgm": "SEQ_BGM_GATE",

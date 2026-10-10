@@ -3,7 +3,7 @@
     "map_type": 9,
     "npc_cache": 24,
     "area": 305,
-    "matrix": 58,
+    "matrix": "MAP_MATRIX_MUSICAL_THEATER",
     "scripts": "SCRIPTS_MUSICAL_THEATER",
     "text": "SCRIPT_TEXT_MUSICAL_THEATER",
     "bgm": "SEQ_BGM_MSL_FIELD",

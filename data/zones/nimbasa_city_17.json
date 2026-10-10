@@ -3,7 +3,7 @@
     "map_type": 10,
     "npc_cache": 24,
     "area": 391,
-    "matrix": 379,
+    "matrix": "MAP_MATRIX_NIMBASA_CITY_17",
     "scripts": "SCRIPTS_NIMBASA_CITY_17",
     "text": "SCRIPT_TEXT_NIMBASA_CITY_17",
     "bgm": "SEQ_BGM_C_04",

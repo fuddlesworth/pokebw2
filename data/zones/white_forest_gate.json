@@ -3,7 +3,7 @@
     "map_type": 4,
     "npc_cache": 24,
     "area": 190,
-    "matrix": 225,
+    "matrix": "MAP_MATRIX_WHITE_FOREST_GATE",
     "scripts": "SCRIPTS_WHITE_FOREST_GATE",
     "text": "SCRIPT_TEXT_WHITE_FOREST_GATE",
     "bgm": "SEQ_BGM_GATE",

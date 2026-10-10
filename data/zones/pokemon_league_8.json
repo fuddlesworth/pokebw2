@@ -3,7 +3,7 @@
     "map_type": 15,
     "npc_cache": 24,
     "area": 335,
-    "matrix": 124,
+    "matrix": "MAP_MATRIX_POKEMON_LEAGUE_8",
     "scripts": "SCRIPTS_POKEMON_LEAGUE_8",
     "text": "SCRIPT_TEXT_POKEMON_LEAGUE_8",
     "bgm": "SEQ_BGM_POKEMON_LEAGUE",

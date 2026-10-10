@@ -3,7 +3,7 @@
     "map_type": 7,
     "npc_cache": 24,
     "area": 340,
-    "matrix": 245,
+    "matrix": "MAP_MATRIX_ABYSSAL_RUINS_3",
     "scripts": "SCRIPTS_ABYSSAL_RUINS_3",
     "text": "SCRIPT_TEXT_ABYSSAL_RUINS_3",
     "bgm": "SEQ_BGM_DIVING",

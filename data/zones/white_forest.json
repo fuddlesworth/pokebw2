@@ -3,7 +3,7 @@
     "map_type": 27,
     "npc_cache": 24,
     "area": 190,
-    "matrix": 356,
+    "matrix": "MAP_MATRIX_WHITE_FOREST",
     "scripts": "SCRIPTS_WHITE_FOREST",
     "text": "SCRIPT_TEXT_WHITE_FOREST",
     "bgm": "SEQ_BGM_C_10_W",

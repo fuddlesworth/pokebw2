@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 102,
-    "matrix": 14,
+    "matrix": "MAP_MATRIX_DREAMYARD",
     "scripts": "SCRIPTS_DREAMYARD",
     "text": "SCRIPT_TEXT_DREAMYARD",
     "bgm": "SEQ_BGM_D_01",

@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 282,
-    "matrix": 44,
+    "matrix": "MAP_MATRIX_BLACK_CITY_3",
     "scripts": "SCRIPTS_LOSTLORN_FOREST_2",
     "text": "SCRIPT_TEXT_LOSTLORN_FOREST_2",
     "bgm": "SEQ_BGM_D_06",

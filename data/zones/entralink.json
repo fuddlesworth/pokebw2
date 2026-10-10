@@ -3,7 +3,7 @@
     "map_type": 3,
     "npc_cache": 24,
     "area": 98,
-    "matrix": 117,
+    "matrix": "MAP_MATRIX_ENTRALINK",
     "scripts": "SCRIPTS_ENTRALINK",
     "text": "SCRIPT_TEXT_ENTRALINK",
     "bgm": "SEQ_BGM_PALACE",

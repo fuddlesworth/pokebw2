@@ -3,7 +3,7 @@
     "map_type": 21,
     "npc_cache": 24,
     "area": 246,
-    "matrix": 273,
+    "matrix": "MAP_MATRIX_MARINE_TUBE",
     "scripts": "SCRIPTS_MARINE_TUBE",
     "text": "SCRIPT_TEXT_MARINE_TUBE",
     "bgm": "SEQ_BGM_SW_H_06",

@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 316,
-    "matrix": 129,
+    "matrix": "MAP_MATRIX_BRIDGE_GATE_GATE_2",
     "scripts": "SCRIPTS_BRIDGE_GATE_GATE_2",
     "text": "SCRIPT_TEXT_BRIDGE_GATE_GATE_2",
     "bgm": "SEQ_BGM_GATE",

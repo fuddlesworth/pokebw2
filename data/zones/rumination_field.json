@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 106,
-    "matrix": 224,
+    "matrix": "MAP_MATRIX_RUMINATION_FIELD",
     "scripts": "SCRIPTS_RUMINATION_FIELD",
     "text": "SCRIPT_TEXT_RUMINATION_FIELD",
     "bgm": "SEQ_BGM_D_01",

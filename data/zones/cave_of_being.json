@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 380,
-    "matrix": 310,
+    "matrix": "MAP_MATRIX_CAVE_OF_BEING",
     "scripts": "SCRIPTS_CAVE_OF_BEING",
     "text": "SCRIPT_TEXT_CAVE_OF_BEING",
     "bgm": "SEQ_BGM_SW_D_UMA",

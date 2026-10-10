@@ -28,6 +28,8 @@ format and can write them again.
 | `a/0/2/4` | `data/items/` (JSON) | Item data | `tools/scripts/item_data.py` |
 | `a/0/5/6` | `data/field_scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/scripts/field_script.py` |
 | `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `data/trainers/` (JSON) | Trainers, their parties, and the table of their messages | `tools/scripts/trainer_data.py` |
+| `a/0/0/9` | `data/map_matrices/` (JSON) | Map matrices | `tools/scripts/map_matrix_data.py` |
+| `a/0/1/3` | `data/areas/areas.json` | Area records | `tools/scripts/area_data.py` |
 | `a/1/2/6` | `data/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/scripts/event_data.py` |
 | `a/1/2/7` | `data/encounters/` (JSON) | Wild encounters | `tools/scripts/encounter_data.py` |
 | `a/1/6/3` | `data/trades/` (JSON) | In-game trades | `tools/scripts/trade_data.py` |
@@ -507,6 +509,19 @@ facility data.
 Unlike a regular trainer (see [Trainers](#trainers)), a facility trainer has no party of its own: the game picks some of
 its sets at random, and the facility sets the level and IVs. The sets are a pool that many trainers share, which is why
 they are files of their own that trainers name.
+
+## Map matrices and areas
+
+A zone's header names its map matrix, `data/map_matrices/<matrix>.json` (`a/0/0/9`), by its constant in
+`data/constants/map_matrices.txt`, which names a matrix after the first zone that uses it, the overworld's
+`MAP_MATRIX_OVERWORLD`. A matrix is a grid of its cells' maps, files of the map archive (null for none), row by row,
+and, for the overworld's, of their zones by name; `tools/scripts/map_matrix_data.py` packs them in the list's order. A
+row stays on one line, so the file reads as the grid.
+
+The areas, `data/areas/areas.json`, are the records of `a/0/1/3` (`AreaData`), which name the graphics that zones
+share: their props, textures, animations (null for none), lights and colors, by the numbers of files that aren't built
+from source yet. A zone's header names its area by its number, and an area with seasons has a record per season after
+it. `tools/scripts/area_data.py` packs them. Both versions have the same matrices and areas.
 
 ## Zone events
 

@@ -157,6 +157,8 @@ DATA_PACKS = [
     # Zone headers, which give each zone the number of its events in data/events/order.json
     ("tools/scripts/zone_data.py", "data/zones", ["a/0/1/2"], False, ["data/events"]),
     ("tools/scripts/trade_data.py", "data/trades", ["a/1/6/3"], False),  # In-game trades
+    ("tools/scripts/map_matrix_data.py", "data/map_matrices", ["a/0/0/9"], False),  # Map matrices
+    ("tools/scripts/area_data.py", "data/areas", ["a/0/1/3"], False),  # Areas, a file of records rather than an archive
     # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
     ("tools/scripts/facility_data.py", "data/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
      ["data/facilities"]),

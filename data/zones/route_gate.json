@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 316,
-    "matrix": 12,
+    "matrix": "MAP_MATRIX_ROUTE_GATE",
     "scripts": "SCRIPTS_ROUTE_GATE",
     "text": "SCRIPT_TEXT_ROUTE_GATE",
     "bgm": "SEQ_BGM_GATE",

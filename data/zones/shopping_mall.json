@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 326,
-    "matrix": 90,
+    "matrix": "MAP_MATRIX_SHOPPING_MALL",
     "scripts": "SCRIPTS_SHOPPING_MALL",
     "text": "SCRIPT_TEXT_SHOPPING_MALL",
     "bgm": "SEQ_BGM_FS",

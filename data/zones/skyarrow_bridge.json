@@ -3,7 +3,7 @@
     "map_type": 1,
     "npc_cache": 24,
     "area": 14,
-    "matrix": 133,
+    "matrix": "MAP_MATRIX_SKYARROW_BRIDGE",
     "scripts": "SCRIPTS_SKYARROW_BRIDGE",
     "text": "SCRIPT_TEXT_SKYARROW_BRIDGE",
     "bgm": "SEQ_BGM_H_01",

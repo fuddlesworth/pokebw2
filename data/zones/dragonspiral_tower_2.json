@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 114,
-    "matrix": 208,
+    "matrix": "MAP_MATRIX_DRAGONSPIRAL_TOWER_2",
     "scripts": "SCRIPTS_DRAGONSPIRAL_TOWER_2",
     "text": "SCRIPT_TEXT_DRAGONSPIRAL_TOWER_2",
     "bgm": "SEQ_BGM_D_05",

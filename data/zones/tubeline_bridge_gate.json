@@ -3,7 +3,7 @@
     "map_type": 13,
     "npc_cache": 24,
     "area": 46,
-    "matrix": 136,
+    "matrix": "MAP_MATRIX_TUBELINE_BRIDGE",
     "scripts": "SCRIPTS_TUBELINE_BRIDGE_GATE",
     "text": "SCRIPT_TEXT_TUBELINE_BRIDGE_GATE",
     "bgm": "SEQ_BGM_GATE",

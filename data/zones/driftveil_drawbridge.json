@@ -3,7 +3,7 @@
     "map_type": 11,
     "npc_cache": 24,
     "area": 30,
-    "matrix": 106,
+    "matrix": "MAP_MATRIX_DRIFTVEIL_DRAWBRIDGE",
     "scripts": "SCRIPTS_DRIFTVEIL_DRAWBRIDGE",
     "text": "SCRIPT_TEXT_DRIFTVEIL_DRAWBRIDGE",
     "bgm": "SEQ_BGM_H_02",

@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 314,
-    "matrix": 68,
+    "matrix": "MAP_MATRIX_OPELUCID_CITY_2",
     "scripts": "SCRIPTS_OPELUCID_CITY_6",
     "text": "SCRIPT_TEXT_OPELUCID_CITY_6",
     "bgm": "SEQ_BGM_C_08_B",

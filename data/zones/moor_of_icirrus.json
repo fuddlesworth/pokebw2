@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 198,
-    "matrix": 183,
+    "matrix": "MAP_MATRIX_MOOR_OF_ICIRRUS",
     "scripts": "SCRIPTS_MOOR_OF_ICIRRUS",
     "text": "SCRIPT_TEXT_MOOR_OF_ICIRRUS",
     "bgm": "SEQ_BGM_D_01",

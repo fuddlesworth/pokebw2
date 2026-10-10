@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 339,
-    "matrix": 240,
+    "matrix": "MAP_MATRIX_LIBERTY_GARDEN_3",
     "scripts": "SCRIPTS_LIBERTY_GARDEN_3",
     "text": "SCRIPT_TEXT_LIBERTY_GARDEN_3",
     "bgm": "SEQ_BGM_D_03",

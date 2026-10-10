@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 316,
-    "matrix": 50,
+    "matrix": "MAP_MATRIX_NACRENE_GATE",
     "scripts": "SCRIPTS_VIRBANK_GATE",
     "text": "SCRIPT_TEXT_VIRBANK_GATE",
     "bgm": "SEQ_BGM_GATE",

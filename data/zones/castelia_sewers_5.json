@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 298,
-    "matrix": 295,
+    "matrix": "MAP_MATRIX_CASTELIA_SEWERS_4",
     "scripts": "SCRIPTS_CASTELIA_SEWERS_5",
     "text": "SCRIPT_TEXT_CASTELIA_SEWERS_5",
     "bgm": "SEQ_BGM_SW_D_GESUI",

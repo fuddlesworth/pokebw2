@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 285,
-    "matrix": 42,
+    "matrix": "MAP_MATRIX_NUVEMA_TOWN_LAB",
     "scripts": "SCRIPTS_NUVEMA_TOWN_LAB",
     "text": "SCRIPT_TEXT_NUVEMA_TOWN_LAB",
     "bgm": "SEQ_BGM_LABO",

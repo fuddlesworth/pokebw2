@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 303,
-    "matrix": 140,
+    "matrix": "MAP_MATRIX_POKE_TRANSFER_LAB",
     "scripts": "SCRIPTS_POKE_TRANSFER_LAB",
     "text": "SCRIPT_TEXT_POKE_TRANSFER_LAB",
     "bgm": "SEQ_BGM_PALPARK",

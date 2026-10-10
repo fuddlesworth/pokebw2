@@ -14,7 +14,7 @@
         "map_type": { "$ref": "#/$defs/u8", "description": "GetZoneMapType" },
         "npc_cache": { "$ref": "#/$defs/u8", "description": "The NPC info cache index" },
         "area": { "$ref": "#/$defs/u16", "description": "The area: its textures and buildings" },
-        "matrix": { "$ref": "#/$defs/u16", "description": "The map matrix" },
+        "matrix": { "type": "string", "x-constant": "MAP_MATRIX_", "description": "The map matrix, a MAP_MATRIX_* constant, data/map_matrices/<name>.json" },
         "scripts": {
             "type": "string", "x-constant": "SCRIPTS_",
             "description": "The zone's field script file, a SCRIPTS_* constant, data/field_scripts/<name>.s"

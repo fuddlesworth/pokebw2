@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 314,
-    "matrix": 213,
+    "matrix": "MAP_MATRIX_BLACK_CITY_5",
     "scripts": "SCRIPTS_BLACK_CITY_5",
     "text": "SCRIPT_TEXT_BLACK_CITY_5",
     "bgm": "SEQ_BGM_C_10_B",

@@ -3,7 +3,7 @@
     "map_type": 6,
     "npc_cache": 24,
     "area": 325,
-    "matrix": 89,
+    "matrix": "MAP_MATRIX_ZONE_150",
     "scripts": "SCRIPTS_150",
     "text": "SCRIPT_TEXT_150",
     "bgm": "SEQ_BGM_POKECEN",

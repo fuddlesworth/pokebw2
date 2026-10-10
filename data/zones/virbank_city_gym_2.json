@@ -3,7 +3,7 @@
     "map_type": 0,
     "npc_cache": 24,
     "area": 301,
-    "matrix": 120,
+    "matrix": "MAP_MATRIX_VIRBANK_CITY_GYM_2",
     "scripts": "SCRIPTS_VIRBANK_CITY_GYM_2",
     "text": "SCRIPT_TEXT_VIRBANK_CITY_GYM_2",
     "bgm": "SEQ_BGM_POISONE_GYM_01",

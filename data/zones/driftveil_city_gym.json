@@ -3,7 +3,7 @@
     "map_type": 22,
     "npc_cache": 24,
     "area": 308,
-    "matrix": 61,
+    "matrix": "MAP_MATRIX_DRIFTVEIL_CITY_GYM",
     "scripts": "SCRIPTS_DRIFTVEIL_CITY_GYM",
     "text": "SCRIPT_TEXT_DRIFTVEIL_CITY_GYM",
     "bgm": "SEQ_BGM_GROUND_GYM_01",

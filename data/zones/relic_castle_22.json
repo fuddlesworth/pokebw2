@@ -3,7 +3,7 @@
     "map_type": 16,
     "npc_cache": 24,
     "area": 291,
-    "matrix": 75,
+    "matrix": "MAP_MATRIX_RELIC_CASTLE_22",
     "scripts": "SCRIPTS_RELIC_CASTLE_22",
     "text": "SCRIPT_TEXT_RELIC_CASTLE_22",
     "bgm": "SEQ_BGM_D_04",
