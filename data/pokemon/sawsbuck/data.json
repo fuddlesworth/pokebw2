@@ -3,6 +3,11 @@
     "name": "Sawsbuck",
     "category": "Season Pokémon",
     "pokedex_entry": "They migrate according to the seasons,\nso some people call Sawsbuck\nthe harbingers of spring.",
+    "form_pokedex_entries": [
+        "They migrate according to the seasons,\nso some people call Sawsbuck\nthe harbingers of spring.",
+        "They migrate according to the seasons,\nso some people call Sawsbuck\nthe harbingers of spring.",
+        "They migrate according to the seasons,\nso some people call Sawsbuck\nthe harbingers of spring."
+    ],
     "base_stats": {
         "hp": 80,
         "attack": 100,

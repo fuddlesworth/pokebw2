@@ -3,6 +3,12 @@
     "name": "Genesect",
     "category": "Paleozoic Pokémon",
     "pokedex_entry": "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+    "form_pokedex_entries": [
+        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back.",
+        "This Pokémon existed 300 million years\nago. Team Plasma altered it and\nattached a cannon to its back."
+    ],
     "base_stats": {
         "hp": 71,
         "attack": 120,

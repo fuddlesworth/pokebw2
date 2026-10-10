@@ -145,6 +145,19 @@ def trainer_messages() -> list[str]:
     return [to_line(message["text"]) for name in message_order() for message in trainers()[name]["messages"]]
 
 
+def form_entry_lines() -> list[str]:
+    lines = []
+    for i, data in enumerate(species()):
+        entries = data.get("form_pokedex_entries", [])
+        # SPECIES_NONE has a count of 0
+        alternate_forms = max(data["forms"]["count"] - 1, 0)
+        if len(entries) != alternate_forms:
+            raise DataError(f"species {i}: form_pokedex_entries has {len(entries)} entries for {alternate_forms} "
+                            "alternate forms")
+        lines += [to_line(entry) for entry in entries]
+    return lines
+
+
 def species_lines(key: str, format_line=to_line) -> list[str]:
     return [format_line(field(data, key, f"species {i}")) for i, data in enumerate(species())]
 
@@ -157,6 +170,7 @@ SOURCES = {
                                           for data in species()[1:]],
     "species.category": lambda: species_lines("category"),
     "species.pokedex_entry": lambda: species_lines("pokedex_entry"),
+    "species.form_pokedex_entries": lambda: form_entry_lines(),
     "moves.name": lambda: [to_line(data["name"]) for data in moves()],
     "moves.name_upper": lambda: [upper(to_line(data["name"])) for data in moves()],
     "moves.description": lambda: [to_line(data["description"]) for data in moves()],

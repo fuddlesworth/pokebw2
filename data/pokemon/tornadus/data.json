@@ -3,6 +3,7 @@
     "name": "Tornadus",
     "category": "Cyclone Pokémon",
     "pokedex_entry": "In every direction it flies,\ncreating winds so powerful,\nthey blow everything away.",
+    "form_pokedex_entries": [ "In every direction it flies,\ncreating winds so powerful,\nthey blow everything away." ],
     "base_stats": {
         "hp": 79,
         "attack": 115,

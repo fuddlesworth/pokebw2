@@ -3,6 +3,10 @@
     "name": "Wormadam",
     "category": "Bagworm Pokémon",
     "pokedex_entry": "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
+    "form_pokedex_entries": [
+        "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations.",
+        "When evolving, its body takes in\nsurrounding materials. As a result,\nthere are many body variations."
+    ],
     "base_stats": {
         "hp": 60,
         "attack": 59,

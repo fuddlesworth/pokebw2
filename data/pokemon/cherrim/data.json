@@ -3,6 +3,7 @@
     "name": "Cherrim",
     "category": "Blossom Pokémon",
     "pokedex_entry": "If it senses strong sunlight, it\nopens its folded petals to absorb\nthe sun's rays with its whole body.",
+    "form_pokedex_entries": [ "If it senses strong sunlight, it\nopens its folded petals to absorb\nthe sun's rays with its whole body." ],
     "base_stats": {
         "hp": 70,
         "attack": 60,

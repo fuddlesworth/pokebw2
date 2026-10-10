@@ -3,6 +3,10 @@
     "name": "Burmy",
     "category": "Bagworm Pokémon",
     "pokedex_entry": "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
+    "form_pokedex_entries": [
+        "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak.",
+        "Even if it is born where there are\nno cocooning materials, it somehow\nalways ends up with a cloak."
+    ],
     "base_stats": {
         "hp": 40,
         "attack": 29,

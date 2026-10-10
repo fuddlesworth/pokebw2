@@ -3,6 +3,11 @@
     "name": "Deerling",
     "category": "Season Pokémon",
     "pokedex_entry": "Their coloring changes according to the\nseasons and can be slightly affected by\nthe temperature and humidity as well.",
+    "form_pokedex_entries": [
+        "Their coloring changes according to the\nseasons and can be slightly affected by\nthe temperature and humidity as well.",
+        "Their coloring changes according to the\nseasons and can be slightly affected by\nthe temperature and humidity as well.",
+        "Their coloring changes according to the\nseasons and can be slightly affected by\nthe temperature and humidity as well."
+    ],
     "base_stats": {
         "hp": 60,
         "attack": 60,

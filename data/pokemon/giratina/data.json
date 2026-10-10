@@ -3,6 +3,7 @@
     "name": "Giratina",
     "category": "Renegade Pokémon",
     "pokedex_entry": "It was banished for its violence.\nIt silently gazed upon the old\nworld from the Distortion World.",
+    "form_pokedex_entries": [ "It was banished for its violence.\nIt silently gazed upon the old\nworld from the Distortion World." ],
     "base_stats": {
         "hp": 150,
         "attack": 100,

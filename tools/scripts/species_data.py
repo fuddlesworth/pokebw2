@@ -186,6 +186,8 @@ def dump(files: Path, output: Path):
     text = files / "a/0/0/2"
     names, with_article, categories, entries = (message_lines(text, n) for n in
                                                 (NAMES, NAMES_WITH_ARTICLE, CATEGORIES, POKEDEX_ENTRIES))
+    # After the species' Pokédex entries, an empty one and then the alternate forms', in species order
+    form_entries = iter(entries[len(species) + 1:])
     for name_, index in species:
         data = entry(index)
         if egg_moves[index]:
@@ -198,6 +200,9 @@ def dump(files: Path, output: Path):
             species_text["name_article"] = with_article[index].removeprefix("{bd01}").split(" ")[0]
         species_text["category"] = to_json(categories[index])
         species_text["pokedex_entry"] = to_json(entries[index])
+        if data["forms"]["count"] > 1:
+            species_text["form_pokedex_entries"] = [to_json(next(form_entries))
+                                                    for _ in range(data["forms"]["count"] - 1)]
         schema = {"$schema": data.pop("$schema")}
         write(output / directory(name_) / "data.json", {**schema, **species_text, **data})
     for index in range(len(species), form_start):

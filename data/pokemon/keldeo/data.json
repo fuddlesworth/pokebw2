@@ -3,6 +3,9 @@
     "name": "Keldeo",
     "category": "Colt Pokémon",
     "pokedex_entry": "When it is resolute, its body fills\nwith power and it becomes swifter.\nIts jumps are then too fast to follow.",
+    "form_pokedex_entries": [
+        "When it is resolute, its body fills\nwith power and it becomes swifter.\nIts jumps are then too fast to follow."
+    ],
     "base_stats": {
         "hp": 91,
         "attack": 72,

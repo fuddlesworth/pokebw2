@@ -112,7 +112,7 @@ Egg and Bad Egg after the species' names:
 | `0486_species_names_upper.txt` | `\from{species.name_upper}` | The same in capitals |
 | `0483_species_names_with_article.txt` | `\from{species.name_with_article}` | The same with "a" or "an" (`name_article` where the first letter doesn't tell) |
 | `0464_species_categories.txt` | `\from{species.category}` | Each species' `category` |
-| `0442_pokedex_entries.txt` | `\from{species.pokedex_entry}` | Each species' `pokedex_entry`; the forms' entries after them stay text |
+| `0442_pokedex_entries.txt` | `\from{species.pokedex_entry}`, `\from{species.form_pokedex_entries}` | Each species' `pokedex_entry`, an empty entry, then the alternate forms' `form_pokedex_entries` in species order |
 | `0403_move_names.txt` | `\from{moves.name}` | Each move's `name` |
 | `0488_move_names_upper.txt` | `\from{moves.name_upper}` | The same in capitals |
 | `0402_btl_main.txt` | `\from{moves.description}` | Each move's `description` |
@@ -215,9 +215,10 @@ The experience tables (`a/0/1/7`) are `data/pokemon/growth_rates.csv`, a row per
 table, headed by its `GROWTH_*` constant; the two after the six rates, headed `EXTRA`, are copies of the first that
 nothing names. Both versions have the same species data.
 
-To add a species, add its constant to the end of `species.txt` and its directory with a `data.json`; to add a form
-with a record of its own, add its `form_<n>.json` and its line to `forms.json`, and count it in the species' `forms`.
-A species' name, category and Pokédex entry go into the text (see [Text](#text)); its sprites and cry aren't built
+To add a species, add its constant to the end of `species.txt` and its directory with a `data.json`; to add a form with
+a record of its own, add its `form_<n>.json` and its line to `forms.json`, and count it in the species' `forms`. A
+species' name, category and Pokédex entry, and the entries of its alternate forms (`form_pokedex_entries`, one for each
+form after the first, Unown's and Arceus' too), go into the text (see [Text](#text)); its sprites and cry aren't built
 from source yet.
 
 ## Moves

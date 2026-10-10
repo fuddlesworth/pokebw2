@@ -3,6 +3,11 @@
     "name": "Castform",
     "category": "Weather Pokémon",
     "pokedex_entry": "Temperature and weather affect its\ncellular structure, so this Pokémon\nchanges form according to the weather.",
+    "form_pokedex_entries": [
+        "Temperature and weather affect its\ncellular structure, so this Pokémon\nchanges form according to the weather.",
+        "Temperature and weather affect its\ncellular structure, so this Pokémon\nchanges form according to the weather.",
+        "Temperature and weather affect its\ncellular structure, so this Pokémon\nchanges form according to the weather."
+    ],
     "base_stats": {
         "hp": 70,
         "attack": 70,

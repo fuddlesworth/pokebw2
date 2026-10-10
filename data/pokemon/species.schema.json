@@ -22,6 +22,10 @@
         },
         "category": { "type": "string", "description": "The Pokédex category, such as \"Seed Pokémon\". Species only" },
         "pokedex_entry": { "type": "string", "description": "The Pokédex entry, with its line breaks. Species only" },
+        "form_pokedex_entries": {
+            "type": "array", "items": { "type": "string" },
+            "description": "The Pokédex entries of the species' alternate forms, one for each form after the first (forms.count - 1), including forms that only change the sprite, as Unown's. The text takes them after the species' entries with \\from{species.form_pokedex_entries}"
+        },
         "base_stats": { "$ref": "#/$defs/stats", "description": "Base stats, 0 to 255 each" },
         "types": {
             "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/type" },
