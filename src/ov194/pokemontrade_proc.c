@@ -11,6 +11,7 @@
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
 #include "gfl/dwc_rap.h"
+#include "gfl/dwc_rapcommon.h"
 #include "gfl/fade.h"
 #include "gfl/g3d.h"
 #include "gfl/graphics.h"

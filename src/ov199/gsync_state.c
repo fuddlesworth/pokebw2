@@ -14,6 +14,7 @@
 #include "dpw/nhttp_rap.h"
 #include "gfl/clact.h"
 #include "gfl/dwc_rap.h"
+#include "gfl/dwc_rapcommon.h"
 #include "gfl/heap.h"
 #include "gfl/key.h"
 #include "gfl/net.h"

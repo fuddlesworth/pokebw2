@@ -116,7 +116,7 @@ static void MysteryNet_OnNdEvent(u32 reason, u32 error);
 static void MysteryNet_SetNdDone(void);
 static u32 Mystery_ParseHex(const char *str);
 static BOOL Mystery_IsZero(const u32 *data, u32 size);
-static u32 MysteryNet_OnDwcEvent(void *work, int a1, int event);
+static u32 MysteryNet_OnDwcEvent(void *work, int a1, int event, int a3);
 
 static const MysteryHexDigit sHexDigits[] = {
     { '0', 0 },  { '1', 1 },  { '2', 2 },  { '3', 3 },  { '4', 4 },  { '5', 5 },  { '6', 6 },   { '7', 7 },
@@ -883,7 +883,7 @@ static BOOL Mystery_IsZero(const u32 *data, u32 size) {
     return TRUE;
 }
 
-static u32 MysteryNet_OnDwcEvent(void *work, int a1, int event) {
+static u32 MysteryNet_OnDwcEvent(void *work, int a1, int event, int a3) {
     MysteryNetDownload *download = work;
 
     switch (event) {
