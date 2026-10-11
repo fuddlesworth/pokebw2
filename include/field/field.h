@@ -254,7 +254,6 @@ void ShutdownFollowWork(GameData *gameData);
 BOOL func_ov011_02154e70(GameData *gameData, u32 a1);
 void func_ov012_02162f44(GameData *gameData);
 void func_ov012_021683f4(GameSystem *gsys, u16 zoneId);
-void func_ov028_02170ec8(GameSystem *gsys);
 void func_ov036_0219ad24(FieldPlayer *player, RailPosition *pos);
 void func_ov036_021a2398(EncountSystem *encount, u32 a1);
 
@@ -317,16 +316,6 @@ void *func_ov034_0217b768(HeapID heapId);
 void func_ov034_0217b794(void *work);
 void func_ov034_0217b7bc(void *work);
 void func_ov034_0217b7d0(void *work);
-// Overlay 28
-void func_ov028_02170f28(GameCommSys *comm, Field *field);
-// Overlay 28's GameCommSys callbacks for GAME_COMM_NO_UNION (see game_comm.c)
-void *func_ov028_021703d0(u32 *seq, void *param);
-BOOL func_ov028_021703fc(u32 *seq, void *param, void *work);
-BOOL func_ov028_02170430(u32 *seq, void *param, void *work);
-BOOL func_ov028_0217046c(u32 *seq, void *param, void *work);
-void func_ov028_021705cc(u32 *seq, void *param, void *work);
-void func_ov028_02170ffc(void *param, void *work, Field *field);
-void func_ov028_0217105c(void *param, void *work, Field *field);
 BOOL FieldmapProc_Init(GameProc *proc, int *seq, void *param, void *work);
 BOOL FieldmapProc_Update(GameProc *proc, int *seq, void *param, void *work);
 BOOL FieldmapProc_End(GameProc *proc, int *seq, void *param, void *work);

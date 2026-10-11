@@ -7,7 +7,7 @@
 #include "app/gsync/pdwacc_disp.h"
 #include "app/gsync/pdwacc_message.h"
 #include "constants/sound.h"
-#include "dpw/nhttp_rap.h"
+#include "gfl/nhttp_rap.h"
 #include "gfl/dwc_rap.h"
 #include "gfl/dwc_rapcommon.h"
 #include "gfl/heap.h"
@@ -192,7 +192,7 @@ static void PdwAcc_StateError(PdwAccWork *wk) {
     u32 msgId = wk->error + 11;
 
     if (wk->http != NULL) {
-        func_ov189_0219d124(wk->http);
+        NHttpRap_EndRequest(wk->http);
     }
     if (wk->error == PDWACC_ERROR_SERVICE_UNAVAILABLE) {
         msgId = 22;
@@ -246,8 +246,8 @@ static void PdwAcc_StateStart(PdwAccWork *wk) {
 
 static void PdwAcc_StateWaitCreate(PdwAccWork *wk) {
     if (func_02042788()) {
-        if (!PdwAcc_CheckHttpStatus(wk, func_ov189_0219d3a8(wk->http)) && func_ov189_0219d140(wk->http) == 0) {
-            u32 *response = func_ov189_0219d1a4(wk->http);
+        if (!PdwAcc_CheckHttpStatus(wk, NHttpRap_GetStatus(wk->http)) && NHttpRap_Poll(wk->http) == 0) {
+            u32 *response = NHttpRap_GetAnswer(wk->http);
 
             PdwAccMessage_ClearMessage(wk->msg);
             if (*response == 2) {
@@ -266,11 +266,11 @@ static void PdwAcc_StateCreate(PdwAccWork *wk) {
     u32 size;
 
     if (func_02042788()) {
-        if (func_ov189_0219d010(PDWACC_REQUEST_CREATE, wk->http)) {
+        if (NHttpRap_SendRequest(PDWACC_REQUEST_CREATE, wk->http)) {
             void *data = func_02007454(wk->save, &size);
 
-            func_ov189_021a0854(func_ov189_0219d0ec(wk->http), data, 0x80000);
-            if (func_ov189_0219d0f8(wk->http) == 0) {
+            func_ov189_021a0854(NHttpRap_GetConnection(wk->http), data, 0x80000);
+            if (NHttpRap_StartRequest(wk->http) == 0) {
                 PdwAcc_ChangeState(wk, PdwAcc_StateWaitCreate, 502);
             }
         }
@@ -296,8 +296,8 @@ static void PdwAcc_OnDisconnect(void *work, int a1, int code, int error) {
     PdwAccWork *wk = work;
 
     if (wk->http != NULL) {
-        func_ov189_0219d124(wk->http);
-        func_ov189_0219d1f0(wk->http);
+        NHttpRap_EndRequest(wk->http);
+        NHttpRap_Destroy(wk->http);
         wk->http = NULL;
     }
 }
@@ -314,7 +314,7 @@ static BOOL PdwAcc_ProcInit(GameProc *proc, u32 *state, void *param, void *work)
     wk->gameData = pdwParam->gameData;
     wk->profileId = func_02008bdc(GetGameDataPlayerInfo(pdwParam->gameData));
     if (func_02042788()) {
-        wk->http = func_ov189_0219d1b8(pdwParam->heapId, wk->profileId, pdwParam->loginBuffer);
+        wk->http = NHttpRap_Create(pdwParam->heapId, wk->profileId, pdwParam->loginBuffer);
         DWCRap_SetErrorFunc(PdwAcc_OnDisconnect, wk);
     }
     wk->disp = PdwAccDisp_Create(wk->heapId);
@@ -352,7 +352,7 @@ static BOOL PdwAcc_ProcMain(GameProc *proc, u32 *state, void *param, void *work)
     PdwAccMessage_Main(wk->msg);
     if (GFL_WipeIsFinished()) {
         if (GFL_NetErrCheck()) {
-            func_ov189_0219d124(wk->http);
+            NHttpRap_EndRequest(wk->http);
             if (wk->saving) {
                 func_02017884(wk->gameData);
                 wk->saving = FALSE;
@@ -384,7 +384,7 @@ static BOOL PdwAcc_ProcExit(GameProc *proc, u32 *state, void *param, void *work)
         GFL_HeapFree(wk->unk24);
     }
     if (wk->http != NULL) {
-        func_ov189_0219d1f0(wk->http);
+        NHttpRap_Destroy(wk->http);
         wk->http = NULL;
     }
     if (func_02042788()) {

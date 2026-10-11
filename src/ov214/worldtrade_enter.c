@@ -2,6 +2,7 @@
 #include "app/wifi_login.h"
 #include "constants/sound.h"
 #include "dpw/dpw_tr.h"
+#include "gfl/dpw_profile.h"
 #include "dwc/dwc.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"
@@ -230,7 +231,7 @@ static int Enter_ServerResult(WorldTradeWork *wk) {
 }
 
 static int Enter_ProfileStart(WorldTradeWork *wk) {
-    func_ov189_0219d504(&wk->dcProfile, wk->param->mystatus);
+    DpwProfile_Fill(&wk->dcProfile, wk->param->mystatus);
     func_ov189_021a7efc(&wk->dcProfile, &wk->dcProfileResult);
     wk->timeoutCount = 0;
     return TRUE;

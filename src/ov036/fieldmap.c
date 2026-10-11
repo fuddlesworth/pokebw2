@@ -44,6 +44,7 @@
 #include "field/resort_mapcreate.h"
 #include "field/scrcmd_ochiba.h"
 #include "field/subscreen.h"
+#include "field/union_main.h"
 #include "field/wbt.h"
 #include "field/zone.h"
 #include "field/zone_change.h"
@@ -464,7 +465,7 @@ u32 FieldRoutine_Run(GameSystem *gsys, Field *field) {
     FieldSkillMapEff_Update(field->skillMapEff);
     FieldPlayer_SyncState(field->player);
     if (GetZoneIsUnionRoom(field->zoneId) == TRUE || IsZone150Or151(field->zoneId) == TRUE) {
-        func_ov028_02170f28(GSYS_GetGameCommSystem(gsys), field);
+        UnionMain_Update(GSYS_GetGameCommSystem(gsys), field);
     }
     FieldSubscreen_Update(field->subscreen);
     if (field->actorSystem != NULL) {

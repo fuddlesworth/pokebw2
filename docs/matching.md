@@ -1073,7 +1073,10 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   identical literal is shared from its first use. An assert's text is the expression as written, spacing included, so
   `GFL_ASSERT(a < (B*C))` needs the game's spacing (`delivery_beacon.c` turns clang-format off for it). In
   `delivery_beacon.c` the game has the asserts' `""` before the file name of an earlier allocation, which no source
-  order tried reproduces: a folded assert or an unused inline creates no literal.
+  order tried reproduces: a folded assert or an unused inline creates no literal. Overlay 28 shows more of it: in
+  `union_main.c` one `""` serves the first two functions' asserts, a second the next twelve, a third the rest, and
+  `colosseum.c` has two, each shared across functions, where MWCC gives every file one. What starts a new one is not
+  known yet; `GFL_ASSERT(0)` stringifies to `"0"`, which is not one of them.
 - String literals are created during code generation, for the references that survive optimization, so they come
   after all of a file's file-scope data, and dead code, unused locals and folded asserts create none. A literal
   laid out earlier than any surviving reference to it points to code the original linker dead-stripped. A file name
