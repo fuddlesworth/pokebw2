@@ -17,10 +17,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from configure import (CC_FLAGS, GENERATED_INCLUDE_DIR, INCLUDE_DIRS, MWCC_VERSION, VERSIONS,  # noqa: E402
+from configure import (CC_FLAGS, GENERATED_INCLUDE_DIR, INCLUDE_DIRS, MWCC_VERSION, TEXT_ARCHIVES, VERSIONS,  # noqa: E402
                        download_tools, library_of)
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.data.gen_constants import generate  # noqa: E402
+from tools.text import pms_words, text_ids  # noqa: E402
 
 TOOLS = ROOT / "tools"
 
@@ -46,15 +47,22 @@ def compile_file(source: Path, version: str, out_dir: Path) -> tuple[Path, str] 
     return None
 
 
+def write_header(header: Path, text: str):
+    header.parent.mkdir(parents=True, exist_ok=True)
+    if not header.exists() or header.read_text() != text:
+        header.write_text(text)
+
+
 def generate_constants():
-    """Writes the constant headers of data/constants/, as ninja does, since the sources include them."""
-    out_dir = ROOT / GENERATED_INCLUDE_DIR / "constants"
-    out_dir.mkdir(parents=True, exist_ok=True)
+    """Writes the headers that ninja generates, since the sources include them: the constants of data/constants/,
+    each message file's message IDs and the easy chat words."""
+    out_dir = ROOT / GENERATED_INCLUDE_DIR
     for source in sorted((ROOT / "data" / "constants").glob("*.txt")):
-        header = out_dir / source.with_suffix(".h").name
-        text = generate(source)
-        if not header.exists() or header.read_text() != text:
-            header.write_text(text)
+        write_header(out_dir / "constants" / source.with_suffix(".h").name, generate(source))
+    for source_dir in TEXT_ARCHIVES.values():
+        for source in sorted((ROOT / source_dir).glob("*.txt")):
+            write_header(out_dir / "text" / source.parent.name / source.with_suffix(".h").name, text_ids.header(source))
+    write_header(out_dir / "constants" / "pms_words.h", pms_words.header())
 
 
 def main():
