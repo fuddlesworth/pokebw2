@@ -1015,7 +1015,12 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   `static GXRgb g_FieldEdgeColorTable[8];`, and the overlay 36 gap function at `0x0219a044`, which copies into a
   12-byte object and then tests one of its bytes, matches the same way only with that object `static`.
 - The file's `.data` objects take part in MWCC's size sort that orders `.rodata`: `btlv_mcss.c`'s 3-byte idle-wait
-  array had to be counted before `rodata_order.py` predicted the layout.
+  array had to be counted before `rodata_order.py` predicted the layout. So do its `.bss` statics: the object's
+  symbol table lists them interleaved with the `.rodata` objects by size, and moving a table moves the statics too.
+  `rodata_order.py` doesn't predict such a file, so `btl_client.c` was solved by compiling variants: each table at
+  file scope or inside its one function, and each static at the top, before its first function or inside it. Its
+  `.rodata` and `.bss` are the original's with four tables inside their functions, `sXItems` and `sCureItems` at
+  file scope before theirs, and `sSelectSeq` declared before the first function that uses it.
 - A function-local static of a function MWCC doesn't emit is dropped, while a global read only by an unemitted
   static function stays in the shared section. Data that outlived code the original link dead-stripped can't be
   reproduced under `-nodead`: wipe_sub.c's `.data` and `.rodata` hold the parameters of about 31 handlers the ROM

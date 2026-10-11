@@ -353,11 +353,6 @@ the original code is linked until they match. The differences are the same in bo
 
 ## Matching, but not linkable as is
 
-- `src/ov167/btl_client.c`'s `.rodata` has the original's sections and sizes, but in its shared section the two 8-byte
-  message tables (`sEscapeMessages` and `sTrainerHintMsgs`) and the two 20-byte ones (`sAudienceLeave` and
-  `sWeatherStartTable`) come out swapped. Moving the top-level tables doesn't change it, so the size sort also sees the
-  function-local statics in an order `rodata_order.py` doesn't model yet. Its `.bss` matches once its seven statics are
-  declared in the order the file has them.
 - `src/ov207/p_sta_sub.c`'s `.rodata` can't be completed yet, for two reasons. It starts with an 8-byte object at
   `0x021bafc0` / `0x021bb000` (`7f 00 00 18 00 90 01 00`, perhaps a touch rectangle) that nothing references and the C
   doesn't define. And no declaration order found by a `rodata_order.py` hill climb over its 24 objects (the
