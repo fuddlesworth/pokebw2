@@ -79,6 +79,17 @@ Black 2 is an NDS/DSi hybrid built with the TWL-SDK, which differs from DS-only 
 - Overlay 169 runs from VRAM, at `0x06898020`. Its code is analyzed like any other overlay's since dsd v0.12.1-dsi.3;
   before, dsd took a branch outside main memory for data and had all of it as `.rodata`.
 
+## Long-branch veneers
+
+A call out of `bl` range, such as from an overlay to overlay 169 or the LTD module, goes through a veneer the linker
+adds after the calling function. The original shares main's veneers among their callers, but gives every call in an
+overlay its own: `HandlerRapidSpin` (`src/ov167/move_handlers.c`) calls `func_ov169_06898cf4` three times and is
+followed by three identical veneers. `mwldarm` does this only for a file listed after its `-overlaygroup` and
+`-overlay` options, which must be how the SDK's response file places each overlay's objects; any other file shares one
+veneer per target with every call in range, even across overlays at the same address. dsd since v0.12.1-dsi.4 writes
+`objects.txt` this way, while the LCF still places the objects. Before, a file that called the same far target twice,
+such as `camera_system.c`, couldn't be completed.
+
 ## Shifting
 
 A mod that changes code sizes moves everything after the change, so it only works if every pointer to code or data
@@ -100,7 +111,4 @@ addresses, such as `0x02020100`. The words that point at no symbol (`--all`) are
 
 ## Known gaps
 
-dsd's analysis has no known gaps left in this ROM. The calls from overlays 167, 11 and 257 into overlay 169 and the LTD
-module can't link as the original's yet, but that is the linker's doing: the original has a veneer for every call, and
-`mwldarm` makes one per target (see
-[Matching, but not linkable as is](nonmatching-functions.md#matching-but-not-linkable-as-is)).
+dsd's analysis and linking have no known gaps left in this ROM.
