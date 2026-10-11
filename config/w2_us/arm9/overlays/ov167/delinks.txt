@@ -61,6 +61,7 @@ src/ov167/ability_handlers.c:
     .rodata     start:0x021d7664 end:0x021d8428
 
 src/ov167/item_handlers.c:
+    complete
     .text       start:0x021c272c end:0x021c5b44
     .rodata     start:0x021d8428 end:0x021d94c8
 

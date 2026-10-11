@@ -349,17 +349,18 @@ the original code is linked until they match. The differences are the same in bo
   the original calls the AEABI double helpers directly.
 - All of `src/ov167/ability_handlers.c`'s functions match in both versions, but its `.rodata` (`0x021d7624` to
   `0x021d83e8`, the event handler tables) isn't written yet: the functions still name the tables through `extern`s
-  in `battle/btl_ability.h`, as `item_handlers.c` and `move_handlers.c` no longer do. Its tables will then have
-  the ordering problem of theirs (below).
+  in `battle/btl_ability.h`, as `item_handlers.c` and `move_handlers.c` no longer do.
 - `src/ov167/btl_client.c`'s `.rodata` has the original's sections and sizes, but in its shared section the two 8-byte
   message tables (`sEscapeMessages` and `sTrainerHintMsgs`) and the two 20-byte ones (`sAudienceLeave` and
   `sWeatherStartTable`) come out swapped. Moving the top-level tables doesn't change it, so the size sort also sees the
   function-local statics in an order `rodata_order.py` doesn't model yet. Its `.bss` matches once its seven statics are
   declared in the order the file has them.
-- `src/ov167/item_handlers.c` and `src/ov167/move_handlers.c` match in both versions except `HandlerChatter`, and
-  link with the original's veneers since dsd v0.12.1-dsi.4 (see
-  [Long-branch veneers](configs.md#long-branch-veneers)). Their `.rodata` is the original's size, with the lookup
-  tables in sections of their own, but the many handler tables of equal size come out in another order.
+- `src/ov167/move_handlers.c` matches in both versions except `HandlerChatter`, and links with the original's
+  veneers since dsd v0.12.1-dsi.4 (see [Long-branch veneers](configs.md#long-branch-veneers)). Its `.rodata` is the
+  original's size, with the lookup tables in sections of their own, but the many handler tables of equal size come
+  out in another order. `item_handlers.c` had the same problem, solved by defining its table of `EventAdd` functions
+  at the top of the file (see [Data and sections](matching.md#data-and-sections)), and `sMoveEventAddTable` is
+  defined at the end likewise.
 - `src/ov207/p_sta_sub.c`'s `.rodata` can't be completed yet, for two reasons. It starts with an 8-byte object at
   `0x021bafc0` / `0x021bb000` (`7f 00 00 18 00 90 01 00`, perhaps a touch rectangle) that nothing references and the C
   doesn't define. And no declaration order found by a `rodata_order.py` hill climb over its 24 objects (the

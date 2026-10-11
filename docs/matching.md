@@ -1027,6 +1027,12 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
 - A `static const` table declared inside the one function that reads it is listed where that function is, among
   the local initializers, rather than where file-scope data would be. `pokemontrade_nego.c` lays out its menus' item
   lists in the game's order only with its table of blocking fields declared inside `func_ov194_021bbe60`.
+- A forward declaration (`static const ItemEventAddEntry sItemEventAddTable[];`) doesn't list an object: it is
+  listed where it is defined. Even a table of 64 bytes or more, with a section of its own, takes part in the sort, so
+  where it is defined moves the equal-size objects around it. `item_handlers.c` defined its 1376-byte table of
+  `EventAdd` functions at the end of the file, after a forward declaration, and 133 of its 171 handler tables came out
+  in another order. Defined after the prototypes at the top, where Game Freak's source evidently had it, all of them
+  are the original's.
 - A struct that is copied from `.rodata` and then has a few fields overwritten with computed values is one local
   initializer with the computed values in its braces. Its template gets a section of its own, while a `static const`
   template assigned to the local compiles to the same code but joins the shared section, so only the module check
