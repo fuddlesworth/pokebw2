@@ -178,7 +178,7 @@ typedef struct {
 
 struct PokemonTradeWork {
     // The HTTP connection of a trade over Wi-Fi
-    NhttpRapWork *unk0;
+    NHttpRap *unk0;
     u8 unk4[2];
     u8 unk6[0x2];
     PokemonTradeParam *param;

@@ -2976,8 +2976,8 @@ static BOOL PokemonTrade_ProcMain(GameProc *proc, u32 *state, void *param, void 
             func_02011d04(0x29);
         }
         if (wk->unk0 != NULL) {
-            func_ov189_0219d124(wk->unk0);
-            func_ov189_0219d1f0(wk->unk0);
+            NHttpRap_EndRequest(wk->unk0);
+            NHttpRap_Destroy(wk->unk0);
             wk->unk0 = NULL;
             DWCRap_SetErrorFunc(NULL, NULL);
             DWCRapCommon_EndSubHeap();

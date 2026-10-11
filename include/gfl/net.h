@@ -240,7 +240,8 @@ void func_020429e0(u8 *mac, int index);
 void func_020429e8(void *a0);
 void func_020429f0(void);
 void func_020429f8(void (*callback)(void *work));
-void func_02042a10(void);
+// The argument is unused
+void func_02042a10(int unused);
 void func_02042a1c(int a0);
 void func_02042a30(int mode, int a1, const u8 *mac);
 BOOL func_02042a38(void);
@@ -262,13 +263,14 @@ BOOL func_02042bc4(void);
 BOOL func_02042bd8(NetHandle *handle);
 // Send a command to every machine, or to one; the game's commands wait for the negotiation
 BOOL func_02042be8(NetHandle *handle, int command, u16 size, const void *data);
-BOOL func_02042c18(NetHandle *handle, u32 sendID, u16 command, u32 size, const void *data, u32 a5, BOOL a6,
+BOOL func_02042c18(NetHandle *handle, u8 sendID, u16 command, u32 size, const void *data, u32 a5, BOOL a6,
                    BOOL noCopy);
 BOOL func_02042c9c(NetHandle *handle, int dest, u16 command, int size, const void *data, u32 a5, BOOL a6, BOOL noCopy);
 BOOL func_02042cfc(void);
 void func_02042d04(NetHandle *handle, u16 timing);
 BOOL func_02042d0c(NetHandle *handle, u16 timing);
-void func_02042d14(u8 gameCommandBase);
+// The second argument is unused
+void func_02042d14(u8 gameCommandBase, u8 unused);
 u8 func_02042d34(void);
 // Whether the net game command base is one of the battle kinds
 BOOL func_02011844(void);

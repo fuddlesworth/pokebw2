@@ -21,6 +21,7 @@
 #include "field/intrude_work.h"
 #include "field/player_state.h"
 #include "field/shaymin_form.h"
+#include "field/union_main.h"
 #include "field/zone.h"
 #include "field/zone_change.h"
 #include "gfl/arc.h"
@@ -986,7 +987,7 @@ GameEventReturnCode EventUnionRoomWarp_Callback(GameEvent *event, u32 *state, vo
         (*state)++;
         break;
     case 2:
-        func_ov028_02170ec8(gsys);
+        UnionMain_Boot(gsys);
         (*state)++;
         break;
     case 3:

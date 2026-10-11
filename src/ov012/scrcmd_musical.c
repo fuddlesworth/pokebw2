@@ -55,7 +55,7 @@ typedef struct {
 
 void func_ov012_02158bfc(ScriptWork *work, GameData *gameData);
 void func_ov012_02158c40(MusicalCommWork *work, GameData *gameData);
-void *func_ov012_02158c6c(MusicalCommWork *work, GameSystem *gsys, GameCommSys *comm, u16 value);
+void func_ov012_02158c6c(MusicalCommWork *work, GameSystem *gsys, GameCommSys *comm, u16 value);
 void func_ov012_02158c78(MusicalCommWork *work);
 GameEventReturnCode func_ov012_02158c8c(GameEvent *event, u32 *state, void *data);
 GameEventReturnCode func_ov012_02158d24(GameEvent *event, u32 *state, void *data);
@@ -694,8 +694,8 @@ void func_ov012_02158c40(MusicalCommWork *work, GameData *gameData) {
     func_020179d4(gameData, NULL);
 }
 
-void *func_ov012_02158c6c(MusicalCommWork *work, GameSystem *gsys, GameCommSys *comm, u16 value) {
-    return func_ov211_021ef1e0(HEAPID_GAMEEVENT, gsys, comm, value);
+void func_ov012_02158c6c(MusicalCommWork *work, GameSystem *gsys, GameCommSys *comm, u16 value) {
+    func_ov211_021ef1e0(HEAPID_GAMEEVENT, gsys, comm, value);
 }
 
 void func_ov012_02158c78(MusicalCommWork *work) {

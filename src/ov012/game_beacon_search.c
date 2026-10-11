@@ -214,7 +214,7 @@ static BeaconSearchFound *func_ov012_0215f6c8(BeaconSearchWork *work, int *index
         return NULL;
     }
     if (work->state == 1) {
-        func_02042a10();
+        func_02042a10(0);
         work->state = 2;
         return NULL;
     }

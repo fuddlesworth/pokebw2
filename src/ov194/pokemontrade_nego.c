@@ -1242,8 +1242,8 @@ static void func_ov194_021bdc50(PokemonTradeWork *wk) {
 static void func_ov194_021bdca4(void *work, int a1, int code, int error) {
     PokemonTradeWork *wk = work;
     if (wk->unk0 != NULL) {
-        func_ov189_0219d124(wk->unk0);
-        func_ov189_0219d1f0(wk->unk0);
+        NHttpRap_EndRequest(wk->unk0);
+        NHttpRap_Destroy(wk->unk0);
         wk->unk0 = NULL;
         DWCRapCommon_EndSubHeap();
     }
@@ -1254,16 +1254,16 @@ static void func_ov194_021bdcc4(PokemonTradeWork *wk) {
     int i;
     u8 count = 0;
     void *response;
-    int status = func_ov189_0219d3a8(wk->unk0);
-    int result = func_ov189_0219d140(wk->unk0);
+    int status = NHttpRap_GetStatus(wk->unk0);
+    int result = NHttpRap_Poll(wk->unk0);
     if (result == 0 && status == 200) {
-        response = func_ov189_0219d1a4(wk->unk0);
-        wk->checkResult = func_ov189_0219d3e4(response);
+        response = NHttpRap_GetAnswer(wk->unk0);
+        wk->checkResult = NHttpRap_GetCheckStatus(response);
         if (wk->checkResult == 1 && wk->unk109A == 0) {
             for (i = 0; i < 3; i++) {
                 if (func_ov194_021b774c((u8 *)wk->negoPkm[1][i])) {
                     PartyPkm *pkm = wk->negoPkm[1][i];
-                    if (func_ov189_0219d3e8(response, count)) {
+                    if (NHttpRap_GetCheckResult(response, count)) {
                         u32 item = PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
                         MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, wk->heapId);
                         StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, MSG_INVALID_PKM_TRAINER);
@@ -1307,12 +1307,12 @@ static void func_ov194_021bdcc4(PokemonTradeWork *wk) {
             break;
         }
         wk->checkResult = error;
-        func_ov189_0219d124(wk->unk0);
+        NHttpRap_EndRequest(wk->unk0);
         PokemonTrade_SetState(wk, func_ov194_021bdc50);
     }
     if (wk->unk0 != NULL) {
-        func_ov189_0219d384(wk->unk0);
-        func_ov189_0219d1f0(wk->unk0);
+        NHttpRap_FreePostData(wk->unk0);
+        NHttpRap_Destroy(wk->unk0);
         wk->unk0 = NULL;
         DWCRapCommon_EndSubHeap();
         DWCRap_SetErrorFunc(NULL, NULL);
@@ -1324,21 +1324,21 @@ static void func_ov194_021bde60(PokemonTradeWork *wk) {
     int i;
     int count = 0;
     DWCRapCommon_SetSubHeap(13, 0x10000, wk->heapId);
-    wk->unk0 = func_ov189_0219d1b8(wk->heapId, func_02008bdc(wk->myInfo), wk->param->buffer);
+    wk->unk0 = NHttpRap_Create(wk->heapId, func_02008bdc(wk->myInfo), wk->param->buffer);
     DWCRap_SetErrorFunc(func_ov194_021bdca4, wk);
     for (i = 0; i < 3; i++) {
         if (func_ov194_021b774c((u8 *)wk->negoPkm[1][i])) {
             count++;
         }
     }
-    func_ov189_0219d258(wk->unk0, wk->heapId, PokeParty_GetPkmRawSize() * count, 2);
+    NHttpRap_BeginPost(wk->unk0, wk->heapId, PokeParty_GetPkmRawSize() * count, 2);
     for (i = 0; i < 3; i++) {
         if (func_ov194_021b774c((u8 *)wk->negoPkm[1][i])) {
-            func_ov189_0219d290(wk->unk0, wk->negoPkm[1][i], PokeParty_GetPkmRawSize());
+            NHttpRap_AddPostData(wk->unk0, wk->negoPkm[1][i], PokeParty_GetPkmRawSize());
         }
     }
-    func_ov189_0219d2b0(wk->unk0);
-    func_ov189_0219d0f8(wk->unk0);
+    NHttpRap_SendValidate(wk->unk0);
+    NHttpRap_StartRequest(wk->unk0);
     PokemonTrade_SetState(wk, func_ov194_021bdcc4);
 }
 

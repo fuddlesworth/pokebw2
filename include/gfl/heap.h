@@ -37,6 +37,8 @@ enum {
     HEAPID_MUSICAL_DRESSUP = 0x2d,
     HEAPID_MUSICAL = 0x2e,
     HEAPID_DEBUG_GENDER_SELECT = 0x39,
+    // The Union Room's, a child of HEAPID_GAMEEVENT (union_comm.c)
+    HEAPID_UNION = 0x41,
     // Not from swan: the summary screen's heap
     HEAPID_P_STATUS = 0x42,
     // Not from swan: the Global Trade Station's heap
