@@ -57,14 +57,17 @@ src/ov167/battle_action.c:
     .text       start:0x021bdb38 end:0x021bdcec
 
 src/ov167/ability_handlers.c:
+    complete
     .text       start:0x021bdcec end:0x021c272c
     .rodata     start:0x021d7664 end:0x021d8428
 
 src/ov167/item_handlers.c:
+    complete
     .text       start:0x021c272c end:0x021c5b44
     .rodata     start:0x021d8428 end:0x021d94c8
 
 src/ov167/move_handlers.c:
+    complete
     .text       start:0x021c5b44 end:0x021cde78
     .rodata     start:0x021d94c8 end:0x021da904
 

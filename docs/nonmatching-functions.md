@@ -203,7 +203,7 @@ the original code is linked until they match. The differences are the same in bo
 | `src/ov167/btl_main.c` | `func_ov167_0219cd3c` | `0x0219cd3c` / `0x0219cd7c` | Same size, 258 bytes: registers and stack slots. The original keeps the first loop's counter in `r4` and the mon ID in `r5`, where ours swaps them, puts its slots 4 bytes lower, and keeps `monId * 4` on the stack (`sp+0x2c`) in the second loop, where ours keeps it in `r6`. A pointer to the client's `BattleParty` and one `s32 i` for both loops give the original's size (with `u32 i` and `u32 j` ours was 4 bytes larger); the declaration orders were tried. |
 | `src/ov167/btl_main.c` | `func_ov167_0219d188` | `0x0219d188` / `0x0219d1c8` | Same size, 7 bytes: ours stores `pos` to `[sp]` at entry, the original after copying it to r4 and setting up the call's argument, just before the call. All declaration orders (with `mainModule` last, 10 bytes to 7), loop forms (`pos--`, `i--`, `for`), an inline helper, an inner block and an `int pos` (worse) tried. |
 | `src/ov167/btl_main.c` | `func_ov167_0219dc10` | `0x0219dc10` / `0x0219dc50` | Same size, 20 bytes: stack slots only. The value the original keeps at `sp+0x18` is at `sp+4` in ours, which moves the four slots between them up by 4. Clearing `maxHP` before `hp` gives the original's size and its truncations of the client index (a `u32` index was tried). |
-| `src/ov167/btl_pokeparam.c` | `CopyBatonPassParams` | `0x021bbdc8` / `0x021bbe08` | The original keeps the condition's offset (`i * 4`) in `r7` across the call to overlay 169, and the flag constants in `r4`; ours recomputes the offset. Nested `if`s, `CheckCondition` and an `s32` index don't change it. The call goes through a linker veneer to overlay 169, so like the other files that call it, the file can't link as the original until the build gives every call its own veneer (below). |
+| `src/ov167/btl_pokeparam.c` | `CopyBatonPassParams` | `0x021bbdc8` / `0x021bbe08` | The original keeps the condition's offset (`i * 4`) in `r7` across the call to overlay 169, and the flag constants in `r4`; ours recomputes the offset. Nested `if`s, `CheckCondition` and an `s32` index don't change it. |
 | `src/ov167/btl_pokeparam.c` | `func_ov167_021bb864` | `0x021bb864` / `0x021bb8a4` | Four bytes larger in the original: it keeps the address of the conditions array on the stack and the `cured` pointer in a register, ours the other way round, in a frame of `0x18` bytes against `0x14`. A `u32` count of turns, a local pointer to the conditions and the declaration orders tried. |
 | `src/ov167/btl_server_flow.c` | `func_ov167_0219f588` | `0x0219f588` / `0x0219f5c8` | `0xd4` bytes versus `0xd2`: the original keeps the `u8` result in the first stack slot and writes it between the two queue position stores without reloading it; ours reloads it before the second store. Declaration orders, a `BOOL` result, a local for the queue and `BtlServerCmdQueue_Init` tried. |
 | `src/ov167/btl_server_flow.c` | `func_ov167_0219fb3c` | `0x0219fb3c` / `0x0219fb7c` | `0x124` bytes versus `0x138`: the original keeps the index and the second state on the stack and the entry in `r6`, where ours keeps them in registers. The packed sort key matches in shape; every order of its four fields, an entry pointer and separate state variables tried. |
@@ -229,8 +229,6 @@ the original code is linked until they match. The differences are the same in bo
 | `src/ov167/btl_rec.c` | `func_ov167_021d46a4` | `0x021d46a4` / `0x021d46e4` | Same size, 104 bytes: before the loop, ours computes `reader + 0x18` before `clientId << 6`, so their slots (`sp+0x18` and `sp+0x1c`) are swapped, and the type 3 branch recomputes the client's actions in `r7` and `r4`, where the original reuses the two hoisted slots, which makes ours 2 bytes shorter there and shifts the tail. A pointer to the client's position (`&reader->pos[clientId]`) fixed the registers of the error test and of the position compares. Tried an actions pointer local, an inline accessor, a `switch`, reversed compares, `int` and `u32` `clientId`, function-scope locals and `result` set before the copy. As diagnostics, `#pragma opt_propagation off` gives the slot order, and with `pos = reader->pos`, `#pragma opt_strength_reduction off` leaves only the last position compare. |
 | `src/ov167/btl_field.c` | `func_ov167_021d5c60` | `0x021d5c60` / `0x021d5ca0` | 2 bytes shorter: the original spills `field + effect * 4` around the count's decrement and reloads the spilled `effect * 4`; ours recomputes them, which shifts the registers by one. Declaration orders and types, a pointer parameter, `--` against `-= 1`, an inline for the event's removal and a `while` for the shift don't move it. |
 | `src/ov167/handler_common.c` | `func_ov167_021cdf08` | `0x021cdf08` / `0x021cdf48` | 2 bytes shorter: after `cmp r0, #1` the original has `beq` to the next instruction and `bne` past it, a branch pair no spelling gives: one condition, nested ifs, a switch with and without `default` or `case 0`, a `u8` local, a flag, an inline or a conditional expression. |
-| `src/ov167/move_handlers.c` | `HandlerChatter` | `0x021c6adc` / `0x021c6b1c` | 4 bytes shorter: the original keeps the confusion status, 6, in `r5` and copies it to each use, as MWCC does for a local of an enum type, while a `u32` local folds into a `movs #6` at each. `CONDITION_*` are `#define`s that the `.inc` files share, and `u8`, `u16`, `s32`, `int` and other declaration orders change nothing. |
-| `src/ov167/move_handlers.c` | `HandlerSolarBeamPower` | `0x021cbcb8` / `0x021cbcf8` | 4 bytes: the original tests `GetWeather`'s result for 2 to 4 with no narrowing, which a `u8` return gives, but `GetWeather` returns `ServerEvent_GetWeather`'s `u32` and `btl_server_flow.c`'s callers need that; a `u8` local narrows, a `u32` local is 4 bytes shorter. |
 | `src/ov167/btlv_core.c` | `BattleClientCmd_StartItemSelect` | `0x021cf5ac` / `0x021cf5ec` | `0x170` bytes versus `0x16e`: the original leaves the bag kind at 0 when no rule applies, sharing one `BtlSetup_IsBattleType(0x10000)` check between the battle-type-0 path and the others; ours returns 0 from the helper, or tests the kind again before that check. Nested `if`s (which duplicate the check), one read of the battle type, a `kind == 0` guard and the early-return helper tried. |
 | `src/ov167/pokewood_cutin.c` | `func_ov167_021d5fe8` | `0x021d5fe8` / `0x021d6028` | Registers only (10 bytes, same size; the other 47 functions of the file match): the original keeps the hoisted `rules->movie` in `r6`, and the entry's unpacked fields and the `play` flag in `r7`, where ours swaps the two. Tried the comparisons the other way round, `rules->movie` in a local declared first or last, the locals in the other order, the entry copied to a local (4 bytes more), an `int` counter, and returning `TRUE` from the cases without `play` (8 bytes less). |
 | `src/ov168/btlv_effect.c` | `BtlvEffect_Init` | `0x021dee04` / `0x021dee44` | 34 bytes: the seasonal test compiles to `cmp #0` where the original has `lsls #1` (only `seasonal * 2` reproduces it; s8, BOOL8, bit fields and a u16 of both flags don't), and two arguments of the light-colour loader and one of BtlvStage_Create are scheduled differently; prototype types, a local env pointer and the season's type change nothing. |
@@ -362,51 +360,19 @@ the original code is linked until they match. The differences are the same in bo
 - `GetHPRatio` (`src/ov167/btl_pokeparam.c`) matches, but its file can only be completed once linking it doesn't need the
   `_dadd`, `_ddiv`, `_dfix`, `_dflt`, `_dfltu`, `_dgr`, `_dmul` and `_dsub` runtime helpers, which the ROM doesn't have;
   the original calls the AEABI double helpers directly.
-- All of `src/ov167/ability_handlers.c`'s functions match in both versions, but its `.rodata` (`0x021d7624` to
-  `0x021d83e8`, the event handler tables) isn't written yet: the functions still name the tables through `extern`s
-  in `battle/btl_ability.h`, as `item_handlers.c` and `move_handlers.c` no longer do. It also calls overlay 169,
-  like them (below).
-- Overlay 169 runs from VRAM (`0x06898020`). dsd took all of it for `.rodata` until v0.12.1-dsi.3, which analyzes its
-  1298 functions, so the calls into it have functions to link to.
-- The calls from overlay 167 to overlay 169 can't come out as the original's, whatever dsd does with overlay 169. The
-  original has a veneer for every call: all 402 long-branch veneers in overlay 167 (a Thumb `bx pc`, then the ARM
-  `ldr ip, [pc]`, `bx ip` and the target's address) have exactly one caller each, as do those of overlays 11 and 257,
-  and `HandlerRapidSpin` (`move_handlers.c`), which calls `func_ov169_06898cf4` three times, is followed by three
-  identical veneers to `0x06898cf5` at `0x021cb374`, `0x021cb384` and `0x021cb394`. Every `mwldarm.exe` the project has
-  (`dsi/1.1` to `dsi/1.6sp2`, `2.0/sp2p2` and `1.2/base`) makes one veneer per target and sends every later call in
-  range to it, from any object, and `-segment_veneers` only adds the segment to its name. It even shares one across two
-  overlays at the same address, sending the second overlay's calls into the first's code. Only the main module's veneers
-  are shared in the ROM (25 calls go through `ndma_copy` at `0x02075524`). Until the build reproduces the original's
-  veneers, a file that calls overlay 169 links as the original only if it calls each of its targets once, and no
-  complete file linked before it in the overlay calls them: the linker then puts each veneer right after the calling
-  function, as the original has it.
 - `src/ov167/btl_client.c`'s `.rodata` has the original's sections and sizes, but in its shared section the two 8-byte
   message tables (`sEscapeMessages` and `sTrainerHintMsgs`) and the two 20-byte ones (`sAudienceLeave` and
   `sWeatherStartTable`) come out swapped. Moving the top-level tables doesn't change it, so the size sort also sees the
   function-local statics in an order `rodata_order.py` doesn't model yet. Its `.bss` matches once its seven statics are
   declared in the order the file has them.
-- `src/ov167/item_handlers.c` and `src/ov167/move_handlers.c` match in both versions except `HandlerChatter`, but like
-  `ability_handlers.c` they can't link as the original until the build gives every call its own veneer (above):
-  `item_handlers.c` calls `func_ov169_0689ca54` twice, through the veneers at `0x021c3998` and `0x021c4534`,
-  `move_handlers.c` calls `func_ov169_06898cf4` five times and two other targets more than once, and
-  `ability_handlers.c` calls two of its targets more than once. Their `.rodata` is the original's size, with the lookup
-  tables in sections of their own, but the many handler tables of equal size come out in another order;
-  `rodata_order.py` can look for the declaration order once these files can be completed.
 - `src/ov207/p_sta_sub.c`'s `.rodata` can't be completed yet, for two reasons. It starts with an 8-byte object at
   `0x021bafc0` / `0x021bb000` (`7f 00 00 18 00 90 01 00`, perhaps a touch rectangle) that nothing references and the C
   doesn't define. And no declaration order found by a `rodata_order.py` hill climb over its 24 objects (the
   function-local scale, position and rectangle tables and the three top-level tables) gives the original's order.
 
-- Two functions failed to link when they were tried alone, before overlay 167 was split into its files, and match now:
-  `BattleHandler_AbilityPopupAdd` (`src/ov167/btl_server_flow.c`) gave a second ARM/Thumb cross-overlay thunk at
-  `0x021ac84c`, and `CommonMoveTargetChangeToMe` (`src/ov167/ability_handlers.c`) lost the two-byte Thumb NOP after
-  it to zero padding. Check both when their files are completed.
-
-- `src/ov257/camera_system.c` matches in both versions, and since dsd v0.12.1-dsi.3 the DSi module's NDMA functions
-  that it calls, such as `func_02768234` (`MI_IsNDmaBusy`), have symbols. It still can't link as the original: the
-  original reaches them and main's functions through a veneer for every call, in the middle of the file, and the
-  linker makes one per target (above), so overlay 257 comes out 0x120 bytes shorter, and overlays 8 and 17, which
-  point into its data, follow.
+- `BattleHandler_AbilityPopupAdd` (`src/ov167/btl_server_flow.c`) failed to link when it was tried alone, before
+  overlay 167 was split into its files, giving a second ARM/Thumb cross-overlay thunk at `0x021ac84c`, and matches
+  now. Check it when its file is completed.
 
 ## Keeping this list current
 
