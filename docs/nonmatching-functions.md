@@ -347,9 +347,6 @@ the original code is linked until they match. The differences are the same in bo
 - `GetHPRatio` (`src/ov167/btl_pokeparam.c`) matches, but its file can only be completed once linking it doesn't need the
   `_dadd`, `_ddiv`, `_dfix`, `_dflt`, `_dfltu`, `_dgr`, `_dmul` and `_dsub` runtime helpers, which the ROM doesn't have;
   the original calls the AEABI double helpers directly.
-- All of `src/ov167/ability_handlers.c`'s functions match in both versions, but its `.rodata` (`0x021d7624` to
-  `0x021d83e8`, the event handler tables) isn't written yet: the functions still name the tables through `extern`s
-  in `battle/btl_ability.h`, as `item_handlers.c` and `move_handlers.c` no longer do.
 - `src/ov167/btl_client.c`'s `.rodata` has the original's sections and sizes, but in its shared section the two 8-byte
   message tables (`sEscapeMessages` and `sTrainerHintMsgs`) and the two 20-byte ones (`sAudienceLeave` and
   `sWeatherStartTable`) come out swapped. Moving the top-level tables doesn't change it, so the size sort also sees the
@@ -364,10 +361,9 @@ the original code is linked until they match. The differences are the same in bo
   doesn't define. And no declaration order found by a `rodata_order.py` hill climb over its 24 objects (the
   function-local scale, position and rectangle tables and the three top-level tables) gives the original's order.
 
-- Two functions failed to link when they were tried alone, before overlay 167 was split into its files, and match now:
-  `BattleHandler_AbilityPopupAdd` (`src/ov167/btl_server_flow.c`) gave a second ARM/Thumb cross-overlay thunk at
-  `0x021ac84c`, and `CommonMoveTargetChangeToMe` (`src/ov167/ability_handlers.c`) lost the two-byte Thumb NOP after
-  it to zero padding. Check both when their files are completed.
+- `BattleHandler_AbilityPopupAdd` (`src/ov167/btl_server_flow.c`) failed to link when it was tried alone, before
+  overlay 167 was split into its files, giving a second ARM/Thumb cross-overlay thunk at `0x021ac84c`, and matches
+  now. Check it when its file is completed.
 
 ## Keeping this list current
 
