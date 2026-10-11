@@ -355,12 +355,10 @@ the original code is linked until they match. The differences are the same in bo
   `sWeatherStartTable`) come out swapped. Moving the top-level tables doesn't change it, so the size sort also sees the
   function-local statics in an order `rodata_order.py` doesn't model yet. Its `.bss` matches once its seven statics are
   declared in the order the file has them.
-- `src/ov167/move_handlers.c` matches in both versions except `HandlerChatter`, and links with the original's
-  veneers since dsd v0.12.1-dsi.4 (see [Long-branch veneers](configs.md#long-branch-veneers)). Its `.rodata` is the
-  original's size, with the lookup tables in sections of their own, but the many handler tables of equal size come
-  out in another order. `item_handlers.c` had the same problem, solved by defining its table of `EventAdd` functions
-  at the top of the file (see [Data and sections](matching.md#data-and-sections)), and `sMoveEventAddTable` is
-  defined at the end likewise.
+- `src/ov167/move_handlers.c` matches in both versions except `HandlerChatter`, and its `.rodata` is the original's
+  with `sMoveEventAddTable` defined at the top and each value table, such as `FLAIL_POWER_TABLE`, inside the handler
+  that reads it (see [Data and sections](matching.md#data-and-sections)). It links with the original's veneers since
+  dsd v0.12.1-dsi.4, so `HandlerChatter` is all that keeps it from being complete.
 - `src/ov207/p_sta_sub.c`'s `.rodata` can't be completed yet, for two reasons. It starts with an 8-byte object at
   `0x021bafc0` / `0x021bb000` (`7f 00 00 18 00 90 01 00`, perhaps a touch rectangle) that nothing references and the C
   doesn't define. And no declaration order found by a `rodata_order.py` hill climb over its 24 objects (the

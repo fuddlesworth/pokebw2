@@ -1026,7 +1026,10 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   the four.
 - A `static const` table declared inside the one function that reads it is listed where that function is, among
   the local initializers, rather than where file-scope data would be. `pokemontrade_nego.c` lays out its menus' item
-  lists in the game's order only with its table of blocking fields declared inside `func_ov194_021bbe60`.
+  lists in the game's order only with its table of blocking fields declared inside `func_ov194_021bbe60`, and
+  `move_handlers.c`'s 226 objects come out as the original's only with its ten value tables, such as
+  `FLAIL_POWER_TABLE`, inside the handlers that read them: declared at file scope, they swap thirteen of the
+  equal-size handler tables.
 - A forward declaration (`static const ItemEventAddEntry sItemEventAddTable[];`) doesn't list an object: it is
   listed where it is defined. Even a table of 64 bytes or more, with a section of its own, takes part in the sort, so
   where it is defined moves the equal-size objects around it. `item_handlers.c` defined its 1376-byte table of
