@@ -67,6 +67,7 @@ src/ov167/item_handlers.c:
     .rodata     start:0x021d83e8 end:0x021d9488
 
 src/ov167/move_handlers.c:
+    complete
     .text       start:0x021c5b04 end:0x021cde38
     .rodata     start:0x021d9488 end:0x021da8c4
 

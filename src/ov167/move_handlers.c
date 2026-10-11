@@ -1849,7 +1849,7 @@ static const BattleEventHandlerEntry *EventAddChatter(u32 *priority) {
 static void HandlerChatter(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     BattleMon *mon;
     u8 volume;
-    u32 status;
+    BattleConditionID status;
     u32 chance;
     BattleCondition condition;
 
@@ -1858,7 +1858,7 @@ static void HandlerChatter(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
         if (GetBattleMonSpecies(mon) == 0x1b9) {
             volume = func_ov167_021aba18(flow, monId);
             if (volume != 0) {
-                status = 6;
+                status = CONDITION_CONFUSION;
                 GetSrcData(mon);
                 if (volume > 2) {
                     chance = 30;

@@ -569,7 +569,13 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   known to be 0, as the Battle Subway's loop over its music switches does, has an enum counter. Nor does it move an
   enum local's value into its one use: `btl_rec.c`'s `func_ov167_021d4674` computes a chunk's type from its header
   byte before the chapter bit, as written, only with `BtlRecChunkType type`; an `int type` used once is computed in
-  the `if` that tests it, after the chapter bit.
+  the `if` that tests it, after the chapter bit. A constant loaded once into a callee-saved register (`movs r5, #6`)
+  and copied to each use (`adds r0, r5, #0`) is such a local too, where an integer local gives a `movs #6` at each
+  use: `move_handlers.c`'s `HandlerChatter` holds its confusion status in a `BattleConditionID`. When the values are
+  `#define`s that asm includes share, as `CONDITION_*` are, a count-only enum in a C header gives the type.
+- A result tested with no narrowing after the call, but narrowed after arithmetic on it (`(u8)(weather - 2) <= 2`),
+  comes from a function that returns `u8`. `HandlerSolarBeamPower` matches only with `GetWeather` returning `u8`, and
+  so do the getters it calls, down to the field's `u8` weather, for their own definitions to keep matching.
 - A function that returns `-1` or `0` from two branches, `if (f(x)) { return 0; } return -1;`, is folded into a
   computed result (`rsbs`) when it returns an `int`, and keeps both returns when it returns an enum. The field action
   checks of `itemuse_event.c` return such an enum.
