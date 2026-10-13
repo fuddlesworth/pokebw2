@@ -18,21 +18,6 @@
 #include "system/game_system.h"
 #include "system/version.h"
 
-// The losses in a row that lower a Wi-Fi rank, by rank
-static const u8 sWifiRankLoseLimits[12] = { 0, 5, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0 };
-
-// The Battle Points a streak of seven gives, by kind of train and by streaks done; the last row is the Wi-Fi train's,
-// by rank
-static const u8 sBattlePointRewards[7][10] = {
-    { 3, 3, 3, 0, 0, 0, 0, 0, 0, 0 },
-    { 5, 6, 7, 8, 9, 10, 10, 10, 10, 10 },
-    { 3, 3, 3, 0, 0, 0, 0, 0, 0, 0 },
-    { 5, 6, 7, 8, 9, 10, 10, 10, 10, 10 },
-    { 3, 3, 3, 0, 0, 0, 0, 0, 0, 0 },
-    { 5, 6, 7, 8, 9, 10, 10, 10, 10, 10 },
-    { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 },
-};
-
 void func_ov033_0217b468(GameSystem *gsys) {
     func_02017954(GSYS_GetGameData(gsys), NULL);
 }
@@ -236,7 +221,7 @@ u16 func_ov033_0217b8ec(BSubwayScrWork *bsw) {
             } else if (index >= 10) {
                 index = 9;
             }
-            reward = sBattlePointRewards[6][index];
+            reward = data_ov033_0217c5ac[index];
         } else {
             reward = 5;
         }
@@ -292,7 +277,7 @@ u16 func_ov033_0217b8ec(BSubwayScrWork *bsw) {
                 reward = 10;
             }
         } else {
-            row = sBattlePointRewards[category];
+            row = data_ov033_0217c570 + 10 * category;
             reward = row[countIndex];
         }
     }
@@ -441,7 +426,7 @@ u16 func_ov033_0217bcb4(BSubwayScoreData *score, GameSystem *gsys, u32 op) {
         if (value == 1) {
             return 0;
         }
-        if (limit >= sWifiRankLoseLimits[value - 1]) {
+        if (limit >= data_ov033_0217c564[value - 1]) {
             BSubwayScoreData_DecWifiRank(score);
             BSubwayScoreData_SetWifiLoseCount(score, 2);
             BSubwayScoreData_SetFlag(score, 0, 2);
@@ -630,53 +615,13 @@ void *func_ov033_0217c110(BSubwayScrWork *bsw) {
     return bsw->unk74C;
 }
 
-// The tables from here on lie after the ones above in the ROM, each group sorted by size on its own, so this file is
-// two original files. The second starts at func_ov033_0217c094, func_ov033_0217c110 or func_ov033_0217c11c.
-
-// The trainers of the super trains from the fifth streak on
-static const BSubwayTrainerRange sSuperTopTrainerRange[1] = {
-    { 200, 299 },
-};
-
-// The trainers of a normal train's last car, by streak
-static const BSubwayTrainerRange sNormalLastTrainerRanges[2] = {
-    { 50, 69 },
-    { 70, 89 },
-};
-
-// The trainers of a normal train's first six cars, by streak
-static const BSubwayTrainerRange sNormalTrainerRanges[3] = {
-    { 0, 49 },
-    { 30, 69 },
-    { 50, 109 },
-};
-
-// The trainers of a super train's first six cars, by streak
-static const BSubwayTrainerRange sSuperTrainerRanges[4] = {
-    { 110, 159 },
-    { 140, 179 },
-    { 160, 199 },
-    { 180, 219 },
-};
-
-// The trainers of a super train's last car, by streak
-static const BSubwayTrainerRange sSuperLastTrainerRanges[4] = {
-    { 160, 179 },
-    { 180, 199 },
-    { 200, 219 },
-    { 220, 239 },
-};
-
 u16 func_ov033_0217c11c(BSubwayScrWork *bsw, u16 level, u8 index, u32 mode, u8 side) {
-    BOOL super;
-    s32 boss;
-    u16 trainerId;
+    u16 trainerId = 0;
+    BOOL super = FALSE;
+    s32 boss = -1;
     const BSubwayTrainerRange *ranges;
     u16 count;
 
-    trainerId = 0;
-    super = FALSE;
-    boss = -1;
     switch (mode) {
     case 5:
     case 6:
@@ -734,9 +679,9 @@ u16 func_ov033_0217c11c(BSubwayScrWork *bsw, u16 level, u8 index, u32 mode, u8 s
     } else if (!super) {
         if (level < 3) {
             if (index < 6) {
-                ranges = sNormalTrainerRanges;
+                ranges = data_ov033_0217c5c4;
             } else if (level < 2) {
-                ranges = sNormalLastTrainerRanges;
+                ranges = data_ov033_0217c5bc;
             } else {
                 return trainerId;
             }
@@ -745,15 +690,14 @@ u16 func_ov033_0217c11c(BSubwayScrWork *bsw, u16 level, u8 index, u32 mode, u8 s
         }
     } else if (level < 4) {
         if (index < 6) {
-            ranges = sSuperTrainerRanges;
+            ranges = data_ov033_0217c5d0;
         } else {
-            ranges = sSuperLastTrainerRanges;
+            ranges = data_ov033_0217c5e0;
         }
         count = ranges[level].max - ranges[level].min + 1;
         trainerId = ranges[level].min + randFFFFFFFFdivFFFF(bsw) % count;
     } else {
-        count = sSuperTopTrainerRange[0].max - sSuperTopTrainerRange[0].min + 1;
-        trainerId = sSuperTopTrainerRange[0].min + randFFFFFFFFdivFFFF(bsw) % count;
+        trainerId = 200 + randFFFFFFFFdivFFFF(bsw) % 100;
     }
     return trainerId;
 }

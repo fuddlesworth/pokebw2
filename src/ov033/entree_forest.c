@@ -20,63 +20,36 @@ typedef struct {
     u8 areaH;
 } EntreeForestActorAppearance;
 
-// Where the Pokémon of an area stand, as pairs of grid X and Z, by which of func_ov012_02160974 and
-// func_ov012_0216099c holds for the area
-static const u8 sPokemonPositions1[] = {
-    13, 20, 18, 13, 18, 21, 13, 12, 9, 19, 22, 14, 22, 19, 9, 14, 18, 18, 13, 15,
-};
+extern const EntreeForestActorAppearance data_ov033_0217c354[];
 
-// The move code and the area of a Pokémon's actor, by EntreeForestPokemon.actorType
-static const EntreeForestActorAppearance sActorAppearances[8] = {
-    { 2, 0, 0 },
-    { 3, 1, 1 },
-    { 3, 2, 2 },
-    { 4, 0, 2 },
-    { 5, 2, 0 },
-    { 3, 2, 0 },
-    { 0x13, 0, 0 },
-    { 0x12, 0, 0 },
-};
+extern const ZoneNPC data_ov033_0217c374;
 
-// The actor of a Pokémon, before its ID, model, movement and position are set
-static const ZoneNPC sPokemonNPC = {
-    0, 0x1000, 0xf, 0, 0, 0x28fa, 1, 0, 0, 0, 0xffff, 0xffff, FALSE, { { 0, 0, 0 } },
-};
-
-static const u8 sPokemonPositions2[] = {
-    14, 18, 17, 15, 17, 18, 14, 15, 11, 21, 20, 12, 20, 21, 11, 12, 14, 21, 17, 12,
-    17, 21, 14, 12, 11, 18, 20, 15, 20, 18, 11, 15, 8,  19, 23, 14, 23, 19, 8,  14,
-};
-
-static const u8 sPokemonPositions0[] = {
-    14, 18, 17, 12, 17, 18, 14, 12, 11, 18, 20, 12, 20, 18, 11, 12, 8,  14, 23, 14,
-    14, 21, 17, 15, 17, 21, 14, 15, 11, 21, 20, 15, 20, 21, 11, 15, 8,  19, 23, 19,
-};
-
-FieldActor *EntreeForest_SpawnPkmActor(const EntreeForestSpawnContext *context, const EntreeForestPokemon *pokemon,
-                                      u16 index, u16 x, u16 z, s32 y) {
+FieldActor *EntreeForest_SpawnPkmActor(EntreeForestSpawnContext *context, const EntreeForestPokemon *pokemon, u16 index,
+                                      u16 x, u16 z, s32 y) {
+    const EntreeForestPokemon *mon;
     const EntreeForestActorAppearance *appearance;
     MMSys *actorSystem;
     u16 zoneId;
     ZoneNPC npc;
-    ZoneNPCGridPosition *grid;
+    u32 actorIdBase;
 
-    appearance = &sActorAppearances[pokemon->actorType];
+    mon = pokemon;
+    appearance = &data_ov033_0217c354[mon->actorType];
     actorSystem = Field_GetActorSystem(context->field);
     zoneId = Field_GetPlayerStateZoneID(context->field);
-    npc = sPokemonNPC;
+    npc = data_ov033_0217c374;
     npc.uid = index;
-    npc.modelId = GetPokemonFieldOBJCODE(context->pokemonData, pokemon->species, pokemon->sex, pokemon->form);
+    npc.modelId = GetPokemonFieldOBJCODE(context->pokemonData, mon->species, mon->sex, mon->form);
     npc.moveCode = appearance->moveCode;
+    actorIdBase = context->actorIdBase;
     npc.areaW = appearance->areaW;
     npc.areaH = appearance->areaH;
-    npc.param0 = context->actorIdBase + index;
+    npc.param0 = actorIdBase + index;
     npc.param1 = pokemon->raw;
     npc.param2 = pokemon->raw >> 16;
-    grid = &npc.pos.grid;
-    grid->x = x;
-    grid->z = z;
-    grid->y = y;
+    npc.pos.grid.x = x;
+    npc.pos.grid.z = z;
+    npc.pos.grid.y = y;
     return CreateNewActorByEntityNoWKOBJCODE(actorSystem, &npc, zoneId);
 }
 
@@ -128,11 +101,11 @@ void EntreeForest_SpawnAllPokemon(Field *field, u32 actorIdBase, const EntreeFor
     s32 z;
 
     if (func_ov012_02160974(area)) {
-        positions = sPokemonPositions0;
+        positions = data_ov033_0217c3c0;
     } else if (func_ov012_0216099c(area)) {
-        positions = sPokemonPositions1;
+        positions = data_ov033_0217c340;
     } else {
-        positions = sPokemonPositions2;
+        positions = data_ov033_0217c398;
     }
     context.pokemonData = LoadTPokeData(Field_GetHeapID(field));
     context.field = field;

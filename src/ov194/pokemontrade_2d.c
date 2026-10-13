@@ -733,16 +733,6 @@ static void func_ov194_021c38d4(PokemonTradeWork *wk, int column, int row, BoxPk
     func_ov194_021c38bc(wk, wk->icons[index][row], grey);
 }
 
-// NitroSDK's inline for the sub screen's OBJ VRAM
-static inline void *G2S_GetOBJCharPtr(void) {
-    return (void *)HW_DB_OBJ_VRAM;
-}
-
-// Where an image's characters are in a screen's OBJ VRAM, as NNS_G2dGetImageLocation(), inlined
-static inline u32 ImageProxy_GetLocation(const NNSG2dImageProxy *proxy, int type) {
-    return proxy->vramLocation.baseAddrOfVram[type];
-}
-
 // Sets up the icons of a column of the strip in the icon column at an index, loading the characters of the ones that
 // changed, in the V-blank if asked and the icon is on screen
 static void func_ov194_021c3904(PokemonTradeWork *wk, BoxSaveAccessor *boxes, int column, int index, BOOL async) {
@@ -795,14 +785,12 @@ static void func_ov194_021c3904(PokemonTradeWork *wk, BoxSaveAccessor *boxes, in
                 if (!NNS_GfdRegisterNewVramTransferTask(35, proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB],
                                                         wk->iconCharData + slot * 0x200, 0x200)) {
                     sys_memcpy(wk->iconCharData + slot * 0x200,
-                               (void *)((u32)G2S_GetOBJCharPtr() +
-                                        ImageProxy_GetLocation(&proxy, NNS_G2D_VRAM_TYPE_2DSUB)),
+                               (void *)(HW_DB_OBJ_VRAM + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
                                0x200);
                 }
             } else {
                 sys_memcpy(wk->iconCharData + slot * 0x200,
-                           (void *)((u32)G2S_GetOBJCharPtr() +
-                                    ImageProxy_GetLocation(&proxy, NNS_G2D_VRAM_TYPE_2DSUB)),
+                           (void *)(HW_DB_OBJ_VRAM + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
                            0x200);
             }
             func_ov194_021c38d4(wk, column, i, pkm, isParty, index);
@@ -1692,9 +1680,8 @@ void func_ov194_021c4ec0(PokemonTradeWork *wk, PartyPkm *pkm, BOOL isEgg) {
                 func_0204c124(icon, TRUE);
             }
         } else {
-            wk->markIcons.icons[i] = UIObjRes_CreateActor(&wk->markIcons.res, wk->clactUnit, xs[i] * 8, 101,
-                                                         anim == -1 ? anims[i][0] : anim, wk->heapId);
-            icon = wk->markIcons.icons[i];
+            icon = wk->markIcons.icons[i] = UIObjRes_CreateActor(&wk->markIcons.res, wk->clactUnit, xs[i] * 8, 101,
+                                                                anim == -1 ? anims[i][0] : anim, wk->heapId);
             if (anim == -1) {
                 func_0204c124(icon, FALSE);
             } else if (isEgg && i == 6) {
