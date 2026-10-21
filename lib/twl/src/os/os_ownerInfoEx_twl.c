@@ -4,14 +4,19 @@
 #include "nitro/os.h"
 #include "twl/os.h"
 
-// The DSi's hardware settings that the system leaves in the shared memory, of which only the flag read here is named
-typedef struct TWLHwNormalInfo {
+// The DSi's secure hardware settings that the system leaves in the shared memory, of which only the flag read here is
+// named. The flag is a bit of a byte of flags, after the word of valid languages (as ntrtwl's reconstruction lays
+// out TwlSDK's OSTWLHWSecureInfo), which the load reaches as offset 4 of the block
+typedef struct TWLHwSecureInfo {
     u32 unk_00;
-    u32 forceDisableWireless : 1;
-    u32 unk_04_1 : 31;
-} TWLHwNormalInfo;
+    struct {
+        u8 forceDisableWireless : 1;
+        u8 : 7;
+    } flags;
+    u8 unk_05[3];
+} TWLHwSecureInfo;
 
-#define TWL_HW_NORMAL_INFO ((TWLHwNormalInfo *)0x02fffd68)
+#define HW_TWL_HW_SECURE_INFO 0x02fffd68
 
 #pragma define_section LTDMAIN ".ltdmain"                                                                              \
                                ".ltdmain.bss"                                                                          \
@@ -23,7 +28,9 @@ BOOL OSi_IsAvailableWirelessTwl(void) {
 }
 
 BOOL OSi_IsForceDisableWirelessTwl(void) {
-    return TWL_HW_NORMAL_INFO->forceDisableWireless == 1 ? TRUE : FALSE;
+    TWLHwSecureInfo *info = (TWLHwSecureInfo *)HW_TWL_HW_SECURE_INFO;
+
+    return info->flags.forceDisableWireless == 1 ? TRUE : FALSE;
 }
 
 #pragma section LTDMAIN end
