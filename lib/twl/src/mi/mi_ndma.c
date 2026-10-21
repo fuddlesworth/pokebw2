@@ -23,6 +23,35 @@ MINDmaConfig MIi_NDmaConfig[MI_NDMA_MAX_NUM + 1];
                                ".ltdmain" abs32 RWX
 #pragma section LTDMAIN begin
 
+// The channel's registers, as TwlSDK's static inlines set them (ntrtwl's reconstruction has their names)
+static inline void MIi_SetSrc(u32 ndmaNo, u32 src) {
+    MI_NDMA_REG(ndmaNo, MI_NDMA_SAD) = src;
+}
+
+static inline void MIi_SetDest(u32 ndmaNo, u32 dest) {
+    MI_NDMA_REG(ndmaNo, MI_NDMA_DAD) = dest;
+}
+
+static inline void MIi_SetTotalWordCount(u32 ndmaNo, u32 size) {
+    MI_NDMA_REG(ndmaNo, MI_NDMA_TCNT) = size;
+}
+
+static inline void MIi_SetWordCount(u32 ndmaNo, u32 size) {
+    MI_NDMA_REG(ndmaNo, MI_NDMA_WCNT) = size;
+}
+
+static inline void MIi_SetInterval(u32 ndmaNo, u32 intervalTimer, u32 prescaler) {
+    MI_NDMA_REG(ndmaNo, MI_NDMA_BCNT) = intervalTimer | prescaler;
+}
+
+static inline void MIi_SetFillData(u32 ndmaNo, u32 data) {
+    MI_NDMA_REG(ndmaNo, MI_NDMA_FDATA) = data;
+}
+
+static inline void MIi_SetControl(u32 ndmaNo, u32 control) {
+    MI_NDMA_REG(ndmaNo, MI_NDMA_CNT) = control;
+}
+
 // The address modes of each kind of transfer
 static u32 MIi_GetNDmaModeBits(u32 mode) {
     switch (mode) {
@@ -54,77 +83,74 @@ static u32 MIi_GetNDmaModeBits(u32 mode) {
 // A transfer that is waited for. Mode 0 fills with data, the others copy from src
 static void MIi_NDma(u32 mode, u32 ndmaNo, const void *src, void *dest, u32 data, u32 size, const MINDmaConfig *config,
                      u32 timing, u32 enable) {
-    u32 enabled;
-    u32 control;
+    if (size > 0) {
+        u32 control;
+        u32 enabled = OS_DisableInterrupts();
 
-    if (size == 0) {
-        return;
-    }
-    enabled = OS_DisableInterrupts();
-    MIi_WaitNDmaDone(ndmaNo);
+        MIi_WaitNDmaDone(ndmaNo);
+        if (mode != 0) {
+            MIi_SetSrc(ndmaNo, (u32)src);
+        }
+        MIi_SetDest(ndmaNo, (u32)dest);
+        MIi_SetInterval(ndmaNo, config->intervalTimer, config->prescaler);
+        if (mode == 0) {
+            MIi_SetFillData(ndmaNo, data);
+        }
+        if (timing == (u32)-1) {
+            MIi_SetWordCount(ndmaNo, size / 4);
+        } else {
+            MIi_SetTotalWordCount(ndmaNo, size / 4);
+            MIi_SetWordCount(ndmaNo, config->wordCount == (u32)-1 ? size / 4 : config->wordCount);
+        }
+        control = config->blockWord | (enable & MI_NDMA_ENABLE);
+        control |= MIi_GetNDmaModeBits(mode);
+        control |= timing == (u32)-1 ? MI_NDMA_IMM : timing;
+        MIi_SetControl(ndmaNo, control);
 
-    if (mode != 0) {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_SAD) = (u32)src;
+        MIi_WaitNDmaDone(ndmaNo);
+        OS_RestoreInterrupts(enabled);
     }
-    MI_NDMA_REG(ndmaNo, MI_NDMA_DAD) = (u32)dest;
-    MI_NDMA_REG(ndmaNo, MI_NDMA_BCNT) = config->intervalTimer | config->prescaler;
-    if (mode == 0) {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_FDATA) = data;
-    }
-    if (timing == (u32)-1) {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_WCNT) = size / 4;
-    } else {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_TCNT) = size / 4;
-        MI_NDMA_REG(ndmaNo, MI_NDMA_WCNT) = config->wordCount == (u32)-1 ? size / 4 : config->wordCount;
-    }
-    control = config->blockWord | (enable & MI_NDMA_ENABLE);
-    control |= MIi_GetNDmaModeBits(mode);
-    MI_NDMA_REG(ndmaNo, MI_NDMA_CNT) = control | (timing == (u32)-1 ? MI_NDMA_IMM : timing);
-
-    MIi_WaitNDmaDone(ndmaNo);
-    OS_RestoreInterrupts(enabled);
 }
 
-void MIi_NDmaAsync(u32 mode, u32 ndmaNo, const void *src, void *dest, u32 data, u32 size, MINDmaCallback callback,
-                   void *arg, const MINDmaConfig *config, u32 timing, u32 enable) {
-    u32 enabled;
-    u32 control;
-
+void MIi_NDmaAsync_withConfig_Dev(u32 mode, u32 ndmaNo, const void *src, void *dest, u32 data, u32 size,
+                                  MINDmaCallback callback, void *arg, const MINDmaConfig *config, u32 timing,
+                                  u32 enable) {
     if (size == 0) {
         if (callback != NULL) {
             callback(arg);
         }
-        return;
-    }
-    enabled = OS_DisableInterrupts();
-    MIi_WaitNDmaDone(ndmaNo);
-
-    if (callback != NULL) {
-        OSi_EnterNDmaCallback(ndmaNo, callback, arg);
-    }
-    if (mode != 0) {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_SAD) = (u32)src;
-    }
-    MI_NDMA_REG(ndmaNo, MI_NDMA_DAD) = (u32)dest;
-    MI_NDMA_REG(ndmaNo, MI_NDMA_BCNT) = config->intervalTimer | config->prescaler;
-    if (mode == 0) {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_FDATA) = data;
-    }
-    if (timing == (u32)-1) {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_WCNT) = size / 4;
     } else {
-        MI_NDMA_REG(ndmaNo, MI_NDMA_TCNT) = size / 4;
-        MI_NDMA_REG(ndmaNo, MI_NDMA_WCNT) = config->wordCount == (u32)-1 ? size / 4 : config->wordCount;
-    }
-    control = config->blockWord | (enable & MI_NDMA_ENABLE);
-    control |= MIi_GetNDmaModeBits(mode);
-    control |= timing == (u32)-1 ? MI_NDMA_IMM : timing;
-    if (callback != NULL) {
-        control |= MI_NDMA_IF_ENABLE;
-    }
-    MI_NDMA_REG(ndmaNo, MI_NDMA_CNT) = control;
+        u32 control;
+        u32 enabled = OS_DisableInterrupts();
 
-    OS_RestoreInterrupts(enabled);
+        MIi_WaitNDmaDone(ndmaNo);
+        if (callback != NULL) {
+            OSi_EnterNDmaCallback(ndmaNo, callback, arg);
+        }
+        if (mode != 0) {
+            MIi_SetSrc(ndmaNo, (u32)src);
+        }
+        MIi_SetDest(ndmaNo, (u32)dest);
+        MIi_SetInterval(ndmaNo, config->intervalTimer, config->prescaler);
+        if (mode == 0) {
+            MIi_SetFillData(ndmaNo, data);
+        }
+        if (timing == (u32)-1) {
+            MIi_SetWordCount(ndmaNo, size / 4);
+        } else {
+            MIi_SetTotalWordCount(ndmaNo, size / 4);
+            MIi_SetWordCount(ndmaNo, config->wordCount == (u32)-1 ? size / 4 : config->wordCount);
+        }
+        control = config->blockWord | (enable & MI_NDMA_ENABLE);
+        control |= MIi_GetNDmaModeBits(mode);
+        control |= timing == (u32)-1 ? MI_NDMA_IMM : timing;
+        if (callback != NULL) {
+            control |= MI_NDMA_IF_ENABLE;
+        }
+        MIi_SetControl(ndmaNo, control);
+
+        OS_RestoreInterrupts(enabled);
+    }
 }
 
 void MI_InitNDma(void) {
@@ -141,11 +167,11 @@ void MI_NDmaCopy(u32 ndmaNo, const void *src, void *dest, u32 size) {
 }
 
 void MI_NDmaFillAsync(u32 ndmaNo, void *dest, u32 data, u32 size, MINDmaCallback callback, void *arg) {
-    MIi_NDmaAsync(0, ndmaNo, NULL, dest, data, size, callback, arg, &MIi_NDmaConfig[ndmaNo], (u32)-1, MI_NDMA_ENABLE);
+    MIi_NDmaAsync(0, ndmaNo, NULL, dest, data, size, callback, arg, MI_NDMA_ENABLE);
 }
 
 void MI_NDmaCopyAsync(u32 ndmaNo, const void *src, void *dest, u32 size, MINDmaCallback callback, void *arg) {
-    MIi_NDmaAsync(1, ndmaNo, src, dest, 0, size, callback, arg, &MIi_NDmaConfig[ndmaNo], (u32)-1, MI_NDMA_ENABLE);
+    MIi_NDmaAsync(1, ndmaNo, src, dest, 0, size, callback, arg, MI_NDMA_ENABLE);
 }
 
 BOOL MI_IsNDmaBusy(u32 ndmaNo) {
@@ -235,8 +261,8 @@ void MIi_CameraNDmaRecv(u32 ndmaNo, void *dest, u32 unitWords, u32 length, BOOL 
     config.prescaler = 0;
     config.blockWord = MI_NDMA_BWORD_16;
     config.wordCount = unitWords;
-    MIi_NDmaAsync(mode, ndmaNo, (const void *)MI_CAMERA_DATA_ADDR, dest, 0, length, callback, arg, &config,
-                  MI_NDMA_TIMING_CAMERA, MI_NDMA_ENABLE);
+    MIi_NDmaAsync_withConfig_Dev(mode, ndmaNo, (const void *)MI_CAMERA_DATA_ADDR, dest, 0, length, callback, arg,
+                                 &config, MI_NDMA_TIMING_CAMERA, MI_NDMA_ENABLE);
 }
 
 #pragma section LTDMAIN end

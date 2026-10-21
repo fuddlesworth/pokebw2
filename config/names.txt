@@ -5641,7 +5641,7 @@ ltd_autoload_0 0x02767d60 CARDi_ReadRomHashImageCaching
 ltd_autoload_0 0x02767e84 CARD_ReadRomHashImage
 ltd_autoload_0 0x02767f08 MIi_GetNDmaModeBits
 ltd_autoload_0 0x02767f78 MIi_NDma
-ltd_autoload_0 0x02768040 MIi_NDmaAsync
+ltd_autoload_0 0x02768040 MIi_NDmaAsync_withConfig_Dev
 ltd_autoload_0 0x02768138 MI_InitNDma
 ltd_autoload_0 0x0276814c MI_NDmaFill
 ltd_autoload_0 0x02768180 MI_NDmaCopy

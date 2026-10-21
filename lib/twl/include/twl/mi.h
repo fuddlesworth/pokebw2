@@ -109,9 +109,18 @@ void MI_SetNDmaArbitrament(u32 mode, u32 cycle);
 void MI_InitNDmaConfig(void);
 void MI_GetNDmaConfig(u32 ndmaNo, MINDmaConfig *config);
 // The transfer under all of the asynchronous NDMA functions, which mi_ndma_gxcommand.c also calls: a fill of data or a
-// copy, by the address modes of mode, started at timing (-1: at once) with the channel's settings in config
-void MIi_NDmaAsync(u32 mode, u32 ndmaNo, const void *src, void *dest, u32 data, u32 size, MINDmaCallback callback,
-                   void *arg, const MINDmaConfig *config, u32 timing, u32 enable);
+// copy, by the address modes of mode, started at timing (-1: at once) with the channel's settings in config. The names
+// here and of MIi_NDmaAsync are TwlSDK's as ntrtwl's reconstruction has them
+void MIi_NDmaAsync_withConfig_Dev(u32 mode, u32 ndmaNo, const void *src, void *dest, u32 data, u32 size,
+                                  MINDmaCallback callback, void *arg, const MINDmaConfig *config, u32 timing,
+                                  u32 enable);
+
+// The transfer started at once with the channel's own settings
+static inline void MIi_NDmaAsync(u32 mode, u32 ndmaNo, const void *src, void *dest, u32 data, u32 size,
+                                 MINDmaCallback callback, void *arg, u32 enable) {
+    MIi_NDmaAsync_withConfig_Dev(mode, ndmaNo, src, dest, data, size, callback, arg, &MIi_NDmaConfig[ndmaNo], (u32)-1,
+                                 enable);
+}
 // The card's reads by NDMA: one word at each request of the card, from its data register, until the card's transfer
 // ends. The second is the one that CARDi_NdmaInterface gives the card library
 void MIi_StartCardNDma(u32 ndmaNo, const void *src, void *dest);
