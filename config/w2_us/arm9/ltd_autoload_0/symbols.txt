@@ -715,8 +715,10 @@ sConnectIndex kind:bss addr:0x0276b100
 sCameraInitialized kind:bss addr:0x0276b104
 sUnused kind:bss addr:0x0276b108
 sCameraWork kind:bss addr:0x0276b10c
-sNwmInitialized kind:bss addr:0x0276c2e4
-sNwm kind:bss addr:0x0276c2e8
+NWMi_Initialized kind:bss addr:0x0276c2e4
+NWMi_SysWork kind:bss addr:0x0276c2e8
+NWMi_ExitCallbackInfo kind:bss addr:0x0276c2ec
+sSleepCallbackInfo kind:bss addr:0x0276c2fc
 sUnloaded kind:bss addr:0x0276c30c
 sBlockBuf kind:bss addr:0x0276c310
 sFatfs kind:bss addr:0x0276c520
