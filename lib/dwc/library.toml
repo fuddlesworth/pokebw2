@@ -56,6 +56,26 @@ flags = [
 # The authentication service (overlay 260) has its 257-byte RSA modulus in a section of its own, 4-aligned after the
 # exponent, which only -ipa file gives
 "auth/dwc_auth.c" = ["-ipa file"]
+# The connection test (overlay 11) reaches its globals from one base
+"auth/dwc_netcheck.c" = ["-ipa file"]
+# The profanity check (overlay 11) has DWCi_Prof_ParseResult's local table of field names, and its strings, at the head
+# of its .data, as -ipa file sorts local initializers ahead of the functions' strings
+"auth/dwc_prof.c" = ["-ipa file"]
+# Each root certificate of the HTTPS connection (overlay 11) is a file of its own whose name and key, of 64 bytes or
+# more, are 4-aligned in sections of their own, which only -ipa file gives
+"auth/dwc_ca_cybertrust_baltimore.c" = ["-ipa file"]
+"auth/dwc_ca_cybertrust_globalsign.c" = ["-ipa file"]
+"auth/dwc_ca_cybertrust_gteglroot.c" = ["-ipa file"]
+"auth/dwc_ca_cybertrust_gteroot.c" = ["-ipa file"]
+"auth/dwc_ca_globalsign_rootcar2.c" = ["-ipa file"]
+"auth/dwc_ca_nas_self.c" = ["-ipa file"]
+"auth/dwc_ca_nas_class2.c" = ["-ipa file"]
+"auth/dwc_ca_thawte_premiumserver.c" = ["-ipa file"]
+"auth/dwc_ca_thawte_server.c" = ["-ipa file"]
+"auth/dwc_ca_verisign_c3pcag2v2.c" = ["-ipa file"]
+"auth/dwc_ca_verisign_c3pcag3v2.c" = ["-ipa file"]
+"auth/dwc_ca_verisign_pca3ssg4.c" = ["-ipa file"]
+"auth/dwc_ca_verisign_secureserver.c" = ["-ipa file"]
 # GameSpy's NAT detection and negotiation (overlay 11) reach their statics from one base too
 "natneg/NATify.c" = ["-ipa file"]
 "natneg/natneg.c" = ["-ipa file"]
