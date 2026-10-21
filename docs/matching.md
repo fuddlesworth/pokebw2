@@ -467,6 +467,17 @@ Same instructions, registers swapped.
   block layout gives needs the locals at function scope (`NNS_G2dInitMCAnimationInstance`). A second loop that
   reuses the first loop's counter swaps registers with its block's temporary, where a counter of its own declared
   after the others doesn't (`gfd_LinkedListTexVramMan.c`'s `NNS_GfdResetLnkTexVramState`).
+- NitroSystem's own inlines, as the public decompilation github.com/ntrtwl/NitroSystem has them, are worth copying
+  whole into a NitroSystem function that is close: MWCC shares an expression between two inlines only when both
+  spell it the same. `g2d_OamSoftwareSpriteDraw.c`'s `SetTexParamsAndGetTexCoord_` (NitroSystem's
+  `CalcSpriteParams_`) matched once its 1D texture inline computed `(u16)((shape & GX_OAM_ATTR0_SHAPE_MASK) >> 14)`
+  as `NNS_G2dGetOamSizeX` does, so the shape and size indices are computed once and spilled raw, and the `u16`
+  conversions come late in the branch; the flips had to be read through `BOOL` getters (`NNSi_G2dGetOamFlipH`), which
+  as locals or direct reads swap registers. Our `GX_OAM_ATTR01_SHAPE_MASK` is NitroSDK's shape and size masks
+  together (0xc000c000); NitroSDK's own `GX_OAM_ATTR01_SHAPE_MASK` is `GX_OAM_ATTR0_SHAPE_MASK`. How an inline
+  assigns its locals counts too: `snd_arc_stream.c`'s `DecodeAdpcm`, with its locals declared and then assigned
+  (sample before index) as NitroSystem writes it, took `ProcessCommand` from 208 differing bytes to 72, before
+  the types below matched it.
 - A loop offset that starts at 0, grows by a step and is zeroed after the loop's hoisted invariants is a counter
   times the step: MWCC strength-reduces `x + step * line` into a running offset that it zeroes in the loop's
   preheader, where an offset kept by hand is zeroed before the hoisted code. NitroSystem's `g2d_TextCanvas.c`
@@ -2336,6 +2347,15 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   original adds the index's offset to a second literal. And its weighted sums add each product as a 64-bit value,
   `sum.invM.m[0][0] += (weight * clip->m[0][0]) >> FX32_SHIFT`, as NitroSystem writes them: through an inline that
   casts the product to `fx32` first, one load is scheduled after a store where the original has it before.
+- The same goes for NitroSystem's `s32` (a `long`) and for a spilled `u32` in a big function: two NitroSystem
+  functions matched only with one variable of the SDK's type. `g2d_Renderer.c`'s `NNS_G2dPushMtx` loads the stack
+  position once to check `next < 32` and again in each branch for the source index; with `static long mtxStackPos_`
+  (NitroSystem's `s32 stackPos_`) it does, where an `int` keeps the first load (pret's pokeheartgold reaches the same
+  code only through a `volatile` view of the state). `snd_arc_stream.c`'s `ProcessCommand` homes `bufOffset` and
+  `readSize` in their declared slots only with `unsigned long bufOffset` (NitroSystem's `u32 destOffset`; Kingdom
+  Hearts Re:coded's decompilation writes `long`) and `s32 readSize`, the type of the read's result it is compared
+  with; as `unsigned int`s they took late spill slots. Rows that are left with a reload the original has, or with
+  locals in late slots, are candidates.
 - `lsl #15; asr #16` is a halving folded with an `s16` narrowing, so the value is an `fx16`, not a statement-order
   problem: the Battle Competition's `WifiBattleMatchView_BlendColor` matched with `fx16 ratio`. In the same file a
   constant assigned in both arms of an `if`/`else` is written first in each arm (`frameBG = 2;` / `= 6;` in the two
