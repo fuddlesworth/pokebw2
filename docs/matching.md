@@ -3829,3 +3829,13 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
 - When the order of instructions differs and no source change moves it, try `tools/decomp/permuter_setup.py`, which
   prepares a function for [decomp-permuter](https://github.com/simonlindholm/decomp-permuter). Its result can point to
   a plain change: `GFL_BGSysAllocChar`'s registers only matched with its tile size, a `u8` from a call, in an `int`.
+
+- A TwlSDK function that resists respellings can be in the shape of ntrtwl's reconstruction, which keeps the SDK's
+  inlines and blocks: six of the LTD autoload's matched once rebuilt so. `mi_ndma.c`'s `MIi_NDma` and
+  `MIi_NDmaAsync_withConfig_Dev` set the registers through one-line `static inline` setters inside
+  `if (size > 0) { ... }`, with the locals declared there; `mi_ndma_gxcommand.c`'s `MIi_NDmaFIFOCallback` calls the
+  transfer through the `static inline` `MIi_NDmaAsync`, which adds the channel's config, so the arguments are computed
+  in the inline's order; `card_hash.c`'s `CARD_InitRomHashContext` lays its buffer out through a cursor and puts the
+  rest under `if (cur > hi) ... else`, and its `CARDi_ReadRomHashImageDirect` gets the sector index from a
+  `static inline`; `mi_sharedWram_twl.c`'s `MIi_ReserveWramSlotCore` bounds both loops by `slot + blocks`. Look the
+  function up there before grinding registers.
