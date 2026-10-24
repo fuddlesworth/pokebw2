@@ -3,7 +3,8 @@
 
 Each row names a source file, its functions and their addresses, Black 2's then White 2's (`same` when they are
 equal). For every function the row gives an address for, the file must be delinked in a module of both versions, the
-function must be a symbol of that module at Black 2's address and at White 2's, and the source file must define it.
+function must be a symbol of that module, or of a module of one of a merged file's parts (config/merged_sources.toml),
+at Black 2's address and at White 2's, and the source file must define it.
 Rows about data, whose function column is in parentheses, are left out. Merge markers and duplicate function
 entries are rejected. It needs no ROM, so CI runs it.
 
@@ -16,6 +17,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from tools.build.merge_objects import merged_sources  # noqa: E402
 from tools.decomp.dsd_config import ROOT, parse_symbols  # noqa: E402
 
 DOC = ROOT / "docs" / "nonmatching-functions.md"
@@ -72,6 +74,15 @@ def symbols_by_module(version: str) -> dict[str, dict[str, set[int]]]:
     return modules
 
 
+def merged_parts() -> dict[str, list[str]]:
+    """Returns the parts of each merged file (config/merged_sources.toml), which delinks.txt lists under their own
+    names, in their own modules, while the whole's source holds their code."""
+    parts = {}
+    for part, whole in merged_sources(ROOT / "config/merged_sources.toml").items():
+        parts.setdefault(whole, []).append(part)
+    return parts
+
+
 def defines(source: str, name: str) -> bool:
     """Whether a line opens a definition of the function: not a call (no `=` before it) or a prototype (no `;`)."""
     return re.search(r"^\s*[A-Za-z_][^;=\n]*\b" + re.escape(name) + r"\s*\([^;\n]*$", source, re.M) is not None
@@ -84,6 +95,7 @@ def main():
 
     files = {v: modules_by_file(v) for v in VERSIONS}
     symbols = {v: symbols_by_module(v) for v in VERSIONS}
+    parts = merged_parts()
     lines = DOC.read_text().split("\n")
     problems = structural_problems(lines)
     fixed = 0
@@ -109,9 +121,16 @@ def main():
         for v, module in modules.items():
             if module is None:
                 problems.append(f"{where}: not in any {v} delinks.txt")
+        # A merged file's functions may be in a part's module
+        searched = {v: [m for m in (module, *(files[v].get(part) for part in parts.get(path, ()))) if m is not None]
+                    for v, module in modules.items()}
+
+        def addresses(v: str, name: str) -> set[int]:
+            return set().union(*(symbols[v][m].get(name, set()) for m in searched[v]))
+
         can_fix_white = True
         if shared_pair and modules["w2_us"] is not None:
-            targets = [symbols["w2_us"][modules["w2_us"]].get(name, set()) for name in names]
+            targets = [addresses("w2_us", name) for name in names]
             can_fix_white = all(len(target) == 1 and target == targets[0] for target in targets)
         edits = {}
         for name, pair in zip(names, pairs):
@@ -122,7 +141,7 @@ def main():
                 continue
             wanted = {"b2_us": int(b2, 16), "w2_us": int(b2 if same else w2, 16)}
             for v in VERSIONS:
-                actual = symbols[v][modules[v]].get(name, set())
+                actual = addresses(v, name)
                 if wanted[v] in actual:
                     continue
                 found = ", ".join(f"0x{a:08x}" for a in sorted(actual)) or "none"
