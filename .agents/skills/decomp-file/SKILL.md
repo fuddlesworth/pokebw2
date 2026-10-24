@@ -86,7 +86,7 @@ Write directly from the asm; this repo has no m2c for ARM. Per file:
   so definitions are checked against declarations.
 - Functions in address order (reverse for SPL). Static functions get prototypes at the top (`-requireprotos`), but
   only after checking that no other module references them (`grep` the address in every `relocs.txt`, or let
-  `mark_complete.py` refuse later). A static referenced from another module links to address 0.
+  `mark_complete.py` refuse later). A static referenced from outside its file links to address 0.
 - Public functions, data and callback tables go in the owning header. No `extern` or other files' prototypes in a
   `.c` file. `struct_decls.h` gets `typedef struct X X;`, and the owner's header gets the layout.
 - Event callbacks take `void *data` and cast it. Data in `.data` is not `const`; data in `.rodata` is `static const`

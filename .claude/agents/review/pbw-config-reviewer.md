@@ -40,7 +40,7 @@ The caller applies your fixes without re-deriving them, so a confident wrong cla
   `mark_complete.py`, `rename_symbol.py`, `config_fixes.py`, never by hand (a hand edit of `symbols.txt` is lost on
   regeneration).
 - **complete**: a file is complete only if every function matches in both versions (probe it) and nothing static is
-  referenced from another module; a file that no longer matches must lose its `complete`.
+  referenced from outside the file; a file that no longer matches must lose its `complete`.
 - **Ranges**: overlays share addresses, so a `.bss` or data range can't be claimed from a symbol's spacing alone
   (fieldmap.c's heap block overlapped shortcut_menu.c's .bss); a symbol at a range's start is needed for the range to
   end there (`config_fixes.py add-data`).

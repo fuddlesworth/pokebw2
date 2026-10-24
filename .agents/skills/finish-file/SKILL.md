@@ -20,7 +20,8 @@ Leave out `--compilers` for library code. Every function that doesn't match in e
 .venv/bin/python tools/decomp/mark_complete.py src/X.c
 ```
 
-It refuses while a function the file defines as `static` is referenced from another module. Make that function global
+It refuses while a function the file defines as `static` is referenced from outside the file (another module, or code
+of its own module that the file doesn't own). Make that function global
 (and declare it in the header) rather than forcing it.
 
 ## 3. Build and verify

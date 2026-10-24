@@ -537,7 +537,8 @@ text to `grep -n` there. Entries without a key come from later work and still be
 - A three-register `adds` done late, at the copy for a later `adds rd, #imm8`, with both operands spilled across
   calls, where the original adds where the sum is written: MWCC moved the add down by itself; a second use of the
   sum that isn't a copy (`f(x + 4)`, not `f(x)`) or another immediate keeps it in place, no pragma does, and each
-  use of the incremented value gets its own copy of the sum. (matching.md: "whose only use is the copy")
+  use of the incremented value gets its own copy of the sum. (matching.md: "whose only use is the copy"; the pass
+  and its conditions: "The move is the back end's AddressModePropagation")
 
 ## An instruction too many or too few
 

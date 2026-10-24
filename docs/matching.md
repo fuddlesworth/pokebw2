@@ -1560,7 +1560,19 @@ Same instructions, scheduled in another order.
   the +8 is conditional or when an operand is redefined on one path to the same use (`if (b) { a = 0; }`); a
   redefinition on every path, `a += 12`, goes into a new register and leaves the old value to the moved sum. `arc_tool.c`'s `ArchiveMoveImageTop` writes
   `fimgOffset = fntbOffset + value;` before a read and `fimgOffset += 8;` after it, and is 4 bytes short for it:
-  the original stores the sum where it is written and adds the 8 to its spill slot.
+  the original stores the sum where it is written and adds the 8 to its spill slot. Folding the 8 into the other
+  operand, `dataOffset = 8 + entry.start;` and then `fimgOffset + dataOffset`, keeps the sum where it is written, as
+  any use that isn't a copy does, but puts the 8 on `entry.start`'s register.
+  The move is the back end's AddressModePropagation (mwccarm 1.1p1's `AddressModePropagation.c`, entry at file offset
+  0x5255e0), at every level above 0, after the CSE that follows code motion. It moves an `add rd, rm, rn` into its uses
+  only when every use is a register copy, an add of 0 or a load or store based on `rd`, when no instruction in between
+  redefines `rm` or `rn`, and when no flag-reading instruction (`b<cond>`, `adc`, `sbc`) follows before one that sets
+  the flags, since Thumb's `adds` sets them: the 64-bit carrier's add and `adc` keep the sum for that reason. The front
+  end turns a `+=` with a single use into a copy plus an add, so a straight-line `x += 8` before its use always reaches
+  the pass as a copy. With the pass's call NOPped in a copy of the compiler, `ArchiveMoveImageTop`'s `fimgOffset += 8`
+  form (`fntbOffset` declared first) compiles to the original byte for byte in both versions; the same patch breaks 11
+  matching functions in the first 15 source files, so the game's compiler had the pass, and the original source kept the
+  sum out of it in a way not yet found.
 - A local of another type than the callee parameters it is passed to is computed at its first use, past a call in
   between, where a local of their type is computed where it is written: `g3d_text_draw.c`'s
   `G3DTextDraw_StringToTexture` computes `size` before `GX_BeginLoadTex()`, as the original does, only as a
