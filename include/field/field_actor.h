@@ -427,7 +427,8 @@ enum {
     DRAW_STATUS_ANIME_13,
 };
 void FldAct_SetDrawStatus(FieldActor *actor, u32 value);
-void func_ov012_02167564(FieldActor *actor, u32 value);
+// Actor flag 0x4000, which hides the actor's reflection (fldeff_reflect.c), as fishing does
+void SetActorReflectionHidden(FieldActor *actor, u32 value);
 // Sets x and z to the center of a tile, leaving y
 void ConvGXZToVector(s16 x, s16 z, VecFx32 *pos);
 void SpawnAllZoneNPCs(MMSys *mmSys, ZoneNPC *npcs, s32 zoneId, u32 count, EventWork *eventWork);
@@ -619,8 +620,9 @@ ActorG3DSystem *FldActSys_GetActorG3DSystem(MMSys *system);
 NoGridMapper *FldActSys_GetNoGridMapper(MMSys *system);
 // The camera angle that FldActSys_InitDraw set, or 0
 u16 FldActSys_GetCameraAngle(MMSys *system);
-u32 func_ov012_02166fc0(MMSys *system);
-void func_ov012_02166fc4(MMSys *system, u32 value);
+// The lights that fldeff_reflect.c gives the reflections' billboard actors
+u32 FldActSys_GetReflectLights(MMSys *system);
+void FldActSys_SetReflectLights(MMSys *system, u32 value);
 // The number of event types (constants/actor_event_types.h), by which field_actor_evtype.c's tables go
 #define ACTOR_EVENT_TYPE_MAX 21
 void SetActorEvType(FieldActor *actor, u16 evType);
@@ -660,9 +662,10 @@ void FldActSys_SetDrawInited(MMSys *system, BOOL flag);
 // Whether the actor exists
 BOOL FldAct_IsInUse(FieldActor *actor);
 BOOL FldAct_IsDrawCreated(FieldActor *actor);
-BOOL func_ov012_0216754c(FieldActor *actor);
+BOOL IsActorReflectionHidden(FieldActor *actor);
 void SetActorFlag8000(FieldActor *actor, BOOL value);
-BOOL func_ov012_021675b4(FieldActor *actor);
+// Whether actor flag 0x100, which SetActorFlag256 sets, is clear
+BOOL IsActorFlag256Clear(FieldActor *actor);
 void SetActorFlag256(FieldActor *actor, BOOL value);
 void SetActorFlag32(FieldActor *actor, BOOL value);
 void FldAct_SetHeightCalcDisabled(FieldActor *actor, BOOL a1);

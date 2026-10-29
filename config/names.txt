@@ -8842,6 +8842,8 @@ overlays/ov012 0x02166f6c FldActSys_GetTaskPriority
 overlays/ov012 0x02166f94 FldActSys_BindFieldBillboardActor
 overlays/ov012 0x02166f98 FldActSys_GetFieldBillboardActor
 overlays/ov012 0x02166fb0 FldActSys_GetCameraAngle
+overlays/ov012 0x02166fc0 FldActSys_GetReflectLights
+overlays/ov012 0x02166fc4 FldActSys_SetReflectLights
 overlays/ov012 0x02166fe4 GetActorMovementFlags
 overlays/ov012 0x02167004 SetFieldActorUID
 overlays/ov012 0x0216707c GetActorLastFaceDir
@@ -8878,7 +8880,10 @@ overlays/ov012 0x021674f4 FldAct_SetDrawCreated
 overlays/ov012 0x02167500 FldAct_ClearDrawCreated
 overlays/ov012 0x0216750c FldAct_IsDrawCreated
 overlays/ov012 0x02167520 IsActorHidden
+overlays/ov012 0x0216754c IsActorReflectionHidden
+overlays/ov012 0x02167564 SetActorReflectionHidden
 overlays/ov012 0x02167580 SetActorCollisionEnabled
+overlays/ov012 0x021675b4 IsActorFlag256Clear
 overlays/ov012 0x02167600 IsActorMovementDisabled
 overlays/ov012 0x02167614 FldAct_IsDrawReady
 overlays/ov012 0x0216763c FldAct_SetHeightCalcDisabled

@@ -122,7 +122,8 @@ struct MMSys {
     HeapID fieldHeapId;
     u16 unkC;
     u16 unkE;
-    u32 unk10;
+    // The lights of the reflections' billboard actors: 1, or 8 in the Infinity dungeon
+    u32 reflectLights;
     ArcTool *dataArc;
     ArcTool *actorConfigArc;
     FieldActor *actorHeap;

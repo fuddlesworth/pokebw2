@@ -187,7 +187,7 @@ MMSys *FldActSys_Create(HeapID heapId, u32 capacity, StrengthRockSave *save) {
     system->heapId = heapId;
     system->mmodelSave = save;
     system->unkC = 0x80;
-    system->unk10 = 1;
+    system->reflectLights = 1;
     FldActSys_InitConfigArc(system, heapId);
     system->actorConfigCache = GFL_HeapAllocate(heapId, 0x310, TRUE, "fldmmdl.c", 215);
     return system;
@@ -689,12 +689,12 @@ u16 FldActSys_GetCameraAngle(MMSys *system) {
     return 0;
 }
 
-u32 func_ov012_02166fc0(MMSys *system) {
-    return system->unk10;
+u32 FldActSys_GetReflectLights(MMSys *system) {
+    return system->reflectLights;
 }
 
-void func_ov012_02166fc4(MMSys *system, u32 value) {
-    system->unk10 = value;
+void FldActSys_SetReflectLights(MMSys *system, u32 value) {
+    system->reflectLights = value;
 }
 
 void SetActorFlag(FieldActor *actor, u32 flag) {
@@ -1279,14 +1279,14 @@ void SetActorHidden(FieldActor *actor, BOOL hidden) {
     }
 }
 
-BOOL func_ov012_0216754c(FieldActor *actor) {
+BOOL IsActorReflectionHidden(FieldActor *actor) {
     if (CheckActorFlag(actor, 0x4000)) {
         return TRUE;
     }
     return FALSE;
 }
 
-void func_ov012_02167564(FieldActor *actor, u32 value) {
+void SetActorReflectionHidden(FieldActor *actor, u32 value) {
     if (value == TRUE) {
         SetActorFlag(actor, 0x4000);
     } else {
@@ -1310,7 +1310,7 @@ void SetActorFlag8000(FieldActor *actor, BOOL value) {
     }
 }
 
-BOOL func_ov012_021675b4(FieldActor *actor) {
+BOOL IsActorFlag256Clear(FieldActor *actor) {
     if (!CheckActorFlag(actor, 0x100)) {
         return TRUE;
     }

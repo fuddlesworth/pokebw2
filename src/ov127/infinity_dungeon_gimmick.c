@@ -175,7 +175,7 @@ void InfinityDungeonGimmick_Setup(Field *field) {
         GFL_HeapAllocate(heapId, InfinityDungeonGimmick_GetDungeonSize(), FALSE, "infinity_dungeon_gimmick.c", 510);
     InfinityDungeonGimmick_SetupDungeon(gimmick->dungeon, gameData, heapId);
     InfinityDungeonGimmick_SetupScene(gimmick->dungeon, gimmick);
-    func_ov012_02166fc4(Field_GetActorSystem(field), 8);
+    FldActSys_SetReflectLights(Field_GetActorSystem(field), 8);
 }
 
 void InfinityDungeonGimmick_Delete(Field *field) {
@@ -183,7 +183,7 @@ void InfinityDungeonGimmick_Delete(Field *field) {
     FieldExpObj_FreeScene(gimmick->expObjSystem, 0);
     GFL_HeapFree(gimmick->dungeon);
     Field_DeleteGimmickWorkBlock(field, 0);
-    func_ov012_02166fc4(Field_GetActorSystem(field), 1);
+    FldActSys_SetReflectLights(Field_GetActorSystem(field), 1);
 }
 
 void InfinityDungeonGimmick_Update(Field *field) {

@@ -165,7 +165,7 @@ GameEventReturnCode EventFieldFishing_Callback(GameEvent *event, u32 *state, voi
     case FISHING_STEP_WAIT_FORM_CHANGE:
         if (FieldPlayer_StepFormChange(work->player) == TRUE) {
             FldAct_SetDrawStatus(work->actor, DRAW_STATUS_STOP);
-            func_ov012_02167564(work->actor, work->flag5B);
+            SetActorReflectionHidden(work->actor, work->flag5B);
             GFL_SndSEPlay(SEQ_SE_FLD_19);
             ++*state;
         }
@@ -237,7 +237,7 @@ GameEventReturnCode EventFieldFishing_Callback(GameEvent *event, u32 *state, voi
         if (FieldPlayer_StepFormChange(work->player) != TRUE) {
             break;
         }
-        func_ov012_02167564(work->actor, 0);
+        SetActorReflectionHidden(work->actor, 0);
         return GAMEEVENT_DONE;
     case FISHING_STEP_BATTLE:
         RecordAddOne(work->records, 8);

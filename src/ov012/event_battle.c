@@ -159,8 +159,8 @@ static GameEventReturnCode EventWildBattleCall_Callback(GameEvent *event, u32 *s
         if (wk->unk0A) {
             FieldActor *player = FindPlayerFieldActor(GameData_GetMMSys(gameData));
 
-            if (func_ov012_0216754c(player)) {
-                func_ov012_02167564(player, 0);
+            if (IsActorReflectionHidden(player)) {
+                SetActorReflectionHidden(player, 0);
             }
         }
         if (!defeat && GameData_CheckPairFlag(gameData)) {
