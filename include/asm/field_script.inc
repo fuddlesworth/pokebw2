@@ -2101,7 +2101,7 @@
     FieldCommand 366
     .endm
 
-    .macro HighLinkCmd_0170 a0
+    .macro HasPassPower a0
     FieldCommand 368
     .2byte \a0
     .endm

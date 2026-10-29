@@ -3069,7 +3069,7 @@
    ]
   },
   "368": {
-   "handler": "func_ov033_021772f4",
+   "handler": "Scrcmd_Funfest_HasPassPower",
    "overlay": 33,
    "args": [
     "var"
@@ -3077,7 +3077,7 @@
    "area": "HighLink"
   },
   "370": {
-   "handler": "func_ov033_021772c8",
+   "handler": "Scrcmd_Funfest_IsFestMissionAvailable",
    "overlay": 33,
    "args": [
     "var"

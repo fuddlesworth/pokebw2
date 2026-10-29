@@ -463,9 +463,9 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     NULL,                                               // 0x16d
     Scrcmd_Proc_CallMonolith,                           // 0x16e
     NULL,                                               // 0x16f
-    func_ov033_021772f4,                                // 0x170
+    Scrcmd_Funfest_HasPassPower,                        // 0x170
     NULL,                                               // 0x171
-    func_ov033_021772c8,                                // 0x172
+    Scrcmd_Funfest_IsFestMissionAvailable,              // 0x172
     NULL,                                               // 0x173
     Scrcmd_Encount_CallWildBattle,                      // 0x174
     Scrcmd_Encount_CallWildBattleEnd,                   // 0x175
