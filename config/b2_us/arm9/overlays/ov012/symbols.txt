@@ -1748,7 +1748,7 @@ FIELD_ACTION_BLOCK_CHECKS kind:data(any) addr:0x0216ce14
 HIDDEN_ITEMS kind:data(any) addr:0x0216ce44
 DAYS_PER_MONTH kind:data(any) addr:0x0216d698
 sGameBeaconSearchNetInit kind:data(any) addr:0x0216d6a8
-data_ov012_0216d718 kind:data(any) addr:0x0216d718
+sThankedCountMilestones kind:data(any) addr:0x0216d718
 SYMBOL_MAP_13 kind:data(any) addr:0x0216d720
 SYMBOL_MAP_12 kind:data(any) addr:0x0216d73e
 SYMBOL_MAP_11 kind:data(any) addr:0x0216d75c
