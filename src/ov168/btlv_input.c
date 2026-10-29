@@ -1187,14 +1187,14 @@ s32 BtlvInput_CheckInput(BtlvInput *work, const BtlvInputButtonSet *set, const B
                     int i;
 
                     if (work->rule != 2) {
-                        count = data_ov169_0689e218[work->pokeIndex][work->pos];
+                        count = BTLV_SCD_TARGET_STOP_COUNTS_DOUBLE[work->pokeIndex][work->pos];
                     } else {
-                        count = data_ov169_0689e238[work->pokeIndex][work->pos];
+                        count = BTLV_SCD_TARGET_STOP_COUNTS_TRIPLE[work->pokeIndex][work->pos];
                     }
                     if (work->rule != 2) {
-                        targetStops = data_ov169_0689e6e0[work->pokeIndex][work->pos];
+                        targetStops = BTLV_SCD_TARGET_STOPS_DOUBLE[work->pokeIndex][work->pos];
                     } else {
-                        targetStops = data_ov169_0689e884[work->pokeIndex][work->pos];
+                        targetStops = BTLV_SCD_TARGET_STOPS_TRIPLE[work->pokeIndex][work->pos];
                     }
                     for (i = 0; i < count; i++) {
                         if (button == targetStops[i].a) {
