@@ -31322,7 +31322,7 @@ overlays/ov257 0x0219cc54 CtvtComm_StartSync
 overlays/ov257 0x0219cc68 CtvtComm_IsSynced
 overlays/ov257 0x0219cc7c CtvtComm_GetSelfNetId
 overlays/ov257 0x0219cc88 CtvtComm_GetTalker
-overlays/ov257 0x0219cc94 CtvtComm_GetUnk3dc
+overlays/ov257 0x0219cc94 CtvtComm_GetGameCharacter
 overlays/ov257 0x0219cca0 CtvtComm_IsVoiceBusy
 overlays/ov257 0x0219cca8 CtvtComm_GetBeacon
 overlays/ov257 0x0219ccb0 CtvtComm_GetVoicePacket
@@ -31336,7 +31336,7 @@ overlays/ov257 0x0219ccf0 CtvtComm_GetDrawSlot
 overlays/ov257 0x0219cd34 CtvtComm_CommitDrawSlot
 overlays/ov257 0x0219cd4c CtvtComm_StartInviteTimer
 overlays/ov257 0x0219cd58 CtvtComm_IsInviteTimerDone
-overlays/ov257 0x0219cd6c CtvtComm_GetUnk3f8
+overlays/ov257 0x0219cd6c CtvtComm_CanSendVoice
 overlays/ov257 0x0219cd74 CtvtTalk_Create
 overlays/ov257 0x0219cdec CtvtTalk_Delete
 overlays/ov257 0x0219ce04 CtvtTalk_Enter
@@ -31642,6 +31642,8 @@ overlays/ov257 0x021aaa54 CommTvt_GetHeapId
 overlays/ov257 0x021aaa58 CommTvt_GetArc
 overlays/ov257 0x021aaa60 CommTvt_GetObjResource
 overlays/ov257 0x021aaa6c CommTvt_GetClActUnit
+overlays/ov257 0x021aaa74 CommTvt_GetFadeInBoth
+overlays/ov257 0x021aaa78 CommTvt_SetFadeInBoth
 overlays/ov257 0x021aaa7c CommTvt_GetFont
 overlays/ov257 0x021aaa84 CommTvt_GetMsgData
 overlays/ov257 0x021aaa8c CommTvt_GetPrintQueue
@@ -31659,16 +31661,23 @@ overlays/ov257 0x021aaaf0 CommTvt_ToggleZoom
 overlays/ov257 0x021aab04 CommTvt_SetZoomed
 overlays/ov257 0x021aab08 CommTvt_GetSelfIndex
 overlays/ov257 0x021aab0c CommTvt_SetSelfIndex
-overlays/ov257 0x021aab14 CommTvt_SetMessageActive
+overlays/ov257 0x021aab10 CommTvt_IsEnding
+overlays/ov257 0x021aab14 CommTvt_SetEnding
 overlays/ov257 0x021aab18 CommTvt_GetViewSwapped
 overlays/ov257 0x021aab1c CommTvt_ToggleViewSwapped
 overlays/ov257 0x021aab2c CommTvt_GetInputLocked
+overlays/ov257 0x021aab30 CommTvt_SetInputLocked
 overlays/ov257 0x021aab34 CommTvt_GetEndRequested
+overlays/ov257 0x021aab38 CommTvt_SetEndRequested
 overlays/ov257 0x021aab3c CommTvt_IsLaunchModeCall
 overlays/ov257 0x021aab50 CommTvt_CanExchangePhotos
 overlays/ov257 0x021aab54 CommTvt_ClearCanExchangePhotos
+overlays/ov257 0x021aab5c CommTvt_IsPictureLocked
+overlays/ov257 0x021aab60 CommTvt_SetPictureLocked
 overlays/ov257 0x021aab64 CommTvt_IsCameraEnabled
 overlays/ov257 0x021aab80 CommTvt_OpenConfirmMenu
+overlays/ov257 0x021aac08 CommTvt_OpenConfirmMenuAt
+overlays/ov257 0x021aac98 CommTvt_OpenCancelMenu
 overlays/ov257 0x021aad08 CommTvt_ClearNameWindows
 overlays/ov257 0x021aad48 CommTvt_ClearAndTransferNameWindows
 overlays/ov257 0x021aad74 CommTvt_PlaceSlotMarker
@@ -31732,6 +31741,7 @@ overlays/ov257 0x021b18e4 sPictureSizes
 overlays/ov257 0x021b18f0 sVoiceSpeeds
 overlays/ov257 0x021b1904 sCtvtCommCommands
 overlays/ov257 0x021b193c sCtvtCommNetInitData
+overlays/ov257 0x021b19ac wipeDivision
 overlays/ov257 0x021b19ae sPixelMasks
 overlays/ov257 0x021b19b6 sWaveEdges
 overlays/ov257 0x021b19bf sZoomButtons
@@ -31754,6 +31764,7 @@ overlays/ov257 0x021b1a94 sStampMenuPos
 overlays/ov257 0x021b1a98 sPenFramePos
 overlays/ov257 0x021b1a9c sStampFramePos
 overlays/ov257 0x021b1aa0 sReturnButton
+overlays/ov257 0x021b1aa8 barWidth
 overlays/ov257 0x021b1aad sPumpThresholds
 overlays/ov257 0x021b1ab0 sResultPopAnimations
 overlays/ov257 0x021b1ab4 sHitSizes
@@ -31804,6 +31815,7 @@ overlays/ov257 0x021b2104 sFaceOrders
 overlays/ov257 0x021b2164 sTargetResources
 overlays/ov257 0x021b21f4 sTargetBounds
 overlays/ov257 0x021b2218 sBalloonPositions
+overlays/ov257 0x021b223c y
 overlays/ov257 0x021b2244 sCtvtGameCamPromptMessages
 overlays/ov257 0x021b2280 sCtvtGameCamLCDConfig
 overlays/ov257 0x021b2290 sCtvtGameCamClActSetup

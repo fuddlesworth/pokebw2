@@ -454,7 +454,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         break;
     case 23:
         wk->tvt.gameData = GSYS_GetGameData(gsys);
-        wk->tvt.unk4 = 3;
+        wk->tvt.startMode = COMM_TVT_START_EXISTING;
         GSYS_QueueProcAsEvent(wk->event, OVERLAY_COMM_TVT, &COMM_TVT_PROC_FUNCTIONS, &wk->tvt);
         (*state)++;
         break;
