@@ -1675,7 +1675,7 @@ sHallOnlinePos kind:data(any) addr:0x0216adfc
 sGiftCountPoints kind:data(any) addr:0x0216ae08
 sProgramGiftProps kind:data(any) addr:0x0216ae1c
 sDeliveryBeaconCommands kind:data(any) addr:0x0216af34
-data_ov012_0216af3c kind:data(any) addr:0x0216af3c
+sDeliveryIrcCommands kind:data(any) addr:0x0216af3c
 sRibbonParams kind:data(any) addr:0x0216af5c
 GLOBAL_SCRIPT_TABLE kind:data(any) addr:0x0216af98
 EVCMD_PERM_TABLE kind:data(any) addr:0x0216b1f0
@@ -1813,7 +1813,7 @@ sDeliveryBeaconNetInit kind:data(any) addr:0x0216e034
 sDeliveryBeaconAssertFileName kind:data(any) addr:0x0216e0a4
 data_ov012_0216e0a8 kind:data(any) addr:0x0216e0a8
 data_ov012_0216e0bc kind:data(any) addr:0x0216e0bc
-data_ov012_0216e110 kind:data(any) addr:0x0216e110
+sDeliveryIrcNetInit kind:data(any) addr:0x0216e110
 data_ov012_0216e180 kind:data(any) addr:0x0216e180
 data_ov012_0216e190 kind:data(any) addr:0x0216e190
 data_ov012_0216e1a0 kind:data(any) addr:0x0216e1a0

@@ -8977,6 +8977,7 @@ overlays/ov012 0x0216adfc sHallOnlinePos
 overlays/ov012 0x0216ae08 sGiftCountPoints
 overlays/ov012 0x0216ae1c sProgramGiftProps
 overlays/ov012 0x0216af34 sDeliveryBeaconCommands
+overlays/ov012 0x0216af3c sDeliveryIrcCommands
 overlays/ov012 0x0216af5c sRibbonParams
 overlays/ov012 0x0216c9a8 sRebattleTrainers
 overlays/ov012 0x0216c9c0 sListMenuRequest
@@ -9009,6 +9010,7 @@ overlays/ov012 0x0216dfc4 MUSICAL_DRESSUP_PROC_FUNCTIONS
 overlays/ov012 0x0216dfe8 MUSICAL_STAGE_PROC_FUNCTIONS
 overlays/ov012 0x0216e034 sDeliveryBeaconNetInit
 overlays/ov012 0x0216e0a4 sDeliveryBeaconAssertFileName
+overlays/ov012 0x0216e110 sDeliveryIrcNetInit
 overlays/ov012 0x0216e2e0 sScaleStep
 overlays/ov012 0x0216e644 sEffect
 overlays/ov013 0x0216e660 EventBeaconDetail_Callback
