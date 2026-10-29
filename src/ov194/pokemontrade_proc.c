@@ -2999,7 +2999,7 @@ static BOOL PokemonTrade_ProcMain(GameProc *proc, u32 *state, void *param, void 
     Poketrade3D_Update3DScene(wk);
     GFL_G3DSysReqSwapBuffers();
     if (PokemonTrade_IsNetwork(wk) && wk->netSave == NULL && GFL_NetErrCheck()) {
-        if (wk->unk11F7) {
+        if (wk->tradeUnsaved) {
             GFL_NetErrShowWifi(0x29);
         }
         if (wk->http != NULL) {

@@ -55,11 +55,11 @@ static void PoketradeSave_StepWaitFade1(PokemonTradeWork *wk);
 static void PoketradeSave_StepWaitFade2(PokemonTradeWork *wk);
 static void PoketradeSave_StepWaitSyncRange(PokemonTradeWork *wk);
 static void PoketradeSave_SendTradeSummary(PokemonTradeWork *wk);
-static void *func_ov194_021bef14(GameData *gameData, HeapID heapId);
+static void *PoketradeSave_BackupSurvey(GameData *gameData, HeapID heapId);
 static void PoketradeSave_RestoreSaveControl(GameData *gameData, void *copy);
-static void *func_ov194_021bef7c(GameData *gameData, HeapID heapId);
+static void *PoketradeSave_BackupPokedex(GameData *gameData, HeapID heapId);
 static void PoketradeSave_RestorePokedex(GameData *gameData, void *copy);
-static void *func_ov194_021befdc(GameData *gameData, HeapID heapId);
+static void *PoketradeSave_BackupPlayersMet(GameData *gameData, HeapID heapId);
 static void PoketradeSave_RestoreBlock1F(GameData *gameData, void *copy);
 static void PoketradeSave_FreeBackups(void *work);
 static void PoketradeSave_RestoreBackups(PokemonTradeWork *wk);
@@ -263,7 +263,7 @@ inline void *BackupRecords(GameData *gameData, HeapID heapId) {
     return copy;
 }
 
-static void *func_ov194_021bef14(GameData *gameData, HeapID heapId) {
+static void *PoketradeSave_BackupSurvey(GameData *gameData, HeapID heapId) {
     SaveControl *save = GameData_GetSaveControl(gameData);
     void *copy = GFL_HeapAllocate(heapId, UnityTower_GetSurveySaveSize(), FALSE, "pokemontrade_save.c", 431);
     u32 size = UnityTower_GetSurveySaveSize();
@@ -277,7 +277,7 @@ static void PoketradeSave_RestoreSaveControl(GameData *gameData, void *copy) {
     GFL_HeapFree(copy);
 }
 
-static void *func_ov194_021bef7c(GameData *gameData, HeapID heapId) {
+static void *PoketradeSave_BackupPokedex(GameData *gameData, HeapID heapId) {
     void *copy = GFL_HeapAllocate(heapId, getSizeofPokedexData(), FALSE, "pokemontrade_save.c", 460);
     u32 size = getSizeofPokedexData();
     MI_CpuCopy8(GameData_GetPokedex(gameData), copy, size);
@@ -289,7 +289,7 @@ static void PoketradeSave_RestorePokedex(GameData *gameData, void *copy) {
     GFL_HeapFree(copy);
 }
 
-static void *func_ov194_021befdc(GameData *gameData, HeapID heapId) {
+static void *PoketradeSave_BackupPlayersMet(GameData *gameData, HeapID heapId) {
     void *copy = GFL_HeapAllocate(heapId, PalPadFriendList_GetSize(), FALSE, "pokemontrade_save.c", 489);
     u32 size = PalPadFriendList_GetSize();
     MI_CpuCopy8(GameData_GetPalPadFriendList(gameData), copy, size);
@@ -326,7 +326,7 @@ static void PoketradeSave_FreeBackups(void *work) {
         GFL_HeapFree(wk->backup.box);
     }
     MI_CpuFill8(&wk->backup, 0, sizeof(wk->backup));
-    wk->unk11F7 = 0;
+    wk->tradeUnsaved = 0;
 }
 
 // Restores what the trade changed from the copies
@@ -357,7 +357,7 @@ static void PoketradeSave_RestoreBackups(PokemonTradeWork *wk) {
     }
     if (wk->backup.party != NULL) {
         PokeParty_Copy(wk->backup.party, wk->party);
-        PlayTime_SetLastSaved(GameData_GetPlayTime(wk->gameData), &wk->backup.unk1C);
+        PlayTime_SetLastSaved(GameData_GetPlayTime(wk->gameData), &wk->backup.lastSaved);
         GFL_HeapFree(wk->backup.party);
         wk->backup.party = NULL;
     }
@@ -403,10 +403,10 @@ static void PoketradeSave_ApplyTradeResult(PokemonTradeWork *wk) {
     if (!PokemonTrade_IsNegoType(wk)) {
         wk->backup.mail = BackupMail(wk->gameData, wk->heapId);
         wk->backup.records = BackupRecords(wk->gameData, wk->heapId);
-        wk->backup.survey = func_ov194_021bef14(wk->gameData, wk->heapId);
-        wk->backup.pokedex = func_ov194_021bef7c(wk->gameData, wk->heapId);
-        wk->backup.playersMet = func_ov194_021befdc(wk->gameData, wk->heapId);
-        PlayTime_GetLastSaved(GameData_GetPlayTime(wk->gameData), &wk->backup.unk1C);
+        wk->backup.survey = PoketradeSave_BackupSurvey(wk->gameData, wk->heapId);
+        wk->backup.pokedex = PoketradeSave_BackupPokedex(wk->gameData, wk->heapId);
+        wk->backup.playersMet = PoketradeSave_BackupPlayersMet(wk->gameData, wk->heapId);
+        PlayTime_GetLastSaved(GameData_GetPlayTime(wk->gameData), &wk->backup.lastSaved);
         if (wk->param->box == BoxSaveAccessor_GetAvailableBoxCount(wk->boxes)) {
             wk->backup.party = PokeParty_Create(wk->heapId);
             PokeParty_Copy(wk->party, wk->backup.party);
@@ -422,7 +422,7 @@ static void PoketradeSave_ApplyTradeResult(PokemonTradeWork *wk) {
         if (param->box == BoxSaveAccessor_GetAvailableBoxCount(wk->boxes)) {
             PoketradeSave_ConsumePerapVoice(wk, wk->party, param->slot);
         }
-        wk->unk11F7 = 1;
+        wk->tradeUnsaved = 1;
     }
     {
         PokemonTradeParam *param = wk->param;
@@ -674,7 +674,7 @@ static void PoketradeSave_StepWaitSaveDone(PokemonTradeWork *wk) {
 static void PoketradeSave_StepBeginWipeOut(PokemonTradeWork *wk) {
     GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0, 6, 1, wk->heapId);
     wk->timer = 0;
-    wk->unk11F7 = 0;
+    wk->tradeUnsaved = 0;
     PokemonTrade_SetState(wk, PoketradeSave_StepRebuildSceneAfterWipe);
 }
 

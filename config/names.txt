@@ -26666,8 +26666,11 @@ overlays/ov194 0x021bed88 PoketradeSave_StepWaitFade1
 overlays/ov194 0x021bedb0 PoketradeSave_StepWaitFade2
 overlays/ov194 0x021bedd8 PoketradeSave_StepWaitSyncRange
 overlays/ov194 0x021bedfc PoketradeSave_SendTradeSummary
+overlays/ov194 0x021bef14 PoketradeSave_BackupSurvey
 overlays/ov194 0x021bef58 PoketradeSave_RestoreSaveControl
+overlays/ov194 0x021bef7c PoketradeSave_BackupPokedex
 overlays/ov194 0x021befbc PoketradeSave_RestorePokedex
+overlays/ov194 0x021befdc PoketradeSave_BackupPlayersMet
 overlays/ov194 0x021bf01c PoketradeSave_RestoreBlock1F
 overlays/ov194 0x021bf03c PoketradeSave_FreeBackups
 overlays/ov194 0x021bf0c4 PoketradeSave_RestoreBackups

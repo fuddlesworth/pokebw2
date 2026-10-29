@@ -143,7 +143,9 @@ typedef struct {
     void *playersMet;
     PokeParty *party;
     void *box;
-    u32 unk1C;
+    // The play time's last save, which the party's copy restores
+    u32 lastSaved;
+    // Whether the Chatot's cry was forgotten
     BOOL chatot;
 } TradeBackup;
 
@@ -469,7 +471,9 @@ struct PokemonTradeWork {
     u8 partnerMailBoxFull;
     u8 boxCursorDone;
     u8 nationalDex;
-    u8 unk11F7;
+    // Whether a negotiated trade, which keeps no copies, is in the save data but not yet saved: a lost connection
+    // then shows its error
+    u8 tradeUnsaved;
     u8 bgmCount;
     // Whether the upper screen's windows wait for the V-blank
     u8 wndSetupPending;
