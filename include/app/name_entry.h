@@ -38,13 +38,13 @@ typedef struct {
     // The gender, or the Pokémon's species
     u16 gender;
     // The Pokémon's form, and its sex in the high byte
-    u16 unk6;
+    u16 sexAndForm;
     PartyPkm *pkm;
     // A StrBuf that the Pokémon name entry formats and prints once the name is given, if not NULL, and the box data and
     // the number of the box, which it names
-    StrBuf *unkC;
-    BoxSaveAccessor *unk10;
-    u32 unk14;
+    StrBuf *boxMessage;
+    BoxSaveAccessor *boxes;
+    u32 box;
     u32 maxLength;
     // Set when the name is to be left as it was, unchanged or empty (NameEntryParam_IsCanceled)
     u32 canceled;
@@ -63,13 +63,13 @@ typedef struct {
 
 // Overlay 12's name_input_setup.c
 // The name starts as a copy of name, if given
-NameEntryParam *setupNameEntry(HeapID heapId, u32 mode, u32 a2, u32 a3, u32 maxLength, const StrBuf *name,
+NameEntryParam *setupNameEntry(HeapID heapId, u32 mode, u32 gender, u32 sexAndForm, u32 maxLength, const StrBuf *name,
                                TrainerGameInfoSave *gameInfo);
 // The name entry for a Pokémon's nickname
 NameEntryParam *setupPokemonNameEntry(HeapID heapId, PartyPkm *pkm, u32 maxLength, const StrBuf *name,
                                       TrainerGameInfoSave *gameInfo);
-NameEntryParam *pokemonNameEntry(HeapID heapId, PartyPkm *pkm, u32 maxLength, const StrBuf *name, StrBuf *unkC,
-                                 BoxSaveAccessor *unk10, u32 unk14, TrainerGameInfoSave *gameInfo);
+NameEntryParam *pokemonNameEntry(HeapID heapId, PartyPkm *pkm, u32 maxLength, const StrBuf *name, StrBuf *boxMessage,
+                                 BoxSaveAccessor *boxes, u32 box, TrainerGameInfoSave *gameInfo);
 void NameEntryParam_Free(NameEntryParam *param);
 // Copies the entered name, and compares it with a string
 void NameEntryParam_GetName(NameEntryParam *param, StrBuf *dest);
