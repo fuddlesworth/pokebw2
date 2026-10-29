@@ -56,13 +56,6 @@
 #define COMM_TVT_PALETTE_FRAMES 10
 #define COMM_TVT_OBJ_RESOURCES 11
 
-enum {
-    COMM_TVT_START_WAIT,
-    COMM_TVT_START_CALL,
-    COMM_TVT_START_ANSWER,
-    COMM_TVT_START_EXISTING,
-};
-
 struct CommTvtWork {
     HeapID heapId;
     TCB *vblankTask;
@@ -290,7 +283,7 @@ static void CommTvt_Init(CommTvtWork *sys) {
     }
     GFL_NetSetIconScreen(FALSE, sys->heapId);
 
-    switch (sys->param->unk4) {
+    switch (sys->param->startMode) {
     case COMM_TVT_START_WAIT:
         CtvtComm_SetNextConnectType(sys, sys->comm, CTVT_CONNECT_SCAN);
         sys->nextMode = COMM_TVT_MODE_TALK;
@@ -940,7 +933,7 @@ void func_ov257_021aab38(CommTvtWork *sys, BOOL value) {
 }
 
 BOOL CommTvt_IsLaunchModeCall(CommTvtWork *sys) {
-    if (sys->param->unk4 == COMM_TVT_START_EXISTING) {
+    if (sys->param->startMode == COMM_TVT_START_EXISTING) {
         return TRUE;
     }
     return FALSE;
@@ -1121,7 +1114,7 @@ void CommTvt_DeleteTimeIcon(CommTvtWork *sys) {
 static BOOL CommTvt_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
     CommTvtWork *sys;
 
-    if (param != NULL && ((CommTvtParam *)param)->unk4 == COMM_TVT_START_EXISTING) {
+    if (param != NULL && ((CommTvtParam *)param)->startMode == COMM_TVT_START_EXISTING) {
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_COMM_TVT, 0xd0000);
     } else {
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_COMM_TVT, 0x130000);
@@ -1132,12 +1125,12 @@ static BOOL CommTvt_ProcInit(GameProc *proc, u32 *state, void *param, void *work
         // Started on its own, for debugging: R calls, X answers
         sys->param = GFL_HeapAllocate(HEAPID_USER, sizeof(CommTvtParam), TRUE, "comm_tvt_sys.c", 1656);
         sys->param->gameData = GameData_Create(HEAPID_USER);
-        sys->param->unk4 = COMM_TVT_START_WAIT;
+        sys->param->startMode = COMM_TVT_START_WAIT;
         if (GCTX_HIDGetHeldKeys() & PAD_BUTTON_R) {
-            sys->param->unk4 = COMM_TVT_START_CALL;
+            sys->param->startMode = COMM_TVT_START_CALL;
         }
         if (GCTX_HIDGetHeldKeys() & PAD_BUTTON_X) {
-            sys->param->unk4 = COMM_TVT_START_ANSWER;
+            sys->param->startMode = COMM_TVT_START_ANSWER;
         }
     } else {
         sys->param = param;

@@ -217,7 +217,8 @@ void CtvtCall_Enter(CommTvtWork *sys, CtvtCall *call) {
     u8 i;
     u8 j;
 
-    if (param->unk4 != 2 && param->unk4 != 3 && CommTvt_CanExchangePhotos(sys) == FALSE) {
+    if (param->startMode != COMM_TVT_START_ANSWER && param->startMode != COMM_TVT_START_EXISTING &&
+        CommTvt_CanExchangePhotos(sys) == FALSE) {
         GFL_BGSysLoadArcNCGRStatic(arc, 12, 4, 0, 0x2800, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(arc, 18, 4, 0, 0, FALSE, heapId);
         GFL_BGSysLoadScr(4);
@@ -306,7 +307,8 @@ void CtvtCall_Enter(CommTvtWork *sys, CtvtCall *call) {
     call->photoTimer = 0;
     GFL_BGSysMoveBGReq(6, BG_MOVE_SET_Y, 0);
 
-    if ((param->unk4 == 2 || param->unk4 == 3) && CommTvt_CanExchangePhotos(sys) == FALSE) {
+    if ((param->startMode == COMM_TVT_START_ANSWER || param->startMode == COMM_TVT_START_EXISTING) &&
+        CommTvt_CanExchangePhotos(sys) == FALSE) {
         ClActor_SetSequence(call->returnButton, 15);
         CtvtCall_PrintInfo(sys, call, 24);
         call->showInfo = TRUE;
@@ -373,7 +375,7 @@ int CtvtCall_Main(CommTvtWork *sys, CtvtCall *call) {
 
             if (CommTvt_CanExchangePhotos(sys) == TRUE) {
                 call->state = CALL_STATE_PHOTO_NOTICE;
-            } else if (param->unk4 == 2 || param->unk4 == 3) {
+            } else if (param->startMode == COMM_TVT_START_ANSWER || param->startMode == COMM_TVT_START_EXISTING) {
                 call->state = CALL_STATE_WAITING;
             } else {
                 call->state = CALL_STATE_LIST;
@@ -494,7 +496,7 @@ int CtvtCall_Main(CommTvtWork *sys, CtvtCall *call) {
     }
     case CALL_STATE_FAILED:
         if (GFL_HIDIsTouchPressed() == TRUE) {
-            if (CommTvt_GetParam(sys)->unk4 == 2) {
+            if (CommTvt_GetParam(sys)->startMode == COMM_TVT_START_ANSWER) {
                 CtvtCamera_StopCamera(sys, CommTvt_GetCamera(sys));
                 call->menuMode = CALL_MENU_NONE;
                 call->state = CALL_STATE_LEAVE;
@@ -537,7 +539,7 @@ int CtvtCall_Main(CommTvtWork *sys, CtvtCall *call) {
             BmpWin_Free(call->msgWin);
             call->msgWin = BmpWin_CreateDynamic(4, 1, 21, 21, 2, 10, TRUE);
             CommTvt_ClearCanExchangePhotos(sys);
-            if (param->unk4 == 2 || param->unk4 == 3) {
+            if (param->startMode == COMM_TVT_START_ANSWER || param->startMode == COMM_TVT_START_EXISTING) {
                 ClActor_SetSequence(call->returnButton, 15);
                 if (CommTvt_GetMemberCount(sys) < 2) {
                     CtvtCall_PrintInfo(sys, call, 24);
@@ -562,7 +564,7 @@ int CtvtCall_Main(CommTvtWork *sys, CtvtCall *call) {
         break;
     }
 
-    if (param->unk4 != 3 && CommTvt_CanExchangePhotos(sys) == FALSE) {
+    if (param->startMode != COMM_TVT_START_EXISTING && CommTvt_CanExchangePhotos(sys) == FALSE) {
         u8 i;
 
         CtvtCall_Scan(sys, call);
