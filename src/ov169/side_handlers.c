@@ -199,13 +199,13 @@ static void HandlerSideLightScreen(BattleEventItem *item, BtlServerFlow *flow, u
 
 // Reflect and Light Screen cut the damage of the screen's category of moves, by a third in a double battle
 static void CommonScreenEffect(BtlServerFlow *flow, u8 side, u32 screen) {
-    u32 battleType;
+    u32 battleStyle;
     u32 multiplier;
 
     if (side == GetSideFromMonID(BattleEventVar_GetValue(4)) && screen == BattleEventVar_GetValue(0x1a) &&
         BattleEventVar_GetValue(0x45) == 0) {
-        battleType = BtlServerFlow_GetBattleStyle(flow);
-        if (battleType == 0 || battleType == 3) {
+        battleStyle = BtlServerFlow_GetBattleStyle(flow);
+        if (battleStyle == BTL_STYLE_SINGLE || battleStyle == BTL_STYLE_ROTATION) {
             multiplier = 0x800;
         } else {
             multiplier = 0xa8f;
@@ -231,7 +231,7 @@ static void HandlerSideSafeguardCheckFail(BattleEventItem *item, BtlServerFlow *
     attackerId = BattleEventVar_GetValue(4);
     if (side == GetSideFromMonID(attackerId) && attackerId != BattleEventVar_GetValue(3)) {
         condition = BattleEventVar_GetValue(0x1d);
-        if (IsBasicStatus(condition) || condition == 6 || condition == 0xe) {
+        if (IsBasicStatus(condition) || condition == CONDITION_CONFUSION || condition == CONDITION_YAWN) {
             work[0] = BattleEventVar_RewriteValue(0x41, 1);
         }
     }
@@ -483,7 +483,7 @@ static void HandlerSideToxicSpikes(BattleEventItem *item, BtlServerFlow *flow, u
             BattleHandler_PopWork(flow, remove);
         } else {
             condition = BattleHandler_PushWork(flow, 0xc, 0x1f);
-            condition->condition = 5;
+            condition->condition = CONDITION_POISON;
             if (GetSideEffectLayersOfItem(item, side) > 1) {
                 condition->value = MakeConditionBadlyPoisoned();
             } else {

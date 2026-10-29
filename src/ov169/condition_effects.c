@@ -67,10 +67,10 @@ static void ConditionEndTurnActive(BtlServerFlow *flow, BattleMon *mon, u8 monId
     case CONDITION_BIND:
         ConditionEndTurnBind(flow, mon, monId);
         break;
-    case 0x23:
+    case CONDITION_AQUA_RING:
         ConditionEndTurnAquaRing(flow, mon, monId);
         break;
-    case 0x17:
+    case CONDITION_ENCORE:
         ConditionEndTurnEncore(flow, mon, monId);
         break;
     }
@@ -243,7 +243,7 @@ static void ConditionEndTurnAquaRing(BtlServerFlow *flow, BattleMon *mon, u8 mon
 // Cures the condition of a Pokemon whose move is gone
 static void ConditionEndTurnEncore(BtlServerFlow *flow, BattleMon *mon, u8 monId) {
     BattleHandlerCureConditionParam *cure;
-    u32 condition = 0x17;
+    u32 condition = CONDITION_ENCORE;
 
     if (!BattleMon_GetPPOfMove(mon, Condition_GetParam(GetConditionContinuationParam(mon, condition)))) {
         cure = BattleHandler_PushWork(flow, 0xb, monId);
@@ -422,23 +422,12 @@ void Condition_SetAddMessage(u32 condition, BattleCondition value, BattleMon *mo
 
 // The messages of conditions that ended
 static const ConditionCureMessage sConditionCureMessages[] = {
-    { CONDITION_POISON, 0xf6, 0x395 },
-    { CONDITION_BURN, 0x108, 0x3a1 },
-    { CONDITION_SLEEP, 0x138, 0x39b },
-    { CONDITION_FREEZE, 0x126, 0x39e },
-    { CONDITION_PARALYSIS, 0x117, 0x398 },
-    { 0x17, 0x232, -1 },
-    { CONDITION_DISABLE, 0x256, -1 },
-    { CONDITION_EMBARGO, 0x2da, -1 },
-    { CONDITION_BIND, 0x177, 0x177 },
-    { CONDITION_LEECH_SEED, 0x177, 0x177 },
-    { 0x20, 0x477, -1 },
-    { CONDITION_TAUNT, 0x23e, -1 },
-    { 0x1e, 0x295, -1 },
-    { CONDITION_HEAL_BLOCK, 0x374, -1 },
-    { CONDITION_TORMENT, 0x247, -1 },
-    { CONDITION_CONFUSION, 0x15f, 0x3a4 },
-    { CONDITION_ATTRACT, 0x153, 0x3a7 },
+    { CONDITION_POISON, 0xf6, 0x395 },      { CONDITION_BURN, 0x108, 0x3a1 },      { CONDITION_SLEEP, 0x138, 0x39b },
+    { CONDITION_FREEZE, 0x126, 0x39e },     { CONDITION_PARALYSIS, 0x117, 0x398 }, { CONDITION_ENCORE, 0x232, -1 },
+    { CONDITION_DISABLE, 0x256, -1 },       { CONDITION_EMBARGO, 0x2da, -1 },      { CONDITION_BIND, 0x177, 0x177 },
+    { CONDITION_LEECH_SEED, 0x177, 0x177 }, { CONDITION_TELEKINESIS, 0x477, -1 },  { CONDITION_TAUNT, 0x23e, -1 },
+    { CONDITION_MAGNET_RISE, 0x295, -1 },   { CONDITION_HEAL_BLOCK, 0x374, -1 },   { CONDITION_TORMENT, 0x247, -1 },
+    { CONDITION_CONFUSION, 0x15f, 0x3a4 },  { CONDITION_ATTRACT, 0x153, 0x3a7 },
 };
 
 static s32 GetConditionCureMessage(u32 condition, BOOL alt) {
@@ -478,7 +467,7 @@ BOOL Condition_SetCureMessage(u32 condition, BattleCondition cont, BattleMon *mo
             BattleHandler_AddArg(string, Condition_GetParam(cont));
             break;
         case CONDITION_LEECH_SEED:
-            BattleHandler_AddArg(string, 0x49);
+            BattleHandler_AddArg(string, MOVE_LEECH_SEED);
             break;
         }
         return TRUE;
@@ -542,20 +531,9 @@ void Condition_CheckIngrainForceSwitch(BtlServerFlow *flow, BattleMon *mon) {
 
 // The conditions that Baton Pass passes on
 static const u16 sBatonPassConditions[14] = {
-    CONDITION_CONFUSION,
-    CONDITION_HEAL_BLOCK,
-    CONDITION_GASTRO_ACID,
-    CONDITION_LEECH_SEED,
-    CONDITION_EMBARGO,
-    CONDITION_PERISH_SONG,
-    CONDITION_INGRAIN,
-    CONDITION_MEAN_LOOK,
-    0x1d,
-    0x1e,
-    CONDITION_MEAN_LOOK,
-    CONDITION_CURSE,
-    0x20,
-    0x23,
+    CONDITION_CONFUSION,   CONDITION_HEAL_BLOCK, CONDITION_GASTRO_ACID, CONDITION_LEECH_SEED, CONDITION_EMBARGO,
+    CONDITION_PERISH_SONG, CONDITION_INGRAIN,    CONDITION_MEAN_LOOK,   CONDITION_LOCK_ON,    CONDITION_MAGNET_RISE,
+    CONDITION_MEAN_LOOK,   CONDITION_CURSE,      CONDITION_TELEKINESIS, CONDITION_AQUA_RING,
 };
 
 BOOL Condition_IsPassedByBatonPass(u32 condition) {
