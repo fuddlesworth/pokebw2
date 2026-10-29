@@ -19,9 +19,10 @@ res/
     classes/  sprites/{front,back}/<sprite>/  ai/  facilities/<facility>/
   battle/{animations,backgrounds,regulations}/
   pokewood/movies/<n>/      Pokéstar Studios' movies: their casts and scripts
+  musicals/programs/<n>/    the musical's programs: their data, messages, stage scripts and sound
   field/
     zones/  events/  encounters/  scripts/  areas/  matrices/  cameras/  rails/  land_patches/  flash/
-    maps/{models,textures}/
+    maps/{models,textures,pattern_animations}/
     props/{exterior,interior}/{models,textures}/
     actors/                 the overworld's people and objects, with pokemon/ and models/ for its Pokémon and 3D models
                             npc_caches/ for the zones' caches of their records, animations/ for the scripts'
@@ -41,6 +42,8 @@ res/
   graphics/<archive>/       the menus', apps' and screens' graphics and models, an archive each
   demo/<archive>/           the demos and cutscenes: the movies' frames and the 3D demos' models, an archive each
   text/{system,script}/
+  debug/{skb,soundstatus}/  the 2D graphics of two debug screens that nothing loads
+  download_play/            the DS Download Play icons
 generated/                  the constant lists: species.txt, items.txt, obj_codes.txt, sound.txt and the others
 ```
 
@@ -87,6 +90,8 @@ which documents the format and can write them again.
 | `a/0/2/5` | `res/items/<item>/` (PNG, palette), `res/items/shared/` | Item icons | `tools/data/item_icon_data.py` |
 | `a/0/5/6` | `res/field/scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/script/field_script.py` |
 | `a/2/7/2`, `a/2/6/9` | `res/pokewood/movies/<n>/` (JSON), `res/pokewood/default_record.bin` | Pokéstar Studios' movies: their casts and scripts | `tools/data/pokewood_data.py` |
+| `a/1/1/2` to `a/1/1/5` | `res/musicals/programs/<n>/` (JSON, text, assembly, sound) | The musical's programs: their performers, title, stage scripts and sound, see [Musical programs](#musical-programs) | `tools/data/musical_program_data.py` |
+| `a/2/7/5` | `res/pokewood/cutins.json` | Pokéstar Studios' cut-in scripts | `tools/data/pokewood_cutin_data.py` |
 | `a/1/5/1` | `res/battle/backgrounds/` (JSON) | The battle backgrounds' types, fields and stages | `tools/data/battle_bg_data.py` |
 | `a/1/0/6` | `res/battle/regulations/` (JSON) | Battle regulations | `tools/data/regulation_data.py` |
 | `a/0/6/5`, `a/0/6/6` | `res/battle/animations/{moves,effects}/` | Battle animations: the moves' and the other effects' scripts, see [Scripts](scripts.md#battle-animation-scripts) | `tools/script/btlv_effvm_script.py` |
@@ -98,6 +103,7 @@ which documents the format and can write them again.
 | `a/1/7/4` | `res/field/props/exterior/textures/<bundle>/` (PNG) | Exterior field prop textures | `tools/data/map_texture_data.py` |
 | `a/1/7/5` | `res/field/props/interior/textures/<bundle>/` (PNG) | Interior field prop textures | `tools/data/map_texture_data.py` |
 | `a/0/1/4` | `res/field/maps/textures/<set>/` (PNG) | All 409 field texture sets | `tools/data/map_texture_data.py` |
+| `a/0/6/9` | `res/field/maps/pattern_animations/<n>/` (JSON, PNG, palette) | The areas' texture pattern animations | `tools/data/map_pattern_animation_data.py` |
 | `a/0/1/3` | `res/field/areas/<area>.json` | Area records | `tools/data/area_data.py` |
 | `a/1/2/6` | `res/field/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/data/event_data.py` |
 | `a/0/4/7`, `a/0/4/8` | `res/field/actors/<code>/` (JSON, PNG, palette, Nitro model) | The field actors' models: their table and graphics | `tools/data/field_actor_data.py` |
@@ -121,6 +127,8 @@ which documents the format and can write them again.
 | `a/2/4/0`, `a/2/3/4` | `res/local_tvt/` (JSON) | The Xtransceiver's calls and the story's scripted calls | `tools/data/local_tvt_data.py` |
 | `a/0/3/7` | `res/pass_powers/` (JSON) | The Pass Powers | `tools/data/pass_power_data.py` |
 | `ARCID_*` in `include/constants/arc.h` | `res/graphics/<archive>/` (PNG, palette, Nitro screens, cells and animations) | The 2D graphics of the menus, apps and screens, see [2D graphics](#2d-graphics) | `tools/data/graphics_archive.py` |
+| `skb.narc`, `soundstatus.narc` | `res/debug/{skb,soundstatus}/` (PNG, palette, Nitro screens) | The 2D graphics of two debug screens, a software keyboard and a sound status screen | `tools/data/debug_graphics_data.py` |
+| `dl_rom/icon_{b,w}.{char,plt}` | `res/download_play/` (PNG) | The DS Download Play icons of Black 2 and White 2 | `tools/data/download_play_icon_data.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
 `TEXT_ARCHIVES`.
@@ -1082,6 +1090,18 @@ changes only its bundle, and the rebuilt model loads in Apicula.
 The models of the other archives (the demos', the gimmicks' and the effects') are GLBs in the same way, packed by
 `tools/data/graphics_archive.py` with these converters; see "2D graphics".
 
+The areas' texture pattern animations (`a/0/6/9`, `ARCID_AREA_ANIME_PAT`), the water, flowers, fire and flags whose
+frames `field_ground_anime.c` uploads over the area's textures in VRAM, are `res/field/maps/pattern_animations/<n>/`,
+the pack of the areas whose `pattern_animation` is n. Each of a pack's animations is a Game Freak texture pattern
+animation (GFBTP) and the texture set (BTX0) of its frames, which `animations.json`
+(`pattern_animation.schema.json`) gives: the animation's length in frames, its textures and palettes in the texture
+set's order, and its targets, each a texture of the area's set, the one named as the target's first texture, with its
+key frames, from which on the target shows a texture, by name. Each texture is `<name>.png`, an indexed PNG whose
+pixels are the indices of its palette, `<palette>.pal`, a JASC palette named after the first of the palette's names,
+whose colors are the ones the game shows, so edit the PNG in indexed mode and recolor in the `.pal`. The packer
+writes the texture sets again from these as the game's are, byte for byte, so textures, frames and key frames can be
+added; `tools/data/map_pattern_animation_data.py` packs the archive, the same in both versions.
+
 ## Map matrices, areas, lights and cameras
 
 A zone's header names its map matrix, `res/field/matrices/<matrix>.json` (`a/0/0/9`), by its constant in
@@ -1283,8 +1303,42 @@ messages by turn, and its twelve scenes, each with its trigger, its score, its m
 offers. Every value is a halfword, -1 for none, and the fields that nothing reads keep their C names. The archive's
 last file, after the movies', is `res/pokewood/default_record.bin`, a recorded movie (`PokewoodBlock`, a battle
 recording) that `loadPokewoodAndCheck` loads. `tools/data/pokewood_data.py` packs both archives, the same in both
-versions, and `res/pokewood/cast.schema.json` and `movie.schema.json` describe the fields. The cut-ins' scripts
-(`a/2/7/5`, `ARCID_POKEWOOD_CUTIN_SCRIPT`, `pokewood_cutin.c`) are still copied as they are.
+versions, and `res/pokewood/cast.schema.json` and `movie.schema.json` describe the fields.
+
+The cut-ins that the movies' battles play after some scenes (`a/2/7/5`, `ARCID_POKEWOOD_CUTIN_SCRIPT`,
+`pokewood_cutin.c`) are `res/pokewood/cutins.json`, a script per cut-in, script n being the cut-in of `sCutins[n]`:
+its movie and scene, which the code doesn't read, the files of `ARCID_POKEWOOD_CUTIN_GRA`
+(`res/graphics/pokewood_cutin_gra/`) it loads for each sex of the player, and its steps, which run in order without
+jumps. A step is one of the eleven commands, which move, nudge or show the four actors, load other resources, wait,
+print one of the scene's messages (by its step and kind in the movie's `movie.json`, or the player's choice) and hide
+the message window again, and play, wait for or stop sounds, with its arguments named after what the command reads
+them as and sound effects as their `SEQ_*` constants; an argument it doesn't read is `argN` when it isn't 0.
+`tools/data/pokewood_cutin_data.py` packs it, the same in both versions, and `res/pokewood/cutin.schema.json`
+describes the fields.
+
+## Musical programs
+
+The musical's four programs are the archives `ARCID_MUSICAL_PROGRAM` + n (`a/1/1/2` to `a/1/1/5`), which
+`MusicalSystem_LoadProgramData` (`musical_system.c`) loads; a downloaded program is an archive of the same six
+members. Program n is the directory `res/musicals/programs/<n>/`, a file for each member, which
+`tools/data/musical_program_data.py` packs, the same in both versions:
+
+- `data.json`, the program's `MusicalProgramData` (`musical_program.c`): its number, the points its audience has for
+  each of the four kinds of prop and the bonus it adds to them at random, its list of props to give away, and its six
+  performers, of which the game picks the other three entrants among those whose `min_shots` the player has reached.
+  A performer has its Pokémon's species and form, its look as an `OBJ_CODE_*` (the C's `trainerClass`, which the
+  player's is `OBJ_CODE_HERO` or `OBJ_CODE_HEROINE`), its name as a message of `res/text/system/btl_main_9.txt` (the
+  same line of `musical_event.txt` is its Pokémon's nickname), and the props its Pokémon wears, each `[item, slot]`.
+  `res/musicals/programs/program.schema.json` describes the fields.
+- `messages.txt`, the program's messages, in the format of `res/text/`'s (see [Text](#text)), with IDs of the
+  program's own, `MusicalProgram0_Text_Stardom`; the first is the program's title.
+- `script.s`, the stage's scripts, which the build assembles with the macros of `include/asm/sta_script.inc` (see
+  [Scripts](scripts.md#musical-stage-scripts)) and gives the packer as `configure.py`'s `PACK_SCRIPTS` says.
+- `bank.json`, `sequence.s` and `waves/`, a bank, a sequence and a wave archive in the formats of `res/sound/`'s
+  (see [Sound](#sound)), which the stage's `PlayStrm` plays in place of a sequence of the sound archive and whose
+  wave `PlayWave` puts in place of one of its waves. The bank's instruments name a wave archive by its slot, 0 to 3,
+  among the four of the sound archive's bank of the sequence that `PlayStrm` names. The four programs have the same
+  sound, which their scripts don't play.
 
 ## Field actors
 
@@ -1526,3 +1580,17 @@ frames' size (256 by 256, of which the game shows the top 192 rows), how many th
 members after them are numbered files from there (`626.bin`). The game plays as many frames as `cdemo_control.c`'s
 `CDEMO_MOVIES` says, so a movie with more or fewer needs its count changed there too. `dump ARCID_X res/demo --movie
 256x256` writes such an archive.
+
+Two archives at the file system's root hold the 2D graphics of debug screens that the retail game leaves out, since no
+code loads them by name: `skb.narc`, a software keyboard's, with hiragana, katakana and letters to type a name in
+Japanese, and `soundstatus.narc`, a sound status screen's, with the player's tempo, pitch, volume, reverb and tracks.
+They are `res/debug/skb/` and `res/debug/soundstatus/`, numbered members as an archive of `res/graphics/` has them
+(indexed PNGs, JASC palettes and `.nscr` screens), which `tools/data/debug_graphics_data.py` packs with
+`graphics_archive.py`'s converters, the same in both versions.
+
+The DS Download Play parent (`mb_parent_sys.c`, `mb_parent_dataconv_sys.c`) gives the children it sends, the programs
+`dl_rom/*.srl`, which stay as they are, an icon to show on their download menus: Black 2's, `dl_rom/icon_b.char` and
+`icon_b.plt`, and White 2's, `icon_w.char` and `icon_w.plt`, each 32 by 32 pixels in 16 colors. They are
+`res/download_play/icon_b.png` and `icon_w.png`, indexed PNGs whose pixels are the palette's indices and whose palette
+is the icon's 16 colors, color 0 transparent, so edit them in indexed mode and keep the palette's order;
+`tools/data/download_play_icon_data.py` writes the characters and the palette of each, the same in both versions.

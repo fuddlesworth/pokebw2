@@ -286,6 +286,13 @@ def archive_sources(path: str, directory: Path) -> list[Path]:
     return sources
 
 
+# Scripts that are members of archives that a DATA_PACKS script packs, among members of other kinds: by the script,
+# the pattern of their sources in its data directory. Each is assembled as ARCHIVES' members are, and the packer gets
+# the binaries after its archives, with --scripts, in the sources' order, each at its source's path under the build's
+# directory, which tells it the member's place.
+PACK_SCRIPTS = {"tools/data/musical_program_data.py": "*/script.s"}  # Each program's stage scripts
+
+
 # Archives packed from JSON (and CSV) data by a script's pack command: the script, its data directory, the archives it
 # writes, in the order it takes them, and whether it packs each version apart, which passes it the version's name
 # (black2 or white2); and any other data directories it reads. The data's constants come from the lists and headers,
@@ -357,11 +364,16 @@ DATA_PACKS = [
     ("tools/data/map_texture_data.py", "res/field/maps/textures", ["a/0/1/4"], True),  # Map texture PNG sources
     ("tools/data/map_texture_data.py", "res/field/props/exterior/textures", ["a/1/7/4"], True),
     ("tools/data/map_texture_data.py", "res/field/props/interior/textures", ["a/1/7/5"], True),
+    # The areas' texture pattern animations: their key frames and the textures they draw over the texture sets' with
+    ("tools/data/map_pattern_animation_data.py", "res/field/maps/pattern_animations", ["a/0/6/9"], False),
     ("tools/data/area_data.py", "res/field/areas", ["a/0/1/3"], False),  # Areas, a file of records rather than an archive
     ("tools/data/light_data.py", "res/lighting", ["a/0/6/0", "a/0/6/1"], False),  # Field and battle lighting
     # Pokéstar Studios' movies: their casts, and their scripts with the default recorded movie
     ("tools/data/pokewood_data.py", "res/pokewood/movies", ["a/2/7/2", "a/2/6/9"], False,
      ["res/pokewood/cast.schema.json", "res/pokewood/movie.schema.json", "res/pokewood/default_record.bin"]),
+    # Pokéstar Studios' cut-in scripts, which the movies' battles play after some scenes
+    ("tools/data/pokewood_cutin_data.py", "res/pokewood/cutins.json", ["a/2/7/5"], False,
+     ["res/pokewood/cutin.schema.json"]),
     # The battle backgrounds' types, fields and stages, and the battle regulations
     ("tools/data/battle_bg_data.py", "res/battle/backgrounds", ["a/1/5/1"], False),
     ("tools/data/regulation_data.py", "res/battle/regulations", ["a/1/0/6"], False,
@@ -429,6 +441,16 @@ DATA_PACKS = [
     ("tools/data/facility_data.py", "res/trainers/facilities/pwt_rental", ["a/2/5/7"], False, ["res/trainers/facilities"]),
     # The zones' events, in the order of res/field/events/order.json
     ("tools/data/event_data.py", "res/field/events", ["a/1/2/6"], False),
+    # The debug screens' 2D graphics at the root, a software keyboard's and a sound status screen's, which nothing loads
+    ("tools/data/debug_graphics_data.py", "res/debug/skb", ["skb.narc"], True),
+    ("tools/data/debug_graphics_data.py", "res/debug/soundstatus", ["soundstatus.narc"], True),
+    # The DS Download Play icons that the game gives the children it sends, Black 2's and White 2's
+    ("tools/data/download_play_icon_data.py", "res/download_play",
+     ["dl_rom/icon_b.char", "dl_rom/icon_b.plt", "dl_rom/icon_w.char", "dl_rom/icon_w.plt"], False),
+    # The musical's four programs: their data, messages, stage scripts (PACK_SCRIPTS) and sound, with the performers'
+    # names of btl_main_9.txt and the wave archives' schema
+    ("tools/data/musical_program_data.py", "res/musicals/programs", ["a/1/1/2", "a/1/1/3", "a/1/1/4", "a/1/1/5"],
+     False, ["res/text/system/btl_main_9.txt", "res/sound/wave_archive.schema.json"]),
 ]
 # The archives of Nitro resources and data, each a directory named after its ARCID_* constant, which gives its file, in
 # the root for what it holds (graphics_archive.ARCHIVE_ROOTS)
@@ -768,16 +790,19 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
                                           *(a for _, _, pack, *_ in DATA_PACKS for a in pack)])})
     archives = []
     checks = []
+
+    def assembled(source: Path) -> Path:
+        """Assembles a script, an archive's member, and returns its binary."""
+        source = source.relative_to(ROOT)
+        obj = build_dir / source.with_suffix(".o")
+        n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines},
+                order_only=["constants_headers"])
+        member = obj.with_suffix(".bin")
+        n.build([member], "objcopy_bin", [obj])
+        return member
+
     for path, source_dir in ARCHIVES.items():
-        members = []
-        for source in archive_sources(path, ROOT / source_dir):
-            source = source.relative_to(ROOT)
-            obj = build_dir / source.with_suffix(".o")
-            n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines},
-                    order_only=["constants_headers"])
-            member = obj.with_suffix(".bin")
-            n.build([member], "objcopy_bin", [obj])
-            members.append(member)
+        members = [assembled(source) for source in archive_sources(path, ROOT / source_dir)]
         archive = files_dir / path
         n.build([archive], "narc", members, implicit=["tools/data/narc.py"], order_only=[files_ok])
         archive_ok = stamp_dir / "files" / f"{path.replace('/', '_')}.ok"
@@ -797,8 +822,11 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
         game = VERSIONS[version]["defines"][0].lower() if per_version else ""
         dependencies = sorted({script, *DATA_PACK_TOOLS, *script_imports(script), *DATA_PACK_SOURCES.get(script, []),
                                *constant_sources})
-        n.build(outputs, "data_pack", sources, implicit=dependencies,
-                order_only=[files_ok], variables={"script": script, "dir": data_dir, "game": game})
+        scripts = ([assembled(source) for source in sorted((ROOT / data_dir).glob(PACK_SCRIPTS[script]))]
+                   if script in PACK_SCRIPTS else [])
+        n.build(outputs, "data_pack", sources, implicit=[*dependencies, *scripts], order_only=[files_ok],
+                variables={"script": script, "dir": data_dir, "game": game,
+                           "scripts": f"--scripts {' '.join(map(str, scripts))}" if scripts else ""})
         for path, archive in zip(paths, outputs):
             archive_ok = stamp_dir / "files" / f"{path.replace('/', '_')}.ok"
             n.build([archive_ok], "check_file", [archive], implicit=[extract_dir / "config.yaml"],
@@ -960,7 +988,7 @@ def main():
     n.rule("objcopy_bin", f"{shlex.quote(llvm_objcopy)} -O binary $in $out", "Converting $in")
     n.rule("narc", "$python tools/data/narc.py pack $out $in", "Packing $out")
     n.rule("text_pack", "$python tools/text/text_data.py pack $dir $out", "Packing $out")
-    n.rule("data_pack", "$python $script pack $dir $game $out", "Packing $dir")
+    n.rule("data_pack", "$python $script pack $dir $game $out $scripts", "Packing $dir")
     n.rule("check_file", "cmp $in $original && mkdir -p $$(dirname $out) && touch $out", "Checking $in")
     n.rule("files_tree", "$python tools/build/files_tree.py $source $output $built --stamp $out",
            "Linking the files of $output")

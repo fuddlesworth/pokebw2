@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 import tools.script.field_script as field_script  # noqa: E402
 import tools.script.btlv_effvm_script as btlv_effvm_script  # noqa: E402
+import tools.script.sta_script as sta_script  # noqa: E402
 
 MANIFEST = ROOT / "tools" / "script" / "field_commands.json"
 INC = ROOT / "include" / "asm" / "field_script.inc"
@@ -126,6 +127,8 @@ def main():
 
     # The battle effect VM's commands take their names from btlv_effvm.c's MOVE_SCRCMD
     btlv_effvm_script.sync(args.dry_run)
+    # The musical stage's, from script_command.c's STA_SCRIPT_COMMANDS
+    sta_script.sync(args.dry_run)
     raw = MANIFEST.read_text()
     by_address = symbols_by_address()
     head = subprocess.run(["git", "show", "HEAD:tools/script/field_commands.json"], capture_output=True, text=True,
