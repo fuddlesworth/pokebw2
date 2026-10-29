@@ -1766,8 +1766,8 @@ SYMBOL_MAP_0 kind:data(any) addr:0x0216d8e6
 SYMBOL_MAP_TABLE kind:data(any) addr:0x0216d904
 sBSubwayCommCommands kind:data(any) addr:0x0216d93c
 sBSubwayCommNetInit kind:data(any) addr:0x0216d97c
-data_ov012_0216d9ac kind:data(any) addr:0x0216d9ec
-data_ov012_0216d9b4 kind:data(any) addr:0x0216d9f4
+sRentalItems kind:data(any) addr:0x0216d9ec
+sTrainerClassObjCodes kind:data(any) addr:0x0216d9f4
 data_ov012_0216d9b6 kind:data(any) addr:0x0216d9f6
 FIELD_CHUNK_SCALE_IDENTITY kind:data(any) addr:0x0216dac8
 FIELD_CHUNK_TRANSLATION_IDENTITY kind:data(any) addr:0x0216dad4

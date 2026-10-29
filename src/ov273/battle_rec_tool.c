@@ -308,8 +308,8 @@ static void BattleRecTool_StoreClients(const BtlSetup *setup, BattleRecClient *c
         if (setup->trainers[i] != NULL) {
             BattleRecTool_StoreTrainer(setup->trainers[i], &clients[i].info.trainer);
             clients[i].type = BATTLE_REC_CLIENT_TRAINER;
-        } else if (setup->unk34[i] != NULL) {
-            PlayerInfo_Copy(setup->unk34[i], &clients[i].info.player);
+        } else if (setup->playerInfo[i] != NULL) {
+            PlayerInfo_Copy(setup->playerInfo[i], &clients[i].info.player);
             clients[i].type = BATTLE_REC_CLIENT_PLAYER;
         } else {
             clients[i].type = BATTLE_REC_CLIENT_NONE;
@@ -325,10 +325,10 @@ static void BattleRecTool_StorePokewoodClients(const BtlSetup *setup, BattleRecC
     for (i = 0; i < count; i++) {
         switch (i) {
         case 0:
-            PlayerInfo_Copy(setup->unk34[i], &clients[i].info.player);
+            PlayerInfo_Copy(setup->playerInfo[i], &clients[i].info.player);
             if (setup->trainers[i] != NULL) {
                 *trainerClass = setup->trainers[i]->trainerClass;
-            } else if (getTrainerGender(setup->unk34[i]) == GENDER_MALE) {
+            } else if (getTrainerGender(setup->playerInfo[i]) == GENDER_MALE) {
                 *trainerClass = 0;
             } else {
                 *trainerClass = 1;
@@ -352,7 +352,7 @@ static void BattleRecTool_LoadClients(BtlSetup *setup, BattleRecClient *clients,
         client = &clients[i];
         switch (clients[i].type) {
         case BATTLE_REC_CLIENT_PLAYER:
-            PlayerInfo_Copy(&client->info.player, setup->unk34[i]);
+            PlayerInfo_Copy(&client->info.player, setup->playerInfo[i]);
             break;
         case BATTLE_REC_CLIENT_TRAINER:
             BattleRecTool_LoadTrainer(setup->trainers[i], &client->info.trainer);
@@ -369,7 +369,7 @@ static void BattleRecTool_LoadPokewoodClients(BtlSetup *setup, const BattleRecCl
     for (i = 0; i < count; i++) {
         switch (i) {
         case 0:
-            PlayerInfo_Copy(&clients[i].info.player, setup->unk34[i]);
+            PlayerInfo_Copy(&clients[i].info.player, setup->playerInfo[i]);
             setup->trainers[i]->trainerId = 1;
             setup->trainers[i]->trainerClass = trainerClass;
             break;
@@ -387,8 +387,8 @@ static void BattleRecTool_StoreTrainer(const BtlSetupTrainer *trainer, BattleRec
     rec->trainerId = trainer->trainerId;
     rec->trainerClass = trainer->trainerClass;
     rec->aiFlags = trainer->aiFlags;
-    rec->unk30 = trainer->unk18;
-    rec->unk38 = trainer->unk20;
+    rec->unk30 = trainer->winWords;
+    rec->unk38 = trainer->loseWords;
     for (i = 0; i < 4; i++) {
         rec->items[i] = trainer->items[i];
     }
@@ -402,8 +402,8 @@ static void BattleRecTool_LoadTrainer(BtlSetupTrainer *trainer, const BattleRecT
     trainer->trainerId = rec->trainerId;
     trainer->trainerClass = rec->trainerClass;
     trainer->aiFlags = rec->aiFlags;
-    trainer->unk18 = rec->unk30;
-    trainer->unk20 = rec->unk38;
+    trainer->winWords = rec->unk30;
+    trainer->loseWords = rec->unk38;
     for (i = 0; i < 4; i++) {
         trainer->items[i] = rec->items[i];
     }

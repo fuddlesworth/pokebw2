@@ -9028,6 +9028,8 @@ overlays/ov012 0x0216d8a6 SYMBOL_MAP_0
 overlays/ov012 0x0216d8c4 SYMBOL_MAP_TABLE
 overlays/ov012 0x0216d8fc sBSubwayCommCommands
 overlays/ov012 0x0216d93c sBSubwayCommNetInit
+overlays/ov012 0x0216d9ac sRentalItems
+overlays/ov012 0x0216d9b4 sTrainerClassObjCodes
 overlays/ov012 0x0216dfc4 MUSICAL_DRESSUP_PROC_FUNCTIONS
 overlays/ov012 0x0216dfe8 MUSICAL_STAGE_PROC_FUNCTIONS
 overlays/ov012 0x0216e034 sDeliveryBeaconNetInit

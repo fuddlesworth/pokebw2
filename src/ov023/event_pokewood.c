@@ -306,8 +306,8 @@ static void EventPokewood_SetupMovieTrainer(u32 movie, u32 kind, BtlSetupTrainer
     msgBase = EventPokewood_GetTitleMsgBase(kind, gender);
     GFL_MsgDataLoadStrbuf(msgData, msgBase + movie, trainer->name);
     GFL_MsgDataFree(msgData);
-    PMSData_Clear(&trainer->unk18);
-    PMSData_Clear(&trainer->unk20);
+    PMSData_Clear(&trainer->winWords);
+    PMSData_Clear(&trainer->loseWords);
     GFL_HeapFree(file);
 }
 
@@ -344,7 +344,7 @@ static BtlSetup *EventPokewood_CreateFilmSetup(GameSystem *gsys, Field *field, H
     BtlSetup_AllocRecBuffer(setup, heapId);
     EventPokewood_SetupMovieTrainer(movie, POKEWOOD_KIND_FILM, setup->trainers[1], playerInfo, heapId);
     EventPokewood_CreateCastParty(playerInfo, setup->party[1], heapId, movie, 1);
-    setup->unk34[0] = GetGameDataPlayerInfo(gameData);
+    setup->playerInfo[0] = GetGameDataPlayerInfo(gameData);
     if (PokewoodSystem_GetUsePlayerCast(*sys) == 1) {
         PokewoodSystem_CopyCast(*sys, gameData, setup->party[0]);
         setup->unkE0 = 0;
@@ -418,7 +418,7 @@ static BtlSetup *EventPokewood_LoadWatchSetup(GameSystem *gsys, Field *field, He
 // Loads the lines the movie opens with
 static void EventPokewood_LoadIntroText(PokewoodMovieParam *param, BtlSetup *setup, u32 movie, u32 kind,
                                         HeapID heapId) {
-    u32 gender = getTrainerGender(setup->unk34[0]);
+    u32 gender = getTrainerGender(setup->playerInfo[0]);
     u32 isMale = TRUE;
     MsgData *msgData;
 
@@ -473,7 +473,7 @@ static BtlSetup *EventPokewood_CreateSetup(PokewoodMovieParam *param, GameSystem
 
 static void EventPokewood_FreeSetup(BtlSetup *setup) {
     if (setup->unkDD_3 == 2) {
-        GFL_HeapFree(setup->unk34[0]);
+        GFL_HeapFree(setup->playerInfo[0]);
         BtlSetup_FreeForRecord(setup);
     }
     BtlSetup_Free(setup);
@@ -484,7 +484,7 @@ static void EventPokewood_StoreRecordedSetup(GameData *gameData, BtlSetup *setup
     GameData_GetPokewoodSystemPtr(gameData);
     BattleRec_LoadToolOverlay();
     setup->trainers[0] = TrainerBattleSetup_Create(heapId);
-    EventPokewood_SetupRecordTrainer(setup->unkDF, setup->trainers[0], setup->unk34[0], heapId);
+    EventPokewood_SetupRecordTrainer(setup->unkDF, setup->trainers[0], setup->playerInfo[0], heapId);
     BattleRecTool_StoreSetup(setup);
     BattleRec_UnloadToolOverlay();
 }
@@ -505,7 +505,7 @@ static void EventPokewood_InitTitleParam(PokewoodTitleParam *title, BtlSetup *se
     BattleRec_UnloadToolOverlay();
     GFL_HeapFree(pkm);
     title->movie = setup->unkDF;
-    title->gender = getTrainerGender(setup->unk34[0]);
+    title->gender = getTrainerGender(setup->playerInfo[0]);
 }
 
 static void EventPokewood_FreeTitleParam(PokewoodTitleParam *title) {
@@ -1023,7 +1023,8 @@ static GameEventReturnCode EventPokewood_RunScreen(GameEvent *event, u32 *state,
 
 // Gives the opponent of a movie that is watched its class and name
 static void EventPokewood_SetupRecordedOpponent(BtlSetup *setup, HeapID heapId) {
-    EventPokewood_SetupMovieTrainer(setup->unkDF, POKEWOOD_KIND_WATCH, setup->trainers[1], setup->unk34[0], heapId);
+    EventPokewood_SetupMovieTrainer(setup->unkDF, POKEWOOD_KIND_WATCH, setup->trainers[1], setup->playerInfo[0],
+                                    heapId);
     setup->trainers[1]->trainerId = 1;
 }
 
