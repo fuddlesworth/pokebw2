@@ -377,7 +377,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
     case IRC_STEP_TRADE:
         work->trade.gameData = work->gameData;
         work->trade.party = work->party;
-        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, &data_ov194_021c63dc, &work->trade);
+        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, &POKEMONTRADE_IRC_PROC_FUNCTIONS, &work->trade);
         (*state)++;
         break;
     case IRC_STEP_WAIT_TRADE:
