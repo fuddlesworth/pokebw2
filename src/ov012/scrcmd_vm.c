@@ -6,6 +6,7 @@
 // can't be script_plugin.c's, which starts with 2-byte tables, and EVCMD_MAX counts EVCMD_TABLE
 
 #include "types.h"
+#include "constants/field_script.h"
 #include "field/entree_scripts.h"
 #include "field/event_phrase_input.h"
 #include "field/event_sound.h"
@@ -1037,28 +1038,28 @@ BOOL Scrcmd_Vm_VMStackCmp(VM *vm, FieldScriptEnv *env) {
     BOOL result;
 
     switch (comparison) {
-    case 0:
+    case CMP_LT:
         result = left < right;
         break;
-    case 1:
+    case CMP_EQ:
         result = left == right;
         break;
-    case 2:
+    case CMP_GT:
         result = left > right;
         break;
-    case 3:
+    case CMP_LE:
         result = left <= right;
         break;
-    case 4:
+    case CMP_GE:
         result = left >= right;
         break;
-    case 5:
+    case CMP_NE:
         result = left != right;
         break;
-    case 6:
+    case CMP_OR:
         result = left == 1 || right == 1;
         break;
-    case 7:
+    case CMP_AND:
         result = left == 1 && right == 1;
         break;
     default:
@@ -1137,7 +1138,7 @@ BOOL Scrcmd_Vm_VMJumpIf(VM *vm, FieldScriptEnv *env) {
     u8 condition = VM_Read8(vm);
     u32 offset = VM_Read32(vm);
 
-    if (condition == 0xff) {
+    if (condition == CMP_STACK) {
         if (VM_StackPop(vm) != 1) {
             VM_Jump(vm, vm->pc + offset);
         }
