@@ -345,7 +345,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
     draw->inputHandled = FALSE;
     switch (draw->state) {
     case DRAW_STATE_FADE_IN:
-        if (func_ov257_021aaa74(sys) == TRUE) {
+        if (CommTvt_GetFadeInBoth(sys) == TRUE) {
             GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, 0, 6, 1, heapId);
         } else {
             GFL_WipeSet(WIPE_MODE_SUB, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, 0, 6, 1, heapId);
@@ -398,7 +398,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
     case DRAW_STATE_DISCONNECTED:
         CtvtComm_Disconnect(sys, CommTvt_GetComm(sys));
         CtvtDraw_PrintMessage(sys, draw, 36);
-        CommTvt_SetMessageActive(sys, TRUE);
+        CommTvt_SetEnding(sys, TRUE);
         draw->state = DRAW_STATE_WAIT_DISCONNECTED;
         CtvtCamera_EndRecording(sys, CommTvt_GetCamera(sys));
         draw->waitSound = TRUE;
@@ -407,7 +407,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
         if (GFL_HIDIsTouchPressed() == TRUE || (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             draw->exit = TRUE;
             draw->state = DRAW_STATE_FADE_OUT;
-            CommTvt_SetMessageActive(sys, TRUE);
+            CommTvt_SetEnding(sys, TRUE);
             CtvtCamera_StopCamera(sys, CommTvt_GetCamera(sys));
             draw->waitSound = TRUE;
         }
@@ -420,7 +420,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
     case DRAW_STATE_PARENT_LEFT:
         CtvtComm_Disconnect(sys, CommTvt_GetComm(sys));
         CtvtDraw_PrintMessage(sys, draw, 37);
-        CommTvt_SetMessageActive(sys, TRUE);
+        CommTvt_SetEnding(sys, TRUE);
         draw->state = DRAW_STATE_WAIT_PARENT_LEFT;
         draw->waitFrames = 0;
         CtvtCamera_EndRecording(sys, CommTvt_GetCamera(sys));
@@ -441,7 +441,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
         if (CtvtComm_IsSynced(sys, CommTvt_GetComm(sys), 47) == TRUE) {
             draw->exit = TRUE;
             draw->state = DRAW_STATE_FADE_OUT;
-            CommTvt_SetMessageActive(sys, TRUE);
+            CommTvt_SetEnding(sys, TRUE);
             CtvtCamera_StopCamera(sys, CommTvt_GetCamera(sys));
             draw->waitSound = TRUE;
         }
@@ -449,7 +449,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
     case DRAW_STATE_ALONE:
         CtvtComm_Disconnect(sys, CommTvt_GetComm(sys));
         CtvtDraw_PrintMessage(sys, draw, 38);
-        CommTvt_SetMessageActive(sys, TRUE);
+        CommTvt_SetEnding(sys, TRUE);
         draw->state = DRAW_STATE_WAIT_ALONE;
         CtvtCamera_EndRecording(sys, CommTvt_GetCamera(sys));
         draw->waitSound = TRUE;
@@ -458,7 +458,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
         if (GFL_HIDIsTouchPressed() == TRUE || (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             draw->exit = TRUE;
             draw->state = DRAW_STATE_FADE_OUT;
-            CommTvt_SetMessageActive(sys, TRUE);
+            CommTvt_SetEnding(sys, TRUE);
             CtvtCamera_StopCamera(sys, CommTvt_GetCamera(sys));
             draw->waitSound = TRUE;
         }

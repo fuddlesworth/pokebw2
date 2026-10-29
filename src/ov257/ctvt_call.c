@@ -362,7 +362,7 @@ int CtvtCall_Main(CommTvtWork *sys, CtvtCall *call) {
 
     switch (call->state) {
     case CALL_STATE_FADE_IN:
-        if (func_ov257_021aaa74(sys) == TRUE) {
+        if (CommTvt_GetFadeInBoth(sys) == TRUE) {
             GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, 0, 6, 1, heapId);
         } else {
             GFL_WipeSet(WIPE_MODE_SUB, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, 0, 6, 1, heapId);
@@ -384,13 +384,13 @@ int CtvtCall_Main(CommTvtWork *sys, CtvtCall *call) {
         break;
     case CALL_STATE_FADE_OUT:
         GFL_WipeSet(WIPE_MODE_SUB, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0, 6, 1, heapId);
-        func_ov257_021aaa78(sys, FALSE);
+        CommTvt_SetFadeInBoth(sys, FALSE);
         call->state = CALL_STATE_WAIT_FADE_OUT;
         break;
     case CALL_STATE_LEAVE:
         if (CtvtCamera_IsSoundDone(sys, CommTvt_GetCamera(sys)) == TRUE) {
             GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0, 6, 1, heapId);
-            func_ov257_021aaa78(sys, FALSE);
+            CommTvt_SetFadeInBoth(sys, FALSE);
             call->state = CALL_STATE_WAIT_FADE_OUT;
         }
         break;

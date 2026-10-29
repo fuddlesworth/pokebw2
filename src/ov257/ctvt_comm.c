@@ -603,9 +603,9 @@ static void CtvtComm_UpdateTalk(CommTvtWork *sys, CtvtComm *comm) {
                 comm->photoSending = FALSE;
             }
         } else if (comm->photoTargetMask == (comm->photoTargetMask & comm->photoReadyMask) &&
-                   comm->photoTargetMask != 0 && func_ov257_021aab5c(sys) == FALSE) {
-            func_ov257_021aab60(sys, TRUE);
-            if (func_ov257_021aab10(sys) == FALSE) {
+                   comm->photoTargetMask != 0 && CommTvt_IsPictureLocked(sys) == FALSE) {
+            CommTvt_SetPictureLocked(sys, TRUE);
+            if (CommTvt_IsEnding(sys) == FALSE) {
                 CtvtCamera *camera = CommTvt_GetCamera(sys);
                 void *picture = CtvtCamera_GetOwnPicture(sys, camera);
                 u32 size = CtvtCamera_GetPictureSize(sys, camera);
@@ -623,7 +623,7 @@ static void CtvtComm_UpdateTalk(CommTvtWork *sys, CtvtComm *comm) {
                     comm->photoSending = TRUE;
                 }
             }
-            func_ov257_021aab60(sys, FALSE);
+            CommTvt_SetPictureLocked(sys, FALSE);
         }
 
         if (comm->drawWriteIndex != comm->drawReadIndex && comm->canSendDraw == TRUE) {
@@ -895,7 +895,7 @@ static void CtvtComm_RecvPacket(int netId, int size, const void *data, void *wor
     }
     case CTVT_PACKET_DRAW_INDEX:
         DrawSystem_SetWriteIndex(CommTvt_GetDrawSystem(comm->sys), packet->value);
-        func_ov257_021aab30(comm->sys, FALSE);
+        CommTvt_SetInputLocked(comm->sys, FALSE);
         break;
     case CTVT_PACKET_ZOOM: {
         CtvtCamera *camera = CommTvt_GetCamera(comm->sys);
@@ -989,7 +989,7 @@ static void CtvtComm_RecvPacket(int netId, int size, const void *data, void *wor
         }
         break;
     case CTVT_PACKET_EXIT:
-        func_ov257_021aab38(comm->sys, TRUE);
+        CommTvt_SetEndRequested(comm->sys, TRUE);
         break;
     }
 }

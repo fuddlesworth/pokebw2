@@ -369,7 +369,7 @@ static void CtvtCamera_OnFrame(void *frame, void *data) {
     int width;
     u16 height;
 
-    if (func_ov257_021aab10(sys) == TRUE || CommTvt_GetMemberCount(sys) < 2) {
+    if (CommTvt_IsEnding(sys) == TRUE || CommTvt_GetMemberCount(sys) < 2) {
         return;
     }
     if (work->dirtyMask & (1 << self)) {
@@ -401,13 +401,13 @@ static void CtvtCamera_OnFrame(void *frame, void *data) {
         height = displayMode == CTDM_DOUBLE ? 96 : 48;
     }
 
-    if (func_ov257_021aab5c(sys) == FALSE) {
-        func_ov257_021aab60(sys, TRUE);
+    if (CommTvt_IsPictureLocked(sys) == FALSE) {
+        CommTvt_SetPictureLocked(sys, TRUE);
         for (y = 0; y < height; y++) {
             MIi_CpuCopy32((void *)((u32)work->frameCopy + (top + y) * 256 + left * 2),
                           (void *)((u32)work->screen + pos * (width * height * 2) + width * y * 2), width * 2);
         }
-        func_ov257_021aab60(sys, FALSE);
+        CommTvt_SetPictureLocked(sys, FALSE);
         work->dirtyMask |= 1 << self;
     }
 }
