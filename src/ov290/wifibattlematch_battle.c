@@ -105,7 +105,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
     switch (*state) {
     case 0:
         GFL_SndBGMPlay(battle->setup->fieldSituation.bgm, SND_CHANNEL_MASK_ALL);
-        battle->players->base.unk44 = 1;
+        battle->players->base.demoType = 1;
         QueueGameProc(wk->manager, OVERLAY_ID(305), &CommBtlDemoProc, battle->players);
         running = 2;
         *state = 1;
@@ -189,10 +189,10 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
         break;
     case 11:
         queue = TRUE;
-        if (battle->setup->fieldSituation.unk1a == 0) {
-            battle->players->base.unk44 = 2;
+        if (battle->setup->fieldSituation.multiMode == 0) {
+            battle->players->base.demoType = 2;
         } else {
-            battle->players->base.unk44 = 4;
+            battle->players->base.demoType = 4;
         }
         switch (battle->setup->result) {
         case BTL_RESULT_VICTORY:
@@ -215,7 +215,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
             battle->players->base.result = 2;
             break;
         }
-        if (battle->setup->fieldSituation.unk1a == 0) {
+        if (battle->setup->fieldSituation.multiMode == 0) {
             last = 1;
             first = 0;
             second = 1;

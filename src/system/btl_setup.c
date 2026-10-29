@@ -211,7 +211,7 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     setup->unkA0 = 0xffff;
     setup->fieldSituation.unk18 = 0;
     setup->fieldSituation.unk19 = 0;
-    setup->fieldSituation.unk1a = 0;
+    setup->fieldSituation.multiMode = 0;
     setup->unkB0 = NULL;
     setup->fieldSituation.unk1b = 0;
     setup->unkDD_0 = FALSE;
@@ -281,7 +281,7 @@ void BtlSetup_SetWildMulti(BtlSetup *setup, GameData *gameData, PokeParty *party
         PokeParty_Copy(party, setup->party[1]);
     }
     setup->battleStyle = 1;
-    setup->fieldSituation.unk1a = 5;
+    setup->fieldSituation.multiMode = 5;
     setup->battleType = 0;
     if (PokeParty_GetPkmCount(setup->party[0]) == PokeParty_GetCapacity(setup->party[0])) {
         BoxSaveAccessor *boxes = GameData_GetBoxSaveAccessor(gameData);
@@ -321,7 +321,7 @@ static void BtlSetup_SetNetImpl(BtlSetup *setup, GameData *gameData, u32 style, 
     setup->battleStyle = style;
     setup->fieldSituation.netHandle = handle;
     setup->fieldSituation.unk18 = a5;
-    setup->fieldSituation.unk1a = multiMode;
+    setup->fieldSituation.multiMode = multiMode;
     setup->fieldSituation.unk19 = a6;
     setup->unkA0 = 0xff;
     setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
@@ -378,7 +378,7 @@ void BtlSetup_SetTrainer1v2(BtlSetup *setup, GameData *gameData, BtlFieldStatus 
     BtlSetup_LoadTrainerBase(setup, gameData, 1, status, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 1, &setup->party[1], trainerId, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 3, &setup->party[3], trainerId2, heapId);
-    setup->fieldSituation.unk1a = 4;
+    setup->fieldSituation.multiMode = 4;
 }
 
 // a3 is the partner's trainer, a4 and a5 the opponents'
@@ -388,7 +388,7 @@ void BtlSetup_SetTrainer2v2(BtlSetup *setup, GameData *gameData, BtlFieldStatus 
     BtlSetup_LoadTrainer(setup, gameData, 2, &setup->party[2], a3, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 1, &setup->party[1], a4, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 3, &setup->party[3], a5, heapId);
-    setup->fieldSituation.unk1a = 3;
+    setup->fieldSituation.multiMode = 3;
 }
 
 void BtlSetup_SetNet1v1Single(BtlSetup *setup, GameData *gameData, NetHandle *handle, u8 a3, HeapID heapId) {

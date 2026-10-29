@@ -42,7 +42,7 @@ static GameEventReturnCode EventColosseumBattle_Callback(GameEvent *event, u32 *
     case 4:
         args.setup = &work->setup;
         args.players = work->players;
-        args.unk08 = 0;
+        args.markNetErrShown = FALSE;
         GameEvent_ChainNext(event, GameEvent_CreateOverlayDelegate(gsys, OVERLAY_ID(10), eventMakeFunc, &args));
         (*state)++;
         break;

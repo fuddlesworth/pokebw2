@@ -352,7 +352,7 @@ void BtlMain_SetSetupSeq(BtlMainSeq *seq, BtlMainModule *mainModule, BtlSetup *s
             BtlMainSeq_Set(seq, BtlMain_SetupAloneSingle, mainModule);
             return;
         case 1:
-            if (setup->fieldSituation.unk1a == 0) {
+            if (setup->fieldSituation.multiMode == 0) {
                 BtlMainSeq_Set(seq, BtlMain_SetupAloneDouble, mainModule);
                 return;
             }
@@ -474,7 +474,7 @@ u8 CalcClientBattlerCount(BtlMainModule *mainModule, u8 clientId) {
     case 2:
         return 3;
     case 1:
-        if (setup->fieldSituation.unk1a == 0) {
+        if (setup->fieldSituation.multiMode == 0) {
             return 2;
         }
         if (setup->battleType == 3) {
@@ -623,7 +623,7 @@ BOOL BtlMain_SetupAloneMulti(u32 *state, BtlMainModule *mainModule) {
     mainModule->posClientIds[2] = 0;
     mainModule->posClientIds[1] = 1;
     mainModule->posClientIds[3] = 1;
-    switch (setup->fieldSituation.unk1a) {
+    switch (setup->fieldSituation.multiMode) {
     case 1:
     case 2:
     case 3:
@@ -822,7 +822,7 @@ BOOL BtlMain_SetupCommDouble(u32 *state, BtlMainModule *mainModule) {
     };
 
     if (*state == 0) {
-        switch (mainModule->setup->fieldSituation.unk1a) {
+        switch (mainModule->setup->fieldSituation.multiMode) {
         case 0:
         default:
             mainModule->clientCount = 2;
@@ -1289,7 +1289,7 @@ BOOL BtlMain_CommCreateDouble(BtlMainModule *mainModule, s32 *state) {
     BtlSetup *setup = mainModule->setup;
     u8 clientId = mainModule->playerClientId;
     u8 unk = BtlMain_IsCommCompetitor(setup);
-    u8 posCount = setup->fieldSituation.unk1a == 0 ? 2 : 1;
+    u8 posCount = setup->fieldSituation.multiMode == 0 ? 2 : 1;
     u8 ally;
     u32 i;
 
@@ -1305,7 +1305,7 @@ BOOL BtlMain_CommCreateDouble(BtlMainModule *mainModule, s32 *state) {
             clientId, posCount, 0, unk, 0, &mainModule->rand, mainModule->heapId);
         BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[clientId]), clientId,
                                   posCount);
-        if (setup->fieldSituation.unk1a == 2) {
+        if (setup->fieldSituation.multiMode == 2) {
             ally = GetAllyClientID(mainModule, clientId);
             mainModule->clients[1] = BattleClient_Create(mainModule, &mainModule->pokeCons[0],
                                                          setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
@@ -1630,7 +1630,7 @@ u32 BtlSetup_GetBattleType(BtlMainModule *mainModule) {
 }
 
 u8 GetMultiMode(BtlMainModule *mainModule) {
-    return mainModule->setup->fieldSituation.unk1a;
+    return mainModule->setup->fieldSituation.multiMode;
 }
 
 u8 GetCommMode(BtlMainModule *mainModule) {
@@ -1638,7 +1638,7 @@ u8 GetCommMode(BtlMainModule *mainModule) {
 }
 
 BOOL IsMultiMode(BtlMainModule *mainModule) {
-    return mainModule->setup->fieldSituation.unk1a != 0;
+    return mainModule->setup->fieldSituation.multiMode != 0;
 }
 
 u16 GetWinBGM(BtlMainModule *mainModule) {
