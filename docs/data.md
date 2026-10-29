@@ -25,7 +25,7 @@ res/
     gimmicks/<archive>/  effects/<archive>/   the gyms' and other gimmicks' models, the field effects' animations
   lighting/{field,battle}/
   town_map/
-  sound/{sequences,banks,wave_archives,streams,interactive}/
+  sound/{sequences,banks,wave_archives,streams,interactive,archives}/
   graphics/<archive>/       the menus', apps' and screens' graphics and models, an archive each
   demo/<archive>/           the demos and cutscenes: the movies' frames and the 3D demos' models, an archive each
   text/{system,script}/
@@ -1107,9 +1107,9 @@ replacing it and any edits.
 
 The same packer takes archives of other subjects, each in the directory for what it holds (`ARCHIVE_ROOTS`):
 `res/graphics/` for the menus and apps, `res/demo/` for the demos and cutscenes, `res/field/gimmicks/` and
-`res/field/effects/`, `res/particles/` and `res/fonts/`; `dump ARCID_X res/demo` writes one there. A name, like its
-`ARCID_*`, is in one of them only. `res/fonts/font/` is `ARCID_FONT` (`a/0/2/3`): the game's five fonts, `00/` to
-`04/`, and three palettes, the same in both versions. `res/particles/btlv_effvm_particles/` is
+`res/field/effects/`, `res/particles/`, `res/fonts/` and `res/sound/archives/`; `dump ARCID_X res/demo` writes one
+there. A name, like its `ARCID_*`, is in one of them only. `res/fonts/font/` is `ARCID_FONT` (`a/0/2/3`): the game's
+five fonts, `00/` to `04/`, and three palettes, the same in both versions. `res/particles/btlv_effvm_particles/` is
 `ARCID_BTLV_EFFVM_PARTICLES` (`a/0/0/6`), the particle effects of the battle's moves, which `btlv_effvm.c` loads, and of
 the intro, which `intro_particle.c` does: 739 resources, `000/` to `738/`, the same in both versions.
 
@@ -1124,6 +1124,10 @@ calls a material of its own, copying a material that several share (`awa_1.001`)
 one material on export; edit the copies alike. A model that the converters don't take stays its `.nsbmd` file, as
 `dump` says: one with textures that the texture converter doesn't decode (4x4 compressed or direct color), one without
 a mesh, or one whose materials pair a texture with another palette than the converter gives it. A new model or texture
+`res/graphics/manual_image/` is `ARCID_MANUAL_IMAGE` (`a/2/2/7`), the in-game manual's pages, which `manual_common.c`
+shows: 256 by 192 direct color bitmaps, kept as RGBA PNGs as a movie's frames are, since its `archive.json` has
+`"bitmaps": [256, 192]` (`dump ARCID_X --bitmaps 256x192`). `res/sound/archives/camera_sound/` is `ARCID_CAMERA_SOUND`
+(`a/2/0/9`), the DSi camera's shutter sounds, WAV files that `camera_system.c` plays itself.
 set is added as its `.nsbmd` or `.nsbtx` file. The archives dumped before the models were GLBs keep their `.nsbmd` and
 `.nsbtx` files, which pack as they are, until they are dumped again: in scratch copies of the 19 such archives in
 `res/graphics/`, 214 of their 233 models and all 31 texture sets convert and pack byte for byte.

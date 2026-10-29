@@ -5,14 +5,15 @@ the 3D models of its demos, gimmicks and effects, its fonts and its particle eff
     graphics_archive.py dump ARCID_TITLE            # writes res/graphics/title/ from both versions' archives
     graphics_archive.py dump ARCID_X res/demo       # or under another of the archive roots (ARCHIVE_ROOTS)
     graphics_archive.py dump ARCID_X res/demo --movie 256x256    # its first members, 256x256 frames, as a movie
+    graphics_archive.py dump ARCID_X --bitmaps 256x192    # its members that are 256x192 bitmaps as PNGs
     graphics_archive.py dump ARCID_X res/demo --apicula PATH    # Apicula, for models, where it isn't on PATH
     graphics_archive.py pack res/graphics/title black2 OUT
 
 Each archive is a directory named after its ARCID_* constant in include/constants/arc.h, whose number gives its file
 (ARCID_TITLE, 26, is a/0/2/6), in the root for what it holds (ARCHIVE_ROOTS: res/graphics/ for the menus and apps,
-res/demo/, res/field/gimmicks/ and effects/, res/particles/ and res/fonts/). It holds the archive's members in order,
-each a file named after its number in the archive, or after its constant where generated/narc_<archive>.txt names it, as
-narc_intro.txt does:
+res/demo/, res/field/gimmicks/ and effects/, res/particles/, res/fonts/ and res/sound/archives/). It holds the
+archive's members in order, each a file named after its number in the archive, or after its constant where
+generated/narc_<archive>.txt names it, as narc_intro.txt does:
 
 - a character resource (NCGR) is an indexed PNG, `03.png`, 4bpp or 8bpp as the resource is. Its pixels are the palette
   indices the game draws, so edit it in indexed mode and keep the palette's order: the packer reads the indices, not
@@ -49,6 +50,9 @@ narc_intro.txt does:
   compression; the members after them are numbered files from there. The PNG plays at the game's 15 frames a second.
   Any APNG editor's output packs, its frames composed as a viewer shows them; a frame's colors go in by their top five
   bits, and it shows where alpha is at least 128.
+- in an archive whose archive.json has "bitmaps", a member of that size that is no Nitro resource is a direct color
+  bitmap, an RGBA PNG as a movie's frame is (the manual's pages).
+- a sound file (RIFF), which the code plays itself, is its .wav file.
 - anything else is the member itself, decompressed, named by its kind: `.nscr` (screens), `.ncer` (cells), `.nanr`
   (cell animations), `.nmcr`/`.nmar` (multi-cells), `.nsbca`/`.nsbta`/`.nsbma`/`.nsbtp`/`.nsbva` (3D animations),
   `.nftr` (fonts), `.spa` (particle resources), or `.bin`.
@@ -82,7 +86,7 @@ from tools.data.datajson import DataError, load, write  # noqa: E402
 from tools.data.narc import read_narc, write_narc  # noqa: E402
 from tools.data.nitro_2d import (bitmap_pixels, compress_literals, decompress, palette_colors,  # noqa: E402
                                  palette_resource, pixels_bitmap, read_indexed_png, read_palette, read_rgba_apng,
-                                 write_indexed_png, write_palette, write_rgba_apng)
+                                 read_rgba_png, write_indexed_png, write_palette, write_rgba_apng, write_rgba_png)
 from tools.data.nitro_font import FontError, build_font_directory, export_font  # noqa: E402
 from tools.data.nitro_particles import ParticleError, build_directory as build_particles, export_particles  # noqa: E402
 from field_prop_model_data import edit_model, glb_fields  # noqa: E402
@@ -95,14 +99,15 @@ GRAPHICS = ROOT / "res" / "graphics"
 MOVIE = "movie.png"
 MOVIE_DELAY = (1, 15)
 # The directories that hold archive directories, by what the archives are: the menus' and apps' 2D graphics, the
-# demos and cutscenes, the field's gimmicks and effects, the particles and the fonts
+# demos and cutscenes, the field's gimmicks and effects, the particles, the fonts
+# and the sound files that the code plays itself
 ARCHIVE_ROOTS = [GRAPHICS, ROOT / "res" / "demo", ROOT / "res" / "field" / "gimmicks", ROOT / "res" / "field" / "effects",
-                 ROOT / "res" / "particles", ROOT / "res" / "fonts"]
+                 ROOT / "res" / "particles", ROOT / "res" / "fonts", ROOT / "res" / "sound" / "archives"]
 VERSIONS = {"black2": "b2_us", "white2": "w2_us"}
 EXTENSIONS = {b"RGCN": ".png", b"RLCN": ".pal", b"RCSN": ".nscr", b"RECN": ".ncer", b"RNAN": ".nanr",
               b"RCMN": ".nmcr", b"RAMN": ".nmar", b"BMD0": ".nsbmd", b"BCA0": ".nsbca", b"BTA0": ".nsbta",
               b"BMA0": ".nsbma", b"BTP0": ".nsbtp", b"BTX0": ".nsbtx", b"BVA0": ".nsbva", b"RTFN": ".nftr",
-              b" APS": ".spa"}
+              b" APS": ".spa", b"RIFF": ".wav"}
 LZ = {0x10: "lz10", 0x11: "lz11"}
 
 
@@ -508,8 +513,11 @@ def preview_colors(members: list[bytes], index: int, bits: int) -> list:
     return bank + [(0, 0, 0)] * (16 - len(bank))
 
 
-def member_file(name: str, data: bytes, members: list[bytes], index: int) -> tuple[str, bytes]:
+def member_file(name: str, data: bytes, members: list[bytes], index: int,
+                bitmaps: tuple[int, int] | None = None) -> tuple[str, bytes]:
     extension = EXTENSIONS.get(data[:4], ".bin")
+    if bitmaps and extension == ".bin" and len(data) == bitmaps[0] * bitmaps[1] * 2:
+        return name + ".png", write_rgba_png(*bitmaps, bitmap_pixels(data, *bitmaps))
     if extension == ".png":
         _, _, bits, _, _ = characters(data)
         return name + ".png", character_png(data, preview_colors(members, index, bits))
@@ -530,7 +538,8 @@ def movie_frames(games: dict, size: tuple[int, int], path: str) -> tuple[int, st
     return count, kinds.pop()
 
 
-def dump(arcid: str, root: Path = GRAPHICS, movie: tuple[int, int] | None = None, apicula: str | None = None):
+def dump(arcid: str, root: Path = GRAPHICS, movie: tuple[int, int] | None = None, apicula: str | None = None,
+         bitmaps: tuple[int, int] | None = None):
     ids = archive_ids()
     if arcid not in ids:
         raise SystemExit(f"no {arcid} in include/constants/arc.h")
@@ -555,7 +564,7 @@ def dump(arcid: str, root: Path = GRAPHICS, movie: tuple[int, int] | None = None
     if directory.exists():
         shutil.rmtree(directory)
     directory.mkdir(parents=True)
-    settings = {}
+    settings = {"bitmaps": list(bitmaps)} if bitmaps else {}
     first = 0
     if movie:
         first, kind = movie_frames(games, movie, path)
@@ -585,7 +594,7 @@ def dump(arcid: str, root: Path = GRAPHICS, movie: tuple[int, int] | None = None
                 if problem is not None:
                     print(f"{path}: member {index} stays a Nitro file: {problem}")
             if not converted:
-                file_name, content = member_file(name, data, members, index)
+                file_name, content = member_file(name, data, members, index, bitmaps)
                 (directory / sub / file_name).write_bytes(content)
             if black[1]:
                 compressed[file_name] = black[1]
@@ -631,7 +640,7 @@ def member_files(directory: Path, game: str, first: int = 0) -> list[tuple[str, 
     return [numbered[number] for number in range(first, first + len(numbered))]
 
 
-def build_member(path: Path, original: bytes | None) -> bytes:
+def build_member(path: Path, original: bytes | None, bitmaps: list[int] | None = None) -> bytes:
     if path.is_dir():
         if (path / "font.json").exists():
             return build_font_directory(path)
@@ -643,6 +652,11 @@ def build_member(path: Path, original: bytes | None) -> bytes:
             return pack_textures(original, path, str(path))
         raise GraphicsError(f"{path}: a directory, which only the game's models, texture sets, fonts and particle "
                             "resources are; add a new model or texture set as its .nsbmd or .nsbtx file")
+    if path.suffix == ".png" and bitmaps and not (original and original[:4] == b"RGCN"):
+        width, height, pixels = read_rgba_png(path)
+        if [width, height] != bitmaps:
+            raise GraphicsError(f"{path}: a bitmap of this archive is {bitmaps[0]}x{bitmaps[1]}, not {width}x{height}")
+        return pixels_bitmap(pixels)
     if path.suffix == ".png":
         return build_characters(path, original if original and original[:4] == b"RGCN" else None)
     if path.suffix == ".pal":
@@ -669,7 +683,8 @@ def pack(directory: Path, game: str, output: Path):
         if [width, height] != movie["size"]:
             raise GraphicsError(f"{file}: the movie is {width}x{height}, not {movie['size'][0]}x{movie['size'][1]}")
         built_members += [(pixels_bitmap(frame), movie["compressed"]) for frame in frames]
-    built_members += [(build_member(file, None if index >= len(originals) else unpack(originals[index])[0]),
+    built_members += [(build_member(file, None if index >= len(originals) else unpack(originals[index])[0],
+                                    settings.get("bitmaps")),
                        compressed.get(file.name))
                       for index, (_, file) in enumerate(members, len(built_members))]
     result = []
@@ -692,12 +707,17 @@ def main():
                 at = args.index("--movie")
                 movie = tuple(int(n) for n in args[at + 1].split("x"))
                 del args[at:at + 2]
+            bitmaps = None
+            if "--bitmaps" in args:
+                at = args.index("--bitmaps")
+                bitmaps = tuple(int(n) for n in args[at + 1].split("x"))
+                del args[at:at + 2]
             apicula = shutil.which("apicula")
             if "--apicula" in args:
                 at = args.index("--apicula")
                 apicula = args[at + 1]
                 del args[at:at + 2]
-            dump(args[0], *(Path(a) for a in args[1:]), movie=movie, apicula=apicula)
+            dump(args[0], *(Path(a) for a in args[1:]), movie=movie, apicula=apicula, bitmaps=bitmaps)
         elif len(sys.argv) == 5 and sys.argv[1] == "pack":
             pack(Path(sys.argv[2]), sys.argv[3], Path(sys.argv[4]))
         else:
