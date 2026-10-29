@@ -8409,6 +8409,7 @@ overlays/ov012 0x02159e88 Scrcmd_Stadium_StadiumSetupActorsTriple
 overlays/ov012 0x02159f58 Scrcmd_Stadium_StadiumResetTrainerFlags
 overlays/ov012 0x02159f90 Scrcmd_Stadium_GetRandomDistinctSix
 overlays/ov012 0x0215a50c SetGameClearStaffRollParam
+overlays/ov012 0x0215a670 EventGameClear_SetHallOfFameMinutes
 overlays/ov012 0x0215aa68 FieldMenu_GetAppId
 overlays/ov012 0x0215aa74 FieldMenu_CanRetry
 overlays/ov012 0x0215aa90 FieldMenu_CanLeaveField
