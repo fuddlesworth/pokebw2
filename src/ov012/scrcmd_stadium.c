@@ -89,7 +89,7 @@ BOOL Scrcmd_Stadium_StadiumResetTrainerFlags(VM *vm, FieldScriptEnv *env) {
     eventWork = GameData_GetEventWork(GSYS_GetGameData(ScriptWork_GetGameSystem(work)));
     trainers = ScriptWork_GetStadiumTrainers(work);
     i = 0;
-    while (i != 0x84) {
+    while (i != STADIUM_TRAINER_COUNT) {
         clearTrainerBattleFlag(eventWork, trainers[i].trainerId);
         ++i;
     }
@@ -141,7 +141,7 @@ BOOL Scrcmd_Stadium_GetRandomDistinctSix(VM *vm, FieldScriptEnv *env) {
 
 u32 FindStadiumTrainerIndex(StadiumTrainerEntry *trainers, u16 a, u16 b) {
     s32 i;
-    for (i = 0; i < 0x84; i++) {
+    for (i = 0; i < STADIUM_TRAINER_COUNT; i++) {
         if (trainers[i].unk00 == a && trainers[i].unk02 == b) {
             return i;
         }
