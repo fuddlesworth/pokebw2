@@ -8531,6 +8531,8 @@ overlays/ov012 0x0215f7e8 GameBeaconSearch_GetSendBeacon
 overlays/ov012 0x0215f810 GameBeaconSearch_SetupBeacon
 overlays/ov012 0x0215f910 GameBeaconSearch_GetBeaconSize
 overlays/ov012 0x0215f914 GameBeaconSearch_AcceptAnyBeacon
+overlays/ov012 0x0215f918 GameBeaconSearch_OnNetError
+overlays/ov012 0x0215f920 GameBeaconSearch_OnNetEnd
 overlays/ov012 0x0215f924 GameBeaconSearch_PickBetterBeacon
 overlays/ov012 0x0215f94c GameBeaconSearch_StartType35Wait
 overlays/ov012 0x0215f958 GameBeacon_BroadcastWildBattleStart
@@ -9007,6 +9009,7 @@ overlays/ov012 0x0216cb74 sFieldMenuAppIds
 overlays/ov012 0x0216cd60 DIRECTION_ANGLES
 overlays/ov012 0x0216cd68 ANGLE_SECTOR_QUARTERS
 overlays/ov012 0x0216cdc8 ROTATED_DIR_TABLE
+overlays/ov012 0x0216d6a8 sGameBeaconSearchNetInit
 overlays/ov012 0x0216d720 SYMBOL_MAP_13
 overlays/ov012 0x0216d73e SYMBOL_MAP_12
 overlays/ov012 0x0216d75c SYMBOL_MAP_11

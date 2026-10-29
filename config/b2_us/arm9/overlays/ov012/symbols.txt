@@ -895,8 +895,8 @@ GameBeaconSearch_GetSendBeacon kind:function(thumb,size=0x28) addr:0x0215f7e8
 GameBeaconSearch_SetupBeacon kind:function(thumb,size=0x100) addr:0x0215f810
 GameBeaconSearch_GetBeaconSize kind:function(thumb,size=0x4) addr:0x0215f910
 GameBeaconSearch_AcceptAnyBeacon kind:function(thumb,size=0x4) addr:0x0215f914
-func_ov012_0215f918 kind:function(thumb,size=0x6) addr:0x0215f918
-func_ov012_0215f920 kind:function(thumb,size=0x2) addr:0x0215f920
+GameBeaconSearch_OnNetError kind:function(thumb,size=0x6) addr:0x0215f918
+GameBeaconSearch_OnNetEnd kind:function(thumb,size=0x2) addr:0x0215f920
 GameBeaconSearch_PickBetterBeacon kind:function(thumb,size=0x28) addr:0x0215f924
 GameBeaconSearch_StartType35Wait kind:function(thumb,size=0xc) addr:0x0215f94c
 GameBeacon_BroadcastWildBattleStart kind:function(thumb,size=0x3c) addr:0x0215f958
@@ -1747,7 +1747,7 @@ FIELD_COMMON_EVENTS kind:data(any) addr:0x0216cde4
 FIELD_ACTION_BLOCK_CHECKS kind:data(any) addr:0x0216ce14
 HIDDEN_ITEMS kind:data(any) addr:0x0216ce44
 DAYS_PER_MONTH kind:data(any) addr:0x0216d698
-data_ov012_0216d6a8 kind:data(any) addr:0x0216d6a8
+sGameBeaconSearchNetInit kind:data(any) addr:0x0216d6a8
 data_ov012_0216d718 kind:data(any) addr:0x0216d718
 SYMBOL_MAP_13 kind:data(any) addr:0x0216d720
 SYMBOL_MAP_12 kind:data(any) addr:0x0216d73e
