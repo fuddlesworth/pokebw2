@@ -79,26 +79,26 @@ static BOOL TrainerCardSys_Init(GameProc *proc, u32 *state, void *param, void *w
 static BOOL TrainerCardSys_Exit(GameProc *proc, u32 *state, void *param, void *work);
 
 // The order of the declarations gives the order of the tables, which MWCC sorts by size
-const GameProcFunctions data_ov012_0216dd78 = {
+const GameProcFunctions TRCARD_SYS_PROC_FUNCTIONS = {
     TrainerCardSys_Init,
     TrainerCardSys_Main,
     TrainerCardSys_Exit,
 };
 
-const GameProcFunctions data_ov012_0216dd6c = {
+const GameProcFunctions TRCARD_SYS_VIEW_PROC_FUNCTIONS = {
     TrainerCardSys_InitView,
     TrainerCardSys_Main,
     TrainerCardSys_ExitView,
 };
 
-static const GameProcFunctions data_ov012_0216dd60 = {
+static const GameProcFunctions TRCARD_SCREEN_PROC_FUNCTIONS = {
     TrainerCard_Init,
     TrainerCard_Main,
     TrainerCard_Exit,
 };
 
 // The records that each sum on the card adds up, ending at 0
-static const u16 data_ov012_0216dd84[9][7] = {
+static const u16 TRCARD_RECORD_SUMS[9][7] = {
     { 0xc, 0xd, 0x10, 0x11, 0x24, 0x25, 0x5a },
     { 0xd, 0x11, 0x25 },
     { 0xe, 0x12, 0x26 },
@@ -242,7 +242,7 @@ static u32 TrainerCardSys_SeqCard(TrainerCardSysWork *wk) {
     if (wk->procMgr == NULL) {
         wk->procMgr = CreateGameProcManager(wk->heapId);
     }
-    QueueGameProc(wk->procMgr, OVERLAY_NONE, &data_ov012_0216dd60, wk->param);
+    QueueGameProc(wk->procMgr, OVERLAY_NONE, &TRCARD_SCREEN_PROC_FUNCTIONS, wk->param);
     return TRCARD_SEQ_CARD_WAIT;
 }
 
@@ -400,10 +400,10 @@ static u32 TrainerCardData_SumRecords(GameRecords *records, u32 row, u32 max) {
     int i;
 
     for (i = 0; i < 7; i++) {
-        if (data_ov012_0216dd84[row][i] == 0) {
+        if (TRCARD_RECORD_SUMS[row][i] == 0) {
             break;
         }
-        sum += RecordGet(records, data_ov012_0216dd84[row][i]);
+        sum += RecordGet(records, TRCARD_RECORD_SUMS[row][i]);
         if (sum > max) {
             sum = max;
         }

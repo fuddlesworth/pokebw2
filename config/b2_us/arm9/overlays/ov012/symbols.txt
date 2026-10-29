@@ -1790,10 +1790,10 @@ data_ov012_0216dc92 kind:data(any) addr:0x0216dc92
 WILD_BATTLE_RESULT kind:data(any) addr:0x0216dd1c
 data_ov012_0216dd24 kind:data(any) addr:0x0216dd24
 BTL_RESULT_LUT kind:data(any) addr:0x0216dd3c
-data_ov012_0216dd60 kind:data(any) addr:0x0216dd60
-data_ov012_0216dd6c kind:data(any) addr:0x0216dd6c
-data_ov012_0216dd78 kind:data(any) addr:0x0216dd78
-data_ov012_0216dd84 kind:data(any) addr:0x0216dd84
+TRCARD_SCREEN_PROC_FUNCTIONS kind:data(any) addr:0x0216dd60
+TRCARD_SYS_VIEW_PROC_FUNCTIONS kind:data(any) addr:0x0216dd6c
+TRCARD_SYS_PROC_FUNCTIONS kind:data(any) addr:0x0216dd78
+TRCARD_RECORD_SUMS kind:data(any) addr:0x0216dd84
 data_ov012_0216ddfd kind:data(any) addr:0x0216ddfd ambiguous
 TEX_DIM_LUT kind:data(any) addr:0x0216de04
 HIDDEN_HOLLOW_ENTRANCES kind:data(any) addr:0x0216de58
