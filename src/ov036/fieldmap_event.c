@@ -1331,7 +1331,7 @@ static GameEvent *CheckRailDiveEvent(FieldInteractWk *wk, GameSystem *gsys, Fiel
     if (dir == DIR_DOWN && (wk->observeStatus == PLAYER_OBSERVE_NONE || wk->observeStatus == PLAYER_OBSERVE_END)) {
         if (FieldRailTilemap_IsSignBoard(GetTileClass(wk->tileType)) &&
             (RailActor_GetHitBitsDirNoAttr(actor, dir) & 3) != 0) {
-            return func_ov033_0217a0f4(gsys, field, dir);
+            return EventRailSlipdown_CreatePlayer(gsys, field, dir);
         }
     }
     return NULL;

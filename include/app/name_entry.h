@@ -54,11 +54,11 @@ typedef struct {
     SaveControlIntr *saveTask;
     TrainerGameInfoSave *gameInfo;
     // 1 to allow more than 4 digits, 2 to skip the check of profane words
-    u32 unk2C;
+    u32 skipChecks;
     // The save block that a third preset name, for modes that offer some, is read from
-    u16 *unk30;
+    u16 *presetNameSave;
     // Set to which preset name (1 to 3) the name that was entered is, if any
-    u32 unk34;
+    u32 presetIndex;
 } NameEntryParam;
 
 // Overlay 12's name_input_setup.c

@@ -87,7 +87,7 @@ BOOL Scrcmd_TrialHouse_TrialHouseSetDownloadMode(VM *vm, FieldScriptEnv *env) {
 
     FieldScriptEnv_GetScriptWork(env);
     workPtr = GetTrialHouseWkPPtr(GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env)));
-    func_ov033_0217adbc(*workPtr, ScriptReadAny(vm, env));
+    TrialHouse_SetSelectionFlag(*workPtr, ScriptReadAny(vm, env));
     return FALSE;
 }
 
@@ -118,7 +118,7 @@ BOOL Scrcmd_TrialHouse_TrialHouseDownloadExamination(VM *vm, FieldScriptEnv *env
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     TrialHouseWork **workPtr = GetTrialHouseWkPPtr(GSYS_GetGameData(gsys));
 
-    ScriptWork_CallEvent(work, func_ov033_0217aee8(gsys, *workPtr, ScriptReadVar(vm, env)));
+    ScriptWork_CallEvent(work, TrialHouse_CreateDeliveryTask(gsys, *workPtr, ScriptReadVar(vm, env)));
     return TRUE;
 }
 

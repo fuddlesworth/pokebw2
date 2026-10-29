@@ -184,8 +184,8 @@ GameEvent *EventBSubwayPokeSelect_Create(BSubwayScrWork *bsw, GameSystem *gsys, 
     data->gsys = gsys;
     data->field = field;
     data->picked = bsw->memberChoices;
-    data->choice = &bsw->unk82;
-    data->result = &bsw->unk84;
+    data->choice = &bsw->pokeSelectIndex;
+    data->result = &bsw->pokeSelectResult;
     if (rental == FALSE) {
         party = GameData_GetParty(gameData);
     } else {

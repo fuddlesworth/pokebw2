@@ -308,7 +308,7 @@ u32 EventSweetScentCall_Check(PlayerActionPossibilities *context) {
 }
 
 GameEvent *EventSweetScentCall_Create(HiddenEventArgs *args, PlayerActionPossibilities *context) {
-    return func_ov033_021785d4(context->gsys, context->field, args->partySlot);
+    return EventSweetScent_CreateFromPartySlot(context->gsys, context->field, args->partySlot);
 }
 
 GameEvent *EventFly_Create(HiddenEventArgs *args, PlayerActionPossibilities *context) {

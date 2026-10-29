@@ -85,7 +85,7 @@ GameEventReturnCode EventCommTvt_Callback(GameEvent *event, u32 *state, void *da
         break;
     case 9:
         if (work->mode == 0) {
-            GameEvent_Replace(event, func_ov033_021773e4(gsys, work->exitArgument));
+            GameEvent_Replace(event, EventEntralinkWarpReturn_Create(gsys, work->exitArgument));
             return GAMEEVENT_CONTINUE;
         }
         *state = 10;
