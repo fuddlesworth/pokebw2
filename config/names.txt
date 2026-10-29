@@ -8158,6 +8158,7 @@ overlays/ov012 0x02153658 Intrude_GetAlertState
 overlays/ov012 0x0215365c Intrude_CountEventPeers
 overlays/ov012 0x02153660 Intrude_GetRequesterStatus
 overlays/ov012 0x02153664 Intrude_IsSessionEndPending
+overlays/ov012 0x02153668 Intrude_OnZoneChange
 overlays/ov012 0x02153ed0 ScriptWork_SetSignFont
 overlays/ov012 0x02153ed4 ScriptWork_GetSignFont
 overlays/ov012 0x02154180 Scrcmd_Vm_VMNop
