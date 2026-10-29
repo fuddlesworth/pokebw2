@@ -431,6 +431,7 @@ struct PokemonTradeWork {
     // The characters of every Pokémon's icon in the boxes, 0x200 bytes each
     u8 *iconCharData;
     u8 unk1188[0x4];
+    // The kind of trade, a TRADE_TYPE_*
     int type;
     // The curve the carried icon flies along when it is let go, and the frames left of its flight
     TradeCurve curve;
@@ -454,11 +455,13 @@ struct PokemonTradeWork {
     // Whether the lower screen's BGs, and the trade demo's BGs 6 and 7, are set up
     u8 subBGsCreated;
     u8 demoBGsCreated;
+    // For the trade's animation: whether the Pokémon sent goes back to the partner, its original trainer, and whether
+    // it doesn't hop, and the same of the Pokémon received
+    u8 sentPkmReturns;
+    u8 recvPkmReturns;
+    u8 sentPkmNoBounce;
+    u8 recvPkmNoBounce[0x1];
     // Frames to wait before going on, after a message
-    u8 unk11ED;
-    u8 unk11EE;
-    u8 unk11EF;
-    u8 unk11F0[0x1];
     u8 waitTimer;
     u8 partnerBoxCount;
     // Whether a negotiation's summary is open

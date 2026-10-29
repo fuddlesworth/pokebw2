@@ -137,7 +137,7 @@ static void PoketradeSave_StepEventMessage1(PokemonTradeWork *wk) {
             GFL_MsgDataLoadStrbuf(wk->msgData, 154, wk->strbufTemplate);
         } else if (wk->type == TRADE_TYPE_GTS_TRADE) {
             GFL_MsgDataLoadStrbuf(wk->msgData, 157, wk->strbufTemplate);
-        } else if (wk->unk11EE != 0) {
+        } else if (wk->recvPkmReturns != 0) {
             GFL_MsgDataLoadStrbuf(wk->msgData, 132, wk->strbufTemplate);
         } else {
             GFL_MsgDataLoadStrbuf(wk->msgData, 48, wk->strbufTemplate);
@@ -170,7 +170,7 @@ static void PoketradeSave_StepEventMessage2(PokemonTradeWork *wk) {
         loadPokemonNicknameToStrbuf(wk->wordSet, 1, pkm);
         copyVarForText(wk->wordSet, 0, wk->partnerInfo);
         if (wk->type != TRADE_TYPE_GTS_WITHDRAW && wk->type != TRADE_TYPE_GTS_TRADE) {
-            if (wk->unk11EE != 0) {
+            if (wk->recvPkmReturns != 0) {
                 GFL_MsgDataLoadStrbuf(wk->msgData, 133, wk->strbufTemplate);
                 GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->strbufTemplate);
                 PoketradeSave_OpenMessageWindowAtPos(wk, TRUE, 0);
