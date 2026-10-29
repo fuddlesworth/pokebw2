@@ -117,7 +117,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         mainModule->heapId = HEAPID_BATTLE;
         mainModule->setup = setup;
         setup->unkAC = 6;
-        mainModule->unkC0 = mainModule->setup->unk34[0];
+        mainModule->unkC0 = mainModule->setup->playerInfo[0];
         mainModule->unk440 = mainModule->setup->unk8C;
         mainModule->unk442 = mainModule->setup->unk8E;
         mainModule->unk473_3 = 0;
@@ -459,7 +459,7 @@ void BtlMain_SetupClientTrainer(BtlMainModule *mainModule, u8 clientId) {
     if (setup->trainers[index]->trainerId != 0) {
         TrainerData_SetFromSetup(trainer, setup->trainers[index]);
     } else {
-        TrainerData_SetFromPlayer(trainer, mainModule->heapId, setup->unk34[index]);
+        TrainerData_SetFromPlayer(trainer, mainModule->heapId, setup->playerInfo[index]);
     }
 }
 
@@ -3106,8 +3106,8 @@ void TrainerData_SetFromSetup(BtlTrainerData *trainer, const BtlSetupTrainer *sr
         trainer->name = GFL_StrBufClone(src->name, HEAPID_BATTLE);
         trainer->unk0C = src->aiFlags;
         MI_CpuCopy8(src->items, trainer->unk10, sizeof(trainer->unk10));
-        PMSData_Copy(&trainer->unk18, &src->unk18);
-        PMSData_Copy(&trainer->unk20, &src->unk20);
+        PMSData_Copy(&trainer->unk18, &src->winWords);
+        PMSData_Copy(&trainer->unk20, &src->loseWords);
     } else {
         trainer->unk0A = 0;
         trainer->unk08 = 0;
@@ -3507,8 +3507,8 @@ void SetSetupParty(BtlMainModule *mainModule, u8 clientId, const PokeParty *part
 void SetSetupPlayerInfo(BtlMainModule *mainModule, u8 clientId, const PlayerInfo *src) {
     u8 index = ClientIDToSetupIndex(mainModule->playerClientId, clientId);
 
-    if (mainModule->setup->unk34[index] != NULL) {
-        PlayerInfo_Copy(src, mainModule->setup->unk34[index]);
+    if (mainModule->setup->playerInfo[index] != NULL) {
+        PlayerInfo_Copy(src, mainModule->setup->playerInfo[index]);
     }
 }
 

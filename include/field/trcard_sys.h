@@ -134,9 +134,9 @@ u16 TrainerCardData_GetMedalCount(TrainerCardData *data);
 u8 TrainerCardData_GetMedalRank(TrainerCardData *data);
 
 // The proc of the player's own card, which FIELD_PROC_LINK_LIST opens
-extern const GameProcFunctions data_ov012_0216dd78;
+extern const GameProcFunctions TRCARD_SYS_PROC_FUNCTIONS;
 // The proc that shows a card it is given, which it frees
-extern const GameProcFunctions data_ov012_0216dd6c;
+extern const GameProcFunctions TRCARD_SYS_VIEW_PROC_FUNCTIONS;
 
 // Overlay 186, the trainer card screen
 BOOL TrainerCard_Init(GameProc *proc, u32 *state, void *param, void *work);

@@ -95,7 +95,7 @@ static BOOL Demo3D_Init(GameProc *proc, u32 *state, void *param, void *work) {
     demo->engine = Demo3DEngine_Create(demo->graphic, demoParam, demo->heapId);
     demo->exp = Demo3DExp_Create(demoParam->demoId, demo->graphic, demo->engine, demo->heapId);
     Demo3D_LoadSoundGroups(demoParam->demoId);
-    frames = Demo3DEngine_GetFrameCount(demo->engine) - demoParam->unk08;
+    frames = Demo3DEngine_GetFrameCount(demo->engine) - demoParam->startFrame;
     Demo3DData_GetFadeParams(demoParam->demoId, FALSE, &white, &fadeFrames);
     if (frames > fadeFrames) {
         Demo3D_StartFade(demoParam->demoId, WIPE_TYPE_FADE_IN, demo->heapId);
@@ -144,7 +144,7 @@ static BOOL Demo3D_Main(GameProc *proc, u32 *state, void *param, void *work) {
     switch (*state) {
     case 0:
         if (Demo3D_IsSkipRequested(demo) || ended) {
-            demo->param->unk10 = Demo3DEngine_GetNowFrame(demo->engine) >> FX32_SHIFT;
+            demo->param->endFrame = Demo3DEngine_GetNowFrame(demo->engine) >> FX32_SHIFT;
             demo->param->result = ended + 1;
             Demo3DEngine_SetStopped(demo->engine, demo->param->result);
             (*state)++;
@@ -188,7 +188,7 @@ static BOOL Demo3D_StartFade(u8 demoId, int type, HeapID heapId) {
 }
 
 static BOOL Demo3D_IsSkipRequested(Demo3DWork *work) {
-    if (work->param->result != 0 || !GFL_WipeIsFinished()) {
+    if (work->param->result != DEMO3D_RESULT_NONE || !GFL_WipeIsFinished()) {
         return FALSE;
     }
     if (work->exp->skippable &&

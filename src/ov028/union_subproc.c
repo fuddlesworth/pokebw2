@@ -183,7 +183,8 @@ BOOL UnionCommand_IsActive(UnionSystem *unisys) {
 static BOOL UnionCommand_TrainerCard(GameSystem *gsys, UnionSystem *unisys, Field *field, void *arg, GameEvent *event,
                                      GameEvent **next, u8 *step) {
     if (*step == 0) {
-        *next = EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_ID(186), &data_ov012_0216dd6c, arg);
+        *next =
+            EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_ID(186), &TRCARD_SYS_VIEW_PROC_FUNCTIONS, arg);
     } else {
         return TRUE;
     }

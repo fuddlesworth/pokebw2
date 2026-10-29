@@ -2848,13 +2848,13 @@
     .2byte \a0
     .endm
 
-    .macro AreaNPCCmd_0218 a0, a1
+    .macro EntreeForestGetInfo a0, a1
     FieldCommand 536
     .2byte \a0
     .2byte \a1
     .endm
 
-    .macro AreaNPCCmd_0219 a0, a1
+    .macro EntreeForestToggleKeepPkm a0, a1
     FieldCommand 537
     .2byte \a0
     .2byte \a1
@@ -3038,8 +3038,7 @@
     .2byte \a1
     .endm
 
-    // func_ov012_02169c1c
-    .macro Cmd_023B
+    .macro NuvemaGimmickSetVisible
     FieldCommand 571
     .endm
 
@@ -3221,7 +3220,7 @@
     .2byte \a0
     .endm
 
-    .macro HollowRivalCmd_0267
+    .macro HollowRivalSetMet
     FieldCommand 615
     .endm
 
@@ -3601,7 +3600,7 @@
     .2byte \a0
     .endm
 
-    .macro HollowRivalCmd_02C3 a0
+    .macro HollowRivalSetSpecies a0
     FieldCommand 707
     .2byte \a0
     .endm

@@ -113,7 +113,7 @@ void CalcPlayerActionPossibilities(Field *field, PlayerActionPossibilities *acti
 }
 
 // The events of each hidden move, by its kind, and the same in the Abyssal Ruins, where Strength and Flash differ
-const HiddenEventSpec HM_EVENTS_NORMAL[11] = {
+const HiddenEventSpec HM_EVENTS_NORMAL[HM_EVENT_MAX] = {
     { EventCutCall_Create, EventCutCall_Check },
     { EventSurfCall_Create, EventSurfCall_Check },
     { EventWaterfallCall_Create, EventWaterfallCall_Check },
@@ -127,7 +127,7 @@ const HiddenEventSpec HM_EVENTS_NORMAL[11] = {
     { EventDivingCall_Create, EventDivingCall_Check },
 };
 
-const HiddenEventSpec HM_EVENTS_RUINS[11] = {
+const HiddenEventSpec HM_EVENTS_RUINS[HM_EVENT_MAX] = {
     { EventCutCall_Create, EventCutCall_Check },
     { EventSurfCall_Create, EventSurfCall_Check },
     { EventWaterfallCall_Create, EventWaterfallCall_Check },

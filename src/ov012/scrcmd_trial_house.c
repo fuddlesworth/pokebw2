@@ -162,13 +162,13 @@ BOOL Scrcmd_TrialHouse_TrialHouseSaveData(VM *vm, FieldScriptEnv *env) {
 BOOL Scrcmd_TrialHouse_TrialHouseCallResults(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    u16 a1;
-    u16 a2;
+    u16 downloaded;
+    u16 playJingle;
 
     GetTrialHouseWkPPtr(GSYS_GetGameData(gsys));
-    a1 = ScriptReadAny(vm, env);
-    a2 = ScriptReadAny(vm, env);
-    ScriptWork_CallEvent(work, CallTrialHouseResults(gsys, a1, a2));
+    downloaded = ScriptReadAny(vm, env);
+    playJingle = ScriptReadAny(vm, env);
+    ScriptWork_CallEvent(work, CallTrialHouseResults(gsys, downloaded, playJingle));
     return TRUE;
 }
 

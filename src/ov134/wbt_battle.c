@@ -412,8 +412,8 @@ static void WbtBattle_SetBattleTrainer(BtlSetupTrainer *trainer, const WbtEntran
     trainer->trainerClass = entrant->unk6_0;
     WbtEntrant_GetName(entrant, trainer->name);
     MI_CpuClear16(trainer->items, sizeof(trainer->items));
-    PMSData_Clear(&trainer->unk18);
-    PMSData_Clear(&trainer->unk20);
+    PMSData_Clear(&trainer->winWords);
+    PMSData_Clear(&trainer->loseWords);
 }
 
 // The two lines that the opponent says in the battle

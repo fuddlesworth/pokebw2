@@ -108,7 +108,7 @@ static BOOL BSubwayCommBattleProc_Init(GameProc *proc, u32 *state, void *param, 
 static BOOL BSubwayCommBattleProc_Exit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL BSubwayCommBattleProc_Main(GameProc *proc, u32 *state, void *param, void *work);
 
-static const GameProcFunctions data_ov012_0216dc5c = {
+static const GameProcFunctions BSUBWAY_COMM_BATTLE_PROC_FUNCTIONS = {
     BSubwayCommBattleProc_Init,
     BSubwayCommBattleProc_Main,
     BSubwayCommBattleProc_Exit,
@@ -397,7 +397,7 @@ static GameEventReturnCode EventBSubwayCommBattleProc_Callback(GameEvent *event,
         data->param.gameData = GSYS_GetGameData(gsys);
         param->setup = data->setup;
         param->unk08 = data->unk08;
-        GSYS_QueueProc(gsys, -1, &data_ov012_0216dc5c, param);
+        GSYS_QueueProc(gsys, -1, &BSUBWAY_COMM_BATTLE_PROC_FUNCTIONS, param);
         (*state)++;
         break;
     case 1:

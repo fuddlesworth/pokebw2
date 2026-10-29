@@ -69,8 +69,8 @@ void BtlSetup_FreeContents(BtlSetup *setup) {
         if (setup->trainers[i] != NULL) {
             TrainerBattleSetup_Free(setup->trainers[i]);
         }
-        if (i != 0 && setup->unk34[i] != NULL) {
-            GFL_HeapFree(setup->unk34[i]);
+        if (i != 0 && setup->playerInfo[i] != NULL) {
+            GFL_HeapFree(setup->playerInfo[i]);
         }
     }
     if (setup->unkB0 != NULL) {
@@ -148,8 +148,8 @@ BtlSetupTrainer *TrainerBattleSetup_Create(HeapID heapId) {
 
     trainer->name = GFL_StrBufCreate(16, heapId);
     trainer->trainerId = 0;
-    PMSData_Clear(&trainer->unk18);
-    PMSData_Clear(&trainer->unk20);
+    PMSData_Clear(&trainer->winWords);
+    PMSData_Clear(&trainer->loseWords);
     return trainer;
 }
 
@@ -219,7 +219,7 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     setup->unkDD_1 = FALSE;
     for (i = 0; i < 4; i++) {
         setup->party[i] = NULL;
-        setup->unk34[i] = NULL;
+        setup->playerInfo[i] = NULL;
     }
     for (i = 0; i < 6; i++) {
         setup->unkE1[i] = 0;
@@ -228,7 +228,7 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     for (i = 0; i < 7; i++) {
         setup->unk90[i] = 0;
     }
-    setup->unk34[0] = GetGameDataPlayerInfo(gameData);
+    setup->playerInfo[0] = GetGameDataPlayerInfo(gameData);
     setup->bag = GameData_GetBag(gameData);
     setup->unk7C = GameData_GetBagCursor(gameData);
     setup->pokedex = GameData_GetPokedex(gameData);
@@ -327,8 +327,8 @@ static void BtlSetup_SetNetImpl(BtlSetup *setup, GameData *gameData, u32 style, 
     setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
     for (i = 0; i < 4; i++) {
         if (i != 0) {
-            if (setup->unk34[i] == NULL) {
-                setup->unk34[i] = PlayerInfo_Create(heapId);
+            if (setup->playerInfo[i] == NULL) {
+                setup->playerInfo[i] = PlayerInfo_Create(heapId);
             }
             if (setup->party[i] == NULL) {
                 setup->party[i] = PokeParty_Create(heapId);
@@ -427,7 +427,7 @@ void BtlSetup_InitForRecord(BtlSetup *setup, GameData *gameData, HeapID heapId) 
     MI_CpuFill8(setup, 0, sizeof(BtlSetup));
     for (i = 0; i < 4; i++) {
         setup->party[i] = PokeParty_Create(heapId);
-        setup->unk34[i] = PlayerInfo_Create(heapId);
+        setup->playerInfo[i] = PlayerInfo_Create(heapId);
         setup->trainers[i] = TrainerBattleSetup_Create(heapId);
     }
     setup->gameData = gameData;

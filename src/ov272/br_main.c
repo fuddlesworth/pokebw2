@@ -243,7 +243,7 @@ static void BrMain_BattleFreeParam(void *param, void *work) {
         FieldSnd_SetPlayerVolumeFade(fieldSound, 64, 0);
     }
     wk->data.unk_17bc = setup->unkDD_1;
-    GFL_HeapFree(setup->unk34[0]);
+    GFL_HeapFree(setup->playerInfo[0]);
     BtlSetup_FreeForRecord(setup);
     BtlSetup_Free(setup);
     BrMainProcSys_SetNext(work, BR_MAIN_PROCID_CORE);

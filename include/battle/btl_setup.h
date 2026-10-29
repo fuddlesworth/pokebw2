@@ -42,8 +42,9 @@ struct BtlSetupTrainer {
     u32 aiFlags;
     u16 items[4];
     StrBuf *name;
-    PMSData unk18;
-    PMSData unk20;
+    // The phrases the trainer says on winning and on losing
+    PMSData winWords;
+    PMSData loseWords;
 };
 
 // A trainer as a link battle sends it, with the name as characters
@@ -65,7 +66,8 @@ struct BtlSetup {
     BtlFieldSituation fieldSituation;
     // The parties of the four clients
     PokeParty *party[4];
-    PlayerInfo *unk34[4];
+    // The players' infos, by client
+    PlayerInfo *playerInfo[4];
     u8 unk44[4];
     // The trainers of the four clients
     BtlSetupTrainer *trainers[4];

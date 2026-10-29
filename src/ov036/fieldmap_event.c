@@ -1469,7 +1469,7 @@ static FieldActor *FindActorForInteraction(FieldInteractWk *wk, Field *field) {
         AdjusGridXZByDir(GetActorFaceDir(actor), &x, &z, 1);
     }
     found = FindActorByGPos(Field_GetActorSystem(field), x, z, GetActorPosY(actor), GRID_SIZE, FALSE);
-    if (found != NULL && func_ov012_021675b4(found)) {
+    if (found != NULL && IsActorFlag256Clear(found)) {
         return found;
     }
     return NULL;

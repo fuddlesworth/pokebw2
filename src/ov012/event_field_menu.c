@@ -127,7 +127,7 @@ GameEventReturnCode EventFieldMenu_Callback(GameEvent *event, u32 *state, void *
         break;
     case FIELD_MENU_EVENT_STATE_CLOSE:
         EnableAllActorsMovement(Field_GetActorSystem(work->field));
-        if (work->appCall.eventType != 1 && work->appCall.eventType != 4) {
+        if (work->appCall.eventType != FIELD_APP_RESULT_EXIT && work->appCall.eventType != FIELD_APP_RESULT_NEXT) {
             GameEvent_Replace(event,
                               EventFieldMenuReturn_Create(GameEvent_GetGameSystem(event), work->field, work->screenId));
             return GAMEEVENT_CONTINUE;
@@ -148,17 +148,17 @@ GameEventReturnCode EventFieldMenu_Callback(GameEvent *event, u32 *state, void *
         work->state = FIELD_MENU_EVENT_STATE_APP_RESULT;
         break;
     case FIELD_MENU_EVENT_STATE_APP_RESULT:
-        if (work->appCall.eventType == 0) {
+        if (work->appCall.eventType == FIELD_APP_RESULT_RETURN) {
             work->state = FIELD_MENU_EVENT_STATE_WAIT_SELECTION;
-        } else if (work->appCall.eventType == 1) {
+        } else if (work->appCall.eventType == FIELD_APP_RESULT_EXIT) {
             work->state = FIELD_MENU_EVENT_STATE_CLOSE;
-        } else if (work->appCall.eventType == 3) {
+        } else if (work->appCall.eventType == FIELD_APP_RESULT_COMMON_EVENT) {
             work->state = FIELD_MENU_EVENT_STATE_COMMON_EVENT;
-        } else if (work->appCall.eventType == 2) {
+        } else if (work->appCall.eventType == FIELD_APP_RESULT_HM_EVENT) {
             work->state = FIELD_MENU_EVENT_STATE_HM_EVENT;
-        } else if (work->appCall.eventType == 4) {
+        } else if (work->appCall.eventType == FIELD_APP_RESULT_NEXT) {
             work->state = FIELD_MENU_EVENT_STATE_CLOSE;
-        } else if (work->appCall.eventType == 5) {
+        } else if (work->appCall.eventType == FIELD_APP_RESULT_SCRIPT) {
             work->state = FIELD_MENU_EVENT_STATE_SCRIPT;
         }
         break;
@@ -201,7 +201,7 @@ static BOOL FieldMenu_CanRetry(FieldAppCallInput *input, void *arg) {
     FieldMenuWork *menu = arg;
     FieldSubscreen *subscreen = Field_GetSubscreen(menu->field);
 
-    if (input->eventType == 0) {
+    if (input->eventType == FIELD_APP_RESULT_RETURN) {
         FieldSubscreen_SetMenuSelectedButton(subscreen, menu->selectedButton);
     }
     return TRUE;
@@ -216,18 +216,18 @@ static BOOL FieldMenu_OnAppEnd(FieldAppCallInput *input, void *arg) {
     GameData *gameData = GSYS_GetGameData(menu->gameSystem);
 
     switch (input->eventType) {
-    case 4:
+    case FIELD_APP_RESULT_NEXT:
         GameData_SetLastSubscreen(gameData, 6);
         break;
-    case 0:
+    case FIELD_APP_RESULT_RETURN:
         GameData_SetLastSubscreen(gameData, 1);
         break;
-    case 5:
+    case FIELD_APP_RESULT_SCRIPT:
         GameData_SetLastSubscreen(gameData, 0);
         break;
-    case 1:
-    case 2:
-    case 3:
+    case FIELD_APP_RESULT_EXIT:
+    case FIELD_APP_RESULT_HM_EVENT:
+    case FIELD_APP_RESULT_COMMON_EVENT:
         GameData_SetLastSubscreen(gameData, menu->screenId);
         break;
     }

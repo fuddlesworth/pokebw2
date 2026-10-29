@@ -139,9 +139,12 @@ enum {
 };
 
 struct ZoneWarp {
-    u16 unk0;
+    // The zone and the warp the player arrives at
+    u16 destZoneId;
     u16 destId;
-    u8 unk4;
+    // The direction the player faces on arriving at this warp, one more than its DIR_*, or 0 for none: the player
+    // walks the other way into it
+    u8 direction;
     u8 transitionType;
     u16 isRail;
     union {

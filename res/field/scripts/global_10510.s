@@ -36,7 +36,7 @@ L_0072:
     VMCall L_0161
 
 L_008E:
-    HollowRivalCmd_0267
+    HollowRivalSetMet
     VMJump L_0155
 
 L_0096:
@@ -393,7 +393,7 @@ L_05BD:
     WorkSetConst EVENT_WORK_0x4189, 0
 
 L_0617:
-    HollowRivalCmd_02C3 0x802e
+    HollowRivalSetSpecies 0x802e
     VMReturn
 
 L_061D:

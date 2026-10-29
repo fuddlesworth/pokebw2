@@ -632,8 +632,8 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_SpPokeGimmick_SetSpecialTransferUsed,        // 0x215
     Scrcmd_PokeDisp_IsOneShotDRObtained,                // 0x216
     Scrcmd_EntreeForest_MapChangeEntreeForest,          // 0x217
-    func_ov012_02164c68,                                // 0x218
-    func_ov012_02164bcc,                                // 0x219
+    Scrcmd_EntreeForest_EntreeForestGetInfo,            // 0x218
+    Scrcmd_EntreeForest_EntreeForestToggleKeepPkm,      // 0x219
     Scrcmd_EntreeForest_WordSetLoadEntreeForestPkmName, // 0x21a
     Scrcmd_EntreeForest_EntreeForestSpawnAllPkm,        // 0x21b
     Scrcmd_EntreeForest_EntreeForestStartBattle,        // 0x21c
@@ -667,7 +667,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_Sound_BGMChangeMapEx,                        // 0x238
     Scrcmd_FieldActor_CheckPlayerFormModel,             // 0x239
     Scrcmd_Sound_PokeVoicePlay,                         // 0x23a
-    func_ov012_02169c1c,                                // 0x23b
+    Scrcmd_SpPoke_NuvemaGimmickSetVisible,              // 0x23b
     Scrcmd_SpPoke_NuvemaGimmickPlay,                    // 0x23c
     Scrcmd_SpPoke_NuvemaGimmickWaitAnim,                // 0x23d
     Scrcmd_DayCare_DayCareGetSexForNamePrint,           // 0x23e
@@ -711,7 +711,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     func_ov012_0216a748,                                // 0x264
     Scrcmd_ProcFld_CallXTransceiverSecret,              // 0x265
     Scrcmd_HollowRival_HollowRivalGetCounter,           // 0x266
-    func_ov012_0216a7cc,                                // 0x267
+    Scrcmd_HollowRival_HollowRivalSetMet,               // 0x267
     Scrcmd_Gym_GymInsectPlayObject,                     // 0x268
     Scrcmd_Gym_GymInsectShowEffect,                     // 0x269
     NULL,                                               // 0x26a
@@ -803,7 +803,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_PokemonMisc_FieldTradeGetSpecies,            // 0x2c0
     NULL,                                               // 0x2c1
     Scrcmd_Encount_RepelRearm,                          // 0x2c2
-    func_ov012_0216a7f4,                                // 0x2c3
+    Scrcmd_HollowRival_HollowRivalSetSpecies,           // 0x2c3
     Scrcmd_HiddenHollow_HiddenHollowSetPeriod,          // 0x2c4
     Scrcmd_PokeDisp_JoinAvenueRecordActivity,           // 0x2c5
     Scrcmd_JoinAvenueStore_JoinAvenueStoreStart,        // 0x2c6

@@ -957,7 +957,7 @@ static BOOL WifiBattleMatchSys_FinishReplay(WifiBattleMatchChain *chain, void *p
     BtlSetup *setup = param;
 
     GFL_SndBGMStopImmediate();
-    GFL_HeapFree(setup->unk34[0]);
+    GFL_HeapFree(setup->playerInfo[0]);
     BtlSetup_FreeForRecord(setup);
     GFL_HeapFree(setup);
     GFL_OvlUnload(OVERLAY_ID(167));
