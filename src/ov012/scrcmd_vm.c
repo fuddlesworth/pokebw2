@@ -475,7 +475,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_GameState_WildBattleGetResult,               // 0x178
     Scrcmd_Encount_CallCaptureDemo,                     // 0x179
     Scrcmd_FieldGimmickGate_GimmickGateViewBoard,       // 0x17a
-    func_ov012_02157bdc,                                // 0x17b
+    Scrcmd_Proc_GimmickSetNimbasaFlags,                 // 0x17b
     Scrcmd_Gym_RollerCoasterCallSwitch,                 // 0x17c
     Scrcmd_Gym_RollerCoasterSetCarIntroSeen,            // 0x17d
     NULL,                                               // 0x17e
@@ -698,7 +698,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     NULL,                                               // 0x257
     NULL,                                               // 0x258
     NULL,                                               // 0x259
-    func_ov012_02157b7c,                                // 0x25a
+    Scrcmd_Proc_GimmickSetNimbasaGym,                   // 0x25a
     Scrcmd_Gym_GymElecReapplyProgress,                  // 0x25b
     Scrcmd_Gym_GymElecSetFollower,                      // 0x25c
     Scrcmd_Gym_GymElecSetProgress,                      // 0x25d
@@ -772,7 +772,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_Medal_MedalGetMostCompleteCategory,          // 0x2a1
     Scrcmd_Gym_HumilauGymPlayLeaderSplash,              // 0x2a2
     Scrcmd_Gym_HumilauGymPlayLeaderWaves,               // 0x2a3
-    func_ov012_02157bb4,                                // 0x2a4
+    Scrcmd_Proc_GimmickResetOpelucid,                   // 0x2a4
     Scrcmd_Gym_OpelucidGymCallMove,                     // 0x2a5
     Scrcmd_Gym_OpelucidGymRefreshVars,                  // 0x2a6
     Scrcmd_Gym_OpelucidGymCallButton,                   // 0x2a7

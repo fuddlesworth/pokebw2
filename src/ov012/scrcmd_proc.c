@@ -415,7 +415,7 @@ BOOL Scrcmd_Proc_NetConnectBattleVideo(VM *vm, FieldScriptEnv *env) {
     return TRUE;
 }
 
-BOOL func_ov012_02157b7c(VM *vm, FieldScriptEnv *env) {
+BOOL Scrcmd_Proc_GimmickSetNimbasaGym(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys;
     u16 value;
 
@@ -427,7 +427,7 @@ BOOL func_ov012_02157b7c(VM *vm, FieldScriptEnv *env) {
     return FALSE;
 }
 
-BOOL func_ov012_02157bb4(VM *vm, FieldScriptEnv *env) {
+BOOL Scrcmd_Proc_GimmickResetOpelucid(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys;
 
     gsys = FieldScriptEnv_GetGameSystem(env);
@@ -437,7 +437,7 @@ BOOL func_ov012_02157bb4(VM *vm, FieldScriptEnv *env) {
     return FALSE;
 }
 
-BOOL func_ov012_02157bdc(VM *vm, FieldScriptEnv *env) {
+BOOL Scrcmd_Proc_GimmickSetNimbasaFlags(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys;
     u16 *first;
     u16 *second;

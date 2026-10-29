@@ -8327,6 +8327,9 @@ overlays/ov012 0x02157a2c Scrcmd_Proc_callPoke3Select
 overlays/ov012 0x02157a78 Scrcmd_Proc_Nop
 overlays/ov012 0x02157a8c Scrcmd_Proc_NetConnectWiFiBattle
 overlays/ov012 0x02157b28 Scrcmd_Proc_NetConnectBattleVideo
+overlays/ov012 0x02157b7c Scrcmd_Proc_GimmickSetNimbasaGym
+overlays/ov012 0x02157bb4 Scrcmd_Proc_GimmickResetOpelucid
+overlays/ov012 0x02157bdc Scrcmd_Proc_GimmickSetNimbasaFlags
 overlays/ov012 0x02157c20 Scrcmd_DayCare_DayCareCheckSpawnFlag
 overlays/ov012 0x02157c44 Scrcmd_DayCare_DayCareBreed
 overlays/ov012 0x02157c70 Scrcmd_DayCare_DayCareResetSeed

@@ -3132,7 +3132,7 @@
    ]
   },
   "379": {
-   "handler": "func_ov012_02157bdc",
+   "handler": "Scrcmd_Proc_GimmickSetNimbasaFlags",
    "overlay": 12,
    "args": [
     "var",
@@ -4524,7 +4524,7 @@
    ]
   },
   "602": {
-   "handler": "func_ov012_02157b7c",
+   "handler": "Scrcmd_Proc_GimmickSetNimbasaGym",
    "overlay": 12,
    "args": [
     "any"
@@ -4940,7 +4940,7 @@
    "args": []
   },
   "676": {
-   "handler": "func_ov012_02157bb4",
+   "handler": "Scrcmd_Proc_GimmickResetOpelucid",
    "overlay": 12,
    "args": []
   },
