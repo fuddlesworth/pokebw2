@@ -9737,6 +9737,8 @@ overlays/ov032 0x02199a58 WFCUserInfoWarning_LoadWindow
 overlays/ov032 0x02199b28 WFCUserInfoWarning_PrintMessage
 overlays/ov032 0x02199be0 WFCUserInfoWarning_Exit
 overlays/ov033 0x02176bd0 EntreeForest_CreateSymbolMon
+overlays/ov033 0x02176d88 EventFunfestMission_Create
+overlays/ov033 0x02176d9c EventFunfestMission_Callback
 overlays/ov033 0x02176f90 Scrcmd_Funfest_FunfestBGMReturn
 overlays/ov033 0x02176fec Scrcmd_Funfest_FunfestMissionBroadcast
 overlays/ov033 0x02177020 Scrcmd_Funfest_FunfestActorDelete

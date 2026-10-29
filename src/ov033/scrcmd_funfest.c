@@ -205,7 +205,7 @@ BOOL Scrcmd_Funfest_FunfestMissionStart(VM *vm, FieldScriptEnv *env) {
     ScriptWork *scriptWork = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
 
-    ScriptWork_CallEvent(scriptWork, func_ov033_02176d88(gsys));
+    ScriptWork_CallEvent(scriptWork, EventFunfestMission_Create(gsys));
     return TRUE;
 }
 
