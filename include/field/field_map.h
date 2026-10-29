@@ -44,9 +44,23 @@ struct MapMatrixFileHeader {
     u32 chunkIds[];
 };
 
+// What a map replacement replaces: chunks of the matrix, or the matrix
+enum {
+    MAP_REPLACE_KIND_CHUNK,
+    MAP_REPLACE_KIND_MATRIX,
+};
+
+// What picks a map replacement's value; the conditions after these are the events of EVENT_MAP_REPLACE_TABLE
+enum {
+    MAP_REPLACE_COND_SEASON,
+    MAP_REPLACE_COND_VERSION,
+    MAP_REPLACE_COND_VERSION_SEASON,
+};
+
 // An entry of the map replacements, file 0 of archive 10
 typedef struct {
     u16 id;
+    // MAP_REPLACE_KIND_*
     u8 kind;
     // What picks the value: the season, the version, both, or an event of EVENT_MAP_REPLACE_TABLE
     u8 condition;
