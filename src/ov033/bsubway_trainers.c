@@ -36,8 +36,8 @@ BtlSetup *BsubwayScr_CreateBtlSetup(BSubwayScrWork *bsw, GameSystem *gsys) {
         pkm = PokeParty_GetPkm(source, bsw->memberSlots[i]);
         PokeParty_AddPkm(party, pkm);
     }
-    result =
-        SetupTrialHouseBattle(gsys, party, bsw->playMode, bsw->trainers, &bsw->unk2C8[bsw->unkC_5], bsw->memberCount);
+    result = SetupTrialHouseBattle(gsys, party, bsw->playMode, bsw->trainers, &bsw->partners[bsw->partnerIndex],
+                                   bsw->memberCount);
     GFL_HeapFree(party);
     return result;
 }

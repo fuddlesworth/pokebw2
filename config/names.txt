@@ -9843,7 +9843,9 @@ overlays/ov033 0x0217b6b4 BsubwayScr_ChangeCommMultiMode
 overlays/ov033 0x0217b708 BsubwayScr_SaveRestPlayData
 overlays/ov033 0x0217b790 BsubwayScr_LoadMembers
 overlays/ov033 0x0217b7e8 BsubwayScr_SavePlayDataMembers
+overlays/ov033 0x0217b86c BsubwayScr_ResetSavedPlay
 overlays/ov033 0x0217b8ac BsubwayScr_SetLoseScore
+overlays/ov033 0x0217b8ec BsubwayScr_AddBattlePoints
 overlays/ov033 0x0217b9dc BsubwayScr_DrawTrainerNos
 overlays/ov033 0x0217ba94 BsubwayScr_SetSelectedMembers
 overlays/ov033 0x0217bb20 BsubwayScr_IsWinMax

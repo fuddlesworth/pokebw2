@@ -143,7 +143,7 @@ static void BSubwayComm_SetMembersData(BSubwayScrWork *bsw, GameData *gameData) 
 }
 
 static void BSubwayComm_SetTrainersData(BSubwayScrWork *bsw) {
-    MI_CpuCopy8(bsw->unk32, bsw->sendBuf, 14 * sizeof(u16));
+    MI_CpuCopy8(bsw->trainerNos, bsw->sendBuf, 14 * sizeof(u16));
 }
 
 static void BSubwayComm_SetRetireData(BSubwayScrWork *bsw, u16 retire) {
@@ -261,8 +261,8 @@ static void BSubwayComm_RecvMembers(int netId, int size, const void *data, void 
     bsw->partnerGender = recv[0];
     bsw->partnerSpecies[0] = recv[1];
     bsw->partnerSpecies[1] = recv[2];
-    bsw->unk18 = recv[3];
-    bsw->unkC_5 = bsw->partnerGender + 5;
+    bsw->partnerStageNo = recv[3];
+    bsw->partnerIndex = bsw->partnerGender + 5;
     if (bsw->memberSpecies[0] == bsw->partnerSpecies[0] || bsw->memberSpecies[0] == bsw->partnerSpecies[1]) {
         result += 1;
     }
@@ -279,7 +279,7 @@ static void BSubwayComm_RecvTrainers(int netId, int size, const void *data, void
     if (netId == NetSystem_GetNetId() || NetSystem_GetNetId() == 0) {
         return;
     }
-    MI_CpuCopy8(data, bsw->unk32, 14 * sizeof(u16));
+    MI_CpuCopy8(data, bsw->trainerNos, 14 * sizeof(u16));
 }
 
 static void BSubwayComm_RecvRetire(int netId, int size, const void *data, void *work, NetHandle *handle) {
