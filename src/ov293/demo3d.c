@@ -188,7 +188,7 @@ static BOOL Demo3D_StartFade(u8 demoId, int type, HeapID heapId) {
 }
 
 static BOOL Demo3D_IsSkipRequested(Demo3DWork *work) {
-    if (work->param->result != 0 || !GFL_WipeIsFinished()) {
+    if (work->param->result != DEMO3D_RESULT_NONE || !GFL_WipeIsFinished()) {
         return FALSE;
     }
     if (work->exp->skippable &&

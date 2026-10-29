@@ -22,10 +22,16 @@ typedef struct {
     u8 playerSex : 1;
     // The frame the demo ended at
     u32 endFrame;
-    // What the demo left: 1 when a key ended it and 2 when its camera animation did. The Royal Unova's cruise is
-    // the one demo a key ends
+    // What the demo left, a DEMO3D_RESULT_*. The Royal Unova's cruise is the one demo a key ends
     u32 result;
 } Demo3DParam;
+
+// How a demo ended: not yet, by a key, or at the end of its camera animation
+enum {
+    DEMO3D_RESULT_NONE,
+    DEMO3D_RESULT_SKIPPED,
+    DEMO3D_RESULT_ENDED,
+};
 
 // The same table: its symbol and its name in demo3d.c, until the symbol is renamed
 extern const GameProcFunctions gDemo3DProcFunctions;

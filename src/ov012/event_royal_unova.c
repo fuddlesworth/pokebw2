@@ -60,7 +60,7 @@ static GameEventReturnCode EventRoyalUnova_Callback(GameEvent *event, u32 *state
         (*state)++;
         break;
     case 1:
-        if (work->param.result == 2) {
+        if (work->param.result == DEMO3D_RESULT_ENDED) {
             *work->result = TRUE;
         } else {
             *work->result = FALSE;
