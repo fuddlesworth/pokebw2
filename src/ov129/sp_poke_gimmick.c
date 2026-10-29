@@ -3,6 +3,7 @@
 // the stage of that event. Four gimmicks (A to D here, in address order) differ in which scene of 3D models they add;
 // each keeps its state in work block 1, which holds the field's expansion object system
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/sound.h"
 #include "field/field.h"
 #include "field/field_actor.h"
@@ -18,11 +19,6 @@
 
 #define WORK_ID 1
 #define WORK_SIZE 0x30
-
-#define ARCID_SP_POKE_ACTORS 201
-#define ARCID_SP_POKE_CURVE 305
-#define ARCID_SP_POKE_SCENE_C 214
-#define ARCID_SP_POKE_SCENE_D 304
 
 // The center of a grid square, in fx32
 #define GRID_CENTER(n) ((n) * FX32_CONST(16) + FX32_CONST(8))

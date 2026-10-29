@@ -1,5 +1,6 @@
 #include "field/encounter_effect_model.h"
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/sound.h"
 #include "field/encounter_effect.h"
 #include "field/field.h"
@@ -14,9 +15,6 @@
 
 // The encounter effects that play an animated 3D model, textured with a capture of the screen. The name is
 // descriptive, since the overlay embeds no name
-
-// The archive of the effects' models and animations
-#define ARCID_ENCOUNT_EFFECT_MODEL 130
 
 typedef struct EncounterModelWork {
     // The flashes so far

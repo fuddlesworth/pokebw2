@@ -18,6 +18,7 @@
 #include "battle/btlv_mcss.h"
 #include "battle/btlv_stage.h"
 #include "battle/btlv_timer.h"
+#include "constants/arc.h"
 #include "constants/battle.h"
 #include "constants/trainer_classes.h"
 #include "field/field_light_status.h"
@@ -283,7 +284,7 @@ void BtlvEffect_Init(BtlvEffectSetup *setup, Font *font, HeapID heapId) {
         BtlvMcss_SetShadows(sBtlvEffect->mcss, 1);
     }
 
-    bgData = GFL_ArcSysReadHeapNew(0x97, 0, HEAPID_TAIL(sBtlvEffect->heapId));
+    bgData = GFL_ArcSysReadHeapNew(ARCID_BATTLE_BG_DATA, 0, HEAPID_TAIL(sBtlvEffect->heapId));
     season = 0;
     if (bgData[setup->fieldEnv.bgType].seasonal * 2) {
         season = setup->fieldEnv.season;

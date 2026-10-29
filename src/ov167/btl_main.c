@@ -3659,7 +3659,7 @@ BtlSetup *GetBattleSetupParam(BtlMainModule *mainModule) {
 }
 
 void BtlMain_LoadStudioData(BtlMainModule *mainModule, u8 arg1) {
-    mainModule->unk474 = GFL_ArcSysReadHeapNew(0x10d, arg1, HEAPID_BATTLE);
+    mainModule->unk474 = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, arg1, HEAPID_BATTLE);
     mainModule->unk478 = GFL_HeapAllocate(HEAPID_BATTLE, 0x14, FALSE, "btl_main.c", 6432);
     func_ov167_0219e3c8(mainModule->unk474);
     mainModule->unk478->unk08 = 0xff;

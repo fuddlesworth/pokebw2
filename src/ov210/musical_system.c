@@ -1,5 +1,6 @@
 #include "types.h"
 #include "app/musical/musical_system.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -9,9 +10,8 @@
 
 // Overlay 210's musical_system.c, named after its string: the musical's Pokémon and the program's data
 
-// The archives of the four built-in programs, one each (our name)
-#define ARCID_MUSICAL_PROGRAM 112
-// The first program that is the downloaded one, read from the save data
+// The four built-in programs are one file each of ARCID_MUSICAL_PROGRAM. The first program that is the downloaded one,
+// read from the save data
 #define MUSICAL_PROGRAM_DOWNLOAD 4
 
 #define MUSICAL_ITEM_NONE 0xff
