@@ -174,22 +174,22 @@ static void BtlSetup_LoadTrainer(BtlSetup *setup, GameData *gameData, u32 client
         switch (GetTrainerClassBGMGroupId(setup->trainers[client]->trainerClass)) {
         case 0:
         case 1:
-            setup->fieldSituation.unk12 = SEQ_BGM_WIN3;
+            setup->fieldSituation.winBgm = SEQ_BGM_WIN3;
             break;
         case 5:
         case 9:
-            setup->fieldSituation.unk12 = SEQ_BGM_WIN4;
+            setup->fieldSituation.winBgm = SEQ_BGM_WIN4;
             break;
         case 8:
         case 14:
-            setup->fieldSituation.unk12 = SEQ_BGM_WIN5;
+            setup->fieldSituation.winBgm = SEQ_BGM_WIN5;
             break;
         case 7:
         case 10:
-            setup->fieldSituation.unk12 = SEQ_BGM_WIN6;
+            setup->fieldSituation.winBgm = SEQ_BGM_WIN6;
             break;
         default:
-            setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
+            setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
             break;
         }
     }
@@ -240,7 +240,7 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     setup->unk98 = getBadgeCount(card);
     MI_CpuCopy8(status, &setup->fieldSituation.env, sizeof(BtlFieldEnv));
     setup->fieldSituation.bgm = SEQ_BGM_VS_NORAPOKE;
-    setup->fieldSituation.unk12 = SEQ_BGM_WIN1;
+    setup->fieldSituation.winBgm = SEQ_BGM_WIN1;
     setup->result = BTL_RESULT_VICTORY;
     if (EventWork_FlagGet(GameData_GetEventWork(gameData), EVENT_FLAG_0x096b)) {
         BtlSetup_SetFlag(setup, 2);
@@ -302,7 +302,7 @@ static void BtlSetup_LoadTrainerBase(BtlSetup *setup, GameData *gameData, u32 st
     BtlSetup_LoadPlayerParty(setup, gameData, heapId);
     setup->battleType = 1;
     setup->battleStyle = style;
-    setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
+    setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
 }
 
 // What every link battle starts from, with a party and a player's info for each other client
@@ -324,7 +324,7 @@ static void BtlSetup_SetNetImpl(BtlSetup *setup, GameData *gameData, u32 style, 
     setup->fieldSituation.multiMode = multiMode;
     setup->fieldSituation.unk19 = a6;
     setup->unkA0 = 0xff;
-    setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
+    setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
     for (i = 0; i < 4; i++) {
         if (i != 0) {
             if (setup->playerInfo[i] == NULL) {
@@ -485,10 +485,10 @@ void BtlSetup_PostProcessTrialHouse(BtlSetup *setup) {
         setup->battleType = 2;
         if (GetTrainerClassBGMGroupId(setup->trainers[1]->trainerClass) != 14) {
             setup->fieldSituation.bgm = SEQ_BGM_VS_SUBWAY_TRAINER;
-            setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
+            setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
         } else {
             setup->fieldSituation.bgm = SEQ_BGM_VS_CHAMP;
-            setup->fieldSituation.unk12 = SEQ_BGM_WIN5;
+            setup->fieldSituation.winBgm = SEQ_BGM_WIN5;
         }
     }
 }

@@ -226,7 +226,7 @@ static void *BrMain_BattleCreateParam(HeapID heapId, void *work, u32 preID) {
     BattleRec_UnloadToolOverlay();
     GFL_SndBGMSetPaused(TRUE);
     GFL_SndBGMPush();
-    BrMain_CheckBgm(&setup->fieldSituation.bgm, &setup->fieldSituation.unk12);
+    BrMain_CheckBgm(&setup->fieldSituation.bgm, &setup->fieldSituation.winBgm);
     GFL_SndBGMPlay(setup->fieldSituation.bgm, 0xffff);
     return setup;
 }

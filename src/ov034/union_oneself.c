@@ -1586,7 +1586,7 @@ static BOOL UnionOneself_StepCardRun(UnionSystem *unisys, UnionSelf *situ, Field
         break;
     case 4:
         if (situ->mycomm.recvFlag == 1 && UnionMsg_IsPrintDone(unisys) == TRUE) {
-            unisys->alloc.target_card->unk04_5 = 1;
+            unisys->alloc.target_card->isLocked = 1;
             unisys->alloc.cardParam =
                 TrainerCardParam_CreateView(unisys->param->gameData, unisys->alloc.target_card, HEAPID_UNION);
             (*seq)++;
@@ -2945,7 +2945,7 @@ static BOOL UnionOneself_StepColosseumCardRun(UnionSystem *unisys, UnionSelf *si
     case 1:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeAll(unisys);
-            clsys->cardCheck[clsys->unk17C[0]]->unk04_5 = 1;
+            clsys->cardCheck[clsys->unk17C[0]]->isLocked = 1;
             unisys->cmdArg =
                 TrainerCardParam_CreateView(unisys->param->gameData, clsys->cardCheck[clsys->unk17C[0]], HEAPID_UNION);
             UnionCommand_Set(unisys, 0x1c, unisys->cmdArg);

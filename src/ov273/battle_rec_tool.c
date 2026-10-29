@@ -206,7 +206,7 @@ void BattleRecTool_StoreSetup(BtlSetup *setup) {
     BattleRecBody *body;
     PokewoodBlock *block;
 
-    switch (setup->unkDD_3) {
+    switch (setup->studioMode) {
     case 0:
     default:
         body = &data_02140f64->body;
@@ -249,7 +249,7 @@ void BattleRecTool_LoadSetup(BtlSetup *setup, u32 mode, HeapID heapId) {
         BattleRecTool_LoadSetupParams(setup, &block->setup);
         BattleRecTool_LoadPokewoodInfo(setup, &block->info);
         BattleRecTool_LoadPokewoodExtra(setup, block);
-        setup->unkDD_3 = 2;
+        setup->studioMode = 2;
         break;
     }
 }
@@ -439,7 +439,7 @@ static BOOL BattleRecTool_StoreSetupParams(const BtlSetup *setup, BattleRecSetup
     rec->env = setup->fieldSituation.env;
     rec->rand = setup->rand;
     rec->bgm = setup->fieldSituation.bgm;
-    rec->winBgm = setup->fieldSituation.unk12;
+    rec->winBgm = setup->fieldSituation.winBgm;
     rec->battleType = setup->battleType;
     rec->battleStyle = setup->battleStyle;
     rec->unk33_4 = setup->fieldSituation.multiMode;
@@ -454,7 +454,7 @@ static BOOL BattleRecTool_LoadSetupParams(BtlSetup *setup, const BattleRecSetup 
     setup->fieldSituation.env = rec->env;
     setup->rand = rec->rand;
     setup->fieldSituation.bgm = rec->bgm;
-    setup->fieldSituation.unk12 = rec->winBgm;
+    setup->fieldSituation.winBgm = rec->winBgm;
     setup->battleType = rec->battleType;
     setup->battleStyle = rec->battleStyle;
     setup->fieldSituation.multiMode = rec->unk33_4;

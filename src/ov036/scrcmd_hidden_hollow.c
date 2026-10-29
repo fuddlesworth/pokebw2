@@ -400,10 +400,10 @@ static GameEventReturnCode EventHiddenHollowWarpOut_Callback(GameEvent *event, u
         (*state)++;
         break;
     case HOLLOW_WARP_STATE_MAP_CHANGE: {
-        u16 zone = GetHiddenHollowEntranceParam(work->hollow, 0);
-        u32 x = GetHiddenHollowEntranceParam(work->hollow, 1);
-        u32 y = GetHiddenHollowEntranceParam(work->hollow, 2);
-        u32 z = GetHiddenHollowEntranceParam(work->hollow, 3);
+        u16 zone = GetHiddenHollowEntranceParam(work->hollow, HIDDEN_HOLLOW_ENTRANCE_ZONE);
+        u32 x = GetHiddenHollowEntranceParam(work->hollow, HIDDEN_HOLLOW_ENTRANCE_X);
+        u32 y = GetHiddenHollowEntranceParam(work->hollow, HIDDEN_HOLLOW_ENTRANCE_Y);
+        u32 z = GetHiddenHollowEntranceParam(work->hollow, HIDDEN_HOLLOW_ENTRANCE_Z);
 
         CreateHiddenHollowWarpPosVec(&pos, x, y, z);
         next = EventMapChange_CreateGridDefault(work->gsys, work->field, zone, &pos, DIR_DOWN);

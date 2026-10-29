@@ -26,7 +26,7 @@ struct BtlFieldSituation {
     BtlFieldEnv env;
     // The battle's music, and the music of a win
     u16 bgm;
-    u16 unk12;
+    u16 winBgm;
     NetHandle *netHandle;
     u8 unk18;
     u8 unk19;
@@ -120,11 +120,13 @@ struct BtlSetup {
     u8 unkDD_0 : 1;
     u8 unkDD_1 : 1;
     u8 unkDD_2 : 1;
-    u8 unkDD_3 : 2;
+    // 1 for a Pokéstar Studios movie's battle and 2 for one loaded from its record (GetStudioMode)
+    u8 studioMode : 2;
     u8 unkDD_5 : 1;
     u8 unkDD_6 : 1;
     u8 unkDD_7 : 1;
-    u8 unkDE_0 : 1;
+    // Whether the battle doesn't register the foes in the Pokédex (RegisterDexMon)
+    u8 noPokedexRegistration : 1;
     u8 unkDE_1 : 7;
     u8 unkDF;
     u8 unkE0;

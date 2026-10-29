@@ -105,13 +105,13 @@ struct ZoneNPC {
     } pos;
 };
 
-// An actor's move code and its functions, called with the actor: unkC before the code is changed
+// An actor's move code and its functions, called with the actor: delete before the code is changed
 typedef struct {
     u32 code;
-    void (*unk4)(FieldActor *actor);
-    void (*unk8)(FieldActor *actor);
-    void (*unkC)(FieldActor *actor);
-    void (*unk10)(FieldActor *actor);
+    void (*init)(FieldActor *actor);
+    void (*move)(FieldActor *actor);
+    void (*delete)(FieldActor *actor);
+    void (*returnProc)(FieldActor *actor);
 } FieldActorMoveCode;
 
 // The saved positions of the strength boulders that were moved, in grid units, by the slots of field_actor.c's table of
@@ -668,7 +668,7 @@ void SetActorFlag8000(FieldActor *actor, BOOL value);
 BOOL IsActorFlag256Clear(FieldActor *actor);
 void SetActorFlag256(FieldActor *actor, BOOL value);
 void SetActorFlag32(FieldActor *actor, BOOL value);
-void FldAct_SetHeightCalcDisabled(FieldActor *actor, BOOL a1);
+void FldAct_SetHeightCalcDisabled(FieldActor *actor, BOOL disabled);
 void FldAct_SetIgnoreDisableAll(FieldActor *actor, BOOL value);
 void FldAct_SetMapAttrDisabled(FieldActor *actor, BOOL value);
 void FldAct_SetMoveBitAttrEffectOff(FieldActor *actor, BOOL value);
