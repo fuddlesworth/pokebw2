@@ -26571,6 +26571,7 @@ overlays/ov194 0x021bc7f8 PoketradeNego_StepQuitMenuChoice
 overlays/ov194 0x021bc87c PoketradeNego_StepOpenQuitMenu
 overlays/ov194 0x021bc8b8 PoketradeNego_StepWaitSync25
 overlays/ov194 0x021bc90c PoketradeNego_StepSendSync25
+overlays/ov194 0x021bc938 PoketradeNego_StepWaitKeyAfterReplies
 overlays/ov194 0x021bc998 PoketradeNego_StepResolveReplies
 overlays/ov194 0x021bca98 PoketradeNego_StepSendReply
 overlays/ov194 0x021bcb08 PoketradeNego_StepWaitReplySync

@@ -106,6 +106,23 @@ enum {
     TRADE_SELECT_PARTNER_BAD_PKM,
     // Never sent: its message says the Pokémon knows an HM move
     TRADE_SELECT_HM_MOVE,
+    // A negotiation: both players agree on the Pokémon offered, one chose one of the other's, or wants to offer
+    // others, and the answer to the trade of the two chosen
+    TRADE_SELECT_NEGO_AGREE,
+    TRADE_SELECT_NEGO_CHOOSE,
+    TRADE_SELECT_NEGO_RESELECT,
+    TRADE_SELECT_NEGO_TRADE,
+    TRADE_SELECT_NEGO_CANCEL,
+};
+
+// What the server's check of the other player's Pokémon found, or the HTTP error that kept it from answering
+enum {
+    TRADE_CHECK_OK,
+    TRADE_CHECK_INVALID,
+    TRADE_CHECK_HTTP_400 = 0xf0,
+    TRADE_CHECK_HTTP_401,
+    TRADE_CHECK_HTTP_408,
+    TRADE_CHECK_HTTP_ERROR = 0xff,
 };
 
 // The label over each side's Pokémon in a negotiation, from its message; TRADE_STATUS_DRAWN once it is drawn
@@ -202,11 +219,13 @@ struct PokemonTradeWork {
     PokemonTrade3DWork *work3D;
     // The colours of each machine's box slots, by network ID
     TradeBoxColors boxColors[2];
-    BmpWin *unk5BC[2];
+    // The window over each side's Pokémon on the upper screen: its panel, or its label in a negotiation
+    BmpWin *sideWindows[2];
     BmpWin *unk5C4[2];
     BmpWin *unk5CC[2];
-    BmpWin *unk5D4;
-    BmpWin *unk5D8;
+    // The windows of a negotiation's upper screen: what a GTS Negotiation's player wants, and the players' names
+    BmpWin *headerWindow;
+    BmpWin *nameWindow;
     // The Pokémon each machine offers, by network ID
     PartyPkm *pkm[2];
     // Whether the Pokémon each machine offers is from its party, by network ID
@@ -385,7 +404,8 @@ struct PokemonTradeWork {
     int unk1090;
     u32 bgmTimer;
     u16 typeIconPage;
-    u16 unk109A;
+    // Whether the Pokémon the server found invalid were renamed, before checking them again
+    u16 checkedPkmRenamed;
     // The scene of pokemontrade_3d.c's table that is set up, or -1
     int sceneId;
     // The side, or the one of the six Pokémon of a negotiation, that the cursor is on
@@ -421,9 +441,10 @@ struct PokemonTradeWork {
     s16 panelSlide;
     // The command each machine sent last
     u8 command[2];
-    u8 unk11E2[2];
-    u8 unk11E4[2];
-    // The results of the server's check of the Pokémon
+    // The frames left of each side's panel of the Pokémon offered, and of each side's stamp
+    u8 offerCardTimers[2];
+    u8 stampTimers[2];
+    // The results of the server's check of the Pokémon, TRADE_CHECK_*
     u8 checkResult;
     u8 partnerCheckResult;
     // The label over each side's Pokémon, a TRADE_STATUS_*

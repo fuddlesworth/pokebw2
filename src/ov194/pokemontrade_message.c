@@ -239,9 +239,9 @@ void PoketradeSave_DeleteMessageResources(PokemonTradeWork *wk) {
             wk->summaryWindow = NULL;
         }
         for (i = 0; i < 2; i++) {
-            if (wk->unk5BC[i] != NULL) {
-                BmpWin_Free(wk->unk5BC[i]);
-                wk->unk5BC[i] = NULL;
+            if (wk->sideWindows[i] != NULL) {
+                BmpWin_Free(wk->sideWindows[i]);
+                wk->sideWindows[i] = NULL;
             }
         }
         GFL_WordSetSystemFree(wk->wordSet);
@@ -500,26 +500,27 @@ void PoketradeSave_DrawOfferCardWindow(PokemonTradeWork *wk, int side, PartyPkm 
     int ballPalette[] = { 12, 5 };
     BOOL isEgg = PokeParty_GetParam(pkm, PKM_PARAM_IS_EGG, NULL);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 0, 0x1c0, 0x20, wk->heapId);
-    if (wk->unk5BC[side] != NULL) {
-        BmpWin_Free(wk->unk5BC[side]);
+    if (wk->sideWindows[side] != NULL) {
+        BmpWin_Free(wk->sideWindows[side]);
     }
-    wk->unk5BC[side] = BmpWin_CreateDynamic(3, windowX[side], 1, 14, 20, 14, 0);
+    wk->sideWindows[side] = BmpWin_CreateDynamic(3, windowX[side], 1, 14, 20, 14, 0);
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
-    PoketradeSave_PrintNickname(pkm, BmpWin_GetBitmap(wk->unk5BC[side]), 16, 0, isEgg, PokemonTrade_IsWifiMode(wk), wk);
+    PoketradeSave_PrintNickname(pkm, BmpWin_GetBitmap(wk->sideWindows[side]), 16, 0, isEgg, PokemonTrade_IsWifiMode(wk),
+                                wk);
     if (!isEgg) {
-        PoketradeSave_PrintGender(pkm, BmpWin_GetBitmap(wk->unk5BC[side]), 80, 0, wk, FALSE,
+        PoketradeSave_PrintGender(pkm, BmpWin_GetBitmap(wk->sideWindows[side]), 80, 0, wk, FALSE,
                                   PokemonTrade_IsWifiMode(wk));
         GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
-        PoketradeSave_PrintLevel(pkm, BmpWin_GetBitmap(wk->unk5BC[side]), 16, 19, wk);
-        PoketradeSave_PrintHeldItem(pkm, wk->unk5BC[side], 16, 128, wk);
+        PoketradeSave_PrintLevel(pkm, BmpWin_GetBitmap(wk->sideWindows[side]), 16, 19, wk);
+        PoketradeSave_PrintHeldItem(pkm, wk->sideWindows[side], 16, 128, wk);
         PoketradeSave_CreateStatusIconActor(&wk->ballIcons[side + 1], pkm, wk->clactUnit, ballX[side] + 16, 16, 0,
                                             wk->heapId, ballPalette[side]);
         ClActor_SetBgPriority(wk->ballIcons[side + 1].actor, 1);
     } else {
         PoketradeSave_DeleteStatusIconActor(&wk->ballIcons[side + 1]);
     }
-    BmpWin_FlushChar(wk->unk5BC[side]);
-    BmpWin_FlushMap(wk->unk5BC[side]);
+    BmpWin_FlushChar(wk->sideWindows[side]);
+    BmpWin_FlushMap(wk->sideWindows[side]);
     GFL_BGSysQueueScrLoad(3);
 }
 
@@ -729,12 +730,12 @@ void PoketradeSave_ShowSummaryMon(PokemonTradeWork *wk, PartyPkm *pkm, int side,
 
 // Closes a side's panel on the upper screen
 void PoketradeSave_DeleteOfferCardWindow(PokemonTradeWork *wk, int side) {
-    if (wk->unk5BC[side] != NULL) {
-        GFL_BitmapFill(BmpWin_GetBitmap(wk->unk5BC[side]), 0);
-        BmpWin_ClearScreen(wk->unk5BC[side]);
-        BmpWin_Free(wk->unk5BC[side]);
+    if (wk->sideWindows[side] != NULL) {
+        GFL_BitmapFill(BmpWin_GetBitmap(wk->sideWindows[side]), 0);
+        BmpWin_ClearScreen(wk->sideWindows[side]);
+        BmpWin_Free(wk->sideWindows[side]);
         GFL_BGSysQueueScrLoad(3);
-        wk->unk5BC[side] = NULL;
+        wk->sideWindows[side] = NULL;
         PoketradeSave_DeleteStatusIconActor(&wk->ballIcons[side + 1]);
     }
 }
@@ -847,7 +848,7 @@ void PoketradeSave_DrawPartnerOfferCard(PokemonTradeWork *wk, int side, PartyPkm
     BmpWin_FlushMap(wk->unk5C4[side]);
     BmpWin_FlushMap(wk->unk5CC[side]);
     GFL_BGSysQueueScrLoad(1);
-    wk->unk11E2[side] = 120;
+    wk->offerCardTimers[side] = 120;
 }
 
 void PoketradeSave_DeletePartnerOfferCard(PokemonTradeWork *wk, int side) {
