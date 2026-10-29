@@ -105,6 +105,13 @@ s32 MapReplace_GetEntryCount(MapReplace *replace);
 s32 MapReplace_LoadEntry(MapReplace *replace, u32 index);
 void MapReplace_Free(MapReplace *replace);
 void MapReplace_Patch(MapMatrix *matrix, MapReplace *replace, HeapID heapId);
+// What MapReplace_ResolvePatch finds to do: nothing, replace chunks of the matrix by others, or load another matrix
+enum {
+    MAP_REPLACE_RESULT_NONE,
+    MAP_REPLACE_RESULT_CHUNK,
+    MAP_REPLACE_RESULT_MATRIX,
+};
+
 u32 MapReplace_ResolvePatch(MapReplace *replace, u32 *oldValue, u32 *newValue);
 int MapReplace_GetEventByCond(u8 condition);
 const MapReplaceEvent *MapReplace_GetEventByUID(GameData *gameData, u16 uid);
