@@ -763,7 +763,7 @@ GameEventReturnCode MusicalDressUpEvent_Callback(GameEvent *event, u32 *state, v
         (*state)++;
         break;
     case 3:
-        GSYS_QueueProc(gsys, OVERLAY_NONE, &data_ov012_0216dfc4, data->param);
+        GSYS_QueueProc(gsys, OVERLAY_NONE, &MUSICAL_DRESSUP_PROC_FUNCTIONS, data->param);
         (*state)++;
         break;
     case 4:

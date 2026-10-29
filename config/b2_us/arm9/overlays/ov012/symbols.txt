@@ -1802,7 +1802,7 @@ data_ov012_0216de60 kind:data(any) addr:0x0216de60
 data_ov012_0216de64 kind:data(any) addr:0x0216de64
 data_ov012_0216dfa0 kind:data(any) addr:0x0216dfa0
 data_ov012_0216dfb4 kind:data(any) addr:0x0216dfb4
-data_ov012_0216dfc4 kind:data(any) addr:0x0216dfc4
+MUSICAL_DRESSUP_PROC_FUNCTIONS kind:data(any) addr:0x0216dfc4
 data_ov012_0216dfd0 kind:data(any) addr:0x0216dfd0
 data_ov012_0216dfe8 kind:data(any) addr:0x0216dfe8
 data_ov012_0216dff4 kind:data(any) addr:0x0216dff4

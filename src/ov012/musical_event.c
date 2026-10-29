@@ -277,7 +277,7 @@ static GameEventReturnCode MusicalEvent_Callback(GameEvent *event, u32 *state, v
         break;
     case MUSICAL_STATE_DRESS_UP:
         MusicalEvent_CreateDressUpParam(work);
-        GSYS_QueueProc(work->gsys, OVERLAY_NONE, &data_ov012_0216dfc4, work->dressUp);
+        GSYS_QueueProc(work->gsys, OVERLAY_NONE, &MUSICAL_DRESSUP_PROC_FUNCTIONS, work->dressUp);
         work->state = MUSICAL_STATE_WAIT_DRESS_UP;
         break;
     case MUSICAL_STATE_WAIT_DRESS_UP:

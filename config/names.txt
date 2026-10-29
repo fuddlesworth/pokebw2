@@ -9003,6 +9003,7 @@ overlays/ov012 0x0216d86a SYMBOL_MAP_2
 overlays/ov012 0x0216d888 SYMBOL_MAP_1
 overlays/ov012 0x0216d8a6 SYMBOL_MAP_0
 overlays/ov012 0x0216d8c4 SYMBOL_MAP_TABLE
+overlays/ov012 0x0216dfc4 MUSICAL_DRESSUP_PROC_FUNCTIONS
 overlays/ov012 0x0216e0a4 sDeliveryBeaconAssertFileName
 overlays/ov012 0x0216e2e0 sScaleStep
 overlays/ov012 0x0216e644 sEffect
