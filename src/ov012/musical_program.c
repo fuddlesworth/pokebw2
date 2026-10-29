@@ -28,7 +28,8 @@ typedef struct {
 
 // The program's data, which overlay 210 loads
 typedef struct {
-    u8 unk0;
+    // The built-in program this one is made on, whose stage the photo shows
+    u8 baseProgramId;
     // The points the audience has for each kind of prop
     u8 points[4];
     // The points the program shares out among the kinds of prop at random, by fives
@@ -208,7 +209,7 @@ void MusicalProgram_PutNpcOnStage(MusicalProgram *program, MusicalStageParam *st
 }
 
 u8 MusicalProgram_GetBaseProgramId(MusicalProgram *program) {
-    return program->data->unk0;
+    return program->data->baseProgramId;
 }
 
 u8 MusicalProgram_GetPropList(MusicalProgram *program) {
