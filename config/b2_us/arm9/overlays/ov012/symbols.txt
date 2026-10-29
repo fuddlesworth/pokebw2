@@ -1734,14 +1734,14 @@ ACMD_QUEUE_WALK_W_8F kind:data(any) addr:0x0216cd08
 ACMD_QUEUE_WALK_S_8F kind:data(any) addr:0x0216cd10
 ACMD_QUEUE_WALK_N_8F kind:data(any) addr:0x0216cd18
 JUMP_ANY_HEIGHT_TABLE kind:data(any) addr:0x0216cd20
-data_ov012_0216cd60 kind:data(any) addr:0x0216cd60
-data_ov012_0216cd68 kind:data(any) addr:0x0216cd68
+DIRECTION_ANGLES kind:data(any) addr:0x0216cd60
+ANGLE_SECTOR_QUARTERS kind:data(any) addr:0x0216cd68
 DIRECTION_VEC_Z kind:data(any) addr:0x0216cd78
 DIRECTION_VEC_X kind:data(any) addr:0x0216cd88
 TILE_ENTER_BLOCK_CHECKS kind:data(any) addr:0x0216cd98
 TILE_EXIT_BLOCK_CHECKS kind:data(any) addr:0x0216cda8
 INV_DIR_TABLE kind:data(any) addr:0x0216cdb8
-data_ov012_0216cdc8 kind:data(any) addr:0x0216cdc8
+ROTATED_DIR_TABLE kind:data(any) addr:0x0216cdc8
 data_ov012_0216cdd8 kind:data(any) addr:0x0216cdd8
 FIELD_COMMON_EVENTS kind:data(any) addr:0x0216cde4
 FIELD_ACTION_BLOCK_CHECKS kind:data(any) addr:0x0216ce14

@@ -62,9 +62,9 @@ enum {
     ACTOR_BILLBOARD_SIZE_64,
 };
 
-// An actor's place on a rail, from swan's ActorPositionRail. unk0 is ACTOR_RAIL_POS_SET once the place is set
+// An actor's place on a rail, from swan's ActorPositionRail. magic is ACTOR_RAIL_POS_SET once the place is set
 typedef struct {
-    u32 unk0;
+    u32 magic;
     RailPosition position;
 } ActorPositionRail;
 

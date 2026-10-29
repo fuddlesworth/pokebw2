@@ -9004,6 +9004,9 @@ overlays/ov012 0x0216cae0 HM_EVENTS_RUINS
 overlays/ov012 0x0216cb38 sEndingPositionB
 overlays/ov012 0x0216cb44 sEndingPositionA
 overlays/ov012 0x0216cb74 sFieldMenuAppIds
+overlays/ov012 0x0216cd60 DIRECTION_ANGLES
+overlays/ov012 0x0216cd68 ANGLE_SECTOR_QUARTERS
+overlays/ov012 0x0216cdc8 ROTATED_DIR_TABLE
 overlays/ov012 0x0216d720 SYMBOL_MAP_13
 overlays/ov012 0x0216d73e SYMBOL_MAP_12
 overlays/ov012 0x0216d75c SYMBOL_MAP_11
