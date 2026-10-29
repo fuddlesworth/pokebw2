@@ -17,13 +17,15 @@ res/
     data/<trainer>.json     record and party
     classes/  sprites/{front,back}/<sprite>/  ai/  facilities/<facility>/
   field/
-    zones/  events/  encounters/  scripts/  areas/  matrices/  cameras/
+    zones/  events/  encounters/  scripts/  areas/  matrices/  cameras/  rails/  land_patches/  flash/
     maps/{models,textures}/
     props/{exterior,interior}/{models,textures}/
     actors/                 the overworld's people and objects, with pokemon/ and models/ for its Pokémon and 3D models
-    trades/  places/
+                            npc_caches/ for the zones' caches of their records, animations/ for the scripts'
+    trades/  places/  shops/  fog/  zone_gimmicks/  gate_boards/  entralink/  lens_flares/
+    stadium/  hidden_hollows/  item_collectors/
     gimmicks/<archive>/  effects/<archive>/   the gyms' and other gimmicks' models, the field effects' animations
-  lighting/{field,battle}/
+  lighting/{field,battle,zones}/  edge_colors.json  actor_material_colors.json
   town_map/
   sound/{sequences,banks,wave_archives,streams,interactive,archives}/
   graphics/<archive>/       the menus', apps' and screens' graphics and models, an archive each
@@ -407,6 +409,12 @@ BGMs whose tracks play from places on the map. Zones and BGM are their `ZONE_*` 
 lists of track numbers, 0 to 15. `interactive_sound.schema.json` describes the fields, and both versions have the same
 tables.
 
+Which of these a BGM uses is `res/sound/interactive/bgm_info.json` (`a/0/8/6`, `ARCID_BGM_INFO`), which
+`tools/data/bgm_info_data.py` packs: a list of BGMs by their `SEQ_*` constants, each with its subsystem of the
+`ISS_SUBSYSTEM_*` enum in `include/system/iss_sys.h`, which `BGMInfo_GetISSSubsystem` (`bgm_info.c`) gives the
+interactive sound system for the BGM that plays; a BGM that isn't listed uses none. `bgm_info.schema.json` describes
+the fields, and both versions have the same list.
+
 ### Sequences
 
 A sequence's `sequence.s` is its commands as text, one a line, in the order of the sequence's data, with labels where
@@ -783,6 +791,65 @@ names' message IDs from its place, and `res/field/trades/trade.schema.json` docu
 are null for random ones. The field scripts name the trades they start, as `FieldTradeCheck 0x8022, TRADE_GIGALITH,
 0x8020`. Both versions have the same trades.
 
+## Poké Marts
+
+The Poké Marts' lists of items are `res/field/shops/shops.json`, which `tools/data/shop_data.py` packs into `a/2/8/2`
+(`ARCID_SHOP_ITEMS`), a list of u16 items per file, and `a/2/8/3` (`ARCID_SHOP_ITEM_COUNTS`), their lengths, a byte
+each; `ShopUI_LoadPokeMartItems` in `scrcmd_shop.c` reads them. Items are their `ITEM_*` constants, in the menu's order,
+at their price in the item data, and a list whose first item is a TM or HM is shown as TMs with their moves. The file
+has the archive's three parts in order: `badge_marts`, the mart whose stock grows with the badges, the list that
+`BADGE_SHOP_DAT_IDS` gives each number of badges; `marts`, the other marts by the shop ID that the script's shop
+command names; and `special_marts`, the eight of `SPECIAL_POKE_MART_HEADERS`, a list per level of the key system's
+progress, all empty. The Battle Point shops and the move tutors keep their lists in the code. `shops.schema.json`
+describes the fields, and both versions have the same lists.
+
+## Gimmicks, news boards, the Entralink and lens flares
+
+The field's other tables are a JSON file per archive, each with a schema beside it, the same in both versions:
+
+- `res/field/zone_gimmicks/zone_gimmicks.json` (`a/1/0/2`, `ARCID_GIMMICK_TBL`), which `tools/data/zone_gimmick_data.py`
+  packs: the zones that have a gimmick, each with its number in `GIMMICK_OVERLAY_INFO` (`field_gimmick.c`), which gives
+  the gimmick's overlay and functions. `GameData_SetGimmickByZone` takes the first entry of the zone the player enters.
+- `res/field/gate_boards/` (`tools/data/gate_board_data.py`): `gates.json` (`a/1/7/2`,
+  `ARCID_FIELD_GIMMICK_GATE_ZONE_DATA`), the news board of each gate, by its zone and version: where it stands, which
+  way it faces, its animation, the messages it shows by the date and the day of the week, and the zones whose weather
+  it reports when nothing else gives one; and `news.json` (`a/1/6/4`, `ARCID_FIELD_GIMMICK_GATE_BOARD_ENTRIES`), the
+  news that the boards show while an event flag is set (`field_gimmick_gate.c`). Messages are numbers of the system
+  text bank 0x2b.
+- `res/field/entralink/` (`tools/data/entralink_data.py`): `luminance.json` (`a/2/1/9`, `ARCID_FIELD_PALACE_SYS`), the
+  tables of grays that another player's Entralink worlds are drawn in, by the owner's version class and whether the
+  player has been to the world's town (`field_palace_sys.c`); and `forest_levels.json` (`a/2/2/3`,
+  `ARCID_ENTREE_FOREST`), the level of each species in the Entree Forest, by its `SPECIES_*` constant
+  (`EntreeForest_CreateSymbolMon`).
+- `res/field/lens_flares/lens_flares.json` (`a/2/4/1`, `ARCID_FIELD_GOOUT_EFFECT_DATA`), which
+  `tools/data/lens_flare_data.py` packs: the zone transitions that show a lens flare in sunny weather, each with the
+  effect set of each season and time of day, a row of `LENS_FLARE_IDS` (`field_goout_effect.c` and
+  `field_goout_effect_data.c`).
+
+Zones are their `ZONE_*` constants, directions `DIR_*`, versions `VERSION_*` and flags their constants of
+`generated/flags.txt`.
+
+## The script commands' tables
+
+Some of the field script's commands read tables of their own, each packed by its script, the same in both versions:
+
+- `res/field/cameras/event/<n>.json` (`a/1/6/1`, `ARCID_SCRCMD_CAMERA`), which `tools/data/event_camera_data.py`
+  packs: the event camera's stored positions, which `Scrcmd_Camera_EvCameraMoveToCommon` names by number and moves
+  the camera to: its pitch and yaw in 65536ths of a turn, its distance and target in 4096ths of a unit, and which of
+  them the move animates (`scrcmd_camera.c`).
+- `res/field/stadium/trainers.json` (`a/2/0/6`, `ARCID_SCRCMD_STADIUM`), which `tools/data/stadium_data.py` packs:
+  the stadiums' 0x84 trainers, each with the two keys that the script commands find it by, its model by its
+  `OBJ_CODE_*` constant and its trainer by its `TRAINER_*` constant, whose battle script an NPC gets
+  (`scrcmd_stadium.c`).
+- `res/field/hidden_hollows/<n>.json` (`a/2/7/3`, `ARCID_SCRCMD_HIDDEN_HOLLOW`), which
+  `tools/data/hidden_hollow_data.py` packs: what Hidden Grotto n holds in each slot and group, its Pokémon in each
+  version, with their levels, gender and form, its items in balls and its hidden items (`scrcmd_hidden_hollow.c`).
+- `res/field/item_collectors/item_collectors.json` (`a/2/0/5`, `ARCID_ITEM_COLLECTOR`), which
+  `tools/data/item_collector_data.py` packs: what each group of item collectors pays for each item it buys, by the
+  group that `ITEM_COLLECTOR_FILES` gives each file (`scrcmd_misc.c`).
+
+Species and items are their `SPECIES_*` and `ITEM_*` constants, and each directory has its schema.
+
 ## Battle facilities
 
 A battle facility's trainers and the Pokémon sets they pick from are in `res/trainers/facilities/<facility>/`, as
@@ -930,6 +997,20 @@ none), row by row,
 and, for the overworld's, of their zones by name; `tools/data/map_matrix_data.py` packs them in the list's order. A
 row stays on one line, so the file reads as the grid.
 
+`res/field/matrices/replacements.json` is the map replacements (`a/0/1/0`, `MapReplaceEntry`), which
+`MapMatrix_Patch` applies to a matrix as the field loads it, and `tools/data/map_replace_data.py` packs, the same in
+both versions. Each names its matrix and picks a value by the season, the version, both, or an event of
+`EVENT_MAP_REPLACE_TABLE` in `map_replace.c` by its condition number, a value for each case by name (`"spring"`,
+`"white"`, `"set"`): a map model, which replaces every cell of the matrix with the first value's, or a matrix, which
+the field loads instead. `"unused"` keeps the slots of the six that the condition doesn't pick.
+`replacements.schema.json` describes the fields.
+
+The Join Avenue's shops change the avenue's map where they stand: `res/field/land_patches/<n>.json` (`a/1/5/4`) is
+the patch that a shop's column 6 or 7 names (`resort_mapcreate.c`), the tiles it writes over the avenue's terrain, each
+with an RD chunk's two planes and its tile type, and the props it adds there, by their model's ID in the area's props
+(`land_data_patch.c`). `tools/data/land_patch_data.py` packs them, the same in both versions, and
+`land_patch.schema.json` describes the fields.
+
 Each area is `res/field/areas/<area>.json`, named after its constant in `generated/areas.txt`, in whose order
 `a/0/1/3` has the records (`AreaData`), which name the graphics that zones share: their props, textures, animations
 (null for none), lights and colors. The props and texture set are named by their constants (see
@@ -949,6 +1030,26 @@ lights (on or off, color and direction in 4096ths), the materials' diffuse, ambi
 fog's color and the color the screen clears to. Colors are 0 to 31 per component. `tools/data/light_data.py`
 packs them, and both versions have the same sets.
 
+An area also names its edge colors, a table of `res/lighting/edge_colors.json` (`a/0/1/5`), 255 for none: the eight
+colors of the outlines around the models, by the top three bits of their polygon IDs, which `Field_LoadEdgeColorTable`
+sets, replacing the last with gray; and its billboard actors' material colors, a preset of
+`res/lighting/actor_material_colors.json` (`a/1/7/3`, `field_bbd_color.c`): the normal they are lit with and their
+diffuse, ambient, specular and emission colors. `tools/data/area_color_data.py` packs both, the same in both versions,
+and `edge_colors.schema.json` and `actor_material_colors.schema.json` describe them. The zones where Flash can be used
+are in `res/field/flash/flash.json` (`a/1/4/9`, `ARCID_MAPEFF_SKILL_TBL`), which `GetZoneFlashFlags` looks a zone up
+in: each zone by its constant and whether it allows Flash (`FLD_FLASH_ALLOW`) or is lit as if it had been used
+(`FLD_FLASH_ACTIVE`). `tools/data/flash_data.py` packs it, the same in both versions.
+
+A zone can have a lighting set of its own instead of its area's: `res/lighting/zones/zones.json` is the table of such
+zones (the last file of `a/0/8/1`, `ARCID_ZONE_LIGHT_TABLE`), each with its set, `res/lighting/zones/<n>.json`, a set
+as the field's, which `GetZoneStaticLightDataIndex` finds for `FieldLightStatus_Get` and the sunny weather. The table
+is empty, so its one set goes unused. A zone's fog is in `res/field/fog/fog.json` (`a/0/8/0`,
+`ARCID_ZONE_FOG_TABLE`): the 29 fogs, each the depth where it starts and its slope, how fast it thickens, which
+`FieldFogCtrl` loads and the sunny weather fades in, and the table of the zones that have one (`GetZoneFogIndex`).
+Zones are their `ZONE_*` constants. As the code reads each table from a fixed file, the last (`ZONE_FOG_TABLE_FILE`
+and `ZONE_LIGHT_TABLE_FILE` in `zonedata.c`), the number of fogs and sets is fixed. `tools/data/zone_fog_data.py` and
+`tools/data/zone_light_data.py` pack them, and both versions have the same.
+
 The field camera's data is in `res/field/cameras/`, which `tools/data/field_camera_data.py` packs, the same in both
 versions. A zone's header names its camera setup by number, `setups/<n>.json` (the records of `a/0/5/9`'s one file,
 `FieldCameraDefaults`, which `FieldCamera_CoordsLoadDefaults` applies): its distance, pitch, yaw and field of view,
@@ -959,6 +1060,27 @@ transition type from `WARP_TRANSITION_CAMERA` (7) on has an entrance camera, `en
 camera moves as the player goes in or comes out (`entrance_camera.c`). Distances and positions are in whole units,
 except the setups' clipping planes and target and the circles, which are in 4096ths; angles are in 65536ths of a turn.
 `setup.schema.json`, `boundary.schema.json` and `entrance.schema.json` describe the fields.
+
+A few zones have camera areas, where the camera changes as the player moves (`fld_scenearea_loader.c`), which
+`tools/data/camera_area_data.py` packs, the same in both versions: `areas/<n>.json` (`a/1/5/6`) are the files that
+`GetCameraIDForZone` gives a zone from `ZONE_CAMERA_ASSIGNMENTS` in `zonedata.c`, and `rail_areas/<n>.json`
+(`a/0/7/9`) the files that a rail map's header names (see below). Each lists its areas (`CameraArea`): a rectangle of
+tiles, across which the camera blends its pitch, yaw and distance, and with some functions the target's offset and the
+field of view, from the setting at its start to the one at its end, or a ring around a point, where the camera looks
+at the point from behind the player or from a fixed eye; and the functions of `CAM_CALC_FUNCS` that run as the player
+enters the area, stays in it and leaves it. `area.schema.json` describes the fields.
+
+The maps without a grid, where the player walks on rails, have their data in `res/field/rails/`, which
+`tools/data/rail_data.py` packs, the same in both versions. `GetRailIDForZone` gives such a zone a rail ID from
+`ZONE_RAIL_ASSIGNMENTS` in `zonedata.c`, and `headers.json` (`a/1/1/0`) gives each rail ID its rail file and its
+camera areas, of `res/field/cameras/rail_areas/` (`NoGridMapperHeader`), null for none. A rail file, `<n>.json`
+(`a/0/7/8`'s file n), is the width of a tile, the points, where up to four lines meet, the lines between them, the
+cameras, which name their function of `RAIL_CAMERA_CURVE_FUNC_SET` and its eight parameters, and the curves that bend
+the lines (`field_rail.h`); points, lines, cameras and curves name each other by their place in their lists. Each line
+also has its tiles, which the archive keeps after all the rail files, in its file n plus their count (`rail_attr.c`):
+a row for each tile along the line, each the tiles across it, a map tile type in hex with its flags in the high 16 bits
+and its class in the low 16, as `GetTileFlags` and `GetTileClass` split it. Positions are in 4096ths of a unit and
+angles in 65536ths of a turn. `rail.schema.json` and `headers.schema.json` describe the fields.
 
 ## Town map
 
@@ -1009,6 +1131,17 @@ Funfest Missions' player icons (`sFMissionViewPlayerModels`) and an entrant's de
 `tools/data/field_actor_data.py` writes the sprites' texture sets as the game's are, so the sources pack both archives
 byte for byte; `.venv/bin/python tools/data/field_actor_data.py dump extract/b2_us/files res/field/actors` writes
 them again.
+
+A zone's header names an NPC info cache by its `"npc_cache"`, `res/field/actors/npc_caches/<n>.json` (`a/0/5/7`),
+which the field loads as the player enters the zone (`LoadMModelSystemInfoCache`) and takes the records of its object
+codes from before it reads the model table (`GetNPCMdlInfoForOBJCODE`); a number from 24 on is none. Each cache lists
+its codes, at most 26, and `tools/data/npc_cache_data.py` writes each code's record into it from its `data.json`, as
+the table has it, so a cache follows its actors. Scripts play an actor's animations by number,
+`res/field/actors/animations/<n>.json` (`a/2/0/0`, `field_actor_animation.c`): curves of a scale, a rotation in
+degrees and a translation in units for each frame, which move the actor from where it started and turn it to face as
+the rotation's Y says. `tools/data/field_actor_animation_data.py` packs them, writing each float as the shortest
+decimal that gives it back. Both are the same in both versions; `npc_cache.schema.json` and `animation.schema.json`
+describe the fields.
 
 ## Zone events
 
@@ -1112,6 +1245,10 @@ there. A name, like its `ARCID_*`, is in one of them only. `res/fonts/font/` is 
 five fonts, `00/` to `04/`, and three palettes, the same in both versions. `res/particles/btlv_effvm_particles/` is
 `ARCID_BTLV_EFFVM_PARTICLES` (`a/0/0/6`), the particle effects of the battle's moves, which `btlv_effvm.c` loads, and of
 the intro, which `intro_particle.c` does: 739 resources, `000/` to `738/`, the same in both versions.
+`res/graphics/manual_image/` is `ARCID_MANUAL_IMAGE` (`a/2/2/7`), the in-game manual's pages, which `manual_common.c`
+shows: 256 by 192 direct color bitmaps, kept as RGBA PNGs as a movie's frames are, since its `archive.json` has
+`"bitmaps": [256, 192]` (`dump ARCID_X --bitmaps 256x192`). `res/sound/archives/camera_sound/` is `ARCID_CAMERA_SOUND`
+(`a/2/0/9`), the DSi camera's shutter sounds, WAV files that `camera_system.c` plays itself.
 
 A model's GLB and PNGs are edited and packed as the field props' are (see "Map model sources"), with the same
 converters. `dump` has [Apicula](https://github.com/scurest/apicula) convert each model, from `PATH` or `--apicula
@@ -1124,10 +1261,6 @@ calls a material of its own, copying a material that several share (`awa_1.001`)
 one material on export; edit the copies alike. A model that the converters don't take stays its `.nsbmd` file, as
 `dump` says: one with textures that the texture converter doesn't decode (4x4 compressed or direct color), one without
 a mesh, or one whose materials pair a texture with another palette than the converter gives it. A new model or texture
-`res/graphics/manual_image/` is `ARCID_MANUAL_IMAGE` (`a/2/2/7`), the in-game manual's pages, which `manual_common.c`
-shows: 256 by 192 direct color bitmaps, kept as RGBA PNGs as a movie's frames are, since its `archive.json` has
-`"bitmaps": [256, 192]` (`dump ARCID_X --bitmaps 256x192`). `res/sound/archives/camera_sound/` is `ARCID_CAMERA_SOUND`
-(`a/2/0/9`), the DSi camera's shutter sounds, WAV files that `camera_system.c` plays itself.
 set is added as its `.nsbmd` or `.nsbtx` file. The archives dumped before the models were GLBs keep their `.nsbmd` and
 `.nsbtx` files, which pack as they are, until they are dumped again: in scratch copies of the 19 such archives in
 `res/graphics/`, 214 of their 233 models and all 31 texture sets convert and pack byte for byte.

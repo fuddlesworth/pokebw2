@@ -304,6 +304,11 @@ DATA_PACKS = [
     ("tools/data/item_icon_data.py", "res/items", ["a/0/2/5"], True),  # Item icons
     # The field actors' models: their table and their sprites' and 3D models' graphics
     ("tools/data/field_actor_data.py", "res/field/actors", ["a/0/4/7", "a/0/4/8"], False),
+    # The zones' NPC info caches, with copies of their actors' records of the model table
+    ("tools/data/npc_cache_data.py", "res/field/actors/npc_caches", ["a/0/5/7"], False, ["res/field/actors"]),
+    # The actors' scripted animations
+    ("tools/data/field_actor_animation_data.py", "res/field/actors/animations", ["a/2/0/0"], False,
+     ["res/field/actors/animation.schema.json"]),
     # Trainers, their parties, and the table of their messages with its offsets
     ("tools/data/trainer_data.py", "res/trainers/data", ["a/0/9/1", "a/0/9/2", "a/0/8/9", "a/0/9/0"], False),
     # Trainer sprites, front and back, and a/0/6/3, a copy of the back sprites
@@ -312,7 +317,25 @@ DATA_PACKS = [
     # Zone headers, which give each zone the number of its events in res/field/events/order.json
     ("tools/data/zone_data.py", "res/field/zones", ["a/0/1/2"], False, ["res/field/events"]),
     ("tools/data/trade_data.py", "res/field/trades", ["a/1/6/3"], False),  # In-game trades
+    ("tools/data/shop_data.py", "res/field/shops", ["a/2/8/2", "a/2/8/3"], False),  # The Poké Marts' lists and counts
+    ("tools/data/zone_gimmick_data.py", "res/field/zone_gimmicks", ["a/1/0/2"], False),  # The zones' gimmicks
+    # The gates' news boards: each gate's board and the news they show
+    ("tools/data/gate_board_data.py", "res/field/gate_boards", ["a/1/7/2", "a/1/6/4"], False),
+    # The Entralink's luminance tables and the Entree Forest's levels
+    ("tools/data/entralink_data.py", "res/field/entralink", ["a/2/1/9", "a/2/2/3"], False),
+    ("tools/data/lens_flare_data.py", "res/field/lens_flares", ["a/2/4/1"], False),  # The zone transitions' lens flares
+    # The tables of the script commands: the event camera's positions, the stadiums' trainers, what the Hidden Grottoes
+    # hold and what the item collectors pay
+    ("tools/data/event_camera_data.py", "res/field/cameras/event", ["a/1/6/1"], False),
+    ("tools/data/stadium_data.py", "res/field/stadium", ["a/2/0/6"], False),
+    ("tools/data/hidden_hollow_data.py", "res/field/hidden_hollows", ["a/2/7/3"], False),
+    ("tools/data/item_collector_data.py", "res/field/item_collectors", ["a/2/0/5"], False),
     ("tools/data/map_matrix_data.py", "res/field/matrices", ["a/0/0/9"], False),  # Map matrices
+    # The map replacements, which swap a matrix's map models or the matrix by the season, version or an event
+    ("tools/data/map_replace_data.py", "res/field/matrices/replacements.json", ["a/0/1/0"], False,
+     ["res/field/matrices/replacements.schema.json"]),
+    # The Join Avenue shops' land data patches: their tiles and props
+    ("tools/data/land_patch_data.py", "res/field/land_patches", ["a/1/5/4"], False),
     # Map models, whose GLBs show the map texture sets' PNGs, which name the textures they bind
     ("tools/data/map_model_data.py", "res/field/maps/models", ["a/0/0/8"], True, ["res/field/maps/textures"]),
     # Field prop models, which their bundles' textures go with in the same way
@@ -325,11 +348,23 @@ DATA_PACKS = [
     ("tools/data/map_texture_data.py", "res/field/props/interior/textures", ["a/1/7/5"], True),
     ("tools/data/area_data.py", "res/field/areas", ["a/0/1/3"], False),  # Areas, a file of records rather than an archive
     ("tools/data/light_data.py", "res/lighting", ["a/0/6/0", "a/0/6/1"], False),  # Field and battle lighting
+    # The areas' edge color tables and their billboard actors' material colors
+    ("tools/data/area_color_data.py", "res/lighting", ["a/0/1/5", "a/1/7/3"], False),
+    ("tools/data/flash_data.py", "res/field/flash", ["a/1/4/9"], False),  # The zones where Flash can be used
+    # The lighting sets that zones have instead of their area's, and the zones' table, as a/0/6/0's sets
+    ("tools/data/zone_light_data.py", "res/lighting/zones", ["a/0/8/1"], False, ["res/lighting/lights.schema.json"]),
+    ("tools/data/zone_fog_data.py", "res/field/fog", ["a/0/8/0"], False),  # The zones' fog and its table
     # The field camera's setups, the zones' camera boundaries and the entrance cameras
     ("tools/data/field_camera_data.py", "res/field/cameras", ["a/0/5/9", "a/1/0/9", "a/1/7/7"], False),
+    # The camera areas of the rail maps and of the other maps
+    ("tools/data/camera_area_data.py", "res/field/cameras", ["a/0/7/9", "a/1/5/6"], False),
+    # The rail maps' rails and their tiles, and the headers that name a rail map's rails and camera areas
+    ("tools/data/rail_data.py", "res/field/rails", ["a/0/7/8", "a/1/1/0"], False),
     # The interactive sound system's towns, dungeons, zones, BGM switches and 3D sound
     ("tools/data/interactive_sound_data.py", "res/sound/interactive",
      ["a/1/3/3", "a/1/4/6", "a/1/3/6", "a/1/4/7", "a/1/8/2"], False),
+    # The BGM info: the interactive sound subsystem of each BGM
+    ("tools/data/bgm_info_data.py", "res/sound/interactive", ["a/0/8/6"], False),
     # The town map's places, whose texts are messages of town_map.txt
     ("tools/data/town_map_data.py", "res/town_map", ["a/0/8/5"], True, ["res/text/system/town_map.txt"]),
     # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
