@@ -156,7 +156,7 @@ void FieldScriptEnv_ShowListMenu(FieldScriptEnv *env);
 void FreeListMenuWork(ScriptListMenu *menu);
 BOOL FieldScriptEnv_UpdateListMenu(FieldScriptEnv *env);
 BOOL FieldScriptEnv_UpdateListMenuEx(FieldScriptEnv *env);
-void ListMenu_ShowDescription(BmpMenuList *list, s32 value, u8 a2);
+void ListMenu_ShowDescription(BmpMenuList *list, s32 value, u8 init);
 FieldMsgBG *FieldScriptEnv_GetMsgBGSys(FieldScriptEnv *env);
 MsgData *GetFieldScriptMsgData(FieldScriptEnv *env);
 u16 GetFieldScriptMsgFileNo(FieldScriptEnv *env);
