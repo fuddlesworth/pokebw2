@@ -266,11 +266,25 @@ def source_compiler(source: Path) -> SourceCompiler:
 # under files/ to the directory of its members, one assembly file each, in archive order.
 ARCHIVES = {
     "a/0/5/6": "res/field/scripts",  # Field scripts, see tools/script/field_script.py
+    "a/0/6/5": "res/battle/animations/moves",  # Move animations, see tools/script/btlv_effvm_script.py
+    "a/0/6/6": "res/battle/animations/effects",  # The other battle effects' animations, the same
     "a/1/6/9": "res/trainers/ai",  # Trainer AI scripts, see tools/script/tr_ai_script.py
 }
 
-# The constant list that names and orders each assembled archive's files, and the prefix of its constants
-ARCHIVE_LISTS = {"a/0/5/6": ("field_scripts", "SCRIPTS_"), "a/1/6/9": ("tr_ai_scripts", "TR_AI_SCRIPT_")}
+# The constant list that names and orders each assembled archive's files, and the prefix of its constants. Members
+# past the list's end are numbered, NNN.s, and so are all of an archive without a list.
+ARCHIVE_LISTS = {"a/0/5/6": ("field_scripts", "SCRIPTS_"), "a/0/6/5": ("moves", "MOVE_"),
+                 "a/1/6/9": ("tr_ai_scripts", "TR_AI_SCRIPT_")}
+
+
+def archive_sources(path: str, directory: Path) -> list[Path]:
+    """Returns the sources of an assembled archive's members, in archive order: the files named after its list's
+    constants, then the numbered files that follow them."""
+    sources = ordered_files(*ARCHIVE_LISTS[path], directory, ".s") if path in ARCHIVE_LISTS else []
+    while (directory / f"{len(sources):03d}.s").exists():
+        sources.append(directory / f"{len(sources):03d}.s")
+    return sources
+
 
 # Archives packed from JSON (and CSV) data by a script's pack command: the script, its data directory, the archives it
 # writes, in the order it takes them, and whether it packs each version apart, which passes it the version's name
@@ -675,7 +689,7 @@ def add_version(n: Writer, version: str, dsd: Path, bugfix: bool, shift: int) ->
     checks = []
     for path, source_dir in ARCHIVES.items():
         members = []
-        for source in ordered_files(*ARCHIVE_LISTS[path], ROOT / source_dir, ".s"):
+        for source in archive_sources(path, ROOT / source_dir):
             source = source.relative_to(ROOT)
             obj = build_dir / source.with_suffix(".o")
             n.build([obj], "as", [source], variables={"dep": obj.with_suffix(".d"), "defines": as_defines},

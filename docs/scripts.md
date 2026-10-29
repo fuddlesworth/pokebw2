@@ -1,6 +1,6 @@
 # Scripts
 
-The script VM in `src/system/vm.c` runs four sets of commands: field events, the trainer AI, battle move animations and
+The script VM in `src/system/vm.c` runs four sets of commands: field events, the trainer AI, battle animations and
 musicals. Scripts are files in the ROM's NARC archives. Each command is a 16-bit ID followed by its arguments.
 
 The trainer AI scripts are built from source. Archive `a/1/6/9` holds 14 scripts, one per AI flag, which run in turn
@@ -57,6 +57,60 @@ The disassembler follows the jumps from the start of each script. Bytes it does 
 where they are valid, then as tables, and otherwise kept as `.byte`. A value compared with the loaded value is written
 as a constant when every way to the comparison loads the same kind of value. Labels are named after their offset,
 unless `--labels` gives names.
+
+## Battle animation scripts
+
+The battle effect VM, `src/ov168/btlv_effvm.c`, plays the animations of the moves and of the battle's other effects,
+which the encounters' openings and the sending in of Pokémon (`btlv_scu.c`), the server's effect commands
+(`btlv_core.c`) and Pokéstar Studios' battles (`btl_client.c`) start. Its scripts are built from source in `res/battle/animations/`, with the macros in `include/asm/btlv_effvm.inc`. An effect number below
+`BTLV_EFFECT_FIRST` (0x231) is a move, whose script is the member of archive `a/0/6/5` with the move's number, written
+in `moves/<move>.s` after `generated/moves.txt`; the 41 members past the last move are copies of Pound's, numbered
+`560.s` to `600.s`, which nothing plays. The other effects are the 115 members of `a/0/6/6`, from `BTLV_EFFECT_FIRST`
+up, written in `effects/NNN.s` by their member: the code that starts them (`BtlvEffect_Start` and the others) gives only
+their numbers. Both versions have the same archives, and members with the same bytes keep a file
+each.
+
+A script file starts with the number of its variants and their code, in `ScriptHeader` and `ScriptVariant`. A variant
+is the turn of a two-turn move, or a case of a move that looks different, which `BtlvEffvmParam`'s `variant` picks.
+
+```
+Pound:
+    CameraMovePreset 1, 11, 16, 0, 8
+    Wait EFFVM_WAIT_ALL
+    ParticleLoad 165
+    EmitterAdd 165, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
+    PlaySE SEQ_SE_W001_01, 1, EFFVM_DEFENDER, 0, 0, 115, 0, 0, 0
+    McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 0, 1
+    Wait EFFVM_WAIT_ALL
+    End
+```
+
+Each macro is one command of `btlv_effvm.c`'s `MOVE_SCRCMD`, named after its handler as the field's are:
+`BtlvEffvm_CmdCameraMove` is `CameraMove`. Its arguments are 32-bit, in the order the handler reads them. Particles are
+the resources of `ARCID_BTLV_EFFVM_PARTICLES` (`res/particles/btlv_effvm_particles/`) and their emitters, by number;
+sounds are `SEQ_*` constants, and `Call` and `ChangeScript` take a move or `BTLV_EFFECT_FIRST + N`, the script of
+`effects/NNN.s`. fx32 values are written in hex, 0x1000 for 1. Jumps are labels, relative to the end of the command.
+The macros define the VM's own codes, where the handlers show what they are: the attacker, the defender and the other
+targets besides the positions 0 to 13 (`EFFVM_ATTACKER`), the emitters' positions (`EFFVM_EMIT_*`), what `Wait` waits
+for (`EFFVM_WAIT_*`), the comparisons of `IfVarConst` (`EFFVM_CMP_*`), and the variables that the scripts test and set
+(`EFFVM_VAR_*`, with a position added for those of each position, as in `EFFVM_VAR_WEIGHT + 3`); a value compared with
+a flag is `TRUE` or `FALSE`.
+
+The scripts are source, edited by hand. `tools/script/btlv_effvm_script.py` disassembled them, and writes the macros
+from `MOVE_SCRCMD`. After handlers are renamed, its `sync`, which `sync_handler_names.py` runs too, writes the macros
+again and renames the commands in the scripts:
+
+```sh
+python3 tools/script/btlv_effvm_script.py inc include/asm/btlv_effvm.inc
+python3 tools/script/btlv_effvm_script.py disasm extract/b2_us/files/a/0/6/5 OUTPUT_DIR moves
+python3 tools/script/btlv_effvm_script.py disasm extract/b2_us/files/a/0/6/6 OUTPUT_DIR effects
+python3 tools/script/btlv_effvm_script.py sync
+```
+
+The disassembler follows the code from each variant. Bytes it does not reach are decoded as commands where they trace
+cleanly, and otherwise kept as `.byte`; every byte of both archives decodes as commands. `ninja` builds the archives
+as it builds the trainer AI's. `configure.py`'s `ARCHIVE_LISTS` orders the move scripts by `generated/moves.txt`, and
+the numbered files follow; the effects, which have no list, are all numbered.
 
 ## Field scripts
 

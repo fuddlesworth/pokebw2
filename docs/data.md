@@ -71,6 +71,7 @@ which documents the format and can write them again.
 | `a/0/2/4` | `res/items/` (JSON) | Item data | `tools/data/item_data.py` |
 | `a/0/2/5` | `res/items/<item>/` (PNG, palette), `res/items/shared/` | Item icons | `tools/data/item_icon_data.py` |
 | `a/0/5/6` | `res/field/scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/script/field_script.py` |
+| `a/0/6/5`, `a/0/6/6` | `res/battle/animations/{moves,effects}/` | Battle animations: the moves' and the other effects' scripts, see [Scripts](scripts.md#battle-animation-scripts) | `tools/script/btlv_effvm_script.py` |
 | `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `res/trainers/data/` (JSON) | Trainers, their parties, and the table of their messages | `tools/data/trainer_data.py` |
 | `a/0/7/1`, `a/0/7/2`, `a/0/6/3` | `res/trainers/sprites/{front,back}/<sprite>/` (PNG, palette, Nitro cells and animations) | Trainer sprites, front and back | `tools/data/trainer_graphics.py` |
 | `a/0/0/9` | `res/field/matrices/` (JSON) | Map matrices | `tools/data/map_matrix_data.py` |
