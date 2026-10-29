@@ -9804,7 +9804,9 @@ overlays/ov033 0x02178468 Scrcmd_FieldMove_CallSurf
 overlays/ov033 0x021784f4 Scrcmd_FieldMove_CallWaterfall
 overlays/ov033 0x02178544 Scrcmd_FieldMove_CallCut
 overlays/ov033 0x02178570 Scrcmd_FieldMove_CallDiving
+overlays/ov033 0x021785d4 EventSweetScent_CreateFromPartySlot
 overlays/ov033 0x02178730 EventSweetScent_CheckWeatherClear
+overlays/ov033 0x02178748 EventSweetScent_StartFade
 overlays/ov033 0x02178788 EventSweetScent_FadeMain
 overlays/ov033 0x0217884c EventSweetScent_FadeSetup
 overlays/ov033 0x021788c4 EventSweetScent_FadeCleanup
