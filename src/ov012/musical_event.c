@@ -312,7 +312,7 @@ static GameEventReturnCode MusicalEvent_Callback(GameEvent *event, u32 *state, v
             work->state = MUSICAL_STATE_ERROR_RETURN_TO_FIELD;
         } else {
             MusicalEvent_CreateStageParam(work);
-            GSYS_QueueProc(work->gsys, OVERLAY_NONE, &data_ov012_0216dfe8, work->stage);
+            GSYS_QueueProc(work->gsys, OVERLAY_NONE, &MUSICAL_STAGE_PROC_FUNCTIONS, work->stage);
             work->state = MUSICAL_STATE_WAIT_STAGE;
         }
         break;

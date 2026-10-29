@@ -14,7 +14,8 @@ typedef struct {
     u8 name;
     u8 unk4;
     u8 form;
-    u16 unk6;
+    // When the performer uses a hand prop, MusicalPoke.handPropUse
+    u16 handPropUse;
     // The photos the player must have taken before the performer appears
     u16 minShots;
     u16 unkA;
@@ -198,7 +199,7 @@ void MusicalProgram_PutNpcOnStage(MusicalProgram *program, MusicalStageParam *st
 
     MusicalStageParam_CreateNpcPoke(stage, pos, npc->species, npc->form,
                                     npc->trainerClass + (npc->name << 8) + (npc->unk4 << 16) + (npc->form << 24),
-                                    npc->unk6, heapId);
+                                    npc->handPropUse, heapId);
     for (i = 0; i < 8; i++) {
         if (npc->equips[i].itemId != 0x1fe && npc->equips[i].itemId != 0x1ff) {
             MusicalStageParam_SetEquip(stage, pos, npc->equips[i].slot, npc->equips[i].itemId, 0, i);

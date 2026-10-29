@@ -64,7 +64,7 @@ MusicalPoke *MusicalSystem_InitPoke(u16 species, u8 sex, u8 form, u8 rare, u32 p
     for (i = 0; i < 4; i++) {
         poke->kindPoints[i] = 0;
     }
-    poke->unk78 = 0;
+    poke->handPropUse = 0;
     poke->species = species;
     poke->sex = sex;
     poke->form = form;
