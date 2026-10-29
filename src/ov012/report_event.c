@@ -241,7 +241,7 @@ u32 EventSave_Update(EventSaveWork *work, u32 *state) {
         *state = 18;
         break;
     case 18:
-        return 1;
+        return EVENT_SAVE_RESULT_BACK;
     case 19:
         Report_Exit(work);
         if (work->screenId == 10 || work->screenId == 4) {
@@ -254,9 +254,9 @@ u32 EventSave_Update(EventSaveWork *work, u32 *state) {
         break;
     case 20:
         FieldSubscreen_ResumeField(Field_GetSubscreen(work->field), work->heapId);
-        return 0;
+        return EVENT_SAVE_RESULT_DONE;
     }
-    return 2;
+    return EVENT_SAVE_RESULT_RUNNING;
 }
 
 static void Report_Exit(EventSaveWork *work) {
