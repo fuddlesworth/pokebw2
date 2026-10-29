@@ -31630,6 +31630,7 @@ overlays/ov257 0x021b18e4 sPictureSizes
 overlays/ov257 0x021b18f0 sVoiceSpeeds
 overlays/ov257 0x021b1904 sCtvtCommCommands
 overlays/ov257 0x021b193c sCtvtCommNetInitData
+overlays/ov257 0x021b19ac wipeDivision
 overlays/ov257 0x021b19ae sPixelMasks
 overlays/ov257 0x021b19b6 sWaveEdges
 overlays/ov257 0x021b19bf sZoomButtons

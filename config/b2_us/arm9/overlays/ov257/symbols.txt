@@ -642,7 +642,7 @@ sPictureSizes kind:data(any) addr:0x021b18e4
 sVoiceSpeeds kind:data(any) addr:0x021b18f0
 sCtvtCommCommands kind:data(any) addr:0x021b1904
 sCtvtCommNetInitData kind:data(any) addr:0x021b193c
-data_ov257_021b19ac kind:data(any) addr:0x021b19ac
+wipeDivision kind:data(any) addr:0x021b19ac
 sPixelMasks kind:data(any) addr:0x021b19ae
 sWaveEdges kind:data(any) addr:0x021b19b6
 sZoomButtons kind:data(any) addr:0x021b19bf
