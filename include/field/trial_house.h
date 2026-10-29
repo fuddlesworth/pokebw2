@@ -71,6 +71,6 @@ GameEvent *CallTrialHouseTeamSelect(GameSystem *gsys, TrialHouseWork *work, u32 
 GameEvent *CallTrialHouseBattle(GameSystem *gsys, TrialHouseWork *work);
 void SyncTrialHouseWkStatsFromBattle(TrialHouseWork *work, BtlSetup *setup);
 // Overlay 313's results screen
-GameEvent *CallTrialHouseResults(GameSystem *gsys, u32 a1, u32 a2);
+GameEvent *CallTrialHouseResults(GameSystem *gsys, u32 downloaded, u32 playJingle);
 
 #endif // POKEBW2_FIELD_TRIAL_HOUSE_H
