@@ -4080,7 +4080,7 @@
    ]
   },
   "536": {
-   "handler": "func_ov012_02164c68",
+   "handler": "Scrcmd_EntreeForest_EntreeForestGetInfo",
    "overlay": 12,
    "args": [
     "any",
@@ -4089,7 +4089,7 @@
    "area": "AreaNPC"
   },
   "537": {
-   "handler": "func_ov012_02164bcc",
+   "handler": "Scrcmd_EntreeForest_EntreeForestToggleKeepPkm",
    "overlay": 12,
    "args": [
     "any",

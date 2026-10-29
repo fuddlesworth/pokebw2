@@ -1210,9 +1210,9 @@ TransformVsPokePartyBySeason kind:function(thumb,size=0xf4) addr:0x02164a2c
 Scrcmd_EntreeForest_EntreeForestStartBattle kind:function(thumb,size=0x68) addr:0x02164b20
 Scrcmd_EntreeForest_EntreeForestSpawnAllPkm kind:function(thumb,size=0x4a) addr:0x02164b88
 Scrcmd_EntreeForest_EntreeForestRemovePkm kind:function(thumb,size=0x36) addr:0x02164bd4
-func_ov012_02164bcc kind:function(thumb,size=0x48) addr:0x02164c0c
+Scrcmd_EntreeForest_EntreeForestToggleKeepPkm kind:function(thumb,size=0x48) addr:0x02164c0c
 Scrcmd_EntreeForest_WordSetLoadEntreeForestPkmName kind:function(thumb,size=0x54) addr:0x02164c54
-func_ov012_02164c68 kind:function(thumb,size=0x92) addr:0x02164ca8
+Scrcmd_EntreeForest_EntreeForestGetInfo kind:function(thumb,size=0x92) addr:0x02164ca8
 Scrcmd_EntreeForest_MapChangeEntreeForest kind:function(thumb,size=0xb8) addr:0x02164d3c
 FieldScriptEnv_FindActor kind:function(thumb,size=0x18) addr:0x02164df4
 GetTalkActorEntreeForestPkm kind:function(thumb,size=0x34) addr:0x02164e0c
@@ -1772,7 +1772,7 @@ data_ov012_0216d9b6 kind:data(any) addr:0x0216d9f6
 FIELD_CHUNK_SCALE_IDENTITY kind:data(any) addr:0x0216dac8
 FIELD_CHUNK_TRANSLATION_IDENTITY kind:data(any) addr:0x0216dad4
 FIELD_CHUNK_ROTATION_IDENTITY kind:data(any) addr:0x0216dae0
-data_ov012_0216dac4 kind:data(any) addr:0x0216db04
+sEntralinkArrivalPos kind:data(any) addr:0x0216db04
 data_ov012_0216dad0 kind:data(any) addr:0x0216db10
 data_ov012_0216dad1 kind:data(any) addr:0x0216db11
 data_ov012_0216dad2 kind:data(any) addr:0x0216db12

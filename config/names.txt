@@ -8769,7 +8769,9 @@ overlays/ov012 0x02164988 EventActorHold_Callback
 overlays/ov012 0x02164ae0 Scrcmd_EntreeForest_EntreeForestStartBattle
 overlays/ov012 0x02164b48 Scrcmd_EntreeForest_EntreeForestSpawnAllPkm
 overlays/ov012 0x02164b94 Scrcmd_EntreeForest_EntreeForestRemovePkm
+overlays/ov012 0x02164bcc Scrcmd_EntreeForest_EntreeForestToggleKeepPkm
 overlays/ov012 0x02164c14 Scrcmd_EntreeForest_WordSetLoadEntreeForestPkmName
+overlays/ov012 0x02164c68 Scrcmd_EntreeForest_EntreeForestGetInfo
 overlays/ov012 0x02164cfc Scrcmd_EntreeForest_MapChangeEntreeForest
 overlays/ov012 0x02164dcc GetTalkActorEntreeForestPkm
 overlays/ov012 0x021650f8 GetEntreeForestArrivalPos
@@ -9030,6 +9032,7 @@ overlays/ov012 0x0216d8fc sBSubwayCommCommands
 overlays/ov012 0x0216d93c sBSubwayCommNetInit
 overlays/ov012 0x0216d9ac sRentalItems
 overlays/ov012 0x0216d9b4 sTrainerClassObjCodes
+overlays/ov012 0x0216dac4 sEntralinkArrivalPos
 overlays/ov012 0x0216dfc4 MUSICAL_DRESSUP_PROC_FUNCTIONS
 overlays/ov012 0x0216dfe8 MUSICAL_STAGE_PROC_FUNCTIONS
 overlays/ov012 0x0216e034 sDeliveryBeaconNetInit

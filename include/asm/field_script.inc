@@ -2848,13 +2848,13 @@
     .2byte \a0
     .endm
 
-    .macro AreaNPCCmd_0218 a0, a1
+    .macro EntreeForestGetInfo a0, a1
     FieldCommand 536
     .2byte \a0
     .2byte \a1
     .endm
 
-    .macro AreaNPCCmd_0219 a0, a1
+    .macro EntreeForestToggleKeepPkm a0, a1
     FieldCommand 537
     .2byte \a0
     .2byte \a1

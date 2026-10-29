@@ -632,8 +632,8 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_SpPokeGimmick_SetSpecialTransferUsed,        // 0x215
     Scrcmd_PokeDisp_IsOneShotDRObtained,                // 0x216
     Scrcmd_EntreeForest_MapChangeEntreeForest,          // 0x217
-    func_ov012_02164c68,                                // 0x218
-    func_ov012_02164bcc,                                // 0x219
+    Scrcmd_EntreeForest_EntreeForestGetInfo,            // 0x218
+    Scrcmd_EntreeForest_EntreeForestToggleKeepPkm,      // 0x219
     Scrcmd_EntreeForest_WordSetLoadEntreeForestPkmName, // 0x21a
     Scrcmd_EntreeForest_EntreeForestSpawnAllPkm,        // 0x21b
     Scrcmd_EntreeForest_EntreeForestStartBattle,        // 0x21c
