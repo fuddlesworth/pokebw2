@@ -11,7 +11,6 @@
 // The downloaded battle examination that the Trial House plays: five Trainers, a signature and a checksum.
 // Extra save block 5.
 
-
 u32 BattleExamination_GetSize(void) {
     return sizeof(BattleExaminationSave);
 }
