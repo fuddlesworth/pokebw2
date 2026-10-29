@@ -9824,6 +9824,10 @@ overlays/ov033 0x02179140 EventPerapRecord_SetupWindow
 overlays/ov033 0x021791a8 EventPerapRecord_Cleanup
 overlays/ov033 0x021795a4 Fishing_StepCounter
 overlays/ov033 0x021795bc Fishing_WaitBite
+overlays/ov033 0x021795e8 Fishing_ShowBite
+overlays/ov033 0x02179614 Fishing_DeleteBubble
+overlays/ov033 0x02179628 Fishing_StartLine
+overlays/ov033 0x02179650 Fishing_DeleteLine
 overlays/ov033 0x02179664 EventHallOfFameMachine_Create
 overlays/ov033 0x02179684 EventHallOfFameMachine_Callback
 overlays/ov033 0x02179700 EventHallOfFameMachine_Init
