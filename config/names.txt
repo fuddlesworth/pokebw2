@@ -31704,6 +31704,7 @@ overlays/ov257 0x021b2104 sFaceOrders
 overlays/ov257 0x021b2164 sTargetResources
 overlays/ov257 0x021b21f4 sTargetBounds
 overlays/ov257 0x021b2218 sBalloonPositions
+overlays/ov257 0x021b223c y
 overlays/ov257 0x021b2244 sCtvtGameCamPromptMessages
 overlays/ov257 0x021b2280 sCtvtGameCamLCDConfig
 overlays/ov257 0x021b2290 sCtvtGameCamClActSetup

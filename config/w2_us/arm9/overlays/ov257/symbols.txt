@@ -753,7 +753,7 @@ sFaceOrders kind:data(any) addr:0x021b2140
 sTargetResources kind:data(any) addr:0x021b21a0
 sTargetBounds kind:data(any) addr:0x021b2230
 sBalloonPositions kind:data(any) addr:0x021b2254
-data_ov257_021b223c kind:data(any) addr:0x021b2278
+y kind:data(any) addr:0x021b2278
 sCtvtGameCamPromptMessages kind:data(any) addr:0x021b2280
 data_ov257_021b2250 kind:data(any) addr:0x021b228c
 data_ov257_021b2260 kind:data(any) addr:0x021b229c

@@ -656,12 +656,12 @@ int CtvtGame_Main(CommTvtWork *sys, CtvtGame *game) {
         if (GFL_WipeIsFinished() == TRUE) {
             if (!CtvtGame_CheckError(sys, game)) {
                 switch (CtvtGameCam_UpdateTask(game->camTask)) {
-                case 0:
+                case CTVT_GAME_CAM_RUNNING:
                     break;
-                case 1:
+                case CTVT_GAME_CAM_DONE:
                     game->state = CTVT_GAME_STATE_FADE_OUT_CAMERA;
                     break;
-                case 2:
+                case CTVT_GAME_CAM_ERROR:
                     return COMM_TVT_MODE_EXIT_ERROR;
                 }
             } else {
