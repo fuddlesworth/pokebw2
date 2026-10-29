@@ -79,7 +79,7 @@ SetRuleIfNone kind:function(thumb,size=0xa) addr:0x02152950
 DeliveryBeacon_OnDisconnect kind:function(thumb,size=0x2) addr:0x0215295c
 DeliveryBeacon_RecvDummy kind:function(thumb,size=0x2) addr:0x02152960
 DeliveryBeacon_OnNegotiation kind:function(thumb,size=0x2) addr:0x02152964
-func_ov012_02152928 kind:function(thumb,size=0x2) addr:0x02152968
+DeliveryBeacon_OnNetEnd kind:function(thumb,size=0x2) addr:0x02152968
 DeliveryBeacon_GetSendBeacon kind:function(thumb,size=0x3c) addr:0x0215296c
 DeliveryBeacon_GetBeaconSize kind:function(thumb,size=0x4) addr:0x021529a8
 DeliveryBeacon_IsMatchingBeacon kind:function(thumb,size=0xc) addr:0x021529ac
@@ -1674,7 +1674,7 @@ sDressingRoomPos kind:data(any) addr:0x0216ae30
 sHallOnlinePos kind:data(any) addr:0x0216ae3c
 sGiftCountPoints kind:data(any) addr:0x0216ae48
 sProgramGiftProps kind:data(any) addr:0x0216ae5c
-data_ov012_0216af34 kind:data(any) addr:0x0216af74
+sDeliveryBeaconCommands kind:data(any) addr:0x0216af74
 data_ov012_0216af3c kind:data(any) addr:0x0216af7c
 sRibbonParams kind:data(any) addr:0x0216af9c
 GLOBAL_SCRIPT_TABLE kind:data(any) addr:0x0216afd8
@@ -1809,7 +1809,7 @@ data_ov012_0216dff4 kind:data(any) addr:0x0216e034
 data_ov012_0216e008 kind:data(any) addr:0x0216e048
 data_ov012_0216e01c kind:data(any) addr:0x0216e05c
 data_ov012_0216e020 kind:data(any) addr:0x0216e060
-data_ov012_0216e034 kind:data(any) addr:0x0216e074
+sDeliveryBeaconNetInit kind:data(any) addr:0x0216e074
 sDeliveryBeaconAssertFileName kind:data(any) addr:0x0216e0e4
 data_ov012_0216e0a8 kind:data(any) addr:0x0216e0e8
 data_ov012_0216e0bc kind:data(any) addr:0x0216e0fc
