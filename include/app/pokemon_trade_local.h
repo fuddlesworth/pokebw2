@@ -223,8 +223,9 @@ struct PokemonTradeWork {
     TradeBoxColors boxColors[2];
     // The window over each side's Pokémon on the upper screen: its panel, or its label in a negotiation
     BmpWin *sideWindows[2];
-    BmpWin *unk5C4[2];
-    BmpWin *unk5CC[2];
+    // The windows of each side's small panel on the upper screen: the Pokémon's name and level, and its held item
+    BmpWin *cardWindows[2];
+    BmpWin *cardItemWindows[2];
     // The windows of a negotiation's upper screen: what a GTS Negotiation's player wants, and the players' names
     BmpWin *headerWindow;
     BmpWin *nameWindow;
@@ -380,7 +381,8 @@ struct PokemonTradeWork {
     // The icons of the Pokémon each player offers in a negotiation, and their characters
     ClActor *negoIcons[2][3];
     u32 negoIconChars[2][3];
-    BmpWin *unk1038[4];
+    // Never created, only freed with the panels of a negotiation
+    BmpWin *offerListWindows[4];
     // In a GTS Negotiation, the kind of Pokémon each player wants and the level of the first's, or -1
     u32 wantedKind[2];
     u32 wantedLevel[2];
