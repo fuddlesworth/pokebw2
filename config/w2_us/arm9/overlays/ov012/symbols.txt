@@ -1783,7 +1783,7 @@ data_ov012_0216dad6 kind:data(any) addr:0x0216db16
 ONESHOT_DR_KEYS kind:data(any) addr:0x0216dc5c
 sLeagueLiftCameraCoords kind:data(any) addr:0x0216dc7c
 BSUBWAY_COMM_BATTLE_PROC_FUNCTIONS kind:data(any) addr:0x0216dc9c
-data_ov012_0216dc68 kind:data(any) addr:0x0216dca8
+FEST_MISSION_ZONES kind:data(any) addr:0x0216dca8
 data_ov012_0216dc6a kind:data(any) addr:0x0216dcaa
 data_ov012_0216dc90 kind:data(any) addr:0x0216dcd0
 data_ov012_0216dc92 kind:data(any) addr:0x0216dcd2
