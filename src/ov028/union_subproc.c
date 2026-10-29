@@ -207,7 +207,7 @@ static BOOL UnionCommand_Trade(GameSystem *gsys, UnionSystem *unisys, Field *fie
         (*step)++;
         break;
     case 2:
-        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, &data_ov194_021c640c, trade);
+        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, &POKEMONTRADE_UNION_PROC_FUNCTIONS, trade);
         (*step)++;
         break;
     case 3:
