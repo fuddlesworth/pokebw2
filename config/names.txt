@@ -9048,6 +9048,7 @@ overlays/ov012 0x0216dc3c sLeagueLiftCameraCoords
 overlays/ov012 0x0216dc5c BSUBWAY_COMM_BATTLE_PROC_FUNCTIONS
 overlays/ov012 0x0216dc68 FEST_MISSION_ZONES
 overlays/ov012 0x0216dc90 BURMY_FORMS
+overlays/ov012 0x0216dd24 TRAINER_BATTLE_BEACONS
 overlays/ov012 0x0216dd60 TRCARD_SCREEN_PROC_FUNCTIONS
 overlays/ov012 0x0216dd6c TRCARD_SYS_VIEW_PROC_FUNCTIONS
 overlays/ov012 0x0216dd78 TRCARD_SYS_PROC_FUNCTIONS
@@ -9058,6 +9059,7 @@ overlays/ov012 0x0216e034 sDeliveryBeaconNetInit
 overlays/ov012 0x0216e0a4 sDeliveryBeaconAssertFileName
 overlays/ov012 0x0216e110 sDeliveryIrcNetInit
 overlays/ov012 0x0216e2e0 sScaleStep
+overlays/ov012 0x0216e5cc sSpecialBeaconTrainerClasses
 overlays/ov012 0x0216e644 sEffect
 overlays/ov013 0x0216e660 EventBeaconDetail_Callback
 overlays/ov013 0x0216e770 EventBeaconDetail_Create

@@ -1788,7 +1788,7 @@ data_ov012_0216dc6a kind:data(any) addr:0x0216dc6a
 BURMY_FORMS kind:data(any) addr:0x0216dc90
 data_ov012_0216dc92 kind:data(any) addr:0x0216dc92
 WILD_BATTLE_RESULT kind:data(any) addr:0x0216dd1c
-data_ov012_0216dd24 kind:data(any) addr:0x0216dd24
+TRAINER_BATTLE_BEACONS kind:data(any) addr:0x0216dd24
 BTL_RESULT_LUT kind:data(any) addr:0x0216dd3c
 TRCARD_SCREEN_PROC_FUNCTIONS kind:data(any) addr:0x0216dd60
 TRCARD_SYS_VIEW_PROC_FUNCTIONS kind:data(any) addr:0x0216dd6c
@@ -1848,7 +1848,7 @@ data_ov012_0216e3a0 kind:data(any) addr:0x0216e3a0
 RELOADABLE_STRENGTH_ROCKS kind:data(any) addr:0x0216e3b0
 data_ov012_0216e3b4 kind:data(any) addr:0x0216e3b4
 data_ov012_0216e5c0 kind:data(any) addr:0x0216e5c0
-data_ov012_0216e5cc kind:data(any) addr:0x0216e5cc
+sSpecialBeaconTrainerClasses kind:data(any) addr:0x0216e5cc
 data_ov012_0216e5dc kind:data(any) addr:0x0216e5dc
 data_ov012_0216e5ec kind:data(any) addr:0x0216e5ec
 data_ov012_0216e5fc kind:data(any) addr:0x0216e5fc

@@ -629,17 +629,17 @@ static void *WifiBattleMatchSys_CreateBattleParam(WifiBattleMatchChain *chain, H
     param->players->base.rule = battleType;
     if (sys->mode - 2 <= 1) {
         param->setup->fieldSituation.bgm = SEQ_BGM_VS_TRAINER_WIFI;
-        param->setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
+        param->setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
     } else if (sys->mode == 0) {
         entry = TournamentBlock_GetEntry(tournament, 0);
         value = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_VARIANT);
         param12 = Regulation_GetParam(TournamentEntry_GetRegulation(entry), REGULATION_PARAM_18);
         if (value == 1) {
             param->setup->fieldSituation.bgm = SEQ_BGM_VS_WCS;
-            param->setup->fieldSituation.unk12 = SEQ_BGM_WIN5;
+            param->setup->fieldSituation.winBgm = SEQ_BGM_WIN5;
         } else {
             param->setup->fieldSituation.bgm = SEQ_BGM_VS_SUBWAY_TRAINER;
-            param->setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
+            param->setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
         }
         if (param12 - 2 <= 1) {
             param->setup->fieldSituation.env.terrain = 0xe;
@@ -652,10 +652,10 @@ static void *WifiBattleMatchSys_CreateBattleParam(WifiBattleMatchChain *chain, H
         param12 = Regulation_GetParam(TournamentEntry_GetRegulation(entry), REGULATION_PARAM_18);
         if (value == 1) {
             param->setup->fieldSituation.bgm = SEQ_BGM_VS_WCS;
-            param->setup->fieldSituation.unk12 = SEQ_BGM_WIN5;
+            param->setup->fieldSituation.winBgm = SEQ_BGM_WIN5;
         } else {
             param->setup->fieldSituation.bgm = SEQ_BGM_VS_SUBWAY_TRAINER;
-            param->setup->fieldSituation.unk12 = SEQ_BGM_WIN2;
+            param->setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
         }
         if (param12 - 2 <= 1) {
             param->setup->fieldSituation.env.terrain = 0xe;

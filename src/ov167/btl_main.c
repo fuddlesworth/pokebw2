@@ -168,7 +168,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         mainModule->unk46F = isSet;
         BtlNet_Init(setup->fieldSituation.netHandle, setup->unkA0, 0x14);
         BtlCalc_SetHeapID(HEAPID_BATTLE);
-        if (setup->unkDD_3) {
+        if (setup->studioMode) {
             BtlMain_LoadStudioData(mainModule, setup->unkDF);
         }
         (*state)++;
@@ -1642,7 +1642,7 @@ BOOL IsMultiMode(BtlMainModule *mainModule) {
 }
 
 u16 GetWinBGM(BtlMainModule *mainModule) {
-    return mainModule->setup->fieldSituation.unk12;
+    return mainModule->setup->fieldSituation.winBgm;
 }
 
 u16 func_ov167_0219bf08(BtlMainModule *mainModule) {
@@ -1695,7 +1695,7 @@ void RegisterDexMon(BtlMainModule *mainModule, u8 clientId, BattleMon *mon) {
     u32 battleType = BtlSetup_GetBattleType(mainModule);
     u32 unk = GetStudioMode(mainModule);
 
-    if (mainModule->setup->unkDE_0 != 1 && battleType <= 1 && unk == 0 && clientId != 0) {
+    if (mainModule->setup->noPokedexRegistration != 1 && battleType <= 1 && unk == 0 && clientId != 0) {
         PokeDex_RegistPkm(mainModule->setup->pokedex, GetSrcData(mon));
     }
 }
@@ -2282,7 +2282,7 @@ u8 IsRecPlayMode(BtlMainModule *mainModule) {
 
 u32 GetStudioMode(BtlMainModule *mainModule) {
     if (mainModule != NULL) {
-        return mainModule->setup->unkDD_3;
+        return mainModule->setup->studioMode;
     }
     return 0;
 }

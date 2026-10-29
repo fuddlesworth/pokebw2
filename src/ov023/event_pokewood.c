@@ -353,7 +353,7 @@ static BtlSetup *EventPokewood_CreateFilmSetup(GameSystem *gsys, Field *field, H
         setup->unkE0 = 1;
     }
     GFL_HeapFree(buffer);
-    setup->unkDD_3 = 1;
+    setup->studioMode = 1;
     setup->unkDF = movie;
     grade = PokewoodSave_GetLevelOfPoints(PokewoodSave_GetLevelPoints(save));
     setup->unk128 = sGradeTicks[grade].base + GFL_RandomLC(sGradeTicks[grade].range);
@@ -448,14 +448,14 @@ static BtlSetup *EventPokewood_CreateSetup(PokewoodMovieParam *param, GameSystem
     case POKEWOOD_KIND_FILM:
         setup = EventPokewood_CreateFilmSetup(gsys, field, heapId, param->movie);
         setup->fieldSituation.bgm = SEQ_BGM_PW_FILMING;
-        setup->fieldSituation.unk12 = SEQ_BGM_WIN1;
+        setup->fieldSituation.winBgm = SEQ_BGM_WIN1;
         EventPokewood_LoadIntroText(param, setup, param->movie, POKEWOOD_KIND_FILM, heapId);
         break;
     case POKEWOOD_KIND_WATCH:
         setup = EventPokewood_LoadWatchSetup(gsys, field, heapId, param->slot);
         file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, setup->unkDF, HEAPID_TAIL(heapId));
         setup->fieldSituation.bgm = file->bgm;
-        setup->fieldSituation.unk12 = file->bgm2;
+        setup->fieldSituation.winBgm = file->bgm2;
         setup->unk138 = file->unk2a;
         setup->unk13a = file->unk2c;
         EventPokewood_LoadIntroText(param, setup, setup->unkDF, POKEWOOD_KIND_WATCH, heapId);
@@ -472,7 +472,7 @@ static BtlSetup *EventPokewood_CreateSetup(PokewoodMovieParam *param, GameSystem
 }
 
 static void EventPokewood_FreeSetup(BtlSetup *setup) {
-    if (setup->unkDD_3 == 2) {
+    if (setup->studioMode == 2) {
         GFL_HeapFree(setup->playerInfo[0]);
         BtlSetup_FreeForRecord(setup);
     }

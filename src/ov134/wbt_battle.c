@@ -440,7 +440,7 @@ BtlSetup *WbtBattle_SetupBattle(WbtSystem *sys, GameSystem *gsys) {
     WbtBattle_LoadOpponentLine(sys, 3, sys->unk13D4);
     WbtBattle_LoadOpponentLine(sys, 4, sys->unk13D8);
     BtlSetup_SetLines(setup, sys->unk13D4, sys->unk13D8);
-    WbtBattle_GetBattleMusic(sys, &setup->fieldSituation.bgm, &setup->fieldSituation.unk12);
+    WbtBattle_GetBattleMusic(sys, &setup->fieldSituation.bgm, &setup->fieldSituation.winBgm);
     if (WbtSystem_GetTournament(sys) == 3 && sys->download.tournament.unkA8 == 1) {
         setup->fieldSituation.env.bgType = 0x12;
         setup->fieldSituation.env.terrain = 0xe;
