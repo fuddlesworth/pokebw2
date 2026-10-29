@@ -9837,6 +9837,8 @@ overlays/ov033 0x0217980c EventHallOfFameMachine_StartAnimations
 overlays/ov033 0x02179844 EventHallOfFameMachine_IsAnimationDone
 overlays/ov033 0x02179868 Scrcmd_CreateSubProcEvent
 overlays/ov033 0x021798a0 Scrcmd_SubProcEventMain
+overlays/ov033 0x021799e8 pcIdle
+overlays/ov033 0x02179a58 CreatePCIdleCallEvent
 overlays/ov033 0x02179b24 FieldDoorAnime_StartClose
 overlays/ov033 0x02179dd4 EventGameManual_Create
 overlays/ov033 0x02179e28 EventGameManual_Main
