@@ -434,7 +434,7 @@ L_069B:
     WorkAdd 0x8021, 0x8001
     VMStackPop 0x8001
     VMStackPop 0x8000
-    Cmd_0220 0x8021, 0x8022
+    SeasonTrainerGetTrainerID 0x8021, 0x8022
     TrainerFlagGet 0x8022, 0x8024
     RTCGetSeason 0x8035
     WorkSetConst 0x8023, 229
@@ -636,24 +636,24 @@ L_0A10:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0A7B
-    Cmd_0220 0, 0x803c
+    SeasonTrainerGetTrainerID 0, 0x803c
     TrainerFlagGet 0x803c, 0x8038
-    Cmd_0220 2, 0x803c
+    SeasonTrainerGetTrainerID 2, 0x803c
     TrainerFlagGet 0x803c, 0x8039
-    Cmd_0220 4, 0x803c
+    SeasonTrainerGetTrainerID 4, 0x803c
     TrainerFlagGet 0x803c, 0x803a
-    Cmd_0220 6, 0x803c
+    SeasonTrainerGetTrainerID 6, 0x803c
     TrainerFlagGet 0x803c, 0x803b
     VMJump L_0AAB
 
 L_0A7B:
-    Cmd_0220 1, 0x803c
+    SeasonTrainerGetTrainerID 1, 0x803c
     TrainerFlagGet 0x803c, 0x8038
-    Cmd_0220 3, 0x803c
+    SeasonTrainerGetTrainerID 3, 0x803c
     TrainerFlagGet 0x803c, 0x8039
-    Cmd_0220 5, 0x803c
+    SeasonTrainerGetTrainerID 5, 0x803c
     TrainerFlagGet 0x803c, 0x803a
-    Cmd_0220 7, 0x803c
+    SeasonTrainerGetTrainerID 7, 0x803c
     TrainerFlagGet 0x803c, 0x803b
 
 L_0AAB:

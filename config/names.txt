@@ -8270,6 +8270,8 @@ overlays/ov012 0x02156054 Scrcmd_GameState_TrainerBattleIsVictory
 overlays/ov012 0x02156080 Scrcmd_GameState_CallWildLose
 overlays/ov012 0x021560b0 Scrcmd_GameState_WildBattleIsVictory
 overlays/ov012 0x021560dc Scrcmd_GameState_WildBattleGetResult
+overlays/ov012 0x02156104 Scrcmd_GameState_SeasonTrainerGetObjCode
+overlays/ov012 0x02156128 Scrcmd_GameState_SeasonTrainerGetTrainerID
 overlays/ov012 0x0215614c Scrcmd_GameState_FieldOpenRestoreLCD
 overlays/ov012 0x02156220 Scrcmd_Pokemon_PokePartyGetTypes
 overlays/ov012 0x02156270 Scrcmd_Pokemon_PokePartyRecoverAll
@@ -8983,6 +8985,8 @@ overlays/ov012 0x0216af5c sRibbonParams
 overlays/ov012 0x0216c9a8 sRebattleTrainers
 overlays/ov012 0x0216c9c0 sListMenuRequest
 overlays/ov012 0x0216c9e0 sSystemUIFlags
+overlays/ov012 0x0216c9e4 sSeasonTrainerObjCodes
+overlays/ov012 0x0216c9f4 sSeasonTrainers
 overlays/ov012 0x0216ca04 wf_location
 overlays/ov012 0x0216ca06 stats_list
 overlays/ov012 0x0216ca1a iv_set

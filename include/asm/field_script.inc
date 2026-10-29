@@ -2887,15 +2887,13 @@
     .2byte \a0
     .endm
 
-    // func_ov012_02156104
-    .macro Cmd_021F a0, a1
+    .macro SeasonTrainerGetObjCode a0, a1
     FieldCommand 543
     .2byte \a0
     .2byte \a1
     .endm
 
-    // func_ov012_02156128
-    .macro Cmd_0220 a0, a1
+    .macro SeasonTrainerGetTrainerID a0, a1
     FieldCommand 544
     .2byte \a0
     .2byte \a1

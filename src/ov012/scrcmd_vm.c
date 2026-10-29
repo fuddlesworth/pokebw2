@@ -639,8 +639,8 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_EntreeForest_EntreeForestStartBattle,        // 0x21c
     Scrcmd_EntreeForest_EntreeForestRemovePkm,          // 0x21d
     Scrcmd_Encount_FishingChallengeGetRandomPkm,        // 0x21e
-    func_ov012_02156104,                                // 0x21f
-    func_ov012_02156128,                                // 0x220
+    Scrcmd_GameState_SeasonTrainerGetObjCode,           // 0x21f
+    Scrcmd_GameState_SeasonTrainerGetTrainerID,         // 0x220
     Scrcmd_Misc_AnvilleTrainGetModelID,                 // 0x221
     Scrcmd_Misc_AnvilleTrainGetDailyIndex,              // 0x222
     Scrcmd_PokemonMisc_PokePartyGetHiddenPowerType,     // 0x223

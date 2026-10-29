@@ -424,8 +424,8 @@ Scrcmd_GameState_TrainerBattleIsVictory kind:function(thumb,size=0x2c) addr:0x02
 Scrcmd_GameState_CallWildLose kind:function(thumb,size=0x2e) addr:0x021560c0
 Scrcmd_GameState_WildBattleIsVictory kind:function(thumb,size=0x2c) addr:0x021560f0
 Scrcmd_GameState_WildBattleGetResult kind:function(thumb,size=0x28) addr:0x0215611c
-func_ov012_02156104 kind:function(thumb,size=0x24) addr:0x02156144
-func_ov012_02156128 kind:function(thumb,size=0x24) addr:0x02156168
+Scrcmd_GameState_SeasonTrainerGetObjCode kind:function(thumb,size=0x24) addr:0x02156144
+Scrcmd_GameState_SeasonTrainerGetTrainerID kind:function(thumb,size=0x24) addr:0x02156168
 Scrcmd_GameState_FieldOpenRestoreLCD kind:function(thumb,size=0x26) addr:0x0215618c
 CheckGetPartyPokemon kind:function(thumb,size=0x2e) addr:0x021561b4
 GetScrPokeStat kind:function(thumb,size=0x24) addr:0x021561e4
@@ -1710,8 +1710,8 @@ REBATTLE_TRAINER_COUNT kind:data(any) addr:0x0216c9e4
 sRebattleTrainers kind:data(any) addr:0x0216c9e8
 sListMenuRequest kind:data(any) addr:0x0216ca00
 sSystemUIFlags kind:data(any) addr:0x0216ca20
-data_ov012_0216c9e4 kind:data(any) addr:0x0216ca24
-data_ov012_0216c9f4 kind:data(any) addr:0x0216ca34
+sSeasonTrainerObjCodes kind:data(any) addr:0x0216ca24
+sSeasonTrainers kind:data(any) addr:0x0216ca34
 wf_location kind:data(any) addr:0x0216ca44
 stats_list kind:data(any) addr:0x0216ca46
 iv_set kind:data(any) addr:0x0216ca5a

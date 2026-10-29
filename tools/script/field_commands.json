@@ -4134,7 +4134,7 @@
    ]
   },
   "543": {
-   "handler": "func_ov012_02156104",
+   "handler": "Scrcmd_GameState_SeasonTrainerGetObjCode",
    "overlay": 12,
    "args": [
     "any",
@@ -4142,7 +4142,7 @@
    ]
   },
   "544": {
-   "handler": "func_ov012_02156128",
+   "handler": "Scrcmd_GameState_SeasonTrainerGetTrainerID",
    "overlay": 12,
    "args": [
     "any",
