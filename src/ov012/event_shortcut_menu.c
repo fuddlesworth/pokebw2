@@ -199,17 +199,17 @@ GameEventReturnCode EventShortcutChoicePopup_Callback(GameEvent *event, u32 *sta
         *state = SHORTCUT_MENU_EVENT_STATE_APP_RESULT;
         break;
     case SHORTCUT_MENU_EVENT_STATE_APP_RESULT:
-        if (work->input->eventType == 0) {
+        if (work->input->eventType == FIELD_APP_RESULT_RETURN) {
             if (work->done) {
                 *state = SHORTCUT_MENU_EVENT_STATE_CLOSE;
             } else {
                 *state = SHORTCUT_MENU_EVENT_STATE_REOPEN;
             }
-        } else if (work->input->eventType == 1) {
+        } else if (work->input->eventType == FIELD_APP_RESULT_EXIT) {
             *state = SHORTCUT_MENU_EVENT_STATE_CLOSE;
-        } else if (work->input->eventType == 3) {
+        } else if (work->input->eventType == FIELD_APP_RESULT_COMMON_EVENT) {
             *state = SHORTCUT_MENU_EVENT_STATE_COMMON_EVENT;
-        } else if (work->input->eventType == 2) {
+        } else if (work->input->eventType == FIELD_APP_RESULT_HM_EVENT) {
             *state = SHORTCUT_MENU_EVENT_STATE_HM_EVENT;
         }
         break;
@@ -316,13 +316,13 @@ GameEventReturnCode EventShortcutCallDirect_Callback(GameEvent *event, u32 *stat
         }
         break;
     case SHORTCUT_CALL_DIRECT_STATE_APP_RESULT:
-        if (work->input->eventType == 0) {
+        if (work->input->eventType == FIELD_APP_RESULT_RETURN) {
             *state = SHORTCUT_CALL_DIRECT_STATE_CLOSE;
-        } else if (work->input->eventType == 1) {
+        } else if (work->input->eventType == FIELD_APP_RESULT_EXIT) {
             *state = SHORTCUT_CALL_DIRECT_STATE_CLOSE;
-        } else if (work->input->eventType == 3) {
+        } else if (work->input->eventType == FIELD_APP_RESULT_COMMON_EVENT) {
             *state = SHORTCUT_CALL_DIRECT_STATE_COMMON_EVENT;
-        } else if (work->input->eventType == 2) {
+        } else if (work->input->eventType == FIELD_APP_RESULT_HM_EVENT) {
             *state = SHORTCUT_CALL_DIRECT_STATE_HM_EVENT;
         }
         break;
@@ -596,7 +596,8 @@ BOOL ShortcutMenu_CanRetry(FieldAppCallInput *input, void *arg) {
         if (ShortcutSave_GetShortcutCount(shortcut) == 0) {
             work->done = 1;
             work->state = 2;
-        } else if (input->eventType == 1 || input->eventType == 3 || input->eventType == 2 || input->eventType == 5) {
+        } else if (input->eventType == FIELD_APP_RESULT_EXIT || input->eventType == FIELD_APP_RESULT_COMMON_EVENT ||
+                   input->eventType == FIELD_APP_RESULT_HM_EVENT || input->eventType == FIELD_APP_RESULT_SCRIPT) {
             work->state = 2;
         } else {
             ShortcutMenu_Open(SHORTCUT_MENU_START_OPEN, work);

@@ -35,10 +35,10 @@ GameEventReturnCode EventSave_Callback(GameEvent *event, u32 *state, void *data)
 
     switch (result) {
     case 0:
-        *work->result = 1;
+        *work->result = FIELD_APP_RESULT_EXIT;
         return GAMEEVENT_DONE;
     case 1:
-        *work->result = 0;
+        *work->result = FIELD_APP_RESULT_RETURN;
         return GAMEEVENT_DONE;
     default:
         return GAMEEVENT_CONTINUE;
