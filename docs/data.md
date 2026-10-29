@@ -9,24 +9,34 @@ the C code's headers:
 
 ```
 res/
-  pokemon/<species>/        data, text, battle sprites, icon, footprint, cry
+  pokemon/<species>/        data, text, Pokédex data, battle sprites, icon, footprint, cry
+  pokedex/                  the Pokédex search's orders and the habitat list
   moves/<move>/             data and text
   items/<item>/             data, text and icon; shared/ for the icons' cells, animations and unused icons
   abilities/  natures/  types/
   trainers/
     data/<trainer>.json     record and party
     classes/  sprites/{front,back}/<sprite>/  ai/  facilities/<facility>/
+  battle/{animations,backgrounds,regulations}/
+  pokewood/movies/<n>/      Pokéstar Studios' movies: their casts and scripts
   field/
     zones/  events/  encounters/  scripts/  areas/  matrices/  cameras/  rails/  land_patches/  flash/
     maps/{models,textures}/
     props/{exterior,interior}/{models,textures}/
     actors/                 the overworld's people and objects, with pokemon/ and models/ for its Pokémon and 3D models
                             npc_caches/ for the zones' caches of their records, animations/ for the scripts'
-    trades/  places/  shops/  fog/  zone_gimmicks/  gate_boards/  entralink/  lens_flares/
-    stadium/  hidden_hollows/  item_collectors/
+    trades/  places/  shops/  fog/  weather/  zone_gimmicks/  gate_boards/  entralink/  lens_flares/  cutins/
+    stadium/  hidden_hollows/  item_collectors/  castelia_rush/
     gimmicks/<archive>/  effects/<archive>/   the gyms' and other gimmicks' models, the field effects' animations
   lighting/{field,battle,zones}/  edge_colors.json  actor_material_colors.json
   town_map/
+  medals/                   the Medal Rally's medals
+  funfest/                  the Funfest Missions
+  name_input/               the name input's keyboards and profane words
+  geonet/                   Geonet's places on the globe
+  join_avenue/              the Join Avenue's tables
+  local_tvt/                the Xtransceiver's calls
+  pass_powers/              the Pass Powers
   sound/{sequences,banks,wave_archives,streams,interactive,archives}/
   graphics/<archive>/       the menus', apps' and screens' graphics and models, an archive each
   demo/<archive>/           the demos and cutscenes: the movies' frames and the 3D demos' models, an archive each
@@ -68,11 +78,17 @@ which documents the format and can write them again.
 | `a/0/1/7` | `res/pokemon/growth_rates.csv` | Experience tables of the growth rates | `tools/data/species_data.py` |
 | `a/0/0/4`, `a/0/0/7`, `a/0/5/1`, `a/1/6/5`, `a/2/2/9` | `res/pokemon/<species>/` (PNG, palette, Nitro animation files) | Battle sprites, icons, musical sprites, and footprints | `tools/data/pokemon_graphics.py` |
 | `a/1/9/1` | `res/pokemon/<species>/data.json` (`cry_volume`) | The Pokémon cries' playback volumes | `tools/data/pokemon_cries.py` |
+| `a/3/0/2` | `res/pokemon/black_white.json` | Black and White's species data, as its differences from this game's | `tools/data/personal_bw1_data.py` |
+| `a/0/9/7`, `a/1/7/6`, `a/2/9/6` | `res/pokemon/<species>/pokedex.json`, `res/pokedex/` (JSON) | The Pokédex's search data and orders, the species' areas and the habitat list, see [The Pokédex](#the-pokédex) | `tools/data/pokedex_data.py` |
 | `swan_sound_data.sdat` | `res/sound/`, `res/pokemon/<species>/cry.wav` | The sound archive: sequences, banks, wave archives, players, groups, streams and the Pokémon cries | `tools/data/sound_data.py` |
 | `a/0/2/1` | `res/moves/` (JSON) | Move data | `tools/data/move_data.py` |
 | `a/0/2/4` | `res/items/` (JSON) | Item data | `tools/data/item_data.py` |
+| `a/2/2/8` | `res/items/` (JSON, `battle_pocket`) | The battle bag's pockets of each item | `tools/data/battle_bag_data.py` |
 | `a/0/2/5` | `res/items/<item>/` (PNG, palette), `res/items/shared/` | Item icons | `tools/data/item_icon_data.py` |
 | `a/0/5/6` | `res/field/scripts/` | Field scripts, see [Scripts](scripts.md#field-scripts) | `tools/script/field_script.py` |
+| `a/2/7/2`, `a/2/6/9` | `res/pokewood/movies/<n>/` (JSON), `res/pokewood/default_record.bin` | Pokéstar Studios' movies: their casts and scripts | `tools/data/pokewood_data.py` |
+| `a/1/5/1` | `res/battle/backgrounds/` (JSON) | The battle backgrounds' types, fields and stages | `tools/data/battle_bg_data.py` |
+| `a/1/0/6` | `res/battle/regulations/` (JSON) | Battle regulations | `tools/data/regulation_data.py` |
 | `a/0/6/5`, `a/0/6/6` | `res/battle/animations/{moves,effects}/` | Battle animations: the moves' and the other effects' scripts, see [Scripts](scripts.md#battle-animation-scripts) | `tools/script/btlv_effvm_script.py` |
 | `a/0/9/1`, `a/0/9/2`, `a/0/8/9`, `a/0/9/0` | `res/trainers/data/` (JSON) | Trainers, their parties, and the table of their messages | `tools/data/trainer_data.py` |
 | `a/0/7/1`, `a/0/7/2`, `a/0/6/3` | `res/trainers/sprites/{front,back}/<sprite>/` (PNG, palette, Nitro cells and animations) | Trainer sprites, front and back | `tools/data/trainer_graphics.py` |
@@ -85,12 +101,25 @@ which documents the format and can write them again.
 | `a/0/1/3` | `res/field/areas/<area>.json` | Area records | `tools/data/area_data.py` |
 | `a/1/2/6` | `res/field/events/` (JSON) | Zone events: signs, NPCs, warps, triggers and init scripts | `tools/data/event_data.py` |
 | `a/0/4/7`, `a/0/4/8` | `res/field/actors/<code>/` (JSON, PNG, palette, Nitro model) | The field actors' models: their table and graphics | `tools/data/field_actor_data.py` |
+| `a/2/0/8` | `res/field/actors/pokemon/<code>/pokemon.json` | The walking Pokémon's species, sex and form | `tools/data/walking_pokemon_data.py` |
 | `a/1/2/7` | `res/field/encounters/` (JSON) | Wild encounters | `tools/data/encounter_data.py` |
 | `a/1/6/3` | `res/field/trades/` (JSON) | In-game trades | `tools/data/trade_data.py` |
+| `a/1/1/8`, `a/2/6/8` | `res/field/cutins/` (JSON) | The field's 3D cut-in effects: their scenes and bitmaps | `tools/data/field_cutin_data.py` |
 | `a/2/1/2`, `a/2/1/1` | `res/trainers/facilities/battle_subway/` (JSON) | Battle Subway and Trial House trainers and Pokémon | `tools/data/facility_data.py` |
 | `a/2/6/2`, `a/2/6/1` | `res/trainers/facilities/black_tower/` (JSON) | Black Tower and White Treehollow trainers and Pokémon | `tools/data/facility_data.py` |
 | `a/2/4/8` to `a/2/5/7` | `res/trainers/facilities/pwt_*/` (JSON) | Pokémon World Tournament trainers, Pokémon and rental Pokémon | `tools/data/facility_data.py` |
+| `a/2/4/7` | `res/trainers/facilities/pwt_trainers.json` | The Pokémon World Tournament's table of its Trainers | `tools/data/pwt_trainer_data.py` |
 | `a/1/6/9` | `res/trainers/ai/` | Trainer AI scripts, see [Scripts](scripts.md) | `tools/script/tr_ai_script.py` |
+| `a/2/3/5`, `a/2/3/9` | `res/medals/` (JSON) | The Medal Rally's medals and the Pokémon the type medals count | `tools/data/medal_data.py` |
+| `a/2/8/9` | `res/funfest/` (JSON) | The Funfest Missions and their people's species | `tools/data/funfest_mission_data.py` |
+| `a/2/1/6` | `res/name_input/profane_words.json` | The words the name input rejects | `tools/data/profane_word_data.py` |
+| `a/1/2/0` | `res/name_input/name_input.json` | The name input's keyboards, word tables and conversion table | `tools/data/name_input_data.py` |
+| `a/0/9/6` | `res/field/weather/calendar.json` | The weather of 24 zones on each day of the year | `tools/data/weather_calendar_data.py` |
+| `a/1/8/3` | `res/field/castelia_rush/` (JSON) | The crowds of Castelia City's streets | `tools/data/castelia_rush_data.py` |
+| `a/0/5/2` | `res/geonet/` (JSON) | Geonet's places of the countries and their regions | `tools/data/geonet_place_data.py` |
+| `a/2/4/4` | `res/join_avenue/` (JSON) | The Join Avenue's tables of shops, goods, people, ranks and raffles | `tools/data/join_avenue_data.py` |
+| `a/2/4/0`, `a/2/3/4` | `res/local_tvt/` (JSON) | The Xtransceiver's calls and the story's scripted calls | `tools/data/local_tvt_data.py` |
+| `a/0/3/7` | `res/pass_powers/` (JSON) | The Pass Powers | `tools/data/pass_power_data.py` |
 | `ARCID_*` in `include/constants/arc.h` | `res/graphics/<archive>/` (PNG, palette, Nitro screens, cells and animations) | The 2D graphics of the menus, apps and screens, see [2D graphics](#2d-graphics) | `tools/data/graphics_archive.py` |
 
 The text archives are packed by `text_data.py` from text files rather than assembled; `configure.py` lists them in
@@ -331,6 +360,35 @@ too); and `languages`, the text the game keeps in English, French, German, Itali
 species up to Arceus, which a Pokémon from a game in that language shows, with Giratina's and Shaymin's alternate forms'
 sizes, and the Japanese category of every species. Existing species' graphics and cries are built from the files
 beside `data.json`.
+
+Black and White's species data (`a/3/0/2`, `ARCID_PERSONAL_BW1`), which `poke_personal.c` reads beside this game's
+and the musical takes its forms from (`musical_mcss.c`), is `res/pokemon/black_white.json`, the ways its records differ
+from this game's: the fields, as `data.json` names them, of the 69 species whose records differ, such as Pikachu's held
+items; the 18 forms that had records of their own then, the first of `forms.json`, with their differences; and Black
+and White's Unova Pokédex, the species in its order. Every other field is the species' `data.json`'s, so the record
+follows an edit to it. A record stops after the type tutor's word of tutor moves, Black and White's only tutor.
+`tools/data/personal_bw1_data.py` packs it, the same in both versions, and `black_white.schema.json` describes the
+fields.
+
+### The Pokédex
+
+What the Pokédex's search and maps know of a species is its `pokedex.json`, beside `data.json`, from `SPECIES_NONE` to
+`SPECIES_EGG`: its `initial`, the letter its name starts with, which the search's initials pick from (null for
+`SPECIES_NONE`, none for the egg); its `shapes`, the body shape of the species and then of each of its other forms, 0 to
+13, the search's shape icons, whose count is the count of forms that the Pokédex knows; and its `area`, where it lives
+on the area map (`pokedex_detail_map.c`): the town map's places by their zones, each with the kinds of habitat it has
+there, the encounter groups (`grass` to `rippling_fishing`), all year or by season. A species without an area, such as
+the Pokéstar species, lives nowhere. `res/pokedex/orders.json` is the lists of the species in the search's orders: by
+national number (which nothing reads), by number for the regional Pokédex, by name, and by height and weight both ways,
+with forms as `[ species, form ]`. `res/pokedex/habitats/<zone>.json` is an area of the habitat list
+(`pokedex_habitat.c`), named after its zone in `sPokedexHabitats` (`pokedex_common.c`), or `16.json` for the file that
+the table gives no zone: the kinds of habitat it has, which of them change by season, what lives on its land, and its
+species, with the seasons when each is in each kind and the form whose icon it shows. `tools/data/pokedex_data.py` packs
+`ARCID_POKEDEX_DATA` (`a/0/9/7`), whose links of the forms it makes from the shapes, `ARCID_POKEDEX_AREA` (`a/1/7/6`)
+and `ARCID_POKEDEX_HABITAT` (`a/2/9/6`) for each version: the areas of 31 species and the habitat list's
+version-exclusive species differ, a value that differs being `{ "black2": ..., "white2": ... }`.
+`res/pokemon/pokedex.schema.json`, `res/pokedex/orders.schema.json` and `res/pokedex/habitat.schema.json` describe the
+fields.
 
 ### Pokémon graphics and cries
 
@@ -576,6 +634,11 @@ outside battle is a `BAG_POCKET_*`, and its battle bag pockets are a list of `BA
 is "a" or "an" by its first letter unless `name_article` says otherwise ("an HP Up", "the Leftovers", none for Honey).
 The 20 unused items, named "???", have constants of their own, as `ITEM_UNUSED_113`. Both versions have the same item
 data.
+
+The battle bag also reads each item's battle pockets from an archive of its own, `a/2/2/8` (`ARCID_B_BAG_ITEM`, a
+byte per item, `b_bag_item.c`), which holds the same bits as the items' `battle_pocket`, so
+`tools/data/battle_bag_data.py` packs it from `res/items/` too, and its `check` command compares the original with
+them.
 
 ### Item icons
 
@@ -825,6 +888,12 @@ The field's other tables are a JSON file per archive, each with a schema beside 
   `tools/data/lens_flare_data.py` packs: the zone transitions that show a lens flare in sunny weather, each with the
   effect set of each season and time of day, a row of `LENS_FLARE_IDS` (`field_goout_effect.c` and
   `field_goout_effect_data.c`).
+- `res/field/cutins/<n>.json` is the field's 3D cut-in effect n (`fld3d_ci.c`, `FLD3DCI_*` in `field_event.h`): the
+  field move's Pokémon sprite, the battle cut-ins and Alder's flight. Each is its scene (`a/1/1/8`,
+  `ARCID_FLD3D_CI_FILE`): its particle resource and the delays of its emitters, its two actors' models and animations,
+  files of `ARCID_FLD3D_CI_RESOURCES` (`a/1/1/6`, null for none), and its sound and fade lists' slot; and its bitmaps
+  (`a/2/6/8`, `ARCID_FLD3D_CI_BITMAP`), the graphics that it converts into the textures and palettes of its model,
+  which name them, and the cut-in's flag. `tools/data/field_cutin_data.py` packs both archives.
 
 Zones are their `ZONE_*` constants, directions `DIR_*`, versions `VERSION_*` and flags their constants of
 `generated/flags.txt`.
@@ -875,6 +944,32 @@ facility data.
 Unlike a regular trainer (see [Trainers](#trainers)), a facility trainer has no party of its own: the game picks some of
 its sets at random, and the facility sets the level and IVs. The sets are a pool that many trainers share, which is why
 they are files of their own that trainers name.
+
+The tournament's own table of its Trainers is `res/trainers/facilities/pwt_trainers.json` (`a/2/4/7`,
+`ARCID_WBT_TOOL`, `WbtTrainer` in `field/wbt.h`), which `WbtTrainers_Load` reads: for each, the tournaments it takes
+part in, the type the Type Expert Tournament picks it for, its trainer class and the music of its battle and its win,
+by their constants, and the values that `wbt_makematch.c` gives its entrant. `tools/data/pwt_trainer_data.py` packs
+it, the same in both versions, and `pwt_trainers.schema.json` describes the fields.
+
+## Battle backgrounds and regulations
+
+The battle backgrounds' tables (`a/1/5/1`, `ARCID_BATTLE_BG_DATA`) are `res/battle/backgrounds/`, a list for each of
+the archive's files, which `tools/data/battle_bg_data.py` packs. `types.json` is the background types, a zone's
+`battle_bg` (`BtlvEffectBgData`, `btlv_effect.c`): whether the zone's light lights the battle, whether the season picks
+the variant, and for each of the battle's 20 terrains the field, the backdrop, and the stage, the ground the Pokémon
+stand on, by their places in the other two lists; the stage is also the terrain that Burmy changes its form for.
+`fields.json` (`btlv_field.c`) is each field's model and three animations, and `stages.json` (`btlv_stage.c`) each
+stage's edge color and its models and animations, two to a variant, the two sides' grounds: files of `ARCID_BTLV`
+(`a/0/1/1`), for each variant (the season, or a field's special forms), null for none.
+
+The battle regulations (`a/1/0/6`, `ARCID_REGULATION`) are `res/battle/regulations/<n>.json`, regulation n, which the
+Union Room, the Wi-Fi and wireless battles, the Battle Subway and Pokéstar Studios load by number
+(`PokeRegulation_Load`): its name, a message of `load_battle_type_text_to_strbuf.txt`; how many Pokémon a team enters;
+the level and how it applies; whether a team may have two of a species or of a held item; the banned species and items;
+the species a team must have; the Wonder Launcher; whether nicknames are kept and the partners' teams shown; the
+selection's time limit; the battle type; and how many battles may be played. `tools/data/regulation_data.py` packs
+them. Both archives are the same in both versions, and `backgrounds.schema.json` and `regulation.schema.json` describe
+the fields.
 
 ## Map model sources
 
@@ -1050,6 +1145,19 @@ Zones are their `ZONE_*` constants. As the code reads each table from a fixed fi
 and `ZONE_LIGHT_TABLE_FILE` in `zonedata.c`), the number of fogs and sets is fixed. `tools/data/zone_fog_data.py` and
 `tools/data/zone_light_data.py` pack them, and both versions have the same.
 
+Twenty-four zones have a weather for each day of the year: `res/field/weather/calendar.json` (`a/0/9/6`,
+`ARCID_CALENDAR`), which `Calendar_GetWeather` (`calender.c`) reads when the season is the real one, and which gives
+each zone, by its constant, the weather of each day of each month by its `WEATHER_*` name of `system/zone_weather.h`,
+February with 29 days. A zone it doesn't have keeps its header's weather. The code reads all 24 zones, so the
+calendar has 24. `tools/data/weather_calendar_data.py` packs it, the same in both versions, and
+`calendar.schema.json` describes the fields.
+
+The crowds that walk Castelia City's streets are `res/field/castelia_rush/castelia_rush.json` (`a/1/8/3`,
+`ARCID_CASTELIA_RUSH`, `castelia_rush.c`): each zone's crowd, by its constant, with the frames between passers-by by
+day period, their object codes, the balloons' messages, the frames of a step and the two lanes they walk; and the
+scripts a passer-by of each object code picks from. `tools/data/castelia_rush_data.py` packs it, the same in both
+versions, and `castelia_rush.schema.json` describes the fields.
+
 The field camera's data is in `res/field/cameras/`, which `tools/data/field_camera_data.py` packs, the same in both
 versions. A zone's header names its camera setup by number, `setups/<n>.json` (the records of `a/0/5/9`'s one file,
 `FieldCameraDefaults`, which `FieldCamera_CoordsLoadDefaults` applies): its distance, pitch, yaw and field of view,
@@ -1099,6 +1207,85 @@ show it (an event flag, or a `TOWNMAP_FLAG_*` that the code works out, from
 
 `res/town_map/place.schema.json` describes each file, and `tools/data/town_map_data.py` packs them for each version.
 
+## Medals, missions and the apps' other tables
+
+The Medal Rally's medals are `res/medals/medals.json` (`a/2/3/5`, `ARCID_MEDAL_DEF`, a file per medal), in the order of
+their names in `res/text/system/medal_names.txt`, whose message each names, as the packer checks. A medal is earned by
+a record of the save data that reaches its threshold or by one of the special checks of `sMedalChecks` in
+`scrcmd_pokemon_center.c`, by index, which leave it to the scripts where the table has none; its type is its picture,
+its field effect and its category, and its kind and rank decide when Mr. Medal hints at it and when it is discovered.
+`res/medals/type_species.json` (`a/2/3/9`) lists the Pokémon whose types the type medals count, by their constants.
+`tools/data/medal_data.py` packs both, the same in both versions, and `medals.schema.json` and
+`type_species.schema.json` describe the fields.
+
+The Funfest Missions are `res/funfest/missions.json`, files 0 and 1 of `a/2/8/9` (`ARCID_FMISSION_DATA`), each
+mission's header and parameters (`field/fest_mission_data.h`), which `FestMission_Load` copies into the mission's
+config: its goal's and result's messages of `res/text/system/get_text_file_for_fest_missions.txt` by ID, its target,
+a species by its constant where its kind says so, its reward and second item and the event flag it needs by their
+constants, and the time and score of each of its four levels. `res/funfest/species_lists.json` is the archive's other
+files, the species that a people mission picks its people's Pokémon from (`FesMissionPeople_LoadSpecies`).
+`tools/data/funfest_mission_data.py` packs them, the same in both versions, and `missions.schema.json` and
+`species_lists.schema.json` describe the fields.
+
+The words that the name input rejects as a name are `res/name_input/profane_words.json` (`a/2/1/6`,
+`ARCID_PROF_WORD`): seven lists, all of which `ProfWord_Check` (`prof_word.c`) checks, of words written as it folds a
+name, katakana as hiragana and Latin letters as capitals. The archive keeps each list encrypted and each word in 32
+characters with its terminator; the characters after the terminator are the original's leftovers, which the game
+doesn't read, and `padding` keeps them for each word so that the archive matches. `tools/data/profane_word_data.py`
+packs it, the same in both versions, and `profane_words.schema.json` describes the fields. Its other tables are
+`res/name_input/name_input.json` (`a/1/2/0`, `ARCID_NAME_INPUT`, `name_input_data.c`): the five keyboards, grids of
+the characters that can be entered with a string per row, the three word tables, empty in this version, and the
+conversion table, the rows of characters that a key changes into each other. An ideographic space fills a grid's
+unused places and the rest of a word or row. `tools/data/name_input_data.py` packs it, the same in both versions,
+and `name_input.schema.json` describes the fields.
+
+Geonet's places on the globe are in `res/geonet/` (`a/0/5/2`, `ARCID_GEONET_PLACE`): `countries.json` has where each
+country is, by its number, and `regions.json` where each region of the 18 countries with regions is, a list for each
+country in the order of `sSubdividedCountries` (`country_region.c`), which `Geonet_LoadPlaces` shows instead of the
+country. A place is the globe's turn about its X and Y axes that brings it to the front, in 65536ths of a turn. Each
+names its message of the countries' or its country's text bank, which `country_region.c` gives, by ID, null past the
+last, and the packer checks the names against the text. `tools/data/geonet_place_data.py` packs them, the same in
+both versions, and `countries.schema.json` and `regions.schema.json` describe the fields.
+
+The Join Avenue's tables are `res/join_avenue/<table>.json`, the 13 files of `a/2/4/4` (`ARCID_RESORT_BINARY`), each
+rows of u16 columns that `ResortBinary_Load` reads (`system/resort_binary.h`), as a list of its rows with each column
+by name: the people's scripts, the shops (whose `patch_odd` and `patch_even` name the land patches above) and their
+goods, the occupants' places, the people's types, the avenue's NPCs and their texts, its ranks, the raffles, the
+visitors, the points of a visit by trainer type and by shop kind and day, and the groups of visits. Columns the code
+doesn't read are `column_<n>`, messages are numbers of `SCRIPT_TEXT_GLOBAL_10685`, and an item of the goods, an NPC's
+model and its movement are their constants. `tools/data/join_avenue_data.py` packs them, the same in both versions,
+and `join_avenue.schema.json` describes every table and column, some from the code's use more than its names.
+
+The Xtransceiver's calls are in `res/local_tvt/`: `calls.json` (`a/2/4/0`, `ARCID_LOCAL_TVT_CALL_DATA`) is the calls
+the player can make, each a person's after a count of calls with them (`local_tvt_calldata.c`), with the background
+and zone of their face and what they say, messages of `res/text/system/local_tvt_talk.txt` by ID; `scripts.json`
+(`a/2/3/4`, `ARCID_LOCAL_TVT_SCRIPT`) is the calls the story makes (`local_tvt_scriptmode.c`), each its faces' persons
+and zones and its commands, which make a face talk, with a message of the script's own text file, wait or play a
+sound. `tools/data/local_tvt_data.py` packs both, the same in both versions, and `local_tvt.schema.json` describes
+the fields.
+
+The Pass Powers are `res/pass_powers/pass_powers.json` (`a/0/3/7`, `ARCID_PASS_POWER`, `PassPowerData` in
+`save/high_link.h`), by their numbers: the levels that unlock each in each version, its price in Pass Orbs, its name
+and description, messages of `res/text/system/pass_powers.txt` and `monolith_power_info.txt` by ID, its effect by
+its `PASS_POWER_EFFECT_*` name, the effect's strength and how many minutes it lasts. `tools/data/pass_power_data.py`
+packs it, the same in both versions, and `pass_powers.schema.json` describes the fields.
+
+## Pokéstar Studios
+
+Each of Pokéstar Studios' 41 movies is a directory, `res/pokewood/movies/<n>/`, by its number. Its `cast.json`
+(`a/2/7/2`, `ARCID_POKEWOOD_CAST`) is the Pokémon of the player's side and the opponent's, which the movie's battle makes the
+parties of (`event_pokewood.c`): each with its species, the species it is shown as, its level, form, sex, nature,
+ability slot, held item, moves, IVs and EVs. Its `movie.json` (`a/2/6/9`, `ARCID_POKEWOOD_MOVIE`, `BtlScriptedRules`
+in `btl_main.h`, which several overlays read parts of) is its script: the score multiplier, how many Pokémon each side
+has, the director, whose message file the movie's messages are of, the turn limit and the turn it should end on, its
+rule and the species the rule targets, each side's trainer class for each sex of the player, the music, the events and
+messages by turn, and its twelve scenes, each with its trigger, its score, its messages by step and the choices it
+offers. Every value is a halfword, -1 for none, and the fields that nothing reads keep their C names. The archive's
+last file, after the movies', is `res/pokewood/default_record.bin`, a recorded movie (`PokewoodBlock`, a battle
+recording) that `loadPokewoodAndCheck` loads. `tools/data/pokewood_data.py` packs both archives, the same in both
+versions, and `res/pokewood/cast.schema.json` and `movie.schema.json` describe the fields. The cut-ins' scripts
+(`a/2/7/5`, `ARCID_POKEWOOD_CUTIN_SCRIPT`, `pokewood_cutin.c`) are still copied as they are.
+
 ## Field actors
 
 The field's actors are the people, Pokémon and objects that zones and scripts put on the map. Each one's model is an
@@ -1131,6 +1318,12 @@ Funfest Missions' player icons (`sFMissionViewPlayerModels`) and an entrant's de
 `tools/data/field_actor_data.py` writes the sprites' texture sets as the game's are, so the sources pack both archives
 byte for byte; `.venv/bin/python tools/data/field_actor_data.py dump extract/b2_us/files res/field/actors` writes
 them again.
+
+The walking Pokémon's table (`a/2/0/8`, `ARCID_TPOKE`, `tpoke_data.c`) is each walking Pokémon's `pokemon.json`
+beside its `data.json`: the species, the sex (null for either) and the form that the code shows, which
+`GetPokemonFieldOBJCODE` looks up for the Entree Forest, the Hidden Grottoes and Game Sync, the first entry that fits.
+`tools/data/walking_pokemon_data.py` packs the table from the codes that have one, in the list's order, the same in
+both versions, and `res/field/actors/walking_pokemon.schema.json` describes the fields.
 
 A zone's header names an NPC info cache by its `"npc_cache"`, `res/field/actors/npc_caches/<n>.json` (`a/0/5/7`),
 which the field loads as the player enters the zone (`LoadMModelSystemInfoCache`) and takes the records of its object

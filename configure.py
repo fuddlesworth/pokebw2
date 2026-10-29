@@ -297,13 +297,22 @@ DATA_PACKS = [
     ("tools/data/pokemon_graphics.py", "res/pokemon",
      ["a/0/0/4", "a/0/0/7", "a/0/5/1", "a/1/6/5", "a/2/2/9"], True),
     ("tools/data/pokemon_cries.py", "res/pokemon", ["a/1/9/1"], True),  # The cries' volumes
+    # Black and White's species data, as its differences from this game's records
+    ("tools/data/personal_bw1_data.py", "res/pokemon", ["a/3/0/2"], False),
+    # The Pokédex's search data and orders, the species' areas and the habitat list, from res/pokedex and the species'
+    # pokedex.json
+    ("tools/data/pokedex_data.py", "res/pokedex", ["a/0/9/7", "a/1/7/6", "a/2/9/6"], True, ["res/pokemon"]),
     # The sound archive: sequences, banks, wave archives, players, groups and streams, and the Pokémon's cries
     ("tools/data/sound_data.py", "res/sound", ["swan_sound_data.sdat"], False, ["res/pokemon"]),
     ("tools/data/move_data.py", "res/moves", ["a/0/2/1"], False),  # Move data
     ("tools/data/item_data.py", "res/items", ["a/0/2/4"], False),  # Item data
     ("tools/data/item_icon_data.py", "res/items", ["a/0/2/5"], True),  # Item icons
+    # The battle bag's pockets of each item, from the items' data
+    ("tools/data/battle_bag_data.py", "res/items", ["a/2/2/8"], False),
     # The field actors' models: their table and their sprites' and 3D models' graphics
     ("tools/data/field_actor_data.py", "res/field/actors", ["a/0/4/7", "a/0/4/8"], False),
+    # The walking Pokémon's table: the species, sex and form of each walking Pokémon's object code
+    ("tools/data/walking_pokemon_data.py", "res/field/actors", ["a/2/0/8"], False),
     # The zones' NPC info caches, with copies of their actors' records of the model table
     ("tools/data/npc_cache_data.py", "res/field/actors/npc_caches", ["a/0/5/7"], False, ["res/field/actors"]),
     # The actors' scripted animations
@@ -324,6 +333,8 @@ DATA_PACKS = [
     # The Entralink's luminance tables and the Entree Forest's levels
     ("tools/data/entralink_data.py", "res/field/entralink", ["a/2/1/9", "a/2/2/3"], False),
     ("tools/data/lens_flare_data.py", "res/field/lens_flares", ["a/2/4/1"], False),  # The zone transitions' lens flares
+    # The field's 3D cut-in effects: their scenes and bitmaps
+    ("tools/data/field_cutin_data.py", "res/field/cutins", ["a/1/1/8", "a/2/6/8"], False),
     # The tables of the script commands: the event camera's positions, the stadiums' trainers, what the Hidden Grottoes
     # hold and what the item collectors pay
     ("tools/data/event_camera_data.py", "res/field/cameras/event", ["a/1/6/1"], False),
@@ -348,6 +359,13 @@ DATA_PACKS = [
     ("tools/data/map_texture_data.py", "res/field/props/interior/textures", ["a/1/7/5"], True),
     ("tools/data/area_data.py", "res/field/areas", ["a/0/1/3"], False),  # Areas, a file of records rather than an archive
     ("tools/data/light_data.py", "res/lighting", ["a/0/6/0", "a/0/6/1"], False),  # Field and battle lighting
+    # Pokéstar Studios' movies: their casts, and their scripts with the default recorded movie
+    ("tools/data/pokewood_data.py", "res/pokewood/movies", ["a/2/7/2", "a/2/6/9"], False,
+     ["res/pokewood/cast.schema.json", "res/pokewood/movie.schema.json", "res/pokewood/default_record.bin"]),
+    # The battle backgrounds' types, fields and stages, and the battle regulations
+    ("tools/data/battle_bg_data.py", "res/battle/backgrounds", ["a/1/5/1"], False),
+    ("tools/data/regulation_data.py", "res/battle/regulations", ["a/1/0/6"], False,
+     ["res/text/system/load_battle_type_text_to_strbuf.txt"]),
     # The areas' edge color tables and their billboard actors' material colors
     ("tools/data/area_color_data.py", "res/lighting", ["a/0/1/5", "a/1/7/3"], False),
     ("tools/data/flash_data.py", "res/field/flash", ["a/1/4/9"], False),  # The zones where Flash can be used
@@ -367,6 +385,34 @@ DATA_PACKS = [
     ("tools/data/bgm_info_data.py", "res/sound/interactive", ["a/0/8/6"], False),
     # The town map's places, whose texts are messages of town_map.txt
     ("tools/data/town_map_data.py", "res/town_map", ["a/0/8/5"], True, ["res/text/system/town_map.txt"]),
+    # The Medal Rally's medals, in the order of their names in medal_names.txt, and the Pokémon the type medals count
+    ("tools/data/medal_data.py", "res/medals", ["a/2/3/5", "a/2/3/9"], False, ["res/text/system/medal_names.txt"]),
+    # The Funfest Missions and the species their people missions pick from, whose messages are of their text file
+    ("tools/data/funfest_mission_data.py", "res/funfest", ["a/2/8/9"], False,
+     ["res/text/system/get_text_file_for_fest_missions.txt"]),
+    # The name input's lists of profane words
+    ("tools/data/profane_word_data.py", "res/name_input/profane_words.json", ["a/2/1/6"], False,
+     ["res/name_input/profane_words.schema.json"]),
+    # The weather calendar: the weather of 24 zones on each day of the year
+    ("tools/data/weather_calendar_data.py", "res/field/weather/calendar.json", ["a/0/9/6"], False,
+     ["res/field/weather/calendar.schema.json"]),
+    # Geonet's places of the countries and their regions, which name their messages of the countries' text banks
+    ("tools/data/geonet_place_data.py", "res/geonet", ["a/0/5/2"], False, ["res/text/system"]),
+    # The Join Avenue's tables: its shops, goods, people, NPCs, ranks, raffles and visitors
+    ("tools/data/join_avenue_data.py", "res/join_avenue", ["a/2/4/4"], False),
+    # The Xtransceiver's calls and the story's scripted calls, which name their messages of the text banks
+    ("tools/data/local_tvt_data.py", "res/local_tvt", ["a/2/4/0", "a/2/3/4"], False, ["res/text/system"]),
+    # The Pokémon World Tournament's Trainers: their tournaments, classes and music
+    ("tools/data/pwt_trainer_data.py", "res/trainers/facilities/pwt_trainers.json", ["a/2/4/7"], False,
+     ["res/trainers/facilities/pwt_trainers.schema.json"]),
+    # The name input's keyboards, word tables and conversion table
+    ("tools/data/name_input_data.py", "res/name_input/name_input.json", ["a/1/2/0"], False,
+     ["res/name_input/name_input.schema.json"]),
+    # The Pass Powers, whose names and descriptions are messages of their text files
+    ("tools/data/pass_power_data.py", "res/pass_powers", ["a/0/3/7"], False,
+     ["res/text/system/pass_powers.txt", "res/text/system/monolith_power_info.txt"]),
+    # The crowds of Castelia City's streets: their zones, lanes and passers-by
+    ("tools/data/castelia_rush_data.py", "res/field/castelia_rush", ["a/1/8/3"], False),
     # The battle facilities' trainers and Pokémon; the Battle Subway's are also the Trial House's
     ("tools/data/facility_data.py", "res/trainers/facilities/battle_subway", ["a/2/1/2", "a/2/1/1"], False,
      ["res/trainers/facilities"]),
