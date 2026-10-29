@@ -45,7 +45,8 @@ struct VM {
     void *env;
     VMVerifier verifier;
     void *verifierArg;
-    u32 unk38;
+    // The script file the field loaded the VM's script from, which it frees with the VM
+    u32 scriptData;
     // The work and then the stack follow
 };
 

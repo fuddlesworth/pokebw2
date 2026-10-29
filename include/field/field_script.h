@@ -99,7 +99,7 @@ struct ScriptSubwork {
 
 struct FieldScriptEnvArgs {
     u16 zoneId;
-    u16 unk02;
+    u16 scriptId;
     u32 featureLevel;
     u32 reducedFeatureLevel;
     ScriptWork *work;
@@ -179,11 +179,11 @@ void FieldScript_ResetMapLocalEvents(EventWork *eventWork);
 const u8 *FieldScript_GetInitSCRID(const u8 *script, u32 mode, u16 *scriptId);
 u16 FieldScript_GetSceneChangeSCRID(GameData *gameData, const u8 *script, u32 mode);
 GameEvent *FieldScript_CheckSceneChangeEvent(GameSystem *gsys, HeapID heapId);
-u32 FieldScript_CallZoneInitCore(GameSystem *gsys, u32 arg1, u32 mode, u32 featureLevel);
-void FieldScript_CallOnZoneReload(GameSystem *gsys, u32 arg1);
-void FieldScript_CallOnZoneNewLoad(GameSystem *gsys, u32 arg1);
-void FieldScript_CallOnZoneInit(GameSystem *gsys, u32 a1);
-void FieldScript_CallPlayerInitSetup(GameSystem *gsys, u32 a1);
+u32 FieldScript_CallZoneInitCore(GameSystem *gsys, u32 unused, u32 mode, u32 featureLevel);
+void FieldScript_CallOnZoneReload(GameSystem *gsys, u32 unused);
+void FieldScript_CallOnZoneNewLoad(GameSystem *gsys, u32 unused);
+void FieldScript_CallOnZoneInit(GameSystem *gsys, u32 unused);
+void FieldScript_CallPlayerInitSetup(GameSystem *gsys, u32 unused);
 void FieldScript_CallPlayerPostHOFSetup(GameSystem *gsys, u32 unused);
 void resetRebattleTrainers(EventWork *eventWork);
 
