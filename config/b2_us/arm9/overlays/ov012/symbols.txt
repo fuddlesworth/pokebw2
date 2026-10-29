@@ -1764,8 +1764,8 @@ SYMBOL_MAP_2 kind:data(any) addr:0x0216d86a
 SYMBOL_MAP_1 kind:data(any) addr:0x0216d888
 SYMBOL_MAP_0 kind:data(any) addr:0x0216d8a6
 SYMBOL_MAP_TABLE kind:data(any) addr:0x0216d8c4
-data_ov012_0216d8fc kind:data(any) addr:0x0216d8fc
-data_ov012_0216d93c kind:data(any) addr:0x0216d93c
+sBSubwayCommCommands kind:data(any) addr:0x0216d8fc
+sBSubwayCommNetInit kind:data(any) addr:0x0216d93c
 data_ov012_0216d9ac kind:data(any) addr:0x0216d9ac
 data_ov012_0216d9b4 kind:data(any) addr:0x0216d9b4
 data_ov012_0216d9b6 kind:data(any) addr:0x0216d9b6

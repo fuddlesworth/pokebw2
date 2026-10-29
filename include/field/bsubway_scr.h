@@ -106,8 +106,8 @@ struct BSubwayScrWork {
     // Set once the seventh round is won
     u16 winMax : 1;
     u16 unkC_1 : 2;
-    // Whether the partner retired
-    u16 unkC_3 : 1;
+    // Whether this player chose to retire, as sent to the partner: either's retiring retires both
+    u16 retired : 1;
     u16 unkC_4 : 1;
     // The partners entry of a multi train's partner, or 5 plus the gender of a wireless partner
     u16 partnerIndex : 3;

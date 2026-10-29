@@ -34,7 +34,7 @@ static void BSubwayComm_RecvCommand6(int netId, int size, const void *data, void
 static void BSubwayComm_RecvCommand7(int netId, int size, const void *data, void *work, NetHandle *handle);
 
 // clang-format off
-static const NetCommand data_ov012_0216d8fc[] = {
+static const NetCommand sBSubwayCommCommands[] = {
     {BSubwayComm_RecvMembers, NULL},
     {BSubwayComm_RecvTrainers, NULL},
     {BSubwayComm_RecvRetire, NULL},
@@ -48,9 +48,9 @@ static const NetCommand data_ov012_0216d8fc[] = {
 // clang-format on
 
 // clang-format off
-static const GFLNetInitData data_ov012_0216d93c = {
-    data_ov012_0216d8fc,
-    NELEMS(data_ov012_0216d8fc),
+static const GFLNetInitData sBSubwayCommNetInit = {
+    sBSubwayCommCommands,
+    NELEMS(sBSubwayCommCommands),
     NULL,
     NULL,
     NULL,
@@ -89,7 +89,7 @@ static const GFLNetInitData data_ov012_0216d93c = {
 // clang-format on
 
 void BSubwayComm_InitNet(BSubwayScrWork *bsw) {
-    GFL_NetInit(&data_ov012_0216d93c, NULL, bsw);
+    GFL_NetInit(&sBSubwayCommNetInit, NULL, bsw);
 }
 
 static void *BSubwayComm_GetBeacon(void *work) {
@@ -115,7 +115,7 @@ static BOOL BSubwayComm_IsMatchingBeacon(int a, int b) {
 
 void BSubwayComm_AddCommands(BSubwayScrWork *bsw) {
     // The count passed is the end command, not the table's length
-    NetCommand_AddTable(BSUBWAY_COMM_MEMBERS, data_ov012_0216d8fc, BSUBWAY_COMM_MAX, bsw);
+    NetCommand_AddTable(BSUBWAY_COMM_MEMBERS, sBSubwayCommCommands, BSUBWAY_COMM_MAX, bsw);
 }
 
 void BSubwayComm_RemoveCommands(BSubwayScrWork *bsw) {
@@ -147,7 +147,7 @@ static void BSubwayComm_SetTrainersData(BSubwayScrWork *bsw) {
 }
 
 static void BSubwayComm_SetRetireData(BSubwayScrWork *bsw, u16 retire) {
-    bsw->unkC_3 = retire;
+    bsw->retired = retire;
     bsw->sendBuf[0] = retire;
 }
 
@@ -291,7 +291,7 @@ static void BSubwayComm_RecvRetire(int netId, int size, const void *data, void *
         return;
     }
     bsw->recvResult = 0;
-    if (bsw->unkC_3 || recv[0]) {
+    if (bsw->retired || recv[0]) {
         bsw->recvResult = 1;
     }
 }
