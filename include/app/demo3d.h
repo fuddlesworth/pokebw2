@@ -14,14 +14,14 @@ typedef struct {
     GameSystem *gsys;
     u32 demoId;
     // The frame of the camera's animation that the demo starts at
-    u32 unk08;
+    u32 startFrame;
     u8 param;
     u8 hour;
     u8 minute;
     u8 season : 7;
     u8 playerSex : 1;
     // The frame the demo ended at
-    u32 unk10;
+    u32 endFrame;
     // What the demo left: 1 when a key ended it and 2 when its camera animation did. The Royal Unova's cruise is
     // the one demo a key ends
     u32 result;

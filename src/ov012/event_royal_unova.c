@@ -40,7 +40,7 @@ static GameEvent *EventRoyalUnova_Create(GameSystem *gsys, PleasureBoat *boat, u
     work->boat = boat;
     work->result = result;
     SetupPlaySequenceEventRealTime(&work->param, gsys, 1, 0);
-    work->param.unk08 = PleasureBoat_GetClock(boat);
+    work->param.startFrame = PleasureBoat_GetClock(boat);
     return event;
 }
 
@@ -65,7 +65,7 @@ static GameEventReturnCode EventRoyalUnova_Callback(GameEvent *event, u32 *state
         } else {
             *work->result = FALSE;
         }
-        PleasureBoat_SetClock(work->boat, work->param.unk10);
+        PleasureBoat_SetClock(work->boat, work->param.endFrame);
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
