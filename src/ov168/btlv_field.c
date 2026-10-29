@@ -13,9 +13,6 @@
 #include "nitro/fx.h"
 #include "nnsys/g3d.h"
 
-// The archive of the field table
-#define BTLV_FIELD_TABLE_ARC 0x97
-
 #define BTLV_FIELD_RES_NONE 0xffff
 
 // A field's resources in file 1 of archive 0x97: the model, then three animations, each by variant, the season or a
@@ -65,7 +62,7 @@ BtlvField *BtlvField_Create(BOOL arg0, u8 fieldId, u8 variant, HeapID heapId, u3
     int j;
 
     field = GFL_HeapAllocate(heapId, sizeof(BtlvField), TRUE, "btlv_field.c", 0x76);
-    table = GFL_ArcSysReadHeapNew(BTLV_FIELD_TABLE_ARC, 1, HEAPID_TAIL(heapId));
+    table = GFL_ArcSysReadHeapNew(ARCID_BATTLE_BG_DATA, 1, HEAPID_TAIL(heapId));
 
     if (mode == 1) {
         fieldId = 0x14;
@@ -171,7 +168,7 @@ void BtlvField_Reload(BtlvField *field, s32 fieldParam) {
     int j;
 
     BtlvField_FreeResources(field);
-    table = GFL_ArcSysReadHeapNew(BTLV_FIELD_TABLE_ARC, 1, HEAPID_TAIL(field->heapId));
+    table = GFL_ArcSysReadHeapNew(ARCID_BATTLE_BG_DATA, 1, HEAPID_TAIL(field->heapId));
     variant = data_ov168_021f2f6c[(fieldParam >> 8) & 0xff];
     if (table[fieldParam & 0xff][0][variant] != BTLV_FIELD_RES_NONE) {
         field->res = GFL_G3DSysReadArcSysResource(ARCID_BTLV, table[fieldParam & 0xff][0][variant]);

@@ -3,6 +3,7 @@
 // zone's music fades in as the camera climbs; and a sound plays when the player passes a point on the way down. The
 // ROM embeds no name for this file, so its name is a guess
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/sound.h"
 #include "field/field.h"
 #include "field/field_camera.h"
@@ -25,7 +26,6 @@
 #include "system/iss_sys.h"
 
 #define GIMMICK_STATE_ID 1
-#define ARCID_SKYARROW_BRIDGE 148
 #define OBJ_COUNT 5
 #define EYE_HISTORY_SIZE 32
 

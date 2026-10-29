@@ -39,9 +39,6 @@
 // The PC box's Pokémon search: lists to pick a species by its first letter, a nature, an ability by its first letter,
 // the sex, the held item and the markings that the box's Pokémon are filtered by. Names are ours
 
-// The archive of the Pokédex's orders of species
-#define ARCID_POKEDEX_DATA 97
-
 // What the search's lists are of
 enum {
     LIST_SPECIES,

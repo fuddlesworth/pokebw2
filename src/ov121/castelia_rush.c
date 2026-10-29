@@ -18,7 +18,6 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 
-#define ARCID_CASTELIA_RUSH 183
 // File 5 of archive 183: the zones that have a crowd, as u32s, in the order of their files
 #define CASTELIA_RUSH_FILE_ZONES 5
 // File 6 of archive 183: the scripts of the object codes, CasteliaRushScripts entries

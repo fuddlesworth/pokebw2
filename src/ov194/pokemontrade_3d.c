@@ -2,6 +2,7 @@
 #include "app/pokemon_trade/pokemontrade_3d.h"
 #include "app/pokemon_trade/pokemontrade_proc.h"
 #include "app/pokemon_trade_local.h"
+#include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
 #include "gfl/arc.h"
@@ -104,33 +105,33 @@ static const VecFx32 sCameraUp = { 0, FX32_ONE, 0 };
 static const G3DSceneActorSetup sSceneActor = { 0, 0, 0, 0, sSceneAnimations, NELEMS(sSceneAnimations) };
 
 static const G3DSceneResourceSetup sScene1Resources[3] = {
-    { 0x68, 0x17, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x16, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x18, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x17, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x16, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x18, 0, G3D_SCENE_RES_ARCSYS },
 };
 
 static const G3DSceneResourceSetup sScene2Resources[3] = {
-    { 0x69, 0x6, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x69, 0x5, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x69, 0x7, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_2D, 0x6, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_2D, 0x5, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_2D, 0x7, 0, G3D_SCENE_RES_ARCSYS },
 };
 
 static const G3DSceneResourceSetup sScene3Resources[3] = {
-    { 0x68, 0x2f, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x2e, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x30, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x2f, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x2e, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x30, 0, G3D_SCENE_RES_ARCSYS },
 };
 
 static const G3DSceneResourceSetup sScene4Resources[3] = {
-    { 0x68, 0x2c, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x2b, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x2d, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x2c, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x2b, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x2d, 0, G3D_SCENE_RES_ARCSYS },
 };
 
 static const G3DSceneResourceSetup sScene5Resources[3] = {
-    { 0x68, 0x21, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x20, 0, G3D_SCENE_RES_ARCSYS },
-    { 0x68, 0x22, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x21, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x20, 0, G3D_SCENE_RES_ARCSYS },
+    { ARCID_POKEMONTRADE_DEMO, 0x22, 0, G3D_SCENE_RES_ARCSYS },
 };
 
 static const Light sLights[4] = {
@@ -311,24 +312,24 @@ static void PoketradeSave_Setup3DDrawState(PokemonTradeWork *wk, SRTMatrix *mtx)
 void Poketrade3D_CreateIcaStreamsForMode(PokemonTrade3DWork *work, int path) {
     switch (path) {
     case 0:
-        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x38, 10);
-        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x39, 10);
-        work->emitterPaths[0] = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x36, 10);
-        work->emitterPaths[1] = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x37, 10);
+        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x38, 10);
+        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x39, 10);
+        work->emitterPaths[0] = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x36, 10);
+        work->emitterPaths[1] = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x37, 10);
         break;
     case 1:
-        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x3f, 10);
-        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x3e, 10);
-        work->emitterPaths[0] = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x36, 10);
+        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x3f, 10);
+        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x3e, 10);
+        work->emitterPaths[0] = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x36, 10);
         break;
     case 2:
-        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x3d, 10);
-        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x3c, 10);
+        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x3d, 10);
+        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x3c, 10);
         break;
     case 3:
-        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x3b, 10);
-        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x3a, 10);
-        work->emitterPaths[1] = GFL_G3DCurveLoadFileStream(work->heapId, 0x68, 0x37, 10);
+        work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x3b, 10);
+        work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x3a, 10);
+        work->emitterPaths[1] = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_DEMO, 0x37, 10);
         GFL_G3DCurveFrameSet(work->emitterPaths[1], FX32_CONST(693));
         break;
     }
@@ -354,8 +355,8 @@ static void Poketrade3D_DeleteIcaStreams(PokemonTrade3DWork *work) {
 }
 
 void Poketrade3D_CreateIcaStreamsEnding(PokemonTrade3DWork *work) {
-    work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x69, 0xb, 10);
-    work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, 0x69, 0xc, 10);
+    work->cameraPosPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_2D, 0xb, 10);
+    work->cameraTargetPath = GFL_G3DCurveLoadFileStream(work->heapId, ARCID_POKEMONTRADE_2D, 0xc, 10);
 }
 
 void Poketrade3D_FreeParticleResources(PokemonTrade3DWork *work) {
@@ -390,7 +391,7 @@ void Poketrade3D_InitParticleSystems(PokemonTrade3DWork *work) {
 void func_ov194_021c1db4(PokemonTrade3DWork *work) {
     int i;
 
-    work->resource = Particle_ReadResource(0x68, 0x35, HEAPID_TAIL(work->heapId));
+    work->resource = Particle_ReadResource(ARCID_POKEMONTRADE_DEMO, 0x35, HEAPID_TAIL(work->heapId));
     for (i = 0; i < 4; i++) {
         OS_WaitInterrupt(TRUE, OS_IE_V_BLANK);
         Particle_SetExternalResource(work->systems[i], work->resource, TRUE, GFL_VBlankGetTCBMgr());
@@ -431,7 +432,7 @@ void Poketrade3D_InitTradeParticleSet(PokemonTrade3DWork *work) {
         work->systemWork[i] = GFL_HeapAllocate(work->heapId, PARTICLE_WORK_SIZE, TRUE, "pokemontrade_3d.c", 627);
         work->systems[i] = Particle_CreateSystem(work->systemWork[i], PARTICLE_WORK_SIZE, FALSE, work->heapId);
     }
-    resource = Particle_ReadResource(0x69, 0xa, work->heapId);
+    resource = Particle_ReadResource(ARCID_POKEMONTRADE_2D, 0xa, work->heapId);
     for (i = 0; i < 6; i++) {
         Particle_SetResource(work->systems[i], resource, TRUE, NULL);
     }

@@ -86,7 +86,7 @@ BtlvStage *BtlvStage_Create(u32 rule, u32 stageId, u8 variant, HeapID heapId, u3
     fx32 scale;
 
     stage = GFL_HeapAllocate(heapId, sizeof(BtlvStage), TRUE, "btlv_stage.c", 0x9c);
-    data = GFL_ArcSysReadHeapNew(151, 2, HEAPID_TAIL(heapId));
+    data = GFL_ArcSysReadHeapNew(ARCID_BATTLE_BG_DATA, 2, HEAPID_TAIL(heapId));
     stage->heapId = heapId;
     if (unk == 1 || unk == 2) {
         stageId = 27;

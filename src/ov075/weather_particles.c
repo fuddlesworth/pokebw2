@@ -1,4 +1,5 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "field/field_weather.h"
 #include "field/weather_particles.h"
 #include "gfl/clact.h"
@@ -161,7 +162,7 @@ static const s8 sFlakeSway[0x151] = {
 };
 
 WeatherData SPECK_WEATHER = {
-    { 0x37, 1, 0, 0x1b, 0x1c, 0x1a, 0x19 },
+    { ARCID_WEATHER, 1, 0, 0x1b, 0x1c, 0x1a, 0x19 },
     sizeof(SpeckWork),
     {
         Speck_Init,
@@ -176,7 +177,7 @@ WeatherData SPECK_WEATHER = {
 };
 
 WeatherData BLIZZARD_WEATHER = {
-    { 0x37, 1, 1, 0x1f, 0x18, 0x1e, 0x1d, 0x2a, 0x303, 3, 0x102 },
+    { ARCID_WEATHER, 1, 1, 0x1f, 0x18, 0x1e, 0x1d, 0x2a, 0x303, 3, 0x102 },
     sizeof(BlizzardWork),
     {
         Blizzard_Init,
@@ -191,7 +192,7 @@ WeatherData BLIZZARD_WEATHER = {
 };
 
 WeatherData FLUTTER_WEATHER = {
-    { 0x37, 1, 0, 2, 3, 1 },
+    { ARCID_WEATHER, 1, 0, 2, 3, 1 },
     sizeof(FlutterWork),
     {
         Flutter_Init,
@@ -206,7 +207,7 @@ WeatherData FLUTTER_WEATHER = {
 };
 
 WeatherData FLAKE_WEATHER = {
-    { 0x37, 1, 0, 0x17, 0x18, 0x16, 0x15 },
+    { ARCID_WEATHER, 1, 0, 0x17, 0x18, 0x16, 0x15 },
     sizeof(FlakeWork),
     {
         Flake_Init,

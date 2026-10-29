@@ -49,9 +49,8 @@
 #define POKEDEX_GRA_SCREEN_BACK 0x20
 #define POKEDEX_GRA_SCREEN_EXTRA 0x25
 
-// The archives it reads (our names): the table of the next form of each species and form, the footprints of each
-// species, and of the forms that have a footprint of their own
-#define ARCID_FORM_NAME_TABLE 97
+// The archives it reads besides ARCID_POKEDEX_DATA, which has the table of the next form of each species and form: the
+// footprints of each species, and of the forms that have a footprint of their own
 #define ARCID_POKE_FOOTPRINT 165
 #define ARCID_POKE_FOOTPRINT_FORM 229
 
@@ -245,7 +244,7 @@ static const u16 sEntryX[POKEDEX_INFO_LANGUAGE_COUNT] = { 4, 2, 2, 2, 2, 4 };
 // The type icons of each language in the Pokédex's graphics
 static const u16 sTypeIconFiles[POKEDEX_INFO_LANGUAGE_COUNT] = { 22, 19, 20, 21, 24, 23 };
 static const u16 sHeightX[POKEDEX_INFO_LANGUAGE_COUNT] = { 93, 94, 94, 94, 94, 94 };
-static const u32 sArcIds[POKEDEX_INFO_ARC_COUNT] = { ARCID_POKEDEX_GRA, ARCID_FORM_NAME_TABLE, ARCID_FONT, 0, 0, 0, 0 };
+static const u32 sArcIds[POKEDEX_INFO_ARC_COUNT] = { ARCID_POKEDEX_GRA, ARCID_POKEDEX_DATA, ARCID_FONT, 0, 0, 0, 0 };
 // Where each type's icon is in its language's file, as its tile row and column
 static const u8 sTypeIconTiles[TYPE_NULL + 1][2] = {
     { 0, 0 }, { 2, 1 }, { 2, 0 }, { 3, 0 }, { 1, 2 }, { 1, 1 }, { 2, 3 }, { 2, 2 }, { 3, 2 },

@@ -41,10 +41,6 @@ enum {
     BATTLE_TYPE_TRAINER,
 };
 
-// The battle backgrounds, by BtlFieldEnv's bgType, with the terrain Burmy takes its form from for each of its
-// terrains
-#define ARCID_BATTLE_BG_DATA 0x97
-
 // Set once the player knows whose PC the boxes are
 #define FLAG_BATTLE_RETURN_BOX_MESSAGE 0x96b
 

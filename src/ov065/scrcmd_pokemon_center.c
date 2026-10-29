@@ -1,4 +1,5 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/flags.h"
 #include "constants/pokemon.h"
 #include "field/field_actor.h"
@@ -27,10 +28,8 @@
 // The script plugin of the Pokémon Centers (plugin 13), commands from 1000: Mr. Medal's Medal Rally, and records of
 // link battles
 
-// The medals' definitions, one file of MEDAL_COUNT MedalDef
-#define ARCID_MEDAL_DEF 235
-// The Pokémon whose types the type medals count, one file of MedalTypeSpecies
-#define ARCID_MEDAL_TYPE_SPECIES 239
+// ARCID_MEDAL_DEF has one file of MEDAL_COUNT MedalDef, and ARCID_MEDAL_TYPE_SPECIES one file of MedalTypeSpecies, the
+// Pokémon whose types the type medals count
 #define MEDAL_TYPE_SPECIES_COUNT 301
 
 #define TYPE_COUNT 17

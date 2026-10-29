@@ -1,4 +1,5 @@
 #include "types.h"
+#include "constants/arc.h"
 #include "constants/directions.h"
 #include "constants/sound.h"
 #include "field/field.h"
@@ -29,9 +30,6 @@
 
 #define GIMMICK_ID 1
 #define GIMMICK_STATE_ID 48
-
-// The archive of the coaster's models, animations and the player's ride curves
-#define ARCID_ROLLER_COASTER 292
 
 #define CAR_COUNT 4
 // Each car has two paths, path car * 2 + switch, played by the car's animation path + 1

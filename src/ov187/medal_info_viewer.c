@@ -35,10 +35,6 @@
 
 // The viewer of the medal screens, named after the ROM's "medal_info_viewer.c". The names are ours
 
-// The archives of the medal screens. Our names; the archives hold, in order, each medal's picture data, the screen's BG
-// graphics and its cell actors' graphics
-#define ARCID_MEDAL_INFO_MEDAL_DATA 235
-
 // The BGs, in the order of sMedalInfoBGSetups
 enum {
     MEDAL_INFO_BG_MEDAL,
@@ -106,7 +102,7 @@ typedef struct {
     u32 chars;
 } MedalInfoClActRes;
 
-// What a medal's file of ARCID_MEDAL_INFO_MEDAL_DATA holds, as far as the viewer reads it
+// What a medal's file of ARCID_MEDAL_DEF holds, as far as the viewer reads it
 typedef struct {
     u8 unk0[9];
     // The sequence of the medal's cell actor
@@ -442,7 +438,7 @@ static void MedalInfoViewer_ChangeEntry(MedalInfoViewer *viewer) {
         } else {
             viewer->hasMedal = TRUE;
         }
-        arc = GFL_ArcSysCreateFileHandle(ARCID_MEDAL_INFO_MEDAL_DATA, viewer->heapId);
+        arc = GFL_ArcSysCreateFileHandle(ARCID_MEDAL_DEF, viewer->heapId);
         if (viewer->hasMedal == TRUE) {
             GFL_ArcToolRead(arc, viewer->entry->medal, &data);
             ClActor_SetVisible(viewer->actors[MEDAL_INFO_ACTOR_MEDAL], TRUE);
@@ -762,7 +758,7 @@ static void MedalInfoViewer_ClActInit(MedalInfoViewer *viewer) {
     }
 
     MI_CpuFill8(&actorSetup, 0, sizeof(ClActorSetup));
-    medalArc = GFL_ArcSysCreateFileHandle(ARCID_MEDAL_INFO_MEDAL_DATA, heapId);
+    medalArc = GFL_ArcSysCreateFileHandle(ARCID_MEDAL_DEF, heapId);
     if (viewer->hasMedal == TRUE) {
         GFL_ArcToolRead(medalArc, viewer->entry->medal, &data);
     } else {
