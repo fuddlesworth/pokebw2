@@ -14,6 +14,8 @@
 
 // The UID of the player's actor
 #define ACTOR_UID_PLAYER 0xff
+// The actor that follows the player (MOVE_CODE_FOLLOW_PLAYER), for EventActionCall_Create
+#define ACTOR_UID_FOLLOWER 0xf2
 
 // A position on the grid of 16-unit tiles. The game copies it as 8 bytes, with a field after z
 typedef struct {
