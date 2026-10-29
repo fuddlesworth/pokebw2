@@ -4346,7 +4346,7 @@
    ]
   },
   "571": {
-   "handler": "func_ov012_02169c1c",
+   "handler": "Scrcmd_SpPoke_NuvemaGimmickSetVisible",
    "overlay": 12,
    "args": []
   },

@@ -667,7 +667,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_Sound_BGMChangeMapEx,                        // 0x238
     Scrcmd_FieldActor_CheckPlayerFormModel,             // 0x239
     Scrcmd_Sound_PokeVoicePlay,                         // 0x23a
-    func_ov012_02169c1c,                                // 0x23b
+    Scrcmd_SpPoke_NuvemaGimmickSetVisible,              // 0x23b
     Scrcmd_SpPoke_NuvemaGimmickPlay,                    // 0x23c
     Scrcmd_SpPoke_NuvemaGimmickWaitAnim,                // 0x23d
     Scrcmd_DayCare_DayCareGetSexForNamePrint,           // 0x23e

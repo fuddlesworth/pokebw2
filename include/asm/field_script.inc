@@ -3038,8 +3038,7 @@
     .2byte \a1
     .endm
 
-    // func_ov012_02169c1c
-    .macro Cmd_023B
+    .macro NuvemaGimmickSetVisible
     FieldCommand 571
     .endm
 

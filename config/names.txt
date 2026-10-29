@@ -8959,8 +8959,10 @@ overlays/ov012 0x02169b3c TrainerCardParam_CreateView
 overlays/ov012 0x02169b78 TrainerCard_CountStars
 overlays/ov012 0x02169c04 TrainerCardData_GetMedalCount
 overlays/ov012 0x02169c10 TrainerCardData_GetMedalRank
+overlays/ov012 0x02169c1c Scrcmd_SpPoke_NuvemaGimmickSetVisible
 overlays/ov012 0x02169c2c Scrcmd_SpPoke_NuvemaGimmickPlay
 overlays/ov012 0x02169c40 Scrcmd_SpPoke_NuvemaGimmickWaitAnim
+overlays/ov012 0x02169c64 NuvemaGimmick_SetVisible
 overlays/ov012 0x02169c7c MoveReminderProcessData_Create
 overlays/ov012 0x02169ca4 MoveReminderProcessData_Free
 overlays/ov012 0x02169fb0 G3DTextDraw_GetTexDimCount
