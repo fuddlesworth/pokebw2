@@ -8364,6 +8364,8 @@ overlays/ov012 0x02158c8c MusicalCallEvent_Callback
 overlays/ov012 0x02158d24 MusicalDressUpEvent_Callback
 overlays/ov012 0x02158da0 MusicalShotHolder_Free
 overlays/ov012 0x02158dac MusicalIrcMatch_OnReturn
+overlays/ov012 0x02158de8 ScriptNative_MusicalLeaderMenuWait
+overlays/ov012 0x02158e44 ScriptNative_MusicalSelectLeaderMenuWait
 overlays/ov012 0x02158e9c ScriptNative_MusicalTimingWait
 overlays/ov012 0x02158ee4 ScriptNative_MusicalScriptRecvWait
 overlays/ov012 0x02158f20 ScriptNative_MusicalCommBootWait
