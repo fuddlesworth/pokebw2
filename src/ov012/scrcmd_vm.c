@@ -6,6 +6,7 @@
 // can't be script_plugin.c's, which starts with 2-byte tables, and EVCMD_MAX counts EVCMD_TABLE
 
 #include "types.h"
+#include "constants/field_script.h"
 #include "field/entree_scripts.h"
 #include "field/event_phrase_input.h"
 #include "field/event_sound.h"
@@ -474,7 +475,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_GameState_WildBattleGetResult,               // 0x178
     Scrcmd_Encount_CallCaptureDemo,                     // 0x179
     Scrcmd_FieldGimmickGate_GimmickGateViewBoard,       // 0x17a
-    func_ov012_02157bdc,                                // 0x17b
+    Scrcmd_Proc_GimmickSetNimbasaFlags,                 // 0x17b
     Scrcmd_Gym_RollerCoasterCallSwitch,                 // 0x17c
     Scrcmd_Gym_RollerCoasterSetCarIntroSeen,            // 0x17d
     NULL,                                               // 0x17e
@@ -638,8 +639,8 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_EntreeForest_EntreeForestStartBattle,        // 0x21c
     Scrcmd_EntreeForest_EntreeForestRemovePkm,          // 0x21d
     Scrcmd_Encount_FishingChallengeGetRandomPkm,        // 0x21e
-    func_ov012_02156104,                                // 0x21f
-    func_ov012_02156128,                                // 0x220
+    Scrcmd_GameState_SeasonTrainerGetObjCode,           // 0x21f
+    Scrcmd_GameState_SeasonTrainerGetTrainerID,         // 0x220
     Scrcmd_Misc_AnvilleTrainGetModelID,                 // 0x221
     Scrcmd_Misc_AnvilleTrainGetDailyIndex,              // 0x222
     Scrcmd_PokemonMisc_PokePartyGetHiddenPowerType,     // 0x223
@@ -697,7 +698,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     NULL,                                               // 0x257
     NULL,                                               // 0x258
     NULL,                                               // 0x259
-    func_ov012_02157b7c,                                // 0x25a
+    Scrcmd_Proc_GimmickSetNimbasaGym,                   // 0x25a
     Scrcmd_Gym_GymElecReapplyProgress,                  // 0x25b
     Scrcmd_Gym_GymElecSetFollower,                      // 0x25c
     Scrcmd_Gym_GymElecSetProgress,                      // 0x25d
@@ -771,7 +772,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_Medal_MedalGetMostCompleteCategory,          // 0x2a1
     Scrcmd_Gym_HumilauGymPlayLeaderSplash,              // 0x2a2
     Scrcmd_Gym_HumilauGymPlayLeaderWaves,               // 0x2a3
-    func_ov012_02157bb4,                                // 0x2a4
+    Scrcmd_Proc_GimmickResetOpelucid,                   // 0x2a4
     Scrcmd_Gym_OpelucidGymCallMove,                     // 0x2a5
     Scrcmd_Gym_OpelucidGymRefreshVars,                  // 0x2a6
     Scrcmd_Gym_OpelucidGymCallButton,                   // 0x2a7
@@ -1037,28 +1038,28 @@ BOOL Scrcmd_Vm_VMStackCmp(VM *vm, FieldScriptEnv *env) {
     BOOL result;
 
     switch (comparison) {
-    case 0:
+    case CMP_LT:
         result = left < right;
         break;
-    case 1:
+    case CMP_EQ:
         result = left == right;
         break;
-    case 2:
+    case CMP_GT:
         result = left > right;
         break;
-    case 3:
+    case CMP_LE:
         result = left <= right;
         break;
-    case 4:
+    case CMP_GE:
         result = left >= right;
         break;
-    case 5:
+    case CMP_NE:
         result = left != right;
         break;
-    case 6:
+    case CMP_OR:
         result = left == 1 || right == 1;
         break;
-    case 7:
+    case CMP_AND:
         result = left == 1 && right == 1;
         break;
     default:
@@ -1137,7 +1138,7 @@ BOOL Scrcmd_Vm_VMJumpIf(VM *vm, FieldScriptEnv *env) {
     u8 condition = VM_Read8(vm);
     u32 offset = VM_Read32(vm);
 
-    if (condition == 0xff) {
+    if (condition == CMP_STACK) {
         if (VM_StackPop(vm) != 1) {
             VM_Jump(vm, vm->pc + offset);
         }

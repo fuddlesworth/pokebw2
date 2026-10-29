@@ -359,7 +359,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         int i;
 
         GFL_SndBGMPlay(SEQ_BGM_VS_TRAINER_WIFI, SND_CHANNEL_MASK_ALL);
-        wk->players.unk44 = 1;
+        wk->players.demoType = 1;
         if (GFL_NetGetHandleNetId(NetHandle_GetOwn()) == 0) {
             for (i = 0; i < 2; i++) {
                 wk->players.players[i].info = GameData_GetPlayerInfoByNetID(GSYS_GetGameData(gsys), i);
@@ -376,7 +376,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         wk->battle.gameData = GSYS_GetGameData(wk->gsys);
         wk->battle.setup = wk->btlSetup;
         wk->battle.players = &wk->players;
-        wk->battle.unk14 = 1;
+        wk->battle.markNetErrShown = TRUE;
         wk->records = GameData_GetRecords(GSYS_GetGameData(wk->gsys));
         GFL_OvlUnload(OVERLAY_BATTLE_MAIN);
         GSYS_QueueProcAsEvent(wk->event, OVERLAY_BATTLE, &data_ov010_0215039c, &wk->battle);

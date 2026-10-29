@@ -101,10 +101,10 @@ BtlSetup *SetupTrialHouseBattle(GameSystem *gsys, PokeParty *party, u32 mode, BS
     setup->unk34[client] = info;
     RestrictPlayerParty(party, setup->party[client], count, 50, 4);
     BtlSetup_SetTrialHouseParty(setup, trainers, 1, type, count, 4);
-    if (setup->fieldSituation.unk1a != 0) {
+    if (setup->fieldSituation.multiMode != 0) {
         BtlSetup_SetTrialHouseParty(setup, &trainers[1], 3, type, count, 4);
     }
-    if (setup->fieldSituation.unk1a == 3) {
+    if (setup->fieldSituation.multiMode == 3) {
         BtlSetup_SetTrialHouseParty(setup, partner, 2, type, count, 4);
     }
     BtlSetup_PostProcessTrialHouse(setup);

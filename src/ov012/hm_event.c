@@ -3,6 +3,7 @@
 // file of its own between field_encount_st.c and this one would give the same ROM. Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), in English: swan's Hiden (the HMs) is HM
 #include "types.h"
+#include "constants/moves.h"
 #include "constants/obj_codes.h"
 #include "field/event_chatot.h"
 #include "field/event_fly.h"
@@ -312,7 +313,7 @@ GameEvent *EventSweetScentCall_Create(HiddenEventArgs *args, PlayerActionPossibi
 }
 
 GameEvent *EventFly_Create(HiddenEventArgs *args, PlayerActionPossibilities *context) {
-    GameBeacon_BroadcastFieldMove(0x13);
+    GameBeacon_BroadcastFieldMove(MOVE_FLY);
     return EventFly_CreateMapChangeEvent(context->gsys, context->field, args->value);
 }
 
@@ -372,7 +373,7 @@ GameEventReturnCode EventFlash_Callback(GameEvent *event, u32 *state, void *data
         if (!FieldStatus_CheckFlashUsed(status)) {
             status2 = GameData_GetFieldStatus(gameData);
             FieldStatus_SetFlashUsed(status, TRUE);
-            GameBeacon_BroadcastFieldMove(0x94);
+            GameBeacon_BroadcastFieldMove(MOVE_FLASH);
             FieldFlash_RequestState(flash, FIELD_FLASH_REQUEST_WIDEN);
             flags = FieldStatus_GetFlashPerms(status2);
             flags &= ~FLD_FLASH_ALLOW;
@@ -403,7 +404,7 @@ u32 EventDigCall_Check(PlayerActionPossibilities *context) {
 GameEvent *EventDigCall_Create(HiddenEventArgs *param, PlayerActionPossibilities *context) {
     GameEvent *event;
     HiddenEventData *data;
-    GameBeacon_BroadcastFieldMove(0x5b);
+    GameBeacon_BroadcastFieldMove(MOVE_DIG);
     event = GameEvent_Create(context->gsys, NULL, EventDigCall_Callback, 0x14);
     data = GameEvent_GetData(event);
     HiddenEventData_Init(data, param, context);
@@ -441,7 +442,7 @@ u32 EventTeleportCall_Check(PlayerActionPossibilities *context) {
 GameEvent *EventTeleportCall_Create(HiddenEventArgs *param, PlayerActionPossibilities *context) {
     GameEvent *event;
     HiddenEventData *data;
-    GameBeacon_BroadcastFieldMove(0x64);
+    GameBeacon_BroadcastFieldMove(MOVE_TELEPORT);
     event = GameEvent_Create(context->gsys, NULL, EventTeleportCall_Callback, 0x14);
     data = GameEvent_GetData(event);
     HiddenEventData_Init(data, param, context);
@@ -507,7 +508,7 @@ u32 EventChatterCall_Check(PlayerActionPossibilities *context) {
 }
 
 GameEvent *EventChatterCall_Create(HiddenEventArgs *args, PlayerActionPossibilities *context) {
-    GameBeacon_BroadcastFieldMove(0x1c0);
+    GameBeacon_BroadcastFieldMove(MOVE_CHATTER);
     return EventPerapRecord_Create(context->gsys, context->field, args->partySlot);
 }
 

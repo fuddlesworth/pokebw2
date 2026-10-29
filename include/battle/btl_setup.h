@@ -30,7 +30,8 @@ struct BtlFieldSituation {
     NetHandle *netHandle;
     u8 unk18;
     u8 unk19;
-    u8 unk1a;
+    // The kind of multi battle, which GetMultiMode returns: 0 for a battle of one player a side
+    u8 multiMode;
     u8 unk1b;
 };
 
