@@ -2430,7 +2430,7 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
 - A value moved into an argument register just before a call, and used for nothing else, is an argument the prototype
   is missing. `GFL_SEPlayKeepVol` takes the sound's player as well as the sound. The value can be narrowed for it:
   `CtvtComm_RecvPacket` narrows `packet->value` into r1 (`lsls`/`lsrs #24`) but compares the unnarrowed value with
-  0xff, because `func_ov257_021aad74(sys, u8 talker)` takes it; with `u32 talker = packet->value` and the talker
+  0xff, because `CommTvt_PlaceSlotMarker(sys, u8 talker)` takes it; with `u32 talker = packet->value` and the talker
   passed, it matches, where a `u8` local or no argument cannot. A missing parameter can also swap the registers of
   the caller's loop variables, as it did in `CtvtComm_UpdateTalk` (`CtvtComm_IsMemberTalking` takes the net ID).
 - A value built once and passed both in `r3` and in the first stack slot (`mvn r3, r3; mov r0, r3; str r0, [sp]`)
