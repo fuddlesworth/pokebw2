@@ -1780,7 +1780,7 @@ data_ov012_0216dad3 kind:data(any) addr:0x0216db13
 data_ov012_0216dad4 kind:data(any) addr:0x0216db14
 data_ov012_0216dad5 kind:data(any) addr:0x0216db15
 data_ov012_0216dad6 kind:data(any) addr:0x0216db16
-data_ov012_0216dc1c kind:data(any) addr:0x0216dc5c
+ONESHOT_DR_KEYS kind:data(any) addr:0x0216dc5c
 data_ov012_0216dc3c kind:data(any) addr:0x0216dc7c
 data_ov012_0216dc5c kind:data(any) addr:0x0216dc9c
 data_ov012_0216dc68 kind:data(any) addr:0x0216dca8
