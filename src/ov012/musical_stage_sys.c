@@ -146,6 +146,6 @@ void MusicalStageParam_SetEquip(MusicalStageParam *param, u8 pos, u8 slot, u16 i
     MusicalPoke *poke = param->pokes[pos];
 
     poke->equips[slot].itemId = itemId;
-    poke->equips[slot].unk2 = a4;
+    poke->equips[slot].rotation = a4;
     poke->equips[slot].slot = a5;
 }

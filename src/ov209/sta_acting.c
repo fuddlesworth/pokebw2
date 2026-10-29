@@ -1097,7 +1097,7 @@ static void StaActing_UpdateItemUse(StaActing *stage) {
                 if (stage->param->comm == NULL) {
                     u32 se = StaActing_ScoreItem(stage, stage->lightUpPos, stage->lightUpEquip);
 
-                    stage->param->pokes[stage->lightUpPos]->unk54[stage->lightUpEquip] = TRUE;
+                    stage->param->pokes[stage->lightUpPos]->likedEquips[stage->lightUpEquip] = TRUE;
                     GFL_SndSEPlay(se);
                 } else if (GFL_NetIsParent() == TRUE) {
                     if (StaActing_ScoreItem(stage, stage->lightUpPos, stage->lightUpEquip) == SEQ_SE_MSCL_11) {

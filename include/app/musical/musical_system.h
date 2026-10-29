@@ -31,7 +31,7 @@ struct Ov210Work {
 // A prop a Pokémon wears on the stage
 typedef struct {
     u16 itemId;
-    s16 unk2;
+    s16 rotation;
     // The slot it is worn on
     u8 slot;
 } MusicalPokeEquip;
@@ -49,8 +49,10 @@ struct MusicalPoke {
     u32 personality;
     MusicalPokeEquip equips[9];
     u16 points;
-    u16 unk4C[4];
-    BOOL unk54[9];
+    // The points of its props of each kind
+    u16 kindPoints[4];
+    // The props, by equip, that scored when the audience looked at them
+    BOOL likedEquips[9];
     u16 unk78;
 };
 

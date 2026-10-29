@@ -8970,6 +8970,11 @@ overlays/ov012 0x0216acc4 Scrcmd_JoinAvenueStore_JoinAvenueStoreStart
 overlays/ov012 0x0216ace0 Scrcmd_JoinAvenueStore_JoinAvenueStoreEnd
 overlays/ov012 0x0216acfc Scrcmd_JoinAvenueStore_PokewoodGetLevel
 overlays/ov012 0x0216ad24 Scrcmd_JoinAvenueStore_LensFlareRequest
+overlays/ov012 0x0216ade4 sHallPos
+overlays/ov012 0x0216adf0 sDressingRoomPos
+overlays/ov012 0x0216adfc sHallOnlinePos
+overlays/ov012 0x0216ae08 sGiftCountPoints
+overlays/ov012 0x0216ae1c sProgramGiftProps
 overlays/ov012 0x0216af5c sRibbonParams
 overlays/ov012 0x0216c9a8 sRebattleTrainers
 overlays/ov012 0x0216c9c0 sListMenuRequest
@@ -29060,8 +29065,8 @@ overlays/ov211 0x021f04ac MusComm_AreAllPokesReceived
 overlays/ov211 0x021f04b4 MusComm_BeginDataTiming
 overlays/ov211 0x021f04d4 MusComm_BeginProgramTiming
 overlays/ov211 0x021f04e4 MusComm_BeginSendPoke
-overlays/ov211 0x021f04f0 MusComm_GetUnk144
-overlays/ov211 0x021f04f8 MusComm_GetUnk148
+overlays/ov211 0x021f04f0 MusComm_GetProgramPoints
+overlays/ov211 0x021f04f8 MusComm_GetProgramNpcs
 overlays/ov211 0x021f0500 MusComm_GetPlayerEquip
 overlays/ov211 0x021f0510 MusComm_SetEquipRequest
 overlays/ov211 0x021f053c MusComm_GetEquipUsed

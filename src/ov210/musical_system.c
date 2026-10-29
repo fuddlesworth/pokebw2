@@ -38,8 +38,8 @@ MusicalPoke *MusicalSystem_InitPokeFromPkm(PartyPkm *pkm, HeapID heapId) {
     poke->points = 0;
     for (i = 0; i < 9; i++) {
         poke->equips[i].itemId = MUSICAL_ITEM_NONE;
-        poke->equips[i].unk2 = 0;
-        poke->unk54[i] = FALSE;
+        poke->equips[i].rotation = 0;
+        poke->likedEquips[i] = FALSE;
     }
     poke->species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
     poke->sex = PokeParty_GetParam(pkm, PKM_PARAM_SEX, NULL);
@@ -58,11 +58,11 @@ MusicalPoke *MusicalSystem_InitPoke(u16 species, u8 sex, u8 form, u8 rare, u32 p
     poke->points = 0;
     for (i = 0; i < 9; i++) {
         poke->equips[i].itemId = MUSICAL_ITEM_NONE;
-        poke->equips[i].unk2 = 0;
-        poke->unk54[i] = FALSE;
+        poke->equips[i].rotation = 0;
+        poke->likedEquips[i] = FALSE;
     }
     for (i = 0; i < 4; i++) {
-        poke->unk4C[i] = 0;
+        poke->kindPoints[i] = 0;
     }
     poke->unk78 = 0;
     poke->species = species;

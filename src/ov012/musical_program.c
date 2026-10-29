@@ -145,7 +145,7 @@ void MusicalProgram_CalcPoints(HeapID heapId, MusicalProgram *program, MusicalSt
             u8 value = program->propPoints[j] * counts[i][j];
 
             poke->points += value;
-            poke->unk4C[j] = value;
+            poke->kindPoints[j] = value;
         }
     }
     MusItemData_Free(items);

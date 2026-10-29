@@ -1669,11 +1669,11 @@ FieldG3D_RestoreSurface kind:function(thumb,size=0x28) addr:0x0216ade4
 data_ov012_0216adcc kind:data(any) addr:0x0216ae0c
 data_ov012_0216add0 kind:data(any) addr:0x0216ae10
 data_ov012_0216add4 kind:data(any) addr:0x0216ae14
-data_ov012_0216ade4 kind:data(any) addr:0x0216ae24
-data_ov012_0216adf0 kind:data(any) addr:0x0216ae30
-data_ov012_0216adfc kind:data(any) addr:0x0216ae3c
-data_ov012_0216ae08 kind:data(any) addr:0x0216ae48
-data_ov012_0216ae1c kind:data(any) addr:0x0216ae5c
+sHallPos kind:data(any) addr:0x0216ae24
+sDressingRoomPos kind:data(any) addr:0x0216ae30
+sHallOnlinePos kind:data(any) addr:0x0216ae3c
+sGiftCountPoints kind:data(any) addr:0x0216ae48
+sProgramGiftProps kind:data(any) addr:0x0216ae5c
 data_ov012_0216af34 kind:data(any) addr:0x0216af74
 data_ov012_0216af3c kind:data(any) addr:0x0216af7c
 sRibbonParams kind:data(any) addr:0x0216af9c
