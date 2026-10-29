@@ -3220,7 +3220,7 @@
     .2byte \a0
     .endm
 
-    .macro HollowRivalCmd_0267
+    .macro HollowRivalSetMet
     FieldCommand 615
     .endm
 
@@ -3600,7 +3600,7 @@
     .2byte \a0
     .endm
 
-    .macro HollowRivalCmd_02C3 a0
+    .macro HollowRivalSetSpecies a0
     FieldCommand 707
     .2byte \a0
     .endm

@@ -4601,7 +4601,7 @@
    "area": "HollowRival"
   },
   "615": {
-   "handler": "func_ov012_0216a7cc",
+   "handler": "Scrcmd_HollowRival_HollowRivalSetMet",
    "overlay": 12,
    "args": [],
    "area": "HollowRival"
@@ -5124,7 +5124,7 @@
    ]
   },
   "707": {
-   "handler": "func_ov012_0216a7f4",
+   "handler": "Scrcmd_HollowRival_HollowRivalSetSpecies",
    "overlay": 12,
    "args": [
     "any"

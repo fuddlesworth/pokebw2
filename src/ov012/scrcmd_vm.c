@@ -711,7 +711,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     func_ov012_0216a748,                                // 0x264
     Scrcmd_ProcFld_CallXTransceiverSecret,              // 0x265
     Scrcmd_HollowRival_HollowRivalGetCounter,           // 0x266
-    func_ov012_0216a7cc,                                // 0x267
+    Scrcmd_HollowRival_HollowRivalSetMet,               // 0x267
     Scrcmd_Gym_GymInsectPlayObject,                     // 0x268
     Scrcmd_Gym_GymInsectShowEffect,                     // 0x269
     NULL,                                               // 0x26a
@@ -803,7 +803,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_PokemonMisc_FieldTradeGetSpecies,            // 0x2c0
     NULL,                                               // 0x2c1
     Scrcmd_Encount_RepelRearm,                          // 0x2c2
-    func_ov012_0216a7f4,                                // 0x2c3
+    Scrcmd_HollowRival_HollowRivalSetSpecies,           // 0x2c3
     Scrcmd_HiddenHollow_HiddenHollowSetPeriod,          // 0x2c4
     Scrcmd_PokeDisp_JoinAvenueRecordActivity,           // 0x2c5
     Scrcmd_JoinAvenueStore_JoinAvenueStoreStart,        // 0x2c6
