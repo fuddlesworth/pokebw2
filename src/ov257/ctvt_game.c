@@ -99,6 +99,20 @@ enum {
     CTVT_GAME_PLAY_FREE,
 };
 
+// The steps of the results, CtvtGame_UpdateResults's: the scores come in, then the own rank is shown, with a crown for
+// the winner and a "try again" for a rank under second
+enum {
+    CTVT_GAME_RESULT_SHOW_SCORES,
+    CTVT_GAME_RESULT_FANFARE,
+    CTVT_GAME_RESULT_RANK,
+    CTVT_GAME_RESULT_WIN_FLASH,
+    CTVT_GAME_RESULT_SECOND,
+    CTVT_GAME_RESULT_LOWER,
+    CTVT_GAME_RESULT_CROWN,
+    CTVT_GAME_RESULT_WAIT,
+    CTVT_GAME_RESULT_DONE,
+};
+
 // A member's score on the sub screen, or a slot of the call that nobody is in
 typedef struct {
     TCB *tcb;
@@ -2334,7 +2348,7 @@ static void CtvtGame_InitResults(CommTvtWork *sys, CtvtGame *game) {
             slot++;
         }
     }
-    game->resultState = 0;
+    game->resultState = CTVT_GAME_RESULT_SHOW_SCORES;
     game->resultTimer = 0;
 }
 
@@ -2344,7 +2358,7 @@ static BOOL CtvtGame_UpdateResults(CommTvtWork *sys, CtvtGame *game) {
     u8 i;
 
     switch (game->resultState) {
-    case 0:
+    case CTVT_GAME_RESULT_SHOW_SCORES:
         for (i = 0; i < 4; i++) {
             if (!game->players[i]->absent && !game->shots[i]->active && game->players[i]->state == 0) {
                 game->players[i]->state = 1;
@@ -2352,10 +2366,10 @@ static BOOL CtvtGame_UpdateResults(CommTvtWork *sys, CtvtGame *game) {
         }
         game->resultTimer++;
         if (game->resultTimer > 462) {
-            game->resultState = 1;
+            game->resultState = CTVT_GAME_RESULT_FANFARE;
         }
         break;
-    case 1:
+    case CTVT_GAME_RESULT_FANFARE:
         for (i = 0; i < 4; i++) {
             game->players[i]->state = 1;
         }
@@ -2364,9 +2378,9 @@ static BOOL CtvtGame_UpdateResults(CommTvtWork *sys, CtvtGame *game) {
         } else {
             GFL_SndBGMPlay(SEQ_ME_LCG_04, SND_CHANNEL_MASK_ALL);
         }
-        game->resultState = 2;
+        game->resultState = CTVT_GAME_RESULT_RANK;
         break;
-    case 2:
+    case CTVT_GAME_RESULT_RANK:
         if (game->players[selfNetId]->rank == 1) {
             ClActor_SetVisible(game->winBanner, TRUE);
             ClActor_SetVisible(game->winBursts[0], TRUE);
@@ -2384,33 +2398,33 @@ static BOOL CtvtGame_UpdateResults(CommTvtWork *sys, CtvtGame *game) {
             ClActor_SetVisible(game->winGlow, TRUE);
             ClActor_SetAutoAnim(game->winGlow, TRUE);
             ClActor_RestartAnim(game->winGlow);
-            game->resultState = 3;
+            game->resultState = CTVT_GAME_RESULT_WIN_FLASH;
         } else if (game->players[selfNetId]->rank == 2) {
-            game->resultState = 4;
+            game->resultState = CTVT_GAME_RESULT_SECOND;
         } else {
-            game->resultState = 5;
+            game->resultState = CTVT_GAME_RESULT_LOWER;
         }
         ClActor_SetSequence(game->rankSign, game->players[selfNetId]->rank + 32);
         ClActor_SetVisible(game->rankSign, FALSE);
         break;
-    case 3:
+    case CTVT_GAME_RESULT_WIN_FLASH:
         if (!ClActor_IsAnimActive(game->winFlashes[0])) {
             ClActor_SetVisible(game->winFlashes[0], FALSE);
             ClActor_SetVisible(game->winFlashes[1], FALSE);
             ClActor_SetVisible(game->crown, TRUE);
             ClActor_SetAutoAnim(game->crown, TRUE);
             ClActor_RestartAnim(game->crown);
-            game->resultState = 6;
+            game->resultState = CTVT_GAME_RESULT_CROWN;
         }
         break;
-    case 4:
+    case CTVT_GAME_RESULT_SECOND:
         ClActor_SetVisible(game->rankSign, TRUE);
         ClActor_SetAutoAnim(game->rankSign, TRUE);
         ClActor_RestartAnim(game->rankSign);
         game->resultTimer = 0;
-        game->resultState = 7;
+        game->resultState = CTVT_GAME_RESULT_WAIT;
         break;
-    case 5:
+    case CTVT_GAME_RESULT_LOWER:
         ClActor_SetVisible(game->rankSign, TRUE);
         ClActor_SetAutoAnim(game->rankSign, TRUE);
         ClActor_RestartAnim(game->rankSign);
@@ -2418,9 +2432,9 @@ static BOOL CtvtGame_UpdateResults(CommTvtWork *sys, CtvtGame *game) {
         ClActor_SetAutoAnim(game->tryAgainSign, TRUE);
         ClActor_RestartAnim(game->tryAgainSign);
         game->resultTimer = 0;
-        game->resultState = 7;
+        game->resultState = CTVT_GAME_RESULT_WAIT;
         break;
-    case 6:
+    case CTVT_GAME_RESULT_CROWN:
         if (!ClActor_IsAnimActive(game->crown)) {
             ClActor_SetVisible(game->crown, FALSE);
             for (i = 0; i < 6; i++) {
@@ -2432,16 +2446,16 @@ static BOOL CtvtGame_UpdateResults(CommTvtWork *sys, CtvtGame *game) {
             ClActor_SetAutoAnim(game->rankSign, TRUE);
             ClActor_RestartAnim(game->rankSign);
             game->resultTimer = 0;
-            game->resultState = 7;
+            game->resultState = CTVT_GAME_RESULT_WAIT;
         }
         break;
-    case 7:
+    case CTVT_GAME_RESULT_WAIT:
         game->resultTimer++;
         if (game->resultTimer > 300) {
-            game->resultState = 8;
+            game->resultState = CTVT_GAME_RESULT_DONE;
         }
         break;
-    case 8:
+    case CTVT_GAME_RESULT_DONE:
         return TRUE;
     }
     CtvtGame_UpdatePlayers(game);

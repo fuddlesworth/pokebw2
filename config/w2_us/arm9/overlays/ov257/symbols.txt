@@ -695,7 +695,7 @@ sStampMenuPos kind:data(any) addr:0x021b1ad0
 sPenFramePos kind:data(any) addr:0x021b1ad4
 sStampFramePos kind:data(any) addr:0x021b1ad8
 sReturnButton kind:data(any) addr:0x021b1adc
-data_ov257_021b1aa8 kind:data(any) addr:0x021b1ae4
+barWidth kind:data(any) addr:0x021b1ae4
 sPumpThresholds kind:data(any) addr:0x021b1ae9
 sResultPopAnimations kind:data(any) addr:0x021b1aec
 sHitSizes kind:data(any) addr:0x021b1af0
