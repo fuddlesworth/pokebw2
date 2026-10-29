@@ -54,6 +54,8 @@
 #define MAX_BOXES 24
 // The columns of icons that are set up at once, enough to cover the screen
 #define ICON_COLUMNS 12
+// An icon's column of the strip when it shows no Pokémon
+#define ICON_NO_COLUMN 0xff
 
 // The screen files of the strip's backgrounds: where the cells start, after the file's, the block's and the screen's
 // headers, and the screens' width, in tiles
@@ -700,11 +702,11 @@ static void Poketrade2D_CreateBoxIcon(PokemonTradeWork *wk, BoxSaveAccessor *box
         pkm = Poketrade2D_ResolveGridCell(boxes, column, i, wk, &isParty);
         entry = Poketrade2D_GetGridCellMon(column, i, wk);
         if (entry == NULL) {
-            wk->iconColumns[index][i] = 0xff;
+            wk->iconColumns[index][i] = ICON_NO_COLUMN;
             continue;
         }
         if (entry->species == SPECIES_NONE) {
-            wk->iconColumns[index][i] = 0xff;
+            wk->iconColumns[index][i] = ICON_NO_COLUMN;
             continue;
         }
         wk->iconColumns[index][i] = column;
@@ -946,7 +948,7 @@ ClActor *Poketrade2D_HitTestBoxIcons(PokemonTradeWork *wk, int x, int y, int *bo
             if (pos.x <= x && x < pos.x + 24 && pos.y <= y && y < pos.y + 24) {
                 if (box != NULL) {
                     iconColumn = wk->iconColumns[i][j];
-                    if (iconColumn == 0xff) {
+                    if (iconColumn == ICON_NO_COLUMN) {
                         return NULL;
                     }
                     if (PokemonTrade_GetColumnSlot(iconColumn, j) != -1) {
