@@ -575,7 +575,7 @@ void CtvtGame_Enter(CommTvtWork *sys, CtvtGame *game) {
                 game->members[slot].pictures[i] = allocConfigDSSoftwareFeature(heapId, 0x2000, "ctvt_game.c", 773);
             }
         } else {
-            fileId = files[CtvtComm_GetUnk3dc(sys, comm, netId)];
+            fileId = files[CtvtComm_GetGameCharacter(sys, comm, netId)];
             for (i = 0; i < 3; i++) {
                 game->members[slot].pictures[i] =
                     GFL_ArcSysReadHeapNewLZ(ARCID_CTVT_GAME_CAM, i + fileId, FALSE, heapId);
@@ -586,10 +586,10 @@ void CtvtGame_Enter(CommTvtWork *sys, CtvtGame *game) {
     {
         BOOL cameraEnabled = CommTvt_IsCameraEnabled();
         CameraSystem *cameraSystem = CtvtCamera_GetCameraSystem(sys, CommTvt_GetCamera(sys));
-        u8 unk3dc = CtvtComm_GetUnk3dc(sys, comm, selfNetId);
+        u8 character = CtvtComm_GetGameCharacter(sys, comm, selfNetId);
 
         game->cam =
-            CtvtGameCam_Create(heapId, cameraEnabled, CtvtGame_GetType(game), unk3dc, game->members, cameraSystem);
+            CtvtGameCam_Create(heapId, cameraEnabled, CtvtGame_GetType(game), character, game->members, cameraSystem);
     }
     game->state = CTVT_GAME_STATE_START_CAMERA;
     game->replay = FALSE;
@@ -881,13 +881,13 @@ u16 CtvtGame_GetHostFrame(CtvtGame *game) {
 void CtvtGame_CheckTouch(CtvtComm *comm, CtvtGame *game, const CtvtGamePacket *packet, int netId) {
     u16 index;
 
-    if (CtvtGame_FindTouchedTarget(game, packet->frame, packet->unk5[0], packet->unk5[1], &index) == TRUE) {
+    if (CtvtGame_FindTouchedTarget(game, packet->frame, packet->touchX, packet->touchY, &index) == TRUE) {
         CtvtGamePacket reply = { 0 };
 
         reply.values[netId] = index;
         reply.mask = 1 << netId;
         reply.frame = game->frame;
-        CtvtComm_QueueGamePacket(comm, reply, 4);
+        CtvtComm_QueueGamePacket(comm, reply, CTVT_GAME_PACKET_HITS);
         game->targets[index].hitPending = TRUE;
     }
 }
@@ -984,7 +984,7 @@ void CtvtGame_CountPump(CtvtComm *comm, CtvtGame *game, BOOL big, int netId) {
         CtvtGamePacket packet = { 0 };
 
         packet.mask = 1 << netId;
-        CtvtComm_QueueGamePacket(comm, packet, 7);
+        CtvtComm_QueueGamePacket(comm, packet, CTVT_GAME_PACKET_GROW_BALLOONS);
     }
 }
 
@@ -1129,7 +1129,7 @@ static BOOL CtvtGame_UpdatePlay(CommTvtWork *sys, CtvtGame *game) {
             RTC_GetCachedDateTime(&date, &time);
             packet.value = date.year + date.month * 0x100 + date.day * 0x10000 + time.hour * 0x100000 +
                            (time.minute + time.second) * 0x1000000;
-            CtvtComm_QueueGamePacket(comm, packet, 1);
+            CtvtComm_QueueGamePacket(comm, packet, CTVT_GAME_PACKET_SEED);
         }
         game->playState = CTVT_GAME_PLAY_SYNC_SEED;
         break;
@@ -1393,7 +1393,7 @@ static BOOL CtvtGame_UpdatePlay(CommTvtWork *sys, CtvtGame *game) {
                 AppTaskMenu_Free(game->yesNoMenu);
                 game->yesNoMenu = NULL;
             } else if (!AppTaskMenu_IsDecided(game->yesNoMenu) && CtvtGame_AreAllJoined(sys, game)) {
-                CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), 2);
+                CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), CTVT_GAME_COMMAND_ALL_JOINED);
                 game->playState = CTVT_GAME_PLAY_HOST_WAIT_READY;
             }
         } else {
@@ -1403,7 +1403,7 @@ static BOOL CtvtGame_UpdatePlay(CommTvtWork *sys, CtvtGame *game) {
     case CTVT_GAME_PLAY_HOST_WAIT_READY:
         if (!CtvtGame_CheckQuit(sys, game)) {
             if (CtvtGame_AreAllReady(sys, game)) {
-                CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), 5);
+                CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), CTVT_GAME_COMMAND_REPLAY);
                 game->replay = TRUE;
                 game->playState = CTVT_GAME_PLAY_FADE_OUT_MENU;
             }
@@ -1417,7 +1417,7 @@ static BOOL CtvtGame_UpdatePlay(CommTvtWork *sys, CtvtGame *game) {
             game->exitWait--;
         }
         if (game->exitWait == 0) {
-            CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), 3);
+            CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), CTVT_GAME_COMMAND_HOST_QUIT);
             game->playState = CTVT_GAME_PLAY_FADE_OUT_MENU;
             if (game->yesNoMenu != NULL) {
                 AppTaskMenu_Free(game->yesNoMenu);
@@ -1437,7 +1437,7 @@ static BOOL CtvtGame_UpdatePlay(CommTvtWork *sys, CtvtGame *game) {
                 AppTaskMenu_Free(game->yesNoMenu);
                 game->yesNoMenu = NULL;
             } else if (!AppTaskMenu_IsDecided(game->yesNoMenu)) {
-                CtvtComm_QueueGameCommand(sys, comm, 0);
+                CtvtComm_QueueGameCommand(sys, comm, CTVT_GAME_COMMAND_JOIN);
                 if (game->allJoined == TRUE) {
                     game->allJoined = FALSE;
                     game->playState = CTVT_GAME_PLAY_CHILD_READY;
@@ -1449,7 +1449,7 @@ static BOOL CtvtGame_UpdatePlay(CommTvtWork *sys, CtvtGame *game) {
         break;
     case CTVT_GAME_PLAY_CHILD_READY:
         if (!CtvtGame_CheckQuit(sys, game)) {
-            CtvtComm_QueueGameCommand(sys, comm, 4);
+            CtvtComm_QueueGameCommand(sys, comm, CTVT_GAME_COMMAND_READY);
             if (game->replayStarted == TRUE) {
                 game->replay = TRUE;
                 game->replayStarted = FALSE;
@@ -1465,7 +1465,7 @@ static BOOL CtvtGame_UpdatePlay(CommTvtWork *sys, CtvtGame *game) {
         }
         if (game->exitWait == 0) {
             if (!CtvtGame_CheckQuit(sys, game)) {
-                CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), 1);
+                CtvtComm_QueueGameCommand(sys, CommTvt_GetComm(sys), CTVT_GAME_COMMAND_CHILD_QUIT);
             } else {
                 game->playState = CTVT_GAME_PLAY_FADE_OUT_MENU;
             }
@@ -1875,10 +1875,10 @@ static BOOL CtvtGame_UpdateTargets(CommTvtWork *sys, CtvtGame *game) {
     if (GFL_HIDGetTouchPressedPoint(&x, &y) == TRUE) {
         CtvtGamePacket packet = { 0 };
 
-        packet.unk5[0] = x;
-        packet.unk5[1] = y;
+        packet.touchX = x;
+        packet.touchY = y;
         packet.frame = game->frame;
-        CtvtComm_QueueGamePacket(comm, packet, 3);
+        CtvtComm_QueueGamePacket(comm, packet, CTVT_GAME_PACKET_TOUCH);
     }
     if (!game->frameReceived) {
         return FALSE;
@@ -1893,8 +1893,8 @@ static BOOL CtvtGame_UpdateTargets(CommTvtWork *sys, CtvtGame *game) {
             if (CtvtGame_FindFreeTarget(game, &index) == TRUE) {
                 CtvtGamePacket packet = { 0 };
 
-                packet.unk7 = index;
-                CtvtComm_QueueGamePacket(comm, packet, 0);
+                packet.target = index;
+                CtvtComm_QueueGamePacket(comm, packet, CTVT_GAME_PACKET_SPAWN_TARGET);
             }
             game->spawnNow = FALSE;
             game->spawnWait = 15;
@@ -2010,10 +2010,10 @@ static BOOL CtvtGame_UpdateBalloons(CommTvtWork *sys, CtvtGame *game) {
             CtvtGamePacket packet = { 0 };
 
             if (hit == 0 || hit == 4) {
-                CtvtComm_QueueGamePacket(comm, packet, 6);
+                CtvtComm_QueueGamePacket(comm, packet, CTVT_GAME_PACKET_PUMP_BIG);
                 GFL_SndSEPlay(SEQ_SE_LCG_10);
             } else {
-                CtvtComm_QueueGamePacket(comm, packet, 5);
+                CtvtComm_QueueGamePacket(comm, packet, CTVT_GAME_PACKET_PUMP);
                 GFL_SndSEPlay(SEQ_SE_LCG_11);
             }
             if (game->wobbleCooldown == 0) {

@@ -396,7 +396,7 @@ int CtvtDraw_Main(CommTvtWork *sys, CtvtDraw *draw) {
         }
         break;
     case DRAW_STATE_SEND_PARENT_EXIT:
-        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_UNK_A, 0) == TRUE) {
+        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_EXIT, 0) == TRUE) {
             draw->state = DRAW_STATE_PARENT_LEFT;
         }
         break;

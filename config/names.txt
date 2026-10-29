@@ -31220,7 +31220,7 @@ overlays/ov257 0x0219cc54 CtvtComm_StartSync
 overlays/ov257 0x0219cc68 CtvtComm_IsSynced
 overlays/ov257 0x0219cc7c CtvtComm_GetSelfNetId
 overlays/ov257 0x0219cc88 CtvtComm_GetTalker
-overlays/ov257 0x0219cc94 CtvtComm_GetUnk3dc
+overlays/ov257 0x0219cc94 CtvtComm_GetGameCharacter
 overlays/ov257 0x0219cca0 CtvtComm_IsVoiceBusy
 overlays/ov257 0x0219cca8 CtvtComm_GetBeacon
 overlays/ov257 0x0219ccb0 CtvtComm_GetVoicePacket
@@ -31234,7 +31234,7 @@ overlays/ov257 0x0219ccf0 CtvtComm_GetDrawSlot
 overlays/ov257 0x0219cd34 CtvtComm_CommitDrawSlot
 overlays/ov257 0x0219cd4c CtvtComm_StartInviteTimer
 overlays/ov257 0x0219cd58 CtvtComm_IsInviteTimerDone
-overlays/ov257 0x0219cd6c CtvtComm_GetUnk3f8
+overlays/ov257 0x0219cd6c CtvtComm_CanSendVoice
 overlays/ov257 0x0219cd74 CtvtTalk_Create
 overlays/ov257 0x0219cdec CtvtTalk_Delete
 overlays/ov257 0x0219ce04 CtvtTalk_Enter

@@ -499,8 +499,8 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
         break;
     case TALK_STATE_SEND_INVITE:
         if (!CtvtTalk_CheckGameCancel(sys, talk) &&
-            CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_UNK_B, CtvtGame_GetType(CommTvt_GetGame(sys))) ==
-                TRUE) {
+            CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_GAME_INVITE,
+                                CtvtGame_GetType(CommTvt_GetGame(sys))) == TRUE) {
             talk->state = TALK_STATE_WAIT_ANSWERS;
             CtvtTalk_PrintGameMessage(sys, talk, 45, NULL, 0);
             talk->gameMenu = func_ov257_021aac98(sys, 24, 15);
@@ -513,7 +513,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
             break;
         }
         comm = CommTvt_GetComm(sys);
-        CtvtComm_SendPacketAll(sys, comm, CTVT_PACKET_UNK_B, CtvtGame_GetType(CommTvt_GetGame(sys)));
+        CtvtComm_SendPacketAll(sys, comm, CTVT_PACKET_GAME_INVITE, CtvtGame_GetType(CommTvt_GetGame(sys)));
         AppTaskMenu_Update(talk->gameMenu);
         if (AppTaskMenu_IsFlashFinished(talk->gameMenu) == TRUE) {
             if (AppTaskMenu_GetCursorPos(talk->gameMenu) == 0) {
@@ -544,7 +544,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
                 sent[i] = order[i];
             }
             CtvtComm_ScanNone(sys, comm);
-            if (CtvtComm_SendPacketData(sys, comm, CTVT_PACKET_UNK_E, sent) == TRUE) {
+            if (CtvtComm_SendPacketData(sys, comm, CTVT_PACKET_GAME_STARTING, sent) == TRUE) {
                 talk->state = TALK_STATE_SEND_START;
             }
         }
@@ -573,7 +573,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
             break;
         }
         comm = CommTvt_GetComm(sys);
-        if (CtvtTalk_AreAllReady(sys, talk) && CtvtComm_SendPacket(sys, comm, CTVT_PACKET_UNK_11, 0) == TRUE) {
+        if (CtvtTalk_AreAllReady(sys, talk) && CtvtComm_SendPacket(sys, comm, CTVT_PACKET_GAME_START, 0) == TRUE) {
             talk->state = TALK_STATE_START_GAME;
         }
         break;
@@ -597,7 +597,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
         break;
     }
     case TALK_STATE_CANCEL_GAME:
-        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_UNK_F, 0) == TRUE) {
+        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_GAME_CANCEL, 0) == TRUE) {
             talk->state = TALK_STATE_GAME_CANCELLED;
             CtvtTalk_PrintGameMessage(sys, talk, 46, NULL, 120);
         }
@@ -660,7 +660,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
             AppTaskMenu_Free(talk->gameMenu);
             talk->gameMenu = NULL;
         } else if (AppTaskMenu_IsDecided(talk->gameMenu) == FALSE) {
-            CtvtComm_SendPacketAll(sys, comm, CTVT_PACKET_UNK_C, 0);
+            CtvtComm_SendPacketAll(sys, comm, CTVT_PACKET_GAME_JOIN, 0);
             if (talk->gameStarting == TRUE) {
                 talk->gameStarting = FALSE;
                 talk->state = TALK_STATE_JOIN_GAME;
@@ -672,7 +672,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
         if (CtvtTalk_CheckGameCancel(sys, talk)) {
             break;
         }
-        CtvtComm_SendPacketAll(sys, CommTvt_GetComm(sys), CTVT_PACKET_UNK_10, 0);
+        CtvtComm_SendPacketAll(sys, CommTvt_GetComm(sys), CTVT_PACKET_GAME_READY, 0);
         if (talk->gameStart == TRUE) {
             talk->gameStart = FALSE;
             talk->state = TALK_STATE_FADE_OUT;
@@ -684,7 +684,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
             talk->messageFrames--;
         }
         if (talk->messageFrames == 0 && !CtvtTalk_CheckGameCancel(sys, talk)) {
-            CtvtComm_SendPacketAll(sys, CommTvt_GetComm(sys), CTVT_PACKET_UNK_D, 0);
+            CtvtComm_SendPacketAll(sys, CommTvt_GetComm(sys), CTVT_PACKET_GAME_CANCEL_REQUEST, 0);
         }
         break;
     case TALK_STATE_GAME_CANCELLED:
@@ -702,7 +702,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
         }
         break;
     case TALK_STATE_SEND_EXIT:
-        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_UNK_A, 0) == TRUE) {
+        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_EXIT, 0) == TRUE) {
             talk->state = TALK_STATE_WAIT_EXIT;
         }
         // fallthrough
@@ -735,7 +735,7 @@ int CtvtTalk_Main(CommTvtWork *sys, CtvtTalk *talk) {
         }
         break;
     case TALK_STATE_SEND_PARENT_EXIT:
-        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_UNK_A, 0) == TRUE) {
+        if (CtvtComm_SendPacket(sys, CommTvt_GetComm(sys), CTVT_PACKET_EXIT, 0) == TRUE) {
             CtvtCamera *camera = CommTvt_GetCamera(sys);
 
             CommTvt_SetMessageActive(sys, TRUE);
@@ -1045,7 +1045,7 @@ static void CtvtTalk_UpdateRecord(CommTvtWork *sys, CtvtTalk *talk) {
         u32 size;
 
         comm = CommTvt_GetComm(sys);
-        if (CtvtComm_GetUnk3f8(sys, comm) != TRUE) {
+        if (CtvtComm_CanSendVoice(sys, comm) != TRUE) {
             break;
         }
         busy = CtvtComm_IsVoiceBusy(sys, comm);
