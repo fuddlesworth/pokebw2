@@ -2491,8 +2491,7 @@
     .2byte \a3
     .endm
 
-    // func_ov033_02177d78
-    .macro Cmd_01DB a0, a1
+    .macro MysteryGifts a0, a1
     FieldCommand 475
     .2byte \a0
     .2byte \a1

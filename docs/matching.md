@@ -709,8 +709,8 @@ Same instructions, registers swapped.
   `GX_SetVisiblePlane(0); GXS_SetVisiblePlane(0);` (the SDK inline's parameter is what holds the zero in a
   register), and `(s32)work->badgeFrame < 45` gives the signed `bge` a `u16` field is otherwise compared without.
 - A spilled `u8` that is reloaded and narrowed at each use can come from a later callee's `u8` parameter, not from
-  the local's own type: the Dream World postman's `func_ov033_02177d78` matched once its callee
-  `func_ov033_021780a4` took `u8 kind` in place of `u32`.
+  the local's own type: the Dream World postman's `Scrcmd_PdwPostman_MysteryGifts` matched once its callee
+  `ScrcmdPokemonFld_IsLandorusTherianGift` took `u8 kind` in place of `u32`.
 - Whether an argument is loaded with `ldrh` or `ldrsh` follows the callee's parameter type, not the field's: the
   Funfest's `FesMissionPeople_PlaceActors` matched once `ZoneNPC_SetRailPos` took `u16 sidePos`. Consecutive
   halfword fields loaded as `adds r3, r4, #0; adds r3, #8; ldrh [r3, #2]; ldrh [r3, #4]` are read through a pointer

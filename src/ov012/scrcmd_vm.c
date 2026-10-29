@@ -570,7 +570,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     Scrcmd_GameState_ObjInitWarpGPos,                   // 0x1d8
     Scrcmd_GameState_ObjInitNPCGPos,                    // 0x1d9
     Scrcmd_PhraseSelect_CallPhraseSelect,               // 0x1da
-    func_ov033_02177d78,                                // 0x1db
+    Scrcmd_PdwPostman_MysteryGifts,                     // 0x1db
     Scrcmd_Musical_DreamWorldItems,                     // 0x1dc
     Scrcmd_FldeffCut_BroadcastGameBeacon,               // 0x1dd
     Scrcmd_FldeffCut_PassPowerPopDepletedID,            // 0x1de
