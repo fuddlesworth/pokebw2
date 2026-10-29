@@ -253,28 +253,28 @@ BOOL SymbolMap_ToggleKeepPokemon(AreaNPCSave *npcData, u32 index) {
     u32 slot;
 
     switch (SymbolSave_GetKindOfSlot(index)) {
-    case 0:
-        kind = 2;
+    case SYMBOL_KIND_KEEP_LARGE:
+        kind = SYMBOL_KIND_FREE_LARGE;
         break;
-    case 1:
-        kind = 3;
+    case SYMBOL_KIND_KEEP_SMALL:
+        kind = SYMBOL_KIND_FREE_SMALL;
         break;
-    case 2:
-        kind = 0;
+    case SYMBOL_KIND_FREE_LARGE:
+        kind = SYMBOL_KIND_KEEP_LARGE;
         break;
-    case 3:
-        kind = 1;
+    case SYMBOL_KIND_FREE_SMALL:
+        kind = SYMBOL_KIND_KEEP_SMALL;
         break;
     default:
         return FALSE;
     }
     slot = SymbolSave_FindFreeSlot(npcData, kind);
-    if (slot == 0xffff) {
+    if (slot == SYMBOL_SLOT_NONE) {
         return FALSE;
     }
     SymbolSave_Decrypt(npcData);
     npcData->pokemon[slot] = npcData->pokemon[index];
-    if (kind == 3) {
+    if (kind == SYMBOL_KIND_FREE_SMALL) {
         SymbolSave_UpdateDeepestArea(npcData, slot);
     }
     decryptNpcData(npcData);
