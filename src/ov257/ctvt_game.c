@@ -922,10 +922,10 @@ void CtvtGame_ApplyHits(CtvtGame *game, const CtvtGamePacket *packet, u8 mask) {
         if (i == game->targets[index].scene) {
             if (game->timeLeft <= 20) {
                 game->scores[i] += 4;
-                game->targets[index].hitKind = 1;
+                game->targets[index].hitKind = CTVT_TARGET_HIT_OWN_HURRY;
             } else {
                 game->scores[i] += 2;
-                game->targets[index].hitKind = 0;
+                game->targets[index].hitKind = CTVT_TARGET_HIT_OWN;
             }
             if (game->scores[i] > 999) {
                 game->scores[i] = 999;
@@ -936,10 +936,10 @@ void CtvtGame_ApplyHits(CtvtGame *game, const CtvtGamePacket *packet, u8 mask) {
         } else {
             if (game->timeLeft <= 20) {
                 game->scores[i] -= 2;
-                game->targets[index].hitKind = 3;
+                game->targets[index].hitKind = CTVT_TARGET_HIT_OTHER_HURRY;
             } else {
                 game->scores[i] -= 1;
-                game->targets[index].hitKind = 2;
+                game->targets[index].hitKind = CTVT_TARGET_HIT_OTHER;
             }
             if (game->scores[i] < 0) {
                 game->scores[i] = 0;
