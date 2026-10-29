@@ -17,14 +17,6 @@
 #include "system/game_event.h"
 #include "system/game_system.h"
 
-// Whether a field action is blocked where the player stands
-typedef enum {
-    FIELD_ACTION_BLOCKED = -1,
-    FIELD_ACTION_ALLOWED = 0,
-    // Allowed, while the player walks with a partner
-    FIELD_ACTION_ALLOWED_PAIRED = 1,
-} FieldActionResult;
-
 typedef FieldActionResult (*FieldActionBlockCheck)(GameData *gameData, Field *field, PlayerState *state);
 
 typedef struct {
