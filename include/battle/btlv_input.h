@@ -70,7 +70,7 @@ typedef struct {
 typedef struct {
     u8 msgForm : 2; // the name's message, by sex mark
     u8 selectable : 1;
-    u8 unk1;
+    u8 iconAnim; // set as the command screen's is (1, 2 fainted, 3 a status condition), but nothing reads it
     u16 unk2;
     s16 hp; // 0: no mon in that position, or it has fainted
     s16 maxHp;
