@@ -175,6 +175,7 @@
 
 // The 2D graphics archives that the code loads by number, named after the source files that load them, or the
 // app's prefix where several do (docs/data.md, 2D graphics). Our names, not swan's
+#define ARCID_WM_ICON 0                            // wm_icon.c, net_define.c
 #define ARCID_MAP_REPLACE 10                       // map_replace.c
 #define ARCID_BTLV_EFFVM_PARTICLES 6               // btlv_effvm.c, intro_particle.c
 #define ARCID_BTLV 11                              // btlv_scu.c, btlv_stage.c, pkwd_briefing.c
@@ -189,6 +190,7 @@
 #define ARCID_TRAINER_CARD_UNION_GRA 40            // trainer_card.c, badge_view.c
 #define ARCID_GEONET_PLACE 52                      // geonet.c
 #define ARCID_SCRCMD_SHOP 53                       // scrcmd_shop.c, scrcmd_resort_shop.c
+#define ARCID_WEATHER 55                           // weather_task.c, weather_rain.c, weather_particles.c
 #define ARCID_FIELD_ACTOR_CONFIG 57                // field_actor.c
 #define ARCID_CODEIN 58                            // codein.c, br_codein.c
 #define ARCID_WIFI_NOTE 62                         // wifi_note.c
@@ -218,10 +220,14 @@
 #define ARCID_MIC_TEST 107                         // mictest.c
 #define ARCID_GYM_ELEC 108                         // gym_elec.c
 #define ARCID_MUSICAL_PROGRAM 112                  // musical_system.c
+#define ARCID_MUSICAL_PROGRAM_1 113                // musical_system.c
+#define ARCID_MUSICAL_PROGRAM_2 114                // musical_system.c
+#define ARCID_MUSICAL_PROGRAM_3 115                // musical_system.c
 #define ARCID_FLD3D_CI_RESOURCES 116               // fld3d_ci.c
 #define ARCID_FLD3D_CI_FILE 118                    // fld3d_ci.c
 #define ARCID_NAME_INPUT_GRAPHIC 119               // name_input.c
 #define ARCID_NAME_INPUT 120                       // name_input_data.c
+#define ARCID_GYM_MISTRALTON 122                   // gym_mistralton.c
 #define ARCID_MOVE_TUTOR 125                       // move_tutor_main.c
 #define ARCID_TUBELINE_BRIDGE 128                  // gimmick_tubeline_bridge.c
 #define ARCID_SHORTCUT_MENU 129                    // shortcut_menu.c

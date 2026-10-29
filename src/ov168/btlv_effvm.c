@@ -2035,7 +2035,8 @@ static BOOL BtlvEffvm_CmdClactAdd(VM *vm, void *env) {
     world.x += offsetX;
     world.y += offsetY;
     NNS_G3dWorldPosToScrPos(&world, &x, &y);
-    wk->clactIndexes[index] = BtlvClact_AddActor(BtlvEffect_GetClact(), 94, fileId, x, y, scaleX, scaleY);
+    wk->clactIndexes[index] =
+        BtlvClact_AddActor(BtlvEffect_GetClact(), ARCID_BTLV_EFFVM_BG, fileId, x, y, scaleX, scaleY);
     return wk->ret;
 }
 
@@ -2522,8 +2523,8 @@ static BOOL BtlvEffvm_CmdBallAdd(VM *vm, void *env) {
     if (ball == 25) {
         ball = 17;
     }
-    wk->clactIndexes[index] =
-        BtlvClact_AddActorEx(BtlvEffect_GetClact(), 94, ball * 2 + 231, ball * 2 + 232, 231, 232, x, y, scaleX, scaleY);
+    wk->clactIndexes[index] = BtlvClact_AddActorEx(BtlvEffect_GetClact(), ARCID_BTLV_EFFVM_BG, ball * 2 + 231,
+                                                   ball * 2 + 232, 231, 232, x, y, scaleX, scaleY);
     return wk->ret;
 }
 

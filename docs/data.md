@@ -1069,8 +1069,8 @@ the Pokédex's (`ARCID_POKEDEX_GRA`), the box's (`ARCID_BOX2`) and the others. E
 after its `ARCID_*` constant in `include/constants/arc.h`, whose number gives the archive's file (`ARCID_TITLE`, 26, is
 `a/0/2/6`); `configure.py` packs a directory for each, 111 of them. An archive that swan doesn't name is named after
 the source file that loads it, or the prefix of an app's files where several load it (`ARCID_BTLV` for the
-`btlv_*.c` files), in the block at the end of `arc.h` with its loaders. Twelve archives with graphics, `a/0/0/0`,
-`a/0/0/1`, `a/0/3/5`, `a/0/4/3`, `a/0/5/4`, `a/0/5/5`, `a/0/6/4`, `a/0/6/7`, `a/1/2/1`, `a/1/4/0`, `a/1/4/1` and
+`btlv_*.c` files), in the block at the end of `arc.h` with its loaders. Ten archives with graphics,
+`a/0/0/1`, `a/0/3/5`, `a/0/4/3`, `a/0/5/4`, `a/0/6/4`, `a/0/6/7`, `a/1/2/1`, `a/1/4/0`, `a/1/4/1` and
 `a/2/4/6`, have no loader found yet, so no name, and stay as the ROM has them until code that loads them is; the fonts'
 archive is `res/fonts/font/`. The members are files in the archive's order, named after their number in it, or
 after their constant where `generated/narc_<archive>.txt` names them (`professor.png` for `NARC_INTRO_PROFESSOR_NCGR`):
