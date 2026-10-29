@@ -524,7 +524,7 @@ static void PokemonTradeDemoMiddle_Init(PokemonTradeWork *wk) {
     MCSS_Hide(wk->mcss[2]);
     MCSS_Hide(wk->mcss[3]);
     Poketrade3D_InitParticleSystems(wk->work3D);
-    func_ov194_021c1db4(wk->work3D);
+    Poketrade3D_SetupParticleSystemsLow(wk->work3D);
     Poketrade3D_CreateIcaStreamsForMode(wk->work3D, 0);
     PokemonTradeDemoMiddle_SetTimer(wk, 0);
     PokemonTrade_SetState(wk, PokemonTradeDemoMiddle_Wait1);

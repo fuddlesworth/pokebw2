@@ -67,7 +67,7 @@ static void PoketradeSave_Init3DProjection(HeapID heapId);
 static void PoketradeSave_Free3DLightSet(void);
 static void PoketradeSave_SetCameraSummary(PokemonTradeWork *wk);
 static void PoketradeSave_SetCameraTrade(PokemonTradeWork *wk);
-static void func_ov194_021c1a38(PokemonTradeWork *wk, SRTMatrix *mtx);
+static void Poketrade3D_DrawBoxCubes(PokemonTradeWork *wk, SRTMatrix *mtx);
 static void PoketradeSave_Setup3DDrawState(PokemonTradeWork *wk, SRTMatrix *mtx);
 static void Poketrade3D_DeleteIcaStreams(PokemonTrade3DWork *work);
 static void Poketrade3D_AddUnit(PokemonTradeWork *wk, int sceneId);
@@ -143,7 +143,7 @@ static const Light sLights[4] = {
 
 // Scene 0 has nothing to load, and its camera looks at the box cubes
 static const TradeSceneFuncs sSceneFuncs[6] = {
-    { PoketradeSave_SetCameraSummary, func_ov194_021c1a38 },
+    { PoketradeSave_SetCameraSummary, Poketrade3D_DrawBoxCubes },
     { PoketradeSave_SetCameraTrade, PoketradeSave_Setup3DDrawState },
     { PoketradeSave_SetCameraTrade, PoketradeSave_Setup3DDrawState },
     { PoketradeSave_SetCameraTrade, PoketradeSave_Setup3DDrawState },
@@ -261,7 +261,8 @@ static void PoketradeSave_SetCameraTrade(PokemonTradeWork *wk) {
     GFL_G3DCameraSetLookatUpVector(wk->sceneCamera, &vec);
 }
 
-static void func_ov194_021c1a38(PokemonTradeWork *wk, SRTMatrix *mtx) {
+// Scene 0's drawing: the ring of box cubes
+static void Poketrade3D_DrawBoxCubes(PokemonTradeWork *wk, SRTMatrix *mtx) {
     Poketrade3D_DrawRotatingCube(wk);
 }
 
@@ -388,7 +389,9 @@ void Poketrade3D_InitParticleSystems(PokemonTrade3DWork *work) {
     }
 }
 
-void func_ov194_021c1db4(PokemonTrade3DWork *work) {
+// Reads the particles' resource and gives it to the first four systems, Poketrade3D_SetupParticleSystemsHigh to the
+// others
+void Poketrade3D_SetupParticleSystemsLow(PokemonTrade3DWork *work) {
     int i;
 
     work->resource = Particle_ReadResource(ARCID_POKEMONTRADE_DEMO, 0x35, HEAPID_TAIL(work->heapId));
@@ -646,8 +649,8 @@ void Poketrade3D_AddPokemonMcss(PokemonTradeWork *wk, int side, BOOL front, Part
 }
 
 void Poketrade3D_AddPokemonMcssFlipped(PokemonTradeWork *wk, int side, BOOL front, PartyPkm *pkm, BOOL mirror,
-                                       BOOL a5) {
-    if (a5 && !front) {
+                                       BOOL alwaysFront) {
+    if (alwaysFront && !front) {
         front = TRUE;
         mirror = FALSE;
     }

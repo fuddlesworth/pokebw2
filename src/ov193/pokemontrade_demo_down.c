@@ -347,7 +347,7 @@ static void PokemonTradeDemoDown_Init(PokemonTradeWork *wk) {
     MCSS_Hide(wk->mcss[3]);
     Poketrade3D_InitParticleSystems(wk->work3D);
     Poketrade3D_CreateIcaStreamsForMode(wk->work3D, 3);
-    func_ov194_021c1db4(wk->work3D);
+    Poketrade3D_SetupParticleSystemsLow(wk->work3D);
     PokemonTradeDemoDown_SetTimer(wk, DOWN_START_FRAME);
     PoketradeNego_PlaySeByKeyA(wk->timer);
     PokemonTrade_SetState(wk, PokemonTradeDemoDown_Wait1);
