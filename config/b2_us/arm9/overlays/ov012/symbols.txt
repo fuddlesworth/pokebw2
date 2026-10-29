@@ -1781,7 +1781,7 @@ data_ov012_0216dad4 kind:data(any) addr:0x0216dad4
 data_ov012_0216dad5 kind:data(any) addr:0x0216dad5
 data_ov012_0216dad6 kind:data(any) addr:0x0216dad6
 ONESHOT_DR_KEYS kind:data(any) addr:0x0216dc1c
-data_ov012_0216dc3c kind:data(any) addr:0x0216dc3c
+sLeagueLiftCameraCoords kind:data(any) addr:0x0216dc3c
 data_ov012_0216dc5c kind:data(any) addr:0x0216dc5c
 data_ov012_0216dc68 kind:data(any) addr:0x0216dc68
 data_ov012_0216dc6a kind:data(any) addr:0x0216dc6a
