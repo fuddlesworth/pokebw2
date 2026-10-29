@@ -1785,7 +1785,7 @@ sLeagueLiftCameraCoords kind:data(any) addr:0x0216dc3c
 BSUBWAY_COMM_BATTLE_PROC_FUNCTIONS kind:data(any) addr:0x0216dc5c
 FEST_MISSION_ZONES kind:data(any) addr:0x0216dc68
 data_ov012_0216dc6a kind:data(any) addr:0x0216dc6a
-data_ov012_0216dc90 kind:data(any) addr:0x0216dc90
+BURMY_FORMS kind:data(any) addr:0x0216dc90
 data_ov012_0216dc92 kind:data(any) addr:0x0216dc92
 WILD_BATTLE_RESULT kind:data(any) addr:0x0216dd1c
 data_ov012_0216dd24 kind:data(any) addr:0x0216dd24
