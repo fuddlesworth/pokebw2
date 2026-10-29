@@ -315,7 +315,7 @@ void PokemonTradeDemoDown_Start(PokemonTradeWork *wk) {
     MCSS_SetAnimation(wk->mcss[0], 0);
     MCSS_Hide(wk->mcss[0]);
     MCSS_Hide(wk->mcss[1]);
-    if (wk->type == 6) {
+    if (wk->type == TRADE_TYPE_GTS_DEPOSIT) {
         VecFx32 pos = { 0, FX32_CONST(-23), FX32_CONST(10) };
 
         MCSS_SetPosition(wk->mcss[0], &pos);

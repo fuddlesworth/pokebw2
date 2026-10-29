@@ -113,7 +113,7 @@ void PoketradeSave_ResetClactAndBeginEvent(PokemonTradeWork *wk) {
         PokemonTrade_SetState(wk, PokemonTrade_FadeOutToEnd);
         return;
     }
-    if (wk->type == 6) {
+    if (wk->type == TRADE_TYPE_GTS_DEPOSIT) {
         PoketradeSave_PopBgmFadeIn60(wk);
         wk->param->next = 3;
         PokemonTrade_SetState(wk, NULL);
@@ -133,9 +133,9 @@ static void PoketradeSave_StepEventMessage1(PokemonTradeWork *wk) {
     if (wk->timer >= 6) {
         GFL_SndBGMPlay(SEQ_ME_POKEGET, 0xffff);
         GFL_SndBGMFadeIn(6);
-        if (wk->type == 7) {
+        if (wk->type == TRADE_TYPE_GTS_WITHDRAW) {
             GFL_MsgDataLoadStrbuf(wk->msgData, 154, wk->strbufTemplate);
-        } else if (wk->type == 8) {
+        } else if (wk->type == TRADE_TYPE_GTS_TRADE) {
             GFL_MsgDataLoadStrbuf(wk->msgData, 157, wk->strbufTemplate);
         } else if (wk->unk11EE != 0) {
             GFL_MsgDataLoadStrbuf(wk->msgData, 132, wk->strbufTemplate);
@@ -169,7 +169,7 @@ static void PoketradeSave_StepEventMessage2(PokemonTradeWork *wk) {
         }
         loadPokemonNicknameToStrbuf(wk->wordSet, 1, pkm);
         copyVarForText(wk->wordSet, 0, wk->partnerInfo);
-        if (wk->type != 7 && wk->type != 8) {
+        if (wk->type != TRADE_TYPE_GTS_WITHDRAW && wk->type != TRADE_TYPE_GTS_TRADE) {
             if (wk->unk11EE != 0) {
                 GFL_MsgDataLoadStrbuf(wk->msgData, 133, wk->strbufTemplate);
                 GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->strbufTemplate);
@@ -232,7 +232,7 @@ static void PoketradeSave_SendTradeSummary(PokemonTradeWork *wk) {
     profile.countryCount = UnityTower_GetCountryCount(survey);
     profile.unk26_0 = UnityTower_GetRatingLevel(survey);
     if (PokemonTrade_IsNetwork(wk)) {
-        if (GFL_NetSendCommand(NetHandle_GetOwn(), TRADE_NET_CMD_UNK12, sizeof(profile), &profile)) {
+        if (GFL_NetSendCommand(NetHandle_GetOwn(), TRADE_NET_CMD_PROFILE, sizeof(profile), &profile)) {
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x17, 8);
             PokemonTrade_SetState(wk, PoketradeSave_StepWaitSyncRange);
         }
@@ -499,19 +499,19 @@ static void PoketradeSave_ApplyTradeResult(PokemonTradeWork *wk) {
         PokeParty_SetupMetData(pkm, 6, wk->myInfo, 30003, wk->heapId);
     }
     switch (wk->type) {
-    case 2:
-    case 3:
+    case TRADE_TYPE_WIFICLUB:
+    case TRADE_TYPE_GTSNEGO:
         RecordAddOne(records, 16);
         break;
-    case 1:
+    case TRADE_TYPE_UNION:
         RecordAddOne(records, 12);
         break;
-    case 0:
+    case TRADE_TYPE_IRC:
         RecordAddOne(records, 36);
         break;
     }
     addPkmToDex(GameData_GetPokedex(wk->gameData), pkm);
-    if (wk->type == 3) {
+    if (wk->type == TRADE_TYPE_GTSNEGO) {
         PalPadFriendList_IncrementTradeCount(GameData_GetPalPadFriendList(wk->gameData));
     }
     if (PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL) == SPECIES_SHAYMIN &&
@@ -525,11 +525,11 @@ static void PoketradeSave_ApplyTradeResult(PokemonTradeWork *wk) {
         BoxSaveAccessor_SetPkm(wk->boxes, wk->param->box, wk->param->slot, PokeParty_ToBoxPkm(pkm));
     }
     switch (wk->type) {
-    case 2:
+    case TRADE_TYPE_WIFICLUB:
         WifiList_AddFriendRecord(GameData_GetWifiList(wk->gameData), wk->param->friendIndex - 1, 0, 0, 1);
         break;
-    case 0:
-    case 1: {
+    case TRADE_TYPE_IRC:
+    case TRADE_TYPE_UNION: {
         u32 index;
         if (WifiList_FindFriendByPlayerInfo(GameData_GetWifiList(wk->gameData), wk->partnerInfo, &index)) {
             WifiList_AddFriendRecord(GameData_GetWifiList(wk->gameData), index, 0, 0, 1);
@@ -544,11 +544,11 @@ static void PoketradeSave_StepAfterTrade(PokemonTradeWork *wk) {
     Poketrade3D_DeleteMcssSlot(wk, 1);
     Poketrade3D_DeleteMcssSlot(wk, 2);
     Poketrade3D_DeleteMcssSlot(wk, 3);
-    if (wk->type == 4 || wk->type == 7 || wk->type == 8) {
+    if (wk->type == TRADE_TYPE_IRCDEMO || wk->type == TRADE_TYPE_GTS_WITHDRAW || wk->type == TRADE_TYPE_GTS_TRADE) {
         wk->param->next = 3;
         PoketradeSave_PopBgmFadeIn60(wk);
         PokemonTrade_SetState(wk, PokemonTrade_FadeOutToEnd);
-    } else if (wk->type == 1 || wk->type == 2 || wk->type == 3) {
+    } else if (wk->type == TRADE_TYPE_UNION || wk->type == TRADE_TYPE_WIFICLUB || wk->type == TRADE_TYPE_GTSNEGO) {
         PokemonTrade_SetState(wk, PoketradeSave_SendTradeSummary);
     } else {
         PokemonTrade_SetState(wk, PoketradeSave_StepRegisterReceived);
@@ -566,7 +566,7 @@ static void PoketradeSave_StepRegisterReceived(PokemonTradeWork *wk) {
     PartyPkm *pkm;
     int slot;
     if (PokemonTrade_IsNegoType(wk)) {
-        int index = wk->unkFA0 % 3;
+        int index = wk->partnerCursor % 3;
         pkm = PokemonTrade_GetPkm(wk, 0);
         wk->param->box = wk->negoBox[0][index];
         slot = wk->negoSlot[0][index];

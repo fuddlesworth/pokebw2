@@ -288,9 +288,9 @@ static void PokemonTradeIrcDemo_StateMoves(PokemonTradeWork *wk) {
 
 static void PokemonTradeIrcDemo_ShowMessage(PokemonTradeWork *wk) {
     GFL_NetSetIconScreen(FALSE, wk->heapId);
-    if (wk->type == 6) {
+    if (wk->type == TRADE_TYPE_GTS_DEPOSIT) {
         GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_WillOffered, wk->strbufTemplate);
-    } else if (wk->type == 8) {
+    } else if (wk->type == TRADE_TYPE_GTS_TRADE) {
         GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_WillSent, wk->strbufTemplate);
     } else if (wk->unk11ED != 0) {
         GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_ReturningGoodBye, wk->strbufTemplate);
@@ -399,7 +399,7 @@ void PokemonTradeIrcDemo_Start(PokemonTradeWork *wk) {
     wk->unk854 = TRUE;
     MCSS_SetAnimation(wk->mcss[0], 0);
     MCSS_PauseAnimation(wk->mcss[0]);
-    if (wk->type == 4) {
+    if (wk->type == TRADE_TYPE_IRCDEMO) {
         VecFx32 pos = sIrcDemoPosEnd;
 
         MCSS_SetPosition(wk->mcss[0], &pos);

@@ -333,8 +333,8 @@ void Poketrade2D_DrawBoxGridScreen(PokemonTradeWork *wk) {
                                 Poketrade2D_GetBoxScreenEntry(scroll + x, y, wk, Poketrade2D_HitTestBoxGrid(wk, x, y)));
         }
     }
-    wk->unk108C = wk->scrollX % 8;
-    wk->unk1084 = 1;
+    wk->bgScrollX = wk->scrollX % 8;
+    wk->bgScrollPending = 1;
     GFL_BGSysQueueScrLoad(7);
 }
 
@@ -647,7 +647,7 @@ static u8 sSpeciesInitials[] = {
 
 // Whether a species has the initial searched for
 static BOOL Poketrade2D_IsBoxIconFiltered(PokemonTradeWork *wk, int species) {
-    if (wk->unk800 != 0 && wk->unk800 - 1 == sSpeciesInitials[species]) {
+    if (wk->searchInitial != 0 && wk->searchInitial - 1 == sSpeciesInitials[species]) {
         return TRUE;
     }
     return FALSE;

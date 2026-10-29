@@ -628,7 +628,7 @@ void Poketrade3D_AddPokemonMcss(PokemonTradeWork *wk, int side, BOOL front, Part
             scale.x = -scale.x;
         }
     }
-    if (wk->type == 2) {
+    if (wk->type == TRADE_TYPE_WIFICLUB) {
         DWCRap_SetMic(TRUE);
     }
     if (front) {
@@ -636,7 +636,7 @@ void Poketrade3D_AddPokemonMcss(PokemonTradeWork *wk, int side, BOOL front, Part
     } else {
         wk->mcss[side] = MCSSSys_AddPartyPkm(wk->mcssSys, pkm, 1, x[side], FX32_CONST(-28), 0);
     }
-    if (wk->type == 2) {
+    if (wk->type == TRADE_TYPE_WIFICLUB) {
         DWCRap_SetMic(FALSE);
     }
     MCSS_SetLoopAnimation(wk->mcss[side]);
@@ -798,7 +798,7 @@ static void Poketrade3D_DrawRotatingCube(PokemonTradeWork *wk) {
     boxCount = PokemonTrade_GetStoredBoxIndex(wk);
     count = boxCount + 1;
     width = count * 160;
-    scroll = wk->unk107E;
+    scroll = wk->partnerScrollX;
     if (scroll < 96) {
         if (scroll < 48) {
             x = scroll * 112 / 48;

@@ -290,9 +290,9 @@ static void PokemonTradeDemoCommon_StateMoves(PokemonTradeWork *wk) {
 
 static void PokemonTradeDemoCommon_ShowMessage(PokemonTradeWork *wk) {
     GFL_NetSetIconScreen(FALSE, wk->heapId);
-    if (wk->type == 6) {
+    if (wk->type == TRADE_TYPE_GTS_DEPOSIT) {
         GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_WillOffered, wk->strbufTemplate);
-    } else if (wk->type == 8) {
+    } else if (wk->type == TRADE_TYPE_GTS_TRADE) {
         GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_WillSent, wk->strbufTemplate);
     } else if (wk->unk11ED != 0) {
         GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_ReturningGoodBye, wk->strbufTemplate);
@@ -391,7 +391,7 @@ void PokemonTradeDemoCommon_Start(PokemonTradeWork *wk) {
     PokemonTradeDemoCommon_StartBgmTimer(wk);
     wk->unk854 = 1;
     MCSS_SetAnimation(wk->mcss[0], 0);
-    if (wk->type == 6) {
+    if (wk->type == TRADE_TYPE_GTS_DEPOSIT) {
         pos = sTradeDemoCommonPosEnd;
         MCSS_SetPosition(wk->mcss[0], &pos);
     }

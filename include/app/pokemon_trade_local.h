@@ -44,25 +44,77 @@
 // is one struct that every file uses
 
 // The network commands, from TRADE_NET_CMD_BASE. The library takes a command as a u16, which GFL_NetSendCommand's
-// prototype doesn't say, so a computed command is cast
+// prototype doesn't say, so a computed command is cast. Commands 2, 4 and 5 are never sent
 #define TRADE_NET_CMD_BASE 0xc00
 #define TRADE_NET_CMD_SELECT (TRADE_NET_CMD_BASE + 0)
-#define TRADE_NET_CMD_UNK1 (TRADE_NET_CMD_BASE + 1)
-#define TRADE_NET_CMD_UNK3 (TRADE_NET_CMD_BASE + 3)
-#define TRADE_NET_CMD_UNK6 (TRADE_NET_CMD_BASE + 6)
+// The Pokémon offered, which the other machine acknowledges with TRADE_NET_CMD_MON_ACK
+#define TRADE_NET_CMD_MON (TRADE_NET_CMD_BASE + 1)
+// The side the cursor chose, before the trade's animation
+#define TRADE_NET_CMD_CURSOR (TRADE_NET_CMD_BASE + 3)
+// The Pokémon offered is taken back
+#define TRADE_NET_CMD_CLEAR_MON (TRADE_NET_CMD_BASE + 6)
+// The three Pokémon offered in a negotiation, from TRADE_NET_CMD_OFFER
 #define TRADE_NET_CMD_OFFER (TRADE_NET_CMD_BASE + 7)
-#define TRADE_NET_CMD_UNKA (TRADE_NET_CMD_BASE + 0xa)
+#define TRADE_NET_CMD_READY (TRADE_NET_CMD_BASE + 0xa)
 #define TRADE_NET_CMD_WITHDRAW (TRADE_NET_CMD_BASE + 0xb)
-#define TRADE_NET_CMD_UNKC (TRADE_NET_CMD_BASE + 0xc)
-#define TRADE_NET_CMD_UNKD (TRADE_NET_CMD_BASE + 0xd)
-#define TRADE_NET_CMD_UNKE (TRADE_NET_CMD_BASE + 0xe)
-#define TRADE_NET_CMD_UNKF (TRADE_NET_CMD_BASE + 0xf)
-#define TRADE_NET_CMD_UNK10 (TRADE_NET_CMD_BASE + 0x10)
+// Where the strip is scrolled to
+#define TRADE_NET_CMD_SCROLL (TRADE_NET_CMD_BASE + 0xc)
+// The stamp a negotiation's player touched
+#define TRADE_NET_CMD_STAMP (TRADE_NET_CMD_BASE + 0xd)
+#define TRADE_NET_CMD_BOX_COLORS (TRADE_NET_CMD_BASE + 0xe)
+// The label over a side's Pokémon, a TRADE_STATUS_*
+#define TRADE_NET_CMD_STATUS (TRADE_NET_CMD_BASE + 0xf)
+// The number of boxes and whether the mailbox is full
+#define TRADE_NET_CMD_BOX_INFO (TRADE_NET_CMD_BASE + 0x10)
 #define TRADE_NET_CMD_CHECK_RESULT (TRADE_NET_CMD_BASE + 0x11)
-#define TRADE_NET_CMD_UNK12 (TRADE_NET_CMD_BASE + 0x12)
-#define TRADE_NET_CMD_UNK13 (TRADE_NET_CMD_BASE + 0x13)
-#define TRADE_NET_CMD_UNK16 (TRADE_NET_CMD_BASE + 0x16)
-#define TRADE_NET_CMD_UNK17 (TRADE_NET_CMD_BASE + 0x17)
+// The player's profile, for the Unity Tower's survey
+#define TRADE_NET_CMD_PROFILE (TRADE_NET_CMD_BASE + 0x12)
+// Whether each of the three Pokémon offered in a negotiation is from the party, from TRADE_NET_CMD_NEGO_IN_PARTY
+#define TRADE_NET_CMD_NEGO_IN_PARTY (TRADE_NET_CMD_BASE + 0x13)
+// Whether the Pokémon offered is from the party
+#define TRADE_NET_CMD_IN_PARTY (TRADE_NET_CMD_BASE + 0x16)
+#define TRADE_NET_CMD_MON_ACK (TRADE_NET_CMD_BASE + 0x17)
+
+// The kinds of trade, by the proc that starts it. No proc starts types 5 and 9
+enum {
+    TRADE_TYPE_IRC,
+    TRADE_TYPE_UNION,
+    TRADE_TYPE_WIFICLUB,
+    TRADE_TYPE_GTSNEGO,
+    // The infrared trade's animation alone, which the in-game trades show
+    TRADE_TYPE_IRCDEMO,
+    // The Global Trade Station's animations: a Pokémon deposited, taken out and traded
+    TRADE_TYPE_GTS_DEPOSIT = 6,
+    TRADE_TYPE_GTS_WITHDRAW,
+    TRADE_TYPE_GTS_TRADE,
+};
+
+// What a machine sends with TRADE_NET_CMD_SELECT, which each machine keeps in command: a choice of the menus, or why
+// the trade can't go on
+enum {
+    TRADE_SELECT_NONE,
+    TRADE_SELECT_OFFER,
+    TRADE_SELECT_TRADE,
+    TRADE_SELECT_CANCEL,
+    TRADE_SELECT_END,
+    // The Pokémon offered is the last that can fight in the party
+    TRADE_SELECT_LAST_PKM,
+    // The Pokémon offered holds mail and the other machine's mailbox is full
+    TRADE_SELECT_MAIL_FULL,
+    // A bad egg or an invalid species, this machine's or the other's
+    TRADE_SELECT_BAD_PKM,
+    TRADE_SELECT_PARTNER_BAD_PKM,
+    // Never sent: its message says the Pokémon knows an HM move
+    TRADE_SELECT_HM_MOVE,
+};
+
+// The label over each side's Pokémon in a negotiation, from its message; TRADE_STATUS_DRAWN once it is drawn
+enum {
+    TRADE_STATUS_SELECTING,
+    TRADE_STATUS_SELECTED,
+    TRADE_STATUS_WAITING,
+    TRADE_STATUS_DRAWN,
+};
 
 // The copies of the save's data that a trade changes, to restore if saving fails
 typedef struct {
@@ -142,7 +194,7 @@ enum {
 
 struct PokemonTradeWork {
     // The HTTP connection of a trade over Wi-Fi
-    NHttpRap *unk0;
+    NHttpRap *http;
     u8 unk4[2];
     u8 unk6[0x2];
     PokemonTradeParam *param;
@@ -157,7 +209,8 @@ struct PokemonTradeWork {
     BmpWin *unk5D8;
     // The Pokémon each machine offers, by network ID
     PartyPkm *pkm[2];
-    u32 unk5E4[2];
+    // Whether the Pokémon each machine offers is from its party, by network ID
+    u32 inParty[2];
     // The step that runs each frame
     PokemonTradeState state;
     // The icon that shows while the machines wait on each other
@@ -200,7 +253,8 @@ struct PokemonTradeWork {
     // The windows of the letters to search the boxes by initial
     BmpWin *initialWindows[26];
     u8 unk7B8[0x48];
-    u32 unk800;
+    // The initial searched for in the list of letters, plus one, or 0
+    u32 searchInitial;
     u8 unk804[0xc];
     G3DCamera *camera;
     u8 unk814[0x4];
@@ -268,7 +322,8 @@ struct PokemonTradeWork {
     u8 unkF38[0x1c];
     int touchX;
     int touchY;
-    u32 unkF5C;
+    // Whether the held icon has moved from where it was picked up
+    u32 heldMoved;
     // The Pokémon icon held by the stylus, where it was picked up and the stylus's offset from it
     ClActor *heldIcon;
     ClActorPos heldPos;
@@ -276,7 +331,8 @@ struct PokemonTradeWork {
     s16 heldOffsetY;
     // Where the held icon was the frame before, which gives the motion it is let go with
     ClActorPos heldPrevPos;
-    u32 unkF70;
+    // Whether the held icon is still only tapped, not dragged away
+    u32 heldTap;
     // The cursor of the keys in the strip
     int cursorColumn;
     int cursorRow;
@@ -285,25 +341,31 @@ struct PokemonTradeWork {
     int selectSlot;
     int selectBox;
     u8 unkF8C[0x8];
-    int unkF94;
-    int unkF98;
-    int unkF9C;
-    int unkFA0;
+    // The Pokémon the player picked, whose summary shows or which is taken out of the offers
+    int targetSlot;
+    int targetBox;
+    // The network ID, plus one, of the machine whose Pokémon arrived, to show once the summary is closed
+    int pendingSideMon;
+    // The side the other machine's cursor chose
+    int partnerCursor;
     // The Pokémon each player offers in a negotiation: their slots, boxes and copies
     int negoSlot[2][3];
     int negoBox[2][3];
     // The cursor over the panels of a negotiation
     ClActor *negoCursor;
     PartyPkm *negoPkm[2][3];
-    u32 unkFF0[2][3];
+    // Whether each Pokémon a player offers in a negotiation is from the party
+    u32 negoInParty[2][3];
     // The icons of the Pokémon each player offers in a negotiation, and their characters
     ClActor *negoIcons[2][3];
     u32 negoIconChars[2][3];
     BmpWin *unk1038[4];
-    u32 unk1048[2];
-    u32 unk1050[2];
+    // In a GTS Negotiation, the kind of Pokémon each player wants and the level of the first's, or -1
+    u32 wantedKind[2];
+    u32 wantedLevel[2];
     u8 unk1058[0x8];
-    u32 unk1060;
+    // Whether the other machine sent TRADE_NET_CMD_READY
+    u32 partnerReady;
     // Where each machine's Pokémon arrives
     PartyPkm *recvPkm[3];
     u8 unk1070[0x4];
@@ -312,12 +374,14 @@ struct PokemonTradeWork {
     s16 scrollTouchX;
     s16 scrollSpeed;
     s16 scrollX;
-    s16 unk107E;
+    // Where the other machine's strip is scrolled to
+    s16 partnerScrollX;
     s16 firstColumn;
     u8 unk1082[0x2];
-    u32 unk1084;
-    u32 unk1088;
-    int unk108C;
+    // Whether the V-blank sets the strip's BGs to bgScrollX, and whether the stylus was on the strip last frame
+    u32 bgScrollPending;
+    u32 browseTouchHeld;
+    int bgScrollX;
     int unk1090;
     u32 bgmTimer;
     u16 typeIconPage;
@@ -362,9 +426,10 @@ struct PokemonTradeWork {
     // The results of the server's check of the Pokémon
     u8 checkResult;
     u8 partnerCheckResult;
-    u8 unk11E8[2];
-    // The other machine's number of boxes
-    u8 unk11EA;
+    // The label over each side's Pokémon, a TRADE_STATUS_*
+    u8 statusLabels[2];
+    // Whether the labels over the sides' Pokémon are drawn
+    u8 showStatusLabels;
     // Whether the lower screen's BGs, and the trade demo's BGs 6 and 7, are set up
     u8 subBGsCreated;
     u8 demoBGsCreated;
@@ -375,17 +440,20 @@ struct PokemonTradeWork {
     u8 unk11F0[0x1];
     u8 waitTimer;
     u8 partnerBoxCount;
-    u8 unk11F3;
-    u8 unk11F4;
+    // Whether a negotiation's summary is open
+    u8 inSummary;
+    u8 partnerMailBoxFull;
     u8 boxCursorDone;
     u8 nationalDex;
     u8 unk11F7;
     u8 bgmCount;
-    u8 unk11F9;
+    // Whether the upper screen's windows wait for the V-blank
+    u8 wndSetupPending;
     // How many times the server checked the Pokémon
     u8 checkCount;
-    u8 unk11FB_0 : 4;
-    u8 unk11FB_4 : 4;
+    // Whether a Pokémon was sent and not yet acknowledged, and whether one arrived and is to be acknowledged
+    u8 awaitingMonAck : 4;
+    u8 monAckPending : 4;
     // The icons of the party and of every box
     TradeBoxEntry boxEntries[726];
 };

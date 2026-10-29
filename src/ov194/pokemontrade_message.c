@@ -574,7 +574,7 @@ void PoketradeSave_OpenSummaryScreen(PokemonTradeWork *wk, PartyPkm *pkm) {
                                 GX_PLANEMASK_OBJ);
         G2x_SetBlendBrightness_(REG_DB_BLDCNT_ADDR,
                                 GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG3 | GX_BLEND_PLANEMASK_OBJ, -8);
-        wk->unk11F9 = 1;
+        wk->wndSetupPending = 1;
         GFL_VBlankTCBAdd(PoketradeSave_VBlankSetupWindowRegs, wk, 0);
     }
     TouchBar_SetIconVisible(wk->touchBar, TOUCHBAR_ICON_RETURN, TRUE);
@@ -912,6 +912,6 @@ static void PoketradeSave_VBlankSetupWindowRegs(TCB *tcb, void *work) {
     G2S_SetWnd0Position(224, 169, 255, 192);
     G2S_SetWndOutsidePlane(GX_PLANEMASK_ALL, TRUE);
     GXS_SetVisibleWnd(GX_WNDMASK_W0 | GX_WNDMASK_W1);
-    wk->unk11F9 = 0;
+    wk->wndSetupPending = 0;
     GFL_TCBRemove(tcb);
 }
