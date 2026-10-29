@@ -97,7 +97,7 @@ BOOL Scrcmd_EntreeForest_EntreeForestSpawnAllPkm(VM *vm, FieldScriptEnv *env) {
     SymbolMapList *list = SymbolMap_CreatePokemonList(FieldScriptEnv_GetHeapID(env), gsys, &actorIdBase);
 
     if (list != NULL) {
-        EntreeForest_SpawnAllPokemon(field, actorIdBase, list->pokemon, list->count, list->unk50_18);
+        EntreeForest_SpawnAllPokemon(field, actorIdBase, list->pokemon, list->count, list->area);
         GFL_HeapFree(list);
     }
     return FALSE;
