@@ -8372,7 +8372,9 @@ overlays/ov012 0x02158f20 ScriptNative_MusicalCommBootWait
 overlays/ov012 0x02158f64 ScriptNative_MusicalCommEndWait
 overlays/ov012 0x02158fb8 ScriptNative_MusicalPokesRecvWait
 overlays/ov012 0x02158ff4 Scrcmd_Musical_DreamWorldItems
+overlays/ov012 0x0215917c GameData_LoadEncountZone
 overlays/ov012 0x021591b4 GameData_ResetPhenomenonSteps
+overlays/ov012 0x021591f4 Encount_OnZoneChange
 overlays/ov012 0x02159218 EncountSave_HasActiveEntry
 overlays/ov012 0x0215921c EncountSave_SpawnEntry
 overlays/ov012 0x02159220 EncountSave_SpawnPendingEntries
