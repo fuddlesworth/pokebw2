@@ -20560,6 +20560,13 @@ overlays/ov167 0x021d7070 sCmdProcTable
 overlays/ov167 0x021d7160 sServerCmdTable
 overlays/ov167 0x021d7448 BTL_NET_COMMANDS
 overlays/ov167 0x021d7490 sSemiInvulnFlags
+overlays/ov167 0x021d74a0 CRITICAL_HIT_CHANCES
+overlays/ov167 0x021d74a5 MULTI_HIT_CHANCES
+overlays/ov167 0x021d74ab TYPE_EFFECTIVENESS_QUARTERS
+overlays/ov167 0x021d74b1 LOST_MONEY_MULTIPLIERS
+overlays/ov167 0x021d74cc STAT_STAGE_RATIOS
+overlays/ov167 0x021d74e6 ACCURACY_STAGE_RATIOS
+overlays/ov167 0x021d7500 TYPE_CHART
 overlays/ov167 0x021d7624 sHandlersStall
 overlays/ov167 0x021d762c sHandlersHydration
 overlays/ov167 0x021d7634 sHandlersRattled
@@ -21136,6 +21143,7 @@ overlays/ov167 0x021db194 g_BattleEventList
 overlays/ov167 0x021db1a0 g_BattleEventPool
 overlays/ov167 0x021db3b0 g_BattleEventVars
 overlays/ov167 0x021db954 g_BattleEventItems
+overlays/ov167 0x021dd844 g_BtlCalcWork
 overlays/ov167 0x021dd864 sOverlayLoaded
 overlays/ov167 0x021dd868 sCommMode
 overlays/ov167 0x021dd86c sAdapters

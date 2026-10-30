@@ -4270,15 +4270,15 @@ data_ov167_021d7074 kind:data(any) addr:0x021d7074
 sServerCmdTable kind:data(any) addr:0x021d7160
 BTL_NET_COMMANDS kind:data(any) addr:0x021d7448 ambiguous
 sSemiInvulnFlags kind:data(any) addr:0x021d7490
-data_ov167_021d74a0 kind:data(any) addr:0x021d74a0
-data_ov167_021d74a5 kind:data(any) addr:0x021d74a5
-data_ov167_021d74ab kind:data(any) addr:0x021d74ab
-data_ov167_021d74b1 kind:data(any) addr:0x021d74b1
-data_ov167_021d74cc kind:data(any) addr:0x021d74cc
+CRITICAL_HIT_CHANCES kind:data(any) addr:0x021d74a0
+MULTI_HIT_CHANCES kind:data(any) addr:0x021d74a5
+TYPE_EFFECTIVENESS_QUARTERS kind:data(any) addr:0x021d74ab
+LOST_MONEY_MULTIPLIERS kind:data(any) addr:0x021d74b1
+STAT_STAGE_RATIOS kind:data(any) addr:0x021d74cc
 data_ov167_021d74cd kind:data(any) addr:0x021d74cd
-data_ov167_021d74e6 kind:data(any) addr:0x021d74e6
+ACCURACY_STAGE_RATIOS kind:data(any) addr:0x021d74e6
 data_ov167_021d74e7 kind:data(any) addr:0x021d74e7
-data_ov167_021d7500 kind:data(any) addr:0x021d7500
+TYPE_CHART kind:data(any) addr:0x021d7500
 sHandlersStall kind:data(any) addr:0x021d7624
 sHandlersHydration kind:data(any) addr:0x021d762c
 sHandlersRattled kind:data(any) addr:0x021d7634
@@ -4908,7 +4908,7 @@ data_ov167_021db5f4 kind:bss addr:0x021db5f4
 data_ov167_021db774 kind:bss addr:0x021db774
 data_ov167_021db8f4 kind:bss addr:0x021db8f4
 g_BattleEventItems kind:bss addr:0x021db954
-data_ov167_021dd844 kind:bss addr:0x021dd844
+g_BtlCalcWork kind:bss addr:0x021dd844
 data_ov167_021dd84c kind:bss addr:0x021dd84c
 sOverlayLoaded kind:bss addr:0x021dd864
 sCommMode kind:bss addr:0x021dd868
