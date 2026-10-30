@@ -730,9 +730,9 @@ TARGET_MAPS kind:data(any) addr:0x021f3c18
 data_ov168_021f3d80 kind:data(any) addr:0x021f3d80
 data_ov168_021f3d84 kind:data(any) addr:0x021f3d84
 data_ov168_021f3d88 kind:data(any) addr:0x021f3d88
-data_ov168_021f3d8c kind:data(any) addr:0x021f3d8c
-data_ov168_021f3d92 kind:data(any) addr:0x021f3d92
-data_ov168_021f3d9a kind:data(any) addr:0x021f3d9a
+sPriorities kind:data(any) addr:0x021f3d8c
+sPrioritiesTriple kind:data(any) addr:0x021f3d92
+sPrioritiesRotation kind:data(any) addr:0x021f3d9a
 data_ov168_021f3da4 kind:data(any) addr:0x021f3da4
 data_ov168_021f3dac kind:data(any) addr:0x021f3dac
 data_ov168_021f3db4 kind:data(any) addr:0x021f3db4

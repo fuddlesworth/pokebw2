@@ -327,14 +327,14 @@ void BtlvMcss_Main(BtlvMcss *work) {
                 }
             }
             switch (status) {
-            case 3:
+            case BTLV_GAUGE_STATUS_SLEEP:
                 BtlvMcss_ResetPaletteBlend(work, pos);
                 BtlvMcss_SetAnimStop(work, pos, 3);
                 BtlvMcss_SetAnimPause(work, pos, 3);
                 BtlvMcss_SetAnimSpeed(work, pos, 0x555);
                 work->entries[index].statusAnim = TRUE;
                 break;
-            case 1:
+            case BTLV_GAUGE_STATUS_PARALYSIS:
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, work->entries[index].statusEvy, GX_RGB(15, 15, 0));
                 }
@@ -342,7 +342,7 @@ void BtlvMcss_Main(BtlvMcss *work) {
                 BtlvMcss_SetAnimPause(work, pos, 3);
                 work->entries[index].statusAnim = TRUE;
                 break;
-            case 2:
+            case BTLV_GAUGE_STATUS_FREEZE:
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, 8, GX_RGB(15, 15, 31));
                 }
@@ -350,7 +350,7 @@ void BtlvMcss_Main(BtlvMcss *work) {
                 BtlvMcss_SetAnimPause(work, pos, 2);
                 work->entries[index].statusAnim = TRUE;
                 break;
-            case 5:
+            case BTLV_GAUGE_STATUS_BURN:
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, work->entries[index].statusEvy, GX_RGB(15, 0, 0));
                 }
@@ -358,7 +358,7 @@ void BtlvMcss_Main(BtlvMcss *work) {
                 BtlvMcss_SetAnimPause(work, pos, 3);
                 work->entries[index].statusAnim = TRUE;
                 break;
-            case 4:
+            case BTLV_GAUGE_STATUS_POISON:
             case 7:
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, work->entries[index].statusEvy, GX_RGB(15, 0, 15));
@@ -367,7 +367,7 @@ void BtlvMcss_Main(BtlvMcss *work) {
                 BtlvMcss_SetAnimPause(work, pos, 3);
                 work->entries[index].statusAnim = TRUE;
                 break;
-            case 8:
+            case BTLV_GAUGE_STATUS_NONE:
             default:
                 if (work->entries[index].statusAnim == TRUE) {
                     BtlvMcss_ResetPaletteBlend(work, pos);
@@ -380,7 +380,7 @@ void BtlvMcss_Main(BtlvMcss *work) {
                 }
                 break;
             }
-            if (status == 8) {
+            if (status == BTLV_GAUGE_STATUS_NONE) {
                 if (hpColor == HP_GAUGE_COLOR_RED || hpColor == HP_GAUGE_COLOR_NONE) {
                     BtlvMcss_SetAnimSpeed(work, pos, 0x555);
                 } else {

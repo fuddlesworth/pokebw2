@@ -21886,6 +21886,9 @@ overlays/ov168 0x021f3ac8 TARGET_NAME_POS
 overlays/ov168 0x021f3b28 TILE_SETS
 overlays/ov168 0x021f3b88 BG_SETUPS
 overlays/ov168 0x021f3c18 TARGET_MAPS
+overlays/ov168 0x021f3d8c sPriorities
+overlays/ov168 0x021f3d92 sPrioritiesTriple
+overlays/ov168 0x021f3d9a sPrioritiesRotation
 overlays/ov168 0x021f3f50 sIdleEffectsWaitMsg
 overlays/ov168 0x021f3f58 sIdleEffects
 overlays/ov168 0x021f3f70 sStudioMovieShadows
