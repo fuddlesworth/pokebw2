@@ -119,7 +119,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
     case 2:
         GFL_OvlLoad(OVERLAY_ID(167));
         wk->ov167Loaded = TRUE;
-        NetCommand_AddTable(0x100, data_ov167_021d7448, 9, NULL);
+        NetCommand_AddTable(0x100, BTL_NET_COMMANDS, 9, NULL);
         wk->commandsSet = TRUE;
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xc8, 0x24);
         *state = 3;

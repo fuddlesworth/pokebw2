@@ -267,7 +267,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
         break;
     case IRC_STEP_LOAD_BATTLE:
         GFL_OvlLoad(OVERLAY_BATTLE_MAIN);
-        NetCommand_AddTable(0x100, data_ov167_021d7448, 9, NULL);
+        NetCommand_AddTable(0x100, BTL_NET_COMMANDS, 9, NULL);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x6e, 12);
         (*state)++;
         break;

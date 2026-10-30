@@ -4268,7 +4268,7 @@ sCmdProcTable kind:data(any) addr:0x021d7070
 data_ov167_021d7071 kind:data(any) addr:0x021d7071
 data_ov167_021d7074 kind:data(any) addr:0x021d7074
 sServerCmdTable kind:data(any) addr:0x021d7160
-data_ov167_021d7448 kind:data(any) addr:0x021d7448 ambiguous
+BTL_NET_COMMANDS kind:data(any) addr:0x021d7448 ambiguous
 sSemiInvulnFlags kind:data(any) addr:0x021d7490
 data_ov167_021d74a0 kind:data(any) addr:0x021d74a0
 data_ov167_021d74a5 kind:data(any) addr:0x021d74a5

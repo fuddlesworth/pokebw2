@@ -340,7 +340,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         } else {
             EventWifiClub_SetBattleParty(wk, GSYS_GetGameData(gsys), seq);
             GFL_OvlLoad(OVERLAY_BATTLE_MAIN);
-            NetCommand_AddTable(0x100, data_ov167_021d7448, 9, 0);
+            NetCommand_AddTable(0x100, BTL_NET_COMMANDS, 9, 0);
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 100, 10);
             (*state)++;
         }

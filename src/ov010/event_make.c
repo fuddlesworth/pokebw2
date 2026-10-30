@@ -118,7 +118,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         procWork->ov167Loaded = TRUE;
         GFL_OvlLoad(OVERLAY_ID(167));
         procWork->commandsSet = TRUE;
-        NetCommand_AddTable(0x100, data_ov167_021d7448, 9, NULL);
+        NetCommand_AddTable(0x100, BTL_NET_COMMANDS, 9, NULL);
         GFL_NetSendTiming(NetHandle_GetOwn(), 0xc8);
         *state = 7;
         break;
