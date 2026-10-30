@@ -28,6 +28,7 @@ static struct {
     CaptureBatch batches[PC_GX_MAX_VERTICES / 3 + 1];
     Uint32 batchCount;
     float sceneMinDepth, sceneMaxDepth;
+    float sceneProjectionScaleX;
 } renderer;
 
 static void CaptureScreen(u32 control);
@@ -40,6 +41,7 @@ static const PcGxVertex rearVertices[6] = {
 
 static void SetViewport(SDL_GPUCommandBuffer *commands, SDL_GPURenderPass *pass, const SDL_GPUViewport *viewport,
                         Uint32 captureMode, bool scene) {
+    float projectionScale[4] = { 1, 1, 1, 1 };
     struct {
         float rect[4], depth[4];
         Uint32 captureMode, spriteFilter, padding[2];
@@ -48,6 +50,9 @@ static void SetViewport(SDL_GPUCommandBuffer *commands, SDL_GPURenderPass *pass,
                 .captureMode = captureMode,
                 .spriteFilter = PcSettings_Get()->spriteFilter };
     SDL_SetGPUViewport(pass, viewport);
+    if (captureMode && scene && renderer.sceneProjectionScaleX > 0)
+        projectionScale[0] = 1.0f / renderer.sceneProjectionScaleX;
+    SDL_PushGPUVertexUniformData(commands, 0, projectionScale, sizeof(projectionScale));
     SDL_PushGPUFragmentUniformData(commands, 0, &state, sizeof(state));
 }
 
@@ -67,7 +72,8 @@ bool PcGxVideo_Init(PcVideo *video) {
                                             .code_size = sizeof(vertex_code),
                                             .entrypoint = "main",
                                             .format = SDL_GPU_SHADERFORMAT_SPIRV,
-                                            .stage = SDL_GPU_SHADERSTAGE_VERTEX };
+                                            .stage = SDL_GPU_SHADERSTAGE_VERTEX,
+                                            .num_uniform_buffers = 1 };
     SDL_GPUShader *vert = SDL_CreateGPUShader(video->device, &shader_info);
     if (!vert)
         return false;
@@ -404,6 +410,7 @@ bool PcGxVideo_Present(PcVideo *video, bool *presented) {
     renderer.batchCount = 0;
     renderer.sceneMinDepth = scene_viewport.min_depth;
     renderer.sceneMaxDepth = scene_viewport.max_depth;
+    renderer.sceneProjectionScaleX = PcGx.wide_scene ? PcGx.projection_scale_x : 1.0f;
     for (int layer = 0; layer < 4; layer++) {
         if (layer == 3 && (samples || PcGx.battle_ui)) {
             SDL_EndGPURenderPass(pass);

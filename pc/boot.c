@@ -45,6 +45,7 @@
 #include "gfl/ui.h"
 #include "gx_backend.h"
 #include "menu_ui.h"
+#include "nitro/host_gx.h"
 #include "nitro/os.h"
 #include "nnsys/gfd.h"
 #include "party_ui.h"
@@ -376,6 +377,8 @@ void OS_WaitIrq(BOOL clear, OSIrqMask interrupts) {
     SDL_Delay(16);
     PcOsVBlankCount++;
     PC_GX_REG16(0x04000006) = 192;
+    // Hardware captures the armed display on VBlank, including during synchronous waits.
+    PcGx_Capture();
     GFL_VBlankExecCallback();
     NNS_GfdDoVramTransfer();
     GFL_TCBMgrUpdate(vblank);
