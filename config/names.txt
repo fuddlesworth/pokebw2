@@ -7858,6 +7858,7 @@ overlays/ov011 0x021857d0 sMatchChance
 overlays/ov011 0x02185aec DWCauthhttpparam
 overlays/ov011 0x02185b08 sDefaultUrl
 overlays/ov011 0x02185d24 DWCi_NasRootCerts
+overlays/ov011 0x02185e68 sConnTest
 overlays/ov011 0x0218604c sExponent
 overlays/ov011 0x0218604f sName
 overlays/ov011 0x02186084 DWCi_RootCertBaltimoreCyberTrust

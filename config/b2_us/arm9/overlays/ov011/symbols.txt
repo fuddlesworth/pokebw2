@@ -1910,7 +1910,7 @@ data_ov011_02185e58 kind:data(any) addr:0x02185e58
 data_ov011_02185e5c kind:data(any) addr:0x02185e5c
 data_ov011_02185e60 kind:data(any) addr:0x02185e60
 data_ov011_02185e64 kind:data(any) addr:0x02185e64
-data_ov011_02185e68 kind:data(any) addr:0x02185e68
+sConnTest kind:data(any) addr:0x02185e68
 data_ov011_02185e70 kind:data(any) addr:0x02185e70
 data_ov011_02185e94 kind:data(any) addr:0x02185e94
 data_ov011_02185ea0 kind:data(any) addr:0x02185ea0
