@@ -751,7 +751,7 @@ data_ov168_021f3e9c kind:data(any) addr:0x021f3e9c
 data_ov168_021f3ea4 kind:data(any) addr:0x021f3ea4
 data_ov168_021f3eac kind:data(any) addr:0x021f3eac
 data_ov168_021f3ec4 kind:data(any) addr:0x021f3ec4
-data_ov168_021f3ef4 kind:data(any) addr:0x021f3ef4
+FINGER_ACTOR_SETUP kind:data(any) addr:0x021f3ef4
 data_ov168_021f3f20 kind:data(any) addr:0x021f3f20
 data_ov168_021f3f30 kind:data(any) addr:0x021f3f30
 data_ov168_021f3f40 kind:data(any) addr:0x021f3f40
