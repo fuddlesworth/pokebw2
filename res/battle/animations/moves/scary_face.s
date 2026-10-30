@@ -9,7 +9,7 @@ ScaryFace:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
     ParticleLoad 354
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     Wait EFFVM_WAIT_PARTICLES
     SetYield FALSE
     PlaySE SEQ_SE_W116_01, 1, EFFVM_ATTACKER, 15, 0, 115, 0, 0, 0
@@ -19,7 +19,7 @@ ScaryFace:
     EmitterAdd 354, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_ATTACKER, 2, 0, 0x4cd, 10, 1, 1
     WaitFrames 60
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

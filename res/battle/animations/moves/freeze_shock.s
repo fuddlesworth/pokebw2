@@ -28,12 +28,12 @@ FreezeShock:
 
 FreezeShock_Variant1:
     LoadBg 219
-    CallDfd74 2, 0
+    SetVanish 2, 0
     CameraMovePreset 1, 9, 16, 0, 8
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 1
+    SetVanish 0, 1
     ParticleLoad 727
     ParticleLoad 728
     ParticleLoad 729
@@ -54,7 +54,7 @@ FreezeShock_Variant1:
     EmitterMove 727, 0, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x14000, 0, 0x800, 0x1000, 0
     EmitterMove 728, 2, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x14000, 0, 0x800, 0x1000, 0
     EmitterMove 729, 2, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x14000, 0, 0x800, 0x1000, 0
-    CallDfd74 1, 1
+    SetVanish 1, 1
     WaitFrames 20
     SetYield FALSE
     PlaySE SEQ_SE_W465_01, 1, EFFVM_DEFENDER, 10, -500, 127, 0, 0, 0
@@ -66,7 +66,7 @@ FreezeShock_Variant1:
     MoveSE 3, 0, 1, 50, 0, 70, 20, 0, 0
     PlaySE SEQ_SE_DUMMY5, 3, EFFVM_DEFENDER, 100, 0, 0, 0, 0, 0
     SetYield TRUE
-    CallDfc70 3, 16, 0, 2, 0
+    PaletteFade 3, 16, 0, 2, 0
     WaitFrames 3
     BgPalAnim 38, 6
     BgMove 4, 8, 0, 80, 0, 0
@@ -76,12 +76,12 @@ FreezeShock_Variant1:
     EmitterAdd 728, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 727, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 0, 16, 2, 0
+    PaletteFade 3, 0, 16, 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8

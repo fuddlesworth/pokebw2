@@ -26,7 +26,7 @@ PsychoShift:
     PlaySE SEQ_SE_W051_03, 1, EFFVM_DEFENDER, 125, 0, 40, 0, 0, 0
     PlaySE SEQ_SE_W051_03, 2, EFFVM_DEFENDER, 135, 0, 30, 0, 0, 0
     SetYield TRUE
-    CallDfc70 2, 0, 8, 2, 0
+    PaletteFade 2, 0, 8, 2, 0
     McssMoveXY EFFVM_ATTACKER, 2, 0x333, 0, 2, 0, 30
     ParticleLoad 554
     EmitterAddOrtho 554, 0, EFFVM_EMIT_ATTACKER, 8, 0, 0x2000, 0, 0x800, 0x1000, 0x800, 0x1000
@@ -42,7 +42,7 @@ PsychoShift:
     WaitFrames 20
     EmitterAddOrtho 554, 1, EFFVM_EMIT_DEFENDER, 8, 0, 0x2000, 0, 0x800, 0x1000, 0x800, 0x1000
     WaitFrames 50
-    CallDfc70 2, 8, 0, 2, 0
+    PaletteFade 2, 8, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL

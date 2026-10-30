@@ -18,7 +18,7 @@ Grudge:
     EmitterAdd 459, 0, EFFVM_EMIT_ATTACKER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 459, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_ATTACKER, 2, 0, 0x800, 16, 1, 1
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     WaitFrames 20
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssPalFade EFFVM_DEFENDER, 0, 12, 1, 0x5816
@@ -29,7 +29,7 @@ Grudge:
     McssPalFade EFFVM_DEFENDER, 0, 12, 1, 0x5816
     WaitFrames 20
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x5816
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE

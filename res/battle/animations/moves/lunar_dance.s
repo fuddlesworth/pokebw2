@@ -7,14 +7,14 @@
 
 LunarDance:
     LoadBg 186
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 15, 0, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 15, 0, 0
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 15, 0, 0, 0
+    PaletteFade 4, 15, 0, 0, 0
     BgMove 4, 0, 2, 80, 0, 0
     ParticleLoad 640
     SetYield FALSE
@@ -27,12 +27,12 @@ LunarDance:
     EmitterAdd 640, 2, EFFVM_EMIT_ATTACKER, 8, 0x4cd, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 640, 3, EFFVM_EMIT_ATTACKER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 15, 0, 0
+    PaletteFade 4, 0, 15, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 15, 0, 0, 0
+    PaletteFade 4, 15, 0, 0, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

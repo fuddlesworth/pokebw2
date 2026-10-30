@@ -8,7 +8,7 @@
 NightDaze:
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 13, 3, 10570
+    PaletteFade 4, 0, 13, 3, 10570
     SetYield FALSE
     PlaySE SEQ_SE_W054_01, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
     PlaySE SEQ_SE_W307_03, 2, EFFVM_ATTACKER, 0, 0, 70, 0, 0, 0
@@ -41,7 +41,7 @@ NightDaze:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x333, 0, 1, 1, 12
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 3, 10570
+    PaletteFade 4, 13, 0, 3, 10570
     McssPalFade EFFVM_DEFENDER, 6, 0, 2, 0x1405
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

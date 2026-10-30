@@ -11,7 +11,7 @@ Effect099:
     McssAlpha 0, 1, 1, 10, 0, 0
     Wait EFFVM_WAIT_ALL
     McssSetMode 0, 3
-    CallDisplay 0, 8, -18432, -20480, 0
+    SetTrainer 0, 8, -18432, -20480, 0
     McssScale 8, 1, 0x1800, 0x1800, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

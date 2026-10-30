@@ -9,7 +9,7 @@ ShadowSneak:
     McssSetValue EFFVM_ALL, 1
     CameraMovePreset 1, 20, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 5, 2, 32767
+    PaletteFade 4, 0, 5, 2, 32767
     SetYield FALSE
     PlaySE SEQ_SE_W028_01, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
     PlaySE SEQ_SE_W157_02, 2, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -38,7 +38,7 @@ ShadowSneak:
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetValue EFFVM_ALL, 0
-    CallDfc70 4, 5, 0, 2, 32767
+    PaletteFade 4, 5, 0, 2, 32767
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

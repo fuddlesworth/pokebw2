@@ -1188,13 +1188,13 @@ void BtlvMcss_ReloadSprite(BtlvMcss *work, int pos, const MCSSLoadInfo *info) {
     MCSS_Reload(work->mcssSys, work->entries[index].mcss, dst);
 }
 
-u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int arg4, int arg5, int arg6) {
+u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int chorusVolume, int chorusSpeed, int reverse) {
     int index = BtlvMcss_GetIndex(work, pos);
     s32 pan;
     BtlMainModule *mainModule;
     PokeVoiceChatterInfo chatter;
     PokeVoiceChatterInfo *chatterInfo;
-    BOOL flag;
+    BOOL chorus;
     u32 handle;
 
     if (index == -1) {
@@ -1231,7 +1231,7 @@ u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int arg4, i
     }
     mainModule = BtlvEffect_GetMainModule();
     chatterInfo = &chatter;
-    flag = FALSE;
+    chorus = FALSE;
     if (mainModule != NULL) {
         if (!GetViewPosChatter(mainModule, pos, &chatterInfo->chatter)) {
             chatterInfo = NULL;
@@ -1239,15 +1239,15 @@ u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int arg4, i
     } else {
         chatterInfo = NULL;
     }
-    if (arg4 != 0 || arg5 != 0) {
-        flag = TRUE;
+    if (chorusVolume != 0 || chorusSpeed != 0) {
+        chorus = TRUE;
     }
     // By the HP: lower in the yellow
     if (speed == (s32)0x80000000) {
         speed = work->entries[index].mon.hpColor == HP_GAUGE_COLOR_YELLOW ? -0xa00 : 0;
     }
-    handle = PokeVoice_Play(work->entries[index].mon.species, work->entries[index].mon.form, (u8)pan, flag, arg4, arg5,
-                            arg6, chatterInfo);
+    handle = PokeVoice_Play(work->entries[index].mon.species, work->entries[index].mon.form, (u8)pan, chorus,
+                            chorusVolume, chorusSpeed, reverse, chatterInfo);
     PokeVoice_AdjustVolume(handle, volume);
     PokeVoice_AdjustSpeed(handle, speed);
     return handle;

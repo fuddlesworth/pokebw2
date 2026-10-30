@@ -14,14 +14,14 @@ Overheat:
     SetYield TRUE
     McssPalFade EFFVM_ATTACKER, 0, 12, 2, 0x1f
     LoadBg 123
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 15, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 15, 1, 0
     Wait EFFVM_WAIT_ALL
     BgPalAnim 18, 0
     BgWave 1, 0x119a, 24, 80, 0, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 15, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 15, 0, 1, 0
     SetYield FALSE
     PlaySE SEQ_SE_W121_01, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
     PlaySE SEQ_SE_W011_01, 2, EFFVM_ATTACKER, 10, 0, 120, 0, 0, 0
@@ -32,11 +32,11 @@ Overheat:
     EmitterAdd 490, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 490, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 15, 0, 0
+    PaletteFade 4, 0, 15, 0, 0
     WaitFrames 15
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 4, 13, 0, 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 4, 13, 0, 1, 0
     McssPalFade EFFVM_ATTACKER, 12, 0, 2, 0x1f
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8

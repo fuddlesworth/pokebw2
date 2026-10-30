@@ -7,7 +7,7 @@
 
 IcePunch:
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfc70 4, 0, 12, 2, 21140
+    PaletteFade 4, 0, 12, 2, 21140
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W002_01, 2, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -34,7 +34,7 @@ IcePunch:
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 12, 0, 0, 0x6294
-    CallDfc70 4, 12, 0, 2, 21140
+    PaletteFade 4, 12, 0, 2, 21140
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

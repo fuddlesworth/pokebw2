@@ -6,7 +6,7 @@
     ScriptVariant IceShard
 
 IceShard:
-    CallDfc70 4, 0, 13, 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     ParticleLoad 599
     CameraMovePreset 1, 9, 16, 0, 8
     McssSetValue EFFVM_ALL, 1
@@ -39,6 +39,6 @@ IceShard:
     McssPalFade EFFVM_DEFENDER, 13, 0, 2, 0x7fff
     CameraMovePreset 1, 8, 10, 0, 8
     McssSetValue EFFVM_ALL, 0
-    CallDfc70 4, 13, 0, 2, 0
+    PaletteFade 4, 13, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     End

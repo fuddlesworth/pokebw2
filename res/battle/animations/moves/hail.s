@@ -6,7 +6,7 @@
     ScriptVariant Hail
 
 Hail:
-    CallDfc70 4, 0, 13, 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     Wait EFFVM_WAIT_ALL
     PlaySE SEQ_SE_W258_ARARE, 1, EFFVM_ATTACKER, 0, 0, 100, 0, 0, 0
     MoveSE 1, 0, 1, 100, 0, 20, 20, 0, 0
@@ -19,6 +19,6 @@ Hail:
     WaitFrames 20
     EmitterAddAt 428, 1, 0, 0x6000, 0x3000, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 2, 0
+    PaletteFade 4, 13, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     End

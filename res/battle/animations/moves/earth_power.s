@@ -6,7 +6,7 @@
     ScriptVariant EarthPower
 
 EarthPower:
-    CallDfc70 4, 0, 12, 0, 0
+    PaletteFade 4, 0, 12, 0, 0
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -45,7 +45,7 @@ EarthPower:
     CameraShake 0, 0x4cd, 0, 2, 0, 10
     WaitFrames 50
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 0, 0
+    PaletteFade 4, 12, 0, 0, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

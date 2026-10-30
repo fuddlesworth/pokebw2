@@ -7,7 +7,7 @@
 
 Extrasensory:
     CameraMovePreset 1, 14, 24, 0, 0
-    CallDfc70 4, 0, 12, 0, 0
+    PaletteFade 4, 0, 12, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W048_01, 1, EFFVM_ATTACKER, 0, 0, 60, 0, 0, 0
@@ -28,7 +28,7 @@ Extrasensory:
     WaitFrames 20
     McssScale EFFVM_ATTACKER, 2, 0x333, 0x333, 1, 0, 20
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 0, 0
+    PaletteFade 4, 12, 0, 0, 0
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End

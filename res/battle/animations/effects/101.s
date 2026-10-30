@@ -13,8 +13,8 @@ Effect101:
     Wait EFFVM_WAIT_ALL
     McssSetMode 1, 3
     McssSetMode 0, 3
-    CallDisplay 0, 8, 0, 0, 0
-    CallDisplay 0, 9, 0, 0, 0
+    SetTrainer 0, 8, 0, 0, 0
+    SetTrainer 0, 9, 0, 0, 0
     McssScale 8, 1, 0x1800, 0x1800, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

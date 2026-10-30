@@ -7,8 +7,8 @@
 
 Hurricane:
     LoadBg 159
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 16, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 11, 16, 0, 8
     SetYield FALSE
@@ -19,9 +19,9 @@ Hurricane:
     MoveSE 2, 0, 1, 0, 127, 0, 50, 0, 0
     MoveSE 2, 0, 1, 127, 0, 100, 100, 0, 0
     SetYield TRUE
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 16, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 16, 0, 1, 0
     BgMove 4, 24, 0, 230, 0, 0
     McssSetValue EFFVM_ATTACKER, 1
     McssSetValue EFFVM_DEFENDER, 1
@@ -46,12 +46,12 @@ Hurricane:
     OrbitEmitters 711, 1, 2, 0x2000, 0x2000, -0x1000, 120, 0, 1, 0
     WaitFrames 20
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 1, 0
+    PaletteFade 4, 16, 0, 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetValue EFFVM_ATTACKER, 0
     McssSetValue EFFVM_DEFENDER, 0

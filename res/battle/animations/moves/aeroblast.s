@@ -7,7 +7,7 @@
 
 Aeroblast:
     CameraMovePreset 1, 9, 16, 0, 12
-    CallDfc70 2, 0, 16, 1, 0
+    PaletteFade 2, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W027_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -32,13 +32,13 @@ Aeroblast:
     PanSE 2, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 0, 40, 0, 0
     SetYield TRUE
     LoadBg 78
-    CallDfd74 2, 0
-    CallDfc70 3, 0, 16, 1, 0
+    SetVanish 2, 0
+    PaletteFade 3, 0, 16, 1, 0
     WaitFrames 8
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     WaitFrames 2
-    CallDfc70 3, 16, 0, 1, 0
+    PaletteFade 3, 16, 0, 1, 0
     WaitFrames 4
     BgPalAnim 8, 9
     WaitFrames 50
@@ -55,14 +55,14 @@ Aeroblast:
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 8
     WaitFrames 40
     McssPalFade EFFVM_DEFENDER, 12, 0, 0, 0x7fff
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfc70 2, 16, 0, 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    PaletteFade 2, 16, 0, 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 16, 0, 0, 0
+    PaletteFade 3, 16, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

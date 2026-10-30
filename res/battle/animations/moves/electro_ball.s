@@ -8,7 +8,7 @@
 ElectroBall:
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 12, 1, 0
+    PaletteFade 2, 0, 12, 1, 0
     ParticleLoad 661
     EmitterAdd 661, 2, EFFVM_EMIT_ATTACKER, 8, 0x4000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 661, 5, EFFVM_EMIT_ATTACKER, 8, 0x4000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -34,7 +34,7 @@ ElectroBall:
     SetYield TRUE
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 12, 0, 1, 0
+    PaletteFade 2, 12, 0, 1, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

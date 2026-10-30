@@ -17,12 +17,12 @@ MistBall:
     PanSE 1, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 50, 18, 0, 0
     SetYield TRUE
     LoadBg 18
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 15, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 15, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 4, 15, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 4, 15, 0, 1, 0
     BgMove 4, -20, 0, 150, 1, 0
     ParticleLoad 466
     EmitterMove 466, 0, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x1e000, 0, 0x1000, 0x1000, 0
@@ -38,12 +38,12 @@ MistBall:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 3
     WaitFrames 60
-    CallDfc70 4, 0, 15, 1, 0
+    PaletteFade 4, 0, 15, 1, 0
     WaitFrames 30
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     WaitFrames 30
-    CallDfc70 4, 15, 0, 1, 0
+    PaletteFade 4, 15, 0, 1, 0
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

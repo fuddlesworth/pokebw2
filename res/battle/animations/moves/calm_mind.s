@@ -6,8 +6,8 @@
     ScriptVariant CalmMind
 
 CalmMind:
-    CallDfc70 4, 0, 13, 0, 0
-    CallDfd74 0, 1
+    PaletteFade 4, 0, 13, 0, 0
+    SetVanish 0, 1
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -20,7 +20,7 @@ CalmMind:
     EmitterAdd 524, 2, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfd74 0, 0
-    CallDfc70 4, 13, 0, 0, 0
+    SetVanish 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

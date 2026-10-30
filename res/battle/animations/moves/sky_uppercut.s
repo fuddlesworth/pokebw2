@@ -8,14 +8,14 @@
 SkyUppercut:
     CameraMovePreset 1, 11, 16, 0, 8
     LoadBg 132
-    CallDfd74 2, 0
+    SetVanish 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 15, 0, 0
+    PaletteFade 4, 0, 15, 0, 0
     Wait EFFVM_WAIT_ALL
     BgMove 4, 0, 10, 100, 0, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
-    CallDfc70 4, 15, 0, 0, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
+    PaletteFade 4, 15, 0, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W157_03, 1, EFFVM_DEFENDER, 0, 1000, 100, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_DEFENDER, 80, 0, 0, 0, 0, 0
@@ -35,14 +35,14 @@ SkyUppercut:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x666, 2, 1, 4
     Wait EFFVM_WAIT_MCSS
-    CallDfc70 4, 0, 15, 1, 0
+    PaletteFade 4, 0, 15, 1, 0
     Wait EFFVM_WAIT_BG
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 15, 0, 0, 0
+    PaletteFade 4, 15, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

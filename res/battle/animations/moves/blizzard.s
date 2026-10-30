@@ -7,15 +7,15 @@
 
 Blizzard:
     CameraMovePreset 1, 11, 16, 0, 12
-    CallDfc70 2, 0, 16, 0, 0
+    PaletteFade 2, 0, 16, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 16, 0, 1, 0
+    PaletteFade 3, 16, 0, 1, 0
     ParticleLoad 224
     McssSetVanish EFFVM_DEFENDER, TRUE
     LoadBg 30
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfd74 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    SetVanish 2, 0
     BgMove 4, -16, 0, 120, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W239_01, 1, EFFVM_DEFENDER, 0, 200, 70, 127, 127, 0
@@ -73,12 +73,12 @@ Blizzard_04B4:
 
 Blizzard_06C8:
     WaitFrames 20
-    CallDfc70 3, 0, 16, 0, 0
+    PaletteFade 3, 0, 16, 0, 0
     WaitFrames 2
-    CallDfc70 2, 16, 0, 0, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfd74 2, 1
+    PaletteFade 2, 16, 0, 0, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    SetVanish 2, 1
     Wait EFFVM_WAIT_PARTICLES
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

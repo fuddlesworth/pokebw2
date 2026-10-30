@@ -111,7 +111,7 @@ u8 BtlvMcss_GetUnk(BtlvMcss *work, int pos);
 void BtlvMcss_SetSubstitute(BtlvMcss *work, int pos, BOOL substitute, BOOL flag);
 void BtlvMcss_Transform(BtlvMcss *work, int targetPos, int pos);
 void BtlvMcss_ReloadSprite(BtlvMcss *work, int pos, const MCSSLoadInfo *info);
-u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int arg4, int arg5, int arg6);
+u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int chorusVolume, int chorusSpeed, int reverse);
 void BtlvMcss_StartRotation(BtlvMcss *work, int side, int dir, BOOL playSe);
 u32 BtlvMcss_GetBall(BtlvMcss *work, int pos);
 void BtlvMcss_SetupPokemonLoadInfo(BtlvMcss *work, PartyPkm *pkm, MCSSLoadInfo *info, int pos);

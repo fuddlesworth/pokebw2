@@ -18,7 +18,7 @@ FusionFlare:
     EmitterAdd 735, 0, EFFVM_EMIT_ATTACKER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssPalFade EFFVM_ATTACKER, 0, 8, 1, 0x1f
     WaitFrames 20
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     CameraMove 1, 0xca6, 0x5f33, 0x1dcc3, -0xe8d, 0xad9a, 0x27f6, 32, 0, 26
     EmitterAddAt 735, 2, 0, 0xa000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAddAt 735, 5, 0, 0xa000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -45,7 +45,7 @@ FusionFlare:
     McssScale EFFVM_DEFENDER, 2, 0x800, -0x800, 4, 1, 1
     CameraMovePreset 1, 8, 40, 0, 32
     WaitFrames 30
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssPalFade EFFVM_DEFENDER, 8, 0, 1, 0x1f
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
@@ -65,7 +65,7 @@ FusionFlare_Variant1:
     EmitterAdd 736, 0, EFFVM_EMIT_ATTACKER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssPalFade EFFVM_ATTACKER, 0, 8, 1, 0x1f
     WaitFrames 20
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     CameraMove 1, 0xca6, 0x5f33, 0x1dcc3, -0xe8d, 0xcd9a, 0x27f6, 32, 0, 26
     EmitterAddAt 736, 2, 0, 0xd000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1b33, 0x1800, 0x1000
     EmitterAddAt 736, 5, 0, 0xd000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x2000, 0x2000, 0x1000
@@ -93,7 +93,7 @@ FusionFlare_Variant1:
     WaitFrames 40
     CameraMovePreset 1, 8, 50, 0, 46
     WaitFrames 20
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssPalFade EFFVM_DEFENDER, 8, 0, 1, 0x1f
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

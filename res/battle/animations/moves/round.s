@@ -7,7 +7,7 @@
 
 Round:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 2, 0, 10, 2, 32767
+    PaletteFade 2, 0, 10, 2, 32767
     SetYield FALSE
     PlaySE SEQ_SE_W235_01, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
     PlaySE SEQ_SE_W235_01, 1, EFFVM_ATTACKER, 55, 0, 127, 0, 0, 0
@@ -49,7 +49,7 @@ Round:
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 12, 0, 2, 0x295e
     WaitFrames 5
-    CallDfc70 2, 10, 0, 2, 32767
+    PaletteFade 2, 10, 0, 2, 32767
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL

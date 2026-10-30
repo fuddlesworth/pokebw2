@@ -8,7 +8,7 @@
 IcyWind:
     CameraMovePreset 1, 20, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     SetYield FALSE
     PlaySE SEQ_SE_W018_01, 1, EFFVM_DEFENDER, 10, 0, 80, 0, 0, 0
     PlaySE SEQ_SE_W059_01, 2, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -39,7 +39,7 @@ IcyWind:
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 12, 0, 3, 0x7fff
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
     End

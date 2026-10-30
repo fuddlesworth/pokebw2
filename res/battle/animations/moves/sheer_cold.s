@@ -7,8 +7,8 @@
 
 SheerCold:
     McssSetValue EFFVM_ALL, 1
-    CallDfc70 4, 0, 13, 0, 0
-    CallDfd74 0, 1
+    PaletteFade 4, 0, 13, 0, 0
+    SetVanish 0, 1
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -25,9 +25,9 @@ SheerCold:
     McssMoveXY EFFVM_DEFENDER, 2, 0x333, 0, 2, 0, 4
     McssPalFade EFFVM_DEFENDER, 0, 13, 0, 0x7fff
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
+    SetVanish 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 13, 0, 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     McssPalFade EFFVM_DEFENDER, 13, 0, 0, 0x7fff
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetValue EFFVM_ALL, 0

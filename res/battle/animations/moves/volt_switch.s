@@ -7,7 +7,7 @@
 
 VoltSwitch:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 2, 0, 12, 4, 0
+    PaletteFade 2, 0, 12, 4, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_SHINKA_W025, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
@@ -38,7 +38,7 @@ VoltSwitch:
     WaitFrames 20
     CameraMovePreset 1, 8, 10, 0, 8
     WaitFrames 10
-    CallDfc70 2, 12, 0, 4, 0
+    PaletteFade 2, 12, 0, 4, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

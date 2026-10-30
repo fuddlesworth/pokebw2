@@ -15,13 +15,13 @@ HealBlock:
     ParticleLoad 556
     EmitterAdd 556, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 30
-    CallDfc70 4, 0, 12, 0, 15855
+    PaletteFade 4, 0, 12, 0, 15855
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssPalFade EFFVM_DEFENDER, 0, 10, 0, 0
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 10, 0, 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 0, 15855
+    PaletteFade 4, 12, 0, 0, 15855
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

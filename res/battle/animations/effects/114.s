@@ -8,7 +8,7 @@
 Effect114:
     ParticleLoad 163
     IfVarConst EFFVM_VAR_ATTACKER_SIDE, EFFVM_CMP_EQ, 0, Effect114_01AA
-    CallDfc70 1, 0, 12, 0, 0
+    PaletteFade 1, 0, 12, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_SW_STARPOKE, 5, EFFVM_PAN_RIGHT, 0, 0, 127, 0, 0, 0
     SetYield TRUE
@@ -21,11 +21,11 @@ Effect114:
     McssPalFade EFFVM_ATTACKER, 0, 14, 4, 0x6680
     McssPalFade EFFVM_ATTACKER, 14, 0, 4, 0x6680
     WaitFrames 65
-    CallDfc70 1, 6, 0, 0, 0
+    PaletteFade 1, 6, 0, 0, 0
     Return
 
 Effect114_01AA:
-    CallDfc70 1, 0, 12, 0, 0
+    PaletteFade 1, 0, 12, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_SW_STARPOKE, 5, EFFVM_PAN_LEFT, 0, 0, 127, 0, 0, 0
     SetYield TRUE
@@ -38,5 +38,5 @@ Effect114_01AA:
     McssPalFade EFFVM_ATTACKER, 0, 14, 4, 0x6680
     McssPalFade EFFVM_ATTACKER, 14, 0, 4, 0x6680
     WaitFrames 65
-    CallDfc70 1, 12, 0, 0, 0
+    PaletteFade 1, 12, 0, 0, 0
     Return

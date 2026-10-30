@@ -6,7 +6,7 @@
     ScriptVariant HealPulse
 
 HealPulse:
-    CallDfc70 2, 0, 6, 2, 0
+    PaletteFade 2, 0, 6, 2, 0
     ParticleLoad 676
     SetYield FALSE
     PlaySE SEQ_SE_SHINKA_W025, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
@@ -22,7 +22,7 @@ HealPulse:
     EmitterAdd 676, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 5, 0, 2, 0x421f
-    CallDfc70 2, 6, 0, 2, 0
+    PaletteFade 2, 6, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

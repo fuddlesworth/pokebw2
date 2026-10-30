@@ -6,7 +6,7 @@
     ScriptVariant Leer
 
 Leer:
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     ParticleLoad 208
@@ -28,7 +28,7 @@ Leer:
     McssScale EFFVM_DEFENDER, 2, -0x333, 0x333, 10, 1, 1
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

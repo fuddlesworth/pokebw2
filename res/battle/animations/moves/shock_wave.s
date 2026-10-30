@@ -14,7 +14,7 @@ ShockWave:
     EmitterAdd 528, 4, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 528, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 528, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     SetYield FALSE
     PlaySE SEQ_SE_W239_01, 1, EFFVM_ATTACKER, 40, 0, 100, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_ATTACKER, 120, 0, 0, 0, 0, 0
@@ -39,7 +39,7 @@ ShockWave:
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 8
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x3ff
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     CameraMovePreset 1, 8, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, FALSE
     Wait EFFVM_WAIT_ALL

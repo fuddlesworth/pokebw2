@@ -8,7 +8,7 @@
 ChargeBeam:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     ParticleLoad 630
     SetYield FALSE
     PlaySE SEQ_SE_W027_01, 1, EFFVM_ATTACKER, 0, 0, 110, 0, 0, 0
@@ -43,6 +43,6 @@ ChargeBeam:
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     End

@@ -17,22 +17,22 @@ Spark:
     SetYield FALSE
     SetYield TRUE
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 2, 0, 8, 1, 13311
+    PaletteFade 2, 0, 8, 1, 13311
     McssPalFade EFFVM_ATTACKER, 0, 14, 1, 0x32d6
     ParticleLoad 379
     EmitterAdd 379, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 379, 2, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 60
-    CallDfc70 2, 8, 0, 1, 13311
+    PaletteFade 2, 8, 0, 1, 13311
     McssPalFade EFFVM_ATTACKER, 14, 0, 1, 0x32d6
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 8, 0, 13311
+    PaletteFade 2, 0, 8, 0, 13311
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 0, 13311
+    PaletteFade 2, 8, 0, 0, 13311
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 8, 0, 13311
+    PaletteFade 2, 0, 8, 0, 13311
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 0, 13311
+    PaletteFade 2, 8, 0, 0, 13311
     McssMoveXY EFFVM_ATTACKER, 2, 0x1000, 0, 2, 1, 1
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 11, 16, 0, 12

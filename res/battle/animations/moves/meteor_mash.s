@@ -6,7 +6,7 @@
     ScriptVariant MeteorMash
 
 MeteorMash:
-    CallDfc70 4, 0, 12, 3, 0
+    PaletteFade 4, 0, 12, 3, 0
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     Wait EFFVM_WAIT_ALL
@@ -29,6 +29,6 @@ MeteorMash:
     CameraMovePreset 1, 8, 16, 0, 8
     McssPalFade EFFVM_DEFENDER, 12, 0, 2, 0x7fff
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 3, 0
+    PaletteFade 4, 12, 0, 3, 0
     Wait EFFVM_WAIT_ALL
     End

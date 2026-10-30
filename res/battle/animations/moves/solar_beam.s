@@ -8,7 +8,7 @@
 
 SolarBeam:
     CameraMovePreset 1, 15, 24, 0, 0
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W239_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -37,13 +37,13 @@ SolarBeam:
     Wait EFFVM_WAIT_MCSS
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 17, 24, 0, 0
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     End
 
 SolarBeam_Variant1:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfd74 0, 1
+    SetVanish 0, 1
     SetYield FALSE
     PlaySE SEQ_SE_W121_01, 1, EFFVM_ATTACKER, 10, 0, 120, 0, 0, 0
     PlaySE SEQ_SE_W295_02, 2, EFFVM_ATTACKER, 10, 0, 110, 0, 0, 0
@@ -53,7 +53,7 @@ SolarBeam_Variant1:
     EmitterAdd 244, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 244, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 60
-    CallDfd74 0, 0
+    SetVanish 0, 0
     CameraMovePreset 1, 11, 8, 0, 8
     WaitFrames 30
     SetYield FALSE

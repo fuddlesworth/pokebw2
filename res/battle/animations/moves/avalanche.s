@@ -7,7 +7,7 @@
 
 Avalanche:
     McssSetValue EFFVM_ALL, 1
-    CallDfc70 4, 0, 13, 0, 32767
+    PaletteFade 4, 0, 13, 0, 32767
     CameraMovePreset 1, 11, 16, 0, 8
     WaitFrames 16
     CameraMove 2, 0, 0, 0, 0, 0x4000, 0, 16, 0, 12
@@ -41,6 +41,6 @@ Avalanche:
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetValue EFFVM_ALL, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 13, 0, 0, 32767
+    PaletteFade 4, 13, 0, 0, 32767
     Wait EFFVM_WAIT_ALL
     End

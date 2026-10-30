@@ -18,13 +18,13 @@ FinalGambit:
     ParticleLoad 685
     EmitterAdd 685, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssPalFade EFFVM_ATTACKER, 14, 0, 1, 0x32d6
-    CallDfc70 2, 0, 8, 0, 32767
+    PaletteFade 2, 0, 8, 0, 32767
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 0, 32767
+    PaletteFade 2, 8, 0, 0, 32767
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 8, 0, 32767
+    PaletteFade 2, 0, 8, 0, 32767
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 0, 32767
+    PaletteFade 2, 8, 0, 0, 32767
     McssCircle EFFVM_ATTACKER, 0, 0, 0x4000, 0, 0xa000, 0, 0x1000, 0
     Wait EFFVM_WAIT_CAMERA
     WaitFrames 16

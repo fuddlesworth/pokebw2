@@ -16,13 +16,13 @@ Crabhammer:
     MoveSE 2, 0, 1, 120, 0, 30, 30, 0, 0
     SetYield TRUE
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 8, 1, 22912
+    PaletteFade 4, 0, 8, 1, 22912
     ParticleLoad 320
     EmitterAdd 320, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 320, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 320, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 10
-    CallDfc70 4, 8, 0, 1, 22912
+    PaletteFade 4, 8, 0, 1, 22912
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 3
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, FALSE

@@ -7,7 +7,7 @@
 
 MetalBurst:
     CameraMovePreset 1, 14, 24, 0, 0
-    CallDfc70 4, 0, 13, 0, 0
+    PaletteFade 4, 0, 13, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W321_01, 2, EFFVM_ATTACKER, 0, 0, 110, 0, 0, 0
@@ -27,6 +27,6 @@ MetalBurst:
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 17, 24, 0, 0
-    CallDfc70 4, 13, 0, 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

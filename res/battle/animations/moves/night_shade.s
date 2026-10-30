@@ -8,7 +8,7 @@
 NightShade:
     McssSetVanish EFFVM_ATTACKER, TRUE
     CameraMovePreset 1, 14, 24, 0, 0
-    CallDfc70 4, 0, 10, 1, 0
+    PaletteFade 4, 0, 10, 1, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W464_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -25,7 +25,7 @@ NightShade:
     McssPalFade EFFVM_ATTACKER, 8, 0, 1, 0x7fff
     McssScale EFFVM_ATTACKER, 1, 0x1000, 0x1000, 4, 1, 1
     McssPalFade EFFVM_DEFENDER, 14, 0, 1, 0
-    CallDfc70 4, 10, 0, 1, 0
+    PaletteFade 4, 10, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 17, 24, 0, 0
     McssSetVanish EFFVM_ATTACKER, FALSE

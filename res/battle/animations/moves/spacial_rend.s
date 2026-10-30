@@ -21,14 +21,14 @@ SpacialRend:
     EmitterAdd 639, 2, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     LoadBg 183
     EmitterAdd 639, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 0, 13, 0, 0
+    PaletteFade 4, 0, 13, 0, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 11, 12, 0, 8
     Wait EFFVM_WAIT_CAMERA
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 13, 0, 0, 0
-    CallDfd74 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 13, 0, 0, 0
+    SetVanish 2, 0
     BgPalAnim 32, 3
     SetYield FALSE
     PlaySE SEQ_SE_W055_01, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -43,11 +43,11 @@ SpacialRend:
     EmitterAdd 639, 5, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, 0x333, -0x333, 2, 1, 6
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 0, 13, 1, 0
+    PaletteFade 3, 0, 13, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 4, 13, 0, 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 4, 13, 0, 1, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     PlaySE SEQ_SE_DUMMY5, 2, EFFVM_DEFENDER, 0, 0, 0, 0, 0, 0

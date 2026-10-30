@@ -9,7 +9,7 @@ Effect068:
     IfVarConst EFFVM_VAR_ATTACKER_VANISH, EFFVM_CMP_EQ, TRUE, Effect068_02CA
     CameraMovePreset 1, 14, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 6, 6, 0
+    PaletteFade 2, 0, 6, 6, 0
     ParticleLoad 236
     SetYield FALSE
     PlaySE SEQ_SE_BE_SE_029, 1, EFFVM_DEFENDER, 0, -800, 100, 0, 0, 0
@@ -33,7 +33,7 @@ Effect068_01FA:
     McssPalFade EFFVM_ATTACKER, 0, 10, 2, 0x7fff
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 10, 0, 2, 0x7fff
-    CallDfc70 2, 6, 0, 6, 1023
+    PaletteFade 2, 6, 0, 6, 1023
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL

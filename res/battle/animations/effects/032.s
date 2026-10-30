@@ -9,7 +9,7 @@ Effect032:
     IfVarConst 55, EFFVM_CMP_EQ, 0, Effect032_011A
     SetYield FALSE
     McssCameraMode 0, 0
-    CallDfc70 2, 0, 16, 1, 0
+    PaletteFade 2, 0, 16, 1, 0
     McssPalFade EFFVM_ALL, 0, 16, 1, 0
     Wait EFFVM_WAIT_MCSS
     Wait EFFVM_WAIT_STAGE_FIELD_FADE
@@ -18,8 +18,8 @@ Effect032:
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     McssSetMode EFFVM_ALL, 5
-    CallDfd74 0, 0
-    CallDfc70 2, 16, 0, 1, 0
+    SetVanish 0, 0
+    PaletteFade 2, 16, 0, 1, 0
     McssPalFade EFFVM_ALL, 16, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE

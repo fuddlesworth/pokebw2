@@ -30,7 +30,9 @@ void BtlvEffvm_Stop(VM *vm);
 void BtlvEffvm_Resume(VM *vm);
 s32 BtlvEffvm_GetScriptKind(VM *vm);
 void BtlvEffvmParam_Clear(BtlvEffvmParam *param);
-void BtlvEffvm_PlaySEAt(VM *vm, u32 se, u32 player, u32 pan, int arg4, int arg5, int vol, int pitch, int wait);
+// PlaySE's arguments; the modulation's depth and speed are capped at 255
+void BtlvEffvm_PlaySEAt(VM *vm, u32 se, u32 player, u32 pan, int pitch, int volume, int modDepth, int modSpeed,
+                        int wait);
 void BtlvEffvm_SlideSE(VM *vm, u32 player, u32 type, u32 param, int start, int end, int delay, int frames, int stepWait,
                        int count);
 void BtlvEffvm_ReleaseVoices(VM *vm);

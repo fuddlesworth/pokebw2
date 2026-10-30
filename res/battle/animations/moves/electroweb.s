@@ -6,7 +6,7 @@
     ScriptVariant Electroweb
 
 Electroweb:
-    CallDfc70 2, 0, 8, 2, 0
+    PaletteFade 2, 0, 8, 2, 0
     CameraMovePreset 1, 11, 16, 0, 8
     ParticleLoad 697
     EmitterAdd 697, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -24,7 +24,7 @@ Electroweb:
     EmitterAdd 697, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 2, 8, 0, 2, 0
+    PaletteFade 2, 8, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

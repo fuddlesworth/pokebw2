@@ -27,7 +27,7 @@ Superpower:
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssCircle EFFVM_ATTACKER, 0, 1, 0x1000, 0, 0xa000, 0x1000, 0x1000, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -39,20 +39,20 @@ Superpower:
     SetYield TRUE
     EmitterAdd 446, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     LoadBg 120
-    CallDfc70 3, 16, 0, 0, 0
+    PaletteFade 3, 16, 0, 0, 0
     EmitterAdd 446, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     BgPalAnim 16, 3
-    CallDfd74 2, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    SetVanish 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
     McssSetVanish EFFVM_DEFENDER, TRUE
     WaitFrames 6
     McssScale EFFVM_DEFENDER, 2, -0x333, 0x333, 2, 1, 2
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 1, 0
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    PaletteFade 4, 16, 0, 1, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetValue EFFVM_ALL, 0

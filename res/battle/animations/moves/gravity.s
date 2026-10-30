@@ -22,14 +22,14 @@ Gravity:
     EmitterAdd 533, 0, EFFVM_EMIT_ATTACKER, 8, 0x19a, 0, 0, 0x1000, 0x800, 0x1000, 0x1000
     EmitterAdd 534, 0, EFFVM_EMIT_ATTACKER, 8, 0x19a, 0, 0, 0x1000, 0xccd, 0x1000, 0x1000
     EmitterAdd 533, 1, 0, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 0, 6, 1, 0
+    PaletteFade 4, 0, 6, 1, 0
     WaitFrames 20
     CameraMovePreset 1, 8, 42, 0, 38
     McssMoveXY EFFVM_DEFENDER, 2, 0, 0x333, 1, 2, 15
     McssScale EFFVM_DEFENDER, 2, 0, -0xb33, 22, 1, 1
     Wait EFFVM_WAIT_ALL
     McssSetValue EFFVM_ALL, 0
-    CallDfc70 4, 6, 0, 1, 0
+    PaletteFade 4, 6, 0, 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
     End

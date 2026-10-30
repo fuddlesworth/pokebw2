@@ -7,7 +7,7 @@
 
 PsychUp:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 4, 0, 12, 2, 0
+    PaletteFade 4, 0, 12, 2, 0
     Wait EFFVM_WAIT_ALL
     ParticleLoad 415
     SetYield FALSE
@@ -17,6 +17,6 @@ PsychUp:
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 2, 0
+    PaletteFade 4, 12, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     End

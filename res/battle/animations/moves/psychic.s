@@ -8,15 +8,15 @@
 Psychic:
     CameraMovePreset 1, 11, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 16, 0, 0
+    PaletteFade 4, 0, 16, 0, 0
     Wait EFFVM_WAIT_ALL
     LoadBg 48
-    CallDfc70 3, 16, 0, 1, 0
+    PaletteFade 3, 16, 0, 1, 0
     BgMove 1, 0, 40, 40, 1, 0
     BgWave 1, 0x1800, 16, 60, 0, 0
-    CallDfd74 2, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    SetVanish 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
     SetYield FALSE
     PlaySE SEQ_SE_W048_01, 2, EFFVM_DEFENDER, 0, -200, 80, 0, 0, 0
     PlaySE SEQ_SE_W095_01, 1, EFFVM_DEFENDER, 40, 0, 110, 0, 0, 0
@@ -27,14 +27,14 @@ Psychic:
     McssScale EFFVM_DEFENDER, 2, 0x333, 0x333, 4, 1, 1
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x7fff
     WaitFrames 20
-    CallDfc70 3, 0, 16, 2, 0
+    PaletteFade 3, 0, 16, 2, 0
     WaitFrames 10
-    CallDfc70 4, 16, 0, 2, 0
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    PaletteFade 4, 16, 0, 2, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
-    CallDfc70 3, 16, 0, 0, 0
+    PaletteFade 3, 16, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

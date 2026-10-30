@@ -12,7 +12,7 @@ Effect009:
     ParticleLoad 48
     CameraMovePreset 1, 11, 200, 0, 0
     EmitterMoveFrom 48, 0, 2, 0, -0x2000, 0xa000, EFFVM_EMIT_DEFENDER, 0x2666, 0x23000, 0x5000, 0x1000, 0x1000, 0
-    IfVarConst EFFVM_VAR_PARAM_8, EFFVM_CMP_NE, 1, Effect009_00F2
+    IfVarConst EFFVM_VAR_CRITICAL, EFFVM_CMP_NE, 1, Effect009_00F2
     PlaySE SEQ_SE_NAGERU2, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
     Jump Effect009_0118
 
@@ -48,7 +48,7 @@ Effect009_0118:
     ClactPalFade 0, 16, 0, 2, 0x73ff
     Wait EFFVM_WAIT_ALL
     ParticleDelete 46
-    IfVarConst EFFVM_VAR_PARAM_8, EFFVM_CMP_NE, 1, Effect009_03A2
+    IfVarConst EFFVM_VAR_CRITICAL, EFFVM_CMP_NE, 1, Effect009_03A2
     ClactMove 0, 3, 0x1, 0, 1, 0, 2
     PlaySE SEQ_SE_SYS_91, 5, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
     Wait EFFVM_WAIT_ALL
@@ -87,13 +87,13 @@ Effect009_03A2:
     PlaySE SEQ_SE_KON, 5, EFFVM_DEFENDER, 0, 0, 64, 0, 0, 0
     WaitFrames 40
     Wait EFFVM_WAIT_ALL
-    IfVarConst EFFVM_VAR_PARAM_8, EFFVM_CMP_EQ, 1, Effect009_0688
-    IfVarConst EFFVM_VAR_PARAM_3, EFFVM_CMP_EQ, 0, Effect009_0766
+    IfVarConst EFFVM_VAR_CRITICAL, EFFVM_CMP_EQ, 1, Effect009_0688
+    IfVarConst EFFVM_VAR_SHAKES, EFFVM_CMP_EQ, 0, Effect009_0766
     ClactSetAnim 0, 1
     PlaySE SEQ_SE_BOWA1, 5, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
     WaitFrames 65
     Wait EFFVM_WAIT_ALL
-    IfVarConst EFFVM_VAR_PARAM_3, EFFVM_CMP_EQ, 1, Effect009_0766
+    IfVarConst EFFVM_VAR_SHAKES, EFFVM_CMP_EQ, 1, Effect009_0766
     ClactSetAnim 0, 2
     PlaySE SEQ_SE_BOWA1, 5, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
     WaitFrames 70
@@ -104,7 +104,7 @@ Effect009_0688:
     PlaySE SEQ_SE_BOWA1, 5, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
     WaitFrames 75
     Wait EFFVM_WAIT_ALL
-    IfVarConst EFFVM_VAR_PARAM_4, EFFVM_CMP_EQ, 0, Effect009_0766
+    IfVarConst EFFVM_VAR_CAUGHT, EFFVM_CMP_EQ, 0, Effect009_0766
     PlaySE SEQ_SE_GETTING, 5, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
     ClactPalFade 0, 0, 8, -2, 0
     ParticleLoad 28

@@ -8,7 +8,7 @@
 Explosion:
     CameraMovePreset 1, 9, 16, 0, 8
     LoadBg 0
-    CallDfd74 2, 0
+    SetVanish 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W239_01, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
@@ -28,20 +28,20 @@ Explosion:
     EmitterAdd 321, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 321, 4, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 70
-    CallDfc70 2, 0, 13, 2, 32767
+    PaletteFade 2, 0, 13, 2, 32767
     WaitFrames 4
     McssSetValue EFFVM_ATTACKER, 1
     McssSetValue EFFVM_DEFENDER, 1
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     McssPalFade EFFVM_ATTACKER, 0, 10, 2, 0x1f
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssScale EFFVM_ATTACKER, 2, 0x4cd, -0x4cd, 10, 2, 1
     CameraShake 0, 0x4cd, 0, 2, 0, 12
     WaitFrames 70
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 2, 13, 0, 3, 32767
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 2, 13, 0, 3, 32767
     McssSetValue EFFVM_ATTACKER, 0
     McssSetValue EFFVM_DEFENDER, 0
     Wait EFFVM_WAIT_ALL

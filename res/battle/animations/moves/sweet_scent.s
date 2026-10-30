@@ -22,9 +22,9 @@ SweetScent_0136:
     EmitterAddOrtho 400, 4, 0, 8, 0, 0x4000, 0, 0x800, 0x1000, 0x800, 0x1000
 
 SweetScent_01C0:
-    CallDfc70 4, 0, 6, 0, 22943
+    PaletteFade 4, 0, 6, 0, 22943
     WaitFrames 80
-    CallDfc70 4, 6, 0, 1, 22943
+    PaletteFade 4, 6, 0, 1, 22943
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 17, 24, 0, 0
     McssSetVanish EFFVM_ATTACKER, FALSE

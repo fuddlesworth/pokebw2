@@ -6,7 +6,7 @@
     ScriptVariant Effect056
 
 Effect056:
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     ParticleLoad 428
     EmitterAddOrtho 428, 2, 0, 8, 0, 0x2000, 0, 0x800, 0x1000, 0x800, 0x1000
     WaitFrames 12
@@ -17,6 +17,6 @@ Effect056:
     EmitterAddOrtho 428, 1, 0, 8, 0, 0x2000, 0, 0x800, 0x1000, 0x800, 0x1000
     EmitterAddOrtho 428, 0, 0, 8, 0, 0x4000, 0, 0x800, 0x1000, 0x800, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 0, 0
+    PaletteFade 2, 10, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

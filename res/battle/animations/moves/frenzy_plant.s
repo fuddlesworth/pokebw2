@@ -8,13 +8,13 @@
 FrenzyPlant:
     CameraMovePreset 1, 9, 16, 0, 12
     LoadBg 138
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 15, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 15, 1, 0
     Wait EFFVM_WAIT_ALL
     BgMove 4, 0, 12, 200, 1, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 4, 15, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 4, 15, 0, 1, 0
     SetYield FALSE
     PlaySE SEQ_SE_W096_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
     PlaySE SEQ_SE_W121_01, 2, EFFVM_ATTACKER, 17, 0, 120, 0, 0, 0
@@ -52,11 +52,11 @@ FrenzyPlant:
     EmitterAdd 514, 0, EFFVM_EMIT_DEFENDER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 6
     WaitFrames 40
-    CallDfc70 4, 0, 15, 1, 0
+    PaletteFade 4, 0, 15, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 15, 0, 1, 0
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    PaletteFade 4, 15, 0, 1, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     CameraMovePreset 1, 8, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE

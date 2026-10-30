@@ -15,9 +15,9 @@ PerishSong:
     EmitterAddAt 365, 0, 0, 0x4000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAddAt 365, 2, 0, 0x4000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAddAt 365, 3, 0, 0x4000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     WaitFrames 90
-    CallDfc70 4, 16, 0, 1, 0
+    PaletteFade 4, 16, 0, 1, 0
     CameraMovePreset 1, 8, 16, 0, 12
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, FALSE

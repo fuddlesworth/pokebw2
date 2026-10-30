@@ -8,7 +8,7 @@
 PowerGem:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     McssPalFade EFFVM_ATTACKER, 0, 8, 6, 0x7fff
     SetYield FALSE
     PlaySE SEQ_SE_W278_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -38,7 +38,7 @@ PowerGem:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 3
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

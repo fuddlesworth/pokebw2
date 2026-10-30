@@ -19,7 +19,7 @@ FusionBolt:
     PanSE 1, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 80, 40, 0, 0
     SetYield TRUE
     CameraMovePreset 1, 9, 32, 0, 26
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     McssPalFade EFFVM_ATTACKER, 0, 12, 1, 0x5980
     ParticleLoad 737
     EmitterAdd 737, 4, EFFVM_EMIT_ATTACKER, 8, 0x3000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -58,7 +58,7 @@ FusionBolt:
     McssMoveXY EFFVM_ATTACKER, 5, 0, 0, 8, 1, 0
     McssAlpha EFFVM_ATTACKER, 1, 31, 32, 1, 0
     WaitFrames 30
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0x5980
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x5980
     McssSetVanish EFFVM_DEFENDER, FALSE
@@ -83,7 +83,7 @@ FusionBolt_Variant1:
     PlaySE SEQ_SE_W307_EXP, 0, EFFVM_DEFENDER, 320, -700, 127, 0, 0, 0
     SetYield TRUE
     CameraMovePreset 1, 9, 32, 0, 26
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     McssPalFade EFFVM_ATTACKER, 0, 12, 1, 0x5980
     ParticleLoad 738
     EmitterAdd 738, 4, EFFVM_EMIT_ATTACKER, 8, 0x3000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -128,7 +128,7 @@ FusionBolt_Variant1:
     McssAlpha EFFVM_ATTACKER, 1, 31, 32, 1, 0
     WaitFrames 30
     CameraMovePreset 1, 8, 50, 0, 46
-    CallDfc70 4, 12, 0, 3, 0
+    PaletteFade 4, 12, 0, 3, 0
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0x5980
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x5980
     McssSetVanish EFFVM_DEFENDER, FALSE

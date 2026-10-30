@@ -6,7 +6,7 @@
     ScriptVariant BlastBurn
 
 BlastBurn:
-    CallDfc70 4, 0, 12, 3, 20
+    PaletteFade 4, 0, 12, 3, 20
     PlaySE SEQ_SE_W123_01, 1, EFFVM_ATTACKER, 0, 0, 70, 0, 0, 0
     PlaySE SEQ_SE_W055_01, 0, EFFVM_ATTACKER, 0, -2000, 80, 0, 0, 0
     MoveSE 0, 0, 0, -2000, 2000, 0, 200, 0, 0
@@ -62,7 +62,7 @@ BlastBurn:
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetValue EFFVM_ALL, 0
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 12, 0, 3, 30
+    PaletteFade 4, 12, 0, 3, 30
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

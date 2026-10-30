@@ -16,14 +16,14 @@ MeanLook:
     EmitterAdd 382, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 382, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 382, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 0, 12, 1, 31775
+    PaletteFade 4, 0, 12, 1, 31775
     WaitFrames 100
     SetYield FALSE
     PlaySE SEQ_SE_W319_01, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
     SetYield TRUE
-    CallDfc70 4, 12, 12, 1, 32767
+    PaletteFade 4, 12, 12, 1, 32767
     WaitFrames 4
-    CallDfc70 4, 12, 0, 1, 32767
+    PaletteFade 4, 12, 0, 1, 32767
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

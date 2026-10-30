@@ -8,11 +8,11 @@
 SearingShot:
     CameraMovePreset 1, 9, 16, 0, 8
     LoadBg 210
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 16, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 16, 1, 0
     WaitFrames 10
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     SetYield FALSE
     PlaySE SEQ_SE_W179_03, 1, EFFVM_ATTACKER, 0, 500, 60, 0, 0, 0
     MoveSE 1, 0, 1, 60, 0, 45, 9, 0, 0
@@ -46,17 +46,17 @@ SearingShot:
     McssPalFade EFFVM_DEFENDER, 0, 10, 3, 0x1f
     McssScale EFFVM_DEFENDER, 2, 0x4cd, -0x4cd, 4, 0, 9
     EmitterAdd 714, 4, EFFVM_EMIT_DEFENDER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     BgMove 2, 6, 0, 2, 0, 20
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 10, 0, 3, 0x1f
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfd74 0, 0
+    SetVanish 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfd74 1, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

@@ -7,7 +7,7 @@
 
 Defog:
     McssSetValue EFFVM_ALL, 1
-    CallDfc70 4, 0, 12, 2, 32767
+    PaletteFade 4, 0, 12, 2, 32767
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -25,7 +25,7 @@ Defog:
     EmitterAdd 612, 0, EFFVM_EMIT_DEFENDER, 8, 0x4000, 0, 0, 0x1000, 0x1000, 0x99a, 0x1000
     EmitterAdd 612, 0, EFFVM_EMIT_DEFENDER, 8, 0x5000, 0, 0, 0x1000, 0x1000, 0x99a, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 2, 32767
+    PaletteFade 4, 12, 0, 2, 32767
     McssPalFade EFFVM_ALL, 12, 0, 2, 0x7fff
     McssSetValue EFFVM_ALL, 0
     CameraMovePreset 1, 8, 16, 0, 8

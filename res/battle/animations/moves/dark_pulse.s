@@ -16,7 +16,7 @@ DarkPulse:
     MoveSE 2, 0, 0, 0, 4000, 0, 128, 0, 0
     PanSE 2, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 0, 64, 0, 0
     SetYield TRUE
-    CallDfc70 4, 0, 13, 3, 10570
+    PaletteFade 4, 0, 13, 3, 10570
     ParticleLoad 578
     EmitterAdd 578, 0, EFFVM_EMIT_ATTACKER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 578, 1, EFFVM_EMIT_ATTACKER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -27,7 +27,7 @@ DarkPulse:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x333, 0, 1, 1, 12
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 3, 10570
+    PaletteFade 4, 13, 0, 3, 10570
     McssPalFade EFFVM_DEFENDER, 6, 0, 2, 0x1405
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

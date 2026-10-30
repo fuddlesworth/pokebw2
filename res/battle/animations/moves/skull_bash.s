@@ -35,7 +35,7 @@ SkullBash:
     End
 
 SkullBash_Variant1:
-    CallDfc70 4, 0, 13, 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, TRUE
@@ -63,7 +63,7 @@ SkullBash_Variant1:
     McssMoveXY EFFVM_DEFENDER, 2, 0x800, 0, 2, 0, 9
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 13, 0, 2, 0
+    PaletteFade 4, 13, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
     End

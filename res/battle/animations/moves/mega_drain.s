@@ -6,7 +6,7 @@
     ScriptVariant MegaDrain
 
 MegaDrain:
-    CallDfc70 4, 0, 4, 4, 960
+    PaletteFade 4, 0, 4, 4, 960
     CameraMovePreset 1, 14, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -32,7 +32,7 @@ MegaDrain:
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 8, 0, 0, 0x7fff
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 4, 0, 4, 960
+    PaletteFade 4, 4, 0, 4, 960
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End

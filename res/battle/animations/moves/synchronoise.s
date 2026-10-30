@@ -7,7 +7,7 @@
 
 Synchronoise:
     CameraMovePreset 1, 9, 12, 0, 8
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_FLD_23, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
@@ -38,7 +38,7 @@ Synchronoise:
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

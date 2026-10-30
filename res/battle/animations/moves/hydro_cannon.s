@@ -12,7 +12,7 @@ HydroCannon:
     PlaySE SEQ_SE_DUMMY5, 3, EFFVM_ATTACKER, 130, 0, 0, 0, 0, 0
     MoveSE 3, 0, 0, 0, 3000, 0, 60, 0, 0
     SetYield TRUE
-    CallDfc70 4, 0, 15, 2, 0
+    PaletteFade 4, 0, 15, 2, 0
     ParticleLoad 479
     EmitterAdd 479, 3, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
@@ -32,11 +32,11 @@ HydroCannon:
     EmitterMove 479, 1, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x1000, 0, 0, 0x1000, 0x1000, 0
     EmitterMove 479, 2, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x1000, 0, 0, 0x1000, 0x1000, 0
     LoadBg 159
-    CallDfd74 2, 0
-    CallDfc70 4, 15, 0, 0, 0
+    SetVanish 2, 0
+    PaletteFade 4, 15, 0, 0, 0
     BgMove 4, -32, 0, 100, 0, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     WaitFrames 20
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetValue EFFVM_ATTACKER, 1
@@ -44,13 +44,13 @@ HydroCannon:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, -0x800, 0, 2, 1, 8
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 15, 1, 0
+    PaletteFade 4, 0, 15, 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetValue EFFVM_ATTACKER, 0
     McssSetValue EFFVM_DEFENDER, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 4, 12, 0, 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
     End

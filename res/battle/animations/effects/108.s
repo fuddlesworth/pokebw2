@@ -8,7 +8,7 @@
 
 Effect108:
     SetYield FALSE
-    CallDisplay 0, 8, 0, 0, 0
+    SetTrainer 0, 8, 0, 0, 0
     McssAlpha 8, 1, 1, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     McssAlpha 8, 1, 31, 10, 0, 0

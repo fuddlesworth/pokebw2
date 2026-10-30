@@ -7,9 +7,9 @@
 
 Effect078:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 4, 0, 16, 3, 0
+    PaletteFade 4, 0, 16, 3, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 1
+    SetVanish 0, 1
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W129_04, 1, EFFVM_ATTACKER, 10, 0, 115, 0, 0, 0
@@ -22,8 +22,8 @@ Effect078:
     EmitterAdd 1, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssPalFade EFFVM_ATTACKER, 0, 10, 0, 0x7fff
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfc70 4, 16, 0, 3, 0
+    SetVanish 0, 0
+    PaletteFade 4, 16, 0, 3, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssPalFade EFFVM_ATTACKER, 10, 0, 0, 0x7fff
     Wait EFFVM_WAIT_ALL

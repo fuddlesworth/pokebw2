@@ -7,7 +7,7 @@
 
 ConfuseRay:
     CameraMovePreset 1, 20, 24, 0, 0
-    CallDfc70 4, 0, 12, 2, 0
+    PaletteFade 4, 0, 12, 2, 0
     Wait EFFVM_WAIT_ALL
     ParticleLoad 278
     EmitterMove 278, 1, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x78000, 0, 0x1333, 0x1000, 0
@@ -29,7 +29,7 @@ ConfuseRay:
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 2, 0
+    PaletteFade 4, 12, 0, 2, 0
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 2, 1
     Wait EFFVM_WAIT_ALL
     End

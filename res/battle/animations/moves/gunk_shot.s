@@ -10,15 +10,15 @@ GunkShot:
     McssSetVanish EFFVM_ATTACKER, TRUE
     Wait EFFVM_WAIT_ALL
     LoadBg 21
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 14, 0, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 14, 0, 0
     WaitFrames 6
     CameraMovePreset 1, 9, 16, 0, 12
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     BgMove 4, -30, 0, 200, 1, 0
     WaitFrames 6
-    CallDfc70 4, 14, 0, 0, 0
+    PaletteFade 4, 14, 0, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W157_03, 3, EFFVM_ATTACKER, 0, -700, 120, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 3, EFFVM_ATTACKER, 80, 0, 0, 0, 0, 0
@@ -54,12 +54,12 @@ GunkShot:
     WaitFrames 30
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x300c
     WaitFrames 30
-    CallDfc70 4, 0, 14, 0, 0
+    PaletteFade 4, 0, 14, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 14, 0, 0, 0
+    PaletteFade 4, 14, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE

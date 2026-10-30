@@ -16,12 +16,12 @@ DoubleEdge:
     SetYield TRUE
     WaitFrames 20
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
     LoadBg 15
-    CallDfc70 3, 16, 0, 1, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    PaletteFade 3, 16, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
     McssCircle EFFVM_ATTACKER, 3, 0, 0, 0x8000, 0x6000, 0x1000, 0x1000, 0
     SetYield FALSE
     PlaySE SEQ_SE_W121_01, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -39,20 +39,20 @@ DoubleEdge:
     McssSetValue EFFVM_DEFENDER, 1
     McssPalFade EFFVM_DEFENDER, 0, 10, 0, 0x3ff
     WaitFrames 2
-    CallDfd74 2, 0
+    SetVanish 2, 0
     BgPalAnim 2, 3
     WaitFrames 24
     McssPalFade EFFVM_DEFENDER, 10, 0, 0, 0x3ff
-    CallDfc70 3, 0, 16, 0, 0
+    PaletteFade 3, 0, 16, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 0, 0
+    PaletteFade 2, 10, 0, 0, 0
     McssSetValue EFFVM_DEFENDER, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfd74 2, 1
+    SetVanish 0, 0
+    SetVanish 1, 0
+    SetVanish 2, 1
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 3, 16, 0, 0, 0
+    PaletteFade 3, 16, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

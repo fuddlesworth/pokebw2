@@ -9,8 +9,8 @@ VCreate:
     McssSetValue EFFVM_ALL, 1
     CameraMovePreset 1, 9, 16, 0, 8
     LoadBg 225
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 10, 2, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 10, 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W360_MOMOMON, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
@@ -30,7 +30,7 @@ VCreate:
     WaitFrames 120
     McssCircle EFFVM_ATTACKER, 3, 0, 0, 0x4000, 0xa000, 0, 0x1000, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 10, 16, 2, 0
+    PaletteFade 4, 10, 16, 2, 0
     CameraMovePreset 1, 11, 10, 0, 6
     WaitFrames 10
     WaitFrames 2
@@ -38,10 +38,10 @@ VCreate:
     PlaySE SEQ_SE_W307_EXP, 1, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
     PlaySE SEQ_SE_FLD_158, 2, EFFVM_DEFENDER, 15, 0, 127, 0, 0, 0
     SetYield TRUE
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     WaitFrames 2
-    CallDfc70 3, 16, 0, 2, 0
+    PaletteFade 3, 16, 0, 2, 0
     BgMove 2, 8, 0, 2, 0, 10
     BgPalAnim 42, 10
     McssSetVanish EFFVM_DEFENDER, TRUE
@@ -59,12 +59,12 @@ VCreate:
     WaitFrames 30
     McssPalFade EFFVM_ATTACKER, 10, 0, 2, 0x12
     McssPalFade EFFVM_DEFENDER, 10, 0, 2, 0x12
-    CallDfc70 3, 0, 16, 2, 0
+    PaletteFade 3, 0, 16, 2, 0
     WaitFrames 10
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     WaitFrames 2
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 12, 0, 8
     McssSetValue EFFVM_ALL, 0

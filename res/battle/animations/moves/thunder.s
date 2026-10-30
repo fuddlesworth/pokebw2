@@ -9,21 +9,21 @@ Thunder:
     SetYield FALSE
     PlaySE SEQ_SE_FLD_34, 1, EFFVM_PAN_CENTER, 0, 0, 127, 0, 0, 0
     SetYield TRUE
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     CameraMovePreset 1, 11, 26, 0, 22
     WaitFrames 26
     CameraMove 2, 0, 0, 0, 0, 0xa000, 0, 32, 0, 28
     McssSetVanish EFFVM_ATTACKER, TRUE
     McssSetVanish EFFVM_DEFENDER, TRUE
     WaitFrames 20
-    CallDfc70 3, 14, 0, 1, 0
+    PaletteFade 3, 14, 0, 1, 0
     LoadBg 39
-    CallDfd74 2, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    SetVanish 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
     BgMove 4, 1, 0, 50, 0, 0
     WaitFrames 30
-    CallDfc70 3, 0, 14, 2, 0
+    PaletteFade 3, 0, 14, 2, 0
     CameraMovePreset 1, 11, 8, 0, 6
     CameraShake 0, 0x4cd, 0, 1, 1, 8
     SetYield FALSE
@@ -43,11 +43,11 @@ Thunder:
     McssPalFade EFFVM_DEFENDER, 14, 0, 2, 0x3ff
     McssScale EFFVM_DEFENDER, 2, 0x4cd, -0x4cd, 6, 0, 1
     McssMoveXY EFFVM_DEFENDER, 2, 0x800, 0, 1, 2, 8
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     WaitFrames 50
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     CameraMovePreset 1, 8, 32, 0, 28
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE

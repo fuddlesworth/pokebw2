@@ -10,13 +10,13 @@ HydroPump:
     McssSetValue EFFVM_ALL, 1
     Wait EFFVM_WAIT_ALL
     LoadBg 18
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 14, 0, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 14, 0, 0
     Wait EFFVM_WAIT_ALL
     BgMove 4, -20, 0, 130, 0, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 14, 6, 0, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 14, 6, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W063_01, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
     PlaySE SEQ_SE_W157_02, 2, EFFVM_DEFENDER, 0, 300, 125, 0, 0, 0
@@ -59,14 +59,14 @@ HydroPump:
     McssScale EFFVM_DEFENDER, 2, 0x4cd, -0x4cd, 2, 1, 1
     McssSetVanish EFFVM_DEFENDER, TRUE
     WaitFrames 30
-    CallDfc70 3, 6, 14, 1, 0
+    PaletteFade 3, 6, 14, 1, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_BG
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     Wait EFFVM_WAIT_BG
     McssSetValue EFFVM_ALL, 0
-    CallDfc70 2, 14, 0, 0, 0
+    PaletteFade 2, 14, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

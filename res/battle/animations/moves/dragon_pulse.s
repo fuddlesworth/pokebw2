@@ -8,7 +8,7 @@
 DragonPulse:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 13, 0, 0
+    PaletteFade 4, 0, 13, 0, 0
     McssSetValue EFFVM_ALL, 1
     ParticleLoad 585
     SetYield FALSE
@@ -41,7 +41,7 @@ DragonPulse:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 14
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     McssSetValue EFFVM_ALL, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE

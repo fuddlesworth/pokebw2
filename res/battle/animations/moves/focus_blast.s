@@ -7,7 +7,7 @@
 
 FocusBlast:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 2, 0, 13, 2, 0
+    PaletteFade 2, 0, 13, 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W063_02, 1, EFFVM_ATTACKER, 0, 0, 80, 0, 0, 0
@@ -26,9 +26,9 @@ FocusBlast:
     EmitterAdd 590, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
     LoadBg 24
-    CallDfd74 1, 1
-    CallDfd74 0, 1
-    CallDfd74 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
+    SetVanish 2, 0
     BgMove 4, -20, 0, 70, 1, 0
     EmitterMove 590, 2, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x3c000, 0, 0x1000, 0x1000, 0
     WaitFrames 30
@@ -44,10 +44,10 @@ FocusBlast:
     McssMoveXY EFFVM_DEFENDER, 2, 0x99a, 0, 2, 0, 8
     Wait EFFVM_WAIT_SE_PLAYER_1
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
-    CallDfc70 2, 13, 0, 2, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
+    PaletteFade 2, 13, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

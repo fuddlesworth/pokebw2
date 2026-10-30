@@ -6,7 +6,7 @@
     ScriptVariant FlashCannon
 
 FlashCannon:
-    CallDfc70 4, 0, 13, 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     McssSetValue EFFVM_ALL, 1
     CameraMovePreset 1, 9, 16, 0, 8
     SetYield FALSE
@@ -43,7 +43,7 @@ FlashCannon:
     McssScale EFFVM_DEFENDER, 2, -0x333, 0x333, 2, 0, 8
     McssMoveXY EFFVM_DEFENDER, 2, 0x333, 0, 2, 0, 10
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 2, 0
+    PaletteFade 4, 13, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetValue EFFVM_ATTACKER, 0
     McssSetVanish EFFVM_ALL, FALSE

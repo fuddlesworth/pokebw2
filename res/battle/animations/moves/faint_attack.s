@@ -7,7 +7,7 @@
 
 FaintAttack:
     CameraMovePreset 1, 15, 24, 0, 0
-    CallDfc70 4, 0, 13, 0, 0
+    PaletteFade 4, 0, 13, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W027_01, 1, EFFVM_ATTACKER, 0, 400, 120, 0, 0, 0
@@ -32,7 +32,7 @@ FaintAttack:
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetMode EFFVM_ATTACKER, 4
-    CallDfc70 4, 13, 0, 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End

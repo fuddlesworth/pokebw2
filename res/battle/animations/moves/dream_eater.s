@@ -8,7 +8,7 @@
 DreamEater:
     CameraMovePreset 1, 14, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 12, 0, 0
+    PaletteFade 4, 0, 12, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W054_01, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
     MoveSE 1, 0, 0, -1000, 2000, 0, 100, 0, 0
@@ -28,7 +28,7 @@ DreamEater:
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 12, 0, 0, 0x7fff
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 0, 0
+    PaletteFade 4, 12, 0, 0, 0
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End
