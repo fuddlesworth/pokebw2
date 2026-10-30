@@ -226,16 +226,16 @@ u32 BtlServerFlow_RunFaintSwitch(BtlServerFlow *flow, BtlClientActions *clientAc
         flow->nextAction = 0;
         for (i = 0; i < flow->actionOrderCount; i++) {
             if (flow->actionOrder[i].action.change.action == BATTLE_ACTION_CHANGE &&
-                !flow->actionOrder[i].action.change.unk10 && !IsFainted(flow->actionOrder[i].mon)) {
+                !flow->actionOrder[i].action.change.deplete && !IsFainted(flow->actionOrder[i].mon)) {
                 ServerControl_ChangePokemon(flow, flow->actionOrder[i].mon, flow->actionOrder[i].action.change.slot);
                 flow->actionOrder[i].done = TRUE;
             }
         }
         for (i = 0; i < flow->actionOrderCount; i++) {
             if (flow->actionOrder[i].action.change.action == BATTLE_ACTION_CHANGE &&
-                !flow->actionOrder[i].action.change.unk10 && IsFainted(flow->actionOrder[i].mon)) {
+                !flow->actionOrder[i].action.change.deplete && IsFainted(flow->actionOrder[i].mon)) {
                 ServerControl_SwitchInFillSlot(flow, flow->actionOrder[i].clientId,
-                                               flow->actionOrder[i].action.change.unk4,
+                                               flow->actionOrder[i].action.change.pos,
                                                flow->actionOrder[i].action.change.slot, TRUE);
                 flow->actionOrder[i].done = TRUE;
             }
@@ -243,7 +243,7 @@ u32 BtlServerFlow_RunFaintSwitch(BtlServerFlow *flow, BtlClientActions *clientAc
         if (BtlSetup_GetBattleStyle(flow->mainModule) == BTL_STYLE_ROTATION) {
             for (i = 0; i < flow->actionOrderCount; i++) {
                 if (flow->actionOrder[i].action.change.action == BATTLE_ACTION_ROTATION &&
-                    !flow->actionOrder[i].action.change.unk10) {
+                    !flow->actionOrder[i].action.change.deplete) {
                     ActionOrder_Proc(flow, &flow->actionOrder[i]);
                 }
             }
@@ -372,8 +372,8 @@ BOOL ServerControl_MidTurnSwitchIn(BtlServerFlow *flow, BtlClientActions *client
             count = ClientActions_GetCount(clientActions, clientId);
             for (i = 0; i < count; i++) {
                 action = ClientActions_GetAction(clientActions, clientId, i);
-                if (action.change.action == BATTLE_ACTION_CHANGE && !action.change.unk10) {
-                    ServerControl_SwitchInFillSlot(flow, clientId, action.change.unk4, action.change.slot, TRUE);
+                if (action.change.action == BATTLE_ACTION_CHANGE && !action.change.deplete) {
+                    ServerControl_SwitchInFillSlot(flow, clientId, action.change.pos, action.change.slot, TRUE);
                 }
             }
         }
@@ -582,12 +582,12 @@ u8 ActionOrder_Build(BtlServerFlow *flow, BtlClientActions *clientActions, Actio
             }
             switch ((u8)BattleAction_GetAction(&entry->action)) {
             case BATTLE_ACTION_ROTATION:
-                slot = GetRotationInSlot((u8)entry->action.change.unk4);
+                slot = GetRotationInSlot((u8)entry->action.change.pos);
                 entry->mon = BattleParty_GetMon(client->party, slot);
                 rotated = TRUE;
                 break;
             case BATTLE_ACTION_CHANGE:
-                entry->mon = BattleParty_GetMon(client->party, entry->action.change.unk4);
+                entry->mon = BattleParty_GetMon(client->party, entry->action.change.pos);
                 slot++;
                 break;
             default:
@@ -863,7 +863,7 @@ u32 ActionOrder_Proc(BtlServerFlow *flow, ActionOrderEntry *entry) {
                 switch (action.bits.action) {
                 case BATTLE_ACTION_ROTATION:
                     if (BtlSetup_GetBattleStyle(flow->mainModule) == BTL_STYLE_ROTATION) {
-                        ServerControl_Rotation(flow, entry->clientId, action.change.unk4);
+                        ServerControl_Rotation(flow, entry->clientId, action.change.pos);
                     }
                     break;
                 case BATTLE_ACTION_FIGHT:
