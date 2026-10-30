@@ -227,6 +227,7 @@ copies and incorrectly sized files.
 `POKEBW2_TRACE_DEX=1` logs the elapsed time and simulation ticks from opening the Pokédex procedure to its first
 native UI frame, and the species, form and playback state when a cry is requested. This measures UI construction,
 not GPU presentation latency.
+Set `POKEBW2_GPU_DEBUG=1` when GPU validation is needed; normal play leaves it disabled.
 
 `POKEBW2_INPUT_REPLAY` accepts a text file of frame numbers and hexadecimal DS button masks (one pair per line).
 Each mask remains held until the next entry; use a zero mask to release buttons. Replay exercises the original

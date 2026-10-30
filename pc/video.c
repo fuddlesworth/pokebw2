@@ -9,7 +9,9 @@ bool PcVideo_Init(PcVideo *video) {
     if (!video->window) {
         return false;
     }
-    video->device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, "vulkan");
+    const char *gpu_debug = SDL_getenv("POKEBW2_GPU_DEBUG");
+    video->device =
+        SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, gpu_debug && SDL_strcmp(gpu_debug, "1") == 0, "vulkan");
     if (!video->device) {
         return false;
     }

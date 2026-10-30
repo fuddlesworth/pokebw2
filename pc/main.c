@@ -561,7 +561,8 @@ int main(int argc, char **argv) {
         SDL_GetMouseState(&mouse_x, &mouse_y);
         bool pointer = SDL_GetMouseFocus() == video.window && SDL_GetKeyboardFocus() == video.window &&
                        PcVideo_MapPointer(&video, mouse_x, mouse_y, &canvas_x, &canvas_y);
-        DrawDiagnostic(pixels, panel, pointer, canvas_x, canvas_y);
+        if (!boot && !model_path && !sprite_archive)
+            DrawDiagnostic(pixels, panel, pointer, canvas_x, canvas_y);
         bool presented;
         unsigned updates = PcGameClock_Advance(&game_clock, SDL_GetTicksNS());
         for (unsigned update = 0; update < updates; update++) {
