@@ -450,7 +450,7 @@ static u8 ServerEvent_DecideMoveTarget(BtlServerFlow *flow, BattleMon *mon, BtlF
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetRewriteOnceValue(4, 0x1f);
     BattleEventVar_SetRewriteOnceValue(0x50, FALSE);
-    BattleEvent_CallHandlers(flow, 0x29);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DECIDE_MOVE_TARGET);
     monId = BattleEventVar_GetValue(4);
     BattleEventVar_Pop(0x287);
     return monId;
@@ -465,7 +465,7 @@ static u8 ServerEvent_BaitMoveTarget(BtlServerFlow *flow, BattleMon *mon, BtlFlo
     BattleEventVar_SetConstValue(0x16, param->type);
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetRewriteOnceValue(4, targetId);
-    BattleEvent_CallHandlers(flow, 0x2a);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_BAIT_MOVE_TARGET);
     newTarget = BattleEventVar_GetValue(4);
     BattleEventVar_Pop(0x29f);
     if (newTarget == targetId) {

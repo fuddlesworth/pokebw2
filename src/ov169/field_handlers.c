@@ -43,7 +43,7 @@ BattleEventItem *FieldEffectEventAdd(u32 effect, u8 monId) {
     for (i = 0; i < NELEMS(sFieldEffectEventAddTable); i++) {
         if (effect == sFieldEffectEventAddTable[i].effect) {
             handlers = sFieldEffectEventAddTable[i].eventAdd(&numHandlers);
-            return BattleEvent_AddItem(3, effect, 3, 0, monId, handlers, numHandlers);
+            return BattleEvent_AddItem(BTL_EVENT_FACTOR_FIELD, effect, 3, 0, monId, handlers, numHandlers);
         }
     }
     return NULL;
@@ -54,7 +54,7 @@ void FieldEffectEventRemove(BattleEventItem *item) {
 }
 
 static const BattleEventHandlerEntry sHandlersFieldWeather[] = {
-    { 0x47, HandlerFieldWeather },
+    { BTL_EVENT_CALC_DAMAGE, HandlerFieldWeather },
 };
 
 static const BattleEventHandlerEntry *EventAddFieldWeather(u32 *numHandlers) {
@@ -66,7 +66,7 @@ static void HandlerFieldWeather(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sHandlersFieldTrickRoom[] = {
-    { 0x13, HandlerFieldTrickRoom },
+    { BTL_EVENT_CALC_SPEED, HandlerFieldTrickRoom },
 };
 
 static const BattleEventHandlerEntry *EventAddFieldTrickRoom(u32 *numHandlers) {
@@ -80,8 +80,8 @@ static void HandlerFieldTrickRoom(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersFieldGravity[] = {
-    { 0x34, HandlerFieldGravityAccuracy },
-    { 0x3e, HandlerFieldGravityGrounded },
+    { BTL_EVENT_GET_MOVE_ACCURACY, HandlerFieldGravityAccuracy },
+    { BTL_EVENT_CHECK_TYPE_EFFECTIVENESS, HandlerFieldGravityGrounded },
 };
 
 static const BattleEventHandlerEntry *EventAddFieldGravity(u32 *numHandlers) {
@@ -102,7 +102,7 @@ static void HandlerFieldGravityGrounded(BattleEventItem *item, BtlServerFlow *fl
 }
 
 static const BattleEventHandlerEntry sHandlersFieldWaterSport[] = {
-    { 0x38, HandlerFieldWaterSport },
+    { BTL_EVENT_MOVE_POWER, HandlerFieldWaterSport },
 };
 
 static const BattleEventHandlerEntry *EventAddFieldWaterSport(u32 *numHandlers) {
@@ -118,7 +118,7 @@ static void HandlerFieldWaterSport(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersFieldMudSport[] = {
-    { 0x38, HandlerFieldMudSport },
+    { BTL_EVENT_MOVE_POWER, HandlerFieldMudSport },
 };
 
 static const BattleEventHandlerEntry *EventAddFieldMudSport(u32 *numHandlers) {
@@ -134,7 +134,7 @@ static void HandlerFieldMudSport(BattleEventItem *item, BtlServerFlow *flow, u8 
 }
 
 static const BattleEventHandlerEntry sHandlersFieldWonderRoom[] = {
-    { 0x3a, HandlerFieldWonderRoom },
+    { BTL_EVENT_DECIDE_DEFENSE_STAT, HandlerFieldWonderRoom },
 };
 
 static const BattleEventHandlerEntry *EventAddFieldWonderRoom(u32 *numHandlers) {

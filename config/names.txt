@@ -21132,6 +21132,10 @@ overlays/ov167 0x021db05c sLevelUp
 overlays/ov167 0x021db06c sWork
 overlays/ov167 0x021db070 sTransformMoveBackup
 overlays/ov167 0x021db0a8 sTransformCoreBackup
+overlays/ov167 0x021db194 g_BattleEventList
+overlays/ov167 0x021db1a0 g_BattleEventPool
+overlays/ov167 0x021db3b0 g_BattleEventVars
+overlays/ov167 0x021db954 g_BattleEventItems
 overlays/ov167 0x021dd864 sOverlayLoaded
 overlays/ov167 0x021dd868 sCommMode
 overlays/ov167 0x021dd86c sAdapters
