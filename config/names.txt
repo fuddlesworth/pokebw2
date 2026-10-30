@@ -21846,6 +21846,9 @@ overlays/ov168 0x021f333c DEFAULT_POS_TRAINER
 overlays/ov168 0x021f3384 DEFAULT_POS_TRIPLE
 overlays/ov168 0x021f33cc DEFAULT_POS_ROTATION
 overlays/ov168 0x021f3414 SPECIES_SHADOWS
+overlays/ov168 0x021f3594 GAUGE_ACTOR_SETUP
+overlays/ov168 0x021f359c EFFECT_ACTOR_SETUP
+overlays/ov168 0x021f35b4 POPUP_ACTOR_SETUP
 overlays/ov168 0x021f3f50 sIdleEffectsWaitMsg
 overlays/ov168 0x021f3f58 sIdleEffects
 overlays/ov168 0x021f3f70 sStudioMovieShadows

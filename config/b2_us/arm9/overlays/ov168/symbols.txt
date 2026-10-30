@@ -673,9 +673,9 @@ SPECIES_SHADOWS kind:data(any) addr:0x021f3414
 data_ov168_021f3416 kind:data(any) addr:0x021f3416
 data_ov168_021f3418 kind:data(any) addr:0x021f3418
 data_ov168_021f341a kind:data(any) addr:0x021f341a
-data_ov168_021f3594 kind:data(any) addr:0x021f3594
-data_ov168_021f359c kind:data(any) addr:0x021f359c
-data_ov168_021f35b4 kind:data(any) addr:0x021f35b4
+GAUGE_ACTOR_SETUP kind:data(any) addr:0x021f3594
+EFFECT_ACTOR_SETUP kind:data(any) addr:0x021f359c
+POPUP_ACTOR_SETUP kind:data(any) addr:0x021f35b4
 data_ov168_021f35cc kind:data(any) addr:0x021f35cc
 data_ov168_021f35cf kind:data(any) addr:0x021f35cf
 data_ov168_021f35d2 kind:data(any) addr:0x021f35d2
