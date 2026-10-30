@@ -29,6 +29,12 @@ int main(int argc, char **argv) {
         FSFile memoryFile;
         FS_InitFile(&memoryFile);
         CHECK(FS_CreateFileFromMemory(&memoryFile, memory, 128));
+        memory[127] = 0x5a;
+        char end[4] = { 0, 0x7f, 0x7f, 0x7f };
+        CHECK(FS_SeekFile(&memoryFile, 127, FS_SEEK_SET));
+        CHECK(FS_ReadFile(&memoryFile, end, sizeof(end)) == 1 && end[0] == 0x5a);
+        CHECK(end[1] == 0x7f && memoryFile.error == FS_RESULT_SUCCESS);
+        CHECK(FS_ReadFile(&memoryFile, end, sizeof(end)) == 0 && memoryFile.error == FS_RESULT_SUCCESS);
         FSFile closedFile;
         FS_InitFile(&closedFile);
         CHECK(FS_OpenFile(&closedFile, argv[1]));

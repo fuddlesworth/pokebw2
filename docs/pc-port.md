@@ -434,6 +434,10 @@ the full PC canvas for the circle and four directional patterns; the DS window r
 logic.
 The main screen's white master-brightness fade also colors empty canvas pixels, so it reaches the edges.
 
+Aspertia Gate's weather board reads the `ZONE_MAX` marker past the final zone header. NitroFS returns zero bytes at
+end-of-file without failing; the PC file adapter now does the same, while still reporting actual stream errors. A
+replay that warps into Aspertia Gate completes its map load and renders the gate.
+
 Aspect ratio remains fixed at the native 16:9 layout; arbitrary aspect selection is not implemented. Separate Run/Back
 and Open C-Gear actions and a captured field preview are still absent from the mockup design.
 The right panel shows the selected binding/conflict while rebinding, and a themed emblem on other pages.

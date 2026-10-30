@@ -84,9 +84,12 @@ s32 FS_ReadFile(FSFile *file, void *dest, s32 size) {
     if (size < 0 || !file->hostStream)
         return -1;
     size_t read = SDL_ReadIO(file->hostStream, dest, (size_t)size);
-    file->error = read == (size_t)size ? FS_RESULT_SUCCESS : FS_RESULT_FAILURE;
-    if (read != (size_t)size)
+    // NitroFS returns the available bytes, including zero at EOF, without treating that as a read failure.
+    file->error = FS_RESULT_SUCCESS;
+    if (read != (size_t)size && SDL_GetIOStatus(file->hostStream) != SDL_IO_STATUS_EOF) {
+        file->error = FS_RESULT_FAILURE;
         GFL_DebugAssertFailEx(__FILE__, __LINE__, "Short resource read: %zu/%d", read, size);
+    }
     return (s32)read;
 }
 BOOL FS_SeekFile(FSFile *file, s32 offset, FSSeekFileMode whence) {
