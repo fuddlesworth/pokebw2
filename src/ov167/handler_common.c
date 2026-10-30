@@ -111,7 +111,7 @@ void CommonMagicCoatCheckMoveEffect(BattleEventItem *item, BtlServerFlow *flow, 
     if (!IsAllyMonID(attacker, monId)) {
         u16 move = BattleEventVar_GetValue(BTL_EVAR_MOVE);
 
-        if (PML_MoveGetQuality(move) == 0xb && getMoveFlag(move, 4) &&
+        if (PML_MoveGetQuality(move) == MOVE_QUALITY_SIDE && getMoveFlag(move, 4) &&
             BattleEventVar_RewriteValue(BTL_EVAR_FAIL_CAUSE, 0x19)) {
             BtlServerFlow_AddMagicCoatReflect(flow, monId, attacker);
         }
