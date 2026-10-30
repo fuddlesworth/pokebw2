@@ -6777,6 +6777,7 @@ overlays/ov011 0x02160dd8 DWC_IsValidCancelMatching
 overlays/ov011 0x02160e10 DWC_AddMatchKeyInt
 overlays/ov011 0x02160ed4 DWC_AddMatchKeyString
 overlays/ov011 0x02160f98 DWC_GetMatchIntValue
+overlays/ov011 0x02160fd8 DWCi_UpdateSuspendState
 overlays/ov011 0x02161048 DWCi_MatchInit
 overlays/ov011 0x021611a8 DWCi_QR2Startup
 overlays/ov011 0x021612d0 DWCi_ConnectToAnybodyAsync
@@ -6793,6 +6794,8 @@ overlays/ov011 0x02162864 DWCi_StopResendingMatchCommand
 overlays/ov011 0x02162880 DWCi_StopMatching
 overlays/ov011 0x02162908 DWCi_ClearQR2Key
 overlays/ov011 0x02162930 DWCi_ProcessMatchSynPacket
+overlays/ov011 0x02162958 DWCi_HandleMatchSynPacket
+overlays/ov011 0x02162bf8 DWCi_HandleMatchSynPacketFullMesh
 overlays/ov011 0x02162c00 DWCi_CloseConnectionsNotInBitmap
 overlays/ov011 0x02162c30 DWCi_ProcessServerAIDBitmapCommand
 overlays/ov011 0x02162c68 DWCi_ProcessMatchClosing
@@ -6815,6 +6818,7 @@ overlays/ov011 0x02163974 DWCi_SendSBMsgCommand
 overlays/ov011 0x021639c8 DWCi_SendGPBuddyMsgCommand
 overlays/ov011 0x02163a30 DWCi_ProcessRecvMatchCommand
 overlays/ov011 0x0216475c DWCi_CheckResvCommand
+overlays/ov011 0x0216484c DWCi_CheckResvCommandAsServer
 overlays/ov011 0x02164aa0 DWCi_ProcessResvOK
 overlays/ov011 0x02164b78 DWCi_HandleMatchCommandError
 overlays/ov011 0x02164b98 DWCi_SendResvCommand
@@ -6825,6 +6829,9 @@ overlays/ov011 0x02165094 DWCi_CancelPreConnectedServerProcessWithResetLevel
 overlays/ov011 0x02165164 DWCi_CancelPreConnectedServerProcess
 overlays/ov011 0x02165194 DWCi_CancelPreConnectedClientProcess
 overlays/ov011 0x02165280 DWCi_PostProcessConnection
+overlays/ov011 0x0216549c DWCi_AddPendingNodeInfo
+overlays/ov011 0x021654c0 DWCi_PushPendingNodeInfo
+overlays/ov011 0x02165540 DWCi_PushPendingNodeInfoFullMesh
 overlays/ov011 0x02165558 DWCi_StartMatchSyn
 overlays/ov011 0x02165654 DWCi_SendClientLinkRequest
 overlays/ov011 0x0216574c DWCi_DoCancelMatching
@@ -6879,6 +6886,7 @@ overlays/ov011 0x02167810 DWCi_MakeGroupID
 overlays/ov011 0x02167838 DWCi_SetReservationCallback
 overlays/ov011 0x0216788c DWCi_ChangeToServer
 overlays/ov011 0x02167924 DWCi_StartReservingServer
+overlays/ov011 0x021679c0 DWCi_GetNumConnectionHost
 overlays/ov011 0x021679c8 DWCi_SendServerPoll
 overlays/ov011 0x02167ac4 DWCi_SetSuspendAndNotify
 overlays/ov011 0x02167c28 DWCi_StartMatchingAfterSearchOwn
@@ -6910,6 +6918,7 @@ overlays/ov011 0x02168374 DWCi_ClearTargetNodeInfo
 overlays/ov011 0x02168388 DWCi_IsTargetNodeInfoValid
 overlays/ov011 0x0216839c DWCi_ClearNodeInfo
 overlays/ov011 0x021683a8 DWCi_IsValidNodeInfo
+overlays/ov011 0x021683b8 DWCi_GetNextConnectTick
 overlays/ov011 0x02168468 DWCi_StopMeshMaking
 overlays/ov011 0x02168590 DWCi_IsFirstServer
 overlays/ov011 0x021685a0 DWCi_IsMatchLocked
