@@ -69,7 +69,7 @@ typedef struct {
     u8 size;
 } BtlHandlerWorkSize;
 
-static const BtlHandlerWorkSize data_ov167_021d6dd8[59] = {
+static const BtlHandlerWorkSize sHandlerWorkSizes[] = {
     { BTL_HANDLER_USE_HELD_ITEM, 0x08 },
     { BTL_HANDLER_USE_ITEM_ANIM, 0x04 },
     { BTL_HANDLER_RECOVER_HP, 0x30 },
@@ -139,9 +139,9 @@ void *PushWork(BtlActionState *state, u32 command, u32 monId) {
     u32 size;
     BattleHandlerHeader *header;
 
-    for (i = 0, size = 0; i < 59; i++) {
-        if (command == data_ov167_021d6dd8[i].command) {
-            size = data_ov167_021d6dd8[i].size;
+    for (i = 0, size = 0; i < NELEMS(sHandlerWorkSizes); i++) {
+        if (command == sHandlerWorkSizes[i].command) {
+            size = sHandlerWorkSizes[i].size;
             break;
         }
     }

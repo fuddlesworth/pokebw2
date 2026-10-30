@@ -4235,7 +4235,7 @@ data_ov167_021d6cf4 kind:data(any) addr:0x021d6d34
 sEVParams kind:data(any) addr:0x021d6d3c
 sBagItemEffects kind:data(any) addr:0x021d6d60
 data_ov167_021d6d24 kind:data(any) addr:0x021d6d64
-data_ov167_021d6dd8 kind:data(any) addr:0x021d6e18
+sHandlerWorkSizes kind:data(any) addr:0x021d6e18
 data_ov167_021d6dd9 kind:data(any) addr:0x021d6e19
 data_ov167_021d6e50 kind:data(any) addr:0x021d6e90
 data_ov167_021d6eb0 kind:data(any) addr:0x021d6ef0
