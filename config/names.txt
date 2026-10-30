@@ -19044,6 +19044,8 @@ overlays/ov167 0x0219bd5c BtlMain_AreAllClientsDone
 overlays/ov167 0x0219bd88 IsBattleSceneOff
 overlays/ov167 0x0219bd98 GetBadgeCount
 overlays/ov167 0x0219bde0 GetTextWait
+overlays/ov167 0x0219bdf0 SetFastestTextSpeed
+overlays/ov167 0x0219bdfc IsExpGainEnabled
 overlays/ov167 0x0219be48 GetCommPlayerSupport
 overlays/ov167 0x0219be8c GetActivePosCount
 overlays/ov167 0x0219bebc IsActivePos
@@ -19051,6 +19053,8 @@ overlays/ov167 0x0219bedc GetMultiMode
 overlays/ov167 0x0219bee4 GetCommMode
 overlays/ov167 0x0219beec IsMultiMode
 overlays/ov167 0x0219bf00 GetWinBGM
+overlays/ov167 0x0219bf08 GetStudioEndingBGM0
+overlays/ov167 0x0219bf14 GetStudioEndingBGM2
 overlays/ov167 0x0219bf68 GetPlayerInfo
 overlays/ov167 0x0219bf70 IsMonCaught
 overlays/ov167 0x0219bf88 GetDexCaughtCount
@@ -19092,6 +19096,9 @@ overlays/ov167 0x0219c964 IsRecordingEnabled
 overlays/ov167 0x0219c980 IsRecPlayMode
 overlays/ov167 0x0219c988 GetStudioMode
 overlays/ov167 0x0219c9b0 GetStudioMovieId
+overlays/ov167 0x0219c9c0 IsStudioSkipDisabled
+overlays/ov167 0x0219c9d4 SetRecPlayQuit
+overlays/ov167 0x0219c9e0 GetScriptedRulesOutcome
 overlays/ov167 0x0219c9fc BtlMain_StoreSlotNthResult
 overlays/ov167 0x0219ca48 SetBattleResult
 overlays/ov167 0x0219ca58 GetBattleResult
@@ -19161,6 +19168,9 @@ overlays/ov167 0x0219da44 SetClientSrcParty
 overlays/ov167 0x0219da94 GetClientSrcParty
 overlays/ov167 0x0219dad0 IncRecord
 overlays/ov167 0x0219dae8 AddRecord
+overlays/ov167 0x0219db00 GetShooterSettings
+overlays/ov167 0x0219db08 IsShooterEnabled
+overlays/ov167 0x0219db28 IsBagEnabled
 overlays/ov167 0x0219db64 NotifyMonLevelUp
 overlays/ov167 0x0219db7c ChangeFriendshipByItem
 overlays/ov167 0x0219dc00 NotifyMonCaught
@@ -19181,11 +19191,13 @@ overlays/ov167 0x0219e130 BtlMain_EndRecSkip
 overlays/ov167 0x0219e158 GetServerFlow
 overlays/ov167 0x0219e164 BtlSetup_ClearResults
 overlays/ov167 0x0219e1b0 BtlMain_StoreResultStats
+overlays/ov167 0x0219e300 GetPlayerFirstActionMove
 overlays/ov167 0x0219e30c GetBattleSetup
 overlays/ov167 0x0219e310 GetBattleSetupParam
 overlays/ov167 0x0219e314 BtlMain_LoadStudioData
 overlays/ov167 0x0219e378 BtlMain_FreeStudioData
 overlays/ov167 0x0219e39c GetStudioRules
+overlays/ov167 0x0219e3ac GetStudioWork
 overlays/ov167 0x0219e3bc GetPokewoodCutin
 overlays/ov167 0x0219e3cc BattleServer_Create
 overlays/ov167 0x0219e498 BattleServer_AttachClient
@@ -20514,6 +20526,15 @@ overlays/ov167 0x021d6be8 CutinScript_Free
 overlays/ov167 0x021d6bfc CutinScript_GetHeader
 overlays/ov167 0x021d6c04 CutinScript_GetStepValue
 overlays/ov167 0x021d6c14 CutinScript_GetStepCount
+overlays/ov167 0x021d6c24 sClientFirstMonIds
+overlays/ov167 0x021d6c28 sDoubleViewPositions
+overlays/ov167 0x021d6c2e sTripleViewPositions
+overlays/ov167 0x021d6c34 sCommDoubleSetupSteps
+overlays/ov167 0x021d6c50 sCommSingleSetupSteps
+overlays/ov167 0x021d6c6c sCommRotationSetupSteps
+overlays/ov167 0x021d6c88 sCommTripleSetupSteps
+overlays/ov167 0x021d6ca4 sAdjacentOpponentData
+overlays/ov167 0x021d6ce0 BATTLE_PROC_FUNCTIONS
 overlays/ov167 0x021d7070 sCmdProcTable
 overlays/ov167 0x021d7490 sSemiInvulnFlags
 overlays/ov167 0x021d7624 sHandlersStall

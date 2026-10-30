@@ -1539,7 +1539,7 @@ s32 CheckScriptedBattleRules(BtlMainModule *mainModule, BtlPokeCon *pokeCon) {
         BOOL otherDown = HasFaintedMonOfOtherSpecies(party, species);
         BOOL targetDown = HasFaintedMonOfSpecies(party, species);
 
-        u32 value = func_ov167_0219e300(mainModule);
+        u32 value = GetPlayerFirstActionMove(mainModule);
 
         if (targetDown) {
             if (value == rules->unk16) {

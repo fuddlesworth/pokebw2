@@ -591,7 +591,7 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
         break;
     case 6:
         GFL_SndBGMPlay(wk->setup->fieldSituation.bgm, 0xffff);
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &data_ov167_021d6ce0, wk->setup);
+        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &BATTLE_PROC_FUNCTIONS, wk->setup);
         (*state)++;
         break;
     case 7:
@@ -681,7 +681,7 @@ static GameEventReturnCode EventPokewood_RunFilm(GameEvent *event, u32 *state, v
         break;
     case 3:
         FieldSnd_SetPlayerVolumeFade(fieldSound, 127, 1);
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &data_ov167_021d6ce0, wk->setup);
+        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &BATTLE_PROC_FUNCTIONS, wk->setup);
         (*state)++;
         break;
     case 4:

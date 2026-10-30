@@ -367,7 +367,7 @@ static BOOL BSubwayCommBattleProc_Main(GameProc *proc, u32 *state, void *param, 
         }
         break;
     case 2:
-        QueueGameProc(procWork->procManager, -1, &data_ov167_021d6ce0, battleParam->setup);
+        QueueGameProc(procWork->procManager, -1, &BATTLE_PROC_FUNCTIONS, battleParam->setup);
         *state = 3;
         break;
     case 3:

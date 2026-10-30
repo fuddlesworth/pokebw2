@@ -1025,7 +1025,7 @@ BOOL BtlvEffect_GetUnk2E4(void) {
     BOOL result = FALSE;
 
     if (sBtlvEffect->setup.mainModule != NULL) {
-        result = func_ov167_0219db08(sBtlvEffect->setup.mainModule);
+        result = IsShooterEnabled(sBtlvEffect->setup.mainModule);
     }
     return result;
 }
@@ -1034,7 +1034,7 @@ BOOL BtlvEffect_GetUnk304(void) {
     BOOL result = FALSE;
 
     if (sBtlvEffect->setup.mainModule != NULL) {
-        result = func_ov167_0219db28(sBtlvEffect->setup.mainModule);
+        result = IsBagEnabled(sBtlvEffect->setup.mainModule);
     }
     return result;
 }

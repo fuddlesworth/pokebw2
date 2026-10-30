@@ -5514,7 +5514,7 @@ BOOL ServerControl_CheckExpGain(BtlServerFlow *flow) {
     BOOL result = FALSE;
 
     func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
-    if (func_ov167_0219bdfc(flow->mainModule)) {
+    if (IsExpGainEnabled(flow->mainModule)) {
         u32 i;
         u32 count = BtlFaintRec_GetCount(&flow->faintRec, 0);
 

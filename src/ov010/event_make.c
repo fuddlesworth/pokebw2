@@ -130,7 +130,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
     case 8:
         procWork->vsPlayerLoaded = TRUE;
         BattleRec_Init(HEAPID_BATTLE_PROC);
-        QueueGameProc(procWork->manager, -1, &data_ov167_021d6ce0, battle->setup);
+        QueueGameProc(procWork->manager, -1, &BATTLE_PROC_FUNCTIONS, battle->setup);
         *state = 9;
         break;
     case 9:

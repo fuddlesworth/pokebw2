@@ -445,7 +445,7 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
     case BATTLE_CALL_STEP_BATTLE:
         FieldStatus_SetBusyFlag(GameData_GetFieldStatus(gameData), FLD_STATUS_BUSY_BATTLE);
         CommPlayerSupport_Init(GameData_GetCommPlayerSupport(gameData));
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &data_ov167_021d6ce0, wk->setup);
+        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &BATTLE_PROC_FUNCTIONS, wk->setup);
         (*state)++;
         break;
     case BATTLE_CALL_STEP_BATTLE_RETURN:

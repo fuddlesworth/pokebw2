@@ -54,8 +54,8 @@ typedef struct {
     u32 aiFlags;
     u16 items[4];
     u8 unk14[4];
-    PMSData unk18;
-    PMSData unk20;
+    PMSData winWords;
+    PMSData loseWords;
     u16 name[0x20];
     u32 nameLength;
 } BtlCommTrainerData;

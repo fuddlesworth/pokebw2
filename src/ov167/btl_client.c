@@ -1796,14 +1796,14 @@ static void Studio_FreeChoiceStrBufs(BtlClientStudioWork *studio) {
 
 static BOOL Studio_PlayScene(BtlClient *client) {
     const BtlScriptedRules *rules = GetStudioRules(client->mainModule);
-    BtlMainUnk478 *result = func_ov167_0219e3ac(client->mainModule);
+    BtlStudioWork *result = GetStudioWork(client->mainModule);
     PokewoodCutin *cutin = GetPokewoodCutin(client->mainModule);
     s16 msgId;
 
     switch (client->studio.seq) {
     case STUDIO_SCENE_SEQ_INIT:
         client->studio.scene =
-            Studio_FindScene(rules, &client->studio, client->turnCount, func_ov167_0219c9e0(client->mainModule));
+            Studio_FindScene(rules, &client->studio, client->turnCount, GetScriptedRulesOutcome(client->mainModule));
         Studio_ScoreEndScene(client, rules, client->studio.scene);
         Studio_DecideEnding(client, rules, client->studio.scene);
         BtlString_SetStudioWords();
@@ -1890,7 +1890,7 @@ static BOOL Studio_PlayScene(BtlClient *client) {
             Studio_FreeChoiceStrBufs(&client->studio);
             Studio_SaveChoice(client, client->studio.scene, client->studio.unk08);
             Studio_RecordChoice(rules, &client->studio, client->studio.scene, client->studio.unk08);
-            result->unk08 = rules->scenes[client->studio.scene].choices[client->studio.unk08].unk04;
+            result->aiMoveIndex = rules->scenes[client->studio.scene].choices[client->studio.unk08].aiMoveIndex;
             StudioScore_AddChoicePoints(client, &client->studio.score, client->studio.scene, client->studio.unk08);
             Studio_SetChoiceField(rules, &client->studio);
             client->studio.seq = STUDIO_SCENE_SEQ_CHOICE_MSG_1;
@@ -1899,7 +1899,7 @@ static BOOL Studio_PlayScene(BtlClient *client) {
     case STUDIO_SCENE_SEQ_SAVED_CHOICE:
         client->studio.unk08 = Studio_GetSavedChoice(client, &client->studio);
         Studio_RecordChoice(rules, &client->studio, client->studio.scene, client->studio.unk08);
-        result->unk08 = rules->scenes[client->studio.scene].choices[client->studio.unk08].unk04;
+        result->aiMoveIndex = rules->scenes[client->studio.scene].choices[client->studio.unk08].aiMoveIndex;
         StudioScore_AddChoicePoints(client, &client->studio.score, client->studio.scene, client->studio.unk08);
         Studio_SetChoiceField(rules, &client->studio);
         client->studio.seq = STUDIO_SCENE_SEQ_CHOICE_MSG_1;
@@ -2163,7 +2163,8 @@ static BOOL Studio_ChangeField(BtlClient *client) {
 
 static u32 Studio_GetResultMsgId(BtlClient *client, const BtlScriptedRules *rules, BtlSetup *setup) {
     u32 msgId;
-    s32 scene = Studio_FindScene(rules, &client->studio, client->turnCount, func_ov167_0219c9e0(client->mainModule));
+    s32 scene =
+        Studio_FindScene(rules, &client->studio, client->turnCount, GetScriptedRulesOutcome(client->mainModule));
     s16 value = rules->scenes[scene].unk0A;
     u8 rank = data_ov167_021d6eb4[setup->unk110[0x19]];
 
@@ -2476,7 +2477,7 @@ static BOOL BattleClient_ActionSelectRoot(BtlClient *client, s32 *seq) {
         case BTLV_COMMAND_BAG:
             if (CheckCondition(client->procMon, CONDITION_SKY_DROP)) {
                 *seq = ROOT_SEQ_BLOCKED_RESET_SCREEN;
-            } else if (client->bagMode == 1 && !func_ov167_0219db08(client->mainModule)) {
+            } else if (client->bagMode == 1 && !IsShooterEnabled(client->mainModule)) {
                 BtlvCore_ResetScreen(client->viewCore);
                 *seq = ROOT_SEQ_WAIT_SCREEN;
             } else if (GetStudioMode(client->mainModule) == 1) {
@@ -3836,7 +3837,7 @@ static BOOL AISelectAction(BtlClient *client, s32 *seq) {
     u16 move;
     u8 moveIdx;
     u8 target;
-    BtlMainUnk478 *debug;
+    BtlStudioWork *debug;
 
     switch (*seq) {
     case AI_SELECT_SEQ_WAIT_PLAYER:
@@ -3919,9 +3920,9 @@ static BOOL AISelectAction(BtlClient *client, s32 *seq) {
         moveIdx = TrAI_GetChosenMove(client->aiVM);
         if (moveIdx != 4) {
             target = TrAI_GetChosenTarget(client->aiVM);
-            debug = func_ov167_0219e3ac(client->mainModule);
-            if (debug != NULL && debug->unk08 >= 0) {
-                moveIdx = debug->unk08;
+            debug = GetStudioWork(client->mainModule);
+            if (debug != NULL && debug->aiMoveIndex >= 0) {
+                moveIdx = debug->aiMoveIndex;
             }
             BattleAction_SetFightParam(client->procAction, MoveGetID(client->procMon, moveIdx), target);
             *seq = AI_SELECT_SEQ_NEXT;
@@ -4636,8 +4637,8 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
         if (Studio_ShowResult(client)) {
             setup = GetBattleSetup(client->mainModule);
             rules = GetStudioRules(client->mainModule);
-            score =
-                Studio_FindScene(rules, &client->studio, client->turnCount, func_ov167_0219c9e0(client->mainModule));
+            score = Studio_FindScene(rules, &client->studio, client->turnCount,
+                                     GetScriptedRulesOutcome(client->mainModule));
             Studio_ScoreEndScene(client, rules, score);
             Studio_DecideEnding(client, rules, score);
             setup->studioScore = StudioScore_CalcTotal(client, &client->studio.score);
@@ -7007,8 +7008,8 @@ static void RecPlayer_Update(BtlClient *client, BtlClientRecPlayer *recPlayer) {
                     recPlayer->quitStarted = TRUE;
                     recPlayer->seq = REC_PLAYER_SEQ_FADE_OUT;
                     BtlvCore_ShowRecorderMessage(client->viewCore, recPlayer->chapter, 1);
-                    func_ov167_0219c9d4(client->mainModule);
-                    func_ov167_0219bdf0(client->mainModule);
+                    SetRecPlayQuit(client->mainModule);
+                    SetFastestTextSpeed(client->mainModule);
                     GFL_SndBGMFadeOut(30);
                     GFL_SndPlayerSetMuteStateEx(0, 0x3e);
                     PokeVoice_SetMasterVolume(0);
@@ -7243,10 +7244,10 @@ static void Studio_PlayEndingBgm(BtlMainModule *mainModule) {
     BtlSetup *setup = GetBattleSetupParam(mainModule);
 
     if (setup->studioEnding == 0) {
-        BtlvEffect_PlayBgm(func_ov167_0219bf08(mainModule));
+        BtlvEffect_PlayBgm(GetStudioEndingBGM0(mainModule));
     } else if (setup->studioEnding == 1) {
         BtlvEffect_PlayBgm(GetWinBGM(mainModule));
     } else if (setup->studioEnding == 2) {
-        BtlvEffect_PlayBgm(func_ov167_0219bf14(mainModule));
+        BtlvEffect_PlayBgm(GetStudioEndingBGM2(mainModule));
     }
 }

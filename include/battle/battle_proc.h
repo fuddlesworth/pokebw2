@@ -55,7 +55,7 @@ typedef struct {
 
 extern const GameProcFunctions data_ov010_0215039c;
 // The battle system's proc
-extern const GameProcFunctions data_ov167_021d6ce0;
+extern const GameProcFunctions BATTLE_PROC_FUNCTIONS;
 extern const GameProcFunctions CommBtlDemoProc;
 
 BOOL BattleProc_Init(GameProc *proc, u32 *state, void *param, void *work);

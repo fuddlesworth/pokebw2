@@ -130,7 +130,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
         }
         break;
     case 4:
-        QueueGameProc(wk->manager, OVERLAY_NONE, &data_ov167_021d6ce0, battle->setup);
+        QueueGameProc(wk->manager, OVERLAY_NONE, &BATTLE_PROC_FUNCTIONS, battle->setup);
         running = 2;
         *state = 5;
         break;
