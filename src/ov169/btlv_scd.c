@@ -534,7 +534,7 @@ BtlvScd *BtlvScd_Create(BtlvCore *core, BtlMainModule *mainModule, BtlPokeCon *p
     scd->forceQuit = FALSE;
     scd->typeCount = BattleClient_GetAudienceSize(client);
     scd->typeMask = BattleClient_GetAudienceMask(client);
-    scd->noCancel = func_ov167_0219c9c0(mainModule);
+    scd->noCancel = IsStudioSkipDisabled(mainModule);
     scd->keyCursorFlag = GameData_GetBattleKeyCursorFlag(GetGameData(scd->mainModule));
     scd->printQueue = PrintQueue_CreateDefault(scd->heapId);
     BtlvScd_ClearProcs(scd);

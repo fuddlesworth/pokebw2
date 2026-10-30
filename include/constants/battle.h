@@ -7,6 +7,15 @@
 #define BTL_STYLE_TRIPLE 2
 #define BTL_STYLE_ROTATION 3
 
+// Battle types, from BtlSetup_GetBattleType: which of the BtlSetup functions sets each, and how the server ends each
+#define BTL_TYPE_WILD 0
+#define BTL_TYPE_TRAINER 1
+// A trainer battle of a facility, as the Battle Subway's and the Trial House's
+#define BTL_TYPE_FACILITY 2
+#define BTL_TYPE_COMM 3
+// BtlSetup_SetCaptureDemo's
+#define BTL_TYPE_CAPTURE_DEMO 4
+
 // Type effectiveness, which multiplies the power by 0, 1/4, 1/2, 1, 2 or 4
 #define TYPE_EFFECTIVENESS_IMMUNE 0
 #define TYPE_EFFECTIVENESS_QUARTER 1

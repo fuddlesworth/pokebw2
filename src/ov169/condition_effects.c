@@ -133,7 +133,7 @@ static void ConditionEndTurnLeechSeed(BtlServerFlow *flow, BattleMon *mon, u8 mo
         if (amount > hp) {
             amount = hp;
         }
-        damage = BattleHandler_PushWork(flow, 7, monId);
+        damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, monId);
         message = 0x262;
         damage->targetIndex = monId;
         damage->amount = amount;
@@ -146,7 +146,7 @@ static void ConditionEndTurnLeechSeed(BtlServerFlow *flow, BattleMon *mon, u8 mo
         damage->effectArg2 = BtlServerFlow_MonIDToPos(flow, monId);
         BattleHandler_PopWork(flow, damage);
         if (sourceId != 0x1f) {
-            drain = BattleHandler_PushWork(flow, 6, monId);
+            drain = BattleHandler_PushWork(flow, BTL_HANDLER_DRAIN, monId);
             drain->header.checkPrevResult = TRUE;
             drain->monIndex = sourceId;
             drain->sourceIndex = monId;
@@ -161,7 +161,7 @@ static void ConditionEndTurnIngrain(BtlServerFlow *flow, BattleMon *mon, u8 monI
     BattleHandlerDrainParam *drain;
 
     if (!IsMonFullHP(mon)) {
-        drain = BattleHandler_PushWork(flow, 6, monId);
+        drain = BattleHandler_PushWork(flow, BTL_HANDLER_DRAIN, monId);
         drain->monIndex = monId;
         drain->sourceIndex = 0x1f;
         drain->amount = DivideMaxHPZeroCheck(mon, 16);
@@ -205,7 +205,7 @@ static void ConditionEndTurnBind(BtlServerFlow *flow, BattleMon *mon, u8 monId) 
             effect = 0x27c;
             break;
         }
-        damage = BattleHandler_PushWork(flow, 7, monId);
+        damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, monId);
         damage->targetIndex = monId;
         if (GetConditionFlag(cont) != 0) {
             damage->amount = DivideMaxHPZeroCheck(mon, 8);
@@ -230,7 +230,7 @@ static void ConditionEndTurnAquaRing(BtlServerFlow *flow, BattleMon *mon, u8 mon
     BattleHandlerDrainParam *drain;
 
     if (!IsMonFullHP(mon) && !IsFainted(mon)) {
-        drain = BattleHandler_PushWork(flow, 6, monId);
+        drain = BattleHandler_PushWork(flow, BTL_HANDLER_DRAIN, monId);
         drain->monIndex = monId;
         drain->sourceIndex = 0x1f;
         drain->amount = DivideMaxHPZeroCheck(mon, 16);
@@ -246,7 +246,7 @@ static void ConditionEndTurnEncore(BtlServerFlow *flow, BattleMon *mon, u8 monId
     u32 condition = CONDITION_ENCORE;
 
     if (!BattleMon_GetPPOfMove(mon, Condition_GetParam(GetConditionContinuationParam(mon, condition)))) {
-        cure = BattleHandler_PushWork(flow, 0xb, monId);
+        cure = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
         cure->condition = condition;
         cure->monIds[0] = monId;
         cure->count = 1;
@@ -259,7 +259,7 @@ static void ConditionCured(BtlServerFlow *flow, BattleMon *mon, u8 monId, u32 co
     BattleHandlerString string;
 
     if (Condition_SetCureMessage(condition, cont, mon, 0, &string)) {
-        message = BattleHandler_PushWork(flow, 4, monId);
+        message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         message->string = string;
         BattleHandler_PopWork(flow, message);
     }
@@ -289,7 +289,7 @@ static void ConditionCuredYawn(BtlServerFlow *flow, BattleMon *mon) {
     if (turns > 0) {
         if (GetBattleMonStatus(mon) == 0) {
             monId = GetMonID(mon);
-            add = BattleHandler_PushWork(flow, 0xc, monId);
+            add = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
             add->showFail = TRUE;
             add->condition = CONDITION_SLEEP;
             add->value = SetConditionTurns(turns);
@@ -306,7 +306,7 @@ static void ConditionCuredPerishSong(BtlServerFlow *flow, BattleMon *mon) {
 
     PerishSongMessage(flow, mon, 0);
     monId = GetMonID(mon);
-    faint = BattleHandler_PushWork(flow, 0x13, monId);
+    faint = BattleHandler_PushWork(flow, BTL_HANDLER_FAINT, monId);
     faint->monIndex = monId;
     BattleHandler_PopWork(flow, faint);
 }
@@ -316,7 +316,7 @@ static void PerishSongMessage(BtlServerFlow *flow, BattleMon *mon, u8 turns) {
     u8 monId;
 
     monId = GetMonID(mon);
-    message = BattleHandler_PushWork(flow, 4, monId);
+    message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
     BattleHandler_StrSetup(&message->string, 2, 0x35c);
     BattleHandler_AddArg(&message->string, monId);
     BattleHandler_AddArg(&message->string, turns);
@@ -327,7 +327,7 @@ static void PerishSongMessage(BtlServerFlow *flow, BattleMon *mon, u8 turns) {
 static void ConditionCuredEmbargo(BtlServerFlow *flow, BattleMon *mon) {
     BattleHandlerCheckHeldItemParam *check;
 
-    check = BattleHandler_PushWork(flow, 0x21, GetMonID(mon));
+    check = BattleHandler_PushWork(flow, BTL_HANDLER_CHECK_HELD_ITEM, GetMonID(mon));
     check->monIndex = GetMonID(mon);
     check->reaction = 0;
     BattleHandler_PopWork(flow, check);
@@ -337,7 +337,7 @@ static void ConditionCuredEmbargo(BtlServerFlow *flow, BattleMon *mon) {
 static void ConditionCuredHealBlock(BtlServerFlow *flow, BattleMon *mon) {
     BattleHandlerCheckHeldItemParam *check;
 
-    check = BattleHandler_PushWork(flow, 0x21, GetMonID(mon));
+    check = BattleHandler_PushWork(flow, BTL_HANDLER_CHECK_HELD_ITEM, GetMonID(mon));
     check->monIndex = GetMonID(mon);
     check->reaction = 1;
     BattleHandler_PopWork(flow, check);
@@ -522,7 +522,7 @@ void Condition_CheckIngrainForceSwitch(BtlServerFlow *flow, BattleMon *mon) {
 
     if (CheckCondition(mon, CONDITION_INGRAIN) && BattleEventVar_RewriteValue(0x41, TRUE)) {
         monId = GetMonID(mon);
-        message = BattleHandler_PushWork(flow, 4, monId);
+        message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&message->string, 2, 0x2e6);
         BattleHandler_AddArg(&message->string, monId);
         BattleHandler_PopWork(flow, message);

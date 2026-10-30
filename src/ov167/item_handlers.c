@@ -719,7 +719,7 @@ static fx32 ItemAttackValueToRatio(BattleEventItem *item) {
 
 static void ItemEvent_PushRun(BattleEventItem *item, BtlServerFlow *flow, u8 monId) {
     BattleEventItem_SetRecallEnable(item);
-    BattleHandler_PushRun(flow, 0, monId);
+    BattleHandler_PushRun(flow, BTL_HANDLER_USE_HELD_ITEM, monId);
 }
 
 static void HandlerCheriBerry(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
@@ -864,7 +864,7 @@ static void CommonUseForStatus(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     BattleHandlerCureConditionParam *param;
 
     if (BattleEventVar_GetValue(2) == monId && CommonConditionCodeMatch(flow, monId, condition)) {
-        param = BattleHandler_PushWork(flow, 0xb, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
         param->condition = condition;
         param->count = 1;
         param->monIds[0] = monId;
@@ -1007,7 +1007,7 @@ static BOOL HandlerLeppaBerryCommon(BattleEventItem *item, BtlServerFlow *flow, 
         }
     }
     if (moveIndex != 4) {
-        param = BattleHandler_PushWork(flow, 9, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_PP, monId);
         param->amount = 10;
         param->monIndex = monId;
         param->moveIndex = moveIndex;
@@ -1054,7 +1054,7 @@ static void HandlerOranBerryUse(BattleEventItem *item, BtlServerFlow *flow, u8 m
     BattleHandlerRecoverHPParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 5, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
         param->targetIndex = monId;
         param->amount = CommonGetItemParam(item, 2);
         BattleHandler_StrSetup(&param->string, 2, 0x38c);
@@ -1094,7 +1094,7 @@ static void HandlerSitrusBerryUse(BattleEventItem *item, BtlServerFlow *flow, u8
     if (BattleEventVar_GetValue(2) == monId) {
         maxHp = GetBattleMonStat(GetBattleMon(flow, monId), BATTLEMON_MAX_HP);
         ratio = CommonGetItemParam(item, 2);
-        param = BattleHandler_PushWork(flow, 5, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
         param->targetIndex = monId;
         param->amount = maxHp * ratio / 100;
         BattleHandler_StrSetup(&param->string, 2, 0x38c);
@@ -1244,7 +1244,7 @@ static void CommonPinchBerry(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 
     if (work[0] == 0 && BattleEventVar_GetValue(2) == monId) {
         mon = GetBattleMon(flow, monId);
-        param = BattleHandler_PushWork(flow, 5, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
         param->targetIndex = monId;
         param->amount = DivideMaxHPZeroCheck(mon, CommonGetItemParam(item, 2));
         BattleHandler_StrSetup(&param->string, 2, 0x38c);
@@ -1252,7 +1252,7 @@ static void CommonPinchBerry(BattleEventItem *item, BtlServerFlow *flow, u8 monI
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
         BattleHandler_PopWork(flow, param);
         if (doesNatureAffectStat(GetSrcData(mon), flavor) == -1) {
-            confuse = BattleHandler_PushWork(flow, 0xc, monId);
+            confuse = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
             confuse->targetIndex = monId;
             confuse->condition = 6;
             BtlCalc_MakeDefaultCondition(6, mon, &confuse->value);
@@ -1348,11 +1348,11 @@ static void HandlerLansatBerry(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     BattleHandlerMessageParam *message;
 
     if (BattleEventVar_GetValue(2) == monId && !GetAdditionalConditionFlag(GetBattleMon(flow, monId), 9)) {
-        flag = BattleHandler_PushWork(flow, 0x17, monId);
+        flag = BattleHandler_PushWork(flow, BTL_HANDLER_SET_CONTINUE_FLAG, monId);
         flag->monIndex = monId;
         flag->flag = 9;
         BattleHandler_PopWork(flow, flag);
-        message = BattleHandler_PushWork(flow, 4, monId);
+        message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&message->string, 2, 0x3e9);
         BattleHandler_AddArg(&message->string, monId);
         BattleHandler_AddArg(&message->string, BattleEventItem_GetSubID(item));
@@ -1397,7 +1397,7 @@ static void CommonStatBoostBerry(BtlServerFlow *flow, u8 monId, u32 stat, s8 cha
     BattleHandlerStatChangeParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 0xe, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         param->stat = stat;
         param->change = change;
         param->count = 1;
@@ -1431,7 +1431,7 @@ static void HandlerEnigmaBerryUse(BattleEventItem *item, BtlServerFlow *flow, u8
     if (BattleEventVar_GetValue(2) == monId) {
         mon = GetBattleMon(flow, monId);
         ratio = CommonGetItemParam(item, 2);
-        param = BattleHandler_PushWork(flow, 5, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
         param->targetIndex = monId;
         param->amount = DivideMaxHPZeroCheck(mon, ratio);
         BattleHandler_PopWork(flow, param);
@@ -1696,7 +1696,7 @@ static void HandlerCommonResistBerryDamageAfter(BattleEventItem *item, BtlServer
     BattleHandlerConsumeItemParam *param;
 
     if (work[0] != 0 && IsEventTargetMon(monId)) {
-        param = BattleHandler_PushWork(flow, 0x23, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_CONSUME_ITEM, monId);
         BattleHandler_StrSetup(&param->string, 2, 0xdb);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
@@ -1799,7 +1799,7 @@ static void HandlerCustapBerryUse(BattleEventItem *item, BtlServerFlow *flow, u8
     BattleHandlerMessageParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 4, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x401);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
@@ -1860,7 +1860,7 @@ static void HandlerMicleBerryUse(BattleEventItem *item, BtlServerFlow *flow, u8 
 
     if (BattleEventVar_GetValue(2) == monId) {
         mon = GetBattleMon(flow, monId);
-        param = BattleHandler_PushWork(flow, 0xc, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
         param->targetIndex = monId;
         param->condition = CONDITION_MICLE_BERRY;
         param->value = MakeConditionParamPermanent(0x78);
@@ -1913,7 +1913,7 @@ static void CommonJabocaRowapBerryReaction(BattleEventItem *item, BtlServerFlow 
         !IsDelayedAttackMove(BattleEventVar_GetValue(0x12)) && BattleEventVar_GetValue(0x1a) == category) {
         BattleEventItem_SetRecallEnable(item);
         work[0] = BattleEventVar_GetValue(3) + 1;
-        param = BattleHandler_PushWork(flow, 0, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_USE_HELD_ITEM, monId);
         param->allowFainted = 1;
         BattleHandler_PopWork(flow, param);
     }
@@ -1930,7 +1930,7 @@ static void HandlerJabocaRowapBerryUse(BattleEventItem *item, BtlServerFlow *flo
         attacker = GetBattleMon(flow, attackerId);
         if (!IsFainted(attacker)) {
             ratio = CommonGetItemParam(item, 2);
-            param = BattleHandler_PushWork(flow, 7, monId);
+            param = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, monId);
             param->targetIndex = attackerId;
             param->amount = DivideMaxHPZeroCheck(attacker, ratio);
             BattleHandler_StrSetup(&param->string, 2, 0x407);
@@ -1975,10 +1975,10 @@ static void HandlerWhiteHerbUse(BattleEventItem *item, BtlServerFlow *flow, u8 m
     BattleHandlerMessageParam *message;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        recover = BattleHandler_PushWork(flow, 0x12, monId);
+        recover = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_STAT_STAGE, monId);
         recover->monIndex = monId;
         BattleHandler_PopWork(flow, recover);
-        message = BattleHandler_PushWork(flow, 4, monId);
+        message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&message->string, 2, 0x3f2);
         BattleHandler_AddArg(&message->string, monId);
         BattleHandler_AddArg(&message->string, BattleEventItem_GetSubID(item));
@@ -2078,7 +2078,7 @@ static void HandlerQuickClawUse(BattleEventItem *item, BtlServerFlow *flow, u8 m
     BattleHandlerMessageParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 4, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x401);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
@@ -2125,7 +2125,7 @@ static void HandlerKingsRockUseTemp(BattleEventItem *item, BtlServerFlow *flow, 
     BattleHandlerFlinchParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 0x2b, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_FLINCH, monId);
         param->monIndex = monId;
         param->flag = 100;
         BattleHandler_PopWork(flow, param);
@@ -2468,7 +2468,7 @@ static void HandlerChoiceItemCommonMoveLock(BattleEventItem *item, BtlServerFlow
     if (BattleEventVar_GetValue(3) == monId) {
         move = BattleEventVar_GetValue(0x12);
         if (move != MOVE_STRUGGLE) {
-            param = BattleHandler_PushWork(flow, 0xc, monId);
+            param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
             param->targetIndex = monId;
             param->condition = CONDITION_CHOICE_LOCK;
             param->value = MakeConditionParamPermanent(move);
@@ -2483,7 +2483,7 @@ static void HandlerChoiceItemCommonItemChange(BattleEventItem *item, BtlServerFl
     BattleHandlerCureConditionParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 0xb, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
         param->condition = CONDITION_CHOICE_LOCK;
         param->monIds[0] = monId;
         param->count = 1;
@@ -2516,7 +2516,7 @@ static void HandlerFocusSashUse(BattleEventItem *item, BtlServerFlow *flow, u8 m
     BattleHandlerConsumeItemParam *param;
 
     if (BattleEventVar_GetValue(2) == monId && *work) {
-        param = BattleHandler_PushWork(flow, 0x23, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_CONSUME_ITEM, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x3ef);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
@@ -2559,7 +2559,7 @@ static void HandlerFocusBandUse(BattleEventItem *item, BtlServerFlow *flow, u8 m
     BattleHandlerMessageParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 4, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x3ef);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
@@ -2600,7 +2600,7 @@ static void HandlerLifeOrbReaction(BattleEventItem *item, BtlServerFlow *flow, u
 
     if (BattleEventVar_GetValue(3) == monId) {
         mon = GetBattleMon(flow, monId);
-        param = BattleHandler_PushWork(flow, 7, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, monId);
         param->targetIndex = monId;
         param->amount = DivideMaxHPZeroCheck(mon, 10);
         BattleHandler_StrSetup(&param->string, 2, 0x3f5);
@@ -2688,7 +2688,7 @@ static void HandlerShellBell(BattleEventItem *item, BtlServerFlow *flow, u8 monI
             if (amount == 0) {
                 amount = 1;
             }
-            param = BattleHandler_PushWork(flow, 5, monId);
+            param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
             param->targetIndex = monId;
             param->amount = amount;
             BattleHandler_StrSetup(&param->string, 2, 0x392);
@@ -2749,7 +2749,7 @@ static void HandlerPowerHerbUse(BattleEventItem *item, BtlServerFlow *flow, u8 m
     BattleHandlerMessageParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 4, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x3fe);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
@@ -2771,7 +2771,7 @@ static void HandlerLeftoversReaction(BattleEventItem *item, BtlServerFlow *flow,
     BattleHandlerUseHeldItemParam *param;
 
     if (BattleEventVar_GetValue(2) == monId && !IsMonFullHP(GetBattleMon(flow, monId))) {
-        param = BattleHandler_PushWork(flow, 0, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_USE_HELD_ITEM, monId);
         param->checkFullHp = 1;
         BattleEventItem_SetRecallEnable(item);
         BattleHandler_PopWork(flow, param);
@@ -2785,7 +2785,7 @@ static void HandlerLeftoversUse(BattleEventItem *item, BtlServerFlow *flow, u8 m
     if (BattleEventVar_GetValue(2) == monId) {
         mon = GetBattleMon(flow, monId);
         if (!IsMonFullHP(mon)) {
-            param = BattleHandler_PushWork(flow, 5, monId);
+            param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
             param->targetIndex = monId;
             param->amount = DivideMaxHPZeroCheck(mon, 16);
             BattleHandler_StrSetup(&param->string, 2, 0x392);
@@ -2813,7 +2813,7 @@ static void HandlerBlackSludge(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     if (BattleEventVar_GetValue(2) == monId && !BtlServerFlow_CheckMatchup(flow)) {
         mon = GetBattleMon(flow, monId);
         if (PokeTypePair_IsMatch(GetPokeType(mon), TYPE_POISON)) {
-            recoverParam = BattleHandler_PushWork(flow, 5, monId);
+            recoverParam = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
             recoverParam->targetIndex = monId;
             recoverParam->amount = DivideMaxHPZeroCheck(mon, CommonGetItemParam(item, 2));
             BattleHandler_StrSetup(&recoverParam->string, 2, 0x392);
@@ -2821,7 +2821,7 @@ static void HandlerBlackSludge(BattleEventItem *item, BtlServerFlow *flow, u8 mo
             BattleHandler_AddArg(&recoverParam->string, BattleEventItem_GetSubID(item));
             BattleHandler_PopWork(flow, recoverParam);
         } else {
-            damageParam = BattleHandler_PushWork(flow, 7, monId);
+            damageParam = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, monId);
             damageParam->targetIndex = monId;
             damageParam->amount = DivideMaxHPZeroCheck(mon, 8);
             damageParam->showViewEffect = 1;
@@ -2852,7 +2852,7 @@ static void HandlerDestinyKnot(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     if (BattleEventVar_GetValue(4) == monId && BattleEventVar_GetValue(0x1d) == 7) {
         attackerId = BattleEventVar_GetValue(3);
         if (attackerId != 0x1f) {
-            param = BattleHandler_PushWork(flow, 0xc, monId);
+            param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
             param->targetIndex = attackerId;
             param->condition = CONDITION_ATTRACT;
             param->value = MakeConditionDependPoke(monId);
@@ -2883,7 +2883,7 @@ static void HandlerStickyBarbDamageReaction(BattleEventItem *item, BtlServerFlow
         getMoveFlag(BattleEventVar_GetValue(0x12), 0)) {
         attackerId = BattleEventVar_GetValue(3);
         if (GetBattleMonHeldItem(GetBattleMon(flow, attackerId)) == ITEM_NONE) {
-            param = BattleHandler_PushWork(flow, 0x24, monId);
+            param = BattleHandler_PushWork(flow, BTL_HANDLER_SWAP_ITEM, monId);
             param->otherIndex = attackerId;
             BattleHandler_PopWork(flow, param);
         }
@@ -2896,7 +2896,7 @@ static void HandlerStickyBarbTurnCheck(BattleEventItem *item, BtlServerFlow *flo
 
     if (BattleEventVar_GetValue(2) == monId) {
         mon = GetBattleMon(flow, monId);
-        param = BattleHandler_PushWork(flow, 7, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, monId);
         param->targetIndex = monId;
         param->amount = DivideMaxHPZeroCheck(mon, CommonGetItemParam(item, 2));
         param->showViewEffect = 1;
@@ -3147,7 +3147,7 @@ static void HandlerSmokeBallMessage(BattleEventItem *item, BtlServerFlow *flow, 
     BattleHandlerMessageParam *param;
 
     if (CommonCheckRunMessage(item, flow, monId)) {
-        param = BattleHandler_PushWork(flow, 4, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x3ec);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
@@ -3276,7 +3276,7 @@ static void HandlerLightBallUseTemp(BattleEventItem *item, BtlServerFlow *flow, 
 
     if (BattleEventVar_GetValue(2) == monId) {
         attackerId = BattleEventVar_GetValue(3);
-        param = BattleHandler_PushWork(flow, 0xc, attackerId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, attackerId);
         param->targetIndex = monId;
         param->condition = CONDITION_PARALYSIS;
         param->value = BtlCalc_MakeStatusCondition(1);
@@ -3298,7 +3298,7 @@ static void HandlerToxicOrb(BattleEventItem *item, BtlServerFlow *flow, u8 monId
     BattleHandlerAddConditionParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 0xc, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
         param->condition = CONDITION_POISON;
         param->value = MakeConditionBadlyPoisoned();
         param->showFail = 0;
@@ -3316,7 +3316,7 @@ static void HandlerToxicOrbUseTemp(BattleEventItem *item, BtlServerFlow *flow, u
 
     if (BattleEventVar_GetValue(2) == monId) {
         attackerId = BattleEventVar_GetValue(3);
-        param = BattleHandler_PushWork(flow, 0xc, attackerId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, attackerId);
         param->targetIndex = monId;
         param->condition = CONDITION_POISON;
         param->value = MakeConditionBadlyPoisoned();
@@ -3338,7 +3338,7 @@ static void HandlerFlameOrb(BattleEventItem *item, BtlServerFlow *flow, u8 monId
     BattleHandlerAddConditionParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 0xc, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
         param->condition = CONDITION_BURN;
         param->value = BtlCalc_MakeStatusCondition(4);
         param->showFail = 0;
@@ -3357,7 +3357,7 @@ static void HandlerFlameOrbUseTemp(BattleEventItem *item, BtlServerFlow *flow, u
 
     if (BattleEventVar_GetValue(2) == monId) {
         attackerId = BattleEventVar_GetValue(3);
-        param = BattleHandler_PushWork(flow, 0xc, attackerId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, attackerId);
         param->targetIndex = monId;
         param->condition = CONDITION_BURN;
         param->value = BtlCalc_MakeStatusCondition(4);
@@ -3515,7 +3515,7 @@ static void HandlerPoisonBarbUseTemp(BattleEventItem *item, BtlServerFlow *flow,
 
     if (BattleEventVar_GetValue(2) == monId) {
         attackerId = BattleEventVar_GetValue(3);
-        param = BattleHandler_PushWork(flow, 0xc, attackerId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, attackerId);
         param->targetIndex = monId;
         param->condition = CONDITION_POISON;
         param->value = BtlCalc_MakeStatusCondition(5);
@@ -3780,7 +3780,7 @@ static void HandlerRockyHelmet(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 
     if (BattleEventVar_GetValue(4) == monId && BattleEventVar_GetValue(0x46) == 0 &&
         getMoveFlag(BattleEventVar_GetValue(0x12), 0)) {
-        param = BattleHandler_PushWork(flow, 7, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, monId);
         param->targetIndex = BattleEventVar_GetValue(3);
         attacker = GetBattleMon(flow, param->targetIndex);
         divisor = CommonGetItemParam(item, 2);
@@ -3806,7 +3806,7 @@ static void HandlerAirBalloonMemberIn(BattleEventItem *item, BtlServerFlow *flow
     BattleHandlerMessageParam *param;
 
     if (BattleEventVar_GetValue(2) == monId && !IsFieldEffectActive(FIELD_CONDITION_GRAVITY)) {
-        param = BattleHandler_PushWork(flow, 4, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x198);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_PopWork(flow, param);
@@ -3823,7 +3823,7 @@ static void HandlerAirBalloonDamageReaction(BattleEventItem *item, BtlServerFlow
     BattleHandlerSetItemParam *param;
 
     if (BattleEventVar_GetValue(4) == monId) {
-        param = BattleHandler_PushWork(flow, 0x20, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_SET_ITEM, monId);
         param->targetIndex = monId;
         param->item = ITEM_NONE;
         BattleHandler_StrSetup(&param->string, 2, 0x19b);
@@ -3850,12 +3850,12 @@ static void HandlerRedCard(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
         attackerId = BattleEventVar_GetValue(3);
         if (BtlServerFlow_GetMonBattlePos(flow, attackerId) != 6 && BattleEventVar_GetValue(0x4d) == 0 &&
             BtlServerFlow_HasReserveMon(flow, attackerId) && !BtlServerFlow_CheckMatchup(flow)) {
-            consumeParam = BattleHandler_PushWork(flow, 0x23, monId);
+            consumeParam = BattleHandler_PushWork(flow, BTL_HANDLER_CONSUME_ITEM, monId);
             BattleHandler_StrSetup(&consumeParam->string, 2, 0x1a1);
             BattleHandler_AddArg(&consumeParam->string, monId);
             BattleHandler_AddArg(&consumeParam->string, attackerId);
             BattleHandler_PopWork(flow, consumeParam);
-            switchParam = BattleHandler_PushWork(flow, 0x2e, monId);
+            switchParam = BattleHandler_PushWork(flow, BTL_HANDLER_FORCE_SWITCH, monId);
             switchParam->targetIndex = BattleEventVar_GetValue(3);
             switchParam->ignoreLevel = 1;
             switchParam->effect = 0x28c;
@@ -3920,7 +3920,7 @@ static void HandlerAbsorbBulbUse(BattleEventItem *item, BtlServerFlow *flow, u8 
     BattleHandlerStatChangeParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 0xe, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         param->count = 1;
         param->monIds[0] = monId;
         param->stat = BATTLEMON_SP_ATTACK_STAGE;
@@ -3951,7 +3951,7 @@ static void HandlerCellBatteryUse(BattleEventItem *item, BtlServerFlow *flow, u8
     BattleHandlerStatChangeParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        param = BattleHandler_PushWork(flow, 0xe, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         param->count = 1;
         param->monIds[0] = monId;
         param->stat = BATTLEMON_ATTACK_STAGE;
@@ -3983,11 +3983,11 @@ static void HandlerEjectButtonUse(BattleEventItem *item, BtlServerFlow *flow, u8
     BattleHandlerSwitchParam *switchParam;
 
     if (BattleEventVar_GetValue(2) == monId && BtlServerFlow_HasReserveMon(flow, monId)) {
-        messageParam = BattleHandler_PushWork(flow, 4, monId);
+        messageParam = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&messageParam->string, 2, 0x19e);
         BattleHandler_AddArg(&messageParam->string, monId);
         BattleHandler_PopWork(flow, messageParam);
-        switchParam = BattleHandler_PushWork(flow, 0x29, monId);
+        switchParam = BattleHandler_PushWork(flow, BTL_HANDLER_SWITCH, monId);
         switchParam->monIndex = monId;
         BattleHandler_PopWork(flow, switchParam);
     }
@@ -4326,7 +4326,7 @@ static void CommonGemDecide(BattleEventItem *item, BtlServerFlow *flow, u8 monId
         if (PML_MoveIsDamaging(move) && !IsPledgeMove(move) && !BattleEventItem_IsIsolated(item) &&
             !BtlServerFlow_IsSimulating(flow)) {
             BattleEventItem_ConvertToIsolated(item);
-            param = BattleHandler_PushWork(flow, 0x23, monId);
+            param = BattleHandler_PushWork(flow, BTL_HANDLER_CONSUME_ITEM, monId);
             BattleHandler_StrSetup(&param->string, 1, 0xb6);
             BattleHandler_AddArg(&param->string, BattleEventItem_GetSubID(item));
             BattleHandler_AddArg(&param->string, BattleEventVar_GetValue(0x12));

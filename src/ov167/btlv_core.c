@@ -821,7 +821,7 @@ void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 arg2, u8 arg3,
         core->ov286.item = 0;
         core->ov286.usingKeys = BtlvScd_GetKeyCursorFlag(core->scd);
         core->ov286.quit = 0;
-        core->ov286.shooterDisabled = func_ov167_0219db00(core->mainModule);
+        core->ov286.shooterDisabled = GetShooterSettings(core->mainModule);
         kind = 0;
         if (BtlSetup_GetBattleType(core->mainModule) != 3) {
             kind = 1;

@@ -78,7 +78,7 @@ const GameProcFunctions BR_MAIN_PROC_FUNCTIONS = {
 
 static const BrMainProcData sBrMainProcTable[] = {
     [BR_MAIN_PROCID_CORE] = { OVERLAY_ID(271), &BR_CORE_PROC_FUNCTIONS, BrMain_CoreCreateParam, BrMain_CoreFreeParam },
-    [BR_MAIN_PROCID_BATTLE] = { OVERLAY_ID(167), &data_ov167_021d6ce0, BrMain_BattleCreateParam,
+    [BR_MAIN_PROCID_BATTLE] = { OVERLAY_ID(167), &BATTLE_PROC_FUNCTIONS, BrMain_BattleCreateParam,
                                 BrMain_BattleFreeParam },
 };
 
