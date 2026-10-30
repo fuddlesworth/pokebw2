@@ -396,14 +396,14 @@ BattleCondition BtlCalc_MakeStatusCondition(u32 status) {
     case CONDITION_FREEZE:
     case CONDITION_BURN:
     case CONDITION_POISON:
-        condition.common.type = 1;
+        condition.common.type = BTL_CONDITION_TYPE_PERMANENT;
         break;
     case CONDITION_SLEEP:
-        condition.common.type = 2;
+        condition.common.type = BTL_CONDITION_TYPE_TURNS;
         condition.common.turns = BtlCalc_RandomRange(2, 4);
         break;
     default:
-        condition.common.type = 0;
+        condition.common.type = BTL_CONDITION_TYPE_NONE;
         break;
     }
     return condition;
@@ -420,17 +420,17 @@ BattleCondition BtlCalc_MakeTurnCondition(u32 turns) {
     BattleCondition condition;
 
     condition.raw = 0;
-    condition.common.type = 2;
+    condition.common.type = BTL_CONDITION_TYPE_TURNS;
     condition.common.turns = turns;
     return condition;
 }
 
-BattleCondition BtlCalc_MakePokeCondition(u32 turns) {
+BattleCondition BtlCalc_MakePokeCondition(u32 monId) {
     BattleCondition condition;
 
     condition.raw = 0;
-    condition.common.type = 3;
-    condition.common.turns = turns;
+    condition.common.type = BTL_CONDITION_TYPE_DEPEND_MON;
+    condition.common.turns = monId;
     return condition;
 }
 

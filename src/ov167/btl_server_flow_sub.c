@@ -96,7 +96,7 @@ u8 CollectMoveTargets(BtlServerFlow *flow, BattleMon *mon, u8 target, BtlFlowMov
 
     style = BtlSetup_GetBattleStyle(flow->mainModule);
     redirect = 0x1f;
-    if (!param->flags.unk0) {
+    if (!param->flags.reflected) {
         redirect = ServerEvent_DecideMoveTarget(flow, mon, param);
     }
     BtlMonSet_Clear(targets);
@@ -445,13 +445,13 @@ static u8 ServerEvent_DecideMoveTarget(BtlServerFlow *flow, BattleMon *mon, BtlF
     u8 monId;
 
     BattleEventVar_Push(0x27f);
-    BattleEventVar_SetConstValue(3, GetMonID(mon));
-    BattleEventVar_SetConstValue(0x16, param->type);
-    BattleEventVar_SetConstValue(0x12, param->move);
-    BattleEventVar_SetRewriteOnceValue(4, 0x1f);
+    BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(mon));
+    BattleEventVar_SetConstValue(BTL_EVAR_MOVE_TYPE, param->type);
+    BattleEventVar_SetConstValue(BTL_EVAR_MOVE, param->move);
+    BattleEventVar_SetRewriteOnceValue(BTL_EVAR_DEFENDER, 0x1f);
     BattleEventVar_SetRewriteOnceValue(0x50, FALSE);
     BattleEvent_CallHandlers(flow, BTL_EVENT_DECIDE_MOVE_TARGET);
-    monId = BattleEventVar_GetValue(4);
+    monId = BattleEventVar_GetValue(BTL_EVAR_DEFENDER);
     BattleEventVar_Pop(0x287);
     return monId;
 }
@@ -461,12 +461,12 @@ static u8 ServerEvent_BaitMoveTarget(BtlServerFlow *flow, BattleMon *mon, BtlFlo
     u8 newTarget;
 
     BattleEventVar_Push(0x298);
-    BattleEventVar_SetConstValue(3, GetMonID(mon));
-    BattleEventVar_SetConstValue(0x16, param->type);
-    BattleEventVar_SetConstValue(0x12, param->move);
-    BattleEventVar_SetRewriteOnceValue(4, targetId);
+    BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(mon));
+    BattleEventVar_SetConstValue(BTL_EVAR_MOVE_TYPE, param->type);
+    BattleEventVar_SetConstValue(BTL_EVAR_MOVE, param->move);
+    BattleEventVar_SetRewriteOnceValue(BTL_EVAR_DEFENDER, targetId);
     BattleEvent_CallHandlers(flow, BTL_EVENT_BAIT_MOVE_TARGET);
-    newTarget = BattleEventVar_GetValue(4);
+    newTarget = BattleEventVar_GetValue(BTL_EVAR_DEFENDER);
     BattleEventVar_Pop(0x29f);
     if (newTarget == targetId) {
         newTarget = 0x1f;

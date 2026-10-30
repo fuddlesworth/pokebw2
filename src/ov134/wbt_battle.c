@@ -418,8 +418,8 @@ static void WbtBattle_SetBattleTrainer(BtlSetupTrainer *trainer, const WbtEntran
 
 // The two lines that the opponent says in the battle
 static inline void BtlSetup_SetLines(BtlSetup *setup, StrBuf *line1, StrBuf *line2) {
-    setup->unk68 = line1;
-    setup->unk6C = line2;
+    setup->trainerLoseMsg = line1;
+    setup->trainerWinMsg = line2;
 }
 
 // The battle of the current round

@@ -20178,6 +20178,7 @@ overlays/ov167 0x021cf1b4 BtlvCore_CancelSelect
 overlays/ov167 0x021cf1e0 BtlvCore_ResetScreenIfShown
 overlays/ov167 0x021cf1f0 BtlvCore_ResetScreen
 overlays/ov167 0x021cf200 BtlvCore_IsScreenIdle
+overlays/ov167 0x021cf210 BtlvCore_CanPlayListSE
 overlays/ov167 0x021cf234 BtlvCore_SetupPokeListParam
 overlays/ov167 0x021cf72c BtlvCore_QuitItemSelect
 overlays/ov167 0x021cf73c BtlvCore_WaitItemSelect
@@ -20282,6 +20283,7 @@ overlays/ov167 0x021d09f8 BtlvCore_StartFadeIn
 overlays/ov167 0x021d0a08 BtlvCore_WaitFadeIn
 overlays/ov167 0x021d0a38 BtlvCore_CheckRecorderInput
 overlays/ov167 0x021d0a48 BtlvCore_ShowRecorderChapter
+overlays/ov167 0x021d0a7c BtlvCore_ShowRecorderSkipping
 overlays/ov167 0x021d0aa0 BtlvCore_ShowRecorderMessage
 overlays/ov167 0x021d0ad4 BtlvCore_PlaySE
 overlays/ov167 0x021d0b4c Btlv_StringParam_SetWait
@@ -20472,8 +20474,12 @@ overlays/ov167 0x021d54fc FormatStatChange
 overlays/ov167 0x021d55a4 FormatStatLimit
 overlays/ov167 0x021d5630 FormatClientSideMsg
 overlays/ov167 0x021d5684 BtlString_FormatMoveMsg
+overlays/ov167 0x021d5700 BtlString_LoadTrainerWinLoseMsg
 overlays/ov167 0x021d575c BtlString_LoadUIMsg
-overlays/ov167 0x021d57b8 BtlString_BuildTrainerStringBody
+overlays/ov167 0x021d5770 BtlString_FormatLearnMsg
+overlays/ov167 0x021d5778 FormatLearnMsgCore
+overlays/ov167 0x021d57b0 BtlString_FormatYesNoMsg
+overlays/ov167 0x021d57b8 FormatYesNoMsgCore
 overlays/ov167 0x021d57e4 BtlString_FormatLevelUpGains
 overlays/ov167 0x021d5874 BtlString_FormatLevelUpStats
 overlays/ov167 0x021d5904 BtlString_FormatMovieScriptMsg
@@ -21131,6 +21137,10 @@ overlays/ov167 0x021da01c sSkyDropHandlers
 overlays/ov167 0x021da04c sHandlersEndure
 overlays/ov167 0x021da07c sHandlersBide
 overlays/ov167 0x021da0b4 sMoveEventAddTable
+overlays/ov167 0x021da8c4 BTLV_CMD_PROCS
+overlays/ov167 0x021da8d4 BTLV_LCD_CONFIG
+overlays/ov167 0x021da8e4 BTLV_CLACT_SETUP
+overlays/ov167 0x021da900 BTLV_VRAM_CONFIG
 overlays/ov167 0x021da930 sSingleViewPos
 overlays/ov167 0x021da932 sDoubleViewPos
 overlays/ov167 0x021da936 sTripleViewPos

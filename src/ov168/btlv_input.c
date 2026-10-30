@@ -1043,11 +1043,11 @@ void BtlvInput_SetScreen(BtlvInput *work, u32 screen, void *param) {
             BtlvInput_DrawRecorderCount(work, recorder);
         }
         switch (recorder->mode) {
-        case 0:
+        case BTLV_RECORDER_MSG_NONE:
             break;
-        case 1:
-        case 2:
-        case 3:
+        case BTLV_RECORDER_MSG_PAUSED:
+        case BTLV_RECORDER_MSG_DATA_CORRUPTED:
+        case BTLV_RECORDER_MSG_SKIPPING:
             GFL_TextRndUpdateColorIndexLUT(1, 2, 0);
             strbuf = GFL_MsgDataLoadStrbufNew(work->msgData, recorder->mode + 8);
             break;
@@ -1057,7 +1057,7 @@ void BtlvInput_SetScreen(BtlvInput *work, u32 screen, void *param) {
                 GFL_HeapAllocate(HEAPID_TAIL(work->heapId), sizeof(BtlvInputScreenTask), TRUE, "btlv_input.c", 0x70a);
             work->busy = TRUE;
             task->work = work;
-            if (recorder->mode == 0) {
+            if (recorder->mode == BTLV_RECORDER_MSG_NONE) {
                 task->x = 0;
                 task->y = 0x100;
             } else {
@@ -1069,7 +1069,7 @@ void BtlvInput_SetScreen(BtlvInput *work, u32 screen, void *param) {
                               BtlvInput_ScreenTaskEnd);
         } else {
             if (!studioPlayback) {
-                if (recorder->mode == 0) {
+                if (recorder->mode == BTLV_RECORDER_MSG_NONE) {
                     BtlvInput_StartSetLayers(work, 4, 0, 0x100, 2, 2, 2, 2);
                 } else {
                     BtlvInput_StartSetLayers(work, 4, 0x100, 0, 2, 2, 2, 2);
@@ -2693,7 +2693,7 @@ static void BtlvInput_SetupMoveScreen(BtlvInput *work) {
     }
 }
 
-// Draws the recorder screen's count line, unk4 / unk8, unk4 in red when it differs from unk0
+// Draws the recorder screen's count line, the target chapter / the last one, in red when it isn't the chapter played
 static void BtlvInput_DrawRecorderCount(BtlvInput *work, const BtlvInputRecorderParam *param) {
     u8 letter;
     u8 shadow;
@@ -2708,13 +2708,13 @@ static void BtlvInput_DrawRecorderCount(BtlvInput *work, const BtlvInputRecorder
     fmt = GFL_MsgDataLoadStrbufNew(work->msgData, BtlvInput_Text_Empty_6);
     GFL_TextRndGetGlobalColors(&letter, &shadow, &background);
     GFL_TextRndUpdateColorIndexLUT(9, 10, 0);
-    WordSetNumber(wordSet, 0, param->unk8, 3, 2, TRUE);
+    WordSetNumber(wordSet, 0, param->maxChapter, 3, 2, TRUE);
     GFL_WordSetFormatStrbuf(wordSet, buf, fmt);
     GFL_TextRendererDrawToBitmap(work->msgBitmap, 140, 8, buf, work->font);
-    if (param->unk0 != param->unk4) {
+    if (param->chapter != param->targetChapter) {
         GFL_TextRndUpdateColorIndexLUT(7, 8, 0);
     }
-    WordSetNumber(wordSet, 0, param->unk4, 3, 2, TRUE);
+    WordSetNumber(wordSet, 0, param->targetChapter, 3, 2, TRUE);
     GFL_WordSetFormatStrbuf(wordSet, buf, fmt);
     GFL_TextRendererDrawToBitmap(work->msgBitmap, 96, 8, buf, work->font);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 0);

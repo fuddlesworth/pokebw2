@@ -7,6 +7,20 @@
 #include "nitro/fx.h"
 #include "struct_decls.h"
 
+// How long a BattleCondition lasts, its common.type, after battle_condition.c's swan-named makers: not at all (no
+// condition), for good (MakeConditionPermanent), for its turns (SetConditionTurns), while the mon whose ID it holds in
+// its turns stays (MakeConditionDependPoke), and while that mon stays, for its turns (MakeConditionDependPokeTurns)
+enum {
+    BTL_CONDITION_TYPE_NONE,
+    BTL_CONDITION_TYPE_PERMANENT,
+    BTL_CONDITION_TYPE_TURNS,
+    BTL_CONDITION_TYPE_DEPEND_MON,
+    BTL_CONDITION_TYPE_DEPEND_MON_TURNS,
+};
+
+// The turns of a permanent poison that make it bad poisoning (MakeConditionBadlyPoisoned)
+#define BTL_CONDITION_BADLY_POISONED_TURNS 15
+
 struct BattleCondition {
     union {
         u32 raw;
@@ -205,7 +219,7 @@ void IncrementTurn(BattleCondition *condition, u32 amount);
 void SetTurns(BattleCondition *condition, u32 turns);
 BattleCondition SetConditionTurns(u8 turns);
 BattleCondition AddTurnCondition(u32 turns, u16 param);
-BattleCondition MakeConditionDependPoke(u32 turns);
+BattleCondition MakeConditionDependPoke(u32 monId);
 BattleCondition MakeConditionPermanent(void);
 BattleCondition MakeConditionParamPermanent(u16 param);
 BattleCondition MakeConditionPermanentTurnsParam(u8 turns, u16 param);

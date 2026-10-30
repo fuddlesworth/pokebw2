@@ -409,7 +409,7 @@ void BattleEventVar_Init(void) {
 
     vars->sp = 0;
     for (i = 0; i < BATTLE_EVENT_VAR_MAX; i++) {
-        vars->keys[i] = 0;
+        vars->keys[i] = BTL_EVAR_NONE;
     }
 }
 
@@ -422,12 +422,12 @@ void BattleEventVar_CheckReset(void) {
 void BattleEventVar_Push(u32 line) {
     BattleEventVarStack *vars = &g_BattleEventVars;
     for (; vars->sp < BATTLE_EVENT_VAR_MAX; vars->sp++) {
-        if (vars->keys[vars->sp] == 0) {
+        if (vars->keys[vars->sp] == BTL_EVAR_NONE) {
             break;
         }
     }
     if (vars->sp < BATTLE_EVENT_VAR_MAX - 1) {
-        vars->keys[vars->sp++] = 1;
+        vars->keys[vars->sp++] = BTL_EVAR_FRAME_START;
     } else {
         GFL_ASSERT(0);
     }
@@ -438,15 +438,15 @@ void BattleEventVar_Pop(u32 line) {
     u16 i;
 
     if (vars->sp != 0) {
-        for (i = vars->sp; i < BATTLE_EVENT_VAR_MAX && vars->keys[i] != 0;) {
-            vars->keys[i++] = 0;
+        for (i = vars->sp; i < BATTLE_EVENT_VAR_MAX && vars->keys[i] != BTL_EVAR_NONE;) {
+            vars->keys[i++] = BTL_EVAR_NONE;
         }
         vars->sp--;
-        vars->keys[vars->sp] = 0;
+        vars->keys[vars->sp] = BTL_EVAR_NONE;
         if (vars->sp != 0) {
             while (vars->sp != 0) {
                 vars->sp--;
-                if (vars->keys[vars->sp] == 1) {
+                if (vars->keys[vars->sp] == BTL_EVAR_FRAME_START) {
                     vars->sp++;
                     break;
                 }
@@ -527,7 +527,7 @@ u32 BattleEventVar_GetValue(u32 key) {
         if (key == vars->keys[i]) {
             return vars->values[i];
         }
-        if (vars->keys[i] == 0) {
+        if (vars->keys[i] == BTL_EVAR_NONE) {
             break;
         }
     }
@@ -543,7 +543,7 @@ BOOL BattleEventVar_GetValueIfExist(u16 key, s32 *value) {
             *value = vars->values[i];
             return TRUE;
         }
-        if (vars->keys[i] == 0) {
+        if (vars->keys[i] == BTL_EVAR_NONE) {
             break;
         }
     }
@@ -555,7 +555,7 @@ u32 BattleEventVar_FindSetIndex(BattleEventVarStack *vars, u32 key) {
     u32 i;
 
     for (i = vars->sp; i < BATTLE_EVENT_VAR_MAX; i++) {
-        if (vars->keys[i] == 0 || key == vars->keys[i]) {
+        if (vars->keys[i] == BTL_EVAR_NONE || key == vars->keys[i]) {
             break;
         }
     }
@@ -568,7 +568,7 @@ u32 BattleEventVar_FindSetIndex(BattleEventVarStack *vars, u32 key) {
 s32 BattleEventVar_FindIndex(BattleEventVarStack *vars, u16 key) {
     u32 i;
 
-    for (i = vars->sp; i < BATTLE_EVENT_VAR_MAX && vars->keys[i] != 0; i++) {
+    for (i = vars->sp; i < BATTLE_EVENT_VAR_MAX && vars->keys[i] != BTL_EVAR_NONE; i++) {
         if (key == vars->keys[i]) {
             return i;
         }

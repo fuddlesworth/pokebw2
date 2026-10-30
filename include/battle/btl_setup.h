@@ -73,8 +73,10 @@ struct BtlSetup {
     BtlSetupTrainer *trainers[4];
     // The trainers' names, by client
     StrBuf *trainerNames[4];
-    StrBuf *unk68;
-    StrBuf *unk6C;
+    // The opponent's lines when it loses and when it wins, for a trainer ID from 0x800 (a Pokémon World Tournament
+    // entrant's, wbt_battle.c), which BtlString_LoadTrainerWinLoseMsg shows
+    StrBuf *trainerLoseMsg;
+    StrBuf *trainerWinMsg;
     GameData *gameData;
     Config *config;
     BagSave *bag;
