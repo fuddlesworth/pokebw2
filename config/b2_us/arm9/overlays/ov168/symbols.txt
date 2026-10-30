@@ -741,11 +741,11 @@ data_ov168_021f3dd4 kind:data(any) addr:0x021f3dd4
 data_ov168_021f3df0 kind:data(any) addr:0x021f3df0
 data_ov168_021f3e10 kind:data(any) addr:0x021f3e10
 data_ov168_021f3e30 kind:data(any) addr:0x021f3e30
-data_ov168_021f3e50 kind:data(any) addr:0x021f3e50
+SIDE_POSITIONS kind:data(any) addr:0x021f3e50
 data_ov168_021f3e52 kind:data(any) addr:0x021f3e52
 data_ov168_021f3e54 kind:data(any) addr:0x021f3e54
 data_ov168_021f3e56 kind:data(any) addr:0x021f3e56
-data_ov168_021f3e60 kind:data(any) addr:0x021f3e60
+BALL_SEQUENCES kind:data(any) addr:0x021f3e60
 data_ov168_021f3e70 kind:data(any) addr:0x021f3e70
 data_ov168_021f3e9c kind:data(any) addr:0x021f3e9c
 data_ov168_021f3ea4 kind:data(any) addr:0x021f3ea4

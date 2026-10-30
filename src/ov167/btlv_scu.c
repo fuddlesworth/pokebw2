@@ -2802,7 +2802,7 @@ static void BtlvScu_SetupBallGauge(BtlvScu *scu, BtlvBGaugeParam *status, u8 cli
         }
     }
     status->side = side;
-    status->mode = GetStudioMode(scu->mainModule);
+    status->studioMode = GetStudioMode(scu->mainModule);
     for (i = 0; i < 6; i++) {
         if (i < counts[0] + counts[1]) {
             if (i < counts[0]) {

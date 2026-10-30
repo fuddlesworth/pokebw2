@@ -21889,6 +21889,8 @@ overlays/ov168 0x021f3c18 TARGET_MAPS
 overlays/ov168 0x021f3d8c sPriorities
 overlays/ov168 0x021f3d92 sPrioritiesTriple
 overlays/ov168 0x021f3d9a sPrioritiesRotation
+overlays/ov168 0x021f3e50 SIDE_POSITIONS
+overlays/ov168 0x021f3e60 BALL_SEQUENCES
 overlays/ov168 0x021f3f50 sIdleEffectsWaitMsg
 overlays/ov168 0x021f3f58 sIdleEffects
 overlays/ov168 0x021f3f70 sStudioMovieShadows
