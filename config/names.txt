@@ -20699,6 +20699,7 @@ overlays/ov167 0x021d7b9c sHandlersUnaware
 overlays/ov167 0x021d7bb4 sHandlersDrySkin
 overlays/ov167 0x021d7bcc sHandlersZenMode
 overlays/ov167 0x021d7be4 sHandlersIllusion
+overlays/ov167 0x021d7bfc sKlutzWorkingItems
 overlays/ov167 0x021d7c18 sHandlersTruant
 overlays/ov167 0x021d7c38 sHandlersOwnTempo
 overlays/ov167 0x021d7c58 sHandlersDamp

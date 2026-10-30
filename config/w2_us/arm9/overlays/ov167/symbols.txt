@@ -4411,7 +4411,7 @@ sHandlersUnaware kind:data(any) addr:0x021d7bdc
 sHandlersDrySkin kind:data(any) addr:0x021d7bf4
 sHandlersZenMode kind:data(any) addr:0x021d7c0c
 sHandlersIllusion kind:data(any) addr:0x021d7c24
-data_ov167_021d7bfc kind:data(any) addr:0x021d7c3c
+sKlutzWorkingItems kind:data(any) addr:0x021d7c3c
 sHandlersTruant kind:data(any) addr:0x021d7c58
 sHandlersOwnTempo kind:data(any) addr:0x021d7c78
 sHandlersDamp kind:data(any) addr:0x021d7c98

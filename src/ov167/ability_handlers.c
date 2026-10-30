@@ -9,12 +9,17 @@
 #include "battle/btl_item.h"
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"
+#include "battle/btl_pospoke.h"
 #include "battle/btl_server_flow.h"
 #include "battle/btl_tables.h"
 #include "battle/handler_common.h"
 #include "constants/abilities.h"
 #include "constants/battle.h"
 #include "constants/items.h"
+#include "constants/moves.h"
+#include "constants/pokemon.h"
+#include "constants/species.h"
+#include "constants/types.h"
 #include "pml/item.h"
 #include "pml/move.h"
 
@@ -396,7 +401,7 @@ void HandlerThickFat(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *
 
     if (BattleEventVar_GetValue(4) == monId) {
         type = BattleEventVar_GetValue(0x16);
-        if (type == 14 || type == 9) {
+        if (type == TYPE_ICE || type == TYPE_FIRE) {
             BattleEventVar_MulValue(0x35, FX32_CONST(0.5));
         }
     }
@@ -424,7 +429,7 @@ void HandlerHugePower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
 
 void HandlerSwiftSwim(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(2) == monId) {
-        if (GetWeather(flow) == 2) {
+        if (GetWeather(flow) == BTL_WEATHER_RAIN) {
             BattleEventVar_MulValue(0x35, FX32_CONST(2));
         }
     }
@@ -635,7 +640,7 @@ const BattleEventHandlerEntry *EventAddCompoundEyes(u32 *priority) {
 
 void HandlerSandVeil(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(4) == monId) {
-        if (GetWeather(flow) == 4) {
+        if (GetWeather(flow) == BTL_WEATHER_SANDSTORM) {
             BattleEventVar_MulValue(0x35, FX32_CONST(0.8));
         }
     }
@@ -657,7 +662,7 @@ const BattleEventHandlerEntry *EventAddSandVeil(u32 *priority) {
 
 void HandlerSnowCloak(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(4) == monId) {
-        if (GetWeather(flow) == 3) {
+        if (GetWeather(flow) == BTL_WEATHER_HAIL) {
             BattleEventVar_MulValue(0x35, FX32_CONST(0.8));
         }
     }
@@ -876,7 +881,7 @@ const BattleEventHandlerEntry *EventAddGuts(u32 *priority) {
 void HandlerPlusMinus(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(3) == monId) {
         if (CheckAllyHasAbility(flow, monId, (u8 *)work, 0x39) || CheckAllyHasAbility(flow, monId, (u8 *)work, 0x3a)) {
-            if (PML_MoveGetCategory(BattleEventVar_GetValue(0x12)) == 2) {
+            if (PML_MoveGetCategory(BattleEventVar_GetValue(0x12)) == MOVE_CATEGORY_SPECIAL) {
                 BattleEventVar_MulValue(0x35, FX32_CONST(1.5));
             }
         }
@@ -899,7 +904,7 @@ BOOL CheckAllyHasAbility(BtlServerFlow *flow, u8 monId, u8 *mons, u32 ability) {
     u8 i;
 
     pos = BtlServerFlow_MonIDToPos(flow, monId);
-    if (pos != 6) {
+    if (pos != BTL_POS_NONE) {
         packed = (7 << 8) | pos;
         count = HandlerGetAlivePartyCount(flow, packed, mons);
         for (i = 0; i < count; i++) {
@@ -913,7 +918,7 @@ BOOL CheckAllyHasAbility(BtlServerFlow *flow, u8 monId, u8 *mons, u32 ability) {
 }
 
 BOOL CheckFlowerGiftEnablePokemon(BtlServerFlow *flow, u8 monId) {
-    return GetBattleMonSpecies(GetBattleMon(flow, monId)) == 0x1a5;
+    return GetBattleMonSpecies(GetBattleMon(flow, monId)) == SPECIES_CHERRIM;
 }
 
 void HandlerFlowerGiftMemberOnField(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
@@ -1024,7 +1029,7 @@ void HandlerFlowerGiftSpecialDefense(BattleEventItem *item, BtlServerFlow *flow,
         if (GetWeather(flow) == 1) {
             allyMonId = BattleEventVar_GetValue(4);
             if (IsAllyMonID(monId, allyMonId)) {
-                if (BattleEventVar_GetValue(0x1a) == 2) {
+                if (BattleEventVar_GetValue(0x1a) == MOVE_CATEGORY_SPECIAL) {
                     BattleEventVar_MulValue(0x35, FX32_CONST(1.5));
                 }
             }
@@ -1066,7 +1071,7 @@ void HandlerRivalry(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *w
         defender = GetBattleMon(flow, (u8)targetMonId);
         attackerGender = GetBattleMonStat(attacker, BATTLEMON_GENDER);
         defenderGender = GetBattleMonStat(defender, BATTLEMON_GENDER);
-        if (attackerGender != 2 && defenderGender != 2) {
+        if (attackerGender != GENDER_UNKNOWN && defenderGender != GENDER_UNKNOWN) {
             if (attackerGender == defenderGender) {
                 BattleEventVar_MulValue(0x31, FX32_CONST(1.25));
                 return;
@@ -1124,7 +1129,7 @@ void HandlerReckless(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *
 
     if (BattleEventVar_GetValue(3) == monId) {
         move = BattleEventVar_GetValue(0x12);
-        if (PML_MoveGetParam(move, MOVE_PARAM_RECOIL) || move == 0x1a || move == 0x88) {
+        if (PML_MoveGetParam(move, MOVE_PARAM_RECOIL) || move == MOVE_JUMP_KICK || move == MOVE_HI_JUMP_KICK) {
             BattleEventVar_MulValue(0x31, FX32_CONST(1.2));
         }
     }
@@ -1283,7 +1288,7 @@ void HandlerLeafGuard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
     if (BattleEventVar_GetValue(4) == monId) {
         if (GetWeather(flow) == 1) {
             condition = BattleEventVar_GetValue(0x1d);
-            if (IsBasicStatus(condition) || condition == 0xe) {
+            if (IsBasicStatus(condition) || condition == CONDITION_YAWN) {
                 *work = BattleEventVar_RewriteValue(0x41, 1);
             }
         }
@@ -1488,7 +1493,7 @@ void HandlerObliviousNoEffectCheck(BattleEventItem *item, BtlServerFlow *flow, u
     BattleHandlerMessageParam *param;
 
     if (BattleEventVar_GetValue(4) == monId) {
-        if ((u16)BattleEventVar_GetValue(0x12) == 0x1bd) {
+        if ((u16)BattleEventVar_GetValue(0x12) == MOVE_CAPTIVATE) {
             if (BattleEventVar_RewriteValue(0x40, 1)) {
                 BattleHandler_PushRun(flow, BTL_HANDLER_ABILITY_POPUP_ADD, monId);
                 param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
@@ -1725,7 +1730,7 @@ void HandlerSolarPowerWeather(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 void HandlerSolarPowerPower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(3) == monId) {
         if (GetWeather(flow) == 1) {
-            if (PML_MoveGetCategory(BattleEventVar_GetValue(0x12)) == 2) {
+            if (PML_MoveGetCategory(BattleEventVar_GetValue(0x12)) == MOVE_CATEGORY_SPECIAL) {
                 BattleEventVar_MulValue(0x35, FX32_CONST(1.5));
             }
         }
@@ -1745,7 +1750,7 @@ const BattleEventHandlerEntry *EventAddSolarPower(u32 *priority) {
 void HandlerShieldDustStatus(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(4) == monId) {
         if (BattleEventVar_GetValue(3) != monId) {
-            if (BattleEventVar_GetValue(0x1d) != 8) {
+            if (BattleEventVar_GetValue(0x1d) != CONDITION_BIND) {
                 BattleEventVar_RewriteValue(0x41, 1);
             }
         }
@@ -1825,7 +1830,7 @@ void HandlerHydration(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
     BattleHandlerCureConditionParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        if (GetWeather(flow) == 2) {
+        if (GetWeather(flow) == BTL_WEATHER_RAIN) {
             mon = GetBattleMon(flow, monId);
             if (GetBattleMonStatus(mon)) {
                 BattleHandler_PushRun(flow, BTL_HANDLER_ABILITY_POPUP_ADD, monId);
@@ -1884,7 +1889,7 @@ void HandlerPoisonHeal(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32
     BattleHandlerRecoverHPParam *param;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        if (BattleEventVar_GetValue(0x1d) == 5) {
+        if (BattleEventVar_GetValue(0x1d) == CONDITION_POISON) {
             mon = GetBattleMon(flow, monId);
             BattleEventVar_RewriteValue(0x32, 0);
             param = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
@@ -2040,7 +2045,7 @@ void HandlerCuteCharm(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
         attacker = GetBattleMon(flow, (u8)BattleEventVar_GetValue(3));
         sex = GetBattleMonStat(mon, BATTLEMON_GENDER);
         attackerSex = GetBattleMonStat(attacker, BATTLEMON_GENDER);
-        if (sex != 2 && attackerSex != 2 && sex != attackerSex) {
+        if (sex != GENDER_UNKNOWN && attackerSex != GENDER_UNKNOWN && sex != attackerSex) {
             BtlCalc_MakeDefaultCondition(7, mon, &condition);
             CommonContactStatusAbility(flow, monId, 7, condition, 30);
         }
@@ -2170,7 +2175,7 @@ void HandlerColorChange(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
         mon = GetBattleMon(flow, monId);
         if (!IsFainted(mon)) {
             type = BattleEventVar_GetValue(0x16);
-            if (type != 0x11 && !DoesMonHaveType(mon, type)) {
+            if (type != TYPE_NULL && !DoesMonHaveType(mon, type)) {
                 BattleHandler_PushRun(flow, BTL_HANDLER_ABILITY_POPUP_ADD, monId);
                 param = BattleHandler_PushWork(flow, BTL_HANDLER_CHANGE_TYPE, monId);
                 param->type = PokeTypePair_MakeMonotype(type);
@@ -2200,16 +2205,16 @@ void HandlerSynchronize(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 
     if (BattleEventVar_GetValue(4) == monId) {
         status = BattleEventVar_GetValue(0x1d);
-        if (status == 5 || status == 1 || status == 4) {
+        if (status == CONDITION_POISON || status == CONDITION_PARALYSIS || status == CONDITION_BURN) {
             attackerId = BattleEventVar_GetValue(3);
-            if (attackerId != 0x1f && attackerId != monId) {
+            if (attackerId != BTL_POSPOKE_NO_MON && attackerId != monId) {
                 mon = GetBattleMon(flow, monId);
                 cont.raw = BattleEventVar_GetValue(0x1e);
                 BattleHandler_PushRun(flow, BTL_HANDLER_ABILITY_POPUP_ADD, monId);
                 param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
                 param->targetIndex = attackerId;
                 param->condition = status;
-                if (status == 5 && Condition_IsBadlyPoisoned(cont)) {
+                if (status == CONDITION_POISON && Condition_IsBadlyPoisoned(cont)) {
                     param->value = cont;
                 } else {
                     BtlCalc_MakeDefaultCondition(status, mon, &param->value);
@@ -2306,7 +2311,8 @@ void HandlerTrace(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wor
     } else if (!IsAllyMonID(enteringId, monId) && work[0] == 1) {
         pos = BtlServerFlow_MonIDToPos(flow, enteringId);
         myPos = BtlServerFlow_GetMonBattlePos(flow, monId);
-        if (pos != 6 && (BtlServerFlow_GetBattleStyle(flow) != 2 || IsAdjacentOpponent(myPos, pos))) {
+        if (pos != BTL_POS_NONE &&
+            (BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_TRIPLE || IsAdjacentOpponent(myPos, pos))) {
             count = GetBattleMonStat(GetBattleMon(flow, enteringId), BATTLEMON_ABILITY);
             if (!IsTraceExcludedAbility(count)) {
                 ability = count;
@@ -2314,7 +2320,7 @@ void HandlerTrace(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wor
             }
         }
     }
-    if (ability != 0 && monId != 0x1f) {
+    if (ability != 0 && monId != BTL_POSPOKE_NO_MON) {
         BattleHandlerAbilityChangeParam *param;
 
         param = BattleHandler_PushWork(flow, BTL_HANDLER_ABILITY_CHANGE, monId);
@@ -2424,9 +2430,9 @@ void HandlerForewarn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *
                 if (PML_MoveGetCategory(move) != 0) {
                     power = (u8)PML_MoveGetBasePower(move);
                     if (power == 1) {
-                        if (PML_MoveGetQuality(move) == 9) {
+                        if (PML_MoveGetQuality(move) == MOVE_QUALITY_OHKO) {
                             power = 150;
-                        } else if (move == 0x44 || move == 0xf3 || move == 0x170) {
+                        } else if (move == MOVE_COUNTER || move == MOVE_MIRROR_COAT || move == MOVE_METAL_BURST) {
                             power = 120;
                         } else {
                             power = 80;
@@ -2505,7 +2511,7 @@ BOOL CheckAnticipationMon(BattleMon *mon, BattleMon *opponent) {
     moveCount = GetBattleMonMoveCount(opponent);
     for (i = 0; i < moveCount; i++) {
         move = MoveGetID(opponent, i);
-        if (PML_MoveGetQuality(move) == 9) {
+        if (PML_MoveGetQuality(move) == MOVE_QUALITY_OHKO) {
             return TRUE;
         }
         if (PML_MoveIsDamaging(move) && BtlCalc_GetTypePairEffectiveness(PML_MoveGetType(move), types) > 3) {
@@ -2652,7 +2658,7 @@ const BattleEventHandlerEntry *EventAddUnaware(u32 *priority) {
 
 void HandlerHeatproofPower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(4) == monId) {
-        if (BattleEventVar_GetValue(0x16) == 9) {
+        if (BattleEventVar_GetValue(0x16) == TYPE_FIRE) {
             BattleEventVar_MulValue(0x31, FX32_CONST(0.5));
         }
     }
@@ -2662,7 +2668,7 @@ void HandlerHeatproofStatus(BattleEventItem *item, BtlServerFlow *flow, u8 monId
     s32 damage;
 
     if (BattleEventVar_GetValue(2) == monId) {
-        if (BattleEventVar_GetValue(0x1d) == 4) {
+        if (BattleEventVar_GetValue(0x1d) == CONDITION_BURN) {
             damage = BattleEventVar_GetValue(0x32);
             damage = BtlCalc_AtLeast(damage / 2, 1);
             BattleEventVar_RewriteValue(0x32, damage);
@@ -2755,7 +2761,7 @@ void HandlerDrySkinWeather(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
             damage->amount = DivideMaxHPZeroCheck(mon, 8);
             BattleHandler_PopWork(flow, damage);
             BattleHandler_PushRun(flow, BTL_HANDLER_ABILITY_POPUP_REMOVE, monId);
-        } else if (weather == 2) {
+        } else if (weather == BTL_WEATHER_RAIN) {
             recover = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
             recover->popup = 1;
             recover->targetIndex = monId;
@@ -2767,7 +2773,7 @@ void HandlerDrySkinWeather(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
 void HandlerDrySkinDamageRecover(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(4) == monId) {
-        if (BattleEventVar_GetValue(0x16) == 9) {
+        if (BattleEventVar_GetValue(0x16) == TYPE_FIRE) {
             BattleEventVar_MulValue(0x31, FX32_CONST(1.25));
         }
     }
@@ -2837,7 +2843,7 @@ void HandlerMotorDriveCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 
 void HandlerScrappy(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(3) == monId) {
-        if (BattleEventVar_GetValue(0x15) == 7) {
+        if (BattleEventVar_GetValue(0x15) == TYPE_GHOST) {
             BattleEventVar_RewriteValue(0x4b, 1);
         }
     }
@@ -2931,7 +2937,7 @@ void HandlerWonderGuard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
             GetBattleMon(flow, monId);
             move = BattleEventVar_GetValue(0x12);
             if (PML_MoveIsDamaging(move)) {
-                if (move != 0xa5) {
+                if (move != MOVE_STRUGGLE) {
                     if ((s32)BattleEventVar_GetValue(0x38) <= 3) {
                         if (BattleEventVar_RewriteValue(0x40, 1)) {
                             BattleHandler_PushRun(flow, BTL_HANDLER_ABILITY_POPUP_ADD, monId);
@@ -3017,7 +3023,7 @@ void HandlerDamp(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work
 
     move = BattleEventVar_GetValue(0x12);
     work[0] = 0;
-    if (move == 0x99 || move == 0x78) {
+    if (move == MOVE_EXPLOSION || move == MOVE_SELFDESTRUCT) {
         key = 0x22;
         if (BattleEventVar_GetValue(key) == 0) {
             work[0] = BattleEventVar_RewriteValue(key, 0x13);
@@ -3058,7 +3064,7 @@ void HandlerDampEnd(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *w
 
 BOOL HandlerDampSkipCheck(BattleEventItem *item, BtlServerFlow *flow, u32 factorType, u32 event, u16 subId, u8 monId) {
     if (factorType == BTL_EVENT_FACTOR_ABILITY) {
-        if (subId == 0x6a) {
+        if (subId == ABILITY_AFTERMATH) {
             return TRUE;
         }
     }
@@ -3079,7 +3085,7 @@ const BattleEventHandlerEntry *EventAddDamp(u32 *priority) {
 void HandlerFlashFirePower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(3) == monId) {
         if (GetAdditionalConditionFlag(GetBattleMon(flow, monId), 0xd)) {
-            if (BattleEventVar_GetValue(0x16) == 9) {
+            if (BattleEventVar_GetValue(0x16) == TYPE_FIRE) {
                 BattleEventVar_MulValue(0x35, FX32_CONST(1.5));
             }
         }
@@ -3208,10 +3214,10 @@ void HandlerMoldBreakerMemberIn(BattleEventItem *item, BtlServerFlow *flow, u8 m
 
     if (BattleEventVar_GetValue(2) == monId) {
         switch (BattleEventItem_GetSubID(item)) {
-        case 0xa3:
+        case ABILITY_TURBOBLAZE:
             message = 0x1f9;
             break;
-        case 0xa4:
+        case ABILITY_TERAVOLT:
             message = 0x1f6;
             break;
         default:
@@ -3326,7 +3332,7 @@ void CommonForecastOff(BattleEventItem *item, BtlServerFlow *flow, u8 monId) {
     BattleHandlerChangeFormParam *work;
 
     mon = GetBattleMon(flow, monId);
-    if (GetBattleMonSpecies(mon) == 0x15f) {
+    if (GetBattleMonSpecies(mon) == SPECIES_CASTFORM) {
         if (GetBattleMonStat(mon, BATTLEMON_FORM) != 0) {
             work = BattleHandler_PushWork(flow, BTL_HANDLER_CHANGE_FORM, monId);
             work->monIndex = monId;
@@ -3345,19 +3351,19 @@ void CommonForecastFormChange(BtlServerFlow *flow, u8 monId, u32 weather) {
     u32 newForm;
 
     mon = GetBattleMon(flow, monId);
-    if (GetBattleMonSpecies(mon) == 0x15f) {
+    if (GetBattleMonSpecies(mon) == SPECIES_CASTFORM) {
         currentForm = GetBattleMonStat(mon, BATTLEMON_FORM);
         switch (weather) {
-        case 0:
+        case BTL_WEATHER_NONE:
             newForm = 0;
             break;
-        case 1:
+        case BTL_WEATHER_SUN:
             newForm = 1;
             break;
-        case 2:
+        case BTL_WEATHER_RAIN:
             newForm = 2;
             break;
-        case 3:
+        case BTL_WEATHER_HAIL:
             newForm = 3;
             break;
         default:
@@ -3581,7 +3587,7 @@ void HandlerKlutzCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32
     if (BattleEventVar_GetValue(2) == monId) {
         move = BattleEventVar_GetValue(0x12);
         work[2] = 0;
-        if (move == 0x16b && BattleEventVar_GetValue(2) == monId) {
+        if (move == MOVE_NATURAL_GIFT && BattleEventVar_GetValue(2) == monId) {
             work[2] = BattleEventVar_RewriteValue(0x22, 0x13);
         }
     }
@@ -3624,7 +3630,7 @@ void HandlerStickyHoldNoEffect(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 
     if (BattleEventVar_GetValue(4) == monId) {
         move = BattleEventVar_GetValue(0x12);
-        if ((move == 0x10f || move == 0x19f) && BattleEventVar_RewriteValue(0x40, 1)) {
+        if ((move == MOVE_TRICK || move == MOVE_SWITCHEROO) && BattleEventVar_RewriteValue(0x40, 1)) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
             param->popup = 1;
             BattleHandler_StrSetup(&param->string, 2, 0xd2);
@@ -3699,7 +3705,7 @@ void HandlerPressure(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *
             apply = TRUE;
         } else {
             move = BattleEventVar_GetValue(0x12);
-            if (PML_MoveGetQuality(move) == 10) {
+            if (PML_MoveGetQuality(move) == MOVE_QUALITY_FIELD) {
                 apply = TRUE;
             } else if (IsPressureFieldMove(move)) {
                 apply = TRUE;
@@ -3764,7 +3770,7 @@ void HandlerShadowTag(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
     if (!IsAllyMonID(BattleEventVar_GetValue(2), monId)) {
         count = HandlerGetAlivePartyCount(flow, BtlServerFlow_GetMonBattlePos(flow, monId) | 0x100, mons);
         for (i = 0; i < count; i++) {
-            if (GetBattleMonStat(GetBattleMon(flow, mons[i]), BATTLEMON_EFFECTIVE_ABILITY) == 0x17) {
+            if (GetBattleMonStat(GetBattleMon(flow, mons[i]), BATTLEMON_EFFECTIVE_ABILITY) == ABILITY_SHADOW_TAG) {
                 return;
             }
         }
@@ -3944,7 +3950,8 @@ void HandlerCursedBody(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32
         attacker = GetBattleMon(flow, attackerId);
         if (!CheckCondition(attacker, CONDITION_DISABLE)) {
             move = BattleEventVar_GetValue(0x14);
-            if (move != 0 && move != 0xa5 && !IsDelayedAttackMove(move) && AbilityEvent_RollEffectChance(flow, 30)) {
+            if (move != MOVE_NONE && move != MOVE_STRUGGLE && !IsDelayedAttackMove(move) &&
+                AbilityEvent_RollEffectChance(flow, 30)) {
                 turns = 4;
                 if (GetTurnFlag(attacker, 1)) {
                     turns++;
@@ -4059,13 +4066,13 @@ BOOL IsAffectedBySheerForce(u16 move) {
         return TRUE;
     }
     switch (quality) {
-    case 4:
-        if (PML_MoveGetParam(move, MOVE_PARAM_CONDITION) == 8) {
+    case MOVE_QUALITY_DAMAGE_INFLICT:
+        if (PML_MoveGetParam(move, MOVE_PARAM_CONDITION) == CONDITION_BIND) {
             return FALSE;
         }
-    case 6:
+    case MOVE_QUALITY_DAMAGE_LOWER_TARGET_STATS:
         return TRUE;
-    case 7:
+    case MOVE_QUALITY_DAMAGE_USER_STAT_CHANGE:
         count = PML_MoveGetStatChangeStat(move);
         for (i = 0; i < count; i++) {
             PML_MoveGetStatChangeStage(move, i, &stage);
@@ -4075,7 +4082,7 @@ BOOL IsAffectedBySheerForce(u16 move) {
         }
         return TRUE;
     }
-    if (move == 0x122) {
+    if (move == MOVE_SECRET_POWER) {
         return TRUE;
     }
     return FALSE;
@@ -4214,7 +4221,7 @@ const BattleEventHandlerEntry *EventAddToxicBoost(u32 *priority) {
 
 void HandlerFlareBoost(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(3) == monId && CheckCondition(GetBattleMon(flow, monId), 4) &&
-        BattleEventVar_GetValue(0x1a) == 2) {
+        BattleEventVar_GetValue(0x1a) == MOVE_CATEGORY_SPECIAL) {
         BattleEventVar_MulValue(0x31, 0x1800);
     }
 }
@@ -4436,7 +4443,7 @@ const BattleEventHandlerEntry *EventAddSandRush(u32 *priority) {
 }
 
 void HandlerSandRush(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(2) == monId && GetWeather(flow) == 4) {
+    if (BattleEventVar_GetValue(2) == monId && GetWeather(flow) == BTL_WEATHER_SANDSTORM) {
         BattleEventVar_MulValue(0x35, 0x2000);
     }
 }
@@ -4484,11 +4491,11 @@ const BattleEventHandlerEntry *EventAddSandForce(u32 *priority) {
 }
 
 void HandlerSandForce(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == 4) {
+    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == BTL_WEATHER_SANDSTORM) {
         switch ((u8)BattleEventVar_GetValue(0x16)) {
-        case 4:
-        case 5:
-        case 8:
+        case TYPE_GROUND:
+        case TYPE_ROCK:
+        case TYPE_STEEL:
             BattleEventVar_MulValue(0x31, 0x14cd);
             break;
         }
@@ -4502,7 +4509,7 @@ void HandlerZenMode(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *w
     u16 message;
 
     mon = GetBattleMon(flow, monId);
-    if (GetBattleMonSpecies(mon) == 0x22b) {
+    if (GetBattleMonSpecies(mon) == SPECIES_DARMANITAN) {
         form = GetBattleMonStat(mon, BATTLEMON_HP) <= DivideMaxHp(mon, 2) ? 1 : 0;
         if (form != GetBattleMonStat(mon, BATTLEMON_FORM)) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_CHANGE_FORM, monId);
@@ -4519,7 +4526,7 @@ void HandlerZenMode(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *w
 void HandlerZenModeGastroAcid(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     BattleHandlerChangeFormParam *param;
 
-    if (BattleEventVar_GetValue(2) == monId && GetBattleMonSpecies(GetBattleMon(flow, monId)) == 0x22b) {
+    if (BattleEventVar_GetValue(2) == monId && GetBattleMonSpecies(GetBattleMon(flow, monId)) == SPECIES_DARMANITAN) {
         param = BattleHandler_PushWork(flow, BTL_HANDLER_CHANGE_FORM, monId);
         param->monIndex = monId;
         param->form = 0;
@@ -4618,7 +4625,7 @@ void HandlerJustified(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
     BattleHandlerStatChangeParam *param;
 
     if (BattleEventVar_GetValue(4) == monId && BattleEventVar_GetValue(0x46) == 0 &&
-        BattleEventVar_GetValue(0x16) == 0x10) {
+        BattleEventVar_GetValue(0x16) == TYPE_DARK) {
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         param->popup = 1;
         param->count = 1;
@@ -4644,7 +4651,7 @@ void HandlerRattled(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *w
 
     if (BattleEventVar_GetValue(4) == monId && BattleEventVar_GetValue(0x46) == 0) {
         type = BattleEventVar_GetValue(0x16);
-        if (type == 0x10 || type == 6 || type == 7) {
+        if (type == TYPE_DARK || type == TYPE_BUG || type == TYPE_GHOST) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
             param->popup = 1;
             param->count = 1;
@@ -4672,7 +4679,7 @@ void HandlerMummy(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wor
     if (BattleEventVar_GetValue(4) == monId && BattleEventVar_GetValue(0x46) == 0 &&
         !BtlServerFlow_CheckMatchup(flow) && getMoveFlag(BattleEventVar_GetValue(0x12), 0)) {
         attackerId = BattleEventVar_GetValue(3);
-        if (GetBattleMonStat(GetBattleMon(flow, attackerId), BATTLEMON_ABILITY) != 0x98) {
+        if (GetBattleMonStat(GetBattleMon(flow, attackerId), BATTLEMON_ABILITY) != ABILITY_MUMMY) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_ABILITY_CHANGE, monId);
             param->ability = 0x98;
             param->targetIndex = attackerId;
