@@ -426,8 +426,10 @@ same viewport for presentation, native pointer controls, and legacy touch input,
 
 Building-entry capture retains the original 256x192 VRAM image for game state and also records the full 384x216 field
 frame for PC presentation. The captured frame covers the new map until the original alpha fade reveals it, then the
-game clears both captures. Field wipe masks use the original game-frame progress and cover the full PC canvas for the
-circle and four directional patterns; the DS window registers still drive the original game logic.
+game clears both captures. The host marks VBlank while running its callbacks so the original affine entrance zoom
+advances. The field renderer holds its last complete 3D list through the brief actor reload after the fade, keeping
+sprites visible until the new list is ready. Field wipe masks use the original game-frame progress and cover the full
+PC canvas for the circle and four directional patterns; the DS window registers still drive the original game logic.
 The main screen's white master-brightness fade also colors empty canvas pixels, so it reaches the edges.
 
 Aspect ratio remains fixed at the native 16:9 layout; arbitrary aspect selection is not implemented. Separate Run/Back

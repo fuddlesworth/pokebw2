@@ -87,6 +87,8 @@ static PcGxVertex *fieldVertices;
 static u32 fieldVertexCount;
 static u32 fieldVertexCapacity;
 static u32 fieldSparseFrames;
+static u32 fieldCaptureGrace;
+static bool fieldCaptureWasActive;
 static u16 pendingBackKeys;
 
 bool PcBoot_Start(const char *root, PcBootEntry entry) {
@@ -166,10 +168,13 @@ void PcBoot_Update(void) {
     GFL_FadeUpdate();
     GFL_WipeMain();
     PC_GX_REG16(0x04000006) = 192;
+    // VBlank effects read DISPSTAT before updating their affine registers.
+    reg_GX_DISPSTAT |= REG_GX_DISPSTAT_VBLK_MASK;
     GFL_VBlankExecCallback();
     NNS_GfdDoVramTransfer();
     GFL_TCBMgrUpdate(vblank);
     GFL_BGSysUpdate();
+    reg_GX_DISPSTAT &= ~REG_GX_DISPSTAT_VBLK_MASK;
     PC_GX_REG16(0x04000006) = 0;
     if (!completed)
         completed = GFL_ProcMgrUpdate(manager) == 0;
@@ -191,6 +196,8 @@ void PcBoot_Stop(void) {
     fieldVertices = NULL;
     fieldVertexCount = fieldVertexCapacity = 0;
     fieldSparseFrames = 0;
+    fieldCaptureGrace = 0;
+    fieldCaptureWasActive = false;
     for (unsigned i = 0; i < SDL_arraysize(paths); i++) {
         SDL_free(paths[i]);
         paths[i] = NULL;
@@ -205,10 +212,25 @@ void PcBoot_Draw(void) {
     BOOL fieldScene = GCTX_ProcMgrCurrentFunctions() == &FIELDMAP_PROC_FUNCS;
     BOOL fieldReady = fieldScene && g_GameSystem != NULL && GSYS_GetField(g_GameSystem) != NULL &&
                       Field_CheckMapLoadFinished(GSYS_GetField(g_GameSystem));
+    bool wideCapture = fieldScene && PcGx_WideCaptureActive();
+    if (!fieldScene) {
+        fieldCaptureWasActive = false;
+        fieldCaptureGrace = 0;
+    } else if (wideCapture) {
+        fieldCaptureWasActive = true;
+        fieldCaptureGrace = 0;
+    } else if (fieldCaptureWasActive) {
+        fieldCaptureWasActive = false;
+        fieldCaptureGrace = 24;
+    } else if (fieldCaptureGrace) {
+        fieldCaptureGrace--;
+    }
     if (fieldReady) {
-        // Map handoffs can submit a nearly empty 3D list for one tick; keep the last full field until it recovers.
-        if (PcGx.vertex_count &&
-            (!fieldVertexCount || PcGx.vertex_count * 2 >= fieldVertexCount || fieldSparseFrames >= 2)) {
+        // The 3D list briefly loses field actors as the captured building scene is released.
+        bool sparse = fieldVertexCount && PcGx.vertex_count < fieldVertexCount &&
+                      (fieldCaptureGrace || PcGx.vertex_count * 2 < fieldVertexCount) &&
+                      fieldSparseFrames < (fieldCaptureGrace ? 4u : 2u);
+        if (PcGx.vertex_count && !sparse) {
             fieldSparseFrames = 0;
             if (PcGx.vertex_count > fieldVertexCapacity) {
                 PcGxVertex *vertices = SDL_realloc(fieldVertices, PcGx.vertex_count * sizeof(*fieldVertices));
@@ -237,7 +259,7 @@ void PcBoot_Draw(void) {
     if (battleScene) {
         PcGx.scene_viewport = (PcViewport){ 0, 0, PC_CANVAS_WIDTH, 138 };
         // BG0 is the arena. Messages and gauges are composed from their original live state below.
-    } else if (fieldScene && PcGx_WideCaptureActive()) {
+    } else if (wideCapture) {
         PcGx_DrawBackgroundLayers(0, scene, 256, 192, 15 & ~(1u << 2));
         u32 first = PcGx.vertex_count;
         PcGx_DrawBackgroundLayers(0, (PcViewport){ 0, 0, PC_CANVAS_WIDTH, PC_CANVAS_HEIGHT }, PC_CANVAS_WIDTH,
@@ -410,12 +432,14 @@ void OS_WaitIrq(BOOL clear, OSIrqMask interrupts) {
     SDL_Delay(16);
     PcOsVBlankCount++;
     PC_GX_REG16(0x04000006) = 192;
+    reg_GX_DISPSTAT |= REG_GX_DISPSTAT_VBLK_MASK;
     // Hardware captures the armed display on VBlank, including during synchronous waits.
     PcGx_Capture();
     GFL_VBlankExecCallback();
     NNS_GfdDoVramTransfer();
     GFL_TCBMgrUpdate(vblank);
     GFL_BGSysUpdate();
+    reg_GX_DISPSTAT &= ~REG_GX_DISPSTAT_VBLK_MASK;
     PC_GX_REG16(0x04000006) = 0;
 }
 void OS_WaitInterrupt(BOOL clear, OSIrqMask interrupts) {
