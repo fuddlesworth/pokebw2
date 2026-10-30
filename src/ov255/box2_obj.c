@@ -195,7 +195,7 @@ void Box2Obj_Init(Box2SysWork *syswk) {
     CreateClActSys(syswk->app);
     LoadResources(syswk->app);
     CreateActors(syswk);
-    Box2Obj_SetButtons(syswk, syswk->unk1F, syswk->unk20, syswk->unk21, syswk->unk22);
+    Box2Obj_SetButtons(syswk, syswk->button1, syswk->button2, syswk->button3, syswk->button4);
     CreateFontOams(syswk->app);
     InitRangeSelect(syswk);
     GFL_BGSysSetBGEnabledA(GX_PLANEMASK_OBJ, TRUE);
@@ -686,7 +686,7 @@ void Box2Obj_ScrollTrayIcons(Box2SysWork *syswk, s32 mv) {
             x = start;
             TransferIconChar(syswk->app, syswk->app->pokeIconChar[i], id, syswk->app->pokeIconPal[i]);
             Box2Obj_SetVisible(syswk->app, id, syswk->app->pokeIconExist[i]);
-            if (syswk->app->unkA55A == 0 && (syswk->param->mode == 3 || syswk->param->mode == 5)) {
+            if (syswk->app->boxJumpOpen == 0 && (syswk->param->mode == 3 || syswk->param->mode == 5)) {
                 SetIconBlendChecked(syswk, i);
             }
         }
@@ -778,7 +778,7 @@ static void SetIconsBlend(Box2SysWork *syswk, BOOL blend, u32 start, u32 end, BO
     if (check == TRUE) {
         if (syswk->param->mode == BOX2_MODE_DREAM_WORLD) {
             for (i = start; i < end; i++) {
-                if (Box2Main_IsSpeciesFlagged(syswk, i) == TRUE &&
+                if (Box2Main_IsSpeciesSendable(syswk, i) == TRUE &&
                     Box2Main_GetPokeParam(syswk, i, syswk->tray, PKM_PARAM_IS_EGG, NULL) == 0) {
                     SetBlend(syswk->app, syswk->app->pokeIconId[i], FALSE);
                 } else {
@@ -884,7 +884,7 @@ void Box2Obj_MoveHeldIcons(Box2SysWork *syswk) {
     int j;
     int i;
 
-    if (syswk->unk18 != 0) {
+    if (syswk->pickState != BOX2_PICK_NONE) {
         Box2Obj_GetPos(syswk->app, BOX2_ACTOR_CURSOR, &x, &y, 0);
         if (syswk->param->mode == 3) {
             y += 8;
@@ -1620,10 +1620,10 @@ void Box2Obj_ShowBoxNameFrame(Box2SysWork *syswk, u32 index, BOOL show) {
 }
 
 void Box2Obj_SetButtons(Box2SysWork *syswk, u8 button1, u8 button2, u8 button3, u8 button4) {
-    syswk->unk20 = button2;
-    syswk->unk21 = button3;
-    syswk->unk1F = button1;
-    syswk->unk22 = button4;
+    syswk->button2 = button2;
+    syswk->button3 = button3;
+    syswk->button1 = button1;
+    syswk->button4 = button4;
     if (button1 == 0) {
         Box2Obj_SetVisible(syswk->app, 6, TRUE);
         Box2Obj_SetAnimAndPlay(syswk->app, 6, 1);
@@ -1800,7 +1800,7 @@ void Box2Obj_UpdateRangeDots(Box2SysWork *syswk) {
     bottom = rs->bottom;
     half = width + height;
     length = half * 2;
-    if (syswk->unk18 == 2) {
+    if (syswk->pickState == BOX2_PICK_RANGE_HELD) {
         Box2Obj_GetPos(syswk->app, syswk->app->pokeIconId[BOX2_BOXLIST_POS], &x, &y, 0);
         left = x - 14;
         top = y - 6;

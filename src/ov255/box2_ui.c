@@ -969,7 +969,7 @@ void Box2Ui_SetButtonStates(Box2SysWork *syswk, u32 pos) {
     u8 button3 = 0;
     u8 button4 = 0;
 
-    if (syswk->unk18 != 0) {
+    if (syswk->pickState != BOX2_PICK_NONE) {
         button1 = 2;
         if (syswk->param->mode == 3) {
             button3 = 1;

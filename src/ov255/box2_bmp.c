@@ -474,9 +474,9 @@ void Box2Bmp_PutTrayName(Box2SysWork *syswk, u32 tray, u32 index) {
 }
 
 void Box2Bmp_FlushTrayName(Box2SysWork *syswk) {
-    if (syswk->app->unkA5B8 == TRUE) {
+    if (syswk->app->trayNamePending == TRUE) {
         BmpOam_ActorBmpTrans(syswk->app->fontOam[0].oam);
-        syswk->app->unkA5B8 = FALSE;
+        syswk->app->trayNamePending = FALSE;
     }
 }
 
@@ -487,7 +487,7 @@ void Box2Bmp_DrawScrolledTrayName(Box2SysWork *syswk, u32 mv) {
         tray -= syswk->trayMax;
     }
     DrawTrayName(syswk, tray, 0);
-    syswk->app->unkA5B8 = TRUE;
+    syswk->app->trayNamePending = TRUE;
 }
 
 // Draws how many Pokémon a box holds into a text object

@@ -30518,7 +30518,7 @@ overlays/ov255 0x021bcbb4 PokeFormChangeShaymin
 overlays/ov255 0x021bcc4c Box2Main_RecalcPartyStats
 overlays/ov255 0x021bcc74 Box2Main_InitDexData
 overlays/ov255 0x021bcc9c Box2Main_ExitDexData
-overlays/ov255 0x021bccac Box2Main_IsSpeciesFlagged
+overlays/ov255 0x021bccac Box2Main_IsSpeciesSendable
 overlays/ov255 0x021bccd4 PokeIconRangeMove
 overlays/ov255 0x021bcd80 Box2Main_VFuncRangePokeMove
 overlays/ov255 0x021bd088 Box2Main_VFuncGetPokeMove
