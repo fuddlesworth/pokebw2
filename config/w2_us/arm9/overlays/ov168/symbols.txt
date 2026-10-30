@@ -630,7 +630,7 @@ BtlvFingerCursor_RemoveActor kind:function(thumb,size=0x14) addr:0x021f2ec4
 BtlvFingerCursor_IsTouched kind:function(thumb,size=0x4) addr:0x021f2ed8
 BtlvFingerCursor_AnimCallback kind:function(thumb,size=0x94) addr:0x021f2edc
 BtlvFingerCursor_Task kind:function(thumb,size=0x24) addr:0x021f2f70
-data_ov168_021f2f54 kind:data(any) addr:0x021f2f94
+GROUND_POSITIONS kind:data(any) addr:0x021f2f94
 data_ov168_021f2f58 kind:data(any) addr:0x021f2f98
 data_ov168_021f2f5c kind:data(any) addr:0x021f2f9c
 data_ov168_021f2f6c kind:data(any) addr:0x021f2fac

@@ -788,7 +788,7 @@ BOOL BtlvEffect_IsPaletteFading(u32 target) {
 void BtlvEffect_SetVanish(u32 target, BOOL hide) {
     switch (target) {
     case BTLV_EFFECT_VANISH_STAGE:
-        BtlvStage_SetVanish(sBtlvEffect->stage, 2, hide);
+        BtlvStage_SetVanish(sBtlvEffect->stage, BTLV_STAGE_SIDE_BOTH, hide);
         break;
     case BTLV_EFFECT_VANISH_FIELD:
         BtlvField_SetHidden(sBtlvEffect->field, hide);
