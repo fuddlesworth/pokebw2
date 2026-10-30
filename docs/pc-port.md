@@ -424,6 +424,12 @@ both passes' depth fixes boot and the Options-to-field transition with 4x MSAA. 
 premultiplied colors to avoid dark transparency fringes and leaves native text unchanged. Integer scaling uses the
 same viewport for presentation, native pointer controls, and legacy touch input, including high-DPI windows.
 
+Building-entry capture retains the original 256x192 VRAM image for game state and also records the full 384x216 field
+frame for PC presentation. The captured frame covers the new map until the original alpha fade reveals it, then the
+game clears both captures. Field wipe masks use the original game-frame progress and cover the full PC canvas for the
+circle and four directional patterns; the DS window registers still drive the original game logic.
+The main screen's white master-brightness fade also colors empty canvas pixels, so it reaches the edges.
+
 Aspect ratio remains fixed at the native 16:9 layout; arbitrary aspect selection is not implemented. Separate Run/Back
 and Open C-Gear actions and a captured field preview are still absent from the mockup design.
 The right panel shows the selected binding/conflict while rebinding, and a themed emblem on other pages.

@@ -10,6 +10,7 @@ void PcGx_InitVRAM(u32 preservedBanks) {
     memset(PcGxBackground, 0, sizeof(PcGxBackground));
     memset(PcGxLcdc, 0, sizeof(PcGxLcdc));
     PcGxCapturedBanks = 0;
+    PcGxWideCaptureValid = FALSE;
     memset(PcGx2D, 0, sizeof(PcGx2D));
     memset(PcGx.textures, 0, sizeof(PcGx.textures));
     memset(PcGx.palettes, 0, sizeof(PcGx.palettes));

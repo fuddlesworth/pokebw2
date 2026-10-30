@@ -15,6 +15,8 @@ PcGx2DRegisters PcGxRegisters[2];
 u8 PcGxBackground[2][524288];
 u8 PcGxLcdc[0xa4000];
 u32 PcGxCapturedBanks;
+u32 PcGxWideCapture[PC_CANVAS_WIDTH * PC_CANVAS_HEIGHT];
+BOOL PcGxWideCaptureValid;
 static PcGxCaptureCallback captureCallback;
 static GXVRamClearImage clearImageBanks;
 static void Fail(const char *reason, u32 value);

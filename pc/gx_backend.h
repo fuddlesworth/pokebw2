@@ -5,9 +5,10 @@
 #include "video.h"
 
 enum { PC_GX_MAX_VERTICES = 262144, PC_GX_TEX_BYTES = 524288, PC_GX_PLTT_BYTES = 98304 };
-// Bits 24-29 belong to the DS polygon ID, including particle IDs. Bit 23 is unused by the hardware.
+// Bits 24-29 belong to the DS polygon ID, including particle IDs. Bits 21 and 23 are unused by the hardware.
 // Native UI colors are independent of the original screen's brightness and blend registers.
-enum { PC_GX_POLYGON_UI = 1u << 23 };
+enum { PC_GX_POLYGON_WIDE_CAPTURE = 1u << 21, PC_GX_POLYGON_UI = 1u << 23 };
+enum { PC_GX_POLYGON_WIPE = PC_GX_POLYGON_WIDE_CAPTURE | PC_GX_POLYGON_UI };
 typedef struct {
     float clip[4], uv[2], color[4];
     u32 texture, palette, polygon;
@@ -41,6 +42,8 @@ typedef struct {
     char error[128];
 } PcGxFrame;
 extern PcGxFrame PcGx;
+extern u32 PcGxWideCapture[PC_CANVAS_WIDTH * PC_CANVAS_HEIGHT];
+bool PcGx_WideCaptureActive(void);
 // Decoded rear-plane pixels are shared by the display and capture passes.
 typedef struct {
     u32 color;

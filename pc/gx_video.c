@@ -1,6 +1,7 @@
 #include "dex_skin.h"
 #include "gx_backend.h"
 #include "settings.h"
+#include "system/wipe.h"
 #include <stddef.h>
 
 static const Uint32 vertex_code[] =
@@ -17,7 +18,7 @@ typedef struct {
 
 static struct {
     SDL_GPUGraphicsPipeline *pipelines[3], *multisample[2][3];
-    SDL_GPUBuffer *vertices, *textures, *palettes, *backgrounds, *rearPlane;
+    SDL_GPUBuffer *vertices, *textures, *palettes, *backgrounds, *rearPlane, *wideCapture;
     SDL_GPUTransferBuffer *upload;
     SDL_GPUTexture *color, *depth, *msColor, *msDepth;
     unsigned samples;
@@ -25,6 +26,8 @@ static struct {
     PcVideo *video;
     SDL_GPUTexture *captureColor, *captureDepth;
     SDL_GPUTransferBuffer *captureDownload;
+    SDL_GPUTexture *captureWideColor;
+    SDL_GPUTransferBuffer *captureWideDownload;
     CaptureBatch batches[PC_GX_MAX_VERTICES / 3 + 1];
     Uint32 batchCount;
     float sceneMinDepth, sceneMaxDepth;
@@ -44,11 +47,20 @@ static void SetViewport(SDL_GPUCommandBuffer *commands, SDL_GPURenderPass *pass,
     float projectionScale[4] = { 1, 1, 1, 1 };
     struct {
         float rect[4], depth[4];
-        Uint32 captureMode, spriteFilter, padding[2];
+        Uint32 captureMode, spriteFilter, wideCaptureActive, wipeType;
+        float wipeProgress;
+        float padding[3];
     } state = { .rect = { viewport->x, viewport->y, viewport->w, viewport->h },
                 .depth = { viewport->min_depth, viewport->max_depth, scene ? 1 : 0, 0 },
                 .captureMode = captureMode,
-                .spriteFilter = PcSettings_Get()->spriteFilter };
+                .spriteFilter = PcSettings_Get()->spriteFilter,
+                .wideCaptureActive = !captureMode && PcGx_WideCaptureActive() };
+    int wipeType;
+    float wipeProgress;
+    if (!captureMode && GFL_WipeGetHostState(&wipeType, &wipeProgress)) {
+        state.wipeType = wipeType;
+        state.wipeProgress = wipeProgress;
+    }
     SDL_SetGPUViewport(pass, viewport);
     if (captureMode && scene && renderer.sceneProjectionScaleX > 0)
         projectionScale[0] = 1.0f / renderer.sceneProjectionScaleX;
@@ -59,6 +71,8 @@ static void SetViewport(SDL_GPUCommandBuffer *commands, SDL_GPURenderPass *pass,
 static int DrawLayer(const PcGxVertex *vertex, float sceneDepth) {
     if (vertex->polygon & PC_GX_POLYGON_UI)
         return 3;
+    if (vertex->polygon & PC_GX_POLYGON_WIDE_CAPTURE)
+        return 2;
     if (vertex->polygon & 0xc0000000u) {
         // Compose the rear plane between the original layers behind and in front of BG0.
         float depth = (vertex->clip[2] / vertex->clip[3] + 1) * 0.5f;
@@ -80,7 +94,7 @@ bool PcGxVideo_Init(PcVideo *video) {
     shader_info.code = (const Uint8 *)fragment_code;
     shader_info.code_size = sizeof(fragment_code);
     shader_info.stage = SDL_GPU_SHADERSTAGE_FRAGMENT;
-    shader_info.num_storage_buffers = 4;
+    shader_info.num_storage_buffers = 5;
     shader_info.num_uniform_buffers = 1;
     SDL_GPUShader *frag = SDL_CreateGPUShader(video->device, &shader_info);
     if (!frag) {
@@ -175,16 +189,18 @@ bool PcGxVideo_Init(PcVideo *video) {
     renderer.backgrounds = SDL_CreateGPUBuffer(video->device, &buffer_info);
     buffer_info.size = 256 * 192 * sizeof(PcGxRearPixel);
     renderer.rearPlane = SDL_CreateGPUBuffer(video->device, &buffer_info);
+    buffer_info.size = sizeof(PcGxWideCapture);
+    renderer.wideCapture = SDL_CreateGPUBuffer(video->device, &buffer_info);
     SDL_GPUTransferBufferCreateInfo transfer_info = { .usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
                                                       .size = sizeof(PcGx.vertices) + sizeof(PcGx.textures) +
                                                               sizeof(PcGx.palettes) + 2 * sizeof(PcGxBackgroundState) +
-                                                              sizeof(rearVertices) +
-                                                              256 * 192 * sizeof(PcGxRearPixel) };
+                                                              sizeof(rearVertices) + 256 * 192 * sizeof(PcGxRearPixel) +
+                                                              sizeof(PcGxWideCapture) };
     renderer.upload = SDL_CreateGPUTransferBuffer(video->device, &transfer_info);
     renderer.video = video;
     PcGx_SetCaptureCallback(CaptureScreen);
     return renderer.vertices && renderer.textures && renderer.palettes && renderer.backgrounds && renderer.rearPlane &&
-           renderer.upload && PcDexSkin_Init(video);
+           renderer.wideCapture && renderer.upload && PcDexSkin_Init(video);
 }
 void PcGxVideo_Destroy(PcVideo *video) {
     PcGx_SetCaptureCallback(NULL);
@@ -211,6 +227,8 @@ void PcGxVideo_Destroy(PcVideo *video) {
         SDL_ReleaseGPUBuffer(video->device, renderer.backgrounds);
     if (renderer.rearPlane)
         SDL_ReleaseGPUBuffer(video->device, renderer.rearPlane);
+    if (renderer.wideCapture)
+        SDL_ReleaseGPUBuffer(video->device, renderer.wideCapture);
     if (renderer.upload)
         SDL_ReleaseGPUTransferBuffer(video->device, renderer.upload);
     if (renderer.color)
@@ -223,6 +241,10 @@ void PcGxVideo_Destroy(PcVideo *video) {
         SDL_ReleaseGPUTexture(video->device, renderer.captureDepth);
     if (renderer.captureDownload)
         SDL_ReleaseGPUTransferBuffer(video->device, renderer.captureDownload);
+    if (renderer.captureWideColor)
+        SDL_ReleaseGPUTexture(video->device, renderer.captureWideColor);
+    if (renderer.captureWideDownload)
+        SDL_ReleaseGPUTransferBuffer(video->device, renderer.captureWideDownload);
     SDL_zero(renderer);
 }
 static bool Resize(PcVideo *video, Uint32 width, Uint32 height) {
@@ -326,7 +348,9 @@ bool PcGxVideo_Present(PcVideo *video, bool *presented) {
         SDL_memcpy(backgrounds[i].oam, PcGx2D[i].oam, sizeof(backgrounds[i].oam));
         backgrounds[i].display = i ? PcGxSubDisplay : PcGxMainDisplay;
     }
-    PcGx_ReadRearPlane((PcGxRearPixel *)(void *)(backgrounds + 2));
+    PcGxRearPixel *rearPlane = (void *)(backgrounds + 2);
+    PcGx_ReadRearPlane(rearPlane);
+    SDL_memcpy(rearPlane + 256 * 192, PcGxWideCapture, sizeof(PcGxWideCapture));
     SDL_UnmapGPUTransferBuffer(video->device, renderer.upload);
     SDL_GPUCopyPass *copy = SDL_BeginGPUCopyPass(commands);
     SDL_GPUTransferBufferLocation source = { .transfer_buffer = renderer.upload };
@@ -348,6 +372,10 @@ bool PcGxVideo_Present(PcVideo *video, bool *presented) {
     source.offset += dest.size;
     dest.buffer = renderer.rearPlane;
     dest.size = 256 * 192 * sizeof(PcGxRearPixel);
+    SDL_UploadToGPUBuffer(copy, &source, &dest, true);
+    source.offset += dest.size;
+    dest.buffer = renderer.wideCapture;
+    dest.size = sizeof(PcGxWideCapture);
     SDL_UploadToGPUBuffer(copy, &source, &dest, true);
     SDL_EndGPUCopyPass(copy);
     PcViewport fitted = PcSettings_Viewport(width, height);
@@ -371,6 +399,13 @@ bool PcGxVideo_Present(PcVideo *video, bool *presented) {
                                      .load_op = skinDrawn ? SDL_GPU_LOADOP_LOAD : SDL_GPU_LOADOP_CLEAR,
                                      .store_op = samples ? SDL_GPU_STOREOP_RESOLVE : SDL_GPU_STOREOP_STORE,
                                      .cycle = !skinDrawn };
+    u32 brightness = PcGxRegisters[0].words[27];
+    if ((brightness >> 14) == 1) {
+        float white = SDL_min(brightness & 31u, 16u) / 16.0f;
+        color.clear_color.r = white;
+        color.clear_color.g = white;
+        color.clear_color.b = white;
+    }
     // Keep depth stored across the multisample-to-UI pass switch; discarding depth at the switch
     // produces depth-target faults on the tested NVIDIA Vulkan driver.
     SDL_GPUDepthStencilTargetInfo depth = { .texture = samples ? renderer.msDepth : renderer.depth,
@@ -391,8 +426,9 @@ bool PcGxVideo_Present(PcVideo *video, bool *presented) {
         SDL_SetGPUViewport(pass, &viewport);
     SDL_GPUBufferBinding binding = { .buffer = renderer.vertices };
     SDL_BindGPUVertexBuffers(pass, 0, &binding, 1);
-    SDL_GPUBuffer *storage[] = { renderer.textures, renderer.palettes, renderer.backgrounds, renderer.rearPlane };
-    SDL_BindGPUFragmentStorageBuffers(pass, 0, storage, 4);
+    SDL_GPUBuffer *storage[] = { renderer.textures, renderer.palettes, renderer.backgrounds, renderer.rearPlane,
+                                 renderer.wideCapture };
+    SDL_BindGPUFragmentStorageBuffers(pass, 0, storage, 5);
     Uint32 captureMode = 0;
     SetViewport(commands, pass, &viewport, captureMode, false);
     SDL_GPUViewport scene_viewport = viewport;
@@ -426,7 +462,7 @@ bool PcGxVideo_Present(PcVideo *video, bool *presented) {
             pass = SDL_BeginGPURenderPass(commands, &color, 1, &depth);
             SDL_SetGPUViewport(pass, &viewport);
             SDL_BindGPUVertexBuffers(pass, 0, &binding, 1);
-            SDL_BindGPUFragmentStorageBuffers(pass, 0, storage, 4);
+            SDL_BindGPUFragmentStorageBuffers(pass, 0, storage, 5);
             SetViewport(commands, pass, &viewport, captureMode, false);
         }
         if (layer == 1 && PcGx.composite_scene && (PcGxMainDisplay & 0x108) == 0x108 && fitted.width && fitted.height) {
@@ -498,6 +534,9 @@ static void CaptureScreen(u32 control) {
     PcVideo *video = renderer.video;
     if (!video || !renderer.batchCount)
         return;
+    bool wideFieldCapture = ((control >> 16) & 3u) == 3u && !(control & (1u << 24)) && PcGx.wide_scene;
+    if (((control >> 16) & 3u) == 3u)
+        PcGxWideCaptureValid = FALSE;
     if (!renderer.captureColor) {
         SDL_GPUTextureCreateInfo info = { .type = SDL_GPU_TEXTURETYPE_2D,
                                           .format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
@@ -515,11 +554,40 @@ static void CaptureScreen(u32 control) {
                                                      .size = 256 * 192 * 4 };
         renderer.captureDownload = SDL_CreateGPUTransferBuffer(video->device, &download);
     }
-    if (!renderer.captureColor || !renderer.captureDepth || !renderer.captureDownload)
+    if (wideFieldCapture && !renderer.captureWideColor) {
+        SDL_GPUTextureCreateInfo info = { .type = SDL_GPU_TEXTURETYPE_2D,
+                                          .format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
+                                          .usage = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET,
+                                          .width = PC_CANVAS_WIDTH,
+                                          .height = PC_CANVAS_HEIGHT,
+                                          .layer_count_or_depth = 1,
+                                          .num_levels = 1,
+                                          .sample_count = SDL_GPU_SAMPLECOUNT_1 };
+        renderer.captureWideColor = SDL_CreateGPUTexture(video->device, &info);
+        SDL_GPUTransferBufferCreateInfo download = { .usage = SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD,
+                                                     .size = sizeof(PcGxWideCapture) };
+        renderer.captureWideDownload = SDL_CreateGPUTransferBuffer(video->device, &download);
+    }
+    if (!renderer.captureColor || !renderer.captureDepth || !renderer.captureDownload ||
+        (wideFieldCapture && (!renderer.captureWideColor || !renderer.captureWideDownload)))
         goto fail;
     SDL_GPUCommandBuffer *commands = SDL_AcquireGPUCommandBuffer(video->device);
     if (!commands)
         goto fail;
+    if (wideFieldCapture) {
+        PcViewport fitted = PcSettings_Viewport(renderer.width, renderer.height);
+        SDL_GPUBlitInfo blit = {
+            .source = { .texture = renderer.color,
+                        .x = fitted.x,
+                        .y = fitted.y,
+                        .w = fitted.width,
+                        .h = fitted.height },
+            .destination = { .texture = renderer.captureWideColor, .w = PC_CANVAS_WIDTH, .h = PC_CANVAS_HEIGHT },
+            .load_op = SDL_GPU_LOADOP_DONT_CARE,
+            .filter = SDL_GPU_FILTER_LINEAR
+        };
+        SDL_BlitGPUTexture(commands, &blit);
+    }
     SDL_GPUColorTargetInfo color = { .texture = renderer.captureColor,
                                      .clear_color = { 0, 0, 0, 1 },
                                      .load_op = SDL_GPU_LOADOP_CLEAR,
@@ -533,8 +601,9 @@ static void CaptureScreen(u32 control) {
     SDL_GPURenderPass *pass = SDL_BeginGPURenderPass(commands, &color, 1, &depth);
     SDL_GPUBufferBinding binding = { .buffer = renderer.vertices };
     SDL_BindGPUVertexBuffers(pass, 0, &binding, 1);
-    SDL_GPUBuffer *storage[] = { renderer.textures, renderer.palettes, renderer.backgrounds, renderer.rearPlane };
-    SDL_BindGPUFragmentStorageBuffers(pass, 0, storage, 4);
+    SDL_GPUBuffer *storage[] = { renderer.textures, renderer.palettes, renderer.backgrounds, renderer.rearPlane,
+                                 renderer.wideCapture };
+    SDL_BindGPUFragmentStorageBuffers(pass, 0, storage, 5);
     Uint32 mode = (control & (1u << 24)) ? 2 : 1;
 
     for (Uint32 i = 0; i < renderer.batchCount; i++) {
@@ -554,6 +623,13 @@ static void CaptureScreen(u32 control) {
     SDL_GPUTextureRegion source = { .texture = renderer.captureColor, .w = 256, .h = 192, .d = 1 };
     SDL_GPUTextureTransferInfo destination = { .transfer_buffer = renderer.captureDownload };
     SDL_DownloadFromGPUTexture(copy, &source, &destination);
+    if (wideFieldCapture) {
+        source.texture = renderer.captureWideColor;
+        source.w = PC_CANVAS_WIDTH;
+        source.h = PC_CANVAS_HEIGHT;
+        destination.transfer_buffer = renderer.captureWideDownload;
+        SDL_DownloadFromGPUTexture(copy, &source, &destination);
+    }
     SDL_EndGPUCopyPass(copy);
     SDL_GPUFence *fence = SDL_SubmitGPUCommandBufferAndAcquireFence(commands);
     bool ok = fence && SDL_WaitForGPUFences(video->device, true, &fence, 1);
@@ -572,6 +648,17 @@ static void CaptureScreen(u32 control) {
             }
             PcGxCapturedBanks |= 1u << bank;
             SDL_UnmapGPUTransferBuffer(video->device, renderer.captureDownload);
+        }
+        if (ok && wideFieldCapture) {
+            const u8 *widePixels = SDL_MapGPUTransferBuffer(video->device, renderer.captureWideDownload, false);
+            ok = widePixels != NULL;
+            if (widePixels) {
+                for (u32 i = 0; i < PC_CANVAS_WIDTH * PC_CANVAS_HEIGHT; i++)
+                    PcGxWideCapture[i] =
+                        (u32)widePixels[i * 4] | ((u32)widePixels[i * 4 + 1] << 8) | ((u32)widePixels[i * 4 + 2] << 16);
+                SDL_UnmapGPUTransferBuffer(video->device, renderer.captureWideDownload);
+                PcGxWideCaptureValid = TRUE;
+            }
         }
     }
     if (fence)

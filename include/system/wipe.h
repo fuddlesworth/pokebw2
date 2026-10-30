@@ -63,6 +63,10 @@ void GFL_WipeMain(void);
 BOOL GFL_WipeIsFinished(void);
 // Ends the wipe at once
 void GFL_WipeForceEnd(void);
+#ifdef POKEBW2_PC
+// The host uses the original wipe's game-frame timing to mask the full canvas.
+BOOL GFL_WipeGetHostState(int *type, float *progress);
+#endif
 void Wipe_HideWindows(int screen);
 void killBrightnessEitherEngine(int screen);
 // Covers a screen or both with the master brightness, white for WIPE_COLOR_WHITE and black otherwise

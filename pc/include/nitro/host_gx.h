@@ -20,6 +20,7 @@ void PcGx_SetCaptureCallback(PcGxCaptureCallback callback);
 void PcGx_Capture(void);
 extern u8 PcGxLcdc[0xa4000];
 extern u32 PcGxCapturedBanks;
+extern BOOL PcGxWideCaptureValid;
 u32 PcGx_GetPolygonCount(void);
 u32 PcGx_GetVertexCount(void);
 void PcGx_ReadClipMatrix(void *dest);

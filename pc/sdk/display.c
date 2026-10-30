@@ -4,6 +4,11 @@
 static GXVRamBG bankBG;
 static GXVRamTex bankTex;
 
+bool PcGx_WideCaptureActive(void) {
+    return PcGxWideCaptureValid && (PcGxCapturedBanks & GX_VRAM_D) && bankBG == GX_VRAM_BG_128_D &&
+           (PcGxMainDisplay & (1u << 10));
+}
+
 static void CopyCapturedBanks(u8 *mapped, u32 banks, bool toMapped) {
     u32 offset = 0;
     for (u32 bank = 0; bank < 4; bank++) {

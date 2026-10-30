@@ -88,11 +88,28 @@ static const WipeFunc WIPE_FUNCTIONS[] = {
 };
 
 static WipeSys sWipe;
+#ifdef POKEBW2_PC
+static u32 sHostWipeFrames;
+
+BOOL GFL_WipeGetHostState(int *type, float *progress) {
+    if (!sWipe.active || !sWipe.control.mainOn || sWipe.main.type < 2 || sWipe.main.type > 11)
+        return FALSE;
+    *type = sWipe.main.type;
+    u32 duration = sWipe.main.division * sWipe.main.sync;
+    *progress = duration ? (float)sHostWipeFrames / duration : 1.0f;
+    if (*progress > 1.0f)
+        *progress = 1.0f;
+    return TRUE;
+}
+#endif
 
 void GFL_WipeSet(int mode, int typeMain, int typeSub, u16 color, s32 division, s32 sync, u32 heapId) {
     WipeSys *sys;
 
     sync /= GFL_FadeGetUpdateFreq();
+#ifdef POKEBW2_PC
+    sHostWipeFrames = 0;
+#endif
     sys = &sWipe;
 
     Wipe_Clear(sys);
@@ -120,6 +137,9 @@ void GFL_WipeMain(void) {
     WipeSys *sys = &sWipe;
 
     if (sWipe.active) {
+#ifdef POKEBW2_PC
+        sHostWipeFrames++;
+#endif
         if (Wipe_Update(sys, &sys->main, &sys->sub) == TRUE) {
             Wipe_End(sys);
         }

@@ -8,19 +8,19 @@
 #include "app/game_start.h"
 #include "app/name_entry.h"
 #include "app/pms_select.h"
+#include "app/pokedex.h"
+#include "app/pokedex_list.h"
+#include "app/pokedex_registration.h"
 #include "app/pokelist.h"
 #include "app/psel.h"
 #include "app/start_menu.h"
 #include "app/title.h"
 #include "app/townmap.h"
-#include "app/pokedex.h"
-#include "app/pokedex_list.h"
-#include "app/pokedex_registration.h"
 #include "audio.h"
 #include "battle/battle_proc.h"
 #include "battle_ui.h"
-#include "demo/intro.h"
 #include "demo/evolution_demo.h"
+#include "demo/intro.h"
 #include "dex_ui.h"
 #include "field/event_season_banner.h"
 #include "field/field.h"
@@ -64,6 +64,7 @@
 #include "system/wipe.h"
 #include "timing.h"
 #include "ui_components.h"
+#include "ui_draw.h"
 #include <SDL3/SDL.h>
 
 static GameProcManager *manager;
@@ -228,6 +229,22 @@ void PcBoot_Draw(void) {
     if (battleScene) {
         PcGx.scene_viewport = (PcViewport){ 0, 0, PC_CANVAS_WIDTH, 138 };
         // BG0 is the arena. Messages and gauges are composed from their original live state below.
+    } else if (fieldScene && PcGx_WideCaptureActive()) {
+        PcGx_DrawBackgroundLayers(0, scene, 256, 192, 15 & ~(1u << 2));
+        u32 first = PcGx.vertex_count;
+        PcGx_DrawBackgroundLayers(0, (PcViewport){ 0, 0, PC_CANVAS_WIDTH, PC_CANVAS_HEIGHT }, PC_CANVAS_WIDTH,
+                                  PC_CANVAS_HEIGHT, 1u << 2);
+        u32 blend = PcGxRegisters[0].words[20];
+        if ((blend & (REG_G2_BLDCNT_EFFECT_MASK | GX_BLEND_PLANEMASK_BG2)) ==
+            (REG_G2_BLDCNT_EFFECT_ALPHA | GX_BLEND_PLANEMASK_BG2)) {
+            float alpha = SDL_min((blend >> 16) & 31u, 16u) / 16.0f;
+            for (u32 i = first; i < PcGx.vertex_count; i++)
+                PcGx.vertices[i].color[3] = alpha;
+        }
+        for (u32 i = first; i < PcGx.vertex_count; i++) {
+            PcGx.vertices[i].polygon |= PC_GX_POLYGON_WIDE_CAPTURE;
+            PcGx.vertices[i].clip[2] = -0.99f;
+        }
     } else if (fieldScene && Fld3DCi_IsNativeSceneActive()) {
         PcGx_DrawBackgroundLayers(0, (PcViewport){ 0, 0, PC_CANVAS_WIDTH, PC_CANVAS_HEIGHT }, 256, 192, 15);
     } else if (fieldScene)
@@ -282,6 +299,14 @@ void PcBoot_Draw(void) {
         SDL_Log("Pokédex first frame: %.1f ms, %llu game ticks", (SDL_GetTicksNS() - dexOpenTime) / 1000000.0,
                 (unsigned long long)(ticks - dexOpenTick));
         dexOpenTime = 0;
+    }
+    int wipeType;
+    float wipeProgress;
+    if (fieldScene && GFL_WipeGetHostState(&wipeType, &wipeProgress)) {
+        u32 first = PcGx.vertex_count;
+        PcUi_Quad(0, 0, PC_UI_WIDTH, PC_UI_HEIGHT, -0.99f, 0, 0, 0, 0, 0, 0, 1, 1);
+        for (u32 i = first; i < PcGx.vertex_count; i++)
+            PcGx.vertices[i].polygon |= PC_GX_POLYGON_WIPE;
     }
 }
 u64 OS_GetTick(void) {

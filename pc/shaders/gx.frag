@@ -15,11 +15,20 @@ struct BackgroundState {
 layout(set=2,binding=2,std430) readonly buffer BackgroundMemory { BackgroundState backgrounds[2]; };
 struct RearPixel { uint color; float depth; };
 layout(set=2,binding=3,std430) readonly buffer RearPlaneMemory { RearPixel rearPixels[]; };
+layout(set=2,binding=4,std430) readonly buffer WideCaptureMemory { uint widePixels[]; };
 layout(location=0) in vec2 texcoord;
 layout(location=1) in vec4 vertexColor;
 layout(location=2) flat in uvec3 attributes;
 layout(location=0) out vec4 outColor;
-layout(set=3, binding=0) uniform CaptureState { vec4 sceneRect; vec4 sceneDepth; uint captureMode; uint spriteFilter; };
+layout(set=3, binding=0) uniform CaptureState {
+    vec4 sceneRect;
+    vec4 sceneDepth;
+    uint captureMode;
+    uint spriteFilter;
+    uint wideCaptureActive;
+    uint wipeType;
+    float wipeProgress;
+};
 uint byteAt(uint address) { return (texels[(address & 524287u) >> 2] >> ((address & 3u) * 8u)) & 255u; }
 uint halfAt(uint address) { return byteAt(address) | (byteAt(address + 1u) << 8u); }
 vec3 rgb(uint value) { return vec3(value & 31u, (value >> 5u) & 31u, (value >> 10u) & 31u) / 31.0; }
@@ -90,7 +99,21 @@ uint bgByte(uint engine, uint address) {
     return (backgrounds[engine].vram[address >> 2u] >> ((address & 3u) * 8u)) & 255u;
 }
 uint bgHalf(uint engine, uint address) { return bgByte(engine, address) | (bgByte(engine, address + 1u) << 8u); }
+vec4 wideCapturedBackground(vec2 uv) {
+    uint ab = backgrounds[0].registers[8], cd = backgrounds[0].registers[9];
+    int a = int(ab << 16u) >> 16, b = int(ab) >> 16;
+    int c = int(cd << 16u) >> 16, d = int(cd) >> 16;
+    int x = int(backgrounds[0].registers[10] << 4u) >> 4;
+    int y = int(backgrounds[0].registers[11] << 4u) >> 4;
+    vec2 ds = (uv - vec2(48, 0)) / 1.125;
+    vec2 source = vec2(x + a * ds.x + b * ds.y, y + c * ds.x + d * ds.y) * (1.125 / 256.0) + vec2(48, 0);
+    ivec2 p = ivec2(floor(source));
+    if (p.x < 0 || p.y < 0 || p.x >= 384 || p.y >= 216) return vec4(0);
+    uint pixel = widePixels[p.y * 384 + p.x];
+    return vec4(vec3(pixel & 255u, (pixel >> 8u) & 255u, (pixel >> 16u) & 255u) / 255.0, vertexColor.a);
+}
 vec4 backgroundPixel(uint engine, uint layer) {
+    if (wideCaptureActive != 0u && engine == 0u && layer == 2u) return wideCapturedBackground(texcoord);
     if (layer == 4u) return vec4(rgb(backgrounds[engine].palette[0] & 65535u), 1);
     uint display = backgrounds[engine].display;
     uint control = (backgrounds[engine].registers[2u + layer / 2u] >> ((layer & 1u) * 16u)) & 65535u;
@@ -175,6 +198,21 @@ vec3 applyBrightness(vec3 color, uint engine, uint plane) {
 }
 void main() {
     uint param = attributes.x, poly = attributes.z, format = (param >> 26u) & 7u;
+    if ((poly & 10485760u) == 10485760u) {
+        float edge = clamp(wipeProgress, 0.0, 1.0);
+        bool covered = false;
+        if (wipeType == 2u || wipeType == 3u) covered = texcoord.y < (wipeType == 2u ? edge : 1.0 - edge);
+        if (wipeType == 4u || wipeType == 5u) covered = texcoord.y > (wipeType == 4u ? 1.0 - edge : edge);
+        if (wipeType == 6u || wipeType == 7u) covered = texcoord.x < (wipeType == 6u ? edge : 1.0 - edge);
+        if (wipeType == 10u || wipeType == 11u) covered = texcoord.x > (wipeType == 10u ? 1.0 - edge : edge);
+        if (wipeType == 8u || wipeType == 9u) {
+            vec2 offset = (texcoord - vec2(0.5)) * vec2(384, 216);
+            covered = length(offset) > (wipeType == 8u ? 1.0 - edge : edge) * 288.0;
+        }
+        if (!covered) discard;
+        outColor = vec4(0, 0, 0, 1);
+        return;
+    }
     if ((poly & 1073741824u) != 0u) {
         if (captureMode == 2u) discard;
         outColor = objectPixel(attributes.y, param, texcoord);

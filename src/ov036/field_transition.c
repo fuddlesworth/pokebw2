@@ -508,6 +508,7 @@ GameEventReturnCode EventGameTransition_RunDefaultFadeIn(GameEvent *event, u32 *
 #ifdef POKEBW2_PC
         // Bank D still holds the capture; clear it before remapping it as a background.
         MIi_CpuClearFast(0, PcGxLcdc + 0x60000, 0x20000);
+        PcGxWideCaptureValid = FALSE;
 #else
         MIi_CpuClearFast(0, (void *)0x6800000, 0x20000);
 #endif
