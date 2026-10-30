@@ -88,7 +88,7 @@ static void HandlerPosWish(BattleEventItem *item, BtlServerFlow *flow, u8 pos, s
     u8 wisherId;
     u8 targetId;
 
-    if (BattleEventVar_GetValue(2) == 0x1f && !BtlServerFlow_CheckMatchup(flow)) {
+    if (BattleEventVar_GetValue(BTL_EVAR_MON) == 0x1f && !BtlServerFlow_CheckMatchup(flow)) {
         if (work[0] == 0) {
             work[1] = GetTurnCounter(flow);
             work[0] = 1;
@@ -134,7 +134,7 @@ static void HandlerPosLunarDance(BattleEventItem *item, BtlServerFlow *flow, u8 
     BattleHandlerCureConditionParam *cure;
     BattleHandlerPPParam *pp;
 
-    monId = BattleEventVar_GetValue(2);
+    monId = BattleEventVar_GetValue(BTL_EVAR_MON);
     if (pos != BtlServerFlow_MonIDToPos(flow, monId)) {
         return;
     }
@@ -208,7 +208,7 @@ static void HandlerPosHealingWish(BattleEventItem *item, BtlServerFlow *flow, u8
     BattleHandlerRecoverHPParam *recover;
     BattleHandlerCureConditionParam *cure;
 
-    monId = BattleEventVar_GetValue(2);
+    monId = BattleEventVar_GetValue(BTL_EVAR_MON);
     if (pos != BtlServerFlow_MonIDToPos(flow, monId)) {
         return;
     }
@@ -262,7 +262,7 @@ static void HandlerPosFutureSight(BattleEventItem *item, BtlServerFlow *flow, u8
     BattleHandlerMessageParam *msg;
     BattleHandlerDelayMoveDamageParam *damage;
 
-    if (BattleEventVar_GetValue(2) == 0x1f && !BtlServerFlow_CheckMatchup(flow)) {
+    if (BattleEventVar_GetValue(BTL_EVAR_MON) == 0x1f && !BtlServerFlow_CheckMatchup(flow)) {
         turn = GetTurnCounter(flow);
         if (turn >= work[0]) {
             targetId = BtlServerFlow_PosToMonID(flow, pos);
@@ -298,7 +298,7 @@ static void HandlerPosBatonPass(BattleEventItem *item, BtlServerFlow *flow, u8 p
     u8 monId;
     BattleHandlerBatonPassParam *param;
 
-    monId = BattleEventVar_GetValue(2);
+    monId = BattleEventVar_GetValue(BTL_EVAR_MON);
     if (monId == BtlServerFlow_PosToMonID(flow, pos)) {
         param = BattleHandler_PushWork(flow, BTL_HANDLER_BATON_PASS, 0x1f);
         param->sourceMonIndex = work[0];

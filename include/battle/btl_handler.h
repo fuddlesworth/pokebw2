@@ -61,7 +61,8 @@ typedef struct {
     union {
         u32 raw;
         struct {
-            u32 unk0 : 1;
+            // Set when Magic Coat or Magic Bounce reflects the move back, which then keeps its targets
+            u32 reflected : 1;
             u32 unk1 : 31;
         };
     } flags;

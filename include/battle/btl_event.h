@@ -162,6 +162,126 @@ enum {
     BTL_EVENT_AFTER_MOVE = 0xa4,
 };
 
+// The keys of the event variables (BattleEventVar_SetValue and the others), each named after what the ServerEvent_
+// functions of btl_server_flow.c that set it put in it and what the handlers read from it or write to it. Mon IDs are
+// 0x1f for none. Left as numbers: 0x36 (CalcRecoil's bonus, which no handler touches), 0x3e (MoveExecuteStart's
+// result, 1 or 2 from Charge and Bide), 0x4d (DamageProcessEnd's, read by Shell Bell, Red Card and Eject Button), 0x50
+// (DecideMoveTarget's, never read), and the flags that mean something else in each event: 0x42 (whether a
+// semi-invulnerable target avoids the move, whether each hit of a multi-hit move is checked), 0x45 (a critical hit,
+// a doubled flinch chance) and 0x4b (ignoring the evasion stage, making the move typeless, ignoring an immunity)
+enum {
+    // An empty key and the start of a frame (BattleEventVar_Push), the stack's own
+    BTL_EVAR_NONE = 0x00,
+    BTL_EVAR_FRAME_START = 0x01,
+    // The mon the event is about, the move's user and its target
+    BTL_EVAR_MON = 0x02,
+    BTL_EVAR_ATTACKER = 0x03,
+    BTL_EVAR_DEFENDER = 0x04,
+    // How many targets follow, then each target's mon ID
+    BTL_EVAR_TARGET_COUNT = 0x05,
+    BTL_EVAR_TARGET_1 = 0x06,
+    BTL_EVAR_TARGET_2 = 0x07,
+    BTL_EVAR_TARGET_3 = 0x08,
+    BTL_EVAR_TARGET_4 = 0x09,
+    BTL_EVAR_TARGET_5 = 0x0a,
+    BTL_EVAR_TARGET_6 = 0x0b,
+    // The action started or ended (BATTLE_ACTION_*)
+    BTL_EVAR_ACTION = 0x0c,
+    // The position a delayed or called move aims at, and the one the calling move aimed at
+    BTL_EVAR_TARGET_POS = 0x0d,
+    BTL_EVAR_ORIGINAL_TARGET_POS = 0x0e,
+    BTL_EVAR_OLD_ABILITY = 0x0f,
+    BTL_EVAR_NEW_ABILITY = 0x10,
+    // 1, or 2 to act first in the priority bracket (Quick Claw, Custap Berry), 0 to act last (Stall, Lagging Tail)
+    BTL_EVAR_SPECIAL_PRIORITY = 0x11,
+    BTL_EVAR_MOVE = 0x12,
+    // The move whose animation plays instead (MoveExecuteStart), 0 for the move's own
+    BTL_EVAR_ANIM_MOVE = 0x13,
+    // The move that called the move (Metronome, Sleep Talk and the others), or the move itself
+    BTL_EVAR_ORIGINAL_MOVE = 0x14,
+    BTL_EVAR_DEFENDER_TYPE = 0x15,
+    BTL_EVAR_MOVE_TYPE = 0x16,
+    // The slot of the move whose PP is taken
+    BTL_EVAR_MOVE_INDEX = 0x17,
+    BTL_EVAR_MOVE_PRIORITY = 0x18,
+    // The serial of the stat changes of one move (ServerControl_NextSerial), so that a guard shows its message once
+    BTL_EVAR_STAT_CHANGE_SERIAL = 0x19,
+    BTL_EVAR_MOVE_CATEGORY = 0x1a,
+    // How the move picks its targets, the move data's target type
+    BTL_EVAR_TARGET_TYPE = 0x1b,
+    BTL_EVAR_USER_TYPE = 0x1c,
+    BTL_EVAR_CONDITION = 0x1d,
+    // A BattleCondition's raw value
+    BTL_EVAR_CONDITION_PARAM = 0x1e,
+    // A MoveStatChangeStat, and how many stages it changes by; also the PP taken and the HP drained
+    BTL_EVAR_STAT = 0x1f,
+    BTL_EVAR_AMOUNT = 0x20,
+    // The target's semi-invulnerable state (BattleMon_GetSemiInvulnFlag)
+    BTL_EVAR_SEMI_INVULN_STATE = 0x21,
+    // Why a move fails, 0 when it doesn't
+    BTL_EVAR_FAIL_CAUSE = 0x22,
+    // The turns an item adds to a weather move's
+    BTL_EVAR_WEATHER_TURNS = 0x24,
+    // The move's own flinch chance, and the chance of an effect: of a condition, a stat drop or a flinch
+    BTL_EVAR_MOVE_FLINCH_CHANCE = 0x25,
+    BTL_EVAR_CHANCE = 0x26,
+    BTL_EVAR_ACCURACY_STAGE = 0x27,
+    BTL_EVAR_EVASION_STAGE = 0x28,
+    BTL_EVAR_MAX_HITS = 0x29,
+    BTL_EVAR_HIT_COUNT = 0x2a,
+    BTL_EVAR_ACCURACY = 0x2b,
+    BTL_EVAR_CRITICAL_STAGE = 0x2c,
+    BTL_EVAR_ITEM = 0x2d,
+    // What made the item check whether it reacts (ServerControl_CheckItemReaction)
+    BTL_EVAR_ITEM_REACTION = 0x2e,
+    BTL_EVAR_SPEED = 0x2f,
+    BTL_EVAR_POWER = 0x30,
+    BTL_EVAR_POWER_RATIO = 0x31,
+    BTL_EVAR_DAMAGE = 0x32,
+    BTL_EVAR_ATTACK_POWER = 0x33,
+    BTL_EVAR_DEFENSE = 0x34,
+    // A fixed-point multiplier of the value the event calculates
+    BTL_EVAR_RATIO = 0x35,
+    // The damage of a move that does a fixed amount, 0 for the calculated damage
+    BTL_EVAR_FIXED_DAMAGE = 0x37,
+    BTL_EVAR_EFFECTIVENESS = 0x38,
+    BTL_EVAR_WEATHER = 0x39,
+    // What makes the target hang on with 1 HP, 0 for nothing
+    BTL_EVAR_ENDURE_CAUSE = 0x3a,
+    // The mon whose attack stat is used (Foul Play's target), 0x1f for the attacker
+    BTL_EVAR_ATTACK_STAT_MON = 0x3b,
+    // The defense stat a move's category picks, and how many times it is swapped for the other (Psyshock, Wonder
+    // Room): an odd count swaps it
+    BTL_EVAR_DEFENSE_STAT = 0x3c,
+    BTL_EVAR_DEFENSE_SWAP_COUNT = 0x3d,
+    // A BattleHandlerString for the handlers' message
+    BTL_EVAR_STRING = 0x3f,
+    // Set when the move has no effect on the target (ServerEvent_CheckNoEffect)
+    BTL_EVAR_NO_EFFECT_FLAG = 0x40,
+    // Set to make what the event checks fail, be blocked or be cancelled; CAN_USE_MOVE_ASLEEP's yes
+    BTL_EVAR_FAIL_FLAG = 0x41,
+    BTL_EVAR_SAME_TYPE_BONUS_FLAG = 0x44,
+    // Set when the move hit the target's substitute
+    BTL_EVAR_SUBSTITUTE_FLAG = 0x46,
+    // Set when the target blocks the move's added effects (Shield Dust)
+    BTL_EVAR_EFFECT_BLOCKED_FLAG = 0x47,
+    // Set to skip the event that follows (Sheer Force, ServerEvent_DamageProcessEndSub)
+    BTL_EVAR_SKIP_EVENT_FLAG = 0x48,
+    // Set to reverse the speed order (Trick Room)
+    BTL_EVAR_TRICK_ROOM_FLAG = 0x4a,
+    // Set to make the move's effectiveness normal whatever the types (ServerEvent_CheckTypeEffectiveness)
+    BTL_EVAR_FORCE_NORMAL_FLAG = 0x4c,
+    // Set when the move was reflected back by Magic Coat or Magic Bounce, which don't reflect it again
+    BTL_EVAR_REFLECTED_FLAG = 0x4e,
+    // Set when the handler showed why the charge failed, so that the move's fail message isn't shown (Sky Drop)
+    BTL_EVAR_FAIL_MESSAGE_FLAG = 0x4f,
+    // The event's own yes or no, which each ServerEvent_ function reads as it says
+    BTL_EVAR_FLAG = 0x51,
+    // A side effect's side and effect (ServerEvent_CheckSideEffectParam)
+    BTL_EVAR_SIDE = 0x52,
+    BTL_EVAR_SIDE_EFFECT = 0x53,
+};
+
 // Checks whether an item's handlers are skipped for the item being run: the checking item, the server flow, the
 // checked item's factor type, the event, and the checked item's sub ID and mon
 typedef BOOL (*BattleEventSkipCheckFn)(BattleEventItem *item, BtlServerFlow *flow, u32 factorType, u32 event, u16 subId,
