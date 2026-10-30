@@ -9,6 +9,7 @@
 #include "battle/btl_result.h"
 #include "battle/btl_setup.h"
 #include "constants/arc.h"
+#include "constants/battle.h"
 #include "constants/flags.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
@@ -353,11 +354,11 @@ static BtlSetup *EventPokewood_CreateFilmSetup(GameSystem *gsys, Field *field, H
         setup->unkE0 = 1;
     }
     GFL_HeapFree(buffer);
-    setup->studioMode = 1;
+    setup->studioMode = BTL_STUDIO_MODE_FILM;
     setup->unkDF = movie;
     grade = PokewoodSave_GetLevelOfPoints(PokewoodSave_GetLevelPoints(save));
-    setup->unk128 = sGradeTicks[grade].base + GFL_RandomLC(sGradeTicks[grade].range);
-    setup->unk129 = grade;
+    setup->audienceCount = sGradeTicks[grade].base + GFL_RandomLC(sGradeTicks[grade].range);
+    setup->studioGrade = grade;
     return setup;
 }
 
@@ -472,7 +473,7 @@ static BtlSetup *EventPokewood_CreateSetup(PokewoodMovieParam *param, GameSystem
 }
 
 static void EventPokewood_FreeSetup(BtlSetup *setup) {
-    if (setup->studioMode == 2) {
+    if (setup->studioMode == BTL_STUDIO_MODE_PLAYBACK) {
         GFL_HeapFree(setup->playerInfo[0]);
         BtlSetup_FreeForRecord(setup);
     }
@@ -515,7 +516,7 @@ static void EventPokewood_FreeTitleParam(PokewoodTitleParam *title) {
 static void EventPokewood_InitBriefingParam(PkwdBriefingParam *briefing, BtlSetup *setup, PlayerInfo *playerInfo,
                                             GameData *gameData) {
     briefing->movie = setup->unkDF;
-    briefing->audienceCount = setup->unk128;
+    briefing->audienceCount = setup->audienceCount;
     briefing->setup = setup;
     briefing->playerInfo = playerInfo;
     briefing->noSkip = setup->unkDD_7;
@@ -526,8 +527,8 @@ static void EventPokewood_InitResultParam(PkwdBriefingParam *result, BtlSetup *s
     result->saveControl = GameData_GetSaveControl(gameData);
     result->gameData = gameData;
     result->playerInfo = playerInfo;
-    result->audienceCount = setup->unk128;
-    result->audience = setup->unk12C;
+    result->audienceCount = setup->audienceCount;
+    result->audience = setup->audience;
     result->setup = setup;
     result->movie = setup->unkDF;
     result->noSkip = setup->unkDD_7;
@@ -581,7 +582,7 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
         (*state)++;
         break;
     case 5:
-        wk->setup->unk12C = param->briefing.audience;
+        wk->setup->audience = param->briefing.audience;
         if (param->briefing.skip != 0) {
             *state = 8;
         } else {

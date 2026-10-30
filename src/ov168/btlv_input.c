@@ -12,6 +12,7 @@
 #include "battle/btlv_mcss.h"
 #include "battle/btlv_scd.h"
 #include "constants/arc.h"
+#include "constants/battle.h"
 #include "constants/moves.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -1028,18 +1029,17 @@ void BtlvInput_SetScreen(BtlvInput *work, u32 screen, void *param) {
         BtlvInputScreenTask *task;
         const BtlvInputRecorderParam *recorder = param;
         StrBuf *strbuf = NULL;
-        // GetStudioMode is the battle's Pokestar Studios mode, 0 for none; mode 2 shows this screen without its
-        // count and animation
-        BOOL studioMode2 = FALSE;
+        // A Pokestar Studios movie's playback shows this screen without its count and animation
+        BOOL studioPlayback = FALSE;
         int i;
 
-        if (GetStudioMode(BtlvEffect_GetMainModule()) == 2) {
-            studioMode2 = TRUE;
+        if (GetStudioMode(BtlvEffect_GetMainModule()) == BTL_STUDIO_MODE_PLAYBACK) {
+            studioPlayback = TRUE;
         }
         for (i = 0; i < 3; i++) {
             work->buttonEnabled[i] = TRUE;
         }
-        if (!studioMode2) {
+        if (!studioPlayback) {
             BtlvInput_DrawRecorderCount(work, recorder);
         }
         switch (recorder->mode) {
@@ -1068,7 +1068,7 @@ void BtlvInput_SetScreen(BtlvInput *work, u32 screen, void *param) {
             BtlvInput_AddTask(work, GFL_TCBMgrAddTask(work->tcbMgr, BtlvInput_StandbyToMessageTask, task, 1),
                               BtlvInput_ScreenTaskEnd);
         } else {
-            if (!studioMode2) {
+            if (!studioPlayback) {
                 if (recorder->mode == 0) {
                     BtlvInput_StartSetLayers(work, 4, 0, 0x100, 2, 2, 2, 2);
                 } else {
@@ -1767,14 +1767,14 @@ static void BtlvInput_StandbyToMovesSlotTask(TCB *tcb, void *data) {
 // Standby to a message screen: the ball opens while the buttons rise, then the text is drawn
 static void BtlvInput_StandbyToMessageTask(TCB *tcb, void *data) {
     BtlvInputScreenTask *param = data;
-    BOOL studioMode2 = FALSE;
+    BOOL studioPlayback = FALSE;
 
-    if (GetStudioMode(BtlvEffect_GetMainModule()) == 2) {
-        studioMode2 = TRUE;
+    if (GetStudioMode(BtlvEffect_GetMainModule()) == BTL_STUDIO_MODE_PLAYBACK) {
+        studioPlayback = TRUE;
     }
     switch (param->seq) {
     case 0:
-        if (!studioMode2) {
+        if (!studioPlayback) {
             loadBGScrToVramByFileNoReserveNegAlign(param->work->arc, BtlvInput_FileId(0x16e, param->work), 4, 0, 0,
                                                    FALSE, param->work->heapId);
             loadBGScrToVramByFileNoReserveNegAlign(param->work->arc, BtlvInput_FileId(0x179, param->work), 5, 0, 0,
@@ -1797,7 +1797,7 @@ static void BtlvInput_StandbyToMessageTask(TCB *tcb, void *data) {
             BmpWin_FlushMap(param->work->msgWin);
             GFL_BGSysLoadScr(6);
             BmpWin_FlushChar(param->work->msgWin);
-            if (!studioMode2) {
+            if (!studioPlayback) {
                 BtlvInput_StartSetLayers(param->work, 4, param->x, param->y, 1, 1, 2, 0);
             }
             BtlvInput_EndTask(param->work, tcb);

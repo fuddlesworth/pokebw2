@@ -16,6 +16,12 @@
 // BtlSetup_SetCaptureDemo's
 #define BTL_TYPE_CAPTURE_DEMO 4
 
+// Pokéstar Studios modes, from GetStudioMode: no movie, a movie being filmed, whose choices the player makes, and the
+// playback of a filmed one, which shows the saved choices to an audience
+#define BTL_STUDIO_MODE_NONE 0
+#define BTL_STUDIO_MODE_FILM 1
+#define BTL_STUDIO_MODE_PLAYBACK 2
+
 // Type effectiveness, which multiplies the power by 0, 1/4, 1/2, 1, 2 or 4
 #define TYPE_EFFECTIVENESS_IMMUNE 0
 #define TYPE_EFFECTIVENESS_QUARTER 1

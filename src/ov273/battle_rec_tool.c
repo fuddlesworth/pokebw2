@@ -5,6 +5,7 @@
 #include "types.h"
 #include "battle/battle_rec_tool.h"
 #include "battle/btl_setup.h"
+#include "constants/battle.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
@@ -207,7 +208,7 @@ void BattleRecTool_StoreSetup(BtlSetup *setup) {
     PokewoodBlock *block;
 
     switch (setup->studioMode) {
-    case 0:
+    case BTL_STUDIO_MODE_NONE:
     default:
         body = &data_02140f64->body;
         BattleRecTool_StoreParties(setup, body);
@@ -215,8 +216,8 @@ void BattleRecTool_StoreSetup(BtlSetup *setup) {
         BattleRecTool_StoreRecData(setup, body);
         BattleRecTool_StoreSetupParams(setup, &body->setup);
         break;
-    case 1:
-    case 2:
+    case BTL_STUDIO_MODE_FILM:
+    case BTL_STUDIO_MODE_PLAYBACK:
         block = getPokewoodBlock();
         BattleRecTool_StorePokewoodParty(setup, block);
         BattleRecTool_StorePokewoodClients(setup, &block->client, 1, &block->trainerClass);
@@ -249,7 +250,7 @@ void BattleRecTool_LoadSetup(BtlSetup *setup, u32 mode, HeapID heapId) {
         BattleRecTool_LoadSetupParams(setup, &block->setup);
         BattleRecTool_LoadPokewoodInfo(setup, &block->info);
         BattleRecTool_LoadPokewoodExtra(setup, block);
-        setup->studioMode = 2;
+        setup->studioMode = BTL_STUDIO_MODE_PLAYBACK;
         break;
     }
 }
@@ -527,22 +528,22 @@ static void BattleRecTool_LoadPokewoodPartyCore(BattleRecParty *rec, PokeParty *
 static void BattleRecTool_StorePokewoodInfo(const BtlSetup *setup, PokewoodBattleInfo *info) {
     info->unkDF = setup->unkDF;
     info->unk124 = setup->studioEnding;
-    MI_CpuCopy8(setup->unk110, info->unk110, sizeof(info->unk110));
+    MI_CpuCopy8(setup->studioChoices, info->unk110, sizeof(info->unk110));
 }
 
 static void BattleRecTool_LoadPokewoodInfo(BtlSetup *setup, const PokewoodBattleInfo *info) {
     setup->unkDF = info->unkDF;
     setup->studioEnding = info->unk124;
-    MI_CpuCopy8(info->unk110, setup->unk110, sizeof(setup->unk110));
+    MI_CpuCopy8(info->unk110, setup->studioChoices, sizeof(setup->studioChoices));
 }
 
 static void BattleRecTool_StorePokewoodExtra(const BtlSetup *setup, PokewoodBlock *block) {
-    block->unk128 = setup->unk128;
+    block->unk128 = setup->audienceCount;
     block->unkE0 = setup->unkE0;
     block->unk130 = setup->studioScore;
 }
 
 static void BattleRecTool_LoadPokewoodExtra(BtlSetup *setup, const PokewoodBlock *block) {
-    setup->unk128 = block->unk128;
+    setup->audienceCount = block->unk128;
     setup->unkE0 = block->unkE0;
 }

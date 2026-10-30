@@ -136,12 +136,16 @@ struct BtlSetup {
     u8 unkFF;
     // Each client's remaining HP, in percent of its party's total
     u32 unk100[4];
-    u8 unk110[0x14];
+    // The choice made in each scene of a Pokéstar Studios movie, which its playback shows again
+    u8 studioChoices[0x14];
     // How a Pokéstar Studios movie ended, which picks its ending music
     u32 studioEnding;
-    u8 unk128;
-    u8 unk129;
-    u32 unk12C;
+    // The size of a Pokéstar Studios movie's audience, which event_pokewood.c draws from the grade
+    u8 audienceCount;
+    // The player's grade at the studio (PokewoodSave_GetLevelOfPoints)
+    u8 studioGrade;
+    // One bit per member of the audience still in it
+    u32 audience;
     // The Pokéstar Studios movie's score
     s32 studioScore;
     u32 unk134;

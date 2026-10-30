@@ -1555,7 +1555,7 @@ u8 GetBadgeCount(BtlMainModule *mainModule) {
 BOOL IsSwitchMode(BtlMainModule *mainModule) {
     if (BtlSetup_GetBattleType(mainModule) == BTL_TYPE_TRAINER &&
         BtlSetup_GetBattleStyle(mainModule) == BTL_STYLE_SINGLE && GetCommMode(mainModule) == 0 &&
-        GetStudioMode(mainModule) == 0 && Config_GetBattleStyle(mainModule->setup->config) == 0) {
+        GetStudioMode(mainModule) == BTL_STUDIO_MODE_NONE && Config_GetBattleStyle(mainModule->setup->config) == 0) {
         return TRUE;
     }
     return FALSE;
@@ -1660,7 +1660,7 @@ u32 GetRunMode(BtlMainModule *mainModule) {
     case BTL_TYPE_WILD:
         return 0;
     case BTL_TYPE_TRAINER:
-        if (GetStudioMode(mainModule) == 1) {
+        if (GetStudioMode(mainModule) == BTL_STUDIO_MODE_FILM) {
             return 2;
         }
         return 1;
@@ -1697,8 +1697,8 @@ void RegisterDexMon(BtlMainModule *mainModule, u8 clientId, BattleMon *mon) {
     u32 battleType = BtlSetup_GetBattleType(mainModule);
     u32 studioMode = GetStudioMode(mainModule);
 
-    if (mainModule->setup->noPokedexRegistration != 1 && battleType <= BTL_TYPE_TRAINER && studioMode == 0 &&
-        clientId != 0) {
+    if (mainModule->setup->noPokedexRegistration != 1 && battleType <= BTL_TYPE_TRAINER &&
+        studioMode == BTL_STUDIO_MODE_NONE && clientId != 0) {
         PokeDex_RegistPkm(mainModule->setup->pokedex, GetSrcData(mon));
     }
 }
@@ -3373,7 +3373,7 @@ void BtlMain_StorePartiesToSetup(BtlMainModule *mainModule) {
     u8 slot;
     BattleMon *mon;
 
-    if (mainModule->setup->fieldSituation.unk1b != 0 || GetStudioMode(mainModule) != 0) {
+    if (mainModule->setup->fieldSituation.unk1b != 0 || GetStudioMode(mainModule) != BTL_STUDIO_MODE_NONE) {
         return;
     }
     if (mainModule->setup->battleType <= BTL_TYPE_TRAINER) {
@@ -3668,7 +3668,7 @@ void BtlMain_LoadStudioData(BtlMainModule *mainModule, u8 movie) {
     func_ov167_0219e3c8(mainModule->studioRules);
     mainModule->studioWork->aiMoveIndex = 0xff;
     mainModule->cutin = PokewoodCutin_Create(HEAPID_BATTLE);
-    if (GetStudioMode(mainModule) == 2) {
+    if (GetStudioMode(mainModule) == BTL_STUDIO_MODE_PLAYBACK) {
         SkipExitBGMFadeOut(mainModule);
     }
 }
