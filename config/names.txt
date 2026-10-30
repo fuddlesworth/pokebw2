@@ -7921,6 +7921,9 @@ overlays/ov011 0x02187754 PADDING
 overlays/ov011 0x02187d6c GPConnectionManagerHostname
 overlays/ov011 0x02187dac sCharacters
 overlays/ov011 0x021889d4 sSearchManagerHostname
+overlays/ov011 0x02188f5c enc
+overlays/ov011 0x02188f84 enc1
+overlays/ov011 0x02188f94 enc3
 overlays/ov011 0x02188fe4 StatsServerHostname
 overlays/ov011 0x021890b0 GT2ChallengeKey
 overlays/ov011 0x02189204 natType
@@ -8022,6 +8025,7 @@ overlays/ov011 0x02190968 gTopScreen
 overlays/ov011 0x02190f68 text
 overlays/ov011 0x02191768 sCount
 overlays/ov011 0x02191770 g_buckets
+overlays/ov011 0x02191780 gameport
 overlays/ov011 0x021917bc gcd_gamename
 overlays/ov011 0x021918bc gcd_secret_key
 overlays/ov011 0x02191bbc nIndex

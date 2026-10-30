@@ -2434,9 +2434,9 @@ data_ov011_02188ee4 kind:data(any) addr:0x02188ee4
 data_ov011_02188f1c kind:data(any) addr:0x02188f1c
 data_ov011_02188f34 kind:data(any) addr:0x02188f34
 data_ov011_02188f4c kind:data(any) addr:0x02188f4c
-data_ov011_02188f5c kind:data(any) addr:0x02188f5c
-data_ov011_02188f84 kind:data(any) addr:0x02188f84
-data_ov011_02188f94 kind:data(any) addr:0x02188f94
+enc kind:data(any) addr:0x02188f5c
+enc1 kind:data(any) addr:0x02188f84
+enc3 kind:data(any) addr:0x02188f94
 StatsServerHostname kind:data(any) addr:0x02188fe4
 data_ov011_02189024 kind:data(any) addr:0x02189024
 data_ov011_02189028 kind:data(any) addr:0x02189028
@@ -2781,7 +2781,7 @@ sCount kind:bss addr:0x02191768
 g_buckets kind:bss addr:0x02191770
 data_ov011_02191774 kind:bss addr:0x02191774
 data_ov011_02191778 kind:bss addr:0x02191778
-data_ov011_02191780 kind:bss addr:0x02191780
+gameport kind:bss addr:0x02191780
 gcd_gamename kind:bss addr:0x021917bc
 gcd_secret_key kind:bss addr:0x021918bc
 data_ov011_021919bc kind:bss addr:0x021919bc
