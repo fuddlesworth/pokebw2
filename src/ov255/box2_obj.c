@@ -421,7 +421,8 @@ void Box2Obj_LoadTrayPokeIcons(Box2SysWork *syswk, u32 tray) {
     for (i = 0; i < BOX2_TRAY_POKE_MAX; i++) {
         if (BoxSaveAccessor_GetPkmParam(syswk->param->boxes, tray, i, PKM_PARAM_SPECIES_VALID, NULL) == 0) {
             syswk->app->pokeIconExist[i] = FALSE;
-        } else if (syswk->param->mode != 3 && syswk->tray == syswk->getTray && IsInPickedRange(syswk, i) == TRUE) {
+        } else if (syswk->param->mode != BOX2_MODE_MOVE_ITEMS && syswk->tray == syswk->getTray &&
+                   IsInPickedRange(syswk, i) == TRUE) {
             syswk->app->pokeIconExist[i] = FALSE;
         } else {
             pkm = Box2Main_GetBoxPkm(syswk, tray, i);
@@ -686,7 +687,8 @@ void Box2Obj_ScrollTrayIcons(Box2SysWork *syswk, s32 mv) {
             x = start;
             TransferIconChar(syswk->app, syswk->app->pokeIconChar[i], id, syswk->app->pokeIconPal[i]);
             Box2Obj_SetVisible(syswk->app, id, syswk->app->pokeIconExist[i]);
-            if (syswk->app->boxJumpOpen == 0 && (syswk->param->mode == 3 || syswk->param->mode == 5)) {
+            if (syswk->app->boxJumpOpen == 0 &&
+                (syswk->param->mode == BOX2_MODE_MOVE_ITEMS || syswk->param->mode == BOX2_MODE_DREAM_WORLD)) {
                 SetIconBlendChecked(syswk, i);
             }
         }
@@ -886,7 +888,7 @@ void Box2Obj_MoveHeldIcons(Box2SysWork *syswk) {
 
     if (syswk->pickState != BOX2_PICK_NONE) {
         Box2Obj_GetPos(syswk->app, BOX2_ACTOR_CURSOR, &x, &y, 0);
-        if (syswk->param->mode == 3) {
+        if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
             y += 8;
             Box2Obj_SetPos(syswk->app, BOX2_ACTOR_ITEM_ICON, x, y, 0);
         } else {
@@ -900,7 +902,7 @@ void Box2Obj_MoveHeldIcons(Box2SysWork *syswk) {
             }
             Box2Obj_PutRangeCount(syswk->app, x, y + 9);
         }
-        if (syswk->param->mode == 3) {
+        if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
             Box2Obj_MoveItemOutline(syswk->app);
         } else {
             if (syswk->app->actors[121] == NULL) {
@@ -1205,7 +1207,8 @@ static void CreateFixedActors(Box2SysWork *syswk) {
 void Box2Obj_SetToolButtons(Box2SysWork *syswk, unsigned int set, BOOL visible) {
     int i;
 
-    if (syswk->param->mode != 2 && syswk->param->mode != 4 && syswk->param->mode != 3) {
+    if (syswk->param->mode != BOX2_MODE_MOVE_POKEMON && syswk->param->mode != BOX2_MODE_BATTLE_BOX &&
+        syswk->param->mode != BOX2_MODE_MOVE_ITEMS) {
         for (i = 9; i <= 11; i++) {
             Box2Obj_SetVisible(syswk->app, i, FALSE);
         }
@@ -1214,7 +1217,7 @@ void Box2Obj_SetToolButtons(Box2SysWork *syswk, unsigned int set, BOOL visible) 
             Box2Obj_SetAnim(syswk->app, 9 + i, sButtonAnims[set - 9][i]);
             Box2Obj_SetVisible(syswk->app, 9 + i, visible);
         }
-        if (syswk->param->mode == 3) {
+        if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
             Box2Obj_SetVisible(syswk->app, 11, FALSE);
         }
     }
