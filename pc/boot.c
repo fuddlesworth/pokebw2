@@ -275,7 +275,6 @@ void PcBoot_Draw(void) {
         }
         for (u32 i = first; i < PcGx.vertex_count; i++) {
             PcGx.vertices[i].polygon |= PC_GX_POLYGON_WIDE_CAPTURE;
-            PcGx.vertices[i].clip[2] = -0.99f;
         }
     } else if (fieldScene && Fld3DCi_IsNativeSceneActive()) {
         PcGx_DrawBackgroundLayers(0, (PcViewport){ 0, 0, PC_CANVAS_WIDTH, PC_CANVAS_HEIGHT }, 256, 192, 15);
