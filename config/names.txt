@@ -19557,6 +19557,8 @@ overlays/ov167 0x021ac114 BtlServerFlow_SetFrame
 overlays/ov167 0x021ac450 BtlServerFlow_GetHandlerResult
 overlays/ov167 0x021ac7ac BattleHandler_UseItemAnim
 overlays/ov167 0x021ad564 BattleHandler_AddPosEffect
+overlays/ov167 0x021ae30c BtlServerFlow_UsesDamageRoll
+overlays/ov167 0x021ae320 BtlServerFlow_GetScriptedRulesOutcome
 overlays/ov167 0x021ae32c CollectMoveTargets
 overlays/ov167 0x021ae430 CollectTargetsSingle
 overlays/ov167 0x021ae55c GetCurseTargetPos
@@ -20535,6 +20537,7 @@ overlays/ov167 0x021d6c6c sCommRotationSetupSteps
 overlays/ov167 0x021d6c88 sCommTripleSetupSteps
 overlays/ov167 0x021d6ca4 sAdjacentOpponentData
 overlays/ov167 0x021d6ce0 BATTLE_PROC_FUNCTIONS
+overlays/ov167 0x021d6cec sPledgeMoves
 overlays/ov167 0x021d7070 sCmdProcTable
 overlays/ov167 0x021d7490 sSemiInvulnFlags
 overlays/ov167 0x021d7624 sHandlersStall
@@ -21097,7 +21100,7 @@ overlays/ov167 0x021dab24 sCommands
 overlays/ov167 0x021dab50 sNudgeFuncs
 overlays/ov167 0x021dab80 sCutins
 overlays/ov167 0x021db000 sHitCritical
-overlays/ov167 0x021db003 sHitUnk9
+overlays/ov167 0x021db003 sHitEndureCauses
 overlays/ov167 0x021db006 sHitDamages
 overlays/ov167 0x021db00c sHitMons
 overlays/ov167 0x021db018 sHitEffectiveness

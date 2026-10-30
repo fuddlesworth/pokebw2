@@ -133,7 +133,7 @@ void CommonMoveProtectedMessage(BattleEventItem *item, BtlServerFlow *flow, u8 m
     BattleHandlerMessageParam *param;
 
     if (monId == BattleEventVar_GetValue(2) && !IsSemiInvulnMove(GetBattleMon(flow, monId))) {
-        param = BattleHandler_PushWork(flow, 4, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&param->string, 2, 0x2fc);
         BattleHandler_AddArg(&param->string, monId);
         BattleHandler_AddArg(&param->string, BattleEventVar_GetValue(0x12));

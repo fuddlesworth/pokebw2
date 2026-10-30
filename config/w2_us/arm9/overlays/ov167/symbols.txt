@@ -1279,8 +1279,8 @@ BattleHandler_RemoveMessageWindow kind:function(thumb,size=0x10) addr:0x021ae290
 BattleHandler_ChangeForm kind:function(thumb,size=0x7a) addr:0x021ae2a0
 BattleHandler_SetMoveEffectIndex kind:function(thumb,size=0x10) addr:0x021ae31c
 BattleHandler_SetMoveEffectEnable kind:function(thumb,size=0x20) addr:0x021ae32c
-func_ov167_021ae30c kind:function(thumb,size=0x14) addr:0x021ae34c
-func_ov167_021ae320 kind:function(thumb,size=0xc) addr:0x021ae360
+BtlServerFlow_UsesDamageRoll kind:function(thumb,size=0x14) addr:0x021ae34c
+BtlServerFlow_GetScriptedRulesOutcome kind:function(thumb,size=0xc) addr:0x021ae360
 CollectMoveTargets kind:function(thumb,size=0xd4) addr:0x021ae36c
 func_ov167_021ae400 kind:function(thumb,size=0x2) addr:0x021ae440
 func_ov167_021ae404 kind:function(arm,size=0xc) addr:0x021ae444
@@ -4230,7 +4230,7 @@ sCommRotationSetupSteps kind:data(any) addr:0x021d6cac
 sCommTripleSetupSteps kind:data(any) addr:0x021d6cc8
 sAdjacentOpponentData kind:data(any) addr:0x021d6ce4
 BATTLE_PROC_FUNCTIONS kind:data(any) addr:0x021d6d20 ambiguous
-data_ov167_021d6cec kind:data(any) addr:0x021d6d2c
+sPledgeMoves kind:data(any) addr:0x021d6d2c
 data_ov167_021d6cf4 kind:data(any) addr:0x021d6d34
 data_ov167_021d6cfc kind:data(any) addr:0x021d6d3c
 data_ov167_021d6d20 kind:data(any) addr:0x021d6d60
@@ -4887,7 +4887,7 @@ data_ov167_021dafc4 kind:data(any) addr:0x021db004
 data_ov167_021dafd4 kind:data(any) addr:0x021db014
 data_ov167_021dafe0 kind:data(any) addr:0x021db020
 sHitCritical kind:bss addr:0x021db040
-sHitUnk9 kind:bss addr:0x021db043
+sHitEndureCauses kind:bss addr:0x021db043
 sHitDamages kind:bss addr:0x021db046
 sHitMons kind:bss addr:0x021db04c
 sHitEffectiveness kind:bss addr:0x021db058

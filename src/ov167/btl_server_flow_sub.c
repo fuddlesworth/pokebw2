@@ -100,7 +100,7 @@ u8 CollectMoveTargets(BtlServerFlow *flow, BattleMon *mon, u8 target, BtlFlowMov
         redirect = ServerEvent_DecideMoveTarget(flow, mon, param);
     }
     BtlMonSet_Clear(targets);
-    flow->unk77F = 6;
+    flow->targetPos = 6;
     switch (style) {
     case BTL_STYLE_SINGLE:
     default:
@@ -119,7 +119,7 @@ u8 CollectMoveTargets(BtlServerFlow *flow, BattleMon *mon, u8 target, BtlFlowMov
     if (count == 1) {
         first = BtlMonSet_Get(targets, 0);
         if (first != NULL) {
-            flow->unk77F = BtlPosPoke_GetPosOfMon(&flow->posPoke, GetMonID(first));
+            flow->targetPos = BtlPosPoke_GetPosOfMon(&flow->posPoke, GetMonID(first));
         }
         if (!RetargetFromFaintedFoe(flow, style, mon, param, target, targets)) {
             count = 0;
@@ -765,7 +765,7 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
             place = 1;
         }
     }
-    if (flow->unk18 != 1) {
+    if (flow->commCompetitor != 1) {
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, 0x21, clientId, item, SC_MSG_ARG_END);
         if (ItemGetParam(item, 0xf) == 4) {
             if (ThrowBall(flow, mon, item)) {
@@ -803,7 +803,7 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, 0xc4, SC_MSG_ARG_END);
         return FALSE;
     }
-    if (flow->unk18 == 1) {
+    if (flow->commCompetitor == 1) {
         if (targetPos != 6) {
             BtlServerCmdQueue_Put(flow->queue, SC_EFFECT_BY_POS, targetPos, 0x282);
         }
@@ -841,7 +841,7 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
     if (used) {
         effectId = targetPos != 6 ? 0x25e : 0x292;
         BtlServerCmdQueue_PutReserved(flow->queue, reserve, SC_EFFECT_BY_POS, targetPos, effectId);
-        if (flow->unk18 != 1) {
+        if (flow->commCompetitor != 1) {
             BattleClient_SubItem(flow->mainModule, clientId, item);
             ChangeFriendshipByItem(flow->mainModule, target, item);
         }
@@ -880,8 +880,8 @@ static BOOL ThrowBall(BtlServerFlow *flow, BattleMon *mon, u16 item) {
         if (targetPos != 6) {
             caught = CheckBallCapture(flow, mon, target, item, &shakes, &critical);
             if (caught) {
-                flow->unk14 = 6;
-                flow->unk784 = targetPos;
+                flow->result = BTL_FLOW_RESULT_CAPTURE;
+                flow->capturePos = targetPos;
                 isNew = !IsMonCaught(flow->mainModule, target) ? TRUE : FALSE;
                 BattleMon_SetCaughtBall(target, item);
             } else {
@@ -1015,7 +1015,7 @@ static fx32 GetBallCaptureMod(BtlServerFlow *flow, BattleMon *mon, BattleMon *ta
         }
         break;
     case ITEM_TIMER_BALL: {
-        fx32 ratio = flow->unk10 * FX32_CONST(0.3) + FX32_ONE;
+        fx32 ratio = flow->turnCount * FX32_CONST(0.3) + FX32_ONE;
 
         if (ratio > FX32_CONST(4)) {
             ratio = FX32_CONST(4);
@@ -1035,7 +1035,7 @@ static fx32 GetBallCaptureMod(BtlServerFlow *flow, BattleMon *mon, BattleMon *ta
         break;
     }
     case ITEM_QUICK_BALL:
-        if (flow->unk10 == 0) {
+        if (flow->turnCount == 0) {
             return FX32_CONST(5);
         }
         break;
@@ -1108,7 +1108,7 @@ static BOOL BagItemGuardSpec(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
     side = GetSideFromMonID(GetMonID(mon));
     cont = SetConditionTurns(5);
     if (SideEffectEventAdd(side, 3, cont)) {
-        message = BattleHandler_PushWork(flow, 4, 0x1f);
+        message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, 0x1f);
         BattleHandler_StrSetup(&message->string, 1, 0x88);
         BattleHandler_AddArg(&message->string, side);
         BattleHandler_PopWork(flow, message);
@@ -1124,7 +1124,7 @@ static BOOL BagItemRevive(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 val
 
     if (IsFainted(mon)) {
         monId = GetMonID(mon);
-        revive = BattleHandler_PushWork(flow, 0x2c, monId);
+        revive = BattleHandler_PushWork(flow, BTL_HANDLER_REVIVE, monId);
         revive->monIndex = monId;
         switch (ItemGetParam(item, 0x3a)) {
         case 0xff:
@@ -1208,7 +1208,7 @@ static BOOL BagItemRestorePP(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
             amount = maxAmount;
         }
         if (amount != 0) {
-            pp = BattleHandler_PushWork(flow, 9, monId);
+            pp = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_PP, monId);
             pp->amount = amount;
             pp->monIndex = monId;
             pp->moveIndex = slot;
@@ -1244,7 +1244,7 @@ static BOOL BagItemRestoreAllPP(BtlServerFlow *flow, BattleMon *mon, u16 item, s
             amount = maxAmount;
         }
         if (amount != 0) {
-            pp = BattleHandler_PushWork(flow, 9, monId);
+            pp = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_PP, monId);
             pp->moveIndex = i;
             pp->monIndex = monId;
             pp->amount = amount;
@@ -1254,7 +1254,7 @@ static BOOL BagItemRestoreAllPP(BtlServerFlow *flow, BattleMon *mon, u16 item, s
         }
     }
     if (used) {
-        message = BattleHandler_PushWork(flow, 4, monId);
+        message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&message->string, 2, 0x189);
         BattleHandler_AddArg(&message->string, monId);
         BattleHandler_PopWork(flow, message);
@@ -1270,7 +1270,7 @@ static BOOL BagItemRestoreHP(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
 
     if (!IsMonFullHP(mon) && !IsFainted(mon)) {
         monId = GetMonID(mon);
-        recover = BattleHandler_PushWork(flow, 5, monId);
+        recover = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
         recover->targetIndex = monId;
         recover->skipCheck = TRUE;
         amount = ItemGetParam(item, 0x3a);
@@ -1303,7 +1303,7 @@ static BOOL BagItemCureCondition(BtlServerFlow *flow, BattleMon *mon, u16 item, 
 
     if (!IsFainted(mon) && CheckCondition(mon, condition)) {
         monId = GetMonID(mon);
-        param = BattleHandler_PushWork(flow, 0xb, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
         param->count = 1;
         param->monIds[0] = monId;
         param->condition = condition;
@@ -1331,7 +1331,7 @@ static BOOL BagItemCureMentalConditions(BtlServerFlow *flow, BattleMon *mon, u16
             }
             if (CheckCondition(mon, condition)) {
                 monId = GetMonID(mon);
-                work = BattleHandler_PushWork(flow, 0xb, monId);
+                work = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
                 work->count = 1;
                 work->monIds[0] = monId;
                 work->condition = condition;
@@ -1351,7 +1351,7 @@ static BOOL BagItemRaiseStat(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
 
     monId = GetMonID(mon);
     if (GetBattlePos(&flow->posPoke, monId) != 6 && !IsFainted(mon) && IsStatChangeValid(mon, stat, value)) {
-        param = BattleHandler_PushWork(flow, 0xe, monId);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         param->count = 1;
         param->monIds[0] = monId;
         param->stat = stat;
@@ -1407,7 +1407,7 @@ static BOOL BagItemItemDrop(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 v
     if (!IsItemUnremovable(flow, GetMonID(mon)) && (heldItem = GetBattleMonHeldItem(mon)) != 0) {
         state = PushState(&flow->actionState, 0x7ae);
         monId = GetMonID(mon);
-        setItem = BattleHandler_PushWork(flow, 0x20, monId);
+        setItem = BattleHandler_PushWork(flow, BTL_HANDLER_SET_ITEM, monId);
         setItem->targetIndex = monId;
         setItem->item = 0;
         BattleHandler_StrSetup(&setItem->string, 2, 0xe1);
@@ -1429,11 +1429,11 @@ static BOOL BagItemResetUrge(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
 
     state = PushState(&flow->actionState, 0x7c6);
     monId = GetMonID(mon);
-    reset = BattleHandler_PushWork(flow, 0x10, monId);
+    reset = BattleHandler_PushWork(flow, BTL_HANDLER_RESET_STAT_STAGE, monId);
     reset->count = 1;
     reset->monIndices[0] = monId;
     BattleHandler_PopWork(flow, reset);
-    message = BattleHandler_PushWork(flow, 4, monId);
+    message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
     BattleHandler_StrSetup(&message->string, 2, 0xe4);
     BattleHandler_AddArg(&message->string, monId);
     BattleHandler_PopWork(flow, message);
@@ -1515,7 +1515,7 @@ static s32 CheckRulesTurnLimit(BtlMainModule *mainModule, BOOL won) {
     BtlServerFlow *flow = GetServerFlow(mainModule);
     const BtlScriptedRules *rules = GetStudioRules(mainModule);
 
-    if (flow->unk10 >= rules->turnLimit && !won) {
+    if (flow->turnCount >= rules->turnLimit && !won) {
         return -2;
     }
     return 0;
@@ -1737,7 +1737,7 @@ u32 CalcBattleResult(BtlServerFlow *flow) {
         return JudgeByRemainingMons(flow, alive, total, side);
     }
     outcome = CheckScriptedBattleRules(flow->mainModule, flow->pokeCon);
-    flow->unk2130 = -outcome;
+    flow->scriptedRulesOutcome = -outcome;
     if (outcome > 0) {
         return BTL_RESULT_VICTORY;
     }

@@ -2317,7 +2317,7 @@ void SetRecPlayQuit(BtlMainModule *mainModule) {
 
 u32 GetScriptedRulesOutcome(BtlMainModule *mainModule) {
     if (mainModule != NULL) {
-        return func_ov167_021ae320(BattleServer_GetFlow(mainModule->server));
+        return BtlServerFlow_GetScriptedRulesOutcome(BattleServer_GetFlow(mainModule->server));
     }
     return 0;
 }
