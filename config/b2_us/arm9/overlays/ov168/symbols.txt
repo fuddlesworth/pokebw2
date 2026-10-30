@@ -634,9 +634,9 @@ GROUND_POSITIONS kind:data(any) addr:0x021f2f54
 data_ov168_021f2f58 kind:data(any) addr:0x021f2f58
 data_ov168_021f2f5c kind:data(any) addr:0x021f2f5c
 FIELD_PARAM_VARIANTS kind:data(any) addr:0x021f2f6c
-data_ov168_021f2f74 kind:data(any) addr:0x021f2f74
-data_ov168_021f2f80 kind:data(any) addr:0x021f2f80
-data_ov168_021f2f8c kind:data(any) addr:0x021f2f8c
+CAMERA_DEFAULT_TARGET kind:data(any) addr:0x021f2f74
+CAMERA_DEFAULT_POS kind:data(any) addr:0x021f2f80
+CAMERA_UP kind:data(any) addr:0x021f2f8c
 data_ov168_021f2f98 kind:data(any) addr:0x021f2f98
 data_ov168_021f2fa4 kind:data(any) addr:0x021f2fa4
 data_ov168_021f2fb0 kind:data(any) addr:0x021f2fb0
