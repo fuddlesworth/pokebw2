@@ -2734,7 +2734,7 @@ static void HandlerShellBell(BattleEventItem *item, BtlServerFlow *flow, u8 monI
     u32 amount;
     BattleHandlerRecoverHPParam *param;
 
-    if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId && BattleEventVar_GetValue(0x4d) == 0) {
+    if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId && BattleEventVar_GetValue(BTL_EVAR_DELAYED_FLAG) == 0) {
         damage = BattleEventVar_GetValue(BTL_EVAR_DAMAGE);
         if (damage != 0) {
             amount = damage / CommonGetItemParam(item, 2);
@@ -3907,8 +3907,9 @@ static void HandlerRedCard(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
     if (IsEventTargetMon(monId)) {
         attackerId = BattleEventVar_GetValue(BTL_EVAR_ATTACKER);
-        if (BtlServerFlow_GetMonBattlePos(flow, attackerId) != BTL_POS_NONE && BattleEventVar_GetValue(0x4d) == 0 &&
-            BtlServerFlow_HasReserveMon(flow, attackerId) && !BtlServerFlow_CheckMatchup(flow)) {
+        if (BtlServerFlow_GetMonBattlePos(flow, attackerId) != BTL_POS_NONE &&
+            BattleEventVar_GetValue(BTL_EVAR_DELAYED_FLAG) == 0 && BtlServerFlow_HasReserveMon(flow, attackerId) &&
+            !BtlServerFlow_CheckMatchup(flow)) {
             consumeParam = BattleHandler_PushWork(flow, BTL_HANDLER_CONSUME_ITEM, monId);
             BattleHandler_StrSetup(&consumeParam->string, 2, 0x1a1);
             BattleHandler_AddArg(&consumeParam->string, monId);
@@ -4030,9 +4031,9 @@ static const BattleEventHandlerEntry *EventAddEjectButton(u32 *priority) {
 }
 
 static void HandlerEjectButtonReaction(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (IsEventTargetMon(monId) && BattleEventVar_GetValue(0x4d) == 0 && !BtlServerFlow_IsInSkyDrop(flow, monId) &&
-        !BtlServerFlow_CheckMatchup(flow) && !IsMonSwitchingOut(flow) && BtlServerFlow_HasReserveMon(flow, monId) &&
-        ServerControl_TrySetOnceFlag(flow)) {
+    if (IsEventTargetMon(monId) && BattleEventVar_GetValue(BTL_EVAR_DELAYED_FLAG) == 0 &&
+        !BtlServerFlow_IsInSkyDrop(flow, monId) && !BtlServerFlow_CheckMatchup(flow) && !IsMonSwitchingOut(flow) &&
+        BtlServerFlow_HasReserveMon(flow, monId) && ServerControl_TrySetOnceFlag(flow)) {
         ItemEvent_PushRun(item, flow, monId);
     }
 }

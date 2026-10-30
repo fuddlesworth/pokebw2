@@ -165,10 +165,10 @@ enum {
 // The keys of the event variables (BattleEventVar_SetValue and the others), each named after what the ServerEvent_
 // functions of btl_server_flow.c that set it put in it and what the handlers read from it or write to it. Mon IDs are
 // 0x1f for none. Left as numbers: 0x36 (CalcRecoil's bonus, which no handler touches), 0x3e (MoveExecuteStart's
-// result, 1 or 2 from Charge and Bide), 0x4d (DamageProcessEnd's, read by Shell Bell, Red Card and Eject Button), 0x50
-// (DecideMoveTarget's, never read), and the flags that mean something else in each event: 0x42 (whether a
-// semi-invulnerable target avoids the move, whether each hit of a multi-hit move is checked), 0x45 (a critical hit,
-// a doubled flinch chance) and 0x4b (ignoring the evasion stage, making the move typeless, ignoring an immunity)
+// result, 1 or 2 from Charge and Bide), 0x50 (DecideMoveTarget's, never read), and the flags that mean something else
+// in each event: 0x42 (whether a semi-invulnerable target avoids the move, whether each hit of a multi-hit move is
+// checked), 0x45 (a critical hit, a doubled flinch chance) and 0x4b (ignoring the evasion stage, making the move
+// typeless, ignoring an immunity)
 enum {
     // An empty key and the start of a frame (BattleEventVar_Push), the stack's own
     BTL_EVAR_NONE = 0x00,
@@ -271,6 +271,9 @@ enum {
     BTL_EVAR_TRICK_ROOM_FLAG = 0x4a,
     // Set to make the move's effectiveness normal whatever the types (ServerEvent_CheckTypeEffectiveness)
     BTL_EVAR_FORCE_NORMAL_FLAG = 0x4c,
+    // Set for the damage of a delayed move (BattleHandler_DelayMoveDamage: Future Sight, Doom Desire), which Shell
+    // Bell, Red Card and Eject Button ignore
+    BTL_EVAR_DELAYED_FLAG = 0x4d,
     // Set when the move was reflected back by Magic Coat or Magic Bounce, which don't reflect it again
     BTL_EVAR_REFLECTED_FLAG = 0x4e,
     // Set when the handler showed why the charge failed, so that the move's fail message isn't shown (Sky Drop)

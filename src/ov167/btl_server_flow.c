@@ -2980,7 +2980,7 @@ void ServerControl_DecrementPPCore(BtlServerFlow *flow, BattleMon *mon, u8 moveI
 }
 
 void ServerControl_DamageMove(BtlServerFlow *flow, BtlFlowMoveParam *param, BattleMon *mon, BtlMonSet *targets,
-                              u32 *data, u32 arg5) {
+                              u32 *data, u32 delayed) {
     u32 reserved;
     u32 damage = 0;
     BOOL showEffect = FALSE;
@@ -2994,12 +2994,12 @@ void ServerControl_DamageMove(BtlServerFlow *flow, BtlFlowMoveParam *param, Batt
         if (BtlFlowHitWork_IsMultiHit(flow->hitWork) && BtlMonSet_GetCountMax(targets) == 1) {
             damage = ServerControl_DamageMultiHit(flow, param, mon, targets, data);
         } else {
-            damage = ServerControl_DamageAllTargets(flow, param, mon, targets, data, &reserved, arg5);
+            damage = ServerControl_DamageAllTargets(flow, param, mon, targets, data, &reserved, delayed);
             showEffect = TRUE;
         }
         ServerControl_CalcRecoil(flow, mon, param->move, damage);
     }
-    ServerControl_DamageProcessEnd(flow, param, mon, flow->damagedMons, damage, arg5);
+    ServerControl_DamageProcessEnd(flow, param, mon, flow->damagedMons, damage, delayed);
     if (showEffect) {
         BattleMoveEffectState *effect = flow->moveEffect;
         if (!effect->enabled) {
@@ -3109,7 +3109,7 @@ u32 BtlFlowDamageList_GetTotalDamage(const BtlFlowDamageList *list) {
 }
 
 u32 ServerControl_DamageAllTargets(BtlServerFlow *flow, BtlFlowMoveParam *param, BattleMon *attacker,
-                                   BtlMonSet *targets, u32 *data, u32 *reserved, u32 arg6) {
+                                   BtlMonSet *targets, u32 *data, u32 *reserved, u32 delayed) {
     BtlFlowDamageFlags flags;
     u32 ratio;
     u32 damage;
@@ -3121,7 +3121,7 @@ u32 ServerControl_DamageAllTargets(BtlServerFlow *flow, BtlFlowMoveParam *param,
     }
     damage = 0;
     flags.multipleTargets = BtlMonSet_GetCount(targets) > 1;
-    flags.unk1 = arg6;
+    flags.delayed = delayed;
     BtlMonSet_CopyAllies(targets, attacker, flow->allyTargets);
     BtlMonSet_CopyOpponents(targets, attacker, flow->foeTargets);
     ServerControl_CalcDamageList(flow, attacker, flow->allyTargets, param, data, ratio, flow->allyDamages);
@@ -3348,7 +3348,7 @@ void ServerEvent_DamageDetermine(BtlServerFlow *flow, BattleMon *attacker, Battl
     BattleEventVar_Pop(0x19d4);
 }
 
-u32 ServerEvent_CheckEndure(BtlServerFlow *flow, BattleMon *attacker, BattleMon *target, u32 arg3, u16 *damage) {
+u32 ServerEvent_CheckEndure(BtlServerFlow *flow, BattleMon *attacker, BattleMon *target, u32 byMove, u16 *damage) {
     u32 cause;
     int hp = GetBattleMonStat(target, BATTLEMON_HP);
 
@@ -3358,7 +3358,7 @@ u32 ServerEvent_CheckEndure(BtlServerFlow *flow, BattleMon *attacker, BattleMon 
     BattleEventVar_Push(0x19ef);
     BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(attacker));
     BattleEventVar_SetConstValue(BTL_EVAR_DEFENDER, GetMonID(target));
-    BattleEventVar_SetConstValue(BTL_EVAR_FLAG, arg3);
+    BattleEventVar_SetConstValue(BTL_EVAR_FLAG, byMove);
     BattleEventVar_SetRewriteOnceValue(BTL_EVAR_ENDURE_CAUSE, 0);
     BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_ENDURE);
     cause = BattleEventVar_GetValue(BTL_EVAR_ENDURE_CAUSE);
@@ -3493,27 +3493,27 @@ void ServerEvent_DamageProcessStart(BtlServerFlow *flow, BattleMon *mon, BtlFlow
 }
 
 void ServerControl_DamageProcessEnd(BtlServerFlow *flow, BtlFlowMoveParam *param, BattleMon *mon, BtlMonSet *monSet,
-                                    u32 damage, u32 arg5) {
+                                    u32 damage, u32 delayed) {
     u32 state;
     BattleMon *target;
 
     ServerControl_CheckFireThaw(flow, param, mon, monSet);
     state = PushState(&flow->actionState, 0x1b17);
-    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, arg5, FALSE, 0x84);
-    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, arg5, TRUE, 0x83);
-    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, arg5, FALSE, 0x85);
+    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, delayed, FALSE, 0x84);
+    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, delayed, TRUE, 0x83);
+    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, delayed, FALSE, 0x85);
     BtlMonSet_ResetIndex(monSet);
     while ((target = BtlMonSet_GetNext(monSet)) != NULL) {
         ServerControl_CheckItemReaction(flow, target, 1);
     }
-    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, arg5, FALSE, 0x86);
-    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, arg5, TRUE, 0x87);
-    ServerEvent_DamageProcessEnd(flow, mon, monSet, param, arg5);
+    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, delayed, FALSE, 0x86);
+    ServerEvent_DamageProcessEndSub(flow, mon, monSet, param, delayed, TRUE, 0x87);
+    ServerEvent_DamageProcessEnd(flow, mon, monSet, param, delayed);
     PopState(&flow->actionState, state, 0x1b2b);
 }
 
 void ServerEvent_DamageProcessEndSub(BtlServerFlow *flow, BattleMon *mon, BtlMonSet *monSet, BtlFlowMoveParam *param,
-                                     u32 arg4, BOOL flag, u32 event) {
+                                     u32 delayed, BOOL flag, u32 event) {
     u32 value;
     u32 total;
     u32 count;
@@ -3526,7 +3526,7 @@ void ServerEvent_DamageProcessEndSub(BtlServerFlow *flow, BattleMon *mon, BtlMon
     hits = 0;
     BattleEventVar_Push(0x1b3b);
     BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(mon));
-    BattleEventVar_SetConstValue(0x4d, arg4);
+    BattleEventVar_SetConstValue(BTL_EVAR_DELAYED_FLAG, delayed);
     BattleEventVar_SetConstValue(BTL_EVAR_MOVE, param->move);
     BattleEventVar_SetConstValue(BTL_EVAR_MOVE_TYPE, param->type);
     for (i = 0; i < count; i++) {
@@ -3557,10 +3557,10 @@ void ServerEvent_DamageProcessEndSub(BtlServerFlow *flow, BattleMon *mon, BtlMon
 }
 
 void ServerEvent_DamageProcessEnd(BtlServerFlow *flow, BattleMon *mon, BtlMonSet *monSet, BtlFlowMoveParam *param,
-                                  u32 arg4) {
+                                  u32 delayed) {
     BattleEventVar_Push(0x1b71);
     BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(mon));
-    BattleEventVar_SetConstValue(0x4d, arg4);
+    BattleEventVar_SetConstValue(BTL_EVAR_DELAYED_FLAG, delayed);
     BattleEventVar_SetConstValue(BTL_EVAR_MOVE, param->move);
     BattleEvent_CallHandlers(flow, BTL_EVENT_DAMAGE_PROCESS_END);
     BattleEventVar_Pop(0x1b76);
@@ -7587,8 +7587,8 @@ u32 BtlServerFlow_GetSideEffectLayers(BtlServerFlow *flow, u8 pos, u32 sideEffec
     return GetSideEffectLayers(GetPosSide(pos), sideEffect);
 }
 
-BOOL BtlServerFlow_IsPosEffectFree(BtlServerFlow *flow, u8 pos, u32 a2) {
-    return IsPosEffectFree(a2, pos);
+BOOL BtlServerFlow_IsPosEffectFree(BtlServerFlow *flow, u8 pos, u32 effect) {
+    return IsPosEffectFree(effect, pos);
 }
 
 u8 BtlServerFlow_GetAllyClientID(BtlServerFlow *flow, u8 clientId) {
