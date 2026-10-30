@@ -1935,15 +1935,16 @@ BOOL BtlvScu_WaitMsg(BtlvScu *scu) {
 }
 
 // Starts the effect of a move
-void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 move, s32 arg4, u32 arg5, u8 arg6) {
+void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
+                             u8 arg6) {
     BtlvMoveEffectParam *param = (BtlvMoveEffectParam *)scu->work;
 
     param->move = move;
     param->attackerPos = attackerPos;
     param->targetPos = targetPos;
-    param->unk0C = arg5;
+    param->variant = variant;
     param->unk0D = arg6;
-    param->unk10 = arg4;
+    param->target = moveTarget;
     BtlvScu_SetSubProc(scu, BtlvScu_MoveEffectProc);
 }
 

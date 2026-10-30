@@ -21234,7 +21234,7 @@ overlays/ov168 0x021df520 BtlvEffect_Stop
 overlays/ov168 0x021df540 BtlvEffect_Resume
 overlays/ov168 0x021df560 BtlvEffect_StartDamage
 overlays/ov168 0x021df618 BtlvEffect_StartEffect23B
-overlays/ov168 0x021df630 BtlvEffect_StartEffect23A
+overlays/ov168 0x021df630 BtlvEffect_StartBallThrow
 overlays/ov168 0x021df678 BtlvEffect_StartEffect23D
 overlays/ov168 0x021df6b4 BtlvEffect_StartChangeSprite
 overlays/ov168 0x021df76c BtlvEffect_ChangeSprite
@@ -21304,10 +21304,10 @@ overlays/ov168 0x021e021c BtlvEffect_IsBgmChanged
 overlays/ov168 0x021e022c BtlvEffect_PlayBgmNoPinch
 overlays/ov168 0x021e0274 BtlvEffect_SetState
 overlays/ov168 0x021e0298 BtlvEffect_GetState
-overlays/ov168 0x021e02ac BtlvEffect_SetFlag26
-overlays/ov168 0x021e02d0 BtlvEffect_GetFlag26
-overlays/ov168 0x021e02e4 BtlvEffect_GetUnk2E4
-overlays/ov168 0x021e0304 BtlvEffect_GetUnk304
+overlays/ov168 0x021e02ac BtlvEffect_SetMuteSE
+overlays/ov168 0x021e02d0 BtlvEffect_GetMuteSE
+overlays/ov168 0x021e02e4 BtlvEffect_IsShooterEnabled
+overlays/ov168 0x021e0304 BtlvEffect_IsBagEnabled
 overlays/ov168 0x021e0324 BtlvEffect_SetPokemonCheck
 overlays/ov168 0x021e035c BtlvEffect_AddTask
 overlays/ov168 0x021e038c BtlvEffect_FindTask
@@ -21326,7 +21326,7 @@ overlays/ov168 0x021e0580 BtlvEffect_VBlankTask
 overlays/ov168 0x021e059c BtlvEffect_BlinkTask
 overlays/ov168 0x021e0668 BtlvEffect_DamageTaskEnd
 overlays/ov168 0x021e06a0 BtlvEffect_SubstituteTask
-overlays/ov168 0x021e08e8 BtlvEffect_Unk8TaskEnd
+overlays/ov168 0x021e08e8 BtlvEffect_ChangeTaskEnd
 overlays/ov168 0x021e0920 BtlvEffect_RotateTask
 overlays/ov168 0x021e09a0 BtlvEffect_RotateTaskEnd
 overlays/ov168 0x021e09d8 BtlvEffect_DelayedMoveTask
@@ -21819,6 +21819,9 @@ overlays/ov168 0x021f2f6c FIELD_PARAM_VARIANTS
 overlays/ov168 0x021f2f74 CAMERA_DEFAULT_TARGET
 overlays/ov168 0x021f2f80 CAMERA_DEFAULT_POS
 overlays/ov168 0x021f2f8c CAMERA_UP
+overlays/ov168 0x021f3f50 sIdleEffectsWaitMsg
+overlays/ov168 0x021f3f58 sIdleEffects
+overlays/ov168 0x021f3f70 sStudioMovieShadows
 overlays/ov168 0x021f4240 sBtlvEffect
 overlays/ov169 0x06898080 FieldEffectEventRemove
 overlays/ov169 0x068982ac IsPosEffectFree

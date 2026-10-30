@@ -48,7 +48,7 @@ BtlvEffect_Stop kind:function(thumb,size=0x20) addr:0x021df560
 BtlvEffect_Resume kind:function(thumb,size=0x20) addr:0x021df580
 BtlvEffect_StartDamage kind:function(thumb,size=0xb8) addr:0x021df5a0
 BtlvEffect_StartEffect23B kind:function(thumb,size=0x18) addr:0x021df658
-BtlvEffect_StartEffect23A kind:function(thumb,size=0x48) addr:0x021df670
+BtlvEffect_StartBallThrow kind:function(thumb,size=0x48) addr:0x021df670
 BtlvEffect_StartEffect23D kind:function(thumb,size=0x3c) addr:0x021df6b8
 BtlvEffect_StartChangeSprite kind:function(thumb,size=0xb8) addr:0x021df6f4
 BtlvEffect_ChangeSprite kind:function(thumb,size=0x3c) addr:0x021df7ac
@@ -118,10 +118,10 @@ BtlvEffect_IsBgmChanged kind:function(thumb,size=0x10) addr:0x021e025c
 BtlvEffect_PlayBgmNoPinch kind:function(thumb,size=0x48) addr:0x021e026c
 BtlvEffect_SetState kind:function(thumb,size=0x24) addr:0x021e02b4
 BtlvEffect_GetState kind:function(thumb,size=0x14) addr:0x021e02d8
-BtlvEffect_SetFlag26 kind:function(thumb,size=0x24) addr:0x021e02ec
-BtlvEffect_GetFlag26 kind:function(thumb,size=0x14) addr:0x021e0310
-BtlvEffect_GetUnk2E4 kind:function(thumb,size=0x20) addr:0x021e0324
-BtlvEffect_GetUnk304 kind:function(thumb,size=0x20) addr:0x021e0344
+BtlvEffect_SetMuteSE kind:function(thumb,size=0x24) addr:0x021e02ec
+BtlvEffect_GetMuteSE kind:function(thumb,size=0x14) addr:0x021e0310
+BtlvEffect_IsShooterEnabled kind:function(thumb,size=0x20) addr:0x021e0324
+BtlvEffect_IsBagEnabled kind:function(thumb,size=0x20) addr:0x021e0344
 BtlvEffect_SetPokemonCheck kind:function(thumb,size=0x38) addr:0x021e0364
 BtlvEffect_AddTask kind:function(thumb,size=0x30) addr:0x021e039c
 BtlvEffect_FindTask kind:function(thumb,size=0x20) addr:0x021e03cc
@@ -140,7 +140,7 @@ BtlvEffect_VBlankTask kind:function(thumb,size=0x1c) addr:0x021e05c0
 BtlvEffect_BlinkTask kind:function(thumb,size=0xcc) addr:0x021e05dc
 BtlvEffect_DamageTaskEnd kind:function(thumb,size=0x38) addr:0x021e06a8
 BtlvEffect_SubstituteTask kind:function(thumb,size=0x248) addr:0x021e06e0
-BtlvEffect_Unk8TaskEnd kind:function(thumb,size=0x38) addr:0x021e0928
+BtlvEffect_ChangeTaskEnd kind:function(thumb,size=0x38) addr:0x021e0928
 BtlvEffect_RotateTask kind:function(thumb,size=0x80) addr:0x021e0960
 BtlvEffect_RotateTaskEnd kind:function(thumb,size=0x38) addr:0x021e09e0
 BtlvEffect_DelayedMoveTask kind:function(thumb,size=0x40) addr:0x021e0a18
@@ -755,9 +755,9 @@ data_ov168_021f3ef4 kind:data(any) addr:0x021f3f34
 data_ov168_021f3f20 kind:data(any) addr:0x021f3f60
 data_ov168_021f3f30 kind:data(any) addr:0x021f3f70
 data_ov168_021f3f40 kind:data(any) addr:0x021f3f80
-data_ov168_021f3f50 kind:data(any) addr:0x021f3f90
-data_ov168_021f3f58 kind:data(any) addr:0x021f3f98
-data_ov168_021f3f70 kind:data(any) addr:0x021f3fb0
+sIdleEffectsWaitMsg kind:data(any) addr:0x021f3f90
+sIdleEffects kind:data(any) addr:0x021f3f98
+sStudioMovieShadows kind:data(any) addr:0x021f3fb0
 data_ov168_021f3f9c kind:data(any) addr:0x021f3fdc
 data_ov168_021f3fac kind:data(any) addr:0x021f3fec
 data_ov168_021f3ff4 kind:data(any) addr:0x021f4034

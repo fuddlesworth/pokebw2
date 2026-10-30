@@ -461,7 +461,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
         break;
     case 16:
         if (BtlvCore_WaitMsg(core) && !BtlvEffect_IsBusy()) {
-            BtlvEffect_StartEffect23A(1, 4, 3, 1, 0);
+            BtlvEffect_StartBallThrow(1, 4, 3, 1, 0);
             (*seq)++;
         }
         break;
@@ -1074,7 +1074,8 @@ BOOL BtlvCore_WaitChoice(BtlvCore *core) {
     return FALSE;
 }
 
-void BtlvCore_StartMoveEffect(BtlvCore *core, u8 attackerPos, u8 targetPos, u16 move, s32 arg4, u32 arg5, u8 arg6) {
+void BtlvCore_StartMoveEffect(BtlvCore *core, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
+                              u8 arg6) {
     u8 attacker;
     u8 target;
 
@@ -1084,7 +1085,7 @@ void BtlvCore_StartMoveEffect(BtlvCore *core, u8 attackerPos, u8 targetPos, u16 
     } else {
         target = 0xff;
     }
-    BtlvScu_StartMoveEffect(core->scu, attacker, target, move, arg4, arg5, arg6);
+    BtlvScu_StartMoveEffect(core->scu, attacker, target, move, moveTarget, variant, arg6);
 }
 
 BOOL BtlvCore_WaitMoveEffect(BtlvCore *core) {

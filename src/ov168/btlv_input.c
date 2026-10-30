@@ -907,7 +907,7 @@ void BtlvInput_SetScreen(BtlvInput *work, u32 screen, void *param) {
         for (i = 0; i < 4; i++) {
             work->buttonEnabled[i] = TRUE;
         }
-        work->buttonEnabled[1] = BtlvEffect_GetUnk304();
+        work->buttonEnabled[1] = BtlvEffect_IsBagEnabled();
         BtlvInput_DeletePartyIcons(work);
         BtlvInput_CreatePartyIcons(work, cmd);
         BtlvInput_CreateBallSlideActors(work, cmd->ballSlide);
@@ -3355,7 +3355,7 @@ static void BtlvInput_PrintLauncherPoints(BtlvInput *work, BtlvInputCommandParam
     StrBuf *strbuf;
     StrBuf *src;
 
-    if (!BtlvEffect_GetUnk2E4()) {
+    if (!BtlvEffect_IsShooterEnabled()) {
         return;
     }
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
@@ -3497,7 +3497,7 @@ static void BtlvInput_RestoreKeyCursor(BtlvInput *work) {
 static void BtlvInput_LoadDarkPalette(BtlvInput *work) {
     u16 colors[16];
 
-    if (BtlSetup_GetBattleType(BtlvEffect_GetMainModule()) != 4 && !BtlvEffect_GetUnk304()) {
+    if (BtlSetup_GetBattleType(BtlvEffect_GetMainModule()) != 4 && !BtlvEffect_IsBagEnabled()) {
         BlendColors(work->savedPalette, colors, 16, 8, 0);
         PaletteFade_LoadData(BtlvEffect_GetPaletteFade(), colors, 1, 0x20, 0x20);
     }

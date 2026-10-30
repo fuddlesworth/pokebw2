@@ -667,12 +667,12 @@ s32 BtlvEffvm_GetScriptKind(VM *vm) {
 }
 
 void BtlvEffvmParam_Clear(BtlvEffvmParam *param) {
-    param->unk0 = 0;
+    param->target = 0;
     param->variant = 0;
     param->unk2 = 0;
-    param->unk3 = 0;
-    param->unk4 = 0;
-    param->unk8 = 0;
+    param->shakes = 0;
+    param->caught = 0;
+    param->critical = 0;
     param->itemNo = 0;
 }
 
@@ -680,7 +680,7 @@ void BtlvEffvm_PlaySEAt(VM *vm, u32 se, u32 player, u32 pan, int arg4, int arg5,
     BtlvEffvm *wk = VM_GetEnv(vm);
     BtlvEffvmSeWork *work;
 
-    if (BtlvEffect_GetFlag26() == TRUE) {
+    if (BtlvEffect_GetMuteSE() == TRUE) {
         return;
     }
     wk->sePlayed = TRUE;
@@ -870,7 +870,7 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
         break;
     case 11:
     case 12:
-        switch (wk->param.unk0) {
+        switch (wk->param.target) {
         case 0:
         case 1:
         case 2:
@@ -2384,7 +2384,7 @@ static BOOL BtlvEffvm_CmdSetVar(VM *vm, void *env) {
 
     switch (id) {
     case 9:
-        wk->param.unk0 = value;
+        wk->param.target = value;
         break;
     case 10:
         wk->param.variant = value;
@@ -2393,13 +2393,13 @@ static BOOL BtlvEffvm_CmdSetVar(VM *vm, void *env) {
         wk->param.unk2 = value;
         break;
     case 12:
-        wk->param.unk3 = value;
+        wk->param.shakes = value;
         break;
     case 13:
-        wk->param.unk4 = value;
+        wk->param.caught = value;
         break;
     case 14:
-        wk->param.unk8 = value;
+        wk->param.critical = value;
         break;
     case 15:
         wk->param.itemNo = value;
@@ -2923,7 +2923,7 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
         rule = BtlvEffect_GetBattleStyle();
         count = 0;
         if (rule == 0 || rule == 3) {
-            if (wk->param.unk0 == 8 || wk->param.unk0 == 10) {
+            if (wk->param.target == 8 || wk->param.target == 10) {
                 count = 1;
                 positions[0] = wk->attacker;
                 if (BtlvEffect_CheckExist(wk->attacker ^ 1)) {
@@ -2939,7 +2939,7 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
             }
             break;
         }
-        switch (wk->param.unk0) {
+        switch (wk->param.target) {
         case 0:
         case 1:
         case 2:
@@ -3072,7 +3072,7 @@ static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int code, int *position
         rule = BtlvEffect_GetBattleStyle();
         count = 0;
         if (rule == 0 || rule == 3) {
-            if (wk->param.unk0 == 8 || wk->param.unk0 == 10) {
+            if (wk->param.target == 8 || wk->param.target == 10) {
                 count = 1;
                 positions[0] = wk->attacker;
                 if (BtlvEffect_CheckExist(wk->attacker ^ 1)) {
@@ -3087,7 +3087,7 @@ static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int code, int *position
                 }
             }
         } else {
-            switch (wk->param.unk0) {
+            switch (wk->param.target) {
             case 0:
             case 1:
             case 2:
@@ -3281,7 +3281,7 @@ static int BtlvEffvm_GetDefenderForEmitter(VM *vm, int *pos) {
         if (ret == 0 || ret == 3 || wk->isEffect == TRUE) {
             *pos = wk->attacker ^ 1;
         } else {
-            switch (wk->param.unk0) {
+            switch (wk->param.target) {
             case 4:
             case 5:
             case 8:
@@ -3791,17 +3791,17 @@ static u32 BtlvEffvm_GetVariable(BtlvEffvm *wk, int id) {
     case 8:
         return BtlvMcss_GetWeight(BtlvEffect_GetMcss(), wk->attacker);
     case 9:
-        return wk->param.unk0;
+        return wk->param.target;
     case 10:
         return wk->param.variant;
     case 11:
         return wk->param.unk2;
     case 12:
-        return wk->param.unk3;
+        return wk->param.shakes;
     case 13:
-        return wk->param.unk4;
+        return wk->param.caught;
     case 14:
-        return wk->param.unk8;
+        return wk->param.critical;
     case 15:
         return wk->param.itemNo;
     case 16:
@@ -3932,7 +3932,7 @@ static void BtlvEffvm_AddEmitters(BtlvEffvm *wk, BtlvEffvmEmitParam *param, int 
                 }
             }
         }
-    } else if (param->to == param->from && wk->param.unk0 == 12 && !wk->isEffect && wk->move != 366 &&
+    } else if (param->to == param->from && wk->param.target == 12 && !wk->isEffect && wk->move != 366 &&
                (param->to == 9 || param->to == 10)) {
         int targets[8];
         int count;

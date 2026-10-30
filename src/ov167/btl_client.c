@@ -1156,7 +1156,7 @@ static BOOL BattleClient_MainProcRecPlay(BtlClient *client) {
                 GFL_SndPlayerSetMuteStateEx(1, 1);
                 BtlvCore_StartFadeIn(client->viewCore);
                 GFL_SndBGMFadeIn(30);
-                BtlvEffect_SetFlag26(0);
+                BtlvEffect_SetMuteSE(0);
                 PokeVoice_ResetMasterVolume();
             }
             client->mainSeq = CLIENT_SKIP_SEQ_FADE_IN;
@@ -1167,7 +1167,7 @@ static BOOL BattleClient_MainProcRecPlay(BtlClient *client) {
             client->mainSeq = CLIENT_SKIP_SEQ_RETURN;
             client->cmdSeq = 0;
             if (BtlvEffect_GetWork()) {
-                BtlvEffect_SetFlag26(1);
+                BtlvEffect_SetMuteSE(1);
             }
         }
         break;
@@ -5738,7 +5738,7 @@ static BOOL BattleClient_ScSubstituteDelete(BtlClient *client, s32 *seq, const u
         u8 viewPos = BattlePosToViewPos(client->mainModule, args[0]);
 
         if (BattleClient_IsChapterSkipping(client)) {
-            BtlvEffect_SetFlag26(TRUE);
+            BtlvEffect_SetMuteSE(TRUE);
         }
         BtlvEffect_StartEffect26F(viewPos);
         (*seq)++;
@@ -5747,7 +5747,7 @@ static BOOL BattleClient_ScSubstituteDelete(BtlClient *client, s32 *seq, const u
     case 1:
         if (!BtlvEffect_IsBusy()) {
             if (BattleClient_IsChapterSkipping(client)) {
-                BtlvEffect_SetFlag26(FALSE);
+                BtlvEffect_SetMuteSE(FALSE);
             }
             return TRUE;
         }
@@ -6144,7 +6144,7 @@ static BOOL BattleClient_ScBallThrow(BtlClient *client, s32 *seq, const u32 *arg
 
     switch (*seq) {
     case 0:
-        BtlvEffect_StartEffect23A(BattlePosToViewPos(client->mainModule, args[0]), args[5], args[1], args[2], args[4]);
+        BtlvEffect_StartBallThrow(BattlePosToViewPos(client->mainModule, args[0]), args[5], args[1], args[2], args[4]);
         (*seq)++;
         break;
     case 1:
