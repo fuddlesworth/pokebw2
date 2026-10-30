@@ -7806,6 +7806,7 @@ overlays/ov011 0x02184d84 SBSendMessageToServer
 overlays/ov011 0x02184e38 SBSendNatNegotiateCookieToServer
 overlays/ov011 0x02184eb0 ProcessLanData
 overlays/ov011 0x02184f90 SBListThink
+overlays/ov011 0x02184fc8 sQueryFormat
 overlays/ov011 0x02184fd4 sNoCertificateAlert
 overlays/ov011 0x02184fdc WCM_Bssid_Any
 overlays/ov011 0x02184fe4 WCM_Essid_Any

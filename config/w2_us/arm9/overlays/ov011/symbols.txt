@@ -1703,7 +1703,7 @@ SBSendMessageToServer kind:function(thumb,size=0xb4) addr:0x02184dc4
 SBSendNatNegotiateCookieToServer kind:function(thumb,size=0x78) addr:0x02184e78
 ProcessLanData kind:function(thumb,size=0xe0) addr:0x02184ef0
 SBListThink kind:function(thumb,size=0x36) addr:0x02184fd0
-data_ov011_02184fc8 kind:data(any) addr:0x02185008
+sQueryFormat kind:data(any) addr:0x02185008
 sNoCertificateAlert kind:data(any) addr:0x02185014
 WCM_Bssid_Any kind:data(any) addr:0x0218501c
 WCM_Essid_Any kind:data(any) addr:0x02185024
