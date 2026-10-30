@@ -116,8 +116,8 @@ typedef struct {
 
 BtlvInput *BtlvInput_CreateSimple(GameData *gameData, u32 rule, PaletteFade *paletteFade, Font *font, u8 *keyCursorFlag,
                                   HeapID heapId);
-BtlvInput *BtlvInput_CreateForBattle(GameData *gameData, u32 rule, u32 unk54, PaletteFade *paletteFade, Font *font,
-                                     u8 *keyCursorFlag, u32 scdState, u8 unk328, u32 fileSet, u32 typeCount,
+BtlvInput *BtlvInput_CreateForBattle(GameData *gameData, u32 rule, u32 battleType, PaletteFade *paletteFade, Font *font,
+                                     u8 *keyCursorFlag, u32 scdState, u8 multiMode, u32 studioMode, u32 typeCount,
                                      u32 typeMask, BOOL noCancel, HeapID heapId);
 void BtlvInput_Delete(BtlvInput *work);
 void BtlvInput_Update(BtlvInput *work);
