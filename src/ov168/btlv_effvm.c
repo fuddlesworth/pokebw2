@@ -579,7 +579,7 @@ void BtlvEffvm_Start(VM *vm, u32 attacker, u32 defender, u16 move, BtlvEffvmPara
     wk->lastMove = wk->move;
     wk->lastAttacker = attacker;
     if (BtlvEffvm_IsGaugeKeptEffect(wk->move) == FALSE) {
-        BtlvEffect_SetPokemonCheck(0);
+        BtlvEffect_SetPokemonReverse(0);
     }
     if (wk->move < BTLV_EFFECT_FIRST) {
         wk->script = GFL_ArcSysReadHeapNew(ARCID_BTLV_EFFVM_MOVE_SCRIPTS, move, HEAPID_TAIL(wk->heapId));
@@ -1626,7 +1626,7 @@ static BOOL BtlvEffvm_CmdMcssScale(VM *vm, void *env) {
     times = VM_Read32(vm);
     if (count != 0) {
         for (i = 0; i < count; i++) {
-            BtlvMcss_MoveVec518(BtlvEffect_GetMcss(), positions[i], type, &dest, frames, wait, times);
+            BtlvMcss_MoveScaleOffset(BtlvEffect_GetMcss(), positions[i], type, &dest, frames, wait, times);
         }
     }
     return wk->ret;
@@ -1651,7 +1651,7 @@ static BOOL BtlvEffvm_CmdMcssRotate(VM *vm, void *env) {
     times = VM_Read32(vm);
     if (count != 0) {
         for (i = 0; i < count; i++) {
-            BtlvMcss_MoveVec51c(BtlvEffect_GetMcss(), positions[i], type, &dest, frames, wait, times);
+            BtlvMcss_MoveRotation(BtlvEffect_GetMcss(), positions[i], type, &dest, frames, wait, times);
         }
     }
     return wk->ret;
@@ -1799,7 +1799,7 @@ static BOOL BtlvEffvm_CmdMcssScaleTo(VM *vm, void *env) {
     times = VM_Read32(vm);
     if (count != 0) {
         for (i = 0; i < count; i++) {
-            BtlvMcss_MoveVec524(BtlvEffect_GetMcss(), positions[i], type, &dest, frames, wait, times);
+            BtlvMcss_MoveShadowScaleOffset(BtlvEffect_GetMcss(), positions[i], type, &dest, frames, wait, times);
         }
     }
     return wk->ret;
@@ -2619,7 +2619,7 @@ static BOOL BtlvEffvm_CmdWaitSide(VM *vm, void *env) {
 static BOOL BtlvEffvm_CmdMcssReset(VM *vm, void *env) {
     BtlvEffvm *wk = env;
 
-    BtlvEffect_SetPokemonCheck(VM_Read32(vm));
+    BtlvEffect_SetPokemonReverse(VM_Read32(vm));
     return wk->ret;
 }
 
@@ -2649,7 +2649,7 @@ static BOOL BtlvEffvm_CmdEnd(VM *vm, void *env) {
     BtlvEffvm_ResetMcssAll(wk);
     BtlvEffvm_ClearMcssFlagAll(wk);
     if (!wk->unk0_18) {
-        BtlvEffect_SetPokemonCheck(1);
+        BtlvEffect_SetPokemonReverse(1);
     }
     VM_Halt(vm);
     wk->ret = TRUE;
@@ -3860,9 +3860,9 @@ static u32 BtlvEffvm_GetVariable(BtlvEffvm *wk, int id) {
     case 49:
     case 50:
     case 51:
-        return BtlvMcss_GetUnk(BtlvEffect_GetMcss(), id - 44);
+        return BtlvMcss_GetStopCellFlags(BtlvEffect_GetMcss(), id - 44);
     case 52:
-        return BtlvMcss_GetUnk(BtlvEffect_GetMcss(), wk->attacker);
+        return BtlvMcss_GetStopCellFlags(BtlvEffect_GetMcss(), wk->attacker);
     case 53:
         return wk->mcssScaled;
     case 54:

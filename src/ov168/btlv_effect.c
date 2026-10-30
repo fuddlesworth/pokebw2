@@ -1041,12 +1041,12 @@ BOOL BtlvEffect_IsBagEnabled(void) {
     return result;
 }
 
-void BtlvEffect_SetPokemonCheck(u32 arg0) {
+void BtlvEffect_SetPokemonReverse(u32 byPos) {
     BtlvMcssPos pos;
 
     for (pos = BTLV_MCSS_POS_FIRST; pos < BTLV_MCSS_POS_TRAINER; pos++) {
         if (BtlvMcss_Exists(sBtlvEffect->mcss, pos)) {
-            BtlvMcss_SetUnkB270(sBtlvEffect->mcss, pos, arg0);
+            BtlvMcss_SetReverse(sBtlvEffect->mcss, pos, byPos);
         }
     }
 }

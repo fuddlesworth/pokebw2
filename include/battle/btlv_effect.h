@@ -195,7 +195,7 @@ void BtlvEffect_SetMuteSE(u32 mute);
 u32 BtlvEffect_GetMuteSE(void);
 BOOL BtlvEffect_IsShooterEnabled(void);
 BOOL BtlvEffect_IsBagEnabled(void);
-void BtlvEffect_SetPokemonCheck(u32 arg0);
+void BtlvEffect_SetPokemonReverse(u32 byPos);
 
 // The effect's task slots: a task with its end function and group, its end, and the end of a group's tasks
 void BtlvEffect_AddTask(TCB *tcb, void (*endFunc)(TCB *tcb), u32 group);
