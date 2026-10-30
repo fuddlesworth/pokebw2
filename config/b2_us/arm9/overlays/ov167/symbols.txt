@@ -3733,7 +3733,7 @@ func_ov167_021cf1d4 kind:function(arm,size=0xc) addr:0x021cf1d4
 BtlvCore_ResetScreenIfShown kind:function(thumb,size=0x10) addr:0x021cf1e0
 BtlvCore_ResetScreen kind:function(thumb,size=0x10) addr:0x021cf1f0
 BtlvCore_IsScreenIdle kind:function(thumb,size=0x10) addr:0x021cf200
-func_ov167_021cf210 kind:function(thumb,size=0x24) addr:0x021cf210
+BtlvCore_CanPlayListSE kind:function(thumb,size=0x24) addr:0x021cf210
 BtlvCore_SetupPokeListParam kind:function(thumb,size=0xdc) addr:0x021cf234
 func_ov167_021cf310 kind:function(thumb,size=0x2) addr:0x021cf310
 func_ov167_021cf314 kind:function(arm,size=0xc) addr:0x021cf314
@@ -3927,7 +3927,7 @@ BtlvCore_CheckRecorderInput kind:function(thumb,size=0x10) addr:0x021d0a38
 BtlvCore_ShowRecorderChapter kind:function(thumb,size=0x24) addr:0x021d0a48
 func_ov167_021d0a6c kind:function(thumb,size=0x2) addr:0x021d0a6c
 func_ov167_021d0a70 kind:function(arm,size=0xc) addr:0x021d0a70
-func_ov167_021d0a7c kind:function(thumb,size=0x24) addr:0x021d0a7c
+BtlvCore_ShowRecorderSkipping kind:function(thumb,size=0x24) addr:0x021d0a7c
 BtlvCore_ShowRecorderMessage kind:function(thumb,size=0x22) addr:0x021d0aa0
 func_ov167_021d0ac4 kind:function(thumb,size=0x2) addr:0x021d0ac4
 func_ov167_021d0ac8 kind:function(arm,size=0xc) addr:0x021d0ac8
@@ -4831,11 +4831,11 @@ sHandlersEndure kind:data(any) addr:0x021da04c
 sHandlersBide kind:data(any) addr:0x021da07c
 sMoveEventAddTable kind:data(any) addr:0x021da0b4
 data_ov167_021da0b8 kind:data(any) addr:0x021da0b8
-data_ov167_021da8c4 kind:data(any) addr:0x021da8c4
+BTLV_CMD_PROCS kind:data(any) addr:0x021da8c4
 data_ov167_021da8c8 kind:data(any) addr:0x021da8c8
-data_ov167_021da8d4 kind:data(any) addr:0x021da8d4
-data_ov167_021da8e4 kind:data(any) addr:0x021da8e4
-data_ov167_021da900 kind:data(any) addr:0x021da900
+BTLV_LCD_CONFIG kind:data(any) addr:0x021da8d4
+BTLV_CLACT_SETUP kind:data(any) addr:0x021da8e4
+BTLV_VRAM_CONFIG kind:data(any) addr:0x021da900
 sSingleViewPos kind:data(any) addr:0x021da930
 sDoubleViewPos kind:data(any) addr:0x021da932
 sTripleViewPos kind:data(any) addr:0x021da936

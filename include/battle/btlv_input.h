@@ -96,12 +96,22 @@ typedef struct {
     BOOL moveUsable[3][4];
 } BtlvInputRotationParam;
 
+// The recorder screen's message, BtlvInputRecorderParam's mode: none, or the message 8 after it, with BG 4 scrolled
+enum {
+    BTLV_RECORDER_MSG_NONE,
+    BTLV_RECORDER_MSG_PAUSED,
+    BTLV_RECORDER_MSG_DATA_CORRUPTED,
+    BTLV_RECORDER_MSG_SKIPPING,
+};
+
 // Screen 6, the recorder screen
 typedef struct {
-    s32 unk0;
-    s32 unk4; // printed left of the slash, in red when it differs from unk0
-    s32 unk8; // printed right of it
-    u32 mode; // 0 none, 1-3 a message (message 9-11) and BG 4 scrolled
+    // The chapter played, the one skipped to (printed left of the slash, in red when it differs) and the last one
+    // (printed right of it)
+    s32 chapter;
+    s32 targetChapter;
+    s32 maxChapter;
+    u32 mode;
 } BtlvInputRecorderParam;
 
 BtlvInput *BtlvInput_CreateSimple(GameData *gameData, u32 rule, PaletteFade *paletteFade, Font *font, u8 *keyCursorFlag,

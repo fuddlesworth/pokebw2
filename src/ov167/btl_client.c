@@ -16,6 +16,7 @@
 #include "battle/btl_tables.h"
 #include "battle/btlv.h"
 #include "battle/btlv_effect.h"
+#include "battle/btlv_input.h"
 #include "battle/btlv_mcss.h"
 #include "battle/pokewood_cutin.h"
 #include "battle/tr_ai.h"
@@ -1241,9 +1242,9 @@ static BOOL BattleClient_SetupView(BtlClient *client, s32 *seq) {
     switch (*seq) {
     case 0:
         if (BtlSetup_GetBattleType(client->mainModule) != BTL_TYPE_CAPTURE_DEMO) {
-            BtlvCore_StartCommand(client->viewCore, FALSE);
+            BtlvCore_StartCommand(client->viewCore, BTLV_CMD_BATTLE_START);
         } else {
-            BtlvCore_StartCommand(client->viewCore, TRUE);
+            BtlvCore_StartCommand(client->viewCore, BTLV_CMD_CAPTURE_DEMO);
         }
         (*seq)++;
         break;
@@ -1259,7 +1260,7 @@ static BOOL BattleClient_SetupView(BtlClient *client, s32 *seq) {
             }
             BattleClient_SaveFrontMonHp(client);
             if (BattleClient_IsChapterSkipping(client)) {
-                func_ov167_021d0a7c(client->viewCore, RecPlayer_GetSkipTarget(&client->recPlayer));
+                BtlvCore_ShowRecorderSkipping(client->viewCore, RecPlayer_GetSkipTarget(&client->recPlayer));
             }
             client->studio.audienceMask = BtlvCore_GetTypeMask(client->viewCore);
             Studio_InitAudienceTimers(&client->studio);
@@ -7032,7 +7033,7 @@ static void RecPlayer_Update(BtlClient *client, BtlClientRecPlayer *recPlayer) {
                     BtlvCore_StartFadeOut(client->viewCore);
                     recPlayer->quitStarted = TRUE;
                     recPlayer->seq = REC_PLAYER_SEQ_FADE_OUT;
-                    BtlvCore_ShowRecorderMessage(client->viewCore, recPlayer->chapter, 1);
+                    BtlvCore_ShowRecorderMessage(client->viewCore, recPlayer->chapter, BTLV_RECORDER_MSG_PAUSED);
                     SetRecPlayQuit(client->mainModule);
                     SetFastestTextSpeed(client->mainModule);
                     GFL_SndBGMFadeOut(30);
