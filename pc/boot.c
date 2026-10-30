@@ -86,6 +86,7 @@ static NNSGfdVramTransferTask vramTransfers[48];
 static PcGxVertex *fieldVertices;
 static u32 fieldVertexCount;
 static u32 fieldVertexCapacity;
+static u32 fieldSparseFrames;
 static u16 pendingBackKeys;
 
 bool PcBoot_Start(const char *root, PcBootEntry entry) {
@@ -189,6 +190,7 @@ void PcBoot_Stop(void) {
     SDL_free(fieldVertices);
     fieldVertices = NULL;
     fieldVertexCount = fieldVertexCapacity = 0;
+    fieldSparseFrames = 0;
     for (unsigned i = 0; i < SDL_arraysize(paths); i++) {
         SDL_free(paths[i]);
         paths[i] = NULL;
@@ -204,7 +206,10 @@ void PcBoot_Draw(void) {
     BOOL fieldReady = fieldScene && g_GameSystem != NULL && GSYS_GetField(g_GameSystem) != NULL &&
                       Field_CheckMapLoadFinished(GSYS_GetField(g_GameSystem));
     if (fieldReady) {
-        if (PcGx.vertex_count) {
+        // Map handoffs can submit a nearly empty 3D list for one tick; keep the last full field until it recovers.
+        if (PcGx.vertex_count &&
+            (!fieldVertexCount || PcGx.vertex_count * 2 >= fieldVertexCount || fieldSparseFrames >= 2)) {
+            fieldSparseFrames = 0;
             if (PcGx.vertex_count > fieldVertexCapacity) {
                 PcGxVertex *vertices = SDL_realloc(fieldVertices, PcGx.vertex_count * sizeof(*fieldVertices));
                 if (vertices) {
@@ -217,11 +222,14 @@ void PcBoot_Draw(void) {
                 SDL_memcpy(fieldVertices, PcGx.vertices, fieldVertexCount * sizeof(*fieldVertices));
             }
         } else if (fieldVertexCount) {
+            if (PcGx.vertex_count)
+                fieldSparseFrames++;
             SDL_memcpy(PcGx.vertices, fieldVertices, fieldVertexCount * sizeof(*fieldVertices));
             PcGx.vertex_count = fieldVertexCount;
         }
     } else {
         fieldVertexCount = 0;
+        fieldSparseFrames = 0;
     }
     PcGx.composite_scene = true;
     PcGx.scene_viewport = PcGx.wide_scene ? (PcViewport){ 0, 0, PC_CANVAS_WIDTH, PC_CANVAS_HEIGHT } : scene;
