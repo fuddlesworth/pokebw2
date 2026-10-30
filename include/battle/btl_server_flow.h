@@ -18,6 +18,23 @@ typedef enum {
     MOVE_STAT_CHANGE_ALL = 10,
 } MoveStatChangeStat;
 
+// What a turn, or the switches after one, ends with (BtlServerFlow_RunTurn), which tells the server what comes next
+enum {
+    // The clients choose their next actions
+    BTL_FLOW_RESULT_NONE,
+    // A Pokémon switches out mid-turn, as BattleHandler_Switch does
+    BTL_FLOW_RESULT_MID_TURN_SWITCH,
+    // Pokémon fainted, and the clients replace them at the turn's end
+    BTL_FLOW_RESULT_FAINT_SWITCH,
+    // The turn goes on once the clients have shown the commands so far
+    BTL_FLOW_RESULT_CONTINUE,
+    // A side won, or the recorded battle's time ran out
+    BTL_FLOW_RESULT_BATTLE_END,
+    // A Pokémon escaped, or was blown away from a wild battle
+    BTL_FLOW_RESULT_ESCAPE,
+    BTL_FLOW_RESULT_CAPTURE,
+};
+
 // The move that a move calls instead of itself, such as Metronome's, and its target
 typedef struct {
     u16 move;
