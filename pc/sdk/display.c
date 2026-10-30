@@ -5,8 +5,8 @@ static GXVRamBG bankBG;
 static GXVRamTex bankTex;
 
 bool PcGx_WideCaptureActive(void) {
-    return PcGxWideCaptureValid && (PcGxCapturedBanks & GX_VRAM_D) && bankBG == GX_VRAM_BG_128_D &&
-           (PcGxMainDisplay & (1u << 10));
+    // Building entry briefly remaps bank D while BG2 still displays its captured frame.
+    return PcGxWideCaptureValid && (PcGxCapturedBanks & GX_VRAM_D) && (PcGxMainDisplay & (1u << 10));
 }
 
 static void CopyCapturedBanks(u8 *mapped, u32 banks, bool toMapped) {

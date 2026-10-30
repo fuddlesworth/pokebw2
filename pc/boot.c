@@ -209,7 +209,9 @@ void PcBoot_Draw(void) {
     if (naming)
         scene = (PcViewport){ 128, 12, 256, 192 };
     GFL_G3DSysCheckSwapBuffers();
-    BOOL fieldScene = GCTX_ProcMgrCurrentFunctions() == &FIELDMAP_PROC_FUNCS;
+    // The field process briefly yields during building entry while its captured BG2 remains on screen.
+    BOOL fieldScene =
+        GCTX_ProcMgrCurrentFunctions() == &FIELDMAP_PROC_FUNCS || (fieldCaptureWasActive && PcGx_WideCaptureActive());
     BOOL fieldReady = fieldScene && g_GameSystem != NULL && GSYS_GetField(g_GameSystem) != NULL &&
                       Field_CheckMapLoadFinished(GSYS_GetField(g_GameSystem));
     bool wideCapture = fieldScene && PcGx_WideCaptureActive();
