@@ -29,24 +29,24 @@ PsychoBoost:
     McssPalFade EFFVM_ATTACKER, 0, 12, 4, 0x7fff
     LoadBg 150
     BgPalAnim 24, 2
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 14, 0, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 14, 0, 0
     WaitFrames 6
-    CallDfd74 0, 1
+    SetVanish 0, 1
     WaitFrames 6
-    CallDfd74 1, 1
-    CallDfc70 3, 14, 0, 0, 0
+    SetVanish 1, 1
+    PaletteFade 3, 14, 0, 0, 0
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0x7fff
     EmitterAdd 531, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 531, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 6
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 1, 0
+    PaletteFade 4, 13, 0, 1, 0
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

@@ -32,21 +32,21 @@ GigaImpact:
     McssSetVanish EFFVM_DEFENDER, TRUE
     WaitFrames 40
     LoadBg 162
-    CallDfc70 4, 0, 13, 1, 0
+    PaletteFade 4, 0, 13, 1, 0
     BgMove 2, 0, 4, 1, 1, 20
     WaitFrames 10
-    CallDfd74 1, 1
-    CallDfd74 0, 1
-    CallDfd74 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
+    SetVanish 2, 0
     WaitFrames 10
-    CallDfc70 3, 13, 0, 0, 0
+    PaletteFade 3, 13, 0, 0, 0
     BgPalAnim 28, 1
     McssScale EFFVM_DEFENDER, 2, -0x333, 0x333, 2, 1, 4
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
-    CallDfc70 4, 13, 0, 1, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
+    PaletteFade 4, 13, 0, 1, 0
     CameraMovePreset 1, 8, 12, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

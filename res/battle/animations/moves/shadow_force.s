@@ -8,7 +8,7 @@
 
 ShadowForce:
     CameraMovePreset 1, 15, 24, 0, 0
-    CallDfc70 4, 0, 12, 3, 16912
+    PaletteFade 4, 0, 12, 3, 16912
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_SYS_31, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
@@ -42,13 +42,13 @@ ShadowForce:
     Wait EFFVM_WAIT_ALL
     McssSetMode EFFVM_ATTACKER, 3
     CameraMovePreset 1, 17, 24, 0, 0
-    CallDfc70 4, 12, 0, 3, 16912
+    PaletteFade 4, 12, 0, 3, 16912
     Wait EFFVM_WAIT_ALL
     End
 
 ShadowForce_Variant1:
     CameraMovePreset 1, 14, 24, 0, 0
-    CallDfc70 4, 0, 12, 3, 16912
+    PaletteFade 4, 0, 12, 3, 16912
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W225_02, 2, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -92,7 +92,7 @@ ShadowForce_Variant1:
     WaitFrames 2
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 3, 16912
+    PaletteFade 4, 12, 0, 3, 16912
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End

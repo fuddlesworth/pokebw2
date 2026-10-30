@@ -15,16 +15,16 @@ Nightmare:
     SetYield TRUE
     McssSetVanish EFFVM_ATTACKER, TRUE
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     LoadBg 72
-    CallDfd74 2, 0
+    SetVanish 2, 0
     Wait EFFVM_WAIT_ALL
     BgMove 1, 0, -48, 48, 2, 0
     BgWave 0, 0x1800, 16, 106, 0, 0
     WaitFrames 4
-    CallDfc70 3, 16, 0, 2, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    PaletteFade 3, 16, 0, 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
     McssSetValue EFFVM_DEFENDER, 1
     McssSetValue EFFVM_ATTACKER, 1
     McssAlpha EFFVM_DEFENDER, 1, 12, 12, 1, 1
@@ -43,11 +43,11 @@ Nightmare:
     PlaySE SEQ_SE_W254_04, 2, EFFVM_DEFENDER, 20, -100, 115, 0, 0, 0
     SetYield TRUE
     WaitFrames 50
-    CallDfc70 3, 0, 16, 2, 0
+    PaletteFade 3, 0, 16, 2, 0
     WaitFrames 2
-    CallDfc70 4, 16, 0, 2, 0
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    PaletteFade 4, 16, 0, 2, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     McssSetValue EFFVM_DEFENDER, 0
     McssSetValue EFFVM_ATTACKER, 0
     McssSetVanish EFFVM_ATTACKER, FALSE

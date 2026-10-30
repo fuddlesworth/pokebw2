@@ -33,8 +33,8 @@ IceBurn:
 
 IceBurn_Variant1:
     LoadBg 222
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 16, 2, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     SetYield FALSE
     PlaySE SEQ_SE_FLD_127, 2, EFFVM_ATTACKER, 0, -1300, 127, 0, 0, 0
     PlaySE SEQ_SE_SYS_88, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
@@ -45,7 +45,7 @@ IceBurn_Variant1:
     EmitterAdd 731, 5, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0xccd, 0x1000
     EmitterAdd 731, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x99a, 0x1000
     McssScale EFFVM_ATTACKER, 2, 0x4cd, -0x4cd, 20, 0, 1
-    CallDfd74 0, 1
+    SetVanish 0, 1
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W018_02, 1, EFFVM_DEFENDER, 0, -500, 127, 0, 0, 0
@@ -61,20 +61,20 @@ IceBurn_Variant1:
     EmitterAdd 731, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x800, 0x1000
     EmitterAdd 731, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 731, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x800, 0x1000, 0x4cd, 0x1000
-    CallDfd74 1, 1
-    CallDfc70 4, 16, 3, 1, 0
+    SetVanish 1, 1
+    PaletteFade 4, 16, 3, 1, 0
     WaitFrames 20
     McssPalFade EFFVM_DEFENDER, 0, 8, 2, 0x7fff
     EmitterAdd 731, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     BgPalAnim 40, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 3, 16, 2, 0
+    PaletteFade 4, 3, 16, 2, 0
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 2, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    PaletteFade 4, 16, 0, 2, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     McssPalFade EFFVM_DEFENDER, 8, 0, 2, 0x7fff
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8

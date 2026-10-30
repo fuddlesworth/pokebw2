@@ -7,7 +7,7 @@
 
 SunnyDay:
     CameraMovePreset 1, 14, 24, 0, 0
-    CallDfc70 4, 0, 6, 3, 990
+    PaletteFade 4, 0, 6, 3, 990
     PlaySE SEQ_SE_W235_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_DECIDE3, 2, EFFVM_ATTACKER, 30, 0, 120, 0, 0, 0
@@ -20,7 +20,7 @@ SunnyDay:
     EmitterAddAt 412, 1, -0x1000, 0x3000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAddAt 412, 2, -0x1000, 0x3000, 0, 0, 0, 0, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 6, 0, 3, 990
+    PaletteFade 4, 6, 0, 3, 990
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End

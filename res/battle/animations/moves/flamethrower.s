@@ -8,7 +8,7 @@
 Flamethrower:
     CameraMovePreset 1, 20, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 10, 0, 30
+    PaletteFade 2, 0, 10, 0, 30
     ParticleLoad 218
     SetYield FALSE
     PlaySE SEQ_SE_W307_01, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -34,7 +34,7 @@ Flamethrower:
     McssMoveXY EFFVM_DEFENDER, 2, 0x800, 0, 2, 1, 6
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 10, 0, 1, 0x1f
-    CallDfc70 2, 10, 0, 0, 30
+    PaletteFade 2, 10, 0, 0, 30
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

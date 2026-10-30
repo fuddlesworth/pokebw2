@@ -7,7 +7,7 @@
 
 Psystrike:
     LoadBg 204
-    CallDfd74 2, 0
+    SetVanish 2, 0
     SetYield FALSE
     PlaySE SEQ_SE_SHINKA_W060C, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
     SetYield TRUE
@@ -18,7 +18,7 @@ Psystrike:
     McssMoveXY EFFVM_ATTACKER, 2, 0x4cd, 0, 2, 0, 10
     WaitFrames 30
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     WaitFrames 20
     SetYield FALSE
     PlaySE SEQ_SE_SYS_24, 2, EFFVM_DEFENDER, 0, 100, 127, 0, 0, 0
@@ -34,23 +34,23 @@ Psystrike:
     EmitterAdd 709, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssSetValue EFFVM_ALL, 1
     WaitFrames 10
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    SetVanish 1, 1
+    SetVanish 0, 1
     EmitterAdd 709, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0xb33, 0x1000
     EmitterAdd 709, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0xb33, 0x1000
     EmitterAdd 709, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0xb33, 0x1000
     McssSetVanish EFFVM_DEFENDER, TRUE
     WaitFrames 10
     McssScale EFFVM_DEFENDER, 2, 0x333, -0x333, 2, 1, 5
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     BgPalAnim 34, 20
     WaitFrames 50
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE

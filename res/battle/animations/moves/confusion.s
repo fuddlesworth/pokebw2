@@ -10,7 +10,7 @@ Confusion:
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, TRUE
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 2, 0, 12, 1, 0
+    PaletteFade 2, 0, 12, 1, 0
     SetYield FALSE
     PlaySE SEQ_SE_W048_01, 1, EFFVM_ATTACKER, 0, -500, 100, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_ATTACKER, 30, 0, 0, 0, 0, 0
@@ -34,7 +34,7 @@ Confusion:
     WaitFrames 22
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x58cc
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 12, 0, 1, 0
+    PaletteFade 2, 12, 0, 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

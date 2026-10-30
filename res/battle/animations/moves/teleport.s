@@ -6,7 +6,7 @@
     ScriptVariant Teleport
 
 Teleport:
-    CallDfc70 2, 0, 15, 0, 0
+    PaletteFade 2, 0, 15, 0, 0
     CameraMovePreset 1, 15, 24, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W179_03, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
@@ -30,7 +30,7 @@ Teleport:
     McssMoveXY EFFVM_ATTACKER, 5, 0, 0, 20, 0, 0
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_SE_PLAYER_1
-    CallDfc70 2, 15, 0, 0, 0
+    PaletteFade 2, 15, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

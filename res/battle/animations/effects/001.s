@@ -10,7 +10,7 @@ Effect001:
     McssCameraMode 0, 0
     CameraMove 2, 0xa000, 0x1000, 0x10000, 0x6000, 0x2000, 0x10000, 32, 0, 32
     LoadVar EFFVM_VAR_TRAINER_TYPE
-    CallDisplay -1, 8, -61440, -45056, 0
+    SetTrainer -1, 8, -61440, -45056, 0
     IfPokeExists 1, FALSE, Effect001_00BE
     McssScale 1, 1, 0x800, 0x800, 12, 2, 0
 

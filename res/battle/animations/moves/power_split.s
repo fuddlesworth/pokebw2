@@ -8,7 +8,7 @@
 PowerSplit:
     CameraMovePreset 1, 9, 10, 0, 6
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     ParticleLoad 563
     EmitterMove 563, 0, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x1e000, 0x1000, 0x1000, 0x1000, 0
     EmitterMove 563, 0, 1, EFFVM_EMIT_DEFENDER, EFFVM_EMIT_ATTACKER, 0x2000, 0x1e000, -0x1000, 0x1000, 0x1000, 0
@@ -40,7 +40,7 @@ PowerSplit:
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 0, 1
     CameraMovePreset 1, 8, 10, 0, 6
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     McssCameraMode 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

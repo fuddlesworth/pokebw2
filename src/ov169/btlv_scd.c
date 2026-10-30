@@ -547,10 +547,10 @@ void BtlvScd_CreateInput(BtlvScd *scd) {
     u32 battleType = BtlSetup_GetBattleType(scd->mainModule);
     PaletteFade *paletteFade = BtlvEffect_GetPaletteFade();
     u8 multiMode = GetMultiMode(scd->mainModule);
-    u32 fileSet = GetStudioMode(scd->mainModule);
+    u32 studioMode = GetStudioMode(scd->mainModule);
 
     scd->input = BtlvInput_CreateForBattle(gameData, rule, battleType, paletteFade, scd->font, &scd->keyCursorFlag,
-                                           scd->scdState, multiMode, fileSet, scd->typeCount, scd->typeMask,
+                                           scd->scdState, multiMode, studioMode, scd->typeCount, scd->typeMask,
                                            scd->noCancel, scd->heapId);
     GFL_BGSysSetBGEnabledB(0x10, TRUE);
     BtlvScd_Nop(scd);

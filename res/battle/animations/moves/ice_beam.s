@@ -8,7 +8,7 @@
 IceBeam:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 12, 1, 32592
+    PaletteFade 4, 0, 12, 1, 32592
     WaitFrames 20
     CameraMovePreset 1, 11, 32, 0, 22
     SetYield FALSE
@@ -28,7 +28,7 @@ IceBeam:
     WaitFrames 10
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 3
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 1, 32592
+    PaletteFade 4, 12, 0, 1, 32592
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
     Wait EFFVM_WAIT_ALL

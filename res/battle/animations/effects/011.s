@@ -9,7 +9,7 @@ Effect011:
     McssCameraMode 0, 0
     SetYield FALSE
     CameraMove 2, 0xa000, 0x1000, 0x10000, 0x6000, 0x2000, 0x10000, 32, 0, 32
-    CallDisplay 38, 8, -61440, -45056, 0
+    SetTrainer 38, 8, -61440, -45056, 0
     IfPokeExists 1, FALSE, Effect011_00B8
     McssScale 1, 1, 0x800, 0x800, 12, 2, 0
 

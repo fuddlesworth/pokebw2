@@ -7,7 +7,7 @@
 
 Disable:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 4, 0, 12, 4, 21140
+    PaletteFade 4, 0, 12, 4, 21140
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W319_01, 1, EFFVM_ATTACKER, 0, 0, 110, 0, 0, 0
@@ -25,6 +25,6 @@ Disable:
     McssScale EFFVM_DEFENDER, 2, 0x4cd, 0x4cd, 10, 1, 1
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 12, 0, 3, 0
-    CallDfc70 4, 12, 0, 4, 21140
+    PaletteFade 4, 12, 0, 4, 21140
     Wait EFFVM_WAIT_ALL
     End

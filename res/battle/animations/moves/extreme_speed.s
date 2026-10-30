@@ -10,12 +10,12 @@ ExtremeSpeed:
     McssSetValue EFFVM_ALL, 1
     Wait EFFVM_WAIT_ALL
     LoadBg 111
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 13, 0, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 13, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 1
-    CallDfd74 0, 1
-    CallDfc70 3, 13, 0, 0, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
+    PaletteFade 3, 13, 0, 0, 0
     BgMove 4, 36, 0, 200, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W245_BUCKL, 1, EFFVM_ATTACKER, 0, 0, 90, 0, 0, 0
@@ -90,12 +90,12 @@ ExtremeSpeed:
     WaitFrames 3
     McssSetMode EFFVM_ATTACKER, 4
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     WaitFrames 16
-    CallDfc70 2, 16, 0, 0, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfd74 2, 1
+    PaletteFade 2, 16, 0, 0, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    SetVanish 2, 1
     CameraMovePreset 1, 17, 24, 0, 0
     McssSetValue EFFVM_ALL, 0
     Wait EFFVM_WAIT_ALL

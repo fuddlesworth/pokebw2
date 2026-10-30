@@ -8,7 +8,7 @@
 Sandstorm:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 14, 1, 268
+    PaletteFade 4, 0, 14, 1, 268
     SetYield FALSE
     PlaySE SEQ_SE_W239_01, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_ATTACKER, 100, 0, 0, 0, 0, 0
@@ -24,7 +24,7 @@ Sandstorm:
     EmitterAdd 371, 1, EFFVM_EMIT_ATTACKER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 371, 2, EFFVM_EMIT_ATTACKER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 44
-    CallDfc70 4, 14, 0, 1, 268
+    PaletteFade 4, 14, 0, 1, 268
     McssPalFade EFFVM_ATTACKER, 10, 0, 1, 0x10c
     McssPalFade EFFVM_DEFENDER, 10, 0, 1, 0x10c
     Wait EFFVM_WAIT_ALL

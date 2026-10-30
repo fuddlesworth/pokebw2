@@ -7,7 +7,7 @@
 
 Outrage:
     CameraMovePreset 1, 14, 24, 0, 0
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetValue EFFVM_ALL, 1
     CameraShake 0, 0x333, 0, 2, 0, 13
@@ -25,11 +25,11 @@ Outrage:
     LoadBg 93
     BgPalAnim 12, 12
     BgWave 0, 0x4000, 16, 120, 0, 0
-    CallDfd74 2, 0
+    SetVanish 2, 0
     WaitFrames 6
-    CallDfc70 3, 16, 0, 2, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    PaletteFade 3, 16, 0, 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
     BgMove 1, 320, 0, 120, 0, 0
     ParticleLoad 370
     EmitterAddOrtho 370, 0, EFFVM_EMIT_ATTACKER, 8, 0, 0x2000, 0, 0x800, 0x1000, 0x800, 0x1000
@@ -39,13 +39,13 @@ Outrage:
     McssPalFade EFFVM_DEFENDER, 0, 13, 0, 0x1f
     McssMoveXY EFFVM_DEFENDER, 2, 0x800, 0, 2, 1, 10
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     McssPalFade EFFVM_DEFENDER, 13, 0, 0, 0x1f
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 0, 0
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    PaletteFade 4, 16, 0, 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetValue EFFVM_ALL, 0
     CameraMovePreset 1, 17, 24, 0, 0

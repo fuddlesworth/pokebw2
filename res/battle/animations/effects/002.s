@@ -10,9 +10,9 @@ Effect002:
     SetYield FALSE
     CameraMove 2, 0xa000, 0x1000, 0x10000, 0x6000, 0x2000, 0x10000, 32, 0, 32
     LoadVar EFFVM_VAR_TRAINER_TYPE
-    CallDisplay -1, 10, -61440, -45056, 0
+    SetTrainer -1, 10, -61440, -45056, 0
     LoadVar EFFVM_VAR_TRAINER_TYPE + 2
-    CallDisplay -1, 12, -36864, -45056, -4096
+    SetTrainer -1, 12, -36864, -45056, -4096
     IfPokeExists 1, FALSE, Effect002_00DA
     McssScale 1, 1, 0x800, 0x800, 12, 2, 0
 

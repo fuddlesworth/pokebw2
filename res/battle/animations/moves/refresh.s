@@ -6,7 +6,7 @@
     ScriptVariant Refresh
 
 Refresh:
-    CallDfc70 4, 0, 12, 2, 32767
+    PaletteFade 4, 0, 12, 2, 32767
     CameraMovePreset 1, 9, 16, 0, 8
     SetYield FALSE
     PlaySE SEQ_SE_W129_04, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
@@ -18,7 +18,7 @@ Refresh:
     EmitterAdd 458, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 12, 0, 2, 32767
+    PaletteFade 4, 12, 0, 2, 32767
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

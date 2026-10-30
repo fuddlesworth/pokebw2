@@ -7,7 +7,7 @@
 
 ZenHeadbutt:
     CameraMovePreset 1, 9, 10, 0, 6
-    CallDfc70 4, 0, 13, 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W129_04, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -35,6 +35,6 @@ ZenHeadbutt:
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 10, 0, 6
     McssSetVanish EFFVM_ATTACKER, FALSE
-    CallDfc70 4, 13, 0, 2, 0
+    PaletteFade 4, 13, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     End

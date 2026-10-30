@@ -12,12 +12,12 @@ BlueFlare:
     LoadBg 216
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     McssSetValue EFFVM_ALL, 1
     Wait EFFVM_WAIT_ALL
-    CallDfd74 2, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
     ParticleLoad 724
     EmitterAdd 724, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 20
@@ -46,20 +46,20 @@ BlueFlare:
     WaitFrames 140
     BgWave 0, 0x2000, 16, 90, 0, 0
     BgMove 4, 2, 0, 60, 0, 0
-    CallDfc70 3, 16, 0, 1, 0
+    PaletteFade 3, 16, 0, 1, 0
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 4, 0, 6
     EmitterAdd 724, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 724, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 40
     EmitterAdd 724, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 3, 0, 16, 2, 0
+    PaletteFade 3, 0, 16, 2, 0
     WaitFrames 6
     McssPalFade EFFVM_DEFENDER, 8, 0, 2, 0x1f
     WaitFrames 30
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     WaitFrames 2
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetValue EFFVM_ALL, 0
     CameraMovePreset 1, 8, 16, 0, 8

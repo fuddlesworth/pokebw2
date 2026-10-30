@@ -7,7 +7,7 @@
 
 Effect093:
     CameraMove 2, 0x3000, 0, 0x6000, 0, 0, 0, 32, 0, 28
-    CallDfc70 4, 0, 10, 1, 31
+    PaletteFade 4, 0, 10, 1, 31
     McssSetVanish EFFVM_ATTACKER, TRUE
     SetYield FALSE
     PlaySE SEQ_SE_BE_SE_016, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
@@ -21,6 +21,6 @@ Effect093:
     McssPalFade EFFVM_ATTACKER, 10, 0, 1, 0x1f
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
-    CallDfc70 4, 10, 0, 1, 31
+    PaletteFade 4, 10, 0, 1, 31
     Wait EFFVM_WAIT_ALL
     End

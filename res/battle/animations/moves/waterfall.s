@@ -7,13 +7,13 @@
 
 Waterfall:
     LoadBg 63
-    CallDfc70 2, 0, 16, 1, 0
+    PaletteFade 2, 0, 16, 1, 0
     CameraMovePreset 1, 9, 16, 0, 12
     WaitFrames 24
-    CallDfc70 3, 16, 0, 1, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfd74 2, 0
+    PaletteFade 3, 16, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    SetVanish 2, 0
     BgMove 4, 0, 8, 140, 1, 0
     BgWave 0, 0x2000, 12, 140, 0, 0
     SetYield FALSE
@@ -44,12 +44,12 @@ Waterfall:
     WaitFrames 30
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x7fff
     WaitFrames 30
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     WaitFrames 16
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 4, 16, 0, 0, 0
-    CallDfd74 2, 1
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 4, 16, 0, 0, 0
+    SetVanish 2, 1
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

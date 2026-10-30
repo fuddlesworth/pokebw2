@@ -9,12 +9,12 @@ WaterPulse:
     CameraMovePreset 1, 15, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     LoadBg 147
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 13, 2, 0
-    CallDfd74 0, 1
+    SetVanish 2, 0
+    PaletteFade 4, 0, 13, 2, 0
+    SetVanish 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 1
-    CallDfc70 3, 13, 0, 2, 0
+    SetVanish 1, 1
+    PaletteFade 3, 13, 0, 2, 0
     BgMove 4, 1, 0, 120, 0, 0
     BgWave 1, 0x1800, 16, 120, 0, 0
     PlaySE SEQ_SE_W124_01, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
@@ -38,13 +38,13 @@ WaterPulse:
     McssMoveXY EFFVM_DEFENDER, 2, 0x333, 0, 3, 1, 4
     McssPalFade EFFVM_DEFENDER, 0, 10, 3, 0x7e85
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 0, 13, 2, 0
+    PaletteFade 3, 0, 13, 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
+    SetVanish 1, 0
     McssPalFade EFFVM_DEFENDER, 10, 0, 3, 0x7e85
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 13, 0, 2, 0
-    CallDfd74 0, 0
+    PaletteFade 4, 13, 0, 2, 0
+    SetVanish 0, 0
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End

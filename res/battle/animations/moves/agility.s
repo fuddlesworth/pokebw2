@@ -20,25 +20,25 @@ Agility:
     MoveSE 2, 0, 1, 110, 0, 60, 30, 0, 0
     SetYield TRUE
     LoadBg 51
-    CallDfc70 2, 0, 16, 0, 0
+    PaletteFade 2, 0, 16, 0, 0
     WaitFrames 16
     ParticleLoad 269
     EmitterAdd 269, 0, EFFVM_EMIT_ATTACKER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 269, 1, EFFVM_EMIT_ATTACKER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 3, 16, 0, 0, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfd74 2, 0
+    PaletteFade 3, 16, 0, 0, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    SetVanish 2, 0
     BgMove 4, 60, 0, 80, 1, 0
     WaitFrames 6
     McssCircle EFFVM_ATTACKER, 3, 0, 0x1800, 0x1800, 0x14000, 0, 0x2000, 0
     WaitFrames 40
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     WaitFrames 16
-    CallDfc70 2, 16, 0, 0, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfd74 2, 1
+    PaletteFade 2, 16, 0, 0, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    SetVanish 2, 1
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

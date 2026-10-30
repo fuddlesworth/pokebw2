@@ -6,7 +6,7 @@
     ScriptVariant DrainPunch
 
 DrainPunch:
-    CallDfc70 4, 0, 10, 0, 0
+    PaletteFade 4, 0, 10, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W002_01, 1, EFFVM_DEFENDER, 0, -1000, 120, 0, 0, 0
@@ -34,7 +34,7 @@ DrainPunch:
     Wait EFFVM_WAIT_PARTICLES
     CameraMovePreset 1, 8, 10, 0, 6
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 10, 0, 0, 0
+    PaletteFade 4, 10, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

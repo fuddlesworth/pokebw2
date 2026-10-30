@@ -13,7 +13,7 @@ Spite:
     MoveSE 2, 0, 1, 40, 0, 130, 20, 0, 0
     SetYield TRUE
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 0, 12, 1, 0x7fff
     SetYield FALSE
@@ -31,7 +31,7 @@ Spite:
     McssMoveXY EFFVM_DEFENDER, 2, 0, 0x4cd, 1, 2, 2
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0x7fff
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE

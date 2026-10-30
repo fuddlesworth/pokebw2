@@ -319,7 +319,7 @@ static u32 PdcMain_ProcBag(PdcMain *work) {
         break;
     case PDC_BAG_WAIT_CALL:
         if (PdcMsg_Step(work->msg)) {
-            BtlvEffect_StartEffect23A(1, work->bag.item, 4, 1, 0);
+            BtlvEffect_StartBallThrow(1, work->bag.item, 4, 1, 0);
             work->seq++;
         }
         break;

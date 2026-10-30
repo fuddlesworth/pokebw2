@@ -6,7 +6,7 @@
     ScriptVariant SeedFlare
 
 SeedFlare:
-    CallDfc70 4, 0, 12, 0, 32767
+    PaletteFade 4, 0, 12, 0, 32767
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -41,7 +41,7 @@ SeedFlare:
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 0, 32767
+    PaletteFade 4, 12, 0, 0, 32767
     PlaySE SEQ_SE_DUMMY5, 2, EFFVM_DEFENDER, 0, 0, 0, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_DEFENDER, 0, 0, 0, 0, 0, 0
     Wait EFFVM_WAIT_ALL

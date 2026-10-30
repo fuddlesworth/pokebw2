@@ -7,7 +7,7 @@
 
 EchoedVoice:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 4, 0, 10, 2, 32767
+    PaletteFade 4, 0, 10, 2, 32767
     Wait EFFVM_WAIT_CAMERA
     SetYield FALSE
     PlaySE SEQ_SE_W103_01, 1, EFFVM_ATTACKER, 0, -1000, 120, 0, 0, 0
@@ -26,7 +26,7 @@ EchoedVoice:
     McssScale EFFVM_DEFENDER, 2, 0x333, -0x333, 6, 0, 2
     Wait EFFVM_WAIT_MCSS
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 10, 0, 2, 32767
+    PaletteFade 4, 10, 0, 2, 32767
     CameraMovePreset 1, 8, 10, 0, 8
     Wait EFFVM_WAIT_ALL
     End

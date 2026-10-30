@@ -7,7 +7,7 @@
 
 DestinyBond:
     CameraMove 2, 0x3000, 0, 0x5000, 0, 0, 0, 32, 0, 28
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W124_01, 1, EFFVM_ATTACKER, 0, -800, 115, 0, 0, 0
@@ -33,7 +33,7 @@ DestinyBond:
     McssPalFade EFFVM_ATTACKER, 10, 0, 2, 0x7bde
     McssPalFade EFFVM_DEFENDER, 10, 0, 2, 0x7bde
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 12
     Wait EFFVM_WAIT_ALL
     End

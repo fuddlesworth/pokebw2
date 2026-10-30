@@ -6,7 +6,7 @@
     ScriptVariant Absorb
 
 Absorb:
-    CallDfc70 4, 0, 12, 0, 0
+    PaletteFade 4, 0, 12, 0, 0
     CameraMovePreset 1, 14, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -27,7 +27,7 @@ Absorb:
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 12, 0, 0, 0x7fff
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 0, 0
+    PaletteFade 4, 12, 0, 0, 0
     CameraMovePreset 1, 8, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End

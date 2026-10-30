@@ -6,8 +6,8 @@
     ScriptVariant RoarOfTime
 
 RoarOfTime:
-    CallDfc70 4, 0, 13, 2, 0
-    CallDfd74 0, 1
+    PaletteFade 4, 0, 13, 2, 0
+    SetVanish 0, 1
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 9, 16, 0, 8
     SetYield FALSE
@@ -42,9 +42,9 @@ RoarOfTime:
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 2, 0, 6
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 13, 0, 2, 0
+    PaletteFade 4, 13, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfd74 0, 0
+    SetVanish 0, 0
     PlaySE SEQ_SE_DUMMY5, 2, EFFVM_DEFENDER, 0, 0, 0, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

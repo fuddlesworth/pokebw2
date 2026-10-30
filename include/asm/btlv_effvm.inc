@@ -65,12 +65,12 @@
     // The variables (BtlvEffvm_GetVariable); those of each position take it added, from 0 to 7
     .set EFFVM_VAR_WEIGHT, 0
     .set EFFVM_VAR_ATTACKER_WEIGHT, 8
-    .set EFFVM_VAR_PARAM_0, 9
+    .set EFFVM_VAR_TARGET, 9
     .set EFFVM_VAR_VARIANT, 10
     .set EFFVM_VAR_PARAM_2, 11
-    .set EFFVM_VAR_PARAM_3, 12
-    .set EFFVM_VAR_PARAM_4, 13
-    .set EFFVM_VAR_PARAM_8, 14
+    .set EFFVM_VAR_SHAKES, 12
+    .set EFFVM_VAR_CAUGHT, 13
+    .set EFFVM_VAR_CRITICAL, 14
     .set EFFVM_VAR_ITEM, 15
     .set EFFVM_VAR_VALUE, 16
     .set EFFVM_VAR_ATTACKER, 17
@@ -468,13 +468,14 @@ ScriptStart:
     .4byte \targets
     .endm
 
-    .macro CallDisplay arg0, target, arg2, arg3, arg4
+    // Shows a trainer at a position; trainer_type -1 takes the script's value
+    .macro SetTrainer trainer_type, target, x, y, z
     EffvmCommand 32
-    .4byte \arg0
+    .4byte \trainer_type
     .4byte \target
-    .4byte \arg2
-    .4byte \arg3
-    .4byte \arg4
+    .4byte \x
+    .4byte \y
+    .4byte \z
     .endm
 
     .macro TrainerMove trainer, type, x, y, z, frames, wait, times
@@ -549,19 +550,21 @@ ScriptStart:
     .4byte \unused5
     .endm
 
-    .macro CallDfc70 arg0, arg1, arg2, arg3, arg4
+    // Fades the stage's, the field's or the palettes' colors (BtlvEffect_StartPaletteFade)
+    .macro PaletteFade fade, evy, target_evy, wait, color
     EffvmCommand 42
-    .4byte \arg0
-    .4byte \arg1
-    .4byte \arg2
-    .4byte \arg3
-    .4byte \arg4
+    .4byte \fade
+    .4byte \evy
+    .4byte \target_evy
+    .4byte \wait
+    .4byte \color
     .endm
 
-    .macro CallDfd74 arg0, arg1
+    // Hides or shows the stage, the field or BG 3 (BtlvEffect_SetVanish)
+    .macro SetVanish what, hide
     EffvmCommand 43
-    .4byte \arg0
-    .4byte \arg1
+    .4byte \what
+    .4byte \hide
     .endm
 
     // Opens or closes window 0 step by step
@@ -754,14 +757,14 @@ ScriptStart:
     .endm
 
     // Plays the Pokemon's cries
-    .macro PlayCry targets, arg2, arg3, arg4, arg5, arg6, delay
+    .macro PlayCry targets, speed, volume, chorus_volume, chorus_speed, reverse, delay
     EffvmCommand 67
     .4byte \targets
-    .4byte \arg2
-    .4byte \arg3
-    .4byte \arg4
-    .4byte \arg5
-    .4byte \arg6
+    .4byte \speed
+    .4byte \volume
+    .4byte \chorus_volume
+    .4byte \chorus_speed
+    .4byte \reverse
     .4byte \delay
     .endm
 

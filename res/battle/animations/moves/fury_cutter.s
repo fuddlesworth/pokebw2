@@ -6,15 +6,15 @@
     ScriptVariant FuryCutter
 
 FuryCutter:
-    CallDfc70 4, 0, 16, 0, 0
+    PaletteFade 4, 0, 16, 0, 0
     PlaySE SEQ_SE_W179_01, 1, EFFVM_DEFENDER, 0, 200, 100, 0, 0, 0
     Wait EFFVM_WAIT_STAGE_FIELD_FADE
-    CallDfc70 4, 16, 0, 0, 0
+    PaletteFade 4, 16, 0, 0, 0
     Wait EFFVM_WAIT_STAGE_FIELD_FADE
-    CallDfc70 4, 0, 16, 0, 0
+    PaletteFade 4, 0, 16, 0, 0
     PlaySE SEQ_SE_W179_01, 2, EFFVM_DEFENDER, 0, 200, 100, 0, 0, 0
     Wait EFFVM_WAIT_STAGE_FIELD_FADE
-    CallDfc70 4, 16, 0, 0, 0
+    PaletteFade 4, 16, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL

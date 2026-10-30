@@ -8,7 +8,7 @@
 VoltTackle:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 13, 1, 0
+    PaletteFade 4, 0, 13, 1, 0
     ParticleLoad 521
     EmitterAdd 521, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 521, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -42,11 +42,11 @@ VoltTackle:
     SetYield TRUE
     WaitFrames 20
     LoadBg 141
-    CallDfc70 3, 13, 0, 0, 0
+    PaletteFade 3, 13, 0, 0, 0
     BgPalAnim 22, 6
-    CallDfd74 2, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    SetVanish 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
     SetYield FALSE
     PlaySE SEQ_SE_W255_BU, 1, EFFVM_DEFENDER, 0, 0, 100, 0, 0, 0
     PlaySE SEQ_SE_W307_EXP, 2, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
@@ -57,10 +57,10 @@ VoltTackle:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x666, 0, 1, 2, 6
     WaitFrames 40
-    CallDfc70 4, 13, 0, 1, 0
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    PaletteFade 4, 13, 0, 1, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

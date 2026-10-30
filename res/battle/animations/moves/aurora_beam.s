@@ -18,14 +18,14 @@ AuroraBeam:
     PanSE 1, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 0, 30, 0, 0
     PanSE 2, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 0, 30, 0, 0
     SetYield TRUE
-    CallDfc70 2, 0, 13, 2, 0
+    PaletteFade 2, 0, 13, 2, 0
     WaitFrames 20
     CameraMovePreset 1, 11, 10, 0, 8
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x333, 0, 2, 1, 12
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 10, 0, 8
-    CallDfc70 2, 13, 0, 2, 0
+    PaletteFade 2, 13, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
     End

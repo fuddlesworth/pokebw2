@@ -8,7 +8,7 @@
 SimpleBeam:
     CameraMovePreset 1, 20, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 0, 8, 2, 0x7fff
     McssScale EFFVM_ATTACKER, 2, 0x19a, -0x19a, 2, 0, 6
@@ -51,6 +51,6 @@ SimpleBeam:
     McssPalFade EFFVM_DEFENDER, 8, 0, 2, 0x7fff
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     End

@@ -7,7 +7,7 @@
 
 EnergyBall:
     CameraMovePreset 1, 9, 16, 0, 12
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     McssSetVanish EFFVM_ATTACKER, TRUE
     SetYield FALSE
     PlaySE SEQ_SE_W278_01, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
@@ -35,7 +35,7 @@ EnergyBall:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 3
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

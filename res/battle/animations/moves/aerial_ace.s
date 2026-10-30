@@ -8,7 +8,7 @@
 AerialAce:
     CameraMovePreset 1, 14, 24, 0, 0
     LoadBg 135
-    CallDfc70 4, 0, 15, 1, 0
+    PaletteFade 4, 0, 15, 1, 0
     SetYield FALSE
     PlaySE SEQ_SE_W002_01, 2, EFFVM_DEFENDER, 10, 600, 120, 0, 0, 0
     PlaySE SEQ_SE_W010_01, 2, EFFVM_DEFENDER, 20, 800, 120, 0, 0, 0
@@ -17,10 +17,10 @@ AerialAce:
     SetYield TRUE
     McssCircle EFFVM_ATTACKER, 2, 0, 0x1000, 0x1000, 0xa000, 0, 0x1000, 0
     McssPalFade EFFVM_DEFENDER, 0, 12, 2, 0
-    CallDfd74 2, 0
+    SetVanish 2, 0
     WaitFrames 6
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     ParticleLoad 506
     EmitterAddOrtho 506, 3, EFFVM_EMIT_DEFENDER, 8, 0, 0x3000, 0, 0x800, 0x1000, 0x800, 0x1000
     EmitterAddOrtho 506, 4, EFFVM_EMIT_DEFENDER, 8, 0, 0x3000, 0, 0x800, 0x1000, 0x800, 0x1000
@@ -30,16 +30,16 @@ AerialAce:
     McssSetVanish EFFVM_DEFENDER, TRUE
     WaitFrames 6
     BgPalAnim 20, 2
-    CallDfc70 3, 15, 0, 1, 0
+    PaletteFade 3, 15, 0, 1, 0
     WaitFrames 10
     McssMoveXY EFFVM_DEFENDER, 2, -0x1000, 0, 2, 1, 2
     WaitFrames 16
-    CallDfc70 3, 0, 15, 0, 0
+    PaletteFade 3, 0, 15, 0, 0
     WaitFrames 16
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     McssPalFade EFFVM_DEFENDER, 15, 0, 2, 0
-    CallDfc70 4, 15, 0, 0, 0
+    PaletteFade 4, 15, 0, 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL

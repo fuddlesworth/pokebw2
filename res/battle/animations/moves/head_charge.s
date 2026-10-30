@@ -14,9 +14,9 @@ HeadCharge:
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_ATTACKER, 41, 0, 0, 0, 0, 0
     SetYield TRUE
     LoadBg 12
-    CallDfd74 2, 0
+    SetVanish 2, 0
     McssCircle EFFVM_ATTACKER, 2, 2, 0, 0x2000, 0xa000, 0, 0x1000, 0
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 11, 16, 0, 12
     SetYield FALSE
@@ -31,14 +31,14 @@ HeadCharge:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssScale EFFVM_DEFENDER, 2, 0x666, -0x666, 6, 0, 1
     McssMoveXY EFFVM_DEFENDER, 2, 0x1000, 0, 3, 0, 10
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 16, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 16, 0, 1, 0
     BgPalAnim 0, 3
     WaitFrames 40
-    CallDfc70 4, 16, 0, 1, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    PaletteFade 4, 16, 0, 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL

@@ -8,7 +8,7 @@
 
 FutureSight:
     CameraMovePreset 1, 15, 24, 0, 0
-    CallDfc70 4, 0, 13, 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W248_TIKIRIN, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -17,7 +17,7 @@ FutureSight:
     McssMoveXY EFFVM_ATTACKER, 2, 0x800, 0, 4, 0, 3
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 10, 0, 2, 0x7fff
-    CallDfc70 4, 13, 0, 2, 0
+    PaletteFade 4, 13, 0, 2, 0
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     End
@@ -25,7 +25,7 @@ FutureSight:
 FutureSight_Variant1:
     CameraMovePreset 1, 16, 24, 0, 0
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 2, 0, 12
-    CallDfc70 4, 0, 13, 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     PlaySE SEQ_SE_W307_03, 0, EFFVM_PAN_CENTER, 0, 0, 120, 0, 0, 0
     McssSetVanish EFFVM_DEFENDER, TRUE
     Wait EFFVM_WAIT_ALL
@@ -40,7 +40,7 @@ FutureSight_Variant1:
     McssPalFade EFFVM_DEFENDER, 10, 0, 2, 0x7fff
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 2, 0, 4
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     CameraMovePreset 1, 17, 24, 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

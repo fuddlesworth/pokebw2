@@ -10,12 +10,12 @@ Effect072:
     CameraMovePreset 1, 15, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     LoadBg 189
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 16, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 13, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 13, 0, 1, 0
     BgMove 4, 0, 24, 180, 0, 0
     McssSetValue EFFVM_ALL, 1
     ParticleLoad 643
@@ -47,12 +47,12 @@ Effect072:
     OrbitEmittersAlt 643, 2, 1, 0x2000, 0x2000, 0, 60, 0, 3, 0
     OrbitEmittersAlt 643, 0, 1, 0x2000, 0x2000, 0, 60, 0, 3, 0
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 16, 0, 0, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfd74 2, 1
+    PaletteFade 2, 16, 0, 0, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    SetVanish 2, 1
     McssPalFade EFFVM_ATTACKER, 10, 0, 1, 0x1f
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetValue EFFVM_ALL, 0

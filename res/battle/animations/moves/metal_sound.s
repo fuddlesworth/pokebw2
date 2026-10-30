@@ -8,7 +8,7 @@
 MetalSound:
     McssSetValue EFFVM_ALL, 1
     CameraMovePreset 1, 9, 12, 0, 8
-    CallDfc70 4, 0, 12, 3, 0
+    PaletteFade 4, 0, 12, 3, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W319_SWARD, 1, EFFVM_ATTACKER, 10, 0, 127, 0, 0, 0
@@ -29,7 +29,7 @@ MetalSound:
     WaitFrames 15
     EmitterAdd 493, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 3, 0
+    PaletteFade 4, 12, 0, 3, 0
     CameraMovePreset 1, 8, 12, 0, 8
     McssSetValue EFFVM_ALL, 0
     Wait EFFVM_WAIT_ALL

@@ -8,7 +8,7 @@
 WildCharge:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 2, 0, 8, 1, 13311
+    PaletteFade 2, 0, 8, 1, 13311
     McssPalFade EFFVM_ATTACKER, 0, 14, 1, 0x32d6
     ParticleLoad 379
     SetYield FALSE
@@ -21,16 +21,16 @@ WildCharge:
     EmitterAdd 379, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 379, 2, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 30
-    CallDfc70 2, 8, 0, 1, 13311
+    PaletteFade 2, 8, 0, 1, 13311
     McssPalFade EFFVM_ATTACKER, 14, 0, 1, 0x32d6
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 8, 0, 13311
+    PaletteFade 2, 0, 8, 0, 13311
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 0, 13311
+    PaletteFade 2, 8, 0, 0, 13311
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 8, 0, 13311
+    PaletteFade 2, 0, 8, 0, 13311
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 0, 13311
+    PaletteFade 2, 8, 0, 0, 13311
     McssCircle EFFVM_ATTACKER, 0, 0, 0x4000, 0, 0xa000, 0, 0x1000, 0
     Wait EFFVM_WAIT_CAMERA
     CameraMovePreset 1, 11, 16, 0, 12

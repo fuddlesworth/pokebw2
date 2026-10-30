@@ -14,7 +14,7 @@ QuiverDance:
     SetYield TRUE
     CameraMovePreset 1, 9, 12, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 8, 2, 0
+    PaletteFade 2, 0, 8, 2, 0
     McssCircle EFFVM_ATTACKER, 2, 2, 0x2000, 0x2000, 0xa000, 0, 0x3000, 0
     WaitFrames 10
     ParticleLoad 658
@@ -25,7 +25,7 @@ QuiverDance:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 2, 0
+    PaletteFade 2, 8, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL

@@ -8,7 +8,7 @@
 Thunderbolt:
     CameraMovePreset 1, 11, 10, 0, 8
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     WaitFrames 20
     SetYield FALSE
     PlaySE SEQ_SE_W084_01, 1, EFFVM_DEFENDER, 0, 300, 120, 0, 0, 0
@@ -31,7 +31,7 @@ Thunderbolt:
     WaitFrames 50
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 10, 0, 8

@@ -6,7 +6,7 @@
     ScriptVariant Encore
 
 Encore:
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -21,7 +21,7 @@ Encore:
     EmitterAdd 397, 2, EFFVM_EMIT_DEFENDER, 8, 0xccd, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 10, 0, 3
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

@@ -13,7 +13,7 @@ TechnoBlast:
     CameraMovePreset 1, 9, 16, 0, 8
     WaitFrames 20
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     WaitFrames 30
     SetYield FALSE
     PlaySE SEQ_SE_SYS_68, 1, EFFVM_ATTACKER, 0, -500, 127, 0, 0, 0
@@ -40,7 +40,7 @@ TechnoBlast:
     EmitterAdd 715, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 6, 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
@@ -50,7 +50,7 @@ TechnoBlast_Variant1:
     CameraMovePreset 1, 9, 16, 0, 8
     WaitFrames 20
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     WaitFrames 30
     SetYield FALSE
     PlaySE SEQ_SE_SYS_68, 1, EFFVM_ATTACKER, 0, -500, 127, 0, 0, 0
@@ -77,7 +77,7 @@ TechnoBlast_Variant1:
     EmitterAdd 716, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 6, 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
@@ -87,7 +87,7 @@ TechnoBlast_Variant2:
     CameraMovePreset 1, 9, 16, 0, 8
     WaitFrames 20
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     WaitFrames 30
     SetYield FALSE
     PlaySE SEQ_SE_SYS_68, 1, EFFVM_ATTACKER, 0, -500, 127, 0, 0, 0
@@ -114,7 +114,7 @@ TechnoBlast_Variant2:
     EmitterAdd 717, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 6, 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
@@ -124,7 +124,7 @@ TechnoBlast_Variant3:
     CameraMovePreset 1, 9, 16, 0, 8
     WaitFrames 20
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     WaitFrames 30
     SetYield FALSE
     PlaySE SEQ_SE_SYS_68, 1, EFFVM_ATTACKER, 0, -500, 127, 0, 0, 0
@@ -151,7 +151,7 @@ TechnoBlast_Variant3:
     EmitterAdd 718, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 6, 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
@@ -161,7 +161,7 @@ TechnoBlast_Variant4:
     CameraMovePreset 1, 9, 16, 0, 8
     WaitFrames 20
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     WaitFrames 30
     SetYield FALSE
     PlaySE SEQ_SE_SYS_68, 1, EFFVM_ATTACKER, 0, -500, 127, 0, 0, 0
@@ -188,7 +188,7 @@ TechnoBlast_Variant4:
     EmitterAdd 719, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 6, 0, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

@@ -9,13 +9,13 @@ Effect074:
     IfVarConst EFFVM_VAR_ATTACKER_VANISH, EFFVM_CMP_EQ, TRUE, Effect074_0290
     CameraMovePreset 1, 15, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 12, 0, 0
+    PaletteFade 4, 0, 12, 0, 0
     LoadBg 144
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 12, 0, 3, 0
-    CallDfd74 2, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    PaletteFade 3, 12, 0, 3, 0
+    SetVanish 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
     Wait EFFVM_WAIT_BG
     BgMove 1, 60, 0, 120, 0, 0
     ParticleLoad 420
@@ -31,10 +31,10 @@ Effect074:
     WaitFrames 20
     McssPalFade EFFVM_ATTACKER, 12, 0, 2, 0x514a
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 3, 0, 12, 2, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 2, 12, 0, 2, 0
+    PaletteFade 3, 0, 12, 2, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 2, 12, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL

@@ -7,7 +7,7 @@
 
 Sing:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 4, 0, 10, 2, 32767
+    PaletteFade 4, 0, 10, 2, 32767
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W047_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -28,7 +28,7 @@ Sing:
     Wait EFFVM_WAIT_MCSS
     McssPalFade EFFVM_DEFENDER, 6, 0, 2, 0x3c1f
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 10, 0, 2, 32767
+    PaletteFade 4, 10, 0, 2, 32767
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

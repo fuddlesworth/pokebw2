@@ -13,7 +13,7 @@ DracoMeteor:
     EmitterAdd 613, 1, EFFVM_EMIT_DEFENDER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 613, 2, EFFVM_EMIT_DEFENDER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 613, 3, EFFVM_EMIT_DEFENDER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 0, 12, 1, 12288
+    PaletteFade 4, 0, 12, 1, 12288
     PlaySE SEQ_SE_W319_01, 1, EFFVM_DEFENDER, 15, 0, 110, 0, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W157_03, 3, EFFVM_DEFENDER, 70, 0, 120, 0, 0, 0
@@ -44,7 +44,7 @@ DracoMeteor:
     CameraShake 0, 0x4cd, 0, 1, 1, 14
     McssSetVanish EFFVM_DEFENDER, TRUE
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 1, 12288
+    PaletteFade 4, 12, 0, 1, 12288
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12

@@ -6,7 +6,7 @@
     ScriptVariant Detect
 
 Detect:
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 0, 12, 3, 0x7fff
@@ -22,7 +22,7 @@ Detect:
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
     McssPalFade EFFVM_ATTACKER, 12, 0, 3, 0x7fff
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     McssSetVanish EFFVM_ATTACKER, FALSE
     Wait EFFVM_WAIT_ALL
     End

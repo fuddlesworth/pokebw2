@@ -20,9 +20,9 @@ FlareBlitz:
     WaitFrames 30
     McssMoveXY EFFVM_ATTACKER, 2, 0x1000, 0, 3, 2, 1
     LoadBg 156
-    CallDfc70 3, 0, 13, 0, 0
-    CallDfd74 2, 0
-    CallDfc70 2, 0, 13, 1, 0
+    PaletteFade 3, 0, 13, 0, 0
+    SetVanish 2, 0
+    PaletteFade 2, 0, 13, 1, 0
     Wait EFFVM_WAIT_ALL
     PlaySE SEQ_SE_W307_01, 0, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
     MoveSE 0, 0, 0, 0, 500, 0, 60, 0, 0
@@ -38,22 +38,22 @@ FlareBlitz:
     EmitterAdd 573, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 573, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 30
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     Wait EFFVM_WAIT_BG
-    CallDfc70 3, 13, 0, 2, 0
+    PaletteFade 3, 13, 0, 2, 0
     WaitFrames 2
     BgPalAnim 26, 2
     BgWave 0, 0x3000, 16, 60, 0, 0
     McssPalFade EFFVM_DEFENDER, 0, 13, 0, 0
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 2, 1, 2
     WaitFrames 45
-    CallDfc70 3, 0, 13, 2, 0
+    PaletteFade 3, 0, 13, 2, 0
     WaitFrames 10
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     McssPalFade EFFVM_DEFENDER, 13, 0, 0, 0
-    CallDfc70 4, 13, 0, 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     CameraMovePreset 1, 8, 12, 0, 8
     Wait EFFVM_WAIT_ALL
     End

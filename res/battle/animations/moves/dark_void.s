@@ -10,12 +10,12 @@ DarkVoid:
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     LoadBg 192
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 13, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 13, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 13, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 13, 0, 1, 0
     BgMove 4, 0, -1, 240, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W464_02, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -38,12 +38,12 @@ DarkVoid:
     WaitFrames 1
     McssSetMode EFFVM_DEFENDER, 3
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 4, 0, 15, 1, 0
+    PaletteFade 4, 0, 15, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 15, 0, 1, 0
+    PaletteFade 4, 15, 0, 1, 0
     McssSetMode EFFVM_DEFENDER, 4
     McssSetValue EFFVM_ALL, 0
     CameraMovePreset 1, 8, 16, 0, 8

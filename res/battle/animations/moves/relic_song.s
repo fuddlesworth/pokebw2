@@ -7,7 +7,7 @@
 
 RelicSong:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 4, 0, 10, 2, 32767
+    PaletteFade 4, 0, 10, 2, 32767
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W547_INIMELO, 1, EFFVM_ATTACKER, 0, -500, 80, 0, 0, 0
@@ -58,7 +58,7 @@ RelicSong:
     Wait EFFVM_WAIT_MCSS
     CameraMovePreset 1, 8, 10, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 10, 0, 2, 32767
+    PaletteFade 4, 10, 0, 2, 32767
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

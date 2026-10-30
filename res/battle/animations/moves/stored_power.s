@@ -11,7 +11,7 @@ StoredPower:
     PlaySE SEQ_SE_FLD_05, 1, EFFVM_ATTACKER, 0, -1000, 70, 0, 0, 0
     PlaySE SEQ_SE_SYS_73, 1, EFFVM_ATTACKER, 42, 0, 127, 0, 0, 0
     SetYield TRUE
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     McssPalFade EFFVM_ATTACKER, 0, 10, 0, 0x1f
     Wait EFFVM_WAIT_ALL
     ParticleLoad 672
@@ -20,7 +20,7 @@ StoredPower:
     McssPalFade EFFVM_ATTACKER, 10, 0, 0, 0x1f
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

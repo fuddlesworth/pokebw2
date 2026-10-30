@@ -19,7 +19,7 @@ Aromatherapy:
     MoveSE 2, 0, 1, 20, 0, 65, 18, 0, 0
     PlaySE SEQ_SE_DUMMY5, 2, EFFVM_ATTACKER, 83, 0, 0, 0, 0, 0
     SetYield TRUE
-    CallDfc70 4, 0, 12, 1, 8896
+    PaletteFade 4, 0, 12, 1, 8896
     WaitFrames 10
     McssSetValue EFFVM_ALL, 1
     WaitFrames 70
@@ -31,7 +31,7 @@ Aromatherapy:
     PlaySE SEQ_SE_W445_YUUWAKU, 2, EFFVM_ATTACKER, 5, 0, 127, 0, 0, 0
     SetYield TRUE
     WaitFrames 40
-    CallDfc70 4, 12, 0, 1, 8896
+    PaletteFade 4, 12, 0, 1, 8896
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0x5ad6
     Wait EFFVM_WAIT_ALL
     McssSetValue EFFVM_ALL, 0

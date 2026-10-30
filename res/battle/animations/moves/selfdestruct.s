@@ -7,14 +7,14 @@
 
 Selfdestruct:
     CameraMovePreset 1, 9, 16, 0, 12
-    CallDfc70 2, 0, 16, 1, 0
+    PaletteFade 2, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
     LoadBg 54
     BgMove 2, 0, 8, 1, 1, 24
     BgPalAnim 4, 5
-    CallDfd74 1, 1
-    CallDfd74 0, 1
-    CallDfd74 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
+    SetVanish 2, 0
     McssSetVanish EFFVM_ATTACKER, TRUE
     SetYield FALSE
     PlaySE SEQ_SE_W121_01, 2, EFFVM_ATTACKER, 10, 0, 100, 0, 0, 0
@@ -36,15 +36,15 @@ Selfdestruct:
     McssMoveXY EFFVM_DEFENDER, 2, 0x800, 0, 2, 0, 3
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0xc
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 16, 0, 0, 0
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    PaletteFade 2, 16, 0, 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 16, 0, 0, 0
+    PaletteFade 3, 16, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

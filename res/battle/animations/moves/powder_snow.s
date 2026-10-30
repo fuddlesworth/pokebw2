@@ -14,7 +14,7 @@ PowderSnow:
     PanSE 1, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 0, 30, 0, 0
     PanSE 2, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 0, 30, 0, 0
     SetYield TRUE
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     ParticleLoad 351
     EmitterMove 351, 0, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0, 0, 0x1000, 0x1000, 0
     WaitFrames 30
@@ -28,7 +28,7 @@ PowderSnow:
     EmitterAdd 351, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 16, 0, 1, 0
+    PaletteFade 4, 16, 0, 1, 0
     McssPalFade EFFVM_DEFENDER, 6, 0, 3, 0x7fff
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

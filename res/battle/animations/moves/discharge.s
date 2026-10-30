@@ -7,7 +7,7 @@
 
 Discharge:
     CameraMovePreset 1, 9, 16, 0, 12
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     McssPalFade EFFVM_ATTACKER, 0, 12, 6, 0x33ff
     SetYield FALSE
     PlaySE SEQ_SE_W027_01, 1, EFFVM_ATTACKER, 10, 0, 120, 0, 0, 0
@@ -38,7 +38,7 @@ Discharge:
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

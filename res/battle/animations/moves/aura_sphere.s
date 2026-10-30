@@ -7,13 +7,13 @@
 
 AuraSphere:
     LoadBg 27
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 15, 2, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 15, 2, 0
     Wait EFFVM_WAIT_ALL
     BgMove 4, -22, 0, 150, 0, 0
-    CallDfd74 1, 1
-    CallDfd74 0, 1
-    CallDfc70 4, 15, 0, 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
+    PaletteFade 4, 15, 0, 2, 0
     SetYield FALSE
     PlaySE SEQ_SE_W157_03, 3, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 3, EFFVM_ATTACKER, 80, 0, 0, 0, 0, 0
@@ -41,14 +41,14 @@ AuraSphere:
     WaitFrames 12
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 2, 1, 1
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 2, 1, 4
-    CallDfc70 4, 0, 15, 2, 0
+    PaletteFade 4, 0, 15, 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 2, 1
+    SetVanish 2, 1
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 15, 0, 2, 0
+    PaletteFade 4, 15, 0, 2, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

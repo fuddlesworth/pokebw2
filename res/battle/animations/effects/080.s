@@ -9,7 +9,7 @@ Effect080:
     LoadBg 228
     SetYield FALSE
     QueueCommands 0, 255, 20560, 5919, 14, 0, 1
-    CallDfd74 2, 0
+    SetVanish 2, 0
     BgSetPriority 0
     Wait EFFVM_WAIT_WINDOW
     BgMove 1, 256, 0, 32, 0, 0
@@ -17,7 +17,7 @@ Effect080:
     WaitFrames 30
     QueueCommands 1, 255, 16990, 5919, 14, 0, 1
     Wait EFFVM_WAIT_WINDOW
-    CallDfd74 2, 1
+    SetVanish 2, 1
     QueueCommands 1, 255, 20305, 5919, 1, 0, 0
     Wait EFFVM_WAIT_WINDOW
     End

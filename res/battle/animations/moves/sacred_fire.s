@@ -7,7 +7,7 @@
 
 SacredFire:
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfc70 4, 0, 16, 0, 0
+    PaletteFade 4, 0, 16, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W221_NOISE, 1, EFFVM_DEFENDER, 0, 200, 120, 0, 0, 0
@@ -17,11 +17,11 @@ SacredFire:
     PlaySE SEQ_SE_W001_01, 1, EFFVM_DEFENDER, 105, -800, 127, 0, 0, 0
     PlaySE SEQ_SE_W307_02, 2, EFFVM_DEFENDER, 95, 500, 127, 0, 0, 0
     SetYield TRUE
-    CallDfc70 3, 16, 0, 2, 0
+    PaletteFade 3, 16, 0, 2, 0
     LoadBg 99
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfd74 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    SetVanish 2, 0
     BgMove 4, 2, 0, 160, 0, 0
     BgWave 0, 0x3000, 16, 160, 0, 0
     ParticleLoad 392
@@ -35,13 +35,13 @@ SacredFire:
     McssPalFade EFFVM_DEFENDER, 0, 13, 0, 0x1f
     McssMoveXY EFFVM_DEFENDER, 2, 0x800, 0, 2, 1, 10
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 3, 0, 16, 2, 0
+    PaletteFade 3, 0, 16, 2, 0
     McssPalFade EFFVM_DEFENDER, 13, 0, 0, 0x1f
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 0, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfd74 2, 1
+    PaletteFade 4, 16, 0, 0, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    SetVanish 2, 1
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL

@@ -7,7 +7,7 @@
 
 Glare:
     CameraMovePreset 1, 9, 16, 0, 12
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     SetYield FALSE
     PlaySE SEQ_SE_W116_01, 1, EFFVM_ATTACKER, 15, 0, 115, 0, 0, 0
     PlaySE SEQ_SE_W319_01, 2, EFFVM_ATTACKER, 40, -200, 100, 0, 0, 0
@@ -19,7 +19,7 @@ Glare:
     WaitFrames 12
     McssScale EFFVM_ATTACKER, 2, 0, 0x4cd, 14, 1, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssSetVanish EFFVM_ATTACKER, FALSE
     CameraMovePreset 1, 8, 16, 0, 12
     Wait EFFVM_WAIT_ALL

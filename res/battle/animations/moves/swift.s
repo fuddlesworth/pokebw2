@@ -6,7 +6,7 @@
     ScriptVariant Swift
 
 Swift:
-    CallDfc70 4, 0, 12, 2, 0
+    PaletteFade 4, 0, 12, 2, 0
     CameraMovePreset 1, 9, 10, 0, 8
     Wait EFFVM_WAIT_ALL
     ParticleLoad 298
@@ -36,7 +36,7 @@ Swift:
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 1, 6
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 10, 0, 8
-    CallDfc70 4, 12, 0, 2, 0
+    PaletteFade 4, 12, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL
     End

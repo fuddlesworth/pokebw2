@@ -21,7 +21,7 @@ SmackDown:
     PlaySE SEQ_SE_W377_02, 1, EFFVM_DEFENDER, 0, 0, 100, 0, 0, 0
     SetYield TRUE
     LoadBg 36
-    CallDfd74 2, 0
+    SetVanish 2, 0
     EmitterAdd 654, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 654, 4, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssSetVanish EFFVM_DEFENDER, TRUE
@@ -31,23 +31,23 @@ SmackDown:
     SetYield TRUE
     McssCircle EFFVM_DEFENDER, 3, 2, 0, 0x1000, 0x8000, 0, 0x1000, 0
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 6, 0, 1
-    CallDfc70 4, 0, 16, 0, 0
+    PaletteFade 4, 0, 16, 0, 0
     WaitFrames 2
     McssSetValue EFFVM_DEFENDER, 1
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 0, 1
+    SetVanish 1, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 16, 0, 0, 0
+    PaletteFade 3, 16, 0, 0, 0
     BgMove 4, 0, 30, 30, 0, 0
     WaitFrames 20
     McssScale EFFVM_DEFENDER, 2, 0xccd, -0xccd, 6, 0, 1
-    CallDfc70 3, 0, 16, 0, 0
+    PaletteFade 3, 0, 16, 0, 0
     EmitterAdd 654, 0, EFFVM_EMIT_DEFENDER, 8, 0x800, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 654, 1, EFFVM_EMIT_DEFENDER, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 2
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 4, 16, 0, 0, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 4, 16, 0, 0, 0
     McssSetValue EFFVM_DEFENDER, 0
     WaitFrames 10
     McssSetVanish EFFVM_DEFENDER, FALSE

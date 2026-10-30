@@ -6,7 +6,7 @@
     ScriptVariant Telekinesis
 
 Telekinesis:
-    CallDfc70 4, 0, 10, 2, 0
+    PaletteFade 4, 0, 10, 2, 0
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 0, 12, 3, 0x7fff
@@ -18,7 +18,7 @@ Telekinesis:
     EmitterAdd 367, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssSetVanish EFFVM_DEFENDER, TRUE
     WaitFrames 20
-    CallDfc70 4, 10, 0, 2, 0
+    PaletteFade 4, 10, 0, 2, 0
     CameraMovePreset 1, 11, 10, 0, 8
     SetYield FALSE
     PlaySE SEQ_SE_W213_01, 1, EFFVM_DEFENDER, 0, -1000, 100, 0, 0, 0

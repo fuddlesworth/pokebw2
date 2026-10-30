@@ -7,16 +7,16 @@
 
 RockWrecker:
     LoadBg 177
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 13, 2, 0
-    CallDfd74 0, 1
+    SetVanish 2, 0
+    PaletteFade 4, 0, 13, 2, 0
+    SetVanish 0, 1
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     BgMove 4, -36, 0, 160, 0, 0
-    CallDfd74 1, 1
+    SetVanish 1, 1
     McssSetValue EFFVM_ATTACKER, 1
     McssSetValue EFFVM_DEFENDER, 1
-    CallDfc70 3, 13, 0, 2, 0
+    PaletteFade 3, 13, 0, 2, 0
     SetYield FALSE
     PlaySE SEQ_SE_W157_01, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_ATTACKER, 70, 0, 0, 0, 0, 0
@@ -46,15 +46,15 @@ RockWrecker:
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssScale EFFVM_DEFENDER, 2, 0x333, -0x333, 2, 1, 4
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 3, 0, 13, 2, 0
+    PaletteFade 3, 0, 13, 2, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
+    SetVanish 1, 0
     McssSetValue EFFVM_ATTACKER, 0
     McssSetValue EFFVM_DEFENDER, 0
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 13, 2, 2, 0
+    PaletteFade 4, 13, 2, 2, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfd74 0, 0
+    SetVanish 0, 0
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

@@ -8,7 +8,7 @@
 FirePunch:
     McssSetValue EFFVM_ALL, 1
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfc70 4, 0, 12, 2, 31
+    PaletteFade 4, 0, 12, 2, 31
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 0, 10, 0, 0x1f
     SetYield FALSE
@@ -28,7 +28,7 @@ FirePunch:
     McssSetValue EFFVM_ALL, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssPalFade EFFVM_DEFENDER, 10, 0, 0, 0x1f
-    CallDfc70 4, 12, 0, 2, 31
+    PaletteFade 4, 12, 0, 2, 31
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

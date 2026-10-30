@@ -8,15 +8,15 @@
 IronDefense:
     CameraMovePreset 1, 9, 16, 0, 12
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 12, 1, 32767
+    PaletteFade 4, 0, 12, 1, 32767
     PlaySE SEQ_SE_W095_01, 0, EFFVM_ATTACKER, 10, 0, 80, 0, 0, 0
     WaitFrames 22
-    CallDfc70 4, 12, 0, 1, 32767
+    PaletteFade 4, 12, 0, 1, 32767
     WaitFrames 22
-    CallDfc70 4, 0, 12, 1, 32767
+    PaletteFade 4, 0, 12, 1, 32767
     PlaySE SEQ_SE_W095_01, 0, EFFVM_ATTACKER, 10, 0, 80, 0, 0, 0
     WaitFrames 22
-    CallDfc70 4, 12, 0, 1, 32767
+    PaletteFade 4, 12, 0, 1, 32767
     SetYield FALSE
     PlaySE SEQ_SE_W112_01, 1, EFFVM_ATTACKER, 5, 300, 115, 0, 0, 0
     PlaySE SEQ_SE_DECIDE3, 2, EFFVM_ATTACKER, 5, 0, 115, 0, 0, 0

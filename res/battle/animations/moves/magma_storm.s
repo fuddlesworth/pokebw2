@@ -11,13 +11,13 @@ MagmaStorm:
     PlaySE SEQ_SE_SDEMO_03, 1, EFFVM_DEFENDER, 0, 0, 127, 0, 0, 0
     SetYield TRUE
     LoadBg 189
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 13, 1, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 13, 1, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 13, 0, 1, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 13, 0, 1, 0
     BgMove 4, 0, 24, 180, 0, 0
     McssSetValue EFFVM_ATTACKER, 1
     McssSetValue EFFVM_DEFENDER, 1
@@ -62,11 +62,11 @@ MagmaStorm:
     OrbitEmitters 643, 2, 3, 0x1800, 0x1800, 0, 60, 0, 3, 0
     OrbitEmitters 643, 0, 3, 0x1800, 0x1800, 0x1000, 60, 0, 3, 0
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 3, 0, 15, 1, 0
+    PaletteFade 3, 0, 15, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfc70 2, 15, 0, 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    PaletteFade 2, 15, 0, 1, 0
     McssPalFade EFFVM_DEFENDER, 10, 0, 1, 0x1f
     McssSetVanish EFFVM_DEFENDER, FALSE
     McssSetValue EFFVM_ATTACKER, 0

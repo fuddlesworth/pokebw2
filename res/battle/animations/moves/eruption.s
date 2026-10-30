@@ -7,7 +7,7 @@
 
 Eruption:
     CameraMovePreset 1, 9, 16, 0, 8
-    CallDfc70 4, 0, 12, 3, 31
+    PaletteFade 4, 0, 12, 3, 31
     McssScale EFFVM_ATTACKER, 2, 0x4cd, -0x4cd, 6, 2, 2
     SetYield FALSE
     PlaySE SEQ_SE_W121_01, 2, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
@@ -59,7 +59,7 @@ Eruption:
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 3, 31
+    PaletteFade 4, 12, 0, 3, 31
     McssSetValue EFFVM_ALL, 0
     Wait EFFVM_WAIT_ALL
     End

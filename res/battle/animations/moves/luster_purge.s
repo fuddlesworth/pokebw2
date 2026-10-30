@@ -20,7 +20,7 @@ LusterPurge:
     McssSetValue EFFVM_ALL, 1
     McssPalFade EFFVM_ATTACKER, 0, 12, 3, 0x7fff
     McssPalFade EFFVM_DEFENDER, 0, 12, 3, 0x7fff
-    CallDfc70 4, 0, 12, 3, 32767
+    PaletteFade 4, 0, 12, 3, 32767
     Wait EFFVM_WAIT_PARTICLES
     CameraMovePreset 1, 16, 24, 0, 0
     Wait EFFVM_WAIT_ALL
@@ -37,7 +37,7 @@ LusterPurge:
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_ATTACKER, 12, 0, 3, 0x7fff
     McssPalFade EFFVM_DEFENDER, 12, 0, 3, 0x7fff
-    CallDfc70 4, 12, 0, 3, 32767
+    PaletteFade 4, 12, 0, 3, 32767
     CameraMovePreset 1, 17, 24, 0, 0
     McssSetValue EFFVM_ALL, 0
     McssSetVanish EFFVM_DEFENDER, FALSE

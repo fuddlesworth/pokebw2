@@ -9,7 +9,7 @@ Effect066:
     IfVarConst EFFVM_VAR_ATTACKER_VANISH, EFFVM_CMP_EQ, TRUE, Effect066_02EA
     CameraMovePreset 1, 15, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 10, 3, 0
+    PaletteFade 2, 0, 10, 3, 0
     WaitFrames 20
     ParticleLoad 345
     SetYield FALSE
@@ -29,7 +29,7 @@ Effect066:
     EmitterAddOrtho 345, 2, EFFVM_EMIT_ATTACKER, 8, 0, 0x2000, 0, 0x800, 0x1000, 0xd55, 0x1000
     EmitterAddOrtho 345, 3, EFFVM_EMIT_ATTACKER, 8, 0, 0x2000, 0, 0x800, 0x1000, 0xd55, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 3, 0
+    PaletteFade 2, 10, 0, 3, 0
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL

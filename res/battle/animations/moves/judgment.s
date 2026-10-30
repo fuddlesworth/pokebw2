@@ -6,7 +6,7 @@
     ScriptVariant Judgment
 
 Judgment:
-    CallDfc70 4, 0, 12, 2, 31710
+    PaletteFade 4, 0, 12, 2, 31710
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -26,7 +26,7 @@ Judgment:
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfc70 4, 12, 0, 2, 31710
+    PaletteFade 4, 12, 0, 2, 31710
     Wait EFFVM_WAIT_ALL
     End
     .balign 4

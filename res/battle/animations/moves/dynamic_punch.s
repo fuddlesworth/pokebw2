@@ -9,9 +9,9 @@ DynamicPunch:
     CameraMovePreset 1, 11, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     LoadBg 102
-    CallDfc70 4, 0, 13, 0, 0
+    PaletteFade 4, 0, 13, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 13, 0, 0, 0
+    PaletteFade 3, 13, 0, 0, 0
     ParticleLoad 393
     EmitterAdd 393, 6, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 393, 5, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -33,19 +33,19 @@ DynamicPunch:
     EmitterAdd 393, 0, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, -0x333, 0x333, 4, 0, 2
     BgMove 2, 0, 4, 1, 1, 20
-    CallDfd74 2, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
+    SetVanish 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
     McssPalFade EFFVM_DEFENDER, 0, 12, 2, 0
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 1, 16
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 0, 16, 1, 0
+    PaletteFade 3, 0, 16, 1, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 1, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
-    CallDfd74 2, 1
+    PaletteFade 4, 16, 0, 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
+    SetVanish 2, 1
     CameraMovePreset 1, 8, 16, 0, 8
     McssPalFade EFFVM_DEFENDER, 12, 0, 0, 0
     McssSetVanish EFFVM_DEFENDER, FALSE

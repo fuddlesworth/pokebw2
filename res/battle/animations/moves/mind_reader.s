@@ -7,7 +7,7 @@
 
 MindReader:
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfc70 4, 0, 13, 0, 0
+    PaletteFade 4, 0, 13, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W113_02, 1, EFFVM_DEFENDER, 0, 0, 120, 0, 0, 0
@@ -21,7 +21,7 @@ MindReader:
     WaitFrames 2
     Wait EFFVM_WAIT_PARTICLES
     WaitFrames 20
-    CallDfc70 4, 13, 0, 0, 0
+    PaletteFade 4, 13, 0, 0, 0
     CameraMovePreset 1, 8, 16, 0, 8
     Wait EFFVM_WAIT_ALL
     End

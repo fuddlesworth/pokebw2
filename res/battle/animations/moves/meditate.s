@@ -7,7 +7,7 @@
 
 Meditate:
     McssSetVanish EFFVM_ATTACKER, TRUE
-    CallDfc70 4, 0, 10, 1, 0
+    PaletteFade 4, 0, 10, 1, 0
     CameraMovePreset 1, 15, 24, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
@@ -21,7 +21,7 @@ Meditate:
     McssScale EFFVM_ATTACKER, 2, -0x333, 0x666, 6, 1, 1
     Wait EFFVM_WAIT_ALL
     McssScale EFFVM_ATTACKER, 1, 0x1000, 0x1000, 4, 1, 1
-    CallDfc70 4, 10, 0, 1, 0
+    PaletteFade 4, 10, 0, 1, 0
     CameraMovePreset 1, 17, 24, 0, 0
     McssSetVanish EFFVM_ATTACKER, FALSE
     Wait EFFVM_WAIT_ALL

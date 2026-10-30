@@ -8,7 +8,7 @@
 FrostBreath:
     CameraMovePreset 1, 20, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 16, 1, 0
+    PaletteFade 4, 0, 16, 1, 0
     SetYield FALSE
     PlaySE SEQ_SE_W018_01, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
     PlaySE SEQ_SE_W363_01, 2, EFFVM_DEFENDER, 30, 1700, 100, 0, 0, 0
@@ -35,7 +35,7 @@ FrostBreath:
     McssMoveXY EFFVM_DEFENDER, 2, 0x333, 0, 2, 0, 2
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 16, 0, 1, 0
+    PaletteFade 4, 16, 0, 1, 0
     McssPalFade EFFVM_DEFENDER, 6, 0, 3, 0x7fff
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

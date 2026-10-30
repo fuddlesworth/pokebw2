@@ -18,7 +18,7 @@ FireBlast:
     WaitFrames 30
     CameraMovePreset 1, 11, 32, 0, 28
     EmitterAdd 295, 7, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 2, 0, 13, 1, 31
+    PaletteFade 2, 0, 13, 1, 31
     SetYield FALSE
     PlaySE SEQ_SE_W307_01, 1, EFFVM_ATTACKER, 0, 0, 127, 0, 0, 0
     PanSE 1, 0, EFFVM_ATTACKER, EFFVM_DEFENDER, 0, 60, 0, 0
@@ -38,23 +38,23 @@ FireBlast:
     McssPalFade EFFVM_DEFENDER, 0, 10, 2, 0x1f
     McssScale EFFVM_DEFENDER, 2, -0x333, 0x4cd, 2, 1, 6
     LoadBg 60
-    CallDfd74 1, 1
-    CallDfd74 0, 1
-    CallDfd74 2, 0
+    SetVanish 1, 1
+    SetVanish 0, 1
+    SetVanish 2, 0
     BgPalAnim 6, 3
     BgMove 2, 0, 8, 2, 0, 16
     WaitFrames 60
     McssPalFade EFFVM_DEFENDER, 10, 0, 2, 0x1f
-    CallDfc70 3, 0, 16, 0, 0
+    PaletteFade 3, 0, 16, 0, 0
     WaitFrames 10
-    CallDfc70 2, 16, 0, 1, 0
+    PaletteFade 2, 16, 0, 1, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
-    CallDfd74 1, 0
-    CallDfd74 0, 0
-    CallDfd74 2, 1
+    SetVanish 1, 0
+    SetVanish 0, 0
+    SetVanish 2, 1
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_ATTACKER, FALSE
     Wait EFFVM_WAIT_ALL
-    CallDfc70 3, 16, 0, 0, 0
+    PaletteFade 3, 16, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

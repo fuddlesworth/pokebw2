@@ -94,7 +94,8 @@ void BtlvScu_PrintMsgAtOnce(BtlvScu *scu, const StrBuf *strbuf);
 void BtlvScu_StartMsg(BtlvScu *scu, const StrBuf *strbuf, u16 wait, BtlvMsgCallback callback);
 BOOL BtlvScu_IsMsgFinished(BtlvScu *scu);
 BOOL BtlvScu_WaitMsg(BtlvScu *scu);
-void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 move, s32 arg4, u32 arg5, u8 arg6);
+void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
+                             u8 arg6);
 BOOL BtlvScu_WaitMoveEffect(BtlvScu *scu);
 void BtlvScu_StartDamage(BtlvScu *scu, u8 pos, u16 move, BOOL immediate);
 BOOL BtlvScu_WaitDamage(BtlvScu *scu);
@@ -215,7 +216,8 @@ void BtlvCore_StartChoice(BtlvCore *core);
 void BtlvCore_SetupChoice(BtlvCore *core, u32 count, u32 *result);
 void BtlvCore_SetChoiceStr(BtlvCore *core, u32 index, StrBuf *value);
 BOOL BtlvCore_WaitChoice(BtlvCore *core);
-void BtlvCore_StartMoveEffect(BtlvCore *core, u8 attackerPos, u8 targetPos, u16 move, s32 arg4, u32 arg5, u8 arg6);
+void BtlvCore_StartMoveEffect(BtlvCore *core, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
+                              u8 arg6);
 BOOL BtlvCore_WaitMoveEffect(BtlvCore *core);
 void BtlvCore_StartDamage(BtlvCore *core, u16 move, u8 pos, u8 type);
 BOOL BtlvCore_WaitDamage(BtlvCore *core);

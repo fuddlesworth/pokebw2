@@ -7,7 +7,7 @@
 
 SecretSword:
     CameraMovePreset 1, 11, 16, 0, 8
-    CallDfc70 2, 0, 10, 2, 0
+    PaletteFade 2, 0, 10, 2, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W075_01, 1, EFFVM_DEFENDER, 0, -500, 127, 0, 0, 0
@@ -32,7 +32,7 @@ SecretSword:
     McssScale EFFVM_DEFENDER, 2, 0x4cd, -0x4cd, 2, 1, 1
     Wait EFFVM_WAIT_ALL
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 10, 0, 2, 0
+    PaletteFade 2, 10, 0, 2, 0
     CameraMovePreset 1, 8, 16, 0, 8
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

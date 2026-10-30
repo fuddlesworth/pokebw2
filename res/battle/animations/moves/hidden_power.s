@@ -6,12 +6,12 @@
     ScriptVariant HiddenPower
 
 HiddenPower:
-    CallDfc70 4, 0, 16, 2, 0
+    PaletteFade 4, 0, 16, 2, 0
     McssSetValue EFFVM_ALL, 1
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 1
-    CallDfd74 0, 1
+    SetVanish 1, 1
+    SetVanish 0, 1
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W129_04, 1, EFFVM_ATTACKER, 0, 0, 100, 0, 0, 0
@@ -38,10 +38,10 @@ HiddenPower:
     WaitFrames 20
     McssScale EFFVM_DEFENDER, 2, -0x4cd, 0x4cd, 4, 1, 1
     Wait EFFVM_WAIT_ALL
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 16, 0, 2, 0
+    PaletteFade 4, 16, 0, 2, 0
     McssSetValue EFFVM_ALL, 0
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

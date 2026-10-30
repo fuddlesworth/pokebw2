@@ -6,15 +6,15 @@
     ScriptVariant Reversal
 
 Reversal:
-    CallDfc70 4, 0, 12, 1, 31710
+    PaletteFade 4, 0, 12, 1, 31710
     PlaySE SEQ_SE_W179_01, 1, EFFVM_PAN_CENTER, 0, 200, 100, 0, 0, 0
     Wait EFFVM_WAIT_STAGE_FIELD_FADE
-    CallDfc70 4, 12, 0, 1, 31710
+    PaletteFade 4, 12, 0, 1, 31710
     Wait EFFVM_WAIT_STAGE_FIELD_FADE
-    CallDfc70 4, 0, 12, 1, 31710
+    PaletteFade 4, 0, 12, 1, 31710
     PlaySE SEQ_SE_W179_01, 1, EFFVM_PAN_CENTER, 0, 200, 100, 0, 0, 0
     Wait EFFVM_WAIT_STAGE_FIELD_FADE
-    CallDfc70 4, 12, 0, 1, 31710
+    PaletteFade 4, 12, 0, 1, 31710
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 9, 16, 0, 8
     ParticleLoad 350
@@ -28,9 +28,9 @@ Reversal:
     PlaySE SEQ_SE_W179_02, 1, EFFVM_PAN_CENTER, 15, 0, 115, 0, 0, 0
     PlaySE SEQ_SE_W006_03, 2, EFFVM_PAN_CENTER, 15, 0, 115, 0, 0, 0
     McssMoveXY EFFVM_ATTACKER, 2, 0x1000, 0, 6, 1, 1
-    CallDfc70 4, 0, 12, 1, 31710
+    PaletteFade 4, 0, 12, 1, 31710
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 12, 0, 1, 31710
+    PaletteFade 4, 12, 0, 1, 31710
     CameraMovePreset 1, 11, 14, 0, 8
     Wait EFFVM_WAIT_ALL
     EmitterAdd 350, 1, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000

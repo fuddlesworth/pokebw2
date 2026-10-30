@@ -9,7 +9,7 @@ RolePlay:
     CameraMovePreset 1, 15, 24, 0, 0
     McssSetVanish EFFVM_ATTACKER, TRUE
     McssSetVanish EFFVM_DEFENDER, TRUE
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     WaitFrames 30
     SetYield FALSE
     PlaySE SEQ_SE_W002_01, 1, EFFVM_ATTACKER, 0, 1000, 115, 0, 0, 0
@@ -31,7 +31,7 @@ RolePlay:
     CameraMovePreset 1, 16, 24, 0, 0
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x7fff
     WaitFrames 30
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE
     Wait EFFVM_WAIT_ALL

@@ -27,7 +27,7 @@ Megahorn:
     EmitterMove 394, 4, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x10000, 0, 0x1000, 0x1000, 0
     EmitterMove 394, 3, 1, EFFVM_EMIT_ATTACKER, EFFVM_EMIT_DEFENDER, 0x2000, 0x10000, 0, 0x1000, 0x1000, 0
     WaitFrames 16
-    CallDfc70 4, 0, 13, 0, 0
+    PaletteFade 4, 0, 13, 0, 0
     SetYield FALSE
     PlaySE SEQ_SE_W121_01, 1, EFFVM_DEFENDER, 10, 0, 120, 0, 0, 0
     SetYield TRUE
@@ -36,21 +36,21 @@ Megahorn:
     EmitterAdd 394, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     WaitFrames 4
     LoadBg 105
-    CallDfd74 2, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 13, 0, 1, 0
+    SetVanish 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 13, 0, 1, 0
     BgPalAnim 14, 6
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 6
     CameraShake 0, 0x333, 0, 1, 1, 6
     WaitFrames 2
-    CallDfc70 3, 0, 13, 1, 0
+    PaletteFade 3, 0, 13, 1, 0
     WaitFrames 16
-    CallDfd74 1, 0
-    CallDfd74 0, 0
+    SetVanish 1, 0
+    SetVanish 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 13, 0, 1, 0
+    PaletteFade 4, 13, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE

@@ -7,7 +7,7 @@
 
 Mist:
     CameraMovePreset 1, 21, 16, 0, 8
-    CallDfc70 4, 0, 12, 4, 32767
+    PaletteFade 4, 0, 12, 4, 32767
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W054_01, 1, EFFVM_ATTACKER, 0, 0, 115, 0, 0, 0
@@ -17,6 +17,6 @@ Mist:
     EmitterAdd 219, 0, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 4, 12, 0, 4, 32767
+    PaletteFade 4, 12, 0, 4, 32767
     Wait EFFVM_WAIT_ALL
     End

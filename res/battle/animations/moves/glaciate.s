@@ -24,7 +24,7 @@ Glaciate:
     PlaySE SEQ_SE_W043_01, 1, EFFVM_DEFENDER, 90, -100, 70, 0, 0, 0
     PlaySE SEQ_SE_W043_01, 1, EFFVM_DEFENDER, 200, -300, 50, 0, 0, 0
     SetYield TRUE
-    CallDfc70 2, 0, 8, 2, 0
+    PaletteFade 2, 0, 8, 2, 0
     WaitFrames 30
     EmitterAdd 722, 6, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 722, 7, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
@@ -37,7 +37,7 @@ Glaciate:
     EmitterAdd 722, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 722, 2, EFFVM_EMIT_DEFENDER, 8, 0x2800, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 2, 0
+    PaletteFade 2, 8, 0, 2, 0
     McssSetVanish EFFVM_DEFENDER, TRUE
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 0, 1
     Wait EFFVM_WAIT_ALL

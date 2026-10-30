@@ -8,13 +8,13 @@
 LeafStorm:
     CameraMovePreset 1, 9, 10, 0, 6
     LoadBg 33
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 15, 2, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 15, 2, 0
     Wait EFFVM_WAIT_ALL
     BgMove 4, -36, 0, 100, 0, 0
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 4, 15, 0, 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 4, 15, 0, 2, 0
     SetYield FALSE
     PlaySE SEQ_SE_W239_01, 1, EFFVM_ATTACKER, 0, 0, 100, 0, 0, 0
     PlaySE SEQ_SE_DUMMY5, 1, EFFVM_ATTACKER, 50, 0, 0, 0, 0, 0
@@ -38,13 +38,13 @@ LeafStorm:
     EmitterAdd 616, 2, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     McssScale EFFVM_DEFENDER, 2, 0x333, -0x333, 2, 1, 4
     Wait EFFVM_WAIT_PARTICLES
-    CallDfc70 4, 0, 15, 0, 0
+    PaletteFade 4, 0, 15, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_DEFENDER, FALSE
     CameraMovePreset 1, 8, 12, 0, 8
-    CallDfc70 4, 15, 0, 0, 0
+    PaletteFade 4, 15, 0, 0, 0
     Wait EFFVM_WAIT_ALL
     End

@@ -26,7 +26,7 @@ SilverWind_01CC:
     EmitterAdd 492, 3, 0, 8, 0, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
 
 SilverWind_0228:
-    CallDfc70 4, 0, 12, 1, 0
+    PaletteFade 4, 0, 12, 1, 0
     McssPalFade EFFVM_DEFENDER, 0, 12, 1, 0x318c
     McssPalFade EFFVM_ATTACKER, 0, 12, 1, 0x318c
     WaitFrames 20
@@ -35,7 +35,7 @@ SilverWind_0228:
     WaitFrames 60
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x318c
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0x318c
-    CallDfc70 4, 12, 0, 1, 0
+    PaletteFade 4, 12, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     McssSetVanish EFFVM_ATTACKER, FALSE
     McssSetVanish EFFVM_DEFENDER, FALSE

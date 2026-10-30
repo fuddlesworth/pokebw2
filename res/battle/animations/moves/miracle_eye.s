@@ -8,7 +8,7 @@
 MiracleEye:
     CameraMovePreset 1, 15, 24, 0, 0
     Wait EFFVM_WAIT_ALL
-    CallDfc70 4, 0, 12, 0, 0
+    PaletteFade 4, 0, 12, 0, 0
     Wait EFFVM_WAIT_ALL
     SetYield FALSE
     PlaySE SEQ_SE_W357_JIRORI, 1, EFFVM_ATTACKER, 0, 0, 120, 0, 0, 0
@@ -30,7 +30,7 @@ MiracleEye:
     SetYield TRUE
     Wait EFFVM_WAIT_ALL
     McssPalFade EFFVM_DEFENDER, 10, 0, 0, 0x7fff
-    CallDfc70 4, 12, 0, 0, 0
+    PaletteFade 4, 12, 0, 0, 0
     McssSetValue EFFVM_ALL, 0
     CameraMovePreset 1, 17, 24, 0, 0
     Wait EFFVM_WAIT_ALL

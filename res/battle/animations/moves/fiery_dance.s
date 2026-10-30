@@ -14,7 +14,7 @@ FieryDance:
     CameraMovePreset 1, 11, 16, 0, 8
     McssSetValue EFFVM_ALL, 1
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 0, 8, 2, 31
+    PaletteFade 2, 0, 8, 2, 31
     McssPalFade EFFVM_DEFENDER, 0, 8, 4, 0x1f
     McssSetVanish EFFVM_DEFENDER, TRUE
     ParticleLoad 725
@@ -36,7 +36,7 @@ FieryDance:
     EmitterAdd 725, 3, EFFVM_EMIT_DEFENDER, 8, 0x2000, 0, 0, 0x800, 0x1000, 0x800, 0x1000
     EmitterAdd 725, 1, EFFVM_EMIT_DEFENDER, 8, 0x1000, 0, 0, 0x800, 0x1000, 0x800, 0x1000
     Wait EFFVM_WAIT_ALL
-    CallDfc70 2, 8, 0, 2, 31
+    PaletteFade 2, 8, 0, 2, 31
     McssPalFade EFFVM_DEFENDER, 8, 0, 2, 0x1f
     McssScale EFFVM_DEFENDER, 2, 0x19a, -0x19a, 2, 0, 1
     Wait EFFVM_WAIT_ALL

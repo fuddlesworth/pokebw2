@@ -18,14 +18,14 @@ HeatWave:
     MoveSE 2, 0, 1, 127, 0, 70, 50, 0, 0
     ParticleLoad 427
     EmitterAdd 427, 0, 0, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 4, 0, 12, 1, 8470
+    PaletteFade 4, 0, 12, 1, 8470
     McssPalFade EFFVM_ATTACKER, 0, 12, 1, 0x2116
     McssPalFade EFFVM_DEFENDER, 0, 12, 1, 0x2116
     WaitFrames 10
     McssMoveXY EFFVM_DEFENDER, 2, 0x4cd, 0, 1, 2, 3
     WaitFrames 12
     WaitFrames 80
-    CallDfc70 4, 12, 0, 1, 8470
+    PaletteFade 4, 12, 0, 1, 8470
     McssPalFade EFFVM_ATTACKER, 12, 0, 1, 0x2116
     McssPalFade EFFVM_DEFENDER, 12, 0, 1, 0x2116
     Wait EFFVM_WAIT_ALL

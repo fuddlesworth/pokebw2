@@ -8,13 +8,13 @@
 CosmicPower:
     McssPalFade EFFVM_DEFENDER, 0, 13, 2, 0
     LoadBg 126
-    CallDfd74 2, 0
-    CallDfc70 4, 0, 13, 2, 0
+    SetVanish 2, 0
+    PaletteFade 4, 0, 13, 2, 0
     CameraMovePreset 1, 9, 16, 0, 8
     Wait EFFVM_WAIT_ALL
-    CallDfd74 0, 1
-    CallDfd74 1, 1
-    CallDfc70 3, 13, 0, 2, 0
+    SetVanish 0, 1
+    SetVanish 1, 1
+    PaletteFade 3, 13, 0, 2, 0
     McssSetValue EFFVM_ATTACKER, 1
     McssSetValue EFFVM_DEFENDER, 1
     SetYield FALSE
@@ -27,14 +27,14 @@ CosmicPower:
     EmitterAdd 496, 1, EFFVM_EMIT_ATTACKER, 8, 0x2000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 496, 2, EFFVM_EMIT_ATTACKER, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     EmitterAdd 496, 3, EFFVM_EMIT_ATTACKER, 8, -0x333, 0x5a000, 0, 0x1000, 0x1000, 0x1000, 0x1000
-    CallDfc70 3, 0, 13, 1, 0
+    PaletteFade 3, 0, 13, 1, 0
     McssPalFade EFFVM_DEFENDER, 13, 0, 2, 0
     WaitFrames 75
     McssSetValue EFFVM_ATTACKER, 0
     McssSetValue EFFVM_DEFENDER, 0
-    CallDfd74 0, 0
-    CallDfd74 1, 0
+    SetVanish 0, 0
+    SetVanish 1, 0
     CameraMovePreset 1, 8, 16, 0, 8
-    CallDfc70 2, 13, 0, 1, 0
+    PaletteFade 2, 13, 0, 1, 0
     Wait EFFVM_WAIT_ALL
     End
