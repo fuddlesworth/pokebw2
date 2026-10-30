@@ -115,16 +115,18 @@ typedef struct {
     u16 baseAbility;
     u8 level;
     u8 monId;
-    u8 unk1a;
+    // The species' base Attack, which Beat Up's power is from
+    u8 baseAttack;
     u8 baseForm : 5;
     u8 transformed : 1;
     u8 illusion : 1;
-    u8 unk1b_7 : 1;
+    // Set once the Pokémon has come out (BattleMon_SetAppearTurn)
+    u8 appeared : 1;
     BattleCondition conditions[CONDITION_ID_COUNT];
     u8 conditionCounters[CONDITION_ID_COUNT];
-    // The IDs of up to 24 Pokémon, each recorded once
-    u8 unkD0Count;
-    u8 unkD1[24];
+    // The IDs of up to 24 Pokémon it has faced, each recorded once (BattleMon_AddConfrontedMon)
+    u8 confrontedMonCount;
+    u8 confrontedMons[24];
 } BattleMonCore;
 
 // A Pokémon in battle, 0x1f8 bytes from BattleMon_Create. Offsets are from btl_pokeparam.c's accessors.
@@ -147,12 +149,17 @@ struct BattleMon {
     u16 weight;
     u8 moveCount;
     u8 form;
-    u8 unk142;
-    u8 unk143;
-    u8 unk144;
+    // Up to 4
+    u8 critStage;
+    // How many of its moves it has used
+    u8 usedMoveKindCount;
+    // The type of the last move it used, TYPE_NULL for none
+    u8 prevMoveType;
     u8 unk145;
-    u16 unk146;
-    u16 unk148;
+    // The turns since it came out, up to 9999
+    u16 turnsOnField;
+    // The turn it came out on, 10000 before it has
+    u16 appearTurn;
     u16 prevMoveUsed;
     u16 prevMoveId;
     u16 consecutiveMoveCount;
@@ -352,7 +359,7 @@ void BattleMon_EndTurn(BattleMon *mon);
 void Clear_ForFainted(BattleMon *mon);
 void Clear_ForSwitch(BattleMon *mon);
 void BattleMon_ClearForSwitchIn(BattleMon *mon);
-void BattleMon_SetPrevMove(BattleMon *mon, u8 targetPos, BOOL success, u8 unk144, u16 moveId, u16 moveUsed);
+void BattleMon_SetPrevMove(BattleMon *mon, u8 targetPos, BOOL success, u8 prevMoveType, u16 moveId, u16 moveUsed);
 BOOL BattleMon_HasAppeared(BattleMon *mon);
 void BattleMon_ClearDamageRecords(BattleMon *mon);
 void BattleMon_AdvanceDamageRecordTurn(BattleMon *mon);

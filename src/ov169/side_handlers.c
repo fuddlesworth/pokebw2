@@ -98,7 +98,7 @@ BattleEventItem *SideEffectEventAdd(u8 side, u32 effect, BattleCondition cont) {
         if (effect == sSideEffectEventAddTable[i].effect) {
             if (slot->layers == 0) {
                 handlers = sSideEffectEventAddTable[i].eventAdd(&numHandlers);
-                item = BattleEvent_AddItem(2, effect, 2, 0, side, handlers, numHandlers);
+                item = BattleEvent_AddItem(BTL_EVENT_FACTOR_SIDE, effect, 2, 0, side, handlers, numHandlers);
                 BattleEventItem_SetWorkValue(item, 6, cont.raw);
                 slot->layers = 1;
                 slot->turnsElapsed = 0;
@@ -172,7 +172,7 @@ static u8 GetSideEffectLayersOfItem(BattleEventItem *item, u32 side) {
 }
 
 static const BattleEventHandlerEntry sHandlersSideReflect[] = {
-    { 0x47, HandlerSideReflect },
+    { BTL_EVENT_CALC_DAMAGE, HandlerSideReflect },
 };
 
 static const BattleEventHandlerEntry *EventAddSideReflect(u32 *numHandlers) {
@@ -185,7 +185,7 @@ static void HandlerSideReflect(BattleEventItem *item, BtlServerFlow *flow, u8 si
 }
 
 static const BattleEventHandlerEntry sHandlersSideLightScreen[] = {
-    { 0x47, HandlerSideLightScreen },
+    { BTL_EVENT_CALC_DAMAGE, HandlerSideLightScreen },
 };
 
 static const BattleEventHandlerEntry *EventAddSideLightScreen(u32 *numHandlers) {
@@ -215,8 +215,8 @@ static void CommonScreenEffect(BtlServerFlow *flow, u8 side, u32 screen) {
 }
 
 static const BattleEventHandlerEntry sHandlersSideSafeguard[] = {
-    { 0x65, HandlerSideSafeguardCheckFail },
-    { 0x67, HandlerSideSafeguardFixFail },
+    { BTL_EVENT_MOVE_CONDITION_CHECK_FAIL, HandlerSideSafeguardCheckFail },
+    { BTL_EVENT_ADD_CONDITION_FAILED, HandlerSideSafeguardFixFail },
 };
 
 static const BattleEventHandlerEntry *EventAddSideSafeguard(u32 *numHandlers) {
@@ -252,8 +252,8 @@ static void HandlerSideSafeguardFixFail(BattleEventItem *item, BtlServerFlow *fl
 }
 
 static const BattleEventHandlerEntry sHandlersSideMist[] = {
-    { 0x5b, HandlerSideMistCheckFail },
-    { 0x5c, HandlerSideMistFixFail },
+    { BTL_EVENT_CHECK_STAT_CHANGE, HandlerSideMistCheckFail },
+    { BTL_EVENT_STAT_CHANGE_FAILED, HandlerSideMistFixFail },
 };
 
 static const BattleEventHandlerEntry *EventAddSideMist(u32 *numHandlers) {
@@ -291,7 +291,7 @@ static void HandlerSideMistFixFail(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersSideTailwind[] = {
-    { 0x13, HandlerSideTailwind },
+    { BTL_EVENT_CALC_SPEED, HandlerSideTailwind },
 };
 
 static const BattleEventHandlerEntry *EventAddSideTailwind(u32 *numHandlers) {
@@ -306,7 +306,7 @@ static void HandlerSideTailwind(BattleEventItem *item, BtlServerFlow *flow, u8 s
 }
 
 static const BattleEventHandlerEntry sHandlersSideLuckyChant[] = {
-    { 0x36, HandlerSideLuckyChant },
+    { BTL_EVENT_CHECK_CRITICAL, HandlerSideLuckyChant },
 };
 
 static const BattleEventHandlerEntry *EventAddSideLuckyChant(u32 *numHandlers) {
@@ -321,7 +321,7 @@ static void HandlerSideLuckyChant(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersSideStealthRock[] = {
-    { 0x55, HandlerSideStealthRock },
+    { BTL_EVENT_MEMBER_IN, HandlerSideStealthRock },
 };
 
 static const BattleEventHandlerEntry *EventAddSideStealthRock(u32 *numHandlers) {
@@ -367,7 +367,7 @@ static void HandlerSideStealthRock(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersSideWideGuard[] = {
-    { 0x2c, HandlerSideWideGuard },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerSideWideGuard },
 };
 
 static const BattleEventHandlerEntry *EventAddSideWideGuard(u32 *numHandlers) {
@@ -395,7 +395,7 @@ static void HandlerSideWideGuard(BattleEventItem *item, BtlServerFlow *flow, u8 
 }
 
 static const BattleEventHandlerEntry sHandlersSideQuickGuard[] = {
-    { 0x2c, HandlerSideQuickGuard },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerSideQuickGuard },
 };
 
 static const BattleEventHandlerEntry *EventAddSideQuickGuard(u32 *numHandlers) {
@@ -420,7 +420,7 @@ static void HandlerSideQuickGuard(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersSideSpikes[] = {
-    { 0x55, HandlerSideSpikes },
+    { BTL_EVENT_MEMBER_IN, HandlerSideSpikes },
 };
 
 static const BattleEventHandlerEntry *EventAddSideSpikes(u32 *numHandlers) {
@@ -459,7 +459,7 @@ static void HandlerSideSpikes(BattleEventItem *item, BtlServerFlow *flow, u8 sid
 }
 
 static const BattleEventHandlerEntry sHandlersSideToxicSpikes[] = {
-    { 0x55, HandlerSideToxicSpikes },
+    { BTL_EVENT_MEMBER_IN, HandlerSideToxicSpikes },
 };
 
 static const BattleEventHandlerEntry *EventAddSideToxicSpikes(u32 *numHandlers) {
@@ -496,9 +496,9 @@ static void HandlerSideToxicSpikes(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersSideRainbow[] = {
-    { 0x64, HandlerSideRainbow },
-    { 0x51, HandlerSideRainbow },
-    { 0x6c, HandlerSideRainbowShrink },
+    { BTL_EVENT_CHECK_MOVE_ADD_CONDITION, HandlerSideRainbow },
+    { BTL_EVENT_STAT_CHANGE_CHANCE, HandlerSideRainbow },
+    { BTL_EVENT_GET_FLINCH_CHANCE, HandlerSideRainbowShrink },
 };
 
 static const BattleEventHandlerEntry *EventAddSideRainbow(u32 *numHandlers) {
@@ -523,7 +523,7 @@ static void HandlerSideRainbowShrink(BattleEventItem *item, BtlServerFlow *flow,
 }
 
 static const BattleEventHandlerEntry sHandlersSideSeaOfFire[] = {
-    { 0x76, HandlerSideSeaOfFire },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerSideSeaOfFire },
 };
 
 static const BattleEventHandlerEntry *EventAddSideSeaOfFire(u32 *numHandlers) {
@@ -559,7 +559,7 @@ static void HandlerSideSeaOfFire(BattleEventItem *item, BtlServerFlow *flow, u8 
 }
 
 static const BattleEventHandlerEntry sHandlersSideSwamp[] = {
-    { 0x13, HandlerSideSwamp },
+    { BTL_EVENT_CALC_SPEED, HandlerSideSwamp },
 };
 
 static const BattleEventHandlerEntry *EventAddSideSwamp(u32 *numHandlers) {

@@ -449,7 +449,7 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         (*state)++;
         break;
     case BATTLE_CALL_STEP_BATTLE_RETURN:
-        if (wk->setup->studioMode == 0) {
+        if (wk->setup->studioMode == BTL_STUDIO_MODE_NONE) {
             wk->battleReturnParam.setup = wk->setup;
             wk->battleReturnParam.gameData = gameData;
             GSYS_QueueProcAsEvent(event, OVERLAY_ID(166), &EVENT_BATTLE_RETURN_PROC_FUNCTIONS, &wk->battleReturnParam);

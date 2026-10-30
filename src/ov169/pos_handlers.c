@@ -44,7 +44,7 @@ BOOL PosEventAdd(u32 effect, u8 pos, u8 monId, const u32 *args, u8 argCount) {
                 break;
             }
             handlers = sPosEventAddTable[i].eventAdd(&numHandlers);
-            item = BattleEvent_AddItem(1, effect, 1, 0, pos, handlers, numHandlers);
+            item = BattleEvent_AddItem(BTL_EVENT_FACTOR_POS, effect, 1, 0, pos, handlers, numHandlers);
             if (item != NULL) {
                 for (j = 0; j < argCount; j++) {
                     BattleEventItem_SetWorkValue(item, j, args[j]);
@@ -65,7 +65,7 @@ BOOL IsPosEffectFree(u32 effect, u8 pos) {
 static BOOL IsPosEffectFreeCore(u32 effect, u8 pos) {
     BattleEventItem *item;
 
-    for (item = BattleEvent_SeekItem(1, pos); item != NULL; item = BattleEvent_GetNextItem(item)) {
+    for (item = BattleEvent_SeekItem(BTL_EVENT_FACTOR_POS, pos); item != NULL; item = BattleEvent_GetNextItem(item)) {
         if (effect == BattleEventItem_GetSubID(item)) {
             return FALSE;
         }
@@ -74,7 +74,7 @@ static BOOL IsPosEffectFreeCore(u32 effect, u8 pos) {
 }
 
 static const BattleEventHandlerEntry sHandlersPosWish[] = {
-    { 0x76, HandlerPosWish },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerPosWish },
 };
 
 static const BattleEventHandlerEntry *EventAddPosWish(u32 *numHandlers) {
@@ -112,8 +112,8 @@ static void HandlerPosWish(BattleEventItem *item, BtlServerFlow *flow, u8 pos, s
 }
 
 static const BattleEventHandlerEntry sHandlersPosLunarDance[] = {
-    { 0x55, HandlerPosLunarDance },
-    { 0xa4, HandlerPosLunarDance },
+    { BTL_EVENT_MEMBER_IN, HandlerPosLunarDance },
+    { BTL_EVENT_AFTER_MOVE, HandlerPosLunarDance },
 };
 
 static const BattleEventHandlerEntry *EventAddPosLunarDance(u32 *numHandlers) {
@@ -191,8 +191,8 @@ static void HandlerPosLunarDance(BattleEventItem *item, BtlServerFlow *flow, u8 
 }
 
 static const BattleEventHandlerEntry sHandlersPosHealingWish[] = {
-    { 0x55, HandlerPosHealingWish },
-    { 0xa4, HandlerPosHealingWish },
+    { BTL_EVENT_MEMBER_IN, HandlerPosHealingWish },
+    { BTL_EVENT_AFTER_MOVE, HandlerPosHealingWish },
 };
 
 static const BattleEventHandlerEntry *EventAddPosHealingWish(u32 *numHandlers) {
@@ -247,7 +247,7 @@ static void HandlerPosHealingWish(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersPosFutureSight[] = {
-    { 0x76, HandlerPosFutureSight },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerPosFutureSight },
 };
 
 static const BattleEventHandlerEntry *EventAddPosFutureSight(u32 *numHandlers) {
@@ -286,7 +286,7 @@ static void HandlerPosFutureSight(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersPosBatonPass[] = {
-    { 0x55, HandlerPosBatonPass },
+    { BTL_EVENT_MEMBER_IN, HandlerPosBatonPass },
 };
 
 static const BattleEventHandlerEntry *EventAddPosBatonPass(u32 *numHandlers) {

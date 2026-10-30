@@ -12,13 +12,18 @@
 #include "battle/btl_move.h"
 #include "battle/btl_move_rec.h"
 #include "battle/btl_pokeparam.h"
+#include "battle/btl_pospoke.h"
 #include "battle/btl_server_flow.h"
 #include "battle/btl_tables.h"
 #include "battle/handler_common.h"
 #include "battle/side_handlers.h"
+#include "constants/abilities.h"
 #include "constants/battle.h"
+#include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/pokemon.h"
 #include "constants/species.h"
+#include "constants/types.h"
 #include "gfl/std.h"
 #include "pml/item.h"
 #include "pml/move.h"
@@ -883,7 +888,7 @@ BOOL MoveEvent_AddItem(BattleMon *mon, u16 move, u32 subPriority) {
             if (DoesMoveEventExist(monId, move, &found)) {
                 handlers = sMoveEventAddTable[i].eventAdd(&numHandlers);
                 if (handlers != NULL) {
-                    BattleEvent_AddItem(0, move, 0, subPriority, monId, handlers, numHandlers);
+                    BattleEvent_AddItem(BTL_EVENT_FACTOR_MOVE, move, 0, subPriority, monId, handlers, numHandlers);
                     return TRUE;
                 }
             }
@@ -899,7 +904,7 @@ static BOOL DoesMoveEventExist(u8 monId, u16 move, u8 *found) {
     u32 count;
 
     count = 0;
-    item = BattleEvent_SeekItem(0, monId);
+    item = BattleEvent_SeekItem(BTL_EVENT_FACTOR_MOVE, monId);
     while (item != NULL) {
         if (move == BattleEventItem_GetSubID(item)) {
             *found = TRUE;
@@ -918,7 +923,7 @@ void MoveEvent_RemoveItem(BattleMon *mon, u16 move) {
     BattleEventItem *item;
     BattleEventItem *next;
 
-    item = BattleEvent_SeekItem(0, GetMonID(mon));
+    item = BattleEvent_SeekItem(BTL_EVENT_FACTOR_MOVE, GetMonID(mon));
     while (item != NULL) {
         next = BattleEvent_GetNextItem(item);
         if (move == BattleEventItem_GetSubID(item) && BattleEventItem_GetWorkValue(item, 6) == 0) {
@@ -942,11 +947,11 @@ BOOL MoveEventItem_IsPersistent(BattleEventItem *item, s32 *work) {
 static void RemoveHandlerForce(u8 monId, u16 move) {
     BattleEventItem *item;
 
-    item = BattleEvent_SeekItem(0, monId);
+    item = BattleEvent_SeekItem(BTL_EVENT_FACTOR_MOVE, monId);
     while (item != NULL) {
         if (move == BattleEventItem_GetSubID(item)) {
             BattleEventItem_Remove(item);
-            item = BattleEvent_SeekItem(0, monId);
+            item = BattleEvent_SeekItem(BTL_EVENT_FACTOR_MOVE, monId);
         } else {
             item = BattleEvent_GetNextItem(item);
         }
@@ -958,15 +963,15 @@ void RemoveForceAll(BattleMon *mon) {
     u8 monId;
 
     monId = GetMonID(mon);
-    item = BattleEvent_SeekItem(0, monId);
+    item = BattleEvent_SeekItem(BTL_EVENT_FACTOR_MOVE, monId);
     while (item != NULL) {
         BattleEventItem_Remove(item);
-        item = BattleEvent_SeekItem(0, monId);
+        item = BattleEvent_SeekItem(BTL_EVENT_FACTOR_MOVE, monId);
     }
 }
 
 static const BattleEventHandlerEntry sHandlersConversion[] = {
-    { 0xa0, HandlerConversion },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerConversion },
 };
 
 static const BattleEventHandlerEntry *EventAddConversion(u32 *priority) {
@@ -1006,7 +1011,7 @@ static void HandlerConversion(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersCamouflage[] = {
-    { 0xa0, HandlerCamouflage },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerCamouflage },
 };
 
 static const BattleEventHandlerEntry *EventAddCamouflage(u32 *priority) {
@@ -1062,7 +1067,7 @@ static void HandlerCamouflage(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersTrickRoom[] = {
-    { 0x9e, HandlerTrickRoom },
+    { BTL_EVENT_FIELD_EFFECT_MOVE, HandlerTrickRoom },
 };
 
 static const BattleEventHandlerEntry *EventAddTrickRoom(u32 *priority) {
@@ -1091,7 +1096,7 @@ static void HandlerTrickRoom(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersGravity[] = {
-    { 0x9e, HandlerGravity },
+    { BTL_EVENT_FIELD_EFFECT_MOVE, HandlerGravity },
 };
 
 static const BattleEventHandlerEntry *EventAddGravity(u32 *priority) {
@@ -1114,7 +1119,7 @@ static void HandlerGravity(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersWaterSport[] = {
-    { 0x9e, HandlerWaterSport },
+    { BTL_EVENT_FIELD_EFFECT_MOVE, HandlerWaterSport },
 };
 
 static const BattleEventHandlerEntry *EventAddWaterSport(u32 *priority) {
@@ -1135,7 +1140,7 @@ static void HandlerWaterSport(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersMudSport[] = {
-    { 0x9e, HandlerMudSport },
+    { BTL_EVENT_FIELD_EFFECT_MOVE, HandlerMudSport },
 };
 
 static const BattleEventHandlerEntry *EventAddMudSport(u32 *priority) {
@@ -1156,7 +1161,7 @@ static void HandlerMudSport(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersDefog[] = {
-    { 0xa0, HandlerDefog },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerDefog },
     { 0x5, HandlerBypassSubstitute },
 };
 
@@ -1196,9 +1201,9 @@ static void HandlerDefog(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersBrickBreak[] = {
-    { 0x46, HandlerBrickBreakStart },
-    { 0x48, HandlerBrickBreakEnd },
-    { 0x45, HandlerBrickBreakCheck },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerBrickBreakStart },
+    { BTL_EVENT_CALC_DAMAGE_END, HandlerBrickBreakEnd },
+    { BTL_EVENT_DAMAGE_DETERMINE, HandlerBrickBreakCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddBrickBreak(u32 *priority) {
@@ -1242,14 +1247,14 @@ static void HandlerBrickBreakCheck(BattleEventItem *item, BtlServerFlow *flow, u
 // Skips the side effects' handlers, Reflect's and Light Screen's, while Brick Break hits
 static BOOL HandlerBrickBreakSkipCheck(BattleEventItem *item, BtlServerFlow *flow, u32 factorType, u32 event, u16 subId,
                                        u8 monId) {
-    if (factorType == 2 && subId <= 1) {
+    if (factorType == BTL_EVENT_FACTOR_SIDE && subId <= 1) {
         return TRUE;
     }
     return FALSE;
 }
 
 static const BattleEventHandlerEntry sHandlersJumpKick[] = {
-    { 0x26, HandlerJumpKickMiss },
+    { BTL_EVENT_MOVE_EXECUTE_NO_EFFECT, HandlerJumpKickMiss },
 };
 
 static const BattleEventHandlerEntry *EventJumpKickAdd(u32 *priority) {
@@ -1277,7 +1282,7 @@ static void CommonJumpKickEffect(BattleEventItem *item, BtlServerFlow *flow, u8 
 }
 
 static const BattleEventHandlerEntry sHandlersMimic[] = {
-    { 0xa0, HandlerMimic },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerMimic },
 };
 
 static const BattleEventHandlerEntry *EventAddMimic(u32 *priority) {
@@ -1303,7 +1308,7 @@ static void HandlerMimic(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
             if (used != move) {
                 move = used;
             }
-            if (move != 0 && !IsMimicExcludedMove(move) && BattleMon_FindMoveSlot(mon, move) == 4) {
+            if (move != MOVE_NONE && !IsMimicExcludedMove(move) && BattleMon_FindMoveSlot(mon, move) == 4) {
                 slot = BattleMon_FindMoveSlot(mon, BattleEventItem_GetSubID(item));
                 if (slot != 4) {
                     update = BattleHandler_PushWork(flow, BTL_HANDLER_UPDATE_MOVE, monId);
@@ -1325,7 +1330,7 @@ static void HandlerMimic(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersSketch[] = {
-    { 0xa0, HandlerSketch },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerSketch },
 };
 
 static const BattleEventHandlerEntry *EventAddSketch(u32 *priority) {
@@ -1350,8 +1355,8 @@ static void HandlerSketch(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
         if (used != move) {
             move = used;
         }
-        if (move != 0 && move != 0xa6 && move != 0xa5 && move != 0x1c0 && !MoveIsUsable(mon, move) &&
-            !TransformCheck(mon)) {
+        if (move != MOVE_NONE && move != MOVE_SKETCH && move != MOVE_STRUGGLE && move != MOVE_CHATTER &&
+            !MoveIsUsable(mon, move) && !TransformCheck(mon)) {
             slot = BattleMon_FindMoveSlot(mon, BattleEventItem_GetSubID(item));
             if (slot != 4) {
                 update = BattleHandler_PushWork(flow, BTL_HANDLER_UPDATE_MOVE, monId);
@@ -1372,10 +1377,10 @@ static void HandlerSketch(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sHandlersFollowMe[] = {
-    { 0x1f, HandlerFollowMeCheckFail },
-    { 0xa0, HandlerFollowMeTextSet },
-    { 0x2a, HandlerFollowMeBaitTarget },
-    { 0x76, HandlerFollowMeTurnCheck },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerFollowMeCheckFail },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerFollowMeTextSet },
+    { BTL_EVENT_BAIT_MOVE_TARGET, HandlerFollowMeBaitTarget },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerFollowMeTurnCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddFollowMe(u32 *priority) {
@@ -1384,7 +1389,8 @@ static const BattleEventHandlerEntry *EventAddFollowMe(u32 *priority) {
 }
 
 static void HandlerFollowMeCheckFail(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if ((BtlServerFlow_GetBattleStyle(flow) == 0 || BtlServerFlow_GetBattleStyle(flow) == 3) &&
+    if ((BtlServerFlow_GetBattleStyle(flow) == BTL_STYLE_SINGLE ||
+         BtlServerFlow_GetBattleStyle(flow) == BTL_STYLE_ROTATION) &&
         BattleEventVar_GetValue(2) == monId && BattleEventVar_GetValue(0x22) == 0) {
         BattleEventVar_RewriteValue(0x22, 0x1a);
     }
@@ -1407,10 +1413,11 @@ static void HandlerFollowMeBaitTarget(BattleEventItem *item, BtlServerFlow *flow
     BattleMon *mon;
     u16 move;
 
-    if (BtlServerFlow_GetBattleStyle(flow) != 0 && BtlServerFlow_GetBattleStyle(flow) != 3) {
+    if (BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_SINGLE &&
+        BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_ROTATION) {
         attackerId = BattleEventVar_GetValue(3);
         mon = GetBattleMon(flow, monId);
-        if (!IsAllyMonID(monId, attackerId) && BattleEventVar_GetValue(0x12) != 0x1fb &&
+        if (!IsAllyMonID(monId, attackerId) && BattleEventVar_GetValue(0x12) != MOVE_SKY_DROP &&
             !CheckCondition(mon, CONDITION_SKY_DROP) && !IsMonSwitchingOut(flow)) {
             move = BattleEventVar_GetValue(0x12);
             if (!BtlServerFlow_IsTargetOutOfRange(flow, attackerId, monId, move)) {
@@ -1425,7 +1432,7 @@ static void HandlerFollowMeTurnCheck(BattleEventItem *item, BtlServerFlow *flow,
 }
 
 static const BattleEventHandlerEntry sHandlersRefresh[] = {
-    { 0xa0, HandlerRefresh },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerRefresh },
 };
 
 static const BattleEventHandlerEntry *EventAddRefresh(u32 *priority) {
@@ -1439,7 +1446,7 @@ static void HandlerRefresh(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
     if (BattleEventVar_GetValue(3) == monId) {
         status = GetBattleMonStatus(GetBattleMon(flow, monId));
-        if (status == 5 || status == 1 || status == 4) {
+        if (status == CONDITION_POISON || status == CONDITION_PARALYSIS || status == CONDITION_BURN) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
             param->condition = status;
             param->monIds[0] = monId;
@@ -1450,7 +1457,7 @@ static void HandlerRefresh(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersSpiderWeb[] = {
-    { 0xa0, HandlerSpiderWeb },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerSpiderWeb },
 };
 
 static const BattleEventHandlerEntry *EventAddSpiderWeb(u32 *priority) {
@@ -1477,7 +1484,7 @@ static void HandlerSpiderWeb(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersHaze[] = {
-    { 0x9e, HandlerHaze },
+    { BTL_EVENT_FIELD_EFFECT_MOVE, HandlerHaze },
 };
 
 static const BattleEventHandlerEntry *EventAddHaze(u32 *priority) {
@@ -1501,7 +1508,7 @@ static void HandlerHaze(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 }
 
 static const BattleEventHandlerEntry sHandlersSplash[] = {
-    { 0xa0, HandlerSplash },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerSplash },
 };
 
 static const BattleEventHandlerEntry *EventAddSplash(u32 *priority) {
@@ -1520,8 +1527,8 @@ static void HandlerSplash(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sHandlersCurse[] = {
-    { 0x28, HandlerCurseMoveParam },
-    { 0xa0, HandlerCurse },
+    { BTL_EVENT_GET_MOVE_PARAM, HandlerCurseMoveParam },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerCurse },
 };
 
 static const BattleEventHandlerEntry *EventAddCurse(u32 *priority) {
@@ -1549,7 +1556,7 @@ static void HandlerCurse(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
         if (DoesMonHaveType(mon, 7)) {
             if ((s32)GetBattleMonStat(mon, BATTLEMON_HP) > 0) {
                 targetId = BattleEventVar_GetValue(6);
-                if (targetId != 0x1f) {
+                if (targetId != BTL_POSPOKE_NO_MON) {
                     condition = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
                     condition->targetIndex = targetId;
                     condition->condition = 0xa;
@@ -1592,7 +1599,7 @@ static void HandlerCurse(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersThunderWave[] = {
-    { 0x3d, HandlerThunderWave },
+    { BTL_EVENT_CHECK_TYPE_IMMUNITY_ENABLED, HandlerThunderWave },
 };
 
 static const BattleEventHandlerEntry *EventAddThunderWave(u32 *priority) {
@@ -1607,8 +1614,8 @@ static void HandlerThunderWave(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersWorrySeed[] = {
-    { 0x2c, HandlerWorrySeedCheckFail },
-    { 0xa0, HandlerWorrySeed },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerWorrySeedCheckFail },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerWorrySeed },
 };
 
 static const BattleEventHandlerEntry *EventAddWorrySeed(u32 *priority) {
@@ -1623,8 +1630,8 @@ static void HandlerWorrySeedCheckFail(BattleEventItem *item, BtlServerFlow *flow
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(4);
         target = GetBattleMon(flow, targetId);
-        if (GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == 0x36 ||
-            GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == 0xf) {
+        if (GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == ABILITY_TRUANT ||
+            GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == ABILITY_INSOMNIA) {
             BattleEventVar_RewriteValue(0x40, 1);
         }
     }
@@ -1647,7 +1654,7 @@ static void HandlerWorrySeed(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersDreamEater[] = {
-    { 0x2c, HandlerDreamEater },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerDreamEater },
     { 0x5, HandlerDreamEaterSubstituteCheck },
 };
 
@@ -1674,7 +1681,7 @@ static void HandlerDreamEaterSubstituteCheck(BattleEventItem *item, BtlServerFlo
 }
 
 static const BattleEventHandlerEntry sHandlersCaptivate[] = {
-    { 0x2c, HandlerCaptivate },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerCaptivate },
 };
 
 static const BattleEventHandlerEntry *EventAddCaptivate(u32 *priority) {
@@ -1693,14 +1700,14 @@ static void HandlerCaptivate(BattleEventItem *item, BtlServerFlow *flow, u8 monI
         target = GetBattleMon(flow, targetId);
         sex = GetBattleMonStat(GetBattleMon(flow, monId), BATTLEMON_GENDER);
         targetSex = GetBattleMonStat(target, BATTLEMON_GENDER);
-        if (sex == 2 || targetSex == 2 || sex == targetSex) {
+        if (sex == GENDER_UNKNOWN || targetSex == GENDER_UNKNOWN || sex == targetSex) {
             BattleEventVar_RewriteValue(0x40, 1);
         }
     }
 }
 
 static const BattleEventHandlerEntry sHandlersTriAttack[] = {
-    { 0x64, HandlerTriAttack },
+    { BTL_EVENT_CHECK_MOVE_ADD_CONDITION, HandlerTriAttack },
 };
 
 static const BattleEventHandlerEntry *EventAddTriAttack(u32 *priority) {
@@ -1725,7 +1732,7 @@ static void HandlerTriAttack(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 
 static const BattleEventHandlerEntry sHandlersSecretPower[] = {
     { 0x83, HandlerSecretPower },
-    { 0x24, HandlerSecretPowerStart },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerSecretPowerStart },
 };
 
 static const BattleEventHandlerEntry *EventAddSecretPower(u32 *priority) {
@@ -1844,7 +1851,7 @@ static void HandlerSecretPower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersChatter[] = {
-    { 0x64, HandlerChatter },
+    { BTL_EVENT_CHECK_MOVE_ADD_CONDITION, HandlerChatter },
 };
 
 static const BattleEventHandlerEntry *EventAddChatter(u32 *priority) {
@@ -1861,7 +1868,7 @@ static void HandlerChatter(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
     if (BattleEventVar_GetValue(3) == monId) {
         mon = GetBattleMon(flow, monId);
-        if (GetBattleMonSpecies(mon) == 0x1b9) {
+        if (GetBattleMonSpecies(mon) == SPECIES_CHATOT) {
             volume = BtlServerFlow_GetChatterEffect(flow, monId);
             if (volume != 0) {
                 status = CONDITION_CONFUSION;
@@ -1881,8 +1888,8 @@ static void HandlerChatter(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersBind[] = {
-    { 0x64, HandlerBind },
-    { 0x61, HandlerBindTextSet },
+    { BTL_EVENT_CHECK_MOVE_ADD_CONDITION, HandlerBind },
+    { BTL_EVENT_ADD_MOVE_CONDITION_STRING, HandlerBindTextSet },
 };
 
 static const BattleEventHandlerEntry *EventAddBind(u32 *priority) {
@@ -1907,29 +1914,29 @@ static void HandlerBindTextSet(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     u8 targetId;
     u16 message;
 
-    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x1d) == 8) {
+    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x1d) == CONDITION_BIND) {
         string = (BattleHandlerString *)BattleEventVar_GetValue(0x3f);
         targetId = BattleEventVar_GetValue(4);
         switch (BattleEventItem_GetSubID(item)) {
-        case 0x23:
+        case MOVE_WRAP:
             message = 0x32a;
             break;
-        case 0x14:
+        case MOVE_BIND:
             message = 0x323;
             break;
-        case 0x53:
+        case MOVE_FIRE_SPIN:
             message = 0x33b;
             break;
-        case 0x80:
+        case MOVE_CLAMP:
             message = 0x331;
             break;
-        case 0x148:
+        case MOVE_SAND_TOMB:
             message = 0x341;
             break;
-        case 0x1cf:
+        case MOVE_MAGMA_STORM:
             message = 0x33e;
             break;
-        case 0xfa:
+        case MOVE_WHIRLPOOL:
             message = 0x338;
             break;
         default:
@@ -1942,10 +1949,10 @@ static void HandlerBindTextSet(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersWhirlpool[] = {
-    { 0x64, HandlerBind },
-    { 0x61, HandlerBindTextSet },
-    { 0x99, HandlerWhirlpoolDiveCheck },
-    { 0x47, HandlerWhirlpoolPower },
+    { BTL_EVENT_CHECK_MOVE_ADD_CONDITION, HandlerBind },
+    { BTL_EVENT_ADD_MOVE_CONDITION_STRING, HandlerBindTextSet },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerWhirlpoolDiveCheck },
+    { BTL_EVENT_CALC_DAMAGE, HandlerWhirlpoolPower },
 };
 
 static const BattleEventHandlerEntry *EventAddWhirlpool(u32 *priority) {
@@ -1967,7 +1974,7 @@ static void HandlerWhirlpoolPower(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersSuperFang[] = {
-    { 0x46, HandlerSuperFang },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerSuperFang },
 };
 
 static const BattleEventHandlerEntry *EventAddSuperFang(u32 *priority) {
@@ -1992,7 +1999,7 @@ static void HandlerSuperFang(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersDragonRage[] = {
-    { 0x46, HandlerDragonRage },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerDragonRage },
 };
 
 static const BattleEventHandlerEntry *EventAddDragonRage(u32 *priority) {
@@ -2007,7 +2014,7 @@ static void HandlerDragonRage(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersSonicBoom[] = {
-    { 0x46, HandlerSonicBoom },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerSonicBoom },
 };
 
 static const BattleEventHandlerEntry *EventAddSonicBoom(u32 *priority) {
@@ -2022,8 +2029,8 @@ static void HandlerSonicBoom(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersEndeavor[] = {
-    { 0x2c, HandlerEndeavorCheckFail },
-    { 0x46, HandlerEndeavor },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerEndeavorCheckFail },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerEndeavor },
 };
 
 static const BattleEventHandlerEntry *EventAddEndeavor(u32 *priority) {
@@ -2065,7 +2072,7 @@ static void HandlerEndeavor(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersSeismicToss[] = {
-    { 0x46, HandlerSeismicToss },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerSeismicToss },
 };
 
 static const BattleEventHandlerEntry *EventAddSeismicToss(u32 *priority) {
@@ -2083,7 +2090,7 @@ static void HandlerSeismicToss(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersPsywave[] = {
-    { 0x46, HandlerPsywave },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerPsywave },
 };
 
 static const BattleEventHandlerEntry *EventAddPsywave(u32 *priority) {
@@ -2108,8 +2115,8 @@ static void HandlerPsywave(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersStockpile[] = {
-    { 0x1f, HandlerStockpileCheckCount },
-    { 0xa0, HandlerStockpileIncreaseStats },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerStockpileCheckCount },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerStockpileIncreaseStats },
 };
 
 static const BattleEventHandlerEntry *EventAddStockpile(u32 *priority) {
@@ -2175,9 +2182,9 @@ static void HandlerStockpileIncreaseStats(BattleEventItem *item, BtlServerFlow *
 }
 
 static const BattleEventHandlerEntry sHandlersSpitUp[] = {
-    { 0x1f, HandlerSpitUpStart },
-    { 0x37, HandlerSpitUpPower },
-    { 0x27, HandlerSpitUpResetStats },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerSpitUpStart },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerSpitUpPower },
+    { BTL_EVENT_MOVE_EXECUTE_END, HandlerSpitUpResetStats },
 };
 
 static const BattleEventHandlerEntry *EventAddSpitUp(u32 *priority) {
@@ -2255,9 +2262,9 @@ static void HandlerSpitUpResetStats(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sHandlersSwallow[] = {
-    { 0x1f, HandlerSpitUpStart },
-    { 0x8f, HandlerSwallow },
-    { 0x27, HandlerSpitUpResetStats },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerSpitUpStart },
+    { BTL_EVENT_CALC_MOVE_HEAL, HandlerSwallow },
+    { BTL_EVENT_MOVE_EXECUTE_END, HandlerSpitUpResetStats },
 };
 
 static const BattleEventHandlerEntry *EventAddSwallow(u32 *priority) {
@@ -2286,9 +2293,9 @@ static void HandlerSwallow(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersCounter[] = {
-    { 0x1f, HandlerCounterStart },
-    { 0x29, HandlerCounterSetTarget },
-    { 0x46, HandlerCounterCalcDamage },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerCounterStart },
+    { BTL_EVENT_DECIDE_MOVE_TARGET, HandlerCounterSetTarget },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerCounterCalcDamage },
 };
 
 static const BattleEventHandlerEntry *EventAddCounter(u32 *priority) {
@@ -2309,9 +2316,9 @@ static void HandlerCounterCalcDamage(BattleEventItem *item, BtlServerFlow *flow,
 }
 
 static const BattleEventHandlerEntry sHandlersMirrorCoat[] = {
-    { 0x1f, HandlerMirrorCoatStart },
-    { 0x29, HandlerMirrorCoatSetTarget },
-    { 0x46, HandlerMirrorCoatCalcDamage },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerMirrorCoatStart },
+    { BTL_EVENT_DECIDE_MOVE_TARGET, HandlerMirrorCoatSetTarget },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerMirrorCoatCalcDamage },
 };
 
 static const BattleEventHandlerEntry *EventAddMirrorCoat(u32 *priority) {
@@ -2332,9 +2339,9 @@ static void HandlerMirrorCoatCalcDamage(BattleEventItem *item, BtlServerFlow *fl
 }
 
 static const BattleEventHandlerEntry sHandlersMetalBurst[] = {
-    { 0x1f, HandlerMetalBurstStart },
-    { 0x29, HandlerMetalBurstSetTarget },
-    { 0x46, HandlerMetalBurstCalcDamage },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerMetalBurstStart },
+    { BTL_EVENT_DECIDE_MOVE_TARGET, HandlerMetalBurstSetTarget },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerMetalBurstCalcDamage },
 };
 
 static const BattleEventHandlerEntry *EventAddMetalBurst(u32 *priority) {
@@ -2373,17 +2380,17 @@ static void CommonCounterSetTarget(BtlServerFlow *flow, u8 monId, s32 *work, u32
     if (BattleEventVar_GetValue(3) == monId &&
         CommonCounterCheckDamageRecieved(GetBattleMon(flow, monId), category, &record)) {
         targetId = record.attackerId;
-        if (BtlServerFlow_GetMonBattlePos(flow, targetId) == 6) {
+        if (BtlServerFlow_GetMonBattlePos(flow, targetId) == BTL_POS_NONE) {
             targetId = 0x1f;
-            if (record.attackerPos != 6) {
+            if (record.attackerPos != BTL_POS_NONE) {
                 targetId = BtlServerFlow_GetMonIDAtPos(flow, record.attackerPos);
             }
-            if (targetId == 0x1f) {
+            if (targetId == BTL_POSPOKE_NO_MON) {
                 pos = BtlServerFlow_GetMoveTargetPos(flow, monId, 1);
-                if (pos != 6) {
+                if (pos != BTL_POS_NONE) {
                     targetId = BtlServerFlow_GetMonIDAtPos(flow, pos);
                 }
-                if (targetId == 0x1f) {
+                if (targetId == BTL_POSPOKE_NO_MON) {
                     targetId = record.attackerId;
                 }
             }
@@ -2418,7 +2425,7 @@ static BOOL CommonCounterCheckDamageRecieved(BattleMon *mon, u32 category, Battl
 }
 
 static const BattleEventHandlerEntry sHandlersLastResort[] = {
-    { 0x1f, HandlerLastResort },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerLastResort },
 };
 
 static const BattleEventHandlerEntry *EventAddLastResort(u32 *priority) {
@@ -2439,7 +2446,7 @@ static void HandlerLastResort(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         used = 0;
         hasLastResort = FALSE;
         for (i = 0; i < moveCount; i++) {
-            if (MoveGetID(mon, i) == 0x183) {
+            if (MoveGetID(mon, i) == MOVE_LAST_RESORT) {
                 hasLastResort = TRUE;
             } else if (CheckIfMoveWasUsed(mon, i)) {
                 used++;
@@ -2452,8 +2459,8 @@ static void HandlerLastResort(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersSnore[] = {
-    { 0x1d, HandlerSnoreCheck1 },
-    { 0x1f, HandlerSnoreCheck2 },
+    { BTL_EVENT_CAN_USE_MOVE_ASLEEP, HandlerSnoreCheck1 },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerSnoreCheck2 },
 };
 
 static const BattleEventHandlerEntry *EventAddSnore(u32 *priority) {
@@ -2481,7 +2488,7 @@ static void HandlerSnoreCheck2(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersNightmare[] = {
-    { 0x2c, HandlerNightmareNoEffect },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerNightmareNoEffect },
 };
 
 static const BattleEventHandlerEntry *EventAddNightmare(u32 *priority) {
@@ -2501,7 +2508,7 @@ static void HandlerNightmareNoEffect(BattleEventItem *item, BtlServerFlow *flow,
 }
 
 static const BattleEventHandlerEntry sHandlersSuckerPunch[] = {
-    { 0x2c, HandlerSuckerPunch },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerSuckerPunch },
 };
 
 static const BattleEventHandlerEntry *EventAddSuckerPunch(u32 *priority) {
@@ -2538,9 +2545,9 @@ static void HandlerSuckerPunch(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersPursuit[] = {
-    { 0x53, HandlerPursuitStart },
-    { 0x32, HandlerPursuitHitCheck },
-    { 0x37, HandlerPursuitPower },
+    { BTL_EVENT_INTERRUPT_SWITCH, HandlerPursuitStart },
+    { BTL_EVENT_CHECK_ALWAYS_HIT, HandlerPursuitHitCheck },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerPursuitPower },
 };
 
 static const BattleEventHandlerEntry *EventAddPursuit(u32 *priority) {
@@ -2577,9 +2584,9 @@ static void HandlerPursuitPower(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sHandlersExplosion[] = {
-    { 0x45, HandlerExplosionDamageDetermine },
-    { 0x24, HandlerExplosionStart },
-    { 0x27, HandlerExplosionEnd },
+    { BTL_EVENT_DAMAGE_DETERMINE, HandlerExplosionDamageDetermine },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerExplosionStart },
+    { BTL_EVENT_MOVE_EXECUTE_END, HandlerExplosionEnd },
 };
 
 static const BattleEventHandlerEntry *EventAddExplosion(u32 *priority) {
@@ -2614,7 +2621,7 @@ static void HandlerExplosionEnd(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sHandlersFocusEnergy[] = {
-    { 0xa0, HandlerFocusEnergy },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerFocusEnergy },
 };
 
 static const BattleEventHandlerEntry *EventAddFocusEnergy(u32 *priority) {
@@ -2639,10 +2646,10 @@ static void HandlerFocusEnergy(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersCharge[] = {
-    { 0x24, HandlerCharge },
-    { 0x3, HandlerChargeStart },
-    { 0x38, HandlerChargePower },
-    { 0x4, HandlerChargeEnd },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerCharge },
+    { BTL_EVENT_MOVE_SEQ_START, HandlerChargeStart },
+    { BTL_EVENT_MOVE_POWER, HandlerChargePower },
+    { BTL_EVENT_MOVE_SEQ_END, HandlerChargeEnd },
 };
 
 static const BattleEventHandlerEntry *EventAddCharge(u32 *priority) {
@@ -2665,7 +2672,7 @@ static void HandlerCharge(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static void HandlerChargePower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (work[0] == 2 && BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x16) == 0xc) {
+    if (work[0] == 2 && BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x16) == TYPE_ELECTRIC) {
         BattleEventVar_MulValue(0x31, 0x2000);
     }
 }
@@ -2683,7 +2690,7 @@ static void HandlerChargeEnd(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersPerishSong[] = {
-    { 0x25, HandlerPerishSongStart },
+    { BTL_EVENT_MOVE_EXECUTE_EFFECTIVE, HandlerPerishSongStart },
     { 0x5, HandlerBypassSubstitute },
 };
 
@@ -2709,7 +2716,7 @@ static void HandlerBypassSubstitute(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sHandlersLeechSeed[] = {
-    { 0x62, HandlerLeechSeed },
+    { BTL_EVENT_MOVE_CONDITION_CONTINUE, HandlerLeechSeed },
 };
 
 static const BattleEventHandlerEntry *EventAddLeechSeed(u32 *priority) {
@@ -2724,7 +2731,7 @@ static void HandlerLeechSeed(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersPayDay[] = {
-    { 0x45, HandlerPayDay },
+    { BTL_EVENT_DAMAGE_DETERMINE, HandlerPayDay },
 };
 
 static const BattleEventHandlerEntry *EventAddPayDay(u32 *priority) {
@@ -2744,9 +2751,9 @@ static void HandlerPayDay(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sHandlersRage[] = {
-    { 0x24, HandlerRageStart },
-    { 0x4b, HandlerRageBuild },
-    { 0x1, HandlerRageEnd },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerRageStart },
+    { BTL_EVENT_DAMAGE_REACTION, HandlerRageBuild },
+    { BTL_EVENT_ACTION_START, HandlerRageEnd },
 };
 
 static const BattleEventHandlerEntry *EventAddRage(u32 *priority) {
@@ -2789,7 +2796,7 @@ static void HandlerRageEnd(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersAquaRing[] = {
-    { 0xa0, HandlerAquaRing },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerAquaRing },
 };
 
 static const BattleEventHandlerEntry *EventAddAquaRing(u32 *priority) {
@@ -2812,9 +2819,9 @@ static void HandlerAquaRing(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersThrash[] = {
-    { 0x24, HandlerThrash },
-    { 0x4, HandlerThrashEnd },
-    { 0x77, HandlerThrashTurnCheck },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerThrash },
+    { BTL_EVENT_MOVE_SEQ_END, HandlerThrashEnd },
+    { BTL_EVENT_TURN_CHECK_END, HandlerThrashTurnCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddThrash(u32 *priority) {
@@ -2898,9 +2905,11 @@ static void HandlerThrashTurnCheck(BattleEventItem *item, BtlServerFlow *flow, u
 // This part
 
 static const BattleEventHandlerEntry sHandlersUproar[] = {
-    { 0x45, HandlerUproar },          { 0x04, HandlerUproarEnd },
-    { 0x77, HandlerUproarUnlock },    { 0x65, HandlerUproarPreventSleep },
-    { 0x0e, HandlerUproarYawnCheck },
+    { BTL_EVENT_DAMAGE_DETERMINE, HandlerUproar },
+    { BTL_EVENT_MOVE_SEQ_END, HandlerUproarEnd },
+    { BTL_EVENT_TURN_CHECK_END, HandlerUproarUnlock },
+    { BTL_EVENT_MOVE_CONDITION_CHECK_FAIL, HandlerUproarPreventSleep },
+    { BTL_EVENT_CHECK_SLEEP_PREVENTED, HandlerUproarYawnCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddUproar(u32 *priority) {
@@ -2988,7 +2997,7 @@ static void HandlerUproarPreventSleep(BattleEventItem *item, BtlServerFlow *flow
     BattleHandlerMessageParam *param;
     u8 targetId;
 
-    if (work[6] != 0 && BattleEventVar_GetValue(0x1d) == 2 && BattleEventVar_RewriteValue(0x41, 1)) {
+    if (work[6] != 0 && BattleEventVar_GetValue(0x1d) == CONDITION_SLEEP && BattleEventVar_RewriteValue(0x41, 1)) {
         param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         targetId = BattleEventVar_GetValue(4);
         BattleHandler_StrSetup(&param->string, 2, targetId == monId ? 0x2c8 : 0x2c5);
@@ -3004,8 +3013,9 @@ static void HandlerUproarYawnCheck(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersRollout[] = {
-    { 0x24, HandlerRolloutStart }, { 0x21, HandlerRolloutMiss },  { 0x26, HandlerRolloutMiss },
-    { 0x04, HandlerRolloutEnd },   { 0x37, HandlerRolloutPower },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerRolloutStart },    { BTL_EVENT_MOVE_EXECUTE_FAIL, HandlerRolloutMiss },
+    { BTL_EVENT_MOVE_EXECUTE_NO_EFFECT, HandlerRolloutMiss }, { BTL_EVENT_MOVE_SEQ_END, HandlerRolloutEnd },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerRolloutPower },
 };
 
 static const BattleEventHandlerEntry *EventAddRollout(u32 *priority) {
@@ -3080,8 +3090,8 @@ static void HandlerRolloutPower(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sHandlersTripleKick[] = {
-    { 0x37, HandlerTripleKickPower },
-    { 0x35, HandlerTripleKickHitCount },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerTripleKickPower },
+    { BTL_EVENT_CHECK_MULTIHIT_HITS, HandlerTripleKickHitCount },
 };
 
 static const BattleEventHandlerEntry *EventAddTripleKick(u32 *priority) {
@@ -3103,7 +3113,7 @@ static void HandlerTripleKickHitCount(BattleEventItem *item, BtlServerFlow *flow
 }
 
 static const BattleEventHandlerEntry sHandlersGyroBall[] = {
-    { 0x37, HandlerGyroBall },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerGyroBall },
 };
 
 static const BattleEventHandlerEntry *EventAddGyroBall(u32 *priority) {
@@ -3130,7 +3140,7 @@ static void HandlerGyroBall(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersRevenge[] = {
-    { 0x37, HandlerRevenge },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerRevenge },
 };
 
 static const BattleEventHandlerEntry *EventAddRevenge(u32 *priority) {
@@ -3164,7 +3174,7 @@ typedef struct FlailPowerEntry {
 } FlailPowerEntry;
 
 static const BattleEventHandlerEntry sHandlersFlail[] = {
-    { 0x37, HandlerFlail },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerFlail },
 };
 
 static const BattleEventHandlerEntry *EventAddFlail(u32 *priority) {
@@ -3200,7 +3210,7 @@ static void HandlerFlail(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersFacade[] = {
-    { 0x38, HandlerFacade },
+    { BTL_EVENT_MOVE_POWER, HandlerFacade },
 };
 
 static const BattleEventHandlerEntry *EventAddFacade(u32 *priority) {
@@ -3213,14 +3223,14 @@ static void HandlerFacade(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 
     if (BattleEventVar_GetValue(3) == monId) {
         status = GetBattleMonStatus(GetBattleMon(flow, monId));
-        if (status == 5 || status == 1 || status == 4) {
+        if (status == CONDITION_POISON || status == CONDITION_PARALYSIS || status == CONDITION_BURN) {
             BattleEventVar_MulValue(0x31, FX32_CONST(2));
         }
     }
 }
 
 static const BattleEventHandlerEntry sHandlersPayback[] = {
-    { 0x37, HandlerPayback },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerPayback },
 };
 
 static const BattleEventHandlerEntry *EventAddPayback(u32 *priority) {
@@ -3237,7 +3247,7 @@ static void HandlerPayback(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersEruption[] = {
-    { 0x37, HandlerEruption },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerEruption },
 };
 
 static const BattleEventHandlerEntry *EventAddEruption(u32 *priority) {
@@ -3265,7 +3275,7 @@ static void HandlerEruption(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersCrushGrip[] = {
-    { 0x37, HandlerCrushGrip },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerCrushGrip },
 };
 
 static const BattleEventHandlerEntry *EventAddCrushGrip(u32 *priority) {
@@ -3286,7 +3296,7 @@ static void HandlerCrushGrip(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersBrine[] = {
-    { 0x38, HandlerBrine },
+    { BTL_EVENT_MOVE_POWER, HandlerBrine },
 };
 
 static const BattleEventHandlerEntry *EventAddBrine(u32 *priority) {
@@ -3303,7 +3313,7 @@ static void HandlerBrine(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersReturn[] = {
-    { 0x37, HandlerReturn },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerReturn },
 };
 
 static const BattleEventHandlerEntry *EventAddReturn(u32 *priority) {
@@ -3324,7 +3334,7 @@ static void HandlerReturn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sHandlersFrustration[] = {
-    { 0x37, HandlerFrustration },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerFrustration },
 };
 
 static const BattleEventHandlerEntry *EventAddFrustration(u32 *priority) {
@@ -3345,7 +3355,7 @@ static void HandlerFrustration(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersWakeUpSlap[] = {
-    { 0x37, HandlerWakeUpSlapPower },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerWakeUpSlapPower },
     { 0x83, HandlerWakeUpSlapSleepCure },
 };
 
@@ -3382,7 +3392,7 @@ static void HandlerWakeUpSlapSleepCure(BattleEventItem *item, BtlServerFlow *flo
 }
 
 static const BattleEventHandlerEntry sHandlersSmellingSalts[] = {
-    { 0x37, HandlerSmellingSaltsPower },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerSmellingSaltsPower },
     { 0x83, HandlerSmellingSaltsParaCure },
 };
 
@@ -3408,7 +3418,7 @@ static void HandlerSmellingSaltsParaCure(BattleEventItem *item, BtlServerFlow *f
 
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(6);
-        if (targetId != 0x1f && CheckCondition(GetBattleMon(flow, targetId), 1)) {
+        if (targetId != BTL_POSPOKE_NO_MON && CheckCondition(GetBattleMon(flow, targetId), 1)) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
             param->monIds[0] = targetId;
             param->count = 1;
@@ -3419,9 +3429,9 @@ static void HandlerSmellingSaltsParaCure(BattleEventItem *item, BtlServerFlow *f
 }
 
 static const BattleEventHandlerEntry sHandlersPresent[] = {
-    { 0x30, HandlerPresentRandomCheck },
-    { 0x31, HandlerPresentHeal },
-    { 0x37, HandlerPresentPower },
+    { BTL_EVENT_CHECK_DAMAGE_TO_RECOVER, HandlerPresentRandomCheck },
+    { BTL_EVENT_APPLY_DAMAGE_TO_RECOVER, HandlerPresentHeal },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerPresentPower },
 };
 
 static const BattleEventHandlerEntry *EventAddPresent(u32 *priority) {
@@ -3481,7 +3491,7 @@ static void HandlerPresentPower(BattleEventItem *item, BtlServerFlow *flow, u8 m
 
 // Trump Card's power for the PP left after it is used
 static const BattleEventHandlerEntry sHandlersTrumpCard[] = {
-    { 0x37, HandlerTrumpCard },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerTrumpCard },
 };
 
 static const BattleEventHandlerEntry *EventAddTrumpCard(u32 *priority) {
@@ -3514,7 +3524,7 @@ static void HandlerTrumpCard(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 
 // The stat stages whose raises Punishment counts
 static const BattleEventHandlerEntry sHandlersPunishment[] = {
-    { 0x37, HandlerPunishment },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerPunishment },
 };
 
 static const BattleEventHandlerEntry *EventAddPunishment(u32 *priority) {
@@ -3548,7 +3558,7 @@ static void HandlerPunishment(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersFuryCutter[] = {
-    { 0x37, HandlerFuryCutter },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerFuryCutter },
 };
 
 static const BattleEventHandlerEntry *EventAddFuryCutter(u32 *priority) {
@@ -3580,7 +3590,7 @@ static void HandlerFuryCutter(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersAssurance[] = {
-    { 0x37, HandlerAssurance },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerAssurance },
 };
 
 static const BattleEventHandlerEntry *EventAddAssurance(u32 *priority) {
@@ -3597,7 +3607,7 @@ static void HandlerAssurance(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersLowKick[] = {
-    { 0x37, HandlerLowKick },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerLowKick },
 };
 
 static const BattleEventHandlerEntry *EventAddLowKick(u32 *priority) {
@@ -3629,8 +3639,8 @@ static void HandlerLowKick(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersWeatherBall[] = {
-    { 0x28, HandlerWeatherBallType },
-    { 0x37, HandlerWeatherBallPower },
+    { BTL_EVENT_GET_MOVE_PARAM, HandlerWeatherBallType },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerWeatherBallPower },
 };
 
 static const BattleEventHandlerEntry *EventAddWeatherBall(u32 *priority) {
@@ -3679,8 +3689,8 @@ static void HandlerWeatherBallPower(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sHandlersTwister[] = {
-    { 0x99, HandlerTwisterFlyCheck },
-    { 0x37, HandlerTwisterPower },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerTwisterFlyCheck },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerTwisterPower },
 };
 
 static const BattleEventHandlerEntry *EventAddTwister(u32 *priority) {
@@ -3703,7 +3713,7 @@ static void HandlerTwisterPower(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sHandlersSkyUppercut[] = {
-    { 0x99, HandlerSkyUppercut },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerSkyUppercut },
 };
 
 static const BattleEventHandlerEntry *EventAddSkyUppercut(u32 *priority) {
@@ -3718,9 +3728,9 @@ static void HandlerSkyUppercut(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersThunder[] = {
-    { 0x99, HandlerThunderFlyCheck },
-    { 0x32, HandlerThunderRainCheck },
-    { 0x34, HandlerThunderSunCheck },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerThunderFlyCheck },
+    { BTL_EVENT_CHECK_ALWAYS_HIT, HandlerThunderRainCheck },
+    { BTL_EVENT_GET_MOVE_ACCURACY, HandlerThunderSunCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddThunder(u32 *priority) {
@@ -3735,7 +3745,7 @@ static void HandlerThunderFlyCheck(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static void HandlerThunderRainCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == 2) {
+    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == BTL_WEATHER_RAIN) {
         BattleEventVar_RewriteValue(0x51, 1);
     }
 }
@@ -3747,7 +3757,7 @@ static void HandlerThunderSunCheck(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersBlizzard[] = {
-    { 0x32, HandlerBlizzard },
+    { BTL_EVENT_CHECK_ALWAYS_HIT, HandlerBlizzard },
 };
 
 static const BattleEventHandlerEntry *EventAddBlizzard(u32 *priority) {
@@ -3756,14 +3766,14 @@ static const BattleEventHandlerEntry *EventAddBlizzard(u32 *priority) {
 }
 
 static void HandlerBlizzard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == 3) {
+    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == BTL_WEATHER_HAIL) {
         BattleEventVar_RewriteValue(0x51, 1);
     }
 }
 
 static const BattleEventHandlerEntry sHandlersEarthquake[] = {
-    { 0x99, HandlerEarthquakeDigCheck },
-    { 0x47, HandlerEarthquakeDamage },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerEarthquakeDigCheck },
+    { BTL_EVENT_CALC_DAMAGE, HandlerEarthquakeDamage },
 };
 
 static const BattleEventHandlerEntry *EventAddEarthquake(u32 *priority) {
@@ -3786,7 +3796,7 @@ static void HandlerEarthquakeDamage(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sHandlersJudgement[] = {
-    { 0x28, HandlerJudgement },
+    { BTL_EVENT_GET_MOVE_PARAM, HandlerJudgement },
 };
 
 static const BattleEventHandlerEntry *EventAddJudgement(u32 *priority) {
@@ -3800,55 +3810,55 @@ static void HandlerJudgement(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 
     if (BattleEventVar_GetValue(2) == monId && BtlServerFlow_CanUseHeldItem(flow, monId)) {
         heldItem = GetBattleMonHeldItem(GetBattleMon(flow, monId));
-        type = 0;
+        type = TYPE_NORMAL;
         switch (heldItem) {
-        case 298:
-            type = 9;
+        case ITEM_FLAME_PLATE:
+            type = TYPE_FIRE;
             break;
-        case 299:
-            type = 10;
+        case ITEM_SPLASH_PLATE:
+            type = TYPE_WATER;
             break;
-        case 300:
-            type = 12;
+        case ITEM_ZAP_PLATE:
+            type = TYPE_ELECTRIC;
             break;
-        case 301:
-            type = 11;
+        case ITEM_MEADOW_PLATE:
+            type = TYPE_GRASS;
             break;
-        case 302:
-            type = 14;
+        case ITEM_ICICLE_PLATE:
+            type = TYPE_ICE;
             break;
-        case 303:
-            type = 1;
+        case ITEM_FIST_PLATE:
+            type = TYPE_FIGHTING;
             break;
-        case 304:
-            type = 3;
+        case ITEM_TOXIC_PLATE:
+            type = TYPE_POISON;
             break;
-        case 305:
-            type = 4;
+        case ITEM_EARTH_PLATE:
+            type = TYPE_GROUND;
             break;
-        case 306:
-            type = 2;
+        case ITEM_SKY_PLATE:
+            type = TYPE_FLYING;
             break;
-        case 307:
-            type = 13;
+        case ITEM_MIND_PLATE:
+            type = TYPE_PSYCHIC;
             break;
-        case 308:
-            type = 6;
+        case ITEM_INSECT_PLATE:
+            type = TYPE_BUG;
             break;
-        case 309:
-            type = 5;
+        case ITEM_STONE_PLATE:
+            type = TYPE_ROCK;
             break;
-        case 310:
-            type = 7;
+        case ITEM_SPOOKY_PLATE:
+            type = TYPE_GHOST;
             break;
-        case 311:
-            type = 15;
+        case ITEM_DRACO_PLATE:
+            type = TYPE_DRAGON;
             break;
-        case 312:
-            type = 16;
+        case ITEM_DREAD_PLATE:
+            type = TYPE_DARK;
             break;
-        case 313:
-            type = 8;
+        case ITEM_IRON_PLATE:
+            type = TYPE_STEEL;
             break;
         }
         BattleEventVar_RewriteValue(0x16, type);
@@ -3856,7 +3866,7 @@ static void HandlerJudgement(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersTechnoBlast[] = {
-    { 0x28, HandlerTechnoBlast },
+    { BTL_EVENT_GET_MOVE_PARAM, HandlerTechnoBlast },
 };
 
 static const BattleEventHandlerEntry *EventAddTechnoBlast(u32 *priority) {
@@ -3871,23 +3881,23 @@ static void HandlerTechnoBlast(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 
     if (BattleEventVar_GetValue(2) == monId && BtlServerFlow_CanUseHeldItem(flow, monId)) {
         heldItem = GetBattleMonHeldItem(GetBattleMon(flow, monId));
-        type = 0;
+        type = TYPE_NORMAL;
         effect = 0;
         switch (heldItem) {
-        case 116:
-            type = 10;
+        case ITEM_DOUSE_DRIVE:
+            type = TYPE_WATER;
             effect = 1;
             break;
-        case 117:
-            type = 12;
+        case ITEM_SHOCK_DRIVE:
+            type = TYPE_ELECTRIC;
             effect = 2;
             break;
-        case 118:
-            type = 9;
+        case ITEM_BURN_DRIVE:
+            type = TYPE_FIRE;
             effect = 3;
             break;
-        case 119:
-            type = 14;
+        case ITEM_CHILL_DRIVE:
+            type = TYPE_ICE;
             effect = 4;
             break;
         }
@@ -3897,8 +3907,8 @@ static void HandlerTechnoBlast(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersHiddenPower[] = {
-    { 0x28, HandlerHiddenPowerType },
-    { 0x37, HandlerHiddenPowerPower },
+    { BTL_EVENT_GET_MOVE_PARAM, HandlerHiddenPowerType },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerHiddenPowerPower },
 };
 
 static const BattleEventHandlerEntry *EventAddHiddenPower(u32 *priority) {
@@ -3919,10 +3929,10 @@ static void HandlerHiddenPowerPower(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sHandlersNaturalGift[] = {
-    { 0x1f, HandlerNaturalGiftCheckFail },
-    { 0x28, HandlerNaturalGiftType },
-    { 0x37, HandlerNaturalGiftPower },
-    { 0x27, HandlerNaturalGiftEnd },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerNaturalGiftCheckFail },
+    { BTL_EVENT_GET_MOVE_PARAM, HandlerNaturalGiftType },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerNaturalGiftPower },
+    { BTL_EVENT_MOVE_EXECUTE_END, HandlerNaturalGiftEnd },
 };
 
 static const BattleEventHandlerEntry *EventAddNaturalGift(u32 *priority) {
@@ -4002,8 +4012,9 @@ static void HandlerKnockOff(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersMagicCoat[] = {
-    { 0x1f, HandlerMagicCoatCheckFail }, { 0xa0, HandlerMagicCoat },          { 0x2d, HandlerMagicCoatWait },
-    { 0x09, HandlerMagicCoatReflect },   { 0x76, HandlerMagicCoatTurnCheck },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerMagicCoatCheckFail }, { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerMagicCoat },
+    { BTL_EVENT_CHECK_NO_EFFECT_3, HandlerMagicCoatWait },         { BTL_EVENT_REFLECT_MOVE, HandlerMagicCoatReflect },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerMagicCoatTurnCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddMagicCoat(u32 *priority) {
@@ -4053,10 +4064,10 @@ static void HandlerMagicCoatTurnCheck(BattleEventItem *item, BtlServerFlow *flow
 }
 
 static const BattleEventHandlerEntry sHandlersSnatch[] = {
-    { 0xa0, HandlerSnatch },
-    { 0x1a, HandlerSnatchCheckMoveEffect },
-    { 0x08, HandlerSnatchStealMove },
-    { 0x76, HandlerSnatchTurnCheck },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerSnatch },
+    { BTL_EVENT_CHECK_MOVE_STEAL, HandlerSnatchCheckMoveEffect },
+    { BTL_EVENT_STEAL_MOVE, HandlerSnatchStealMove },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerSnatchTurnCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddSnatch(u32 *priority) {
@@ -4107,7 +4118,7 @@ static void HandlerSnatchTurnCheck(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersThief[] = {
-    { 0x81, HandlerThiefStart },
+    { BTL_EVENT_DAMAGE_PROCESS_START, HandlerThiefStart },
     { 0x83, HandlerThief },
 };
 
@@ -4130,7 +4141,7 @@ static void HandlerThief(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 
     if (BattleEventVar_GetValue(3) == monId && GetBattleMonHeldItem(GetBattleMon(flow, monId)) == 0 && work[0] == 0) {
         targetId = BattleEventVar_GetValue(6);
-        if (targetId != 0x1f) {
+        if (targetId != BTL_POSPOKE_NO_MON) {
             target = GetBattleMon(flow, targetId);
             if (GetBattleMonHeldItem(target) != 0 && !IsItemSwapBlocked(flow, monId, targetId)) {
                 swapParam = BattleHandler_PushWork(flow, BTL_HANDLER_SWAP_ITEM, monId);
@@ -4151,7 +4162,7 @@ static void HandlerThief(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersTrick[] = {
-    { 0xa0, HandlerTrick },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerTrick },
 };
 
 static const BattleEventHandlerEntry *EventAddTrick(u32 *priority) {
@@ -4212,10 +4223,10 @@ typedef struct MagnitudeEntry {
 } MagnitudeEntry;
 
 static const BattleEventHandlerEntry sHandlersMagnitude[] = {
-    { 0x99, HandlerEarthquakeDigCheck },
-    { 0x47, HandlerEarthquakeDamage },
-    { 0x24, HandlerMagnitudeEffect },
-    { 0x37, HandlerMagnitudePower },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerEarthquakeDigCheck },
+    { BTL_EVENT_CALC_DAMAGE, HandlerEarthquakeDamage },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerMagnitudeEffect },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerMagnitudePower },
 };
 
 static const BattleEventHandlerEntry *EventAddMagnitude(u32 *priority) {
@@ -4255,8 +4266,8 @@ static void HandlerMagnitudePower(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersSurf[] = {
-    { 0x99, HandlerSurfDiveCheck },
-    { 0x47, HandlerSurfPower },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerSurfDiveCheck },
+    { BTL_EVENT_CALC_DAMAGE, HandlerSurfPower },
 };
 
 static const BattleEventHandlerEntry *EventAddSurf(u32 *priority) {
@@ -4279,7 +4290,7 @@ static void HandlerSurfPower(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersStomp[] = {
-    { 0x47, HandlerStomp },
+    { BTL_EVENT_CALC_DAMAGE, HandlerStomp },
 };
 
 static const BattleEventHandlerEntry *EventAddStomp(u32 *priority) {
@@ -4296,7 +4307,7 @@ static void HandlerStomp(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersFalseSwipe[] = {
-    { 0x74, HandlerFalseSwipe },
+    { BTL_EVENT_CHECK_ENDURE, HandlerFalseSwipe },
 };
 
 static const BattleEventHandlerEntry *EventAddFalseSwipe(u32 *priority) {
@@ -4311,8 +4322,12 @@ static void HandlerFalseSwipe(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersEndure[] = {
-    { 0x03, HandlerProtectStart }, { 0x1f, HandlerProtectCheckFail }, { 0x21, HandlerProtectResetCounter },
-    { 0xa0, HandlerEndure },       { 0x74, HandlerEndureCheck },      { 0x76, HandlerEndureTurnCheck },
+    { BTL_EVENT_MOVE_SEQ_START, HandlerProtectStart },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerProtectCheckFail },
+    { BTL_EVENT_MOVE_EXECUTE_FAIL, HandlerProtectResetCounter },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerEndure },
+    { BTL_EVENT_CHECK_ENDURE, HandlerEndureCheck },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerEndureTurnCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddEndure(u32 *priority) {
@@ -4348,10 +4363,10 @@ static void HandlerEndureTurnCheck(BattleEventItem *item, BtlServerFlow *flow, u
 // Protect, Detect, Endure, Wide Guard and Quick Guard
 // Protecting again succeeds one time in n, n by how many protections in a row came before
 static const BattleEventHandlerEntry sHandlersProtect[] = {
-    { 0x03, HandlerProtectStart },
-    { 0x1f, HandlerProtectCheckFail },
-    { 0x21, HandlerProtectResetCounter },
-    { 0xa0, HandlerProtect },
+    { BTL_EVENT_MOVE_SEQ_START, HandlerProtectStart },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerProtectCheckFail },
+    { BTL_EVENT_MOVE_EXECUTE_FAIL, HandlerProtectResetCounter },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerProtect },
 };
 
 static const BattleEventHandlerEntry *EventAddProtect(u32 *priority) {
@@ -4446,13 +4461,13 @@ static void IncrementProtectCounter(BtlServerFlow *flow, u8 monId, BOOL checkPre
 }
 
 static const BattleEventHandlerEntry sHandlersBide[] = {
-    { 0x24, HandlerBide },
-    { 0x19, HandlerBideTextSet },
-    { 0x1f, HandlerBideCheckFail },
-    { 0x29, HandlerBideTarget },
-    { 0x46, HandlerBideCalcDamage },
-    { 0x21, HandlerBideFail },
-    { 0x4b, HandlerBideDamageRecieved },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerBide },
+    { BTL_EVENT_SET_MOVE_MESSAGE, HandlerBideTextSet },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerBideCheckFail },
+    { BTL_EVENT_DECIDE_MOVE_TARGET, HandlerBideTarget },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerBideCalcDamage },
+    { BTL_EVENT_MOVE_EXECUTE_FAIL, HandlerBideFail },
+    { BTL_EVENT_DAMAGE_REACTION, HandlerBideDamageRecieved },
 };
 
 static const BattleEventHandlerEntry *EventAddBide(u32 *priority) {
@@ -4566,7 +4581,7 @@ static u8 GetBideTargetID(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
         if (BattleMon_GetDamageRecordCount(mon, i) != 0) {
             GetDamageReceived(mon, i, 0, &record);
             targetId = record.attackerId;
-            if (BtlServerFlow_GetMonBattlePos(flow, targetId) == 6) {
+            if (BtlServerFlow_GetMonBattlePos(flow, targetId) == BTL_POS_NONE) {
                 count = HandlerGetAlivePartyCount(flow, BtlServerFlow_MonIDToPos(flow, monId) | 0x100, mons);
                 if (count != 0) {
                     targetId = mons[(u8)BattleRandom(count)];
@@ -4595,7 +4610,7 @@ static void BideEnd(BtlServerFlow *flow, u8 monId, s32 *work) {
 }
 
 static const BattleEventHandlerEntry sHandlersRecycle[] = {
-    { 0xa0, HandlerRecycle },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerRecycle },
 };
 
 static const BattleEventHandlerEntry *EventAddRecycle(u32 *priority) {
@@ -4627,7 +4642,7 @@ static void HandlerRecycle(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersPsychoShift[] = {
-    { 0xa0, HandlerPsychoShift },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerPsychoShift },
 };
 
 static const BattleEventHandlerEntry *EventAddPsychoShift(u32 *priority) {
@@ -4653,7 +4668,7 @@ static void HandlerPsychoShift(BattleEventItem *item, BtlServerFlow *flow, u8 mo
                 cont = GetConditionContinuationParam(mon, status);
                 addParam = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
                 addParam->condition = status;
-                if (status == 5 && Condition_IsBadlyPoisoned(cont)) {
+                if (status == CONDITION_POISON && Condition_IsBadlyPoisoned(cont)) {
                     value = MakeConditionBadlyPoisoned();
                 } else {
                     value = BtlCalc_MakeStatusCondition(status);
@@ -4676,7 +4691,7 @@ static void HandlerPsychoShift(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersPainSplit[] = {
-    { 0xa0, HandlerPainSplit },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerPainSplit },
 };
 
 static const BattleEventHandlerEntry *EventAddPainSplit(u32 *priority) {
@@ -4729,7 +4744,7 @@ static void HandlerPainSplit(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersBellyDrum[] = {
-    { 0xa0, HandlerBellyDrum },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerBellyDrum },
 };
 
 static const BattleEventHandlerEntry *EventBellyDrum(u32 *priority) {
@@ -4781,8 +4796,8 @@ static void HandlerBellyDrum(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersFeint[] = {
-    { 0x2e, HandlerFeintBreakProtect },
-    { 0x45, HandlerFeintTextSet },
+    { BTL_EVENT_CHECK_PROTECT_BREAK, HandlerFeintBreakProtect },
+    { BTL_EVENT_DAMAGE_DETERMINE, HandlerFeintTextSet },
     { 0x23, HandlerFeintResetProtectCounter },
 };
 
@@ -4838,7 +4853,7 @@ static void HandlerFeintResetProtectCounter(BattleEventItem *item, BtlServerFlow
 
 // The stats Acupressure picks one of to raise
 static const BattleEventHandlerEntry sHandlersAcupressure[] = {
-    { 0xa0, HandlerAcupressure },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerAcupressure },
 };
 
 static const BattleEventHandlerEntry *EventAddAcupressure(u32 *priority) {
@@ -4889,8 +4904,8 @@ static void HandlerAcupressure(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 // This part
 
 static const BattleEventHandlerEntry sHandlersRest[] = {
-    { 0x1f, HandlerRestCheckFail },
-    { 0xa0, HandlerRest },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerRestCheckFail },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerRest },
 };
 
 static const BattleEventHandlerEntry *EventAddRest(u32 *priority) {
@@ -4917,7 +4932,7 @@ static void HandlerRestCheckFail(BattleEventItem *item, BtlServerFlow *flow, u8 
             return;
         }
         ability = GetBattleMonStat(mon, BATTLEMON_EFFECTIVE_ABILITY);
-        if (ability == 0xf || ability == 0x48) {
+        if (ability == ABILITY_INSOMNIA || ability == ABILITY_VITAL_SPIRIT) {
             BattleEventVar_RewriteValue(0x22, 0xf);
         }
     }
@@ -4961,7 +4976,7 @@ static void HandlerRest(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 }
 
 static const BattleEventHandlerEntry sHandlersAttract[] = {
-    { 0x2c, HandlerAttractCheckFail },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerAttractCheckFail },
 };
 
 static const BattleEventHandlerEntry *EventAddAttract(u32 *priority) {
@@ -4980,14 +4995,14 @@ static void HandlerAttractCheckFail(BattleEventItem *item, BtlServerFlow *flow, 
         defender = GetBattleMon(flow, BattleEventVar_GetValue(4));
         attackerSex = GetBattleMonStat(attacker, BATTLEMON_GENDER);
         defenderSex = GetBattleMonStat(defender, BATTLEMON_GENDER);
-        if (attackerSex == 2 || defenderSex == 2 || attackerSex == defenderSex) {
+        if (attackerSex == GENDER_UNKNOWN || defenderSex == GENDER_UNKNOWN || attackerSex == defenderSex) {
             BattleEventVar_RewriteValue(0x40, 1);
         }
     }
 }
 
 static const BattleEventHandlerEntry sHandlersConversion2[] = {
-    { 0xa0, HandlerConversion2 },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerConversion2 },
 };
 
 static const BattleEventHandlerEntry *EventAddConversion2(u32 *priority) {
@@ -5006,7 +5021,7 @@ static void HandlerConversion2(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 
     if (BattleEventVar_GetValue(3) == monId) {
         type = BattleMon_GetPrevMoveType(GetBattleMon(flow, BattleEventVar_GetValue(6)));
-        if (type != 0x11) {
+        if (type != TYPE_NULL) {
             types = BtlServerFlow_GetHandlerWork(flow, 0x11);
             count = GetTypeWeaknesses(type, types);
             if (count != 0) {
@@ -5036,7 +5051,7 @@ static void HandlerConversion2(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersEncore[] = {
-    { 0xa0, HandlerEncore },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerEncore },
 };
 
 static const BattleEventHandlerEntry *EventAddEncore(u32 *priority) {
@@ -5073,7 +5088,7 @@ static void HandlerEncore(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sHandlersTaunt[] = {
-    { 0xa0, HandlerTaunt },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerTaunt },
 };
 
 static const BattleEventHandlerEntry *EventAddTaunt(u32 *priority) {
@@ -5104,7 +5119,7 @@ static void HandlerTaunt(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersTorment[] = {
-    { 0xa0, HandlerTorment },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerTorment },
     { 0x5, HandlerBypassSubstitute },
 };
 
@@ -5130,7 +5145,7 @@ static void HandlerTorment(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersDisable[] = {
-    { 0xa0, HandlerDisable },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerDisable },
 };
 
 static const BattleEventHandlerEntry *EventAddDisable(u32 *priority) {
@@ -5150,7 +5165,7 @@ static void HandlerDisable(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
         target = GetBattleMon(flow, targetId);
         if (!CheckCondition(target, CONDITION_DISABLE)) {
             move = GetPreviousMoveUsed(target);
-            if (move != 0 && move != 0xa5 && MoveIsUsable(target, move)) {
+            if (move != MOVE_NONE && move != MOVE_STRUGGLE && MoveIsUsable(target, move)) {
                 turns = 4;
                 if (GetTurnFlag(target, 1)) {
                     turns++;
@@ -5166,7 +5181,7 @@ static void HandlerDisable(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersImprison[] = {
-    { 0xa0, HandlerImprison },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerImprison },
 };
 
 static const BattleEventHandlerEntry *EventAddImprison(u32 *priority) {
@@ -5191,9 +5206,9 @@ static void HandlerImprison(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersAromatherapy[] = {
-    { 0x1c, HandlerHelpingHandSkip },
-    { 0x99, HandlerHelpingHandCheckInvuln },
-    { 0xa1, HandlerAromatherapy },
+    { BTL_EVENT_SKIP_ACCURACY_CHECK, HandlerHelpingHandSkip },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerHelpingHandCheckInvuln },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerAromatherapy },
 };
 
 static const BattleEventHandlerEntry *EventAddAromatherapy(u32 *priority) {
@@ -5206,9 +5221,9 @@ static void HandlerAromatherapy(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sHandlersHealBell[] = {
-    { 0x1c, HandlerHelpingHandSkip },
-    { 0x99, HandlerHelpingHandCheckInvuln },
-    { 0xa1, HandlerHealBell },
+    { BTL_EVENT_SKIP_ACCURACY_CHECK, HandlerHelpingHandSkip },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerHelpingHandCheckInvuln },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerHealBell },
 };
 
 static const BattleEventHandlerEntry *EventAddHealBell(u32 *priority) {
@@ -5279,7 +5294,7 @@ static u8 CheckMonStatus(BattleParty *party, u8 pos, u8 max, u8 *monIds) {
 }
 
 static const BattleEventHandlerEntry sHandlersMemento[] = {
-    { 0xa0, HandlerMemento },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerMemento },
 };
 
 static const BattleEventHandlerEntry *EventAddMemento(u32 *priority) {
@@ -5322,7 +5337,7 @@ static void HandlerMemento(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersSpite[] = {
-    { 0xa0, HandlerSpite },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerSpite },
 };
 
 static const BattleEventHandlerEntry *EventAddSpite(u32 *priority) {
@@ -5364,7 +5379,7 @@ static void HandlerSpite(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersPsychUp[] = {
-    { 0xa0, HandlerPsychUp },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerPsychUp },
 };
 
 static const BattleEventHandlerEntry *EventAddPsychUp(u32 *priority) {
@@ -5401,7 +5416,7 @@ static void HandlerPsychUp(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersHeartSwap[] = {
-    { 0xa0, HandlerHeartSwap },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerHeartSwap },
 };
 
 static const BattleEventHandlerEntry *EventAddHeartSwap(u32 *priority) {
@@ -5457,7 +5472,7 @@ static void HandlerHeartSwap(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersPowerSwap[] = {
-    { 0xa0, HandlerPowerSwap },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerPowerSwap },
 };
 
 static const BattleEventHandlerEntry *EventAddPowerSwap(u32 *priority) {
@@ -5511,7 +5526,7 @@ static void HandlerPowerSwap(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersGuardSwap[] = {
-    { 0xa0, HandlerGuardSwap },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerGuardSwap },
 };
 
 static const BattleEventHandlerEntry *EventAddGuardSwap(u32 *priority) {
@@ -5565,7 +5580,7 @@ static void HandlerGuardSwap(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersPowerTrick[] = {
-    { 0xa0, HandlerPowerTrick },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerPowerTrick },
 };
 
 static const BattleEventHandlerEntry *EventAddPowerTrick(u32 *priority) {
@@ -5598,7 +5613,7 @@ static void HandlerPowerTrick(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersPowerSplit[] = {
-    { 0xa0, HandlerPowerSplit },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerPowerSplit },
 };
 
 static const BattleEventHandlerEntry *EventAddPowerSplit(u32 *priority) {
@@ -5642,7 +5657,7 @@ static void HandlerPowerSplit(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersGuardSplit[] = {
-    { 0xa0, HandlerGuardSplit },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerGuardSplit },
 };
 
 static const BattleEventHandlerEntry *EventAddGuardSplit(u32 *priority) {
@@ -5686,7 +5701,7 @@ static void HandlerGuardSplit(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersLockOn[] = {
-    { 0xa0, HandlerLockOn },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerLockOn },
 };
 
 static const BattleEventHandlerEntry *EventAddLockOn(u32 *priority) {
@@ -5712,7 +5727,7 @@ static void HandlerLockOn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sHandlersReflect[] = {
-    { 0xa1, HandlerReflect },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerReflect },
 };
 
 static const BattleEventHandlerEntry *EventAddReflect(u32 *priority) {
@@ -5727,7 +5742,7 @@ static void HandlerReflect(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersLightScreen[] = {
-    { 0xa1, HandlerLightScreen },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerLightScreen },
 };
 
 static const BattleEventHandlerEntry *EventAddLightScreen(u32 *priority) {
@@ -5742,7 +5757,7 @@ static void HandlerLightScreen(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersSafeguard[] = {
-    { 0xa1, HandlerSafeguard },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerSafeguard },
 };
 
 static const BattleEventHandlerEntry *EventAddSafeguard(u32 *priority) {
@@ -5758,7 +5773,7 @@ static void HandlerSafeguard(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersMist[] = {
-    { 0xa1, HandlerMist },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerMist },
 };
 
 static const BattleEventHandlerEntry *EventAddMist(u32 *priority) {
@@ -5773,7 +5788,7 @@ static void HandlerMist(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 }
 
 static const BattleEventHandlerEntry sHandlersTailwind[] = {
-    { 0xa1, HandlerTailwind },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerTailwind },
 };
 
 static const BattleEventHandlerEntry *EventAddTailwind(u32 *priority) {
@@ -5788,7 +5803,7 @@ static void HandlerTailwind(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersLuckyChant[] = {
-    { 0xa1, HandlerLuckyChant },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerLuckyChant },
 };
 
 static const BattleEventHandlerEntry *EventAddLuckyChant(u32 *priority) {
@@ -5803,7 +5818,7 @@ static void HandlerLuckyChant(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersSpikes[] = {
-    { 0xa1, HandlerSpikes },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerSpikes },
 };
 
 static const BattleEventHandlerEntry *EventAddSpikes(u32 *priority) {
@@ -5818,7 +5833,7 @@ static void HandlerSpikes(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sHandlersToxicSpikes[] = {
-    { 0xa1, HandlerToxicSpikes },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerToxicSpikes },
 };
 
 static const BattleEventHandlerEntry *EventAddToxicSpikes(u32 *priority) {
@@ -5833,7 +5848,7 @@ static void HandlerToxicSpikes(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersStealthRock[] = {
-    { 0xa1, HandlerStealthRock },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerStealthRock },
 };
 
 static const BattleEventHandlerEntry *EventAddStealthRock(u32 *priority) {
@@ -5848,10 +5863,10 @@ static void HandlerStealthRock(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersWideGuard[] = {
-    { 0x3, HandlerProtectStart },
-    { 0x1f, HandlerProtectCheckFail },
-    { 0x21, HandlerProtectResetCounter },
-    { 0xa1, HandlerWideGuard },
+    { BTL_EVENT_MOVE_SEQ_START, HandlerProtectStart },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerProtectCheckFail },
+    { BTL_EVENT_MOVE_EXECUTE_FAIL, HandlerProtectResetCounter },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerWideGuard },
 };
 
 static const BattleEventHandlerEntry *EventAddWideGuard(u32 *priority) {
@@ -5882,7 +5897,7 @@ static void CommonCreateSideEffect(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersTransform[] = {
-    { 0xa0, HandlerTransform },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerTransform },
 };
 
 static const BattleEventHandlerEntry *EventAddTransform(u32 *priority) {
@@ -5904,7 +5919,7 @@ static void HandlerTransform(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersLunarDance[] = {
-    { 0xa0, HandlerLunarDance },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerLunarDance },
 };
 
 static const BattleEventHandlerEntry *EventAddLunarDance(u32 *priority) {
@@ -5929,7 +5944,7 @@ static void HandlerLunarDance(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersHealingWish[] = {
-    { 0xa0, HandlerHealingWish },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerHealingWish },
 };
 
 static const BattleEventHandlerEntry *EventAddHealingWish(u32 *priority) {
@@ -5954,7 +5969,7 @@ static void HandlerHealingWish(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersWish[] = {
-    { 0xa0, HandlerWish },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerWish },
 };
 
 static const BattleEventHandlerEntry *EventAddWish(u32 *priority) {
@@ -5974,8 +5989,8 @@ static void HandlerWish(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 }
 
 static const BattleEventHandlerEntry sHandlersFutureSight[] = {
-    { 0x6, HandlerFutureSight },
-    { 0x7, HandlerFutureSightLand },
+    { BTL_EVENT_CHECK_DELAY_MOVE, HandlerFutureSight },
+    { BTL_EVENT_DELAY_MOVE_DECIDE, HandlerFutureSightLand },
 };
 
 static const BattleEventHandlerEntry *EventAddFutureSight(u32 *priority) {
@@ -6008,7 +6023,7 @@ static void CommonDelayAttack(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     BattleHandlerPosEffectParam *param;
 
     if (BattleEventVar_GetValue(3) == monId && BattleEventVar_RewriteValue(0x51, 1)) {
-        if (targetPos == 6) {
+        if (targetPos == BTL_POS_NONE) {
             pos = BtlServerFlow_MonIDToPos(flow, monId);
             targetPos = GetOpposingPosForStyle(BtlServerFlow_GetBattleStyle(flow), pos, 0);
         }
@@ -6023,8 +6038,8 @@ static void CommonDelayAttack(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersDoomDesire[] = {
-    { 0x6, HandlerDoomDesire },
-    { 0x7, HandlerDoomDesireLand },
+    { BTL_EVENT_CHECK_DELAY_MOVE, HandlerDoomDesire },
+    { BTL_EVENT_DELAY_MOVE_DECIDE, HandlerDoomDesireLand },
 };
 
 static const BattleEventHandlerEntry *EventAddDoomDesire(u32 *priority) {
@@ -6053,7 +6068,7 @@ static void HandlerDoomDesireLand(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersGastroAcid[] = {
-    { 0xa0, HandlerGastroAcid },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerGastroAcid },
 };
 
 static const BattleEventHandlerEntry *EventAddGastroAcid(u32 *priority) {
@@ -6078,7 +6093,7 @@ static void HandlerGastroAcid(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersRolePlay[] = {
-    { 0xa0, HandlerRolePlay },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerRolePlay },
 };
 
 static const BattleEventHandlerEntry *EventAddRolePlay(u32 *priority) {
@@ -6132,7 +6147,7 @@ static void HandlerUturn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
         BattleHandler_PopWork(flow, param);
 
         effect = BattleHandler_PushWork(flow, BTL_HANDLER_EFFECT_AT_POS, monId);
-        effect->effect = BattleEventItem_GetSubID(item) == 0x171 ? 0x283 : 0x284;
+        effect->effect = BattleEventItem_GetSubID(item) == MOVE_U_TURN ? 0x283 : 0x284;
         effect->pos1 = BtlServerFlow_MonIDToPos(flow, monId);
         effect->pos2 = 6;
         effect->header.checkPrevResult = 1;
@@ -6141,7 +6156,7 @@ static void HandlerUturn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sHandlersRapidSpin[] = {
-    { 0x4d, HandlerRapidSpin },
+    { BTL_EVENT_AFTER_DAMAGE, HandlerRapidSpin },
 };
 
 static const BattleEventHandlerEntry *EventAddRapidSpin(u32 *priority) {
@@ -6197,7 +6212,7 @@ static void HandlerRapidSpin(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersBatonPass[] = {
-    { 0xa0, HandlerBatonPass },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerBatonPass },
 };
 
 static const BattleEventHandlerEntry *EventAddBatonPass(u32 *priority) {
@@ -6234,9 +6249,9 @@ static void HandlerBatonPass(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHandlersTeleport[] = {
-    { 0xa0, HandlerTeleport },
-    { 0x1f, HandlerTeleportCheckFail },
-    { 0xd, HandlerTeleportExitText },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerTeleport },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerTeleportCheckFail },
+    { BTL_EVENT_ESCAPE_MESSAGE, HandlerTeleportExitText },
 };
 
 static const BattleEventHandlerEntry *EventAddTeleport(u32 *priority) {
@@ -6275,8 +6290,9 @@ static void HandlerTeleportExitText(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sHandlersFling[] = {
-    { 0x1f, HandlerFlingCheckFail },   { 0x37, HandlerFlingPower }, { 0x81, HandlerFlingStart },
-    { 0x4b, HandlerFlingDamageAfter }, { 0x27, HandlerFlingEnd },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerFlingCheckFail }, { BTL_EVENT_MOVE_BASE_POWER, HandlerFlingPower },
+    { BTL_EVENT_DAMAGE_PROCESS_START, HandlerFlingStart },     { BTL_EVENT_DAMAGE_REACTION, HandlerFlingDamageAfter },
+    { BTL_EVENT_MOVE_EXECUTE_END, HandlerFlingEnd },
 };
 
 static const BattleEventHandlerEntry *EventAddFling(u32 *priority) {
@@ -6356,8 +6372,8 @@ static void HandlerFlingEnd(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sHandlersMagnetRise[] = {
-    { 0x1f, HandlerMagnetRiseCheckFail },
-    { 0xa0, HandlerMagnetRise },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerMagnetRiseCheckFail },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerMagnetRise },
 };
 
 static const BattleEventHandlerEntry *EventAddMagnetRise(u32 *priority) {
@@ -6391,8 +6407,11 @@ static void HandlerMagnetRise(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersHelpingHand[] = {
-    { 0x1c, HandlerHelpingHandSkip },  { 0x99, HandlerHelpingHandCheckInvuln }, { 0xa0, HandlerHelpingHandReady },
-    { 0x38, HandlerHelpingHandPower }, { 0x76, HandlerHelpingHandTurnCheck },
+    { BTL_EVENT_SKIP_ACCURACY_CHECK, HandlerHelpingHandSkip },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerHelpingHandCheckInvuln },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerHelpingHandReady },
+    { BTL_EVENT_MOVE_POWER, HandlerHelpingHandPower },
+    { BTL_EVENT_TURN_CHECK_BEGIN, HandlerHelpingHandTurnCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddHelpingHand(u32 *priority) {
@@ -6445,8 +6464,8 @@ static void HandlerHelpingHandTurnCheck(BattleEventItem *item, BtlServerFlow *fl
 }
 
 static const BattleEventHandlerEntry sHandlersBeatUp[] = {
-    { 0x35, HandlerBeatUp },
-    { 0x37, HandlerBeatUpPower },
+    { BTL_EVENT_CHECK_MULTIHIT_HITS, HandlerBeatUp },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerBeatUpPower },
 };
 
 static const BattleEventHandlerEntry *EventAddBeatUp(u32 *priority) {
@@ -6485,7 +6504,7 @@ static void HandlerBeatUpPower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
         if (work[0] >= 6) {
             work[0] = 0;
         }
-        BattleEventVar_RewriteValue(0x30, GetBattleMonStat(mon, 0x15) / 10 + 5);
+        BattleEventVar_RewriteValue(0x30, GetBattleMonStat(mon, BATTLEMON_BASE_ATTACK) / 10 + 5);
     }
 }
 
@@ -6521,7 +6540,7 @@ static BattleMon *CommonBeatUpGetParam(BtlServerFlow *flow, u8 monId, u8 index) 
 }
 
 static const BattleEventHandlerEntry sHandlersFakeOut[] = {
-    { 0x1f, HandlerFakeOut },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerFakeOut },
 };
 
 static const BattleEventHandlerEntry *EventAddFakeOut(u32 *priority) {
@@ -6536,7 +6555,7 @@ static void HandlerFakeOut(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sHandlersMorningSun[] = {
-    { 0x8f, HandlerMorningSun },
+    { BTL_EVENT_CALC_MOVE_HEAL, HandlerMorningSun },
 };
 
 static const BattleEventHandlerEntry *EventAddMorningSun(u32 *priority) {
@@ -6566,8 +6585,8 @@ static void HandlerMorningSun(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersFly[] = {
-    { 0x95, HandlerFly },
-    { 0x98, HandlerFlyRelease },
+    { BTL_EVENT_CHARGE_START, HandlerFly },
+    { BTL_EVENT_CHARGE_RELEASE, HandlerFlyRelease },
 };
 
 static const BattleEventHandlerEntry *EventAddFly(u32 *priority) {
@@ -6596,8 +6615,10 @@ static void HandlerFlyRelease(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersShadowForce[] = {
-    { 0x95, HandlerShadowForce },       { 0x98, HandlerShadowForceRelease },
-    { 0x2e, HandlerFeintBreakProtect }, { 0x81, HandlerFeintResetProtectCounter },
+    { BTL_EVENT_CHARGE_START, HandlerShadowForce },
+    { BTL_EVENT_CHARGE_RELEASE, HandlerShadowForceRelease },
+    { BTL_EVENT_CHECK_PROTECT_BREAK, HandlerFeintBreakProtect },
+    { BTL_EVENT_DAMAGE_PROCESS_START, HandlerFeintResetProtectCounter },
     { 0x84, HandlerShadowForceEnd },
 };
 
@@ -6648,8 +6669,8 @@ static void HandlerShadowForceEnd(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sHandlersBounce[] = {
-    { 0x95, HandlerBounce },
-    { 0x98, HandlerBounceRelease },
+    { BTL_EVENT_CHARGE_START, HandlerBounce },
+    { BTL_EVENT_CHARGE_RELEASE, HandlerBounceRelease },
 };
 
 static const BattleEventHandlerEntry *EventAddBounce(u32 *priority) {
@@ -6678,8 +6699,8 @@ static void HandlerBounceRelease(BattleEventItem *item, BtlServerFlow *flow, u8 
 }
 
 static const BattleEventHandlerEntry sHandlersDive[] = {
-    { 0x95, HandlerDive },
-    { 0x98, HandlerDiveRelease },
+    { BTL_EVENT_CHARGE_START, HandlerDive },
+    { BTL_EVENT_CHARGE_RELEASE, HandlerDiveRelease },
 };
 
 static const BattleEventHandlerEntry *EventAddDive(u32 *priority) {
@@ -6708,8 +6729,8 @@ static void HandlerDiveRelease(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHandlersDig[] = {
-    { 0x95, HandlerDig },
-    { 0x98, HandlerDigRelease },
+    { BTL_EVENT_CHARGE_START, HandlerDig },
+    { BTL_EVENT_CHARGE_RELEASE, HandlerDigRelease },
 };
 
 static const BattleEventHandlerEntry *EventAddDig(u32 *priority) {
@@ -6738,9 +6759,9 @@ static void HandlerDigRelease(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sHandlersSolarBeam[] = {
-    { 0x94, HandlerSolarBeamSunCheck },
-    { 0x95, HandlerSolarBeamCharge },
-    { 0x38, HandlerSolarBeamPower },
+    { BTL_EVENT_CHECK_CHARGE_SKIP, HandlerSolarBeamSunCheck },
+    { BTL_EVENT_CHARGE_START, HandlerSolarBeamCharge },
+    { BTL_EVENT_MOVE_POWER, HandlerSolarBeamPower },
 };
 
 static const BattleEventHandlerEntry *EventAddSolarBeam(u32 *priority) {
@@ -6770,14 +6791,14 @@ static void HandlerSolarBeamPower(BattleEventItem *item, BtlServerFlow *flow, u8
 
     if (BattleEventVar_GetValue(3) == monId) {
         weather = GetWeather(flow);
-        if (weather == 2 || weather == 3 || weather == 4) {
+        if (weather == BTL_WEATHER_RAIN || weather == BTL_WEATHER_HAIL || weather == BTL_WEATHER_SANDSTORM) {
             BattleEventVar_MulValue(0x31, FX32_CONST(0.5));
         }
     }
 }
 
 static const BattleEventHandlerEntry sHandlersRazorWind[] = {
-    { 0x95, HandlerRazorWindCharge },
+    { BTL_EVENT_CHARGE_START, HandlerRazorWindCharge },
 };
 
 static const BattleEventHandlerEntry *EventAddRazorWind(u32 *priority) {
@@ -6797,7 +6818,7 @@ static void HandlerRazorWindCharge(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static const BattleEventHandlerEntry sHandlersSkyAttack[] = {
-    { 0x95, HandlerSkyAttack },
+    { BTL_EVENT_CHARGE_START, HandlerSkyAttack },
 };
 
 static const BattleEventHandlerEntry *EventAddSkyAttack(u32 *priority) {
@@ -6817,7 +6838,7 @@ static void HandlerSkyAttack(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sSkullBashHandlers[] = {
-    { 0x96, HandlerSkullBash },
+    { BTL_EVENT_CHARGE_START_FIXED, HandlerSkullBash },
 };
 
 static const BattleEventHandlerEntry *EventAddSkullBash(u32 *priority) {
@@ -6883,8 +6904,8 @@ static void HandlerPluck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 
 static const BattleEventHandlerEntry sStruggleHandlers[] = {
     { 0x22, HandlerStruggleStart },
-    { 0x28, HandlerStruggleMoveParam },
-    { 0x50, HandlerStruggleRecoil },
+    { BTL_EVENT_GET_MOVE_PARAM, HandlerStruggleMoveParam },
+    { BTL_EVENT_CALC_RECOIL, HandlerStruggleRecoil },
 };
 
 static const BattleEventHandlerEntry *EventAddStruggle(u32 *priority) {
@@ -6916,9 +6937,9 @@ static void HandlerStruggleMoveParam(BattleEventItem *item, BtlServerFlow *flow,
 }
 
 static const BattleEventHandlerEntry sDestinyBondHandlers[] = {
-    { 0xa0, HandlerDestinyBondReady },
-    { 0x1, HandlerDestinyBondStart },
-    { 0x4c, HandlerDestinyBondDamage },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerDestinyBondReady },
+    { BTL_EVENT_ACTION_START, HandlerDestinyBondStart },
+    { BTL_EVENT_DAMAGE_REACTION_POST, HandlerDestinyBondDamage },
 };
 
 static const BattleEventHandlerEntry *EventAddDestinyBond(u32 *priority) {
@@ -6973,9 +6994,9 @@ static void HandlerDestinyBondDamage(BattleEventItem *item, BtlServerFlow *flow,
 }
 
 static const BattleEventHandlerEntry sGrudgeHandlers[] = {
-    { 0xa0, HandlerGrudgeReady },
-    { 0x4b, HandlerGrudgeReducePP },
-    { 0x1, HandlerDestinyBondStart },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerGrudgeReady },
+    { BTL_EVENT_DAMAGE_REACTION, HandlerGrudgeReducePP },
+    { BTL_EVENT_ACTION_START, HandlerDestinyBondStart },
 };
 
 static const BattleEventHandlerEntry *EventAddGrudge(u32 *priority) {
@@ -7024,7 +7045,7 @@ static void HandlerGrudgeReducePP(BattleEventItem *item, BtlServerFlow *flow, u8
 }
 
 static const BattleEventHandlerEntry sMinimizeHandlers[] = {
-    { 0x24, HandlerMinimize },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerMinimize },
 };
 
 static const BattleEventHandlerEntry *EventAddMinimize(u32 *priority) {
@@ -7044,7 +7065,7 @@ static void HandlerMinimize(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sDefenseCurlHandlers[] = {
-    { 0x24, HandlerDefenseCurl },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerDefenseCurl },
 };
 
 static const BattleEventHandlerEntry *EventAddDefenseCurl(u32 *priority) {
@@ -7064,7 +7085,7 @@ static void HandlerDefenseCurl(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sRoostHandlers[] = {
-    { 0x25, HandlerRoost },
+    { BTL_EVENT_MOVE_EXECUTE_EFFECTIVE, HandlerRoost },
 };
 
 static const BattleEventHandlerEntry *EventAddRoost(u32 *priority) {
@@ -7087,7 +7108,7 @@ static void HandlerRoost(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sFocusPunchHandlers[] = {
-    { 0x15, HandlerFocuspunch },
+    { BTL_EVENT_BEFORE_FIGHT, HandlerFocuspunch },
 };
 
 static const BattleEventHandlerEntry *EventAddFocusPunch(u32 *priority) {
@@ -7123,8 +7144,8 @@ static void HandlerFocuspunch(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sMetronomeHandlers[] = {
-    { 0x18, HandlerMetronome },
-    { 0x19, HandlerMetronomeTextSet },
+    { BTL_EVENT_GET_CALLED_MOVE, HandlerMetronome },
+    { BTL_EVENT_SET_MOVE_MESSAGE, HandlerMetronomeTextSet },
 };
 
 static const BattleEventHandlerEntry *EventAddMetronome(u32 *priority) {
@@ -7161,8 +7182,8 @@ static void HandlerMetronomeTextSet(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sNaturePowerHandlers[] = {
-    { 0x18, HandlerNaturePower },
-    { 0x19, HandlerNaturePowerTextSet },
+    { BTL_EVENT_GET_CALLED_MOVE, HandlerNaturePower },
+    { BTL_EVENT_SET_MOVE_MESSAGE, HandlerNaturePowerTextSet },
 };
 
 static const BattleEventHandlerEntry *EventAddNaturePower(u32 *priority) {
@@ -7234,7 +7255,7 @@ static void HandlerNaturePowerTextSet(BattleEventItem *item, BtlServerFlow *flow
 }
 
 static const BattleEventHandlerEntry sAssistHandlers[] = {
-    { 0x18, HandlerAssist },
+    { BTL_EVENT_GET_CALLED_MOVE, HandlerAssist },
 };
 
 static const BattleEventHandlerEntry *EventAddAssist(u32 *priority) {
@@ -7282,9 +7303,9 @@ static void HandlerAssist(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sSleepTalkHandlers[] = {
-    { 0x1d, HandlerSnoreCheck1 },
-    { 0x1f, HandlerSnoreCheck2 },
-    { 0x18, HandlerSleepTalk },
+    { BTL_EVENT_CAN_USE_MOVE_ASLEEP, HandlerSnoreCheck1 },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerSnoreCheck2 },
+    { BTL_EVENT_GET_CALLED_MOVE, HandlerSleepTalk },
 };
 
 static const BattleEventHandlerEntry *EventAddSleepTalk(u32 *priority) {
@@ -7323,7 +7344,7 @@ static void HandlerSleepTalk(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sMirrorMoveHandlers[] = {
-    { 0x18, HandlerMirrorMove },
+    { BTL_EVENT_GET_CALLED_MOVE, HandlerMirrorMove },
 };
 
 static const BattleEventHandlerEntry *EventAddMirrorMove(u32 *priority) {
@@ -7338,7 +7359,7 @@ static void HandlerMirrorMove(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 
     if (BattleEventVar_GetValue(2) == monId) {
         pos = BattleEventVar_GetValue(0xe);
-        if (pos == 6) {
+        if (pos == BTL_POS_NONE) {
             side = BtlServerFlow_GetMonBattlePos(flow, monId);
             pos = GetOpposingPosForStyle(BtlServerFlow_GetBattleStyle(flow), side, 0);
         }
@@ -7355,8 +7376,8 @@ static void HandlerMirrorMove(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sMeFirstHandlers[] = {
-    { 0x18, HandlerMeFirst },
-    { 0x38, HandlerMeFirstPower },
+    { BTL_EVENT_GET_CALLED_MOVE, HandlerMeFirst },
+    { BTL_EVENT_MOVE_POWER, HandlerMeFirstPower },
 };
 
 static const BattleEventHandlerEntry *EventAddMeFirst(u32 *priority) {
@@ -7375,7 +7396,7 @@ static void HandlerMeFirst(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
     if (BattleEventVar_GetValue(2) == monId) {
         pos = BattleEventVar_GetValue(0xe);
-        if (pos == 6) {
+        if (pos == BTL_POS_NONE) {
             side = BtlServerFlow_GetMonBattlePos(flow, monId);
             pos = GetOpposingPosForStyle(BtlServerFlow_GetBattleStyle(flow), side, 0);
         }
@@ -7407,7 +7428,7 @@ static void HandlerMeFirstPower(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sCopycatHandlers[] = {
-    { 0x18, HandlerCopycat },
+    { BTL_EVENT_GET_CALLED_MOVE, HandlerCopycat },
 };
 
 static const BattleEventHandlerEntry *EventAddCopycat(u32 *priority) {
@@ -7430,7 +7451,7 @@ static void HandlerCopycat(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 static const BattleEventHandlerEntry sAncientPowerHandlers[] = {
-    { 0x59, HandlerAncientPower },
+    { BTL_EVENT_MOVE_STAT_CHANGE_VALUE, HandlerAncientPower },
 };
 
 static const BattleEventHandlerEntry *EventAddAncientPower(u32 *priority) {
@@ -7445,7 +7466,7 @@ static void HandlerAncientPower(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sVenoshockHandlers[] = {
-    { 0x38, HandlerVenoshock },
+    { BTL_EVENT_MOVE_POWER, HandlerVenoshock },
 };
 
 static const BattleEventHandlerEntry *EventAddVenoshock(u32 *priority) {
@@ -7460,7 +7481,7 @@ static void HandlerVenoshock(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sHexHandlers[] = {
-    { 0x37, HandlerHex },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerHex },
 };
 
 static const BattleEventHandlerEntry *EventAddHex(u32 *priority) {
@@ -7475,7 +7496,7 @@ static void HandlerHex(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32
 }
 
 static const BattleEventHandlerEntry sAcrobaticsHandlers[] = {
-    { 0x37, HandlerAcrobatics },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerAcrobatics },
 };
 
 static const BattleEventHandlerEntry *EventAddAcrobatics(u32 *priority) {
@@ -7490,7 +7511,7 @@ static void HandlerAcrobatics(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sStoredPowerHandlers[] = {
-    { 0x37, HandlerStoredPower },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerStoredPower },
 };
 
 static const BattleEventHandlerEntry *EventAddStoredPower(u32 *priority) {
@@ -7525,7 +7546,7 @@ static void HandlerStoredPower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sHeavySlamHandlers[] = {
-    { 0x37, HandlerHeavySlam },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerHeavySlam },
 };
 
 static const BattleEventHandlerEntry *EventAddHeavySlam(u32 *priority) {
@@ -7559,7 +7580,7 @@ static void HandlerHeavySlam(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sElectroBallHandlers[] = {
-    { 0x37, HandlerElectroBall },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerElectroBall },
 };
 
 static const BattleEventHandlerEntry *EventAddElectroBall(u32 *priority) {
@@ -7593,7 +7614,7 @@ static void HandlerElectroBall(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sEchoedVoiceHandlers[] = {
-    { 0x37, HandlerEchoedVoice },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerEchoedVoice },
 };
 
 static const BattleEventHandlerEntry *EventAddEchoedVoice(u32 *priority) {
@@ -7641,7 +7662,7 @@ static void HandlerEchoedVoice(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sRetaliateHandlers[] = {
-    { 0x38, HandlerRetaliate },
+    { BTL_EVENT_MOVE_POWER, HandlerRetaliate },
 };
 
 static const BattleEventHandlerEntry *EventAddRetaliate(u32 *priority) {
@@ -7667,7 +7688,7 @@ static void HandlerRetaliate(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sFoulPlayHandlers[] = {
-    { 0x39, HandlerFoulPlay },
+    { BTL_EVENT_DECIDE_ATTACK_STAT, HandlerFoulPlay },
 };
 
 static const BattleEventHandlerEntry *EventAddFoulPlay(u32 *priority) {
@@ -7685,7 +7706,7 @@ static void HandlerFoulPlay(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sSoakHandlers[] = {
-    { 0xa0, HandlerSoak },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerSoak },
 };
 
 static const BattleEventHandlerEntry *EventAddSoak(u32 *priority) {
@@ -7710,7 +7731,7 @@ static void HandlerSoak(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 }
 
 static const BattleEventHandlerEntry sSimpleBeamHandlers[] = {
-    { 0xa0, HandlerSimpleBeam },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerSimpleBeam },
 };
 
 static const BattleEventHandlerEntry *EventAddSimpleBeam(u32 *priority) {
@@ -7726,7 +7747,8 @@ static void HandlerSimpleBeam(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     if (BattleEventVar_GetValue(3) == monId) {
         count = BattleEventVar_GetValue(5);
         for (i = 0; i < count; i++) {
-            if (GetBattleMonStat(GetBattleMon(flow, BattleEventVar_GetValue(6 + i)), 0x10) != 0x36) {
+            if (GetBattleMonStat(GetBattleMon(flow, BattleEventVar_GetValue(6 + i)), BATTLEMON_ABILITY) !=
+                ABILITY_TRUANT) {
                 param = BattleHandler_PushWork(flow, BTL_HANDLER_ABILITY_CHANGE, monId);
                 param->targetIndex = BattleEventVar_GetValue(6 + i);
                 param->ability = 0x56;
@@ -7740,7 +7762,7 @@ static void HandlerSimpleBeam(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sEntrainmentHandlers[] = {
-    { 0xa0, HandlerEntrainment },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerEntrainment },
 };
 
 static const BattleEventHandlerEntry *EventAddEntrainment(u32 *priority) {
@@ -7761,7 +7783,7 @@ static void HandlerEntrainment(BattleEventItem *item, BtlServerFlow *flow, u8 mo
             count = BattleEventVar_GetValue(5);
             for (i = 0; i < count; i++) {
                 targetId = BattleEventVar_GetValue(6 + i);
-                if (GetBattleMonStat(GetBattleMon(flow, targetId), BATTLEMON_ABILITY) != 0x36) {
+                if (GetBattleMonStat(GetBattleMon(flow, targetId), BATTLEMON_ABILITY) != ABILITY_TRUANT) {
                     param = BattleHandler_PushWork(flow, BTL_HANDLER_ABILITY_CHANGE, monId);
                     param->targetIndex = BattleEventVar_GetValue(6 + i);
                     param->ability = ability;
@@ -7776,7 +7798,7 @@ static void HandlerEntrainment(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sClearSmogHandlers[] = {
-    { 0x4b, HandlerClearSmog },
+    { BTL_EVENT_DAMAGE_REACTION, HandlerClearSmog },
 };
 
 static const BattleEventHandlerEntry *EventAddClearSmog(u32 *priority) {
@@ -7805,7 +7827,7 @@ static void HandlerClearSmog(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sIncinerateHandlers[] = {
-    { 0x4b, HandlerIncinerate },
+    { BTL_EVENT_DAMAGE_REACTION, HandlerIncinerate },
 };
 
 static const BattleEventHandlerEntry *EventAddIncinerate(u32 *priority) {
@@ -7855,7 +7877,7 @@ static void HandlerCircleThrow(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 
 static const BattleEventHandlerEntry sSmackDownHandlers[] = {
     { 0x83, HandlerSmackDown },
-    { 0x99, HandlerThunderFlyCheck },
+    { BTL_EVENT_CHECK_SEMI_INVULN_AVOID, HandlerThunderFlyCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddSmackDown(u32 *priority) {
@@ -7918,7 +7940,7 @@ static void HandlerSmackDown(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sShellSmashHandlers[] = {
-    { 0xa0, HandlerShellSmash },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerShellSmash },
 };
 
 static const BattleEventHandlerEntry *EventAddShellSmash(u32 *priority) {
@@ -7973,7 +7995,7 @@ static void HandlerShellSmash(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sReflectTypeHandlers[] = {
-    { 0xa0, HandlerReflectType },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerReflectType },
 };
 
 static const BattleEventHandlerEntry *EventAddReflectType(u32 *priority) {
@@ -8007,7 +8029,7 @@ static void HandlerReflectType(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sAutotomizeHandlers[] = {
-    { 0x5e, HandlerAutotomize },
+    { BTL_EVENT_MOVE_STAT_CHANGE_APPLIED, HandlerAutotomize },
 };
 
 static const BattleEventHandlerEntry *EventAddAutotomize(u32 *priority) {
@@ -8038,7 +8060,7 @@ static void HandlerAutotomize(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sPsyshockHandlers[] = {
-    { 0x3a, HandlerPsyshock },
+    { BTL_EVENT_DECIDE_DEFENSE_STAT, HandlerPsyshock },
 };
 
 static const BattleEventHandlerEntry *EventAddPsyshock(u32 *priority) {
@@ -8047,14 +8069,14 @@ static const BattleEventHandlerEntry *EventAddPsyshock(u32 *priority) {
 }
 
 static void HandlerPsyshock(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x3c) == 0xb) {
+    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x3c) == BATTLEMON_SP_DEFENSE) {
         BattleEventVar_RewriteValue(0x3d, BattleEventVar_GetValue(0x3d) + 1);
     }
 }
 
 static const BattleEventHandlerEntry sChipAwayHandlers[] = {
-    { 0x3a, HandlerChipAwayCalcDamage },
-    { 0x33, HandlerChipAwayHitCheck },
+    { BTL_EVENT_DECIDE_DEFENSE_STAT, HandlerChipAwayCalcDamage },
+    { BTL_EVENT_CHECK_HIT, HandlerChipAwayHitCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddChipAway(u32 *priority) {
@@ -8075,7 +8097,7 @@ static void HandlerChipAwayHitCheck(BattleEventItem *item, BtlServerFlow *flow, 
 }
 
 static const BattleEventHandlerEntry sWonderRoomHandlers[] = {
-    { 0x9e, HandlerWonderRoom },
+    { BTL_EVENT_FIELD_EFFECT_MOVE, HandlerWonderRoom },
 };
 
 static const BattleEventHandlerEntry *EventAddWonderRoom(u32 *priority) {
@@ -8103,7 +8125,7 @@ static void HandlerWonderRoom(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sMagicRoomHandlers[] = {
-    { 0x9e, HandlerMagicRoom },
+    { BTL_EVENT_FIELD_EFFECT_MOVE, HandlerMagicRoom },
 };
 
 static const BattleEventHandlerEntry *EventAddMagicRoom(u32 *priority) {
@@ -8131,7 +8153,7 @@ static void HandlerMagicRoom(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sFlameBurstHandlers[] = {
-    { 0x4b, HandlerFlameBurst },
+    { BTL_EVENT_DAMAGE_REACTION, HandlerFlameBurst },
 };
 
 static const BattleEventHandlerEntry *EventAddFlameBurst(u32 *priority) {
@@ -8151,7 +8173,7 @@ static void HandlerFlameBurst(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(4);
         pos = BtlServerFlow_GetPosOfMon(flow, targetId);
-        if (pos != 6) {
+        if (pos != BTL_POS_NONE) {
             count = HandlerGetAlivePartyCount(flow, 0x900 | pos, targets);
             for (i = 0; i < count; i++) {
                 if (targets[i] != targetId) {
@@ -8170,7 +8192,7 @@ static void HandlerFlameBurst(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sSynchronoiseHandlers[] = {
-    { 0x2c, HandlerSynchronoise },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerSynchronoise },
 };
 
 static const BattleEventHandlerEntry *EventAddSynchronoise(u32 *priority) {
@@ -8192,7 +8214,7 @@ static void HandlerSynchronoise(BattleEventItem *item, BtlServerFlow *flow, u8 m
 }
 
 static const BattleEventHandlerEntry sBestowHandlers[] = {
-    { 0xa0, HandlerBestow },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerBestow },
 };
 
 static const BattleEventHandlerEntry *EventAddBestow(u32 *priority) {
@@ -8231,8 +8253,8 @@ static void HandlerBestow(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sFinalGambitHandlers[] = {
-    { 0x46, HandlerFinalGambit },
-    { 0x45, HandlerExplosionDamageDetermine },
+    { BTL_EVENT_FIXED_DAMAGE, HandlerFinalGambit },
+    { BTL_EVENT_DAMAGE_DETERMINE, HandlerExplosionDamageDetermine },
 };
 
 static const BattleEventHandlerEntry *EventAddFinalGambit(u32 *priority) {
@@ -8247,7 +8269,7 @@ static void HandlerFinalGambit(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sAfterYouHandlers[] = {
-    { 0xa0, HandlerAfterYou },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerAfterYou },
 };
 
 static const BattleEventHandlerEntry *EventAddAfterYou(u32 *priority) {
@@ -8268,7 +8290,7 @@ static void HandlerAfterYou(BattleEventItem *item, BtlServerFlow *flow, u8 monId
 }
 
 static const BattleEventHandlerEntry sQuashHandlers[] = {
-    { 0xa0, HandlerQuash },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerQuash },
 };
 
 static const BattleEventHandlerEntry *EventAddQuash(u32 *priority) {
@@ -8289,8 +8311,8 @@ static void HandlerQuash(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 }
 
 static const BattleEventHandlerEntry sRoundHandlers[] = {
-    { 0x24, HandlerRound },
-    { 0x37, HandlerRoundPower },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerRound },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerRoundPower },
 };
 
 static const BattleEventHandlerEntry *EventAddRound(u32 *priority) {
@@ -8328,10 +8350,10 @@ static void HandlerRoundPower(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sQuickGuardHandlers[] = {
-    { 0x3, HandlerProtectStart },
-    { 0x1f, HandlerProtectCheckFail },
-    { 0x21, HandlerProtectResetCounter },
-    { 0xa1, HandlerQuickGuard },
+    { BTL_EVENT_MOVE_SEQ_START, HandlerProtectStart },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerProtectCheckFail },
+    { BTL_EVENT_MOVE_EXECUTE_FAIL, HandlerProtectResetCounter },
+    { BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET, HandlerQuickGuard },
 };
 
 static const BattleEventHandlerEntry *EventAddQuickGuard(u32 *priority) {
@@ -8348,7 +8370,7 @@ static void HandlerQuickGuard(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sAllySwitchHandlers[] = {
-    { 0xa0, HandlerAllySwitch },
+    { BTL_EVENT_UNCATEGORIZED_MOVE, HandlerAllySwitch },
 };
 
 static const BattleEventHandlerEntry *EventAddAllySwitch(u32 *priority) {
@@ -8396,8 +8418,8 @@ static void HandlerAllySwitch(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sTelekinesisHandlers[] = {
-    { 0x2d, HandlerTelekinesisCheckFail },
-    { 0x60, HandlerTelekinesis },
+    { BTL_EVENT_CHECK_NO_EFFECT_3, HandlerTelekinesisCheckFail },
+    { BTL_EVENT_DECIDE_SPECIAL_MOVE_CONDITION, HandlerTelekinesis },
 };
 
 static const BattleEventHandlerEntry *EventAddTelekinesis(u32 *priority) {
@@ -8433,8 +8455,12 @@ static void HandlerTelekinesis(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sSkyDropHandlers[] = {
-    { 0x93, HandlerSkyDropGrabFail }, { 0x95, HandlerSkyDropGrab },      { 0x98, HandlerSkyDropRelease },
-    { 0x2a, HandlerSkyDropTarget },   { 0x1f, HandlerSkyDropCheckFail }, { 0x2c, HandlerSkyDropTypeCheck },
+    { BTL_EVENT_CHECK_CHARGE_FAIL, HandlerSkyDropGrabFail },
+    { BTL_EVENT_CHARGE_START, HandlerSkyDropGrab },
+    { BTL_EVENT_CHARGE_RELEASE, HandlerSkyDropRelease },
+    { BTL_EVENT_BAIT_MOVE_TARGET, HandlerSkyDropTarget },
+    { BTL_EVENT_CHECK_MOVE_FAIL_LATE, HandlerSkyDropCheckFail },
+    { BTL_EVENT_CHECK_NO_EFFECT_2, HandlerSkyDropTypeCheck },
 };
 
 static const BattleEventHandlerEntry *EventAddSkyDrop(u32 *priority) {
@@ -8447,7 +8473,7 @@ static void HandlerSkyDropGrabFail(BattleEventItem *item, BtlServerFlow *flow, u
 
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(4);
-        if (targetId != 0x1f && IsAllyMonID(monId, targetId)) {
+        if (targetId != BTL_POSPOKE_NO_MON && IsAllyMonID(monId, targetId)) {
             BattleEventVar_RewriteValue(0x41, 1);
         }
     }
@@ -8461,7 +8487,7 @@ static void HandlerSkyDropGrab(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(6);
         failed = FALSE;
-        if (targetId == 0x1f || !BtlServerFlow_StartSkyDrop(flow, monId, targetId, &failed)) {
+        if (targetId == BTL_POSPOKE_NO_MON || !BtlServerFlow_StartSkyDrop(flow, monId, targetId, &failed)) {
             BattleEventVar_RewriteValue(0x41, 1);
             if (failed) {
                 BattleEventVar_RewriteValue(0x4f, 1);
@@ -8481,7 +8507,7 @@ static void HandlerSkyDropRelease(BattleEventItem *item, BtlServerFlow *flow, u8
 
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BtlFlow_GetSkyDropTarget(GetBattleMon(flow, monId));
-        if (targetId == 0x1f || BtlServerFlow_GetMonBattlePos(flow, targetId) == 6) {
+        if (targetId == BTL_POSPOKE_NO_MON || BtlServerFlow_GetMonBattlePos(flow, targetId) == BTL_POS_NONE) {
             BattleEventVar_RewriteValue(0x41, 1);
         }
         BtlServerFlow_SkyDropRelease(flow, monId);
@@ -8491,9 +8517,10 @@ static void HandlerSkyDropRelease(BattleEventItem *item, BtlServerFlow *flow, u8
 static void HandlerSkyDropTarget(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     u8 targetId;
 
-    if (BtlServerFlow_GetBattleStyle(flow) != 0 && BtlServerFlow_GetBattleStyle(flow) != 3) {
+    if (BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_SINGLE &&
+        BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_ROTATION) {
         targetId = BtlFlow_GetSkyDropTarget(GetBattleMon(flow, monId));
-        if (targetId != 0x1f) {
+        if (targetId != BTL_POSPOKE_NO_MON) {
             BattleEventVar_RewriteValue(4, targetId);
         }
     }
@@ -8504,7 +8531,7 @@ static void HandlerSkyDropCheckFail(BattleEventItem *item, BtlServerFlow *flow, 
 
     if (BattleEventVar_GetValue(2) == monId) {
         targetId = BtlFlow_GetSkyDropTarget(GetBattleMon(flow, monId));
-        if (targetId != 0x1f && !BtlServerFlow_IsMonInBattle(flow, targetId)) {
+        if (targetId != BTL_POSPOKE_NO_MON && !BtlServerFlow_IsMonInBattle(flow, targetId)) {
             BattleEventVar_RewriteValue(0x22, 0x1a);
         }
     }
@@ -8543,7 +8570,7 @@ static void HandlerRelicSong(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sForesightHandlers[] = {
-    { 0x62, HandlerForesight },
+    { BTL_EVENT_MOVE_CONDITION_CONTINUE, HandlerForesight },
     { 0x5, HandlerBypassSubstitute },
 };
 
@@ -8563,7 +8590,7 @@ static void HandlerForesight(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 }
 
 static const BattleEventHandlerEntry sMiracleEyeHandlers[] = {
-    { 0x62, HandlerMiracleEye },
+    { BTL_EVENT_MOVE_CONDITION_CONTINUE, HandlerMiracleEye },
     { 0x5, HandlerBypassSubstitute },
 };
 
@@ -8583,7 +8610,7 @@ static void HandlerMiracleEye(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 }
 
 static const BattleEventHandlerEntry sGrowthHandlers[] = {
-    { 0x59, HandlerGrowth },
+    { BTL_EVENT_MOVE_STAT_CHANGE_VALUE, HandlerGrowth },
 };
 
 static const BattleEventHandlerEntry *EventAddGrowth(u32 *priority) {
@@ -8604,7 +8631,7 @@ static void HandlerGrowth(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static const BattleEventHandlerEntry sFreezeShockHandlers[] = {
-    { 0x95, HandlerFreezeShock },
+    { BTL_EVENT_CHARGE_START, HandlerFreezeShock },
 };
 
 static const BattleEventHandlerEntry *EventAddFreezeShock(u32 *priority) {
@@ -8626,7 +8653,7 @@ static void HandlerFreezeShock(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static const BattleEventHandlerEntry sFusionFlareHandlers[] = {
-    { 0x38, HandlerFusionFlare },
+    { BTL_EVENT_MOVE_POWER, HandlerFusionFlare },
 };
 
 static const BattleEventHandlerEntry *EventAddFusionFlare(u32 *priority) {
@@ -8683,9 +8710,12 @@ static u32 GetPledgeComboEffect(u16 move, u16 partnerMove) {
 }
 
 static const BattleEventHandlerEntry sWaterPledgeHandlers[] = {
-    { 0xa2, HandlerWaterPledgeCheck },        { 0x23, HandlerWaterPledgeDecide },
-    { 0x40, HandlerWaterPledgeTypeMatch },    { 0x37, HandlerWaterPledgePower },
-    { 0x24, HandlerWaterPledgeChangeEffect }, { 0x85, HandlerWaterPledgeFieldEffect },
+    { BTL_EVENT_REWRITE_MOVE_TYPE, HandlerWaterPledgeCheck },
+    { 0x23, HandlerWaterPledgeDecide },
+    { BTL_EVENT_CHECK_SAME_TYPE_BONUS, HandlerWaterPledgeTypeMatch },
+    { BTL_EVENT_MOVE_BASE_POWER, HandlerWaterPledgePower },
+    { BTL_EVENT_MOVE_EXECUTE_START, HandlerWaterPledgeChangeEffect },
+    { 0x85, HandlerWaterPledgeFieldEffect },
 };
 
 static const BattleEventHandlerEntry *EventAddWaterPledge(u32 *priority) {
@@ -8816,9 +8846,9 @@ static void HandlerWaterPledgeFieldEffect(BattleEventItem *item, BtlServerFlow *
             BattleHandler_AddArg(&param->string, effectSide);
             BattleHandler_PopWork(flow, param);
 
-            if (posMonId != 0x1f) {
+            if (posMonId != BTL_POSPOKE_NO_MON) {
                 pos = BtlServerFlow_GetPosOfMon(flow, posMonId);
-                if (pos != 6) {
+                if (pos != BTL_POS_NONE) {
                     posParam = BattleHandler_PushWork(flow, BTL_HANDLER_EFFECT_AT_POS, monId);
                     posParam->pos1 = pos;
                     posParam->pos2 = 6;

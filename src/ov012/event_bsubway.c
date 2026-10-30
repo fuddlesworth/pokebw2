@@ -355,7 +355,7 @@ static BOOL BSubwayCommBattleProc_Main(GameProc *proc, u32 *state, void *param, 
     switch (*state) {
     case 0:
         GFL_OvlLoad(OVERLAY_ID(167));
-        NetCommand_AddTable(0x100, data_ov167_021d7448, 9, NULL);
+        NetCommand_AddTable(0x100, BTL_NET_COMMANDS, 9, NULL);
         GFL_NetSendTiming(NetHandle_GetOwn(), BSUBWAY_COMM_TIMING_BATTLE);
         *state = 1;
         break;

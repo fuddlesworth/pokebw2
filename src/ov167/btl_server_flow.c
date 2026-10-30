@@ -226,16 +226,16 @@ u32 BtlServerFlow_RunFaintSwitch(BtlServerFlow *flow, BtlClientActions *clientAc
         flow->nextAction = 0;
         for (i = 0; i < flow->actionOrderCount; i++) {
             if (flow->actionOrder[i].action.change.action == BATTLE_ACTION_CHANGE &&
-                !flow->actionOrder[i].action.change.unk10 && !IsFainted(flow->actionOrder[i].mon)) {
+                !flow->actionOrder[i].action.change.deplete && !IsFainted(flow->actionOrder[i].mon)) {
                 ServerControl_ChangePokemon(flow, flow->actionOrder[i].mon, flow->actionOrder[i].action.change.slot);
                 flow->actionOrder[i].done = TRUE;
             }
         }
         for (i = 0; i < flow->actionOrderCount; i++) {
             if (flow->actionOrder[i].action.change.action == BATTLE_ACTION_CHANGE &&
-                !flow->actionOrder[i].action.change.unk10 && IsFainted(flow->actionOrder[i].mon)) {
+                !flow->actionOrder[i].action.change.deplete && IsFainted(flow->actionOrder[i].mon)) {
                 ServerControl_SwitchInFillSlot(flow, flow->actionOrder[i].clientId,
-                                               flow->actionOrder[i].action.change.unk4,
+                                               flow->actionOrder[i].action.change.pos,
                                                flow->actionOrder[i].action.change.slot, TRUE);
                 flow->actionOrder[i].done = TRUE;
             }
@@ -243,7 +243,7 @@ u32 BtlServerFlow_RunFaintSwitch(BtlServerFlow *flow, BtlClientActions *clientAc
         if (BtlSetup_GetBattleStyle(flow->mainModule) == BTL_STYLE_ROTATION) {
             for (i = 0; i < flow->actionOrderCount; i++) {
                 if (flow->actionOrder[i].action.change.action == BATTLE_ACTION_ROTATION &&
-                    !flow->actionOrder[i].action.change.unk10) {
+                    !flow->actionOrder[i].action.change.deplete) {
                     ActionOrder_Proc(flow, &flow->actionOrder[i]);
                 }
             }
@@ -372,8 +372,8 @@ BOOL ServerControl_MidTurnSwitchIn(BtlServerFlow *flow, BtlClientActions *client
             count = ClientActions_GetCount(clientActions, clientId);
             for (i = 0; i < count; i++) {
                 action = ClientActions_GetAction(clientActions, clientId, i);
-                if (action.change.action == BATTLE_ACTION_CHANGE && !action.change.unk10) {
-                    ServerControl_SwitchInFillSlot(flow, clientId, action.change.unk4, action.change.slot, TRUE);
+                if (action.change.action == BATTLE_ACTION_CHANGE && !action.change.deplete) {
+                    ServerControl_SwitchInFillSlot(flow, clientId, action.change.pos, action.change.slot, TRUE);
                 }
             }
         }
@@ -582,12 +582,12 @@ u8 ActionOrder_Build(BtlServerFlow *flow, BtlClientActions *clientActions, Actio
             }
             switch ((u8)BattleAction_GetAction(&entry->action)) {
             case BATTLE_ACTION_ROTATION:
-                slot = GetRotationInSlot((u8)entry->action.change.unk4);
+                slot = GetRotationInSlot((u8)entry->action.change.pos);
                 entry->mon = BattleParty_GetMon(client->party, slot);
                 rotated = TRUE;
                 break;
             case BATTLE_ACTION_CHANGE:
-                entry->mon = BattleParty_GetMon(client->party, entry->action.change.unk4);
+                entry->mon = BattleParty_GetMon(client->party, entry->action.change.pos);
                 slot++;
                 break;
             default:
@@ -692,7 +692,7 @@ u8 ServerEvent_GetMovePriority(BtlServerFlow *flow, u16 move, BattleMon *mon) {
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetValue(0x18, priority);
-    BattleEvent_CallHandlers(flow, 0x11);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_GET_MOVE_PRIORITY);
     priority = BattleEventVar_GetValue(0x18);
     BattleEventVar_Pop(0x6d7);
     return priority;
@@ -708,7 +708,7 @@ u16 ServerEvent_CalculateSpeed(BtlServerFlow *flow, BattleMon *mon, BOOL flag) {
     BattleEventVar_SetValue(0x51, 1);
     BattleEventVar_SetValue(0x4a, 0);
     BattleEventVar_SetMulValue(0x35, 0x1000, 0x19a, 0x20000);
-    BattleEvent_CallHandlers(flow, 0x13);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_SPEED);
     speed = fixed_round(BattleEventVar_GetValue(0x2f), BattleEventVar_GetValue(0x35));
     if (GetBattleMonStatus(mon) == CONDITION_PARALYSIS && BattleEventVar_GetValue(0x51)) {
         speed = speed * 25 / 100;
@@ -863,7 +863,7 @@ u32 ActionOrder_Proc(BtlServerFlow *flow, ActionOrderEntry *entry) {
                 switch (action.bits.action) {
                 case BATTLE_ACTION_ROTATION:
                     if (BtlSetup_GetBattleStyle(flow->mainModule) == BTL_STYLE_ROTATION) {
-                        ServerControl_Rotation(flow, entry->clientId, action.change.unk4);
+                        ServerControl_Rotation(flow, entry->clientId, action.change.pos);
                     }
                     break;
                 case BATTLE_ACTION_FIGHT:
@@ -926,7 +926,7 @@ void ServerEvent_ActionStart(BtlServerFlow *flow, BattleMon *mon, u32 action) {
     BattleEventVar_Push(0x86e);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0xc, action);
-    BattleEvent_CallHandlers(flow, 1);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ACTION_START);
     BattleEventVar_Pop(0x872);
 }
 
@@ -934,7 +934,7 @@ void ServerEvent_ActionEnd(BtlServerFlow *flow, BattleMon *mon, u32 action) {
     BattleEventVar_Push(0x87e);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0xc, action);
-    BattleEvent_CallHandlers(flow, 2);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ACTION_END);
     BattleEventVar_Pop(0x882);
 }
 
@@ -988,7 +988,7 @@ BOOL ServerEvent_CheckSleepPrevented(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x8e0);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
-    BattleEvent_CallHandlers(flow, 0xe);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_SLEEP_PREVENTED);
     result = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x8e5);
     return result;
@@ -1212,7 +1212,7 @@ void ServerControl_AfterMoveCore(BtlServerFlow *flow, BattleMon *mon) {
 void ServerEvent_AfterMove(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0xaa8);
     BattleEventVar_SetValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0xa4);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_AFTER_MOVE);
     BattleEventVar_Pop(0xaab);
 }
 
@@ -1287,7 +1287,7 @@ BOOL ServerEvent_CheckSureEscape(BtlServerFlow *flow, BattleMon *mon) {
         BattleEventVar_Push(0xb31);
         BattleEventVar_SetConstValue(2, GetMonID(mon));
         BattleEventVar_SetRewriteOnceValue(0x51, 0);
-        BattleEvent_CallHandlers(flow, 0xb);
+        BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_SURE_ESCAPE);
         result = BattleEventVar_GetValue(0x51);
         BattleEventVar_Pop(0xb36);
         return result;
@@ -1348,7 +1348,7 @@ BOOL ServerEvent_CheckEscapeBlocked(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
     Condition_CheckTrapped(flow, mon);
-    BattleEvent_CallHandlers(flow, 0xc);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_ESCAPE_BLOCKED);
     result = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0xba3);
     return result;
@@ -1360,7 +1360,7 @@ BOOL ServerEvent_EscapeMessage(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0xbb3);
     BattleEventVar_SetValue(2, GetMonID(mon));
     BattleEventVar_SetRewriteOnceValue(0x51, 0);
-    BattleEvent_CallHandlers(flow, 0xd);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ESCAPE_MESSAGE);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0xbb8);
     return result;
@@ -1445,26 +1445,26 @@ BOOL ServerControl_AfterSwitchIn(BtlServerFlow *handler) {
 void ServerEvent_MemberIn(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0xc53);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x55);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MEMBER_IN);
     BattleEventVar_Pop(0xc56);
 }
 
 void ServerEvent_AbilityMemberIn(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0xc65);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallFactorHandlers(flow, 0x55, 4);
+    BattleEvent_CallFactorHandlers(flow, BTL_EVENT_MEMBER_IN, BTL_EVENT_FACTOR_ABILITY);
     BattleEventVar_Pop(0xc68);
 }
 
 void ServerEvent_MemberInPrev(BtlServerFlow *flow) {
     BattleEventVar_Push(0xc75);
-    BattleEvent_CallHandlers(flow, 0x56);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MEMBER_IN_PREV);
     BattleEventVar_Pop(0xc77);
 }
 
 void ServerEvent_MemberInComplete(BtlServerFlow *flow) {
     BattleEventVar_Push(0xc83);
-    BattleEvent_CallHandlers(flow, 0x57);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MEMBER_IN_COMPLETE);
     BattleEventVar_Pop(0xc85);
 }
 
@@ -1478,7 +1478,7 @@ void ServerControl_RotationIn(BtlServerFlow *flow) {
 
 void ServerEvent_RotationIn(BtlServerFlow *flow) {
     BattleEventVar_Push(0xca1);
-    BattleEvent_CallHandlers(flow, 0x58);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ROTATION_IN);
     BattleEventVar_Pop(0xca3);
 }
 
@@ -1551,7 +1551,7 @@ void ServerControl_SwitchOutCore(BtlServerFlow *flow, BattleMon *mon, u32 effect
 void ServerControl_SwitchOutConfirm(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0xd24);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x54);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_SWITCH_OUT);
     BattleEventVar_Pop(0xd27);
 }
 
@@ -1787,7 +1787,7 @@ void ServerEvent_RewriteMoveType(BtlServerFlow *flow, BattleMon *mon, BtlFlowMov
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetRewriteOnceValue(0x16, param->type);
-    BattleEvent_CallHandlers(flow, 0xa2);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_REWRITE_MOVE_TYPE);
     param->type = BattleEventVar_GetValue(0x16);
     BattleEventVar_Pop(0xec1);
 }
@@ -1893,7 +1893,7 @@ BOOL ServerEvent_CheckDelayMove(BtlServerFlow *flow, BattleMon *mon, u8 target) 
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(0xd, target);
     BattleEventVar_SetRewriteOnceValue(0x51, 0);
-    BattleEvent_CallHandlers(flow, 6);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_DELAY_MOVE);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0xf71);
     return result;
@@ -1910,7 +1910,7 @@ void ServerControl_DelayMoveDecide(BtlServerFlow *flow, BattleMon *mon) {
 void ServerEvent_DelayMoveDecide(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0xf90);
     BattleEventVar_SetConstValue(3, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 7);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DELAY_MOVE_DECIDE);
     BattleEventVar_Pop(0xf93);
 }
 
@@ -1926,7 +1926,7 @@ void ServerEvent_MoveSeqStart(BtlServerFlow *flow, BattleMon *mon, u16 move) {
     BattleEventVar_Push(0xfb0);
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(0x12, move);
-    BattleEvent_CallHandlers(flow, 3);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_SEQ_START);
     BattleEventVar_Pop(0xfb4);
 }
 
@@ -1943,7 +1943,7 @@ void ServerEvent_MoveSeqEnd(BtlServerFlow *flow, BattleMon *mon, u16 move, u8 re
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetConstValue(0x51, result);
-    BattleEvent_CallHandlers(flow, 4);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_SEQ_END);
     BattleEventVar_Pop(0xfd5);
 }
 
@@ -1952,7 +1952,7 @@ void ServerEvent_StealMove(BtlServerFlow *flow, BattleMon *mon, BattleMon *attac
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(3, GetMonID(attacker));
     BattleEventVar_SetConstValue(0x12, move);
-    BattleEvent_CallHandlers(flow, 8);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_STEAL_MOVE);
     BattleEventVar_Pop(0xfe8);
 }
 
@@ -1962,7 +1962,7 @@ void ServerEvent_ReflectMove(BtlServerFlow *flow, BattleMon *mon, BattleMon *tar
     BattleEventVar_SetConstValue(3, GetMonID(target));
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetRewriteOnceValue(0x51, 0);
-    BattleEvent_CallHandlers(flow, 9);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_REFLECT_MOVE);
     BattleEventVar_Pop(0xffb);
 }
 
@@ -1998,7 +1998,7 @@ BOOL ServerEvent_CheckMoveSteal(BtlServerFlow *flow, BattleMon *mon, u16 move, B
     }
     BattleEventVar_SetRewriteOnceValue(2, 0x1f);
     BattleEventVar_SetValue(4, 0x1f);
-    BattleEvent_CallHandlers(flow, 0x1a);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_MOVE_STEAL);
     *monId = BattleEventVar_GetValue(2);
     *target = BattleEventVar_GetValue(4);
     BattleEventVar_Pop(0x104b);
@@ -2208,7 +2208,7 @@ BOOL ServerEvent_CheckTypeImmunityEnabled(BtlServerFlow *flow, BtlFlowMoveParam 
     BattleEventVar_SetValue(3, GetMonID(mon));
     BattleEventVar_SetValue(0x12, param->move);
     BattleEventVar_SetRewriteOnceValue(0x51, 0);
-    BattleEvent_CallHandlers(flow, 0x3d);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_TYPE_IMMUNITY_ENABLED);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x11aa);
     return result;
@@ -2230,7 +2230,7 @@ void ServerControl_MoveExecuteEffective(BtlServerFlow *flow, u8 monId, u16 move)
     u32 state;
 
     state = PushState(&flow->actionState, 0x11f7);
-    ServerEvent_MoveExecuteEvent(flow, monId, move, 0x25);
+    ServerEvent_MoveExecuteEvent(flow, monId, move, BTL_EVENT_MOVE_EXECUTE_EFFECTIVE);
     PopState(&flow->actionState, state, 0x11f9);
 }
 
@@ -2238,7 +2238,7 @@ void ServerControl_MoveExecuteNoEffect(BtlServerFlow *flow, u8 monId, u16 move) 
     u32 state;
 
     state = PushState(&flow->actionState, 0x1206);
-    ServerEvent_MoveExecuteEvent(flow, monId, move, 0x26);
+    ServerEvent_MoveExecuteEvent(flow, monId, move, BTL_EVENT_MOVE_EXECUTE_NO_EFFECT);
     PopState(&flow->actionState, state, 0x1208);
 }
 
@@ -2246,7 +2246,7 @@ void ServerControl_MoveExecuteEnd(BtlServerFlow *flow, u8 monId, u16 move) {
     u32 state;
 
     state = PushState(&flow->actionState, 0x1215);
-    ServerEvent_MoveExecuteEvent(flow, monId, move, 0x27);
+    ServerEvent_MoveExecuteEvent(flow, monId, move, BTL_EVENT_MOVE_EXECUTE_END);
     PopState(&flow->actionState, state, 0x1217);
 }
 
@@ -2307,13 +2307,14 @@ void ServerControl_RemoveNoEffectTargets(BtlServerFlow *flow, BtlFlowMoveParam *
 
     BtlMonSet_ResetIndex(targets);
     while ((target = BtlMonSet_GetNext(targets)) != NULL) {
-        if (!IsGuaranteedHit(flow, mon, target) && ServerControl_CheckNoEffect(flow, param, mon, target, data, 0x2b)) {
+        if (!IsGuaranteedHit(flow, mon, target) &&
+            ServerControl_CheckNoEffect(flow, param, mon, target, data, BTL_EVENT_CHECK_NO_EFFECT_1)) {
             BtlMonSet_Remove(targets, target);
         }
     }
     BtlMonSet_ResetIndex(targets);
     while ((target = BtlMonSet_GetNext(targets)) != NULL) {
-        if (ServerControl_CheckNoEffect(flow, param, mon, target, data, 0x2c)) {
+        if (ServerControl_CheckNoEffect(flow, param, mon, target, data, BTL_EVENT_CHECK_NO_EFFECT_2)) {
             BtlMonSet_Remove(targets, target);
         }
     }
@@ -2328,7 +2329,7 @@ void ServerControl_RemoveNoEffectTargets(BtlServerFlow *flow, BtlFlowMoveParam *
     }
     BtlMonSet_ResetIndex(targets);
     while ((target = BtlMonSet_GetNext(targets)) != NULL) {
-        if (ServerControl_CheckNoEffect(flow, param, mon, target, data, 0x2d)) {
+        if (ServerControl_CheckNoEffect(flow, param, mon, target, data, BTL_EVENT_CHECK_NO_EFFECT_3)) {
             BtlMonSet_Remove(targets, target);
         }
     }
@@ -2416,7 +2417,7 @@ BOOL ServerEvent_SkipAccuracyCheck(BtlServerFlow *flow, BattleMon *mon, BattleMo
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetRewriteOnceValue(0x51, 0);
-    BattleEvent_CallHandlers(flow, 0x1c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_SKIP_ACCURACY_CHECK);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x1358);
     return result;
@@ -2464,7 +2465,7 @@ BOOL ServerEvent_CheckHit(BtlServerFlow *flow, BattleMon *mon, BattleMon *target
     BattleEventVar_SetValue(0x27, GetBattleMonStat(mon, BATTLEMON_ACCURACY_STAGE));
     BattleEventVar_SetValue(0x28, GetBattleMonStat(target, BATTLEMON_EVASION_STAGE));
     BattleEventVar_SetMulValue(0x35, 0x1000, 0x29, 0x20000);
-    BattleEvent_CallHandlers(flow, 0x33);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_HIT);
     accuracy = BattleEventVar_GetValue(0x27);
     evasion = BattleEventVar_GetValue(0x28);
     ignore = BattleEventVar_GetValue(0x4b);
@@ -2651,7 +2652,7 @@ BOOL ServerControl_CheckMoveFail(BtlServerFlow *flow, BattleMon *mon, u16 move, 
                 break;
             }
         }
-        cause = ServerEvent_CheckMoveFail(flow, mon, move, 0x1e);
+        cause = ServerEvent_CheckMoveFail(flow, mon, move, BTL_EVENT_CHECK_MOVE_FAIL);
         if (cause != 0) {
             break;
         }
@@ -2730,7 +2731,7 @@ BOOL ServerControl_CheckMoveFail(BtlServerFlow *flow, BattleMon *mon, u16 move, 
 BOOL ServerControl_CheckMoveFailLate(BtlServerFlow *flow, BattleMon *mon, u16 move) {
     u32 cause;
     if (move != MOVE_STRUGGLE) {
-        cause = ServerEvent_CheckMoveFail(flow, mon, move, 0x1f);
+        cause = ServerEvent_CheckMoveFail(flow, mon, move, BTL_EVENT_CHECK_MOVE_FAIL_LATE);
         if (cause != 0) {
             ServerControl_MoveFail(flow, mon, move, cause);
             return TRUE;
@@ -2746,7 +2747,7 @@ BOOL ServerEvent_CanUseMoveAsleep(BtlServerFlow *flow, BattleMon *mon, u16 move,
     BattleEventVar_SetConstValue(0x22, status);
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
-    BattleEvent_CallHandlers(flow, 0x1d);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CAN_USE_MOVE_ASLEEP);
     result = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x15b8);
     return result;
@@ -2950,7 +2951,7 @@ u32 ServerEvent_CalcPPDecrement(BtlServerFlow *flow, BattleMon *mon, u8 moveSlot
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetConstValue(0x17, moveSlot);
     BattleEventVar_SetValue(0x20, 1);
-    BattleEvent_CallHandlers(flow, 0x4e);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_PP_DECREMENT);
     amount = BattleEventVar_GetValue(0x20);
     BattleEventVar_Pop(0x1714);
     return amount;
@@ -3343,7 +3344,7 @@ void ServerEvent_DamageDetermine(BtlServerFlow *flow, BattleMon *attacker, Battl
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetConstValue(0x16, param->type);
-    BattleEvent_CallHandlers(flow, 0x45);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DAMAGE_DETERMINE);
     BattleEventVar_Pop(0x19d4);
 }
 
@@ -3359,7 +3360,7 @@ u32 ServerEvent_CheckEndure(BtlServerFlow *flow, BattleMon *attacker, BattleMon 
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x51, arg3);
     BattleEventVar_SetRewriteOnceValue(0x3a, 0);
-    BattleEvent_CallHandlers(flow, 0x74);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_ENDURE);
     cause = BattleEventVar_GetValue(0x3a);
     BattleEventVar_Pop(0x19f6);
     if (cause != 0) {
@@ -3388,7 +3389,7 @@ void ServerControl_Endure(BtlServerFlow *flow, BattleMon *mon, u32 cause) {
 void ServerEvent_EndureUsed(BtlServerFlow *flow, BattleMon *mon, u32 cause) {
     BattleEventVar_Push(0x1a27);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x75);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ENDURE_USED);
     BattleEventVar_Pop(0x1a2a);
 }
 
@@ -3409,7 +3410,7 @@ void ServerEvent_BeforeDamageDisplay(BtlServerFlow *flow, BtlFlowMoveParam *para
     for (i = 0; i < count; i++) {
         BattleEventVar_SetConstValue(6 + i, GetMonID(mons[i]));
     }
-    BattleEvent_CallHandlers(flow, 0x44);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_BEFORE_DAMAGE_DISPLAY);
     BattleEventVar_Pop(0x1a57);
 }
 
@@ -3456,7 +3457,7 @@ void ServerEvent_AfterDamage(BtlServerFlow *flow, BattleMon *attacker, BtlFlowMo
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetConstValue(0x16, param->type);
     BattleEventVar_SetConstValue(0x32, damage);
-    BattleEvent_CallHandlers(flow, 0x4d);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_AFTER_DAMAGE);
     BattleEventVar_Pop(0x1abd);
 }
 
@@ -3472,7 +3473,7 @@ void ServerEvent_CheckItemReaction(BtlServerFlow *flow, BattleMon *mon, u32 reac
     BattleEventVar_Push(0x1adf);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x2e, reaction);
-    BattleEvent_CallHandlers(flow, 0x91);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_ITEM_REACTION);
     BattleEventVar_Pop(0x1ae3);
 }
 
@@ -3487,7 +3488,7 @@ void ServerEvent_DamageProcessStart(BtlServerFlow *flow, BattleMon *mon, BtlFlow
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetConstValue(0x16, param->type);
-    BattleEvent_CallHandlers(flow, 0x81);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DAMAGE_PROCESS_START);
     BattleEventVar_Pop(0x1b01);
 }
 
@@ -3561,7 +3562,7 @@ void ServerEvent_DamageProcessEnd(BtlServerFlow *flow, BattleMon *mon, BtlMonSet
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(0x4d, arg4);
     BattleEventVar_SetConstValue(0x12, param->move);
-    BattleEvent_CallHandlers(flow, 0x88);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DAMAGE_PROCESS_END);
     BattleEventVar_Pop(0x1b76);
 }
 
@@ -3645,7 +3646,7 @@ BOOL ServerEvent_CalcDamage(BtlServerFlow *flow, BattleMon *attacker, BattleMon 
     BattleEventVar_SetConstValue(0x12, param->move);
     BattleEventVar_SetConstValue(0x1a, category);
     BattleEventVar_SetValue(0x37, 0);
-    BattleEvent_CallHandlers(flow, 0x46);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_FIXED_DAMAGE);
     result = BattleEventVar_GetValue(0x37);
     if (result != 0) {
         fixed = TRUE;
@@ -3690,11 +3691,11 @@ BOOL ServerEvent_CalcDamage(BtlServerFlow *flow, BattleMon *attacker, BattleMon 
         }
         BattleEventVar_SetMulValue(0x35, 0x1000, 0x29, 0x20000);
         BattleEventVar_SetValue(0x32, value);
-        BattleEvent_CallHandlers(flow, 0x47);
+        BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_DAMAGE);
         mod = BattleEventVar_GetValue(0x35);
         result = fixed_round(BattleEventVar_GetValue(0x32), mod);
     }
-    BattleEvent_CallHandlers(flow, 0x48);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_DAMAGE_END);
     BattleEventVar_Pop(0x1c9d);
     *damage = result;
     return fixed;
@@ -3779,7 +3780,7 @@ BOOL ServerEvent_CheckHeldItemFail(BtlServerFlow *flow, BattleMon *mon, u16 item
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x2d, item);
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
-    BattleEvent_CallHandlers(flow, 0x90);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_HELD_ITEM_FAIL);
     failed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x1d2f);
     return failed;
@@ -3849,7 +3850,7 @@ u32 ServerEvent_CheckMoveAddCondition(BtlServerFlow *flow, u16 move, BattleMon *
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
     BattleEventVar_SetRewriteOnceValue(0x1e, result.raw);
     BattleEventVar_SetValue(0x26, chance);
-    BattleEvent_CallHandlers(flow, 0x64);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_MOVE_ADD_CONDITION);
     condition = BattleEventVar_GetValue(0x1d);
     chance = BattleEventVar_GetValue(0x26);
     failed = BattleEventVar_GetValue(0x41);
@@ -3935,7 +3936,7 @@ u32 ServerEvent_DecideSpecialMoveCondition(BtlServerFlow *flow, BattleMon *attac
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x3f, (s32)string);
     BattleEventVar_SetValue(0x1d, 0);
-    BattleEvent_CallHandlers(flow, 0x60);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DECIDE_SPECIAL_MOVE_CONDITION);
     condition = BattleEventVar_GetValue(0x1d);
     BattleEventVar_Pop(0x1e18);
     return condition;
@@ -3948,7 +3949,7 @@ void ServerEvent_AddMoveConditionString(BtlServerFlow *flow, u32 condition, Batt
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x3f, (s32)string);
     BattleEventVar_SetConstValue(0x1d, condition);
-    BattleEvent_CallHandlers(flow, 0x61);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ADD_MOVE_CONDITION_STRING);
     BattleEventVar_Pop(0x1e2e);
 }
 
@@ -3959,7 +3960,7 @@ void ServerEvent_MoveConditionContinue(BtlServerFlow *flow, BattleMon *attacker,
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x1d, condition);
     BattleEventVar_SetValue(0x1e, value->raw);
-    BattleEvent_CallHandlers(flow, 0x62);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_CONDITION_CONTINUE);
     value->raw = BattleEventVar_GetValue(0x1e);
     BattleEventVar_Pop(0x1e45);
 }
@@ -4098,7 +4099,7 @@ u8 ServerEvent_GetWeather(BtlServerFlow *flow) {
     BattleEventVar_Push(0x1f33);
     weather = 0;
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
-    BattleEvent_CallHandlers(flow, 0x7a);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_GET_WEATHER);
     suppressed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x1f37);
     if (!suppressed) {
@@ -4112,7 +4113,7 @@ fx32 ServerEvent_GetWeightRatio(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x1f4d);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetMulValue(0x35, 0x1000, 0x19a, 0x20000);
-    BattleEvent_CallHandlers(flow, 0x7b);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_GET_WEIGHT_RATIO);
     ratio = BattleEventVar_GetValue(0x35);
     BattleEventVar_Pop(0x1f52);
     return ratio;
@@ -4125,7 +4126,7 @@ BOOL ServerEvent_MoveConditionCheckFail(BtlServerFlow *flow, BattleMon *attacker
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x1d, condition);
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
-    BattleEvent_CallHandlers(flow, 0x65);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_CONDITION_CHECK_FAIL);
     failed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x1f6c);
     return failed;
@@ -4136,7 +4137,7 @@ void ServerEvent_AddConditionFailed(BtlServerFlow *flow, BattleMon *target, Batt
     BattleEventVar_SetValue(4, GetMonID(target));
     BattleEventVar_SetValue(3, GetMonID(attacker));
     BattleEventVar_SetValue(0x1d, condition);
-    BattleEvent_CallHandlers(flow, 0x67);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ADD_CONDITION_FAILED);
     BattleEventVar_Pop(0x1f7f);
 }
 
@@ -4147,7 +4148,7 @@ void ServerEvent_ConditionConfirmed(BtlServerFlow *flow, BattleMon *target, Batt
     BattleEventVar_SetConstValue(3, (u8)(attacker != NULL ? GetMonID(attacker) : 0x1f));
     BattleEventVar_SetConstValue(0x1d, condition);
     BattleEventVar_SetConstValue(0x1e, value.raw);
-    BattleEvent_CallHandlers(flow, 0x68);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CONDITION_CONFIRMED);
     BattleEventVar_Pop(0x1f97);
 }
 
@@ -4156,14 +4157,14 @@ void ServerEvent_MoveStatusConfirmed(BtlServerFlow *flow, BattleMon *target, Bat
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(3, (u8)(attacker != NULL ? GetMonID(attacker) : 0x1f));
     BattleEventVar_SetConstValue(0x1d, condition);
-    BattleEvent_CallHandlers(flow, 0x69);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_STATUS_CONFIRMED);
     BattleEventVar_Pop(0x1fad);
 }
 
 void ServerEvent_GastroAcidConfirmed(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x1fb9);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_ForceCallHandlers(flow, 0x6a);
+    BattleEvent_ForceCallHandlers(flow, BTL_EVENT_GASTRO_ACID_CONFIRMED);
     BattleEventVar_Pop(0x1fbc);
 }
 
@@ -4186,7 +4187,7 @@ BOOL ServerEvent_RollStatDropEffectChance(BtlServerFlow *flow, BtlFlowMoveParam 
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
     hit = FALSE;
     BattleEventVar_SetValue(0x26, chance);
-    BattleEvent_CallHandlers(flow, 0x51);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_STAT_CHANGE_CHANCE);
     failed = BattleEventVar_GetValue(0x41);
     chance = BattleEventVar_GetValue(0x26);
     BattleEventVar_Pop(0x1fe8);
@@ -4279,7 +4280,7 @@ void ServerEvent_GetMoveStatChangeValue(BtlServerFlow *flow, u16 move, u32 index
     BattleEventVar_SetValue(0x1f, *stat);
     BattleEventVar_SetValue(0x20, *change);
     BattleEventVar_SetValue(0x35, 1);
-    BattleEvent_CallHandlers(flow, 0x59);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_STAT_CHANGE_VALUE);
     *stat = BattleEventVar_GetValue(0x1f);
     *change = BattleEventVar_GetValue(0x20);
     multiplier = BattleEventVar_GetValue(0x35);
@@ -4338,7 +4339,7 @@ s32 ServerEvent_CheckSubstituteInteraction(BtlServerFlow *flow, BattleMon *mon, 
     BattleEventVar_SetConstValue(3, attackerId);
     BattleEventVar_SetConstValue(0x1f, stat);
     BattleEventVar_SetRewriteOnceValue(0x20, change);
-    BattleEvent_CallHandlers(flow, 0x5a);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_STAT_CHANGE_VALUE);
     change = BattleEventVar_GetValue(0x20);
     BattleEventVar_Pop(0x20d8);
     return change;
@@ -4660,7 +4661,7 @@ BOOL ServerEvent_CheckForceSwitchBlocked(BtlServerFlow *flow, BattleMon *attacke
     BattleEventVar_Push(0x22bd);
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
     BattleEventVar_SetConstValue(4, GetMonID(target));
-    BattleEvent_CallHandlers(flow, 0x8b);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_FORCE_SWITCH_BLOCKED);
     Condition_CheckIngrainForceSwitch(flow, target);
     blocked = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x22c3);
@@ -4732,7 +4733,7 @@ u8 ServerEvent_IncreaseMoveWeatherTurns(BtlServerFlow *flow, u8 weather, BattleM
     BattleEventVar_SetConstValue(0x39, weather);
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetValue(0x24, 0);
-    BattleEvent_CallHandlers(flow, 0x7c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_WEATHER_TURNS);
     turns = BattleEventVar_GetValue(0x24);
     BattleEventVar_Pop(0x232d);
     return turns;
@@ -4758,7 +4759,7 @@ void ServerEvent_FieldEffectMove(BtlServerFlow *flow, BattleMon *mon, u16 move) 
     BattleEventVar_Push(0x2370);
     BattleEventVar_SetValue(3, GetMonID(mon));
     BattleEventVar_SetValue(0x12, move);
-    BattleEvent_CallHandlers(flow, 0x9e);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_FIELD_EFFECT_MOVE);
     BattleEventVar_Pop(0x2374);
 }
 
@@ -4944,9 +4945,9 @@ void ServerEvent_DamageReaction(BtlServerFlow *flow, BattleMon *attacker, Battle
     BattleEventVar_SetConstValue(0x45, critical);
     BattleEventVar_SetConstValue(0x46, flag);
     BattleEventVar_SetRewriteOnceValue(0x47, 0);
-    BattleEvent_CallHandlers(flow, 0x4a);
-    BattleEvent_CallHandlers(flow, 0x4b);
-    BattleEvent_CallHandlers(flow, 0x4c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DAMAGE_REACTION_PRE);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DAMAGE_REACTION);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DAMAGE_REACTION_POST);
     BattleEventVar_Pop(0x2498);
 }
 
@@ -4968,10 +4969,10 @@ BOOL ServerEvent_UncategorizedMove(BtlServerFlow *flow, BtlFlowMoveParam *param,
     BattleEventVar_SetConstValue(0x12, param->move);
     if (realCount) {
         if (count) {
-            BattleEvent_CallHandlers(flow, 0xa0);
+            BattleEvent_CallHandlers(flow, BTL_EVENT_UNCATEGORIZED_MOVE);
         }
     } else {
-        BattleEvent_CallHandlers(flow, 0xa1);
+        BattleEvent_CallHandlers(flow, BTL_EVENT_UNCATEGORIZED_MOVE_NO_TARGET);
     }
     *showFail = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x24ca);
@@ -5017,7 +5018,7 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
         }
     case 2:
         flow->turnCheckSeq++;
-        if (ServerControl_TurnCheckEvent(flow, monSet, 0x76)) {
+        if (ServerControl_TurnCheckEvent(flow, monSet, BTL_EVENT_TURN_CHECK_BEGIN)) {
             result = TRUE;
             break;
         }
@@ -5039,7 +5040,7 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
         ServerControl_TurnCheckFieldEffects(flow);
     case 5:
         flow->turnCheckSeq++;
-        if (ServerControl_TurnCheckEvent(flow, monSet, 0x77)) {
+        if (ServerControl_TurnCheckEvent(flow, monSet, BTL_EVENT_TURN_CHECK_END)) {
             result = TRUE;
             break;
         }
@@ -5047,7 +5048,7 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
             return FALSE;
         }
     case 6:
-        ServerControl_TurnCheckEvent(flow, monSet, 0x78);
+        ServerControl_TurnCheckEvent(flow, monSet, BTL_EVENT_TURN_CHECK_DONE);
         flow->turnCheckSeq++;
         BtlMonSet_ResetIndex(monSet);
         while ((mon = BtlMonSet_GetNext(monSet)) != NULL) {
@@ -5235,7 +5236,7 @@ u32 ServerEvent_ConditionDamage(BtlServerFlow *flow, BattleMon *mon, u32 conditi
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x1d, condition);
     BattleEventVar_SetValue(0x32, damage);
-    BattleEvent_CallHandlers(flow, 0x6b);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CONDITION_DAMAGE);
     result = BattleEventVar_GetValue(0x32);
     BattleEventVar_Pop(0x2658);
     return result;
@@ -5382,7 +5383,7 @@ s32 ServerEvent_CheckWeatherDamage(BtlServerFlow *flow, BattleMon *mon, u32 weat
     result = 0;
     BattleEventVar_SetRewriteOnceValue(0x41, 0);
     BattleEventVar_SetValue(0x32, damage);
-    BattleEvent_CallHandlers(flow, 0x7f);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_WEATHER_DAMAGE);
     value = BattleEventVar_GetValue(0x32);
     cancel = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x26fa);
@@ -5511,7 +5512,7 @@ void ServerControl_ClearMonDependentEffects(BtlServerFlow *flow, BattleMon *mon,
 void ServerEvent_BeforeFaint(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x27e8);
     BattleEventVar_SetValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0xa3);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_BEFORE_FAINT);
     BattleEventVar_Pop(0x27eb);
 }
 
@@ -6133,7 +6134,7 @@ u32 ServerEvent_InterruptSwitch(BtlServerFlow *flow, BattleMon *mon) {
     flow->interruptCount = 0;
     BattleEventVar_Push(0x2c37);
     BattleEventVar_SetConstValue(6, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x53);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_INTERRUPT_SWITCH);
     BattleEventVar_Pop(0x2c3a);
     for (i = 0; i < flow->actionOrderCount; i++) {
         if (flow->actionOrder[i].interrupting) {
@@ -6156,7 +6157,7 @@ BOOL ServerEvent_GetCalledMove(BtlServerFlow *flow, BattleMon *mon, u16 move, u8
     BattleEventVar_SetValue(0x12, 0);
     BattleEventVar_SetValue(0xd, 6);
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x18);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_GET_CALLED_MOVE);
     called->move = BattleEventVar_GetValue(0x12);
     called->target = BattleEventVar_GetValue(0xd);
     failed = BattleEventVar_GetValue(0x41);
@@ -6170,7 +6171,7 @@ u8 ServerEvent_CheckSpecialPriority(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x2c7c);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetRewriteOnceValue(0x11, 1);
-    BattleEvent_CallHandlers(flow, 0xf);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_SPECIAL_PRIORITY);
     result = BattleEventVar_GetValue(0x11);
     BattleEventVar_Pop(0x2c81);
     return result;
@@ -6180,7 +6181,7 @@ void ServerEvent_BeforeFight(BtlServerFlow *flow, BattleMon *mon, u16 move) {
     BattleEventVar_Push(0x2c91);
     BattleEventVar_SetValue(2, GetMonID(mon));
     BattleEventVar_SetValue(0x12, move);
-    BattleEvent_CallHandlers(flow, 0x15);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_BEFORE_FIGHT);
     BattleEventVar_Pop(0x2c95);
 }
 
@@ -6216,7 +6217,7 @@ BOOL ServerEvent_SetMoveMessage(BtlServerFlow *flow, BattleMon *mon, u16 move, u
     BattleEventVar_SetConstValue(0x12, actualMove);
     BattleEventVar_SetConstValue(0x3f, (s32)string);
     BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x19);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_SET_MOVE_MESSAGE);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x2cd6);
     return result;
@@ -6230,7 +6231,7 @@ void ServerEvent_GetMoveParam(BtlServerFlow *flow, u16 move, BattleMon *mon, Btl
     BattleEventVar_SetValue(0x1a, PML_MoveGetCategory(move));
     BattleEventVar_SetValue(0x1b, PML_MoveGetParam(move, MOVE_PARAM_TARGET));
     BattleEventVar_SetRewriteOnceValue(0x4b, FALSE);
-    BattleEvent_CallHandlers(flow, 0x28);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_GET_MOVE_PARAM);
     param->move = move;
     param->originalMove = move;
     param->type = BattleEventVar_GetValue(0x16);
@@ -6249,7 +6250,7 @@ void ServerEvent_MoveExecuteFail(BtlServerFlow *flow, BattleMon *mon, u16 move, 
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetConstValue(0x22, cause);
-    BattleEvent_CallHandlers(flow, 0x21);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_EXECUTE_FAIL);
     BattleEventVar_Pop(0x2d18);
 }
 
@@ -6269,7 +6270,7 @@ u32 ServerEvent_MoveExecuteStart(BtlServerFlow *flow, BattleMon *mon, u16 move, 
     }
     BattleEventVar_SetRewriteOnceValue(0x3e, 0);
     BattleEventVar_SetRewriteOnceValue(0x13, 0);
-    BattleEvent_CallHandlers(flow, 0x24);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_EXECUTE_START);
     result = BattleEventVar_GetValue(0x3e);
     newMove = BattleEventVar_GetValue(0x13);
     BattleEventVar_Pop(0x2d3d);
@@ -6285,7 +6286,7 @@ BOOL ServerEvent_CheckProtectBreak(BtlServerFlow *flow, BattleMon *mon, BattleMo
     BattleEventVar_Push(0x2d55);
     BattleEventVar_SetValue(3, GetMonID(mon));
     BattleEventVar_SetValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x2e);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_PROTECT_BREAK);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x2d5a);
     return result;
@@ -6300,7 +6301,7 @@ BOOL ServerEvent_CheckChargeFail(BtlServerFlow *flow, BattleMon *mon, BtlMonSet 
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(4, target != NULL ? GetMonID(target) : 0x1f);
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x93);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_CHARGE_FAIL);
     result = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x2d74);
     return result;
@@ -6313,7 +6314,7 @@ BOOL ServerEvent_CheckChargeSkip(BtlServerFlow *flow, BattleMon *mon, u16 move) 
     BattleEventVar_SetConstValue(3, GetMonID(mon));
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x94);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_CHARGE_SKIP);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x2d8b);
     return result;
@@ -6339,7 +6340,7 @@ BOOL ServerEvent_ChargeStart(BtlServerFlow *flow, BattleMon *mon, BtlMonSet *tar
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
     BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
     BattleEventVar_SetRewriteOnceValue(0x4f, FALSE);
-    BattleEvent_CallHandlers(flow, 0x95);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHARGE_START);
     if (BattleEventVar_GetValue(0x51)) {
         *monId = BattleEventVar_GetValue(6);
     } else {
@@ -6354,14 +6355,14 @@ BOOL ServerEvent_ChargeStart(BtlServerFlow *flow, BattleMon *mon, BtlMonSet *tar
 void ServerEvent_ChargeStartFixed(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x2dcb);
     BattleEventVar_SetConstValue(3, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x96);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHARGE_START_FIXED);
     BattleEventVar_Pop(0x2dce);
 }
 
 void ServerEvent_ChargeSkipFixed(BtlServerFlow *flow, BattleMon *mon, u16 move) {
     BattleEventVar_Push(0x2ddc);
     BattleEventVar_SetConstValue(3, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x97);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHARGE_SKIP_FIXED);
     BattleEventVar_Pop(0x2ddf);
 }
 
@@ -6378,7 +6379,7 @@ u32 ServerEvent_ChargeRelease(BtlServerFlow *flow, BattleMon *mon, BtlMonSet *ta
     for (i = 0; i < count; i++) {
         BattleEventVar_SetConstValue(6 + i, GetMonID(BtlMonSet_Get(targets, i)));
     }
-    BattleEvent_CallHandlers(flow, 0x98);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHARGE_RELEASE);
     failed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x2dfd);
     return failed ? FALSE : TRUE;
@@ -6395,7 +6396,7 @@ BOOL ServerEvent_CheckSemiInvulnAvoid(BtlServerFlow *flow, BattleMon *mon, Battl
         BattleEventVar_SetConstValue(4, GetMonID(target));
         BattleEventVar_SetConstValue(0x21, status);
         BattleEventVar_SetRewriteOnceValue(0x42, TRUE);
-        BattleEvent_CallHandlers(flow, 0x99);
+        BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_SEMI_INVULN_AVOID);
         if (BattleEventVar_GetValue(0x42)) {
             result = TRUE;
         }
@@ -6412,7 +6413,7 @@ BOOL ServerEvent_CheckAlwaysHit(BtlServerFlow *flow, BattleMon *mon, BattleMon *
         BattleEventVar_Push(0x2e34);
         BattleEventVar_SetConstValue(3, GetMonID(mon));
         BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
-        BattleEvent_CallHandlers(flow, 0x32);
+        BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_ALWAYS_HIT);
         result = BattleEventVar_GetValue(0x51);
         BattleEventVar_Pop(0x2e39);
     }
@@ -6431,7 +6432,7 @@ u32 ServerEvent_GetMoveAccuracy(BtlServerFlow *flow, BattleMon *mon, BattleMon *
     BattleEventVar_SetConstValue(0x1a, param->category);
     BattleEventVar_SetRewriteOnceValue(0x2b, accuracy);
     BattleEventVar_SetMulValue(0x35, 0x1000, 0x19a, 0x20000);
-    BattleEvent_CallHandlers(flow, 0x34);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_GET_MOVE_ACCURACY);
     accuracy = BattleEventVar_GetValue(0x2b);
     ratio = BattleEventVar_GetValue(0x35);
     BattleEventVar_Pop(0x2e58);
@@ -6457,7 +6458,7 @@ BOOL ServerEvent_CheckOHKOHit(BtlServerFlow *flow, BattleMon *attacker, BattleMo
     BattleEventVar_SetConstValue(4, GetMonID(target));
     result = FALSE;
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x70);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_OHKO_HIT);
     failed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x2e7f);
     if (failed) {
@@ -6484,7 +6485,7 @@ BOOL ServerEvent_CheckDamageToRecover(BtlServerFlow *flow, BattleMon *attacker, 
     BattleEventVar_SetConstValue(4, GetMonID(target));
     BattleEventVar_SetConstValue(0x16, param->type);
     BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x30);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_DAMAGE_TO_RECOVER);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x2ea9);
     return result;
@@ -6494,7 +6495,7 @@ void ServerEvent_ApplyDamageToRecover(BtlServerFlow *flow, BattleMon *attacker, 
     BattleEventVar_Push(0x2eb7);
     BattleEventVar_SetConstValue(3, GetMonID(attacker));
     BattleEventVar_SetConstValue(4, GetMonID(target));
-    BattleEvent_CallHandlers(flow, 0x31);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_APPLY_DAMAGE_TO_RECOVER);
     BattleEventVar_Pop(0x2ebb);
 }
 
@@ -6512,7 +6513,7 @@ BOOL ServerEvent_CheckCritical(BtlServerFlow *flow, BattleMon *attacker, BattleM
     BattleEventVar_SetValue(0x2c, stage);
     critical = FALSE;
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x36);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_CRITICAL);
     if (!BattleEventVar_GetValue(0x41)) {
         if (PML_MoveIsAlwaysCrit(move)) {
             critical = TRUE;
@@ -6562,7 +6563,7 @@ s32 ServerEvent_CalcRecoil(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 da
     BattleEventVar_SetValue(0x36, 0);
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
     BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x50);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_RECOIL);
     ratio = BattleEventVar_GetValue(0x35);
     failed = BattleEventVar_GetValue(0x41);
     force = BattleEventVar_GetValue(0x51);
@@ -6593,7 +6594,7 @@ s32 ServerEvent_CalcRecoil(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 da
 void ServerEvent_EquipItem(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x2f4c);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x72);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_USE_ITEM);
     BattleEventVar_Pop(0x2f4f);
 }
 
@@ -6601,7 +6602,7 @@ void ServerEvent_EquipTempItem(BtlServerFlow *flow, BattleMon *mon, u8 monIndex)
     BattleEventVar_Push(0x2f5c);
     BattleEventVar_SetValue(2, GetMonID(mon));
     BattleEventVar_SetValue(3, monIndex);
-    BattleEvent_ForceCallHandlers(flow, 0x73);
+    BattleEvent_ForceCallHandlers(flow, BTL_EVENT_USE_TEMP_ITEM);
     BattleEventVar_Pop(0x2f60);
 }
 
@@ -6661,7 +6662,7 @@ BOOL ServerEvent_CheckFloating(BtlServerFlow *flow, BattleMon *mon, BOOL flag) {
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetRewriteOnceValue(0x51, floating);
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x12);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_FLOATING);
     Condition_CheckFloating(flow, mon);
     floating = BattleEventVar_GetValue(0x51);
     failed = BattleEventVar_GetValue(0x41);
@@ -6686,7 +6687,7 @@ void ServerControl_FloatingImmune(BtlServerFlow *flow, BattleMon *mon) {
 void ServerEvent_FloatingImmune(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x3008);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x1b);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_FLOATING_IMMUNE);
     BattleEventVar_Pop(0x300b);
 }
 
@@ -6704,7 +6705,7 @@ u32 ServerEvent_CheckTypeEffectiveness(BtlServerFlow *flow, BattleMon *attacker,
     BattleEventVar_SetRewriteOnceValue(0x4b, FALSE);
     BattleEventVar_SetRewriteOnceValue(0x4c, FALSE);
     Condition_CheckTypeImmunity(flow, target);
-    BattleEvent_CallHandlers(flow, 0x3e);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_TYPE_EFFECTIVENESS);
     ignoreImmunity = BattleEventVar_GetValue(0x4b);
     forceNormal = BattleEventVar_GetValue(0x4c);
     BattleEventVar_Pop(0x302e);
@@ -6763,7 +6764,7 @@ BOOL ServerEvent_DecrementPP(BtlServerFlow *flow, BattleMon *mon, u8 moveIndex) 
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x17, moveIndex);
     BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x4f);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DECREMENT_PP);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x3094);
     return result;
@@ -6784,7 +6785,7 @@ BOOL ServerEvent_CheckMultihitHits(BtlServerFlow *flow, BattleMon *mon, u16 move
         BattleEventVar_SetValue(0x2a, hits);
         BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
         BattleEventVar_SetRewriteOnceValue(0x42, FALSE);
-        BattleEvent_CallHandlers(flow, 0x35);
+        BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_MULTIHIT_HITS);
         if (maxHits <= 5 && BattleEventVar_GetValue(0x51)) {
             hitWork->count = maxHits;
             hitWork->checkEachHit = FALSE;
@@ -6815,9 +6816,9 @@ u16 ServerEvent_GetMovePower(BtlServerFlow *flow, BattleMon *attacker, BattleMon
     BattleEventVar_SetConstValue(0x16, param->type);
     BattleEventVar_SetConstValue(0x1a, param->category);
     BattleEventVar_SetRewriteOnceValue(0x30, power);
-    BattleEvent_CallHandlers(flow, 0x37);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_BASE_POWER);
     BattleEventVar_SetMulValue(0x31, 0x1000, 0x29, 0x200000);
-    BattleEvent_CallHandlers(flow, 0x38);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_POWER);
     power = BattleEventVar_GetValue(0x30);
     ratio = BattleEventVar_GetValue(0x31);
     BattleEventVar_Pop(0x30f3);
@@ -6830,7 +6831,7 @@ BOOL ServerEvent_CheckSimpleDamageEnabled(BtlServerFlow *flow, BattleMon *mon, u
     BattleEventVar_Push(0x3108);
     BattleEventVar_SetConstValue(4, GetMonID(mon));
     BattleEventVar_SetRewriteOnceValue(0x51, TRUE);
-    BattleEvent_CallHandlers(flow, 0x80);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_SIMPLE_DAMAGE_ENABLED);
     result = BattleEventVar_GetValue(0x51);
     BattleEventVar_Pop(0x310d);
     return result;
@@ -6848,7 +6849,7 @@ u16 ServerEvent_GetAttackPower(BtlServerFlow *flow, BattleMon *attacker, BattleM
     BattleEventVar_SetConstValue(4, GetMonID(defender));
     BattleEventVar_SetValue(0x3b, 0x1f);
     BattleEventVar_SetValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x39);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DECIDE_ATTACK_STAT);
     // Foul Play attacks with the target's stat
     monId = BattleEventVar_GetValue(0x3b);
     if (monId != 0x1f) {
@@ -6866,7 +6867,7 @@ u16 ServerEvent_GetAttackPower(BtlServerFlow *flow, BattleMon *attacker, BattleM
     BattleEventVar_SetConstValue(0x1a, param->category);
     BattleEventVar_SetValue(0x33, power);
     BattleEventVar_SetMulValue(0x35, 0x1000, 0x19a, 0x20000);
-    BattleEvent_CallHandlers(flow, 0x3b);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ATTACK_POWER);
     power = BattleEventVar_GetValue(0x33);
     power = fixed_round(power, BattleEventVar_GetValue(0x35));
     BattleEventVar_Pop(0x3144);
@@ -6889,7 +6890,7 @@ u16 ServerEvent_GetTargetDefenses(BtlServerFlow *flow, BattleMon *attacker, Batt
     BattleEventVar_SetConstValue(0x3c, stat);
     BattleEventVar_SetValue(0x3d, 0);
     BattleEventVar_SetRewriteOnceValue(0x51, FALSE);
-    BattleEvent_CallHandlers(flow, 0x3a);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_DECIDE_DEFENSE_STAT);
     // Wonder Room swaps the two defenses
     if (BattleEventVar_GetValue(0x3d) & 1) {
         if (stat == BATTLEMON_DEFENSE) {
@@ -6924,7 +6925,7 @@ u16 ServerEvent_GetTargetDefenses(BtlServerFlow *flow, BattleMon *attacker, Batt
     BattleEventVar_SetConstValue(0x1a, category);
     BattleEventVar_SetValue(0x34, defense);
     BattleEventVar_SetMulValue(0x35, 0x1000, 0x19a, 0x20000);
-    BattleEvent_CallHandlers(flow, 0x3c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_TARGET_DEFENSE);
     defense = BattleEventVar_GetValue(0x34);
     ratio = BattleEventVar_GetValue(0x35);
     BattleEventVar_Pop(0x3183);
@@ -6940,14 +6941,14 @@ fx32 ServerEvent_SameTypeAttackBonus(BtlServerFlow *flow, BattleMon *attacker, u
     BattleEventVar_Push(0x3199);
     BattleEventVar_SetConstValue(2, GetMonID(attacker));
     BattleEventVar_SetRewriteOnceValue(0x51, stab);
-    BattleEvent_CallHandlers(flow, 0x40);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_SAME_TYPE_BONUS);
     stab = BattleEventVar_GetValue(0x51);
     if (stab) {
         ratio = 0x1800;
     }
     BattleEventVar_SetConstValue(0x44, stab);
     BattleEventVar_SetValue(0x35, ratio);
-    BattleEvent_CallHandlers(flow, 0x41);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_SAME_TYPE_BONUS);
     ratio = BattleEventVar_GetValue(0x35);
     BattleEventVar_Pop(0x31aa);
     return ratio;
@@ -6967,7 +6968,7 @@ u32 ServerEvent_GetFlinchChance(BtlServerFlow *flow, u16 move, BattleMon *attack
     BattleEventVar_SetRewriteOnceValue(0x45, FALSE);
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
     BattleEventVar_SetValue(0x26, 0);
-    BattleEvent_CallHandlers(flow, 0x6c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_GET_FLINCH_CHANCE);
     failed = BattleEventVar_GetValue(0x41);
     doubled = BattleEventVar_GetValue(0x45);
     bonus = BattleEventVar_GetValue(0x26);
@@ -6994,7 +6995,7 @@ BOOL ServerEvent_CheckFlinch(BtlServerFlow *flow, BattleMon *mon, u32 chance) {
     BattleEventVar_SetValue(0x26, chance);
     result = FALSE;
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x6d);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_FLINCH);
     rate = BattleEventVar_GetValue(0x26);
     failed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x31f2);
@@ -7016,7 +7017,7 @@ BOOL ServerEvent_CheckFlinch(BtlServerFlow *flow, BattleMon *mon, u32 chance) {
 void ServerEvent_FlinchFail(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x320b);
     BattleEventVar_SetValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x6e);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_FLINCH_FAIL);
     BattleEventVar_Pop(0x320e);
 }
 
@@ -7030,7 +7031,7 @@ BOOL ServerEvent_CheckStatChange(BtlServerFlow *flow, BattleMon *mon, u32 stat, 
     BattleEventVar_SetConstValue(0x20, change);
     BattleEventVar_SetConstValue(0x19, value);
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x5b);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_STAT_CHANGE);
     failed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x322b);
     return !failed;
@@ -7040,7 +7041,7 @@ void ServerEvent_StatChangeFailed(BtlServerFlow *flow, BattleMon *mon, u32 value
     BattleEventVar_Push(0x323b);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x19, value);
-    BattleEvent_CallHandlers(flow, 0x5c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_STAT_CHANGE_FAILED);
     BattleEventVar_Pop(0x323f);
 }
 
@@ -7050,7 +7051,7 @@ void ServerEvent_StatChangeApplied(BtlServerFlow *flow, u8 monId, BattleMon *mon
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x1f, stat);
     BattleEventVar_SetConstValue(0x20, change);
-    BattleEvent_CallHandlers(flow, 0x5d);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_STAT_CHANGE_APPLIED);
     BattleEventVar_Pop(0x3255);
 }
 
@@ -7060,7 +7061,7 @@ void ServerEvent_MoveStatChangeApplied(BtlServerFlow *flow, BattleMon *mon, u16 
     BattleEventVar_SetConstValue(0x12, move);
     BattleEventVar_SetConstValue(0x1f, stat);
     BattleEventVar_SetConstValue(0x20, change);
-    BattleEvent_CallHandlers(flow, 0x5e);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_MOVE_STAT_CHANGE_APPLIED);
     BattleEventVar_Pop(0x326b);
 }
 
@@ -7074,14 +7075,14 @@ u16 ServerEvent_CalcDrainAmount(BtlServerFlow *flow, BattleMon *mon, BattleMon *
     BattleEventVar_SetConstValue(4, sourceId);
     BattleEventVar_SetMulValue(0x35, 0x1000, 0x19a, 0x20000);
     BattleEventVar_SetValue(0x20, amount);
-    BattleEvent_CallHandlers(flow, 0x8c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_DRAIN);
     amount = BattleEventVar_GetValue(0x20);
     ratio = BattleEventVar_GetValue(0x35);
     if (amount != 0) {
         amount = GetRatioOverZero(amount, ratio);
     }
     BattleEventVar_RewriteValue(0x20, amount);
-    BattleEvent_CallHandlers(flow, 0x8d);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_DRAIN_END);
     amount = BattleEventVar_GetValue(0x20);
     BattleEventVar_Pop(0x3290);
     return amount;
@@ -7093,7 +7094,7 @@ void ServerEvent_AfterWeatherChange(BtlServerFlow *flow, u8 weather) {
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
     BattleEvent_CallHandlers(flow, 0x7d);
     if (!BattleEventVar_GetValue(0x41)) {
-        BattleEvent_CallHandlers(flow, 0x7e);
+        BattleEvent_CallHandlers(flow, BTL_EVENT_AFTER_WEATHER_CHANGE);
     }
     BattleEventVar_Pop(0x32ab);
 }
@@ -7108,7 +7109,7 @@ u32 ServerEvent_CalcMoveHealAmount(BtlServerFlow *flow, u16 move, BattleMon *mon
     BattleEventVar_Push(0x32bd);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetValue(0x35, 0);
-    BattleEvent_CallHandlers(flow, 0x8f);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CALC_MOVE_HEAL);
     multiplier = BattleEventVar_GetValue(0x35);
     BattleEventVar_Pop(0x32c2);
     maxHP = GetBattleMonStat(mon, BATTLEMON_MAX_HP);
@@ -7133,7 +7134,7 @@ u32 ServerEvent_CheckItemSet(BtlServerFlow *flow, BattleMon *mon, u16 item) {
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x2d, item);
     BattleEventVar_SetRewriteOnceValue(0x41, FALSE);
-    BattleEvent_CallHandlers(flow, 0x9a);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_ITEM_SET);
     failed = BattleEventVar_GetValue(0x41);
     BattleEventVar_Pop(0x32eb);
     return failed;
@@ -7142,7 +7143,7 @@ u32 ServerEvent_CheckItemSet(BtlServerFlow *flow, BattleMon *mon, u16 item) {
 void ServerEvent_ItemSetFailed(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x32fa);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x9b);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ITEM_SET_FAILED);
     BattleEventVar_Pop(0x32fd);
 }
 
@@ -7150,14 +7151,14 @@ void ServerEvent_ItemSetDecide(BtlServerFlow *flow, BattleMon *mon, u16 item) {
     BattleEventVar_Push(0x330a);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
     BattleEventVar_SetConstValue(0x2d, item);
-    BattleEvent_CallHandlers(flow, 0x9c);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ITEM_SET_DECIDE);
     BattleEventVar_Pop(0x330e);
 }
 
 void ServerEvent_ItemSetFixed(BtlServerFlow *flow, BattleMon *mon) {
     BattleEventVar_Push(0x331b);
     BattleEventVar_SetConstValue(2, GetMonID(mon));
-    BattleEvent_CallHandlers(flow, 0x9d);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_ITEM_SET_FIXED);
     BattleEventVar_Pop(0x331e);
 }
 
@@ -7166,14 +7167,14 @@ void ServerEvent_ChangeAbilityBefore(BtlServerFlow *flow, u8 monIndex, u16 oldAb
     BattleEventVar_SetConstValue(2, monIndex);
     BattleEventVar_SetConstValue(0xf, oldAbility);
     BattleEventVar_SetConstValue(0x10, newAbility);
-    BattleEvent_CallHandlers(flow, 0x89);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHANGE_ABILITY_BEFORE);
     BattleEventVar_Pop(0x3332);
 }
 
 void ServerEvent_ChangeAbilityAfter(BtlServerFlow *flow, u8 monIndex) {
     BattleEventVar_Push(0x333e);
     BattleEventVar_SetConstValue(2, monIndex);
-    BattleEvent_CallHandlers(flow, 0x8a);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHANGE_ABILITY_AFTER);
     BattleEventVar_Pop(0x3341);
 }
 
@@ -7183,14 +7184,14 @@ void ServerEvent_CheckSideEffectParam(BtlServerFlow *flow, u8 monId, u32 effect,
     BattleEventVar_SetConstValue(0x52, side);
     BattleEventVar_SetConstValue(0x53, effect);
     BattleEventVar_SetValue(0x1e, cont->raw);
-    BattleEvent_CallHandlers(flow, 0x9f);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_CHECK_SIDE_EFFECT_PARAM);
     cont->raw = BattleEventVar_GetValue(0x1e);
     BattleEventVar_Pop(0x3356);
 }
 
 void ServerEvent_NotifyAirLock(BtlServerFlow *flow) {
     BattleEventVar_Push(0x3364);
-    BattleEvent_CallHandlers(flow, 0x79);
+    BattleEvent_CallHandlers(flow, BTL_EVENT_NOTIFY_AIR_LOCK);
     BattleEventVar_Pop(0x3366);
 }
 
