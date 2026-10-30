@@ -20887,6 +20887,7 @@ overlays/ov167 0x021d8e90 sHandlersMicleBerry
 overlays/ov167 0x021d8ec0 sHandlersWhiteHerb
 overlays/ov167 0x021d8ef0 sHandlersLeppaBerry
 overlays/ov167 0x021d8f28 sItemEventAddTable
+overlays/ov167 0x021d9488 sStoredPowerStats
 overlays/ov167 0x021d9490 sHandlersMorningSun
 overlays/ov167 0x021d9498 sHandlersCamouflage
 overlays/ov167 0x021d94a0 sHandlersFrustration
@@ -21023,6 +21024,10 @@ overlays/ov167 0x021d98b0 sSoakHandlers
 overlays/ov167 0x021d98b8 sFoulPlayHandlers
 overlays/ov167 0x021d98c0 sBestowHandlers
 overlays/ov167 0x021d98c8 sHandlersKnockOff
+overlays/ov167 0x021d98d0 sProtectMoves
+overlays/ov167 0x021d98da sProtectFailChance
+overlays/ov167 0x021d98e4 sTrumpCardPower
+overlays/ov167 0x021d98f0 sTriAttackStatuses
 overlays/ov167 0x021d990c sHandlersRest
 overlays/ov167 0x021d991c sForesightHandlers
 overlays/ov167 0x021d992c sHandlersTorment
@@ -21082,7 +21087,10 @@ overlays/ov167 0x021d9cfc sHandlersRage
 overlays/ov167 0x021d9d14 sHandlersThrash
 overlays/ov167 0x021d9d44 sHandlersPresent
 overlays/ov167 0x021d9d5c sHandlersTeleport
+overlays/ov167 0x021d9d74 sPledgeCombos
 overlays/ov167 0x021d9d8c sHandlersThunder
+overlays/ov167 0x021d9da4 sAcupressureStats
+overlays/ov167 0x021d9dc0 sPunishmentStats
 overlays/ov167 0x021d9ddc sHandlersProtect
 overlays/ov167 0x021d9dfc sHandlersFollowMe
 overlays/ov167 0x021d9e1c sHandlersWhirlpool

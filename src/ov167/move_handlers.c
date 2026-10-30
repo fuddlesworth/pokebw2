@@ -12,13 +12,18 @@
 #include "battle/btl_move.h"
 #include "battle/btl_move_rec.h"
 #include "battle/btl_pokeparam.h"
+#include "battle/btl_pospoke.h"
 #include "battle/btl_server_flow.h"
 #include "battle/btl_tables.h"
 #include "battle/handler_common.h"
 #include "battle/side_handlers.h"
+#include "constants/abilities.h"
 #include "constants/battle.h"
+#include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/pokemon.h"
 #include "constants/species.h"
+#include "constants/types.h"
 #include "gfl/std.h"
 #include "pml/item.h"
 #include "pml/move.h"
@@ -1303,7 +1308,7 @@ static void HandlerMimic(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
             if (used != move) {
                 move = used;
             }
-            if (move != 0 && !IsMimicExcludedMove(move) && BattleMon_FindMoveSlot(mon, move) == 4) {
+            if (move != MOVE_NONE && !IsMimicExcludedMove(move) && BattleMon_FindMoveSlot(mon, move) == 4) {
                 slot = BattleMon_FindMoveSlot(mon, BattleEventItem_GetSubID(item));
                 if (slot != 4) {
                     update = BattleHandler_PushWork(flow, BTL_HANDLER_UPDATE_MOVE, monId);
@@ -1350,8 +1355,8 @@ static void HandlerSketch(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
         if (used != move) {
             move = used;
         }
-        if (move != 0 && move != 0xa6 && move != 0xa5 && move != 0x1c0 && !MoveIsUsable(mon, move) &&
-            !TransformCheck(mon)) {
+        if (move != MOVE_NONE && move != MOVE_SKETCH && move != MOVE_STRUGGLE && move != MOVE_CHATTER &&
+            !MoveIsUsable(mon, move) && !TransformCheck(mon)) {
             slot = BattleMon_FindMoveSlot(mon, BattleEventItem_GetSubID(item));
             if (slot != 4) {
                 update = BattleHandler_PushWork(flow, BTL_HANDLER_UPDATE_MOVE, monId);
@@ -1384,7 +1389,8 @@ static const BattleEventHandlerEntry *EventAddFollowMe(u32 *priority) {
 }
 
 static void HandlerFollowMeCheckFail(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if ((BtlServerFlow_GetBattleStyle(flow) == 0 || BtlServerFlow_GetBattleStyle(flow) == 3) &&
+    if ((BtlServerFlow_GetBattleStyle(flow) == BTL_STYLE_SINGLE ||
+         BtlServerFlow_GetBattleStyle(flow) == BTL_STYLE_ROTATION) &&
         BattleEventVar_GetValue(2) == monId && BattleEventVar_GetValue(0x22) == 0) {
         BattleEventVar_RewriteValue(0x22, 0x1a);
     }
@@ -1407,10 +1413,11 @@ static void HandlerFollowMeBaitTarget(BattleEventItem *item, BtlServerFlow *flow
     BattleMon *mon;
     u16 move;
 
-    if (BtlServerFlow_GetBattleStyle(flow) != 0 && BtlServerFlow_GetBattleStyle(flow) != 3) {
+    if (BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_SINGLE &&
+        BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_ROTATION) {
         attackerId = BattleEventVar_GetValue(3);
         mon = GetBattleMon(flow, monId);
-        if (!IsAllyMonID(monId, attackerId) && BattleEventVar_GetValue(0x12) != 0x1fb &&
+        if (!IsAllyMonID(monId, attackerId) && BattleEventVar_GetValue(0x12) != MOVE_SKY_DROP &&
             !CheckCondition(mon, CONDITION_SKY_DROP) && !IsMonSwitchingOut(flow)) {
             move = BattleEventVar_GetValue(0x12);
             if (!BtlServerFlow_IsTargetOutOfRange(flow, attackerId, monId, move)) {
@@ -1439,7 +1446,7 @@ static void HandlerRefresh(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
     if (BattleEventVar_GetValue(3) == monId) {
         status = GetBattleMonStatus(GetBattleMon(flow, monId));
-        if (status == 5 || status == 1 || status == 4) {
+        if (status == CONDITION_POISON || status == CONDITION_PARALYSIS || status == CONDITION_BURN) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
             param->condition = status;
             param->monIds[0] = monId;
@@ -1549,7 +1556,7 @@ static void HandlerCurse(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
         if (DoesMonHaveType(mon, 7)) {
             if ((s32)GetBattleMonStat(mon, BATTLEMON_HP) > 0) {
                 targetId = BattleEventVar_GetValue(6);
-                if (targetId != 0x1f) {
+                if (targetId != BTL_POSPOKE_NO_MON) {
                     condition = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
                     condition->targetIndex = targetId;
                     condition->condition = 0xa;
@@ -1623,8 +1630,8 @@ static void HandlerWorrySeedCheckFail(BattleEventItem *item, BtlServerFlow *flow
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(4);
         target = GetBattleMon(flow, targetId);
-        if (GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == 0x36 ||
-            GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == 0xf) {
+        if (GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == ABILITY_TRUANT ||
+            GetBattleMonStat(target, BATTLEMON_EFFECTIVE_ABILITY) == ABILITY_INSOMNIA) {
             BattleEventVar_RewriteValue(0x40, 1);
         }
     }
@@ -1693,7 +1700,7 @@ static void HandlerCaptivate(BattleEventItem *item, BtlServerFlow *flow, u8 monI
         target = GetBattleMon(flow, targetId);
         sex = GetBattleMonStat(GetBattleMon(flow, monId), BATTLEMON_GENDER);
         targetSex = GetBattleMonStat(target, BATTLEMON_GENDER);
-        if (sex == 2 || targetSex == 2 || sex == targetSex) {
+        if (sex == GENDER_UNKNOWN || targetSex == GENDER_UNKNOWN || sex == targetSex) {
             BattleEventVar_RewriteValue(0x40, 1);
         }
     }
@@ -1861,7 +1868,7 @@ static void HandlerChatter(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
     if (BattleEventVar_GetValue(3) == monId) {
         mon = GetBattleMon(flow, monId);
-        if (GetBattleMonSpecies(mon) == 0x1b9) {
+        if (GetBattleMonSpecies(mon) == SPECIES_CHATOT) {
             volume = BtlServerFlow_GetChatterEffect(flow, monId);
             if (volume != 0) {
                 status = CONDITION_CONFUSION;
@@ -1907,29 +1914,29 @@ static void HandlerBindTextSet(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     u8 targetId;
     u16 message;
 
-    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x1d) == 8) {
+    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x1d) == CONDITION_BIND) {
         string = (BattleHandlerString *)BattleEventVar_GetValue(0x3f);
         targetId = BattleEventVar_GetValue(4);
         switch (BattleEventItem_GetSubID(item)) {
-        case 0x23:
+        case MOVE_WRAP:
             message = 0x32a;
             break;
-        case 0x14:
+        case MOVE_BIND:
             message = 0x323;
             break;
-        case 0x53:
+        case MOVE_FIRE_SPIN:
             message = 0x33b;
             break;
-        case 0x80:
+        case MOVE_CLAMP:
             message = 0x331;
             break;
-        case 0x148:
+        case MOVE_SAND_TOMB:
             message = 0x341;
             break;
-        case 0x1cf:
+        case MOVE_MAGMA_STORM:
             message = 0x33e;
             break;
-        case 0xfa:
+        case MOVE_WHIRLPOOL:
             message = 0x338;
             break;
         default:
@@ -2373,17 +2380,17 @@ static void CommonCounterSetTarget(BtlServerFlow *flow, u8 monId, s32 *work, u32
     if (BattleEventVar_GetValue(3) == monId &&
         CommonCounterCheckDamageRecieved(GetBattleMon(flow, monId), category, &record)) {
         targetId = record.attackerId;
-        if (BtlServerFlow_GetMonBattlePos(flow, targetId) == 6) {
+        if (BtlServerFlow_GetMonBattlePos(flow, targetId) == BTL_POS_NONE) {
             targetId = 0x1f;
-            if (record.attackerPos != 6) {
+            if (record.attackerPos != BTL_POS_NONE) {
                 targetId = BtlServerFlow_GetMonIDAtPos(flow, record.attackerPos);
             }
-            if (targetId == 0x1f) {
+            if (targetId == BTL_POSPOKE_NO_MON) {
                 pos = BtlServerFlow_GetMoveTargetPos(flow, monId, 1);
-                if (pos != 6) {
+                if (pos != BTL_POS_NONE) {
                     targetId = BtlServerFlow_GetMonIDAtPos(flow, pos);
                 }
-                if (targetId == 0x1f) {
+                if (targetId == BTL_POSPOKE_NO_MON) {
                     targetId = record.attackerId;
                 }
             }
@@ -2439,7 +2446,7 @@ static void HandlerLastResort(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         used = 0;
         hasLastResort = FALSE;
         for (i = 0; i < moveCount; i++) {
-            if (MoveGetID(mon, i) == 0x183) {
+            if (MoveGetID(mon, i) == MOVE_LAST_RESORT) {
                 hasLastResort = TRUE;
             } else if (CheckIfMoveWasUsed(mon, i)) {
                 used++;
@@ -2665,7 +2672,7 @@ static void HandlerCharge(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 }
 
 static void HandlerChargePower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (work[0] == 2 && BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x16) == 0xc) {
+    if (work[0] == 2 && BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x16) == TYPE_ELECTRIC) {
         BattleEventVar_MulValue(0x31, 0x2000);
     }
 }
@@ -2990,7 +2997,7 @@ static void HandlerUproarPreventSleep(BattleEventItem *item, BtlServerFlow *flow
     BattleHandlerMessageParam *param;
     u8 targetId;
 
-    if (work[6] != 0 && BattleEventVar_GetValue(0x1d) == 2 && BattleEventVar_RewriteValue(0x41, 1)) {
+    if (work[6] != 0 && BattleEventVar_GetValue(0x1d) == CONDITION_SLEEP && BattleEventVar_RewriteValue(0x41, 1)) {
         param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         targetId = BattleEventVar_GetValue(4);
         BattleHandler_StrSetup(&param->string, 2, targetId == monId ? 0x2c8 : 0x2c5);
@@ -3216,7 +3223,7 @@ static void HandlerFacade(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
 
     if (BattleEventVar_GetValue(3) == monId) {
         status = GetBattleMonStatus(GetBattleMon(flow, monId));
-        if (status == 5 || status == 1 || status == 4) {
+        if (status == CONDITION_POISON || status == CONDITION_PARALYSIS || status == CONDITION_BURN) {
             BattleEventVar_MulValue(0x31, FX32_CONST(2));
         }
     }
@@ -3411,7 +3418,7 @@ static void HandlerSmellingSaltsParaCure(BattleEventItem *item, BtlServerFlow *f
 
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(6);
-        if (targetId != 0x1f && CheckCondition(GetBattleMon(flow, targetId), 1)) {
+        if (targetId != BTL_POSPOKE_NO_MON && CheckCondition(GetBattleMon(flow, targetId), 1)) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
             param->monIds[0] = targetId;
             param->count = 1;
@@ -3738,7 +3745,7 @@ static void HandlerThunderFlyCheck(BattleEventItem *item, BtlServerFlow *flow, u
 }
 
 static void HandlerThunderRainCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == 2) {
+    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == BTL_WEATHER_RAIN) {
         BattleEventVar_RewriteValue(0x51, 1);
     }
 }
@@ -3759,7 +3766,7 @@ static const BattleEventHandlerEntry *EventAddBlizzard(u32 *priority) {
 }
 
 static void HandlerBlizzard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == 3) {
+    if (BattleEventVar_GetValue(3) == monId && GetWeather(flow) == BTL_WEATHER_HAIL) {
         BattleEventVar_RewriteValue(0x51, 1);
     }
 }
@@ -3803,55 +3810,55 @@ static void HandlerJudgement(BattleEventItem *item, BtlServerFlow *flow, u8 monI
 
     if (BattleEventVar_GetValue(2) == monId && BtlServerFlow_CanUseHeldItem(flow, monId)) {
         heldItem = GetBattleMonHeldItem(GetBattleMon(flow, monId));
-        type = 0;
+        type = TYPE_NORMAL;
         switch (heldItem) {
-        case 298:
-            type = 9;
+        case ITEM_FLAME_PLATE:
+            type = TYPE_FIRE;
             break;
-        case 299:
-            type = 10;
+        case ITEM_SPLASH_PLATE:
+            type = TYPE_WATER;
             break;
-        case 300:
-            type = 12;
+        case ITEM_ZAP_PLATE:
+            type = TYPE_ELECTRIC;
             break;
-        case 301:
-            type = 11;
+        case ITEM_MEADOW_PLATE:
+            type = TYPE_GRASS;
             break;
-        case 302:
-            type = 14;
+        case ITEM_ICICLE_PLATE:
+            type = TYPE_ICE;
             break;
-        case 303:
-            type = 1;
+        case ITEM_FIST_PLATE:
+            type = TYPE_FIGHTING;
             break;
-        case 304:
-            type = 3;
+        case ITEM_TOXIC_PLATE:
+            type = TYPE_POISON;
             break;
-        case 305:
-            type = 4;
+        case ITEM_EARTH_PLATE:
+            type = TYPE_GROUND;
             break;
-        case 306:
-            type = 2;
+        case ITEM_SKY_PLATE:
+            type = TYPE_FLYING;
             break;
-        case 307:
-            type = 13;
+        case ITEM_MIND_PLATE:
+            type = TYPE_PSYCHIC;
             break;
-        case 308:
-            type = 6;
+        case ITEM_INSECT_PLATE:
+            type = TYPE_BUG;
             break;
-        case 309:
-            type = 5;
+        case ITEM_STONE_PLATE:
+            type = TYPE_ROCK;
             break;
-        case 310:
-            type = 7;
+        case ITEM_SPOOKY_PLATE:
+            type = TYPE_GHOST;
             break;
-        case 311:
-            type = 15;
+        case ITEM_DRACO_PLATE:
+            type = TYPE_DRAGON;
             break;
-        case 312:
-            type = 16;
+        case ITEM_DREAD_PLATE:
+            type = TYPE_DARK;
             break;
-        case 313:
-            type = 8;
+        case ITEM_IRON_PLATE:
+            type = TYPE_STEEL;
             break;
         }
         BattleEventVar_RewriteValue(0x16, type);
@@ -3874,23 +3881,23 @@ static void HandlerTechnoBlast(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 
     if (BattleEventVar_GetValue(2) == monId && BtlServerFlow_CanUseHeldItem(flow, monId)) {
         heldItem = GetBattleMonHeldItem(GetBattleMon(flow, monId));
-        type = 0;
+        type = TYPE_NORMAL;
         effect = 0;
         switch (heldItem) {
-        case 116:
-            type = 10;
+        case ITEM_DOUSE_DRIVE:
+            type = TYPE_WATER;
             effect = 1;
             break;
-        case 117:
-            type = 12;
+        case ITEM_SHOCK_DRIVE:
+            type = TYPE_ELECTRIC;
             effect = 2;
             break;
-        case 118:
-            type = 9;
+        case ITEM_BURN_DRIVE:
+            type = TYPE_FIRE;
             effect = 3;
             break;
-        case 119:
-            type = 14;
+        case ITEM_CHILL_DRIVE:
+            type = TYPE_ICE;
             effect = 4;
             break;
         }
@@ -4134,7 +4141,7 @@ static void HandlerThief(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
 
     if (BattleEventVar_GetValue(3) == monId && GetBattleMonHeldItem(GetBattleMon(flow, monId)) == 0 && work[0] == 0) {
         targetId = BattleEventVar_GetValue(6);
-        if (targetId != 0x1f) {
+        if (targetId != BTL_POSPOKE_NO_MON) {
             target = GetBattleMon(flow, targetId);
             if (GetBattleMonHeldItem(target) != 0 && !IsItemSwapBlocked(flow, monId, targetId)) {
                 swapParam = BattleHandler_PushWork(flow, BTL_HANDLER_SWAP_ITEM, monId);
@@ -4574,7 +4581,7 @@ static u8 GetBideTargetID(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
         if (BattleMon_GetDamageRecordCount(mon, i) != 0) {
             GetDamageReceived(mon, i, 0, &record);
             targetId = record.attackerId;
-            if (BtlServerFlow_GetMonBattlePos(flow, targetId) == 6) {
+            if (BtlServerFlow_GetMonBattlePos(flow, targetId) == BTL_POS_NONE) {
                 count = HandlerGetAlivePartyCount(flow, BtlServerFlow_MonIDToPos(flow, monId) | 0x100, mons);
                 if (count != 0) {
                     targetId = mons[(u8)BattleRandom(count)];
@@ -4661,7 +4668,7 @@ static void HandlerPsychoShift(BattleEventItem *item, BtlServerFlow *flow, u8 mo
                 cont = GetConditionContinuationParam(mon, status);
                 addParam = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
                 addParam->condition = status;
-                if (status == 5 && Condition_IsBadlyPoisoned(cont)) {
+                if (status == CONDITION_POISON && Condition_IsBadlyPoisoned(cont)) {
                     value = MakeConditionBadlyPoisoned();
                 } else {
                     value = BtlCalc_MakeStatusCondition(status);
@@ -4925,7 +4932,7 @@ static void HandlerRestCheckFail(BattleEventItem *item, BtlServerFlow *flow, u8 
             return;
         }
         ability = GetBattleMonStat(mon, BATTLEMON_EFFECTIVE_ABILITY);
-        if (ability == 0xf || ability == 0x48) {
+        if (ability == ABILITY_INSOMNIA || ability == ABILITY_VITAL_SPIRIT) {
             BattleEventVar_RewriteValue(0x22, 0xf);
         }
     }
@@ -4988,7 +4995,7 @@ static void HandlerAttractCheckFail(BattleEventItem *item, BtlServerFlow *flow, 
         defender = GetBattleMon(flow, BattleEventVar_GetValue(4));
         attackerSex = GetBattleMonStat(attacker, BATTLEMON_GENDER);
         defenderSex = GetBattleMonStat(defender, BATTLEMON_GENDER);
-        if (attackerSex == 2 || defenderSex == 2 || attackerSex == defenderSex) {
+        if (attackerSex == GENDER_UNKNOWN || defenderSex == GENDER_UNKNOWN || attackerSex == defenderSex) {
             BattleEventVar_RewriteValue(0x40, 1);
         }
     }
@@ -5014,7 +5021,7 @@ static void HandlerConversion2(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 
     if (BattleEventVar_GetValue(3) == monId) {
         type = BattleMon_GetPrevMoveType(GetBattleMon(flow, BattleEventVar_GetValue(6)));
-        if (type != 0x11) {
+        if (type != TYPE_NULL) {
             types = BtlServerFlow_GetHandlerWork(flow, 0x11);
             count = GetTypeWeaknesses(type, types);
             if (count != 0) {
@@ -5158,7 +5165,7 @@ static void HandlerDisable(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
         target = GetBattleMon(flow, targetId);
         if (!CheckCondition(target, CONDITION_DISABLE)) {
             move = GetPreviousMoveUsed(target);
-            if (move != 0 && move != 0xa5 && MoveIsUsable(target, move)) {
+            if (move != MOVE_NONE && move != MOVE_STRUGGLE && MoveIsUsable(target, move)) {
                 turns = 4;
                 if (GetTurnFlag(target, 1)) {
                     turns++;
@@ -6016,7 +6023,7 @@ static void CommonDelayAttack(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     BattleHandlerPosEffectParam *param;
 
     if (BattleEventVar_GetValue(3) == monId && BattleEventVar_RewriteValue(0x51, 1)) {
-        if (targetPos == 6) {
+        if (targetPos == BTL_POS_NONE) {
             pos = BtlServerFlow_MonIDToPos(flow, monId);
             targetPos = GetOpposingPosForStyle(BtlServerFlow_GetBattleStyle(flow), pos, 0);
         }
@@ -6140,7 +6147,7 @@ static void HandlerUturn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
         BattleHandler_PopWork(flow, param);
 
         effect = BattleHandler_PushWork(flow, BTL_HANDLER_EFFECT_AT_POS, monId);
-        effect->effect = BattleEventItem_GetSubID(item) == 0x171 ? 0x283 : 0x284;
+        effect->effect = BattleEventItem_GetSubID(item) == MOVE_U_TURN ? 0x283 : 0x284;
         effect->pos1 = BtlServerFlow_MonIDToPos(flow, monId);
         effect->pos2 = 6;
         effect->header.checkPrevResult = 1;
@@ -6784,7 +6791,7 @@ static void HandlerSolarBeamPower(BattleEventItem *item, BtlServerFlow *flow, u8
 
     if (BattleEventVar_GetValue(3) == monId) {
         weather = GetWeather(flow);
-        if (weather == 2 || weather == 3 || weather == 4) {
+        if (weather == BTL_WEATHER_RAIN || weather == BTL_WEATHER_HAIL || weather == BTL_WEATHER_SANDSTORM) {
             BattleEventVar_MulValue(0x31, FX32_CONST(0.5));
         }
     }
@@ -7352,7 +7359,7 @@ static void HandlerMirrorMove(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 
     if (BattleEventVar_GetValue(2) == monId) {
         pos = BattleEventVar_GetValue(0xe);
-        if (pos == 6) {
+        if (pos == BTL_POS_NONE) {
             side = BtlServerFlow_GetMonBattlePos(flow, monId);
             pos = GetOpposingPosForStyle(BtlServerFlow_GetBattleStyle(flow), side, 0);
         }
@@ -7389,7 +7396,7 @@ static void HandlerMeFirst(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 
     if (BattleEventVar_GetValue(2) == monId) {
         pos = BattleEventVar_GetValue(0xe);
-        if (pos == 6) {
+        if (pos == BTL_POS_NONE) {
             side = BtlServerFlow_GetMonBattlePos(flow, monId);
             pos = GetOpposingPosForStyle(BtlServerFlow_GetBattleStyle(flow), side, 0);
         }
@@ -7740,7 +7747,8 @@ static void HandlerSimpleBeam(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     if (BattleEventVar_GetValue(3) == monId) {
         count = BattleEventVar_GetValue(5);
         for (i = 0; i < count; i++) {
-            if (GetBattleMonStat(GetBattleMon(flow, BattleEventVar_GetValue(6 + i)), 0x10) != 0x36) {
+            if (GetBattleMonStat(GetBattleMon(flow, BattleEventVar_GetValue(6 + i)), BATTLEMON_ABILITY) !=
+                ABILITY_TRUANT) {
                 param = BattleHandler_PushWork(flow, BTL_HANDLER_ABILITY_CHANGE, monId);
                 param->targetIndex = BattleEventVar_GetValue(6 + i);
                 param->ability = 0x56;
@@ -7775,7 +7783,7 @@ static void HandlerEntrainment(BattleEventItem *item, BtlServerFlow *flow, u8 mo
             count = BattleEventVar_GetValue(5);
             for (i = 0; i < count; i++) {
                 targetId = BattleEventVar_GetValue(6 + i);
-                if (GetBattleMonStat(GetBattleMon(flow, targetId), BATTLEMON_ABILITY) != 0x36) {
+                if (GetBattleMonStat(GetBattleMon(flow, targetId), BATTLEMON_ABILITY) != ABILITY_TRUANT) {
                     param = BattleHandler_PushWork(flow, BTL_HANDLER_ABILITY_CHANGE, monId);
                     param->targetIndex = BattleEventVar_GetValue(6 + i);
                     param->ability = ability;
@@ -8061,7 +8069,7 @@ static const BattleEventHandlerEntry *EventAddPsyshock(u32 *priority) {
 }
 
 static void HandlerPsyshock(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x3c) == 0xb) {
+    if (BattleEventVar_GetValue(3) == monId && BattleEventVar_GetValue(0x3c) == BATTLEMON_SP_DEFENSE) {
         BattleEventVar_RewriteValue(0x3d, BattleEventVar_GetValue(0x3d) + 1);
     }
 }
@@ -8165,7 +8173,7 @@ static void HandlerFlameBurst(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(4);
         pos = BtlServerFlow_GetPosOfMon(flow, targetId);
-        if (pos != 6) {
+        if (pos != BTL_POS_NONE) {
             count = HandlerGetAlivePartyCount(flow, 0x900 | pos, targets);
             for (i = 0; i < count; i++) {
                 if (targets[i] != targetId) {
@@ -8465,7 +8473,7 @@ static void HandlerSkyDropGrabFail(BattleEventItem *item, BtlServerFlow *flow, u
 
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(4);
-        if (targetId != 0x1f && IsAllyMonID(monId, targetId)) {
+        if (targetId != BTL_POSPOKE_NO_MON && IsAllyMonID(monId, targetId)) {
             BattleEventVar_RewriteValue(0x41, 1);
         }
     }
@@ -8479,7 +8487,7 @@ static void HandlerSkyDropGrab(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BattleEventVar_GetValue(6);
         failed = FALSE;
-        if (targetId == 0x1f || !BtlServerFlow_StartSkyDrop(flow, monId, targetId, &failed)) {
+        if (targetId == BTL_POSPOKE_NO_MON || !BtlServerFlow_StartSkyDrop(flow, monId, targetId, &failed)) {
             BattleEventVar_RewriteValue(0x41, 1);
             if (failed) {
                 BattleEventVar_RewriteValue(0x4f, 1);
@@ -8499,7 +8507,7 @@ static void HandlerSkyDropRelease(BattleEventItem *item, BtlServerFlow *flow, u8
 
     if (BattleEventVar_GetValue(3) == monId) {
         targetId = BtlFlow_GetSkyDropTarget(GetBattleMon(flow, monId));
-        if (targetId == 0x1f || BtlServerFlow_GetMonBattlePos(flow, targetId) == 6) {
+        if (targetId == BTL_POSPOKE_NO_MON || BtlServerFlow_GetMonBattlePos(flow, targetId) == BTL_POS_NONE) {
             BattleEventVar_RewriteValue(0x41, 1);
         }
         BtlServerFlow_SkyDropRelease(flow, monId);
@@ -8509,9 +8517,10 @@ static void HandlerSkyDropRelease(BattleEventItem *item, BtlServerFlow *flow, u8
 static void HandlerSkyDropTarget(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     u8 targetId;
 
-    if (BtlServerFlow_GetBattleStyle(flow) != 0 && BtlServerFlow_GetBattleStyle(flow) != 3) {
+    if (BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_SINGLE &&
+        BtlServerFlow_GetBattleStyle(flow) != BTL_STYLE_ROTATION) {
         targetId = BtlFlow_GetSkyDropTarget(GetBattleMon(flow, monId));
-        if (targetId != 0x1f) {
+        if (targetId != BTL_POSPOKE_NO_MON) {
             BattleEventVar_RewriteValue(4, targetId);
         }
     }
@@ -8522,7 +8531,7 @@ static void HandlerSkyDropCheckFail(BattleEventItem *item, BtlServerFlow *flow, 
 
     if (BattleEventVar_GetValue(2) == monId) {
         targetId = BtlFlow_GetSkyDropTarget(GetBattleMon(flow, monId));
-        if (targetId != 0x1f && !BtlServerFlow_IsMonInBattle(flow, targetId)) {
+        if (targetId != BTL_POSPOKE_NO_MON && !BtlServerFlow_IsMonInBattle(flow, targetId)) {
             BattleEventVar_RewriteValue(0x22, 0x1a);
         }
     }
@@ -8837,9 +8846,9 @@ static void HandlerWaterPledgeFieldEffect(BattleEventItem *item, BtlServerFlow *
             BattleHandler_AddArg(&param->string, effectSide);
             BattleHandler_PopWork(flow, param);
 
-            if (posMonId != 0x1f) {
+            if (posMonId != BTL_POSPOKE_NO_MON) {
                 pos = BtlServerFlow_GetPosOfMon(flow, posMonId);
-                if (pos != 6) {
+                if (pos != BTL_POS_NONE) {
                     posParam = BattleHandler_PushWork(flow, BTL_HANDLER_EFFECT_AT_POS, monId);
                     posParam->pos1 = pos;
                     posParam->pos2 = 6;
