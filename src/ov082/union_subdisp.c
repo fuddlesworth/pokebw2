@@ -325,7 +325,6 @@ static void UnionSubdisp_InitBG(UnionSubdisp *work, ArcTool *arc) {
     NNSG2dScreenData *screen;
     void *screenBuffer;
     void *lines;
-    int i = 0;
 
     GFL_BGSysCreateBG(BG_FRAME, &sBGSetups[0], BGMODE_TEXT);
     GFL_BGSysCreateBG(BG_LINES, &sBGSetups[1], BGMODE_TEXT);
@@ -828,6 +827,11 @@ static BOOL UnionSubdisp_UpdateLineTouch(UnionSystem *sys, UnionSubdisp *work, U
                 break;
             }
         }
+#ifdef BUGFIX
+    } else {
+        // BUG: a touch outside the list leaves the selected line uninitialized.
+        return FALSE;
+#endif
     }
     if (line >= LINE_COUNT || line > list->count) {
         return FALSE;

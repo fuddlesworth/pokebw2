@@ -141,7 +141,12 @@ struct FieldEffectTask {
     u32 mode;
     void *params;
     VecFx32 pos;
+#ifdef POKEBW2_PC
+    // Native task payloads contain pointers, so their storage needs pointer alignment.
+    u64 work[0xa0 / sizeof(u64)];
+#else
     u8 work[0xa0];
+#endif
     FieldEffectTaskVTable vtable;
     FieldEffectTaskStore *store;
     TCB *tcb;

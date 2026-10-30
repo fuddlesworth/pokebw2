@@ -233,7 +233,7 @@ static u32 DWCRap_UpdateLogin(void) {
     int friendListLen;
     u32 result;
 
-    switch (_dWork->state) {
+    switch ((int)_dWork->state) {
     case DWCRAP_STATE_INIT:
         GFL_NetGetInitData();
         DWC_InitInetEx(&_dWork->inetControl, 2, 1, 20);
@@ -397,7 +397,7 @@ int DWCRap_Process(int cancelMatch) {
     u32 result;
 
     DWCRap_FlushAck();
-    switch (_dWork->state) {
+    switch ((int)_dWork->state) {
     case DWCRAP_STATE_INIT:
     case DWCRAP_STATE_INET:
     case DWCRAP_STATE_LOGIN_WAIT:
@@ -717,7 +717,7 @@ static u32 DWCRap_HandleError(void) {
         errorResult = error;
     }
     result = errorResult;
-    switch (type) {
+    switch ((int)type) {
     case DWC_ETYPE_LIGHT:
         DWC_ClearError();
         if (_dWork != NULL && _dWork->state == DWCRAP_STATE_ERROR) {
@@ -745,7 +745,7 @@ static u32 DWCRap_HandleError(void) {
     case DWC_ETYPE_SHUTDOWN_FM:
     case DWC_ETYPE_DISCONNECT:
         if (_dWork != NULL) {
-            switch (_dWork->state) {
+            switch ((int)_dWork->state) {
             case DWCRAP_STATE_LOGIN:
             case DWCRAP_STATE_READY:
             case DWCRAP_STATE_MATCHING:
@@ -1045,7 +1045,7 @@ int DWCRap_GetErrorKind(int code, int type) {
     if (thousands == 31) {
         return WifiError_Text_DownloadFailedHelpVisit;
     }
-    switch (type) {
+    switch ((int)type) {
     case DWC_ETYPE_NO_ERROR:
     case DWC_ETYPE_LIGHT:
         return WifiError_Text_CommunicationError;
@@ -1073,7 +1073,7 @@ BOOL DWCRap_RequestClose(BOOL checkOnly) {
         DWC_ClearError();
     }
     if (checkOnly == 0) {
-        switch (_dWork->state) {
+        switch ((int)_dWork->state) {
         case DWCRAP_STATE_MATCHING:
         case DWCRAP_STATE_CONNECTED:
         case DWCRAP_STATE_CONNECTED_IDLE:
@@ -1089,7 +1089,7 @@ BOOL DWCRap_RequestClose(BOOL checkOnly) {
             return TRUE;
         }
     } else {
-        switch (_dWork->state) {
+        switch ((int)_dWork->state) {
         case DWCRAP_STATE_READY:
         case DWCRAP_STATE_ENDING:
         case DWCRAP_STATE_ENDED:

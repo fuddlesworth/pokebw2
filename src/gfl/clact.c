@@ -314,8 +314,8 @@ static ClActSurfaceSetup sSurfaceSetups[2] = {
 };
 
 static inline void ClAct_SetVec(NNSG2dFVec2 *vec, s16 x, s16 y) {
-    vec->x = x << FX32_SHIFT;
-    vec->y = y << FX32_SHIFT;
+    vec->x = x * FX32_ONE;
+    vec->y = y * FX32_ONE;
 }
 
 static inline void ClAct_RunTransfers(ClActTransfer *transfer) {
@@ -1062,6 +1062,7 @@ void ClActor_SetDrawAnim(ClActor *actor, BOOL a1) {
 }
 
 // The user extended attributes of the actor's animations and cells, which nothing calls
+#ifndef POKEBW2_PC
 static const NNSG2dUserExAnimSequenceAttr *ClActor_GetUserExAnimSequenceAttr(ClActor *actor, u32 sequence) {
     return gClActAnimGetSeqAttrFuncs[actor->anim.type](&actor->anim, sequence);
 }
@@ -1069,6 +1070,7 @@ static const NNSG2dUserExAnimSequenceAttr *ClActor_GetUserExAnimSequenceAttr(ClA
 static const NNSG2dUserExCellAttrBank *ClActor_GetUserExCellAttrBank(ClActor *actor) {
     return gClActAnimGetCellAttrFuncs[actor->anim.type](&actor->anim);
 }
+#endif
 
 void ClActRenderer_InitForSystem(ClActRenderer *renderer, const ClActSysSetup *setup, HeapID heapId) {
     sSurfaceSetups[0].x = setup->mainX;
@@ -1310,13 +1312,13 @@ static BOOL ClAct_IsCellInViewTransformed(const NNSG2dCellData *cell, const MtxF
     fx32 right;
 
     if (((cell->cellAttr >> NNS_G2D_CELL_HAS_BR_SHIFT) & 1) == 1) {
-        minY = rect->minY << FX32_SHIFT;
-        maxY = rect->maxY << FX32_SHIFT;
-        minX = rect->minX << FX32_SHIFT;
-        maxX = rect->maxX << FX32_SHIFT;
+        minY = rect->minY * FX32_ONE;
+        maxY = rect->maxY * FX32_ONE;
+        minX = rect->minX * FX32_ONE;
+        maxX = rect->maxX * FX32_ONE;
     } else {
-        minY = -r << FX32_SHIFT;
-        maxY = r << FX32_SHIFT;
+        minY = -r * FX32_ONE;
+        maxY = r * FX32_ONE;
         minX = minY;
         maxX = maxY;
     }
@@ -1352,13 +1354,13 @@ static BOOL ClAct_IsCellInView(const NNSG2dCellData *cell, const MtxFx32 *mtx, c
     fx32 maxX;
 
     if (((cell->cellAttr >> NNS_G2D_CELL_HAS_BR_SHIFT) & 1) == 1) {
-        minY = rect->minY << FX32_SHIFT;
-        maxY = rect->maxY << FX32_SHIFT;
-        minX = rect->minX << FX32_SHIFT;
-        maxX = rect->maxX << FX32_SHIFT;
+        minY = rect->minY * FX32_ONE;
+        maxY = rect->maxY * FX32_ONE;
+        minX = rect->minX * FX32_ONE;
+        maxX = rect->maxX * FX32_ONE;
     } else {
-        minY = -r << FX32_SHIFT;
-        maxY = r << FX32_SHIFT;
+        minY = -r * FX32_ONE;
+        maxY = r * FX32_ONE;
         minX = minY;
         maxX = maxY;
     }
@@ -1392,10 +1394,10 @@ static inline s16 ClAct_WrapOamY(s16 y) {
 static void ClAct_CullOam(ClActDrawState *state, const NNSG2dViewRect *view, u32 a2, u32 a3, const MtxFx32 *mtx) {
     GXOamAttr *oam = &state->oam;
     GXOamShape shape = oam->attr01 & GX_OAM_ATTR01_SHAPE_MASK;
-    fx32 left = ClAct_WrapOamX(oam->x) << FX32_SHIFT;
-    fx32 right = (ClAct_WrapOamX(oam->x) + NNS_G2dGetOamSizeX(&shape)) << FX32_SHIFT;
-    fx32 top = ClAct_WrapOamY(oam->y) << FX32_SHIFT;
-    fx32 bottom = (ClAct_WrapOamY(oam->y) + NNS_G2dGetOamSizeY(&shape)) << FX32_SHIFT;
+    fx32 left = ClAct_WrapOamX(oam->x) * FX32_ONE;
+    fx32 right = (ClAct_WrapOamX(oam->x) + NNS_G2dGetOamSizeX(&shape)) * FX32_ONE;
+    fx32 top = ClAct_WrapOamY(oam->y) * FX32_ONE;
+    fx32 bottom = (ClAct_WrapOamY(oam->y) + NNS_G2dGetOamSizeY(&shape)) * FX32_ONE;
 
     if (ClAct_IsRectInView(mtx->_20 - view->posTopLeft.x, mtx->_21 - view->posTopLeft.y, left, right, top, bottom, mtx,
                            view)) {

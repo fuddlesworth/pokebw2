@@ -22,6 +22,7 @@ typedef double f64;
 
 // An address held as an integer, which a native port widens to the size of a pointer
 typedef u32 uptr;
+typedef int sptr;
 
 typedef int BOOL;
 #define TRUE 1

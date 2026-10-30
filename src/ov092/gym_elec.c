@@ -400,7 +400,7 @@ void GymElec_Update(Field *field) {
 GameEvent *GymElec_SetProgress(GameSystem *gsys, u8 progress) {
     Field *field = GSYS_GetField(gsys);
     GymElecWork *wk = Field_GetGimmickWorkBlock(field, GIMMICK_ID);
-    FieldPlayer *player = Field_GetPlayer(field);
+    Field_GetPlayer(field);
 
     GymElecSave_SetProgress(wk->save, progress);
     switch (progress) {

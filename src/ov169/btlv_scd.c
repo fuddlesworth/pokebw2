@@ -122,6 +122,12 @@ struct BtlvScd {
     BtlvInput *input;                   // 0xBC
 }; // size 0xC0
 
+#ifdef POKEBW2_PC
+BtlvInput *BtlvScd_GetNativeInput(BtlvScd *scd) {
+    return scd->input;
+}
+#endif
+
 // The screens' buttons (the command screen's, the move screen's, its Shift variant for the side mons of a triple
 // battle, yes or no, the recorder's, and the target screen's, by the user's position and the move's range), the
 // cursor stops that go with them, and the tables of both by position and range. The target screen's are named after

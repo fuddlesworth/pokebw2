@@ -201,7 +201,7 @@ static GustParticleFunc sGustParticleInit[3] = { GustSlant_Init, GustStreak_Init
 static GustParticleFunc sGustParticleMove[3] = { GustSlant_Move, GustStreak_Move, GustDriven_Move };
 
 WeatherData THUNDERSTORM_WEATHER = {
-    { ARCID_WEATHER, 1, 1, 0x11, 0xe, 0x10, 0xf, 0x29, 0x202, 3, 0x102 },
+    { ARCID_WEATHER, 1, 1, 0x11, 0xe, 0x10, 0xf, { { 0x29, 0x202, 3, 0x102 } } },
     sizeof(ThunderWork),
     {
         Thunder_Init,
@@ -216,7 +216,7 @@ WeatherData THUNDERSTORM_WEATHER = {
 };
 
 WeatherData GUSTY_RAIN_WEATHER = {
-    { ARCID_WEATHER, 1, 2, 6, 7, 5, 4, 0x28, 0x202, 3, 0x102, 0, 0, 0x27, 0x202, 3, 0x102 },
+    { ARCID_WEATHER, 1, 2, 6, 7, 5, 4, { { 0x28, 0x202, 3, 0x102, 0, 0 }, { 0x27, 0x202, 3, 0x102 } } },
     sizeof(GustWork),
     {
         GustyRain_Init,
@@ -1021,12 +1021,16 @@ static void Lightning_Exit(Lightning *lightning) {
 static void Lightning_Update(Lightning *lightning, WeatherTask *task) {
     // The three setups below read a column of each of these tables as constants, one entry per kind of strike (the
     // sound's delay, the shade's base and range, the delay's base and range), which leaves the tables in the ROM
+#ifndef POKEBW2_PC
     static const s16 sDelayBase[3] = { 0x78, 0xf0, 0xf0 };
     static const s16 sDelayRange[3] = { 0xf0, 300, 300 };
     static const u8 sShadeBase[3] = { 0x12, 0x18, 0x1e };
     static const u8 sSoundDelay[3] = { 0x1c, 0xd, 0xa };
+#endif
     static const u8 sOdds[3] = { 30, 75, 100 };
+#ifndef POKEBW2_PC
     static const u8 sShadeRange[3] = { 3, 3, 1 };
+#endif
 
     switch (lightning->state) {
     case 0:

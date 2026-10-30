@@ -30,7 +30,7 @@ void ListMenuCore_FreeOptionList(ListMenuOption *options) {
     GFL_HeapFree(options);
 }
 
-void ListMenuCore_AppendMsgOption(ListMenuOption *options, MsgData *msgData, u32 messageId, s32 value, HeapID heapId) {
+void ListMenuCore_AppendMsgOption(ListMenuOption *options, MsgData *msgData, u32 messageId, sptr value, HeapID heapId) {
     u32 listHeapId;
     ListMenuOption *option = ListMenuCore_GetNextOptionPtr(options, &listHeapId);
 
@@ -40,7 +40,7 @@ void ListMenuCore_AppendMsgOption(ListMenuOption *options, MsgData *msgData, u32
     }
 }
 
-void ListMenuCore_AppendStrBufOption(ListMenuOption *options, const StrBuf *text, s32 value, HeapID heapId) {
+void ListMenuCore_AppendStrBufOption(ListMenuOption *options, const StrBuf *text, sptr value, HeapID heapId) {
     u32 listHeapId;
     ListMenuOption *option = ListMenuCore_GetNextOptionPtr(options, &listHeapId);
 

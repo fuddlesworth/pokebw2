@@ -110,8 +110,8 @@ static void PokewoodPoster_WriteImage(G3DResource *texResource, const char *texN
     static const u8 sTileWidth = 8;
     static const u8 sTileHeight = 8;
     static const u8 sTilePixels = 8;
-    NNSGfdTexKey texKey = GFL_G3DResGetTexVRAMHandle(texResource);
-    NNSGfdPlttKey plttKey = GFL_G3DResGetPltVRAMHandle(texResource);
+    GFL_G3DResGetTexVRAMHandle(texResource);
+    GFL_G3DResGetPltVRAMHandle(texResource);
     NNSG3dResTex *tex = NNS_G3dGetTex(GFL_G3DResGetResData(texResource));
     u32 texAddr = PokewoodPoster_FindTexAddr(tex, texName);
     u32 plttAddr = PokewoodPoster_FindPlttAddr(tex, plttName);

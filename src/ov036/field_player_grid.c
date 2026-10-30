@@ -244,9 +244,18 @@ static const TileClassSFX TILE_CLASS_SFX_LAY0[] = {
     { NULL, 0, 0, 0, SEASON_ANY },
 };
 
+#ifdef POKEBW2_PC
+static BOOL MapTile_IsReallyTallGrassNative(u32 tileClass) {
+    return MapTile_IsReallyTallGrass((u16)tileClass);
+}
+#define REALLY_TALL_GRASS_CHECK MapTile_IsReallyTallGrassNative
+#else
+#define REALLY_TALL_GRASS_CHECK (BOOL (*)(u32)) MapTile_IsReallyTallGrass
+#endif
+
 // clang-format off
 static const TileClassSFX TILE_CLASS_SFX_LAY1[] = {
-    {(BOOL (*)(u32))MapTile_IsReallyTallGrass, SEQ_SE_FLD_08, 2, 4, SEASON_ANY},
+    {REALLY_TALL_GRASS_CHECK, SEQ_SE_FLD_08, 2, 4, SEASON_ANY},
     {MapTile_IsSnow_, SEQ_SE_FLD_11, 2, 4, SEASON_ANY},
     {MapTile_IsSnowNoCycling, SEQ_SE_FLD_11, 2, 4, SEASON_ANY},
     {MapTile_IsSplashWater, SEQ_SE_FLD_13, 2, 4, SEASON_ANY},
@@ -262,6 +271,7 @@ static const TileClassSFX TILE_CLASS_SFX_LAY1[] = {
 };
 
 // clang-format on
+#undef REALLY_TALL_GRASS_CHECK
 
 FieldPlayerGrid *FieldPlayerGrid_Create(FieldPlayerCore *core, HeapID heapId) {
     FieldPlayerGrid *grid = GFL_HeapAllocate(heapId, sizeof(FieldPlayerGrid), TRUE, "field_player_grid.c", 384);

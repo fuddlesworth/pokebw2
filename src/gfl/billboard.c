@@ -48,7 +48,6 @@ const BillboardActorQuad BILLBOARD_ACTOR_GEOM_QUADS[9] = {
 BillboardActorScene *BillboardActorScene_Create(const BillboardActorSceneSetup *setup, HeapID heapId) {
     BillboardActorScene *scene = GFL_HeapAllocate(heapId, sizeof(BillboardActorScene), TRUE, "billboard.c", 153);
     int i;
-    int light;
 
     scene->heapId = heapId;
     scene->setup = *setup;
@@ -129,7 +128,6 @@ void BillboardActor_GetTexDimensions(int size, u16 *width, u16 *height) {
 
 static BOOL BillboardActorScene_GetAvailMatSlotIdx(BillboardActorScene *scene, u32 *idx) {
     int i;
-    int light;
 
     for (i = 0; i < scene->setup.materialCount; i++) {
         if (scene->materials[i].texResource == NULL && scene->materials[i].texFormat == BILLBOARD_ACTOR_TEXFMT_FREE) {
@@ -243,7 +241,6 @@ void BillboardActorScene_FreeMaterialVram(BillboardActorScene *scene, u32 materi
 
 void BillboardActorScene_FreeAllMaterials(BillboardActorScene *scene) {
     int i;
-    int light;
 
     for (i = 0; i < scene->setup.materialCount; i++) {
         BillboardActorScene_FreeMaterial(scene, i);
@@ -300,7 +297,6 @@ void BillboardActorScene_GetMaterialFaceLocation(BillboardActorScene *scene, u32
 u32 BillboardActorScene_AddNewActor(BillboardActorScene *scene, u32 material, s16 scaleX, s16 scaleY,
                                     const VecFx32 *pos, u8 alpha, u32 lights, u32 type) {
     int i;
-    int light;
 
     for (i = 0; i < scene->setup.actorCount; i++) {
         if (scene->actors[i].material == BILLBOARD_ACTOR_MATERIAL_NONE) {
@@ -411,6 +407,7 @@ void BillboardActorScene_Draw(BillboardActorScene *scene, G3DCamera *camera, G3D
     MtxFx33 rots[4];
     VecFx16 lightDir;
     GXRgb lightColor;
+    int light;
     fx32 scale;
     fx32 s0;
     fx32 t0;
@@ -421,7 +418,6 @@ void BillboardActorScene_Draw(BillboardActorScene *scene, G3DCamera *camera, G3D
     s16 left;
     s16 right;
     int i;
-    int light;
     fx16 normalX;
     fx16 normalY;
     fx16 normalZ;

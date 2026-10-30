@@ -548,11 +548,11 @@ typedef enum {
 } NNSG3dJntAnmRIdx;
 
 // The second category of an animation resource's header, which tells the kind of animation within what it animates
-#define NNS_G3D_ANM_CATEGORY1_MA 'MA'
-#define NNS_G3D_ANM_CATEGORY1_TP 'TP'
-#define NNS_G3D_ANM_CATEGORY1_TA 'TA'
-#define NNS_G3D_ANM_CATEGORY1_VA 'VA'
-#define NNS_G3D_ANM_CATEGORY1_CA 'CA'
+#define NNS_G3D_ANM_CATEGORY1_MA (('M' << 8) | 'A')
+#define NNS_G3D_ANM_CATEGORY1_TP (('T' << 8) | 'P')
+#define NNS_G3D_ANM_CATEGORY1_TA (('T' << 8) | 'A')
+#define NNS_G3D_ANM_CATEGORY1_VA (('V' << 8) | 'A')
+#define NNS_G3D_ANM_CATEGORY1_CA (('C' << 8) | 'A')
 
 // What an animation computes for one material, joint or node. The function in an animation object's funcAnm fills one
 // in from the data at the index of the animation's own data that mapData gives, and a blend combines the results of all

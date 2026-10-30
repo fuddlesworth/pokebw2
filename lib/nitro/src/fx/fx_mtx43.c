@@ -6,8 +6,19 @@
 #include "nitro/fx.h"
 #include "nitro/mi.h"
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Identity43_(MtxFx43 *mtx) {
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 3; col++) {
+            mtx->m[row][col] = row == col ? FX32_ONE : 0;
+        }
+    }
+}
+#else
 asm void MTX_Identity43_(MtxFx43 *mtx) {
     mov r2, #0x1000
     mov r3, #0
@@ -20,10 +31,20 @@ asm void MTX_Identity43_(MtxFx43 *mtx) {
     stmia r0!, {r1, r3}
     bx lr
 }
+#endif
 
 // clang-format on
 
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Copy43To44_(const MtxFx43 *src, MtxFx44 *dst) {
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            dst->m[row][col] = row < 4 && col < 3 ? src->m[row][col] : (row == col ? FX32_ONE : 0);
+        }
+    }
+}
+#else
 asm void MTX_Copy43To44_(const MtxFx43 *src, MtxFx44 *dst) {
     stmdb sp!, {r4}
     mov ip, #0
@@ -39,11 +60,22 @@ asm void MTX_Copy43To44_(const MtxFx43 *src, MtxFx44 *dst) {
     ldmia sp!, {r4}
     bx lr
 }
+#endif
 
 // clang-format on
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Scale43_(MtxFx43 *mtx, fx32 x, fx32 y, fx32 z) {
+    *mtx = (MtxFx43){ 0 };
+    mtx->m[0][0] = x;
+    mtx->m[1][1] = y;
+    mtx->m[2][2] = z;
+}
+#else
 asm void MTX_Scale43_(MtxFx43 *mtx, fx32 x, fx32 y, fx32 z) {
     stmia r0!, {r1}
     mov r1, #0
@@ -57,19 +89,34 @@ asm void MTX_Scale43_(MtxFx43 *mtx, fx32 x, fx32 y, fx32 z) {
     stmia r0!, {r1, r2, r3}
     bx lr
 }
+#endif
 
 // clang-format on
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 void MTX_ScaleApply43(const MtxFx43 *src, MtxFx43 *dest, fx32 x, fx32 y, fx32 z) {
     MTX_ScaleApply33(&src->rt.rot, &dest->rt.rot, x, y, z);
     dest->m[3][0] = src->m[3][0];
     dest->m[3][1] = src->m[3][1];
     dest->m[3][2] = src->m[3][2];
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_RotY43_(MtxFx43 *mtx, fx32 sin, fx32 cos) {
+    *mtx = (MtxFx43){ 0 };
+    mtx->m[1][1] = FX32_ONE;
+    mtx->m[2][2] = cos;
+    mtx->m[0][0] = cos;
+    mtx->m[2][0] = sin;
+    mtx->m[0][2] = -sin;
+}
+#else
 asm void MTX_RotY43_(MtxFx43 *mtx, fx32 sin, fx32 cos) {
     str r1, [r0, #0x18]
     mov r3, #0
@@ -85,10 +132,13 @@ asm void MTX_RotY43_(MtxFx43 *mtx, fx32 sin, fx32 cos) {
     stmia r0!, {r1, r3}
     bx lr
 }
+#endif
 
 // clang-format on
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 void MTX_RotAxis43(MtxFx43 *mtx, const VecFx32 *axis, fx32 sin, fx32 cos) {
     MTX_RotAxis33(&mtx->rt.rot, axis, sin, cos);
     mtx->rt.trans.x = 0;
@@ -237,4 +287,6 @@ void MTX_LookAt(const VecFx32 *camPos, const VecFx32 *camUp, const VecFx32 *targ
     mtx->m[3][1] = -VEC_DotProduct(camPos, &up);
     mtx->m[3][2] = -VEC_DotProduct(camPos, &forward);
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif

@@ -214,7 +214,11 @@ void BtlServerFlow_PrepareFaintSwitch(BtlServerFlow *flow) {
 
 u32 BtlServerFlow_RunFaintSwitch(BtlServerFlow *flow, BtlClientActions *clientActions) {
     u32 i;
+#ifdef POKEBW2_PC
+    u32 sideEffects = BtlFaintRec_GetCount(&flow->faintRec, 0);
+#else
     u32 sideEffects;
+#endif
 
     flow->result = BTL_FLOW_RESULT_NONE;
     BtlServerCmdQueue_Init(flow->queue);
@@ -2369,7 +2373,7 @@ BOOL ServerEvent_CheckNoEffect(BtlServerFlow *flow, BtlFlowMoveParam *param, u32
     BattleEventVar_SetConstValue(BTL_EVAR_MOVE, param->move);
     BattleEventVar_SetConstValue(BTL_EVAR_MOVE_TYPE, param->type);
     BattleEventVar_SetConstValue(BTL_EVAR_REFLECTED_FLAG, param->flags.reflected);
-    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (s32)string);
+    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (sptr)string);
     BattleEventVar_SetConstValue(BTL_EVAR_EFFECTIVENESS, value);
     BattleEventVar_SetRewriteOnceValue(BTL_EVAR_NO_EFFECT_FLAG, 0);
     BattleEventVar_SetRewriteOnceValue(BTL_EVAR_FLAG, 0);
@@ -3934,7 +3938,7 @@ u32 ServerEvent_DecideSpecialMoveCondition(BtlServerFlow *flow, BattleMon *attac
     BattleEventVar_Push(0x1e11);
     BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(attacker));
     BattleEventVar_SetConstValue(BTL_EVAR_DEFENDER, GetMonID(target));
-    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (s32)string);
+    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (sptr)string);
     BattleEventVar_SetValue(BTL_EVAR_CONDITION, 0);
     BattleEvent_CallHandlers(flow, BTL_EVENT_DECIDE_SPECIAL_MOVE_CONDITION);
     condition = BattleEventVar_GetValue(BTL_EVAR_CONDITION);
@@ -3947,7 +3951,7 @@ void ServerEvent_AddMoveConditionString(BtlServerFlow *flow, u32 condition, Batt
     BattleEventVar_Push(0x1e28);
     BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(attacker));
     BattleEventVar_SetConstValue(BTL_EVAR_DEFENDER, GetMonID(target));
-    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (s32)string);
+    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (sptr)string);
     BattleEventVar_SetConstValue(BTL_EVAR_CONDITION, condition);
     BattleEvent_CallHandlers(flow, BTL_EVENT_ADD_MOVE_CONDITION_STRING);
     BattleEventVar_Pop(0x1e2e);
@@ -5909,7 +5913,11 @@ void ServerDisplay_SimpleHP(BtlServerFlow *flow, BattleMon *mon, s32 amount, BOO
 }
 
 void ServerDisplay_FaintPokemon(BtlServerFlow *flow, BattleMon *mon, u32 flag) {
+#ifdef POKEBW2_PC
+    GetBattleMonStat(mon, BATTLEMON_HP);
+#else
     u32 hp = GetBattleMonStat(mon, BATTLEMON_HP);
+#endif
     u8 monId = GetMonID(mon);
 
     HPZero(mon);
@@ -6215,7 +6223,7 @@ BOOL ServerEvent_SetMoveMessage(BtlServerFlow *flow, BattleMon *mon, u16 move, u
     BattleEventVar_Push(0x2ccf);
     BattleEventVar_SetConstValue(BTL_EVAR_MON, GetMonID(mon));
     BattleEventVar_SetConstValue(BTL_EVAR_MOVE, actualMove);
-    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (s32)string);
+    BattleEventVar_SetConstValue(BTL_EVAR_STRING, (sptr)string);
     BattleEventVar_SetRewriteOnceValue(BTL_EVAR_FLAG, FALSE);
     BattleEvent_CallHandlers(flow, BTL_EVENT_SET_MOVE_MESSAGE);
     result = BattleEventVar_GetValue(BTL_EVAR_FLAG);
@@ -8201,11 +8209,10 @@ u8 BattleHandler_ChangeHP(BtlServerFlow *handler, BattleHandlerChangeHPParam *pa
 
 // Function name from swan.
 u8 BattleHandler_RecoverPP(BtlServerFlow *handler, const BattleHandlerPPParam *param, u16 itemId) {
-    BattleMon *user;
     BattleMon *mon;
     BOOL original;
 
-    user = GetPokeParam(handler->pokeCon, param->header.monId);
+    GetPokeParam(handler->pokeCon, param->header.monId);
     mon = GetPokeParam(handler->pokeCon, param->monIndex);
     if (CanPokemonBattle(mon) || param->allowFainted) {
         original = !param->currentMoves;

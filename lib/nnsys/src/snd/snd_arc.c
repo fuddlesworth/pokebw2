@@ -8,9 +8,9 @@
 // newer than that reconstruction
 
 static BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeapHandle heap, BOOL symbolLoadFlag);
-static void InfoDisposeCallback(void *mem, u32 size, u32 data1, u32 data2);
-static void FatDisposeCallback(void *mem, u32 size, u32 data1, u32 data2);
-static void SymbolDisposeCallback(void *mem, u32 size, u32 data1, u32 data2);
+static void InfoDisposeCallback(void *mem, u32 size, uptr data1, uptr data2);
+static void FatDisposeCallback(void *mem, u32 size, uptr data1, uptr data2);
+static void SymbolDisposeCallback(void *mem, u32 size, uptr data1, uptr data2);
 
 static NNSSndArc *sCurrent;
 
@@ -56,7 +56,7 @@ static BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeapHandle heap, BOOL symbolLo
     }
 
     if (heap != NNS_SND_HEAP_INVALID_HANDLE) {
-        arc->info = NNS_SndHeapAlloc(heap, arc->header.infoSize, InfoDisposeCallback, (u32)arc, 0);
+        arc->info = NNS_SndHeapAlloc(heap, arc->header.infoSize, InfoDisposeCallback, (uptr)arc, 0);
         if (arc->info == NULL) {
             return FALSE;
         }
@@ -68,7 +68,7 @@ static BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeapHandle heap, BOOL symbolLo
             return FALSE;
         }
 
-        arc->fat = NNS_SndHeapAlloc(heap, arc->header.fatSize, FatDisposeCallback, (u32)arc, 0);
+        arc->fat = NNS_SndHeapAlloc(heap, arc->header.fatSize, FatDisposeCallback, (uptr)arc, 0);
         if (arc->fat == NULL) {
             return FALSE;
         }
@@ -81,7 +81,7 @@ static BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeapHandle heap, BOOL symbolLo
         }
 
         if (symbolLoadFlag && arc->header.symbolDataSize != 0) {
-            arc->symbol = NNS_SndHeapAlloc(heap, arc->header.symbolDataSize, SymbolDisposeCallback, (u32)arc, 0);
+            arc->symbol = NNS_SndHeapAlloc(heap, arc->header.symbolDataSize, SymbolDisposeCallback, (uptr)arc, 0);
             if (arc->symbol == NULL) {
                 return FALSE;
             }
@@ -275,19 +275,19 @@ void NNS_SndArcSetLoadBlockSize(s32 size) {
     sCurrent->loadBlockSize = size;
 }
 
-static void InfoDisposeCallback(void *mem, u32 size, u32 data1, u32 data2) {
+static void InfoDisposeCallback(void *mem, u32 size, uptr data1, uptr data2) {
     NNSSndArc *arc = (NNSSndArc *)data1;
 
     arc->info = NULL;
 }
 
-static void FatDisposeCallback(void *mem, u32 size, u32 data1, u32 data2) {
+static void FatDisposeCallback(void *mem, u32 size, uptr data1, uptr data2) {
     NNSSndArc *arc = (NNSSndArc *)data1;
 
     arc->fat = NULL;
 }
 
-static void SymbolDisposeCallback(void *mem, u32 size, u32 data1, u32 data2) {
+static void SymbolDisposeCallback(void *mem, u32 size, uptr data1, uptr data2) {
     NNSSndArc *arc = (NNSSndArc *)data1;
 
     arc->symbol = NULL;

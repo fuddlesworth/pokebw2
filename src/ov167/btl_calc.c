@@ -77,9 +77,11 @@ const u8 TYPE_CHART[17][17] = {
 // Reconstructed, not known from the ROM. MWCC puts data_ov167_021d74ba with the file's other small tables, as the
 // original has it, only when some code reads it, even code it never emits. This accessor is that code; nothing
 // calls it.
+#ifndef POKEBW2_PC
 static inline u16 BtlCalc_GetUnkTableValue(u32 index) {
     return data_ov167_021d74ba[index];
 }
+#endif
 
 void BtlCalc_Init(const MATHRandContext32 *rand, HeapID heapId) {
     g_BtlCalcWork.moves = GFL_HeapAllocate(heapId, 0x230 * sizeof(u16), TRUE, "btl_calc.c", 0x50);
@@ -262,7 +264,6 @@ u32 GetRatioOverZero(u32 value, u32 ratio) {
 
 u32 MultiplyValueByRatio(u32 value, u32 ratio) {
     u32 remainder;
-    u32 result;
 
     value *= ratio;
     remainder = value % 100;

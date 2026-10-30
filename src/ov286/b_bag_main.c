@@ -76,6 +76,41 @@ static BOOL BBagMain_CheckQuit(BBagWork *work);
 static void BBagMain_PlaySE(BBagWork *work, u32 se);
 static void BBagMain_PlayMessageSE(BBagWork *work, u32 se);
 
+#ifdef POKEBW2_PC
+static BBagWork *nativeWork;
+
+BBagWork *BBagMain_GetNativeWork(void) {
+    return nativeWork != NULL && nativeWork->initialized ? nativeWork : NULL;
+}
+
+BBagNativePhase BBagMain_GetNativePhase(const BBagWork *work) {
+    if (work->seq == 14 || work->seq == 15)
+        return BBAG_NATIVE_MESSAGE;
+    if (PaletteFade_GetActiveMask(work->paletteFade) != 0 || work->animActive)
+        return BBAG_NATIVE_WAIT;
+    switch (work->seq) {
+    case 4:
+        return BBAG_NATIVE_POCKETS;
+    case 5:
+        return BBAG_NATIVE_ITEMS;
+    case 6:
+        return BBAG_NATIVE_USE;
+    default:
+        return BBAG_NATIVE_WAIT;
+    }
+}
+
+BOOL BBagMain_SetNativeCursor(BBagWork *work, u32 pos) {
+    BBagNativePhase phase = BBagMain_GetNativePhase(work);
+    u32 count = phase == BBAG_NATIVE_POCKETS ? 6 : phase == BBAG_NATIVE_ITEMS ? 9 : phase == BBAG_NATIVE_USE ? 2 : 0;
+    if (pos >= count)
+        return FALSE;
+    CursorMove_SetCursorVisible(work->cursorMove, TRUE);
+    CursorMove_SetPos(work->cursorMove, pos);
+    return TRUE;
+}
+#endif
+
 static int (*const data_ov286_021f728c[])(BBagWork *work) = {
     BBagMain_StateInit,          BBagMain_StateInitLauncher, BBagMain_StateStartWipe,     BBagMain_StateWaitWipe,
     BBagMain_StatePocketPage,    BBagMain_StateItemPage,     BBagMain_StateUsePage,       BBagMain_StateToPage0,
@@ -90,6 +125,9 @@ void BBagMain_Start(BBagParam *param) {
 
     GFL_TCBMgrAddTask(BtlvEffect_GetTCBManager(), BBagMain_Task, work, 100);
     work->param = param;
+#ifdef POKEBW2_PC
+    nativeWork = work;
+#endif
     work->paletteFade = BtlvEffect_GetPaletteFade();
     work->initialized = FALSE;
     if (work->param->mode == 1) {
@@ -540,6 +578,15 @@ static int BBagMain_StateCloseMessage(BBagWork *work) {
 }
 
 static int BBagMain_StatePrintMessage(BBagWork *work) {
+#ifdef POKEBW2_PC
+    // The native panel displays the full message, including the DS page breaks.
+    if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) {
+        PrintStream_Delete(work->printStream);
+        work->printStream = NULL;
+        work->streamAdvanced = FALSE;
+        return BBagMain_StateWaitMessageKey(work);
+    }
+#endif
     switch (PrintStream_GetState(work->printStream)) {
     case PRINT_STREAM_RUNNING:
         if (GFL_HIDIsTouchPressed() == TRUE || (GCTX_HIDGetHeldKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
@@ -627,6 +674,9 @@ static BOOL BBagMain_Exit(TCB *tcb, BBagWork *work) {
         }
     }
     work->param->done = TRUE;
+#ifdef POKEBW2_PC
+    nativeWork = NULL;
+#endif
     GFL_TCBRemove(tcb);
     GFL_HeapFree(work);
     return TRUE;

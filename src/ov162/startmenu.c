@@ -175,6 +175,9 @@ typedef struct {
     CGearSettings *unkC;
     EventWork *eventWork;
     KeyInfoSave *keyInfo;
+#ifdef POKEBW2_PC
+    KeyInfoSave outsideKeyInfo;
+#endif
     TCB *vblankTask;
     ClActUnit *clactUnit;
     ClActor *actors[ACTOR_COUNT];
@@ -346,6 +349,11 @@ static BOOL StartMenu_Init(GameProc *proc, u32 *state, void *param, void *work) 
         GFL_OvlLoad(OVERLAY_ID(331));
         ov331 = SaveOutside_Load(HEAPID_STARTMENU);
         wk->keyInfo = KeySystemData_GetKeyInfo(SaveOutside_GetKeyData(ov331));
+#ifdef POKEBW2_PC
+        // Keep the key data after releasing the temporary outside-save allocation.
+        wk->outsideKeyInfo = *wk->keyInfo;
+        wk->keyInfo = &wk->outsideKeyInfo;
+#endif
         SaveOutside_Free(ov331);
         GFL_OvlUnload(OVERLAY_ID(331));
     }
@@ -355,6 +363,12 @@ static BOOL StartMenu_Init(GameProc *proc, u32 *state, void *param, void *work) 
 static BOOL StartMenu_Main(GameProc *proc, u32 *state, void *param, void *work) {
     StartMenuWork *wk = work;
 
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping() && wk->state != STATE_SETUP && wk->state != STATE_FREE) {
+        wk->state = STATE_FREE;
+        wk->seq = 0;
+    }
+#endif
     wk->state = sStateFuncs[wk->state](wk);
     if (wk->state == STATE_END) {
         return TRUE;
@@ -373,6 +387,10 @@ static BOOL StartMenu_Exit(GameProc *proc, u32 *state, void *param, void *work) 
 
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(HEAPID_STARTMENU);
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping())
+        return TRUE;
+#endif
     switch (selection) {
     case ITEM_CONTINUE:
         GameBeaconSys_CheckGenuineCard();
@@ -387,34 +405,34 @@ static BOOL StartMenu_Exit(GameProc *proc, u32 *state, void *param, void *work) 
         GameStart_NewGame();
         break;
     case ITEM_MYSTERY_GIFT:
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(197), &MYSTERY_GIFT_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(197), GAME_PROC_REFERENCE(MYSTERY_GIFT_PROC_FUNCTIONS), NULL);
         break;
     case ITEM_BATTLE_COMPETITION:
         battleMatchParam = GFL_HeapAllocate(HEAPID_USER, sizeof(WifiBattleMatchParam), FALSE, "startmenu.c", 583);
         MI_CpuFill8(battleMatchParam, 0, sizeof(WifiBattleMatchParam));
         battleMatchParam->unk8 = 0;
         battleMatchParam->unk10 = 1;
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(290), &WIFIBATTLEMATCH_PROC_FUNCTIONS, battleMatchParam);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(290), GAME_PROC_REFERENCE(WIFIBATTLEMATCH_PROC_FUNCTIONS), battleMatchParam);
         break;
     case ITEM_GAME_SYNC_SETTINGS:
-        GCTX_ProcMgrReplaceProc(OVERLAY_NONE, &GAME_SYNC_SETTINGS_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_NONE, GAME_PROC_REFERENCE(GAME_SYNC_SETTINGS_PROC_FUNCTIONS), NULL);
         break;
     case ITEM_WFC_SETTINGS:
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(182), &DWC_UTILITY_RESET_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(182), GAME_PROC_REFERENCE(DWC_UTILITY_RESET_PROC_FUNCTIONS), NULL);
         break;
     case ITEM_MIC_TEST:
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(253), &MIC_TEST_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(253), GAME_PROC_REFERENCE(MIC_TEST_PROC_FUNCTIONS), NULL);
         break;
     case ITEM_MB_PARENT:
         mbParentParam = GFL_HeapAllocate(HEAPID_USER, sizeof(MBParentParam), TRUE, "startmenu.c", 605);
         mbParentParam->startMenu = TRUE;
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(181), &MB_PARENT_PROC_FUNCTIONS, mbParentParam);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(181), GAME_PROC_REFERENCE(MB_PARENT_PROC_FUNCTIONS), mbParentParam);
         break;
     case ITEM_UNOVA_LINK:
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(332), &UNOVA_LINK_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(332), GAME_PROC_REFERENCE(UNOVA_LINK_PROC_FUNCTIONS), NULL);
         break;
     default:
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), &TITLE_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(TITLE_PROC_FUNCTIONS), NULL);
         break;
     }
     return TRUE;

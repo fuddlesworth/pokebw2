@@ -198,13 +198,12 @@ static BOOL NetLdata_SendPiece(int size) {
 }
 
 void *NetLdata_GetRecvPtr(int netId, void *work, int size) {
-    GFLNetInitData *ini;
 
     if (netId == GFL_NET_NETID_SERVER) {
         netId = 0;
     }
     if (netLdataWork != NULL && netLdataWork->postWork[netId] != NULL) {
-        ini = GFL_NetGetInitData();
+        GFL_NetGetInitData();
         if (netLdataWork == NULL || netLdataWork->postWork[netId] == NULL) {
             return NULL;
         }
@@ -250,7 +249,7 @@ static BOOL NetLdata_SendHeader(int type) {
 }
 
 void NetLdata_RecvHeader(int netId, int size, const void *data, void *work, NetHandle *handle) {
-    NetLdataHeader *header = data;
+    const NetLdataHeader *header = data;
     GFLNetInitData *ini;
 
     if (netId == GFL_NET_NETID_SERVER) {

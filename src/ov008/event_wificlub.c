@@ -256,7 +256,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         wk->login.unk18 = 1;
         GFL_SndBGMPlay(SEQ_BGM_WIFI_ACCESS, SND_CHANNEL_MASK_ALL);
         wk->procManager = CreateGameProcManager(HEAPID_GAMEEVENT);
-        QueueGameProc(wk->procManager, OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, &wk->login);
+        QueueGameProc(wk->procManager, OVERLAY_WIFILOGIN, GAME_PROC_REFERENCE(WIFILOGIN_PROC_FUNCTIONS), &wk->login);
         wk->club->mode = 0;
         *state = 10;
         break;
@@ -288,7 +288,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         wk->logout.unk14 = 0;
         wk->logout.unk18 = 0;
         wk->procManager = CreateGameProcManager(HEAPID_GAMEEVENT);
-        QueueGameProc(wk->procManager, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
+        QueueGameProc(wk->procManager, OVERLAY_WIFILOGIN, GAME_PROC_REFERENCE(WIFILOGOUT_PROC_FUNCTIONS), &wk->logout);
         (*state)++;
         break;
     case 31:
@@ -308,7 +308,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
             BtlSetup_Free(wk->btlSetup);
             wk->btlSetup = NULL;
         }
-        GSYS_QueueProcAsEvent(wk->event, OVERLAY_WIFICLUB, &WIFICLUB_PROC_FUNCTIONS, wk->club);
+        GSYS_QueueProcAsEvent(wk->event, OVERLAY_WIFICLUB, GAME_PROC_REFERENCE(WIFICLUB_PROC_FUNCTIONS), wk->club);
         (*state)++;
         break;
     case 12:
@@ -325,7 +325,8 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         EventWifiClub_SetupBattleSelect(wk, GSYS_GetGameData(gsys), seq);
         wk->btlSetup = BtlSetup_Create(HEAPID_GAMEEVENT);
         EventWifiClub_SetupBattle(wk, wk->club->mode);
-        GSYS_QueueProcAsEvent(wk->event, OVERLAY_BATTLE_SELECT, &BATTLE_SELECT_PROC_FUNCTIONS, &wk->select);
+        GSYS_QueueProcAsEvent(wk->event, OVERLAY_BATTLE_SELECT, GAME_PROC_REFERENCE(BATTLE_SELECT_PROC_FUNCTIONS),
+                              &wk->select);
         (*state)++;
         break;
     case 14:
@@ -406,7 +407,8 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         break;
     case 19:
         wk->trade.gameData = GSYS_GetGameData(gsys);
-        GSYS_QueueProcAsEvent(wk->event, OVERLAY_POKEMONTRADE, &POKEMONTRADE_WIFICLUB_PROC_FUNCTIONS, &wk->trade);
+        GSYS_QueueProcAsEvent(wk->event, OVERLAY_POKEMONTRADE,
+                              GAME_PROC_REFERENCE(POKEMONTRADE_WIFICLUB_PROC_FUNCTIONS), &wk->trade);
         (*state)++;
         break;
     case 20:
@@ -455,7 +457,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
     case 23:
         wk->tvt.gameData = GSYS_GetGameData(gsys);
         wk->tvt.startMode = COMM_TVT_START_EXISTING;
-        GSYS_QueueProcAsEvent(wk->event, OVERLAY_COMM_TVT, &COMM_TVT_PROC_FUNCTIONS, &wk->tvt);
+        GSYS_QueueProcAsEvent(wk->event, OVERLAY_COMM_TVT, GAME_PROC_REFERENCE(COMM_TVT_PROC_FUNCTIONS), &wk->tvt);
         (*state)++;
         break;
     case 24:

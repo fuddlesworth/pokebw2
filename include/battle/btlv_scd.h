@@ -21,6 +21,9 @@ extern const BtlvInputKeyStop *BTLV_SCD_TARGET_STOPS_TRIPLE[3][15];
 BtlvScd *BtlvScd_Create(BtlvCore *core, BtlMainModule *mainModule, BtlPokeCon *pokeCon, TCBExManager *tcbManager,
                         Font *font, BtlClient *client, u32 scdState, HeapID heapId);
 void BtlvScd_Delete(BtlvScd *scd);
+#ifdef POKEBW2_PC
+BtlvInput *BtlvScd_GetNativeInput(BtlvScd *scd);
+#endif
 // Creates the BtlvInput and enables BG 4 of the lower screen
 void BtlvScd_CreateInput(BtlvScd *scd);
 

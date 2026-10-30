@@ -311,6 +311,11 @@ void GFL_BGSysReleaseBG(u8 bg) {
         GFL_HeapFree(sBGSys->bgs[bg].screen);
         sBGSys->bgs[bg].screen = NULL;
     }
+#ifdef POKEBW2_PC
+    // Native VBlank runs between process updates; discard uploads whose owner has released its screen.
+    sBGSys->screenRequests &= ~(1 << bg);
+    sBGSys->transformRequests &= ~(1 << bg);
+#endif
 }
 
 void GFL_BGSysSet3DBGPriority(u16 priority) {
@@ -464,7 +469,7 @@ static void GFL_BGSysTransferUncomp(const void *src, void *dest, u32 size) {
         MI_UncompressLZ8(src, dest);
         return;
     }
-    if ((u32)src % 4 == 0 && (u32)dest % 4 == 0 && (u16)size % 4 == 0) {
+    if ((uptr)src % 4 == 0 && (uptr)dest % 4 == 0 && (u16)size % 4 == 0) {
         MIi_CpuCopy32(src, dest, size);
         return;
     }
@@ -472,6 +477,11 @@ static void GFL_BGSysTransferUncomp(const void *src, void *dest, u32 size) {
 }
 
 void GFL_BGSysLoadScr(u8 bg) {
+#ifdef POKEBW2_PC
+    if (sBGSys->bgs[bg].screen == NULL) {
+        return;
+    }
+#endif
     GFL_BGSysLoadScrCore(bg, sBGSys->bgs[bg].screen, sBGSys->bgs[bg].screenSize, sBGSys->bgs[bg].screenOffset);
 }
 
@@ -946,6 +956,12 @@ static void GFL_BGSysLoadQueuedScreens(void) {
 }
 
 void GFL_BGSysQueueScrLoad(u8 bg) {
+#ifdef POKEBW2_PC
+    // A closing UI's animation can finish after its screen buffer has been released.
+    if (sBGSys->bgs[bg].screen == NULL) {
+        return;
+    }
+#endif
     sBGSys->screenRequests |= 1 << bg;
 }
 

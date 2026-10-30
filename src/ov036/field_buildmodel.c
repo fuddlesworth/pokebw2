@@ -794,6 +794,13 @@ BOOL FieldPropResInstance_IsAnmIdle(FieldPropResInstance *instance, u32 animatio
 }
 
 void FieldChunkPropHolder_Release(FieldPropSystem *system, FieldChunkPropHolder *holder) {
+#ifdef POKEBW2_PC
+    // A prop handle may outlive the chunk during a field transition.
+    for (int i = 0; i < 7; i++) {
+        if (system->handles[i] != NULL && system->handles[i]->holder == holder)
+            system->handles[i]->holder = NULL;
+    }
+#endif
     holder->chunk = NULL;
     holder->savedResIndex = 0xffffffff;
     holder->propIndex = 0;

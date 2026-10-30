@@ -882,7 +882,11 @@ BOOL Scrcmd_Vm_VMSleep(VM *vm, FieldScriptEnv *env) {
 BOOL Scrcmd_Vm_VMCall(VM *vm, FieldScriptEnv *env) {
     u32 offset = VM_Read32(vm);
 
+#ifdef POKEBW2_PC
+    VM_Call(vm, vm->pc + (s32)offset);
+#else
     VM_Call(vm, vm->pc + offset);
+#endif
     return FALSE;
 }
 
@@ -1130,7 +1134,11 @@ BOOL Scrcmd_Vm_RTEndGlobal(VM *vm, FieldScriptEnv *env) {
 BOOL Scrcmd_Vm_VMJump(VM *vm, FieldScriptEnv *env) {
     u32 offset = VM_Read32(vm);
 
+#ifdef POKEBW2_PC
+    VM_Jump(vm, vm->pc + (s32)offset);
+#else
     VM_Jump(vm, vm->pc + offset);
+#endif
     return FALSE;
 }
 
@@ -1140,10 +1148,18 @@ BOOL Scrcmd_Vm_VMJumpIf(VM *vm, FieldScriptEnv *env) {
 
     if (condition == CMP_STACK) {
         if (VM_StackPop(vm) != 1) {
+#ifdef POKEBW2_PC
+            VM_Jump(vm, vm->pc + (s32)offset);
+#else
             VM_Jump(vm, vm->pc + offset);
+#endif
         }
     } else if (VM_CMP_LUT[condition][vm->cmpResult] == 1) {
+#ifdef POKEBW2_PC
+        VM_Jump(vm, vm->pc + (s32)offset);
+#else
         VM_Jump(vm, vm->pc + offset);
+#endif
     }
     return FALSE;
 }
@@ -1153,7 +1169,11 @@ BOOL Scrcmd_Vm_VMCallIf(VM *vm, FieldScriptEnv *env) {
     u32 offset = VM_Read32(vm);
 
     if (VM_CMP_LUT[condition][vm->cmpResult] == 1) {
+#ifdef POKEBW2_PC
+        VM_Call(vm, vm->pc + (s32)offset);
+#else
         VM_Call(vm, vm->pc + offset);
+#endif
     }
     return FALSE;
 }

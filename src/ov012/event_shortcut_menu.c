@@ -316,6 +316,9 @@ GameEventReturnCode EventShortcutCallDirect_Callback(GameEvent *event, u32 *stat
         }
         break;
     case SHORTCUT_CALL_DIRECT_STATE_APP_RESULT:
+#ifdef POKEBW2_PC
+        work->field = work->input->field;
+#endif
         if (work->input->eventType == FIELD_APP_RESULT_RETURN) {
             *state = SHORTCUT_CALL_DIRECT_STATE_CLOSE;
         } else if (work->input->eventType == FIELD_APP_RESULT_EXIT) {
@@ -588,6 +591,10 @@ BOOL ShortcutMenu_CanRetry(FieldAppCallInput *input, void *arg) {
     SaveControl *save;
     ShortcutSave *shortcut;
 
+#ifdef POKEBW2_PC
+    // Rebind before opening the shortcut UI on the recreated field.
+    work->field = input->field;
+#endif
     gameData = GSYS_GetGameData(work->gameSystem);
     save = GameData_GetSaveControl(gameData);
     shortcut = SaveControl_GetShortcutSave(save);

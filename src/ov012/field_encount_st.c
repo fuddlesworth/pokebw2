@@ -107,10 +107,12 @@ u32 EncountSave_HasActiveEntry(EncountSave *save) {
 }
 
 void EncountSave_SpawnEntry(GameData *gameData, u8 slot) {
+#ifndef POKEBW2_PC
     // Nothing reads these groups, so which of the empty functions held them is a guess
     static const RoamingZoneGroup sRoamingZoneGroups[5] = {
         { 3, { 0, 1, 15 } }, { 3, { 2, 3, 14 } }, { 3, { 4, 5, 6 } }, { 3, { 7, 8, 9 } }, { 4, { 10, 11, 12, 13 } },
     };
+#endif
 }
 
 void EncountSave_SpawnPendingEntries(GameData *gameData) {

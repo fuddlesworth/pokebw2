@@ -17,7 +17,7 @@ static void PokemonLeague_DisableRailLines(Field *field, u16 a1);
 static u32 PokemonLeague_GetRoomCamera(u16 room);
 
 static BOOL Scrcmd_PokemonLeague_DisableRailLines(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     Field *field = GSYS_GetField(FieldScriptEnv_GetGameSystem(env));
     u16 room = ScriptReadAny(vm, env);
 
@@ -122,7 +122,7 @@ static BOOL Scrcmd_PokemonLeague_CallShauntalModel8Event(VM *vm, FieldScriptEnv 
 
 // Shauntal's room
 static BOOL Scrcmd_PokemonLeague_PlayShauntalModel(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
 
     GimmickShauntal_PlayModelFromIndex(gsys, VM_Read16(vm));

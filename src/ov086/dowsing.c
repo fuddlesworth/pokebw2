@@ -391,6 +391,11 @@ static inline BOOL Dowsing_HitMoved(DowsingWork *work) {
     if (work->hit.type == HIT_HIDDEN_ITEM) {
         newX = work->hit.item->x;
         newZ = work->hit.item->z;
+#ifdef BUGFIX
+    } else {
+        // BUG: losing the item leaves its new coordinates uninitialized.
+        return TRUE;
+#endif
     }
     if ((oldX != newX || oldZ != newZ) && work->prevSignal != work->signal) {
         changed = TRUE;
@@ -807,7 +812,6 @@ static void Dowsing_UpdateButton(DowsingWork *work) {
 }
 
 static void Dowsing_InitFade(DowsingWork *work) {
-    u8 i;
 
     work->tcbMemory = GFL_HeapAllocate(work->heapId, GFL_TCBMgrCalcAllocSize(2), TRUE, "dowsing.c", 1628);
     work->tcbManager = GFL_TCBMgrCreate(2, work->tcbMemory);

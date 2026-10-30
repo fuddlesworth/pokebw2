@@ -114,6 +114,13 @@ ParticleSystem *Particle_CreateSystemEx(void *work, u32 size, BOOL camera, u32 f
     system->cameraUp = sDefaultCameraUp;
     system->cameraTarget = sDefaultCameraTarget;
     system->extResource = FALSE;
+#ifdef POKEBW2_PC
+    // Original callers size their scratch arenas for 32-bit emitter and particle links.
+    system->callerWork = work;
+    GFL_ASSERT(size <= 0xffffffffu / (sizeof(void *) / 4));
+    size *= sizeof(void *) / 4;
+    work = GFL_HeapAllocate(heapId, size, FALSE, "particle.c", __LINE__);
+#endif
     MI_CpuFill8(work, 0, size);
     system->workStart = work;
     system->work = work;
@@ -173,6 +180,9 @@ void Particle_DeleteSystem(ParticleSystem *system) {
     if (system->camera != NULL) {
         GFL_G3DCameraFree(system->camera);
     }
+#ifdef POKEBW2_PC
+    GFL_HeapFree(system->workStart);
+#endif
     GFL_HeapFree(system);
 }
 
@@ -191,11 +201,14 @@ void Particle_Free(void) {
 // Takes size bytes of the system's work, rounded up to a word
 static inline void *Particle_Alloc(ParticleSystem *system, u32 size) {
     void *ret = system->work;
-    u32 next = (u32)system->work + size;
+    uptr next = (uptr)system->work + size;
 
-    if (next % 4 != 0) {
-        next += 4 - next % 4;
+    if (next % sizeof(void *) != 0) {
+        next += sizeof(void *) - next % sizeof(void *);
     }
+#ifdef POKEBW2_PC
+    GFL_ASSERT(next <= (uptr)system->workEnd);
+#endif
     system->work = (void *)next;
     return ret;
 }
@@ -442,7 +455,12 @@ void Particle_DeleteEmitter(ParticleSystem *system, SPLEmitter *emitter) {
 }
 
 void *Particle_GetWork(ParticleSystem *system) {
+#ifdef POKEBW2_PC
+    // Callers own their original arena; deleting the system releases its expanded native arena.
+    return system->callerWork;
+#else
     return system->workStart;
+#endif
 }
 
 void Particle_SetCamera(ParticleSystem *system, G3DCameraProjection *projection, u16 fov, const VecFx32 *position,

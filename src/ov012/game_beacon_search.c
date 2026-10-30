@@ -83,11 +83,11 @@ static const GFLNetInitData sGameBeaconSearchNetInit = {
     NULL,
     GameBeaconSearch_OnNetEnd,
     NULL,
-    {0},
+    {{0}},
     NULL,
     NULL,
     0,
-    {1, 0, 0, 0, 0x80, 0x13, 0, 0},
+    {{1, 0, 0, 0, 0x80, 0x13, 0, 0}},
     HEAPID_TAIL(HEAPID_USER),
     HEAPID_TAIL(0xd),
     HEAPID_TAIL(0xf),
@@ -102,7 +102,7 @@ static const GFLNetInitData sGameBeaconSearchNetInit = {
     GFL_NET_TYPE_WIRELESS,
     0,
     3,
-    {0x2c, 1, 0, 0},
+    {{0x2c, 1, 0, 0}},
     0,
     0,
 };
@@ -126,7 +126,6 @@ void *GameBeaconSearch_Init(u32 *seq, void *param) {
 }
 
 BOOL GameBeaconSearch_InitWait(u32 *seq, void *param, void *work) {
-    GameSystem *gsys = param;
     BeaconSearchWork *search = work;
 
     switch (*seq) {
@@ -152,7 +151,6 @@ static void GameBeaconSearch_OnNetInit(void *work) {
 }
 
 BOOL GameBeaconSearch_Exit(u32 *seq, void *param, void *work) {
-    GameSystem *gsys = param;
     BeaconSearchWork *search = work;
 
     WihDwc_Destroy(search->wihDwc);
@@ -161,7 +159,6 @@ BOOL GameBeaconSearch_Exit(u32 *seq, void *param, void *work) {
 }
 
 BOOL GameBeaconSearch_ExitWait(u32 *seq, void *param, void *work) {
-    GameSystem *gsys = param;
     BeaconSearchWork *search = work;
 
     if (search->state == 0) {

@@ -46,11 +46,19 @@ const u16 NNSi_objSizeHTbl[3][4] = {
 };
 
 static void CpuLoadOAMSub_(const void *src, u32 offset, u32 size) {
+#ifdef POKEBW2_PC
+    GXS_LoadOAM(src, offset, size);
+#else
     MI_CpuCopy16(src, (void *)(HW_DB_OAM + offset), size);
+#endif
 }
 
 static void CpuLoadOAMMain_(const void *src, u32 offset, u32 size) {
+#ifdef POKEBW2_PC
+    GX_LoadOAM(src, offset, size);
+#else
     MI_CpuCopy16(src, (void *)(HW_OAM + offset), size);
+#endif
 }
 
 static inline OamCache *GetOamCachePtr_(NNSG2dOamType type) {

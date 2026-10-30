@@ -216,8 +216,13 @@ void MCSSSys_Free(MCSSSystem *system) {
     if (system->shadowTcb != NULL) {
         MCSSLoad *load = GFL_TCBGetData(system->shadowTcb);
 
+#ifdef POKEBW2_PC
+        // The shadow palette belongs to the loaded NCLR allocation.
+        GFL_HeapFree(load->plttFile);
+#else
         GFL_HeapFree(load->pltt->pRawData);
         GFL_HeapFree(load->pltt);
+#endif
         GFL_HeapFree(load);
         GFL_TCBRemove(system->shadowTcb);
         system->shadowTcb = NULL;
@@ -365,8 +370,8 @@ void MCSSSys_Draw(MCSSSystem *system) {
         pos.y = mcss->pos.y + mcss->posOffset.y;
         pos.z = mcss->pos.z + mcss->posOffset.z;
         if (ortho == FALSE) {
-            x = FX_Mul(mcSrt.px << 8, system->offsetScale);
-            y = FX_Mul(-mcSrt.py << 8, system->offsetScale);
+            x = FX_Mul(mcSrt.px * 256, system->offsetScale);
+            y = FX_Mul(-mcSrt.py * 256, system->offsetScale);
         } else {
             fx32 scaleX = FX_Mul(mcss->scale.x, mcss->scaleOffset.x);
             fx32 scaleY = FX_Mul(mcss->scale.y, mcss->scaleOffset.y);
@@ -406,8 +411,8 @@ void MCSSSys_Draw(MCSSSystem *system) {
         G3_Translate(mcss->pos.x + mcss->posOffset.x + mcss->shadowOffset.x, mcss->pos.y + mcss->shadowOffset.y,
                      mcss->pos.z + mcss->posOffset.z + mcss->shadowOffset.z);
         G3_RotX(FX_SinIdx(mcss->shadowRotX), FX_CosIdx(mcss->shadowRotX));
-        G3_Translate(FX_Mul(FX_Mul(mcSrt.px << 8, system->offsetScale), mcss->shadowScale.x),
-                     FX_Mul(FX_Mul(-mcSrt.py << 8, system->offsetScale), mcss->shadowScale.y), 0);
+        G3_Translate(FX_Mul(FX_Mul(mcSrt.px * 256, system->offsetScale), mcss->shadowScale.x),
+                     FX_Mul(FX_Mul(-mcSrt.py * 256, system->offsetScale), mcss->shadowScale.y), 0);
         G3_RotZ(-FX_SinIdx(mcss->shadowRotZ), FX_CosIdx(mcss->shadowRotZ));
         G3_RotZ(-FX_SinIdx(rot), FX_CosIdx(rot));
         G3_Scale(FX_Mul(FX_Mul(FX_Mul(mcSrt.sx, mcss->shadowScale.x), mcss->shadowScaleOffset.x), mcss->scaleOffset.x),
@@ -497,11 +502,11 @@ static void MCSS_DrawQuad(MCSSSystem *system, MCSS *mcss, fx32 x, fx32 y, fx32 w
     G3_TexPlttBase(mcss->plttProxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_3DMAIN], mcss->plttProxy.fmt);
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, polygonId, mcss->alpha, 0);
     nodeX =
-        (cellSrt->px + mcss->mcAnim.pMultiCellDataBank->pMultiCellDataArray[mcSrt->index].pHierDataArray[node].pos.x)
-        << 8;
+        (cellSrt->px + mcss->mcAnim.pMultiCellDataBank->pMultiCellDataArray[mcSrt->index].pHierDataArray[node].pos.x) *
+        256;
     nodeY =
-        -(cellSrt->py + mcss->mcAnim.pMultiCellDataBank->pMultiCellDataArray[mcSrt->index].pHierDataArray[node].pos.y)
-        << 8;
+        -(cellSrt->py + mcss->mcAnim.pMultiCellDataBank->pMultiCellDataArray[mcSrt->index].pHierDataArray[node].pos.y) *
+        256;
     G3_Translate(nodeX, nodeY, *z);
     G3_RotZ(-FX_SinIdx(cellSrt->rotZ), FX_CosIdx(cellSrt->rotZ));
     if (flip == 0) {
@@ -518,16 +523,16 @@ static void MCSS_DrawQuad(MCSSSystem *system, MCSS *mcss, fx32 x, fx32 y, fx32 w
     // The packed texture coordinates are written again for the shadow's quad
     G3_Begin(GX_BEGIN_QUADS);
     texCoord0 = GX_ST(s, t);
-    reg_G3_TEXCOORD = texCoord0;
+    G3X_WriteRegister(reg_G3_TEXCOORD, texCoord0);
     G3_Vtx(0, 0, 0);
     texCoord1 = GX_ST(s, t + height);
-    reg_G3_TEXCOORD = texCoord1;
+    G3X_WriteRegister(reg_G3_TEXCOORD, texCoord1);
     G3_Vtx(0, -0x100, 0);
     texCoord2 = GX_ST(s + width, t + height);
-    reg_G3_TEXCOORD = texCoord2;
+    G3X_WriteRegister(reg_G3_TEXCOORD, texCoord2);
     G3_Vtx(0x100, -0x100, 0);
     texCoord3 = GX_ST(s + width, t);
-    reg_G3_TEXCOORD = texCoord3;
+    G3X_WriteRegister(reg_G3_TEXCOORD, texCoord3);
     G3_Vtx(0x100, 0, 0);
     G3_End();
     G3_MtxMode(GX_MTXMODE_PROJECTION);
@@ -544,13 +549,13 @@ static void MCSS_DrawQuad(MCSSSystem *system, MCSS *mcss, fx32 x, fx32 y, fx32 w
         G3_Translate(x, y, 0);
         G3_Scale(width, height, FX32_ONE);
         G3_Begin(GX_BEGIN_QUADS);
-        reg_G3_TEXCOORD = texCoord0;
+        G3X_WriteRegister(reg_G3_TEXCOORD, texCoord0);
         G3_Vtx(0, 0, 0);
-        reg_G3_TEXCOORD = texCoord1;
+        G3X_WriteRegister(reg_G3_TEXCOORD, texCoord1);
         G3_Vtx(0, -0x100, 0);
-        reg_G3_TEXCOORD = texCoord2;
+        G3X_WriteRegister(reg_G3_TEXCOORD, texCoord2);
         G3_Vtx(0x100, -0x100, 0);
-        reg_G3_TEXCOORD = texCoord3;
+        G3X_WriteRegister(reg_G3_TEXCOORD, texCoord3);
         G3_Vtx(0x100, 0, 0);
         G3_End();
     }
@@ -819,7 +824,7 @@ u8 MCSSSys_GetStopCellFlags(MCSS *mcss) {
     return mcss->binTail->unk1;
 }
 
-void MCSS_SetAnimationEndCallback(MCSS *mcss, u32 param, MCSSAnimationCallback callback, u32 unused) {
+void MCSS_SetAnimationEndCallback(MCSS *mcss, uptr param, MCSSAnimationCallback callback, u32 unused) {
     NNS_G2dSetAnimCtrlCallBackFunctor(&mcss->mcAnim.animCtrl, NNS_G2D_ANMCALLBACKTYPE_LAST_FRM, param, callback);
 }
 

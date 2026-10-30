@@ -20,7 +20,7 @@ struct G3DTextDrawResource {
     u32 plttOffset;
 };
 
-BOOL G3DTextDraw_CreateResource(G3DResource *texture, const char *texName, u32 palette, const char *plName,
+BOOL G3DTextDraw_CreateResource(G3DResource *texture, const char *texName, uptr palette, const char *plName,
                                 const StrBuf *text, u16 x, u16 y, u16 color, HeapID heapId,
                                 G3DTextDrawResource *resource);
 u32 G3DTextDraw_GetTexDimCount(void);

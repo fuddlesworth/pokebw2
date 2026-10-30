@@ -33,7 +33,7 @@ static const BlackTowerUnkPair *func_ov061_021e5f94(FieldScriptEnv *env);
 
 static BOOL Scrcmd_BlackTower_CreateWalls(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
 
     InfinityDungeon_CreateCurrentWalls(gsys, InfinityDungeonGimmick_GetDungeon(GSYS_GetField(gsys)));
     return FALSE;
@@ -184,7 +184,7 @@ static BOOL func_ov061_021e5bac(VM *vm, FieldScriptEnv *env) {
 
 static BOOL func_ov061_021e5bc4(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
+    FieldScriptEnv_GetGameSystem(env);
     u16 objCode = FldAct_GetObjCode(ScriptWork_GetParentActor(work));
     u16 *var = ScriptReadVar(vm, env);
 
@@ -246,7 +246,7 @@ static BOOL Scrcmd_BlackTower_GetRoomNpcCount(VM *vm, FieldScriptEnv *env) {
 
 static BOOL Scrcmd_BlackTower_GetTrainerClass(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    SaveControl *save = GameData_GetSaveControl(GSYS_GetGameData(gsys));
+    GameData_GetSaveControl(GSYS_GetGameData(gsys));
     HeapID heapId = Field_GetHeapID(GSYS_GetField(gsys));
     u16 a = ScriptReadAny(vm, env);
     u16 *var = ScriptReadVar(vm, env);
@@ -284,7 +284,7 @@ static BOOL Scrcmd_BlackTower_GetTrainerId(VM *vm, FieldScriptEnv *env) {
 
 static BOOL Scrcmd_BlackTower_GetVersion(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     InfinityDungeon *dungeon = InfinityDungeonGimmick_GetDungeon(GSYS_GetField(gsys));
     u16 *var = ScriptReadVar(vm, env);
 
@@ -294,7 +294,7 @@ static BOOL Scrcmd_BlackTower_GetVersion(VM *vm, FieldScriptEnv *env) {
 
 static BOOL Scrcmd_BlackTower_GetInfo(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     InfinityDungeon *dungeon = InfinityDungeonGimmick_GetDungeon(GSYS_GetField(gsys));
     u16 info = ScriptReadAny(vm, env);
     u16 arg = ScriptReadAny(vm, env);

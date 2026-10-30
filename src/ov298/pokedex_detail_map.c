@@ -396,6 +396,37 @@ static const u16 sPokedexDetailMapZones[TOWNMAP_PLACE_COUNT + 1] = {
     0x1db, 0x23d, 0x1f7, 0x203, 0x1fa, 0x205, 0x1d0, 0x108, 0x228, 0x0f1, 0x000,
 };
 
+#ifdef POKEBW2_PC
+u32 PokedexDetailMap_GetNativeHabitats(u16 species, u32 season, u16 *zones, u8 *kinds, u32 capacity) {
+    PokedexHabitat *habitat;
+    u32 count = 0;
+    u32 i;
+
+    if (species == 0 || species > 649 || season >= SEASON_COUNT ||
+        GFL_ArcSysGetDataLength(ARCID_POKEDEX_AREA, species - 1) < sizeof(PokedexHabitat)) {
+        return 0;
+    }
+    habitat = GFL_ArcSysReadHeapNew(ARCID_POKEDEX_AREA, species - 1, HEAPID_USER);
+    if (habitat == NULL) {
+        return 0;
+    }
+    if (habitat->allYear) {
+        season = 0;
+    }
+    if (!habitat->seasons[season].none) {
+        for (i = 0; i < TOWNMAP_PLACE_COUNT && count < capacity; i++) {
+            if (habitat->seasons[season].places[i]) {
+                zones[count] = sPokedexDetailMapZones[i];
+                kinds[count] = habitat->seasons[season].places[i];
+                count++;
+            }
+        }
+    }
+    GFL_HeapFree(habitat);
+    return count;
+}
+#endif
+
 // The map's BGs 2 and 3, 256-color bitmaps, and the BGs they replace
 static const PokedexDetailBGSetup sPokedexDetailMapBGSetups[2] = {
     { 2,

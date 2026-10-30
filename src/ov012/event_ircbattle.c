@@ -211,7 +211,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
         *state = IRC_STEP_MENU;
         break;
     case IRC_STEP_MENU:
-        GSYS_QueueProc(gsys, OVERLAY_ID(36), &IRC_MENU_PROC, work);
+        GSYS_QueueProc(gsys, OVERLAY_ID(36), GAME_PROC_REFERENCE(IRC_MENU_PROC), work);
         (*state)++;
         break;
     case IRC_STEP_WAIT_MENU:
@@ -238,7 +238,8 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
         work->ircMatch.parties[2] = work->parties[2];
         work->ircMatch.parties[3] = work->parties[3];
         work->ircMatch.result = work->mode;
-        GSYS_QueueProc(gsys, OVERLAY_IRCBATTLEMATCH, &IRCBATTLEMATCH_PROC_FUNCTIONS, &work->ircMatch);
+        GSYS_QueueProc(gsys, OVERLAY_IRCBATTLEMATCH, GAME_PROC_REFERENCE(IRCBATTLEMATCH_PROC_FUNCTIONS),
+                       &work->ircMatch);
         (*state)++;
         break;
     case IRC_STEP_WAIT_MATCH:
@@ -377,7 +378,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
     case IRC_STEP_TRADE:
         work->trade.gameData = work->gameData;
         work->trade.party = work->party;
-        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, &POKEMONTRADE_IRC_PROC_FUNCTIONS, &work->trade);
+        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, GAME_PROC_REFERENCE(POKEMONTRADE_IRC_PROC_FUNCTIONS), &work->trade);
         (*state)++;
         break;
     case IRC_STEP_WAIT_TRADE:
@@ -466,7 +467,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
         break;
     case IRC_STEP_FEELING_CHECK:
         work->ov175Param = work->gsys;
-        GSYS_QueueProc(gsys, OVERLAY_ID(175), &IRC_COMPATIBLE_PROC_FUNCTIONS, &work->ov175Param);
+        GSYS_QueueProc(gsys, OVERLAY_ID(175), GAME_PROC_REFERENCE(IRC_COMPATIBLE_PROC_FUNCTIONS), &work->ov175Param);
         (*state)++;
         break;
     case IRC_STEP_WAIT_FEELING_CHECK:

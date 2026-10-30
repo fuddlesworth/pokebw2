@@ -31,5 +31,17 @@ typedef struct {
 } PokedexListParam;
 
 extern const GameProcFunctions PokedexList_ProcFunctions;
+#ifdef POKEBW2_PC
+typedef struct {
+    const u16 *species;
+    u16 count;
+    u16 selected;
+    Font *font;
+    PokeDexSave *pokedex;
+    GameData *gameData;
+} PokedexNativeListState;
+BOOL PokedexList_GetNativeState(PokedexNativeListState *state);
+void PokedexList_SetNativeSpecies(u16 species);
+#endif
 
 #endif // POKEBW2_APP_POKEDEX_LIST_H

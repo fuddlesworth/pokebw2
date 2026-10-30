@@ -715,7 +715,9 @@ void EntranceCamera_ConfigureDefaultDeparture(EntranceCamera *camera) {
         {
             // Leftovers: this vector is zeroed and never read, as pos is fetched and never read and the field camera
             // fetched at the top is discarded
+#ifndef POKEBW2_PC
             VecFx32 unused = { 0, 0, 0 };
+#endif
 
             FieldCamera_GetAnimationCoords(camera->camera, dst);
             switch (dir) {

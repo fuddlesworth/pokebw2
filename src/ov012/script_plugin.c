@@ -103,7 +103,12 @@ u32 GetCurrentScrPluginCmdCount(GameData *gameData) {
         return 0;
     }
     count = 0;
-    while ((u32)GetCurrentScrPluginTable(gameData)[count] != (u32)-1) {
+#ifdef POKEBW2_PC
+    // Script command tables retain the DS 0xffffffff terminator in the native build.
+    while ((uptr)GetCurrentScrPluginTable(gameData)[count] != 0xffffffffu) {
+#else
+    while ((uptr)GetCurrentScrPluginTable(gameData)[count] != (uptr)-1) {
+#endif
         count++;
     }
     return count;

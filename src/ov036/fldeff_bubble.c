@@ -215,7 +215,7 @@ void FldeffBubble_UpdateBubble(Bubble *bubble, fx32 count) {
 static SRTMatrix sBubbleMatrix = {
     { 0, 0, 0 },
     { FX32_ONE, FX32_ONE, FX32_ONE },
-    { FX32_ONE, 0, 0, 0, FX32_ONE, 0, 0, 0, FX32_ONE },
+    { { { FX32_ONE, 0, 0 }, { 0, FX32_ONE, 0 }, { 0, 0, FX32_ONE } } },
 };
 
 void FldeffBubble_DrawBubble(Bubble *bubble, G3DActor *actor) {

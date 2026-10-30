@@ -5,6 +5,22 @@
 // these three were hand-written assembly and are asm functions here.
 #include "nitro/fx.h"
 
+#ifdef POKEBW2_PC
+void MTX_Identity22_(MtxFx22 *mtx) {
+    mtx->_00 = mtx->_11 = FX32_ONE;
+    mtx->_01 = mtx->_10 = 0;
+}
+void MTX_Scale22_(MtxFx22 *mtx, fx32 x, fx32 y) {
+    mtx->_00 = x;
+    mtx->_11 = y;
+    mtx->_01 = mtx->_10 = 0;
+}
+void MTX_Rot22_(MtxFx22 *mtx, fx32 sin, fx32 cos) {
+    mtx->_00 = mtx->_11 = cos;
+    mtx->_01 = sin;
+    mtx->_10 = -sin;
+}
+#else
 #pragma thumb off
 // clang-format off
 asm void MTX_Identity22_(MtxFx22 *mtx) {
@@ -43,6 +59,8 @@ asm void MTX_Rot22_(MtxFx22 *mtx, fx32 sin, fx32 cos) {
 }
 
 // clang-format on
+
+#endif
 
 void MTX_ScaleApply22(const MtxFx22 *src, MtxFx22 *dest, fx32 x, fx32 y) {
     dest->_00 = (fx32)(((fx64)x * src->_00) >> FX32_SHIFT);

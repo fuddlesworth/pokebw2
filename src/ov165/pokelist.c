@@ -14,6 +14,14 @@ static BOOL PokeListProc_Main(GameProc *proc, u32 *state, void *param, void *wor
 // Frames since the time left was last counted down
 static u8 sTimerFrames;
 
+#ifdef POKEBW2_PC
+static PokeListWork *sNativeList;
+
+PokeListWork *PokeList_GetNativeWork(void) {
+    return sNativeList;
+}
+#endif
+
 GameProcFunctions POKELIST_PROC_FUNCTIONS = {
     PokeListProc_Init,
     PokeListProc_Main,
@@ -32,6 +40,9 @@ static BOOL PokeListProc_Init(GameProc *proc, u32 *state, void *param, void *wor
         *state = 1;
     case 1:
         if (PokeList_Init(wk) == TRUE) {
+#ifdef POKEBW2_PC
+            sNativeList = wk;
+#endif
             return TRUE;
         }
         break;
@@ -52,6 +63,9 @@ static BOOL PokeListProc_Exit(GameProc *proc, u32 *state, void *param, void *wor
     BOOL *ret;
     u8 i;
 
+#ifdef POKEBW2_PC
+    sNativeList = NULL;
+#endif
     if (PokeList_Exit(wk) == FALSE) {
         return FALSE;
     }
@@ -73,7 +87,12 @@ static BOOL PokeListProc_Exit(GameProc *proc, u32 *state, void *param, void *wor
     GFL_ProcReleaseSubsystem(proc);
     heapId = HEAPID_POKELIST;
     result = TRUE;
+#ifdef POKEBW2_PC
+    // The host has no DS card authentication; keep the original heap cleanup.
+    ret = PokeListProc_DeleteHeap(&heapId, &result);
+#else
     DSPROT_CHECKED_RUN(ret, DSProt_CallRunChecks, DSProt_CallCrash, PokeListProc_DeleteHeap, &heapId, &result);
+#endif
     return *ret;
 }
 

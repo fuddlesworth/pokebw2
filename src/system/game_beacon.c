@@ -78,7 +78,9 @@ static void GameBeacon_SetMyCGearRecord(const PMSData *record);
 static void GameBeaconSys_SetEnabled(u8 enabled);
 static void GameBeaconSys_SendAvenueAd(GameBeaconSystem *sys);
 static BOOL GameBeaconSys_UpdateAvenueAdTimer(GameBeaconSystem *sys);
+#ifndef POKEBW2_PC
 static void GameBeaconSys_HideNewHBlank(TCB *tcb, void *data);
+#endif
 
 // The frames between Join Avenue advertisements, by advertisement
 static const u16 sAvenueAdIntervals[7] = { 30, 30, 30, 30, 30, 30, 30 };
@@ -808,11 +810,11 @@ void GameBeaconSendSlot_ResetB2W2Only(GameBeaconSendSlot *slot) {
     GameBeaconSendSlot_ResetHeader(slot, 0xfc);
 }
 
-void GameBeaconSendSlot_SetMission(GameBeaconSendSlot *slot, u16 type, u32 value) {
+void GameBeaconSendSlot_SetMission(GameBeaconSendSlot *slot, u16 type, uptr value) {
     GameBeaconSendSlot_SetMissionEx(slot, type, value, 0);
 }
 
-void GameBeaconSendSlot_SetMissionEx(GameBeaconSendSlot *slot, u16 type, u32 value, u32 extra) {
+void GameBeaconSendSlot_SetMissionEx(GameBeaconSendSlot *slot, u16 type, uptr value, u32 extra) {
     LinkFestival *festival;
     FestMissionConfig *config;
     GameBeaconSendSlot newSlot;
@@ -1233,6 +1235,7 @@ static BOOL GameBeaconSys_UpdateAvenueAdTimer(GameBeaconSystem *sys) {
 }
 
 void GameBeaconSys_CheckGenuineCard(void) {
+#ifndef POKEBW2_PC
     BOOL ok;
 
     GFL_OvlLoad(OVERLAY_ID(338));
@@ -1241,8 +1244,11 @@ void GameBeaconSys_CheckGenuineCard(void) {
     if (!ok) {
         GFL_HBlankTCBAdd(GameBeaconSys_HideNewHBlank, NULL, 3);
     }
+#endif
+    // The native target reads extracted assets and has no cartridge infrared identity to query.
 }
 
+#ifndef POKEBW2_PC
 static void GameBeaconSys_HideNewHBlank(TCB *tcb, void *data) {
     if (GameBeaconSys != NULL) {
         GameBeaconSys->newMask = 0;
@@ -1250,3 +1256,4 @@ static void GameBeaconSys_HideNewHBlank(TCB *tcb, void *data) {
         GameBeaconSys->newMask = 0;
     }
 }
+#endif

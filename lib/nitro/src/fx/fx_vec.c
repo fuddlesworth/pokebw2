@@ -22,7 +22,9 @@ void VEC_Fx16Add(const VecFx16 *a, const VecFx16 *b, VecFx16 *ab) {
     ab->z = a->z + b->z;
 }
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 
 fx32 VEC_DotProduct(const VecFx32 *a, const VecFx32 *b) {
     fx64 sum = (fx64)a->x * b->x + (fx64)a->y * b->y + (fx64)a->z * b->z;
@@ -131,4 +133,6 @@ fx32 VEC_Distance(const VecFx32 *a, const VecFx32 *b) {
     return ((fx32)reg_CP_SQRT_RESULT + 1) >> 1;
 }
 
+#ifdef __MWERKS__
 #pragma thumb on
+#endif

@@ -47,6 +47,9 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#ifdef POKEBW2_PC
+#include "../../pc/gx_backend.h"
+#endif
 
 // The party list's screen: its graphics, the cursor, and what each mode does with the Pokémon picked. The ROM
 // doesn't name this file; it is named for the list's system, which pokelist.c's proc runs
@@ -117,6 +120,47 @@ static void PokeList_AskTakeMail(PokeListWork *wk);
 static void PokeList_MessageDoneDemo(PokeListWork *wk);
 static void PokeList_SetHeldItem(PokeListWork *wk, PartyPkm *pkm, u16 item);
 static u16 PokeList_GetBagCount(PokeListWork *wk, u16 item);
+
+#ifdef POKEBW2_PC
+PokeListNativePhase PokeList_GetNativePhase(PokeListWork *wk) {
+    switch (wk->state) {
+    case 2:
+        return wk->subState == 1 ? POKELIST_NATIVE_BROWSE : POKELIST_NATIVE_WAIT;
+    case 3:
+    case 4:
+    case 22:
+    case 23:
+        return wk->subState == 1 ? POKELIST_NATIVE_TARGET : POKELIST_NATIVE_WAIT;
+    case 6:
+    case 9:
+        return POKELIST_NATIVE_MENU;
+    case 7:
+        return POKELIST_NATIVE_MESSAGE;
+    default:
+        return POKELIST_NATIVE_WAIT;
+    }
+}
+
+BOOL PokeList_SetNativeCursor(PokeListWork *wk, u32 slot) {
+    PokeListNativePhase phase = PokeList_GetNativePhase(wk);
+    if ((phase != POKELIST_NATIVE_BROWSE && phase != POKELIST_NATIVE_TARGET) ||
+        slot >= PokeParty_GetPkmCount(wk->param->party)) {
+        return FALSE;
+    }
+    if (wk->cursorPos >= 0 && wk->cursorPos < POKELIST_PLATE_COUNT && wk->cursorPos != wk->selectPos &&
+        wk->cursorPos != wk->selectPos2) {
+        PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
+    }
+    wk->cursorPos = slot;
+    wk->param->index = slot;
+    wk->touch = FALSE;
+    GCTX_HIDSetUsingTouch(FALSE);
+    PokeListPlate_SetSelected(wk, wk->plates[slot], TRUE);
+    func_ov165_0219cdd8(wk, slot);
+    GFL_SndSEPlay(SEQ_SE_SELECT1);
+    return TRUE;
+}
+#endif
 
 // BG 0's setup, which PokeList_CreateBG0 builds, again after plist_demo.c's 3D demo. The other BGs' setups are statics
 // of PokeList_InitGraphics; this one is declared ahead of them, and its place there sets its place in .rodata
@@ -337,7 +381,7 @@ BOOL PokeList_Main(PokeListWork *wk) {
         PokeListDemo_End(wk);
         break;
     case 17:
-        NetSync_StartTiming((u32)wk->param, 2);
+        NetSync_StartTiming((uptr)wk->param, 2);
         wk->state = 18;
         break;
     case 18:
@@ -525,6 +569,9 @@ void PokeList_Init3D(PokeListWork *wk) {
     // Nothing reads it, but the original's .rodata has these 16 zero bytes after the LCD config. Its type and name are
     // a guess: the eight colors that G3X_SetEdgeColorTable takes, for the edge marking turned on below
     static const GXRgb sEdgeColors[8] = { 0 };
+#ifdef POKEBW2_PC
+    (void)sEdgeColors;
+#endif
 
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX_BG0_AS_3D);
     GFL_G3DSysCreate(FALSE, 1, FALSE, 1, 0, wk->heapId, NULL);
@@ -706,7 +753,11 @@ static void PokeList_LoadResources(PokeListWork *wk) {
     wk->clResources[CL_RES_CELL(5)] = ClActSys_LoadCellAnims(commonArc, AppMenuCommon_GetStatusIconCellFile(2),
                                                              AppMenuCommon_GetStatusIconAnimFile(2), wk->heapId);
     GFL_ArcToolFree(commonArc);
+#ifdef POKEBW2_PC
+    MIi_CpuCopy16(PcGx2D[0].background_palette + 0xc0, wk->baseColors, sizeof(wk->baseColors));
+#else
     MIi_CpuCopy16((void *)(HW_BG_PLTT + 0xc0), wk->baseColors, sizeof(wk->baseColors));
+#endif
 }
 
 static void PokeList_FreeResources(PokeListWork *wk) {
@@ -1101,7 +1152,7 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
         if (PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL) == 0) {
             MailData *mail = MailBox_CopyMail(wk->param->unk08, 0, wk->param->unk6C, wk->heapId);
 
-            PokeParty_SetParam(wk->pkm, PKM_PARAM_MAIL, (u32)mail);
+            PokeParty_SetParam(wk->pkm, PKM_PARAM_MAIL, (uptr)mail);
             GFL_HeapFree(mail);
             PokeParty_SetParam(wk->pkm, PKM_PARAM_ITEM, wk->param->item);
             MailBox_ResetMail(wk->param->unk08, 0, wk->param->unk6C);
@@ -1616,9 +1667,9 @@ static void func_ov165_0219c36c(PokeListWork *wk, PartyPkm *from, PartyPkm *to, 
         MailData *blank = CreateMailData(wk->heapId);
 
         PokeParty_GetParam(from, PKM_PARAM_MAIL, mail);
-        PokeParty_SetParam(to, PKM_PARAM_MAIL, (u32)mail);
+        PokeParty_SetParam(to, PKM_PARAM_MAIL, (uptr)mail);
         PokeParty_SetParam(to, PKM_PARAM_ITEM, item);
-        PokeParty_SetParam(from, PKM_PARAM_MAIL, (u32)blank);
+        PokeParty_SetParam(from, PKM_PARAM_MAIL, (uptr)blank);
         PokeParty_SetParam(from, PKM_PARAM_ITEM, 0);
         GFL_HeapFree(blank);
         GFL_HeapFree(mail);
@@ -1637,22 +1688,22 @@ static void func_ov165_0219c3e8(PokeListWork *wk, PartyPkm *pkmA, PartyPkm *pkmB
     } else if (PML_ItemIsMail(itemA) == TRUE && PML_ItemIsMail(itemB) == FALSE) {
         PokeParty_GetParam(pkmA, PKM_PARAM_MAIL, mailA);
         PokeParty_SetParam(pkmB, PKM_PARAM_ITEM, itemA);
-        PokeParty_SetParam(pkmB, PKM_PARAM_MAIL, (u32)mailA);
-        PokeParty_SetParam(pkmA, PKM_PARAM_MAIL, (u32)blank);
+        PokeParty_SetParam(pkmB, PKM_PARAM_MAIL, (uptr)mailA);
+        PokeParty_SetParam(pkmA, PKM_PARAM_MAIL, (uptr)blank);
         PokeParty_SetParam(pkmA, PKM_PARAM_ITEM, itemB);
     } else if (PML_ItemIsMail(itemA) == FALSE && PML_ItemIsMail(itemB) == TRUE) {
         PokeParty_GetParam(pkmB, PKM_PARAM_MAIL, mailB);
         PokeParty_SetParam(pkmA, PKM_PARAM_ITEM, itemB);
-        PokeParty_SetParam(pkmA, PKM_PARAM_MAIL, (u32)mailB);
-        PokeParty_SetParam(pkmB, PKM_PARAM_MAIL, (u32)blank);
+        PokeParty_SetParam(pkmA, PKM_PARAM_MAIL, (uptr)mailB);
+        PokeParty_SetParam(pkmB, PKM_PARAM_MAIL, (uptr)blank);
         PokeParty_SetParam(pkmB, PKM_PARAM_ITEM, itemA);
     } else if (PML_ItemIsMail(itemA) == TRUE && PML_ItemIsMail(itemB) == TRUE) {
         PokeParty_GetParam(pkmA, PKM_PARAM_MAIL, mailA);
         PokeParty_GetParam(pkmB, PKM_PARAM_MAIL, mailB);
         PokeParty_SetParam(pkmA, PKM_PARAM_ITEM, itemB);
-        PokeParty_SetParam(pkmA, PKM_PARAM_MAIL, (u32)mailB);
+        PokeParty_SetParam(pkmA, PKM_PARAM_MAIL, (uptr)mailB);
         PokeParty_SetParam(pkmB, PKM_PARAM_ITEM, itemA);
-        PokeParty_SetParam(pkmB, PKM_PARAM_MAIL, (u32)mailA);
+        PokeParty_SetParam(pkmB, PKM_PARAM_MAIL, (uptr)mailA);
     }
     GFL_HeapFree(blank);
     GFL_HeapFree(mailB);
@@ -2846,6 +2897,9 @@ static void PokeList_ShareHpDone(PokeListWork *wk) {
     u32 hp = PokeParty_GetParam(wk->pkm, PKM_PARAM_HP, NULL);
     u32 maxHp = PokeParty_GetParam(wk->pkm, PKM_PARAM_MAX_HP, NULL);
 
+#ifdef POKEBW2_PC
+    (void)userHp;
+#endif
     wk->cursorPos = wk->param->index;
     if (hp + userMaxHp / 5 > maxHp) {
         PokeParty_SetParam(target, PKM_PARAM_HP, maxHp);

@@ -103,7 +103,11 @@ static void MailView_InitFade(MailSysWork *work) {
 BOOL MailView_Unload(MailSysWork *work) {
     MailView_DeletePMSDraw(work);
     MailView_DeleteClAct(work);
+#ifdef POKEBW2_PC
+    if (work->msgData != NULL) {
+#else
     if (work->unk28) {
+#endif
         GFL_MsgDataFree(work->msgData);
     }
     GFL_StrBufFree(work->msgBuf);

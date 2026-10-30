@@ -7,6 +7,9 @@
 #include "nitro/pxi.h"
 #include <stdarg.h>
 #include <stddef.h>
+#ifdef POKEBW2_PC
+#include "nitro/host_os.h"
+#endif
 
 // NitroSDK's OSIntrMode, the state of the CPU's interrupt bits that OS_DisableInterrupts gives and
 // OS_RestoreInterrupts takes, and OSIrqMask, a set of interrupts, one bit each, as IE and IF hold them
@@ -102,7 +105,7 @@ void OS_SetProtectionRegion(int regionNo, u32 address, u32 size); // swan's SetM
 
 // The start of DTCM, where the linker places the DTCM module
 extern u32 SDK_AUTOLOAD_DTCM_START[];
-#define HW_DTCM ((u32)SDK_AUTOLOAD_DTCM_START)
+#define HW_DTCM ((uptr)SDK_AUTOLOAD_DTCM_START)
 // The interrupt flags that OS_WaitIrq checks, at the end of DTCM
 #define HW_INTR_CHECK_BUF (HW_DTCM + 0x3ff8)
 // The IRQ stack in DTCM: its top, and its end where it would overflow
@@ -178,7 +181,11 @@ typedef struct OSSystemWork {
 #define OS_IE_NDMA1 0x20000000
 
 static inline u32 OS_GetVBlankCount(void) {
+#ifdef POKEBW2_PC
+    return PcOsVBlankCount;
+#else
     return *(vu32 *)HW_VBLANK_COUNT_BUF;
+#endif
 }
 
 // Waits for one of the interrupts, after clearing their flags if clear is set, by halting the CPU until it happens.
@@ -186,7 +193,11 @@ static inline u32 OS_GetVBlankCount(void) {
 void OS_WaitInterrupt(BOOL clear, OSIrqMask interrupts); // swan's CPU_WaitIntrBit
 
 static inline void OS_SetIrqCheckFlag(OSIrqMask interrupts) {
+#ifdef POKEBW2_PC
+    PcOsIrqCheck |= interrupts;
+#else
     *(vu32 *)HW_INTR_CHECK_BUF |= interrupts;
+#endif
 }
 
 // Memory arenas and OS heaps: OS_GetArenaLo, OS_GetArenaHi, OS_SetArenaLo, OS_SetArenaHi,
@@ -403,7 +414,11 @@ void OS_WaitVBlankIntr(void);
 #define PAD_DETECT_FOLD_SHIFT 15
 
 static inline BOOL PAD_DetectFold(void) {
+#ifdef POKEBW2_PC
+    return FALSE;
+#else
     return (*(vu16 *)HW_BUTTON_XY_BUF & PAD_DETECT_FOLD_MASK) >> PAD_DETECT_FOLD_SHIFT;
+#endif
 }
 
 // The DS's owner settings

@@ -61,7 +61,7 @@ GameEventReturnCode EventFestival_Callback(GameEvent *event, u32 *state, void *d
     case 2:
         FieldSnd_DuckVolume(GameData_GetFieldSoundSystem(gameData), GameSystem_GetISS(gsys));
         EventFestival_SetupParam(&work->param, work->gsys, work->gameData, work->mode);
-        GSYS_QueueProc(gsys, OVERLAY_FESTIVAL_APP, &FMISSION_APP_PROC_FUNCTIONS, &work->param);
+        GSYS_QueueProc(gsys, OVERLAY_FESTIVAL_APP, GAME_PROC_REFERENCE(FMISSION_APP_PROC_FUNCTIONS), &work->param);
         (*state)++;
         break;
     case 3:

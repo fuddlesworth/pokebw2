@@ -420,11 +420,16 @@ static void MusicalMcss_DrawQuad(MusicalMcss *mcss, fx32 x, fx32 y, fx32 width, 
     nodeY =
         -(cellSrt->py + mcss->mcAnim.pMultiCellDataBank->pMultiCellDataArray[mcSrt->index].pHierDataArray[node].pos.y)
         << 8;
+    // BUG: a vertical-only flip leaves the angle uninitialized.
+#ifdef BUGFIX
+    rot = (flip & 1) ? 0x10000 - mcss->rotation : mcss->rotation;
+#else
     if (flip == 0) {
         rot = mcss->rotation;
     } else if (flip & 1) {
         rot = 0x10000 - mcss->rotation;
     }
+#endif
     G3_RotZ(-FX_SinIdx(rot), FX_CosIdx(rot));
     G3_Translate(nodeX, nodeY, *z);
     G3_RotZ(-FX_SinIdx(cellSrt->rotZ), FX_CosIdx(cellSrt->rotZ));

@@ -248,6 +248,12 @@ void FieldPlaceName_Free(PlaceName *wk) {
     PlaceName_FreeWork(wk);
 }
 
+#ifdef POKEBW2_PC
+BOOL FieldPlaceName_IsNativeActive(const PlaceName *wk) {
+    return wk != NULL && wk->mode >= 2 && wk->mode <= 6;
+}
+#endif
+
 void PlaceName_Main(PlaceName *wk) {
     PlaceName_IncrementTimer(wk);
     switch (PlaceName_GetMode(wk)) {
@@ -610,6 +616,12 @@ u32 PlaceName_GetForceShowRequest(PlaceName *wk) {
 }
 
 BOOL IsLocNameIdxChanged(PlaceName *wk) {
+#ifdef POKEBW2_PC
+    // The initial value is one past the zone archive. On DS its read runs into padding after the file.
+    if (wk->prevZoneId == 0x267) {
+        return TRUE;
+    }
+#endif
     u16 prev = ZoneData_GetPlaceNameID(wk->prevZoneId);
     u16 req = ZoneData_GetPlaceNameID(wk->reqZoneId);
     if (prev != req) {

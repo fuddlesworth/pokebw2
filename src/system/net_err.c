@@ -122,16 +122,22 @@ static inline int GXS_GetVisibleWnd(void) {
 }
 
 static inline GXWndPlane G2_GetWndOBJInsidePlane(void) {
-    return *(volatile GXWndPlane *)((u32)&reg_G2_WINOUT + 1);
+    // Read the live main-engine window register's high byte.
+    return *((volatile GXWndPlane *)&reg_G2_WINOUT + 1);
 }
 
 static inline GXWndPlane G2S_GetWndOBJInsidePlane(void) {
-    return *(volatile GXWndPlane *)((u32)&reg_G2S_DB_WINOUT + 1);
+    // Read the live sub-engine window register's high byte.
+    return *((volatile GXWndPlane *)&reg_G2S_DB_WINOUT + 1);
 }
 
 // NitroSDK's PAD_Read, as in key.c
 static inline u16 PAD_Read(void) {
+#ifdef POKEBW2_PC
+    return PcPad_Read();
+#else
     return (u16)(((reg_PAD_KEYINPUT | *(vu16 *)HW_BUTTON_XY_BUF) ^ PAD_ALL_MASK) & PAD_ALL_MASK);
+#endif
 }
 
 // The keys held, up cancelling down and left cancelling right, as key.c reads them

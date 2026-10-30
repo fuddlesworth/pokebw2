@@ -9,9 +9,13 @@
 #define TEXT_SPEED_MAX 5
 
 // The original has this in .data, as an explicit zero
+#ifndef POKEBW2_PC
 #pragma explicit_zero_data on
+#endif
 static SaveControl *sSaveControl = NULL;
+#ifndef POKEBW2_PC
 #pragma explicit_zero_data reset
+#endif
 
 // A negative wait prints that many characters a frame
 static const s8 sTextSpeedWaits[TEXT_SPEED_MAX] = { 3, 1, -2, -4, 6 };

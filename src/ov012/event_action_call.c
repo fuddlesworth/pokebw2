@@ -8,6 +8,7 @@
 #include "field/field_actor.h"
 #include "field/field_effect.h"
 #include "gfl/sound.h"
+#include "gfl/std.h"
 #include "nitro/fx.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
@@ -108,6 +109,11 @@ FieldActor *EventActionCall_FindActor(MMSys *mmSys, u16 actorId) {
         actor = FindActorByMoveCode(mmSys, MOVE_CODE_FOLLOW_PLAYER);
     } else if (actorId != 0xf1) {
         actor = FindFieldActor(mmSys, actorId);
+#ifdef POKEBW2_PC
+    } else {
+        GFL_DebugAssertFailEx(__FILE__, __LINE__, "Actor action requires a concrete actor ID");
+        return NULL;
+#endif
     }
     // Left unset for 0xf1, which returns whatever the register holds: the actor system
     return actor;

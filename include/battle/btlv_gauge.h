@@ -28,6 +28,13 @@ typedef enum {
 
 // studioMode is BTL_STUDIO_MODE_*: a movie's playback shows no gauges and only keeps the statuses
 BtlvGauge *BtlvGauge_Create(Font *font, u32 studioMode, HeapID heapId);
+#ifdef POKEBW2_PC
+typedef struct {
+    s32 hp, maxHp, exp, expMax;
+    u32 level, sex, status;
+} BtlvGaugeNativeState;
+BOOL BtlvGauge_GetNativeState(const BtlvGauge *gauge, u32 index, BtlvGaugeNativeState *state);
+#endif
 void BtlvGauge_Delete(BtlvGauge *gauge);
 void BtlvGauge_Update(BtlvGauge *gauge);
 // type is the battle's style, BTL_STYLE_*; index the gauge, by view position, even for the player's side

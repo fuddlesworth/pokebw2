@@ -26,8 +26,8 @@ GameEventReturnCode EventCommTvt_Callback(GameEvent *event, u32 *state, void *da
 GameEventReturnCode EventCommTvt_Callback(GameEvent *event, u32 *state, void *data) {
     EventCommTvt *work = data;
     GameSystem *gsys = work->gsys;
-    GameCommSys *comm = GSYS_GetGameCommSystem(gsys);
-    GameData *gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameCommSystem(gsys);
+    GSYS_GetGameData(gsys);
     Field *field = GSYS_GetField(gsys);
 
     switch (*state) {
@@ -43,7 +43,7 @@ GameEventReturnCode EventCommTvt_Callback(GameEvent *event, u32 *state, void *da
     case 2:
         (*state)++;
     case 3:
-        GSYS_QueueProc(gsys, OVERLAY_COMM_TVT_FIELD_APP, &COMM_TVT_FIELD_PROC_FUNCTIONS, work);
+        GSYS_QueueProc(gsys, OVERLAY_COMM_TVT_FIELD_APP, GAME_PROC_REFERENCE(COMM_TVT_FIELD_PROC_FUNCTIONS), work);
         (*state)++;
         break;
     case 4:
@@ -54,7 +54,8 @@ GameEventReturnCode EventCommTvt_Callback(GameEvent *event, u32 *state, void *da
                 break;
             case 1:
                 work->bgm = GFL_SndBGMGetID();
-                GSYS_QueueProcAsEvent(event, OVERLAY_ID(257), &COMM_TVT_PROC_FUNCTIONS, work->commParam);
+                GSYS_QueueProcAsEvent(event, OVERLAY_ID(257), GAME_PROC_REFERENCE(COMM_TVT_PROC_FUNCTIONS),
+                                      work->commParam);
                 *state = 5;
                 break;
             default:

@@ -558,6 +558,9 @@ void PokeList_UpdateLevelUp(PokeListWork *wk) {
         // Read but not used
         u32 species = PokeParty_GetParam(wk->pkm, PKM_PARAM_SPECIES, NULL);
 
+#ifdef POKEBW2_PC
+        (void)species;
+#endif
         if (CheckEvolveSpecies(wk->param->party, wk->pkm, 0, wk->param->zoneId, wk->param->season, NULL, wk->heapId) !=
             0) {
             wk->state = 19;

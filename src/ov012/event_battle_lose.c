@@ -20,7 +20,7 @@ GameEventReturnCode EventBattleLose_Callback(GameEvent *event, u32 *state, void 
         BrightnessController_SetScreenBrightness(-16, 0x37, 1);
         BrightnessController_SetScreenBrightness(-16, 0x3f, 2);
         GameBeacon_BroadcastBattleLostMission();
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(295), &BATTLE_LOSE_MESSAGE_PROC_FUNCTIONS, work);
+        GSYS_QueueProcAsEvent(event, OVERLAY_ID(295), GAME_PROC_REFERENCE(BATTLE_LOSE_MESSAGE_PROC_FUNCTIONS), work);
         (*state)++;
         break;
     case 1:

@@ -108,6 +108,31 @@ static BOOL Report_IsAvatarReady(EventSaveWork *work);
 static void Report_StartSaveIcon(EventSaveWork *work);
 static void Report_EndSaveIcon(EventSaveWork *work);
 
+#ifdef POKEBW2_PC
+static EventSaveWork *sNativeReport;
+static ReportNativePhase sNativePhase;
+static u32 sNativeSequence;
+static u32 sNativeLastSaved;
+static u16 sNativeMessage[512];
+
+BOOL Report_IsNativeActive(void) {
+    return sNativeReport != NULL;
+}
+
+BOOL Report_GetNativeState(ReportNativeState *state) {
+    if (!sNativeReport)
+        return FALSE;
+    MI_CpuFill8(state, 0, sizeof(*state));
+    state->gameSystem = sNativeReport->gameSystem;
+    state->font = MsgBGPrinter_GetFont(sNativeReport->msgBgSys);
+    state->menu = sNativeSequence == 4 ? sNativeReport->report->menu : NULL;
+    state->phase = sNativePhase;
+    state->ready = sNativeSequence == 15 || sNativeSequence == 16;
+    MI_CpuCopy8(sNativeMessage, state->message, sizeof(state->message));
+    return TRUE;
+}
+#endif
+
 u32 EventSave_Update(EventSaveWork *work, u32 *state) {
     WordSet *wordSet;
     StrBuf *str;
@@ -130,6 +155,12 @@ u32 EventSave_Update(EventSaveWork *work, u32 *state) {
             work->report->timer = 0;
             Report_CreateWindow(work);
             Report_CreateYesNoRes(work);
+#ifdef POKEBW2_PC
+            sNativeReport = work;
+            sNativePhase = REPORT_NATIVE_OPENING;
+            sNativeMessage[0] = 0xffff;
+            PlayTime_GetLastSaved(SaveControl_GetPlayTime(work->save), &sNativeLastSaved);
+#endif
             *state = REPORT_STATE_ASK;
         }
         break;
@@ -199,6 +230,10 @@ u32 EventSave_Update(EventSaveWork *work, u32 *state) {
             *state = REPORT_STATE_SAVED;
             break;
         case SAVE_RESULT_NG:
+#ifdef POKEBW2_PC
+            PlayTime_SetLastSaved(SaveControl_GetPlayTime(work->save), &sNativeLastSaved);
+            PlayTime_SetLastSaved(GameData_GetPlayTime(GSYS_GetGameData(work->gameSystem)), &sNativeLastSaved);
+#endif
             FieldSubscreen_Report_StopBar(Field_GetSubscreen(work->field));
             Report_EndSaveIcon(work);
             Report_EndPlayerSaveSeq(work);
@@ -220,6 +255,9 @@ u32 EventSave_Update(EventSaveWork *work, u32 *state) {
             GFL_StrBufFree(str);
             GFL_WordSetSystemFree(wordSet);
             Report_StartStream(work);
+#ifdef POKEBW2_PC
+            sNativePhase = REPORT_NATIVE_SAVED;
+#endif
             WaitIcon_Free(work->report->waitIcon);
             *state = REPORT_STATE_WAIT_SAVED_MESSAGE;
         }
@@ -281,10 +319,16 @@ u32 EventSave_Update(EventSaveWork *work, u32 *state) {
         FieldSubscreen_ResumeField(Field_GetSubscreen(work->field), work->heapId);
         return EVENT_SAVE_RESULT_DONE;
     }
+#ifdef POKEBW2_PC
+    sNativeSequence = *state;
+#endif
     return EVENT_SAVE_RESULT_RUNNING;
 }
 
 static void Report_Exit(EventSaveWork *work) {
+#ifdef POKEBW2_PC
+    sNativeReport = NULL;
+#endif
     Report_FreeYesNoRes(work);
     Report_FreeWindow(work);
     PrintQueue_Free(work->report->printQueue);
@@ -306,6 +350,14 @@ static void Report_FreeWindow(EventSaveWork *work) {
 }
 
 static void Report_PrintMessage(EventSaveWork *work, u32 messageId) {
+#ifdef POKEBW2_PC
+    if (messageId == 2)
+        sNativePhase = REPORT_NATIVE_CONFIRM;
+    else if (messageId == 7)
+        sNativePhase = REPORT_NATIVE_ERROR;
+    else if (messageId == 8)
+        sNativePhase = REPORT_NATIVE_BLOCKED;
+#endif
     GFL_MsgDataLoadStrbuf(work->report->msgData, messageId, work->report->strbuf);
     Report_StartStream(work);
 }
@@ -314,12 +366,19 @@ static void Report_StartStream(EventSaveWork *work) {
     ReportWork *report;
     BmpWin *window;
 
+#ifdef POKEBW2_PC
+    GFL_StrBufStoreString(work->report->strbuf, sNativeMessage, NELEMS(sNativeMessage));
+#endif
     GFL_BitmapFill(BmpWin_GetBitmap(work->report->window.window), 15);
     BmpWin_DrawFrame(work->report->window.window, 2, 1, 13);
     report = work->report;
     work->report->stream =
         PrintStream_Create(report->window.window, 0, 0, report->strbuf, MsgBGPrinter_GetFont(work->msgBgSys),
                            TextSpeed_GetCurrentWait(), report->tcbManager, 10, work->heapId, 15);
+#ifdef POKEBW2_PC
+    // The native card displays the complete message rather than the DS typewriter animation.
+    PrintStream_SetFastWait(work->report->stream, -64);
+#endif
     work->report->continued = FALSE;
     window = work->report->window.window;
     BmpWin_Transfer(window);
@@ -334,12 +393,17 @@ static BOOL Report_UpdateStream(EventSaveWork *work) {
         work->report->continued = FALSE;
         break;
     case PRINT_STREAM_PAUSED:
+#ifdef POKEBW2_PC
+        // Native confirmation buttons replace the hidden DS message's page-break prompts.
+        PrintStream_Continue(work->report->stream);
+#else
         if (work->report->continued == FALSE &&
             (GFL_HIDIsTouchPressed() == TRUE || (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)))) {
             GFL_SndSEPlay(SEQ_SE_MESSAGE);
             PrintStream_Continue(work->report->stream);
             work->report->continued = TRUE;
         }
+#endif
         break;
     case PRINT_STREAM_DONE:
         PrintStream_Delete(work->report->stream);
@@ -371,6 +435,10 @@ static void Report_PrintMessageInstant(EventSaveWork *work, u32 messageId) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->report->window.window), 15);
     BmpWin_DrawFrame(work->report->window.window, 2, 1, 13);
     str = GFL_MsgDataLoadStrbufNew(work->report->msgData, messageId);
+#ifdef POKEBW2_PC
+    sNativePhase = REPORT_NATIVE_WRITING;
+    GFL_StrBufStoreString(str, sNativeMessage, NELEMS(sNativeMessage));
+#endif
     font = MsgBGPrinter_GetFont(work->msgBgSys);
     reportWindow = &work->report->window;
     queue = work->report->printQueue;

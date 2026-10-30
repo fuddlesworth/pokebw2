@@ -32,7 +32,8 @@ GameEventReturnCode EventResearchRadar_Callback(GameEvent *event, u32 *state, vo
         *state = 2;
         break;
     case 2:
-        GSYS_QueueProc(gsys, OVERLAY_RESEARCH_RADAR_APP, &RESEARCH_RADAR_PROC_FUNCTIONS, work->param);
+        GSYS_QueueProc(gsys, OVERLAY_RESEARCH_RADAR_APP, GAME_PROC_REFERENCE(RESEARCH_RADAR_PROC_FUNCTIONS),
+                       work->param);
         *state = 3;
         break;
     case 3:

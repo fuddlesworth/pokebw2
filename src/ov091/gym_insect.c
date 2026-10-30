@@ -461,8 +461,6 @@ static void GymInsect_EndRide(GymInsectWork *wk, RideWork *ride) {
 // Moves the player and the ride's model to the curve's current frame
 static void GymInsect_UpdateRide(GymInsectWork *wk, RideWork *ride) {
     VecFx32 pos = { 0, 0, 0 };
-    VecFx32 rotation;
-    VecFx32 scale;
     SRTMatrix *matrix;
 
     if (GFL_G3DCurveGetNowTranslationLoop(ride->curve, &pos, ride->frame) == FALSE) {

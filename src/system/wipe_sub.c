@@ -1246,7 +1246,7 @@ static fx32 WipeSub_GetTanHeight(s32 angle, s32 width) {
 
 // The step a value moves each division, with 7 fraction bits
 static s32 WipeSub_GetStep(s32 start, s32 end, s32 division) {
-    return ((end - start) << 7) / division;
+    return ((end - start) * 128) / division;
 }
 
 // Dead-stripped, only this function: x moved by offset, kept on the screen
@@ -1312,8 +1312,8 @@ static void WipeBright_Init(WipeScreen *screen, BOOL cover) {
     work->division = screen->division;
     work->sync = screen->sync;
     work->syncCount = 0;
-    work->value = start << 7;
-    work->end = end << 7;
+    work->value = start * 128;
+    work->end = end * 128;
     work->step = WipeSub_GetStep(start, end, screen->division);
     work->screen = screen->screen;
     work->brightness = start;

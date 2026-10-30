@@ -260,12 +260,23 @@ void BtlvClact_StartMove(BtlvClact *wk, int index, int type, ClActorPos *pos, in
     ClActorPos current;
 
     if (wk->entries[index].actor != NULL) {
+#ifdef POKEBW2_PC
+        // Effect scripts move sprites above and left of the origin; signed shifts are undefined for those positions.
+        end.x = pos->x * FX32_ONE;
+        end.y = pos->y * FX32_ONE;
+#else
         end.x = pos->x << FX32_SHIFT;
         end.y = pos->y << FX32_SHIFT;
+#endif
         end.z = 0;
         ClActor_GetSurfacePos(wk->entries[index].actor, &current, CLACT_SURFACE_MAIN);
+#ifdef POKEBW2_PC
+        start.x = current.x * FX32_ONE;
+        start.y = current.y * FX32_ONE;
+#else
         start.x = current.x << FX32_SHIFT;
         start.y = current.y << FX32_SHIFT;
+#endif
         start.z = 0;
         if (type == 1) {
             end.x += start.x;

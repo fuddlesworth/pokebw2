@@ -16,8 +16,8 @@
 // dwc/ac.h.
 
 // The allocator and the deallocator of a request, with a name (0 here) first, as DWC_Alloc and DWC_Free take them
-typedef void *(*DWCAuthAlloc)(unsigned long name, long size);
-typedef void (*DWCAuthFree)(unsigned long name, void *ptr, long size);
+typedef void *(*DWCAuthAlloc)(u32 name, s32 size);
+typedef void (*DWCAuthFree)(u32 name, void *ptr, s32 size);
 
 // A text of the HTTP client: where it starts, where the next byte goes, where it ends, and its size
 typedef struct DWCHttpBuffer {

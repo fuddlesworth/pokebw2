@@ -52,4 +52,14 @@ void PokedexInfo_SetPokemonInLanguage(PokedexInfo *info, u16 species, u16 form, 
 void PokedexInfo_Hide(PokedexInfo *info);
 void PokedexInfo_Show(PokedexInfo *info);
 
+#ifdef POKEBW2_PC
+typedef struct {
+    u32 charArc, charFile;
+    u32 sharedArc, cellFile, paletteFile;
+} PokedexNativeFootprintResources;
+void PokedexInfo_GetNativeFootprintResources(u32 species, u32 form, PokedexNativeFootprintResources *resources);
+void PokedexInfo_GetNativeLanguageBanks(u32 language, u16 *names, u16 *categories, u16 *entries);
+void PokedexInfo_LoadNativeTypeCharacters(u32 type, u32 language, u8 *tiles);
+#endif
+
 #endif // POKEBW2_APP_POKEDEX_INFO_H

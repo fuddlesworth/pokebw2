@@ -1,0 +1,58 @@
+diff --git a/libraries/sim7/src/snd/snd_exchannel.c b/libraries/sim7/src/snd/snd_exchannel.c
+index 6f43a29..eddf011 100644
+--- a/libraries/sim7/src/snd/snd_exchannel.c
++++ b/libraries/sim7/src/snd/snd_exchannel.c
+@@ -19,7 +19,7 @@
+ 
+ #define SND_ENV_DECAY_RATIO ( 1 << SND_EX_CHANNEL_ENV_DECAY_SHIFT )
+ 
+-#define SND_EX_CHANNEL_ENVDECAY_INIT ( SND_VOLUME_DB_MIN << SND_EX_CHANNEL_ENV_DECAY_SHIFT )
++#define SND_EX_CHANNEL_ENVDECAY_INIT ( SND_VOLUME_DB_MIN * (1 << SND_EX_CHANNEL_ENV_DECAY_SHIFT) )
+ #define SND_EX_CHANNEL_KEY_INIT          60
+ #define SND_EX_CHANNEL_ORIGINAL_KEY_INIT 60
+ #define SND_EX_CHANNEL_VELOCITY_INIT    127
+@@ -192,7 +192,7 @@ void SND_ExChannelMain(BOOL doPeriodicProc)
+ 
+         decay += SND_CalcDecibelSquare(ch_p->velocity);
+ 
+-        pitch += (ch_p->key - ch_p->original_key) << SND_PITCH_DIVISION_BIT;
++        pitch += (ch_p->key - ch_p->original_key) * (1 << SND_PITCH_DIVISION_BIT);
+ 
+         decay += SND_UpdateExChannelEnvelope(ch_p, doPeriodicProc);
+ 
+@@ -361,7 +361,7 @@ s32 SND_UpdateExChannelEnvelope(SNDExChannel *ch_p, BOOL doPeriodicProc)
+         case SND_ENV_DECAY:
+             {
+                 const s32 sustain_decay =
+-                    SND_CalcDecibelSquare(ch_p->sustain) << SND_EX_CHANNEL_ENV_DECAY_SHIFT;
++                    SND_CalcDecibelSquare(ch_p->sustain) * (1 << SND_EX_CHANNEL_ENV_DECAY_SHIFT);
+ 
+                 ch_p->env_decay -= ch_p->decay;
+                 if (ch_p->env_decay > sustain_decay)
+diff --git a/libraries/sim7/src/snd/snd_seq.c b/libraries/sim7/src/snd/snd_seq.c
+index 3adda94..6b00d2e 100644
+--- a/libraries/sim7/src/snd/snd_seq.c
++++ b/libraries/sim7/src/snd/snd_seq.c
+@@ -1058,7 +1058,7 @@ static void NoteOnCommandProc(SNDTrack *track_p,
+ 
+     if (track_p->porta_flag)
+     {
+-        ch_p->sweep_pitch += (s16)((track_p->porta_key - key) << SND_PITCH_DIVISION_BIT);
++        ch_p->sweep_pitch += (s16)((track_p->porta_key - key) * (1 << SND_PITCH_DIVISION_BIT));
+     }
+     if (track_p->porta_time == 0)
+     {
+@@ -1459,11 +1459,11 @@ static int TrackSeqMain(SNDTrack *track_p, SNDPlayer *player_p, int trackNo, BOO
+                         case SND_MML_SHIFTVAR:
+                             if (arg >= 0)
+                             {
+-                                *varPtr <<= arg;
++                                *varPtr = arg < 32 ? (s16)((u32)(u16)*varPtr << arg) : 0;
+                             }
+                             else
+                             {
+-                                *varPtr >>= -arg;
++                                *varPtr = arg > -32 ? *varPtr >> -arg : (*varPtr < 0 ? -1 : 0);
+                             }
+                             break;
+ 

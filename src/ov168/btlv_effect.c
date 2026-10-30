@@ -287,7 +287,7 @@ void BtlvEffect_Init(BtlvEffectSetup *setup, Font *font, HeapID heapId) {
 
     bgData = GFL_ArcSysReadHeapNew(ARCID_BATTLE_BG_DATA, 0, HEAPID_TAIL(sBtlvEffect->heapId));
     season = 0;
-    if (bgData[setup->fieldEnv.bgType].seasonal * 2) {
+    if ((bgData[setup->fieldEnv.bgType].seasonal * 2) != 0) {
         season = setup->fieldEnv.season;
     }
     sBtlvEffect->stage =

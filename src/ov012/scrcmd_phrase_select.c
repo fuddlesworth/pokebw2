@@ -100,7 +100,7 @@ static GameEventReturnCode EventPhraseSelect_Callback(GameEvent *event, u32 *sta
         if (pms == NULL) {
             return GAMEEVENT_DONE;
         }
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(185), &PMS_INPUT_PROC_FUNCTIONS, pms);
+        GSYS_QueueProcAsEvent(event, OVERLAY_ID(185), GAME_PROC_REFERENCE(PMS_INPUT_PROC_FUNCTIONS), pms);
         (*state)++;
         break;
     case 1:

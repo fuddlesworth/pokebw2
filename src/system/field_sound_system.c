@@ -609,7 +609,7 @@ static void FieldSnd_NextCommand(FieldSound *fieldSound) {
 }
 
 static void FieldSnd_SetCommand(FieldSound *fieldSound, const FieldSoundRequest *request) {
-    switch (request->command) {
+    switch ((int)request->command) {
     case FIELD_SND_FADE_IN:
         FieldSnd_SetCommandFadeIn(fieldSound, request->fadeInFrames);
         break;
@@ -692,7 +692,7 @@ static BOOL FieldSnd_IsCommandPermitted(FieldSound *fieldSound, FieldSoundComman
 }
 
 static void FieldSnd_Control_Init(FieldSound *fieldSound) {
-    switch (fieldSound->command) {
+    switch ((int)fieldSound->command) {
     case FIELD_SND_BGM_POP:
         FieldSnd_BGMPop(fieldSound);
         FieldSnd_CmdFadeIn(fieldSound);
@@ -713,7 +713,7 @@ static void FieldSnd_Control_Init(FieldSound *fieldSound) {
 }
 
 static void FieldSnd_Control_Playing(FieldSound *fieldSound) {
-    switch (fieldSound->command) {
+    switch ((int)fieldSound->command) {
     case FIELD_SND_FADE_IN:
         FieldSnd_DiscardCommand(fieldSound);
         break;
@@ -758,7 +758,7 @@ static void FieldSnd_Control_Playing(FieldSound *fieldSound) {
 }
 
 static void FieldSnd_Control_Idle(FieldSound *fieldSound) {
-    switch (fieldSound->command) {
+    switch ((int)fieldSound->command) {
     case FIELD_SND_CMD_NULL:
         break;
     case FIELD_SND_FADE_IN:
@@ -790,7 +790,7 @@ static void FieldSnd_Control_PopFinish(FieldSound *fieldSound) {
 
 // A push while the BGM changes waits for the change to finish
 static void FieldSnd_Control_ChangeOut(FieldSound *fieldSound) {
-    switch (fieldSound->command) {
+    switch ((int)fieldSound->command) {
     case FIELD_SND_CMD_NULL:
         break;
     case FIELD_SND_BGM_PUSH:
@@ -802,7 +802,7 @@ static void FieldSnd_Control_ChangeOut(FieldSound *fieldSound) {
 }
 
 static void FieldSnd_Control_ChangeIn(FieldSound *fieldSound) {
-    switch (fieldSound->command) {
+    switch ((int)fieldSound->command) {
     case FIELD_SND_CMD_NULL:
         break;
     case FIELD_SND_BGM_PUSH:

@@ -144,15 +144,13 @@ void EventPhraseInput_StoreResult(struct EventPhraseInputData *data, NameEntryPa
 }
 
 BOOL Scrcmd_PhraseInput_CheckWifiListFlags(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work;
-    GameSystem *gsys;
     GameData *gameData;
     u16 input;
     u16 *result;
     DreamWorldSave *save;
 
-    work = FieldScriptEnv_GetScriptWork(env);
-    gsys = FieldScriptEnv_GetGameSystem(env);
+    FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetGameSystem(env);
     gameData = FieldScriptEnv_GetGameData(env);
     input = ScriptReadAny(vm, env);
     ScriptReadAny(vm, env);
@@ -170,8 +168,6 @@ BOOL Scrcmd_PhraseInput_CheckWifiListFlags(VM *vm, FieldScriptEnv *env) {
 }
 
 BOOL Scrcmd_PhraseInput_WifiListOperation(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work;
-    GameSystem *gsys;
     GameData *gameData;
     u16 input;
     u16 input2;
@@ -180,8 +176,8 @@ BOOL Scrcmd_PhraseInput_WifiListOperation(VM *vm, FieldScriptEnv *env) {
     u8 i;
     u16 *value;
 
-    work = FieldScriptEnv_GetScriptWork(env);
-    gsys = FieldScriptEnv_GetGameSystem(env);
+    FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetGameSystem(env);
     gameData = FieldScriptEnv_GetGameData(env);
     input = ScriptReadAny(vm, env);
     input2 = ScriptReadAny(vm, env);
@@ -226,7 +222,6 @@ BOOL Scrcmd_PhraseInput_WifiListOperation(VM *vm, FieldScriptEnv *env) {
 
 BOOL Scrcmd_PhraseInput_SetWifiFriendNameWord(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work;
-    GameSystem *gsys;
     GameData *gameData;
     HeapID heapId;
     WordSet *wordSet;
@@ -237,7 +232,7 @@ BOOL Scrcmd_PhraseInput_SetWifiFriendNameWord(VM *vm, FieldScriptEnv *env) {
     StrBuf *strbuf;
 
     work = FieldScriptEnv_GetScriptWork(env);
-    gsys = FieldScriptEnv_GetGameSystem(env);
+    FieldScriptEnv_GetGameSystem(env);
     gameData = FieldScriptEnv_GetGameData(env);
     heapId = FieldScriptEnv_GetHeapID(env);
     wordSet = ScriptWork_GetWordSet(work);

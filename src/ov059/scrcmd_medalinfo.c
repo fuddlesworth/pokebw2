@@ -46,9 +46,9 @@ BOOL Scrcmd_Medalinfo_ShowMedalInfo(VM *vm, FieldScriptEnv *env) {
     param->mode = 0;
     param->gameData = gameData;
     param->gsys = gsys;
-    ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(gsys, field, OVERLAY_MEDAL_INFO,
-                                                                                 &MedalInfo_ProcFunctions, param,
-                                                                                 ResortCmd_FreeMedalInfo, param));
+    ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(
+                                   gsys, field, OVERLAY_MEDAL_INFO, GAME_PROC_REFERENCE(MedalInfo_ProcFunctions), param,
+                                   ResortCmd_FreeMedalInfo, param));
     return TRUE;
 }
 

@@ -1,3 +1,6 @@
+#ifdef POKEBW2_PC
+#include "host_settings.h"
+#endif
 #include "types.h"
 #include "app/game_start.h"
 #include "app/name_entry.h"
@@ -200,15 +203,15 @@ const GameProcFunctions DEBUG_GAME_START_PROC_FUNCTIONS = { DebugGameStart_Init,
                                                             DebugGameStart_Exit };
 
 void GameStart_NewGame(void) {
-    GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), &NEW_GAME_PROC_FUNCTIONS, NULL);
+    GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(NEW_GAME_PROC_FUNCTIONS), NULL);
 }
 
 void GameStart_ContinueCGearOff(void) {
-    GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), &CONTINUE_PROC_FUNCTIONS, (void *)CONTINUE_CGEAR_OFF);
+    GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(CONTINUE_PROC_FUNCTIONS), (void *)CONTINUE_CGEAR_OFF);
 }
 
 void GameStart_ContinueCGearOn(void) {
-    GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), &CONTINUE_PROC_FUNCTIONS, (void *)CONTINUE_CGEAR_ON);
+    GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(CONTINUE_PROC_FUNCTIONS), (void *)CONTINUE_CGEAR_ON);
 }
 
 static BOOL NewGame_Init(GameProc *proc, u32 *state, void *param, void *work) {
@@ -269,9 +272,13 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
 
     SaveControlIntr_Update(wk->saveTask);
     running = GFL_ProcMgrUpdate(wk->procManager);
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping())
+        return !running;
+#endif
     switch (*state) {
     case NEW_GAME_INTRO:
-        QueueGameProc(wk->procManager, OVERLAY_ID(294), &INTRO_PROC_FUNCTIONS, &wk->introParam);
+        QueueGameProc(wk->procManager, OVERLAY_ID(294), GAME_PROC_REFERENCE(INTRO_PROC_FUNCTIONS), &wk->introParam);
         *state = NEW_GAME_WAIT_INTRO;
         break;
     case NEW_GAME_WAIT_INTRO:
@@ -283,7 +290,8 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
     case NEW_GAME_NAME_ENTRY:
         wk->nameEntryParam->gender = getTrainerGender(wk->playerInfo);
         wk->nameEntryParam->saveTask = wk->saveTask;
-        QueueGameProc(wk->procManager, OVERLAY_ID(280), &NAME_ENTRY_PROC_FUNCTIONS, wk->nameEntryParam);
+        QueueGameProc(wk->procManager, OVERLAY_ID(280), GAME_PROC_REFERENCE(NAME_ENTRY_PROC_FUNCTIONS),
+                      wk->nameEntryParam);
         *state = NEW_GAME_WAIT_NAME_ENTRY;
         break;
     case NEW_GAME_WAIT_NAME_ENTRY:
@@ -295,7 +303,7 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
     case NEW_GAME_INTRO_PLAYER_NAMED:
         NewGame_SetUpPlayer(wk->newPlayerInfo, wk->nameEntryParam->name, getTrainerGender(wk->newPlayerInfo));
         wk->introParam.mode = INTRO_MODE_PLAYER_NAMED;
-        QueueGameProc(wk->procManager, OVERLAY_ID(294), &INTRO_PROC_FUNCTIONS, &wk->introParam);
+        QueueGameProc(wk->procManager, OVERLAY_ID(294), GAME_PROC_REFERENCE(INTRO_PROC_FUNCTIONS), &wk->introParam);
         *state = NEW_GAME_WAIT_INTRO_PLAYER_NAMED;
         break;
     case NEW_GAME_WAIT_INTRO_PLAYER_NAMED:
@@ -319,7 +327,8 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
         GFL_StrBufFree(name);
         GFL_MsgDataFree(msgData);
         wk->nameEntryParam->mode = NAME_ENTRY_RIVAL;
-        QueueGameProc(wk->procManager, OVERLAY_ID(280), &NAME_ENTRY_PROC_FUNCTIONS, wk->nameEntryParam);
+        QueueGameProc(wk->procManager, OVERLAY_ID(280), GAME_PROC_REFERENCE(NAME_ENTRY_PROC_FUNCTIONS),
+                      wk->nameEntryParam);
         *state = NEW_GAME_WAIT_RIVAL_NAME_ENTRY;
         break;
     case NEW_GAME_WAIT_RIVAL_NAME_ENTRY:
@@ -331,7 +340,7 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
     case NEW_GAME_INTRO_RIVAL_NAMED:
         GFL_StrBufStoreString(wk->nameEntryParam->name, wk->rivalName, NELEMS(wk->rivalName));
         wk->introParam.mode = INTRO_MODE_RIVAL_NAMED;
-        QueueGameProc(wk->procManager, OVERLAY_ID(294), &INTRO_PROC_FUNCTIONS, &wk->introParam);
+        QueueGameProc(wk->procManager, OVERLAY_ID(294), GAME_PROC_REFERENCE(INTRO_PROC_FUNCTIONS), &wk->introParam);
         *state = NEW_GAME_WAIT_INTRO_RIVAL_NAMED;
         break;
     case NEW_GAME_WAIT_INTRO_RIVAL_NAMED:
@@ -360,6 +369,18 @@ static BOOL NewGame_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     VecFx32 spawnPos = { 0, 0, 0 };
     GameSystemProcData *procData;
 
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping()) {
+        GFL_SndBGMStack_Unload(wk->preloadedSeqs);
+        SaveControlIntr_Free(wk->saveTask);
+        GFL_HeapFree(wk->newPlayerInfo);
+        GFL_HeapFree(wk->newConfig);
+        FreeGameProcManager(wk->procManager);
+        NameEntryParam_Free(wk->nameEntryParam);
+        GFL_ProcReleaseSubsystem(proc);
+        return TRUE;
+    }
+#endif
     GFL_SndBGMStack_Unload(wk->preloadedSeqs);
     SaveControlIntr_Free(wk->saveTask);
     PlayerInfo_Copy(wk->newPlayerInfo, SaveControl_GetPlayerInfo(save));
@@ -372,7 +393,7 @@ static BOOL NewGame_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     procData = GameSystem_CreateProcData(GAME_ENTRYPOINT_OPENING, 0, &spawnPos, 0);
     NameEntryParam_Free(wk->nameEntryParam);
     GFL_ProcReleaseSubsystem(proc);
-    GCTX_ProcMgrReplaceProc(OVERLAY_NONE, &GAMESYSTEM_PROC_FUNCTIONS, procData);
+    GCTX_ProcMgrReplaceProc(OVERLAY_NONE, GAME_PROC_REFERENCE(GAMESYSTEM_PROC_FUNCTIONS), procData);
     return TRUE;
 }
 
@@ -391,11 +412,11 @@ static BOOL Continue_Main(GameProc *proc, u32 *state, void *param, void *work) {
 
     switch (*state) {
     case 0:
-        if ((u32)param == CONTINUE_DEBUG) {
-            GCTX_ProcMgrQueueProc(OVERLAY_NONE, &DEBUG_GAME_START_PROC_FUNCTIONS, wk);
-        } else if ((u32)param == CONTINUE_CGEAR_OFF) {
+        if ((uptr)param == CONTINUE_DEBUG) {
+            GCTX_ProcMgrQueueProc(OVERLAY_NONE, GAME_PROC_REFERENCE(DEBUG_GAME_START_PROC_FUNCTIONS), wk);
+        } else if ((uptr)param == CONTINUE_CGEAR_OFF) {
             Config_SetCGearOn(wk->config, FALSE);
-        } else if ((u32)param == CONTINUE_CGEAR_ON) {
+        } else if ((uptr)param == CONTINUE_CGEAR_ON) {
             Config_SetCGearOn(wk->config, TRUE);
         }
         (*state)++;
@@ -418,10 +439,13 @@ static BOOL Continue_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     gameInfoValues[0] = TrainerGameInfo_GetStartMenuFlags(wk->gameInfo);
     gameInfoValues[1] = TrainerGameInfo_GetKeyNotice(wk->gameInfo);
     SaveControl_Reload(save);
+#ifdef POKEBW2_PC
+    PcSettings_ApplyGame((Config *)getTrainerDataBlkAddress(save));
+#endif
     Config_ApplyMsgLanguage((Config *)getTrainerDataBlkAddress(save));
     SaveControl_GetPlayerLocation(save, &location);
     GCTX_ProcMgrReplaceProc(
-        OVERLAY_NONE, &GAMESYSTEM_PROC_FUNCTIONS,
+        OVERLAY_NONE, GAME_PROC_REFERENCE(GAMESYSTEM_PROC_FUNCTIONS),
         GameSystem_CreateProcData(GAME_ENTRYPOINT_FIELD_CONTINUE, location.zoneId, &location.pos, location.unk18));
     Config_SetCGearOn(wk->config, cgearOn);
     TrainerGameInfo_SetStartMenuFlags(wk->gameInfo, gameInfoValues[0]);

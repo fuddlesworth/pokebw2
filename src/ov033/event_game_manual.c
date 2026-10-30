@@ -33,8 +33,8 @@ GameEventReturnCode EventGameManual_Main(GameEvent *event, u32 *state, void *dat
     work = data;
     switch (*state) {
     case 0:
-        next =
-            EventFieldSubprocessTransition_Create(work->gsys, work->field, 0x13f, &gManualProcFunctions, work->subwork);
+        next = EventFieldSubprocessTransition_Create(work->gsys, work->field, 0x13f,
+                                                     GAME_PROC_REFERENCE(gManualProcFunctions), work->subwork);
         GameEvent_ChainNext(event, next);
         (*state)++;
         break;

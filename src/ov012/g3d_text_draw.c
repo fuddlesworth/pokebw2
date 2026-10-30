@@ -37,7 +37,7 @@ static void G3DTextDraw_StringToTexture(G3DTextDrawWork *work, const StrBuf *tex
                                         HeapID heapId);
 static void G3DTextDraw_ConvertPalette(G3DTextDrawWork *work, const void *palette);
 
-BOOL G3DTextDraw_CreateResource(G3DResource *texture, const char *texName, u32 palette, const char *plName,
+BOOL G3DTextDraw_CreateResource(G3DResource *texture, const char *texName, uptr palette, const char *plName,
                                 const StrBuf *text, u16 x, u16 y, u16 color, HeapID heapId,
                                 G3DTextDrawResource *resource) {
     G3DTextDrawResource res;

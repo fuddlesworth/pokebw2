@@ -87,7 +87,7 @@ GameEventReturnCode EventWorldTrade_Callback(GameEvent *event, u32 *state, void 
         *state = 3;
         break;
     case 3:
-        GSYS_QueueProc(wk->gsys, OVERLAY_WORLDTRADE, &WORLDTRADE_PROC_FUNCTIONS, &wk->param);
+        GSYS_QueueProc(wk->gsys, OVERLAY_WORLDTRADE, GAME_PROC_REFERENCE(WORLDTRADE_PROC_FUNCTIONS), &wk->param);
         *state = 4;
         break;
     case 4:

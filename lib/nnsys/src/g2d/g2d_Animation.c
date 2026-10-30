@@ -53,7 +53,11 @@ static inline BOOL ShouldAnmCtrlMoveNext_(const NNSG2dAnimController *animCtrl) 
 }
 
 static inline u16 GetCurrentFrameIdx_(const NNSG2dAnimController *animCtrl) {
+#ifdef POKEBW2_PC
+    return animCtrl->pCurrent - animCtrl->pAnimSequence->pAnmFrameArray;
+#else
     return ((u32)animCtrl->pCurrent - (u32)animCtrl->pAnimSequence->pAnmFrameArray) / sizeof(NNSG2dAnimFrameData);
+#endif
 }
 
 // At the sequence's end: calls back if asked to, then loops or stops
@@ -121,6 +125,10 @@ static inline void CallbackFuncHandling_(const NNSG2dCallBackFunctor *functor, u
     case NNS_G2D_ANMCALLBACKTYPE_EVER_FRM:
         functor->pFunc(functor->param, frameIdx);
         break;
+#ifdef POKEBW2_PC
+    default:
+        break;
+#endif
     }
 }
 
@@ -203,7 +211,7 @@ void NNS_G2dBindAnimCtrl(NNSG2dAnimController *animCtrl, const NNSG2dAnimSequenc
     NNS_G2dResetAnimCtrlState(animCtrl);
 }
 
-void NNS_G2dSetAnimCtrlCallBackFunctor(NNSG2dAnimController *animCtrl, NNSG2dAnmCallbackType type, u32 param,
+void NNS_G2dSetAnimCtrlCallBackFunctor(NNSG2dAnimController *animCtrl, NNSG2dAnmCallbackType type, uptr param,
                                        NNSG2dAnmCallBackPtr pFunc) {
     animCtrl->callbackFunctor.pFunc = pFunc;
     animCtrl->callbackFunctor.param = param;
@@ -211,8 +219,8 @@ void NNS_G2dSetAnimCtrlCallBackFunctor(NNSG2dAnimController *animCtrl, NNSG2dAnm
     animCtrl->callbackFunctor.frameIdx = 0;
 }
 
-void NNS_G2dSetAnimCtrlCallBackFunctorAtAnimFrame(NNSG2dAnimController *animCtrl, u32 param, NNSG2dAnmCallBackPtr pFunc,
-                                                  u16 frameIdx) {
+void NNS_G2dSetAnimCtrlCallBackFunctorAtAnimFrame(NNSG2dAnimController *animCtrl, uptr param,
+                                                  NNSG2dAnmCallBackPtr pFunc, u16 frameIdx) {
     animCtrl->callbackFunctor.type = NNS_G2D_ANMCALLBACKTYPE_SPEC_FRM;
     animCtrl->callbackFunctor.pFunc = pFunc;
     animCtrl->callbackFunctor.param = param;

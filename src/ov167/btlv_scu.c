@@ -89,6 +89,10 @@ typedef struct BtlvScuAbilityWin {
 } BtlvScuAbilityWin;   // size 0x24
 
 struct BtlvScu {
+#ifdef POKEBW2_PC
+    u16 nativeMessage[1024];
+    u32 nativeStatsMode;
+#endif
     BmpWin *msgWin;                    // 0x000 BG1
     GFLBitmap *msgBitmap;              // 0x004
     BmpWin *statWin;                   // 0x008 the level-up stats window, BG3
@@ -390,6 +394,9 @@ BtlvScu *BtlvScu_Create(BtlvCore *core, BtlMainModule *mainModule, BtlPokeCon *p
     BtlvScu *scu = GFL_HeapAllocate(heapId, sizeof(BtlvScu), TRUE, "btlv_scu.c", 351);
 
     scu->core = core;
+#ifdef POKEBW2_PC
+    scu->nativeMessage[0] = 0xffff;
+#endif
     scu->mainModule = mainModule;
     scu->pokeCon = pokeCon;
     scu->heapId = heapId;
@@ -1803,6 +1810,9 @@ static u16 BtlvScu_GetSendOutMsg(BtlvScu *scu, u8 count) {
 void BtlvScu_PrintMsgAtOnce(BtlvScu *scu, const StrBuf *strbuf) {
     u16 color = BtlvScu_GetClearColor(scu, 12);
 
+#ifdef POKEBW2_PC
+    GFL_StrBufStoreString(strbuf, scu->nativeMessage, NELEMS(scu->nativeMessage));
+#endif
     GFL_BitmapFill(scu->msgBitmap, color);
     GFL_TextRndUpdateColorIndexLUT(1, 9, color);
     GFL_TextRendererDrawToBitmap(scu->msgBitmap, 0, 0, strbuf, scu->font);
@@ -1819,6 +1829,9 @@ void BtlvScu_PrintMsgAtOnce(BtlvScu *scu, const StrBuf *strbuf) {
 void BtlvScu_StartMsg(BtlvScu *scu, const StrBuf *strbuf, u16 wait, BtlvMsgCallback callback) {
     u16 color = BtlvScu_GetClearColor(scu, 12);
 
+#ifdef POKEBW2_PC
+    GFL_StrBufStoreString(strbuf, scu->nativeMessage, NELEMS(scu->nativeMessage));
+#endif
     GFL_BitmapFill(scu->msgBitmap, color);
     GFL_TextRndUpdateColorIndexLUT(1, 9, color);
     scu->printStream =
@@ -2894,6 +2907,9 @@ static BOOL BtlvScu_LevelUpWinOpenProc(s32 *seq, void *arg) {
     case 1:
         BtlString_FormatLevelUpGains(scu->strbuf, scu->levelUp.hp, scu->levelUp.attack, scu->levelUp.defense,
                                      scu->levelUp.spAttack, scu->levelUp.spDefense, scu->levelUp.speed);
+#ifdef POKEBW2_PC
+        scu->nativeStatsMode = 1;
+#endif
         GFL_TextRendererDrawToBitmap(scu->statBitmap, 0, 0, scu->strbuf, scu->font);
         (*seq)++;
         break;
@@ -2920,6 +2936,9 @@ static BOOL BtlvScu_LevelUpWinStatsProc(s32 *seq, void *arg) {
     switch (*seq) {
     case 0:
         BattleMon_GetSrcStats(scu->levelUpMon, &scu->levelUp);
+#ifdef POKEBW2_PC
+        scu->nativeStatsMode = 2;
+#endif
         BtlString_FormatLevelUpStats(scu->strbuf, scu->levelUp.hp, scu->levelUp.attack, scu->levelUp.defense,
                                      scu->levelUp.spAttack, scu->levelUp.spDefense, scu->levelUp.speed);
         GFL_BitmapFill(scu->statBitmap, 0xC);
@@ -2949,6 +2968,9 @@ static BOOL BtlvScu_LevelUpWinCloseProc(s32 *seq, void *arg) {
     switch (*seq) {
     case 0:
         x = BmpWin_GetPosX(scu->statWin) - 1;
+#ifdef POKEBW2_PC
+        scu->nativeStatsMode = 0;
+#endif
         y = BmpWin_GetPosY(scu->statWin) - 1;
         width = BmpWin_GetSizeX(scu->statWin) + 2;
         height = BmpWin_GetSizeY(scu->statWin) + 2;
@@ -2978,6 +3000,20 @@ static u16 BtlvScu_GetClearColor(BtlvScu *scu, u16 color) {
 }
 
 static void BtlvScu_ClearMsgWin(BtlvScu *scu) {
+#ifdef POKEBW2_PC
+    scu->nativeMessage[0] = 0xffff;
+#endif
     GFL_BitmapFill(scu->msgBitmap, BtlvScu_GetClearColor(scu, 0xC));
     BmpWin_FlushChar(scu->msgWin);
 }
+
+#ifdef POKEBW2_PC
+const u16 *BtlvScu_GetNativeMessage(const BtlvScu *scu) {
+    return scu->nativeMessage;
+}
+
+u32 BtlvScu_GetNativeStats(const BtlvScu *scu, BattleMonLevelUp *stats) {
+    *stats = scu->levelUp;
+    return scu->nativeStatsMode;
+}
+#endif

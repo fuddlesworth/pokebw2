@@ -14,8 +14,8 @@ typedef struct {
 } NNSiMemRegion;
 
 // The address of p, for arithmetic
-static inline u32 NNSiGetUIntPtr(const void *p) {
-    return (u32)p;
+static inline uptr NNSiGetUIntPtr(const void *p) {
+    return (uptr)p;
 }
 
 // How many bytes lie from from up to to

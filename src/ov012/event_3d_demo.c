@@ -51,7 +51,7 @@ GameEventReturnCode Event3DDemo_Callback(GameEvent *event, u32 *state, void *dat
         }
         break;
     case 2:
-        GSYS_QueueProc(work->gameSystem, OVERLAY_DEMO3D, &gDemo3DProcFunctions, &work->param);
+        GSYS_QueueProc(work->gameSystem, OVERLAY_DEMO3D, GAME_PROC_REFERENCE(gDemo3DProcFunctions), &work->param);
         (*state)++;
         break;
     case 3:

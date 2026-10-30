@@ -121,7 +121,11 @@ BOOL Scrcmd_FieldActor_ActorCmdExec(VM *vm, FieldScriptEnv *env) {
     if (actor == NULL) {
         return FALSE;
     }
+#ifdef POKEBW2_PC
+    FieldScriptEnv_AddAcmdTask(env, FieldAcmdTCB_Create(actor, (const u32 *)(vm->pc + (s32)offset)));
+#else
     FieldScriptEnv_AddAcmdTask(env, FieldAcmdTCB_Create(actor, (const u32 *)(vm->pc + offset)));
+#endif
     return FALSE;
 }
 

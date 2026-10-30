@@ -33,9 +33,13 @@ static BOOL StartMenuEventInit(GameProc *proc, u32 *state, void *param, void *wo
 // Never ends: the title screen's process is queued after it, and once that ends it starts over, showing only the
 // copyright notice of the boot screens
 static BOOL StartMenuEventTick(GameProc *proc, u32 *state, void *param, void *work) {
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping())
+        return TRUE;
+#endif
     switch (*state) {
     case 0:
-        GCTX_ProcMgrQueueProc(OVERLAY_ID(162), &BOOT_SCREENS_PROC_FUNCTIONS, &sBootScreensParam);
+        GCTX_ProcMgrQueueProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(BOOT_SCREENS_PROC_FUNCTIONS), &sBootScreensParam);
         *state = 1;
         break;
     case 1:
@@ -43,17 +47,17 @@ static BOOL StartMenuEventTick(GameProc *proc, u32 *state, void *param, void *wo
         sCDemoParam.demo = CDEMO_GF_LOGO;
         sCDemoParam.canSkip = TRUE;
         sCDemoParam.skipped = FALSE;
-        GCTX_ProcMgrQueueProc(OVERLAY_ID(264), &CDEMO_PROC_FUNCTIONS, &sCDemoParam);
+        GCTX_ProcMgrQueueProc(OVERLAY_ID(264), GAME_PROC_REFERENCE(CDEMO_PROC_FUNCTIONS), &sCDemoParam);
         *state = 2;
         break;
     case 2:
         sCDemoParam.demo = CDEMO_OPENING;
         sCDemoParam.skipped = FALSE;
-        GCTX_ProcMgrQueueProc(OVERLAY_ID(264), &CDEMO_PROC_FUNCTIONS, &sCDemoParam);
+        GCTX_ProcMgrQueueProc(OVERLAY_ID(264), GAME_PROC_REFERENCE(CDEMO_PROC_FUNCTIONS), &sCDemoParam);
         *state = 3;
         break;
     case 3:
-        GCTX_ProcMgrQueueProc(OVERLAY_ID(162), &TITLE_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrQueueProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(TITLE_PROC_FUNCTIONS), NULL);
         *state = 0;
         break;
     }

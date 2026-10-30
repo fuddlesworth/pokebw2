@@ -123,10 +123,9 @@ void AspertiaCity_PlaySeasonModel(GameSystem *gsys) {
 }
 
 void AspertiaCity_RequestBG(GameSystem *gsys) {
-    GameData *gameData;
     GimmickWork *work;
 
-    gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     work = Field_GetGimmickWorkBlock(GSYS_GetField(gsys), GIMMICK_WORK_ID);
     work->bgWanted = TRUE;
 }

@@ -30,6 +30,10 @@ void WmIconFiles_Init(WmIconFiles *files) {
 }
 
 const GFLNetDevTable *NetDefine_LoadDevice(int type) {
+#ifdef POKEBW2_PC
+    // Host builds have no Nintendo wireless or infrared device.
+    return NULL;
+#else
     switch (type) {
     case GFL_NET_TYPE_WIFI_GTS:
         GFL_OvlUnload(OVERLAY_ID(12));
@@ -60,6 +64,7 @@ const GFLNetDevTable *NetDefine_LoadDevice(int type) {
         return NetDevIrc_GetTable();
     }
     return NULL;
+#endif
 }
 
 void NetDefine_UnloadDevice(int type) {

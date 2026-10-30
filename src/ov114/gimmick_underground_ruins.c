@@ -57,10 +57,9 @@ void UndergroundRuins_Update(Field *field) {
 }
 
 void UndergroundRuins_ShowModel(GameSystem *gsys, u8 a1) {
-    GameData *gameData;
     GimmickWork *work;
 
-    gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     work = Field_GetGimmickWorkBlock(GSYS_GetField(gsys), 1);
     FieldExpObj_SetActorHidden(work->expObj, 0, 1, TRUE);
     FieldExpObj_SetActorHidden(work->expObj, 0, 2, TRUE);
@@ -70,13 +69,12 @@ void UndergroundRuins_ShowModel(GameSystem *gsys, u8 a1) {
 }
 
 void UndergroundRuins_SetAnmEnd(GameSystem *gsys, u16 a1) {
-    GameData *gameData;
     GimmickWork *work;
     FieldExpObjAnm *anm;
     fx32 lastFrame;
     int i;
 
-    gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     work = Field_GetGimmickWorkBlock(GSYS_GetField(gsys), 1);
     for (i = 0; i < NELEMS(sAnimations); i++) {
         anm = FieldExpObj_GetAnmInfo(work->expObj, 0, 0, i);
@@ -91,12 +89,11 @@ void UndergroundRuins_SetAnmEnd(GameSystem *gsys, u16 a1) {
 }
 
 void UndergroundRuins_PlayAnm(GameSystem *gsys, u16 a1) {
-    GameData *gameData;
     GimmickWork *work;
     int i;
     FieldExpObjAnm *anm;
 
-    gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     work = Field_GetGimmickWorkBlock(GSYS_GetField(gsys), 1);
     for (i = 0; i < NELEMS(sAnimations); i++) {
         anm = FieldExpObj_GetAnmInfo(work->expObj, 0, 0, i);

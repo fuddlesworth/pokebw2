@@ -150,6 +150,25 @@ static void TrainerCard_AnimateRankPalette(TrainerCardWork *wk);
 static void TrainerCard_SetRankAnime(TrainerCardWork *wk, int on);
 static void TrainerCard_SetScrollArrows(TrainerCardWork *wk, int mode);
 
+#ifdef POKEBW2_PC
+static TrainerCardWork *sNativeCard;
+static TrainerCardNativeAction sNativeAction;
+static BOOL sNativeReady;
+
+TrainerCardWork *TrainerCard_GetNativeWork(void) {
+    return sNativeCard;
+}
+
+BOOL TrainerCard_NativeReady(void) {
+    return sNativeCard && sNativeReady;
+}
+
+void TrainerCard_NativeAction(TrainerCardNativeAction action) {
+    if (TrainerCard_NativeReady())
+        sNativeAction = action;
+}
+#endif
+
 // The card's palette for each number of stars, by the version's color, and the one of a card from another game
 static u32 sTrainerCardPalettes[7][2] = {
     { 18, 8 }, { 19, 9 }, { 20, 10 }, { 21, 11 }, { 22, 12 }, { 23, 13 }, { 14, 14 },
@@ -253,6 +272,11 @@ BOOL TrainerCard_Init(GameProc *proc, u32 *state, void *param, void *work) {
     wk->tcbl = GFL_TCBExMgrCreate(wk->heapId, wk->heapId, 3, 0);
     GFL_NetSetIconScreen(TRUE, wk->heapId);
     GFL_WipeSet(WIPE_MODE_MAIN_FIRST, 3, 3, 0, 6, 1, wk->heapId);
+#ifdef POKEBW2_PC
+    sNativeCard = wk;
+    sNativeAction = TRCARD_NATIVE_NONE;
+    sNativeReady = FALSE;
+#endif
     return TRUE;
 }
 
@@ -281,6 +305,21 @@ static void TrainerCard_PlayPenSE(TrainerCardWork *wk, int count) {
 
 BOOL TrainerCard_Main(GameProc *proc, u32 *state, void *param, void *work) {
     TrainerCardWork *wk = work;
+
+#ifdef POKEBW2_PC
+    sNativeReady = *state == TRCARD_SEQ_MAIN;
+    if (sNativeReady && sNativeAction != TRCARD_NATIVE_NONE) {
+        int input = TRCARD_INPUT_NONE;
+        if (sNativeAction == TRCARD_NATIVE_GREETING)
+            input = TRCARD_INPUT_GREETING;
+        else if (sNativeAction == TRCARD_NATIVE_APPEARANCE)
+            input = TRCARD_INPUT_UNION_VIEW;
+        else if (sNativeAction == TRCARD_NATIVE_PERSONALITY)
+            input = TRCARD_INPUT_PERSONALITY;
+        TrainerCard_HandleInput(wk, input, state);
+        sNativeAction = TRCARD_NATIVE_NONE;
+    }
+#endif
 
     switch (*state) {
     case TRCARD_SEQ_FADE_IN:
@@ -347,9 +386,11 @@ BOOL TrainerCard_Main(GameProc *proc, u32 *state, void *param, void *work) {
         break;
     }
     wk->frame++;
+#ifndef POKEBW2_PC
     if (wk->frame >= 0x100) {
         wk->frame = 0;
     }
+#endif
     ClActSys_Draw();
     PMSDraw_Main(wk->pmsDraw);
     PrintQueue_Main(wk->printQueue);
@@ -365,6 +406,11 @@ BOOL TrainerCard_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     PlayerInfo *info;
     TimeSigSave *timeSig;
 
+#ifdef POKEBW2_PC
+    sNativeCard = NULL;
+    sNativeReady = FALSE;
+    sNativeAction = TRCARD_NATIVE_NONE;
+#endif
     if (!wk->data->isLocked) {
         TrainerCard_PackSign(wk->signPixels, wk->data->signature);
         MI_CpuCopy8(wk->data->signature, TimeSigSave_GetSignature(getTimeSigSaveBlock(wk->param->gameData)),
@@ -653,6 +699,25 @@ static const u8 sTrainerCardBrushes[2][2][16] = {
     { { 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, { 0, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 0 } },
     { { 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 0 } },
 };
+
+#ifdef POKEBW2_PC
+void TrainerCard_NativeSign(int x, int y, BOOL held, BOOL erase) {
+    static int lastX, lastY;
+    static BOOL drawing;
+    if (!TrainerCard_NativeReady() || !sNativeCard->data->canEdit || !held || x < 0 || y < 0 ||
+        x >= TRCARD_SIGN_WIDTH || y >= TRCARD_SIGN_HEIGHT) {
+        drawing = FALSE;
+        return;
+    }
+    if (!drawing) {
+        lastX = x;
+        lastY = y;
+    }
+    TrainerCard_DrawLine(sNativeCard->signPixels, sTrainerCardBrushes[0][erase != FALSE], x, y, &lastX, &lastY, TRUE,
+                         TRUE, 0, 0);
+    drawing = TRUE;
+}
+#endif
 
 // Which of the side's actors show on the front, on the back and while the card moves, for a card that can't be
 // edited and for one that can
@@ -1326,6 +1391,9 @@ static void TrainerCard_ScrollTouch(TrainerCardWork *wk) {
         wk->scrolled = 1;
         TrCardBmp_DrawList(wk, wk->scroll, TRUE, 1);
         GFL_SndSEPlay(SEQ_SE_SW_CARD_07);
+#ifdef POKEBW2_PC
+        up = wk->scroll < wk->oldScroll;
+#else
         if (cont == 0) {
             up = 0;
             if (wk->scroll < wk->oldScroll) {
@@ -1337,6 +1405,7 @@ static void TrainerCard_ScrollTouch(TrainerCardWork *wk) {
                 up = 1;
             }
         }
+#endif
         TrainerCard_SetScrollArrows(wk, up);
         wk->rankAngle = 0x8000;
     } else {

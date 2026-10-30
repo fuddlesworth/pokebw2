@@ -267,7 +267,7 @@ static BOOL EventBattleReturn_Main(GameProc *proc, u32 *state, void *param, void
                 oldName = GFL_StrBufCreate(32, wk->heapId);
                 NameEntryParam_GetName(wk->nameEntry, wk->name);
                 PokeParty_GetParam(wk->pkm, PKM_PARAM_NICKNAME, oldName);
-                PokeParty_SetParam(wk->pkm, PKM_PARAM_NICKNAME, (u32)wk->name);
+                PokeParty_SetParam(wk->pkm, PKM_PARAM_NICKNAME, (uptr)wk->name);
                 if (NameEntryParam_CompareName(wk->nameEntry, oldName) == FALSE) {
                     RecordAddOne(GameData_GetRecords(prm->gameData), 0x1e);
                 }

@@ -35,4 +35,27 @@ enum {
 // Overlay 12's report_event.c: the report screen, which asks whether to save and saves, an EVENT_SAVE_RESULT_*
 u32 EventSave_Update(EventSaveWork *work, u32 *state);
 
+#ifdef POKEBW2_PC
+typedef enum {
+    REPORT_NATIVE_OPENING,
+    REPORT_NATIVE_CONFIRM,
+    REPORT_NATIVE_WRITING,
+    REPORT_NATIVE_SAVED,
+    REPORT_NATIVE_ERROR,
+    REPORT_NATIVE_BLOCKED
+} ReportNativePhase;
+
+typedef struct {
+    GameSystem *gameSystem;
+    Font *font;
+    AppTaskMenu *menu;
+    ReportNativePhase phase;
+    BOOL ready;
+    u16 message[512];
+} ReportNativeState;
+
+BOOL Report_IsNativeActive(void);
+BOOL Report_GetNativeState(ReportNativeState *state);
+#endif
+
 #endif // POKEBW2_FIELD_EVENT_SAVE_H

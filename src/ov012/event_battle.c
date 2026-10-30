@@ -125,10 +125,12 @@ static BOOL EventBattleCall_IsResultDefeat(EventBattleCallWork *work);
 static void EventBattleCall_SyncGameDataOnReturn(EventBattleCallWork *work, GameData *gameData);
 static void EventBattleCall_Setup(EventBattleCallWork *work, GameSystem *gsys, BtlSetup *setup);
 static void EventBattleCall_ReleaseBtlSetup(EventBattleCallWork *work);
+#ifndef POKEBW2_PC
 static void *EventBattleCall_DSProtTamper1(void *seed, void *work);
 static void *EventBattleCall_DSProtNop1(void *seed, void *work);
 static void *EventBattleCall_DSProtTamper3(void *seed, void *work);
 static void *EventBattleCall_DSProtNop3(void *seed, void *work);
+#endif
 
 // The result of a wild battle for each battle result
 static const u8 WILD_BATTLE_RESULT[7] = { 0xff, 2, 0xff, 1, 1, 0, 0 };
@@ -415,7 +417,7 @@ GameEvent *LoadTradedPokemonBattleStats(GameSystem *gsys, Field *field, u32 styl
             PokeParty_SetParam(pkm, 0x71, TRUE);
             PokeParty_SetParam(pkm, PKM_PARAM_ABILITY, TradedPokemonSave_GetAbility(block, index));
         }
-        PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME_RAW, (u32)TradedPokemonSave_GetNickname(block, index));
+        PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME_RAW, (uptr)TradedPokemonSave_GetNickname(block, index));
         setChangedPkmSpecies(pkm, (u16)species);
         PokeParty_SetDefaultMoves(pkm);
     }
@@ -427,7 +429,9 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
     GameSystem *gsys = wk->gsys;
     GameData *gameData = wk->gameData;
     Field *field = GSYS_GetField(gsys);
+#ifndef POKEBW2_PC
     u32 seed = 0x13a1ab5;
+#endif
 
     switch (*state) {
     case BATTLE_CALL_STEP_PLAY_BGM:
@@ -452,25 +456,31 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         if (wk->setup->studioMode == BTL_STUDIO_MODE_NONE) {
             wk->battleReturnParam.setup = wk->setup;
             wk->battleReturnParam.gameData = gameData;
-            GSYS_QueueProcAsEvent(event, OVERLAY_ID(166), &EVENT_BATTLE_RETURN_PROC_FUNCTIONS, &wk->battleReturnParam);
+            GSYS_QueueProcAsEvent(event, OVERLAY_ID(166), GAME_PROC_REFERENCE(EVENT_BATTLE_RETURN_PROC_FUNCTIONS),
+                                  &wk->battleReturnParam);
         }
         (*state)++;
         break;
     case BATTLE_CALL_STEP_END_BATTLE: {
+#ifndef POKEBW2_PC
         u32 index;
 
         GFL_OvlLoad(OVERLAY_ID(337));
         DSProt_Init();
+#endif
         FieldStatus_SetBusyFlag(GameData_GetFieldStatus(gameData), FLD_STATUS_BUSY_NONE);
         CommPlayerSupport_EndBattle(GameData_GetCommPlayerSupport(gameData));
+#ifndef POKEBW2_PC
         index = OS_GetVBlankCount() & 1;
         data_ov337_02182440 = index;
         data_ov337_02182444[index] = EventBattleCall_DSProtNop1;
         data_ov337_02182444[index ^ 1] = EventBattleCall_DSProtTamper1;
+#endif
         (*state)++;
         break;
     }
     case BATTLE_CALL_STEP_SYNC_GAME_DATA: {
+#ifndef POKEBW2_PC
         u32 shift;
         u32 checksum;
         const u32 *code = (const u32 *)DSProt_CallRunChecks1;
@@ -485,18 +495,22 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         } else {
             data_ov337_02182444[data_ov337_02182440 ^ 1](&seed, wk);
         }
+#endif
         EventBattleCall_SyncGameDataOnReturn(wk, gameData);
         if (wk->isTrialHouse) {
             SyncTrialHouseWkStatsFromBattle(*GetTrialHouseWkPPtr(gameData), wk->setup);
         }
         (*state)++;
+#ifndef POKEBW2_PC
         index = OS_GetVBlankCount() & 1;
         data_ov337_02182440 = index;
         data_ov337_02182444[index] = EventBattleCall_DSProtNop3;
         data_ov337_02182444[index ^ 1] = EventBattleCall_DSProtTamper3;
+#endif
         break;
     }
     case BATTLE_CALL_STEP_FADE_BGM: {
+#ifndef POKEBW2_PC
         u32 shift;
         u32 checksum;
         const u32 *code = (const u32 *)DSProt_CallRunChecks3;
@@ -510,12 +524,15 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         } else {
             data_ov337_02182444[data_ov337_02182440 ^ 1](&seed, wk);
         }
+#endif
         if (wk->noBlackout == FALSE && EventBattleCall_IsResultDefeat(wk) == TRUE) {
             GameEvent_ChainNext(event, EventBGMFadeStop_Create(gsys, 30));
         } else {
             GameEvent_ChainNext(event, EventBGMFadePop_Create(gsys));
         }
+#ifndef POKEBW2_PC
         GFL_OvlUnload(OVERLAY_ID(337));
+#endif
         (*state)++;
         break;
     }
@@ -550,10 +567,12 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         EventBattleCall_ReleaseBtlSetup(wk);
         return GAMEEVENT_DONE;
     }
+#ifndef POKEBW2_PC
     if (seed % 0x1933 != 0) {
         GFL_VBlankTCBAdd(get_mt, NULL, 0x7f);
         g_AntiPiracyTaskCount++;
     }
+#endif
     return GAMEEVENT_CONTINUE;
 }
 
@@ -703,6 +722,7 @@ static void EventBattleCall_ReleaseBtlSetup(EventBattleCallWork *work) {
 }
 
 // The fallbacks of the anti-piracy checks
+#ifndef POKEBW2_PC
 static void *EventBattleCall_DSProtTamper1(void *seed, void *work) {
     GFL_RandomMT();
     GFL_RandomMT();
@@ -726,3 +746,4 @@ static void *EventBattleCall_DSProtTamper3(void *seed, void *work) {
 static void *EventBattleCall_DSProtNop3(void *seed, void *work) {
     return work;
 }
+#endif

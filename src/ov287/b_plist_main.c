@@ -120,6 +120,81 @@ static BOOL BPlistMain_CheckQuit(BPlistWork *work);
 static void BPlistMain_PlaySE(BPlistWork *work, u32 se);
 static void BPlistMain_PlayMessageSE(BPlistWork *work, u32 se);
 
+#ifdef POKEBW2_PC
+static BPlistWork *nativeWork;
+
+BPlistWork *BPlistMain_GetNativeWork(void) {
+    return nativeWork != NULL && nativeWork->initialized ? nativeWork : NULL;
+}
+
+BPlistNativePhase BPlistMain_GetNativePhase(const BPlistWork *work) {
+    if (work->seq == 23 || work->seq == 24)
+        return BPLIST_NATIVE_MESSAGE;
+    if (PaletteFade_GetActiveMask(work->paletteFade) != 0 || work->animActive)
+        return BPLIST_NATIVE_WAIT;
+    switch (work->seq) {
+    case 3:
+        return BPLIST_NATIVE_PARTY;
+    case 4:
+        return BPLIST_NATIVE_ACTIONS;
+    case 5:
+        return BPLIST_NATIVE_SUMMARY;
+    case 6:
+        return BPLIST_NATIVE_MOVES;
+    case 7:
+    case 30:
+        return BPLIST_NATIVE_MOVE_INFO;
+    case 8:
+        return BPLIST_NATIVE_POSITION;
+    case 25:
+        return BPLIST_NATIVE_FORGET;
+    case 26:
+        return BPLIST_NATIVE_CONFIRM;
+    case 28:
+        return BPLIST_NATIVE_PP;
+    default:
+        return BPLIST_NATIVE_WAIT;
+    }
+}
+
+BOOL BPlistMain_SetNativeCursor(BPlistWork *work, u32 pos) {
+    BPlistNativePhase phase = BPlistMain_GetNativePhase(work);
+    u32 count;
+    switch (phase) {
+    case BPLIST_NATIVE_PARTY:
+    case BPLIST_NATIVE_POSITION:
+        count = 7;
+        if (pos < 6 && BPlistMain_CheckPos(work, pos) == 0)
+            return FALSE;
+        break;
+    case BPLIST_NATIVE_ACTIONS:
+    case BPLIST_NATIVE_SUMMARY:
+        count = 4;
+        break;
+    case BPLIST_NATIVE_MOVES:
+        count = 8;
+        break;
+    case BPLIST_NATIVE_MOVE_INFO:
+    case BPLIST_NATIVE_PP:
+        count = 5;
+        break;
+    case BPLIST_NATIVE_FORGET:
+        count = 6;
+        break;
+    case BPLIST_NATIVE_CONFIRM:
+        count = 2;
+        break;
+    default:
+        return FALSE;
+    }
+    if (pos >= count)
+        return FALSE;
+    CursorMove_SetCursorVisible(work->cursorMove, TRUE);
+    CursorMove_SetPos(work->cursorMove, pos);
+    return TRUE;
+}
+#endif
+
 // The NSCR files of BGs 6 and 7, by page
 static const u32 data_ov287_021fb50c[9][2] = {
     { 1, 0 }, { 15, 14 }, { 5, 4 }, { 3, 2 }, { 7, 6 }, { 9, 8 }, { 11, 10 }, { 13, 12 }, { 1, 0 },
@@ -176,6 +251,9 @@ void BPlistMain_Start(BPlistParam *param) {
     work = GFL_HeapAllocate(param->heapId, sizeof(BPlistWork), TRUE, "b_plist_main.c", 304);
     GFL_TCBMgrAddTask(param->tcbManager, BPlistMain_Task, work, 100);
     work->param = param;
+#ifdef POKEBW2_PC
+    nativeWork = work;
+#endif
     if (param->unk1F != 5) {
         param->slot = 0;
     } else if (BPlistMain_IsMulti(work) == TRUE && param->unk1C == 1) {
@@ -850,6 +928,15 @@ static int BPlistMain_StateCloseMessage(BPlistWork *work) {
 }
 
 static int BPlistMain_StatePrintMessage(BPlistWork *work) {
+#ifdef POKEBW2_PC
+    // The native panel displays the full message, including the DS page breaks.
+    if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) {
+        PrintStream_Delete(work->printStream);
+        work->printStream = NULL;
+        work->streamAdvanced = FALSE;
+        return BPlistMain_StateWaitMessageKey(work);
+    }
+#endif
     switch (PrintStream_GetState(work->printStream)) {
     case PRINT_STREAM_RUNNING:
         if (GFL_HIDIsTouchPressed() == TRUE || (GCTX_HIDGetHeldKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
@@ -946,6 +1033,9 @@ static BOOL BPlistMain_Exit(TCB *tcb, BPlistWork *work) {
         }
     }
     work->param->done = TRUE;
+#ifdef POKEBW2_PC
+    nativeWork = NULL;
+#endif
     GFL_TCBRemove(tcb);
     GFL_HeapFree(work);
     return TRUE;

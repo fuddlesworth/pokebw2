@@ -23,5 +23,5 @@ void NNSi_G3dAnmCalcNsBva(NNSG3dVisAnmResult *result, const NNSG3dAnmObj *anmObj
     const NNSG3dResVisAnm *visAnm = anmObj->resAnm;
     u32 bit = (anmObj->frame >> FX32_SHIFT) * visAnm->numNode + dataIdx;
 
-    result->isVisible = visAnm->visData[bit >> 5] & (1 << (bit & 31));
+    result->isVisible = visAnm->visData[bit >> 5] & (1u << (bit & 31));
 }

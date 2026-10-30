@@ -36,6 +36,20 @@ void CRYPTO_RC4Init(CRYPTORC4Context *context, const void *key, u32 key_len) {
     }
 }
 
+#ifdef POKEBW2_PC
+void CRYPTO_RC4Encrypt(CRYPTORC4Context *context, const void *in, u32 length, void *out) {
+    const u8 *source = in;
+    u8 *dest = out;
+    for (u32 n = 0; n < length; n++) {
+        context->i++;
+        context->j += context->s[context->i];
+        u8 value = context->s[context->i];
+        context->s[context->i] = context->s[context->j];
+        context->s[context->j] = value;
+        dest[n] = source[n] ^ context->s[(u8)(value + context->s[context->i])];
+    }
+}
+#else
 // Hand-written in assembly: the counters i and j are kept in the top byte of their registers, so that adding to them
 // wraps at 256 by itself, the next s[i] is loaded before the loop and at the end of each pass, and the state is
 // stored back through the context pointer advanced to s. MWCC can't produce this (it pads the odd register list
@@ -77,3 +91,4 @@ asm void CRYPTO_RC4Encrypt(CRYPTORC4Context *context, const void *in, u32 length
 }
 
 // clang-format on
+#endif

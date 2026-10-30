@@ -149,7 +149,7 @@ static u32 GetTexSRTAnmSinCosVal_(const NNSG3dResTexSRTAnm *anm, u32 info, u32 o
                     cosR = data[idx].cosR;
                     sinR = (3 * sinR + data[idxB].sinR) >> 2;
                     cosR = (3 * cosR + data[idxB].cosR) >> 2;
-                    return (u16)sinR | (cosR << 16);
+                    return (u16)sinR | ((u32)cosR << 16);
                 } else {
                     idx = frame >> 2;
                     goto average;
@@ -164,7 +164,7 @@ static u32 GetTexSRTAnmSinCosVal_(const NNSG3dResTexSRTAnm *anm, u32 info, u32 o
 average:
     // The frame between two stored values is their average
     a = data + idx;
-    return (u16)((a->sinR + (a + 1)->sinR) >> 1) | (((a->cosR + (a + 1)->cosR) >> 1) << 16);
+    return (u16)((a->sinR + (a + 1)->sinR) >> 1) | ((u32)((a->cosR + (a + 1)->cosR) >> 1) << 16);
 }
 
 // Sets the texture matrix of a material in a result for the data at idx, at a frame: the scale, rotation and
@@ -232,7 +232,7 @@ void NNSi_G3dAnmObjInitNsBta(NNSG3dAnmObj *anmObj, void *anm, const NNSG3dResMdl
 // with the texture coordinates taken as they are (texture coordinate generation mode one)
 void NNSi_G3dAnmCalcNsBta(NNSG3dMatAnmResult *result, const NNSG3dAnmObj *anmObj, u32 dataIdx) {
     GetTexSRTAnm_(anmObj->resAnm, (u16)dataIdx, anmObj->frame >> FX32_SHIFT, result);
-    result->prmTexImage = (result->prmTexImage & ~(3 << REG_G3_TEXIMAGE_PARAM_TGEN_SHIFT)) |
+    result->prmTexImage = (result->prmTexImage & ~(3u << REG_G3_TEXIMAGE_PARAM_TGEN_SHIFT)) |
                           (GX_TEXGEN_TEXCOORD << REG_G3_TEXIMAGE_PARAM_TGEN_SHIFT);
     result->flag |= NNS_G3D_MATANM_RESULTFLAG_TEXMTX_SET;
 }

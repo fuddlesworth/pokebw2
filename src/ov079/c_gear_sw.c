@@ -2591,8 +2591,8 @@ static GameEventReturnCode CGearSw_EventMain(GameEvent *event, u32 *state, void 
 
         param->playerInfo = GetGameDataPlayerInfo(work->gameData);
         param->gsys = work->gsys;
-        next = EventFieldSubprocessTransition_CreateWithCallback(work->gsys, field, OVERLAY_ID(200),
-                                                                 &CG_HELP_PROC_FUNCTIONS, param, NULL, param);
+        next = EventFieldSubprocessTransition_CreateWithCallback(
+            work->gsys, field, OVERLAY_ID(200), GAME_PROC_REFERENCE(CG_HELP_PROC_FUNCTIONS), param, NULL, param);
         break;
     }
     case ACTION_POWER_OFF:

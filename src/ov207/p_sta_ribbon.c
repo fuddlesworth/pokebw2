@@ -84,6 +84,27 @@ struct PStaRibbonWork {
     RibbonEntry entries[RIBBON_COUNT];
 };
 
+#ifdef POKEBW2_PC
+u32 PStatus_GetNativeRibbon(u32 index, u16 *name, u32 nameSize, u16 *description, u32 descriptionSize, u32 *icon,
+                            u32 *palette) {
+    PStatusWork *wk = PStatus_GetNativeWork();
+    PStaRibbonWork *ribbon;
+    u32 id;
+    if (wk == NULL) {
+        return 0;
+    }
+    ribbon = wk->ribbon;
+    if (index < ribbon->ribbonCount) {
+        id = ribbon->entries[index].ribbon;
+        GFL_MsgDataLoadRawStr(ribbon->msgData, Ribbon_GetData(id, RIBBON_DATA_NAME), name, nameSize);
+        GFL_MsgDataLoadRawStr(ribbon->msgData, Ribbon_GetDescription(id), description, descriptionSize);
+        *icon = Ribbon_GetData(id, RIBBON_DATA_ICON);
+        *palette = Ribbon_GetData(id, RIBBON_DATA_PALETTE);
+    }
+    return ribbon->ribbonCount;
+}
+#endif
+
 static void PStaRibbon_HandleInput(PStatusWork *wk, PStaRibbonWork *ribbon);
 static BOOL PStaRibbon_HandleDetailKeys(PStatusWork *wk, PStaRibbonWork *ribbon);
 static void PStaRibbon_HandleDetailTouch(PStatusWork *wk, PStaRibbonWork *ribbon);

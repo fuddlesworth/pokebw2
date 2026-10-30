@@ -14,6 +14,15 @@ typedef struct {
     GameSystem *gsys;
 } ConfigPanelParam;
 
+#ifdef POKEBW2_PC
+typedef struct {
+    Font *font;
+    Config *config;
+} ConfigPanelNativeState;
+BOOL ConfigPanel_GetNativeState(ConfigPanelNativeState *state);
+void ConfigPanel_CloseNative(void);
+#endif
+
 extern const GameProcFunctions CONFIG_PANEL_PROC_FUNCTIONS;
 
 #endif // POKEBW2_APP_CONFIG_PANEL_H

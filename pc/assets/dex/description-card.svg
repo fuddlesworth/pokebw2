@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="484" height="222" viewBox="0 0 484 222">
+  <defs><pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#56636c" stroke-opacity=".16"/></pattern><linearGradient id="panel" x2="1" y2="1"><stop stop-color="#10161a"/><stop offset="1" stop-color="#1a2126"/></linearGradient><path id="frame" d="M28 6H432L466 40V176L442 200H50L28 178Z"/><clipPath id="inside"><use href="#frame"/></clipPath><path id="rim" d="M472 32V170L442 200H50L28 178"/></defs>
+  <path fill="#0b1013" d="M0 0H484V222H0z"/>
+  <!-- x=434..478 continues the upper shell across the component boundary. -->
+  <path fill="#e7eaec" d="M434 0H478V172.485L444.485 206L442 200L466 176V32Z"/>
+  <use href="#frame" fill="url(#panel)" stroke="#0a0d10" stroke-width="12" stroke-linejoin="miter"/>
+  <use href="#rim" fill="none" stroke="#e7eaec" stroke-width="12" stroke-linejoin="miter"/>
+  <use href="#frame" fill="url(#panel)" stroke="#6a737b" stroke-width="2" stroke-linejoin="miter"/>
+  <path fill="url(#grid)" clip-path="url(#inside)" d="M0 0H484V222H0z"/>
+  <path fill="none" stroke="#30393f" stroke-width="3" d="M32 10H430L462 42V172"/>
+  <!-- Four-pixel clear gap; end cuts translate the outer rim's corners equally in x and y. -->
+  <path fill="#00dfee" d="M482.243 173.899V179.556L451.556 210.243H445.899Z"/>
+  <circle cx="435" cy="174" r="10" fill="#77828b"/>
+  <path stroke="#1b2329" stroke-width="3" d="M425 174H445"/>
+  <circle cx="435" cy="174" r="4" fill="#77828b" stroke="#1b2329" stroke-width="2"/>
+</svg>

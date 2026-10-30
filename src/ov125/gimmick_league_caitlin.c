@@ -151,7 +151,7 @@ void GimmickCaitlin_PlayModels34Or5(GameSystem *gsys, u16 which) {
 }
 
 GameEvent *GimmickCaitlin_CreateModel1Event(GameSystem *gsys) {
-    CaitlinRoomWork *work = Field_GetGimmickWorkBlock(GSYS_GetField(gsys), GIMMICK_WORK_ID);
+    Field_GetGimmickWorkBlock(GSYS_GetField(gsys), GIMMICK_WORK_ID);
 
     return GameEvent_Create(gsys, NULL, GimmickCaitlin_Model1Event, 0);
 }

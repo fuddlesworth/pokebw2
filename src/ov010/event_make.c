@@ -73,7 +73,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         } else {
             battle->players->demoType = 3;
         }
-        QueueGameProc(procWork->manager, OVERLAY_ID(305), &CommBtlDemoProc, battle->players);
+        QueueGameProc(procWork->manager, OVERLAY_ID(305), GAME_PROC_REFERENCE(CommBtlDemoProc), battle->players);
         *state = 1;
         break;
     case 1:
@@ -105,7 +105,8 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
             procWork->ov171Param.party0 = battle->players->players[1].party;
             procWork->ov171Param.party1 = battle->players->players[0].party;
         }
-        QueueGameProc(procWork->manager, OVERLAY_ID(171), &VS_MULTI_LIST_PROC_FUNCTIONS, &procWork->ov171Param);
+        QueueGameProc(procWork->manager, OVERLAY_ID(171), GAME_PROC_REFERENCE(VS_MULTI_LIST_PROC_FUNCTIONS),
+                      &procWork->ov171Param);
         *state = 5;
         break;
     case 5:
@@ -218,7 +219,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
             *state = 16;
             break;
         }
-        QueueGameProc(procWork->manager, OVERLAY_ID(305), &CommBtlDemoProc, battle->players);
+        QueueGameProc(procWork->manager, OVERLAY_ID(305), GAME_PROC_REFERENCE(CommBtlDemoProc), battle->players);
         *state = 14;
         break;
     case 14:
@@ -239,7 +240,8 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         battle->ov306Param.unkC = 1;
         battle->ov306Param.unk10 = battle->rule;
         battle->ov306Param.unk14 = battle->unk10;
-        QueueGameProc(procWork->manager, OVERLAY_ID(306), &BtlRecSelProcFunctions, &battle->ov306Param);
+        QueueGameProc(procWork->manager, OVERLAY_ID(306), GAME_PROC_REFERENCE(BtlRecSelProcFunctions),
+                      &battle->ov306Param);
         *state = 16;
         break;
     case 16:

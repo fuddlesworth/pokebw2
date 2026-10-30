@@ -325,6 +325,13 @@ static void EventFieldEffectCutinSub_DrawStrToTexture(PlayerInfo *info, RivalDat
                                                       u16 color, u16 color2, BOOL measure);
 static void EventFieldEffectPokeSpriteSub_ConvertSprite(Fld3DCi *ci);
 
+#ifdef POKEBW2_PC
+static Fld3DCi *nativeCutin;
+BOOL Fld3DCi_IsNativeSceneActive(void) {
+    return nativeCutin != NULL && nativeCutin->scene != -1;
+}
+#endif
+
 Fld3DCi *Fld3DCi_Create(HeapID heapId, FieldParticle *particleSystem) {
     Fld3DCi *ci = GFL_HeapAllocate(heapId, sizeof(Fld3DCi), TRUE, "fld3d_ci.c", 481);
 
@@ -347,10 +354,17 @@ Fld3DCi *Fld3DCi_Create(HeapID heapId, FieldParticle *particleSystem) {
                                           FX32_CONST(1024), 0, &position, &up, &target, heapId);
     }
     ci->cameraSel = 0;
+#ifdef POKEBW2_PC
+    nativeCutin = ci;
+#endif
     return ci;
 }
 
 void Fld3DCi_Free(Fld3DCi *ci) {
+#ifdef POKEBW2_PC
+    if (nativeCutin == ci)
+        nativeCutin = NULL;
+#endif
     GFL_G3DCameraFree(ci->camera);
     GFL_G3DCameraFree(ci->camera2);
     GFL_G3DMgrFree(ci->mgr);
@@ -398,7 +412,7 @@ GameEvent *EventFieldEffect_Create(GameSystem *gsys, Fld3DCi *ci, u8 effectId) {
     ci->callback = 0;
     ci->control = 0;
     ci->cameraSel = 0;
-    event = GameEvent_Create(gsys, NULL, EventFieldEffect_Callback, 0x44);
+    event = GameEvent_Create(gsys, NULL, EventFieldEffect_Callback, sizeof(Fld3DCiEvent));
     Fld3DCi_InitEventData(ci, GameEvent_GetData(event));
     return event;
 }
@@ -964,6 +978,9 @@ static void Fld3DCi_ScreenCapTCB(TCB *tcb, void *work) {
     u32 *done = work;
 
     reg_GX_DISPCAPCNT = 0x81330010;
+#ifdef POKEBW2_PC
+    PcGx_Capture();
+#endif
     GFL_TCBRemove(tcb);
     if (done != NULL) {
         *done = TRUE;
@@ -1123,6 +1140,10 @@ static void EventFieldEffectPokeSpriteSub_ConvertSprite(Fld3DCi *ci) {
     GFL_BitmapMakeLinear(ci->bitmap, FALSE, heapId);
     NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_3D_TEX_VRAM, texAddr, GFL_BitmapGetPixelData(ci->bitmap), 0x2000);
     NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_3D_TEX_PLTT, palAddr, ci->palette->pRawData, 32);
+#ifdef POKEBW2_PC
+    // The caller frees these temporary bitmaps before the next V-blank.
+    NNS_GfdDoVramTransfer();
+#endif
     GFL_HeapGetFreeSize(ci->heapId);
 }
 
@@ -1229,6 +1250,9 @@ static void Fld3DCi_ConvG2DToG3D(Fld3DCi *ci, const char *texName, const char *p
                                        width * height * 32);
     NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_3D_TEX_PLTT, palAddr, (u8 *)ci->palette->pRawData + palOffset * 32,
                                        32);
+#ifdef POKEBW2_PC
+    NNS_GfdDoVramTransfer();
+#endif
     GFL_HeapGetFreeSize(ci->heapId);
 }
 
@@ -1501,7 +1525,7 @@ static void EventFieldEffectCutinSub_DrawStrToTexture(PlayerInfo *info, RivalDat
     raw = ci->palette->pRawData;
     raw[1] = color;
     raw[2] = color2;
-    G3DTextDraw_CreateResource(res, texName, (u32)raw, palName, str, (u16)width, 0, 0x440, heapId, &resource);
+    G3DTextDraw_CreateResource(res, texName, (uptr)raw, palName, str, (u16)width, 0, 0x440, heapId, &resource);
     GFL_HeapFree(ci->paletteData);
     GFL_HeapFree(str);
     GFL_MsgDataFree(msgData);
@@ -1519,7 +1543,7 @@ GameEvent *EventFieldEffect_CreateAlderFly(GameSystem *gsys, Fld3DCi *ci, u32 ac
 
 static void EventFieldEffect_DimCaptureColor(void) {
     u32 banks = GX_ResetBankForBG();
-    u16 *vram = (u16 *)0x6860000;
+    u16 *vram = (u16 *)HW_LCDC_VRAM_D;
     int i;
 
     for (i = 0; i < 0xc000; i++) {

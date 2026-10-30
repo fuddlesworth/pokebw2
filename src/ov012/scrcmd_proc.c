@@ -136,7 +136,8 @@ BOOL Scrcmd_Proc_CallBag(VM *vm, FieldScriptEnv *env) {
     result = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(BagScriptResult), TRUE, "scrcmd_proc.c", 280);
     result->hasSelection = hasSelection;
     result->item = item;
-    CreateScrCmdOverlayProcess(vm, env, OVERLAY_BAG, &BAG_PROC_FUNCTIONS, bag, CallBag_ReadResult, result);
+    CreateScrCmdOverlayProcess(vm, env, OVERLAY_BAG, GAME_PROC_REFERENCE(BAG_PROC_FUNCTIONS), bag, CallBag_ReadResult,
+                               result);
     return TRUE;
 }
 
@@ -169,9 +170,9 @@ BOOL Scrcmd_Proc_CallMailbox(VM *vm, FieldScriptEnv *env) {
     mailbox->gameData = gameData;
     work->resource = mailbox;
     work->data = ScriptReadVar(vm, env);
-    ScriptWork_CallEvent(scriptWork, EventFieldSubprocessCall_CreateWithCallback(gsys, field, OVERLAY_MAILBOX,
-                                                                                 &MAILBOX_PROC_FUNCTIONS, mailbox,
-                                                                                 CallMailbox_ReadResult, work));
+    ScriptWork_CallEvent(scriptWork, EventFieldSubprocessCall_CreateWithCallback(
+                                         gsys, field, OVERLAY_MAILBOX, GAME_PROC_REFERENCE(MAILBOX_PROC_FUNCTIONS),
+                                         mailbox, CallMailbox_ReadResult, work));
     return TRUE;
 }
 
@@ -230,7 +231,7 @@ BOOL Scrcmd_Proc_MoveReminderCallMoveSelect(VM *vm, FieldScriptEnv *env) {
     work->resource = data;
     work->data = result;
     ScriptWork_CallEvent(scriptWork, EventFieldSubprocessTransition_CreateWithCallback(
-                                         gsys, field, OVERLAY_MOVE_REMINDER, &MoveTutorProcFunctions, data,
+                                         gsys, field, OVERLAY_MOVE_REMINDER, GAME_PROC_REFERENCE(MoveTutorProcFunctions), data,
                                          MoveReminder_ReadResult, work));
     return TRUE;
 }
@@ -257,7 +258,8 @@ BOOL Scrcmd_Proc_CallMonolith(VM *vm, FieldScriptEnv *env) {
     param->unk31 = 0;
     param->gsys = gsys;
     param->netId = 0;
-    CreateScrCmdOverlayProcess(vm, env, OVERLAY_MONOLITH, &MONOLITH_PROC_FUNCTIONS, param, NULL, NULL);
+    CreateScrCmdOverlayProcess(vm, env, OVERLAY_MONOLITH, GAME_PROC_REFERENCE(MONOLITH_PROC_FUNCTIONS), param, NULL,
+                               NULL);
     return TRUE;
 }
 
@@ -302,27 +304,28 @@ BOOL Scrcmd_Proc_CallPokedexDiploma(VM *vm, FieldScriptEnv *env) {
         award = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(PokedexAwardParam), TRUE, "scrcmd_proc.c", 546);
         award->gameData = gameData;
         award->unk04 = value;
-        CreateScrCmdOverlayProcess(vm, env, OVERLAY_REGIONAL_POKEDEX_AWARD, &REGIONAL_POKEDEX_AWARD_PROC_FUNCTIONS,
+        CreateScrCmdOverlayProcess(vm, env, OVERLAY_REGIONAL_POKEDEX_AWARD, GAME_PROC_REFERENCE(REGIONAL_POKEDEX_AWARD_PROC_FUNCTIONS),
                                    award, NULL, NULL);
         break;
     case 1:
         award = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(PokedexAwardParam), TRUE, "scrcmd_proc.c", 554);
         award->gameData = gameData;
         award->unk04 = value;
-        CreateScrCmdOverlayProcess(vm, env, OVERLAY_NATIONAL_POKEDEX_AWARD, &NATIONAL_POKEDEX_AWARD_PROC_FUNCTIONS,
+        CreateScrCmdOverlayProcess(vm, env, OVERLAY_NATIONAL_POKEDEX_AWARD, GAME_PROC_REFERENCE(NATIONAL_POKEDEX_AWARD_PROC_FUNCTIONS),
                                    award, NULL, NULL);
         break;
     case 2:
         subwayMap = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(SubwayMapParam), TRUE, "scrcmd_proc.c", 563);
         subwayMap->playerInfo = playerInfo;
-        CreateScrCmdOverlayProcess(vm, env, OVERLAY_SUBWAY_MAP, &SUBWAY_MAP_PROC_FUNCTIONS, subwayMap, NULL, NULL);
+        CreateScrCmdOverlayProcess(vm, env, OVERLAY_SUBWAY_MAP, GAME_PROC_REFERENCE(SUBWAY_MAP_PROC_FUNCTIONS),
+                                   subwayMap, NULL, NULL);
         break;
     case 3:
         board = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(MarineTubeBoardParam), TRUE, "scrcmd_proc.c", 570);
         board->gsys = gsys;
         board->board = value;
-        CreateScrCmdOverlayProcess(vm, env, OVERLAY_MARINE_TUBE_BOARD, &MARINE_TUBE_BOARD_PROC_FUNCTIONS, board, NULL,
-                                   NULL);
+        CreateScrCmdOverlayProcess(vm, env, OVERLAY_MARINE_TUBE_BOARD,
+                                   GAME_PROC_REFERENCE(MARINE_TUBE_BOARD_PROC_FUNCTIONS), board, NULL, NULL);
         break;
     }
     return TRUE;
@@ -335,7 +338,7 @@ BOOL Scrcmd_Proc_callPoke3Select(VM *vm, FieldScriptEnv *env) {
     result = ScriptReadVar(vm, env);
     param = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(PselParam), TRUE, "scrcmd_proc.c", 597);
     param->result = result;
-    CreateScrCmdOverlayProcess(vm, env, OVERLAY_PSEL, &PselProcFunctions, param, NULL, NULL);
+    CreateScrCmdOverlayProcess(vm, env, OVERLAY_PSEL, GAME_PROC_REFERENCE(PselProcFunctions), param, NULL, NULL);
     return TRUE;
 }
 

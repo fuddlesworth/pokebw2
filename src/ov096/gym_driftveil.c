@@ -691,8 +691,8 @@ static GameEvent *DriftveilGym_CreateElevator(GameEvent *parent, GameSystem *gsy
 
 static GameEventReturnCode DriftveilGym_ElevatorEventCallback(GameEvent *event, u32 *state, void *data) {
     DriftveilGymElevatorEvent *ev = data;
-    DriftveilGymWork *work = Field_GetGimmickWorkBlock(ev->field, GIMMICK_WORK_ID);
-    FieldCamera *camera = Field_GetCameraSystem(ev->field);
+    Field_GetGimmickWorkBlock(ev->field, GIMMICK_WORK_ID);
+    Field_GetCameraSystem(ev->field);
     FieldExpObjSystem *expObj = Field_GetExpObjSystem(ev->field);
     FieldExpObjAnm *anm;
 

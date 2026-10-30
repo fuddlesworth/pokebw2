@@ -3,6 +3,7 @@
 #include "field/event_game_clear.h"
 #include "field/festival.h"
 #include "field/field.h"
+#include "field/field_event.h"
 #include "field/field_sound.h"
 #include "field/intrude_work.h"
 #include "field/player_state.h"
@@ -32,10 +33,12 @@
 // owns. The file's name is a guess, from the GameSystem and GSYS names: the ROM has no string for it. The functions'
 // names are swan's
 
+#ifndef POKEBW2_PC
 static void *GameSystem_DSProtTamper1(void *arg0, void *arg1);
 static void *GameSystem_DSProtNop1(void *arg0, void *arg1);
 static void *GameSystem_DSProtTamper2(void *arg0, void *arg1);
 static void *GameSystem_DSProtNop2(void *arg0, void *arg1);
+#endif
 static BOOL GameSystem_Init(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL GameSystem_MainLoop(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL GameSystem_End(GameProc *proc, u32 *state, void *param, void *work);
@@ -71,6 +74,7 @@ void get_mt(TCB *tcb, void *data) {
 }
 
 // What a failed anti-piracy check does: each one makes the random numbers of every frame after it skip two more
+#ifndef POKEBW2_PC
 static void *GameSystem_DSProtTamper1(void *arg0, void *arg1) {
     u32 *seed = arg0;
 
@@ -97,10 +101,17 @@ static void *GameSystem_DSProtTamper2(void *arg0, void *arg1) {
 static void *GameSystem_DSProtNop2(void *arg0, void *arg1) {
     return arg0;
 }
+#endif
 
 static BOOL GameSystem_Init(GameProc *proc, u32 *state, void *param, void *work) {
     GameSystem *gsys;
     u32 size = GameSystem_GetWorkSize();
+#ifdef POKEBW2_PC
+    // Native assets do not have a cartridge bus or the ARM code checked by DS Protect.
+    GFL_HeapCreateChild(HEAPID_USER, HEAPID_GAMESYSTEM, 0xc000);
+    GFL_HeapCreateChild(HEAPID_USER, HEAPID_GAMEEVENT, 0x10000);
+    GFL_HeapCreateChild(HEAPID_DEVICE_ALLOC, HEAPID_TRIAL_HOUSE, 0x1400);
+#else
     u32 seed;
     u8 flag = 0;
     s32 i;
@@ -157,6 +168,7 @@ static BOOL GameSystem_Init(GameProc *proc, u32 *state, void *param, void *work)
         }
     }
     GFL_OvlUnload(OVERLAY_DSPROT);
+#endif
 
     gsys = GFL_ProcInitSubsystem(proc, size, HEAPID_GAMESYSTEM);
     MI_CpuFill8(gsys, 0, size);
@@ -164,12 +176,14 @@ static BOOL GameSystem_Init(GameProc *proc, u32 *state, void *param, void *work)
     SetupGameSystem(gsys, HEAPID_GAMESYSTEM, param);
     GSYS_SetNowEvent(gsys, CallCreateGameEntryPointEvent(gsys, param));
 
+#ifndef POKEBW2_PC
     if (seed % 0x12af != 0) {
         badges = getBadgeCount(getTrainerCardDataBlkAddress(GSYS_GetGameData(gsys)));
         for (i = 0; i < badges; i++) {
             GameSystem_DSProtTamper1(&seed, &flag);
         }
     }
+#endif
     return TRUE;
 }
 
@@ -186,7 +200,12 @@ static BOOL GameSystem_End(GameProc *proc, u32 *state, void *param, void *work) 
     GFL_HeapDelete(HEAPID_GAMESYSTEM);
     GFL_HeapDelete(HEAPID_GAMEEVENT);
     GFL_HeapDelete(HEAPID_TRIAL_HOUSE);
+#ifdef POKEBW2_PC
+    if (!GCTX_ProcMgrIsStopping())
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(TITLE_PROC_FUNCTIONS), NULL);
+#else
     OS_ResetSystem(0);
+#endif
     return TRUE;
 }
 
@@ -248,7 +267,15 @@ static BOOL GSYS_Update(GameSystem *gsys) {
         GCTX_HIDSetUpdateRate(30);
     }
     if (!GameData_Is30FPSSkipFrame(gsys->gameData)) {
-        GSYS_FeedEventsFromProvider(gsys, gsys->eventProvider, gsys->eventProviderData);
+#ifdef POKEBW2_PC
+        if (GCTX_ProcMgrIsStopping()) {
+            if (gsys->event == NULL && GSYS_CheckField(gsys) && Field_CheckMapLoadFinished(GSYS_GetField(gsys)))
+                GSYS_SetNowEvent(gsys, CreateFieldCloseEvent(gsys, GSYS_GetField(gsys)));
+        } else
+#endif
+        {
+            GSYS_FeedEventsFromProvider(gsys, gsys->eventProvider, gsys->eventProviderData);
+        }
         GSYS_UpdateGameCommBoot(gsys);
         GSYS_UpdateEvents(gsys);
         GameCommSys_Main(gsys->comm);
@@ -379,7 +406,7 @@ void GSYS_SetCGearOn(GameSystem *gsys, u32 value) {
 }
 
 static BOOL GSYS_CanBootGameComm(GameSystem *gsys) {
-    GameCommSys *comm = GSYS_GetGameCommSystem(gsys);
+    GSYS_GetGameCommSystem(gsys);
     u16 zoneId = PlayerState_GetZoneID(GSYS_GetPlayerState(gsys));
 
     if (gsys->gameCommPaused == 0 && !IsZoneGameCommDisabled(zoneId) && !GFL_NetErrCheck() &&

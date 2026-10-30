@@ -3,6 +3,14 @@
 // The split from math_md5.c is certain (the first two functions of libmath, in front of the MD5 code).
 #include "nitro/math.h"
 
+#ifdef POKEBW2_PC
+u32 MATH_CountLeadingZerosFunc(u32 x) {
+    u32 count = 0;
+    for (u32 bit = 0x80000000; bit && !(x & bit); bit >>= 1)
+        count++;
+    return count;
+}
+#else
 // The SDK wrote this in assembly: a CLZ and a return, in ARM, for Thumb code to call.
 #pragma thumb off
 // clang-format off
@@ -13,6 +21,7 @@ asm u32 MATH_CountLeadingZerosFunc(u32 x) {
 
 // clang-format on
 #pragma thumb on
+#endif
 
 u8 MATH_CountPopulation(u32 x) {
     x = x - ((x >> 1) & 0x55555555);

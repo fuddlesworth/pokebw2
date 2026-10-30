@@ -64,8 +64,8 @@ BOOL Scrcmd_Keysystem_CallUnovaLinkKeyUnlock(VM *vm, FieldScriptEnv *env) {
     param->gameData = gameData;
     param->mode = UNOVA_LINK_MODE_GAME_CLEAR;
     param->key = key;
-    ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(gsys, field, OVERLAY_ID(332),
-                                                                                 &UNOVA_LINK_PROC_FUNCTIONS, param,
-                                                                                 FreeUnovaLinkKeyParam, param));
+    ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(
+                                   gsys, field, OVERLAY_ID(332), GAME_PROC_REFERENCE(UNOVA_LINK_PROC_FUNCTIONS), param,
+                                   FreeUnovaLinkKeyParam, param));
     return TRUE;
 }

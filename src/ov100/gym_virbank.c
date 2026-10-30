@@ -110,7 +110,7 @@ static const u32 sVolumeIndicesRoom2[16][17] = {
 // clang-format on
 
 void GymVirbank_Init(Field *field) {
-    GameData *gameData = GSYS_GetGameData(Field_GetGameSystem(field));
+    GSYS_GetGameData(Field_GetGameSystem(field));
     VirbankWork *work =
         Field_AllocGimmickWorkBlock(field, GIMMICK_WORK_ID, Field_GetHeapID(field), sizeof(VirbankWork));
     BOOL hidden = TRUE;
@@ -237,7 +237,7 @@ static void GymVirbank_InitMusic(VirbankMusic *music, Field *field) {
 
 // Fades the music to the volume of where the player stands, if it has changed
 static BOOL GymVirbank_UpdateMusicVolume(VirbankMusic *music) {
-    FieldPlayer *player = Field_GetPlayer(music->field);
+    Field_GetPlayer(music->field);
     u32 volumeIndex = GymVirbank_GetVolumeIndex(music);
 
     if (volumeIndex == NO_VOLUME_INDEX) {

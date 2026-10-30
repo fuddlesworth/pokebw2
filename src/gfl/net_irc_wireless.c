@@ -429,7 +429,7 @@ static int NetIw_GetBeaconSize(void *work) {
 }
 
 void NetIw_RecvCollectedMacs(int netId, int size, const void *data, void *work, NetHandle *handle) {
-    NetIwCollectMac *pTemp = data;
+    const NetIwCollectMac *pTemp = data;
     int i;
     int num;
 

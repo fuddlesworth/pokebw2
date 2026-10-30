@@ -199,6 +199,10 @@ static u32 FieldMenu_GetAppId(u32 index) {
 
 static BOOL FieldMenu_CanRetry(FieldAppCallInput *input, void *arg) {
     FieldMenuWork *menu = arg;
+#ifdef POKEBW2_PC
+    // Full-screen apps recreate the field; native allocations need not reuse its old address.
+    menu->field = input->field;
+#endif
     FieldSubscreen *subscreen = Field_GetSubscreen(menu->field);
 
     if (input->eventType == FIELD_APP_RESULT_RETURN) {

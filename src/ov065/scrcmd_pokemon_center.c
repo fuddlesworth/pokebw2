@@ -796,7 +796,7 @@ static u32 PokemonCenter_CountSetFlags(const u32 *flags, EventWork *eventWork, i
 }
 
 BOOL Scrcmd_PokemonCenter_GetMatchState(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     GameData *gameData = GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env));
     RecordSave *record = SaveControl_GetRecordSave(GameData_GetSaveControl(gameData));
     u16 info = ScriptReadAny(vm, env);
@@ -824,7 +824,7 @@ BOOL Scrcmd_PokemonCenter_GetMatchState(VM *vm, FieldScriptEnv *env) {
 }
 
 BOOL Scrcmd_PokemonCenter_SetMatchInProgress(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     GameData *gameData = GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env));
 
     RecordSave_SetMatchInProgress(getRecordBlkAddress(GameData_GetSaveControl(gameData)));
@@ -833,7 +833,7 @@ BOOL Scrcmd_PokemonCenter_SetMatchInProgress(VM *vm, FieldScriptEnv *env) {
 }
 
 BOOL Scrcmd_PokemonCenter_ClearMatchInProgress(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
 
     RecordSave_ClearMatchInProgress(
         getRecordBlkAddress(GameData_GetSaveControl(GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env)))));
@@ -842,7 +842,7 @@ BOOL Scrcmd_PokemonCenter_ClearMatchInProgress(VM *vm, FieldScriptEnv *env) {
 
 // Action 4 sets the value that Scrcmd_PokemonCenter_GetMatchState's info 4 returns, and action 5 counts record 0x35
 BOOL Scrcmd_PokemonCenter_SetMatchState(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     SaveControl *save = GameData_GetSaveControl(GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env)));
     RecordSave *record = getRecordBlkAddress(save);
     u16 action = ScriptReadAny(vm, env);
@@ -860,9 +860,9 @@ BOOL Scrcmd_PokemonCenter_SetMatchState(VM *vm, FieldScriptEnv *env) {
 }
 
 BOOL Scrcmd_PokemonCenter_AddBattlePoints(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     GameData *gameData = GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env));
-    RecordSave *record = getRecordBlkAddress(GameData_GetSaveControl(gameData));
+    getRecordBlkAddress(GameData_GetSaveControl(gameData));
     u16 value = ScriptReadAny(vm, env);
 
     BSubwayScoreData_AddBattlePoints(GameData_GetBSubwayScoreData(gameData), value);

@@ -1,4 +1,7 @@
 #include "types.h"
+#ifdef POKEBW2_PC
+#include "nitro/host_gx.h"
+#endif
 #include "constants/arc.h"
 #include "constants/flags.h"
 #include "constants/sound.h"
@@ -153,9 +156,13 @@ void InitMapChangeEvent(EventMapChange *wk, GameSystem *gsys);
 GameEventReturnCode EventMapChangeBlackout_Callback(GameEvent *event, u32 *state, void *data);
 
 static inline void ClearLCDCVram(void) {
+#ifdef POKEBW2_PC
+    PcGx_InitVRAM(0);
+#else
     GX_SetBankForLCDC(0x1ff);
     MIi_CpuClearFast(0, (void *)0x06800000, 0xa4000);
     GX_DisableBankForLCDC();
+#endif
 }
 
 GameEvent *CreateGameEntryPointEvent(GameSystem *gsys, GameSystemProcData *procData) {
@@ -167,6 +174,10 @@ GameEvent *CreateGameEntryPointEvent(GameSystem *gsys, GameSystemProcData *procD
     case GAME_ENTRYPOINT_DEBUG:
         return EventFieldFirst_Create(gsys, procData);
     }
+#ifdef POKEBW2_PC
+    GFL_ASSERT(FALSE);
+    return NULL;
+#endif
 }
 
 GameEventReturnCode EventGameOpening_Callback(GameEvent *event, u32 *state, void *data) {
@@ -487,7 +498,9 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
     }
     case 1:
         GFL_OvlLoad(OVERLAY_DSPROT);
+#ifndef POKEBW2_PC
         DSProt_Init();
+#endif
         if (IsZoneGameCommDisabled(wk->spawn.zoneId) == TRUE) {
             u8 status = GameCommSys_BootCheck(comm);
             if (status == 1 || status == 2) {
@@ -504,7 +517,9 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
         }
         break;
     case 3:
+#ifndef POKEBW2_PC
         DSPROT_CHECKED_CALL(DSProt_CallRunChecks2, EventMapChange_DSProtNop, EventMapChange_DSProtTamper1, wk, gsys);
+#endif
         FieldMapControl_DeleteAllActors(gsys);
         if (wk->unk40 && wk->seasonChanged) {
             AdventureTime *adventureTime;
@@ -518,7 +533,9 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
             TransformVsPokePartyBySeason(gameData, party, season);
             ShayminForm_CheckNight(gameData, party, &adventureTime->time, season);
         }
+#ifndef POKEBW2_PC
         DSPROT_CHECKED_CALL(DSProt_CallRunChecks4, EventMapChange_DSProtNop, EventMapChange_DSProtTamper2, wk, gsys);
+#endif
         FieldMapControl_LoadZone(gsys, wk->spawn.zoneId);
         GameData_UpdateZoneChangeFlag(gameData, wk->spawn.zoneId, wk->zoneId);
         FieldMapControl_InitSpawn(gsys, &wk->spawn);
@@ -550,6 +567,10 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
     case 5: {
         Field *currentField = GSYS_GetField(gsys);
 
+#ifdef POKEBW2_PC
+        // Reopening the field can allocate it at a different address on the host. Arrival events use this owner.
+        wk->field = currentField;
+#endif
         if (GameData_IsLensFlareRequested(gameData)) {
             wk->lensFlareStarted = FALSE;
             GameData_SetLensFlareRequested(gameData, FALSE);

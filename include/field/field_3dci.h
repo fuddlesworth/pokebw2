@@ -37,6 +37,10 @@ BOOL FieldParticle_IsFinished(FieldParticle *particle);
 void FieldParticle_Free(FieldParticle *particle);
 void FieldParticle_DrawAndUpdateAll(void);
 
+#ifdef POKEBW2_PC
+BOOL Fld3DCi_IsNativeSceneActive(void);
+#endif
+
 // The screen fades and sound effects of the field effects, which fld3d_ci.c's tables point to, numbered by their slots
 // there
 extern const Fld3DCiSoundKey FLD3DCI_SOUND_KEYS_25[1];

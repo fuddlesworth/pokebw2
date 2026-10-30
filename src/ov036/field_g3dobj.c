@@ -430,7 +430,10 @@ void FieldG3DObj_Free(FieldG3DObj *obj, FieldG3DObjResGroup *group) {
     int i;
     G3DModel *model;
 
-    if (obj->animations != NULL) {
+#ifndef POKEBW2_PC
+    if (obj->animations != NULL)
+#endif
+    {
         for (i = 0; i < group->animationCount; i++) {
             GFL_G3DAnmFree(obj->animations[i]);
         }

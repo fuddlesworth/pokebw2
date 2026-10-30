@@ -756,8 +756,8 @@ void MsgBGPrinter_DeleteMenuFunc(ListMenuUI *menu) {
     GFL_HeapFree(menu);
 }
 
-s32 ListMenuUI_Update(ListMenuUI *menu) {
-    s32 result;
+sptr ListMenuUI_Update(ListMenuUI *menu) {
+    sptr result;
 
     if (!MsgBGPrinter_IsPrintQueFinished(menu->sys)) {
         return BMPMENULIST_NULL;
@@ -791,7 +791,7 @@ ListMenuOption *MsgBGPrinter_CreateMenuItemsFromTable(const ListMenuRow *rows, s
     return options;
 }
 
-void AppendListMenuOption(ListMenuOption *options, StrBuf *text, u32 value, HeapID heapId) {
+void AppendListMenuOption(ListMenuOption *options, StrBuf *text, uptr value, HeapID heapId) {
     ListMenuCore_AppendStrBufOption(options, text, value, heapId);
 }
 

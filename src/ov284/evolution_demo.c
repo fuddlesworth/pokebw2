@@ -1352,21 +1352,28 @@ static void EvolutionDemo_MakeShedinja(EvolutionDemoParam *param, EvolutionDemoW
         }
         name =
             GFL_MsgDataLoadStrbufNew(g_PMLSpeciesNamesResident, PokeParty_GetParam(shedinja, PKM_PARAM_SPECIES, NULL));
-        PokeParty_SetParam(shedinja, PKM_PARAM_NICKNAME, (u32)name);
+        PokeParty_SetParam(shedinja, PKM_PARAM_NICKNAME, (uptr)name);
         GFL_StrBufFree(name);
         PokeParty_SetParam(shedinja, PKM_PARAM_STATUS, 0);
         mail = CreateMailData(wk->heapId);
-        PokeParty_SetParam(shedinja, PKM_PARAM_MAIL, (u32)mail);
+        PokeParty_SetParam(shedinja, PKM_PARAM_MAIL, (uptr)mail);
         GFL_HeapFree(mail);
         PokeParty_SetParam(shedinja, 0x9f, 0);
         PokeParty_SetParam(shedinja, PKM_PARAM_POKESTAR_FAME, 0);
         PokeParty_AddPkm(param->party, shedinja);
         BagSave_SubItem(bag, ITEM_POKE_BALL, 1, wk->heapId);
-        GFL_HeapFree(shedinja);
-        // Registers the Shedinja after freeing it
+        // BUG: The original frees Shedinja before registering it in the Pokédex.
+#ifdef BUGFIX
         pokedex = GameData_GetPokedex(param->gameData);
         PokeDex_RegistPkm(pokedex, shedinja);
         addPkmToDex(pokedex, shedinja);
+        GFL_HeapFree(shedinja);
+#else
+        GFL_HeapFree(shedinja);
+        pokedex = GameData_GetPokedex(param->gameData);
+        PokeDex_RegistPkm(pokedex, shedinja);
+        addPkmToDex(pokedex, shedinja);
+#endif
         records = GameData_GetRecords(param->gameData);
         RecordAddOne(records, 10);
         RecordAddOne(records, 88);

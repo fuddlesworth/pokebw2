@@ -86,7 +86,7 @@ static GameEventReturnCode EventUnityTowerFloorSelect_Callback(GameEvent *event,
 
     switch (*state) {
     case 0:
-        GSYS_QueueProcAsEvent(event, OVERLAY_UN_SELECT, &UN_SELECT_PROC_FUNCTIONS, &work->param);
+        GSYS_QueueProcAsEvent(event, OVERLAY_UN_SELECT, GAME_PROC_REFERENCE(UN_SELECT_PROC_FUNCTIONS), &work->param);
         (*state)++;
         break;
     case 1:

@@ -444,12 +444,17 @@ static BOOL Title_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     GFL_SndStreamFree();
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(HEAPID_TITLE);
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping()) {
+        return TRUE;
+    }
+#endif
     if (next == NEXT_START_MENU) {
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), &START_MENU_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(START_MENU_PROC_FUNCTIONS), NULL);
     } else if (next == NEXT_DELETE_SAVE) {
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), &DELETE_SAVE_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(162), GAME_PROC_REFERENCE(DELETE_SAVE_PROC_FUNCTIONS), NULL);
     } else if (next == NEXT_MIC_TEST) {
-        GCTX_ProcMgrReplaceProc(OVERLAY_ID(253), &MIC_TEST_PROC_FUNCTIONS, NULL);
+        GCTX_ProcMgrReplaceProc(OVERLAY_ID(253), GAME_PROC_REFERENCE(MIC_TEST_PROC_FUNCTIONS), NULL);
     }
     return TRUE;
 }

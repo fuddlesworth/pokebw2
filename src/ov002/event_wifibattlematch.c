@@ -58,7 +58,7 @@ GameEventReturnCode EventWifiBattleMatch_Callback(GameEvent *event, u32 *state, 
         param->gameData = GSYS_GetGameData(gsys);
         param->unk4 = wk->unk18;
         param->unkC = wk->unk14;
-        GSYS_QueueProc(gsys, OVERLAY_WIFIBATTLEMATCH, &WIFIBATTLEMATCH_PROC_FUNCTIONS, wk->param);
+        GSYS_QueueProc(gsys, OVERLAY_WIFIBATTLEMATCH, GAME_PROC_REFERENCE(WIFIBATTLEMATCH_PROC_FUNCTIONS), wk->param);
         (*state)++;
         break;
     }

@@ -59,7 +59,11 @@ static u32 GFL_HIDGetTypedKeys(SystemUI *ui);
 static void GFL_HIDGetRepeat(SystemUI *ui, u32 *repeatWait, u32 *repeatStart);
 
 static inline u16 PAD_Read(void) {
+#ifdef POKEBW2_PC
+    return PcPad_Read();
+#else
     return (u16)(((reg_PAD_KEYINPUT | *(vu16 *)HW_BUTTON_XY_BUF) ^ PAD_ALL_MASK) & PAD_ALL_MASK);
+#endif
 }
 
 KeypadManager *GFL_HIDCreateKeypadManager(HeapID heapId) {

@@ -422,6 +422,9 @@ typedef struct {
 extern const PokedexDetailProcFuncs POKEDEX_DETAIL_MAP_PROC_FUNCS;
 
 void PokedexDetailMap_InitParam(PokedexDetailMapParam *param, HeapID heapId);
+#ifdef POKEBW2_PC
+u32 PokedexDetailMap_GetNativeHabitats(u16 species, u32 season, u16 *zones, u8 *kinds, u32 capacity);
+#endif
 
 // pokedex_detail_voice.c: the Pokémon's cry
 

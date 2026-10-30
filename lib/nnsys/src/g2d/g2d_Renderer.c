@@ -161,7 +161,7 @@ static inline void TranslateFlipped_(const NNSG2dSVec2 *pos) {
     if (NNS_G2dIsRndCoreFlipV(&pCurrentInstance_->rendererCore)) {
         y = -y;
     }
-    NNS_G2dTranslate(x << FX32_SHIFT, y << FX32_SHIFT, 0);
+    NNS_G2dTranslate(x * FX32_ONE, y * FX32_ONE, 0);
 }
 
 static inline void ApplySRT_(const NNSG2dSRTData *srt) {

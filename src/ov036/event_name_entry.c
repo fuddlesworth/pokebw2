@@ -117,7 +117,7 @@ static GameEventReturnCode PokeNameEntry_Callback(GameEvent *event, u32 *state, 
     case NAME_ENTRY_STATE_RESULT:
         if (work->nameEntry->canceled != TRUE) {
             if (GFL_StrBufCmp(work->nameEntry->name, work->name) == 0) {
-                PokeParty_SetParam(work->pkm, PKM_PARAM_NICKNAME, (u32)work->nameEntry->name);
+                PokeParty_SetParam(work->pkm, PKM_PARAM_NICKNAME, (uptr)work->nameEntry->name);
             } else {
                 work->nameEntry->canceled = TRUE;
             }
@@ -219,16 +219,16 @@ static GameEventReturnCode JoinAvenueNameEntry_Callback(GameEvent *event, u32 *s
 
             switch (work->target) {
             case JOIN_AVENUE_ENTRY_NAME:
-                JoinAvenueInfo_SetParam(info, JOIN_AVE_INFO_NAME, (u32)str);
+                JoinAvenueInfo_SetParam(info, JOIN_AVE_INFO_NAME, (uptr)str);
                 break;
             case JOIN_AVENUE_ENTRY_TITLE:
-                JoinAvenueInfo_SetParam(info, JOIN_AVE_INFO_TITLE, (u32)str);
+                JoinAvenueInfo_SetParam(info, JOIN_AVE_INFO_TITLE, (uptr)str);
                 break;
             case JOIN_AVENUE_ENTRY_PHRASE:
-                JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_MESSAGE1, (u32)str);
+                JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_MESSAGE1, (uptr)str);
                 break;
             case JOIN_AVENUE_ENTRY_IMPRESSED:
-                JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_MESSAGE2, (u32)str);
+                JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_MESSAGE2, (uptr)str);
                 break;
             }
         } else if (work->target == JOIN_AVENUE_ENTRY_NAME) {
@@ -241,7 +241,7 @@ static GameEventReturnCode JoinAvenueNameEntry_Callback(GameEvent *event, u32 *s
             msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PLACE_NAMES, HEAPID_GAMEEVENT);
             GFL_MsgDataLoadRawStr(msgData, 0x79, name, 0x15);
             GFL_MsgDataFree(msgData);
-            JoinAvenueInfo_SetParam(info, JOIN_AVE_INFO_NAME, (u32)name);
+            JoinAvenueInfo_SetParam(info, JOIN_AVE_INFO_NAME, (uptr)name);
         }
         if (work->result != NULL) {
             *work->result = (work->nameEntry->canceled != TRUE);

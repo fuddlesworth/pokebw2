@@ -46,7 +46,7 @@ typedef struct {
 typedef struct ListMenuRow {
     u32 messageId;
     union {
-        s32 value;
+        sptr value;
         const struct ListMenuRow *sub;
     };
 } ListMenuRow;
@@ -136,13 +136,13 @@ ListMenuUI *ListMenuUI_Create(FieldMsgBG *sys, ListMenuRequest *request, ListMen
                               BmpMenuListCursorCallback callback, void *work, u16 listTop, u16 cursorRow,
                               u32 cancelable);
 void MsgBGPrinter_DeleteMenuFunc(ListMenuUI *menu);
-s32 ListMenuUI_Update(ListMenuUI *menu);
+sptr ListMenuUI_Update(ListMenuUI *menu);
 void MsgBGPrinter_RewriteMenuFunc(ListMenuUI *menu);
 // The menu's options: allocate them, add the rows' messages, add a string, free the strings, and count them
 ListMenuOption *InitListMenuOptionHeap(u32 count, HeapID heapId);
 ListMenuOption *MsgBGPrinter_CreateMenuItemsFromTable(const ListMenuRow *rows, s32 count, MsgData *msgData,
                                                       HeapID heapId);
-void AppendListMenuOption(ListMenuOption *options, StrBuf *text, u32 value, HeapID heapId);
+void AppendListMenuOption(ListMenuOption *options, StrBuf *text, uptr value, HeapID heapId);
 void MsgBGPrinter_DeleteMenuItems(ListMenuOption *options);
 u32 ListMenuCore_GetOptionCount(ListMenuOption *options);
 // The width and the height in tiles of a menu of the options

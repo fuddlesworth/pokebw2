@@ -192,7 +192,7 @@ static GameEventReturnCode EventPokeMoveReplace_Callback(GameEvent *event, u32 *
         *state = 2;
         break;
     case 2:
-        GSYS_QueueProc(gsys, OVERLAY_PSTATUS, &PSTATUS_PROC_FUNCTIONS, work->summaryParam);
+        GSYS_QueueProc(gsys, OVERLAY_PSTATUS, GAME_PROC_REFERENCE(PSTATUS_PROC_FUNCTIONS), work->summaryParam);
         *state = 3;
         break;
     case 3:

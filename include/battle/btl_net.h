@@ -46,11 +46,11 @@ BOOL BtlNet_CheckTiming(u8 id);
 // The server's commands and the clients' replies
 BOOL BtlNet_SendServerCmd(u8 clientId, void *data, u32 size);
 BOOL BtlNet_AreRepliesReceived(void);
-u16 BtlNet_GetReply(u8 clientId, void **data);
+u16 BtlNet_GetReply(u8 clientId, const void **data);
 void BtlNet_ResetReplies(void);
 BOOL BtlNet_IsServerCmdReceived(void);
 u16 BtlNet_GetServerCmd(void **data);
-BOOL BtlNet_SendReply(void *data, u32 size);
+BOOL BtlNet_SendReply(const void *data, u32 size);
 BtlNetPartyPacket *BtlNet_CreatePartyPacket(u32 size, HeapID heapId);
 void BtlNet_FreePartyPacket(BtlNetPartyPacket *packet);
 void BtlNet_SetPartyPacket(BtlNetPartyPacket *packet, PokeParty *party, u8 clientId);

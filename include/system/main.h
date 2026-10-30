@@ -9,7 +9,9 @@
 // The game's main file, with main, GameInit and GameUpdate. main is a name from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 
+#ifndef POKEBW2_PC
 void main(void);
+#endif
 // Keeps the main loop from giving the ARM9 priority on the main memory while it is set
 void SetMainMemoryPriorityBlocked(BOOL blocked);
 

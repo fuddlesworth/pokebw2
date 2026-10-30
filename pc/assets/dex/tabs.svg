@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="486" height="129" viewBox="0 0 486 129">
+  <defs>
+    <path id="entry" d="M1 2H122L161 41H1z"/>
+    <path id="area" d="M134 2H272L311 41H173z"/>
+    <path id="forms" d="M284 2H424L463 41H323z"/>
+    <!-- Parallel detached accent; labels are drawn through the shared typography theme. -->
+    <path id="accent" d="M433.899 2H439.556L478.556 41H472.899Z"/>
+    <g id="frames" fill="#0c1115" stroke="#4d565d" stroke-width="2"><use xlink:href="#entry"/><use xlink:href="#area"/><use xlink:href="#forms"/></g>
+  </defs>
+  <path fill="#0b1013" d="M0 0H486V129H0z"/>
+  <g><use xlink:href="#frames"/><use xlink:href="#entry" fill="#00ddec" stroke="#00ddec" stroke-width="2"/><use xlink:href="#accent" fill="#fa3548"/></g>
+  <g transform="translate(0 43)"><use xlink:href="#frames"/><use xlink:href="#area" fill="#00ddec" stroke="#00ddec" stroke-width="2"/><use xlink:href="#accent" fill="#fa3548"/></g>
+  <g transform="translate(0 86)"><use xlink:href="#frames"/><use xlink:href="#forms" fill="#00ddec" stroke="#00ddec" stroke-width="2"/><use xlink:href="#accent" fill="#fa3548"/></g>
+</svg>

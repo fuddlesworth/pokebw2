@@ -26,7 +26,7 @@ typedef u32 NNSGfdPlttKey;
 // A key for the VRAM at the address, not allocated from a manager
 static inline NNSGfdTexKey NNS_GfdMakeTexKey(u32 addr, u32 size, BOOL is4x4comp) {
     return ((size >> NNS_GFD_TEXKEY_SIZE_SHIFT) << 16) | ((addr >> NNS_GFD_KEY_ADDR_SHIFT) & 0xffff) |
-           (is4x4comp << 31);
+           ((u32)is4x4comp << 31);
 }
 
 static inline u32 NNS_GfdGetTexKeyAddr(NNSGfdTexKey key) {
@@ -184,7 +184,7 @@ typedef enum {
 
 typedef struct {
     NNS_GFD_DST_TYPE type;
-    void *pSrc;
+    const void *pSrc;
     u32 dstAddr;
     u32 szByte;
 } NNSGfdVramTransferTask;
@@ -212,6 +212,6 @@ void NNS_GfdClearVramTransferManagerTask(void);
 // Does every queued transfer, in the V-blank
 void NNS_GfdDoVramTransfer(void);
 // Queues a transfer to VRAM for the next V-blank, or returns FALSE if the queue is full
-BOOL NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_TYPE type, u32 dstAddr, void *pSrc, u32 szByte);
+BOOL NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_TYPE type, u32 dstAddr, const void *pSrc, u32 szByte);
 
 #endif // POKEBW2_NNSYS_GFD_H

@@ -16,6 +16,7 @@ static u32 unpackAndLoadOBJChar(void *file, u32 engine, u32 offset, u32 size);
 static void GFL_BGSysLoadNSCR(void *file, u32 bg, u32 offset, u32 palOffset, u32 size, BOOL async);
 static void GFL_BGSysLoadNCLR(void *file, u32 type, u32 srcOffset, u32 offset, u32 size);
 
+#ifndef POKEBW2_PC
 // The unused image-loader table belongs here by adjacency to the related OBJ and palette dispatch tables.
 // Its descriptive name, source ownership and per-function IPA setting are inferred from the ROM layout.
 typedef void (*ImageLoadFunc)(const NNSG2dCharacterData *data, u32 baseAddr, NNS_G2D_VRAM_TYPE type,
@@ -26,6 +27,7 @@ static const ImageLoadFunc sOBJImageLoadFuncs[] = {
     NNS_G2dLoadImage1DMapping,
     NNS_G2dLoadImage2DMapping,
 };
+#endif
 
 u32 GFL_BGSysLoadNCGRStatic(u32 arcId, u32 fileId, u32 bg, u32 offset, u32 size, BOOL compressed, HeapID heapId) {
     void *file = GFL_ArcSysReadHeapNewLZ(arcId, fileId, compressed, heapId);
@@ -46,7 +48,19 @@ static u32 GFL_BGSysLoadNCGRStaticCore(void *file, u32 bg, u32 offset, u32 size,
         if (size == 0) {
             size = character->szByte;
         }
+        // BUG: callers can request a full VRAM region even when the character resource is smaller.
+#ifdef BUGFIX
+        if (size > character->szByte) {
+            void *padded = GFL_HeapAllocate(HEAPID_SYSTEM, size, TRUE, __FILE__, __LINE__);
+            MI_CpuCopy8(character->pRawData, padded, character->szByte);
+            GFL_BGSysLoadChar(bg, padded, size, offset);
+            GFL_HeapFree(padded);
+        } else {
+            GFL_BGSysLoadChar(bg, character->pRawData, size, offset);
+        }
+#else
         GFL_BGSysLoadChar(bg, character->pRawData, size, offset);
+#endif
     }
     GFL_HeapFree(file);
     return size;

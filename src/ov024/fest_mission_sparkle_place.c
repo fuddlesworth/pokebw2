@@ -74,7 +74,7 @@ static BOOL FestSparklePlace_PickPlaces(GameSystem *gsys, FestSparkleWork *work,
     int level;
     u8 pattern;
 
-    entity = GetZoneProxiesAndCount(GameData_GetEventData(GSYS_GetGameData(gsys)), &count);
+    entity = GetZoneProxiesAndCount(GameData_GetEventData(GSYS_GetGameData(gsys)), (u32 *)&count);
     if (entity == NULL) {
         return FALSE;
     }

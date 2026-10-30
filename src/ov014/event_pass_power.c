@@ -90,7 +90,7 @@ GameEventReturnCode EventPassPower_Callback(GameEvent *event, u32 *state, void *
         (*state)++;
     case 3:
         EventPassPower_SetupParam(&work->param, work->paramArgument, gsys, gameData, 0x8004);
-        GSYS_QueueProc(gsys, OVERLAY_PASS_POWER_APP, &GPOWER_APP_PROC_FUNCTIONS, &work->param);
+        GSYS_QueueProc(gsys, OVERLAY_PASS_POWER_APP, GAME_PROC_REFERENCE(GPOWER_APP_PROC_FUNCTIONS), &work->param);
         (*state)++;
         break;
     case 4:

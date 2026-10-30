@@ -39,7 +39,7 @@ GameEventReturnCode EventBattleVideo_Callback(GameEvent *event, u32 *state, void
     case 2:
         wk->param.gameData = GSYS_GetGameData(gsys);
         wk->param.mode = wk->mode;
-        GSYS_QueueProc(gsys, OVERLAY_NONE, &BATTLE_VIDEO_PROC_FUNCTIONS, &wk->param);
+        GSYS_QueueProc(gsys, OVERLAY_NONE, GAME_PROC_REFERENCE(BATTLE_VIDEO_PROC_FUNCTIONS), &wk->param);
         (*state)++;
         break;
     case 3:

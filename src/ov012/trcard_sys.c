@@ -267,7 +267,7 @@ static u32 TrainerCardSys_SeqGreeting(TrainerCardSysWork *wk) {
         wk->procMgr = CreateGameProcManager(wk->heapId);
     }
     wk->greeting.save = GameData_GetSaveControl(wk->param->gameData);
-    QueueGameProc(wk->procMgr, OVERLAY_ID(185), &PMS_SELECT_PROC_FUNCTIONS, &wk->greeting);
+    QueueGameProc(wk->procMgr, OVERLAY_ID(185), GAME_PROC_REFERENCE(PMS_SELECT_PROC_FUNCTIONS), &wk->greeting);
     return TRCARD_SEQ_GREETING_WAIT;
 }
 
@@ -291,7 +291,7 @@ static u32 TrainerCardSys_SeqOther(TrainerCardSysWork *wk) {
         wk->procMgr = CreateGameProcManager(wk->heapId);
     }
     wk->greeting.save = GameData_GetSaveControl(wk->param->gameData);
-    QueueGameProc(wk->procMgr, OVERLAY_ID(185), &BADGE_VIEW_PROC_FUNCTIONS, wk->param);
+    QueueGameProc(wk->procMgr, OVERLAY_ID(185), GAME_PROC_REFERENCE(BADGE_VIEW_PROC_FUNCTIONS), wk->param);
     return TRCARD_SEQ_OTHER_WAIT;
 }
 
@@ -363,7 +363,7 @@ void TrainerCardData_FillExtras(TrainerCardData *data, GameData *gameData, HeapI
 
 static u32 TrainerCardSys_SeqMedal(TrainerCardSysWork *wk) {
     // Read but unused
-    MedalBox *box = SaveControl_GetMedalBox(GameData_GetSaveControl(wk->param->gameData));
+    SaveControl_GetMedalBox(GameData_GetSaveControl(wk->param->gameData));
 
     if (wk->procMgr == NULL) {
         wk->procMgr = CreateGameProcManager(wk->heapId);
@@ -378,7 +378,7 @@ static u32 TrainerCardSys_SeqMedal(TrainerCardSysWork *wk) {
     wk->medal.year = wk->param->data->medalYear;
     wk->medal.month = wk->param->data->medalMonth;
     wk->medal.day = wk->param->data->medalDay;
-    QueueGameProc(wk->procMgr, OVERLAY_ID(187), &MedalInfo_ProcFunctions, &wk->medal);
+    QueueGameProc(wk->procMgr, OVERLAY_ID(187), GAME_PROC_REFERENCE(MedalInfo_ProcFunctions), &wk->medal);
     return TRCARD_SEQ_MEDAL_WAIT;
 }
 
@@ -556,8 +556,8 @@ u32 TrainerCard_CountStars(GameData *gameData) {
     u32 stars = 0;
     SaveControl *save = GameData_GetSaveControl(gameData);
     // Read but unused
-    BSubwayScoreData *bsubway = GameData_GetBSubwayScoreData(gameData);
-    MusicalSave *musical = getMusicalInfoBlkAddress(gameData);
+    GameData_GetBSubwayScoreData(gameData);
+    getMusicalInfoBlkAddress(gameData);
     PassPowerLevel *levels = GameData_GetMyPassPowerLevels(gameData);
     PokewoodSave *pokewood = PokewoodSave_Get(gameData);
     WbtSave *wbt = TrialHouseSave_GetWbtSave(save);

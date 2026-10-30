@@ -50,7 +50,7 @@ void ScrcmdPokemonFld_SwapPartyMonWithBoxedLegend(FieldScriptEnv *env, u32 party
                 MailBox_SetMail(mails, 0, index, mail);
             }
             ResetMailData(mail);
-            PokeParty_SetParam(pkm, PKM_PARAM_MAIL, (u32)mail);
+            PokeParty_SetParam(pkm, PKM_PARAM_MAIL, (uptr)mail);
             PokeParty_SetParam(pkm, PKM_PARAM_ITEM, 0);
             GFL_HeapFree(mail);
         }

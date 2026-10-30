@@ -176,7 +176,7 @@ static void FldeffCut_Draw(FieldEffectTask *task, void *data) {
     SRTMatrix mtx = {
         { 0, 0, 0 },
         { FX32_ONE, FX32_ONE, FX32_ONE },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
     };
 
     MTX_Identity33_(&mtx.rotation);

@@ -145,7 +145,7 @@ static void DWCi_Inet_ConnectToAp(const char *ssid, const u8 *wepKey, int wepMod
         sInet.control->ended = TRUE;
     }
     if (DWC_GetInetStatus() == DWC_CONNECTINET_STATE_OPERATING) {
-        DWC_AC_SetSpecifyApEx(ssid, wepKey, wepMode, mtu, spotInfo, apType);
+        DWC_AC_SetSpecifyApEx((const u8 *)ssid, wepKey, wepMode, mtu, (const u8 *)spotInfo, apType);
     }
 }
 
@@ -352,7 +352,7 @@ BOOL DWC_GetApInfo(DWCApInfo *apInfo) {
         MI_CpuCopy8(ssid, apInfo->essid, ssidLength);
     }
     OS_RestoreInterrupts(irq);
-    if (!DWC_AC_GetApSpotInfo(spotInfo)) {
+    if (!DWC_AC_GetApSpotInfo((u8 *)spotInfo)) {
         apInfo->area = AP_AREA_UNKNOWN;
     } else {
         DWCi_ApInfo_SetSpotInfo(spotInfo, apInfo);
@@ -372,7 +372,7 @@ static BOOL DWCi_ApInfo_FromNintendoSsid(const u8 *ssid, u16 ssidLength, DWCApIn
         if (apInfo == NULL) {
             return TRUE;
         }
-        if (DWCi_AC_GetPostalCode(ssid, spotInfo)) {
+        if (DWCi_AC_GetPostalCode(ssid, (u8 *)spotInfo)) {
             apInfo->aptype = AP_TYPE_NINTENDO_WFC;
             DWCi_ApInfo_SetSpotInfo(spotInfo, apInfo);
             return TRUE;

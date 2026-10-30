@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="375" height="61" viewBox="0 0 375 61">
+  <defs><linearGradient id="selected" x2="0" y2="1"><stop stop-color="#10282e"/><stop offset="1" stop-color="#0b1a20"/></linearGradient></defs>
+  <path fill="#080c0f" d="M0 0H375V61H0z"/>
+  <!-- Inset the 4px stroke so its top, right, bottom and bevel match row.svg's 2px stroke. -->
+  <path fill="url(#selected)" stroke="#00dfef" stroke-width="4" stroke-linejoin="miter" d="M2 4H339.586L359 23.414V58H2Z"/>
+  <path fill="#56eff7" d="M4 2H340.414L341.414 3H4Z"/>
+  <path fill="#00dfef" d="M19 17l15 14-15 14z"/>
+</svg>

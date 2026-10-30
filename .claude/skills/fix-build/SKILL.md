@@ -5,12 +5,19 @@ description: Diagnose a pokebw2 build failure or compiler warning after a C or c
 
 # Fix the build
 
+Run native graphical tests one game instance at a time. Do not run a window-opening CTest suite alongside a
+gameplay replay on the user's desktop; it repeatedly opens and focuses game windows. Prefer an isolated display
+for automated visual tests, and keep non-graphical build and ABI checks separate.
+If SDL's `offscreen` driver fails because Vulkan lacks `VK_EXT_headless_surface`, use Xvfb with
+`DISPLAY=:99 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy`. That failure does not rule out headless SDL/Vulkan testing.
+
 Keep the full Ninja output and inspect every `warning:` and `error:` line; use the tail for the failing task's context.
 Ninja checks, per version, the archives built from source,
 every module (`dsd check modules`) and the ROM's SHA1, so the failing check names the module and the version.
 
 | Symptom | Cause and fix |
 | --- | --- |
+| Native Clang ASan build links unused application tables and reports their missing dependencies | With GNU ld, use `-Wl,-z,start-stop-gc` alongside section garbage collection. ASan's registration section otherwise retains globals that the plain build discards. Keep global instrumentation enabled; disabling it hides memory errors. |
 | MWCC emits a warning while Ninja succeeds | Treat the build as unfinished. Correct the declaration, cast, initialization or duplicate definition at the reported line; do not silence warnings with compiler flags. Recompile the affected file in both versions and check the ROMs. If the first build log was incremental, run a clean build once to catch warnings in untouched files. |
 | `Last symbol 'X' ... not contained within the file's section range` | A `.data`/`.rodata`/`.bss` range in `delinks.txt` ends before the file's last object. Extend the range to the end of that object. If the object is the next file's, the boundary is wrong. When an object nothing references sits between files, `config_fixes.py add-data` gives it a symbol. Fix both versions. |
 | `Check ... overlay N: checksum failed` in one module the change didn't touch | (1) A function made `static` that this module calls links to address 0 through a veneer, and one whose address it loads (a `kind:load` relocation, such as ov036's pointer to `ListMenuCore_FreeStrBufs`) becomes 0. Make it global again; `mark_complete.py` and `add_source_file.py` without `--incomplete` check for this. (2) A header type change altered a caller's code in another file. `git diff include/` and probe the files that include it. A caller's local typed only to fit a wrong prototype (a `u32 heapId` passed to a parameter that is really `HeapID`) changes with it: give the local the parameter's real type. Other modules failing at the same time may only be calling into the changed one. (3) An ambiguous relocation now resolves to another overlay's symbol (see below). (4) A literal in that module that dsd took for a pointer into the data just made complete, such as ov011's MD5 constant `0x021ac7f4` that fell inside overlay 298's rodata in White 2: the same value in both versions while the data moved shows it is not a pointer. `config_fixes.py remove-reloc` it. |

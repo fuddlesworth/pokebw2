@@ -148,7 +148,7 @@ void WbtSetup_FreeWinRecordParam(WbtOv326Param *param) {
 }
 
 WbtOv326Param2 *WbtSetup_CreateDownloadParam(HeapID heapId, GameSystem *gsys, u32 a2, u16 *var1, u16 *var2) {
-    GameData *gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     WbtOv326Param2 *param = GFL_HeapAllocate(heapId, sizeof(WbtOv326Param2), TRUE, "wbt_setup.c", 390);
 
     param->gsys = gsys;

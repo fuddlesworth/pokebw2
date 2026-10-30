@@ -17,6 +17,9 @@
 #include "nitro/gx.h"
 #include "nitro/mi.h"
 #include "nitro/os.h"
+#ifdef POKEBW2_PC
+#include "nitro/host_gx.h"
+#endif
 #include "system/game_event.h"
 #include "system/wipe.h"
 
@@ -502,7 +505,11 @@ GameEventReturnCode EventGameTransition_RunDefaultFadeIn(GameEvent *event, u32 *
         }
         GFL_BGSysSetBGEnabled(2, FALSE);
         GX_SetBankForLCDC(8);
+#ifdef POKEBW2_PC
+        MIi_CpuClearFast(0, PcGxBackground[0], 0x20000);
+#else
         MIi_CpuClearFast(0, (void *)0x6800000, 0x20000);
+#endif
         GX_DisableBankForLCDC();
         GX_SetBankForBG(GX_VRAM_BG_128_D);
         resetBuildingEnterVBlankCallback();

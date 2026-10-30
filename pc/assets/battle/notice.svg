@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="260" viewBox="0 0 1280 260">
+ <defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#11171a"/><stop offset="1" stop-color="#20282e"/></linearGradient><linearGradient id="card" x2="1" y2="1"><stop stop-color="#2b3338"/><stop offset="1" stop-color="#101619"/></linearGradient></defs>
+ <path d="M0 0h1280v260H0z" fill="url(#bg)"/>
+ <path d="M0 1h1280M0 5h1280" stroke="#a6adb2" stroke-width="2"/>
+ <path d="M42 23h1196l20 20v126l-20 20H22V43z" fill="url(#card)" stroke="#bbc4ca" stroke-width="2"/>
+ <path d="M0 209h786l13-13h481v64H0z" fill="#101417"/>
+ <path d="M0 209h786l13-13h481" fill="none" stroke="#8c949b" stroke-width="2"/>
+</svg>

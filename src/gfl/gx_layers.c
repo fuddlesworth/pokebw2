@@ -12,6 +12,9 @@ static struct {
 } sEnabledPlanes;
 
 void GFL_BGSysInitVRAM(u32 banks) {
+#ifdef POKEBW2_PC
+    PcGx_InitVRAM(banks);
+#else
     GX_SetBankForLCDC(GX_VRAM_LCDC_ALL & (banks ^ 0xffff));
     MIi_CpuClearFast(0, (void *)HW_LCDC_VRAM, HW_LCDC_VRAM_SIZE);
     GX_DisableBankForLCDC();
@@ -19,6 +22,7 @@ void GFL_BGSysInitVRAM(u32 banks) {
     MIi_CpuClearFast(0, (void *)HW_BG_PLTT, HW_PLTT_SIZE);
     MIi_CpuClearFast(0xc0, (void *)HW_DB_OAM, HW_OAM_SIZE);
     MIi_CpuClearFast(0, (void *)HW_DB_BG_PLTT, HW_PLTT_SIZE);
+#endif
 }
 
 void GFL_BGSysSetVRAMBanks(const BGSysVRAMConfig *config) {

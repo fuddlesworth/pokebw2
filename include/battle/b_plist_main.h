@@ -178,6 +178,25 @@ struct BPlistWork {
 
 void BPlistMain_Start(BPlistParam *param);
 
+#ifdef POKEBW2_PC
+typedef enum {
+    BPLIST_NATIVE_WAIT,
+    BPLIST_NATIVE_PARTY,
+    BPLIST_NATIVE_ACTIONS,
+    BPLIST_NATIVE_SUMMARY,
+    BPLIST_NATIVE_MOVES,
+    BPLIST_NATIVE_MOVE_INFO,
+    BPLIST_NATIVE_POSITION,
+    BPLIST_NATIVE_FORGET,
+    BPLIST_NATIVE_CONFIRM,
+    BPLIST_NATIVE_PP,
+    BPLIST_NATIVE_MESSAGE
+} BPlistNativePhase;
+BPlistWork *BPlistMain_GetNativeWork(void);
+BPlistNativePhase BPlistMain_GetNativePhase(const BPlistWork *work);
+BOOL BPlistMain_SetNativeCursor(BPlistWork *work, u32 pos);
+#endif
+
 int BPlistMain_CheckPos(BPlistWork *work, int pos);
 int BPlistMain_GetSwitchError(BPlistWork *work);
 BOOL BPlistMain_IsPartnerSlot(BPlistWork *work, u32 idx);

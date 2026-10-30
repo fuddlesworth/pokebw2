@@ -1,4 +1,7 @@
 #include "app/pokelist.h"
+#ifdef POKEBW2_PC
+#include "../../pc/gx_backend.h"
+#endif
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "gfl/arc.h"
@@ -189,7 +192,11 @@ static void PokeListBattle_LoadResources(PokeListWork *wk) {
     iconArc = GFL_ArcSysCreateFileHandle(7, wk->heapId);
     wk->clResources[CL_RES_PLTT(7)] = ClActSys_LoadPlttEx(iconArc, PokeIcon_GetPaletteFile(), 1, 0xc0, wk->heapId);
     GFL_ArcToolFree(iconArc);
+#ifdef POKEBW2_PC
+    MIi_CpuCopy16(PcGx2D[1].background_palette + 0x40, wk->timerBaseColors, sizeof(wk->timerBaseColors));
+#else
     MIi_CpuCopy16((void *)(HW_DB_BG_PLTT + 0x40), wk->timerBaseColors, sizeof(wk->timerBaseColors));
+#endif
 }
 
 static void PokeListBattle_FreeResources(PokeListWork *wk) {

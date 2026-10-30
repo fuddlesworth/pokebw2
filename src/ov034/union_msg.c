@@ -37,7 +37,7 @@ static void UnionMsg_FreeMsgSystem(UnionSystem *unisys);
 static void UnionMsg_CreateMenu(UnionSystem *unisys, Field *field, const ListMenuRow *rows, u32 count,
                                 ListMenuRequest *request);
 static void UnionMsg_FreeMenu(UnionSystem *unisys);
-static s32 UnionMsg_UpdateMenu(UnionSystem *unisys, Field *field);
+static sptr UnionMsg_UpdateMenu(UnionSystem *unisys, Field *field);
 
 // The menus of the battle rules, each row a message and a value or the menu it opens
 static const ListMenuRow sMenu_029c[3];
@@ -672,7 +672,7 @@ static void UnionMsg_FreeMenu(UnionSystem *unisys) {
     }
 }
 
-static s32 UnionMsg_UpdateMenu(UnionSystem *unisys, Field *field) {
+static sptr UnionMsg_UpdateMenu(UnionSystem *unisys, Field *field) {
     void *fldmsg_bg = Field_GetMsgBGSys(field);
 
     GFL_ASSERT(fldmsg_bg != NULL);
@@ -753,7 +753,7 @@ static inline const UnionMenuInfo *UnionMsg_GetMenuInfo(int kind) {
 // Runs the menu of the battle rules and takes the choice: the value is a submenu or a rule. picked says the choice
 // changed the rules or opened a menu, isFinal that the rules are confirmed
 u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL *isFinal, Field *field) {
-    u32 ret;
+    uptr ret;
     u32 i;
 
     *picked = FALSE;
@@ -778,11 +778,11 @@ u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL
     }
 
     if (ruleSel[3] == 0) {
-        if (ret == (u32)sMenu_03f4) {
+        if (ret == (uptr)sMenu_03f4) {
             if (ruleSel[0] == 4) {
                 ruleSel[0] = 0;
             }
-        } else if (ret == (u32)sMenu_039c) {
+        } else if (ret == (uptr)sMenu_039c) {
             ruleSel[0] = 4;
         }
     }

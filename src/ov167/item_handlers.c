@@ -1738,27 +1738,24 @@ static void HandlerCommonResistBerryDamageAfter(BattleEventItem *item, BtlServer
 }
 
 static void HandlerPinchReactionCommon(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    BattleMon *mon;
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
-        mon = GetBattleMon(flow, monId);
+        GetBattleMon(flow, monId);
         CommonDamageReactCheck(item, flow, monId, CommonGetItemParam(item, 2), TRUE);
     }
 }
 
 static void HandlerPinchReactionMemberIn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    BattleMon *mon;
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
-        mon = GetBattleMon(flow, monId);
+        GetBattleMon(flow, monId);
         CommonDamageReactCheck(item, flow, monId, CommonGetItemParam(item, 2), FALSE);
     }
 }
 
 static void CommonDamageReact(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    BattleMon *mon;
 
-    mon = GetBattleMon(flow, monId);
+    GetBattleMon(flow, monId);
     if (CommonDamageReactCheckCore(flow, monId, CommonGetItemParam(item, 2))) {
         ItemEvent_PushRun(item, flow, monId);
     }
@@ -1856,11 +1853,10 @@ static const BattleEventHandlerEntry *EventAddMicleBerry(u32 *numHandlers) {
 }
 
 static void HandlerMicleBerryReaction(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    BattleMon *mon;
     u8 ratio;
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
-        mon = GetBattleMon(flow, monId);
+        GetBattleMon(flow, monId);
         ratio = CommonGetItemParam(item, 2);
         if (CommonDamageReactCheckContext(item, flow, monId, ratio)) {
             ItemEvent_PushRun(item, flow, monId);
@@ -1881,10 +1877,9 @@ static void HandlerMicleBerryActionEnd(BattleEventItem *item, BtlServerFlow *flo
 }
 
 static void HandlerMicleBerryMemberIn(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    BattleMon *mon;
     u8 ratio;
 
-    mon = GetBattleMon(flow, monId);
+    GetBattleMon(flow, monId);
     ratio = CommonGetItemParam(item, 2);
     if (CommonDamageReactCheckCore(flow, monId, ratio)) {
         ItemEvent_PushRun(item, flow, monId);
@@ -1892,11 +1887,10 @@ static void HandlerMicleBerryMemberIn(BattleEventItem *item, BtlServerFlow *flow
 }
 
 static void HandlerMicleBerryUse(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    BattleMon *mon;
     BattleHandlerAddConditionParam *param;
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
-        mon = GetBattleMon(flow, monId);
+        GetBattleMon(flow, monId);
         param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
         param->targetIndex = monId;
         param->condition = CONDITION_MICLE_BERRY;

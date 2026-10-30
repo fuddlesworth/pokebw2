@@ -5,8 +5,19 @@
 #include "nitro/fx.h"
 #include "nitro/mi.h"
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Identity33_(MtxFx33 *mtx) {
+    for (int row = 0; row < 3; row++) {
+        for (int col = 0; col < 3; col++) {
+            mtx->m[row][col] = row == col ? FX32_ONE : 0;
+        }
+    }
+}
+#else
 asm void MTX_Identity33_(MtxFx33 *mtx) {
     mov r2, #0x1000
     str r2, [r0, #0x20]
@@ -18,11 +29,21 @@ asm void MTX_Identity33_(MtxFx33 *mtx) {
     stmia r0!, {r1, r3}
     bx lr
 }
+#endif
 
 // clang-format on
 
 // Copies through ldm and stm with writeback, which MWCC does not generate
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Copy33To44_(const MtxFx33 *src, MtxFx44 *dst) {
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            dst->m[row][col] = row < 3 && col < 3 ? src->m[row][col] : (row == col ? FX32_ONE : 0);
+        }
+    }
+}
+#else
 asm void MTX_Copy33To44_(const MtxFx33 *src, MtxFx44 *dst) {
     stmdb sp!, {r4}
     mov ip, #0
@@ -40,12 +61,23 @@ asm void MTX_Copy33To44_(const MtxFx33 *src, MtxFx44 *dst) {
     ldmia sp!, {r4}
     bx lr
 }
+#endif
 
 // clang-format on
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 // Stores through stm with writeback, which MWCC does not generate
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Scale33_(MtxFx33 *mtx, fx32 x, fx32 y, fx32 z) {
+    *mtx = (MtxFx33){ 0 };
+    mtx->m[0][0] = x;
+    mtx->m[1][1] = y;
+    mtx->m[2][2] = z;
+}
+#else
 asm void MTX_Scale33_(MtxFx33 *mtx, fx32 x, fx32 y, fx32 z) {
     stmia r0!, {r1}
     mov r1, #0
@@ -57,10 +89,13 @@ asm void MTX_Scale33_(MtxFx33 *mtx, fx32 x, fx32 y, fx32 z) {
     stmia r0!, {r1, r3}
     bx lr
 }
+#endif
 
 // clang-format on
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 void MTX_ScaleApply33(const MtxFx33 *src, MtxFx33 *dest, fx32 x, fx32 y, fx32 z) {
     dest->m[0][0] = (fx32)(((fx64)x * src->m[0][0]) >> FX32_SHIFT);
     dest->m[0][1] = (fx32)(((fx64)x * src->m[0][1]) >> FX32_SHIFT);
@@ -72,9 +107,21 @@ void MTX_ScaleApply33(const MtxFx33 *src, MtxFx33 *dest, fx32 x, fx32 y, fx32 z)
     dest->m[2][1] = (fx32)(((fx64)z * src->m[2][1]) >> FX32_SHIFT);
     dest->m[2][2] = (fx32)(((fx64)z * src->m[2][2]) >> FX32_SHIFT);
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_RotX33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
+    *mtx = (MtxFx33){ 0 };
+    mtx->m[0][0] = FX32_ONE;
+    mtx->m[1][1] = cos;
+    mtx->m[2][2] = cos;
+    mtx->m[1][2] = sin;
+    mtx->m[2][1] = -sin;
+}
+#else
 asm void MTX_RotX33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
     mov r3, #1
     lsl r3, r3, #0xc
@@ -91,10 +138,21 @@ asm void MTX_RotX33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
     str r2, [r0, #0x20]
     bx lr
 }
+#endif
 
 // clang-format on
 
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_RotY33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
+    *mtx = (MtxFx33){ 0 };
+    mtx->m[1][1] = FX32_ONE;
+    mtx->m[2][2] = cos;
+    mtx->m[0][0] = cos;
+    mtx->m[2][0] = sin;
+    mtx->m[0][2] = -sin;
+}
+#else
 asm void MTX_RotY33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
     str r2, [r0, #0]
     str r2, [r0, #0x20]
@@ -111,10 +169,21 @@ asm void MTX_RotY33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
     str r3, [r0, #0x10]
     bx lr
 }
+#endif
 
 // clang-format on
 
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_RotZ33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
+    *mtx = (MtxFx33){ 0 };
+    mtx->m[2][2] = FX32_ONE;
+    mtx->m[0][0] = cos;
+    mtx->m[1][1] = cos;
+    mtx->m[0][1] = sin;
+    mtx->m[1][0] = -sin;
+}
+#else
 asm void MTX_RotZ33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
     stmia r0!, {r2}
     mov r3, #0
@@ -129,10 +198,13 @@ asm void MTX_RotZ33_(MtxFx33 *mtx, fx32 sin, fx32 cos) {
     str r1, [r0, #0xc]
     bx lr
 }
+#endif
 
 // clang-format on
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 void MTX_RotAxis33(MtxFx33 *mtx, const VecFx32 *axis, fx32 sin, fx32 cos) {
     fx64 omc = FX32_ONE - cos;
     fx64 x = axis->x;
@@ -249,4 +321,6 @@ void MTX_MultVec33(const VecFx32 *vec, const MtxFx33 *mtx, VecFx32 *dest) {
     dest->y = (fx32)(((fx64)x * mtx->m[0][1] + (fx64)y * mtx->m[1][1] + (fx64)z * mtx->m[2][1]) >> FX32_SHIFT);
     dest->z = (fx32)(((fx64)x * mtx->m[0][2] + (fx64)y * mtx->m[1][2] + (fx64)z * mtx->m[2][2]) >> FX32_SHIFT);
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif

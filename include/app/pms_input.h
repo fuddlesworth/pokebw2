@@ -52,4 +52,20 @@ void PMSInput_GetSearchResultStr(const PMSInputWork *wk, u32 index, StrBuf *buf)
 // Puts the categories' cursor on the first category
 void PMSInput_ResetCategoryPos(PMSInputWork *wk);
 
+#ifdef POKEBW2_PC
+enum { PMS_NATIVE_EDIT, PMS_NATIVE_CATEGORIES, PMS_NATIVE_WORDS };
+typedef struct {
+    Font *font;
+    u32 phase, mode, categoryMode, category, cursor, count, editCursor, editCount, button;
+    BOOL ready, buttonFocused, complete, fixedSentence;
+    u16 preview[256];
+    u16 words[2][64];
+} PMSInputNativeState;
+PMSInputWork *PMSInput_GetNativeWork(void);
+BOOL PMSInput_GetNativeState(PMSInputNativeState *state);
+BOOL PMSInput_SelectNative(u32 index);
+void PMSInput_NativeConfirm(BOOL cancel);
+BOOL PMSInput_GetNativeCategory(u32 index, StrBuf *label);
+#endif
+
 #endif // POKEBW2_APP_PMS_INPUT_H

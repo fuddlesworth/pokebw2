@@ -49,6 +49,7 @@ CI compiles every C file for both versions; fork PRs must verify ROM matching lo
 | [Matching](docs/matching.md) | MWCC behavior and matching techniques |
 | [Code organization](docs/code-organization.md) | Source layout, libraries and names |
 | [Native port notes](docs/porting-notes.md) | Recovered platform assumptions and open porting questions |
+| [64-bit PC port](docs/pc-port.md) | SDL3/Vulkan host build, single-screen direction and integration milestones |
 | [Source files](docs/source-files.md) | Overlay files and boundary evidence |
 | [Nonmatching functions](docs/nonmatching-functions.md) | Remaining mismatches |
 | [Game data](docs/data.md) | Data formats and archives |

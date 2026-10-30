@@ -110,6 +110,14 @@ static void Report_ShowBarIcon(ReportScreen *wk, int index);
 static void Report_FillBar(ReportScreen *wk);
 static void Report_VBlank(TCB *tcb, void *data);
 
+#ifdef POKEBW2_PC
+static ReportScreen *sNativeScreen;
+
+u32 Report_GetNativeProgress(void) {
+    return sNativeScreen ? sNativeScreen->barCount : 0;
+}
+#endif
+
 ReportScreen *Report_Create(GameSystem *gsys, HeapID heapId) {
     ReportScreen *wk = GFL_HeapAllocate(heapId, sizeof(ReportScreen), FALSE, "report.c", 288);
 
@@ -123,10 +131,17 @@ ReportScreen *Report_Create(GameSystem *gsys, HeapID heapId) {
     Report_PrintWindows(wk);
     GFL_NetSetIconScreen(FALSE, heapId);
     wk->vblankTcb = GFL_VBlankTCBAdd(Report_VBlank, wk, 0);
+#ifdef POKEBW2_PC
+    wk->barCount = 0;
+    sNativeScreen = wk;
+#endif
     return wk;
 }
 
 void Report_Free(ReportScreen *wk) {
+#ifdef POKEBW2_PC
+    sNativeScreen = NULL;
+#endif
     GFL_TCBRemove(wk->vblankTcb);
     Report_FreeWindows(wk);
     Report_FreeActors(wk);

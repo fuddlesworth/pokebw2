@@ -104,8 +104,8 @@ BOOL Scrcmd_Musical_MusicalCall(VM *vm, FieldScriptEnv *env) {
     holder->param->loadComm = TRUE;
     holder->param->loadData = TRUE;
     ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(
-                                   gsys, field, OVERLAY_ID(209), &MUSICAL_SHOT_PROC_FUNCTIONS, holder->param,
-                                   MusicalShotHolder_Free, holder));
+                                   gsys, field, OVERLAY_ID(209), GAME_PROC_REFERENCE(MUSICAL_SHOT_PROC_FUNCTIONS),
+                                   holder->param, MusicalShotHolder_Free, holder));
     return TRUE;
 }
 
@@ -624,8 +624,9 @@ BOOL Scrcmd_Musical_MusicalComm(VM *vm, FieldScriptEnv *env) {
             commWork->ircMatch.result = IRCBATTLEMATCH_MODE_MUSICAL_ARG1;
         }
         ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(
-                                       gsys, field, OVERLAY_IRCBATTLEMATCH, &IRCBATTLEMATCH_PROC_FUNCTIONS,
-                                       &commWork->ircMatch, MusicalIrcMatch_OnReturn, holder));
+                                       gsys, field, OVERLAY_IRCBATTLEMATCH,
+                                       GAME_PROC_REFERENCE(IRCBATTLEMATCH_PROC_FUNCTIONS), &commWork->ircMatch,
+                                       MusicalIrcMatch_OnReturn, holder));
         return TRUE;
     case 19:
         if (commWork->comm != NULL && lost == TRUE) {

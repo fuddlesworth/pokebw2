@@ -192,7 +192,9 @@ static BOOL MicTest_IsExitPressed(void);
 
 const GameProcFunctions MIC_TEST_PROC_FUNCTIONS = { MicTest_Init, MicTest_Main, MicTest_Exit };
 
+#ifndef POKEBW2_PC
 static u32 sMicTestBufferFullCount;
+#endif
 
 static const u16 sMicTestWindowColors[WINDOW_COUNT] = { 0x044f, 0x044f, 0x3c40 };
 
@@ -612,7 +614,7 @@ static void MicTestMic_Init(MicTestMic *mic, u32 heapId, MICCallback callback, v
     MI_CpuFill8(buffer, 0, bufferSize);
     mic->buffer = buffer;
     mic->param.type = MIC_SAMPLING_TYPE_8BIT;
-    mic->param.buffer = (void *)(((u32)buffer + 0x1f) & ~0x1f);
+    mic->param.buffer = (void *)(((uptr)buffer + 0x1f) & ~(uptr)0x1f);
     mic->param.rate = MIC_SAMPLING_RATE_8180;
     mic->param.loop_enable = TRUE;
     // Less the 32 bytes that aligning the start may skip
@@ -726,7 +728,9 @@ static void MicTest_OnBufferFull(MICResult result, void *arg) {
         ClActor_SetSequence(wk->actors[0], 0);
         ClActor_SetSequence(wk->actors[1], 0);
     }
+#ifndef POKEBW2_PC
     sMicTestBufferFullCount++;
+#endif
 }
 
 // The animation of the speaker for a sample as loud as peak
@@ -743,9 +747,13 @@ static u32 MicTest_GetLevel(u8 peak) {
     if (peak >= 177 && peak <= 197) {
         return 3;
     }
+#ifdef POKEBW2_PC
+    return 4;
+#else
     if (peak >= 198) {
         return 4;
     }
+#endif
 }
 
 static BOOL MicTest_AreNotesFree(MicTestWork *wk) {

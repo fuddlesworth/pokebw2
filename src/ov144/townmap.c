@@ -330,6 +330,73 @@ static BOOL TownMapTouch_GetDrag(const TownMapTouch *touch, VecFx32 *delta, u32 
 static void TownMapTouch_Restart(TownMapTouch *touch);
 static void TownMap_VBlank(TCB *tcb, void *data);
 
+#ifdef POKEBW2_PC
+static TownMapWork *sNativeMap;
+
+BOOL TownMap_GetNativeState(TownMapNativeState *state) {
+    TownMapWork *work = sNativeMap;
+    if (work == NULL) {
+        return FALSE;
+    }
+    state->font = work->font;
+    state->mode = work->param->mode;
+    state->selected = work->selected != NULL ? work->selected - work->places.places : TOWNMAP_PLACE_NONE;
+    state->player =
+        work->places.player.place != NULL ? work->places.player.place - work->places.places : TOWNMAP_PLACE_NONE;
+    state->count = work->places.count;
+    state->ready = work->seq.func == TownMap_SeqMain && !TownMapMap_IsMoving(&work->map);
+    return TRUE;
+}
+
+BOOL TownMap_GetNativePlace(u32 index, TownMapNativePlace *state) {
+    TownMapWork *work = sNativeMap;
+    TownMapPlace *place;
+    u32 zone;
+    u32 message;
+    if (work == NULL || index >= work->places.count) {
+        return FALSE;
+    }
+    place = &work->places.places[index];
+    state->visible = !place->hidden;
+    state->canFly = place->canFly;
+    state->x = TownMapPlace_GetParam(place, TOWNMAP_PARAM_CURSOR_X);
+    state->y = TownMapPlace_GetParam(place, TOWNMAP_PARAM_CURSOR_Y);
+    zone = TownMapPlace_GetParam(place, TOWNMAP_PARAM_ZONE);
+    GFL_MsgDataLoadRawStr(work->placeNames, ZoneData_GetPlaceNameID(zone), state->name, NELEMS(state->name));
+    message = TownMapPlace_GetParam(place, TOWNMAP_PARAM_DESCRIPTION);
+    state->description[0] = 0xffff;
+    if (message != 0xffff) {
+        GFL_MsgDataLoadRawStr(work->msgData, message, state->description, NELEMS(state->description));
+    }
+    return TRUE;
+}
+
+BOOL TownMap_SetNativePlace(u32 index) {
+    TownMapWork *work = sNativeMap;
+    TownMapPlace *place;
+    TownMapPoint pos;
+    TownMapPoint scroll;
+    if (work == NULL || index >= work->places.count || work->seq.func != TownMap_SeqMain || work->zoomed) {
+        return FALSE;
+    }
+    place = &work->places.places[index];
+    if (place->hidden) {
+        return FALSE;
+    }
+    pos.x = TownMapPlace_GetParam(place, TOWNMAP_PARAM_CURSOR_X);
+    pos.y = TownMapPlace_GetParam(place, TOWNMAP_PARAM_CURSOR_Y);
+    TownMapCursor_SetPos(&work->cursor, &pos);
+    TownMapInfo_Draw(&work->info, place);
+    TownMapPlaces_Select(&work->places, place);
+    work->selected = place;
+    TownMapPlaces_GetScroll(&work->places, &scroll);
+    TownMapCursor_SetPlace(&work->cursor, place, &scroll);
+    TownMapPlaceName_SetPlace(&work->placeName, place);
+    GCTX_HIDSetUsingTouch(FALSE);
+    return TRUE;
+}
+#endif
+
 static const TownMapPoint sTownMapCenter = { TOWNMAP_CENTER_X, TOWNMAP_CENTER_Y };
 
 const GameProcFunctions TOWNMAP_PROC_FUNCTIONS = { TownMap_ProcInit, TownMap_ProcMain, TownMap_ProcExit };
@@ -406,12 +473,18 @@ static BOOL TownMap_ProcInit(GameProc *proc, u32 *state, void *paramPtr, void *w
         GFL_NetSetIconScreen(TRUE, HEAPID_TOWNMAP);
     }
     work->vblankTask = GFL_VBlankTCBAdd(TownMap_VBlank, work, 0);
+#ifdef POKEBW2_PC
+    sNativeMap = work;
+#endif
     return TRUE;
 }
 
 static BOOL TownMap_ProcExit(GameProc *proc, u32 *state, void *paramPtr, void *workPtr) {
     TownMapWork *work = workPtr;
 
+#ifdef POKEBW2_PC
+    sNativeMap = NULL;
+#endif
     GFL_TCBRemove(work->vblankTask);
     TownMapTouch_Free(&work->touch);
     TownMapInfo_Free(&work->info);

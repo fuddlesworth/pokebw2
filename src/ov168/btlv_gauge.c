@@ -142,6 +142,28 @@ struct BtlvGauge {
 }; // 0x46c
 
 // The red flash of the gauges losing HP
+#ifdef POKEBW2_PC
+BOOL BtlvGauge_GetNativeState(const BtlvGauge *gauge, u32 index, BtlvGaugeNativeState *state) {
+    const BtlvGaugeMon *mon;
+    if (gauge == NULL || index >= NELEMS(gauge->entries))
+        return FALSE;
+    mon = &gauge->entries[index].mon;
+    if (!mon->shown || !mon->visible)
+        return FALSE;
+    state->hp =
+        mon->hpMoving && mon->hpAnim != GAUGE_ANIM_START ? (mon->maxHp < 48 ? mon->hpAnim >> 8 : mon->hpAnim) : mon->hp;
+    state->maxHp = mon->maxHp;
+    state->exp = mon->expMoving && mon->expAnim != GAUGE_ANIM_START
+                     ? (mon->expMax < 96 ? mon->expAnim >> 8 : mon->expAnim)
+                     : mon->exp;
+    state->expMax = mon->expMax;
+    state->level = mon->level;
+    state->sex = mon->sex;
+    state->status = mon->status;
+    return TRUE;
+}
+#endif
+
 typedef struct {
     BtlvGauge *gauge;
     u32 seq;
@@ -498,6 +520,10 @@ static void BtlvGauge_CreateActors(BtlvGauge *gauge, u32 type, int index) {
         animFile = index & 1 ? 0x1bb : 0x1be;
         break;
     case 4:
+#ifdef POKEBW2_PC
+        GFL_DebugAssertFailEx(__FILE__, __LINE__, "No gauge resources for battle style %u", type);
+        return;
+#endif
         break;
     }
     if (type == BTL_STYLE_ROTATION) {
@@ -1062,28 +1088,30 @@ static void BtlvGauge_DrawName(BtlvGauge *gauge, BtlvGaugeEntry *entry, PartyPkm
         pixels = GFL_BitmapGetPixelData(bitmap);
         ClActor_GetImageProxy(entry->nameActor, &proxy);
         if (entry->mon.side) {
-            MI_CpuCopy16(
-                pixels, (void *)((u32)vram + 0x40 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]), 0xc0);
+            MI_CpuCopy16(pixels,
+                         (void *)((uptr)vram + 0x40 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         0xc0);
             MI_CpuCopy16(pixels + 0x100,
-                         (void *)((u32)vram + 0x140 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x140 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0xc0);
             MI_CpuCopy16(pixels + 0xc0,
-                         (void *)((u32)vram + 0x400 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x400 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x40);
             MI_CpuCopy16(pixels + 0x1c0,
-                         (void *)((u32)vram + 0x500 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x500 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x40);
         } else {
-            MI_CpuCopy16(
-                pixels, (void *)((u32)vram + 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]), 0xe0);
+            MI_CpuCopy16(pixels,
+                         (void *)((uptr)vram + 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         0xe0);
             MI_CpuCopy16(pixels + 0x100,
-                         (void *)((u32)vram + 0x120 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x120 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0xe0);
             MI_CpuCopy16(pixels + 0xe0,
-                         (void *)((u32)vram + 0x400 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x400 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x20);
             MI_CpuCopy16(pixels + 0x1e0,
-                         (void *)((u32)vram + 0x500 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x500 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x20);
         }
     }
@@ -1105,17 +1133,17 @@ static void BtlvGauge_DrawSex(BtlvGauge *gauge, BtlvGaugeEntry *entry) {
         ClActor_GetImageProxy(entry->nameActor, &proxy);
         if (entry->mon.side) {
             MI_CpuCopy16(gauge->chars + top,
-                         (void *)((u32)vram + 0x440 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x440 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x20);
             MI_CpuCopy16(gauge->chars + bottom,
-                         (void *)((u32)vram + 0x540 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x540 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x20);
         } else {
             MI_CpuCopy16(gauge->chars + top,
-                         (void *)((u32)vram + 0x420 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x420 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x20);
             MI_CpuCopy16(gauge->chars + bottom,
-                         (void *)((u32)vram + 0x520 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x520 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x20);
         }
     }
@@ -1162,7 +1190,7 @@ static void BtlvGauge_DrawBar(BtlvGauge *gauge, int index, int bar) {
         for (i = 0; i < 6; i++) {
             MI_CpuCopy16(
                 gauge->chars + (color + tiles[i] * 0x20),
-                (void *)((u32)vram + (i + 1) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                (void *)((uptr)vram + (i + 1) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                 0x20);
         }
         if (entry->mon.hpDelta > 0) {
@@ -1178,7 +1206,7 @@ static void BtlvGauge_DrawBar(BtlvGauge *gauge, int index, int bar) {
         for (i = 0; i < 10; i++) {
             MI_CpuCopy16(
                 gauge->chars + (tiles[i] * 0x20 + 0x400),
-                (void *)((u32)vram + (i + 1) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                (void *)((uptr)vram + (i + 1) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                 0x20);
         }
         break;
@@ -1226,11 +1254,11 @@ static void BtlvGauge_DrawHpNumbers(BtlvGauge *gauge, BtlvGaugeEntry *entry, s32
     maxTiles[n] = maxHp * 0x20 + GAUGE_TILE_DIGITS;
     for (i = 0; i < 3; i++) {
         MI_CpuCopy16(gauge->chars + hpTiles[i],
-                     (void *)((u32)vram + i * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                     (void *)((uptr)vram + i * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                      0x20);
-        MI_CpuCopy16(gauge->chars + maxTiles[i],
-                     (void *)((u32)vram + (i + 4) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
-                     0x20);
+        MI_CpuCopy16(
+            gauge->chars + maxTiles[i],
+            (void *)((uptr)vram + (i + 4) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]), 0x20);
     }
 }
 
@@ -1255,17 +1283,17 @@ static void BtlvGauge_DrawLevel(BtlvGauge *gauge, BtlvGaugeEntry *entry) {
         ClActor_GetImageProxy(entry->nameActor, &proxy);
         if (entry->mon.side) {
             MI_CpuCopy16(pixels,
-                         (void *)((u32)vram + 0x480 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x480 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x60);
             MI_CpuCopy16(pixels + 0x60,
-                         (void *)((u32)vram + 0x580 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x580 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x60);
         } else {
             MI_CpuCopy16(pixels,
-                         (void *)((u32)vram + 0x460 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x460 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x60);
             MI_CpuCopy16(pixels + 0x60,
-                         (void *)((u32)vram + 0x560 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + 0x560 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x60);
         }
     }
@@ -1284,7 +1312,7 @@ static void BtlvGauge_DrawCaughtMark(BtlvGauge *gauge, BtlvGaugeEntry *entry) {
         }
         ClActor_GetImageProxy(entry->nameActor, &proxy);
         MI_CpuCopy16(gauge->chars + tile,
-                     (void *)((u32)vram + 0x120 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]), 0x20);
+                     (void *)((uptr)vram + 0x120 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]), 0x20);
     }
 }
 
@@ -1312,7 +1340,7 @@ static void BtlvGauge_DrawDamage(BtlvGauge *gauge, BtlvGaugeEntry *entry, s32 do
         ClActor_GetImageProxy(entry->damageActor, &proxy);
         for (i = 0; i < 6; i++) {
             MI_CpuCopy16(gauge->chars + (tiles[i] * 0x20 + 0x6a0),
-                         (void *)((u32)vram + i * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
+                         (void *)((uptr)vram + i * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DMAIN]),
                          0x20);
         }
     }

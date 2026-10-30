@@ -80,6 +80,26 @@ struct BtlvCore {
 };
 
 // The work of the capture demo's procedure
+#ifdef POKEBW2_PC
+static BtlvCore *nativeCore;
+
+BOOL BtlvCore_GetNativeState(BtlvNativeState *state) {
+    if (nativeCore == NULL)
+        return FALSE;
+    // The battle frees its source parties before deleting the view during the exit sequence.
+    if (GetClientSrcParty(nativeCore->mainModule, GetPlayerClientID(nativeCore->mainModule), 0) == NULL)
+        return FALSE;
+    state->core = nativeCore;
+    state->input = BtlvScd_GetNativeInput(nativeCore->scd);
+    state->mainModule = nativeCore->mainModule;
+    state->mon = nativeCore->mon;
+    state->font = nativeCore->font;
+    state->message = BtlvScu_GetNativeMessage(nativeCore->scu);
+    state->statsMode = BtlvScu_GetNativeStats(nativeCore->scu, &state->stats);
+    return TRUE;
+}
+#endif
+
 typedef struct BtlvCaptureDemoWork {
     MsgData *msgData;
     s32 wait;
@@ -244,10 +264,17 @@ BtlvCore *BtlvCore_Create(BtlMainModule *mainModule, BtlClient *client, BtlPokeC
     core->seq = 0;
     core->subSeq = 0;
     BtlString_Init(mainModule, core->clientId, pokeCon, heapId);
+#ifdef POKEBW2_PC
+    core->mon = NULL;
+    nativeCore = core;
+#endif
     return core;
 }
 
 void BtlvCore_Delete(BtlvCore *core) {
+#ifdef POKEBW2_PC
+    nativeCore = NULL;
+#endif
     BtlString_Exit();
     BtlvScd_Delete(core->scd);
     BtlvScu_Delete(core->scu);

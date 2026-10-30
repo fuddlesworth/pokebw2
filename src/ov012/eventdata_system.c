@@ -31,9 +31,12 @@ void EventData_Free(EventData *data) {
 
 void EventData_Reset(EventData *data) {
     EventData_Clear(data);
-    // 0x2200 bytes into the entity file, far past the end of EventData, until LoadZoneEntities points it at the
-    // file's init script
+    // BUG: the reset sentinel points beyond the cache. No init script exists until LoadZoneEntities loads it.
+#ifdef BUGFIX
+    data->initScript = NULL;
+#else
     data->initScript = data->cache + 0x2200;
+#endif
     data->encLoaded = 0;
     data->encData.fishingEnable = 0;
 }

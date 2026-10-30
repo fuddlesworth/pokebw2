@@ -86,7 +86,7 @@ void EventFieldTrade_CreatePkm(GameData *gameData, HeapID heapId, PartyPkm *pkm,
     EventFieldTrade_DebugLogPkm(pkm);
 
     name = FieldTradeInput_LoadName(heapId, offer->nicknameMessageId);
-    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (u32)name);
+    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (uptr)name);
     GFL_StrBufFree(name);
 
     if (offer->ivs[0] != 0xff) {
@@ -122,7 +122,7 @@ void EventFieldTrade_CreatePkm(GameData *gameData, HeapID heapId, PartyPkm *pkm,
     PokeParty_SetParam(pkm, PKM_PARAM_ITEM, offer->heldItem);
 
     name = FieldTradeInput_LoadName(heapId, offer->nameMessageId);
-    PokeParty_SetParam(pkm, PKM_PARAM_OT_NAME, (u32)name);
+    PokeParty_SetParam(pkm, PKM_PARAM_OT_NAME, (uptr)name);
     GFL_StrBufFree(name);
     PokeParty_SetParam(pkm, PKM_PARAM_OT_GENDER, offer->trainerGender);
     PokeParty_SetParam(pkm, PKM_PARAM_REGION, offer->region);
@@ -207,7 +207,7 @@ GameEventReturnCode EventFieldTrade_Callback(GameEvent *event, u32 *state, void 
         work->tradeTrainer = work->input->trainer;
         work->tradePkm = work->input->tradeData;
         GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_ID(194),
-                                                                         &POKEMONTRADE_IRCDEMO_PROC_FUNCTIONS,
+                                                                         GAME_PROC_REFERENCE(POKEMONTRADE_IRCDEMO_PROC_FUNCTIONS),
                                                                          work->subprocessData));
         *state = 2;
         break;

@@ -126,7 +126,7 @@ static void updateHintVec_(u32 *hint, const NNSG3dAnmObj *anmObj) {
 
         for (i = 0; i < anmObj->numMapData; i++) {
             if (anmObj->mapData[i] & NNS_G3D_ANMOBJ_MAPDATA_EXIST) {
-                hint[i >> 5] |= 1 << (i & 0x1f);
+                hint[i >> 5] |= 1u << (i & 0x1f);
             }
         }
         anmObj = anmObj->next;

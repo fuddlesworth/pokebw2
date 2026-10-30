@@ -32,6 +32,9 @@ typedef struct {
     void *workStart;
     void *work;
     void *workEnd;
+#ifdef POKEBW2_PC
+    void *callerWork;
+#endif
     SPLTexVRAMAllocFunc texAllocFunc;
     SPLPalVRAMAllocFunc palAllocFunc;
     G3DCamera *camera;

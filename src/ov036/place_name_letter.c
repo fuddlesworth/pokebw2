@@ -390,7 +390,9 @@ static void PlaceNameFrame_SetPos(PlaceNameLetter *letter, PlaceNameFrameWork *w
 static u32 PlaceNameText_SlideIn(PlaceNameLetter *letter, PlaceNameTextWork *wk, s32 *step) {
     // The slide in as a plain move, on the path of PLACE_NAME_LETTER_TEXT_ANIM_IN's. Nothing reads it, so which
     // function held it is a guess, one that gives the original's .rodata
+#ifndef POKEBW2_PC
     static const MoveSpec sMoveIn = { { { 0, -0x20 }, { 0, 0 } }, 0, 0 };
+#endif
 
     switch (*step) {
     case PLACE_NAME_LETTER_SLIDE_START: {
@@ -529,7 +531,9 @@ static u32 PlaceNameFrame_SetIcon(PlaceNameLetter *letter, PlaceNameFrameWork *w
 
 static u32 PlaceNameFrame_SlideIn(PlaceNameLetter *letter, PlaceNameFrameWork *wk, s32 *step) {
     // The slide in as a plain move, on the path of PLACE_NAME_LETTER_FRAME_ANIM_IN's. Nothing reads it either
+#ifndef POKEBW2_PC
     static const MoveSpec sMoveIn = { { { 0, 0x20 }, { 0, 0 } }, 0, 0 };
+#endif
 
     switch (*step) {
     case PLACE_NAME_LETTER_SLIDE_START: {

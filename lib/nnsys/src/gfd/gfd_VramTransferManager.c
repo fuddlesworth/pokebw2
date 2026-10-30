@@ -330,7 +330,7 @@ void NNS_GfdDoVramTransfer(void) {
     }
 }
 
-BOOL NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_TYPE type, u32 dstAddr, void *pSrc, u32 szByte) {
+BOOL NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_TYPE type, u32 dstAddr, const void *pSrc, u32 szByte) {
     NNSGfdVramTransferTaskQueue *queue = &s_VramTransferManager;
 
     if (!IsVramTransferTaskQueueFull_(queue)) {

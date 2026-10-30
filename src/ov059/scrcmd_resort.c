@@ -1226,7 +1226,7 @@ BOOL Scrcmd_Resort_DescribeOccupant(VM *vm, FieldScriptEnv *env) {
     mode = ScriptReadAny(vm, env);
     var = ScriptReadVar(vm, env);
     person = JoinAvenueOccupants_GetPerson(occupants, index);
-    switch (mode) {
+    switch ((int)mode) {
     case 0:
         date = joinAveTextHandler(person, JOIN_AVE_PARAM_START_DATE, NULL);
         if (date == 0) {

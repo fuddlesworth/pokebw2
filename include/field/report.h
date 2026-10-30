@@ -31,4 +31,9 @@ void Report_StartBar(ReportScreen *wk);
 BOOL Report_IsBarFull(ReportScreen *wk);
 void Report_StopBar(ReportScreen *wk);
 
+#ifdef POKEBW2_PC
+// The original ten-step indicator, advanced by the save writer.
+u32 Report_GetNativeProgress(void);
+#endif
+
 #endif // POKEBW2_FIELD_REPORT_H

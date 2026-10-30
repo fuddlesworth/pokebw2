@@ -113,6 +113,7 @@ BOOL UnionEff_AnyColosseumUnk172(UnionColosseum *colosseum) {
     return FALSE;
 }
 
+#ifndef POKEBW2_PC
 static inline BOOL UnionEff_IsOnSpot(const s16 (*spots)[2], int count, int x, int z) {
     int i;
 
@@ -123,6 +124,7 @@ static inline BOOL UnionEff_IsOnSpot(const s16 (*spots)[2], int count, int x, in
     }
     return FALSE;
 }
+#endif
 
 BOOL UnionEff_IsOnSeatSpot(Field *field) {
     static const s16 spotsA[5][2] = { { 0x48, 0xa8 }, { 0x58, 0xa8 }, { 0x68, 0xa8 }, { 0x78, 0xa8 }, { 0x88, 0xa8 } };

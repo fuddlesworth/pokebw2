@@ -106,7 +106,7 @@ static GameEventReturnCode EventFieldCloseKeepSound_Callback(GameEvent *event, u
     EventFieldCloseWork *wk = data;
     GameSystem *gsys = wk->gsys;
     Field *field = wk->field;
-    FieldSound *fieldSound = GameData_GetFieldSoundSystem(wk->gameData);
+    GameData_GetFieldSoundSystem(wk->gameData);
 
     switch (*state) {
     case 0:
@@ -360,7 +360,7 @@ static GameEventReturnCode EventPokeList_Callback(GameEvent *event, u32 *state, 
 
     switch (*state) {
     case 0:
-        GSYS_QueueProc(gsys, OVERLAY_ID(165), &POKELIST_PROC_FUNCTIONS, wk->param);
+        GSYS_QueueProc(gsys, OVERLAY_ID(165), GAME_PROC_REFERENCE(POKELIST_PROC_FUNCTIONS), wk->param);
         *state = 1;
         break;
     case 1:
@@ -380,7 +380,7 @@ static GameEventReturnCode EventPokeList_Callback(GameEvent *event, u32 *state, 
         }
         break;
     case 3:
-        GSYS_QueueProc(gsys, OVERLAY_PSTATUS, &PSTATUS_PROC_FUNCTIONS, wk->summaryParam);
+        GSYS_QueueProc(gsys, OVERLAY_PSTATUS, GAME_PROC_REFERENCE(PSTATUS_PROC_FUNCTIONS), wk->summaryParam);
         *state = 4;
         break;
     case 4:

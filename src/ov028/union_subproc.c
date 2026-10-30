@@ -207,7 +207,7 @@ static BOOL UnionCommand_Trade(GameSystem *gsys, UnionSystem *unisys, Field *fie
         (*step)++;
         break;
     case 2:
-        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, &POKEMONTRADE_UNION_PROC_FUNCTIONS, trade);
+        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, GAME_PROC_REFERENCE(POKEMONTRADE_UNION_PROC_FUNCTIONS), trade);
         (*step)++;
         break;
     case 3:
@@ -356,11 +356,11 @@ static BOOL UnionCommand_App(GameSystem *gsys, UnionSystem *unisys, Field *field
         if (self->activity == 3) {
             param = subproc->arg;
             param->app = unisys->alloc.uniapp;
-            GSYS_QueueProc(gsys, OVERLAY_ID(70), &DRAWING_PROC_FUNCTIONS, param);
+            GSYS_QueueProc(gsys, OVERLAY_ID(70), GAME_PROC_REFERENCE(DRAWING_PROC_FUNCTIONS), param);
         } else {
             param = subproc->arg;
             param->app = unisys->alloc.uniapp;
-            GSYS_QueueProc(gsys, OVERLAY_ID(216), &SPIN_TRADE_PROC_FUNCTIONS, param);
+            GSYS_QueueProc(gsys, OVERLAY_ID(216), GAME_PROC_REFERENCE(SPIN_TRADE_PROC_FUNCTIONS), param);
         }
         (*step)++;
         break;
@@ -498,7 +498,7 @@ static BOOL UnionCommand_Colosseum(GameSystem *gsys, UnionSystem *unisys, Field 
         (*step)++;
         break;
     case 3:
-        GSYS_QueueProc(gsys, OVERLAY_ID(165), &POKELIST_PROC_FUNCTIONS, param);
+        GSYS_QueueProc(gsys, OVERLAY_ID(165), GAME_PROC_REFERENCE(POKELIST_PROC_FUNCTIONS), param);
         (*step)++;
         break;
     case 4:
@@ -521,7 +521,7 @@ static BOOL UnionCommand_Colosseum(GameSystem *gsys, UnionSystem *unisys, Field 
         status->partyIndex = param->list.index;
         status->page = PSTATUS_PAGE_INFO;
         status->isNationalDex = PokeDex_IsNationalObtained(GameData_GetPokedex(status->gameData));
-        GSYS_QueueProc(gsys, OVERLAY_PSTATUS, &PSTATUS_PROC_FUNCTIONS, status);
+        GSYS_QueueProc(gsys, OVERLAY_PSTATUS, GAME_PROC_REFERENCE(PSTATUS_PROC_FUNCTIONS), status);
         (*step)++;
         break;
     case 6:
@@ -665,7 +665,8 @@ static BOOL Colosseum_CommandBattle(GameSystem *gsys, UnionSystem *unisys, Field
 static BOOL Colosseum_CommandPmsSelect(GameSystem *gsys, UnionSystem *unisys, Field *field, void *param,
                                        GameEvent *event, GameEvent **next, u8 *step) {
     if (*step == 0) {
-        *next = EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_ID(185), &PMS_SELECT_PROC_FUNCTIONS, param);
+        *next = EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_ID(185),
+                                                      GAME_PROC_REFERENCE(PMS_SELECT_PROC_FUNCTIONS), param);
     } else {
         return TRUE;
     }

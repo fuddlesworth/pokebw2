@@ -658,7 +658,9 @@ static void StaActing_InitPoke(StaActing *stage) {
 }
 
 static void StaActing_InitObj(StaActing *stage) {
+#ifndef POKEBW2_PC
     VecFx32 unused = { 0, 0, 0 };
+#endif
     int i;
 
     for (i = 0; i < 5; i++) {
@@ -707,6 +709,11 @@ static void StaActing_UpdateScroll(StaActing *stage) {
             if (stage->pokes[followPos] != NULL) {
                 StaActPoke_GetPosition(stage->pokeSys, stage->pokes[followPos], &pos);
                 target = FX_FX32_TO_F32(pos.x) - 128.0f;
+#ifdef BUGFIX
+            } else {
+                // BUG: an absent followed actor leaves the scrolling target uninitialized.
+                target = stage->scrollTarget;
+#endif
             }
         } else {
             StaActLight_GetPosition(stage->lightSys, stage->lights[stage->followLight], &pos);

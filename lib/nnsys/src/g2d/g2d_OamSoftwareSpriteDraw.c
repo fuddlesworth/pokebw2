@@ -16,6 +16,7 @@ typedef struct {
     int sy;
 } SpriteParams;
 
+#ifndef POKEBW2_PC
 // Cached texture coordinates for the sprite-cache entry points removed by the original link
 typedef struct SoftwareSpriteParamCache {
     fx32 u0;
@@ -25,6 +26,7 @@ typedef struct SoftwareSpriteParamCache {
 } SoftwareSpriteParamCache;
 
 static SoftwareSpriteParamCache softwareSpreiteParamCache_ = { 0, 0, 0, 0 };
+#endif
 static fx32 zOffset_ = 0;
 static BOOL bAutoZOffsetAdd_ = FALSE;
 static NNS_G2dOamSoftEmuUVFlipCorrectFunc s_pUVFlipCorrectFunc = NULL;
@@ -32,8 +34,10 @@ static fx32 zOffsetStep_ = -FX32_ONE;
 
 // Two unit values the ROM holds before the tables: the original kept them as objects though nothing loads them,
 // and their names are unknown. Each is its own four-byte object, which is what puts them before the tables.
+#ifndef POKEBW2_PC
 static const u32 sUnitValue0[1] = { FX32_ONE };
 static const u32 sUnitValue1[1] = { FX32_ONE };
+#endif
 // The texture format of each OAM color mode
 static const GXTexFmt texFmtTbl_[2] = { GX_TEXFMT_PLTT16, GX_TEXFMT_PLTT256 };
 // The characters in a row of a 2D mapped image, by its texture width
@@ -118,15 +122,17 @@ static inline void SetTextureParamsFor3DDirect1DMap_(const NNSG2dImageAttr *texI
     const u16 sizeBit = (u16)((shape & GX_OAM_ATTR01_SIZE_MASK) >> GX_OAM_ATTR01_SIZE_SHIFT);
     const int shiftBit = 5 + ((texImageAttr->mappingType & REG_GX_DISPCNT_EXOBJ_MASK) >> REG_GX_DISPCNT_EXOBJ_SHIFT);
 
-    reg_G3_TEXIMAGE_PARAM = GX_PACK_TEXIMAGE_PARAM(
-        texImageAttr->fmt, GX_TEXGEN_TEXCOORD, gxTexSizeSTbl[shapeBit][sizeBit], gxTexSizeTTbl[shapeBit][sizeBit],
-        GX_TEXREPEAT_NONE, GX_TEXFLIP_NONE, texImageAttr->plttUse, texBaseAddr + (charName << shiftBit));
+    G3X_WriteRegister(reg_G3_TEXIMAGE_PARAM,
+                      GX_PACK_TEXIMAGE_PARAM(texImageAttr->fmt, GX_TEXGEN_TEXCOORD, gxTexSizeSTbl[shapeBit][sizeBit],
+                                             gxTexSizeTTbl[shapeBit][sizeBit], GX_TEXREPEAT_NONE, GX_TEXFLIP_NONE,
+                                             texImageAttr->plttUse, texBaseAddr + (charName << shiftBit)));
 }
 
 static inline void SetTextureParamsFor3DDirect2DMap_(const NNSG2dImageAttr *texImageAttr, u32 texBaseAddr) {
-    reg_G3_TEXIMAGE_PARAM =
-        GX_PACK_TEXIMAGE_PARAM(texImageAttr->fmt, GX_TEXGEN_TEXCOORD, texImageAttr->sizeS, texImageAttr->sizeT,
-                               GX_TEXREPEAT_NONE, GX_TEXFLIP_NONE, texImageAttr->plttUse, texBaseAddr);
+    G3X_WriteRegister(reg_G3_TEXIMAGE_PARAM,
+                      GX_PACK_TEXIMAGE_PARAM(texImageAttr->fmt, GX_TEXGEN_TEXCOORD, texImageAttr->sizeS,
+                                             texImageAttr->sizeT, GX_TEXREPEAT_NONE, GX_TEXFLIP_NONE,
+                                             texImageAttr->plttUse, texBaseAddr));
 }
 
 static inline void SetPaletteParamsFor3DDirect_(const NNSG2dImageAttr *texImageAttr, u32 pltBaseAddr,
@@ -194,18 +200,42 @@ void NNS_G2dDrawOneOam3DDirectWithPosFast(s16 posX, s16 posY, s16 posZ, const GX
         int halfH = NNS_G2dGetOamSizeY(&shape) >> 1;
 
         if (bAutoZOffsetAdd_) {
+#ifdef POKEBW2_PC
+            z = posZ * FX32_ONE + zOffset_;
+#else
             z = (posZ << FX32_SHIFT) + zOffset_;
+#endif
         } else {
+#ifdef POKEBW2_PC
+            z = posZ * FX32_ONE;
+#else
             z = posZ << FX32_SHIFT;
+#endif
         }
+#ifdef POKEBW2_PC
+        G3_Translate((posX + halfW) * FX32_ONE, (posY + halfH) * FX32_ONE, z);
+#else
         G3_Translate((posX + halfW) << FX32_SHIFT, (posY + halfH) << FX32_SHIFT, z);
+#endif
     } else {
         if (bAutoZOffsetAdd_) {
+#ifdef POKEBW2_PC
+            z = posZ * FX32_ONE + zOffset_;
+#else
             z = (posZ << FX32_SHIFT) + zOffset_;
+#endif
         } else {
+#ifdef POKEBW2_PC
+            z = posZ * FX32_ONE;
+#else
             z = posZ << FX32_SHIFT;
+#endif
         }
+#ifdef POKEBW2_PC
+        G3_Translate(posX * FX32_ONE, posY * FX32_ONE, z);
+#else
         G3_Translate(posX << FX32_SHIFT, posY << FX32_SHIFT, z);
+#endif
     }
 
     G3_Scale(coord.sx << FX32_SHIFT, coord.sy << FX32_SHIFT, FX32_ONE);

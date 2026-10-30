@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="484" height="280" viewBox="0 0 484 280">
+  <defs><linearGradient id="paper" x2="0" y2="1"><stop stop-color="#f1f2f4"/><stop offset="1" stop-color="#e9ebed"/></linearGradient><pattern id="lines" width="484" height="20" patternUnits="userSpaceOnUse"><path d="M0 20H484" stroke="#a5adb2" stroke-opacity=".07"/></pattern><path id="frame" d="M8 4H452L474 26V272H30L16 258V86L8 78Z"/><clipPath id="inside"><use href="#frame"/></clipPath></defs>
+  <path fill="#0b1013" d="M0 0H484V280H0z"/>
+  <!-- The paper shell continues into the description panel's right-hand spine. -->
+  <path fill="#e7eaec" d="M434 248H478V280H434Z"/>
+  <path fill="#e7eaec" d="M0 0H8V78L16 86V258L30 272H458V278H28L10 260V88L0 78Z"/>
+  <use href="#frame" fill="url(#paper)" stroke="#e7eaed" stroke-width="8" stroke-linejoin="miter"/>
+  <use href="#frame" fill="url(#paper)"/>
+  <path fill="none" stroke="#20262a" stroke-width="2" d="M8 4H452L474 26M8 4V78L16 86V258L30 272H458"/>
+  <path fill="url(#lines)" clip-path="url(#inside)" d="M0 0H484V280H0z"/>
+  <path fill="#d4d8dc" d="M402 10h44v44zM454 10l12 12v44l-12-12zM23 116l21 21v102l25 25H40l-17-17z"/>
+  <path stroke="#c3c9ce" stroke-width="3" d="M30 236v22"/>
+  <circle cx="59" cy="46" r="19" fill="#080b0e"/>
+  <path stroke="#f3f4f5" stroke-width="3" d="M40 46H78"/>
+  <circle cx="59" cy="46" r="7" fill="#f3f4f5"/>
+  <circle cx="59" cy="46" r="4" fill="#080b0e"/>
+  <path stroke="#11191d" stroke-width="1.5" d="M39 103H458"/>
+</svg>

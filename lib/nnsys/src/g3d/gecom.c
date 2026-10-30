@@ -142,6 +142,6 @@ void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 num) {
     } else if (NNS_G3dFlagGXDmaAsync) {
         NNS_G3dGeWaitSendDL();
     }
-    reg_G3X_GXFIFO = op;
+    G3X_WriteRegister(reg_G3X_GXFIFO, op);
     MIi_CpuSend32(args, &reg_G3X_GXFIFO, num * sizeof(u32));
 }

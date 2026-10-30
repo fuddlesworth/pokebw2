@@ -211,7 +211,6 @@ static void EventPokewood_ShowCastNames(BtlSetup *setup, HeapID heapId);
 
 // Builds the cast of one side of a movie as a party
 void EventPokewood_CreateCastParty(PlayerInfo *playerInfo, PokeParty *dest, HeapID heapId, u32 movie, u32 side) {
-    u32 gender;
     s32 i;
     s32 j;
     u32 trainerId;
@@ -222,7 +221,7 @@ void EventPokewood_CreateCastParty(PlayerInfo *playerInfo, PokeParty *dest, Heap
     s16 count;
 
     trainerId = getIDAsUInt(playerInfo);
-    gender = getTrainerGender(playerInfo);
+    getTrainerGender(playerInfo);
     party = PokeParty_Create(heapId);
     pkm = GFL_HeapAllocate(heapId, PokeParty_GetPkmRawSize(), TRUE, "event_pokewood.c", 156);
     file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_CAST, movie, heapId);
@@ -497,7 +496,7 @@ static void EventPokewood_InitTitleParam(PokewoodTitleParam *title, BtlSetup *se
     MsgData *msgData;
 
     BattleRec_LoadToolOverlay();
-    Pokewood_GetLoadedMovieField(POKEWOOD_BLOCK_FIELD_PKM_0, (u32)pkm);
+    Pokewood_GetLoadedMovieField(POKEWOOD_BLOCK_FIELD_PKM_0, (uptr)pkm);
     species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPECIES_NAMES, HEAPID_TAIL(HEAPID_GAMEEVENT));
     GFL_MsgDataLoadStrbuf(msgData, species, name);
@@ -569,7 +568,7 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
         break;
     case 2:
         EventPokewood_InitTitleParam(&param->title, wk->setup);
-        GSYS_QueueProcAsEvent(event, OVERLAY_PKWD_COUNT, &PKWD_COUNT_PROC_FUNCTIONS, &param->title);
+        GSYS_QueueProcAsEvent(event, OVERLAY_PKWD_COUNT, GAME_PROC_REFERENCE(PKWD_COUNT_PROC_FUNCTIONS), &param->title);
         (*state)++;
         break;
     case 3:
@@ -578,7 +577,8 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
         break;
     case 4:
         EventPokewood_InitBriefingParam(&param->briefing, wk->setup, playerInfo, gameData);
-        GSYS_QueueProcAsEvent(event, OVERLAY_PKWD_BRIEFING, &PKWD_BRIEFING_PROC_FUNCTIONS, &param->briefing);
+        GSYS_QueueProcAsEvent(event, OVERLAY_PKWD_BRIEFING, GAME_PROC_REFERENCE(PKWD_BRIEFING_PROC_FUNCTIONS),
+                              &param->briefing);
         (*state)++;
         break;
     case 5:
@@ -598,7 +598,8 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
     case 7:
         if (wk->setup->unk134 == 0) {
             EventPokewood_InitResultParam(&param->result, wk->setup, playerInfo, gameData);
-            GSYS_QueueProcAsEvent(event, OVERLAY_PKWD_BRIEFING, &PKWD_BRIEFING_CREDITS_PROC_FUNCTIONS, &param->result);
+            GSYS_QueueProcAsEvent(event, OVERLAY_PKWD_BRIEFING,
+                                  GAME_PROC_REFERENCE(PKWD_BRIEFING_CREDITS_PROC_FUNCTIONS), &param->result);
         }
         (*state)++;
         break;
@@ -642,7 +643,7 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
 
 // Looks up which of the downloaded movies of the slots load, and what each is shown as
 static void EventPokewood_LoadSlotInfo(GameData *gameData, HeapID heapId, PokewoodMovieParam *param) {
-    PokewoodSave *save = PokewoodSave_Get(gameData);
+    PokewoodSave_Get(gameData);
     SaveControl *saveControl = GameData_GetSaveControl(gameData);
     int slot;
 
@@ -824,7 +825,8 @@ static GameEventReturnCode EventPokewood_RunPicker(GameEvent *event, u32 *state,
     switch (*state) {
     case 0:
         GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_ID(322),
-                                                                         &PKWD_BOOK_PROC_FUNCTIONS, &wk->param));
+                                                                         GAME_PROC_REFERENCE(PKWD_BOOK_PROC_FUNCTIONS),
+                                                                         &wk->param));
         *state = 1;
         break;
     case 1:
@@ -857,9 +859,9 @@ static GameEventReturnCode EventPokewood_RunMenu(GameEvent *event, u32 *state, v
 
     switch (*state) {
     case 0:
-        GameEvent_ChainNext(event,
-                            EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_ID(323),
-                                                                  &PKWD_SELECTSCREEN_PROC_FUNCTIONS, &wk->param));
+        GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(
+                                       wk->gsys, wk->field, OVERLAY_ID(323),
+                                       GAME_PROC_REFERENCE(PKWD_SELECTSCREEN_PROC_FUNCTIONS), &wk->param));
         *state = 1;
         break;
     case 1:
@@ -1011,9 +1013,9 @@ static GameEventReturnCode EventPokewood_RunScreen(GameEvent *event, u32 *state,
 
     switch (*state) {
     case 0:
-        GameEvent_ChainNext(event,
-                            EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_PKWD_RECORD_MONITOR,
-                                                                  &PKWD_RECORD_MONITOR_PROC_FUNCTIONS, &wk->param));
+        GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(
+                                       wk->gsys, wk->field, OVERLAY_PKWD_RECORD_MONITOR,
+                                       GAME_PROC_REFERENCE(PKWD_RECORD_MONITOR_PROC_FUNCTIONS), &wk->param));
         *state = 1;
         break;
     case 1:
@@ -1050,7 +1052,7 @@ static void EventPokewood_ShowCastNames(BtlSetup *setup, HeapID heapId) {
                     member->shownSpecies <= POKEWOOD_CAST_SPECIES_LAST) {
                     StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, member->shownSpecies - POKEWOOD_CAST_MSG_OFFSET);
 
-                    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (u32)name);
+                    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (uptr)name);
                     GFL_StrBufFree(name);
                 }
             }

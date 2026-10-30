@@ -180,6 +180,56 @@ static void ItemMenu_SaveFreeSpaceFilter(BagCursor *cursor, u32 mode, u32 result
 
 const GameProcFunctions BAG_PROC_FUNCTIONS = { ItemMenuProc_Init, ItemMenuProc_Main, ItemMenuProc_Exit };
 
+#ifdef POKEBW2_PC
+static ItemMenuWork *sNativeBag;
+
+ItemMenuWork *ItemMenu_GetNativeWork(void) {
+    return sNativeBag;
+}
+
+u32 ItemMenu_GetNativePhase(ItemMenuWork *work) {
+    if (work->taskMenu != NULL) {
+        return ITEMMENU_NATIVE_MENU;
+    }
+    if (work->state == ItemMenu_StateList || work->state == ItemMenu_StateMoveItem) {
+        return ITEMMENU_NATIVE_LIST;
+    }
+    if (work->state == ItemMenu_StateTossQuantity || work->state == ItemMenu_StateSellQuantity) {
+        return ITEMMENU_NATIVE_QUANTITY;
+    }
+    return work->nativeMessage[0] != 0xffff ? ITEMMENU_NATIVE_MESSAGE : ITEMMENU_NATIVE_WAIT;
+}
+
+BOOL ItemMenu_SetNativeIndex(ItemMenuWork *work, s32 index) {
+    s32 old;
+    if (ItemMenu_GetNativePhase(work) != ITEMMENU_NATIVE_LIST || index < 0 || index >= ItemMenu_GetItemCount(work)) {
+        return FALSE;
+    }
+    old = ItemMenu_GetCursorIndex(work);
+    if (work->movingItem) {
+        ItemMenu_MoveItem(work, old, index);
+    }
+    work->scroll = index >= ITEMMENU_LIST_ROWS ? index - ITEMMENU_LIST_ROWS : -1;
+    work->cursorRow = index - work->scroll - 1;
+    ItemMenu_SetKeyMode(work, TRUE);
+    ItemMenu_RedrawList(work);
+    ItemMenuDisp_UpdateScrollBar(work);
+    return TRUE;
+}
+
+BOOL ItemMenu_SetNativePocket(ItemMenuWork *work, u32 pocket) {
+    s32 old;
+    if (work->state != ItemMenu_StateList || pocket >= 6 || pocket == work->pocket) {
+        return FALSE;
+    }
+    old = work->pocket;
+    work->pocket = pocket;
+    ItemMenu_SetKeyMode(work, TRUE);
+    ItemMenu_PressPocketArrow(work, old, pocket > old, ItemMenu_StatePocketArrowDone);
+    return TRUE;
+}
+#endif
+
 static const ItemMenuFieldUse sItemMenuFieldUses[] = {
     { ITEM_BICYCLE, 1, ItemMenu_UseBicycle },
     { ITEM_TOWN_MAP, 1, ItemMenu_UseTownMap },
@@ -1351,6 +1401,9 @@ static void ItemMenu_SubItem(ItemMenuWork *work, u32 count) {
     BagItem *slot = ItemMenu_GetSlot(work, ItemMenu_GetCursorIndex(work));
     BOOL inFreeSpace = BagSave_IsItemInFreeSpace(work->bag, work->item);
 
+#ifdef POKEBW2_PC
+    (void)slot;
+#endif
     BagSave_SubItem(work->bag, work->item, count, work->heapId);
     if (BagSave_GetItemCountByID(work->bag, work->item, work->heapId) == 0) {
         if (inFreeSpace == TRUE) {
@@ -2224,6 +2277,10 @@ static BOOL ItemMenuProc_Init(GameProc *proc, u32 *state, void *param, void *dat
     ItemMenu_SetKeyMode(work, GCTX_HIDIsUsingTouch() ? FALSE : TRUE);
     ItemMenuDisp_ShowBGs();
     ItemMenu_SetState(work, ItemMenu_StateFadeIn);
+#ifdef POKEBW2_PC
+    work->nativeMessage[0] = 0xffff;
+    sNativeBag = work;
+#endif
     return TRUE;
 }
 
@@ -2260,6 +2317,9 @@ static BOOL ItemMenuProc_Exit(GameProc *proc, u32 *state, void *param, void *dat
     if (PrintQueue_IsEmpty(work->printQueue) == FALSE) {
         return FALSE;
     }
+#ifdef POKEBW2_PC
+    sNativeBag = NULL;
+#endif
     GFL_TCBRemove(work->vblankTask);
     BagItemList_Exit(&work->itemList);
     BagCursor_SetPocket(work->cursor, work->pocket);

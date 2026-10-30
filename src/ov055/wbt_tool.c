@@ -88,7 +88,12 @@ int WbtTrainers_GetRank(WbtTrainers *trainers, u8 index) {
 
 // Meant to keep the style in range, but it can never change it
 static int WbtStyle_GetIndex(int style) {
+    // BUG: the original condition cannot reject an out-of-range style.
+#ifdef BUGFIX
+    if (style < 0 || style > 3) {
+#else
     if (style < 0 && style > 3) {
+#endif
         style = 0;
     }
     return style;

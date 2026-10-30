@@ -161,7 +161,7 @@ void GSYS_QueueProcAsEvent(GameEvent *event, s32 overlayId, const GameProcFuncti
 
 static GameEventReturnCode EventCallOverlayDelegateEvent_Callback(GameEvent *event, u32 *state, void *data) {
     EventCallOverlayDelegateWork *work = data;
-    GameSystem *gsys = GameEvent_GetGameSystem(event);
+    GameEvent_GetGameSystem(event);
 
     switch (*state) {
     case 0:

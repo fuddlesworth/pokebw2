@@ -6,6 +6,12 @@
 #include "app/pmsi_search.h"
 #include "app/ui/ui_scene.h"
 #include "constants/sound.h"
+#ifdef POKEBW2_PC
+#include "constants/arc.h"
+#include "constants/text_banks.h"
+#include "gfl/msg.h"
+#include "gfl/std.h"
+#endif
 #include "gfl/button_man.h"
 #include "gfl/heap.h"
 #include "gfl/key.h"
@@ -95,10 +101,10 @@ struct PMSInputWork {
     PMSInputView *vwk;
     PMSInputData *dwk;
     PMSISearch *search;
-    int mainSeq;
+    u32 mainSeq;
     PMSInputMainProc mainProc;
     PMSInputMainProc nextProc;
-    int subSeq;
+    u32 subSeq;
     PMSInputSubProc subProc;
     u16 keyTrg;
     u16 keyCont;
@@ -192,6 +198,119 @@ static void PMSInput_SubProcCommandCancel(PMSInputWork *wk, u32 *seq);
 static BOOL PMSInput_CheckInputComplete(PMSInputWork *wk);
 static void PMSInput_InitMenuState(PMSInputMenu *menu, u8 max, u8 pos);
 
+#ifdef POKEBW2_PC
+static PMSInputWork *sNativeInput;
+
+PMSInputWork *PMSInput_GetNativeWork(void) {
+    return sNativeInput;
+}
+
+BOOL PMSInput_GetNativeState(PMSInputNativeState *state) {
+    PMSInputWork *wk = sNativeInput;
+    StrBuf *text;
+    u32 i;
+    if (wk == NULL) {
+        return FALSE;
+    }
+    MI_CpuFill8(state, 0, sizeof(*state));
+    state->font = PMSIView_GetFont(wk->vwk);
+    state->phase = wk->mainProc == PMSInput_MainProcWordWin    ? PMS_NATIVE_WORDS
+                   : wk->mainProc == PMSInput_MainProcCategory ? PMS_NATIVE_CATEGORIES
+                                                               : PMS_NATIVE_EDIT;
+    state->ready = wk->subProc == NULL && PMSIView_WaitCommandAll(wk->vwk);
+    state->mode = wk->inputMode;
+    state->categoryMode = wk->categoryMode;
+    state->category = wk->categoryPos;
+    state->editCursor = wk->editPos;
+    state->editCount = wk->inputMode == PMSI_MODE_SENTENCE ? wk->sentenceEditPosMax : wk->inputMode + 1;
+    state->button = wk->buttonPos;
+    state->buttonFocused = state->phase == PMS_NATIVE_EDIT && wk->mainSeq == (wk->inputMode == PMSI_MODE_WORD ? 1 : 2);
+    state->complete = PMSInput_CheckInputComplete(wk);
+    state->fixedSentence = PMSIParam_HasStartSentence(wk->param);
+    if (state->phase == PMS_NATIVE_WORDS) {
+        state->count = wk->wordWin.wordMax - 2;
+        state->cursor = wk->wordWin.onBack ? 0xffff : PMSInput_WordWinGetPos(&wk->wordWin);
+    }
+    state->preview[0] = 0xffff;
+    if (wk->inputMode == PMSI_MODE_SENTENCE) {
+        text = PMSData_ToString(&wk->sentence, HEAPID_PMS_INPUT);
+        GFL_StrBufStoreString(text, state->preview, NELEMS(state->preview));
+        GFL_StrBufFree(text);
+    }
+    text = GFL_StrBufCreate(64, HEAPID_PMS_INPUT);
+    for (i = 0; i < 2; i++) {
+        u32 index =
+            wk->inputMode == PMSI_MODE_SENTENCE && i < state->editCount ? PMSIView_GetSentenceWord(wk->vwk, i) : i;
+        loadSayingToString(PMSInput_GetEditWord(wk, index), text, HEAPID_PMS_INPUT);
+        GFL_StrBufStoreString(text, state->words[i], NELEMS(state->words[i]));
+    }
+    GFL_StrBufFree(text);
+    return TRUE;
+}
+
+BOOL PMSInput_SelectNative(u32 index) {
+    PMSInputWork *wk = sNativeInput;
+    PMSInputNativeState state;
+    if (!PMSInput_GetNativeState(&state) || !state.ready) {
+        return FALSE;
+    }
+    wk->keyMode = KEY_MODE_KEY;
+    if (state.phase == PMS_NATIVE_EDIT && index < state.editCount) {
+        wk->editPos = index;
+        PMSInput_ResetCategoryPos(wk);
+        PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_CATEGORY);
+        PMSInput_ChangeMainProc(wk, PMSInput_MainProcCategory);
+        wk->nextProc = PMSInput_MainProcCategory;
+        wk->mainSeq = 2;
+    } else if (state.phase == PMS_NATIVE_CATEGORIES &&
+               (index < (state.categoryMode ? PMSIInitial_GetCount() : GROUP_COUNT) || index == CATEGORY_POS_SEARCH ||
+                index == CATEGORY_POS_ERASE || index == CATEGORY_POS_BACK)) {
+        wk->categoryPos = index;
+        return TRUE;
+    } else if (state.phase == PMS_NATIVE_WORDS && index < state.count) {
+        wk->wordWin.top = index / 2 > wk->wordWin.scrollMax ? wk->wordWin.scrollMax : index / 2;
+        wk->wordWin.x = index % 2;
+        wk->wordWin.y = index / 2 - wk->wordWin.top;
+        wk->wordWin.onBack = 0;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+void PMSInput_NativeConfirm(BOOL cancel) {
+    PMSInputWork *wk = sNativeInput;
+    PMSInputNativeState state;
+    if (!PMSInput_GetNativeState(&state) || !state.ready || state.phase != PMS_NATIVE_EDIT) {
+        return;
+    }
+    wk->keyMode = KEY_MODE_KEY;
+    PMSInput_SetSubProc(wk, cancel ? PMSInput_SubProcCommandCancel : PMSInput_SubProcCommandOK);
+}
+
+BOOL PMSInput_GetNativeCategory(u32 index, StrBuf *label) {
+    static const u8 messages[GROUP_COUNT] = { 0, 1, 2, 3, 11, 5, 12, 6, 7, 8, 10, 9 };
+    PMSInputWork *wk = sNativeInput;
+    MsgData *bank;
+    if (wk == NULL) {
+        return FALSE;
+    }
+    if (wk->categoryMode) {
+        if (index >= PMSIInitial_GetCount()) {
+            return FALSE;
+        }
+        PMSIInitial_GetString(index, label);
+        return TRUE;
+    }
+    if (index >= GROUP_COUNT) {
+        return FALSE;
+    }
+    bank = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PMS_CATEGORIES, HEAPID_PMS_INPUT);
+    GFL_MsgDataLoadStrbuf(bank, messages[index], label);
+    GFL_MsgDataFree(bank);
+    return PMSIData_GetCategoryWordCount(wk->dwk, index) != 0;
+}
+#endif
+
 const GameProcFunctions PMS_INPUT_PROC_FUNCTIONS = {
     PMSInput_Init,
     PMSInput_Main,
@@ -227,6 +346,9 @@ BOOL PMSInput_Init(GameProc *proc, u32 *state, void *param, void *work) {
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcEditArea);
             GFL_NetSetIconScreen(TRUE, HEAPID_PMS_INPUT);
+#ifdef POKEBW2_PC
+            sNativeInput = wk;
+#endif
             return TRUE;
         }
         break;
@@ -273,6 +395,9 @@ static void PMSInput_ButtonCallback(u32 button, u32 event, void *work) {
 }
 
 BOOL PMSInput_Exit(GameProc *proc, u32 *state, void *param, void *work) {
+#ifdef POKEBW2_PC
+    sNativeInput = NULL;
+#endif
     PMSInput_DestructWork(work, proc);
     GFL_HeapDelete(HEAPID_PMS_INPUT_SYS);
     GFL_HeapDelete(HEAPID_PMS_INPUT);
@@ -2005,6 +2130,9 @@ static BOOL PMSInput_SetSelectWord(PMSInputWork *wk) {
 static BOOL PMSInput_MainProcQuit(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
     case 0:
+#ifdef POKEBW2_PC
+        sNativeInput = NULL;
+#endif
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_QUIT);
         (*seq)++;
         break;

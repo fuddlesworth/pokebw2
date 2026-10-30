@@ -108,7 +108,7 @@ struct FieldAppCallWork {
 // An app that the field app call can open: its proc, and how to start it, read what it left and free its param
 typedef struct {
     s32 overlayId;
-    const GameProcFunctions *functions;
+    GameProcReference functions;
     void *(*createParam)(FieldAppCallWork *work, s32 appParam, s32 prevAppId, const void *prevParam);
     u32 (*getResult)(FieldAppCallWork *work, void *param);
     // Called in place of a proc, if functions is NULL

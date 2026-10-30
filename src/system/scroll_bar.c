@@ -20,6 +20,11 @@ u32 ScrollBar_GetValue(u32 max, u32 pos, u32 top, u32 bottom, u32 barSize) {
 }
 
 u32 ScrollBar_GetPos(u32 max, u32 value, u32 top, u32 bottom, u32 barSize) {
+#ifdef POKEBW2_PC
+    if (max == 0) {
+        return top + barSize / 2;
+    }
+#endif
     u32 range = (bottom - top - barSize) << 8;
 
     value = (range * value / max) >> 8;

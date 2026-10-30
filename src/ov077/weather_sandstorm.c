@@ -47,7 +47,7 @@ static const int sWindSpeedX[8] = { 6, 10, 10, 6, 10, 12, 20, 12 };
 static const int sWindSpeedY[8] = { 4, 4, 4, 8, 8, 4, 4, 4 };
 
 WeatherData SANDSTORM_WEATHER = {
-    { ARCID_WEATHER, 1, 0, 0x22, 0x23, 0x21, 0x20, 0x2b, 0x303, 3, 0x102 },
+    { ARCID_WEATHER, 1, 0, 0x22, 0x23, 0x21, 0x20, { { 0x2b, 0x303, 3, 0x102 } } },
     sizeof(SandstormWork),
     {
         Sandstorm_Init,
@@ -62,7 +62,7 @@ WeatherData SANDSTORM_WEATHER = {
 };
 
 WeatherData SANDSTORM_WEATHER_2 = {
-    { ARCID_WEATHER, 1, 1, 0x22, 0x23, 0x21, 0x20, 0x2b, 0x303, 3, 0x102 },
+    { ARCID_WEATHER, 1, 1, 0x22, 0x23, 0x21, 0x20, { { 0x2b, 0x303, 3, 0x102 } } },
     sizeof(SandstormWork),
     {
         Sandstorm_Init,

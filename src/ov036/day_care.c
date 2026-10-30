@@ -897,7 +897,6 @@ static void shinyBreedHandler(EggParents *parents, EggData *egg, BOOL hasShinyCh
 static void levelMoves(EggData *egg) {
     LearnsetEntry learnset[LEARNSET_MAX];
     int i;
-    u32 param;
 
     PML_LearnsetLvUpLoad(egg->species, egg->form, learnset);
     i = 0;
@@ -1038,10 +1037,10 @@ static void createEggPkm(PartyPkm *pkm, const EggData *egg, PlayerInfo *info, u3
     PokeParty_SetParam(pkm, PKM_PARAM_MOVE3, egg->moves[2]);
     PokeParty_SetParam(pkm, PKM_PARAM_MOVE4, egg->moves[3]);
     name = copyTrainerNameToNewStrbuf(info->name, heapId);
-    PokeParty_SetParam(pkm, PKM_PARAM_OT_NAME, (u32)name);
+    PokeParty_SetParam(pkm, PKM_PARAM_OT_NAME, (uptr)name);
     GFL_StrBufFree(name);
     name = GFL_MsgDataLoadStrbufNew(g_PMLSpeciesNamesResident, SPECIES_EGG);
-    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (u32)name);
+    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (uptr)name);
     GFL_StrBufFree(name);
     PokeParty_SetupMetData(pkm, 5, info, place, heapId);
     PokeParty_SetParam(pkm, PKM_PARAM_IS_EGG, 1);

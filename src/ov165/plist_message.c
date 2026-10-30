@@ -35,7 +35,16 @@ struct PokeListMessage {
     // Whether the wait icon is to show once the message is printed
     BOOL wantWaitIcon;
     WaitIcon *waitIcon;
+#ifdef POKEBW2_PC
+    u16 nativeText[256];
+#endif
 };
+
+#ifdef POKEBW2_PC
+const u16 *PokeListMessage_GetNativeText(PokeListMessage *msg) {
+    return msg != NULL && msg->windowType != POKELIST_MESSAGE_WINDOW_NONE ? msg->nativeText : NULL;
+}
+#endif
 
 static BOOL PokeListMessage_StreamCallback(u32 event);
 static void PokeListMessage_Clear(PokeListWork *wk, PokeListMessage *msg);
@@ -47,6 +56,9 @@ PokeListMessage *PokeListMessage_Create(PokeListWork *wk) {
     msg->tcbMgr = GFL_TCBExMgrCreate(wk->heapId, wk->heapId, 1, 0);
     msg->stream = NULL;
     msg->windowType = POKELIST_MESSAGE_WINDOW_NONE;
+#ifdef POKEBW2_PC
+    msg->nativeText[0] = 0xffff;
+#endif
     msg->dirty = FALSE;
     msg->waitInput = FALSE;
     msg->wordSet = NULL;
@@ -159,6 +171,9 @@ void PokeListMessage_Print(PokeListWork *wk, PokeListMessage *msg, u32 msgId) {
     PokeListMessage_Clear(wk, msg);
     PrintQueue_Clear(msg->printQueue);
     PrintQueue_PrintColor(msg->printQueue, BmpWin_GetBitmap(msg->window), 1, 1, str, wk->font, 0x440);
+#ifdef POKEBW2_PC
+    GFL_StrBufStoreString(str, msg->nativeText, NELEMS(msg->nativeText));
+#endif
     msg->dirty = TRUE;
     GFL_StrBufFree(str);
 }
@@ -182,6 +197,9 @@ void PokeListMessage_PrintStream(PokeListWork *wk, PokeListMessage *msg, u32 msg
     }
     msg->waitInput = waitInput;
     msg->str = str;
+#ifdef POKEBW2_PC
+    GFL_StrBufStoreString(str, msg->nativeText, NELEMS(msg->nativeText));
+#endif
     AppPrintsysCommon_Init(&msg->printWait, APP_PRINTSYS_COMMON_KEYS | APP_PRINTSYS_COMMON_TOUCH);
     msg->stream = PrintStream_CreateWithCallback(msg->window, 0, 0, msg->str, wk->font, TextSpeed_GetCurrentWait(),
                                                  msg->tcbMgr, 0, wk->heapId, 15, PokeListMessage_StreamCallback);

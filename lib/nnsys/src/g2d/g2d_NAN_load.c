@@ -43,9 +43,13 @@ void NNS_G2dUnpackNAN(NNSG2dAnimBankData *bank) {
     for (i = 0; i < bank->numSequences; i++) {
         NNS_G2D_UNPACK_OFFSET_PTR(seqArray[i].pAnmFrameArray, frameArray);
         for (j = 0; j < seqArray[i].numFrames; j++) {
-            // The SDK assigns the macro's result again here
+#ifdef POKEBW2_PC
+            NNS_G2D_UNPACK_OFFSET_PTR(seqArray[i].pAnmFrameArray[j].pContent, animData);
+#else
+            // The SDK assigns the macro's result again here.
             seqArray[i].pAnmFrameArray[j].pContent =
                 NNS_G2D_UNPACK_OFFSET_PTR(seqArray[i].pAnmFrameArray[j].pContent, animData);
+#endif
         }
     }
 

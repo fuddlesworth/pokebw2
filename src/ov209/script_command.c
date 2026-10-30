@@ -611,12 +611,12 @@ static BOOL StaScriptCmd_PokeAppeal(VM *vm, void *work) {
     StaActScript *script = work;
     StaActScriptSys *sys = script->sys;
     u32 mask = StaScript_GetPokeMask(script, VM_Read32(script->vm));
-    StaActPokeSys *pokeSys = StaActing_GetPokeSys(sys->stage);
+    StaActing_GetPokeSys(sys->stage);
     u8 i;
 
     for (i = 0; i < 4; i++) {
         if ((1 << i) & mask) {
-            StaActPoke *poke = StaActing_GetPoke(sys->stage, i);
+            StaActing_GetPoke(sys->stage, i);
 
             StaActing_StartAppealEffect(sys->stage, i);
         }
@@ -678,7 +678,6 @@ static BOOL StaScriptCmd_PokeJump(VM *vm, void *work) {
     fx32 height;
     u32 period;
     u32 count;
-    StaActPokeSys *pokeSys;
     u8 i;
 
     mask = StaScript_GetPokeMask(script, VM_Read32(script->vm));
@@ -686,7 +685,7 @@ static BOOL StaScriptCmd_PokeJump(VM *vm, void *work) {
     count = VM_Read32(script->vm);
     height = VM_Read32(script->vm);
     wait = VM_Read32(script->vm);
-    pokeSys = StaActing_GetPokeSys(sys->stage);
+    StaActing_GetPokeSys(sys->stage);
 
     for (i = 0; i < 4; i++) {
         if ((1 << i) & mask) {
@@ -736,7 +735,7 @@ static BOOL StaScriptCmd_PokeRotate(VM *vm, void *work) {
     int start = VM_Read32(script->vm);
     int angle = VM_Read32(script->vm);
     BOOL wait = VM_Read32(script->vm);
-    StaActPokeSys *pokeSys = StaActing_GetPokeSys(sys->stage);
+    StaActing_GetPokeSys(sys->stage);
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -1222,7 +1221,7 @@ static BOOL StaScriptCmd_LightFollow(VM *vm, void *work) {
                 VEC_Add(&pos, &offset, &pos);
                 StaActLight_SetPosition(lightSys, light, &pos);
             } else {
-                StaActAudience *audience = StaActing_GetAudience(sys->stage);
+                StaActing_GetAudience(sys->stage);
                 StaScriptLightFollowWork *follow =
                     GFL_HeapAllocate(sys->heapId, sizeof(StaScriptLightFollowWork), FALSE, sFile, 1873);
 
@@ -1246,7 +1245,7 @@ static BOOL StaScriptCmd_LightFollow(VM *vm, void *work) {
 static void StaScript_LightFollowTask(TCB *tcb, void *data) {
     StaScriptLightFollowWork *follow = data;
     StaActLightSys *lightSys = StaActing_GetLightSys(follow->follow.stage);
-    StaActAudience *audience = StaActing_GetAudience(follow->follow.stage);
+    StaActing_GetAudience(follow->follow.stage);
     VecFx32 pos;
     BOOL end = StaScript_UpdateFollow(&follow->follow, &pos);
 

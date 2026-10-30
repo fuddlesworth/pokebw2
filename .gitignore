@@ -1,8 +1,10 @@
 # Base ROMs and anything extracted from them are never committed
 orig/*.nds
+/orig
 *.nds
 extract/
 /build/
+/*-test-*.sav
 
 # Tools downloaded or built by configure
 tools/dsd

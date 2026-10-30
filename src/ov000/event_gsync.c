@@ -39,7 +39,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
     case 2:
         MI_CpuFill8(&wk->accountInfo, 0, sizeof(wk->accountInfo));
         wk->hasAccountInfo = FALSE;
-        GSYS_QueueProc(gsys, OVERLAY_GSYNC, &GSYNC_MENU_PROC_FUNCTIONS, wk);
+        GSYS_QueueProc(gsys, OVERLAY_GSYNC, GAME_PROC_REFERENCE(GSYNC_MENU_PROC_FUNCTIONS), wk);
         (*state)++;
         break;
     case 3:
@@ -60,7 +60,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
         // Nintendo Wi-Fi Connection settings, which need the sound heap's memory
         wk->bgm = GFL_SndBGMGetID();
         GFL_SndDestroyHeap();
-        GSYS_QueueProc(gsys, OVERLAY_DWC_UTILITY, &DWC_UTILITY_PROC_FUNCTIONS, wk);
+        GSYS_QueueProc(gsys, OVERLAY_DWC_UTILITY, GAME_PROC_REFERENCE(DWC_UTILITY_PROC_FUNCTIONS), wk);
         (*state)++;
         break;
     case 7:
@@ -118,7 +118,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
     }
     case 17:
         wk->login.buffer = wk->loginBuffer;
-        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, &wk->login);
+        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, GAME_PROC_REFERENCE(WIFILOGIN_PROC_FUNCTIONS), &wk->login);
         (*state)++;
         break;
     case 18:
@@ -135,7 +135,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
         }
         break;
     case 19:
-        GSYS_QueueProc(gsys, OVERLAY_GSYNC, &GSYNC_PROC_FUNCTIONS, wk);
+        GSYS_QueueProc(gsys, OVERLAY_GSYNC, GAME_PROC_REFERENCE(GSYNC_PROC_FUNCTIONS), wk);
         (*state)++;
         break;
     case 20:
@@ -166,7 +166,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
         wk->box.sendableSpecies = wk->sendableSpecies;
         wk->box.isNationalDex = FALSE;
         wk->box.mode = BOX2_MODE_DREAM_WORLD;
-        GSYS_QueueProcAsEvent(event, OVERLAY_BOX2, &BOX2_PROC_FUNCTIONS, &wk->box);
+        GSYS_QueueProcAsEvent(event, OVERLAY_BOX2, GAME_PROC_REFERENCE(BOX2_PROC_FUNCTIONS), &wk->box);
         (*state)++;
         break;
     case 22:
@@ -194,7 +194,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
         wk->logout.gameData = GSYS_GetGameData(gsys);
         wk->logout.unk4 = 1;
         wk->logout.unk8 = 0;
-        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
+        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, GAME_PROC_REFERENCE(WIFILOGOUT_PROC_FUNCTIONS), &wk->logout);
         (*state)++;
         break;
     case 24:

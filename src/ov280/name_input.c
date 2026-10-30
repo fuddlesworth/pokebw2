@@ -626,6 +626,10 @@ BOOL NameEntry_ProcExit(GameProc *proc, u32 *state, void *param, void *arg) {
 BOOL NameEntry_ProcMain(GameProc *proc, u32 *state, void *param, void *arg) {
     NameEntryWork *work = arg;
 
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping())
+        return TRUE;
+#endif
     NameEntryTask_Run(&work->task);
     NameInputGraphic_Main(work->graphic);
     PrintQueue_Main(work->queue);
@@ -1437,6 +1441,11 @@ static void KeyLayout_ConvertPos(KeyPos *pos, u32 from, u32 to) {
         newKind = KanaLayout_GetKind;
         width = 11;
         height = 4;
+#ifdef POKEBW2_PC
+    } else {
+        // No kana/alpha conversion is needed between layouts of the same family.
+        return;
+#endif
     }
     kind = oldKind(pos, NULL);
     for (next.y = 0; next.y <= height; next.y++) {

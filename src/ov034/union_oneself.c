@@ -206,8 +206,8 @@ static void UnionOneself_CheckParentEntry(UnionSystem *unisys, UnionBeaconEntry 
         OS_GetMacAddress(ownMac);
         if (GFL_STD_MemCmp(entry, ownMac, 6) == 0 &&
             UnionOneself_SetNextStepIfRunning(unisys, UNION_STEP_ASKED) == TRUE) {
-            UnionComm_SetSelf(unisys, 2, (u32)entry);
-            UnionComm_SetSelf(unisys, 0, (u32)entry);
+            UnionComm_SetSelf(unisys, 2, (uptr)entry);
+            UnionComm_SetSelf(unisys, 0, (uptr)entry);
         }
     }
 }
@@ -460,10 +460,10 @@ static BOOL UnionOneself_StepIdleRun(UnionSystem *unisys, UnionSelf *situ, Field
         }
         situ->mycomm.unk44 = id;
         entryIndex = UnionOneself_GetEntryIndex(id);
-        UnionComm_SetSelf(unisys, 0, (u32)&unisys->found[entryIndex]);
+        UnionComm_SetSelf(unisys, 0, (uptr)&unisys->found[entryIndex]);
         if (UnionOneself_IsMemberId(id) == UNION_ACTOR_PARENT) {
             if (unisys->found[entryIndex].beacon.activity == 0) {
-                UnionComm_SetSelf(unisys, 1, (u32)&unisys->found[entryIndex]);
+                UnionComm_SetSelf(unisys, 1, (uptr)&unisys->found[entryIndex]);
                 UnionOneself_SetNextStep(unisys, UNION_STEP_ASK);
             } else {
                 UnionOneself_SetNextStep(unisys, UNION_STEP_ANSWER);
@@ -641,7 +641,7 @@ static BOOL UnionOneself_StepAskRun(UnionSystem *unisys, UnionSelf *situ, Field 
             } else if (UnionMain_SendUnk46_2(1) == TRUE) {
                 GFL_SndSEPlay(SEQ_SE_SYS_101);
                 UnionOneself_SetNextStep(unisys, UNION_STEP_PARENT);
-                UnionComm_SetSelf(unisys, 3, (u32)situ->mycomm.unk4);
+                UnionComm_SetSelf(unisys, 3, (uptr)situ->mycomm.unk4);
                 UnionComm_SetSelf(unisys, 1, 0);
                 *seq = 3;
             }
@@ -754,7 +754,7 @@ static BOOL UnionOneself_StepAskedRun(UnionSystem *unisys, UnionSelf *situ, Fiel
     case 4:
         switch (situ->mycomm.unk46_2) {
         case 1:
-            UnionComm_SetSelf(unisys, 3, (u32)situ->mycomm.answer_pc);
+            UnionComm_SetSelf(unisys, 3, (uptr)situ->mycomm.answer_pc);
             UnionComm_SetSelf(unisys, 2, 0);
             UnionOneself_SetNextStep(unisys, UNION_STEP_OFFER_PARTY);
             return TRUE;
@@ -1035,7 +1035,8 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
             party = GameData_GetParty(unisys->param->gameData);
             UnionMsg_FreeYesNo(unisys);
             if (yes == 1) {
-                if (!UnionOneself_CheckRegulation(unisys, situ->mycomm.unk19, &situ->partyCheck, &situ->boxCheck)) {
+                if (!UnionOneself_CheckRegulation(unisys, situ->mycomm.unk19, (u32 *)&situ->partyCheck,
+                                                  (u32 *)&situ->boxCheck)) {
                     UnionMsg_CreateAndPrint(unisys, field, 0x13e);
                     yes = 0;
                 } else if (situ->mycomm.unk19 == UNION_ACTIVITY_TRADE && yes == 1) {
@@ -1174,7 +1175,7 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
         } else if (choice != -1) {
             UnionMsg_FreeInfoWindow(unisys);
             UnionMsg_FreeRuleMenu(unisys);
-            if (!UnionOneself_CheckRegulation(unisys, choice, &situ->partyCheck, &situ->boxCheck)) {
+            if (!UnionOneself_CheckRegulation(unisys, choice, (u32 *)&situ->partyCheck, (u32 *)&situ->boxCheck)) {
                 UnionMsg_CreateAndPrint(unisys, field, 0x13e);
                 *seq = 5;
             } else {
@@ -1352,7 +1353,8 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                                         UnionMsg_GetBattleDeclineMessage(situ->mycomm.target->beacon.gender));
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
                 *seq = 2;
-            } else if (!UnionOneself_CheckRegulation(unisys, situ->mycomm.unk19, &situ->partyCheck, &situ->boxCheck)) {
+            } else if (!UnionOneself_CheckRegulation(unisys, situ->mycomm.unk19, (u32 *)&situ->partyCheck,
+                                                     (u32 *)&situ->boxCheck)) {
                 UnionMsg_CreateAndPrint(unisys, field, 0x13e);
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
                 *seq = 6;
@@ -1734,7 +1736,7 @@ static BOOL UnionOneself_StepRecruitRun(UnionSystem *unisys, UnionSelf *situ, Fi
                 if (needed <= GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
                     *seq = 4;
                 } else {
-                    UnionComm_SetSelf(unisys, 3, (u32)&unisys->found[entryIndex]);
+                    UnionComm_SetSelf(unisys, 3, (uptr)&unisys->found[entryIndex]);
                     situ->mycomm.unk46_1 = 1;
                     switch (situ->mycomm.unk19) {
                     case 20:
@@ -2141,11 +2143,13 @@ static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, 
             return TRUE;
         }
         break;
+#ifndef POKEBW2_PC
     case 0x12c:
         clsys->unkDE = 2;
         UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_END);
         UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
         return TRUE;
+#endif
     }
     return FALSE;
 }
@@ -2266,8 +2270,6 @@ static BOOL UnionOneself_StepIdleColosseumBegin(UnionSystem *unisys, UnionSelf *
 static BOOL UnionOneself_StepIdleColosseumRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
     FieldPlayer *player = Field_GetPlayer(field);
-    s16 z, y, x;
-    u32 dir = 0;
     u32 out;
     u32 pos;
 

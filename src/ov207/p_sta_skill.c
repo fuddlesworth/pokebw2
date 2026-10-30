@@ -53,6 +53,9 @@ typedef struct {
 } SkillPlate;
 
 struct PStaSkillWork {
+#ifdef POKEBW2_PC
+    u16 nativeMessage[256];
+#endif
     BOOL isShown;
     BOOL redrawStats;
     BOOL redrawDetail;
@@ -110,6 +113,36 @@ static void PStaSkill_GetPlateRect(SkillPlate *plate, TouchRect *rect);
 static void PStaSkill_GetPlatePos(SkillPlate *plate, ClActorPos *pos);
 static void PStaSkill_SetPlateAnim(SkillPlate *plate, u32 anim);
 
+#ifdef POKEBW2_PC
+void PStaSkill_GetNativeState(PStaSkillWork *skill, PStatusNativeState *state) {
+    state->moveCursor = skill->cursor;
+    state->swapSource = skill->swapSrc;
+    state->swapping = skill->isSwapping;
+    state->confirming = skill->isConfirming;
+    MI_CpuCopy8(skill->nativeMessage, state->moveMessage, sizeof(state->moveMessage));
+}
+
+BOOL PStatus_SetNativeMove(u32 slot) {
+    PStatusWork *wk = PStatus_GetNativeWork();
+    PStaSkillWork *skill;
+    if (wk == NULL || wk->seq != PSTA_SEQ_MAIN || wk->isRedrawing ||
+        (wk->page != PSTATUS_PAGE_SKILL && wk->page != PSTATUS_PAGE_FORGET)) {
+        return FALSE;
+    }
+    skill = wk->skill;
+    if (slot >= skill->moveCount || skill->isConfirming || skill->isSwapPending || skill->isExiting ||
+        (slot < 4 && PML_PkmGetParam(PStatus_GetBoxPkm(wk), PKM_PARAM_MOVE1 + slot, NULL) == MOVE_NONE)) {
+        return FALSE;
+    }
+    wk->isTouch = FALSE;
+    PStatus_EnableInput(wk, FALSE);
+    skill->cursor = slot;
+    PStaSkill_SelectMove(wk, skill, slot, FALSE);
+    PStaSkill_PrintDetail(wk, skill);
+    return TRUE;
+}
+#endif
+
 // The Pokémon's move in a slot
 static inline u32 PStaSkill_GetMove(PStatusWork *wk, u32 slot) {
     return PML_PkmGetParam(PStatus_GetBoxPkm(wk), PKM_PARAM_MOVE1 + slot, NULL);
@@ -127,6 +160,9 @@ PStaSkillWork *PStaSkill_Create(PStatusWork *wk) {
     PStaSkillWork *skill = GFL_HeapAllocate(wk->heapId, sizeof(PStaSkillWork), FALSE, "p_sta_skill.c", 334);
     u8 i;
 
+#ifdef POKEBW2_PC
+    skill->nativeMessage[0] = 0xffff;
+#endif
     skill->isShown = FALSE;
     skill->redrawStats = FALSE;
     skill->redrawDetail = FALSE;
@@ -405,6 +441,9 @@ static void PStaSkill_DrawStats(PStatusWork *wk, PStaSkillWork *skill) {
 }
 
 static void PStaSkill_PrintDetail(PStatusWork *wk, PStaSkillWork *skill) {
+#ifdef POKEBW2_PC
+    skill->nativeMessage[0] = 0xffff;
+#endif
     PStaSkill_PrintMoveDetail(wk, skill);
 }
 
@@ -1186,6 +1225,9 @@ static void PStaSkill_ShowHmMessage(PStatusWork *wk, PStaSkillWork *skill, BOOL 
     GFL_BitmapFill(BmpWin_GetBitmap(skill->windows[12]), 0);
     if (isHm == TRUE) {
         PStatus_PrintToWindow(wk, skill->windows[12], 0x9c, 0, 0, PRINT_COLOR(15, 2, 0));
+#ifdef POKEBW2_PC
+        GFL_MsgDataLoadRawStr(wk->msgData, 0x9c, skill->nativeMessage, NELEMS(skill->nativeMessage));
+#endif
     }
     GFL_SndSEPlay(SEQ_SE_BEEP);
 }

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="81" viewBox="0 0 1280 81">
+  <defs><linearGradient id="metal" x2="0" y2="1"><stop stop-color="#f4f5f6"/><stop offset="1" stop-color="#b9bdc1"/></linearGradient></defs>
+  <path fill="#0b0f12" d="M0 0H1280V81H0Z"/>
+  <path fill="none" stroke="#b9bfc3" stroke-width="2" d="M0 9H370L435 74H0"/>
+  <path fill="url(#metal)" d="M376 20H619L674 75H431Z"/>
+  <path fill="#080b0d" d="M392 22L443 73H439L388 22ZM624 22L675 73H671L620 22Z"/>
+  <circle cx="67" cy="44" r="26" fill="#efeff0"/>
+  <path fill="#fc3547" d="M41 41a26 26 0 0 1 52 0Z"/>
+  <path stroke="#0b0f12" stroke-width="6" d="M40 44H94"/>
+  <circle cx="67" cy="44" r="11" fill="#edf0f1" stroke="#0b0f12" stroke-width="5"/>
+  <path fill="#e8ebed" d="M0 50L24 74H1141L1067 0H1078L1156 78H0Z"/>
+  <path fill="#ff3446" d="M1142 0H1147.657L1217.657 70H1280V74H1216Z"/>
+  <path fill="#e8ebed" d="M1131 0L1206 75H1193L1118 0Z"/>
+  <path fill="#ff3446" d="M1233 36H1239V52H1233ZM1243 15H1249V52H1243ZM1253 27H1259V52H1253Z"/>
+</svg>

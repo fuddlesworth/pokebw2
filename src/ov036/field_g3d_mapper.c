@@ -264,6 +264,9 @@ void FieldG3DMapper_FreeMap(FieldG3DMapper *mapper) {
 
     if (mapper->chunkHandles != NULL) {
         for (i = 0; i < mapper->chunkCapacity; i++) {
+#ifdef POKEBW2_PC
+            FieldPropSystem_UnlinkChunk(mapper->propSystem, mapper->chunkHandles[i].chunk);
+#endif
             FieldChunk_UnbindPropResInstanceBank(mapper->chunkHandles[i].chunk);
             FieldChunk_UnbindMapTextures(mapper->chunkHandles[i].chunk);
             FieldChunk_UnbindArc(mapper->chunkHandles[i].chunk);

@@ -968,7 +968,9 @@ static void ShopUI_SpendMoney(ShopUIWork *wk, u32 amount) {
 
 static BOOL ShopUI_Update(GameSystem *gsys, ShopUIWork *wk, u32 shopId, u32 subId) {
     // Six unused bytes retained with the shop menu resources.
+#ifndef POKEBW2_PC
     static const u8 sUnk021d091e[6] = { 0 };
+#endif
 
     u32 result;
 

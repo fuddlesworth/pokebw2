@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="421" height="565" viewBox="0 0 421 565">
+  <defs>
+    <pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#747e85" stroke-opacity=".13" stroke-width="1"/></pattern>
+    <radialGradient id="glow"><stop stop-color="#333a40"/><stop offset="1" stop-color="#0a0e11"/></radialGradient>
+  </defs>
+  <path fill="url(#glow)" d="M0 0H421V565H0z"/>
+  <circle cx="211" cy="260" r="195" fill="none" stroke="#a6adb2" stroke-opacity=".2" stroke-width="3"/>
+  <path fill="#b5b9be" opacity=".31" d="M51 255a160 160 0 0 1 320 0H271a60 60 0 0 0-120 0zM51 270a160 160 0 0 0 320 0H271a60 60 0 0 1-120 0z"/>
+  <circle cx="211" cy="262" r="43" fill="#a8afb4" opacity=".22"/>
+  <ellipse cx="211" cy="407" rx="139" ry="58" fill="none" stroke="#9ba2a8" stroke-opacity=".28" stroke-width="2"/>
+  <ellipse cx="211" cy="407" rx="112" ry="43" fill="#bbc2c7" opacity=".15"/>
+  <path d="M65 424C96 493 324 510 356 425" fill="none" stroke="#a5abb1" stroke-opacity=".28" stroke-width="8"/>
+  <path fill="url(#grid)" d="M0 0H421V565H0z"/>
+  <ellipse cx="211" cy="397" rx="62" ry="13" fill="#070b0e" opacity=".2"/>
+  <path fill="#adb3b7" d="M23 238L7 254l16 16v-11l-6-5 6-5zM398 238l16 16-16 16v-11l6-5-6-5z"/>
+  <path fill="none" stroke="#273137" stroke-width="2" d="M365 17L419 71"/>
+  <path fill="none" stroke="#90989e" stroke-width="3" stroke-linejoin="miter" d="M20 17L2 35V527L30 555H42M419 64V529L397 551"/>
+  <!-- The bevel stops short of the tab; its horizontal and vertical cuts match the frame. -->
+  <path fill="#90989e" d="M375 17H381L416 52V58Z"/>
+  <!-- This solid corner meets the footer at world (375,646), beneath the inset grey bevel. -->
+  <path fill="#e8ebed" d="M0 543L22 565H0Z"/>
+</svg>

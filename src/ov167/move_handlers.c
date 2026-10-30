@@ -937,7 +937,7 @@ void RemoveForce(BattleMon *mon, u16 move) {
     RemoveHandlerForce(GetMonID(mon), move);
 }
 
-BOOL MoveEventItem_IsPersistent(BattleEventItem *item, s32 *work) {
+BOOL MoveEventItem_IsPersistent(BattleEventItem *item, u32 *work) {
     if (work[6] != 0) {
         return TRUE;
     }
@@ -7578,13 +7578,12 @@ static const BattleEventHandlerEntry *EventAddHeavySlam(u32 *priority) {
 }
 
 static void HandlerHeavySlam(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    BattleMon *attacker;
     BattleMon *target;
     int ratio;
     u16 power;
 
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId) {
-        attacker = GetBattleMon(flow, monId);
+        GetBattleMon(flow, monId);
         target = GetBattleMon(flow, BattleEventVar_GetValue(BTL_EVAR_DEFENDER));
         ratio = BtlServerFlow_GetMonWeight(flow, monId) / BtlServerFlow_GetMonWeight(flow, GetMonID(target));
         if (ratio >= 5) {

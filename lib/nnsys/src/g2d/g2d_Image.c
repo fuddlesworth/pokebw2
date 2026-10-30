@@ -35,6 +35,8 @@ static inline void SetOBJVRamModeCharacterMapping_(NNS_G2D_VRAM_TYPE type, GXOBJ
     case NNS_G2D_VRAM_TYPE_2DSUB:
         GXS_SetOBJVRamModeChar(mode);
         break;
+    default:
+        break;
     }
 }
 
@@ -50,6 +52,8 @@ static inline void DoLoadingToVram_(const NNSG2dCharacterData *data, u32 baseAdd
         break;
     case NNS_G2D_VRAM_TYPE_2DSUB:
         GXS_LoadOBJ(data->pRawData, baseAddr, data->szByte);
+        break;
+    default:
         break;
     }
 }
@@ -96,6 +100,8 @@ static inline void DoLoadingPalette_(const NNSG2dPaletteData *data, const void *
         GX_BeginLoadTexPltt();
         GX_LoadTexPltt(src, addr, size);
         GX_EndLoadTexPltt();
+        break;
+    default:
         break;
     }
 }

@@ -19,4 +19,19 @@ typedef struct {
 
 extern const GameProcFunctions PMS_SELECT_PROC_FUNCTIONS;
 
+#ifdef POKEBW2_PC
+typedef struct {
+    Font *font;
+    AppTaskMenu *menu;
+    u32 cursor, top, count;
+    BOOL ready;
+    u16 phrases[3][256];
+    BOOL empty[3];
+} PMSSelectNativeState;
+BOOL PMSSelect_IsNativeActive(void);
+BOOL PMSSelect_IsNativeRunning(void);
+BOOL PMSSelect_GetNativeState(PMSSelectNativeState *state);
+BOOL PMSSelect_NativeSelect(u32 index);
+#endif
+
 #endif // POKEBW2_APP_PMS_SELECT_H

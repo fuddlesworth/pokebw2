@@ -308,9 +308,9 @@ static GameEventReturnCode EventBSubwayRecords_Callback(GameEvent *event, u32 *s
         bsubwaySave = GameData_GetBSubwayWifiData(data->param.gameData);
         data->param.rank = BSubwayWifiData_GetLeaderRank(bsubwaySave);
         data->param.trainNumber = BSubwayWifiData_GetLeaderRoom(bsubwaySave);
-        GameEvent_ChainNext(event,
-                            EventFieldSubprocessTransition_Create(data->gsys, data->field, OVERLAY_ID(141),
-                                                                  &BSUBWAY_RECORDS_PROC_FUNCTIONS, &data->param));
+        GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(
+                                       data->gsys, data->field, OVERLAY_ID(141),
+                                       GAME_PROC_REFERENCE(BSUBWAY_RECORDS_PROC_FUNCTIONS), &data->param));
         (*state)++;
         break;
     case 1:

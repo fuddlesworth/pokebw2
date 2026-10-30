@@ -39,9 +39,34 @@ static const u32 sItemNames[] = {
     0x7a, 0x7b, 0xbd, 0xbe, 0,    0,    0,    0,    0x7f, 0x80, 0x8b, 0x8c,
 };
 
+#ifdef POKEBW2_PC
+BOOL PokeListMenu_GetNativeState(PokeListMenu *menu, PokeListNativeMenu *state) {
+    if (menu == NULL || menu->taskMenu == NULL) {
+        return FALSE;
+    }
+    state->count = menu->count;
+    state->cursor = AppTaskMenu_GetCursorPos(menu->taskMenu);
+    for (u32 i = 0; i < menu->count; i++) {
+        state->labels[i] = GFL_StrBufGetStringPtr(menu->entries[i].str);
+    }
+    return TRUE;
+}
+
+BOOL PokeListMenu_SetNativeCursor(PokeListMenu *menu, u32 slot) {
+    if (menu == NULL || menu->taskMenu == NULL || slot >= menu->count || AppTaskMenu_IsDecided(menu->taskMenu)) {
+        return FALSE;
+    }
+    AppTaskMenu_SetCursorPos(menu->taskMenu, slot);
+    return TRUE;
+}
+#endif
+
 PokeListMenu *PokeListMenu_Create(PokeListWork *wk) {
     PokeListMenu *menu = GFL_HeapAllocate(wk->heapId, sizeof(PokeListMenu), FALSE, "plist_menu.c", 99);
 
+#ifdef POKEBW2_PC
+    menu->taskMenu = NULL;
+#endif
     GFL_BGSysLoadNCLRDefault(getUINarcIdx(), 31, 0, 0x20, 0x40, wk->heapId);
     menu->charsFile = GFL_G2DIOReadBGNCGR(getUINarcIdx(), 32, FALSE, &menu->chars, wk->heapId);
     return menu;
@@ -90,6 +115,9 @@ void PokeListMenu_Close(PokeListWork *wk, PokeListMenu *menu) {
     u8 i;
 
     AppTaskMenu_Free(menu->taskMenu);
+#ifdef POKEBW2_PC
+    menu->taskMenu = NULL;
+#endif
     for (i = 0; i < menu->count; i++) {
         GFL_StrBufFree(menu->entries[i].str);
     }

@@ -111,13 +111,12 @@ void FieldGimmickBSubway_Setup(Field *field) {
 }
 
 void FieldGimmickBSubway_End(Field *field) {
-    u16 heapId;
     GimmickState *state;
     u32 index;
     u32 gimmickId;
     BSubwayGimmickWork *work;
 
-    heapId = Field_GetHeapID(field);
+    Field_GetHeapID(field);
     state = GameData_GetGimmickState(GSYS_GetGameData(Field_GetGameSystem(field)));
     GetZoneGimmick(Field_GetPlayerStateZoneID(field), &gimmickId, &index);
     work = GimmickState_GetUserData(state, gimmickId);
@@ -139,13 +138,12 @@ void FieldGimmickBSubway_Move(Field *field) {
 }
 
 void FieldGimmickBSubway_StartTrainEffect(Field *field, u32 a1, const VecFx32 *pos) {
-    u16 heapId;
     GimmickState *state;
     u32 index;
     u32 gimmickId;
     TrainWork *train;
 
-    heapId = Field_GetHeapID(field);
+    Field_GetHeapID(field);
     state = GameData_GetGimmickState(GSYS_GetGameData(Field_GetGameSystem(field)));
     GetZoneGimmick(Field_GetPlayerStateZoneID(field), &gimmickId, &index);
     train = ((BSubwayGimmickWork *)GimmickState_GetUserData(state, gimmickId))->data;
@@ -153,13 +151,12 @@ void FieldGimmickBSubway_StartTrainEffect(Field *field, u32 a1, const VecFx32 *p
 }
 
 FieldEffectTask *FieldGimmickBSubway_GetTrainEffect(Field *field) {
-    u16 heapId;
     GimmickState *state;
     u32 index;
     u32 gimmickId;
     TrainWork *train;
 
-    heapId = Field_GetHeapID(field);
+    Field_GetHeapID(field);
     state = GameData_GetGimmickState(GSYS_GetGameData(Field_GetGameSystem(field)));
     GetZoneGimmick(Field_GetPlayerStateZoneID(field), &gimmickId, &index);
     train = ((BSubwayGimmickWork *)GimmickState_GetUserData(state, gimmickId))->data;

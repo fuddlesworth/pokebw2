@@ -97,4 +97,17 @@ struct BBagWork {
 
 void BBagMain_Start(BBagParam *param);
 
+#ifdef POKEBW2_PC
+typedef enum {
+    BBAG_NATIVE_WAIT,
+    BBAG_NATIVE_POCKETS,
+    BBAG_NATIVE_ITEMS,
+    BBAG_NATIVE_USE,
+    BBAG_NATIVE_MESSAGE
+} BBagNativePhase;
+BBagWork *BBagMain_GetNativeWork(void);
+BBagNativePhase BBagMain_GetNativePhase(const BBagWork *work);
+BOOL BBagMain_SetNativeCursor(BBagWork *work, u32 pos);
+#endif
+
 #endif // POKEBW2_BATTLE_B_BAG_MAIN_H

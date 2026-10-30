@@ -9,6 +9,7 @@
 #include "gfl/key.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"
+#include "gfl/str.h"
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
 #include "nitro/fx.h"
@@ -77,7 +78,27 @@ struct AppTaskMenu {
     AppTaskMenuItem *items;
     AppTaskMenuInit init;
     AppTaskMenuRes *res;
+#ifdef POKEBW2_PC
+    u16 nativeLabels[APP_TASKMENU_ITEM_MAX][100];
+#endif
 };
+
+#ifdef POKEBW2_PC
+BOOL AppTaskMenu_GetNativeState(AppTaskMenu *menu, AppTaskMenuNativeState *state) {
+    u32 i;
+
+    if (menu == NULL) {
+        return FALSE;
+    }
+    state->count = menu->init.itemCount;
+    state->cursor = menu->cursorPos;
+    state->ready = !menu->isLocked && !menu->isDecided && !menu->isUpdatingText;
+    for (i = 0; i < state->count; i++) {
+        state->labels[i] = menu->nativeLabels[i];
+    }
+    return TRUE;
+}
+#endif
 
 struct AppTaskMenuWin {
     BmpWin *window;
@@ -108,6 +129,14 @@ AppTaskMenu *AppTaskMenu_Create(AppTaskMenuInit *init, AppTaskMenuRes *res) {
     AppTaskMenu *menu = GFL_HeapAllocate(init->heapId, sizeof(AppTaskMenu), FALSE, "app_taskmenu.c", 162);
 
     menu->init = *init;
+#ifdef POKEBW2_PC
+    {
+        u32 i;
+        for (i = 0; i < init->itemCount; i++) {
+            GFL_StrBufStoreString(init->items[i].str, menu->nativeLabels[i], NELEMS(menu->nativeLabels[i]));
+        }
+    }
+#endif
     menu->res = res;
     menu->windows =
         GFL_HeapAllocate(menu->init.heapId, menu->init.itemCount * sizeof(BmpWin *), FALSE, "app_taskmenu.c", 168);

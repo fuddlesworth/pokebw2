@@ -5,7 +5,11 @@
 #include "gfl/heap.h"
 
 // The linker script defines OVERLAY_<n>_ID for every overlay, so that overlay IDs in the code are relocations
+#ifdef POKEBW2_PC
+#define OVERLAY_ID(n) ((u32)(n))
+#else
 #define OVERLAY_ID(n) ((u32)OVERLAY_##n##_ID)
+#endif
 // For procs in the main program, which need no overlay
 #define OVERLAY_NONE (-1)
 

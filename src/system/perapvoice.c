@@ -114,7 +114,11 @@ u8 PerapVoice_GetChatterEffect(PerapVoice *chatter) {
         if (value < 100) {
             return 1;
         }
+#ifdef POKEBW2_PC
+        if (value >= 150) {
+#else
         if (value >= 150 && value < 256) {
+#endif
             return 2;
         }
     }

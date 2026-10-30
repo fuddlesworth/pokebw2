@@ -262,7 +262,7 @@ extern CARDiCommon cardi_common;
 void CARD_LockBackup(u16 lockId);
 void CARD_UnlockBackup(u16 lockId);
 CARDResult CARD_GetResultCode(void);
-BOOL CARDi_RequestStreamCommand(u32 src, u32 dest, u32 size, MIDmaCallback callback, void *arg, BOOL async,
+BOOL CARDi_RequestStreamCommand(uptr src, uptr dest, u32 size, MIDmaCallback callback, void *arg, BOOL async,
                                 CARDRequest request, int retries, CARDRequestMode mode);
 BOOL CARD_IdentifyBackup(CARDBackupType type);
 BOOL CARD_WaitBackupAsync(void);
@@ -348,18 +348,18 @@ BOOL CARD_IsPulledOut(void);
 void CARDi_CheckPulledOutCore(u32 cardId);
 
 static inline BOOL CARD_ReadBackup(u32 src, void *dest, u32 size) {
-    return CARDi_RequestStreamCommand(src, (u32)dest, size, NULL, NULL, FALSE, CARD_REQ_READ_BACKUP, 1,
+    return CARDi_RequestStreamCommand(src, (uptr)dest, size, NULL, NULL, FALSE, CARD_REQ_READ_BACKUP, 1,
                                       CARD_REQUEST_MODE_RECV);
 }
 
 static inline BOOL CARD_ReadBackupAsync(u32 src, void *dest, u32 size, MIDmaCallback callback, void *arg) {
-    return CARDi_RequestStreamCommand(src, (u32)dest, size, callback, arg, TRUE, CARD_REQ_READ_BACKUP, 1,
+    return CARDi_RequestStreamCommand(src, (uptr)dest, size, callback, arg, TRUE, CARD_REQ_READ_BACKUP, 1,
                                       CARD_REQUEST_MODE_RECV);
 }
 
 static inline BOOL CARD_WriteAndVerifyBackupAsync(u32 dest, const void *src, u32 size, MIDmaCallback callback,
                                                   void *arg) {
-    return CARDi_RequestStreamCommand((u32)src, dest, size, callback, arg, TRUE, CARD_REQ_WRITE_BACKUP,
+    return CARDi_RequestStreamCommand((uptr)src, dest, size, callback, arg, TRUE, CARD_REQ_WRITE_BACKUP,
                                       CARD_RETRY_COUNT_MAX, CARD_REQUEST_MODE_SEND_VERIFY);
 }
 

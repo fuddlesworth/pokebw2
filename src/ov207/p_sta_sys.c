@@ -20,6 +20,9 @@
 #include "nitro/hw.h"
 #include "nitro/os.h"
 #include "p_status_local.h"
+#ifdef POKEBW2_PC
+#include "../../pc/gx_backend.h"
+#endif
 #include "pml/poke_party.h"
 #include "system/app_menu_common.h"
 #include "system/game_data.h"
@@ -59,6 +62,41 @@ static void PStatus_StartRedraw(PStatusWork *wk);
 static void PStatus_UpdateRedraw(PStatusWork *wk);
 static BOOL PStatus_IsFromFieldMenu(PStatusWork *wk);
 static BOOL PStatus_HasRibbon(PStatusWork *wk, BoxPkm *pkm);
+
+#ifdef POKEBW2_PC
+BOOL PStatus_GetNativeState(PStatusNativeState *state) {
+    PStatusWork *wk = PStatus_GetNativeWork();
+    if (wk == NULL) {
+        return FALSE;
+    }
+    MI_CpuFill8(state, 0, sizeof(*state));
+    state->font = wk->font;
+    state->pkm = PStatus_GetPartyPkm(wk);
+    state->param = wk->param;
+    state->page = wk->page;
+    state->partyIndex = wk->partyIndex;
+    state->ready = wk->seq == PSTA_SEQ_MAIN && !wk->isRedrawing && PrintQueue_IsEmpty(wk->printQueue);
+    state->browsing = wk->isInputEnabled;
+    PStaSkill_GetNativeState(wk->skill, state);
+    PStaInfo_GetNativeMemo(wk->info, state);
+    return TRUE;
+}
+
+BOOL PStatus_SetNativePage(u32 page) {
+    PStatusWork *wk = PStatus_GetNativeWork();
+    if (wk == NULL || wk->seq != PSTA_SEQ_MAIN || wk->isRedrawing || !wk->isInputEnabled ||
+        wk->page == PSTATUS_PAGE_FORGET || page > PSTATUS_PAGE_RIBBON || (wk->isEgg && page != PSTATUS_PAGE_INFO)) {
+        return FALSE;
+    }
+    if (wk->page != page) {
+        wk->page = page;
+        wk->isTouch = FALSE;
+        PStatus_StartRedraw(wk);
+        GFL_SndSEPlay(SEQ_SE_SYS_38);
+    }
+    return TRUE;
+}
+#endif
 
 static const BGSysVRAMConfig sPStatusVRAMConfig = {
     GX_VRAM_BG_128_A,  GX_VRAM_BGEXTPLTT_NONE,  GX_VRAM_SUB_BG_128_C,        GX_VRAM_SUB_BGEXTPLTT_NONE,
@@ -121,10 +159,17 @@ BOOL PStatus_Init(PStatusWork *wk) {
     PStatus_CreateActors(wk);
     wk->vblankTcb = GFL_VBlankTCBAdd(PStatus_VBlank, wk, 8);
     wk->plttAnimPhase = 0;
+#ifdef POKEBW2_PC
+    MIi_CpuCopy16(PcGx2D[0].object_palette + 0x6c, wk->cursorPlttSrc, 12);
+    MIi_CpuCopy16(PcGx2D[0].object_palette + 0x160, wk->tabPlttSrc, sizeof(wk->tabPlttSrc));
+    MIi_CpuCopy16(PcGx2D[0].object_palette + 0x1a0, wk->buttonPltt, sizeof(wk->buttonPltt));
+    MIi_CpuCopy16(PcGx2D[0].object_palette + 0x1a0, wk->buttonPlttSrc, sizeof(wk->buttonPlttSrc));
+#else
     MIi_CpuCopy16((void *)(HW_OBJ_PLTT + 0x6c), wk->cursorPlttSrc, 12);
     MIi_CpuCopy16((void *)(HW_OBJ_PLTT + 0x160), wk->tabPlttSrc, sizeof(wk->tabPlttSrc));
     MIi_CpuCopy16((void *)(HW_OBJ_PLTT + 0x1a0), wk->buttonPltt, sizeof(wk->buttonPltt));
     MIi_CpuCopy16((void *)(HW_OBJ_PLTT + 0x1a0), wk->buttonPlttSrc, sizeof(wk->buttonPlttSrc));
+#endif
     PStatus_LoadPokemon(wk);
     if (wk->param->mode == PSTATUS_MODE_FORGET_MOVE) {
         wk->page = PSTATUS_PAGE_FORGET;
@@ -549,7 +594,11 @@ static void PStatus_InitText(PStatusWork *wk) {
     wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_P_STA_SYS, wk->heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 0, 0x1c0, 0x20, wk->heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 4, 0x1c0, 0x20, wk->heapId);
+#ifdef POKEBW2_PC
+    pltt = (GXRgb *)PcGx2D[1].background_palette + 0xe0;
+#else
     pltt = (GXRgb *)(HW_DB_BG_PLTT + 0x1c0);
+#endif
     pltt[9] = GX_RGB(25, 18, 19);
     pltt[10] = GX_RGB(18, 18, 26);
     wk->printQueue = PrintQueue_Create(0x1000, wk->heapId);

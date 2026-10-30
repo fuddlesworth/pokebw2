@@ -13,6 +13,24 @@ typedef struct {
 } CPContext;
 
 // The divider and square root unit's registers
+#ifdef POKEBW2_PC
+#include "nitro/host_cp.h"
+#define reg_CP_DIVCNT PcCpDivMode
+#define reg_CP_DIV_NUMER PcCpNumerator.wide
+#define reg_CP_DIV_NUMER_L PcCpNumerator.words[0]
+#define reg_CP_DIV_DENOM PcCpDenominator.wide
+#define reg_CP_DIV_RESULT (PcCp_GetQuotient()->wide)
+#define reg_CP_DIV_RESULT_L (PcCp_GetQuotient()->words[0])
+#define reg_CP_DIVREM_RESULT PcCp_GetRemainder()
+#define reg_CP_SQRTCNT PcCpSqrtMode
+#define reg_CP_SQRT_RESULT (*PcCp_GetSqrt())
+#define reg_CP_SQRT_PARAM PcCpSqrtParameter.wide
+#define REG_DIV_NUMER_ADDR ((uptr) & PcCpNumerator.wide)
+#define REG_DIV_DENOM_ADDR ((uptr) & PcCpDenominator.wide)
+#define REG_DIV_RESULT_ADDR ((uptr) & PcCp_GetQuotient()->wide)
+#define REG_SQRT_RESULT_ADDR ((uptr)PcCp_GetSqrt())
+#define REG_SQRT_PARAM_ADDR ((uptr) & PcCpSqrtParameter.wide)
+#else
 #define reg_CP_DIVCNT (*(vu16 *)0x04000280)
 #define reg_CP_DIV_NUMER (*(volatile u64 *)0x04000290)
 #define reg_CP_DIV_NUMER_L (*(vu32 *)0x04000290)
@@ -24,7 +42,6 @@ typedef struct {
 #define reg_CP_SQRTCNT (*(vu16 *)0x040002b0)
 #define reg_CP_SQRT_RESULT (*(vu32 *)0x040002b4)
 #define reg_CP_SQRT_PARAM (*(volatile u64 *)0x040002b8)
-#define REG_CP_BUSY_MASK 0x8000
 
 // The divider's registers by address, which NitroSDK's divider inlines write and read through plain pointers
 #define REG_DIV_NUMER_ADDR 0x04000290
@@ -33,6 +50,8 @@ typedef struct {
 // The square root unit's, which its inlines use the same way
 #define REG_SQRT_RESULT_ADDR 0x040002b4
 #define REG_SQRT_PARAM_ADDR 0x040002b8
+#endif
+#define REG_CP_BUSY_MASK 0x8000
 
 // The divider's modes: a 64-bit numerator over a 32-bit or a 64-bit denominator
 #define CP_DIV_64_32BIT_MODE 1

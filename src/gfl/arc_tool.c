@@ -21,6 +21,11 @@ typedef struct {
     u32 end;
 } NarcFATBEntry;
 
+typedef struct {
+    uptr start;
+    uptr end;
+} NarcMemoryRange;
+
 struct ArcTool {
     FSFile file;
     u32 fimgOffset;
@@ -32,7 +37,7 @@ typedef struct {
     // The path of each archive, or the start and end of each in memory
     union {
         const char **paths;
-        const NarcFATBEntry *ranges;
+        const NarcMemoryRange *ranges;
     } table;
     u32 count;
     BOOL inMemory;
@@ -91,6 +96,34 @@ static void GFL_ArcSysInitArcHandle(FSFile *file, u32 arcId) {
     }
 }
 
+#ifdef POKEBW2_PC
+static u32 ArchiveMoveImageTop(FSFile *file, u32 fileId, u32 offset, u32 size) {
+    NarcFATBEntry entry;
+    NarcFATBHeader fatb;
+    u32 value = 0;
+    u32 fntbOffset;
+    u32 fimgOffset;
+    u32 fatbOffset;
+
+    FS_SeekFile(file, NARC_HEADER_SIZE_OFFSET, FS_SEEK_SET);
+    FS_ReadFile(file, &value, 2);
+    fatbOffset = value;
+    FS_SeekFile(file, fatbOffset + NARC_BLOCK_SIZE_OFFSET, FS_SEEK_SET);
+    FS_ReadFile(file, &fatb, 6);
+    GFL_ASSERT_MSG(fatb.fileCount > fileId, "ArchiveMoveImageTop fileCnt=%d, datID=%d", fatb.fileCount, fileId);
+    fntbOffset = fatbOffset + fatb.size;
+    FS_SeekFile(file, fntbOffset + NARC_BLOCK_SIZE_OFFSET, FS_SEEK_SET);
+    FS_ReadFile(file, &value, 4);
+    fimgOffset = fntbOffset + value;
+    FS_SeekFile(file, fatbOffset + NARC_FATB_ENTRIES_OFFSET + fileId * sizeof(NarcFATBEntry), FS_SEEK_SET);
+    FS_ReadFile(file, &entry, sizeof(NarcFATBEntry));
+    fimgOffset += NARC_FIMG_DATA_OFFSET + entry.start;
+    FS_SeekFile(file, offset + fimgOffset, FS_SEEK_SET);
+    if (size == 0)
+        size = entry.end - entry.start;
+    return size;
+}
+#else
 // Seeks to the data of a file of an archive, at offset into it, and returns its size, or size if it is not 0.
 // Hand-written in assembly: the original build's compiler kept the dead store of fimgOffset + 8 back to its stack
 // slot, which no installed compiler produces from the C, so the maintainer took the assembly exception for this, the
@@ -181,6 +214,7 @@ SizeDone:
     dcd sAssertNameAndFormat
     dcd sAssertNameAndFormat+4
 }
+#endif
 
 // clang-format on
 

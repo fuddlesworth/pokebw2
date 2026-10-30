@@ -189,6 +189,20 @@ typedef struct {
     u16 rankPaletteOut[16];
 } TrainerCardWork;
 
+#ifdef POKEBW2_PC
+typedef enum {
+    TRCARD_NATIVE_NONE,
+    TRCARD_NATIVE_GREETING,
+    TRCARD_NATIVE_APPEARANCE,
+    TRCARD_NATIVE_PERSONALITY
+} TrainerCardNativeAction;
+
+TrainerCardWork *TrainerCard_GetNativeWork(void);
+BOOL TrainerCard_NativeReady(void);
+void TrainerCard_NativeAction(TrainerCardNativeAction action);
+void TrainerCard_NativeSign(int x, int y, BOOL held, BOOL erase);
+#endif
+
 // trainer_card.c
 BOOL TrainerCard_Init(GameProc *proc, u32 *state, void *param, void *work);
 BOOL TrainerCard_Main(GameProc *proc, u32 *state, void *param, void *work);

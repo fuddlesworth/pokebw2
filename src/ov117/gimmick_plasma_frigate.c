@@ -107,7 +107,6 @@ static void GimmickPlasmaFrigate_ShowSecondEnd(PlasmaFrigateWork *work, u16 inde
 static void GimmickPlasmaFrigate_PlayGroupASecond(PlasmaFrigateWork *work, u16 index);
 static void GimmickPlasmaFrigate_ShowGroupASecondEnd(PlasmaFrigateWork *work, u16 index);
 static void GimmickPlasmaFrigate_PlayGroupAFirst(PlasmaFrigateWork *work, u16 index);
-static void GimmickPlasmaFrigate_ShowGroupAFirstEnd(PlasmaFrigateWork *work, u16 index);
 static void GimmickPlasmaFrigate_PlayGroupBSecond(PlasmaFrigateWork *work, u16 index);
 static void GimmickPlasmaFrigate_ShowGroupBFirstEnd(PlasmaFrigateWork *work, u16 index);
 static void GimmickPlasmaFrigate_ShowGroupBSecondEnd(PlasmaFrigateWork *work, u16 index);
@@ -301,7 +300,7 @@ void GimmickPlasmaFrigate_Update(Field *field) {
 }
 
 GameEvent *GimmickPlasmaFrigate_CallSwitchEvent(GameSystem *gsys, int switchIndex) {
-    PlasmaFrigateWork *work = Field_GetGimmickWorkBlock(GSYS_GetField(gsys), GIMMICK_WORK_ID);
+    Field_GetGimmickWorkBlock(GSYS_GetField(gsys), GIMMICK_WORK_ID);
 
     if (switchIndex >= SWITCH_COUNT) {
         return NULL;
@@ -726,7 +725,7 @@ static void GimmickPlasmaFrigate_SpawnEffectB(PlasmaFrigateWork *work, u16 panel
 }
 
 static GameEvent *GimmickPlasmaFrigate_CreateSwitchEvent(GameSystem *gsys, int switchIndex) {
-    Field *field = GSYS_GetField(gsys);
+    GSYS_GetField(gsys);
     GameEvent *event = GameEvent_Create(gsys, NULL, GimmickPlasmaFrigate_SwitchEvent, sizeof(SwitchEventWork));
     SwitchEventWork *eventWork = GameEvent_GetData(event);
 

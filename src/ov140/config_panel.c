@@ -318,6 +318,22 @@ typedef struct {
     ConfigPanelParam *param;
 } ConfigPanelWork;
 
+#ifdef POKEBW2_PC
+static ConfigPanelWork *nativeWork;
+static BOOL nativeClosed;
+BOOL ConfigPanel_GetNativeState(ConfigPanelNativeState *state) {
+    if (!nativeWork)
+        return FALSE;
+    state->font = nativeWork->font;
+    state->config =
+        (Config *)getTrainerDataBlkAddress(GameData_GetSaveControl(GSYS_GetGameData(nativeWork->param->gsys)));
+    return TRUE;
+}
+void ConfigPanel_CloseNative(void) {
+    nativeClosed = TRUE;
+}
+#endif
+
 static BOOL ConfigPanel_Init(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL ConfigPanel_Exit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL ConfigPanel_Main(GameProc *proc, u32 *state, void *param, void *work);
@@ -497,6 +513,12 @@ static BOOL ConfigPanel_Init(GameProc *proc, u32 *state, void *param, void *work
     MI_CpuFill8(wk, 0, sizeof(ConfigPanelWork));
     wk->param = param;
     wk->param->result = FALSE;
+#ifdef POKEBW2_PC
+    wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_CONFIG_PANEL);
+    nativeWork = wk;
+    nativeClosed = FALSE;
+    return TRUE;
+#endif
     ConfigPanelGraphic_Init(&wk->graphic, HEAPID_CONFIG_PANEL);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_CONFIG_PANEL);
     wk->queue = PrintQueue_CreateDefault(HEAPID_CONFIG_PANEL);
@@ -522,6 +544,14 @@ static BOOL ConfigPanel_Init(GameProc *proc, u32 *state, void *param, void *work
 static BOOL ConfigPanel_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     ConfigPanelWork *wk = work;
 
+#ifdef POKEBW2_PC
+    nativeWork = NULL;
+    GFL_FontFree(wk->font);
+    GFL_ProcReleaseSubsystem(proc);
+    GFL_HeapDelete(HEAPID_CONFIG_PANEL);
+    GFL_OvlUnload(OVERLAY_APP_UI);
+    return TRUE;
+#endif
     ConfigPanelConfirm_Exit(&wk->confirm);
     ConfigPanelMsg_Exit(&wk->msg);
     ConfigPanelUi_Exit(&wk->ui);
@@ -545,6 +575,9 @@ static BOOL ConfigPanel_Exit(GameProc *proc, u32 *state, void *param, void *work
 static BOOL ConfigPanel_Main(GameProc *proc, u32 *state, void *param, void *work) {
     ConfigPanelWork *wk = work;
 
+#ifdef POKEBW2_PC
+    return nativeClosed;
+#endif
     ConfigPanelSeq_Main(&wk->seq);
     ConfigPanelGraphic_Main(&wk->graphic);
     PrintQueue_Main(wk->queue);

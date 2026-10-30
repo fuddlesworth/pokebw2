@@ -413,6 +413,9 @@ typedef union FSFileCommandArgs {
 } FSFileCommandArgs;
 
 struct FSFile {
+#ifdef POKEBW2_PC
+    void *hostStream;
+#endif
     FSFile *next;         // the next file of its archive's queue
     FSFileProperty *prop; // the property below, once the file or directory is open
     FSArchive *arc;

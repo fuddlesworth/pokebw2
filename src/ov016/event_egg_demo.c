@@ -47,7 +47,7 @@ GameEventReturnCode EventEggDemo_Callback(GameEvent *event, u32 *state, void *da
         *state = 4;
         break;
     case 4:
-        GSYS_QueueProc(gsys, OVERLAY_EGG_DEMO, &EGG_DEMO_PROC_FUNCTIONS, &work->demo);
+        GSYS_QueueProc(gsys, OVERLAY_EGG_DEMO, GAME_PROC_REFERENCE(EGG_DEMO_PROC_FUNCTIONS), &work->demo);
         *state = 5;
         break;
     case 5:

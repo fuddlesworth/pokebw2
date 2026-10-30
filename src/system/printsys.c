@@ -274,7 +274,7 @@ BOOL PrintQueue_Main(PrintQueue *queue) {
             }
         }
         if (*queue->cursor == CHAR_EOM) {
-            u16 offset = (u32)queue->job - (u32)queue->buffer;
+            u16 offset = (uptr)queue->job - (uptr)queue->buffer;
 
             queue->job = PrintQueue_GetNextJob(queue, queue->job);
             if (queue->job != NULL) {
@@ -623,8 +623,15 @@ void PrintStream_Continue(PrintStream *stream) {
 
 void PrintStream_Delete(PrintStream *stream) {
     if (stream->task != NULL) {
+#if defined(BUGFIX) || defined(POKEBW2_PC)
+        // BUG: RequestEnd can free the task and its embedded PrintStream immediately.
+        TCBEx *task = stream->task;
+        stream->task = NULL;
+        GFL_TCBExRequestEnd(task);
+#else
         GFL_TCBExRequestEnd(stream->task);
         stream->task = NULL;
+#endif
     }
 }
 
@@ -1080,7 +1087,7 @@ const u16 *GFL_StrCmdSkipCommand(const u16 *cmd) {
 static u32 PrintQueue_GetStringSize(const StrBuf *strbuf) {
     u32 size = (GFL_StrBufGetCharCount(strbuf) + 1) * 2;
 
-    while (size & 3) {
+    while (size & (sizeof(void *) - 1)) {
         size++;
     }
     return size;
@@ -1101,7 +1108,17 @@ static u32 PrintQueue_GetFreeSize(PrintQueue *queue) {
 // Adds the string and a copy of the renderer, and links them after the last one
 static void PrintQueue_Enqueue(PrintQueue *queue, TextRenderer *renderer, const StrBuf *strbuf) {
     const u16 *str = GFL_StrBufGetStringPtr(strbuf);
+#ifdef POKEBW2_PC
+    u32 stringSize = (GFL_StrBufGetCharCount(strbuf) + 1) * sizeof(u16);
+    const u16 *queued = PrintQueue_Write(queue, str, stringSize, sizeof(u16));
+    u16 padding = 0;
+    while (stringSize < PrintQueue_GetStringSize(strbuf)) {
+        PrintQueue_Write(queue, &padding, sizeof(padding), sizeof(padding));
+        stringSize += sizeof(padding);
+    }
+#else
     const u16 *queued = PrintQueue_Write(queue, str, PrintQueue_GetStringSize(strbuf), sizeof(u16));
+#endif
     TextRenderer *job = PrintQueue_Write(queue, renderer, sizeof(TextRenderer), sizeof(TextRenderer));
     TextRenderer *next = NULL;
 

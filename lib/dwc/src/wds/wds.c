@@ -51,7 +51,7 @@ static BOOL IsValidApnum(const u8 *text);
 static WDSWork *sWdsWork;
 
 // The RC4 key's first four bytes, "WDS!" as a four-character constant (the ROM has it as "!SDW")
-static const u32 sKeyPrefix = 'WDS!';
+static const u32 sKeyPrefix = 0x57445321;
 
 // Turns the RSSI of a scan result into the signal strength that the entries keep
 static u8 WDSGetRssi8(u8 rssi) {

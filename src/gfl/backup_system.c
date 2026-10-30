@@ -1010,7 +1010,7 @@ static void SaveData_SetBlockStatus(SaveData *sv, u32 index, u32 status) {
     u32 shift = index % 16 * 2;
     u32 word = index / 16;
 
-    sv->blockStatus[word] &= 0xffffffff ^ (3 << shift);
+    sv->blockStatus[word] &= 0xffffffff ^ (3u << shift);
     sv->blockStatus[word] |= status << shift;
 }
 
@@ -1030,7 +1030,7 @@ static void SaveData_SwapBlockStatuses(SaveData *sv) {
             } else if (status == BLOCK_STATUS_WRITE_BACKUP) {
                 status = BLOCK_STATUS_WRITE_MAIN;
             }
-            sv->blockStatus[word] &= 0xffffffff ^ (3 << shift);
+            sv->blockStatus[word] &= 0xffffffff ^ (3u << shift);
             sv->blockStatus[word] |= status << shift;
         }
         shift += 2;

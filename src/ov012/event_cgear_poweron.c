@@ -60,7 +60,7 @@ static GameEventReturnCode EventCGearPowerOn_Callback(GameEvent *event, u32 *sta
 }
 
 GameEvent *EventCGearPowerOn_Create(GameSystem *gsys, BOOL bootComm) {
-    GameData *gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     GameEvent *event = GameEvent_Create(gsys, NULL, EventCGearPowerOn_Callback, sizeof(CGearPowerOnData));
     CGearPowerOnData *data = GameEvent_GetData(event);
 

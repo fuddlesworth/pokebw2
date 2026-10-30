@@ -28,7 +28,7 @@ typedef struct {
 
 static void SetupPokemonLoaderByBoxData(BoxPkm *pkm, MCSSLoadInfo *info, u32 dir);
 static BOOL MCSS_SpindaLoadCallback(const MCSSLoadInfo *info, MCSSLoad *load, u32 personality);
-static void MCSS_RestartOnAnimationEnd(u32 param, fx32 frame);
+static void MCSS_RestartOnAnimationEnd(uptr param, fx32 frame);
 
 static const SpindaSpotPixel sMcssSpindaSpot0[] = {
     { 11, 7 },  { 12, 7 },  { 13, 7 },  { 14, 7 },  { 10, 8 },  { 11, 8 },  { 12, 8 },  { 13, 8 },      { 14, 8 },
@@ -168,9 +168,9 @@ void MCSS_DrawSpindaSpots(void *chars, u32 personality) {
 
 // Restarts the sprite's animation each time it ends
 void MCSS_SetLoopAnimation(MCSS *mcss) {
-    MCSS_SetAnimationEndCallback(mcss, (u32)mcss, MCSS_RestartOnAnimationEnd, 1);
+    MCSS_SetAnimationEndCallback(mcss, (uptr)mcss, MCSS_RestartOnAnimationEnd, 1);
 }
 
-static void MCSS_RestartOnAnimationEnd(u32 param, fx32 frame) {
+static void MCSS_RestartOnAnimationEnd(uptr param, fx32 frame) {
     MCSS_RequestRestart((MCSS *)param);
 }

@@ -67,9 +67,8 @@ static G3DSceneSetup sSceneSetup = { sResources, NELEMS(sResources), sActors, NE
 void PassingVehicles_Init(Field *field) {
     FieldExpObjSystem *expObj;
     GimmickWork *work;
-    HeapID heapId;
 
-    heapId = Field_GetHeapID(field);
+    Field_GetHeapID(field);
     expObj = Field_GetExpObjSystem(field);
     GameData_GetGimmickState(GSYS_GetGameData(Field_GetGameSystem(field)));
     Field_AllocGimmickWorkBlock(field, GIMMICK_WORK_ID, Field_GetHeapID(field), sizeof(GimmickWork));
@@ -187,7 +186,6 @@ static void PassingVehicles_PlaceAll(GimmickWork *work, Field *field) {
 
 // Places a vehicle's models for both lanes, the first model and the one behind it
 static void PassingVehicles_PlaceVehicle(GimmickWork *work, Field *field, u32 first, u32 second) {
-    HeapID heapId;
     FieldExpObjSystem *expObj;
     SRTMatrix *matrix;
     fx32 cos;
@@ -195,7 +193,7 @@ static void PassingVehicles_PlaceVehicle(GimmickWork *work, Field *field, u32 fi
     fx32 cos2;
     fx32 sin2;
 
-    heapId = Field_GetHeapID(field);
+    Field_GetHeapID(field);
     expObj = Field_GetExpObjSystem(field);
 
     matrix = FieldExpObj_GetActorMatrixPtr(expObj, 0, first);

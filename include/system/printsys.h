@@ -22,6 +22,8 @@ typedef struct PrintStream PrintStream;
 
 // Sets the string terminator, and creates the bitmap glyphs are drawn into
 void GFL_TextRndInit(HeapID heapId);
+// The scratch bitmap allocated by GFL_TextRndInit, released when the host shuts down its renderer.
+extern GFLBitmap *g_TextRendererTempBitmap;
 
 // Draws a string into a bitmap at once
 void GFL_TextRendererDrawToBitmap(GFLBitmap *bitmap, s16 x, s16 y, const StrBuf *strbuf, Font *font);

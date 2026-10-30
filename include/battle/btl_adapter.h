@@ -41,7 +41,7 @@ void BtlAdapter_Idle(void);
 void BtlAdapter_SetCmd(BtlAdapter *adapter, u32 cmd, const void *data, u32 size);
 BOOL BtlAdapter_WaitCmd(BtlAdapter *adapter);
 // The client's reply to the last command, and its size if size isn't NULL
-void *BtlAdapter_GetReturnData(BtlAdapter *adapter, u32 *size);
+const void *BtlAdapter_GetReturnData(BtlAdapter *adapter, u32 *size);
 void BtlAdapter_SetIdle(BtlAdapter *adapter);
 
 void BtlAdapter_ClearSendCmd(BtlAdapter *adapter);

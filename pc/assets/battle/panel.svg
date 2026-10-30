@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="260" viewBox="0 0 1280 260">
+ <defs>
+  <linearGradient id="base" x2="0" y2="1"><stop stop-color="#101315"/><stop offset="1" stop-color="#20272b"/></linearGradient>
+  <linearGradient id="message" x2="1" y2="1"><stop stop-color="#272e32"/><stop offset="1" stop-color="#111619"/></linearGradient>
+  <pattern id="grain" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 0h2v2H0zM3 3h1v1H3z" fill="#89949b" opacity=".045"/></pattern>
+ </defs>
+ <path fill="url(#base)" d="M0 0h1280v260H0z"/>
+ <path fill="url(#grain)" d="M0 0h1280v260H0z"/>
+ <path d="M0 1h1280M0 5h1280" stroke="#9da4a8" stroke-width="2"/>
+ <path d="M40 16h570L574 193H1280" fill="none" stroke="#8c949b" stroke-width="3"/>
+ <path d="M40 16h570l-17 84H21V36z" fill="url(#message)" stroke="#b9c1c7" stroke-width="2"/>
+ <path d="M24 98h545" stroke="#656e75" stroke-width="2"/>
+ <path d="M0 209h786l13-13h481v64H0z" fill="#101417"/>
+ <path d="M0 209h786l13-13h481" fill="none" stroke="#8c949b" stroke-width="2"/>
+</svg>

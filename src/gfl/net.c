@@ -279,6 +279,7 @@ void GFL_NetChangeoverConnect(void (*callback)(void *work)) {
 
 void GFL_NetStartSearch(int unused) {
     GFLNetSys *pNet = GFL_NetGetSys();
+    (void)pNet;
 
     NetState_StartSearch();
 }
@@ -419,6 +420,7 @@ BOOL GFL_NetIsHandleNegotiated(NetHandle *handle) {
 
 BOOL GFL_NetSendCommand(NetHandle *handle, int command, u16 size, const void *data) {
     GFLNetInitData *ini = GFL_NetGetInitData();
+    (void)ini;
 
     return NetSystem_QueueCommand(command, (u8 *)data, size, 0, NetHandle_GetNetId(handle), 0xff, FALSE);
 }
@@ -427,6 +429,7 @@ BOOL GFL_NetSendCommandToMachine(NetHandle *handle, u8 sendID, u16 command, u32 
                                  BOOL noCopy) {
     GFLNetInitData *ini = GFL_NetGetInitData();
     u8 dest = 0xff;
+    (void)ini;
 
     if (!GFL_NetIsHandleNegotiated(handle) && command >= GFL_NET_CMD_BASE_COUNT) {
         return FALSE;
@@ -444,6 +447,7 @@ BOOL GFL_NetSendCommandToMachine(NetHandle *handle, u8 sendID, u16 command, u32 
 BOOL GFL_NetSendCommandToBits(NetHandle *handle, int dest, u16 command, int size, const void *data, u32 a5, BOOL a6,
                               BOOL noCopy) {
     GFLNetInitData *ini = GFL_NetGetInitData();
+    (void)ini;
 
     if (!GFL_NetIsHandleNegotiated(handle) && command >= GFL_NET_CMD_BASE_COUNT) {
         return FALSE;
@@ -468,6 +472,7 @@ BOOL GFL_NetIsTimingRecv(NetHandle *handle, u16 timing) {
 
 void GFL_NetSetGameCommandBase(u8 gameCommandBase, u8 unused) {
     GFLNetSys *pNet = GFL_NetGetSys();
+    (void)pNet;
 
     GFL_NetGetInitData()->gameCommandBase = gameCommandBase;
     NetHandle_SetNegotiationCommandBase(NetHandle_Get(GFL_NET_NETID_SERVER), gameCommandBase);
@@ -482,7 +487,7 @@ u8 GFL_NetGetGameCommandBase(void) {
     return 0;
 }
 
-int GFL_NetGetUserData(void) {
+sptr GFL_NetGetUserData(void) {
     GFLNetSys *pNet = GFL_NetGetSys();
 
     if (pNet->aNetInit.getUserData != NULL) {
@@ -491,7 +496,7 @@ int GFL_NetGetUserData(void) {
     return 0;
 }
 
-int GFL_NetGetFriendData(void) {
+sptr GFL_NetGetFriendData(void) {
     GFLNetSys *pNet = GFL_NetGetSys();
 
     if (pNet->aNetInit.getFriendData != NULL) {
@@ -593,7 +598,7 @@ void GFL_NetSetDisconnectError(BOOL a0) {
 // Allocates 32-byte aligned memory, keeping the allocation just before it for GFL_NetFreeAligned32
 void *allocConfigDSSoftwareFeature(HeapID heapId, u32 size, const char *file, u16 line) {
     void *mem = GFL_HeapAllocate(heapId, ((size + sizeof(void *) + 32) & ~31) + 32, TRUE, file, line);
-    void **aligned = (void **)(((u32)mem + 32) & ~31);
+    void **aligned = (void **)(((uptr)mem + 32) & ~(uptr)31);
 
     aligned[-1] = mem;
     return aligned;

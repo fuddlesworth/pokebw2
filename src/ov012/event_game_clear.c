@@ -73,7 +73,7 @@ GameEventReturnCode EventGameClear_Callback(GameEvent *event, u32 *state, void *
         EventGameClear_NextState(work, state);
         break;
     case GAME_CLEAR_STATE_HALL_OF_FAME:
-        GSYS_QueueProc(gsys, OVERLAY_ID(265), &HALL_OF_FAME_DEMO_PROC_FUNCTIONS, &work->ov265Param);
+        GSYS_QueueProc(gsys, OVERLAY_ID(265), GAME_PROC_REFERENCE(HALL_OF_FAME_DEMO_PROC_FUNCTIONS), &work->ov265Param);
         EventGameClear_NextState(work, state);
         break;
     case GAME_CLEAR_STATE_WAIT_HALL_OF_FAME:
@@ -82,7 +82,7 @@ GameEventReturnCode EventGameClear_Callback(GameEvent *event, u32 *state, void *
         }
         break;
     case GAME_CLEAR_STATE_STAFF_ROLL:
-        GSYS_QueueProc(gsys, OVERLAY_STAFF_ROLL, &STAFF_ROLL_PROC_FUNCTIONS, &work->staffRollParam);
+        GSYS_QueueProc(gsys, OVERLAY_STAFF_ROLL, GAME_PROC_REFERENCE(STAFF_ROLL_PROC_FUNCTIONS), &work->staffRollParam);
         EventGameClear_NextState(work, state);
         break;
     case GAME_CLEAR_STATE_WAIT_STAFF_ROLL:
@@ -100,12 +100,13 @@ GameEventReturnCode EventGameClear_Callback(GameEvent *event, u32 *state, void *
         break;
     case GAME_CLEAR_STATE_UNOVA_LINK:
         if (!KeyInfo_IsKeyUnlocked(getKeyInfoSaveBlk(save), work->unovaLinkParam.key)) {
-            GSYS_QueueProcAsEvent(event, OVERLAY_ID(332), &UNOVA_LINK_PROC_FUNCTIONS, &work->unovaLinkParam);
+            GSYS_QueueProcAsEvent(event, OVERLAY_ID(332), GAME_PROC_REFERENCE(UNOVA_LINK_PROC_FUNCTIONS),
+                                  &work->unovaLinkParam);
         }
         EventGameClear_NextState(work, state);
         break;
     case GAME_CLEAR_STATE_SAVE:
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(295), &GAME_CLEAR_SAVE_PROC_FUNCTIONS, &work->ov295Param);
+        GSYS_QueueProcAsEvent(event, OVERLAY_ID(295), GAME_PROC_REFERENCE(GAME_CLEAR_SAVE_PROC_FUNCTIONS), &work->ov295Param);
         EventGameClear_NextState(work, state);
         break;
     case GAME_CLEAR_STATE_WAIT:
@@ -116,7 +117,7 @@ GameEventReturnCode EventGameClear_Callback(GameEvent *event, u32 *state, void *
         work->counter++;
         break;
     case GAME_CLEAR_STATE_THE_END:
-        GSYS_QueueProcAsEvent(event, OVERLAY_THE_END, &THE_END_PROC_FUNCTIONS, &work->ov267Param);
+        GSYS_QueueProcAsEvent(event, OVERLAY_THE_END, GAME_PROC_REFERENCE(THE_END_PROC_FUNCTIONS), &work->ov267Param);
         GSYS_SetCGearOn(gsys, 0);
         EventGameClear_NextState(work, state);
         break;

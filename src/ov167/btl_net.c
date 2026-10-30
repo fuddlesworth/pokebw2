@@ -631,7 +631,7 @@ BOOL BtlNet_AreRepliesReceived(void) {
 }
 
 // A client's reply and its size
-u16 BtlNet_GetReply(u8 clientId, void **data) {
+u16 BtlNet_GetReply(u8 clientId, const void **data) {
     u8 netId = GetClientNetId(clientId);
     BtlNetRecvBuffer *buffer = &sWork->clientReplies[netId];
 
@@ -672,7 +672,7 @@ u16 BtlNet_GetServerCmd(void **data) {
 }
 
 // Sends this machine's reply to the server
-BOOL BtlNet_SendReply(void *data, u32 size) {
+BOOL BtlNet_SendReply(const void *data, u32 size) {
     BOOL result =
         GFL_NetSendCommandToMachine(sWork->netHandle, sWork->serverNetId, BTL_NET_CMD_REPLY, size, data, 0, 1, 1);
 

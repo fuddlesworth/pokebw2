@@ -128,8 +128,8 @@ static u32 JoinAvenue_MergeExisting(JoinAvenueSave *joinAvenue, GameData *gameDa
     JoinAvenuePersonList *personList = JoinAvenue_GetPersonList(joinAvenue);
     JoinAvenuePersonList *extraList = *GameData_GetJoinAvenuePersonListPtr(gameData);
     JoinAvenueEntryList *entryList = JoinAvenue_GetEntryList(joinAvenue);
-    JoinAvenueOccupants *occupants = getAddressOfBeginningOfOccupants(joinAvenue);
-    JoinAvenueInfo *info = JoinAvenue_GetInfo(joinAvenue);
+    getAddressOfBeginningOfOccupants(joinAvenue);
+    JoinAvenue_GetInfo(joinAvenue);
     u32 result;
 
     if (!sSourceFuncs[kind].isValid(source)) {
@@ -167,7 +167,7 @@ static u32 JoinAvenue_MergeOrAdd(JoinAvenueSave *joinAvenue, GameData *gameData,
     JoinAvenuePersonList *extraList = *GameData_GetJoinAvenuePersonListPtr(gameData);
     JoinAvenueEntryList *entryList = JoinAvenue_GetEntryList(joinAvenue);
     JoinAvenueOccupants *occupants = getAddressOfBeginningOfOccupants(joinAvenue);
-    JoinAvenueInfo *info = JoinAvenue_GetInfo(joinAvenue);
+    JoinAvenue_GetInfo(joinAvenue);
     u32 (*add)(JoinAvenuePersonList *list, const void *source);
     u32 result;
 

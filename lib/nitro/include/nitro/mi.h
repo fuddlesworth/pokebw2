@@ -3,7 +3,12 @@
 
 #include "types.h"
 
+#ifdef POKEBW2_PC
+extern u16 PcMiExMemControl;
+#define reg_MI_EXMEMCNT PcMiExMemControl
+#else
 #define reg_MI_EXMEMCNT (*(vu16 *)0x04000204)
+#endif
 #define REG_MI_EXMEMCNT_EP_MASK 0x8000
 #define REG_MI_EXMEMCNT_EP_SHIFT 15
 

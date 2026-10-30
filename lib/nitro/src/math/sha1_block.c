@@ -9,6 +9,49 @@
 // pc-relative offsets to them (their dsd labels are .L_02077cd4..ce0, with no symbol).
 #include "nitro/math.h"
 
+#ifdef POKEBW2_PC
+// The host uses the same compression rounds as the SDK's ARM implementation below.
+void sha1_block(MATHSHA1Context *context) {
+    u32 words[80];
+    for (unsigned i = 0; i < 16; i++) {
+        const u8 *p = &context->block.bytes[i * 4];
+        words[i] = (u32)p[0] << 24 | (u32)p[1] << 16 | (u32)p[2] << 8 | p[3];
+    }
+    for (unsigned i = 16; i < 80; i++) {
+        u32 word = words[i - 3] ^ words[i - 8] ^ words[i - 14] ^ words[i - 16];
+        words[i] = word << 1 | word >> 31;
+    }
+    u32 a = context->state[0], b = context->state[1], c = context->state[2];
+    u32 d = context->state[3], e = context->state[4];
+    for (unsigned i = 0; i < 80; i++) {
+        u32 f, k;
+        if (i < 20) {
+            f = (b & c) | (~b & d);
+            k = 0x5a827999;
+        } else if (i < 40) {
+            f = b ^ c ^ d;
+            k = 0x6ed9eba1;
+        } else if (i < 60) {
+            f = (b & c) | (b & d) | (c & d);
+            k = 0x8f1bbcdc;
+        } else {
+            f = b ^ c ^ d;
+            k = 0xca62c1d6;
+        }
+        u32 next = (a << 5 | a >> 27) + f + e + k + words[i];
+        e = d;
+        d = c;
+        c = b << 30 | b >> 2;
+        b = a;
+        a = next;
+    }
+    context->state[0] += a;
+    context->state[1] += b;
+    context->state[2] += c;
+    context->state[3] += d;
+    context->state[4] += e;
+}
+#else
 #pragma thumb off
 // clang-format off
 asm void sha1_block_constants(void) {
@@ -232,3 +275,4 @@ rounds_60_79:
 
 // clang-format on
 #pragma thumb on
+#endif

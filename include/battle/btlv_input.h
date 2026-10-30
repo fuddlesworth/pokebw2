@@ -34,6 +34,18 @@ struct BtlvInputKeyStop {
 // Set on a stop: the stop the cursor came from, if it is in the list the caller passes
 #define KEY_CURSOR_LAST 0x40
 
+#ifdef POKEBW2_PC
+typedef struct {
+    u32 screen;
+    u32 cursor;
+    BOOL ready;
+    u8 enabled[8];
+    const u16 *choices[2];
+} BtlvInputNativeState;
+BOOL BtlvInput_GetNativeState(const BtlvInput *work, BtlvInputNativeState *state);
+BOOL BtlvInput_PressNativeButton(BtlvInput *work, u32 screen, u32 button);
+#endif
+
 // A party slot of the command screen; only the icon animation byte is read
 typedef struct {
     u8 unk0;

@@ -1570,15 +1570,19 @@ void SetFastestTextSpeed(BtlMainModule *mainModule) {
 }
 
 BOOL IsExpGainEnabled(BtlMainModule *mainModule) {
+#ifndef POKEBW2_PC
     BOOL result;
+#endif
 
     if (mainModule->setup->battleType <= BTL_TYPE_TRAINER) {
+#ifndef POKEBW2_PC
         GFL_OvlLoad(OVERLAY_ID(338));
         result = IrCheck_IsGenuineCard();
         GFL_OvlUnload(OVERLAY_ID(338));
         if (!result) {
             return FALSE;
         }
+#endif
         if (!BtlSetup_IsBattleType(mainModule, 0x200) && !GetStudioMode(mainModule)) {
             return TRUE;
         }

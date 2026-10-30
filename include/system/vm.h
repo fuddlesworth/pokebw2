@@ -34,19 +34,23 @@ typedef struct {
 
 struct VM {
     VMInitParam param;
+#ifdef POKEBW2_PC
+    // Field opcodes take FieldScriptEnv *, while other VMs use void *.
+    BOOL (*commandDispatcher)(VM *vm, void *env, u16 command);
+#endif
     u8 stackPos;
     u8 state;
     // The result of the last comparison: less, equal or greater than (0, 1, 2)
     u8 cmpResult;
     VMCommand native;
     const u8 *pc;
-    u32 *stack;
-    u32 *work;
+    uptr *stack;
+    uptr *work;
     void *env;
     VMVerifier verifier;
     void *verifierArg;
     // The script file the field loaded the VM's script from, which it frees with the VM
-    u32 scriptData;
+    uptr scriptData;
     // The work and then the stack follow
 };
 
@@ -68,8 +72,8 @@ static inline u8 VM_Read8(VM *vm) {
 
 u16 VM_Read16(VM *vm);
 u32 VM_Read32(VM *vm);
-void VM_StackPush(VM *vm, u32 value);
-u32 VM_StackPop(VM *vm);
+void VM_StackPush(VM *vm, uptr value);
+uptr VM_StackPop(VM *vm);
 void VM_Jump(VM *vm, const u8 *pc);
 void VM_Call(VM *vm, const u8 *pc);
 void VM_Return(VM *vm);

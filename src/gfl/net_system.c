@@ -336,7 +336,7 @@ void NetSystem_HoldScan(int a0) {
 
 int NetSystem_StartChild(BOOL a0, const u8 *mac, int size, void (*callback)(void)) {
     GFLNetSys *sys = GFL_NetGetSys();
-    GFLNetInitData *ini = GFL_NetGetInitData();
+    GFL_NetGetInitData();
 
     sys->pDevTable->setRecvCallback(NetSystem_RecvServerPacket);
     if (a0) {
@@ -349,8 +349,8 @@ int NetSystem_StartChild(BOOL a0, const u8 *mac, int size, void (*callback)(void
 }
 
 void NetSystem_Free(void) {
-    GFLNetSys *sys = GFL_NetGetSys();
-    GFLNetInitData *ini = GFL_NetGetInitData();
+    GFL_NetGetSys();
+    GFL_NetGetInitData();
 
     if (sNetSys != NULL) {
         GFL_HeapFree(sNetSys->serverRingData);

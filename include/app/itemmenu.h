@@ -155,7 +155,24 @@ struct ItemMenuWork {
     BagItemList itemList;
     u32 sortType;
     u32 freeSpaceFilter;
+#ifdef POKEBW2_PC
+    u16 nativeMessage[256];
+#endif
 };
+
+#ifdef POKEBW2_PC
+enum {
+    ITEMMENU_NATIVE_WAIT,
+    ITEMMENU_NATIVE_LIST,
+    ITEMMENU_NATIVE_MENU,
+    ITEMMENU_NATIVE_QUANTITY,
+    ITEMMENU_NATIVE_MESSAGE
+};
+ItemMenuWork *ItemMenu_GetNativeWork(void);
+u32 ItemMenu_GetNativePhase(ItemMenuWork *work);
+BOOL ItemMenu_SetNativeIndex(ItemMenuWork *work, s32 index);
+BOOL ItemMenu_SetNativePocket(ItemMenuWork *work, u32 pocket);
+#endif
 
 // The slot of an item of the list
 BagItem *ItemMenu_GetSlot(ItemMenuWork *work, u32 index);

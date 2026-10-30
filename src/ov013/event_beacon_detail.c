@@ -23,7 +23,7 @@ GameEventReturnCode EventBeaconDetail_Callback(GameEvent *event, u32 *state, voi
 GameEventReturnCode EventBeaconDetail_Callback(GameEvent *event, u32 *state, void *data) {
     EventBeaconDetail *work = data;
     GameSystem *gsys = work->gsys;
-    GameData *gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     Field *field = GSYS_GetField(gsys);
 
     switch (*state) {
@@ -45,7 +45,7 @@ GameEventReturnCode EventBeaconDetail_Callback(GameEvent *event, u32 *state, voi
         work->param.gameData = work->gameData;
         work->param.subscreen = work->subscreen;
         work->param.mode = work->mode;
-        GSYS_QueueProc(gsys, OVERLAY_BEACON_DETAIL, &BeaconDetail_ProcFunctions, &work->param);
+        GSYS_QueueProc(gsys, OVERLAY_BEACON_DETAIL, GAME_PROC_REFERENCE(BeaconDetail_ProcFunctions), &work->param);
         (*state)++;
         break;
     case 4:

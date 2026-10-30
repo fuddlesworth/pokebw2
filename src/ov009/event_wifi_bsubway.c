@@ -59,7 +59,7 @@ GameEventReturnCode EventWifiBSubway_Callback(GameEvent *event, u32 *state, void
         (*state)++;
         break;
     case 3:
-        GSYS_QueueProc(gsys, OVERLAY_WIFI_BSUBWAY, &WIFI_BSUBWAY_PROC_FUNCTIONS, wk);
+        GSYS_QueueProc(gsys, OVERLAY_WIFI_BSUBWAY, GAME_PROC_REFERENCE(WIFI_BSUBWAY_PROC_FUNCTIONS), wk);
         (*state)++;
         break;
     case 4:

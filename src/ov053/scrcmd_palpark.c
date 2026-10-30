@@ -26,8 +26,9 @@ static BOOL Scrcmd_Palpark_CallMbParent(VM *vm, FieldScriptEnv *env) {
 
     param->startMenu = FALSE;
     param->gameData = gameData;
-    ScriptWork_CallEvent(work, EventFieldSubprocessCall_CreateWithCallback(
-                                   gsys, field, OVERLAY_ID(181), &MB_PARENT_PROC_FUNCTIONS, param, NULL, param));
+    ScriptWork_CallEvent(
+        work, EventFieldSubprocessCall_CreateWithCallback(
+                  gsys, field, OVERLAY_ID(181), GAME_PROC_REFERENCE(MB_PARENT_PROC_FUNCTIONS), param, NULL, param));
     return TRUE;
 }
 

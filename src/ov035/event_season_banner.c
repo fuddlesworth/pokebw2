@@ -43,6 +43,14 @@ struct EventSeasonBanner {
     void *callbackArg;
 };
 
+#ifdef POKEBW2_PC
+static BOOL nativeBannerActive;
+
+BOOL EventSeasonBanner_IsNativeActive(void) {
+    return nativeBannerActive;
+}
+#endif
+
 #define SEASON_BANNER_BG 3
 
 GameEventReturnCode EventSeasonBanner_Callback(GameEvent *event, u32 *state, void *data);
@@ -178,6 +186,9 @@ GameEvent *EventSeasonBanner_CreateStandalone(GameSystem *gsys, u8 startSeason, 
 }
 
 void EventSeasonBanner_InitRenderer(EventSeasonBanner *wk) {
+#ifdef POKEBW2_PC
+    nativeBannerActive = TRUE;
+#endif
     switch (EventSeasonBanner_GetType(wk)) {
     case SEASON_BANNER_TYPE_FIELD:
         EventSeasonBanner_InitRendererFieldOpen(wk);
@@ -213,6 +224,9 @@ void EventSeasonBanner_InitRendererStandalone(EventSeasonBanner *wk) {
 }
 
 void EventSeasonBanner_FreeRenderer(EventSeasonBanner *wk) {
+#ifdef POKEBW2_PC
+    nativeBannerActive = FALSE;
+#endif
     switch (EventSeasonBanner_GetType(wk)) {
     case SEASON_BANNER_TYPE_FIELD:
         EventSeasonBanner_FreeRendererFieldOpen(wk);

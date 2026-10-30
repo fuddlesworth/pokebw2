@@ -834,8 +834,8 @@ BOOL JoinAvenuePerson_IsValid(JoinAvenuePerson *person) {
     return TRUE;
 }
 
-u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam param, void *buffer) {
-    switch (param) {
+uptr joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam param, void *buffer) {
+    switch ((int)param) {
     case JOIN_AVE_PARAM_SLOT:
         return person->slot;
     case JOIN_AVE_PARAM_ROW:
@@ -1005,19 +1005,19 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
             MI_CpuCopy8(&person->data[5].message, buffer, sizeof(JoinAvenueMessage));
             ((u16 *)buffer)[8] = GFL_StrBufGetTerminator();
         }
-        return (u32)&person->data[5].message;
+        return (uptr)&person->data[5].message;
     case JOIN_AVE_PARAM_MESSAGE2_RAW:
         if (buffer != NULL) {
             MI_CpuCopy8(&person->data[6].message, buffer, sizeof(JoinAvenueMessage));
             ((u16 *)buffer)[8] = GFL_StrBufGetTerminator();
         }
-        return (u32)&person->data[6].message;
+        return (uptr)&person->data[6].message;
     }
     return 0;
 }
 
-void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam param, u32 value) {
-    switch (param) {
+void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam param, uptr value) {
+    switch ((int)param) {
     case JOIN_AVE_PARAM_SLOT:
         person->slot = value;
         break;
@@ -1395,7 +1395,7 @@ void JoinAvenueEntry_Init(JoinAvenueEntry *entry, PlayerInfo *playerInfo, u16 sp
 }
 
 u32 JoinAvenueEntry_GetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam param, void *buffer) {
-    switch (param) {
+    switch ((int)param) {
     case JOIN_AVE_PARAM_SLOT:
         return entry->slot;
     case JOIN_AVE_PARAM_ROW:
@@ -1465,8 +1465,8 @@ u32 JoinAvenueEntry_GetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam param
     return 0;
 }
 
-void JoinAvenueEntry_SetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam param, u32 value) {
-    switch (param) {
+void JoinAvenueEntry_SetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam param, uptr value) {
+    switch ((int)param) {
     case JOIN_AVE_PARAM_SLOT:
         entry->slot = value;
         break;
@@ -1948,7 +1948,7 @@ static u32 JoinAvenueRecord_MergeEntry(JoinAvenueRecord *record, const JoinAvenu
 }
 
 u32 JoinAvenueRecord_GetParam(JoinAvenueRecord *record, JoinAvenuePersonParam param, void *buffer) {
-    switch (param) {
+    switch ((int)param) {
     case JOIN_AVE_PARAM_SLOT:
         return record->slot;
     case JOIN_AVE_PARAM_ROW:
@@ -1988,7 +1988,7 @@ u32 JoinAvenueRecord_GetParam(JoinAvenueRecord *record, JoinAvenuePersonParam pa
 }
 
 void JoinAvenueRecord_SetParam(JoinAvenueRecord *record, JoinAvenuePersonParam param, u32 value) {
-    switch (param) {
+    switch ((int)param) {
     case JOIN_AVE_PARAM_SLOT:
         record->slot = value;
         break;
@@ -2402,18 +2402,18 @@ void JoinAvenueInfo_Init(JoinAvenueInfo *info) {
     GFL_MsgDataFree(msgData);
 }
 
-u32 JoinAvenue_GetParam(JoinAvenueInfo *info, u32 param, void *buffer) {
-    switch (param) {
+uptr JoinAvenue_GetParam(JoinAvenueInfo *info, u32 param, void *buffer) {
+    switch ((int)param) {
     case JOIN_AVE_INFO_NAME:
         if (buffer != NULL) {
             wcharsncpy(info->name, buffer, NELEMS(info->name));
         }
-        return (u32)info->name;
+        return (uptr)info->name;
     case JOIN_AVE_INFO_TITLE:
         if (buffer != NULL) {
             wcharsncpy(info->title, buffer, 11);
         }
-        return (u32)info->title;
+        return (uptr)info->title;
     case JOIN_AVE_INFO_RANK:
         return info->rank;
     case JOIN_AVE_INFO_POPULARITY:
@@ -2470,8 +2470,8 @@ u32 JoinAvenue_GetParam(JoinAvenueInfo *info, u32 param, void *buffer) {
     return 0;
 }
 
-void JoinAvenueInfo_SetParam(JoinAvenueInfo *info, u32 param, u32 value) {
-    switch (param) {
+void JoinAvenueInfo_SetParam(JoinAvenueInfo *info, u32 param, uptr value) {
+    switch ((int)param) {
     case JOIN_AVE_INFO_NAME:
         wcharsncpy((const u16 *)value, info->name, NELEMS(info->name));
         break;

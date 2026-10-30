@@ -22,7 +22,7 @@ enum {
 struct BtlAdapter {
     NetHandle *netHandle;
     // The client's reply to the last command, and its size
-    void *returnData;
+    const void *returnData;
     u32 returnSize;
     // 1 once the reply has arrived
     u8 returned : 4;
@@ -127,7 +127,7 @@ BOOL BtlAdapter_WaitCmd(BtlAdapter *adapter) {
     return FALSE;
 }
 
-void *BtlAdapter_GetReturnData(BtlAdapter *adapter, u32 *size) {
+const void *BtlAdapter_GetReturnData(BtlAdapter *adapter, u32 *size) {
     if (size != NULL) {
         *size = adapter->returnSize;
     }

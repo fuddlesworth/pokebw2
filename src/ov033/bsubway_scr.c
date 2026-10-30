@@ -135,6 +135,11 @@ void BsubwayScr_ChangeCommMultiMode(BSubwayScrWork *bsw) {
         mode = BSUBWAY_MODE_COMM_MULTI;
     } else if (bsw->playMode == BSUBWAY_MODE_SUPER_MULTI) {
         mode = BSUBWAY_MODE_SUPER_COMM_MULTI;
+#ifdef POKEBW2_PC
+    } else {
+        GFL_DebugAssertFailEx(__FILE__, __LINE__, "Cannot convert Subway play mode %u", bsw->playMode);
+        return;
+#endif
     }
     bsw->playMode = mode;
     BSubwayPlayData_SetData(bsw->playData, BSUBWAY_PLAY_MODE, &mode);

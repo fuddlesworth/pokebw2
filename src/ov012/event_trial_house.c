@@ -163,7 +163,7 @@ static GameEventReturnCode EventTrialHouseResults_Callback(GameEvent *event, u32
 
     switch (*state) {
     case 0:
-        GSYS_QueueProcAsEvent(event, OVERLAY_TH_AWARD, &TH_AWARD_PROC_FUNCTIONS, &data->param);
+        GSYS_QueueProcAsEvent(event, OVERLAY_TH_AWARD, GAME_PROC_REFERENCE(TH_AWARD_PROC_FUNCTIONS), &data->param);
         (*state)++;
         break;
     case 1:

@@ -41,37 +41,37 @@ void G3i_LookAt_(const VecFx32 *camPos, const VecFx32 *camUp, const VecFx32 *tar
 }
 
 void G3_RotX(fx32 sin, fx32 cos) {
-    reg_G3_MTX_MULT_3x3 = FX32_ONE;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = cos;
-    reg_G3_MTX_MULT_3x3 = sin;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = -sin;
-    reg_G3_MTX_MULT_3x3 = cos;
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, FX32_ONE);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, cos);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, sin);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, -sin);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, cos);
 }
 
 void G3_RotY(fx32 sin, fx32 cos) {
-    reg_G3_MTX_MULT_3x3 = cos;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = -sin;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = FX32_ONE;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = sin;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = cos;
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, cos);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, -sin);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, FX32_ONE);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, sin);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, cos);
 }
 
 void G3_RotZ(fx32 sin, fx32 cos) {
-    reg_G3_MTX_MULT_3x3 = cos;
-    reg_G3_MTX_MULT_3x3 = sin;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = -sin;
-    reg_G3_MTX_MULT_3x3 = cos;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = 0;
-    reg_G3_MTX_MULT_3x3 = FX32_ONE;
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, cos);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, sin);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, -sin);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, cos);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, 0);
+    G3X_WriteRegister(reg_G3_MTX_MULT_3x3, FX32_ONE);
 }

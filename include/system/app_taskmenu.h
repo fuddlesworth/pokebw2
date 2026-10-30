@@ -60,6 +60,16 @@ BOOL AppTaskMenu_IsDecided(AppTaskMenu *menu);
 void AppTaskMenu_SetLocked(AppTaskMenu *menu, BOOL locked);
 void AppTaskMenu_SetCursorPos(AppTaskMenu *menu, u32 pos);
 
+#ifdef POKEBW2_PC
+typedef struct {
+    u32 count;
+    u32 cursor;
+    const u16 *labels[APP_TASKMENU_ITEM_MAX];
+    BOOL ready;
+} AppTaskMenuNativeState;
+BOOL AppTaskMenu_GetNativeState(AppTaskMenu *menu, AppTaskMenuNativeState *state);
+#endif
+
 AppTaskMenuRes *AppTaskMenuRes_Create(u8 bg, u8 palette, Font *font, PrintQueue *queue, HeapID heapId);
 void AppTaskMenuRes_Free(AppTaskMenuRes *res);
 

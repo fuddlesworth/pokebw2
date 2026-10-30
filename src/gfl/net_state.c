@@ -209,7 +209,11 @@ static void NetState_StartScanForMac(NetState *state) {
 
 void NetState_ConnectMac(const u8 *mac, BOOL scanFirst) {
     // clang-format off
+#ifdef POKEBW2_PC
+    GFL_ASSERT(((uptr)_pNetState->aMacAddress%2)==0);
+#else
     GFL_ASSERT(((u32)_pNetState->aMacAddress%2)==0);
+#endif
     // clang-format on
     if (mac != NULL) {
         MI_CpuCopy8(mac, _pNetState->aMacAddress, sizeof(_pNetState->aMacAddress));

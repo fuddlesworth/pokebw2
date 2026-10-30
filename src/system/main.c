@@ -1,3 +1,6 @@
+#ifdef POKEBW2_PC
+#include "host_settings.h"
+#endif
 #include "types.h"
 #include "gfl/g3d.h"
 #include "gfl/net.h"
@@ -134,6 +137,9 @@ static void GameInit(void) {
     GCTX_ProcMgrQueueProc(OVERLAY_NONE, &EVENT_TITLE_FUNCS, NULL);
 
     SaveControl_Create(7);
+#ifdef POKEBW2_PC
+    PcSettings_ApplyGame(&getTrainerDataBlkAddress(SaveControl_GetInstance())->config);
+#endif
     Config_ApplyMsgLanguage(&getTrainerDataBlkAddress(SaveControl_GetInstance())->config);
     saveMainSaveAreaAddress(SaveControl_GetInstance());
     setImportantJABlockAddresses(SaveControl_GetInstance());

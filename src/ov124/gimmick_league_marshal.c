@@ -332,8 +332,8 @@ static GameEvent *MarshalRoom_CreatePlatformEvent(GameSystem *gsys) {
 
 static GameEventReturnCode MarshalRoom_PlatformEvent(GameEvent *event, u32 *state, void *data) {
     PlatformEventWork *work = data;
-    GameSystem *gsys = GameEvent_GetGameSystem(event);
-    MarshalRoomWork *gimmick = Field_GetGimmickWorkBlock(work->field, GIMMICK_WORK_ID);
+    GameEvent_GetGameSystem(event);
+    Field_GetGimmickWorkBlock(work->field, GIMMICK_WORK_ID);
     CameraShake shake;
     FieldTask *task;
     fx32 y;

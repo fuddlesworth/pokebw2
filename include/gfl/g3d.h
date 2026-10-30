@@ -97,7 +97,7 @@ enum {
 // A scene that GFL_G3DMgrNewScene loads: its resources, and its actors, each a model with animations
 typedef struct {
     // The archive, or for the G3D_SCENE_RES_FS types its path
-    u32 arcId;
+    uptr arcId;
     u16 fileId;
     u16 unk6;
     u32 type;

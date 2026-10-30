@@ -267,7 +267,9 @@ u32 PokeRegulation_CheckParty(Regulation *regulation, PokeParty *party, u32 *fla
     u16 items[PARTY_SIZE];
     u16 forms[PARTY_SIZE];
     int count;
+#ifndef POKEBW2_PC
     int levelTotal = 0;
+#endif
     u32 result = REGULATION_RESULT_OK;
     int i, j;
     u32 required, requiredForm;
@@ -295,7 +297,11 @@ u32 PokeRegulation_CheckParty(Regulation *regulation, PokeParty *party, u32 *fla
             species[i] = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
             items[i] = PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
             forms[i] = PokeParty_GetParam(pkm, PKM_PARAM_FORM, NULL);
+#ifdef POKEBW2_PC
+            PokeParty_GetParam(pkm, PKM_PARAM_LEVEL, NULL);
+#else
             levelTotal += PokeParty_GetParam(pkm, PKM_PARAM_LEVEL, NULL);
+#endif
         }
     }
     if (Regulation_GetParam(regulation, REGULATION_PARAM_ALLOW_SAME_SPECIES) == 0 && count > 1) {

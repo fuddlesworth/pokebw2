@@ -219,9 +219,9 @@ void GimmickD06_Setup(Field *field) {
 }
 
 void GimmickD06_End(Field *field) {
-    HeapID heapId = Field_GetHeapID(field);
+    Field_GetHeapID(field);
     GimmickState *gimmickState = GameData_GetGimmickState(GSYS_GetGameData(Field_GetGameSystem(field)));
-    void *effects = Field_GetFieldEffects(field);
+    Field_GetFieldEffects(field);
     D06State *state;
 
     state = GimmickState_GetUserData(gimmickState, GetGimmickId(Field_GetPlayerStateZoneID(field)));

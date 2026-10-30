@@ -149,7 +149,11 @@ void BtlServerCmdQueue_PutReserved(BtlServerCmdQueue *que, u32 reserve, BtlServe
 u16 BtlServerCmdQueue_Read(BtlServerCmdQueue *que, u32 *args);
 void BtlServerCmdQueue_PutByte(BtlServerCmdQueue *que, u8 value);
 u8 BtlServerCmdQueue_ReadByte(BtlServerCmdQueue *que);
+#ifdef POKEBW2_PC
+void BtlServerCmdQueue_PutMsg(BtlServerCmdQueue *que, BtlServerCmd event, ...);
+#else
 void BtlServerCmdQueue_PutMsg(BtlServerCmdQueue *que, u8 event, ...);
+#endif
 void func_ov167_021b1670(void);
 
 // SC_OP_UPDATE_USED_MOVE, with its arguments' types

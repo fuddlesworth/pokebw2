@@ -44,8 +44,8 @@ typedef struct {
         } wifiError;
     } unk34;
     // The Wi-Fi friend list (DWCFriendData) and user data (DWCUserData)
-    int (*getFriendData)(void *work);
-    int (*getUserData)(void *work);
+    sptr (*getFriendData)(void *work);
+    sptr (*getUserData)(void *work);
     // The size of the heap for Wi-Fi
     u32 wifiHeapSize;
     // The game's ID in the wireless beacons (gameId, of which the low 16 bits go in them) after four more bytes. The
@@ -137,7 +137,7 @@ typedef struct {
     BOOL (*startScan)(int a0, int a1);
     int (*startChild)(BOOL a0, const u8 *mac, int a2, int a3, void (*callback)(void));
     // Start a Wi-Fi match, and connect to a Wi-Fi friend by index (anybody when negative)
-    BOOL (*startMatch)(int a0, int a1, int a2, int a3);
+    BOOL (*startMatch)(sptr a0, int a1, int a2, int a3);
     BOOL (*connectFriend)(int a0, int a1, int a2);
     // Closes the connection, FALSE until it is closed
     BOOL (*close)(BOOL a0, int a1);
@@ -332,8 +332,8 @@ void GFL_NetSetGameCommandBase(u8 gameCommandBase, u8 unused);
 u8 GFL_NetGetGameCommandBase(void);
 // Whether the net game command base is one of the battle kinds
 BOOL GflNet_IsWifiGameKind(void);
-int GFL_NetGetUserData(void);
-int GFL_NetGetFriendData(void);
+sptr GFL_NetGetUserData(void);
+sptr GFL_NetGetFriendData(void);
 u8 GflNet_GetFriendListNum(void);
 void GFL_NetSetMPSendEnabled(BOOL a0);
 // The game's work, which the callbacks get

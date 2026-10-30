@@ -950,7 +950,7 @@ static BOOL getRotDataByIdx_(VecFx32 *rot, const void *rot3Table, const void *ro
         elem[2] = p[2] >> 3;
         bits = (bits << 3) | (p[3] & 7);
         elem[3] = p[3] >> 3;
-        elem[5] = (bits << 19) >> 19;
+        elem[5] = (s32)((u32)bits << 19) >> 19;
         return TRUE;
     }
 }

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="74" viewBox="0 0 1280 74">
+  <path fill="#090e11" d="M0 0H1280V74H0z"/>
+  <path fill="#e8ebed" d="M375 0H1244l12 12H338l-5-5h42z"/>
+  <path fill="#ff3446" d="M0 7H333l5 5H0z"/>
+  <!-- Both ends follow the trim’s horizontal edges. -->
+  <path fill="#ff3446" d="M1249.657 0H1255.314L1267.314 12H1261.657Z"/>
+  <path stroke="#39434a" stroke-width="2" d="M0 25H795"/>
+  <path fill="#20292f" d="M790 15h29l-31 31h-14l20-20h-15z"/>
+  <g fill="none" stroke="#b6c0c7" stroke-width="1.5"><rect x="845" y="28" width="26" height="28" rx="3"/><rect x="876" y="28" width="26" height="28" rx="3"/><rect x="1025" y="28" width="27" height="28" rx="3"/><rect x="1162" y="28" width="27" height="28" rx="3"/></g>
+  <g fill="none" stroke="#d8dfe3" stroke-width="2"><path d="M864 42h-13m5-5-5 5 5 5M882 42h13m-5-5 5 5-5 5"/></g>
+</svg>

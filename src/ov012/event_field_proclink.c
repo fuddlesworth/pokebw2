@@ -61,21 +61,21 @@ enum {
 
 // clang-format off
 const FieldProcLink FIELD_PROC_LINK_LIST[FIELD_APP_MAX] = {
-    { OVERLAY_ID(165), &POKELIST_PROC_FUNCTIONS, FieldAppCall_CreatePokeListParam, FieldAppCall_GetPokeListResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(302), &POKEDEX_PROC_FUNCTIONS, FieldAppCall_CreatePokedexParam, FieldAppCall_GetPokedexResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(142), &BAG_PROC_FUNCTIONS, FieldAppCall_CreateBagParam, FieldAppCall_GetBagResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(186), &TRCARD_SYS_PROC_FUNCTIONS, FieldAppCall_CreateTrainerCardParam, FieldAppCall_GetTrainerCardResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(165), GAME_PROC_SYMBOL(POKELIST_PROC_FUNCTIONS), FieldAppCall_CreatePokeListParam, FieldAppCall_GetPokeListResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(302), GAME_PROC_SYMBOL(POKEDEX_PROC_FUNCTIONS), FieldAppCall_CreatePokedexParam, FieldAppCall_GetPokedexResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(142), GAME_PROC_SYMBOL(BAG_PROC_FUNCTIONS), FieldAppCall_CreateBagParam, FieldAppCall_GetBagResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(186), GAME_PROC_SYMBOL(TRCARD_SYS_PROC_FUNCTIONS), FieldAppCall_CreateTrainerCardParam, FieldAppCall_GetTrainerCardResult, NULL, FieldProcLink_FreeParam },
     { 0, NULL, NULL, NULL, FieldAppCall_CallSave, FieldProcLink_FreeParam },
-    { OVERLAY_ID(140), &CONFIG_PANEL_PROC_FUNCTIONS, FieldAppCall_CreateConfigParam, FieldAppCall_GetConfigResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(140), GAME_PROC_SYMBOL(CONFIG_PANEL_PROC_FUNCTIONS), FieldAppCall_CreateConfigParam, FieldAppCall_GetConfigResult, NULL, FieldProcLink_FreeParam },
     { 0, NULL, NULL, NULL, FieldProcLink_CallInfDungeonRetire, FieldProcLink_FreeParam },
-    { OVERLAY_PSTATUS, &PSTATUS_PROC_FUNCTIONS, FieldAppCall_CreatePStatusParam, FieldAppCall_GetPStatusResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(144), &TOWNMAP_PROC_FUNCTIONS, FieldAppCall_CreateTownMapParam, FieldAppCall_GetTownMapResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(204), &WIFI_NOTE_PROC_FUNCTIONS, FieldAppCall_CreateWifiNoteParam, FieldAppCall_GetWifiNoteResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_NONE, &MAILSYS_PROC_FUNCTIONS, FieldAppCall_CreateMailParam, FieldAppCall_GetMailResult, NULL, FieldAppCall_FreeMailParam },
-    { OVERLAY_ID(284), &EVOLUTION_DEMO_PROC_FUNCTIONS, script_evo, FieldAppCall_GetEvolutionDemoResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(272), &BR_MAIN_PROC_FUNCTIONS, FieldAppCall_CreateBattleRecorderParam, FieldAppCall_GetBattleRecorderResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(259), &XTRANSCEIVER_PROC_FUNCTIONS, FieldAppCall_CreateXtransceiverParam, FieldAppCall_GetXtransceiverResult, NULL, FieldProcLink_FreeParam },
-    { OVERLAY_ID(145), &MEDALBOX_PROC_FUNCTIONS, FieldAppCall_CreateMedalBoxParam, FieldAppCall_GetMedalBoxResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_PSTATUS, GAME_PROC_SYMBOL(PSTATUS_PROC_FUNCTIONS), FieldAppCall_CreatePStatusParam, FieldAppCall_GetPStatusResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(144), GAME_PROC_SYMBOL(TOWNMAP_PROC_FUNCTIONS), FieldAppCall_CreateTownMapParam, FieldAppCall_GetTownMapResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(204), GAME_PROC_SYMBOL(WIFI_NOTE_PROC_FUNCTIONS), FieldAppCall_CreateWifiNoteParam, FieldAppCall_GetWifiNoteResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_NONE, GAME_PROC_SYMBOL(MAILSYS_PROC_FUNCTIONS), FieldAppCall_CreateMailParam, FieldAppCall_GetMailResult, NULL, FieldAppCall_FreeMailParam },
+    { OVERLAY_ID(284), GAME_PROC_SYMBOL(EVOLUTION_DEMO_PROC_FUNCTIONS), script_evo, FieldAppCall_GetEvolutionDemoResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(272), GAME_PROC_SYMBOL(BR_MAIN_PROC_FUNCTIONS), FieldAppCall_CreateBattleRecorderParam, FieldAppCall_GetBattleRecorderResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(259), GAME_PROC_SYMBOL(XTRANSCEIVER_PROC_FUNCTIONS), FieldAppCall_CreateXtransceiverParam, FieldAppCall_GetXtransceiverResult, NULL, FieldProcLink_FreeParam },
+    { OVERLAY_ID(145), GAME_PROC_SYMBOL(MEDALBOX_PROC_FUNCTIONS), FieldAppCall_CreateMedalBoxParam, FieldAppCall_GetMedalBoxResult, NULL, FieldProcLink_FreeParam },
 };
 
 // clang-format on
@@ -182,7 +182,7 @@ GameEventReturnCode EventFieldAppCall_Callback(GameEvent *event, u32 *state, voi
         work->appParam = param;
         if (FIELD_PROC_LINK_LIST[work->appId].functions != NULL) {
             GSYS_QueueProc(work->input->gameSystem, FIELD_PROC_LINK_LIST[work->appId].overlayId,
-                           FIELD_PROC_LINK_LIST[work->appId].functions, param);
+                           GAME_PROC_RESOLVE(FIELD_PROC_LINK_LIST[work->appId].functions), param);
             *state = FIELD_APP_CALL_STATE_WAIT_PROC;
         }
         break;

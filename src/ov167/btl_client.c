@@ -2189,7 +2189,11 @@ static u32 Studio_GetResultMsgId(BtlClient *client, const BtlScriptedRules *rule
         msgId = rank * 15 + 12;
     } else if (value >= 0) {
         msgId = rank * 15 + 10;
+#ifdef POKEBW2_PC
+    } else {
+#else
     } else if (value < 0) {
+#endif
         msgId = rank * 15 + 11;
     }
     return msgId;

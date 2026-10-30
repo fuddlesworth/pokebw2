@@ -153,7 +153,7 @@ static BOOL AcceptVoice(u8 aid) {
 }
 
 static void ManualCallback(u8 aid, VCTEvent event, VCTSession *session, void *userData) {
-    switch (event) {
+    switch ((int)event) {
     case 9:
         DropSession(session);
         break;
@@ -167,7 +167,7 @@ static void ManualCallback(u8 aid, VCTEvent event, VCTSession *session, void *us
 }
 
 static void SessionCallback(u8 aid, VCTEvent event, VCTSession *session, void *userData) {
-    switch (event) {
+    switch ((int)event) {
     case 1:
         if (sVChatWork->requestSession != NULL) {
             VCT_Response(session, VCT_RESPONSE_BUSY_HERE);
@@ -307,7 +307,11 @@ void DWCRapVChat_Start(HeapID heapId, int codec, int count) {
     config.session = &sVChatWork->session;
     config.numSession = count;
     config.aid = DWC_GetMyAID();
+#ifdef POKEBW2_PC
+    GFL_ASSERT((config.aid != 0xff));
+#else
     GFL_ASSERT((config.aid != -1));
+#endif
     if (sVChatWork->callbackKind == 3) {
         config.callback = ManualCallback;
     } else {

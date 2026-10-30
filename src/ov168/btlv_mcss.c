@@ -15,6 +15,7 @@
 #include "gfl/heap.h"
 #include "gfl/random.h"
 #include "gfl/sound.h"
+#include "gfl/std.h"
 #include "gfl/tcb.h"
 #include "nitro/fx.h"
 #include "nitro/gx.h"
@@ -163,10 +164,10 @@ static void BtlvMcss_MoveTaskEnd_Level(TCB *tcb);
 static void BtlvMcss_IdleTask(TCB *tcb, void *data);
 static void BtlvMcss_RotationTask(TCB *tcb, void *data);
 static void BtlvMcss_RotationTaskEnd(TCB *tcb);
-static void BtlvMcss_OnAnimationEnd(u32 index, fx32 frame);
+static void BtlvMcss_OnAnimationEnd(uptr index, fx32 frame);
 static BOOL BtlvMcss_IdleNodeCallback(u32 param, const NNSG2dMultiCellHierarchyData *node,
                                       NNSG2dCellAnimation *cellAnim, u16 nodeIdx);
-static void BtlvMcss_OnSetAnimationEnd(u32 index, fx32 frame);
+static void BtlvMcss_OnSetAnimationEnd(uptr index, fx32 frame);
 static void BtlvMcss_GetDefaultPosImpl(BtlvMcss *work, VecFx32 *out, int pos);
 static fx32 BtlvMcss_GetDefaultScaleImpl(BtlvMcss *work, int pos, BOOL flat);
 static int BtlvMcss_GetIndex(BtlvMcss *work, int pos);
@@ -2052,7 +2053,7 @@ static void BtlvMcss_RotationTaskEnd(TCB *tcb) {
     task->work->rotating = FALSE;
 }
 
-static void BtlvMcss_OnAnimationEnd(u32 index, fx32 frame) {
+static void BtlvMcss_OnAnimationEnd(uptr index, fx32 frame) {
     BtlvMcss *work = BtlvEffect_GetMcss();
     BtlvMcssIdle *idle;
     u32 count;
@@ -2098,7 +2099,12 @@ static BOOL BtlvMcss_IdleNodeCallback(u32 param, const NNSG2dMultiCellHierarchyD
     int count;
     int i;
 
+    // BUG: the node callback's 16-bit sentinel cannot compare equal to signed -1.
+#ifdef BUGFIX
+    if (index == 0xffff) {
+#else
     if (index == -1) {
+#endif
         return FALSE;
     }
     if (work->entries[index].mcss == NULL) {
@@ -2123,7 +2129,7 @@ static BOOL BtlvMcss_IdleNodeCallback(u32 param, const NNSG2dMultiCellHierarchyD
     return TRUE;
 }
 
-static void BtlvMcss_OnSetAnimationEnd(u32 index, fx32 frame) {
+static void BtlvMcss_OnSetAnimationEnd(uptr index, fx32 frame) {
     BtlvMcss *work = BtlvEffect_GetMcss();
 
     work->entries[index].animSet = FALSE;
@@ -2210,6 +2216,10 @@ static fx32 BtlvMcss_GetDefaultScaleImpl(BtlvMcss *work, int pos, BOOL flat) {
     } else {
         return FX32_CONST(16);
     }
+#ifdef POKEBW2_PC
+    GFL_DebugAssertFailEx(__FILE__, __LINE__, "Invalid battle sprite position %d", pos);
+    return 0;
+#endif
 }
 
 static int BtlvMcss_GetIndex(BtlvMcss *work, int pos) {

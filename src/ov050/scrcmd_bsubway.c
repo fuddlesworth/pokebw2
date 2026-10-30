@@ -137,7 +137,7 @@ static u16 BSubway_GetPlayerObjCode(PlayerInfo *info);
 
 BOOL Scrcmd_Bsubway_CreateWork(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    ScriptFieldWork *fieldWork = ScriptWork_GetFieldWork(work);
+    ScriptWork_GetFieldWork(work);
     GameSystem *gsys = ScriptWork_GetGameSystem(work);
     u16 a1 = VM_Read16(vm);
 
@@ -147,7 +147,7 @@ BOOL Scrcmd_Bsubway_CreateWork(VM *vm, FieldScriptEnv *env) {
 
 BOOL Scrcmd_Bsubway_ClearWork(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    ScriptFieldWork *fieldWork = ScriptWork_GetFieldWork(work);
+    ScriptWork_GetFieldWork(work);
 
     BsubwayScr_ClearWorkPtr(ScriptWork_GetGameSystem(work));
     return FALSE;
@@ -155,7 +155,7 @@ BOOL Scrcmd_Bsubway_ClearWork(VM *vm, FieldScriptEnv *env) {
 
 BOOL Scrcmd_Bsubway_FreeWork(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    ScriptFieldWork *fieldWork = ScriptWork_GetFieldWork(work);
+    ScriptWork_GetFieldWork(work);
     GameSystem *gsys = ScriptWork_GetGameSystem(work);
 
     BsubwayScr_DeleteWork(gsys, GameData_GetBSubwayScrWork(GSYS_GetGameData(gsys)));
@@ -166,7 +166,7 @@ BOOL Scrcmd_Bsubway_Tool(VM *vm, FieldScriptEnv *env) {
     PartyPkm *pkm;
     BOOL result = FALSE;
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    ScriptFieldWork *fieldWork = ScriptWork_GetFieldWork(work);
+    ScriptWork_GetFieldWork(work);
     GameSystem *gsys = ScriptWork_GetGameSystem(work);
     GameData *gameData = GSYS_GetGameData(gsys);
     SaveControl *save = GameData_GetSaveControl(gameData);
@@ -752,9 +752,9 @@ BOOL Scrcmd_Bsubway_Tool(VM *vm, FieldScriptEnv *env) {
         if (bsw->ov306Param.unk14 > BSUBWAY_COUNT_MAX) {
             bsw->ov306Param.unk14 = BSUBWAY_COUNT_MAX;
         }
-        ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(gsys, field, OVERLAY_ID(306),
-                                                                                     &BtlRecSelProcFunctions,
-                                                                                     &bsw->ov306Param, NULL, NULL));
+        ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(
+                                       gsys, field, OVERLAY_ID(306), GAME_PROC_REFERENCE(BtlRecSelProcFunctions),
+                                       &bsw->ov306Param, NULL, NULL));
         result = TRUE;
         break;
     case 349:
@@ -887,9 +887,10 @@ BOOL Scrcmd_Bsubway_Tool(VM *vm, FieldScriptEnv *env) {
         MI_CpuFill8(&bsw->ircMatchParam, 0, sizeof(bsw->ircMatchParam));
         bsw->ircMatchParam.gameData = gameData;
         bsw->ircMatchParam.result = IRCBATTLEMATCH_MODE_BSUBWAY;
-        ScriptWork_CallEvent(work, EventFieldSubprocessTransition_CreateWithCallback(
-                                       gsys, field, OVERLAY_IRCBATTLEMATCH, &IRCBATTLEMATCH_PROC_FUNCTIONS,
-                                       &bsw->ircMatchParam, NULL, NULL));
+        ScriptWork_CallEvent(
+            work, EventFieldSubprocessTransition_CreateWithCallback(gsys, field, OVERLAY_IRCBATTLEMATCH,
+                                                                    GAME_PROC_REFERENCE(IRCBATTLEMATCH_PROC_FUNCTIONS),
+                                                                    &bsw->ircMatchParam, NULL, NULL));
         result = TRUE;
         break;
     case 409:
@@ -977,13 +978,13 @@ static BOOL ScriptNative_BSubwayTimingWait(VM *vm, void *env) {
 
 static BOOL ScriptNative_BSubwayParentEntryMenuWait(VM *vm, void *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    ScriptFieldWork *fieldWork = ScriptWork_GetFieldWork(work);
+    ScriptWork_GetFieldWork(work);
     GameData *gameData = GSYS_GetGameData(ScriptWork_GetGameSystem(work));
     SaveControl *save = GameData_GetSaveControl(gameData);
-    EventWork *eventWork = GameData_GetEventWork(gameData);
+    GameData_GetEventWork(gameData);
     BSubwayScrWork *bsw = GameData_GetBSubwayScrWork(gameData);
-    u32 mode = BSubwayPlayData_GetData(SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_PLAY), BSUBWAY_PLAY_MODE, NULL);
-    BSubwayScoreData *score = SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_SCORE);
+    BSubwayPlayData_GetData(SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_PLAY), BSUBWAY_PLAY_MODE, NULL);
+    SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_SCORE);
     u32 answer = CommEntryMenu_Update(bsw->entryMenu);
 
     if (answer != COMM_ENTRY_MENU_RUNNING) {
@@ -1007,13 +1008,13 @@ static BOOL ScriptNative_BSubwayParentEntryMenuWait(VM *vm, void *env) {
 
 static BOOL ScriptNative_BSubwayChildEntryMenuWait(VM *vm, void *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    ScriptFieldWork *fieldWork = ScriptWork_GetFieldWork(work);
+    ScriptWork_GetFieldWork(work);
     GameData *gameData = GSYS_GetGameData(ScriptWork_GetGameSystem(work));
     SaveControl *save = GameData_GetSaveControl(gameData);
-    EventWork *eventWork = GameData_GetEventWork(gameData);
+    GameData_GetEventWork(gameData);
     BSubwayScrWork *bsw = GameData_GetBSubwayScrWork(gameData);
-    u32 mode = BSubwayPlayData_GetData(SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_PLAY), BSUBWAY_PLAY_MODE, NULL);
-    BSubwayScoreData *score = SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_SCORE);
+    BSubwayPlayData_GetData(SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_PLAY), BSUBWAY_PLAY_MODE, NULL);
+    SaveControl_GetBlockPtr(save, SAVE_BLOCK_BSUBWAY_SCORE);
     u32 answer = CommEntryMenu_Update(bsw->entryMenu);
 
     if (answer != COMM_ENTRY_MENU_RUNNING) {
@@ -1086,7 +1087,7 @@ static GameEvent *EventBSubwayCommEnd_Create(GameSystem *gsys, BSubwayScrWork *b
 
 static GameEventReturnCode EventBSubwayMsgWindow_Callback(GameEvent *event, u32 *state, void *data) {
     BSubwayMsgEvent *wk = data;
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(wk->env);
+    FieldScriptEnv_GetScriptWork(wk->env);
 
     switch (*state) {
     case 0:

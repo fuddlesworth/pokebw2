@@ -97,7 +97,7 @@ enum {
 // A list showing the options from listTop, with the cursor on cursorRow of the window
 BmpMenuList *BmpMenuList_Create(const BmpMenuListHeader *header, u16 listTop, u16 cursorRow, HeapID heapId);
 // Reads the keys and moves the cursor; returns the chosen option's value, BMPMENULIST_CANCEL or BMPMENULIST_NULL
-s32 BmpMenuList_Update(BmpMenuList *list);
+sptr BmpMenuList_Update(BmpMenuList *list);
 // Frees the list, giving back where it was
 void BmpMenuList_Free(BmpMenuList *list, u16 *listTop, u16 *cursorRow);
 void BmpMenuList_Redraw(BmpMenuList *list);
@@ -109,9 +109,9 @@ void BmpMenuList_GetCursorIndex(BmpMenuList *list, u16 *index);
 void BmpMenuList_GetPos(BmpMenuList *list, u16 *listTop, u16 *cursorRow);
 u16 BmpMenuList_GetCursorY(BmpMenuList *list);
 u16 BmpMenuList_GetRowY(BmpMenuList *list, u16 row);
-s32 BmpMenuList_GetOptionValue(BmpMenuList *list, u16 index);
+sptr BmpMenuList_GetOptionValue(BmpMenuList *list, u16 index);
 // A field of the list's header, or -1
-s32 BmpMenuList_GetParam(BmpMenuList *list, u8 param);
+sptr BmpMenuList_GetParam(BmpMenuList *list, u8 param);
 // Makes the cursor the ROM's triangle bitmap
 void BmpMenuList_LoadCursor(BmpMenuList *list, u32 heapId);
 void *BmpMenuList_GetWork(BmpMenuList *list);

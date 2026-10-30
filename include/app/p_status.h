@@ -73,4 +73,30 @@ typedef struct {
 
 extern GameProcFunctions PSTATUS_PROC_FUNCTIONS;
 
+#ifdef POKEBW2_PC
+typedef struct {
+    Font *font;
+    PartyPkm *pkm;
+    PStatusParam *param;
+    u32 page;
+    u32 partyIndex;
+    BOOL ready;
+    BOOL browsing;
+    u32 moveCursor;
+    u32 swapSource;
+    BOOL swapping;
+    BOOL confirming;
+    u16 moveMessage[256];
+    u16 memo[3][256];
+} PStatusNativeState;
+PStatusWork *PStatus_GetNativeWork(void);
+BOOL PStatus_GetNativeState(PStatusNativeState *state);
+BOOL PStatus_SetNativePage(u32 page);
+BOOL PStatus_SetNativeMove(u32 slot);
+void PStaSkill_GetNativeState(PStaSkillWork *skill, PStatusNativeState *state);
+void PStaInfo_GetNativeMemo(PStaInfoWork *info, PStatusNativeState *state);
+u32 PStatus_GetNativeRibbon(u32 index, u16 *name, u32 nameSize, u16 *description, u32 descriptionSize, u32 *icon,
+                            u32 *palette);
+#endif
+
 #endif // POKEBW2_APP_P_STATUS_H

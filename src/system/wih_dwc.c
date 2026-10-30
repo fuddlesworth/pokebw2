@@ -224,7 +224,7 @@ u32 WihDwc_GetStatus(WifiList *wifiList) {
         } else if (isFreeSpot(bss)) {
             _localWork->timers[AP_TIMER_HOTSPOT] = AP_KNOWN_FRAMES;
         } else if (DWCi_BssDescToApInfo(_localWork->parseWork, bss, &apInfo)) {
-            switch (apInfo.aptype) {
+            switch ((int)apInfo.aptype) {
             case 0:
             case 1:
             case 2:

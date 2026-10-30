@@ -8,6 +8,7 @@ push and pull request; matching is still checked by `ninja` with the ROMs.
 
     compile_all.py                  # every file, both versions
     compile_all.py --version b2_us  # one version
+    compile_all.py --generate-headers-only  # native build prerequisites, no DS compiler download
 """
 import argparse
 import os
@@ -135,10 +136,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--version", choices=VERSIONS, action="append", help="version to compile, default every one")
     parser.add_argument("-j", "--jobs", type=int, default=os.cpu_count(), help="files to compile at once")
+    parser.add_argument("--generate-headers-only", action="store_true",
+                        help="generate native build headers without downloading the DS compiler")
     args = parser.parse_args()
 
-    download_tools(TOOLS)
     generate_constants()
+    if args.generate_headers_only:
+        return
+    download_tools(TOOLS)
     sources = sorted(p.relative_to(ROOT) for pattern in ("src/**/*.c", "lib/*/src/**/*.c", "lib/*/src/**/*.s") for p in ROOT.glob(pattern))
     versions = args.version or list(VERSIONS)
     manifest_path = ROOT / "config" / "deadstrip.toml"

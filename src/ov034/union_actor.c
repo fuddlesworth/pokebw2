@@ -280,13 +280,12 @@ void UnionOneself_UpdateActors(UnionSystem *unisys, GameData *gameData, Field *f
     RivalDataSave *rival;
     WifiList *wifiList;
     UnionEffect *effWork;
-    MMSys *mmsys;
     UnionBeaconEntry *entry;
 
     rival = getHollow_RivalData(GameData_GetSaveControl(gameData));
     wifiList = GameData_GetWifiList(gameData);
     effWork = Field_GetUnionEff(field);
-    mmsys = GameData_GetMMSys(gameData);
+    GameData_GetMMSys(gameData);
     if (GFL_STD_MemCmp(zero, unisys->situ.mac78, 6) != 0) {
         focus = TRUE;
     }

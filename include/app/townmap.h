@@ -54,6 +54,28 @@ typedef struct {
 // townmap.c
 extern const GameProcFunctions TOWNMAP_PROC_FUNCTIONS;
 
+#ifdef POKEBW2_PC
+typedef struct {
+    Font *font;
+    u32 mode;
+    u32 selected;
+    u32 player;
+    u32 count;
+    BOOL ready;
+} TownMapNativeState;
+typedef struct {
+    BOOL visible;
+    BOOL canFly;
+    s32 x;
+    s32 y;
+    u16 name[100];
+    u16 description[256];
+} TownMapNativePlace;
+BOOL TownMap_GetNativeState(TownMapNativeState *state);
+BOOL TownMap_GetNativePlace(u32 index, TownMapNativePlace *place);
+BOOL TownMap_SetNativePlace(u32 index);
+#endif
+
 // townmap_grh.c: the town map's BGs and cell actors
 
 typedef struct TownMapGraphic TownMapGraphic;

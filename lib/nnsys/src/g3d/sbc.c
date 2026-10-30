@@ -118,7 +118,7 @@ static void updateHintVec_(u32 *hint, const NNSG3dAnmObj *anmObj) {
 
         for (i = 0; i < anmObj->numMapData; i++) {
             if (anmObj->mapData[i] & NNS_G3D_ANMOBJ_MAPDATA_EXIST) {
-                hint[i >> 5] |= 1 << (i & 0x1f);
+                hint[i >> 5] |= 1u << (i & 0x1f);
             }
         }
         anmObj = anmObj->next;
@@ -182,7 +182,7 @@ void NNSi_G3dFuncSbc_NODE(NNSG3dRS *rs, u32 opt) {
         if (!RunCallBack(rs, NNS_G3D_SBC_NODE, &timing, NNS_G3D_SBC_CALLBACK_TIMING_A)) {
             const NNSG3dRenderObj *obj = rs->pRenderObj;
 
-            if (obj->anmVis == NULL || !(obj->hintVisAnmExist[nodeID >> 5] & (1 << (nodeID & 0x1f))) ||
+            if (obj->anmVis == NULL || !(obj->hintVisAnmExist[nodeID >> 5] & (1u << (nodeID & 0x1f))) ||
                 !obj->funcBlendVis(rs->pVisAnmResult, obj->anmVis, nodeID)) {
                 rs->pVisAnmResult->isVisible = rs->c[2] & 1;
             }
@@ -236,7 +236,7 @@ void NNSi_G3dFuncSbc_MAT_InternalDefault(NNSG3dRS *rs, u32 opt, const NNSG3dResM
         if (rs->pRenderObj->recMatAnm != NULL && !(rs->flag & NNS_G3D_RSFLAG_OPT_RECORD)) {
             result = &rs->pRenderObj->recMatAnm[matID];
         } else if ((opt == NNS_G3D_SBCFLG_001 || opt == NNS_G3D_SBCFLG_010) &&
-                   (rs->isMatCached[matID >> 5] & (1 << (matID & 0x1f)))) {
+                   (rs->isMatCached[matID >> 5] & (1u << (matID & 0x1f)))) {
             if (rs->pRenderObj->recMatAnm != NULL) {
                 result = &rs->pRenderObj->recMatAnm[matID];
             } else {
@@ -244,10 +244,10 @@ void NNSi_G3dFuncSbc_MAT_InternalDefault(NNSG3dRS *rs, u32 opt, const NNSG3dResM
             }
         } else {
             if (rs->pRenderObj->recMatAnm != NULL) {
-                rs->isMatCached[matID >> 5] |= 1 << (matID & 0x1f);
+                rs->isMatCached[matID >> 5] |= 1u << (matID & 0x1f);
                 result = &rs->pRenderObj->recMatAnm[matID];
             } else if (opt == NNS_G3D_SBCFLG_010) {
-                rs->isMatCached[matID >> 5] |= 1 << (matID & 0x1f);
+                rs->isMatCached[matID >> 5] |= 1u << (matID & 0x1f);
                 result = &NNS_G3dRSOnGlb.matCache[matID];
             } else {
                 result = &rs->tmpMatAnmResult;
@@ -307,7 +307,7 @@ void NNSi_G3dFuncSbc_MAT_InternalDefault(NNSG3dRS *rs, u32 opt, const NNSG3dResM
             }
 
             if (rs->pRenderObj->anmMat != NULL &&
-                (rs->pRenderObj->hintMatAnmExist[matID >> 5] & (1 << (matID & 0x1f)))) {
+                (rs->pRenderObj->hintMatAnmExist[matID >> 5] & (1u << (matID & 0x1f)))) {
                 rs->pRenderObj->funcBlendMat(result, rs->pRenderObj->anmMat, matID);
             }
 
@@ -591,9 +591,9 @@ void NNSi_G3dFuncSbc_BB(NNSG3dRS *rs, u32 opt) {
         VecFx32 *scale = &sBBCmd.scale;
 
         NNS_G3dGeFlushBuffer();
-        reg_G3X_GXFIFO = 0x151110; // MTX_MODE, MTX_PUSH, MTX_IDENTITY
-        reg_G3X_GXFIFO = 0;
-        reg_G3X_GXFIFO = 0;
+        G3X_WriteRegister(reg_G3X_GXFIFO, 0x151110); // MTX_MODE, MTX_PUSH, MTX_IDENTITY
+        G3X_WriteRegister(reg_G3X_GXFIFO, 0);
+        G3X_WriteRegister(reg_G3X_GXFIFO, 0);
         while (G3X_GetClipMtx(&clip) != 0) {
         }
 
@@ -617,16 +617,16 @@ void NNSi_G3dFuncSbc_BB(NNSG3dRS *rs, u32 opt) {
         scale->z = VEC_Mag((const VecFx32 *)clip.m[2]);
 
         if (NNS_G3dGlb.flag & NNS_G3D_GLB_FLAG_FLUSH_WVP) {
-            reg_G3X_GXFIFO = 0x171012; // MTX_POP, MTX_MODE, MTX_LOAD_4x3
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x171012); // MTX_POP, MTX_MODE, MTX_LOAD_4x3
             MIi_CpuSend32(&sBBCmd.popNum, &reg_G3X_GXFIFO, 2 * sizeof(u32));
             MIi_CpuSend32(NNS_G3dGlbGetInvWV(), &reg_G3X_GXFIFO, sizeof(MtxFx43));
-            reg_G3X_GXFIFO = 0x1b19; // MTX_MULT_4x3, MTX_SCALE
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x1b19); // MTX_MULT_4x3, MTX_SCALE
             MIi_CpuSend32(sBBCmd.axis, &reg_G3X_GXFIFO, sizeof(BillboardCmd) - 3 * sizeof(u32));
         } else if (NNS_G3dGlb.flag & NNS_G3D_GLB_FLAG_FLUSH_VP) {
-            reg_G3X_GXFIFO = 0x171012; // MTX_POP, MTX_MODE, MTX_LOAD_4x3
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x171012); // MTX_POP, MTX_MODE, MTX_LOAD_4x3
             MIi_CpuSend32(&sBBCmd.popNum, &reg_G3X_GXFIFO, 2 * sizeof(u32));
             MIi_CpuSend32(NNS_G3dGlbGetInvV(), &reg_G3X_GXFIFO, sizeof(MtxFx43));
-            reg_G3X_GXFIFO = 0x1b19; // MTX_MULT_4x3, MTX_SCALE
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x1b19); // MTX_MULT_4x3, MTX_SCALE
             MIi_CpuSend32(sBBCmd.axis, &reg_G3X_GXFIFO, sizeof(BillboardCmd) - 3 * sizeof(u32));
         } else {
             MIi_CpuSend32(&sBBCmd, &reg_G3X_GXFIFO, sizeof(BillboardCmd));
@@ -685,9 +685,9 @@ void NNSi_G3dFuncSbc_BBY(NNSG3dRS *rs, u32 opt) {
         VecFx32 *scale = &sBBYCmd.scale;
 
         NNS_G3dGeFlushBuffer();
-        reg_G3X_GXFIFO = 0x151110; // MTX_MODE, MTX_PUSH, MTX_IDENTITY
-        reg_G3X_GXFIFO = 0;
-        reg_G3X_GXFIFO = 0;
+        G3X_WriteRegister(reg_G3X_GXFIFO, 0x151110); // MTX_MODE, MTX_PUSH, MTX_IDENTITY
+        G3X_WriteRegister(reg_G3X_GXFIFO, 0);
+        G3X_WriteRegister(reg_G3X_GXFIFO, 0);
         while (G3X_GetClipMtx(&clip) != 0) {
         }
 
@@ -721,16 +721,16 @@ void NNSi_G3dFuncSbc_BBY(NNSG3dRS *rs, u32 opt) {
         VEC_CrossProduct(xAxis, yAxis, zAxis);
 
         if (NNS_G3dGlb.flag & NNS_G3D_GLB_FLAG_FLUSH_WVP) {
-            reg_G3X_GXFIFO = 0x171012; // MTX_POP, MTX_MODE, MTX_LOAD_4x3
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x171012); // MTX_POP, MTX_MODE, MTX_LOAD_4x3
             MIi_CpuSend32(&sBBYCmd.popNum, &reg_G3X_GXFIFO, 2 * sizeof(u32));
             MIi_CpuSend32(NNS_G3dGlbGetInvWV(), &reg_G3X_GXFIFO, sizeof(MtxFx43));
-            reg_G3X_GXFIFO = 0x1b19; // MTX_MULT_4x3, MTX_SCALE
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x1b19); // MTX_MULT_4x3, MTX_SCALE
             MIi_CpuSend32(sBBYCmd.axis, &reg_G3X_GXFIFO, sizeof(BillboardCmd) - 3 * sizeof(u32));
         } else if (NNS_G3dGlb.flag & NNS_G3D_GLB_FLAG_FLUSH_VP) {
-            reg_G3X_GXFIFO = 0x171012; // MTX_POP, MTX_MODE, MTX_LOAD_4x3
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x171012); // MTX_POP, MTX_MODE, MTX_LOAD_4x3
             MIi_CpuSend32(&sBBYCmd.popNum, &reg_G3X_GXFIFO, 2 * sizeof(u32));
             MIi_CpuSend32(NNS_G3dGlbGetInvV(), &reg_G3X_GXFIFO, sizeof(MtxFx43));
-            reg_G3X_GXFIFO = 0x1b19; // MTX_MULT_4x3, MTX_SCALE
+            G3X_WriteRegister(reg_G3X_GXFIFO, 0x1b19); // MTX_MULT_4x3, MTX_SCALE
             MIi_CpuSend32(sBBYCmd.axis, &reg_G3X_GXFIFO, sizeof(BillboardCmd) - 3 * sizeof(u32));
         } else {
             MIi_CpuSend32(&sBBYCmd, &reg_G3X_GXFIFO, sizeof(BillboardCmd));
@@ -765,21 +765,21 @@ void NNSi_G3dFuncSbc_NODEMIX(NNSG3dRS *rs, u32 opt) {
 
     MI_CpuClearFast(&sum, sizeof(sum));
     NNS_G3dGeFlushBuffer();
-    reg_G3_MTX_MODE = GX_MTXMODE_PROJECTION;
-    reg_G3_MTX_STORE = 1;
-    reg_G3_MTX_IDENTITY = 0;
-    reg_G3_MTX_MODE = GX_MTXMODE_POSITION_VECTOR;
+    G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_PROJECTION);
+    G3X_WriteRegister(reg_G3_MTX_STORE, 1);
+    G3X_WriteRegister(reg_G3_MTX_IDENTITY, 0);
+    G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_POSITION_VECTOR);
 
     for (i = 0; i < numMtx; i++) {
         // NitroSDK's u32, which is unsigned long
         unsigned long jointID = p[1];
-        u32 isCached = rs->isEvpCached[jointID >> 5] & (1 << (jointID & 0x1f));
+        u32 isCached = rs->isEvpCached[jointID >> 5] & (1u << (jointID & 0x1f));
         MtxFx44 *clip = &NNS_G3dRSOnGlb.evpCache[jointID].clip;
 
         if (!isCached) {
-            rs->isEvpCached[jointID >> 5] |= 1 << (jointID & 0x1f);
-            reg_G3_MTX_RESTORE = p[0];
-            reg_G3_MTX_MODE = GX_MTXMODE_POSITION;
+            rs->isEvpCached[jointID >> 5] |= 1u << (jointID & 0x1f);
+            G3X_WriteRegister(reg_G3_MTX_RESTORE, p[0]);
+            G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_POSITION);
             G3_MultMtx43(&evpMtx[jointID].invM);
         }
 
@@ -798,7 +798,7 @@ void NNSi_G3dFuncSbc_NODEMIX(NNSG3dRS *rs, u32 opt) {
         if (!isCached) {
             while (G3X_GetClipMtx(clip) != 0) {
             }
-            reg_G3_MTX_MODE = GX_MTXMODE_POSITION_VECTOR;
+            G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_POSITION_VECTOR);
             G3_MultMtx33(&evpMtx[jointID].invN);
         }
 
@@ -832,15 +832,23 @@ void NNSi_G3dFuncSbc_NODEMIX(NNSG3dRS *rs, u32 opt) {
     sum.invN.m[2][0] += (weight * nrm->m[2][0]) >> FX32_SHIFT;
     sum.invN.m[2][1] += (weight * nrm->m[2][1]) >> FX32_SHIFT;
     sum.invN.m[2][2] += (weight * nrm->m[2][2]) >> FX32_SHIFT;
-    // Loads the normal matrix as a 4x3 one, so the load reads three words past sum. Only the position matrix takes that
-    // translation, and the next load replaces it
+    // BUG: The original 4x3 upload reads three words past the normal matrix on the stack.
+#ifdef POKEBW2_PC
+    {
+        MtxFx43 normal = { 0 };
+        MIi_CpuCopy32(&sum.invN, &normal, sizeof(sum.invN));
+        G3_LoadMtx43(&normal);
+    }
+#else
+    // Only the position matrix takes the extra translation, and the next load replaces it.
     G3_LoadMtx43((const MtxFx43 *)&sum.invN);
-    reg_G3_MTX_MODE = GX_MTXMODE_POSITION;
+#endif
+    G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_POSITION);
     G3_LoadMtx43(&sum.invM);
-    reg_G3_MTX_MODE = GX_MTXMODE_PROJECTION;
-    reg_G3_MTX_RESTORE = 1;
-    reg_G3_MTX_MODE = GX_MTXMODE_POSITION_VECTOR;
-    reg_G3_MTX_STORE = rs->c[1];
+    G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_PROJECTION);
+    G3X_WriteRegister(reg_G3_MTX_RESTORE, 1);
+    G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_POSITION_VECTOR);
+    G3X_WriteRegister(reg_G3_MTX_STORE, rs->c[1]);
     rs->c += 3 * (rs->c[2] + 1);
 }
 
@@ -1016,13 +1024,13 @@ void NNSi_G3dFuncSbc_PRJMAP(NNSG3dRS *rs, u32 opt) {
             }
 
             NNS_G3dGeFlushBuffer();
-            reg_G3_MTX_MODE = GX_MTXMODE_PROJECTION;
-            reg_G3_MTX_PUSH = 0;
-            reg_G3_MTX_IDENTITY = 0;
+            G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_PROJECTION);
+            G3X_WriteRegister(reg_G3_MTX_PUSH, 0);
+            G3X_WriteRegister(reg_G3_MTX_IDENTITY, 0);
             while (G3X_GetClipMtx(&clip) != 0) {
             }
-            reg_G3_MTX_POP = 1;
-            reg_G3_MTX_MODE = GX_MTXMODE_TEXTURE;
+            G3X_WriteRegister(reg_G3_MTX_POP, 1);
+            G3X_WriteRegister(reg_G3_MTX_MODE, GX_MTXMODE_TEXTURE);
             NNS_G3dGeLoadMtx44(&clip);
             NNS_G3dGeTexCoord(clip.m[3][0] >> 4, clip.m[3][1] >> 4);
         }

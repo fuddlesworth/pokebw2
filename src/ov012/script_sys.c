@@ -530,6 +530,16 @@ u16 FieldScript_GetSceneChangeSCRID(GameData *gameData, const u8 *script, u32 mo
     }
 }
 
+#ifdef POKEBW2_PC
+static BOOL FieldScript_DispatchCommand(VM *vm, void *data, u16 command) {
+    FieldScriptEnv *env = data;
+    if (command < EVCMD_MAX)
+        return EVCMD_TABLE[command](vm, env);
+    GameData *gameData = GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env));
+    return GetCurrentScrPluginTable(gameData)[command - vm->param.extraCommandStart](vm, env);
+}
+#endif
+
 VM *FieldScript_CreateVM(HeapID heapId, ScriptWork *work, u16 zoneId, u16 scriptId, u32 featureLevel) {
     FieldScriptEnvArgs args;
     VMInitParam param;
@@ -562,9 +572,12 @@ VM *FieldScript_CreateVM(HeapID heapId, ScriptWork *work, u16 zoneId, u16 script
     param.extraCommandCount = GetCurrentScrPluginCmdCount(gameData);
     param.extraCommandStart = 1000;
     vm = VM_Create(heapId, &param);
+#ifdef POKEBW2_PC
+    vm->commandDispatcher = FieldScript_DispatchCommand;
+#endif
     VM_ChangeEnv(vm, env);
     scriptOffset = FieldScript_ResolveSCRID(zoneId, scriptId, &fileId, &msgArcId, &msgFileNo);
-    vm->scriptData = (u32)FieldScript_LoadData(fileId, heapId);
+    vm->scriptData = (uptr)FieldScript_LoadData(fileId, heapId);
     workSize -= 0x41;
     if (!reduced && msgFileNo != workSize) {
         SetFieldScriptEnvMsgData(env, msgArcId, msgFileNo);

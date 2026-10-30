@@ -202,6 +202,9 @@ PlaceName *FieldPlaceName_Create(GameSystem *gsys, HeapID heapId, FieldMsgBG *ms
 void FieldPlaceName_Free(PlaceName *placeName);
 void PlaceName_Main(PlaceName *placeName);
 void PlaceName_Draw(PlaceName *placeName);
+#ifdef POKEBW2_PC
+BOOL FieldPlaceName_IsNativeActive(const PlaceName *placeName);
+#endif
 void Field_InitGimmick(Field *field);
 void Field_TerminateGimmick(Field *field);
 void Field_UpdateGimmick(Field *field);

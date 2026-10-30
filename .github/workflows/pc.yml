@@ -1,0 +1,32 @@
+name: PC port
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    name: ROM-free native build and CPU tests
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build pkg-config libsdl3-dev libfreetype-dev librsvg2-dev glslc
+
+      - name: Configure without ROMs
+        run: cmake -S pc -B build/pc-ci -G Ninja -DPC_GPU_TESTS=OFF
+
+      - name: Build
+        run: cmake --build build/pc-ci --parallel 4
+
+      - name: CPU tests
+        run: ctest --test-dir build/pc-ci -L cpu --output-on-failure

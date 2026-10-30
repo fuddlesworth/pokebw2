@@ -637,7 +637,9 @@ static void PokedexHabitat_SeqLeaveCursor(PokedexHabitatWork *wk) {
 
 // The cursor on the Pokémon, which chooses one to see in the Pokédex
 static void PokedexHabitat_SeqCursor(PokedexHabitatWork *wk) {
+#ifndef POKEBW2_PC
     PokedexHabitatArea *area = PokedexHabitat_GetArea(wk);
+#endif
     int hit = GFL_HIDGetTouchPressedRect(sPokedexHabitatCursorTouchRects);
 
     switch (wk->step) {
@@ -805,7 +807,9 @@ static void PokedexHabitat_SeqButton(PokedexHabitatWork *wk) {
 static void PokedexHabitat_SeqChangeSeason(PokedexHabitatWork *wk) {
     ClActor *pressed;
     ClActor *other;
+#ifndef POKEBW2_PC
     PokedexHabitatArea *area = PokedexHabitat_GetArea(wk);
+#endif
 
     if (wk->action == ACTION_LEFT) {
         pressed = PokedexHabitatGraphic_GetActor(&wk->graphic, POKEDEX_HABITAT_OBJ_SEASON_LEFT);
@@ -1248,7 +1252,9 @@ static void PokedexHabitat_SeqAllComplete(PokedexHabitatWork *wk) {
         }
         break;
     case 2: {
+#ifndef POKEBW2_PC
         PokedexHabitatArea *area = PokedexHabitat_GetArea(wk);
+#endif
 
         PokedexHabitatGraphic_CloseMessage(&wk->graphic);
         PokedexHabitat_SetSequence(wk, SEQ_LIST, ACTION_NONE);
@@ -1590,7 +1596,9 @@ static void PokedexHabitat_LoadSave(PokedexHabitatWork *wk) {
 
 // The species in a cell, or -1
 static int PokedexHabitat_GetSpecies(PokedexHabitatWork *wk, u8 cell) {
+#ifndef POKEBW2_PC
     PokedexHabitatArea *area = PokedexHabitat_GetArea(wk);
+#endif
     int species = wk->species[cell];
 
     if (species == 0) {

@@ -179,6 +179,57 @@ static BOOL PMSSelect_SeqMenuClose(u32 *seq, PMSSelectWork *wk);
 static BOOL PMSSelect_SeqCallInput(u32 *seq, PMSSelectWork *wk);
 static BOOL PMSSelect_SeqInputReturn(u32 *seq, PMSSelectWork *wk);
 
+#ifdef POKEBW2_PC
+static PMSSelectWork *sNativeSelect;
+static u32 sNativeSeq;
+static BOOL sNativeVisible;
+
+BOOL PMSSelect_IsNativeActive(void) {
+    return sNativeSelect && sNativeVisible;
+}
+
+BOOL PMSSelect_IsNativeRunning(void) {
+    return sNativeSelect != NULL;
+}
+
+BOOL PMSSelect_GetNativeState(PMSSelectNativeState *state) {
+    PMSSelectWork *wk = sNativeSelect;
+    u32 i;
+    if (!wk || !sNativeVisible)
+        return FALSE;
+    MI_CpuFill8(state, 0, sizeof(*state));
+    state->font = wk->font;
+    state->menu = sNativeSeq == SEQ_MENU ? wk->menu : NULL;
+    state->cursor = wk->pos;
+    state->top = wk->top;
+    state->count = wk->lineCount;
+    state->ready = sNativeSeq == SEQ_SELECT && !wk->bg.decided && PMSSelect_IsPrintEnd(wk);
+    for (i = 0; i < 3 && wk->top + i < wk->lineCount; i++) {
+        PMSData *phrase = PMSWordSave_GetSentence(wk->wordSave, wk->top + i);
+        state->empty[i] = wk->top + i >= wk->sentenceCount;
+        if (!state->empty[i]) {
+            StrBuf *text = PMSData_ToString(phrase, wk->heapId);
+            GFL_StrBufStoreString(text, state->phrases[i], 256);
+            GFL_StrBufFree(text);
+        }
+    }
+    return TRUE;
+}
+
+BOOL PMSSelect_NativeSelect(u32 index) {
+    PMSSelectWork *wk = sNativeSelect;
+    if (!wk || !sNativeVisible || sNativeSeq != SEQ_SELECT || wk->bg.decided || index >= wk->lineCount ||
+        !PMSSelect_IsPrintEnd(wk))
+        return FALSE;
+    wk->prevPos = wk->pos;
+    wk->pos = index;
+    wk->touchMode = FALSE;
+    wk->listActive = TRUE;
+    // Reprinting the hidden DS plate would consume the click while the text queue finishes.
+    return TRUE;
+}
+#endif
+
 const GameProcFunctions PMS_SELECT_PROC_FUNCTIONS = {
     PMSSelect_Init,
     PMSSelect_Main,
@@ -215,12 +266,20 @@ static BOOL PMSSelect_Init(GameProc *proc, u32 *state, void *param, void *work) 
     wk->procMgr = CreateGameProcManager(wk->heapId);
     wk->prevPos = POS_NONE;
     wk->pos = POS_NONE;
+#ifdef POKEBW2_PC
+    sNativeSelect = wk;
+    sNativeSeq = SEQ_START;
+#endif
     PMSSelect_SetupScreen(wk);
     return TRUE;
 }
 
 static BOOL PMSSelect_Exit(GameProc *proc, u32 *state, void *param, void *work) {
     PMSSelectWork *wk = work;
+
+#ifdef POKEBW2_PC
+    sNativeSelect = NULL;
+#endif
 
     PMSSelect_ReleaseScreen(wk);
     FreeGameProcManager(wk->procMgr);
@@ -244,6 +303,9 @@ static BOOL PMSSelect_IsPrintEnd(PMSSelectWork *wk) {
 static void PMSSelect_SetSeq(u32 *state, PMSSelectWork *wk, u32 seq) {
     *state = seq;
     wk->subSeq = 0;
+#ifdef POKEBW2_PC
+    sNativeSeq = seq;
+#endif
 }
 
 static BOOL PMSSelect_Main(GameProc *proc, u32 *state, void *param, void *work) {
@@ -397,10 +459,17 @@ static void PMSSelect_SetupScreen(PMSSelectWork *wk) {
     wk->menuRes = AppTaskMenuRes_Create(0, 12, wk->font, wk->queue, wk->heapId);
     PMSSelect_SetupList(wk);
     GFL_NetSetIconScreen(TRUE, wk->heapId);
+#ifdef POKEBW2_PC
+    sNativeVisible = TRUE;
+#endif
 }
 
 static void PMSSelect_ReleaseScreen(PMSSelectWork *wk) {
     u8 i;
+
+#ifdef POKEBW2_PC
+    sNativeVisible = FALSE;
+#endif
 
     PrintQueue_Clear(wk->queue);
     for (i = 0; i < PLATE_COUNT; i++) {

@@ -651,7 +651,7 @@ static GameEventReturnCode GimmickShauntal_RoomChangeEvent(GameEvent *event, u32
     RoomChangeEventWork *eventWork = data;
     ShauntalRoomWork *work;
     FieldFog *fog;
-    GameSystem *gsys = GameEvent_GetGameSystem(event);
+    GameEvent_GetGameSystem(event);
 
     work = Field_GetGimmickWorkBlock(eventWork->field, GIMMICK_WORK_ID);
     switch (*state) {

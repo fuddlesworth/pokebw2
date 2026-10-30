@@ -111,8 +111,12 @@ static u16 GetVersionedMapChangeZoneNum(u16 zoneId);
 static ZoneHeader *ZoneData_GetHeaderCore(u16 zoneId, BOOL versioned);
 static ZoneHeader *ZoneData_GetHeader(u16 zoneId);
 static BOOL IsZoneIDArrayContainsZoneID(u16 zoneId, const u16 *zones, int count);
+#ifndef POKEBW2_PC
 static BOOL IsZoneBlackCityOrWhiteForest(u16 zoneId);
+#endif
+#ifndef POKEBW2_PC
 static BOOL IsZoneGearStationPlatform(u16 zoneId);
+#endif
 
 static ZoneDataSystem *g_ZoneDataSystem;
 
@@ -580,9 +584,11 @@ BOOL IsZoneFlashbackMemoryPostFX(u16 zoneId) {
     return FALSE;
 }
 
+#ifndef POKEBW2_PC
 static BOOL IsZoneBlackCityOrWhiteForest(u16 zoneId) {
     return IsZoneIDArrayContainsZoneID(zoneId, BC_WF_ZONES, NELEMS(BC_WF_ZONES));
 }
+#endif
 
 BOOL IsZoneBlackCityOrWhiteForestLobby(u16 zoneId) {
     return IsZoneIDArrayContainsZoneID(zoneId, BC_WF_LOBBY_ZONES, NELEMS(BC_WF_LOBBY_ZONES));
@@ -787,9 +793,11 @@ BOOL IsZoneNimbasaStadium(u16 zoneId) {
     return IsZoneIDArrayContainsZoneID(zoneId, NIMBASA_STADIUM_ZONES, NELEMS(NIMBASA_STADIUM_ZONES));
 }
 
+#ifndef POKEBW2_PC
 static BOOL IsZoneGearStationPlatform(u16 zoneId) {
     return IsZoneIDArrayContainsZoneID(zoneId, GEAR_STATION_PLATFORM_ZONES, NELEMS(GEAR_STATION_PLATFORM_ZONES));
 }
+#endif
 
 BOOL IsMetLocationEntralink(u16 location) {
     if (location >= PLACE_NIMBASA_CITY_2 && location <= PLACE_UNDELLA_TOWN_2) {

@@ -234,7 +234,7 @@ void BattleEvent_CallHandlersSub(BtlServerFlow *flow, u32 event, u32 factorType,
                 if (event == entry->event) {
                     if (!checkSkip || !BattleEvent_CheckSkip(flow, item, event)) {
                         item->running = TRUE;
-                        entry->handler(item, flow, item->monId, item->work);
+                        entry->handler(item, flow, item->monId, (s32 *)item->work);
                         if (item->recallEnable) {
                             item->recallEnable = FALSE;
                         } else {
@@ -455,7 +455,7 @@ void BattleEventVar_Pop(u32 line) {
     }
 }
 
-void BattleEventVar_SetValue(u32 key, s32 value) {
+void BattleEventVar_SetValue(u32 key, sptr value) {
     u32 index = BattleEventVar_FindSetIndex(&g_BattleEventVars, key);
 
     g_BattleEventVars.keys[index] = key;
@@ -465,7 +465,7 @@ void BattleEventVar_SetValue(u32 key, s32 value) {
     g_BattleEventVars.kinds[index] = 0;
 }
 
-void BattleEventVar_SetConstValue(u32 key, s32 value) {
+void BattleEventVar_SetConstValue(u32 key, sptr value) {
     u32 index = BattleEventVar_FindSetIndex(&g_BattleEventVars, key);
 
     g_BattleEventVars.keys[index] = key;
@@ -475,7 +475,7 @@ void BattleEventVar_SetConstValue(u32 key, s32 value) {
     g_BattleEventVars.kinds[index] = 4;
 }
 
-void BattleEventVar_SetRewriteOnceValue(u32 key, s32 value) {
+void BattleEventVar_SetRewriteOnceValue(u32 key, sptr value) {
     u32 index = BattleEventVar_FindSetIndex(&g_BattleEventVars, key);
 
     g_BattleEventVars.keys[index] = key;
@@ -519,7 +519,7 @@ void BattleEventVar_MulValue(u16 key, s32 value) {
     }
 }
 
-u32 BattleEventVar_GetValue(u32 key) {
+uptr BattleEventVar_GetValue(u32 key) {
     BattleEventVarStack *vars = &g_BattleEventVars;
     u32 i;
 

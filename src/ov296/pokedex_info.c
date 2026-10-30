@@ -1751,3 +1751,51 @@ static u32 PokedexInfo_GetFootprintFormFile(u32 species, u32 form) {
     }
     return 0xffff;
 }
+
+#ifdef POKEBW2_PC
+void PokedexInfo_LoadNativeTypeCharacters(u32 type, u32 language, u8 *tiles) {
+    NNSG2dCharacterData *character;
+    void *file;
+    u8 *source;
+    u32 offset;
+
+    if (language >= POKEDEX_INFO_LANGUAGE_COUNT || type >= TYPE_NULL) {
+        return;
+    }
+    file = GFL_G2DIOReadBGNCGR(ARCID_POKEDEX_GRA, sTypeIconFiles[language], FALSE, &character, HEAPID_USER);
+    if (file == NULL) {
+        return;
+    }
+    source = character->pRawData;
+    offset = (sTypeIconTiles[type][0] << 11) + (sTypeIconTiles[type][1] << 7);
+    MI_CpuCopy8(source + offset, tiles, 0x80);
+    MI_CpuCopy8(source + offset + 0x400, tiles + 0x80, 0x80);
+    GFL_HeapFree(file);
+}
+
+void PokedexInfo_GetNativeLanguageBanks(u32 language, u16 *names, u16 *categories, u16 *entries) {
+    if (language < POKEDEX_INFO_LANGUAGE_COUNT) {
+        *names = sMsgBanks[POKEDEX_INFO_MSG_OTHER_NAMES + language];
+        *categories = sMsgBanks[POKEDEX_INFO_MSG_OTHER_CATEGORIES + language];
+        *entries = sMsgBanks[POKEDEX_INFO_MSG_OTHER_ENTRIES + language];
+    } else {
+        *names = TEXT_BANK_SPECIES_NAMES;
+        *categories = sMsgBanks[POKEDEX_INFO_MSG_CATEGORIES];
+        *entries = sMsgBanks[POKEDEX_INFO_MSG_ENTRIES];
+    }
+}
+
+void PokedexInfo_GetNativeFootprintResources(u32 species, u32 form, PokedexNativeFootprintResources *resources) {
+    resources->sharedArc = PokedexInfo_GetFootprintArcId();
+    resources->paletteFile = PokedexInfo_GetFootprintPaletteFile();
+    resources->charFile = PokedexInfo_GetFootprintFormFile(species, form);
+    if (resources->charFile == 0xffff) {
+        resources->charArc = resources->sharedArc;
+        resources->charFile = PokedexInfo_GetFootprintFile(species);
+        resources->cellFile = PokedexInfo_GetFootprintCellFile(SPECIES_ARCEUS + 1);
+    } else {
+        resources->charArc = PokedexInfo_GetFootprintFormArcId();
+        resources->cellFile = PokedexInfo_GetFootprintCellFile(species);
+    }
+}
+#endif

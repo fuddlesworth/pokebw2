@@ -73,6 +73,10 @@ BOOL IntroProc_Exit(GameProc *proc, u32 *state, void *param, void *work) {
 BOOL IntroProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
     IntroWork *wk = work;
 
+#ifdef POKEBW2_PC
+    if (GCTX_ProcMgrIsStopping())
+        return TRUE;
+#endif
     if (!IntroCmd_Update(wk->cmd)) {
         return TRUE;
     }

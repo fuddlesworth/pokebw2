@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="486" height="76" viewBox="0 0 486 76">
+ <defs><linearGradient id="base" x2="0" y2="1"><stop stop-color="#0a0e10"/><stop offset="1" stop-color="#1d2225"/></linearGradient>
+ <pattern id="checks" width="72" height="72" patternUnits="userSpaceOnUse"><path d="M0 0h8v8H0zM18 0h8v8h-8zM36 0h8v8h-8zM8 9h8v8H8zM27 9h8v8h-8zM45 9h6v6h-6zM0 18h8v8H0zM18 18h8v8h-8zM38 20h6v6h-6zM10 28h8v8h-8zM28 29h7v7h-7zM49 32h5v5h-5zM3 38h7v7H3zM21 39h8v8h-8zM38 42h6v6h-6zM57 47h4v4h-4zM12 49h8v8h-8zM29 53h6v6h-6zM45 58h5v5h-5zM0 60h8v8H0zM19 64h6v6h-6z" fill="#677079" opacity=".45"/></pattern>
+ <clipPath id="shape"><path d="M0 3h430l39 67H0z"/></clipPath></defs>
+ <path d="M441 43h27l17 31h-43l-9-14z" fill="#edf0f1" stroke="#080b0d" stroke-width="3"/>
+ <path d="M0 3h430l39 67H0" fill="url(#base)" stroke="#92999e" stroke-width="3"/>
+ <path d="M0 8h52l37 56H0z" fill="url(#checks)" clip-path="url(#shape)"/>
+ <path d="M196 44h211v17H196z" fill="#0a0e10" stroke="#d3d9dc" stroke-width="1.7"/>
+ <path d="M198 46h207v13H198z" fill="#4a5053"/>
+</svg>

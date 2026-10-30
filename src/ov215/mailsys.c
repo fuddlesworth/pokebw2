@@ -98,6 +98,24 @@ static BOOL MailSys_PhaseCancel(MailSysWork *work);
 static void MailSys_DisableAllBGs(void);
 static void MailSys_VBlank(TCB *tcb, void *data);
 
+#ifdef POKEBW2_PC
+static MailSysWork *sNativeMail;
+MailSysWork *MailSys_GetNativeWork(void) {
+    return sNativeMail;
+}
+
+BOOL MailSys_SetNativeCursor(u32 cursor) {
+    MailSysWork *work = sNativeMail;
+    if (work == NULL || work->seq != MAIL_SEQ_PHASE || work->phase != MAIL_PHASE_WRITE || cursor >= 6) {
+        return FALSE;
+    }
+    work->cursor = cursor;
+    work->blinkTarget = cursor;
+    work->keyMode = TRUE;
+    return TRUE;
+}
+#endif
+
 const GameProcFunctions MAILSYS_PROC_FUNCTIONS = {
     MailSys_ProcInit,
     MailSys_ProcMain,
@@ -340,6 +358,10 @@ static BOOL MailSys_EditInit(GameProc *proc, u32 *state, void *param, void *unus
     work->tcbEx = GFL_TCBExMgrCreate(work->heapId, work->heapId, 32, 32);
     work->keyMode = TRUE;
     GFL_BGSysCreate(work->heapId);
+#ifdef POKEBW2_PC
+    work->nativeMessage[0] = 0xffff;
+    sNativeMail = work;
+#endif
     return TRUE;
 }
 
@@ -354,6 +376,9 @@ static BOOL MailSys_EditExit(GameProc *proc, u32 *state, void *param, void *work
     MailSysWork *work = workPtr;
     u32 heapId;
 
+#ifdef POKEBW2_PC
+    sNativeMail = NULL;
+#endif
     GFL_BGSysFree();
     GFL_TCBExMgrFree(work->tcbEx);
     GFL_FontFree(work->font);
@@ -633,6 +658,9 @@ static void MailSys_ShowMessage(MailSysWork *work, u32 messageId) {
     BmpWin_DrawFrame(work->windows[6], WINFRAME_TRANSFER_NONE, 0xd, 4);
     GFL_BitmapFill(BmpWin_GetBitmap(work->windows[6]), 0xff);
     GFL_MsgDataLoadStrbuf(work->msgData, messageId, work->msgBuf);
+#ifdef POKEBW2_PC
+    GFL_StrBufStoreString(work->msgBuf, work->nativeMessage, NELEMS(work->nativeMessage));
+#endif
     work->printStream = PrintStream_Create(work->windows[6], 0, 0, work->msgBuf, work->font, work->textSpeed,
                                            work->tcbEx, 4, work->heapId, 15);
     BmpWin_TransferNow(work->windows[6]);
@@ -703,6 +731,9 @@ static s32 MailSys_GetMenuResult(MailSysWork *work) {
     if (AppTaskMenu_IsFlashFinished(work->menu)) {
         result = AppTaskMenu_GetCursorPos(work->menu);
         AppTaskMenu_Free(work->menu);
+#ifdef POKEBW2_PC
+        work->menu = NULL;
+#endif
         GFL_StrBufFree(work->menuItems[0].str);
         GFL_StrBufFree(work->menuItems[1].str);
     }

@@ -60,11 +60,11 @@ static const GFLNetInitData data_ov028_02172c94 = {
     NULL,
     UnionComm_NetCallback2C,
     NULL,
-    {0},
+    {{0}},
     NULL,
     NULL,
     0,
-    {1, 0, 0, 0, 0x80, 0x13, 0, 0},
+    {{1, 0, 0, 0, 0x80, 0x13, 0, 0}},
     HEAPID_USER,
     HEAPID_TAIL(0xd),
     HEAPID_TAIL(0xf),
@@ -79,7 +79,7 @@ static const GFLNetInitData data_ov028_02172c94 = {
     GFL_NET_TYPE_WIRELESS,
     1,
     0x14,
-    {0x2c, 1, 0, 0},
+    {{0x2c, 1, 0, 0}},
     0,
     0,
 };
@@ -569,7 +569,7 @@ void UnionComm_FreeResources(UnionSystem *unisys) {
     }
 }
 
-void UnionComm_SetSelf(UnionSystem *unisys, u32 which, u32 value) {
+void UnionComm_SetSelf(UnionSystem *unisys, u32 which, uptr value) {
     UnionSelf *self = &unisys->situ;
 
     switch (which) {

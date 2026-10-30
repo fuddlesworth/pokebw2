@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="565" viewBox="0 0 1280 565">
+ <defs><pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#263039" stroke-width=".6"/></pattern></defs>
+ <path fill="#0b1013" d="M0 0H1280V565H0Z"/><path fill="url(#grid)" d="M0 0H1280V565H0Z"/>
+ <path fill="#11191e" stroke="#707b83" stroke-width="2" d="M28 75H638L666 103V525L642 549H52L28 525Z"/>
+ <path fill="#eceff1" d="M690 69H1218L1254 105V324H710L690 304Z"/>
+ <path fill="none" stroke="#29333a" stroke-width="2" d="M696 75H1215L1248 108V318H713L696 301Z"/>
+ <path fill="#d3d9de" d="M1190 82H1212V104ZM1220 88L1242 110V144L1232 134V111Z"/>
+ <path fill="#161e23" stroke="#707b83" stroke-width="2" d="M710 338H1218L1254 374V526L1230 550H732L710 528Z"/>
+ <path fill="url(#grid)" d="M712 340H1217L1252 375V525L1229 548H733L712 527Z"/>
+ <path fill="#e3e8eb" d="M704 320H710V528L732 550H1230L1254 526V531L1232 554H730L704 528Z"/>
+ <path fill="#02d2e5" d="M1237.657 554L1260 531.657V537.314L1243.314 554Z"/>
+ <path stroke="#59656e" d="M52 117H638"/>
+</svg>

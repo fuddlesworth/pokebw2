@@ -306,7 +306,9 @@ void WbtStadiumGimmick_PlayCrowd(Field *field, u8 a1) {
 
 static void WbtStadiumGimmick_LoadMainScene(GimmickWork *work) {
     // Nothing reads it, but 4 bytes of it are in the original's .rodata, before the animation lists
+#ifndef POKEBW2_PC
     static const u8 sUnused[4] = { 4, 28, 4, 32 };
+#endif
     VecFx32 posA = { 0x170000, 0, 0xa0000 };
     VecFx32 posB = { 0x100000, 0, 0x100000 };
     VecFx32 posC = { 0x300000, 0, 0x100000 };
@@ -333,7 +335,9 @@ static void WbtStadiumGimmick_LoadMainScene(GimmickWork *work) {
 
 static void WbtStadiumGimmick_FreeScenes(GimmickWork *work) {
     // Nothing reads it either
+#ifndef POKEBW2_PC
     static const G3DSceneAnimationSetup sUnusedAnm[1] = { { 6, 0 } };
+#endif
     FieldExpObj_FreeScene(work->expObj, 0);
     if (work->sceneLoaded) {
         FieldExpObj_FreeScene(work->expObj, 2);

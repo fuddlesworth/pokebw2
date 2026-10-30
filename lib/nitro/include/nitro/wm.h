@@ -136,7 +136,7 @@ typedef void (*WMCallbackFunc)(void *arg);
 
 // What a parent gives out in its beacon: the game's ID and the user's data. Its size is 0x38
 typedef struct {
-    u16 *userGameInfo;
+    const u16 *userGameInfo;
     u16 userGameInfoLength;
     u16 padding;
     u32 ggid;

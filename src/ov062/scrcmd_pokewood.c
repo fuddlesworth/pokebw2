@@ -130,8 +130,8 @@ static BOOL Scrcmd_Pokewood_SelectCast(VM *vm, FieldScriptEnv *env) {
 }
 
 static BOOL Scrcmd_Pokewood_SetUsePlayerCast(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    GameData *gameData = GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env));
+    FieldScriptEnv_GetScriptWork(env);
+    GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env));
     PokewoodSystem *sys = Pokewood_GetSystem(env);
 
     PokewoodSystem_SetUsePlayerCast(sys, ScriptReadAny(vm, env));
@@ -141,7 +141,7 @@ static BOOL Scrcmd_Pokewood_SetUsePlayerCast(VM *vm, FieldScriptEnv *env) {
 static BOOL Scrcmd_Pokewood_WatchSlot(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    GameData *gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     u32 arg = ScriptReadAny(vm, env);
     u16 *var = ScriptReadVar(vm, env);
     PokewoodSystem *sys = Pokewood_GetSystem(env);
@@ -155,7 +155,7 @@ static BOOL Scrcmd_Pokewood_WatchSlot(VM *vm, FieldScriptEnv *env) {
 static BOOL Scrcmd_Pokewood_WatchBlock(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    GameData *gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     PokewoodSystem *sys = Pokewood_GetSystem(env);
 
     ScriptWork_CallEvent(
@@ -170,7 +170,7 @@ static BOOL Scrcmd_Pokewood_PickMovie(VM *vm, FieldScriptEnv *env) {
     GameData *gameData = GSYS_GetGameData(gsys);
     HeapID heapId = FieldScriptEnv_GetHeapID(env);
     u16 *var = ScriptReadVar(vm, env);
-    PokewoodSystem **sys = GameData_GetPokewoodSystemPtr(gameData);
+    GameData_GetPokewoodSystemPtr(gameData);
     PkwdBookParam *param = PokewoodSetup_CreateBookParam(heapId, gsys, var);
     GameEvent *event =
         GameEvent_CreateOverlayDelegate(gsys, OVERLAY_EVENT_POKEWOOD, EventPokewood_CreateMoviePickerEvent, param);
@@ -183,7 +183,7 @@ static BOOL Scrcmd_Pokewood_PickMovie(VM *vm, FieldScriptEnv *env) {
 static BOOL Scrcmd_Pokewood_OpenMenu(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    GameData *gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     HeapID heapId = FieldScriptEnv_GetHeapID(env);
     u16 mode = ScriptReadAny(vm, env);
     u16 *var = ScriptReadVar(vm, env);
@@ -391,7 +391,7 @@ static BOOL Scrcmd_Pokewood_SetSlotFlag(VM *vm, FieldScriptEnv *env) {
 }
 
 static BOOL func_ov062_021e5f1c(VM *vm, FieldScriptEnv *env) {
-    PokewoodSave *save = Pokewood_GetSave(env);
+    Pokewood_GetSave(env);
     u16 slot = ScriptReadAny(vm, env);
     u16 *var = ScriptReadVar(vm, env);
 
@@ -411,10 +411,10 @@ static BOOL func_ov062_021e5f50(VM *vm, FieldScriptEnv *env) {
 }
 
 static BOOL Scrcmd_Pokewood_SetSaveSlot(VM *vm, FieldScriptEnv *env) {
-    PokewoodSave *save = Pokewood_GetSave(env);
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    GameData *gameData = FieldScriptEnv_GetGameData(env);
+    Pokewood_GetSave(env);
+    FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetGameSystem(env);
+    FieldScriptEnv_GetGameData(env);
     PokewoodSystem *sys = Pokewood_GetSystem(env);
 
     PokewoodSystem_SetSaveSlot(sys, ScriptReadAny(vm, env));
@@ -446,8 +446,8 @@ static BOOL Scrcmd_Pokewood_OpenRecordMonitor(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     GameData *gameData = GSYS_GetGameData(gsys);
     HeapID heapId = FieldScriptEnv_GetHeapID(env);
-    u16 *var = ScriptReadVar(vm, env);
-    PokewoodSystem **sys = GameData_GetPokewoodSystemPtr(gameData);
+    ScriptReadVar(vm, env);
+    GameData_GetPokewoodSystemPtr(gameData);
     PkwdRecordMonitorParam *param = PokewoodSetup_CreateRecordMonitorParam(heapId, gsys);
     GameEvent *event =
         GameEvent_CreateOverlayDelegate(gsys, OVERLAY_EVENT_POKEWOOD, EventPokewood_CreateScreenEvent, param);

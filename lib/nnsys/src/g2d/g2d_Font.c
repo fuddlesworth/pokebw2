@@ -90,6 +90,7 @@ int NNSi_G2dFontGetStringWidth(const NNSG2dFont *pFont, int hSpace, const void *
 int NNSi_G2dFontGetTextHeight(const NNSG2dFont *pFont, int vSpace, const void *txt) {
     const void *pos = txt;
     NNSG2dTextRect rect = { 0, 0 }; // Never used, but the original sets it
+    (void)rect;
     int lines = 1;
     NNSiG2dSplitCharCallback getNextChar = pFont->cbCharSpliter;
     u16 c;

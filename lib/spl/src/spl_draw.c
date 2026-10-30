@@ -105,7 +105,9 @@ void SPLDraw_Billboard(SPLManager *mgr, SPLParticle *particle) {
     viewMatrix = mgr->viewMatrix;
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }
@@ -186,7 +188,9 @@ void SPLDraw_Child_Billboard(SPLManager *mgr, SPLParticle *particle) {
 
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }
@@ -277,7 +281,9 @@ void SPLDraw_DirBillboard(SPLManager *mgr, SPLParticle *particle) {
 
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }
@@ -408,7 +414,9 @@ void SPLDraw_Child_DirBillboard(SPLManager *mgr, SPLParticle *particle) {
 
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }
@@ -532,7 +540,9 @@ void SPLDraw_Polygon(SPLManager *mgr, SPLParticle *particle) {
 
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }
@@ -594,7 +604,9 @@ void SPLDraw_Child_Polygon(SPLManager *mgr, SPLParticle *particle) {
 
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }
@@ -662,7 +674,9 @@ void SPLDraw_DirPolygon(SPLManager *mgr, SPLParticle *particle) {
 
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }
@@ -763,7 +777,9 @@ void SPLDraw_Child_DirPolygon(SPLManager *mgr, SPLParticle *particle) {
 
     G3_PolygonAttr(GX_LIGHTMASK_NONE, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, particle->polygonId, alpha,
                    mgr->polygonAttr);
+#ifndef POKEBW2_PC
     (void)reg_G3_POLYGON_ATTR;
+#endif
     if (alpha == 0) {
         return;
     }

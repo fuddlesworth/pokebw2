@@ -56,7 +56,7 @@ static GameEventReturnCode EventRoyalUnova_Callback(GameEvent *event, u32 *state
 
     switch (*state) {
     case 0:
-        GSYS_QueueProcAsEvent(event, OVERLAY_DEMO3D, &gDemo3DProcFunctions, work);
+        GSYS_QueueProcAsEvent(event, OVERLAY_DEMO3D, GAME_PROC_REFERENCE(gDemo3DProcFunctions), work);
         (*state)++;
         break;
     case 1:

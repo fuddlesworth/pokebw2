@@ -14,7 +14,7 @@
 
 typedef struct {
     StrBuf *text;
-    s32 value;
+    sptr value;
 } ListMenuOption;
 
 #define LIST_MENU_END ((StrBuf *)-1)
@@ -23,8 +23,8 @@ ListMenuOption *ListMenuCore_CreateOptionList(u32 count, u32 heapId);
 // Frees the options' strings and the array
 void ListMenuCore_FreeOptionList(ListMenuOption *options);
 // Adds an option after the last one, with a message or a copy of text, unless the array is full
-void ListMenuCore_AppendMsgOption(ListMenuOption *options, MsgData *msgData, u32 messageId, s32 value, HeapID heapId);
-void ListMenuCore_AppendStrBufOption(ListMenuOption *options, const StrBuf *text, s32 value, HeapID heapId);
+void ListMenuCore_AppendMsgOption(ListMenuOption *options, MsgData *msgData, u32 messageId, sptr value, HeapID heapId);
+void ListMenuCore_AppendStrBufOption(ListMenuOption *options, const StrBuf *text, sptr value, HeapID heapId);
 // Frees the options' strings, leaving the array empty
 void ListMenuCore_FreeStrBufs(ListMenuOption *options);
 // The number of options in the list

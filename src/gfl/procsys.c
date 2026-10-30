@@ -57,7 +57,28 @@ static BOOL GFL_ProcUpdate(GameProc *proc);
 
 static GameProcManager *sGameProcManager;
 
+#ifdef POKEBW2_PC
+static BOOL sStopping;
+static const GameProcFunctions *sCurrentFunctions;
+void GCTX_ProcMgrBeginShutdown(void) {
+    sStopping = TRUE;
+}
+BOOL GCTX_ProcMgrIsStopping(void) {
+    return sStopping;
+}
+GameProcManager *GCTX_ProcMgrGet(void) {
+    return sGameProcManager;
+}
+const GameProcFunctions *GCTX_ProcMgrCurrentFunctions(void) {
+    return sCurrentFunctions;
+}
+#endif
+
 void GCTX_ProcMgrInit(HeapID heapId) {
+#ifdef POKEBW2_PC
+    sStopping = FALSE;
+    sCurrentFunctions = NULL;
+#endif
     sGameProcManager = GFL_ProcMgrCreate(heapId);
 }
 
@@ -217,6 +238,10 @@ void GFL_ProcReleaseSubsystem(GameProc *proc) {
 
 // Returns TRUE once the process has ended
 static BOOL GFL_ProcUpdate(GameProc *proc) {
+#ifdef POKEBW2_PC
+    // A nested application's update replaces this so native composition sees the active child screen.
+    sCurrentFunctions = proc->functions;
+#endif
     switch (proc->state) {
     case PROC_STATE_LOAD:
         if (proc->overlayId != OVERLAY_NONE) {

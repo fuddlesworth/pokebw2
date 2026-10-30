@@ -122,7 +122,7 @@ void GFL_G3DAnmMdlDrawHeadless(G3DActor *actor) {
     SRTMatrix status = {
         { 0, 0, 0 },
         { FX32_ONE, FX32_ONE, FX32_ONE },
-        { FX32_ONE, 0, 0, 0, FX32_ONE, 0, 0, 0, FX32_ONE },
+        { { { FX32_ONE, 0, 0 }, { 0, FX32_ONE, 0 }, { 0, 0, FX32_ONE } } },
     };
 
     NNS_G3dGlbPerspective(FX_SinIdx(DEG_TO_IDX(20)), FX_CosIdx(DEG_TO_IDX(20)), FX32_ONE * 4 / 3, FX32_ONE,

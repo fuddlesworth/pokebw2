@@ -35,7 +35,7 @@ static BOOL Scrcmd_PleasureBoat_Free(VM *vm, FieldScriptEnv *env) {
 
 // Sets a variable to PLEASURE_BOAT_INFO_*
 static BOOL Scrcmd_PleasureBoat_GetInfo(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     PleasureBoat **boat = GameData_GetPleasureBoatPtr(
         GSYS_GetGameData(Field_GetGameSystem(GSYS_GetField(FieldScriptEnv_GetGameSystem(env)))));
     u16 info = VM_Read16(vm);
@@ -46,7 +46,7 @@ static BOOL Scrcmd_PleasureBoat_GetInfo(VM *vm, FieldScriptEnv *env) {
 }
 
 static BOOL Scrcmd_PleasureBoat_AdvanceClock(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     PleasureBoat **boat = GameData_GetPleasureBoatPtr(
         GSYS_GetGameData(Field_GetGameSystem(GSYS_GetField(FieldScriptEnv_GetGameSystem(env)))));
     u16 steps = VM_Read16(vm);
@@ -58,11 +58,11 @@ static BOOL Scrcmd_PleasureBoat_AdvanceClock(VM *vm, FieldScriptEnv *env) {
 
 // Sets something about a Trainer aboard, of which only PLEASURE_BOAT_TRAINER_INFO_DEFEATED does anything
 static BOOL Scrcmd_PleasureBoat_SetTrainerInfo(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     PleasureBoat **boat = GameData_GetPleasureBoatPtr(GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env)));
     u16 trainer = ScriptReadAny(vm, env);
     u16 info = VM_Read16(vm);
-    u16 unused = VM_Read16(vm);
+    VM_Read16(vm);
     u16 value = ScriptReadAny(vm, env);
 
     switch (info) {

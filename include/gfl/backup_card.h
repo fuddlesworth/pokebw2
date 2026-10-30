@@ -2,7 +2,9 @@
 #define POKEBW2_GFL_BACKUP_CARD_H
 
 #include "types.h"
+#ifndef POKEBW2_PC
 #include "nitro/card.h"
+#endif
 
 // Reading and writing the card's flash for backup_system.c (backup_card.c, a name the ROM does not embed). A write
 // runs in the background and returns the lock ID that finishBackupGetResult and cancelCardProcess take

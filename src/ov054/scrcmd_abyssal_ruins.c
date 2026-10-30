@@ -10,7 +10,7 @@
 
 // Starts the underwater effect
 static BOOL Scrcmd_AbyssalRuins_StartUnderwaterEffect(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     FieldAsyncProcManager *mgr = Field_GetAsyncProcMgr(GSYS_GetField(FieldScriptEnv_GetGameSystem(env)));
 
     FieldAsyncProcManager_AddProc(OVERLAY_UNDERWATER_EFFECT, mgr, &UNDERWATER_EFFECT_PROC);
@@ -19,7 +19,7 @@ static BOOL Scrcmd_AbyssalRuins_StartUnderwaterEffect(VM *vm, FieldScriptEnv *en
 
 // Sets a variable to the steps counted in the Abyssal Ruins
 static BOOL Scrcmd_AbyssalRuins_GetStepCounter(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     PlayerSave *playerSave =
         SaveControl_GetPlayerSave(GameData_GetSaveControl(GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env))));
     u16 *var = ScriptReadVar(vm, env);

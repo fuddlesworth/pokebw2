@@ -1366,11 +1366,10 @@ static BOOL BagItemRaiseStat(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
 // Uses a mon's held item: 1 when it was used, 2 when it only set the flag, 0 when it can't be used
 static BOOL BagItemItemUrge(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 value, u8 param) {
     u8 flag;
-    u8 monId;
     u8 result;
 
     if (!IsReactiveHeldItem(GetBattleMonHeldItem(mon))) {
-        monId = GetMonID(mon);
+        GetMonID(mon);
         result = BtlServerFlow_UseHeldItem(flow, mon, &flag);
         if (!result) {
             result = flag ? 2 : 0;
@@ -1523,7 +1522,7 @@ static s32 CheckRulesTurnLimit(BtlMainModule *mainModule, BOOL won) {
 
 // Checks a scripted battle's rules at the end of a turn: 1 for a win, the outcome of a broken rule, or 0 to go on
 s32 CheckScriptedBattleRules(BtlMainModule *mainModule, BtlPokeCon *pokeCon) {
-    u8 movieId = GetStudioMovieId(mainModule);
+    GetStudioMovieId(mainModule);
     BOOL won = FALSE;
     s32 outcomes[5] = { 0 };
     const BtlScriptedRules *rules;

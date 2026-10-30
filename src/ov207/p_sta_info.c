@@ -52,7 +52,16 @@ struct PStaInfoWork {
     BmpWin *memoWindow;
     MsgData *msgData[INFO_MSG_COUNT];
     PStaScreen screens[4];
+#ifdef POKEBW2_PC
+    u16 nativeMemo[3][256];
+#endif
 };
+
+#ifdef POKEBW2_PC
+void PStaInfo_GetNativeMemo(PStaInfoWork *info, PStatusNativeState *state) {
+    MI_CpuCopy8(info->nativeMemo, state->memo, sizeof(state->memo));
+}
+#endif
 
 static void PStaInfo_PrintInfo(PStatusWork *wk, PStaInfoWork *info, BoxPkm *pkm);
 static void PStaInfo_PrintMemo(PStatusWork *wk, PStaInfoWork *info, BoxPkm *pkm);
@@ -68,6 +77,9 @@ PStaInfoWork *PStaInfo_Create(PStatusWork *wk) {
 
     info->isPrinted = FALSE;
     info->isShown = FALSE;
+#ifdef POKEBW2_PC
+    MI_CpuFill8(info->nativeMemo, 0xff, sizeof(info->nativeMemo));
+#endif
     info->regionalDex = PML_PersonalLoadRegionalDexTable(wk->heapId, 0);
     return info;
 }
@@ -351,8 +363,14 @@ static void PStaInfo_PrintMemo(PStatusWork *wk, PStaInfoWork *info, BoxPkm *pkm)
     StrBuf *metPlace;
 
     foreignOT = PML_UtilCheckForeignOT(pkm, playerInfo);
+#ifdef POKEBW2_PC
+    MI_CpuFill8(info->nativeMemo, 0xff, sizeof(info->nativeMemo));
+#endif
     if (isEgg == FALSE) {
         str = GFL_MsgDataLoadStrbufNew(info->msgData[INFO_MSG_MEMO], nature);
+#ifdef POKEBW2_PC
+        GFL_StrBufStoreString(str, info->nativeMemo[0], NELEMS(info->nativeMemo[0]));
+#endif
         PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(info->memoWindow), 1, 1, str, wk->font,
                               PRINT_COLOR(1, 2, 0));
         GFL_StrBufFree(str);
@@ -472,6 +490,9 @@ static void PStaInfo_PrintMemo(PStatusWork *wk, PStaInfoWork *info, BoxPkm *pkm)
         GFL_WordSetFormatStrbuf(wordSet, buf, str);
         PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(info->memoWindow), 1, y + 1, buf, wk->font,
                               PRINT_COLOR(1, 2, 0));
+#ifdef POKEBW2_PC
+        GFL_StrBufStoreString(buf, info->nativeMemo[1], NELEMS(info->nativeMemo[1]));
+#endif
         GFL_WordSetSystemFree(wordSet);
         y += GFL_FontGetLineCount(buf) * 16;
         GFL_StrBufFree(eggPlace);
@@ -501,6 +522,9 @@ static void PStaInfo_PrintMemo(PStatusWork *wk, PStaInfoWork *info, BoxPkm *pkm)
                 }
             }
             str = GFL_MsgDataLoadStrbufNew(info->msgData[INFO_MSG_MEMO], maxIV % 5 + (0x36 + best * 5));
+#ifdef POKEBW2_PC
+            GFL_StrBufStoreString(str, info->nativeMemo[2], NELEMS(info->nativeMemo[2]));
+#endif
             PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(info->memoWindow), 1, y + 1, str, wk->font,
                                   PRINT_COLOR(1, 2, 0));
             GFL_StrBufFree(str);
@@ -517,6 +541,9 @@ static void PStaInfo_PrintMemo(PStatusWork *wk, PStaInfoWork *info, BoxPkm *pkm)
                 hatchMsg = 0x5b;
             }
             str = GFL_MsgDataLoadStrbufNew(info->msgData[INFO_MSG_MEMO], hatchMsg);
+#ifdef POKEBW2_PC
+            GFL_StrBufStoreString(str, info->nativeMemo[2], NELEMS(info->nativeMemo[2]));
+#endif
             PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(info->memoWindow), 1, y + 1, str, wk->font,
                                   PRINT_COLOR(1, 2, 0));
             GFL_StrBufFree(str);

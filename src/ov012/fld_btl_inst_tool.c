@@ -182,6 +182,11 @@ BtlSetup *SetupInfinityDungeonBattle(GameSystem *gsys, PokeParty *party, int par
     // Only mode 0 makes the setup, so the others use it unset
     if (mode <= 0) {
         setup = BtlSetup_SetTrainerTrialHouse(gsys, 0, &status, FALSE, 4);
+#ifdef POKEBW2_PC
+    } else {
+        GFL_DebugAssertFailEx(__FILE__, __LINE__, "Unsupported Trial House battle mode %u", mode);
+        return NULL;
+#endif
     }
     client = CLIENT_PLAYER;
     info = GetGameDataPlayerInfo(gameData);
@@ -452,7 +457,7 @@ static void genSubwayBtlInstitutePoke(const BSubwayPokemon *src, PartyPkm *pkm, 
     }
     nickname[i - 1] = terminator;
     GFL_StrBufLoadString(strbuf, nickname);
-    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (u32)strbuf);
+    PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (uptr)strbuf);
     GFL_StrBufFree(strbuf);
     PokeParty_SetParam(pkm, PKM_PARAM_REGION, src->region);
     PokeParty_SetParam(pkm, PKM_PARAM_LEVEL, PokeParty_GetLevel(pkm));

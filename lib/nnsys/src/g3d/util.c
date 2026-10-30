@@ -107,8 +107,14 @@ int NNS_G3dScrPosToWorldLine(int px, int py, VecFx32 *nearPos, VecFx32 *farPos) 
 
     NNS_G3dGlbGetViewPort(&x1, &y1, &x2, &y2);
     height = y2 - y1;
+#ifdef POKEBW2_PC
+    // Screen coordinates may be negative here; signed left shift is undefined in native C.
+    ndcX = FX_Div((px - x1) * FX32_ONE, (x2 - x1) * FX32_ONE);
+    ndcY = FX_Div((py + y1 - 191) * FX32_ONE, -height * FX32_ONE);
+#else
     ndcX = FX_Div((px - x1) << FX32_SHIFT, (x2 - x1) << FX32_SHIFT);
     ndcY = FX_Div((py + y1 - 191) << FX32_SHIFT, -height << FX32_SHIFT);
+#endif
     if (ndcX < 0 || ndcY < 0 || ndcX > FX32_ONE || ndcY > FX32_ONE) {
         result = -1;
     } else {

@@ -181,7 +181,12 @@ static BOOL PML_MoveGetFlagCore(const MoveData *data, u32 flag) {
 }
 
 MoveConditionParam PML_MoveGetConditionParam(u16 move) {
+#ifdef POKEBW2_PC
+    // A move with no duration has no condition parameters to return.
+    MoveConditionParam param = { 0 };
+#else
     MoveConditionParam param;
+#endif
     MoveData *data = PML_MoveGetData(move);
 
     if (data->conditionDuration != 0) {

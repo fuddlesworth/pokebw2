@@ -24,7 +24,9 @@ static void texmtxCalc_flagTS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result);
 static void texmtxCalc_flagTR_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result);
 static void texmtxCalc_flagTRS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result);
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 
 // The texture matrix elements of a material with a scale, a rotation and a translation
 static void texmtxCalc_flag_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
@@ -47,8 +49,14 @@ static void texmtxCalc_flag_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     turnedT = ((fx64)result->transS * result->sinR - (fx64)result->transT * result->cosR) >> FX32_SHIFT;
     scaledT = (fx32)((turnedT * result->scaleT) >> FX32_SHIFT);
     scaledS = (fx32)((turnedS * result->scaleS) >> FX32_SHIFT);
+    // BUG: Signed shifts of negative texture offsets are undefined on the host.
+#ifdef POKEBW2_PC
+    mtx->m[3][0] = (fx32)((u32)(result->origWidth * (scaleSSin - scaledS)) << 4);
+    mtx->m[3][1] = (fx32)((u32)(-result->origHeight * (scaleTCos + scaledT - FX32_ONE)) << 4);
+#else
     mtx->m[3][0] = (result->origWidth * (scaleSSin - scaledS)) << 4;
     mtx->m[3][1] = (-result->origHeight * (scaleTCos + scaledT - FX32_ONE)) << 4;
+#endif
     mtx->m[1][0] = (-scaleSSin * FX_GetDivResult()) >> FX32_SHIFT;
 }
 
@@ -65,8 +73,14 @@ static void texmtxCalc_flagS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     FX_DivAsync(width, height);
     turnedS = (fx32)(((fx64)result->transS * result->cosR + (fx64)result->transT * result->sinR) >> FX32_SHIFT);
     turnedT = (fx32)(((fx64)result->transS * result->sinR - (fx64)result->transT * result->cosR) >> FX32_SHIFT);
+    // BUG: Signed shifts of negative texture offsets are undefined on the host.
+#ifdef POKEBW2_PC
+    mtx->m[3][0] = (fx32)((u32)(result->origWidth * (result->sinR - turnedS)) << 4);
+    mtx->m[3][1] = (fx32)((u32)(-result->origHeight * (result->cosR + turnedT - FX32_ONE)) << 4);
+#else
     mtx->m[3][0] = (result->origWidth * (result->sinR - turnedS)) << 4;
     mtx->m[3][1] = (-result->origHeight * (result->cosR + turnedT - FX32_ONE)) << 4;
+#endif
     mtx->m[1][0] = (-result->sinR * FX_GetDivResult()) >> FX32_SHIFT;
 }
 
@@ -79,8 +93,14 @@ static void texmtxCalc_flagR_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[0][1] = 0;
     scaledS = -(fx32)(((fx64)result->transS * result->scaleS) >> FX32_SHIFT);
     scaledT = (fx32)(((fx64)(-result->transT) * result->scaleT) >> FX32_SHIFT);
+    // BUG: Signed shifts of negative texture offsets are undefined on the host.
+#ifdef POKEBW2_PC
+    mtx->m[3][0] = (fx32)((u32)(result->origWidth * scaledS) << 4);
+    mtx->m[3][1] = (fx32)((u32)(-result->origHeight * (result->scaleT + scaledT - FX32_ONE)) << 4);
+#else
     mtx->m[3][0] = (result->origWidth * scaledS) << 4;
     mtx->m[3][1] = (-result->origHeight * (result->scaleT + scaledT - FX32_ONE)) << 4;
+#endif
     mtx->m[1][0] = 0;
 }
 
@@ -94,8 +114,14 @@ static void texmtxCalc_flagRS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[0][1] = 0;
     turnedS = result->transS;
     turnedT = -result->transT;
+    // BUG: Signed shifts of negative texture offsets are undefined on the host.
+#ifdef POKEBW2_PC
+    mtx->m[3][0] = (fx32)((u32)(result->origWidth * -turnedS) << 4);
+    mtx->m[3][1] = (fx32)((u32)(-result->origHeight * turnedT) << 4);
+#else
     mtx->m[3][0] = (result->origWidth * -turnedS) << 4;
     mtx->m[3][1] = (-result->origHeight * turnedT) << 4;
+#endif
     mtx->m[1][0] = 0;
 }
 
@@ -114,8 +140,14 @@ static void texmtxCalc_flagT_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = scaleTCos;
     mtx->m[0][1] = (scaleTSin * FX_GetDivResult()) >> FX32_SHIFT;
     FX_DivAsync(width, height);
+    // BUG: Signed shifts of negative texture offsets are undefined on the host.
+#ifdef POKEBW2_PC
+    mtx->m[3][0] = (fx32)((u32)(result->origWidth * scaleSSin) << 4);
+    mtx->m[3][1] = (fx32)((u32)(-result->origHeight * (scaleTCos - FX32_ONE)) << 4);
+#else
     mtx->m[3][0] = (result->origWidth * scaleSSin) << 4;
     mtx->m[3][1] = (-result->origHeight * (scaleTCos - FX32_ONE)) << 4;
+#endif
     mtx->m[1][0] = (-scaleSSin * FX_GetDivResult()) >> FX32_SHIFT;
 }
 
@@ -129,8 +161,14 @@ static void texmtxCalc_flagTS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = result->cosR;
     mtx->m[0][1] = (result->sinR * FX_GetDivResult()) >> FX32_SHIFT;
     FX_DivAsync(width, height);
+    // BUG: Signed shifts of negative texture offsets are undefined on the host.
+#ifdef POKEBW2_PC
+    mtx->m[3][0] = (fx32)((u32)(result->origWidth * result->sinR) << 4);
+    mtx->m[3][1] = (fx32)((u32)(-result->origHeight * (result->cosR - FX32_ONE)) << 4);
+#else
     mtx->m[3][0] = (result->origWidth * result->sinR) << 4;
     mtx->m[3][1] = (-result->origHeight * (result->cosR - FX32_ONE)) << 4;
+#endif
     mtx->m[1][0] = (-result->sinR * FX_GetDivResult()) >> FX32_SHIFT;
 }
 
@@ -140,7 +178,12 @@ static void texmtxCalc_flagTR_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = result->scaleT;
     mtx->m[0][1] = 0;
     mtx->m[3][0] = 0;
+    // BUG: Signed shifts of negative texture offsets are undefined on the host.
+#ifdef POKEBW2_PC
+    mtx->m[3][1] = (fx32)((u32)(-result->origHeight * (result->scaleT - FX32_ONE)) << 4);
+#else
     mtx->m[3][1] = (-result->origHeight * (result->scaleT - FX32_ONE)) << 4;
+#endif
     mtx->m[1][0] = 0;
 }
 
@@ -219,4 +262,6 @@ void NNSi_G3dSendTexSRTXsi(const NNSG3dMatAnmResult *result) {
     }
     sendPacket_((const u32 *)&cmd, sizeof(cmd) / sizeof(u32));
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif

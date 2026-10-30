@@ -172,7 +172,9 @@ BOOL NetIrc_GetNetId(void) {
 
 static void NetIrc_OnFrame(u8 *data, u8 size, u8 cmd, u8 id) {
     _NETIRC_DATA *packet = (_NETIRC_DATA *)data;
+#ifndef POKEBW2_PC
     u8 zero[6] = { 0, 0, 0, 0, 0, 0 };
+#endif
     int peerTurn = packet->turn & 0xf;
     int peerAck = packet->turn >> 4;
     BOOL senderNetId;

@@ -30,15 +30,13 @@ GameEventReturnCode EventEntralinkWarpReturn_Callback(GameEvent *event, u32 *sta
     EntralinkWarpReturnWork *work;
     GameSystem *gsys;
     GameCommSys *comm;
-    GameData *gameData;
-    Field *field;
     GameEvent *next;
 
     work = data;
     gsys = work->gsys;
     comm = GSYS_GetGameCommSystem(gsys);
-    gameData = GSYS_GetGameData(gsys);
-    field = GSYS_GetField(gsys);
+    GSYS_GetGameData(gsys);
+    GSYS_GetField(gsys);
     switch (*state) {
     case ENTRALINK_WARP_RETURN_STEP_WARP:
         if (GameCommSys_IsTransitioning(comm)) {

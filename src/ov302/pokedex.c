@@ -144,7 +144,12 @@ static BOOL Pokedex_Init(GameProc *proc, u32 *state, void *param, void *work) {
     PokedexHabitatSave_SetSeason(habitat, Season_GetRealTime());
     PokedexHabitatSave_SetType(habitat, 0);
     if (wk->param->start == POKEDEX_START_OPEN) {
+#ifdef POKEBW2_PC
+        // The single-screen menu has no two-screen cover to open.
+        wk->state = PokeDex_GetMode(wk->param->pokedex) == DEX_HABITAT ? STATE_AWARDS : STATE_LIST;
+#else
         wk->state = STATE_OPEN;
+#endif
     } else if (wk->param->start == POKEDEX_START_LIST) {
         if (PokeDex_GetMode(wk->param->pokedex) == DEX_HABITAT) {
             wk->state = STATE_AWARDS;

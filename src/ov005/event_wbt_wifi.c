@@ -47,8 +47,9 @@ GameEventReturnCode EventWbtWifi_Callback(GameEvent *event, u32 *state, void *da
         }
         break;
     case 1:
-        GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_WBT_DOWNLOAD,
-                                                                         &WBT_DOWNLOAD_PROC_FUNCTIONS, wk->param));
+        GameEvent_ChainNext(
+            event, EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_WBT_DOWNLOAD,
+                                                         GAME_PROC_REFERENCE(WBT_DOWNLOAD_PROC_FUNCTIONS), wk->param));
         *state = 2;
         break;
     case 2:

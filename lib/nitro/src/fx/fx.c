@@ -6,7 +6,9 @@
 void FX_Init(void) {
 }
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 fx32 FX_MulFunc(fx32 v1, fx32 v2) {
     return (fx32)(((fx64)v1 * v2 + 0x800LL) >> FX32_SHIFT);
 }
@@ -14,7 +16,9 @@ fx32 FX_MulFunc(fx32 v1, fx32 v2) {
 fx32 FX_Mul32x64cFunc(fx32 v32, fx64c v64c) {
     return (fx32)((v64c * v32 + 0x80000000LL) >> 32);
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 fx32 FX_Modf(fx32 x, fx32 *whole) {
     if (x >= 0) {

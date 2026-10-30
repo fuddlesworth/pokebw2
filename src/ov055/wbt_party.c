@@ -133,7 +133,12 @@ static BOOL WbtPartyFilter_Excludes(const WbtPartyFilter *filter, u16 species, u
         }
     }
     for (i = 0; i < filter->fileCount; i++) {
+        // BUG: the signed file index's sentinel is -1, not the positive integer 0xffff.
+#ifdef BUGFIX
+        if (file != -1 && file == filter->files[i]) {
+#else
         if (file != 0xffff && file == filter->files[i]) {
+#endif
             return TRUE;
         }
     }
@@ -337,7 +342,7 @@ void WbtParty_MakeRentalParty(WbtSystem *sys, u32 a1, PlayerInfo *playerInfo, u1
     for (i = 0; i < 6; i++) {
         pkm = PokeParty_GetPkm(sys->partyC4, i);
         PokeParty_SetupMetData(pkm, 0, playerInfo, placeName, heapId);
-        PokeParty_SetParam(pkm, PKM_PARAM_OT_NAME, (u32)name);
+        PokeParty_SetParam(pkm, PKM_PARAM_OT_NAME, (uptr)name);
         PokeParty_SetParam(pkm, PKM_PARAM_OT_GENDER, 0);
         PokeParty_SetParam(pkm, PKM_PARAM_ID, 41122);
     }

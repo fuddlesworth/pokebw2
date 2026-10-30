@@ -209,6 +209,29 @@ struct PokeListWork {
 
 extern GameProcFunctions POKELIST_PROC_FUNCTIONS;
 
+#ifdef POKEBW2_PC
+typedef enum {
+    POKELIST_NATIVE_WAIT,
+    POKELIST_NATIVE_BROWSE,
+    POKELIST_NATIVE_TARGET,
+    POKELIST_NATIVE_MENU,
+    POKELIST_NATIVE_MESSAGE,
+} PokeListNativePhase;
+
+typedef struct {
+    u32 count;
+    u32 cursor;
+    const u16 *labels[8];
+} PokeListNativeMenu;
+
+PokeListWork *PokeList_GetNativeWork(void);
+PokeListNativePhase PokeList_GetNativePhase(PokeListWork *wk);
+BOOL PokeList_SetNativeCursor(PokeListWork *wk, u32 slot);
+BOOL PokeListMenu_GetNativeState(PokeListMenu *menu, PokeListNativeMenu *state);
+BOOL PokeListMenu_SetNativeCursor(PokeListMenu *menu, u32 slot);
+const u16 *PokeListMessage_GetNativeText(PokeListMessage *msg);
+#endif
+
 void PokeListParam_Setup(PokeListParam *param, GameData *gameData, u32 mode, PokeParty *party);
 // Allocates the parameters and fills them in with PokeListParam_Setup
 PokeListParam *PokeListParam_Create(GameData *gameData, u32 mode, PokeParty *party, HeapID heapId);

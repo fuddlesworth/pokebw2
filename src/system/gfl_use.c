@@ -97,7 +97,9 @@ static const HeapDef HEAP_SETUP_TWL[] = {
     { 0x48ae00, 0 },
 };
 
+#ifndef POKEBW2_PC
 static u32 sVBlankCount;
+#endif
 static VBlankCallback sVBlankCallback;
 static void *sVBlankCallbackData;
 static int sOSHeap;
@@ -150,7 +152,9 @@ void GFLAppInit(void) {
     GFL_TextPrintInit(NULL);
     RTCCache_Init();
     GFL_RandomInit();
+#ifndef POKEBW2_PC
     sVBlankCount = 0;
+#endif
     GFL_VBlankResetCallback();
     GFL_SndSetVolumeControlCallbacks();
     GFL_FadeSetUpdateFreq(2);
@@ -170,9 +174,11 @@ void GFL_HBlankTCBUpdate(void) {
     GFL_TCBMgrUpdate(sWork->hblankTCBMgr);
 }
 
+#ifndef POKEBW2_PC
 TCB *GFL_HBlankTCBAdd(TCBFunc func, void *data, u32 priority) {
     return GFL_TCBMgrAddTask(sWork->hblankTCBMgr, func, data, priority);
 }
+#endif
 
 void GFL_VBlankExecCallback(void) {
     if (sVBlankCallback != NULL) {
@@ -199,16 +205,22 @@ void GFL_VBlankUpdate(void) {
     GFL_BGSysUpdate();
     DMAVBlank_Update();
     GFL_FadeUpdate();
+#ifndef POKEBW2_PC
     sVBlankCount++;
+#endif
 }
 
+#ifndef POKEBW2_PC
 TCB *GFL_VBlankTCBAdd(TCBFunc func, void *data, u32 priority) {
     return GFL_TCBMgrAddTask(sWork->vblankTCBMgr, func, data, priority);
 }
+#endif
 
+#ifndef POKEBW2_PC
 TCBManager *GFL_VBlankGetTCBMgr(void) {
     return sWork->vblankTCBMgr;
 }
+#endif
 
 void GFL_RandomInitLC(MATHRandContext32 *context) {
     buildSeed(context);
@@ -219,16 +231,20 @@ void GFL_RandomInit(void) {
     GFL_RandomUpdateMT(GFL_RandomLC(0));
 }
 
+#ifndef POKEBW2_PC
 u32 GFL_RandomLC(u32 max) {
     return MATH_Rand32(&sWork->rand, max);
 }
+#endif
 
+#ifndef POKEBW2_PC
 u32 GFL_RandomLCAlt(u32 max) {
     MATHRandContext32 *context = &sWork->rand;
 
     context->x = context->mul * context->x + context->add;
     return (u32)(((context->x >> 32) * max) >> 32);
 }
+#endif
 
 const char *GFL_ArcSysGetResourcePath(u32 arcId) {
     return NARC_PATH_LIST[arcId];

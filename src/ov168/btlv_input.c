@@ -56,6 +56,10 @@ typedef struct {
 
 // The lower screen's work, 0x36c bytes
 struct BtlvInput {
+#ifdef POKEBW2_PC
+    s32 nativeButton;
+    u16 nativeChoices[2][128];
+#endif
     TCBManager *tcbMgr;                // 0x000
     void *tcbMgrBuf;                   // 0x004
     TCB *tasks[8];                     // 0x008
@@ -593,6 +597,9 @@ static BtlvInput *BtlvInput_Create(GameData *gameData, u32 rule, u32 battleType,
         work->moveChars[i] = -1;
     }
     work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTLV_INPUT, work->heapId);
+#ifdef POKEBW2_PC
+    work->nativeButton = -1;
+#endif
     work->pressedButton = -1;
     work->typeLoaded = FALSE;
     work->typePalBuf = NULL;
@@ -1157,6 +1164,12 @@ s32 BtlvInput_CheckInput(BtlvInput *work, const BtlvInputButtonSet *set, const B
     }
 
     touched = GFL_HIDGetTouchPressedRect(set->rects);
+#ifdef POKEBW2_PC
+    if (work->nativeButton >= 0) {
+        touched = work->nativeButton;
+        work->nativeButton = -1;
+    }
+#endif
     button = BtlvInput_KeyInput(work, set, stops, NULL, touched, work->noMoveInfo);
     if (button != -1) {
         keys = GCTX_HIDGetHeldKeys();
@@ -1217,6 +1230,30 @@ s32 BtlvInput_CheckInput(BtlvInput *work, const BtlvInputButtonSet *set, const B
 }
 
 // Runs the finger cursor's demonstration of the move buttons; returns TRUE when it has ended
+#ifdef POKEBW2_PC
+BOOL BtlvInput_GetNativeState(const BtlvInput *work, BtlvInputNativeState *state) {
+    if (work == NULL)
+        return FALSE;
+    state->screen = work->screen;
+    state->cursor = work->cursor;
+    state->choices[0] = work->nativeChoices[0];
+    state->choices[1] = work->nativeChoices[1];
+    state->ready = !work->busy && !work->inputLocked && !work->selectionLocked && work->pressedButton == -1 &&
+                   work->nativeButton == -1 && PaletteFade_GetActiveMask(work->paletteFade) == 0;
+    MI_CpuCopy8(work->buttonEnabled, state->enabled, sizeof(state->enabled));
+    return TRUE;
+}
+
+BOOL BtlvInput_PressNativeButton(BtlvInput *work, u32 screen, u32 button) {
+    BtlvInputNativeState state;
+    if (!BtlvInput_GetNativeState(work, &state) || state.screen != screen || !state.ready ||
+        button >= NELEMS(work->buttonEnabled) || !state.enabled[button])
+        return FALSE;
+    work->nativeButton = button;
+    return TRUE;
+}
+#endif
+
 BOOL BtlvInput_FingerDemoMain(BtlvInput *work) {
     BOOL done = FALSE;
 
@@ -2640,6 +2677,18 @@ static void BtlvInput_DrawYesNo(BtlvInput *work, const BtlvInputYesNoParam *para
     s32 width;
     s32 blocks;
 
+#ifdef POKEBW2_PC
+    for (u32 i = 0; i < 2; i++) {
+        const u16 *text = GFL_StrBufGetStringPtr(param->strs[i]);
+        u32 length = 0;
+        while (length + 1 < NELEMS(work->nativeChoices[i]) && text[length] != 0xffff) {
+            work->nativeChoices[i][length] = text[length];
+            length++;
+        }
+        work->nativeChoices[i][length] = 0xffff;
+    }
+#endif
+
     GFL_TextRndUpdateColorIndexLUT(1, 2, 0);
     BtlvInput_GetStringWidth(param->strs[0], work->font, &width, &blocks);
     GFL_TextRendererDrawToBitmap(work->msgBitmap, 128 - width / 2, 16, param->strs[0], work->font);
@@ -2653,7 +2702,6 @@ static void BtlvInput_DrawYesNo(BtlvInput *work, const BtlvInputYesNoParam *para
 // Draws the move screen for the current mon and starts its fade
 static void BtlvInput_SetupMoveScreen(BtlvInput *work) {
     BtlvInputMoveParam param;
-    BattleMon *mon;
     int i;
 
     for (i = 0; i < 4; i++) {
@@ -3043,15 +3091,15 @@ static void BtlvInput_CreateStruggleActor(BtlvInput *work) {
     for (i = 0; i < 4; i++) {
         MI_CpuCopy16(
             &pixels[i * 0x1c0],
-            (void *)((u32)vram + (0xde + i * 8) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
+            (void *)((uptr)vram + (0xde + i * 8) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
             0x100);
         MI_CpuCopy16(
             &pixels[i * 0x1c0 + 0x100],
-            (void *)((u32)vram + (0xfe + i * 4) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
+            (void *)((uptr)vram + (0xfe + i * 4) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
             0x80);
         MI_CpuCopy16(
             &pixels[i * 0x1c0 + 0x180],
-            (void *)((u32)vram + (0x10e + i * 2) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
+            (void *)((uptr)vram + (0x10e + i * 2) * 0x20 + proxy.vramLocation.baseAddrOfVram[NNS_G2D_VRAM_TYPE_2DSUB]),
             0x40);
     }
 

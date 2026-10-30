@@ -83,6 +83,21 @@ struct BtlvSelectTargetParam {
 };
 
 // btlv_scu.c, the message and command unit of the battle display
+#ifdef POKEBW2_PC
+typedef struct {
+    BtlvCore *core;
+    BtlvInput *input;
+    BtlMainModule *mainModule;
+    BattleMon *mon;
+    Font *font;
+    const u16 *message;
+    BattleMonLevelUp stats;
+    u32 statsMode;
+} BtlvNativeState;
+BOOL BtlvCore_GetNativeState(BtlvNativeState *state);
+const u16 *BtlvScu_GetNativeMessage(const BtlvScu *scu);
+u32 BtlvScu_GetNativeStats(const BtlvScu *scu, BattleMonLevelUp *stats);
+#endif
 BtlvScu *BtlvScu_Create(BtlvCore *core, BtlMainModule *mainModule, BtlPokeCon *pokeCon, TCBExManager *tcbManager,
                         Font *font, Font *smallFont, u8 clientId, HeapID heapId);
 void BtlvScu_Setup(BtlvScu *scu);

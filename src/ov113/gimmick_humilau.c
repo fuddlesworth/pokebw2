@@ -79,14 +79,13 @@ void GimmickHumilau_Update(Field *field) {
 }
 
 void GimmickHumilau_ShowSplash(GameSystem *gsys, u16 x, u16 y, u16 z) {
-    GameData *gameData;
     Field *field;
     GimmickWork *work;
     FieldExpObjSystem *system;
     SRTMatrix *matrix;
 
     // The game data is fetched and never used
-    gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     field = GSYS_GetField(gsys);
     work = Field_GetGimmickWorkBlock(field, 1);
     system = Field_GetExpObjSystem(field);
@@ -100,7 +99,6 @@ void GimmickHumilau_ShowSplash(GameSystem *gsys, u16 x, u16 y, u16 z) {
 }
 
 GameEvent *GimmickHumilau_CreateJumpEvent(GameSystem *gsys, u16 actorId, u16 x, u16 z, u16 a4) {
-    GameData *gameData;
     FieldActor *actor;
     GameEvent *event;
     JumpWork *work;
@@ -109,7 +107,7 @@ GameEvent *GimmickHumilau_CreateJumpEvent(GameSystem *gsys, u16 actorId, u16 x, 
     VecFx32 end;
 
     // The game data is fetched and never used
-    gameData = GSYS_GetGameData(gsys);
+    GSYS_GetGameData(gsys);
     actor = FindFieldActor(Field_GetActorSystem(GSYS_GetField(gsys)), actorId);
     if (actor == NULL) {
         return NULL;

@@ -10,15 +10,15 @@
 
 // Every block starts with its head, rounded up to the cache line
 #define HEAP_ALIGN 32
-#define BLOCK_HEAD_SIZE 32
+#define BLOCK_HEAD_SIZE ROUNDUP(sizeof(NNSSndHeapBlock), HEAP_ALIGN)
 #define ROUNDUP(value, alignment) (((value) + ((alignment) - 1)) & ~((alignment) - 1))
 
 typedef struct NNSSndHeapBlock {
     NNSFndLink link;
     u32 size;
     NNSSndHeapDisposeCallback callback;
-    u32 data1;
-    u32 data2;
+    uptr data1;
+    uptr data2;
 } NNSSndHeapBlock;
 
 typedef struct NNSSndHeapSection {
@@ -36,7 +36,7 @@ NNSSndHeapHandle NNS_SndHeapCreate(void *startAddress, u32 size) {
     NNSFndHeapHandle handle;
     void *endAddress = (u8 *)startAddress + size;
 
-    startAddress = (void *)ROUNDUP((u32)startAddress, 4);
+    startAddress = (void *)ROUNDUP((uptr)startAddress, sizeof(void *));
     if (startAddress > endAddress) {
         return NNS_SND_HEAP_INVALID_HANDLE;
     }
@@ -84,7 +84,7 @@ void NNS_SndHeapClear(NNSSndHeapHandle heap) {
     NewSection(heap);
 }
 
-void *NNS_SndHeapAlloc(NNSSndHeapHandle heap, u32 size, NNSSndHeapDisposeCallback callback, u32 data1, u32 data2) {
+void *NNS_SndHeapAlloc(NNSSndHeapHandle heap, u32 size, NNSSndHeapDisposeCallback callback, uptr data1, uptr data2) {
     NNSSndHeapSection *section;
     NNSSndHeapBlock *block =
         NNS_FndAllocFromFrmHeapEx(heap->handle, ROUNDUP(size, HEAP_ALIGN) + BLOCK_HEAD_SIZE, HEAP_ALIGN);
@@ -169,8 +169,11 @@ static BOOL NewSection(NNSSndHeap *heap) {
 
 // Waits for the sound driver to have run every command sent, so that nothing plays from the memory freed
 static void EraseSync(void) {
+#ifndef POKEBW2_PC
     u32 tag = SND_GetCurrentCommandTag();
 
     SND_FlushCommand(SND_COMMAND_BLOCK);
     SND_WaitForCommandProc(tag);
+#endif
+    // The native mixer and heap disposal run synchronously on the game thread.
 }

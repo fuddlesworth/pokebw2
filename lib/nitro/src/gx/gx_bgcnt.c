@@ -30,7 +30,9 @@ void *G2S_GetBG1ScrPtr(void) {
                     ((reg_G2S_DB_BG1CNT & REG_G2_BG0CNT_SCREENBASE_MASK) >> REG_G2_BG0CNT_SCREENBASE_SHIFT) * 0x800);
 }
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 void *G2_GetBG2ScrPtr(void) {
     int mode = reg_GX_DISPCNT & REG_GX_DISPCNT_BGMODE_MASK;
     u32 bgcnt = reg_G2_BG2CNT;
@@ -55,7 +57,9 @@ void *G2_GetBG2ScrPtr(void) {
         return NULL;
     }
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 void *G2S_GetBG2ScrPtr(void) {
     int mode = reg_GXS_DB_DISPCNT & REG_GXS_DB_DISPCNT_BGMODE_MASK;
@@ -81,7 +85,9 @@ void *G2S_GetBG2ScrPtr(void) {
     }
 }
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 void *G2_GetBG3ScrPtr(void) {
     int mode = reg_GX_DISPCNT & REG_GX_DISPCNT_BGMODE_MASK;
     u32 bgcnt = reg_G2_BG3CNT;
@@ -106,7 +112,9 @@ void *G2_GetBG3ScrPtr(void) {
         return NULL;
     }
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 void *G2S_GetBG3ScrPtr(void) {
     int mode = reg_GXS_DB_DISPCNT & REG_GXS_DB_DISPCNT_BGMODE_MASK;

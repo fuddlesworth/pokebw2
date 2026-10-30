@@ -373,7 +373,7 @@ static void PokedexDetailForm_InitSpriteAnim(SpriteAnim *anim, int sprite, Poked
 static void PokedexDetailForm_PlaySpriteAnim(Sprite *sprite);
 static void PokedexDetailForm_StopSpriteAnim(Sprite *sprite);
 static void PokedexDetailForm_UpdateSprite(Sprite *sprite);
-static void PokedexDetailForm_SpriteAnimEnd(u32 param, fx32 frame);
+static void PokedexDetailForm_SpriteAnimEnd(uptr param, fx32 frame);
 static void PokedexDetailForm_Turn(PokedexDetailFormParam *param, PokedexDetailFormWork *wk,
                                    PokedexDetailCommon *common);
 static void PokedexDetailForm_LoadIconResources(PokedexDetailFormParam *param, PokedexDetailFormWork *wk,
@@ -1553,7 +1553,7 @@ static void PokedexDetailForm_CreateSprite(Sprite *sprite, HeapID heapId, MCSSSy
     sprite->mcss = PokedexDetailForm_AddMCSS(system, species, form, sex, rare, a6, back, personality);
     sprite->anim = GFL_HeapAllocate(heapId, sizeof(SpriteAnim), TRUE, "zukan_detail_form.c", 2737);
     NNS_G2dSetAnimCtrlCallBackFunctor(&MCSS_GetMultiCellAnimation(sprite->mcss)->animCtrl,
-                                      NNS_G2D_ANMCALLBACKTYPE_LAST_FRM, (u32)sprite->anim,
+                                      NNS_G2D_ANMCALLBACKTYPE_LAST_FRM, (uptr)sprite->anim,
                                       PokedexDetailForm_SpriteAnimEnd);
     PokedexDetailForm_InitSpritePositions(sprite->pos, species, form, sex, rare, a6, back, personality);
 }
@@ -1605,7 +1605,7 @@ static void PokedexDetailForm_UpdateSprite(Sprite *sprite) {
     }
 }
 
-static void PokedexDetailForm_SpriteAnimEnd(u32 param, fx32 frame) {
+static void PokedexDetailForm_SpriteAnimEnd(uptr param, fx32 frame) {
     SpriteAnim *anim = (SpriteAnim *)param;
     PokedexDetailFormWork *wk = anim->wk;
 
@@ -2096,6 +2096,8 @@ static void PokedexDetailForm_CheckInput(PokedexDetailFormParam *param, PokedexD
                     PokedexDetailForm_StepNext(param, wk, common);
                     PokedexDetailForm_SetMode(param, wk, common, FORM_MODE_SLIDE);
                     break;
+                default:
+                    break;
                 }
             } else {
                 BOOL open = FALSE;
@@ -2146,6 +2148,8 @@ static void PokedexDetailForm_CheckInput(PokedexDetailFormParam *param, PokedexD
                     }
                     break;
                 }
+                default:
+                    break;
                 }
             }
         }

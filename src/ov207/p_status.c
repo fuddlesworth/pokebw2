@@ -23,6 +23,13 @@ static BOOL PStatus_ProcMain(GameProc *proc, u32 *state, void *data, void *work)
 
 GameProcFunctions PSTATUS_PROC_FUNCTIONS = { PStatus_ProcInit, PStatus_ProcMain, PStatus_ProcExit };
 
+#ifdef POKEBW2_PC
+static PStatusWork *sNativeStatus;
+PStatusWork *PStatus_GetNativeWork(void) {
+    return sNativeStatus;
+}
+#endif
+
 static BOOL PStatus_ProcInit(GameProc *proc, u32 *state, void *data, void *work) {
     PStatusParam *param = data;
     PStatusWork *wk;
@@ -49,7 +56,7 @@ static BOOL PStatus_ProcInit(GameProc *proc, u32 *state, void *data, void *work)
                         // "ブラック", Black
                         u16 otName[5] = { 0x30d6, 0x30e9, 0x30c3, 0x30af, 0xffff };
 
-                        PokeParty_SetParam(partyPkm, PKM_PARAM_OT_NAME_RAW, (u32)otName);
+                        PokeParty_SetParam(partyPkm, PKM_PARAM_OT_NAME_RAW, (uptr)otName);
                     }
                     PokeParty_SetParam(partyPkm, PKM_PARAM_OT_GENDER, 0);
                     PokeParty_AddPkm(party, partyPkm);
@@ -74,7 +81,7 @@ static BOOL PStatus_ProcInit(GameProc *proc, u32 *state, void *data, void *work)
                             // "ブラック", Black
                             u16 otName[5] = { 0x30d6, 0x30e9, 0x30c3, 0x30af, 0xffff };
 
-                            PML_PkmSetParam(boxPkm, PKM_PARAM_OT_NAME_RAW, (u32)otName);
+                            PML_PkmSetParam(boxPkm, PKM_PARAM_OT_NAME_RAW, (uptr)otName);
                         }
                         PML_PkmSetParam(boxPkm, PKM_PARAM_OT_GENDER, 0);
                         if (param->partyIndex == 0xff) {
@@ -104,6 +111,9 @@ static BOOL PStatus_ProcInit(GameProc *proc, u32 *state, void *data, void *work)
         break;
     case 1:
         if (PStatus_Init(work) == TRUE) {
+#ifdef POKEBW2_PC
+            sNativeStatus = work;
+#endif
             return TRUE;
         }
         break;
@@ -114,6 +124,9 @@ static BOOL PStatus_ProcInit(GameProc *proc, u32 *state, void *data, void *work)
 static BOOL PStatus_ProcExit(GameProc *proc, u32 *state, void *data, void *work) {
     PStatusWork *wk = work;
 
+#ifdef POKEBW2_PC
+    sNativeStatus = NULL;
+#endif
     if (PStatus_Exit(wk) == FALSE) {
         return FALSE;
     }

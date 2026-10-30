@@ -17,6 +17,7 @@
 #include "gfl/key.h"
 #include "gfl/msg.h"
 #include "gfl/sound.h"
+#include "gfl/std.h"
 #include "gfl/tcb.h"
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
@@ -989,6 +990,9 @@ void ItemMenuDisp_SetPocketTab(ItemMenuWork *work, u32 pocket) {
 }
 
 void ItemMenuDisp_ClearMsgWindow(ItemMenuWork *work) {
+#ifdef POKEBW2_PC
+    work->nativeMessage[0] = 0xffff;
+#endif
     BmpWin_ClearFrame(work->msgWindow.window, WINFRAME_TRANSFER_VBLANK);
 }
 
@@ -1142,6 +1146,9 @@ static void ItemMenuDisp_DrawTMInfo(ItemMenuWork *work, u32 move) {
 // Shows the message in expandBuf, printed a character at a time if stream is TRUE
 void ItemMenuDisp_ShowMessage(ItemMenuWork *work, BOOL stream) {
     PrintWindow *window;
+#ifdef POKEBW2_PC
+    GFL_StrBufStoreString(work->expandBuf, work->nativeMessage, NELEMS(work->nativeMessage));
+#endif
     if (work->msgWindow.window == NULL) {
         work->msgWindow.window = BmpWin_CreateDynamic(3, 1, 1, 30, 4, 12, TRUE);
     }
@@ -1348,6 +1355,10 @@ u32 ItemMenuDisp_GetPocketShortcut(s32 pocket) {
     case BAG_POCKET_FREE_SPACE:
         return SHORTCUT_BAG_FREE_SPACE;
     }
+#ifdef POKEBW2_PC
+    GFL_ASSERT(FALSE);
+    return SHORTCUT_BAG_ITEMS;
+#endif
 }
 
 // Sets the palette of the row under the list's cursor

@@ -8,9 +8,13 @@
 // The species names' message data, which stays loaded. The file's name is a guess: the ROM has no string for it
 
 // The original has this in .data, as an explicit zero
+#ifndef POKEBW2_PC
 #pragma explicit_zero_data on
+#endif
 MsgData *g_PMLSpeciesNamesResident = NULL;
+#ifndef POKEBW2_PC
 #pragma explicit_zero_data reset
+#endif
 
 void PML_SpeciesNamesResidentInit(HeapID heapId) {
     g_PMLSpeciesNamesResident = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPECIES_NAMES, heapId);

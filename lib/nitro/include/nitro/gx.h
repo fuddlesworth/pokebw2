@@ -6,6 +6,9 @@
 #include "nitro/hw.h"
 #include "nitro/mi.h"
 #include "twl/mi.h"
+#ifdef POKEBW2_PC
+#include "nitro/host_gx.h"
+#endif
 
 // The parts of NitroSDK's graphics registers and inline functions that the game's code uses
 
@@ -26,20 +29,70 @@ typedef u16 GXRgb;
 #define GX_RGB_B_SHIFT 10
 #define GX_RGB_B_MASK 0x7c00
 
+#ifdef POKEBW2_PC
+#define reg_GX_DISPCNT PcGxMainDisplay
+#else
 #define reg_GX_DISPCNT (*(vu32 *)0x04000000)
+#endif
+#ifndef POKEBW2_PC
 #define reg_GX_DISPSTAT (*(vu16 *)0x04000004)
+#endif
 #define REG_GX_DISPSTAT_VBLK_MASK 0x0001
+#ifdef POKEBW2_PC
+#define reg_G2_BG0CNT PC_GX_REG16(0x04000008)
+#else
 #define reg_G2_BG0CNT (*(vu16 *)0x04000008)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_WIN0H PC_GX_REG16(0x04000040)
+#else
 #define reg_G2_WIN0H (*(vu16 *)0x04000040)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_WIN1H PC_GX_REG16(0x04000042)
+#else
 #define reg_G2_WIN1H (*(vu16 *)0x04000042)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_WIN0V PC_GX_REG16(0x04000044)
+#else
 #define reg_G2_WIN0V (*(vu16 *)0x04000044)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_WIN1V PC_GX_REG16(0x04000046)
+#else
 #define reg_G2_WIN1V (*(vu16 *)0x04000046)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_WININ PC_GX_REG16(0x04000048)
+#else
 #define reg_G2_WININ (*(vu16 *)0x04000048)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_WINOUT PC_GX_REG16(0x0400004a)
+#else
 #define reg_G2_WINOUT (*(vu16 *)0x0400004a)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BLDCNT PC_GX_REG16(0x04000050)
+#else
 #define reg_G2_BLDCNT (*(vu16 *)0x04000050)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BLDALPHA PC_GX_REG16(0x04000052)
+#else
 #define reg_G2_BLDALPHA (*(vu16 *)0x04000052)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_DISP3DCNT PcGxDisplay3D
+#else
 #define reg_G3X_DISP3DCNT (*(vu16 *)0x04000060)
+#endif
+#ifdef POKEBW2_PC
+#define reg_GX_DISPCAPCNT PC_GX_REG32(0x04000064)
+#else
 #define reg_GX_DISPCAPCNT (*(vu32 *)0x04000064)
+#endif
 #define reg_G3X_GXFIFO (*(vu32 *)0x04000400)
 #define reg_G3_MTX_MODE (*(vu32 *)0x04000440)
 #define reg_G3_MTX_PUSH (*(vu32 *)0x04000444)
@@ -66,17 +119,58 @@ typedef u16 GXRgb;
 #define reg_G3_SWAP_BUFFERS (*(vu32 *)0x04000540)
 #define reg_G3_VIEWPORT (*(vu32 *)0x04000580)
 // The counts of polygons in polygon list RAM and of vertices in vertex RAM
+#ifdef POKEBW2_PC
+#define reg_G3X_LISTRAM_COUNT PcGx_GetPolygonCount()
+#define reg_G3X_VTXRAM_COUNT PcGx_GetVertexCount()
+#else
 #define reg_G3X_LISTRAM_COUNT (*(vu16 *)0x04000604)
 #define reg_G3X_VTXRAM_COUNT (*(vu16 *)0x04000606)
+#endif
+#ifdef POKEBW2_PC
+#define reg_GXS_DB_DISPCNT PcGxSubDisplay
+#else
 #define reg_GXS_DB_DISPCNT (*(vu32 *)0x04001000)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_WIN0H PC_GX_REG16(0x04001040)
+#else
 #define reg_G2S_DB_WIN0H (*(vu16 *)0x04001040)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_WIN1H PC_GX_REG16(0x04001042)
+#else
 #define reg_G2S_DB_WIN1H (*(vu16 *)0x04001042)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_WIN0V PC_GX_REG16(0x04001044)
+#else
 #define reg_G2S_DB_WIN0V (*(vu16 *)0x04001044)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_WIN1V PC_GX_REG16(0x04001046)
+#else
 #define reg_G2S_DB_WIN1V (*(vu16 *)0x04001046)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_WININ PC_GX_REG16(0x04001048)
+#else
 #define reg_G2S_DB_WININ (*(vu16 *)0x04001048)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_WINOUT PC_GX_REG16(0x0400104a)
+#else
 #define reg_G2S_DB_WINOUT (*(vu16 *)0x0400104a)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BLDCNT PC_GX_REG16(0x04001050)
+#else
 #define reg_G2S_DB_BLDCNT (*(vu16 *)0x04001050)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BLDALPHA PC_GX_REG16(0x04001052)
+#else
 #define reg_G2S_DB_BLDALPHA (*(vu16 *)0x04001052)
+#endif
 
 #define REG_GX_DISPCNT_W0_SHIFT 13
 #define REG_GX_DISPCNT_W0_MASK 0x00002000
@@ -219,16 +313,16 @@ typedef struct {
 typedef enum {
     GX_OAM_SHAPE_8x8 = (0 << GX_OAM_ATTR01_SHAPE_SHIFT) | (0 << GX_OAM_ATTR01_SIZE_SHIFT),
     GX_OAM_SHAPE_16x16 = (0 << GX_OAM_ATTR01_SHAPE_SHIFT) | (1 << GX_OAM_ATTR01_SIZE_SHIFT),
-    GX_OAM_SHAPE_32x32 = (0 << GX_OAM_ATTR01_SHAPE_SHIFT) | (2 << GX_OAM_ATTR01_SIZE_SHIFT),
-    GX_OAM_SHAPE_64x64 = (0 << GX_OAM_ATTR01_SHAPE_SHIFT) | (3 << GX_OAM_ATTR01_SIZE_SHIFT),
+    GX_OAM_SHAPE_32x32 = (0 << GX_OAM_ATTR01_SHAPE_SHIFT) | (int)(2u << GX_OAM_ATTR01_SIZE_SHIFT),
+    GX_OAM_SHAPE_64x64 = (0 << GX_OAM_ATTR01_SHAPE_SHIFT) | (int)(3u << GX_OAM_ATTR01_SIZE_SHIFT),
     GX_OAM_SHAPE_16x8 = (1 << GX_OAM_ATTR01_SHAPE_SHIFT) | (0 << GX_OAM_ATTR01_SIZE_SHIFT),
     GX_OAM_SHAPE_32x8 = (1 << GX_OAM_ATTR01_SHAPE_SHIFT) | (1 << GX_OAM_ATTR01_SIZE_SHIFT),
-    GX_OAM_SHAPE_32x16 = (1 << GX_OAM_ATTR01_SHAPE_SHIFT) | (2 << GX_OAM_ATTR01_SIZE_SHIFT),
-    GX_OAM_SHAPE_64x32 = (1 << GX_OAM_ATTR01_SHAPE_SHIFT) | (3 << GX_OAM_ATTR01_SIZE_SHIFT),
+    GX_OAM_SHAPE_32x16 = (1 << GX_OAM_ATTR01_SHAPE_SHIFT) | (int)(2u << GX_OAM_ATTR01_SIZE_SHIFT),
+    GX_OAM_SHAPE_64x32 = (1 << GX_OAM_ATTR01_SHAPE_SHIFT) | (int)(3u << GX_OAM_ATTR01_SIZE_SHIFT),
     GX_OAM_SHAPE_8x16 = (2 << GX_OAM_ATTR01_SHAPE_SHIFT) | (0 << GX_OAM_ATTR01_SIZE_SHIFT),
     GX_OAM_SHAPE_8x32 = (2 << GX_OAM_ATTR01_SHAPE_SHIFT) | (1 << GX_OAM_ATTR01_SIZE_SHIFT),
-    GX_OAM_SHAPE_16x32 = (2 << GX_OAM_ATTR01_SHAPE_SHIFT) | (2 << GX_OAM_ATTR01_SIZE_SHIFT),
-    GX_OAM_SHAPE_32x64 = (2 << GX_OAM_ATTR01_SHAPE_SHIFT) | (3 << GX_OAM_ATTR01_SIZE_SHIFT),
+    GX_OAM_SHAPE_16x32 = (2 << GX_OAM_ATTR01_SHAPE_SHIFT) | (int)(2u << GX_OAM_ATTR01_SIZE_SHIFT),
+    GX_OAM_SHAPE_32x64 = (2 << GX_OAM_ATTR01_SHAPE_SHIFT) | (int)(3u << GX_OAM_ATTR01_SIZE_SHIFT),
 } GXOamShape;
 
 typedef enum {
@@ -782,9 +876,9 @@ typedef enum {
 #define GX_VECFX10(x, y, z) ((u32)(((x) & 0x3ff) | (((y) & 0x3ff) << 10) | (((z) & 0x3ff) << 20)))
 #define REG_G3_LIGHT_VECTOR_LNUM_SHIFT 30
 #define GX_PACK_LIGHTVECTOR_PARAM(lightID, x, y, z)                                                                    \
-    ((u32)(((lightID) << REG_G3_LIGHT_VECTOR_LNUM_SHIFT) |                                                             \
+    ((u32)(((u32)(lightID) << REG_G3_LIGHT_VECTOR_LNUM_SHIFT) |                                                        \
            GX_VECFX10(GX_FX16_FX10(x), GX_FX16_FX10(y), GX_FX16_FX10(z))))
-#define GX_PACK_LIGHTCOLOR_PARAM(lightID, rgb) ((u32)(((lightID) << REG_G3_LIGHT_VECTOR_LNUM_SHIFT) | (rgb)))
+#define GX_PACK_LIGHTCOLOR_PARAM(lightID, rgb) ((u32)(((u32)(lightID) << REG_G3_LIGHT_VECTOR_LNUM_SHIFT) | (rgb)))
 // Packs texture coordinates. The game's SDK narrows each to an fx16 first; the older NitroSDK that SPL was built
 // against does not
 #ifdef OLD_NITRO_SDK
@@ -852,6 +946,10 @@ static inline void GX_SetDispSelect(GXDispSelect select) {
 }
 
 // The main screen's OBJ characters, and the sub screen's
+#ifdef POKEBW2_PC
+void *G2_GetOBJCharPtr(void);
+void *G2S_GetOBJCharPtr(void);
+#else
 static inline void *G2_GetOBJCharPtr(void) {
     return (void *)HW_OBJ_VRAM;
 }
@@ -859,6 +957,7 @@ static inline void *G2_GetOBJCharPtr(void) {
 static inline void *G2S_GetOBJCharPtr(void) {
     return (void *)HW_DB_OBJ_VRAM;
 }
+#endif
 
 static inline GXDispSelect GX_GetDispSelect(void) {
     return (reg_GX_POWCNT & REG_GX_POWCNT_DSEL_MASK) >> REG_GX_POWCNT_DSEL_SHIFT;
@@ -871,6 +970,9 @@ static inline void GX_SetCapture(GXCaptureSize sz, GXCaptureMode mode, GXCapture
                         (b << REG_GX_DISPCAPCNT_SRCB_SHIFT) | (a << REG_GX_DISPCAPCNT_SRCA_SHIFT) |
                         (sz << REG_GX_DISPCAPCNT_WSIZE_SHIFT) | (dest << REG_GX_DISPCAPCNT_DEST_SHIFT) |
                         (evb << REG_GX_DISPCAPCNT_EVB_SHIFT) | (eva << REG_GX_DISPCAPCNT_EVA_SHIFT);
+#ifdef POKEBW2_PC
+    PcGx_Capture();
+#endif
 }
 
 static inline void GX_SetVisibleWnd(int window) {
@@ -1066,7 +1168,11 @@ static inline void G3X_AlphaTest(BOOL enable, int ref) {
     if (enable) {
         reg_G3X_DISP3DCNT = (u16)((reg_G3X_DISP3DCNT & ~(REG_G3X_DISP3DCNT_RO_MASK | REG_G3X_DISP3DCNT_GO_MASK)) |
                                   REG_G3X_DISP3DCNT_ATE_MASK);
+#ifdef POKEBW2_PC
+        PC_GX_RASTER16(0x04000340) = (u16)ref;
+#else
         *(vu16 *)0x04000340 = (u16)ref;
+#endif
     } else {
         reg_G3X_DISP3DCNT &= ~(REG_G3X_DISP3DCNT_ATE_MASK | REG_G3X_DISP3DCNT_RO_MASK | REG_G3X_DISP3DCNT_GO_MASK);
     }
@@ -1091,136 +1197,232 @@ static inline void G3X_EdgeMarking(BOOL enable) {
 }
 
 static inline void G3X_SetFogColor(GXRgb rgb, int alpha) {
+#ifdef POKEBW2_PC
+    PC_GX_RASTER32(0x04000358) = (u32)(rgb | (alpha << 16));
+#else
     *(vu32 *)0x04000358 = (u32)(rgb | (alpha << 16));
+#endif
 }
 
 // Swaps the geometry engine's buffers at the next vertical blank, with how it sorts translucent polygons and whether
 // it depth tests with Z or W
+#ifdef POKEBW2_PC
+#include "nitro/host_gx.h"
+#define G3X_WriteRegister(reg, value) PcGx_Write((uptr) & (reg), (u32)(value))
+#else
+#define G3X_WriteRegister(reg, value) ((reg) = (value))
+#endif
 static inline void G3_SwapBuffers(GXSortMode am, GXBufferMode zw) {
-    reg_G3_SWAP_BUFFERS = am | (zw << 1);
+    G3X_WriteRegister(reg_G3_SWAP_BUFFERS, am | (zw << 1));
 }
 
 static inline void G3_ViewPort(int x1, int y1, int x2, int y2) {
-    reg_G3_VIEWPORT = GX_PACK_VIEWPORT_PARAM(x1, y1, x2, y2);
+    G3X_WriteRegister(reg_G3_VIEWPORT, GX_PACK_VIEWPORT_PARAM(x1, y1, x2, y2));
 }
 
 static inline void G3_MtxMode(GXMtxMode mode) {
-    reg_G3_MTX_MODE = mode;
+    G3X_WriteRegister(reg_G3_MTX_MODE, mode);
 }
 
 static inline void G3_PushMtx(void) {
-    reg_G3_MTX_PUSH = 0;
+    G3X_WriteRegister(reg_G3_MTX_PUSH, 0);
 }
 
 static inline void G3_PopMtx(int num) {
-    reg_G3_MTX_POP = num;
+    G3X_WriteRegister(reg_G3_MTX_POP, num);
 }
 
 static inline void G3_StoreMtx(int num) {
-    reg_G3_MTX_STORE = (u32)num;
+    G3X_WriteRegister(reg_G3_MTX_STORE, (u32)num);
 }
 
 static inline void G3_RestoreMtx(int num) {
-    reg_G3_MTX_RESTORE = (u32)num;
+    G3X_WriteRegister(reg_G3_MTX_RESTORE, (u32)num);
 }
 
 static inline void G3_Identity(void) {
-    reg_G3_MTX_IDENTITY = 0;
+    G3X_WriteRegister(reg_G3_MTX_IDENTITY, 0);
 }
 
 static inline void G3_Translate(fx32 x, fx32 y, fx32 z) {
-    reg_G3_MTX_TRANS = (u32)x;
-    reg_G3_MTX_TRANS = (u32)y;
-    reg_G3_MTX_TRANS = (u32)z;
+    G3X_WriteRegister(reg_G3_MTX_TRANS, (u32)x);
+    G3X_WriteRegister(reg_G3_MTX_TRANS, (u32)y);
+    G3X_WriteRegister(reg_G3_MTX_TRANS, (u32)z);
 }
 
 static inline void G3_Scale(fx32 x, fx32 y, fx32 z) {
-    reg_G3_MTX_SCALE = (u32)x;
-    reg_G3_MTX_SCALE = (u32)y;
-    reg_G3_MTX_SCALE = (u32)z;
+    G3X_WriteRegister(reg_G3_MTX_SCALE, (u32)x);
+    G3X_WriteRegister(reg_G3_MTX_SCALE, (u32)y);
+    G3X_WriteRegister(reg_G3_MTX_SCALE, (u32)z);
 }
 
 static inline void G3_PolygonAttr(int light, GXPolygonMode polyMode, GXCull cullMode, int polygonID, int alpha,
                                   int misc) {
-    reg_G3_POLYGON_ATTR = GX_PACK_POLYGONATTR_PARAM(light, polyMode, cullMode, polygonID, alpha, misc);
+    G3X_WriteRegister(reg_G3_POLYGON_ATTR,
+                      GX_PACK_POLYGONATTR_PARAM(light, polyMode, cullMode, polygonID, alpha, misc));
 }
 
 static inline void G3_TexImageParam(GXTexFmt texFmt, GXTexGen texGen, GXTexSizeS s, GXTexSizeT t, GXTexRepeat repeat,
                                     GXTexFlip flip, GXTexPlttColor0 pltt0, u32 addr) {
-    reg_G3_TEXIMAGE_PARAM = GX_PACK_TEXIMAGE_PARAM(texFmt, texGen, s, t, repeat, flip, pltt0, addr);
+    G3X_WriteRegister(reg_G3_TEXIMAGE_PARAM, GX_PACK_TEXIMAGE_PARAM(texFmt, texGen, s, t, repeat, flip, pltt0, addr));
 }
 
 static inline void G3_TexPlttBase(u32 addr, GXTexFmt texFmt) {
-    reg_G3_TEXPLTT_BASE = GX_PACK_TEXPLTTBASE_PARAM(addr, texFmt);
+    G3X_WriteRegister(reg_G3_TEXPLTT_BASE, GX_PACK_TEXPLTTBASE_PARAM(addr, texFmt));
 }
 
 static inline void G3_MaterialColorDiffAmb(GXRgb diffuse, GXRgb ambient, BOOL IsSetVtxColor) {
-    reg_G3_DIF_AMB = GX_PACK_DIFFAMB_PARAM(diffuse, ambient, IsSetVtxColor);
+    G3X_WriteRegister(reg_G3_DIF_AMB, GX_PACK_DIFFAMB_PARAM(diffuse, ambient, IsSetVtxColor));
 }
 
 static inline void G3_MaterialColorSpecEmi(GXRgb specular, GXRgb emission, BOOL IsShininess) {
-    reg_G3_SPE_EMI = GX_PACK_SPECEMI_PARAM(specular, emission, IsShininess);
+    G3X_WriteRegister(reg_G3_SPE_EMI, GX_PACK_SPECEMI_PARAM(specular, emission, IsShininess));
 }
 
 static inline void G3_Begin(GXBegin primitive) {
-    reg_G3_BEGIN_VTXS = (u32)primitive;
+    G3X_WriteRegister(reg_G3_BEGIN_VTXS, (u32)primitive);
 }
 
 static inline void G3_End(void) {
-    reg_G3_END_VTXS = 0;
+    G3X_WriteRegister(reg_G3_END_VTXS, 0);
 }
 
 static inline void G3_Normal(fx16 x, fx16 y, fx16 z) {
-    reg_G3_NORMAL = GX_VECFX10(GX_FX16_FX10(x), GX_FX16_FX10(y), GX_FX16_FX10(z));
+    G3X_WriteRegister(reg_G3_NORMAL, GX_VECFX10(GX_FX16_FX10(x), GX_FX16_FX10(y), GX_FX16_FX10(z)));
 }
 
 static inline void G3_TexCoord(fx32 s, fx32 t) {
-    reg_G3_TEXCOORD = GX_ST(s, t);
+    G3X_WriteRegister(reg_G3_TEXCOORD, GX_ST(s, t));
 }
 
 static inline void G3_Color(GXRgb rgb) {
-    reg_G3_COLOR = rgb;
+    G3X_WriteRegister(reg_G3_COLOR, rgb);
 }
 
 static inline void G3_LightVector(GXLightId lightID, fx16 x, fx16 y, fx16 z) {
-    reg_G3_LIGHT_VECTOR = GX_PACK_LIGHTVECTOR_PARAM(lightID, x, y, z);
+    G3X_WriteRegister(reg_G3_LIGHT_VECTOR, GX_PACK_LIGHTVECTOR_PARAM(lightID, x, y, z));
 }
 
 static inline void G3_LightColor(GXLightId lightID, GXRgb rgb) {
-    reg_G3_LIGHT_COLOR = GX_PACK_LIGHTCOLOR_PARAM(lightID, rgb);
+    G3X_WriteRegister(reg_G3_LIGHT_COLOR, GX_PACK_LIGHTCOLOR_PARAM(lightID, rgb));
 }
 
 static inline void G3_Vtx(fx16 x, fx16 y, fx16 z) {
+#ifdef POKEBW2_PC
+    G3X_WriteRegister(reg_G3_VTX_16, (u32)(u16)x | ((u32)(u16)y << 16));
+#else
     reg_G3_VTX_16 = (u32)((u16)x | ((u16)y << 16));
-    reg_G3_VTX_16 = (u32)(u16)z;
+#endif
+    G3X_WriteRegister(reg_G3_VTX_16, (u32)(u16)z);
 }
+#ifdef POKEBW2_PC
+#define reg_G2_BG2PA PC_GX_REG16(0x04000020)
+#else
 #define reg_G2_BG2PA (*(vu16 *)0x04000020)
+#endif
 
 // A vertex with 10-bit coordinates, of 6 fractional bits
 static inline void G3_Vtx10(fx16 x, fx16 y, fx16 z) {
-    reg_G3_VTX_10 = (u32)((x >> 6) & 0x3ff) | ((u32)((y >> 6) & 0x3ff) << 10) | ((u32)((z >> 6) & 0x3ff) << 20);
+    G3X_WriteRegister(reg_G3_VTX_10,
+                      (u32)((x >> 6) & 0x3ff) | ((u32)((y >> 6) & 0x3ff) << 10) | ((u32)((z >> 6) & 0x3ff) << 20));
 }
 
 // The BG registers of both engines. The sub engine's are at the main engine's address plus 0x1000
+#ifdef POKEBW2_PC
+#define reg_G2_BG1CNT PC_GX_REG16(0x0400000a)
+#else
 #define reg_G2_BG1CNT (*(vu16 *)0x0400000a)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG2CNT PC_GX_REG16(0x0400000c)
+#else
 #define reg_G2_BG2CNT (*(vu16 *)0x0400000c)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG3CNT PC_GX_REG16(0x0400000e)
+#else
 #define reg_G2_BG3CNT (*(vu16 *)0x0400000e)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG0OFS PC_GX_REG32(0x04000010)
+#else
 #define reg_G2_BG0OFS (*(vu32 *)0x04000010)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG1OFS PC_GX_REG32(0x04000014)
+#else
 #define reg_G2_BG1OFS (*(vu32 *)0x04000014)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG2OFS PC_GX_REG32(0x04000018)
+#else
 #define reg_G2_BG2OFS (*(vu32 *)0x04000018)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG3OFS PC_GX_REG32(0x0400001c)
+#else
 #define reg_G2_BG3OFS (*(vu32 *)0x0400001c)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG2PA PC_GX_REG16(0x04000020)
+#else
 #define reg_G2_BG2PA (*(vu16 *)0x04000020)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG3PA PC_GX_REG16(0x04000030)
+#else
 #define reg_G2_BG3PA (*(vu16 *)0x04000030)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG0CNT PC_GX_REG16(0x04001008)
+#else
 #define reg_G2S_DB_BG0CNT (*(vu16 *)0x04001008)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG1CNT PC_GX_REG16(0x0400100a)
+#else
 #define reg_G2S_DB_BG1CNT (*(vu16 *)0x0400100a)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG2CNT PC_GX_REG16(0x0400100c)
+#else
 #define reg_G2S_DB_BG2CNT (*(vu16 *)0x0400100c)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG3CNT PC_GX_REG16(0x0400100e)
+#else
 #define reg_G2S_DB_BG3CNT (*(vu16 *)0x0400100e)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG0OFS PC_GX_REG32(0x04001010)
+#else
 #define reg_G2S_DB_BG0OFS (*(vu32 *)0x04001010)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG1OFS PC_GX_REG32(0x04001014)
+#else
 #define reg_G2S_DB_BG1OFS (*(vu32 *)0x04001014)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG2OFS PC_GX_REG32(0x04001018)
+#else
 #define reg_G2S_DB_BG2OFS (*(vu32 *)0x04001018)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG3OFS PC_GX_REG32(0x0400101c)
+#else
 #define reg_G2S_DB_BG3OFS (*(vu32 *)0x0400101c)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG2PA PC_GX_REG16(0x04001020)
+#else
 #define reg_G2S_DB_BG2PA (*(vu16 *)0x04001020)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG3PA PC_GX_REG16(0x04001030)
+#else
 #define reg_G2S_DB_BG3PA (*(vu16 *)0x04001030)
+#endif
 
 // The fields of a BG control register. Bit 13 is the extended palette slot of BG 0 and 1, and the area overflow
 // mode of BG 2 and 3
@@ -1415,11 +1617,20 @@ static inline void GX_SetBGCharOffset(GXBGCharOffset offset) {
         }                                                                                                              \
     }
 
+#ifdef POKEBW2_PC
+// Background scrolling uses signed offsets; pack the hardware bits with defined unsigned shifts.
+#define GX_DEFINE_BG_OFFSET(name, reg)                                                                                 \
+    static inline void name(int hOffset, int vOffset) {                                                                \
+        reg = ((u32)hOffset & REG_G2_BG0OFS_HOFFSET_MASK) |                                                            \
+              (((u32)vOffset << REG_G2_BG0OFS_VOFFSET_SHIFT) & REG_G2_BG0OFS_VOFFSET_MASK);                            \
+    }
+#else
 #define GX_DEFINE_BG_OFFSET(name, reg)                                                                                 \
     static inline void name(int hOffset, int vOffset) {                                                                \
         reg = (u32)((hOffset & REG_G2_BG0OFS_HOFFSET_MASK) |                                                           \
                     ((vOffset << REG_G2_BG0OFS_VOFFSET_SHIFT) & REG_G2_BG0OFS_VOFFSET_MASK));                          \
     }
+#endif
 
 #define GX_DEFINE_BG_GET_CONTROL(name, type, reg)                                                                      \
     static inline type name(void) {                                                                                    \
@@ -1475,11 +1686,21 @@ GX_DEFINE_BG_MOSAIC(G2S_BG3Mosaic, reg_G2S_DB_BG3CNT)
 
                                                                                 static inline void G2_SetBGMosaicSize(
                                                                                     int hSize, int vSize) {
+#ifdef POKEBW2_PC
+    PC_GX_REG16(REG_MOSAIC_ADDR) =
+        (PC_GX_REG16(REG_MOSAIC_ADDR) & 0xff00) | (u8)(hSize | (vSize << REG_G2_MOSAIC_BGVSIZE_SHIFT));
+#else
     *(vu8 *)REG_MOSAIC_ADDR = (u8)(hSize | (vSize << REG_G2_MOSAIC_BGVSIZE_SHIFT));
+#endif
 }
 
 static inline void G2S_SetBGMosaicSize(int hSize, int vSize) {
+#ifdef POKEBW2_PC
+    PC_GX_REG16(REG_DB_MOSAIC_ADDR) =
+        (PC_GX_REG16(REG_DB_MOSAIC_ADDR) & 0xff00) | (u8)(hSize | (vSize << REG_G2_MOSAIC_BGVSIZE_SHIFT));
+#else
     *(vu8 *)REG_DB_MOSAIC_ADDR = (u8)(hSize | (vSize << REG_G2_MOSAIC_BGVSIZE_SHIFT));
+#endif
 }
 // clang-format off
 
@@ -1512,22 +1733,22 @@ GX_DEFINE_BG_GET_CONTROL(G2S_GetBG3Control256x16Pltt, GXBg23Control256x16Pltt, r
 
 // Sets a BG's affine matrix, its center and its offset. NitroSDK's G2x_SetBGyAffine_
 // swan's gfxRegSetBGTransform
-void G2x_SetBGyAffine_(u32 addr, const MtxFx22 *mtx, int centerX, int centerY, int x, int y);
+void G2x_SetBGyAffine_(uptr addr, const MtxFx22 *mtx, int centerX, int centerY, int x, int y);
 
 static inline void G2_SetBG2Affine(const MtxFx22 *mtx, int centerX, int centerY, int x, int y) {
-    G2x_SetBGyAffine_((u32)&reg_G2_BG2PA, mtx, centerX, centerY, x, y);
+    G2x_SetBGyAffine_((uptr)&reg_G2_BG2PA, mtx, centerX, centerY, x, y);
 }
 
 static inline void G2_SetBG3Affine(const MtxFx22 *mtx, int centerX, int centerY, int x, int y) {
-    G2x_SetBGyAffine_((u32)&reg_G2_BG3PA, mtx, centerX, centerY, x, y);
+    G2x_SetBGyAffine_((uptr)&reg_G2_BG3PA, mtx, centerX, centerY, x, y);
 }
 
 static inline void G2S_SetBG2Affine(const MtxFx22 *mtx, int centerX, int centerY, int x, int y) {
-    G2x_SetBGyAffine_((u32)&reg_G2S_DB_BG2PA, mtx, centerX, centerY, x, y);
+    G2x_SetBGyAffine_((uptr)&reg_G2S_DB_BG2PA, mtx, centerX, centerY, x, y);
 }
 
 static inline void G2S_SetBG3Affine(const MtxFx22 *mtx, int centerX, int centerY, int x, int y) {
-    G2x_SetBGyAffine_((u32)&reg_G2S_DB_BG3PA, mtx, centerX, centerY, x, y);
+    G2x_SetBGyAffine_((uptr)&reg_G2S_DB_BG3PA, mtx, centerX, centerY, x, y);
 }
 
 // NitroSDK's GX_SetGraphicsMode and GXS_SetGraphicsMode
@@ -1741,8 +1962,20 @@ typedef struct GXState {
 extern GXState gGXState; // swan's g_GfxVRAMLCDCBanks
 
 // VRAM as the CPU sees it with every bank given to it, and OAM
-#define HW_LCDC_VRAM 0x06800000
 #define HW_LCDC_VRAM_SIZE 0xa4000
+#ifdef POKEBW2_PC
+#define HW_LCDC_VRAM PcGxLcdc
+#define HW_LCDC_VRAM_A (PcGxLcdc + 0x00000)
+#define HW_LCDC_VRAM_B (PcGxLcdc + 0x20000)
+#define HW_LCDC_VRAM_C (PcGxLcdc + 0x40000)
+#define HW_LCDC_VRAM_D (PcGxLcdc + 0x60000)
+#define HW_LCDC_VRAM_E (PcGxLcdc + 0x80000)
+#define HW_LCDC_VRAM_F (PcGxLcdc + 0x90000)
+#define HW_LCDC_VRAM_G (PcGxLcdc + 0x94000)
+#define HW_LCDC_VRAM_H (PcGxLcdc + 0x98000)
+#define HW_LCDC_VRAM_I (PcGxLcdc + 0xa0000)
+#else
+#define HW_LCDC_VRAM 0x06800000
 #define HW_LCDC_VRAM_A 0x06800000
 #define HW_LCDC_VRAM_B 0x06820000
 #define HW_LCDC_VRAM_C 0x06840000
@@ -1752,10 +1985,16 @@ extern GXState gGXState; // swan's g_GfxVRAMLCDCBanks
 #define HW_LCDC_VRAM_G 0x06894000
 #define HW_LCDC_VRAM_H 0x06898000
 #define HW_LCDC_VRAM_I 0x068a0000
+#endif
 // The BG and OBJ VRAM of each engine, at their largest
+#ifdef POKEBW2_PC
+#define HW_BG_VRAM ((uptr)PcGxBackground[0])
+#define HW_DB_BG_VRAM ((uptr)PcGxBackground[1])
+#else
 #define HW_BG_VRAM 0x06000000
-#define HW_BG_VRAM_SIZE 0x80000
 #define HW_DB_BG_VRAM 0x06200000
+#endif
+#define HW_BG_VRAM_SIZE 0x80000
 #define HW_DB_BG_VRAM_SIZE 0x20000
 #define HW_OBJ_VRAM_SIZE 0x40000
 // The sub engine's OBJ characters (HW_DB_OBJ_VRAM is in nitro/hw.h)
@@ -1848,12 +2087,33 @@ void G3X_InitMtxStack(void);                                      // swan's gfxR
 int G3X_GetBoxTestResult(s32 *result);                            // swan's gfxGetBoxTestResult
 
 // NitroSDK libgx's gx.c: the power and display registers it sets up, and its entry points
+#ifdef POKEBW2_PC
+#define reg_G2_BG2PD PC_GX_REG16(0x04000026)
+#else
 #define reg_G2_BG2PD (*(vu16 *)0x04000026)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2_BG3PD PC_GX_REG16(0x04000036)
+#else
 #define reg_G2_BG3PD (*(vu16 *)0x04000036)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG2PD PC_GX_REG16(0x04001026)
+#else
 #define reg_G2S_DB_BG2PD (*(vu16 *)0x04001026)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G2S_DB_BG3PD PC_GX_REG16(0x04001036)
+#else
 #define reg_G2S_DB_BG3PD (*(vu16 *)0x04001036)
+#endif
+#ifdef POKEBW2_PC
+#define reg_GX_MASTER_BRIGHT PC_GX_REG16(REG_MASTER_BRIGHT_ADDR)
+#define reg_GXS_DB_MASTER_BRIGHT PC_GX_REG16(REG_DB_MASTER_BRIGHT_ADDR)
+#else
 #define reg_GX_MASTER_BRIGHT (*(vu16 *)REG_MASTER_BRIGHT_ADDR)
 #define reg_GXS_DB_MASTER_BRIGHT (*(vu16 *)REG_DB_MASTER_BRIGHT_ADDR)
+#endif
 
 // The default DMA channel of GXi_DmaId
 #define GX_DEFAULT_DMAID 3
@@ -1933,16 +2193,16 @@ extern u16 GXi_VRamLockId;
 
 // NitroSDK's G2x_SetBlendAlpha_: alpha blending of the planes of plane1 over those of plane2. The sub screen's BLDCNT
 // is at REG_DB_BLDCNT_ADDR
-void G2x_SetBlendAlpha_(u32 reg, int plane1, int plane2, int alpha1, int alpha2); // swan's gfxRegSetAlphaBlend
+void G2x_SetBlendAlpha_(uptr reg, int plane1, int plane2, int alpha1, int alpha2); // swan's gfxRegSetAlphaBlend
 // NitroSDK's G2x_SetBlendBrightness_: brightens the planes by a positive brightness or darkens them by a negative one
-void G2x_SetBlendBrightness_(u32 reg, int plane, int brightness); // swan's gfxRegSetBrightnessBlend
+void G2x_SetBlendBrightness_(uptr reg, int plane, int brightness); // swan's gfxRegSetBrightnessBlend
 // NitroSDK's G2x_SetBlendBrightnessExt_: the brightness effect, with the alphas that BLDALPHA holds for the planes
 // that it is not applied to
 // swan's gfxRegSetBlend
-void G2x_SetBlendBrightnessExt_(u32 reg, int plane1, int plane2, int alpha1, int alpha2, int brightness);
+void G2x_SetBlendBrightnessExt_(uptr reg, int plane1, int plane2, int alpha1, int alpha2, int brightness);
 // NitroSDK's G2x_ChangeBlendBrightness_: changes the brightness effect's level and keeps its planes, turning a
 // brightening into a darkening and back
-void G2x_ChangeBlendBrightness_(u32 reg, int brightness); // swan's gfxRegAdjustBrightnessBlend
+void G2x_ChangeBlendBrightness_(uptr reg, int brightness); // swan's gfxRegAdjustBrightnessBlend
 
 // NitroSDK libgx's g3imm.c and g3_util.c: matrix commands through the FIFO port, and rotations through the matrix
 // multiplication port
@@ -1954,17 +2214,53 @@ void GX_SendFifo64B(const void *src, volatile void *dest); // swan's gfxUploadMa
 void GX_SendFifo48B(const void *src, volatile void *dest); // swan's gfxUploadMatrix4x3
 
 // NitroSDK libgx's g3x.c: the 3D engine's registers that it clears, polls and loads, and its entry points
+#ifdef POKEBW2_PC
+#define reg_G3X_GXSTAT PcGxStatus
+#else
 #define reg_G3X_GXSTAT (*(vu32 *)0x04000600)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_DISP_1DOT_DEPTH PcGx1DotDepth
+#else
 #define reg_G3X_DISP_1DOT_DEPTH (*(vu16 *)0x04000610)
+#endif
 #define reg_G3X_CLIPMTX_RESULT_0 (*(vu32 *)0x04000640)
 #define reg_G3X_VECMTX_RESULT_0 (*(vu32 *)0x04000680)
+#ifdef POKEBW2_PC
+#define reg_G3X_EDGE_COLOR_0 PC_GX_RASTER16(0x04000330)
+#else
 #define reg_G3X_EDGE_COLOR_0 (*(vu16 *)0x04000330)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_CLEAR_COLOR PC_GX_RASTER32(0x04000350)
+#else
 #define reg_G3X_CLEAR_COLOR (*(vu32 *)0x04000350)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_CLEAR_DEPTH PC_GX_RASTER16(0x04000354)
+#else
 #define reg_G3X_CLEAR_DEPTH (*(vu16 *)0x04000354)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_CLRIMAGE_OFFSET PC_GX_RASTER16(0x04000356)
+#else
 #define reg_G3X_CLRIMAGE_OFFSET (*(vu16 *)0x04000356)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_FOG_COLOR PC_GX_RASTER32(0x04000358)
+#else
 #define reg_G3X_FOG_COLOR (*(vu32 *)0x04000358)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_FOG_OFFSET PC_GX_RASTER16(0x0400035c)
+#else
 #define reg_G3X_FOG_OFFSET (*(vu16 *)0x0400035c)
+#endif
+#ifdef POKEBW2_PC
+#define reg_G3X_FOG_TABLE_0 PC_GX_RASTER32(0x04000360)
+#else
 #define reg_G3X_FOG_TABLE_0 (*(vu32 *)0x04000360)
+#endif
 #define reg_G3_SHININESS (*(vu32 *)0x040004d0)
 
 // GXSTAT: the box test's state and result, the matrix stacks' levels and errors, the command FIFO's state (bit 25 of
@@ -2050,7 +2346,7 @@ void G3X_SetDisp1DotDepth(fx32 depth);  // swan's gfxSet1DotDepth
 static inline void GXi_DmaCopy16(u32 dmaNo, const void *src, void *dest, u32 size) {
     if (dmaNo != GX_DMA_NOT_USE && size > 28) {
         if (dmaNo > MI_DMA_MAX_NUM) {
-            if ((((u32)src | (u32)dest | size) & 3) == 0) {
+            if ((((uptr)src | (uptr)dest | size) & 3) == 0) {
                 MI_NDmaCopy(dmaNo - 4, src, dest, size);
             } else {
                 MI_CpuCopy16(src, dest, size);

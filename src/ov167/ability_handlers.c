@@ -647,7 +647,7 @@ void HandlerSandVeil(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *
 }
 
 void HandlerSandVeilWeather(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonWeatherGuard(item, flow, monId, work, 4);
+    CommonWeatherGuard(item, flow, monId, (u32 *)work, 4);
 }
 
 static const BattleEventHandlerEntry sHandlersSandVeil[] = {
@@ -669,7 +669,7 @@ void HandlerSnowCloak(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
 }
 
 void HandlerSnowCloakWeather(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonWeatherGuard(item, flow, monId, work, 3);
+    CommonWeatherGuard(item, flow, monId, (u32 *)work, 3);
 }
 
 static const BattleEventHandlerEntry sHandlersSnowCloak[] = {
@@ -1193,11 +1193,11 @@ const BattleEventHandlerEntry *EventAddHyperCutter(u32 *priority) {
 }
 
 void HandlerHyperCutterCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardCheck(flow, monId, work, BATTLEMON_ATTACK_STAGE);
+    CommonStatDropGuardCheck(flow, monId, (u32 *)work, BATTLEMON_ATTACK_STAGE);
 }
 
 void HandlerHyperCutterGuard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardFixed(flow, monId, work, 0xc9);
+    CommonStatDropGuardFixed(flow, monId, (u32 *)work, 0xc9);
 }
 
 static const BattleEventHandlerEntry sHandlersKeenEye[] = {
@@ -1211,11 +1211,11 @@ const BattleEventHandlerEntry *EventAddKeenEye(u32 *priority) {
 }
 
 void HandlerKeenEyeCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardCheck(flow, monId, work, BATTLEMON_ACCURACY_STAGE);
+    CommonStatDropGuardCheck(flow, monId, (u32 *)work, BATTLEMON_ACCURACY_STAGE);
 }
 
 void HandlerKeenEyeGuard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardFixed(flow, monId, work, 0xcf);
+    CommonStatDropGuardFixed(flow, monId, (u32 *)work, 0xcf);
 }
 
 static const BattleEventHandlerEntry sHandlersClearBody[] = {
@@ -1229,11 +1229,11 @@ const BattleEventHandlerEntry *EventAddClearBody(u32 *priority) {
 }
 
 void HandlerClearBodyCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardCheck(flow, monId, work, MOVE_STAT_CHANGE_MULTI);
+    CommonStatDropGuardCheck(flow, monId, (u32 *)work, MOVE_STAT_CHANGE_MULTI);
 }
 
 void HandlerClearBodyGuard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardFixed(flow, monId, work, 0xc6);
+    CommonStatDropGuardFixed(flow, monId, (u32 *)work, 0xc6);
 }
 
 void CommonStatDropGuardCheck(BtlServerFlow *flow, u32 monId, u32 *result, u32 stat) {
@@ -1454,7 +1454,7 @@ void HandlerOwnTempoStatus(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
 }
 
 void HandlerOwnTempoAddStatusFailed(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonAddStatusFailed(item, flow, monId, work, 0x165);
+    CommonAddStatusFailed(item, flow, monId, (u32 *)work, 0x165);
 }
 
 void HandlerOwnTempoCureStatus(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
@@ -1545,7 +1545,7 @@ void CommonAddStatusFailed(BattleEventItem *item, BtlServerFlow *flow, u32 monId
 }
 
 void HandlerAddStatusFailedCommon(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonAddStatusFailed(item, flow, monId, work, 0xd2);
+    CommonAddStatusFailed(item, flow, monId, (u32 *)work, 0xd2);
 }
 
 void CommonAbilityCureStatus(BtlServerFlow *flow, u8 monId, u32 status) {
@@ -3594,11 +3594,10 @@ void HandlerKlutzCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32
 }
 
 void HandlerKlutzFail(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    u8 attackerId;
     BattleHandlerMessageParam *param;
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && work[2] != 0) {
-        attackerId = BattleEventVar_GetValue(BTL_EVAR_MON);
+        BattleEventVar_GetValue(BTL_EVAR_MON);
         param = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         param->popup = 1;
         BattleHandler_StrSetup(&param->string, 2, 0x389);
@@ -4430,11 +4429,11 @@ const BattleEventHandlerEntry *EventAddBigPecks(u32 *priority) {
 }
 
 void HandlerBigPecksCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardCheck(flow, monId, work, BATTLEMON_DEFENSE_STAGE);
+    CommonStatDropGuardCheck(flow, monId, (u32 *)work, BATTLEMON_DEFENSE_STAGE);
 }
 
 void HandlerBigPecksGuard(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    CommonStatDropGuardFixed(flow, monId, work, 0xcc);
+    CommonStatDropGuardFixed(flow, monId, (u32 *)work, 0xcc);
 }
 
 static const BattleEventHandlerEntry sHandlersSandRush[] = {

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="486" height="86" viewBox="0 0 486 86">
+  <defs>
+    <path id="party" d="M2 1H154L194 41H2Z"/>
+    <path id="overview" d="M164 1H430L470 41H204Z"/>
+    <path id="accent" d="M439 1H444.657L484.657 41H479Z"/>
+  </defs>
+  <path fill="#0b1013" d="M0 0H486V86H0Z"/>
+  <use href="#party" fill="#00cddd"/>
+  <use href="#overview" fill="none" stroke="#56646c" stroke-width="2"/>
+  <use href="#accent" fill="#ff3446"/>
+  <g transform="translate(0 43)">
+    <use href="#party" fill="none" stroke="#56646c" stroke-width="2"/>
+    <use href="#overview" fill="#00cddd"/>
+    <use href="#accent" fill="#ff3446"/>
+  </g>
+</svg>

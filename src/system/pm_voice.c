@@ -268,7 +268,11 @@ static void PokeVoice_ResetEx(PokeVoiceEntry *entry) {
 // Reads a wave archive into the entry's buffer and takes its first wave
 static BOOL PokeVoice_LoadWaveArc(PokeVoiceEntry *entry, u32 waveArc) {
     const NNSSndArcWaveArcInfo *info;
+#ifdef POKEBW2_PC
+    SNDWaveArcDisk *arc;
+#else
     SNDWaveArc *arc;
+#endif
     PokeVoiceWaveData *wave;
     u32 size;
     int read;
@@ -290,7 +294,9 @@ static BOOL PokeVoice_LoadWaveArc(PokeVoiceEntry *entry, u32 waveArc) {
     }
     arc = entry->buffer;
     wave = (PokeVoiceWaveData *)((u8 *)arc + arc->waveOffset[0]);
+#ifndef POKEBW2_PC
     SND_GetWaveDataCount(arc);
+#endif
     size = arc->fileHeader.fileSize - arc->waveOffset[0];
     size -= sizeof(PokeVoiceWaveData);
     entry->samples = wave + 1;

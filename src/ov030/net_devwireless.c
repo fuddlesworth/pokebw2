@@ -31,7 +31,7 @@ static BOOL NetDevWireless_SetDisconnectCallback(void (*callback)(int netId));
 static int NetDevWireless_Unk40(int a0, BOOL (*callback)(void));
 static BOOL NetDevWireless_Unk44(int a0, int a1);
 static int NetDevWireless_Unk48(BOOL a0, const u8 *mac, int index, int a3, void (*callback)(void));
-static BOOL NetDevWireless_Unk4C(int a0, int a1, int a2, int a3);
+static BOOL NetDevWireless_Unk4C(sptr a0, int a1, int a2, int a3);
 static BOOL NetDevWireless_Unk54(BOOL a0, int a1);
 static BOOL NetDevWireless_IsDataSharing(void);
 static BOOL NetDevWireless_Unk5C(u8 *data);
@@ -205,7 +205,7 @@ static int NetDevWireless_Unk48(BOOL a0, const u8 *mac, int index, int a3, void 
     return NetWhpipe_StartChild(a0, mac, index, callback);
 }
 
-static BOOL NetDevWireless_Unk4C(int a0, int a1, int a2, int a3) {
+static BOOL NetDevWireless_Unk4C(sptr a0, int a1, int a2, int a3) {
     return FALSE;
 }
 

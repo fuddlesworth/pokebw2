@@ -178,7 +178,20 @@ static void GFL_FontLoad(Font *font, u32 fileId, BOOL fixedWidth, HeapID heapId)
         font->lastBits = 8;
     }
     font->glyphsOffset = font->info.glyphOffset + sizeof(FontGlyphInfo);
+#ifdef POKEBW2_PC
+    // The converters read complete eight-row tiles and prefetch one byte. The 16x8 converter
+    // reads three full bytes before lastBits, whereas 16x16 reads two. Pad both layouts.
+    {
+        u32 rowBits = font->tilesWide == 1 ? 8 : font->tilesHigh == 1 ? 24 : 16;
+        u32 capacity = 4 + font->tilesHigh * (rowBits + font->lastBits);
+        if (capacity < font->glyphInfo.cellSize)
+            capacity = font->glyphInfo.cellSize;
+        font->cell = GFL_HeapAllocate(heapId, capacity, FALSE, "gf_font.c", 275);
+        MI_CpuFill8(font->cell, 0, capacity);
+    }
+#else
     font->cell = GFL_HeapAllocate(heapId, font->glyphInfo.cellSize, FALSE, "gf_font.c", 275);
+#endif
     size = GFL_ArcToolGetDataLength(font->handle, fileId) - font->info.mapOffset;
     font->maps = GFL_HeapAllocate(heapId, size, FALSE, "gf_font.c", 280);
     GFL_ArcToolReadRange(font->handle, fileId, font->info.mapOffset, size, font->maps);

@@ -79,5 +79,8 @@ u8 FieldMenu_GetMenuType(GameData *gameData, EventWork *eventWork, u32 zoneId);
 // The item chosen (FIELD_MENU_ITEM_), and moves the cursor to an item
 u32 FieldMenu_GetSelectedItem(FieldMenu *menu);
 void FieldMenu_SetCursorItem(FieldMenu *menu, u32 itemId);
+#ifdef POKEBW2_PC
+BOOL FieldMenu_IsOpenNative(void);
+#endif
 
 #endif // POKEBW2_FIELD_FIELD_MENU_H

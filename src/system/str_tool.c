@@ -43,6 +43,7 @@ static const u16 SPECIAL_COMPRESSED_CHAR_TABLE[] = {
 
 // Not in the ROM: MWCC leaves out static functions that nothing calls, but the global tables they read stay. These are
 // reconstructed from those tables, as GFL_WordSetFormatNumber for unsigned decimal and for hexadecimal numbers
+#ifndef POKEBW2_PC
 static void FormatDecimal(StrBuf *strbuf, u32 number, u32 digits, u32 pad, BOOL ascii) {
     const u16 *chars = ascii == FALSE ? digitsMono : digitsAscii;
     u32 div;
@@ -84,6 +85,8 @@ static void FormatHex(StrBuf *strbuf, u32 number, u32 digits, u32 pad, BOOL asci
         }
     }
 }
+
+#endif
 
 #define COMPRESSED_STRING_MARK 0xf100
 #define COMPRESSED_CHAR_BITS 9

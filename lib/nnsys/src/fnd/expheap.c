@@ -17,6 +17,7 @@
 #define MBLOCK_USED_SIGNATURE 0x5544      // 'UD'
 
 #define HEADER_SIZE sizeof(NNSiFndExpHeapMBlockHead)
+#define HEAP_ALIGNMENT sizeof(void *)
 // What is left of a free block is kept only when it can hold a header and 4 bytes more
 #define MIN_FREE_BLOCK_SIZE (HEADER_SIZE + 4)
 // The heap needs room for its heads, a block header and 4 bytes
@@ -285,9 +286,9 @@ static BOOL RecycleRegion(NNSiFndExpHeapHead *expHeap, const NNSiMemRegion *regi
 }
 
 NNSFndHeapHandle NNS_FndCreateExpHeapEx(void *startAddress, u32 size, u16 optFlag) {
-    void *end = (void *)((NNSiGetUIntPtr(startAddress) + size) & ~3);
+    void *end = (void *)((NNSiGetUIntPtr(startAddress) + size) & ~(HEAP_ALIGNMENT - 1));
 
-    startAddress = (void *)((NNSiGetUIntPtr(startAddress) + 3) & ~3);
+    startAddress = (void *)((NNSiGetUIntPtr(startAddress) + HEAP_ALIGNMENT - 1) & ~(HEAP_ALIGNMENT - 1));
     if (NNSiGetUIntPtr(startAddress) > NNSiGetUIntPtr(end) || GetOffsetFromPtr(startAddress, end) < MIN_HEAP_SIZE) {
         return NULL;
     }
@@ -300,10 +301,16 @@ void NNS_FndDestroyExpHeap(NNSFndHeapHandle heap) {
 
 // A negative alignment takes the block from the end of the heap
 void *NNS_FndAllocFromExpHeapEx(NNSFndHeapHandle heap, u32 size, int alignment) {
+#ifdef POKEBW2_PC
+    if (alignment >= 0 && alignment < (int)HEAP_ALIGNMENT)
+        alignment = HEAP_ALIGNMENT;
+    else if (alignment < 0 && alignment > -(int)HEAP_ALIGNMENT)
+        alignment = -(int)HEAP_ALIGNMENT;
+#endif
     if (size == 0) {
         size = 1;
     }
-    size = (size + 3) & ~3;
+    size = (size + HEAP_ALIGNMENT - 1) & ~(HEAP_ALIGNMENT - 1);
     if (alignment >= 0) {
         return AllocFromHead(heap, size, alignment);
     } else {
@@ -318,7 +325,7 @@ u32 NNS_FndResizeForMBlockExpHeap(NNSFndHeapHandle heap, void *memBlock, u32 siz
     NNSiFndExpHeapMBlockHead *block = GetMBlockHeadPtr(memBlock);
     u32 oldSize;
 
-    size = (size + 3) & ~3;
+    size = (size + HEAP_ALIGNMENT - 1) & ~(HEAP_ALIGNMENT - 1);
     oldSize = block->blockSize;
     if (size == oldSize) {
         return size;
@@ -393,12 +400,16 @@ u32 NNS_FndGetAllocatableSizeForExpHeapEx(NNSFndHeapHandle heap, int alignment) 
     NNSiFndExpHeapMBlockHead *block;
 
     alignment = abs(alignment);
+#ifdef POKEBW2_PC
+    if (alignment < (int)HEAP_ALIGNMENT)
+        alignment = HEAP_ALIGNMENT;
+#endif
     best = 0;
     bestSkip = 0xFFFFFFFF;
     for (block = GetExpHeapHeadPtrFromHandle(heap)->mbFreeList.head; block != NULL; block = block->pMBHeadNext) {
         void *data = GetMemPtrForMBlock(block);
-        u32 aligned = (NNSiGetUIntPtr(data) + (alignment - 1)) & ~(alignment - 1);
-        u32 end = NNSiGetUIntPtr(data) + block->blockSize;
+        uptr aligned = (NNSiGetUIntPtr(data) + (alignment - 1)) & ~(uptr)(alignment - 1);
+        uptr end = NNSiGetUIntPtr(data) + block->blockSize;
 
         if (aligned < end) {
             u32 room = end - aligned;

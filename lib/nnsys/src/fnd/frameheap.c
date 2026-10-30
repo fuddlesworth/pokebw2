@@ -7,6 +7,7 @@
 // in NitroSystem
 
 #define NNSI_FRMHEAP_SIGNATURE 0x46524D48 // 'FRMH'
+#define HEAP_ALIGNMENT sizeof(void *)
 
 // The heap needs room for its heads
 #define MIN_HEAP_SIZE (sizeof(NNSiFndHeapHead) + sizeof(NNSiFndFrmHeapHead))
@@ -82,9 +83,9 @@ static void FreeTail(NNSiFndHeapHead *heap) {
 }
 
 NNSFndHeapHandle NNS_FndCreateFrmHeapEx(void *startAddress, u32 size, u16 optFlag) {
-    void *end = (void *)((NNSiGetUIntPtr(startAddress) + size) & ~3);
+    void *end = (void *)((NNSiGetUIntPtr(startAddress) + size) & ~(HEAP_ALIGNMENT - 1));
 
-    startAddress = (void *)((NNSiGetUIntPtr(startAddress) + 3) & ~3);
+    startAddress = (void *)((NNSiGetUIntPtr(startAddress) + HEAP_ALIGNMENT - 1) & ~(HEAP_ALIGNMENT - 1));
     if (NNSiGetUIntPtr(startAddress) > NNSiGetUIntPtr(end) || GetOffsetFromPtr(startAddress, end) < MIN_HEAP_SIZE) {
         return NULL;
     }
@@ -99,10 +100,17 @@ void NNS_FndDestroyFrmHeap(NNSFndHeapHandle heap) {
 void *NNS_FndAllocFromFrmHeapEx(NNSFndHeapHandle heap, u32 size, int alignment) {
     NNSiFndFrmHeapHead *frmHeap = GetFrmHeapHeadPtrFromHeapHead(heap);
 
+#ifdef POKEBW2_PC
+    if (alignment >= 0 && alignment < (int)HEAP_ALIGNMENT)
+        alignment = HEAP_ALIGNMENT;
+    else if (alignment < 0 && alignment > -(int)HEAP_ALIGNMENT)
+        alignment = -(int)HEAP_ALIGNMENT;
+#endif
+
     if (size == 0) {
         size = 1;
     }
-    size = (size + 3) & ~3;
+    size = (size + HEAP_ALIGNMENT - 1) & ~(HEAP_ALIGNMENT - 1);
     if (alignment >= 0) {
         return AllocFromHead(frmHeap, size, alignment);
     } else {
@@ -125,7 +133,7 @@ void NNS_FndFreeToFrmHeap(NNSFndHeapHandle heap, int mode) {
 BOOL NNS_FndRecordStateForFrmHeap(NNSFndHeapHandle heap, u32 tag) {
     NNSiFndFrmHeapHead *frmHeap = GetFrmHeapHeadPtrFromHeapHead(heap);
     void *headBefore = frmHeap->headAllocator;
-    NNSiFndFrmHeapState *record = AllocFromHead(frmHeap, sizeof(NNSiFndFrmHeapState), 4);
+    NNSiFndFrmHeapState *record = AllocFromHead(frmHeap, sizeof(NNSiFndFrmHeapState), HEAP_ALIGNMENT);
 
     if (record == NULL) {
         return FALSE;

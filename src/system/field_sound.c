@@ -158,7 +158,7 @@ static u32 GetZoneBGMOverrideID(GameData *gameData, s32 zoneId) {
 static u32 GetMapBGMIDByPlayerState(GameData *gameData, s32 zoneId, u8 season) {
     u32 exState = GetPlayerLandSurfCycleState(gameData);
     // Unused: the original fetches the sound system here and drops it
-    FieldSound *fieldSound = GameData_GetFieldSoundSystem(gameData);
+    GameData_GetFieldSoundSystem(gameData);
     u32 bgm = GetZoneBGMOverrideID(gameData, zoneId);
 
     if (bgm != NO_BGM_OVERRIDE) {

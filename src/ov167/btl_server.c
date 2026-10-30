@@ -264,7 +264,7 @@ BOOL BattleServer_ProcAskEscape(BtlServer *server, int *seq) {
     case 1:
         if (BattleServer_AllClientsReplied(server)) {
             u8 clientId = GetPlayerClientID(server->mainModule);
-            u8 *reply;
+            const u8 *reply;
 
             BattleServer_FinishCmd(server);
             reply = BtlAdapter_GetReturnData(server->clients[clientId].adapter, NULL);
@@ -385,7 +385,7 @@ BOOL DoesSwitchModeNeedConfirming(BtlServer *server) {
 
 u8 GetNextEnemyForSwitchMode(BtlServer *server) {
     BtlServerClient *client;
-    BattleAction *action;
+    const BattleAction *action;
     u8 slot;
 
     client = &server->clients[1];
@@ -727,7 +727,7 @@ void *BattleServer_MakeRecActionsChunk(BtlServer *server, u8 value, BOOL flag, u
     for (i = 0; i < 4; i++) {
         if (server->clients[i].clientId != BTL_SERVER_CLIENT_NONE) {
             u32 actionSize;
-            void *actions = BtlAdapter_GetReturnData(server->clients[i].adapter, &actionSize);
+            const void *actions = BtlAdapter_GetReturnData(server->clients[i].adapter, &actionSize);
 
             BtlRecTool_AddClientActions(&server->recTool, i, actions, actionSize / sizeof(BattleAction));
         }
@@ -744,7 +744,7 @@ void BattleServer_StoreClientActions(BtlServer *server) {
         server->clientActions.count[i] = 0;
         if (IsSwitchModeEnabled(client)) {
             u32 size;
-            BattleAction *actions = BtlAdapter_GetReturnData(client->adapter, &size);
+            const BattleAction *actions = BtlAdapter_GetReturnData(client->adapter, &size);
             u32 j;
             u32 count = size / sizeof(BattleAction);
 

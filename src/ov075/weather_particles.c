@@ -177,7 +177,7 @@ WeatherData SPECK_WEATHER = {
 };
 
 WeatherData BLIZZARD_WEATHER = {
-    { ARCID_WEATHER, 1, 1, 0x1f, 0x18, 0x1e, 0x1d, 0x2a, 0x303, 3, 0x102 },
+    { ARCID_WEATHER, 1, 1, 0x1f, 0x18, 0x1e, 0x1d, { { 0x2a, 0x303, 3, 0x102 } } },
     sizeof(BlizzardWork),
     {
         Blizzard_Init,
@@ -723,7 +723,11 @@ static void Flutter_AddFlakes(WeatherTask *task, int count, HeapID heapId) {
             kind = 0;
         } else if (seed % 100 < 95) {
             kind = 1;
+#ifdef POKEBW2_PC
+        } else {
+#else
         } else if (seed % 100 < 100) {
+#endif
             kind = 2;
         }
         ClActor_SetAnimFrame(actor, 2 - kind);

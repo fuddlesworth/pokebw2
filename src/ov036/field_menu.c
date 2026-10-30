@@ -120,6 +120,12 @@ struct FieldMenu {
     TCB *vblankTcb;
     u32 cursorFadeFrame;
 };
+#ifdef POKEBW2_PC
+static FieldMenu *sNativeFieldMenu;
+BOOL FieldMenu_IsOpenNative(void) {
+    return sNativeFieldMenu != NULL;
+}
+#endif
 
 // What FieldMenu_CreateItem makes an item from
 typedef struct {
@@ -309,6 +315,9 @@ FieldMenu *FieldMenu_Create(HeapID heapId, HeapID tmpHeapId, FieldSubscreen *sub
         }
     }
     GFL_NetSetIconScreen(FALSE, menu->tmpHeapId);
+#ifdef POKEBW2_PC
+    sNativeFieldMenu = menu;
+#endif
     return menu;
 }
 
@@ -321,6 +330,9 @@ static void FieldMenu_RestoreSubscreenOnCancel(FieldMenu *menu) {
 void FieldMenu_Free(FieldMenu *menu) {
     u8 i;
 
+#ifdef POKEBW2_PC
+    sNativeFieldMenu = NULL;
+#endif
     for (i = 0; i < FIELD_MENU_SLOT_COUNT; i++) {
         FieldMenu_FreeItem(menu, &menu->items[i]);
     }
@@ -491,7 +503,9 @@ static void FieldMenu_LoadResources(FieldMenu *menu, ArcTool *arc, u8 menuType, 
     static const BGSetup sFieldMenuBG6Setup = { 0, 0, 0x1000, 0, 2, 0, 0xc, 0, 0x5800, 0, 1, 0, 0 };
     static const BGSetup sFieldMenuBG7Setup = { 0, 0, 0x800, 0, 1, 0, 0xa, 0, 0x5800, 0, 3, 0, 0 };
     // An unused background setup retained in the menu's resources.
+#ifndef POKEBW2_PC
     static const BGSetup sFieldMenuUnusedBGSetup = { 0, 0, 0x800, 0, 1, 0, 2, 1, 0x8000, 0, 0, 0, 0 };
+#endif
     static const BGSetup sFieldMenuBG5Setup = { 0, 0, 0x1000, 0, 2, 0, 0xe, 0, 0x5800, 0, 3, 0, 0 };
 
     ArcTool *common;

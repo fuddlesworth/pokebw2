@@ -3452,7 +3452,7 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
     case 12:
         flip = TRUE;
     case 11:
-        rule = BtlvEffvm_GetDefenderForEmitter(param->vm, &param->to);
+        rule = BtlvEffvm_GetDefenderForEmitter(param->vm, (int *)&param->to);
         BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &to, param->to, rule);
         param->to = -1;
         break;
@@ -3521,6 +3521,11 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
         ParticleEmitter_SetUpdateCallback(emitter, BtlvEffvm_MoveEmitterArc);
         wk->allocCount++;
         work->angle = 0;
+#ifdef BUGFIX
+        // BUG: the arc callback advances the second angle even for single-axis motion.
+        work->angle2 = 0;
+        work->angle2Step = 0;
+#endif
         work->wait = 0;
         work->waitAccum = 0;
         work->waitStep = 0;
@@ -3908,6 +3913,10 @@ static u32 BtlvEffvm_GetVariable(BtlvEffvm *wk, int id) {
         }
         return FALSE;
     }
+#ifdef POKEBW2_PC
+    GFL_DebugAssertFailEx(__FILE__, __LINE__, "Invalid battle effect condition %d", id);
+    return FALSE;
+#endif
 }
 
 static void BtlvEffvm_AddEmitters(BtlvEffvm *wk, BtlvEffvmEmitParam *param, int index, int resourceId) {

@@ -7,8 +7,19 @@
 #include "nitro/cp.h"
 #include "nitro/fx.h"
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Identity44_(MtxFx44 *mtx) {
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            mtx->m[row][col] = row == col ? FX32_ONE : 0;
+        }
+    }
+}
+#else
 asm void MTX_Identity44_(MtxFx44 *mtx) {
     mov r2, #0x1000
     mov r3, #0
@@ -22,10 +33,20 @@ asm void MTX_Identity44_(MtxFx44 *mtx) {
     stmia r0!, {r1, r2}
     bx lr
 }
+#endif
 
 // clang-format on
 
 // clang-format off
+#ifdef POKEBW2_PC
+void MTX_Copy44To43_(const MtxFx44 *src, MtxFx43 *dst) {
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 3; col++) {
+            dst->m[row][col] = row < 4 && col < 4 ? src->m[row][col] : (row == col ? FX32_ONE : 0);
+        }
+    }
+}
+#else
 asm void MTX_Copy44To43_(const MtxFx44 *src, MtxFx43 *dst) {
     ldmia r0!, {r2, r3, ip}
     add r0, r0, #4
@@ -41,6 +62,7 @@ asm void MTX_Copy44To43_(const MtxFx44 *src, MtxFx43 *dst) {
     stmia r1!, {r2, r3, ip}
     bx lr
 }
+#endif
 
 // clang-format on
 
@@ -240,4 +262,6 @@ void MTX_OrthoW(fx32 t, fx32 b, fx32 l, fx32 r, fx32 n, fx32 f, fx32 scaleW, Mtx
     mtx->m[3][1] = (fx32)((invHeight * -(t + b) + 0x80000000LL) >> 32);
     mtx->m[3][2] = (fx32)((invDepth * (f + n) + 0x80000000LL) >> 32);
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif

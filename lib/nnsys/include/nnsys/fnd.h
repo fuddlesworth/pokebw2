@@ -149,7 +149,7 @@ void *NNS_FndAllocFromUnitHeap(NNSFndHeapHandle heap);
 void NNS_FndFreeToUnitHeap(NNSFndHeapHandle heap, void *memBlock);
 
 static inline u32 NNS_FndGetMemBlockSizeForUnitHeap(NNSFndHeapHandle heap) {
-    return ((NNSiFndUntHeapHead *)((u32)heap + sizeof(NNSiFndHeapHead)))->mBlkSize;
+    return ((NNSiFndUntHeapHead *)(heap + 1))->mBlkSize;
 }
 
 // Allocators (allocator.c): a heap and its parameters behind one pair of functions

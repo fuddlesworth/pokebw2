@@ -51,7 +51,7 @@ void NetSync_RecvCallback(u32 a0, u32 a1, const NetSyncPacket *packet, NetSyncWo
     }
 }
 
-void NetSync_StartTiming(u32 ignored, u32 a1) {
+void NetSync_StartTiming(uptr ignored, u32 a1) {
     NetHandle_SendTimingPair(NetHandle_GetOwn(), a1, 0x2d);
 }
 

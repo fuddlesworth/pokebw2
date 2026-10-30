@@ -9,6 +9,9 @@
 #include "nitro/os.h"
 #include "nnsys/g2d.h"
 #include "system/palanm.h"
+#ifdef POKEBW2_PC
+#include "../../pc/gx_backend.h"
+#endif
 
 // Palette fades, and blends and filters of colors
 
@@ -148,16 +151,32 @@ void PaletteFade_LoadFromVRAM(PaletteFade *fade, u32 vram, u16 offset, u32 size)
 
     switch (vram) {
     case PALFADE_VRAM_MAIN_BG:
+#ifdef POKEBW2_PC
+        src = (u16 *)PcGx2D[0].background_palette;
+#else
         src = (u16 *)HW_BG_PLTT;
+#endif
         break;
     case PALFADE_VRAM_SUB_BG:
+#ifdef POKEBW2_PC
+        src = (u16 *)PcGx2D[1].background_palette;
+#else
         src = (u16 *)HW_DB_BG_PLTT;
+#endif
         break;
     case PALFADE_VRAM_MAIN_OBJ:
+#ifdef POKEBW2_PC
+        src = (u16 *)PcGx2D[0].object_palette;
+#else
         src = (u16 *)HW_OBJ_PLTT;
+#endif
         break;
     case PALFADE_VRAM_SUB_OBJ:
+#ifdef POKEBW2_PC
+        src = (u16 *)PcGx2D[1].object_palette;
+#else
         src = (u16 *)HW_DB_OBJ_PLTT;
+#endif
         break;
     default:
         return;

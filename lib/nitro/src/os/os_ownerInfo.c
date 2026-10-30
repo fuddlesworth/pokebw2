@@ -10,6 +10,7 @@ static const u16 col_table[16] = {
     0x1e80, 0x4769, 0x7ae6, 0x7960, 0x4800, 0x6811, 0x741a, 0x481f,
 };
 
+#ifndef POKEBW2_PC
 void OS_GetMacAddress(u8 *macAddress) {
     MI_CpuCopy8(((NVRAMConfig *)HW_NVRAM_USER_INFO)->macAddress, macAddress, 6);
 }
@@ -36,6 +37,8 @@ s64 OS_GetOwnerRtcOffset(void) {
 
     return config->rtcOffset;
 }
+
+#endif
 
 const u16 *OS_GetFavoriteColorTable(void) {
     return col_table;

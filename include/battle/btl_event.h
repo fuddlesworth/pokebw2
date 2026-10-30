@@ -335,7 +335,7 @@ struct BattleEventItem {
 typedef struct {
     u32 sp;
     u16 keys[0x60];
-    s32 values[0x60];
+    sptr values[0x60];
     s32 maxValues[0x60];
     s32 minValues[0x60];
     // 0, or 1 to be rewritten once (then 2), 3 to be multiplied and clamped, 4 constant
@@ -360,16 +360,16 @@ void BattleEventVar_CheckReset(void);
 // The line is the caller's source line, which they ignore
 void BattleEventVar_Push(u32 line);
 void BattleEventVar_Pop(u32 line);
-void BattleEventVar_SetValue(u32 key, s32 value);
-void BattleEventVar_SetConstValue(u32 key, s32 value);
-void BattleEventVar_SetRewriteOnceValue(u32 key, s32 value);
+void BattleEventVar_SetValue(u32 key, sptr value);
+void BattleEventVar_SetConstValue(u32 key, sptr value);
+void BattleEventVar_SetRewriteOnceValue(u32 key, sptr value);
 void BattleEventVar_SetMulValue(u32 key, s32 value, s32 minValue, s32 maxValue);
 BOOL BattleEventVar_GetValueIfExist(u16 key, s32 *value);
 u32 BattleEventVar_FindSetIndex(BattleEventVarStack *vars, u32 key);
 s32 BattleEventVar_FindIndex(BattleEventVarStack *vars, u16 key);
 s32 BattleEventVar_ClampValue(BattleEventVarStack *vars, u32 index, s32 value);
 // Whether the item's handlers are skipped for now
-BOOL MoveEventItem_IsPersistent(BattleEventItem *item, s32 *work);
+BOOL MoveEventItem_IsPersistent(BattleEventItem *item, u32 *work);
 
 void BattleEventItem_ConvertToIsolated(BattleEventItem *item);
 BOOL BattleEventItem_IsIsolated(BattleEventItem *item);
@@ -390,7 +390,7 @@ BattleEventItem *BattleEvent_SeekItem(u32 type, u32 monId);
 void BattleEventItem_Remove(BattleEventItem *item);
 void BattleEvent_ItemRotationSleep(u8 monId, u32 factorType);
 BOOL BattleEvent_ItemRotationWake(u8 monId, u32 factorType);
-u32 BattleEventVar_GetValue(u32 key);
+uptr BattleEventVar_GetValue(u32 key);
 BOOL BattleEventVar_RewriteValue(u16 key, s32 value);
 void BattleEventVar_MulValue(u16 key, s32 value);
 

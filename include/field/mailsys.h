@@ -112,7 +112,15 @@ struct MailSysWork {
     PMSData pmsWord;
     ClActUnit *pmsClUnit;
     PrintQueue *pmsQueue;
+#ifdef POKEBW2_PC
+    u16 nativeMessage[256];
+#endif
 };
+
+#ifdef POKEBW2_PC
+MailSysWork *MailSys_GetNativeWork(void);
+BOOL MailSys_SetNativeCursor(u32 cursor);
+#endif
 
 // The phases: the mail only shown, and the mail written
 enum {

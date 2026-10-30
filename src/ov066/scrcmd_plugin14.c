@@ -58,7 +58,7 @@ static BOOL Scrcmd_Plugin14_HideGC6Model3(VM *vm, FieldScriptEnv *env) {
 
 // Moves an actor by whole units along x and z
 static BOOL Scrcmd_Plugin14_ShiftActor(VM *vm, FieldScriptEnv *env) {
-    GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
+    FieldScriptEnv_GetGameSystem(env);
     u32 actorId = ScriptReadAny(vm, env);
     s16 dx = ScriptReadAny(vm, env);
     s16 dz = ScriptReadAny(vm, env);
@@ -107,7 +107,7 @@ static BOOL Plugin14_SeqFadeOutTask(void *data);
 
 // Fades a sound sequence out and stops it
 static BOOL Scrcmd_Plugin14_FadeOutSeq(VM *vm, FieldScriptEnv *env) {
-    ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
+    FieldScriptEnv_GetScriptWork(env);
     Field *field = GSYS_GetField(FieldScriptEnv_GetGameSystem(env));
     HeapID heapId = Field_GetHeapID(field);
     u16 seq = ScriptReadAny(vm, env);

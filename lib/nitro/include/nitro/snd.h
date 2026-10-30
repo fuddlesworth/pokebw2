@@ -164,6 +164,17 @@ typedef struct SNDWaveData SNDWaveData;
 typedef struct SNDWaveArc SNDWaveArc;
 typedef struct SNDWaveArcLink SNDWaveArcLink;
 
+#ifdef POKEBW2_PC
+// On-disk SWAR headers keep 32-bit reserved link slots even on a 64-bit host.
+typedef struct SNDWaveArcDisk {
+    SNDBinaryFileHeader fileHeader;
+    SNDBinaryBlockHeader blockHeader;
+    u32 reserved[8];
+    u32 waveCount;
+    u32 waveOffset[];
+} SNDWaveArcDisk;
+#endif
+
 // A wave archive: its waves' offsets in the file. Loaded in the heap, the table holds the waves' addresses
 struct SNDWaveArc {
     SNDBinaryFileHeader fileHeader;

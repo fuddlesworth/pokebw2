@@ -441,6 +441,14 @@ BOOL GFL_G3DResUploadTexData(G3DResource *resource) {
             return FALSE;
         }
         if (!GFL_G3DResAllocPltMem(tex, &pltKey)) {
+#ifdef BUGFIX
+            if (texKey != 0) {
+                NNS_GfdFreeTexVram(texKey);
+            }
+            if (tex4x4Key != 0) {
+                NNS_GfdFreeTexVram(tex4x4Key);
+            }
+#endif
             return FALSE;
         }
         NNS_G3dTexSetTexKey(tex, texKey, tex4x4Key);
@@ -498,6 +506,14 @@ BOOL GFL_G3DResSetupTexData(G3DResource *resource) {
             return FALSE;
         }
         if (!GFL_G3DResAllocPltMem(tex, &pltKey)) {
+#ifdef BUGFIX
+            if (texKey != 0) {
+                NNS_GfdFreeTexVram(texKey);
+            }
+            if (tex4x4Key != 0) {
+                NNS_GfdFreeTexVram(tex4x4Key);
+            }
+#endif
             return FALSE;
         }
         NNS_G3dTexSetTexKey(tex, texKey, tex4x4Key);
@@ -528,6 +544,11 @@ static BOOL GFL_G3DResAllocTexMem(NNSG3dResTex *tex, NNSGfdTexKey *texKey, NNSGf
     u32 texSize = NNS_G3dTexGetRequiredSize(tex);
     u32 tex4x4Size = NNS_G3dTex4x4GetRequiredSize(tex);
 
+    // BUG: absent texture kinds leave keys uninitialized, and a failed second allocation leaks the first.
+#ifdef BUGFIX
+    *texKey = 0;
+    *tex4x4Key = 0;
+#endif
     if (texSize != 0) {
         *texKey = NNS_GfdAllocTexVram(texSize, FALSE, 0);
         if (*texKey == 0) {
@@ -542,6 +563,12 @@ static BOOL GFL_G3DResAllocTexMem(NNSG3dResTex *tex, NNSGfdTexKey *texKey, NNSGf
         *tex4x4Key = NNS_GfdAllocTexVram(texSize, TRUE, 0);
 #endif
         if (*tex4x4Key == 0) {
+#ifdef BUGFIX
+            if (*texKey != 0) {
+                NNS_GfdFreeTexVram(*texKey);
+                *texKey = 0;
+            }
+#endif
             return FALSE;
         }
     }
@@ -551,6 +578,10 @@ static BOOL GFL_G3DResAllocTexMem(NNSG3dResTex *tex, NNSGfdTexKey *texKey, NNSGf
 static BOOL GFL_G3DResAllocPltMem(NNSG3dResTex *tex, NNSGfdPlttKey *pltKey) {
     u32 size = NNS_G3dPlttGetRequiredSize(tex);
 
+    // BUG: a palette-free texture leaves its palette key uninitialized.
+#ifdef BUGFIX
+    *pltKey = 0;
+#endif
     if (size != 0) {
         *pltKey = NNS_GfdAllocPlttVram(size, tex->tex4x4Info.flag & NNS_G3D_RESPLTT_USEPLTT4, 0);
         if (*pltKey == 0) {

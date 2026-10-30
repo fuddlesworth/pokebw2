@@ -326,11 +326,11 @@ typedef enum {
     AnmCallbackType_MAX,
 } NNSG2dAnmCallbackType;
 
-typedef void (*NNSG2dAnmCallBackPtr)(u32 param, fx32 currentFrame);
+typedef void (*NNSG2dAnmCallBackPtr)(uptr param, fx32 currentFrame);
 
 typedef struct {
     NNSG2dAnmCallbackType type;
-    u32 param;
+    uptr param;
     NNSG2dAnmCallBackPtr pFunc;
     u16 frameIdx;
     u16 pad16_;
@@ -493,10 +493,10 @@ void NNS_G2dInitAnimCtrl(NNSG2dAnimController *animCtrl);
 void NNS_G2dInitAnimCallBackFunctor(NNSG2dAnimCallBackFunctor *functor);
 void NNS_G2dResetAnimCtrlState(NNSG2dAnimController *animCtrl);
 void NNS_G2dBindAnimCtrl(NNSG2dAnimController *animCtrl, const NNSG2dAnimSequence *seq);
-void NNS_G2dSetAnimCtrlCallBackFunctor(NNSG2dAnimController *animCtrl, NNSG2dAnmCallbackType type, u32 param,
+void NNS_G2dSetAnimCtrlCallBackFunctor(NNSG2dAnimController *animCtrl, NNSG2dAnmCallbackType type, uptr param,
                                        NNSG2dAnmCallBackPtr pFunc);
-void NNS_G2dSetAnimCtrlCallBackFunctorAtAnimFrame(NNSG2dAnimController *animCtrl, u32 param, NNSG2dAnmCallBackPtr pFunc,
-                                                  u16 frameIdx);
+void NNS_G2dSetAnimCtrlCallBackFunctorAtAnimFrame(NNSG2dAnimController *animCtrl, uptr param,
+                                                  NNSG2dAnmCallBackPtr pFunc, u16 frameIdx);
 BOOL NNSi_G2dIsAnimCtrlLoopAnim(const NNSG2dAnimController *animCtrl);
 
 // Cell animations: NNS_G2dInitCellAnimationVramTransfered transfers each cell's characters to VRAM as it is shown

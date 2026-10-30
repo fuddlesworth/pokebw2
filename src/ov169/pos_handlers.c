@@ -51,7 +51,11 @@ BOOL PosEventAdd(u32 effect, u8 pos, u8 monId, const u32 *args, u8 argCount) {
                 }
                 BattleEventItem_SetWorkValue(item, 6, monId);
             }
+#ifdef POKEBW2_PC
+            return item != NULL;
+#else
             return (BOOL)item;
+#endif
         }
     }
     return FALSE;

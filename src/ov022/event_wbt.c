@@ -123,10 +123,10 @@ static GameEventReturnCode EventWbtList_Callback(GameEvent *event, u32 *state, v
         GFL_SndPlayerSetVolume(2, 63);
         if (work->unkC) {
             next = EventFieldSubprocessTransition_Create(work->gsys, work->field, OVERLAY_WBT_LIST,
-                                                         &WBT_LIST_PROC_FUNCTIONS, work->setup);
+                                                         GAME_PROC_REFERENCE(WBT_LIST_PROC_FUNCTIONS), work->setup);
         } else {
-            next = EventFieldSubprocessCall_Create(work->gsys, work->field, OVERLAY_WBT_LIST, &WBT_LIST_PROC_FUNCTIONS,
-                                                   work->setup);
+            next = EventFieldSubprocessCall_Create(work->gsys, work->field, OVERLAY_WBT_LIST,
+                                                   GAME_PROC_REFERENCE(WBT_LIST_PROC_FUNCTIONS), work->setup);
         }
         GameEvent_ChainNext(event, next);
         *state = 1;
@@ -187,7 +187,8 @@ static GameEventReturnCode EventWbtWinRecord_Callback(GameEvent *event, u32 *sta
     switch (*state) {
     case 0:
         GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(work->gsys, work->field, OVERLAY_WIN_RECORD,
-                                                                         &WIN_RECORD_PROC_FUNCTIONS, work->param));
+                                                                         GAME_PROC_REFERENCE(WIN_RECORD_PROC_FUNCTIONS),
+                                                                         work->param));
         *state = 1;
         break;
     case 1:
@@ -215,7 +216,8 @@ static GameEventReturnCode EventWbtDownload_Callback(GameEvent *event, u32 *stat
     switch (*state) {
     case 0:
         GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(work->gsys, work->field, OVERLAY_T_DOWNLOAD,
-                                                                         &T_DOWNLOAD_PROC_FUNCTIONS, work->param));
+                                                                         GAME_PROC_REFERENCE(T_DOWNLOAD_PROC_FUNCTIONS),
+                                                                         work->param));
         *state = 1;
         break;
     case 1:

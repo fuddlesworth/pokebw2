@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="565" viewBox="0 0 1280 565">
+ <defs><pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#263039" stroke-width=".6"/></pattern><linearGradient id="paper" x2="0" y2="1"><stop stop-color="#f0f1f3"/><stop offset="1" stop-color="#e6e9ec"/></linearGradient></defs>
+ <path fill="#0b1013" d="M0 0H1280V565H0Z"/><path fill="url(#grid)" d="M0 0H1280V565H0Z"/>
+ <path fill="#12191e" stroke="#68747d" stroke-width="2" d="M28 24H364L394 54V528L372 550H50L28 528Z"/>
+ <path fill="url(#grid)" d="M30 26H363L392 55V527L371 548H51L30 527Z"/>
+ <path fill="none" stroke="#d6dce0" stroke-width="2" d="M24 20H365L398 53V530L374 554H48L24 530Z"/>
+ <path fill="#ebedef" d="M416 69H1218L1254 105V340H436L416 320Z"/>
+ <path fill="url(#paper)" stroke="#29333a" stroke-width="2" d="M422 75H1215L1248 108V334H439L422 317Z"/>
+ <path fill="#d3d9de" d="M1190 82H1212V104ZM1220 88L1242 110V144L1232 134V111Z"/>
+ <path fill="#161e23" stroke="#707b83" stroke-width="2" d="M436 354H1218L1254 390V526L1230 550H458L436 528Z"/>
+ <path fill="url(#grid)" d="M438 356H1217L1252 391V525L1229 548H459L438 527Z"/>
+ <path fill="#e3e8eb" d="M430 336H436V528L458 550H1230L1254 526V531L1232 554H456L430 528Z"/>
+ <path fill="#02d2e5" d="M1237.657 554L1260 531.657V537.314L1243.314 554Z"/>
+ <path fill="#89959d" d="M28 22L6 0H9L31 22Z"/>
+</svg>

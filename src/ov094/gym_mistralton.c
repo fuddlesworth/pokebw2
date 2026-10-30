@@ -563,7 +563,6 @@ static GameEvent *Mistralton_CreateRideEvent(GameEvent *parent, GameSystem *gsys
 
 static GameEventReturnCode MistraltonTravelEvent_Run(GameEvent *event, u32 *state, void *eventData) {
     RideEvent *data = eventData;
-    MistraltonWork *work;
     FieldTask *task;
     VecFx32 pos;
     FieldCameraShakeSetup shake;
@@ -575,7 +574,7 @@ static GameEventReturnCode MistraltonTravelEvent_Run(GameEvent *event, u32 *stat
     // The frames after which the bump ends and the ride waits for the tasks to finish
     static const u16 sEndFrames[2] = { 0x5a, 0x78 };
 
-    work = Field_GetGimmickWorkBlock(data->field, WORK_BLOCK);
+    Field_GetGimmickWorkBlock(data->field, WORK_BLOCK);
     switch (*state) {
     case 0:
         if (FldAct_CheckAcmdEnd(data->actor)) {

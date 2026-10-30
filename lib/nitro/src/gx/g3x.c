@@ -5,6 +5,9 @@
 #include "nitro/gx.h"
 
 void G3X_Init(void) {
+#ifdef POKEBW2_PC
+    PcGx_ResetHardware();
+#endif
     G3X_ClearFifo();
     G3_End();
     while (reg_G3X_GXSTAT & REG_G3X_GXSTAT_B_MASK) {
@@ -47,7 +50,7 @@ void G3X_Reset(void) {
 }
 
 void G3X_ClearFifo(void) {
-    GXi_NopClearFifo128_(&reg_G3X_GXFIFO);
+    GXi_NopClearFifo128_((void *)&reg_G3X_GXFIFO);
     while (reg_G3X_GXSTAT & REG_G3X_GXSTAT_B_MASK) {
     }
 }
@@ -105,18 +108,26 @@ void G3X_SetFog(BOOL enabled, GXFogBlend alphaMode, GXFogSlope depthShift, int o
 }
 
 int G3X_GetClipMtx(MtxFx44 *dest) {
+#ifdef POKEBW2_PC
+    PcGx_ReadClipMatrix(dest);
+#else
     if (reg_G3X_GXSTAT & REG_G3X_GXSTAT_B_MASK) {
         return -1;
     }
     MI_Copy64B((const void *)&reg_G3X_CLIPMTX_RESULT_0, dest);
+#endif
     return 0;
 }
 
 int G3X_GetVectorMtx(MtxFx33 *dest) {
+#ifdef POKEBW2_PC
+    PcGx_ReadVectorMatrix(dest);
+#else
     if (reg_G3X_GXSTAT & REG_G3X_GXSTAT_B_MASK) {
         return -1;
     }
     MI_Copy36B((const void *)&reg_G3X_VECMTX_RESULT_0, dest);
+#endif
     return 0;
 }
 
@@ -152,7 +163,7 @@ void G3X_InitTable(void) {
         MI_CpuClear32((void *)&reg_G3X_FOG_TABLE_0, 0x60);
     }
     for (i = 0; i < 32; i++) {
-        reg_G3_SHININESS = 0;
+        G3X_WriteRegister(reg_G3_SHININESS, 0);
     }
 }
 
@@ -184,6 +195,12 @@ int G3X_GetBoxTestResult(s32 *result) {
     return 0;
 }
 
+#ifdef POKEBW2_PC
+void GXi_NopClearFifo128_(void *fifo) {
+    (void)fifo;
+    PcGx_ClearFifo();
+}
+#else
 // clang-format off
 #pragma thumb off
 // The SDK wrote this in assembly: 128 words of 0 stored to the FIFO port, which push out whatever it still holds. The
@@ -229,3 +246,4 @@ asm void GXi_NopClearFifo128_(void *fifo) {
 }
 #pragma thumb on
 // clang-format on
+#endif

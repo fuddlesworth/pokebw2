@@ -66,7 +66,7 @@ void NNSi_G3dGetJointScaleMaya(NNSG3dJntAnmResult *result, const fx32 *p, const 
         if (flags & NNS_G3D_SBC_NODEDESC_FLAG_MAYASSC_PARENT) {
             u32 node = cmd[1];
 
-            NNS_G3dRS->isScaleCacheOne[node >> 5] |= 1 << (node & 0x1f);
+            NNS_G3dRS->isScaleCacheOne[node >> 5] |= 1u << (node & 0x1f);
         }
     } else {
         result->scale.x = p[0];
@@ -75,7 +75,7 @@ void NNSi_G3dGetJointScaleMaya(NNSG3dJntAnmResult *result, const fx32 *p, const 
         if (flags & NNS_G3D_SBC_NODEDESC_FLAG_MAYASSC_PARENT) {
             u32 node = cmd[1];
 
-            NNS_G3dRS->isScaleCacheOne[node >> 5] &= ~(1 << (node & 0x1f));
+            NNS_G3dRS->isScaleCacheOne[node >> 5] &= ~(1u << (node & 0x1f));
             NNS_G3dRSOnGlb.scaleCache[node].invScale.x = p[3];
             NNS_G3dRSOnGlb.scaleCache[node].invScale.y = p[4];
             NNS_G3dRSOnGlb.scaleCache[node].invScale.z = p[5];
@@ -85,7 +85,7 @@ void NNSi_G3dGetJointScaleMaya(NNSG3dJntAnmResult *result, const fx32 *p, const 
         u32 parent = cmd[2];
 
         result->flag |= NNS_G3D_JNTANM_RESULTFLAG_MAYA_SSC;
-        if (NNS_G3dRS->isScaleCacheOne[parent >> 5] & (1 << (parent & 0x1f))) {
+        if (NNS_G3dRS->isScaleCacheOne[parent >> 5] & (1u << (parent & 0x1f))) {
             result->flag |= NNS_G3D_JNTANM_RESULTFLAG_SCALEEX0_ONE;
         } else {
             result->scaleEx0 = NNS_G3dRSOnGlb.scaleCache[parent].invScale;
@@ -94,7 +94,9 @@ void NNSi_G3dGetJointScaleMaya(NNSG3dJntAnmResult *result, const fx32 *p, const 
     result->flag |= NNS_G3D_JNTANM_RESULTFLAG_SCALEEX1_ONE;
 }
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 
 // The texture matrix elements of a material with a scale, a rotation and a translation. A Maya texture is turned about
 // its center and flipped vertically, so the translation has the center and the flip in it, and the shear of the
@@ -114,9 +116,9 @@ static void texmtxCalc_flag_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = scaleTCos;
     mtx->m[0][1] = (-scaleTSin * FX_GetDivResult()) >> FX32_SHIFT;
     FX_DivAsync(width, height);
-    mtx->m[3][0] = ((result->origWidth * (result->scaleS - (scaleSSin + scaleSCos))) << 3) -
+    mtx->m[3][0] = ((result->origWidth * (result->scaleS - (scaleSSin + scaleSCos))) * 8) -
                    result->origWidth * (fx32)(((fx64)result->scaleS * result->transS) >> 8);
-    mtx->m[3][1] = ((result->origHeight * (scaleTSin - scaleTCos - result->scaleT + 2 * FX32_ONE)) << 3) +
+    mtx->m[3][1] = ((result->origHeight * (scaleTSin - scaleTCos - result->scaleT + 2 * FX32_ONE)) * 8) +
                    result->origHeight * (fx32)(((fx64)result->scaleT * result->transT) >> 8);
     mtx->m[1][0] = (scaleSSin * FX_GetDivResult()) >> FX32_SHIFT;
 }
@@ -131,10 +133,10 @@ static void texmtxCalc_flagS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = result->cosR;
     mtx->m[0][1] = (-result->sinR * FX_GetDivResult()) >> FX32_SHIFT;
     FX_DivAsync(width, height);
-    mtx->m[3][0] = ((result->origWidth * (-(result->sinR + result->cosR) + FX32_ONE)) << 3) -
-                   ((result->transS * result->origWidth) << 4);
-    mtx->m[3][1] = ((result->origHeight * (result->sinR - result->cosR + FX32_ONE)) << 3) +
-                   ((result->transT * result->origHeight) << 4);
+    mtx->m[3][0] = ((result->origWidth * (-(result->sinR + result->cosR) + FX32_ONE)) * 8) -
+                   ((result->transS * result->origWidth) * 16);
+    mtx->m[3][1] = ((result->origHeight * (result->sinR - result->cosR + FX32_ONE)) * 8) +
+                   ((result->transT * result->origHeight) * 16);
     mtx->m[1][0] = (result->sinR * FX_GetDivResult()) >> FX32_SHIFT;
 }
 
@@ -144,7 +146,7 @@ static void texmtxCalc_flagR_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = result->scaleT;
     mtx->m[0][1] = 0;
     mtx->m[3][0] = -(fx32)(((fx64)result->scaleS * result->transS) >> 8) * result->origWidth;
-    mtx->m[3][1] = ((result->origHeight * (-2 * result->scaleT + 2 * FX32_ONE)) << 3) +
+    mtx->m[3][1] = ((result->origHeight * (-2 * result->scaleT + 2 * FX32_ONE)) * 8) +
                    result->origHeight * (fx32)(((fx64)result->scaleT * result->transT) >> 8);
     mtx->m[1][0] = 0;
 }
@@ -154,8 +156,8 @@ static void texmtxCalc_flagRS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[0][0] = FX32_ONE;
     mtx->m[1][1] = FX32_ONE;
     mtx->m[0][1] = 0;
-    mtx->m[3][0] = (-(result->transS * result->origWidth)) << 4;
-    mtx->m[3][1] = (result->transT * result->origHeight) << 4;
+    mtx->m[3][0] = (-(result->transS * result->origWidth)) * 16;
+    mtx->m[3][1] = (result->transT * result->origHeight) * 16;
     mtx->m[1][0] = 0;
 }
 
@@ -177,8 +179,8 @@ static void texmtxCalc_flagT_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = scaleTCos;
     mtx->m[0][1] = (-scaleTSin * FX_GetDivResult()) >> FX32_SHIFT;
     FX_DivAsync(width, height);
-    mtx->m[3][0] = (result->origWidth * (result->scaleS - (scaleSSin + scaleSCos))) << 3;
-    mtx->m[3][1] = (result->origHeight * (scaleTSin - scaleTCos - result->scaleT + 2 * FX32_ONE)) << 3;
+    mtx->m[3][0] = (result->origWidth * (result->scaleS - (scaleSSin + scaleSCos))) * 8;
+    mtx->m[3][1] = (result->origHeight * (scaleTSin - scaleTCos - result->scaleT + 2 * FX32_ONE)) * 8;
     mtx->m[1][0] = (scaleSSin * FX_GetDivResult()) >> FX32_SHIFT;
 }
 
@@ -192,8 +194,8 @@ static void texmtxCalc_flagTS_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = result->cosR;
     mtx->m[0][1] = (-result->sinR * FX_GetDivResult()) >> FX32_SHIFT;
     FX_DivAsync(width, height);
-    mtx->m[3][0] = (result->origWidth * (-(result->sinR + result->cosR) + FX32_ONE)) << 3;
-    mtx->m[3][1] = (result->origHeight * (result->sinR - result->cosR + FX32_ONE)) << 3;
+    mtx->m[3][0] = (result->origWidth * (-(result->sinR + result->cosR) + FX32_ONE)) * 8;
+    mtx->m[3][1] = (result->origHeight * (result->sinR - result->cosR + FX32_ONE)) * 8;
     mtx->m[1][0] = (result->sinR * FX_GetDivResult()) >> FX32_SHIFT;
 }
 
@@ -203,7 +205,7 @@ static void texmtxCalc_flagTR_(MtxFx44 *mtx, const NNSG3dMatAnmResult *result) {
     mtx->m[1][1] = result->scaleT;
     mtx->m[0][1] = 0;
     mtx->m[3][0] = 0;
-    mtx->m[3][1] = (result->origHeight * (-2 * result->scaleT + 2 * FX32_ONE)) << 3;
+    mtx->m[3][1] = (result->origHeight * (-2 * result->scaleT + 2 * FX32_ONE)) * 8;
     mtx->m[1][0] = 0;
 }
 
@@ -267,4 +269,6 @@ void NNSi_G3dSendTexSRTMaya(const NNSG3dMatAnmResult *result) {
     }
     sendPacket_((const u32 *)&cmd, sizeof(cmd) / sizeof(u32));
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif

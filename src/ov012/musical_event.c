@@ -327,7 +327,7 @@ static GameEventReturnCode MusicalEvent_Callback(GameEvent *event, u32 *state, v
         break;
     case MUSICAL_STATE_SHOT:
         MusicalEvent_TakeShot(work);
-        GSYS_QueueProc(work->gsys, OVERLAY_ID(209), &MUSICAL_SHOT_PROC_FUNCTIONS, work->shot);
+        GSYS_QueueProc(work->gsys, OVERLAY_ID(209), GAME_PROC_REFERENCE(MUSICAL_SHOT_PROC_FUNCTIONS), work->shot);
         work->state = MUSICAL_STATE_WAIT_SHOT;
         break;
     case MUSICAL_STATE_WAIT_SHOT:

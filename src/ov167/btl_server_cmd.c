@@ -101,7 +101,7 @@ static void PutU32(BtlServerCmdQueue *que, u32 value) {
 }
 
 static u32 ReadU32(BtlServerCmdQueue *que) {
-    u32 value = (*(que->buffer + que->readPtr) << 24) | (*(que->buffer + que->readPtr + 1) << 16)
+    u32 value = ((u32)*(que->buffer + que->readPtr) << 24) | (*(que->buffer + que->readPtr + 1) << 16)
         | (*(que->buffer + que->readPtr + 2) << 8) | *(que->buffer + que->readPtr + 3);
 
     que->readPtr += 4;
@@ -615,7 +615,11 @@ u8 BtlServerCmdQueue_ReadByte(BtlServerCmdQueue *que) {
 }
 
 // Writes a message command: the message, then its arguments up to SC_MSG_ARG_END
+#ifdef POKEBW2_PC
+void BtlServerCmdQueue_PutMsg(BtlServerCmdQueue *que, BtlServerCmd event, ...) {
+#else
 void BtlServerCmdQueue_PutMsg(BtlServerCmdQueue *que, u8 event, ...) {
+#endif
     va_list list;
     u16 message;
     u32 arg;

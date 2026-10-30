@@ -14,6 +14,7 @@
 #include "field/scrcmd_trainer.h"
 #include "field/trainer_script.h"
 #include "field/zone.h"
+#include "gfl/std.h"
 #include "save/records.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
@@ -31,6 +32,11 @@ BOOL Scrcmd_Trainer_TrainerEyeEventInit(VM *vm, FieldScriptEnv *env) {
         slot = ScriptWork_GetTrainerState(work, 0);
     } else if (index == 1) {
         slot = ScriptWork_GetTrainerState(work, 1);
+#ifdef POKEBW2_PC
+    } else {
+        GFL_DebugAssertFailEx(__FILE__, __LINE__, "Invalid trainer eye slot %u", index);
+        return FALSE;
+#endif
     }
     slot->eye = EventTrainerEye_CreateData(FieldScriptEnv_GetHeapID(env), fieldWork->field, &slot->data, index);
     return FALSE;

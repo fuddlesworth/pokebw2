@@ -104,9 +104,9 @@ BOOL Scrcmd_ProcFld_CallPC(VM *vm, FieldScriptEnv *env) {
     callWork->gameData = gameData;
     callWork->result = result;
     callWork->param = param;
-    ScriptWork_CallEvent(work,
-                         EventFieldSubprocessCall_CreateWithCallback(gsys, field, OVERLAY_BOX2, &BOX2_PROC_FUNCTIONS,
-                                                                     param, ScrcmdProcFld_FinishOv170Event, callWork));
+    ScriptWork_CallEvent(work, EventFieldSubprocessCall_CreateWithCallback(
+                                   gsys, field, OVERLAY_BOX2, GAME_PROC_REFERENCE(BOX2_PROC_FUNCTIONS), param,
+                                   ScrcmdProcFld_FinishOv170Event, callWork));
     return TRUE;
 }
 
@@ -166,7 +166,8 @@ BOOL Scrcmd_ProcFld_CallGeonet(VM *vm, FieldScriptEnv *env) {
     Field *field = GSYS_GetField(gsys);
 
     ScriptWork_CallEvent(work, EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_GEONET,
-                                                                     &GEONET_PROC_FUNCTIONS, GSYS_GetGameData(gsys)));
+                                                                     GAME_PROC_REFERENCE(GEONET_PROC_FUNCTIONS),
+                                                                     GSYS_GetGameData(gsys)));
     return TRUE;
 }
 
@@ -216,7 +217,7 @@ BOOL Scrcmd_ProcFld_CallXTransceiver(VM *vm, FieldScriptEnv *env) {
     param->gameData = FieldScriptEnv_GetGameData(env);
     param->gsys = gsys;
     ScriptWork_CallEvent(work, EventFieldSubprocessCall_CreateWithCallback(gsys, field, OVERLAY_XTRANSCEIVER,
-                                                                           &XTRANSCEIVER_PROC_FUNCTIONS, param,
+                                                                           GAME_PROC_REFERENCE(XTRANSCEIVER_PROC_FUNCTIONS), param,
                                                                            ScrcmdProcFld_FreeXTransceiverParam, param));
     return TRUE;
 }
@@ -236,7 +237,7 @@ BOOL Scrcmd_ProcFld_CallXTransceiverSecret(VM *vm, FieldScriptEnv *env) {
     param->gameData = FieldScriptEnv_GetGameData(env);
     param->gsys = gsys;
     ScriptWork_CallEvent(work, EventFieldSubprocessCall_CreateWithCallback(gsys, field, OVERLAY_XTRANSCEIVER,
-                                                                           &XTRANSCEIVER_PROC_FUNCTIONS, param,
+                                                                           GAME_PROC_REFERENCE(XTRANSCEIVER_PROC_FUNCTIONS), param,
                                                                            ScrcmdProcFld_FreeXTransceiverParam, param));
     return TRUE;
 }

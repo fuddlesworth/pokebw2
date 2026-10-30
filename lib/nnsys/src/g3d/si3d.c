@@ -7,7 +7,9 @@
 // NNS_G3dRSOnGlb for the joints below them. The names are NitroSystem's, as ntrtwl's reconstruction of NitroSystem and
 // pokeheartgold have them, except sendPacket_, which is ours
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 
 // Sends a joint's pose to the geometry engine. Unless the parent's scale is one, the joint scales by the parent's
 // inverse scale (scaleEx1), translates by its translation scaled by the parent's scale (scaleEx0), rotates, and scales
@@ -61,8 +63,8 @@ void NNSi_G3dGetJointScaleSi3d(NNSG3dJntAnmResult *result, const fx32 *p, const 
 
     if (srtFlag & NNS_G3D_SRTFLAG_SCALE_ONE) {
         result->flag |= NNS_G3D_JNTANM_RESULTFLAG_SCALE_ONE;
-        if (NNS_G3dRS->isScaleCacheOne[parent >> 5] & (1 << (parent & 0x1f))) {
-            NNS_G3dRS->isScaleCacheOne[node >> 5] |= 1 << (node & 0x1f);
+        if (NNS_G3dRS->isScaleCacheOne[parent >> 5] & (1u << (parent & 0x1f))) {
+            NNS_G3dRS->isScaleCacheOne[node >> 5] |= 1u << (node & 0x1f);
             result->flag |= NNS_G3D_JNTANM_RESULTFLAG_SCALEEX0_ONE | NNS_G3D_JNTANM_RESULTFLAG_SCALEEX1_ONE;
         } else {
             MIi_CpuCopy32(&NNS_G3dRSOnGlb.scaleCache[parent], &NNS_G3dRSOnGlb.scaleCache[node],
@@ -73,12 +75,12 @@ void NNSi_G3dGetJointScaleSi3d(NNSG3dJntAnmResult *result, const fx32 *p, const 
         result->scale.x = p[0];
         result->scale.y = p[1];
         result->scale.z = p[2];
-        if (NNS_G3dRS->isScaleCacheOne[parent >> 5] & (1 << (parent & 0x1f))) {
+        if (NNS_G3dRS->isScaleCacheOne[parent >> 5] & (1u << (parent & 0x1f))) {
             MIi_CpuCopy32(p, &NNS_G3dRSOnGlb.scaleCache[node], sizeof(NNSG3dJointScale));
-            NNS_G3dRS->isScaleCacheOne[node >> 5] &= ~(1 << (node & 0x1f));
+            NNS_G3dRS->isScaleCacheOne[node >> 5] &= ~(1u << (node & 0x1f));
             result->flag |= NNS_G3D_JNTANM_RESULTFLAG_SCALEEX0_ONE | NNS_G3D_JNTANM_RESULTFLAG_SCALEEX1_ONE;
         } else {
-            NNS_G3dRS->isScaleCacheOne[node >> 5] &= ~(1 << (node & 0x1f));
+            NNS_G3dRS->isScaleCacheOne[node >> 5] &= ~(1u << (node & 0x1f));
             NNS_G3dRSOnGlb.scaleCache[node].scale.x =
                 (fx32)(((fx64)p[0] * NNS_G3dRSOnGlb.scaleCache[parent].scale.x) >> FX32_SHIFT);
             NNS_G3dRSOnGlb.scaleCache[node].scale.y =
@@ -133,8 +135,14 @@ void NNSi_G3dSendTexSRTSi3d(const NNSG3dMatAnmResult *result) {
             cmd.mtx.m[1][1] = result->scaleT;
         }
     } else if (result->flag & NNS_G3D_MATANM_RESULTFLAG_TEXMTX_SCALEONE) {
+        // BUG: Negative translations cannot be shifted as signed host integers.
+#ifdef POKEBW2_PC
+        cmd.mtx.m[3][0] = (fx32)(0u - ((u32)result->transS << 4) * result->origWidth);
+        cmd.mtx.m[3][1] = (fx32)(0u - ((u32)result->transT << 4) * result->origHeight);
+#else
         cmd.mtx.m[3][0] = -(result->transS << 4) * result->origWidth;
         cmd.mtx.m[3][1] = -(result->transT << 4) * result->origHeight;
+#endif
         cmd.mtx.m[0][0] = FX32_ONE;
         cmd.mtx.m[1][1] = FX32_ONE;
     } else {
@@ -153,4 +161,6 @@ void NNSi_G3dSendTexSRTSi3d(const NNSG3dMatAnmResult *result) {
     }
     sendPacket_((const u32 *)&cmd, sizeof(cmd) / sizeof(u32));
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif

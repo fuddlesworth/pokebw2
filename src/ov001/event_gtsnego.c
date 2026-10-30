@@ -56,7 +56,7 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
     case 2:
         wk->login.buffer = wk->buffer;
         wk->login.unkC = 0x33;
-        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, &wk->login);
+        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, GAME_PROC_REFERENCE(WIFILOGIN_PROC_FUNCTIONS), &wk->login);
         (*state)++;
         break;
     case 3:
@@ -70,7 +70,7 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
         break;
     case 4:
         wk->nego.result = 0;
-        GSYS_QueueProc(gsys, OVERLAY_GTSNEGO, &GTSNEGO_PROC_FUNCTIONS, &wk->nego);
+        GSYS_QueueProc(gsys, OVERLAY_GTSNEGO, GAME_PROC_REFERENCE(GTSNEGO_PROC_FUNCTIONS), &wk->nego);
         (*state)++;
         break;
     case 5:
@@ -90,7 +90,7 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
         wk->trade.gameData = gameData;
         wk->trade.nego = &wk->nego;
         wk->trade.buffer = wk->buffer;
-        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, &POKEMONTRADE_PROC_FUNCTIONS, &wk->trade);
+        GSYS_QueueProc(gsys, OVERLAY_POKEMONTRADE, GAME_PROC_REFERENCE(POKEMONTRADE_PROC_FUNCTIONS), &wk->trade);
         (*state)++;
         break;
     case 7:
@@ -153,7 +153,7 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
         }
         break;
     case 12:
-        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
+        GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, GAME_PROC_REFERENCE(WIFILOGOUT_PROC_FUNCTIONS), &wk->logout);
         (*state)++;
         break;
     case 13:

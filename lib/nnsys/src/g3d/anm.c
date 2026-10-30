@@ -51,7 +51,9 @@ BOOL NNSi_G3dAnmBlendMat(NNSG3dMatAnmResult *result, const NNSG3dAnmObj *anmObj,
     return blended;
 }
 
+#ifdef __MWERKS__
 #pragma thumb off
+#endif
 
 // Adds ratio times the vector to the sum, or just ratio if the vector is one (every component of it one)
 static void blendScaleVec_(VecFx32 *dest, const VecFx32 *src, fx32 ratio, BOOL isOne) {
@@ -210,7 +212,9 @@ BOOL NNSi_G3dAnmBlendJnt(NNSG3dJntAnmResult *result, const NNSG3dAnmObj *anmObj,
     VEC_CrossProduct(&result->rotRow[2], &result->rotRow[0], &result->rotRow[1]);
     return TRUE;
 }
+#ifdef __MWERKS__
 #pragma thumb on
+#endif
 
 // ORs together the visibility that every animation object with data for the node gives
 BOOL NNSi_G3dAnmBlendVis(NNSG3dVisAnmResult *result, const NNSG3dAnmObj *anmObj, u32 nodeID) {

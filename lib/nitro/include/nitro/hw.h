@@ -2,6 +2,9 @@
 #define POKEBW2_NITRO_HW_H
 
 #include "types.h"
+#ifdef POKEBW2_PC
+#include "nitro/host_gx.h"
+#endif
 
 #define reg_OS_IME (*(vu16 *)0x04000208)
 #define reg_OS_IE (*(vu32 *)0x04000210)
@@ -46,10 +49,19 @@
 #define REG_MI_MCCNT1_PC_4B 0x07000000
 #define REG_MI_MCCNT1_L1_MASK 0x00001fff
 
+#ifdef POKEBW2_PC
+#define reg_GX_DISPSTAT PC_GX_REG16(0x04000004)
+#define reg_GX_POWCNT PcGxPower
+#else
 #define reg_GX_DISPSTAT (*(vu16 *)0x04000004)
-#define REG_GX_DISPSTAT_HBLK_MASK 0x0002
-#define reg_GX_VCOUNT (*(vu16 *)0x04000006)
 #define reg_GX_POWCNT (*(vu16 *)0x04000304)
+#endif
+#define REG_GX_DISPSTAT_HBLK_MASK 0x0002
+#ifdef POKEBW2_PC
+#define reg_GX_VCOUNT PC_GX_REG16(0x04000006)
+#else
+#define reg_GX_VCOUNT (*(vu16 *)0x04000006)
+#endif
 // Swaps the screens, so that the main engine drives the top screen
 #define REG_GX_POWCNT_DSEL_MASK 0x8000
 

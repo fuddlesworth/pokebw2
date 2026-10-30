@@ -1,4 +1,11 @@
 #include "types.h"
+
+// BUG: weather IDs are bytes; the cleared sentinel cannot equal 0xffff.
+#ifdef BUGFIX
+#define GATE_WEATHER_INVALID 0xff
+#else
+#define GATE_WEATHER_INVALID 0xffff
+#endif
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "field/encounter.h"
