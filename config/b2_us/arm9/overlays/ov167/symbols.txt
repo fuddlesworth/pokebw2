@@ -4237,7 +4237,7 @@ sBagItemEffects kind:data(any) addr:0x021d6d20
 data_ov167_021d6d24 kind:data(any) addr:0x021d6d24
 sHandlerWorkSizes kind:data(any) addr:0x021d6dd8
 data_ov167_021d6dd9 kind:data(any) addr:0x021d6dd9
-data_ov167_021d6e50 kind:data(any) addr:0x021d6e50
+sCmdFormats kind:data(any) addr:0x021d6e50
 data_ov167_021d6eb0 kind:data(any) addr:0x021d6eb0
 data_ov167_021d6eb4 kind:data(any) addr:0x021d6eb4
 data_ov167_021d6eb9 kind:data(any) addr:0x021d6eb9

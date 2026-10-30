@@ -20541,6 +20541,7 @@ overlays/ov167 0x021d6cec sPledgeMoves
 overlays/ov167 0x021d6cfc sEVParams
 overlays/ov167 0x021d6d20 sBagItemEffects
 overlays/ov167 0x021d6dd8 sHandlerWorkSizes
+overlays/ov167 0x021d6e50 sCmdFormats
 overlays/ov167 0x021d7070 sCmdProcTable
 overlays/ov167 0x021d7490 sSemiInvulnFlags
 overlays/ov167 0x021d7624 sHandlersStall
