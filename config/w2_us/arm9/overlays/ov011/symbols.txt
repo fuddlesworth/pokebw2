@@ -2745,7 +2745,7 @@ DWCishotspot kind:bss addr:0x02190650
 DWCi_ConnTestConfig kind:bss addr:0x0219066c
 DWCi_ConnTestInit kind:bss addr:0x02190688
 data_ov011_02190668 kind:bss addr:0x021906a8
-data_ov011_02190690 kind:bss addr:0x021906d0
+sWords kind:bss addr:0x021906d0
 sLocator kind:bss addr:0x021906d4
 __GSIACResult kind:bss addr:0x021906d8
 __GSIACGamename kind:bss addr:0x021906dc

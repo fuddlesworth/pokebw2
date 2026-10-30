@@ -8002,6 +8002,7 @@ overlays/ov011 0x021905fc DWCi_ConnTestHttp
 overlays/ov011 0x02190610 DWCishotspot
 overlays/ov011 0x0219062c DWCi_ConnTestConfig
 overlays/ov011 0x02190648 DWCi_ConnTestInit
+overlays/ov011 0x02190690 sWords
 overlays/ov011 0x02190694 sLocator
 overlays/ov011 0x02190698 __GSIACResult
 overlays/ov011 0x0219069c __GSIACGamename
