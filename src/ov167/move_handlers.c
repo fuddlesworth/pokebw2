@@ -6485,7 +6485,7 @@ static void HandlerBeatUpPower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
         if (work[0] >= 6) {
             work[0] = 0;
         }
-        BattleEventVar_RewriteValue(0x30, GetBattleMonStat(mon, 0x15) / 10 + 5);
+        BattleEventVar_RewriteValue(0x30, GetBattleMonStat(mon, BATTLEMON_BASE_ATTACK) / 10 + 5);
     }
 }
 

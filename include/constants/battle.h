@@ -53,6 +53,8 @@
 #define BATTLEMON_GENDER 18
 #define BATTLEMON_FORM 19
 #define BATTLEMON_EXP 20
+// The species' base Attack, which Beat Up's power is from
+#define BATTLEMON_BASE_ATTACK 21
 
 #define BATTLEMON_STAT_STAGE_NEUTRAL 6
 
