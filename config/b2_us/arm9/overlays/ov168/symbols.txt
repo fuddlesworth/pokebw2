@@ -633,7 +633,7 @@ BtlvFingerCursor_Task kind:function(thumb,size=0x24) addr:0x021f2f30
 GROUND_POSITIONS kind:data(any) addr:0x021f2f54
 data_ov168_021f2f58 kind:data(any) addr:0x021f2f58
 data_ov168_021f2f5c kind:data(any) addr:0x021f2f5c
-data_ov168_021f2f6c kind:data(any) addr:0x021f2f6c
+FIELD_PARAM_VARIANTS kind:data(any) addr:0x021f2f6c
 data_ov168_021f2f74 kind:data(any) addr:0x021f2f74
 data_ov168_021f2f80 kind:data(any) addr:0x021f2f80
 data_ov168_021f2f8c kind:data(any) addr:0x021f2f8c
