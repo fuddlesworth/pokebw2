@@ -31379,6 +31379,10 @@ overlays/ov255 0x021d91d0 sMainMenuCursorData
 overlays/ov255 0x021d9248 sAbilityOrder
 overlays/ov255 0x021d92ec sSeqFuncs
 overlays/ov255 0x021d9394 sSearchActorData
+overlays/ov255 0x021d9490 sBoxSearchLCDConfig
+overlays/ov255 0x021d94a0 sBoxSearchClActSetup
+overlays/ov255 0x021d94bc sBoxSearchVRAMConfig
+overlays/ov255 0x021d94ec sBoxSearchBGSetups
 overlays/ov255 0x021d9664 sMainMenuSeqs
 overlays/ov255 0x021d967c sWindowData
 overlays/ov256 0x021bb700 HallOfFamePCProc_Init

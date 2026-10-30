@@ -952,10 +952,10 @@ sMainMenuCursorData kind:data(any) addr:0x021d91d0
 sAbilityOrder kind:data(any) addr:0x021d9248
 sSeqFuncs kind:data(any) addr:0x021d92ec
 sSearchActorData kind:data(any) addr:0x021d9394
-data_ov255_021d9490 kind:data(any) addr:0x021d9490
-data_ov255_021d94a0 kind:data(any) addr:0x021d94a0
-data_ov255_021d94bc kind:data(any) addr:0x021d94bc
-data_ov255_021d94ec kind:data(any) addr:0x021d94ec
+sBoxSearchLCDConfig kind:data(any) addr:0x021d9490
+sBoxSearchClActSetup kind:data(any) addr:0x021d94a0
+sBoxSearchVRAMConfig kind:data(any) addr:0x021d94bc
+sBoxSearchBGSetups kind:data(any) addr:0x021d94ec
 data_ov255_021d9640 kind:data(any) addr:0x021d9640
 data_ov255_021d964c kind:data(any) addr:0x021d964c
 data_ov255_021d9658 kind:data(any) addr:0x021d9658
