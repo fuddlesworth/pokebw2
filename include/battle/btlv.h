@@ -12,6 +12,21 @@
 #include "gfl/tcb.h"
 #include "struct_decls.h"
 
+// How a BtlvStringParam's message is made (BtlvCore_MakeString): a standard message (BtlString_FormatStdMsgArgs), a
+// message about Pokémon (BtlString_FormatSetMsg), a UI string, a move's use, a message of learning a move, a yes/no
+// choice, a trainer's win or lose line, a Pokéstar Studios movie's script and its movie's message
+enum {
+    BTLV_STR_STD = 1,
+    BTLV_STR_SET,
+    BTLV_STR_UI,
+    BTLV_STR_MOVE,
+    BTLV_STR_LEARN,
+    BTLV_STR_YES_NO,
+    BTLV_STR_TRAINER_WIN_LOSE,
+    BTLV_STR_MOVIE_SCRIPT,
+    BTLV_STR_MOVIE,
+};
+
 struct BtlvStringParam {
     u16 message;
     u8 mode;

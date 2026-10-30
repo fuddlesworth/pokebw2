@@ -1424,11 +1424,11 @@ static void BattleClient_HideCmdLimitTimer(BtlClient *client) {
 
 static void BattleClient_SetActionPromptMsg(BtlClient *client, BattleMon *mon, BtlvStringParam *param) {
     if (BtlSetup_GetBattleStyle(client->mainModule) != BTL_STYLE_ROTATION) {
-        Btlv_StringParam_Setup(param, 1, 0x45);
+        Btlv_StringParam_Setup(param, BTLV_STR_STD, 0x45);
         Btlv_StringParam_AddArg(param, GetMonID(mon));
         Btlv_StringParam_SetWait(param, 0);
     } else {
-        Btlv_StringParam_Setup(param, 1, 0x46);
+        Btlv_StringParam_Setup(param, BTLV_STR_STD, 0x46);
         Btlv_StringParam_AddArg(param, client->clientId);
         Btlv_StringParam_SetWait(param, 0);
     }
@@ -1534,7 +1534,7 @@ static BOOL BattleClient_PlayerSelectActionStudio(BtlClient *client, s32 *seq) {
         }
         break;
     case SELECT_ACTION_SEQ_TURN_MSG:
-        Btlv_StringParam_Setup(&client->strParam, 9, Studio_GetTurnMsgId(client));
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE, Studio_GetTurnMsgId(client));
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
         *seq = SELECT_ACTION_SEQ_WAIT_TURN_MSG;
         break;
@@ -1609,7 +1609,7 @@ static BOOL Studio_PlayTurnMessages(BtlClient *client) {
     case STUDIO_TURN_SEQ_MSG_1:
         msgId = rules->unkA8[client->turnCount - 1];
         if (msgId != -1) {
-            Btlv_StringParam_Setup(&client->strParam, 8, msgId);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT, msgId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             client->studio.seq++;
         } else {
@@ -1624,7 +1624,7 @@ static BOOL Studio_PlayTurnMessages(BtlClient *client) {
     case STUDIO_TURN_SEQ_MSG_2:
         msgId = rules->unkD0[client->turnCount - 1];
         if (msgId != -1) {
-            Btlv_StringParam_Setup(&client->strParam, 8, msgId);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT, msgId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             client->studio.seq++;
         } else {
@@ -1863,7 +1863,7 @@ static BOOL Studio_PlayScene(BtlClient *client) {
     case STUDIO_SCENE_SEQ_MSG_1:
         msgId = rules->scenes[client->studio.scene].messages[0][client->studio.msgStep];
         if (msgId != -1) {
-            Btlv_StringParam_Setup(&client->strParam, 8, msgId);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT, msgId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             Studio_SetSeq(&client->studio, STUDIO_SCENE_SEQ_WAIT_MSG, STUDIO_SCENE_SEQ_MSG_2);
         } else {
@@ -1873,7 +1873,7 @@ static BOOL Studio_PlayScene(BtlClient *client) {
     case STUDIO_SCENE_SEQ_MSG_2:
         msgId = rules->scenes[client->studio.scene].messages[1][client->studio.msgStep];
         if (msgId != -1) {
-            Btlv_StringParam_Setup(&client->strParam, 8, msgId);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT, msgId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             Studio_SetSeq(&client->studio, STUDIO_SCENE_SEQ_WAIT_MSG, STUDIO_SCENE_SEQ_CHECK_STATE);
         } else {
@@ -1922,13 +1922,13 @@ static BOOL Studio_PlayScene(BtlClient *client) {
         client->studio.seq = STUDIO_SCENE_SEQ_CHOICE_MSG_1;
         break;
     case STUDIO_SCENE_SEQ_CHOICE_MSG_1:
-        Btlv_StringParam_Setup(&client->strParam, 8,
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT,
                                rules->scenes[client->studio.scene].choices[client->studio.choice].msgId);
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
         Studio_SetSeq(&client->studio, STUDIO_SCENE_SEQ_WAIT_MSG, STUDIO_SCENE_SEQ_CHOICE_MSG_2);
         break;
     case STUDIO_SCENE_SEQ_CHOICE_MSG_2:
-        Btlv_StringParam_Setup(&client->strParam, 8,
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT,
                                rules->scenes[client->studio.scene].choices[client->studio.choice].msgId2);
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
         Studio_SetSeq(&client->studio, STUDIO_SCENE_SEQ_WAIT_MSG, STUDIO_SCENE_SEQ_CHECK_TURN);
@@ -2228,7 +2228,7 @@ static BOOL Studio_ShowResult(BtlClient *client) {
         break;
     case STUDIO_RESULT_SEQ_MSG_1:
         if (client->studio.msgId1 >= 0) {
-            Btlv_StringParam_Setup(&client->strParam, 9, client->studio.msgId1);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE, client->studio.msgId1);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             Studio_SetSeq(&client->studio, STUDIO_RESULT_SEQ_WAIT_MSG, STUDIO_RESULT_SEQ_END);
         } else {
@@ -2237,7 +2237,7 @@ static BOOL Studio_ShowResult(BtlClient *client) {
         break;
     case STUDIO_RESULT_SEQ_MSG_2:
         if (client->studio.msgId2 >= 0) {
-            Btlv_StringParam_Setup(&client->strParam, 8, client->studio.msgId2);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT, client->studio.msgId2);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             Studio_SetSeq(&client->studio, STUDIO_RESULT_SEQ_WAIT_MSG, STUDIO_RESULT_SEQ_END);
         } else {
@@ -2280,7 +2280,7 @@ static BOOL RecPlaySelectActionCore(BtlClient *client, s32 *seq, BOOL arg2) {
         if (action->bits.action == BATTLE_ACTION_REC_TIMEOUT) {
             RecPlayer_SetDataEnd(&client->recPlayer);
             if (client->viewCore != NULL) {
-                Btlv_StringParam_Setup(&client->strParam, 1, 0xb7);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0xb7);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
                 *seq = REC_SELECT_SEQ_WAIT_TIME_UP_MSG;
             } else {
@@ -2292,7 +2292,7 @@ static BOOL RecPlaySelectActionCore(BtlClient *client, s32 *seq, BOOL arg2) {
             client->recCanceled = TRUE;
             RecPlayer_SetDataEnd(&client->recPlayer);
             if (client->viewCore != NULL) {
-                Btlv_StringParam_Setup(&client->strParam, 1, 0xb8);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0xb8);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
                 *seq = REC_SELECT_SEQ_WAIT_CANCEL_MSG;
             } else {
@@ -2543,7 +2543,7 @@ static BOOL BattleClient_ActionSelectRoot(BtlClient *client, s32 *seq) {
         break;
     case ROOT_SEQ_BLOCKED_MSG:
         if (BtlvCore_IsScreenIdle(client->viewCore)) {
-            Btlv_StringParam_Setup(&client->strParam, 1, 0xc5);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0xc5);
             Btlv_StringParam_AddArg(&client->strParam, GetMonID(client->procMon));
             BattleClient_ShowSelectMsg(client, &client->strParam);
             (*seq)++;
@@ -3004,23 +3004,23 @@ static BOOL BattleClient_ActionSelectEscape(BtlClient *client, s32 *seq) {
                 *seq = ESCAPE_SEQ_ESCAPE;
             } else {
                 if (trapAbility != 0) {
-                    Btlv_StringParam_Setup(&client->strParam, 2, 0x365);
+                    Btlv_StringParam_Setup(&client->strParam, BTLV_STR_SET, 0x365);
                     Btlv_StringParam_AddArg(&client->strParam, trapMonId);
                     Btlv_StringParam_AddArg(&client->strParam, trapAbility);
                 } else {
-                    Btlv_StringParam_Setup(&client->strParam, 1, 0x4a);
+                    Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x4a);
                 }
                 BattleClient_ShowSelectMsg(client, &client->strParam);
                 *seq = ESCAPE_SEQ_WAIT_BLOCKED_MSG;
             }
             break;
         case 1:
-            Btlv_StringParam_Setup(&client->strParam, 1, 0x4c);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x4c);
             BattleClient_ShowSelectMsg(client, &client->strParam);
             *seq = ESCAPE_SEQ_WAIT_BLOCKED_MSG;
             break;
         case 2:
-            Btlv_StringParam_Setup(&client->strParam, 1, 0x4d);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x4d);
             Btlv_StringParam_SetWait(&client->strParam, 0xff);
             BattleClient_ShowSelectMsg(client, &client->strParam);
             *seq = ESCAPE_SEQ_ASK;
@@ -3043,8 +3043,8 @@ static BOOL BattleClient_ActionSelectEscape(BtlClient *client, s32 *seq) {
     case ESCAPE_SEQ_ASK:
         BtlvCore_WaitMsg(client->viewCore);
         if (BtlvCore_IsMsgJustDone(client->viewCore)) {
-            Btlv_StringParam_Setup(&client->strParam, 3, 8);
-            Btlv_StringParam_Setup(&client->strParam2, 3, 9);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_UI, 8);
+            Btlv_StringParam_Setup(&client->strParam2, BTLV_STR_UI, 9);
             BtlvCore_ShowYesNo(client->viewCore, &client->strParam, &client->strParam2, 1);
             *seq = ESCAPE_SEQ_ANSWER;
         }
@@ -3257,7 +3257,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
         u16 lockedMove = Condition_GetParam(GetConditionContinuationParam(mon, CONDITION_CHOICE_LOCK));
         if (MoveIsUsable(mon, lockedMove) && lockedMove != move) {
             if (param != NULL) {
-                Btlv_StringParam_Setup(param, 1, 0x63);
+                Btlv_StringParam_Setup(param, BTLV_STR_STD, 0x63);
                 Btlv_StringParam_AddArg(param, GetBattleMonHeldItem(mon));
                 Btlv_StringParam_AddArg(param, lockedMove);
             }
@@ -3269,7 +3269,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
         u16 encoreMove = Condition_GetParam(cont);
         if (move != encoreMove) {
             if (param != NULL) {
-                Btlv_StringParam_Setup(param, 1, 0x64);
+                Btlv_StringParam_Setup(param, BTLV_STR_STD, 0x64);
                 Btlv_StringParam_AddArg(param, GetMonID(mon));
                 Btlv_StringParam_AddArg(param, encoreMove);
             }
@@ -3278,7 +3278,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
     }
     if (CheckCondition(mon, CONDITION_TAUNT) && !PML_MoveIsDamaging(move)) {
         if (param != NULL) {
-            Btlv_StringParam_Setup(param, 2, 0x23b);
+            Btlv_StringParam_Setup(param, BTLV_STR_SET, 0x23b);
             Btlv_StringParam_AddArg(param, GetMonID(mon));
             Btlv_StringParam_AddArg(param, move);
         }
@@ -3286,7 +3286,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
     }
     if (CheckCondition(mon, CONDITION_TORMENT) && move == GetPreviousMoveUsed(mon)) {
         if (param != NULL) {
-            Btlv_StringParam_Setup(param, 2, 0x244);
+            Btlv_StringParam_Setup(param, BTLV_STR_SET, 0x244);
             Btlv_StringParam_AddArg(param, GetMonID(mon));
             Btlv_StringParam_AddArg(param, move);
         }
@@ -3295,7 +3295,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
     if (CheckCondition(mon, CONDITION_DISABLE) && move == GetDisabledMove(mon, CONDITION_DISABLE) &&
         move != MOVE_STRUGGLE) {
         if (param != NULL) {
-            Btlv_StringParam_Setup(param, 2, 0x253);
+            Btlv_StringParam_Setup(param, BTLV_STR_SET, 0x253);
             Btlv_StringParam_AddArg(param, GetMonID(mon));
             Btlv_StringParam_AddArg(param, move);
         }
@@ -3303,7 +3303,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
     }
     if (CheckCondition(mon, CONDITION_HEAL_BLOCK) && getMoveFlag(move, 12)) {
         if (param != NULL) {
-            Btlv_StringParam_Setup(param, 2, 0x37a);
+            Btlv_StringParam_Setup(param, BTLV_STR_SET, 0x37a);
             Btlv_StringParam_AddArg(param, GetMonID(mon));
             Btlv_StringParam_AddArg(param, move);
         }
@@ -3311,7 +3311,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
     }
     if (CheckFieldEffect(client->field, 3) && CheckImprison(client->field, client->pokeCon, mon, move)) {
         if (param != NULL) {
-            Btlv_StringParam_Setup(param, 2, 0x24d);
+            Btlv_StringParam_Setup(param, BTLV_STR_SET, 0x24d);
             Btlv_StringParam_AddArg(param, GetMonID(mon));
             Btlv_StringParam_AddArg(param, move);
         }
@@ -3319,7 +3319,7 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
     }
     if (CheckFieldEffect(client->field, FIELD_CONDITION_GRAVITY) && getMoveFlag(move, 9)) {
         if (param != NULL) {
-            Btlv_StringParam_Setup(param, 2, 0x43e);
+            Btlv_StringParam_Setup(param, BTLV_STR_SET, 0x43e);
             Btlv_StringParam_AddArg(param, GetMonID(mon));
             Btlv_StringParam_AddArg(param, move);
         }
@@ -4110,8 +4110,8 @@ static BOOL BattleClient_PlayerConfirmUseNextPoke(BtlClient *client, s32 *seq) {
 
     switch (*seq) {
     case 0:
-        Btlv_StringParam_Setup(&client->strParam, 3, 5);
-        Btlv_StringParam_Setup(&client->strParam2, 3, 1);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_UI, 5);
+        Btlv_StringParam_Setup(&client->strParam2, BTLV_STR_UI, 1);
         BtlvCore_ShowYesNo(client->viewCore, &client->strParam, &client->strParam2, 0);
         (*seq)++;
         break;
@@ -4327,7 +4327,7 @@ static BOOL BattleClient_PlayerConfirmShiftSwitch(BtlClient *client, s32 *seq) {
     case SHIFT_SWITCH_SEQ_INIT:
         BtlAdapter_GetRecvData(client->adapter, (const void **)&data);
         if (*data != 0x1f) {
-            Btlv_StringParam_Setup(&client->strParam, 1, 20);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 20);
             Btlv_StringParam_AddArg(&client->strParam, 1);
             Btlv_StringParam_AddArg(&client->strParam, *data);
             Btlv_StringParam_SetWait(&client->strParam, 0xff);
@@ -4340,8 +4340,8 @@ static BOOL BattleClient_PlayerConfirmShiftSwitch(BtlClient *client, s32 *seq) {
     case SHIFT_SWITCH_SEQ_ASK:
         BtlvCore_WaitMsg(client->viewCore);
         if (BtlvCore_IsMsgJustDone(client->viewCore)) {
-            Btlv_StringParam_Setup(&client->strParam, 3, 6);
-            Btlv_StringParam_Setup(&client->strParam2, 3, 7);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_UI, 6);
+            Btlv_StringParam_Setup(&client->strParam2, BTLV_STR_UI, 7);
             BtlvCore_ShowYesNo(client->viewCore, &client->strParam, &client->strParam2, 1);
             *seq = SHIFT_SWITCH_SEQ_ANSWER;
         }
@@ -4429,7 +4429,7 @@ static BOOL BattleClient_ExitCommBattle(BtlClient *client, s32 *seq) {
         default:
             return TRUE;
         }
-        Btlv_StringParam_Setup(&client->strParam, 1, msg);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, msg);
         Btlv_StringParam_AddArg(&client->strParam, name);
         if (isMulti) {
             Btlv_StringParam_AddArg(&client->strParam, GetPlayerOpponentClientID(client->mainModule, 1));
@@ -4507,10 +4507,10 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
                 name1 = GetPlayerOpponentClientID(client->mainModule, 0);
                 name2 = GetPlayerOpponentClientID(client->mainModule, 1);
                 if (name1 == name2) {
-                    Btlv_StringParam_Setup(&client->strParam, 1, 0x2c);
+                    Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x2c);
                     Btlv_StringParam_AddArg(&client->strParam, name1);
                 } else {
-                    Btlv_StringParam_Setup(&client->strParam, 1, 0x2d);
+                    Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x2d);
                     Btlv_StringParam_AddArg(&client->strParam, name1);
                     Btlv_StringParam_AddArg(&client->strParam, name2);
                 }
@@ -4518,7 +4518,7 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
                 *seq = EXIT_TRAINER_SEQ_TRAINER_1_IN;
             } else if (!BtlSetup_IsBattleType(client->mainModule, 0x100)) {
                 name1 = GetPlayerClientID(client->mainModule);
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x36);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x36);
                 Btlv_StringParam_AddArg(&client->strParam, name1);
                 Btlv_StringParam_AddArg(&client->strParam, name1);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -4600,7 +4600,7 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
         value = FixPrizeMoney(client->mainModule);
         if (value != 0) {
             name1 = GetPlayerClientID(client->mainModule);
-            Btlv_StringParam_Setup(&client->strParam, 1, 0x3a);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x3a);
             Btlv_StringParam_AddArg(&client->strParam, name1);
             Btlv_StringParam_AddArg(&client->strParam, value);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -4616,7 +4616,7 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
             value = GetBonusMoney(client->mainModule);
             if (value != 0) {
                 name1 = GetPlayerClientID(client->mainModule);
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x3b);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x3b);
                 Btlv_StringParam_AddArg(&client->strParam, name1);
                 Btlv_StringParam_AddArg(&client->strParam, value);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -4628,7 +4628,7 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
         if (BtlvCore_WaitMsg(client->viewCore)) {
             value = CalcLossMoney(client->mainModule);
             if (value != 0) {
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x38);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x38);
                 Btlv_StringParam_AddArg(&client->strParam, client->clientId);
                 Btlv_StringParam_AddArg(&client->strParam, value);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -4638,7 +4638,7 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
         break;
     case EXIT_TRAINER_SEQ_LOSE_MSG:
         if (BtlvCore_WaitMsg(client->viewCore)) {
-            Btlv_StringParam_Setup(&client->strParam, 1, 0x39);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x39);
             Btlv_StringParam_AddArg(&client->strParam, client->clientId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             *seq = EXIT_TRAINER_SEQ_END;
@@ -4761,7 +4761,7 @@ static void ShowTrainerWinLoseMsg(BtlClient *client, u32 result, u8 which) {
     } else {
         trainerId = GetClientTrainerID(client->mainModule, clientId);
         if (trainerId != 0) {
-            Btlv_StringParam_Setup(&client->strParam, 7, 0);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_TRAINER_WIN_LOSE, 0);
             Btlv_StringParam_AddArg(&client->strParam, trainerId);
             Btlv_StringParam_AddArg(&client->strParam, result);
             BtlvCore_MakeMsg(client->viewCore, &client->strParam);
@@ -4779,7 +4779,7 @@ static BOOL BattleClient_ExitWildBattleWin(BtlClient *client, s32 *seq) {
             value = GetBonusMoney(client->mainModule);
             if (value != 0) {
                 playerId = GetPlayerClientID(client->mainModule);
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x3b);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x3b);
                 Btlv_StringParam_AddArg(&client->strParam, playerId);
                 Btlv_StringParam_AddArg(&client->strParam, value);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -4801,7 +4801,7 @@ static BOOL BattleClient_ExitWildBattleLose(BtlClient *client, s32 *seq) {
 
     switch (*seq) {
     case 0:
-        Btlv_StringParam_Setup(&client->strParam, 1, 0x36);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x36);
         Btlv_StringParam_AddArg(&client->strParam, client->clientId);
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
         (*seq)++;
@@ -4810,7 +4810,7 @@ static BOOL BattleClient_ExitWildBattleLose(BtlClient *client, s32 *seq) {
         if (BtlvCore_WaitMsg(client->viewCore)) {
             value = CalcLossMoney(client->mainModule);
             if (value != 0) {
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x37);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x37);
                 Btlv_StringParam_AddArg(&client->strParam, client->clientId);
                 Btlv_StringParam_AddArg(&client->strParam, value);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -4820,7 +4820,7 @@ static BOOL BattleClient_ExitWildBattleLose(BtlClient *client, s32 *seq) {
         break;
     case 2:
         if (BtlvCore_WaitMsg(client->viewCore)) {
-            Btlv_StringParam_Setup(&client->strParam, 1, 0x39);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x39);
             Btlv_StringParam_AddArg(&client->strParam, client->clientId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             (*seq)++;
@@ -4954,7 +4954,7 @@ static const struct {
 static BOOL BattleClient_ShowTimeUpMsg(BtlClient *client, s32 *seq) {
     switch (*seq) {
     case 0:
-        Btlv_StringParam_Setup(&client->strParam, 1, 0xb7);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0xb7);
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
         (*seq)++;
         break;
@@ -5045,7 +5045,7 @@ static BOOL BattleClient_ScRecallMsg(BtlClient *client, s32 *seq, const u32 *arg
 
     switch (*seq) {
     case 0:
-        Btlv_StringParam_Setup(&client->strParam, 1, BattleClient_GetRecallMsg(client, args[0], &withName));
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, BattleClient_GetRecallMsg(client, args[0], &withName));
         if (withName) {
             Btlv_StringParam_AddArg(&client->strParam, args[0]);
         }
@@ -5119,22 +5119,22 @@ static BOOL BattleClient_ScSendOut(BtlClient *client, s32 *seq, const u32 *args)
 
             if (!AreClientsOnOppositeSides(client->mainModule, client->clientId, clientId)) {
                 if (client->clientId == clientId) {
-                    Btlv_StringParam_Setup(&client->strParam, 1, BattleClient_GetPlayerSendOutMsg(client));
+                    Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, BattleClient_GetPlayerSendOutMsg(client));
                     Btlv_StringParam_AddArg(&client->strParam, monId);
                     BtlvCore_StartMsg(client->viewCore, &client->strParam);
                 } else {
-                    Btlv_StringParam_Setup(&client->strParam, 1, 0x11);
+                    Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x11);
                     Btlv_StringParam_AddArg(&client->strParam, clientId);
                     Btlv_StringParam_AddArg(&client->strParam, monId);
                     BtlvCore_StartMsg(client->viewCore, &client->strParam);
                 }
             } else if (IsClientNPCTrainer(client->mainModule, clientId)) {
-                Btlv_StringParam_Setup(&client->strParam, 1, 0xe);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0xe);
                 Btlv_StringParam_AddArg(&client->strParam, clientId);
                 Btlv_StringParam_AddArg(&client->strParam, monId);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
             } else {
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x11);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x11);
                 Btlv_StringParam_AddArg(&client->strParam, clientId);
                 Btlv_StringParam_AddArg(&client->strParam, monId);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -5904,7 +5904,7 @@ static BOOL BattleClient_ScExpGain(BtlClient *client, s32 *seq, const u32 *args)
         }
         break;
     case EXP_SEQ_LEVEL_UP_MSG:
-        Btlv_StringParam_Setup(&client->strParam, 1, 0x3c);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x3c);
         Btlv_StringParam_AddArg(&client->strParam, monId);
         Btlv_StringParam_AddArg(&client->strParam, sLevelUp.level);
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -6006,7 +6006,7 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
 
         GetSrcData(bpp);
         BattleMon_ReloadSrcData(bpp);
-        Btlv_StringParam_Setup(&client->strParam, 5, 3);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_LEARN, 3);
         Btlv_StringParam_AddArg(&client->strParam, monId);
         Btlv_StringParam_AddArg(&client->strParam, sLearnMove);
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -6030,7 +6030,7 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
         }
         break;
     case LEARN_SEQ_ASK_FORGET:
-        Btlv_StringParam_Setup(&client->strParam, 5, 4);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_LEARN, 4);
         Btlv_StringParam_AddArg(&client->strParam, monId);
         Btlv_StringParam_AddArg(&client->strParam, sLearnMove);
         Btlv_StringParam_SetWait(&client->strParam, 0xff);
@@ -6041,8 +6041,8 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
             BtlvStringParam yesParam;
             BtlvStringParam noParam;
 
-            Btlv_StringParam_Setup(&yesParam, 6, 2);
-            Btlv_StringParam_Setup(&noParam, 6, 3);
+            Btlv_StringParam_Setup(&yesParam, BTLV_STR_YES_NO, 2);
+            Btlv_StringParam_Setup(&noParam, BTLV_STR_YES_NO, 3);
             BtlvCore_ShowYesNo(client->viewCore, &yesParam, &noParam, 1);
         }
         if (BtlvCore_WaitMsg(client->viewCore)) {
@@ -6075,7 +6075,7 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
                 u16 oldMove = PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + slot, NULL);
 
                 PokeParty_SetMove(pkm, sLearnMove, slot);
-                Btlv_StringParam_Setup(&client->strParam, 5, 5);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_LEARN, 5);
                 Btlv_StringParam_AddArg(&client->strParam, monId);
                 Btlv_StringParam_AddArg(&client->strParam, oldMove);
                 BtlvCore_StartMsgCallback(client->viewCore, &client->strParam, BattleClient_ForgetMoveSECallback);
@@ -6090,7 +6090,7 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
         }
         break;
     case LEARN_SEQ_ASK_GIVE_UP:
-        Btlv_StringParam_Setup(&client->strParam, 5, 7);
+        Btlv_StringParam_Setup(&client->strParam, BTLV_STR_LEARN, 7);
         Btlv_StringParam_AddArg(&client->strParam, monId);
         Btlv_StringParam_AddArg(&client->strParam, sLearnMove);
         Btlv_StringParam_SetWait(&client->strParam, 0xff);
@@ -6102,9 +6102,9 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
             BtlvStringParam yesParam;
             BtlvStringParam noParam;
 
-            Btlv_StringParam_Setup(&yesParam, 6, 4);
+            Btlv_StringParam_Setup(&yesParam, BTLV_STR_YES_NO, 4);
             Btlv_StringParam_AddArg(&yesParam, sLearnMove);
-            Btlv_StringParam_Setup(&noParam, 6, 5);
+            Btlv_StringParam_Setup(&noParam, BTLV_STR_YES_NO, 5);
             Btlv_StringParam_AddArg(&noParam, sLearnMove);
             BtlvCore_ShowYesNo(client->viewCore, &yesParam, &noParam, 1);
         }
@@ -6117,7 +6117,7 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
 
         if (BtlvCore_PollYesNo(client->viewCore, &answer)) {
             if (answer == 0) {
-                Btlv_StringParam_Setup(&client->strParam, 5, 8);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_LEARN, 8);
                 Btlv_StringParam_AddArg(&client->strParam, monId);
                 Btlv_StringParam_AddArg(&client->strParam, sLearnMove);
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -6151,7 +6151,7 @@ static BOOL BattleClient_ScBallThrow(BtlClient *client, s32 *seq, const u32 *arg
         if (!BtlvEffect_IsBusy()) {
             if (args[2]) {
                 mon = PokeCon_GetPosMonInner(client->pokeCon, args[0]);
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x41);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x41);
                 Btlv_StringParam_AddArg(&client->strParam, GetMonID(mon));
                 BtlvEffect_PlayBgmNoPinch(0x518);
             } else {
@@ -6160,7 +6160,7 @@ static BOOL BattleClient_ScBallThrow(BtlClient *client, s32 *seq, const u32 *arg
                 } else {
                     message = 0x3d;
                 }
-                Btlv_StringParam_Setup(&client->strParam, 1, message);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, message);
             }
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             (*seq)++;
@@ -6184,7 +6184,7 @@ static BOOL BattleClient_ScBallThrow(BtlClient *client, s32 *seq, const u32 *arg
             SkipExitBGMFadeOut(client->mainModule);
             if (args[3]) {
                 mon = PokeCon_GetPosMonInner(client->pokeCon, args[0]);
-                Btlv_StringParam_Setup(&client->strParam, 1, 0x42);
+                Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x42);
                 Btlv_StringParam_AddArg(&client->strParam, GetMonID(mon));
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
                 (*seq)++;
@@ -6212,7 +6212,7 @@ static BOOL BattleClient_ScBallThrowTrainer(BtlClient *client, s32 *seq, const u
         break;
     case 1:
         if (!BtlvEffect_IsBusy()) {
-            Btlv_StringParam_Setup(&client->strParam, 1, 0x43);
+            Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x43);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
             (*seq)++;
         }

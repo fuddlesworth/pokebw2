@@ -525,7 +525,7 @@ static BOOL Cutin_CmdPrintMessage(PokewoodCutin *cutin, u16 *seq, const u16 *arg
         } else {
             msgId = scene->messages[args[1]][args[0]];
         }
-        Btlv_StringParam_Setup(&cutin->strParam, 8, msgId);
+        Btlv_StringParam_Setup(&cutin->strParam, BTLV_STR_MOVIE_SCRIPT, msgId);
         BtlvCore_StartMsg(cutin->viewCore, &cutin->strParam);
         (*seq)++;
         break;

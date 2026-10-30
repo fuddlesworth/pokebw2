@@ -20454,8 +20454,12 @@ overlays/ov167 0x021d54fc FormatStatChange
 overlays/ov167 0x021d55a4 FormatStatLimit
 overlays/ov167 0x021d5630 FormatClientSideMsg
 overlays/ov167 0x021d5684 BtlString_FormatMoveMsg
+overlays/ov167 0x021d5700 BtlString_LoadTrainerWinLoseMsg
 overlays/ov167 0x021d575c BtlString_LoadUIMsg
-overlays/ov167 0x021d57b8 BtlString_BuildTrainerStringBody
+overlays/ov167 0x021d5770 BtlString_FormatLearnMsg
+overlays/ov167 0x021d5778 FormatLearnMsgCore
+overlays/ov167 0x021d57b0 BtlString_FormatYesNoMsg
+overlays/ov167 0x021d57b8 FormatYesNoMsgCore
 overlays/ov167 0x021d57e4 BtlString_FormatLevelUpGains
 overlays/ov167 0x021d5874 BtlString_FormatLevelUpStats
 overlays/ov167 0x021d5904 BtlString_FormatMovieScriptMsg

@@ -355,7 +355,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             BtlvStringParam param;
 
             mon = BtlvCore_GetMonAtViewPos(core, 0);
-            Btlv_StringParam_Setup(&param, 1, 0x45);
+            Btlv_StringParam_Setup(&param, BTLV_STR_STD, 0x45);
             Btlv_StringParam_AddArg(&param, GetMonID(mon));
             Btlv_StringParam_SetWait(&param, 0);
             BtlvCore_PrintMsg(core, &param);
@@ -422,7 +422,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             BtlvStringParam param;
 
             mon = BtlvCore_GetMonAtViewPos(core, 0);
-            Btlv_StringParam_Setup(&param, 2, 0x5a);
+            Btlv_StringParam_Setup(&param, BTLV_STR_SET, 0x5a);
             Btlv_StringParam_AddArg(&param, GetMonID(mon));
             Btlv_StringParam_AddArg(&param, 1);
             Btlv_StringParam_AddArg(&param, 0);
@@ -470,7 +470,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             BtlvStringParam param;
 
             mon = BtlvCore_GetMonAtViewPos(core, 1);
-            Btlv_StringParam_Setup(&param, 1, 0x41);
+            Btlv_StringParam_Setup(&param, BTLV_STR_STD, 0x41);
             Btlv_StringParam_AddArg(&param, GetMonID(mon));
             BtlvCore_StartMsg(core, &param);
             (*seq)++;
@@ -1326,31 +1326,31 @@ BOOL BtlvCore_ProcSwitchIn(s32 *seq, void *arg) {
 
 void BtlvCore_MakeString(const BtlvStringParam *param, StrBuf *strbuf) {
     switch (param->type) {
-    case 1:
+    case BTLV_STR_STD:
         BtlString_FormatStdMsgArgs(strbuf, param->message, param->args);
         break;
-    case 2:
+    case BTLV_STR_SET:
         BtlString_FormatSetMsg(strbuf, param->message, param->args);
         break;
-    case 3:
+    case BTLV_STR_UI:
         BtlString_LoadUIMsg(strbuf, param->message);
         break;
-    case 5:
-        func_ov167_021d5770(strbuf, param->message, param->args);
+    case BTLV_STR_LEARN:
+        BtlString_FormatLearnMsg(strbuf, param->message, param->args);
         break;
-    case 6:
-        func_ov167_021d57b0(strbuf, param->message, param->args);
+    case BTLV_STR_YES_NO:
+        BtlString_FormatYesNoMsg(strbuf, param->message, param->args);
         break;
-    case 4:
+    case BTLV_STR_MOVE:
         BtlString_FormatMoveMsg(strbuf, param->args[0], param->args[1]);
         break;
-    case 7:
-        func_ov167_021d5700(strbuf, param->args[0], param->args[1]);
+    case BTLV_STR_TRAINER_WIN_LOSE:
+        BtlString_LoadTrainerWinLoseMsg(strbuf, param->args[0], param->args[1]);
         break;
-    case 8:
+    case BTLV_STR_MOVIE_SCRIPT:
         BtlString_FormatMovieScriptMsg(strbuf, param->message);
         break;
-    case 9:
+    case BTLV_STR_MOVIE:
         BtlString_FormatMovieMsg(strbuf, param->message);
         break;
     }
