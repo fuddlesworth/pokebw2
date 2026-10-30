@@ -135,27 +135,27 @@ static u8 CollectTargetsSingle(BtlServerFlow *flow, BattleMon *mon, u8 target, B
 
     pos = MonIDToBattlePos(flow->mainModule, flow->pokeCon, GetMonID(mon));
     switch (param->targetType) {
-    case 0:
-    case 3:
-    case 4:
-    case 5:
-    case 9:
+    case MOVE_TARGET_SELECTED:
+    case MOVE_TARGET_FOE:
+    case MOVE_TARGET_ALL_ADJACENT:
+    case MOVE_TARGET_ADJACENT_FOES:
+    case MOVE_TARGET_RANDOM_FOE:
         BtlMonSet_Add(targets,
                       redirect == 0x1f ? GetOpposingMonAt(flow, pos, 0) : GetPokeParam(flow->pokeCon, redirect));
         return 1;
-    case 1:
-    case 7:
+    case MOVE_TARGET_USER_OR_ALLY:
+    case MOVE_TARGET_USER:
         if (redirect == 0x1f) {
             BtlMonSet_Add(targets, mon);
         } else {
             BtlMonSet_Add(targets, GetPokeParam(flow->pokeCon, redirect));
         }
         return 1;
-    case 8:
+    case MOVE_TARGET_ALL:
         BtlMonSet_Add(targets, mon);
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 0));
         return 2;
-    case 13:
+    case MOVE_TARGET_DEPENDS:
         if (redirect != 0x1f) {
             BtlMonSet_Add(targets, GetPokeParam(flow->pokeCon, redirect));
             return 1;
@@ -171,10 +171,10 @@ static u8 GetCurseTargetPos(BtlServerFlow *flow, BtlFlowMoveParam *param, Battle
 
     if (move == MOVE_CURSE) {
         if (param->targetType == 0) {
-            if (pos == targetPos || targetPos == 6) {
+            if (pos == targetPos || targetPos == BTL_POS_NONE) {
                 return DecideMoveTargetAuto(flow->mainModule, flow->pokeCon, mon, MOVE_CURSE);
             }
-        } else if (param->targetType == 7 && pos != targetPos) {
+        } else if (param->targetType == MOVE_TARGET_USER && pos != targetPos) {
             return pos;
         }
     }
@@ -192,44 +192,44 @@ static u8 CollectTargetsDouble(BtlServerFlow *flow, BattleMon *mon, u8 target, B
     pos = MonIDToBattlePos(flow->mainModule, flow->pokeCon, GetMonID(mon));
     targetPos = GetCurseTargetPos(flow, param, mon, pos, target);
     switch (param->targetType) {
-    case 0:
+    case MOVE_TARGET_SELECTED:
         single = PokeCon_GetPosMon(flow->pokeCon, targetPos);
         break;
-    case 3:
+    case MOVE_TARGET_FOE:
         single = PokeCon_GetPosMon(flow->pokeCon, targetPos);
         break;
-    case 9:
+    case MOVE_TARGET_RANDOM_FOE:
         single = GetOpposingMonAt(flow, pos, BattleRandom(2));
         break;
-    case 5:
+    case MOVE_TARGET_ADJACENT_FOES:
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 0));
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 1));
         return 2;
-    case 4:
+    case MOVE_TARGET_ALL_ADJACENT:
         BtlMonSet_Add(targets, GetAllyMonAt(flow, pos));
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 0));
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 1));
         return 3;
-    case 8:
+    case MOVE_TARGET_ALL:
         BtlMonSet_Add(targets, mon);
         BtlMonSet_Add(targets, GetAllyMonAt(flow, pos));
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 0));
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 1));
         return 3;
-    case 7:
+    case MOVE_TARGET_USER:
         if (redirect == 0x1f) {
             BtlMonSet_Add(targets, mon);
         } else {
             BtlMonSet_Add(targets, GetPokeParam(flow->pokeCon, redirect));
         }
         return 1;
-    case 1:
+    case MOVE_TARGET_USER_OR_ALLY:
         BtlMonSet_Add(targets, PokeCon_GetPosMon(flow->pokeCon, targetPos));
         return 1;
-    case 2:
+    case MOVE_TARGET_ALLY:
         BtlMonSet_Add(targets, GetAllyMonAt(flow, pos));
         return 1;
-    case 13:
+    case MOVE_TARGET_DEPENDS:
         if (redirect != 0x1f) {
             single = GetPokeParam(flow->pokeCon, redirect);
             break;
@@ -266,22 +266,22 @@ static u8 CollectTargetsTriple(BtlServerFlow *flow, BattleMon *mon, u8 target, B
     adjacent = GetAdjacentOpponentData(pos);
     targetPos = GetCurseTargetPos(flow, param, mon, pos, target);
     switch (param->targetType) {
-    case 0:
+    case MOVE_TARGET_SELECTED:
         single = PokeCon_GetPosMon(flow->pokeCon, targetPos);
         break;
-    case 3:
+    case MOVE_TARGET_FOE:
         single = PokeCon_GetPosMon(flow->pokeCon, targetPos);
         break;
-    case 9:
+    case MOVE_TARGET_RANDOM_FOE:
         index = BattleRandom(adjacent->count1);
         single = PokeCon_GetPosMon(flow->pokeCon, adjacent->list1[index]);
         break;
-    case 5:
+    case MOVE_TARGET_ADJACENT_FOES:
         for (i = 0; i < adjacent->count1; i++) {
             BtlMonSet_Add(targets, PokeCon_GetPosMon(flow->pokeCon, adjacent->list1[i]));
         }
         return adjacent->count1;
-    case 4:
+    case MOVE_TARGET_ALL_ADJACENT:
         count = 0;
         for (i = 0; i < adjacent->count1; i++) {
             BtlMonSet_Add(targets, PokeCon_GetPosMon(flow->pokeCon, adjacent->list1[i]));
@@ -294,7 +294,7 @@ static u8 CollectTargetsTriple(BtlServerFlow *flow, BattleMon *mon, u8 target, B
             }
         }
         return count;
-    case 8:
+    case MOVE_TARGET_ALL:
         BtlMonSet_Add(targets, mon);
         for (i = 0; i < 3; i++) {
             u8 allyPos = GetPosOnSameSide(pos, i);
@@ -307,20 +307,20 @@ static u8 CollectTargetsTriple(BtlServerFlow *flow, BattleMon *mon, u8 target, B
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 1));
         BtlMonSet_Add(targets, GetOpposingMonAt(flow, pos, 2));
         return 6;
-    case 7:
+    case MOVE_TARGET_USER:
         if (redirect == 0x1f) {
             BtlMonSet_Add(targets, mon);
         } else {
             BtlMonSet_Add(targets, GetPokeParam(flow->pokeCon, redirect));
         }
         return 1;
-    case 1:
+    case MOVE_TARGET_USER_OR_ALLY:
         BtlMonSet_Add(targets, PokeCon_GetPosMon(flow->pokeCon, targetPos));
         return 1;
-    case 2:
+    case MOVE_TARGET_ALLY:
         BtlMonSet_Add(targets, PokeCon_GetPosMon(flow->pokeCon, targetPos));
         return 1;
-    case 13:
+    case MOVE_TARGET_DEPENDS:
         if (redirect != 0x1f) {
             single = GetPokeParam(flow->pokeCon, redirect);
             break;
@@ -499,7 +499,7 @@ void AddExpAndEVs(BtlServerFlow *flow, BattleParty *party, BattleMon *defeated, 
     baseExp = CalcBaseExpGain(defeated, setup->levelDiff);
     numMons = GetNumMonsInParty(party);
     numExpShare = 0;
-    if (BtlSetup_GetBattleType(flow->mainModule) == 1) {
+    if (BtlSetup_GetBattleType(flow->mainModule) == BTL_TYPE_TRAINER) {
         baseExp = baseExp * 15 / 10;
     }
     for (i = 0; i < 6; i++) {
@@ -612,7 +612,7 @@ typedef struct {
 } BtlFlowEVParam;
 
 // clang-format off
-static const BtlFlowEVParam data_ov167_021d6cfc[6] = {
+static const BtlFlowEVParam sEVParams[6] = {
     { 0x0a, 0x0d, 0x126 },
     { 0x0b, 0x0e, 0x121 },
     { 0x0c, 0x0f, 0x122 },
@@ -637,7 +637,7 @@ static void AddEVs(BattleMon *mon, BattleMon *defeated, BtlFlowExpEntry *entry) 
     species = GetBattleMonSpecies(defeated);
     form = GetBattleMonStat(defeated, BATTLEMON_FORM);
     for (i = 0; i < 6; i++) {
-        evs[i] = PML_PersonalGetParamSingle(species, form, data_ov167_021d6cfc[i].personalParam);
+        evs[i] = PML_PersonalGetParamSingle(species, form, sEVParams[i].personalParam);
     }
     if (GetBattleMonHeldItem(mon) == ITEM_MACHO_BRACE) {
         for (i = 0; i < 6; i++) {
@@ -645,7 +645,7 @@ static void AddEVs(BattleMon *mon, BattleMon *defeated, BtlFlowExpEntry *entry) 
         }
     }
     for (i = 0; i < 6; i++) {
-        u16 item = data_ov167_021d6cfc[i].powerItem;
+        u16 item = sEVParams[i].powerItem;
 
         if (item == GetBattleMonHeldItem(mon)) {
             evs[i] += (u8)ItemGetParam(item, 2);
@@ -660,7 +660,7 @@ static void AddEVs(BattleMon *mon, BattleMon *defeated, BtlFlowExpEntry *entry) 
     }
     for (i = 0; i < 6; i++) {
         if (evs[i] != 0) {
-            field = data_ov167_021d6cfc[i].field;
+            field = sEVParams[i].field;
             total = evs[i] + PokeParty_GetParam(pkm, field, NULL);
             if (total > 255) {
                 total = 255;
@@ -701,7 +701,7 @@ typedef struct {
     BOOL (*func)(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 value, u8 param);
 } BtlFlowItemEffect;
 
-static const BtlFlowItemEffect data_ov167_021d6d20[23] = {
+static const BtlFlowItemEffect sBagItemEffects[23] = {
     { 0x12, 0, FALSE, BagItemCureSleep },
     { 0x13, 0, FALSE, BagItemCurePoison },
     { 0x14, 0, FALSE, BagItemCureBurn },
@@ -783,16 +783,16 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
             IncRecord(flow->mainModule, 0x6f);
         }
     }
-    usable = place == 0 && targetPos != 6 ? TRUE : FALSE;
+    usable = place == 0 && targetPos != BTL_POS_NONE ? TRUE : FALSE;
     if (!usable) {
         for (i = 0; i < 23; i++) {
-            effect = &data_ov167_021d6d20[i];
+            effect = &sBagItemEffects[i];
             if ((effect->exact && item == effect->param) || (!effect->exact && ItemGetParam(item, effect->param))) {
                 if (effect->place == 0) {
                     usable = TRUE;
                     break;
                 }
-                if (effect->place == 1 && place < 2 && targetPos != 6) {
+                if (effect->place == 1 && place < 2 && targetPos != BTL_POS_NONE) {
                     usable = TRUE;
                     break;
                 }
@@ -804,16 +804,16 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
         return FALSE;
     }
     if (flow->commCompetitor == 1) {
-        if (targetPos != 6) {
+        if (targetPos != BTL_POS_NONE) {
             BtlServerCmdQueue_Put(flow->queue, SC_EFFECT_BY_POS, targetPos, 0x282);
         }
         for (i = 0; i < 23; i++) {
-            if (data_ov167_021d6d20[i].exact && item == data_ov167_021d6d20[i].param) {
+            if (sBagItemEffects[i].exact && item == sBagItemEffects[i].param) {
                 result = FALSE;
                 if (!BtlServerFlow_IsSemiInvuln(flow, targetId)) {
                     u32 reservePos = SCQUE_RESERVE_Pos(flow->queue, SC_EFFECT_BY_POS);
 
-                    result = data_ov167_021d6d20[i].func(flow, target, item, 0, param);
+                    result = sBagItemEffects[i].func(flow, target, item, 0, param);
                     if (result == TRUE) {
                         BtlServerCmdQueue_PutReserved(flow->queue, reservePos, SC_EFFECT_BY_POS, targetPos, 0x25e);
                         BtlServerCmdQueue_Put(flow->queue, SC_EFFECT, 0x236);
@@ -832,14 +832,14 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
     reserve = SCQUE_RESERVE_Pos(flow->queue, SC_EFFECT_BY_POS);
     state = PushState(&flow->actionState, 0x4d7);
     for (i = 0; i < 23; i++) {
-        effect = &data_ov167_021d6d20[i];
-        value = ItemGetParam(item, data_ov167_021d6d20[i].param);
+        effect = &sBagItemEffects[i];
+        value = ItemGetParam(item, sBagItemEffects[i].param);
         if (value != 0 && effect->func(flow, target, item, value, param)) {
             used = TRUE;
         }
     }
     if (used) {
-        effectId = targetPos != 6 ? 0x25e : 0x292;
+        effectId = targetPos != BTL_POS_NONE ? 0x25e : 0x292;
         BtlServerCmdQueue_PutReserved(flow->queue, reserve, SC_EFFECT_BY_POS, targetPos, effectId);
         if (flow->commCompetitor != 1) {
             BattleClient_SubItem(flow->mainModule, clientId, item);
@@ -876,8 +876,8 @@ static BOOL ThrowBall(BtlServerFlow *flow, BattleMon *mon, u16 item) {
             break;
         }
     }
-    if (BtlSetup_GetBattleType(flow->mainModule) == 0) {
-        if (targetPos != 6) {
+    if (BtlSetup_GetBattleType(flow->mainModule) == BTL_TYPE_WILD) {
+        if (targetPos != BTL_POS_NONE) {
             caught = CheckBallCapture(flow, mon, target, item, &shakes, &critical);
             if (caught) {
                 flow->result = BTL_FLOW_RESULT_CAPTURE;
@@ -891,7 +891,7 @@ static BOOL ThrowBall(BtlServerFlow *flow, BattleMon *mon, u16 item) {
         }
         return TRUE;
     }
-    if (targetPos != 6) {
+    if (targetPos != BTL_POS_NONE) {
         BtlServerCmdQueue_Put(flow->queue, SC_BALL_THROW_TRAINER, targetPos, item);
     }
     return FALSE;
@@ -925,13 +925,13 @@ static BOOL CheckBallCapture(BtlServerFlow *flow, BattleMon *mon, BattleMon *tar
     rate *= (u16)PML_PersonalGetParamSingle(species, form, PERSONAL_CATCH_RATE);
     rate = (u32)FX_MUL(rate, GetBallCaptureMod(flow, mon, target, item)) / maxHP;
     switch (GetBattleMonStatus(target)) {
-    case 2:
-    case 3:
+    case CONDITION_SLEEP:
+    case CONDITION_FREEZE:
         rate = FX_MUL(rate, FX32_CONST(2.5));
         break;
-    case 1:
-    case 4:
-    case 5:
+    case CONDITION_PARALYSIS:
+    case CONDITION_BURN:
+    case CONDITION_POISON:
         rate = FX_MUL(rate, FX32_CONST(1.5));
         break;
     }
@@ -1350,7 +1350,7 @@ static BOOL BagItemRaiseStat(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
     BattleHandlerStatChangeParam *param;
 
     monId = GetMonID(mon);
-    if (GetBattlePos(&flow->posPoke, monId) != 6 && !IsFainted(mon) && IsStatChangeValid(mon, stat, value)) {
+    if (GetBattlePos(&flow->posPoke, monId) != BTL_POS_NONE && !IsFainted(mon) && IsStatChangeValid(mon, stat, value)) {
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         param->count = 1;
         param->monIds[0] = monId;
@@ -1523,7 +1523,7 @@ static s32 CheckRulesTurnLimit(BtlMainModule *mainModule, BOOL won) {
 
 // Checks a scripted battle's rules at the end of a turn: 1 for a win, the outcome of a broken rule, or 0 to go on
 s32 CheckScriptedBattleRules(BtlMainModule *mainModule, BtlPokeCon *pokeCon) {
-    u8 unkDF = GetStudioMovieId(mainModule);
+    u8 movieId = GetStudioMovieId(mainModule);
     BOOL won = FALSE;
     s32 outcomes[5] = { 0 };
     const BtlScriptedRules *rules;

@@ -20538,6 +20538,8 @@ overlays/ov167 0x021d6c88 sCommTripleSetupSteps
 overlays/ov167 0x021d6ca4 sAdjacentOpponentData
 overlays/ov167 0x021d6ce0 BATTLE_PROC_FUNCTIONS
 overlays/ov167 0x021d6cec sPledgeMoves
+overlays/ov167 0x021d6cfc sEVParams
+overlays/ov167 0x021d6d20 sBagItemEffects
 overlays/ov167 0x021d7070 sCmdProcTable
 overlays/ov167 0x021d7490 sSemiInvulnFlags
 overlays/ov167 0x021d7624 sHandlersStall

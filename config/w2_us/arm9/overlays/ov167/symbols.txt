@@ -4232,8 +4232,8 @@ sAdjacentOpponentData kind:data(any) addr:0x021d6ce4
 BATTLE_PROC_FUNCTIONS kind:data(any) addr:0x021d6d20 ambiguous
 sPledgeMoves kind:data(any) addr:0x021d6d2c
 data_ov167_021d6cf4 kind:data(any) addr:0x021d6d34
-data_ov167_021d6cfc kind:data(any) addr:0x021d6d3c
-data_ov167_021d6d20 kind:data(any) addr:0x021d6d60
+sEVParams kind:data(any) addr:0x021d6d3c
+sBagItemEffects kind:data(any) addr:0x021d6d60
 data_ov167_021d6d24 kind:data(any) addr:0x021d6d64
 data_ov167_021d6dd8 kind:data(any) addr:0x021d6e18
 data_ov167_021d6dd9 kind:data(any) addr:0x021d6e19
