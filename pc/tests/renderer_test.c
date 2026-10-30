@@ -120,6 +120,16 @@ int main(void) {
     CHECK(PcGxLcdc[0x60001] == 0xa5);
     GX_SetBankForTex(GX_VRAM_TEX_01_AD);
     CHECK(PcGx.textures[0x20000] == 0x5a && PcGx.textures[0x20001] == 0xa5);
+    PcGxWideCaptureValid = TRUE;
+    PcGxCapturedBanks = GX_VRAM_D;
+    PcGxMainDisplay = (1u << 10) | GX_BGMODE_5;
+    PcGxRegisters[0].halves[6] = 0x4084;
+    CHECK(PcGx_WideCaptureActive());
+    PcGxMainDisplay = (1u << 10) | GX_BGMODE_0;
+    PcGxRegisters[0].halves[6] = 0x1f12;
+    CHECK(!PcGx_WideCaptureActive());
+    PcGxMainDisplay = (1u << 10) | GX_BGMODE_5;
+    CHECK(!PcGx_WideCaptureActive());
     PcGxCapturedBanks = 0;
     PcGx_ResetHardware();
     GXBoxTestParam box = { 0, 0, 0, FX32_ONE / 2, FX32_ONE / 2, FX32_ONE / 2 };

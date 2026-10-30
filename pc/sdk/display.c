@@ -5,8 +5,10 @@ static GXVRamBG bankBG;
 static GXVRamTex bankTex;
 
 bool PcGx_WideCaptureActive(void) {
-    // Building entry briefly remaps bank D while BG2 still displays its captured frame.
-    return PcGxWideCaptureValid && (PcGxCapturedBanks & GX_VRAM_D) && (PcGxMainDisplay & (1u << 10));
+    // Bank D retains its captured frame after BG2 returns to text mode.
+    return PcGxWideCaptureValid && (PcGxCapturedBanks & GX_VRAM_D) && (PcGxMainDisplay & (1u << 10)) &&
+           (PcGxMainDisplay & REG_GX_DISPCNT_BGMODE_MASK) == GX_BGMODE_5 &&
+           (PcGxRegisters[0].halves[6] & 0x84u) == 0x84u;
 }
 
 static void CopyCapturedBanks(u8 *mapped, u32 banks, bool toMapped) {
