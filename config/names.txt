@@ -7957,6 +7957,10 @@ overlays/ov011 0x0218dc4c SOCLiSocketCount
 overlays/ov011 0x0218dc54 SOCLiSocketList
 overlays/ov011 0x0218dc58 SOCLiSocketListTrash
 overlays/ov011 0x0218dc5c sHostAddr
+overlays/ov011 0x0218dc74 sHostAddrList
+overlays/ov011 0x0218dc7c sHostEnt
+overlays/ov011 0x0218dc8c sInetNtoABuffer
+overlays/ov011 0x0218dcac sSoclConfig
 overlays/ov011 0x0218dce4 sHostName
 overlays/ov011 0x0218dde8 sPoolSeeded
 overlays/ov011 0x0218ddf0 sPool

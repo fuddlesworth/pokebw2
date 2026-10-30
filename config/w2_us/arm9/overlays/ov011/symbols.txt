@@ -2691,10 +2691,10 @@ SOCLiSocketCount kind:bss addr:0x0218dc8c
 SOCLiSocketList kind:bss addr:0x0218dc94
 SOCLiSocketListTrash kind:bss addr:0x0218dc98
 sHostAddr kind:bss addr:0x0218dc9c
-data_ov011_0218dc74 kind:bss addr:0x0218dcb4
-data_ov011_0218dc7c kind:bss addr:0x0218dcbc
-data_ov011_0218dc8c kind:bss addr:0x0218dccc
-data_ov011_0218dcac kind:bss addr:0x0218dcec
+sHostAddrList kind:bss addr:0x0218dcb4
+sHostEnt kind:bss addr:0x0218dcbc
+sInetNtoABuffer kind:bss addr:0x0218dccc
+sSoclConfig kind:bss addr:0x0218dcec
 data_ov011_0218dcdc kind:bss addr:0x0218dd1c
 sHostName kind:bss addr:0x0218dd24
 sPoolSeeded kind:bss addr:0x0218de28
