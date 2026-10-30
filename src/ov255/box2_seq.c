@@ -934,8 +934,8 @@ static int Box2Seq_ArrangeMain(Box2SysWork *syswk) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         break;
     case CURSORMOVE_NONE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -1192,14 +1192,14 @@ static int Box2Seq_ArrangeMoveMain(Box2SysWork *syswk) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         syswk->moveMode = 0;
         return Box2Seq_AnimActorButton(syswk, 6, 9, Box2Seq_Goto(syswk, 22));
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_U:
         if (CursorMove_GetPos(syswk->app->cursorMove) == 34) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             Box2Main_StartBoxListScroll(syswk, -1);
             return Box2Seq_RunVFunc(syswk, Box2Main_VFuncBoxListScrollRight, 21);
         }
         break;
-    case CURSORMOVE_UNK_7:
+    case CURSORMOVE_SCROLL_D:
         if (CursorMove_GetPos(syswk->app->cursorMove) == 37) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             Box2Main_StartBoxListScroll(syswk, 1);
@@ -1745,7 +1745,7 @@ static int Box2Seq_RangeMain(Box2SysWork *syswk) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         syswk->moveMode = 0;
         return Box2Seq_AnimActorButton(syswk, 6, 9, Box2Seq_Goto(syswk, 37));
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_U:
         if (CursorMove_GetPos(syswk->app->cursorMove) == 34) {
             if (syswk->pickState == BOX2_PICK_KEY) {
                 Box2Main_PokeSelectOff(syswk);
@@ -1756,7 +1756,7 @@ static int Box2Seq_RangeMain(Box2SysWork *syswk) {
             return Box2Seq_RunVFunc(syswk, Box2Main_VFuncBoxListScrollRight, 36);
         }
         break;
-    case CURSORMOVE_UNK_7:
+    case CURSORMOVE_SCROLL_D:
         if (CursorMove_GetPos(syswk->app->cursorMove) == 37) {
             if (syswk->pickState == BOX2_PICK_KEY) {
                 Box2Main_PokeSelectOff(syswk);
@@ -2499,8 +2499,8 @@ static int Box2Seq_RangePartyMain(Box2SysWork *syswk) {
         }
         return Box2Seq_RunRequestedVFunc(syswk, Box2Seq_PokeMoveEndTo(syswk, 42));
     }
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
     case CURSORMOVE_NONE:
         break;
     default:
@@ -2814,8 +2814,8 @@ static int Box2Seq_ArrangePartyMain(Box2SysWork *syswk) {
     case CURSORMOVE_NONE:
     case CURSORMOVE_SCROLL_R:
     case CURSORMOVE_SCROLL_L:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res + BOX2_PARTY_POS, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -3161,8 +3161,8 @@ static int Box2Seq_MovePartyMain(Box2SysWork *syswk) {
         }
         return Box2Seq_RunRequestedVFunc(syswk, Box2Seq_PokeMoveEndTo(syswk, 32));
     case CURSORMOVE_NONE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (syswk->pickState == BOX2_PICK_KEY) {
@@ -3422,8 +3422,8 @@ static int Box2Seq_ArrangeBoxMain(Box2SysWork *syswk) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         break;
     case CURSORMOVE_NONE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -3611,8 +3611,8 @@ static int Box2Seq_ArrangeBoxPartyMain(Box2SysWork *syswk) {
     case CURSORMOVE_NONE:
     case CURSORMOVE_SCROLL_R:
     case CURSORMOVE_SCROLL_L:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res + BOX2_PARTY_POS, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -3811,8 +3811,8 @@ static int Box2Seq_WithdrawMain(Box2SysWork *syswk) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         break;
     case CURSORMOVE_NONE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -4002,8 +4002,8 @@ static int Box2Seq_DepositPartyMain(Box2SysWork *syswk) {
     case CURSORMOVE_NONE:
     case CURSORMOVE_SCROLL_R:
     case CURSORMOVE_SCROLL_L:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res + BOX2_PARTY_POS, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -4154,8 +4154,8 @@ static int Box2Seq_DepositPickBox(Box2SysWork *syswk) {
         break;
     case CURSORMOVE_NONE:
     case CURSORMOVE_CURSOR_MOVE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     }
     return 63;
@@ -4398,8 +4398,8 @@ static int Box2Seq_ItemMain(Box2SysWork *syswk) {
         syswk->param->closed = FALSE;
         return Box2Seq_AnimActorButton(syswk, 6, 9, 116);
     case CURSORMOVE_NONE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -4686,8 +4686,8 @@ static int Box2Seq_ItemPartyOutMain(Box2SysWork *syswk) {
         }
         return Box2Seq_RunRequestedVFunc(syswk, Box2Seq_PokeMoveEndTo(syswk, 74));
     case CURSORMOVE_NONE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (syswk->pickState == BOX2_PICK_KEY) {
@@ -5030,8 +5030,8 @@ static int Box2Seq_ItemPartyMain(Box2SysWork *syswk) {
     case CURSORMOVE_NONE:
     case CURSORMOVE_SCROLL_R:
     case CURSORMOVE_SCROLL_L:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res + BOX2_PARTY_POS, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -5258,8 +5258,8 @@ static int Box2Seq_DreamWorldMain(Box2SysWork *syswk) {
         syswk->param->position = BOX2_GET_NONE;
         return Box2Seq_AnimActorButton(syswk, 6, 9, 116);
     case CURSORMOVE_NONE:
-    case CURSORMOVE_UNK_7:
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_D:
+    case CURSORMOVE_SCROLL_U:
         break;
     default:
         if (Box2Main_GetPokeParam(syswk, res, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
@@ -5994,14 +5994,14 @@ static int Box2Seq_BoxJumpMain(Box2SysWork *syswk) {
     case CURSORMOVE_CURSOR_MOVE:
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         return Box2Seq_RunRequestedVFunc(syswk, Box2Seq_PokeMoveEndTo(syswk, 109));
-    case CURSORMOVE_UNK_8:
+    case CURSORMOVE_SCROLL_U:
         if (CursorMove_GetPos(syswk->app->cursorMove) == 1) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             Box2Main_StartBoxListScroll(syswk, -1);
             return Box2Seq_RunVFunc(syswk, Box2Main_VFuncBoxMoveScrollRight, 109);
         }
         break;
-    case CURSORMOVE_UNK_7:
+    case CURSORMOVE_SCROLL_D:
         if (CursorMove_GetPos(syswk->app->cursorMove) == 4) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             Box2Main_StartBoxListScroll(syswk, 1);
