@@ -1122,7 +1122,7 @@ BOOL BattleMon_TickCondition(BattleMon *mon, u32 index, BattleCondition *prev, B
     if (index == CONDITION_SLEEP || index == CONDITION_CONFUSION) {
         return FALSE;
     }
-    if (GetConditionPtr(mon, index)->common.type != 0) {
+    if (GetConditionPtr(mon, index)->common.type != BTL_CONDITION_TYPE_NONE) {
         turns = Condition_GetTurns(*GetConditionPtr(mon, index));
         cond = *GetConditionPtr(mon, index);
         if (prev != NULL) {
@@ -1147,7 +1147,7 @@ BOOL BattleMon_TickCondition(BattleMon *mon, u32 index, BattleCondition *prev, B
                     *cured = TRUE;
                 }
             }
-        } else if (GetConditionPtr(mon, index)->common.type == 1) {
+        } else if (GetConditionPtr(mon, index)->common.type == BTL_CONDITION_TYPE_PERMANENT) {
             u32 max = GetConditionPtr(mon, index)->common.turns;
 
             if (max != 0 && mon->core.conditionCounters[index] < max) {
@@ -1175,7 +1175,7 @@ BOOL BattleMon_TickSleep(BattleMon *mon) {
     u8 turns;
     u8 amount;
 
-    if (condition->common.type != 0) {
+    if (condition->common.type != BTL_CONDITION_TYPE_NONE) {
         turns = Condition_GetTurns(*condition);
         if (turns != 0) {
             amount = CheckEffectiveAbility(mon, ABILITY_EARLY_BIRD) ? 2 : 1;
@@ -1193,7 +1193,7 @@ BOOL BattleMon_TickConfusion(BattleMon *mon) {
     BattleCondition *condition = &mon->core.conditions[6];
     u8 turns;
 
-    if (condition->common.type != 0) {
+    if (condition->common.type != BTL_CONDITION_TYPE_NONE) {
         turns = Condition_GetTurns(*condition);
         if (turns != 0) {
             mon->core.conditionCounters[6]++;
@@ -1252,7 +1252,7 @@ u32 GetBattleMonStatus(BattleMon *mon) {
     u32 i;
 
     for (i = 1; i < 6; i++) {
-        if (mon->core.conditions[i].common.type != 0) {
+        if (mon->core.conditions[i].common.type != BTL_CONDITION_TYPE_NONE) {
             return i;
         }
     }
@@ -1260,16 +1260,16 @@ u32 GetBattleMonStatus(BattleMon *mon) {
 }
 
 BOOL CheckCondition(const BattleMon *mon, u32 index) {
-    return mon->core.conditions[index].common.type != 0;
+    return mon->core.conditions[index].common.type != BTL_CONDITION_TYPE_NONE;
 }
 
 u16 GetDisabledMove(BattleMon *mon, u32 index) {
     switch (mon->core.conditions[index].common.type) {
-    case 2:
+    case BTL_CONDITION_TYPE_TURNS:
         return (mon->core.conditions[index].raw << 7) >> 16;
-    case 3:
+    case BTL_CONDITION_TYPE_DEPEND_MON:
         return (mon->core.conditions[index].raw << 23) >> 26;
-    case 4:
+    case BTL_CONDITION_TYPE_DEPEND_MON_TURNS:
         return (mon->core.conditions[index].raw << 17) >> 26;
     default:
         return 0;
@@ -1317,7 +1317,7 @@ void ClearMoveStatusWork(BattleMon *mon, u32 flag) {
     }
     for (; i < 0x24; i++) {
         mon->core.conditions[i].raw = 0;
-        mon->core.conditions[i].common.type = 0;
+        mon->core.conditions[i].common.type = BTL_CONDITION_TYPE_NONE;
     }
     MI_CpuFill8(mon->core.conditionCounters, 0, 0x24);
 }
@@ -1399,7 +1399,7 @@ void CopyBatonPassParams(BattleMon *target, BattleMon *source) {
     target->statStages = source->statStages;
     target->substituteHP = source->substituteHP;
     for (i = 0; i < 36; i++) {
-        if (GetConditionPtr(source, i)->common.type != 0 && Condition_IsPassedByBatonPass(i)) {
+        if (GetConditionPtr(source, i)->common.type != BTL_CONDITION_TYPE_NONE && Condition_IsPassedByBatonPass(i)) {
             *GetConditionPtr(target, i) = *GetConditionPtr(source, i);
             target->core.conditionCounters[i] = source->core.conditionCounters[i];
         }

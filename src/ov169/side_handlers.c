@@ -133,7 +133,7 @@ BOOL ServerDisplay_RemoveSideEffect(u8 side, u32 effect) {
         BattleEventItem_Remove(slot->item);
         slot->item = NULL;
         slot->layers = 0;
-        slot->cont.common.type = 0;
+        slot->cont.common.type = BTL_CONDITION_TYPE_NONE;
         return TRUE;
     }
     return FALSE;
@@ -147,11 +147,11 @@ void SideEffectsEndTurn(void (*callback)(u8 side, u32 effect, BtlServerFlow *flo
     for (side = 0; side < NUM_SIDES; side++) {
         for (effect = 0; effect < NUM_SIDE_EFFECTS; effect++) {
             slot = &sSideEffects[side][effect];
-            if (slot->layers != 0 && slot->cont.common.type == 2) {
+            if (slot->layers != 0 && slot->cont.common.type == BTL_CONDITION_TYPE_TURNS) {
                 slot->turnsElapsed++;
                 if (slot->turnsElapsed >= slot->cont.common.turns) {
                     slot->layers = 0;
-                    slot->cont.common.type = 0;
+                    slot->cont.common.type = BTL_CONDITION_TYPE_NONE;
                     BattleEventItem_Remove(slot->item);
                     slot->item = NULL;
                     callback(side, effect, flow);
