@@ -463,7 +463,7 @@ u16 CheckProxyEntityEvent(EventData *data, EventWork *eventWork, const void *pos
             } else if (!CheckBGPositionMatchRail(entity, position)) {
                 continue;
             }
-            if (entity->condition == 2) {
+            if (entity->condition == BG_ENTITY_CONDITION_HIDDEN_ITEM) {
                 flag = GetHiddenItemEventFlagNoBySCRID(entity->scrId);
                 if (EventWork_FlagGet(eventWork, flag)) {
                     continue;
