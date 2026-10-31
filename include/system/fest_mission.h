@@ -30,7 +30,8 @@ typedef struct {
     // The total score the mission wants
     u32 count : 14;
     u32 unk4_31 : 1;
-    u32 unk8_0 : 18;
+    // 3 bits for each of a zone's 6 stages, which pick how many sparkles or people the zone has
+    u32 stagePatterns : 18;
     // An event flag that must be set to join the mission, or 0
     u32 requiredFlag : 12;
     u32 unk8_30 : 2;

@@ -31,7 +31,7 @@
 #define GIMMICK_ID 1
 #define GIMMICK_STATE_ID 48
 
-#define CAR_COUNT 4
+#define CAR_COUNT ROLLER_COASTER_CAR_COUNT
 // Each car has two paths, path car * 2 + switch, played by the car's animation path + 1
 #define PATH_COUNT (CAR_COUNT * 2)
 #define SPOT_COUNT 9
@@ -78,14 +78,6 @@
 #define SCRIPT_INTRO_START 12
 #define SCRIPT_INTRO_RIDE 6
 #define SCRIPT_INTRO_END 7
-
-// The gimmick's saved state
-typedef struct {
-    fx32 frames[CAR_COUNT];
-    u8 switches[CAR_COUNT];
-    // Whether the first ride of cars 1 and 2 has been shown
-    u16 introSeen[2];
-} RollerCoasterSave;
 
 typedef struct {
     TCB *task;

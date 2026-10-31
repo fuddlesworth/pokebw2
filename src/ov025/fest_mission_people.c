@@ -329,7 +329,8 @@ static BOOL FesMissionPeople_PickPlaces(GameSystem *gsys, FesMissionWork *work, 
     }
     work->placeCount = 0;
     for (i = 0; i < count; i++, entity++) {
-        if (entity->condition != 5 && entity->condition != 4) {
+        if (entity->condition != BG_ENTITY_CONDITION_FEST_PEOPLE_PLACE &&
+            entity->condition != BG_ENTITY_CONDITION_FEST_PLACE) {
             continue;
         }
         work->places[work->placeCount++] = *entity;
@@ -345,7 +346,7 @@ static BOOL FesMissionPeople_PickPlaces(GameSystem *gsys, FesMissionWork *work, 
         work->actorCount = 0;
         return FALSE;
     }
-    pattern = (mission->info.unk8_0 >> (level * 3)) & 7;
+    pattern = (mission->info.stagePatterns >> (level * 3)) & 7;
     work->actorCount = sActorCounts[pattern][FestMission_RandExcluding(rand, 8, NULL, 0)];
     if (work->actorCount > work->placeCount) {
         work->actorCount = work->placeCount;

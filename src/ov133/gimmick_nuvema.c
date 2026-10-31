@@ -56,7 +56,7 @@ void GimmickNuvema_Init(Field *field) {
     work = Field_GetGimmickWorkBlock(field, 1);
     work->playing = FALSE;
     period = GetRealTimeDayPeriod(GameData_GetSeason(gameData));
-    if (period == 3 || period == 4) {
+    if (period == DAY_PERIOD_NIGHT || period == DAY_PERIOD_MIDNIGHT) {
         LoadFieldExpandObjData(system, &sNightSceneSetup, 0);
         work->night = TRUE;
     } else {

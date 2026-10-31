@@ -33,7 +33,8 @@ struct EncEffGrid {
     s32 work[2];
     u16 columns;
     u16 rows;
-    u8 unk300C[0x64];
+    // The effect's own work: encounter_effect_spread.c keeps its EncEffSpread here
+    u8 effectWork[0x64];
     void (*update)(EncEffGrid *grid);
     u32 unk3074;
     u32 unk3078;
