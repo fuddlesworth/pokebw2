@@ -368,13 +368,13 @@ static void FesMissionPeople_SetParams(FesMissionWork *work, FestMissionConfig *
     case 1:
         FesMissionPeople_SetRandomParam(work, mission, index, rand);
         break;
-    case 2:
+    case FES_MISSION_TARGET_ITEM_EXCHANGE:
         FesMissionPeople_SetAnswerParams(work, mission, index, rand);
         break;
-    case 3:
+    case FES_MISSION_TARGET_ITEM_SALE:
         FesMissionPeople_SetShopParams(work, mission, index, rand);
         break;
-    case 6:
+    case FES_MISSION_TARGET_BATTLE:
         FesMissionPeople_SetBattleParam(work, mission, index, rand, picked);
         break;
     case 7:
