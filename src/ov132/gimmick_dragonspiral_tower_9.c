@@ -21,6 +21,13 @@ enum {
     MODEL_THROWN,
 };
 
+// The steps of the flash in GimmickDT9_ReleaseEvent
+enum {
+    STEP_WAIT_FLASH_FRAME,
+    STEP_HOLD_WHITE,
+    STEP_WAIT_FADE_BACK,
+};
+
 typedef struct {
     // The fade of the flash
     u32 fadeMode;
@@ -156,14 +163,14 @@ static GameEventReturnCode GimmickDT9_ReleaseEvent(GameEvent *event, u32 *state,
     }
 
     switch (*state) {
-    case 0:
+    case STEP_WAIT_FLASH_FRAME:
         if (frame == FX32_CONST(101)) {
             GFL_FadeSet(work->fadeMode, 0, 16, 0);
             work->fadeWait = 15;
             (*state)++;
         }
         break;
-    case 1:
+    case STEP_HOLD_WHITE:
         if (GFL_FadeIsRunning() == FALSE) {
             if (work->fadeWait <= 0) {
                 GFL_FadeSet(work->fadeMode, 16, 0, 0);
@@ -173,7 +180,7 @@ static GameEventReturnCode GimmickDT9_ReleaseEvent(GameEvent *event, u32 *state,
             }
         }
         break;
-    case 2:
+    case STEP_WAIT_FADE_BACK:
         if (GFL_FadeIsRunning() == FALSE) {
             (*state)++;
         }
