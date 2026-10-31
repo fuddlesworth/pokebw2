@@ -27,6 +27,7 @@
 #include "nitro/fx.h"
 #include "nitro/gx.h"
 #include "nitro/hw.h"
+#include "save/medal_box.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/version.h"
@@ -79,10 +80,11 @@ enum {
     MEDAL_INFO_STATE_CHANGE_ENTRY,
 };
 
-// The result of the screen: the button that closed it
+// The steps of MedalInfoViewer_ChangeEntry
 enum {
-    MEDAL_INFO_RESULT_BACK,
-    MEDAL_INFO_RESULT_FIELD,
+    MEDAL_INFO_CHANGE_WAIT_BUTTONS,
+    MEDAL_INFO_CHANGE_LOAD,
+    MEDAL_INFO_CHANGE_WAIT_PRINT,
 };
 
 // The touch rectangles
@@ -414,7 +416,7 @@ static void MedalInfoViewer_ChangeEntry(MedalInfoViewer *viewer) {
     ArcTool *arc;
 
     switch (viewer->subState) {
-    case 0:
+    case MEDAL_INFO_CHANGE_WAIT_BUTTONS:
         if (ClActor_IsAnimActive(viewer->actors[MEDAL_INFO_ACTOR_PREV]) &&
             ClActor_IsAnimActive(viewer->actors[MEDAL_INFO_ACTOR_NEXT])) {
             return;
@@ -432,7 +434,7 @@ static void MedalInfoViewer_ChangeEntry(MedalInfoViewer *viewer) {
         GFL_BitmapFill(BmpWin_GetBitmap(viewer->window), 0);
         viewer->subState++;
         // fallthrough
-    case 1:
+    case MEDAL_INFO_CHANGE_LOAD:
         if (viewer->entry->medal >= MEDAL_INFO_NO_MEDAL) {
             viewer->hasMedal = FALSE;
         } else {
@@ -465,7 +467,7 @@ static void MedalInfoViewer_ChangeEntry(MedalInfoViewer *viewer) {
         viewer->printing = TRUE;
         viewer->subState++;
         // fallthrough
-    case 2:
+    case MEDAL_INFO_CHANGE_WAIT_PRINT:
         if (!viewer->printing) {
             BmpWin_FlushChar(viewer->window);
             GFL_BGSysQueueScrLoad(MedalInfoViewer_GetBG(MEDAL_INFO_BG_TEXT));
@@ -555,7 +557,7 @@ static void MedalInfoViewer_BGInit(MedalInfoViewer *viewer) {
     commonArc = GFL_ArcSysCreateFileHandle(ARCID_APP_MENU_COMMON, heapId);
     if (viewer->param->mode != MEDAL_INFO_VIEWER_MODE_LIST) {
         rank = viewer->entry->rank;
-        if (rank == 4 && getGameVersion() == VERSION_BLACK2) {
+        if (rank == MEDAL_RANK_MAX && getGameVersion() == VERSION_BLACK2) {
             rank++;
         }
     } else {
