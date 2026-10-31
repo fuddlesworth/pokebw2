@@ -30,6 +30,13 @@
 #define DEMO3D_ID_C_CRUISER 1
 #define DEMO3D_SOUND_GROUP_COUNT 2
 
+// The steps of the process: play until the demo ends or is skipped, then start its fade-out and wait for it
+enum {
+    STATE_PLAY,
+    STATE_START_FADE_OUT,
+    STATE_WAIT_FADE_OUT,
+};
+
 typedef struct {
     HeapID heapId;
     Demo3DParam *param;
@@ -142,7 +149,7 @@ static BOOL Demo3D_Main(GameProc *proc, u32 *state, void *param, void *work) {
     demo->lastVBlank = vblank;
     demo->droppedTotal += demo->droppedFrames;
     switch (*state) {
-    case 0:
+    case STATE_PLAY:
         if (Demo3D_IsSkipRequested(demo) || ended) {
             demo->param->endFrame = Demo3DEngine_GetNowFrame(demo->engine) >> FX32_SHIFT;
             demo->param->result = ended + 1;
@@ -150,7 +157,7 @@ static BOOL Demo3D_Main(GameProc *proc, u32 *state, void *param, void *work) {
             (*state)++;
         }
         break;
-    case 1:
+    case STATE_START_FADE_OUT:
         if (GFL_WipeIsFinished() == TRUE) {
             if (Demo3D_StartFade(demo->param->demoId, WIPE_TYPE_FADE_OUT, demo->heapId)) {
                 return TRUE;
@@ -158,7 +165,7 @@ static BOOL Demo3D_Main(GameProc *proc, u32 *state, void *param, void *work) {
             (*state)++;
         }
         break;
-    case 2:
+    case STATE_WAIT_FADE_OUT:
         if (GFL_WipeIsFinished() == TRUE) {
             return TRUE;
         }

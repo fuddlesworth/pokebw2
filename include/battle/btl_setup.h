@@ -122,7 +122,8 @@ struct BtlSetup {
     u8 unkDB;
     u8 unkDC;
     u8 unkDD_0 : 1;
-    u8 unkDD_1 : 1;
+    // Whether a played recording was read to its end on every client (BtlMain_IsRecReadComplete)
+    u8 recReadComplete : 1;
     u8 unkDD_2 : 1;
     // 1 for a Pokéstar Studios movie's battle and 2 for one loaded from its record (GetStudioMode)
     u8 studioMode : 2;

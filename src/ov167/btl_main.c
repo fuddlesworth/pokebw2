@@ -230,7 +230,7 @@ BOOL BtlMain_ProcMain(GameProc *proc, u32 *state, void *param, void *work) {
                 break;
             }
         } else {
-            mainModule->setup->unkDD_1 = (u8)BtlMain_IsRecReadComplete(mainModule);
+            mainModule->setup->recReadComplete = (u8)BtlMain_IsRecReadComplete(mainModule);
         }
         return TRUE;
     }

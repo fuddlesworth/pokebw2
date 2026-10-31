@@ -284,7 +284,7 @@ void *FieldAppCall_CreatePokeListParam(FieldAppCallWork *work, s32 appParam, s32
     param->action = work->action;
     param->index = work->input->partySlot;
     param->move = 0;
-    param->unk6E = 0xff;
+    param->learnable = 0xff;
     param->zoneId = GameData_GetPlayerState(gameData)->zoneId;
     if (GameData_IsShortcutRegistered(gameData, SHORTCUT_POKELIST) == TRUE) {
         param->keyItemRegistered = TRUE;
