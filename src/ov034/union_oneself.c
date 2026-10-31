@@ -422,7 +422,7 @@ static BOOL UnionOneself_StepIdleBegin(UnionSystem *unisys, UnionSelf *situ, Fie
     UnionComm_SetSelf(unisys, 4, 0);
     UnionMsg_FreeAll(unisys);
     UnionOneself_SetUpdateDisabled(unisys, field, FALSE);
-    unisys->unk282E = 0;
+    unisys->greetingRequested = 0;
     return TRUE;
 }
 
@@ -474,7 +474,7 @@ static BOOL UnionOneself_StepIdleRun(UnionSystem *unisys, UnionSelf *situ, Field
         UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
         return TRUE;
     }
-    if (unisys->unk282E == 1) {
+    if (unisys->greetingRequested == 1) {
         UnionOneself_SetNextStep(unisys, UNION_STEP_GREETING);
         return TRUE;
     }
@@ -550,10 +550,10 @@ static BOOL UnionOneself_StepGreeting(UnionSystem *unisys, UnionSelf *situ, Fiel
 
     switch (*seq) {
     case 0:
-        if (unisys->unk282E == 0) {
+        if (unisys->greetingRequested == 0) {
             return TRUE;
         }
-        unisys->unk282E = 0;
+        unisys->greetingRequested = 0;
         GFL_SndSEPlay(SEQ_SE_SELECT4);
         param = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(PMSSelectParam), TRUE, "union_oneself.c", 1050);
         param->save = GameData_GetSaveControl(unisys->param->gameData);

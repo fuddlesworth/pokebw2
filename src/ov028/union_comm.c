@@ -484,7 +484,7 @@ static void UnionComm_BuildBeacon(UnionSystem *unisys, UnionBeacon *beacon) {
     beacon->version = GAME_VERSION;
     beacon->language = GAME_LANGUAGE;
     beacon->unk0A = self->step;
-    beacon->unk07_5 = self->unk02;
+    beacon->wantedKind = self->wantedKind;
     beacon->activity = self->activity;
     copyName(unisys->param->playerInfo->name, beacon->name, 8);
     beacon->look = PlayerInfo_GetUnionView(unisys->param->playerInfo);

@@ -9291,8 +9291,8 @@ overlays/ov028 0x02170ffc UnionMain_OnFieldIn
 overlays/ov028 0x0217105c UnionMain_OnFieldOut
 overlays/ov028 0x021710a4 UnionMain_GetAtCounter
 overlays/ov028 0x021710b0 UnionMain_GetExiting
-overlays/ov028 0x021710bc UnionMain_SetSituUnk02
-overlays/ov028 0x021710c8 UnionMain_GetSituUnk02
+overlays/ov028 0x021710bc UnionMain_SetWantedKind
+overlays/ov028 0x021710c8 UnionMain_GetWantedKind
 overlays/ov028 0x021710d4 UnionMain_IsIdle
 overlays/ov028 0x0217110c UnionNet_GetRecvBuffer
 overlays/ov028 0x02171138 UnionNet_RecvGroupDone

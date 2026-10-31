@@ -42,8 +42,8 @@ void UnionMain_OnFieldOut(void *param, void *work, Field *field);
 // Accessors of the system that the field and overlay 82 use
 u32 UnionMain_GetAtCounter(UnionSystem *sys);
 u32 UnionMain_GetExiting(UnionSystem *sys);
-void UnionMain_SetSituUnk02(UnionSystem *sys, u8 value);
-u8 UnionMain_GetSituUnk02(UnionSystem *sys);
+void UnionMain_SetWantedKind(UnionSystem *sys, u8 value);
+u8 UnionMain_GetWantedKind(UnionSystem *sys);
 // Whether the Union Room is up and idle
 BOOL UnionMain_IsIdle(GameSystem *gsys);
 
