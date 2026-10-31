@@ -67,7 +67,7 @@ void FestMission_Load(ArcTool *arc, u8 index, u32 level, FestMissionConfig *miss
     mission->info.index = index;
     mission->info.level = level;
     mission->info.target = params->target;
-    mission->info.unk0_20 = params->unk0C;
+    mission->info.targetVariant = params->unk0C;
     mission->info.unk0_30 = 0;
     mission->info.unk0_31 = MISSION_VERSION_BIT;
     mission->info.unk4_0 = params->unk0E;

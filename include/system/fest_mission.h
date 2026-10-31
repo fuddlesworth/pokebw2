@@ -21,7 +21,8 @@ typedef struct {
     u32 level : 3;
     // The species or item the mission is about
     u32 target : 10;
-    u32 unk0_20 : 10;
+    // Which of the target's variants the mission uses: a table index or file, by the target
+    u32 targetVariant : 10;
     u32 unk0_30 : 1;
     u32 unk0_31 : 1;
     // The item of the mission's reward

@@ -54,6 +54,12 @@
 #define ARCID_POKE_FOOTPRINT 165
 #define ARCID_POKE_FOOTPRINT_FORM 229
 
+// In the regional Pokédex table: a species that has no regional number
+#define REGIONAL_DEX_NONE 999
+
+// From PokedexInfo_GetFootprintFormFile: the form has no footprint of its own
+#define FOOTPRINT_FORM_NONE 0xffff
+
 enum {
     POKEDEX_INFO_MODE_MAIN,
     POKEDEX_INFO_MODE_SUB,
@@ -912,7 +918,7 @@ static void PokedexInfo_PrintEntry(PokedexInfo *info) {
         number = table[info->species];
         GFL_HeapFree(table);
     }
-    if (number != 999) {
+    if (number != REGIONAL_DEX_NONE) {
         wordSet = GFL_WordSetSystemCreateDefault(info->heapId);
         WordSetNumber(wordSet, 0, number, 3, NUM_PAD_ZERO, TRUE);
         PokedexInfo_PrintStrbuf(info->heapId, info->windows[POKEDEX_INFO_WINDOW_NAME], info->printQueue, info->font,
@@ -998,7 +1004,7 @@ static void PokedexInfo_PrintEntryInLanguage(PokedexInfo *info, unsigned int lan
         number = table[info->species];
         GFL_HeapFree(table);
     }
-    if (number != 999) {
+    if (number != REGIONAL_DEX_NONE) {
         wordSet = GFL_WordSetSystemCreateDefault(info->heapId);
         if (language == 0) {
             WordSetNumber(wordSet, 0, number, 3, NUM_PAD_ZERO, FALSE);
@@ -1480,7 +1486,7 @@ static void PokedexInfo_LoadFootprint(PokedexInfo *info, u32 species, u32 form, 
     }
     surface = info->engine == 0 ? CLACT_SURFACE_MAIN : CLACT_SURFACE_SUB;
     formFile = PokedexInfo_GetFootprintFormFile(species, form);
-    if (formFile == 0xffff) {
+    if (formFile == FOOTPRINT_FORM_NONE) {
         arc = info->arcs[POKEDEX_INFO_ARC_FOOTPRINT];
         info->footprintChars[slot] =
             ClActSys_LoadChars(arc, PokedexInfo_GetFootprintFile(species), TRUE, draw, info->heapId);
@@ -1494,7 +1500,7 @@ static void PokedexInfo_LoadFootprint(PokedexInfo *info, u32 species, u32 form, 
     setup.sequence = 0;
     setup.priority = 1;
     setup.bgPriority = 0;
-    if (species <= SPECIES_ARCEUS && formFile != 0xffff) {
+    if (species <= SPECIES_ARCEUS && formFile != FOOTPRINT_FORM_NONE) {
         info->footprints[slot] = ClActor_Create(info->unit, info->footprintChars[slot], info->footprintPalette,
                                                 info->footprintCellAnimsOld, &setup, surface, info->heapId);
     } else {
@@ -1723,7 +1729,7 @@ static u32 PokedexInfo_GetFootprintFormArcId(void) {
     return ARCID_POKE_FOOTPRINT_FORM;
 }
 
-// The file of a form that has a footprint of its own, or 0xffff
+// The file of a form that has a footprint of its own, or FOOTPRINT_FORM_NONE
 static u32 PokedexInfo_GetFootprintFormFile(u32 species, u32 form) {
     if (species == SPECIES_GIRATINA && form == 1) {
         return 0;
@@ -1749,5 +1755,5 @@ static u32 PokedexInfo_GetFootprintFormFile(u32 species, u32 form) {
     if (species == SPECIES_LANDORUS && form == 1) {
         return 7;
     }
-    return 0xffff;
+    return FOOTPRINT_FORM_NONE;
 }

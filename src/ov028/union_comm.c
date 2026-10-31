@@ -101,7 +101,7 @@ static const NetCommand data_ov028_02172d04[22] = {
     { UnionNet_RecvEntryReply2, NULL },
     { UnionNet_RecvEntryReply1, NULL },
     { UnionNet_RecvEnqueue, NULL },
-    { UnionNet_RecvUnkE, NULL },
+    { UnionNet_RecvTurn, NULL },
     { UnionNet_RecvRequestStatus, NULL },
     { UnionNet_RecvStatus, NULL },
     { UnionNet_RecvAppProfile, NULL },

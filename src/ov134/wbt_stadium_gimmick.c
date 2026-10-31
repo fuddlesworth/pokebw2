@@ -162,12 +162,12 @@ void WbtStadiumGimmick_SetNames(Field *field, u8 mode, StrBuf *name, StrBuf *pla
     FieldExpObj_SetActorHidden(work->expObj, 0, 3, TRUE);
     font = MsgBGPrinter_GetFont(Field_GetMsgBGSys(field));
     switch (mode) {
-    case 0:
+    case WBT_STADIUM_NAMES_BOTH:
         WbtStadiumGimmick_DrawNamePlate(work, font, 0, name, heapId);
         WbtStadiumGimmick_DrawNamePlate(work, font, 1, playerName, heapId);
         break;
-    case 1:
-    case 2:
+    case WBT_STADIUM_NAMES_PLAYER:
+    case WBT_STADIUM_NAMES_OPPONENT:
         WbtStadiumGimmick_DrawNamePlate(work, font, 2, name, heapId);
         break;
     }
@@ -181,9 +181,9 @@ void WbtStadiumGimmick_ShowPortraits(Field *field, u8 mode) {
     FieldExpObj_SetActorHidden(work->expObj, 0, 2, TRUE);
     FieldExpObj_SetActorHidden(work->expObj, 0, 3, TRUE);
     switch (mode) {
-    case 0:
-    case 1:
-    case 2:
+    case WBT_STADIUM_NAMES_BOTH:
+    case WBT_STADIUM_NAMES_PLAYER:
+    case WBT_STADIUM_NAMES_OPPONENT:
         WbtStadiumGimmick_AddNamesTask(work, mode);
         break;
     default:
@@ -430,11 +430,11 @@ static void WbtStadiumGimmick_ShowActor4(GimmickWork *work) {
 
 static void WbtStadiumGimmick_AddNamesTask(GimmickWork *work, u32 mode) {
     switch (mode) {
-    case 1:
-    case 2:
+    case WBT_STADIUM_NAMES_PLAYER:
+    case WBT_STADIUM_NAMES_OPPONENT:
         WbtStadiumGimmick_AddPortraitTask(work);
         break;
-    case 0:
+    case WBT_STADIUM_NAMES_BOTH:
         WbtStadiumGimmick_AddPortraitsTask(work);
         break;
     }
