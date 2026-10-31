@@ -37,12 +37,12 @@ CDemoCmd_SetTransitionSettings kind:function(thumb,size=0x24) addr:0x0219a030
 CDemoCmd_ResetBackgroundSettings kind:function(thumb,size=0x24) addr:0x0219a054
 CDemoCmd_Unused12 kind:function(thumb,size=0x4) addr:0x0219a078
 CDemoCmd_ResetSound kind:function(thumb,size=0xa) addr:0x0219a07c
-CDemoCmd_StopBGM kind:function(thumb,size=0xc) addr:0x0219a088
+CDemoCmd_PlayBGM kind:function(thumb,size=0xc) addr:0x0219a088
 CDemoCmd_Unused15 kind:function(thumb,size=0x4) addr:0x0219a094
 CDemoCmd_Unused16 kind:function(thumb,size=0x4) addr:0x0219a098
 CDemoCmd_Unused17 kind:function(thumb,size=0x4) addr:0x0219a09c
 CDemoCmd_StartMovie kind:function(thumb,size=0x34) addr:0x0219a0a0
-CDemoCmd_Unused19 kind:function(thumb,size=0x4) addr:0x0219a0d4
+CDemoCmd_Nop19 kind:function(thumb,size=0x4) addr:0x0219a0d4
 CDEMO_PROC_FUNCTIONS kind:data(any) addr:0x0219a0d8
 CDEMO_SCRIPTS kind:data(any) addr:0x0219a0e4
 CDEMO_VRAM_CONFIG kind:data(any) addr:0x0219a0f0

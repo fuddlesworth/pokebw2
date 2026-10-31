@@ -33384,12 +33384,12 @@ overlays/ov264 0x02199ff0 CDemoCmd_SetTransitionSettings
 overlays/ov264 0x0219a014 CDemoCmd_ResetBackgroundSettings
 overlays/ov264 0x0219a038 CDemoCmd_Unused12
 overlays/ov264 0x0219a03c CDemoCmd_ResetSound
-overlays/ov264 0x0219a048 CDemoCmd_StopBGM
+overlays/ov264 0x0219a048 CDemoCmd_PlayBGM
 overlays/ov264 0x0219a054 CDemoCmd_Unused15
 overlays/ov264 0x0219a058 CDemoCmd_Unused16
 overlays/ov264 0x0219a05c CDemoCmd_Unused17
 overlays/ov264 0x0219a060 CDemoCmd_StartMovie
-overlays/ov264 0x0219a094 CDemoCmd_Unused19
+overlays/ov264 0x0219a094 CDemoCmd_Nop19
 overlays/ov264 0x0219a098 CDEMO_PROC_FUNCTIONS
 overlays/ov264 0x0219a0a4 CDEMO_SCRIPTS
 overlays/ov264 0x0219a0b0 CDEMO_VRAM_CONFIG
