@@ -18738,6 +18738,7 @@ overlays/ov164 0x02199944 NetSync_Send
 overlays/ov164 0x02199984 NetSync_RecvCallback
 overlays/ov164 0x021999a8 NetSync_StartTiming
 overlays/ov164 0x021999bc NetSync_IsTimingDone
+overlays/ov164 0x021999e8 NetSync_CommandTable
 overlays/ov165 0x02199a00 PokeListProc_Init
 overlays/ov165 0x02199a50 PokeListProc_DeleteHeap
 overlays/ov165 0x02199a64 PokeListProc_Exit
