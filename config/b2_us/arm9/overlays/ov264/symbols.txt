@@ -46,8 +46,8 @@ CDemoCmd_Nop19 kind:function(thumb,size=0x4) addr:0x0219a094
 CDEMO_PROC_FUNCTIONS kind:data(any) addr:0x0219a098
 CDEMO_SCRIPTS kind:data(any) addr:0x0219a0a4
 CDEMO_VRAM_CONFIG kind:data(any) addr:0x0219a0b0
-CDEMO_SCRIPT_LOGO kind:data(any) addr:0x0219a0e0
-CDEMO_SCRIPT_0 kind:data(any) addr:0x0219a124
+CDEMO_SCRIPT_OPENING kind:data(any) addr:0x0219a0e0
+CDEMO_SCRIPT_GF_LOGO kind:data(any) addr:0x0219a124
 CDEMO_SCRIPT_1 kind:data(any) addr:0x0219a170
 CDEMO_STATES kind:data(any) addr:0x0219a1c4
 CDEMO_MOVIES kind:data(any) addr:0x0219a1dc
