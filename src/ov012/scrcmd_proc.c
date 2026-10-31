@@ -385,9 +385,9 @@ BOOL Scrcmd_Proc_NetConnectWiFiBattle(VM *vm, FieldScriptEnv *env) {
         break;
     }
     args.field = GSYS_GetField(gsys);
-    args.unk4 = 1;
-    args.unk8 = option;
-    args.unkC = type;
+    args.startFrom = 1;
+    args.teamSource = option;
+    args.battleType = type;
     event = GameEvent_CreateOverlayDelegate(gsys, OVERLAY_ID(2), EventWifiBattleMatch_CreateFromArgs, &args);
     ScriptWork_CallEvent(work, event);
     return TRUE;
