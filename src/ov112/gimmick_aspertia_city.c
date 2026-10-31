@@ -113,10 +113,10 @@ void AspertiaCity_PlaySeasonModel(GameSystem *gsys) {
     work = Field_GetGimmickWorkBlock(GSYS_GetField(gsys), GIMMICK_WORK_ID);
     season = GameData_GetSeason(gameData);
     switch (season) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
+    case SEASON_SPRING:
+    case SEASON_SUMMER:
+    case SEASON_AUTUMN:
+    case SEASON_WINTER:
         AspertiaCity_ShowSeasonModel(work->expObj, season);
         break;
     }
