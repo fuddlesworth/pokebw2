@@ -96,10 +96,12 @@ struct BtlSetup {
     u32 flags;
     u16 unkA0;
     u16 unkA2;
-    u32 unkA4;
+    // The money the player wins, or negative loses
+    u32 moneyChange;
     // How the battle ended, a BTL_RESULT_*
     u32 result;
-    u8 unkAC;
+    // The slot of the caught Pokémon in the second party, or 6 if none was caught
+    u8 capturedSlot;
     u8 unkAD;
     u8 unkAE;
     u8 unkAF;
@@ -132,7 +134,8 @@ struct BtlSetup {
     u8 unkDE_1 : 7;
     u8 unkDF;
     u8 unkE0;
-    u8 unkE1[6];
+    // Whether each party slot's Pokémon appeared in the battle
+    u8 appeared[6];
     // The party slots each client sends out
     u8 unkE7[4][6];
     u8 unkFF;

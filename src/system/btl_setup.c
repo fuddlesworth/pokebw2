@@ -222,7 +222,7 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
         setup->playerInfo[i] = NULL;
     }
     for (i = 0; i < 6; i++) {
-        setup->unkE1[i] = 0;
+        setup->appeared[i] = 0;
     }
     setup->unk97 = 1;
     for (i = 0; i < 7; i++) {

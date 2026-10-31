@@ -34,6 +34,32 @@ enum {
     MODEL_9,
 };
 
+// The steps of GimmickShauntal_Model8Event
+enum {
+    MODEL8_STEP_WAIT_OPENING,
+    MODEL8_STEP_PLAY_FINALE,
+};
+
+// The steps of GimmickShauntal_RoomChangeEvent. No step 3
+enum {
+    ROOM_CHANGE_STEP_PLAYER_ACT,
+    ROOM_CHANGE_STEP_WAIT_PLAYER,
+    ROOM_CHANGE_STEP_WAIT_OPENING,
+    ROOM_CHANGE_STEP_WAIT = 4,
+    ROOM_CHANGE_STEP_FADE_OUT,
+    ROOM_CHANGE_STEP_WAIT_FADE_OUT,
+    ROOM_CHANGE_STEP_FADE_IN,
+    ROOM_CHANGE_STEP_WAIT_FADE_IN,
+    ROOM_CHANGE_STEP_END,
+};
+
+// The steps of GimmickShauntal_Models6And9Event
+enum {
+    MODELS_6_9_STEP_PLAY,
+    MODELS_6_9_STEP_WAIT,
+    MODELS_6_9_STEP_SHOW_END,
+};
+
 // What the save keeps of the room
 typedef struct {
     // Model 8 has played
@@ -599,12 +625,12 @@ static GameEventReturnCode GimmickShauntal_Model8Event(GameEvent *event, u32 *st
     ShauntalRoomWork *work = Field_GetGimmickWorkBlock(field, GIMMICK_WORK_ID);
 
     switch (*state) {
-    case 0:
+    case MODEL8_STEP_WAIT_OPENING:
         if (GimmickShauntal_IsModel8OpeningDone(work)) {
             (*state)++;
         }
         break;
-    case 1:
+    case MODEL8_STEP_PLAY_FINALE:
         GimmickShauntal_PlayModel8Finale(work);
         GFL_SndSEPlay(SEQ_SE_SW_SHIKIMI_01);
         return GAMEEVENT_DONE;
@@ -655,38 +681,38 @@ static GameEventReturnCode GimmickShauntal_RoomChangeEvent(GameEvent *event, u32
 
     work = Field_GetGimmickWorkBlock(eventWork->field, GIMMICK_WORK_ID);
     switch (*state) {
-    case 0:
+    case ROOM_CHANGE_STEP_PLAYER_ACT:
         FldAct_SetAcmd(eventWork->player, 0x4b);
-        *state = 1;
+        *state = ROOM_CHANGE_STEP_WAIT_PLAYER;
         break;
-    case 1:
+    case ROOM_CHANGE_STEP_WAIT_PLAYER:
         if (FldAct_CheckAcmdEnd(eventWork->player)) {
             GimmickShauntal_PlayModel0Opening(work);
             GFL_SndSEPlay(SEQ_SE_SW_SHIKIMI_03);
-            *state = 2;
+            *state = ROOM_CHANGE_STEP_WAIT_OPENING;
         }
         break;
-    case 2:
+    case ROOM_CHANGE_STEP_WAIT_OPENING:
         if (GimmickShauntal_IsModel0OpeningDone(work)) {
             FldAct_SetAcmd(eventWork->player, 0x21);
             GimmickShauntal_PlayModel0Finale(work);
             GFL_SndSEPlay(SEQ_SE_SW_SHIKIMI_06);
-            *state = 4;
+            *state = ROOM_CHANGE_STEP_WAIT;
         }
         break;
-    case 4:
+    case ROOM_CHANGE_STEP_WAIT:
         eventWork->wait--;
         if (eventWork->wait <= 0) {
-            *state = 5;
+            *state = ROOM_CHANGE_STEP_FADE_OUT;
         }
         break;
-    case 5:
+    case ROOM_CHANGE_STEP_FADE_OUT:
         GFL_WipeSet(WIPE_MODE_MAIN, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, WIPE_COLOR_BLACK, 6, 1,
                     Field_GetHeapID(eventWork->field));
-        *state = 6;
+        *state = ROOM_CHANGE_STEP_WAIT_FADE_OUT;
         eventWork->wait = 15;
         break;
-    case 6:
+    case ROOM_CHANGE_STEP_WAIT_FADE_OUT:
         if (GFL_WipeIsFinished()) {
             eventWork->wait--;
             if (eventWork->wait <= 0) {
@@ -694,21 +720,21 @@ static GameEventReturnCode GimmickShauntal_RoomChangeEvent(GameEvent *event, u32
                 FieldFog_SetEnabled(fog, TRUE);
                 FieldFog_Flush(fog);
                 FieldExpObj_SetActorHidden(eventWork->expObj, 0, MODEL_9, FALSE);
-                *state = 7;
+                *state = ROOM_CHANGE_STEP_FADE_IN;
             }
         }
         break;
-    case 7:
+    case ROOM_CHANGE_STEP_FADE_IN:
         GFL_WipeSet(WIPE_MODE_MAIN, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1,
                     Field_GetHeapID(eventWork->field));
-        *state = 8;
+        *state = ROOM_CHANGE_STEP_WAIT_FADE_IN;
         break;
-    case 8:
+    case ROOM_CHANGE_STEP_WAIT_FADE_IN:
         if (GFL_WipeIsFinished() == TRUE) {
-            *state = 9;
+            *state = ROOM_CHANGE_STEP_END;
         }
         break;
-    case 9:
+    case ROOM_CHANGE_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
@@ -724,18 +750,18 @@ static GameEventReturnCode GimmickShauntal_Models6And9Event(GameEvent *event, u3
     ShauntalRoomWork *work = Field_GetGimmickWorkBlock(field, GIMMICK_WORK_ID);
 
     switch (*state) {
-    case 0:
+    case MODELS_6_9_STEP_PLAY:
         GimmickShauntal_PlayModel6Transition(work);
         GimmickShauntal_PlayModel9(work);
         GFL_SndSEPlay(SEQ_SE_SW_SHIKIMI_05);
         (*state)++;
         break;
-    case 1:
+    case MODELS_6_9_STEP_WAIT:
         if (GimmickShauntal_IsModel6TransitionDone(work) && GimmickShauntal_IsModel9Done(work)) {
             (*state)++;
         }
         break;
-    case 2:
+    case MODELS_6_9_STEP_SHOW_END:
         GimmickShauntal_ShowModel6End(work);
         GimmickShauntal_ShowModel9End(work);
         return GAMEEVENT_DONE;

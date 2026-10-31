@@ -333,18 +333,23 @@ static void GimmickCaitlin_PlayModel5(CaitlinRoomWork *work) {
     GimmickCaitlin_PlayAnimation(work->expObj, MODEL_5, 1, FALSE);
 }
 
+enum {
+    MODEL1_STEP_WAIT,
+    MODEL1_STEP_PLAY,
+};
+
 // Waits for model 1's last animation, then plays its others
 static GameEventReturnCode GimmickCaitlin_Model1Event(GameEvent *event, u32 *state, void *data) {
     Field *field = GSYS_GetField(GameEvent_GetGameSystem(event));
     CaitlinRoomWork *work = Field_GetGimmickWorkBlock(field, GIMMICK_WORK_ID);
 
     switch (*state) {
-    case 0:
+    case MODEL1_STEP_WAIT:
         if (GimmickCaitlin_IsModel1Done(work)) {
             (*state)++;
         }
         break;
-    case 1:
+    case MODEL1_STEP_PLAY:
         GimmickCaitlin_PlayModel1(work);
         return GAMEEVENT_DONE;
     }

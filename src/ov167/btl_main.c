@@ -117,7 +117,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         }
         mainModule->heapId = HEAPID_BATTLE;
         mainModule->setup = setup;
-        setup->unkAC = 6;
+        setup->capturedSlot = 6;
         mainModule->playerInfo = mainModule->setup->playerInfo[0];
         mainModule->gameTimeLimit = mainModule->setup->unk8C;
         mainModule->commandTimeLimit = mainModule->setup->unk8E;
@@ -222,11 +222,11 @@ BOOL BtlMain_ProcMain(GameProc *proc, u32 *state, void *param, void *work) {
             BtlMain_StorePartiesToSetup(mainModule);
             switch (result) {
             case BTL_RESULT_VICTORY:
-                mainModule->setup->unkA4 = mainModule->prizeMoney + GetBonusMoney(mainModule);
+                mainModule->setup->moneyChange = mainModule->prizeMoney + GetBonusMoney(mainModule);
                 break;
             case BTL_RESULT_DEFEAT:
             case BTL_RESULT_DRAW:
-                mainModule->setup->unkA4 = -mainModule->lossMoney;
+                mainModule->setup->moneyChange = -mainModule->lossMoney;
                 break;
             }
         } else {
@@ -2327,8 +2327,8 @@ u32 ReturnZero(BtlMainModule *mainModule, u32 flag) {
 }
 
 void BtlMain_StoreSlotNthResult(BtlMainModule *mainModule, u8 pos) {
-    if (mainModule->setup->unkAC == 6) {
-        mainModule->setup->unkAC = CountClientPosBefore(mainModule, pos);
+    if (mainModule->setup->capturedSlot == 6) {
+        mainModule->setup->capturedSlot = CountClientPosBefore(mainModule, pos);
     }
 }
 
@@ -2650,7 +2650,7 @@ void PokeCon_StoreClientSrcPartyInOrder(BtlPokeCon *pokeCon, BtlMainModule *main
                 BattleMon_WriteToSrc(mon, TRUE);
                 PokeParty_AddPkm(mainModule->tempParty, GetSrcData(mon));
                 if (BattleMon_HasAppeared(mon)) {
-                    mainModule->setup->unkE1[i] = 1;
+                    mainModule->setup->appeared[i] = 1;
                 }
                 break;
             }
@@ -3454,7 +3454,7 @@ u32 BtlMain_DetermineResult(BtlMainModule *mainModule) {
         result = BTL_RESULT_VICTORY;
     } else if (mainModule->commError) {
         result = BTL_RESULT_6;
-    } else if (mainModule->setup->unkAC != 6) {
+    } else if (mainModule->setup->capturedSlot != 6) {
         result = BTL_RESULT_CAPTURE;
     } else if (BtlClientIDList_GetCount(&mainModule->clientIdList)) {
         result = BtlClientIDList_GetEscapeResult(&mainModule->clientIdList, mainModule->playerClientId,
