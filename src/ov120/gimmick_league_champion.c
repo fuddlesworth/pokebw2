@@ -269,6 +269,14 @@ static GameEvent *GimmickChampion_CreateChangeEvent(GameSystem *gsys) {
     return GameEvent_Create(gsys, NULL, GimmickChampion_ChangeEvent, 0);
 }
 
+enum {
+    CHANGE_STEP_START,
+    CHANGE_STEP_PLAY_MODEL,
+    CHANGE_STEP_WAIT_MODEL,
+    CHANGE_STEP_SWAP_MODELS,
+    CHANGE_STEP_DONE,
+};
+
 // Plays model 4, then swaps the models of the room for the changed ones
 static GameEventReturnCode GimmickChampion_ChangeEvent(GameEvent *event, u32 *state, void *data) {
     GameSystem *gsys = GameEvent_GetGameSystem(event);
@@ -276,19 +284,19 @@ static GameEventReturnCode GimmickChampion_ChangeEvent(GameEvent *event, u32 *st
     ChampionRoomWork *work = Field_GetGimmickWorkBlock(field, GIMMICK_WORK_ID);
 
     switch (*state) {
-    case 0:
-        *state = 1;
+    case CHANGE_STEP_START:
+        *state = CHANGE_STEP_PLAY_MODEL;
         break;
-    case 1:
+    case CHANGE_STEP_PLAY_MODEL:
         GimmickChampion_PlayModel4(work);
-        *state = 2;
+        *state = CHANGE_STEP_WAIT_MODEL;
         break;
-    case 2:
+    case CHANGE_STEP_WAIT_MODEL:
         if (GimmickChampion_IsModel4Done(work) == TRUE) {
-            *state = 3;
+            *state = CHANGE_STEP_SWAP_MODELS;
         }
         break;
-    case 3:
+    case CHANGE_STEP_SWAP_MODELS:
         FieldExpObj_SetActorHidden(work->expObj, 0, MODEL_0, TRUE);
         FieldExpObj_SetActorHidden(work->expObj, 0, MODEL_1, FALSE);
         FieldExpObj_SetActorHidden(work->expObj, 0, MODEL_2, TRUE);
@@ -299,9 +307,9 @@ static GameEventReturnCode GimmickChampion_ChangeEvent(GameEvent *event, u32 *st
         GimmickChampion_StopAnimation(work->expObj, MODEL_2, 0);
         GimmickChampion_SetChanged(work->state, TRUE);
         FieldCamera_SetDefaultsIndex(Field_GetCameraSystem(field), CHANGED_CAMERA_INDEX);
-        *state = 4;
+        *state = CHANGE_STEP_DONE;
         break;
-    case 4:
+    case CHANGE_STEP_DONE:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
@@ -311,6 +319,11 @@ static GameEvent *GimmickChampion_CreateOpenEvent(GameSystem *gsys) {
     return GameEvent_Create(gsys, NULL, GimmickChampion_OpenEvent, 0);
 }
 
+enum {
+    OPEN_STEP_START,
+    OPEN_STEP_DONE,
+};
+
 // Plays the animations that open the room, with a shake of the camera
 static GameEventReturnCode GimmickChampion_OpenEvent(GameEvent *event, u32 *state, void *data) {
     Field *field = GSYS_GetField(GameEvent_GetGameSystem(event));
@@ -319,7 +332,7 @@ static GameEventReturnCode GimmickChampion_OpenEvent(GameEvent *event, u32 *stat
     FieldTask *task;
 
     switch (*state) {
-    case 0:
+    case OPEN_STEP_START:
         GimmickChampion_StopAnimation(work->expObj, MODEL_3, 0);
         GimmickChampion_PlayAnimation(work->expObj, MODEL_3, 1, 0, FALSE);
         GimmickChampion_PlayAnimation(work->expObj, MODEL_3, 2, 0, FALSE);
@@ -332,9 +345,9 @@ static GameEventReturnCode GimmickChampion_OpenEvent(GameEvent *event, u32 *stat
         shake.delay = 149;
         task = GimmickChampion_CreateShakeTask(field, &shake);
         FieldTaskManager_AddTask(Field_GetTaskManager(field), task, 0);
-        *state = 1;
+        *state = OPEN_STEP_DONE;
         break;
-    case 1:
+    case OPEN_STEP_DONE:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
@@ -367,6 +380,13 @@ static FieldTask *GimmickChampion_CreateShakeTask(Field *field, const CameraShak
     return task;
 }
 
+enum {
+    SHAKE_STEP_BEGIN,
+    SHAKE_STEP_WAIT_DELAY,
+    SHAKE_STEP_SHAKE,
+    SHAKE_STEP_DONE,
+};
+
 static BOOL GimmickChampion_ShakeTask(void *data) {
     CameraShakeTaskWork *work = data;
     BOOL done = FALSE;
@@ -379,11 +399,11 @@ static BOOL GimmickChampion_ShakeTask(void *data) {
         return FALSE;
     }
     switch (work->state) {
-    case 0:
+    case SHAKE_STEP_BEGIN:
         FieldCamera_FinishDelay(camera);
         work->state++;
         break;
-    case 1:
+    case SHAKE_STEP_WAIT_DELAY:
         if (FieldCamera_IsDelayActive(work->camera)) {
             break;
         }
@@ -396,7 +416,7 @@ static BOOL GimmickChampion_ShakeTask(void *data) {
         FieldCamera_ClearBind(camera);
         work->state++;
         // fallthrough
-    case 2:
+    case SHAKE_STEP_SHAKE:
         shake->frame++;
         angle = (shake->frame << 16) / shake->period;
         if (shake->frame >= shake->period) {
@@ -426,7 +446,7 @@ static BOOL GimmickChampion_ShakeTask(void *data) {
             FieldCamera_CoordsSetTarget(camera, &target);
         }
         break;
-    case 3:
+    case SHAKE_STEP_DONE:
         return TRUE;
     }
     return FALSE;

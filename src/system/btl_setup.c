@@ -216,13 +216,13 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     setup->fieldSituation.unk1b = 0;
     setup->unkDD_0 = FALSE;
     setup->gameData = gameData;
-    setup->unkDD_1 = FALSE;
+    setup->recReadComplete = FALSE;
     for (i = 0; i < 4; i++) {
         setup->party[i] = NULL;
         setup->playerInfo[i] = NULL;
     }
     for (i = 0; i < 6; i++) {
-        setup->unkE1[i] = 0;
+        setup->appeared[i] = 0;
     }
     setup->unk97 = 1;
     for (i = 0; i < 7; i++) {

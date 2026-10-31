@@ -526,21 +526,21 @@ static void BattleRecTool_LoadPokewoodPartyCore(BattleRecParty *rec, PokeParty *
 }
 
 static void BattleRecTool_StorePokewoodInfo(const BtlSetup *setup, PokewoodBattleInfo *info) {
-    info->unkDF = setup->unkDF;
-    info->unk124 = setup->studioEnding;
+    info->movie = setup->unkDF;
+    info->ending = setup->studioEnding;
     MI_CpuCopy8(setup->studioChoices, info->unk110, sizeof(info->unk110));
 }
 
 static void BattleRecTool_LoadPokewoodInfo(BtlSetup *setup, const PokewoodBattleInfo *info) {
-    setup->unkDF = info->unkDF;
-    setup->studioEnding = info->unk124;
+    setup->unkDF = info->movie;
+    setup->studioEnding = info->ending;
     MI_CpuCopy8(info->unk110, setup->studioChoices, sizeof(setup->studioChoices));
 }
 
 static void BattleRecTool_StorePokewoodExtra(const BtlSetup *setup, PokewoodBlock *block) {
     block->unk128 = setup->audienceCount;
     block->unkE0 = setup->unkE0;
-    block->unk130 = setup->studioScore;
+    block->score = setup->studioScore;
 }
 
 static void BattleRecTool_LoadPokewoodExtra(BtlSetup *setup, const PokewoodBlock *block) {

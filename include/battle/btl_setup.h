@@ -96,10 +96,12 @@ struct BtlSetup {
     u32 flags;
     u16 unkA0;
     u16 unkA2;
-    u32 unkA4;
+    // The money the player wins, or negative loses
+    u32 moneyChange;
     // How the battle ended, a BTL_RESULT_*
     u32 result;
-    u8 unkAC;
+    // The slot of the caught Pokémon in the second party, or 6 if none was caught
+    u8 capturedSlot;
     u8 unkAD;
     u8 unkAE;
     u8 unkAF;
@@ -120,7 +122,8 @@ struct BtlSetup {
     u8 unkDB;
     u8 unkDC;
     u8 unkDD_0 : 1;
-    u8 unkDD_1 : 1;
+    // Whether a played recording was read to its end on every client (BtlMain_IsRecReadComplete)
+    u8 recReadComplete : 1;
     u8 unkDD_2 : 1;
     // 1 for a Pokéstar Studios movie's battle and 2 for one loaded from its record (GetStudioMode)
     u8 studioMode : 2;
@@ -132,7 +135,8 @@ struct BtlSetup {
     u8 unkDE_1 : 7;
     u8 unkDF;
     u8 unkE0;
-    u8 unkE1[6];
+    // Whether each party slot's Pokémon appeared in the battle
+    u8 appeared[6];
     // The party slots each client sends out
     u8 unkE7[4][6];
     u8 unkFF;
