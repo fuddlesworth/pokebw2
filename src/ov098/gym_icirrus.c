@@ -24,6 +24,12 @@
 // The controller type of maps with both grid and rail movement
 #define CONTROLLER_TYPE_HYBRID 2
 
+// The steps of both of the switch events
+enum {
+    STEP_START_ANIM,
+    STEP_WAIT_ANIM,
+};
+
 // What the save keeps of the gym: whether each switch is flipped
 typedef struct {
     BOOL flipped[SWITCH_COUNT];
@@ -227,14 +233,14 @@ static GameEventReturnCode GymIcirrus_SwitchAnimEvent(GameEvent *event, u32 *sta
     BOOL flipped = TRUE;
 
     switch (*state) {
-    case 0:
+    case STEP_START_ANIM:
         switchIndex = work->switchIndex;
         FieldExpObjAnm_SetPaused(
             GetAnimation(expObj, switchIndex + SECOND_MODEL_OFFSET, GymIcirrus_IsSwitchFlipped(gymState, switchIndex)),
             FALSE);
         (*state)++;
         break;
-    case 1:
+    case STEP_WAIT_ANIM:
         switchIndex = work->switchIndex;
         if (FieldExpObjAnm_IsPlaybackFinished(GetAnimation(expObj, switchIndex + SECOND_MODEL_OFFSET,
                                                            GymIcirrus_IsSwitchFlipped(gymState, switchIndex)))) {
@@ -260,14 +266,14 @@ static GameEventReturnCode GymIcirrus_FlipSwitchEvent(GameEvent *event, u32 *sta
     BOOL newFlipped;
 
     switch (*state) {
-    case 0:
+    case STEP_START_ANIM:
         switchIndex = work->switchIndex;
         FieldExpObjAnm_SetPaused(GetAnimation(expObj, switchIndex, GymIcirrus_IsSwitchFlipped(gymState, switchIndex)),
                                  FALSE);
         GFL_SndSEPlay(SEQ_SE_FLD_65);
         (*state)++;
         break;
-    case 1:
+    case STEP_WAIT_ANIM:
         switchIndex = work->switchIndex;
         if (FieldExpObjAnm_IsPlaybackFinished(
                 GetAnimation(expObj, switchIndex, GymIcirrus_IsSwitchFlipped(gymState, switchIndex)))) {
