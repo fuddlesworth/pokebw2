@@ -9322,8 +9322,8 @@ overlays/ov028 0x021715a4 UnionNet_RecvEntryReply1
 overlays/ov028 0x021715b0 UnionMain_SendEntryReply1
 overlays/ov028 0x021715d8 UnionNet_RecvEnqueue
 overlays/ov028 0x02171614 UnionMain_SendEnqueue
-overlays/ov028 0x02171638 UnionNet_RecvUnkE
-overlays/ov028 0x02171664 UnionMain_SendUnkE
+overlays/ov028 0x02171638 UnionNet_RecvTurn
+overlays/ov028 0x02171664 UnionMain_SendTurn
 overlays/ov028 0x0217168c UnionNet_RecvRequestStatus
 overlays/ov028 0x021716c8 UnionMain_SendRequestStatus
 overlays/ov028 0x021716ec UnionNet_RecvStatus
