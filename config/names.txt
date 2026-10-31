@@ -9200,10 +9200,11 @@ overlays/ov025 0x02170118 sPeopleSets
 overlays/ov025 0x02170160 FesMissionPeople_Answers
 overlays/ov025 0x021701f0 sShopItems
 overlays/ov026 0x0216f900 FesMissionHollow_Setup
-overlays/ov026 0x0216f9a4 FesMissionHollow_GetPersonObjCode
-overlays/ov026 0x0216f9c0 FesMissionHollow_GetPersonUnk2
+overlays/ov026 0x0216f9a4 FesMissionHollow_GetPersonSpecies
+overlays/ov026 0x0216f9c0 FesMissionHollow_GetPersonForm
 overlays/ov026 0x0216f9dc FesMissionHollow_Shuffle
 overlays/ov026 0x0216fa30 FesMissionHollow_IsActive
+overlays/ov026 0x0216fa50 sFesMissionHollowPeople
 overlays/ov027 0x021703a8 Scrcmd_Survey_SurveyGetRank
 overlays/ov027 0x021703dc Scrcmd_Survey_SurveyRaiseRank
 overlays/ov027 0x0217041c Scrcmd_Survey_SurveyGetCurrentQuestionID

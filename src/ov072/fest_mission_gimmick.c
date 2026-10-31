@@ -92,7 +92,7 @@ void FesMissionGimmick_GetItemExchangeInfo(FesGimmick *gimmick, FieldActor *acto
         *out1 = 0x1a;
         return;
     }
-    answers = &FesMissionPeople_Answers[gimmick->mission->info.unk0_20];
+    answers = &FesMissionPeople_Answers[gimmick->mission->info.targetVariant];
     *out0 = answers->values[GetActorUserParam(actor, 0)][arg0];
     *out1 = answers->values[GetActorUserParam(actor, 1)][arg1];
 }

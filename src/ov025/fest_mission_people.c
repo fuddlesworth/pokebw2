@@ -231,7 +231,7 @@ void FesMissionPeople_LoadSpecies(FesGimmick *gimmick, FesMissionWork *work) {
         fileId = 20;
         break;
     case 8:
-        fileId = mission->info.unk0_20 + 2;
+        fileId = mission->info.targetVariant + 2;
         break;
     default:
         return;
@@ -247,7 +247,7 @@ void FesMissionPeople_LoadSpecies(FesGimmick *gimmick, FesMissionWork *work) {
 
 static const FesMissionPerson *FesMissionPeople_GetPerson(FestMissionConfig *mission) {
     const FesMissionPeopleSet *set = &sPeopleSets[mission->info.target];
-    u32 variant = mission->info.unk0_20;
+    u32 variant = mission->info.targetVariant;
 
     if (set->count == 1) {
         variant = 0;
@@ -393,7 +393,7 @@ static void FesMissionPeople_SetRandomParam(FesMissionWork *work, FestMissionCon
 
 static void FesMissionPeople_SetAnswerParams(FesMissionWork *work, FestMissionConfig *mission, u8 index,
                                              MATHRandContext32 *rand) {
-    u8 variant = mission->info.unk0_20;
+    u8 variant = mission->info.targetVariant;
     u32 first;
     int second;
     int i;
@@ -414,7 +414,7 @@ static void FesMissionPeople_SetAnswerParams(FesMissionWork *work, FestMissionCo
 
 static void FesMissionPeople_SetShopParams(FesMissionWork *work, FestMissionConfig *mission, u8 index,
                                            MATHRandContext32 *rand) {
-    u8 variant = mission->info.unk0_20;
+    u8 variant = mission->info.targetVariant;
     u8 pick = 0;
     u32 total = 0;
     int i;
@@ -434,7 +434,7 @@ static void FesMissionPeople_SetShopParams(FesMissionWork *work, FestMissionConf
 
 static void FesMissionPeople_SetBattleParam(FesMissionWork *work, FestMissionConfig *mission, u8 index,
                                             MATHRandContext32 *rand, u32 *picked) {
-    u8 variant = mission->info.unk0_20;
+    u8 variant = mission->info.targetVariant;
     u32 pick;
 
     if (variant >= 3) {
@@ -451,7 +451,7 @@ static void FesMissionPeople_SetWeightedParam(FesMissionWork *work, FestMissionC
     int pick = 0;
     u32 total = 0;
     u32 roll;
-    const FesMissionWeightedValue *values = sWeightedParams[mission->info.unk0_20];
+    const FesMissionWeightedValue *values = sWeightedParams[mission->info.targetVariant];
 
     roll = FestMission_RandExcluding(rand, 100, NULL, 0);
     for (i = 0; i < 16; i++) {
