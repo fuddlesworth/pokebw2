@@ -671,24 +671,24 @@ void BtlvCore_SetupPokeListParam(BtlvCore *core, BPlistParam *param, u8 mode, u8
 
     clientId = BattleClient_GetClientId(core->client);
     param->party = GetClientPokeParty(core->mainModule, clientId);
-    param->unk18 = mode != 3 ? BtlMain_IsCommMulti(core->mainModule) : 0;
-    if (param->unk18) {
-        param->unk8 = GetAllyPokeParty(core->mainModule, clientId);
+    param->isMulti = mode != BPLIST_MODE_ITEM ? BtlMain_IsCommMulti(core->mainModule) : 0;
+    if (param->isMulti) {
+        param->allyParty = GetAllyPokeParty(core->mainModule, clientId);
         trainerIndex = GetMultiTrainerIndex(core->mainModule, clientId);
     } else {
-        param->unk8 = NULL;
+        param->allyParty = NULL;
         trainerIndex = 0;
     }
-    param->unk1F = mode;
-    param->unk1C = trainerIndex;
+    param->mode = mode;
+    param->multiTrainerIndex = trainerIndex;
     if (BtlSetup_GetBattleStyle(core->mainModule) != BTL_STYLE_ROTATION) {
-        param->unk22 = GetClientBattlerCount(core->mainModule, clientId);
+        param->battlePosCount = GetClientBattlerCount(core->mainModule, clientId);
     } else {
-        param->unk22 = 3;
+        param->battlePosCount = 3;
     }
     switch (mode) {
-    case 4:
-    case 5:
+    case BPLIST_MODE_FORGET_MOVE:
+    case BPLIST_MODE_MOVE_INFO:
         index = partyIndex;
         break;
     default:
@@ -696,19 +696,19 @@ void BtlvCore_SetupPokeListParam(BtlvCore *core, BPlistParam *param, u8 mode, u8
         break;
     }
     param->partyIndex = index;
-    param->unk21 = partyIndex;
+    param->switchOutPos = partyIndex;
     param->move = move;
     param->slot = 0;
     param->heapId = core->heapId;
     param->font = core->font;
-    param->unk14 = BtlSetup_GetBattleStyle(core->mainModule);
+    param->battleStyle = BtlSetup_GetBattleStyle(core->mainModule);
     param->usingKeys = BtlvScd_GetKeyCursorFlag(core->scd);
     param->tcbManager = BtlvEffect_GetTCBManager();
     param->paletteFade = BtlvEffect_GetPaletteFade();
     param->gameData = GetGameData(core->mainModule);
-    param->unk30 = 0;
-    param->unk40 = BtlvCore_CanPlayListSE(core);
-    param->unk34 = 0;
+    param->quit = 0;
+    param->playSound = BtlvCore_CanPlayListSE(core);
+    param->abort = 0;
     param->done = FALSE;
 }
 
@@ -726,10 +726,10 @@ void BattleClientCmd_StartPokeList(BtlvCore *core, const BtlvPokeListCmd *cmd, s
         if (i >= 2) {
             break;
         }
-        core->ov287.unk1D[i] = PokeSelect_Get(select, i);
+        core->ov287.alreadyChosen[i] = PokeSelect_Get(select, i);
     }
     for (; i < 2; i++) {
-        core->ov287.unk1D[i] = 6;
+        core->ov287.alreadyChosen[i] = 6;
     }
     select->selecting = TRUE;
     core->selectParam = select;
@@ -737,7 +737,7 @@ void BattleClientCmd_StartPokeList(BtlvCore *core, const BtlvPokeListCmd *cmd, s
 }
 
 void BattleClientCmd_QuitPokeSelect(BtlvCore *core) {
-    core->ov287.unk30 = 1;
+    core->ov287.quit = 1;
 }
 
 BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
@@ -745,7 +745,7 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
 
     switch (core->subSeq) {
     case 0:
-        if (core->ov287.unk1F == 1 || core->ov287.unk1F == 2) {
+        if (core->ov287.mode == BPLIST_MODE_MID_TURN || core->ov287.mode == BPLIST_MODE_FAINTED) {
             BtlvScd_StartFadeOut(core->scd, 0);
         } else {
             BtlvScd_StartFadeOut(core->scd, 1);
@@ -763,10 +763,10 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
         break;
     case 2:
         if (core->ov287.done) {
-            if (core->ov287.unk1F != 5 && core->ov287.unk30 == 0) {
+            if (core->ov287.mode != BPLIST_MODE_MOVE_INFO && core->ov287.quit == 0) {
                 for (i = 0; i < 3; i++) {
-                    if (core->ov287.unk48[i] != 0xff) {
-                        PokeSelect_Push(core->selectParam, i, core->ov287.unk48[i]);
+                    if (core->ov287.chosen[i] != BPLIST_NONE) {
+                        PokeSelect_Push(core->selectParam, i, core->ov287.chosen[i]);
                         PokeSelect_GetCount(core->selectParam);
                         core->selectParam->selecting = FALSE;
                     }
@@ -792,7 +792,7 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
 }
 
 void BattleClientCmd_StartMoveInfoView(BtlvCore *core, u8 partyIndex, u8 slot) {
-    BtlvCore_SetupPokeListParam(core, &core->ov287, 5, partyIndex, 0);
+    BtlvCore_SetupPokeListParam(core, &core->ov287, BPLIST_MODE_MOVE_INFO, partyIndex, 0);
     core->ov287.slot = slot;
     core->subSeq = 0;
 }
@@ -853,14 +853,14 @@ void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 shooterEnergy,
             }
         }
         core->ov286.ballError = kind;
-        BtlvCore_SetupPokeListParam(core, &core->ov287, 3, 0, 0);
+        BtlvCore_SetupPokeListParam(core, &core->ov287, BPLIST_MODE_ITEM, 0, 0);
         party = BattleClient_GetParty(core->client);
         count = GetNumMonsInParty(party);
         for (i = 0; i < count; i++) {
-            core->ov287.unk38[i] = CheckCondition(GetBattleMonFromParty(party, i), 0x13);
+            core->ov287.embargo[i] = CheckCondition(GetBattleMonFromParty(party, i), CONDITION_EMBARGO);
         }
         for (; i < 6; i++) {
-            core->ov287.unk38[i] = 0;
+            core->ov287.embargo[i] = 0;
         }
         core->subSeq = 1;
     }
@@ -868,7 +868,7 @@ void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 shooterEnergy,
 
 void BtlvCore_QuitItemSelect(BtlvCore *core) {
     core->ov286.quit = 1;
-    core->ov287.unk30 = 1;
+    core->ov287.quit = 1;
 }
 
 BOOL BtlvCore_WaitItemSelect(BtlvCore *core) {
@@ -1661,7 +1661,7 @@ BOOL BtlvCore_PollYesNo(BtlvCore *core, u32 *answer) {
 }
 
 void BtlvCore_StartForgetMoveSelect(BtlvCore *core, u8 partyIndex, u16 move) {
-    BtlvCore_SetupPokeListParam(core, &core->ov287, 4, partyIndex, move);
+    BtlvCore_SetupPokeListParam(core, &core->ov287, BPLIST_MODE_FORGET_MOVE, partyIndex, move);
     core->subSeq = 0;
 }
 

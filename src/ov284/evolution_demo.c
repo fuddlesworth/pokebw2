@@ -629,15 +629,15 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
             wk->ov287Param.party = demoParam->party;
             wk->ov287Param.font = wk->font;
             wk->ov287Param.heapId = wk->heapId;
-            wk->ov287Param.unk1F = 4;
+            wk->ov287Param.mode = BPLIST_MODE_FORGET_MOVE;
             wk->ov287Param.done = FALSE;
             wk->ov287Param.partyIndex = demoParam->partyIndex;
             wk->ov287Param.move = wk->move;
-            wk->ov287Param.unk14 = 0;
+            wk->ov287Param.battleStyle = 0;
             wk->ov287Param.usingKeys = &wk->usingKeys;
             wk->ov287Param.tcbManager = wk->tcbManager;
             wk->ov287Param.paletteFade = wk->paletteFade;
-            wk->ov287Param.unk40 = 1;
+            wk->ov287Param.playSound = 1;
             GFL_OvlLoad(OVERLAY_OV285);
             GFL_OvlLoad(OVERLAY_OV287);
             BPlistMain_Start(&wk->ov287Param);

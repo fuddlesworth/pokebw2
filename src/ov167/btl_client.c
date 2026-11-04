@@ -2377,7 +2377,8 @@ static BOOL BattleClient_ActionSelectInit(BtlClient *client, s32 *seq) {
     client->prevActionIdx = -1;
     client->firstActionIdx = 0;
     client->escapeSelected = FALSE;
-    BattleClient_SetupPokeSelect(client, 0, client->numCoverPos, &client->pokeListCmd, &client->pokeSelect);
+    BattleClient_SetupPokeSelect(client, BPLIST_MODE_SELECT, client->numCoverPos, &client->pokeListCmd,
+                                 &client->pokeSelect);
     shooterWork_Init(client);
     selItemWork_Init(client);
     for (i = 0; i < 3; i++) {
@@ -4132,11 +4133,11 @@ static BOOL BattleClient_PlayerConfirmUseNextPoke(BtlClient *client, s32 *seq) {
 }
 
 static BOOL BattleClient_PlayerSelectChangePokeFainted(BtlClient *client, s32 *seq) {
-    return PlayerSelectChangePoke(client, seq, 2);
+    return PlayerSelectChangePoke(client, seq, BPLIST_MODE_FAINTED);
 }
 
 static BOOL BattleClient_PlayerSelectChangePokeMidTurn(BtlClient *client, s32 *seq) {
-    return PlayerSelectChangePoke(client, seq, 1);
+    return PlayerSelectChangePoke(client, seq, BPLIST_MODE_MID_TURN);
 }
 
 // The AI's choice of the mons to send out
@@ -4349,7 +4350,7 @@ static BOOL BattleClient_PlayerConfirmShiftSwitch(BtlClient *client, s32 *seq) {
     case SHIFT_SWITCH_SEQ_ANSWER:
         if (BtlvCore_WaitMsg(client->viewCore) && BtlvCore_PollYesNo(client->viewCore, &result)) {
             if (result == 0) {
-                BattleClient_SetupPokeSelect(client, 0, 1, &client->pokeListCmd, &client->pokeSelect);
+                BattleClient_SetupPokeSelect(client, BPLIST_MODE_SELECT, 1, &client->pokeListCmd, &client->pokeSelect);
                 BattleClientCmd_StartPokeList(client->viewCore, &client->pokeListCmd, 0, 0, &client->pokeSelect);
                 *seq = SHIFT_SWITCH_SEQ_SELECT;
             } else {
