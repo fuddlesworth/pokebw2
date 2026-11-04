@@ -177,7 +177,7 @@ static void BBagBmp_PrintSlotCount(BBagWork *work, u32 index, u32 slot, u32 winI
     StrBuf *tmpl;
 
     GFL_BitmapFill(BmpWin_GetBitmap(win), 0);
-    if (work->items[work->pocket][index].count != 0 && work->param->mode != 1) {
+    if (work->items[work->pocket][index].count != 0 && work->param->mode != BBAG_MODE_SHOOTER) {
         tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, data_ov286_021f6d84[slot][1]);
         WordSetNumber(work->wordSet, 0, work->items[work->pocket][index].count, 3, NUM_PAD_NONE, TRUE);
         GFL_WordSetFormatStrbuf(work->wordSet, work->strBuf, tmpl);
@@ -246,7 +246,7 @@ void BBagBmp_PrintPageNumber(BBagWork *work) {
 
 static void BBagBmp_PrintPocketName(BBagWork *work) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->windows[29].window), 0);
-    if (work->param->mode != 1) {
+    if (work->param->mode != BBAG_MODE_SHOOTER) {
         switch (work->pocket) {
         case 0:
             BBagBmp_PrintCentered(work, 29, 22, 4, BBAG_COLOR);

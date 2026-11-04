@@ -13,6 +13,17 @@
 // after it and Diamond and Pearl's): the bag shown during a battle to use or throw an item, the Wonder Launcher,
 // and the catching demo. It sets done when it ends. Every name here is ours; swan has none for this overlay.
 
+// What the bag is opened for (BBagParam.mode)
+enum {
+    BBAG_MODE_NORMAL,
+    // The Wonder Launcher's items, in a link battle whose regulation allows it
+    BBAG_MODE_SHOOTER,
+    // The catching demonstration
+    BBAG_MODE_CAPTURE_DEMO,
+    // Opens on the Poké Balls, for the Entree Forest capture (pdc_main.c)
+    BBAG_MODE_BALLS,
+};
+
 // Why a Poké Ball can't be thrown (BBagParam.ballError), each with its message
 enum {
     BBAG_BALL_OK,
@@ -32,7 +43,7 @@ enum {
 typedef struct {
     BagSave *bag;              // 0x00
     Font *font;                // 0x04
-    u32 mode;                  // 0x08  0 normal, 1 Wonder Launcher, 2 catching demo, 3 opens on the Poké Balls
+    u32 mode;                  // 0x08  a BBAG_MODE_*
     HeapID heapId;             // 0x0c
     const u8 *shooterDisabled; // 0x10  ShooterItem_IsEnabled's bit field
     u8 shooterEnergy;          // 0x14

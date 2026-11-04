@@ -1,4 +1,5 @@
 #include "types.h"
+#include "battle/b_bag_main.h"
 #include "battle/btl_action.h"
 #include "battle/btl_adapter.h"
 #include "battle/btl_calc.h"
@@ -468,6 +469,7 @@ struct BtlClient {
     u8 clientType;
     u8 mainSeq;
     u8 waitMsgShown;
+    // The bag's BBAG_MODE_*: the Wonder Launcher in a link battle
     u8 bagMode;
     u8 shooterEnergy;
     u8 yesNoResult;
@@ -2496,7 +2498,7 @@ static BOOL BattleClient_ActionSelectRoot(BtlClient *client, s32 *seq) {
         case BTLV_COMMAND_BAG:
             if (CheckCondition(client->procMon, CONDITION_SKY_DROP)) {
                 *seq = ROOT_SEQ_BLOCKED_RESET_SCREEN;
-            } else if (client->bagMode == 1 && !IsShooterEnabled(client->mainModule)) {
+            } else if (client->bagMode == BBAG_MODE_SHOOTER && !IsShooterEnabled(client->mainModule)) {
                 BtlvCore_ResetScreen(client->viewCore);
                 *seq = ROOT_SEQ_WAIT_SCREEN;
             } else if (GetStudioMode(client->mainModule) == BTL_STUDIO_MODE_FILM) {
@@ -3150,14 +3152,14 @@ static void selItemWork_Init(BtlClient *client) {
 }
 
 static void selItemWork_Reserve(BtlClient *client, u8 index, u16 item) {
-    if (client->bagMode == 0 && client->clientId == GetPlayerClientID(client->mainModule)) {
+    if (client->bagMode == BBAG_MODE_NORMAL && client->clientId == GetPlayerClientID(client->mainModule)) {
         client->reservedItems[index] = item;
         BattleClient_SubItem(client->mainModule, client->clientId, item);
     }
 }
 
 static void selItemWork_Restore(BtlClient *client, u8 index) {
-    if (client->bagMode == 0 && client->clientId == GetPlayerClientID(client->mainModule)) {
+    if (client->bagMode == BBAG_MODE_NORMAL && client->clientId == GetPlayerClientID(client->mainModule)) {
         u16 item = client->reservedItems[index];
         if (item != 0) {
             client->reservedItems[index] = 0;
@@ -3168,7 +3170,7 @@ static void selItemWork_Restore(BtlClient *client, u8 index) {
 
 static void selItemWork_Quit(BtlClient *client) {
     u32 i;
-    if (client->bagMode == 0) {
+    if (client->bagMode == BBAG_MODE_NORMAL) {
         for (i = 0; i < 3; i++) {
             selItemWork_Restore(client, i);
         }

@@ -447,7 +447,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
         break;
     case 14:
         if (BtlvScd_GetCommandResult(core->scd)) {
-            BattleClientCmd_StartItemSelect(core, 2, 0, 0, 1, 0);
+            BattleClientCmd_StartItemSelect(core, BBAG_MODE_CAPTURE_DEMO, 0, 0, 1, 0);
             (*seq)++;
         }
         break;
@@ -953,7 +953,7 @@ u8 BtlvCore_GetSelectedMoveSlot(BtlvCore *core) {
 }
 
 void BtlvCore_SaveBagCursor(BtlvCore *core) {
-    if (core->ov286.item != 0 && core->ov287.partyIndex != 6 && core->ov286.mode != 1) {
+    if (core->ov286.item != 0 && core->ov287.partyIndex != 6 && core->ov286.mode != BBAG_MODE_SHOOTER) {
         BagCursor_SetBattlePositions(core->ov286.bagCursor, core->ov286.rows, core->ov286.pages);
         BagCursor_SetBattleLastItem(core->ov286.bagCursor, core->ov286.item, core->ov286.pocket);
     }

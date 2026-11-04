@@ -92,11 +92,11 @@ void BBagMain_Start(BBagParam *param) {
     work->param = param;
     work->paletteFade = BtlvEffect_GetPaletteFade();
     work->initialized = FALSE;
-    if (work->param->mode == 1) {
+    if (work->param->mode == BBAG_MODE_SHOOTER) {
         work->page = 1;
         work->seq = 1;
         work->pocket = 0;
-    } else if (work->param->mode == 3) {
+    } else if (work->param->mode == BBAG_MODE_BALLS) {
         work->page = 1;
         work->seq = 0;
         work->pocket = 2;
@@ -105,7 +105,7 @@ void BBagMain_Start(BBagParam *param) {
         work->seq = 0;
         work->pocket = 0;
     }
-    if (work->param->mode != 1) {
+    if (work->param->mode != BBAG_MODE_SHOOTER) {
         for (i = 0; i < 4; i++) {
             BagCursor_GetBattlePocketPosition(work->param->bagCursor, i, &work->param->rows[i], &work->param->pages[i]);
         }
@@ -148,7 +148,7 @@ static int BBagMain_StateInit(BBagWork *work) {
     BBagMain_InitBG(work);
     BBagMain_LoadGraphics(work);
     BBagMain_InitText(work);
-    if (work->param->mode == 2) {
+    if (work->param->mode == BBAG_MODE_CAPTURE_DEMO) {
         BBagItem_MakeDemoList(work);
     } else {
         BBagItem_MakePocketLists(work);
@@ -174,7 +174,7 @@ static int BBagMain_StateInit(BBagWork *work) {
     GFL_NetSetIconScreen(FALSE, work->param->heapId);
     PaletteFade_LoadFromVRAM(work->paletteFade, PALFADE_VRAM_SUB_OBJ, 0xe0, 0x20);
     PaletteFade_StartFade(work->paletteFade, 0xa, 0xffff, 0, 16, 0, 0, BtlvEffect_GetTCBManager());
-    if (work->param->mode == 3) {
+    if (work->param->mode == BBAG_MODE_BALLS) {
         BBagMain_ScrollPage(work, work->page);
     }
     work->initialized = TRUE;
@@ -222,13 +222,13 @@ static int BBagMain_StateStartWipe(BBagWork *work) {
 
 static int BBagMain_StateWaitWipe(BBagWork *work) {
     if (GFL_WipeIsFinished() == TRUE) {
-        if (work->param->mode == 2) {
+        if (work->param->mode == BBAG_MODE_CAPTURE_DEMO) {
             return 0x11;
         }
-        if (work->param->mode == 1) {
+        if (work->param->mode == BBAG_MODE_SHOOTER) {
             return 5;
         }
-        if (work->param->mode == 3) {
+        if (work->param->mode == BBAG_MODE_BALLS) {
             return 5;
         }
         return 4;
@@ -317,7 +317,7 @@ static int BBagMain_StateItemPage(BBagWork *work) {
         case 6:
             BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
             BBagAnm_StartButtonAnm(work, 10);
-            if (work->param->mode == 1 || work->param->mode == 3) {
+            if (work->param->mode == BBAG_MODE_SHOOTER || work->param->mode == BBAG_MODE_BALLS) {
                 work->param->item = 0;
                 work->param->pocket = 4;
                 return 0x12;
@@ -327,7 +327,7 @@ static int BBagMain_StateItemPage(BBagWork *work) {
         case CURSOR_MOVE_CANCEL:
             BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
             BBagAnm_StartButtonAnm(work, 10);
-            if (work->param->mode == 1 || work->param->mode == 3) {
+            if (work->param->mode == BBAG_MODE_SHOOTER || work->param->mode == BBAG_MODE_BALLS) {
                 work->param->item = 0;
                 work->param->pocket = 4;
                 return 0x12;
@@ -422,7 +422,7 @@ static int BBagMain_StateUsePage(BBagWork *work) {
         BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
         work->param->item = BBagItem_GetSlotItem(work, work->param->rows[work->pocket]);
         work->param->pocket = work->pocket;
-        if (work->param->mode == 1) {
+        if (work->param->mode == BBAG_MODE_SHOOTER) {
             work->param->cost = BBagItem_GetShooterCost(work->param->item);
         } else {
             work->param->cost = 0;
@@ -458,7 +458,7 @@ static int BBagMain_StateUsePage(BBagWork *work) {
 static int BBagMain_CheckUse(BBagWork *work) {
     BBagParam *param = work->param;
 
-    if (param->mode == 1 && param->shooterEnergy < BBagItem_GetShooterCost(param->item)) {
+    if (param->mode == BBAG_MODE_SHOOTER && param->shooterEnergy < BBagItem_GetShooterCost(param->item)) {
         GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNotChargedEnough, work->strBuf);
         BBagBmp_OpenMessage(work);
         work->nextSeq = 0xd;

@@ -102,7 +102,7 @@ static void BBagObj_LoadItemIconRes(BBagWork *wk) {
     u32 plttType;
     u16 i;
 
-    if (wk->param->mode == 1) {
+    if (wk->param->mode == BBAG_MODE_SHOOTER) {
         item = ShooterItem_GetItem(0);
         charType = ITEM_FILE_LIST_ICON_CHAR;
         plttType = ITEM_FILE_LIST_ICON_PLTT;
@@ -131,7 +131,7 @@ static void BBagObj_LoadItemIcon(BBagWork *wk, u16 item, u32 chars, u32 row) {
     u32 charType;
     u32 plttType;
 
-    if (param->mode == 1) {
+    if (param->mode == BBAG_MODE_SHOOTER) {
         charType = ITEM_FILE_LIST_ICON_CHAR;
         plttType = ITEM_FILE_LIST_ICON_PLTT;
     } else {
@@ -150,7 +150,7 @@ static void BBagObj_LoadItemIcon(BBagWork *wk, u16 item, u32 chars, u32 row) {
 static void BBagObj_LoadItemIconPalette(BBagWork *wk, u16 item, u32 row) {
     BBagParam *param = wk->param;
 
-    if (param->mode == 1) {
+    if (param->mode == BBAG_MODE_SHOOTER) {
         GFL_BGSysLoadNCLRDefault(PML_ItemGetIconArcID(), GetItemGraphicsDatID(item, ITEM_FILE_LIST_ICON_PLTT),
                                  PALTYPE_SUB_OBJ, row * 0x20, 0x20, param->heapId);
     } else {
@@ -260,7 +260,7 @@ static void BBagObj_ShowPockets(BBagWork *wk) {
         BBagObj_LoadItemIcon(wk, wk->lastItem, 6, 6);
         BBagObj_ShowAt(wk->actors[BBAG_ACTOR_SHOWN_ITEM], &data_ov286_021f6ec8);
     }
-    if (wk->param->mode == 2) {
+    if (wk->param->mode == BBAG_MODE_CAPTURE_DEMO) {
         BBagObj_ShowFingerCursor(wk, 192, 24);
     }
 }
@@ -274,17 +274,17 @@ static void BBagObj_ShowItemList(BBagWork *wk) {
             BBagObj_LoadItemIcon(wk, item, i, i);
             BBagObj_LoadItemIconPalette(wk, item, i);
             BBagObj_ShowAt(wk->actors[BBAG_ACTOR_ITEM + i], &data_ov286_021f6ed4[i]);
-            if (wk->param->mode == 1) {
+            if (wk->param->mode == BBAG_MODE_SHOOTER) {
                 BBagObj_ShowCost(wk, BBAG_ACTOR_COST + i * 8, BBagItem_GetShooterCost(item), 0,
                                  &data_ov286_021f6ed4[i + 6]);
             }
         }
     }
-    if (wk->param->mode == 1) {
+    if (wk->param->mode == BBAG_MODE_SHOOTER) {
         BBagObj_ShowCost(wk, BBAG_ACTOR_ENERGY, wk->param->shooterEnergy, wk->param->shooterSpent,
                          &data_ov286_021f6ed4[i + 6]);
     }
-    if (wk->param->mode == 2) {
+    if (wk->param->mode == BBAG_MODE_CAPTURE_DEMO) {
         BBagObj_ShowFingerCursor(wk, 64, 16);
     }
 }
@@ -294,10 +294,10 @@ static void BBagObj_ShowItem(BBagWork *wk) {
 
     BBagObj_LoadItemIcon(wk, item, 6, 6);
     BBagObj_ShowAt(wk->actors[BBAG_ACTOR_SHOWN_ITEM], &data_ov286_021f6ecc);
-    if (wk->param->mode == 1) {
+    if (wk->param->mode == BBAG_MODE_SHOOTER) {
         BBagObj_ShowCost(wk, BBAG_ACTOR_COST, BBagItem_GetShooterCost(item), 0, &data_ov286_021f6ed0);
     }
-    if (wk->param->mode == 2) {
+    if (wk->param->mode == BBAG_MODE_CAPTURE_DEMO) {
         BBagObj_ShowFingerCursor(wk, 104, 152);
     }
 }

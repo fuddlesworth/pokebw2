@@ -296,7 +296,7 @@ static u32 PdcMain_ProcBag(PdcMain *work) {
     case PDC_BAG_START:
         work->bag.bag = PdcWork_GetBag(work->pdc);
         work->bag.bagCursor = work->bagCursor;
-        work->bag.mode = 3;
+        work->bag.mode = BBAG_MODE_BALLS;
         work->bag.font = work->font;
         work->bag.heapId = work->heapId;
         work->bag.item = 0;
