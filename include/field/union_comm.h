@@ -76,9 +76,9 @@ typedef struct {
     u8 gender;
     u8 member; // in entry->beacon.members
     u8 used;
-    u8 step;
+    u8 step; // UNION_ACTOR_STEP_*
     u8 nextStep;
-    u8 phase;
+    u8 phase; // UNION_PHASE_*
     u8 seq;
 } UnionActorSlot;
 

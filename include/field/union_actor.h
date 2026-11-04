@@ -15,6 +15,15 @@ typedef enum {
     UNION_ACTOR_MEMBER,
 } UnionActorKind;
 
+// The steps of an actor, the rows of union_actor.c's table: standing, appearing, leaving and facing the player who
+// talks to it
+enum {
+    UNION_ACTOR_STEP_IDLE,
+    UNION_ACTOR_STEP_APPEAR,
+    UNION_ACTOR_STEP_LEAVE,
+    UNION_ACTOR_STEP_TALK,
+};
+
 // A step of an actor, for the player heard that it stands for
 typedef BOOL (*UnionActorFunc)(UnionSystem *unisys, UnionActorSlot *slot, Field *field, u8 *seq);
 
