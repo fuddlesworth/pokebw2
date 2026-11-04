@@ -465,31 +465,31 @@ static int BBagMain_CheckUse(BBagWork *work) {
         return 0xe;
     }
     if (work->pocket == 2) {
-        if (param->ballError == 1) {
+        if (param->ballError == BBAG_BALL_BOXES_FULL) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ThereNoRoomLeft, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = 0xd;
             return 0xe;
         }
-        if (param->ballError == 2) {
+        if (param->ballError == BBAG_BALL_TWO_TARGETS) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNoGoodIts, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = 0xd;
             return 0xe;
         }
-        if (param->ballError == 3) {
+        if (param->ballError == BBAG_BALL_NOT_FOCUSED) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsImpossibleAimWithout, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = 0xd;
             return 0xe;
         }
-        if (param->ballError == 4) {
+        if (param->ballError == BBAG_BALL_HIDDEN) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNoGoodIts_2, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = 0xd;
             return 0xe;
         }
-        if (param->ballError == 5) {
+        if (param->ballError == BBAG_BALL_BLOCKED) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsImpossibleUsePoke, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = 0xd;

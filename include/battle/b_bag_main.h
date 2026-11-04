@@ -13,6 +13,21 @@
 // after it and Diamond and Pearl's): the bag shown during a battle to use or throw an item, the Wonder Launcher,
 // and the catching demo. It sets done when it ends. Every name here is ours; swan has none for this overlay.
 
+// Why a Poké Ball can't be thrown (BBagParam.ballError), each with its message
+enum {
+    BBAG_BALL_OK,
+    // The party and the boxes are full (BTL_SETUP_FLAG_BOXES_FULL)
+    BBAG_BALL_BOXES_FULL,
+    // Two wild Pokémon are left
+    BBAG_BALL_TWO_TARGETS,
+    // Items can't be used now: "impossible to aim without being focused"
+    BBAG_BALL_NOT_FOCUSED,
+    // The wild Pokémon is out of sight, as in the middle of Fly or Dig
+    BBAG_BALL_HIDDEN,
+    // Ghetsis's device blocks them (BTL_SETUP_FLAG_NO_BALLS)
+    BBAG_BALL_BLOCKED,
+};
+
 // What the battle passes to the bag, 0x44 bytes, inside BtlvCore
 typedef struct {
     BagSave *bag;              // 0x00
@@ -28,7 +43,7 @@ typedef struct {
     BagCursor *bagCursor;      // 0x1c  the bag's saved cursor
     BOOL quit;                 // 0x20  1 leaves with the fade
     BOOL abort;                // 0x24  1 leaves at once
-    u8 ballError;              // 0x28  0, or 1-5: why a Poké Ball can't be thrown
+    u8 ballError;              // 0x28  a BBAG_BALL_*: why a Poké Ball can't be thrown
     u8 isWild;                 // 0x29
     u8 pocket;                 // 0x2a  out, 4 on cancel
     u8 *usingKeys;             // 0x2c

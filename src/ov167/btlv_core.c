@@ -827,27 +827,27 @@ void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 shooterEnergy,
             kind = 1;
         }
         core->ov286.isWild = kind;
-        kind = 0;
+        kind = BBAG_BALL_OK;
         core->ov286.done = FALSE;
         if (!canUseItems) {
-            kind = 3;
+            kind = BBAG_BALL_NOT_FOCUSED;
         } else if (BtlSetup_IsBattleType(core->mainModule, BTL_SETUP_FLAG_BOXES_FULL)) {
-            kind = 1;
+            kind = BBAG_BALL_BOXES_FULL;
         } else {
             switch (BtlSetup_GetBattleType(core->mainModule)) {
             case BTL_TYPE_WILD:
                 if (PokeCon_GetClientAliveCount(core->pokeCon, 1) > 1) {
-                    kind = 2;
+                    kind = BBAG_BALL_TWO_TARGETS;
                     break;
                 }
                 if (targetHiding) {
-                    kind = 4;
+                    kind = BBAG_BALL_HIDDEN;
                     break;
                 }
                 // fallthrough
             default:
                 if (BtlSetup_IsBattleType(core->mainModule, BTL_SETUP_FLAG_NO_BALLS)) {
-                    kind = 5;
+                    kind = BBAG_BALL_BLOCKED;
                 }
                 break;
             }
