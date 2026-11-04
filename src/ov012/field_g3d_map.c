@@ -356,7 +356,7 @@ BOOL FieldChunk_IsTerrainReady(FieldChunk *chunk) {
     return TRUE;
 }
 
-void FieldChunk_GetTerrain(MapTerrainSamplerOutput *out, FieldChunk *chunk, const VecFx32 *pos, fx32 a3) {
+void FieldChunk_GetTerrain(MapTerrainSamplerOutput *out, FieldChunk *chunk, const VecFx32 *pos, fx32 size) {
     VecFx32 local;
     fx32 y;
     void (*getTerrain)(MapTerrainSamplerOutput *, const void *, const VecFx32 *, fx32, fx32);
@@ -367,16 +367,16 @@ void FieldChunk_GetTerrain(MapTerrainSamplerOutput *out, FieldChunk *chunk, cons
         VEC_Subtract(pos, &chunk->worldPos, &local);
         getTerrain = chunk->vtable[chunk->vtableIndex].getTerrain;
         if (getTerrain != NULL) {
-            getTerrain(out, chunk->container, &local, a3, y);
+            getTerrain(out, chunk->container, &local, size, y);
         }
     }
 }
 
-void FieldChunk_GetTerrainBaseLayer(MapTerrainSamplerOutput *out, FieldChunk *chunk, const VecFx32 *pos, fx32 a3) {
+void FieldChunk_GetTerrainBaseLayer(MapTerrainSamplerOutput *out, FieldChunk *chunk, const VecFx32 *pos, fx32 size) {
     VecFx32 local;
 
     VEC_Subtract(pos, &chunk->worldPos, &local);
-    chunk->vtable[chunk->vtableIndex].getTerrainBaseLayer(out, chunk->container, &local, a3, chunk->worldPos.y);
+    chunk->vtable[chunk->vtableIndex].getTerrainBaseLayer(out, chunk->container, &local, size, chunk->worldPos.y);
 }
 
 void FieldChunk_ResetProps(FieldChunk *chunk) {
