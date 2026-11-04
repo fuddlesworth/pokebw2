@@ -1498,8 +1498,8 @@ static void HandlerHaze(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId) {
         reset = BattleHandler_PushWork(flow, BTL_HANDLER_RESET_STAT_STAGE, monId);
-        reset->count =
-            HandlerGetAlivePartyCount(flow, 0x800 | BtlServerFlow_GetMonBattlePos(flow, monId), reset->monIndices);
+        reset->count = HandlerGetAlivePartyCount(
+            flow, BTL_EXPOS_FLAGS(BTL_EXPOS_ALL, BtlServerFlow_GetMonBattlePos(flow, monId)), reset->monIndices);
         BattleHandler_PopWork(flow, reset);
         message = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
         BattleHandler_StrSetup(&message->string, 1, 0x65);
@@ -8199,7 +8199,7 @@ static void HandlerFlameBurst(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         targetId = BattleEventVar_GetValue(BTL_EVAR_DEFENDER);
         pos = BtlServerFlow_GetPosOfMon(flow, targetId);
         if (pos != BTL_POS_NONE) {
-            count = HandlerGetAlivePartyCount(flow, 0x900 | pos, targets);
+            count = HandlerGetAlivePartyCount(flow, BTL_EXPOS_FLAGS(BTL_EXPOS_9, pos), targets);
             for (i = 0; i < count; i++) {
                 if (targets[i] != targetId) {
                     mon = GetBattleMon(flow, targets[i]);

@@ -3412,9 +3412,10 @@ static u32 CheckEscapeBlocked(BtlClient *client, u8 *trapMonId, u16 *trapAbility
 
 static u32 IsMonTrapped(BtlClient *client, BattleMon *mon, u8 *trapMonId, u16 *trapAbility) {
     u8 monIds[4];
-    u8 count =
-        ExpandPosFlagsToMonIDs(client->mainModule, client->pokeCon,
-                               0x100 | MonIDToBattlePos(client->mainModule, client->pokeCon, GetMonID(mon)), monIds);
+    u8 count = ExpandPosFlagsToMonIDs(
+        client->mainModule, client->pokeCon,
+        BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_FOES, MonIDToBattlePos(client->mainModule, client->pokeCon, GetMonID(mon))),
+        monIds);
     u8 i;
     for (i = 0; i < count; i++) {
         BattleMon *opponent = GetPokeParam(client->pokeCon, monIds[i]);
@@ -3577,7 +3578,8 @@ static BOOL AISwitchChecks(BtlClient *client, BattleMon *mon, u8 index, u8 *slot
 
 static BattleMon *PickRandomOpponent(BtlClient *client, u8 pos) {
     u8 monIds[4];
-    u8 count = ExpandPosFlagsToMonIDs(client->mainModule, client->pokeCon, 0x100 | pos, monIds);
+    u8 count = ExpandPosFlagsToMonIDs(client->mainModule, client->pokeCon,
+                                      BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_FOES, pos), monIds);
     if (count != 0) {
         u8 index = MATH_Rand32(&client->aiRand, count);
         return GetPokeParam(client->pokeCon, monIds[index]);

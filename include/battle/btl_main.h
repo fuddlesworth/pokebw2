@@ -266,6 +266,29 @@ u8 MonIDToClientID(u8 monId);
 u8 GetClientBattlePos(BtlMainModule *mainModule, u8 clientId, u8 slot);
 s32 PokeCon_FindClientMonIndex(BtlPokeCon *pokeCon, u8 clientId, u8 monId);
 u8 MonIDToBattlePos(BtlMainModule *mainModule, BtlPokeCon *pokeCon, u8 monId);
+// What a position's flags expand to (ExpandPosFlags), in the high byte over the position in the low one: the
+// position itself, or around it the foes, the others, its side, its allies or all of them, the adjacent ones in a
+// triple battle or every one
+enum {
+    BTL_EXPOS_SELF,
+    BTL_EXPOS_ADJACENT_FOES,
+    BTL_EXPOS_ADJACENT_OTHERS,
+    // The position and its adjacent allies
+    BTL_EXPOS_ADJACENT_SIDE,
+    BTL_EXPOS_ADJACENT_ALLIES,
+    // The position and every adjacent one
+    BTL_EXPOS_ADJACENT_ALL,
+    BTL_EXPOS_ALL_FOES,
+    // Every position on its side
+    BTL_EXPOS_ALL_SIDE,
+    BTL_EXPOS_ALL,
+    // Expands as BTL_EXPOS_ADJACENT_ALLIES does
+    BTL_EXPOS_9,
+};
+
+// The flags of the positions of the kind type around pos
+#define BTL_EXPOS_FLAGS(type, pos) (((type) << 8) | (pos))
+
 u8 ExpandPosFlags(BtlMainModule *mainModule, u16 posFlags, u8 *out);
 u8 GetOpposingPos(BtlMainModule *mainModule, u8 pos, u8 index);
 u8 ExpandPosFlagsToMonIDs(BtlMainModule *mainModule, BtlPokeCon *pokeCon, u16 posFlags, u8 *monIds);

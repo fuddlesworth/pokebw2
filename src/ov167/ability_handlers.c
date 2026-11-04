@@ -905,7 +905,7 @@ BOOL CheckAllyHasAbility(BtlServerFlow *flow, u8 monId, u8 *mons, u32 ability) {
 
     pos = BtlServerFlow_MonIDToPos(flow, monId);
     if (pos != BTL_POS_NONE) {
-        packed = (7 << 8) | pos;
+        packed = BTL_EXPOS_FLAGS(BTL_EXPOS_ALL_SIDE, pos);
         count = HandlerGetAlivePartyCount(flow, packed, mons);
         for (i = 0; i < count; i++) {
             if (monId != mons[i] &&
@@ -3876,7 +3876,7 @@ void HandlerPickup(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wo
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && GetBattleMonHeldItem(GetBattleMon(flow, monId)) == 0) {
         pos = BtlServerFlow_GetMonBattlePos(flow, monId);
         wk = (PickupWork *)BtlServerFlow_GetHandlerWork(flow, 0xe);
-        wk->count = HandlerGetAlivePartyCount(flow, (2 << 8) | pos, wk->mons);
+        wk->count = HandlerGetAlivePartyCount(flow, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_OTHERS, pos), wk->mons);
         numCandidates = 0;
         wk->numCandidates = 0;
         for (i = 0; i < wk->count; i++) {
@@ -4182,7 +4182,8 @@ void HandlerHealer(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wo
     u8 mons[4];
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
-        count = HandlerGetAlivePartyCount(flow, (2 << 9) | BtlServerFlow_MonIDToPos(flow, monId), mons);
+        count = HandlerGetAlivePartyCount(
+            flow, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_ALLIES, BtlServerFlow_MonIDToPos(flow, monId)), mons);
         for (i = 0; i < count; i++) {
             if (mons[i] != monId && GetBattleMonStatus(GetBattleMon(flow, mons[i])) != 0 &&
                 AbilityEvent_RollEffectChance(flow, 30)) {

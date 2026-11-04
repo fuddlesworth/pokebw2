@@ -22,9 +22,6 @@
 
 #define NUM_PROCS 4
 
-// What BtlMain gets the positions of a group of targets by: a group, and the position of the user
-#define TARGET_FLAGS(group, pos) (((group) << 8) | (pos))
-
 // The target screen's range for MOVE_TARGET_SELECTED when a move with MOVE_FLAG_DISTANT is used in a triple battle,
 // after the move data's ranges
 #define TARGET_RANGE_DISTANT 14
@@ -1219,42 +1216,42 @@ static void BtlvScd_BuildTargetList(BtlvScdTargetList *list, BtlvScd *scd) {
     }
     switch (range) {
     case MOVE_TARGET_SELECTED:
-        BtlvScd_FillSelectTargets(list, scd->mainModule, TARGET_FLAGS(2, pos));
+        BtlvScd_FillSelectTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_OTHERS, pos));
         BtlvScd_AddFarTargets(list, scd->mainModule, move, pos);
         break;
     case MOVE_TARGET_FOE:
-        BtlvScd_FillSelectTargets(list, scd->mainModule, TARGET_FLAGS(1, pos));
+        BtlvScd_FillSelectTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_FOES, pos));
         BtlvScd_AddFarTargets(list, scd->mainModule, move, pos);
         break;
     case MOVE_TARGET_USER_OR_ALLY:
-        BtlvScd_FillSelectTargets(list, scd->mainModule, TARGET_FLAGS(3, pos));
+        BtlvScd_FillSelectTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_SIDE, pos));
         break;
     case MOVE_TARGET_ALLY:
-        BtlvScd_FillSelectTargets(list, scd->mainModule, TARGET_FLAGS(4, pos));
+        BtlvScd_FillSelectTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_ALLIES, pos));
         break;
     case MOVE_TARGET_ADJACENT_FOES:
-        BtlvScd_FillGroupTargets(list, scd->mainModule, TARGET_FLAGS(1, pos));
+        BtlvScd_FillGroupTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_FOES, pos));
         break;
     case MOVE_TARGET_ALL_ADJACENT:
-        BtlvScd_FillGroupTargets(list, scd->mainModule, TARGET_FLAGS(2, pos));
+        BtlvScd_FillGroupTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_OTHERS, pos));
         break;
     case MOVE_TARGET_USER:
     case MOVE_TARGET_RANDOM_FOE:
-        BtlvScd_FillGroupTargets(list, scd->mainModule, TARGET_FLAGS(0, pos));
+        BtlvScd_FillGroupTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_SELF, pos));
         break;
     case MOVE_TARGET_USER_PARTY:
     case MOVE_TARGET_USER_SIDE:
-        BtlvScd_FillSideTargets(list, scd->mainModule, TARGET_FLAGS(7, pos));
+        BtlvScd_FillSideTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ALL_SIDE, pos));
         break;
     case MOVE_TARGET_FOE_SIDE:
-        BtlvScd_FillSideTargets(list, scd->mainModule, TARGET_FLAGS(6, pos));
+        BtlvScd_FillSideTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ALL_FOES, pos));
         break;
     case MOVE_TARGET_ALL:
     case MOVE_TARGET_FIELD:
-        BtlvScd_FillSideTargets(list, scd->mainModule, TARGET_FLAGS(8, pos));
+        BtlvScd_FillSideTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_ALL, pos));
         break;
     case MOVE_TARGET_DEPENDS:
-        BtlvScd_FillGroupTargets(list, scd->mainModule, TARGET_FLAGS(0, pos));
+        BtlvScd_FillGroupTargets(list, scd->mainModule, BTL_EXPOS_FLAGS(BTL_EXPOS_SELF, pos));
         break;
     }
 }

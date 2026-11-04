@@ -362,9 +362,9 @@ static BOOL RetargetFromFaintedFoe(BtlServerFlow *flow, u32 style, BattleMon *mo
             pos = MonIDToBattlePos(flow->mainModule, flow->pokeCon, GetMonID(mon));
             BtlMonSet_Remove(targets, fainted);
             if (getMoveFlag(param->move, 0xb)) {
-                code = 0x600 | pos;
+                code = BTL_EXPOS_FLAGS(BTL_EXPOS_ALL_FOES, pos);
             } else {
-                code = 0x100 | pos;
+                code = BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_FOES, pos);
             }
             numPositions = ExpandPosFlags(flow->mainModule, code, positions);
             for (i = 0; i < 3; i++) {
@@ -867,8 +867,10 @@ static BOOL ThrowBall(BtlServerFlow *flow, BattleMon *mon, u16 item) {
 
     target = NULL;
     targetPos = 6;
-    numPositions = ExpandPosFlags(flow->mainModule,
-                                  0x600 | MonIDToBattlePos(flow->mainModule, flow->pokeCon, GetMonID(mon)), positions);
+    numPositions = ExpandPosFlags(
+        flow->mainModule,
+        BTL_EXPOS_FLAGS(BTL_EXPOS_ALL_FOES, MonIDToBattlePos(flow->mainModule, flow->pokeCon, GetMonID(mon))),
+        positions);
     for (i = 0; i < numPositions; i++) {
         target = PokeCon_GetPosMon(flow->pokeCon, positions[i]);
         if (!IsFainted(target)) {

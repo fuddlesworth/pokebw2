@@ -1707,7 +1707,7 @@ u8 ExpandPosFlags(BtlMainModule *mainModule, u16 posFlags, u8 *out) {
     u8 type = posFlags >> 8;
     u8 pos = posFlags;
 
-    if (type == 0) {
+    if (type == BTL_EXPOS_SELF) {
         *out = pos;
         return *out != BTL_POS_NONE ? 1 : 0;
     }
@@ -1732,16 +1732,16 @@ u8 ExpandPosFlagsSingle(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
     switch (type) {
     default:
         return 0;
-    case 1:
-    case 2:
-    case 6:
+    case BTL_EXPOS_ADJACENT_FOES:
+    case BTL_EXPOS_ADJACENT_OTHERS:
+    case BTL_EXPOS_ALL_FOES:
         *out = GetOpposingPos(mainModule, pos, 0);
         break;
-    case 3:
+    case BTL_EXPOS_ADJACENT_SIDE:
         *out = pos;
         break;
-    case 5:
-    case 8:
+    case BTL_EXPOS_ADJACENT_ALL:
+    case BTL_EXPOS_ALL:
         out[0] = 0;
         out[1] = 1;
         return 2;
@@ -1753,17 +1753,17 @@ u8 ExpandPosFlagsDouble(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
     switch (type) {
     default:
         return 0;
-    case 1:
-    case 6:
+    case BTL_EXPOS_ADJACENT_FOES:
+    case BTL_EXPOS_ALL_FOES:
         out[0] = GetOpposingPos(mainModule, pos, 0);
         out[1] = GetOpposingPos(mainModule, pos, 1);
         return 2;
-    case 2:
+    case BTL_EXPOS_ADJACENT_OTHERS:
         out[0] = GetOpposingPos(mainModule, pos, 0);
         out[1] = GetOpposingPos(mainModule, pos, 1);
         out[2] = GetPartnerPos(mainModule, pos);
         return 3;
-    case 3:
+    case BTL_EXPOS_ADJACENT_SIDE:
         out[0] = pos;
         out[1] = GetPartnerPos(mainModule, pos);
         if (out[0] > out[1]) {
@@ -1773,16 +1773,16 @@ u8 ExpandPosFlagsDouble(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
             out[1] = tmp;
         }
         return 2;
-    case 4:
-    case 9:
+    case BTL_EXPOS_ADJACENT_ALLIES:
+    case BTL_EXPOS_9:
         out[0] = GetPartnerPos(mainModule, pos);
         return 1;
-    case 7:
+    case BTL_EXPOS_ALL_SIDE:
         out[0] = pos;
         out[1] = GetPartnerPos(mainModule, pos);
         return 2;
-    case 5:
-    case 8:
+    case BTL_EXPOS_ADJACENT_ALL:
+    case BTL_EXPOS_ALL:
         out[0] = 0;
         out[1] = 1;
         out[2] = 2;
@@ -1797,8 +1797,8 @@ u8 ExpandPosFlagsTriple(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
 
     switch (type) {
     default:
-    case 0:
-    case 1:
+    case BTL_EXPOS_SELF:
+    case BTL_EXPOS_ADJACENT_FOES:
         if (isCenter) {
             out[0] = GetOpposingPos(mainModule, pos, 0);
             out[1] = GetOpposingPos(mainModule, pos, 1);
@@ -1814,17 +1814,17 @@ u8 ExpandPosFlagsTriple(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
         }
         out[1] = GetOpposingPosForStyle(2, pos, index);
         return 2;
-    case 6:
+    case BTL_EXPOS_ALL_FOES:
         out[0] = GetOpposingPos(mainModule, pos, 0);
         out[1] = GetOpposingPos(mainModule, pos, 1);
         out[2] = GetOpposingPos(mainModule, pos, 2);
         return 3;
-    case 7:
+    case BTL_EXPOS_ALL_SIDE:
         out[0] = GetPosOnSameSide(pos, 0);
         out[1] = GetPosOnSameSide(pos, 1);
         out[2] = GetPosOnSameSide(pos, 2);
         return 3;
-    case 8:
+    case BTL_EXPOS_ALL:
         out[0] = GetOpposingPos(mainModule, pos, 0);
         out[1] = GetOpposingPos(mainModule, pos, 1);
         out[2] = GetOpposingPos(mainModule, pos, 2);
@@ -1832,7 +1832,7 @@ u8 ExpandPosFlagsTriple(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
         out[4] = GetPosOnSameSide(pos, 1);
         out[5] = GetPosOnSameSide(pos, 2);
         return 6;
-    case 2:
+    case BTL_EXPOS_ADJACENT_OTHERS:
         if (isCenter) {
             out[0] = GetOpposingPos(mainModule, pos, 0);
             out[1] = GetOpposingPos(mainModule, pos, 1);
@@ -1851,7 +1851,7 @@ u8 ExpandPosFlagsTriple(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
         out[1] = GetOpposingPosForStyle(2, pos, index);
         out[2] = GetPosOnSameSide(pos, 1);
         return 3;
-    case 3:
+    case BTL_EXPOS_ADJACENT_SIDE:
         if (isCenter) {
             out[0] = pos;
             out[1] = GetPosOnSameSide(pos, 0);
@@ -1861,7 +1861,7 @@ u8 ExpandPosFlagsTriple(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
         out[0] = pos;
         out[1] = GetPosOnSameSide(pos, 1);
         return 2;
-    case 9:
+    case BTL_EXPOS_9:
         if (isCenter) {
             out[0] = GetPosOnSameSide(pos, 0);
             out[1] = GetPosOnSameSide(pos, 2);
@@ -1869,7 +1869,7 @@ u8 ExpandPosFlagsTriple(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
         }
         out[0] = GetPosOnSameSide(pos, 1);
         return 1;
-    case 4:
+    case BTL_EXPOS_ADJACENT_ALLIES:
         if (isCenter) {
             out[0] = GetPosOnSameSide(pos, 0);
             out[1] = GetPosOnSameSide(pos, 2);
@@ -1877,7 +1877,7 @@ u8 ExpandPosFlagsTriple(BtlMainModule *mainModule, u8 type, u8 pos, u8 *out) {
         }
         out[0] = GetPosOnSameSide(pos, 1);
         return 1;
-    case 5:
+    case BTL_EXPOS_ADJACENT_ALL:
         if (isCenter) {
             out[0] = GetOpposingPos(mainModule, pos, 0);
             out[1] = GetOpposingPos(mainModule, pos, 1);

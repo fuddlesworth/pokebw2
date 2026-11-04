@@ -697,19 +697,19 @@ u8 DecideMoveTargetAuto(BtlMainModule *mainModule, BtlPokeCon *pokeCon, BattleMo
         case MOVE_TARGET_FOE:
         case MOVE_TARGET_RANDOM_FOE:
             if (farTarget) {
-                posFlags = (6 << 8) | pos;
+                posFlags = BTL_EXPOS_FLAGS(BTL_EXPOS_ALL_FOES, pos);
             } else {
-                posFlags = (1 << 8) | pos;
+                posFlags = BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_FOES, pos);
             }
             break;
         case MOVE_TARGET_USER_OR_ALLY:
-            posFlags = (3 << 8) | pos;
+            posFlags = BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_SIDE, pos);
             break;
         case MOVE_TARGET_ALLY:
             if (farTarget) {
-                posFlags = (7 << 8) | pos;
+                posFlags = BTL_EXPOS_FLAGS(BTL_EXPOS_ALL_SIDE, pos);
             } else {
-                posFlags = (4 << 8) | pos;
+                posFlags = BTL_EXPOS_FLAGS(BTL_EXPOS_ADJACENT_ALLIES, pos);
             }
             break;
         case MOVE_TARGET_USER:
