@@ -40,15 +40,19 @@ static void UnionMsg_CreateMenu(UnionSystem *unisys, Field *field, const ListMen
 static void UnionMsg_FreeMenu(UnionSystem *unisys);
 static s32 UnionMsg_UpdateMenu(UnionSystem *unisys, Field *field);
 
+// The rows of the summaries that end the menu: confirm the rules, or show them
+#define UNION_RULE_MENU_CONFIRM 0x64
+#define UNION_RULE_MENU_SHOW_RULES 0x96
+
 // The menus of the battle rules, each row a message and a value or the menu it opens
-static const ListMenuRow sMenu_029c[3];
-static const ListMenuRow sMenu_02b4[3];
-static const ListMenuRow sMenu_02cc[3];
-static const ListMenuRow sMenu_02e4[3];
-static const ListMenuRow sMenu_02fc[3];
-static const ListMenuRow sMenu_0374[5];
-static const ListMenuRow sMenu_039c[5];
-static const ListMenuRow sMenu_03f4[6];
+static const ListMenuRow sMenuRules[3];
+static const ListMenuRow sMenuLauncher[3];
+static const ListMenuRow sMenuPlayers[3];
+static const ListMenuRow sMenuFourRules[3];
+static const ListMenuRow sMenuFourLauncher[3];
+static const ListMenuRow sMenuFormat[5];
+static const ListMenuRow sMenuFour[5];
+static const ListMenuRow sMenuTwo[6];
 
 // The tables are declared in the order that gives the ROM's .rodata: MWCC heapsorts the objects of equal size by where
 // they are declared. The pairs are the messages of a gender, or of a language, by the lookups above
@@ -201,67 +205,64 @@ static const u16 sTable_0424[26] = { 11, 18, 22, 22, 23, 23, 25, 25, 26, 26, 28,
 static const u16 sTable_0458[26] = { 17, 20, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36,
                                      36, 36, 36, 36, 36, 36, 36, 36, 36, 39, 46, 46, 0 };
 
-static const ListMenuRow sMenu_029c[3] = {
+static const ListMenuRow sMenuRules[3] = {
     { UnionMsg_Text_NoRestrictions, { 0x0 } },
     { UnionMsg_Text_FlatBattle, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenu_03f4 } },
+    { UnionMsg_Text_Cancel_6, { .sub = sMenuTwo } },
 };
 
-static const ListMenuRow sMenu_02b4[3] = {
+static const ListMenuRow sMenuLauncher[3] = {
     { UnionMsg_Text_WonderLauncher, { 0x0 } },
     { UnionMsg_Text_WonderLauncherOff, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenu_03f4 } },
+    { UnionMsg_Text_Cancel_6, { .sub = sMenuTwo } },
 };
 
-static const ListMenuRow sMenu_02cc[3] = {
-    { UnionMsg_Text_BattlesTwo, { .sub = sMenu_03f4 } },
-    { UnionMsg_Text_BattlesFour, { .sub = sMenu_039c } },
+static const ListMenuRow sMenuPlayers[3] = {
+    { UnionMsg_Text_BattlesTwo, { .sub = sMenuTwo } },
+    { UnionMsg_Text_BattlesFour, { .sub = sMenuFour } },
     { UnionMsg_Text_Cancel_4, { BMPMENULIST_CANCEL } },
 };
 
-static const ListMenuRow sMenu_02e4[3] = {
+static const ListMenuRow sMenuFourRules[3] = {
     { UnionMsg_Text_NoRestrictions, { 0x0 } },
     { UnionMsg_Text_FlatBattle, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenu_039c } },
+    { UnionMsg_Text_Cancel_6, { .sub = sMenuFour } },
 };
 
-static const ListMenuRow sMenu_02fc[3] = {
+static const ListMenuRow sMenuFourLauncher[3] = {
     { UnionMsg_Text_WonderLauncher, { 0x0 } },
     { UnionMsg_Text_WonderLauncherOff, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenu_039c } },
+    { UnionMsg_Text_Cancel_6, { .sub = sMenuFour } },
 };
 
 // clang-format off
-static const ListMenuRow sMenu_0374[5] = {
+static const ListMenuRow sMenuFormat[5] = {
     { UnionMsg_Text_SingleBattle, { 0x0 } },
     { UnionMsg_Text_DoubleBattle, { 0x1 } },
     { UnionMsg_Text_TripleBattle, { 0x2 } },
     { UnionMsg_Text_RotationBattle, { 0x3 } },
-    { UnionMsg_Text_Cancel_5, { .sub = sMenu_03f4 } },
+    { UnionMsg_Text_Cancel_5, { .sub = sMenuTwo } },
 };
 
 // clang-format on
 
-static const ListMenuRow sMenu_039c[5] = {
-    { UnionMsg_Text_DoubleBattle, { .sub = sMenu_02e4 } },
-    { UnionMsg_Text_TripleBattle, { .sub = sMenu_02fc } },
-    { UnionMsg_Text_Confirm, { 0x64 } },
-    { UnionMsg_Text_Rules, { 0x96 } },
-    { UnionMsg_Text_Cancel_5, { .sub = sMenu_02cc } },
+static const ListMenuRow sMenuFour[5] = {
+    { UnionMsg_Text_DoubleBattle, { .sub = sMenuFourRules } },
+    { UnionMsg_Text_TripleBattle, { .sub = sMenuFourLauncher } },
+    { UnionMsg_Text_Confirm, { UNION_RULE_MENU_CONFIRM } },
+    { UnionMsg_Text_Rules, { UNION_RULE_MENU_SHOW_RULES } },
+    { UnionMsg_Text_Cancel_5, { .sub = sMenuPlayers } },
 };
 
-static const ListMenuRow sMenu_03f4[6] = {
-    { UnionMsg_Text_SingleBattle, { .sub = sMenu_0374 } },
-    { UnionMsg_Text_DoubleBattle, { .sub = sMenu_029c } },
-    { UnionMsg_Text_TripleBattle, { .sub = sMenu_02b4 } },
-    { UnionMsg_Text_Confirm, { 0x64 } },
-    { UnionMsg_Text_Rules, { 0x96 } },
-    { UnionMsg_Text_Cancel_5, { .sub = sMenu_02cc } },
+static const ListMenuRow sMenuTwo[6] = {
+    { UnionMsg_Text_SingleBattle, { .sub = sMenuFormat } },   { UnionMsg_Text_DoubleBattle, { .sub = sMenuRules } },
+    { UnionMsg_Text_TripleBattle, { .sub = sMenuLauncher } }, { UnionMsg_Text_Confirm, { UNION_RULE_MENU_CONFIRM } },
+    { UnionMsg_Text_Rules, { UNION_RULE_MENU_SHOW_RULES } },  { UnionMsg_Text_Cancel_5, { .sub = sMenuPlayers } },
 };
 
 static const UnionMenuInfo sMenuInfo[8] = {
-    { sMenu_02cc, 3 }, { sMenu_03f4, 6 }, { sMenu_0374, 5 }, { sMenu_029c, 3 },
-    { sMenu_02b4, 3 }, { sMenu_039c, 5 }, { sMenu_02e4, 3 }, { sMenu_02fc, 3 },
+    { sMenuPlayers, 3 },  { sMenuTwo, 6 },  { sMenuFormat, 5 },    { sMenuRules, 3 },
+    { sMenuLauncher, 3 }, { sMenuFour, 5 }, { sMenuFourRules, 3 }, { sMenuFourLauncher, 3 },
 };
 
 // The party and the rules a menu's choices lead to, by the battle format and the two options
@@ -716,24 +717,24 @@ void UnionMsg_CreateRuleMenu(UnionSystem *unisys, Field *field, int kind, u8 *ru
     request.count = count;
     request.maxShown = count;
     request.height = request.count * 2;
-    if (kind == 1 || kind == 5) {
+    if (kind == UNION_RULE_MENU_TWO || kind == UNION_RULE_MENU_FOUR) {
         request.width = 30;
     }
-    if (kind >= 5) {
+    if (kind >= UNION_RULE_MENU_FOUR) {
         request.y = 5;
     }
 
-    if (kind == 1) {
+    if (kind == UNION_RULE_MENU_TWO) {
         rows = GFL_HeapAllocate(UNION_HEAPID, sizeof(ListMenuRow) * 6, TRUE, "union_msg.c", 0x647);
-        MI_CpuCopy8(sMenu_03f4, rows, sizeof(ListMenuRow) * 6);
+        MI_CpuCopy8(sMenuTwo, rows, sizeof(ListMenuRow) * 6);
         rows[0].messageId = UnionMsg_Text_BattleFormatSingleBattle + ruleSel[0];
         rows[1].messageId = UnionMsg_Text_BattleRulesNoRestrictions + ruleSel[1];
         rows[2].messageId = UnionMsg_Text_WonderLauncher_2 + ruleSel[2];
         UnionMsg_CreateMenu(unisys, field, rows, count, &request);
         GFL_HeapFree(rows);
-    } else if (kind == 5) {
+    } else if (kind == UNION_RULE_MENU_FOUR) {
         rows = GFL_HeapAllocate(UNION_HEAPID, sizeof(ListMenuRow) * 5, TRUE, "union_msg.c", 0x657);
-        MI_CpuCopy8(sMenu_039c, rows, sizeof(ListMenuRow) * 5);
+        MI_CpuCopy8(sMenuFour, rows, sizeof(ListMenuRow) * 5);
         rows[0].messageId = UnionMsg_Text_BattleRulesNoRestrictions + ruleSel[1];
         rows[1].messageId = UnionMsg_Text_WonderLauncher_2 + ruleSel[2];
         UnionMsg_CreateMenu(unisys, field, rows, count, &request);
@@ -774,25 +775,25 @@ u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL
     case BMPMENULIST_NULL:
         return ret;
     case BMPMENULIST_CANCEL:
-        if (ruleSel[3] == 0) {
+        if (ruleSel[3] == UNION_RULE_MENU_PLAYERS) {
             return ret;
         }
         // The last row goes back to the menu that opened this one
         ret = sMenuInfo[ruleSel[3]].rows[UnionMsg_GetMenuInfo(ruleSel[3])->count - 1].value;
         break;
-    case 0x64:
+    case UNION_RULE_MENU_CONFIRM:
         return sRuleResult[ruleSel[0]][ruleSel[1]][ruleSel[2]];
-    case 0x96:
+    case UNION_RULE_MENU_SHOW_RULES:
         *isFinal = TRUE;
         return sRuleResult[ruleSel[0]][ruleSel[1]][ruleSel[2]];
     }
 
-    if (ruleSel[3] == 0) {
-        if (ret == (u32)sMenu_03f4) {
+    if (ruleSel[3] == UNION_RULE_MENU_PLAYERS) {
+        if (ret == (u32)sMenuTwo) {
             if (ruleSel[0] == 4) {
                 ruleSel[0] = 0;
             }
-        } else if (ret == (u32)sMenu_039c) {
+        } else if (ret == (u32)sMenuFour) {
             ruleSel[0] = 4;
         }
     }
@@ -803,33 +804,33 @@ u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL
             return i;
         }
         switch (ruleSel[3]) {
-        case 2:
+        case UNION_RULE_MENU_FORMAT:
             if (ret < 5) {
                 ruleSel[0] = ret;
                 *picked = TRUE;
-                return TRUE;
+                return UNION_RULE_MENU_TWO;
             }
             break;
-        case 3:
-        case 6:
+        case UNION_RULE_MENU_RULES:
+        case UNION_RULE_MENU_FOUR_RULES:
             if (ret < 2) {
                 ruleSel[1] = ret;
                 *picked = TRUE;
-                if (ruleSel[3] == 6) {
-                    return 5;
+                if (ruleSel[3] == UNION_RULE_MENU_FOUR_RULES) {
+                    return UNION_RULE_MENU_FOUR;
                 }
-                return TRUE;
+                return UNION_RULE_MENU_TWO;
             }
             break;
-        case 4:
-        case 7:
+        case UNION_RULE_MENU_LAUNCHER:
+        case UNION_RULE_MENU_FOUR_LAUNCHER:
             if (ret < 2) {
                 ruleSel[2] = ret;
                 *picked = TRUE;
-                if (ruleSel[3] == 7) {
-                    return 5;
+                if (ruleSel[3] == UNION_RULE_MENU_FOUR_LAUNCHER) {
+                    return UNION_RULE_MENU_FOUR;
                 }
-                return TRUE;
+                return UNION_RULE_MENU_TWO;
             }
             break;
         }

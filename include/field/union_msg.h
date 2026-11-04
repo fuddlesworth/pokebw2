@@ -69,6 +69,20 @@ BOOL UnionMsg_UpdateYesNo(UnionSystem *unisys, BOOL *yes);
 void UnionMsg_CreateMainMenu(UnionSystem *unisys, Field *field);
 void UnionMsg_FreeMainMenu(UnionSystem *unisys);
 s32 UnionMsg_UpdateMainMenu(UnionSystem *unisys, Field *field);
+// The menus of the battle rules, the kinds of UnionMsg_CreateRuleMenu: the number of players, then for two players
+// the summary and its format, rules and Wonder Launcher submenus, and for four the summary and its rules and Wonder
+// Launcher submenus
+enum {
+    UNION_RULE_MENU_PLAYERS,
+    UNION_RULE_MENU_TWO,
+    UNION_RULE_MENU_FORMAT,
+    UNION_RULE_MENU_RULES,
+    UNION_RULE_MENU_LAUNCHER,
+    UNION_RULE_MENU_FOUR,
+    UNION_RULE_MENU_FOUR_RULES,
+    UNION_RULE_MENU_FOUR_LAUNCHER,
+};
+
 void UnionMsg_CreateRuleMenu(UnionSystem *unisys, Field *field, int kind, u8 *ruleSel);
 void UnionMsg_FreeRuleMenu(UnionSystem *unisys);
 u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL *isFinal, Field *field);

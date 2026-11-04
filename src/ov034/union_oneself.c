@@ -1145,9 +1145,9 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
         (*seq)++;
         break;
     case 1:
-        if (situ->result == 5) {
+        if (situ->result == UNION_RULE_MENU_FOUR) {
             UnionMsg_CreateInfoWindow(unisys, field);
-        } else if (situ->result == 0) {
+        } else if (situ->result == UNION_RULE_MENU_PLAYERS) {
             UnionMsg_FreeInfoWindow(unisys);
         }
         UnionMsg_CreateRuleMenu(unisys, field, situ->result, situ->ruleSel);
@@ -1161,8 +1161,8 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
             (*seq)--;
         } else if (choice == -2 || choice == 0) {
             UnionMsg_FreeRuleMenu(unisys);
-            if (situ->result > 0) {
-                situ->result = 0;
+            if (situ->result > UNION_RULE_MENU_PLAYERS) {
+                situ->result = UNION_RULE_MENU_PLAYERS;
                 (*seq)--;
             } else {
                 UnionMsg_FreeInfoWindow(unisys);
