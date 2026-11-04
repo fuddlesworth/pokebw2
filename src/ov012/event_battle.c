@@ -239,9 +239,9 @@ GameEvent *EventWildBattleCall_CreateCore(GameSystem *gsys, Field *field, BtlSet
     work->callerReturns = callerReturns;
     work->encountMode = encountMode;
     work->specialIndex = specialIndex;
-    work->unk0A = BtlSetup_CheckFlag(setup, 1);
+    work->unk0A = BtlSetup_CheckFlag(setup, BTL_SETUP_FLAG_FISHING);
     if (encountMode == ENCOUNT_MODE_EFFECT) {
-        BtlSetup_SetFlag(setup, 1 << 14);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_EFFECT_ENCOUNT);
     }
     EventBattleCall_BroadcastWildBattle(setup, BATTLE_BEACON_START);
     RecordAddOne(GameData_GetRecords(GSYS_GetGameData(gsys)), 5);
@@ -276,7 +276,7 @@ GameEvent *EventTrainerBattleCall_Create(GameSystem *gsys, Field *field, u32 sty
     EventBattleCall_Setup(work, gsys, setup);
     work->callerReturns = TRUE;
     if (flags & 1) {
-        BtlSetup_SetFlag(setup, 0x100);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_NO_BLACKOUT);
         work->noBlackout = TRUE;
     }
     if (flags & 4) {
@@ -291,7 +291,7 @@ GameEvent *EventTrainerBattleCall_Create(GameSystem *gsys, Field *field, u32 sty
             setup->fieldSituation.env.terrain =
                 InfinityDungeon_GetVersion(InfinityDungeonGimmick_GetDungeon(field)) == VERSION_BLACK2 ? 0x12 : 0x13;
             setup->fieldSituation.env.bgType = level;
-            setup->unkDD_5 = TRUE;
+            setup->bagDisabled = TRUE;
             setup->noPokedexRegistration = TRUE;
         }
     }
@@ -331,7 +331,7 @@ GameEvent *EventInfinityDungeonBattleCall_Create(GameSystem *gsys, Field *field,
     GameEvent *event = GameEvent_Create(gsys, NULL, EventBattleCall_Callback, sizeof(EventBattleCallWork));
     EventBattleCallWork *work;
 
-    setup->unkDD_5 = TRUE;
+    setup->bagDisabled = TRUE;
     setup->noPokedexRegistration = TRUE;
     work = GameEvent_GetData(event);
     EventBattleCall_Setup(work, gsys, setup);

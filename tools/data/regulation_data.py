@@ -32,7 +32,7 @@ LEVEL_MODES = ["none", "minimum", "maximum", "cap", "all", "raise"]
 # battleType: the battles that wifibattlematch_sys.c sets up for it, and the multi battle
 BATTLE_TYPES = ["single", "double", "triple", "rotation", "multi"]
 BOOLEANS = ["allow_same_species", "allow_same_item", "allow_nicknames", "show_partners"]
-TAIL = ["unkb3", "unkb4", "allow_nicknames", "unkb6", "unkb7", "show_partners", "time_limit", "battle_type",
+TAIL = ["unkb3", "unkb4", "allow_nicknames", "idle_effects", "unkb7", "show_partners", "time_limit", "battle_type",
         "max_battles"]
 
 

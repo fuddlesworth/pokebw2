@@ -122,7 +122,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         }
         break;
     case PROC_STEP_MULTI_LIST:
-        if (battle->setup->fieldSituation.unk19 <= 1) {
+        if (battle->setup->fieldSituation.playerClientId <= 1) {
             procWork->ov171Param.flipped = 0;
             procWork->ov171Param.party0 = battle->players->players[0].party;
             procWork->ov171Param.party1 = battle->players->players[1].party;
@@ -218,7 +218,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
             first = 0;
             second = 2;
         }
-        client = battle->setup->fieldSituation.unk19;
+        client = battle->setup->fieldSituation.playerClientId;
         for (i = 0; i <= last; i++) {
             if ((i & 1) == (client & 1)) {
                 if (client & 1) {
@@ -227,7 +227,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
                     source = i & 2;
                 }
                 for (j = 0; j < 6; j++) {
-                    battle->players->players[first + (i >> 1)].order[j] = battle->setup->unkE7[source][j];
+                    battle->players->players[first + (i >> 1)].order[j] = battle->setup->monStatus[source][j];
                 }
             } else {
                 if (client & 1) {
@@ -236,7 +236,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
                     source = (i & 2) + 1;
                 }
                 for (j = 0; j < 6; j++) {
-                    battle->players->players[second + (i >> 1)].order[j] = battle->setup->unkE7[source][j];
+                    battle->players->players[second + (i >> 1)].order[j] = battle->setup->monStatus[source][j];
                 }
             }
         }

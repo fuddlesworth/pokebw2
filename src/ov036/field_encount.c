@@ -205,19 +205,19 @@ GameEvent *EventWildBattleCall_CreateStatic(EncountSystem *system, u16 species, 
         setup->fieldSituation.env.bgType = 6;
     }
     if (flags & 1) {
-        BtlSetup_SetFlag(setup, 4);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_LEGENDARY);
     } else if (flags & 0x80) {
-        BtlSetup_SetFlag(setup, 0x80);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_80);
     }
     if (flags & 0x100) {
-        BtlSetup_SetFlag(setup, 0x200);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_200);
     }
     if (flags & 0x400) {
-        BtlSetup_SetFlag(setup, 0x8000);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_DISGUISED);
     }
     if (flags & 0x800) {
         setup->fieldSituation.env.bgType = 0x14;
-        BtlSetup_SetFlag(setup, 0x10000);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_NO_BALLS);
     }
     if (species == SPECIES_KYUREM) {
         setup->fieldSituation.env.bgType = 0x14;
@@ -259,7 +259,7 @@ BtlSetup *BtlSetup_CreateFishing(EncountSystem *system, BOOL rare) {
     }
     setup = BtlSetup_Create(4);
     FieldEncount_SetupNormal(system, &manager, setup, 4, params);
-    BtlSetup_SetFlag(setup, 1);
+    BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_FISHING);
     setup->fieldSituation.env.terrain = 6;
     return setup;
 }
@@ -356,7 +356,7 @@ static void FieldEncount_SetupNormal(EncountSystem *system, EncountManager *mana
         BtlSetup_SetWildNormal(setup, system->gameData, party, &status, manager->doubleBattle, heapId);
     }
     if (manager->encType == ENCTYPE_GRASS_RARE) {
-        BtlSetup_SetFlag(setup, 0x20);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_DARK_GRASS);
     }
     GFL_HeapFree(pkm);
     GFL_HeapFree(party);
@@ -372,7 +372,7 @@ static void FieldEncount_SetupRoaming(EncountSystem *system, EncountManager *man
     PokeParty_AddPkm(party, pkm);
     SaveBtlFieldStatus(&status, system->gameData, system->field);
     BtlSetup_SetWildNormal(setup, system->gameData, party, &status, FALSE, heapId);
-    BtlSetup_SetFlag(setup, 8);
+    BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_ROAMING);
     GFL_HeapFree(pkm);
     GFL_HeapFree(party);
 }
@@ -387,7 +387,7 @@ static void FieldEncount_SetupNPoke(EncountSystem *system, EncountManager *manag
     PokeParty_AddPkm(party, pkm);
     SaveBtlFieldStatus(&status, system->gameData, system->field);
     BtlSetup_SetWildNormal(setup, system->gameData, party, &status, FALSE, heapId);
-    BtlSetup_SetFlag(setup, 1 << 13);
+    BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_N_POKEMON);
     GFL_HeapFree(pkm);
     GFL_HeapFree(party);
 }

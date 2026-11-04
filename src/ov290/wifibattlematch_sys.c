@@ -633,7 +633,7 @@ static void *WifiBattleMatchSys_CreateBattleParam(WifiBattleMatchChain *chain, H
     } else if (sys->mode == 0) {
         entry = TournamentBlock_GetEntry(tournament, 0);
         value = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_VARIANT);
-        param12 = Regulation_GetParam(TournamentEntry_GetRegulation(entry), REGULATION_PARAM_18);
+        param12 = Regulation_GetParam(TournamentEntry_GetRegulation(entry), REGULATION_PARAM_IDLE_EFFECTS);
         if (value == 1) {
             param->setup->fieldSituation.bgm = SEQ_BGM_VS_WCS;
             param->setup->fieldSituation.winBgm = SEQ_BGM_WIN5;
@@ -649,7 +649,7 @@ static void *WifiBattleMatchSys_CreateBattleParam(WifiBattleMatchChain *chain, H
     } else if (sys->mode == 1) {
         entry = TournamentBlock_GetEntry(tournament, 1);
         value = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_VARIANT);
-        param12 = Regulation_GetParam(TournamentEntry_GetRegulation(entry), REGULATION_PARAM_18);
+        param12 = Regulation_GetParam(TournamentEntry_GetRegulation(entry), REGULATION_PARAM_IDLE_EFFECTS);
         if (value == 1) {
             param->setup->fieldSituation.bgm = SEQ_BGM_VS_WCS;
             param->setup->fieldSituation.winBgm = SEQ_BGM_WIN5;
@@ -666,7 +666,7 @@ static void *WifiBattleMatchSys_CreateBattleParam(WifiBattleMatchChain *chain, H
     BtlSetup_SetParty(param->setup, sys->party, 0);
     BtlSetup_ApplyRegulation(param->setup, regulation, HEAPID_TAIL(heapId));
     if (sys->unk8AC) {
-        param->setup->unkDD_2 = 1;
+        param->setup->hideOpponentNames = 1;
     }
     BtlSetup_AllocRecBuffer(param->setup, heapId);
     GFL_OvlUnload(OVERLAY_ID(167));
@@ -689,7 +689,7 @@ static BOOL WifiBattleMatchSys_FinishBattle(WifiBattleMatchChain *chain, void *p
 
     sys->battleResult.battleStyle = setup->battleStyle;
     sys->battleResult.result = setup->result;
-    sys->battleResult.unk10 = setup->unkDD_0;
+    sys->battleResult.unk10 = setup->cmdCheckError;
     sys->battleResult.result = setup->result;
     WifiBattleMatchSys_CountAlive(battle->setup, &aliveOwn, &aliveOther);
     sys->battleResult.aliveOwn = aliveOwn;
@@ -1039,7 +1039,7 @@ static void WifiBattleMatchSys_CountAlive(const BtlSetup *setup, u8 *own, u8 *ot
 
     *own = 0;
     *other = 0;
-    client = setup->fieldSituation.unk19 & 1;
+    client = setup->fieldSituation.playerClientId & 1;
     for (i = 0; i <= 1; i++) {
         if ((i & 1) == client) {
             if (client) {
@@ -1049,7 +1049,7 @@ static void WifiBattleMatchSys_CountAlive(const BtlSetup *setup, u8 *own, u8 *ot
             }
             count = PokeParty_GetPkmCount(setup->party[index]);
             for (j = 0; j < count; j++) {
-                if (setup->unkE7[index][j] != 2) {
+                if (setup->monStatus[index][j] != 2) {
                     (*own)++;
                 }
             }
@@ -1061,7 +1061,7 @@ static void WifiBattleMatchSys_CountAlive(const BtlSetup *setup, u8 *own, u8 *ot
             }
             count = PokeParty_GetPkmCount(setup->party[index]);
             for (j = 0; j < count; j++) {
-                if (setup->unkE7[index][j] != 2) {
+                if (setup->monStatus[index][j] != 2) {
                     (*other)++;
                 }
             }
@@ -1071,7 +1071,7 @@ static void WifiBattleMatchSys_CountAlive(const BtlSetup *setup, u8 *own, u8 *ot
 
 static void WifiBattleMatchSys_GetHpPercents(const BtlSetup *setup, u8 *own, u8 *other) {
     int i;
-    u32 client = setup->fieldSituation.unk19 & 1;
+    u32 client = setup->fieldSituation.playerClientId & 1;
     u32 index;
 
     *own = 0;
@@ -1083,14 +1083,14 @@ static void WifiBattleMatchSys_GetHpPercents(const BtlSetup *setup, u8 *own, u8 
             } else {
                 index = i & 2;
             }
-            *own = setup->unk100[index];
+            *own = setup->hpPercent[index];
         } else {
             if (client) {
                 index = i & 2;
             } else {
                 index = (i & 2) + 1;
             }
-            *other = setup->unk100[index];
+            *other = setup->hpPercent[index];
         }
     }
 }

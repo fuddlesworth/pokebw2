@@ -29,7 +29,8 @@ enum {
     REGULATION_PARAM_GAME_TIME_LIMIT,
     REGULATION_PARAM_COMMAND_TIME_LIMIT,
     REGULATION_PARAM_ALLOW_NICKNAMES,
-    REGULATION_PARAM_18,
+    // The battle view's idle effects (idleEffects)
+    REGULATION_PARAM_IDLE_EFFECTS,
     REGULATION_PARAM_SHOW_PARTNERS,
     REGULATION_PARAM_TIME_LIMIT,
     REGULATION_PARAM_BATTLE_TYPE,
@@ -74,7 +75,10 @@ struct Regulation {
     u8 commandTimeLimit;
     // Whether nicknames are kept
     u8 allowNicknames;
-    u8 unkB6;
+    // The battle view's idle effects, which only downloaded tournaments set: bit 0 starts them sooner and bit 1 plays
+    // them while a message waits (BTL_SETUP_FLAG_SHORT_IDLE_WAIT, BTL_SETUP_FLAG_MSG_IDLE_EFFECTS), and moves a
+    // Wi-Fi tournament to the stage that the World Championships use (wifibattlematch_sys.c)
+    u8 idleEffects;
     u8 unkB7;
     // Whether the partners' teams are shown in the selection, and its time limit
     u8 showPartners;

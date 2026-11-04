@@ -23,7 +23,7 @@
         "unkb3",
         "unkb4",
         "allow_nicknames",
-        "unkb6",
+        "idle_effects",
         "unkb7",
         "show_partners",
         "time_limit",
@@ -145,11 +145,11 @@
             "type": "boolean",
             "description": "Whether the Pokémon's nicknames are kept"
         },
-        "unkb6": {
+        "idle_effects": {
             "type": "integer",
             "minimum": 0,
             "maximum": 255,
-            "description": "REGULATION_PARAM_18"
+            "description": "The battle view's idle effects (REGULATION_PARAM_IDLE_EFFECTS): bit 0 sooner, bit 1 while a message waits"
         },
         "unkb7": {
             "type": "integer",

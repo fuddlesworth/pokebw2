@@ -98,21 +98,21 @@ u32 BtlSetup_CheckFlag(BtlSetup *setup, u32 flag) {
 void BtlSetup_ApplyRegulation(BtlSetup *setup, Regulation *regulation, HeapID heapId) {
     int i;
 
-    setup->unk8E = Regulation_GetParam(regulation, REGULATION_PARAM_COMMAND_TIME_LIMIT) * 60;
-    setup->unk8C = Regulation_GetParam(regulation, REGULATION_PARAM_GAME_TIME_LIMIT) * 60;
-    Regulation_GetShooterSettings(regulation, (RegulationShooterSettings *)setup->unk90);
-    switch (Regulation_GetParam(regulation, REGULATION_PARAM_18)) {
+    setup->commandTimeLimit = Regulation_GetParam(regulation, REGULATION_PARAM_COMMAND_TIME_LIMIT) * 60;
+    setup->gameTimeLimit = Regulation_GetParam(regulation, REGULATION_PARAM_GAME_TIME_LIMIT) * 60;
+    Regulation_GetShooterSettings(regulation, &setup->shooterSettings);
+    switch (Regulation_GetParam(regulation, REGULATION_PARAM_IDLE_EFFECTS)) {
     case 0:
         break;
     case 1:
-        setup->flags |= 0x800;
+        setup->flags |= BTL_SETUP_FLAG_SHORT_IDLE_WAIT;
         break;
     case 2:
-        setup->flags |= 0x400;
+        setup->flags |= BTL_SETUP_FLAG_MSG_IDLE_EFFECTS;
         break;
     case 3:
-        setup->flags |= 0x400;
-        setup->flags |= 0x800;
+        setup->flags |= BTL_SETUP_FLAG_MSG_IDLE_EFFECTS;
+        setup->flags |= BTL_SETUP_FLAG_SHORT_IDLE_WAIT;
         break;
     }
     for (i = 0; i < 4; i++) {
@@ -208,13 +208,13 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     TrainerCardSave *card;
 
     setup->fieldSituation.netHandle = NULL;
-    setup->unkA0 = 0xffff;
-    setup->fieldSituation.unk18 = 0;
-    setup->fieldSituation.unk19 = 0;
+    setup->netClientMask = 0xffff;
+    setup->fieldSituation.commMode = 0;
+    setup->fieldSituation.playerClientId = 0;
     setup->fieldSituation.multiMode = 0;
     setup->recBuffer = NULL;
-    setup->fieldSituation.unk1b = 0;
-    setup->unkDD_0 = FALSE;
+    setup->fieldSituation.recPlay = 0;
+    setup->cmdCheckError = FALSE;
     setup->gameData = gameData;
     setup->recReadComplete = FALSE;
     for (i = 0; i < 4; i++) {
@@ -224,26 +224,26 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     for (i = 0; i < 6; i++) {
         setup->appeared[i] = 0;
     }
-    setup->unk97 = 1;
+    setup->shooterSettings.launcher = 1;
     for (i = 0; i < 7; i++) {
-        setup->unk90[i] = 0;
+        setup->shooterSettings.disabledItems[i] = 0;
     }
     setup->playerInfo[0] = GetGameDataPlayerInfo(gameData);
     setup->bag = GameData_GetBag(gameData);
-    setup->unk7C = GameData_GetBagCursor(gameData);
+    setup->bagCursor = GameData_GetBagCursor(gameData);
     setup->pokedex = GameData_GetPokedex(gameData);
-    setup->unk88 = GameData_GetCommPlayerSupport(gameData);
+    setup->commSupport = GameData_GetCommPlayerSupport(gameData);
     setup->records = GameData_GetRecords(gameData);
     save = GameData_GetSaveControl(gameData);
     card = getTrainerCardData_wrapper(save);
     setup->config = &getTrainerDataBlkAddress(save)->config;
-    setup->unk98 = getBadgeCount(card);
+    setup->badgeCount = getBadgeCount(card);
     MI_CpuCopy8(status, &setup->fieldSituation.env, sizeof(BtlFieldEnv));
     setup->fieldSituation.bgm = SEQ_BGM_VS_NORAPOKE;
     setup->fieldSituation.winBgm = SEQ_BGM_WIN1;
     setup->result = BTL_RESULT_VICTORY;
     if (EventWork_FlagGet(GameData_GetEventWork(gameData), EVENT_FLAG_0x096b)) {
-        BtlSetup_SetFlag(setup, 2);
+        BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_MET_AMANITA);
     }
 }
 
@@ -265,7 +265,7 @@ void BtlSetup_SetWildNormal(BtlSetup *setup, GameData *gameData, PokeParty *part
         int slot = 0;
 
         if (!BoxSaveAccessor_GetNextFreeBoxSlot(boxes, &box, &slot)) {
-            BtlSetup_SetFlag(setup, 0x40);
+            BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_BOXES_FULL);
         }
     }
 }
@@ -289,7 +289,7 @@ void BtlSetup_SetWildMulti(BtlSetup *setup, GameData *gameData, PokeParty *party
         int slot = 0;
 
         if (!BoxSaveAccessor_GetNextFreeBoxSlot(boxes, &box, &slot)) {
-            BtlSetup_SetFlag(setup, 0x40);
+            BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_BOXES_FULL);
         }
     }
 }
@@ -320,10 +320,10 @@ static void BtlSetup_SetNetImpl(BtlSetup *setup, GameData *gameData, u32 style, 
     setup->battleType = 3;
     setup->battleStyle = style;
     setup->fieldSituation.netHandle = handle;
-    setup->fieldSituation.unk18 = commMode;
+    setup->fieldSituation.commMode = commMode;
     setup->fieldSituation.multiMode = multiMode;
-    setup->fieldSituation.unk19 = clientId;
-    setup->unkA0 = 0xff;
+    setup->fieldSituation.playerClientId = clientId;
+    setup->netClientMask = 0xff;
     setup->fieldSituation.winBgm = SEQ_BGM_WIN2;
     for (i = 0; i < 4; i++) {
         if (i != 0) {
@@ -439,7 +439,7 @@ void BtlSetup_InitForRecord(BtlSetup *setup, GameData *gameData, HeapID heapId) 
     setup->config = Config_Create(heapId);
     initConfig(&trainerData->config, setup->config);
     setup->pokedex = GameData_GetPokedex(gameData);
-    setup->fieldSituation.unk1b = 1;
+    setup->fieldSituation.recPlay = 1;
     BtlSetup_AllocRecBuffer(setup, heapId);
 }
 

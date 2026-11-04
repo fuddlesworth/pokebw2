@@ -224,7 +224,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
             first = 0;
             second = 2;
         }
-        client = battle->setup->fieldSituation.unk19;
+        client = battle->setup->fieldSituation.playerClientId;
         for (i = 0; i <= last; i++) {
             if ((i & 1) == (client & 1)) {
                 if (client & 1) {
@@ -233,7 +233,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
                     source = i & 2;
                 }
                 for (j = 0; j < 6; j++) {
-                    battle->players->base.players[first + (i >> 1)].order[j] = battle->setup->unkE7[source][j];
+                    battle->players->base.players[first + (i >> 1)].order[j] = battle->setup->monStatus[source][j];
                 }
             } else {
                 if (client & 1) {
@@ -242,7 +242,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
                     source = (i & 2) + 1;
                 }
                 for (j = 0; j < 6; j++) {
-                    battle->players->base.players[second + (i >> 1)].order[j] = battle->setup->unkE7[source][j];
+                    battle->players->base.players[second + (i >> 1)].order[j] = battle->setup->monStatus[source][j];
                 }
             }
         }

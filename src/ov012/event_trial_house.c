@@ -124,24 +124,24 @@ void SyncTrialHouseWkStatsFromBattle(TrialHouseWork *work, BtlSetup *setup) {
     int totalHp;
     int i;
 
-    work->stats[0] += (u16)(setup->unkD2 + 1);
-    work->stats[1] += setup->unkD3;
-    work->stats[2] += setup->unkD4;
-    work->stats[3] += setup->unkD5;
-    work->stats[4] += setup->unkD6;
-    work->stats[5] += setup->unkD7;
-    work->stats[6] += setup->unkD8;
-    work->stats[7] += setup->unkD9;
-    work->stats[8] += setup->unkDA;
-    work->stats[9] += setup->unkDB;
-    work->stats[11] += setup->unkDC;
+    work->stats[0] += (u16)(setup->turnCount + 1);
+    work->stats[1] += setup->switchCount;
+    work->stats[2] += setup->playerImmuneHitCount;
+    work->stats[3] += setup->playerSuperEffectiveHitCount;
+    work->stats[4] += setup->playerNotVeryEffectiveHitCount;
+    work->stats[5] += setup->foeImmuneHitCount;
+    work->stats[6] += setup->foeNotVeryEffectiveHitCount;
+    work->stats[7] += setup->won;
+    work->stats[8] += setup->foeFaintedCount;
+    work->stats[9] += setup->playerFaintedCount;
+    work->stats[11] += setup->usedMoveKindCount;
     party = setup->party[0];
     count = PokeParty_GetPkmCount(party);
     totalHp = 0;
     for (i = 0; i < count; i++) {
         totalHp += PokeParty_GetParam(PokeParty_GetPkm(party, i), PKM_PARAM_MAX_HP, NULL);
     }
-    work->stats[10] += (u16)(setup->unkD0 * 100 / totalHp);
+    work->stats[10] += (u16)(setup->playerHp * 100 / totalHp);
 }
 
 GameEvent *CallTrialHouseResults(GameSystem *gsys, u32 downloaded, u32 playJingle) {
