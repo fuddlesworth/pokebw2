@@ -16,7 +16,8 @@ typedef struct {
     // Which of the beacons this is, from 1, and how many there are
     u8 index;
     u8 count;
-    u8 unk5E;
+    // Ties the beacons of one delivery together: once one is taken, those of another set are dropped
+    u8 setId;
     u8 region;
     u32 mask;
 } DeliveryBeaconData;
@@ -27,8 +28,8 @@ struct DeliveryBeaconWork {
     DeliveryInit aInit;
     DeliveryBeaconData beacons[7][DELIVERY_BEACON_MAX_NUM];
     int sendIndex;
-    // The unk5E of the beacons taken, 0xff until the first one
-    u8 unk5E;
+    // The setId of the beacons taken, 0xff until the first one
+    u8 setId;
     DeliveryBeaconSeq seq;
 };
 
@@ -194,7 +195,7 @@ static void DeliveryBeacon_SeqReceive(void *work) {
             NetWhpipe_RemoveBeacon(i);
         } else if ((beacon->mask & pWork->aInit.data[0].mask) == 0) {
             NetWhpipe_RemoveBeacon(i);
-        } else if (beacon->unk5E != pWork->unk5E && pWork->unk5E != 0xff) {
+        } else if (beacon->setId != pWork->setId && pWork->setId != 0xff) {
             NetWhpipe_RemoveBeacon(i);
         } else {
             index = beacon->index - 1;
@@ -203,8 +204,8 @@ static void DeliveryBeacon_SeqReceive(void *work) {
                 if (crc != beacon->crc) {
                     NetWhpipe_RemoveBeacon(i);
                 } else {
-                    if (pWork->unk5E == 0xff) {
-                        pWork->unk5E = beacon->unk5E;
+                    if (pWork->setId == 0xff) {
+                        pWork->setId = beacon->setId;
                     }
                     NetWhpipe_SetScanTarget(i);
                     MI_CpuCopy8(beacon, &pWork->beacons[0][index], sizeof(DeliveryBeaconData));
@@ -249,7 +250,7 @@ BOOL DeliveryBeacon_RecvStart(DeliveryBeaconWork *pWork) {
         return FALSE;
     }
     sDeliveryBeaconNetInit.gameCommandBase = pWork->aInit.code;
-    pWork->unk5E = 0xff;
+    pWork->setId = 0xff;
     DeliveryBeacon_CheckDataSize(pWork);
     GFL_NetInit(&sDeliveryBeaconNetInit, DeliveryBeacon_OnNetInit, pWork);
     DeliveryBeacon_SetSeqWithLine(pWork, DeliveryBeacon_SeqIdle, 498);
