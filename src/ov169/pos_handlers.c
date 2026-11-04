@@ -88,7 +88,7 @@ static void HandlerPosWish(BattleEventItem *item, BtlServerFlow *flow, u8 pos, s
     u8 wisherId;
     u8 targetId;
 
-    if (BattleEventVar_GetValue(BTL_EVAR_MON) == 0x1f && !BtlServerFlow_CheckMatchup(flow)) {
+    if (BattleEventVar_GetValue(BTL_EVAR_MON) == BTL_MONID_NONE && !BtlServerFlow_CheckMatchup(flow)) {
         if (work[0] == 0) {
             work[1] = GetTurnCounter(flow);
             work[0] = 1;
@@ -96,7 +96,7 @@ static void HandlerPosWish(BattleEventItem *item, BtlServerFlow *flow, u8 pos, s
         }
         if (GetTurnCounter(flow) > (u32)work[1]) {
             targetId = BtlServerFlow_PosToMonID(flow, pos);
-            if (targetId != 0x1f && !IsMonFullHP(GetBattleMon(flow, targetId))) {
+            if (targetId != BTL_MONID_NONE && !IsMonFullHP(GetBattleMon(flow, targetId))) {
                 wisherId = work[6];
                 wisher = GetBattleMon(flow, wisherId);
                 recover = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, wisherId);
@@ -262,12 +262,12 @@ static void HandlerPosFutureSight(BattleEventItem *item, BtlServerFlow *flow, u8
     BattleHandlerMessageParam *msg;
     BattleHandlerDelayMoveDamageParam *damage;
 
-    if (BattleEventVar_GetValue(BTL_EVAR_MON) == 0x1f && !BtlServerFlow_CheckMatchup(flow)) {
+    if (BattleEventVar_GetValue(BTL_EVAR_MON) == BTL_MONID_NONE && !BtlServerFlow_CheckMatchup(flow)) {
         turn = GetTurnCounter(flow);
         if (turn >= work[0]) {
             targetId = BtlServerFlow_PosToMonID(flow, pos);
             attackerId = work[6];
-            if (targetId != 0x1f && targetId != attackerId && !IsFainted(GetBattleMon(flow, targetId))) {
+            if (targetId != BTL_MONID_NONE && targetId != attackerId && !IsFainted(GetBattleMon(flow, targetId))) {
                 msg = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, attackerId);
                 BattleHandler_StrSetup(&msg->string, 2, 0x438);
                 BattleHandler_AddArg(&msg->string, targetId);
@@ -300,7 +300,7 @@ static void HandlerPosBatonPass(BattleEventItem *item, BtlServerFlow *flow, u8 p
 
     monId = BattleEventVar_GetValue(BTL_EVAR_MON);
     if (monId == BtlServerFlow_PosToMonID(flow, pos)) {
-        param = BattleHandler_PushWork(flow, BTL_HANDLER_BATON_PASS, 0x1f);
+        param = BattleHandler_PushWork(flow, BTL_HANDLER_BATON_PASS, BTL_MONID_NONE);
         param->sourceMonIndex = work[0];
         param->targetMonIndex = monId;
         BattleHandler_PopWork(flow, param);

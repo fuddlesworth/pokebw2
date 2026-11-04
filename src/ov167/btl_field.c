@@ -13,7 +13,6 @@
 // Effect 3 is Imprison, whose user is the first of its depending Pokemon
 #define FIELD_EFFECT_IMPRISON 3
 #define FIELD_DEPEND_POKE_MAX 6
-#define NO_MON 31
 #define WEATHER_TURNS_PERMANENT 0xff
 
 struct BtlField {
@@ -45,7 +44,7 @@ static void clearEffect(BtlField *field, u32 effect) {
     field->dependPokeCounts[effect] = 0;
     field->active[effect] = 0;
     for (i = 0; i < FIELD_DEPEND_POKE_MAX; i++) {
-        field->dependPokes[effect][i] = NO_MON;
+        field->dependPokes[effect][i] = BTL_MONID_NONE;
     }
 }
 
@@ -175,10 +174,10 @@ BOOL FieldStatusaddEffectCore(BtlField *field, unsigned int effect, BattleCondit
         field->turnCounts[effect] = 0;
         field->dependPokeCounts[effect] = 0;
         for (i = 0; i < FIELD_DEPEND_POKE_MAX; i++) {
-            field->dependPokes[effect][i] = NO_MON;
+            field->dependPokes[effect][i] = BTL_MONID_NONE;
         }
         monId = Condition_GetMonID(value);
-        if (monId != NO_MON) {
+        if (monId != BTL_MONID_NONE) {
             BtlField_AddDependPoke(field, effect, monId);
         }
         return TRUE;
@@ -237,7 +236,7 @@ void BtlField_RemoveDependPoke(BtlField *field, u8 monId) {
                 for (; i < FIELD_DEPEND_POKE_MAX - 1; i++) {
                     field->dependPokes[effect][i] = field->dependPokes[effect][i + 1];
                 }
-                field->dependPokes[effect][i] = NO_MON;
+                field->dependPokes[effect][i] = BTL_MONID_NONE;
                 if (--field->dependPokeCounts[effect] == 0) {
                     if (field->events[effect] != NULL) {
                         FieldEffectEventRemove(field->events[effect]);

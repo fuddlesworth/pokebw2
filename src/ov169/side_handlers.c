@@ -357,7 +357,7 @@ static void HandlerSideStealthRock(BattleEventItem *item, BtlServerFlow *flow, u
         case TYPE_EFFECTIVENESS_QUADRUPLE:
             break;
         }
-        damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, 0x1f);
+        damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, BTL_MONID_NONE);
         damage->targetIndex = monId;
         damage->amount = DivideMaxHPZeroCheck(mon, divisor);
         BattleHandler_StrSetup(&damage->string, 2, 0x356);
@@ -449,7 +449,7 @@ static void HandlerSideSpikes(BattleEventItem *item, BtlServerFlow *flow, u8 sid
             divisor = 4;
             break;
         }
-        damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, 0x1f);
+        damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, BTL_MONID_NONE);
         mon = GetBattleMon(flow, monId);
         damage->targetIndex = monId;
         damage->amount = DivideMaxHPZeroCheck(mon, divisor);
@@ -483,7 +483,7 @@ static void HandlerSideToxicSpikes(BattleEventItem *item, BtlServerFlow *flow, u
             BattleHandler_SetFlag(remove->effects, SIDE_CONDITION_TOXIC_SPIKES);
             BattleHandler_PopWork(flow, remove);
         } else {
-            condition = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, 0x1f);
+            condition = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, BTL_MONID_NONE);
             condition->condition = CONDITION_POISON;
             if (GetSideEffectLayersOfItem(item, side) > 1) {
                 condition->value = MakeConditionBadlyPoisoned();
@@ -539,7 +539,7 @@ static void HandlerSideSeaOfFire(BattleEventItem *item, BtlServerFlow *flow, u8 
     BattleHandlerDamageParam *damage;
 
     monId = BattleEventVar_GetValue(BTL_EVAR_MON);
-    if (monId != 0x1f && BtlServerFlow_IsMonInBattle(flow, monId) && !BtlServerFlow_CheckMatchup(flow) &&
+    if (monId != BTL_MONID_NONE && BtlServerFlow_IsMonInBattle(flow, monId) && !BtlServerFlow_CheckMatchup(flow) &&
         side == GetSideFromMonID(monId)) {
         mon = GetBattleMon(flow, monId);
         if (!DoesMonHaveType(mon, TYPE_FIRE)) {
@@ -549,7 +549,7 @@ static void HandlerSideSeaOfFire(BattleEventItem *item, BtlServerFlow *flow, u8 
             effect->effect = 0x28e;
             BattleHandler_PopWork(flow, effect);
 
-            damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, 0x1f);
+            damage = BattleHandler_PushWork(flow, BTL_HANDLER_DAMAGE, BTL_MONID_NONE);
             damage->targetIndex = monId;
             damage->amount = DivideMaxHPZeroCheck(mon, 8);
             BattleHandler_StrSetup(&damage->string, 2, 0x484);

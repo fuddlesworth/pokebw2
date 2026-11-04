@@ -2289,7 +2289,7 @@ void HandlerTrace(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wor
     u8 candidates[3];
 
     enteringId = BattleEventVar_GetValue(BTL_EVAR_MON);
-    targetId = 0x1f;
+    targetId = BTL_MONID_NONE;
     ability = 0;
     if (enteringId == monId) {
         myPos = BtlServerFlow_GetMonBattlePos(flow, monId);

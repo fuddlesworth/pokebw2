@@ -396,7 +396,7 @@ u8 GetNextEnemyForSwitchMode(BtlServer *server) {
             return GetMonID(GetClientMonData(server->pokeCon, 1, slot));
         }
     }
-    return 31;
+    return BTL_MONID_NONE;
 }
 
 BOOL BattleServer_ProcChangePokemonMidTurn(BtlServer *server, int *seq) {

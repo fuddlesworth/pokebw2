@@ -3381,7 +3381,7 @@ static u32 CanMonSwitch(BtlClient *client, BattleMon *mon, u8 *trapMonId, u16 *t
     }
     result = IsMonTrapped(client, mon, trapMonId, trapAbility);
     if (result == TRAP_NONE) {
-        *trapMonId = 31;
+        *trapMonId = BTL_MONID_NONE;
         *trapAbility = 0;
         return TRAP_NONE;
     }
@@ -4341,7 +4341,7 @@ static BOOL BattleClient_PlayerConfirmShiftSwitch(BtlClient *client, s32 *seq) {
     switch (*seq) {
     case SHIFT_SWITCH_SEQ_INIT:
         BtlAdapter_GetRecvData(client->adapter, (const void **)&data);
-        if (*data != 0x1f) {
+        if (*data != BTL_MONID_NONE) {
             Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 20);
             Btlv_StringParam_AddArg(&client->strParam, 1);
             Btlv_StringParam_AddArg(&client->strParam, *data);

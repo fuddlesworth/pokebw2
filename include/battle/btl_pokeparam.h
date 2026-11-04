@@ -21,6 +21,9 @@ enum {
 // The turns of a permanent poison that make it bad poisoning (MakeConditionBadlyPoisoned)
 #define BTL_CONDITION_BADLY_POISONED_TURNS 15
 
+// No mon, in place of a mon ID (GetMonID's IDs go up to 23)
+#define BTL_MONID_NONE 0x1f
+
 struct BattleCondition {
     union {
         u32 raw;

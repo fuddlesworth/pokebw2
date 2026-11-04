@@ -2384,7 +2384,7 @@ static void CommonCounterSetTarget(BtlServerFlow *flow, u8 monId, s32 *work, u32
         CommonCounterCheckDamageRecieved(GetBattleMon(flow, monId), category, &record)) {
         targetId = record.attackerId;
         if (BtlServerFlow_GetMonBattlePos(flow, targetId) == BTL_POS_NONE) {
-            targetId = 0x1f;
+            targetId = BTL_MONID_NONE;
             if (record.attackerPos != BTL_POS_NONE) {
                 targetId = BtlServerFlow_GetMonIDAtPos(flow, record.attackerPos);
             }
@@ -4548,7 +4548,7 @@ static void HandlerBideCheckFail(BattleEventItem *item, BtlServerFlow *flow, u8 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && work[0] >= 2) {
         if (work[1] == 0) {
             BattleEventVar_RewriteValue(BTL_EVAR_FAIL_CAUSE, 0x1a);
-        } else if (work[2] == 0x1f) {
+        } else if (work[2] == BTL_MONID_NONE) {
             BattleEventVar_RewriteValue(BTL_EVAR_FAIL_CAUSE, 0x1a);
         }
         work[0] = 3;
@@ -4607,13 +4607,13 @@ static u8 GetBideTargetID(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
                 if (count != 0) {
                     targetId = mons[(u8)BattleRandom(count)];
                 } else {
-                    targetId = 0x1f;
+                    targetId = BTL_MONID_NONE;
                 }
             }
             return targetId;
         }
     }
-    return 0x1f;
+    return BTL_MONID_NONE;
 }
 
 static void BideEnd(BtlServerFlow *flow, u8 monId, s32 *work) {
@@ -8839,7 +8839,7 @@ static void HandlerWaterPledgeFieldEffect(BattleEventItem *item, BtlServerFlow *
         targetSide = GetSideFromMonID(BattleEventVar_GetValue(BTL_EVAR_TARGET_1));
         posEffect = 0;
         message = 0;
-        posMonId = 0x1f;
+        posMonId = BTL_MONID_NONE;
         switch (work[1]) {
         case 1:
             message = 0xa4;

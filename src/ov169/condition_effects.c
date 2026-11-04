@@ -127,7 +127,7 @@ static void ConditionEndTurnLeechSeed(BtlServerFlow *flow, BattleMon *mon, u8 mo
     cont = GetConditionContinuationParam(mon, CONDITION_LEECH_SEED);
     pos = Condition_GetParam(cont);
     sourceId = BtlServerFlow_GetMonIDAtPos(flow, pos);
-    if (sourceId != 0x1f) {
+    if (sourceId != BTL_MONID_NONE) {
         amount = DivideMaxHPZeroCheck(mon, 8);
         hp = GetBattleMonStat(mon, BATTLEMON_HP);
         if (amount > hp) {
@@ -145,7 +145,7 @@ static void ConditionEndTurnLeechSeed(BtlServerFlow *flow, BattleMon *mon, u8 mo
         damage->effectArg1 = pos;
         damage->effectArg2 = BtlServerFlow_MonIDToPos(flow, monId);
         BattleHandler_PopWork(flow, damage);
-        if (sourceId != 0x1f) {
+        if (sourceId != BTL_MONID_NONE) {
             drain = BattleHandler_PushWork(flow, BTL_HANDLER_DRAIN, monId);
             drain->header.checkPrevResult = TRUE;
             drain->monIndex = sourceId;
@@ -163,7 +163,7 @@ static void ConditionEndTurnIngrain(BtlServerFlow *flow, BattleMon *mon, u8 monI
     if (!IsMonFullHP(mon)) {
         drain = BattleHandler_PushWork(flow, BTL_HANDLER_DRAIN, monId);
         drain->monIndex = monId;
-        drain->sourceIndex = 0x1f;
+        drain->sourceIndex = BTL_MONID_NONE;
         drain->amount = DivideMaxHPZeroCheck(mon, 16);
         BattleHandler_StrSetup(&drain->string, 2, 0x2e3);
         BattleHandler_AddArg(&drain->string, monId);
@@ -232,7 +232,7 @@ static void ConditionEndTurnAquaRing(BtlServerFlow *flow, BattleMon *mon, u8 mon
     if (!IsMonFullHP(mon) && !IsFainted(mon)) {
         drain = BattleHandler_PushWork(flow, BTL_HANDLER_DRAIN, monId);
         drain->monIndex = monId;
-        drain->sourceIndex = 0x1f;
+        drain->sourceIndex = BTL_MONID_NONE;
         drain->amount = DivideMaxHPZeroCheck(mon, 16);
         BattleHandler_StrSetup(&drain->string, 2, 0x25c);
         BattleHandler_AddArg(&drain->string, monId);

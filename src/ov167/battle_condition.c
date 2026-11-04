@@ -115,7 +115,7 @@ u8 Condition_GetMonID(BattleCondition condition) {
     if (type == BTL_CONDITION_TYPE_DEPEND_MON_TURNS) {
         return mon2;
     }
-    return 31;
+    return BTL_MONID_NONE;
 }
 
 void Condition_SetMonID(BattleCondition *condition, u32 value) {
