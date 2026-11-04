@@ -4,6 +4,7 @@
 #include "constants/text_banks.h"
 #include "field/field.h"
 #include "field/field_msgbg.h"
+#include "field/union_oneself.h"
 #include "field/unity_tower.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
@@ -265,13 +266,22 @@ static const UnionMenuInfo sMenuInfo[8] = {
 
 // The party and the rules a menu's choices lead to, by the battle format and the two options
 static const u8 sRuleResult[5][2][2] = {
-    { { 4, 5 }, { 6, 7 } },     { { 8, 9 }, { 10, 11 } },   { { 12, 13 }, { 14, 15 } },
-    { { 16, 17 }, { 18, 19 } }, { { 20, 21 }, { 22, 23 } },
+    { { UNION_ACTIVITY_SINGLE, UNION_ACTIVITY_SINGLE_NO_LAUNCHER },
+      { UNION_ACTIVITY_SINGLE_FLAT, UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER } },
+    { { UNION_ACTIVITY_DOUBLE, UNION_ACTIVITY_DOUBLE_NO_LAUNCHER },
+      { UNION_ACTIVITY_DOUBLE_FLAT, UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER } },
+    { { UNION_ACTIVITY_TRIPLE, UNION_ACTIVITY_TRIPLE_NO_LAUNCHER },
+      { UNION_ACTIVITY_TRIPLE_FLAT, UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER } },
+    { { UNION_ACTIVITY_ROTATION, UNION_ACTIVITY_ROTATION_NO_LAUNCHER },
+      { UNION_ACTIVITY_ROTATION_FLAT, UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER } },
+    { { UNION_ACTIVITY_MULTI, UNION_ACTIVITY_MULTI_NO_LAUNCHER },
+      { UNION_ACTIVITY_MULTI_FLAT, UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER } },
 };
 
 static const ListMenuRow sMenuMain[6] = {
-    { UnionMsg_Text_Greet, { 2 } }, { UnionMsg_Text_Battle, { 0x1b } }, { UnionMsg_Text_Trade, { 0x18 } },
-    { UnionMsg_Text_Draw, { 3 } },  { UnionMsg_Text_Spin, { 0x19 } },   { UnionMsg_Text_Cancel, { 0 } },
+    { UnionMsg_Text_Greet, { UNION_ACTIVITY_CARD } },      { UnionMsg_Text_Battle, { UNION_ACTIVITY_NONE } },
+    { UnionMsg_Text_Trade, { UNION_ACTIVITY_TRADE } },     { UnionMsg_Text_Draw, { UNION_ACTIVITY_DRAW } },
+    { UnionMsg_Text_Spin, { UNION_ACTIVITY_SPIN_TRADE } }, { UnionMsg_Text_Cancel, { 0 } },
 };
 
 static const u32 sLanguageFlags[8] = { 0, 1, 2, 3, 4, 7, 5, 6 };
@@ -845,21 +855,22 @@ void UnionMsg_FreeInfoWindow(UnionSystem *unisys) {
 }
 
 // Opens the window that lists the regulation's rules, each in the color of whether the party meets it
-void UnionMsg_CreateRulesWindow(UnionSystem *unisys, Field *field, u32 okMask, u32 battleType, u32 mode) {
+void UnionMsg_CreateRulesWindow(UnionSystem *unisys, Field *field, u32 okMask, u32 hasLauncher, u32 mode) {
     FieldMsgBG *msgBGSys = Field_GetMsgBGSys(field);
-    BOOL isMulti;
+    BOOL launcher;
     int i;
 
     GFL_ASSERT(unisys->wordset != NULL);
     GFL_ASSERT(unisys->fldmsgwin == NULL);
     GFL_ASSERT(unisys->alloc.rpm == NULL);
 
-    isMulti = TRUE;
-    if (battleType != 1) {
-        isMulti = FALSE;
+    launcher = TRUE;
+    if (hasLauncher != 1) {
+        launcher = FALSE;
     }
     unisys->fldmsgwin = MsgBGPrinter_CreatePlainWin(msgBGSys, unisys->msgdata, 0, 1, 1, 0x1a, 0x10);
-    unisys->alloc.rpm = PokeRegulation_CreatePrintMsg(unisys->alloc.regulation, unisys->wordset, UNION_HEAPID, isMulti);
+    unisys->alloc.rpm =
+        PokeRegulation_CreatePrintMsg(unisys->alloc.regulation, unisys->wordset, UNION_HEAPID, launcher);
     UnionMsg_SetupWordSet(unisys);
 
     if (mode == 0) {

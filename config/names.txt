@@ -10179,7 +10179,7 @@ overlays/ov034 0x02177528 UnionOneself_RunStep
 overlays/ov034 0x021775cc UnionOneself_SetNextStep
 overlays/ov034 0x021775d8 UnionOneself_SetNextStepIfRunning
 overlays/ov034 0x021775f0 UnionOneself_GetRegulationFile
-overlays/ov034 0x0217765c UnionOneself_IsDoubleActivity
+overlays/ov034 0x0217765c UnionOneself_HasWonderLauncher
 overlays/ov034 0x021776a4 UnionOneself_IsBattleActivity
 overlays/ov034 0x021776b4 UnionOneself_CreateBoxParty
 overlays/ov034 0x021776dc UnionOneself_FreeBoxParty

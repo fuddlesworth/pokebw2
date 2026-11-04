@@ -70,7 +70,7 @@ static void UnionOneself_CheckParentEntry(UnionSystem *unisys, UnionBeaconEntry 
 static BOOL UnionOneself_SetNextStep(UnionSystem *unisys, u32 step);
 static BOOL UnionOneself_SetNextStepIfRunning(UnionSystem *unisys, u32 step);
 static u32 UnionOneself_GetRegulationFile(u32 activity);
-static BOOL UnionOneself_IsDoubleActivity(u32 activity);
+static BOOL UnionOneself_HasWonderLauncher(u32 activity);
 static BOOL UnionOneself_IsBattleActivity(u32 activity);
 static PokeParty *UnionOneself_CreateBoxParty(UnionSystem *unisys);
 static void UnionOneself_FreeBoxParty(PokeParty *party);
@@ -164,7 +164,7 @@ static const UnionSituStep sUnionSituSteps[] = {
     { NULL, UnionOneself_StepColosseumParentRun, NULL }, // UNION_STEP_JOIN_MULTI_2
     { NULL, UnionOneself_StepColosseumParentRun, NULL }, // UNION_STEP_JOIN_MULTI_3
     { NULL, UnionOneself_StepTradeRun, NULL }, // UNION_STEP_TRADE
-    { NULL, UnionOneself_StepJoinRun, NULL }, // UNION_STEP_JOIN_EGG
+    { NULL, UnionOneself_StepJoinRun, NULL }, // UNION_STEP_JOIN_SPIN_TRADE
     { NULL, UnionOneself_StepLeaveRun, NULL }, // UNION_STEP_LEAVE_2
     { NULL, UnionOneself_StepRecruitRun, NULL }, // UNION_STEP_RECRUIT
     { NULL, UnionOneself_StepLeaveRun, NULL }, // UNION_STEP_LEAVE
@@ -275,53 +275,53 @@ static BOOL UnionOneself_SetNextStepIfRunning(UnionSystem *unisys, u32 step) {
 // The regulation of an activity, by its file
 static u32 UnionOneself_GetRegulationFile(u32 activity) {
     switch (activity) {
-    case 4:
-    case 5:
+    case UNION_ACTIVITY_SINGLE:
+    case UNION_ACTIVITY_SINGLE_NO_LAUNCHER:
         return 5;
-    case 6:
-    case 7:
+    case UNION_ACTIVITY_SINGLE_FLAT:
+    case UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER:
         return 0x18;
-    case 8:
-    case 9:
+    case UNION_ACTIVITY_DOUBLE:
+    case UNION_ACTIVITY_DOUBLE_NO_LAUNCHER:
         return 6;
-    case 10:
-    case 11:
+    case UNION_ACTIVITY_DOUBLE_FLAT:
+    case UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER:
         return 0x19;
-    case 12:
-    case 13:
+    case UNION_ACTIVITY_TRIPLE:
+    case UNION_ACTIVITY_TRIPLE_NO_LAUNCHER:
         return 7;
-    case 14:
-    case 15:
+    case UNION_ACTIVITY_TRIPLE_FLAT:
+    case UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER:
         return 0x1a;
-    case 16:
-    case 17:
+    case UNION_ACTIVITY_ROTATION:
+    case UNION_ACTIVITY_ROTATION_NO_LAUNCHER:
         return 8;
-    case 18:
-    case 19:
+    case UNION_ACTIVITY_ROTATION_FLAT:
+    case UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER:
         return 0x1b;
-    case 20:
-    case 21:
+    case UNION_ACTIVITY_MULTI:
+    case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
         return 9;
-    case 22:
-    case 23:
+    case UNION_ACTIVITY_MULTI_FLAT:
+    case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
         return 0x1c;
     default:
         return 5;
     }
 }
 
-static BOOL UnionOneself_IsDoubleActivity(u32 activity) {
+static BOOL UnionOneself_HasWonderLauncher(u32 activity) {
     switch (activity) {
-    case 4:
-    case 6:
-    case 8:
-    case 10:
-    case 12:
-    case 14:
-    case 16:
-    case 18:
-    case 20:
-    case 22:
+    case UNION_ACTIVITY_SINGLE:
+    case UNION_ACTIVITY_SINGLE_FLAT:
+    case UNION_ACTIVITY_DOUBLE:
+    case UNION_ACTIVITY_DOUBLE_FLAT:
+    case UNION_ACTIVITY_TRIPLE:
+    case UNION_ACTIVITY_TRIPLE_FLAT:
+    case UNION_ACTIVITY_ROTATION:
+    case UNION_ACTIVITY_ROTATION_FLAT:
+    case UNION_ACTIVITY_MULTI:
+    case UNION_ACTIVITY_MULTI_FLAT:
         return TRUE;
     default:
         return FALSE;
@@ -329,7 +329,7 @@ static BOOL UnionOneself_IsDoubleActivity(u32 activity) {
 }
 
 static BOOL UnionOneself_IsBattleActivity(u32 activity) {
-    if (activity < 4 || activity > 0x17) {
+    if (activity < UNION_ACTIVITY_SINGLE || activity > UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER) {
         return FALSE;
     }
     return TRUE;
@@ -351,7 +351,7 @@ static void UnionOneself_FreeBoxParty(PokeParty *party) {
 
 static void UnionOneself_SetRegulation(UnionSystem *unisys, u32 activity) {
     PokeRegulation_Load(UnionOneself_GetRegulationFile(activity), unisys->alloc.regulation);
-    if (UnionOneself_IsDoubleActivity(activity) == TRUE) {
+    if (UnionOneself_HasWonderLauncher(activity) == TRUE) {
         Regulation_SetParam(unisys->alloc.regulation, REGULATION_PARAM_LAUNCHER, 1);
     } else {
         Regulation_SetParam(unisys->alloc.regulation, REGULATION_PARAM_LAUNCHER, 0);
@@ -878,7 +878,7 @@ static BOOL UnionOneself_StepParentRun(UnionSystem *unisys, UnionSelf *situ, Fie
                 *seq = 4;
                 break;
             }
-        } else if (choice == UNION_ACTIVITY_EGG_TRADE) {
+        } else if (choice == UNION_ACTIVITY_SPIN_TRADE) {
             if (countSanityEggsInParty(party) > 0) {
                 UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetEggCannotTradeMessage(unisys));
                 *seq = 4;
@@ -1009,8 +1009,8 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetOfferMessage(situ->mycomm.chosenActivity));
             if (UnionOneself_IsBattleActivity(situ->mycomm.chosenActivity) == TRUE) {
                 UnionOneself_SetRegulation(unisys, situ->mycomm.chosenActivity);
-                UnionMsg_CreateRulesWindow(unisys, field, 0, UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity),
-                                           0);
+                UnionMsg_CreateRulesWindow(unisys, field, 0,
+                                           UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 0);
                 *seq = 2;
             } else {
                 *seq = 3;
@@ -1047,7 +1047,7 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
                         yes = 0;
                         situ->result = 1;
                     }
-                } else if (situ->mycomm.chosenActivity == UNION_ACTIVITY_EGG_TRADE && yes == 1) {
+                } else if (situ->mycomm.chosenActivity == UNION_ACTIVITY_SPIN_TRADE && yes == 1) {
                     if (countSanityEggsInParty(party) > 0) {
                         yes = 0;
                         situ->result = 3;
@@ -1075,7 +1075,7 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
         break;
     case 6:
         UnionMsg_CreateRulesWindow(unisys, field, situ->partyCheck,
-                                   UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity), 1);
+                                   UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 1);
         (*seq)++;
         break;
     case 7:
@@ -1091,7 +1091,7 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
         break;
     case 8:
         UnionMsg_CreateRulesWindow(unisys, field, situ->boxCheck,
-                                   UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity), 2);
+                                   UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 2);
         (*seq)++;
         break;
     case 9:
@@ -1189,7 +1189,7 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
         }
         break;
     case 3:
-        UnionMsg_CreateRulesWindow(unisys, field, 0, UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity), 0);
+        UnionMsg_CreateRulesWindow(unisys, field, 0, UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 0);
         (*seq)++;
         break;
     case 4:
@@ -1201,7 +1201,7 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
         break;
     case 5:
         UnionMsg_CreateRulesWindow(unisys, field, situ->partyCheck,
-                                   UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity), 1);
+                                   UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 1);
         (*seq)++;
         break;
     case 6:
@@ -1217,7 +1217,7 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
         break;
     case 7:
         UnionMsg_CreateRulesWindow(unisys, field, situ->boxCheck,
-                                   UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity), 2);
+                                   UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 2);
         (*seq)++;
         break;
     case 8:
@@ -1281,7 +1281,7 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetJoinMultiBattleMessage(situ->mycomm.target->beacon.gender));
                 UnionOneself_SetRegulation(unisys, activity);
-                UnionMsg_CreateRulesWindow(unisys, field, 0, UnionOneself_IsDoubleActivity(activity), 0);
+                UnionMsg_CreateRulesWindow(unisys, field, 0, UnionOneself_HasWonderLauncher(activity), 0);
                 *seq = 3;
             } else {
                 UnionMsg_CreateAndPrint(unisys, field,
@@ -1290,7 +1290,7 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                 *seq = 2;
             }
             break;
-        case UNION_ACTIVITY_EGG_TRADE:
+        case UNION_ACTIVITY_SPIN_TRADE:
             if (unisys->found[index].beacon.memberCount < UnionMsg_GetActivityPlayerCount(activity) &&
                 !unisys->found[index].beacon.entryClosed) {
                 UnionMsg_CreateAndPrint(unisys, field,
@@ -1377,7 +1377,7 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
             return TRUE;
         }
         UnionMsg_CreateRulesWindow(unisys, field, situ->partyCheck,
-                                   UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity), 1);
+                                   UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 1);
         (*seq)++;
         break;
     case 7:
@@ -1393,7 +1393,7 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
         break;
     case 8:
         UnionMsg_CreateRulesWindow(unisys, field, situ->boxCheck,
-                                   UnionOneself_IsDoubleActivity(situ->mycomm.chosenActivity), 2);
+                                   UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 2);
         (*seq)++;
         break;
     case 9:
@@ -1416,11 +1416,11 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
             UnionMsg_FreeYesNo(unisys);
             if (yes == 0) {
                 switch (situ->mycomm.chosenActivity) {
-                case 3:
+                case UNION_ACTIVITY_DRAW:
                     UnionMsg_CreateAndPrint(unisys, field,
                                             UnionMsg_GetDrawDeclineMessage(situ->mycomm.target->beacon.gender));
                     break;
-                case UNION_ACTIVITY_EGG_TRADE:
+                case UNION_ACTIVITY_SPIN_TRADE:
                     UnionMsg_CreateAndPrint(unisys, field,
                                             UnionMsg_GetEggTradeDeclineMessage(situ->mycomm.target->beacon.gender));
                     break;
@@ -1432,11 +1432,11 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                 UnionOneself_SetNextStep(unisys, UNION_STEP_RECRUIT);
                 *seq = 1;
                 switch (situ->mycomm.chosenActivity) {
-                case 3:
+                case UNION_ACTIVITY_DRAW:
                     UnionMsg_CreateAndPrint(unisys, field,
                                             UnionMsg_GetDrawAcceptMessage(situ->mycomm.target->beacon.gender));
                     break;
-                case UNION_ACTIVITY_EGG_TRADE: {
+                case UNION_ACTIVITY_SPIN_TRADE: {
                     PokeParty *party = GameData_GetParty(unisys->param->gameData);
 
                     if (countSanityEggsInParty(party) > 0) {
@@ -1501,7 +1501,7 @@ static BOOL UnionOneself_StepAnswerMember(UnionSystem *unisys, UnionSelf *situ, 
         case 23:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBattleChatMessage(gender));
             break;
-        case UNION_ACTIVITY_EGG_TRADE:
+        case UNION_ACTIVITY_SPIN_TRADE:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetSpinTradeChatMessage(gender));
             break;
         case 3:
@@ -1759,8 +1759,8 @@ static BOOL UnionOneself_StepRecruitRun(UnionSystem *unisys, UnionSelf *situ, Fi
                     case 3:
                         UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_DRAW);
                         break;
-                    case UNION_ACTIVITY_EGG_TRADE:
-                        UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_EGG);
+                    case UNION_ACTIVITY_SPIN_TRADE:
+                        UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_SPIN_TRADE);
                         break;
                     default:
                         GFL_ASSERT(0);
@@ -1789,7 +1789,7 @@ static BOOL UnionOneself_StepRecruitRun(UnionSystem *unisys, UnionSelf *situ, Fi
         case 3:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetDrawBusyMessage(situ->mycomm.target->beacon.gender));
             break;
-        case UNION_ACTIVITY_EGG_TRADE:
+        case UNION_ACTIVITY_SPIN_TRADE:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetEggTradeBusyMessage(situ->mycomm.target->beacon.gender));
             break;
         }
@@ -2494,7 +2494,7 @@ static BOOL UnionOneself_StepPartySelectRun(UnionSystem *unisys, UnionSelf *situ
         }
         if (count != 0) {
             UnionMsg_CreateMsgSystem(unisys, field);
-            UnionMsg_CreateRulesWindow(unisys, field, count, UnionOneself_IsDoubleActivity(situ->activity), kind);
+            UnionMsg_CreateRulesWindow(unisys, field, count, UnionOneself_HasWonderLauncher(situ->activity), kind);
             *seq = 5;
         } else {
             UnionOneself_SetNextStep(unisys, UNION_STEP_PARTY_WAIT);

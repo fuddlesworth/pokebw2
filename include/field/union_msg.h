@@ -74,7 +74,9 @@ void UnionMsg_FreeRuleMenu(UnionSystem *unisys);
 u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL *isFinal, Field *field);
 void UnionMsg_CreateInfoWindow(UnionSystem *unisys, Field *field);
 void UnionMsg_FreeInfoWindow(UnionSystem *unisys);
-void UnionMsg_CreateRulesWindow(UnionSystem *unisys, Field *field, u32 okMask, u32 battleType, u32 mode);
+// The regulation's rules in a window, with the Wonder Launcher when hasLauncher is 1, under its title (mode 0), or
+// with the party (1) or the Battle Box (2) checked against them
+void UnionMsg_CreateRulesWindow(UnionSystem *unisys, Field *field, u32 okMask, u32 hasLauncher, u32 mode);
 BOOL UnionMsg_IsRulesPrinted(UnionSystem *unisys, Field *field);
 void UnionMsg_FreeRulesWindow(UnionSystem *unisys);
 

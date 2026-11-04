@@ -14,8 +14,9 @@
 
 // Whether the player stands on the Union Room's spot (the one entry of its table)
 BOOL UnionEff_IsPlayerOnSpot(Field *field);
-// A step of the Union Room's actors told in kinds: 1 for 4 to 0x17, 4 for 3, 2 for 0x18, 5 for 0x19, 3 for 0x1a
-int UnionEff_GetKindStep(int kind);
+// The UNION_WANT_* of a UNION_ACTIVITY_*, which marks the players who want the same: the battles, the drawing, the
+// trade, the spin trade and 0x1a
+int UnionEff_GetKindStep(int activity);
 // Whether the beacon's player is one of the wifi list's friends
 BOOL UnionEff_IsFriendBeacon(WifiList *wifiList, const UnionBeacon *beacon);
 UnionEffect *UnionEff_Create(HeapID heapId);
