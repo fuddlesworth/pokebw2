@@ -127,7 +127,7 @@ UnionMsg_SetupWordSet kind:function(thumb,size=0x158) addr:0x0217ad48
 UnionMsg_SetLanguageFlag kind:function(thumb,size=0x40) addr:0x0217aea0
 UnionMsg_CreateWordSet kind:function(thumb,size=0x24) addr:0x0217aee0
 UnionMsg_FreeWordSet kind:function(thumb,size=0x1c) addr:0x0217af04
-UnionMsg_GetTableByte kind:function(thumb,size=0x14) addr:0x0217af20
+UnionMsg_GetActivityPlayerCount kind:function(thumb,size=0x14) addr:0x0217af20
 UnionMsg_FreeAll kind:function(thumb,size=0x22) addr:0x0217af34
 UnionMsg_CreateMsgSystem kind:function(thumb,size=0x98) addr:0x0217af58
 UnionMsg_FreeMsgSystem kind:function(thumb,size=0x60) addr:0x0217aff0
@@ -185,11 +185,11 @@ UnionEff_DrawMarks kind:function(thumb,size=0x50) addr:0x0217bc34
 UnionEff_GetFreeMarkSlot kind:function(thumb,size=0x3e) addr:0x0217bc84
 UnionEff_AllColosseumMembersHere kind:function(thumb,size=0x2e) addr:0x0217bcc4
 UnionEff_AllColosseumCardsIn kind:function(thumb,size=0x2a) addr:0x0217bcf4
-UnionEff_IsColosseumUnk170Set kind:function(thumb,size=0x12) addr:0x0217bd20
-UnionEff_ClearColosseumUnk170 kind:function(thumb,size=0xa) addr:0x0217bd34
+UnionEff_AreColosseumPositionsReceived kind:function(thumb,size=0x12) addr:0x0217bd20
+UnionEff_ClearColosseumPositionsReceived kind:function(thumb,size=0xa) addr:0x0217bd34
 UnionEff_GetEntrySpot kind:function(thumb,size=0x74) addr:0x0217bd40
-UnionEff_AllColosseumReady kind:function(thumb,size=0x3c) addr:0x0217bdb4
-UnionEff_AnyColosseumUnk172 kind:function(thumb,size=0x20) addr:0x0217bdf0
+UnionEff_AreAllColosseumMembersLeaving kind:function(thumb,size=0x3c) addr:0x0217bdb4
+UnionEff_IsAnyColosseumMemberLeaving kind:function(thumb,size=0x20) addr:0x0217bdf0
 UnionEff_IsOnSeatSpot kind:function(thumb,size=0x64) addr:0x0217be10
 UnionEff_UpdateColosseumCommPlayers kind:function(thumb,size=0x64) addr:0x0217be74
 UnionEff_GetMemberLook kind:function(thumb,size=0x32) addr:0x0217bed8
@@ -256,7 +256,7 @@ sMenuInfo kind:data(any) addr:0x0217c4cc
 data_ov034_0217c490 kind:data(any) addr:0x0217c4d0
 sMsgPairs_04cc kind:data(any) addr:0x0217c50c
 sMsgPairs_0530 kind:data(any) addr:0x0217c570
-sMsgIndexTable kind:data(any) addr:0x0217c5d4
+sActivityPlayerCounts kind:data(any) addr:0x0217c5d4
 data_ov034_0217c600 kind:data(any) addr:0x0217c640
 data_ov034_0217c604 kind:data(any) addr:0x0217c644
 data_ov034_0217c640 kind:data(any) addr:0x0217c680

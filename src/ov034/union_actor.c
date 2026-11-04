@@ -359,7 +359,7 @@ static BOOL UnionOneself_RunActor(UnionSystem *unisys, UnionActorSlot *slot, Fie
 static BOOL UnionOneself_UpdateTimeout(UnionSystem *unisys, UnionBeaconEntry *entry) {
     UnionSelf *situ = &unisys->situ;
 
-    if (situ->mycomm.target == entry || situ->mycomm.unk4 == entry || situ->mycomm.answer_pc == entry ||
+    if (situ->mycomm.target == entry || situ->mycomm.asked == entry || situ->mycomm.answer_pc == entry ||
         situ->mycomm.parent == entry) {
         if (entry->timeout == 0) {
             entry->timeout = 1;
@@ -409,14 +409,14 @@ static BOOL UnionOneself_ActorIdle(UnionSystem *unisys, UnionActorSlot *slot, Fi
         return TRUE;
     }
     beaconAct = UnionEff_GetKindStep(entry->beacon.activity);
-    if (situ->mycomm.unk44 == UnionOneself_GetActorId(slot->entry, slot)) {
+    if (situ->mycomm.targetActorId == UnionOneself_GetActorId(slot->entry, slot)) {
         UnionOneself_SetActorNextStep(slot, 3);
         return TRUE;
     }
     if (situ->wantedKind != UNION_WANT_NONE &&
         (situ->wantedKind == beaconAct ||
          (beaconAct == UNION_WANT_NONE && situ->wantedKind == entry->beacon.wantedKind)) &&
-        slot->member == 0 && UnionMsg_GetTableByte(entry->beacon.activity) > entry->beacon.memberCount) {
+        slot->member == 0 && UnionMsg_GetActivityPlayerCount(entry->beacon.activity) > entry->beacon.memberCount) {
         FieldActor *actor = UnionOneself_FindActor(unisys, slot->entry, slot);
 
         if (IsAllActorAcmdFinished(actor) == TRUE) {
@@ -520,7 +520,7 @@ static BOOL UnionOneself_ActorTalk(UnionSystem *unisys, UnionActorSlot *slot, Fi
         }
         break;
     case 2:
-        if (situ->mycomm.unk44 != UnionOneself_GetActorId(slot->entry, slot)) {
+        if (situ->mycomm.targetActorId != UnionOneself_GetActorId(slot->entry, slot)) {
             ClearActorFlag(actor, ACTOR_FLAG_FACE_DIR_LOCK);
             return TRUE;
         }

@@ -51,7 +51,7 @@ typedef struct {
     u8 wantedKind : 3; // UNION_WANT_*
     u8 version;
     u8 language;
-    u8 unk0A;
+    u8 step; // the machine's UNION_STEP_*
     u8 activity;
     u16 name[8];
     u16 look2[4];
@@ -97,38 +97,42 @@ typedef struct UnionBeaconEntry {
 
 // The players this machine is grouped with
 struct UnionGroup {
-    // The player spoken to, the one who answered, and the parent joined (the names of the third are the ROM's)
+    // The player spoken to, the one asked to connect, the one who answered, and the parent joined (the name of the
+    // third is the ROM's)
     UnionBeaconEntry *target;
-    UnionBeaconEntry *unk4;
+    UnionBeaconEntry *asked;
     UnionBeaconEntry *answer_pc;
     UnionBeaconEntry *parent;
-    u8 unk10[8];
+    // The MAC of the machine that connected to the asking one, with 1 after it once it arrived
+    u8 connectedMac[8];
     u8 unk18;
-    u8 unk19;
-    u8 unk1A;
+    // The UNION_ACTIVITY_* the parent chose (0 to leave, 0xff until it arrives), and the child's answer to it
+    u8 chosenActivity;
+    u8 activityReply;
     u8 unk1B;
     union {
         UnionMember members[UNION_MEMBER_MAX];
         UnionMemberList memberList;
     };
-    u16 unk44;
-    u8 unk46_0 : 1;
-    u8 unk46_1 : 1;
-    u8 unk46_2 : 2;
+    u16 targetActorId; // the actor of the player spoken to
+    // Set while joining a recruit, whose machines only match the beacons of the same activity, and once joined
+    u8 sameActivityOnly : 1;
+    u8 joinedRecruit : 1;
+    u8 connectReply : 2; // the asking machine's answer to the one that connected: 1 accepted, 2 refused
     u8 unk46_4 : 4;
-    u8 unk47;
-    u8 unk48;
+    u8 infoReceivedMask; // the machines whose PlayerInfo arrived, a bit per net ID
+    u8 talkCount;        // the parent greets the child the first time only
     u8 recvFlag;
     u8 doneMask; // a bit per net ID
     u8 step : 7;
     u8 active : 1;
-    u8 unk4C;
+    u8 joinAvenueReceived; // the other's Join Avenue person arrived
 };
 
 // This machine's state, which its beacon is built from
 typedef struct {
     u8 activity;
-    u8 step;       // 0x2a when idle; the beacon sends it
+    u8 step;       // UNION_STEP_*, which the beacon sends
     u8 wantedKind; // UNION_WANT_*: picked on the touch screen, which marks the players who want the same
     u16 look[4];
     u16 counter;
@@ -143,10 +147,17 @@ typedef struct {
     s16 result;
     u8 prevStep;
     u8 nextStep;
-    u8 phase; // of the step: 0 entering, 1 running, 2 leaving
+    u8 phase; // of the step, UNION_PHASE_*
     u8 seq;
     u8 mac78[6]; // the player to show the focus effect on
 } UnionSelf;
+
+// The phases of a step, each run by its function of the step's row
+enum {
+    UNION_PHASE_BEGIN,
+    UNION_PHASE_RUN,
+    UNION_PHASE_END,
+};
 
 // What the player wants to do, picked with an icon of the touch screen. UnionEff_GetKindStep gives a beacon's activity
 // in the same values
@@ -269,8 +280,9 @@ struct UnionSystem {
     u8 linkState; // 0 when idle, then the steps of UnionComm_UpdateLink's restart of the communication
     u8 linkMode;
     u8 updateDisabled;
-    u32 unk362C;
-    u32 unk3630;
+    // Set once the player is off the counter's spot, so that stepping on it again starts UNION_STEP_COUNTER
+    u32 counterArmed;
+    u32 atCounter; // set by UNION_STEP_COUNTER: the field then asks the communication to end
     // Set once UnionComm_Exit starts
     u32 exiting;
 };
@@ -296,7 +308,16 @@ void UnionComm_ActivateGroup(UnionSystem *sys);
 // Clears the beacons found, and frees what the system holds
 void UnionComm_ClearBeacons(UnionSystem *sys);
 void UnionComm_FreeResources(UnionSystem *sys);
-// Sets a part of this machine's state: a group's target 0 to 3, or the activity for 4
+// The parts of this machine's state that UnionComm_SetSelf sets: the group's targets, and the activity
+enum {
+    UNION_SELF_TARGET,
+    UNION_SELF_ASKED,
+    UNION_SELF_ANSWER,
+    UNION_SELF_PARENT,
+    UNION_SELF_ACTIVITY,
+};
+
+// Sets a part of this machine's state, UNION_SELF_*
 void UnionComm_SetSelf(UnionSystem *sys, u32 which, u32 value);
 // Resets a group, with this machine as its first member
 void UnionGroup_ResetTargets(UnionGroup *group);

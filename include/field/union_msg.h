@@ -53,7 +53,8 @@ u16 UnionMsg_GetMultiBattleStartMessage(u8 gender);
 u16 UnionMsg_GetBattleBusyMessage(u8 gender);
 // The message of a trainer card's origin: nothing, another country, another province or the same
 u32 UnionMsg_GetOriginMessage(UnionSystem *unisys, u8 country, u8 province);
-s32 UnionMsg_GetTableByte(s32 index);
+// The most players an activity takes: 2, 4 for a multi battle, 5 for drawing and the spin trade (0 past the table)
+s32 UnionMsg_GetActivityPlayerCount(s32 index);
 // Frees the message system, the menus and the windows
 void UnionMsg_FreeAll(UnionSystem *unisys);
 // Creates the message system (the message data, the stream window, the word set) or reopens its window

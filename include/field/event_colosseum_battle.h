@@ -23,7 +23,7 @@ typedef struct {
     u32 unk8;
     u32 unkC;
     u16 bgm;
-    u8 unk12;
+    u8 clientId; // the player's client in a multi battle: its entry spot
     Regulation *regulation;
     ColosseumPlayers players;
 } ColosseumBattleParam;

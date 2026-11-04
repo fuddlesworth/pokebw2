@@ -20,7 +20,7 @@
 
 static void Colosseum_SetPlayer(UnionColosseum *colosseum, BattlePlayer *player, u8 index, u32 unused);
 
-UnionColosseum *Colosseum_Create(GameData *gameData, GameSystem *gsys, const PlayerInfo *info, u32 flag) {
+UnionColosseum *Colosseum_Create(GameData *gameData, GameSystem *gsys, const PlayerInfo *info, u32 joinedRecruit) {
     UnionColosseum *colosseum;
     int self = GFL_NetGetHandleNetId(NetHandle_GetOwn());
     int i;
@@ -35,21 +35,21 @@ UnionColosseum *Colosseum_Create(GameData *gameData, GameSystem *gsys, const Pla
         colosseum->party[i] = PokeParty_Create(HEAPID_UNION);
     }
     for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
-        colosseum->unkCC[i] = 0xff;
+        colosseum->vote[i] = 0xff;
         colosseum->voteReply[i] = 0xff;
     }
-    colosseum->unkDC = 0xff;
-    colosseum->unkDD = 0xff;
+    colosseum->myVote = 0xff;
+    colosseum->myVoteReply = 0xff;
     PokeParty_Copy(GameData_GetParty(gameData), colosseum->party[self]);
     member = &colosseum->members[self];
     PlayerInfo_Copy(info, &member->info);
     OS_GetMacAddress(member->mac);
-    member->unk26 = 1;
+    member->present = 1;
     value = 1;
-    if (flag == 1) {
+    if (joinedRecruit == 1) {
         value = 0;
     }
-    member->unk27 = value;
+    member->autoAccept = value;
     member->unk28 = 100;
     TrainerCardData_Fill(colosseum->cardCheck[self], gameData, TRUE, FALSE, HEAPID_UNION);
     TrainerCardData_FillExtras(colosseum->card[self], gameData, HEAPID_UNION);
@@ -68,25 +68,25 @@ void Colosseum_Free(UnionColosseum *colosseum, GameSystem *gsys) {
     GFL_HeapFree(colosseum);
 }
 
-void Colosseum_SetUnkC8_0(UnionColosseum *colosseum, BOOL value) {
-    colosseum->unkC8_0 = value;
+void Colosseum_SetStarted(UnionColosseum *colosseum, BOOL value) {
+    colosseum->started = value;
 }
 
-void Colosseum_SetUnkDC(UnionColosseum *colosseum, u32 value) {
-    colosseum->unkDC = value;
-    colosseum->unkDD = 0xff;
+void Colosseum_SetMyVote(UnionColosseum *colosseum, u32 value) {
+    colosseum->myVote = value;
+    colosseum->myVoteReply = 0xff;
 }
 
-u8 Colosseum_GetUnkDC(const UnionColosseum *colosseum) {
-    return colosseum->unkDC;
+u8 Colosseum_GetMyVote(const UnionColosseum *colosseum) {
+    return colosseum->myVote;
 }
 
-void Colosseum_SetUnkDD(UnionColosseum *colosseum, u32 value) {
-    colosseum->unkDD = value;
+void Colosseum_SetMyVoteReply(UnionColosseum *colosseum, u32 value) {
+    colosseum->myVoteReply = value;
 }
 
-u8 Colosseum_GetUnkDD(const UnionColosseum *colosseum) {
-    return colosseum->unkDD;
+u8 Colosseum_GetMyVoteReply(const UnionColosseum *colosseum) {
+    return colosseum->myVoteReply;
 }
 
 BOOL Colosseum_Vote(UnionColosseum *colosseum, u32 netId, u8 value) {
@@ -94,17 +94,17 @@ BOOL Colosseum_Vote(UnionColosseum *colosseum, u32 netId, u8 value) {
     BOOL accepted;
 
     if (value == 0xff) {
-        colosseum->unkCC[netId] = value;
+        colosseum->vote[netId] = value;
         accepted = TRUE;
     } else {
         for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
-            if (value == colosseum->unkCC[i]) {
+            if (value == colosseum->vote[i]) {
                 accepted = FALSE;
                 break;
             }
         }
         if (i == COLOSSEUM_MEMBER_MAX) {
-            colosseum->unkCC[netId] = value;
+            colosseum->vote[netId] = value;
             accepted = TRUE;
         }
     }
@@ -218,9 +218,9 @@ void Colosseum_BuildBattlePlayers(UnionColosseum *colosseum, GameSystem *gsys, C
     }
     GFL_ASSERT(member_max == 2 || member_max == 4);
     self = GFL_NetGetHandleNetId(NetHandle_GetOwn());
-    selfTeam = colosseum->unk16C[self];
+    selfTeam = colosseum->positions[self];
     for (i = 0; i < member_max; i++) {
-        u8 team = colosseum->unk16C[i];
+        u8 team = colosseum->positions[i];
 
         if ((team & 1) == (selfTeam & 1)) {
             slot = 0;

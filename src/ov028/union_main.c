@@ -111,7 +111,7 @@ void UnionMain_OnFieldIn(void *param, void *work, Field *field) {
     if (GetZoneIsUnionRoom(Field_GetPlayerStateZoneID(field)) == TRUE) {
         UnionOneself_UpdateMarks(unisys, GSYS_GetGameData(unisys->param->gsys), field);
     }
-    if (colosseum != NULL && colosseum->unkC8_0 == TRUE) {
+    if (colosseum != NULL && colosseum->started == TRUE) {
         CommPlayer_RestoreActors(colosseum->commPlayer);
     }
 }
@@ -121,10 +121,10 @@ void UnionMain_OnFieldOut(void *param, void *work, Field *field) {
     UnionColosseum *colosseum = unisys->colosseum_sys;
 
     if (colosseum != NULL) {
-        if (colosseum->unkC9 == 1) {
+        if (colosseum->exiting == 1) {
             Colosseum_Free(colosseum, unisys->param->gsys);
             unisys->colosseum_sys = NULL;
-        } else if (colosseum->unkC8_0 == TRUE) {
+        } else if (colosseum->started == TRUE) {
             CommPlayer_HideActors(colosseum->commPlayer);
         }
     }
@@ -132,7 +132,7 @@ void UnionMain_OnFieldOut(void *param, void *work, Field *field) {
 }
 
 u32 UnionMain_GetAtCounter(UnionSystem *unisys) {
-    return unisys->unk3630;
+    return unisys->atCounter;
 }
 
 u32 UnionMain_GetExiting(UnionSystem *unisys) {

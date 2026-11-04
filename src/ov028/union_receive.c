@@ -45,15 +45,15 @@
 // The net commands, from UNION_NET_CMD_BASE
 #define UNION_NET_CMD_BASE 0x1400
 enum {
-    UNION_NET_CMD_UNK0 = UNION_NET_CMD_BASE,
-    UNION_NET_CMD_UNK1,
-    UNION_NET_CMD_UNK2,
+    UNION_NET_CMD_GROUP_DONE = UNION_NET_CMD_BASE,
+    UNION_NET_CMD_ACTIVITY,
+    UNION_NET_CMD_ACTIVITY_REPLY,
     UNION_NET_CMD_MAC,
-    UNION_NET_CMD_UNK4,
+    UNION_NET_CMD_CONNECT_REPLY,
     UNION_NET_CMD_PLAYER_INFO,
     UNION_NET_CMD_CARD_A,
-    UNION_NET_CMD_UNK7,
-    UNION_NET_CMD_UNK8,
+    UNION_NET_CMD_COLOSSEUM_MEMBER,
+    UNION_NET_CMD_COLOSSEUM_ENTRY_RESULT,
     UNION_NET_CMD_UNK9,
     UNION_NET_CMD_ENTRY_REQUEST,
     UNION_NET_CMD_ENTRY_REPLY_2,
@@ -84,35 +84,35 @@ void UnionNet_RecvGroupDone(int netId, int size, const void *data, void *work, N
 }
 
 BOOL UnionMain_SendGroupDone(void) {
-    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_UNK0, 0, NULL);
+    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_GROUP_DONE, 0, NULL);
 }
 
-void UnionNet_RecvUnk19(int netId, int size, const void *data, void *work, NetHandle *handle) {
+void UnionNet_RecvActivity(int netId, int size, const void *data, void *work, NetHandle *handle) {
     UnionSystem *unisys = work;
     UnionSelf *self = &unisys->situ;
     const u32 *value = data;
 
     if (netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        self->mycomm.unk19 = *value;
+        self->mycomm.chosenActivity = *value;
     }
 }
 
-BOOL UnionMain_SendUnk19(u32 value) {
-    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_UNK1, sizeof(u32), &value);
+BOOL UnionMain_SendActivity(u32 value) {
+    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_ACTIVITY, sizeof(u32), &value);
 }
 
-void UnionNet_RecvUnk1A(int netId, int size, const void *data, void *work, NetHandle *handle) {
+void UnionNet_RecvActivityReply(int netId, int size, const void *data, void *work, NetHandle *handle) {
     UnionSystem *unisys = work;
     UnionSelf *self = &unisys->situ;
     const u32 *value = data;
 
     if (netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        self->mycomm.unk1A = *value;
+        self->mycomm.activityReply = *value;
     }
 }
 
-BOOL UnionMain_SendUnk1A(u32 value) {
-    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_UNK2, sizeof(u32), &value);
+BOOL UnionMain_SendActivityReply(u32 value) {
+    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_ACTIVITY_REPLY, sizeof(u32), &value);
 }
 
 void UnionNet_RecvMac(int netId, int size, const void *data, void *work, NetHandle *handle) {
@@ -120,7 +120,7 @@ void UnionNet_RecvMac(int netId, int size, const void *data, void *work, NetHand
     UnionSelf *self = &unisys->situ;
 
     if (netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        MI_CpuCopy8(data, self->mycomm.unk10, 8);
+        MI_CpuCopy8(data, self->mycomm.connectedMac, 8);
     }
 }
 
@@ -133,25 +133,25 @@ BOOL UnionMain_SendMac(void) {
     return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_MAC, sizeof(mac), mac);
 }
 
-void UnionNet_RecvUnk46_2(int netId, int size, const void *data, void *work, NetHandle *handle) {
+void UnionNet_RecvConnectReply(int netId, int size, const void *data, void *work, NetHandle *handle) {
     UnionSystem *unisys = work;
     UnionSelf *self = &unisys->situ;
     const u32 *value = data;
 
     if (netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        self->mycomm.unk46_2 = *value;
+        self->mycomm.connectReply = *value;
     }
 }
 
-BOOL UnionMain_SendUnk46_2(u32 value) {
-    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_UNK4, sizeof(u32), &value);
+BOOL UnionMain_SendConnectReply(u32 value) {
+    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_CONNECT_REPLY, sizeof(u32), &value);
 }
 
 void UnionNet_RecvPlayerInfo(int netId, int size, const void *data, void *work, NetHandle *handle) {
     UnionSystem *unisys = work;
 
     PlayerInfo_Copy(data, GameData_GetPlayerInfoByNetID(unisys->param->gameData, netId));
-    unisys->situ.mycomm.unk47 |= (u8)(1 << netId);
+    unisys->situ.mycomm.infoReceivedMask |= (u8)(1 << netId);
 }
 
 BOOL UnionMain_SendPlayerInfo(UnionSystem *unisys) {
@@ -192,10 +192,11 @@ void UnionNet_RecvColosseumMember(int netId, int size, const void *data, void *w
         return;
     }
     OS_GetMacAddress(mac);
-    CommEntryMenu_AddEntry(colosseum->entryMenu, netId, GetGameDataPlayerInfo(gameData), ((const u8 *)data)[0x27], mac);
+    CommEntryMenu_AddEntry(colosseum->entryMenu, netId, GetGameDataPlayerInfo(gameData),
+                           ((const ColosseumMember *)data)->autoAccept, mac);
 }
 
-void UnionNet_RecvColosseumUnkDE(int netId, int size, const void *data, void *work, NetHandle *handle) {
+void UnionNet_RecvColosseumEntryResult(int netId, int size, const void *data, void *work, NetHandle *handle) {
     UnionSystem *unisys = work;
     UnionColosseum *colosseum = unisys->colosseum_sys;
     const u32 *value = data;
@@ -204,7 +205,7 @@ void UnionNet_RecvColosseumUnkDE(int netId, int size, const void *data, void *wo
         GFL_ASSERT(0);
         return;
     }
-    colosseum->unkDE = *value;
+    colosseum->entryResult = *value;
 }
 
 void UnionNet_RecvColosseumUnkCA(int netId, int size, const void *data, void *work, NetHandle *handle) {
@@ -414,7 +415,7 @@ void UnionNet_RecvJoinAvenue(int netId, int size, const void *data, void *work, 
     JoinAvenueSave *joinAvenue = SaveControl_GetJoinAvenue(GameData_GetSaveControl(unisys->param->gameData));
 
     if (netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        self->mycomm.unk4C = 1;
+        self->mycomm.joinAvenueReceived = 1;
         JoinAvenuePerson_SetParam((JoinAvenuePerson *)data, JOIN_AVE_PARAM_UNK_26, 3);
         JoinAvenue_Add(joinAvenue, unisys->param->gameData, (void *)data, TRUE);
     }

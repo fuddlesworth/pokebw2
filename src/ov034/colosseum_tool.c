@@ -19,7 +19,7 @@ BOOL UnionEff_AllColosseumMembersHere(UnionColosseum *colosseum) {
     int i;
 
     for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
-        if (colosseum->members[i].unk26 == 1) {
+        if (colosseum->members[i].present == 1) {
             count++;
         }
     }
@@ -44,15 +44,15 @@ BOOL UnionEff_AllColosseumCardsIn(UnionColosseum *colosseum) {
     return FALSE;
 }
 
-BOOL UnionEff_IsColosseumUnk170Set(UnionColosseum *colosseum) {
-    if (colosseum->unk170 == 1) {
+BOOL UnionEff_AreColosseumPositionsReceived(UnionColosseum *colosseum) {
+    if (colosseum->positionsReceived == 1) {
         return TRUE;
     }
     return FALSE;
 }
 
-void UnionEff_ClearColosseumUnk170(UnionColosseum *colosseum) {
-    colosseum->unk170 = 0;
+void UnionEff_ClearColosseumPositionsReceived(UnionColosseum *colosseum) {
+    colosseum->positionsReceived = 0;
 }
 
 BOOL UnionEff_GetEntrySpot(Field *field, u32 kind, u32 *index) {
@@ -86,13 +86,13 @@ BOOL UnionEff_GetEntrySpot(Field *field, u32 kind, u32 *index) {
     return FALSE;
 }
 
-BOOL UnionEff_AllColosseumReady(UnionColosseum *colosseum) {
+BOOL UnionEff_AreAllColosseumMembersLeaving(UnionColosseum *colosseum) {
     int count = 0;
     int i;
-    u8 mask = colosseum->unk17C[2];
+    u8 mask = colosseum->entryMask;
 
     for (i = 0; i < 4; i++) {
-        if (colosseum->unk172[i] == 1) {
+        if (colosseum->leaving[i] == 1) {
             count++;
         }
     }
@@ -102,11 +102,11 @@ BOOL UnionEff_AllColosseumReady(UnionColosseum *colosseum) {
     return FALSE;
 }
 
-BOOL UnionEff_AnyColosseumUnk172(UnionColosseum *colosseum) {
+BOOL UnionEff_IsAnyColosseumMemberLeaving(UnionColosseum *colosseum) {
     int i;
 
     for (i = 0; i < 4; i++) {
-        if (colosseum->unk172[i] == 1) {
+        if (colosseum->leaving[i] == 1) {
             return TRUE;
         }
     }

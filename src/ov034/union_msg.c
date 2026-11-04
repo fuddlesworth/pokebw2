@@ -283,9 +283,9 @@ static const ListMenuRequest sMenuRulesRequest = { 3, 3, 0, 0x0d, 0,    0, 1, 0x
                                                    0, 0, 1, 0x0c, 0x10, 1, 1, 0x13, 0x0e, NULL };
 
 static const struct {
-    u8 value;
+    u8 count;
     u8 unk01[3];
-} sMsgIndexTable[27] = {
+} sActivityPlayerCounts[27] = {
     { 2 }, { 2 }, { 2 }, { 5 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 },
     { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 4 }, { 4 }, { 4 }, { 4 }, { 2 }, { 5 }, { 5 },
 };
@@ -559,11 +559,11 @@ static void UnionMsg_FreeWordSet(UnionSystem *unisys) {
     }
 }
 
-s32 UnionMsg_GetTableByte(s32 index) {
+s32 UnionMsg_GetActivityPlayerCount(s32 index) {
     if (index >= 27) {
         return 0;
     }
-    return sMsgIndexTable[index].value;
+    return sActivityPlayerCounts[index].count;
 }
 
 void UnionMsg_FreeAll(UnionSystem *unisys) {

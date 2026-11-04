@@ -141,7 +141,7 @@ static GameEventReturnCode UnionMain_RunCommand(GameEvent *event, u32 *seq, void
     case 0:
         UnionMsg_FreeAll(unisys);
         if (sUnionCommands[subproc->id].startActivity != UNION_ACTIVITY_NONE) {
-            UnionComm_SetSelf(unisys, 4, sUnionCommands[subproc->id].startActivity);
+            UnionComm_SetSelf(unisys, UNION_SELF_ACTIVITY, sUnionCommands[subproc->id].startActivity);
         }
         (*seq)++;
         // fallthrough
@@ -155,7 +155,7 @@ static GameEventReturnCode UnionMain_RunCommand(GameEvent *event, u32 *seq, void
         break;
     case 2:
         if (sUnionCommands[subproc->id].endActivity != UNION_ACTIVITY_NONE) {
-            UnionComm_SetSelf(unisys, 4, sUnionCommands[subproc->id].endActivity);
+            UnionComm_SetSelf(unisys, UNION_SELF_ACTIVITY, sUnionCommands[subproc->id].endActivity);
         }
         subproc->id = 0;
         subproc->arg = NULL;
@@ -298,7 +298,7 @@ static BOOL UnionCommand_App(GameSystem *gsys, UnionSystem *unisys, Field *field
     case 2:
         GFL_OvlLoad(OVERLAY_ID(69));
         unisys->alloc.uniapp = UnionApp_Create(unisys, 3, 5, GetGameDataPlayerInfo(unisys->param->gameData));
-        if (self->mycomm.unk46_1 == 1) {
+        if (self->mycomm.joinedRecruit == 1) {
             *step = 5;
         } else {
             (*step)++;
@@ -345,7 +345,7 @@ static BOOL UnionCommand_App(GameSystem *gsys, UnionSystem *unisys, Field *field
         }
         break;
     case 11:
-        if (self->mycomm.unk46_1 == 1) {
+        if (self->mycomm.joinedRecruit == 1) {
             joined = UnionApp_GetJoined(unisys->alloc.uniapp);
             if (UnionMain_SendConfirmProfile(joined, GetGameDataPlayerInfo(unisys->param->gameData)) == TRUE) {
                 UnionApp_JoinSelf(unisys->alloc.uniapp);
@@ -599,9 +599,9 @@ static BOOL UnionCommand_Colosseum(GameSystem *gsys, UnionSystem *unisys, Field 
         break;
     case 12:
         battle->party = colosseum->party[selfId];
-        battle->unk12 = colosseum->unk16C[selfId];
+        battle->clientId = colosseum->positions[selfId];
         battle->regulation = unisys->alloc.regulation;
-        if (selfId == 0 || (colosseum->unk16C[0] & 2) == (colosseum->unk16C[selfId] & 2)) {
+        if (selfId == 0 || (colosseum->positions[0] & 2) == (colosseum->positions[selfId] & 2)) {
             battle->bgm = 0x489;
         } else {
             battle->bgm = 0x48a;
@@ -614,7 +614,7 @@ static BOOL UnionCommand_Colosseum(GameSystem *gsys, UnionSystem *unisys, Field 
         if (!GFL_NetErrCheck()) {
             wifiList = GameData_GetWifiList(GSYS_GetGameData(gsys));
             count = GFL_NetGetNegotiatedCount();
-            isRedTeam = colosseum->unk16C[selfId] & 1;
+            isRedTeam = colosseum->positions[selfId] & 1;
             for (i = 0; i < count; i++) {
                 if (i == selfId) {
                     continue;
@@ -622,7 +622,7 @@ static BOOL UnionCommand_Colosseum(GameSystem *gsys, UnionSystem *unisys, Field 
                 if (WifiList_FindFriendByPlayerInfo(wifiList, &colosseum->members[i].info, &friendIndex) != TRUE) {
                     continue;
                 }
-                if (isRedTeam == (colosseum->unk16C[i] & 1)) {
+                if (isRedTeam == (colosseum->positions[i] & 1)) {
                     WifiList_SetFriendLastDateToNow(wifiList, friendIndex);
                 } else {
                     switch (battle->players.battle.result) {

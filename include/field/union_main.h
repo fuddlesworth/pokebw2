@@ -50,14 +50,14 @@ BOOL UnionMain_IsIdle(GameSystem *gsys);
 // The net commands of union_comm.c's table: a command's handler, and for those with data in chunks, where it goes
 void *UnionNet_GetRecvBuffer(int netId, void *work, int size);
 void UnionNet_RecvGroupDone(int netId, int size, const void *data, void *work, NetHandle *handle);
-void UnionNet_RecvUnk19(int netId, int size, const void *data, void *work, NetHandle *handle);
-void UnionNet_RecvUnk1A(int netId, int size, const void *data, void *work, NetHandle *handle);
+void UnionNet_RecvActivity(int netId, int size, const void *data, void *work, NetHandle *handle);
+void UnionNet_RecvActivityReply(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvMac(int netId, int size, const void *data, void *work, NetHandle *handle);
-void UnionNet_RecvUnk46_2(int netId, int size, const void *data, void *work, NetHandle *handle);
+void UnionNet_RecvConnectReply(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvPlayerInfo(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvCard(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvColosseumMember(int netId, int size, const void *data, void *work, NetHandle *handle);
-void UnionNet_RecvColosseumUnkDE(int netId, int size, const void *data, void *work, NetHandle *handle);
+void UnionNet_RecvColosseumEntryResult(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvColosseumUnkCA(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvEntryRequest(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvEntryReply2(int netId, int size, const void *data, void *work, NetHandle *handle);
@@ -74,10 +74,10 @@ void UnionNet_RecvJoinAvenue(int netId, int size, const void *data, void *work, 
 
 // The senders of those commands. The first goes to every machine, those with a mask go to the machines in it
 BOOL UnionMain_SendGroupDone(void);
-BOOL UnionMain_SendUnk19(u32 value);
-BOOL UnionMain_SendUnk1A(u32 value);
+BOOL UnionMain_SendActivity(u32 value);
+BOOL UnionMain_SendActivityReply(u32 value);
 BOOL UnionMain_SendMac(void);
-BOOL UnionMain_SendUnk46_2(u32 value);
+BOOL UnionMain_SendConnectReply(u32 value);
 BOOL UnionMain_SendPlayerInfo(UnionSystem *sys);
 // The group's card, in two sizes
 BOOL UnionMain_SendCard(UnionSystem *sys);

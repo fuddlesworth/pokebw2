@@ -149,7 +149,7 @@ GameEvent *EventColosseumBattle_Create(GameSystem *gsys, Field *field, u32 categ
     case 22:
         SetRuleIfNone(&rule, 19);
         gameData = GSYS_GetGameData(gsys);
-        BtlSetup_SetNetMultiVsNet(setup, gameData, NetHandle_GetOwn(), 1, param->unk12, HEAPID_GAMEEVENT);
+        BtlSetup_SetNetMultiVsNet(setup, gameData, NetHandle_GetOwn(), 1, param->clientId, HEAPID_GAMEEVENT);
         break;
     default:
         GFL_ASSERT_MSG(FALSE, "play_category = %d\n", category);
