@@ -658,10 +658,10 @@ BOOL UnionMsg_UpdateYesNo(UnionSystem *unisys, BOOL *yes) {
 
     GFL_ASSERT(unisys->fldmenu_yesno_func != NULL);
     answer = MsgBGPrinter_YesNoMenuMain(unisys->fldmenu_yesno_func);
-    if (answer == 2) {
+    if (answer == MSGBG_YES_NO_WAITING) {
         return FALSE;
     }
-    *yes = answer == 0;
+    *yes = answer == MSGBG_YES_NO_YES;
     return TRUE;
 }
 
