@@ -136,7 +136,7 @@ BOOL Scrcmd_Resort_GetValue(VM *vm, FieldScriptEnv *env) {
     }
     case 3:
         if (ResortPerson_GetParam(person, JOIN_AVE_PARAM_RAFFLED, NULL) == 0) {
-            *var = ResortData_RaffleShopItem(data, ResortSys_GetUnk24Table(sys), ResortSys_GetRanks(sys), info);
+            *var = ResortData_RaffleShopItem(data, ResortSys_GetRaffles(sys), ResortSys_GetRanks(sys), info);
             ResortPerson_SetParam(person, JOIN_AVE_PARAM_RAFFLED, 1);
         } else {
             *var = 0;
@@ -515,7 +515,7 @@ BOOL Scrcmd_Resort_RaffleShopItem(VM *vm, FieldScriptEnv *env) {
     field = GSYS_GetField(FieldScriptEnv_GetGameSystem(env));
     sys = ResortSys_Get(field);
     shops = ResortSys_GetShopData(sys);
-    table = ResortSys_GetUnk24Table(sys);
+    table = ResortSys_GetRaffles(sys);
     index = ScriptReadAny(vm, env);
     var1 = ScriptReadVar(vm, env);
     var2 = ScriptReadVar(vm, env);
@@ -670,7 +670,7 @@ BOOL Scrcmd_Resort_ShortenEggSteps(VM *vm, FieldScriptEnv *env) {
     data = ResortPerson_GetData(person);
     rate = 0;
     shops = ResortSys_GetShopData(sys);
-    table = ResortSys_GetUnk24Table(sys);
+    table = ResortSys_GetRaffles(sys);
     row = ResortShopData_GetGoods(shops, ResortShopData_GetPersonShop(shops, ResortPerson_GetJoinAvenuePerson(person)),
                                   index);
     id = ResortShopData_GetGoodsParam(row, 6);

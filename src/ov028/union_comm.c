@@ -702,22 +702,22 @@ void UnionComm_SetState(UnionSystem *unisys, u8 state) {
 
 void UnionComm_SetCommandBase(u32 activity) {
     switch (activity) {
-    case 0x14:
+    case UNION_ACTIVITY_MULTI:
         GFL_NetSetGameCommandBase(0x17, 5);
         break;
-    case 0x15:
+    case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
         GFL_NetSetGameCommandBase(0x18, 5);
         break;
-    case 0x16:
+    case UNION_ACTIVITY_MULTI_FLAT:
         GFL_NetSetGameCommandBase(0x19, 5);
         break;
-    case 0x17:
+    case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
         GFL_NetSetGameCommandBase(0x1a, 5);
         break;
-    case 3:
+    case UNION_ACTIVITY_DRAW:
         GFL_NetSetGameCommandBase(0x16, 5);
         break;
-    case 0x19:
+    case UNION_ACTIVITY_SPIN_TRADE:
         GFL_NetSetGameCommandBase(0x1b, 5);
         break;
     }

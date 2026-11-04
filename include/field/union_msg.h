@@ -69,12 +69,28 @@ BOOL UnionMsg_UpdateYesNo(UnionSystem *unisys, BOOL *yes);
 void UnionMsg_CreateMainMenu(UnionSystem *unisys, Field *field);
 void UnionMsg_FreeMainMenu(UnionSystem *unisys);
 s32 UnionMsg_UpdateMainMenu(UnionSystem *unisys, Field *field);
+// The menus of the battle rules, the kinds of UnionMsg_CreateRuleMenu: the number of players, then for two players
+// the summary and its format, rules and Wonder Launcher submenus, and for four the summary and its rules and Wonder
+// Launcher submenus
+enum {
+    UNION_RULE_MENU_PLAYERS,
+    UNION_RULE_MENU_TWO,
+    UNION_RULE_MENU_FORMAT,
+    UNION_RULE_MENU_RULES,
+    UNION_RULE_MENU_LAUNCHER,
+    UNION_RULE_MENU_FOUR,
+    UNION_RULE_MENU_FOUR_RULES,
+    UNION_RULE_MENU_FOUR_LAUNCHER,
+};
+
 void UnionMsg_CreateRuleMenu(UnionSystem *unisys, Field *field, int kind, u8 *ruleSel);
 void UnionMsg_FreeRuleMenu(UnionSystem *unisys);
 u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL *isFinal, Field *field);
 void UnionMsg_CreateInfoWindow(UnionSystem *unisys, Field *field);
 void UnionMsg_FreeInfoWindow(UnionSystem *unisys);
-void UnionMsg_CreateRulesWindow(UnionSystem *unisys, Field *field, u32 okMask, u32 battleType, u32 mode);
+// The regulation's rules in a window, with the Wonder Launcher when hasLauncher is 1, under its title (mode 0), or
+// with the party (1) or the Battle Box (2) checked against them
+void UnionMsg_CreateRulesWindow(UnionSystem *unisys, Field *field, u32 okMask, u32 hasLauncher, u32 mode);
 BOOL UnionMsg_IsRulesPrinted(UnionSystem *unisys, Field *field);
 void UnionMsg_FreeRulesWindow(UnionSystem *unisys);
 

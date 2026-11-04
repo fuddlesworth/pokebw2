@@ -5,6 +5,7 @@
 #include "field/event_make.h"
 #include "field/event_sound.h"
 #include "field/field_event.h"
+#include "field/union_oneself.h"
 #include "gfl/heap.h"
 #include "gfl/net_handle.h"
 #include "gfl/overlay.h"
@@ -96,57 +97,57 @@ GameEvent *EventColosseumBattle_Create(GameSystem *gsys, Field *field, u32 categ
     work->players = &param->players.battle;
     setup = &work->setup;
     switch (category) {
-    case 5:
+    case UNION_ACTIVITY_SINGLE_NO_LAUNCHER:
         SetRuleIfNone(&rule, 0);
-    case 4:
+    case UNION_ACTIVITY_SINGLE:
         SetRuleIfNone(&rule, 2);
-    case 7:
+    case UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER:
         SetRuleIfNone(&rule, 1);
-    case 6:
+    case UNION_ACTIVITY_SINGLE_FLAT:
         SetRuleIfNone(&rule, 3);
         gameData = GSYS_GetGameData(gsys);
         BtlSetup_SetNet1v1Single(setup, gameData, NetHandle_GetOwn(), 1, HEAPID_GAMEEVENT);
         break;
-    case 9:
+    case UNION_ACTIVITY_DOUBLE_NO_LAUNCHER:
         SetRuleIfNone(&rule, 4);
-    case 8:
+    case UNION_ACTIVITY_DOUBLE:
         SetRuleIfNone(&rule, 6);
-    case 11:
+    case UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER:
         SetRuleIfNone(&rule, 5);
-    case 10:
+    case UNION_ACTIVITY_DOUBLE_FLAT:
         SetRuleIfNone(&rule, 7);
         gameData = GSYS_GetGameData(gsys);
         BtlSetup_SetNet1v1Double(setup, gameData, NetHandle_GetOwn(), 1, HEAPID_GAMEEVENT);
         break;
-    case 13:
+    case UNION_ACTIVITY_TRIPLE_NO_LAUNCHER:
         SetRuleIfNone(&rule, 8);
-    case 12:
+    case UNION_ACTIVITY_TRIPLE:
         SetRuleIfNone(&rule, 10);
-    case 15:
+    case UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER:
         SetRuleIfNone(&rule, 9);
-    case 14:
+    case UNION_ACTIVITY_TRIPLE_FLAT:
         SetRuleIfNone(&rule, 11);
         gameData = GSYS_GetGameData(gsys);
         BtlSetup_SetNetTriple(setup, gameData, NetHandle_GetOwn(), 1, HEAPID_GAMEEVENT);
         break;
-    case 17:
+    case UNION_ACTIVITY_ROTATION_NO_LAUNCHER:
         SetRuleIfNone(&rule, 12);
-    case 16:
+    case UNION_ACTIVITY_ROTATION:
         SetRuleIfNone(&rule, 14);
-    case 19:
+    case UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER:
         SetRuleIfNone(&rule, 13);
-    case 18:
+    case UNION_ACTIVITY_ROTATION_FLAT:
         SetRuleIfNone(&rule, 15);
         gameData = GSYS_GetGameData(gsys);
         BtlSetup_SetNetRotation(setup, gameData, NetHandle_GetOwn(), 1, HEAPID_GAMEEVENT);
         break;
-    case 21:
+    case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
         SetRuleIfNone(&rule, 16);
-    case 20:
+    case UNION_ACTIVITY_MULTI:
         SetRuleIfNone(&rule, 18);
-    case 23:
+    case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
         SetRuleIfNone(&rule, 17);
-    case 22:
+    case UNION_ACTIVITY_MULTI_FLAT:
         SetRuleIfNone(&rule, 19);
         gameData = GSYS_GetGameData(gsys);
         BtlSetup_SetNetMultiVsNet(setup, gameData, NetHandle_GetOwn(), 1, param->clientId, HEAPID_GAMEEVENT);

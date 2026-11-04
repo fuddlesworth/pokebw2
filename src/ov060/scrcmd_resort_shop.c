@@ -389,7 +389,7 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
     shop->work.vars[3] = var3;
     shop->work.vars[4] = var4;
     shop->work.shops = ResortSys_GetShopData(sys);
-    shop->work.table = ResortSys_GetUnk24Table(sys);
+    shop->work.table = ResortSys_GetRaffles(sys);
     shop->work.occupants = ResortSys_GetOccupants(sys);
     shop->work.datas = ResortSys_GetDatas(sys);
     shop->work.info = ResortSys_GetInfo(sys);

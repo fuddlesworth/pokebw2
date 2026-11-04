@@ -20,7 +20,7 @@ typedef void (*ResortPersonFunc)(void *person);
 typedef BOOL (*ResortPersonIsEmptyFunc)(void *person);
 typedef u32 (*ResortPersonGetParamFunc)(void *person, u32 param, void *buffer);
 typedef void (*ResortPersonSetParamFunc)(void *person, u32 param, u32 value);
-typedef u32 (*ResortPersonUnk1cFunc)(void *person, u32 a1, u32 a2);
+typedef u32 (*ResortPersonRandomFunc)(void *person, u32 count, u32 max);
 
 typedef struct {
     ResortPersonCreateFunc create;
@@ -30,7 +30,7 @@ typedef struct {
     ResortPersonGetParamFunc getParam;
     ResortPersonSetParamFunc setParam;
     void *unk18;
-    ResortPersonUnk1cFunc unk1c;
+    ResortPersonRandomFunc random;
 } ResortPersonFuncs;
 
 struct ResortPersonData {
@@ -85,7 +85,7 @@ static const ResortPersonFuncs sFuncs[] = {
         (ResortPersonGetParamFunc)joinAveTextHandler,
         (ResortPersonSetParamFunc)JoinAvenuePerson_SetParam,
         NULL,
-        (ResortPersonUnk1cFunc)JoinAvenuePerson_Random,
+        (ResortPersonRandomFunc)JoinAvenuePerson_Random,
     },
     {
         (ResortPersonCreateFunc)JoinAvenueEntry_Create,
@@ -95,7 +95,7 @@ static const ResortPersonFuncs sFuncs[] = {
         (ResortPersonGetParamFunc)JoinAvenueEntry_GetParam,
         (ResortPersonSetParamFunc)JoinAvenueEntry_SetParam,
         NULL,
-        (ResortPersonUnk1cFunc)JoinAvenueEntry_Random,
+        (ResortPersonRandomFunc)JoinAvenueEntry_Random,
     },
     {
         (ResortPersonCreateFunc)JoinAvenuePerson_Create,
@@ -105,7 +105,7 @@ static const ResortPersonFuncs sFuncs[] = {
         (ResortPersonGetParamFunc)joinAveTextHandler,
         (ResortPersonSetParamFunc)JoinAvenuePerson_SetParam,
         NULL,
-        (ResortPersonUnk1cFunc)JoinAvenuePerson_Random,
+        (ResortPersonRandomFunc)JoinAvenuePerson_Random,
     },
     {
         (ResortPersonCreateFunc)JoinAvenueRecord_Create,
@@ -115,7 +115,7 @@ static const ResortPersonFuncs sFuncs[] = {
         (ResortPersonGetParamFunc)JoinAvenueRecord_GetParam,
         (ResortPersonSetParamFunc)JoinAvenueRecord_SetParam,
         NULL,
-        (ResortPersonUnk1cFunc)JoinAvenueRecord_Random,
+        (ResortPersonRandomFunc)JoinAvenueRecord_Random,
     },
 };
 
@@ -201,14 +201,16 @@ u32 ResortSlots_FindEmpty(ResortSlots *slots, u32 row) {
     return 0xffff;
 }
 
-u16 ResortData_RaffleShopItem(ResortPersonData *data, ResortBinary *a1, ResortBinary *a2, JoinAvenueInfo *info) {
+u16 ResortData_RaffleShopItem(ResortPersonData *data, ResortBinary *raffles, ResortBinary *ranks,
+                              JoinAvenueInfo *info) {
     u32 value = ResortData_Roll(data, 0, 100);
-    u32 row = ResortBinary_FindRange(a2, JoinAvenue_GetParam(info, JOIN_AVE_INFO_RANK, 0));
-    if (value < ResortBinary_Get(a2, row, 8)) {
-        u16 shopRow = ResortBinary_Get(a2, row, 7);
-        u32 prize = join_ave_raffle_shop(a1, shopRow, ResortData_Roll(data, 1, ResortBinary_Get(a1, shopRow, 0)));
+    u32 row = ResortBinary_FindRange(ranks, JoinAvenue_GetParam(info, JOIN_AVE_INFO_RANK, 0));
+    if (value < ResortBinary_Get(ranks, row, 8)) {
+        u16 shopRow = ResortBinary_Get(ranks, row, 7);
+        u32 prize =
+            join_ave_raffle_shop(raffles, shopRow, ResortData_Roll(data, 1, ResortBinary_Get(raffles, shopRow, 0)));
         if (prize != 10) {
-            return ResortBinary_Get(a1, shopRow, prize * 2 + 3);
+            return ResortBinary_Get(raffles, shopRow, prize * 2 + 3);
         }
     }
     return 0;
@@ -266,14 +268,14 @@ u32 ResortData_GetIndex(ResortPersonData *data) {
     return data->index;
 }
 
-u32 ResortData_Roll(ResortPersonData *data, u32 a1, u32 a2) {
-    return data->funcs->unk1c(data->person, a1, a2);
+u32 ResortData_Roll(ResortPersonData *data, u32 count, u32 max) {
+    return data->funcs->random(data->person, count, max);
 }
 
-u32 ResortData_RollPair(ResortPersonData *data, ResortPersonData *other, u32 a2, u32 a3) {
+u32 ResortData_RollPair(ResortPersonData *data, ResortPersonData *other, u32 count, u32 max) {
     return JoinAvenue_RandomFromSeed(ResortData_GetParam(data, JOIN_AVE_PARAM_SEED, NULL) +
                                          ResortData_GetParam(other, JOIN_AVE_PARAM_SEED, NULL),
-                                     a2, a3);
+                                     count, max);
 }
 
 ResortPersonData **ResortDatas_Create(const ResortSysSetup *setup, HeapID heapId) {

@@ -10,8 +10,8 @@
 // The actors of the players heard are union_actor.c's, whose header this one includes
 
 // The steps of this machine (UnionSelf.step): a row of union_oneself.c's table, with a function to begin the step, one
-// to run it and one to end it. The rows from UNION_STEP_JOIN_DRAW to UNION_STEP_JOIN_EGG are those of the activities,
-// UNION_STEP_FOR_ACTIVITY(activity)
+// to run it and one to end it. The rows from UNION_STEP_JOIN_DRAW to UNION_STEP_JOIN_SPIN_TRADE are those of the
+// activities, UNION_STEP_FOR_ACTIVITY(activity)
 enum {
     UNION_STEP_IDLE = 0,
     UNION_STEP_RESET,
@@ -49,7 +49,7 @@ enum {
     UNION_STEP_JOIN_MULTI_2,
     UNION_STEP_JOIN_MULTI_3,
     UNION_STEP_TRADE,
-    UNION_STEP_JOIN_EGG,
+    UNION_STEP_JOIN_SPIN_TRADE,
     UNION_STEP_LEAVE_2,
     UNION_STEP_RECRUIT,
     UNION_STEP_LEAVE,
@@ -70,10 +70,36 @@ enum {
 
 #define UNION_STEP_FOR_ACTIVITY(activity) ((activity) + 11)
 
-// The activities that this file names; the others are a number of the menu
+// What a player does or offers in the Union Room, which its beacon shows and the menus pick. The battles are
+// UNION_ACTIVITY_SINGLE + 4 * the format (union_msg.c's menu: single, double, triple, rotation, multi) + 2 for a
+// flat battle + 1 without the Wonder Launcher. UNION_ACTIVITY_NONE is the main menu's battle row, which opens the
+// rules menu
 enum {
-    UNION_ACTIVITY_TRADE = 0x18,
-    UNION_ACTIVITY_EGG_TRADE,
+    UNION_ACTIVITY_TALKING = 1,
+    UNION_ACTIVITY_CARD,
+    UNION_ACTIVITY_DRAW,
+    UNION_ACTIVITY_SINGLE,
+    UNION_ACTIVITY_SINGLE_NO_LAUNCHER,
+    UNION_ACTIVITY_SINGLE_FLAT,
+    UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_DOUBLE,
+    UNION_ACTIVITY_DOUBLE_NO_LAUNCHER,
+    UNION_ACTIVITY_DOUBLE_FLAT,
+    UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_TRIPLE,
+    UNION_ACTIVITY_TRIPLE_NO_LAUNCHER,
+    UNION_ACTIVITY_TRIPLE_FLAT,
+    UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_ROTATION,
+    UNION_ACTIVITY_ROTATION_NO_LAUNCHER,
+    UNION_ACTIVITY_ROTATION_FLAT,
+    UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_MULTI,
+    UNION_ACTIVITY_MULTI_NO_LAUNCHER,
+    UNION_ACTIVITY_MULTI_FLAT,
+    UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_TRADE,
+    UNION_ACTIVITY_SPIN_TRADE,
     UNION_ACTIVITY_NONE = 0x1b,
 };
 
