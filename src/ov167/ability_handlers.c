@@ -335,7 +335,7 @@ void HandlerIntimidateMemberIn(BattleEventItem *item, BtlServerFlow *flow, u8 mo
             param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
             param->stat = 1;
             param->change = -1;
-            param->unk0e = 1;
+            param->showFail = 1;
             param->count = count;
             for (i = 0; i < count; i++) {
                 param->monIds[i] = mons[i];
@@ -379,7 +379,7 @@ void HandlerSteadfast(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
             param->popup = 1;
             param->stat = 5;
             param->change = 1;
-            param->unk0e = 0;
+            param->showFail = 0;
             param->count = 1;
             param->monIds[0] = monId;
             BattleHandler_PopWork(flow, param);
@@ -1838,7 +1838,7 @@ void HandlerHydration(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
                 param->condition = CONDITION_ANY_STATUS;
                 param->monIds[0] = monId;
                 param->count = 1;
-                param->unk25 = 1;
+                param->checkFainted = 1;
                 BattleHandler_PopWork(flow, param);
                 BattleHandler_PushRun(flow, BTL_HANDLER_ABILITY_POPUP_REMOVE, monId);
             }
@@ -1865,7 +1865,7 @@ void HandlerShedSkin(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *
             if (AbilityEvent_RollEffectChance(flow, 0x21)) {
                 param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
                 param->popup = 1;
-                param->unk25 = 1;
+                param->checkFainted = 1;
                 param->condition = CONDITION_ANY_STATUS;
                 param->monIds[0] = monId;
                 param->count = 1;
@@ -1958,7 +1958,7 @@ void HandlerAngerPoint(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32
                     param->stat = 1;
                     amount = BattleMon_GetStatRaiseRoom(mon, 1);
                     param->change = amount;
-                    param->unk0e = 1;
+                    param->showFail = 1;
                     param->count = 1;
                     param->monIds[0] = monId;
                     param->flag = 1;
@@ -2731,7 +2731,7 @@ void CommonTypeNoEffectRankUp(BtlServerFlow *flow, u8 monId, u32 stat, u32 amoun
         work = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         work->count = 1;
         work->monIds[0] = monId;
-        work->unk0e = 1;
+        work->showFail = 1;
         work->stat = stat;
         work->change = amount;
         work->popup = 1;
@@ -3994,14 +3994,14 @@ void HandlerWeakArmor(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 
             param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
             param->count = 1;
             param->monIds[0] = monId;
-            param->unk0e = 1;
+            param->showFail = 1;
             param->stat = 2;
             param->change = -1;
             BattleHandler_PopWork(flow, param);
             param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
             param->count = 1;
             param->monIds[0] = monId;
-            param->unk0e = 1;
+            param->showFail = 1;
             param->stat = 5;
             param->change = 1;
             BattleHandler_PopWork(flow, param);
@@ -4103,7 +4103,7 @@ void HandlerDefiant(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *w
             param->popup = 1;
             param->stat = 1;
             param->change = 2;
-            param->unk0e = 1;
+            param->showFail = 1;
             param->count = 1;
             param->monIds[0] = monId;
             BattleHandler_PopWork(flow, param);
@@ -4188,7 +4188,7 @@ void HandlerHealer(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wo
                 AbilityEvent_RollEffectChance(flow, 30)) {
                 param = BattleHandler_PushWork(flow, BTL_HANDLER_CURE_CONDITION, monId);
                 param->popup = 1;
-                param->unk25 = 1;
+                param->checkFainted = 1;
                 param->count = 1;
                 param->monIds[0] = mons[i];
                 param->condition = CONDITION_ANY_STATUS;

@@ -18,32 +18,62 @@
 #define OVERLAY_OV285 OVERLAY_ID(285)
 #define OVERLAY_OV287 OVERLAY_ID(287)
 
+// What the list is opened for (BPlistParam.mode, BtlvPokeListCmd.mode)
+enum {
+    // A Pokémon to switch in, from the action menu
+    BPLIST_MODE_SELECT,
+    // One to switch in during a turn, which can't be cancelled
+    BPLIST_MODE_MID_TURN,
+    // One to replace a fainted Pokémon
+    BPLIST_MODE_FAINTED,
+    // The Pokémon to use an item on
+    BPLIST_MODE_ITEM,
+    // The move to forget for a new one
+    BPLIST_MODE_FORGET_MOVE,
+    // A Pokémon's moves
+    BPLIST_MODE_MOVE_INFO,
+};
+
+// No party slot, in BPlistParam's chosen
+#define BPLIST_NONE 0xff
+
 typedef struct {
     GameData *gameData;
     PokeParty *party;
-    PokeParty *unk8;
+    // The ally's party in a multi battle (GetAllyPokeParty), else NULL
+    PokeParty *allyParty;
     Font *font;
     HeapID heapId;
-    u32 unk14;
-    BOOL unk18; // TRUE in a multi battle
-    u8 unk1C;
-    u8 unk1D[2];
-    u8 unk1F;
+    u32 battleStyle;
+    BOOL isMulti;
+    // The player's place among the multi battle's trainers (GetMultiTrainerIndex), which orders the list
+    u8 multiTrainerIndex;
+    // The party slots chosen before for the other positions this turn, 6 for none
+    u8 alreadyChosen[2];
+    // A BPLIST_MODE_*
+    u8 mode;
     u8 partyIndex;
-    u8 unk21;
-    u8 unk22;
+    // The position whose Pokémon is switched out, where the choice goes in chosen
+    u8 switchOutPos;
+    // How many positions are in battle (GetClientBattlerCount, 3 in a rotation battle)
+    u8 battlePosCount;
     u8 unk23;
     u16 item;
     u16 move;
     TCBManager *tcbManager;
     PaletteFade *paletteFade;
-    u32 unk30;
-    u32 unk34; // 1 forces the exit
-    u8 unk38[6];
+    // 1 leaves, choosing nothing (BattleClientCmd_QuitPokeSelect)
+    u32 quit;
+    // 1 leaves at once
+    u32 abort;
+    // Whether each party slot's Pokémon is under Embargo, so no item can be used on it
+    u8 embargo[6];
     u8 unk3E[2];
-    u32 unk40; // 1 plays the sound effects
+    // 1 plays the sound effects
+    u32 playSound;
     u8 *usingKeys;
-    u8 unk48[3];
+    // Out: the party slot chosen for each position, BPLIST_NONE for none
+    u8 chosen[3];
     // The slot of the move to forget, or 4 for none
     u8 slot;
     u8 done;

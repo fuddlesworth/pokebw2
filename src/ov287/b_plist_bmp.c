@@ -257,9 +257,9 @@ void BPlistBmp_DrawPage(BPlistWork *work, u8 page) {
     switch (page) {
     case 0:
         BPlistBmp_DrawPartyPage(work);
-        if (work->param->unk1F == 3) {
+        if (work->param->mode == BPLIST_MODE_ITEM) {
             BPlistBmp_PrintInfo(work, 7);
-        } else if (work->param->unk1F == 2) {
+        } else if (work->param->mode == BPLIST_MODE_FAINTED) {
             BPlistBmp_PrintInfo(work, 9);
         } else {
             BPlistBmp_PrintInfo(work, 6);

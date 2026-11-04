@@ -534,7 +534,7 @@ void BPlistObj_ShowMoveTypes(BPlistWork *wk) {
             BPlistObj_ShowAt(wk->actors[actor + i], &data_ov287_021fb0d8[i]);
         }
     }
-    if (wk->param->move != 0 && wk->param->unk1F == 4) {
+    if (wk->param->move != 0 && wk->param->mode == BPLIST_MODE_FORGET_MOVE) {
         BPlistObj_LoadTypeIcon(wk, wk->actors[actor + i], chars + i,
                                PML_MoveGetParam(wk->param->move, MOVE_PARAM_TYPE));
         BPlistObj_ShowAt(wk->actors[actor + i], &data_ov287_021fb0d8[i]);

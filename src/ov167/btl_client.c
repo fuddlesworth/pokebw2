@@ -356,8 +356,8 @@ enum {
 // A Pokestar Studios movie's score
 typedef struct {
     s16 points[STUDIO_SCORE_MAX];
-    s16 unk08;
-    // The total is the sum of the points times unk08 times this
+    s16 multiplier;
+    // The total is the sum of the points times multiplier times this
     s16 audienceCount;
     u8 counts[STUDIO_SCORE_MAX];
     // How the last choice scored: 1 for points won, 2 for none and 3 for points lost, which picks the next turn's
@@ -502,7 +502,7 @@ static s32 sExpSeq;
 static u32 sLearnIdx;
 static BattleMonLevelUp sLevelUp;
 
-static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *unk01);
+static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *locksRecPlay);
 static void BattleClient_SetMainProc(BtlClient *client, BOOL (*mainProc)(BtlClient *client));
 static BOOL BattleClient_MainProcNormal(BtlClient *client);
 static BOOL BattleClient_MainProcRecPlay(BtlClient *client);
@@ -773,7 +773,8 @@ static void Studio_PlayEndingBgm(BtlMainModule *mainModule);
 // A server command a client handles, with its handler for each client type
 typedef struct {
     u8 cmd;
-    u8 unk01;
+    // Whether a playback can't be quit while the command runs (RecPlayer_TryLock)
+    u8 locksRecPlay;
     BtlClientCmdProc procs[BTL_CLIENT_TYPE_MAX];
 } BtlClientCmdEntry;
 
@@ -1048,10 +1049,10 @@ static BOOL BattleClient_MainProcNormal(BtlClient *client) {
             client->cmdSeq = 0;
             client->mainSeq = CLIENT_MAIN_SEQ_RETURN_LAST;
         } else if (cmd != 0) {
-            u32 unk01;
+            u32 locksRecPlay;
 
-            client->cmdProc = BattleClient_GetCmdProc(client, cmd, &unk01);
-            if (unk01) {
+            client->cmdProc = BattleClient_GetCmdProc(client, cmd, &locksRecPlay);
+            if (locksRecPlay) {
                 if (!RecPlayer_TryLock(&client->recPlayer)) {
                     client->mainSeq = CLIENT_MAIN_SEQ_WAIT_REC_QUIT;
                     break;
@@ -1196,13 +1197,13 @@ static void BattleClient_SetDummyReturnData(BtlClient *client) {
     client->returnDataSize = sizeof(client->dummyReturnData);
 }
 
-static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *unk01) {
+static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *locksRecPlay) {
     u32 i;
 
     for (i = 0; i < NELEMS(sCmdProcTable); i++) {
         if (cmd == sCmdProcTable[i].cmd) {
-            if (unk01 != NULL) {
-                *unk01 = sCmdProcTable[i].unk01;
+            if (locksRecPlay != NULL) {
+                *locksRecPlay = sCmdProcTable[i].locksRecPlay;
             }
             return sCmdProcTable[i].procs[client->clientType];
         }
@@ -1464,7 +1465,7 @@ static u32 Studio_GetTurnMsgId(BtlClient *client) {
         client->studio.score.lastChoiceResult = 0;
         break;
     default:
-        if (client->turnCount > rules->unk0C) {
+        if (client->turnCount > rules->targetTurnCount) {
             msgId = group * 15 + 9;
         } else if (client->turnCount == 0) {
             msgId = group * 15 + (GFL_RandomLC(2) + 13);
@@ -1588,7 +1589,7 @@ static BOOL Studio_PlayTurnMessages(BtlClient *client) {
 
     switch (client->studio.seq) {
     case STUDIO_TURN_SEQ_INIT:
-        if (rules->unkA8[client->turnCount - 1] == -1 && rules->unkD0[client->turnCount - 1] == -1) {
+        if (rules->turnMsgIds1[client->turnCount - 1] == -1 && rules->turnMsgIds2[client->turnCount - 1] == -1) {
             client->studio.seq = STUDIO_TURN_SEQ_END;
         } else {
             BtlString_SetStudioWords();
@@ -1607,7 +1608,7 @@ static BOOL Studio_PlayTurnMessages(BtlClient *client) {
         Studio_SetSeq(&client->studio, STUDIO_TURN_SEQ_WAIT_EFFECT, STUDIO_TURN_SEQ_MSG_1);
         break;
     case STUDIO_TURN_SEQ_MSG_1:
-        msgId = rules->unkA8[client->turnCount - 1];
+        msgId = rules->turnMsgIds1[client->turnCount - 1];
         if (msgId != -1) {
             Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT, msgId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -1622,7 +1623,7 @@ static BOOL Studio_PlayTurnMessages(BtlClient *client) {
         }
         break;
     case STUDIO_TURN_SEQ_MSG_2:
-        msgId = rules->unkD0[client->turnCount - 1];
+        msgId = rules->turnMsgIds2[client->turnCount - 1];
         if (msgId != -1) {
             Btlv_StringParam_Setup(&client->strParam, BTLV_STR_MOVIE_SCRIPT, msgId);
             BtlvCore_StartMsg(client->viewCore, &client->strParam);
@@ -1660,26 +1661,26 @@ static s32 Studio_FindScene(const BtlScriptedRules *rules, BtlClientStudioWork *
     s32 i;
 
     for (i = 0; i < 12; i++) {
-        s16 unk02 = rules->scenes[i].unk02;
+        s16 requiredChoice = rules->scenes[i].requiredChoice;
 
-        if (unk02 == -1 && rules->scenes[i].unk04 == -1) {
-            if (turn == rules->scenes[i].unk00) {
+        if (requiredChoice == -1 && rules->scenes[i].trigger == -1) {
+            if (turn == rules->scenes[i].turn) {
                 found = i;
             }
-        } else if (turn == rules->scenes[i].unk00 && studio->recordedChoice == unk02) {
+        } else if (turn == rules->scenes[i].turn && studio->recordedChoice == requiredChoice) {
             found = i;
         }
     }
     if (turn == 101) {
         for (i = 0; i < 12; i++) {
-            if (outcome == rules->scenes[i].unk04) {
+            if (outcome == rules->scenes[i].trigger) {
                 found = i;
             }
         }
     }
     if (found < 0) {
         for (i = 0; i < 12; i++) {
-            if (rules->scenes[i].unk04 == 0 && studio->faintedSpecies == rules->scenes[i].unk06 &&
+            if (rules->scenes[i].trigger == 0 && studio->faintedSpecies == rules->scenes[i].triggerValue &&
                 !((studio->usedEventMask >> i) & 1)) {
                 found = i;
             }
@@ -1687,7 +1688,7 @@ static s32 Studio_FindScene(const BtlScriptedRules *rules, BtlClientStudioWork *
     }
     if (found < 0) {
         for (i = 0; i < 12; i++) {
-            if (rules->scenes[i].unk04 == 1 && studio->usedMove == rules->scenes[i].unk06 &&
+            if (rules->scenes[i].trigger == 1 && studio->usedMove == rules->scenes[i].triggerValue &&
                 !((studio->usedEventMask >> i) & 1)) {
                 found = i;
             }
@@ -1710,7 +1711,7 @@ static BOOL Studio_HasChoiceScene(const BtlScriptedRules *rules, BtlClientStudio
 }
 
 static void Studio_SetChoiceField(const BtlScriptedRules *rules, BtlClientStudioWork *studio) {
-    s16 value = rules->scenes[studio->scene].choices[studio->choice].unk06;
+    s16 value = rules->scenes[studio->scene].choices[studio->choice].field;
 
     if (value != -1) {
         studio->newField = value;
@@ -1752,9 +1753,9 @@ static void Studio_SetEnding(BtlClient *client, u32 value) {
 
 static void Studio_DecideEnding(BtlClient *client, const BtlScriptedRules *rules, s32 scene) {
     if (GetStudioMode(client->mainModule) == BTL_STUDIO_MODE_FILM) {
-        if (rules->unk0E == scene) {
+        if (rules->badEndingScene == scene) {
             Studio_SetEnding(client, 1);
-        } else if (rules->scenes[scene].unk0A >= 60) {
+        } else if (rules->scenes[scene].points >= 60) {
             Studio_SetEnding(client, 2);
         } else {
             Studio_SetEnding(client, 0);
@@ -1763,7 +1764,7 @@ static void Studio_DecideEnding(BtlClient *client, const BtlScriptedRules *rules
 }
 
 static void Studio_ScoreEndScene(BtlClient *client, const BtlScriptedRules *rules, s32 scene) {
-    int type = rules->scenes[scene].unk00;
+    int type = rules->scenes[scene].turn;
 
     if (type == 100 || type == 101) {
         StudioScore_AddScenePoints(client, &client->studio.score, scene);
@@ -1998,7 +1999,7 @@ static BOOL Studio_PlayScene(BtlClient *client) {
 
 static void Studio_RecordChoice(const BtlScriptedRules *rules, BtlClientStudioWork *studio, s32 scene, u32 value) {
     const BtlStudioScene *s = &rules->scenes[scene];
-    if (s->unk00 != -1 || s->unk02 != -1 || (u16)s->unk04 > 1) {
+    if (s->turn != -1 || s->requiredChoice != -1 || (u16)s->trigger > 1) {
         studio->recordedChoice = value + 1;
     }
 }
@@ -2182,7 +2183,7 @@ static u32 Studio_GetResultMsgId(BtlClient *client, const BtlScriptedRules *rule
     u32 msgId;
     s32 scene =
         Studio_FindScene(rules, &client->studio, client->turnCount, GetScriptedRulesOutcome(client->mainModule));
-    s16 value = rules->scenes[scene].unk0A;
+    s16 value = rules->scenes[scene].points;
     u8 rank = sGradeMsgGroups[setup->studioGrade];
 
     if (value > 60) {
@@ -2377,7 +2378,8 @@ static BOOL BattleClient_ActionSelectInit(BtlClient *client, s32 *seq) {
     client->prevActionIdx = -1;
     client->firstActionIdx = 0;
     client->escapeSelected = FALSE;
-    BattleClient_SetupPokeSelect(client, 0, client->numCoverPos, &client->pokeListCmd, &client->pokeSelect);
+    BattleClient_SetupPokeSelect(client, BPLIST_MODE_SELECT, client->numCoverPos, &client->pokeListCmd,
+                                 &client->pokeSelect);
     shooterWork_Init(client);
     selItemWork_Init(client);
     for (i = 0; i < 3; i++) {
@@ -2505,7 +2507,8 @@ static BOOL BattleClient_ActionSelectRoot(BtlClient *client, s32 *seq) {
             break;
         case BTLV_COMMAND_RUN:
             if (client->procActionIdx == client->firstActionIdx) {
-                if (CheckCondition(client->procMon, CONDITION_SKY_DROP) && GetRunMode(client->mainModule) != 2) {
+                if (CheckCondition(client->procMon, CONDITION_SKY_DROP) &&
+                    GetRunMode(client->mainModule) != BTL_RUN_MODE_FORFEIT) {
                     *seq = ROOT_SEQ_BLOCKED_RESET_SCREEN;
                 } else {
                     shooterWork_SetCost(client, client->procActionIdx, 0);
@@ -2998,7 +3001,7 @@ static BOOL BattleClient_ActionSelectEscape(BtlClient *client, s32 *seq) {
         u8 trapMonId;
 
         switch (GetRunMode(client->mainModule)) {
-        case 0:
+        case BTL_RUN_MODE_ESCAPE:
         default:
             if (CheckEscapeBlocked(client, &trapMonId, &trapAbility) == TRAP_NONE) {
                 *seq = ESCAPE_SEQ_ESCAPE;
@@ -3014,12 +3017,12 @@ static BOOL BattleClient_ActionSelectEscape(BtlClient *client, s32 *seq) {
                 *seq = ESCAPE_SEQ_WAIT_BLOCKED_MSG;
             }
             break;
-        case 1:
+        case BTL_RUN_MODE_NO_RUNNING:
             Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x4c);
             BattleClient_ShowSelectMsg(client, &client->strParam);
             *seq = ESCAPE_SEQ_WAIT_BLOCKED_MSG;
             break;
-        case 2:
+        case BTL_RUN_MODE_FORFEIT:
             Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x4d);
             Btlv_StringParam_SetWait(&client->strParam, 0xff);
             BattleClient_ShowSelectMsg(client, &client->strParam);
@@ -4132,11 +4135,11 @@ static BOOL BattleClient_PlayerConfirmUseNextPoke(BtlClient *client, s32 *seq) {
 }
 
 static BOOL BattleClient_PlayerSelectChangePokeFainted(BtlClient *client, s32 *seq) {
-    return PlayerSelectChangePoke(client, seq, 2);
+    return PlayerSelectChangePoke(client, seq, BPLIST_MODE_FAINTED);
 }
 
 static BOOL BattleClient_PlayerSelectChangePokeMidTurn(BtlClient *client, s32 *seq) {
-    return PlayerSelectChangePoke(client, seq, 1);
+    return PlayerSelectChangePoke(client, seq, BPLIST_MODE_MID_TURN);
 }
 
 // The AI's choice of the mons to send out
@@ -4349,7 +4352,7 @@ static BOOL BattleClient_PlayerConfirmShiftSwitch(BtlClient *client, s32 *seq) {
     case SHIFT_SWITCH_SEQ_ANSWER:
         if (BtlvCore_WaitMsg(client->viewCore) && BtlvCore_PollYesNo(client->viewCore, &result)) {
             if (result == 0) {
-                BattleClient_SetupPokeSelect(client, 0, 1, &client->pokeListCmd, &client->pokeSelect);
+                BattleClient_SetupPokeSelect(client, BPLIST_MODE_SELECT, 1, &client->pokeListCmd, &client->pokeSelect);
                 BattleClientCmd_StartPokeList(client->viewCore, &client->pokeListCmd, 0, 0, &client->pokeSelect);
                 *seq = SHIFT_SWITCH_SEQ_SELECT;
             } else {
@@ -7188,12 +7191,12 @@ static void StudioScore_AddScenePoints(BtlClient *client, BtlClientStudioScore *
     BtlScriptedRules *rules = GetStudioRules(client->mainModule);
 
     score->counts[STUDIO_SCORE_SCENE] = scene;
-    score->points[STUDIO_SCORE_SCENE] += rules->scenes[scene].unk0A;
+    score->points[STUDIO_SCORE_SCENE] += rules->scenes[scene].points;
 }
 
 static void StudioScore_SetTurnPoints(BtlClient *client, BtlClientStudioScore *score) {
     BtlScriptedRules *rules = GetStudioRules(client->mainModule);
-    int points = 5 - MATH_ABS(rules->unk0C - client->turnCount);
+    int points = 5 - MATH_ABS(rules->targetTurnCount - client->turnCount);
 
     if (points < 0) {
         points = 0;
@@ -7213,13 +7216,13 @@ static void StudioScore_AddChoicePoints(BtlClient *client, BtlClientStudioScore 
     score->points[STUDIO_SCORE_CHOICE] += points;
     score->counts[STUDIO_SCORE_CHOICE]++;
     if (points > 0) {
-        reaction = sReactions[rules->scenes[scene].unk08][0];
+        reaction = sReactions[rules->scenes[scene].reaction][0];
         Studio_SetLastChoiceResult(client, 1);
     } else if (points < 0) {
-        reaction = sReactions[rules->scenes[scene].unk08][1];
+        reaction = sReactions[rules->scenes[scene].reaction][1];
         Studio_SetLastChoiceResult(client, 3);
     } else {
-        reaction = sReactions[rules->scenes[scene].unk08][2];
+        reaction = sReactions[rules->scenes[scene].reaction][2];
         Studio_SetLastChoiceResult(client, 2);
     }
     Studio_ReactAudience(client->viewCore, &client->studio, reaction);
@@ -7238,9 +7241,9 @@ static s32 StudioScore_CalcTotal(BtlClient *client, BtlClientStudioScore *score)
     if (sum == 0) {
         sum = 1;
     }
-    score->unk08 = rules->unk04;
+    score->multiplier = rules->scoreMultiplier;
     score->audienceCount = setup->audienceCount;
-    total = sum * score->unk08;
+    total = sum * score->multiplier;
     score->total = total * score->audienceCount;
     if (score->total > 9999) {
         score->total = 9999;

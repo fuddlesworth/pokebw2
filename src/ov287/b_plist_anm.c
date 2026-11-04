@@ -259,7 +259,7 @@ void BPlistAnm_PutPageButtons(BPlistWork *work, u8 page) {
                 BPlistAnm_PutButton(work, i, 0, 1);
             }
         }
-        if (work->param->unk1F == 1 || work->param->unk1F == 2) {
+        if (work->param->mode == BPLIST_MODE_MID_TURN || work->param->mode == BPLIST_MODE_FAINTED) {
             BPlistAnm_PutReturnButton(work);
         } else {
             BPlistAnm_PutButton(work, 6, 0, 0);
