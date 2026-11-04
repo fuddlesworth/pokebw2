@@ -11,22 +11,22 @@
             "type": "array",
             "items": {
                 "type": "object", "additionalProperties": false,
-                "required": [ "trainer_class", "gender", "type", "unk2", "tournaments", "unk5_7", "tournament", "expert_type", "rank", "unk8_3", "unk9", "bgm", "win_bgm", "unkE" ],
+                "required": [ "trainer_class", "gender", "type", "obj_code", "tournaments", "unk5_7", "tournament", "expert_type", "rank", "iv", "unk9", "bgm", "win_bgm", "special_pokemon" ],
                 "properties": {
                     "trainer_class": { "type": [ "string", "integer" ], "x-constant": "TRAINER_CLASS_", "description": "The Trainer's class, which their entrant and battle take" },
                     "gender": { "type": "integer", "minimum": 0, "maximum": 1 },
                     "type": { "type": "integer", "minimum": 0, "maximum": 255, "description": "WbtTrainer.type, which WbtEntrant_Set takes" },
-                    "unk2": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "WbtTrainer.unk2, which WbtEntrant_Set takes" },
+                    "obj_code": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "The Trainer's field object, WbtTrainer.objCode" },
                     "tournaments": { "type": "array", "items": { "enum": [ 11, 4, 10, 12, 14, 13, 15 ] }, "description": "The tournaments of 11, 4, 10, 12, 14, 13 and 15 that the Trainer takes part in (inTournament11 and the others)" },
                     "unk5_7": { "type": "boolean", "description": "The last bit of those, WbtTrainer.unk5_7" },
                     "tournament": { "type": "integer", "minimum": 0, "maximum": 255, "description": "The tournament that only has this Trainer, for tournaments 1 and 5 to 9" },
                     "expert_type": { "type": [ "string", "integer" ], "x-constant": "TYPE_", "description": "The type the Type Expert Tournament picks the Trainer for, TYPE_NULL for any" },
-                    "rank": { "type": "integer", "minimum": 0, "maximum": 7, "description": "WbtTrainer.unk8_0, which WbtEntrant_Set takes as the entrant's rank" },
-                    "unk8_3": { "type": "integer", "minimum": 0, "maximum": 31, "description": "WbtTrainer.unk8_3, which WbtEntrant_Set takes" },
+                    "rank": { "type": "integer", "minimum": 0, "maximum": 7, "description": "WbtTrainer.rank, which WbtEntrant_Set takes as the entrant's rank" },
+                    "iv": { "type": "integer", "minimum": 0, "maximum": 31, "description": "The IVs of the Trainer's Pokémon, WbtTrainer.iv" },
                     "unk9": { "type": "integer", "minimum": 0, "maximum": 255, "description": "WbtTrainer.unk9, which the code doesn't read" },
                     "bgm": { "type": [ "string", "integer" ], "x-constant": "SEQ_", "description": "The music of the battle against the Trainer" },
                     "win_bgm": { "type": [ "string", "integer" ], "x-constant": "SEQ_", "description": "The music of winning it" },
-                    "unkE": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "WbtTrainer.unkE, whose being set WbtEntrant_Set takes" }
+                    "special_pokemon": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "Nonzero when the Trainer has a special Pokémon, WbtTrainer.specialPokemon" }
                 }
             }
         }

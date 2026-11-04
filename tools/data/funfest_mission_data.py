@@ -47,17 +47,19 @@ def flag(number: int):
 
 
 def mission_json(header: bytes, params: bytes, texts: list[str]) -> dict:
-    kind, unk01, header_unk02 = HEADER.unpack(header)
-    (unk00, params_unk01, extra_seconds, unk03, unk04, target_kind, message, result_message, second_item, target,
-     variant, reward, unk10, required_flag, unk14) = PARAMS.unpack_from(params)
+    kind, version, clear_flag = HEADER.unpack(header)
+    (ends_at_target, params_unk01, extra_seconds, unk03, second_count, target_kind, message, result_message, second_item,
+     target, variant, reward, unlock_flag, required_flag, stage_patterns) = PARAMS.unpack_from(params)
     levels = [LEVEL.unpack_from(params, PARAMS.size + LEVEL.size * i) for i in range(LEVEL_COUNT)]
     return {"kind": kind, "message": texts[message], "result_message": texts[result_message],
             "target": name("SPECIES_", target) if kind == KIND_SPECIES else target, "target_kind": target_kind,
             "variant": variant, "reward_item": name("ITEM_", reward), "second_item": name("ITEM_", second_item),
             "required_flag": flag(required_flag), "extra_seconds_index": extra_seconds,
-            "levels": [{"seconds": seconds, "count": count, "unk3": unk3} for seconds, count, unk3 in levels],
-            "unk00": unk00, "unk03": unk03, "unk04": unk04, "unk10": unk10, "unk14": unk14,
-            "header_unk01": unk01, "header_unk02": header_unk02, "params_unk01": params_unk01}
+            "levels": [{"seconds": seconds, "count": count, "reward_item_count": reward_count}
+                       for seconds, count, reward_count in levels],
+            "ends_at_target": ends_at_target, "unk03": unk03, "second_item_count": second_count,
+            "unlock_flag": unlock_flag, "stage_patterns": stage_patterns,
+            "version": version, "clear_flag": clear_flag, "params_unk01": params_unk01}
 
 
 def mission_bytes(entry: dict, texts: dict[str, int], where: str) -> tuple[bytes, bytes]:
@@ -66,13 +68,13 @@ def mission_bytes(entry: dict, texts: dict[str, int], where: str) -> tuple[bytes
             raise DataError(f"{where}: {entry[key]} is not a message of {label(MESSAGES)}")
         return texts[entry[key]]
 
-    header = HEADER.pack(entry["kind"], entry["header_unk01"], entry["header_unk02"])
-    params = PARAMS.pack(entry["unk00"], entry["params_unk01"], entry["extra_seconds_index"], entry["unk03"],
-                         entry["unk04"], entry["target_kind"], text("message"), text("result_message"),
+    header = HEADER.pack(entry["kind"], entry["version"], entry["clear_flag"])
+    params = PARAMS.pack(entry["ends_at_target"], entry["params_unk01"], entry["extra_seconds_index"], entry["unk03"],
+                         entry["second_item_count"], entry["target_kind"], text("message"), text("result_message"),
                          value(entry["second_item"], where), value(entry["target"], where), entry["variant"],
-                         value(entry["reward_item"], where), entry["unk10"], value(entry["required_flag"], where),
-                         entry["unk14"])
-    levels = b"".join(LEVEL.pack(level["seconds"], level["count"], level["unk3"]) for level in entry["levels"])
+                         value(entry["reward_item"], where), entry["unlock_flag"], value(entry["required_flag"], where),
+                         entry["stage_patterns"])
+    levels = b"".join(LEVEL.pack(level["seconds"], level["count"], level["reward_item_count"]) for level in entry["levels"])
     return header, params + levels
 
 

@@ -16,31 +16,31 @@
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 5
+                    "reward_item_count": 5
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 0,
-            "unk14": 157988,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 0,
+            "stage_patterns": 157988,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -58,31 +58,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 25,
-                    "unk3": 15
+                    "reward_item_count": 15
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 0,
-            "unk14": 92386,
-            "header_unk01": 0,
-            "header_unk02": 2444,
+            "second_item_count": 1,
+            "unlock_flag": 0,
+            "stage_patterns": 92386,
+            "version": 0,
+            "clear_flag": 2444,
             "params_unk01": 0
         },
         {
@@ -100,31 +100,31 @@
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 15,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 300,
                     "count": 20,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 40,
-                    "unk3": 15
+                    "reward_item_count": 15
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2444,
-            "unk14": 91292,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2444,
+            "stage_patterns": 91292,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -142,31 +142,31 @@
                 {
                     "seconds": 180,
                     "count": 4,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 180,
                     "count": 8,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 16,
-                    "unk3": 16
+                    "reward_item_count": 16
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 25
+                    "reward_item_count": 25
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 12,
-            "unk10": 0,
-            "unk14": 91884,
-            "header_unk01": 0,
-            "header_unk02": 2445,
+            "second_item_count": 12,
+            "unlock_flag": 0,
+            "stage_patterns": 91884,
+            "version": 0,
+            "clear_flag": 2445,
             "params_unk01": 0
         },
         {
@@ -184,31 +184,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 25,
-                    "unk3": 15
+                    "reward_item_count": 15
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2445,
-            "unk14": 91876,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2445,
+            "stage_patterns": 91876,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -226,31 +226,31 @@
                 {
                     "seconds": 300,
                     "count": 1,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 300,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 20
+                    "reward_item_count": 20
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 0,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 2462,
+            "second_item_count": 10,
+            "unlock_flag": 0,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 2462,
             "params_unk01": 0
         },
         {
@@ -268,31 +268,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 15
+                    "reward_item_count": 15
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 20
+                    "reward_item_count": 20
                 }
             ],
-            "unk00": 1,
+            "ends_at_target": 1,
             "unk03": 1,
-            "unk04": 0,
-            "unk10": 2462,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 0,
+            "unlock_flag": 2462,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -310,31 +310,31 @@
                 {
                     "seconds": 300,
                     "count": 2,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 4,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 300,
                     "count": 8,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 60
+                    "reward_item_count": 60
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2452,
-            "unk14": 92443,
-            "header_unk01": 0,
-            "header_unk02": 2548,
+            "second_item_count": 1,
+            "unlock_flag": 2452,
+            "stage_patterns": 92443,
+            "version": 0,
+            "clear_flag": 2548,
             "params_unk01": 0
         },
         {
@@ -352,31 +352,31 @@
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 30,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 1,
+            "ends_at_target": 1,
             "unk03": 1,
-            "unk04": 0,
-            "unk10": 2548,
-            "unk14": 91930,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 0,
+            "unlock_flag": 2548,
+            "stage_patterns": 91930,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -394,31 +394,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 25,
-                    "unk3": 15
+                    "reward_item_count": 15
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2447,
-            "unk14": 91857,
-            "header_unk01": 2,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2447,
+            "stage_patterns": 91857,
+            "version": 2,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -436,31 +436,31 @@
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 24,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 15
+                    "reward_item_count": 15
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2447,
-            "unk14": 92443,
-            "header_unk01": 1,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2447,
+            "stage_patterns": 92443,
+            "version": 1,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -478,31 +478,31 @@
                 {
                     "seconds": 300,
                     "count": 2,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 4,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 300,
                     "count": 8,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2453,
-            "unk14": 92379,
-            "header_unk01": 2,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2453,
+            "stage_patterns": 92379,
+            "version": 2,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -520,31 +520,31 @@
                 {
                     "seconds": 300,
                     "count": 2,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 4,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 300,
                     "count": 8,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2453,
-            "unk14": 92379,
-            "header_unk01": 1,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2453,
+            "stage_patterns": 92379,
+            "version": 1,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -562,31 +562,31 @@
                 {
                     "seconds": 300,
                     "count": 1,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 15
+                    "reward_item_count": 15
                 },
                 {
                     "seconds": 300,
                     "count": 30,
-                    "unk3": 40
+                    "reward_item_count": 40
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2504,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 2504,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -604,31 +604,31 @@
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 40,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 100,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2457,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2457,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -646,31 +646,31 @@
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 40,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 100,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2458,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2458,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -688,31 +688,31 @@
                 {
                     "seconds": 300,
                     "count": 3,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 30,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 5
+                    "reward_item_count": 5
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2456,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2456,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -730,31 +730,31 @@
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 300,
                     "count": 20,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 300,
                     "count": 30,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 180,
                     "count": 30,
-                    "unk3": 5
+                    "reward_item_count": 5
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2448,
-            "unk14": 91921,
-            "header_unk01": 2,
-            "header_unk02": 2549,
+            "second_item_count": 5,
+            "unlock_flag": 2448,
+            "stage_patterns": 91921,
+            "version": 2,
+            "clear_flag": 2549,
             "params_unk01": 0
         },
         {
@@ -772,31 +772,31 @@
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 300,
                     "count": 20,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 300,
                     "count": 30,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 180,
                     "count": 30,
-                    "unk3": 5
+                    "reward_item_count": 5
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2448,
-            "unk14": 91921,
-            "header_unk01": 1,
-            "header_unk02": 2549,
+            "second_item_count": 5,
+            "unlock_flag": 2448,
+            "stage_patterns": 91921,
+            "version": 1,
+            "clear_flag": 2549,
             "params_unk01": 0
         },
         {
@@ -814,31 +814,31 @@
                 {
                     "seconds": 300,
                     "count": 2,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 300,
                     "count": 4,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 30,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 1,
+            "ends_at_target": 1,
             "unk03": 1,
-            "unk04": 0,
-            "unk10": 2549,
-            "unk14": 58505,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 0,
+            "unlock_flag": 2549,
+            "stage_patterns": 58505,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -856,31 +856,31 @@
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 180,
                     "count": 24,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 100,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2449,
-            "unk14": 92834,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 2449,
+            "stage_patterns": 92834,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -898,31 +898,31 @@
                 {
                     "seconds": 180,
                     "count": 1,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 180,
                     "count": 2,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 180,
                     "count": 8,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2513,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 2550,
+            "second_item_count": 5,
+            "unlock_flag": 2513,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 2550,
             "params_unk01": 0
         },
         {
@@ -940,31 +940,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 180,
                     "count": 7,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 1,
+            "ends_at_target": 1,
             "unk03": 1,
-            "unk04": 0,
-            "unk10": 2550,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 0,
+            "unlock_flag": 2550,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -982,31 +982,31 @@
                 {
                     "seconds": 300,
                     "count": 3,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 6,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 300,
                     "count": 12,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2481,
-            "unk14": 91867,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2481,
+            "stage_patterns": 91867,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1024,31 +1024,31 @@
                 {
                     "seconds": 180,
                     "count": 4,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 180,
                     "count": 8,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 32,
-                    "unk3": 15
+                    "reward_item_count": 15
                 },
                 {
                     "seconds": 180,
                     "count": 100,
-                    "unk3": 100
+                    "reward_item_count": 100
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2459,
-            "unk14": 91931,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2459,
+            "stage_patterns": 91931,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1066,31 +1066,31 @@
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 1,
+            "ends_at_target": 1,
             "unk03": 1,
-            "unk04": 0,
-            "unk10": 2454,
-            "unk14": 92452,
-            "header_unk01": 0,
-            "header_unk02": 2551,
+            "second_item_count": 0,
+            "unlock_flag": 2454,
+            "stage_patterns": 92452,
+            "version": 0,
+            "clear_flag": 2551,
             "params_unk01": 0
         },
         {
@@ -1108,31 +1108,31 @@
                 {
                     "seconds": 300,
                     "count": 5,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 300,
                     "count": 40,
-                    "unk3": 40
+                    "reward_item_count": 40
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 1
+                    "reward_item_count": 1
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2551,
-            "unk14": 92451,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2551,
+            "stage_patterns": 92451,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1150,31 +1150,31 @@
                 {
                     "seconds": 600,
                     "count": 5,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 600,
                     "count": 10,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 600,
                     "count": 20,
-                    "unk3": 20
+                    "reward_item_count": 20
                 },
                 {
                     "seconds": 600,
                     "count": 100,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2400,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 2400,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1192,31 +1192,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 16,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 180,
                     "count": 32,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 100,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2400,
-            "unk14": 91931,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2400,
+            "stage_patterns": 91931,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1234,31 +1234,31 @@
                 {
                     "seconds": 120,
                     "count": 5,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 120,
                     "count": 10,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 120,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 120,
                     "count": 100,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2400,
-            "unk14": 92323,
-            "header_unk01": 2,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2400,
+            "stage_patterns": 92323,
+            "version": 2,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1276,31 +1276,31 @@
                 {
                     "seconds": 120,
                     "count": 5,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 120,
                     "count": 10,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 120,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 120,
                     "count": 100,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2400,
-            "unk14": 92323,
-            "header_unk01": 1,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2400,
+            "stage_patterns": 92323,
+            "version": 1,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1318,31 +1318,31 @@
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 180,
                     "count": 40,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2400,
-            "unk14": 91931,
-            "header_unk01": 2,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2400,
+            "stage_patterns": 91931,
+            "version": 2,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1360,31 +1360,31 @@
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 180,
                     "count": 40,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2400,
-            "unk14": 91931,
-            "header_unk01": 1,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2400,
+            "stage_patterns": 91931,
+            "version": 1,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1402,31 +1402,31 @@
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 300,
                     "count": 15,
-                    "unk3": 7
+                    "reward_item_count": 7
                 },
                 {
                     "seconds": 300,
                     "count": 20,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 40,
-                    "unk3": 15
+                    "reward_item_count": 15
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2400,
-            "unk14": 92452,
-            "header_unk01": 0,
-            "header_unk02": 2460,
+            "second_item_count": 1,
+            "unlock_flag": 2400,
+            "stage_patterns": 92452,
+            "version": 0,
+            "clear_flag": 2460,
             "params_unk01": 0
         },
         {
@@ -1444,31 +1444,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 180,
                     "count": 80,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 5
+                    "reward_item_count": 5
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2460,
-            "unk14": 91805,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2460,
+            "stage_patterns": 91805,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1486,31 +1486,31 @@
                 {
                     "seconds": 600,
                     "count": 1,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 600,
                     "count": 3,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 600,
                     "count": 10,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 300,
                     "count": 3,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2400,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 2461,
+            "second_item_count": 10,
+            "unlock_flag": 2400,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 2461,
             "params_unk01": 0
         },
         {
@@ -1528,31 +1528,31 @@
                 {
                     "seconds": 600,
                     "count": 3,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 600,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 600,
                     "count": 10,
-                    "unk3": 20
+                    "reward_item_count": 20
                 },
                 {
                     "seconds": 600,
                     "count": 30,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2461,
-            "unk14": 0,
-            "header_unk01": 2,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2461,
+            "stage_patterns": 0,
+            "version": 2,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1570,31 +1570,31 @@
                 {
                     "seconds": 600,
                     "count": 3,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 600,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 600,
                     "count": 10,
-                    "unk3": 20
+                    "reward_item_count": 20
                 },
                 {
                     "seconds": 600,
                     "count": 30,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2461,
-            "unk14": 0,
-            "header_unk01": 1,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2461,
+            "stage_patterns": 0,
+            "version": 1,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1612,31 +1612,31 @@
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 180,
                     "count": 20,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 180,
                     "count": 30,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2437,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 2437,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1654,31 +1654,31 @@
                 {
                     "seconds": 180,
                     "count": 6,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 180,
                     "count": 12,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 180,
                     "count": 24,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 90,
                     "count": 9,
-                    "unk3": 2
+                    "reward_item_count": 2
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 2450,
-            "unk14": 92881,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 2450,
+            "stage_patterns": 92881,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1696,31 +1696,31 @@
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 2
+                    "reward_item_count": 2
                 },
                 {
                     "seconds": 300,
                     "count": 20,
-                    "unk3": 4
+                    "reward_item_count": 4
                 },
                 {
                     "seconds": 300,
                     "count": 40,
-                    "unk3": 8
+                    "reward_item_count": 8
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2451,
-            "unk14": 91827,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 2451,
+            "stage_patterns": 91827,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1738,31 +1738,31 @@
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 15
+                    "reward_item_count": 15
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 180,
                     "count": 100,
-                    "unk3": 100
+                    "reward_item_count": 100
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 2455,
-            "unk14": 91820,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 2455,
+            "stage_patterns": 91820,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1780,31 +1780,31 @@
                 {
                     "seconds": 600,
                     "count": 3,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 600,
                     "count": 12,
-                    "unk3": 6
+                    "reward_item_count": 6
                 },
                 {
                     "seconds": 600,
                     "count": 50,
-                    "unk3": 12
+                    "reward_item_count": 12
                 },
                 {
                     "seconds": 600,
                     "count": 100,
-                    "unk3": 20
+                    "reward_item_count": 20
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 105,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 105,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1822,31 +1822,31 @@
                 {
                     "seconds": 300,
                     "count": 1,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 15
+                    "reward_item_count": 15
                 },
                 {
                     "seconds": 300,
                     "count": 30,
-                    "unk3": 40
+                    "reward_item_count": 40
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2400,
-            "unk14": 0,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 2400,
+            "stage_patterns": 0,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1864,31 +1864,31 @@
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 20,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 30,
-                    "unk3": 15
+                    "reward_item_count": 15
                 },
                 {
                     "seconds": 180,
                     "count": 100,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 2557,
-            "unk14": 93027,
-            "header_unk01": 0,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 2557,
+            "stage_patterns": 93027,
+            "version": 0,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1906,31 +1906,31 @@
                 {
                     "seconds": 600,
                     "count": 30,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 600,
                     "count": 30,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 600,
                     "count": 30,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 600,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 0,
-            "unk14": 0,
-            "header_unk01": 3,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 0,
+            "stage_patterns": 0,
+            "version": 3,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1948,31 +1948,31 @@
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 0,
-            "unk14": 91885,
-            "header_unk01": 3,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 0,
+            "stage_patterns": 91885,
+            "version": 3,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -1990,31 +1990,31 @@
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 0,
-            "unk14": 92899,
-            "header_unk01": 3,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 0,
+            "stage_patterns": 92899,
+            "version": 3,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -2032,31 +2032,31 @@
                 {
                     "seconds": 300,
                     "count": 250,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 300,
                     "count": 250,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 300,
                     "count": 250,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 300,
                     "count": 5,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 0,
-            "unk14": 93027,
-            "header_unk01": 3,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 0,
+            "stage_patterns": 93027,
+            "version": 3,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -2074,31 +2074,31 @@
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 50,
-            "unk10": 0,
-            "unk14": 93027,
-            "header_unk01": 3,
-            "header_unk02": 0,
+            "second_item_count": 50,
+            "unlock_flag": 0,
+            "stage_patterns": 93027,
+            "version": 3,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -2116,31 +2116,31 @@
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 5,
-                    "unk3": 10
+                    "reward_item_count": 10
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 0,
-            "unk14": 91885,
-            "header_unk01": 3,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 0,
+            "stage_patterns": 91885,
+            "version": 3,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -2158,31 +2158,31 @@
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 300,
                     "count": 20,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 5,
-            "unk10": 0,
-            "unk14": 91877,
-            "header_unk01": 4,
-            "header_unk02": 0,
+            "second_item_count": 5,
+            "unlock_flag": 0,
+            "stage_patterns": 91877,
+            "version": 4,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -2200,31 +2200,31 @@
                 {
                     "seconds": 600,
                     "count": 10,
-                    "unk3": 1
+                    "reward_item_count": 1
                 },
                 {
                     "seconds": 600,
                     "count": 15,
-                    "unk3": 3
+                    "reward_item_count": 3
                 },
                 {
                     "seconds": 600,
                     "count": 30,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 600,
                     "count": 100,
-                    "unk3": 30
+                    "reward_item_count": 30
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 0,
-            "unk14": 59675,
-            "header_unk01": 5,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 0,
+            "stage_patterns": 59675,
+            "version": 5,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -2242,31 +2242,31 @@
                 {
                     "seconds": 180,
                     "count": 3,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 180,
                     "count": 10,
-                    "unk3": 10
+                    "reward_item_count": 10
                 },
                 {
                     "seconds": 180,
                     "count": 30,
-                    "unk3": 30
+                    "reward_item_count": 30
                 },
                 {
                     "seconds": 180,
                     "count": 50,
-                    "unk3": 50
+                    "reward_item_count": 50
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 10,
-            "unk10": 0,
-            "unk14": 91885,
-            "header_unk01": 6,
-            "header_unk02": 0,
+            "second_item_count": 10,
+            "unlock_flag": 0,
+            "stage_patterns": 91885,
+            "version": 6,
+            "clear_flag": 0,
             "params_unk01": 0
         },
         {
@@ -2284,31 +2284,31 @@
                 {
                     "seconds": 300,
                     "count": 10,
-                    "unk3": 5
+                    "reward_item_count": 5
                 },
                 {
                     "seconds": 300,
                     "count": 30,
-                    "unk3": 15
+                    "reward_item_count": 15
                 },
                 {
                     "seconds": 300,
                     "count": 100,
-                    "unk3": 50
+                    "reward_item_count": 50
                 },
                 {
                     "seconds": 300,
                     "count": 50,
-                    "unk3": 5
+                    "reward_item_count": 5
                 }
             ],
-            "unk00": 0,
+            "ends_at_target": 0,
             "unk03": 2,
-            "unk04": 1,
-            "unk10": 0,
-            "unk14": 59545,
-            "header_unk01": 7,
-            "header_unk02": 0,
+            "second_item_count": 1,
+            "unlock_flag": 0,
+            "stage_patterns": 59545,
+            "version": 7,
+            "clear_flag": 0,
             "params_unk01": 0
         }
     ]

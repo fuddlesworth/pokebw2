@@ -25,19 +25,19 @@ TOURNAMENT_BITS = [11, 4, 10, 12, 14, 13, 15]  # inTournament11 to inTournament1
 
 
 def trainer_json(values) -> dict:
-    kind, gender, unk2, trainer_class, bits, tournament, expert_type, byte8, unk9, bgm, win_bgm, unk_e = values
-    return {"trainer_class": name("TRAINER_CLASS_", trainer_class), "gender": gender, "type": kind, "unk2": unk2,
+    kind, gender, obj_code, trainer_class, bits, tournament, expert_type, byte8, unk9, bgm, win_bgm, special = values
+    return {"trainer_class": name("TRAINER_CLASS_", trainer_class), "gender": gender, "type": kind, "obj_code": obj_code,
             "tournaments": [t for bit, t in enumerate(TOURNAMENT_BITS) if bits >> bit & 1],
             "unk5_7": bool(bits >> 7), "tournament": tournament, "expert_type": name("TYPE_", expert_type),
-            "rank": byte8 & 7, "unk8_3": byte8 >> 3, "unk9": unk9, "bgm": name("SEQ_", bgm),
-            "win_bgm": name("SEQ_", win_bgm), "unkE": unk_e}
+            "rank": byte8 & 7, "iv": byte8 >> 3, "unk9": unk9, "bgm": name("SEQ_", bgm),
+            "win_bgm": name("SEQ_", win_bgm), "special_pokemon": special}
 
 
 def trainer_bytes(entry: dict, where: str) -> bytes:
     bits = sum(1 << TOURNAMENT_BITS.index(t) for t in set(entry["tournaments"])) | entry["unk5_7"] << 7
-    return TRAINER.pack(entry["type"], entry["gender"], entry["unk2"], value(entry["trainer_class"], where), bits,
-                        entry["tournament"], value(entry["expert_type"], where), entry["rank"] | entry["unk8_3"] << 3,
-                        entry["unk9"], value(entry["bgm"], where), value(entry["win_bgm"], where), entry["unkE"])
+    return TRAINER.pack(entry["type"], entry["gender"], entry["obj_code"], value(entry["trainer_class"], where), bits,
+                        entry["tournament"], value(entry["expert_type"], where), entry["rank"] | entry["iv"] << 3,
+                        entry["unk9"], value(entry["bgm"], where), value(entry["win_bgm"], where), entry["special_pokemon"])
 
 
 def dump(files: Path, output: Path):
