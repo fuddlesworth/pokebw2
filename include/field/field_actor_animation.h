@@ -13,7 +13,7 @@
 // Only the fields needed by the current C accessors are known.
 struct FieldActorAnmProc {
     FieldActor *actor;
-    u8 unk4[0x180];
+    u8 curveBuffer[0x180]; // where the animation's curve is loaded
     G3DCurve *curve;
     FieldAsyncProc *asyncProc;
     VecFx32 pos;
