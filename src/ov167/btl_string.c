@@ -36,7 +36,8 @@ typedef struct BtlStringWork {
     u32 args[9];
     HeapID heapId;
     u32 clientId;
-    u16 unk68;
+    // BTL_SETUP_FLAG_200: names the foes' Pokémon as the player's, without "wild" or "foe"
+    u16 noFoeVariants;
     // Set while FormatLearnMsgCore formats, which names the Pokémon behind an Illusion
     u16 trueNames;
 } BtlStringWork;
@@ -106,7 +107,8 @@ static BtlStringWork sWork;
 
 // Which variant of a message names a Pokémon: 0 for the player's side, 1 for a wild Pokémon, 2 for a foe's
 static inline int GetMonVariant(u8 monId) {
-    if (sWork.unk68 == 0 && AreClientsOnOppositeSides(sWork.mainModule, sWork.clientId, GetClientIDFromMonID(monId))) {
+    if (sWork.noFoeVariants == 0 &&
+        AreClientsOnOppositeSides(sWork.mainModule, sWork.clientId, GetClientIDFromMonID(monId))) {
         if (BtlSetup_GetBattleType(sWork.mainModule) == BTL_TYPE_WILD ||
             BtlSetup_GetBattleType(sWork.mainModule) == BTL_TYPE_CAPTURE_DEMO) {
             return 1;
@@ -148,7 +150,7 @@ void BtlString_Init(BtlMainModule *mainModule, u8 clientId, const BtlPokeCon *po
     sWork.pokeCon = pokeCon;
     sWork.heapId = heapId;
     sWork.clientId = clientId;
-    sWork.unk68 = BtlSetup_IsBattleType(mainModule, BTL_SETUP_FLAG_200);
+    sWork.noFoeVariants = BtlSetup_IsBattleType(mainModule, BTL_SETUP_FLAG_200);
     sWork.trueNames = FALSE;
     sWork.wordSet = GFL_WordSetSystemCreateDefault(heapId);
     sWork.strbuf = GFL_StrBufCreate(0x2f4, heapId);
