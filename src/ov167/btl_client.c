@@ -354,6 +354,15 @@ enum {
     STUDIO_SCORE_MAX,
 };
 
+// How the audience took the player's last choice in a scene, by its points, which picks the next turn's message
+// (Studio_GetTurnMsgId) and is cleared once shown
+enum {
+    STUDIO_CHOICE_RESULT_NONE,
+    STUDIO_CHOICE_RESULT_GOOD,
+    STUDIO_CHOICE_RESULT_NEUTRAL,
+    STUDIO_CHOICE_RESULT_BAD,
+};
+
 // A Pokestar Studios movie's score
 typedef struct {
     s16 points[STUDIO_SCORE_MAX];
@@ -361,8 +370,7 @@ typedef struct {
     // The total is the sum of the points times multiplier times this
     s16 audienceCount;
     u8 counts[STUDIO_SCORE_MAX];
-    // How the last choice scored: 1 for points won, 2 for none and 3 for points lost, which picks the next turn's
-    // message
+    // How the last choice scored, a STUDIO_CHOICE_RESULT_*
     u32 lastChoiceResult;
     // Clamped to +-9999
     s32 total;
@@ -1460,11 +1468,11 @@ static u32 Studio_GetTurnMsgId(BtlClient *client) {
     u32 msgId;
 
     switch (client->studio.score.lastChoiceResult) {
-    case 1:
-    case 2:
-    case 3:
+    case STUDIO_CHOICE_RESULT_GOOD:
+    case STUDIO_CHOICE_RESULT_NEUTRAL:
+    case STUDIO_CHOICE_RESULT_BAD:
         msgId = client->studio.score.lastChoiceResult + 5 + group * 15;
-        client->studio.score.lastChoiceResult = 0;
+        client->studio.score.lastChoiceResult = STUDIO_CHOICE_RESULT_NONE;
         break;
     default:
         if (client->turnCount > rules->targetTurnCount) {
@@ -7219,13 +7227,13 @@ static void StudioScore_AddChoicePoints(BtlClient *client, BtlClientStudioScore 
     score->counts[STUDIO_SCORE_CHOICE]++;
     if (points > 0) {
         reaction = sReactions[rules->scenes[scene].reaction][0];
-        Studio_SetLastChoiceResult(client, 1);
+        Studio_SetLastChoiceResult(client, STUDIO_CHOICE_RESULT_GOOD);
     } else if (points < 0) {
         reaction = sReactions[rules->scenes[scene].reaction][1];
-        Studio_SetLastChoiceResult(client, 3);
+        Studio_SetLastChoiceResult(client, STUDIO_CHOICE_RESULT_BAD);
     } else {
         reaction = sReactions[rules->scenes[scene].reaction][2];
-        Studio_SetLastChoiceResult(client, 2);
+        Studio_SetLastChoiceResult(client, STUDIO_CHOICE_RESULT_NEUTRAL);
     }
     Studio_ReactAudience(client->viewCore, &client->studio, reaction);
 }
