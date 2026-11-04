@@ -502,7 +502,7 @@ static s32 sExpSeq;
 static u32 sLearnIdx;
 static BattleMonLevelUp sLevelUp;
 
-static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *unk01);
+static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *locksRecPlay);
 static void BattleClient_SetMainProc(BtlClient *client, BOOL (*mainProc)(BtlClient *client));
 static BOOL BattleClient_MainProcNormal(BtlClient *client);
 static BOOL BattleClient_MainProcRecPlay(BtlClient *client);
@@ -773,7 +773,8 @@ static void Studio_PlayEndingBgm(BtlMainModule *mainModule);
 // A server command a client handles, with its handler for each client type
 typedef struct {
     u8 cmd;
-    u8 unk01;
+    // Whether a playback can't be quit while the command runs (RecPlayer_TryLock)
+    u8 locksRecPlay;
     BtlClientCmdProc procs[BTL_CLIENT_TYPE_MAX];
 } BtlClientCmdEntry;
 
@@ -1048,10 +1049,10 @@ static BOOL BattleClient_MainProcNormal(BtlClient *client) {
             client->cmdSeq = 0;
             client->mainSeq = CLIENT_MAIN_SEQ_RETURN_LAST;
         } else if (cmd != 0) {
-            u32 unk01;
+            u32 locksRecPlay;
 
-            client->cmdProc = BattleClient_GetCmdProc(client, cmd, &unk01);
-            if (unk01) {
+            client->cmdProc = BattleClient_GetCmdProc(client, cmd, &locksRecPlay);
+            if (locksRecPlay) {
                 if (!RecPlayer_TryLock(&client->recPlayer)) {
                     client->mainSeq = CLIENT_MAIN_SEQ_WAIT_REC_QUIT;
                     break;
@@ -1196,13 +1197,13 @@ static void BattleClient_SetDummyReturnData(BtlClient *client) {
     client->returnDataSize = sizeof(client->dummyReturnData);
 }
 
-static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *unk01) {
+static BtlClientCmdProc BattleClient_GetCmdProc(BtlClient *client, u32 cmd, u32 *locksRecPlay) {
     u32 i;
 
     for (i = 0; i < NELEMS(sCmdProcTable); i++) {
         if (cmd == sCmdProcTable[i].cmd) {
-            if (unk01 != NULL) {
-                *unk01 = sCmdProcTable[i].unk01;
+            if (locksRecPlay != NULL) {
+                *locksRecPlay = sCmdProcTable[i].locksRecPlay;
             }
             return sCmdProcTable[i].procs[client->clientType];
         }
