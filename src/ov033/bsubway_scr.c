@@ -292,7 +292,7 @@ u16 BsubwayScr_AddBattlePoints(BSubwayScrWork *bsw) {
         } else if (countIndex >= 10) {
             countIndex = 9;
         }
-        if (bsw->unkC_1 != 0) {
+        if (bsw->fixedReward != 0) {
             if (reward == 1) {
                 reward = 30;
             } else {
@@ -389,7 +389,7 @@ void BsubwayScr_SetClearScore(BSubwayScrWork *bsw, GameSystem *gsys) {
 
 void BsubwayScr_ClearStateBits(BSubwayScrWork *bsw, GameSystem *gsys) {
     bsw->winMax = 0;
-    bsw->unkC_1 = 0;
+    bsw->fixedReward = 0;
 }
 
 void BsubwayScr_CreateRoundTrainers(BSubwayScrWork *bsw) {

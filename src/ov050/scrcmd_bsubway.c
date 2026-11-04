@@ -567,10 +567,10 @@ BOOL Scrcmd_Bsubway_Tool(VM *vm, FieldScriptEnv *env) {
         *retWk = bsw->playMode;
         break;
     case 311:
-        bsw->unkC_1 = param0;
+        bsw->fixedReward = param0;
         break;
     case 312:
-        *retWk = bsw->unkC_1;
+        *retWk = bsw->fixedReward;
         break;
     case 313:
         *retWk = BsubwayScr_AddBattlePoints(bsw);

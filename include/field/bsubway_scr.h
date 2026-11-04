@@ -105,7 +105,8 @@ struct BSubwayScrWork {
     u8 partnerGender;
     // Set once the seventh round is won
     u16 winMax : 1;
-    u16 unkC_1 : 2;
+    // Set by the scripts: the battle points of the round are then 10, or 30 on a super train, whatever the streak
+    u16 fixedReward : 2;
     // Whether this player chose to retire, as sent to the partner: either's retiring retires both
     u16 retired : 1;
     u16 unkC_4 : 1;
