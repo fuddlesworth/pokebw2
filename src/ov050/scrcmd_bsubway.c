@@ -786,8 +786,8 @@ BOOL Scrcmd_Bsubway_Tool(VM *vm, FieldScriptEnv *env) {
         break;
     case 353:
         if (bsw->btlSetup != NULL) {
-            u8 a = bsw->btlSetup->unkD2;
-            u8 b = bsw->btlSetup->unkDB;
+            u8 a = bsw->btlSetup->turnCount;
+            u8 b = bsw->btlSetup->playerFaintedCount;
             int count;
             PokeParty *party = bsw->btlSetup->party[0];
             int i;

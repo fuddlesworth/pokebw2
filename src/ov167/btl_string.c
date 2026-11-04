@@ -148,7 +148,7 @@ void BtlString_Init(BtlMainModule *mainModule, u8 clientId, const BtlPokeCon *po
     sWork.pokeCon = pokeCon;
     sWork.heapId = heapId;
     sWork.clientId = clientId;
-    sWork.unk68 = BtlSetup_IsBattleType(mainModule, 0x200);
+    sWork.unk68 = BtlSetup_IsBattleType(mainModule, BTL_SETUP_FLAG_200);
     sWork.trueNames = FALSE;
     sWork.wordSet = GFL_WordSetSystemCreateDefault(heapId);
     sWork.strbuf = GFL_StrBufCreate(0x2f4, heapId);

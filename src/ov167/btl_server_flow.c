@@ -5430,7 +5430,7 @@ BOOL ServerControl_CheckFainted(BtlServerFlow *flow, BattleMon *mon) {
 
         flow->faintRecorded[monId] = TRUE;
         BtlFaintRec_Add(&flow->faintRec, monId);
-        if (!BtlSetup_IsBattleType(flow->mainModule, 0x200) || GetClientIDFromMonID(monId) == 0) {
+        if (!BtlSetup_IsBattleType(flow->mainModule, BTL_SETUP_FLAG_200) || GetClientIDFromMonID(monId) == 0) {
             if (flow->multiHitTargetId != monId) {
                 BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0, monId, SC_MSG_ARG_END);
             }
@@ -5550,8 +5550,9 @@ BOOL ServerControl_GainExpFromFainted(BtlServerFlow *flow, BattleMon *mon) {
         AddExpAndEVs(flow, party, mon, flow->expEntries);
         if (BtlSetup_GetBattleType(flow->mainModule) == BTL_TYPE_WILD) {
             u16 species = GetBattleMonSpecies(mon);
-            GameBeaconSys_SendDefeatMission(species, BtlSetup_IsBattleType(flow->mainModule, 0x4000),
-                                            BtlSetup_IsBattleType(flow->mainModule, 0x8000));
+            GameBeaconSys_SendDefeatMission(species,
+                                            BtlSetup_IsBattleType(flow->mainModule, BTL_SETUP_FLAG_EFFECT_ENCOUNT),
+                                            BtlSetup_IsBattleType(flow->mainModule, BTL_SETUP_FLAG_DISGUISED));
         }
         return ServerControl_GiveExp(flow, party, flow->expEntries);
     }

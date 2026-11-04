@@ -831,7 +831,7 @@ void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 shooterEnergy,
         core->ov286.done = FALSE;
         if (!canUseItems) {
             kind = 3;
-        } else if (BtlSetup_IsBattleType(core->mainModule, 0x40)) {
+        } else if (BtlSetup_IsBattleType(core->mainModule, BTL_SETUP_FLAG_BOXES_FULL)) {
             kind = 1;
         } else {
             switch (BtlSetup_GetBattleType(core->mainModule)) {
@@ -846,7 +846,7 @@ void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 shooterEnergy,
                 }
                 // fallthrough
             default:
-                if (BtlSetup_IsBattleType(core->mainModule, 0x10000)) {
+                if (BtlSetup_IsBattleType(core->mainModule, BTL_SETUP_FLAG_NO_BALLS)) {
                     kind = 5;
                 }
                 break;

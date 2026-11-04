@@ -873,8 +873,8 @@ void BattleServer_SendNicknameBeacon(BtlServer *server, BattleMon *mon) {
 
 void BattleServer_NotifyCapture(BtlServer *server, BattleMon *mon) {
     u32 species = PokeParty_GetParam(GetSrcData(mon), PKM_PARAM_SPECIES, NULL);
-    BOOL a = BtlSetup_IsBattleType(server->mainModule, 0x4000);
-    BOOL b = BtlSetup_IsBattleType(server->mainModule, 0x8000);
+    BOOL a = BtlSetup_IsBattleType(server->mainModule, BTL_SETUP_FLAG_EFFECT_ENCOUNT);
+    BOOL b = BtlSetup_IsBattleType(server->mainModule, BTL_SETUP_FLAG_DISGUISED);
 
     GameBeaconSys_SendCapture(species, a, b);
     IncRecord(server->mainModule, 7);

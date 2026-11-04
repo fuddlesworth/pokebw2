@@ -294,9 +294,10 @@ void BtlvEffect_Init(BtlvEffectSetup *setup, Font *font, HeapID heapId) {
         BtlvStage_Create(setup->battleStyle, bgData[setup->fieldEnv.bgType].stageIds[setup->fieldEnv.terrain], season,
                          heapId, setup->studioMode);
     if (sBtlvEffect->setup.mainModule != NULL) {
-        sBtlvEffect->field = BtlvField_Create(BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, 0x400),
-                                              bgData[setup->fieldEnv.bgType].fieldIds[setup->fieldEnv.terrain], season,
-                                              heapId, setup->studioMode, setup->studioField, setup->unk30);
+        sBtlvEffect->field =
+            BtlvField_Create(BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, BTL_SETUP_FLAG_MSG_IDLE_EFFECTS),
+                             bgData[setup->fieldEnv.bgType].fieldIds[setup->fieldEnv.terrain], season, heapId,
+                             setup->studioMode, setup->studioField, setup->unk30);
     } else {
         sBtlvEffect->field = BtlvField_Create(FALSE, bgData[setup->fieldEnv.bgType].fieldIds[setup->fieldEnv.terrain],
                                               season, heapId, setup->studioMode, setup->studioField, setup->unk30);
@@ -330,7 +331,7 @@ void BtlvEffect_Init(BtlvEffectSetup *setup, Font *font, HeapID heapId) {
         sBtlvEffect->trainers[i] = -1;
     }
     if (sBtlvEffect->setup.mainModule != NULL) {
-        if (BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, 0x800)) {
+        if (BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, BTL_SETUP_FLAG_SHORT_IDLE_WAIT)) {
             sBtlvEffect->idleEffectWait = 300;
         } else {
             sBtlvEffect->idleEffectWait = 900;
@@ -1112,7 +1113,7 @@ void BtlvEffect_SetIdleEffectMode(u32 mode) {
 void BtlvEffect_StopIdleEffect(void) {
     BtlvEffect_Stop();
     if (sBtlvEffect->idleEffectMode == BTLV_IDLE_EFFECT_WAIT_MSG &&
-        BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, 0x400)) {
+        BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, BTL_SETUP_FLAG_MSG_IDLE_EFFECTS)) {
         BtlvEffect_Start(0x251);
     } else {
         BtlvEffect_Start(0x236);
@@ -1363,7 +1364,7 @@ static void BtlvEffect_UpdateIdleEffect(void) {
             break;
         }
         if (sBtlvEffect->idleEffectMode == BTLV_IDLE_EFFECT_WAIT_MSG &&
-            BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, 0x400)) {
+            BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, BTL_SETUP_FLAG_MSG_IDLE_EFFECTS)) {
             do {
                 pick = GFL_RandomMTRange(2);
             } while (sBtlvEffect->idleEffectLast == pick);

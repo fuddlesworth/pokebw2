@@ -512,8 +512,8 @@ void WbtBattle_EndBattle(WbtSystem *sys, GameData *gameData, BtlSetup *setup) {
     void *save;
     u8 i;
 
-    WbtBattle_CountRemainingPokemon(setup->party[1], setup->unkE7[1]);
-    WbtBattle_SetRoundRemaining(sys, sys->round, WbtBattle_CountRemainingPokemon(setup->party[0], setup->unkE7[0]));
+    WbtBattle_CountRemainingPokemon(setup->party[1], setup->monStatus[1]);
+    WbtBattle_SetRoundRemaining(sys, sys->round, WbtBattle_CountRemainingPokemon(setup->party[0], setup->monStatus[0]));
     switch (result) {
     case 0:
     case 1:

@@ -722,19 +722,19 @@ static BOOL BtlvScu_EncountWildSingle(s32 *seq, void *arg) {
 
 // The message that a wild mon appeared, by the battle's type
 static u16 BtlvScu_GetWildEncountMsg(BtlvScu *scu) {
-    if (BtlSetup_IsBattleType(scu->mainModule, 4)) {
+    if (BtlSetup_IsBattleType(scu->mainModule, BTL_SETUP_FLAG_LEGENDARY)) {
         return 6;
     }
-    if (BtlSetup_IsBattleType(scu->mainModule, 8)) {
+    if (BtlSetup_IsBattleType(scu->mainModule, BTL_SETUP_FLAG_ROAMING)) {
         return 3;
     }
-    if (BtlSetup_IsBattleType(scu->mainModule, 0x2000)) {
+    if (BtlSetup_IsBattleType(scu->mainModule, BTL_SETUP_FLAG_N_POKEMON)) {
         return 200;
     }
-    if (BtlSetup_IsBattleType(scu->mainModule, 0x80)) {
+    if (BtlSetup_IsBattleType(scu->mainModule, BTL_SETUP_FLAG_80)) {
         return 4;
     }
-    if (BtlSetup_IsBattleType(scu->mainModule, 0x10)) {
+    if (BtlSetup_IsBattleType(scu->mainModule, BTL_SETUP_FLAG_DREAM)) {
         return 5;
     }
     return 1;

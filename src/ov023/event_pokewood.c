@@ -355,7 +355,7 @@ static BtlSetup *EventPokewood_CreateFilmSetup(GameSystem *gsys, Field *field, H
     }
     GFL_HeapFree(buffer);
     setup->studioMode = BTL_STUDIO_MODE_FILM;
-    setup->unkDF = movie;
+    setup->studioMovie = movie;
     grade = PokewoodSave_GetLevelOfPoints(PokewoodSave_GetLevelPoints(save));
     setup->audienceCount = sGradeTicks[grade].base + GFL_RandomLC(sGradeTicks[grade].range);
     setup->studioGrade = grade;
@@ -401,7 +401,7 @@ static BtlSetup *EventPokewood_LoadBlockSetup(GameSystem *gsys, Field *field, He
     BattleRec_LoadToolOverlay();
     BattleRecTool_LoadSetup(setup, 1, heapId);
     BattleRec_UnloadToolOverlay();
-    EventPokewood_FinishWatchSetup(gameData, setup, setup->unkDF, heapId);
+    EventPokewood_FinishWatchSetup(gameData, setup, setup->studioMovie, heapId);
     return setup;
 }
 
@@ -412,7 +412,7 @@ static BtlSetup *EventPokewood_LoadWatchSetup(GameSystem *gsys, Field *field, He
         return EventPokewood_LoadBlockSetup(gsys, field, heapId);
     }
     setup = EventPokewood_LoadDownloadedSetup(gsys, field, heapId, slot);
-    GameBeacon_BroadcastPokestarWatching(setup->unkDF);
+    GameBeacon_BroadcastPokestarWatching(setup->studioMovie);
     return setup;
 }
 
@@ -454,21 +454,21 @@ static BtlSetup *EventPokewood_CreateSetup(PokewoodMovieParam *param, GameSystem
         break;
     case POKEWOOD_KIND_WATCH:
         setup = EventPokewood_LoadWatchSetup(gsys, field, heapId, param->slot);
-        file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, setup->unkDF, HEAPID_TAIL(heapId));
+        file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, setup->studioMovie, HEAPID_TAIL(heapId));
         setup->fieldSituation.bgm = file->bgm;
         setup->fieldSituation.winBgm = file->bgm2;
-        setup->unk138 = file->unk2a;
-        setup->unk13a = file->unk2c;
-        EventPokewood_LoadIntroText(param, setup, setup->unkDF, POKEWOOD_KIND_WATCH, heapId);
+        setup->studioGoodEndingBgm = file->unk2a;
+        setup->studioStrangeEndingBgm = file->unk2c;
+        EventPokewood_LoadIntroText(param, setup, setup->studioMovie, POKEWOOD_KIND_WATCH, heapId);
         GFL_HeapFree(file);
         Config_SetBattleScene(setup->config, 0);
-        setup->unkDD_7 = 1;
-        if (setup->unkDF < POKEWOOD_MOVIE_COUNT && PokewoodSave_IsSlotWatched(save, param->slot) != 0) {
-            setup->unkDD_7 = 0;
+        setup->studioSkipDisabled = 1;
+        if (setup->studioMovie < POKEWOOD_MOVIE_COUNT && PokewoodSave_IsSlotWatched(save, param->slot) != 0) {
+            setup->studioSkipDisabled = 0;
         }
         break;
     }
-    setup->unk98 = 8;
+    setup->badgeCount = 8;
     return setup;
 }
 
@@ -485,7 +485,7 @@ static void EventPokewood_StoreRecordedSetup(GameData *gameData, BtlSetup *setup
     GameData_GetPokewoodSystemPtr(gameData);
     BattleRec_LoadToolOverlay();
     setup->trainers[0] = TrainerBattleSetup_Create(heapId);
-    EventPokewood_SetupRecordTrainer(setup->unkDF, setup->trainers[0], setup->playerInfo[0], heapId);
+    EventPokewood_SetupRecordTrainer(setup->studioMovie, setup->trainers[0], setup->playerInfo[0], heapId);
     BattleRecTool_StoreSetup(setup);
     BattleRec_UnloadToolOverlay();
 }
@@ -505,7 +505,7 @@ static void EventPokewood_InitTitleParam(PokewoodTitleParam *title, BtlSetup *se
     title->title = name;
     BattleRec_UnloadToolOverlay();
     GFL_HeapFree(pkm);
-    title->movie = setup->unkDF;
+    title->movie = setup->studioMovie;
     title->gender = getTrainerGender(setup->playerInfo[0]);
 }
 
@@ -515,11 +515,11 @@ static void EventPokewood_FreeTitleParam(PokewoodTitleParam *title) {
 
 static void EventPokewood_InitBriefingParam(PkwdBriefingParam *briefing, BtlSetup *setup, PlayerInfo *playerInfo,
                                             GameData *gameData) {
-    briefing->movie = setup->unkDF;
+    briefing->movie = setup->studioMovie;
     briefing->audienceCount = setup->audienceCount;
     briefing->setup = setup;
     briefing->playerInfo = playerInfo;
-    briefing->noSkip = setup->unkDD_7;
+    briefing->noSkip = setup->studioSkipDisabled;
 }
 
 static void EventPokewood_InitResultParam(PkwdBriefingParam *result, BtlSetup *setup, PlayerInfo *playerInfo,
@@ -530,8 +530,8 @@ static void EventPokewood_InitResultParam(PkwdBriefingParam *result, BtlSetup *s
     result->audienceCount = setup->audienceCount;
     result->audience = setup->audience;
     result->setup = setup;
-    result->movie = setup->unkDF;
-    result->noSkip = setup->unkDD_7;
+    result->movie = setup->studioMovie;
+    result->noSkip = setup->studioSkipDisabled;
 }
 
 static void EventPokewood_OnBriefingDone(PkwdBriefingParam *briefing) {
@@ -611,7 +611,7 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
         (*state)++;
         break;
     case STEP_START_RESULT:
-        if (wk->setup->unk134 == 0) {
+        if (wk->setup->recPlayQuit == 0) {
             EventPokewood_InitResultParam(&param->result, wk->setup, playerInfo, gameData);
             GSYS_QueueProcAsEvent(event, OVERLAY_PKWD_BRIEFING, &PKWD_BRIEFING_CREDITS_PROC_FUNCTIONS, &param->result);
         }
@@ -630,17 +630,17 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
         u16 *var;
 
         GFL_StrBufFree(param->introText);
-        if (wk->setup->unkDF < POKEWOOD_MOVIE_COUNT) {
+        if (wk->setup->studioMovie < POKEWOOD_MOVIE_COUNT) {
             sys = *GameData_GetPokewoodSystemPtr(gameData);
             var = PokewoodSystem_GetResultVar(sys);
             if (var != NULL) {
                 *var = (wk->setup->result != BTL_RESULT_FLEE) ? TRUE : FALSE;
                 if (*var != 0) {
-                    PokewoodSystem_SetResultFlag(sys, gameData, wk->setup->unkDF, wk->setup->studioEnding);
+                    PokewoodSystem_SetResultFlag(sys, gameData, wk->setup->studioMovie, wk->setup->studioEnding);
                     PokewoodSystem_AddGradePoints(gameData, sys, wk->setup->studioEnding, param->slot);
-                    PokewoodSave_SetFlag(save, 5, wk->setup->unkDF);
+                    PokewoodSave_SetFlag(save, 5, wk->setup->studioMovie);
                     Pokewood_CheckMedals(gameData);
-                    EventPokewood_UnlockMovies(save, gameData, wk->setup->unkDF, wk->setup->studioEnding,
+                    EventPokewood_UnlockMovies(save, gameData, wk->setup->studioMovie, wk->setup->studioEnding,
                                                wk->setup->studioScore);
                 }
             }
@@ -749,7 +749,7 @@ static GameEventReturnCode EventPokewood_RunFilm(GameEvent *event, u32 *state, v
         if (var != NULL) {
             *var = (wk->setup->result != BTL_RESULT_FLEE) ? TRUE : FALSE;
         }
-        PokewoodSystem_SetRecord(sys, wk->setup, wk->setup->unkDF);
+        PokewoodSystem_SetRecord(sys, wk->setup, wk->setup->studioMovie);
         PokewoodSystem_SetSlotInfo(sys, param->slotInfo);
         EventPokewood_FreeSetup(wk->setup);
         (*state)++;
@@ -1082,7 +1082,7 @@ static GameEventReturnCode EventPokewood_RunScreen(GameEvent *event, u32 *state,
 
 // Gives the opponent of a movie that is watched its class and name
 static void EventPokewood_SetupRecordedOpponent(BtlSetup *setup, HeapID heapId) {
-    EventPokewood_SetupMovieTrainer(setup->unkDF, POKEWOOD_KIND_WATCH, setup->trainers[1], setup->playerInfo[0],
+    EventPokewood_SetupMovieTrainer(setup->studioMovie, POKEWOOD_KIND_WATCH, setup->trainers[1], setup->playerInfo[0],
                                     heapId);
     setup->trainers[1]->trainerId = 1;
 }
@@ -1091,7 +1091,7 @@ static void EventPokewood_SetupRecordedOpponent(BtlSetup *setup, HeapID heapId) 
 static void EventPokewood_ShowCastNames(BtlSetup *setup, HeapID heapId) {
     MsgData *msgData =
         GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_PASS_POWER_STARTMENU, HEAPID_TAIL(heapId));
-    PokewoodCastFile *file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_CAST, setup->unkDF, HEAPID_TAIL(heapId));
+    PokewoodCastFile *file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_CAST, setup->studioMovie, HEAPID_TAIL(heapId));
     PokeParty *party = setup->party[1];
     int i;
 

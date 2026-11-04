@@ -4516,7 +4516,7 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
                 }
                 BtlvCore_StartMsg(client->viewCore, &client->strParam);
                 *seq = EXIT_TRAINER_SEQ_TRAINER_1_IN;
-            } else if (!BtlSetup_IsBattleType(client->mainModule, 0x100)) {
+            } else if (!BtlSetup_IsBattleType(client->mainModule, BTL_SETUP_FLAG_NO_BLACKOUT)) {
                 name1 = GetPlayerClientID(client->mainModule);
                 Btlv_StringParam_Setup(&client->strParam, BTLV_STR_STD, 0x36);
                 Btlv_StringParam_AddArg(&client->strParam, name1);
@@ -4775,7 +4775,7 @@ static BOOL BattleClient_ExitWildBattleWin(BtlClient *client, s32 *seq) {
 
     switch (*seq) {
     case 0:
-        if (!BtlSetup_IsBattleType(client->mainModule, 0x200)) {
+        if (!BtlSetup_IsBattleType(client->mainModule, BTL_SETUP_FLAG_200)) {
             value = GetBonusMoney(client->mainModule);
             if (value != 0) {
                 playerId = GetPlayerClientID(client->mainModule);

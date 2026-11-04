@@ -315,7 +315,7 @@ static void BattleRecTool_StoreClients(const BtlSetup *setup, BattleRecClient *c
         } else {
             clients[i].type = BATTLE_REC_CLIENT_NONE;
         }
-        clients[i].unk2 = setup->unk44[i];
+        clients[i].unk2 = setup->chatterEffects[i];
     }
 }
 
@@ -341,7 +341,7 @@ static void BattleRecTool_StorePokewoodClients(const BtlSetup *setup, BattleRecC
             clients[i].type = BATTLE_REC_CLIENT_TRAINER;
             break;
         }
-        clients[i].unk2 = setup->unk44[i];
+        clients[i].unk2 = setup->chatterEffects[i];
     }
 }
 
@@ -359,7 +359,7 @@ static void BattleRecTool_LoadClients(BtlSetup *setup, BattleRecClient *clients,
             BattleRecTool_LoadTrainer(setup->trainers[i], &client->info.trainer);
             break;
         }
-        setup->unk44[i] = client->unk2;
+        setup->chatterEffects[i] = client->unk2;
     }
 }
 
@@ -378,7 +378,7 @@ static void BattleRecTool_LoadPokewoodClients(BtlSetup *setup, const BattleRecCl
             BattleRecTool_LoadTrainer(setup->trainers[i], &clients[i].info.trainer);
             break;
         }
-        setup->unk44[i] = clients[i].unk2;
+        setup->chatterEffects[i] = clients[i].unk2;
     }
 }
 
@@ -445,8 +445,8 @@ static BOOL BattleRecTool_StoreSetupParams(const BtlSetup *setup, BattleRecSetup
     rec->battleStyle = setup->battleStyle;
     rec->unk33_4 = setup->fieldSituation.multiMode;
     rec->unk30 = setup->unkA2;
-    rec->unk32_5 = setup->fieldSituation.unk19;
-    rec->unk33_7 = setup->unk97 ? TRUE : FALSE;
+    rec->unk32_5 = setup->fieldSituation.playerClientId;
+    rec->unk33_7 = setup->shooterSettings.launcher ? TRUE : FALSE;
     initConfig(setup->config, (Config *)rec->config);
     return TRUE;
 }
@@ -460,8 +460,8 @@ static BOOL BattleRecTool_LoadSetupParams(BtlSetup *setup, const BattleRecSetup 
     setup->battleStyle = rec->battleStyle;
     setup->fieldSituation.multiMode = rec->unk33_4;
     setup->unkA2 = rec->unk30;
-    setup->fieldSituation.unk19 = rec->unk32_5;
-    setup->unk97 = rec->unk33_7;
+    setup->fieldSituation.playerClientId = rec->unk32_5;
+    setup->shooterSettings.launcher = rec->unk33_7;
     return TRUE;
 }
 
@@ -526,13 +526,13 @@ static void BattleRecTool_LoadPokewoodPartyCore(BattleRecParty *rec, PokeParty *
 }
 
 static void BattleRecTool_StorePokewoodInfo(const BtlSetup *setup, PokewoodBattleInfo *info) {
-    info->movie = setup->unkDF;
+    info->movie = setup->studioMovie;
     info->ending = setup->studioEnding;
     MI_CpuCopy8(setup->studioChoices, info->unk110, sizeof(info->unk110));
 }
 
 static void BattleRecTool_LoadPokewoodInfo(BtlSetup *setup, const PokewoodBattleInfo *info) {
-    setup->unkDF = info->movie;
+    setup->studioMovie = info->movie;
     setup->studioEnding = info->ending;
     MI_CpuCopy8(info->unk110, setup->studioChoices, sizeof(setup->studioChoices));
 }

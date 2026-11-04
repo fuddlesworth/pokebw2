@@ -917,7 +917,7 @@ static BOOL CheckBallCapture(BtlServerFlow *flow, BattleMon *mon, BattleMon *tar
     maxHP = GetBattleMonStat(target, BATTLEMON_MAX_HP) * 3;
     base = maxHP - GetBattleMonStat(target, BATTLEMON_HP) * 2;
     rate = FX32_CONST(base);
-    if (BtlSetup_IsBattleType(flow->mainModule, 0x20)) {
+    if (BtlSetup_IsBattleType(flow->mainModule, BTL_SETUP_FLAG_DARK_GRASS)) {
         rate = FX_MUL(rate, GetDarkGrassCaptureMod(flow));
     }
     species = GetBattleMonSpecies(target);
@@ -989,7 +989,7 @@ static fx32 GetBallCaptureMod(BtlServerFlow *flow, BattleMon *mon, BattleMon *ta
         }
         break;
     case ITEM_DIVE_BALL:
-        if (BtlSetup_IsBattleType(flow->mainModule, 1)) {
+        if (BtlSetup_IsBattleType(flow->mainModule, BTL_SETUP_FLAG_FISHING)) {
             return FX32_CONST(3.5);
         }
         if (GetFieldEffectData(flow->mainModule)->env.terrain == 6) {

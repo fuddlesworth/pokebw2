@@ -119,8 +119,8 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         mainModule->setup = setup;
         setup->capturedSlot = 6;
         mainModule->playerInfo = mainModule->setup->playerInfo[0];
-        mainModule->gameTimeLimit = mainModule->setup->unk8C;
-        mainModule->commandTimeLimit = mainModule->setup->unk8E;
+        mainModule->gameTimeLimit = mainModule->setup->gameTimeLimit;
+        mainModule->commandTimeLimit = mainModule->setup->commandTimeLimit;
         mainModule->prizeMoneyFixed = 0;
         mainModule->lossMoneyCalculated = 0;
         mainModule->commError = 0;
@@ -143,7 +143,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         BtlSetup_ClearResults(mainModule->setup);
         mainModule->wildIllusionPkm = NULL;
         mainModule->partyPacket = NULL;
-        if (mainModule->setup->fieldSituation.unk1b == 0) {
+        if (mainModule->setup->fieldSituation.recPlay == 0) {
             buildSeed(&mainModule->rand);
         } else {
             mainModule->rand = setup->rand;
@@ -153,11 +153,11 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         mainModule->prizeMoney = BtlCalc_GetPrizeMoney(setup);
         mainModule->money = 0;
         mainModule->lossMoney = 0;
-        if (mainModule->setup->fieldSituation.unk1b == 0) {
+        if (mainModule->setup->fieldSituation.recPlay == 0) {
             u32 i;
 
             for (i = 0; i < 4; i++) {
-                mainModule->setup->unk44[i] = 0;
+                mainModule->setup->chatterEffects[i] = 0;
             }
         }
         BtlClientIDList_Init(&mainModule->clientIdList);
@@ -167,10 +167,10 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
             isSet = TRUE;
         }
         mainModule->unk46F = isSet;
-        BtlNet_Init(setup->fieldSituation.netHandle, setup->unkA0, 0x14);
+        BtlNet_Init(setup->fieldSituation.netHandle, setup->netClientMask, 0x14);
         BtlCalc_SetHeapID(HEAPID_BATTLE);
         if (setup->studioMode) {
-            BtlMain_LoadStudioData(mainModule, setup->unkDF);
+            BtlMain_LoadStudioData(mainModule, setup->studioMovie);
         }
         (*state)++;
         break;
@@ -182,7 +182,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
             return TRUE;
         }
         if (BtlNet_IsInitSynced()) {
-            BtlAdapter_InitSystem(mainModule->setup->fieldSituation.unk18);
+            BtlAdapter_InitSystem(mainModule->setup->fieldSituation.commMode);
             BtlMain_SetSetupSeq(&mainModule->seq, mainModule, mainModule->setup);
             mainModule->unk460 = 0;
             BtlMain_InitTrainers(mainModule);
@@ -347,7 +347,7 @@ void BtlMain_SetSetupSeq(BtlMainSeq *seq, BtlMainModule *mainModule, BtlSetup *s
     for (i = 0; i < BTL_POS_MAX; i++) {
         mainModule->posClientIds[i] = 4;
     }
-    if (setup->fieldSituation.unk18 == 0) {
+    if (setup->fieldSituation.commMode == 0) {
         switch (setup->battleStyle) {
         case BTL_STYLE_SINGLE:
             BtlMainSeq_Set(seq, BtlMain_SetupAloneSingle, mainModule);
@@ -413,7 +413,7 @@ void BtlMain_SetupPlayerAndParties(BtlMainModule *mainModule, BtlSetup *setup) {
     PerapVoice *chatter;
     u8 chatterFlags[4];
 
-    mainModule->playerClientId = setup->fieldSituation.unk19;
+    mainModule->playerClientId = setup->fieldSituation.playerClientId;
     i = 0;
     mainModule->playerPos = GetClientBattlePos(mainModule, mainModule->playerClientId, 0);
     BtlMain_LoadSetupParties(mainModule, setup);
@@ -421,14 +421,14 @@ void BtlMain_SetupPlayerAndParties(BtlMainModule *mainModule, BtlSetup *setup) {
         chatter = getChatterBlockAddress(GameData_GetSaveControl(setup->gameData));
         mainModule->chatters[0] = allocChatotChatterBlk(mainModule->heapId);
         moveChatter(mainModule->chatters[0], chatter);
-        mainModule->setup->unk44[0] = GetClientChatterEffect(mainModule, i);
+        mainModule->setup->chatterEffects[0] = GetClientChatterEffect(mainModule, i);
         return;
     }
     for (; i < 4; i++) {
-        chatterFlags[ClientIDToSetupIndex(mainModule->playerClientId, i)] = mainModule->setup->unk44[i];
+        chatterFlags[ClientIDToSetupIndex(mainModule->playerClientId, i)] = mainModule->setup->chatterEffects[i];
     }
     for (i = 0; i < 4; i++) {
-        mainModule->setup->unk44[i] = chatterFlags[i];
+        mainModule->setup->chatterEffects[i] = chatterFlags[i];
     }
 }
 
@@ -492,7 +492,7 @@ u8 CalcClientBattlerCount(BtlMainModule *mainModule, u8 clientId) {
 }
 
 void BtlMain_SetupTrainers(BtlMainModule *mainModule, BtlSetup *setup) {
-    if (setup->fieldSituation.unk1b == 0) {
+    if (setup->fieldSituation.recPlay == 0) {
         TrainerData_SetFromPlayer(&mainModule->trainers[0], mainModule->heapId, mainModule->playerInfo);
         TrainerData_SetFromSetup(&mainModule->trainers[1], setup->trainers[1]);
     } else {
@@ -502,7 +502,7 @@ void BtlMain_SetupTrainers(BtlMainModule *mainModule, BtlSetup *setup) {
 }
 
 void BtlMain_SetupRecReader(BtlMainModule *mainModule, BtlSetup *setup) {
-    if (setup->fieldSituation.unk1b != 0) {
+    if (setup->fieldSituation.recPlay != 0) {
         BtlRecReader_Init(&mainModule->recReader, setup->recBuffer, setup->recSize);
         BattleClient_SetRecPlayData(mainModule->clients[0], &mainModule->recReader);
         BattleClient_SetRecPlayData(mainModule->clients[1], &mainModule->recReader);
@@ -512,8 +512,8 @@ void BtlMain_SetupRecReader(BtlMainModule *mainModule, BtlSetup *setup) {
 void BtlMain_CreateViewCore(BtlMainModule *mainModule, BtlSetup *setup, u32 commCompetitor) {
     BtlClient *client;
 
-    if (setup->fieldSituation.unk1b != 0) {
-        client = mainModule->clients[setup->fieldSituation.unk19];
+    if (setup->fieldSituation.recPlay != 0) {
+        client = mainModule->clients[setup->fieldSituation.playerClientId];
     } else {
         client = mainModule->clients[0];
     }
@@ -541,10 +541,10 @@ BOOL BtlMain_SetupAloneSingle(u32 *state, BtlMainModule *mainModule) {
     BtlMain_SetupTrainers(mainModule, setup);
     mainModule->clients[0] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 0, 1, 0,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     mainModule->clients[1] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 1, 1, 1,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     BtlMain_SetupRecReader(mainModule, setup);
     BtlMain_CreateViewCore(mainModule, setup, commCompetitor);
     BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[0]), 0, 1);
@@ -600,10 +600,10 @@ BOOL BtlMain_SetupAloneDouble(u32 *state, BtlMainModule *mainModule) {
     mainModule->isServer = 1;
     mainModule->clients[0] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 0, 2, 0,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     mainModule->clients[1] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 1, 2, 1,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     BtlMain_SetupRecReader(mainModule, setup);
     BtlMain_CreateViewCore(mainModule, setup, commCompetitor);
     BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[0]), 0, 2);
@@ -650,7 +650,7 @@ BOOL BtlMain_SetupAloneMulti(u32 *state, BtlMainModule *mainModule) {
             PokeCon_CreateClientParty(&mainModule->pokeCons[1], mainModule, i);
         }
     }
-    if (setup->fieldSituation.unk1b == 0) {
+    if (setup->fieldSituation.recPlay == 0) {
         TrainerData_SetFromPlayer(&mainModule->trainers[0], mainModule->heapId, mainModule->playerInfo);
         TrainerData_SetFromSetup(&mainModule->trainers[1], setup->trainers[1]);
         if (DoesClientExist(mainModule, 2)) {
@@ -680,10 +680,10 @@ BOOL BtlMain_SetupAloneMulti(u32 *state, BtlMainModule *mainModule) {
 
             mainModule->clients[i] = BattleClient_Create(
                 mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, i, count, isAI,
-                commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
         }
     }
-    if (setup->fieldSituation.unk1b != 0) {
+    if (setup->fieldSituation.recPlay != 0) {
         BtlRecReader_Init(&mainModule->recReader, setup->recBuffer, setup->recSize);
         for (i = 0; i < 4; i++) {
             if (DoesClientExist(mainModule, i)) {
@@ -729,10 +729,10 @@ BOOL BtlMain_SetupAloneTriple(u32 *state, BtlMainModule *mainModule) {
     mainModule->isServer = 1;
     mainModule->clients[0] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 0, 3, 0,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     mainModule->clients[1] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 1, 3, 1,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     BtlMain_SetupRecReader(mainModule, setup);
     BtlMain_CreateViewCore(mainModule, setup, commCompetitor);
     BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[0]), 0, 3);
@@ -766,10 +766,10 @@ BOOL BtlMain_SetupAloneRotation(u32 *state, BtlMainModule *mainModule) {
     BtlMain_SetupTrainers(mainModule, setup);
     mainModule->clients[0] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 0, 1, 0,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     mainModule->clients[1] =
         BattleClient_Create(mainModule, &mainModule->pokeCons[0], 0, setup->fieldSituation.netHandle, 1, 1, 1,
-                            commCompetitor, setup->fieldSituation.unk1b, &mainModule->rand, mainModule->heapId);
+                            commCompetitor, setup->fieldSituation.recPlay, &mainModule->rand, mainModule->heapId);
     BtlMain_SetupRecReader(mainModule, setup);
     BtlMain_CreateViewCore(mainModule, setup, commCompetitor);
     BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[0]), 0, 1);
@@ -795,7 +795,7 @@ BOOL BtlMain_SetupCommSingle(u32 *state, BtlMainModule *mainModule) {
         mainModule->clientCount = 2;
         mainModule->posClientIds[0] = 0;
         mainModule->posClientIds[1] = 1;
-        mainModule->playerClientId = mainModule->setup->fieldSituation.unk19;
+        mainModule->playerClientId = mainModule->setup->fieldSituation.playerClientId;
         mainModule->playerPos = GetClientBattlePos(mainModule, mainModule->playerClientId, 0);
         (*state)++;
         return FALSE;
@@ -842,7 +842,7 @@ BOOL BtlMain_SetupCommDouble(u32 *state, BtlMainModule *mainModule) {
             mainModule->posClientIds[3] = 3;
             break;
         }
-        mainModule->playerClientId = mainModule->setup->fieldSituation.unk19;
+        mainModule->playerClientId = mainModule->setup->fieldSituation.playerClientId;
         mainModule->playerPos = GetClientBattlePos(mainModule, mainModule->playerClientId, 0);
         (*state)++;
         return FALSE;
@@ -877,7 +877,7 @@ BOOL BtlMain_SetupCommRotation(u32 *state, BtlMainModule *mainModule) {
         mainModule->posClientIds[3] = 1;
         mainModule->posClientIds[4] = 0;
         mainModule->posClientIds[5] = 1;
-        mainModule->playerClientId = mainModule->setup->fieldSituation.unk19;
+        mainModule->playerClientId = mainModule->setup->fieldSituation.playerClientId;
         mainModule->playerPos = GetClientBattlePos(mainModule, mainModule->playerClientId, 0);
         (*state)++;
         return FALSE;
@@ -912,7 +912,7 @@ BOOL BtlMain_SetupCommTriple(u32 *state, BtlMainModule *mainModule) {
         mainModule->posClientIds[3] = 1;
         mainModule->posClientIds[4] = 0;
         mainModule->posClientIds[5] = 1;
-        mainModule->playerClientId = mainModule->setup->fieldSituation.unk19;
+        mainModule->playerClientId = mainModule->setup->fieldSituation.playerClientId;
         mainModule->playerPos = GetClientBattlePos(mainModule, mainModule->playerClientId, 0);
         (*state)++;
         return FALSE;
@@ -953,9 +953,9 @@ BOOL BtlMain_CommExchangeSyncData(BtlMainModule *mainModule, s32 *state) {
     case 2:
         mainModule->syncData.rand = mainModule->rand;
         mainModule->syncData.unk18 = mainModule->setup->unkA2;
-        mainModule->syncData.gameTimeLimit = mainModule->setup->unk8C;
-        mainModule->syncData.commandTimeLimit = mainModule->setup->unk8E;
-        if (BtlSetup_IsBattleType(mainModule, 0x1000)) {
+        mainModule->syncData.gameTimeLimit = mainModule->setup->gameTimeLimit;
+        mainModule->syncData.commandTimeLimit = mainModule->setup->commandTimeLimit;
+        if (BtlSetup_IsBattleType(mainModule, BTL_SETUP_FLAG_PLAYER_CONFIG)) {
             mainModule->syncData.textSpeed = mainModule->textSpeed;
             mainModule->syncData.battleSceneOff = mainModule->battleSceneOff;
         } else {
@@ -1124,7 +1124,7 @@ BOOL BtlMain_CommExchangeTrainers(BtlMainModule *mainModule, s32 *state) {
                 info = BtlNet_GetPlayerInfo(i);
                 if (info != NULL) {
                     TrainerData_SetFromPlayer(&mainModule->trainers[i], mainModule->heapId, info);
-                    if (i != mainModule->playerClientId && setup->unkDD_2) {
+                    if (i != mainModule->playerClientId && setup->hideOpponentNames) {
                         j = 0;
                         msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN,
                                                      mainModule->heapId);
@@ -1261,7 +1261,7 @@ BOOL BtlMain_CommCreateSingle(BtlMainModule *mainModule, s32 *state) {
         mainModule->server = BattleServer_Create(mainModule, &mainModule->rand, &mainModule->pokeCons[1],
                                                  commCompetitor, mainModule->heapId);
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, 1, 0, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
         opponent = 1;
         BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[clientId]), clientId,
@@ -1269,11 +1269,11 @@ BOOL BtlMain_CommCreateSingle(BtlMainModule *mainModule, s32 *state) {
         if (clientId != 0) {
             opponent = 0;
         }
-        BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
-                                     opponent, 1);
+        BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.commMode,
+                                     setup->fieldSituation.netHandle, opponent, 1);
     } else {
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, 1, 0, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
         mainModule->cmdCheckServer = BattleServer_Create(mainModule, &mainModule->rand, &mainModule->pokeCons[1],
                                                          commCompetitor, mainModule->heapId);
@@ -1303,33 +1303,33 @@ BOOL BtlMain_CommCreateDouble(BtlMainModule *mainModule, s32 *state) {
         mainModule->server = BattleServer_Create(mainModule, &mainModule->rand, &mainModule->pokeCons[1],
                                                  commCompetitor, mainModule->heapId);
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, posCount, 0, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
         BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[clientId]), clientId,
                                   posCount);
         if (setup->fieldSituation.multiMode == 2) {
             ally = GetAllyClientID(mainModule, clientId);
             mainModule->clients[1] = BattleClient_Create(
-                mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle, 1,
-                posCount, 1, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
+                mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
+                1, posCount, 1, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
             BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[1]), 1, posCount);
             mainModule->clients[3] = BattleClient_Create(
-                mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle, 3,
-                posCount, 1, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
+                mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
+                3, posCount, 1, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
             BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[3]), 3, posCount);
-            BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.unk18,
+            BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.commMode,
                                          setup->fieldSituation.netHandle, ally, posCount);
         } else {
             for (i = 0; i < mainModule->clientCount; i++) {
                 if (i != clientId) {
-                    BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.unk18,
+                    BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.commMode,
                                                  setup->fieldSituation.netHandle, i, posCount);
                 }
             }
         }
     } else {
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, posCount, 0, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
         mainModule->cmdCheckServer = BattleServer_Create(mainModule, &mainModule->rand, &mainModule->pokeCons[1],
                                                          commCompetitor, mainModule->heapId);
@@ -1358,7 +1358,7 @@ BOOL BtlMain_CommCreateTriple(BtlMainModule *mainModule, s32 *state) {
         mainModule->server = BattleServer_Create(mainModule, &mainModule->rand, &mainModule->pokeCons[1],
                                                  commCompetitor, mainModule->heapId);
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, 3, 0, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
         opponent = 0;
         BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[clientId]), clientId,
@@ -1366,11 +1366,11 @@ BOOL BtlMain_CommCreateTriple(BtlMainModule *mainModule, s32 *state) {
         if (clientId == 0) {
             opponent = 1;
         }
-        BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
-                                     opponent, 3);
+        BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.commMode,
+                                     setup->fieldSituation.netHandle, opponent, 3);
     } else {
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, 3, 0, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
         mainModule->cmdCheckServer = BattleServer_Create(mainModule, &mainModule->rand, &mainModule->pokeCons[1],
                                                          commCompetitor, mainModule->heapId);
@@ -1399,20 +1399,20 @@ BOOL BtlMain_CommCreateRotation(BtlMainModule *mainModule, s32 *state) {
                                                  commCompetitor, mainModule->heapId);
         i = 0;
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, 1, i, commCompetitor, i, &mainModule->rand, mainModule->heapId);
         BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[clientId]), clientId,
                                   1);
         for (; i < mainModule->clientCount; i++) {
             if (i != clientId) {
-                BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.unk18,
+                BattleServer_AttachNetClient(mainModule->server, setup->fieldSituation.commMode,
                                              setup->fieldSituation.netHandle, i, 1);
             }
         }
     } else {
         i = 0;
         mainModule->clients[clientId] = BattleClient_Create(
-            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.unk18, setup->fieldSituation.netHandle,
+            mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
             clientId, 1, i, commCompetitor, i, &mainModule->rand, mainModule->heapId);
         mainModule->cmdCheckServer = BattleServer_Create(mainModule, &mainModule->rand, &mainModule->pokeCons[1],
                                                          commCompetitor, mainModule->heapId);
@@ -1549,7 +1549,7 @@ u32 IsBattleSceneOff(BtlMainModule *mainModule) {
 }
 
 u8 GetBadgeCount(BtlMainModule *mainModule) {
-    return mainModule->setup->unk98;
+    return mainModule->setup->badgeCount;
 }
 
 BOOL IsSwitchMode(BtlMainModule *mainModule) {
@@ -1579,7 +1579,7 @@ BOOL IsExpGainEnabled(BtlMainModule *mainModule) {
         if (!result) {
             return FALSE;
         }
-        if (!BtlSetup_IsBattleType(mainModule, 0x200) && !GetStudioMode(mainModule)) {
+        if (!BtlSetup_IsBattleType(mainModule, BTL_SETUP_FLAG_200) && !GetStudioMode(mainModule)) {
             return TRUE;
         }
     }
@@ -1588,7 +1588,7 @@ BOOL IsExpGainEnabled(BtlMainModule *mainModule) {
 
 CommPlayerSupport *GetCommPlayerSupport(BtlMainModule *mainModule) {
     if (mainModule->setup->battleType <= BTL_TYPE_TRAINER) {
-        return mainModule->setup->unk88;
+        return mainModule->setup->commSupport;
     }
     return NULL;
 }
@@ -1636,7 +1636,7 @@ u8 GetMultiMode(BtlMainModule *mainModule) {
 }
 
 u8 GetCommMode(BtlMainModule *mainModule) {
-    return mainModule->setup->fieldSituation.unk18;
+    return mainModule->setup->fieldSituation.commMode;
 }
 
 BOOL IsMultiMode(BtlMainModule *mainModule) {
@@ -1648,11 +1648,11 @@ u16 GetWinBGM(BtlMainModule *mainModule) {
 }
 
 u16 GetStudioEndingBGM0(BtlMainModule *mainModule) {
-    return mainModule->setup->unk138;
+    return mainModule->setup->studioGoodEndingBgm;
 }
 
 u16 GetStudioEndingBGM2(BtlMainModule *mainModule) {
-    return mainModule->setup->unk13a;
+    return mainModule->setup->studioStrangeEndingBgm;
 }
 
 u32 GetRunMode(BtlMainModule *mainModule) {
@@ -2248,7 +2248,7 @@ void BattleClient_SubItem(BtlMainModule *mainModule, u8 clientId, u16 item) {
     BtlSetup *setup;
 
     setup = mainModule->setup;
-    if (setup->fieldSituation.unk1b == 0 && clientId == mainModule->playerClientId) {
+    if (setup->fieldSituation.recPlay == 0 && clientId == mainModule->playerClientId) {
         BagSave_SubItem(setup->bag, item, 1, mainModule->heapId);
     }
 }
@@ -2257,7 +2257,7 @@ void BattleClient_AddItem(BtlMainModule *mainModule, u8 clientId, u16 item) {
     BtlSetup *setup;
 
     setup = mainModule->setup;
-    if (setup->fieldSituation.unk1b == 0 && clientId == mainModule->playerClientId) {
+    if (setup->fieldSituation.recPlay == 0 && clientId == mainModule->playerClientId) {
         BagSave_AddItem(setup->bag, item, 1, mainModule->heapId);
     }
 }
@@ -2267,20 +2267,20 @@ BagSave *GetBagSave(BtlMainModule *mainModule) {
 }
 
 BagCursor *GetBagCursor(BtlMainModule *mainModule) {
-    return mainModule->setup->unk7C;
+    return mainModule->setup->bagCursor;
 }
 
 BOOL IsRecordingEnabled(BtlMainModule *mainModule) {
     BtlSetup *setup = mainModule->setup;
 
-    if (setup->recBuffer != 0 && setup->fieldSituation.unk1b == 0) {
+    if (setup->recBuffer != 0 && setup->fieldSituation.recPlay == 0) {
         return TRUE;
     }
     return FALSE;
 }
 
 u8 IsRecPlayMode(BtlMainModule *mainModule) {
-    return mainModule->setup->fieldSituation.unk1b;
+    return mainModule->setup->fieldSituation.recPlay;
 }
 
 u32 GetStudioMode(BtlMainModule *mainModule) {
@@ -2299,20 +2299,20 @@ u32 func_ov167_0219c99c(BtlMainModule *mainModule) {
 
 u8 GetStudioMovieId(BtlMainModule *mainModule) {
     if (mainModule != NULL) {
-        return mainModule->setup->unkDF;
+        return mainModule->setup->studioMovie;
     }
     return 0;
 }
 
 u32 IsStudioSkipDisabled(BtlMainModule *mainModule) {
     if (mainModule != NULL) {
-        return mainModule->setup->unkDD_7;
+        return mainModule->setup->studioSkipDisabled;
     }
     return 0;
 }
 
 void SetRecPlayQuit(BtlMainModule *mainModule) {
-    mainModule->setup->unk134 = 1;
+    mainModule->setup->recPlayQuit = 1;
 }
 
 u32 GetScriptedRulesOutcome(BtlMainModule *mainModule) {
@@ -2343,7 +2343,7 @@ u32 GetBattleResult(BtlMainModule *mainModule) {
 }
 
 void SetCmdCheckError(BtlMainModule *mainModule) {
-    mainModule->setup->unkDD_0 = 1;
+    mainModule->setup->cmdCheckError = 1;
 }
 
 u32 FixPrizeMoney(BtlMainModule *mainModule) {
@@ -2389,7 +2389,7 @@ u32 CalcLossMoney(BtlMainModule *mainModule) {
     if (!mainModule->lossMoneyCalculated) {
         if (mainModule->setup->battleType <= BTL_TYPE_TRAINER) {
             cash = getCash(getTrainerCardDataBlkAddress(mainModule->setup->gameData));
-            loss = BtlCalc_GetLostMoney(mainModule->setup->unk98,
+            loss = BtlCalc_GetLostMoney(mainModule->setup->badgeCount,
                                         GetClientParty(&mainModule->pokeCons[1], mainModule->playerClientId));
             if (loss > cash) {
                 loss = cash;
@@ -2406,7 +2406,7 @@ void SkipExitBGMFadeOut(BtlMainModule *mainModule) {
 }
 
 void ChangeFriendshipWhenFainted(BtlMainModule *mainModule, BattleMon *mon, BOOL reason) {
-    if (mainModule->setup->battleType <= BTL_TYPE_TRAINER && mainModule->setup->fieldSituation.unk1b == 0) {
+    if (mainModule->setup->battleType <= BTL_TYPE_TRAINER && mainModule->setup->fieldSituation.recPlay == 0) {
         ChangeFriendship(mainModule, mon, reason ? 5 : 4);
     }
 }
@@ -2734,7 +2734,7 @@ u8 GetClientChatterEffect(BtlMainModule *mainModule, u8 clientId) {
         }
         return 0;
     }
-    return mainModule->setup->unk44[clientId];
+    return mainModule->setup->chatterEffects[clientId];
 }
 
 u8 GetClientBattlerCount(BtlMainModule *mainModule, u8 clientId) {
@@ -3173,7 +3173,7 @@ StrBuf *GetClientTrainerName(BtlMainModule *mainModule, u8 clientId, u32 *traine
 
 u32 GetClientAIFlags(BtlMainModule *mainModule, u8 clientId) {
     if (BtlSetup_GetBattleType(mainModule) == BTL_TYPE_WILD) {
-        if (BtlSetup_IsBattleType(mainModule, 8)) {
+        if (BtlSetup_IsBattleType(mainModule, BTL_SETUP_FLAG_ROAMING)) {
             return 0x800;
         }
         if (BtlSetup_GetBattleStyle(mainModule) == BTL_STYLE_DOUBLE) {
@@ -3214,7 +3214,7 @@ PlayerInfo *GetClientPlayerInfo(BtlMainModule *mainModule, u8 clientId) {
 }
 
 PlayerInfo *GetCommSupporterInfo(BtlMainModule *mainModule) {
-    return CommPlayerSupport_GetSupporter(mainModule->setup->unk88);
+    return CommPlayerSupport_GetSupporter(mainModule->setup->commSupport);
 }
 
 BtlField *GetBtlField(BtlMainModule *mainModule) {
@@ -3279,7 +3279,7 @@ u32 BtlSetup_IsBattleType(BtlMainModule *mainModule, u32 flag) {
 void IncRecord(BtlMainModule *mainModule, u32 record) {
     BtlSetup *setup = mainModule->setup;
 
-    if (setup->fieldSituation.unk1b == 0) {
+    if (setup->fieldSituation.recPlay == 0) {
         RecordAddOne(setup->records, record);
     }
 }
@@ -3287,13 +3287,13 @@ void IncRecord(BtlMainModule *mainModule, u32 record) {
 void AddRecord(BtlMainModule *mainModule, u32 record, u32 value) {
     BtlSetup *setup = mainModule->setup;
 
-    if (setup->fieldSituation.unk1b == 0) {
+    if (setup->fieldSituation.recPlay == 0) {
         RecordAdd(setup->records, record, value);
     }
 }
 
 u8 *GetShooterSettings(BtlMainModule *mainModule) {
-    return mainModule->setup->unk90;
+    return mainModule->setup->shooterSettings.disabledItems;
 }
 
 BOOL IsShooterEnabled(BtlMainModule *mainModule) {
@@ -3301,7 +3301,7 @@ BOOL IsShooterEnabled(BtlMainModule *mainModule) {
 
     switch (BtlMain_IsCommCompetitor(mainModule->setup)) {
     case 1:
-        if (mainModule->setup->unk97 != 0) {
+        if (mainModule->setup->shooterSettings.launcher != 0) {
             result = TRUE;
         }
         break;
@@ -3310,7 +3310,7 @@ BOOL IsShooterEnabled(BtlMainModule *mainModule) {
 }
 
 BOOL IsBagEnabled(BtlMainModule *mainModule) {
-    if (!mainModule->setup->unkDD_5) {
+    if (!mainModule->setup->bagDisabled) {
         if (BtlMain_IsCommCompetitor(mainModule->setup) == 1) {
             return IsShooterEnabled(mainModule);
         }
@@ -3373,7 +3373,7 @@ void BtlMain_StorePartiesToSetup(BtlMainModule *mainModule) {
     u8 slot;
     BattleMon *mon;
 
-    if (mainModule->setup->fieldSituation.unk1b != 0 || GetStudioMode(mainModule) != BTL_STUDIO_MODE_NONE) {
+    if (mainModule->setup->fieldSituation.recPlay != 0 || GetStudioMode(mainModule) != BTL_STUDIO_MODE_NONE) {
         return;
     }
     if (mainModule->setup->battleType <= BTL_TYPE_TRAINER) {
@@ -3413,7 +3413,7 @@ void BtlMain_StorePartiesToSetup(BtlMainModule *mainModule) {
     for (j = 0; j < 4; j++) {
         index = ClientIDToSetupIndex(mainModule->playerClientId, j);
         for (k = 0; k < 6; k++) {
-            mainModule->setup->unkE7[index][k] = 0;
+            mainModule->setup->monStatus[index][k] = 0;
         }
         if (DoesClientExist(mainModule, index)) {
             battleParty = GetPartyData(&mainModule->pokeCons[0], index);
@@ -3427,12 +3427,12 @@ void BtlMain_StorePartiesToSetup(BtlMainModule *mainModule) {
                 hp += GetBattleMonStat(mon, BATTLEMON_HP);
                 maxHP += GetBattleMonStat(mon, BATTLEMON_MAX_HP);
                 if (IsFainted(mon)) {
-                    mainModule->setup->unkE7[index][slot] = 2;
+                    mainModule->setup->monStatus[index][slot] = 2;
                 } else if (GetBattleMonStatus(mon) != 0) {
-                    mainModule->setup->unkE7[index][slot] = 1;
+                    mainModule->setup->monStatus[index][slot] = 1;
                 }
             }
-            mainModule->setup->unk100[index] = hp * 100 / maxHP;
+            mainModule->setup->hpPercent[index] = hp * 100 / maxHP;
         }
     }
 }
@@ -3478,7 +3478,7 @@ u16 GetGameTimeLimit(BtlMainModule *mainModule) {
 }
 
 BOOL IsGameTimeUp(BtlMainModule *mainModule) {
-    if (mainModule->setup->fieldSituation.unk1b == 0) {
+    if (mainModule->setup->fieldSituation.recPlay == 0) {
         if (mainModule->gameTimeLimit != 0) {
             return BattleClient_IsGameTimeUp(mainModule->clients[mainModule->playerClientId]);
         }
@@ -3490,7 +3490,7 @@ BOOL IsGameTimeUp(BtlMainModule *mainModule) {
 BOOL BtlMain_CheckOwnWindowDone(BtlMainModule *mainModule) {
     BOOL result;
 
-    if (mainModule->setup->fieldSituation.unk1b != 0) {
+    if (mainModule->setup->fieldSituation.recPlay != 0) {
         result = BattleClient_IsRecPlayCanceled(mainModule->clients[mainModule->playerClientId]);
         if (result) {
             mainModule->result = BTL_RESULT_DRAW;
@@ -3519,7 +3519,7 @@ void SetSetupPlayerInfo(BtlMainModule *mainModule, u8 clientId, const PlayerInfo
 void SetSetupChatterEffect(BtlMainModule *mainModule, u8 clientId) {
     u8 index = ClientIDToSetupIndex(mainModule->playerClientId, clientId);
 
-    mainModule->setup->unk44[index] = GetClientChatterEffect(mainModule, clientId);
+    mainModule->setup->chatterEffects[index] = GetClientChatterEffect(mainModule, clientId);
 }
 
 void BtlMain_StoreRecData(BtlMainModule *mainModule) {
@@ -3570,9 +3570,11 @@ void BtlMain_StartRecSkip(BtlMainModule *mainModule, u32 chapter) {
     }
     BtlvCore_Delete(mainModule->viewCore);
     BtlvCore_ResetGraphics(0x13);
-    mainModule->viewCore = BtlvCore_Create(mainModule, mainModule->clients[mainModule->setup->fieldSituation.unk19],
-                                           &mainModule->pokeCons[0], commCompetitor, 0x13);
-    BattleClient_SetViewCore(mainModule->clients[mainModule->setup->fieldSituation.unk19], mainModule->viewCore);
+    mainModule->viewCore =
+        BtlvCore_Create(mainModule, mainModule->clients[mainModule->setup->fieldSituation.playerClientId],
+                        &mainModule->pokeCons[0], commCompetitor, 0x13);
+    BattleClient_SetViewCore(mainModule->clients[mainModule->setup->fieldSituation.playerClientId],
+                             mainModule->viewCore);
     BattleServer_Start(mainModule->server);
 }
 
@@ -3591,18 +3593,18 @@ BtlServerFlow *GetServerFlow(BtlMainModule *mainModule) {
 }
 
 void BtlSetup_ClearResults(BtlSetup *setup) {
-    setup->unkD2 = 0;
-    setup->unkD3 = 0;
-    setup->unkD4 = 0;
-    setup->unkD5 = 0;
-    setup->unkD6 = 0;
-    setup->unkD7 = 0;
-    setup->unkD8 = 0;
-    setup->unkD9 = 0;
-    setup->unkDA = 0;
-    setup->unkDB = 0;
-    setup->unkDC = 0;
-    setup->unkD0 = 0;
+    setup->turnCount = 0;
+    setup->switchCount = 0;
+    setup->playerImmuneHitCount = 0;
+    setup->playerSuperEffectiveHitCount = 0;
+    setup->playerNotVeryEffectiveHitCount = 0;
+    setup->foeImmuneHitCount = 0;
+    setup->foeNotVeryEffectiveHitCount = 0;
+    setup->won = 0;
+    setup->foeFaintedCount = 0;
+    setup->playerFaintedCount = 0;
+    setup->usedMoveKindCount = 0;
+    setup->playerHp = 0;
 }
 
 void BtlMain_StoreResultStats(BtlMainModule *mainModule) {
@@ -3619,33 +3621,33 @@ void BtlMain_StoreResultStats(BtlMainModule *mainModule) {
     }
     flow = BattleServer_GetFlow(mainModule->server);
     setup = mainModule->setup;
-    setup->unkD2 = GetTurnCounter(flow);
-    setup->unkD3 = BtlServerFlow_GetSwitchCount(flow, 0);
-    setup->unkD4 = BtlServerFlow_GetPlayerImmuneHitCount(flow);
-    setup->unkD5 = BtlServerFlow_GetPlayerSuperEffectiveHitCount(flow);
-    setup->unkD6 = BtlServerFlow_GetPlayerNotVeryEffectiveHitCount(flow);
-    setup->unkD7 = BtlServerFlow_GetFoeImmuneHitCount(flow);
-    setup->unkD8 = BtlServerFlow_GetFoeNotVeryEffectiveHitCount(flow);
+    setup->turnCount = GetTurnCounter(flow);
+    setup->switchCount = BtlServerFlow_GetSwitchCount(flow, 0);
+    setup->playerImmuneHitCount = BtlServerFlow_GetPlayerImmuneHitCount(flow);
+    setup->playerSuperEffectiveHitCount = BtlServerFlow_GetPlayerSuperEffectiveHitCount(flow);
+    setup->playerNotVeryEffectiveHitCount = BtlServerFlow_GetPlayerNotVeryEffectiveHitCount(flow);
+    setup->foeImmuneHitCount = BtlServerFlow_GetFoeImmuneHitCount(flow);
+    setup->foeNotVeryEffectiveHitCount = BtlServerFlow_GetFoeNotVeryEffectiveHitCount(flow);
     if (setup->result == BTL_RESULT_VICTORY) {
-        setup->unkD9 = 1;
+        setup->won = 1;
     }
     party = GetPartyData(&mainModule->pokeCons[1], 0);
     count = GetNumMonsInParty(party);
     alive = GetAlivePartyCount(party);
     for (i = 0; i < count; i++) {
         mon = BattleParty_GetMon(party, i);
-        setup->unkDC += BattleMon_GetUsedMoveKindCount(mon);
-        setup->unkD0 += GetBattleMonStat(mon, BATTLEMON_HP);
+        setup->usedMoveKindCount += BattleMon_GetUsedMoveKindCount(mon);
+        setup->playerHp += GetBattleMonStat(mon, BATTLEMON_HP);
     }
-    setup->unkDB = count - alive;
+    setup->playerFaintedCount = count - alive;
     party = GetPartyData(&mainModule->pokeCons[1], 1);
     count = GetNumMonsInParty(party);
-    setup->unkDA = count - GetAlivePartyCount(party);
+    setup->foeFaintedCount = count - GetAlivePartyCount(party);
     if (DoesClientExist(mainModule, 3)) {
         party = GetPartyData(&mainModule->pokeCons[1], 3);
         if (party != NULL) {
             count = GetNumMonsInParty(party);
-            setup->unkDA += (u8)(count - GetAlivePartyCount(party));
+            setup->foeFaintedCount += (u8)(count - GetAlivePartyCount(party));
         }
     }
 }

@@ -100,8 +100,8 @@ u32 Regulation_GetParam(Regulation *regulation, u32 param) {
     case REGULATION_PARAM_ALLOW_NICKNAMES:
         value = regulation->allowNicknames;
         break;
-    case REGULATION_PARAM_18:
-        value = regulation->unkB6;
+    case REGULATION_PARAM_IDLE_EFFECTS:
+        value = regulation->idleEffects;
         break;
     case REGULATION_PARAM_SHOW_PARTNERS:
         value = regulation->showPartners;
@@ -190,8 +190,8 @@ void Regulation_SetParam(Regulation *regulation, u32 param, int value) {
             regulation->allowNicknames = value;
         }
         break;
-    case REGULATION_PARAM_18:
-        regulation->unkB6 = value;
+    case REGULATION_PARAM_IDLE_EFFECTS:
+        regulation->idleEffects = value;
         break;
     case REGULATION_PARAM_SHOW_PARTNERS:
         if (value < 2) {
