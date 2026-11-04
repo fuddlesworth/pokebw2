@@ -1181,7 +1181,7 @@ static void HandlerDefog(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
             stat = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
             stat->stat = BATTLEMON_EVASION_STAGE;
             stat->change = -1;
-            stat->unk0e = 1;
+            stat->showFail = 1;
             stat->count = 1;
             stat->monIds[0] = targetId;
             BattleHandler_PopWork(flow, stat);
@@ -2159,7 +2159,7 @@ static void HandlerStockpileIncreaseStats(BattleEventItem *item, BtlServerFlow *
             stat->monIds[0] = monId;
             stat->stat = BATTLEMON_DEFENSE_STAGE;
             stat->change = 1;
-            stat->unk0e = 1;
+            stat->showFail = 1;
             BattleHandler_PopWork(flow, stat);
             counter = BattleHandler_PushWork(flow, BTL_HANDLER_SET_COUNTER, monId);
             counter->header.checkPrevResult = TRUE;
@@ -2172,7 +2172,7 @@ static void HandlerStockpileIncreaseStats(BattleEventItem *item, BtlServerFlow *
             stat->monIds[0] = monId;
             stat->stat = BATTLEMON_SP_DEFENSE_STAGE;
             stat->change = 1;
-            stat->unk0e = 1;
+            stat->showFail = 1;
             BattleHandler_PopWork(flow, stat);
             counter = BattleHandler_PushWork(flow, BTL_HANDLER_SET_COUNTER, monId);
             counter->header.checkPrevResult = TRUE;
@@ -2788,7 +2788,7 @@ static void HandlerRageBuild(BattleEventItem *item, BtlServerFlow *flow, u8 monI
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
         param->stat = 1;
         param->change = 1;
-        param->unk0e = 0;
+        param->showFail = 0;
         param->count = 1;
         param->monIds[0] = monId;
         param->flag = 1;
@@ -4800,7 +4800,7 @@ static void HandlerBellyDrum(BattleEventItem *item, BtlServerFlow *flow, u8 monI
             statParam->count = 1;
             statParam->monIds[0] = monId;
             statParam->flag = 1;
-            statParam->unk0e = 1;
+            statParam->showFail = 1;
             BattleHandler_PopWork(flow, statParam);
 
             msgParam = BattleHandler_PushWork(flow, BTL_HANDLER_MESSAGE, monId);
@@ -4909,7 +4909,7 @@ static void HandlerAcupressure(BattleEventItem *item, BtlServerFlow *flow, u8 mo
                         param->count = 1;
                         param->stat = sAcupressureStats[i];
                         param->change = 2;
-                        param->unk0e = 0;
+                        param->showFail = 0;
                         BattleHandler_PopWork(flow, param);
                         return;
                     }
@@ -5339,7 +5339,7 @@ static void HandlerMemento(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
         param->stat = 1;
         param->change = -2;
         param->value = value;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
 
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
@@ -5348,7 +5348,7 @@ static void HandlerMemento(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
         param->stat = 3;
         param->change = -2;
         param->value = value;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
 
         faint = BattleHandler_PushWork(flow, BTL_HANDLER_FAINT, monId);
@@ -6882,7 +6882,7 @@ static void HandlerSkullBash(BattleEventItem *item, BtlServerFlow *flow, u8 monI
         param->monIds[0] = monId;
         param->stat = 2;
         param->change = 1;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
     }
 }
@@ -7980,7 +7980,7 @@ static void HandlerShellSmash(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         param->change = -1;
         param->count = 1;
         param->monIds[0] = monId;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
 
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
@@ -7988,7 +7988,7 @@ static void HandlerShellSmash(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         param->change = -1;
         param->count = 1;
         param->monIds[0] = monId;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
 
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
@@ -7996,7 +7996,7 @@ static void HandlerShellSmash(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         param->change = 2;
         param->count = 1;
         param->monIds[0] = monId;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
 
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
@@ -8004,7 +8004,7 @@ static void HandlerShellSmash(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         param->change = 2;
         param->count = 1;
         param->monIds[0] = monId;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
 
         param = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
@@ -8012,7 +8012,7 @@ static void HandlerShellSmash(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         param->change = 2;
         param->count = 1;
         param->monIds[0] = monId;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
     }
 }

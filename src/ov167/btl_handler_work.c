@@ -159,7 +159,7 @@ void *PushWork(BtlActionState *state, u32 command, u32 monId) {
             header->command = command;
             header->size = size;
             header->monId = monId;
-            header->unk23 = 0;
+            header->popup = 0;
             header->unk26 = 1;
             state->workPos += size;
             return header;

@@ -5329,9 +5329,9 @@ void ServerControl_FieldEffectEnd(BtlServerFlow *flow, u32 effect) {
     if (effect == 7) {
         BattleMon *mon;
 
-        StoreBattleMonsSpeedOrder(flow, flow->unk868);
-        BtlMonSet_ResetIndex(flow->unk868);
-        while ((mon = BtlMonSet_GetNext(flow->unk868)) != NULL) {
+        StoreBattleMonsSpeedOrder(flow, flow->tempMons);
+        BtlMonSet_ResetIndex(flow->tempMons);
+        while ((mon = BtlMonSet_GetNext(flow->tempMons)) != NULL) {
             if (CanPokemonBattle(mon)) {
                 ServerControl_CheckItemReaction(flow, mon, 0);
             }
@@ -7770,7 +7770,7 @@ void BtlServerFlow_SetFrame(BtlServerFlow *flow, u32 depth, BOOL clear) {
     flow->foeTargets = &frame->monSets[3];
     flow->damagedMons = &frame->monSets[4];
     flow->reactionTargets = &frame->monSets[5];
-    flow->unk868 = &frame->monSets[6];
+    flow->tempMons = &frame->monSets[6];
     flow->moveEffect = &frame->moveEffect;
     flow->moveParam = &frame->moveParams[0];
     flow->selectedMoveParam = &frame->moveParams[1];
@@ -7789,7 +7789,7 @@ void BtlServerFlow_SetFrame(BtlServerFlow *flow, u32 depth, BOOL clear) {
         BtlMonSet_Clear(flow->foeTargets);
         BtlMonSet_Clear(flow->damagedMons);
         BtlMonSet_Clear(flow->reactionTargets);
-        BtlMonSet_Clear(flow->unk868);
+        BtlMonSet_Clear(flow->tempMons);
         BattleMoveEffectState_Init(flow->moveEffect);
         MI_CpuFill8(flow->moveParam, 0, sizeof(BtlFlowMoveParam));
         MI_CpuFill8(flow->selectedMoveParam, 0, sizeof(BtlFlowMoveParam));
@@ -8337,7 +8337,7 @@ u8 BattleHandler_StatChange(BtlServerFlow *handler, const struct BattleHandlerSt
             if (!IsFainted(mon)) {
                 stat = param->stat;
                 if (ServerControl_StatChangeCore(handler, param->monIndex, mon, stat, param->change, 0x1f, context,
-                                                 param->value, param->unk0e, param->flag == 0)) {
+                                                 param->value, param->showFail, param->flag == 0)) {
                     BattleHandler_SetString(handler, &param->string);
                     result = TRUE;
                 }
@@ -8860,26 +8860,27 @@ u8 BattleHandler_DelayMoveDamage(BtlServerFlow *handler, const BattleHandlerDela
     target = GetPokeParam(handler->pokeCon, param->targetIndex);
     ServerEvent_GetMoveParam(handler, param->move, attacker, &moveParam);
     BtlMonSet_Clear(handler->damagedMons);
-    BtlMonSet_Clear(handler->unk868);
-    BtlMonSet_Add(handler->unk868, target);
-    BtlMonSet_SetNumTargets(handler->unk868, 1);
-    BtlMonSet_RemoveFainted(handler->unk868);
-    if (BtlMonSet_IsEmptyAfterTargeting(handler->unk868)) {
+    BtlMonSet_Clear(handler->tempMons);
+    BtlMonSet_Add(handler->tempMons, target);
+    BtlMonSet_SetNumTargets(handler->tempMons, 1);
+    BtlMonSet_RemoveFainted(handler->tempMons);
+    if (BtlMonSet_IsEmptyAfterTargeting(handler->tempMons)) {
         ServerDisplay_MoveFailed(handler, attacker, moveParam.move);
         return FALSE;
     }
-    ServerControl_RemoveHiddenTargets(handler, &moveParam, attacker, handler->unk868);
-    ServerControl_RemoveTypeImmuneTargets(handler, &moveParam, attacker, handler->unk868, handler->effectivenessTable);
-    ServerControl_RemoveNoEffectTargets(handler, &moveParam, attacker, handler->unk868, handler->effectivenessTable);
-    ServerControl_RemoveMissedTargets(handler, &moveParam, attacker, handler->unk868);
-    if (BtlMonSet_IsEmptyAfterTargeting(handler->unk868)) {
+    ServerControl_RemoveHiddenTargets(handler, &moveParam, attacker, handler->tempMons);
+    ServerControl_RemoveTypeImmuneTargets(handler, &moveParam, attacker, handler->tempMons,
+                                          handler->effectivenessTable);
+    ServerControl_RemoveNoEffectTargets(handler, &moveParam, attacker, handler->tempMons, handler->effectivenessTable);
+    ServerControl_RemoveMissedTargets(handler, &moveParam, attacker, handler->tempMons);
+    if (BtlMonSet_IsEmptyAfterTargeting(handler->tempMons)) {
         return FALSE;
     }
     savedEffect = *handler->moveEffect;
     BattleMoveEffectState_Init(handler->moveEffect);
-    BattleMoveEffectState_SetTargets(handler->moveEffect, handler, attacker, handler->unk868);
+    BattleMoveEffectState_SetTargets(handler->moveEffect, handler, attacker, handler->tempMons);
     handler->moveEffect->index = 1;
-    ServerControl_DamageMove(handler, &moveParam, attacker, handler->unk868, handler->effectivenessTable, TRUE);
+    ServerControl_DamageMove(handler, &moveParam, attacker, handler->tempMons, handler->effectivenessTable, TRUE);
     result = handler->moveEffect->enabled;
     *handler->moveEffect = savedEffect;
     return result;

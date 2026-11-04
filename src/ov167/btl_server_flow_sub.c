@@ -1356,7 +1356,7 @@ static BOOL BagItemRaiseStat(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
         param->monIds[0] = monId;
         param->stat = stat;
         param->change = value;
-        param->unk0e = 1;
+        param->showFail = 1;
         BattleHandler_PopWork(flow, param);
         return TRUE;
     }

@@ -19,7 +19,8 @@ typedef struct {
     u32 monId : 5;
     // Rounded up to 4 bytes
     u32 size : 10;
-    u32 unk23 : 1;
+    // The bit the parameters call popup: shows the ability's popup around the command
+    u32 popup : 1;
     // Skips the command when the previous one failed
     u32 checkPrevResult : 1;
     // Skips the command when the mon has fainted
@@ -239,7 +240,8 @@ struct BtlServerFlow {
     BtlMonSet *damagedMons;
     // The targets of a stolen or reflected move
     BtlMonSet *reactionTargets;
-    BtlMonSet *unk868;
+    // A set for one use at a time: the speed order of a field effect's end, a delayed move's one target
+    BtlMonSet *tempMons;
     BtlFlowDamageList *allyDamages;
     BtlFlowDamageList *foeDamages;
     BtlFlowWorkFrame frames[7];
@@ -495,7 +497,7 @@ struct BattleHandlerCureConditionParam {
     u32 unk13 : 10;
     u32 popup : 1;
     u32 checkPrevResult : 1;
-    u32 unk25 : 1;
+    u32 checkFainted : 1;
     u32 unk26 : 6;
     u32 condition;
     u8 monIds[12];
@@ -703,7 +705,8 @@ struct BattleHandlerStatChangeParam {
     u32 value;
     s8 change;
     u8 flag;
-    u8 unk0e;
+    // Shows why the change fails (ServerControl_StatChangeCore's showFail)
+    u8 showFail;
     u8 count;
     u8 monIds[8];
     BattleHandlerString string;
