@@ -221,7 +221,7 @@ BtlvEffectSetup *BtlvEffect_Create(u32 battleStyle, u32 battleType, const BtlFie
     setup->unk30 = BtlvEffect_GetStudioParam(mainModule);
     setup->studioMode = BtlvEffect_GetStudioMode(mainModule);
     if (setup->studioMode != BTL_STUDIO_MODE_NONE) {
-        setup->studioField = GetStudioRules(mainModule)->unk24;
+        setup->studioField = GetStudioRules(mainModule)->field;
     }
     for (i = 0; i < 4; i++) {
         setup->trainerTypes[i] = trainerTypes[i];

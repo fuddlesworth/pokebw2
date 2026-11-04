@@ -184,7 +184,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         if (BtlNet_IsInitSynced()) {
             BtlAdapter_InitSystem(mainModule->setup->fieldSituation.commMode);
             BtlMain_SetSetupSeq(&mainModule->seq, mainModule, mainModule->setup);
-            mainModule->unk460 = 0;
+            mainModule->subSeq = 0;
             BtlMain_InitTrainers(mainModule);
             BtlMain_CreateSrcParties(mainModule);
             (*state)++;
@@ -257,12 +257,12 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
         if (!mainModule->skipExitBgmFadeOut) {
             GFL_SndBGMFadeOut(30);
         }
-        mainModule->unk460 = 0;
+        mainModule->subSeq = 0;
         if (GetStudioMode(mainModule)) {
             BtlMain_FreeStudioData(mainModule);
         }
         if (GX_GetMasterBrightness()) {
-            mainModule->unk460 = -16;
+            mainModule->subSeq = -16;
             GX_SetMasterBrightness(-16);
             GXS_SetMasterBrightness(-16);
             *state += 2;
@@ -271,15 +271,15 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
         (*state)++;
         break;
     case 1:
-        if (mainModule->unk460 > -16) {
-            mainModule->unk460--;
+        if (mainModule->subSeq > -16) {
+            mainModule->subSeq--;
             brightness = GX_GetMasterBrightness();
-            if (brightness > mainModule->unk460) {
-                GX_SetMasterBrightness(mainModule->unk460);
+            if (brightness > mainModule->subSeq) {
+                GX_SetMasterBrightness(mainModule->subSeq);
             }
             brightness = GXS_GetMasterBrightness();
-            if (brightness > mainModule->unk460) {
-                GXS_SetMasterBrightness(mainModule->unk460);
+            if (brightness > mainModule->subSeq) {
+                GXS_SetMasterBrightness(mainModule->subSeq);
             }
             break;
         }
@@ -801,8 +801,8 @@ BOOL BtlMain_SetupCommSingle(u32 *state, BtlMainModule *mainModule) {
         return FALSE;
     }
     if (*state < 7) {
-        if (sCommSingleSetupSteps[*state](mainModule, &mainModule->unk460)) {
-            mainModule->unk460 = 0;
+        if (sCommSingleSetupSteps[*state](mainModule, &mainModule->subSeq)) {
+            mainModule->subSeq = 0;
             (*state)++;
         }
         return FALSE;
@@ -848,8 +848,8 @@ BOOL BtlMain_SetupCommDouble(u32 *state, BtlMainModule *mainModule) {
         return FALSE;
     }
     if (*state < 7) {
-        if (sCommDoubleSetupSteps[*state](mainModule, &mainModule->unk460)) {
-            mainModule->unk460 = 0;
+        if (sCommDoubleSetupSteps[*state](mainModule, &mainModule->subSeq)) {
+            mainModule->subSeq = 0;
             (*state)++;
         }
         return FALSE;
@@ -883,8 +883,8 @@ BOOL BtlMain_SetupCommRotation(u32 *state, BtlMainModule *mainModule) {
         return FALSE;
     }
     if (*state < 7) {
-        if (sCommRotationSetupSteps[*state](mainModule, &mainModule->unk460)) {
-            mainModule->unk460 = 0;
+        if (sCommRotationSetupSteps[*state](mainModule, &mainModule->subSeq)) {
+            mainModule->subSeq = 0;
             (*state)++;
         }
         return FALSE;
@@ -918,8 +918,8 @@ BOOL BtlMain_SetupCommTriple(u32 *state, BtlMainModule *mainModule) {
         return FALSE;
     }
     if (*state < 7) {
-        if (sCommTripleSetupSteps[*state](mainModule, &mainModule->unk460)) {
-            mainModule->unk460 = 0;
+        if (sCommTripleSetupSteps[*state](mainModule, &mainModule->subSeq)) {
+            mainModule->subSeq = 0;
             (*state)++;
         }
         return FALSE;
@@ -1658,18 +1658,18 @@ u16 GetStudioEndingBGM2(BtlMainModule *mainModule) {
 u32 GetRunMode(BtlMainModule *mainModule) {
     switch (mainModule->setup->battleType) {
     case BTL_TYPE_WILD:
-        return 0;
+        return BTL_RUN_MODE_ESCAPE;
     case BTL_TYPE_TRAINER:
         if (GetStudioMode(mainModule) == BTL_STUDIO_MODE_FILM) {
-            return 2;
+            return BTL_RUN_MODE_FORFEIT;
         }
-        return 1;
+        return BTL_RUN_MODE_NO_RUNNING;
     case BTL_TYPE_FACILITY:
-        return 2;
+        return BTL_RUN_MODE_FORFEIT;
     case BTL_TYPE_COMM:
-        return 2;
+        return BTL_RUN_MODE_FORFEIT;
     default:
-        return 1;
+        return BTL_RUN_MODE_NO_RUNNING;
     }
 }
 

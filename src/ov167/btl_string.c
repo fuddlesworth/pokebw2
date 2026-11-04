@@ -133,7 +133,7 @@ static inline void LoadMovieMsgData(BtlMainModule *mainModule, u32 mode, HeapID 
         sWork.msgData[9] =
             GFL_MsgSysLoadData(FALSE, 2, GetMovieScriptMsgFile(GetStudioMovieId(mainModule), male), heapId);
         if (mode == BTL_STUDIO_MODE_FILM) {
-            sWork.msgData[10] = GFL_MsgSysLoadData(FALSE, 2, sMovieMsgFiles[rules->unk08], heapId);
+            sWork.msgData[10] = GFL_MsgSysLoadData(FALSE, 2, sMovieMsgFiles[rules->msgFile], heapId);
         }
     }
 }

@@ -87,19 +87,26 @@ typedef struct {
     s16 msgId2;
     // The move index the foe's AI uses once the choice is made (BtlStudioWork)
     s16 aiMoveIndex;
-    s16 unk06;
+    // The field the choice changes to, -1 for none (Studio_SetChoiceField)
+    s16 field;
     s16 points;
     s16 unk0A;
 } BtlStudioChoice;
 
 // One entry of a Pokestar Studios movie's script
 typedef struct {
-    s16 unk00;
-    s16 unk02;
-    s16 unk04;
-    s16 unk06;
-    s16 unk08;
-    s16 unk0A;
+    // The turn the scene plays at; 100 and 101 are the endings', which score its points
+    s16 turn;
+    // The choice recorded before that the scene follows, -1 for any
+    s16 requiredChoice;
+    // What else starts it, -1 for nothing else: 0 the faint of the species triggerValue, 1 the use of the move
+    // triggerValue, and at turn 101 the outcome of the battle (Studio_FindScene)
+    s16 trigger;
+    s16 triggerValue;
+    // How the audience reacts to the scene's choices (StudioScore_AddChoicePoints)
+    s16 reaction;
+    // The points the scene adds to the score; 60 and more make the ending strange (Studio_DecideEnding)
+    s16 points;
     // The messages of two kinds, by step, which the cut-ins' message command picks between
     s16 messages[2][10];
     // The script event each step waits for, -1 for none
@@ -116,26 +123,30 @@ typedef struct {
 typedef struct {
     s16 movie;
     u8 unk02[2];
-    s16 unk04;
+    // What the score's sum is multiplied by (StudioScore_CalcTotal)
+    s16 scoreMultiplier;
     s16 unk06;
     // Which of the studio's message files the movie uses
-    s16 unk08;
+    s16 msgFile;
     s16 turnLimit;
-    s16 unk0C;
-    s16 unk0E;
+    // The turns the movie should take: each turn away from it costs a point, and the turn messages change past it
+    s16 targetTurnCount;
+    // The scene whose end is the bad ending
+    s16 badEndingScene;
     s16 rule;
     s16 species1;
     s16 species2;
-    s16 unk16;
+    // The move the player's first action must use for rule 2's win (CheckScriptedBattleRules)
+    s16 requiredMove;
     u8 unk18[0xc];
-    // btlv_effect.c passes it to the field
-    s16 unk24;
+    // The field of the movie, which btlv_effect.c passes to BtlvField_Create
+    s16 field;
     u8 unk26[0xa];
     BtlStudioTurnEvent turnEvents[3];
     u8 unk3C[0x6c];
-    // Messages by turn
-    s16 unkA8[20];
-    s16 unkD0[20];
+    // The two messages of each turn, -1 for none (Studio_PlayTurnMessages)
+    s16 turnMsgIds1[20];
+    s16 turnMsgIds2[20];
     BtlStudioScene scenes[];
 } BtlScriptedRules;
 
@@ -176,7 +187,8 @@ struct BtlMainModule {
     u32 result;
     BtlClientIDList clientIdList;
     BtlMainSeq seq;
-    s32 unk460;
+    // The sequence of the link battle's setup step being run, and the brightness of the exit's fade
+    s32 subSeq;
     BOOL (*mainFunc)(BtlMainModule *mainModule);
     u16 heapId;
     u8 unk46A;
@@ -231,6 +243,16 @@ BOOL IsSwitchMode(BtlMainModule *mainModule);
 u32 GetValidPosMax(BtlMainModule *mainModule);
 u32 GetActivePosCount(BtlMainModule *mainModule);
 BOOL IsActivePos(BtlMainModule *mainModule, u32 pos);
+// What the player's Run does (GetRunMode), each with its message
+enum {
+    // Tries to escape, as from a wild battle
+    BTL_RUN_MODE_ESCAPE,
+    // "There's no running from a Trainer battle!"
+    BTL_RUN_MODE_NO_RUNNING,
+    // Asks to forfeit, in a link battle, a facility's and a Pokéstar Studios movie's
+    BTL_RUN_MODE_FORFEIT,
+};
+
 u32 GetRunMode(BtlMainModule *mainModule);
 BtlFieldSituation *GetFieldEffectData(BtlMainModule *mainModule);
 

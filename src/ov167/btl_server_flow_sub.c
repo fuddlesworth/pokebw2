@@ -1542,7 +1542,7 @@ s32 CheckScriptedBattleRules(BtlMainModule *mainModule, BtlPokeCon *pokeCon) {
         u32 value = GetPlayerFirstActionMove(mainModule);
 
         if (targetDown) {
-            if (value == rules->unk16) {
+            if (value == rules->requiredMove) {
                 won = TRUE;
             } else {
                 outcomes[0] = -9;

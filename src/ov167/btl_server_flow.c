@@ -853,7 +853,7 @@ u32 ActionOrder_Proc(BtlServerFlow *flow, ActionOrderEntry *entry) {
         if ((flow->result != BTL_FLOW_RESULT_ESCAPE || action.bits.action == BATTLE_ACTION_ESCAPE) && !IsFainted(mon) &&
             (action.bits.action == BATTLE_ACTION_ROTATION || DoesBattleMonExist(&flow->posPoke, GetMonID(mon)))) {
             if (CheckCondition(mon, CONDITION_SKY_DROP) &&
-                (action.bits.action != BATTLE_ACTION_ESCAPE || GetRunMode(flow->mainModule) != 2)) {
+                (action.bits.action != BATTLE_ACTION_ESCAPE || GetRunMode(flow->mainModule) != BTL_RUN_MODE_FORFEIT)) {
                 if (GetConditionCount(mon, 3)) {
                     ServerControl_SetMonCounter(flow, mon, 3, 0);
                 }
@@ -1250,7 +1250,7 @@ BOOL ServerControl_EscapeSub(BtlServerFlow *handler, BattleMon *mon, u32 flag) {
     u32 chance;
 
     result = FALSE;
-    if (GetRunMode(handler->mainModule) == 0) {
+    if (GetRunMode(handler->mainModule) == BTL_RUN_MODE_ESCAPE) {
         if (GetClientIDFromMonID(GetMonID(mon)) == GetPlayerClientID(handler->mainModule)) {
             result = ServerEvent_CheckSureEscape(handler, mon);
             if (result) {
@@ -1303,7 +1303,7 @@ BOOL ServerControl_EscapeCore(BtlServerFlow *flow, BattleMon *mon, BOOL sureEsca
     u32 state2;
 
     clientId = GetClientIDFromMonID(GetMonID(mon));
-    if (GetRunMode(flow->mainModule) == 0) {
+    if (GetRunMode(flow->mainModule) == BTL_RUN_MODE_ESCAPE) {
         isEnemy = !IsAllyClientID(clientId, GetPlayerClientID(flow->mainModule)) ? TRUE : FALSE;
         if (!sureEscape && !IsFainted(mon)) {
             state = PushState(&flow->actionState, 0xb58);
