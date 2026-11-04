@@ -230,7 +230,7 @@ static void PoketradeSave_SendTradeSummary(PokemonTradeWork *wk) {
     }
     profile.hobby = getPlayerSurveys(survey);
     profile.countryCount = UnityTower_GetCountryCount(survey);
-    profile.unk26_0 = UnityTower_GetRatingLevel(survey);
+    profile.ratingLevel = UnityTower_GetRatingLevel(survey);
     if (PokemonTrade_IsNetwork(wk)) {
         if (GFL_NetSendCommand(NetHandle_GetOwn(), TRADE_NET_CMD_PROFILE, sizeof(profile), &profile)) {
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x17, 8);

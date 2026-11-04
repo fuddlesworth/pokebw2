@@ -30,7 +30,8 @@ typedef struct {
     u8 hobby;
     // The countries the trainer had met
     u8 countryCount;
-    u8 unk26_0 : 3;
+    // The trainer's survey rating level (UnityTower_GetRatingLevel), which picks its greeting
+    u8 ratingLevel : 3;
     // A flag of the Unity Tower's scripts, which a new record of the same trainer keeps
     u8 scriptFlag : 1;
     // Whether the entry of the survey's list is used
@@ -48,7 +49,7 @@ enum {
     UNITY_TOWER_VISITOR_PARAM_RECEIVED_SPECIES,
     UNITY_TOWER_VISITOR_PARAM_HOBBY,
     UNITY_TOWER_VISITOR_PARAM_COUNTRY_COUNT,
-    UNITY_TOWER_VISITOR_PARAM_UNK26_0,
+    UNITY_TOWER_VISITOR_PARAM_RATING_LEVEL,
     UNITY_TOWER_VISITOR_PARAM_SCRIPT_FLAG,
     UNITY_TOWER_VISITOR_PARAM_VALID,
 };
@@ -76,7 +77,7 @@ struct UnityTowerSurveySave {
     u8 countryCount;
     // The player's own answer to the survey, below 9
     u8 hobby;
-    // Below 5, sent in trades as the visitor's unk26_0
+    // Below 5, sent in trades as the visitor's ratingLevel
     u8 ratingLevel;
     // UNITY_TOWER_REGION_* for each of 64 regions of each country from 1 on
     u8 regions[UNITY_TOWER_REGION_BYTES];
@@ -105,7 +106,7 @@ u8 UnityTower_GetRatingLevel(UnityTowerSurveySave *save);
 void setPlayerSurveys(UnityTowerSurveySave *save, s32 hobby);
 u8 getPlayerSurveys(UnityTowerSurveySave *save);
 u32 UnityTower_GetVisitorParam(UnityTowerSurveySave *save, u32 index, u32 param);
-// Sets a visitor's UNITY_TOWER_VISITOR_PARAM_UNK26_0, SCRIPT_FLAG or VALID
+// Sets a visitor's UNITY_TOWER_VISITOR_PARAM_RATING_LEVEL, SCRIPT_FLAG or VALID
 void UnityTower_SetVisitorParam(UnityTowerSurveySave *save, int index, u32 param, u32 value);
 // A visitor's PlayerInfo, or NULL out of range
 PlayerInfo *UnityTower_GetVisitor(UnityTowerSurveySave *save, int index);
@@ -125,7 +126,7 @@ void Scrcmd_CollectPartnersByLanguage(UnityTowerSurveySave *save, UnityTowerFloo
 // The survey's index of the floor's candidate, or UNITY_TOWER_HISTORY_INDEX_NONE when there is none
 #define UNITY_TOWER_HISTORY_INDEX_NONE 0xff
 u32 Scrcmd_GetPartnerCandidateHistoryIndex(UnityTowerFloor *output, u32 index);
-u32 Scrcmd_CalcPartnerGreetingIndex(u32 gender, u32 id, u32 province, u32 a3, u32 hasProvince);
+u32 Scrcmd_CalcPartnerGreetingIndex(u32 gender, u32 id, u32 ratingLevel, u32 a3, u32 hasProvince);
 void UnityTowerSave_Init(UnityTowerFloor *save);
 u32 Scrcmd_GetPartnerGreetingMessage(WordSet *wordSet, GameSystem *gsys, UnityTowerFloor *save, s32 index, u32 param);
 

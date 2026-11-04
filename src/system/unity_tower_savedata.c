@@ -154,8 +154,8 @@ u32 UnityTower_GetVisitorParam(UnityTowerSurveySave *save, u32 index, u32 param)
         return visitor->hobby;
     case UNITY_TOWER_VISITOR_PARAM_COUNTRY_COUNT:
         return visitor->countryCount;
-    case UNITY_TOWER_VISITOR_PARAM_UNK26_0:
-        return visitor->unk26_0;
+    case UNITY_TOWER_VISITOR_PARAM_RATING_LEVEL:
+        return visitor->ratingLevel;
     case UNITY_TOWER_VISITOR_PARAM_SCRIPT_FLAG:
         return visitor->scriptFlag;
     case UNITY_TOWER_VISITOR_PARAM_VALID:
@@ -177,9 +177,9 @@ void UnityTower_SetVisitorParam(UnityTowerSurveySave *save, int index, u32 param
     case UNITY_TOWER_VISITOR_PARAM_HOBBY:
     case UNITY_TOWER_VISITOR_PARAM_COUNTRY_COUNT:
         break;
-    case UNITY_TOWER_VISITOR_PARAM_UNK26_0:
+    case UNITY_TOWER_VISITOR_PARAM_RATING_LEVEL:
         if (value < 5) {
-            visitor->unk26_0 = value;
+            visitor->ratingLevel = value;
         }
         break;
     case UNITY_TOWER_VISITOR_PARAM_SCRIPT_FLAG:
