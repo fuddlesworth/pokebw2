@@ -17466,7 +17466,7 @@ overlays/ov137 0x021f1ff8 ResortSys_GetShopData
 overlays/ov137 0x021f1ffc ResortSys_GetPersonTypes
 overlays/ov137 0x021f2000 ResortSys_GetRanks
 overlays/ov137 0x021f2004 ResortSys_GetPosOffsets
-overlays/ov137 0x021f2008 ResortSys_GetUnk24Table
+overlays/ov137 0x021f2008 ResortSys_GetRaffles
 overlays/ov137 0x021f200c ResortSys_GetTexts
 overlays/ov137 0x021f2010 ResortSys_GetShopOpenings
 overlays/ov137 0x021f2014 ResortSys_GetDatas

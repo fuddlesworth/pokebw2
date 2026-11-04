@@ -137,7 +137,9 @@ u32 ResortData_GetMakeKind(u32 kind);
 BOOL ResortSlots_IsEmpty(ResortSlots *slots, u32 row, u32 pos);
 ResortPersonData *ResortSlots_GetData(ResortSlots *slots, u32 row, u32 pos);
 u32 ResortSlots_FindEmpty(ResortSlots *slots, u32 row);
-u16 ResortData_RaffleShopItem(ResortPersonData *data, ResortBinary *a1, ResortBinary *a2, JoinAvenueInfo *info);
+// The item that a raffle at the avenue's rank gives the person, from the raffle table (ResortSys_GetRaffles) and the
+// ranks' table, or 0
+u16 ResortData_RaffleShopItem(ResortPersonData *data, ResortBinary *raffles, ResortBinary *ranks, JoinAvenueInfo *info);
 // person is a JoinAvenuePerson, JoinAvenueRecord or JoinAvenueEntry, by the kind
 ResortPersonData *ResortData_Create(HeapID heapId, void *person, u32 kind, u16 index);
 void ResortData_Free(ResortPersonData *data);
@@ -150,8 +152,10 @@ void *ResortData_GetPerson(ResortPersonData *data);
 u32 ResortData_GetType(ResortPersonData *data);
 u32 ResortData_GetKind(ResortPersonData *data);
 u32 ResortData_GetIndex(ResortPersonData *data);
-u32 ResortData_Roll(ResortPersonData *data, u32 a1, u32 a2);
-u32 ResortData_RollPair(ResortPersonData *data, ResortPersonData *other, u32 a2, u32 a3);
+// The count-th random number below max from the person's seed (JoinAvenuePerson_Random and the like), and from the
+// sum of two persons' seeds
+u32 ResortData_Roll(ResortPersonData *data, u32 count, u32 max);
+u32 ResortData_RollPair(ResortPersonData *data, ResortPersonData *other, u32 count, u32 max);
 ResortPersonData **ResortDatas_Create(const ResortSysSetup *setup, HeapID heapId);
 void ResortDatas_Free(ResortPersonData **datas);
 ResortDataIter ResortDatas_StartIter(ResortPersonData **datas, const u32 *kinds, u32 count);
@@ -187,7 +191,7 @@ void ResortSys_Free(ResortSys *sys);
 ResortShopData *ResortSys_GetShopData(ResortSys *sys);
 ResortBinary *ResortSys_GetRanks(ResortSys *sys);
 ResortBinary *ResortSys_GetPosOffsets(ResortSys *sys);
-ResortBinary *ResortSys_GetUnk24Table(ResortSys *sys);
+ResortBinary *ResortSys_GetRaffles(ResortSys *sys);
 ResortBinary *ResortSys_GetTexts(ResortSys *sys);
 ResortBinary *ResortSys_GetShopOpenings(ResortSys *sys);
 ResortPersonData **ResortSys_GetDatas(ResortSys *sys);

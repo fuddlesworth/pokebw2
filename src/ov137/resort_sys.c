@@ -49,7 +49,8 @@ struct ResortSys {
     // The avenue's ranks: the popularity they need and the shops they bring
     ResortBinary *ranks;
     ResortBinary *unk20;
-    ResortBinary *unk24;
+    // The shops' raffles, which join_ave_raffle_shop draws from
+    ResortBinary *raffles;
     // The texts of a trainer type, by column
     ResortBinary *texts;
     // The shops that open at a popularity
@@ -177,7 +178,7 @@ ResortSys *ResortSys_Create(const ResortSysSetup *setup, ResortWork *resortWork,
     sys->types = ResortBinary_Load(4, 42, heapId);
     sys->ranks = ResortBinary_Load(7, 13, heapId);
     sys->unk20 = ResortBinary_Load(3, 4, heapId);
-    sys->unk24 = ResortBinary_Load(8, 22, heapId);
+    sys->raffles = ResortBinary_Load(8, 22, heapId);
     sys->texts = ResortBinary_Load(9, 23, heapId);
     sys->unk2c = ResortBinary_Load(5, 11, heapId);
     sys->datas = ResortDatas_Create(setup, heapId);
@@ -190,7 +191,7 @@ void ResortSys_Free(ResortSys *sys) {
     ResortDatas_Free(sys->datas);
     ResortBinary_Free(sys->unk2c);
     ResortBinary_Free(sys->texts);
-    ResortBinary_Free(sys->unk24);
+    ResortBinary_Free(sys->raffles);
     ResortBinary_Free(sys->unk20);
     ResortBinary_Free(sys->ranks);
     ResortBinary_Free(sys->types);
@@ -214,8 +215,8 @@ ResortBinary *ResortSys_GetPosOffsets(ResortSys *sys) {
     return sys->unk20;
 }
 
-ResortBinary *ResortSys_GetUnk24Table(ResortSys *sys) {
-    return sys->unk24;
+ResortBinary *ResortSys_GetRaffles(ResortSys *sys) {
+    return sys->raffles;
 }
 
 ResortBinary *ResortSys_GetTexts(ResortSys *sys) {
