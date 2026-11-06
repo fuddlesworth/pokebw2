@@ -56,7 +56,7 @@ void PokewoodSystem_SetCastFromPokeList(PokewoodSystem *sys, const PokeListParam
 void PokewoodSystem_SetupPokeList(PokewoodSystem *sys, GameData *gameData, PokeListParam *param) {
     PokewoodMovie *movie;
 
-    PokeListParam_Setup(param, gameData, 0x16, GameData_GetParty(gameData));
+    PokeListParam_Setup(param, gameData, POKELIST_MODE_BATTLE_TEAM_CANCEL, GameData_GetParty(gameData));
     PokeRegulation_Load(POKEWOOD_REGULATION, &sys->regulation);
     movie = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, sys->movie, HEAPID_GAMEEVENT);
     sys->regulation.minCount = movie->castCount;
@@ -66,7 +66,7 @@ void PokewoodSystem_SetupPokeList(PokewoodSystem *sys, GameData *gameData, PokeL
     sys->unkCF = 1;
     sys->unkD0 = 0x90;
     param->regulation = &sys->regulation;
-    param->unk18 = &sys->unkCE;
+    param->extraRule = &sys->unkCE;
     param->unk48 = 0;
 }
 

@@ -16,7 +16,7 @@ void PokeListParam_Setup(PokeListParam *param, GameData *gameData, u32 mode, Pok
     param->mode = mode;
     param->party = party;
     param->bag = GameData_GetBag(gameData);
-    param->unk08 = MailBox_GetFromGameData(gameData);
+    param->mailbox = MailBox_GetFromGameData(gameData);
     param->trainerData = getTrainerDataBlkAddress(save);
     param->reshZek = getReshZekBlkAddress(save);
     param->pokedex = GameData_GetPokedex(gameData);
@@ -25,7 +25,7 @@ void PokeListParam_Setup(PokeListParam *param, GameData *gameData, u32 mode, Pok
     param->playerInfo = GetGameDataPlayerInfo(gameData);
     param->season = GameData_GetSeason(gameData);
     param->unk48 = 0;
-    param->result = 0;
+    param->result = POKELIST_RESULT_DONE;
     param->keyItemRegistered = FALSE;
 }
 

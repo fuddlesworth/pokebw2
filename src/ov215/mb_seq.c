@@ -667,7 +667,7 @@ static void MailBox_CreatePartyParam(MailBoxWork *work, u32 mode, u16 item, u16 
                                                 HEAPID_MAILBOX_PROC);
 
     param->item = item;
-    param->unk6C = mailIndex;
+    param->mailboxSlot = mailIndex;
     work->childParam = param;
 }
 

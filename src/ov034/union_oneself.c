@@ -2704,7 +2704,7 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
 
         param = GFL_HeapAllocate(HEAPID_UNION, sizeof(UnionColosseumParam), TRUE, "union_oneself.c", 4426);
 
-        PokeListParam_Setup(&param->list, unisys->param->gameData, 0x1a, clsys->party[netId]);
+        PokeListParam_Setup(&param->list, unisys->param->gameData, POKELIST_MODE_NETWORK_TEAM, clsys->party[netId]);
         param->list.regulation = unisys->alloc.regulation;
         param->battle = GFL_HeapAllocate(HEAPID_UNION, sizeof(ColosseumBattleParam), TRUE, "union_oneself.c", 4433);
         count = 0;
@@ -2727,10 +2727,10 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
         case 21:
         case 22:
         case 23:
-            param->list.partnerCount = 2;
+            param->list.partnerLayout = POKELIST_PARTNER_LAYOUT_THREE_TEAMS;
             break;
         default:
-            param->list.partnerCount = 1;
+            param->list.partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
             break;
         }
         param->list.showPartners = TRUE;

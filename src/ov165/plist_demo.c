@@ -23,6 +23,7 @@
 #include "save/shortcut.h"
 #include "system/rtc.h"
 #include "system/wipe.h"
+#include "text/system/btl_main_11.h"
 
 // The form changes that items make on the party list, with their particles, and the checks for them. Named after
 // the ROM's string "plist_demo.c"
@@ -53,8 +54,8 @@ void PokeListDemo_Start(PokeListWork *wk) {
     PokeList_ReleaseBG0(wk);
     PokeList_Init3D(wk);
     PokeListDemo_Setup(wk);
-    wk->state = 15;
-    wk->demoStep = 0;
+    wk->state = POKELIST_STATE_DEMO_UPDATE;
+    wk->demoStep = POKELIST_DEMO_STEP_START;
 }
 
 void PokeListDemo_End(PokeListWork *wk) {
@@ -65,22 +66,22 @@ void PokeListDemo_End(PokeListWork *wk) {
     PokeList_CreateBG0(wk);
     PokeListMessage_LoadFrame(wk, wk->message);
     switch (wk->demo) {
-    case 1:
-    case 2:
-        if (wk->param->mode == 0) {
+    case POKELIST_DEMO_GIRATINA_ORIGIN:
+    case POKELIST_DEMO_GIRATINA_ALTERED:
+        if (wk->param->mode == POKELIST_MODE_FIELD) {
             doneFunc = PokeList_MessageDoneSelect;
         }
-    case 3:
-    case 4:
-    case 5:
-    case 6:
+    case POKELIST_DEMO_SHAYMIN_SKY:
+    case POKELIST_DEMO_KYUREM_FUSE:
+    case POKELIST_DEMO_KYUREM_SEPARATE:
+    case POKELIST_DEMO_TOGGLE_THERIAN:
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
-        PokeList_ShowMessage(wk, 0xb2, TRUE, doneFunc);
+        PokeList_ShowMessage(wk, BtlMain11_Text_ChangedForme, TRUE, doneFunc);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     default:
-        wk->state = 19;
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         break;
     }
 }
@@ -89,19 +90,19 @@ void PokeListDemo_Update(PokeListWork *wk) {
     BOOL done = FALSE;
 
     switch (wk->demo) {
-    case 1:
-    case 2:
-    case 3:
-    case 6:
+    case POKELIST_DEMO_GIRATINA_ORIGIN:
+    case POKELIST_DEMO_GIRATINA_ALTERED:
+    case POKELIST_DEMO_SHAYMIN_SKY:
+    case POKELIST_DEMO_TOGGLE_THERIAN:
         done = PokeListDemo_UpdateForm(wk);
         break;
-    case 4:
-    case 5:
+    case POKELIST_DEMO_KYUREM_FUSE:
+    case POKELIST_DEMO_KYUREM_SEPARATE:
         done = PokeListDemo_UpdateFusion(wk);
         break;
     }
     if (done) {
-        wk->state = 16;
+        wk->state = POKELIST_STATE_DEMO_END;
     }
     Particle_UpdateAll();
     GFL_G3DSysReset();
@@ -142,18 +143,18 @@ static void PokeListDemo_Setup(PokeListWork *wk) {
         wk->particles[i] = NULL;
     }
     switch (wk->demo) {
-    case 1:
-    case 2:
+    case POKELIST_DEMO_GIRATINA_ORIGIN:
+    case POKELIST_DEMO_GIRATINA_ALTERED:
         PokeListDemo_CreateParticles(wk, 0, 0, wk->cursorPos);
         wk->demoLength = 65;
         wk->demoSe = SEQ_SE_SYS_04;
         break;
-    case 3:
+    case POKELIST_DEMO_SHAYMIN_SKY:
         PokeListDemo_CreateParticles(wk, 0, 1, wk->cursorPos);
         wk->demoLength = 38;
         wk->demoSe = SEQ_SE_SYS_05;
         break;
-    case 4: {
+    case POKELIST_DEMO_KYUREM_FUSE: {
         u8 form = wk->demoForm;
 
         PokeListDemo_CreateParticles(wk, 0, 2, wk->selectPos);
@@ -166,7 +167,7 @@ static void PokeListDemo_Setup(PokeListWork *wk) {
         }
         break;
     }
-    case 5: {
+    case POKELIST_DEMO_KYUREM_SEPARATE: {
         int zekrom = FALSE;
 
         if (PokeParty_GetParam(ReshZekSave_GetPkm(wk->param->reshZek), PKM_PARAM_SPECIES, NULL) == SPECIES_ZEKROM) {
@@ -177,7 +178,7 @@ static void PokeListDemo_Setup(PokeListWork *wk) {
         wk->demoSe = SEQ_SE_SW_KYUREM_03;
         break;
     }
-    case 6:
+    case POKELIST_DEMO_TOGGLE_THERIAN:
         PokeListDemo_CreateParticles(wk, 0, 7, wk->cursorPos);
         wk->demoLength = 25;
         wk->demoSe = SEQ_SE_SW_TOROS_FORM;
@@ -201,25 +202,25 @@ static void PokeListDemo_FreeParticles(PokeListWork *wk) {
 // A form change on one plate: the effect, the new form, then the cry
 static BOOL PokeListDemo_UpdateForm(PokeListWork *wk) {
     switch (wk->demoStep) {
-    case 0:
+    case POKELIST_FORM_STEP_START:
         GFL_BGSysSetBGEnabled(0, TRUE);
         GFL_SndSEPlay(wk->demoSe);
         wk->demoStep++;
-    case 1:
+    case POKELIST_FORM_STEP_WAIT_DELAY:
         wk->demoTimer++;
         if (wk->demoTimer > wk->demoLength) {
             PokeListPlate_SetPkm(wk, wk->plates[wk->cursorPos], wk->pkm, 0);
             wk->demoStep++;
         }
         break;
-    case 2:
+    case POKELIST_FORM_STEP_WAIT_EFFECT:
         if (Particle_GetEmitterCount(wk->particles[0]) <= 0 && GFL_SndPlayerIsActiveAny() == FALSE) {
             wk->voice = PokeVoice_Play(PokeParty_GetParam(wk->pkm, PKM_PARAM_SPECIES, NULL),
                                        PokeParty_GetParam(wk->pkm, PKM_PARAM_FORM, NULL), 64, 0, 0, 0, 0, NULL);
             wk->demoStep++;
         }
         break;
-    case 3:
+    case POKELIST_FORM_STEP_WAIT_CRY:
         if (PokeVoice_IsPlaying(wk->voice) == FALSE) {
             return TRUE;
         }
@@ -235,21 +236,21 @@ static BOOL PokeListDemo_UpdateFusion(PokeListWork *wk) {
     int i;
 
     switch (wk->demoStep) {
-    case 0:
+    case POKELIST_FUSION_STEP_START:
         GFL_BGSysSetBGEnabled(0, TRUE);
         GFL_SEPlayKeepVol(wk->demoSe, 1);
         wk->demoStep++;
-    case 1:
+    case POKELIST_FUSION_STEP_WAIT_DELAY:
         wk->demoTimer++;
         if (wk->demoTimer > wk->demoLength) {
-            if (wk->demoForm != 2) {
+            if (wk->demoForm != POKELIST_FUSION_PARTNER_SEPARATE) {
                 GFL_SndSEPlay(SEQ_SE_SW_KYUREM_04);
             }
             GFL_WipeSet(WIPE_MODE_MAIN, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0x7fff, 12, 1, wk->heapId);
             wk->demoStep++;
         }
         break;
-    case 2: {
+    case POKELIST_FUSION_STEP_APPLY: {
         int count;
 
         if (GFL_WipeIsFinished() == FALSE || GFL_SndPlayerIsActiveAny() == TRUE) {
@@ -265,7 +266,7 @@ static BOOL PokeListDemo_UpdateFusion(PokeListWork *wk) {
 #endif
             }
         }
-        if (wk->demoForm == 2) {
+        if (wk->demoForm == POKELIST_FUSION_PARTNER_SEPARATE) {
             PokeListDemo_Separate(wk, wk->pkm);
         } else {
             PokeListDemo_Fuse(wk, wk->demoForm, wk->selectPos, wk->cursorPos);
@@ -294,7 +295,7 @@ static BOOL PokeListDemo_UpdateFusion(PokeListWork *wk) {
         wk->demoStep++;
         break;
     }
-    case 3: {
+    case POKELIST_FUSION_STEP_WAIT_TEXT: {
         int printing;
         PartyPkm *pkm;
 
@@ -318,13 +319,13 @@ static BOOL PokeListDemo_UpdateFusion(PokeListWork *wk) {
         wk->demoStep++;
         break;
     }
-    case 4:
+    case POKELIST_FUSION_STEP_WAIT_CRY:
         if (PokeVoice_IsPlaying(wk->voice) == FALSE) {
             GFL_WipeSet(WIPE_MODE_MAIN, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, 0x7fff, 12, 1, wk->heapId);
             wk->demoStep++;
         }
         break;
-    case 5:
+    case POKELIST_FUSION_STEP_WAIT_FADE:
     default:
         if (GFL_WipeIsFinished() == TRUE) {
             return TRUE;
@@ -418,31 +419,31 @@ void PokeListDemo_SetSky(PokeListWork *wk, PartyPkm *pkm) {
 }
 
 u32 PokeListDemo_CheckFuse(PokeListWork *wk, PartyPkm *pkm) {
-    u32 result = 0;
+    u32 result = POKELIST_FUSION_CHECK_CAN_FUSE;
 
     if (PokeParty_GetParam(wk->pkm, PKM_PARAM_SPECIES, NULL) != SPECIES_KYUREM) {
-        return 2;
+        return POKELIST_FUSION_CHECK_NOT_KYUREM;
     }
     if (PokeParty_GetParam(wk->pkm, PKM_PARAM_FORM, NULL) != 0) {
-        return 4;
+        return POKELIST_FUSION_CHECK_WRONG_FORM;
     }
     if (PokeParty_GetParam(wk->pkm, PKM_PARAM_HP, NULL) == 0) {
-        result = 3;
+        result = POKELIST_FUSION_CHECK_FAINTED;
     }
     return result;
 }
 
 u32 PokeListDemo_CheckSeparate(PokeListWork *wk, PartyPkm *pkm) {
-    u32 result = 5;
+    u32 result = POKELIST_FUSION_CHECK_PARTY_FULL;
 
     if (PokeParty_GetParam(wk->pkm, PKM_PARAM_SPECIES, NULL) != SPECIES_KYUREM) {
-        return 2;
+        return POKELIST_FUSION_CHECK_NOT_KYUREM;
     }
     if (PokeParty_GetParam(wk->pkm, PKM_PARAM_FORM, NULL) == 0) {
-        return 4;
+        return POKELIST_FUSION_CHECK_WRONG_FORM;
     }
     if (PokeParty_GetPkmCount(wk->param->party) != 6) {
-        result = 1;
+        result = POKELIST_FUSION_CHECK_CAN_SEPARATE;
     }
     return result;
 }

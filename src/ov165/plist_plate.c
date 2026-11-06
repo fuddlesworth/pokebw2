@@ -1,5 +1,7 @@
 #include "app/pokelist.h"
 #include "battle/regulation.h"
+#include "constants/arc.h"
+#include "constants/battle.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
 #include "field/musical.h"
@@ -18,8 +20,24 @@
 #include "system/poke_icon.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "text/system/btl_main_11.h"
 
 // A Pokémon's plate in the party list: its name, level, HP, icon, ball, item and status
+
+// Each actor resource has its own animation sequences
+enum {
+    STATUS_ICON_ANM_PARALYSIS = 1,
+    STATUS_ICON_ANM_FREEZE = 2,
+    STATUS_ICON_ANM_SLEEP = 3,
+    STATUS_ICON_ANM_POISON = 4,
+    STATUS_ICON_ANM_BURN = 5,
+    STATUS_ICON_ANM_FAINTED = 6,
+};
+
+enum {
+    PARTY_BALL_ANM_NORMAL = 0,
+    PARTY_BALL_ANM_SELECTED = 1,
+};
 
 struct PokeListPlate {
     PartyPkm *pkm;
@@ -168,7 +186,7 @@ void PokeListPlate_Update(PokeListWork *wk, PokeListPlate *plate) {
             plate->nameDirty = FALSE;
             BmpWin_Transfer(plate->window);
         }
-        if (plate->selected == TRUE && GetStatusCond(plate->pkm) == 0 && plate->hp != 0) {
+        if (plate->selected == TRUE && GetStatusCond(plate->pkm) == CONDITION_NONE && plate->hp != 0) {
             ClActorPos pos;
 
             PokeListPlate_GetIconPos(plate, 26, 19, &pos);
@@ -192,7 +210,7 @@ static void PokeListPlate_CreateActors(PokeListWork *wk, PokeListPlate *plate) {
 
     ballSetup.x = 16;
     ballSetup.y = 16;
-    ballSetup.sequence = 0;
+    ballSetup.sequence = PARTY_BALL_ANM_NORMAL;
     ballSetup.priority = 1;
     ballSetup.bgPriority = 2;
     plate->ball = ClActor_Create(plate->unit, wk->clResources[CL_RES_CHAR(1)], wk->clResources[CL_RES_PLTT(0)],
@@ -208,7 +226,7 @@ static void PokeListPlate_CreateActors(PokeListWork *wk, PokeListPlate *plate) {
     ClActor_SetVisible(plate->hpBar, FALSE);
     itemSetup.x = 32;
     itemSetup.y = 24;
-    itemSetup.sequence = 0;
+    itemSetup.sequence = POKELIST_HELD_ITEM_ANM_ITEM;
     itemSetup.priority = 0;
     itemSetup.bgPriority = 2;
     plate->itemIcon = ClActor_Create(plate->unit, wk->clResources[CL_RES_CHAR(3)], wk->clResources[CL_RES_PLTT(2)],
@@ -225,7 +243,7 @@ static void PokeListPlate_CreateActors(PokeListWork *wk, PokeListPlate *plate) {
 }
 
 static void PokeListPlate_CreateIcon(PokeListWork *wk, PokeListPlate *plate) {
-    ArcTool *arc = GFL_ArcSysCreateFileHandle(7, HEAPID_TAIL(wk->heapId));
+    ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_POKEICON, HEAPID_TAIL(wk->heapId));
     u32 file;
     u8 palette;
     ClActorSetup setup;
@@ -243,7 +261,7 @@ static void PokeListPlate_CreateIcon(PokeListWork *wk, PokeListPlate *plate) {
     GFL_ArcToolFree(arc);
     setup.x = 24;
     setup.y = 16;
-    setup.sequence = 1;
+    setup.sequence = POKELIST_PARTY_ICON_ANM_DEFAULT;
     setup.priority = 0;
     setup.bgPriority = 2;
     plate->icon = ClActor_Create(plate->unit, plate->iconChars, wk->clResources[CL_RES_PLTT(6)],
@@ -268,56 +286,56 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
     BOOL showLearn = FALSE;
     u32 item;
 
-    if (wk->param->mode == 6 || wk->wasMode18 == TRUE) {
+    if (wk->param->mode == POKELIST_MODE_TEACH_TM || wk->wasTutorMode == TRUE) {
         showLearn = TRUE;
     }
     if (numbersOnly == FALSE) {
         WordSet *wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
 
         loadPokemonNicknameToStrbuf(wordSet, 0, plate->pkm);
-        PokeList_PrintWordSetString(wk, plate->window, wordSet, 3, 41, 9, 0x440);
+        PokeList_PrintWordSetString(wk, plate->window, wordSet, BtlMain11_Text_Empty, 41, 9, 0x440);
         GFL_WordSetSystemFree(wordSet);
     }
     if (numbersOnly == FALSE && PokeParty_GetParam(plate->pkm, PKM_PARAM_SHOW_SEX, NULL) == TRUE) {
         u32 sex = PokeParty_GetParam(plate->pkm, PKM_PARAM_SEX, NULL);
 
         if (sex == GENDER_MALE) {
-            PokeList_PrintString(wk, plate->window, 7, 105, 9, 0x14c0);
+            PokeList_PrintString(wk, plate->window, BtlMain11_Text_Empty_5, 105, 9, 0x14c0);
         } else if (sex == GENDER_FEMALE) {
-            PokeList_PrintString(wk, plate->window, 8, 105, 9, 0xc80);
+            PokeList_PrintString(wk, plate->window, BtlMain11_Text_Empty_6, 105, 9, 0xc80);
         }
     }
     if (showLearn == FALSE) {
-        if ((GetStatusCond(plate->pkm) == 0 && plate->hp != 0) || plate->entry != POKELIST_ENTRY_EMPTY) {
+        if ((GetStatusCond(plate->pkm) == CONDITION_NONE && plate->hp != 0) || plate->entry != POKELIST_ENTRY_EMPTY) {
             WordSet *wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
 
             WordSetNumber(wordSet, 0, PokeParty_GetLevel(plate->pkm), 3, 0, TRUE);
             if (numbersOnly == FALSE) {
-                PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, 2, 9, 35, 0x440);
+                PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_L, 9, 35, 0x440);
             } else {
-                PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, 2, 9, 35, 0x440);
+                PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_L, 9, 35, 0x440);
             }
             GFL_WordSetSystemFree(wordSet);
             ClActor_SetVisible(plate->statusIcon, FALSE);
         } else {
             if (plate->hp == 0) {
-                ClActor_SetSequence(plate->statusIcon, 6);
+                ClActor_SetSequence(plate->statusIcon, STATUS_ICON_ANM_FAINTED);
             } else {
                 switch (GetStatusCond(plate->pkm)) {
-                case 1:
-                    ClActor_SetSequence(plate->statusIcon, 1);
+                case CONDITION_PARALYSIS:
+                    ClActor_SetSequence(plate->statusIcon, STATUS_ICON_ANM_PARALYSIS);
                     break;
-                case 2:
-                    ClActor_SetSequence(plate->statusIcon, 3);
+                case CONDITION_SLEEP:
+                    ClActor_SetSequence(plate->statusIcon, STATUS_ICON_ANM_SLEEP);
                     break;
-                case 3:
-                    ClActor_SetSequence(plate->statusIcon, 2);
+                case CONDITION_FREEZE:
+                    ClActor_SetSequence(plate->statusIcon, STATUS_ICON_ANM_FREEZE);
                     break;
-                case 4:
-                    ClActor_SetSequence(plate->statusIcon, 5);
+                case CONDITION_BURN:
+                    ClActor_SetSequence(plate->statusIcon, STATUS_ICON_ANM_BURN);
                     break;
-                case 5:
-                    ClActor_SetSequence(plate->statusIcon, 4);
+                case CONDITION_POISON:
+                    ClActor_SetSequence(plate->statusIcon, STATUS_ICON_ANM_POISON);
                     break;
                 }
             }
@@ -328,11 +346,11 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
         u32 msgId;
 
         if (plate->entry == POKELIST_ENTRY_ABLE) {
-            msgId = 0x8d;
+            msgId = BtlMain11_Text_NotEntered;
         } else if (plate->entry == POKELIST_ENTRY_UNABLE) {
-            msgId = 0x8e;
+            msgId = BtlMain11_Text_Banned;
         } else {
-            msgId = plate->entry + 0x8f;
+            msgId = plate->entry + BtlMain11_Text_First;
         }
         PokeList_PrintString(wk, plate->window, msgId, 46, 31, 0x440);
         ClActor_SetVisible(plate->hpBar, FALSE);
@@ -340,26 +358,27 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
         u32 msgId;
 
         switch (PokeList_CheckLearnMove(wk, plate->pkm, plate->index)) {
-        case 0:
-        case 1:
-            msgId = 0x95;
+        case POKELIST_LEARN_EMPTY_SLOT:
+        case POKELIST_LEARN_REPLACE_MOVE:
+            msgId = BtlMain11_Text_Able;
             break;
-        case 2:
-            msgId = 0x96;
+        case POKELIST_LEARN_UNABLE:
+            msgId = BtlMain11_Text_Unable;
             break;
-        case 3:
-            msgId = 0x97;
+        case POKELIST_LEARN_KNOWN:
+            msgId = BtlMain11_Text_Learned_2;
             break;
         }
         PokeList_PrintString(wk, plate->window, msgId, 29, 31, 0x440);
         ClActor_SetVisible(plate->hpBar, FALSE);
-    } else if (wk->param->mode == 16) {
-        u32 msgId = PokeList_CanEvolveWithItem(wk, plate->pkm, wk->param->item) == FALSE ? 0x99 : 0x98;
+    } else if (wk->param->mode == POKELIST_MODE_EVOLUTION_ITEM) {
+        u32 msgId = PokeList_CanEvolveWithItem(wk, plate->pkm, wk->param->item) == FALSE ? BtlMain11_Text_Unable_2
+                                                                                         : BtlMain11_Text_Able_2;
 
         PokeList_PrintString(wk, plate->window, msgId, 46, 31, 0x440);
         ClActor_SetVisible(plate->hpBar, FALSE);
-    } else if (wk->wasMode19 == TRUE) {
-        u32 msgId = MusicalSystem_CanJoin(plate->pkm) == TRUE ? 0x9a : 0x9b;
+    } else if (wk->wasMusicalMode == TRUE) {
+        u32 msgId = MusicalSystem_CanJoin(plate->pkm) == TRUE ? BtlMain11_Text_Able_3 : BtlMain11_Text_Banned_2;
 
         PokeList_PrintString(wk, plate->window, msgId, 46, 31, 0x440);
     } else {
@@ -367,50 +386,50 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
 
         WordSetNumber(wordSet, 0, PokeParty_GetParam(plate->pkm, PKM_PARAM_MAX_HP, NULL), 3, 0, TRUE);
         if (numbersOnly == FALSE) {
-            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, 4, 91, 35, 0x440);
+            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_2, 91, 35, 0x440);
         } else {
-            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, 4, 91, 35, 0x440);
+            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_2, 91, 35, 0x440);
         }
         GFL_WordSetSystemFree(wordSet);
         wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
         WordSetNumber(wordSet, 0, plate->hp, 3, 1, TRUE);
         if (numbersOnly == FALSE) {
-            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, 5, 57, 35, 0x440);
+            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_3, 57, 35, 0x440);
         } else {
-            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, 5, 57, 35, 0x440);
+            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_3, 57, 35, 0x440);
         }
         GFL_WordSetSystemFree(wordSet);
         if (numbersOnly == FALSE) {
-            PokeList_PrintStringSmall(wk, plate->window, 6, 82, 35, 0x440);
+            PokeList_PrintStringSmall(wk, plate->window, BtlMain11_Text_Empty_4, 82, 35, 0x440);
         } else {
-            PokeList_DrawStringSmall(wk, plate->window, 6, 82, 35, 0x440);
+            PokeList_DrawStringSmall(wk, plate->window, BtlMain11_Text_Empty_4, 82, 35, 0x440);
         }
     }
     item = PokeParty_GetParam(plate->pkm, PKM_PARAM_ITEM, NULL);
     if (item != 0) {
         ClActor_SetVisible(plate->itemIcon, TRUE);
         if (PML_ItemIsMail(item) == TRUE) {
-            ClActor_SetSequence(plate->itemIcon, 1);
+            ClActor_SetSequence(plate->itemIcon, POKELIST_HELD_ITEM_ANM_MAIL);
         } else {
-            ClActor_SetSequence(plate->itemIcon, 0);
+            ClActor_SetSequence(plate->itemIcon, POKELIST_HELD_ITEM_ANM_ITEM);
         }
     } else {
         ClActor_SetVisible(plate->itemIcon, FALSE);
     }
     {
         u32 color = PokeListPlate_GetHpColor(plate);
-        u16 sequence = 1;
+        u16 sequence = POKELIST_PARTY_ICON_ANM_DEFAULT;
 
         if (color == HP_GAUGE_COLOR_NONE) {
-            sequence = 0;
-        } else if (GetStatusCond(plate->pkm) != 0) {
-            sequence = 5;
+            sequence = POKELIST_PARTY_ICON_ANM_FAINTED;
+        } else if (GetStatusCond(plate->pkm) != CONDITION_NONE) {
+            sequence = POKELIST_PARTY_ICON_ANM_STATUS;
         } else if (color == HP_GAUGE_COLOR_RED) {
-            sequence = 4;
+            sequence = POKELIST_PARTY_ICON_ANM_HP_RED;
         } else if (color == HP_GAUGE_COLOR_YELLOW) {
-            sequence = 3;
+            sequence = POKELIST_PARTY_ICON_ANM_HP_YELLOW;
         } else if (color == HP_GAUGE_COLOR_GREEN) {
-            sequence = 2;
+            sequence = POKELIST_PARTY_ICON_ANM_HP_GREEN;
         }
         ClActor_SetSequence(plate->icon, sequence);
     }
@@ -418,7 +437,7 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
 }
 
 static void PokeListPlate_DrawHpBar(PokeListWork *wk, PokeListPlate *plate) {
-    if (PokeList_IsBattle(wk) == FALSE && wk->param->mode != 6) {
+    if (PokeList_IsBattle(wk) == FALSE && wk->param->mode != POKELIST_MODE_TEACH_TM) {
         u8 color = PokeListPlate_GetHpColor(plate);
         u8 width = HPGauge_GetFill(plate->hp, PokeParty_GetParam(plate->pkm, PKM_PARAM_MAX_HP, NULL), 48);
         GFLBitmap *bitmap = BmpWin_GetBitmap(plate->window);
@@ -446,11 +465,11 @@ static void PokeListPlate_DrawEgg(PokeListWork *wk, PokeListPlate *plate) {
     StrBuf *name = GFL_MsgDataLoadStrbufNew(g_PMLSpeciesNamesResident, SPECIES_EGG);
 
     GFL_WordSetSetStrbuf(wordSet, 0, name, 0, 1, 2);
-    PokeList_PrintWordSetString(wk, plate->window, wordSet, 3, 41, 9, 0x440);
+    PokeList_PrintWordSetString(wk, plate->window, wordSet, BtlMain11_Text_Empty, 41, 9, 0x440);
     GFL_StrBufFree(name);
     GFL_WordSetSystemFree(wordSet);
     ClActor_SetVisible(plate->hpBar, FALSE);
-    ClActor_SetSequence(plate->icon, 1);
+    ClActor_SetSequence(plate->icon, POKELIST_PARTY_ICON_ANM_DEFAULT);
     plate->nameDirty = TRUE;
 }
 
@@ -458,29 +477,31 @@ void PokeListPlate_SetSelected(PokeListWork *wk, PokeListPlate *plate, BOOL sele
     if (selected == TRUE) {
         ClActorPos pos;
 
-        if (wk->state == 3 || wk->state == 4 || wk->state == 23) {
-            PokeListPlate_SetPalette(wk, plate, 8);
+        if (wk->state == POKELIST_STATE_SELECT_SWAP || wk->state == POKELIST_STATE_SELECT_HP_SHARE ||
+            wk->state == POKELIST_STATE_SELECT_FUSION) {
+            PokeListPlate_SetPalette(wk, plate, POKELIST_PLATE_PALETTE_MARKED_SELECTED);
         } else if (PokeList_IsBattle(wk) == TRUE && plate->entry < POKELIST_ENTRY_ABLE) {
-            PokeListPlate_SetPalette(wk, plate, 8);
+            PokeListPlate_SetPalette(wk, plate, POKELIST_PLATE_PALETTE_MARKED_SELECTED);
         } else {
-            PokeListPlate_SetPalette(wk, plate, 6);
+            PokeListPlate_SetPalette(wk, plate, POKELIST_PLATE_PALETTE_SELECTED);
         }
-        ClActor_SetSequence(plate->ball, 1);
+        ClActor_SetSequence(plate->ball, PARTY_BALL_ANM_SELECTED);
         PokeListPlate_GetIconPos(plate, 26, 19, &pos);
         ClActor_SetSurfacePos(plate->icon, &pos, 0);
         plate->bounceTimer = 0;
     } else {
         ClActorPos pos;
 
-        if ((wk->state == 3 && wk->selectPos == plate->index) || (wk->state == 23 && wk->selectPos == plate->index) ||
-            (wk->state == 4 && wk->selectPos2 == plate->index)) {
-            PokeListPlate_SetPalette(wk, plate, 5);
+        if ((wk->state == POKELIST_STATE_SELECT_SWAP && wk->selectPos == plate->index) ||
+            (wk->state == POKELIST_STATE_SELECT_FUSION && wk->selectPos == plate->index) ||
+            (wk->state == POKELIST_STATE_SELECT_HP_SHARE && wk->selectPos2 == plate->index)) {
+            PokeListPlate_SetPalette(wk, plate, POKELIST_PLATE_PALETTE_MARKED);
         } else if (PokeList_IsBattle(wk) == TRUE && plate->entry < POKELIST_ENTRY_ABLE) {
-            PokeListPlate_SetPalette(wk, plate, 5);
+            PokeListPlate_SetPalette(wk, plate, POKELIST_PLATE_PALETTE_MARKED);
         } else {
-            PokeListPlate_SetPalette(wk, plate, 3);
+            PokeListPlate_SetPalette(wk, plate, POKELIST_PLATE_PALETTE_NORMAL);
         }
-        ClActor_SetSequence(plate->ball, 0);
+        ClActor_SetSequence(plate->ball, PARTY_BALL_ANM_NORMAL);
         PokeListPlate_GetIconPos(plate, 24, 16, &pos);
         ClActor_SetSurfacePos(plate->icon, &pos, 0);
     }
@@ -489,10 +510,12 @@ void PokeListPlate_SetSelected(PokeListWork *wk, PokeListPlate *plate, BOOL sele
 
 // The palette of a plate: the fainted ones' palette follows each of 3 and 6
 void PokeListPlate_SetPalette(PokeListWork *wk, PokeListPlate *plate, u32 palette) {
-    if (palette == 3 && PokeListPlate_GetHpColor(plate) == HP_GAUGE_COLOR_NONE) {
-        GFL_BGSysSetScrPaletteNo(2, sPlatePos[plate->index][0] + 16, sPlatePos[plate->index][1], 16, 6, 4);
-    } else if (palette == 6 && PokeListPlate_GetHpColor(plate) == HP_GAUGE_COLOR_NONE) {
-        GFL_BGSysSetScrPaletteNo(2, sPlatePos[plate->index][0] + 16, sPlatePos[plate->index][1], 16, 6, 7);
+    if (palette == POKELIST_PLATE_PALETTE_NORMAL && PokeListPlate_GetHpColor(plate) == HP_GAUGE_COLOR_NONE) {
+        GFL_BGSysSetScrPaletteNo(2, sPlatePos[plate->index][0] + 16, sPlatePos[plate->index][1], 16, 6,
+                                 POKELIST_PLATE_PALETTE_FAINTED);
+    } else if (palette == POKELIST_PLATE_PALETTE_SELECTED && PokeListPlate_GetHpColor(plate) == HP_GAUGE_COLOR_NONE) {
+        GFL_BGSysSetScrPaletteNo(2, sPlatePos[plate->index][0] + 16, sPlatePos[plate->index][1], 16, 6,
+                                 POKELIST_PLATE_PALETTE_SELECTED_FAINTED);
     } else {
         GFL_BGSysSetScrPaletteNo(2, sPlatePos[plate->index][0] + 16, sPlatePos[plate->index][1], 16, 6, palette);
     }
@@ -515,7 +538,7 @@ void PokeListPlate_DrawSlid(PokeListWork *wk, PokeListPlate *plate, int step) {
     GFL_BGSysLoadScrArea(2, x + 16 + step, y, 16, 6, wk->plateScreen->rawData,
                          sPlateScreenPos[plate->index != 0 ? 1 : 0][0], sPlateScreenPos[plate->index != 0 ? 1 : 0][1],
                          32, 32);
-    GFL_BGSysSetScrPaletteNo(2, x + 16 + step, y, 16, 6, 5);
+    GFL_BGSysSetScrPaletteNo(2, x + 16 + step, y, 16, 6, POKELIST_PLATE_PALETTE_MARKED);
     BmpWin_FlushMap(plate->window);
     GFL_BGSysQueueScrLoad(1);
     GFL_BGSysQueueScrLoad(2);
@@ -531,8 +554,8 @@ void PokeListPlate_ClearSlid(PokeListWork *wk, PokeListPlate *plate, int step) {
         step = -step;
     }
     left = x + 16 + step;
-    GFL_BGSysFillScrArea(2, 0, left, y, 16, 6, 5);
-    GFL_BGSysFillScrArea(1, 0, left, y, 16, 6, 5);
+    GFL_BGSysFillScrArea(2, 0, left, y, 16, 6, POKELIST_PLATE_PALETTE_MARKED);
+    GFL_BGSysFillScrArea(1, 0, left, y, 16, 6, POKELIST_PLATE_PALETTE_MARKED);
 }
 
 // Shows another Pokémon on the plate, as swapping two does
@@ -590,7 +613,7 @@ void PokeListPlate_StartHpChange(PokeListWork *wk, PokeListPlate *plate) {
 BOOL PokeListPlate_UpdateHpChange(PokeListWork *wk, PokeListPlate *plate) {
     if (plate->hp < plate->targetHp) {
         if (plate->hp == 0) {
-            PokeListPlate_SetPalette(wk, plate, 6);
+            PokeListPlate_SetPalette(wk, plate, POKELIST_PLATE_PALETTE_SELECTED);
         }
         if (plate->hp + wk->hpStep > plate->targetHp) {
             plate->hp = plate->targetHp;
@@ -658,7 +681,7 @@ BOOL PokeListPlate_IsEgg(PokeListWork *wk, PokeListPlate *plate) {
 static void PokeListPlate_UpdateEntry(PokeListWork *wk, PokeListPlate *plate) {
     if (PokeList_IsBattle(wk) == FALSE) {
         plate->entry = POKELIST_ENTRY_EMPTY;
-    } else if (PokeRegulation_CheckPokemonExtraRule(wk->param->regulation, wk->param->unk18, plate->pkm) == 0) {
+    } else if (PokeRegulation_CheckPokemonExtraRule(wk->param->regulation, wk->param->extraRule, plate->pkm) == 0) {
         plate->entry = POKELIST_ENTRY_ABLE;
     } else {
         plate->entry = POKELIST_ENTRY_UNABLE;
@@ -674,7 +697,7 @@ u32 PokeListPlate_CheckEntry(PokeListWork *wk, PokeListPlate *plate) {
     Regulation *regulation;
 
     if (plate->entry != POKELIST_ENTRY_ABLE) {
-        return 1;
+        return POKELIST_ENTRY_CHECK_REGULATION;
     }
     species = PokeParty_GetParam(plate->pkm, PKM_PARAM_SPECIES, NULL);
     item = PokeParty_GetParam(plate->pkm, PKM_PARAM_ITEM, NULL);
@@ -688,17 +711,17 @@ u32 PokeListPlate_CheckEntry(PokeListWork *wk, PokeListPlate *plate) {
             u32 otherItem = PokeParty_GetParam(other, PKM_PARAM_ITEM, NULL);
 
             if (species == otherSpecies && regulation->allowSameSpecies == 0) {
-                return 2;
+                return POKELIST_ENTRY_CHECK_SAME_SPECIES;
             }
             if (item == otherItem && item != 0 && regulation->allowSameItem == 0) {
-                return 3;
+                return POKELIST_ENTRY_CHECK_SAME_ITEM;
             }
         }
     }
     if (wk->enteredCount == regulation->maxCount) {
-        return 4;
+        return POKELIST_ENTRY_CHECK_FULL;
     }
-    return 0;
+    return POKELIST_ENTRY_CHECK_ALLOWED;
 }
 
 static u8 PokeListPlate_GetHpColor(PokeListPlate *plate) {
