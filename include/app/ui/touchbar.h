@@ -88,13 +88,13 @@ void TouchBar_SetActive(TouchBar *bar, BOOL active);
 void TouchBar_SetVisible(TouchBar *bar, BOOL visible);
 void TouchBar_SetBgPriority(TouchBar *bar, u8 bgPriority);
 void TouchBar_SetPriority(TouchBar *bar, u8 priority);
-void TouchBar_SetIconActive(TouchBar *bar, u32 icon, BOOL a2);
-void TouchBar_SetIconVisible(TouchBar *bar, u32 icon, BOOL a2);
+void TouchBar_SetIconActive(TouchBar *bar, u32 icon, BOOL active);
+void TouchBar_SetIconVisible(TouchBar *bar, u32 icon, BOOL visible);
 void TouchBar_SetIconSe(TouchBar *bar, u32 icon, u32 se);
 void TouchBar_SetIconKey(TouchBar *bar, u32 icon, u32 key);
 void TouchBar_SetIconBgPriority(TouchBar *bar, u32 icon, u8 bgPriority);
 void TouchBar_SetIconPressed(TouchBar *bar, u32 icon, BOOL pressed);
 BOOL TouchBar_IsIconPressed(TouchBar *bar, u32 icon);
-void TouchBar_Reset(TouchBar *bar, u32 a1);
+void TouchBar_Reset(TouchBar *bar, u32 icon);
 
 #endif // POKEBW2_APP_UI_TOUCHBAR_H

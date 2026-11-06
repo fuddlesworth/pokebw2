@@ -191,7 +191,7 @@ u16 BtlServerFlow_GetPlayerSuperEffectiveHitCount(BtlServerFlow *flow);
 u16 BtlServerFlow_GetPlayerNotVeryEffectiveHitCount(BtlServerFlow *flow);
 u16 BtlServerFlow_GetFoeImmuneHitCount(BtlServerFlow *flow);
 u16 BtlServerFlow_GetFoeNotVeryEffectiveHitCount(BtlServerFlow *flow);
-u8 BtlServerFlow_GetSwitchCount(BtlServerFlow *flow, u32 arg1);
+u8 BtlServerFlow_GetSwitchCount(BtlServerFlow *flow, u32 index);
 u32 BtlServerFlow_GetScriptedRulesOutcome(BtlServerFlow *flow);
 
 // Not decompiled yet

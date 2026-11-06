@@ -172,7 +172,7 @@ G3DModel *GFL_G3DMdlCreate(G3DResource *resource, u32 modelId, G3DResource *text
 void GFL_G3DMdlFree(G3DModel *model);
 G3DResource *GFL_G3DMdlGetMdlResource(G3DModel *model);
 G3DResource *GFL_G3DMdlGetTexResource(G3DModel *model);
-G3DAnimation *GFL_G3DAnmCreate(G3DModel *model, G3DResource *resource, u32 a2);
+G3DAnimation *GFL_G3DAnmCreate(G3DModel *model, G3DResource *resource, u32 anmIdx);
 void GFL_G3DAnmFree(G3DAnimation *animation);
 NNSG3dAnmObj *GFL_G3DAnmGetRenderObj(G3DAnimation *animation);
 G3DActor *GFL_G3DActorCreate(G3DModel *model, G3DAnimation **animations, int count);
