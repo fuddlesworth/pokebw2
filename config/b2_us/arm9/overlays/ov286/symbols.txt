@@ -110,11 +110,11 @@ sBBagPocketsByItemBit kind:data(any) addr:0x021f6e8b
 sBBagButtonLayouts kind:data(any) addr:0x021f6e90
 data_ov286_021f6e92 kind:data(any) addr:0x021f6e92
 data_ov286_021f6e93 kind:data(any) addr:0x021f6e93
-data_ov286_021f6ec8 kind:data(any) addr:0x021f6ec8
-data_ov286_021f6ecc kind:data(any) addr:0x021f6ecc
-data_ov286_021f6ed0 kind:data(any) addr:0x021f6ed0
-data_ov286_021f6ed4 kind:data(any) addr:0x021f6ed4
-data_ov286_021f6f08 kind:data(any) addr:0x021f6f08
+sBBagLastItemPos kind:data(any) addr:0x021f6ec8
+sBBagChosenItemPos kind:data(any) addr:0x021f6ecc
+sBBagChosenCostPos kind:data(any) addr:0x021f6ed0
+sBBagItemListActorPositions kind:data(any) addr:0x021f6ed4
+sBBagActorSetups kind:data(any) addr:0x021f6f08
 data_ov286_021f70a0 kind:data(any) addr:0x021f70a0 ambiguous
 data_ov286_021f71fc kind:data(any) addr:0x021f71fc
 data_ov286_021f720c kind:data(any) addr:0x021f720c
