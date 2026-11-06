@@ -161,9 +161,9 @@ u8 GameData_GetPlayerCount(GameData *gameData);
 u8 GameData_GetBeaconNetID(GameData *gameData);
 // The player's Entralink levels, as GameData_GetMyPassPowerLevels returns for the player's own
 PassPowerLevel *GameData_GetPassPowerLevels(GameData *gameData, u32 netId);
-void GameData_SetPlayerCount(GameData *gameData, u32 a1);
-void GameData_SetNetID(GameData *gameData, u32 a1);
-void GameData_SetBeaconNetID(GameData *gameData, u32 a1);
+void GameData_SetPlayerCount(GameData *gameData, u32 playerCount);
+void GameData_SetNetID(GameData *gameData, u32 netId);
+void GameData_SetBeaconNetID(GameData *gameData, u32 netId);
 // Whether the game shows other players' beacons
 BOOL GameData_IsCGearOn(GameData *gameData);
 void GameData_StartSaveBlock(GameData *gameData, u32 block);
