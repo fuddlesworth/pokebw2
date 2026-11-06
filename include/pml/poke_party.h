@@ -131,7 +131,7 @@ enum {
 u32 PML_GenPID(u32 id, u16 species, u16 form, u32 sex, u32 ability, u32 rare);
 // Whether the personality is shiny for the trainer ID
 BOOL PML_UtilPIDIsRare(u32 id, u32 pid);
-u32 makeSpecialPID(u32 id, u16 species, u16 form, u8 sex, u8 a4, BOOL a5);
+u32 makeSpecialPID(u32 id, u16 species, u16 form, u8 sex, u8 ability, BOOL rare);
 // Whether the gender ratio leaves no choice of sex
 BOOL isGenderlessOrSetGender(u32 genderRatio);
 // The trainer ID and the PID are 64-bit so that they can hold these values beside any 32-bit one. The trainer ID is
