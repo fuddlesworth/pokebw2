@@ -141,7 +141,7 @@ static int PokedexSearchSeq_Init(PokedexSearchWork *wk) {
     GFL_BGSysSetDisplayLayout(0);
     GX_SetMasterBrightness(-16);
     GXS_SetMasterBrightness(-16);
-    if (PokeDex_GetMode(wk->param->pokedex) == 1) {
+    if (PokeDex_GetMode(wk->param->pokedex) == DEX_NATIONAL) {
         wk->param->criteria->regional = 0;
     } else {
         wk->param->criteria->regional = 1;
@@ -259,13 +259,13 @@ static int PokedexSearchSeq_MainPage(PokedexSearchWork *wk) {
     case POKEDEX_SEARCH_UI_EXIT:
         GFL_SndSEPlay(SEQ_SE_CLOSE1);
         wk->param->result = POKEDEX_SEARCH_RESULT_CLOSE;
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_EXIT, 8);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_EXIT, POKEDEX_SEARCH_TOUCHBAR_ANM_EXIT_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_EXIT, SEQ_FINISH);
     case POKEDEX_SEARCH_UI_RETURN:
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         PokedexSearchMain_ListPosToShape(wk);
         wk->param->result = POKEDEX_SEARCH_RESULT_CANCEL;
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_FINISH);
     case CURSOR_MOVE_CURSOR_ON:
         GFL_SndSEPlay(SEQ_SE_SELECT1);
@@ -277,7 +277,7 @@ static int PokedexSearchSeq_MainPage(PokedexSearchWork *wk) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         PokedexSearchMain_ListPosToShape(wk);
         wk->param->result = POKEDEX_SEARCH_RESULT_CANCEL;
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_FINISH);
     }
     BlinkPalAnm_Main(wk->blinkAnm);
@@ -366,19 +366,19 @@ static int PokedexSearchSeq_SearchResult(PokedexSearchWork *wk) {
 
 static int PokedexSearchSeq_OrderInit(PokedexSearchWork *wk) {
     switch (wk->initSeq) {
-    case 0:
+    case POKEDEX_SEARCH_PAGE_INIT_SETUP:
         wk->page = POKEDEX_SEARCH_PAGE_ORDER;
         PokedexSearchMain_SetBlend(TRUE);
         PokedexSearchBmp_PutOrder(wk);
         PokedexSearchList_InitOrder(wk);
         wk->initSeq++;
-    case 1:
+    case POKEDEX_SEARCH_PAGE_INIT_DRAW:
         if (FrameList_Draw(wk->frameList) == FALSE) {
             PokedexSearchObj_SetOrder(wk);
             PokedexSearchMain_LoadOrderScreen(wk);
             PokedexSearchMain_SetListBGPriority();
             PokedexSearchMain_RequestBGOn(wk);
-            wk->initSeq = 0;
+            wk->initSeq = POKEDEX_SEARCH_PAGE_INIT_SETUP;
             return SEQ_ORDER;
         }
         break;
@@ -406,11 +406,11 @@ static int PokedexSearchSeq_Order(PokedexSearchWork *wk) {
         switch (ret) {
         case POKEDEX_SEARCH_UI_LIST_RETURN:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_ORDER_EXIT);
         case POKEDEX_SEARCH_UI_LIST_CANCEL:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_ORDER_EXIT);
         case POKEDEX_SEARCH_UI_LIST_RESET:
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
@@ -440,20 +440,20 @@ static int PokedexSearchSeq_OrderExit(PokedexSearchWork *wk) {
 
 static int PokedexSearchSeq_InitialInit(PokedexSearchWork *wk) {
     switch (wk->initSeq) {
-    case 0:
+    case POKEDEX_SEARCH_PAGE_INIT_SETUP:
         wk->page = POKEDEX_SEARCH_PAGE_INITIAL;
         PokedexSearchMain_SetBlend(TRUE);
         PokedexSearchBmp_PutInitial(wk);
         PokedexSearchList_InitInitial(wk);
         wk->initSeq++;
-    case 1:
+    case POKEDEX_SEARCH_PAGE_INIT_DRAW:
         if (FrameList_Draw(wk->frameList) == FALSE) {
             PokedexSearchObj_SetPageButtons(wk, FALSE);
             PokedexSearchObj_SetInitial(wk);
             PokedexSearchMain_LoadInitialScreen(wk);
             PokedexSearchMain_SetListBGPriority();
             PokedexSearchMain_RequestBGOn(wk);
-            wk->initSeq = 0;
+            wk->initSeq = POKEDEX_SEARCH_PAGE_INIT_SETUP;
             return SEQ_INITIAL;
         }
         break;
@@ -478,40 +478,40 @@ static int PokedexSearchSeq_Initial(PokedexSearchWork *wk) {
             PokedexSearchSeq_SetInitial(wk, ret);
         }
         break;
-    case -12:
+    case FRAMELIST_CURSOR_SHOWN:
         break;
-    case -11:
-    case -10:
-    case -9:
-    case -8:
+    case FRAMELIST_CURSOR_MOVE:
+    case FRAMELIST_SCROLL:
+    case FRAMELIST_BAR:
+    case FRAMELIST_DRAG:
         PokedexSearchObj_SetPageButtons(wk, FALSE);
         break;
-    case -7:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_PAGE_UP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_UP;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -6:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_PAGE_DOWN:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_DOWN;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -5:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_CURSOR_TOP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_UP, seq);
-    case -4:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_CURSOR_BOTTOM:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_DOWN, seq);
-    case -3:
-    case -2:
+    case FRAMELIST_JUMP_TOP:
+    case FRAMELIST_JUMP_BOTTOM:
         PokedexSearchObj_HideMarks(wk);
         PokedexSearchObj_PutItemMark(wk, 0, wk->param->criteria->initial);
         wk->buttonId = BUTTON_NONE;
-        wk->subSeq = 1;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_BUTTON;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
@@ -520,11 +520,11 @@ static int PokedexSearchSeq_Initial(PokedexSearchWork *wk) {
         switch (ret) {
         case POKEDEX_SEARCH_UI_LIST_RETURN:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_INITIAL_EXIT);
         case POKEDEX_SEARCH_UI_LIST_CANCEL:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_INITIAL_EXIT);
         case POKEDEX_SEARCH_UI_LIST_RESET:
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
@@ -557,20 +557,20 @@ static int PokedexSearchSeq_InitialExit(PokedexSearchWork *wk) {
 
 static int PokedexSearchSeq_TypeInit(PokedexSearchWork *wk) {
     switch (wk->initSeq) {
-    case 0:
+    case POKEDEX_SEARCH_PAGE_INIT_SETUP:
         wk->page = POKEDEX_SEARCH_PAGE_TYPE;
         PokedexSearchMain_SetBlend(TRUE);
         PokedexSearchBmp_PutType(wk);
         PokedexSearchList_InitType(wk);
         wk->initSeq++;
-    case 1:
+    case POKEDEX_SEARCH_PAGE_INIT_DRAW:
         if (FrameList_Draw(wk->frameList) == FALSE) {
             PokedexSearchObj_SetPageButtons(wk, FALSE);
             PokedexSearchObj_SetType(wk);
             PokedexSearchMain_LoadTypeScreen(wk);
             PokedexSearchMain_SetListBGPriority();
             PokedexSearchMain_RequestBGOn(wk);
-            wk->initSeq = 0;
+            wk->initSeq = POKEDEX_SEARCH_PAGE_INIT_SETUP;
             return SEQ_TYPE;
         }
         break;
@@ -595,41 +595,41 @@ static int PokedexSearchSeq_Type(PokedexSearchWork *wk) {
             PokedexSearchSeq_SetType(wk, ret);
         }
         break;
-    case -12:
+    case FRAMELIST_CURSOR_SHOWN:
         break;
-    case -11:
-    case -10:
-    case -9:
-    case -8:
+    case FRAMELIST_CURSOR_MOVE:
+    case FRAMELIST_SCROLL:
+    case FRAMELIST_BAR:
+    case FRAMELIST_DRAG:
         PokedexSearchObj_SetPageButtons(wk, FALSE);
         break;
-    case -7:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_PAGE_UP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_UP;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -6:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_PAGE_DOWN:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_DOWN;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -5:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_CURSOR_TOP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_UP, seq);
-    case -4:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_CURSOR_BOTTOM:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_DOWN, seq);
-    case -3:
-    case -2:
+    case FRAMELIST_JUMP_TOP:
+    case FRAMELIST_JUMP_BOTTOM:
         PokedexSearchObj_HideMarks(wk);
         PokedexSearchObj_PutItemMark(wk, 0, PokedexSearchMain_TypeToListPos(wk, wk->param->criteria->type1));
         PokedexSearchObj_PutItemMark(wk, 1, PokedexSearchMain_TypeToListPos(wk, wk->param->criteria->type2));
         wk->buttonId = BUTTON_NONE;
-        wk->subSeq = 1;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_BUTTON;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
@@ -638,11 +638,11 @@ static int PokedexSearchSeq_Type(PokedexSearchWork *wk) {
         switch (ret) {
         case POKEDEX_SEARCH_UI_LIST_RETURN:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_TYPE_EXIT);
         case POKEDEX_SEARCH_UI_LIST_CANCEL:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_TYPE_EXIT);
         case POKEDEX_SEARCH_UI_LIST_RESET:
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
@@ -675,20 +675,20 @@ static int PokedexSearchSeq_TypeExit(PokedexSearchWork *wk) {
 
 static int PokedexSearchSeq_ColorInit(PokedexSearchWork *wk) {
     switch (wk->initSeq) {
-    case 0:
+    case POKEDEX_SEARCH_PAGE_INIT_SETUP:
         wk->page = POKEDEX_SEARCH_PAGE_COLOR;
         PokedexSearchMain_SetBlend(TRUE);
         PokedexSearchBmp_PutColor(wk);
         PokedexSearchList_InitColor(wk);
         wk->initSeq++;
-    case 1:
+    case POKEDEX_SEARCH_PAGE_INIT_DRAW:
         if (FrameList_Draw(wk->frameList) == FALSE) {
             PokedexSearchObj_SetPageButtons(wk, FALSE);
             PokedexSearchObj_SetColor(wk);
             PokedexSearchMain_LoadColorScreen(wk);
             PokedexSearchMain_SetListBGPriority();
             PokedexSearchMain_RequestBGOn(wk);
-            wk->initSeq = 0;
+            wk->initSeq = POKEDEX_SEARCH_PAGE_INIT_SETUP;
             return SEQ_COLOR;
         }
         break;
@@ -713,40 +713,40 @@ static int PokedexSearchSeq_Color(PokedexSearchWork *wk) {
             PokedexSearchSeq_SetColor(wk, ret);
         }
         break;
-    case -12:
+    case FRAMELIST_CURSOR_SHOWN:
         break;
-    case -11:
-    case -10:
-    case -9:
-    case -8:
+    case FRAMELIST_CURSOR_MOVE:
+    case FRAMELIST_SCROLL:
+    case FRAMELIST_BAR:
+    case FRAMELIST_DRAG:
         PokedexSearchObj_SetPageButtons(wk, FALSE);
         break;
-    case -7:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_PAGE_UP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_UP;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -6:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_PAGE_DOWN:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_DOWN;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -5:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_CURSOR_TOP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_UP, seq);
-    case -4:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_CURSOR_BOTTOM:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_DOWN, seq);
-    case -3:
-    case -2:
+    case FRAMELIST_JUMP_TOP:
+    case FRAMELIST_JUMP_BOTTOM:
         PokedexSearchObj_HideMarks(wk);
         PokedexSearchObj_PutItemMark(wk, 0, wk->param->criteria->color);
         wk->buttonId = BUTTON_NONE;
-        wk->subSeq = 1;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_BUTTON;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
@@ -755,11 +755,11 @@ static int PokedexSearchSeq_Color(PokedexSearchWork *wk) {
         switch (ret) {
         case POKEDEX_SEARCH_UI_LIST_RETURN:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_COLOR_EXIT);
         case POKEDEX_SEARCH_UI_LIST_CANCEL:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_COLOR_EXIT);
         case POKEDEX_SEARCH_UI_LIST_RESET:
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
@@ -792,20 +792,20 @@ static int PokedexSearchSeq_ColorExit(PokedexSearchWork *wk) {
 
 static int PokedexSearchSeq_ShapeInit(PokedexSearchWork *wk) {
     switch (wk->initSeq) {
-    case 0:
+    case POKEDEX_SEARCH_PAGE_INIT_SETUP:
         wk->page = POKEDEX_SEARCH_PAGE_SHAPE;
         PokedexSearchMain_SetBlend(TRUE);
         PokedexSearchBmp_PutShape(wk);
         PokedexSearchList_InitShape(wk);
         wk->initSeq++;
-    case 1:
+    case POKEDEX_SEARCH_PAGE_INIT_DRAW:
         if (FrameList_Draw(wk->frameList) == FALSE) {
             PokedexSearchObj_SetPageButtons(wk, FALSE);
             PokedexSearchObj_SetShape(wk);
             PokedexSearchMain_LoadShapeScreen(wk);
             PokedexSearchMain_SetListBGPriority();
             PokedexSearchMain_RequestBGOn(wk);
-            wk->initSeq = 0;
+            wk->initSeq = POKEDEX_SEARCH_PAGE_INIT_SETUP;
             return SEQ_SHAPE;
         }
         break;
@@ -827,41 +827,41 @@ static int PokedexSearchSeq_Shape(PokedexSearchWork *wk) {
             PokedexSearchSeq_SetShape(wk, ret);
         }
         break;
-    case -12:
+    case FRAMELIST_CURSOR_SHOWN:
         break;
-    case -11:
-    case -10:
-    case -9:
-    case -8:
+    case FRAMELIST_CURSOR_MOVE:
+    case FRAMELIST_SCROLL:
+    case FRAMELIST_BAR:
+    case FRAMELIST_DRAG:
         PokedexSearchObj_SetPageButtons(wk, FALSE);
         break;
-    case -7:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_PAGE_UP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_UP;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -6:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_PAGE_DOWN:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         wk->buttonId = POKEDEX_SEARCH_OBJ_PAGE_DOWN;
-        wk->subSeq = 0;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
-    case -5:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 12);
+    case FRAMELIST_CURSOR_TOP:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_UP, seq);
-    case -4:
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 13);
+    case FRAMELIST_CURSOR_BOTTOM:
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS);
         return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_PAGE_DOWN, seq);
-    case -3:
-    case -2:
+    case FRAMELIST_JUMP_TOP:
+    case FRAMELIST_JUMP_BOTTOM:
         PokedexSearchObj_PutShapeIcons(wk);
         PokedexSearchObj_HideMarks(wk);
         PokedexSearchObj_PutShapeItemMark(wk);
         wk->buttonId = BUTTON_NONE;
-        wk->subSeq = 1;
+        wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_BUTTON;
         wk->nextSeq = seq;
         seq = SEQ_LIST_SCROLL;
         break;
@@ -870,11 +870,11 @@ static int PokedexSearchSeq_Shape(PokedexSearchWork *wk) {
         switch (ret) {
         case POKEDEX_SEARCH_UI_LIST_RETURN:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_SHAPE_EXIT);
         case POKEDEX_SEARCH_UI_LIST_CANCEL:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 9);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS);
             return PokedexSearchSeq_SetButtonAnm(wk, TRUE, POKEDEX_SEARCH_OBJ_RETURN, SEQ_SHAPE_EXIT);
         case POKEDEX_SEARCH_UI_LIST_RESET:
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
@@ -905,14 +905,14 @@ static int PokedexSearchSeq_ShapeExit(PokedexSearchWork *wk) {
 // Waits for the list's jump or page scroll, and for the page button's animation
 static int PokedexSearchSeq_ListScroll(PokedexSearchWork *wk) {
     switch (wk->subSeq) {
-    case 0:
+    case POKEDEX_SEARCH_SCROLL_WAIT_LIST:
         if (FrameList_Main(wk->frameList) == FRAMELIST_NONE) {
             wk->subSeq++;
         }
         break;
-    case 1:
+    case POKEDEX_SEARCH_SCROLL_WAIT_BUTTON:
         if (wk->buttonId == BUTTON_NONE || PokedexSearchObj_IsAnmPlaying(wk, wk->buttonId) == FALSE) {
-            wk->subSeq = 0;
+            wk->subSeq = POKEDEX_SEARCH_SCROLL_WAIT_LIST;
             PokedexSearchObj_SetPageButtons(wk, FALSE);
             return wk->nextSeq;
         }
@@ -925,8 +925,8 @@ static int PokedexSearchSeq_ListScroll(PokedexSearchWork *wk) {
 static int PokedexSearchSeq_ButtonAnm(PokedexSearchWork *wk) {
     if (wk->buttonIsActor == FALSE) {
         switch (wk->buttonSeq) {
-        case 0:
-        case 2:
+        case POKEDEX_SEARCH_BUTTON_ANM_OFF_FIRST:
+        case POKEDEX_SEARCH_BUTTON_ANM_OFF_SECOND:
             if (wk->buttonTimer == 0) {
                 PokedexSearchUI_SetCursorPalette(wk, wk->buttonId, POKEDEX_SEARCH_UI_PALETTE_OFF);
                 wk->buttonTimer = 4;
@@ -935,8 +935,8 @@ static int PokedexSearchSeq_ButtonAnm(PokedexSearchWork *wk) {
                 wk->buttonTimer--;
             }
             break;
-        case 1:
-        case 3:
+        case POKEDEX_SEARCH_BUTTON_ANM_PRESSED_FIRST:
+        case POKEDEX_SEARCH_BUTTON_ANM_PRESSED_SECOND:
             if (wk->buttonTimer == 0) {
                 PokedexSearchUI_SetCursorPalette(wk, wk->buttonId, POKEDEX_SEARCH_UI_PALETTE_PRESSED);
                 wk->buttonTimer = 4;
@@ -945,7 +945,7 @@ static int PokedexSearchSeq_ButtonAnm(PokedexSearchWork *wk) {
                 wk->buttonTimer--;
             }
             break;
-        case 4:
+        case POKEDEX_SEARCH_BUTTON_ANM_RESTORE:
             if (GCTX_HIDIsUsingTouch() == TRUE) {
                 PokedexSearchUI_SetCursorPalette(wk, wk->buttonId, POKEDEX_SEARCH_UI_PALETTE_OFF);
             } else {
@@ -1081,14 +1081,14 @@ static void PokedexSearchSeq_ResetShape(PokedexSearchWork *wk) {
 static int PokedexSearchSeq_SetButtonAnm(PokedexSearchWork *wk, u32 isActor, u32 id, int next) {
     wk->buttonIsActor = isActor;
     wk->buttonId = id;
-    wk->buttonSeq = 0;
+    wk->buttonSeq = POKEDEX_SEARCH_BUTTON_ANM_OFF_FIRST;
     wk->buttonTimer = 0;
     wk->buttonNextSeq = next;
     return SEQ_BUTTON_ANM;
 }
 
 static int PokedexSearchSeq_SetPageEnd(PokedexSearchWork *wk, int next) {
-    wk->initSeq = 0;
+    wk->initSeq = POKEDEX_SEARCH_PAGE_INIT_SETUP;
     wk->nextSeq = next;
     return SEQ_PAGE_END;
 }
@@ -1096,9 +1096,9 @@ static int PokedexSearchSeq_SetPageEnd(PokedexSearchWork *wk, int next) {
 static void PokedexSearchSeq_ToggleShortcut(PokedexSearchWork *wk) {
     if (GameData_IsShortcutRegistered(wk->param->gameData, SHORTCUT_POKEDEX_SEARCH) == TRUE) {
         GameData_SetKeyItemRegistration(wk->param->gameData, SHORTCUT_POKEDEX_SEARCH, FALSE);
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, 6);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_OFF);
     } else {
         GameData_SetKeyItemRegistration(wk->param->gameData, SHORTCUT_POKEDEX_SEARCH, TRUE);
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, 7);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_ON);
     }
 }
