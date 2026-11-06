@@ -17920,7 +17920,7 @@ overlays/ov142 0x0219b754 ItemMenu_CompareSortKey
 overlays/ov142 0x0219b784 ItemMenu_SortByType
 overlays/ov142 0x0219b8c4 ItemMenu_SortByName
 overlays/ov142 0x0219b9c0 ItemMenu_SortByNumber
-overlays/ov142 0x0219bac4 ItemMenu_SortByUses
+overlays/ov142 0x0219bac4 ItemMenu_SortByCount
 overlays/ov142 0x0219bca4 ItemMenu_PressSortButton
 overlays/ov142 0x0219bcd8 ItemMenu_Sort
 overlays/ov142 0x0219bd2c ItemMenu_ChangeFreeSpaceFilter

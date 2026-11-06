@@ -101,6 +101,16 @@ struct ItemData {
     } work;
 };
 
+// ITEM_PARAM_KIND categories used by the bag
+enum {
+    ITEM_KIND_HELD_EFFECT = 1,
+    ITEM_KIND_BALL = 4,
+    ITEM_KIND_MAIL = 5,
+};
+
+// PML_ItemGetTMBitMask and PML_ItemGetHMID when the item is not a TM/HM or HM
+#define ITEM_TM_HM_NONE 0xff
+
 // PML_ItemGetParam's parameters: the item's fields, then its work's
 enum {
     ITEM_PARAM_PRICE,

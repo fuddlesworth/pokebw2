@@ -40,9 +40,45 @@
 #include "system/scroll_bar.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
+#include "text/system/btl_main.h"
 
 // The bag's screens: BGs, windows, OBJ, the drawing of the item list and of the item under the cursor, and the menus'
 // windows. The ROM doesn't name this file; it is named after itemmenu.c for what it holds
+
+// The row marks, and the two values that hide the mark or the whole row
+enum {
+    ITEMMENU_ROW_MARK_REGISTERED = 0,
+    ITEMMENU_ROW_MARK_REGISTRABLE = 1,
+    ITEMMENU_ROW_MARK_BALL = 3,
+    ITEMMENU_ROW_MARK_MAIL = 4,
+    ITEMMENU_ROW_MARK_HELD_EFFECT = 5,
+    ITEMMENU_ROW_MARK_TM = 6,
+    ITEMMENU_ROW_MARK_HM = 7,
+    ITEMMENU_ROW_MARK_NONE = 8,
+    ITEMMENU_ROW_MARK_EMPTY = 9,
+};
+
+// The pocket tab table's selected and unselected columns
+enum {
+    ITEMMENU_TAB_SELECTED = 0,
+    ITEMMENU_TAB_UNSELECTED = 1,
+};
+
+// The pocket tab resource's animation sequences
+enum {
+    ITEMMENU_TAB_ANM_KEY_ITEMS = 0,
+    ITEMMENU_TAB_ANM_TMS_HMS = 1,
+    ITEMMENU_TAB_ANM_BERRIES = 2,
+    ITEMMENU_TAB_ANM_MEDICINE = 3,
+    ITEMMENU_TAB_ANM_ITEMS = 4,
+    ITEMMENU_TAB_ANM_KEY_ITEMS_SELECTED = 5,
+    ITEMMENU_TAB_ANM_TMS_HMS_SELECTED = 6,
+    ITEMMENU_TAB_ANM_BERRIES_SELECTED = 7,
+    ITEMMENU_TAB_ANM_MEDICINE_SELECTED = 8,
+    ITEMMENU_TAB_ANM_ITEMS_SELECTED = 9,
+    ITEMMENU_TAB_ANM_FREE_SPACE = 10,
+    ITEMMENU_TAB_ANM_FREE_SPACE_SELECTED = 11,
+};
 
 // The colors of the text
 #define ITEMMENU_TEXT_COLOR PRINT_COLOR(15, 14, 0)
@@ -238,11 +274,11 @@ static void ItemMenuDisp_LoadBagPicture(ItemMenuWork *work, ArcTool *arc) {
     u32 screen;
 
     gender = getTrainerGender(work->playerInfo);
-    if (gender == 0) {
+    if (gender == GENDER_MALE) {
         palette = 4;
         chars = 3;
         screen = 5;
-    } else if (gender == 1) {
+    } else if (gender == GENDER_FEMALE) {
         palette = 1;
         chars = 0;
         screen = 2;
@@ -261,19 +297,19 @@ static void ItemMenuDisp_LoadPocketTabRes(ItemMenuWork *work, ArcTool *arc) {
     u32 anims;
 
     gender = getTrainerGender(work->playerInfo);
-    if (gender == 0) {
+    if (gender == GENDER_MALE) {
         palette = 16;
         chars = 15;
         cells = 14;
         anims = 13;
-    } else if (gender == 1) {
+    } else if (gender == GENDER_FEMALE) {
         palette = 12;
         chars = 11;
         cells = 10;
         anims = 9;
     }
-    work->pocketTabPlt = ClActSys_LoadPlttRange(arc, palette, 0, 0xc0, 0, 5, work->heapId);
-    work->pocketTabChr = ClActSys_LoadChars(arc, chars, FALSE, 0, work->heapId);
+    work->pocketTabPlt = ClActSys_LoadPlttRange(arc, palette, CLACT_VRAM_MAIN, 0xc0, 0, 5, work->heapId);
+    work->pocketTabChr = ClActSys_LoadChars(arc, chars, FALSE, CLACT_VRAM_MAIN, work->heapId);
     work->pocketTabCel = ClActSys_LoadCellAnims(arc, cells, anims, work->heapId);
 }
 
@@ -313,7 +349,7 @@ void ItemMenuDisp_Init(ItemMenuWork *work) {
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_ITEMMENU, work->heapId);
     GFL_G2DIOLoadArcNCLRDefault(arc, 8, PALTYPE_SUB_BG, 0, 0, work->heapId);
-    if (getTrainerGender(work->playerInfo) == 0) {
+    if (getTrainerGender(work->playerInfo) == GENDER_MALE) {
         GFL_G2DIOLoadArcNCLR(arc, 8, PALTYPE_SUB_BG, 0x20, 0, 0x20, work->heapId);
     }
     work->bg4Chars = GFL_BGSysLoadArcNCGRDynamic(arc, 6, 4, 0, FALSE, work->heapId);
@@ -330,35 +366,36 @@ void ItemMenuDisp_Init(ItemMenuWork *work) {
     GFL_G2DIOLoadArcNCLRDefault(arc, 34, PALTYPE_MAIN_BG, 0x60, 0x20, work->heapId);
     GFL_ArcToolFree(arc);
 
-    GFL_BGSysLoadNCLRDefault(23, 5, PALTYPE_MAIN_BG, 0x180, 0x20, work->heapId);
+    GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_MAIN_BG, 0x180, 0x20, work->heapId);
     work->actorUnit = ClActUnit_Create(54, 0, work->heapId);
     GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, TRUE);
     GFL_BGSysSetBGEnabledA(GX_PLANEMASK_OBJ, TRUE);
 
-    arc = GFL_ArcSysCreateFileHandle(82, work->heapId);
+    arc = GFL_ArcSysCreateFileHandle(ARCID_APP_MENU_COMMON, work->heapId);
     GFL_G2DIOLoadArcNCLRDefault(arc, 27, PALTYPE_MAIN_BG, 0x100, 0x20, work->heapId);
     work->bg1Chars = GFL_BGSysLoadArcNCGRDynamic(arc, 28, 1, 0, FALSE, work->heapId);
     GFL_G2DIOLoadNSCRSync(arc, 29, 1, 0, CHAR_POS(work->bg1Chars) + 0x8000, 0, FALSE, work->heapId);
     GFL_BGSysLoadScr(1);
-    work->buttonPlt = ClActSys_LoadPlttRange(arc, 19, 0, 0x160, 0, 3, work->heapId);
-    work->buttonChr = ClActSys_LoadChars(arc, 20, FALSE, 0, work->heapId);
+    work->buttonPlt = ClActSys_LoadPlttRange(arc, 19, CLACT_VRAM_MAIN, 0x160, 0, 3, work->heapId);
+    work->buttonChr = ClActSys_LoadChars(arc, 20, FALSE, CLACT_VRAM_MAIN, work->heapId);
     work->buttonCel = ClActSys_LoadCellAnims(arc, 23, 26, work->heapId);
-    work->filterButtonChr = ClActSys_LoadChars(arc, 175, FALSE, 0, work->heapId);
+    work->filterButtonChr = ClActSys_LoadChars(arc, 175, FALSE, CLACT_VRAM_MAIN, work->heapId);
     work->filterButtonCel = ClActSys_LoadCellAnims(arc, 174, 173, work->heapId);
     GFL_ArcToolFree(arc);
     ItemMenuDisp_CreateButtons(work);
 
     uiArc = GFL_ArcSysCreateFileHandle(getUINarcIdx(), work->heapId);
     work->typeIconPlt =
-        ClActSys_LoadPlttRange(uiArc, AppMenuCommon_GetTypeIconPaletteFile(), 1, 0x80, 0, 3, work->heapId);
+        ClActSys_LoadPlttRange(uiArc, AppMenuCommon_GetTypeIconPaletteFile(), CLACT_VRAM_SUB, 0x80, 0, 3, work->heapId);
     work->typeIconCel = ClActSys_LoadCellAnims(uiArc, AppMenuCommon_GetTypeIconCellFile(2),
                                                AppMenuCommon_GetTypeIconAnimFile(2), work->heapId);
     for (i = 0; i < NELEMS(work->categoryIconChr); i++) {
         work->categoryIconChr[i] =
-            ClActSys_LoadChars(uiArc, AppMenuCommon_GetCategoryIconCharFile(i), FALSE, 1, work->heapId);
+            ClActSys_LoadChars(uiArc, AppMenuCommon_GetCategoryIconCharFile(i), FALSE, CLACT_VRAM_SUB, work->heapId);
     }
     for (i = 0; i < NELEMS(work->typeIconChr); i++) {
-        work->typeIconChr[i] = ClActSys_LoadChars(uiArc, AppMenuCommon_GetTypeIconCharFile(i), FALSE, 1, work->heapId);
+        work->typeIconChr[i] =
+            ClActSys_LoadChars(uiArc, AppMenuCommon_GetTypeIconCharFile(i), FALSE, CLACT_VRAM_SUB, work->heapId);
     }
     GFL_ArcToolFree(uiArc);
 
@@ -369,7 +406,7 @@ void ItemMenuDisp_Init(ItemMenuWork *work) {
     categorySetup.sequence = 0;
     for (i = 0; i < NELEMS(work->categoryIcons); i++) {
         work->categoryIcons[i] = ClActor_Create(work->actorUnit, work->categoryIconChr[i], work->typeIconPlt,
-                                                work->typeIconCel, &categorySetup, 1, work->heapId);
+                                                work->typeIconCel, &categorySetup, CLACT_SURFACE_SUB, work->heapId);
         ClActor_SetPalette(work->categoryIcons[i], AppMenuCommon_GetCategoryIconPaletteIndex(i), 1);
         ClActor_SetVisible(work->categoryIcons[i], FALSE);
         ClActor_SetDrawAnim(work->categoryIcons[i], FALSE);
@@ -381,24 +418,24 @@ void ItemMenuDisp_Init(ItemMenuWork *work) {
     typeSetup.sequence = 0;
     for (i = 0; i < NELEMS(work->typeIcons); i++) {
         work->typeIcons[i] = ClActor_Create(work->actorUnit, work->typeIconChr[i], work->typeIconPlt, work->typeIconCel,
-                                            &typeSetup, 1, work->heapId);
+                                            &typeSetup, CLACT_SURFACE_SUB, work->heapId);
         ClActor_SetPalette(work->typeIcons[i], AppMenuCommon_GetTypeIconPaletteIndex(i), 1);
         ClActor_SetVisible(work->typeIcons[i], FALSE);
         ClActor_SetDrawAnim(work->typeIcons[i], FALSE);
     }
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_ITEMMENU, work->heapId);
-    work->sortButtonPlt = ClActSys_LoadPlttRange(arc, 39, 0, 0x80, 0, 2, work->heapId);
-    work->sortButtonChr = ClActSys_LoadChars(arc, 38, FALSE, 0, work->heapId);
+    work->sortButtonPlt = ClActSys_LoadPlttRange(arc, 39, CLACT_VRAM_MAIN, 0x80, 0, 2, work->heapId);
+    work->sortButtonChr = ClActSys_LoadChars(arc, 38, FALSE, CLACT_VRAM_MAIN, work->heapId);
     work->sortButtonCel = ClActSys_LoadCellAnims(arc, 37, 36, work->heapId);
     GFL_ArcToolFree(arc);
     sortSetup.priority = 10;
     sortSetup.bgPriority = 1;
     sortSetup.x = 146;
     sortSetup.y = 176;
-    sortSetup.sequence = 0;
+    sortSetup.sequence = ITEMMENU_SORT_ANM_READY;
     work->sortButton = ClActor_Create(work->actorUnit, work->sortButtonChr, work->sortButtonPlt, work->sortButtonCel,
-                                      &sortSetup, 0, work->heapId);
+                                      &sortSetup, CLACT_SURFACE_MAIN, work->heapId);
     ClActor_SetAutoAnim(work->sortButton, TRUE);
     ClActor_SetVisible(work->sortButton, TRUE);
     ClActor_SetDrawAnim(work->sortButton, FALSE);
@@ -424,15 +461,15 @@ void ItemMenuDisp_ShowTMIcons(ItemMenuWork *work, BOOL show) {
     u16 move;
 
     if (show == TRUE) {
-        work->tmInfoRequest = 1;
+        work->tmInfoRequest = ITEMMENU_TM_INFO_SHOW;
     } else {
-        work->tmInfoRequest = 2;
+        work->tmInfoRequest = ITEMMENU_TM_INFO_HIDE;
     }
     if (work->selIcon != NULL) {
         ClActor_SetVisible(work->selIcon, show);
     }
     move = PML_ItemGetTMMoveID(ItemMenu_GetSlot(work, ItemMenu_GetCursorIndex(work))->item);
-    if (move != 0) {
+    if (move != MOVE_NONE) {
         ClActor_SetVisible(work->categoryIcons[PML_MoveGetCategory(move)], show);
         ClActor_SetVisible(work->typeIcons[PML_MoveGetType(move)], show);
     }
@@ -465,13 +502,13 @@ void ItemMenuDisp_DrawItemInfo(ItemMenuWork *work) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->descWindow.window), 0);
     move = PML_ItemGetTMMoveID(slot->item);
     pocket = BagSave_GetExistingItemPocket(work->bag, slot->item);
-    if (move == 0) {
-        GFL_MsgDataLoadStrbuf(work->msgData, 134, work->strbuf);
+    if (move == MOVE_NONE) {
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_97, work->strbuf);
         ItemMenu_SetItemName(work, 0, slot->item);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, &work->itemNameWindow, work->expandBuf, 0, 4, ITEMMENU_TEXT_COLOR);
         if (ItemMenuDisp_ShowsCount(pocket)) {
-            GFL_MsgDataLoadStrbuf(work->msgData, 131, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_X, work->strbuf);
             WordSetNumber(work->wordSet, 0, slot->count, 3, 0, TRUE);
             GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
             ItemMenuDisp_Print(work, &work->countWindow, work->expandBuf, 0, 4, ITEMMENU_TEXT_COLOR);
@@ -481,11 +518,11 @@ void ItemMenuDisp_DrawItemInfo(ItemMenuWork *work) {
         BmpWin_ClearScreen(work->tmInfoWindow.window);
     } else {
         hm = PML_ItemGetHMID(slot->item);
-        if (hm == 0xff) {
-            GFL_MsgDataLoadStrbuf(work->msgData, 69, work->strbuf);
+        if (hm == ITEM_TM_HM_NONE) {
+            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_No, work->strbuf);
             WordSetNumber(work->wordSet, 0, PML_ItemGetTMBitMask(slot->item) + 1, 2, 2, TRUE);
         } else {
-            GFL_MsgDataLoadStrbuf(work->msgData, 71, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Hidden, work->strbuf);
             WordSetNumber(work->wordSet, 0, hm + 1, 2, 2, TRUE);
         }
         loadMoveNameToStrbuf(work->wordSet, 1, move);
@@ -496,7 +533,7 @@ void ItemMenuDisp_DrawItemInfo(ItemMenuWork *work) {
     }
     if (work->pocket == BAG_POCKET_FREE_SPACE) {
         ItemMenu_SetPocketName(work, 0, pocket);
-        GFL_MsgDataLoadStrbuf(work->msgData, 139, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_100, work->strbuf);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         x = (96 - GFL_FontGetBlockWidth(work->expandBuf, work->font, 0)) / 2;
         ItemMenuDisp_Print(work, &work->pocketLabelWindow, work->expandBuf, x, 0, ITEMMENU_TEXT_COLOR);
@@ -556,9 +593,9 @@ void ItemMenuDisp_Exit(ItemMenuWork *work) {
 static void ItemMenuDisp_DrawMenuTitle(ItemMenuWork *work) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->menuTitleWindow.window), 0);
     if (ItemMenu_CountFilterActions(work) > 2 && work->pocket == BAG_POCKET_FREE_SPACE) {
-        GFL_MsgDataLoadStrbuf(work->msgData, 159, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_CannotFind, work->strbuf);
     } else {
-        GFL_MsgDataLoadStrbuf(work->msgData, 135, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_ItsEmpty, work->strbuf);
     }
     ItemMenuDisp_Print(work, &work->menuTitleWindow, work->strbuf, 0, 4, ITEMMENU_TEXT_COLOR);
 }
@@ -587,15 +624,15 @@ void ItemMenuDisp_CreateWindows(ItemMenuWork *work) {
     work->selIconCel = ClActSys_LoadCellAnims(arc, 1, 0, work->heapId);
     GFL_ArcToolFree(arc);
 
-    GFL_MsgDataLoadStrbuf(work->msgData, 102, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Type, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 8, 4, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, 93, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Category, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 8, 24, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, 91, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Power, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 112, 4, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, 92, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Accuracy, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 112, 24, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, 90, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Pp, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 208, 4, ITEMMENU_TEXT_COLOR);
     if (GCTX_HIDIsUsingTouch() == FALSE) {
         ItemMenuDisp_DrawItemInfo(work);
@@ -620,17 +657,18 @@ static void ItemMenuDisp_ShowSelIcon(ItemMenuWork *work, u32 item) {
         ItemMenuDisp_FreeSelIcon(work);
     }
     arc = GFL_ArcSysCreateFileHandle(ARCID_ITEMGRA, work->heapId);
-    work->selIconPlt =
-        ClActSys_LoadPlttRange(arc, GetItemGraphicsDatID(item, ITEM_FILE_ICON_PLTT), 1, 0, 0, 1, work->heapId);
-    work->selIconChr = ClActSys_LoadChars(arc, GetItemGraphicsDatID(item, ITEM_FILE_ICON_CHAR), FALSE, 1, work->heapId);
+    work->selIconPlt = ClActSys_LoadPlttRange(arc, GetItemGraphicsDatID(item, ITEM_FILE_ICON_PLTT), CLACT_VRAM_SUB, 0,
+                                              0, 1, work->heapId);
+    work->selIconChr =
+        ClActSys_LoadChars(arc, GetItemGraphicsDatID(item, ITEM_FILE_ICON_CHAR), FALSE, CLACT_VRAM_SUB, work->heapId);
     GFL_ArcToolFree(arc);
     setup.x = 132;
     setup.y = 80;
     setup.sequence = 0;
     setup.priority = 0;
     setup.bgPriority = 0;
-    work->selIcon =
-        ClActor_Create(work->actorUnit, work->selIconChr, work->selIconPlt, work->selIconCel, &setup, 1, work->heapId);
+    work->selIcon = ClActor_Create(work->actorUnit, work->selIconChr, work->selIconPlt, work->selIconCel, &setup,
+                                   CLACT_SURFACE_SUB, work->heapId);
     ClActor_SetAutoAnim(work->selIcon, TRUE);
     ClActor_SetVisible(work->selIcon, TRUE);
     ClActor_SetDrawAnim(work->selIcon, FALSE);
@@ -648,18 +686,18 @@ void ItemMenuDisp_LoadListRes(ItemMenuWork *work) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_ITEMMENU, work->heapId);
     s32 i;
 
-    work->rowMarkPlt = ClActSys_LoadPlttRange(arc, 32, 0, 0x1c0, 0, 1, work->heapId);
-    work->rowMarkChr = ClActSys_LoadChars(arc, 31, FALSE, 0, work->heapId);
+    work->rowMarkPlt = ClActSys_LoadPlttRange(arc, 32, CLACT_VRAM_MAIN, 0x1c0, 0, 1, work->heapId);
+    work->rowMarkChr = ClActSys_LoadChars(arc, 31, FALSE, CLACT_VRAM_MAIN, work->heapId);
     work->rowMarkCel = ClActSys_LoadCellAnims(arc, 30, 29, work->heapId);
-    work->listCursorPlt = ClActSys_LoadPlttRange(arc, 28, 0, 0x60, 0, 1, work->heapId);
-    work->listCursorChr = ClActSys_LoadChars(arc, 27, FALSE, 0, work->heapId);
+    work->listCursorPlt = ClActSys_LoadPlttRange(arc, 28, CLACT_VRAM_MAIN, 0x60, 0, 1, work->heapId);
+    work->listCursorChr = ClActSys_LoadChars(arc, 27, FALSE, CLACT_VRAM_MAIN, work->heapId);
     work->listCursorCel = ClActSys_LoadCellAnims(arc, 26, 25, work->heapId);
     for (i = 0; i < ITEMMENU_ROW_OBJS; i++) {
         work->rowNameBitmaps[i] = GFL_BitmapCreate(12, 2, 32, work->heapId);
-        work->rowNameChr[i] = ClActSys_LoadChars(arc, 20, FALSE, 0, work->heapId);
+        work->rowNameChr[i] = ClActSys_LoadChars(arc, 20, FALSE, CLACT_VRAM_MAIN, work->heapId);
     }
     getTrainerGender(work->playerInfo);
-    work->rowNamePlt = ClActSys_LoadPlttRange(arc, 21, 0, 0, 0, 3, work->heapId);
+    work->rowNamePlt = ClActSys_LoadPlttRange(arc, 21, CLACT_VRAM_MAIN, 0, 0, 3, work->heapId);
     work->rowNameCel = ClActSys_LoadCellAnims(arc, 19, 18, work->heapId);
     GFL_ArcToolFree(arc);
 }
@@ -675,9 +713,9 @@ void ItemMenuDisp_CreateListActors(ItemMenuWork *work) {
     scrollSetup.y = 26;
     scrollSetup.priority = 1;
     scrollSetup.bgPriority = 2;
-    scrollSetup.sequence = 0;
+    scrollSetup.sequence = ITEMMENU_LIST_ANM_SCROLL_BAR;
     work->scrollBar = ClActor_Create(work->actorUnit, work->listCursorChr, work->listCursorPlt, work->listCursorCel,
-                                     &scrollSetup, 0, work->heapId);
+                                     &scrollSetup, CLACT_SURFACE_MAIN, work->heapId);
     ClActor_SetVisible(work->scrollBar, TRUE);
     ClActor_SetAutoAnim(work->scrollBar, TRUE);
     ClActor_SetDrawAnim(work->scrollBar, FALSE);
@@ -687,9 +725,9 @@ void ItemMenuDisp_CreateListActors(ItemMenuWork *work) {
     cursorSetup.y = 48;
     cursorSetup.priority = 1;
     cursorSetup.bgPriority = 2;
-    cursorSetup.sequence = 1;
+    cursorSetup.sequence = ITEMMENU_LIST_ANM_CURSOR;
     work->listCursor = ClActor_Create(work->actorUnit, work->listCursorChr, work->listCursorPlt, work->listCursorCel,
-                                      &cursorSetup, 0, work->heapId);
+                                      &cursorSetup, CLACT_SURFACE_MAIN, work->heapId);
     ClActor_SetDrawAnim(work->listCursor, FALSE);
     ClActor_SetVisible(work->listCursor, TRUE);
     ClActor_SetAutoAnim(work->listCursor, TRUE);
@@ -701,11 +739,11 @@ void ItemMenuDisp_CreateListActors(ItemMenuWork *work) {
         rowSetup.bgPriority = 3;
         rowSetup.sequence = 0;
         work->rowNames[i] = ClActor_Create(work->actorUnit, work->rowNameChr[i], work->rowNamePlt, work->rowNameCel,
-                                           &rowSetup, 0, work->heapId);
+                                           &rowSetup, CLACT_SURFACE_MAIN, work->heapId);
         rowSetup.x -= 24;
-        rowSetup.sequence = 1;
+        rowSetup.sequence = ITEMMENU_ROW_MARK_REGISTRABLE;
         work->rowMarks[i] = ClActor_Create(work->actorUnit, work->rowMarkChr, work->rowMarkPlt, work->rowMarkCel,
-                                           &rowSetup, 0, work->heapId);
+                                           &rowSetup, CLACT_SURFACE_MAIN, work->heapId);
         ClActor_SetVisible(work->rowNames[i], FALSE);
         ClActor_SetVisible(work->rowMarks[i], FALSE);
         ClActor_SetDrawAnim(work->rowNames[i], FALSE);
@@ -757,7 +795,7 @@ void ItemMenuDisp_DrawList(ItemMenuWork *work) {
     }
     arc = PML_ItemArcHandleCreate(work->heapId);
     for (i = 0; i < ITEMMENU_ROW_OBJS; i++) {
-        work->rowMarkTypes[i] = 9;
+        work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_EMPTY;
         if (work->scroll + i < 0) {
             continue;
         }
@@ -779,9 +817,9 @@ void ItemMenuDisp_DrawList(ItemMenuWork *work) {
             color = PRINT_COLOR(4, 3, 13);
         }
         GFL_BitmapFill(work->rowNameBitmaps[i], 13);
-        GFL_MsgDataLoadStrbuf(work->msgData, 130, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_96, work->strbuf);
         move = PML_ItemGetTMMoveID(slot->item);
-        if (move == 0) {
+        if (move == MOVE_NONE) {
             ItemMenu_SetItemName(work, 0, slot->item);
         } else {
             loadMoveNameToStrbuf(work->wordSet, 0, move);
@@ -789,27 +827,27 @@ void ItemMenuDisp_DrawList(ItemMenuWork *work) {
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         GFL_TextRendererDrawToBitmapEx(work->rowNameBitmaps[i], 0, 0, work->expandBuf, work->font, color);
         if (work->pocket == BAG_POCKET_MEDICINE) {
-            work->rowMarkTypes[i] = 8;
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_NONE;
         } else if (work->pocket == BAG_POCKET_BERRIES) {
-            work->rowMarkTypes[i] = 8;
-        } else if (kind == 4) {
-            work->rowMarkTypes[i] = 3;
-        } else if (kind == 5) {
-            work->rowMarkTypes[i] = 4;
-        } else if (kind == 1) {
-            work->rowMarkTypes[i] = 5;
-        } else if (PML_ItemGetHMID(slot->item) != 0xff) {
-            work->rowMarkTypes[i] = 7;
-        } else if (PML_ItemGetTMBitMask(slot->item) != 0xff) {
-            work->rowMarkTypes[i] = 6;
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_NONE;
+        } else if (kind == ITEM_KIND_BALL) {
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_BALL;
+        } else if (kind == ITEM_KIND_MAIL) {
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_MAIL;
+        } else if (kind == ITEM_KIND_HELD_EFFECT) {
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_HELD_EFFECT;
+        } else if (PML_ItemGetHMID(slot->item) != ITEM_TM_HM_NONE) {
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_HM;
+        } else if (PML_ItemGetTMBitMask(slot->item) != ITEM_TM_HM_NONE) {
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_TM;
         } else if (PML_ItemGetParam(data, ITEM_PARAM_REGISTRABLE)) {
             if (ItemMenu_IsItemRegistered(work, slot->item) == TRUE) {
-                work->rowMarkTypes[i] = 0;
+                work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_REGISTERED;
             } else {
-                work->rowMarkTypes[i] = 1;
+                work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_REGISTRABLE;
             }
         } else {
-            work->rowMarkTypes[i] = 8;
+            work->rowMarkTypes[i] = ITEMMENU_ROW_MARK_NONE;
         }
         GFL_HeapFree(data);
     }
@@ -821,12 +859,12 @@ void ItemMenuDisp_DrawList(ItemMenuWork *work) {
 void ItemMenuDisp_UpdateListCursor(ItemMenuWork *work) {
     ClActorPos pos;
 
-    ItemMenuDisp_SetListCursorPalette(work, 0);
+    ItemMenuDisp_SetListCursorPalette(work, ITEMMENU_CURSOR_PALETTE_OFF);
     ClActor_GetSurfacePos(work->listCursor, &pos, 0xffff);
     pos.y = (work->cursorRow + 1) * 24;
     ClActor_SetSurfacePos(work->listCursor, &pos, 0xffff);
     if (GCTX_HIDIsUsingTouch() == FALSE) {
-        ItemMenuDisp_SetListCursorPalette(work, 1);
+        ItemMenuDisp_SetListCursorPalette(work, ITEMMENU_CURSOR_PALETTE_ON);
     }
     BlinkPalAnm_InitAnime(work->paletteAnim);
     ClActor_SetVisible(work->scrollBar, ItemMenu_GetItemCount(work) >= ITEMMENU_LIST_ROWS + 1);
@@ -848,8 +886,8 @@ void ItemMenuDisp_UpdateListRows(ItemMenuWork *work) {
         GX_LoadOBJ(pixels + 0x280, chars + 0x100, 0x80);
         GX_LoadOBJ(pixels, chars + 0x300, 0x100);
         GX_LoadOBJ(pixels + 0x180, chars + 0x400, 0x100);
-        if (work->rowMarkTypes[i] != 9) {
-            if (work->rowMarkTypes[i] != 8) {
+        if (work->rowMarkTypes[i] != ITEMMENU_ROW_MARK_EMPTY) {
+            if (work->rowMarkTypes[i] != ITEMMENU_ROW_MARK_NONE) {
                 ClActor_SetSequence(work->rowMarks[i], work->rowMarkTypes[i]);
                 ClActor_SetVisible(work->rowMarks[i], TRUE);
             } else {
@@ -901,38 +939,40 @@ static void ItemMenuDisp_CreateButtons(ItemMenuWork *work) {
     setup.priority = 10;
     setup.bgPriority = 1;
     {
-        u8 sequences[] = { 4, 5, 6, 0, 1 };
+        u8 sequences[] = { ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT, ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT,
+                           ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF, ITEMMENU_TOUCHBAR_ANM_CLOSE,
+                           ITEMMENU_TOUCHBAR_ANM_BACK };
         u8 xs[] = { 0, 120, 173, 192, 224 };
 
         for (i = 0; i < 5; i++) {
             setup.x = xs[i];
             setup.y = 168;
             setup.sequence = sequences[i];
-            if (i == 2) {
+            if (i == ITEMMENU_BUTTON_REGISTER) {
                 setup.y += 4;
             }
             work->buttons[i] = ClActor_Create(work->actorUnit, work->buttonChr, work->buttonPlt, work->buttonCel,
-                                              &setup, 0, work->heapId);
+                                              &setup, CLACT_SURFACE_MAIN, work->heapId);
             ClActor_SetVisible(work->buttons[i], TRUE);
             ClActor_SetDrawAnim(work->buttons[i], FALSE);
         }
     }
     setup.x = 146;
     setup.y = 168;
-    setup.sequence = 0;
+    setup.sequence = ITEMMENU_FILTER_ANM_READY;
     work->filterButton = ClActor_Create(work->actorUnit, work->filterButtonChr, work->buttonPlt, work->filterButtonCel,
-                                        &setup, 0, work->heapId);
+                                        &setup, CLACT_SURFACE_MAIN, work->heapId);
     ClActor_SetVisible(work->filterButton, FALSE);
     ClActor_SetAutoAnim(work->filterButton, TRUE);
     ClActor_SetDrawAnim(work->filterButton, FALSE);
     if (ItemMenu_CanRegister(work) == FALSE) {
-        ClActor_SetVisible(work->buttons[2], FALSE);
+        ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_REGISTER], FALSE);
     }
-    if (work->mode == 2) {
-        ClActor_SetVisible(work->buttons[3], FALSE);
+    if (work->mode == BAG_MODE_GIVE_ITEM) {
+        ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_CLOSE], FALSE);
     }
     {
-        u8 sequences[] = { 3, 2 };
+        u8 sequences[] = { ITEMMENU_TOUCHBAR_ANM_QUANTITY_UP, ITEMMENU_TOUCHBAR_ANM_QUANTITY_DOWN };
         u8 ys[] = { 97, 119 };
         u8 button;
 
@@ -941,9 +981,9 @@ static void ItemMenuDisp_CreateButtons(ItemMenuWork *work) {
             setup.y = ys[i];
             setup.sequence = sequences[i];
             setup.bgPriority = 0;
-            button = i + 5;
+            button = i + ITEMMENU_BUTTON_QUANTITY_UP;
             work->buttons[button] = ClActor_Create(work->actorUnit, work->buttonChr, work->buttonPlt, work->buttonCel,
-                                                   &setup, 0, work->heapId);
+                                                   &setup, CLACT_SURFACE_MAIN, work->heapId);
             ClActor_SetAutoAnim(work->buttons[button], TRUE);
             ClActor_SetVisible(work->buttons[button], FALSE);
             ClActor_SetDrawAnim(work->buttons[button], FALSE);
@@ -953,7 +993,12 @@ static void ItemMenuDisp_CreateButtons(ItemMenuWork *work) {
 
 // The priority of each pocket's tab, and its animation sequences when picked and not
 static const u8 sPocketTabPriorities[] = { 14, 12, 10, 12, 16, 16 };
-static const u8 sPocketTabSequences[][2] = { { 9, 4 }, { 8, 3 }, { 6, 1 }, { 7, 2 }, { 5, 0 }, { 11, 10 } };
+static const u8 sPocketTabSequences[][2] = { { ITEMMENU_TAB_ANM_ITEMS_SELECTED, ITEMMENU_TAB_ANM_ITEMS },
+                                             { ITEMMENU_TAB_ANM_MEDICINE_SELECTED, ITEMMENU_TAB_ANM_MEDICINE },
+                                             { ITEMMENU_TAB_ANM_TMS_HMS_SELECTED, ITEMMENU_TAB_ANM_TMS_HMS },
+                                             { ITEMMENU_TAB_ANM_BERRIES_SELECTED, ITEMMENU_TAB_ANM_BERRIES },
+                                             { ITEMMENU_TAB_ANM_KEY_ITEMS_SELECTED, ITEMMENU_TAB_ANM_KEY_ITEMS },
+                                             { ITEMMENU_TAB_ANM_FREE_SPACE_SELECTED, ITEMMENU_TAB_ANM_FREE_SPACE } };
 
 // Where the pocket tabs slide to
 static ClActorPos sPocketTabPos[] = { { 0, 80 }, { 0, 80 }, { 0, 80 }, { 0, 80 }, { 0, 80 }, { 0, 80 } };
@@ -968,9 +1013,9 @@ void ItemMenuDisp_CreatePocketTabs(ItemMenuWork *work) {
         setup.bgPriority = 1;
         setup.x = sPocketTabPos[i].x - 16;
         setup.y = sPocketTabPos[i].y;
-        setup.sequence = sPocketTabSequences[i][1];
+        setup.sequence = sPocketTabSequences[i][ITEMMENU_TAB_UNSELECTED];
         work->pocketTabs[i] = ClActor_Create(work->actorUnit, work->pocketTabChr, work->pocketTabPlt,
-                                             work->pocketTabCel, &setup, 0, work->heapId);
+                                             work->pocketTabCel, &setup, CLACT_SURFACE_MAIN, work->heapId);
         ClActor_SetAutoAnim(work->pocketTabs[i], TRUE);
     }
 }
@@ -981,9 +1026,9 @@ void ItemMenuDisp_SetPocketTab(ItemMenuWork *work, u32 pocket) {
 
     for (i = 0; i < NELEMS(work->pocketTabs); i++) {
         if (i == pocket) {
-            ClActor_SetSequence(work->pocketTabs[i], sPocketTabSequences[i][0]);
+            ClActor_SetSequence(work->pocketTabs[i], sPocketTabSequences[i][ITEMMENU_TAB_SELECTED]);
         } else {
-            ClActor_SetSequence(work->pocketTabs[i], sPocketTabSequences[i][1]);
+            ClActor_SetSequence(work->pocketTabs[i], sPocketTabSequences[i][ITEMMENU_TAB_UNSELECTED]);
         }
     }
 }
@@ -1062,19 +1107,19 @@ void ItemMenuDisp_OpenFilterMenu(ItemMenuWork *work, u8 count) {
     init.height = 3;
     for (i = 0; i < count; i++) {
         action = work->freeSpaceMenuActions[i];
-        if (action == 5) {
+        if (action == ITEMMENU_FILTER_ACTION_ALL) {
             work->menuItems[i].str = GFL_StrBufCreate(100, work->heapId);
-            GFL_MsgDataLoadStrbuf(work->msgData, 144, work->menuItems[i].str);
+            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_All, work->menuItems[i].str);
             work->menuItems[i].color = ITEMMENU_MENU_COLOR;
             work->menuItems[i].type = 0;
-        } else if (action == 6) {
+        } else if (action == ITEMMENU_FILTER_ACTION_CANCEL) {
             work->menuItems[i].str = GFL_StrBufCreate(100, work->heapId);
-            GFL_MsgDataLoadStrbuf(work->msgData, 8, work->menuItems[i].str);
+            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Cancel, work->menuItems[i].str);
             work->menuItems[i].color = ITEMMENU_MENU_COLOR;
             work->menuItems[i].type = APP_TASKMENU_ITEM_RETURN;
         } else {
             work->menuItems[i].str = GFL_StrBufCreate(100, work->heapId);
-            GFL_MsgDataLoadStrbuf(work->msgData, 139, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_100, work->strbuf);
             loadBagPocketNameToStrbuf(work->wordSet, 0, action);
             GFL_WordSetFormatStrbuf(work->wordSet, work->menuItems[i].str, work->strbuf);
             work->menuItems[i].color = ITEMMENU_MENU_COLOR;
@@ -1115,24 +1160,24 @@ static void ItemMenuDisp_DrawTMInfo(ItemMenuWork *work, u32 move) {
     GFL_BitmapFillArea(BmpWin_GetBitmap(window->window), 176, 0, 32, 40, 0);
     GFL_BitmapFillArea(BmpWin_GetBitmap(window->window), 232, 0, 24, 24, 0);
     if (power <= 1) {
-        GFL_MsgDataLoadStrbuf(work->msgData, 23, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_15, work->strbuf);
         ItemMenuDisp_Print(work, window, work->strbuf, 176, 4, ITEMMENU_TEXT_COLOR);
     } else {
-        GFL_MsgDataLoadStrbuf(work->msgData, 95, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_63, work->strbuf);
         WordSetNumber(work->wordSet, 0, power, 3, 0, TRUE);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, window, work->expandBuf, 176, 4, ITEMMENU_TEXT_COLOR);
     }
     if (accuracy == 0 || PML_MoveIsAlwaysHit(move) == TRUE) {
-        GFL_MsgDataLoadStrbuf(work->msgData, 23, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_15, work->strbuf);
         ItemMenuDisp_Print(work, window, work->strbuf, 176, 24, ITEMMENU_TEXT_COLOR);
     } else {
-        GFL_MsgDataLoadStrbuf(work->msgData, 95, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_63, work->strbuf);
         WordSetNumber(work->wordSet, 0, accuracy, 3, 0, TRUE);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, window, work->expandBuf, 176, 24, ITEMMENU_TEXT_COLOR);
     }
-    GFL_MsgDataLoadStrbuf(work->msgData, 94, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_62, work->strbuf);
     WordSetNumber(work->wordSet, 0, pp, 2, 0, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     ItemMenuDisp_Print(work, window, work->expandBuf, 232, 4, ITEMMENU_TEXT_COLOR);
@@ -1164,7 +1209,7 @@ void ItemMenuDisp_ShowMessageNow(ItemMenuWork *work) {
 
 // Says what the player does with the item
 void ItemMenuDisp_SetItemMenuMessage(ItemMenuWork *work, u32 item) {
-    GFL_MsgDataLoadStrbuf(work->msgData, 43, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Selected, work->strbuf);
     ItemMenu_SetItemName(work, 0, item);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
 }
@@ -1220,7 +1265,7 @@ void ItemMenuDisp_DrawPocketName(ItemMenuWork *work, u32 pocket) {
     u32 x;
 
     GFL_BitmapFill(BmpWin_GetBitmap(work->pocketNameWindow.window), 0);
-    GFL_MsgDataLoadStrbuf(work->msgData, 139, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_100, work->strbuf);
     loadBagPocketNameToStrbuf(work->wordSet, 0, pocket);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     x = (96 - GFL_FontGetBlockWidth(work->expandBuf, work->font, 0)) / 2;
@@ -1232,10 +1277,10 @@ void ItemMenuDisp_DrawPocketName(ItemMenuWork *work, u32 pocket) {
 void ItemMenuDisp_DrawMoney(ItemMenuWork *work) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->moneyValueWindow.window), 0);
     GFL_BitmapFill(BmpWin_GetBitmap(work->moneyWindow.window), 0);
-    GFL_MsgDataLoadStrbuf(work->msgData, 81, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Money, work->strbuf);
     ItemMenuDisp_Print(work, &work->moneyWindow, work->strbuf, 0, 4, ITEMMENU_TITLE_COLOR);
     ItemMenuDisp_TransferScreen(&work->moneyWindow);
-    GFL_MsgDataLoadStrbuf(work->msgData, 82, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_54, work->strbuf);
     WordSetNumber(work->wordSet, 0, getCash(getTrainerCardDataBlkAddress(work->gameData)), 7, 1, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     ItemMenuDisp_Print(work, &work->moneyValueWindow, work->expandBuf, 0, 4, ITEMMENU_TITLE_COLOR);
@@ -1244,16 +1289,16 @@ void ItemMenuDisp_DrawMoney(ItemMenuWork *work) {
 
 // Shows the money in place of the pocket's name and arrows
 void ItemMenuDisp_ShowMoney(ItemMenuWork *work) {
-    ClActor_SetVisible(work->buttons[0], FALSE);
-    ClActor_SetVisible(work->buttons[1], FALSE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_POCKET_LEFT], FALSE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_POCKET_RIGHT], FALSE);
     BmpWin_ClearScreen(work->pocketNameWindow.window);
     ItemMenuDisp_DrawMoney(work);
 }
 
 // Shows the pocket's name and arrows again
 void ItemMenuDisp_HideMoney(ItemMenuWork *work) {
-    ClActor_SetVisible(work->buttons[0], TRUE);
-    ClActor_SetVisible(work->buttons[1], TRUE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_POCKET_LEFT], TRUE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_POCKET_RIGHT], TRUE);
     BmpWin_ClearScreen(work->moneyValueWindow.window);
     BmpWin_ClearScreen(work->moneyWindow.window);
     ItemMenuDisp_DrawPocketName(work, work->pocket);
@@ -1272,11 +1317,11 @@ void ItemMenuDisp_OpenYesNoMenu(ItemMenuWork *work) {
     init.width = 8;
     init.height = 3;
     work->menuItems[0].str = GFL_StrBufCreate(100, work->heapId);
-    GFL_MsgDataLoadStrbuf(work->msgData, 132, work->menuItems[0].str);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Yes, work->menuItems[0].str);
     work->menuItems[0].color = ITEMMENU_MENU_COLOR;
     work->menuItems[0].type = 0;
     work->menuItems[1].str = GFL_StrBufCreate(100, work->heapId);
-    GFL_MsgDataLoadStrbuf(work->msgData, 133, work->menuItems[1].str);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_No_2, work->menuItems[1].str);
     work->menuItems[1].color = ITEMMENU_MENU_COLOR;
     work->menuItems[1].type = 0;
     work->taskMenu = AppTaskMenu_Create(&init, work->taskMenuRes);
@@ -1315,16 +1360,16 @@ void ItemMenuDisp_DrawQuantityFrame(ItemMenuWork *work) {
 // Draws the quantity, and the price when selling
 void ItemMenuDisp_DrawQuantity(ItemMenuWork *work, s32 quantity) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->quantityWindow.window), 5);
-    GFL_MsgDataLoadStrbuf(work->msgData, 131, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_X, work->strbuf);
     WordSetNumber(work->wordSet, 0, quantity, 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     ItemMenuDisp_Print(work, &work->quantityWindow, work->expandBuf, 0, 0, PRINT_COLOR(15, 14, 5));
     ItemMenuDisp_TransferScreen(&work->quantityWindow);
-    if (work->quantityMode == 2) {
+    if (work->quantityMode == ITEMMENU_QUANTITY_SELL) {
         PrintWindow *window = &work->priceWindow;
         s32 price = ItemMenu_GetSellPrice(work->item, work->quantity, work->heapId);
         GFL_BitmapFill(BmpWin_GetBitmap(window->window), 5);
-        GFL_MsgDataLoadStrbuf(work->msgData, 84, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_56, work->strbuf);
         WordSetNumber(work->wordSet, 0, price, 7, 0, TRUE);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, window, work->expandBuf, 0, 0, PRINT_COLOR(15, 14, 5));
@@ -1356,9 +1401,9 @@ void ItemMenuDisp_SetListCursorPalette(ItemMenuWork *work, u32 palette) {
     ClActorPos rowPos;
     u32 i;
 
-    ClActor_GetSurfacePos(work->listCursor, &cursorPos, 0);
+    ClActor_GetSurfacePos(work->listCursor, &cursorPos, CLACT_SURFACE_MAIN);
     for (i = 0; i < ITEMMENU_ROW_OBJS; i++) {
-        ClActor_GetSurfacePos(work->rowNames[i], &rowPos, 0);
+        ClActor_GetSurfacePos(work->rowNames[i], &rowPos, CLACT_SURFACE_MAIN);
         if (rowPos.y == cursorPos.y) {
             break;
         }
@@ -1376,37 +1421,39 @@ void ItemMenuDisp_SetButtonsActive(ItemMenuWork *work, BOOL active) {
     work->buttonsActive = active;
     registered = GameData_IsShortcutRegistered(work->gameData, ItemMenuDisp_GetPocketShortcut(work->pocket));
     if (active == TRUE) {
-        PaletteFade_StartFade(work->paletteFade, 4, 0x47cf, 0, 0, 0, 0, GFL_VBlankGetTCBMgr());
-        PaletteFade_StartFade(work->paletteFade, 1, 1, 0, 0, 0, 0, GFL_VBlankGetTCBMgr());
-        G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 6, 0);
+        PaletteFade_StartFade(work->paletteFade, 1 << PALFADE_BUFFER_MAIN_OBJ, 0x47cf, 0, 0, 0, 0,
+                              GFL_VBlankGetTCBMgr());
+        PaletteFade_StartFade(work->paletteFade, 1 << PALFADE_BUFFER_MAIN_BG, 1, 0, 0, 0, 0, GFL_VBlankGetTCBMgr());
+        G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG2, 0);
         ItemMenuDisp_UpdateSortButton(work);
-        ClActor_SetSequence(work->buttons[0], 4);
-        ClActor_SetSequence(work->buttons[1], 5);
-        ClActor_SetSequence(work->buttons[3], 0);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_LEFT], ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_RIGHT], ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_CLOSE], ITEMMENU_TOUCHBAR_ANM_CLOSE);
         if (registered == TRUE) {
-            ClActor_SetSequence(work->buttons[2], 7);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_ON);
         } else {
-            ClActor_SetSequence(work->buttons[2], 6);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF);
         }
         ItemMenuDisp_SetBackButtonActive(work, TRUE);
     } else {
-        PaletteFade_LoadFromVRAM(work->paletteFade, 2, 0, 0x200);
-        PaletteFade_StartFade(work->paletteFade, 4, 0x47cf, 0, 8, 8, 0, GFL_VBlankGetTCBMgr());
-        PaletteFade_StartFade(work->paletteFade, 1, 1, 0, 8, 8, 0, GFL_VBlankGetTCBMgr());
-        if (work->mode == 4 && ClActor_IsVisible(work->buttons[0]) == FALSE) {
-            G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 2, -8);
+        PaletteFade_LoadFromVRAM(work->paletteFade, PALFADE_VRAM_MAIN_OBJ, 0, 0x200);
+        PaletteFade_StartFade(work->paletteFade, 1 << PALFADE_BUFFER_MAIN_OBJ, 0x47cf, 0, 8, 8, 0,
+                              GFL_VBlankGetTCBMgr());
+        PaletteFade_StartFade(work->paletteFade, 1 << PALFADE_BUFFER_MAIN_BG, 1, 0, 8, 8, 0, GFL_VBlankGetTCBMgr());
+        if (work->mode == BAG_MODE_SELL && ClActor_IsVisible(work->buttons[ITEMMENU_BUTTON_POCKET_LEFT]) == FALSE) {
+            G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG1, -8);
         } else {
-            G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 6, -8);
+            G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG2, -8);
         }
-        ClActor_SetSequence(work->sortButton, 4);
-        ClActor_SetSequence(work->filterButton, 2);
-        ClActor_SetSequence(work->buttons[0], 18);
-        ClActor_SetSequence(work->buttons[1], 19);
-        ClActor_SetSequence(work->buttons[3], 14);
+        ClActor_SetSequence(work->sortButton, ITEMMENU_SORT_ANM_DISABLED);
+        ClActor_SetSequence(work->filterButton, ITEMMENU_FILTER_ANM_DISABLED);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_LEFT], ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT_DISABLED);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_RIGHT], ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT_DISABLED);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_CLOSE], ITEMMENU_TOUCHBAR_ANM_CLOSE_DISABLED);
         if (registered == TRUE) {
-            ClActor_SetSequence(work->buttons[2], 22);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_ON_DISABLED);
         } else {
-            ClActor_SetSequence(work->buttons[2], 21);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF_DISABLED);
         }
     }
 }
@@ -1414,9 +1461,9 @@ void ItemMenuDisp_SetButtonsActive(ItemMenuWork *work, BOOL active) {
 // Lights the back button up, or dims it
 void ItemMenuDisp_SetBackButtonActive(ItemMenuWork *work, BOOL active) {
     if (active == TRUE) {
-        ClActor_SetSequence(work->buttons[4], 1);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_BACK], ITEMMENU_TOUCHBAR_ANM_BACK);
     } else {
-        ClActor_SetSequence(work->buttons[4], 15);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_BACK], ITEMMENU_TOUCHBAR_ANM_BACK_DISABLED);
     }
 }
 
@@ -1426,17 +1473,17 @@ void ItemMenuDisp_UpdateSortButton(ItemMenuWork *work) {
         ClActor_SetVisible(work->sortButton, TRUE);
         ClActor_SetVisible(work->filterButton, FALSE);
         if (ItemMenu_GetItemCount(work) <= 1) {
-            ClActor_SetSequence(work->sortButton, 4);
+            ClActor_SetSequence(work->sortButton, ITEMMENU_SORT_ANM_DISABLED);
         } else {
-            ClActor_SetSequence(work->sortButton, 0);
+            ClActor_SetSequence(work->sortButton, ITEMMENU_SORT_ANM_READY);
         }
     } else {
         ClActor_SetVisible(work->filterButton, TRUE);
         ClActor_SetVisible(work->sortButton, FALSE);
         if (ItemMenu_CountFilterActions(work) > 2) {
-            ClActor_SetSequence(work->filterButton, 0);
+            ClActor_SetSequence(work->filterButton, ITEMMENU_FILTER_ANM_READY);
         } else {
-            ClActor_SetSequence(work->filterButton, 2);
+            ClActor_SetSequence(work->filterButton, ITEMMENU_FILTER_ANM_DISABLED);
         }
     }
 }
@@ -1447,24 +1494,24 @@ void ItemMenuDisp_SetMoveButtons(ItemMenuWork *work, BOOL active) {
 
     if (active == TRUE) {
         ItemMenuDisp_UpdateSortButton(work);
-        ClActor_SetSequence(work->buttons[0], 4);
-        ClActor_SetSequence(work->buttons[1], 5);
-        ClActor_SetSequence(work->buttons[3], 0);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_LEFT], ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_RIGHT], ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_CLOSE], ITEMMENU_TOUCHBAR_ANM_CLOSE);
         if (registered == TRUE) {
-            ClActor_SetSequence(work->buttons[2], 7);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_ON);
         } else {
-            ClActor_SetSequence(work->buttons[2], 6);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF);
         }
     } else {
-        ClActor_SetSequence(work->sortButton, 4);
-        ClActor_SetSequence(work->filterButton, 2);
-        ClActor_SetSequence(work->buttons[0], 18);
-        ClActor_SetSequence(work->buttons[1], 19);
-        ClActor_SetSequence(work->buttons[3], 14);
+        ClActor_SetSequence(work->sortButton, ITEMMENU_SORT_ANM_DISABLED);
+        ClActor_SetSequence(work->filterButton, ITEMMENU_FILTER_ANM_DISABLED);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_LEFT], ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT_DISABLED);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_POCKET_RIGHT], ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT_DISABLED);
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_CLOSE], ITEMMENU_TOUCHBAR_ANM_CLOSE_DISABLED);
         if (registered == TRUE) {
-            ClActor_SetSequence(work->buttons[2], 22);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_ON_DISABLED);
         } else {
-            ClActor_SetSequence(work->buttons[2], 21);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER], ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF_DISABLED);
         }
     }
 }
