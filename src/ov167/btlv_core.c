@@ -899,7 +899,7 @@ BOOL BtlvCore_WaitItemSelect(BtlvCore *core) {
         }
         break;
     case 4:
-        if (core->ov286.item != 0 && core->ov286.pocket != 2 && !IsEscapeItem(core->ov286.item)) {
+        if (core->ov286.item != 0 && core->ov286.pocket != BBAG_POCKET_BALLS && !IsEscapeItem(core->ov286.item)) {
             core->ov287.item = core->ov286.item;
             GFL_OvlLoad(OVERLAY_ID(287));
             BPlistMain_Start(&core->ov287);

@@ -19,6 +19,11 @@ enum {
     ITEM_WORK_PARAMS,
 };
 
+// ITEM_PARAM_BATTLE_FUNC for items that end a wild battle
+enum {
+    ITEM_BATTLE_FUNC_ESCAPE = 3,
+};
+
 // The effects of an item used on a Pokémon
 typedef struct {
     u8 sleepHeal : 1;

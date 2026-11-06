@@ -3868,6 +3868,7 @@ overlays/ov284 0x021e587c reloc_addend 0x80
 overlays/ov284 0x021e7ad8 reloc_addend 0x380
 overlays/ov284 0x021e7f80 add_data SHINKA_DEMO_VIEW_UNK_774
 overlays/ov284 0x021e7ff4 add_data SHINKA_DEMO_EFFECT_UNK_FX32
+overlays/ov286 0x021f6d5f add_data data_ov286_021f6d5f
 overlays/ov286 0x021f721c remove_reloc
 overlays/ov288 0x021f6290 reloc_addend 2
 overlays/ov288 0x021f6c84 reloc_addend 6

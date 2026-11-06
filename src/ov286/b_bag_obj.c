@@ -5,6 +5,7 @@
 #include "battle/btlv_effect.h"
 #include "battle/btlv_finger_cursor.h"
 #include "constants/arc.h"
+#include "constants/items.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/clact.h"
@@ -18,6 +19,8 @@
 // The battle bag's OBJ resources and cell actors: the item icons, the Wonder Launcher's costs and energy gauges,
 // overlay 285's cursor and overlay 168's finger cursor of the catching demo. The file name is our guess, after the
 // ROM's b_bag_main.c and the b_bag_* files of Diamond and Pearl.
+
+#define BBAG_RESOURCE_NONE (-1)
 
 // How BBagObj_CreateActor creates each of the bag's actors, by index into the work's resources
 typedef struct {
@@ -49,25 +52,81 @@ static void BBagObj_ShowCost(BBagWork *wk, u16 actor, u8 cost, u8 spent, const C
 // Declared in the order that MWCC's sort by size lays out in address order (rodata_order.py)
 
 // The last used item on page 0
-static const ClActorPos data_ov286_021f6ec8 = { 0x24, 0xb4 };
+static const ClActorPos sBBagLastItemPos = { 0x24, 0xb4 };
 // The item's cost on page 2
-static const ClActorPos data_ov286_021f6ed0 = { 0xa8, 0x28 };
+static const ClActorPos sBBagChosenCostPos = { 0xa8, 0x28 };
 // The item on page 2
-static const ClActorPos data_ov286_021f6ecc = { 0x28, 0x2c };
+static const ClActorPos sBBagChosenItemPos = { 0x28, 0x2c };
 // Page 1: the items, then their costs, then the energy
-static const ClActorPos data_ov286_021f6ed4[13] = {
+static const ClActorPos sBBagItemListActorPositions[13] = {
     { 0x24, 0x2d }, { 0xa4, 0x2d }, { 0x24, 0x5d }, { 0xa4, 0x5d }, { 0x24, 0x8d }, { 0xa4, 0x8d }, { 0x34, 0x29 },
     { 0xb4, 0x29 }, { 0x34, 0x59 }, { 0xb4, 0x59 }, { 0x34, 0x89 }, { 0xb4, 0x89 }, { 0x64, 0xac },
 };
 
-static const BBagActorSetup data_ov286_021f6f08[BBAG_ACTOR_MAX] = {
-    { 0, 0, 0 }, { 1, 1, 0 }, { 2, 2, 0 }, { 3, 3, 0 }, { 4, 4, 0 }, { 5, 5, 0 }, { 6, 6, 0 }, { 7, 7, 1 }, { 7, 7, 1 },
-    { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 },
-    { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 },
-    { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 },
-    { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 },
-    { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 },
-    { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 }, { 7, 7, 1 },
+static const BBagActorSetup sBBagActorSetups[BBAG_ACTOR_MAX] = {
+    { 0, 0, BBAG_CELL_RES_ITEM },
+    { 1, 1, BBAG_CELL_RES_ITEM },
+    { 2, 2, BBAG_CELL_RES_ITEM },
+    { 3, 3, BBAG_CELL_RES_ITEM },
+    { 4, 4, BBAG_CELL_RES_ITEM },
+    { 5, 5, BBAG_CELL_RES_ITEM },
+    { BBAG_RES_SHOWN_ITEM, BBAG_RES_SHOWN_ITEM, BBAG_CELL_RES_ITEM },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
+    { BBAG_RES_GAUGE, BBAG_RES_GAUGE, BBAG_CELL_RES_GAUGE },
 };
 
 void BBagObj_Init(BBagWork *wk) {
@@ -85,13 +144,13 @@ static void BBagObj_ClearResources(BBagWork *wk) {
     u32 i;
 
     for (i = 0; i < NELEMS(wk->charRes); i++) {
-        wk->charRes[i] = -1;
+        wk->charRes[i] = BBAG_RESOURCE_NONE;
     }
     for (i = 0; i < NELEMS(wk->plttRes); i++) {
-        wk->plttRes[i] = -1;
+        wk->plttRes[i] = BBAG_RESOURCE_NONE;
     }
     for (i = 0; i < NELEMS(wk->cellRes); i++) {
-        wk->cellRes[i] = -1;
+        wk->cellRes[i] = BBAG_RESOURCE_NONE;
     }
 }
 
@@ -108,7 +167,7 @@ static void BBagObj_LoadItemIconRes(BBagWork *wk) {
         plttType = ITEM_FILE_LIST_ICON_PLTT;
     } else {
         charType = ITEM_FILE_ICON_CHAR;
-        item = 1;
+        item = ITEM_MASTER_BALL;
         plttType = ITEM_FILE_ICON_PLTT;
     }
     arc = GFL_ArcSysCreateFileHandle(PML_ItemGetIconArcID(), HEAPID_TAIL(wk->param->heapId));
@@ -118,7 +177,7 @@ static void BBagObj_LoadItemIconRes(BBagWork *wk) {
         wk->plttRes[i] =
             ClActSys_LoadPltt(arc, GetItemGraphicsDatID(item, plttType), CLACT_VRAM_SUB, i * 0x20, wk->param->heapId);
     }
-    wk->cellRes[0] =
+    wk->cellRes[BBAG_CELL_RES_ITEM] =
         ClActSys_LoadCellAnims(arc, PML_ItemGetIconCellDatID(), PML_ItemGetIconAnimDatID(), wk->param->heapId);
     GFL_ArcToolFree(arc);
 }
@@ -162,9 +221,9 @@ static void BBagObj_LoadItemIconPalette(BBagWork *wk, u16 item, u32 row) {
 static void BBagObj_LoadGaugeRes(BBagWork *wk) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_B_BAG, HEAPID_TAIL(wk->param->heapId));
 
-    wk->charRes[7] = ClActSys_LoadChars(arc, 14, TRUE, CLACT_VRAM_SUB, wk->param->heapId);
-    wk->plttRes[7] = ClActSys_LoadPltt(arc, 15, CLACT_VRAM_SUB, 0xe0, wk->param->heapId);
-    wk->cellRes[1] = ClActSys_LoadCellAnims(arc, 16, 17, wk->param->heapId);
+    wk->charRes[BBAG_RES_GAUGE] = ClActSys_LoadChars(arc, 14, TRUE, CLACT_VRAM_SUB, wk->param->heapId);
+    wk->plttRes[BBAG_RES_GAUGE] = ClActSys_LoadPltt(arc, 15, CLACT_VRAM_SUB, 0xe0, wk->param->heapId);
+    wk->cellRes[BBAG_CELL_RES_GAUGE] = ClActSys_LoadCellAnims(arc, 16, 17, wk->param->heapId);
     PaletteFade_LoadArcNCLR(wk->paletteFade, arc, 15, wk->param->heapId, PALFADE_BUFFER_SUB_OBJ, 0x20, 0x70);
     GFL_ArcToolFree(arc);
 }
@@ -174,9 +233,9 @@ static void BBagObj_LoadCursorRes(BBagWork *wk) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_BTLV, HEAPID_TAIL(wk->param->heapId));
     void *file;
 
-    wk->charRes[8] = ClActSys_LoadChars(arc, 424, FALSE, CLACT_VRAM_SUB, wk->param->heapId);
-    wk->plttRes[8] = ClActSys_LoadPlttRange(arc, 421, CLACT_VRAM_SUB, 0x100, 4, 1, wk->param->heapId);
-    wk->cellRes[2] = ClActSys_LoadCellAnims(arc, 425, 426, wk->param->heapId);
+    wk->charRes[BBAG_RES_CURSOR] = ClActSys_LoadChars(arc, 424, FALSE, CLACT_VRAM_SUB, wk->param->heapId);
+    wk->plttRes[BBAG_RES_CURSOR] = ClActSys_LoadPlttRange(arc, 421, CLACT_VRAM_SUB, 0x100, 4, 1, wk->param->heapId);
+    wk->cellRes[BBAG_CELL_RES_CURSOR] = ClActSys_LoadCellAnims(arc, 425, 426, wk->param->heapId);
     file = GFL_G2DIOReadNCLRArc(arc, 421, &palette, HEAPID_TAIL(wk->param->heapId));
     PaletteFade_LoadData(wk->paletteFade, (u16 *)palette->pRawData + 4 * 16, PALFADE_BUFFER_SUB_OBJ, 0x80, 0x20);
     GFL_HeapFree(file);
@@ -200,7 +259,7 @@ static void BBagObj_CreateActors(BBagWork *wk) {
 
     wk->actorUnit = ClActUnit_Create(BBAG_ACTOR_MAX + 4, 0, wk->param->heapId);
     for (i = 0; i < NELEMS(wk->actors); i++) {
-        wk->actors[i] = BBagObj_CreateActor(wk, &data_ov286_021f6f08[i]);
+        wk->actors[i] = BBagObj_CreateActor(wk, &sBBagActorSetups[i]);
     }
 }
 
@@ -213,17 +272,17 @@ void BBagObj_Exit(BBagWork *wk) {
     }
     BBagObj_ExitCursor(wk);
     for (i = 0; i < NELEMS(wk->charRes); i++) {
-        if (wk->charRes[i] != -1) {
+        if (wk->charRes[i] != BBAG_RESOURCE_NONE) {
             ClActSys_FreeChars(wk->charRes[i]);
         }
     }
     for (i = 0; i < NELEMS(wk->plttRes); i++) {
-        if (wk->plttRes[i] != -1) {
+        if (wk->plttRes[i] != BBAG_RESOURCE_NONE) {
             ClActSys_FreePltt(wk->plttRes[i]);
         }
     }
     for (i = 0; i < NELEMS(wk->cellRes); i++) {
-        if (wk->cellRes[i] != -1) {
+        if (wk->cellRes[i] != BBAG_RESOURCE_NONE) {
             ClActSys_FreeCellAnims(wk->cellRes[i]);
         }
     }
@@ -243,22 +302,22 @@ void BBagObj_SetPage(BBagWork *wk, u8 page) {
     }
     BBagObj_HideFingerCursor(wk);
     switch (page) {
-    case 0:
+    case BBAG_PAGE_POCKETS:
         BBagObj_ShowPockets(wk);
         break;
-    case 1:
+    case BBAG_PAGE_ITEMS:
         BBagObj_ShowItemList(wk);
         break;
-    case 2:
+    case BBAG_PAGE_USE:
         BBagObj_ShowItem(wk);
         break;
     }
 }
 
 static void BBagObj_ShowPockets(BBagWork *wk) {
-    if (wk->lastItem != 0) {
-        BBagObj_LoadItemIcon(wk, wk->lastItem, 6, 6);
-        BBagObj_ShowAt(wk->actors[BBAG_ACTOR_SHOWN_ITEM], &data_ov286_021f6ec8);
+    if (wk->lastItem != ITEM_NONE) {
+        BBagObj_LoadItemIcon(wk, wk->lastItem, BBAG_RES_SHOWN_ITEM, BBAG_RES_SHOWN_ITEM);
+        BBagObj_ShowAt(wk->actors[BBAG_ACTOR_SHOWN_ITEM], &sBBagLastItemPos);
     }
     if (wk->param->mode == BBAG_MODE_CAPTURE_DEMO) {
         BBagObj_ShowFingerCursor(wk, 192, 24);
@@ -273,16 +332,16 @@ static void BBagObj_ShowItemList(BBagWork *wk) {
         if (item != 0) {
             BBagObj_LoadItemIcon(wk, item, i, i);
             BBagObj_LoadItemIconPalette(wk, item, i);
-            BBagObj_ShowAt(wk->actors[BBAG_ACTOR_ITEM + i], &data_ov286_021f6ed4[i]);
+            BBagObj_ShowAt(wk->actors[BBAG_ACTOR_ITEM + i], &sBBagItemListActorPositions[i]);
             if (wk->param->mode == BBAG_MODE_SHOOTER) {
                 BBagObj_ShowCost(wk, BBAG_ACTOR_COST + i * 8, BBagItem_GetShooterCost(item), 0,
-                                 &data_ov286_021f6ed4[i + 6]);
+                                 &sBBagItemListActorPositions[i + 6]);
             }
         }
     }
     if (wk->param->mode == BBAG_MODE_SHOOTER) {
         BBagObj_ShowCost(wk, BBAG_ACTOR_ENERGY, wk->param->shooterEnergy, wk->param->shooterSpent,
-                         &data_ov286_021f6ed4[i + 6]);
+                         &sBBagItemListActorPositions[i + 6]);
     }
     if (wk->param->mode == BBAG_MODE_CAPTURE_DEMO) {
         BBagObj_ShowFingerCursor(wk, 64, 16);
@@ -292,10 +351,10 @@ static void BBagObj_ShowItemList(BBagWork *wk) {
 static void BBagObj_ShowItem(BBagWork *wk) {
     u16 item = BBagItem_GetSlotItem(wk, wk->param->rows[wk->pocket]);
 
-    BBagObj_LoadItemIcon(wk, item, 6, 6);
-    BBagObj_ShowAt(wk->actors[BBAG_ACTOR_SHOWN_ITEM], &data_ov286_021f6ecc);
+    BBagObj_LoadItemIcon(wk, item, BBAG_RES_SHOWN_ITEM, BBAG_RES_SHOWN_ITEM);
+    BBagObj_ShowAt(wk->actors[BBAG_ACTOR_SHOWN_ITEM], &sBBagChosenItemPos);
     if (wk->param->mode == BBAG_MODE_SHOOTER) {
-        BBagObj_ShowCost(wk, BBAG_ACTOR_COST, BBagItem_GetShooterCost(item), 0, &data_ov286_021f6ed0);
+        BBagObj_ShowCost(wk, BBAG_ACTOR_COST, BBagItem_GetShooterCost(item), 0, &sBBagChosenCostPos);
     }
     if (wk->param->mode == BBAG_MODE_CAPTURE_DEMO) {
         BBagObj_ShowFingerCursor(wk, 104, 152);
@@ -303,7 +362,8 @@ static void BBagObj_ShowItem(BBagWork *wk) {
 }
 
 static void BBagObj_InitCursor(BBagWork *wk) {
-    BAppCursor_CreateActors(wk->cursor, wk->actorUnit, wk->charRes[8], wk->plttRes[8], wk->cellRes[2]);
+    BAppCursor_CreateActors(wk->cursor, wk->actorUnit, wk->charRes[BBAG_RES_CURSOR], wk->plttRes[BBAG_RES_CURSOR],
+                            wk->cellRes[BBAG_CELL_RES_CURSOR]);
     BAppCursor_SetVisible(wk->cursor, FALSE);
 }
 
@@ -343,24 +403,24 @@ static void BBagObj_ShowCost(BBagWork *wk, u16 actor, u8 cost, u8 spent, const C
     for (i = 0; i < 7; i++) {
         if (c <= 0) {
             if (s <= 0) {
-                ClActor_SetSequence(wk->actors[actor], 15);
+                ClActor_SetSequence(wk->actors[actor], BBAG_GAUGE_ANM_EMPTY);
             } else if (s == 1) {
-                ClActor_SetSequence(wk->actors[actor], 19);
+                ClActor_SetSequence(wk->actors[actor], BBAG_GAUGE_ANM_SPENT_ONE);
                 s -= 1;
             } else {
-                ClActor_SetSequence(wk->actors[actor], 20);
+                ClActor_SetSequence(wk->actors[actor], BBAG_GAUGE_ANM_SPENT_TWO);
                 s -= 2;
             }
         } else if (c == 1) {
             if (s == 0) {
-                ClActor_SetSequence(wk->actors[actor], 16);
+                ClActor_SetSequence(wk->actors[actor], BBAG_GAUGE_ANM_UNSPENT_ONE);
             } else if (s > 0) {
-                ClActor_SetSequence(wk->actors[actor], 18);
+                ClActor_SetSequence(wk->actors[actor], BBAG_GAUGE_ANM_UNSPENT_ONE_SPENT_ONE);
                 s -= 1;
             }
             c -= 1;
         } else {
-            ClActor_SetSequence(wk->actors[actor], 17);
+            ClActor_SetSequence(wk->actors[actor], BBAG_GAUGE_ANM_UNSPENT_TWO);
             c -= 2;
         }
         BBagObj_ShowAt(wk->actors[actor], &p);

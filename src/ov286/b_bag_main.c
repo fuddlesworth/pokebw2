@@ -9,6 +9,7 @@
 #include "battle/btlv_effect.h"
 #include "battle/btlv_finger_cursor.h"
 #include "constants/arc.h"
+#include "constants/items.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "gfl/arc.h"
@@ -53,9 +54,9 @@ static int BBagMain_StateStepPage(BBagWork *work);
 static int BBagMain_StateWaitStepPage(BBagWork *work);
 static int BBagMain_StateUsePage(BBagWork *work);
 static int BBagMain_CheckUse(BBagWork *work);
-static int BBagMain_StateToPage0(BBagWork *work);
-static int BBagMain_StateToPage1(BBagWork *work);
-static int BBagMain_StateToPage2(BBagWork *work);
+static int BBagMain_StateToPocketPage(BBagWork *work);
+static int BBagMain_StateToItemPage(BBagWork *work);
+static int BBagMain_StateToUsePage(BBagWork *work);
 static int BBagMain_StateWaitPagePrint(BBagWork *work);
 static int BBagMain_StateCloseMessage(BBagWork *work);
 static int BBagMain_StatePrintMessage(BBagWork *work);
@@ -76,10 +77,10 @@ static BOOL BBagMain_CheckQuit(BBagWork *work);
 static void BBagMain_PlaySE(BBagWork *work, u32 se);
 static void BBagMain_PlayMessageSE(BBagWork *work, u32 se);
 
-static int (*const data_ov286_021f728c[])(BBagWork *work) = {
+static int (*const sBBagStateFuncs[])(BBagWork *work) = {
     BBagMain_StateInit,          BBagMain_StateInitLauncher, BBagMain_StateStartWipe,     BBagMain_StateWaitWipe,
-    BBagMain_StatePocketPage,    BBagMain_StateItemPage,     BBagMain_StateUsePage,       BBagMain_StateToPage0,
-    BBagMain_StateToPage1,       BBagMain_StateToPage2,      BBagMain_StateWaitPagePrint, BBagMain_StateStepPage,
+    BBagMain_StatePocketPage,    BBagMain_StateItemPage,     BBagMain_StateUsePage,       BBagMain_StateToPocketPage,
+    BBagMain_StateToItemPage,    BBagMain_StateToUsePage,    BBagMain_StateWaitPagePrint, BBagMain_StateStepPage,
     BBagMain_StateWaitStepPage,  BBagMain_StateCloseMessage, BBagMain_StatePrintMessage,  BBagMain_StateWaitMessageKey,
     BBagMain_StateWaitButtonAnm, BBagMain_StateDemo,         BBagMain_StateStartExit,     BBagMain_StateWaitFadeOut,
 };
@@ -93,17 +94,17 @@ void BBagMain_Start(BBagParam *param) {
     work->paletteFade = BtlvEffect_GetPaletteFade();
     work->initialized = FALSE;
     if (work->param->mode == BBAG_MODE_SHOOTER) {
-        work->page = 1;
-        work->seq = 1;
-        work->pocket = 0;
+        work->page = BBAG_PAGE_ITEMS;
+        work->seq = BBAG_STATE_INIT_LAUNCHER;
+        work->pocket = BBAG_POCKET_SHOOTER;
     } else if (work->param->mode == BBAG_MODE_BALLS) {
-        work->page = 1;
-        work->seq = 0;
-        work->pocket = 2;
+        work->page = BBAG_PAGE_ITEMS;
+        work->seq = BBAG_STATE_INIT;
+        work->pocket = BBAG_POCKET_BALLS;
     } else {
-        work->page = 0;
-        work->seq = 0;
-        work->pocket = 0;
+        work->page = BBAG_PAGE_POCKETS;
+        work->seq = BBAG_STATE_INIT;
+        work->pocket = BBAG_POCKET_HP_PP;
     }
     if (work->param->mode != BBAG_MODE_SHOOTER) {
         for (i = 0; i < 4; i++) {
@@ -124,14 +125,14 @@ static void BBagMain_Task(TCB *tcb, void *data) {
     BBagWork *work = data;
 
     if (work->param->abort == 1) {
-        work->param->item = 0;
+        work->param->item = ITEM_NONE;
         work->param->cost = 0;
-        work->seq = 20;
+        work->seq = BBAG_STATE_EXIT;
     }
-    if (work->seq != 20) {
-        work->seq = data_ov286_021f728c[work->seq](work);
+    if (work->seq != BBAG_STATE_EXIT) {
+        work->seq = sBBagStateFuncs[work->seq](work);
     }
-    if (work->seq == 20 && BBagMain_Exit(tcb, work) == TRUE) {
+    if (work->seq == BBAG_STATE_EXIT && BBagMain_Exit(tcb, work) == TRUE) {
         return;
     }
     GFL_TCBExMgrUpdate(work->tcbExMgr);
@@ -166,7 +167,7 @@ static int BBagMain_StateInit(BBagWork *work) {
         work->cursorVisible = FALSE;
     }
     BAppCursor_SetVisible(work->cursor, work->cursorVisible);
-    if (work->page == 0) {
+    if (work->page == BBAG_PAGE_POCKETS) {
         BBagUi_CreateCursor(work, work->page, work->lastPocket);
     } else {
         BBagUi_CreateCursor(work, work->page, 0);
@@ -178,7 +179,7 @@ static int BBagMain_StateInit(BBagWork *work) {
         BBagMain_ScrollPage(work, work->page);
     }
     work->initialized = TRUE;
-    return 2;
+    return BBAG_STATE_START_WIPE;
 }
 
 static int BBagMain_StateInitLauncher(BBagWork *work) {
@@ -209,31 +210,31 @@ static int BBagMain_StateInitLauncher(BBagWork *work) {
     PaletteFade_LoadFromVRAM(work->paletteFade, PALFADE_VRAM_SUB_OBJ, 0xe0, 0x20);
     PaletteFade_StartFade(work->paletteFade, 0xa, 0xffff, 0, 16, 0, 0, BtlvEffect_GetTCBManager());
     work->initialized = TRUE;
-    return 2;
+    return BBAG_STATE_START_WIPE;
 }
 
 static int BBagMain_StateStartWipe(BBagWork *work) {
     if (PrintQueue_IsEmpty(work->printQueue) == TRUE) {
         GFL_WipeSet(WIPE_MODE_SUB, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, work->param->heapId);
-        return 3;
+        return BBAG_STATE_WAIT_WIPE;
     }
-    return 2;
+    return BBAG_STATE_START_WIPE;
 }
 
 static int BBagMain_StateWaitWipe(BBagWork *work) {
     if (GFL_WipeIsFinished() == TRUE) {
         if (work->param->mode == BBAG_MODE_CAPTURE_DEMO) {
-            return 0x11;
+            return BBAG_STATE_DEMO;
         }
         if (work->param->mode == BBAG_MODE_SHOOTER) {
-            return 5;
+            return BBAG_STATE_ITEM_PAGE;
         }
         if (work->param->mode == BBAG_MODE_BALLS) {
-            return 5;
+            return BBAG_STATE_ITEM_PAGE;
         }
-        return 4;
+        return BBAG_STATE_POCKET_PAGE;
     }
-    return 3;
+    return BBAG_STATE_WAIT_WIPE;
 }
 
 static int BBagMain_StatePocketPage(BBagWork *work) {
@@ -241,41 +242,41 @@ static int BBagMain_StatePocketPage(BBagWork *work) {
 
     if (PaletteFade_GetActiveMask(work->paletteFade) == 0) {
         if (BBagMain_CheckQuit(work) == TRUE) {
-            return 0x12;
+            return BBAG_STATE_START_EXIT;
         }
         ret = CursorMove_Update(work->cursorMove);
         switch (ret) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
+        case BBAG_POCKET_HP_PP:
+        case BBAG_POCKET_STATUS:
+        case BBAG_POCKET_BALLS:
+        case BBAG_POCKET_BATTLE_ITEMS:
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
             work->pocket = ret;
-            work->nextSeq = 8;
+            work->nextSeq = BBAG_STATE_TO_ITEM_PAGE;
             BBagAnm_StartButtonAnm(work, ret);
-            return 0x10;
-        case 4:
-            if (work->lastItem == 0) {
+            return BBAG_STATE_WAIT_BUTTON_ANM;
+        case BBAG_UI_POCKET_LAST_ITEM:
+            if (work->lastItem == ITEM_NONE) {
                 break;
             }
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
             work->pocket = work->lastPocket;
-            work->nextSeq = 9;
+            work->nextSeq = BBAG_STATE_TO_USE_PAGE;
             BBagItem_SetCursorToLastItem(work);
-            BBagAnm_StartButtonAnm(work, 13);
-            return 0x10;
-        case 5:
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_ACTION);
+            return BBAG_STATE_WAIT_BUTTON_ANM;
+        case BBAG_UI_POCKET_CANCEL:
             BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
-            work->param->item = 0;
-            work->param->pocket = 4;
-            BBagAnm_StartButtonAnm(work, 10);
-            return 0x12;
+            work->param->item = ITEM_NONE;
+            work->param->pocket = BBAG_POCKET_NONE;
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_BACK);
+            return BBAG_STATE_START_EXIT;
         case CURSOR_MOVE_CANCEL:
             BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
-            work->param->item = 0;
-            work->param->pocket = 4;
-            BBagAnm_StartButtonAnm(work, 10);
-            return 0x12;
+            work->param->item = ITEM_NONE;
+            work->param->pocket = BBAG_POCKET_NONE;
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_BACK);
+            return BBAG_STATE_START_EXIT;
         case CURSOR_MOVE_MOVED:
         case CURSOR_MOVE_CURSOR_ON:
             BBagMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -288,7 +289,7 @@ static int BBagMain_StatePocketPage(BBagWork *work) {
             break;
         }
     }
-    return 4;
+    return BBAG_STATE_POCKET_PAGE;
 }
 
 static int BBagMain_StateItemPage(BBagWork *work) {
@@ -296,7 +297,7 @@ static int BBagMain_StateItemPage(BBagWork *work) {
 
     if (PaletteFade_GetActiveMask(work->paletteFade) == 0) {
         if (BBagMain_CheckQuit(work) == TRUE) {
-            return 0x12;
+            return BBAG_STATE_START_EXIT;
         }
         ret = CursorMove_Update(work->cursorMove);
         switch (ret) {
@@ -306,54 +307,54 @@ static int BBagMain_StateItemPage(BBagWork *work) {
         case 3:
         case 4:
         case 5:
-            if (BBagItem_GetSlotItem(work, ret) == 0) {
+            if (BBagItem_GetSlotItem(work, ret) == ITEM_NONE) {
                 break;
             }
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
             work->param->rows[work->pocket] = (u8)ret;
-            work->nextSeq = 9;
-            BBagAnm_StartButtonAnm(work, ret + 4);
-            return 0x10;
-        case 6:
+            work->nextSeq = BBAG_STATE_TO_USE_PAGE;
+            BBagAnm_StartButtonAnm(work, ret + BBAG_BUTTON_ITEM);
+            return BBAG_STATE_WAIT_BUTTON_ANM;
+        case BBAG_UI_ITEM_CANCEL:
             BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
-            BBagAnm_StartButtonAnm(work, 10);
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_BACK);
             if (work->param->mode == BBAG_MODE_SHOOTER || work->param->mode == BBAG_MODE_BALLS) {
-                work->param->item = 0;
-                work->param->pocket = 4;
-                return 0x12;
+                work->param->item = ITEM_NONE;
+                work->param->pocket = BBAG_POCKET_NONE;
+                return BBAG_STATE_START_EXIT;
             }
-            work->nextSeq = 7;
-            return 0x10;
+            work->nextSeq = BBAG_STATE_TO_POCKET_PAGE;
+            return BBAG_STATE_WAIT_BUTTON_ANM;
         case CURSOR_MOVE_CANCEL:
             BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
-            BBagAnm_StartButtonAnm(work, 10);
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_BACK);
             if (work->param->mode == BBAG_MODE_SHOOTER || work->param->mode == BBAG_MODE_BALLS) {
-                work->param->item = 0;
-                work->param->pocket = 4;
-                return 0x12;
+                work->param->item = ITEM_NONE;
+                work->param->pocket = BBAG_POCKET_NONE;
+                return BBAG_STATE_START_EXIT;
             }
-            work->nextSeq = 7;
-            return 0x10;
-        case 7:
+            work->nextSeq = BBAG_STATE_TO_POCKET_PAGE;
+            return BBAG_STATE_WAIT_BUTTON_ANM;
+        case BBAG_UI_ITEM_PREV_PAGE:
             if (work->lastPage[work->pocket] == 0) {
                 break;
             }
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
             work->param->rows[work->pocket] = 0;
-            work->nextSeq = 0xb;
+            work->nextSeq = BBAG_STATE_STEP_PAGE;
             work->pageStep = -1;
-            BBagAnm_StartButtonAnm(work, 11);
-            return 0x10;
-        case 8:
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_PREV_PAGE);
+            return BBAG_STATE_WAIT_BUTTON_ANM;
+        case BBAG_UI_ITEM_NEXT_PAGE:
             if (work->lastPage[work->pocket] == 0) {
                 break;
             }
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
             work->param->rows[work->pocket] = 0;
-            work->nextSeq = 0xb;
+            work->nextSeq = BBAG_STATE_STEP_PAGE;
             work->pageStep = 1;
-            BBagAnm_StartButtonAnm(work, 12);
-            return 0x10;
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_NEXT_PAGE);
+            return BBAG_STATE_WAIT_BUTTON_ANM;
         case CURSOR_MOVE_MOVED:
         case CURSOR_MOVE_CURSOR_ON:
             BBagMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -364,27 +365,27 @@ static int BBagMain_StateItemPage(BBagWork *work) {
                 break;
             }
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
-            work->nextSeq = 0xb;
+            work->nextSeq = BBAG_STATE_STEP_PAGE;
             work->pageStep = -1;
-            BBagAnm_StartButtonAnm(work, 11);
-            return 0x10;
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_PREV_PAGE);
+            return BBAG_STATE_WAIT_BUTTON_ANM;
         case CURSOR_MOVE_EDGE_RIGHT:
             CursorMove_GetPos(work->cursorMove); // unused
             if (work->lastPage[work->pocket] == 0) {
                 break;
             }
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
-            work->nextSeq = 0xb;
+            work->nextSeq = BBAG_STATE_STEP_PAGE;
             work->pageStep = 1;
-            BBagAnm_StartButtonAnm(work, 12);
-            return 0x10;
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_NEXT_PAGE);
+            return BBAG_STATE_WAIT_BUTTON_ANM;
         case CURSOR_MOVE_NONE:
         case CURSOR_MOVE_EDGE_DOWN:
         case CURSOR_MOVE_EDGE_UP:
             break;
         }
     }
-    return 5;
+    return BBAG_STATE_ITEM_PAGE;
 }
 
 static int BBagMain_StateStepPage(BBagWork *work) {
@@ -400,7 +401,7 @@ static int BBagMain_StateStepPage(BBagWork *work) {
     }
     BBagBmp_DrawSlots(work);
     BBagBmp_PrintPageNumber(work);
-    return 0xc;
+    return BBAG_STATE_WAIT_STEP_PAGE;
 }
 
 static int BBagMain_StateWaitStepPage(BBagWork *work) {
@@ -408,17 +409,17 @@ static int BBagMain_StateWaitStepPage(BBagWork *work) {
         BBagBmp_TransferPage(work);
         BBagObj_SetPage(work, work->page);
         BBagAnm_PutPageButtons(work, work->page);
-        return 5;
+        return BBAG_STATE_ITEM_PAGE;
     }
-    return 0xc;
+    return BBAG_STATE_WAIT_STEP_PAGE;
 }
 
 static int BBagMain_StateUsePage(BBagWork *work) {
     if (BBagMain_CheckQuit(work) == TRUE) {
-        return 0x12;
+        return BBAG_STATE_START_EXIT;
     }
     switch (CursorMove_Update(work->cursorMove)) {
-    case 0:
+    case BBAG_UI_USE_ITEM:
         BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
         work->param->item = BBagItem_GetSlotItem(work, work->param->rows[work->pocket]);
         work->param->pocket = work->pocket;
@@ -427,18 +428,18 @@ static int BBagMain_StateUsePage(BBagWork *work) {
         } else {
             work->param->cost = 0;
         }
-        BBagAnm_StartButtonAnm(work, 13);
+        BBagAnm_StartButtonAnm(work, BBAG_BUTTON_ACTION);
         return BBagMain_CheckUse(work);
-    case 1:
+    case BBAG_UI_USE_CANCEL:
         BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
-        work->nextSeq = 8;
-        BBagAnm_StartButtonAnm(work, 10);
-        return 0x10;
+        work->nextSeq = BBAG_STATE_TO_ITEM_PAGE;
+        BBagAnm_StartButtonAnm(work, BBAG_BUTTON_BACK);
+        return BBAG_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_CANCEL:
         BBagMain_PlaySE(work, SEQ_SE_CANCEL2);
-        work->nextSeq = 8;
-        BBagAnm_StartButtonAnm(work, 10);
-        return 0x10;
+        work->nextSeq = BBAG_STATE_TO_ITEM_PAGE;
+        BBagAnm_StartButtonAnm(work, BBAG_BUTTON_BACK);
+        return BBAG_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BBagMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -450,7 +451,7 @@ static int BBagMain_StateUsePage(BBagWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 6;
+    return BBAG_STATE_USE_PAGE;
 }
 
 // The refusals of USE: the Launcher's energy, why a Poké Ball can't be thrown, and an escape item outside a wild
@@ -461,69 +462,70 @@ static int BBagMain_CheckUse(BBagWork *work) {
     if (param->mode == BBAG_MODE_SHOOTER && param->shooterEnergy < BBagItem_GetShooterCost(param->item)) {
         GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNotChargedEnough, work->strBuf);
         BBagBmp_OpenMessage(work);
-        work->nextSeq = 0xd;
-        return 0xe;
+        work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
+        return BBAG_STATE_PRINT_MESSAGE;
     }
-    if (work->pocket == 2) {
+    if (work->pocket == BBAG_POCKET_BALLS) {
         if (param->ballError == BBAG_BALL_BOXES_FULL) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ThereNoRoomLeft, work->strBuf);
             BBagBmp_OpenMessage(work);
-            work->nextSeq = 0xd;
-            return 0xe;
+            work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
+            return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_TWO_TARGETS) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNoGoodIts, work->strBuf);
             BBagBmp_OpenMessage(work);
-            work->nextSeq = 0xd;
-            return 0xe;
+            work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
+            return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_NOT_FOCUSED) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsImpossibleAimWithout, work->strBuf);
             BBagBmp_OpenMessage(work);
-            work->nextSeq = 0xd;
-            return 0xe;
+            work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
+            return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_HIDDEN) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNoGoodIts_2, work->strBuf);
             BBagBmp_OpenMessage(work);
-            work->nextSeq = 0xd;
-            return 0xe;
+            work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
+            return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_BLOCKED) {
             GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsImpossibleUsePoke, work->strBuf);
             BBagBmp_OpenMessage(work);
-            work->nextSeq = 0xd;
-            return 0xe;
+            work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
+            return BBAG_STATE_PRINT_MESSAGE;
         }
     }
-    if (param->isWild == FALSE && GetItemParam(param->item, ITEM_PARAM_BATTLE_FUNC, param->heapId) == 3) {
+    if (param->isWild == FALSE &&
+        GetItemParam(param->item, ITEM_PARAM_BATTLE_FUNC, param->heapId) == ITEM_BATTLE_FUNC_ESCAPE) {
         GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_JunipersWordsEchoedTheres, work->strBuf);
         BBagBmp_OpenMessage(work);
-        work->nextSeq = 0xd;
-        return 0xe;
+        work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
+        return BBAG_STATE_PRINT_MESSAGE;
     }
-    return 0x12;
+    return BBAG_STATE_START_EXIT;
 }
 
-static int BBagMain_StateToPage0(BBagWork *work) {
-    BBagBmp_DrawPage(work, 0);
-    work->page = 0;
-    work->nextSeq = 4;
-    return 0xa;
+static int BBagMain_StateToPocketPage(BBagWork *work) {
+    BBagBmp_DrawPage(work, BBAG_PAGE_POCKETS);
+    work->page = BBAG_PAGE_POCKETS;
+    work->nextSeq = BBAG_STATE_POCKET_PAGE;
+    return BBAG_STATE_WAIT_PAGE_PRINT;
 }
 
-static int BBagMain_StateToPage1(BBagWork *work) {
-    BBagBmp_DrawPage(work, 1);
-    work->page = 1;
-    work->nextSeq = 5;
-    return 0xa;
+static int BBagMain_StateToItemPage(BBagWork *work) {
+    BBagBmp_DrawPage(work, BBAG_PAGE_ITEMS);
+    work->page = BBAG_PAGE_ITEMS;
+    work->nextSeq = BBAG_STATE_ITEM_PAGE;
+    return BBAG_STATE_WAIT_PAGE_PRINT;
 }
 
-static int BBagMain_StateToPage2(BBagWork *work) {
-    BBagBmp_DrawPage(work, 2);
-    work->page = 2;
-    work->nextSeq = 6;
-    return 0xa;
+static int BBagMain_StateToUsePage(BBagWork *work) {
+    BBagBmp_DrawPage(work, BBAG_PAGE_USE);
+    work->page = BBAG_PAGE_USE;
+    work->nextSeq = BBAG_STATE_USE_PAGE;
+    return BBAG_STATE_WAIT_PAGE_PRINT;
 }
 
 static int BBagMain_StateWaitPagePrint(BBagWork *work) {
@@ -531,12 +533,12 @@ static int BBagMain_StateWaitPagePrint(BBagWork *work) {
         BBagMain_ChangePage(work, work->page);
         return work->nextSeq;
     }
-    return 0xa;
+    return BBAG_STATE_WAIT_PAGE_PRINT;
 }
 
 static int BBagMain_StateCloseMessage(BBagWork *work) {
     BmpWin_ClearFrame(work->msgWin, 0);
-    return 6;
+    return BBAG_STATE_USE_PAGE;
 }
 
 static int BBagMain_StatePrintMessage(BBagWork *work) {
@@ -559,38 +561,38 @@ static int BBagMain_StatePrintMessage(BBagWork *work) {
         PrintStream_Delete(work->printStream);
         work->printStream = NULL;
         work->streamAdvanced = FALSE;
-        return 0xf;
+        return BBAG_STATE_WAIT_MESSAGE_KEY;
     }
-    return 0xe;
+    return BBAG_STATE_PRINT_MESSAGE;
 }
 
 static int BBagMain_StateWaitMessageKey(BBagWork *work) {
     if (BBagMain_CheckQuit(work) == TRUE) {
-        return 0x12;
+        return BBAG_STATE_START_EXIT;
     }
     if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed() == TRUE) {
         return work->nextSeq;
     }
-    return 0xf;
+    return BBAG_STATE_WAIT_MESSAGE_KEY;
 }
 
 static int BBagMain_StateWaitButtonAnm(BBagWork *work) {
     if (work->animActive == FALSE) {
         return work->nextSeq;
     }
-    return 0x10;
+    return BBAG_STATE_WAIT_BUTTON_ANM;
 }
 
 static int BBagMain_StateStartExit(BBagWork *work) {
     PaletteFade_StartFade(work->paletteFade, 0xa, 0xffff, 0, 0, 16, 0, BtlvEffect_GetTCBManager());
-    return 0x13;
+    return BBAG_STATE_WAIT_FADE_OUT;
 }
 
 static int BBagMain_StateWaitFadeOut(BBagWork *work) {
     if (PaletteFade_GetActiveMask(work->paletteFade) == 0) {
-        return 20;
+        return BBAG_STATE_EXIT;
     }
-    return 0x13;
+    return BBAG_STATE_WAIT_FADE_OUT;
 }
 
 static BOOL BBagMain_Exit(TCB *tcb, BBagWork *work) {
@@ -634,59 +636,59 @@ static BOOL BBagMain_Exit(TCB *tcb, BBagWork *work) {
 
 static int BBagMain_StateDemo(BBagWork *work) {
     switch (work->demoSeq) {
-    case 0:
+    case BBAG_DEMO_WAIT_POCKET_TOUCH:
         if (BtlvFingerCursor_IsTouched(work->fingerCursor) == TRUE) {
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
-            work->pocket = 2;
-            work->nextSeq = 0x11;
-            BBagAnm_StartButtonAnm(work, 2);
+            work->pocket = BBAG_POCKET_BALLS;
+            work->nextSeq = BBAG_STATE_DEMO;
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_POCKET_BALLS);
             work->demoSeq++;
-            return 0x10;
+            return BBAG_STATE_WAIT_BUTTON_ANM;
         }
         break;
-    case 1:
+    case BBAG_DEMO_WAIT_POCKET_RELEASE:
         if (BtlvFingerCursor_IsTouched(work->fingerCursor) == FALSE) {
-            BBagMain_StateToPage1(work);
+            BBagMain_StateToItemPage(work);
             work->demoSeq++;
-            work->nextSeq = 0x11;
-            return 0xa;
+            work->nextSeq = BBAG_STATE_DEMO;
+            return BBAG_STATE_WAIT_PAGE_PRINT;
         }
         break;
-    case 2:
+    case BBAG_DEMO_WAIT_ITEM_TOUCH:
         if (BtlvFingerCursor_IsTouched(work->fingerCursor) == TRUE) {
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
             work->param->rows[work->pocket] = 0;
-            work->nextSeq = 0x11;
-            BBagAnm_StartButtonAnm(work, 4);
+            work->nextSeq = BBAG_STATE_DEMO;
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_ITEM);
             work->demoSeq++;
-            return 0x10;
+            return BBAG_STATE_WAIT_BUTTON_ANM;
         }
         break;
-    case 3:
+    case BBAG_DEMO_WAIT_ITEM_RELEASE:
         if (BtlvFingerCursor_IsTouched(work->fingerCursor) == FALSE) {
-            BBagMain_StateToPage2(work);
+            BBagMain_StateToUsePage(work);
             work->demoSeq++;
-            work->nextSeq = 0x11;
-            return 0xa;
+            work->nextSeq = BBAG_STATE_DEMO;
+            return BBAG_STATE_WAIT_PAGE_PRINT;
         }
         break;
-    case 4:
+    case BBAG_DEMO_WAIT_USE_TOUCH:
         if (BtlvFingerCursor_IsTouched(work->fingerCursor) == TRUE) {
             BBagMain_PlaySE(work, SEQ_SE_DECIDE2);
             work->param->item = BBagItem_GetSlotItem(work, work->param->rows[work->pocket]);
             work->param->pocket = work->pocket;
             work->param->cost = 0;
-            BBagAnm_StartButtonAnm(work, 13);
+            BBagAnm_StartButtonAnm(work, BBAG_BUTTON_ACTION);
             work->demoSeq++;
         }
         break;
-    case 5:
+    case BBAG_DEMO_WAIT_USE_RELEASE:
         if (BtlvFingerCursor_IsTouched(work->fingerCursor) == FALSE) {
             return BBagMain_CheckUse(work);
         }
         break;
     }
-    return 0x11;
+    return BBAG_STATE_DEMO;
 }
 
 static void BBagMain_InitBG(BBagWork *work) {
@@ -822,15 +824,15 @@ static void BBagMain_ExitText(BBagWork *work) {
 
 static void BBagMain_ScrollPage(BBagWork *work, u8 page) {
     switch (page) {
-    case 0:
+    case BBAG_PAGE_POCKETS:
         GFL_BGSysMoveBGReq(6, BG_MOVE_SET_X, 0);
         GFL_BGSysMoveBGReq(6, BG_MOVE_SET_Y, 0);
         break;
-    case 1:
+    case BBAG_PAGE_ITEMS:
         GFL_BGSysMoveBGReq(6, BG_MOVE_SET_X, 0x100);
         GFL_BGSysMoveBGReq(6, BG_MOVE_SET_Y, 0);
         break;
-    case 2:
+    case BBAG_PAGE_USE:
         GFL_BGSysMoveBGReq(6, BG_MOVE_SET_X, 0);
         GFL_BGSysMoveBGReq(6, BG_MOVE_SET_Y, 0x100);
         break;
@@ -849,7 +851,7 @@ static void BBagMain_ChangePage(BBagWork *work, u8 page) {
 
 static BOOL BBagMain_CheckQuit(BBagWork *work) {
     if (work->param->quit == 1) {
-        work->param->item = 0;
+        work->param->item = ITEM_NONE;
         work->param->cost = 0;
         return TRUE;
     }

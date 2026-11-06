@@ -11,18 +11,19 @@
 // demo's Poké Balls, the last used item, and the item in a slot of the shown page
 
 // The bag pockets the battle pockets are filled from: Items, Medicine and Berries
-static const u8 data_ov286_021f6e88[3] = { BAG_POCKET_ITEMS, BAG_POCKET_MEDICINE, BAG_POCKET_BERRIES };
+static const u8 sBBagSourcePockets[3] = { BAG_POCKET_ITEMS, BAG_POCKET_MEDICINE, BAG_POCKET_BERRIES };
 // The battle pocket of each bit of an item's byte in archive 228
-static const u8 data_ov286_021f6e8b[4] = { 2, 3, 0, 1 };
+static const u8 sBBagPocketsByItemBit[4] = { BBAG_POCKET_BALLS, BBAG_POCKET_BATTLE_ITEMS, BBAG_POCKET_HP_PP,
+                                             BBAG_POCKET_STATUS };
 
 // Clears the last used item when the bag no longer holds it
 BOOL BBagItem_CheckLastItem(BBagWork *work) {
-    if (work->lastItem == 0) {
+    if (work->lastItem == ITEM_NONE) {
         return FALSE;
     }
     if (BagSave_CheckAmount(work->param->bag, work->lastItem, 1, work->param->heapId) == FALSE) {
-        work->lastItem = 0;
-        work->lastPocket = 0;
+        work->lastItem = ITEM_NONE;
+        work->lastPocket = BBAG_POCKET_HP_PP;
         return FALSE;
     }
     return TRUE;
@@ -32,10 +33,10 @@ BOOL BBagItem_CheckLastItem(BBagWork *work) {
 void BBagItem_SetCursorToLastItem(BBagWork *work) {
     u32 i;
 
-    for (i = 0; i < 36; i++) {
+    for (i = 0; i < BBAG_ITEMS_PER_POCKET; i++) {
         if (work->lastItem == work->items[work->pocket][i].item) {
-            work->param->rows[work->pocket] = i % 6;
-            work->param->pages[work->pocket] = i / 6;
+            work->param->rows[work->pocket] = i % BBAG_ITEMS_PER_PAGE;
+            work->param->pages[work->pocket] = i / BBAG_ITEMS_PER_PAGE;
             return;
         }
     }
@@ -52,17 +53,17 @@ void BBagItem_MakePocketLists(BBagWork *work) {
     pockets = GFL_ArcSysReadHeapNew(ARCID_B_BAG_ITEM, 0, work->param->heapId);
     for (i = 0; i < 3; i++) {
         for (j = 0;; j++) {
-            slot = BagSave_GetItemIndexHandle(work->param->bag, data_ov286_021f6e88[i], j);
+            slot = BagSave_GetItemIndexHandle(work->param->bag, sBBagSourcePockets[i], j);
             if (slot == NULL) {
                 break;
             }
-            if (slot->item == 0 || slot->count == 0) {
+            if (slot->item == ITEM_NONE || slot->count == 0) {
                 continue;
             }
             bits = pockets[slot->item];
             for (k = 0; k < 4; k++) {
                 if (bits & (1 << k)) {
-                    pocket = data_ov286_021f6e8b[k];
+                    pocket = sBBagPocketsByItemBit[k];
                     work->items[pocket][work->itemCount[pocket]] = *slot;
                     work->itemCount[pocket]++;
                 }
@@ -75,7 +76,7 @@ void BBagItem_MakePocketLists(BBagWork *work) {
         if (work->itemCount[i] == 0) {
             work->lastPage[i] = 0;
         } else {
-            work->lastPage[i] = (work->itemCount[i] - 1) / 6;
+            work->lastPage[i] = (work->itemCount[i] - 1) / BBAG_ITEMS_PER_PAGE;
         }
         if (work->lastPage[i] < work->param->pages[i]) {
             work->param->pages[i] = work->lastPage[i];
@@ -89,28 +90,28 @@ void BBagItem_MakeShooterList(BBagWork *work) {
 
     for (i = 0; i < SHOOTER_ITEM_COUNT; i++) {
         if (ShooterItem_IsEnabled(work->param->shooterDisabled, i) == TRUE) {
-            work->items[0][work->itemCount[0]].item = ShooterItem_GetItem(i);
-            work->items[0][work->itemCount[0]].count = 1;
-            work->itemCount[0]++;
+            work->items[BBAG_POCKET_SHOOTER][work->itemCount[BBAG_POCKET_SHOOTER]].item = ShooterItem_GetItem(i);
+            work->items[BBAG_POCKET_SHOOTER][work->itemCount[BBAG_POCKET_SHOOTER]].count = 1;
+            work->itemCount[BBAG_POCKET_SHOOTER]++;
         }
     }
-    work->lastPage[0] = (work->itemCount[0] - 1) / 6;
+    work->lastPage[BBAG_POCKET_SHOOTER] = (work->itemCount[BBAG_POCKET_SHOOTER] - 1) / BBAG_ITEMS_PER_PAGE;
 }
 
 // The catching demo's bag: 30 Poké Balls
 void BBagItem_MakeDemoList(BBagWork *work) {
-    work->items[2][0].item = ITEM_POKE_BALL;
-    work->items[2][0].count = 30;
-    work->itemCount[2] = 1;
-    work->lastPage[2] = 0;
+    work->items[BBAG_POCKET_BALLS][0].item = ITEM_POKE_BALL;
+    work->items[BBAG_POCKET_BALLS][0].count = 30;
+    work->itemCount[BBAG_POCKET_BALLS] = 1;
+    work->lastPage[BBAG_POCKET_BALLS] = 0;
 }
 
 // The item in a slot of the shown page, 0 if the slot is empty
 u16 BBagItem_GetSlotItem(BBagWork *work, int slot) {
-    u32 i = work->param->pages[work->pocket] * 6 + slot;
+    u32 i = work->param->pages[work->pocket] * BBAG_ITEMS_PER_PAGE + slot;
 
-    if (work->items[work->pocket][i].item == 0 || work->items[work->pocket][i].count == 0) {
-        return 0;
+    if (work->items[work->pocket][i].item == ITEM_NONE || work->items[work->pocket][i].count == 0) {
+        return ITEM_NONE;
     }
     return work->items[work->pocket][i].item;
 }
