@@ -80,11 +80,11 @@ static void PokedexSearchMain_VBlankTask(TCB *tcb, void *data) {
     if (wk->bgRequest == POKEDEX_SEARCH_BG_REQUEST_ON) {
         GFL_BGSysSetBGEnabledA(GX_PLANEMASK_BG1 | GX_PLANEMASK_BG3, TRUE);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_BG1, TRUE);
-        wk->bgRequest = 0;
+        wk->bgRequest = POKEDEX_SEARCH_BG_REQUEST_NONE;
     } else if (wk->bgRequest == POKEDEX_SEARCH_BG_REQUEST_OFF) {
         GFL_BGSysSetBGEnabledA(GX_PLANEMASK_BG1 | GX_PLANEMASK_BG3, FALSE);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_BG1, FALSE);
-        wk->bgRequest = 0;
+        wk->bgRequest = POKEDEX_SEARCH_BG_REQUEST_NONE;
     }
     OS_SetIrqCheckFlag(OS_IE_V_BLANK);
 }
@@ -536,12 +536,12 @@ void PokedexSearchMain_FreeLoadingScreen(PokedexSearchWork *wk) {
 void PokedexSearchMain_ShowLoading(PokedexSearchWork *wk) {
     GFL_BGSysLoadScrAreaAll(1, wk->loadingScreen, 0, LOADING_Y, 32, LOADING_HEIGHT);
     GFL_BGSysQueueScrLoad(1);
-    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 15);
-    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_EXIT, 14);
+    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_SEARCHING);
+    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_EXIT, POKEDEX_SEARCH_TOUCHBAR_ANM_EXIT_SEARCHING);
     if (GameData_IsShortcutRegistered(wk->param->gameData, SHORTCUT_POKEDEX_SEARCH) == TRUE) {
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, 22);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_ON_SEARCHING);
     } else {
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, 21);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_OFF_SEARCHING);
     }
     PokedexSearchObj_SetBGPriority(wk, POKEDEX_SEARCH_OBJ_RETURN, 1);
     PokedexSearchObj_SetBGPriority(wk, POKEDEX_SEARCH_OBJ_EXIT, 1);
@@ -552,12 +552,12 @@ void PokedexSearchMain_HideLoading(PokedexSearchWork *wk) {
     PokedexSearchObj_SetVisible(wk, POKEDEX_SEARCH_OBJ_LOADING_BAR, FALSE);
     GFL_BGSysFillScrArea(1, 0, 0, LOADING_Y, 32, LOADING_HEIGHT, 0);
     GFL_BGSysQueueScrLoad(1);
-    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, 1);
-    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_EXIT, 0);
+    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_RETURN, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN);
+    PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_EXIT, POKEDEX_SEARCH_TOUCHBAR_ANM_EXIT);
     if (GameData_IsShortcutRegistered(wk->param->gameData, SHORTCUT_POKEDEX_SEARCH) == TRUE) {
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, 7);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_ON);
     } else {
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, 6);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_OFF);
     }
     PokedexSearchObj_SetBGPriority(wk, POKEDEX_SEARCH_OBJ_RETURN, 0);
     PokedexSearchObj_SetBGPriority(wk, POKEDEX_SEARCH_OBJ_EXIT, 0);
