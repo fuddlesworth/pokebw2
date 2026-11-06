@@ -34862,6 +34862,8 @@ overlays/ov286 0x021f6d65 sBBagSecondListWindows
 overlays/ov286 0x021f6d74 sBBagFirstListWindows
 overlays/ov286 0x021f6d84 sBBagSlotMessages
 overlays/ov286 0x021f6db4 sBBagWindowLayouts
+overlays/ov286 0x021f6e88 sBBagSourcePockets
+overlays/ov286 0x021f6e8b sBBagPocketsByItemBit
 overlays/ov287 0x021f4440 BPlistAnm_CutButtonScrn
 overlays/ov287 0x021f46d4 BPlistAnm_CutPageScrn
 overlays/ov287 0x021f4780 BPlistAnm_CopyScrnRect

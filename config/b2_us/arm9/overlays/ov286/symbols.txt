@@ -105,8 +105,8 @@ sBBagFirstListWindows kind:data(any) addr:0x021f6d74
 sBBagSlotMessages kind:data(any) addr:0x021f6d84
 data_ov286_021f6d88 kind:data(any) addr:0x021f6d88
 sBBagWindowLayouts kind:data(any) addr:0x021f6db4
-data_ov286_021f6e88 kind:data(any) addr:0x021f6e88
-data_ov286_021f6e8b kind:data(any) addr:0x021f6e8b
+sBBagSourcePockets kind:data(any) addr:0x021f6e88
+sBBagPocketsByItemBit kind:data(any) addr:0x021f6e8b
 data_ov286_021f6e90 kind:data(any) addr:0x021f6e90
 data_ov286_021f6e92 kind:data(any) addr:0x021f6e92
 data_ov286_021f6e93 kind:data(any) addr:0x021f6e93
