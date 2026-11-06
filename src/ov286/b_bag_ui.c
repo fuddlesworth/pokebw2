@@ -15,72 +15,152 @@ static void BBagUi_CallbackMove(void *work, int pos, int prevPos);
 static void BBagUi_CallbackItemsCursorOn(void *work, int pos, int prevPos);
 
 // The pockets
-static const CursorMoveData data_ov286_021f7348[7] = {
-    { 64, 42, 132, 60, 0, 1, 0, 2, { 8, 71, 0, 127 } },
-    { 64, 114, 132, 60, 0, 4, 1, 3, { 80, 143, 0, 127 } },
-    { 192, 42, 132, 60, 2, 3, 0, 2, { 8, 71, 128, 255 } },
-    { 192, 114, 132, 60, 2, 5, 1, 3, { 80, 143, 128, 255 } },
-    { 108, 176, 204, 40, 1, 4, 4, 5, { 152, 191, 8, 207 } },
-    { 236, 174, 40, 40, CURSOR_MOVE_LINK_RETURN | 3, 5, 4, 5, { 152, 191, 216, 255 } },
+static const CursorMoveData sBBagPocketCursorData[7] = {
+    { 64, 42, 132, 60, BBAG_POCKET_HP_PP, BBAG_POCKET_STATUS, BBAG_POCKET_HP_PP, BBAG_POCKET_BALLS, { 8, 71, 0, 127 } },
+    { 64,
+      114,
+      132,
+      60,
+      BBAG_POCKET_HP_PP,
+      BBAG_UI_POCKET_LAST_ITEM,
+      BBAG_POCKET_STATUS,
+      BBAG_POCKET_BATTLE_ITEMS,
+      { 80, 143, 0, 127 } },
+    { 192,
+      42,
+      132,
+      60,
+      BBAG_POCKET_BALLS,
+      BBAG_POCKET_BATTLE_ITEMS,
+      BBAG_POCKET_HP_PP,
+      BBAG_POCKET_BALLS,
+      { 8, 71, 128, 255 } },
+    { 192,
+      114,
+      132,
+      60,
+      BBAG_POCKET_BALLS,
+      BBAG_UI_POCKET_CANCEL,
+      BBAG_POCKET_STATUS,
+      BBAG_POCKET_BATTLE_ITEMS,
+      { 80, 143, 128, 255 } },
+    { 108,
+      176,
+      204,
+      40,
+      BBAG_POCKET_STATUS,
+      BBAG_UI_POCKET_LAST_ITEM,
+      BBAG_UI_POCKET_LAST_ITEM,
+      BBAG_UI_POCKET_CANCEL,
+      { 152, 191, 8, 207 } },
+    { 236,
+      174,
+      40,
+      40,
+      CURSOR_MOVE_LINK_RETURN | BBAG_POCKET_BATTLE_ITEMS,
+      BBAG_UI_POCKET_CANCEL,
+      BBAG_UI_POCKET_LAST_ITEM,
+      BBAG_UI_POCKET_CANCEL,
+      { 152, 191, 216, 255 } },
     { 0, 0, 0, 0, 0, 0, 0, 0, { TOUCH_RECT_END, 0, 0, 0 } },
 };
 
 // A pocket's items; 7 and 8, the page arrows, are touch only
-static const CursorMoveData data_ov286_021f739c[10] = {
+static const CursorMoveData sBBagItemCursorData[10] = {
     { 64, 32, 132, 54, 0, 2, 0, 1, { 8, 55, 0, 127 } },
     { 192, 32, 132, 54, 1, 3, 0, 1, { 8, 55, 128, 255 } },
     { 64, 80, 132, 54, 0, 4, 2, 3, { 56, 103, 0, 127 } },
     { 192, 80, 132, 54, 1, 5, 2, 3, { 56, 103, 128, 255 } },
-    { 64, 128, 132, 54, 2, 6, 4, 5, { 104, 151, 0, 127 } },
-    { 192, 128, 132, 54, 3, 6, 4, 5, { 104, 151, 128, 255 } },
-    { 236, 174, 40, 40, CURSOR_MOVE_LINK_RETURN | 5, 6, 6, 6, { 152, 191, 216, 255 } },
-    { 0, 0, 20, 16, 7, 7, 7, 7, { 152, 191, 0, 39 } },
-    { 0, 0, 20, 16, 8, 8, 8, 8, { 152, 191, 40, 79 } },
+    { 64, 128, 132, 54, 2, BBAG_UI_ITEM_CANCEL, 4, 5, { 104, 151, 0, 127 } },
+    { 192, 128, 132, 54, 3, BBAG_UI_ITEM_CANCEL, 4, 5, { 104, 151, 128, 255 } },
+    { 236,
+      174,
+      40,
+      40,
+      CURSOR_MOVE_LINK_RETURN | 5,
+      BBAG_UI_ITEM_CANCEL,
+      BBAG_UI_ITEM_CANCEL,
+      BBAG_UI_ITEM_CANCEL,
+      { 152, 191, 216, 255 } },
+    { 0,
+      0,
+      20,
+      16,
+      BBAG_UI_ITEM_PREV_PAGE,
+      BBAG_UI_ITEM_PREV_PAGE,
+      BBAG_UI_ITEM_PREV_PAGE,
+      BBAG_UI_ITEM_PREV_PAGE,
+      { 152, 191, 0, 39 } },
+    { 0,
+      0,
+      20,
+      16,
+      BBAG_UI_ITEM_NEXT_PAGE,
+      BBAG_UI_ITEM_NEXT_PAGE,
+      BBAG_UI_ITEM_NEXT_PAGE,
+      BBAG_UI_ITEM_NEXT_PAGE,
+      { 152, 191, 40, 79 } },
     { 0, 0, 0, 0, 0, 0, 0, 0, { TOUCH_RECT_END, 0, 0, 0 } },
 };
 
 // One item
-static const CursorMoveData data_ov286_021f7324[3] = {
-    { 108, 176, 204, 40, 0, 0, 0, 1, { 152, 191, 8, 207 } },
-    { 236, 174, 40, 40, 1, 1, 0, 1, { 152, 191, 216, 255 } },
+static const CursorMoveData sBBagUseCursorData[3] = {
+    { 108,
+      176,
+      204,
+      40,
+      BBAG_UI_USE_ITEM,
+      BBAG_UI_USE_ITEM,
+      BBAG_UI_USE_ITEM,
+      BBAG_UI_USE_CANCEL,
+      { 152, 191, 8, 207 } },
+    { 236,
+      174,
+      40,
+      40,
+      BBAG_UI_USE_CANCEL,
+      BBAG_UI_USE_CANCEL,
+      BBAG_UI_USE_ITEM,
+      BBAG_UI_USE_CANCEL,
+      { 152, 191, 216, 255 } },
     { 0, 0, 0, 0, 0, 0, 0, 0, { TOUCH_RECT_END, 0, 0, 0 } },
 };
 
-static const CursorMoveCallbacks data_ov286_021f7304 = {
+static const CursorMoveCallbacks sBBagItemCursorCallbacks = {
     BBagUi_CallbackItemsCursorOn,
     BBagUi_CallbackCursorOff,
     BBagUi_CallbackMove,
     BBagUi_CallbackTouch,
 };
 
-static const CursorMoveCallbacks data_ov286_021f7314 = {
+static const CursorMoveCallbacks sBBagPocketCursorCallbacks = {
     BBagUi_CallbackCursorOn,
     BBagUi_CallbackCursorOff,
     BBagUi_CallbackMove,
     BBagUi_CallbackTouch,
 };
 
-static const CursorMoveCallbacks data_ov286_021f72f4 = {
+static const CursorMoveCallbacks sBBagUseCursorCallbacks = {
     BBagUi_CallbackCursorOn,
     BBagUi_CallbackCursorOff,
     BBagUi_CallbackMove,
     BBagUi_CallbackTouch,
 };
 
-static const CursorMoveData *const data_ov286_021f72e8[3] = {
-    data_ov286_021f7348,
-    data_ov286_021f739c,
-    data_ov286_021f7324,
+static const CursorMoveData *const sBBagPageCursorData[BBAG_PAGE_MAX] = {
+    sBBagPocketCursorData,
+    sBBagItemCursorData,
+    sBBagUseCursorData,
 };
 
-static const CursorMoveCallbacks *const data_ov286_021f72dc[3] = {
-    &data_ov286_021f7314,
-    &data_ov286_021f7304,
-    &data_ov286_021f72f4,
+static const CursorMoveCallbacks *const sBBagPageCursorCallbacks[BBAG_PAGE_MAX] = {
+    &sBBagPocketCursorCallbacks,
+    &sBBagItemCursorCallbacks,
+    &sBBagUseCursorCallbacks,
 };
 
 void BBagUi_CreateCursor(BBagWork *work, u8 page, int pos) {
-    work->cursorMove = CursorMove_Create(data_ov286_021f72e8[page], data_ov286_021f72dc[page], work,
+    work->cursorMove = CursorMove_Create(sBBagPageCursorData[page], sBBagPageCursorCallbacks[page], work,
                                          work->cursorVisible, pos, work->param->heapId);
     CursorMove_SetHideOnTouch(work->cursorMove);
     CursorMove_SetBOnlyShowsCursor(work->cursorMove);
@@ -96,13 +176,13 @@ void BBagUi_ChangeCursorPage(BBagWork *work, u8 page, int pos) {
         pos = 0;
     } else {
         switch (page) {
-        case 0:
+        case BBAG_PAGE_POCKETS:
             pos = work->pocket;
             break;
-        case 1:
+        case BBAG_PAGE_ITEMS:
             pos = work->param->rows[work->pocket];
             break;
-        case 2:
+        case BBAG_PAGE_USE:
             pos = 0;
             break;
         }
@@ -141,7 +221,7 @@ static void BBagUi_CallbackMove(void *work, int pos, int prevPos) {
 static void BBagUi_CallbackItemsCursorOn(void *wk, int pos, int prevPos) {
     BBagWork *work = wk;
 
-    if (pos == 7 || pos == 8) {
+    if (pos == BBAG_UI_ITEM_PREV_PAGE || pos == BBAG_UI_ITEM_NEXT_PAGE) {
         CursorMove_SetPos(work->cursorMove, 0);
         pos = 0;
     }

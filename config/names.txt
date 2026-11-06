@@ -34870,6 +34870,14 @@ overlays/ov286 0x021f6ecc sBBagChosenItemPos
 overlays/ov286 0x021f6ed0 sBBagChosenCostPos
 overlays/ov286 0x021f6ed4 sBBagItemListActorPositions
 overlays/ov286 0x021f6f08 sBBagActorSetups
+overlays/ov286 0x021f72dc sBBagPageCursorCallbacks
+overlays/ov286 0x021f72e8 sBBagPageCursorData
+overlays/ov286 0x021f72f4 sBBagUseCursorCallbacks
+overlays/ov286 0x021f7304 sBBagItemCursorCallbacks
+overlays/ov286 0x021f7314 sBBagPocketCursorCallbacks
+overlays/ov286 0x021f7324 sBBagUseCursorData
+overlays/ov286 0x021f7348 sBBagPocketCursorData
+overlays/ov286 0x021f739c sBBagItemCursorData
 overlays/ov287 0x021f4440 BPlistAnm_CutButtonScrn
 overlays/ov287 0x021f46d4 BPlistAnm_CutPageScrn
 overlays/ov287 0x021f4780 BPlistAnm_CopyScrnRect
