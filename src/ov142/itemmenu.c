@@ -48,6 +48,91 @@
 
 // The bag (itemmenu.c): its proc, the item list and its menus
 
+// The item menu's actions
+enum {
+    ITEMMENU_ACTION_USE = 0,
+    ITEMMENU_ACTION_DISMOUNT = 1,
+    ITEMMENU_ACTION_READ_MAIL = 2,
+    ITEMMENU_ACTION_TOSS = 3,
+    ITEMMENU_ACTION_REGISTER = 4,
+    ITEMMENU_ACTION_UNREGISTER = 5,
+    ITEMMENU_ACTION_GIVE = 6,
+    ITEMMENU_ACTION_CONFIRM = 7,
+    ITEMMENU_ACTION_MOVE_FREE_SPACE = 8,
+    ITEMMENU_ACTION_RETURN_POCKET = 9,
+    ITEMMENU_ACTION_CANCEL = 10,
+    ITEMMENU_ACTION_BACK = 11,
+};
+
+// An action that is not offered by a menu
+#define ITEMMENU_ACTION_NONE 0xff
+
+// The sort menu's choices
+enum {
+    ITEMMENU_SORT_TYPE = 0,
+    ITEMMENU_SORT_NUMBER = 1,
+    ITEMMENU_SORT_NAME = 2,
+    ITEMMENU_SORT_MOST_HELD = 3,
+    ITEMMENU_SORT_FEWEST_HELD = 4,
+    ITEMMENU_SORT_CANCEL = 5,
+};
+
+// The local field effects that do not leave the bag
+enum {
+    ITEMMENU_FIELD_EFFECT_NONE = 0,
+    ITEMMENU_FIELD_EFFECT_REPEL = 1,
+    ITEMMENU_FIELD_EFFECT_STONE = 2,
+};
+
+// The list cursor's two flashes
+enum {
+    ITEMMENU_FLASH_OFF_FIRST = 0,
+    ITEMMENU_FLASH_WAIT_FIRST = 1,
+    ITEMMENU_FLASH_PRESS_FIRST = 2,
+    ITEMMENU_FLASH_OFF_SECOND = 3,
+    ITEMMENU_FLASH_WAIT_SECOND = 4,
+    ITEMMENU_FLASH_PRESS_SECOND = 5,
+    ITEMMENU_FLASH_WAIT_RESTORE = 6,
+    ITEMMENU_FLASH_RESTORE = 7,
+};
+
+// The quantity picker's confirmation buttons
+enum {
+    ITEMMENU_QUANTITY_CONFIRM = 0,
+    ITEMMENU_QUANTITY_CANCEL = 1,
+};
+
+// The quantity picker's touch arrows
+enum {
+    ITEMMENU_QUANTITY_ARROW_UP = 0,
+    ITEMMENU_QUANTITY_ARROW_DOWN = 1,
+};
+
+// The yes and no menu's rows
+enum {
+    ITEMMENU_CONFIRM_YES = 0,
+    ITEMMENU_CONFIRM_NO = 1,
+};
+
+// The touch manager's buttons after the pocket tabs
+enum {
+    ITEMMENU_TOUCH_POCKET_LEFT = 6,
+    ITEMMENU_TOUCH_POCKET_RIGHT = 7,
+    ITEMMENU_TOUCH_SORT = 8,
+    ITEMMENU_TOUCH_REGISTER = 9,
+    ITEMMENU_TOUCH_CLOSE = 10,
+    ITEMMENU_TOUCH_BACK = 11,
+    ITEMMENU_TOUCH_ROW = 12,
+    ITEMMENU_TOUCH_REGISTER_ROW = 18,
+};
+
+// How closing the bag saves the Free Space filter
+enum {
+    ITEMMENU_FILTER_SAVE_UNCHANGED = 0,
+    ITEMMENU_FILTER_SAVE_RESET = 1,
+    ITEMMENU_FILTER_SAVE_CURRENT = 2,
+};
+
 // The key items that are used from the bag, and what using them does
 typedef struct {
     u16 item;
@@ -64,7 +149,7 @@ typedef struct {
 static void ItemMenu_SetState(ItemMenuWork *work, ItemMenuState state);
 static void ItemMenu_RedrawList(ItemMenuWork *work);
 static void ItemMenu_UpdateList(ItemMenuWork *work);
-static void ItemMenu_SetItemText(ItemMenuWork *work, u32 index, u32 item, BOOL plural, BOOL a4);
+static void ItemMenu_SetItemText(ItemMenuWork *work, u32 index, u32 item, BOOL plural, BOOL withArticle);
 static void ItemMenu_SwapItems(ItemMenuWork *work, s32 a, s32 b);
 static void ItemMenu_MoveItem(ItemMenuWork *work, s32 from, s32 to);
 static void ItemMenu_ChangePocket(ItemMenuWork *work, u32 oldPocket, u32 newPocket);
@@ -127,7 +212,7 @@ static s32 ItemMenu_CompareSortKey(void *a, void *b);
 static void ItemMenu_SortByType(ItemMenuWork *work);
 static void ItemMenu_SortByName(ItemMenuWork *work);
 static void ItemMenu_SortByNumber(ItemMenuWork *work);
-static void ItemMenu_SortByUses(ItemMenuWork *work, BOOL mostUsedFirst);
+static void ItemMenu_SortByCount(ItemMenuWork *work, BOOL mostHeldFirst);
 static void ItemMenu_PressSortButton(ItemMenuWork *work);
 static void ItemMenu_Sort(ItemMenuWork *work, u32 sortType);
 static void ItemMenu_ChangeFreeSpaceFilter(ItemMenuWork *work, u32 filter);
@@ -148,7 +233,7 @@ static void ItemMenu_StateWaitFadeIn(ItemMenuWork *work);
 static BOOL ItemMenuProc_Init(GameProc *proc, u32 *state, void *param, void *data);
 static BOOL ItemMenuProc_Main(GameProc *proc, u32 *state, void *param, void *data);
 static BOOL ItemMenuProc_Exit(GameProc *proc, u32 *state, void *param, void *data);
-static void ItemMenu_SetKeyMode(ItemMenuWork *work, BOOL a1);
+static void ItemMenu_SetKeyMode(ItemMenuWork *work, BOOL keys);
 static void ItemMenu_ReturnToList(ItemMenuWork *work);
 static void ItemMenu_StartMoveItem(ItemMenuWork *work);
 static void ItemMenu_CreatePaletteAnim(ItemMenuWork *work);
@@ -200,7 +285,7 @@ static void ItemMenu_SetState(ItemMenuWork *work, ItemMenuState state) {
 }
 
 static void ItemMenu_RedrawList(ItemMenuWork *work) {
-    work->drawnScroll = 0xffff;
+    work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
     ItemMenu_UpdateList(work);
 }
 
@@ -247,8 +332,8 @@ void ItemMenu_SetPocketName(ItemMenuWork *work, u32 index, u32 pocket) {
     loadBagPocketNameToStrbuf(work->wordSet, index, pocket);
 }
 
-static void ItemMenu_SetItemText(ItemMenuWork *work, u32 index, u32 item, BOOL plural, BOOL a4) {
-    loadItemText(work->wordSet, index, item, plural, a4);
+static void ItemMenu_SetItemText(ItemMenuWork *work, u32 index, u32 item, BOOL plural, BOOL withArticle) {
+    loadItemText(work->wordSet, index, item, plural, withArticle);
 }
 
 static void ItemMenu_SwapItems(ItemMenuWork *work, s32 a, s32 b) {
@@ -520,7 +605,7 @@ static void ItemMenu_StateMoveItem(ItemMenuWork *work) {
     from = ItemMenu_GetCursorIndex(work);
     if (ItemMenu_TouchScrollBar(work)) {
         ItemMenu_MoveItem(work, from, ItemMenu_GetCursorIndex(work));
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
         return;
     }
@@ -530,7 +615,7 @@ static void ItemMenu_StateMoveItem(ItemMenuWork *work) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             work->touchMoved = FALSE;
             BagSave_CopyPocket(work->bag, work->items, work->pocket, FALSE);
-            ClActor_SetSequence(work->listCursor, 1);
+            ClActor_SetSequence(work->listCursor, ITEMMENU_LIST_ANM_CURSOR);
             ItemMenuDisp_SetMoveButtons(work, TRUE);
             work->movingItem = FALSE;
             ItemMenu_SetKeyMode(work, FALSE);
@@ -544,7 +629,7 @@ static void ItemMenu_StateMoveItem(ItemMenuWork *work) {
     if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_SELECT)) {
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         BagSave_CopyPocket(work->bag, work->items, work->pocket, FALSE);
-        ClActor_SetSequence(work->listCursor, 1);
+        ClActor_SetSequence(work->listCursor, ITEMMENU_LIST_ANM_CURSOR);
         ItemMenuDisp_SetMoveButtons(work, TRUE);
         work->movingItem = FALSE;
         ItemMenu_SetKeyMode(work, TRUE);
@@ -553,36 +638,36 @@ static void ItemMenu_StateMoveItem(ItemMenuWork *work) {
     }
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
-        ClActor_SetSequence(work->listCursor, 1);
+        ClActor_SetSequence(work->listCursor, ITEMMENU_LIST_ANM_CURSOR);
         work->movingItem = FALSE;
         ItemMenu_SetKeyMode(work, TRUE);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
-        ItemMenu_PressButton(work, 4, ItemMenu_EndMoveItem);
+        ItemMenu_PressButton(work, ITEMMENU_BUTTON_BACK, ItemMenu_EndMoveItem);
         return;
     }
     if (ItemMenu_IsMoveDoneTouched() == TRUE) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
-        ClActor_SetSequence(work->listCursor, 1);
+        ClActor_SetSequence(work->listCursor, ITEMMENU_LIST_ANM_CURSOR);
         work->movingItem = FALSE;
         ItemMenu_SetKeyMode(work, FALSE);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
-        ItemMenu_PressButton(work, 4, ItemMenu_EndMoveItem);
+        ItemMenu_PressButton(work, ITEMMENU_BUTTON_BACK, ItemMenu_EndMoveItem);
         return;
     }
     if (ItemMenu_MoveItemByTouch(work)) {
         work->touchMoved = TRUE;
         ItemMenuDisp_UpdateScrollBar(work);
         GFL_SndSEPlay(SEQ_SE_SELECT1);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
         return;
     }
     if (ItemMenu_MoveItemByKeys(work)) {
         ItemMenuDisp_UpdateScrollBar(work);
         GFL_SndSEPlay(SEQ_SE_SELECT1);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
     }
 }
@@ -593,12 +678,12 @@ static BOOL ItemMenu_IsRepel(u16 item) {
 
 static u32 ItemMenu_GetFieldEffect(u16 item) {
     if (ItemMenu_IsRepel(item)) {
-        return 1;
+        return ITEMMENU_FIELD_EFFECT_REPEL;
     }
     if (item == ITEM_LIGHT_STONE || item == ITEM_DARK_STONE) {
-        return 2;
+        return ITEMMENU_FIELD_EFFECT_STONE;
     }
-    return 0;
+    return ITEMMENU_FIELD_EFFECT_NONE;
 }
 
 static void ItemMenu_StateUseRepel(ItemMenuWork *work) {
@@ -632,7 +717,7 @@ static void ItemMenu_StateWaitMessage(ItemMenuWork *work) {
     if (ItemMenuDisp_IsMessageDone(work) &&
         ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed())) {
         GFL_BGSysClearScr(3);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
         work->listDirty = TRUE;
         ItemMenuDisp_UpdateScrollBar(work);
@@ -676,90 +761,90 @@ static BOOL ItemMenu_UseInField(ItemMenuWork *work, u32 action, u32 result, BOOL
         ItemMenu_SetState(work, NULL);
         return TRUE;
     }
-    ItemMenu_ShowItemMessage(work, 58);
+    ItemMenu_ShowItemMessage(work, BtlMain_Text_JunipersWordsEchoedTheres_2);
     return FALSE;
 }
 
 static BOOL ItemMenu_UseBicycle(ItemMenuWork *work) {
-    u8 blocked = PlayerActionPerms_IsActionBlocked(work->perms, 0);
+    u8 blocked = PlayerActionPerms_IsActionBlocked(work->perms, PLAYER_ACTION_BICYCLE);
 
-    if (work->menuAction == 0) {
-        if (blocked == FALSE) {
-            work->result = 10;
+    if (work->menuAction == ITEMMENU_ACTION_USE) {
+        if (blocked == FIELD_ACTION_ALLOWED) {
+            work->result = BAG_RESULT_RIDE_BICYCLE;
             ItemMenu_SetState(work, NULL);
             return TRUE;
         }
-        if (blocked == 1) {
-            ItemMenu_ShowItemMessage(work, 119);
+        if (blocked == FIELD_ACTION_ALLOWED_PAIRED) {
+            ItemMenu_ShowItemMessage(work, BtlMain_Text_CantUsedWhenHave);
         } else {
-            ItemMenu_ShowItemMessage(work, 58);
+            ItemMenu_ShowItemMessage(work, BtlMain_Text_JunipersWordsEchoedTheres_2);
         }
         return FALSE;
     }
-    if (work->menuAction == 1) {
-        if (blocked == FALSE) {
-            work->result = 11;
+    if (work->menuAction == ITEMMENU_ACTION_DISMOUNT) {
+        if (blocked == FIELD_ACTION_ALLOWED) {
+            work->result = BAG_RESULT_DISMOUNT_BICYCLE;
             ItemMenu_SetState(work, NULL);
             return TRUE;
         }
-        ItemMenu_ShowItemMessage(work, 57);
+        ItemMenu_ShowItemMessage(work, BtlMain_Text_CantDismountBikeHere);
         return FALSE;
     }
     return FALSE;
 }
 
 static BOOL ItemMenu_UseTownMap(ItemMenuWork *work) {
-    return ItemMenu_UseInField(work, 1, 7, FALSE);
+    return ItemMenu_UseInField(work, PLAYER_ACTION_TOWN_MAP, BAG_RESULT_TOWN_MAP, FALSE);
 }
 
 static BOOL ItemMenu_UsePalPad(ItemMenuWork *work) {
-    return ItemMenu_UseInField(work, 2, 8, FALSE);
+    return ItemMenu_UseInField(work, PLAYER_ACTION_PAL_PAD, BAG_RESULT_PAL_PAD, FALSE);
 }
 
 static BOOL ItemMenu_UseVsRecorder(ItemMenuWork *work) {
-    return ItemMenu_UseInField(work, 6, 17, FALSE);
+    return ItemMenu_UseInField(work, PLAYER_ACTION_VS_RECORDER, BAG_RESULT_VS_RECORDER, FALSE);
 }
 
 static BOOL ItemMenu_UseHoney(ItemMenuWork *work) {
-    return ItemMenu_UseInField(work, 4, 15, TRUE);
+    return ItemMenu_UseInField(work, PLAYER_ACTION_HONEY, BAG_RESULT_HONEY, TRUE);
 }
 
 static BOOL ItemMenu_UseSuperRod(ItemMenuWork *work) {
-    u8 blocked = PlayerActionPerms_IsActionBlocked(work->perms, 5);
+    u8 blocked = PlayerActionPerms_IsActionBlocked(work->perms, PLAYER_ACTION_FISHING);
 
-    if (blocked == FALSE) {
-        work->result = 16;
+    if (blocked == FIELD_ACTION_ALLOWED) {
+        work->result = BAG_RESULT_FISH;
         ItemMenu_SetState(work, NULL);
         return TRUE;
     }
-    if (blocked == 1) {
-        ItemMenu_ShowItemMessage(work, 119);
+    if (blocked == FIELD_ACTION_ALLOWED_PAIRED) {
+        ItemMenu_ShowItemMessage(work, BtlMain_Text_CantUsedWhenHave);
     } else {
-        ItemMenu_ShowItemMessage(work, 58);
+        ItemMenu_ShowItemMessage(work, BtlMain_Text_JunipersWordsEchoedTheres_2);
     }
     return FALSE;
 }
 
 static BOOL ItemMenu_UseDowsingMchn(ItemMenuWork *work) {
-    if (work->menuAction == 0) {
-        return ItemMenu_UseInField(work, 9, 20, FALSE);
+    if (work->menuAction == ITEMMENU_ACTION_USE) {
+        return ItemMenu_UseInField(work, PLAYER_ACTION_DOWSING, BAG_RESULT_DOWSING, FALSE);
     }
     return FALSE;
 }
 
 static BOOL ItemMenu_UseEscapeRope(ItemMenuWork *work) {
-    if (work->menuAction == 0) {
-        return ItemMenu_UseInField(work, 3, 14, TRUE);
+    if (work->menuAction == ITEMMENU_ACTION_USE) {
+        return ItemMenu_UseInField(work, PLAYER_ACTION_ESCAPE_ROPE, BAG_RESULT_ESCAPE_ROPE, TRUE);
     }
     return FALSE;
 }
 
 static BOOL ItemMenu_UseXtransceiver(ItemMenuWork *work) {
-    return ItemMenu_UseInField(work, 10, 21, FALSE);
+    return ItemMenu_UseInField(work, PLAYER_ACTION_XTRANSCEIVER, BAG_RESULT_XTRANSCEIVER, FALSE);
 }
 
 static BOOL ItemMenu_UseMedalBox(ItemMenuWork *work) {
-    return ItemMenu_UseInField(work, 11, 22, FALSE);
+    return ItemMenu_UseInField(work, PLAYER_ACTION_MEDAL_BOX, BAG_RESULT_MEDAL_BOX, FALSE);
 }
 
 // The entry of the key items an item uses, or -1
@@ -788,7 +873,7 @@ static void ItemMenu_StateItemMenu(ItemMenuWork *work) {
     if (AppTaskMenu_IsFlashFinished(work->taskMenu)) {
         work->menuAction = work->itemMenuActions[AppTaskMenu_GetCursorPos(work->taskMenu)];
         switch (work->menuAction) {
-        case 0:
+        case ITEMMENU_ACTION_USE:
             pocket = BagSave_GetExistingItemPocket(work->bag, work->item);
             ItemMenuDisp_SetBackButtonActive(work, FALSE);
             if (pocket != BAG_POCKET_FREE_SPACE) {
@@ -801,26 +886,26 @@ static void ItemMenu_StateItemMenu(ItemMenuWork *work) {
             if (pocket == BAG_POCKET_TMS_HMS) {
                 ItemMenu_SetState(work, ItemMenu_StateUseTM);
             } else if (GetItemParam(work->item, ITEM_PARAM_EVOLVE, work->heapId) == TRUE) {
-                work->result = 12;
+                work->result = BAG_RESULT_EVOLVE_ITEM;
                 ItemMenu_SetState(work, NULL);
             } else if (ItemMenu_FindFieldUse(work->item) >= 0) {
                 sItemMenuFieldUses[ItemMenu_FindFieldUse(work->item)].use(work);
             } else {
                 fieldUse = ItemMenu_GetFieldEffect(work->item);
-                if (fieldUse == 1) {
+                if (fieldUse == ITEMMENU_FIELD_EFFECT_REPEL) {
                     ItemMenu_SetState(work, ItemMenu_StateUseRepel);
-                } else if (fieldUse == 2) {
+                } else if (fieldUse == ITEMMENU_FIELD_EFFECT_STONE) {
                     ItemMenu_SetState(work, ItemMenu_StateUseLightStone);
                 } else {
-                    work->result = 5;
+                    work->result = BAG_RESULT_USE_ITEM;
                     ItemMenu_SetState(work, NULL);
                 }
             }
             break;
-        case 1:
+        case ITEMMENU_ACTION_DISMOUNT:
             ItemMenuDisp_SetBackButtonActive(work, FALSE);
-            if (PlayerActionPerms_IsActionBlocked(work->perms, 0) == FALSE) {
-                work->result = 11;
+            if (PlayerActionPerms_IsActionBlocked(work->perms, PLAYER_ACTION_BICYCLE) == FALSE) {
+                work->result = BAG_RESULT_DISMOUNT_BICYCLE;
                 ItemMenu_SetState(work, NULL);
             } else {
                 GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_CantDismountBikeHere, work->strbuf);
@@ -829,15 +914,15 @@ static void ItemMenu_StateItemMenu(ItemMenuWork *work) {
                 ItemMenu_SetState(work, ItemMenu_StateShowMessage);
             }
             break;
-        case 3:
+        case ITEMMENU_ACTION_TOSS:
             ItemMenu_SetState(work, ItemMenu_StateToss);
             break;
-        case 8:
-        case 9:
+        case ITEMMENU_ACTION_MOVE_FREE_SPACE:
+        case ITEMMENU_ACTION_RETURN_POCKET:
             ItemMenu_SetState(work, ItemMenu_StateMoveFreeSpace);
             break;
-        case 4:
-        case 5:
+        case ITEMMENU_ACTION_REGISTER:
+        case ITEMMENU_ACTION_UNREGISTER:
             if (ItemMenu_CanRegister(work) == TRUE) {
                 ItemMenu_ToggleItemRegistration(work, work->cursorRow);
                 ItemMenu_UpdateList(work);
@@ -846,14 +931,14 @@ static void ItemMenu_StateItemMenu(ItemMenuWork *work) {
                 ItemMenu_ReturnToList(work);
             }
             break;
-        case 2:
+        case ITEMMENU_ACTION_READ_MAIL:
             ItemMenuDisp_SetBackButtonActive(work, FALSE);
             if (work->item >= ITEM_GREET_MAIL && work->item <= ITEM_BRIDGE_MAIL_M) {
-                work->result = 19;
+                work->result = BAG_RESULT_READ_MAIL;
                 ItemMenu_SetState(work, NULL);
             }
             break;
-        case 10:
+        case ITEMMENU_ACTION_CANCEL:
             if (GCTX_HIDIsUsingTouch() == TRUE) {
                 ItemMenuDisp_HideItemInfo(work);
             } else {
@@ -864,16 +949,16 @@ static void ItemMenu_StateItemMenu(ItemMenuWork *work) {
             ClActor_SetAutoAnim(work->scrollBar, TRUE);
             ItemMenu_ReturnToList(work);
             break;
-        case 11:
-            work->result = 1;
+        case ITEMMENU_ACTION_BACK:
+            work->result = BAG_RESULT_BACK;
             ItemMenu_SetState(work, NULL);
             break;
-        case 6:
-            work->result = 2;
+        case ITEMMENU_ACTION_GIVE:
+            work->result = BAG_RESULT_GIVE_ITEM;
             ItemMenuDisp_SetBackButtonActive(work, FALSE);
             ItemMenu_SetState(work, NULL);
             break;
-        case 7:
+        case ITEMMENU_ACTION_CONFIRM:
             break;
         }
         done = TRUE;
@@ -893,13 +978,13 @@ static void ItemMenu_StateSelectItem(ItemMenuWork *work) {
     if (slot != NULL) {
         work->item = slot->item;
     }
-    if (work->mode == 2) {
+    if (work->mode == BAG_MODE_GIVE_ITEM) {
         if (GetItemParam(work->item, ITEM_PARAM_IMPORTANT, work->heapId) == 0 &&
             PML_ItemIsNotSpecialMonsball(work->item) == TRUE) {
             if (PML_ItemIsMail(work->item)) {
-                work->result = 18;
+                work->result = BAG_RESULT_GIVE_MAIL;
             } else {
-                work->result = 3;
+                work->result = BAG_RESULT_SELECT_ITEM;
             }
             ItemMenu_SetState(work, NULL);
             return;
@@ -911,10 +996,10 @@ static void ItemMenu_StateSelectItem(ItemMenuWork *work) {
         ItemMenuDisp_SetButtonsActive(work, FALSE);
         ItemMenuDisp_SetBackButtonActive(work, FALSE);
         ItemMenu_SetState(work, ItemMenu_StateReturnToList);
-    } else if (work->mode == 5) {
-        work->result = 1;
+    } else if (work->mode == BAG_MODE_SELECT_ITEM) {
+        work->result = BAG_RESULT_BACK;
         ItemMenu_SetState(work, NULL);
-    } else if (work->mode == 4) {
+    } else if (work->mode == BAG_MODE_SELL) {
         ItemMenu_SetState(work, ItemMenu_StateSell);
     } else {
         ItemMenu_OpenItemMenu(work);
@@ -942,7 +1027,7 @@ static void ItemMenu_StateList(ItemMenuWork *work) {
         return;
     }
     if (ItemMenu_TouchScrollBar(work)) {
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
         return;
     }
@@ -969,20 +1054,20 @@ static void ItemMenu_StateList(ItemMenuWork *work) {
         }
     }
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
-        work->result = 1;
+        work->result = BAG_RESULT_BACK;
         work->item = ITEM_NONE;
         GCTX_HIDSetUsingTouch(FALSE);
-        ItemMenu_PressButton(work, 4, NULL);
+        ItemMenu_PressButton(work, ITEMMENU_BUTTON_BACK, NULL);
         return;
     }
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
-        if (work->mode == 2) {
+        if (work->mode == BAG_MODE_GIVE_ITEM) {
             return;
         }
-        work->result = 0;
+        work->result = BAG_RESULT_CLOSE;
         work->item = ITEM_NONE;
         GCTX_HIDSetUsingTouch(FALSE);
-        ItemMenu_PressButton(work, 3, NULL);
+        ItemMenu_PressButton(work, ITEMMENU_BUTTON_CLOSE, NULL);
         return;
     }
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_Y) {
@@ -1005,7 +1090,7 @@ static void ItemMenu_StateList(ItemMenuWork *work) {
                 ItemMenu_PressSortButton(work);
                 ItemMenu_SetKeyMode(work, TRUE);
                 ItemMenuDisp_SetBackButtonActive(work, FALSE);
-                work->drawnScroll = 0xffff;
+                work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
                 ItemMenu_UpdateList(work);
                 ItemMenu_SetState(work, ItemMenu_StateOpenSortMenu);
                 return;
@@ -1014,7 +1099,7 @@ static void ItemMenu_StateList(ItemMenuWork *work) {
             ItemMenu_PressSortButton(work);
             ItemMenu_SetKeyMode(work, TRUE);
             ItemMenuDisp_SetBackButtonActive(work, FALSE);
-            work->drawnScroll = 0xffff;
+            work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
             ItemMenu_UpdateList(work);
             ItemMenu_SetState(work, ItemMenu_StateOpenFilterMenu);
             return;
@@ -1034,7 +1119,7 @@ static void ItemMenu_StateList(ItemMenuWork *work) {
         }
         MI_CpuFill8(work->items, 0, sizeof(work->items));
         BagSave_CopyPocket(work->bag, work->items, work->pocket, TRUE);
-        ClActor_SetSequence(work->listCursor, 2);
+        ClActor_SetSequence(work->listCursor, ITEMMENU_LIST_ANM_MOVE_CURSOR);
         ItemMenuDisp_SetMoveButtons(work, FALSE);
         work->movingItem = TRUE;
         ItemMenu_StartMoveItem(work);
@@ -1047,15 +1132,15 @@ static void ItemMenu_StateList(ItemMenuWork *work) {
     }
     if (GCTX_HIDGetTypedKeys() & PAD_KEY_RIGHT) {
         pocket = work->pocket;
-        if (++work->pocket >= 6) {
-            work->pocket = 0;
+        if (++work->pocket >= BAG_POCKET_NONE) {
+            work->pocket = BAG_POCKET_ITEMS;
         }
         GCTX_HIDSetUsingTouch(FALSE);
         ItemMenu_PressPocketArrow(work, pocket, TRUE, ItemMenu_StatePocketArrowDone);
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_LEFT) {
         pocket = work->pocket;
         if (--work->pocket < 0) {
-            work->pocket = 5;
+            work->pocket = BAG_POCKET_FREE_SPACE;
         }
         GCTX_HIDSetUsingTouch(FALSE);
         ItemMenu_PressPocketArrow(work, pocket, FALSE, ItemMenu_StatePocketArrowDone);
@@ -1065,9 +1150,9 @@ static void ItemMenu_StateList(ItemMenuWork *work) {
 // Whether to boot up the TM
 static void ItemMenu_StateTMBootUp(ItemMenuWork *work) {
     if (AppTaskMenu_IsFlashFinished(work->taskMenu)) {
-        if (AppTaskMenu_GetCursorPos(work->taskMenu) == 0) {
+        if (AppTaskMenu_GetCursorPos(work->taskMenu) == ITEMMENU_CONFIRM_YES) {
             ItemMenuDisp_ClearMsgWindow(work);
-            work->result = 6;
+            work->result = BAG_RESULT_TEACH_TM;
             ItemMenu_SetState(work, NULL);
         } else {
             ItemMenuDisp_ClearMsgWindow(work);
@@ -1114,7 +1199,7 @@ static void ItemMenu_StateTMBootUpSound(ItemMenuWork *work) {
 
 // Boots up a TM or HM
 static void ItemMenu_StateUseTM(ItemMenuWork *work) {
-    if (PML_ItemGetHMID(work->item) == 0xff) {
+    if (PML_ItemGetHMID(work->item) == ITEM_TM_HM_NONE) {
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_BootedUpTm, work->expandBuf);
     } else {
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_BootedUpHm, work->expandBuf);
@@ -1127,7 +1212,7 @@ static void ItemMenu_StateUseTM(ItemMenuWork *work) {
 static void ItemMenu_StateReturnToList(ItemMenuWork *work) {
     if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed()) {
         GFL_BGSysClearScr(3);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
         work->listDirty = TRUE;
         ItemMenuDisp_UpdateScrollBar(work);
@@ -1151,7 +1236,7 @@ static void ItemMenu_StateTossConfirm(ItemMenuWork *work) {
         pos = AppTaskMenu_GetCursorPos(work->taskMenu);
         ItemMenuDisp_CloseMenu(work);
         GFL_BGSysClearScr(3);
-        if (pos == 0) {
+        if (pos == ITEMMENU_CONFIRM_YES) {
             GFL_SndSEPlay(SEQ_SE_SYS_08);
             ItemMenu_SubItem(work, work->quantity);
             GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_ThrewAway, work->strbuf);
@@ -1179,7 +1264,7 @@ static void ItemMenu_StateTossAsk(ItemMenuWork *work) {
 // Tossing an item: asks how many
 static void ItemMenu_StateToss(ItemMenuWork *work) {
     work->quantity = 1;
-    ItemMenu_ShowQuantity(work, 1);
+    ItemMenu_ShowQuantity(work, ITEMMENU_QUANTITY_TOSS);
     GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_ThrowAwayHowMany, work->strbuf);
     ItemMenu_SetItemText(work, 0, work->item, TRUE, FALSE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
@@ -1193,16 +1278,16 @@ static void ItemMenu_StateTossQuantity(ItemMenuWork *work) {
 
     if (ItemMenuDisp_IsMessageDone(work) && ItemMenu_UpdateQuantity(work) != TRUE) {
         result = ItemMenu_GetQuantityButton();
-        if (result == -1) {
+        if (result == TOUCH_RECT_NONE) {
             if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
-                result = 0;
+                result = ITEMMENU_QUANTITY_CONFIRM;
                 GCTX_HIDSetUsingTouch(FALSE);
             } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
                 GCTX_HIDSetUsingTouch(FALSE);
-                result = 1;
+                result = ITEMMENU_QUANTITY_CANCEL;
             }
         }
-        if (result == 0) {
+        if (result == ITEMMENU_QUANTITY_CONFIRM) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             ItemMenu_HideQuantity(work);
             GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_OkThrowAway, work->strbuf);
@@ -1211,9 +1296,9 @@ static void ItemMenu_StateTossQuantity(ItemMenuWork *work) {
             GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
             ItemMenuDisp_ShowMessageNow(work);
             ItemMenu_SetState(work, ItemMenu_StateTossAsk);
-        } else if (result == 1) {
+        } else if (result == ITEMMENU_QUANTITY_CANCEL) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            ItemMenu_PressButton(work, 4, ItemMenu_StateTossCancel);
+            ItemMenu_PressButton(work, ITEMMENU_BUTTON_BACK, ItemMenu_StateTossCancel);
         }
     }
 }
@@ -1243,7 +1328,7 @@ static void ItemMenu_StateSell(ItemMenuWork *work) {
         ItemMenu_SetState(work, ItemMenu_StateSellAsk);
         return;
     }
-    ItemMenu_ShowQuantity(work, 2);
+    ItemMenu_ShowQuantity(work, ITEMMENU_QUANTITY_SELL);
     GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_HowManyWillSell, work->strbuf);
     ItemMenu_SetItemName(work, 0, work->item);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
@@ -1257,22 +1342,22 @@ static void ItemMenu_StateSellQuantity(ItemMenuWork *work) {
 
     if (ItemMenuDisp_IsMessageDone(work) && ItemMenu_UpdateQuantity(work) != TRUE) {
         result = ItemMenu_GetQuantityButton();
-        if (result == -1) {
+        if (result == TOUCH_RECT_NONE) {
             if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
-                result = 0;
+                result = ITEMMENU_QUANTITY_CONFIRM;
                 GCTX_HIDSetUsingTouch(FALSE);
             } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
                 GCTX_HIDSetUsingTouch(FALSE);
-                result = 1;
+                result = ITEMMENU_QUANTITY_CANCEL;
             }
         }
-        if (result == 0) {
+        if (result == ITEMMENU_QUANTITY_CONFIRM) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             ItemMenu_HideQuantity(work);
             ItemMenu_SetState(work, ItemMenu_StateSellAsk);
-        } else if (result == 1) {
+        } else if (result == ITEMMENU_QUANTITY_CANCEL) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            ItemMenu_PressButton(work, 4, ItemMenu_StateSellCancel);
+            ItemMenu_PressButton(work, ITEMMENU_BUTTON_BACK, ItemMenu_StateSellCancel);
         }
     }
 }
@@ -1299,7 +1384,7 @@ static void ItemMenu_StateSellConfirm(ItemMenuWork *work) {
         pos = AppTaskMenu_GetCursorPos(work->taskMenu);
         ItemMenuDisp_CloseMenu(work);
         switch (pos) {
-        case 0:
+        case ITEMMENU_CONFIRM_YES:
             price = ItemMenu_GetSellPrice(work->item, work->quantity, work->heapId);
             ItemMenu_SubItem(work, work->quantity);
             addCashToTotal(getTrainerCardDataBlkAddress(work->gameData), price);
@@ -1312,7 +1397,7 @@ static void ItemMenu_StateSellConfirm(ItemMenuWork *work) {
             ItemMenuDisp_ShowMessageNow(work);
             ItemMenu_SetState(work, ItemMenu_StateSellWaitMessage);
             break;
-        case 1:
+        case ITEMMENU_CONFIRM_NO:
             ItemMenu_SetKeyMode(work, GCTX_HIDIsUsingTouch() ? FALSE : TRUE);
             ItemMenu_SetState(work, ItemMenu_StateSellEnd);
             break;
@@ -1335,7 +1420,7 @@ static void ItemMenu_StateSellWaitMessage(ItemMenuWork *work) {
 // Goes back to the list after selling
 static void ItemMenu_StateSellEnd(ItemMenuWork *work) {
     GFL_BGSysClearScr(3);
-    work->drawnScroll = 0xffff;
+    work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
     ItemMenu_UpdateList(work);
     work->listDirty = TRUE;
     ItemMenuDisp_UpdateScrollBar(work);
@@ -1407,14 +1492,14 @@ static void ItemMenu_ShowQuantity(ItemMenuWork *work, u32 mode) {
     work->quantityMode = mode;
     ItemMenuDisp_DrawQuantityFrame(work);
     ItemMenuDisp_DrawQuantity(work, work->quantity);
-    ClActor_SetVisible(work->buttons[5], TRUE);
-    ClActor_SetVisible(work->buttons[6], TRUE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_QUANTITY_UP], TRUE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_QUANTITY_DOWN], TRUE);
 }
 
 static void ItemMenu_HideQuantity(ItemMenuWork *work) {
     GFL_BGSysClearScr(3);
-    ClActor_SetVisible(work->buttons[5], FALSE);
-    ClActor_SetVisible(work->buttons[6], FALSE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_QUANTITY_UP], FALSE);
+    ClActor_SetVisible(work->buttons[ITEMMENU_BUTTON_QUANTITY_DOWN], FALSE);
 }
 
 // Changes the quantity with the keys or the arrows. Returns whether it was changed
@@ -1439,7 +1524,7 @@ static BOOL ItemMenu_UpdateQuantity(ItemMenuWork *work) {
     }
     if (work->quantityRepeat == 1 || work->quantityRepeat > 30) {
         switch (hit) {
-        case 0:
+        case ITEMMENU_QUANTITY_ARROW_UP:
             if (work->quantityRepeat > 120) {
                 work->quantity += 10;
             } else {
@@ -1447,7 +1532,7 @@ static BOOL ItemMenu_UpdateQuantity(ItemMenuWork *work) {
             }
             down = FALSE;
             break;
-        case 1:
+        case ITEMMENU_QUANTITY_ARROW_DOWN:
             if (work->quantityRepeat > 120) {
                 work->quantity -= 10;
             } else {
@@ -1484,9 +1569,10 @@ static BOOL ItemMenu_UpdateQuantity(ItemMenuWork *work) {
     if (work->quantity != old) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         if (down == FALSE) {
-            ClActor_SetSequence(work->buttons[5], 11);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_QUANTITY_UP], ITEMMENU_TOUCHBAR_ANM_QUANTITY_UP_PRESS);
         } else {
-            ClActor_SetSequence(work->buttons[6], 10);
+            ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_QUANTITY_DOWN],
+                                ITEMMENU_TOUCHBAR_ANM_QUANTITY_DOWN_PRESS);
         }
         ItemMenuDisp_DrawQuantity(work, work->quantity);
     }
@@ -1527,7 +1613,7 @@ static void ItemMenu_StateFreeSpaceWaitMessage(ItemMenuWork *work) {
         return;
     }
     GFL_BGSysClearScr(3);
-    work->drawnScroll = 0xffff;
+    work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
     ItemMenu_UpdateList(work);
     work->listDirty = TRUE;
     ItemMenuDisp_UpdateScrollBar(work);
@@ -1689,15 +1775,15 @@ static void ItemMenu_SortByNumber(ItemMenuWork *work) {
     }
 }
 
-// Sorts the pocket by how often the items were used, most used first or last
-static void ItemMenu_SortByUses(ItemMenuWork *work, BOOL mostUsedFirst) {
+// Sorts the pocket by the items' held counts, most held first or last
+static void ItemMenu_SortByCount(ItemMenuWork *work, BOOL mostHeldFirst) {
     BagItem *item;
     s32 count;
     ItemMenuSortEntry *sort;
     BagItem *items;
     ArcTool *arc;
     void *data;
-    u32 uses;
+    u32 heldCount;
     s32 i = 0;
 
     sort = GFL_HeapAllocate(work->heapId, sizeof(ItemMenuSortEntry) * NELEMS(work->items), FALSE, "itemmenu.c", 3241);
@@ -1708,12 +1794,12 @@ static void ItemMenu_SortByUses(ItemMenuWork *work, BOOL mostUsedFirst) {
     for (; i < count; i++) {
         item = &items[i];
         data = PML_ItemArcHandleReadFile(arc, item->item, work->heapId);
-        uses = BagSave_GetExistingItemCount(work->bag, item->item);
-        if (mostUsedFirst == TRUE) {
-            sort[i].key = ((u64)(999 - uses) << 40) + (PML_ItemGetParam(data, ITEM_PARAM_KIND) << 28) +
+        heldCount = BagSave_GetExistingItemCount(work->bag, item->item);
+        if (mostHeldFirst == TRUE) {
+            sort[i].key = ((u64)(999 - heldCount) << 40) + (PML_ItemGetParam(data, ITEM_PARAM_KIND) << 28) +
                           (PML_ItemGetParam(data, ITEM_PARAM_SORT_INDEX) << 16) + item->item;
         } else {
-            sort[i].key = ((u64)uses << 40) + (PML_ItemGetParam(data, ITEM_PARAM_KIND) << 28) +
+            sort[i].key = ((u64)heldCount << 40) + (PML_ItemGetParam(data, ITEM_PARAM_KIND) << 28) +
                           (PML_ItemGetParam(data, ITEM_PARAM_SORT_INDEX) << 16) + item->item;
         }
         sort[i].item = *item;
@@ -1732,9 +1818,9 @@ static void ItemMenu_SortByUses(ItemMenuWork *work, BOOL mostUsedFirst) {
 static void ItemMenu_PressSortButton(ItemMenuWork *work) {
     GFL_SndSEPlay(SEQ_SE_DECIDE1);
     if (work->pocket != BAG_POCKET_FREE_SPACE) {
-        ClActor_SetSequence(work->sortButton, 2);
+        ClActor_SetSequence(work->sortButton, ITEMMENU_SORT_ANM_PRESS);
     } else {
-        ClActor_SetSequence(work->filterButton, 1);
+        ClActor_SetSequence(work->filterButton, ITEMMENU_FILTER_ANM_PRESS);
     }
 }
 
@@ -1742,23 +1828,23 @@ static void ItemMenu_PressSortButton(ItemMenuWork *work) {
 static void ItemMenu_Sort(ItemMenuWork *work, u32 sortType) {
     work->sortType = sortType;
     switch (sortType) {
-    case 0:
+    case ITEMMENU_SORT_TYPE:
         ItemMenu_SortByType(work);
         break;
-    case 1:
+    case ITEMMENU_SORT_NUMBER:
         ItemMenu_SortByNumber(work);
         break;
-    case 2:
+    case ITEMMENU_SORT_NAME:
         ItemMenu_SortByName(work);
         break;
-    case 3:
-        ItemMenu_SortByUses(work, TRUE);
+    case ITEMMENU_SORT_MOST_HELD:
+        ItemMenu_SortByCount(work, TRUE);
         break;
-    case 4:
-        ItemMenu_SortByUses(work, FALSE);
+    case ITEMMENU_SORT_FEWEST_HELD:
+        ItemMenu_SortByCount(work, FALSE);
         break;
     }
-    work->drawnScroll = 0xffff;
+    work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
 }
 
 // Changes the Free Space's filter
@@ -1767,7 +1853,7 @@ static void ItemMenu_ChangeFreeSpaceFilter(ItemMenuWork *work, u32 filter) {
         ItemMenu_SetFreeSpaceFilter(work, filter);
         work->cursorRow = 0;
         work->scroll = -1;
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         work->listDirty = TRUE;
         ItemMenuDisp_UpdateScrollBar(work);
     }
@@ -1799,9 +1885,9 @@ static void ItemMenu_SetKeyMode(ItemMenuWork *work, BOOL keys) {
         keys = FALSE;
     }
     if (keys == FALSE) {
-        ItemMenuDisp_SetListCursorPalette(work, FALSE);
+        ItemMenuDisp_SetListCursorPalette(work, ITEMMENU_CURSOR_PALETTE_OFF);
     } else {
-        ItemMenuDisp_SetListCursorPalette(work, TRUE);
+        ItemMenuDisp_SetListCursorPalette(work, ITEMMENU_CURSOR_PALETTE_ON);
         BlinkPalAnm_InitAnime(work->paletteAnim);
     }
     ItemMenuDisp_ShowTMIcons(work, keys);
@@ -1809,7 +1895,7 @@ static void ItemMenu_SetKeyMode(ItemMenuWork *work, BOOL keys) {
 
 // Whether the bag's mode lets items be registered
 BOOL ItemMenu_CanRegister(ItemMenuWork *work) {
-    if (work->mode == 0 || work->mode == 1 || work->mode == 3) {
+    if (work->mode == BAG_MODE_NORMAL || work->mode == BAG_MODE_UNION_ROOM || work->mode == BAG_MODE_COLOSSEUM) {
         return TRUE;
     }
     return FALSE;
@@ -1826,7 +1912,7 @@ static BOOL ItemMenu_ToggleItemRegistration(ItemMenuWork *work, s32 row) {
     }
     slot = ItemMenu_GetSlot(work, row);
     shortcut = ShortcutUtil_GetItemShortcut(slot->item);
-    if (shortcut == 0xff) {
+    if (shortcut == SHORTCUT_NONE) {
         return FALSE;
     }
     if (ItemMenu_IsItemRegistered(work, slot->item) == TRUE) {
@@ -1835,7 +1921,7 @@ static BOOL ItemMenu_ToggleItemRegistration(ItemMenuWork *work, s32 row) {
         GameData_SetKeyItemRegistration(work->gameData, shortcut, TRUE);
     }
     GFL_SndSEPlay(SEQ_SE_SYS_07);
-    work->drawnScroll = 0xffff;
+    work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
     return TRUE;
 }
 
@@ -1856,9 +1942,9 @@ static void ItemMenu_TogglePocketRegistration(ItemMenuWork *work) {
 // Shows whether the pocket is registered
 static void ItemMenu_UpdatePocketRegistration(ItemMenuWork *work) {
     if (work->movingItem != TRUE) {
-        ClActor_SetSequence(work->buttons[2],
+        ClActor_SetSequence(work->buttons[ITEMMENU_BUTTON_REGISTER],
                             GameData_IsShortcutRegistered(work->gameData, ItemMenu_GetPocketShortcut(work->pocket)) +
-                                6);
+                                ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF);
     }
 }
 
@@ -1866,15 +1952,15 @@ static void ItemMenu_UpdatePocketRegistration(ItemMenuWork *work) {
 static void ItemMenu_SetUseAction(ItemMenuWork *work, ItemData *data, BagItem *slot, u8 *actions) {
     if (PML_ItemGetParam(data, ITEM_PARAM_FIELD_FUNC)) {
         if (PML_ItemIsMail(slot->item) == TRUE) {
-            actions[0] = 2;
+            actions[0] = ITEMMENU_ACTION_READ_MAIL;
         } else if (slot->item == ITEM_BICYCLE && work->isCycling == TRUE) {
-            actions[0] = 1;
+            actions[0] = ITEMMENU_ACTION_DISMOUNT;
         } else {
-            actions[0] = 0;
+            actions[0] = ITEMMENU_ACTION_USE;
         }
     }
     if (slot->item == ITEM_LIGHT_STONE || slot->item == ITEM_DARK_STONE) {
-        actions[0] = 0;
+        actions[0] = ITEMMENU_ACTION_USE;
     }
 }
 
@@ -1888,45 +1974,49 @@ static void ItemMenu_GetItemActions(ItemMenuWork *work, u8 *actions) {
         data = PML_ItemReadDataFile(slot->item, ITEM_FILE_DATA, work->heapId);
         fieldPocket = PML_ItemGetParam(data, ITEM_PARAM_FIELD_POCKET);
         ItemMenu_SetUseAction(work, data, slot, actions);
-        if (ItemMenu_CanUseInMode(work, fieldPocket) == FALSE && actions[0] != 2) {
-            actions[0] = 0xff;
+        if (ItemMenu_CanUseInMode(work, fieldPocket) == FALSE && actions[0] != ITEMMENU_ACTION_READ_MAIL) {
+            actions[0] = ITEMMENU_ACTION_NONE;
         }
         if (PML_ItemGetParam(data, ITEM_PARAM_IMPORTANT) == 0) {
             if (PML_ItemIsNotSpecialMonsball(slot->item) == TRUE) {
-                actions[1] = 6;
+                actions[1] = ITEMMENU_ACTION_GIVE;
             }
             if (fieldPocket != BAG_POCKET_TMS_HMS) {
-                actions[2] = 3;
+                actions[2] = ITEMMENU_ACTION_TOSS;
             }
         }
         if (PML_ItemGetParam(data, ITEM_PARAM_REGISTRABLE)) {
             if (ItemMenu_IsItemRegistered(work, slot->item) == TRUE) {
-                actions[2] = 5;
+                actions[2] = ITEMMENU_ACTION_UNREGISTER;
             } else {
-                actions[2] = 4;
+                actions[2] = ITEMMENU_ACTION_REGISTER;
             }
         }
         if (work->pocket != BAG_POCKET_FREE_SPACE) {
-            actions[3] = 8;
+            actions[3] = ITEMMENU_ACTION_MOVE_FREE_SPACE;
         } else {
-            actions[3] = 9;
+            actions[3] = ITEMMENU_ACTION_RETURN_POCKET;
         }
-        actions[4] = 10;
+        actions[4] = ITEMMENU_ACTION_CANCEL;
         GFL_HeapFree(data);
     }
 }
 
 // Opens the item menu
 static void ItemMenu_OpenItemMenu(ItemMenuWork *work) {
-    u32 msgIds[] = { 0, 6, 16, 1, 2, 18, 3, 5, 145, 146, 8, 87, 0 };
+    u32 msgIds[] = { BtlMain_Text_Use,       BtlMain_Text_Walk,       BtlMain_Text_Check,  BtlMain_Text_Trash,
+                     BtlMain_Text_Register,  BtlMain_Text_Deselect,   BtlMain_Text_Give,   BtlMain_Text_Confirm,
+                     BtlMain_Text_FreeSpace, BtlMain_Text_ReturnCase, BtlMain_Text_Cancel, BtlMain_Text_Empty_59,
+                     BtlMain_Text_Use };
     u32 menuMsgIds[5];
-    u8 actions[5] = { 0xff, 0xff, 0xff, 0xff, 0xff };
+    u8 actions[5] = { ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE,
+                      ITEMMENU_ACTION_NONE };
     s32 i;
     s32 count;
 
     ItemMenu_GetItemActions(work, actions);
     for (i = 0, count = 0; i < 5; i++) {
-        if (actions[i] != 0xff) {
+        if (actions[i] != ITEMMENU_ACTION_NONE) {
             work->itemMenuActions[count] = actions[i];
             menuMsgIds[count] = msgIds[actions[i]];
             count++;
@@ -1934,8 +2024,8 @@ static void ItemMenu_OpenItemMenu(ItemMenuWork *work) {
     }
     if (ItemMenu_IsDowsingOn(work)) {
         for (i = 0; i < 5; i++) {
-            if (work->itemMenuActions[i] == 0) {
-                menuMsgIds[i] = 160;
+            if (work->itemMenuActions[i] == ITEMMENU_ACTION_USE) {
+                menuMsgIds[i] = BtlMain_Text_PutAway;
                 break;
             }
         }
@@ -1972,10 +2062,10 @@ static void ItemMenu_ButtonCallback(u32 button, u32 event, void *data) {
     s32 row;
     s32 from;
 
-    if (event != 0) {
+    if (event != BMN_EVENT_TOUCH) {
         return;
     }
-    if (button < 6) {
+    if (button < ITEMMENU_TOUCH_POCKET_LEFT) {
         s32 pockets[] = {
             BAG_POCKET_MEDICINE,  BAG_POCKET_TMS_HMS,    BAG_POCKET_BERRIES,
             BAG_POCKET_KEY_ITEMS, BAG_POCKET_FREE_SPACE, BAG_POCKET_ITEMS,
@@ -1985,29 +2075,29 @@ static void ItemMenu_ButtonCallback(u32 button, u32 event, void *data) {
             newPocket = pockets[button];
             ItemMenu_SetKeyMode(work, FALSE);
         }
-    } else if (button == 6) {
+    } else if (button == ITEMMENU_TOUCH_POCKET_LEFT) {
         ItemMenu_SetKeyMode(work, FALSE);
         pocket = work->pocket;
         if (--work->pocket < 0) {
-            work->pocket = 5;
+            work->pocket = BAG_POCKET_FREE_SPACE;
         }
         ItemMenu_PressPocketArrow(work, pocket, FALSE, ItemMenu_StatePocketArrowDone);
         return;
-    } else if (button == 7) {
+    } else if (button == ITEMMENU_TOUCH_POCKET_RIGHT) {
         ItemMenu_SetKeyMode(work, FALSE);
         pocket = work->pocket;
-        if (++work->pocket >= 6) {
-            work->pocket = 0;
+        if (++work->pocket >= BAG_POCKET_NONE) {
+            work->pocket = BAG_POCKET_ITEMS;
         }
         ItemMenu_PressPocketArrow(work, pocket, TRUE, ItemMenu_StatePocketArrowDone);
         return;
-    } else if (button == 8) {
+    } else if (button == ITEMMENU_TOUCH_SORT) {
         if (work->pocket != BAG_POCKET_FREE_SPACE) {
             if (ItemMenu_GetItemCount(work) > 1) {
                 ItemMenu_PressSortButton(work);
                 ItemMenu_SetKeyMode(work, FALSE);
                 ItemMenuDisp_SetBackButtonActive(work, FALSE);
-                work->drawnScroll = 0xffff;
+                work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
                 ItemMenu_UpdateList(work);
                 ItemMenu_SetState(work, ItemMenu_StateOpenSortMenu);
                 return;
@@ -2016,31 +2106,31 @@ static void ItemMenu_ButtonCallback(u32 button, u32 event, void *data) {
             ItemMenu_PressSortButton(work);
             ItemMenu_SetKeyMode(work, FALSE);
             ItemMenuDisp_SetBackButtonActive(work, FALSE);
-            work->drawnScroll = 0xffff;
+            work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
             ItemMenu_UpdateList(work);
             ItemMenu_SetState(work, ItemMenu_StateOpenFilterMenu);
             return;
         }
-    } else if (button == 9) {
+    } else if (button == ITEMMENU_TOUCH_REGISTER) {
         if (ItemMenu_CanRegister(work) == TRUE) {
             ItemMenu_TogglePocketRegistration(work);
             ItemMenu_SetKeyMode(work, FALSE);
-            work->drawnScroll = 0xffff;
+            work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
             ItemMenu_UpdateList(work);
         }
-    } else if (button == 10) {
-        if (work->mode != 2) {
-            work->result = 0;
+    } else if (button == ITEMMENU_TOUCH_CLOSE) {
+        if (work->mode != BAG_MODE_GIVE_ITEM) {
+            work->result = BAG_RESULT_CLOSE;
             work->item = ITEM_NONE;
-            ItemMenu_PressButton(work, 3, NULL);
+            ItemMenu_PressButton(work, ITEMMENU_BUTTON_CLOSE, NULL);
             GCTX_HIDSetUsingTouch(TRUE);
         }
-    } else if (button == 11) {
-        work->result = 1;
+    } else if (button == ITEMMENU_TOUCH_BACK) {
+        work->result = BAG_RESULT_BACK;
         work->item = ITEM_NONE;
-        ItemMenu_PressButton(work, 4, NULL);
+        ItemMenu_PressButton(work, ITEMMENU_BUTTON_BACK, NULL);
         GCTX_HIDSetUsingTouch(TRUE);
-    } else if (button >= 12 && button < 18) {
+    } else if (button >= ITEMMENU_TOUCH_ROW && button < ITEMMENU_TOUCH_REGISTER_ROW) {
         if (work->state != ItemMenu_StateList) {
             return;
         }
@@ -2049,8 +2139,8 @@ static void ItemMenu_ButtonCallback(u32 button, u32 event, void *data) {
         if (ItemMenu_GetItemCount(work) == 0) {
             return;
         }
-        if (work->cursorRow != button - 12) {
-            work->cursorRow = button - 12;
+        if (work->cursorRow != button - ITEMMENU_TOUCH_ROW) {
+            work->cursorRow = button - ITEMMENU_TOUCH_ROW;
             if (count <= ItemMenu_GetCursorIndex(work)) {
                 work->cursorRow = row;
                 return;
@@ -2058,13 +2148,14 @@ static void ItemMenu_ButtonCallback(u32 button, u32 event, void *data) {
         }
         ItemMenu_MoveItem(work, from, ItemMenu_GetCursorIndex(work));
         ItemMenu_SetKeyMode(work, FALSE);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
         ItemMenuDisp_DrawItemInfo(work);
         ItemMenu_SetState(work, ItemMenu_StateFlashCursor);
         return;
-    } else if (button >= 18) {
-        if (ItemMenu_CanRegister(work) == TRUE && ItemMenu_ToggleItemRegistration(work, button - 18) == TRUE) {
+    } else if (button >= ITEMMENU_TOUCH_REGISTER_ROW) {
+        if (ItemMenu_CanRegister(work) == TRUE &&
+            ItemMenu_ToggleItemRegistration(work, button - ITEMMENU_TOUCH_REGISTER_ROW) == TRUE) {
             ItemMenu_SetKeyMode(work, FALSE);
             ItemMenu_UpdateList(work);
         }
@@ -2076,7 +2167,7 @@ static void ItemMenu_ButtonCallback(u32 button, u32 event, void *data) {
         ItemMenu_ChangePocket(work, pocket, work->pocket);
         ItemMenu_ResetFreeSpaceFilter(work);
         ItemMenu_SetKeyMode(work, FALSE);
-        work->drawnScroll = 0xffff;
+        work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
         ItemMenu_UpdateList(work);
     }
 }
@@ -2084,12 +2175,12 @@ static void ItemMenu_ButtonCallback(u32 button, u32 event, void *data) {
 static void ItemMenu_VBlank(TCB *tcb, void *data) {
     ItemMenuWork *work = data;
 
-    if (work->tmInfoRequest == 1) {
+    if (work->tmInfoRequest == ITEMMENU_TM_INFO_SHOW) {
         ItemMenuDisp_ShowTMInfoBGs(work, TRUE);
-        work->tmInfoRequest = 0;
-    } else if (work->tmInfoRequest == 2) {
+        work->tmInfoRequest = ITEMMENU_TM_INFO_NONE;
+    } else if (work->tmInfoRequest == ITEMMENU_TM_INFO_HIDE) {
         ItemMenuDisp_ShowTMInfoBGs(work, FALSE);
-        work->tmInfoRequest = 0;
+        work->tmInfoRequest = ITEMMENU_TM_INFO_NONE;
     }
     PaletteFade_Transfer(work->paletteFade);
     ClActSys_VBlank();
@@ -2098,7 +2189,7 @@ static void ItemMenu_VBlank(TCB *tcb, void *data) {
 // Fades the bag in
 static void ItemMenu_StateFadeIn(ItemMenuWork *work) {
     if (PrintQueue_IsEmpty(work->printQueue)) {
-        GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, 0, 6, 1, work->heapId);
+        GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, work->heapId);
         GFL_SndSEPlay(SEQ_SE_SYS_90);
         ItemMenu_SetState(work, ItemMenu_StateWaitFadeIn);
     }
@@ -2174,7 +2265,7 @@ static BOOL ItemMenuProc_Init(GameProc *proc, u32 *state, void *param, void *dat
     sortItemBlocks(work->bag);
     BagItemList_Init(&work->itemList, bag->bag, work->freeSpaceFilter, work->heapId);
     work->pocket = BagCursor_GetPocket(work->cursor);
-    for (pocket = 0; pocket < 6; pocket++) {
+    for (pocket = 0; pocket < BAG_POCKET_NONE; pocket++) {
         BagCursor_GetPocketPosition(work->cursor, pocket, &row, &scroll);
         count = BagItemList_CountShown(&work->itemList, pocket);
         while (TRUE) {
@@ -2206,7 +2297,7 @@ static BOOL ItemMenuProc_Init(GameProc *proc, u32 *state, void *param, void *dat
     work->wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     work->printQueue = PrintQueue_Create(0x1000, work->heapId);
     work->keyCursor = KeyCursor_Create(15, TRUE, TRUE, work->heapId);
-    work->font = GFL_FontCreate(23, 0, 0, FALSE, work->heapId);
+    work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, work->heapId);
     ItemMenuDisp_Init(work);
     ItemMenuDisp_CreateWindows(work);
     ItemMenuDisp_LoadListRes(work);
@@ -2231,7 +2322,7 @@ static BOOL ItemMenuProc_Main(GameProc *proc, u32 *state, void *param, void *dat
     ItemMenuWork *work = data;
 
     if (work->state == NULL) {
-        GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0, 6, 1, work->heapId);
+        GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, WIPE_COLOR_BLACK, 6, 1, work->heapId);
         return TRUE;
     }
     work->drawnScroll = work->scroll;
@@ -2310,7 +2401,7 @@ static void ItemMenu_StartMoveItem(ItemMenuWork *work) {
 static void ItemMenu_CreatePaletteAnim(ItemMenuWork *work) {
     ArcTool *arc;
 
-    work->paletteAnim = BlinkPalAnm_Create(16, 16, 0xfffe, work->heapId);
+    work->paletteAnim = BlinkPalAnm_Create(16, 16, BLINK_PALANM_OBJ_MAIN, work->heapId);
     arc = GFL_ArcSysCreateFileHandle(ARCID_ITEMMENU, work->heapId);
     BlinkPalAnm_SetPalBufferArcTool(work->paletteAnim, arc, 21, 16, 32);
     GFL_ArcToolFree(arc);
@@ -2323,30 +2414,30 @@ static void ItemMenu_FreePaletteAnim(ItemMenuWork *work) {
 // Flashes the cursor on the picked item, then opens the item's menu
 static void ItemMenu_StateFlashCursor(ItemMenuWork *work) {
     switch (work->buttonAnim) {
-    case 0:
+    case ITEMMENU_FLASH_OFF_FIRST:
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         // fallthrough
-    case 3:
-        ItemMenuDisp_SetListCursorPalette(work, 0);
+    case ITEMMENU_FLASH_OFF_SECOND:
+        ItemMenuDisp_SetListCursorPalette(work, ITEMMENU_CURSOR_PALETTE_OFF);
         work->buttonAnim++;
         break;
-    case 1:
-    case 4:
-    case 6:
+    case ITEMMENU_FLASH_WAIT_FIRST:
+    case ITEMMENU_FLASH_WAIT_SECOND:
+    case ITEMMENU_FLASH_WAIT_RESTORE:
         work->buttonAnimTimer++;
         if (work->buttonAnimTimer == 4) {
             work->buttonAnimTimer = 0;
             work->buttonAnim++;
         }
         break;
-    case 2:
-    case 5:
-        ItemMenuDisp_SetListCursorPalette(work, 2);
+    case ITEMMENU_FLASH_PRESS_FIRST:
+    case ITEMMENU_FLASH_PRESS_SECOND:
+        ItemMenuDisp_SetListCursorPalette(work, ITEMMENU_CURSOR_PALETTE_PRESS);
         work->buttonAnim++;
         break;
-    case 7:
-        work->buttonAnim = 0;
-        ItemMenuDisp_SetListCursorPalette(work, 1);
+    case ITEMMENU_FLASH_RESTORE:
+        work->buttonAnim = ITEMMENU_FLASH_OFF_FIRST;
+        ItemMenuDisp_SetListCursorPalette(work, ITEMMENU_CURSOR_PALETTE_ON);
         BlinkPalAnm_InitAnime(work->paletteAnim);
         BlinkPalAnm_Main(work->paletteAnim);
         ItemMenu_SetState(work, ItemMenu_StateSelectItem);
@@ -2358,18 +2449,18 @@ static void ItemMenu_StateFlashCursor(ItemMenuWork *work) {
 static void ItemMenu_PressButton(ItemMenuWork *work, u32 button, ItemMenuState next) {
     u32 anim;
 
-    if (button == 4) {
+    if (button == ITEMMENU_BUTTON_BACK) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
-        anim = 9;
-    } else if (button == 3) {
+        anim = ITEMMENU_TOUCHBAR_ANM_BACK_PRESS;
+    } else if (button == ITEMMENU_BUTTON_CLOSE) {
         GFL_SndSEPlay(SEQ_SE_CLOSE1);
-        anim = 8;
-    } else if (button == 1) {
+        anim = ITEMMENU_TOUCHBAR_ANM_CLOSE_PRESS;
+    } else if (button == ITEMMENU_BUTTON_POCKET_RIGHT) {
         GFL_SndSEPlay(SEQ_SE_SYS_99);
-        anim = 13;
-    } else if (button == 0) {
+        anim = ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT_PRESS;
+    } else if (button == ITEMMENU_BUTTON_POCKET_LEFT) {
         GFL_SndSEPlay(SEQ_SE_SYS_99);
-        anim = 12;
+        anim = ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT_PRESS;
     }
     work->buttonAnim = button;
     ClActor_SetAnimTime(work->buttons[work->buttonAnim], 0);
@@ -2393,14 +2484,14 @@ static void ItemMenu_PressPocketArrow(ItemMenuWork *work, s32 oldPocket, BOOL ri
     ItemMenu_ChangePocket(work, oldPocket, work->pocket);
     ItemMenu_ResetFreeSpaceFilter(work);
     ItemMenu_UpdatePocketRegistration(work);
-    work->drawnScroll = 0xffff;
+    work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
     ItemMenu_UpdateList(work);
     if (right == TRUE) {
         GFL_SndSEPlay(SEQ_SE_SYS_99);
-        anim = 13;
+        anim = ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT_PRESS;
     } else if (right == FALSE) {
         GFL_SndSEPlay(SEQ_SE_SYS_99);
-        anim = 12;
+        anim = ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT_PRESS;
     }
     work->buttonAnim = right;
     work->buttonAnimTimer = 6;
@@ -2455,21 +2546,21 @@ static void ItemMenu_StateSellCancel(ItemMenuWork *work) {
 
 static void ItemMenu_CreatePaletteFade(ItemMenuWork *work) {
     work->paletteFade = PaletteFade_Create(work->heapId);
-    PaletteFade_AllocBuffer(work->paletteFade, 2, 0x200, work->heapId);
-    PaletteFade_AllocBuffer(work->paletteFade, 0, 0x20, work->heapId);
-    PaletteFade_LoadFromVRAM(work->paletteFade, 0, 0, 0x20);
+    PaletteFade_AllocBuffer(work->paletteFade, PALFADE_BUFFER_MAIN_OBJ, 0x200, work->heapId);
+    PaletteFade_AllocBuffer(work->paletteFade, PALFADE_BUFFER_MAIN_BG, 0x20, work->heapId);
+    PaletteFade_LoadFromVRAM(work->paletteFade, PALFADE_VRAM_MAIN_BG, 0, 0x20);
 }
 
 static void ItemMenu_FreePaletteFade(ItemMenuWork *work) {
-    PaletteFade_FreeBuffer(work->paletteFade, 0);
-    PaletteFade_FreeBuffer(work->paletteFade, 2);
+    PaletteFade_FreeBuffer(work->paletteFade, PALFADE_BUFFER_MAIN_BG);
+    PaletteFade_FreeBuffer(work->paletteFade, PALFADE_BUFFER_MAIN_OBJ);
     PaletteFade_Free(work->paletteFade);
 }
 
 // Opens the sort menu once its button is up
 static void ItemMenu_StateOpenSortMenu(ItemMenuWork *work) {
     if (ClActor_IsAnimActive(work->sortButton) == FALSE) {
-        ClActor_SetSequence(work->sortButton, 0);
+        ClActor_SetSequence(work->sortButton, ITEMMENU_SORT_ANM_READY);
         ClActor_SetAutoAnim(work->scrollBar, FALSE);
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_HowWantSortItems, work->expandBuf);
         ItemMenuDisp_ShowMessage(work, FALSE);
@@ -2480,15 +2571,17 @@ static void ItemMenu_StateOpenSortMenu(ItemMenuWork *work) {
 }
 
 static void ItemMenu_OpenSortMenu(ItemMenuWork *work) {
-    u32 msgIds[] = { 152, 156, 153, 154, 155, 8 };
+    u32 msgIds[] = { BtlMain_Text_ByType,   BtlMain_Text_ByNumber,   BtlMain_Text_ByName,
+                     BtlMain_Text_FromMost, BtlMain_Text_FromFewest, BtlMain_Text_Cancel };
     u32 menuMsgIds[5];
-    u8 actions[5] = { 0xff, 0xff, 0xff, 0xff, 0xff };
+    u8 actions[5] = { ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE,
+                      ITEMMENU_ACTION_NONE };
     s32 i;
     s32 count;
 
     ItemMenu_GetSortActions(work, actions);
     for (i = 0, count = 0; i < 5; i++) {
-        if (actions[i] != 0xff) {
+        if (actions[i] != ITEMMENU_ACTION_NONE) {
             work->sortMenuActions[count] = actions[i];
             menuMsgIds[count] = msgIds[actions[i]];
             count++;
@@ -2501,16 +2594,16 @@ static void ItemMenu_OpenSortMenu(ItemMenuWork *work) {
 static void ItemMenu_GetSortActions(ItemMenuWork *work, u8 *actions) {
     if (work->pocket == BAG_POCKET_ITEMS || work->pocket == BAG_POCKET_MEDICINE || work->pocket == BAG_POCKET_BERRIES ||
         work->pocket == BAG_POCKET_KEY_ITEMS) {
-        actions[0] = 0;
+        actions[0] = ITEMMENU_SORT_TYPE;
     } else {
-        actions[0] = 1;
+        actions[0] = ITEMMENU_SORT_NUMBER;
     }
     if (work->pocket == BAG_POCKET_ITEMS || work->pocket == BAG_POCKET_MEDICINE || work->pocket == BAG_POCKET_BERRIES) {
-        actions[2] = 3;
-        actions[3] = 4;
+        actions[2] = ITEMMENU_SORT_MOST_HELD;
+        actions[3] = ITEMMENU_SORT_FEWEST_HELD;
     }
-    actions[1] = 2;
-    actions[4] = 5;
+    actions[1] = ITEMMENU_SORT_NAME;
+    actions[4] = ITEMMENU_SORT_CANCEL;
 }
 
 // The sort menu, once the player picked from it
@@ -2521,37 +2614,37 @@ static void ItemMenu_StateSortMenu(ItemMenuWork *work) {
         if (AppTaskMenu_IsFlashFinished(work->taskMenu)) {
             work->menuAction = work->sortMenuActions[AppTaskMenu_GetCursorPos(work->taskMenu)];
             switch (work->menuAction) {
-            case 0:
+            case ITEMMENU_SORT_TYPE:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
-                ItemMenu_Sort(work, 0);
+                ItemMenu_Sort(work, ITEMMENU_SORT_TYPE);
                 ItemMenu_SetState(work, ItemMenu_StateSortDone);
                 done = TRUE;
                 break;
-            case 1:
+            case ITEMMENU_SORT_NUMBER:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
-                ItemMenu_Sort(work, 1);
+                ItemMenu_Sort(work, ITEMMENU_SORT_NUMBER);
                 ItemMenu_SetState(work, ItemMenu_StateSortDone);
                 done = TRUE;
                 break;
-            case 2:
+            case ITEMMENU_SORT_NAME:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
-                ItemMenu_Sort(work, 2);
+                ItemMenu_Sort(work, ITEMMENU_SORT_NAME);
                 ItemMenu_SetState(work, ItemMenu_StateSortDone);
                 done = TRUE;
                 break;
-            case 3:
+            case ITEMMENU_SORT_MOST_HELD:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
-                ItemMenu_Sort(work, 3);
+                ItemMenu_Sort(work, ITEMMENU_SORT_MOST_HELD);
                 ItemMenu_SetState(work, ItemMenu_StateSortDone);
                 done = TRUE;
                 break;
-            case 4:
+            case ITEMMENU_SORT_FEWEST_HELD:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
-                ItemMenu_Sort(work, 4);
+                ItemMenu_Sort(work, ITEMMENU_SORT_FEWEST_HELD);
                 ItemMenu_SetState(work, ItemMenu_StateSortDone);
                 done = TRUE;
                 break;
-            case 5:
+            case ITEMMENU_SORT_CANCEL:
                 if (GCTX_HIDIsUsingTouch() == TRUE) {
                     ItemMenuDisp_HideItemInfo(work);
                 } else {
@@ -2576,19 +2669,19 @@ static void ItemMenu_StateSortMenu(ItemMenuWork *work) {
 // Says how the pocket was sorted
 static void ItemMenu_StateSortDone(ItemMenuWork *work) {
     switch (work->sortType) {
-    case 0:
+    case ITEMMENU_SORT_TYPE:
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_SortedItemsByType, work->expandBuf);
         break;
-    case 1:
+    case ITEMMENU_SORT_NUMBER:
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_SortedItemsByNumber, work->expandBuf);
         break;
-    case 2:
+    case ITEMMENU_SORT_NAME:
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_SortedItemsByName, work->expandBuf);
         break;
-    case 3:
+    case ITEMMENU_SORT_MOST_HELD:
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_SortedItemsFromMost, work->expandBuf);
         break;
-    case 4:
+    case ITEMMENU_SORT_FEWEST_HELD:
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_SortedItemsFromFewest, work->expandBuf);
         break;
     default:
@@ -2648,7 +2741,7 @@ static void ItemMenu_StateFilterDone(ItemMenuWork *work) {
 // Opens the Free Space's filter menu once its button is up
 static void ItemMenu_StateOpenFilterMenu(ItemMenuWork *work) {
     if (ClActor_IsAnimActive(work->filterButton) == FALSE) {
-        ClActor_SetSequence(work->filterButton, 2);
+        ClActor_SetSequence(work->filterButton, ITEMMENU_FILTER_ANM_DISABLED);
         ClActor_SetAutoAnim(work->scrollBar, FALSE);
         GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_SelectTypeItemWant, work->expandBuf);
         ItemMenuDisp_ShowMessage(work, FALSE);
@@ -2659,14 +2752,15 @@ static void ItemMenu_StateOpenFilterMenu(ItemMenuWork *work) {
 }
 
 static void ItemMenu_OpenFilterMenu(ItemMenuWork *work) {
-    u8 actions[7] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+    u8 actions[7] = { ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE,
+                      ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE, ITEMMENU_ACTION_NONE };
     BmpWin *window;
     s32 i;
     s32 count;
 
     ItemMenu_GetFilterActions(work, actions);
     for (i = 0, count = 0; i < 7; i++) {
-        if (actions[i] != 0xff) {
+        if (actions[i] != ITEMMENU_ACTION_NONE) {
             work->freeSpaceMenuActions[count] = actions[i];
             count++;
         }
@@ -2680,29 +2774,29 @@ static void ItemMenu_OpenFilterMenu(ItemMenuWork *work) {
 // The filters the Free Space offers: those of the pockets it holds items of, but not the current one
 static void ItemMenu_GetFilterActions(ItemMenuWork *work, u8 *actions) {
     if (work->freeSpaceFilter != BAG_ITEM_FILTER_ALL) {
-        actions[0] = 5;
+        actions[0] = ITEMMENU_FILTER_ACTION_ALL;
     }
     if (work->freeSpaceFilter != BAG_ITEM_FILTER_ITEMS &&
         BagItemList_CountInPocket(&work->itemList, BAG_POCKET_ITEMS) > 0) {
-        actions[1] = 0;
+        actions[1] = BAG_POCKET_ITEMS;
     }
     if (work->freeSpaceFilter != BAG_ITEM_FILTER_MEDICINE &&
         BagItemList_CountInPocket(&work->itemList, BAG_POCKET_MEDICINE) > 0) {
-        actions[2] = 1;
+        actions[2] = BAG_POCKET_MEDICINE;
     }
     if (work->freeSpaceFilter != BAG_ITEM_FILTER_TMS_HMS &&
         BagItemList_CountInPocket(&work->itemList, BAG_POCKET_TMS_HMS) > 0) {
-        actions[3] = 2;
+        actions[3] = BAG_POCKET_TMS_HMS;
     }
     if (work->freeSpaceFilter != BAG_ITEM_FILTER_BERRIES &&
         BagItemList_CountInPocket(&work->itemList, BAG_POCKET_BERRIES) > 0) {
-        actions[4] = 3;
+        actions[4] = BAG_POCKET_BERRIES;
     }
     if (work->freeSpaceFilter != BAG_ITEM_FILTER_KEY_ITEMS &&
         BagItemList_CountInPocket(&work->itemList, BAG_POCKET_KEY_ITEMS) > 0) {
-        actions[5] = 4;
+        actions[5] = BAG_POCKET_KEY_ITEMS;
     }
-    actions[6] = 6;
+    actions[6] = ITEMMENU_FILTER_ACTION_CANCEL;
 }
 
 // The number of entries of the Free Space's filter menu
@@ -2743,43 +2837,43 @@ static void ItemMenu_StateFilterMenu(ItemMenuWork *work) {
         if (AppTaskMenu_IsFlashFinished(work->taskMenu)) {
             work->menuAction = work->freeSpaceMenuActions[AppTaskMenu_GetCursorPos(work->taskMenu)];
             switch (work->menuAction) {
-            case 5:
+            case ITEMMENU_FILTER_ACTION_ALL:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
                 ItemMenu_ChangeFreeSpaceFilter(work, BAG_ITEM_FILTER_ALL);
                 ItemMenu_SetState(work, ItemMenu_StateFilterDone);
                 done = TRUE;
                 break;
-            case 0:
+            case BAG_POCKET_ITEMS:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
                 ItemMenu_ChangeFreeSpaceFilter(work, BAG_ITEM_FILTER_ITEMS);
                 ItemMenu_SetState(work, ItemMenu_StateFilterDone);
                 done = TRUE;
                 break;
-            case 1:
+            case BAG_POCKET_MEDICINE:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
                 ItemMenu_ChangeFreeSpaceFilter(work, BAG_ITEM_FILTER_MEDICINE);
                 ItemMenu_SetState(work, ItemMenu_StateFilterDone);
                 done = TRUE;
                 break;
-            case 2:
+            case BAG_POCKET_TMS_HMS:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
                 ItemMenu_ChangeFreeSpaceFilter(work, BAG_ITEM_FILTER_TMS_HMS);
                 ItemMenu_SetState(work, ItemMenu_StateFilterDone);
                 done = TRUE;
                 break;
-            case 3:
+            case BAG_POCKET_BERRIES:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
                 ItemMenu_ChangeFreeSpaceFilter(work, BAG_ITEM_FILTER_BERRIES);
                 ItemMenu_SetState(work, ItemMenu_StateFilterDone);
                 done = TRUE;
                 break;
-            case 4:
+            case BAG_POCKET_KEY_ITEMS:
                 GFL_SndSEPlay(SEQ_SE_SYS_36);
                 ItemMenu_ChangeFreeSpaceFilter(work, BAG_ITEM_FILTER_KEY_ITEMS);
                 ItemMenu_SetState(work, ItemMenu_StateFilterDone);
                 done = TRUE;
                 break;
-            case 6:
+            case ITEMMENU_FILTER_ACTION_CANCEL:
                 if (GCTX_HIDIsUsingTouch() == TRUE) {
                     ItemMenuDisp_HideItemInfo(work);
                 } else {
@@ -2810,7 +2904,7 @@ static void ItemMenu_StateSortWaitMessage(ItemMenuWork *work) {
     } else {
         return;
     }
-    work->drawnScroll = 0xffff;
+    work->drawnScroll = ITEMMENU_DRAWN_SCROLL_INVALID;
     ItemMenuDisp_UpdateScrollBar(work);
     ItemMenu_UpdateList(work);
     ItemMenuDisp_ClearMsgWindow(work);
@@ -2821,7 +2915,7 @@ static void ItemMenu_StateSortWaitMessage(ItemMenuWork *work) {
 
 // Whether an item of a field pocket can be used in the bag's mode
 static BOOL ItemMenu_CanUseInMode(ItemMenuWork *work, u8 fieldPocket) {
-    if (work->mode == 3 || work->mode == 1) {
+    if (work->mode == BAG_MODE_COLOSSEUM || work->mode == BAG_MODE_UNION_ROOM) {
         return FALSE;
     }
     if (GameData_IsForceSeasonSync(work->gameData) == TRUE && fieldPocket == BAG_POCKET_KEY_ITEMS) {
@@ -2837,21 +2931,63 @@ static void ItemMenu_StatePocketArrowDone(ItemMenuWork *work) {
 // Whether the Free Space keeps its filter after the bag closes, by the bag's mode and the result
 static void ItemMenu_SaveFreeSpaceFilter(BagCursor *cursor, u32 mode, u32 result, u32 freeSpaceFilter) {
     u8 keepFilter[6][23] = {
-        { 1, 1, 2, 2, 0, 2, 2, 2, 2, 0, 1, 1, 2, 0, 1, 1, 1, 2, 2, 2, 1, 2, 2 },
-        { 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0 },
-        { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 },
-        { 1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0 },
-        { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_CURRENT,
+          ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_CURRENT,
+          ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_CURRENT,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,
+          ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_RESET,
+          ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_CURRENT,
+          ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_RESET,
+          ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_CURRENT },
+        { ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_CURRENT,
+          ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED },
+        { ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,
+          ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED },
+        { ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_CURRENT,
+          ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_CURRENT,   ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED },
+        { ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED },
+        { ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_RESET,     ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED,
+          ITEMMENU_FILTER_SAVE_UNCHANGED, ITEMMENU_FILTER_SAVE_UNCHANGED },
     };
 
     switch (keepFilter[mode][result]) {
-    case 0:
+    case ITEMMENU_FILTER_SAVE_UNCHANGED:
         break;
-    case 1:
+    case ITEMMENU_FILTER_SAVE_RESET:
         BagCursor_SetFreeSpaceFilter(cursor, BAG_ITEM_FILTER_ALL);
         break;
-    case 2:
+    case ITEMMENU_FILTER_SAVE_CURRENT:
         BagCursor_SetFreeSpaceFilter(cursor, freeSpaceFilter);
         break;
     }

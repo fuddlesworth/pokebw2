@@ -20,6 +20,91 @@
 
 // The bag's work, in overlay 142 (itemmenu.c). itemmenu_disp.c draws it
 
+// Forces the next list draw, outside the range of any scroll position
+#define ITEMMENU_DRAWN_SCROLL_INVALID 0xffff
+
+// The quantity picker: tossing items or selling them
+enum {
+    ITEMMENU_QUANTITY_TOSS = 1,
+    ITEMMENU_QUANTITY_SELL = 2,
+};
+
+// The TM panel change performed by the VBlank task
+enum {
+    ITEMMENU_TM_INFO_NONE = 0,
+    ITEMMENU_TM_INFO_SHOW = 1,
+    ITEMMENU_TM_INFO_HIDE = 2,
+};
+
+// The palette of the row under the cursor
+enum {
+    ITEMMENU_CURSOR_PALETTE_OFF = 0,
+    ITEMMENU_CURSOR_PALETTE_ON = 1,
+    ITEMMENU_CURSOR_PALETTE_PRESS = 2,
+};
+
+// The actors in buttons
+enum {
+    ITEMMENU_BUTTON_POCKET_LEFT = 0,
+    ITEMMENU_BUTTON_POCKET_RIGHT = 1,
+    ITEMMENU_BUTTON_REGISTER = 2,
+    ITEMMENU_BUTTON_CLOSE = 3,
+    ITEMMENU_BUTTON_BACK = 4,
+    ITEMMENU_BUTTON_QUANTITY_UP = 5,
+    ITEMMENU_BUTTON_QUANTITY_DOWN = 6,
+};
+
+// The filter menu's extra actions; the others are BAG_POCKET_* values
+enum {
+    ITEMMENU_FILTER_ACTION_ALL = 5,
+    ITEMMENU_FILTER_ACTION_CANCEL = 6,
+};
+
+// The list cursor resource's animation sequences
+enum {
+    ITEMMENU_LIST_ANM_SCROLL_BAR = 0,
+    ITEMMENU_LIST_ANM_CURSOR = 1,
+    ITEMMENU_LIST_ANM_MOVE_CURSOR = 2,
+};
+
+// The touch bar resource's animation sequences
+enum {
+    ITEMMENU_TOUCHBAR_ANM_CLOSE = 0,
+    ITEMMENU_TOUCHBAR_ANM_BACK = 1,
+    ITEMMENU_TOUCHBAR_ANM_QUANTITY_DOWN = 2,
+    ITEMMENU_TOUCHBAR_ANM_QUANTITY_UP = 3,
+    ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT = 4,
+    ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT = 5,
+    ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF = 6,
+    ITEMMENU_TOUCHBAR_ANM_REGISTER_ON = 7,
+    ITEMMENU_TOUCHBAR_ANM_CLOSE_PRESS = 8,
+    ITEMMENU_TOUCHBAR_ANM_BACK_PRESS = 9,
+    ITEMMENU_TOUCHBAR_ANM_QUANTITY_DOWN_PRESS = 10,
+    ITEMMENU_TOUCHBAR_ANM_QUANTITY_UP_PRESS = 11,
+    ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT_PRESS = 12,
+    ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT_PRESS = 13,
+    ITEMMENU_TOUCHBAR_ANM_CLOSE_DISABLED = 14,
+    ITEMMENU_TOUCHBAR_ANM_BACK_DISABLED = 15,
+    ITEMMENU_TOUCHBAR_ANM_POCKET_LEFT_DISABLED = 18,
+    ITEMMENU_TOUCHBAR_ANM_POCKET_RIGHT_DISABLED = 19,
+    ITEMMENU_TOUCHBAR_ANM_REGISTER_OFF_DISABLED = 21,
+    ITEMMENU_TOUCHBAR_ANM_REGISTER_ON_DISABLED = 22,
+};
+
+// The sort button resource's animation sequences
+enum {
+    ITEMMENU_SORT_ANM_READY = 0,
+    ITEMMENU_SORT_ANM_PRESS = 2,
+    ITEMMENU_SORT_ANM_DISABLED = 4,
+};
+
+// The filter button resource's animation sequences
+enum {
+    ITEMMENU_FILTER_ANM_READY = 0,
+    ITEMMENU_FILTER_ANM_PRESS = 1,
+    ITEMMENU_FILTER_ANM_DISABLED = 2,
+};
+
 // The number of rows the item list shows
 #define ITEMMENU_LIST_ROWS 6
 // The rows of OBJ the list draws its items with, one more above and below the rows it shows
