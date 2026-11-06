@@ -34855,6 +34855,13 @@ overlays/ov286 0x021f6d08 BBagUi_CallbackCursorOff
 overlays/ov286 0x021f6d14 BBagUi_CallbackTouch
 overlays/ov286 0x021f6d20 BBagUi_CallbackMove
 overlays/ov286 0x021f6d28 BBagUi_CallbackItemsCursorOn
+overlays/ov286 0x021f6d54 sBBagUsePageWindows
+overlays/ov286 0x021f6d59 sBBagPocketPageWindows
+overlays/ov286 0x021f6d5f sBBagMessageWindowLayout
+overlays/ov286 0x021f6d65 sBBagSecondListWindows
+overlays/ov286 0x021f6d74 sBBagFirstListWindows
+overlays/ov286 0x021f6d84 sBBagSlotMessages
+overlays/ov286 0x021f6db4 sBBagWindowLayouts
 overlays/ov287 0x021f4440 BPlistAnm_CutButtonScrn
 overlays/ov287 0x021f46d4 BPlistAnm_CutPageScrn
 overlays/ov287 0x021f4780 BPlistAnm_CopyScrnRect
