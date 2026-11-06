@@ -7,6 +7,26 @@
 // pokedex_search_obj.c: the actors of the Pokédex's search screen. The ROM doesn't name this file; pokedex_search_obj.c
 // is a guess after pokedex_search_main.c. The names are ours
 
+// The touch bar resource's animation sequences
+enum {
+    POKEDEX_SEARCH_TOUCHBAR_ANM_EXIT = 0,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN = 1,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP = 4,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN = 5,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_OFF = 6,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_ON = 7,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_EXIT_PRESS = 8,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_PRESS = 9,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS = 12,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS = 13,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_EXIT_SEARCHING = 14,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN_SEARCHING = 15,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_DISABLED = 18,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_DISABLED = 19,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_OFF_SEARCHING = 21,
+    POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_ON_SEARCHING = 22,
+};
+
 void PokedexSearchObj_Init(PokedexSearchWork *wk);
 void PokedexSearchObj_Exit(PokedexSearchWork *wk);
 void PokedexSearchObj_Update(PokedexSearchWork *wk);
