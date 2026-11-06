@@ -62,7 +62,7 @@ void DWCRap_StopVoiceChat(void);
 // Whether the voice chat is on
 int DWCRap_IsVoiceChatActive(void);
 void DWCRap_ResetVoiceChat(void);
-void DWCRap_SetMic(BOOL a0);
+void DWCRap_SetMic(BOOL on);
 // The message in TEXT_BANK_WIFI_ERROR for a Wi-Fi library error, from its code and type
 int DWCRap_GetErrorKind(int code, int type);
 // Closes the connection, or with checkOnly only checks on it; TRUE when it is already ready or ended
