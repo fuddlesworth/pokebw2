@@ -2,6 +2,7 @@
 #include "battle/b_bag_item.h"
 #include "battle/b_bag_main.h"
 #include "constants/arc.h"
+#include "constants/items.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "system/bgwinfrm.h"
@@ -18,7 +19,7 @@ typedef struct {
 } BBagButton;
 
 // The buttons: 0-3 the pockets, 4-9 the item slots, 10 back, 11 and 12 the previous and next page, 13 the wide bar
-static const BBagButton data_ov286_021f6e90[14] = {
+static const BBagButton sBBagButtonLayouts[BBAG_BUTTON_MAX] = {
     { 5, 16, 8 }, { 6, 16, 8 }, { 7, 16, 8 }, { 8, 16, 8 }, { 9, 16, 6 }, { 9, 16, 6 }, { 9, 16, 6 },
     { 9, 16, 6 }, { 9, 16, 6 }, { 9, 16, 6 }, { 12, 5, 5 }, { 10, 5, 5 }, { 11, 5, 5 }, { 13, 25, 5 },
 };
@@ -27,27 +28,27 @@ void BBagAnm_CreateButtons(BBagWork *work) {
     ArcTool *arc;
     u32 i;
 
-    work->buttons = BGWinFrame_Create(2, 14, work->param->heapId);
+    work->buttons = BGWinFrame_Create(2, BBAG_BUTTON_MAX, work->param->heapId);
     arc = GFL_ArcSysCreateFileHandle(ARCID_B_BAG, HEAPID_TAIL(work->param->heapId));
-    for (i = 0; i < 14; i++) {
-        BGWinFrame_InitFrame(work->buttons, i, 6, data_ov286_021f6e90[i].width, data_ov286_021f6e90[i].height);
+    for (i = 0; i < BBAG_BUTTON_MAX; i++) {
+        BGWinFrame_InitFrame(work->buttons, i, 6, sBBagButtonLayouts[i].width, sBBagButtonLayouts[i].height);
         BGWinFrame_SetArea(work->buttons, i, 0, 64, 0, 64);
-        BGWinFrame_LoadScreenArc(work->buttons, i, arc, data_ov286_021f6e90[i].member, TRUE);
+        BGWinFrame_LoadScreenArc(work->buttons, i, arc, sBBagButtonLayouts[i].member, TRUE);
     }
     GFL_ArcToolFree(arc);
 
-    BGWinFrame_Put(work->buttons, 0, 0, 1);
-    BGWinFrame_Put(work->buttons, 1, 0, 10);
-    BGWinFrame_Put(work->buttons, 2, 16, 1);
-    BGWinFrame_Put(work->buttons, 3, 16, 10);
-    BGWinFrame_Put(work->buttons, 4, 32, 1);
-    BGWinFrame_Put(work->buttons, 5, 48, 1);
-    BGWinFrame_Put(work->buttons, 6, 32, 7);
-    BGWinFrame_Put(work->buttons, 7, 48, 7);
-    BGWinFrame_Put(work->buttons, 8, 32, 13);
-    BGWinFrame_Put(work->buttons, 9, 48, 13);
-    BGWinFrame_Put(work->buttons, 11, 32, 19);
-    BGWinFrame_Put(work->buttons, 12, 37, 19);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_POCKET_HP_PP, 0, 1);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_POCKET_STATUS, 0, 10);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_POCKET_BALLS, 16, 1);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_POCKET_BATTLE_ITEMS, 16, 10);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_ITEM, 32, 1);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_ITEM + 1, 48, 1);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_ITEM + 2, 32, 7);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_ITEM + 3, 48, 7);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_ITEM + 4, 32, 13);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_ITEM + 5, 48, 13);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_PREV_PAGE, 32, 19);
+    BGWinFrame_Put(work->buttons, BBAG_BUTTON_NEXT_PAGE, 37, 19);
 }
 
 void BBagAnm_DeleteButtons(BBagWork *work) {
@@ -58,66 +59,68 @@ void BBagAnm_DeleteButtons(BBagWork *work) {
 void BBagAnm_PutPageButtons(BBagWork *work, u8 page) {
     u32 i;
 
-    for (i = 0; i < 14; i++) {
+    for (i = 0; i < BBAG_BUTTON_MAX; i++) {
         BGWinFrame_Hide(work->buttons, i);
     }
 
     switch (page) {
-    case 0:
-        BGWinFrame_Put(work->buttons, 10, 27, 19);
-        BGWinFrame_Put(work->buttons, 13, 1, 19);
-        if (work->lastItem == 0) {
-            BGWinFrame_SetPalette(work->buttons, 13, 0, 0, 25, 5, 3);
+    case BBAG_PAGE_POCKETS:
+        BGWinFrame_Put(work->buttons, BBAG_BUTTON_BACK, 27, 19);
+        BGWinFrame_Put(work->buttons, BBAG_BUTTON_ACTION, 1, 19);
+        if (work->lastItem == ITEM_NONE) {
+            BGWinFrame_SetPalette(work->buttons, BBAG_BUTTON_ACTION, 0, 0, 25, 5, BBAG_CONTROL_PALETTE_DISABLED);
         } else {
-            BGWinFrame_SetPalette(work->buttons, 13, 0, 0, 25, 5, 1);
+            BGWinFrame_SetPalette(work->buttons, BBAG_BUTTON_ACTION, 0, 0, 25, 5, BBAG_CONTROL_PALETTE_NORMAL);
         }
-        BGWinFrame_Show(work->buttons, 0);
-        BGWinFrame_Show(work->buttons, 1);
-        BGWinFrame_Show(work->buttons, 2);
-        BGWinFrame_Show(work->buttons, 3);
-        BGWinFrame_Show(work->buttons, 10);
-        BGWinFrame_Show(work->buttons, 13);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_POCKET_HP_PP);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_POCKET_STATUS);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_POCKET_BALLS);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_POCKET_BATTLE_ITEMS);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_BACK);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ACTION);
         break;
-    case 1:
-        BGWinFrame_Put(work->buttons, 10, 59, 19);
+    case BBAG_PAGE_ITEMS:
+        BGWinFrame_Put(work->buttons, BBAG_BUTTON_BACK, 59, 19);
         for (i = 0; i < 6; i++) {
-            if (BBagItem_GetSlotItem(work, i) == 0) {
-                BGWinFrame_SetPalette(work->buttons, i + 4, 0, 0, data_ov286_021f6e90[i + 4].width,
-                                      data_ov286_021f6e90[i + 4].height, 6);
+            if (BBagItem_GetSlotItem(work, i) == ITEM_NONE) {
+                BGWinFrame_SetPalette(work->buttons, i + BBAG_BUTTON_ITEM, 0, 0,
+                                      sBBagButtonLayouts[i + BBAG_BUTTON_ITEM].width,
+                                      sBBagButtonLayouts[i + BBAG_BUTTON_ITEM].height, BBAG_GRID_PALETTE_DISABLED);
             } else {
-                BGWinFrame_SetPalette(work->buttons, i + 4, 0, 0, data_ov286_021f6e90[i + 4].width,
-                                      data_ov286_021f6e90[i + 4].height, 4);
+                BGWinFrame_SetPalette(work->buttons, i + BBAG_BUTTON_ITEM, 0, 0,
+                                      sBBagButtonLayouts[i + BBAG_BUTTON_ITEM].width,
+                                      sBBagButtonLayouts[i + BBAG_BUTTON_ITEM].height, BBAG_GRID_PALETTE_NORMAL);
             }
         }
         if (work->lastPage[work->pocket] == 0) {
-            BGWinFrame_SetPalette(work->buttons, 11, 0, 0, 5, 5, 3);
-            BGWinFrame_SetPalette(work->buttons, 12, 0, 0, 5, 5, 3);
+            BGWinFrame_SetPalette(work->buttons, BBAG_BUTTON_PREV_PAGE, 0, 0, 5, 5, BBAG_CONTROL_PALETTE_DISABLED);
+            BGWinFrame_SetPalette(work->buttons, BBAG_BUTTON_NEXT_PAGE, 0, 0, 5, 5, BBAG_CONTROL_PALETTE_DISABLED);
         } else {
-            BGWinFrame_SetPalette(work->buttons, 11, 0, 0, 5, 5, 1);
-            BGWinFrame_SetPalette(work->buttons, 12, 0, 0, 5, 5, 1);
+            BGWinFrame_SetPalette(work->buttons, BBAG_BUTTON_PREV_PAGE, 0, 0, 5, 5, BBAG_CONTROL_PALETTE_NORMAL);
+            BGWinFrame_SetPalette(work->buttons, BBAG_BUTTON_NEXT_PAGE, 0, 0, 5, 5, BBAG_CONTROL_PALETTE_NORMAL);
         }
-        BGWinFrame_Show(work->buttons, 4);
-        BGWinFrame_Show(work->buttons, 5);
-        BGWinFrame_Show(work->buttons, 6);
-        BGWinFrame_Show(work->buttons, 7);
-        BGWinFrame_Show(work->buttons, 8);
-        BGWinFrame_Show(work->buttons, 9);
-        BGWinFrame_Show(work->buttons, 11);
-        BGWinFrame_Show(work->buttons, 12);
-        BGWinFrame_Show(work->buttons, 10);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ITEM);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ITEM + 1);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ITEM + 2);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ITEM + 3);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ITEM + 4);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ITEM + 5);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_PREV_PAGE);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_NEXT_PAGE);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_BACK);
         break;
-    case 2:
-        BGWinFrame_SetPalette(work->buttons, 13, 0, 0, 25, 5, 1);
-        BGWinFrame_Put(work->buttons, 10, 27, 51);
-        BGWinFrame_Put(work->buttons, 13, 1, 51);
-        BGWinFrame_Show(work->buttons, 10);
-        BGWinFrame_Show(work->buttons, 13);
+    case BBAG_PAGE_USE:
+        BGWinFrame_SetPalette(work->buttons, BBAG_BUTTON_ACTION, 0, 0, 25, 5, BBAG_CONTROL_PALETTE_NORMAL);
+        BGWinFrame_Put(work->buttons, BBAG_BUTTON_BACK, 27, 51);
+        BGWinFrame_Put(work->buttons, BBAG_BUTTON_ACTION, 1, 51);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_BACK);
+        BGWinFrame_Show(work->buttons, BBAG_BUTTON_ACTION);
         break;
     }
 }
 
 void BBagAnm_StartButtonAnm(BBagWork *work, u8 button) {
-    work->animSeq = 0;
+    work->animSeq = BBAG_BUTTON_ANM_PRESS;
     work->animCount = 0;
     work->animButton = button;
     work->animActive = TRUE;
@@ -133,26 +136,26 @@ void BBagAnm_MainButtonAnm(BBagWork *work) {
     }
 
     switch (work->animSeq) {
-    case 0:
-        if (work->animButton >= 10) {
-            palette = 2;
+    case BBAG_BUTTON_ANM_PRESS:
+        if (work->animButton >= BBAG_BUTTON_BACK) {
+            palette = BBAG_CONTROL_PALETTE_PRESSED;
         } else {
-            palette = 5;
+            palette = BBAG_GRID_PALETTE_PRESSED;
         }
-        BGWinFrame_SetPalette(work->buttons, work->animButton, 0, 0, data_ov286_021f6e90[work->animButton].width,
-                              data_ov286_021f6e90[work->animButton].height, palette);
+        BGWinFrame_SetPalette(work->buttons, work->animButton, 0, 0, sBBagButtonLayouts[work->animButton].width,
+                              sBBagButtonLayouts[work->animButton].height, palette);
         BGWinFrame_Show(work->buttons, work->animButton);
         work->animSeq++;
         break;
-    case 1:
+    case BBAG_BUTTON_ANM_WAIT_PRESS:
         if (work->animCount == 4) {
-            if (work->animButton >= 10) {
-                palette = 1;
+            if (work->animButton >= BBAG_BUTTON_BACK) {
+                palette = BBAG_CONTROL_PALETTE_NORMAL;
             } else {
-                palette = 4;
+                palette = BBAG_GRID_PALETTE_NORMAL;
             }
-            BGWinFrame_SetPalette(work->buttons, work->animButton, 0, 0, data_ov286_021f6e90[work->animButton].width,
-                                  data_ov286_021f6e90[work->animButton].height, palette);
+            BGWinFrame_SetPalette(work->buttons, work->animButton, 0, 0, sBBagButtonLayouts[work->animButton].width,
+                                  sBBagButtonLayouts[work->animButton].height, palette);
             BGWinFrame_Show(work->buttons, work->animButton);
             work->animCount = 0;
             work->animSeq++;
@@ -160,10 +163,10 @@ void BBagAnm_MainButtonAnm(BBagWork *work) {
             work->animCount++;
         }
         break;
-    case 2:
+    case BBAG_BUTTON_ANM_WAIT_RELEASE:
         if (work->animCount == 1) {
             work->animCount = 0;
-            work->animSeq = 0;
+            work->animSeq = BBAG_BUTTON_ANM_PRESS;
             work->animActive = FALSE;
         } else {
             work->animCount++;

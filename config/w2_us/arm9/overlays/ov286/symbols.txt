@@ -107,7 +107,7 @@ data_ov286_021f6d88 kind:data(any) addr:0x021f6dc8
 sBBagWindowLayouts kind:data(any) addr:0x021f6df4
 sBBagSourcePockets kind:data(any) addr:0x021f6ec8
 sBBagPocketsByItemBit kind:data(any) addr:0x021f6ecb
-data_ov286_021f6e90 kind:data(any) addr:0x021f6ed0
+sBBagButtonLayouts kind:data(any) addr:0x021f6ed0
 data_ov286_021f6e92 kind:data(any) addr:0x021f6ed2
 data_ov286_021f6e93 kind:data(any) addr:0x021f6ed3
 data_ov286_021f6ec8 kind:data(any) addr:0x021f6f08
