@@ -251,8 +251,8 @@ void PokeListMessage_SetNumber(PokeListWork *wk, PokeListMessage *msg, u32 index
     WordSetNumber(msg->wordSet, index, number, digits, 0, TRUE);
 }
 
-void PokeListMessage_SetString(PokeListWork *wk, PokeListMessage *msg, u32 index, const StrBuf *str, u32 a4) {
-    GFL_WordSetSetStrbuf(msg->wordSet, index, str, a4, 1, 2);
+void PokeListMessage_SetString(PokeListWork *wk, PokeListMessage *msg, u32 index, const StrBuf *str, u32 gender) {
+    GFL_WordSetSetStrbuf(msg->wordSet, index, str, gender, 1, 2);
 }
 
 static void PokeListMessage_Clear(PokeListWork *wk, PokeListMessage *msg) {
