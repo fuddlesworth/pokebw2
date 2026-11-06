@@ -31,9 +31,9 @@ typedef struct {
     u32 endDate;
     // The player's appearance (PlayerInfo_GetUnionView)
     u32 look;
-    u16 unkA0;
+    u16 rating;
     u8 unkA2[2];
-    u32 unkA4;
+    u32 matchCount;
     u16 unkA8;
     // Field 11 of the entry, which picks the card's colors
     u16 variant;
@@ -58,13 +58,13 @@ typedef struct {
 typedef struct {
     // The message of the title is this plus 2
     u32 titleMsg;
-    u16 unk4;
+    u16 rating;
     u8 unk6[2];
     // The player's appearance
     u32 look;
-    u32 unkC;
-    u16 unk10;
-    u16 unk12;
+    u32 matchCount;
+    u16 wins;
+    u16 losses;
 } WifiBattleMatchRankInfo;
 
 // The backdrop. WifiBattleMatchRes_Create takes the unit of the cell actors and a kind of backdrop, 0 to 3

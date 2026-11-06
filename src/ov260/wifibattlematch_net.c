@@ -1,6 +1,7 @@
 #include "app/wifibattlematch_net.h"
 #include "types.h"
 #include "app/livebattlematch_flow.h"
+#include "battle/btl_result.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "dwc/dwc.h"
@@ -30,6 +31,122 @@
 #include "save/wifi_list.h"
 #include "system/game_data.h"
 #include "text/system/ability_handlers_btl_main.h"
+#include "text/system/wifi_error.h"
+
+enum {
+    WBM_WIFI_STATUS_CONNECTING = 0,
+    WBM_WIFI_STATUS_CONNECTED = 1,
+};
+
+enum {
+    WBM_HTTP_STATUS_OK = 200,
+    WBM_HTTP_STATUS_BAD_REQUEST = 400,
+    WBM_HTTP_STATUS_UNAUTHORIZED = 401,
+    WBM_HTTP_STATUS_REQUEST_TIMEOUT = 408,
+    WBM_HTTP_STATUS_BAD_GATEWAY = 502,
+    WBM_HTTP_STATUS_SERVICE_UNAVAILABLE = 503,
+};
+
+enum {
+    WBM_GDB_STATE_ERROR = 4,
+};
+
+enum {
+    WBM_GDB_ERROR_OUT_OF_MEMORY = 1,
+    WBM_GDB_ERROR_SERVICE_UNAVAILABLE = 2,
+    WBM_GDB_ERROR_CORE_SHUTDOWN = 3,
+    WBM_GDB_ERROR_NO_LOGIN_TICKET = 4,
+    WBM_GDB_ERROR_NOT_AUTHENTICATED = 5,
+    WBM_GDB_ERROR_BAD_INPUT = 6,
+    WBM_GDB_ERROR_BAD_TABLE_ID = 7,
+    WBM_GDB_ERROR_BAD_FIELDS = 8,
+    WBM_GDB_ERROR_BAD_FIELD_COUNT = 9,
+    WBM_GDB_ERROR_BAD_FIELD_NAME = 10,
+    WBM_GDB_ERROR_BAD_FIELD_TYPE = 11,
+    WBM_GDB_ERROR_BAD_FIELD_VALUE = 12,
+    WBM_GDB_ERROR_BAD_OFFSET = 13,
+    WBM_GDB_ERROR_BAD_MAXIMUM = 14,
+    WBM_GDB_ERROR_BAD_RECORD_IDS = 15,
+    WBM_GDB_ERROR_BAD_RECORD_ID_COUNT = 16,
+    WBM_GDB_ERROR_UNKNOWN_ERROR = 17,
+    WBM_GDB_ERROR_ALREADY_INITIALIZED = 18,
+    WBM_GDB_ERROR_NOT_INITIALIZED = 19,
+    WBM_GDB_ERROR_DWC_ERROR = 22,
+};
+
+enum {
+    WBM_GDB_RESULT_PENDING = 0,
+    WBM_GDB_RESULT_SUCCESS = 1,
+    WBM_GDB_RESULT_SECRET_KEY_INVALID = 2,
+    WBM_GDB_RESULT_SERVICE_DISABLED = 3,
+    WBM_GDB_RESULT_CONNECTION_TIMEOUT = 4,
+    WBM_GDB_RESULT_CONNECTION_ERROR = 5,
+    WBM_GDB_RESULT_MALFORMED_RESPONSE = 6,
+    WBM_GDB_RESULT_OUT_OF_MEMORY = 7,
+    WBM_GDB_RESULT_DATABASE_UNAVAILABLE = 8,
+    WBM_GDB_RESULT_LOGIN_TICKET_INVALID = 9,
+    WBM_GDB_RESULT_LOGIN_TICKET_EXPIRED = 10,
+    WBM_GDB_RESULT_TABLE_NOT_FOUND = 11,
+    WBM_GDB_RESULT_RECORD_NOT_FOUND = 12,
+    WBM_GDB_RESULT_FIELD_NOT_FOUND = 13,
+    WBM_GDB_RESULT_FIELD_TYPE_INVALID = 14,
+    WBM_GDB_RESULT_NO_PERMISSION = 15,
+    WBM_GDB_RESULT_RECORD_LIMIT_REACHED = 16,
+    WBM_GDB_RESULT_ALREADY_RATED = 17,
+    WBM_GDB_RESULT_NOT_RATEABLE = 18,
+    WBM_GDB_RESULT_NOT_OWNED = 19,
+    WBM_GDB_RESULT_FILTER_INVALID = 20,
+    WBM_GDB_RESULT_SORT_INVALID = 21,
+    WBM_GDB_RESULT_UNKNOWN_ERROR = 22,
+    WBM_GDB_RESULT_TARGET_FILTER_INVALID = 30,
+};
+
+enum {
+    WBM_HTTP_RESULT_OK = 0,
+    WBM_HTTP_RESULT_SERVICE_DISCONTINUED = 6,
+};
+
+enum {
+    WBM_NET_ERROR_END_CONNECTION = 2,
+};
+
+enum {
+    WBM_SYNC_TIMING_HIGH = 36,
+};
+
+enum {
+    WBM_GAMESPY_GAME_ID = 2911,
+};
+
+enum {
+    WBM_REPORT_FIELD_SINGLE_WINS = 5,
+    WBM_REPORT_FIELD_SINGLE_LOSSES = 6,
+    WBM_REPORT_FIELD_DOUBLE_LOSSES = 7,
+    WBM_REPORT_FIELD_DOUBLE_WINS = 8,
+    WBM_REPORT_FIELD_ROTATION_WINS = 9,
+    WBM_REPORT_FIELD_ROTATION_LOSSES = 10,
+    WBM_REPORT_FIELD_TRIPLE_WINS = 11,
+    WBM_REPORT_FIELD_TRIPLE_LOSSES = 12,
+    WBM_REPORT_FIELD_SHOOTER_WINS = 13,
+    WBM_REPORT_FIELD_SHOOTER_LOSSES = 14,
+    WBM_REPORT_FIELD_SINGLE_NON_DRAW_MATCH = 15,
+    WBM_REPORT_FIELD_DOUBLE_NON_DRAW_MATCH = 16,
+    WBM_REPORT_FIELD_ROTATION_NON_DRAW_MATCH = 17,
+    WBM_REPORT_FIELD_TRIPLE_NON_DRAW_MATCH = 18,
+    WBM_REPORT_FIELD_SHOOTER_NON_DRAW_MATCH = 19,
+    WBM_REPORT_FIELD_RATING_COMMAND_CHECK_ERROR = 20,
+    WBM_REPORT_FIELD_COMPETITION_NON_DRAW_MATCH = 21,
+    WBM_REPORT_FIELD_COMPETITION_WINS = 22,
+    WBM_REPORT_FIELD_COMPETITION_LOSSES = 23,
+    WBM_REPORT_FIELD_COMPETITION_COMMAND_CHECK_ERROR = 24,
+    WBM_REPORT_FIELD_COMPETITION_START = 25,
+    WBM_REPORT_FIELD_RATING_START = 26,
+};
+
+enum {
+    WBM_REPORT_PLAYER_OWN = 0,
+    WBM_REPORT_PLAYER_OTHER = 1,
+};
 
 // wifibattlematch_net.c, named by its embedded string, in overlay 260: the net part of the Wi-Fi battle competitions.
 // It matches two players through the Wi-Fi Connection, keeps their stats and teams in the Sake database through the
@@ -46,10 +163,10 @@
 enum {
     WBM_NET_CMD_INFO = 0x2400,
     WBM_NET_CMD_PLAYER_INFO,
-    WBM_NET_CMD_2402,
+    WBM_NET_CMD_CANCEL_SEARCH,
     WBM_NET_CMD_PARTY,
-    WBM_NET_CMD_VALUE4,
-    WBM_NET_CMD_REPORT_VALUE,
+    WBM_NET_CMD_VALIDATION_ERRORS,
+    WBM_NET_CMD_COMMAND_CHECK_ERROR,
     WBM_NET_CMD_PERSON,
 };
 
@@ -99,9 +216,9 @@ enum {
     WBM_END_SEQ_DONE,
 };
 
-// The steps of WifiBattleMatchNet_ReportMain: the exchange of the two sides' counts, the competition service's start,
-// its session and the intention to report, which the two machines share, and the report built and submitted, each
-// shared step followed by a sync
+// The steps of WifiBattleMatchNet_ReportMain: the exchange of local and peer command-check errors, the competition
+// service's start, its session and the intention to report, which the two machines share, and the report built and
+// submitted, each shared step followed by a sync
 enum {
     WBM_REPORT_SEQ_SYNC,
     WBM_REPORT_SEQ_WAIT_SYNC,
@@ -230,17 +347,17 @@ typedef struct {
     char name[6];
 } WifiBattleMatchNetKey;
 
-// The rule of a match (WBM_RULE_*), how it ended (0 to 6) and the two sides' counts
+// The rule of a match (WBM_RULE_*), how it ended (0 to 6) and local and peer command-check errors
 typedef struct {
     u32 format;
     u32 outcome;
-    u32 mine;
-    u32 theirs;
+    u32 ownCommandCheckError;
+    u32 otherCommandCheckError;
 } WifiBattleMatchNetParam;
 
 // Sets a battle's fields in the exchange with the other player
 typedef int (*WifiBattleMatchNetResultFunc)(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                            int a3);
+                                            int partialReport);
 
 // Two values that the server answers with, and that are sent back
 typedef struct {
@@ -268,7 +385,7 @@ typedef struct {
     const u16 *words;
     u8 result;
     int badWordCount;
-    u16 unk24;
+    u16 heapId;
 } WifiBattleMatchNetNameCheck;
 
 // The value of the matching key "ver", which only players of the same version match with
@@ -286,7 +403,7 @@ typedef struct {
 #endif
 
 struct WifiBattleMatchNet {
-    DWCUserData *unk0;
+    DWCUserData *userData;
     WifiList *wifiList;
     GameData *gameData;
     s32 profileId;
@@ -304,22 +421,22 @@ struct WifiBattleMatchNet {
     u32 counter;
     u32 flagInfoReceived;
     u32 flagPlayerInfoReceived;
-    u32 flag140;
+    u32 cancelSearchReceived;
     u32 flagPartyReceived;
-    u32 flag148;
-    u32 flagValueReceived;
+    u32 validationErrorsReceived;
+    u32 commandCheckErrorReceived;
     u32 flagPersonReceived;
-    u32 receivedValue;
+    u32 receivedCommandCheckError;
     u32 phaseB;
     WifiBattleMatchNetResultFunc resultFunc;
     s32 errorCode;
-    u32 flag164;
+    u32 partialReport;
     u32 requestSent;
-    u32 flag16C;
-    u32 flag170;
-    u32 gdbOpen;
-    u32 unk178;
-    void *unk17c;
+    u32 hasPeerReportInfo;
+    u32 reportSubmitted;
+    u32 competitionServiceOpen;
+    u32 checkPokemonCount;
+    void *recordOutput;
     GdbRecordsFunc recordsFunc;
     WifiBattleMatchNetParam param;
     GdbField *record;
@@ -328,7 +445,7 @@ struct WifiBattleMatchNet {
     u32 unk1a0;
     u32 timer;
     u32 matchTimer;
-    u32 unk1ac;
+    u32 authoritativeReport;
     u32 mode;
     s32 recordIdArg;
     u8 unk1b8[0x10];
@@ -353,7 +470,7 @@ struct WifiBattleMatchNet {
     u32 unk1498;
     u32 unk149c;
     JoinAvenuePerson person;
-    u32 unk1564;
+    u32 opponentNameRejected;
 };
 
 static void WifiBattleMatchNet_GetLoginDate(u8 *dest);
@@ -366,28 +483,32 @@ static void WifiBattleMatchNet_OnRequestDoneWithData(int error, void *work);
 static void WifiBattleMatchNet_OnRequestDone2(int error, void *work);
 static void WifiBattleMatchNet_EndRequests(WifiBattleMatchNet *p_wk);
 static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, WifiBattleMatchNetInfo *theirs,
-                                               WifiBattleMatchNetParam *param, int a3,
-                                               WifiBattleMatchNetResultFunc func, int a5, int mode, int a7);
+                                               WifiBattleMatchNetParam *param, int authoritativeReport,
+                                               WifiBattleMatchNetResultFunc func, int partialReport, int mode,
+                                               int includeOtherPlayer);
 static int WifiBattleMatchNet_SetBattleResult(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                              int a3);
+                                              int partialReport);
 static int WifiBattleMatchNet_SetCupBattleResult(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param,
-                                                 int isMine, int a3);
-static int WifiBattleMatchNet_SetFlag1A(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                        int a3);
-static int WifiBattleMatchNet_SetFlag19(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                        int a3);
+                                                 int isMine, int partialReport);
+static int WifiBattleMatchNet_SetRatingStart(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
+                                             int partialReport);
+static int WifiBattleMatchNet_SetCompetitionStart(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param,
+                                                  int isMine, int partialReport);
 static int WifiBattleMatchNet_SetNoRating1B(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                            int a3);
+                                            int partialReport);
 static int WifiBattleMatchNet_SetNoRating1C(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                            int a3);
+                                            int partialReport);
 static void WifiBattleMatchNet_OnInfoReceived(int netId, int size, const void *data, void *work, NetHandle *handle);
 static void WifiBattleMatchNet_OnPlayerInfoReceived(int netId, int size, const void *data, void *work,
                                                     NetHandle *handle);
 static void *WifiBattleMatchNet_GetRecvBuffer(int netId, void *work, int size);
-static void WifiBattleMatchNet_OnCmd2402(int netId, int size, const void *data, void *work, NetHandle *handle);
+static void WifiBattleMatchNet_OnCancelSearchReceived(int netId, int size, const void *data, void *work,
+                                                      NetHandle *handle);
 static void WifiBattleMatchNet_OnPartyReceived(int netId, int size, const void *data, void *work, NetHandle *handle);
-static void WifiBattleMatchNet_OnCmd2404(int netId, int size, const void *data, void *work, NetHandle *handle);
-static void WifiBattleMatchNet_OnValueReceived(int netId, int size, const void *data, void *work, NetHandle *handle);
+static void WifiBattleMatchNet_OnValidationErrorsReceived(int netId, int size, const void *data, void *work,
+                                                          NetHandle *handle);
+static void WifiBattleMatchNet_OnCommandCheckErrorReceived(int netId, int size, const void *data, void *work,
+                                                           NetHandle *handle);
 static void WifiBattleMatchNet_OnPersonReceived(int netId, int size, const void *data, void *work, NetHandle *handle);
 static void WifiBattleMatchNet_EndGdb(WifiBattleMatchNet *p_wk);
 static void WifiBattleMatchNet_BuildProfileRecord(WifiBattleMatchNet *p_wk);
@@ -399,7 +520,7 @@ static void WifiBattleMatchNet_ReadWifiCupParty(int recordNum, GdbField **record
 static void WifiBattleMatchNet_ReadLastLogin(int recordNum, GdbField **records, void *work, int fieldNum);
 static BOOL WifiBattleMatchNet_IsAllZero(const u32 *data, u32 size);
 static void WifiBattleMatchNet_OnDwcError(void *work, int code, int type, int error);
-static u32 WifiBattleMatchNet_OnDwcEvent(void *work, int a1, int event, int a3);
+static u32 WifiBattleMatchNet_OnDwcEvent(void *work, int code, int type, int error);
 static u32 WifiBattleMatchNet_GetHttpResultMessage(u32 result);
 static void WifiBattleMatchNet_StartDownloadWait(WifiBattleMatchNet *p_wk, u32 nextState);
 static void WifiBattleMatchNet_StartDownloadEnd(WifiBattleMatchNet *p_wk, u32 nextState);
@@ -417,16 +538,17 @@ static void WifiBattleMatchNet_SetGdbSubError2(WifiBattleMatchNetError *error, i
 static void WifiBattleMatchNet_SetHttpError(WifiBattleMatchNetError *error, int code, int line);
 
 // What WBM_NET_CMD_2402 sends, and the receivers of the commands
-static const u32 sCmd2402Data = 0;
+static const u32 sCancelSearchData = 0;
 
 static const NetCommand sNetCommands[] = {
     [WBM_NET_CMD_INFO - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnInfoReceived, NULL },
     [WBM_NET_CMD_PLAYER_INFO - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnPlayerInfoReceived,
                                                      WifiBattleMatchNet_GetRecvBuffer },
-    [WBM_NET_CMD_2402 - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnCmd2402, NULL },
+    [WBM_NET_CMD_CANCEL_SEARCH - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnCancelSearchReceived, NULL },
     [WBM_NET_CMD_PARTY - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnPartyReceived, WifiBattleMatchNet_GetRecvBuffer },
-    [WBM_NET_CMD_VALUE4 - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnCmd2404, WifiBattleMatchNet_GetRecvBuffer },
-    [WBM_NET_CMD_REPORT_VALUE - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnValueReceived, NULL },
+    [WBM_NET_CMD_VALIDATION_ERRORS - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnValidationErrorsReceived,
+                                                           WifiBattleMatchNet_GetRecvBuffer },
+    [WBM_NET_CMD_COMMAND_CHECK_ERROR - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnCommandCheckErrorReceived, NULL },
     [WBM_NET_CMD_PERSON - WBM_NET_CMD_INFO] = { WifiBattleMatchNet_OnPersonReceived, WifiBattleMatchNet_GetRecvBuffer },
 };
 
@@ -457,7 +579,7 @@ WifiBattleMatchNet *WifiBattleMatchNet_Create(WifiBattleMatchNetData *data, Game
     p_wk = GFL_HeapAllocate(heapId, sizeof(WifiBattleMatchNet), FALSE, "wifibattlematch_net.c", 700);
     MI_CpuFill8(p_wk, 0, sizeof(WifiBattleMatchNet));
     p_wk->wifiList = GameData_GetWifiList(gameData);
-    p_wk->unk0 = WifiList_GetMyUserData(p_wk->wifiList);
+    p_wk->userData = WifiList_GetMyUserData(p_wk->wifiList);
     p_wk->profileId = PlayerInfo_GetProfileId(GetGameDataPlayerInfo(gameData));
     p_wk->gameData = gameData;
     p_wk->loginBuffer = loginBuffer;
@@ -489,14 +611,14 @@ void WifiBattleMatchNet_Nop(WifiBattleMatchNet *p_wk) {
 
 void WifiBattleMatchNet_StartSync(WifiBattleMatchNet *p_wk, u32 syncId) {
     p_wk->syncId = syncId;
-    NetHandle_SendTimingPair(NetHandle_GetOwn(), (u8)p_wk->syncId, 0x24);
+    NetHandle_SendTimingPair(NetHandle_GetOwn(), (u8)p_wk->syncId, WBM_SYNC_TIMING_HIGH);
 }
 
 BOOL WifiBattleMatchNet_CheckSync(WifiBattleMatchNet *p_wk) {
-    return NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), (u8)p_wk->syncId, 0x24);
+    return NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), (u8)p_wk->syncId, WBM_SYNC_TIMING_HIGH);
 }
 
-u32 WifiBattleMatchNet_CheckError(WifiBattleMatchNet *p_wk, u32 a1, u32 a2) {
+u32 WifiBattleMatchNet_CheckError(WifiBattleMatchNet *p_wk, u32 deferErrorScreen, u32 reportPeerDisconnect) {
     WifiBattleMatchNetError *error = &p_wk->error;
     WifiBattleMatchNetResult result = WBM_RESULT_OK;
 
@@ -510,7 +632,7 @@ u32 WifiBattleMatchNet_CheckError(WifiBattleMatchNet *p_wk, u32 a1, u32 a2) {
                 GFL_NetErrShowWifi(0x29);
             }
         }
-        switch (DWCRapCommon_CheckError(a1, a2)) {
+        switch (DWCRapCommon_CheckError(deferErrorScreen, reportPeerDisconnect)) {
         case DWCRAP_RESULT_OK:
             result = WBM_RESULT_OK;
             break;
@@ -630,12 +752,12 @@ u32 WifiBattleMatchNet_LoginMain(WifiBattleMatchNet *p_wk) {
     return WBM_NET_RUNNING;
 }
 
-void WifiBattleMatchNet_StartMatch(WifiBattleMatchNet *p_wk, u32 mode, u32 a2, u32 rule,
+void WifiBattleMatchNet_StartMatch(WifiBattleMatchNet *p_wk, u32 mode, u32 modeOffset, u32 rule,
                                    const WifiBattleMatchNetKeys *keys) {
     u32 modValue = mode;
 
     if (mode == WBM_MATCH_MODE_UNUSED) {
-        modValue += a2;
+        modValue += modeOffset;
     }
     if (!GFL_NetIsInitialized()) {
         GFL_NetErrAbort();
@@ -690,7 +812,7 @@ u32 WifiBattleMatchNet_MatchMain(WifiBattleMatchNet *p_wk) {
         break;
     case WBM_MATCH_SEQ_WAIT_MATCH:
         switch (NetState_GetWifiStatus()) {
-        case 0: {
+        case WBM_WIFI_STATUS_CONNECTING: {
             GFLNetErrorInfo *info = NetState_GetErrorInfo();
 
             if ((u32)(info->type - 0x3f0) <= 1) {
@@ -699,7 +821,7 @@ u32 WifiBattleMatchNet_MatchMain(WifiBattleMatchNet *p_wk) {
             }
             break;
         }
-        case 1:
+        case WBM_WIFI_STATUS_CONNECTED:
             p_wk->matchTimer = 0;
             p_wk->matchState = WBM_MATCH_SEQ_NEGOTIATE;
             GflNet_SetAutoExit(1);
@@ -726,7 +848,7 @@ u32 WifiBattleMatchNet_MatchMain(WifiBattleMatchNet *p_wk) {
         }
         break;
     case WBM_MATCH_SEQ_SYNC:
-        NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xf, 0x24);
+        NetHandle_SendTimingPair(NetHandle_GetOwn(), WBM_SYNC_MATCH_NEGOTIATED, WBM_SYNC_TIMING_HIGH);
         p_wk->matchTimer = 0;
         p_wk->matchState = WBM_MATCH_SEQ_WAIT_SYNC;
         break;
@@ -735,7 +857,7 @@ u32 WifiBattleMatchNet_MatchMain(WifiBattleMatchNet *p_wk) {
             WifiBattleMatchNet_ResetEnd(p_wk);
             p_wk->matchState = WBM_MATCH_SEQ_END;
         } else if (NetHandle_CountNegotiated() && NetHandle_SendNegotiation()) {
-            NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xf, 0x24);
+            NetHandle_SendTimingPair(NetHandle_GetOwn(), WBM_SYNC_MATCH_NEGOTIATED, WBM_SYNC_TIMING_HIGH);
             p_wk->matchTimer = 0;
             p_wk->matchState = WBM_MATCH_SEQ_WAIT_SYNC;
         }
@@ -744,7 +866,7 @@ u32 WifiBattleMatchNet_MatchMain(WifiBattleMatchNet *p_wk) {
         if (p_wk->matchTimer++ > 3600) {
             WifiBattleMatchNet_ResetEnd(p_wk);
             p_wk->matchState = WBM_MATCH_SEQ_END;
-        } else if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xf, 0x24)) {
+        } else if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), WBM_SYNC_MATCH_NEGOTIATED, WBM_SYNC_TIMING_HIGH)) {
             p_wk->matchState = WBM_MATCH_SEQ_DONE;
         }
         break;
@@ -781,7 +903,7 @@ void WifiBattleMatchNet_ResetEnd(WifiBattleMatchNet *p_wk) {
 BOOL WifiBattleMatchNet_EndMain(WifiBattleMatchNet *p_wk) {
     switch (p_wk->phaseB) {
     case WBM_END_SEQ_SYNC:
-        WifiBattleMatchNet_StartSync(p_wk, 0x18);
+        WifiBattleMatchNet_StartSync(p_wk, WBM_SYNC_DISCONNECT);
         p_wk->timer = 0;
         p_wk->phaseB++;
         break;
@@ -813,18 +935,18 @@ BOOL WifiBattleMatchNet_EndMain(WifiBattleMatchNet *p_wk) {
     return FALSE;
 }
 
-BOOL WifiBattleMatchNet_SendCmd2402(WifiBattleMatchNet *p_wk) {
+BOOL WifiBattleMatchNet_SendCancelSearch(WifiBattleMatchNet *p_wk) {
     if (DWCRap_IsConnected()) {
-        return GFL_NetSendCommand(NetHandle_GetOwn(), WBM_NET_CMD_2402, 4, &sCmd2402Data);
+        return GFL_NetSendCommand(NetHandle_GetOwn(), WBM_NET_CMD_CANCEL_SEARCH, 4, &sCancelSearchData);
     }
     return TRUE;
 }
 
-BOOL WifiBattleMatchNet_TakeCmd2402(WifiBattleMatchNet *p_wk) {
-    u32 flag = p_wk->flag140;
+BOOL WifiBattleMatchNet_TakeCancelSearch(WifiBattleMatchNet *p_wk) {
+    u32 flag = p_wk->cancelSearchReceived;
 
     if (flag != 0) {
-        p_wk->flag140 = 0;
+        p_wk->cancelSearchReceived = 0;
     }
     return flag;
 }
@@ -846,8 +968,8 @@ BOOL WifiBattleMatchNet_TakePerson(WifiBattleMatchNet *p_wk) {
     return flag;
 }
 
-void WifiBattleMatchNet_SetGuest(WifiBattleMatchNet *p_wk, u32 value) {
-    p_wk->unk1564 = value;
+void WifiBattleMatchNet_SetOpponentNameRejected(WifiBattleMatchNet *p_wk, u32 rejected) {
+    p_wk->opponentNameRejected = rejected;
 }
 
 static void WifiBattleMatchNet_GetLoginDate(u8 *dest) {
@@ -922,31 +1044,31 @@ static int WifiBattleMatchNet_Eval(int index, void *work) {
 }
 
 void WifiBattleMatchNet_StartReport(WifiBattleMatchNet *p_wk, u32 mode, u32 kind, u32 rule,
-                                    const WifiBattleMatchBattleResult *battleResult, u32 a5) {
+                                    const WifiBattleMatchBattleResult *battleResult, u32 partialReport) {
     p_wk->unk1498 = 0;
     p_wk->state = WBM_REPORT_SEQ_SYNC;
-    p_wk->unk1ac = 1;
-    p_wk->flagValueReceived = 0;
+    p_wk->authoritativeReport = 1;
+    p_wk->commandCheckErrorReceived = 0;
     p_wk->flagInfoReceived = 0;
     p_wk->mode = mode;
-    p_wk->flag164 = a5;
+    p_wk->partialReport = partialReport;
     p_wk->requestSent = 0;
-    p_wk->flag16C = 0;
-    p_wk->flag170 = 0;
+    p_wk->hasPeerReportInfo = 0;
+    p_wk->reportSubmitted = 0;
     if (mode == WBM_REPORT_MODE_START) {
         switch (kind) {
         case WBM_MATCH_MODE_COMPETITION:
-            p_wk->resultFunc = WifiBattleMatchNet_SetFlag19;
+            p_wk->resultFunc = WifiBattleMatchNet_SetCompetitionStart;
             break;
         case WBM_MATCH_MODE_RATING:
-            p_wk->resultFunc = WifiBattleMatchNet_SetFlag1A;
+            p_wk->resultFunc = WifiBattleMatchNet_SetRatingStart;
             break;
         default:
             GFL_ASSERT(0);
             break;
         }
     } else if (mode == WBM_REPORT_MODE_RESULT) {
-        if (a5 != 0) {
+        if (partialReport != 0) {
             switch (kind) {
             case WBM_MATCH_MODE_COMPETITION:
                 p_wk->resultFunc = WifiBattleMatchNet_SetNoRating1C;
@@ -962,7 +1084,7 @@ void WifiBattleMatchNet_StartReport(WifiBattleMatchNet *p_wk, u32 mode, u32 kind
             GFL_NetIsParent();
             p_wk->param.format = rule;
             p_wk->param.outcome = battleResult->result;
-            p_wk->param.mine = battleResult->unk10;
+            p_wk->param.ownCommandCheckError = battleResult->ownCommandCheckError;
             switch (kind) {
             case WBM_MATCH_MODE_COMPETITION:
                 p_wk->resultFunc = WifiBattleMatchNet_SetCupBattleResult;
@@ -995,59 +1117,62 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
     int err;
 
     if (out != NULL) {
-        *out = p_wk->flag170;
+        *out = p_wk->reportSubmitted;
     }
     netError = NetState_GetErrorInfo();
     if ((u32)(netError->type - 0x3f0) <= 1) {
-        p_wk->flag164 = TRUE;
+        p_wk->partialReport = TRUE;
     }
     if (GFL_NetErrCheck() == 1) {
         if (netError->errorType == DWC_ETYPE_DISCONNECT || netError->errorType == DWC_ETYPE_SHUTDOWN_FM) {
             WifiBattleMatchNet_EndRequests(p_wk);
             return WBM_NET_FAILED;
         }
-    } else if (p_wk->flag164 == 0 && GFL_NetErrCheck() == 2) {
+    } else if (p_wk->partialReport == 0 && GFL_NetErrCheck() == WBM_NET_ERROR_END_CONNECTION) {
         WifiBattleMatchNet_EndRequests(p_wk);
         return WBM_NET_FAILED;
     }
-    if (p_wk->flag164 != 0 && p_wk->mode != WBM_REPORT_MODE_START && p_wk->requestSent == 0 &&
+    if (p_wk->partialReport != 0 && p_wk->mode != WBM_REPORT_MODE_START && p_wk->requestSent == 0 &&
         p_wk->state > WBM_REPORT_SEQ_WAIT_SESSION && p_wk->state < WBM_REPORT_SEQ_SHARE_SESSION) {
-        p_wk->flag16C = 0;
+        p_wk->hasPeerReportInfo = 0;
         p_wk->state = WBM_REPORT_SEQ_CREATE_SESSION;
     }
     switch (p_wk->state) {
     case WBM_REPORT_SEQ_SYNC:
-        if (p_wk->flag164 != 0) {
+        if (p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_STARTUP;
         } else {
-            NetHandle_SendTimingPair(NetHandle_GetOwn(), 4, 0x24);
+            NetHandle_SendTimingPair(NetHandle_GetOwn(), WBM_SYNC_REPORT_START, WBM_SYNC_TIMING_HIGH);
             p_wk->state = WBM_REPORT_SEQ_WAIT_SYNC;
         }
         break;
     case WBM_REPORT_SEQ_WAIT_SYNC:
-        if (p_wk->flag164 != 0) {
+        if (p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_STARTUP;
-        } else if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 4, 0x24) || p_wk->flag164 != 0) {
+        } else if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), WBM_SYNC_REPORT_START, WBM_SYNC_TIMING_HIGH) ||
+                   p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_SEND_VALUE;
         }
         break;
     case WBM_REPORT_SEQ_SEND_VALUE:
-        if (p_wk->flag164 != 0) {
+        if (p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_STARTUP;
-        } else if (WifiBattleMatchNet_SendReportValue(p_wk, &p_wk->param.mine) || p_wk->flag164 != 0) {
+        } else if (WifiBattleMatchNet_SendCommandCheckError(p_wk, &p_wk->param.ownCommandCheckError) ||
+                   p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_TAKE_VALUE;
         }
         break;
     case WBM_REPORT_SEQ_TAKE_VALUE:
-        if (p_wk->flag164 != 0) {
+        if (p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_STARTUP;
-        } else if (WifiBattleMatchNet_TakeReportValue(p_wk, &p_wk->param.theirs) || p_wk->flag164 != 0) {
+        } else if (WifiBattleMatchNet_TakeCommandCheckError(p_wk, &p_wk->param.otherCommandCheckError) ||
+                   p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_STARTUP;
         }
         break;
     case WBM_REPORT_SEQ_STARTUP:
         p_wk->counter = 0;
-        p_wk->gdbOpen = TRUE;
+        p_wk->competitionServiceOpen = TRUE;
         err = Sc_Startup(0xb5f, 0);
         if (err != 0) {
             WifiBattleMatchNet_SetDwcError(&p_wk->error, err, 1937);
@@ -1066,7 +1191,7 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
         p_wk->state = WBM_REPORT_SEQ_CREATE_SESSION;
         break;
     case WBM_REPORT_SEQ_CREATE_SESSION:
-        if (GFL_NetIsParent() || p_wk->flag164 != 0) {
+        if (GFL_NetIsParent() || p_wk->partialReport != 0) {
             p_wk->counter++;
             err = Sc_CreateSession(WifiBattleMatchNet_OnRequestDone, 100, p_wk);
             p_wk->requestSent = TRUE;
@@ -1083,7 +1208,7 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
         break;
     case WBM_REPORT_SEQ_WAIT_SESSION:
         if (p_wk->counter == 0) {
-            WifiBattleMatchNet_CopySessionId(p_wk->p_data->mine.unk8);
+            WifiBattleMatchNet_CopySessionId(p_wk->p_data->mine.sessionId);
             p_wk->state = WBM_REPORT_SEQ_SYNC_SESSION;
         } else {
             if (p_wk->timer++ > 3600) {
@@ -1100,29 +1225,30 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
         }
         break;
     case WBM_REPORT_SEQ_SYNC_SESSION:
-        if (p_wk->flag164 != 0) {
+        if (p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_SET_INTENTION;
         } else {
-            WifiBattleMatchNet_CopyConnectionId(p_wk->p_data->mine.unk30);
-            NetHandle_SendTimingPair(NetHandle_GetOwn(), 1, 0x24);
+            WifiBattleMatchNet_CopyConnectionId(p_wk->p_data->mine.connectionId);
+            NetHandle_SendTimingPair(NetHandle_GetOwn(), WBM_SYNC_REPORT_SESSION, WBM_SYNC_TIMING_HIGH);
             p_wk->state = WBM_REPORT_SEQ_WAIT_SYNC_SESSION;
         }
         break;
     case WBM_REPORT_SEQ_WAIT_SYNC_SESSION:
-        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 1, 0x24) || p_wk->flag164 != 0) {
+        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), WBM_SYNC_REPORT_SESSION, WBM_SYNC_TIMING_HIGH) ||
+            p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_SHARE_SESSION;
         }
         break;
     case WBM_REPORT_SEQ_SHARE_SESSION:
-        if (GFL_NetIsParent() || p_wk->flag164 != 0) {
+        if (GFL_NetIsParent() || p_wk->partialReport != 0) {
             if (GFL_NetSendCommand(NetHandle_GetOwn(), WBM_NET_CMD_INFO, 0x68, &p_wk->p_data->mine) ||
-                p_wk->flag164 != 0) {
+                p_wk->partialReport != 0) {
                 p_wk->state = WBM_REPORT_SEQ_SET_INTENTION;
             }
-        } else if (p_wk->flagInfoReceived != 0 || p_wk->flag164 != 0) {
+        } else if (p_wk->flagInfoReceived != 0 || p_wk->partialReport != 0) {
             p_wk->flagInfoReceived = 0;
-            err = Sc_SetSessionId(p_wk->p_data->theirs.unk8);
-            WifiBattleMatchNet_CopySessionId(p_wk->p_data->mine.unk8);
+            err = Sc_SetSessionId(p_wk->p_data->theirs.sessionId);
+            WifiBattleMatchNet_CopySessionId(p_wk->p_data->mine.sessionId);
             if (err != 0) {
                 WifiBattleMatchNet_SetDwcError(&p_wk->error, err, 2061);
                 WifiBattleMatchNet_EndRequests(p_wk);
@@ -1133,7 +1259,7 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
         break;
     case WBM_REPORT_SEQ_SET_INTENTION:
         p_wk->counter++;
-        err = Sc_SetReportIntention(p_wk->unk1ac, WifiBattleMatchNet_OnRequestDoneWithData, 100, p_wk);
+        err = Sc_SetReportIntention(p_wk->authoritativeReport, WifiBattleMatchNet_OnRequestDoneWithData, 100, p_wk);
         if (err != 0) {
             WifiBattleMatchNet_SetDwcError(&p_wk->error, err, 2077);
             WifiBattleMatchNet_EndRequests(p_wk);
@@ -1160,27 +1286,28 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
         }
         break;
     case WBM_REPORT_SEQ_SYNC_INTENTION:
-        if (p_wk->flag164 != 0) {
+        if (p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_BUILD_REPORT;
         } else {
-            NetHandle_SendTimingPair(NetHandle_GetOwn(), 2, 0x24);
+            NetHandle_SendTimingPair(NetHandle_GetOwn(), WBM_SYNC_REPORT_INTENTION, WBM_SYNC_TIMING_HIGH);
             p_wk->state = WBM_REPORT_SEQ_WAIT_SYNC_INTENTION;
         }
         break;
     case WBM_REPORT_SEQ_WAIT_SYNC_INTENTION:
-        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 2, 0x24) || p_wk->flag164 != 0) {
+        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), WBM_SYNC_REPORT_INTENTION, WBM_SYNC_TIMING_HIGH) ||
+            p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_SEND_INFO_PARENT;
         }
         break;
     case WBM_REPORT_SEQ_SEND_INFO_PARENT:
         if (GFL_NetIsParent()) {
             if (GFL_NetSendCommand(NetHandle_GetOwn(), WBM_NET_CMD_INFO, 0x68, &p_wk->p_data->mine) ||
-                p_wk->flag164 != 0) {
+                p_wk->partialReport != 0) {
                 p_wk->state = WBM_REPORT_SEQ_SEND_INFO_CHILD;
             }
-        } else if (p_wk->flagInfoReceived != 0 || p_wk->flag164 != 0) {
-            if (p_wk->flag164 == 0) {
-                p_wk->flag16C = TRUE;
+        } else if (p_wk->flagInfoReceived != 0 || p_wk->partialReport != 0) {
+            if (p_wk->partialReport == 0) {
+                p_wk->hasPeerReportInfo = TRUE;
             }
             p_wk->flagInfoReceived = 0;
             p_wk->state = WBM_REPORT_SEQ_SEND_INFO_CHILD;
@@ -1189,30 +1316,31 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
     case WBM_REPORT_SEQ_SEND_INFO_CHILD:
         if (!GFL_NetIsParent()) {
             if (GFL_NetSendCommand(NetHandle_GetOwn(), WBM_NET_CMD_INFO, 0x68, &p_wk->p_data->mine) ||
-                p_wk->flag164 != 0) {
+                p_wk->partialReport != 0) {
                 p_wk->state = WBM_REPORT_SEQ_SYNC_INFO;
             }
-        } else if (p_wk->flagInfoReceived != 0 || p_wk->flag164 != 0) {
-            if (p_wk->flag164 == 0) {
-                p_wk->flag16C = TRUE;
+        } else if (p_wk->flagInfoReceived != 0 || p_wk->partialReport != 0) {
+            if (p_wk->partialReport == 0) {
+                p_wk->hasPeerReportInfo = TRUE;
             }
             p_wk->flagInfoReceived = 0;
             p_wk->state = WBM_REPORT_SEQ_SYNC_INFO;
         }
         break;
     case WBM_REPORT_SEQ_SYNC_INFO:
-        NetHandle_SendTimingPair(NetHandle_GetOwn(), 3, 0x24);
+        NetHandle_SendTimingPair(NetHandle_GetOwn(), WBM_SYNC_REPORT_INFO, WBM_SYNC_TIMING_HIGH);
         p_wk->state = WBM_REPORT_SEQ_WAIT_SYNC_INFO;
         break;
     case WBM_REPORT_SEQ_WAIT_SYNC_INFO:
-        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 3, 0x24) || p_wk->flag164 != 0) {
+        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), WBM_SYNC_REPORT_INFO, WBM_SYNC_TIMING_HIGH) ||
+            p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_BUILD_REPORT;
         }
         break;
     case WBM_REPORT_SEQ_BUILD_REPORT:
-        err =
-            WifiBattleMatchNet_SendBattleResult(&p_wk->p_data->mine, &p_wk->p_data->theirs, &p_wk->param, p_wk->unk1ac,
-                                                p_wk->resultFunc, p_wk->flag164, p_wk->mode, p_wk->flag16C);
+        err = WifiBattleMatchNet_SendBattleResult(&p_wk->p_data->mine, &p_wk->p_data->theirs, &p_wk->param,
+                                                  p_wk->authoritativeReport, p_wk->resultFunc, p_wk->partialReport,
+                                                  p_wk->mode, p_wk->hasPeerReportInfo);
         if (err != 0) {
             WifiBattleMatchNet_SetDwcError(&p_wk->error, err, 2221);
             WifiBattleMatchNet_EndRequests(p_wk);
@@ -1222,8 +1350,8 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
         break;
     case WBM_REPORT_SEQ_SUBMIT_REPORT:
         p_wk->counter++;
-        err =
-            Sc_SubmitReport(p_wk->p_data->mine.connection, p_wk->unk1ac, WifiBattleMatchNet_OnRequestDone2, 100, p_wk);
+        err = Sc_SubmitReport(p_wk->p_data->mine.connection, p_wk->authoritativeReport,
+                              WifiBattleMatchNet_OnRequestDone2, 100, p_wk);
         if (err != 0) {
             WifiBattleMatchNet_SetDwcError(&p_wk->error, err, 2236);
             WifiBattleMatchNet_EndRequests(p_wk);
@@ -1250,16 +1378,17 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
         }
         break;
     case WBM_REPORT_SEQ_END:
-        p_wk->flag170 = TRUE;
+        p_wk->reportSubmitted = TRUE;
         WifiBattleMatchNet_EndRequests(p_wk);
         p_wk->state = WBM_REPORT_SEQ_SYNC_END;
         break;
     case WBM_REPORT_SEQ_SYNC_END:
-        NetHandle_SendTimingPair(NetHandle_GetOwn(), 5, 0x24);
+        NetHandle_SendTimingPair(NetHandle_GetOwn(), WBM_SYNC_REPORT_END, WBM_SYNC_TIMING_HIGH);
         p_wk->state = WBM_REPORT_SEQ_WAIT_SYNC_END;
         break;
     case WBM_REPORT_SEQ_WAIT_SYNC_END:
-        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 5, 0x24) || p_wk->flag164 != 0) {
+        if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), WBM_SYNC_REPORT_END, WBM_SYNC_TIMING_HIGH) ||
+            p_wk->partialReport != 0) {
             p_wk->state = WBM_REPORT_SEQ_DONE;
         }
         break;
@@ -1269,8 +1398,8 @@ u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out) {
     return WBM_NET_RUNNING;
 }
 
-u32 WifiBattleMatchNet_GetReceivedValue(WifiBattleMatchNet *p_wk) {
-    return p_wk->receivedValue;
+u32 WifiBattleMatchNet_GetPeerCommandCheckError(WifiBattleMatchNet *p_wk) {
+    return p_wk->receivedCommandCheckError;
 }
 
 static void WifiBattleMatchNet_OnRequestDone(int error, void *work) {
@@ -1287,7 +1416,7 @@ static void WifiBattleMatchNet_OnRequestDoneWithData(int error, void *work) {
     WifiBattleMatchNetInfo *mine = &p_wk->p_data->mine;
 
     if (error == 0) {
-        MI_CpuCopy8(Sc_GetConnectionId(), mine->unk30, 0x28);
+        MI_CpuCopy8(Sc_GetConnectionId(), mine->connectionId, 0x28);
     } else {
         p_wk->errorCode = error;
     }
@@ -1304,20 +1433,21 @@ static void WifiBattleMatchNet_OnRequestDone2(int error, void *work) {
 }
 
 static void WifiBattleMatchNet_EndRequests(WifiBattleMatchNet *p_wk) {
-    if (p_wk->gdbOpen == 1) {
+    if (p_wk->competitionServiceOpen == 1) {
         if (p_wk->state > WBM_REPORT_SEQ_BUILD_REPORT) {
             Sc_FreeReport(p_wk->p_data->mine.connection);
         }
         if (p_wk->state >= WBM_REPORT_SEQ_STARTUP) {
             Sc_Shutdown();
         }
-        p_wk->gdbOpen = 0;
+        p_wk->competitionServiceOpen = 0;
     }
 }
 
 static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, WifiBattleMatchNetInfo *theirs,
-                                               WifiBattleMatchNetParam *param, int a3,
-                                               WifiBattleMatchNetResultFunc func, int a5, int mode, int a7) {
+                                               WifiBattleMatchNetParam *param, int authoritativeReport,
+                                               WifiBattleMatchNetResultFunc func, int partialReport, int mode,
+                                               int includeOtherPlayer) {
     int err;
     int resultMode;
 
@@ -1337,19 +1467,19 @@ static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, Wif
     if (err != 0) {
         return err;
     }
-    if (a5 != 0 || mode == WBM_REPORT_MODE_START) {
+    if (partialReport != 0 || mode == WBM_REPORT_MODE_START) {
         resultMode = SCGameResult_NONE;
     } else {
         switch (param->outcome) {
-        case 1:
-        case 4:
+        case BTL_RESULT_VICTORY:
+        case BTL_RESULT_FLEE_FOE:
             resultMode = SCGameResult_WIN;
             break;
-        case 0:
-        case 3:
+        case BTL_RESULT_DEFEAT:
+        case BTL_RESULT_FLEE:
             resultMode = SCGameResult_LOSS;
             break;
-        case 2:
+        case BTL_RESULT_DRAW:
             resultMode = SCGameResult_DRAW;
             break;
         default:
@@ -1357,11 +1487,12 @@ static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, Wif
             break;
         }
     }
-    err = Sc_SetPlayer(info->connection, 0, info->unk30, 0, resultMode, info->certificate, info->unk58);
+    err = Sc_SetPlayer(info->connection, WBM_REPORT_PLAYER_OWN, info->connectionId, 0, resultMode, info->certificate,
+                       info->unk58);
     if (err != 0) {
         return err;
     }
-    err = func(info, param, 1, a5);
+    err = func(info, param, 1, partialReport);
     if (err != 0) {
         return err;
     }
@@ -1369,24 +1500,24 @@ static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, Wif
     if (err != 0) {
         return err;
     }
-    if (a7 == 1) {
+    if (includeOtherPlayer == 1) {
         int theirsMode;
 
         if (mode == WBM_REPORT_MODE_START) {
             theirsMode = SCGameResult_NONE;
-        } else if (a5 != 0) {
+        } else if (partialReport != 0) {
             theirsMode = SCGameResult_DISCONNECT;
         } else {
             switch (param->outcome) {
-            case 1:
-            case 4:
+            case BTL_RESULT_VICTORY:
+            case BTL_RESULT_FLEE_FOE:
                 theirsMode = SCGameResult_LOSS;
                 break;
-            case 0:
-            case 3:
+            case BTL_RESULT_DEFEAT:
+            case BTL_RESULT_FLEE:
                 theirsMode = SCGameResult_WIN;
                 break;
-            case 2:
+            case BTL_RESULT_DRAW:
                 theirsMode = SCGameResult_DRAW;
                 break;
             default:
@@ -1396,11 +1527,12 @@ static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, Wif
                 break;
             }
         }
-        err = Sc_SetPlayer(info->connection, 1, theirs->unk30, 0, theirsMode, theirs->certificate, theirs->unk58);
+        err = Sc_SetPlayer(info->connection, WBM_REPORT_PLAYER_OTHER, theirs->connectionId, 0, theirsMode,
+                           theirs->certificate, theirs->unk58);
         if (err != 0) {
             return err;
         }
-        err = func(info, param, 0, a5);
+        err = func(info, param, 0, partialReport);
         if (err != 0) {
             return err;
         }
@@ -1409,133 +1541,133 @@ static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, Wif
     if (err != 0) {
         return err;
     }
-    if (a5 != 0) {
-        return Sc_FinishReport(info->connection, a3, SCGameStatus_PARTIAL);
+    if (partialReport != 0) {
+        return Sc_FinishReport(info->connection, authoritativeReport, SCGameStatus_PARTIAL);
     }
-    return Sc_FinishReport(info->connection, a3, SCGameStatus_COMPLETE);
+    return Sc_FinishReport(info->connection, authoritativeReport, SCGameStatus_COMPLETE);
 }
 
 static int WifiBattleMatchNet_SetBattleResult(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                              int a3) {
+                                              int partialReport) {
     int win;
-    int lose;
-    int skip;
-    int draw;
-    int decided;
+    int loss;
+    int skipMatchCount;
+    int commandCheckError;
+    int hasWinner;
     int err;
 
-    decided = 0;
-    skip = 0;
-    draw = 1;
-    if (param->mine == 0 && param->theirs == 0) {
-        draw = 0;
+    hasWinner = 0;
+    skipMatchCount = 0;
+    commandCheckError = 1;
+    if (param->ownCommandCheckError == 0 && param->otherCommandCheckError == 0) {
+        commandCheckError = 0;
     }
     switch (param->outcome) {
-    case 0:
-    case 3:
+    case BTL_RESULT_DEFEAT:
+    case BTL_RESULT_FLEE:
         win = 0;
-        lose = 1;
-        decided = 1;
+        loss = 1;
+        hasWinner = 1;
         break;
-    case 1:
-    case 4:
+    case BTL_RESULT_VICTORY:
+    case BTL_RESULT_FLEE_FOE:
         win = 1;
-        lose = 0;
-        decided = 1;
+        loss = 0;
+        hasWinner = 1;
         break;
-    case 2:
+    case BTL_RESULT_DRAW:
         win = 0;
-        lose = 0;
-        skip = 1;
+        loss = 0;
+        skipMatchCount = 1;
         break;
-    case 5:
-    case 6:
+    case BTL_RESULT_CAPTURE:
+    case BTL_RESULT_6:
     default:
         win = 0;
-        lose = 0;
+        loss = 0;
         break;
     }
-    if (isMine == 0 && decided) {
+    if (isMine == 0 && hasWinner) {
         win ^= 1;
-        lose ^= 1;
+        loss ^= 1;
     }
     switch (param->format) {
     case WBM_RULE_SINGLE:
-        if (skip == 0) {
-            err = Sc_AddByte(info->connection, 0xf, 1);
+        if (skipMatchCount == 0) {
+            err = Sc_AddByte(info->connection, WBM_REPORT_FIELD_SINGLE_NON_DRAW_MATCH, 1);
             if (err != 0) {
                 return err;
             }
         }
-        err = Sc_AddInt(info->connection, 5, win);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_SINGLE_WINS, win);
         if (err != 0) {
             return err;
         }
-        err = Sc_AddInt(info->connection, 6, lose);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_SINGLE_LOSSES, loss);
         if (err != 0) {
             return err;
         }
         break;
     case WBM_RULE_DOUBLE:
-        if (skip == 0) {
-            err = Sc_AddByte(info->connection, 0x10, 1);
+        if (skipMatchCount == 0) {
+            err = Sc_AddByte(info->connection, WBM_REPORT_FIELD_DOUBLE_NON_DRAW_MATCH, 1);
             if (err != 0) {
                 return err;
             }
         }
-        err = Sc_AddInt(info->connection, 8, win);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_DOUBLE_WINS, win);
         if (err != 0) {
             return err;
         }
-        err = Sc_AddInt(info->connection, 7, lose);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_DOUBLE_LOSSES, loss);
         if (err != 0) {
             return err;
         }
         break;
     case WBM_RULE_TRIPLE:
-        if (skip == 0) {
-            err = Sc_AddByte(info->connection, 0x12, 1);
+        if (skipMatchCount == 0) {
+            err = Sc_AddByte(info->connection, WBM_REPORT_FIELD_TRIPLE_NON_DRAW_MATCH, 1);
             if (err != 0) {
                 return err;
             }
         }
-        err = Sc_AddInt(info->connection, 0xb, win);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_TRIPLE_WINS, win);
         if (err != 0) {
             return err;
         }
-        err = Sc_AddInt(info->connection, 0xc, lose);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_TRIPLE_LOSSES, loss);
         if (err != 0) {
             return err;
         }
         break;
     case WBM_RULE_ROTATION:
-        if (skip == 0) {
-            err = Sc_AddByte(info->connection, 0x11, 1);
+        if (skipMatchCount == 0) {
+            err = Sc_AddByte(info->connection, WBM_REPORT_FIELD_ROTATION_NON_DRAW_MATCH, 1);
             if (err != 0) {
                 return err;
             }
         }
-        err = Sc_AddInt(info->connection, 9, win);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_ROTATION_WINS, win);
         if (err != 0) {
             return err;
         }
-        err = Sc_AddInt(info->connection, 0xa, lose);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_ROTATION_LOSSES, loss);
         if (err != 0) {
             return err;
         }
         break;
     case WBM_RULE_SHOOTER:
-        if (skip == 0) {
-            err = Sc_AddByte(info->connection, 0x13, 1);
+        if (skipMatchCount == 0) {
+            err = Sc_AddByte(info->connection, WBM_REPORT_FIELD_SHOOTER_NON_DRAW_MATCH, 1);
             if (err != 0) {
                 return err;
             }
         }
-        err = Sc_AddInt(info->connection, 0xd, win);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_SHOOTER_WINS, win);
         if (err != 0) {
             return err;
         }
-        err = Sc_AddInt(info->connection, 0xe, lose);
+        err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_SHOOTER_LOSSES, loss);
         if (err != 0) {
             return err;
         }
@@ -1544,7 +1676,7 @@ static int WifiBattleMatchNet_SetBattleResult(WifiBattleMatchNetInfo *info, Wifi
         GFL_ASSERT(0);
         break;
     }
-    err = Sc_AddInt(info->connection, 0x14, draw != 0);
+    err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_RATING_COMMAND_CHECK_ERROR, commandCheckError != 0);
     if (err != 0) {
         return err;
     }
@@ -1552,87 +1684,87 @@ static int WifiBattleMatchNet_SetBattleResult(WifiBattleMatchNetInfo *info, Wifi
 }
 
 static int WifiBattleMatchNet_SetCupBattleResult(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param,
-                                                 int isMine, int a3) {
+                                                 int isMine, int partialReport) {
     int win;
-    int lose;
-    int draw;
-    int decided;
-    int skip;
+    int loss;
+    int commandCheckError;
+    int hasWinner;
+    int skipMatchCount;
     int err;
 
-    decided = 0;
-    skip = 0;
-    draw = 1;
-    if (param->mine == 0 && param->theirs == 0) {
-        draw = 0;
+    hasWinner = 0;
+    skipMatchCount = 0;
+    commandCheckError = 1;
+    if (param->ownCommandCheckError == 0 && param->otherCommandCheckError == 0) {
+        commandCheckError = 0;
     }
     switch (param->outcome) {
-    case 0:
-    case 3:
+    case BTL_RESULT_DEFEAT:
+    case BTL_RESULT_FLEE:
         win = 0;
-        lose = 1;
-        decided = 1;
+        loss = 1;
+        hasWinner = 1;
         break;
-    case 1:
-    case 4:
+    case BTL_RESULT_VICTORY:
+    case BTL_RESULT_FLEE_FOE:
         win = 1;
-        lose = 0;
-        decided = 1;
+        loss = 0;
+        hasWinner = 1;
         break;
-    case 2:
+    case BTL_RESULT_DRAW:
         win = 0;
-        lose = 0;
-        skip = 1;
+        loss = 0;
+        skipMatchCount = 1;
         break;
-    case 5:
-    case 6:
+    case BTL_RESULT_CAPTURE:
+    case BTL_RESULT_6:
     default:
         win = 0;
-        lose = 0;
+        loss = 0;
         break;
     }
-    if (isMine == 0 && decided) {
+    if (isMine == 0 && hasWinner) {
         win ^= 1;
-        lose ^= 1;
+        loss ^= 1;
     }
-    if (skip == 0) {
-        err = Sc_AddByte(info->connection, 0x15, 1);
+    if (skipMatchCount == 0) {
+        err = Sc_AddByte(info->connection, WBM_REPORT_FIELD_COMPETITION_NON_DRAW_MATCH, 1);
         if (err != 0) {
             return err;
         }
     }
-    err = Sc_AddInt(info->connection, 0x16, win);
+    err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_COMPETITION_WINS, win);
     if (err != 0) {
         return err;
     }
-    err = Sc_AddInt(info->connection, 0x17, lose);
+    err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_COMPETITION_LOSSES, loss);
     if (err != 0) {
         return err;
     }
-    err = Sc_AddInt(info->connection, 0x18, draw != 0);
+    err = Sc_AddInt(info->connection, WBM_REPORT_FIELD_COMPETITION_COMMAND_CHECK_ERROR, commandCheckError != 0);
     if (err != 0) {
         return err;
     }
     return Sc_AddInt(info->connection, 0x1c, -1);
 }
 
-static int WifiBattleMatchNet_SetFlag1A(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                        int a3) {
-    return Sc_AddInt(info->connection, 0x1a, 1);
+static int WifiBattleMatchNet_SetRatingStart(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
+                                             int partialReport) {
+    return Sc_AddInt(info->connection, WBM_REPORT_FIELD_RATING_START, 1);
 }
 
-static int WifiBattleMatchNet_SetFlag19(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                        int a3) {
-    return Sc_AddInt(info->connection, 0x19, 1);
+static int WifiBattleMatchNet_SetCompetitionStart(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param,
+                                                  int isMine, int partialReport) {
+    return Sc_AddInt(info->connection, WBM_REPORT_FIELD_COMPETITION_START, 1);
 }
 
 static int WifiBattleMatchNet_SetNoRating1B(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                            int a3) {
+                                            int partialReport) {
     return Sc_AddInt(info->connection, 0x1b, -1);
 }
 
 static int WifiBattleMatchNet_SetNoRating1C(WifiBattleMatchNetInfo *info, WifiBattleMatchNetParam *param, int isMine,
-                                            int a3) {
+                                            int partialReport) {
     return Sc_AddInt(info->connection, 0x1c, -1);
 }
 
@@ -1666,11 +1798,12 @@ static void *WifiBattleMatchNet_GetRecvBuffer(int netId, void *work, int size) {
     return p_wk->recvBuffer;
 }
 
-static void WifiBattleMatchNet_OnCmd2402(int netId, int size, const void *data, void *work, NetHandle *handle) {
+static void WifiBattleMatchNet_OnCancelSearchReceived(int netId, int size, const void *data, void *work,
+                                                      NetHandle *handle) {
     WifiBattleMatchNet *p_wk = work;
 
     if (handle == NetHandle_GetOwn() && netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        p_wk->flag140 = 1;
+        p_wk->cancelSearchReceived = 1;
     }
 }
 
@@ -1682,21 +1815,23 @@ static void WifiBattleMatchNet_OnPartyReceived(int netId, int size, const void *
     }
 }
 
-static void WifiBattleMatchNet_OnCmd2404(int netId, int size, const void *data, void *work, NetHandle *handle) {
+static void WifiBattleMatchNet_OnValidationErrorsReceived(int netId, int size, const void *data, void *work,
+                                                          NetHandle *handle) {
     WifiBattleMatchNet *p_wk = work;
 
     if (handle == NetHandle_GetOwn() && netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        p_wk->flag148 = 1;
+        p_wk->validationErrorsReceived = 1;
     }
 }
 
-static void WifiBattleMatchNet_OnValueReceived(int netId, int size, const void *data, void *work, NetHandle *handle) {
+static void WifiBattleMatchNet_OnCommandCheckErrorReceived(int netId, int size, const void *data, void *work,
+                                                           NetHandle *handle) {
     WifiBattleMatchNet *p_wk = work;
     u32 value = *(const u32 *)data;
 
     if (handle == NetHandle_GetOwn() && netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        p_wk->receivedValue = value;
-        p_wk->flagValueReceived = 1;
+        p_wk->receivedCommandCheckError = value;
+        p_wk->commandCheckErrorReceived = 1;
     }
 }
 
@@ -1708,7 +1843,7 @@ static void WifiBattleMatchNet_OnPersonReceived(int netId, int size, const void 
         JoinAvenuePerson *person = (JoinAvenuePerson *)data;
 
         JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_UNK_26, 1);
-        if (p_wk->unk1564 != 0) {
+        if (p_wk->opponentNameRejected != 0) {
             MsgData *msgData =
                 GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, p_wk->msgHeapId);
             StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, WBM_DEFAULT_NAME);
@@ -1724,7 +1859,7 @@ static void WifiBattleMatchNet_OnPersonReceived(int netId, int size, const void 
 
 void WifiBattleMatchNet_StartRead(WifiBattleMatchNet *p_wk, int recordId, int kind, void *out) {
     p_wk->state = WBM_GDB_SEQ_STARTUP;
-    p_wk->unk17c = out;
+    p_wk->recordOutput = out;
     p_wk->recordIdArg = recordId;
     switch (kind) {
     case WBM_READ_ARENA:
@@ -1760,7 +1895,7 @@ u32 WifiBattleMatchNet_ReadMain(WifiBattleMatchNet *p_wk) {
 
     switch (p_wk->state) {
     case WBM_GDB_SEQ_STARTUP:
-        err = Gdb_Startup(0xb5f, p_wk->unk0, 0);
+        err = Gdb_Startup(WBM_GAMESPY_GAME_ID, p_wk->userData, 0);
         if (err != 0) {
             WifiBattleMatchNet_SetGdbError(&p_wk->error, err, 3674);
             WifiBattleMatchNet_EndGdb(p_wk);
@@ -1792,7 +1927,7 @@ u32 WifiBattleMatchNet_ReadMain(WifiBattleMatchNet *p_wk) {
         } else {
             Gdb_Update();
             err = Gdb_GetState();
-            if (err == GDB_STATE_OFF || err == 4) {
+            if (err == GDB_STATE_OFF || err == WBM_GDB_STATE_ERROR) {
                 WifiBattleMatchNet_SetGdbSubError1(&p_wk->error, err, 3729);
                 p_wk->state = WBM_GDB_SEQ_CANCEL;
             } else if (err == GDB_STATE_IDLE) {
@@ -1802,10 +1937,10 @@ u32 WifiBattleMatchNet_ReadMain(WifiBattleMatchNet *p_wk) {
         break;
     case WBM_GDB_SEQ_RESULT:
         err = Gdb_GetResult();
-        if (err == 0) {
+        if (err == WBM_GDB_RESULT_PENDING) {
             WifiBattleMatchNet_SetGdbSubError2(&p_wk->error, err, 3748);
             p_wk->state = WBM_GDB_SEQ_CANCEL;
-        } else if (err != 1) {
+        } else if (err != WBM_GDB_RESULT_SUCCESS) {
             WifiBattleMatchNet_SetGdbSubError2(&p_wk->error, err, 3754);
             WifiBattleMatchNet_EndGdb(p_wk);
             return WBM_NET_FAILED;
@@ -1838,7 +1973,7 @@ u32 WifiBattleMatchNet_ReadMain(WifiBattleMatchNet *p_wk) {
         }
         Gdb_Update();
         err = Gdb_GetState();
-        if (err == GDB_STATE_OFF || err == 4) {
+        if (err == GDB_STATE_OFF || err == WBM_GDB_STATE_ERROR) {
             WifiBattleMatchNet_EndGdb(p_wk);
             return WBM_NET_FAILED;
         } else if (err == GDB_STATE_IDLE) {
@@ -1882,7 +2017,7 @@ static void WifiBattleMatchNet_OnRecords(int recordNum, GdbField **records, void
     int i;
     int j;
 
-    p_wk->recordsFunc(recordNum, records, p_wk->unk17c, p_wk->table_name_num);
+    p_wk->recordsFunc(recordNum, records, p_wk->recordOutput, p_wk->table_name_num);
     if (p_wk->recordIdArg == -1) {
         for (i = 0; i < recordNum; i++) {
             for (j = 0; j < p_wk->table_name_num; j++) {
@@ -2094,7 +2229,7 @@ u32 WifiBattleMatchNet_WriteMain(WifiBattleMatchNet *p_wk) {
 
     switch (p_wk->state) {
     case WBM_GDB_SEQ_STARTUP:
-        err = Gdb_Startup(0xb5f, p_wk->unk0, 0);
+        err = Gdb_Startup(WBM_GAMESPY_GAME_ID, p_wk->userData, 0);
         if (err != 0) {
             WifiBattleMatchNet_SetGdbError(&p_wk->error, err, 4556);
             WifiBattleMatchNet_EndGdb(p_wk);
@@ -2120,7 +2255,7 @@ u32 WifiBattleMatchNet_WriteMain(WifiBattleMatchNet *p_wk) {
         } else {
             Gdb_Update();
             err = Gdb_GetState();
-            if (err == GDB_STATE_OFF || err == 4) {
+            if (err == GDB_STATE_OFF || err == WBM_GDB_STATE_ERROR) {
                 WifiBattleMatchNet_SetGdbSubError1(&p_wk->error, err, 4593);
                 p_wk->state = WBM_GDB_SEQ_CANCEL;
             } else if (err == GDB_STATE_IDLE) {
@@ -2130,10 +2265,10 @@ u32 WifiBattleMatchNet_WriteMain(WifiBattleMatchNet *p_wk) {
         break;
     case WBM_GDB_SEQ_RESULT:
         err = Gdb_GetResult();
-        if (err == 0) {
+        if (err == WBM_GDB_RESULT_PENDING) {
             WifiBattleMatchNet_SetGdbSubError2(&p_wk->error, err, 4612);
             p_wk->state = WBM_GDB_SEQ_CANCEL;
-        } else if (err != 1) {
+        } else if (err != WBM_GDB_RESULT_SUCCESS) {
             WifiBattleMatchNet_EndGdb(p_wk);
             WifiBattleMatchNet_SetGdbSubError2(&p_wk->error, err, 4619);
             return WBM_NET_FAILED;
@@ -2166,7 +2301,7 @@ u32 WifiBattleMatchNet_WriteMain(WifiBattleMatchNet *p_wk) {
         }
         Gdb_Update();
         err = Gdb_GetState();
-        if (err == GDB_STATE_OFF || err == 4) {
+        if (err == GDB_STATE_OFF || err == WBM_GDB_STATE_ERROR) {
             WifiBattleMatchNet_EndGdb(p_wk);
             return WBM_NET_FAILED;
         } else if (err == GDB_STATE_IDLE) {
@@ -2190,7 +2325,7 @@ u32 WifiBattleMatchNet_CreateRecordMain(WifiBattleMatchNet *p_wk) {
 
     switch (p_wk->state) {
     case WBM_CREATE_SEQ_STARTUP:
-        err = Gdb_Startup(0xb5f, p_wk->unk0, 0);
+        err = Gdb_Startup(WBM_GAMESPY_GAME_ID, p_wk->userData, 0);
         if (err != 0) {
             WifiBattleMatchNet_SetGdbError(&p_wk->error, err, 4736);
             return WBM_NET_FAILED;
@@ -2213,7 +2348,7 @@ u32 WifiBattleMatchNet_CreateRecordMain(WifiBattleMatchNet *p_wk) {
         } else {
             Gdb_Update();
             err = Gdb_GetState();
-            if (err == GDB_STATE_OFF || err == 4) {
+            if (err == GDB_STATE_OFF || err == WBM_GDB_STATE_ERROR) {
                 WifiBattleMatchNet_SetGdbSubError1(&p_wk->error, err, 4774);
                 p_wk->state = WBM_CREATE_SEQ_CANCEL;
             } else if (err == GDB_STATE_IDLE) {
@@ -2223,10 +2358,10 @@ u32 WifiBattleMatchNet_CreateRecordMain(WifiBattleMatchNet *p_wk) {
         break;
     case WBM_CREATE_SEQ_RESULT:
         err = Gdb_GetResult();
-        if (err == 0) {
+        if (err == WBM_GDB_RESULT_PENDING) {
             WifiBattleMatchNet_SetGdbSubError2(&p_wk->error, err, 4794);
             p_wk->state = WBM_CREATE_SEQ_CANCEL;
-        } else if (err != 1) {
+        } else if (err != WBM_GDB_RESULT_SUCCESS) {
             WifiBattleMatchNet_EndGdb(p_wk);
             WifiBattleMatchNet_SetGdbSubError2(&p_wk->error, err, 4801);
             return WBM_NET_FAILED;
@@ -2257,7 +2392,7 @@ u32 WifiBattleMatchNet_CreateRecordMain(WifiBattleMatchNet *p_wk) {
         }
         Gdb_Update();
         err = Gdb_GetState();
-        if (err == GDB_STATE_OFF || err == 4) {
+        if (err == GDB_STATE_OFF || err == WBM_GDB_STATE_ERROR) {
             WifiBattleMatchNet_EndGdb(p_wk);
             return WBM_NET_FAILED;
         } else if (err == GDB_STATE_IDLE) {
@@ -2311,32 +2446,33 @@ BOOL WifiBattleMatchNet_TakeParty(WifiBattleMatchNet *p_wk, PokeParty *party) {
     return flag;
 }
 
-BOOL WifiBattleMatchNet_SendValue4(WifiBattleMatchNet *p_wk, const u32 *data) {
+BOOL WifiBattleMatchNet_SendValidationErrors(WifiBattleMatchNet *p_wk, const u32 *data) {
     BOOL toServer = GFL_NetGetHandleNetId(NetHandle_GetOwn()) == 0;
 
-    return GFL_NetSendCommandToMachine(NetHandle_GetOwn(), toServer, WBM_NET_CMD_VALUE4, 4, data, TRUE, TRUE, TRUE);
+    return GFL_NetSendCommandToMachine(NetHandle_GetOwn(), toServer, WBM_NET_CMD_VALIDATION_ERRORS, 4, data, TRUE, TRUE,
+                                       TRUE);
 }
 
-BOOL WifiBattleMatchNet_TakeValue4(WifiBattleMatchNet *p_wk, u32 *out) {
-    u32 flag = p_wk->flag148;
+BOOL WifiBattleMatchNet_TakeValidationErrors(WifiBattleMatchNet *p_wk, u32 *out) {
+    u32 flag = p_wk->validationErrorsReceived;
 
     if (flag != 0) {
-        p_wk->flag148 = 0;
+        p_wk->validationErrorsReceived = 0;
         MI_CpuCopy8(p_wk->recvBuffer, out, 4);
     }
     return flag;
 }
 
-BOOL WifiBattleMatchNet_SendReportValue(WifiBattleMatchNet *p_wk, const void *data) {
-    return GFL_NetSendCommand(NetHandle_GetOwn(), WBM_NET_CMD_REPORT_VALUE, 4, data);
+BOOL WifiBattleMatchNet_SendCommandCheckError(WifiBattleMatchNet *p_wk, const void *data) {
+    return GFL_NetSendCommand(NetHandle_GetOwn(), WBM_NET_CMD_COMMAND_CHECK_ERROR, 4, data);
 }
 
-BOOL WifiBattleMatchNet_TakeReportValue(WifiBattleMatchNet *p_wk, u32 *out) {
-    u32 flag = p_wk->flagValueReceived;
+BOOL WifiBattleMatchNet_TakeCommandCheckError(WifiBattleMatchNet *p_wk, u32 *out) {
+    u32 flag = p_wk->commandCheckErrorReceived;
 
     if (flag != 0) {
-        p_wk->flagValueReceived = 0;
-        *out = p_wk->receivedValue;
+        p_wk->commandCheckErrorReceived = 0;
+        *out = p_wk->receivedCommandCheckError;
     }
     return flag;
 }
@@ -2494,39 +2630,41 @@ static void WifiBattleMatchNet_OnDwcError(void *work, int code, int type, int er
     }
 }
 
-static u32 WifiBattleMatchNet_OnDwcEvent(void *work, int a1, int event, int a3) {
+static u32 WifiBattleMatchNet_OnDwcEvent(void *work, int code, int type, int error) {
     WifiBattleMatchNet *p_wk = work;
 
-    if (event == DWC_ETYPE_SHUTDOWN_FM || event == DWC_ETYPE_DISCONNECT) {
+    if (type == DWC_ETYPE_SHUTDOWN_FM || type == DWC_ETYPE_DISCONNECT) {
         return p_wk->downloading;
     }
     return 0;
 }
 
+// Wire results select errors 13201 through 13209. Apart from service discontinuation, the retained messages
+// do not distinguish the protocol meanings of these values.
 static u32 WifiBattleMatchNet_GetHttpResultMessage(u32 result) {
     switch (result) {
-    case 0:
+    case WBM_HTTP_RESULT_OK:
         GFL_ASSERT(0);
         return 0;
     case 1:
-        return 0x34;
+        return WifiError_Text_ErrorOccurredServerPlease;
     case 2:
-        return 0x35;
+        return WifiError_Text_ErrorOccurredServerPlease_2;
     case 3:
-        return 0x36;
+        return WifiError_Text_CommunicationErrorOccurredPlease;
     case 4:
-        return 0x37;
+        return WifiError_Text_CommunicationErrorOccurredPlease_2;
     case 5:
-        return 0x38;
-    case 6:
-        return 0x39;
+        return WifiError_Text_ErrorOccurredServerPlease_3;
+    case WBM_HTTP_RESULT_SERVICE_DISCONTINUED:
+        return WifiError_Text_ServiceHasBeenDiscontinued;
     case 7:
-        return 0x3a;
+        return WifiError_Text_CommunicationErrorOccurredPlease_3;
     case 8:
-        return 0x3b;
+        return WifiError_Text_ErrorOccurredServerPlease_4;
     case 9:
     default:
-        return 0x3c;
+        return WifiError_Text_CommunicationErrorOccurredPlease_4;
     }
 }
 
@@ -2620,17 +2758,17 @@ u32 WifiBattleMatchNet_AccountRequestMain(WifiBattleMatchNet *p_wk) {
             WifiBattleMatchNetAnswer *answer = NHttpRap_GetAnswer(p_wk->p_nhttp);
 
             switch (status) {
-            case 503:
+            case WBM_HTTP_STATUS_SERVICE_UNAVAILABLE:
                 p_wk->state = WBM_ACCOUNT_SEQ_SERVER_ERROR;
-                GFL_NetErrRecordWifi(0x3e);
+                GFL_NetErrRecordWifi(WifiError_Text_ServerExperiencingHighTraffic);
                 return WBM_NET_RUNNING;
-            case 502:
+            case WBM_HTTP_STATUS_BAD_GATEWAY:
                 p_wk->state = WBM_ACCOUNT_SEQ_SERVER_ERROR;
-                GFL_NetErrRecordWifi(0x3f);
+                GFL_NetErrRecordWifi(WifiError_Text_ServerUndergoingMaintenanceCan);
                 return WBM_NET_RUNNING;
             }
             p_wk->httpValues = answer->values;
-            if (answer->result == 0) {
+            if (answer->result == WBM_HTTP_RESULT_OK) {
                 p_wk->state = WBM_ACCOUNT_SEQ_SUCCESS;
             } else {
                 GFL_NetErrRecordWifi(WifiBattleMatchNet_GetHttpResultMessage(answer->result));
@@ -2711,16 +2849,16 @@ u32 WifiBattleMatchNet_PostRequestMain(WifiBattleMatchNet *p_wk) {
             WifiBattleMatchNetAnswer *answer = NHttpRap_GetAnswer(p_wk->p_nhttp);
 
             switch (status) {
-            case 503:
+            case WBM_HTTP_STATUS_SERVICE_UNAVAILABLE:
                 p_wk->state = WBM_POST_SEQ_SERVER_ERROR;
-                GFL_NetErrRecordWifi(0x3e);
+                GFL_NetErrRecordWifi(WifiError_Text_ServerExperiencingHighTraffic);
                 return WBM_NET_RUNNING;
-            case 502:
+            case WBM_HTTP_STATUS_BAD_GATEWAY:
                 p_wk->state = WBM_POST_SEQ_SERVER_ERROR;
-                GFL_NetErrRecordWifi(0x3f);
+                GFL_NetErrRecordWifi(WifiError_Text_ServerUndergoingMaintenanceCan);
                 return WBM_NET_RUNNING;
             }
-            if (answer->result == 0) {
+            if (answer->result == WBM_HTTP_RESULT_OK) {
                 p_wk->state = WBM_POST_SEQ_SUCCESS;
             } else {
                 GFL_NetErrRecordWifi(WifiBattleMatchNet_GetHttpResultMessage(answer->result));
@@ -2753,7 +2891,7 @@ u32 WifiBattleMatchNet_PostRequestMain(WifiBattleMatchNet *p_wk) {
     return WBM_NET_RUNNING;
 }
 
-void WifiBattleMatchNet_StartNameCheck(WifiBattleMatchNet *p_wk, PlayerInfo *info, u16 unk24) {
+void WifiBattleMatchNet_StartNameCheck(WifiBattleMatchNet *p_wk, PlayerInfo *info, u16 heapId) {
     StrBuf *name;
     const u16 *chars;
     u32 i;
@@ -2761,7 +2899,7 @@ void WifiBattleMatchNet_StartNameCheck(WifiBattleMatchNet *p_wk, PlayerInfo *inf
     p_wk->namePlayerInfo = info;
     name = copyTrainerNameToNewStrbuf(info->name, p_wk->msgHeapId);
     MI_CpuFill8(&p_wk->nameCheck, 0, sizeof(p_wk->nameCheck));
-    p_wk->nameCheck.unk24 = unk24;
+    p_wk->nameCheck.heapId = heapId;
     chars = GFL_StrBufGetStringPtr(name);
     for (i = 0; i < GFL_StrBufGetCharCount(name) + 1; i++) {
         if (chars[i] == GFL_StrBufGetTerminator()) {
@@ -2803,7 +2941,7 @@ void WifiBattleMatchNet_StartPokemonCheck(WifiBattleMatchNet *p_wk, void *data, 
     case WBM_POKEMON_CHECK_ONE:
         NHttpRap_BeginPost(p_wk->p_nhttp, p_wk->msgHeapId, PokeParty_GetPkmRawSize(), 0);
         NHttpRap_AddPostData(p_wk->p_nhttp, data, PokeParty_GetPkmRawSize());
-        p_wk->unk178 = 1;
+        p_wk->checkPokemonCount = 1;
         break;
     case WBM_POKEMON_CHECK_PARTY: {
         PokeParty *party = data;
@@ -2816,7 +2954,7 @@ void WifiBattleMatchNet_StartPokemonCheck(WifiBattleMatchNet *p_wk, void *data, 
 
             NHttpRap_AddPostData(p_wk->p_nhttp, pkm, PokeParty_GetPkmRawSize());
         }
-        p_wk->unk178 = PokeParty_GetPkmCount(party);
+        p_wk->checkPokemonCount = PokeParty_GetPkmCount(party);
         break;
     }
     }
@@ -2851,8 +2989,8 @@ u32 WifiBattleMatchNet_PokemonCheckMain(WifiBattleMatchNet *p_wk, WifiBattleMatc
 
         if (result == 0) {
             switch (status) {
-            case 400:
-                GFL_NetErrRecordWifi(0x41);
+            case WBM_HTTP_STATUS_BAD_REQUEST:
+                GFL_NetErrRecordWifi(WifiError_Text_CommunicationErrorHelpVisit_2);
                 if (p_wk->p_nhttp != NULL) {
                     NHttpRap_FreePostData(p_wk->p_nhttp);
                     NHttpRap_Destroy(p_wk->p_nhttp);
@@ -2861,8 +2999,8 @@ u32 WifiBattleMatchNet_PokemonCheckMain(WifiBattleMatchNet *p_wk, WifiBattleMatc
                     p_wk->state = WBM_CHECK_SEQ_SEND;
                 }
                 return WBM_NET_SERVER_ERROR;
-            case 401:
-                GFL_NetErrRecordWifi(0x42);
+            case WBM_HTTP_STATUS_UNAUTHORIZED:
+                GFL_NetErrRecordWifi(WifiError_Text_CommunicationErrorHelpVisit_3);
                 if (p_wk->p_nhttp != NULL) {
                     NHttpRap_FreePostData(p_wk->p_nhttp);
                     NHttpRap_Destroy(p_wk->p_nhttp);
@@ -2871,8 +3009,8 @@ u32 WifiBattleMatchNet_PokemonCheckMain(WifiBattleMatchNet *p_wk, WifiBattleMatc
                     p_wk->state = WBM_CHECK_SEQ_SEND;
                 }
                 return WBM_NET_SERVER_ERROR;
-            case 408:
-                GFL_NetErrRecordWifi(0x44);
+            case WBM_HTTP_STATUS_REQUEST_TIMEOUT:
+                GFL_NetErrRecordWifi(WifiError_Text_CommunicationErrorHelpVisit_5);
                 if (p_wk->p_nhttp != NULL) {
                     NHttpRap_FreePostData(p_wk->p_nhttp);
                     NHttpRap_Destroy(p_wk->p_nhttp);
@@ -2882,7 +3020,7 @@ u32 WifiBattleMatchNet_PokemonCheckMain(WifiBattleMatchNet *p_wk, WifiBattleMatc
                 }
                 return WBM_NET_SERVER_ERROR;
             default:
-                GFL_NetErrRecordWifi(0x43);
+                GFL_NetErrRecordWifi(WifiError_Text_CommunicationErrorHelpVisit_4);
                 if (p_wk->p_nhttp != NULL) {
                     NHttpRap_FreePostData(p_wk->p_nhttp);
                     NHttpRap_Destroy(p_wk->p_nhttp);
@@ -2891,7 +3029,7 @@ u32 WifiBattleMatchNet_PokemonCheckMain(WifiBattleMatchNet *p_wk, WifiBattleMatc
                     p_wk->state = WBM_CHECK_SEQ_SEND;
                 }
                 return WBM_NET_SERVER_ERROR;
-            case 200:
+            case WBM_HTTP_STATUS_OK:
                 p_wk->state++;
                 break;
             }
@@ -2912,11 +3050,11 @@ u32 WifiBattleMatchNet_PokemonCheckMain(WifiBattleMatchNet *p_wk, WifiBattleMatc
         u32 i;
 
         out->status = NHttpRap_GetCheckStatus(answer);
-        for (i = 0; i < p_wk->unk178; i++) {
+        for (i = 0; i < p_wk->checkPokemonCount; i++) {
             out->result[i] = NHttpRap_GetCheckResult(answer, i);
         }
         if (out->status == 0) {
-            MI_CpuCopy8(NHttpRap_GetCheckSignature(answer, p_wk->unk178), out->signature, 0x80);
+            MI_CpuCopy8(NHttpRap_GetCheckSignature(answer, p_wk->checkPokemonCount), out->signature, 0x80);
         }
         NHttpRap_FreePostData(p_wk->p_nhttp);
         if (p_wk->p_nhttp != NULL) {
@@ -2963,35 +3101,35 @@ static void WifiBattleMatchNet_SetHttpError(WifiBattleMatchNetError *error, int 
 
 static u32 WifiBattleMatchNet_GetDwcResult(u32 code) {
     switch (code) {
-    case 0:
+    case SCResult_NO_ERROR:
         return WBM_RESULT_OK;
-    case 1:
+    case SCResult_NO_AVAILABILITY_CHECK:
         return WBM_RESULT_FAILED;
-    case 2:
+    case SCResult_INVALID_PARAMETERS:
         return WBM_RESULT_FAILED;
-    case 3:
+    case SCResult_NOT_INITIALIZED:
         return WBM_RESULT_FAILED;
-    case 4:
+    case SCResult_CORE_NOT_INITIALIZED:
         return WBM_RESULT_FAILED;
-    case 5:
+    case SCResult_OUT_OF_MEMORY:
         return WBM_RESULT_FAILED;
-    case 6:
+    case SCResult_CALLBACK_PENDING:
         return WBM_RESULT_FAILED;
-    case 7:
+    case SCResult_HTTP_ERROR:
         return WBM_RESULT_FAILED;
-    case 8:
+    case SCResult_UNKNOWN_RESPONSE:
         return WBM_RESULT_FAILED;
-    case 9:
+    case SCResult_RESPONSE_INVALID:
         return WBM_RESULT_FAILED;
-    case 10:
+    case SCResult_REPORT_INCOMPLETE:
         return WBM_RESULT_FAILED;
-    case 11:
+    case SCResult_REPORT_INVALID:
         return WBM_RESULT_FAILED;
-    case 12:
+    case SCResult_SUBMISSION_FAILED:
         return WBM_RESULT_FAILED;
-    case 13:
+    case SCResult_UNKNOWN_ERROR:
         return WBM_RESULT_FAILED;
-    case 14:
+    case SCResultMax:
         return WBM_RESULT_FAILED;
     default:
         GFL_ASSERT(0);
@@ -3001,75 +3139,77 @@ static u32 WifiBattleMatchNet_GetDwcResult(u32 code) {
 
 static u32 WifiBattleMatchNet_GetGdbResult(u32 code, u32 subCode1, u32 subCode2) {
     switch (code) {
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    case WBM_GDB_ERROR_OUT_OF_MEMORY:
+    case WBM_GDB_ERROR_SERVICE_UNAVAILABLE:
+    case WBM_GDB_ERROR_CORE_SHUTDOWN:
+    case WBM_GDB_ERROR_NO_LOGIN_TICKET:
+    case WBM_GDB_ERROR_NOT_AUTHENTICATED:
         return WBM_RESULT_FAILED;
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
+    case WBM_GDB_ERROR_BAD_INPUT:
+    case WBM_GDB_ERROR_BAD_TABLE_ID:
+    case WBM_GDB_ERROR_BAD_FIELDS:
+    case WBM_GDB_ERROR_BAD_FIELD_COUNT:
+    case WBM_GDB_ERROR_BAD_FIELD_NAME:
+    case WBM_GDB_ERROR_BAD_FIELD_TYPE:
+    case WBM_GDB_ERROR_BAD_FIELD_VALUE:
+    case WBM_GDB_ERROR_BAD_OFFSET:
+    case WBM_GDB_ERROR_BAD_MAXIMUM:
+    case WBM_GDB_ERROR_BAD_RECORD_IDS:
+    case WBM_GDB_ERROR_BAD_RECORD_ID_COUNT:
         return WBM_RESULT_DISCONNECTED;
-    case 17:
-    case 18:
+    case WBM_GDB_ERROR_UNKNOWN_ERROR:
+    case WBM_GDB_ERROR_ALREADY_INITIALIZED:
         return WBM_RESULT_FAILED;
-    case 19:
+    case WBM_GDB_ERROR_NOT_INITIALIZED:
         return WBM_RESULT_DISCONNECTED;
+    // This code has no producer in the retained Gdb client.
     case 21:
-    case 22:
+    case WBM_GDB_ERROR_DWC_ERROR:
         return WBM_RESULT_FAILED;
     }
     switch (subCode1) {
-    case 0:
+    case GDB_STATE_OFF:
         return WBM_RESULT_DISCONNECTED;
-    case 1:
-    case 2:
-    case 3:
+    case GDB_STATE_IDLE:
+    case GDB_STATE_BUSY:
+    case GDB_STATE_CANCELING:
         break;
-    case 4:
+    case WBM_GDB_STATE_ERROR:
         return WBM_RESULT_FAILED;
     }
     switch (subCode2) {
-    case 2:
+    case WBM_GDB_RESULT_SECRET_KEY_INVALID:
         return WBM_RESULT_FAILED;
-    case 3:
+    case WBM_GDB_RESULT_SERVICE_DISABLED:
         return WBM_RESULT_FAILED;
-    case 4:
+    case WBM_GDB_RESULT_CONNECTION_TIMEOUT:
         return WBM_RESULT_DISCONNECTED;
-    case 5:
+    case WBM_GDB_RESULT_CONNECTION_ERROR:
         return WBM_RESULT_FAILED;
-    case 6:
+    case WBM_GDB_RESULT_MALFORMED_RESPONSE:
         return WBM_RESULT_FAILED;
-    case 7:
+    case WBM_GDB_RESULT_OUT_OF_MEMORY:
         return WBM_RESULT_FAILED;
-    case 8:
-    case 9:
-    case 10:
+    case WBM_GDB_RESULT_DATABASE_UNAVAILABLE:
+    case WBM_GDB_RESULT_LOGIN_TICKET_INVALID:
+    case WBM_GDB_RESULT_LOGIN_TICKET_EXPIRED:
         return WBM_RESULT_FAILED;
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
+    case WBM_GDB_RESULT_TABLE_NOT_FOUND:
+    case WBM_GDB_RESULT_RECORD_NOT_FOUND:
+    case WBM_GDB_RESULT_FIELD_NOT_FOUND:
+    case WBM_GDB_RESULT_FIELD_TYPE_INVALID:
+    case WBM_GDB_RESULT_NO_PERMISSION:
+    case WBM_GDB_RESULT_RECORD_LIMIT_REACHED:
         return WBM_RESULT_DISCONNECTED;
-    case 17:
-    case 18:
-    case 19:
-    case 20:
-    case 21:
+    case WBM_GDB_RESULT_ALREADY_RATED:
+    case WBM_GDB_RESULT_NOT_RATEABLE:
+    case WBM_GDB_RESULT_NOT_OWNED:
+    case WBM_GDB_RESULT_FILTER_INVALID:
+    case WBM_GDB_RESULT_SORT_INVALID:
         return WBM_RESULT_DISCONNECTED;
-    case 22:
+    case WBM_GDB_RESULT_UNKNOWN_ERROR:
         return WBM_RESULT_FAILED;
+    // Codes 23 through 29 are not produced by the retained Gdb result converter.
     case 23:
     case 24:
     case 25:
@@ -3079,7 +3219,8 @@ static u32 WifiBattleMatchNet_GetGdbResult(u32 code, u32 subCode1, u32 subCode2)
     case 28:
     case 29:
         return WBM_RESULT_FAILED;
-    case 30:
+    case WBM_GDB_RESULT_TARGET_FILTER_INVALID:
+    // Code 31 likewise has no retained producer.
     case 31:
         return WBM_RESULT_FAILED;
     }
@@ -3088,11 +3229,11 @@ static u32 WifiBattleMatchNet_GetGdbResult(u32 code, u32 subCode1, u32 subCode2)
 
 static u32 WifiBattleMatchNet_GetTimeoutResult(u32 code) {
     switch (code) {
-    case 0:
+    case WBM_RESULT_OK:
         return WBM_RESULT_OK;
-    case 1:
+    case WBM_RESULT_DISCONNECTED:
         return WBM_RESULT_DISCONNECTED;
-    case 2:
+    case WBM_RESULT_FAILED:
         return WBM_RESULT_FAILED;
     }
     return WBM_RESULT_OK;
@@ -3102,8 +3243,8 @@ static void WifiBattleMatchNet_ClearError(WifiBattleMatchNetError *error) {
     MI_CpuFill8(error, 0, sizeof(WifiBattleMatchNetError));
 }
 
-void WifiBattleMatchNet_ShowIcon(WifiBattleMatchNet *p_wk, int a1) {
-    if (a1 != 0) {
+void WifiBattleMatchNet_ShowIcon(WifiBattleMatchNet *p_wk, int show) {
+    if (show != 0) {
         GFL_NetSetIconScreen(TRUE, p_wk->msgHeapId);
     }
 }

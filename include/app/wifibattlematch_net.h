@@ -8,8 +8,26 @@
 #include "gfl/proc.h"
 #include "struct_decls.h"
 
+enum {
+    WBM_SYNC_REPORT_SESSION = 1,
+    WBM_SYNC_REPORT_INTENTION = 2,
+    WBM_SYNC_REPORT_INFO = 3,
+    WBM_SYNC_REPORT_START = 4,
+    WBM_SYNC_REPORT_END = 5,
+    WBM_SYNC_MATCH_NEGOTIATED = 15,
+    WBM_SYNC_CONNECTED_PLAYERS = 20,
+    WBM_SYNC_VALIDATED_PLAYERS = 21,
+    WBM_SYNC_MATCH_READY = 22,
+    WBM_SYNC_TEAM_DOWNLOADED = 23,
+    WBM_SYNC_DISCONNECT = 24,
+};
+
+enum {
+    WBM_POKEMON_VALIDATION_OK = 0,
+};
+
 // Overlay 260's wifibattlematch_net.c (named by its embedded string): the net part of the Wi-Fi battle competitions.
-// Its functions have no names yet, only their addresses; what they do is said at each
+// It manages matchmaking, peer messages, competition reports and server requests
 
 typedef struct WifiBattleMatchNet WifiBattleMatchNet;
 
@@ -78,8 +96,9 @@ enum {
 typedef struct {
     const GSLoginCertificate *certificate;
     SCIReport *connection;
-    u8 unk8[0x28];
-    u8 unk30[0x28];
+    u8 sessionId[0x28];
+    u8 connectionId[0x28];
+    // Sc_SetPlayer accepts this buffer, but its retained implementation never reads it.
     u8 unk58[0x10];
 } WifiBattleMatchNetInfo;
 
@@ -108,6 +127,7 @@ typedef struct {
 
 // The fields of the arena's table, by the number that WifiBattleMatchNet_GetArenaFieldName gives their names for
 typedef enum {
+    ARENA_FIELD_NONE = 0,
     ARENA_DISCONNECTS_COUNTER = 3,
     ARENA_COMPLETE_MATCHES_COUNTER = 4,
     ARENA_NUM_SINGLE_WIN = 9,
@@ -215,30 +235,31 @@ void WifiBattleMatchNet_Nop(WifiBattleMatchNet *p_wk);
 // Starts a timing sync with the number, and checks whether the other machine reached it too
 void WifiBattleMatchNet_StartSync(WifiBattleMatchNet *p_wk, u32 syncId);
 BOOL WifiBattleMatchNet_CheckSync(WifiBattleMatchNet *p_wk);
-// Checks the network's state and the error that was found, returning how it ends (a WifiBattleMatchNetResult)
-u32 WifiBattleMatchNet_CheckError(WifiBattleMatchNet *p_wk, u32 a1, u32 a2);
+// Checks the network and returns a WifiBattleMatchNetResult. deferErrorScreen leaves recoverable errors for
+// the caller; reportPeerDisconnect shows the error when the other player is lost.
+u32 WifiBattleMatchNet_CheckError(WifiBattleMatchNet *p_wk, u32 deferErrorScreen, u32 reportPeerDisconnect);
 // Resets the state of the machines that follow, whose main functions return WBM_NET_*
 void WifiBattleMatchNet_ResetLogin(WifiBattleMatchNet *p_wk);
 u32 WifiBattleMatchNet_LoginMain(WifiBattleMatchNet *p_wk);
 // Sets the match query and its keys for the mode (WBM_MATCH_MODE_*) and the rule (WBM_RULE_*), and the machine that
 // runs it; WBM_NET_SUCCESS once matched
-void WifiBattleMatchNet_StartMatch(WifiBattleMatchNet *p_wk, u32 mode, u32 a2, u32 rule,
+void WifiBattleMatchNet_StartMatch(WifiBattleMatchNet *p_wk, u32 mode, u32 modeOffset, u32 rule,
                                    const WifiBattleMatchNetKeys *keys);
 u32 WifiBattleMatchNet_MatchMain(WifiBattleMatchNet *p_wk);
 void WifiBattleMatchNet_CancelMatch(WifiBattleMatchNet *p_wk);
 void WifiBattleMatchNet_ResetEnd(WifiBattleMatchNet *p_wk);
 BOOL WifiBattleMatchNet_EndMain(WifiBattleMatchNet *p_wk);
-BOOL WifiBattleMatchNet_SendCmd2402(WifiBattleMatchNet *p_wk);
-BOOL WifiBattleMatchNet_TakeCmd2402(WifiBattleMatchNet *p_wk);
+BOOL WifiBattleMatchNet_SendCancelSearch(WifiBattleMatchNet *p_wk);
+BOOL WifiBattleMatchNet_TakeCancelSearch(WifiBattleMatchNet *p_wk);
 BOOL WifiBattleMatchNet_SendPerson(WifiBattleMatchNet *p_wk);
 BOOL WifiBattleMatchNet_TakePerson(WifiBattleMatchNet *p_wk);
-void WifiBattleMatchNet_SetGuest(WifiBattleMatchNet *p_wk, u32 value);
+void WifiBattleMatchNet_SetOpponentNameRejected(WifiBattleMatchNet *p_wk, u32 rejected);
 // Starts a report (WBM_REPORT_MODE_*) of a kind (WBM_MATCH_MODE_COMPETITION or WBM_MATCH_MODE_RATING), with the
 // battle's rule (WBM_RULE_*) and result for WBM_REPORT_MODE_RESULT
 void WifiBattleMatchNet_StartReport(WifiBattleMatchNet *p_wk, u32 mode, u32 kind, u32 rule,
-                                    const WifiBattleMatchBattleResult *battleResult, u32 a5);
+                                    const WifiBattleMatchBattleResult *battleResult, u32 partialReport);
 u32 WifiBattleMatchNet_ReportMain(WifiBattleMatchNet *p_wk, u32 *out);
-u32 WifiBattleMatchNet_GetReceivedValue(WifiBattleMatchNet *p_wk);
+u32 WifiBattleMatchNet_GetPeerCommandCheckError(WifiBattleMatchNet *p_wk);
 // Reads the table of fields of a kind (WBM_READ_*) into out
 void WifiBattleMatchNet_StartRead(WifiBattleMatchNet *p_wk, int recordId, int kind, void *out);
 u32 WifiBattleMatchNet_ReadMain(WifiBattleMatchNet *p_wk);
@@ -254,10 +275,10 @@ BOOL WifiBattleMatchNet_TakePlayerInfo(WifiBattleMatchNet *p_wk, void **out);
 BOOL WifiBattleMatchNet_SendParty(WifiBattleMatchNet *p_wk, PokeParty *party);
 // Copies the other player's team into party, and then is TRUE, once it has arrived
 BOOL WifiBattleMatchNet_TakeParty(WifiBattleMatchNet *p_wk, PokeParty *party);
-BOOL WifiBattleMatchNet_SendValue4(WifiBattleMatchNet *p_wk, const u32 *data);
-BOOL WifiBattleMatchNet_TakeValue4(WifiBattleMatchNet *p_wk, u32 *out);
-BOOL WifiBattleMatchNet_SendReportValue(WifiBattleMatchNet *p_wk, const void *data);
-BOOL WifiBattleMatchNet_TakeReportValue(WifiBattleMatchNet *p_wk, u32 *out);
+BOOL WifiBattleMatchNet_SendValidationErrors(WifiBattleMatchNet *p_wk, const u32 *data);
+BOOL WifiBattleMatchNet_TakeValidationErrors(WifiBattleMatchNet *p_wk, u32 *out);
+BOOL WifiBattleMatchNet_SendCommandCheckError(WifiBattleMatchNet *p_wk, const void *data);
+BOOL WifiBattleMatchNet_TakeCommandCheckError(WifiBattleMatchNet *p_wk, u32 *out);
 void WifiBattleMatchNet_InitDownload(WifiBattleMatchNet *p_wk, s32 profileId);
 u32 WifiBattleMatchNet_DownloadMain(WifiBattleMatchNet *p_wk);
 void WifiBattleMatchNet_GetDownload(WifiBattleMatchNet *p_wk, TournamentEntry *dest);
@@ -266,12 +287,12 @@ u32 WifiBattleMatchNet_AccountRequestMain(WifiBattleMatchNet *p_wk);
 void WifiBattleMatchNet_GetAccountValues(WifiBattleMatchNet *p_wk, void *out);
 void WifiBattleMatchNet_StartPostRequest(WifiBattleMatchNet *p_wk, const void *in, HeapID heapId);
 u32 WifiBattleMatchNet_PostRequestMain(WifiBattleMatchNet *p_wk);
-void WifiBattleMatchNet_StartNameCheck(WifiBattleMatchNet *p_wk, PlayerInfo *info, u16 a2);
+void WifiBattleMatchNet_StartNameCheck(WifiBattleMatchNet *p_wk, PlayerInfo *info, u16 heapId);
 BOOL WifiBattleMatchNet_NameCheckMain(WifiBattleMatchNet *p_wk, u32 *out);
 // Checks a Pokémon or a team, by the kind (WBM_POKEMON_CHECK_*)
 void WifiBattleMatchNet_StartPokemonCheck(WifiBattleMatchNet *p_wk, void *data, int kind);
 u32 WifiBattleMatchNet_PokemonCheckMain(WifiBattleMatchNet *p_wk, WifiBattleMatchNetCheck *out);
-void WifiBattleMatchNet_ShowIcon(WifiBattleMatchNet *p_wk, int a1);
+void WifiBattleMatchNet_ShowIcon(WifiBattleMatchNet *p_wk, int show);
 s32 WifiBattleMatchNet_GetGSID(WifiBattleMatchNet *p_wk);
 
 // wifibattlematch_net_fields.c, which follows: the names of the Sake fields. The first two give the arena's table of

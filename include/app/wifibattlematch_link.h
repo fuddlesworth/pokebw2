@@ -6,6 +6,56 @@
 #include "gfl/heap.h"
 #include "gfl/proc.h"
 
+enum {
+    WBM_LINK_RESULT_INITIAL = 0,
+    WBM_LINK_RESULT_BATTLE_FINISHED = 1,
+    WBM_LINK_RESULT_CANCELLED = 2,
+    WBM_LINK_RESULT_RESULT_SHOWN = 3,
+};
+
+enum {
+    WBM_MENU_NO_SELECTION = -1,
+    WBM_MENU_YES = 0,
+    WBM_MENU_NO = 1,
+};
+
+enum {
+    WBM_RATING_INDEX_DOUBLE = 0,
+    WBM_RATING_INDEX_ROTATION = 1,
+    WBM_RATING_INDEX_SHOOTER = 2,
+    WBM_RATING_INDEX_SINGLE = 3,
+    WBM_RATING_INDEX_TRIPLE = 4,
+};
+
+enum {
+    WBM_REGISTRATION_NONE = 0,
+    WBM_REGISTRATION_TEAM_REQUIRED = 1,
+    WBM_REGISTRATION_COMPLETE = 2,
+    WBM_REGISTRATION_PERIOD_ENDED = 3,
+    WBM_REGISTRATION_WITHDRAWN = 4,
+};
+
+enum {
+    WBM_PERIOD_RESULT_ACTIVE = 0,
+    WBM_PERIOD_RESULT_EXPIRED = 1,
+    WBM_PERIOD_RESULT_NOT_STARTED = 2,
+    WBM_PERIOD_RESULT_SERVER_ERROR = 3,
+};
+
+enum {
+    WBM_UNREGISTER_RESULT_DONE = 0,
+    WBM_UNREGISTER_RESULT_NOT_CHANGED = 1,
+    WBM_UNREGISTER_RESULT_NOT_REGISTERED = 2,
+    WBM_UNREGISTER_RESULT_SERVER_ERROR = 3,
+};
+
+enum {
+    WBM_TEAM_CHECK_RESULT_VALID = 0,
+    WBM_TEAM_CHECK_RESULT_INVALID = 1,
+    WBM_TEAM_CHECK_RESULT_REQUEST_FAILED = 2,
+    WBM_TEAM_CHECK_RESULT_SERVER_ERROR = 3,
+};
+
 // Overlay 260's wifibattlematch_link.c, wifibattlematch_link_random.c and wifibattlematch_link_competition.c (all
 // descriptive names: the ROM names only the next file, wifibattlematch_net.c): the link of the Wi-Fi battle
 // competitions, which overlay 290 chains. wifibattlematch_link.c is the proc that overlay 290 runs, which runs one of
@@ -27,18 +77,18 @@ enum {
 };
 
 // What the link writes to the server after a battle: overlay 290's report, and the word that
-// WifiBattleMatchLinkParam.unk28 points to
+// WifiBattleMatchLinkParam.recordSaveIndex points to
 typedef struct {
     WifiBattleMatchReport report;
-    u32 unk50;
+    u32 recordSaveIndex;
 } WifiBattleMatchLinkReportBuf;
 
-// What the server says of the player's account: the Game Sync ID in the first word, and in the bytes after it the
-// state of the competition and whether the Game Sync ID is registered
+// The account response: its profile ID, registration flags and competition registration state
 typedef struct {
     s32 profileId;
+    // Forwarded unchanged in the registration request; 1 clears registered.
     u8 unk4;
-    u8 unk5;
+    u8 registrationState;
     u8 registered;
     u8 unk7;
 } WifiBattleMatchLinkAccount;
@@ -47,26 +97,27 @@ typedef struct {
 // types in, and the data of the Wi-Fi competition's ranking
 typedef struct {
     u32 rating[5];
+    // NetStats.unk14, cheatsCounter and unk1C; the link does not read these words.
     u32 unk14[3];
-    u32 unk20;
+    u32 disconnectsCounter;
     struct {
-        u32 second;
-        u32 first;
+        u32 losses;
+        u32 wins;
     } results[5];
-    u32 unk4C;
-    u32 unk50;
-    u32 unk54;
-    u32 unk58;
+    u32 initialProfileId;
+    u32 currentProfileId;
+    u32 recordSaveIndex;
+    u32 recordId;
 } WifiBattleMatchLinkRatings;
 
 typedef struct {
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    u32 unk14;
-    u8 body[0x534];
+    u32 cheatsCounter;
+    u32 disconnectsCounter;
+    u32 wins;
+    u32 losses;
+    u32 rating;
+    u32 recordSaveIndex;
+    u8 partyData[0x534];
 } WifiBattleMatchLinkRanking;
 
 // What overlay 290 gives the link
@@ -79,16 +130,16 @@ typedef struct {
     RndMatchData *record;
     WifiBattleMatchPlayer *player;
     WifiBattleMatchPlayer *otherPlayer;
-    void *unk1C;
-    u32 *unk20;
+    void *loginBuffer;
+    u32 *recordRequestCooldown;
     WifiBattleMatchReport *report;
-    u32 *unk28;
+    u32 *recordSaveIndex;
     WifiBattleMatchBattleResult *battleResult;
     WifiBattleMatchLinkAccount *account;
-    WifiBattleMatchLinkRanking *unk34;
+    WifiBattleMatchLinkRanking *ranking;
     WifiBattleMatchLinkRatings *ratings;
-    WifiBattleMatchNetData *unk3C;
-    BOOL *unk40;
+    WifiBattleMatchNetData *netData;
+    BOOL *opponentNameRejected;
     u32 unk44;
 } WifiBattleMatchLinkParam;
 

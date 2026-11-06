@@ -28,15 +28,15 @@ struct WifiBattleMatchPlayer {
     u32 record1;
     u32 record2;
     u32 record0;
-    u32 unk34;
+    u32 rating;
     PMSData sentence;
     // The cup ID of the player's entry in the tournament block (TOURNAMENT_FIELD_CUP_ID), which the two players compare
     u32 entryField2;
     // 100, which overlay 290 and the live competition check with BattleRec_IsVersionSupported
-    u32 unk44;
+    u32 battleRecordVersion;
     s32 gsid;
     // The player's record ID in the Sake database, which the Wi-Fi competition reads the other player's team by
-    u32 unk4C;
+    u32 recordId;
     u32 checksum;
     u8 signature[0x80];
     // The team picked, as a PokeParty's save data
@@ -45,7 +45,7 @@ struct WifiBattleMatchPlayer {
 
 // What the battle left, for the steps that follow it
 typedef struct {
-    // How the battle ended, 0 to 4
+    // How the battle ended, a BTL_RESULT_*
     u32 result;
     u32 battleStyle;
     // The other player's Pokémon left standing and the percentage of their HP left, and the player's Pokémon left
@@ -56,8 +56,8 @@ typedef struct {
     // Set when the other player left or the link failed, so that the live competition keeps to the menus that need none
     BOOL disconnected;
     // The player's value of the report, which the two machines exchange, and the other player's
-    u32 unk10;
-    u32 unk14;
+    u32 ownCommandCheckError;
+    u32 otherCommandCheckError;
 } WifiBattleMatchBattleResult;
 
 // What a battle sends to the ranking: the other player's team, then the player's own

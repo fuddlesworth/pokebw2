@@ -11,11 +11,13 @@
 #include "app/wifibattlematch_net.h"
 #include "app/wifibattlematch_util.h"
 #include "app/wifibattlematch_view.h"
+#include "battle/btl_result.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "constants/version.h"
 #include "dwc/dwc.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/dwc_rapcommon.h"
 #include "gfl/fade.h"
@@ -43,6 +45,249 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/system/event_fishing.h"
+
+enum {
+    RANDOM_LINK_PHASE_FADE_IN = 0,
+    RANDOM_LINK_PHASE_WAIT_FADE_IN = 1,
+    RANDOM_LINK_PHASE_RUN_TASK = 2,
+    RANDOM_LINK_PHASE_FADE_OUT = 3,
+    RANDOM_LINK_PHASE_WAIT_FADE_OUT = 4,
+};
+
+enum {
+    RANDOM_SELECT_MODE_HIDE_LINK_ICON = 0,
+    RANDOM_SELECT_MODE_PROMPT_MODE = 1,
+    RANDOM_SELECT_MODE_CREATE_MODE_MENU = 2,
+    RANDOM_SELECT_MODE_WAIT_MODE_MENU = 3,
+    RANDOM_SELECT_MODE_PROMPT_QUIT = 4,
+    RANDOM_SELECT_MODE_CREATE_QUIT_MENU = 5,
+    RANDOM_SELECT_MODE_WAIT_QUIT_MENU = 6,
+    RANDOM_SELECT_MODE_WAIT_MESSAGE = 7,
+};
+
+enum {
+    RATING_START_CHECK_GAME_SYNC_ID = 0,
+    RATING_START_SHOW_RATING_MODE = 1,
+    RATING_START_SHOW_DOWNLOAD_MESSAGE = 2,
+    RATING_START_REQUEST_ACCOUNT = 3,
+    RATING_START_WAIT_ACCOUNT = 4,
+    RATING_START_CHECK_REGISTRATION = 5,
+    RATING_START_SHOW_UNREGISTERED_MESSAGE = 6,
+    RATING_START_START_TEAM_CHECK = 9,
+    RATING_START_WAIT_TEAM_CHECK = 10,
+    RATING_START_SHOW_INVALID_TEAM = 11,
+    RATING_START_END = 12,
+    RATING_START_CONNECT = 13,
+    RATING_START_WAIT_MESSAGE = 14,
+};
+
+enum {
+    RATING_CONNECT_SHOW_DOWNLOAD_MESSAGE = 0,
+    RATING_CONNECT_DOWNLOAD_RATING = 1,
+    RATING_CONNECT_WAIT_RATING = 2,
+    RATING_CONNECT_CHECK_RECORD_ID = 3,
+    RATING_CONNECT_WAIT_RECORD_CREATION = 4,
+    RATING_CONNECT_CHECK_CARD_REFRESH = 5,
+    RATING_CONNECT_DELAY_CARD_REFRESH = 6,
+    RATING_CONNECT_HIDE_OLD_CARD = 7,
+    RATING_CONNECT_CREATE_CARD = 8,
+    RATING_CONNECT_WAIT_CARD_SHOWN = 9,
+    RATING_CONNECT_SEARCH = 10,
+    RATING_CONNECT_WAIT_MESSAGE = 11,
+};
+
+enum {
+    RATING_SEARCH_SHOW_SEARCH_MESSAGE = 0,
+    RATING_SEARCH_START_MATCH = 1,
+    RATING_SEARCH_WAIT_MATCH = 2,
+    RATING_SEARCH_SEND_PLAYER_INFO = 3,
+    RATING_SEARCH_RECEIVE_PLAYER_INFO = 4,
+    RATING_SEARCH_CHECK_SIGNATURE = 5,
+    RATING_SEARCH_START_NAME_CHECK = 6,
+    RATING_SEARCH_WAIT_NAME_CHECK = 7,
+    RATING_SEARCH_SYNC_VALIDATED_PLAYERS = 8,
+    RATING_SEARCH_WAIT_VALIDATED_PLAYERS_SYNC = 9,
+    RATING_SEARCH_SYNC_MATCH_READY = 10,
+    RATING_SEARCH_WAIT_MATCH_READY_SYNC = 11,
+    RATING_SEARCH_SHOW_OPPONENT_FOUND = 12,
+    RATING_SEARCH_WAIT_OPPONENT_FOUND_DELAY = 13,
+    RATING_SEARCH_WAIT_PARTNER_CARD = 14,
+    RATING_SEARCH_WAIT_PARTNER_CARD_DELAY = 15,
+    RATING_SEARCH_START_SESSION_REPORT = 16,
+    RATING_SEARCH_WAIT_SESSION_REPORT = 17,
+    RATING_SEARCH_END_REPORT_HEAP = 18,
+    RATING_SEARCH_SHOW_TEAM_SELECTION_MESSAGE = 19,
+    RATING_SEARCH_WAIT_TEAM_SELECTION_DELAY = 20,
+    RATING_SEARCH_CANCEL_SESSION = 21,
+    RATING_SEARCH_PROMPT_QUIT = 22,
+    RATING_SEARCH_CREATE_QUIT_MENU = 23,
+    RATING_SEARCH_WAIT_QUIT_MENU = 24,
+    RATING_SEARCH_PROMPT_CONTINUE = 25,
+    RATING_SEARCH_CREATE_CONTINUE_MENU = 26,
+    RATING_SEARCH_WAIT_CONTINUE_MENU = 27,
+    RATING_SEARCH_SEND_CANCEL_COMMAND = 28,
+    RATING_SEARCH_CANCEL_AND_RETRY = 29,
+    RATING_SEARCH_WAIT_MESSAGE = 30,
+};
+
+enum {
+    RATING_RESULT_CREATE_REPORT_HEAP = 0,
+    RATING_RESULT_SHOW_REPORT_MESSAGE = 1,
+    RATING_RESULT_START_REPORT = 2,
+    RATING_RESULT_WAIT_REPORT = 3,
+    RATING_RESULT_FINISH_REPORT = 4,
+    RATING_RESULT_SEND_JOIN_AVENUE_PERSON = 5,
+    RATING_RESULT_RECEIVE_JOIN_AVENUE_PERSON = 6,
+    RATING_RESULT_RECORD_MET_TRAINER = 7,
+    RATING_RESULT_WAIT_DISCONNECT = 8,
+    RATING_RESULT_WAIT_WRITE_COOLDOWN = 9,
+    RATING_RESULT_UPLOAD_RESULT = 10,
+    RATING_RESULT_WAIT_RESULT_UPLOAD = 11,
+    RATING_RESULT_SHOW_RESULTS_SENT = 12,
+    RATING_RESULT_SHOW_SAVE_MESSAGE = 13,
+    RATING_RESULT_START_SAVE = 14,
+    RATING_RESULT_WAIT_SAVE = 15,
+    RATING_RESULT_WAIT_MESSAGE = 16,
+};
+
+enum {
+    RATING_AFTER_BATTLE_CHECK_CONNECTION = 0,
+    RATING_AFTER_BATTLE_CONTINUE = 1,
+    RATING_AFTER_BATTLE_WAIT_MESSAGE = 2,
+};
+
+enum {
+    RATING_CONTINUE_CHECK_CONNECTION = 0,
+    RATING_CONTINUE_PROMPT_CONTINUE = 1,
+    RATING_CONTINUE_CREATE_MENU = 2,
+    RATING_CONTINUE_WAIT_MENU = 3,
+    RATING_CONTINUE_WAIT_MESSAGE = 4,
+};
+
+enum {
+    RATING_QUIT_PROMPT_QUIT = 0,
+    RATING_QUIT_CREATE_MENU = 1,
+    RATING_QUIT_WAIT_MENU = 2,
+    RATING_QUIT_WAIT_MESSAGE = 3,
+};
+
+enum {
+    RATING_QUIT_SAVE_SHOW_SAVE_MESSAGE = 0,
+    RATING_QUIT_SAVE_START_SAVE = 1,
+    RATING_QUIT_SAVE_WAIT_SAVE = 2,
+    RATING_QUIT_SAVE_SHOW_UPLOAD_MESSAGE = 3,
+    RATING_QUIT_SAVE_UPLOAD_LOGOUT = 4,
+    RATING_QUIT_SAVE_WAIT_LOGOUT_UPLOAD = 5,
+    RATING_QUIT_SAVE_END = 6,
+    RATING_QUIT_SAVE_WAIT_MESSAGE = 7,
+};
+
+enum {
+    FREE_START_SHOW_MODE_AND_CREATE_CARD = 0,
+    FREE_START_WAIT_CARD_SHOWN = 1,
+    FREE_START_WAIT_MODE_MESSAGE = 2,
+    FREE_START_SHOW_DOWNLOAD_MESSAGE = 3,
+    FREE_START_START_TEAM_CHECK = 4,
+    FREE_START_WAIT_TEAM_CHECK = 5,
+    FREE_START_SHOW_INVALID_TEAM = 6,
+    FREE_START_WAIT_INVALID_TEAM_MESSAGE = 7,
+};
+
+enum {
+    FREE_SEARCH_UPDATE_PLAYER_RECORD = 0,
+    FREE_SEARCH_SHOW_SEARCH_MESSAGE = 1,
+    FREE_SEARCH_START_MATCH = 2,
+    FREE_SEARCH_WAIT_MATCH = 3,
+    FREE_SEARCH_SYNC_CONNECTED_PLAYERS = 6,
+    FREE_SEARCH_WAIT_CONNECTED_PLAYERS_SYNC = 7,
+    FREE_SEARCH_SEND_PLAYER_INFO = 8,
+    FREE_SEARCH_RECEIVE_PLAYER_INFO = 9,
+    FREE_SEARCH_CHECK_SIGNATURE = 10,
+    FREE_SEARCH_START_NAME_CHECK = 11,
+    FREE_SEARCH_WAIT_NAME_CHECK = 12,
+    FREE_SEARCH_SYNC_VALIDATED_PLAYERS = 13,
+    FREE_SEARCH_WAIT_VALIDATED_PLAYERS_SYNC = 14,
+    FREE_SEARCH_SYNC_MATCH_READY = 15,
+    FREE_SEARCH_WAIT_MATCH_READY_SYNC = 16,
+    FREE_SEARCH_SHOW_OPPONENT_FOUND = 17,
+    FREE_SEARCH_WAIT_OPPONENT_FOUND_DELAY = 18,
+    FREE_SEARCH_WAIT_PARTNER_CARD = 19,
+    FREE_SEARCH_WAIT_PARTNER_CARD_DELAY = 20,
+    FREE_SEARCH_SHOW_TEAM_SELECTION_MESSAGE = 21,
+    FREE_SEARCH_WAIT_TEAM_SELECTION_DELAY = 22,
+    FREE_SEARCH_SEND_CANCEL_COMMAND = 23,
+    FREE_SEARCH_CANCEL_AND_RETRY = 24,
+    FREE_SEARCH_WAIT_MESSAGE = 25,
+};
+
+enum {
+    FREE_RESULT_CHECK_CANCELLATION = 0,
+    FREE_RESULT_SEND_COMMAND_CHECK_RESULT = 1,
+    FREE_RESULT_RECEIVE_COMMAND_CHECK_RESULT = 2,
+    FREE_RESULT_SEND_JOIN_AVENUE_PERSON = 3,
+    FREE_RESULT_RECEIVE_JOIN_AVENUE_PERSON = 4,
+    FREE_RESULT_SHOW_EXCHANGE_MESSAGE = 5,
+    FREE_RESULT_RECORD_MET_TRAINER = 6,
+    FREE_RESULT_WAIT_DISCONNECT = 7,
+    FREE_RESULT_WAIT_DISCONNECT_DELAY = 8,
+    FREE_RESULT_DELAY_SAVE = 9,
+    FREE_RESULT_SHOW_SAVE_MESSAGE = 10,
+    FREE_RESULT_START_SAVE = 11,
+    FREE_RESULT_WAIT_SAVE = 12,
+    FREE_RESULT_WAIT_MESSAGE = 13,
+};
+
+enum {
+    FREE_AFTER_BATTLE_FIRST_DELAY_FRAME = 0,
+    FREE_AFTER_BATTLE_SECOND_DELAY_FRAME = 1,
+    FREE_AFTER_BATTLE_CONTINUE = 2,
+    FREE_AFTER_BATTLE_WAIT_MESSAGE = 3,
+};
+
+enum {
+    FREE_CONTINUE_PROMPT_CONTINUE = 0,
+    FREE_CONTINUE_CREATE_MENU = 1,
+    FREE_CONTINUE_WAIT_MENU = 2,
+    FREE_CONTINUE_WAIT_MESSAGE = 3,
+};
+
+enum {
+    FREE_QUIT_PROMPT_QUIT = 0,
+    FREE_QUIT_CREATE_MENU = 1,
+    FREE_QUIT_WAIT_MENU = 2,
+    FREE_QUIT_SHOW_DISCONNECT_MESSAGE = 3,
+    FREE_QUIT_END = 4,
+    FREE_QUIT_WAIT_MESSAGE = 5,
+};
+
+enum {
+    RANDOM_LINK_END_RELEASE_NETWORK = 0,
+};
+
+enum {
+    RANDOM_TEAM_CHECK_CLEAR_SIGNATURE = 0,
+    RANDOM_TEAM_CHECK_START_CHECK = 1,
+    RANDOM_TEAM_CHECK_WAIT_CHECK = 2,
+    RANDOM_TEAM_CHECK_COPY_SIGNATURE = 3,
+    RANDOM_TEAM_CHECK_END = 4,
+};
+
+enum {
+    RANDOM_SEARCH_CANCEL_IDLE = 0,
+    RANDOM_SEARCH_CANCEL_SHOW_QUIT_PROMPT = 1,
+    RANDOM_SEARCH_CANCEL_WAIT_QUIT_PROMPT = 2,
+    RANDOM_SEARCH_CANCEL_CREATE_MENU = 3,
+    RANDOM_SEARCH_CANCEL_WAIT_MENU = 4,
+    RANDOM_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE = 5,
+    RANDOM_SEARCH_CANCEL_DISCONNECT = 6,
+    RANDOM_SEARCH_CANCEL_CONFIRMED = 7,
+};
+
+enum {
+    RANDOM_MODE_SELECTION_FREE = 0,
+    RANDOM_MODE_SELECTION_RATING = 1,
+    RANDOM_MODE_SELECTION_QUIT = 2,
+};
 
 // The modes of the random matchups (WifiBattleMatchLinkParam.mode); the 2 is overlay 290's own
 enum {
@@ -163,12 +408,12 @@ static BOOL WifiBattleMatchLink_RandomInit(GameProc *proc, u32 *state, void *par
     link->res =
         WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(link->graphic), 2, HEAPID_WIFIBATTLEMATCH_LINK);
     WifiBattleMatchLink_FillOwnPlayer(linkParam->player, link);
-    link->font = GFL_FontCreate(0x17, 0, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
+    link->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
     link->printQueue = PrintQueue_CreateDefault(HEAPID_WIFIBATTLEMATCH_LINK);
     link->msgData =
         GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING, HEAPID_WIFIBATTLEMATCH_LINK);
     link->wordSet = GFL_WordSetSystemCreate(8, 0x40, HEAPID_WIFIBATTLEMATCH_LINK);
-    link->net = WifiBattleMatchNet_Create(link->param->unk3C, linkParam->param->gameData, linkParam->unk1C,
+    link->net = WifiBattleMatchNet_Create(link->param->netData, linkParam->param->gameData, linkParam->loginBuffer,
                                           HEAPID_WIFIBATTLEMATCH_LINK);
     link->msgBox =
         WifiBattleMatchMsgBox_Create(0, 15, 14, 10, link->printQueue, link->font, HEAPID_WIFIBATTLEMATCH_LINK);
@@ -177,11 +422,11 @@ static BOOL WifiBattleMatchLink_RandomInit(GameProc *proc, u32 *state, void *par
     link->linkIcon = WifiBattleMatchLinkIcon_Create(WifiBattleMatchGraphic_GetClActUnit(link->graphic), link->res,
                                                     HEAPID_WIFIBATTLEMATCH_LINK);
     WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
-    if (linkParam->result != 0) {
+    if (linkParam->result != WBM_LINK_RESULT_INITIAL) {
         if (linkParam->mode == LINK_MODE_RATING) {
             WifiBattleMatchLink_ShowRankCard(link, 0);
         } else if (linkParam->mode == LINK_MODE_FREE) {
-            if (linkParam->result == 1) {
+            if (linkParam->result == WBM_LINK_RESULT_BATTLE_FINISHED) {
                 WifiBattleMatchLink_AddMatchResult(linkParam->record, linkParam->param->battleType,
                                                    linkParam->battleResult->result);
             }
@@ -189,8 +434,8 @@ static BOOL WifiBattleMatchLink_RandomInit(GameProc *proc, u32 *state, void *par
         }
     }
     WifiBattleMatchNet_ShowIcon(link->net, TRUE);
-    if (linkParam->result == 1) {
-        WifiBattleMatchNet_SetGuest(link->net, *link->param->unk40);
+    if (linkParam->result == WBM_LINK_RESULT_BATTLE_FINISHED) {
+        WifiBattleMatchNet_SetOpponentNameRejected(link->net, *link->param->opponentNameRejected);
     }
     return TRUE;
 }
@@ -226,29 +471,29 @@ static BOOL WifiBattleMatchLink_RandomMain(GameProc *proc, u32 *state, void *par
     WifiBattleMatchLinkRandom *link = work;
 
     switch (*state) {
-    case 0:
-        GFL_FadeSet(3, 16, 0, 0);
-        *state = 1;
+    case RANDOM_LINK_PHASE_FADE_IN:
+        GFL_FadeSet((FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK), 16, 0, 0);
+        *state = RANDOM_LINK_PHASE_WAIT_FADE_IN;
         break;
-    case 1:
+    case RANDOM_LINK_PHASE_WAIT_FADE_IN:
         if (!GFL_FadeIsRunning()) {
-            *state = 2;
+            *state = RANDOM_LINK_PHASE_RUN_TASK;
         }
         break;
-    case 2:
+    case RANDOM_LINK_PHASE_RUN_TASK:
         WifiBattleMatchTask_Run(link->task);
         if (WifiBattleMatchTask_IsEnded(link->task)) {
-            *state = 3;
+            *state = RANDOM_LINK_PHASE_FADE_OUT;
         }
         if (link->net != NULL) {
             WifiBattleMatchNet_Nop(link->net);
         }
         break;
-    case 3:
-        GFL_FadeSet(3, 0, 16, 0);
-        *state = 4;
+    case RANDOM_LINK_PHASE_FADE_OUT:
+        GFL_FadeSet((FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK), 0, 16, 0);
+        *state = RANDOM_LINK_PHASE_WAIT_FADE_OUT;
         break;
-    case 4:
+    case RANDOM_LINK_PHASE_WAIT_FADE_OUT:
         if (!GFL_FadeIsRunning()) {
             return TRUE;
         }
@@ -273,13 +518,13 @@ static void WifiBattleMatchLink_TaskStart(WifiBattleMatchTask *task, u32 *seq, v
     WifiBattleMatchLinkParam *param = link->param;
 
     switch (param->result) {
-    case 0:
+    case WBM_LINK_RESULT_INITIAL:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
         return;
-    case 2:
+    case WBM_LINK_RESULT_CANCELLED:
         WifiBattleMatchNet_CancelMatch(link->net);
         // fall through
-    case 1:
+    case WBM_LINK_RESULT_BATTLE_FINISHED:
         if (param->mode == LINK_MODE_RATING) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingResult);
             return;
@@ -288,7 +533,7 @@ static void WifiBattleMatchLink_TaskStart(WifiBattleMatchTask *task, u32 *seq, v
             return;
         }
         break;
-    case 3:
+    case WBM_LINK_RESULT_RESULT_SHOWN:
         if (param->mode == LINK_MODE_RATING) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingAfterBattle);
             return;
@@ -305,68 +550,68 @@ static void WifiBattleMatchLink_TaskSelectMode(WifiBattleMatchTask *task, u32 *s
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case RANDOM_SELECT_MODE_HIDE_LINK_ICON:
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
-        *seq = 1;
+        *seq = RANDOM_SELECT_MODE_PROMPT_MODE;
         break;
-    case 1:
+    case RANDOM_SELECT_MODE_PROMPT_MODE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WhichModeWillChallenge,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 7;
-        WifiBattleMatchTask_SetReturnSeq(task, 2);
+        *seq = RANDOM_SELECT_MODE_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RANDOM_SELECT_MODE_CREATE_MODE_MENU);
         break;
-    case 2:
+    case RANDOM_SELECT_MODE_CREATE_MODE_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_MODE);
-        *seq = 3;
+        *seq = RANDOM_SELECT_MODE_WAIT_MODE_MENU;
         break;
-    case 3:
+    case RANDOM_SELECT_MODE_WAIT_MODE_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
+        case RANDOM_MODE_SELECTION_FREE:
             param->mode = LINK_MODE_FREE;
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeStart);
             break;
-        case 1:
+        case RANDOM_MODE_SELECTION_RATING:
             param->mode = LINK_MODE_RATING;
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingStart);
             break;
-        case 2:
+        case RANDOM_MODE_SELECTION_QUIT:
             param->mode = LINK_MODE_QUIT;
-            *seq = 4;
+            *seq = RANDOM_SELECT_MODE_PROMPT_QUIT;
             break;
         }
         break;
-    case 4:
+    case RANDOM_SELECT_MODE_PROMPT_QUIT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WillQuitRandomMatchup,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 7;
-        WifiBattleMatchTask_SetReturnSeq(task, 5);
+        *seq = RANDOM_SELECT_MODE_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RANDOM_SELECT_MODE_CREATE_QUIT_MENU);
         break;
-    case 5:
+    case RANDOM_SELECT_MODE_CREATE_QUIT_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
-        *seq = 6;
+        *seq = RANDOM_SELECT_MODE_WAIT_QUIT_MENU;
         break;
-    case 6:
+    case RANDOM_SELECT_MODE_WAIT_QUIT_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             param->action = WIFIBATTLEMATCH_LINK_ACTION_LOGOUT;
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskEnd);
             break;
-        case 1:
-            *seq = 1;
+        case WBM_MENU_NO:
+            *seq = RANDOM_SELECT_MODE_PROMPT_MODE;
             break;
         }
         break;
-    case 7:
+    case RANDOM_SELECT_MODE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -379,48 +624,48 @@ static void WifiBattleMatchLink_TaskRatingStart(WifiBattleMatchTask *task, u32 *
     WifiBattleMatchLinkParam *param = link->param;
 
     switch (*seq) {
-    case 0:
+    case RATING_START_CHECK_GAME_SYNC_ID:
         if (DreamWorldSave_GetIDShown(getDreamWorldStuffAddress(GameData_GetSaveControl(param->param->gameData)))) {
-            *seq = 1;
+            *seq = RATING_START_SHOW_RATING_MODE;
         } else {
-            *seq = 6;
+            *seq = RATING_START_SHOW_UNREGISTERED_MESSAGE;
         }
         break;
-    case 1:
+    case RATING_START_SHOW_RATING_MODE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_RandomMatchupRatingMode_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 2);
+        *seq = RATING_START_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_START_SHOW_DOWNLOAD_MESSAGE);
         break;
-    case 2:
+    case RATING_START_SHOW_DOWNLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataPleaseWait,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 3);
+        *seq = RATING_START_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_START_REQUEST_ACCOUNT);
         break;
-    case 3:
+    case RATING_START_REQUEST_ACCOUNT:
         MI_CpuFill8(param->account, 0, sizeof(WifiBattleMatchLinkAccount));
         WifiBattleMatchNet_StartAccountRequest(link->net, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 4;
+        *seq = RATING_START_WAIT_ACCOUNT;
         break;
-    case 4:
+    case RATING_START_WAIT_ACCOUNT:
         switch (WifiBattleMatchNet_AccountRequestMain(link->net)) {
-        case 0:
+        case WBM_NET_RUNNING:
             break;
-        case 1:
+        case WBM_NET_SUCCESS:
             WifiBattleMatchNet_GetAccountValues(link->net, link->param->account);
-            *seq = 5;
+            *seq = RATING_START_CHECK_REGISTRATION;
             break;
-        case 3:
+        case WBM_NET_SERVER_ERROR:
             MI_CpuFill8(link->param->account, 0, sizeof(WifiBattleMatchLinkAccount));
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
-        case 2:
+        case WBM_NET_FAILED:
             switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-            case 2:
+            case WBM_RESULT_FAILED:
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
                 break;
-            case 1:
+            case WBM_RESULT_DISCONNECTED:
                 WifiBattleMatchLink_HideRankCard(link);
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
                 break;
@@ -428,69 +673,69 @@ static void WifiBattleMatchLink_TaskRatingStart(WifiBattleMatchTask *task, u32 *
             break;
         }
         break;
-    case 5:
+    case RATING_START_CHECK_REGISTRATION:
         if (param->account->registered != 0) {
-            *seq = 9;
+            *seq = RATING_START_START_TEAM_CHECK;
         } else {
-            *seq = 6;
+            *seq = RATING_START_SHOW_UNREGISTERED_MESSAGE;
         }
         break;
-    case 6:
+    case RATING_START_SHOW_UNREGISTERED_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_GameSyncIdHas,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 12);
+        *seq = RATING_START_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_START_END);
         break;
-    case 9:
+    case RATING_START_START_TEAM_CHECK:
         WifiBattleMatchLink_StartSubTask(link, WifiBattleMatchLink_TaskSignTeam);
-        *seq = 10;
+        *seq = RATING_START_WAIT_TEAM_CHECK;
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLink_HideRankCard(link);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 10: {
+    case RATING_START_WAIT_TEAM_CHECK: {
         u32 signResult = WifiBattleMatchLink_UpdateSubTask(link);
 
-        if (signResult == 0) {
-            *seq = 13;
-        } else if (signResult == 1) {
-            *seq = 11;
-        } else if (signResult == 3) {
+        if (signResult == WBM_TEAM_CHECK_RESULT_VALID) {
+            *seq = RATING_START_CONNECT;
+        } else if (signResult == WBM_TEAM_CHECK_RESULT_INVALID) {
+            *seq = RATING_START_SHOW_INVALID_TEAM;
+        } else if (signResult == WBM_TEAM_CHECK_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
         }
         if (signResult == SUB_TASK_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLink_HideRankCard(link);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
     }
-    case 11:
+    case RATING_START_SHOW_INVALID_TEAM:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereProblemPokemonThey_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 12);
+        *seq = RATING_START_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_START_END);
         break;
-    case 12:
+    case RATING_START_END:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskEnd);
         break;
-    case 13:
+    case RATING_START_CONNECT:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingConnect);
         break;
-    case 14:
+    case RATING_START_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -504,105 +749,105 @@ static void WifiBattleMatchLink_TaskRatingConnect(WifiBattleMatchTask *task, u32
     BOOL ready;
 
     switch (*seq) {
-    case 0:
+    case RATING_CONNECT_SHOW_DOWNLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataPleaseWait,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
-        *seq = 11;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_CONNECT_DOWNLOAD_RATING);
+        *seq = RATING_CONNECT_WAIT_MESSAGE;
         break;
-    case 1:
-        if (*link->param->unk20 != 0) {
+    case RATING_CONNECT_DOWNLOAD_RATING:
+        if (*link->param->recordRequestCooldown != 0) {
             break;
         }
-        WifiBattleMatchNet_StartRead(link->net, -1, 0, param->ratings);
-        *seq = 2;
+        WifiBattleMatchNet_StartRead(link->net, -1, WBM_READ_ARENA, param->ratings);
+        *seq = RATING_CONNECT_WAIT_RATING;
         break;
-    case 2:
+    case RATING_CONNECT_WAIT_RATING:
         ready = WifiBattleMatchNet_ReadMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
             link->recordChanged = WifiBattleMatchLink_UpdateRecord(param->record, param->param->battleType, link);
             WifiBattleMatchLink_UpdatePlayerRecord(param->player, link);
-            *link->param->unk28 = link->param->ratings->unk54;
-            *seq = 3;
+            *link->param->recordSaveIndex = link->param->ratings->recordSaveIndex;
+            *seq = RATING_CONNECT_CHECK_RECORD_ID;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLink_HideRankCard(link);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
-            *link->param->unk20 = 1800;
+            *link->param->recordRequestCooldown = 1800;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
-            *link->param->unk20 = 1800;
+            *link->param->recordRequestCooldown = 1800;
             break;
         }
         break;
-    case 3:
+    case RATING_CONNECT_CHECK_RECORD_ID:
         if (WifiBattleMatchNet_GetRecordId(link->net) == 0) {
             WifiBattleMatchNet_StartCreateRecord(link->net);
-            *seq = 4;
+            *seq = RATING_CONNECT_WAIT_RECORD_CREATION;
         } else {
-            *seq = 5;
+            *seq = RATING_CONNECT_CHECK_CARD_REFRESH;
         }
         break;
-    case 4: {
+    case RATING_CONNECT_WAIT_RECORD_CREATION: {
         u32 done = WifiBattleMatchNet_CreateRecordMain(link->net);
 
-        if (done == 1) {
-            *seq = 1;
+        if (done == WBM_NET_SUCCESS) {
+            *seq = RATING_CONNECT_DOWNLOAD_RATING;
         }
-        if (done == 0) {
+        if (done == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLink_HideRankCard(link);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
-            *link->param->unk20 = 1800;
+            *link->param->recordRequestCooldown = 1800;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
-            *link->param->unk20 = 1800;
+            *link->param->recordRequestCooldown = 1800;
             break;
         }
         break;
     }
-    case 5:
+    case RATING_CONNECT_CHECK_CARD_REFRESH:
         if (link->card == NULL) {
-            *seq = 8;
+            *seq = RATING_CONNECT_CREATE_CARD;
         } else if (link->recordChanged) {
-            *seq = 6;
+            *seq = RATING_CONNECT_DELAY_CARD_REFRESH;
         } else {
-            *seq = 10;
+            *seq = RATING_CONNECT_SEARCH;
         }
         link->recordChanged = FALSE;
         break;
-    case 6:
-        *seq = 7;
+    case RATING_CONNECT_DELAY_CARD_REFRESH:
+        *seq = RATING_CONNECT_HIDE_OLD_CARD;
         break;
-    case 7:
+    case RATING_CONNECT_HIDE_OLD_CARD:
         if (WifiBattleMatchLink_IsRankCardHidden(link)) {
             WifiBattleMatchLink_DeleteRankCard(link);
-            *seq = 8;
+            *seq = RATING_CONNECT_CREATE_CARD;
         }
         break;
-    case 8:
+    case RATING_CONNECT_CREATE_CARD:
         WifiBattleMatchLink_CreateRankCard(link, 0);
-        *seq = 9;
+        *seq = RATING_CONNECT_WAIT_CARD_SHOWN;
         break;
-    case 9:
+    case RATING_CONNECT_WAIT_CARD_SHOWN:
         if (WifiBattleMatchLink_IsRankCardShown(link)) {
-            *seq = 10;
+            *seq = RATING_CONNECT_SEARCH;
         }
         break;
-    case 10:
+    case RATING_CONNECT_SEARCH:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingSearch);
         break;
-    case 11:
+    case RATING_CONNECT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -625,80 +870,80 @@ static void WifiBattleMatchLink_TaskRatingSearch(WifiBattleMatchTask *task, u32 
     BOOL canDisconnect;
     BOOL timedOut;
     BOOL noTerminator;
-    BOOL matchFound;
+    BOOL opponentNameRejected;
     u32 cancel;
     u32 ret;
     u32 fixCount;
     s32 selected;
     int i;
 
-    if ((s32)*seq >= 2 && (s32)*seq < 8) {
+    if ((s32)*seq >= RATING_SEARCH_WAIT_MATCH && (s32)*seq < RATING_SEARCH_SYNC_VALIDATED_PLAYERS) {
         canCancel = TRUE;
     }
-    canDisconnect = (s32)*seq < 6 || (s32)*seq > 7;
+    canDisconnect = (s32)*seq < RATING_SEARCH_START_NAME_CHECK || (s32)*seq > RATING_SEARCH_WAIT_NAME_CHECK;
     cancel = WifiBattleMatchLink_UpdateCancel(link, canCancel, canDisconnect);
     if (cancel == CANCEL_CONFIRMED) {
-        *seq = 22;
+        *seq = RATING_SEARCH_PROMPT_QUIT;
         return;
     }
     switch (*seq) {
-    case 0:
-        link->cancelSeq = 0;
+    case RATING_SEARCH_SHOW_SEARCH_MESSAGE:
+        link->cancelSeq = RANDOM_SEARCH_CANCEL_IDLE;
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingOpponent,
                                     WIFIBATTLEMATCH_MSG_QUEUE);
-        *seq = 1;
+        *seq = RATING_SEARCH_START_MATCH;
         break;
-    case 1:
+    case RATING_SEARCH_START_MATCH:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             return;
         default:
             WifiBattleMatchLink_FillCondition(&condition, link);
-            WifiBattleMatchNet_StartMatch(link->net, 2, 1, param->param->battleType, &condition);
-            *seq = 2;
+            WifiBattleMatchNet_StartMatch(link->net, WBM_MATCH_MODE_RATING, 1, param->param->battleType, &condition);
+            *seq = RATING_SEARCH_WAIT_MATCH;
             break;
         }
         break;
-    case 2:
+    case RATING_SEARCH_WAIT_MATCH:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             WifiBattleMatchLink_ResetCancel(link);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             return;
         default:
             ret = WifiBattleMatchNet_MatchMain(link->net);
-            if (ret == 1) {
+            if (ret == WBM_NET_SUCCESS) {
                 link->idleTimer = 0;
-                *seq = 3;
-            } else if (ret == 2) {
-                *seq = 1;
+                *seq = RATING_SEARCH_SEND_PLAYER_INFO;
+            } else if (ret == WBM_NET_FAILED) {
+                *seq = RATING_SEARCH_START_MATCH;
             }
             break;
         }
         break;
-    case 3:
+    case RATING_SEARCH_SEND_PLAYER_INFO:
         if (cancel != CANCEL_NONE) {
             break;
         }
         if (WifiBattleMatchNet_SendPlayerInfo(link->net, param->player)) {
             link->idleTimer = 0;
-            *seq = 4;
+            *seq = RATING_SEARCH_RECEIVE_PLAYER_INFO;
         }
         countIdle = TRUE;
         break;
-    case 4:
+    case RATING_SEARCH_RECEIVE_PLAYER_INFO:
         if (WifiBattleMatchNet_TakePlayerInfo(link->net, &received)) {
             otherPlayer = param->otherPlayer;
             MI_CpuCopy8(received, otherPlayer, WifiBattleMatchLinkPlayer_GetSize());
@@ -743,141 +988,141 @@ static void WifiBattleMatchLink_TaskRatingSearch(WifiBattleMatchTask *task, u32 
                 getPalPadFriendListAddress(GameData_GetSaveControl(param->param->gameData));
             }
             link->idleTimer = 0;
-            *seq = 5;
+            *seq = RATING_SEARCH_CHECK_SIGNATURE;
         }
         countIdle = TRUE;
         break;
-    case 5:
+    case RATING_SEARCH_CHECK_SIGNATURE:
         if (WifiBattleMatchLink_CheckSignature(param->otherPlayer, HEAPID_WIFIBATTLEMATCH_LINK)) {
-            *seq = 6;
+            *seq = RATING_SEARCH_START_NAME_CHECK;
         } else {
             WifiBattleMatchNet_CancelMatch(link->net);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingSearch);
         }
         break;
-    case 6:
+    case RATING_SEARCH_START_NAME_CHECK:
         WifiBattleMatchNet_StartNameCheck(link->net, &param->otherPlayer->info, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 7;
+        *seq = RATING_SEARCH_WAIT_NAME_CHECK;
         break;
-    case 7:
-        if (WifiBattleMatchNet_NameCheckMain(link->net, &matchFound)) {
-            *link->param->unk40 = matchFound;
-            *seq = 8;
+    case RATING_SEARCH_WAIT_NAME_CHECK:
+        if (WifiBattleMatchNet_NameCheckMain(link->net, &opponentNameRejected)) {
+            *link->param->opponentNameRejected = opponentNameRejected;
+            *seq = RATING_SEARCH_SYNC_VALIDATED_PLAYERS;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingContinue);
             WifiBattleMatchLink_ResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 8:
+    case RATING_SEARCH_SYNC_VALIDATED_PLAYERS:
         if (cancel != CANCEL_NONE) {
             break;
         }
-        WifiBattleMatchNet_StartSync(link->net, 21);
+        WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_VALIDATED_PLAYERS);
         link->idleTimer = 0;
-        *seq = 9;
+        *seq = RATING_SEARCH_WAIT_VALIDATED_PLAYERS_SYNC;
         break;
-    case 9:
-        if (!WifiBattleMatchNet_TakeCmd2402(link->net) && WifiBattleMatchNet_CheckSync(link->net)) {
-            *seq = 10;
+    case RATING_SEARCH_WAIT_VALIDATED_PLAYERS_SYNC:
+        if (!WifiBattleMatchNet_TakeCancelSearch(link->net) && WifiBattleMatchNet_CheckSync(link->net)) {
+            *seq = RATING_SEARCH_SYNC_MATCH_READY;
         }
         countIdle = TRUE;
         break;
-    case 10:
-        WifiBattleMatchNet_StartSync(link->net, 22);
+    case RATING_SEARCH_SYNC_MATCH_READY:
+        WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_MATCH_READY);
         link->idleTimer = 0;
-        *seq = 11;
+        *seq = RATING_SEARCH_WAIT_MATCH_READY_SYNC;
         break;
-    case 11:
+    case RATING_SEARCH_WAIT_MATCH_READY_SYNC:
         if (WifiBattleMatchNet_CheckSync(link->net)) {
-            *seq = 12;
+            *seq = RATING_SEARCH_SHOW_OPPONENT_FOUND;
         }
         countIdle = TRUE;
         break;
-    case 12:
+    case RATING_SEARCH_SHOW_OPPONENT_FOUND:
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
         GFL_SndSEPlay(SEQ_SE_SYS_74);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_OpponentHasBeenFound,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 30;
-        WifiBattleMatchTask_SetReturnSeq(task, 13);
+        *seq = RATING_SEARCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_SEARCH_WAIT_OPPONENT_FOUND_DELAY);
         break;
-    case 13:
+    case RATING_SEARCH_WAIT_OPPONENT_FOUND_DELAY:
         if (link->timer++ > 120) {
             link->timer = 0;
             WifiBattleMatchLink_CreatePartnerCard(link, param->otherPlayer);
             GFL_BGSysSetBGEnabled(0, FALSE);
-            *seq = 14;
+            *seq = RATING_SEARCH_WAIT_PARTNER_CARD;
         }
         break;
-    case 14:
+    case RATING_SEARCH_WAIT_PARTNER_CARD:
         if (WifiBattleMatchLink_IsPartnerCardDone(link)) {
-            *seq = 15;
+            *seq = RATING_SEARCH_WAIT_PARTNER_CARD_DELAY;
         }
         break;
-    case 15:
+    case RATING_SEARCH_WAIT_PARTNER_CARD_DELAY:
         if (link->timer++ != 0) {
             link->timer = 0;
-            *seq = 16;
+            *seq = RATING_SEARCH_START_SESSION_REPORT;
         }
         break;
-    case 16:
+    case RATING_SEARCH_START_SESSION_REPORT:
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_WIFIBATTLEMATCH_LINK_DWC, 0x60000);
         DWCRapCommon_SetSubHeapEx(HEAPID_DEVICE_ALLOC, 0x60000, 1000, HEAPID_WIFIBATTLEMATCH_LINK_DWC);
         DWCRapCommon_SetSubHeapOwner(HEAPID_WIFIBATTLEMATCH_LINK_DWC);
         WifiBattleMatchNet_StartReport(link->net, WBM_REPORT_MODE_START, WBM_MATCH_MODE_RATING, 0, NULL, 0);
-        link->exchangeDone = 0;
+        link->exchangeDone = WBM_NET_RUNNING;
         link->exchangeResult = 0;
-        *seq = 17;
+        *seq = RATING_SEARCH_WAIT_SESSION_REPORT;
         break;
-    case 17:
-        if (link->exchangeDone == 0) {
+    case RATING_SEARCH_WAIT_SESSION_REPORT:
+        if (link->exchangeDone == WBM_NET_RUNNING) {
             link->exchangeDone = WifiBattleMatchNet_ReportMain(link->net, &link->exchangeResult);
         }
-        if (link->exchangeDone == 1) {
-            *seq = 18;
+        if (link->exchangeDone == WBM_NET_SUCCESS) {
+            *seq = RATING_SEARCH_END_REPORT_HEAP;
         }
-        if (link->exchangeDone != 0) {
+        if (link->exchangeDone != WBM_NET_RUNNING) {
             switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-            case 1:
+            case WBM_RESULT_DISCONNECTED:
                 WifiBattleMatchNet_CancelMatch(link->net);
                 // fall through
-            case 2:
-            case 4:
+            case WBM_RESULT_FAILED:
+            case WBM_RESULT_TIMEOUT:
                 DWCRapCommon_EndSubHeap();
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
                 break;
             }
         }
         break;
-    case 18:
+    case RATING_SEARCH_END_REPORT_HEAP:
         DWCRapCommon_EndSubHeap();
-        *seq = 19;
+        *seq = RATING_SEARCH_SHOW_TEAM_SELECTION_MESSAGE;
         break;
-    case 19:
+    case RATING_SEARCH_SHOW_TEAM_SELECTION_MESSAGE:
         GFL_BGSysSetBGEnabled(0, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PleaseChoosePokemon,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 30;
-        WifiBattleMatchTask_SetReturnSeq(task, 20);
+        *seq = RATING_SEARCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_SEARCH_WAIT_TEAM_SELECTION_DELAY);
         break;
-    case 20:
+    case RATING_SEARCH_WAIT_TEAM_SELECTION_DELAY:
         if (link->timer++ > 60) {
             link->timer = 0;
             param->action = WIFIBATTLEMATCH_LINK_ACTION_TEAM_LIST;
             WifiBattleMatchTask_End(task);
         }
         break;
-    case 21:
+    case RATING_SEARCH_CANCEL_SESSION:
         WifiBattleMatchNet_CancelMatch(link->net);
-        param->result = 2;
+        param->result = WBM_LINK_RESULT_CANCELLED;
         if (link->exchangeResult != 0) {
             link->hadExchangeResult = TRUE;
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingResult);
@@ -885,66 +1130,66 @@ static void WifiBattleMatchLink_TaskRatingSearch(WifiBattleMatchTask *task, u32 
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingAfterBattle);
         }
         break;
-    case 22:
+    case RATING_SEARCH_PROMPT_QUIT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WillQuitRandomMatchup_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 30;
-        WifiBattleMatchTask_SetReturnSeq(task, 23);
+        *seq = RATING_SEARCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_SEARCH_CREATE_QUIT_MENU);
         break;
-    case 23:
+    case RATING_SEARCH_CREATE_QUIT_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
-        *seq = 24;
+        *seq = RATING_SEARCH_WAIT_QUIT_MENU;
         break;
-    case 24:
+    case RATING_SEARCH_WAIT_QUIT_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingQuitSave);
             break;
-        case 1:
-            *seq = 25;
+        case WBM_MENU_NO:
+            *seq = RATING_SEARCH_PROMPT_CONTINUE;
             break;
         }
         break;
-    case 25:
+    case RATING_SEARCH_PROMPT_CONTINUE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WantContinueBattling,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 30;
-        WifiBattleMatchTask_SetReturnSeq(task, 26);
+        *seq = RATING_SEARCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_SEARCH_CREATE_CONTINUE_MENU);
         break;
-    case 26:
+    case RATING_SEARCH_CREATE_CONTINUE_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
-        *seq = 27;
+        *seq = RATING_SEARCH_WAIT_CONTINUE_MENU;
         break;
-    case 27:
+    case RATING_SEARCH_WAIT_CONTINUE_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 0;
+        case WBM_MENU_YES:
+            *seq = RATING_SEARCH_SHOW_SEARCH_MESSAGE;
             break;
-        case 1:
-            *seq = 22;
+        case WBM_MENU_NO:
+            *seq = RATING_SEARCH_PROMPT_QUIT;
             break;
         }
         break;
-    case 28:
-        if (WifiBattleMatchNet_SendCmd2402(link->net)) {
-            *seq = 29;
+    case RATING_SEARCH_SEND_CANCEL_COMMAND:
+        if (WifiBattleMatchNet_SendCancelSearch(link->net)) {
+            *seq = RATING_SEARCH_CANCEL_AND_RETRY;
         }
         break;
-    case 29:
+    case RATING_SEARCH_CANCEL_AND_RETRY:
         WifiBattleMatchNet_CancelMatch(link->net);
-        *seq = 0;
+        *seq = RATING_SEARCH_SHOW_SEARCH_MESSAGE;
         break;
-    case 30:
+    case RATING_SEARCH_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -956,20 +1201,20 @@ static void WifiBattleMatchLink_TaskRatingSearch(WifiBattleMatchTask *task, u32 
             link->idleTimer = 0;
             timedOut = TRUE;
         }
-        if (WifiBattleMatchNet_TakeCmd2402(link->net)) {
+        if (WifiBattleMatchNet_TakeCancelSearch(link->net)) {
             timedOut = TRUE;
         }
         if (timedOut) {
-            *seq = 28;
+            *seq = RATING_SEARCH_SEND_CANCEL_COMMAND;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingContinue);
             WifiBattleMatchLink_ResetCancel(link);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
@@ -986,8 +1231,8 @@ static void WifiBattleMatchLink_TaskRatingResult(WifiBattleMatchTask *task, u32 
     u32 ready;
 
     switch (*seq) {
-    case 0:
-        if (param->result == 2 && link->hadExchangeResult == 0) {
+    case RATING_RESULT_CREATE_REPORT_HEAP:
+        if (param->result == WBM_LINK_RESULT_CANCELLED && link->hadExchangeResult == 0) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingAfterBattle);
             return;
         }
@@ -995,168 +1240,169 @@ static void WifiBattleMatchLink_TaskRatingResult(WifiBattleMatchTask *task, u32 
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_WIFIBATTLEMATCH_LINK_DWC, 0x60000);
         DWCRapCommon_SetSubHeapEx(HEAPID_DEVICE_ALLOC, 0x60000, 1000, HEAPID_WIFIBATTLEMATCH_LINK_DWC);
         DWCRapCommon_SetSubHeapOwner(HEAPID_WIFIBATTLEMATCH_LINK_DWC);
-        *seq = 1;
+        *seq = RATING_RESULT_SHOW_REPORT_MESSAGE;
         break;
-    case 1:
+    case RATING_RESULT_SHOW_REPORT_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 2);
+        *seq = RATING_RESULT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_RESULT_START_REPORT);
         break;
-    case 2:
+    case RATING_RESULT_START_REPORT:
         WifiBattleMatchNet_StartReport(link->net, WBM_REPORT_MODE_RESULT, WBM_MATCH_MODE_RATING,
-                                       param->param->battleType, param->battleResult, param->result == 2);
-        link->exchangeDone = 0;
+                                       param->param->battleType, param->battleResult,
+                                       param->result == WBM_LINK_RESULT_CANCELLED);
+        link->exchangeDone = WBM_NET_RUNNING;
         link->exchangeResult = 0;
-        *seq = 3;
+        *seq = RATING_RESULT_WAIT_REPORT;
         break;
-    case 3:
-        if (link->exchangeDone == 0) {
+    case RATING_RESULT_WAIT_REPORT:
+        if (link->exchangeDone == WBM_NET_RUNNING) {
             link->exchangeDone = WifiBattleMatchNet_ReportMain(link->net, &link->exchangeResult);
-            if (link->exchangeDone != 0 && link->exchangeResult != 0) {
+            if (link->exchangeDone != WBM_NET_RUNNING && link->exchangeResult != 0) {
                 WifiBattleMatch_RecordResult(param->param->gameData, param->battleResult->result);
             }
         }
-        if (link->exchangeDone == 1) {
-            param->battleResult->unk14 = WifiBattleMatchNet_GetReceivedValue(link->net);
-            *seq = 4;
+        if (link->exchangeDone == WBM_NET_SUCCESS) {
+            param->battleResult->otherCommandCheckError = WifiBattleMatchNet_GetPeerCommandCheckError(link->net);
+            *seq = RATING_RESULT_FINISH_REPORT;
         }
-        if (link->exchangeDone == 0) {
+        if (link->exchangeDone == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchNet_CancelMatch(link->net);
             // fall through
-        case 2:
-        case 4:
+        case WBM_RESULT_FAILED:
+        case WBM_RESULT_TIMEOUT:
             DWCRapCommon_EndSubHeap();
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 4:
+    case RATING_RESULT_FINISH_REPORT:
         DWCRapCommon_EndSubHeap();
-        if (param->result == 2) {
+        if (param->result == WBM_LINK_RESULT_CANCELLED) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingAfterBattle);
             return;
         }
-        *seq = 5;
+        *seq = RATING_RESULT_SEND_JOIN_AVENUE_PERSON;
         break;
-    case 5:
+    case RATING_RESULT_SEND_JOIN_AVENUE_PERSON:
         otherPlayer = param->otherPlayer;
         if (PlayerInfo_GetVersion(&otherPlayer->info) == VERSION_WHITE2 ||
             PlayerInfo_GetVersion(&otherPlayer->info) == VERSION_BLACK2) {
             if (WifiBattleMatchNet_SendPerson(link->net)) {
-                *seq = 6;
+                *seq = RATING_RESULT_RECEIVE_JOIN_AVENUE_PERSON;
             }
         } else {
-            *seq = 7;
+            *seq = RATING_RESULT_RECORD_MET_TRAINER;
         }
         break;
-    case 6:
+    case RATING_RESULT_RECEIVE_JOIN_AVENUE_PERSON:
         if (WifiBattleMatchNet_TakePerson(link->net)) {
-            *seq = 7;
+            *seq = RATING_RESULT_RECORD_MET_TRAINER;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchNet_CancelMatch(link->net);
             // fall through
-        case 2:
-        case 4:
+        case WBM_RESULT_FAILED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 7:
+    case RATING_RESULT_RECORD_MET_TRAINER:
         rivalData = getHollow_RivalData(GameData_GetSaveControl(param->param->gameData));
         Misc_AddMetTrainer(rivalData, getIDAsUInt(&param->otherPlayer->info));
-        *seq = 8;
+        *seq = RATING_RESULT_WAIT_DISCONNECT;
         WifiBattleMatchNet_ResetEnd(link->net);
         break;
-    case 8:
+    case RATING_RESULT_WAIT_DISCONNECT:
         if (WifiBattleMatchNet_EndMain(link->net)) {
-            if (*link->param->unk20 == 0) {
-                *seq = 10;
+            if (*link->param->recordRequestCooldown == 0) {
+                *seq = RATING_RESULT_UPLOAD_RESULT;
             } else {
                 WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WaitingServerDontTurn,
                                             WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-                *seq = 16;
-                WifiBattleMatchTask_SetReturnSeq(task, 9);
+                *seq = RATING_RESULT_WAIT_MESSAGE;
+                WifiBattleMatchTask_SetReturnSeq(task, RATING_RESULT_WAIT_WRITE_COOLDOWN);
             }
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
-            *seq = 9;
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
+            *seq = RATING_RESULT_WAIT_WRITE_COOLDOWN;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 9:
-        if (*link->param->unk20 == 0) {
-            *seq = 10;
+    case RATING_RESULT_WAIT_WRITE_COOLDOWN:
+        if (*link->param->recordRequestCooldown == 0) {
+            *seq = RATING_RESULT_UPLOAD_RESULT;
         }
         break;
-    case 10:
+    case RATING_RESULT_UPLOAD_RESULT:
         MI_CpuFill8(&reportBuf, 0, sizeof(reportBuf));
         reportBuf.report = *link->param->report;
-        reportBuf.unk50 = *link->param->unk28;
-        WifiBattleMatchNet_StartWrite(link->net, 3, &reportBuf);
-        *seq = 11;
+        reportBuf.recordSaveIndex = *link->param->recordSaveIndex;
+        WifiBattleMatchNet_StartWrite(link->net, WBM_WRITE_RECORD_DATA, &reportBuf);
+        *seq = RATING_RESULT_WAIT_RESULT_UPLOAD;
         break;
-    case 11:
+    case RATING_RESULT_WAIT_RESULT_UPLOAD:
         ready = WifiBattleMatchNet_WriteMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
-            *seq = 12;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
+            *seq = RATING_RESULT_SHOW_RESULTS_SENT;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
-            *link->param->unk20 = 1800;
+            *link->param->recordRequestCooldown = 1800;
             return;
-        case 1:
-            *link->param->unk20 = 1800;
-            *seq = 12;
+        case WBM_RESULT_DISCONNECTED:
+            *link->param->recordRequestCooldown = 1800;
+            *seq = RATING_RESULT_SHOW_RESULTS_SENT;
             return;
         }
         break;
-    case 12:
+    case RATING_RESULT_SHOW_RESULTS_SENT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleResultsWereSent,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 13);
+        *seq = RATING_RESULT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_RESULT_SHOW_SAVE_MESSAGE);
         break;
-    case 13:
+    case RATING_RESULT_SHOW_SAVE_MESSAGE:
         WifiBattleMatch_RecordBattleTime(param->param->gameData, param->battleResult->result);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 14);
+        *seq = RATING_RESULT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_RESULT_START_SAVE);
         break;
-    case 14:
+    case RATING_RESULT_START_SAVE:
         GameData_StartSave(param->param->gameData);
-        *seq = 15;
+        *seq = RATING_RESULT_WAIT_SAVE;
         break;
-    case 15:
+    case RATING_RESULT_WAIT_SAVE:
         switch (GameData_UpdateSave(param->param->gameData)) {
-        case 0:
-        case 1:
+        case SAVE_RESULT_CONTINUE:
+        case SAVE_RESULT_LAST:
             break;
-        case 2:
-        case 3:
+        case SAVE_RESULT_OK:
+        case SAVE_RESULT_NG:
             param->action = WIFIBATTLEMATCH_LINK_ACTION_RESULT;
             WifiBattleMatchTask_End(task);
             break;
         }
         break;
-    case 16:
+    case RATING_RESULT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1168,24 +1414,24 @@ static void WifiBattleMatchLink_TaskRatingAfterBattle(WifiBattleMatchTask *task,
     WifiBattleMatchLinkRandom *link = work;
 
     switch (*seq) {
-    case 0:
+    case RATING_AFTER_BATTLE_CHECK_CONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 0:
-            *seq = 1;
+        case WBM_RESULT_OK:
+            *seq = RATING_AFTER_BATTLE_CONTINUE;
             break;
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingContinue);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 1:
+    case RATING_AFTER_BATTLE_CONTINUE:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingContinue);
         break;
-    case 2:
+    case RATING_AFTER_BATTLE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1198,44 +1444,44 @@ static void WifiBattleMatchLink_TaskRatingContinue(WifiBattleMatchTask *task, u3
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case RATING_CONTINUE_CHECK_CONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 0:
-        case 1:
-        case 4:
-            *seq = 1;
+        case WBM_RESULT_OK:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
+            *seq = RATING_CONTINUE_PROMPT_CONTINUE;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 1:
+    case RATING_CONTINUE_PROMPT_CONTINUE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WantContinueBattling,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 4;
-        WifiBattleMatchTask_SetReturnSeq(task, 2);
+        *seq = RATING_CONTINUE_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_CONTINUE_CREATE_MENU);
         break;
-    case 2:
+    case RATING_CONTINUE_CREATE_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
-        *seq = 3;
+        *seq = RATING_CONTINUE_WAIT_MENU;
         break;
-    case 3:
+    case RATING_CONTINUE_WAIT_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingConnect);
             break;
-        case 1:
+        case WBM_MENU_NO:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingQuitConfirm);
             break;
         }
         break;
-    case 4:
+    case RATING_CONTINUE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1248,33 +1494,33 @@ static void WifiBattleMatchLink_TaskRatingQuitConfirm(WifiBattleMatchTask *task,
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case RATING_QUIT_PROMPT_QUIT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WillQuitRandomMatchup_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 3;
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
+        *seq = RATING_QUIT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_QUIT_CREATE_MENU);
         break;
-    case 1:
+    case RATING_QUIT_CREATE_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
-        *seq = 2;
+        *seq = RATING_QUIT_WAIT_MENU;
         break;
-    case 2:
+    case RATING_QUIT_WAIT_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             WifiBattleMatchNet_CancelMatch(link->net);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingQuitSave);
             break;
-        case 1:
+        case WBM_MENU_NO:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRatingContinue);
             break;
         }
         break;
-    case 3:
+    case RATING_QUIT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1287,46 +1533,46 @@ static void WifiBattleMatchLink_TaskRatingQuitSave(WifiBattleMatchTask *task, u3
     WifiBattleMatchLinkParam *param = link->param;
 
     switch (*seq) {
-    case 0:
+    case RATING_QUIT_SAVE_SHOW_SAVE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
-        *seq = 7;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_QUIT_SAVE_START_SAVE);
+        *seq = RATING_QUIT_SAVE_WAIT_MESSAGE;
         break;
-    case 1:
+    case RATING_QUIT_SAVE_START_SAVE:
         GameData_StartSave(param->param->gameData);
-        *seq = 2;
+        *seq = RATING_QUIT_SAVE_WAIT_SAVE;
         break;
-    case 2:
-        if (GameData_UpdateSave(param->param->gameData) == 2) {
-            *seq = 3;
+    case RATING_QUIT_SAVE_WAIT_SAVE:
+        if (GameData_UpdateSave(param->param->gameData) == SAVE_RESULT_OK) {
+            *seq = RATING_QUIT_SAVE_SHOW_UPLOAD_MESSAGE;
         }
         break;
-    case 3:
+    case RATING_QUIT_SAVE_SHOW_UPLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 7;
-        WifiBattleMatchTask_SetReturnSeq(task, 4);
+        *seq = RATING_QUIT_SAVE_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, RATING_QUIT_SAVE_UPLOAD_LOGOUT);
         break;
-    case 4:
-        if (*link->param->unk20 == 0) {
-            WifiBattleMatchNet_StartWrite(link->net, 2, NULL);
-            *seq = 5;
+    case RATING_QUIT_SAVE_UPLOAD_LOGOUT:
+        if (*link->param->recordRequestCooldown == 0) {
+            WifiBattleMatchNet_StartWrite(link->net, WBM_WRITE_PROFILE, NULL);
+            *seq = RATING_QUIT_SAVE_WAIT_LOGOUT_UPLOAD;
         }
         break;
-    case 5:
+    case RATING_QUIT_SAVE_WAIT_LOGOUT_UPLOAD:
         if (WifiBattleMatchNet_WriteMain(link->net)) {
-            *link->param->unk20 = 1800;
-            *seq = 6;
+            *link->param->recordRequestCooldown = 1800;
+            *seq = RATING_QUIT_SAVE_END;
             WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE);
         }
         break;
-    case 6:
+    case RATING_QUIT_SAVE_END:
         WifiBattleMatchNet_CancelMatch(link->net);
         param->action = WIFIBATTLEMATCH_LINK_ACTION_LOGOUT;
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskEnd);
         break;
-    case 7:
+    case RATING_QUIT_SAVE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1339,68 +1585,68 @@ static void WifiBattleMatchLink_TaskFreeStart(WifiBattleMatchTask *task, u32 *se
     u32 signResult;
 
     switch (*seq) {
-    case 0:
+    case FREE_START_SHOW_MODE_AND_CREATE_CARD:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_RandomMatchupFreeMode_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchLink_CreateRankCard(link, 1);
-        *seq = 1;
+        *seq = FREE_START_WAIT_CARD_SHOWN;
         break;
-    case 1:
+    case FREE_START_WAIT_CARD_SHOWN:
         if (WifiBattleMatchLink_IsRankCardShown(link)) {
-            *seq = 2;
+            *seq = FREE_START_WAIT_MODE_MESSAGE;
         }
         break;
-    case 2:
+    case FREE_START_WAIT_MODE_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
-            *seq = 3;
+            *seq = FREE_START_SHOW_DOWNLOAD_MESSAGE;
         }
         break;
-    case 3:
+    case FREE_START_SHOW_DOWNLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataPleaseWait,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 4;
+        *seq = FREE_START_START_TEAM_CHECK;
         break;
-    case 4:
+    case FREE_START_START_TEAM_CHECK:
         WifiBattleMatchLink_StartSubTask(link, WifiBattleMatchLink_TaskSignTeam);
-        *seq = 5;
+        *seq = FREE_START_WAIT_TEAM_CHECK;
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLink_HideRankCard(link);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 5:
+    case FREE_START_WAIT_TEAM_CHECK:
         signResult = WifiBattleMatchLink_UpdateSubTask(link);
-        if (signResult == 0) {
+        if (signResult == WBM_TEAM_CHECK_RESULT_VALID) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeSearch);
-        } else if (signResult == 1) {
-            *seq = 6;
-        } else if (signResult == 3) {
+        } else if (signResult == WBM_TEAM_CHECK_RESULT_INVALID) {
+            *seq = FREE_START_SHOW_INVALID_TEAM;
+        } else if (signResult == WBM_TEAM_CHECK_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
         }
         if (signResult == SUB_TASK_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLink_HideRankCard(link);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 6:
+    case FREE_START_SHOW_INVALID_TEAM:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereProblemPokemonThey_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 7;
+        *seq = FREE_START_WAIT_INVALID_TEAM_MESSAGE;
         break;
-    case 7:
+    case FREE_START_WAIT_INVALID_TEAM_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskEnd);
         }
@@ -1419,94 +1665,94 @@ static void WifiBattleMatchLink_TaskFreeSearch(WifiBattleMatchTask *task, u32 *s
     BOOL canDisconnect;
     BOOL timedOut;
     BOOL noTerminator;
-    BOOL matchFound;
+    BOOL opponentNameRejected;
     u32 cancel;
     u32 ret;
     int i;
 
-    if ((s32)*seq >= 3 && (s32)*seq < 13) {
+    if ((s32)*seq >= FREE_SEARCH_WAIT_MATCH && (s32)*seq < FREE_SEARCH_SYNC_VALIDATED_PLAYERS) {
         canCancel = TRUE;
     }
-    canDisconnect = (s32)*seq < 11 || (s32)*seq > 12;
+    canDisconnect = (s32)*seq < FREE_SEARCH_START_NAME_CHECK || (s32)*seq > FREE_SEARCH_WAIT_NAME_CHECK;
     cancel = WifiBattleMatchLink_UpdateCancel(link, canCancel, canDisconnect);
     if (cancel == CANCEL_CONFIRMED) {
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeQuitConfirm);
         return;
     }
     switch (*seq) {
-    case 0:
+    case FREE_SEARCH_UPDATE_PLAYER_RECORD:
         WifiBattleMatchLink_UpdatePlayerRecord(param->player, link);
-        *seq = 1;
+        *seq = FREE_SEARCH_SHOW_SEARCH_MESSAGE;
         break;
-    case 1:
-        link->cancelSeq = 0;
+    case FREE_SEARCH_SHOW_SEARCH_MESSAGE:
+        link->cancelSeq = RANDOM_SEARCH_CANCEL_IDLE;
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingOpponent,
                                     WIFIBATTLEMATCH_MSG_QUEUE);
-        *seq = 2;
+        *seq = FREE_SEARCH_START_MATCH;
         break;
-    case 2:
+    case FREE_SEARCH_START_MATCH:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             return;
         default:
             WifiBattleMatchLink_FillCondition(&condition, link);
-            WifiBattleMatchNet_StartMatch(link->net, 3, 0, param->param->battleType, &condition);
-            *seq = 3;
+            WifiBattleMatchNet_StartMatch(link->net, WBM_MATCH_MODE_FREE, 0, param->param->battleType, &condition);
+            *seq = FREE_SEARCH_WAIT_MATCH;
             break;
         }
         break;
-    case 3:
+    case FREE_SEARCH_WAIT_MATCH:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskSelectMode);
             WifiBattleMatchLink_ResetCancel(link);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             return;
         default:
             ret = WifiBattleMatchNet_MatchMain(link->net);
-            if (ret == 1) {
+            if (ret == WBM_NET_SUCCESS) {
                 link->idleTimer = 0;
-                *seq = 6;
-            } else if (ret == 2) {
-                *seq = 2;
+                *seq = FREE_SEARCH_SYNC_CONNECTED_PLAYERS;
+            } else if (ret == WBM_NET_FAILED) {
+                *seq = FREE_SEARCH_START_MATCH;
             }
             break;
         }
         break;
-    case 6:
-        WifiBattleMatchNet_StartSync(link->net, 20);
-        *seq = 7;
+    case FREE_SEARCH_SYNC_CONNECTED_PLAYERS:
+        WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_CONNECTED_PLAYERS);
+        *seq = FREE_SEARCH_WAIT_CONNECTED_PLAYERS_SYNC;
         link->idleTimer = 0;
         break;
-    case 7:
+    case FREE_SEARCH_WAIT_CONNECTED_PLAYERS_SYNC:
         if (WifiBattleMatchNet_CheckSync(link->net)) {
             link->idleTimer = 0;
-            *seq = 8;
+            *seq = FREE_SEARCH_SEND_PLAYER_INFO;
         }
         countIdle = TRUE;
         break;
-    case 8:
+    case FREE_SEARCH_SEND_PLAYER_INFO:
         if (cancel != CANCEL_NONE) {
             break;
         }
         if (WifiBattleMatchNet_SendPlayerInfo(link->net, param->player)) {
             link->idleTimer = 0;
-            *seq = 9;
+            *seq = FREE_SEARCH_RECEIVE_PLAYER_INFO;
         }
         countIdle = TRUE;
         break;
-    case 9:
+    case FREE_SEARCH_RECEIVE_PLAYER_INFO:
         if (WifiBattleMatchNet_TakePlayerInfo(link->net, &received)) {
             otherPlayer = param->otherPlayer;
             MI_CpuCopy8(received, otherPlayer, WifiBattleMatchLinkPlayer_GetSize());
@@ -1542,118 +1788,118 @@ static void WifiBattleMatchLink_TaskFreeSearch(WifiBattleMatchTask *task, u32 *s
                 PMSData_Init(&otherPlayer->sentence, 1);
             }
             link->idleTimer = 0;
-            *seq = 10;
+            *seq = FREE_SEARCH_CHECK_SIGNATURE;
         }
         countIdle = TRUE;
         break;
-    case 10:
+    case FREE_SEARCH_CHECK_SIGNATURE:
         if (WifiBattleMatchLink_CheckSignature(param->otherPlayer, HEAPID_WIFIBATTLEMATCH_LINK)) {
-            *seq = 11;
+            *seq = FREE_SEARCH_START_NAME_CHECK;
         } else {
             WifiBattleMatchNet_CancelMatch(link->net);
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeSearch);
         }
         break;
-    case 11:
+    case FREE_SEARCH_START_NAME_CHECK:
         WifiBattleMatchNet_StartNameCheck(link->net, &param->otherPlayer->info, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 12;
+        *seq = FREE_SEARCH_WAIT_NAME_CHECK;
         break;
-    case 12:
-        if (WifiBattleMatchNet_NameCheckMain(link->net, &matchFound)) {
-            *link->param->unk40 = matchFound;
-            *seq = 13;
+    case FREE_SEARCH_WAIT_NAME_CHECK:
+        if (WifiBattleMatchNet_NameCheckMain(link->net, &opponentNameRejected)) {
+            *link->param->opponentNameRejected = opponentNameRejected;
+            *seq = FREE_SEARCH_SYNC_VALIDATED_PLAYERS;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeContinue);
             WifiBattleMatchLink_ResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
         }
         break;
-    case 13:
+    case FREE_SEARCH_SYNC_VALIDATED_PLAYERS:
         if (cancel != CANCEL_NONE) {
             break;
         }
-        WifiBattleMatchNet_StartSync(link->net, 21);
+        WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_VALIDATED_PLAYERS);
         link->idleTimer = 0;
-        *seq = 14;
+        *seq = FREE_SEARCH_WAIT_VALIDATED_PLAYERS_SYNC;
         break;
-    case 14:
-        if (!WifiBattleMatchNet_TakeCmd2402(link->net) && WifiBattleMatchNet_CheckSync(link->net)) {
-            *seq = 15;
+    case FREE_SEARCH_WAIT_VALIDATED_PLAYERS_SYNC:
+        if (!WifiBattleMatchNet_TakeCancelSearch(link->net) && WifiBattleMatchNet_CheckSync(link->net)) {
+            *seq = FREE_SEARCH_SYNC_MATCH_READY;
         }
         countIdle = TRUE;
         break;
-    case 15:
-        WifiBattleMatchNet_StartSync(link->net, 22);
+    case FREE_SEARCH_SYNC_MATCH_READY:
+        WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_MATCH_READY);
         link->idleTimer = 0;
-        *seq = 16;
+        *seq = FREE_SEARCH_WAIT_MATCH_READY_SYNC;
         break;
-    case 16:
+    case FREE_SEARCH_WAIT_MATCH_READY_SYNC:
         countIdle = TRUE;
         if (WifiBattleMatchNet_CheckSync(link->net)) {
-            *seq = 17;
+            *seq = FREE_SEARCH_SHOW_OPPONENT_FOUND;
         }
         break;
-    case 17:
+    case FREE_SEARCH_SHOW_OPPONENT_FOUND:
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
         GFL_SndSEPlay(SEQ_SE_SYS_74);
         WifiBattleMatchLink_DeleteMenu(link);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_OpponentHasBeenFound,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 25;
-        WifiBattleMatchTask_SetReturnSeq(task, 18);
+        *seq = FREE_SEARCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, FREE_SEARCH_WAIT_OPPONENT_FOUND_DELAY);
         break;
-    case 18:
+    case FREE_SEARCH_WAIT_OPPONENT_FOUND_DELAY:
         if (link->timer++ > 120) {
             link->timer = 0;
             WifiBattleMatchLink_CreatePartnerCard(link, param->otherPlayer);
             GFL_BGSysSetBGEnabled(0, FALSE);
-            *seq = 19;
+            *seq = FREE_SEARCH_WAIT_PARTNER_CARD;
         }
         break;
-    case 19:
+    case FREE_SEARCH_WAIT_PARTNER_CARD:
         if (WifiBattleMatchLink_IsPartnerCardDone(link)) {
-            *seq = 20;
+            *seq = FREE_SEARCH_WAIT_PARTNER_CARD_DELAY;
         }
         break;
-    case 20:
+    case FREE_SEARCH_WAIT_PARTNER_CARD_DELAY:
         if (link->timer++ > 300) {
             link->timer = 0;
-            *seq = 21;
+            *seq = FREE_SEARCH_SHOW_TEAM_SELECTION_MESSAGE;
         }
         break;
-    case 21:
+    case FREE_SEARCH_SHOW_TEAM_SELECTION_MESSAGE:
         GFL_BGSysSetBGEnabled(0, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PleaseChoosePokemon,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 25;
-        WifiBattleMatchTask_SetReturnSeq(task, 22);
+        *seq = FREE_SEARCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, FREE_SEARCH_WAIT_TEAM_SELECTION_DELAY);
         break;
-    case 22:
+    case FREE_SEARCH_WAIT_TEAM_SELECTION_DELAY:
         if (link->timer++ > 60) {
             link->timer = 0;
             param->action = WIFIBATTLEMATCH_LINK_ACTION_TEAM_LIST;
             WifiBattleMatchTask_End(task);
         }
         break;
-    case 23:
-        if (WifiBattleMatchNet_SendCmd2402(link->net)) {
-            *seq = 24;
+    case FREE_SEARCH_SEND_CANCEL_COMMAND:
+        if (WifiBattleMatchNet_SendCancelSearch(link->net)) {
+            *seq = FREE_SEARCH_CANCEL_AND_RETRY;
         }
         break;
-    case 24:
+    case FREE_SEARCH_CANCEL_AND_RETRY:
         WifiBattleMatchNet_CancelMatch(link->net);
-        *seq = 1;
+        *seq = FREE_SEARCH_SHOW_SEARCH_MESSAGE;
         break;
-    case 25:
+    case FREE_SEARCH_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1665,20 +1911,20 @@ static void WifiBattleMatchLink_TaskFreeSearch(WifiBattleMatchTask *task, u32 *s
             link->idleTimer = 0;
             timedOut = TRUE;
         }
-        if (WifiBattleMatchNet_TakeCmd2402(link->net)) {
+        if (WifiBattleMatchNet_TakeCancelSearch(link->net)) {
             timedOut = TRUE;
         }
         if (timedOut) {
-            *seq = 23;
+            *seq = FREE_SEARCH_SEND_CANCEL_COMMAND;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeContinue);
             WifiBattleMatchLink_ResetCancel(link);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             break;
@@ -1693,125 +1939,125 @@ static void WifiBattleMatchLink_TaskFreeResult(WifiBattleMatchTask *task, u32 *s
     RivalDataSave *rivalData;
 
     switch (*seq) {
-    case 0:
-        if (param->result == 2) {
+    case FREE_RESULT_CHECK_CANCELLATION:
+        if (param->result == WBM_LINK_RESULT_CANCELLED) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeAfterBattle);
             return;
         }
-        *seq = 5;
+        *seq = FREE_RESULT_SHOW_EXCHANGE_MESSAGE;
         break;
-    case 5:
+    case FREE_RESULT_SHOW_EXCHANGE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_AwaitingCommunicationPleaseStand,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 13;
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
+        *seq = FREE_RESULT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, FREE_RESULT_SEND_COMMAND_CHECK_RESULT);
         link->timer = 0;
         break;
-    case 1:
-        if (WifiBattleMatchNet_SendReportValue(link->net, &param->battleResult->unk10)) {
-            *seq = 2;
+    case FREE_RESULT_SEND_COMMAND_CHECK_RESULT:
+        if (WifiBattleMatchNet_SendCommandCheckError(link->net, &param->battleResult->ownCommandCheckError)) {
+            *seq = FREE_RESULT_RECEIVE_COMMAND_CHECK_RESULT;
         }
         break;
-    case 2:
-        if (WifiBattleMatchNet_TakeReportValue(link->net, &param->battleResult->unk14)) {
-            *seq = 3;
+    case FREE_RESULT_RECEIVE_COMMAND_CHECK_RESULT:
+        if (WifiBattleMatchNet_TakeCommandCheckError(link->net, &param->battleResult->otherCommandCheckError)) {
+            *seq = FREE_RESULT_SEND_JOIN_AVENUE_PERSON;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             link->timer = 0;
-            *seq = 9;
+            *seq = FREE_RESULT_DELAY_SAVE;
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             link->timer = 0;
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             return;
         }
         break;
-    case 3:
+    case FREE_RESULT_SEND_JOIN_AVENUE_PERSON:
         otherPlayer = param->otherPlayer;
         if (PlayerInfo_GetVersion(&otherPlayer->info) == VERSION_WHITE2 ||
             PlayerInfo_GetVersion(&otherPlayer->info) == VERSION_BLACK2) {
             if (WifiBattleMatchNet_SendPerson(link->net)) {
-                *seq = 4;
+                *seq = FREE_RESULT_RECEIVE_JOIN_AVENUE_PERSON;
             }
         } else {
-            *seq = 6;
+            *seq = FREE_RESULT_RECORD_MET_TRAINER;
         }
         break;
-    case 4:
+    case FREE_RESULT_RECEIVE_JOIN_AVENUE_PERSON:
         if (WifiBattleMatchNet_TakePerson(link->net)) {
-            *seq = 6;
+            *seq = FREE_RESULT_RECORD_MET_TRAINER;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             link->timer = 0;
-            *seq = 9;
+            *seq = FREE_RESULT_DELAY_SAVE;
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             link->timer = 0;
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             return;
         }
         break;
-    case 6:
+    case FREE_RESULT_RECORD_MET_TRAINER:
         rivalData = getHollow_RivalData(GameData_GetSaveControl(param->param->gameData));
         Misc_AddMetTrainer(rivalData, getIDAsUInt(&param->otherPlayer->info));
         WifiBattleMatch_RecordResult(param->param->gameData, param->battleResult->result);
         WifiBattleMatchNet_ResetEnd(link->net);
-        *seq = 7;
+        *seq = FREE_RESULT_WAIT_DISCONNECT;
         break;
-    case 7:
+    case FREE_RESULT_WAIT_DISCONNECT:
         link->timer++;
         if (WifiBattleMatchNet_EndMain(link->net)) {
-            *seq = 8;
+            *seq = FREE_RESULT_WAIT_DISCONNECT_DELAY;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             link->timer = 0;
-            *seq = 9;
+            *seq = FREE_RESULT_DELAY_SAVE;
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             link->timer = 0;
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskRelogin);
             return;
         }
         break;
-    case 8:
+    case FREE_RESULT_WAIT_DISCONNECT_DELAY:
         if (link->timer++ > 30) {
             link->timer = 0;
-            *seq = 9;
+            *seq = FREE_RESULT_DELAY_SAVE;
         }
         break;
-    case 9:
-        *seq = 10;
+    case FREE_RESULT_DELAY_SAVE:
+        *seq = FREE_RESULT_SHOW_SAVE_MESSAGE;
         break;
-    case 10:
+    case FREE_RESULT_SHOW_SAVE_MESSAGE:
         WifiBattleMatch_RecordBattleTime(param->param->gameData, param->battleResult->result);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 13;
-        WifiBattleMatchTask_SetReturnSeq(task, 11);
+        *seq = FREE_RESULT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, FREE_RESULT_START_SAVE);
         break;
-    case 11:
+    case FREE_RESULT_START_SAVE:
         GameData_StartSave(param->param->gameData);
-        *seq = 12;
+        *seq = FREE_RESULT_WAIT_SAVE;
         break;
-    case 12:
+    case FREE_RESULT_WAIT_SAVE:
         switch (GameData_UpdateSave(param->param->gameData)) {
-        case 0:
-        case 1:
+        case SAVE_RESULT_CONTINUE:
+        case SAVE_RESULT_LAST:
             break;
-        case 2:
-        case 3:
+        case SAVE_RESULT_OK:
+        case SAVE_RESULT_NG:
             param->action = WIFIBATTLEMATCH_LINK_ACTION_RESULT;
             WifiBattleMatchTask_End(task);
             break;
         }
         break;
-    case 13:
+    case FREE_RESULT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1823,16 +2069,16 @@ static void WifiBattleMatchLink_TaskFreeAfterBattle(WifiBattleMatchTask *task, u
     WifiBattleMatchLinkRandom *link = work;
 
     switch (*seq) {
-    case 0:
-        *seq = 1;
+    case FREE_AFTER_BATTLE_FIRST_DELAY_FRAME:
+        *seq = FREE_AFTER_BATTLE_SECOND_DELAY_FRAME;
         break;
-    case 1:
-        *seq = 2;
+    case FREE_AFTER_BATTLE_SECOND_DELAY_FRAME:
+        *seq = FREE_AFTER_BATTLE_CONTINUE;
         break;
-    case 2:
+    case FREE_AFTER_BATTLE_CONTINUE:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeContinue);
         break;
-    case 3:
+    case FREE_AFTER_BATTLE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1845,32 +2091,32 @@ static void WifiBattleMatchLink_TaskFreeContinue(WifiBattleMatchTask *task, u32 
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case FREE_CONTINUE_PROMPT_CONTINUE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WantContinueBattling,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 3;
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
+        *seq = FREE_CONTINUE_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, FREE_CONTINUE_CREATE_MENU);
         break;
-    case 1:
+    case FREE_CONTINUE_CREATE_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
-        *seq = 2;
+        *seq = FREE_CONTINUE_WAIT_MENU;
         break;
-    case 2:
+    case FREE_CONTINUE_WAIT_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeSearch);
             break;
-        case 1:
+        case WBM_MENU_NO:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeQuitConfirm);
             break;
         }
         break;
-    case 3:
+    case FREE_CONTINUE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1884,42 +2130,42 @@ static void WifiBattleMatchLink_TaskFreeQuitConfirm(WifiBattleMatchTask *task, u
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case FREE_QUIT_PROMPT_QUIT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WillQuitRandomMatchup_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 5;
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
+        *seq = FREE_QUIT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, FREE_QUIT_CREATE_MENU);
         break;
-    case 1:
+    case FREE_QUIT_CREATE_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
-        *seq = 2;
+        *seq = FREE_QUIT_WAIT_MENU;
         break;
-    case 2:
+    case FREE_QUIT_WAIT_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             param->action = WIFIBATTLEMATCH_LINK_ACTION_LOGOUT;
-            *seq = 3;
+            *seq = FREE_QUIT_SHOW_DISCONNECT_MESSAGE;
             break;
-        case 1:
+        case WBM_MENU_NO:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskFreeContinue);
             break;
         }
         break;
-    case 3:
+    case FREE_QUIT_SHOW_DISCONNECT_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_AwaitingCommunicationPleaseStand,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 5;
-        WifiBattleMatchTask_SetReturnSeq(task, 4);
+        *seq = FREE_QUIT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, FREE_QUIT_END);
         break;
-    case 4:
+    case FREE_QUIT_END:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_TaskEnd);
         break;
-    case 5:
+    case FREE_QUIT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1942,7 +2188,7 @@ static void WifiBattleMatchLink_TaskRelogin(WifiBattleMatchTask *task, u32 *seq,
 static void WifiBattleMatchLink_TaskEnd(WifiBattleMatchTask *task, u32 *seq, void *work) {
     WifiBattleMatchLinkRandom *link = work;
 
-    if (*seq == 0) {
+    if (*seq == RANDOM_LINK_END_RELEASE_NETWORK) {
         if (link->net != NULL) {
             WifiBattleMatchNet_Delete(link->net);
             link->net = NULL;
@@ -1957,38 +2203,38 @@ static void WifiBattleMatchLink_TaskSignTeam(WifiBattleMatchTask *task, u32 *seq
     u32 ret;
 
     switch (*seq) {
-    case 0:
+    case RANDOM_TEAM_CHECK_CLEAR_SIGNATURE:
         link->timer = 0;
         MI_CpuFill8(&link->signature, 0, sizeof(link->signature));
         (*seq)++;
         break;
-    case 1:
-        WifiBattleMatchNet_StartPokemonCheck(link->net, player->partyData, TRUE);
+    case RANDOM_TEAM_CHECK_START_CHECK:
+        WifiBattleMatchNet_StartPokemonCheck(link->net, player->partyData, WBM_POKEMON_CHECK_PARTY);
         (*seq)++;
         break;
-    case 2:
+    case RANDOM_TEAM_CHECK_WAIT_CHECK:
         ret = WifiBattleMatchNet_PokemonCheckMain(link->net, &link->signature);
-        if (ret == 1) {
-            *seq = 3;
-        } else if (ret == 2) {
-            link->subTaskResult = 2;
-            *seq = 4;
-        } else if (ret == 3) {
-            link->subTaskResult = 3;
-            *seq = 4;
+        if (ret == WBM_NET_SUCCESS) {
+            *seq = RANDOM_TEAM_CHECK_COPY_SIGNATURE;
+        } else if (ret == WBM_NET_FAILED) {
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_REQUEST_FAILED;
+            *seq = RANDOM_TEAM_CHECK_END;
+        } else if (ret == WBM_NET_SERVER_ERROR) {
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_SERVER_ERROR;
+            *seq = RANDOM_TEAM_CHECK_END;
         }
         break;
-    case 3:
-        if (link->signature.status == 0) {
+    case RANDOM_TEAM_CHECK_COPY_SIGNATURE:
+        if (link->signature.status == WBM_POKEMON_VALIDATION_OK) {
             MI_CpuCopy8(link->signature.signature, player->signature, sizeof(player->signature));
-            link->subTaskResult = 0;
-            *seq = 4;
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_VALID;
+            *seq = RANDOM_TEAM_CHECK_END;
         } else {
-            link->subTaskResult = 1;
-            *seq = 4;
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_INVALID;
+            *seq = RANDOM_TEAM_CHECK_END;
         }
         break;
-    case 4:
+    case RANDOM_TEAM_CHECK_END:
         WifiBattleMatchTask_End(task);
         break;
     }
@@ -2011,23 +2257,23 @@ static void WifiBattleMatchLink_CreateRankCard(WifiBattleMatchLinkRandom *link, 
     if (kind == 0) {
         titleMsg = 1;
         info.titleMsg = link->param->param->battleType;
-        info.unk4 = RndMatchData_GetParam(link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING,
-                                          RNDMATCH_FIELD_RATING);
-        info.unk10 = RndMatchData_GetParam(link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING,
-                                           RNDMATCH_FIELD_WIN);
-        info.unk12 = RndMatchData_GetParam(link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING,
-                                           RNDMATCH_FIELD_LOSE);
-        info.unkC = info.unk10 + info.unk12;
-        if (info.unk4 == 0 && info.unkC == 0) {
-            info.unk4 = 1500;
+        info.rating = RndMatchData_GetParam(
+            link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_RATING);
+        info.wins = RndMatchData_GetParam(link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING,
+                                          RNDMATCH_FIELD_WIN);
+        info.losses = RndMatchData_GetParam(
+            link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_LOSE);
+        info.matchCount = info.wins + info.losses;
+        if (info.rating == 0 && info.matchCount == 0) {
+            info.rating = 1500;
         }
     } else if (kind == 1) {
         titleMsg = 0;
         info.titleMsg = link->param->param->battleType;
-        info.unk4 = 0;
-        info.unk10 = RndMatchData_GetParam(link->param->record, link->param->param->battleType, RNDMATCH_FIELD_WIN);
-        info.unk12 = RndMatchData_GetParam(link->param->record, link->param->param->battleType, RNDMATCH_FIELD_LOSE);
-        info.unkC = info.unk10 + info.unk12;
+        info.rating = 0;
+        info.wins = RndMatchData_GetParam(link->param->record, link->param->param->battleType, RNDMATCH_FIELD_WIN);
+        info.losses = RndMatchData_GetParam(link->param->record, link->param->param->battleType, RNDMATCH_FIELD_LOSE);
+        info.matchCount = info.wins + info.losses;
     }
     info.look = PlayerInfo_GetUnionView(playerInfo);
     link->card =
@@ -2097,58 +2343,58 @@ static BOOL WifiBattleMatchLink_IsPartnerCardDone(WifiBattleMatchLinkRandom *lin
 
 static BOOL WifiBattleMatchLink_UpdateRecord(RndMatchData *results, u32 battleType, WifiBattleMatchLinkRandom *link) {
     u32 rating;
-    u32 first;
-    u32 second;
+    u32 wins;
+    u32 losses;
     BOOL changed;
 
     switch (battleType) {
-    case 0:
-        rating = link->param->ratings->rating[3];
-        first = link->param->ratings->results[3].first;
-        second = link->param->ratings->results[3].second;
+    case WBM_RULE_SINGLE:
+        rating = link->param->ratings->rating[WBM_RATING_INDEX_SINGLE];
+        wins = link->param->ratings->results[WBM_RATING_INDEX_SINGLE].wins;
+        losses = link->param->ratings->results[WBM_RATING_INDEX_SINGLE].losses;
         break;
-    case 1:
-        rating = link->param->ratings->rating[0];
-        first = link->param->ratings->results[0].first;
-        second = link->param->ratings->results[0].second;
+    case WBM_RULE_DOUBLE:
+        rating = link->param->ratings->rating[WBM_RATING_INDEX_DOUBLE];
+        wins = link->param->ratings->results[WBM_RATING_INDEX_DOUBLE].wins;
+        losses = link->param->ratings->results[WBM_RATING_INDEX_DOUBLE].losses;
         break;
-    case 2:
-        rating = link->param->ratings->rating[4];
-        first = link->param->ratings->results[4].first;
-        second = link->param->ratings->results[4].second;
+    case WBM_RULE_TRIPLE:
+        rating = link->param->ratings->rating[WBM_RATING_INDEX_TRIPLE];
+        wins = link->param->ratings->results[WBM_RATING_INDEX_TRIPLE].wins;
+        losses = link->param->ratings->results[WBM_RATING_INDEX_TRIPLE].losses;
         break;
-    case 3:
-        rating = link->param->ratings->rating[1];
-        first = link->param->ratings->results[1].first;
-        second = link->param->ratings->results[1].second;
+    case WBM_RULE_ROTATION:
+        rating = link->param->ratings->rating[WBM_RATING_INDEX_ROTATION];
+        wins = link->param->ratings->results[WBM_RATING_INDEX_ROTATION].wins;
+        losses = link->param->ratings->results[WBM_RATING_INDEX_ROTATION].losses;
         break;
-    case 4:
-        rating = link->param->ratings->rating[2];
-        first = link->param->ratings->results[2].first;
-        second = link->param->ratings->results[2].second;
+    case WBM_RULE_SHOOTER:
+        rating = link->param->ratings->rating[WBM_RATING_INDEX_SHOOTER];
+        wins = link->param->ratings->results[WBM_RATING_INDEX_SHOOTER].wins;
+        losses = link->param->ratings->results[WBM_RATING_INDEX_SHOOTER].losses;
         break;
     }
     if (rating != RndMatchData_GetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_RATING) ||
-        first != RndMatchData_GetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_WIN) ||
-        second != RndMatchData_GetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_LOSE)) {
+        wins != RndMatchData_GetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_WIN) ||
+        losses != RndMatchData_GetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_LOSE)) {
         changed = TRUE;
     } else {
         changed = FALSE;
     }
     RndMatchData_SetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_RATING, rating);
-    RndMatchData_SetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_WIN, first);
-    RndMatchData_SetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_LOSE, second);
+    RndMatchData_SetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_WIN, wins);
+    RndMatchData_SetParam(results, battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_LOSE, losses);
     return changed;
 }
 
 static void WifiBattleMatchLink_AddMatchResult(RndMatchData *results, u32 battleType, u32 matchResult) {
     switch (matchResult) {
-    case 1:
-    case 4:
+    case BTL_RESULT_VICTORY:
+    case BTL_RESULT_FLEE_FOE:
         RndMatchData_IncParam(results, battleType, RNDMATCH_FIELD_WIN);
         break;
-    case 0:
-    case 3:
+    case BTL_RESULT_DEFEAT:
+    case BTL_RESULT_FLEE:
         RndMatchData_IncParam(results, battleType, RNDMATCH_FIELD_LOSE);
         break;
     }
@@ -2207,28 +2453,33 @@ static void WifiBattleMatchLink_FillCondition(WifiBattleMatchNetKeys *condition,
 
     MI_CpuFill8(condition, 0, sizeof(WifiBattleMatchNetKeys));
     param = link->param;
-    condition->disconnects = param->ratings->unk20;
+    condition->disconnects = param->ratings->disconnectsCounter;
     condition->cup = 0;
-    condition->matches = param->ratings->results[3].first + param->ratings->results[3].second +
-                         param->ratings->results[0].first + param->ratings->results[0].second +
-                         param->ratings->results[4].first + param->ratings->results[4].second +
-                         param->ratings->results[1].first + param->ratings->results[1].second +
-                         param->ratings->results[2].first + param->ratings->results[2].second;
+    condition->matches = param->ratings->results[WBM_RATING_INDEX_SINGLE].wins +
+                         param->ratings->results[WBM_RATING_INDEX_SINGLE].losses +
+                         param->ratings->results[WBM_RATING_INDEX_DOUBLE].wins +
+                         param->ratings->results[WBM_RATING_INDEX_DOUBLE].losses +
+                         param->ratings->results[WBM_RATING_INDEX_TRIPLE].wins +
+                         param->ratings->results[WBM_RATING_INDEX_TRIPLE].losses +
+                         param->ratings->results[WBM_RATING_INDEX_ROTATION].wins +
+                         param->ratings->results[WBM_RATING_INDEX_ROTATION].losses +
+                         param->ratings->results[WBM_RATING_INDEX_SHOOTER].wins +
+                         param->ratings->results[WBM_RATING_INDEX_SHOOTER].losses;
     switch (param->param->battleType) {
-    case 0:
-        condition->rating = param->ratings->rating[3];
+    case WBM_RULE_SINGLE:
+        condition->rating = param->ratings->rating[WBM_RATING_INDEX_SINGLE];
         break;
-    case 1:
-        condition->rating = param->ratings->rating[0];
+    case WBM_RULE_DOUBLE:
+        condition->rating = param->ratings->rating[WBM_RATING_INDEX_DOUBLE];
         break;
-    case 2:
-        condition->rating = param->ratings->rating[4];
+    case WBM_RULE_TRIPLE:
+        condition->rating = param->ratings->rating[WBM_RATING_INDEX_TRIPLE];
         break;
-    case 3:
-        condition->rating = param->ratings->rating[1];
+    case WBM_RULE_ROTATION:
+        condition->rating = param->ratings->rating[WBM_RATING_INDEX_ROTATION];
         break;
-    case 4:
-        condition->rating = param->ratings->rating[2];
+    case WBM_RULE_SHOOTER:
+        condition->rating = param->ratings->rating[WBM_RATING_INDEX_SHOOTER];
         break;
     }
 }
@@ -2238,7 +2489,7 @@ static void WifiBattleMatchLink_FillOwnPlayer(WifiBattleMatchPlayer *player, Wif
     SaveControl *save = GameData_GetSaveControl(gameData);
     PlayerInfo *info;
 
-    player->unk44 = 100;
+    player->battleRecordVersion = 100;
     info = GetGameDataPlayerInfo(gameData);
     MI_CpuCopy8(info, player, PlayerInfo_GetSize());
     CGearPhrases_Get(CGearPhrases_GetBlock(save), 0, &player->sentence);
@@ -2262,7 +2513,7 @@ static void WifiBattleMatchLink_UpdatePlayerRecord(WifiBattleMatchPlayer *player
             link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_WIN);
         player->record2 = RndMatchData_GetParam(
             link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_LOSE);
-        player->unk34 = RndMatchData_GetParam(
+        player->rating = RndMatchData_GetParam(
             link->param->record, link->param->param->battleType + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_RATING);
     } else {
         player->record1 =
@@ -2307,53 +2558,53 @@ static u32 WifiBattleMatchLink_UpdateCancel(WifiBattleMatchLinkRandom *link, BOO
     s32 selected;
 
     switch (link->cancelSeq) {
-    case 0:
+    case RANDOM_SEARCH_CANCEL_IDLE:
         if (canCancel && (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B)) {
             GFL_SndSEPlay(SEQ_SE_MESSAGE);
             link->cancelSeq++;
             break;
         }
         return CANCEL_NONE;
-    case 1:
+    case RANDOM_SEARCH_CANCEL_SHOW_QUIT_PROMPT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitSearchingSomeoneBattle,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         link->cancelSeq++;
         break;
-    case 2:
+    case RANDOM_SEARCH_CANCEL_WAIT_QUIT_PROMPT:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             link->cancelSeq++;
         }
         break;
-    case 3:
+    case RANDOM_SEARCH_CANCEL_CREATE_MENU:
         WifiBattleMatchLink_CreateMenu(link, MENU_YES_NO);
         link->cancelSeq++;
         break;
-    case 4:
+    case RANDOM_SEARCH_CANCEL_WAIT_MENU:
         selected = WifiBattleMatchLink_GetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_DeleteMenu(link);
         switch (selected) {
-        case 0:
-            link->cancelSeq = 5;
+        case WBM_MENU_YES:
+            link->cancelSeq = RANDOM_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE;
             break;
-        case 1:
+        case WBM_MENU_NO:
             WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingOpponent,
                                         WIFIBATTLEMATCH_MSG_QUEUE);
-            link->cancelSeq = 0;
+            link->cancelSeq = RANDOM_SEARCH_CANCEL_IDLE;
             return CANCEL_DECLINED;
             break;
         }
         break;
-    case 5:
+    case RANDOM_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_AwaitingCommunicationPleaseStand,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         link->cancelSeq++;
         break;
-    case 6:
+    case RANDOM_SEARCH_CANCEL_DISCONNECT:
         if (canDisconnect) {
-            WifiBattleMatchNet_SendCmd2402(link->net);
+            WifiBattleMatchNet_SendCancelSearch(link->net);
             link->cancelSeq++;
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchNet_CancelMatch(link->net);
@@ -2362,14 +2613,14 @@ static u32 WifiBattleMatchLink_UpdateCancel(WifiBattleMatchLinkRandom *link, BOO
             }
         }
         break;
-    case 7:
-        link->cancelSeq = 0;
+    case RANDOM_SEARCH_CANCEL_CONFIRMED:
+        link->cancelSeq = RANDOM_SEARCH_CANCEL_IDLE;
         return CANCEL_CONFIRMED;
     }
     return CANCEL_BUSY;
 }
 
 static void WifiBattleMatchLink_ResetCancel(WifiBattleMatchLinkRandom *link) {
-    link->cancelSeq = 0;
+    link->cancelSeq = RANDOM_SEARCH_CANCEL_IDLE;
     WifiBattleMatchLink_DeleteMenu(link);
 }
