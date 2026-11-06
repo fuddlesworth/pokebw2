@@ -270,7 +270,7 @@ BOOL PokedexSearchUI_WaitResult(PokedexSearchWork *wk) {
 int PokedexSearchUI_ListMain(PokedexSearchWork *wk) {
     int ret = GFL_HIDGetTouchPressedRect(sPokedexSearchListTouch);
 
-    if (ret != -1) {
+    if (ret != TOUCH_RECT_NONE) {
         GCTX_HIDSetUsingTouch(TRUE);
         return ret;
     }
@@ -295,7 +295,7 @@ int PokedexSearchUI_ListMain(PokedexSearchWork *wk) {
 int PokedexSearchUI_ShapeListMain(PokedexSearchWork *wk) {
     int ret = GFL_HIDGetTouchPressedRect(sPokedexSearchShapeListTouch);
 
-    if (ret != -1) {
+    if (ret != TOUCH_RECT_NONE) {
         GCTX_HIDSetUsingTouch(TRUE);
         return ret;
     }

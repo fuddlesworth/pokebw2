@@ -81,8 +81,11 @@ enum {
 };
 
 // What the VBlank task does with the BGs of the lists (bgRequest)
-#define POKEDEX_SEARCH_BG_REQUEST_ON 1
-#define POKEDEX_SEARCH_BG_REQUEST_OFF 2
+enum {
+    POKEDEX_SEARCH_BG_REQUEST_NONE,
+    POKEDEX_SEARCH_BG_REQUEST_ON,
+    POKEDEX_SEARCH_BG_REQUEST_OFF,
+};
 
 #define POKEDEX_SEARCH_ITEM_NAME_COUNT 50
 

@@ -33,8 +33,15 @@ enum {
     CELL_RES_LOADING,
 };
 
-// The window that an actor's shape cuts out of the blending, which lib/nitro's GX_OAM_MODE_* doesn't have yet
-#define OAM_MODE_OBJWND 2
+// The list resource's animation sequences
+enum {
+    LIST_ANM_SCROLL_BAR,
+    LIST_ANM_SCROLL_RAIL,
+    LIST_ANM_MARK,
+};
+
+// An unallocated cell actor resource
+#define RESOURCE_NONE (-1)
 
 // Where the marks are: their x, the rows' heights and the height of the top screen's list
 #define MARK_X 140
@@ -51,21 +58,46 @@ static void PokedexSearchObj_DeleteActor(PokedexSearchWork *wk, u32 id);
 static void PokedexSearchObj_DeleteActors(PokedexSearchWork *wk);
 
 static const PokedexActorTemplate sPokedexSearchActorTemplates[] = {
-    { { 252, 12, 0, 0, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
-    { { 252, 84, 1, 10, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
-    { { 232, 168, 1, 0, 0 }, CHAR_RES_TOUCHBAR, CHAR_RES_TOUCHBAR, CELL_RES_TOUCHBAR, 0, CLACT_SURFACE_MAIN },
-    { { 208, 168, 0, 0, 0 }, CHAR_RES_TOUCHBAR, CHAR_RES_TOUCHBAR, CELL_RES_TOUCHBAR, 0, CLACT_SURFACE_MAIN },
-    { { 188, 172, 6, 0, 0 }, CHAR_RES_TOUCHBAR, CHAR_RES_TOUCHBAR, CELL_RES_TOUCHBAR, 0, CLACT_SURFACE_MAIN },
-    { { 208, 168, 5, 0, 0 }, CHAR_RES_TOUCHBAR, CHAR_RES_TOUCHBAR, CELL_RES_TOUCHBAR, 0, CLACT_SURFACE_MAIN },
-    { { 188, 168, 4, 0, 0 }, CHAR_RES_TOUCHBAR, CHAR_RES_TOUCHBAR, CELL_RES_TOUCHBAR, 0, CLACT_SURFACE_MAIN },
+    { { 252, 12, LIST_ANM_SCROLL_BAR, 0, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
+    { { 252, 84, LIST_ANM_SCROLL_RAIL, 10, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
+    { { 232, 168, POKEDEX_SEARCH_TOUCHBAR_ANM_RETURN, 0, 0 },
+      CHAR_RES_TOUCHBAR,
+      CHAR_RES_TOUCHBAR,
+      CELL_RES_TOUCHBAR,
+      0,
+      CLACT_SURFACE_MAIN },
+    { { 208, 168, POKEDEX_SEARCH_TOUCHBAR_ANM_EXIT, 0, 0 },
+      CHAR_RES_TOUCHBAR,
+      CHAR_RES_TOUCHBAR,
+      CELL_RES_TOUCHBAR,
+      0,
+      CLACT_SURFACE_MAIN },
+    { { 188, 172, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_OFF, 0, 0 },
+      CHAR_RES_TOUCHBAR,
+      CHAR_RES_TOUCHBAR,
+      CELL_RES_TOUCHBAR,
+      0,
+      CLACT_SURFACE_MAIN },
+    { { 208, 168, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN, 0, 0 },
+      CHAR_RES_TOUCHBAR,
+      CHAR_RES_TOUCHBAR,
+      CELL_RES_TOUCHBAR,
+      0,
+      CLACT_SURFACE_MAIN },
+    { { 188, 168, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP, 0, 0 },
+      CHAR_RES_TOUCHBAR,
+      CHAR_RES_TOUCHBAR,
+      CELL_RES_TOUCHBAR,
+      0,
+      CLACT_SURFACE_MAIN },
     { { 0, 0, 0, 0, 0 }, CHAR_RES_SHAPE, CHAR_RES_SHAPE, CELL_RES_SHAPE, 0, CLACT_SURFACE_MAIN },
     { { 8, 168, 0, 0, 1 }, CHAR_RES_LOADING, CHAR_RES_LOADING, CELL_RES_LOADING, 0, CLACT_SURFACE_MAIN },
-    { { 0, 0, 2, 0, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
-    { { 0, 0, 2, 0, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
-    { { 0, 0, 2, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
-    { { 0, 0, 2, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
-    { { 0, 0, 2, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
-    { { 0, 0, 2, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
+    { { 0, 0, LIST_ANM_MARK, 0, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
+    { { 0, 0, LIST_ANM_MARK, 0, 1 }, CHAR_RES_LIST, CHAR_RES_LIST, CELL_RES_LIST, 0, CLACT_SURFACE_MAIN },
+    { { 0, 0, LIST_ANM_MARK, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
+    { { 0, 0, LIST_ANM_MARK, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
+    { { 0, 0, LIST_ANM_MARK, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
+    { { 0, 0, LIST_ANM_MARK, 0, 2 }, CHAR_RES_LIST_SUB, CHAR_RES_LIST_SUB, CELL_RES_LIST, 0, CLACT_SURFACE_SUB },
 };
 
 void PokedexSearchObj_Init(PokedexSearchWork *wk) {
@@ -174,13 +206,13 @@ static void PokedexSearchObj_LoadResources(PokedexSearchWork *wk) {
     u32 i;
 
     for (i = 0; i < POKEDEX_SEARCH_CHAR_RES_COUNT; i++) {
-        wk->charRes[i] = -1;
+        wk->charRes[i] = RESOURCE_NONE;
     }
     for (i = 0; i < POKEDEX_SEARCH_PALETTE_RES_COUNT; i++) {
-        wk->paletteRes[i] = -1;
+        wk->paletteRes[i] = RESOURCE_NONE;
     }
     for (i = 0; i < POKEDEX_SEARCH_CELL_RES_COUNT; i++) {
-        wk->cellRes[i] = -1;
+        wk->cellRes[i] = RESOURCE_NONE;
     }
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_POKEDEX_GRA, HEAPID_POKEDEX_SEARCH | HEAPID_TAIL_BIT);
@@ -213,17 +245,17 @@ static void PokedexSearchObj_FreeResources(PokedexSearchWork *wk) {
     u32 i;
 
     for (i = 0; i < POKEDEX_SEARCH_CHAR_RES_COUNT; i++) {
-        if (wk->charRes[i] != -1) {
+        if (wk->charRes[i] != RESOURCE_NONE) {
             ClActSys_FreeChars(wk->charRes[i]);
         }
     }
     for (i = 0; i < POKEDEX_SEARCH_PALETTE_RES_COUNT; i++) {
-        if (wk->paletteRes[i] != -1) {
+        if (wk->paletteRes[i] != RESOURCE_NONE) {
             ClActSys_FreePltt(wk->paletteRes[i]);
         }
     }
     for (i = 0; i < POKEDEX_SEARCH_CELL_RES_COUNT; i++) {
-        if (wk->cellRes[i] != -1) {
+        if (wk->cellRes[i] != RESOURCE_NONE) {
             ClActSys_FreeCellAnims(wk->cellRes[i]);
         }
     }
@@ -245,7 +277,7 @@ static void PokedexSearchObj_CreateActors(PokedexSearchWork *wk) {
         wk->actors[i] = PokedexCommon_CreateActor(wk->actorUnit, &template, HEAPID_POKEDEX_SEARCH);
     }
     if (GameData_IsShortcutRegistered(wk->param->gameData, SHORTCUT_POKEDEX_SEARCH) == TRUE) {
-        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, 7);
+        PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_SHORTCUT, POKEDEX_SEARCH_TOUCHBAR_ANM_SHORTCUT_ON);
     }
     PokedexSearchObj_SetVisible(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, FALSE);
     PokedexSearchObj_SetVisible(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, FALSE);
@@ -259,8 +291,8 @@ static void PokedexSearchObj_CreateActors(PokedexSearchWork *wk) {
     PokedexSearchObj_SetVisible(wk, POKEDEX_SEARCH_OBJ_MARK_SUB + 1, FALSE);
     PokedexSearchObj_SetVisible(wk, POKEDEX_SEARCH_OBJ_MARK_WINDOW, FALSE);
     PokedexSearchObj_SetVisible(wk, POKEDEX_SEARCH_OBJ_MARK_WINDOW + 1, FALSE);
-    ClActor_SetObjMode(wk->actors[POKEDEX_SEARCH_OBJ_MARK_WINDOW], OAM_MODE_OBJWND);
-    ClActor_SetObjMode(wk->actors[POKEDEX_SEARCH_OBJ_MARK_WINDOW + 1], OAM_MODE_OBJWND);
+    ClActor_SetObjMode(wk->actors[POKEDEX_SEARCH_OBJ_MARK_WINDOW], GX_OAM_MODE_OBJWND);
+    ClActor_SetObjMode(wk->actors[POKEDEX_SEARCH_OBJ_MARK_WINDOW + 1], GX_OAM_MODE_OBJWND);
     PokedexSearchObj_SetBlend(wk, POKEDEX_SEARCH_OBJ_MARK_SUB, TRUE);
     PokedexSearchObj_SetBlend(wk, POKEDEX_SEARCH_OBJ_MARK_SUB + 1, TRUE);
 
@@ -294,7 +326,7 @@ static void PokedexSearchObj_CreateActors(PokedexSearchWork *wk) {
             wk->actors[POKEDEX_SEARCH_OBJ_SHAPE_ICON_WINDOW + i] =
                 PokedexCommon_CreateActor(wk->actorUnit, &template, HEAPID_POKEDEX_SEARCH);
             PokedexSearchObj_SetVisible(wk, POKEDEX_SEARCH_OBJ_SHAPE_ICON_WINDOW + i, FALSE);
-            ClActor_SetObjMode(wk->actors[POKEDEX_SEARCH_OBJ_SHAPE_ICON_WINDOW + i], OAM_MODE_OBJWND);
+            ClActor_SetObjMode(wk->actors[POKEDEX_SEARCH_OBJ_SHAPE_ICON_WINDOW + i], GX_OAM_MODE_OBJWND);
         }
     }
 }
@@ -442,18 +474,20 @@ void PokedexSearchObj_UpdateScrollBar(PokedexSearchWork *wk) {
 void PokedexSearchObj_SetPageButtons(PokedexSearchWork *wk, BOOL keep) {
     s16 cursor = FrameList_GetCursor(wk->frameList);
 
-    if (PokedexSearchObj_GetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP) != 12 || keep == FALSE) {
+    if (PokedexSearchObj_GetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP) != POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_PRESS ||
+        keep == FALSE) {
         if (FrameList_GetScroll(wk->frameList) == 0 && cursor == 0) {
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 18);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP_DISABLED);
         } else {
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, 4);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_UP, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_UP);
         }
     }
-    if (PokedexSearchObj_GetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN) != 13 || keep == FALSE) {
+    if (PokedexSearchObj_GetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN) != POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_PRESS ||
+        keep == FALSE) {
         if (FrameList_CanScrollDown(wk->frameList) == FALSE && cursor == wk->listRows - 1) {
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 19);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN_DISABLED);
         } else {
-            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, 5);
+            PokedexSearchObj_SetAnm(wk, POKEDEX_SEARCH_OBJ_PAGE_DOWN, POKEDEX_SEARCH_TOUCHBAR_ANM_PAGE_DOWN);
         }
     }
 }
