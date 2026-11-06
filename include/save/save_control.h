@@ -317,14 +317,14 @@ HighLinkSave *getHighLinkBlockAddress(SaveControl *save);
 FunfestSave *FestRecords_GetFromSave(SaveControl *save);
 // The Funfest mission records of FestRecords_GetFromSave's block: missions hosted, joined and completed, the most
 // participants and the best score
-u16 FestRecords_GetHosted(FunfestSave *a0);
-u16 FestRecords_GetJoined(FunfestSave *a0);
+u16 FestRecords_GetHosted(FunfestSave *save);
+u16 FestRecords_GetJoined(FunfestSave *save);
 // Count one more mission hosted and joined, up to 9999, and return the new count
 u16 FestRecords_AddHosted(FunfestSave *records);
 u16 FestRecords_AddJoined(FunfestSave *records);
-u16 FestRecords_GetCompleted(FunfestSave *a0);
-u8 FestRecords_GetMostParticipants(FunfestSave *a0);
-u16 FestRecords_GetTopScores(FunfestSave *a0);
+u16 FestRecords_GetCompleted(FunfestSave *save);
+u8 FestRecords_GetMostParticipants(FunfestSave *save);
+u16 FestRecords_GetTopScores(FunfestSave *save);
 // A Funfest mission's record in FestRecords_GetFromSave's block, by the mission's index, which is 0 for an index past
 // the missions: a 14-bit count, another count, the highest level cleared (0 to 4) and whether the mission is new, which
 // FestRecords_ClearMissionNew clears
