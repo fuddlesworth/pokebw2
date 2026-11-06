@@ -65,9 +65,9 @@ BBagMain_StateStepPage kind:function(thumb,size=0x4c) addr:0x021f6314
 BBagMain_StateWaitStepPage kind:function(thumb,size=0x34) addr:0x021f6360
 BBagMain_StateUsePage kind:function(thumb,size=0xf8) addr:0x021f6394
 BBagMain_CheckUse kind:function(thumb,size=0x114) addr:0x021f648c
-BBagMain_StateToPage0 kind:function(thumb,size=0x20) addr:0x021f65a0
-BBagMain_StateToPage1 kind:function(thumb,size=0x20) addr:0x021f65c0
-BBagMain_StateToPage2 kind:function(thumb,size=0x20) addr:0x021f65e0
+BBagMain_StateToPocketPage kind:function(thumb,size=0x20) addr:0x021f65a0
+BBagMain_StateToItemPage kind:function(thumb,size=0x20) addr:0x021f65c0
+BBagMain_StateToUsePage kind:function(thumb,size=0x20) addr:0x021f65e0
 BBagMain_StateWaitPagePrint kind:function(thumb,size=0x28) addr:0x021f6600
 BBagMain_StateCloseMessage kind:function(thumb,size=0xe) addr:0x021f6628
 BBagMain_StatePrintMessage kind:function(thumb,size=0x7c) addr:0x021f6638
@@ -121,7 +121,7 @@ data_ov286_021f720c kind:data(any) addr:0x021f724c
 data_ov286_021f722c kind:data(any) addr:0x021f726c
 data_ov286_021f724c kind:data(any) addr:0x021f728c
 data_ov286_021f726c kind:data(any) addr:0x021f72ac
-data_ov286_021f728c kind:data(any) addr:0x021f72cc
+sBBagStateFuncs kind:data(any) addr:0x021f72cc
 sBBagPageCursorCallbacks kind:data(any) addr:0x021f731c
 sBBagPageCursorData kind:data(any) addr:0x021f7328
 sBBagUseCursorCallbacks kind:data(any) addr:0x021f7334

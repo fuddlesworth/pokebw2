@@ -34823,9 +34823,9 @@ overlays/ov286 0x021f62d4 BBagMain_StateStepPage
 overlays/ov286 0x021f6320 BBagMain_StateWaitStepPage
 overlays/ov286 0x021f6354 BBagMain_StateUsePage
 overlays/ov286 0x021f644c BBagMain_CheckUse
-overlays/ov286 0x021f6560 BBagMain_StateToPage0
-overlays/ov286 0x021f6580 BBagMain_StateToPage1
-overlays/ov286 0x021f65a0 BBagMain_StateToPage2
+overlays/ov286 0x021f6560 BBagMain_StateToPocketPage
+overlays/ov286 0x021f6580 BBagMain_StateToItemPage
+overlays/ov286 0x021f65a0 BBagMain_StateToUsePage
 overlays/ov286 0x021f65c0 BBagMain_StateWaitPagePrint
 overlays/ov286 0x021f65e8 BBagMain_StateCloseMessage
 overlays/ov286 0x021f65f8 BBagMain_StatePrintMessage
@@ -34870,6 +34870,7 @@ overlays/ov286 0x021f6ecc sBBagChosenItemPos
 overlays/ov286 0x021f6ed0 sBBagChosenCostPos
 overlays/ov286 0x021f6ed4 sBBagItemListActorPositions
 overlays/ov286 0x021f6f08 sBBagActorSetups
+overlays/ov286 0x021f728c sBBagStateFuncs
 overlays/ov286 0x021f72dc sBBagPageCursorCallbacks
 overlays/ov286 0x021f72e8 sBBagPageCursorData
 overlays/ov286 0x021f72f4 sBBagUseCursorCallbacks
