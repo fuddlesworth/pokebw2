@@ -287,7 +287,7 @@ void PokeListMessage_SetItemTextName(PokeListWork *wk, PokeListMessage *msg, u32
 void PokeListMessage_SetMoveName(PokeListWork *wk, PokeListMessage *msg, u32 index, u16 move);
 void PokeListMessage_SetStatName(PokeListWork *wk, PokeListMessage *msg, u32 index, u32 stat);
 void PokeListMessage_SetNumber(PokeListWork *wk, PokeListMessage *msg, u32 index, u16 number, u8 digits);
-void PokeListMessage_SetString(PokeListWork *wk, PokeListMessage *msg, u32 index, const StrBuf *str, u32 a4);
+void PokeListMessage_SetString(PokeListWork *wk, PokeListMessage *msg, u32 index, const StrBuf *str, u32 gender);
 void PokeListMessage_LoadFrame(PokeListWork *wk, PokeListMessage *msg);
 void PokeListMessage_ShowWaitIcon(PokeListWork *wk, PokeListMessage *msg);
 void PokeListMessage_DrawKeyCursor(PokeListWork *wk, PokeListMessage *msg);
