@@ -199,29 +199,29 @@ static void BattleSelect_SetupPokeList(BattleSelectParam *param, BattleSelectWor
     u8 i;
 
     GameData_GetSaveControl(param->gameData);
-    PokeListParam_Setup(pokeList, param->gameData, 0x1a, param->party);
+    PokeListParam_Setup(pokeList, param->gameData, POKELIST_MODE_NETWORK_TEAM, param->party);
     PokeRegulation_ApplyLevelToParty(regulation, pokeList->party);
     pokeList->regulation = regulation;
     switch (regulation->battleType) {
     case 0:
         pokeList->unk48 = 0;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case 1:
         pokeList->unk48 = 1;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case 2:
         pokeList->unk48 = 1;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case 3:
         pokeList->unk48 = 1;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case 4:
         pokeList->unk48 = 2;
-        pokeList->partnerCount = 2;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_THREE_TEAMS;
         break;
     }
     pokeList->item = 0;

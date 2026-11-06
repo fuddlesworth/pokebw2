@@ -47,9 +47,29 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "text/system/btl_main_11.h"
 
 // The party list's screen: its graphics, the cursor, and what each mode does with the Pokémon picked. The ROM
 // doesn't name this file; it is named for the list's system, which pokelist.c's proc runs
+
+// The common touch bar and the party cursor use separate animation resources
+enum {
+    TOUCHBAR_ANM_CLOSE = 0,
+    TOUCHBAR_ANM_BACK = 1,
+    TOUCHBAR_ANM_SHORTCUT_OFF = 6,
+    TOUCHBAR_ANM_SHORTCUT_ON = 7,
+    TOUCHBAR_ANM_CLOSE_PRESS = 8,
+    TOUCHBAR_ANM_BACK_PRESS = 9,
+};
+
+enum {
+    CURSOR_ANM_FIRST,
+    CURSOR_ANM_OTHER,
+    CURSOR_ANM_SUB_FIRST,
+    CURSOR_ANM_SUB_OTHER,
+};
+
+#define TM_INDEX_NONE 0xff
 
 static void PokeList_UpdateGlow(PokeListWork *wk);
 static void PokeList_VBlank(TCB *tcb, void *data);
@@ -68,26 +88,26 @@ static void PokeList_SelectPokemon(PokeListWork *wk);
 static void PokeList_OpenMenu(PokeListWork *wk);
 static void PokeList_UpdateSelect(PokeListWork *wk);
 static void PokeList_RefreshCursor(PokeListWork *wk);
-static void func_ov165_0219bc7c(PokeListWork *wk);
-static void func_ov165_0219be4c(PokeListWork *wk);
-static int func_ov165_0219becc(PokeListWork *wk, u8 pos);
-static void func_ov165_0219bf40(PokeListWork *wk);
-static void func_ov165_0219c038(PokeListWork *wk);
-static void func_ov165_0219c20c(PokeListWork *wk);
-static void func_ov165_0219c36c(PokeListWork *wk, PartyPkm *from, PartyPkm *to, u16 item);
-static void func_ov165_0219c3e8(PokeListWork *wk, PartyPkm *pkmA, PartyPkm *pkmB, u16 itemA, u16 itemB);
-static void func_ov165_0219c51c(PartyPkm *pkmA, PartyPkm *pkmB);
-static void func_ov165_0219c578(PokeListWork *wk, u32 msgId);
-static void func_ov165_0219c5d0(PokeListWork *wk);
-static void func_ov165_0219c7e8(PokeListWork *wk);
-static void func_ov165_0219c820(PokeListWork *wk);
+static void PokeList_HandleSelectionInput(PokeListWork *wk);
+static void PokeList_HandleSwapSelection(PokeListWork *wk);
+static int PokeList_CheckFusionPartner(PokeListWork *wk, u8 pos);
+static void PokeList_HandleFusionSelection(PokeListWork *wk);
+static void PokeList_HandleHpShareSelection(PokeListWork *wk);
+static void PokeList_ConfirmBattleTeam(PokeListWork *wk);
+static void PokeList_MoveHeldItem(PokeListWork *wk, PartyPkm *from, PartyPkm *to, u16 item);
+static void PokeList_SwapHeldItems(PokeListWork *wk, PartyPkm *pkmA, PartyPkm *pkmB, u16 itemA, u16 itemB);
+static void PokeList_UpdateSwappedItemForms(PartyPkm *pkmA, PartyPkm *pkmB);
+static void PokeList_ShowItemSwapError(PokeListWork *wk, u32 msgId);
+static void PokeList_HandleItemSwapSelection(PokeListWork *wk);
+static void PokeList_ReadSelectionInput(PokeListWork *wk);
+static void PokeList_HandleConfirmKey(PokeListWork *wk);
 static void PokeList_ReadCursorKeys(PokeListWork *wk);
 static void PokeList_HandleTouch(PokeListWork *wk);
-static void func_ov165_0219cdd8(PokeListWork *wk, s32 pos);
-static void func_ov165_0219ce34(PokeListWork *wk, s32 pos);
+static void PokeList_ShowCursor(PokeListWork *wk, s32 pos);
+static void PokeList_ShowSubCursor(PokeListWork *wk, s32 pos);
 static void PokeList_UpdateMenu(PokeListWork *wk);
-static void func_ov165_0219ceec(PokeListWork *wk);
-static void func_ov165_0219cf70(PokeListWork *wk);
+static void PokeList_BeginMenu(PokeListWork *wk);
+static void PokeList_EndMenu(PokeListWork *wk);
 static void PokeList_DoMenuItem(PokeListWork *wk);
 static void PokeList_WaitMessage(PokeListWork *wk);
 static void PokeList_UpdateSubMenu(PokeListWork *wk);
@@ -95,9 +115,9 @@ static void PokeList_OpenSubMenu(PokeListWork *wk, void (*func)(PokeListWork *wk
 static void PokeList_UpdateSwap(PokeListWork *wk);
 static void PokeList_StartSwap(PokeListWork *wk);
 static void PokeList_EndSwap(PokeListWork *wk);
-static void PokeList_AnswerStopLearning(PokeListWork *wk, u32 item);
-static void PokeList_AskForgetMove(PokeListWork *wk);
-static void PokeList_AnswerForgetMove(PokeListWork *wk, u32 item);
+static void PokeList_AnswerReplaceMove(PokeListWork *wk, u32 item);
+static void PokeList_AskCancelLearning(PokeListWork *wk);
+static void PokeList_AnswerCancelLearning(PokeListWork *wk, u32 item);
 static void PokeList_AnswerSwapItem(PokeListWork *wk, u32 item);
 static void PokeList_ShareHpEnd(PokeListWork *wk);
 static void PokeList_AnswerTakeMail(PokeListWork *wk, u32 item);
@@ -106,7 +126,7 @@ static void PokeList_AnswerDeleteMail(PokeListWork *wk, u32 item);
 static void PokeList_SetMove(PokeListWork *wk, PartyPkm *pkm, u8 slot);
 static void PokeList_SubFromBag(PokeListWork *wk, u16 item);
 static void PokeList_AddToBag(PokeListWork *wk, u16 item);
-static BOOL func_ov165_0219da74(PokeListWork *wk);
+static BOOL PokeList_HasBattleCancelButton(PokeListWork *wk);
 static BOOL PokeList_HasBackButton(PokeListWork *wk);
 static void PokeList_LearnMove(PokeListWork *wk, PartyPkm *pkm);
 static void PokeList_RaiseFriendship(PokeListWork *wk, PartyPkm *pkm);
@@ -133,14 +153,14 @@ BOOL PokeList_Init(PokeListWork *wk) {
     u8 i;
 
     wk->touch = GCTX_HIDIsUsingTouch();
-    wk->menuItem = 0x19;
-    wk->state = 0;
-    wk->subState = 0;
+    wk->menuItem = POKELIST_MENU_NONE;
+    wk->state = POKELIST_STATE_FADE_IN;
+    wk->subState = POKELIST_SUBSTATE_INIT;
     wk->cursorPos = 0;
     wk->pkm = NULL;
-    wk->selectPos = 9;
-    wk->selectPos2 = 9;
-    wk->showShortcutButtons = FALSE;
+    wk->selectPos = POKELIST_CURSOR_NONE;
+    wk->selectPos2 = POKELIST_CURSOR_NONE;
+    wk->showCloseAndShortcut = FALSE;
     wk->glowPaused = FALSE;
     wk->enteredCount = 0;
     wk->flashTimer = 0;
@@ -153,30 +173,30 @@ BOOL PokeList_Init(PokeListWork *wk) {
     wk->buttons[0] = NULL;
     wk->buttons[1] = NULL;
     wk->decided = FALSE;
-    wk->demo = 0;
+    wk->demo = POKELIST_DEMO_NONE;
     wk->timeUp = FALSE;
-    wk->unk284 = FALSE;
-    wk->param->forceExit = 0;
-    wk->unk28 = TRUE;
+    wk->syncOnTimeUp = FALSE;
+    wk->param->forceExit = FALSE;
+    wk->allowEggs = TRUE;
     wk->playHealSe = FALSE;
     for (i = 0; i < POKELIST_CL_RES_COUNT; i++) {
         wk->clResources[i] = CL_RES_NONE;
     }
-    wk->wasMode19 = wk->param->mode == 0x19 ? TRUE : FALSE;
-    wk->wasMode1B = wk->param->mode == 0x1b ? TRUE : FALSE;
-    if (wk->param->mode == 0x18) {
-        wk->param->mode = 3;
-        wk->wasMode18 = TRUE;
+    wk->wasMusicalMode = wk->param->mode == POKELIST_MODE_MUSICAL ? TRUE : FALSE;
+    wk->wasEggPromptMode = wk->param->mode == POKELIST_MODE_SELECT_EGG_PROMPT ? TRUE : FALSE;
+    if (wk->param->mode == POKELIST_MODE_MOVE_TUTOR) {
+        wk->param->mode = POKELIST_MODE_SELECT;
+        wk->wasTutorMode = TRUE;
     } else {
-        wk->wasMode18 = FALSE;
+        wk->wasTutorMode = FALSE;
     }
-    if (wk->param->mode == 0x1a) {
-        wk->param->mode = 1;
-        wk->wasMode1A = TRUE;
+    if (wk->param->mode == POKELIST_MODE_NETWORK_TEAM) {
+        wk->param->mode = POKELIST_MODE_BATTLE_TEAM;
+        wk->wasNetworkTeamMode = TRUE;
     } else {
-        wk->wasMode1A = FALSE;
+        wk->wasNetworkTeamMode = FALSE;
     }
-    if (wk->param->mode == 6 && wk->param->move == 0) {
+    if (wk->param->mode == POKELIST_MODE_TEACH_TM && wk->param->move == 0) {
         wk->param->move = PML_ItemGetTMMoveID(wk->param->item);
     }
     PokeList_InitGraphics(wk);
@@ -236,17 +256,17 @@ BOOL PokeList_Exit(PokeListWork *wk) {
     PokeList_FreeActors(wk);
     PokeList_FreeResources(wk);
     PokeList_ExitGraphics(wk);
-    if (wk->wasMode18 == TRUE) {
-        wk->param->mode = 0x18;
+    if (wk->wasTutorMode == TRUE) {
+        wk->param->mode = POKELIST_MODE_MOVE_TUTOR;
     }
-    if (wk->wasMode19 == TRUE) {
-        wk->param->mode = 0x19;
+    if (wk->wasMusicalMode == TRUE) {
+        wk->param->mode = POKELIST_MODE_MUSICAL;
     }
-    if (wk->wasMode1B == TRUE) {
-        wk->param->mode = 0x1b;
+    if (wk->wasEggPromptMode == TRUE) {
+        wk->param->mode = POKELIST_MODE_SELECT_EGG_PROMPT;
     }
-    if (wk->wasMode1A == TRUE) {
-        wk->param->mode = 0x1a;
+    if (wk->wasNetworkTeamMode == TRUE) {
+        wk->param->mode = POKELIST_MODE_NETWORK_TEAM;
     }
     GCTX_HIDSetUsingTouch(wk->touch);
     return TRUE;
@@ -256,106 +276,106 @@ BOOL PokeList_Main(PokeListWork *wk) {
     u8 i;
 
     switch (wk->state) {
-    case 0:
+    case POKELIST_STATE_FADE_IN:
         GFL_WipeSet(WIPE_MODE_SUB_FIRST, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, wk->heapId);
-        wk->state = 1;
+        wk->state = POKELIST_STATE_WAIT_WIPE;
         break;
-    case 1:
+    case POKELIST_STATE_WAIT_WIPE:
         if (GFL_WipeIsFinished() == TRUE) {
             wk->state = wk->nextState;
         }
         break;
-    case 2:
-    case 3:
-    case 4:
-    case 22:
-    case 23:
+    case POKELIST_STATE_SELECT:
+    case POKELIST_STATE_SELECT_SWAP:
+    case POKELIST_STATE_SELECT_HP_SHARE:
+    case POKELIST_STATE_SELECT_ITEM_SWAP:
+    case POKELIST_STATE_SELECT_FUSION:
         PokeList_UpdateSelect(wk);
         break;
-    case 5:
+    case POKELIST_STATE_SWAP:
         PokeList_UpdateSwap(wk);
         break;
-    case 6:
+    case POKELIST_STATE_MENU:
         PokeList_UpdateMenu(wk);
         break;
-    case 7:
+    case POKELIST_STATE_MESSAGE:
         PokeList_WaitMessage(wk);
         break;
-    case 8:
+    case POKELIST_STATE_IDLE:
         break;
-    case 9:
+    case POKELIST_STATE_SUBMENU:
         PokeList_UpdateSubMenu(wk);
         break;
-    case 10:
+    case POKELIST_STATE_HP_CHANGE_START:
         PokeListPlate_StartHpChange(wk, wk->plates[wk->cursorPos]);
         if (wk->playHealSe == TRUE) {
             wk->playHealSe = FALSE;
             GFL_SndSEPlay(SEQ_SE_RECOVERY);
         }
-        wk->state = 11;
+        wk->state = POKELIST_STATE_HP_CHANGE;
         // fallthrough
-    case 11:
+    case POKELIST_STATE_HP_CHANGE:
         if (PokeListPlate_UpdateHpChange(wk, wk->plates[wk->cursorPos]) == TRUE) {
             if (wk->hpDoneFunc != NULL) {
                 wk->hpDoneFunc(wk);
             } else {
-                wk->state = 21;
+                wk->state = POKELIST_STATE_EXIT_WAIT_WIPE;
             }
         }
         break;
-    case 12:
+    case POKELIST_STATE_WAIT_TEAM_BUTTON:
         wk->waitTimer++;
         if (wk->waitTimer > 16) {
             PokeListMenu_SetButtonPressed(wk->buttons[0], 0);
-            if (wk->wasMode1A == TRUE) {
+            if (wk->wasNetworkTeamMode == TRUE) {
                 // Overlay 164's sync takes the parameters as its work
                 if (NetSync_Send((NetSyncWork *)wk->param, 0, 0) == TRUE) {
-                    wk->state = 17;
+                    wk->state = POKELIST_STATE_SYNC_START;
                     PokeListMenu_FreeButton(wk->buttons[0]);
                     PokeListMenu_FreeButton(wk->buttons[1]);
                     wk->buttons[0] = NULL;
                     wk->buttons[1] = NULL;
                     PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-                    PokeListMessage_Print(wk, wk->message, 0xbc);
+                    PokeListMessage_Print(wk, wk->message, BtlMain11_Text_CommunicatingPleaseWait);
                     PokeListMessage_ShowWaitIcon(wk, wk->message);
                 }
             } else {
-                wk->state = 19;
+                wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
             }
         }
         break;
-    case 13:
+    case POKELIST_STATE_LEVEL_UP:
         PokeList_UpdateLevelUp(wk);
         break;
-    case 14:
+    case POKELIST_STATE_DEMO_START:
         PokeListDemo_Start(wk);
         break;
-    case 15:
+    case POKELIST_STATE_DEMO_UPDATE:
         PokeListDemo_Update(wk);
         break;
-    case 16:
+    case POKELIST_STATE_DEMO_END:
         PokeListDemo_End(wk);
         break;
-    case 17:
+    case POKELIST_STATE_SYNC_START:
         NetSync_StartTiming((u32)wk->param, 2);
-        wk->state = 18;
+        wk->state = POKELIST_STATE_SYNC_WAIT;
         break;
-    case 18:
+    case POKELIST_STATE_SYNC_WAIT:
         if (NetSync_IsTimingDone((NetSyncWork *)wk->param, 2) == TRUE) {
-            wk->state = 19;
+            wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         }
         break;
-    case 20:
+    case POKELIST_STATE_EXIT_FADE:
         GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0, 6, 1, wk->heapId);
-        wk->state = 21;
+        wk->state = POKELIST_STATE_EXIT_WAIT_WIPE;
         break;
-    case 19:
+    case POKELIST_STATE_EXIT_WAIT_BUTTON:
         if (wk->pressedButton == NULL || ClActor_IsAnimActive(wk->pressedButton) == FALSE) {
             GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0, 6, 1, wk->heapId);
-            wk->state = 21;
+            wk->state = POKELIST_STATE_EXIT_WAIT_WIPE;
         }
         break;
-    case 21:
+    case POKELIST_STATE_EXIT_WAIT_WIPE:
         if (GFL_WipeIsFinished() == TRUE) {
             return TRUE;
         }
@@ -582,7 +602,7 @@ static void PokeList_CreateActors(PokeListWork *wk) {
     ClActUnit_UseSystemRenderer(wk->actorUnit);
     cursorSetup.x = 0;
     cursorSetup.y = 0;
-    cursorSetup.sequence = 0;
+    cursorSetup.sequence = CURSOR_ANM_FIRST;
     cursorSetup.priority = 10;
     cursorSetup.bgPriority = 3;
     wk->cursor = ClActor_Create(wk->actorUnit, wk->clResources[CL_RES_CHAR(0)], wk->clResources[CL_RES_PLTT(0)],
@@ -595,28 +615,28 @@ static void PokeList_CreateActors(PokeListWork *wk) {
     ClActor_SetVisible(wk->subCursor, FALSE);
     setup.x = 224;
     setup.y = 168;
-    setup.sequence = 1;
+    setup.sequence = TOUCHBAR_ANM_BACK;
     setup.priority = 0;
     setup.bgPriority = 0;
-    wk->exitButton = ClActor_Create(wk->actorUnit, wk->clResources[CL_RES_CHAR(2)], wk->clResources[CL_RES_PLTT(1)],
+    wk->backButton = ClActor_Create(wk->actorUnit, wk->clResources[CL_RES_CHAR(2)], wk->clResources[CL_RES_PLTT(1)],
                                     wk->clResources[CL_RES_CELL(2)], &setup, 0, wk->heapId);
-    ClActor_SetAutoAnim(wk->exitButton, TRUE);
+    ClActor_SetAutoAnim(wk->backButton, TRUE);
     setup.x = 204;
-    setup.sequence = 0;
-    wk->shortcutButton = ClActor_Create(wk->actorUnit, wk->clResources[CL_RES_CHAR(2)], wk->clResources[CL_RES_PLTT(1)],
-                                        wk->clResources[CL_RES_CELL(2)], &setup, 0, wk->heapId);
-    ClActor_SetAutoAnim(wk->shortcutButton, TRUE);
+    setup.sequence = TOUCHBAR_ANM_CLOSE;
+    wk->closeButton = ClActor_Create(wk->actorUnit, wk->clResources[CL_RES_CHAR(2)], wk->clResources[CL_RES_PLTT(1)],
+                                     wk->clResources[CL_RES_CELL(2)], &setup, 0, wk->heapId);
+    ClActor_SetAutoAnim(wk->closeButton, TRUE);
     setup.y = 172;
     setup.x = 184;
-    setup.sequence = 6;
+    setup.sequence = TOUCHBAR_ANM_SHORTCUT_OFF;
     wk->shortcutMark = ClActor_Create(wk->actorUnit, wk->clResources[CL_RES_CHAR(2)], wk->clResources[CL_RES_PLTT(1)],
                                       wk->clResources[CL_RES_CELL(2)], &setup, 0, wk->heapId);
     ClActor_SetAutoAnim(wk->shortcutMark, TRUE);
 }
 
 static void PokeList_FreeActors(PokeListWork *wk) {
-    ClActor_Delete(wk->exitButton);
-    ClActor_Delete(wk->shortcutButton);
+    ClActor_Delete(wk->backButton);
+    ClActor_Delete(wk->closeButton);
     ClActor_Delete(wk->shortcutMark);
     ClActor_Delete(wk->cursor);
     ClActor_Delete(wk->subCursor);
@@ -662,7 +682,7 @@ static void PokeList_LoadResources(PokeListWork *wk) {
     wk->clResources[CL_RES_CELL(1)] = ClActSys_LoadCellAnims(arc, 0x16, 0x19, wk->heapId);
     GFL_ArcToolFree(arc);
 
-    iconArc = GFL_ArcSysCreateFileHandle(7, wk->heapId);
+    iconArc = GFL_ArcSysCreateFileHandle(ARCID_POKEICON, wk->heapId);
     wk->clResources[CL_RES_PLTT(6)] = ClActSys_LoadPlttEx(iconArc, PokeIcon_GetPaletteFile(), 0, 0xc0, wk->heapId);
     wk->clResources[CL_RES_CELL(7)] =
         ClActSys_LoadCellAnims(iconArc, PokeIcon_GetCellFile_Main(), getOBJTileMapping_MainEng(), wk->heapId);
@@ -732,36 +752,36 @@ static void PokeList_FreeResources(PokeListWork *wk) {
 
 static void PokeList_InitMode(PokeListWork *wk) {
     switch (wk->param->mode) {
-    case 1:
-        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, 0, 22, 21, 0);
+    case POKELIST_MODE_BATTLE_TEAM:
+        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, BtlMain11_Text_Confirm, 22, 21, 0);
         PokeList_ShowModeMessage(wk);
-        wk->nextState = 2;
+        wk->nextState = POKELIST_STATE_SELECT;
         break;
-    case 22:
-    case 23:
-        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, 0, 12, 21, 0);
-        wk->buttons[1] = PokeListMenu_CreateButton(wk, wk->menu, 1, 22, 21, 1);
+    case POKELIST_MODE_BATTLE_TEAM_CANCEL:
+    case POKELIST_MODE_BATTLE_INSTITUTE:
+        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, BtlMain11_Text_Confirm, 12, 21, 0);
+        wk->buttons[1] = PokeListMenu_CreateButton(wk, wk->menu, BtlMain11_Text_Cancel, 22, 21, 1);
         PokeList_ShowModeMessage(wk);
-        wk->nextState = 2;
+        wk->nextState = POKELIST_STATE_SELECT;
         break;
-    case 0:
-    case 6:
-    case 9:
-    case 14:
-    case 16:
-    case 18:
-    case 21:
-    case 25:
-    case 27:
+    case POKELIST_MODE_FIELD:
+    case POKELIST_MODE_TEACH_TM:
+    case POKELIST_MODE_GIVE_ITEM:
+    case POKELIST_MODE_GIVE_MAIL:
+    case POKELIST_MODE_EVOLUTION_ITEM:
+    case POKELIST_MODE_DAY_CARE:
+    case POKELIST_MODE_SELECT_EGG:
+    case POKELIST_MODE_MUSICAL:
+    case POKELIST_MODE_SELECT_EGG_PROMPT:
         PokeList_ShowModeMessage(wk);
-        wk->nextState = 2;
+        wk->nextState = POKELIST_STATE_SELECT;
         break;
-    case 3:
-        wk->showShortcutButtons = FALSE;
+    case POKELIST_MODE_SELECT:
+        wk->showCloseAndShortcut = FALSE;
         PokeList_ShowModeMessage(wk);
-        wk->nextState = 2;
+        wk->nextState = POKELIST_STATE_SELECT;
         break;
-    case 5:
+    case POKELIST_MODE_USE_ITEM:
         if (PokeList_IsItemForParty(wk, wk->param->item) == TRUE) {
             s32 pos = PokeList_FindItemTarget(wk);
 
@@ -773,29 +793,29 @@ static void PokeList_InitMode(PokeListWork *wk) {
                 PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
                 wk->playHealSe = TRUE;
                 wk->nextState = wk->state;
-                wk->state = 0;
+                wk->state = POKELIST_STATE_FADE_IN;
                 PokeList_SubFromBag(wk, wk->param->item);
             } else {
                 PokeList_ShowItemUselessExit(wk);
                 wk->nextState = wk->state;
-                wk->state = 0;
+                wk->state = POKELIST_STATE_FADE_IN;
             }
         } else if (PokeList_GetBagCount(wk, wk->param->item)) {
             PokeList_ShowModeMessage(wk);
-            wk->nextState = 2;
+            wk->nextState = POKELIST_STATE_SELECT;
         } else {
-            wk->param->result = 10;
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
             PokeListMessage_Close(wk, wk->message);
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetItemName(wk, wk->message, 0, wk->param->item);
-            PokeList_ShowMessage(wk, 0xbf, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, BtlMain11_Text_UsedLast, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             wk->nextState = wk->state;
-            wk->state = 0;
+            wk->state = POKELIST_STATE_FADE_IN;
         }
         break;
-    case 7:
-    case 8:
+    case POKELIST_MODE_REPLACE_TM_MOVE:
+    case POKELIST_MODE_REPLACE_LEVEL_MOVE:
         wk->cursorPos = wk->param->index;
         wk->pkm = PokeParty_GetPkm(wk->param->party, wk->param->index);
         if (wk->param->moveSlot < 4) {
@@ -804,26 +824,26 @@ static void PokeList_InitMode(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, move);
-            PokeList_ShowMessage(wk, 0x29, TRUE, PokeList_LearnInSlot);
+            PokeList_ShowMessage(wk, BtlMain11_Text_12TaDa, TRUE, PokeList_LearnInSlot);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, 0x24, FALSE, PokeList_AskForgetMove);
+            PokeList_ShowMessage(wk, BtlMain11_Text_GiveUpLearningMove, FALSE, PokeList_AskCancelLearning);
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
-        wk->nextState = 7;
-        wk->state = 0;
-        wk->showShortcutButtons = FALSE;
+        wk->nextState = POKELIST_STATE_MESSAGE;
+        wk->state = POKELIST_STATE_FADE_IN;
+        wk->showCloseAndShortcut = FALSE;
         PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], TRUE);
         break;
-    case 10:
+    case POKELIST_MODE_GIVE_FROM_BAG:
         wk->cursorPos = wk->param->index;
         wk->pkm = PokeParty_GetPkm(wk->param->party, wk->param->index);
         if (wk->param->item == 0) {
-            wk->param->mode = 0;
+            wk->param->mode = POKELIST_MODE_FIELD;
             PokeList_ShowModeMessage(wk);
-            wk->nextState = 2;
+            wk->nextState = POKELIST_STATE_SELECT;
         } else {
             u32 heldItem = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
 
@@ -837,28 +857,28 @@ static void PokeList_InitMode(PokeListWork *wk) {
                 PokeList_UpdateGenesectForm(wk, wk->pkm, wk->param->item);
                 if (PokeListDemo_CanBecomeOrigin(wk, wk->pkm) == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, 0x5c, TRUE, PokeList_MessageDoneDemo);
-                    wk->demo = 1;
+                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneDemo);
+                    wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else {
-                    PokeList_ShowMessage(wk, 0x5c, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneSelect);
                 }
                 PokeListMessage_FreeWordSet(wk, wk->message);
-                wk->param->mode = 0;
+                wk->param->mode = POKELIST_MODE_FIELD;
             } else {
                 PokeListMessage_CreateWordSet(wk, wk->message);
                 PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
                 PokeListMessage_SetItemTextName(wk, wk->message, 1, heldItem);
-                PokeList_ShowMessage(wk, 0x3b, FALSE, PokeList_AskSwapItem);
+                PokeList_ShowMessage(wk, BtlMain11_Text_AlreadyHoldingWouldLike, FALSE, PokeList_AskSwapItem);
                 PokeListMessage_FreeWordSet(wk, wk->message);
             }
         }
-        wk->nextState = 7;
-        wk->state = 0;
-        wk->showShortcutButtons = TRUE;
+        wk->nextState = POKELIST_STATE_MESSAGE;
+        wk->state = POKELIST_STATE_FADE_IN;
+        wk->showCloseAndShortcut = TRUE;
         PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], TRUE);
         break;
-    case 11:
-    case 12: {
+    case POKELIST_MODE_GIVE_ITEM_EXIT:
+    case POKELIST_MODE_GIVE_ITEM_RETURN: {
         u32 heldItem;
         u32 msg;
 
@@ -867,11 +887,11 @@ static void PokeList_InitMode(PokeListWork *wk) {
         heldItem = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
         PokeListMessage_CreateWordSet(wk, wk->message);
         if (heldItem == 0) {
-            msg = 0x5c;
+            msg = BtlMain11_Text_GivenHold;
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetItemName(wk, wk->message, 1, wk->param->item);
         } else {
-            msg = 0x41;
+            msg = BtlMain11_Text_TakenReplaced;
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetItemName(wk, wk->message, 1, heldItem);
             PokeListMessage_SetItemName(wk, wk->message, 2, wk->param->item);
@@ -883,21 +903,21 @@ static void PokeList_InitMode(PokeListWork *wk) {
         if (PokeListDemo_CanBecomeAltered(wk, wk->pkm) == TRUE) {
             PokeListDemo_SetAltered(wk, wk->pkm);
             PokeList_ShowMessage(wk, msg, TRUE, PokeList_MessageDoneDemo);
-            wk->demo = 2;
-        } else if (wk->param->mode == 11) {
+            wk->demo = POKELIST_DEMO_GIRATINA_ALTERED;
+        } else if (wk->param->mode == POKELIST_MODE_GIVE_ITEM_EXIT) {
             PokeList_ShowMessage(wk, msg, TRUE, PokeList_MessageDoneExit);
         } else {
             PokeList_ShowMessage(wk, msg, TRUE, PokeList_MessageDoneSelect);
         }
         PokeListMessage_FreeWordSet(wk, wk->message);
-        if (wk->param->mode == 11) {
-            wk->param->result = 10;
+        if (wk->param->mode == POKELIST_MODE_GIVE_ITEM_EXIT) {
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
         } else {
-            wk->param->mode = 0;
+            wk->param->mode = POKELIST_MODE_FIELD;
         }
-        wk->nextState = 7;
-        wk->state = 0;
-        wk->showShortcutButtons = TRUE;
+        wk->nextState = POKELIST_STATE_MESSAGE;
+        wk->state = POKELIST_STATE_FADE_IN;
+        wk->showCloseAndShortcut = TRUE;
         break;
     }
     }
@@ -906,57 +926,57 @@ static void PokeList_InitMode(PokeListWork *wk) {
 static void PokeList_ShowModeMessage(PokeListWork *wk) {
     GFL_BGSysLoadScr(0);
     switch (wk->param->mode) {
-    case 0:
+    case POKELIST_MODE_FIELD:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 9);
-        wk->showShortcutButtons = TRUE;
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_ChoosePokemon);
+        wk->showCloseAndShortcut = TRUE;
         break;
-    case 1:
+    case POKELIST_MODE_BATTLE_TEAM:
         PokeListBattle_ShowMessage(wk);
-        ClActor_SetVisible(wk->exitButton, FALSE);
-        wk->showShortcutButtons = FALSE;
+        ClActor_SetVisible(wk->backButton, FALSE);
+        wk->showCloseAndShortcut = FALSE;
         break;
-    case 22:
-    case 23:
-        wk->showShortcutButtons = FALSE;
+    case POKELIST_MODE_BATTLE_TEAM_CANCEL:
+    case POKELIST_MODE_BATTLE_INSTITUTE:
+        wk->showCloseAndShortcut = FALSE;
         break;
-    case 5:
-    case 16:
+    case POKELIST_MODE_USE_ITEM:
+    case POKELIST_MODE_EVOLUTION_ITEM:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 0xd);
-        wk->showShortcutButtons = FALSE;
-        wk->unk28 = FALSE;
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_UseWhichPokemon);
+        wk->showCloseAndShortcut = FALSE;
+        wk->allowEggs = FALSE;
         break;
-    case 9:
-    case 14:
+    case POKELIST_MODE_GIVE_ITEM:
+    case POKELIST_MODE_GIVE_MAIL:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 0xc);
-        wk->showShortcutButtons = FALSE;
-        wk->unk28 = FALSE;
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_GiveWhichPokemon);
+        wk->showCloseAndShortcut = FALSE;
+        wk->allowEggs = FALSE;
         break;
-    case 6:
+    case POKELIST_MODE_TEACH_TM:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 0xe);
-        wk->showShortcutButtons = FALSE;
-        wk->unk28 = FALSE;
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_TeachWhichPokemon);
+        wk->showCloseAndShortcut = FALSE;
+        wk->allowEggs = FALSE;
         break;
-    case 18:
+    case POKELIST_MODE_DAY_CARE:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 0x10);
-        wk->showShortcutButtons = FALSE;
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_DepositWhichPokemon);
+        wk->showCloseAndShortcut = FALSE;
         break;
-    case 3:
-    case 25:
+    case POKELIST_MODE_SELECT:
+    case POKELIST_MODE_MUSICAL:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 9);
-        wk->showShortcutButtons = FALSE;
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_ChoosePokemon);
+        wk->showCloseAndShortcut = FALSE;
         break;
-    case 21:
-    case 27:
+    case POKELIST_MODE_SELECT_EGG:
+    case POKELIST_MODE_SELECT_EGG_PROMPT:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 0xaf);
-        ClActor_SetVisible(wk->exitButton, FALSE);
-        wk->showShortcutButtons = FALSE;
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_PleaseSelectEgg);
+        ClActor_SetVisible(wk->backButton, FALSE);
+        wk->showCloseAndShortcut = FALSE;
         break;
     }
     PokeList_RefreshCursor(wk);
@@ -964,37 +984,37 @@ static void PokeList_ShowModeMessage(PokeListWork *wk) {
 
 // A Pokémon was picked: what happens depends on the mode
 static void PokeList_SelectPokemon(PokeListWork *wk) {
-    if (wk->param->forceExit == 1) {
-        wk->state = 19;
+    if (wk->param->forceExit == TRUE) {
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         return;
     }
     switch (wk->param->mode) {
-    case 0:
-    case 1:
-    case 18:
-    case 21:
-    case 22:
-    case 23:
-    case 25:
-        func_ov165_0219ceec(wk);
+    case POKELIST_MODE_FIELD:
+    case POKELIST_MODE_BATTLE_TEAM:
+    case POKELIST_MODE_DAY_CARE:
+    case POKELIST_MODE_SELECT_EGG:
+    case POKELIST_MODE_BATTLE_TEAM_CANCEL:
+    case POKELIST_MODE_BATTLE_INSTITUTE:
+    case POKELIST_MODE_MUSICAL:
+        PokeList_BeginMenu(wk);
         GFL_BGSysLoadScr(0);
         PokeList_OpenMenu(wk);
         break;
-    case 5:
+    case POKELIST_MODE_USE_ITEM:
         if (PokeList_IsItemForMove(wk, wk->param->item) == TRUE) {
-            func_ov165_0219ceec(wk);
+            PokeList_BeginMenu(wk);
             PokeList_OpenMenu(wk);
         } else if (StatusRcv_CanUseItem(wk->pkm, wk->param->item, 0, wk->heapId) == TRUE) {
             u32 result = PokeList_ShowItemResult(wk, 0);
             BOOL used = StatusRcv_UseItem(wk->pkm, wk->param->item, 0, wk->param->zoneId, wk->heapId);
 
-            if (result == 2) {
+            if (result == POKELIST_ITEM_EFFECT_LEVEL_UP) {
                 if (used) {
                     JoinAvenue_RecordActivity(9);
                 }
                 PokeListPlate_SetPkm(wk, wk->plates[wk->cursorPos], wk->pkm, 0);
             } else {
-                if (result == 19 || result == 13) {
+                if (result == POKELIST_ITEM_EFFECT_LOWER_HP_EV || result == POKELIST_ITEM_EFFECT_RAISE_HP_EV) {
                     PokeListPlate_SetPkm(wk, wk->plates[wk->cursorPos], wk->pkm, 0);
                 } else {
                     PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
@@ -1004,71 +1024,71 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
             PokeList_SubFromBag(wk, wk->param->item);
         } else if (wk->param->item == ITEM_GRACIDEA && PokeListDemo_CanBecomeSky(wk, wk->pkm) == TRUE) {
             PokeListDemo_SetSky(wk, wk->pkm);
-            wk->param->result = 10;
-            wk->state = 14;
-            wk->demo = 3;
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
+            wk->state = POKELIST_STATE_DEMO_START;
+            wk->demo = POKELIST_DEMO_SHAYMIN_SKY;
         } else if (wk->param->item == ITEM_REVEAL_GLASS && PokeListDemo_CanBecomeTherian(wk, wk->pkm) == TRUE &&
                    isOneShotDRObtained(wk->param->trainerCard, 6, wk->param->playerInfo) == TRUE) {
             PokeListDemo_ToggleTherian(wk, wk->pkm);
-            wk->param->result = 10;
-            wk->state = 14;
-            wk->demo = 6;
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
+            wk->state = POKELIST_STATE_DEMO_START;
+            wk->demo = POKELIST_DEMO_TOGGLE_THERIAN;
         } else if (wk->param->item == ITEM_DNA_SPLICERS_FUSE) {
             u32 result = PokeListDemo_CheckFuse(wk, wk->pkm);
 
-            if (result == 2 || result == 4) {
+            if (result == POKELIST_FUSION_CHECK_NOT_KYUREM || result == POKELIST_FUSION_CHECK_WRONG_FORM) {
                 PokeList_ShowItemUseless(wk);
-            } else if (result == 3) {
-                PokeList_ShowItemMessageSelect(wk, 1);
-            } else if (result == 0) {
-                func_ov165_0219cdd8(wk, wk->cursorPos);
-                func_ov165_0219ce34(wk, wk->cursorPos);
+            } else if (result == POKELIST_FUSION_CHECK_FAINTED) {
+                PokeList_ShowItemMessageSelect(wk, POKELIST_ITEM_MESSAGE_FAINTED);
+            } else if (result == POKELIST_FUSION_CHECK_CAN_FUSE) {
+                PokeList_ShowCursor(wk, wk->cursorPos);
+                PokeList_ShowSubCursor(wk, wk->cursorPos);
                 wk->selectPos = wk->cursorPos;
-                wk->param->result = 10;
-                wk->state = 23;
-                wk->showShortcutButtons = FALSE;
+                wk->param->result = POKELIST_RESULT_ITEM_DONE;
+                wk->state = POKELIST_STATE_SELECT_FUSION;
+                wk->showCloseAndShortcut = FALSE;
                 PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-                PokeListMessage_Print(wk, wk->message, 0x12);
+                PokeListMessage_Print(wk, wk->message, BtlMain11_Text_FuseWhichPokemon);
                 PokeList_RefreshCursor(wk);
             }
         } else if (wk->param->item == ITEM_DNA_SPLICERS_SEPARATE) {
             u32 result = PokeListDemo_CheckSeparate(wk, wk->pkm);
 
-            if (result == 5) {
-                PokeList_ShowItemMessageSelect(wk, 2);
-            } else if (result == 2 || result == 4) {
+            if (result == POKELIST_FUSION_CHECK_PARTY_FULL) {
+                PokeList_ShowItemMessageSelect(wk, POKELIST_ITEM_MESSAGE_NO_FUSION_SPACE);
+            } else if (result == POKELIST_FUSION_CHECK_NOT_KYUREM || result == POKELIST_FUSION_CHECK_WRONG_FORM) {
                 PokeList_ShowItemUseless(wk);
             } else {
                 wk->selectPos = wk->cursorPos;
-                wk->param->result = 10;
-                wk->state = 14;
-                wk->demo = 5;
-                wk->demoForm = 2;
+                wk->param->result = POKELIST_RESULT_ITEM_DONE;
+                wk->state = POKELIST_STATE_DEMO_START;
+                wk->demo = POKELIST_DEMO_KYUREM_SEPARATE;
+                wk->demoForm = POKELIST_FUSION_PARTNER_SEPARATE;
             }
         } else {
             PokeList_ShowItemUseless(wk);
         }
         break;
-    case 16:
+    case POKELIST_MODE_EVOLUTION_ITEM:
         if (PokeList_CanEvolveWithItem(wk, wk->pkm, wk->param->item)) {
             PokeList_SubFromBag(wk, wk->param->item);
-            wk->state = 19;
+            wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
             wk->param->index = wk->cursorPos;
-            wk->param->result = 8;
+            wk->param->result = POKELIST_RESULT_EVOLVE_ITEM;
         } else {
-            PokeList_ShowMessage(wk, 0x52, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, BtlMain11_Text_WontHaveAnyEffect, TRUE, PokeList_MessageDoneExit);
         }
         break;
-    case 9: {
+    case POKELIST_MODE_GIVE_ITEM: {
         u32 heldItem = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
 
         if (heldItem == 0) {
             if (PML_ItemIsMail(wk->param->item) == TRUE) {
-                wk->state = 19;
+                wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
                 wk->param->index = wk->cursorPos;
-                wk->param->result = 6;
+                wk->param->result = POKELIST_RESULT_WRITE_MAIL;
             } else {
-                wk->param->result = 10;
+                wk->param->result = POKELIST_RESULT_ITEM_DONE;
                 PokeList_SetHeldItem(wk, wk->pkm, wk->param->item);
                 PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
                 PokeListMessage_CreateWordSet(wk, wk->message);
@@ -1078,83 +1098,83 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
                 PokeList_UpdateGenesectForm(wk, wk->pkm, wk->param->item);
                 if (PokeListDemo_CanBecomeOrigin(wk, wk->pkm) == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, 0x5c, TRUE, PokeList_MessageDoneDemo);
-                    wk->demo = 1;
+                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneDemo);
+                    wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else {
-                    PokeList_ShowMessage(wk, 0x5c, TRUE, PokeList_MessageDoneExit);
+                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneExit);
                 }
                 PokeListMessage_FreeWordSet(wk, wk->message);
             }
         } else if (PML_ItemIsMail(heldItem) == TRUE) {
-            wk->param->result = 10;
-            PokeList_ShowMessage(wk, 0x3a, TRUE, PokeList_MessageDoneExit);
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
+            PokeList_ShowMessage(wk, BtlMain11_Text_MustRemoveMailBefore, TRUE, PokeList_MessageDoneExit);
         } else {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetItemTextName(wk, wk->message, 1, heldItem);
-            PokeList_ShowMessage(wk, 0x3b, FALSE, PokeList_AskSwapItem);
+            PokeList_ShowMessage(wk, BtlMain11_Text_AlreadyHoldingWouldLike, FALSE, PokeList_AskSwapItem);
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
         break;
     }
-    case 14:
+    case POKELIST_MODE_GIVE_MAIL:
         if (PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL) == 0) {
-            MailData *mail = MailBox_CopyMail(wk->param->unk08, 0, wk->param->unk6C, wk->heapId);
+            MailData *mail = MailBox_CopyMail(wk->param->mailbox, 0, wk->param->mailboxSlot, wk->heapId);
 
             PokeParty_SetParam(wk->pkm, PKM_PARAM_MAIL, (u32)mail);
             GFL_HeapFree(mail);
             PokeParty_SetParam(wk->pkm, PKM_PARAM_ITEM, wk->param->item);
-            MailBox_ResetMail(wk->param->unk08, 0, wk->param->unk6C);
-            PokeList_ShowMessage(wk, 0x6c, TRUE, PokeList_MessageDoneExit);
+            MailBox_ResetMail(wk->param->mailbox, 0, wk->param->mailboxSlot);
+            PokeList_ShowMessage(wk, BtlMain11_Text_MailTransferredFromMailbox, TRUE, PokeList_MessageDoneExit);
         } else {
-            PokeList_ShowMessage(wk, 0x6d, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, BtlMain11_Text_PokemonHoldingItemCannot, TRUE, PokeList_MessageDoneExit);
         }
         break;
-    case 6:
+    case POKELIST_MODE_TEACH_TM:
         switch (PokeList_CheckLearnMove(wk, wk->pkm, wk->param->index)) {
-        case 0:
-            wk->param->result = 10;
+        case POKELIST_LEARN_EMPTY_SLOT:
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, 0x2a, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, BtlMain11_Text_Learned, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             PokeList_LearnMove(wk, wk->pkm);
             PokeList_RaiseFriendship(wk, wk->pkm);
             break;
-        case 1:
+        case POKELIST_LEARN_REPLACE_MOVE:
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, 0x21, FALSE, PokeList_AskStopLearning);
+            PokeList_ShowMessage(wk, BtlMain11_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
             PokeListMessage_FreeWordSet(wk, wk->message);
             break;
-        case 2:
-            wk->param->result = 10;
+        case POKELIST_LEARN_UNABLE:
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, 0x2b, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, BtlMain11_Text_NotCompatibleCantLearned, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             break;
-        case 3:
-            wk->param->result = 10;
+        case POKELIST_LEARN_KNOWN:
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, 0x2c, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, BtlMain11_Text_AlreadyKnows, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             break;
         }
         break;
-    case 3:
-    case 27:
-        wk->state = 19;
+    case POKELIST_MODE_SELECT:
+    case POKELIST_MODE_SELECT_EGG_PROMPT:
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         wk->param->index = wk->cursorPos;
-        wk->param->result = 0;
+        wk->param->result = POKELIST_RESULT_DONE;
         break;
     default:
-        func_ov165_0219ceec(wk);
+        PokeList_BeginMenu(wk);
         PokeList_OpenMenu(wk);
         break;
     }
@@ -1166,115 +1186,115 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
 
     GFL_BGSysLoadScr(0);
     switch (wk->param->mode) {
-    case 0:
+    case POKELIST_MODE_FIELD:
         if (PokeListPlate_IsEgg(wk, wk->plates[wk->cursorPos]) == TRUE) {
-            items[0] = 0;
-            items[1] = 3;
-            items[2] = 6;
-            items[3] = 16;
+            items[0] = POKELIST_MENU_SUMMARY;
+            items[1] = POKELIST_MENU_SWITCH;
+            items[2] = POKELIST_MENU_BACK;
+            items[3] = POKELIST_MENU_END;
         } else {
-            items[0] = 0;
-            items[1] = 1;
-            items[2] = 3;
-            items[3] = 4;
-            items[4] = 6;
-            items[5] = 16;
+            items[0] = POKELIST_MENU_SUMMARY;
+            items[1] = POKELIST_MENU_FIELD_MOVES;
+            items[2] = POKELIST_MENU_SWITCH;
+            items[3] = POKELIST_MENU_ITEM;
+            items[4] = POKELIST_MENU_BACK;
+            items[5] = POKELIST_MENU_END;
             if (PML_ItemIsMail(PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL)) == TRUE) {
-                items[3] = 5;
+                items[3] = POKELIST_MENU_MAIL;
             }
         }
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, 0x13);
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
-    case 1:
-    case 22:
-    case 23:
+    case POKELIST_MODE_BATTLE_TEAM:
+    case POKELIST_MODE_BATTLE_TEAM_CANCEL:
+    case POKELIST_MODE_BATTLE_INSTITUTE:
         if (PokeListPlate_IsEgg(wk, wk->plates[wk->cursorPos]) == TRUE) {
-            items[0] = 0;
-            items[1] = 6;
-            items[2] = 16;
+            items[0] = POKELIST_MENU_SUMMARY;
+            items[1] = POKELIST_MENU_BACK;
+            items[2] = POKELIST_MENU_END;
         } else {
-            items[0] = 8;
-            items[1] = 0;
-            items[2] = 6;
-            items[3] = 16;
+            items[0] = POKELIST_MENU_BATTLE_ENTRY;
+            items[1] = POKELIST_MENU_SUMMARY;
+            items[2] = POKELIST_MENU_BACK;
+            items[3] = POKELIST_MENU_END;
         }
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, 0x13);
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
-    case 5:
-        items[0] = 2;
-        items[1] = 6;
-        items[2] = 16;
+    case POKELIST_MODE_USE_ITEM:
+        items[0] = POKELIST_MENU_ITEM_MOVES;
+        items[1] = POKELIST_MENU_BACK;
+        items[2] = POKELIST_MENU_END;
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
         PokeListMessage_Print(wk, wk->message, PokeList_GetItemMenuMessage(wk, wk->param->item));
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
-    case 18:
+    case POKELIST_MODE_DAY_CARE:
         if (PokeListPlate_IsEgg(wk, wk->plates[wk->cursorPos]) == TRUE) {
-            items[0] = 0;
-            items[1] = 6;
-            items[2] = 16;
+            items[0] = POKELIST_MENU_SUMMARY;
+            items[1] = POKELIST_MENU_BACK;
+            items[2] = POKELIST_MENU_END;
         } else {
-            items[0] = 7;
-            items[1] = 0;
-            items[2] = 6;
-            items[3] = 16;
+            items[0] = POKELIST_MENU_SELECT;
+            items[1] = POKELIST_MENU_SUMMARY;
+            items[2] = POKELIST_MENU_BACK;
+            items[3] = POKELIST_MENU_END;
         }
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, 0x13);
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
-    case 21:
+    case POKELIST_MODE_SELECT_EGG:
         if (PokeListPlate_IsEgg(wk, wk->plates[wk->cursorPos]) == TRUE) {
-            items[0] = 11;
-            items[1] = 0;
-            items[2] = 6;
-            items[3] = 16;
+            items[0] = POKELIST_MENU_CHOOSE;
+            items[1] = POKELIST_MENU_SUMMARY;
+            items[2] = POKELIST_MENU_BACK;
+            items[3] = POKELIST_MENU_END;
             PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-            PokeListMessage_Print(wk, wk->message, 0xae);
+            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_WhatWillEgg);
         } else {
-            items[0] = 0;
-            items[1] = 6;
-            items[2] = 16;
+            items[0] = POKELIST_MENU_SUMMARY;
+            items[1] = POKELIST_MENU_BACK;
+            items[2] = POKELIST_MENU_END;
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-            PokeListMessage_Print(wk, wk->message, 0x13);
+            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
         break;
-    case 25:
+    case POKELIST_MODE_MUSICAL:
         if (MusicalSystem_CanJoin(wk->pkm) == TRUE) {
-            items[0] = 11;
-            items[1] = 0;
-            items[2] = 6;
-            items[3] = 16;
+            items[0] = POKELIST_MENU_CHOOSE;
+            items[1] = POKELIST_MENU_SUMMARY;
+            items[2] = POKELIST_MENU_BACK;
+            items[3] = POKELIST_MENU_END;
         } else {
-            items[0] = 0;
-            items[1] = 6;
-            items[2] = 16;
+            items[0] = POKELIST_MENU_SUMMARY;
+            items[1] = POKELIST_MENU_BACK;
+            items[2] = POKELIST_MENU_END;
         }
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, 0x13);
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     default:
-        items[0] = 0;
-        items[1] = 6;
-        items[2] = 16;
+        items[0] = POKELIST_MENU_SUMMARY;
+        items[1] = POKELIST_MENU_BACK;
+        items[2] = POKELIST_MENU_END;
         break;
     }
     PokeListMenu_Open(wk, wk->menu, items);
@@ -1282,29 +1302,29 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
 
 static void PokeList_UpdateSelect(PokeListWork *wk) {
     switch (wk->subState) {
-    case 0:
-        wk->subState = 1;
-        wk->input = 4;
+    case POKELIST_SUBSTATE_INIT:
+        wk->subState = POKELIST_SUBSTATE_READ_INPUT;
+        wk->input = POKELIST_INPUT_NONE;
         break;
-    case 1:
-        func_ov165_0219c7e8(wk);
+    case POKELIST_SUBSTATE_READ_INPUT:
+        PokeList_ReadSelectionInput(wk);
         break;
-    case 2:
+    case POKELIST_SUBSTATE_HANDLE_INPUT:
         switch (wk->state) {
-        case 3:
-            func_ov165_0219be4c(wk);
+        case POKELIST_STATE_SELECT_SWAP:
+            PokeList_HandleSwapSelection(wk);
             break;
-        case 4:
-            func_ov165_0219c038(wk);
+        case POKELIST_STATE_SELECT_HP_SHARE:
+            PokeList_HandleHpShareSelection(wk);
             break;
-        case 22:
-            func_ov165_0219c5d0(wk);
+        case POKELIST_STATE_SELECT_ITEM_SWAP:
+            PokeList_HandleItemSwapSelection(wk);
             break;
-        case 23:
-            func_ov165_0219bf40(wk);
+        case POKELIST_STATE_SELECT_FUSION:
+            PokeList_HandleFusionSelection(wk);
             break;
         default:
-            func_ov165_0219bc7c(wk);
+            PokeList_HandleSelectionInput(wk);
             break;
         }
         break;
@@ -1313,15 +1333,15 @@ static void PokeList_UpdateSelect(PokeListWork *wk) {
 
 static void PokeList_RefreshCursor(PokeListWork *wk) {
     wk->cursorPos = wk->param->index;
-    wk->subState = 0;
-    wk->menuItem = 0x19;
+    wk->subState = POKELIST_SUBSTATE_INIT;
+    wk->menuItem = POKELIST_MENU_NONE;
     if (PokeList_IsBattle(wk) == TRUE) {
         PokeListMenu_SetButtonActive(wk->buttons[0], FALSE);
         PokeListMenu_SetButtonActive(wk->buttons[1], FALSE);
     }
     if (wk->touch == FALSE) {
         if (wk->cursorPos <= 5) {
-            func_ov165_0219cdd8(wk, wk->cursorPos);
+            PokeList_ShowCursor(wk, wk->cursorPos);
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], TRUE);
         } else {
             PokeListMenu_SetButtonActive(wk->buttons[(u8)(wk->cursorPos - 6)], TRUE);
@@ -1329,7 +1349,8 @@ static void PokeList_RefreshCursor(PokeListWork *wk) {
     } else {
         ClActor_SetVisible(wk->cursor, FALSE);
         if (wk->cursorPos <= 5) {
-            if (wk->state == 3 || wk->state == 22 || wk->state == 23) {
+            if (wk->state == POKELIST_STATE_SELECT_SWAP || wk->state == POKELIST_STATE_SELECT_ITEM_SWAP ||
+                wk->state == POKELIST_STATE_SELECT_FUSION) {
                 PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], TRUE);
             } else {
                 PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
@@ -1338,17 +1359,17 @@ static void PokeList_RefreshCursor(PokeListWork *wk) {
             PokeListMenu_SetButtonActive(wk->buttons[(u8)(wk->cursorPos - 6)], FALSE);
         }
     }
-    ClActor_SetVisible(wk->shortcutButton, wk->showShortcutButtons);
-    ClActor_SetVisible(wk->shortcutMark, wk->showShortcutButtons);
-    ClActor_SetSequence(wk->shortcutMark, wk->param->keyItemRegistered + 6);
+    ClActor_SetVisible(wk->closeButton, wk->showCloseAndShortcut);
+    ClActor_SetVisible(wk->shortcutMark, wk->showCloseAndShortcut);
+    ClActor_SetSequence(wk->shortcutMark, wk->param->keyItemRegistered + TOUCHBAR_ANM_SHORTCUT_OFF);
     if (PokeList_IsBattle(wk) == TRUE || PokeList_HasBackButton(wk) == FALSE) {
-        ClActor_SetVisible(wk->exitButton, FALSE);
+        ClActor_SetVisible(wk->backButton, FALSE);
     } else {
-        ClActor_SetVisible(wk->exitButton, TRUE);
+        ClActor_SetVisible(wk->backButton, TRUE);
     }
 }
 
-static void func_ov165_0219bc7c(PokeListWork *wk) {
+static void PokeList_HandleSelectionInput(PokeListWork *wk) {
     u8 i;
 
     PokeListMessage_Close(wk, wk->message);
@@ -1366,24 +1387,24 @@ static void func_ov165_0219bc7c(PokeListWork *wk) {
         }
     }
     switch (wk->input) {
-    case 3:
+    case POKELIST_INPUT_SELECT_POKEMON:
         ClActor_SetVisible(wk->cursor, FALSE);
         wk->pkm = PokeParty_GetPkm(wk->param->party, wk->cursorPos);
         wk->param->index = wk->cursorPos;
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         PokeList_SelectPokemon(wk);
         break;
-    case 0:
+    case POKELIST_INPUT_CONFIRM:
         if (PokeList_IsBattle(wk) == TRUE) {
-            func_ov165_0219c20c(wk);
+            PokeList_ConfirmBattleTeam(wk);
         } else {
-            wk->state = 19;
-            wk->param->index = 6;
-            wk->param->result = 0;
+            wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
+            wk->param->index = POKELIST_CURSOR_CONFIRM;
+            wk->param->result = POKELIST_RESULT_DONE;
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         }
         break;
-    case 1:
+    case POKELIST_INPUT_CANCEL:
         if (wk->cursorPos <= 5) {
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
             ClActor_SetVisible(wk->cursor, FALSE);
@@ -1391,48 +1412,48 @@ static void func_ov165_0219bc7c(PokeListWork *wk) {
         if (PokeList_IsBattle(wk) == TRUE) {
             PokeListMenu_SetButtonActive(wk->buttons[0], FALSE);
             PokeListMenu_SetButtonPressed(wk->buttons[1], 1);
-            wk->state = 12;
-            wk->cursorPos = 7;
+            wk->state = POKELIST_STATE_WAIT_TEAM_BUTTON;
+            wk->cursorPos = POKELIST_CURSOR_CANCEL;
         } else {
-            wk->state = 19;
-            wk->pressedButton = wk->exitButton;
-            ClActor_SetSequence(wk->pressedButton, 9);
+            wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
+            wk->pressedButton = wk->backButton;
+            ClActor_SetSequence(wk->pressedButton, TOUCHBAR_ANM_BACK_PRESS);
         }
-        wk->param->index = 7;
-        wk->param->result = 0;
+        wk->param->index = POKELIST_CURSOR_CANCEL;
+        wk->param->result = POKELIST_RESULT_DONE;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         break;
-    case 2:
+    case POKELIST_INPUT_CLOSE:
         if (wk->cursorPos <= 5) {
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
             ClActor_SetVisible(wk->cursor, FALSE);
         }
-        wk->state = 19;
-        wk->param->index = 8;
-        wk->param->result = 0;
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
+        wk->param->index = POKELIST_CURSOR_CLOSE;
+        wk->param->result = POKELIST_RESULT_DONE;
         GFL_SndSEPlay(SEQ_SE_CLOSE1);
-        wk->pressedButton = wk->shortcutButton;
-        ClActor_SetSequence(wk->pressedButton, 8);
+        wk->pressedButton = wk->closeButton;
+        ClActor_SetSequence(wk->pressedButton, TOUCHBAR_ANM_CLOSE_PRESS);
         break;
     }
 }
 
-static void func_ov165_0219be4c(PokeListWork *wk) {
+static void PokeList_HandleSwapSelection(PokeListWork *wk) {
     PokeListMessage_Close(wk, wk->message);
-    if (wk->input == 3 && wk->cursorPos == wk->selectPos) {
-        wk->input = 1;
+    if (wk->input == POKELIST_INPUT_SELECT_POKEMON && wk->cursorPos == wk->selectPos) {
+        wk->input = POKELIST_INPUT_CANCEL;
     }
     switch (wk->input) {
-    case 3:
+    case POKELIST_INPUT_SELECT_POKEMON:
         PokeList_StartSwap(wk);
         break;
-    case 1:
+    case POKELIST_INPUT_CANCEL:
         wk->pkm = NULL;
-        wk->state = 2;
-        func_ov165_0219cdd8(wk, wk->cursorPos);
+        wk->state = POKELIST_STATE_SELECT;
+        PokeList_ShowCursor(wk, wk->cursorPos);
         PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
         ClActor_SetVisible(wk->subCursor, FALSE);
-        wk->selectPos = 9;
+        wk->selectPos = POKELIST_CURSOR_NONE;
         wk->param->index = wk->cursorPos;
         PokeList_ShowModeMessage(wk);
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
@@ -1440,38 +1461,38 @@ static void func_ov165_0219be4c(PokeListWork *wk) {
     }
 }
 
-static int func_ov165_0219becc(PokeListWork *wk, u8 pos) {
+static int PokeList_CheckFusionPartner(PokeListWork *wk, u8 pos) {
     PartyPkm *pkm = PokeParty_GetPkm(wk->param->party, pos);
     u16 species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
     u16 hp = PokeParty_GetParam(pkm, PKM_PARAM_HP, NULL);
 
     if (PokeParty_GetParam(pkm, PKM_PARAM_BAD_EGG, NULL) != 0 || PokeParty_GetParam(pkm, PKM_PARAM_IS_EGG, NULL) != 0) {
-        return 5;
+        return POKELIST_FUSION_PARTNER_EGG;
     }
     if (species == SPECIES_RESHIRAM) {
         if (hp == 0) {
-            return 4;
+            return POKELIST_FUSION_PARTNER_FAINTED;
         }
-        return 0;
+        return POKELIST_FUSION_PARTNER_RESHIRAM;
     }
     if (species == SPECIES_ZEKROM) {
         if (hp == 0) {
-            return 4;
+            return POKELIST_FUSION_PARTNER_FAINTED;
         }
-        return 1;
+        return POKELIST_FUSION_PARTNER_ZEKROM;
     }
-    return 3;
+    return POKELIST_FUSION_PARTNER_WRONG_SPECIES;
 }
 
-static void func_ov165_0219bf40(PokeListWork *wk) {
+static void PokeList_HandleFusionSelection(PokeListWork *wk) {
     PokeListMessage_Close(wk, wk->message);
-    if (wk->input != 3 || wk->cursorPos == wk->selectPos) {
+    if (wk->input != POKELIST_INPUT_SELECT_POKEMON || wk->cursorPos == wk->selectPos) {
         wk->pkm = NULL;
-        wk->state = 2;
-        func_ov165_0219cdd8(wk, wk->cursorPos);
+        wk->state = POKELIST_STATE_SELECT;
+        PokeList_ShowCursor(wk, wk->cursorPos);
         PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
         ClActor_SetVisible(wk->subCursor, FALSE);
-        wk->selectPos = 9;
+        wk->selectPos = POKELIST_CURSOR_NONE;
         wk->param->index = wk->cursorPos;
         PokeList_ShowModeMessage(wk);
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
@@ -1479,15 +1500,15 @@ static void func_ov165_0219bf40(PokeListWork *wk) {
         int form;
 
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
-        form = func_ov165_0219becc(wk, wk->cursorPos);
-        if (form == 0 || form == 1) {
-            wk->param->result = 10;
-            wk->state = 14;
-            wk->demo = 4;
+        form = PokeList_CheckFusionPartner(wk, wk->cursorPos);
+        if (form == POKELIST_FUSION_PARTNER_RESHIRAM || form == POKELIST_FUSION_PARTNER_ZEKROM) {
+            wk->param->result = POKELIST_RESULT_ITEM_DONE;
+            wk->state = POKELIST_STATE_DEMO_START;
+            wk->demo = POKELIST_DEMO_KYUREM_FUSE;
             wk->demoForm = form;
         } else {
-            PokeList_ShowMessage(wk, form + 0x52, TRUE, PokeList_MessageDoneSelect);
-            func_ov165_0219cdd8(wk, wk->cursorPos);
+            PokeList_ShowMessage(wk, form + BtlMain11_Text_WontHaveAnyEffect, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowCursor(wk, wk->cursorPos);
             PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
             ClActor_SetVisible(wk->subCursor, FALSE);
@@ -1497,9 +1518,9 @@ static void func_ov165_0219bf40(PokeListWork *wk) {
 }
 
 // Shares a fifth of the user's HP with the Pokémon picked, as Soft-Boiled and Milk Drink do outside battle
-static void func_ov165_0219c038(PokeListWork *wk) {
+static void PokeList_HandleHpShareSelection(PokeListWork *wk) {
     PokeListMessage_Close(wk, wk->message);
-    if (wk->input == 3) {
+    if (wk->input == POKELIST_INPUT_SELECT_POKEMON) {
         u32 hp;
         u32 maxHp;
 
@@ -1507,8 +1528,8 @@ static void func_ov165_0219c038(PokeListWork *wk) {
         hp = PokeParty_GetParam(wk->pkm, PKM_PARAM_HP, NULL);
         maxHp = PokeParty_GetParam(wk->pkm, PKM_PARAM_MAX_HP, NULL);
         if (wk->cursorPos == wk->selectPos2 || hp == 0 || maxHp == hp) {
-            PokeList_ShowMessage(wk, 0x6e, TRUE, PokeList_MessageDoneSelect);
-            func_ov165_0219cdd8(wk, wk->cursorPos);
+            PokeList_ShowMessage(wk, BtlMain11_Text_CantUsedPokemon, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowCursor(wk, wk->cursorPos);
             PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos2], FALSE);
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
             ClActor_SetVisible(wk->subCursor, FALSE);
@@ -1521,10 +1542,10 @@ static void func_ov165_0219c038(PokeListWork *wk) {
 
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
             wk->pkm = PokeParty_GetPkm(wk->param->party, wk->cursorPos);
-            wk->state = 10;
+            wk->state = POKELIST_STATE_HP_CHANGE_START;
             wk->prevHp = PokeListPlate_GetHp(wk, wk->plates[wk->cursorPos]);
             wk->hpDoneFunc = PokeList_ShareHpDone;
-            func_ov165_0219cdd8(wk, wk->cursorPos);
+            PokeList_ShowCursor(wk, wk->cursorPos);
             PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos2], FALSE);
             ClActor_SetVisible(wk->subCursor, FALSE);
             user = PokeParty_GetPkm(wk->param->party, wk->selectPos2);
@@ -1543,11 +1564,11 @@ static void func_ov165_0219c038(PokeListWork *wk) {
         }
     } else {
         wk->pkm = NULL;
-        wk->state = 2;
-        func_ov165_0219cdd8(wk, wk->cursorPos);
+        wk->state = POKELIST_STATE_SELECT;
+        PokeList_ShowCursor(wk, wk->cursorPos);
         PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos2], FALSE);
         ClActor_SetVisible(wk->subCursor, FALSE);
-        wk->selectPos2 = 9;
+        wk->selectPos2 = POKELIST_CURSOR_NONE;
         wk->param->index = wk->cursorPos;
         PokeList_ShowModeMessage(wk);
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
@@ -1555,17 +1576,17 @@ static void func_ov165_0219c038(PokeListWork *wk) {
 }
 
 // Decides the team in a battle's selection, if the regulation allows it
-static void func_ov165_0219c20c(PokeListWork *wk) {
+static void PokeList_ConfirmBattleTeam(PokeListWork *wk) {
     Regulation *regulation = wk->param->regulation;
 
-    if (wk->cursorPos != 6) {
+    if (wk->cursorPos != POKELIST_CURSOR_CONFIRM) {
         if (wk->cursorPos <= 5) {
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
             ClActor_SetVisible(wk->cursor, FALSE);
         }
-        wk->cursorPos = 6;
+        wk->cursorPos = POKELIST_CURSOR_CONFIRM;
     }
-    wk->param->index = 6;
+    wk->param->index = POKELIST_CURSOR_CONFIRM;
     {
         u8 picked[6] = { 0 };
         u8 i;
@@ -1580,26 +1601,28 @@ static void func_ov165_0219c20c(PokeListWork *wk) {
         }
         result = PokeRegulation_CheckPicked(regulation, wk->param->party, picked);
         if (regulation->minCount > wk->enteredCount) {
-            PokeList_ShowMessage(wk, regulation->minCount + 0x60, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, regulation->minCount + BtlMain11_Text_EggCannotHoldItem, TRUE,
+                                 PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else if (regulation->maxCount < wk->enteredCount) {
-            PokeList_ShowMessage(wk, regulation->maxCount + 0x66, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, regulation->maxCount + BtlMain11_Text_SixPokemonNeeded, TRUE,
+                                 PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
-        } else if (result == 1) {
+        } else if (result == REGULATION_RESULT_LEVEL_TOTAL) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetNumber(wk, wk->message, 0, regulation->maxLevelTotal, 3);
-            PokeList_ShowMessage(wk, 0x9e, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_TotalAllPartyMembers, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
             PokeListMessage_FreeWordSet(wk, wk->message);
-        } else if (result == 7) {
-            PokeList_ShowMessage(wk, 0xa0, TRUE, PokeList_MessageDoneSelect);
+        } else if (result == REGULATION_RESULT_REQUIRED) {
+            PokeList_ShowMessage(wk, BtlMain11_Text_PokemonWhichMustParticipate, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else {
             PokeListMenu_SetButtonActive(wk->buttons[1], FALSE);
             PokeListMenu_SetButtonPressed(wk->buttons[0], 1);
-            wk->state = 12;
-            wk->param->index = 6;
-            wk->param->result = 0;
+            wk->state = POKELIST_STATE_WAIT_TEAM_BUTTON;
+            wk->param->index = POKELIST_CURSOR_CONFIRM;
+            wk->param->result = POKELIST_RESULT_DONE;
             wk->decided = TRUE;
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         }
@@ -1607,7 +1630,7 @@ static void func_ov165_0219c20c(PokeListWork *wk) {
 }
 
 // Moves an item from one Pokémon to another, with its mail
-static void func_ov165_0219c36c(PokeListWork *wk, PartyPkm *from, PartyPkm *to, u16 item) {
+static void PokeList_MoveHeldItem(PokeListWork *wk, PartyPkm *from, PartyPkm *to, u16 item) {
     if (PML_ItemIsMail(item) == FALSE) {
         PokeList_SetHeldItem(wk, from, 0);
         PokeList_SetHeldItem(wk, to, item);
@@ -1626,7 +1649,7 @@ static void func_ov165_0219c36c(PokeListWork *wk, PartyPkm *from, PartyPkm *to, 
 }
 
 // Swaps the items of two Pokémon, with their mail
-static void func_ov165_0219c3e8(PokeListWork *wk, PartyPkm *pkmA, PartyPkm *pkmB, u16 itemA, u16 itemB) {
+static void PokeList_SwapHeldItems(PokeListWork *wk, PartyPkm *pkmA, PartyPkm *pkmB, u16 itemA, u16 itemB) {
     MailData *mailA = CreateMailData(wk->heapId);
     MailData *mailB = CreateMailData(wk->heapId);
     MailData *blank = CreateMailData(wk->heapId);
@@ -1660,7 +1683,7 @@ static void func_ov165_0219c3e8(PokeListWork *wk, PartyPkm *pkmA, PartyPkm *pkmB
 }
 
 // Updates the forms that two Pokémon's new items give them
-static void func_ov165_0219c51c(PartyPkm *pkmA, PartyPkm *pkmB) {
+static void PokeList_UpdateSwappedItemForms(PartyPkm *pkmA, PartyPkm *pkmB) {
     u16 items[2];
     PartyPkm *pkms[2];
     u16 i;
@@ -1681,9 +1704,9 @@ static void func_ov165_0219c51c(PartyPkm *pkmA, PartyPkm *pkmB) {
     }
 }
 
-static void func_ov165_0219c578(PokeListWork *wk, u32 msgId) {
+static void PokeList_ShowItemSwapError(PokeListWork *wk, u32 msgId) {
     GFL_SndSEPlay(SEQ_SE_BEEP);
-    func_ov165_0219cdd8(wk, wk->cursorPos);
+    PokeList_ShowCursor(wk, wk->cursorPos);
     PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
     PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
     ClActor_SetVisible(wk->subCursor, FALSE);
@@ -1691,8 +1714,8 @@ static void func_ov165_0219c578(PokeListWork *wk, u32 msgId) {
 }
 
 // Gives the item of the Pokémon picked first to the one picked now, swapping their items
-static void func_ov165_0219c5d0(PokeListWork *wk) {
-    if (wk->input == 3) {
+static void PokeList_HandleItemSwapSelection(PokeListWork *wk) {
+    if (wk->input == POKELIST_INPUT_SELECT_POKEMON) {
         PartyPkm *src = PokeParty_GetPkm(wk->param->party, wk->selectPos);
         PartyPkm *dst = PokeParty_GetPkm(wk->param->party, wk->cursorPos);
         u16 srcSpecies = PokeParty_GetParam(src, PKM_PARAM_LEGAL_SPECIES, NULL);
@@ -1703,32 +1726,32 @@ static void func_ov165_0219c5d0(PokeListWork *wk) {
         PokeListMessage_Close(wk, wk->message);
         if ((dstSpecies == SPECIES_GIRATINA && srcItem == ITEM_GRISEOUS_ORB) ||
             (srcSpecies == SPECIES_GIRATINA && dstItem == ITEM_GRISEOUS_ORB)) {
-            func_ov165_0219c578(wk, 0x5e);
+            PokeList_ShowItemSwapError(wk, BtlMain11_Text_GriseousOrbCannotMoved);
         } else if (dstSpecies == SPECIES_GIRATINA && dstItem == ITEM_GRISEOUS_ORB) {
-            func_ov165_0219c578(wk, 0x5f);
+            PokeList_ShowItemSwapError(wk, BtlMain11_Text_GriseousOrbCannotMoved_2);
         } else if (dstSpecies == SPECIES_EGG) {
-            func_ov165_0219c578(wk, 0x60);
+            PokeList_ShowItemSwapError(wk, BtlMain11_Text_EggCannotHoldItem);
         } else {
             if (dstItem == 0) {
-                func_ov165_0219c36c(wk, src, dst, srcItem);
+                PokeList_MoveHeldItem(wk, src, dst, srcItem);
                 PokeListMessage_SetPkmName(wk, wk->message, 0, dst);
             } else {
-                func_ov165_0219c3e8(wk, src, dst, srcItem, dstItem);
+                PokeList_SwapHeldItems(wk, src, dst, srcItem, dstItem);
                 PokeListMessage_SetPkmName(wk, wk->message, 0, src);
                 PokeListMessage_SetPkmName(wk, wk->message, 2, dst);
                 PokeListMessage_SetItemName(wk, wk->message, 3, dstItem);
             }
-            func_ov165_0219c51c(src, dst);
+            PokeList_UpdateSwappedItemForms(src, dst);
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
             PokeListPlate_Redraw(wk, wk->plates[wk->selectPos]);
-            func_ov165_0219cdd8(wk, wk->cursorPos);
+            PokeList_ShowCursor(wk, wk->cursorPos);
             PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
             ClActor_SetVisible(wk->subCursor, FALSE);
             if (dstItem == 0) {
-                PokeList_ShowMessage(wk, 0x5c, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneSelect);
             } else {
-                PokeList_ShowMessage(wk, 0x5d, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, BtlMain11_Text_SSWereSwapped, TRUE, PokeList_MessageDoneSelect);
             }
         }
         PokeListMessage_FreeWordSet(wk, wk->message);
@@ -1736,16 +1759,16 @@ static void func_ov165_0219c5d0(PokeListWork *wk) {
         PokeListMessage_Close(wk, wk->message);
         PokeListMessage_FreeWordSet(wk, wk->message);
         wk->pkm = NULL;
-        wk->state = 2;
-        func_ov165_0219cdd8(wk, wk->cursorPos);
+        wk->state = POKELIST_STATE_SELECT;
+        PokeList_ShowCursor(wk, wk->cursorPos);
         PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
         PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
         ClActor_SetVisible(wk->subCursor, FALSE);
         // BUG: The selection of the Pokémon giving its item is kept, and that of Soft-Boiled's user is cleared instead
 #ifdef BUGFIX
-        wk->selectPos = 9;
+        wk->selectPos = POKELIST_CURSOR_NONE;
 #else
-        wk->selectPos2 = 9;
+        wk->selectPos2 = POKELIST_CURSOR_NONE;
 #endif
         wk->param->index = wk->cursorPos;
         PokeList_ShowModeMessage(wk);
@@ -1753,32 +1776,32 @@ static void func_ov165_0219c5d0(PokeListWork *wk) {
     }
 }
 
-static void func_ov165_0219c7e8(PokeListWork *wk) {
+static void PokeList_ReadSelectionInput(PokeListWork *wk) {
     PokeList_ReadCursorKeys(wk);
-    if (wk->input == 4) {
+    if (wk->input == POKELIST_INPUT_NONE) {
         PokeList_HandleTouch(wk);
     }
-    if (wk->input != 4) {
-        wk->subState = 2;
+    if (wk->input != POKELIST_INPUT_NONE) {
+        wk->subState = POKELIST_SUBSTATE_HANDLE_INPUT;
     }
-    if (wk->param->forceExit == 1) {
-        wk->subState = 2;
-        wk->input = 1;
+    if (wk->param->forceExit == TRUE) {
+        wk->subState = POKELIST_SUBSTATE_HANDLE_INPUT;
+        wk->input = POKELIST_INPUT_CANCEL;
     }
 }
 
 // A was pressed
-static void func_ov165_0219c820(PokeListWork *wk) {
-    if (wk->cursorPos == 6) {
-        wk->input = 0;
-    } else if (wk->cursorPos == 7) {
-        wk->input = 1;
-    } else if (wk->unk28 == FALSE && PokeListPlate_IsEgg(wk, wk->plates[wk->cursorPos]) == TRUE) {
+static void PokeList_HandleConfirmKey(PokeListWork *wk) {
+    if (wk->cursorPos == POKELIST_CURSOR_CONFIRM) {
+        wk->input = POKELIST_INPUT_CONFIRM;
+    } else if (wk->cursorPos == POKELIST_CURSOR_CANCEL) {
+        wk->input = POKELIST_INPUT_CANCEL;
+    } else if (wk->allowEggs == FALSE && PokeListPlate_IsEgg(wk, wk->plates[wk->cursorPos]) == TRUE) {
         GFL_SndSEPlay(SEQ_SE_BEEP);
-    } else if (wk->state == 22 && wk->cursorPos == wk->selectPos) {
+    } else if (wk->state == POKELIST_STATE_SELECT_ITEM_SWAP && wk->cursorPos == wk->selectPos) {
         GFL_SndSEPlay(SEQ_SE_BEEP);
     } else {
-        wk->input = 3;
+        wk->input = POKELIST_INPUT_SELECT_POKEMON;
     }
 }
 
@@ -1792,7 +1815,7 @@ static void PokeList_ReadCursorKeys(PokeListWork *wk) {
     if (wk->touch == TRUE && ClActor_IsVisible(wk->cursor) == FALSE) {
         if (trg != 0 && !(trg & (PAD_BUTTON_B | PAD_BUTTON_X))) {
             if (wk->cursorPos <= 5) {
-                func_ov165_0219cdd8(wk, wk->cursorPos);
+                PokeList_ShowCursor(wk, wk->cursorPos);
                 PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], TRUE);
             } else {
                 PokeListMenu_SetButtonActive(wk->buttons[(u8)(wk->cursorPos - 6)], TRUE);
@@ -1816,7 +1839,7 @@ static void PokeList_ReadCursorKeys(PokeListWork *wk) {
         } else if (rep & PAD_KEY_RIGHT) {
             dir = 1;
         } else if (trg & PAD_BUTTON_A) {
-            func_ov165_0219c820(wk);
+            PokeList_HandleConfirmKey(wk);
         }
         if (dir != 0) {
             s32 prevPos = wk->cursorPos;
@@ -1824,24 +1847,25 @@ static void PokeList_ReadCursorKeys(PokeListWork *wk) {
             s32 last;
 
             if (PokeList_IsBattle(wk) == TRUE) {
-                if (func_ov165_0219da74(wk) == TRUE) {
-                    last = 7;
+                if (PokeList_HasBattleCancelButton(wk) == TRUE) {
+                    last = POKELIST_CURSOR_CANCEL;
                 } else {
-                    last = 6;
+                    last = POKELIST_CURSOR_CONFIRM;
                 }
             } else {
                 last = 5;
             }
-            if ((wk->cursorPos == 6 || wk->cursorPos == 7) && (rep & (PAD_KEY_UP | PAD_KEY_DOWN))) {
+            if ((wk->cursorPos == POKELIST_CURSOR_CONFIRM || wk->cursorPos == POKELIST_CURSOR_CANCEL) &&
+                (rep & (PAD_KEY_UP | PAD_KEY_DOWN))) {
                 u8 count = PokeParty_GetPkmCount(wk->param->party);
 
                 if (rep & PAD_KEY_UP) {
-                    if (wk->cursorPos == 7 || func_ov165_0219da74(wk) == FALSE) {
+                    if (wk->cursorPos == POKELIST_CURSOR_CANCEL || PokeList_HasBattleCancelButton(wk) == FALSE) {
                         wk->cursorPos = sUpFromButtons[count - 1];
                     } else {
                         wk->cursorPos = sUpFromButtonsTwo[count - 1];
                     }
-                } else if (wk->cursorPos == 7 || func_ov165_0219da74(wk) == FALSE) {
+                } else if (wk->cursorPos == POKELIST_CURSOR_CANCEL || PokeList_HasBattleCancelButton(wk) == FALSE) {
                     if (count > 1) {
                         wk->cursorPos = 1;
                     } else {
@@ -1855,13 +1879,13 @@ static void PokeList_ReadCursorKeys(PokeListWork *wk) {
                     s32 next = wk->cursorPos + dir;
 
                     if (next > last) {
-                        if (last == 6 && dir > 1 && prevPos != 6) {
+                        if (last == POKELIST_CURSOR_CONFIRM && dir > 1 && prevPos != POKELIST_CURSOR_CONFIRM) {
                             wk->cursorPos = last;
                         } else {
                             wk->cursorPos = next - (last + 1);
                         }
                     } else if (next < 0) {
-                        if (last == 6 && dir < 1) {
+                        if (last == POKELIST_CURSOR_CONFIRM && dir < 1) {
                             wk->cursorPos = last;
                         } else {
                             wk->cursorPos = wk->cursorPos + (last + 1) + dir;
@@ -1876,7 +1900,7 @@ static void PokeList_ReadCursorKeys(PokeListWork *wk) {
             }
             if (prevPos != wk->cursorPos) {
                 if (wk->cursorPos <= 5) {
-                    func_ov165_0219cdd8(wk, wk->cursorPos);
+                    PokeList_ShowCursor(wk, wk->cursorPos);
                     PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], TRUE);
                 } else {
                     PokeListMenu_SetButtonActive(wk->buttons[(u8)(wk->cursorPos - 6)], TRUE);
@@ -1893,23 +1917,24 @@ static void PokeList_ReadCursorKeys(PokeListWork *wk) {
         }
     }
     if (trg & PAD_BUTTON_B) {
-        if ((PokeList_IsBattle(wk) == FALSE || func_ov165_0219da74(wk) == TRUE) && PokeList_HasBackButton(wk) == TRUE) {
-            wk->input = 1;
-            wk->pressedButton = wk->exitButton;
-            ClActor_SetSequence(wk->pressedButton, 9);
+        if ((PokeList_IsBattle(wk) == FALSE || PokeList_HasBattleCancelButton(wk) == TRUE) &&
+            PokeList_HasBackButton(wk) == TRUE) {
+            wk->input = POKELIST_INPUT_CANCEL;
+            wk->pressedButton = wk->backButton;
+            ClActor_SetSequence(wk->pressedButton, TOUCHBAR_ANM_BACK_PRESS);
             wk->touch = FALSE;
         }
     } else if (trg & PAD_BUTTON_X) {
-        if (wk->showShortcutButtons == TRUE) {
-            wk->input = 2;
-            wk->pressedButton = wk->shortcutButton;
-            ClActor_SetSequence(wk->pressedButton, 8);
+        if (wk->showCloseAndShortcut == TRUE) {
+            wk->input = POKELIST_INPUT_CLOSE;
+            wk->pressedButton = wk->closeButton;
+            ClActor_SetSequence(wk->pressedButton, TOUCHBAR_ANM_CLOSE_PRESS);
             wk->touch = FALSE;
         }
     } else if (trg & PAD_BUTTON_Y) {
-        if (wk->showShortcutButtons == TRUE) {
+        if (wk->showCloseAndShortcut == TRUE) {
             wk->param->keyItemRegistered ^= 1;
-            ClActor_SetSequence(wk->shortcutMark, wk->param->keyItemRegistered + 6);
+            ClActor_SetSequence(wk->shortcutMark, wk->param->keyItemRegistered + TOUCHBAR_ANM_SHORTCUT_OFF);
             GFL_SndSEPlay(SEQ_SE_SYS_07);
             wk->touch = FALSE;
         }
@@ -1934,14 +1959,14 @@ static void PokeList_HandleTouch(PokeListWork *wk) {
     plateRects[count].top = TOUCH_RECT_END;
     hit = GFL_HIDGetTouchPressedRect(plateRects);
     if (hit != TOUCH_RECT_NONE) {
-        if (wk->unk28 == FALSE && hit <= 5 && PokeListPlate_IsEgg(wk, wk->plates[hit]) == TRUE) {
+        if (wk->allowEggs == FALSE && hit <= 5 && PokeListPlate_IsEgg(wk, wk->plates[hit]) == TRUE) {
             GFL_SndSEPlay(SEQ_SE_BEEP);
-        } else if (wk->state == 22 && hit <= 5 && hit == wk->selectPos) {
+        } else if (wk->state == POKELIST_STATE_SELECT_ITEM_SWAP && hit <= 5 && hit == wk->selectPos) {
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else {
             s32 prevPos;
 
-            wk->input = 3;
+            wk->input = POKELIST_INPUT_SELECT_POKEMON;
             prevPos = wk->cursorPos;
             wk->cursorPos = slots[hit];
             if (prevPos <= 5) {
@@ -1968,7 +1993,7 @@ static void PokeList_HandleTouch(PokeListWork *wk) {
         };
 
         if (PokeList_IsBattle(wk) == TRUE) {
-            if (func_ov165_0219da74(wk) == TRUE) {
+            if (PokeList_HasBattleCancelButton(wk) == TRUE) {
                 buttonRects[1].top = 168;
                 buttonRects[1].bottom = 192;
                 buttonRects[1].left = 176;
@@ -1990,7 +2015,7 @@ static void PokeList_HandleTouch(PokeListWork *wk) {
                 buttonRects[1].left = 224;
                 buttonRects[1].right = 248;
             }
-            if (wk->showShortcutButtons == TRUE) {
+            if (wk->showCloseAndShortcut == TRUE) {
                 buttonRects[2].top = 168;
                 buttonRects[2].bottom = 192;
                 buttonRects[2].left = 208;
@@ -2001,12 +2026,12 @@ static void PokeList_HandleTouch(PokeListWork *wk) {
         if (hit != TOUCH_RECT_NONE) {
             wk->input = hit;
             wk->touch = TRUE;
-            if (hit == 1) {
-                ClActor_SetSequence(wk->exitButton, 9);
+            if (hit == POKELIST_INPUT_CANCEL) {
+                ClActor_SetSequence(wk->backButton, TOUCHBAR_ANM_BACK_PRESS);
             }
         }
     }
-    if (hit == TOUCH_RECT_NONE && wk->showShortcutButtons == TRUE) {
+    if (hit == TOUCH_RECT_NONE && wk->showCloseAndShortcut == TRUE) {
         TouchRect markRects[2] = {
             { 0, 0, 0, 0 },
             { TOUCH_RECT_END, 0, 0, 0 },
@@ -2018,7 +2043,7 @@ static void PokeList_HandleTouch(PokeListWork *wk) {
         markRects[0].right = 208;
         if (GFL_HIDGetTouchPressedRect(markRects) != TOUCH_RECT_NONE) {
             wk->param->keyItemRegistered ^= 1;
-            ClActor_SetSequence(wk->shortcutMark, wk->param->keyItemRegistered + 6);
+            ClActor_SetSequence(wk->shortcutMark, wk->param->keyItemRegistered + TOUCHBAR_ANM_SHORTCUT_OFF);
             GFL_SndSEPlay(SEQ_SE_SYS_07);
             wk->touch = TRUE;
         }
@@ -2026,7 +2051,7 @@ static void PokeList_HandleTouch(PokeListWork *wk) {
 }
 
 // Shows the cursor on a plate
-static void func_ov165_0219cdd8(PokeListWork *wk, s32 pos) {
+static void PokeList_ShowCursor(PokeListWork *wk, s32 pos) {
     ClActorPos actorPos;
 
     PokeListPlate_GetCursorPos(wk, wk->plates[pos], &actorPos);
@@ -2034,14 +2059,14 @@ static void func_ov165_0219cdd8(PokeListWork *wk, s32 pos) {
     ClActor_SetVisible(wk->cursor, TRUE);
     ClActor_SetBgPriority(wk->cursor, 3);
     if (pos == 0) {
-        ClActor_SetSequence(wk->cursor, 0);
+        ClActor_SetSequence(wk->cursor, CURSOR_ANM_FIRST);
     } else {
-        ClActor_SetSequence(wk->cursor, 1);
+        ClActor_SetSequence(wk->cursor, CURSOR_ANM_OTHER);
     }
 }
 
 // Shows the second cursor on a plate, which marks the Pokémon picked first
-static void func_ov165_0219ce34(PokeListWork *wk, s32 pos) {
+static void PokeList_ShowSubCursor(PokeListWork *wk, s32 pos) {
     ClActorPos actorPos;
 
     PokeListPlate_GetCursorPos(wk, wk->plates[pos], &actorPos);
@@ -2049,43 +2074,43 @@ static void func_ov165_0219ce34(PokeListWork *wk, s32 pos) {
     ClActor_SetVisible(wk->subCursor, TRUE);
     ClActor_SetBgPriority(wk->subCursor, 2);
     if (pos == 0) {
-        ClActor_SetSequence(wk->subCursor, 2);
+        ClActor_SetSequence(wk->subCursor, CURSOR_ANM_SUB_FIRST);
     } else {
-        ClActor_SetSequence(wk->subCursor, 3);
+        ClActor_SetSequence(wk->subCursor, CURSOR_ANM_SUB_OTHER);
     }
 }
 
 static void PokeList_UpdateMenu(PokeListWork *wk) {
     switch (wk->subState) {
-    case 0:
-        func_ov165_0219ceec(wk);
-        wk->subState = 1;
+    case POKELIST_SUBSTATE_INIT:
+        PokeList_BeginMenu(wk);
+        wk->subState = POKELIST_SUBSTATE_READ_INPUT;
         break;
-    case 1: {
+    case POKELIST_SUBSTATE_READ_INPUT: {
         u32 item;
 
         PokeListMenu_Update(wk, wk->menu);
         item = PokeListMenu_GetPicked(wk, wk->menu);
-        if (item != 0x19) {
+        if (item != POKELIST_MENU_NONE) {
             wk->menuItem = item;
-            wk->subState = 2;
+            wk->subState = POKELIST_SUBSTATE_HANDLE_INPUT;
         }
-        if (wk->param->forceExit == 1) {
-            wk->subState = 2;
+        if (wk->param->forceExit == TRUE) {
+            wk->subState = POKELIST_SUBSTATE_HANDLE_INPUT;
         }
         break;
     }
-    case 2:
-        func_ov165_0219cf70(wk);
+    case POKELIST_SUBSTATE_HANDLE_INPUT:
+        PokeList_EndMenu(wk);
         PokeList_DoMenuItem(wk);
         break;
     }
 }
 
 // Dims the screen but the menu, for the menu to open
-static void func_ov165_0219ceec(PokeListWork *wk) {
-    wk->state = 6;
-    wk->subState = 0;
+static void PokeList_BeginMenu(PokeListWork *wk) {
+    wk->state = POKELIST_STATE_MENU;
+    wk->subState = POKELIST_SUBSTATE_INIT;
     G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2 | GX_PLANEMASK_BG3 | GX_PLANEMASK_OBJ,
                             8);
     G2_SetWnd0Position(224, 168, 248, 192);
@@ -2094,22 +2119,22 @@ static void func_ov165_0219ceec(PokeListWork *wk) {
     G2_SetWndOutsidePlane(GX_PLANEMASK_BG0 | GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2 | GX_PLANEMASK_BG3 | GX_PLANEMASK_OBJ,
                           TRUE);
     wk->glowPaused = TRUE;
-    ClActor_SetVisible(wk->shortcutButton, FALSE);
-    ClActor_SetVisible(wk->exitButton, FALSE);
+    ClActor_SetVisible(wk->closeButton, FALSE);
+    ClActor_SetVisible(wk->backButton, FALSE);
     ClActor_SetVisible(wk->shortcutMark, FALSE);
     GFL_BGSysQueueScrLoad(0);
     GCTX_HIDSetUsingTouch(wk->touch);
 }
 
-static void func_ov165_0219cf70(PokeListWork *wk) {
+static void PokeList_EndMenu(PokeListWork *wk) {
     PokeListMenu_Close(wk, wk->menu);
     PokeListMessage_Close(wk, wk->message);
     if (PokeList_IsBattle(wk) == TRUE || PokeList_HasBackButton(wk) == FALSE) {
-        ClActor_SetVisible(wk->exitButton, FALSE);
+        ClActor_SetVisible(wk->backButton, FALSE);
     } else {
-        ClActor_SetVisible(wk->exitButton, TRUE);
+        ClActor_SetVisible(wk->backButton, TRUE);
     }
-    if (wk->menuItem != 4 && wk->menuItem != 5) {
+    if (wk->menuItem != POKELIST_MENU_ITEM && wk->menuItem != POKELIST_MENU_MAIL) {
         G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_PLANEMASK_BG2 | GX_PLANEMASK_OBJ, GX_PLANEMASK_BG3, 16, 10);
         wk->glowPaused = FALSE;
     }
@@ -2119,40 +2144,40 @@ static void func_ov165_0219cf70(PokeListWork *wk) {
 
 // Does what the menu item picked does
 static void PokeList_DoMenuItem(PokeListWork *wk) {
-    if (wk->param->forceExit == 1) {
-        wk->state = 19;
+    if (wk->param->forceExit == TRUE) {
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         return;
     }
     switch (wk->menuItem) {
-    case 6:
-        func_ov165_0219cdd8(wk, wk->cursorPos);
+    case POKELIST_MENU_BACK:
+        PokeList_ShowCursor(wk, wk->cursorPos);
         wk->pkm = NULL;
-        wk->state = 2;
+        wk->state = POKELIST_STATE_SELECT;
         PokeList_ShowModeMessage(wk);
         break;
-    case 3:
-        func_ov165_0219cdd8(wk, wk->cursorPos);
-        func_ov165_0219ce34(wk, wk->cursorPos);
+    case POKELIST_MENU_SWITCH:
+        PokeList_ShowCursor(wk, wk->cursorPos);
+        PokeList_ShowSubCursor(wk, wk->cursorPos);
         wk->selectPos = wk->cursorPos;
-        wk->state = 3;
+        wk->state = POKELIST_STATE_SELECT_SWAP;
         wk->pkm = NULL;
-        wk->showShortcutButtons = FALSE;
+        wk->showCloseAndShortcut = FALSE;
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, 0xb);
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_MoveWhere);
         PokeList_RefreshCursor(wk);
         break;
-    case 4: {
+    case POKELIST_MENU_ITEM: {
         PartyPkm *pkm = PokeParty_GetPkm(wk->param->party, wk->cursorPos);
         u16 item = PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
         u16 species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
         u32 itemMenus[2][5] = {
-            { 9, 10, 22, 6, 16 },
-            { 9, 10, 6, 16 },
+            { POKELIST_MENU_GIVE, POKELIST_MENU_TAKE, POKELIST_MENU_MOVE_ITEM, POKELIST_MENU_BACK, POKELIST_MENU_END },
+            { POKELIST_MENU_GIVE, POKELIST_MENU_TAKE, POKELIST_MENU_BACK, POKELIST_MENU_END },
         };
 
-        func_ov165_0219ceec(wk);
+        PokeList_BeginMenu(wk);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, 0x14);
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_WhatItem);
         if (item == ITEM_GRISEOUS_ORB && species == SPECIES_GIRATINA) {
             PokeListMenu_Open(wk, wk->menu, itemMenus[1]);
         } else {
@@ -2161,58 +2186,60 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
         GFL_BGSysLoadScr(0);
         break;
     }
-    case 5: {
-        u32 mailMenu[5] = { 12, 13, 23, 6, 16 };
+    case POKELIST_MENU_MAIL: {
+        u32 mailMenu[5] = { POKELIST_MENU_READ_MAIL, POKELIST_MENU_TAKE_MAIL, POKELIST_MENU_MOVE_MAIL,
+                            POKELIST_MENU_BACK, POKELIST_MENU_END };
 
-        func_ov165_0219ceec(wk);
+        PokeList_BeginMenu(wk);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, 0x14);
+        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_WhatItem);
         PokeListMenu_Open(wk, wk->menu, mailMenu);
         GFL_BGSysLoadScr(0);
         break;
     }
-    case 0:
-        wk->state = 19;
+    case POKELIST_MENU_SUMMARY:
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         wk->param->index = wk->cursorPos;
-        wk->param->result = 1;
+        wk->param->result = POKELIST_RESULT_SUMMARY;
         break;
-    case 20: {
+    case POKELIST_MENU_ENTER: {
         Regulation *regulation = wk->param->regulation;
         BOOL full = FALSE;
         u32 result = PokeListPlate_CheckEntry(wk, wk->plates[wk->cursorPos]);
 
-        if (result == 0) {
+        if (result == POKELIST_ENTRY_CHECK_ALLOWED) {
             PokeListPlate_SetEntry(wk, wk->plates[wk->cursorPos], wk->enteredCount);
             wk->enteredCount++;
             PokeList_ShowModeMessage(wk);
             if (wk->enteredCount == regulation->maxCount) {
                 full = TRUE;
             }
-            wk->state = 2;
-        } else if (result == 2) {
-            PokeList_ShowMessage(wk, 0x9c, TRUE, PokeList_MessageDoneSelect);
+            wk->state = POKELIST_STATE_SELECT;
+        } else if (result == POKELIST_ENTRY_CHECK_SAME_SPECIES) {
+            PokeList_ShowMessage(wk, BtlMain11_Text_IdenticalPokemonNotPermitted, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
-        } else if (result == 3) {
-            PokeList_ShowMessage(wk, 0x9d, TRUE, PokeList_MessageDoneSelect);
+        } else if (result == POKELIST_ENTRY_CHECK_SAME_ITEM) {
+            PokeList_ShowMessage(wk, BtlMain11_Text_SomePokemonHoldingIdentical, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
-        } else if (result == 4) {
-            PokeList_ShowMessage(wk, regulation->maxCount + 0x66, TRUE, PokeList_MessageDoneSelect);
+        } else if (result == POKELIST_ENTRY_CHECK_FULL) {
+            PokeList_ShowMessage(wk, regulation->maxCount + BtlMain11_Text_SixPokemonNeeded, TRUE,
+                                 PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         }
         wk->pkm = NULL;
         if (full == TRUE) {
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
-            wk->cursorPos = 6;
+            wk->cursorPos = POKELIST_CURSOR_CONFIRM;
             if (wk->touch == FALSE) {
                 PokeListMenu_SetButtonActive(wk->buttons[(u8)(wk->cursorPos - 6)], TRUE);
                 ClActor_SetVisible(wk->cursor, FALSE);
             }
         } else if (wk->touch == FALSE) {
-            func_ov165_0219cdd8(wk, wk->cursorPos);
+            PokeList_ShowCursor(wk, wk->cursorPos);
         }
         break;
     }
-    case 21: {
+    case POKELIST_MENU_WITHDRAW: {
         int entry = PokeListPlate_GetEntry(wk->plates[wk->cursorPos]);
         u8 i;
 
@@ -2223,17 +2250,17 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
                 PokeListPlate_SetEntry(wk, wk->plates[i], other - 1);
             }
         }
-        PokeListPlate_SetEntry(wk, wk->plates[wk->cursorPos], 6);
+        PokeListPlate_SetEntry(wk, wk->plates[wk->cursorPos], POKELIST_ENTRY_ABLE);
         wk->enteredCount--;
         if (wk->touch == FALSE) {
-            func_ov165_0219cdd8(wk, wk->cursorPos);
+            PokeList_ShowCursor(wk, wk->cursorPos);
         }
         wk->pkm = NULL;
-        wk->state = 2;
+        wk->state = POKELIST_STATE_SELECT;
         PokeList_ShowModeMessage(wk);
         break;
     }
-    case 10: {
+    case POKELIST_MENU_TAKE: {
         u32 item = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
 
         PokeList_UpdateArceusForm(wk, wk->pkm, 0);
@@ -2241,10 +2268,10 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
         if (item == 0) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
-            PokeList_ShowMessage(wk, 0x3e, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_IsntHoldingAnything, TRUE, PokeList_MessageDoneSelect);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else if (PokeList_GetBagCount(wk, item) == 999) {
-            PokeList_ShowMessage(wk, 0x40, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
         } else {
             PokeList_SetHeldItem(wk, wk->pkm, 0);
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
@@ -2253,17 +2280,17 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
             PokeListMessage_SetItemName(wk, wk->message, 1, item);
             if (PokeListDemo_CanBecomeAltered(wk, wk->pkm) == TRUE) {
                 PokeListDemo_SetAltered(wk, wk->pkm);
-                PokeList_ShowMessage(wk, 0x3f, TRUE, PokeList_MessageDoneDemo);
-                wk->demo = 2;
+                PokeList_ShowMessage(wk, BtlMain11_Text_ReceivedFrom, TRUE, PokeList_MessageDoneDemo);
+                wk->demo = POKELIST_DEMO_GIRATINA_ALTERED;
             } else {
-                PokeList_ShowMessage(wk, 0x3f, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, BtlMain11_Text_ReceivedFrom, TRUE, PokeList_MessageDoneSelect);
             }
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
         break;
     }
-    case 22:
-    case 23: {
+    case POKELIST_MENU_MOVE_ITEM:
+    case POKELIST_MENU_MOVE_MAIL: {
         u32 item = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
 
         PokeList_UpdateArceusForm(wk, wk->pkm, 0);
@@ -2272,58 +2299,60 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
         if (item == 0) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
-            PokeList_ShowMessage(wk, 0x3e, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_IsntHoldingAnything, TRUE, PokeList_MessageDoneSelect);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetItemName(wk, wk->message, 1, item);
-            func_ov165_0219cdd8(wk, wk->cursorPos);
-            func_ov165_0219ce34(wk, wk->cursorPos);
+            PokeList_ShowCursor(wk, wk->cursorPos);
+            PokeList_ShowSubCursor(wk, wk->cursorPos);
             wk->selectPos = wk->cursorPos;
-            wk->state = 22;
+            wk->state = POKELIST_STATE_SELECT_ITEM_SWAP;
             wk->pkm = NULL;
-            wk->showShortcutButtons = FALSE;
+            wk->showCloseAndShortcut = FALSE;
             PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-            PokeListMessage_Print(wk, wk->message, 0xb);
+            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_MoveWhere);
             PokeList_RefreshCursor(wk);
         }
         break;
     }
-    case 11:
-        wk->state = 19;
+    case POKELIST_MENU_CHOOSE:
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         wk->param->index = wk->cursorPos;
-        wk->param->result = 0;
+        wk->param->result = POKELIST_RESULT_DONE;
         break;
-    case 9:
-        wk->state = 19;
+    case POKELIST_MENU_GIVE:
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         wk->param->index = wk->cursorPos;
-        wk->param->result = 3;
+        wk->param->result = POKELIST_RESULT_GIVE_ITEM;
         break;
-    case 12:
-        wk->state = 19;
+    case POKELIST_MENU_READ_MAIL:
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         wk->param->index = wk->cursorPos;
-        wk->param->result = 7;
+        wk->param->result = POKELIST_RESULT_READ_MAIL;
         break;
-    case 13:
-        PokeList_ShowMessage(wk, 0x18, FALSE, PokeList_AskTakeMail);
+    case POKELIST_MENU_TAKE_MAIL:
+        PokeList_ShowMessage(wk, BtlMain11_Text_SendRemovedMailPc, FALSE, PokeList_AskTakeMail);
         break;
-    case 7:
-        wk->state = 19;
+    case POKELIST_MENU_SELECT:
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
         wk->param->index = wk->cursorPos;
-        wk->param->result = 0;
+        wk->param->result = POKELIST_RESULT_DONE;
         break;
-    case 16:
-    case 17:
-    case 18:
-    case 19:
-        if (wk->param->mode == 5) {
-            if (StatusRcv_CanUseItem(wk->pkm, wk->param->item, wk->menuItem - 16, wk->heapId) == TRUE) {
-                u32 move = PokeParty_GetParam(wk->pkm, PKM_PARAM_MOVE1 + wk->menuItem - 16, NULL);
+    case POKELIST_MENU_MOVE1:
+    case POKELIST_MENU_MOVE2:
+    case POKELIST_MENU_MOVE3:
+    case POKELIST_MENU_MOVE4:
+        if (wk->param->mode == POKELIST_MODE_USE_ITEM) {
+            if (StatusRcv_CanUseItem(wk->pkm, wk->param->item, wk->menuItem - POKELIST_MENU_MOVE1, wk->heapId) ==
+                TRUE) {
+                u32 move = PokeParty_GetParam(wk->pkm, PKM_PARAM_MOVE1 + wk->menuItem - POKELIST_MENU_MOVE1, NULL);
 
                 GFL_BGSysLoadScr(0);
                 PokeList_ShowItemResult(wk, move);
-                StatusRcv_UseItem(wk->pkm, wk->param->item, wk->menuItem - 16, wk->param->zoneId, wk->heapId);
+                StatusRcv_UseItem(wk->pkm, wk->param->item, wk->menuItem - POKELIST_MENU_MOVE1, wk->param->zoneId,
+                                  wk->heapId);
                 PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
                 PokeList_SubFromBag(wk, wk->param->item);
                 GFL_SndSEPlay(SEQ_SE_RECOVERY);
@@ -2331,59 +2360,59 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
                 PokeList_ShowItemUseless(wk);
             }
         } else {
-            u32 hm = PokeList_GetHMResult(wk->pkm, wk->menuItem - 16);
+            u32 hm = PokeList_GetHMResult(wk->pkm, wk->menuItem - POKELIST_MENU_MOVE1);
 
-            if (hm == 22 || hm == 23) {
+            if (hm == POKELIST_RESULT_MILK_DRINK || hm == POKELIST_RESULT_SOFTBOILED) {
                 if (IsZoneNormal(wk->param->zoneId) == FALSE) {
-                    PokeList_ShowMessage(wk, 0x51, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, BtlMain11_Text_CantUseHere, TRUE, PokeList_MessageDoneSelect);
                 } else {
                     u32 maxHp = PokeParty_GetParam(wk->pkm, PKM_PARAM_MAX_HP, NULL);
                     u32 hp = PokeParty_GetParam(wk->pkm, PKM_PARAM_HP, NULL);
 
                     if (hp > maxHp / 5) {
-                        func_ov165_0219cdd8(wk, wk->cursorPos);
-                        func_ov165_0219ce34(wk, wk->cursorPos);
+                        PokeList_ShowCursor(wk, wk->cursorPos);
+                        PokeList_ShowSubCursor(wk, wk->cursorPos);
                         wk->selectPos2 = wk->cursorPos;
                         wk->pkm = NULL;
-                        wk->state = 4;
-                        wk->showShortcutButtons = FALSE;
+                        wk->state = POKELIST_STATE_SELECT_HP_SHARE;
+                        wk->showCloseAndShortcut = FALSE;
                         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-                        PokeListMessage_Print(wk, wk->message, 0x11);
+                        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_UseWhichPokemon_2);
                         PokeList_RefreshCursor(wk);
                     } else {
-                        PokeList_ShowMessage(wk, 0x75, TRUE, PokeList_MessageDoneSelect);
+                        PokeList_ShowMessage(wk, BtlMain11_Text_NotEnoughHp, TRUE, PokeList_MessageDoneSelect);
                     }
                 }
             } else {
-                switch (CheckAllowHMEvent(hm - 11, &wk->param->action)) {
-                case 0:
-                    wk->state = 19;
+                switch (CheckAllowHMEvent(hm - POKELIST_RESULT_CUT, &wk->param->action)) {
+                case POKELIST_HM_CHECK_ALLOWED:
+                    wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
                     wk->param->index = wk->cursorPos;
                     wk->param->result = hm;
                     break;
-                case 1:
-                    PokeList_ShowMessage(wk, 0x51, TRUE, PokeList_MessageDoneSelect);
+                case POKELIST_HM_CHECK_UNAVAILABLE:
+                    PokeList_ShowMessage(wk, BtlMain11_Text_CantUseHere, TRUE, PokeList_MessageDoneSelect);
                     break;
-                case 2:
-                    PokeList_ShowMessage(wk, 0x39, TRUE, PokeList_MessageDoneSelect);
+                case POKELIST_HM_CHECK_BADGE_REQUIRED:
+                    PokeList_ShowMessage(wk, BtlMain11_Text_CantUsedUntilNew, TRUE, PokeList_MessageDoneSelect);
                     break;
-                case 3:
+                case POKELIST_HM_CHECK_WITH_PARTNER:
                     PokeListMessage_CreateWordSet(wk, wk->message);
-                    PokeListMessage_SetMoveName(wk, wk->message, 0, *(sHMMoves + hm - 11));
-                    PokeList_ShowMessage(wk, 0xab, TRUE, PokeList_MessageDoneSelect);
+                    PokeListMessage_SetMoveName(wk, wk->message, 0, *(sHMMoves + hm - POKELIST_RESULT_CUT));
+                    PokeList_ShowMessage(wk, BtlMain11_Text_CannotUsedWhenSomeone, TRUE, PokeList_MessageDoneSelect);
                     PokeListMessage_FreeWordSet(wk, wk->message);
                     break;
-                case 4:
-                    PokeList_ShowMessage(wk, 0x50, TRUE, PokeList_MessageDoneSelect);
+                case POKELIST_HM_CHECK_ALREADY_SURFING:
+                    PokeList_ShowMessage(wk, BtlMain11_Text_YoureAlreadySurfing, TRUE, PokeList_MessageDoneSelect);
                     break;
                 }
             }
         }
         break;
     default:
-        func_ov165_0219cdd8(wk, wk->cursorPos);
+        PokeList_ShowCursor(wk, wk->cursorPos);
         wk->pkm = NULL;
-        wk->state = 2;
+        wk->state = POKELIST_STATE_SELECT;
         PokeList_ShowModeMessage(wk);
         break;
     }
@@ -2403,13 +2432,13 @@ static void PokeList_WaitMessage(PokeListWork *wk) {
 }
 
 void PokeList_ShowMessage(PokeListWork *wk, u32 msgId, BOOL waitInput, void (*doneFunc)(PokeListWork *wk)) {
-    wk->state = 7;
+    wk->state = POKELIST_STATE_MESSAGE;
     wk->msgWaitInput = waitInput;
     wk->msgDoneFunc = doneFunc;
     PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_WIDE);
     PokeListMessage_PrintStream(wk, wk->message, msgId, waitInput);
-    ClActor_SetVisible(wk->exitButton, FALSE);
-    ClActor_SetVisible(wk->shortcutButton, FALSE);
+    ClActor_SetVisible(wk->backButton, FALSE);
+    ClActor_SetVisible(wk->closeButton, FALSE);
     ClActor_SetVisible(wk->shortcutMark, FALSE);
 }
 
@@ -2418,14 +2447,14 @@ static void PokeList_UpdateSubMenu(PokeListWork *wk) {
 
     PokeListMenu_Update(wk, wk->menu);
     item = PokeListMenu_GetPicked(wk, wk->menu);
-    if (item != 0x19) {
+    if (item != POKELIST_MENU_NONE) {
         wk->menuFunc(wk, item);
         PokeListMenu_Close(wk, wk->menu);
     }
 }
 
 static void PokeList_OpenSubMenu(PokeListWork *wk, void (*func)(PokeListWork *wk, u32 item)) {
-    wk->state = 9;
+    wk->state = POKELIST_STATE_SUBMENU;
     wk->menuFunc = func;
     PokeListMenu_OpenYesNo(wk, wk->menu);
 }
@@ -2433,29 +2462,29 @@ static void PokeList_OpenSubMenu(PokeListWork *wk, void (*func)(PokeListWork *wk
 // Slides the plates of the two Pokémon being swapped out, swaps them, and slides them back in
 static void PokeList_UpdateSwap(PokeListWork *wk) {
     switch (wk->subState) {
-    case 3:
-        PokeListPlate_ClearSlid(wk, wk->plates[wk->cursorPos], wk->unk108);
-        PokeListPlate_ClearSlid(wk, wk->plates[wk->selectPos], wk->unk108);
-        wk->unk108++;
-        PokeListPlate_DrawSlid(wk, wk->plates[wk->cursorPos], wk->unk108);
-        PokeListPlate_DrawSlid(wk, wk->plates[wk->selectPos], wk->unk108);
-        if (wk->unk108 >= 16) {
+    case POKELIST_SUBSTATE_SWAP_OUT:
+        PokeListPlate_ClearSlid(wk, wk->plates[wk->cursorPos], wk->swapStep);
+        PokeListPlate_ClearSlid(wk, wk->plates[wk->selectPos], wk->swapStep);
+        wk->swapStep++;
+        PokeListPlate_DrawSlid(wk, wk->plates[wk->cursorPos], wk->swapStep);
+        PokeListPlate_DrawSlid(wk, wk->plates[wk->selectPos], wk->swapStep);
+        if (wk->swapStep >= 16) {
             PokeParty_SwapPkms(wk->param->party, wk->cursorPos, wk->selectPos, wk->heapId);
             PokeListPlate_SetPkm(wk, wk->plates[wk->cursorPos], PokeParty_GetPkm(wk->param->party, wk->cursorPos),
-                                 wk->unk108);
+                                 wk->swapStep);
             PokeListPlate_SetPkm(wk, wk->plates[wk->selectPos], PokeParty_GetPkm(wk->param->party, wk->selectPos),
-                                 wk->unk108);
-            wk->subState = 4;
+                                 wk->swapStep);
+            wk->subState = POKELIST_SUBSTATE_SWAP_IN;
             GFL_SndSEPlay(SEQ_SE_SYS_03);
         }
         break;
-    case 4:
-        PokeListPlate_ClearSlid(wk, wk->plates[wk->cursorPos], wk->unk108);
-        PokeListPlate_ClearSlid(wk, wk->plates[wk->selectPos], wk->unk108);
-        wk->unk108--;
-        PokeListPlate_DrawSlid(wk, wk->plates[wk->cursorPos], wk->unk108);
-        PokeListPlate_DrawSlid(wk, wk->plates[wk->selectPos], wk->unk108);
-        if (wk->unk108 == 0) {
+    case POKELIST_SUBSTATE_SWAP_IN:
+        PokeListPlate_ClearSlid(wk, wk->plates[wk->cursorPos], wk->swapStep);
+        PokeListPlate_ClearSlid(wk, wk->plates[wk->selectPos], wk->swapStep);
+        wk->swapStep--;
+        PokeListPlate_DrawSlid(wk, wk->plates[wk->cursorPos], wk->swapStep);
+        PokeListPlate_DrawSlid(wk, wk->plates[wk->selectPos], wk->swapStep);
+        if (wk->swapStep == 0) {
             PokeList_EndSwap(wk);
         }
         break;
@@ -2463,9 +2492,9 @@ static void PokeList_UpdateSwap(PokeListWork *wk) {
 }
 
 static void PokeList_StartSwap(PokeListWork *wk) {
-    wk->state = 5;
-    wk->subState = 3;
-    wk->unk108 = 0;
+    wk->state = POKELIST_STATE_SWAP;
+    wk->subState = POKELIST_SUBSTATE_SWAP_OUT;
+    wk->swapStep = 0;
     GFL_SndSEPlay(SEQ_SE_SYS_02);
     ClActor_SetVisible(wk->cursor, FALSE);
     ClActor_SetVisible(wk->subCursor, FALSE);
@@ -2473,11 +2502,11 @@ static void PokeList_StartSwap(PokeListWork *wk) {
 
 static void PokeList_EndSwap(PokeListWork *wk) {
     wk->pkm = NULL;
-    wk->state = 2;
-    func_ov165_0219cdd8(wk, wk->cursorPos);
+    wk->state = POKELIST_STATE_SELECT;
+    PokeList_ShowCursor(wk, wk->cursorPos);
     PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
     ClActor_SetVisible(wk->subCursor, FALSE);
-    wk->selectPos = 9;
+    wk->selectPos = POKELIST_CURSOR_NONE;
     wk->param->index = wk->cursorPos;
     PokeList_ShowModeMessage(wk);
 }
@@ -2486,52 +2515,53 @@ static void PokeList_EndSwap(PokeListWork *wk) {
 u32 PokeList_GetHMResult(PartyPkm *pkm, u8 slot) {
     switch (PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + slot, NULL)) {
     case MOVE_CUT:
-        return 11;
+        return POKELIST_RESULT_CUT;
     case MOVE_FLY:
-        return 15;
+        return POKELIST_RESULT_FLY;
     case MOVE_SURF:
-        return 12;
+        return POKELIST_RESULT_SURF;
     case MOVE_STRENGTH:
-        return 14;
+        return POKELIST_RESULT_STRENGTH;
     case MOVE_WATERFALL:
-        return 13;
+        return POKELIST_RESULT_WATERFALL;
     case MOVE_FLASH:
-        return 16;
+        return POKELIST_RESULT_FLASH;
     case MOVE_TELEPORT:
-        return 17;
+        return POKELIST_RESULT_TELEPORT;
     case MOVE_DIG:
-        return 18;
+        return POKELIST_RESULT_DIG;
     case MOVE_SWEET_SCENT:
-        return 19;
+        return POKELIST_RESULT_SWEET_SCENT;
     case MOVE_CHATTER:
-        return 20;
+        return POKELIST_RESULT_CHATTER;
     case MOVE_DIVE:
-        return 21;
+        return POKELIST_RESULT_DIVE;
     case MOVE_MILK_DRINK:
-        return 22;
+        return POKELIST_RESULT_MILK_DRINK;
     case MOVE_SOFTBOILED:
-        return 23;
+        return POKELIST_RESULT_SOFTBOILED;
     }
-    return 0;
+    return POKELIST_RESULT_DONE;
 }
 
 BOOL PokeList_IsBattle(PokeListWork *wk) {
-    if (wk->param->mode == 1 || wk->param->mode == 22 || wk->param->mode == 23) {
+    if (wk->param->mode == POKELIST_MODE_BATTLE_TEAM || wk->param->mode == POKELIST_MODE_BATTLE_TEAM_CANCEL ||
+        wk->param->mode == POKELIST_MODE_BATTLE_INSTITUTE) {
         return TRUE;
     }
     return FALSE;
 }
 
 // Whether the cancel button is shown next to the battle's decide button
-static BOOL func_ov165_0219da74(PokeListWork *wk) {
-    if (wk->param->mode == 1) {
+static BOOL PokeList_HasBattleCancelButton(PokeListWork *wk) {
+    if (wk->param->mode == POKELIST_MODE_BATTLE_TEAM) {
         return FALSE;
     }
     return TRUE;
 }
 
 static BOOL PokeList_HasBackButton(PokeListWork *wk) {
-    if (wk->param->mode == 21) {
+    if (wk->param->mode == POKELIST_MODE_SELECT_EGG) {
         return FALSE;
     }
     return TRUE;
@@ -2544,7 +2574,7 @@ u32 PokeList_CheckLearnMove(PokeListWork *wk, PartyPkm *pkm, u8 pos) {
     BOOL hasEmptySlot = FALSE;
     u32 ret;
 
-    if (wk->wasMode18 == TRUE) {
+    if (wk->wasTutorMode == TRUE) {
         u32 moveA = wk->param->move;
         u32 moveB;
         u32 moveC;
@@ -2565,7 +2595,7 @@ u32 PokeList_CheckLearnMove(PokeListWork *wk, PartyPkm *pkm, u8 pos) {
             u32 move = PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + i, NULL);
 
             if (move == moveA || move == moveB || move == moveC) {
-                return 3;
+                return POKELIST_LEARN_KNOWN;
             }
             if (move == 0) {
                 hasEmptySlot = TRUE;
@@ -2573,17 +2603,17 @@ u32 PokeList_CheckLearnMove(PokeListWork *wk, PartyPkm *pkm, u8 pos) {
         }
         if (wk->param->learnable & (1 << pos)) {
             if (hasEmptySlot == TRUE) {
-                return 0;
+                return POKELIST_LEARN_EMPTY_SLOT;
             }
-            return 1;
+            return POKELIST_LEARN_REPLACE_MOVE;
         }
-        return 2;
+        return POKELIST_LEARN_UNABLE;
     }
     for (i = 0; i < 4; i++) {
         u32 move = PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + i, NULL);
 
         if (move == wk->param->move) {
-            return 3;
+            return POKELIST_LEARN_KNOWN;
         }
         if (move == 0) {
             hasEmptySlot = TRUE;
@@ -2592,24 +2622,24 @@ u32 PokeList_CheckLearnMove(PokeListWork *wk, PartyPkm *pkm, u8 pos) {
     if (wk->param->item != 0) {
         u8 tm = PML_ItemGetTMBitMask(wk->param->item);
 
-        if (tm != 0xff && canPkmLearnTM_Wrapper(pkm, tm) == TRUE) {
-            ret = 0;
+        if (tm != TM_INDEX_NONE && canPkmLearnTM_Wrapper(pkm, tm) == TRUE) {
+            ret = POKELIST_LEARN_EMPTY_SLOT;
             if (hasEmptySlot != TRUE) {
-                ret = 1;
+                ret = POKELIST_LEARN_REPLACE_MOVE;
             }
             return ret;
         }
-        return 2;
+        return POKELIST_LEARN_UNABLE;
     }
-    ret = 0;
+    ret = POKELIST_LEARN_EMPTY_SLOT;
     if (hasEmptySlot != TRUE) {
-        ret = 1;
+        ret = POKELIST_LEARN_REPLACE_MOVE;
     }
     return ret;
 }
 
 BOOL PokeList_CanEvolveWithItem(PokeListWork *wk, PartyPkm *pkm, u16 item) {
-    return CheckEvolveSpecies(wk->param->party, pkm, 3, item, wk->param->season, NULL, wk->heapId);
+    return CheckEvolveSpecies(wk->param->party, pkm, EVO_CHECK_ITEM, item, wk->param->season, NULL, wk->heapId);
 }
 
 void PokeList_PrintString(PokeListWork *wk, BmpWin *window, u16 msgId, u16 x, s16 y, u16 color) {
@@ -2670,75 +2700,75 @@ void PokeList_DrawWordSetStringSmall(PokeListWork *wk, BmpWin *window, WordSet *
 // Called once a message is read: back to picking a Pokémon
 void PokeList_MessageDoneSelect(PokeListWork *wk) {
     PokeListMessage_Close(wk, wk->message);
-    wk->state = 2;
+    wk->state = POKELIST_STATE_SELECT;
     PokeList_ShowModeMessage(wk);
 }
 
 // Called once a message is read: the list ends
 void PokeList_MessageDoneExit(PokeListWork *wk) {
-    wk->state = 19;
+    wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
 }
 
 // Called once a message about using an item is read: back to picking a Pokémon, if there are items left
 void PokeList_MessageDoneItem(PokeListWork *wk) {
     if (PokeList_GetBagCount(wk, wk->param->item)) {
         PokeListMessage_Close(wk, wk->message);
-        wk->state = 2;
+        wk->state = POKELIST_STATE_SELECT;
         PokeList_ShowModeMessage(wk);
     } else {
         PokeListMessage_Close(wk, wk->message);
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetItemName(wk, wk->message, 0, wk->param->item);
-        PokeList_ShowMessage(wk, 0xbf, TRUE, PokeList_MessageDoneExit);
+        PokeList_ShowMessage(wk, BtlMain11_Text_UsedLast, TRUE, PokeList_MessageDoneExit);
         PokeListMessage_FreeWordSet(wk, wk->message);
     }
 }
 
-// Asks whether to give up learning the move
-void PokeList_AskStopLearning(PokeListWork *wk) {
-    PokeList_OpenSubMenu(wk, PokeList_AnswerStopLearning);
+// Asks whether to replace an old move with the new one
+void PokeList_AskReplaceMove(PokeListWork *wk) {
+    PokeList_OpenSubMenu(wk, PokeList_AnswerReplaceMove);
 }
 
-static void PokeList_AnswerStopLearning(PokeListWork *wk, u32 item) {
+static void PokeList_AnswerReplaceMove(PokeListWork *wk, u32 item) {
     PokeListMessage_Close(wk, wk->message);
-    if (item == 14) {
-        if (wk->param->mode == 5 || wk->param->mode == 8) {
-            wk->param->result = 5;
+    if (item == POKELIST_MENU_YES) {
+        if (wk->param->mode == POKELIST_MODE_USE_ITEM || wk->param->mode == POKELIST_MODE_REPLACE_LEVEL_MOVE) {
+            wk->param->result = POKELIST_RESULT_REPLACE_LEVEL_MOVE;
         } else {
-            wk->param->result = 4;
+            wk->param->result = POKELIST_RESULT_REPLACE_TM_MOVE;
         }
-        PokeList_ShowMessage(wk, 0x28, TRUE, PokeList_MessageDoneExit);
+        PokeList_ShowMessage(wk, BtlMain11_Text_WhichMoveShouldForgotten, TRUE, PokeList_MessageDoneExit);
     } else {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-        PokeList_ShowMessage(wk, 0x24, FALSE, PokeList_AskForgetMove);
+        PokeList_ShowMessage(wk, BtlMain11_Text_GiveUpLearningMove, FALSE, PokeList_AskCancelLearning);
         PokeListMessage_FreeWordSet(wk, wk->message);
     }
 }
 
-// Asks whether to forget a move for the new one
-static void PokeList_AskForgetMove(PokeListWork *wk) {
-    PokeList_OpenSubMenu(wk, PokeList_AnswerForgetMove);
+// Asks whether to give up learning the new move
+static void PokeList_AskCancelLearning(PokeListWork *wk) {
+    PokeList_OpenSubMenu(wk, PokeList_AnswerCancelLearning);
 }
 
-static void PokeList_AnswerForgetMove(PokeListWork *wk, u32 item) {
+static void PokeList_AnswerCancelLearning(PokeListWork *wk, u32 item) {
     PokeListMessage_Close(wk, wk->message);
-    if (item == 14) {
-        wk->param->result = 10;
+    if (item == POKELIST_MENU_YES) {
+        wk->param->result = POKELIST_RESULT_ITEM_DONE;
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-        if (wk->param->mode == 5 || wk->param->mode == 8) {
-            PokeList_ShowMessage(wk, 0x27, TRUE, PokeList_LearnMessageDone);
+        if (wk->param->mode == POKELIST_MODE_USE_ITEM || wk->param->mode == POKELIST_MODE_REPLACE_LEVEL_MOVE) {
+            PokeList_ShowMessage(wk, BtlMain11_Text_DidNotLearn, TRUE, PokeList_LearnMessageDone);
         } else {
-            PokeList_ShowMessage(wk, 0x27, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, BtlMain11_Text_DidNotLearn, TRUE, PokeList_MessageDoneExit);
         }
         PokeListMessage_FreeWordSet(wk, wk->message);
     } else {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-        PokeList_ShowMessage(wk, 0x21, FALSE, PokeList_AskStopLearning);
+        PokeList_ShowMessage(wk, BtlMain11_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
         PokeListMessage_FreeWordSet(wk, wk->message);
     }
 }
@@ -2749,12 +2779,12 @@ static void PokeList_LearnInSlot(PokeListWork *wk) {
     PokeListMessage_CreateWordSet(wk, wk->message);
     PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
     PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-    if (wk->param->mode == 5 || wk->param->mode == 8) {
-        PokeList_ShowMessage(wk, 0x2a, TRUE, PokeList_LearnMessageDone);
+    if (wk->param->mode == POKELIST_MODE_USE_ITEM || wk->param->mode == POKELIST_MODE_REPLACE_LEVEL_MOVE) {
+        PokeList_ShowMessage(wk, BtlMain11_Text_Learned, TRUE, PokeList_LearnMessageDone);
     } else {
-        PokeList_ShowMessage(wk, 0x2a, TRUE, PokeList_MessageDoneExit);
+        PokeList_ShowMessage(wk, BtlMain11_Text_Learned, TRUE, PokeList_MessageDoneExit);
         PokeList_RaiseFriendship(wk, wk->pkm);
-        wk->param->result = 10;
+        wk->param->result = POKELIST_RESULT_ITEM_DONE;
     }
     PokeListMessage_FreeWordSet(wk, wk->message);
     PokeList_SetMove(wk, wk->pkm, wk->param->moveSlot);
@@ -2766,23 +2796,23 @@ static void PokeList_AskSwapItem(PokeListWork *wk) {
 }
 
 static void PokeList_AnswerSwapItem(PokeListWork *wk, u32 item) {
-    if (item == 14) {
+    if (item == POKELIST_MENU_YES) {
         u32 heldItem = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
 
         if (PokeList_GetBagCount(wk, heldItem) == 999) {
-            if (wk->param->mode == 10) {
-                wk->param->mode = 0;
+            if (wk->param->mode == POKELIST_MODE_GIVE_FROM_BAG) {
+                wk->param->mode = POKELIST_MODE_FIELD;
                 PokeListMessage_Close(wk, wk->message);
-                PokeList_ShowMessage(wk, 0x40, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
             } else {
-                wk->state = 19;
+                wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
                 PokeListMessage_Close(wk, wk->message);
-                PokeList_ShowMessage(wk, 0x40, TRUE, PokeList_MessageDoneExit);
+                PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneExit);
             }
         } else if (PML_ItemIsMail(wk->param->item) == TRUE) {
             wk->param->index = wk->cursorPos;
-            wk->state = 19;
-            wk->param->result = 6;
+            wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
+            wk->param->result = POKELIST_RESULT_WRITE_MAIL;
         } else {
             BOOL griseousForm;
             BOOL plateForm;
@@ -2797,42 +2827,42 @@ static void PokeList_AnswerSwapItem(PokeListWork *wk, u32 item) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetItemName(wk, wk->message, 1, heldItem);
             PokeListMessage_SetItemName(wk, wk->message, 2, wk->param->item);
-            if (wk->param->mode == 10) {
-                wk->param->mode = 0;
+            if (wk->param->mode == POKELIST_MODE_GIVE_FROM_BAG) {
+                wk->param->mode = POKELIST_MODE_FIELD;
                 if (griseousForm == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, 0x41, TRUE, PokeList_MessageDoneDemo);
-                    wk->demo = 1;
+                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else if (plateForm == TRUE) {
                     PokeListDemo_SetAltered(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, 0x41, TRUE, PokeList_MessageDoneDemo);
-                    wk->demo = 2;
+                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    wk->demo = POKELIST_DEMO_GIRATINA_ALTERED;
                 } else {
-                    PokeList_ShowMessage(wk, 0x41, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneSelect);
                 }
             } else {
-                wk->param->result = 10;
+                wk->param->result = POKELIST_RESULT_ITEM_DONE;
                 if (griseousForm == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, 0x41, TRUE, PokeList_MessageDoneDemo);
-                    wk->demo = 1;
+                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else if (plateForm == TRUE) {
                     PokeListDemo_SetAltered(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, 0x41, TRUE, PokeList_MessageDoneDemo);
-                    wk->demo = 2;
+                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    wk->demo = POKELIST_DEMO_GIRATINA_ALTERED;
                 } else {
-                    PokeList_ShowMessage(wk, 0x41, TRUE, PokeList_MessageDoneExit);
+                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneExit);
                 }
             }
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
-    } else if (wk->param->mode == 10) {
-        wk->param->mode = 0;
+    } else if (wk->param->mode == POKELIST_MODE_GIVE_FROM_BAG) {
+        wk->param->mode = POKELIST_MODE_FIELD;
         PokeListMessage_Close(wk, wk->message);
-        wk->state = 2;
+        wk->state = POKELIST_STATE_SELECT;
         PokeList_ShowModeMessage(wk);
     } else {
-        wk->state = 19;
+        wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
     }
 }
 
@@ -2853,7 +2883,7 @@ static void PokeList_ShareHpDone(PokeListWork *wk) {
         PokeParty_SetParam(target, PKM_PARAM_HP, hp + userMaxHp / 5);
     }
     wk->hpDoneFunc = PokeList_ShareHpEnd;
-    wk->state = 10;
+    wk->state = POKELIST_STATE_HP_CHANGE_START;
     wk->playHealSe = TRUE;
 }
 
@@ -2865,7 +2895,7 @@ static void PokeList_ShareHpEnd(PokeListWork *wk) {
     PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
     if (wk->prevHp != 0) {
         PokeListMessage_SetNumber(wk, wk->message, 1, hp - wk->prevHp, 3);
-        PokeList_ShowMessage(wk, 0x2d, TRUE, PokeList_MessageDoneSelect);
+        PokeList_ShowMessage(wk, BtlMain11_Text_SHpRestoredBy, TRUE, PokeList_MessageDoneSelect);
     }
     PokeListMessage_FreeWordSet(wk, wk->message);
 }
@@ -2877,23 +2907,23 @@ static void PokeList_AskTakeMail(PokeListWork *wk) {
 
 static void PokeList_AnswerTakeMail(PokeListWork *wk, u32 item) {
     PokeListMessage_Close(wk, wk->message);
-    if (item == 14) {
-        s32 slot = MailBox_GetFreeSlot(wk->param->unk08, 0);
+    if (item == POKELIST_MENU_YES) {
+        s32 slot = MailBox_GetFreeSlot(wk->param->mailbox, 0);
 
         if (slot >= 0) {
             MailData *mail = CreateMailData(wk->heapId);
 
             PokeParty_GetParam(wk->pkm, PKM_PARAM_MAIL, mail);
-            MailBox_SetMail(wk->param->unk08, 0, slot, mail);
+            MailBox_SetMail(wk->param->mailbox, 0, slot, mail);
             GFL_HeapFree(mail);
             PokeParty_SetParam(wk->pkm, PKM_PARAM_ITEM, 0);
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
-            PokeList_ShowMessage(wk, 0x1b, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_MailSentPc, TRUE, PokeList_MessageDoneSelect);
         } else {
-            PokeList_ShowMessage(wk, 0x1f, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_PcsMailboxFull, TRUE, PokeList_MessageDoneSelect);
         }
     } else {
-        PokeList_ShowMessage(wk, 0x1c, FALSE, PokeList_AskDeleteMail);
+        PokeList_ShowMessage(wk, BtlMain11_Text_IfMailRemovedIts, FALSE, PokeList_AskDeleteMail);
     }
 }
 
@@ -2904,20 +2934,20 @@ static void PokeList_AskDeleteMail(PokeListWork *wk) {
 
 static void PokeList_AnswerDeleteMail(PokeListWork *wk, u32 item) {
     PokeListMessage_Close(wk, wk->message);
-    if (item == 14) {
+    if (item == POKELIST_MENU_YES) {
         u32 heldItem = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
 
         if (PokeList_GetBagCount(wk, heldItem) == 999) {
-            PokeList_ShowMessage(wk, 0x40, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
         } else {
             PokeList_AddToBag(wk, heldItem);
             PokeParty_SetParam(wk->pkm, PKM_PARAM_ITEM, 0);
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
-            PokeList_ShowMessage(wk, 0x20, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, BtlMain11_Text_MailTakenFromPokemon, TRUE, PokeList_MessageDoneSelect);
         }
     } else {
         PokeListMessage_Close(wk, wk->message);
-        wk->state = 2;
+        wk->state = POKELIST_STATE_SELECT;
         PokeList_ShowModeMessage(wk);
     }
 }
@@ -2925,19 +2955,21 @@ static void PokeList_AnswerDeleteMail(PokeListWork *wk, u32 item) {
 // Called once a message is read: the form change is shown
 static void PokeList_MessageDoneDemo(PokeListWork *wk) {
     PokeListMessage_Close(wk, wk->message);
-    wk->state = 14;
+    wk->state = POKELIST_STATE_DEMO_START;
 }
 
 // The time to pick a team ran out
 void PokeList_TimeUp(PokeListWork *wk) {
-    if (wk->timeUp == FALSE && wk->state != 19 && wk->state != 21 && wk->state != 0 && wk->state != 1) {
-        if (wk->state == 6) {
-            func_ov165_0219cf70(wk);
+    if (wk->timeUp == FALSE && wk->state != POKELIST_STATE_EXIT_WAIT_BUTTON &&
+        wk->state != POKELIST_STATE_EXIT_WAIT_WIPE && wk->state != POKELIST_STATE_FADE_IN &&
+        wk->state != POKELIST_STATE_WAIT_WIPE) {
+        if (wk->state == POKELIST_STATE_MENU) {
+            PokeList_EndMenu(wk);
         }
         wk->timeUp = TRUE;
-        wk->state = wk->unk284 == TRUE ? 17 : 20;
-        wk->param->index = 6;
-        wk->param->result = 0;
+        wk->state = wk->syncOnTimeUp == TRUE ? POKELIST_STATE_SYNC_START : POKELIST_STATE_EXIT_FADE;
+        wk->param->index = POKELIST_CURSOR_CONFIRM;
+        wk->param->result = POKELIST_RESULT_DONE;
         if (wk->decided == FALSE) {
             Regulation *regulation;
             u8 i;
@@ -2959,7 +2991,7 @@ void PokeList_TimeUp(PokeListWork *wk) {
 }
 
 static void PokeList_LearnMove(PokeListWork *wk, PartyPkm *pkm) {
-    if (wk->param->mode == 5 || wk->param->mode == 8) {
+    if (wk->param->mode == POKELIST_MODE_USE_ITEM || wk->param->mode == POKELIST_MODE_REPLACE_LEVEL_MOVE) {
         PokeParty_LearnMove(pkm, wk->param->move);
     } else {
         PokeParty_LearnMoveTutor(pkm, wk->param->move);
@@ -2967,7 +2999,7 @@ static void PokeList_LearnMove(PokeListWork *wk, PartyPkm *pkm) {
 }
 
 static void PokeList_SetMove(PokeListWork *wk, PartyPkm *pkm, u8 slot) {
-    if (wk->param->mode == 5 || wk->param->mode == 8) {
+    if (wk->param->mode == POKELIST_MODE_USE_ITEM || wk->param->mode == POKELIST_MODE_REPLACE_LEVEL_MOVE) {
         PokeParty_SetMove(pkm, wk->param->move, slot);
     } else {
         PokeParty_SetMoveKeepPP(pkm, wk->param->move, slot);

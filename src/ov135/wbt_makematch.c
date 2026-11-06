@@ -785,7 +785,7 @@ void WbtMakeMatch_LoadBattleBoxParty(WbtSystem *sys, GameData *gameData) {
 void WbtMakeMatch_SetupPokeList(WbtSystem *sys, GameData *gameData, PokeListParam *param) {
     int mode;
 
-    PokeListParam_Setup(param, gameData, 0x16, WbtMakeMatch_GetParty(sys, gameData));
+    PokeListParam_Setup(param, gameData, POKELIST_MODE_BATTLE_TEAM_CANCEL, WbtMakeMatch_GetParty(sys, gameData));
     switch (sys->style) {
     case 0:
     default:
@@ -802,7 +802,7 @@ void WbtMakeMatch_SetupPokeList(WbtSystem *sys, GameData *gameData, PokeListPara
         break;
     }
     param->regulation = WbtSystem_GetRegulation(sys);
-    param->unk18 = func_ov055_021e6024(sys);
+    param->extraRule = func_ov055_021e6024(sys);
     param->unk48 = mode;
 }
 

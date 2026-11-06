@@ -21,6 +21,7 @@
 #include "system/poke_icon.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "text/system/btl_main_11.h"
 
 // The party list in a battle's team selection: the partners' teams of a multi battle shown beside the player's, the
 // battle's messages, and the time left to pick
@@ -61,11 +62,11 @@ void PokeListBattle_Init(PokeListWork *wk) {
     PokeListBattle_CreateUnit(wk);
     PokeListBattle_LoadResources(wk);
     if (wk->param->showPartners == TRUE) {
-        switch (wk->param->partnerCount) {
-        case 1:
+        switch (wk->param->partnerLayout) {
+        case POKELIST_PARTNER_LAYOUT_ONE_TEAM:
             wk->partners[1] = PokeListBattle_CreatePartner(wk, &wk->param->partners[1], 10, 0, 2);
             break;
-        case 2:
+        case POKELIST_PARTNER_LAYOUT_THREE_TEAMS:
             wk->partners[0] = PokeListBattle_CreatePartner(wk, &wk->param->partners[0], 0, 0, 0);
             wk->partners[1] = PokeListBattle_CreatePartner(wk, &wk->param->partners[1], 11, 0, 0);
             wk->partners[2] = PokeListBattle_CreatePartner(wk, &wk->param->partners[2], 22, 0, 0);
@@ -85,11 +86,11 @@ void PokeListBattle_Exit(PokeListWork *wk) {
         PokeListBattle_FreeTimer(wk);
     }
     if (wk->param->showPartners == TRUE) {
-        switch (wk->param->partnerCount) {
-        case 1:
+        switch (wk->param->partnerLayout) {
+        case POKELIST_PARTNER_LAYOUT_ONE_TEAM:
             PokeListBattle_FreePartner(wk, wk->partners[1]);
             break;
-        case 2:
+        case POKELIST_PARTNER_LAYOUT_THREE_TEAMS:
             PokeListBattle_FreePartner(wk, wk->partners[0]);
             PokeListBattle_FreePartner(wk, wk->partners[1]);
             PokeListBattle_FreePartner(wk, wk->partners[2]);
@@ -102,25 +103,25 @@ void PokeListBattle_Exit(PokeListWork *wk) {
 
 void PokeListBattle_Update(PokeListWork *wk) {
     if (wk->param->showPartners == TRUE) {
-        switch (wk->param->partnerCount) {
-        case 1:
+        switch (wk->param->partnerLayout) {
+        case POKELIST_PARTNER_LAYOUT_ONE_TEAM:
             PokeListBattle_UpdatePartner(wk, wk->partners[1]);
             break;
-        case 2:
+        case POKELIST_PARTNER_LAYOUT_THREE_TEAMS:
             PokeListBattle_UpdatePartner(wk, wk->partners[0]);
             PokeListBattle_UpdatePartner(wk, wk->partners[1]);
             PokeListBattle_UpdatePartner(wk, wk->partners[2]);
             break;
         }
     }
-    if (wk->shownBattleMsg != wk->param->battleMsg && wk->state == 2) {
+    if (wk->shownBattleMsg != wk->param->battleMsg && wk->state == POKELIST_STATE_SELECT) {
         PokeListBattle_PrintMessage(wk);
         wk->shownBattleMsg = wk->param->battleMsg;
     }
     if (wk->param->timerEnabled == TRUE) {
         PokeListBattle_UpdateTimer(wk);
     }
-    if (wk->param->forceExit == 1) {
+    if (wk->param->forceExit == TRUE) {
         PokeList_TimeUp(wk);
     }
 }
@@ -142,11 +143,11 @@ static void PokeListBattle_LoadResources(PokeListWork *wk) {
     GFL_G2DIOLoadArcNCLRDefault(arc, 0, 4, 0x1a0, 0x20, wk->heapId);
     GFL_BGSysLoadArcNCGRStatic(arc, 9, 6, 0, 0, FALSE, wk->heapId);
     if (wk->param->showPartners == TRUE) {
-        switch (wk->param->partnerCount) {
-        case 1:
+        switch (wk->param->partnerLayout) {
+        case POKELIST_PARTNER_LAYOUT_ONE_TEAM:
             loadBGScrToVramByFileNoReserveNegAlign(arc, 0x11, 6, 0, 0, FALSE, wk->heapId);
             break;
-        case 2:
+        case POKELIST_PARTNER_LAYOUT_THREE_TEAMS:
             loadBGScrToVramByFileNoReserveNegAlign(arc, 0x10, 6, 0, 0, FALSE, wk->heapId);
             break;
         }
@@ -186,7 +187,7 @@ static void PokeListBattle_LoadResources(PokeListWork *wk) {
     }
     GFL_ArcToolFree(commonArc);
 
-    iconArc = GFL_ArcSysCreateFileHandle(7, wk->heapId);
+    iconArc = GFL_ArcSysCreateFileHandle(ARCID_POKEICON, wk->heapId);
     wk->clResources[CL_RES_PLTT(7)] = ClActSys_LoadPlttEx(iconArc, PokeIcon_GetPaletteFile(), 1, 0xc0, wk->heapId);
     GFL_ArcToolFree(iconArc);
     MIi_CpuCopy16((void *)(HW_DB_BG_PLTT + 0x40), wk->timerBaseColors, sizeof(wk->timerBaseColors));
@@ -267,9 +268,9 @@ static inline void PokeListBattle_CreateSexWindow(PokeListWork *wk, PokeListPart
     partnerPkm->sexWindow = BmpWin_CreateDynamic(4, tileX + 3, tileY, 3, 2, 13, TRUE);
     if (isEgg == FALSE) {
         if (sex == GENDER_MALE) {
-            PokeList_PrintString(wk, partnerPkm->sexWindow, 7, subX + 4, 0, 0x14c0);
+            PokeList_PrintString(wk, partnerPkm->sexWindow, BtlMain11_Text_Empty_5, subX + 4, 0, 0x14c0);
         } else if (sex == GENDER_FEMALE) {
-            PokeList_PrintString(wk, partnerPkm->sexWindow, 8, subX + 4, 0, 0xc80);
+            PokeList_PrintString(wk, partnerPkm->sexWindow, BtlMain11_Text_Empty_6, subX + 4, 0, 0xc80);
         }
     }
 }
@@ -285,7 +286,7 @@ static inline void PokeListBattle_CreateLevelWindow(PokeListWork *wk, PokeListPa
         WordSet *wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
 
         WordSetNumber(wordSet, 0, level, 3, 0, TRUE);
-        PokeList_PrintWordSetStringSmall(wk, partnerPkm->levelWindow, wordSet, 2, subX, 0, 0x3c40);
+        PokeList_PrintWordSetStringSmall(wk, partnerPkm->levelWindow, wordSet, BtlMain11_Text_L, subX, 0, 0x3c40);
         GFL_WordSetSystemFree(wordSet);
     }
 }
@@ -294,7 +295,7 @@ static PokeListPartnerPkm *PokeListBattle_CreatePartnerPkm(PokeListWork *wk, Par
     PokeListPartnerPkm *partnerPkm =
         GFL_HeapAllocate(wk->heapId, sizeof(PokeListPartnerPkm), FALSE, "plist_battle.c", 409);
     BOOL isEgg = PokeParty_GetParam(pkm, PKM_PARAM_IS_EGG, NULL);
-    ArcTool *arc = GFL_ArcSysCreateFileHandle(7, wk->heapId);
+    ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_POKEICON, wk->heapId);
     BoxPkm *boxPkm = PokeParty_ToBoxPkm(pkm);
     u32 palette;
     u32 item;
@@ -308,7 +309,7 @@ static PokeListPartnerPkm *PokeListBattle_CreatePartnerPkm(PokeListWork *wk, Par
     palette = PokeIcon_GetPaletteOfPkm(boxPkm);
     iconSetup.x = x + 16;
     iconSetup.y = y + 8;
-    iconSetup.sequence = 1;
+    iconSetup.sequence = POKELIST_PARTY_ICON_ANM_DEFAULT;
     iconSetup.priority = 16;
     iconSetup.bgPriority = 2;
     partnerPkm->icon = ClActor_Create(wk->partnerUnit, partnerPkm->iconChars, wk->clResources[CL_RES_PLTT(7)],
@@ -318,7 +319,7 @@ static PokeListPartnerPkm *PokeListBattle_CreatePartnerPkm(PokeListWork *wk, Par
     item = PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
     itemSetup.x = x + 32;
     itemSetup.y = y + 16;
-    itemSetup.sequence = 0;
+    itemSetup.sequence = POKELIST_HELD_ITEM_ANM_ITEM;
     itemSetup.priority = 8;
     itemSetup.bgPriority = 2;
     partnerPkm->itemIcon =
@@ -327,9 +328,9 @@ static PokeListPartnerPkm *PokeListBattle_CreatePartnerPkm(PokeListWork *wk, Par
     if (item != 0) {
         ClActor_SetVisible(partnerPkm->itemIcon, TRUE);
         if (PML_ItemIsMail(item) == TRUE) {
-            ClActor_SetSequence(partnerPkm->itemIcon, 1);
+            ClActor_SetSequence(partnerPkm->itemIcon, POKELIST_HELD_ITEM_ANM_MAIL);
         } else {
-            ClActor_SetSequence(partnerPkm->itemIcon, 0);
+            ClActor_SetSequence(partnerPkm->itemIcon, POKELIST_HELD_ITEM_ANM_ITEM);
         }
     } else {
         ClActor_SetVisible(partnerPkm->itemIcon, FALSE);
@@ -372,17 +373,17 @@ static void PokeListBattle_PrintMessage(PokeListWork *wk) {
         if (PokeListMessage_IsOpen(wk, wk->message) == FALSE) {
             PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORTER);
         }
-        if (wk->param->partnerCount == 1) {
+        if (wk->param->partnerLayout == POKELIST_PARTNER_LAYOUT_ONE_TEAM) {
             StrBuf *name = GFL_StrBufCreate(16, wk->heapId);
 
             GFL_StrBufLoadString(name, wk->param->partners[1].name);
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetString(wk, wk->message, 0, name, wk->param->partners[1].gender);
-            PokeListMessage_Print(wk, wk->message, 0xb5);
+            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_StandingBy);
             PokeListMessage_FreeWordSet(wk, wk->message);
             GFL_StrBufFree(name);
         } else {
-            PokeListMessage_Print(wk, wk->message, wk->param->battleMsg + 0xb5);
+            PokeListMessage_Print(wk, wk->message, wk->param->battleMsg + BtlMain11_Text_StandingBy);
         }
     }
 }
@@ -392,7 +393,7 @@ static void PokeListBattle_CreateTimer(PokeListWork *wk) {
 
     wk->timerWindows[0] = BmpWin_CreateDynamic(4, 7, 21, 11, 3, 14, TRUE);
     wk->timerWindows[1] = BmpWin_CreateDynamic(4, 20, 21, 5, 3, 14, TRUE);
-    label = GFL_MsgDataLoadStrbufNew(wk->msgData, 0xb9);
+    label = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_TimeLimit);
     PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(wk->timerWindows[0]), 0, 4, label, wk->font, 0x3c40);
     GFL_StrBufFree(label);
     wk->timerWindowDirty[0] = TRUE;
@@ -416,10 +417,10 @@ static void PokeListBattle_UpdateTimer(PokeListWork *wk) {
         s32 width;
 
         if (minutes == 0) {
-            format = GFL_MsgDataLoadStrbufNew(wk->msgData, 0xbb);
+            format = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_Empty_55);
             WordSetNumber(wordSet, 1, seconds, 2, 1, TRUE);
         } else {
-            format = GFL_MsgDataLoadStrbufNew(wk->msgData, 0xba);
+            format = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_Empty_54);
             WordSetNumber(wordSet, 0, minutes, 2, 1, TRUE);
             WordSetNumber(wordSet, 1, seconds, 2, 2, TRUE);
         }

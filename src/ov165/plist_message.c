@@ -197,22 +197,22 @@ BOOL PokeListMessage_IsDone(PokeListWork *wk, PokeListMessage *msg) {
 // The events of the messages' control codes: a fanfare, a sound, and waiting for them
 static BOOL PokeListMessage_StreamCallback(u32 event) {
     switch (event) {
-    case 2:
+    case POKELIST_MESSAGE_EVENT_LEVEL_UP:
         GFL_SndBGMSetPaused(TRUE);
         GFL_SndBGMPush();
         GFL_SndBGMPlay(SEQ_ME_LVUP, 0xffff);
         break;
-    case 3:
+    case POKELIST_MESSAGE_EVENT_SOUND:
         GFL_SndSEPlay(SEQ_SE_KON);
         break;
-    case 5:
+    case POKELIST_MESSAGE_EVENT_WAIT_LEVEL_UP:
         if (GFL_SndBGMIsPlaying() == FALSE) {
             GFL_SndBGMPop();
             GFL_SndBGMSetPaused(FALSE);
             return FALSE;
         }
         return TRUE;
-    case 6:
+    case POKELIST_MESSAGE_EVENT_WAIT_SOUND:
         return GFL_SndPlayerIsActiveAny();
     }
     return FALSE;

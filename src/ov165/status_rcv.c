@@ -1,4 +1,5 @@
 #include "app/pokelist.h"
+#include "constants/battle.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
 #include "gfl/heap.h"
@@ -9,6 +10,13 @@
 
 // What an item from the bag does to a Pokémon: whether it can be used, and using it. The ROM doesn't name this file;
 // the name is a guess, after the file that does this in HeartGold and SoulSilver
+
+// Special amounts stored in an item's HP restore field
+enum {
+    HP_RESTORE_QUARTER = 253,
+    HP_RESTORE_HALF = 254,
+    HP_RESTORE_ALL = 255,
+};
 
 static BOOL StatusRcv_PPUp(PartyPkm *pkm, u32 slot, u32 count);
 static void StatusRcv_RestoreHp(PartyPkm *pkm, u32 hp, u32 maxHp, u32 amount);
@@ -31,61 +39,63 @@ BOOL StatusRcv_CanUseItem(PartyPkm *pkm, u16 item, u16 pos, u32 heapId) {
     s32 effort;
 
     data = PML_ItemReadDataFile(item, ITEM_FILE_DATA, heapId);
-    if (PML_ItemGetParam(data, 14) != 1) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_WORK_TYPE) != ITEM_WORK_PARAMS) {
         GFL_HeapFree(data);
         return FALSE;
     }
 
     status = GetStatusCond(pkm);
-    if (PML_ItemGetParam(data, 18) != 0 && status == 2) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_SLEEP_HEAL) != 0 && status == CONDITION_SLEEP) {
         GFL_HeapFree(data);
         return TRUE;
     }
-    if (PML_ItemGetParam(data, 19) != 0 && status == 5) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_POISON_HEAL) != 0 && status == CONDITION_POISON) {
         GFL_HeapFree(data);
         return TRUE;
     }
-    if (PML_ItemGetParam(data, 20) != 0 && status == 4) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_BURN_HEAL) != 0 && status == CONDITION_BURN) {
         GFL_HeapFree(data);
         return TRUE;
     }
-    if (PML_ItemGetParam(data, 21) != 0 && status == 3) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_FREEZE_HEAL) != 0 && status == CONDITION_FREEZE) {
         GFL_HeapFree(data);
         return TRUE;
     }
-    if (PML_ItemGetParam(data, 22) != 0 && status == 1) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_PARALYSIS_HEAL) != 0 && status == CONDITION_PARALYSIS) {
         GFL_HeapFree(data);
         return TRUE;
     }
 
     hp = PokeParty_GetParam(pkm, PKM_PARAM_HP, NULL);
-    if ((PML_ItemGetParam(data, 26) != 0 || PML_ItemGetParam(data, 27) != 0) && PML_ItemGetParam(data, 28) == 0) {
+    if ((PML_ItemGetParam(data, ITEM_PARAM_REVIVE) != 0 || PML_ItemGetParam(data, ITEM_PARAM_REVIVE_ALL) != 0) &&
+        PML_ItemGetParam(data, ITEM_PARAM_LEVEL_UP) == 0) {
         if (hp == 0) {
             GFL_HeapFree(data);
             return TRUE;
         }
-    } else if (PML_ItemGetParam(data, 41) != 0 && hp != 0 && hp < PokeParty_GetParam(pkm, PKM_PARAM_MAX_HP, NULL)) {
+    } else if (PML_ItemGetParam(data, ITEM_PARAM_HP_RESTORE) != 0 && hp != 0 &&
+               hp < PokeParty_GetParam(pkm, PKM_PARAM_MAX_HP, NULL)) {
         GFL_HeapFree(data);
         return TRUE;
     }
 
-    if (PML_ItemGetParam(data, 28) != 0 && PokeParty_GetParam(pkm, PKM_PARAM_LEVEL, NULL) < 100) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_LEVEL_UP) != 0 && PokeParty_GetParam(pkm, PKM_PARAM_LEVEL, NULL) < 100) {
         GFL_HeapFree(data);
         return TRUE;
     }
 
-    if ((PML_ItemGetParam(data, 37) != 0 || PML_ItemGetParam(data, 38) != 0) &&
+    if ((PML_ItemGetParam(data, ITEM_PARAM_PP_UP) != 0 || PML_ItemGetParam(data, ITEM_PARAM_PP_MAX) != 0) &&
         PokeParty_GetParam(pkm, PKM_PARAM_MOVE1_PP_UP + pos, NULL) < 3 &&
         PML_MoveGetMaxPP(PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + pos, NULL), 0) >= 5) {
         GFL_HeapFree(data);
         return TRUE;
     }
 
-    if (PML_ItemGetParam(data, 39) != 0 && PokeParty_CheckPPNeedsReplenish(pkm, pos) == TRUE) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_PP_RESTORE) != 0 && PokeParty_CheckPPNeedsReplenish(pkm, pos) == TRUE) {
         GFL_HeapFree(data);
         return TRUE;
     }
-    if (PML_ItemGetParam(data, 40) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_PP_RESTORE_ALL) != 0) {
         for (i = 0; i < 4; i++) {
             if (PokeParty_CheckPPNeedsReplenish(pkm, i) == TRUE) {
                 GFL_HeapFree(data);
@@ -100,10 +110,10 @@ BOOL StatusRcv_CanUseItem(PartyPkm *pkm, u16 item, u16 pos, u32 heapId) {
     speedEffort = PokeParty_GetParam(pkm, PKM_PARAM_EV_HP + 3, NULL);
     spAtkEffort = PokeParty_GetParam(pkm, PKM_PARAM_EV_HP + 4, NULL);
     spDefEffort = PokeParty_GetParam(pkm, PKM_PARAM_EV_HP + 5, NULL);
-    noLimit = PML_ItemGetParam(data, 48);
+    noLimit = PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_1);
 
-    if (PML_ItemGetParam(data, 42) != 0) {
-        effort = PML_ItemGetParam(data, 52);
+    if (PML_ItemGetParam(data, ITEM_PARAM_HP_EV_UP) != 0) {
+        effort = PML_ItemGetParam(data, ITEM_PARAM_HP_EV);
         if (effort > 0 && PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL) != SPECIES_SHEDINJA) {
             if ((hpEffort < 100 || noLimit != 0) && hpEffort < 255 &&
                 hpEffort + atkEffort + defEffort + speedEffort + spAtkEffort + spDefEffort < 510) {
@@ -121,8 +131,8 @@ BOOL StatusRcv_CanUseItem(PartyPkm *pkm, u16 item, u16 pos, u32 heapId) {
             }
         }
     }
-    if (PML_ItemGetParam(data, 43) != 0) {
-        effort = PML_ItemGetParam(data, 53);
+    if (PML_ItemGetParam(data, ITEM_PARAM_ATTACK_EV_UP) != 0) {
+        effort = PML_ItemGetParam(data, ITEM_PARAM_ATTACK_EV);
         if (effort > 0) {
             if ((atkEffort < 100 || noLimit != 0) && atkEffort < 255 &&
                 hpEffort + atkEffort + defEffort + speedEffort + spAtkEffort + spDefEffort < 510) {
@@ -140,8 +150,8 @@ BOOL StatusRcv_CanUseItem(PartyPkm *pkm, u16 item, u16 pos, u32 heapId) {
             }
         }
     }
-    if (PML_ItemGetParam(data, 44) != 0) {
-        effort = PML_ItemGetParam(data, 54);
+    if (PML_ItemGetParam(data, ITEM_PARAM_DEFENSE_EV_UP) != 0) {
+        effort = PML_ItemGetParam(data, ITEM_PARAM_DEFENSE_EV);
         if (effort > 0) {
             if ((defEffort < 100 || noLimit != 0) && defEffort < 255 &&
                 hpEffort + atkEffort + defEffort + speedEffort + spAtkEffort + spDefEffort < 510) {
@@ -159,8 +169,8 @@ BOOL StatusRcv_CanUseItem(PartyPkm *pkm, u16 item, u16 pos, u32 heapId) {
             }
         }
     }
-    if (PML_ItemGetParam(data, 45) != 0) {
-        effort = PML_ItemGetParam(data, 55);
+    if (PML_ItemGetParam(data, ITEM_PARAM_SPEED_EV_UP) != 0) {
+        effort = PML_ItemGetParam(data, ITEM_PARAM_SPEED_EV);
         if (effort > 0) {
             if ((speedEffort < 100 || noLimit != 0) && speedEffort < 255 &&
                 hpEffort + atkEffort + defEffort + speedEffort + spAtkEffort + spDefEffort < 510) {
@@ -178,8 +188,8 @@ BOOL StatusRcv_CanUseItem(PartyPkm *pkm, u16 item, u16 pos, u32 heapId) {
             }
         }
     }
-    if (PML_ItemGetParam(data, 46) != 0) {
-        effort = PML_ItemGetParam(data, 56);
+    if (PML_ItemGetParam(data, ITEM_PARAM_SP_ATTACK_EV_UP) != 0) {
+        effort = PML_ItemGetParam(data, ITEM_PARAM_SP_ATTACK_EV);
         if (effort > 0) {
             if ((spAtkEffort < 100 || noLimit != 0) && spAtkEffort < 255 &&
                 hpEffort + atkEffort + defEffort + speedEffort + spAtkEffort + spDefEffort < 510) {
@@ -197,8 +207,8 @@ BOOL StatusRcv_CanUseItem(PartyPkm *pkm, u16 item, u16 pos, u32 heapId) {
             }
         }
     }
-    if (PML_ItemGetParam(data, 47) != 0) {
-        effort = PML_ItemGetParam(data, 57);
+    if (PML_ItemGetParam(data, ITEM_PARAM_SP_DEFENSE_EV_UP) != 0) {
+        effort = PML_ItemGetParam(data, ITEM_PARAM_SP_DEFENSE_EV);
         if (effort > 0) {
             if ((spDefEffort < 100 || noLimit != 0) && spDefEffort < 255 &&
                 hpEffort + atkEffort + defEffort + speedEffort + spAtkEffort + spDefEffort < 510) {
@@ -243,7 +253,7 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
     s32 effort;
 
     data = PML_ItemReadDataFile(item, ITEM_FILE_DATA, heapId);
-    if (PML_ItemGetParam(data, 14) != 1) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_WORK_TYPE) != ITEM_WORK_PARAMS) {
         GFL_HeapFree(data);
         return changed;
     }
@@ -251,23 +261,23 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
     hasEffect = FALSE;
     status = PokeParty_GetParam(pkm, PKM_PARAM_STATUS, NULL);
     newStatus = status;
-    if (PML_ItemGetParam(data, 18) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_SLEEP_HEAL) != 0) {
         newStatus = 0;
         hasEffect = TRUE;
     }
-    if (PML_ItemGetParam(data, 19) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_POISON_HEAL) != 0) {
         newStatus = 0;
         hasEffect = TRUE;
     }
-    if (PML_ItemGetParam(data, 20) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_BURN_HEAL) != 0) {
         newStatus = 0;
         hasEffect = TRUE;
     }
-    if (PML_ItemGetParam(data, 21) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_FREEZE_HEAL) != 0) {
         newStatus = 0;
         hasEffect = TRUE;
     }
-    if (PML_ItemGetParam(data, 22) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_PARALYSIS_HEAL) != 0) {
         newStatus = 0;
         hasEffect = TRUE;
     }
@@ -278,22 +288,23 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
 
     hp = PokeParty_GetParam(pkm, PKM_PARAM_HP, NULL);
     maxHp = PokeParty_GetParam(pkm, PKM_PARAM_MAX_HP, NULL);
-    if ((PML_ItemGetParam(data, 26) != 0 || PML_ItemGetParam(data, 27) != 0) && PML_ItemGetParam(data, 28) == 0) {
+    if ((PML_ItemGetParam(data, ITEM_PARAM_REVIVE) != 0 || PML_ItemGetParam(data, ITEM_PARAM_REVIVE_ALL) != 0) &&
+        PML_ItemGetParam(data, ITEM_PARAM_LEVEL_UP) == 0) {
         if (hp == 0) {
-            StatusRcv_RestoreHp(pkm, hp, maxHp, PML_ItemGetParam(data, 58));
+            StatusRcv_RestoreHp(pkm, hp, maxHp, PML_ItemGetParam(data, ITEM_PARAM_HP_RESTORE_AMOUNT));
             changed = TRUE;
         }
         hasEffect = TRUE;
-    } else if (PML_ItemGetParam(data, 41) != 0) {
+    } else if (PML_ItemGetParam(data, ITEM_PARAM_HP_RESTORE) != 0) {
         if (hp < maxHp) {
-            StatusRcv_RestoreHp(pkm, hp, maxHp, PML_ItemGetParam(data, 58));
+            StatusRcv_RestoreHp(pkm, hp, maxHp, PML_ItemGetParam(data, ITEM_PARAM_HP_RESTORE_AMOUNT));
             changed = TRUE;
         }
         hasEffect = TRUE;
     }
 
     level = PokeParty_GetParam(pkm, PKM_PARAM_LEVEL, NULL);
-    if (PML_ItemGetParam(data, 28) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_LEVEL_UP) != 0) {
         if (level < 100) {
             PokeParty_SetParam(pkm, PKM_PARAM_EXP,
                                PML_UtilGetPkmLvExp(PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL),
@@ -310,30 +321,30 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
         hasEffect = TRUE;
     }
 
-    if (PML_ItemGetParam(data, 29) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_EVOLVE) != 0) {
         hasEffect = TRUE;
     }
 
-    if (PML_ItemGetParam(data, 37) != 0) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_PP_UP) != 0) {
         if (StatusRcv_PPUp(pkm, pos, 1) == TRUE) {
             changed = TRUE;
         }
         hasEffect = TRUE;
-    } else if (PML_ItemGetParam(data, 38) != 0) {
+    } else if (PML_ItemGetParam(data, ITEM_PARAM_PP_MAX) != 0) {
         if (StatusRcv_PPUp(pkm, pos, 3) == TRUE) {
             changed = TRUE;
         }
         hasEffect = TRUE;
     }
 
-    if (PML_ItemGetParam(data, 39) != 0) {
-        if (PokeParty_AddPP(pkm, pos, PML_ItemGetParam(data, 59)) == TRUE) {
+    if (PML_ItemGetParam(data, ITEM_PARAM_PP_RESTORE) != 0) {
+        if (PokeParty_AddPP(pkm, pos, PML_ItemGetParam(data, ITEM_PARAM_PP_RESTORE_AMOUNT)) == TRUE) {
             changed = TRUE;
         }
         hasEffect = TRUE;
-    } else if (PML_ItemGetParam(data, 40) != 0) {
+    } else if (PML_ItemGetParam(data, ITEM_PARAM_PP_RESTORE_ALL) != 0) {
         for (i = 0; i < 4; i++) {
-            if (PokeParty_AddPP(pkm, i, PML_ItemGetParam(data, 59)) == TRUE) {
+            if (PokeParty_AddPP(pkm, i, PML_ItemGetParam(data, ITEM_PARAM_PP_RESTORE_AMOUNT)) == TRUE) {
                 changed = TRUE;
             }
         }
@@ -346,10 +357,10 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
     speedEffort = PokeParty_GetParam(pkm, PKM_PARAM_EV_HP + 3, NULL);
     spAtkEffort = PokeParty_GetParam(pkm, PKM_PARAM_EV_HP + 4, NULL);
     spDefEffort = PokeParty_GetParam(pkm, PKM_PARAM_EV_HP + 5, NULL);
-    noLimit = PML_ItemGetParam(data, 48);
+    noLimit = PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_1);
 
-    if (PML_ItemGetParam(data, 42) != 0) {
-        add = PML_ItemGetParam(data, 52);
+    if (PML_ItemGetParam(data, ITEM_PARAM_HP_EV_UP) != 0) {
+        add = PML_ItemGetParam(data, ITEM_PARAM_HP_EV);
         if (add > 0 && PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL) == SPECIES_SHEDINJA) {
             GFL_HeapFree(data);
             return FALSE;
@@ -366,8 +377,8 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
             hasEffect = TRUE;
         }
     }
-    if (PML_ItemGetParam(data, 43) != 0) {
-        add = PML_ItemGetParam(data, 53);
+    if (PML_ItemGetParam(data, ITEM_PARAM_ATTACK_EV_UP) != 0) {
+        add = PML_ItemGetParam(data, ITEM_PARAM_ATTACK_EV);
         effort = StatusRcv_AddEffort(atkEffort, hpEffort + defEffort + speedEffort + spAtkEffort + spDefEffort, add,
                                      noLimit);
 
@@ -381,8 +392,8 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
             hasEffect = TRUE;
         }
     }
-    if (PML_ItemGetParam(data, 44) != 0) {
-        add = PML_ItemGetParam(data, 54);
+    if (PML_ItemGetParam(data, ITEM_PARAM_DEFENSE_EV_UP) != 0) {
+        add = PML_ItemGetParam(data, ITEM_PARAM_DEFENSE_EV);
         effort = StatusRcv_AddEffort(defEffort, hpEffort + atkEffort + speedEffort + spAtkEffort + spDefEffort, add,
                                      noLimit);
 
@@ -396,8 +407,8 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
             hasEffect = TRUE;
         }
     }
-    if (PML_ItemGetParam(data, 45) != 0) {
-        add = PML_ItemGetParam(data, 55);
+    if (PML_ItemGetParam(data, ITEM_PARAM_SPEED_EV_UP) != 0) {
+        add = PML_ItemGetParam(data, ITEM_PARAM_SPEED_EV);
         effort = StatusRcv_AddEffort(speedEffort, hpEffort + atkEffort + defEffort + spAtkEffort + spDefEffort, add,
                                      noLimit);
 
@@ -411,8 +422,8 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
             hasEffect = TRUE;
         }
     }
-    if (PML_ItemGetParam(data, 46) != 0) {
-        add = PML_ItemGetParam(data, 56);
+    if (PML_ItemGetParam(data, ITEM_PARAM_SP_ATTACK_EV_UP) != 0) {
+        add = PML_ItemGetParam(data, ITEM_PARAM_SP_ATTACK_EV);
         effort = StatusRcv_AddEffort(spAtkEffort, hpEffort + atkEffort + defEffort + speedEffort + spDefEffort, add,
                                      noLimit);
 
@@ -426,8 +437,8 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
             hasEffect = TRUE;
         }
     }
-    if (PML_ItemGetParam(data, 47) != 0) {
-        add = PML_ItemGetParam(data, 57);
+    if (PML_ItemGetParam(data, ITEM_PARAM_SP_DEFENSE_EV_UP) != 0) {
+        add = PML_ItemGetParam(data, ITEM_PARAM_SP_DEFENSE_EV);
         effort = StatusRcv_AddEffort(spDefEffort, hpEffort + atkEffort + defEffort + speedEffort + spAtkEffort, add,
                                      noLimit);
 
@@ -449,20 +460,23 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
 
     friendship = PokeParty_GetParam(pkm, PKM_PARAM_HAPPINESS, NULL);
     if (friendship < 100) {
-        if (PML_ItemGetParam(data, 49) != 0) {
-            StatusRcv_ChangeFriendship(pkm, friendship, PML_ItemGetParam(data, 60), item, zoneId, heapId);
+        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_2) != 0) {
+            StatusRcv_ChangeFriendship(pkm, friendship, PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_1), item, zoneId,
+                                       heapId);
             GFL_HeapFree(data);
             return changed;
         }
     } else if (friendship >= 100 && friendship < 200) {
-        if (PML_ItemGetParam(data, 50) != 0) {
-            StatusRcv_ChangeFriendship(pkm, friendship, PML_ItemGetParam(data, 61), item, zoneId, heapId);
+        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_3) != 0) {
+            StatusRcv_ChangeFriendship(pkm, friendship, PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_2), item, zoneId,
+                                       heapId);
             GFL_HeapFree(data);
             return changed;
         }
     } else if (friendship >= 200 && friendship <= 255) {
-        if (PML_ItemGetParam(data, 51) != 0) {
-            StatusRcv_ChangeFriendship(pkm, friendship, PML_ItemGetParam(data, 62), item, zoneId, heapId);
+        if (PML_ItemGetParam(data, ITEM_PARAM_UNK_51) != 0) {
+            StatusRcv_ChangeFriendship(pkm, friendship, PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_3), item, zoneId,
+                                       heapId);
             GFL_HeapFree(data);
             return changed;
         }
@@ -504,11 +518,11 @@ static BOOL StatusRcv_PPUp(PartyPkm *pkm, u32 slot, u32 count) {
 static void StatusRcv_RestoreHp(PartyPkm *pkm, u32 hp, u32 maxHp, u32 amount) {
     if (maxHp == 1) {
         amount = 1;
-    } else if (amount == 255) {
+    } else if (amount == HP_RESTORE_ALL) {
         amount = maxHp;
-    } else if (amount == 254) {
+    } else if (amount == HP_RESTORE_HALF) {
         amount = maxHp / 2;
-    } else if (amount == 253) {
+    } else if (amount == HP_RESTORE_QUARTER) {
         amount = maxHp / 4;
     }
     hp += amount;
@@ -553,19 +567,21 @@ static BOOL StatusRcv_CanChangeFriendship(PartyPkm *pkm, ItemData *data) {
         return FALSE;
     }
     if (friendship < 100) {
-        if (PML_ItemGetParam(data, 49) != 0 && PML_ItemGetParam(data, 60) > 0) {
+        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_2) != 0 &&
+            PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_1) > 0) {
             return TRUE;
         }
         return FALSE;
     }
     if (friendship >= 100 && friendship < 200) {
-        if (PML_ItemGetParam(data, 50) != 0 && PML_ItemGetParam(data, 61) > 0) {
+        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_3) != 0 &&
+            PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_2) > 0) {
             return TRUE;
         }
         return FALSE;
     }
     if (friendship >= 200 && friendship < 255) {
-        if (PML_ItemGetParam(data, 51) != 0 && PML_ItemGetParam(data, 62) > 0) {
+        if (PML_ItemGetParam(data, ITEM_PARAM_UNK_51) != 0 && PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_3) > 0) {
             return TRUE;
         }
         return FALSE;

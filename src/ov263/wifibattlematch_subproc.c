@@ -244,28 +244,28 @@ static void WifiBattleMatchList_SetupPokeList(WifiBattleMatchListParam *param, W
     u8 i;
 
     GameData_GetSaveControl(param->gameData);
-    PokeListParam_Setup(pokeList, param->gameData, 0x1a, wk->party);
+    PokeListParam_Setup(pokeList, param->gameData, POKELIST_MODE_NETWORK_TEAM, wk->party);
     pokeList->regulation = regulation;
     switch (regulation->battleType) {
     case REGULATION_BATTLE_SINGLE:
         pokeList->unk48 = 0;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case REGULATION_BATTLE_DOUBLE:
         pokeList->unk48 = 1;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case REGULATION_BATTLE_TRIPLE:
         pokeList->unk48 = 1;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case REGULATION_BATTLE_ROTATION:
         pokeList->unk48 = 1;
-        pokeList->partnerCount = 1;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_ONE_TEAM;
         break;
     case REGULATION_BATTLE_MULTI:
         pokeList->unk48 = 2;
-        pokeList->partnerCount = 2;
+        pokeList->partnerLayout = POKELIST_PARTNER_LAYOUT_THREE_TEAMS;
         break;
     }
     pokeList->item = 0;

@@ -6,6 +6,12 @@
 // The party list's proc. The ROM doesn't name this file: it is named for the proc, which runs the list that
 // plist_sys.c sets up, updates and frees
 
+// The initialization of the proc
+enum {
+    POKELIST_PROC_INIT_ALLOCATE,
+    POKELIST_PROC_INIT_SCREEN,
+};
+
 static BOOL PokeListProc_Init(GameProc *proc, u32 *state, void *param, void *work);
 static void *PokeListProc_DeleteHeap(void *heapId, void *result);
 static BOOL PokeListProc_Exit(GameProc *proc, u32 *state, void *param, void *work);
@@ -24,13 +30,13 @@ static BOOL PokeListProc_Init(GameProc *proc, u32 *state, void *param, void *wor
     PokeListWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case POKELIST_PROC_INIT_ALLOCATE:
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_POKELIST, 0x30000);
         wk = GFL_ProcInitSubsystem(proc, sizeof(PokeListWork), HEAPID_POKELIST);
         wk->heapId = HEAPID_POKELIST;
         wk->param = param;
-        *state = 1;
-    case 1:
+        *state = POKELIST_PROC_INIT_SCREEN;
+    case POKELIST_PROC_INIT_SCREEN:
         if (PokeList_Init(wk) == TRUE) {
             return TRUE;
         }
