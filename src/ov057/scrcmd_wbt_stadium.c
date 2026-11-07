@@ -77,7 +77,7 @@ BOOL Scrcmd_WbtStadium_ShowOpponentLine7(VM *vm, FieldScriptEnv *env) {
     WordSet *wordSet = ScriptWork_GetWordSet(work);
     StrBuf *text = ScriptWork_GetAltStrBuf(work);
 
-    WbtBattle_LoadOpponentLine(sys, 7, text);
+    WbtBattle_LoadOpponentLine(sys, WBT_TRAINER_LINE_INTRODUCTION, text);
     WbtStadium_LoadRivalName(env, wordSet, 1);
     GFL_WordSetFormatStrbuf(wordSet, strbuf, text);
     return loadMsgBox(vm, env, strbuf, 0, value);
@@ -190,8 +190,8 @@ BOOL Scrcmd_WbtStadium_ListPartyPokemon(VM *vm, FieldScriptEnv *env) {
     StrBuf *text = ScriptWork_GetAltStrBuf(work);
     int count = WbtSystem_GetEntryCount(sys);
     PokeParty *party = WbtSystem_GetOpponentParty(sys);
-    u8 picked1 = WbtBattle_GetPick(sys, 2);
-    u8 picked2 = WbtBattle_GetPick(sys, 3);
+    u8 picked1 = WbtBattle_GetPick(sys, WBT_PICK_OPPONENT_FIRST);
+    u8 picked2 = WbtBattle_GetPick(sys, WBT_PICK_OPPONENT_SECOND);
     int i;
     u32 message;
     u16 value;
@@ -304,7 +304,7 @@ BOOL Scrcmd_WbtStadium_LoadPortraitScene(VM *vm, FieldScriptEnv *env) {
     u8 position = ScriptReadAny(vm, env);
     u8 side = ScriptReadAny(vm, env);
 
-    if (position >= 21) {
+    if (position >= WBT_STADIUM_PORTRAIT_POSITION_COUNT) {
         return FALSE;
     }
     WbtStadiumGimmick_LoadPortraitScene(field, position, side);

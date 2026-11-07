@@ -16,6 +16,31 @@ enum {
     WBT_STADIUM_NAMES_OPPONENT,
 };
 
+// The crowd animation groups, named by the actors they start.
+enum {
+    WBT_STADIUM_CROWD_ACTOR11 = 0,
+    WBT_STADIUM_CROWD_ACTOR12 = 1,
+    WBT_STADIUM_CROWD_ACTORS11_12_13 = 2,
+    WBT_STADIUM_CROWD_ACTOR14 = 3,
+};
+
+// The light actor pairs are 7/9 and 8/10; selection zero shows the second actor.
+enum {
+    WBT_STADIUM_LIGHT_PAIR_ODD = 0,
+    WBT_STADIUM_LIGHT_PAIR_EVEN = 1,
+};
+
+enum {
+    WBT_STADIUM_LIGHT_SECOND = 0,
+    WBT_STADIUM_LIGHT_FIRST = 1,
+};
+
+// Position 20 uses the separate single-portrait scene.
+enum {
+    WBT_STADIUM_PORTRAIT_SINGLE_POSITION = 20,
+    WBT_STADIUM_PORTRAIT_POSITION_COUNT = 21,
+};
+
 // Overlay 36's gimmick table calls the first three: setup, end and update of the gimmick
 void WbtStadiumGimmick_Setup(Field *field);
 void WbtStadiumGimmick_End(Field *field);

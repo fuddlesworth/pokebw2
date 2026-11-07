@@ -34,8 +34,8 @@ typedef struct {
     BOOL sceneLoaded;
     // Whether the intro of actor 5 is playing
     BOOL introPlaying;
-    u16 unk18;
-    u16 unk1A;
+    u16 portraitFile;
+    u16 playerPortraitFile;
     GFLBitmap *bitmap;
     NNSG2dCharacterData *character;
     NNSG2dPaletteData *palette;
@@ -48,6 +48,39 @@ typedef struct {
     u16 state;
     GimmickWork *work;
 } PortraitTaskData;
+
+enum {
+    STEP_WAIT_ANM,
+    STEP_END,
+};
+
+// Texture-table targets and the two portrait drawing sequences.
+enum {
+    NAME_PLATE_FIRST = 0,
+    NAME_PLATE_SECOND = 1,
+    NAME_PLATE_SINGLE = 2,
+};
+
+enum {
+    PORTRAIT_FIRST = 0,
+    PORTRAIT_SECOND = 1,
+    PORTRAIT_SINGLE = 2,
+};
+
+enum {
+    PORTRAITS_DRAW_FIRST = 0,
+    PORTRAITS_DRAW_SECOND = 1,
+    PORTRAITS_START_ANIMATION = 2,
+    PORTRAITS_WAIT_ANIMATION = 3,
+    PORTRAITS_END = 4,
+};
+
+enum {
+    PORTRAIT_DRAW = 0,
+    PORTRAIT_START_ANIMATION = 1,
+    PORTRAIT_WAIT_ANIMATION = 2,
+    PORTRAIT_END = 3,
+};
 
 static void WbtStadiumGimmick_LoadMainScene(GimmickWork *work);
 static void WbtStadiumGimmick_FreeScenes(GimmickWork *work);
@@ -147,15 +180,14 @@ void WbtStadiumGimmick_Update(Field *field) {
     WbtStadiumGimmick_UpdateAnimations(Field_GetGimmickWorkBlock(field, 1));
 }
 
-// Shows the Trainers' names on the plates (mode 0 for both, 1 and 2 for the player's alone) and, once the portraits
-// are drawn, sets the screens up
+// Sets the paired or single name plates and stores the portrait files for their drawing tasks
 void WbtStadiumGimmick_SetNames(Field *field, u8 mode, StrBuf *name, StrBuf *playerName, u16 file, u16 playerFile) {
     GimmickWork *work = Field_GetGimmickWorkBlock(field, 1);
     HeapID heapId = HEAPID_TAIL(work->heapId);
     Font *font;
 
-    work->unk18 = file;
-    work->unk1A = playerFile;
+    work->portraitFile = file;
+    work->playerPortraitFile = playerFile;
     FieldExpObj_SetActorHidden(work->expObj, 0, 0, TRUE);
     FieldExpObj_SetActorHidden(work->expObj, 0, 1, TRUE);
     FieldExpObj_SetActorHidden(work->expObj, 0, 2, TRUE);
@@ -163,12 +195,12 @@ void WbtStadiumGimmick_SetNames(Field *field, u8 mode, StrBuf *name, StrBuf *pla
     font = MsgBGPrinter_GetFont(Field_GetMsgBGSys(field));
     switch (mode) {
     case WBT_STADIUM_NAMES_BOTH:
-        WbtStadiumGimmick_DrawNamePlate(work, font, 0, name, heapId);
-        WbtStadiumGimmick_DrawNamePlate(work, font, 1, playerName, heapId);
+        WbtStadiumGimmick_DrawNamePlate(work, font, NAME_PLATE_FIRST, name, heapId);
+        WbtStadiumGimmick_DrawNamePlate(work, font, NAME_PLATE_SECOND, playerName, heapId);
         break;
     case WBT_STADIUM_NAMES_PLAYER:
     case WBT_STADIUM_NAMES_OPPONENT:
-        WbtStadiumGimmick_DrawNamePlate(work, font, 2, name, heapId);
+        WbtStadiumGimmick_DrawNamePlate(work, font, NAME_PLATE_SINGLE, name, heapId);
         break;
     }
 }
@@ -205,7 +237,7 @@ void WbtStadiumGimmick_LoadPortraitScene(Field *field, u8 position, u8 side) {
     FieldExpObjAnm *anm;
     SRTMatrix *matrix;
 
-    if (position == 20) {
+    if (position == WBT_STADIUM_PORTRAIT_SINGLE_POSITION) {
         WbtStadiumGimmick_LoadSinglePortraitScene(work, side);
         return;
     }
@@ -272,12 +304,12 @@ void WbtStadiumGimmick_SwitchLights(Field *field, u8 which, u8 pair) {
     u16 hidden;
     u16 shown;
 
-    if (pair == 0) {
-        hidden = which == 0 ? 7 : 9;
-        shown = which == 0 ? 9 : 7;
+    if (pair == WBT_STADIUM_LIGHT_PAIR_ODD) {
+        hidden = which == WBT_STADIUM_LIGHT_SECOND ? 7 : 9;
+        shown = which == WBT_STADIUM_LIGHT_SECOND ? 9 : 7;
     } else {
-        hidden = which == 0 ? 8 : 10;
-        shown = which == 0 ? 10 : 8;
+        hidden = which == WBT_STADIUM_LIGHT_SECOND ? 8 : 10;
+        shown = which == WBT_STADIUM_LIGHT_SECOND ? 10 : 8;
     }
     FieldExpObj_SetActorHidden(work->expObj, 0, shown, FALSE);
     FieldExpObj_SetActorHidden(work->expObj, 0, hidden, TRUE);
@@ -287,18 +319,18 @@ void WbtStadiumGimmick_PlayCrowd(Field *field, u8 which) {
     GimmickWork *work = Field_GetGimmickWorkBlock(field, 1);
 
     switch (which) {
-    case 0:
+    case WBT_STADIUM_CROWD_ACTOR11:
         WbtStadiumGimmick_StartAnmsActor11(work);
         break;
-    case 1:
+    case WBT_STADIUM_CROWD_ACTOR12:
         WbtStadiumGimmick_StartAnmsActor12(work);
         break;
-    case 2:
+    case WBT_STADIUM_CROWD_ACTORS11_12_13:
         WbtStadiumGimmick_StartAnmsActor11(work);
         WbtStadiumGimmick_StartAnmsActor12(work);
         WbtStadiumGimmick_StartAnmsActor13(work);
         break;
-    case 3:
+    case WBT_STADIUM_CROWD_ACTOR14:
         WbtStadiumGimmick_StartAnmsActor14(work);
         break;
     }
@@ -449,12 +481,12 @@ static void WbtStadiumGimmick_DrawNamePlate(GimmickWork *work, Font *font, u32 p
     G3DResource *tex;
 
     switch (plate) {
-    case 0:
-    case 1:
+    case NAME_PLATE_FIRST:
+    case NAME_PLATE_SECOND:
         x = 31;
         actor = 1;
         break;
-    case 2:
+    case NAME_PLATE_SINGLE:
         x = 38;
         actor = 3;
         break;
@@ -472,11 +504,11 @@ static void WbtStadiumGimmick_DrawPortrait(GimmickWork *work, u32 mode, u16 file
     G3DResource *tex;
 
     switch (mode) {
-    case 0:
-    case 1:
+    case PORTRAIT_FIRST:
+    case PORTRAIT_SECOND:
         actor = 0;
         break;
-    case 2:
+    case PORTRAIT_SINGLE:
         actor = 2;
         break;
     }
@@ -494,7 +526,7 @@ static void WbtStadiumGimmick_AddPortraitsTask(GimmickWork *work) {
     FieldTask *task = FieldTask_Create(heapId, sizeof(PortraitTaskData), WbtStadiumGimmick_PortraitsTask);
     PortraitTaskData *data = FieldTask_GetData(task);
 
-    data->state = 0;
+    data->state = PORTRAITS_DRAW_FIRST;
     data->work = work;
     FieldTaskManager_AddTask(manager, task, 0);
 }
@@ -505,27 +537,27 @@ static BOOL WbtStadiumGimmick_PortraitsTask(void *data) {
     FieldExpObjSystem *expObj = work->expObj;
 
     switch (task->state) {
-    case 0:
-        WbtStadiumGimmick_DrawPortrait(work, 0, work->unk18);
-        task->state = 1;
+    case PORTRAITS_DRAW_FIRST:
+        WbtStadiumGimmick_DrawPortrait(work, PORTRAIT_FIRST, work->portraitFile);
+        task->state = PORTRAITS_DRAW_SECOND;
         break;
-    case 1:
-        WbtStadiumGimmick_DrawPortrait(work, 1, work->unk1A);
-        task->state = 2;
+    case PORTRAITS_DRAW_SECOND:
+        WbtStadiumGimmick_DrawPortrait(work, PORTRAIT_SECOND, work->playerPortraitFile);
+        task->state = PORTRAITS_START_ANIMATION;
         break;
-    case 2:
+    case PORTRAITS_START_ANIMATION:
         WbtStadiumGimmick_StartAnm(expObj, 0, 0, TRUE);
         WbtStadiumGimmick_StartAnm(expObj, 0, 1, FALSE);
-        task->state = 3;
+        task->state = PORTRAITS_WAIT_ANIMATION;
         break;
-    case 3:
+    case PORTRAITS_WAIT_ANIMATION:
         if (FieldExpObjAnm_IsPlaybackFinished(FieldExpObj_GetAnmInfo(expObj, 0, 0, 1)) == TRUE) {
             FieldExpObj_SetActorHidden(expObj, 0, 4, TRUE);
             FieldExpObj_SetActorHidden(expObj, 0, 1, FALSE);
-            task->state = 4;
+            task->state = PORTRAITS_END;
         }
         break;
-    case 4:
+    case PORTRAITS_END:
         return TRUE;
     }
     return FALSE;
@@ -537,7 +569,7 @@ static void WbtStadiumGimmick_AddPortraitTask(GimmickWork *work) {
     FieldTask *task = FieldTask_Create(heapId, sizeof(PortraitTaskData), WbtStadiumGimmick_PortraitTask);
     PortraitTaskData *data = FieldTask_GetData(task);
 
-    data->state = 0;
+    data->state = PORTRAIT_DRAW;
     data->work = work;
     FieldTaskManager_AddTask(manager, task, 0);
 }
@@ -548,23 +580,23 @@ static BOOL WbtStadiumGimmick_PortraitTask(void *data) {
     FieldExpObjSystem *expObj = work->expObj;
 
     switch (task->state) {
-    case 0:
-        WbtStadiumGimmick_DrawPortrait(work, 2, work->unk18);
-        task->state = 1;
+    case PORTRAIT_DRAW:
+        WbtStadiumGimmick_DrawPortrait(work, PORTRAIT_SINGLE, work->portraitFile);
+        task->state = PORTRAIT_START_ANIMATION;
         break;
-    case 1:
+    case PORTRAIT_START_ANIMATION:
         WbtStadiumGimmick_StartAnm(expObj, 2, 0, TRUE);
         WbtStadiumGimmick_StartAnm(expObj, 2, 1, FALSE);
         FieldExpObj_SetActorHidden(expObj, 0, 4, TRUE);
-        task->state = 2;
+        task->state = PORTRAIT_WAIT_ANIMATION;
         break;
-    case 2:
+    case PORTRAIT_WAIT_ANIMATION:
         if (FieldExpObjAnm_IsPlaybackFinished(FieldExpObj_GetAnmInfo(expObj, 0, 2, 1)) == TRUE) {
             FieldExpObj_SetActorHidden(expObj, 0, 3, FALSE);
-            task->state = 3;
+            task->state = PORTRAIT_END;
         }
         break;
-    case 3:
+    case PORTRAIT_END:
         return TRUE;
     }
     return FALSE;
@@ -741,15 +773,10 @@ static void WbtStadiumGimmick_AddEndTask(GimmickWork *work) {
     FieldTask *task = FieldTask_Create(heapId, sizeof(PortraitTaskData), WbtStadiumGimmick_EndTask);
     PortraitTaskData *data = FieldTask_GetData(task);
 
-    data->state = 0;
+    data->state = STEP_WAIT_ANM;
     data->work = work;
     FieldTaskManager_AddTask(manager, task, 0);
 }
-
-enum {
-    STEP_WAIT_ANM,
-    STEP_END,
-};
 
 static BOOL WbtStadiumGimmick_EndTask(void *data) {
     PortraitTaskData *task = data;

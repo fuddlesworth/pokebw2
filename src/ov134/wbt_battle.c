@@ -1,5 +1,7 @@
 #include "field/wbt_battle.h"
 #include "types.h"
+#include "app/comm_btl_demo.h"
+#include "battle/btl_result.h"
 #include "battle/btl_setup.h"
 #include "battle/trainer_data.h"
 #include "constants/arc.h"
@@ -90,15 +92,15 @@ static u16 *WbtBattle_GetDownloadedLine(WbtSystem *sys, u8 round, u32 index, u16
 void WbtBattle_SwapPickedPokemon(WbtSystem *sys) {
     HeapID heapId = HEAPID_TAIL(sys->heapId);
     PartyPkm *tmp = GFL_HeapAllocate(heapId, PokeParty_GetPkmRawSize(), FALSE, "wbt_battle.c", 251);
-    PartyPkm *first = PokeParty_GetPkm(sys->playerParty, sys->picks[0]);
-    PartyPkm *second = PokeParty_GetPkm(sys->opponentParty, sys->picks[2]);
+    PartyPkm *first = PokeParty_GetPkm(sys->playerParty, sys->picks[WBT_PICK_PLAYER_FIRST]);
+    PartyPkm *second = PokeParty_GetPkm(sys->opponentParty, sys->picks[WBT_PICK_OPPONENT_FIRST]);
 
     copyPartyPkm(first, tmp);
     copyPartyPkm(second, first);
     copyPartyPkm(tmp, second);
-    if (sys->style == 2) {
-        first = PokeParty_GetPkm(sys->playerParty, sys->picks[1]);
-        second = PokeParty_GetPkm(sys->opponentParty, sys->picks[3]);
+    if (sys->style == WBT_STYLE_TRIPLE) {
+        first = PokeParty_GetPkm(sys->playerParty, sys->picks[WBT_PICK_PLAYER_SECOND]);
+        second = PokeParty_GetPkm(sys->opponentParty, sys->picks[WBT_PICK_OPPONENT_SECOND]);
         copyPartyPkm(first, tmp);
         copyPartyPkm(second, first);
         copyPartyPkm(tmp, second);
@@ -110,10 +112,10 @@ void WbtBattle_SwapPickedPokemon(WbtSystem *sys) {
 
 void WbtBattle_ResetPicks(WbtSystem *sys) {
     PokeParty_Copy(sys->initialParty, sys->playerParty);
-    sys->picks[0] = GFL_RandomLC(WbtSystem_GetEntryCount(sys));
-    sys->picks[1] = WBT_PICK_NONE;
-    sys->picks[2] = WBT_PICK_NONE;
-    sys->picks[3] = WBT_PICK_NONE;
+    sys->picks[WBT_PICK_PLAYER_FIRST] = GFL_RandomLC(WbtSystem_GetEntryCount(sys));
+    sys->picks[WBT_PICK_PLAYER_SECOND] = WBT_PICK_NONE;
+    sys->picks[WBT_PICK_OPPONENT_FIRST] = WBT_PICK_NONE;
+    sys->picks[WBT_PICK_OPPONENT_SECOND] = WBT_PICK_NONE;
 }
 
 void WbtBattle_SetPick(WbtSystem *sys, u32 index, u8 value) {
@@ -125,19 +127,19 @@ void WbtBattle_RandomPick(WbtSystem *sys, u32 index) {
     u8 value;
 
     switch (index) {
-    case 0:
-    case 2:
+    case WBT_PICK_PLAYER_FIRST:
+    case WBT_PICK_OPPONENT_FIRST:
         value = GFL_RandomLC(count);
         break;
-    case 1:
+    case WBT_PICK_PLAYER_SECOND:
         value = GFL_RandomLC(count - 1);
-        if (value >= sys->picks[0]) {
+        if (value >= sys->picks[WBT_PICK_PLAYER_FIRST]) {
             value = value + 1;
         }
         break;
-    case 3:
+    case WBT_PICK_OPPONENT_SECOND:
         value = GFL_RandomLC(count - 1);
-        if (value >= sys->picks[2]) {
+        if (value >= sys->picks[WBT_PICK_OPPONENT_FIRST]) {
             value = value + 1;
         }
         break;
@@ -174,8 +176,8 @@ void WbtBattle_ShowPartyList(WbtPartyList *list) {
 
     list->window = FieldMsgBG_CreateMoneyWin(list->msgBGSys, list->msgData, 1, 7, 11, ((size + 7) & ~7) / 8);
     count = WbtSystem_GetEntryCount(list->sys);
-    picked1 = WbtBattle_GetPick(list->sys, 0);
-    picked2 = WbtBattle_GetPick(list->sys, 1);
+    picked1 = WbtBattle_GetPick(list->sys, WBT_PICK_PLAYER_FIRST);
+    picked2 = WbtBattle_GetPick(list->sys, WBT_PICK_PLAYER_SECOND);
     for (i = 0; i < count; i++) {
         u16 message = 54;
         PartyPkm *pkm = PokeParty_GetPkm(party, i);
@@ -343,7 +345,7 @@ static void WbtBattle_MakeTournamentPokemon(BSubwayPokemon *dest, u32 tournament
     u16 files[6];
     int i;
 
-    if (WbtEntrant_HasSpecialPokemon(entrant) == 1) {
+    if (WbtEntrant_HasSpecialPokemon(entrant) == TRUE) {
         u16 file;
 
         trainerFile = BtlInst_LoadTrainerData(arc, trainer, heapId);
@@ -383,7 +385,7 @@ void WbtBattle_MakeOpponentParty(WbtSystem *sys, GameSystem *gsys, const WbtEntr
     u32 count = WbtSystem_GetEntryCount(sys);
 
     switch (opponent->kind) {
-    case 0:
+    case WBT_ENTRANT_KIND_TABLE:
         if (opponent->trainerClass == TRAINER_CLASS_PKMN_TRAINER_RIVAL) {
             TrainerUtil_LoadParty(WbtBattle_GetRivalTrainerId(gsys), sys->opponentParty, heapId);
             return;
@@ -392,11 +394,11 @@ void WbtBattle_MakeOpponentParty(WbtSystem *sys, GameSystem *gsys, const WbtEntr
         WbtBattle_MakeTournamentParty(sys->opponentParty, (WbtEntrant *)opponent, WbtSystem_GetTournament(sys), count,
                                       heapId);
         return;
-    case 1:
-    case 2:
+    case WBT_ENTRANT_KIND_DOWNLOADED:
+    case WBT_ENTRANT_KIND_DOWNLOADED_TABLE:
         WbtBattle_MakeDownloadedParty(sys->opponentParty, &sys->download, opponent->downloadedRound, count, heapId);
         break;
-    case 3:
+    case WBT_ENTRANT_KIND_PLAYER:
         break;
     }
 }
@@ -430,7 +432,7 @@ BtlSetup *WbtBattle_SetupBattle(WbtSystem *sys, GameSystem *gsys) {
     WbtEntrant *opponent = WbtBattle_GetOpponent(sys);
     BtlSetup *setup = BtlSetup_SetTrainerRental(gsys, sys->playerParty, mode);
 
-    if (WbtSystem_GetTournament(sys) != 11) {
+    if (WbtSystem_GetTournament(sys) != WBT_TOURNAMENT_DRIFTVEIL_FIRST) {
         PokeRegulation_ApplyLevelToParty(WbtSystem_GetRegulation(sys), setup->party[0]);
     }
     WbtBattle_SetBattleTrainer(setup->trainers[1], opponent);
@@ -439,17 +441,17 @@ BtlSetup *WbtBattle_SetupBattle(WbtSystem *sys, GameSystem *gsys) {
     setup->trainerNames[1] = opponent->className;
     sys->trainerLoseMsg = GFL_StrBufCreate(0x130, sys->heapId);
     sys->trainerWinMsg = GFL_StrBufCreate(0x130, sys->heapId);
-    WbtBattle_LoadOpponentLine(sys, 3, sys->trainerLoseMsg);
-    WbtBattle_LoadOpponentLine(sys, 4, sys->trainerWinMsg);
+    WbtBattle_LoadOpponentLine(sys, WBT_TRAINER_LINE_DEFEAT, sys->trainerLoseMsg);
+    WbtBattle_LoadOpponentLine(sys, WBT_TRAINER_LINE_VICTORY, sys->trainerWinMsg);
     BtlSetup_SetLines(setup, sys->trainerLoseMsg, sys->trainerWinMsg);
     WbtBattle_GetBattleMusic(sys, &setup->fieldSituation.bgm, &setup->fieldSituation.winBgm);
-    if (WbtSystem_GetTournament(sys) == 3 && sys->download.tournament.isWcs == 1) {
+    if (WbtSystem_GetTournament(sys) == WBT_TOURNAMENT_DOWNLOADED && sys->download.tournament.isWcs == TRUE) {
         setup->fieldSituation.env.bgType = 0x12;
         setup->fieldSituation.env.terrain = 0xe;
     } else {
         setup->fieldSituation.env.bgType = 0x13;
         setup->fieldSituation.env.terrain = 0xe;
-        if (WbtSystem_GetRound(sys) == 4) {
+        if (WbtSystem_GetRound(sys) == WBT_ROUND_FINAL) {
             setup->unkDD_6 = TRUE;
         }
     }
@@ -472,7 +474,7 @@ static int WbtBattle_CountRemainingPokemon(PokeParty *party, const u8 *slots) {
     int i;
 
     for (i = 0; i < 6; i++) {
-        if (slots[i] == 2) {
+        if (slots[i] == COMM_BTL_DEMO_POKE_FAINTED) {
             fainted++;
         }
     }
@@ -484,13 +486,13 @@ static u8 WbtBattle_GetRoundSlot(u32 round) {
     u32 slot = 0;
 
     switch (round) {
-    case 2:
+    case WBT_ROUND_FIRST:
         slot = 2;
         break;
-    case 3:
+    case WBT_ROUND_SEMIFINAL:
         slot = 1;
         break;
-    case 4:
+    case WBT_ROUND_FINAL:
         break;
     }
     return slot;
@@ -515,18 +517,18 @@ void WbtBattle_EndBattle(WbtSystem *sys, GameData *gameData, BtlSetup *setup) {
     WbtBattle_CountRemainingPokemon(setup->party[1], setup->monStatus[1]);
     WbtBattle_SetRoundRemaining(sys, sys->round, WbtBattle_CountRemainingPokemon(setup->party[0], setup->monStatus[0]));
     switch (result) {
-    case 0:
-    case 1:
-    case 2:
+    case BTL_RESULT_DEFEAT:
+    case BTL_RESULT_VICTORY:
+    case BTL_RESULT_DRAW:
         break;
-    case 3:
+    case BTL_RESULT_FLEE:
     default:
-        result = 0;
+        result = BTL_RESULT_DEFEAT;
         break;
     }
     opponent = WbtBattle_GetOpponent(sys);
     save = GameData_GetWbtSave(gameData);
-    if (sys->tournament != 3 && opponent->trainerId < 54) {
+    if (sys->tournament != WBT_TOURNAMENT_DOWNLOADED && opponent->trainerId < 54) {
         u8 slot = WbtBattle_GetRoundSlot(sys->round);
 
         if (opponent->trainerId == 53) {
@@ -535,10 +537,10 @@ void WbtBattle_EndBattle(WbtSystem *sys, GameData *gameData, BtlSetup *setup) {
             WbtSave_SetSlot(save, slot, opponent->trainerId);
         }
         WbtSave_SetTrainerBeaten(save, opponent->trainerId);
-    } else if (sys->tournament == 11 && opponent->trainerId == 56) {
+    } else if (sys->tournament == WBT_TOURNAMENT_DRIFTVEIL_FIRST && opponent->trainerId == 56) {
         WbtSave_SetTrainerBeaten(save, 0);
     }
-    if (result == 0 || sys->clearOpponentSlots == 1) {
+    if (result == BTL_RESULT_DEFEAT || sys->clearOpponentSlots == TRUE) {
         for (i = 0; i < 3; i++) {
             WbtSave_SetSlot(save, i, 0xff);
         }
@@ -569,23 +571,23 @@ static void WbtBattle_GetBattleMusic(WbtSystem *sys, u16 *bgm, u16 *winBgm) {
     u32 kind = WbtEntrant_GetKind(opponent);
     WbtTrainer trainer;
 
-    if (sys->tournament == 3 && sys->download.tournament.isWcs != 0) {
+    if (sys->tournament == WBT_TOURNAMENT_DOWNLOADED && sys->download.tournament.isWcs != 0) {
         *bgm = SEQ_BGM_VS_WCS;
         *winBgm = SEQ_BGM_WIN5;
         return;
     }
     switch (kind) {
-    case 1:
+    case WBT_ENTRANT_KIND_DOWNLOADED:
     default:
         *bgm = SEQ_BGM_VS_WBT;
         *winBgm = SEQ_BGM_WIN_WBT;
         return;
-    case 0:
-    case 2:
+    case WBT_ENTRANT_KIND_TABLE:
+    case WBT_ENTRANT_KIND_DOWNLOADED_TABLE:
         WbtTrainers_Get(sys->trainers, opponent->trainerId, &trainer);
         *bgm = trainer.bgm;
         *winBgm = trainer.winBgm;
-        if (sys->round == 4 && sys->tournament != 1) {
+        if (sys->round == WBT_ROUND_FINAL && sys->tournament != WBT_TOURNAMENT_CHAMPIONS) {
             *bgm = SEQ_BGM_VS_WBT;
             *winBgm = SEQ_BGM_WIN_WBT;
         }
@@ -600,7 +602,7 @@ static void WbtBattle_LoadTrainerLine(StrBuf *strbuf, HeapID heapId, u32 tournam
     MsgData *msgData;
     u16 message;
 
-    if (tournament - 12 <= 1) {
+    if (tournament - WBT_TOURNAMENT_RENTAL <= 1) {
         version = 1;
     }
     trainer = WbtEntrant_GetTrainerId(entrant);
@@ -620,27 +622,27 @@ static u16 *WbtBattle_GetDownloadedLine(WbtSystem *sys, u8 round, u32 index, u16
 
     *messageSet = 1;
     switch (index) {
-    case 0:
-    case 1:
-    case 2:
+    case WBT_TRAINER_LINE_FIRST_ROUND:
+    case WBT_TRAINER_LINE_SECOND_ROUND:
+    case WBT_TRAINER_LINE_FINAL_ROUND:
         *messageSet = trainer->messageSets[0];
         line = trainer->lines[0];
         break;
-    case 3:
+    case WBT_TRAINER_LINE_DEFEAT:
         *messageSet = trainer->messageSets[3];
         break;
-    case 4:
+    case WBT_TRAINER_LINE_VICTORY:
         *messageSet = trainer->messageSets[4];
         break;
-    case 5:
+    case WBT_TRAINER_LINE_AFTER_DEFEAT:
         *messageSet = trainer->messageSets[1];
         line = trainer->lines[1];
         break;
-    case 6:
+    case WBT_TRAINER_LINE_AFTER_VICTORY:
         *messageSet = trainer->messageSets[2];
         line = trainer->lines[2];
         break;
-    case 7:
+    case WBT_TRAINER_LINE_INTRODUCTION:
         *messageSet = trainer->messageSets[5];
         line = trainer->lines[3];
         break;
@@ -658,15 +660,15 @@ void WbtBattle_LoadOpponentLine(WbtSystem *sys, int index, StrBuf *strbuf) {
     WbtEntrant *opponent = WbtBattle_GetOpponent(sys);
     u32 kind = WbtEntrant_GetKind(opponent);
 
-    if (index >= 8) {
+    if (index >= WBT_TRAINER_LINE_COUNT) {
         return;
     }
     switch (kind) {
-    case 0:
+    case WBT_ENTRANT_KIND_TABLE:
     default:
         WbtBattle_LoadTrainerLine(strbuf, heapId, sys->tournament, opponent, index);
         return;
-    case 2: {
+    case WBT_ENTRANT_KIND_DOWNLOADED_TABLE: {
         u32 round = WbtEntrant_GetDownloadedRound(opponent);
         u16 messageSet = 1;
         u16 *line = WbtBattle_GetDownloadedLine(sys, round, index, &messageSet);
@@ -678,7 +680,7 @@ void WbtBattle_LoadOpponentLine(WbtSystem *sys, int index, StrBuf *strbuf) {
         }
         return;
     }
-    case 1: {
+    case WBT_ENTRANT_KIND_DOWNLOADED: {
         u32 round = WbtEntrant_GetDownloadedRound(opponent);
         u16 messageSet = 1;
         u32 set;
@@ -690,7 +692,7 @@ void WbtBattle_LoadOpponentLine(WbtSystem *sys, int index, StrBuf *strbuf) {
             MsgData *msgData =
                 GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_TRAINER_MESSAGES_2, heapId);
 
-            GFL_MsgDataLoadStrbuf(msgData, (u16)((set - 1) * 8 + index), strbuf);
+            GFL_MsgDataLoadStrbuf(msgData, (u16)((set - 1) * WBT_TRAINER_LINE_COUNT + index), strbuf);
             GFL_MsgDataFree(msgData);
         }
         return;
