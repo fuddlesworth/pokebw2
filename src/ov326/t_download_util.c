@@ -126,12 +126,12 @@ static const s16 sTDownloadSelectMenuMsgs[] = { 0x2d, 0x2e, -1, -1 };
 
 static const TDownloadBGRes sTDownloadModeBGChars[] = {
     { 2, 4, 0 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 static const TDownloadBGRes sTDownloadModeBGScreens[] = {
     { 2, 0xc, 0 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 static const TouchRect sTDownloadReceivedTouchRects[] = {
@@ -168,7 +168,7 @@ static const TDownloadActorRes sTDownloadObjActorRes = {
 static const TDownloadBGRes sTDownloadBGPltts[] = {
     { 4, 1, 0, 4 },
     { 0, 0, 0, 5 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 // clang-format off
@@ -177,7 +177,7 @@ static const TDownloadBGRes sTDownloadBGScreens[] = {
     { 6, 0xe, 0 },
     { 3, 8, 0 },
     { 1, 9, 0 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 // clang-format on
@@ -190,7 +190,7 @@ static const TDownloadBGRes sTDownloadBGChars[] = {
     { 6, 5, 0 },
     { 3, 4, 0 },
     { 1, 4, 0 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 // clang-format on
@@ -245,7 +245,7 @@ static const TDownloadWindowData sTDownloadSavedWindows[] = {
     { 2, 3, 5, 0x1c, 3, 2 },
     { 2, 3, 0xa, 0x1c, 3, 2 },
     { 2, 3, 0xf, 0x1c, 3, 2 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 // clang-format off
@@ -264,7 +264,7 @@ static const TDownloadWindowData sTDownloadReceivedWindows[] = {
     { 0, 2, 0xb, 0x1c, 2, 3 },
     { 0, 2, 0xe, 0x1c, 2, 3 },
     { 0, 2, 0x11, 0x1c, 2, 3 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 // clang-format on
@@ -312,7 +312,7 @@ static const TDownloadActorData sTDownloadObjActors[] = {
     { 0xa, 0x30, 3, FALSE, 0, 1, 0x1b },
     { 0xa, 0x30, 3, FALSE, 0, 1, 0x1c },
     { 0xa, 0x30, 3, FALSE, 0, 1, 0x1d },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 // clang-format on
@@ -337,13 +337,9 @@ static const TDownloadWindowData *sTDownloadModeWindows[T_DOWNLOAD_MODE_COUNT] =
 };
 
 static const TDownloadActorData sTDownloadButtonActors[] = {
-    { 4, 0x30, 1, TRUE, 0, 1, 7 },
-    { 5, 0x30, 1, TRUE, 0, 1, 8 },
-    { 0, 0x30, 1, TRUE, 0, 1, 9 },
-    { 1, 0x30, 1, TRUE, 0, 1, 10 },
-    { 2, 0x30, 1, FALSE, 0, 1, 7 },
-    { 3, 0x30, 1, FALSE, 0, 1, 8 },
-    { 0xff },
+    { 4, 0x30, 1, TRUE, 0, 1, 7 },  { 5, 0x30, 1, TRUE, 0, 1, 8 },  { 0, 0x30, 1, TRUE, 0, 1, 9 },
+    { 1, 0x30, 1, TRUE, 0, 1, 10 }, { 2, 0x30, 1, FALSE, 0, 1, 7 }, { 3, 0x30, 1, FALSE, 0, 1, 8 },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 static const TouchRect *sTDownloadTouchRects[T_DOWNLOAD_MODE_COUNT] = {
@@ -371,7 +367,7 @@ static const TDownloadWindowData sTDownloadWindows[] = {
     { 0, 1, 0, 0x1e, 3, 7 },
     { 0, 1, 4, 0x1e, 4, 9 },
     { 0, 1, 0x13, 0x1e, 4, 9 },
-    { 0xff },
+    { T_DOWNLOAD_TABLE_END },
 };
 
 // clang-format on
@@ -403,21 +399,21 @@ static void TDownloadUtil_LoadBG(TDownloadWork *wk) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_T_DOWNLOAD, wk->heapId);
 
     for (i = 0; i < 8; i++) {
-        if (pltts->bg == 0xff) {
+        if (pltts->bg == T_DOWNLOAD_TABLE_END) {
             break;
         }
         GFL_G2DIOLoadArcNCLRDefault(arc, pltts->file, pltts->bg, pltts->offset, pltts->size * 32, wk->heapId);
         pltts++;
     }
     for (i = 0; i < 8; i++) {
-        if (chars->bg == 0xff) {
+        if (chars->bg == T_DOWNLOAD_TABLE_END) {
             break;
         }
         GFL_BGSysLoadArcNCGRStatic(arc, chars->file, chars->bg, chars->offset, 0, FALSE, wk->heapId);
         chars++;
     }
     for (i = 0; i < 8; i++) {
-        if (screens->bg == 0xff) {
+        if (screens->bg == T_DOWNLOAD_TABLE_END) {
             break;
         }
         loadBGScrToVramByFileNoReserveNegAlign(arc, screens->file, screens->bg, screens->offset, 0, FALSE, wk->heapId);
@@ -433,14 +429,14 @@ void TDownloadUtil_LoadModeBG(TDownloadWork *wk, int mode) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_T_DOWNLOAD, wk->heapId);
 
     for (i = 0; i < 8; i++) {
-        if (chars->bg == 0xff) {
+        if (chars->bg == T_DOWNLOAD_TABLE_END) {
             break;
         }
         GFL_BGSysLoadArcNCGRStatic(arc, chars->file, chars->bg, chars->offset, 0, FALSE, wk->heapId);
         chars++;
     }
     for (i = 0; i < 8; i++) {
-        if (screens->bg == 0xff) {
+        if (screens->bg == T_DOWNLOAD_TABLE_END) {
             break;
         }
         loadBGScrToVramByFileNoReserveNegAlign(arc, screens->file, screens->bg, screens->offset, 0, FALSE, wk->heapId);
@@ -455,7 +451,7 @@ static void TDownloadUtil_InitWindows(TDownloadWork *wk) {
     ArcTool *arc;
 
     for (i = 0; i < T_DOWNLOAD_WINDOW_COUNT; i++) {
-        if (data->bg == 0xff) {
+        if (data->bg == T_DOWNLOAD_TABLE_END) {
             break;
         }
         wk->windows[i].window =
@@ -507,7 +503,7 @@ void TDownloadUtil_InitModeWindows(TDownloadWork *wk, int mode) {
     int first = sTDownloadModeWindowRanges[mode][0];
 
     for (i = 0; i < T_DOWNLOAD_WINDOW_COUNT; i++) {
-        if (data->bg == 0xff) {
+        if (data->bg == T_DOWNLOAD_TABLE_END) {
             break;
         }
         wk->windows[first + i].window =
@@ -560,7 +556,7 @@ static void TDownloadUtil_CreateActors(TDownloadWork *wk, u32 surface, const TDo
         actors = wk->buttons;
     }
     for (i = 0; i < count; i++) {
-        if (data->anim == 0xff) {
+        if (data->anim == T_DOWNLOAD_TABLE_END) {
             break;
         }
         pos = data->pos * 2;
@@ -725,7 +721,7 @@ void TDownloadUtil_InitTaskMenu(TDownloadWork *wk, int type) {
         wk->menuItems[i].str = GFL_StrBufCreate(100, wk->heapId);
         GFL_MsgDataLoadStrbuf(wk->msgData[0], msgs[i], wk->menuItems[i].str);
         wk->menuItems[i].color = 0x39e0;
-        if (i == 2) {
+        if (i == T_DOWNLOAD_MENU_RETURN_ITEM) {
             wk->menuItems[i].type = APP_TASKMENU_ITEM_RETURN;
         } else {
             wk->menuItems[i].type = 0;
@@ -746,13 +742,13 @@ void TDownloadUtil_FreeTaskMenu(TDownloadWork *wk) {
 
 int TDownloadUtil_UpdateTaskMenu(TDownloadWork *wk) {
     if (wk->taskMenu == NULL) {
-        return -1;
+        return T_DOWNLOAD_MENU_PENDING;
     }
     AppTaskMenu_Update(wk->taskMenu);
     if (AppTaskMenu_IsFlashFinished(wk->taskMenu)) {
         return AppTaskMenu_GetCursorPos(wk->taskMenu);
     }
-    return -1;
+    return T_DOWNLOAD_MENU_PENDING;
 }
 
 static void TDownloadUtil_PrintStream(TDownloadWork *wk, int window, int message) {
@@ -803,10 +799,10 @@ void TDownloadUtil_PrintMessage(TDownloadWork *wk, int window, u32 message, BOOL
     BmpWin_FlushChar(wk->windows[window].window);
     if (stream == FALSE) {
         switch (message) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
+        case T_DOWNLOAD_MESSAGE_ENTER_PROMPT:
+        case T_DOWNLOAD_MESSAGE_ACTIONS_PROMPT:
+        case T_DOWNLOAD_MESSAGE_DELETE_PROMPT:
+        case T_DOWNLOAD_MESSAGE_DELETE_CONFIRM:
             formatted = TRUE;
             break;
         }
@@ -820,7 +816,7 @@ void TDownloadUtil_PrintMessage(TDownloadWork *wk, int window, u32 message, BOOL
         format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], sTDownloadMessages[message]);
         name = GFL_StrBufCreate(128, wk->heapId);
         strbuf = GFL_StrBufCreate(128, wk->heapId);
-        TDownloadSave_LoadString(wk, record, 0, name);
+        TDownloadSave_LoadString(wk, record, T_DOWNLOAD_STRING_NAME, name);
         GFL_WordSetSetStrbuf(wk->wordSet, 0, name, 0, 1, 2);
         GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
         TDownloadUtil_Print(wk, window, 0, 0, strbuf, 0, 0x440);
@@ -832,20 +828,20 @@ void TDownloadUtil_PrintMessage(TDownloadWork *wk, int window, u32 message, BOOL
     }
 }
 
-void TDownloadUtil_PressButton(TDownloadWork *wk, int button, int dir) {
-    TDownloadUtil_SetActorAnim(wk, T_DOWNLOAD_ACTOR_BUTTON, button, sTDownloadButtonAnims[button * 4 + 1 + dir]);
-    if (dir == 0) {
+void TDownloadUtil_PressButton(TDownloadWork *wk, int button, int state) {
+    TDownloadUtil_SetActorAnim(wk, T_DOWNLOAD_ACTOR_BUTTON, button, sTDownloadButtonAnims[button * 4 + 1 + state]);
+    if (state == T_DOWNLOAD_BUTTON_STATE_PRESSED) {
         wk->objFlags |= 1 << button;
     }
 }
 
 void TDownloadUtil_ScrollBG(TDownloadWork *wk) {
     // The speed of the scroll, and where it wraps around
-    static const u16 scroll[] = { 0x40, 0x2000 };
+    static const u16 sTDownloadBGScroll[] = { 0x40, 0x2000 };
     int y;
 
-    wk->bgScroll += scroll[0];
-    if (wk->bgScroll >= scroll[1]) {
+    wk->bgScroll += sTDownloadBGScroll[0];
+    if (wk->bgScroll >= sTDownloadBGScroll[1]) {
         wk->bgScroll = 0;
     }
     y = -(u8)(wk->bgScroll >> 8);
@@ -854,8 +850,8 @@ void TDownloadUtil_ScrollBG(TDownloadWork *wk) {
 }
 
 void TDownloadUtil_PrintSlotInfo(TDownloadWork *wk, int type, int index) {
-    // Unused, and only here for the layout of .rodata. The first three are the messages the function prints
-    static const s16 unused[] = { 1, 2, 7, 0x24 };
+    // The first three messages are printed below; the fourth is unused and preserves .rodata layout
+    static const s16 messages[] = { 1, 2, 7, 0x24 };
     int i;
     StrBuf *name;
     StrBuf *buf;
@@ -863,7 +859,7 @@ void TDownloadUtil_PrintSlotInfo(TDownloadWork *wk, int type, int index) {
     StrBuf *strbuf;
     TDownloadTournament *data;
 
-    if (type == 0) {
+    if (type == T_DOWNLOAD_SOURCE_SAVED) {
         data = wk->savedData[index];
     } else {
         data = wk->receivedData[index];
@@ -873,34 +869,34 @@ void TDownloadUtil_PrintSlotInfo(TDownloadWork *wk, int type, int index) {
     }
     name = GFL_StrBufCreate(128, wk->heapId);
     buf = GFL_StrBufCreate(128, wk->heapId);
-    TDownloadSave_LoadString(wk, data, 0, name);
+    TDownloadSave_LoadString(wk, data, T_DOWNLOAD_STRING_NAME, name);
     GFL_WordSetSetStrbuf(wk->wordSet, 0, name, 0, 1, 2);
-    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], unused[0]);
+    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], messages[0]);
     GFL_WordSetFormatStrbuf(wk->wordSet, buf, format);
     TDownloadUtil_Print(wk, 0, 112, 0, buf, 2, 0x31a0);
     GFL_StrBufFree(name);
     GFL_StrBufFree(format);
     GFL_StrBufFree(buf);
 
-    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], unused[1]);
+    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], messages[1]);
     TDownloadUtil_Print(wk, 1, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
-    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], sTDownloadRulesMsgs[data->rules & 3]);
+    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], sTDownloadRulesMsgs[data->battleType & 3]);
     TDownloadUtil_Print(wk, 2, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
     strbuf = GFL_StrBufCreate(256, wk->heapId);
-    TDownloadSave_LoadString(wk, data, 2, strbuf);
+    TDownloadSave_LoadString(wk, data, T_DOWNLOAD_STRING_TEXT, strbuf);
     TDownloadUtil_Print(wk, 3, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
-    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], unused[2]);
+    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], messages[2]);
     TDownloadUtil_Print(wk, 4, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
     strbuf = GFL_StrBufCreate(256, wk->heapId);
-    TDownloadSave_LoadString(wk, data, 1, strbuf);
+    TDownloadSave_LoadString(wk, data, T_DOWNLOAD_STRING_AUTHOR, strbuf);
     TDownloadUtil_Print(wk, 5, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
     wk->record = data;
@@ -947,7 +943,7 @@ u32 TDownloadUtil_UpdateList(TDownloadWork *wk) {
 }
 
 int TDownloadUtil_ListResult(TDownloadWork *wk, u32 result) {
-    int handled = 0;
+    int handled = T_DOWNLOAD_LIST_NONE;
 
     switch (result) {
     case 0:
@@ -956,34 +952,34 @@ int TDownloadUtil_ListResult(TDownloadWork *wk, u32 result) {
     case 3:
     case 4:
     case 5:
-        handled = 2;
+        handled = T_DOWNLOAD_LIST_DECIDED;
         break;
     case FRAMELIST_PAGE_UP:
     case FRAMELIST_CURSOR_TOP:
-        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_UP, 0);
-        handled = 3;
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_UP, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+        handled = T_DOWNLOAD_LIST_ARROW;
         break;
     case FRAMELIST_PAGE_DOWN:
     case FRAMELIST_CURSOR_BOTTOM:
-        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_DOWN, 0);
-        handled = 3;
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_DOWN, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+        handled = T_DOWNLOAD_LIST_ARROW;
         break;
     case FRAMELIST_JUMP_TOP:
     case FRAMELIST_JUMP_BOTTOM:
-        handled = 4;
+        handled = T_DOWNLOAD_LIST_JUMPED;
         break;
     case FRAMELIST_CURSOR_MOVE:
     case FRAMELIST_SCROLL:
-        handled = 1;
+        handled = T_DOWNLOAD_LIST_MOVED;
         break;
     }
     // The empty first case is kept: written as one test of 2 or 4, the code comes out 2 bytes shorter, so the
     // original seems to have handled 1 here, perhaps with code compiled out of the release build
-    if (handled == 1) {
-    } else if (handled == 2) {
+    if (handled == T_DOWNLOAD_LIST_MOVED) {
+    } else if (handled == T_DOWNLOAD_LIST_DECIDED) {
         TDownloadUtil_SaveListState(wk);
         wk->objFlags |= T_DOWNLOAD_OBJ_FLAG_LIST_MOVED;
-    } else if (handled == 4) {
+    } else if (handled == T_DOWNLOAD_LIST_JUMPED) {
         TDownloadUtil_SaveListState(wk);
         wk->objFlags |= T_DOWNLOAD_OBJ_FLAG_LIST_MOVED;
     }
@@ -1037,7 +1033,7 @@ static void TDownloadUtil_PrintItemAt(TDownloadWork *wk, PrintWindow *window, Pr
 
     name = GFL_StrBufCreate(128, wk->heapId);
     buf = GFL_StrBufCreate(128, wk->heapId);
-    TDownloadSave_LoadString(wk, data, 0, name);
+    TDownloadSave_LoadString(wk, data, T_DOWNLOAD_STRING_NAME, name);
     GFL_WordSetSetStrbuf(wk->wordSet, 0, name, 0, 1, 2);
     format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], 1);
     GFL_WordSetFormatStrbuf(wk->wordSet, buf, format);
@@ -1056,7 +1052,7 @@ void TDownloadUtil_MoveCursor(TDownloadWork *wk, int type, int pos) {
     ClActorPos cursor;
     u32 index;
 
-    if (type == 0) {
+    if (type == T_DOWNLOAD_CURSOR_LIST) {
         cursor.x = TDownloadUtil_GetPosition(wk, (pos + 18) * 2);
         index = pos + 18;
         cursor.y = TDownloadUtil_GetPosition(wk, index * 2 + 1);
@@ -1182,7 +1178,7 @@ void TDownloadUtil_PrintDetails(TDownloadWork *wk, int type, int index, int tab)
     TDownloadTournament *data;
     u32 id;
 
-    if (type == 0) {
+    if (type == T_DOWNLOAD_SOURCE_SAVED) {
         data = wk->savedData[index];
     } else {
         data = wk->receivedData[index];
@@ -1214,14 +1210,14 @@ void TDownloadUtil_PrintDetails(TDownloadWork *wk, int type, int index, int tab)
             break;
         }
         format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], sTDownloadDetailMsgs[tab]);
-        if (tab == 0) {
-            id = TDownloadSave_GetEntry(wk, data, 0, offset + 1 + i);
+        if (tab == T_DOWNLOAD_TAB_BANNED_POKEMON) {
+            id = TDownloadSave_GetEntry(wk, data, T_DOWNLOAD_ENTRY_SPECIES, offset + 1 + i);
             WordSet_LoadSpeciesName(wk->wordSet, 0, (u16)id);
-        } else if (tab == 1) {
-            id = TDownloadSave_GetEntry(wk, data, 1, offset + 1 + i);
+        } else if (tab == T_DOWNLOAD_TAB_BANNED_ITEMS) {
+            id = TDownloadSave_GetEntry(wk, data, T_DOWNLOAD_ENTRY_ITEMS, offset + 1 + i);
             loadItemNameToStrbuf(wk->wordSet, 0, id);
         } else {
-            id = TDownloadSave_GetEntry(wk, data, 2, offset + 1 + i);
+            id = TDownloadSave_GetEntry(wk, data, T_DOWNLOAD_ENTRY_MOVE, offset + 1 + i);
             loadMoveNameToStrbuf(wk->wordSet, 0, id);
         }
         GFL_WordSetFormatStrbuf(wk->wordSet, buf, format);
@@ -1231,14 +1227,14 @@ void TDownloadUtil_PrintDetails(TDownloadWork *wk, int type, int index, int tab)
             break;
         }
         format2 = GFL_MsgDataLoadStrbufNew(wk->msgData[0], sTDownloadDetailMsgs[tab]);
-        if (tab == 0) {
-            id = TDownloadSave_GetEntry(wk, data, 0, (i + 2) + offset);
+        if (tab == T_DOWNLOAD_TAB_BANNED_POKEMON) {
+            id = TDownloadSave_GetEntry(wk, data, T_DOWNLOAD_ENTRY_SPECIES, (i + 2) + offset);
             WordSet_LoadSpeciesName(wk->wordSet, 0, (u16)id);
-        } else if (tab == 1) {
-            id = TDownloadSave_GetEntry(wk, data, 1, (i + 2) + offset);
+        } else if (tab == T_DOWNLOAD_TAB_BANNED_ITEMS) {
+            id = TDownloadSave_GetEntry(wk, data, T_DOWNLOAD_ENTRY_ITEMS, (i + 2) + offset);
             loadItemNameToStrbuf(wk->wordSet, 0, id);
         } else {
-            id = TDownloadSave_GetEntry(wk, data, 2, (i + 2) + offset);
+            id = TDownloadSave_GetEntry(wk, data, T_DOWNLOAD_ENTRY_MOVE, (i + 2) + offset);
             loadMoveNameToStrbuf(wk->wordSet, 0, id);
         }
         GFL_WordSetFormatStrbuf(wk->wordSet, buf, format2);
@@ -1257,14 +1253,14 @@ void TDownloadUtil_CountDetails(TDownloadWork *wk, int type, int index) {
     int i;
     TDownloadTournament *data;
 
-    if (type == 0) {
+    if (type == T_DOWNLOAD_SOURCE_SAVED) {
         data = wk->savedData[index];
     } else {
         data = wk->receivedData[index];
     }
-    wk->itemCount[0] = TDownloadSave_CountEntries(wk, data, 0);
-    wk->itemCount[1] = TDownloadSave_CountEntries(wk, data, 1);
-    wk->itemCount[2] = TDownloadSave_CountEntries(wk, data, 2);
+    wk->itemCount[T_DOWNLOAD_TAB_BANNED_POKEMON] = TDownloadSave_CountEntries(wk, data, T_DOWNLOAD_ENTRY_SPECIES);
+    wk->itemCount[T_DOWNLOAD_TAB_BANNED_ITEMS] = TDownloadSave_CountEntries(wk, data, T_DOWNLOAD_ENTRY_ITEMS);
+    wk->itemCount[T_DOWNLOAD_TAB_BANNED_MOVES] = TDownloadSave_CountEntries(wk, data, T_DOWNLOAD_ENTRY_MOVE);
     for (i = 0; i < T_DOWNLOAD_TABS; i++) {
         int count = wk->itemCount[i];
 
@@ -1394,7 +1390,7 @@ void TDownloadUtil_PrintSlotName(TDownloadWork *wk, int type, int slot) {
     StrBuf *buf;
     StrBuf *format;
 
-    if (type == 0) {
+    if (type == T_DOWNLOAD_SOURCE_SAVED) {
         data = wk->savedData[slot];
     } else {
         data = wk->receivedData[slot];
@@ -1402,7 +1398,7 @@ void TDownloadUtil_PrintSlotName(TDownloadWork *wk, int type, int slot) {
     TDownloadUtil_ClearWindow(wk, T_DOWNLOAD_WINDOW_SLOT + slot);
     name = GFL_StrBufCreate(128, wk->heapId);
     buf = GFL_StrBufCreate(128, wk->heapId);
-    TDownloadSave_LoadString(wk, data, 0, name);
+    TDownloadSave_LoadString(wk, data, T_DOWNLOAD_STRING_NAME, name);
     GFL_WordSetSetStrbuf(wk->wordSet, 0, name, 0, 1, 2);
     format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], 1);
     GFL_WordSetFormatStrbuf(wk->wordSet, buf, format);
@@ -1464,30 +1460,30 @@ static void TDownloadUtil_TransferTextPalette(TDownloadWork *wk, BOOL dim) {
 }
 
 void TDownloadUtil_UpdateArrows(TDownloadWork *wk, int type, int min, int max, int pos) {
-    if (type == 0) {
-        if (!(wk->objFlags & 3)) {
+    if (type == T_DOWNLOAD_ARROWS_LIST) {
+        if (!(wk->objFlags & T_DOWNLOAD_OBJ_FLAG_LIST_ARROWS)) {
             if (min >= pos) {
-                TDownloadUtil_PressButton(wk, 0, 1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_UP, T_DOWNLOAD_BUTTON_STATE_DISABLED);
             } else {
-                TDownloadUtil_PressButton(wk, 0, -1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_UP, T_DOWNLOAD_BUTTON_STATE_IDLE);
             }
             if (pos >= max) {
-                TDownloadUtil_PressButton(wk, 1, 1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_DOWN, T_DOWNLOAD_BUTTON_STATE_DISABLED);
             } else {
-                TDownloadUtil_PressButton(wk, 1, -1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_DOWN, T_DOWNLOAD_BUTTON_STATE_IDLE);
             }
         }
-    } else if (type == 1) {
-        if (!(wk->objFlags & 0x30)) {
+    } else if (type == T_DOWNLOAD_ARROWS_PAGES) {
+        if (!(wk->objFlags & T_DOWNLOAD_OBJ_FLAG_PAGE_ARROWS)) {
             if (min >= pos) {
-                TDownloadUtil_PressButton(wk, 5, 1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_DOWN, T_DOWNLOAD_BUTTON_STATE_DISABLED);
             } else {
-                TDownloadUtil_PressButton(wk, 5, -1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_DOWN, T_DOWNLOAD_BUTTON_STATE_IDLE);
             }
             if (pos >= max) {
-                TDownloadUtil_PressButton(wk, 4, 1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_UP, T_DOWNLOAD_BUTTON_STATE_DISABLED);
             } else {
-                TDownloadUtil_PressButton(wk, 4, -1);
+                TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_UP, T_DOWNLOAD_BUTTON_STATE_IDLE);
             }
         }
     }
@@ -1495,37 +1491,37 @@ void TDownloadUtil_UpdateArrows(TDownloadWork *wk, int type, int min, int max, i
 
 BOOL TDownloadUtil_IsButtonDone(TDownloadWork *wk, int noResult) {
     BOOL found = FALSE;
-    s16 button = 0;
+    s16 button = T_DOWNLOAD_BUTTON_UP;
     BOOL done = FALSE;
     u32 flags = wk->objFlags;
 
-    if (flags & 1) {
-        button = 0;
+    if (flags & T_DOWNLOAD_OBJ_FLAG_BUTTON_UP) {
+        button = T_DOWNLOAD_BUTTON_UP;
         found = TRUE;
-    } else if (flags & 2) {
-        button = 1;
+    } else if (flags & T_DOWNLOAD_OBJ_FLAG_BUTTON_DOWN) {
+        button = T_DOWNLOAD_BUTTON_DOWN;
         found = TRUE;
-    } else if (flags & 4) {
-        button = 2;
+    } else if (flags & T_DOWNLOAD_OBJ_FLAG_BUTTON_RETURN) {
+        button = T_DOWNLOAD_BUTTON_RETURN;
         found = TRUE;
-    } else if (flags & 8) {
-        button = 3;
+    } else if (flags & T_DOWNLOAD_OBJ_FLAG_BUTTON_X) {
+        button = T_DOWNLOAD_BUTTON_X;
         found = TRUE;
-    } else if (flags & 0x10) {
-        button = 4;
+    } else if (flags & T_DOWNLOAD_OBJ_FLAG_BUTTON_TAB_UP) {
+        button = T_DOWNLOAD_BUTTON_TAB_UP;
         found = TRUE;
-    } else if (flags & 0x20) {
-        button = 5;
+    } else if (flags & T_DOWNLOAD_OBJ_FLAG_BUTTON_TAB_DOWN) {
+        button = T_DOWNLOAD_BUTTON_TAB_DOWN;
         found = TRUE;
     }
     if (found == TRUE) {
         if (TDownloadUtil_IsActorAnimating(wk, T_DOWNLOAD_ACTOR_BUTTON, button) == FALSE) {
             wk->objFlags &= ~(1 << button);
             if (noResult == FALSE) {
-                if (button == 2 || button == 3) {
-                    if (button == 2) {
+                if (button == T_DOWNLOAD_BUTTON_RETURN || button == T_DOWNLOAD_BUTTON_X) {
+                    if (button == T_DOWNLOAD_BUTTON_RETURN) {
                         wk->objFlags |= T_DOWNLOAD_OBJ_FLAG_YES;
-                    } else if (button == 3) {
+                    } else if (button == T_DOWNLOAD_BUTTON_X) {
                         wk->objFlags |= T_DOWNLOAD_OBJ_FLAG_NO;
                     }
                 }

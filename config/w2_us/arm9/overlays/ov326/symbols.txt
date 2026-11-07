@@ -225,7 +225,7 @@ sWinRecordClActSetup kind:data(any) addr:0x021a3000
 sWinRecordVRAMConfig kind:data(any) addr:0x021a301c
 sWinRecordBGSetups kind:data(any) addr:0x021a304c
 T_DOWNLOAD_PROC_FUNCTIONS kind:data(any) addr:0x021a31ac
-data_ov326_021a3178 kind:data(any) addr:0x021a31b8
+sTDownloadBGScroll kind:data(any) addr:0x021a31b8
 sTDownloadSavedMenuMsgs kind:data(any) addr:0x021a31bc
 sTDownloadReceivedMenuMsgs kind:data(any) addr:0x021a31c4
 sTDownloadModeBGChars kind:data(any) addr:0x021a31cc

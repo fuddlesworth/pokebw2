@@ -22,7 +22,7 @@ int TDownloadUtil_UpdateTaskMenu(TDownloadWork *wk);
 BOOL TDownloadUtil_UpdateMessage(TDownloadWork *wk);
 void TDownloadUtil_ClearMessage(TDownloadWork *wk, BOOL clear);
 void TDownloadUtil_PrintMessage(TDownloadWork *wk, int window, u32 msgId, BOOL stream);
-void TDownloadUtil_PressButton(TDownloadWork *wk, int button, int dir);
+void TDownloadUtil_PressButton(TDownloadWork *wk, int button, int state);
 void TDownloadUtil_ScrollBG(TDownloadWork *wk);
 void TDownloadUtil_PrintSlotInfo(TDownloadWork *wk, int type, int index);
 void TDownloadUtil_InitList(TDownloadWork *wk, int mode);
