@@ -58,6 +58,36 @@ enum {
     BADGE_ACTOR_COUNT = BADGE_ACTOR_LEADER + BADGE_COUNT,
 };
 
+enum {
+    BADGE_MESSAGE_BADGE = 0,
+    BADGE_MESSAGE_LEADER = 1,
+};
+
+enum {
+    BADGE_SLIDE_BADGE_IN = 0,
+    BADGE_SLIDE_LEADER_IN = 1,
+    BADGE_SLIDE_BADGE_OUT = 2,
+    BADGE_SLIDE_LEADER_OUT = 3,
+};
+
+enum {
+    BADGE_BUTTON_CARD = 0,
+    BADGE_BUTTON_RETURN = 1,
+    BADGE_BUTTON_EXIT = 2,
+    BADGE_BUTTON_SHORTCUT = 3,
+};
+
+enum {
+    BADGE_VALUE_WINDOW_Y = 0,
+    BADGE_VALUE_LEADER_X = 1,
+    BADGE_VALUE_MODEL_X = 2,
+};
+
+enum {
+    BADGE_VALUE_FLAG_INITIALIZED = 1,
+    BADGE_VALUE_FLAG_FINISHED = 2,
+};
+
 // The actors' resources: the case's own and the touch bar's. The actor table's indices go on into the Gym Leaders'
 enum {
     BADGE_RES_PALETTE,
@@ -438,7 +468,7 @@ static void BadgeView_InitWork(BadgeViewWork *wk, TrainerCardParam *param) {
     wk->moveSeq = BADGE_MOVE_NONE;
     wk->flags = 0;
     wk->selected = 0;
-    wk->kind = 0;
+    wk->kind = BADGE_MESSAGE_BADGE;
     wk->scrollY = 0;
     wk->unk1E2 = 0;
     wk->msgPage = 0;
@@ -924,7 +954,7 @@ static void BadgeView_DrawMessage(BadgeViewWork *wk, int kind, int badge, int pa
 
     GFL_BitmapFill(BmpWin_GetBitmap(wk->win), 0);
     switch (kind) {
-    case 0: {
+    case BADGE_MESSAGE_BADGE: {
         TimeSigBadgeDate date = TimeSigSave_GetBadgeDate(wk->timeSig, badge);
 
         WordSetNumber(wk->wordSet, 0, date.year + 2000, 4, 0, TRUE);
@@ -939,7 +969,7 @@ static void BadgeView_DrawMessage(BadgeViewWork *wk, int kind, int badge, int pa
         }
         break;
     }
-    case 1:
+    case BADGE_MESSAGE_LEADER:
         BadgeView_PrintLeaderLine(wk, 0, 0, badge, strbuf);
         BadgeView_PrintLeaderLine(wk, page + 1, 1, badge, strbuf);
         break;
@@ -967,18 +997,18 @@ static int BadgeView_Input(BadgeViewWork *wk) {
     }
     if (!moving) {
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
-            if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + 1)))) {
+            if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + BADGE_BUTTON_RETURN)))) {
                 GFL_SndSEPlay(SEQ_SE_SW_CARD_04);
                 key = TRUE;
                 hit = BADGE_HIT_RETURN;
             }
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
-            if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + 2)))) {
+            if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + BADGE_BUTTON_EXIT)))) {
                 GFL_SndSEPlay(SEQ_SE_SW_CARD_05);
                 hit = BADGE_HIT_EXIT;
             }
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_Y) {
-            if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + 3)))) {
+            if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + BADGE_BUTTON_SHORTCUT)))) {
                 hit = BADGE_HIT_SHORTCUT;
             }
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
@@ -1016,15 +1046,15 @@ static void BadgeView_HandleHit(BadgeViewWork *wk, int hit, BOOL key) {
             }
             BadgeView_Stub(wk, hit);
             if (slide == TRUE) {
-                BadgeView_StartMove(wk, 0);
+                BadgeView_StartMove(wk, BADGE_SLIDE_BADGE_IN);
             }
             BadgeView_SelectLeader(wk, TRUE, hit);
             BadgeView_SetModelVisible(wk, TRUE);
             BadgeView_SetMessageVisible(wk, TRUE);
             wk->selected = hit;
-            wk->kind = 0;
+            wk->kind = BADGE_MESSAGE_BADGE;
             if (!slide) {
-                BadgeView_DrawMessage(wk, 0, hit, 0);
+                BadgeView_DrawMessage(wk, BADGE_MESSAGE_BADGE, hit, 0);
                 BadgeView_FlushWin(wk);
                 BadgeView_PlayBadgeSE(wk, wk->selected);
             }
@@ -1061,13 +1091,13 @@ static void BadgeView_HandleHit(BadgeViewWork *wk, int hit, BOOL key) {
                 BadgeView_SetPaletteAnime(wk, FALSE);
             }
             if (slide == TRUE) {
-                BadgeView_StartMove(wk, 1);
+                BadgeView_StartMove(wk, BADGE_SLIDE_LEADER_IN);
             }
             BadgeView_SetMessageVisible(wk, TRUE);
             wk->selected = badge;
-            wk->kind = 1;
+            wk->kind = BADGE_MESSAGE_LEADER;
             if (!slide) {
-                BadgeView_DrawMessage(wk, 1, badge, 0);
+                BadgeView_DrawMessage(wk, BADGE_MESSAGE_LEADER, badge, 0);
                 BadgeView_FlushWin(wk);
                 GFL_SndSEPlay(SEQ_SE_SW_CARD_22);
             }
@@ -1085,12 +1115,12 @@ static void BadgeView_HandleHit(BadgeViewWork *wk, int hit, BOOL key) {
         }
         break;
     case BADGE_HIT_SHORTCUT:
-        if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + 3)))) {
+        if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + BADGE_BUTTON_SHORTCUT)))) {
             BadgeView_ToggleShortcut(wk);
         }
         break;
     case BADGE_HIT_EXIT:
-        if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + 2)))) {
+        if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + BADGE_BUTTON_EXIT)))) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_05);
             wk->seq = BADGE_SEQ_BUTTON;
             wk->result = hit;
@@ -1108,12 +1138,12 @@ static void BadgeView_HandleHit(BadgeViewWork *wk, int hit, BOOL key) {
             } else {
                 GCTX_HIDSetUsingTouch(TRUE);
             }
-        } else if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + 1)))) {
+        } else if (!(wk->flags & (1 << (BADGE_FLAG_BUTTON_OFF_SHIFT + BADGE_BUTTON_RETURN)))) {
             // With a message open, the button closes it
             ClActor_SetSequence(wk->actors[BADGE_ACTOR_RETURN], 9);
-            move = 2;
+            move = BADGE_SLIDE_BADGE_OUT;
             if (wk->mode == BADGE_MODE_LEADER) {
-                move = 3;
+                move = BADGE_SLIDE_LEADER_OUT;
             }
             BadgeView_StartMove(wk, move);
             wk->mode = BADGE_MODE_NONE;
@@ -1225,7 +1255,7 @@ static void BadgeView_StartValue(BadgeViewWork *wk, int index, s16 from, s16 to,
         wk->values[index].to = to;
         wk->values[index].step = (to - from) * 100 / frames;
         wk->values[index].value = from * 100;
-        wk->values[index].flags = 1;
+        wk->values[index].flags = BADGE_VALUE_FLAG_INITIALIZED;
     }
 }
 
@@ -1234,8 +1264,8 @@ static int BadgeView_UpdateValue(BadgeViewWork *wk, int index) {
     s16 *flags = &wk->values[index].flags;
     int result = 0;
 
-    if (*flags & 1) {
-        if (!(*flags & 2)) {
+    if (*flags & BADGE_VALUE_FLAG_INITIALIZED) {
+        if (!(*flags & BADGE_VALUE_FLAG_FINISHED)) {
             s16 now;
             BOOL down;
 
@@ -1247,11 +1277,11 @@ static int BadgeView_UpdateValue(BadgeViewWork *wk, int index) {
             }
             if (!down) {
                 if (now >= wk->values[index].to) {
-                    *flags |= 2;
+                    *flags |= BADGE_VALUE_FLAG_FINISHED;
                 }
             } else {
                 if (now <= wk->values[index].to) {
-                    *flags |= 2;
+                    *flags |= BADGE_VALUE_FLAG_FINISHED;
                 }
             }
             result = now;
@@ -1265,7 +1295,8 @@ static int BadgeView_UpdateValue(BadgeViewWork *wk, int index) {
 static BOOL BadgeView_IsValueMoving(BadgeViewWork *wk, int index) {
     BOOL moving = FALSE;
 
-    if ((wk->values[index].flags & 1) && !(wk->values[index].flags & 2)) {
+    if ((wk->values[index].flags & BADGE_VALUE_FLAG_INITIALIZED) &&
+        !(wk->values[index].flags & BADGE_VALUE_FLAG_FINISHED)) {
         moving = TRUE;
     }
     return moving;
@@ -1289,7 +1320,7 @@ static void BadgeView_StartMove(BadgeViewWork *wk, int move) {
     from = sBadgeViewMoves[move].from;
     to = sBadgeViewMoves[move].to;
     frames = sBadgeViewMoves[move].frames;
-    BadgeView_StartValue(wk, 0, from, to, frames);
+    BadgeView_StartValue(wk, BADGE_VALUE_WINDOW_Y, from, to, frames);
     wk->scrollY = from;
     GFL_BGSysMoveBG(7, BG_MOVE_SET_Y, from);
     GFL_BGSysMoveBG(4, BG_MOVE_SET_Y, wk->scrollY);
@@ -1298,13 +1329,13 @@ static void BadgeView_StartMove(BadgeViewWork *wk, int move) {
     from = sBadgeViewLeaderMoves[half * 4];
     to = sBadgeViewLeaderMoves[half * 4 + 1];
     frames = sBadgeViewLeaderMoves[half * 4 + 3];
-    BadgeView_StartValue(wk, 1, from, to, frames);
+    BadgeView_StartValue(wk, BADGE_VALUE_LEADER_X, from, to, frames);
     BadgeView_SetLeadersX(wk, from);
     half = move / 2;
     from = sBadgeViewModelMoves[half * 4];
     to = sBadgeViewModelMoves[half * 4 + 1];
     frames = sBadgeViewModelMoves[half * 4 + 3];
-    BadgeView_StartValue(wk, 2, from, to, frames);
+    BadgeView_StartValue(wk, BADGE_VALUE_MODEL_X, from, to, frames);
     wk->srt.translation.x = from << 8;
 }
 
@@ -1317,17 +1348,17 @@ static void BadgeView_UpdateMove(BadgeViewWork *wk) {
     case BADGE_MOVE_IN_START:
         wk->moveSeq = BADGE_MOVE_IN;
         wk->flags |= BADGE_FLAG_MOVING;
-        BadgeView_SetButtonActive(wk, 3, FALSE);
+        BadgeView_SetButtonActive(wk, BADGE_BUTTON_SHORTCUT, FALSE);
         BadgeView_StartPaletteAnime(wk);
         GFL_SndSEPlay(SEQ_SE_SW_CARD_12);
         break;
     case BADGE_MOVE_IN:
-        wk->scrollY = BadgeView_UpdateValue(wk, 0);
-        if (!BadgeView_IsValueMoving(wk, 0)) {
+        wk->scrollY = BadgeView_UpdateValue(wk, BADGE_VALUE_WINDOW_Y);
+        if (!BadgeView_IsValueMoving(wk, BADGE_VALUE_WINDOW_Y)) {
             wk->moveSeq = BADGE_MOVE_IN_END;
         }
-        BadgeView_SetLeadersX(wk, BadgeView_UpdateValue(wk, 1));
-        wk->srt.translation.x = BadgeView_UpdateValue(wk, 2) << 8;
+        BadgeView_SetLeadersX(wk, BadgeView_UpdateValue(wk, BADGE_VALUE_LEADER_X));
+        wk->srt.translation.x = BadgeView_UpdateValue(wk, BADGE_VALUE_MODEL_X) << 8;
         break;
     case BADGE_MOVE_IN_END:
         BadgeView_DrawMessage(wk, wk->kind, wk->selected, 0);
@@ -1349,12 +1380,12 @@ static void BadgeView_UpdateMove(BadgeViewWork *wk) {
         GFL_SndSEPlay(SEQ_SE_SW_CARD_13);
         break;
     case BADGE_MOVE_OUT:
-        wk->scrollY = BadgeView_UpdateValue(wk, 0);
-        if (!BadgeView_IsValueMoving(wk, 0)) {
+        wk->scrollY = BadgeView_UpdateValue(wk, BADGE_VALUE_WINDOW_Y);
+        if (!BadgeView_IsValueMoving(wk, BADGE_VALUE_WINDOW_Y)) {
             wk->moveSeq = BADGE_MOVE_OUT_END;
         }
-        BadgeView_SetLeadersX(wk, BadgeView_UpdateValue(wk, 1));
-        wk->srt.translation.x = BadgeView_UpdateValue(wk, 2) << 8;
+        BadgeView_SetLeadersX(wk, BadgeView_UpdateValue(wk, BADGE_VALUE_LEADER_X));
+        wk->srt.translation.x = BadgeView_UpdateValue(wk, BADGE_VALUE_MODEL_X) << 8;
         break;
     case BADGE_MOVE_OUT_END:
         GFL_BitmapFill(BmpWin_GetBitmap(wk->win), 0);
@@ -1362,7 +1393,7 @@ static void BadgeView_UpdateMove(BadgeViewWork *wk) {
         BadgeView_SetMessageVisible(wk, FALSE);
         BadgeView_SelectLeader(wk, FALSE, 0);
         BadgeView_SetModelVisible(wk, FALSE);
-        BadgeView_SetButtonActive(wk, 3, TRUE);
+        BadgeView_SetButtonActive(wk, BADGE_BUTTON_SHORTCUT, TRUE);
         BadgeView_SetPaletteAnime(wk, FALSE);
         wk->flags |= BADGE_FLAG_MOVE_END;
         wk->moveSeq = BADGE_MOVE_DONE;
@@ -1421,7 +1452,7 @@ static void BadgeView_UpdateLeader(BadgeViewWork *wk) {
     }
     if (hasBadge == FALSE) {
         if (GFL_HIDGetTouchPressedRect(sBadgeViewLeaderArea) == 0) {
-            BadgeView_StartMove(wk, 3);
+            BadgeView_StartMove(wk, BADGE_SLIDE_LEADER_OUT);
             wk->mode = BADGE_MODE_NONE;
         }
     } else if (hasBadge == TRUE) {
@@ -1440,7 +1471,7 @@ static void BadgeView_UpdateLeader(BadgeViewWork *wk) {
                 BadgeView_FlushWin(wk);
                 GFL_SndSEPlay(SEQ_SE_SW_CARD_02);
             } else {
-                BadgeView_StartMove(wk, 3);
+                BadgeView_StartMove(wk, BADGE_SLIDE_LEADER_OUT);
                 wk->mode = BADGE_MODE_NONE;
             }
         }
@@ -1450,7 +1481,7 @@ static void BadgeView_UpdateLeader(BadgeViewWork *wk) {
 // A touch outside the badges closes a badge's message
 static void BadgeView_UpdateBadge(BadgeViewWork *wk) {
     if (wk->mode == BADGE_MODE_BADGE && GFL_HIDGetTouchPressedRect(sBadgeViewBadgeArea) == 0) {
-        BadgeView_StartMove(wk, 2);
+        BadgeView_StartMove(wk, BADGE_SLIDE_BADGE_OUT);
         wk->mode = BADGE_MODE_NONE;
     }
 }
