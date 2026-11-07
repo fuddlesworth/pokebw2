@@ -38,6 +38,7 @@ enum {
     MYSTERY_NET_ERROR_NONE,
     MYSTERY_NET_ERROR_FATAL,
     MYSTERY_NET_ERROR_DISCONNECT,
+    MYSTERY_NET_ERROR_ABORT,
 };
 
 MysteryNet *MysteryNet_Create(SaveControl *save, HeapID heapId);

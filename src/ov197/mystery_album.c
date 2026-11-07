@@ -6,6 +6,7 @@
 #include "constants/sound.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"
@@ -31,13 +32,105 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+enum {
+    CARD_ACTION_SWAP = 0,
+    CARD_ACTION_TRASH = 1,
+    CARD_ACTION_BACK = 2,
+    CARD_ACTION_MAX = 3,
+};
+
+enum {
+    CARD_VIEW_STATE_INPUT = 0,
+    CARD_VIEW_STATE_SCROLL = 1,
+};
+
+enum {
+    CARD_MENU_STATE_SHOW_PROMPT = 0,
+    CARD_MENU_STATE_OPEN_MENU = 1,
+    CARD_MENU_STATE_WAIT_MENU = 2,
+    CARD_MENU_STATE_SHOW_UNDELIVERED = 3,
+    CARD_MENU_STATE_WAIT_UNDELIVERED = 4,
+    CARD_MENU_STATE_RETURN_MAIN = 5,
+    CARD_MENU_STATE_START_MOVE = 6,
+    CARD_MENU_STATE_START_TRASH = 7,
+};
+
+enum {
+    CARD_TRASH_STATE_SHOW_PROMPT = 0,
+    CARD_TRASH_STATE_WAIT_PROMPT = 1,
+    CARD_TRASH_STATE_WAIT_CONFIRM = 2,
+    CARD_TRASH_STATE_SET_WINDOW = 3,
+    CARD_TRASH_STATE_FADE_OUT = 4,
+    CARD_TRASH_STATE_REMOVE_CARD = 5,
+    CARD_TRASH_STATE_FADE_IN = 6,
+    CARD_TRASH_STATE_CLEAR_WINDOW = 7,
+    CARD_TRASH_STATE_SHOW_REMOVED = 8,
+    CARD_TRASH_STATE_WAIT_REMOVED = 9,
+    CARD_TRASH_STATE_RETURN_MAIN = 10,
+};
+
+enum {
+    CARD_MOVE_STATE_START = 0,
+    CARD_MOVE_STATE_SET_WINDOWS = 1,
+    CARD_MOVE_STATE_FADE_OUT = 2,
+    CARD_MOVE_STATE_SWAP = 3,
+    CARD_MOVE_STATE_FADE_IN = 4,
+    CARD_MOVE_STATE_CLEAR_WINDOWS = 5,
+    CARD_MOVE_STATE_END = 6,
+};
+
+enum {
+    CARD_EXIT_STATE_START = 0,
+    CARD_EXIT_STATE_CHECK_FULL = 1,
+    CARD_EXIT_STATE_SHOW_FULL_PROMPT = 2,
+    CARD_EXIT_STATE_WAIT_PROMPT = 3,
+    CARD_EXIT_STATE_WAIT_CONFIRM = 4,
+    CARD_EXIT_STATE_CHECK_CHANGED = 5,
+    CARD_EXIT_STATE_SHOW_SAVING = 6,
+    CARD_EXIT_STATE_WAIT_SAVING_MESSAGE = 7,
+    CARD_EXIT_STATE_WAIT_OPEN_EFFECT = 8,
+    CARD_EXIT_STATE_WAIT_SAVE = 9,
+    CARD_EXIT_STATE_END = 10,
+};
+
+enum {
+    CARD_FULL_STATE_SHOW_MESSAGE = 0,
+    CARD_FULL_STATE_WAIT_MESSAGE = 1,
+    CARD_FULL_STATE_RETURN_MAIN = 2,
+};
+
+enum {
+    ALBUM_OPEN_STATE_IDLE = 0,
+    ALBUM_OPEN_STATE_FRONT_PRIORITY = 1,
+    ALBUM_OPEN_STATE_FADE_IN = 2,
+    ALBUM_OPEN_STATE_START_DELAY = 3,
+    ALBUM_OPEN_STATE_START_SHAKE = 4,
+    ALBUM_OPEN_STATE_WAIT_SHAKE = 5,
+    ALBUM_OPEN_STATE_FADE_OUT = 6,
+    ALBUM_OPEN_STATE_END_DELAY = 7,
+    ALBUM_OPEN_STATE_RESTORE_PRIORITY = 8,
+};
+
+enum {
+    ALBUM_SHAKE_STATE_LOAD_STEP = 0,
+    ALBUM_SHAKE_STATE_ANIMATE_STEP = 1,
+    ALBUM_SHAKE_STATE_NEXT_STEP = 2,
+    ALBUM_SHAKE_STATE_DONE = 3,
+};
+
 // Mystery Gift's cards: the album of saved cards, where they are looked at, moved and thrown away, and the card shown
 // on the top screen, with the Pokémon of a Pokémon gift coming out of it. Our names; swan has none for this overlay
 
 #define CARD_SLOTS 12
 #define CARDS_PER_PAGE 4
 // The cursor's position below the cards, on the button that leaves
-#define CURSOR_BACK 4
+enum {
+    CURSOR_TOP_LEFT = 0,
+    CURSOR_TOP_RIGHT = 1,
+    CURSOR_BOTTOM_LEFT = 2,
+    CURSOR_BOTTOM_RIGHT = 3,
+    CURSOR_BACK = 4,
+};
 
 // A card of the album: a copy of the saved gift, and its date drawn into a bitmap
 typedef struct {
@@ -286,8 +379,9 @@ MysteryCardView *MysteryCardView_Create(const MysteryCardViewSetup *setup, HeapI
             MysteryCard_Init(&view->cards[i], &gift, &view->setup, heapId);
         }
     }
-    view->seq =
-        MysterySeq_Create(view, view->setup.mode == 0 ? MysteryCardView_SeqMain : MysteryCardView_SeqFull, heapId);
+    view->seq = MysterySeq_Create(
+        view, view->setup.mode == MYSTERY_CARD_VIEW_MODE_ALBUM ? MysteryCardView_SeqMain : MysteryCardView_SeqFull,
+        heapId);
     MysteryCardView_LoadGraphics(view, heapId);
     MysteryCardView_DrawPage(view, TRUE, FALSE, view->page, heapId);
     if (count != 0) {
@@ -553,7 +647,7 @@ static void MysteryCardView_ClearPage(MysteryCardView *view, BOOL shown) {
 static inline void MysteryCardView_LoadIcon(MysteryCardView *view, MysteryCard *card, u32 win, HeapID heapId) {
     ArcTool *arc = MysteryCard_OpenIconArc(card, heapId);
 
-    if (MysteryCard_GetKind(card) != 1) {
+    if (MysteryCard_GetKind(card) != MYSTERY_GIFT_KIND_POKEMON) {
         view->iconPalettes[win] =
             ClActSys_LoadPlttRange(arc, MysteryCard_GetIconPaletteFile(card), 0, (win + 4) * 32, 0, 1, heapId);
     }
@@ -625,7 +719,7 @@ static void MysteryCardView_DrawCard(MysteryCardView *view, BOOL shown, BOOL lef
     MI_CpuFill8(&actorSetup, 0, sizeof(ClActorSetup));
     actorSetup.y = pos.iconY;
     actorSetup.bgPriority = 1;
-    if (MysteryCard_GetKind(card) == 2) {
+    if (MysteryCard_GetKind(card) == MYSTERY_GIFT_KIND_ITEM) {
         dx = 4;
         dy = 8;
     }
@@ -640,7 +734,7 @@ static void MysteryCardView_DrawCard(MysteryCardView *view, BOOL shown, BOOL lef
     }
     actorSetup.x += dx;
     actorSetup.y += dy;
-    if (MysteryCard_GetKind(card) == 1) {
+    if (MysteryCard_GetKind(card) == MYSTERY_GIFT_KIND_POKEMON) {
         palette = view->pokeIconPalette;
     } else {
         palette = view->iconPalettes[win];
@@ -866,9 +960,9 @@ static GFLBitmap *MysteryCard_GetDateBitmap(MysteryCard *card) {
 // The archive of the gift's icon
 static ArcTool *MysteryCard_OpenIconArc(MysteryCard *card, HeapID heapId) {
     switch (MysteryCard_GetKind(card)) {
-    case 1:
+    case MYSTERY_GIFT_KIND_POKEMON:
         return GFL_ArcSysCreateFileHandle(ARCID_POKEICON, heapId);
-    case 2:
+    case MYSTERY_GIFT_KIND_ITEM:
         return GFL_ArcSysCreateFileHandle(ARCID_ITEMGRA, heapId);
     default:
         return GFL_ArcSysCreateFileHandle(ARCID_MYSTERY, heapId);
@@ -878,9 +972,9 @@ static ArcTool *MysteryCard_OpenIconArc(MysteryCard *card, HeapID heapId) {
 // The palette file of the gift's icon
 static u32 MysteryCard_GetIconPaletteFile(MysteryCard *card) {
     switch (MysteryCard_GetKind(card)) {
-    case 1:
+    case MYSTERY_GIFT_KIND_POKEMON:
         return PokeIcon_GetPaletteFile();
-    case 2:
+    case MYSTERY_GIFT_KIND_ITEM:
         return GetItemGraphicsDatID(MysteryCard_GetGift(card)->value, ITEM_FILE_ICON_PLTT);
     default:
         return 3;
@@ -889,7 +983,7 @@ static u32 MysteryCard_GetIconPaletteFile(MysteryCard *card) {
 
 // The palette of a Pokémon gift's icon
 static u32 MysteryCard_GetPokeIconPalette(MysteryCard *card) {
-    if (MysteryCard_GetKind(card) == 1) {
+    if (MysteryCard_GetKind(card) == MYSTERY_GIFT_KIND_POKEMON) {
         MysteryGiftPokemon *poke = (MysteryGiftPokemon *)MysteryCard_GetGift(card);
 
         return PokeIcon_GetPalette(poke->species, poke->form, poke->gender, poke->isEgg);
@@ -902,10 +996,10 @@ static u32 MysteryCard_GetIconCharFile(MysteryCard *card) {
     MysteryGiftPokemon *poke;
 
     switch (MysteryCard_GetKind(card)) {
-    case 1:
+    case MYSTERY_GIFT_KIND_POKEMON:
         poke = (MysteryGiftPokemon *)MysteryCard_GetGift(card);
         return PokeParty_GetIconIndex(poke->species, poke->form, poke->gender, poke->isEgg);
-    case 2:
+    case MYSTERY_GIFT_KIND_ITEM:
         return GetItemGraphicsDatID(MysteryCard_GetGift(card)->value, ITEM_FILE_ICON_CHAR);
     default:
         return 12;
@@ -915,9 +1009,9 @@ static u32 MysteryCard_GetIconCharFile(MysteryCard *card) {
 // The cell file of the gift's icon
 static u32 MysteryCard_GetIconCellFile(MysteryCard *card) {
     switch (MysteryCard_GetKind(card)) {
-    case 1:
+    case MYSTERY_GIFT_KIND_POKEMON:
         return PokeIcon_GetCellFile_Main();
-    case 2:
+    case MYSTERY_GIFT_KIND_ITEM:
         return 1;
     default:
         return 0x21;
@@ -927,9 +1021,9 @@ static u32 MysteryCard_GetIconCellFile(MysteryCard *card) {
 // The animation file of the gift's icon
 static u32 MysteryCard_GetIconAnimFile(MysteryCard *card) {
     switch (MysteryCard_GetKind(card)) {
-    case 1:
+    case MYSTERY_GIFT_KIND_POKEMON:
         return getOBJTileMapping_MainEng();
-    case 2:
+    case MYSTERY_GIFT_KIND_ITEM:
         return 0;
     default:
         return 0x24;
@@ -974,7 +1068,7 @@ static void MysteryCardView_SeqMain(MysterySeq *seq, u32 *state, void *work) {
     ClActorPos pos;
 
     switch (*state) {
-    case 0:
+    case CARD_VIEW_STATE_INPUT:
         ClActor_SetVisible(view->arrows[0], TRUE);
         ClActor_SetVisible(view->arrows[1], TRUE);
         ClActor_SetVisible(view->cursorActor, TRUE);
@@ -996,33 +1090,33 @@ static void MysteryCardView_SeqMain(MysterySeq *seq, u32 *state, void *work) {
         } else if (typed & PAD_KEY_UP) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             switch (view->cursor) {
-            case 0:
+            case CURSOR_TOP_LEFT:
                 if (view->moving) {
-                    view->cursor = 2;
+                    view->cursor = CURSOR_BOTTOM_LEFT;
                 } else {
                     view->fromLeft = TRUE;
                     view->cursor = CURSOR_BACK;
                 }
                 break;
-            case 1:
+            case CURSOR_TOP_RIGHT:
                 if (view->moving) {
-                    view->cursor = 3;
+                    view->cursor = CURSOR_BOTTOM_RIGHT;
                 } else {
                     view->fromLeft = FALSE;
                     view->cursor = CURSOR_BACK;
                 }
                 break;
-            case 2:
-                view->cursor = 0;
+            case CURSOR_BOTTOM_LEFT:
+                view->cursor = CURSOR_TOP_LEFT;
                 break;
-            case 3:
-                view->cursor = 1;
+            case CURSOR_BOTTOM_RIGHT:
+                view->cursor = CURSOR_TOP_RIGHT;
                 break;
             case CURSOR_BACK:
                 if (view->fromLeft) {
-                    view->cursor = 2;
+                    view->cursor = CURSOR_BOTTOM_LEFT;
                 } else {
-                    view->cursor = 3;
+                    view->cursor = CURSOR_BOTTOM_RIGHT;
                 }
                 break;
             }
@@ -1030,23 +1124,23 @@ static void MysteryCardView_SeqMain(MysterySeq *seq, u32 *state, void *work) {
         } else if (typed & PAD_KEY_DOWN) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             switch (view->cursor) {
-            case 0:
-                view->cursor = 2;
+            case CURSOR_TOP_LEFT:
+                view->cursor = CURSOR_BOTTOM_LEFT;
                 break;
-            case 1:
-                view->cursor = 3;
+            case CURSOR_TOP_RIGHT:
+                view->cursor = CURSOR_BOTTOM_RIGHT;
                 break;
-            case 2:
+            case CURSOR_BOTTOM_LEFT:
                 if (view->moving) {
-                    view->cursor = 0;
+                    view->cursor = CURSOR_TOP_LEFT;
                 } else {
                     view->fromLeft = TRUE;
                     view->cursor = CURSOR_BACK;
                 }
                 break;
-            case 3:
+            case CURSOR_BOTTOM_RIGHT:
                 if (view->moving) {
-                    view->cursor = 1;
+                    view->cursor = CURSOR_TOP_RIGHT;
                 } else {
                     view->fromLeft = FALSE;
                     view->cursor = CURSOR_BACK;
@@ -1054,44 +1148,52 @@ static void MysteryCardView_SeqMain(MysterySeq *seq, u32 *state, void *work) {
                 break;
             case CURSOR_BACK:
                 if (view->fromLeft) {
-                    view->cursor = 0;
+                    view->cursor = CURSOR_TOP_LEFT;
                 } else {
-                    view->cursor = 1;
+                    view->cursor = CURSOR_TOP_RIGHT;
                 }
                 break;
             }
             moved = TRUE;
         } else if (typed & PAD_KEY_LEFT) {
             MysteryCardView_GetPageCount(view);
-            if (view->cursor == 0 || view->cursor == 2) {
+            if (view->cursor == CURSOR_TOP_LEFT || view->cursor == CURSOR_BOTTOM_LEFT) {
                 dir = -1;
             } else if (view->cursor != CURSOR_BACK) {
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
             }
             if (view->cursor != CURSOR_BACK) {
-                if (view->cursor == 0 || view->cursor == 1) {
+                if (view->cursor == CURSOR_TOP_LEFT || view->cursor == CURSOR_TOP_RIGHT) {
                     view->cursor = view->cursor - 1;
-                    view->cursor = view->cursor > 1 ? 0 : (view->cursor < 0 ? 1 : view->cursor);
+                    view->cursor = view->cursor > CURSOR_TOP_RIGHT
+                                       ? CURSOR_TOP_LEFT
+                                       : (view->cursor < CURSOR_TOP_LEFT ? CURSOR_TOP_RIGHT : view->cursor);
                 } else {
                     view->cursor = view->cursor - 1;
-                    view->cursor = view->cursor > 3 ? 2 : (view->cursor < 2 ? 3 : view->cursor);
+                    view->cursor = view->cursor > CURSOR_BOTTOM_RIGHT
+                                       ? CURSOR_BOTTOM_LEFT
+                                       : (view->cursor < CURSOR_BOTTOM_LEFT ? CURSOR_BOTTOM_RIGHT : view->cursor);
                 }
                 moved = TRUE;
             }
         } else if (typed & PAD_KEY_RIGHT) {
             MysteryCardView_GetPageCount(view);
-            if (view->cursor == 1 || view->cursor == 3) {
+            if (view->cursor == CURSOR_TOP_RIGHT || view->cursor == CURSOR_BOTTOM_RIGHT) {
                 dir = 1;
             } else if (view->cursor != CURSOR_BACK) {
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
             }
             if (view->cursor != CURSOR_BACK) {
-                if (view->cursor == 0 || view->cursor == 1) {
+                if (view->cursor == CURSOR_TOP_LEFT || view->cursor == CURSOR_TOP_RIGHT) {
                     view->cursor = view->cursor + 1;
-                    view->cursor = view->cursor > 1 ? 0 : (view->cursor < 0 ? 1 : view->cursor);
+                    view->cursor = view->cursor > CURSOR_TOP_RIGHT
+                                       ? CURSOR_TOP_LEFT
+                                       : (view->cursor < CURSOR_TOP_LEFT ? CURSOR_TOP_RIGHT : view->cursor);
                 } else {
                     view->cursor = view->cursor + 1;
-                    view->cursor = view->cursor > 3 ? 2 : (view->cursor < 2 ? 3 : view->cursor);
+                    view->cursor = view->cursor > CURSOR_BOTTOM_RIGHT
+                                       ? CURSOR_BOTTOM_LEFT
+                                       : (view->cursor < CURSOR_BOTTOM_LEFT ? CURSOR_BOTTOM_RIGHT : view->cursor);
                 }
                 moved = TRUE;
             }
@@ -1155,7 +1257,7 @@ static void MysteryCardView_SeqMain(MysterySeq *seq, u32 *state, void *work) {
             ClActor_SetVisible(view->arrows[1], FALSE);
             view->palFrame = 0;
             view->moved = TRUE;
-            *state = 1;
+            *state = CARD_VIEW_STATE_SCROLL;
         }
         if (moved) {
             if (view->cursor < CURSOR_BACK) {
@@ -1172,9 +1274,9 @@ static void MysteryCardView_SeqMain(MysterySeq *seq, u32 *state, void *work) {
             view->moved = TRUE;
         }
         break;
-    case 1:
+    case CARD_VIEW_STATE_SCROLL:
         if (MysteryCardView_Scroll(view)) {
-            *state = 0;
+            *state = CARD_VIEW_STATE_INPUT;
         }
         break;
     }
@@ -1188,37 +1290,37 @@ static void MysteryCardView_SeqMenu(MysterySeq *seq, u32 *state, void *work) {
     u32 result;
 
     switch (*state) {
-    case 0:
+    case CARD_MENU_STATE_SHOW_PROMPT:
         if (view->msgWin == NULL) {
             view->msgWin = MysteryMsgWin_Create(0, 15, view->setup.queue, view->setup.font, HEAPID_MYSTERY);
             MysteryMsgWin_DrawFrame(view->msgWin, 1, 13);
         }
         MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0x25, MYSTERY_PRINT_QUEUE);
-        *state = 1;
+        *state = CARD_MENU_STATE_OPEN_MENU;
         break;
-    case 1:
+    case CARD_MENU_STATE_OPEN_MENU:
         MI_CpuFill8(&setup, 0, sizeof(MysteryYesNoSetup));
         setup.msgData = view->setup.msgData;
         setup.font = view->setup.font;
         setup.queue = view->setup.queue;
-        setup.msgIds[0] = 0x26;
-        setup.msgIds[1] = 0x27;
-        setup.msgIds[2] = 0x28;
-        setup.count = 3;
+        setup.msgIds[CARD_ACTION_SWAP] = 0x26;
+        setup.msgIds[CARD_ACTION_TRASH] = 0x27;
+        setup.msgIds[CARD_ACTION_BACK] = 0x28;
+        setup.count = CARD_ACTION_MAX;
         setup.bg = 0;
         setup.palette = 15;
         setup.framePalette = 13;
         setup.frameChar = 1;
         view->yesNo = MysteryYesNo_Create(&setup, view->heapId);
-        *state = 2;
+        *state = CARD_MENU_STATE_WAIT_MENU;
         break;
-    case 2:
+    case CARD_MENU_STATE_WAIT_MENU:
         result = MysteryYesNo_Update(view->yesNo);
         view->palFrame = 0x7fff;
         if (result == MYSTERY_MENU_NONE) {
             break;
         }
-        if (result == 0) {
+        if (result == CARD_ACTION_SWAP) {
             view->moving = TRUE;
             pos.x = sCardPositions[view->cursor].x * 8 - 24;
             pos.y = sCardPositions[view->cursor].y * 8 - 8;
@@ -1238,31 +1340,31 @@ static void MysteryCardView_SeqMenu(MysterySeq *seq, u32 *state, void *work) {
                 MysteryMsgWin_DrawFrame(view->msgWin, 1, 13);
             }
             MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0x2b, MYSTERY_PRINT_QUEUE);
-            *state = 6;
-        } else if (result == 1) {
+            *state = CARD_MENU_STATE_START_MOVE;
+        } else if (result == CARD_ACTION_TRASH) {
             if (MysteryCard_IsDelivered(&view->cards[view->cursor + view->page * 4])) {
-                *state = 7;
+                *state = CARD_MENU_STATE_START_TRASH;
             } else {
-                *state = 3;
+                *state = CARD_MENU_STATE_SHOW_UNDELIVERED;
             }
-        } else if (result == 2) {
-            *state = 5;
+        } else if (result == CARD_ACTION_BACK) {
+            *state = CARD_MENU_STATE_RETURN_MAIN;
         }
         break;
-    case 3:
+    case CARD_MENU_STATE_SHOW_UNDELIVERED:
         if (view->yesNo != NULL) {
             MysteryYesNo_Delete(view->yesNo);
             view->yesNo = NULL;
         }
         MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0x29, MYSTERY_PRINT_STREAM);
-        *state = 4;
+        *state = CARD_MENU_STATE_WAIT_UNDELIVERED;
         break;
-    case 4:
+    case CARD_MENU_STATE_WAIT_UNDELIVERED:
         if (MysteryMsgWin_IsDone(view->msgWin)) {
-            *state = 5;
+            *state = CARD_MENU_STATE_RETURN_MAIN;
         }
         break;
-    case 5:
+    case CARD_MENU_STATE_RETURN_MAIN:
         if (view->msgWin != NULL) {
             MysteryMsgWin_Delete(view->msgWin);
             view->msgWin = NULL;
@@ -1273,10 +1375,10 @@ static void MysteryCardView_SeqMenu(MysterySeq *seq, u32 *state, void *work) {
         }
         MysterySeq_SetNext(seq, MysteryCardView_SeqMain);
         break;
-    case 6:
+    case CARD_MENU_STATE_START_MOVE:
         MysterySeq_SetNext(seq, MysteryCardView_SeqMain);
         break;
-    case 7:
+    case CARD_MENU_STATE_START_TRASH:
         MysteryYesNo_Delete(view->yesNo);
         view->yesNo = NULL;
         MysterySeq_SetNext(seq, MysteryCardView_SeqThrowAway);
@@ -1295,28 +1397,28 @@ static void MysteryCardView_SeqThrowAway(MysterySeq *seq, u32 *state, void *work
     u32 result;
 
     switch (*state) {
-    case 0:
+    case CARD_TRASH_STATE_SHOW_PROMPT:
         MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0x2c, MYSTERY_PRINT_STREAM);
-        *state = 1;
+        *state = CARD_TRASH_STATE_WAIT_PROMPT;
         break;
-    case 1:
+    case CARD_TRASH_STATE_WAIT_PROMPT:
         if (MysteryMsgWin_IsDone(view->msgWin)) {
             MI_CpuFill8(&setup, 0, sizeof(MysteryYesNoSetup));
             setup.msgData = view->setup.msgData;
             setup.font = view->setup.font;
             setup.queue = view->setup.queue;
-            setup.msgIds[0] = 0x2d;
-            setup.msgIds[1] = 0x2e;
-            setup.count = 2;
+            setup.msgIds[MYSTERY_CONFIRM_YES] = 0x2d;
+            setup.msgIds[MYSTERY_CONFIRM_NO] = 0x2e;
+            setup.count = MYSTERY_CONFIRM_MAX;
             setup.bg = 0;
             setup.palette = 15;
             setup.framePalette = 13;
             setup.frameChar = 1;
             view->yesNo = MysteryYesNo_Create(&setup, view->heapId);
-            *state = 2;
+            *state = CARD_TRASH_STATE_WAIT_CONFIRM;
         }
         break;
-    case 2:
+    case CARD_TRASH_STATE_WAIT_CONFIRM:
         result = MysteryYesNo_Update(view->yesNo);
         view->palFrame = 0x7fff;
         if (result == MYSTERY_MENU_NONE) {
@@ -1324,8 +1426,8 @@ static void MysteryCardView_SeqThrowAway(MysterySeq *seq, u32 *state, void *work
         }
         MysteryYesNo_Delete(view->yesNo);
         view->yesNo = NULL;
-        if (result == 0) {
-            *state = 3;
+        if (result == MYSTERY_CONFIRM_YES) {
+            *state = CARD_TRASH_STATE_SET_WINDOW;
         } else {
             if (view->msgWin != NULL) {
                 MysteryMsgWin_Delete(view->msgWin);
@@ -1334,7 +1436,7 @@ static void MysteryCardView_SeqThrowAway(MysterySeq *seq, u32 *state, void *work
             MysterySeq_SetNext(seq, MysteryCardView_SeqMain);
         }
         break;
-    case 3: {
+    case CARD_TRASH_STATE_SET_WINDOW: {
         u8 pos;
         int x;
         int y;
@@ -1346,47 +1448,47 @@ static void MysteryCardView_SeqThrowAway(MysterySeq *seq, u32 *state, void *work
         G2_SetWnd0InsidePlane(0x1e, TRUE);
         G2_SetWnd0Position(x * 8, y * 8, (x + 12) * 8, (y + 7) * 8);
         G2_SetWndOutsidePlane(0x1e, FALSE);
-        *state = 4;
+        *state = CARD_TRASH_STATE_FADE_OUT;
         break;
     }
-    case 4:
+    case CARD_TRASH_STATE_FADE_OUT:
         G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 0x1e, view->fadeFrame * 16 / 30);
         if (view->fadeFrame++ > 30) {
             view->fadeFrame = 0;
-            *state = 5;
+            *state = CARD_TRASH_STATE_REMOVE_CARD;
         }
         break;
-    case 5:
+    case CARD_TRASH_STATE_REMOVE_CARD:
         MysteryCardView_ThrowAway(view, slot);
         MysteryCardView_ClearPage(view, TRUE);
         MysteryCardView_DrawPage(view, TRUE, FALSE, view->page, view->heapId);
         view->moved = TRUE;
-        *state = 6;
+        *state = CARD_TRASH_STATE_FADE_IN;
         break;
-    case 6:
+    case CARD_TRASH_STATE_FADE_IN:
         G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 0x1e, 16 - view->fadeFrame * 16 / 30);
         if (view->fadeFrame++ > 30) {
             view->fadeFrame = 0;
-            *state = 7;
+            *state = CARD_TRASH_STATE_CLEAR_WINDOW;
         }
         break;
-    case 7:
+    case CARD_TRASH_STATE_CLEAR_WINDOW:
         if (!MysteryGiftSave_HasAnyCard(view->setup.giftSave)) {
             MysteryTextWin_ClearLine(view->textWin, 1);
         }
         GX_SetVisibleWnd(GX_WNDMASK_NONE);
-        *state = 8;
+        *state = CARD_TRASH_STATE_SHOW_REMOVED;
         break;
-    case 8:
+    case CARD_TRASH_STATE_SHOW_REMOVED:
         MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0x2a, MYSTERY_PRINT_STREAM);
-        *state = 9;
+        *state = CARD_TRASH_STATE_WAIT_REMOVED;
         break;
-    case 9:
+    case CARD_TRASH_STATE_WAIT_REMOVED:
         if (MysteryMsgWin_IsDone(view->msgWin)) {
-            *state = 10;
+            *state = CARD_TRASH_STATE_RETURN_MAIN;
         }
         break;
-    case 10:
+    case CARD_TRASH_STATE_RETURN_MAIN:
         if (view->msgWin != NULL) {
             MysteryMsgWin_Delete(view->msgWin);
             view->msgWin = NULL;
@@ -1405,7 +1507,7 @@ static void MysteryCardView_SeqMove(MysterySeq *seq, u32 *state, void *work) {
     u32 slot = MysteryCardView_GetSlot(view);
 
     switch (*state) {
-    case 0:
+    case CARD_MOVE_STATE_START:
         if (view->msgWin != NULL) {
             MysteryMsgWin_Delete(view->msgWin);
             view->msgWin = NULL;
@@ -1415,10 +1517,10 @@ static void MysteryCardView_SeqMove(MysterySeq *seq, u32 *state, void *work) {
             ClActor_SetVisible(view->moveCursor, FALSE);
             MysterySeq_SetNext(seq, MysteryCardView_SeqMain);
         } else {
-            *state = 1;
+            *state = CARD_MOVE_STATE_SET_WINDOWS;
         }
         break;
-    case 1: {
+    case CARD_MOVE_STATE_SET_WINDOWS: {
         u8 pos1 = slot % 4;
         u8 pos2 = view->moveSlot % 4;
         BOOL shown1 = view->page == slot / 4;
@@ -1447,17 +1549,17 @@ static void MysteryCardView_SeqMove(MysterySeq *seq, u32 *state, void *work) {
             G2_SetWnd1Position(x * 8, y * 8, (x + 12) * 8, (y + 7) * 8);
         }
         G2_SetWndOutsidePlane(0x1e, FALSE);
-        *state = 2;
+        *state = CARD_MOVE_STATE_FADE_OUT;
         break;
     }
-    case 2:
+    case CARD_MOVE_STATE_FADE_OUT:
         G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 0x1e, view->fadeFrame * 16 / 30);
         if (view->fadeFrame++ > 30) {
             view->fadeFrame = 0;
-            *state = 3;
+            *state = CARD_MOVE_STATE_SWAP;
         }
         break;
-    case 3: {
+    case CARD_MOVE_STATE_SWAP: {
         int pos2;
         u32 page2;
         BOOL shown2;
@@ -1477,21 +1579,21 @@ static void MysteryCardView_SeqMove(MysterySeq *seq, u32 *state, void *work) {
         }
         GFL_BGSysLoadScr(3);
         view->moved = TRUE;
-        *state = 4;
+        *state = CARD_MOVE_STATE_FADE_IN;
         break;
     }
-    case 4:
+    case CARD_MOVE_STATE_FADE_IN:
         G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 0x1e, 16 - view->fadeFrame * 16 / 30);
         if (view->fadeFrame++ > 30) {
             view->fadeFrame = 0;
-            *state = 5;
+            *state = CARD_MOVE_STATE_CLEAR_WINDOWS;
         }
         break;
-    case 5:
+    case CARD_MOVE_STATE_CLEAR_WINDOWS:
         GX_SetVisibleWnd(GX_WNDMASK_NONE);
-        *state = 6;
+        *state = CARD_MOVE_STATE_END;
         break;
-    case 6:
+    case CARD_MOVE_STATE_END:
         view->moving = FALSE;
         ClActor_SetVisible(view->moveCursor, FALSE);
         if (view->msgWin != NULL) {
@@ -1511,44 +1613,44 @@ static void MysteryCardView_SeqExit(MysterySeq *seq, u32 *state, void *work) {
     BOOL done;
 
     switch (*state) {
-    case 0:
-        *state = 1;
+    case CARD_EXIT_STATE_START:
+        *state = CARD_EXIT_STATE_CHECK_FULL;
         break;
-    case 1:
-        if (view->setup.mode == 0) {
-            *state = 5;
+    case CARD_EXIT_STATE_CHECK_FULL:
+        if (view->setup.mode == MYSTERY_CARD_VIEW_MODE_ALBUM) {
+            *state = CARD_EXIT_STATE_CHECK_CHANGED;
         } else if (MysteryGiftSave_HasFreeSlot(view->setup.giftSave)) {
-            *state = 5;
+            *state = CARD_EXIT_STATE_CHECK_CHANGED;
         } else {
-            *state = 2;
+            *state = CARD_EXIT_STATE_SHOW_FULL_PROMPT;
         }
         break;
-    case 2:
+    case CARD_EXIT_STATE_SHOW_FULL_PROMPT:
         if (view->msgWin == NULL) {
             view->msgWin = MysteryMsgWin_Create(0, 15, view->setup.queue, view->setup.font, HEAPID_MYSTERY);
             MysteryMsgWin_DrawFrame(view->msgWin, 1, 13);
         }
         MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0xe, MYSTERY_PRINT_STREAM);
-        *state = 3;
+        *state = CARD_EXIT_STATE_WAIT_PROMPT;
         break;
-    case 3:
+    case CARD_EXIT_STATE_WAIT_PROMPT:
         if (MysteryMsgWin_IsDone(view->msgWin)) {
             MI_CpuFill8(&setup, 0, sizeof(MysteryYesNoSetup));
             setup.msgData = view->setup.msgData;
             setup.font = view->setup.font;
             setup.queue = view->setup.queue;
-            setup.msgIds[0] = 0x2d;
-            setup.msgIds[1] = 0x2e;
-            setup.count = 2;
+            setup.msgIds[MYSTERY_CONFIRM_YES] = 0x2d;
+            setup.msgIds[MYSTERY_CONFIRM_NO] = 0x2e;
+            setup.count = MYSTERY_CONFIRM_MAX;
             setup.bg = 0;
             setup.palette = 15;
             setup.framePalette = 13;
             setup.frameChar = 1;
             view->yesNo = MysteryYesNo_Create(&setup, view->heapId);
-            *state = 4;
+            *state = CARD_EXIT_STATE_WAIT_CONFIRM;
         }
         break;
-    case 4:
+    case CARD_EXIT_STATE_WAIT_CONFIRM:
         result = MysteryYesNo_Update(view->yesNo);
         view->palFrame = 0x7fff;
         if (result == MYSTERY_MENU_NONE) {
@@ -1556,8 +1658,8 @@ static void MysteryCardView_SeqExit(MysterySeq *seq, u32 *state, void *work) {
         }
         MysteryYesNo_Delete(view->yesNo);
         view->yesNo = NULL;
-        if (result == 0) {
-            *state = 5;
+        if (result == MYSTERY_CONFIRM_YES) {
+            *state = CARD_EXIT_STATE_CHECK_CHANGED;
         } else {
             if (view->msgWin != NULL) {
                 MysteryMsgWin_Delete(view->msgWin);
@@ -1566,42 +1668,42 @@ static void MysteryCardView_SeqExit(MysterySeq *seq, u32 *state, void *work) {
             MysterySeq_SetNext(seq, MysteryCardView_SeqMain);
         }
         break;
-    case 5:
+    case CARD_EXIT_STATE_CHECK_CHANGED:
         if (view->changed) {
-            *state = 6;
+            *state = CARD_EXIT_STATE_SHOW_SAVING;
         } else {
-            *state = 10;
+            *state = CARD_EXIT_STATE_END;
         }
         break;
-    case 6:
+    case CARD_EXIT_STATE_SHOW_SAVING:
         if (view->msgWin == NULL) {
             view->msgWin = MysteryMsgWin_Create(0, 15, view->setup.queue, view->setup.font, HEAPID_MYSTERY);
             MysteryMsgWin_DrawFrame(view->msgWin, 1, 13);
         }
         MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0x24, MYSTERY_PRINT_WAIT_ICON);
-        *state = 7;
+        *state = CARD_EXIT_STATE_WAIT_SAVING_MESSAGE;
         break;
-    case 7:
+    case CARD_EXIT_STATE_WAIT_SAVING_MESSAGE:
         if (MysteryMsgWin_IsDone(view->msgWin)) {
-            *state = 8;
+            *state = CARD_EXIT_STATE_WAIT_OPEN_EFFECT;
         }
         break;
-    case 8:
+    case CARD_EXIT_STATE_WAIT_OPEN_EFFECT:
         done = TRUE;
         if (view->opened != NULL && !MysteryAlbum_IsOpened(view->opened)) {
             done = FALSE;
         }
         if (done) {
             MysteryGiftSave_StartSave(view->setup.giftSave, view->setup.gameData);
-            *state = 9;
+            *state = CARD_EXIT_STATE_WAIT_SAVE;
         }
         break;
-    case 9:
-        if (MysteryGiftSave_SaveStep(view->setup.giftSave, view->setup.gameData) == 2) {
-            *state = 10;
+    case CARD_EXIT_STATE_WAIT_SAVE:
+        if (MysteryGiftSave_SaveStep(view->setup.giftSave, view->setup.gameData) == SAVE_RESULT_OK) {
+            *state = CARD_EXIT_STATE_END;
         }
         break;
-    case 10:
+    case CARD_EXIT_STATE_END:
         if (view->msgWin != NULL) {
             MysteryMsgWin_Delete(view->msgWin);
             view->msgWin = NULL;
@@ -1619,20 +1721,20 @@ static void MysteryCardView_SeqFull(MysterySeq *seq, u32 *state, void *work) {
     MysteryCardView *view = work;
 
     switch (*state) {
-    case 0:
+    case CARD_FULL_STATE_SHOW_MESSAGE:
         if (view->msgWin == NULL) {
             view->msgWin = MysteryMsgWin_Create(0, 15, view->setup.queue, view->setup.font, HEAPID_MYSTERY);
         }
         MysteryMsgWin_DrawFrame(view->msgWin, 1, 13);
         MysteryMsgWin_Print(view->msgWin, view->setup.msgData, 0xd, MYSTERY_PRINT_STREAM);
-        *state = 1;
+        *state = CARD_FULL_STATE_WAIT_MESSAGE;
         break;
-    case 1:
+    case CARD_FULL_STATE_WAIT_MESSAGE:
         if (MysteryMsgWin_IsDone(view->msgWin)) {
-            *state = 2;
+            *state = CARD_FULL_STATE_RETURN_MAIN;
         }
         break;
-    case 2:
+    case CARD_FULL_STATE_RETURN_MAIN:
         if (view->msgWin != NULL) {
             MysteryMsgWin_Delete(view->msgWin);
             view->msgWin = NULL;
@@ -1752,7 +1854,7 @@ MysteryAlbum *MysteryAlbum_CreateReceived(MysteryGift *gift, MysteryCardRes *res
     album->res = res;
     album->gameData = gameData;
     MI_CpuFill8(&setup, 0, sizeof(MysteryCardViewSetup));
-    setup.mode = 0;
+    setup.mode = MYSTERY_CARD_VIEW_MODE_ALBUM;
     setup.unit = res->setup.unit;
     setup.giftSave = res->setup.giftSave;
     setup.font = res->setup.font;
@@ -1793,7 +1895,7 @@ MysteryAlbum *MysteryAlbum_CreateReceived(MysteryGift *gift, MysteryCardRes *res
         GFL_StrBufFree(updates[4].str);
         GFL_StrBufFree(fmt);
     }
-    if (MysteryCard_GetKind(&album->card) == 1) {
+    if (MysteryCard_GetKind(&album->card) == MYSTERY_GIFT_KIND_POKEMON) {
         MysteryGiftPokemon *poke = (MysteryGiftPokemon *)album->gift;
         u16 palFile;
         PartyPkm *pkm = Mystery_CreateGiftPokemon(album->gift, HEAPID_TAIL(heapId), album->gameData);
@@ -1850,33 +1952,33 @@ void MysteryAlbum_Main(MysteryAlbum *album) {
         type = 30;
     }
     switch (album->state) {
-    case 0:
+    case ALBUM_OPEN_STATE_IDLE:
         break;
-    case 1:
+    case ALBUM_OPEN_STATE_FRONT_PRIORITY:
         ClActor_SetBgPriority(res->poke, (u8)res->textBgPriority);
-        album->state = 2;
+        album->state = ALBUM_OPEN_STATE_FADE_IN;
         break;
-    case 2:
+    case ALBUM_OPEN_STATE_FADE_IN:
         MysteryPal_Blend(type, res->fade.colors, album->frame * 0x7fff / 60, (u8)res->pokePaletteNo, res->fade.to,
                          res->fade.from);
         setBlend(2 + album->frame * (16 - 2) / 60, 12 + album->frame * (0 - 12) / 60);
         if (album->frame++ > 60) {
             album->frame = 0;
-            album->state = 3;
+            album->state = ALBUM_OPEN_STATE_START_DELAY;
         }
         break;
-    case 3:
-        album->state = 4;
+    case ALBUM_OPEN_STATE_START_DELAY:
+        album->state = ALBUM_OPEN_STATE_START_SHAKE;
         break;
-    case 4:
+    case ALBUM_OPEN_STATE_START_SHAKE:
         if (!album->isEgg) {
             album->voice = PokeVoice_Play(album->species, album->form, 64, 0, 0, 0, 0, NULL);
         }
         ClActor_GetSurfacePos(res->poke, &actorPos, res->vramType);
         MysteryAlbumShake_Init(&album->shake, ClActor_GetRotation(res->poke), actorPos.x, actorPos.y);
-        album->state = 5;
+        album->state = ALBUM_OPEN_STATE_WAIT_SHAKE;
         break;
-    case 5:
+    case ALBUM_OPEN_STATE_WAIT_SHAKE:
         voiceDone = TRUE;
         done = TRUE;
         done &= MysteryAlbumShake_Update(&album->shake, &rotation, &shakePos);
@@ -1890,24 +1992,24 @@ void MysteryAlbum_Main(MysteryAlbum *album) {
             done &= voiceDone;
         }
         if (done) {
-            album->state = 6;
+            album->state = ALBUM_OPEN_STATE_FADE_OUT;
         }
         break;
-    case 6:
+    case ALBUM_OPEN_STATE_FADE_OUT:
         MysteryPal_Blend(type, res->fade.colors, 0x7fff - album->frame * 0x7fff / 60, (u8)res->pokePaletteNo,
                          res->fade.to, res->fade.from);
         setBlend(16 + (2 - 16) * album->frame / 60, 0 + (12 - 0) * album->frame / 60);
         if (album->frame++ > 60) {
             album->frame = 0;
-            album->state = 7;
+            album->state = ALBUM_OPEN_STATE_END_DELAY;
         }
         break;
-    case 7:
-        album->state = 8;
+    case ALBUM_OPEN_STATE_END_DELAY:
+        album->state = ALBUM_OPEN_STATE_RESTORE_PRIORITY;
         break;
-    case 8:
+    case ALBUM_OPEN_STATE_RESTORE_PRIORITY:
         ClActor_SetBgPriority(res->poke, (u8)res->bgPriority);
-        album->state = 0;
+        album->state = ALBUM_OPEN_STATE_IDLE;
         break;
     }
 }
@@ -1991,14 +2093,14 @@ static void MysteryAlbum_LoadIcon(MysteryAlbum *album, MysteryCardRes *res, Heap
     GFL_ArcToolFree(arc);
     pos.x = 216;
     pos.y = 22;
-    if (MysteryCard_GetKind(&album->card) == 2) {
+    if (MysteryCard_GetKind(&album->card) == MYSTERY_GIFT_KIND_ITEM) {
         pos.x += 4;
         pos.y += 8;
     }
     ClActor_SetPalette(res->icon, (u8)MysteryCard_GetPokeIconPalette(&album->card), 0);
     ClActor_SetSurfacePos(res->icon, &pos, res->vramType);
     ClActor_SetVisible(res->icon, TRUE);
-    if (MysteryCard_GetKind(&album->card) == 1) {
+    if (MysteryCard_GetKind(&album->card) == MYSTERY_GIFT_KIND_POKEMON) {
         // BUG: this passes the palette's colors where the palette data goes, so it uploads 32 bytes from wherever its
         // seventh and eighth colors point, read as the data's pointer. The colors written to the palette below hide it
 #ifdef BUGFIX
@@ -2031,8 +2133,8 @@ static void MysteryAlbum_LoadIcon(MysteryAlbum *album, MysteryCardRes *res, Heap
 }
 
 void MysteryAlbum_StartOpen(MysteryAlbum *album) {
-    if (MysteryCard_GetKind(&album->card) == 1 && album->state == 0) {
-        album->state = 1;
+    if (MysteryCard_GetKind(&album->card) == MYSTERY_GIFT_KIND_POKEMON && album->state == ALBUM_OPEN_STATE_IDLE) {
+        album->state = ALBUM_OPEN_STATE_FRONT_PRIORITY;
         album->frame = 0;
     }
 }
@@ -2042,8 +2144,8 @@ static void MysteryAlbum_Close(MysteryAlbum *album) {
     u16 *pltt;
     void (*setBlend)(int eva, int evb);
 
-    if (MysteryCard_GetKind(&album->card) == 1) {
-        album->state = 0;
+    if (MysteryCard_GetKind(&album->card) == MYSTERY_GIFT_KIND_POKEMON) {
+        album->state = ALBUM_OPEN_STATE_IDLE;
         album->frame = 0;
         ClActor_SetBgPriority(album->res->poke, (u8)album->res->bgPriority);
         if (album->res->isMain) {
@@ -2060,7 +2162,7 @@ static void MysteryAlbum_Close(MysteryAlbum *album) {
 }
 
 BOOL MysteryAlbum_IsOpened(MysteryAlbum *album) {
-    if (album->state == 0) {
+    if (album->state == ALBUM_OPEN_STATE_IDLE) {
         return TRUE;
     }
     return FALSE;
@@ -2132,7 +2234,7 @@ static BOOL MysteryAlbumShake_Update(MysteryAlbumShake *shake, u16 *rotation, My
     s32 sign;
 
     switch (shake->state) {
-    case 0:
+    case ALBUM_SHAKE_STATE_LOAD_STEP:
         shake->frame = 0;
         shake->fromRotation = shake->toRotation;
         shake->toRotation = sShakeRotations[shake->step];
@@ -2149,7 +2251,7 @@ static BOOL MysteryAlbumShake_Update(MysteryAlbumShake *shake, u16 *rotation, My
         }
         shake->state++;
         break;
-    case 1:
+    case ALBUM_SHAKE_STATE_ANIMATE_STEP:
         // The direction of x is also used for y, which no step moves
         fromX = shake->from.x;
         dx = shake->to.x - fromX;
@@ -2165,15 +2267,15 @@ static BOOL MysteryAlbumShake_Update(MysteryAlbumShake *shake, u16 *rotation, My
             shake->state++;
         }
         break;
-    case 2:
+    case ALBUM_SHAKE_STATE_NEXT_STEP:
         shake->step++;
         if (shake->step < shake->stepCount) {
-            shake->state = 0;
+            shake->state = ALBUM_SHAKE_STATE_LOAD_STEP;
         } else {
             shake->state++;
         }
         break;
-    case 3:
+    case ALBUM_SHAKE_STATE_DONE:
         done = TRUE;
         break;
     }
