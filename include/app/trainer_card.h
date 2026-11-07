@@ -67,6 +67,23 @@ enum {
     TRCARD_WIN_MESSAGE,
 };
 
+// The card side, or no side actors while the card is moving
+enum {
+    TRCARD_SIDE_FRONT = 0,
+    TRCARD_SIDE_BACK = 1,
+    TRCARD_SIDE_TRANSITION = 2,
+};
+
+enum {
+    TRCARD_BRUSH_PEN = 0,
+    TRCARD_BRUSH_ERASER = 1,
+};
+
+enum {
+    TRCARD_LIST_COLOR_NORMAL = 0,
+    TRCARD_LIST_COLOR_DRAGGED = 1,
+};
+
 // Where the pen is on the signature
 typedef struct {
     u8 x;

@@ -30,24 +30,24 @@ enum {
     TRCARD_ROW_START_DATE,
     TRCARD_ROW_CLEAR_LABEL,
     TRCARD_ROW_CLEAR_DATE,
-    TRCARD_ROW_6,
-    TRCARD_ROW_7,
-    TRCARD_ROW_8,
-    TRCARD_ROW_9,
-    TRCARD_ROW_10,
-    TRCARD_ROW_11,
-    TRCARD_ROW_12,
-    TRCARD_ROW_13,
-    TRCARD_ROW_14,
+    TRCARD_ROW_TIMES_LINKED,
+    TRCARD_ROW_LINK_BATTLES,
+    TRCARD_ROW_LINK_BATTLE_WINS,
+    TRCARD_ROW_LINK_BATTLE_LOSSES,
+    TRCARD_ROW_LINK_TRADES,
+    TRCARD_ROW_WILD_ENCOUNTERS,
+    TRCARD_ROW_TRAINERS_BATTLED,
+    TRCARD_ROW_PASSERBY_COUNT,
+    TRCARD_ROW_FEELING_CHECKS,
     TRCARD_ROW_PASS_POWERS,
-    TRCARD_ROW_16,
-    TRCARD_ROW_17,
-    TRCARD_ROW_18,
+    TRCARD_ROW_FUNFEST_MISSIONS,
+    TRCARD_ROW_MOVIE_SHOOTS,
+    TRCARD_ROW_MUSICAL_PERFORMANCES,
     TRCARD_ROW_PWT_WINS,
     TRCARD_ROW_AVENUE_NAME,
     TRCARD_ROW_AVENUE,
     TRCARD_ROW_PAL_PARK,
-    TRCARD_ROW_23,
+    TRCARD_ROW_BATTLE_TEST,
 };
 
 typedef struct {
@@ -133,14 +133,15 @@ void TrCardBmp_DrawFront(TrainerCardWork *wk, BmpWin **win, const TrainerCardDat
     GFL_StrBufLoadString(wk->nameBuf, data->name);
     TrCardBmp_PrintRight(wk, win[TRCARD_WIN_NAME], 136, 8, 0, wk->nameBuf);
     if (data->hasPokedex) {
-        TrCardBmp_PrintSeenCount(wk, win[TRCARD_WIN_POKEDEX], 136, 8, 0, tmp, data->seenCount, 1, 0);
+        TrCardBmp_PrintSeenCount(wk, win[TRCARD_WIN_POKEDEX], 136, 8, 0, tmp, data->seenCount, 1,
+                                 TRCARD_LIST_COLOR_NORMAL);
     }
     TrCardBmp_DrawUnionView(wk, data->unionView, FALSE);
     TrCardBmp_DrawPersonality(wk, data->personality, FALSE);
-    TrCardBmp_PrintMoney(wk, win[TRCARD_WIN_MONEY], 216, 8, 0, tmp, data->money, 7, 1, 1, 0);
+    TrCardBmp_PrintMoney(wk, win[TRCARD_WIN_MONEY], 216, 8, 0, tmp, data->money, 7, 1, 1, TRCARD_LIST_COLOR_NORMAL);
     PMSDraw_SetBackColor(wk->pmsDraw, 0);
     PMSDraw_Print(wk->pmsDraw, win[TRCARD_WIN_GREETING], &wk->data->greeting, 0);
-    if (wk->side != 0) {
+    if (wk->side != TRCARD_SIDE_FRONT) {
         PMSDraw_SetVisible(wk->pmsDraw, 0, FALSE);
     }
 }
@@ -188,7 +189,7 @@ void TrCardBmp_DrawPersonality(TrainerCardWork *wk, u32 personality, BOOL flush)
 void TrCardBmp_Flush(TrainerCardWork *wk, BmpWin **win) {
     int i;
 
-    if (wk->side != 0) {
+    if (wk->side != TRCARD_SIDE_FRONT) {
         BmpWin_FlushMap(win[TRCARD_WIN_LIST]);
         BmpWin_FlushChar(win[TRCARD_WIN_LIST]);
     } else {
@@ -204,7 +205,7 @@ void TrCardBmp_Flush(TrainerCardWork *wk, BmpWin **win) {
 }
 
 void TrCardBmp_DrawBack(TrainerCardWork *wk, BmpWin **win, TrainerCardData *data) {
-    TrCardBmp_DrawList(wk, wk->scroll, FALSE, 0);
+    TrCardBmp_DrawList(wk, wk->scroll, FALSE, TRCARD_LIST_COLOR_NORMAL);
 }
 
 static void TrCardBmp_Print(BmpWin *win, TrainerCardWork *wk, int x, int y, StrBuf *strbuf, int color) {
@@ -253,39 +254,39 @@ static void TrCardBmp_DrawRow(TrainerCardWork *wk, BmpWin *win, u32 row, int y, 
             TrCardBmp_Print(win, wk, 216 - width, y, wk->noClearBuf, color);
         }
         break;
-    case TRCARD_ROW_6:
+    case TRCARD_ROW_TIMES_LINKED:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[9], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->timesLinked, 9, 1, color);
         break;
-    case TRCARD_ROW_7:
+    case TRCARD_ROW_LINK_BATTLES:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[10], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->linkBattles, 9, 1, color);
         break;
-    case TRCARD_ROW_8:
+    case TRCARD_ROW_LINK_BATTLE_WINS:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[11], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->linkBattleWins, 9, 1, color);
         break;
-    case TRCARD_ROW_9:
+    case TRCARD_ROW_LINK_BATTLE_LOSSES:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[12], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->linkBattleLosses, 9, 1, color);
         break;
-    case TRCARD_ROW_10:
+    case TRCARD_ROW_LINK_TRADES:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[13], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->linkTrades, 9, 1, color);
         break;
-    case TRCARD_ROW_11:
+    case TRCARD_ROW_WILD_ENCOUNTERS:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[14], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->wildEncounters, 9, 1, color);
         break;
-    case TRCARD_ROW_12:
+    case TRCARD_ROW_TRAINERS_BATTLED:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[15], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->trainersBattled, 9, 1, color);
         break;
-    case TRCARD_ROW_13:
+    case TRCARD_ROW_PASSERBY_COUNT:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[16], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->passerbyCount, 5, 1, color);
         break;
-    case TRCARD_ROW_14:
+    case TRCARD_ROW_FEELING_CHECKS:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[17], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->feelingChecks, 4, 1, color);
         break;
@@ -293,15 +294,15 @@ static void TrCardBmp_DrawRow(TrainerCardWork *wk, BmpWin *win, u32 row, int y, 
         TrCardBmp_Print(win, wk, 0, y, wk->labels[18], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->passPowerCount, 2, 1, color);
         break;
-    case TRCARD_ROW_16:
+    case TRCARD_ROW_FUNFEST_MISSIONS:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[22], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, own->funfestMissions, 5, 1, color);
         break;
-    case TRCARD_ROW_17:
+    case TRCARD_ROW_MOVIE_SHOOTS:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[23], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, own->movieShoots, 4, 1, color);
         break;
-    case TRCARD_ROW_18:
+    case TRCARD_ROW_MUSICAL_PERFORMANCES:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[19], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->musicalPerformances, 4, 1, color);
         break;
@@ -322,7 +323,7 @@ static void TrCardBmp_DrawRow(TrainerCardWork *wk, BmpWin *win, u32 row, int y, 
         TrCardBmp_Print(win, wk, 0, y, wk->labels[20], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->palParkHighScore, 3, 1, color);
         break;
-    case TRCARD_ROW_23:
+    case TRCARD_ROW_BATTLE_TEST:
         TrCardBmp_Print(win, wk, 0, y, wk->labels[21], color);
         TrCardBmp_PrintNumber(wk, win, 216, 8, y, tmp, data->battleTestHighScore, 4, 1, color);
         break;
@@ -342,26 +343,26 @@ void TrCardBmp_InitRows(TrainerCardWork *wk, TrainerCardData *shown, TrainerCard
         TrCardBmp_AddRow(wk, i);
     }
     if (shown->cgearOn) {
-        TrCardBmp_AddRow(wk, TRCARD_ROW_14);
-        TrCardBmp_AddRow(wk, TRCARD_ROW_13);
+        TrCardBmp_AddRow(wk, TRCARD_ROW_FEELING_CHECKS);
+        TrCardBmp_AddRow(wk, TRCARD_ROW_PASSERBY_COUNT);
     }
     if (shown->showPassPowers) {
         TrCardBmp_AddRow(wk, TRCARD_ROW_PASS_POWERS);
     }
     if (shown->showMusicals) {
-        TrCardBmp_AddRow(wk, TRCARD_ROW_18);
+        TrCardBmp_AddRow(wk, TRCARD_ROW_MUSICAL_PERFORMANCES);
     }
     if (shown->showPalPark) {
         TrCardBmp_AddRow(wk, TRCARD_ROW_PAL_PARK);
     }
     if (shown->showBattleTest) {
-        TrCardBmp_AddRow(wk, TRCARD_ROW_23);
+        TrCardBmp_AddRow(wk, TRCARD_ROW_BATTLE_TEST);
     }
     if (own->showFunfestMissions) {
-        TrCardBmp_AddRow(wk, TRCARD_ROW_16);
+        TrCardBmp_AddRow(wk, TRCARD_ROW_FUNFEST_MISSIONS);
     }
     if (own->showMovieShoots) {
-        TrCardBmp_AddRow(wk, TRCARD_ROW_17);
+        TrCardBmp_AddRow(wk, TRCARD_ROW_MOVIE_SHOOTS);
     }
     if (own->showPwtWins) {
         TrCardBmp_AddRow(wk, TRCARD_ROW_PWT_WINS);

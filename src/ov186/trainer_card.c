@@ -71,6 +71,86 @@ enum {
     TRCARD_INPUT_MEDALS,
 };
 
+enum {
+    STEP_ZOOM_IN_START = 0,
+    STEP_ZOOM_IN_GROW = 1,
+    STEP_ZOOM_IN_END = 2,
+    STEP_ZOOM_OUT_START = 3,
+    STEP_ZOOM_OUT_SHRINK = 4,
+    STEP_ZOOM_OUT_END = 5,
+    STEP_ZOOM_SLIDE_LEFT_START = 6,
+    STEP_ZOOM_SLIDE_LEFT = 7,
+    STEP_ZOOM_SLIDE_LEFT_END = 8,
+    STEP_ZOOM_SLIDE_RIGHT_START = 9,
+    STEP_ZOOM_SLIDE_RIGHT = 10,
+    STEP_ZOOM_SLIDE_RIGHT_END = 11,
+    STEP_ZOOM_JUMP_LEFT = 12,
+    STEP_ZOOM_JUMP_RIGHT = 13,
+};
+
+enum {
+    TRCARD_BUTTON_RETURN = 0,
+    TRCARD_BUTTON_EXIT = 1,
+    TRCARD_BUTTON_FLIP = 2,
+    TRCARD_BUTTON_BADGES_OR_BLINK = 3,
+    TRCARD_BUTTON_ZOOM = 4,
+    TRCARD_BUTTON_BRUSH = 5,
+    TRCARD_BUTTON_SHORTCUT = 6,
+    TRCARD_BUTTON_UNION_VIEW = 7,
+    TRCARD_BUTTON_PERSONALITY = 8,
+    TRCARD_BUTTON_GREETING = 9,
+    TRCARD_BUTTON_SLIDE_RIGHT = 10,
+    TRCARD_BUTTON_SLIDE_LEFT = 11,
+    TRCARD_BUTTON_MEDALS = 12,
+};
+
+enum {
+    TRCARD_OTHER_BUTTON_MEDALS = 3,
+};
+
+enum {
+    TRCARD_SCROLL_TOUCH_NONE = -1,
+    TRCARD_SCROLL_TOUCH_LIST = 0,
+    TRCARD_SCROLL_TOUCH_UP = 1,
+    TRCARD_SCROLL_TOUCH_DOWN = 2,
+};
+
+enum {
+    TRCARD_SCROLL_ARROWS_UP_HELD = 0,
+    TRCARD_SCROLL_ARROWS_DOWN_HELD = 1,
+    TRCARD_SCROLL_ARROWS_RELEASED = 2,
+    TRCARD_SCROLL_ARROWS_IDLE = 3,
+};
+
+enum {
+    TRCARD_SCROLL_LIMIT_NONE = 0,
+    TRCARD_SCROLL_LIMIT_BOTTOM = 1,
+    TRCARD_SCROLL_LIMIT_TOP = 2,
+};
+
+enum {
+    TRCARD_SIGN_HALF_NONE = -1,
+    TRCARD_SIGN_HALF_LEFT = 0,
+    TRCARD_SIGN_HALF_RIGHT = 1,
+};
+
+enum {
+    TRCARD_SIGN_FRAME_LEFT = 0,
+    TRCARD_SIGN_FRAME_RIGHT = 1,
+    TRCARD_SIGN_FRAME_FULL = 2,
+};
+
+enum {
+    TRCARD_BRUSH_PIXEL_SKIP = 0,
+    TRCARD_BRUSH_PIXEL_DRAW = 1,
+    TRCARD_BRUSH_PIXEL_ERASE = 2,
+};
+
+enum {
+    TRCARD_RANK_FLAG_VISIBLE = 1,
+    TRCARD_RANK_FLAG_PALETTE_ANIME = 2,
+};
+
 // The card's scale while it flips and before the signature is zoomed
 #define TRCARD_SCALE 0x103d
 
@@ -111,9 +191,9 @@ static void TrainerCard_UpdateAffine(TrainerCardWork *wk);
 static BOOL TrainerCard_CheckInputMode(TrainerCardWork *wk);
 static int TrainerCard_KeyInput(TrainerCardWork *wk);
 static void TrainerCard_ToggleShortcut(TrainerCardWork *wk);
-static void TrainerCard_SetPenButton(TrainerCardWork *wk, int eraser, int visible);
-static void TrainerCard_PressPenButton(TrainerCardWork *wk, int eraser);
-static void TrainerCard_SetSignBlink(TrainerCardWork *wk, int eraser);
+static void TrainerCard_SetPenButton(TrainerCardWork *wk, int blink, int visible);
+static void TrainerCard_PressPenButton(TrainerCardWork *wk, int blink);
+static void TrainerCard_SetSignBlink(TrainerCardWork *wk, int blink);
 static BOOL TrainerCard_IsLocked(TrainerCardWork *wk, int button);
 static int TrainerCard_TouchCard(TrainerCardWork *wk, int button);
 static int TrainerCard_TouchSign(TrainerCardWork *wk, int button);
@@ -225,17 +305,17 @@ BOOL TrainerCard_Init(GameProc *proc, u32 *state, void *param, void *work) {
     TrCardBmp_Stub(wk, wk->win[TRCARD_WIN_MONEY], 1, wk->colonBuf);
     if (wk->param->appParam == TRCARD_START_BACK) {
         wk->param->appParam = TRCARD_START_DEFAULT;
-        wk->side = 1;
+        wk->side = TRCARD_SIDE_BACK;
     } else {
-        wk->side = 0;
+        wk->side = TRCARD_SIDE_FRONT;
     }
     wk->param->next = TRCARD_NEXT_END;
     wk->unk32E8 = 0;
     wk->unk31E0 = 0;
     if (wk->data->signBlinks) {
-        wk->blinkMode = 0;
+        wk->blinkMode = TRCARD_SIGN_FRAME_LEFT;
     } else {
-        wk->blinkMode = 2;
+        wk->blinkMode = TRCARD_SIGN_FRAME_FULL;
     }
     wk->centerX = 128;
     wk->centerY = 96;
@@ -271,7 +351,7 @@ static void TrainerCard_PlayPenSE(TrainerCardWork *wk, int count) {
     }
     if (count > 5) {
         wk->seWait = 5;
-        if (wk->brush == 0) {
+        if (wk->brush == TRCARD_BRUSH_PEN) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_08);
         } else {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_09);
@@ -650,8 +730,22 @@ static const TouchRect sTrainerCardSignRelease[] = {
 
 // The pen and the eraser, normally and on the zoomed signature: 1 draws a pixel and 2 erases it
 static const u8 sTrainerCardBrushes[2][2][16] = {
-    { { 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, { 0, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 0 } },
-    { { 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 0 } },
+    { { TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW,
+        TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_SKIP },
+      { TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE,
+        TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_SKIP } },
+    { { TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_DRAW, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP },
+      { TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_ERASE, TRCARD_BRUSH_PIXEL_SKIP,
+        TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP, TRCARD_BRUSH_PIXEL_SKIP } },
 };
 
 // Which of the side's actors show on the front, on the back and while the card moves, for a card that can't be
@@ -668,7 +762,7 @@ static const TrainerCardArrowAnime sTrainerCardArrowAnimes[2][3] = {
 };
 
 static void TrainerCard_LoadSideScreen(TrainerCardWork *wk) {
-    if (wk->side == 0) {
+    if (wk->side == TRCARD_SIDE_FRONT) {
         loadBGScrToVramByNarcNoReserveNegAlign(
             ARCID_TRAINER_CARD_GRA, TrainerCard_GetFrontScreenFile(wk->data->version), 6, 0, 0, FALSE, wk->heapId);
         GFL_BGSysClearScr(7);
@@ -683,8 +777,8 @@ static void TrainerCard_DrawSide(TrainerCardWork *wk) {
     TrainerCard_LoadSideScreen(wk);
     TrCardBmp_DrawFront(wk, wk->win, wk->data);
     PMSDraw_Main(wk->pmsDraw);
-    if (wk->side == 0) {
-        TrCardBmp_DrawList(wk, wk->scroll, FALSE, 0);
+    if (wk->side == TRCARD_SIDE_FRONT) {
+        TrCardBmp_DrawList(wk, wk->scroll, FALSE, TRCARD_LIST_COLOR_NORMAL);
         TrainerCard_DrawTrainer(wk);
     } else {
         TrCardBmp_DrawBack(wk, wk->win, wk->data);
@@ -692,12 +786,12 @@ static void TrainerCard_DrawSide(TrainerCardWork *wk) {
     }
     TrainerCard_SetButtons(wk, wk->side);
     TrCardBmp_Flush(wk, wk->win);
-    TrainerCard_SetSideActors(wk, 0, wk->param->canEdit);
+    TrainerCard_SetSideActors(wk, TRCARD_SIDE_FRONT, wk->param->canEdit);
 }
 
 // The buttons of a card that its owner can edit
 static void TrainerCard_SetButtonsEdit(TrainerCardWork *wk, int side) {
-    if (side == 0) {
+    if (side == TRCARD_SIDE_FRONT) {
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_RETURN, 1, TRUE);
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_ZOOM, 18, FALSE);
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BRUSH, 6, FALSE);
@@ -727,7 +821,7 @@ static void TrainerCard_SetButtonsEdit(TrainerCardWork *wk, int side) {
 
 // The buttons of the player's card where it can't be edited
 static void TrainerCard_SetButtonsLocked(TrainerCardWork *wk, int side) {
-    if (side == 0) {
+    if (side == TRCARD_SIDE_FRONT) {
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_RETURN, 1, TRUE);
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_ZOOM, 18, FALSE);
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BRUSH, 6, FALSE);
@@ -748,7 +842,7 @@ static void TrainerCard_SetButtonsLocked(TrainerCardWork *wk, int side) {
 
 // The buttons of another player's card
 static void TrainerCard_SetButtonsOther(TrainerCardWork *wk, int side) {
-    if (side == 0) {
+    if (side == TRCARD_SIDE_FRONT) {
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_RETURN, 1, TRUE);
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_EXIT, 14, FALSE);
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BADGES, 16, FALSE);
@@ -795,10 +889,10 @@ static BOOL TrainerCard_FlipSeq(TrainerCardWork *wk) {
         wk->scaleX = TRCARD_SCALE;
         wk->scaleY = TRCARD_SCALE;
         GFL_SndSEPlay(SEQ_SE_SW_CARD_06);
-        if (wk->side == 0) {
+        if (wk->side == TRCARD_SIDE_FRONT) {
             PMSDraw_SetIconVisible(wk->pmsDraw, 0, FALSE);
         }
-        TrainerCard_SetSideActors(wk, 2, wk->param->canEdit);
+        TrainerCard_SetSideActors(wk, TRCARD_SIDE_TRANSITION, wk->param->canEdit);
         wk->subSeq++;
         break;
     case STEP_FLIP_NARROW:
@@ -819,7 +913,7 @@ static BOOL TrainerCard_FlipSeq(TrainerCardWork *wk) {
         wk->subSeq++;
         break;
     case STEP_FLIP_DRAW_SIDE:
-        if (wk->side == 0) {
+        if (wk->side == TRCARD_SIDE_FRONT) {
             TrainerCard_DrawTrainer(wk);
         } else {
             TrainerCard_LoadSign(7, wk->signPixels, wk->blinkMode);
@@ -843,7 +937,7 @@ static BOOL TrainerCard_FlipSeq(TrainerCardWork *wk) {
             wk->scaleX = FX32_ONE;
             wk->scaleY = FX32_ONE;
             done = TRUE;
-            if (wk->side == 0) {
+            if (wk->side == TRCARD_SIDE_FRONT) {
                 PMSDraw_SetVisible(wk->pmsDraw, 0, TRUE);
                 PMSDraw_SetIconVisible(wk->pmsDraw, 0, TRUE);
             }
@@ -863,13 +957,13 @@ static void TrainerCard_SetSignWindow(int side) {
         GXS_SetVisibleWnd(0);
         return;
     }
-    if (side == 0) {
+    if (side == TRCARD_SIGN_HALF_LEFT) {
         G2x_SetBlendBrightness_(REG_DB_BLDCNT_ADDR, 0xc, -8);
         G2S_SetWnd0Position(224, 0, 0, 168);
         G2S_SetWnd0InsidePlane(0x1c, TRUE);
         G2S_SetWndOutsidePlane(0x1f, FALSE);
         GXS_SetVisibleWnd(1);
-    } else if (side == 1) {
+    } else if (side == TRCARD_SIGN_HALF_RIGHT) {
         G2x_SetBlendBrightness_(REG_DB_BLDCNT_ADDR, 0xc, -8);
         G2S_SetWnd0Position(0, 0, 32, 168);
         G2S_SetWnd0InsidePlane(0x1c, TRUE);
@@ -882,8 +976,8 @@ static void TrainerCard_SetSignWindow(int side) {
 // done
 static BOOL TrainerCard_ZoomSeq(TrainerCardWork *wk) {
     switch (wk->subSeq) {
-    case 0:
-        if (wk->zoomSide == 0) {
+    case STEP_ZOOM_IN_START:
+        if (wk->zoomSide == TRCARD_SIGN_HALF_LEFT) {
             wk->centerX = 32;
             wk->centerY = 152;
         } else {
@@ -892,78 +986,78 @@ static BOOL TrainerCard_ZoomSeq(TrainerCardWork *wk) {
         }
         wk->scaleX = TRCARD_SCALE;
         wk->scaleY = TRCARD_SCALE;
-        wk->subSeq = 1;
-        TrainerCard_SetSideActors(wk, 2, wk->param->canEdit);
+        wk->subSeq = STEP_ZOOM_IN_GROW;
+        TrainerCard_SetSideActors(wk, TRCARD_SIDE_TRANSITION, wk->param->canEdit);
         break;
-    case 1:
+    case STEP_ZOOM_IN_GROW:
         wk->scaleX += 0x100;
         wk->scaleY += 0x100;
         if (wk->scaleX >= 2 * FX32_ONE) {
             wk->scaleX = 2 * FX32_ONE;
             wk->scaleY = 2 * FX32_ONE;
-            wk->subSeq = 2;
+            wk->subSeq = STEP_ZOOM_IN_END;
         }
         break;
-    case 2:
+    case STEP_ZOOM_IN_END:
         wk->zoomed = 1;
         TrainerCard_SetButtons(wk, wk->side);
         TrainerCard_SetSignWindow(wk->zoomSide);
         return TRUE;
-    case 3:
-        wk->subSeq = 4;
+    case STEP_ZOOM_OUT_START:
+        wk->subSeq = STEP_ZOOM_OUT_SHRINK;
         break;
-    case 4:
+    case STEP_ZOOM_OUT_SHRINK:
         wk->scaleX -= 0x100;
         wk->scaleY -= 0x100;
         if (wk->scaleX <= FX32_ONE) {
             wk->scaleX = FX32_ONE;
             wk->scaleY = FX32_ONE;
-            wk->subSeq = 5;
+            wk->subSeq = STEP_ZOOM_OUT_END;
         }
         break;
-    case 5:
+    case STEP_ZOOM_OUT_END:
         wk->centerX = 128;
         wk->centerY = 96;
         wk->zoomed = 0;
         TrainerCard_SetButtons(wk, wk->side);
-        TrainerCard_SetSignWindow(-1);
-        TrainerCard_SetSideActors(wk, 1, wk->param->canEdit);
+        TrainerCard_SetSignWindow(TRCARD_SIGN_HALF_NONE);
+        TrainerCard_SetSideActors(wk, TRCARD_SIDE_BACK, wk->param->canEdit);
         return TRUE;
-    case 6:
-        wk->subSeq = 7;
+    case STEP_ZOOM_SLIDE_LEFT_START:
+        wk->subSeq = STEP_ZOOM_SLIDE_LEFT;
         break;
-    case 7:
+    case STEP_ZOOM_SLIDE_LEFT:
         wk->centerX -= 8;
         if (wk->centerX < 32) {
             wk->centerX = 32;
-            wk->subSeq = 8;
+            wk->subSeq = STEP_ZOOM_SLIDE_LEFT_END;
         }
         break;
-    case 8:
+    case STEP_ZOOM_SLIDE_LEFT_END:
         wk->zoomSide ^= 1;
         TrainerCard_SetSignWindow(wk->zoomSide);
         return TRUE;
-    case 12:
+    case STEP_ZOOM_JUMP_LEFT:
         wk->centerX = 32;
-        wk->subSeq = 8;
+        wk->subSeq = STEP_ZOOM_SLIDE_LEFT_END;
         break;
-    case 9:
-        wk->subSeq = 10;
+    case STEP_ZOOM_SLIDE_RIGHT_START:
+        wk->subSeq = STEP_ZOOM_SLIDE_RIGHT;
         break;
-    case 10:
+    case STEP_ZOOM_SLIDE_RIGHT:
         wk->centerX += 8;
         if (wk->centerX > 224) {
             wk->centerX = 224;
-            wk->subSeq = 11;
+            wk->subSeq = STEP_ZOOM_SLIDE_RIGHT_END;
         }
         break;
-    case 11:
+    case STEP_ZOOM_SLIDE_RIGHT_END:
         wk->zoomSide ^= 1;
         TrainerCard_SetSignWindow(wk->zoomSide);
         return TRUE;
-    case 13:
+    case STEP_ZOOM_JUMP_RIGHT:
         wk->centerX = 224;
-        wk->subSeq = 11;
+        wk->subSeq = STEP_ZOOM_SLIDE_RIGHT_END;
         break;
     }
     wk->affineDirty = TRUE;
@@ -1030,21 +1124,21 @@ static int TrainerCard_KeyInput(TrainerCardWork *wk) {
             TrainerCard_ToggleShortcut(wk);
         }
     } else if (keys & PAD_BUTTON_A) {
-        if (!wk->data->isOtherCard && wk->side == 0) {
+        if (!wk->data->isOtherCard && wk->side == TRCARD_SIDE_FRONT) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_01);
             TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BADGES, 17, TRUE);
             return TRCARD_INPUT_BADGES;
         }
     } else if (keys & PAD_BUTTON_L) {
-        if (!wk->data->isOtherCard && wk->zoomed == 1 && wk->zoomSide == 1) {
+        if (!wk->data->isOtherCard && wk->zoomed == 1 && wk->zoomSide == TRCARD_SIGN_HALF_RIGHT) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_02);
-            wk->subSeq = 12;
+            wk->subSeq = STEP_ZOOM_JUMP_LEFT;
             return TRCARD_INPUT_ZOOM;
         }
     } else if (keys & PAD_BUTTON_R) {
-        if (!wk->data->isOtherCard && wk->zoomed == 1 && wk->zoomSide == 0) {
+        if (!wk->data->isOtherCard && wk->zoomed == 1 && wk->zoomSide == TRCARD_SIGN_HALF_LEFT) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_02);
-            wk->subSeq = 13;
+            wk->subSeq = STEP_ZOOM_JUMP_RIGHT;
             return TRCARD_INPUT_ZOOM;
         }
     }
@@ -1056,7 +1150,7 @@ static void TrainerCard_ToggleShortcut(TrainerCardWork *wk) {
     BOOL registered;
 
     GFL_SndSEPlay(SEQ_SE_SW_CARD_03);
-    if (wk->side == 0) {
+    if (wk->side == TRCARD_SIDE_FRONT) {
         registered = GameData_IsShortcutRegistered(wk->param->gameData, SHORTCUT_TRAINER_CARD_FRONT) ^ 1;
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_SHORTCUT, registered + 6, TRUE);
         GameData_SetKeyItemRegistration(wk->param->gameData, SHORTCUT_TRAINER_CARD_FRONT, registered);
@@ -1067,17 +1161,17 @@ static void TrainerCard_ToggleShortcut(TrainerCardWork *wk) {
     }
 }
 
-// The button that switches between the pen and the eraser, which shares its actor with the badge case's on the front
-static void TrainerCard_SetPenButton(TrainerCardWork *wk, int eraser, int visible) {
-    if (eraser == 0) {
+// The signature blinking button shares its actor with the badge case button on the front
+static void TrainerCard_SetPenButton(TrainerCardWork *wk, int blink, int visible) {
+    if (blink == 0) {
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BADGES, 10, visible);
     } else {
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BADGES, 12, visible);
     }
 }
 
-static void TrainerCard_PressPenButton(TrainerCardWork *wk, int eraser) {
-    if (eraser == 0) {
+static void TrainerCard_PressPenButton(TrainerCardWork *wk, int blink) {
+    if (blink == 0) {
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BADGES, 11, TRUE);
         ClActor_SetVisible(wk->obj.actors[TRCARD_ACTOR_ZOOM], FALSE);
         ClActor_SetVisible(wk->obj.actors[TRCARD_ACTOR_BRUSH], FALSE);
@@ -1088,18 +1182,18 @@ static void TrainerCard_PressPenButton(TrainerCardWork *wk, int eraser) {
     }
 }
 
-static void TrainerCard_SetSignBlink(TrainerCardWork *wk, int eraser) {
-    if (eraser) {
-        wk->blinkMode = 0;
+static void TrainerCard_SetSignBlink(TrainerCardWork *wk, int blink) {
+    if (blink) {
+        wk->blinkMode = TRCARD_SIGN_FRAME_LEFT;
         wk->blinkCount = 0;
     } else {
-        wk->blinkMode = 2;
+        wk->blinkMode = TRCARD_SIGN_FRAME_FULL;
     }
     TrainerCard_SetSignScreen(7, wk->blinkMode);
 }
 
 static BOOL TrainerCard_IsLocked(TrainerCardWork *wk, int button) {
-    if (wk->data->isLocked && button >= 3 && button <= 9) {
+    if (wk->data->isLocked && button >= TRCARD_BUTTON_BADGES_OR_BLINK && button <= TRCARD_BUTTON_GREETING) {
         return TRUE;
     }
     return FALSE;
@@ -1110,21 +1204,21 @@ static int TrainerCard_TouchCard(TrainerCardWork *wk, int button) {
         return TRCARD_INPUT_NONE;
     }
     switch (button) {
-    case 0:
+    case TRCARD_BUTTON_RETURN:
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_RETURN, 9, TRUE);
         GFL_SndSEPlay(SEQ_SE_SW_CARD_04);
         GCTX_HIDSetUsingTouch(TRUE);
         return TRCARD_INPUT_RETURN;
-    case 1:
+    case TRCARD_BUTTON_EXIT:
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_EXIT, 8, TRUE);
         GFL_SndSEPlay(SEQ_SE_SW_CARD_05);
         return TRCARD_INPUT_EXIT;
-    case 2:
+    case TRCARD_BUTTON_FLIP:
         GFL_HIDGetTouchHeldPoint(&wk->touchX, &wk->touchY);
         TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_FLIP, 23, TRUE);
         return TRCARD_INPUT_FLIP;
-    case 3:
-        if (wk->side != 0) {
+    case TRCARD_BUTTON_BADGES_OR_BLINK:
+        if (wk->side != TRCARD_SIDE_FRONT) {
             if (wk->param->shownData->canEdit) {
                 TrainerCard_PressPenButton(wk, wk->data->signBlinks);
                 wk->data->signBlinks ^= 1;
@@ -1138,54 +1232,54 @@ static int TrainerCard_TouchCard(TrainerCardWork *wk, int button) {
             return TRCARD_INPUT_BADGES;
         }
         break;
-    case 4:
-        if (wk->side != 0 && !wk->data->signBlinks && wk->param->shownData->canEdit) {
+    case TRCARD_BUTTON_ZOOM:
+        if (wk->side != TRCARD_SIDE_FRONT && !wk->data->signBlinks && wk->param->shownData->canEdit) {
             if (wk->zoomed == 0) {
                 TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_ZOOM, 19, TRUE);
                 GFL_SndSEPlay(SEQ_SE_SW_CARD_10);
-                wk->subSeq = 0;
+                wk->subSeq = STEP_ZOOM_IN_START;
             } else {
                 TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_ZOOM, 21, TRUE);
                 GFL_SndSEPlay(SEQ_SE_SW_CARD_11);
-                wk->subSeq = 3;
+                wk->subSeq = STEP_ZOOM_OUT_START;
             }
             return TRCARD_INPUT_ZOOM;
         }
         break;
-    case 5:
-        if (wk->side != 0 && wk->param->shownData->canEdit && !wk->data->signBlinks) {
+    case TRCARD_BUTTON_BRUSH:
+        if (wk->side != TRCARD_SIDE_FRONT && wk->param->shownData->canEdit && !wk->data->signBlinks) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_02);
             TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BRUSH, 9 - wk->brush * 2, TRUE);
             wk->brush ^= 1;
         }
         break;
-    case 6:
+    case TRCARD_BUTTON_SHORTCUT:
         TrainerCard_ToggleShortcut(wk);
         break;
-    case 7:
-        if (wk->side == 0) {
+    case TRCARD_BUTTON_UNION_VIEW:
+        if (wk->side == TRCARD_SIDE_FRONT) {
             return TRCARD_INPUT_UNION_VIEW;
         }
         break;
-    case 8:
-        if (wk->side == 0) {
+    case TRCARD_BUTTON_PERSONALITY:
+        if (wk->side == TRCARD_SIDE_FRONT) {
             return TRCARD_INPUT_PERSONALITY;
         }
         break;
-    case 9:
-        if (wk->side == 0) {
+    case TRCARD_BUTTON_GREETING:
+        if (wk->side == TRCARD_SIDE_FRONT) {
             return TRCARD_INPUT_GREETING;
         }
         break;
-    case 12:
-        if ((wk->rankFlags & 1) && wk->side == 0) {
+    case TRCARD_BUTTON_MEDALS:
+        if ((wk->rankFlags & TRCARD_RANK_FLAG_VISIBLE) && wk->side == TRCARD_SIDE_FRONT) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_01);
             TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_RANK, sTrainerCardRankAnimes[wk->rank], TRUE);
             return TRCARD_INPUT_MEDALS;
         }
         break;
-    case 10:
-    case 11:
+    case TRCARD_BUTTON_SLIDE_RIGHT:
+    case TRCARD_BUTTON_SLIDE_LEFT:
         break;
     }
     return TRCARD_INPUT_NONE;
@@ -1194,45 +1288,45 @@ static int TrainerCard_TouchCard(TrainerCardWork *wk, int button) {
 // The buttons while the signature is zoomed
 static int TrainerCard_TouchSign(TrainerCardWork *wk, int button) {
     switch (button) {
-    case 4:
-        if (wk->side != 0) {
+    case TRCARD_BUTTON_ZOOM:
+        if (wk->side != TRCARD_SIDE_FRONT) {
             TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_ZOOM, 21, TRUE);
             GFL_SndSEPlay(SEQ_SE_SW_CARD_11);
-            wk->subSeq = 3;
+            wk->subSeq = STEP_ZOOM_OUT_START;
             return TRCARD_INPUT_ZOOM;
         }
         break;
-    case 5:
-        if (wk->side != 0) {
+    case TRCARD_BUTTON_BRUSH:
+        if (wk->side != TRCARD_SIDE_FRONT) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_02);
             TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_BRUSH, 9 - wk->brush * 2, TRUE);
             wk->brush ^= 1;
         }
         break;
-    case 6:
+    case TRCARD_BUTTON_SHORTCUT:
         TrainerCard_ToggleShortcut(wk);
         break;
-    case 10:
-        if (wk->zoomSide == 0) {
+    case TRCARD_BUTTON_SLIDE_RIGHT:
+        if (wk->zoomSide == TRCARD_SIGN_HALF_LEFT) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_02);
-            wk->subSeq = 9;
+            wk->subSeq = STEP_ZOOM_SLIDE_RIGHT_START;
             return TRCARD_INPUT_ZOOM;
         }
         break;
-    case 11:
-        if (wk->zoomSide == 1) {
+    case TRCARD_BUTTON_SLIDE_LEFT:
+        if (wk->zoomSide == TRCARD_SIGN_HALF_RIGHT) {
             GFL_SndSEPlay(SEQ_SE_SW_CARD_02);
-            wk->subSeq = 6;
+            wk->subSeq = STEP_ZOOM_SLIDE_LEFT_START;
             return TRCARD_INPUT_ZOOM;
         }
         break;
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 7:
-    case 8:
-    case 9:
+    case TRCARD_BUTTON_RETURN:
+    case TRCARD_BUTTON_EXIT:
+    case TRCARD_BUTTON_FLIP:
+    case TRCARD_BUTTON_BADGES_OR_BLINK:
+    case TRCARD_BUTTON_UNION_VIEW:
+    case TRCARD_BUTTON_PERSONALITY:
+    case TRCARD_BUTTON_GREETING:
         break;
     }
     return TRCARD_INPUT_NONE;
@@ -1240,29 +1334,29 @@ static int TrainerCard_TouchSign(TrainerCardWork *wk, int button) {
 
 // What of the back's list is touched: 0 the list, 1 the up arrow, 2 the down arrow, or -1
 static int TrainerCard_CheckScrollTouch(TrainerCardWork *wk, BOOL held) {
-    int result = -1;
+    int result = TRCARD_SCROLL_TOUCH_NONE;
     int hit;
 
     if (!held) {
         if (GFL_HIDGetTouchPressedRect(sTrainerCardListRect) == 0) {
-            result = 0;
+            result = TRCARD_SCROLL_TOUCH_LIST;
         } else {
             hit = GFL_HIDGetTouchPressedRect(sTrainerCardArrowRects);
             if (hit == 0) {
-                result = 1;
+                result = TRCARD_SCROLL_TOUCH_UP;
             } else if (hit == 1) {
-                result = 2;
+                result = TRCARD_SCROLL_TOUCH_DOWN;
             }
         }
     } else {
         if (GFL_HIDGetTouchHeldRect(sTrainerCardListRect) == 0) {
-            result = 0;
+            result = TRCARD_SCROLL_TOUCH_LIST;
         } else {
             hit = GFL_HIDGetTouchHeldRect(sTrainerCardArrowRects);
             if (hit == 0) {
-                result = 1;
+                result = TRCARD_SCROLL_TOUCH_UP;
             } else if (hit == 1) {
-                result = 2;
+                result = TRCARD_SCROLL_TOUCH_DOWN;
             }
         }
     }
@@ -1272,12 +1366,12 @@ static int TrainerCard_CheckScrollTouch(TrainerCardWork *wk, BOOL held) {
 static void TrainerCard_ScrollRelease(TrainerCardWork *wk) {
     int hit = TrainerCard_CheckScrollTouch(wk, TRUE);
 
-    if (wk->side != 0 && hit == -1 && wk->scrolled == 1) {
-        TrCardBmp_DrawList(wk, wk->scroll, TRUE, 0);
+    if (wk->side != TRCARD_SIDE_FRONT && hit == TRCARD_SCROLL_TOUCH_NONE && wk->scrolled == 1) {
+        TrCardBmp_DrawList(wk, wk->scroll, TRUE, TRCARD_LIST_COLOR_NORMAL);
         wk->scrolled = 0;
         wk->unk331C = 0;
         wk->scrollTouch = 0;
-        TrainerCard_SetScrollArrows(wk, 2);
+        TrainerCard_SetScrollArrows(wk, TRCARD_SCROLL_ARROWS_RELEASED);
     }
 }
 
@@ -1287,39 +1381,39 @@ static void TrainerCard_ScrollTouch(TrainerCardWork *wk) {
     u32 x;
     u32 y;
     int min;
-    int up;
+    int arrowMode;
 
-    if (trg != -1) {
+    if (trg != TRCARD_SCROLL_TOUCH_NONE) {
         wk->scrollTouch = 1;
     }
-    if (wk->scrollTouch == 0 || cont == -1) {
+    if (wk->scrollTouch == 0 || cont == TRCARD_SCROLL_TOUCH_NONE) {
         return;
     }
-    if (trg == 0) {
+    if (trg == TRCARD_SCROLL_TOUCH_LIST) {
         if (GFL_HIDIsTouchPressed()) {
             GFL_HIDGetTouchPressedPoint(&x, &y);
             wk->dragY = y;
             wk->dragScroll = wk->scroll;
         }
-    } else if (trg == 1) {
+    } else if (trg == TRCARD_SCROLL_TOUCH_UP) {
         wk->dragY = 16;
         wk->dragScroll = wk->scroll;
-    } else if (trg == 2) {
+    } else if (trg == TRCARD_SCROLL_TOUCH_DOWN) {
         wk->dragY = 80;
         wk->dragScroll = wk->scroll;
     }
-    if (cont == 0) {
+    if (cont == TRCARD_SCROLL_TOUCH_LIST) {
         if (GFL_HIDIsTouchHeld()) {
             GFL_HIDGetTouchHeldPoint(&x, &y);
             wk->scroll = wk->dragScroll - (wk->dragY - y);
         }
     } else {
-        if (cont == 1) {
+        if (cont == TRCARD_SCROLL_TOUCH_UP) {
             wk->scroll += 8;
-            TrainerCard_SetScrollArrows(wk, 1);
-        } else if (cont == 2) {
+            TrainerCard_SetScrollArrows(wk, TRCARD_SCROLL_ARROWS_DOWN_HELD);
+        } else if (cont == TRCARD_SCROLL_TOUCH_DOWN) {
             wk->scroll -= 8;
-            TrainerCard_SetScrollArrows(wk, 0);
+            TrainerCard_SetScrollArrows(wk, TRCARD_SCROLL_ARROWS_UP_HELD);
         }
         GFL_HIDGetTouchHeldPoint(&x, &y);
         wk->dragY = y;
@@ -1333,23 +1427,23 @@ static void TrainerCard_ScrollTouch(TrainerCardWork *wk) {
     }
     if (wk->oldScroll != wk->scroll) {
         wk->scrolled = 1;
-        TrCardBmp_DrawList(wk, wk->scroll, TRUE, 1);
+        TrCardBmp_DrawList(wk, wk->scroll, TRUE, TRCARD_LIST_COLOR_DRAGGED);
         GFL_SndSEPlay(SEQ_SE_SW_CARD_07);
-        if (cont == 0) {
-            up = 0;
+        if (cont == TRCARD_SCROLL_TOUCH_LIST) {
+            arrowMode = TRCARD_SCROLL_ARROWS_UP_HELD;
             if (wk->scroll < wk->oldScroll) {
-                up = 1;
+                arrowMode = TRCARD_SCROLL_ARROWS_DOWN_HELD;
             }
-        } else if (cont == 1 || cont == 2) {
-            up = 0;
+        } else if (cont == TRCARD_SCROLL_TOUCH_UP || cont == TRCARD_SCROLL_TOUCH_DOWN) {
+            arrowMode = TRCARD_SCROLL_ARROWS_UP_HELD;
             if (wk->scroll < wk->oldScroll) {
-                up = 1;
+                arrowMode = TRCARD_SCROLL_ARROWS_DOWN_HELD;
             }
         }
-        TrainerCard_SetScrollArrows(wk, up);
+        TrainerCard_SetScrollArrows(wk, arrowMode);
         wk->rankAngle = 0x8000;
     } else {
-        TrainerCard_SetScrollArrows(wk, 3);
+        TrainerCard_SetScrollArrows(wk, TRCARD_SCROLL_ARROWS_IDLE);
         wk->rankAngle = 0x8000;
     }
     wk->oldScroll = wk->scroll;
@@ -1367,8 +1461,8 @@ static int TrainerCard_TouchInput(TrainerCardWork *wk) {
         }
     } else {
         hit = GFL_HIDGetTouchPressedRect(sTrainerCardOtherRects);
-        if (hit == 3) {
-            hit = 12;
+        if (hit == TRCARD_OTHER_BUTTON_MEDALS) {
+            hit = TRCARD_BUTTON_MEDALS;
         }
     }
     if (wk->zoomed == 0) {
@@ -1377,7 +1471,7 @@ static int TrainerCard_TouchInput(TrainerCardWork *wk) {
         input = TrainerCard_TouchSign(wk, hit);
     }
     if (input == TRCARD_INPUT_NONE) {
-        if (wk->side != 0) {
+        if (wk->side != TRCARD_SIDE_FRONT) {
             if (wk->zoomed == 0) {
                 TrainerCard_ScrollTouch(wk);
                 TrainerCard_ReadPen(wk, 0);
@@ -1403,7 +1497,7 @@ static int TrainerCard_Input(TrainerCardWork *wk) {
 static void TrainerCard_HandleInput(TrainerCardWork *wk, int input, u32 *state) {
     switch (input) {
     case TRCARD_INPUT_FLIP:
-        wk->subSeq = 0;
+        wk->subSeq = STEP_FLIP_START;
         *state = TRCARD_SEQ_FLIP;
         break;
     case TRCARD_INPUT_ZOOM:
@@ -1545,7 +1639,7 @@ static void TrainerCard_SetSignScreen(u32 bg, int mode) {
     }
     tile = 0;
     switch (mode) {
-    case 2:
+    case TRCARD_SIGN_FRAME_FULL:
         for (y = 0; y < 8; y++) {
             for (x = 0; x < 24; x++) {
                 tile++;
@@ -1553,7 +1647,7 @@ static void TrainerCard_SetSignScreen(u32 bg, int mode) {
             }
         }
         break;
-    case 0:
+    case TRCARD_SIGN_FRAME_LEFT:
         for (y = 0; y < 8; y++) {
             for (x = 0; x < 12; x++) {
                 tile++;
@@ -1562,7 +1656,7 @@ static void TrainerCard_SetSignScreen(u32 bg, int mode) {
             tile += 12;
         }
         break;
-    case 1:
+    case TRCARD_SIGN_FRAME_RIGHT:
         tile += 12;
         for (y = 0; y < 8; y++) {
             for (x = 0; x < 12; x++) {
@@ -1582,7 +1676,7 @@ static void TrainerCard_LoadSign(u32 bg, const u8 *pixels, u8 mode) {
 }
 
 static void TrainerCard_UpdateSignBlink(TrainerCardWork *wk) {
-    if (wk->side != 0 && wk->data->signBlinks) {
+    if (wk->side != TRCARD_SIDE_FRONT && wk->data->signBlinks) {
         wk->blinkCount++;
         if (wk->blinkCount > 20) {
             wk->blinkMode ^= 1;
@@ -1608,7 +1702,7 @@ static void TrainerCard_AnimatePalette(TrainerCardWork *wk) {
 
 // Ends a stroke when the pen leaves the signature's surroundings
 static void TrainerCard_CheckPenRelease(TrainerCardWork *wk) {
-    if ((wk->side != 0 && wk->zoomed == 0 && GFL_HIDGetTouchHeldRect(sTrainerCardSignRelease) != 0) ||
+    if ((wk->side != TRCARD_SIDE_FRONT && wk->zoomed == 0 && GFL_HIDGetTouchHeldRect(sTrainerCardSignRelease) != 0) ||
         (wk->zoomed == 1 && GFL_HIDGetTouchHeldRect(sTrainerCardZoomedSignRelease) != 0)) {
         wk->penTouch = 0;
     }
@@ -1632,9 +1726,9 @@ static void TrainerCard_ReadPen(TrainerCardWork *wk, int zoomed) {
                 wk->pen.brush = wk->brush;
                 wk->pen.on = 1;
                 if (x < 128) {
-                    wk->zoomSide = 0;
+                    wk->zoomSide = TRCARD_SIGN_HALF_LEFT;
                 } else {
-                    wk->zoomSide = 1;
+                    wk->zoomSide = TRCARD_SIGN_HALF_RIGHT;
                 }
             } else {
                 wk->pen.on = 0;
@@ -1684,16 +1778,16 @@ static void TrainerCard_DrawBrush(u8 *pixels, const u8 *brush, int x, int y, int
                 continue;
             }
             if (zoomed == 1) {
-                if ((zoomSide == 0 && px >= TRCARD_SIGN_WIDTH / 2) ||
-                    (zoomSide == 1 && px <= TRCARD_SIGN_WIDTH / 2 - 1)) {
+                if ((zoomSide == TRCARD_SIGN_HALF_LEFT && px >= TRCARD_SIGN_WIDTH / 2) ||
+                    (zoomSide == TRCARD_SIGN_HALF_RIGHT && px <= TRCARD_SIGN_WIDTH / 2 - 1)) {
                     n++;
                     continue;
                 }
             }
             offset = px % 8 + ((py % 8) * 8 + (px / 8 + (py / 8) * (TRCARD_SIGN_WIDTH / 8)) * 64);
-            if (brush[n] == 1) {
+            if (brush[n] == TRCARD_BRUSH_PIXEL_DRAW) {
                 pixels[offset] = 7;
-            } else if (brush[n] == 2) {
+            } else if (brush[n] == TRCARD_BRUSH_PIXEL_ERASE) {
                 pixels[offset] = 0;
             }
             n++;
@@ -1833,19 +1927,19 @@ static void TrainerCard_SetSideActors(TrainerCardWork *wk, int mode, BOOL canEdi
     int i;
     BOOL anime = FALSE;
 
-    if (mode == 0) {
+    if (mode == TRCARD_SIDE_FRONT) {
         for (i = 0; i < 5; i++) {
             TrainerCard_SetActorVisible(wk, TRCARD_ACTOR_SIDE + i, sTrainerCardSideActors[canEdit][mode][i]);
         }
-        if (wk->rankFlags & 1) {
+        if (wk->rankFlags & TRCARD_RANK_FLAG_VISIBLE) {
             TrainerCard_SetActorVisible(wk, TRCARD_ACTOR_RANK, TRUE);
         }
         anime = TRUE;
-    } else if (mode == 1) {
+    } else if (mode == TRCARD_SIDE_BACK) {
         for (i = 0; i < 6; i++) {
             TrainerCard_SetActorVisible(wk, TRCARD_ACTOR_SIDE + i, sTrainerCardSideActors[canEdit][mode][i]);
         }
-        TrainerCard_SetScrollArrows(wk, 3);
+        TrainerCard_SetScrollArrows(wk, TRCARD_SCROLL_ARROWS_IDLE);
         anime = TRUE;
     } else {
         for (i = 0; i < 6; i++) {
@@ -1860,7 +1954,7 @@ static void TrainerCard_InitRank(TrainerCardWork *wk) {
     int rank;
 
     if (TrainerCardData_GetMedalCount(wk->param->data) == 0) {
-        wk->rankFlags &= ~1;
+        wk->rankFlags &= ~TRCARD_RANK_FLAG_VISIBLE;
         TrainerCard_SetActorVisible(wk, TRCARD_ACTOR_RANK, FALSE);
         return;
     }
@@ -1873,7 +1967,7 @@ static void TrainerCard_InitRank(TrainerCardWork *wk) {
     }
     wk->rank = rank;
     TrCardObj_SetAnime(&wk->obj, TRCARD_ACTOR_RANK, sTrainerCardRankAnimes[rank], TRUE);
-    wk->rankFlags |= 1;
+    wk->rankFlags |= TRCARD_RANK_FLAG_VISIBLE;
 }
 
 static void TrainerCard_LoadRankPalette(TrainerCardWork *wk) {
@@ -1893,7 +1987,7 @@ static void TrainerCard_AnimateRankPalette(TrainerCardWork *wk) {
     int i;
     s16 ratio;
 
-    if (wk->rankFlags & 2) {
+    if (wk->rankFlags & TRCARD_RANK_FLAG_PALETTE_ANIME) {
         wk->rankAngle += 0x200;
         if (wk->rankAngle >= 0x10000) {
             wk->rankAngle -= 0x10000;
@@ -1922,46 +2016,46 @@ static void TrainerCard_AnimateRankPalette(TrainerCardWork *wk) {
 
 static void TrainerCard_SetRankAnime(TrainerCardWork *wk, int on) {
     if (on == TRUE) {
-        wk->rankFlags |= 2;
+        wk->rankFlags |= TRCARD_RANK_FLAG_PALETTE_ANIME;
     } else {
-        wk->rankFlags &= ~2;
+        wk->rankFlags &= ~TRCARD_RANK_FLAG_PALETTE_ANIME;
     }
 }
 
 // The scroll arrows: the up arrow held (0), the down arrow held (1), or both at rest (2 and 3). An arrow that can't
 // scroll further is greyed out
 static void TrainerCard_SetScrollArrows(TrainerCardWork *wk, int mode) {
-    int end = 0;
+    int end = TRCARD_SCROLL_LIMIT_NONE;
     int anime;
 
     if (wk->scroll <= -(wk->rowCount - 4) * TRCARD_ROW_HEIGHT) {
-        end = 1;
+        end = TRCARD_SCROLL_LIMIT_BOTTOM;
     } else if (wk->scroll >= 0) {
-        end = 2;
+        end = TRCARD_SCROLL_LIMIT_TOP;
     }
-    if (mode == 0) {
+    if (mode == TRCARD_SCROLL_ARROWS_UP_HELD) {
         anime = 2;
-        if (end != 2) {
+        if (end != TRCARD_SCROLL_LIMIT_TOP) {
             anime = 1;
         }
         TrCardObj_SetAnimePalette(&wk->obj, TRCARD_ACTOR_SCROLL_UP, sTrainerCardArrowAnimes[0][anime].sequence, TRUE,
                                   sTrainerCardArrowAnimes[0][anime].palette);
-    } else if (mode == 1) {
+    } else if (mode == TRCARD_SCROLL_ARROWS_DOWN_HELD) {
         anime = 2;
-        if (end != 1) {
+        if (end != TRCARD_SCROLL_LIMIT_BOTTOM) {
             anime = 1;
         }
         TrCardObj_SetAnimePalette(&wk->obj, TRCARD_ACTOR_SCROLL_DOWN, sTrainerCardArrowAnimes[1][anime].sequence, TRUE,
                                   sTrainerCardArrowAnimes[1][anime].palette);
-    } else if (mode == 2 || mode == 3) {
+    } else if (mode == TRCARD_SCROLL_ARROWS_RELEASED || mode == TRCARD_SCROLL_ARROWS_IDLE) {
         anime = 2;
-        if (end != 2) {
+        if (end != TRCARD_SCROLL_LIMIT_TOP) {
             anime = 0;
         }
         TrCardObj_SetAnimePalette(&wk->obj, TRCARD_ACTOR_SCROLL_UP, sTrainerCardArrowAnimes[0][anime].sequence, TRUE,
                                   sTrainerCardArrowAnimes[0][anime].palette);
         anime = 2;
-        if (end != 1) {
+        if (end != TRCARD_SCROLL_LIMIT_BOTTOM) {
             anime = 0;
         }
         TrCardObj_SetAnimePalette(&wk->obj, TRCARD_ACTOR_SCROLL_DOWN, sTrainerCardArrowAnimes[1][anime].sequence, TRUE,
