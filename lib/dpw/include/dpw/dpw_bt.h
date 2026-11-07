@@ -9,6 +9,11 @@
 // when the call went well). The ROM has no strings of this library's own, so the DpwBt_ names are guesses after the
 // server's pages
 
+// The result produced after DpwBt_Cancel stops an active request.
+enum {
+    DPW_BT_RESULT_CANCELED = -4,
+};
+
 // Starts and ends the library, for the player's ID and friend key, and runs it every frame
 void DpwBt_Init(s32 pid, u64 friendKey, int server);
 void DpwBt_End(void);
