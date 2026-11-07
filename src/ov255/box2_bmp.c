@@ -27,10 +27,7 @@
 #include "text/system/btl_pokeparam_box_main_save_init.h"
 
 // The PC box's windows: the Pokémon's data on the upper screen, the buttons of the frames, the box names and counts on
-// OAM, and the messages. The ROM doesn't name this file; box2_bmp.c is a guess after box2_main.c. None of these
-// functions has a name yet
-
-#define BOX2_WIN_MAX 28
+// OAM, and the messages. The ROM doesn't name this file; box2_bmp.c is a guess after box2_main.c. Names are ours
 
 // The colors of the text
 #define BOX2_COLOR_NORMAL PRINT_COLOR(1, 2, 0)
@@ -50,6 +47,12 @@ typedef struct {
 } Box2WinData;
 
 // clang-format off
+// Regional dex table sentinel; the table uses999 for species without a number.
+enum {
+    BOX2_REGIONAL_DEX_NONE = 999,
+};
+
+
 static const Box2WinData sWinData[BOX2_WIN_MAX] = {
     {4, 1, 0, 30, 3, 15},  {4, 1, 6, 8, 2, 15},   {4, 1, 10, 8, 2, 15},  {4, 11, 10, 6, 2, 15},
     {4, 9, 10, 2, 2, 15},  {4, 1, 4, 7, 2, 15},   {4, 2, 14, 8, 2, 15},  {4, 2, 18, 11, 2, 15},
@@ -150,25 +153,30 @@ void Box2Bmp_PrintTitle(Box2SysWork *syswk) {
     Box2AppWork *app = syswk->app;
     MsgData *msgData;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[0].window), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[BOX2_WIN_TITLE].window), 0);
     msgData = LoadBoxMsgData();
     // The titles follow the modes, from Deposit Pokémon on
-    PrintMsg(app, 0, msgData, syswk->param->mode + Box2Bmp_Text_DepositPokemon, 0, 8, app->font, BOX2_COLOR_NORMAL);
+    PrintMsg(app, BOX2_WIN_TITLE, msgData, syswk->param->mode + Box2Bmp_Text_DepositPokemon, 0, 8, app->font,
+             BOX2_COLOR_NORMAL);
     GFL_MsgDataFree(msgData);
-    PushWindowScreen(&syswk->app->windows[0]);
+    PushWindowScreen(&syswk->app->windows[BOX2_WIN_TITLE]);
 }
 
 void Box2Bmp_PrintInfoLabels(Box2SysWork *syswk) {
     Box2AppWork *app = syswk->app;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[10].window), 0);
-    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[11].window), 0);
-    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[12].window), 0);
-    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[13].window), 0);
-    PrintMsg(app, 10, app->msgData, BtlPokeparamBoxMainSaveInit_Text_MovesLearned, 0, 0, app->font, BOX2_COLOR_NORMAL);
-    PrintMsg(app, 11, app->msgData, BtlPokeparamBoxMainSaveInit_Text_Nature, 0, 0, app->font, BOX2_COLOR_NORMAL);
-    PrintMsg(app, 12, app->msgData, BtlPokeparamBoxMainSaveInit_Text_Ability, 0, 0, app->font, BOX2_COLOR_NORMAL);
-    PrintMsg(app, 13, app->msgData, BtlPokeparamBoxMainSaveInit_Text_Item, 0, 0, app->font, BOX2_COLOR_NORMAL);
+    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[BOX2_WIN_MOVES_LABEL].window), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[BOX2_WIN_NATURE_LABEL].window), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[BOX2_WIN_ABILITY_LABEL].window), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(app->windows[BOX2_WIN_ITEM_LABEL].window), 0);
+    PrintMsg(app, BOX2_WIN_MOVES_LABEL, app->msgData, BtlPokeparamBoxMainSaveInit_Text_MovesLearned, 0, 0, app->font,
+             BOX2_COLOR_NORMAL);
+    PrintMsg(app, BOX2_WIN_NATURE_LABEL, app->msgData, BtlPokeparamBoxMainSaveInit_Text_Nature, 0, 0, app->font,
+             BOX2_COLOR_NORMAL);
+    PrintMsg(app, BOX2_WIN_ABILITY_LABEL, app->msgData, BtlPokeparamBoxMainSaveInit_Text_Ability, 0, 0, app->font,
+             BOX2_COLOR_NORMAL);
+    PrintMsg(app, BOX2_WIN_ITEM_LABEL, app->msgData, BtlPokeparamBoxMainSaveInit_Text_Item, 0, 0, app->font,
+             BOX2_COLOR_NORMAL);
 }
 
 // The species
@@ -246,7 +254,7 @@ static void PrintInfoDexNumber(Box2SysWork *syswk, Box2PokeInfo *info, u32 index
         } else {
             number = syswk->app->regionalDex[info->species];
         }
-        if (number != 999) {
+        if (number != BOX2_REGIONAL_DEX_NONE) {
             PrintFormattedMsg(syswk->app, index, syswk->app->msgData, BtlPokeparamBoxMainSaveInit_Text_No, 0, 0,
                               syswk->app->font, BOX2_COLOR_NORMAL);
             width = GFL_FontGetBlockWidth(syswk->app->expandBuf, syswk->app->font, 0);
@@ -325,19 +333,19 @@ static void PrintInfoMoves(Box2AppWork *app, Box2PokeInfo *info, u32 index) {
 }
 
 void Box2Bmp_PrintPokeInfo(Box2SysWork *syswk, Box2PokeInfo *info) {
-    PrintInfoSpecies(syswk->app, info, 1);
-    PrintInfoNickname(syswk->app, info, 2);
-    PrintInfoLevel(syswk->app, info, 3);
-    PrintInfoSex(syswk->app, info, 4);
-    PrintInfoDexNumber(syswk, info, 5);
-    PrintInfoNature(syswk->app, info, 6);
-    PrintInfoAbility(syswk->app, info, 7);
-    PrintInfoItem(syswk->app, info, 8);
-    PrintInfoMoves(syswk->app, info, 9);
-    PushWindowScreen(&syswk->app->windows[10]);
-    PushWindowScreen(&syswk->app->windows[11]);
-    PushWindowScreen(&syswk->app->windows[12]);
-    PushWindowScreen(&syswk->app->windows[13]);
+    PrintInfoSpecies(syswk->app, info, BOX2_WIN_SPECIES);
+    PrintInfoNickname(syswk->app, info, BOX2_WIN_NICKNAME);
+    PrintInfoLevel(syswk->app, info, BOX2_WIN_LEVEL);
+    PrintInfoSex(syswk->app, info, BOX2_WIN_GENDER);
+    PrintInfoDexNumber(syswk, info, BOX2_WIN_DEX_NUMBER);
+    PrintInfoNature(syswk->app, info, BOX2_WIN_NATURE);
+    PrintInfoAbility(syswk->app, info, BOX2_WIN_ABILITY);
+    PrintInfoItem(syswk->app, info, BOX2_WIN_ITEM);
+    PrintInfoMoves(syswk->app, info, BOX2_WIN_MOVES);
+    PushWindowScreen(&syswk->app->windows[BOX2_WIN_MOVES_LABEL]);
+    PushWindowScreen(&syswk->app->windows[BOX2_WIN_NATURE_LABEL]);
+    PushWindowScreen(&syswk->app->windows[BOX2_WIN_ABILITY_LABEL]);
+    PushWindowScreen(&syswk->app->windows[BOX2_WIN_ITEM_LABEL]);
 }
 
 void Box2Bmp_ClearPokeInfo(Box2AppWork *app) {
@@ -348,10 +356,10 @@ void Box2Bmp_ClearPokeInfo(Box2AppWork *app) {
         GFL_BitmapFill(BmpWin_GetBitmap(app->windows[i].window), 0);
         RequestFlushChar(app, i);
     }
-    ClearWindowScreen(&app->windows[10]);
-    ClearWindowScreen(&app->windows[11]);
-    ClearWindowScreen(&app->windows[12]);
-    ClearWindowScreen(&app->windows[13]);
+    ClearWindowScreen(&app->windows[BOX2_WIN_MOVES_LABEL]);
+    ClearWindowScreen(&app->windows[BOX2_WIN_NATURE_LABEL]);
+    ClearWindowScreen(&app->windows[BOX2_WIN_ABILITY_LABEL]);
+    ClearWindowScreen(&app->windows[BOX2_WIN_ITEM_LABEL]);
 }
 
 // Draws a button into a window: its frame from the tiles of the box's graphics, an arrow if asked, and the message
@@ -448,26 +456,27 @@ static void InitWindowFrame(BGWinFrame *frames, u32 index, BmpWin *window) {
 }
 
 void Box2Bmp_InitMenuFrames(Box2AppWork *app) {
-    InitWindowFrame(app->bgWinFrame, 0, app->windows[14].window);
-    InitWindowFrame(app->bgWinFrame, 1, app->windows[15].window);
-    InitWindowFrame(app->bgWinFrame, 2, app->windows[16].window);
-    InitWindowFrame(app->bgWinFrame, 3, app->windows[17].window);
-    InitWindowFrame(app->bgWinFrame, 4, app->windows[18].window);
-    InitWindowFrame(app->bgWinFrame, 5, app->windows[19].window);
+    InitWindowFrame(app->bgWinFrame, BOX2_FRAME_MENU_FIRST, app->windows[BOX2_WIN_MENU_FIRST].window);
+    InitWindowFrame(app->bgWinFrame, BOX2_FRAME_MENU_SECOND, app->windows[BOX2_WIN_MENU_SECOND].window);
+    InitWindowFrame(app->bgWinFrame, BOX2_FRAME_MENU_THIRD, app->windows[BOX2_WIN_MENU_THIRD].window);
+    InitWindowFrame(app->bgWinFrame, BOX2_FRAME_MENU_FOURTH, app->windows[BOX2_WIN_MENU_FOURTH].window);
+    InitWindowFrame(app->bgWinFrame, BOX2_FRAME_MENU_FIFTH, app->windows[BOX2_WIN_MENU_FIFTH].window);
+    InitWindowFrame(app->bgWinFrame, BOX2_FRAME_MENU_LAST, app->windows[BOX2_WIN_MENU_LAST].window);
 }
 
 void Box2Bmp_InitPartyButton(Box2SysWork *syswk) {
     if (syswk->param->mode == BOX2_MODE_BATTLE_BOX) {
-        DrawFrameButton(syswk, 22, BtlPokeparamBoxMainSaveInit_Text_BattleBox);
+        DrawFrameButton(syswk, BOX2_WIN_PARTY_BUTTON, BtlPokeparamBoxMainSaveInit_Text_BattleBox);
     } else {
-        DrawFrameButton(syswk, 22, BtlPokeparamBoxMainSaveInit_Text_Party);
+        DrawFrameButton(syswk, BOX2_WIN_PARTY_BUTTON, BtlPokeparamBoxMainSaveInit_Text_Party);
     }
-    InitWindowFrame(syswk->app->bgWinFrame, 10, syswk->app->windows[22].window);
+    InitWindowFrame(syswk->app->bgWinFrame, BOX2_FRAME_PARTY_BUTTON, syswk->app->windows[BOX2_WIN_PARTY_BUTTON].window);
 }
 
 void Box2Bmp_InitBoxListButton(Box2SysWork *syswk) {
-    DrawFrameButton(syswk, 23, BtlPokeparamBoxMainSaveInit_Text_BoxList);
-    InitWindowFrame(syswk->app->bgWinFrame, 11, syswk->app->windows[23].window);
+    DrawFrameButton(syswk, BOX2_WIN_BOX_LIST_BUTTON, BtlPokeparamBoxMainSaveInit_Text_BoxList);
+    InitWindowFrame(syswk->app->bgWinFrame, BOX2_FRAME_BOX_LIST_BUTTON,
+                    syswk->app->windows[BOX2_WIN_BOX_LIST_BUTTON].window);
 }
 
 // Draws a box's name, centered, into a text object
@@ -489,7 +498,7 @@ void Box2Bmp_PutTrayName(Box2SysWork *syswk, u32 tray, u32 index) {
 
 void Box2Bmp_FlushTrayName(Box2SysWork *syswk) {
     if (syswk->app->trayNamePending == TRUE) {
-        BmpOam_ActorBmpTrans(syswk->app->fontOam[0].oam);
+        BmpOam_ActorBmpTrans(syswk->app->fontOam[BOX2_FONT_OAM_BOX_NAME].oam);
         syswk->app->trayNamePending = FALSE;
     }
 }
@@ -500,7 +509,7 @@ void Box2Bmp_DrawScrolledTrayName(Box2SysWork *syswk, u32 mv) {
     if (tray >= syswk->trayMax) {
         tray -= syswk->trayMax;
     }
-    DrawTrayName(syswk, tray, 0);
+    DrawTrayName(syswk, tray, BOX2_FONT_OAM_BOX_NAME);
     syswk->app->trayNamePending = TRUE;
 }
 
@@ -524,15 +533,17 @@ void Box2Bmp_PutTrayCount(Box2SysWork *syswk, u32 tray, u32 index) {
 }
 
 static void InitMarkingButtons(Box2SysWork *syswk) {
-    DrawMenuButton(syswk, 20, BtlPokeparamBoxMainSaveInit_Text_Confirm, FALSE);
-    DrawMenuButton(syswk, 21, BtlPokeparamBoxMainSaveInit_Text_Cancel_3, TRUE);
-    BGWinFrame_SetPalette(syswk->app->bgWinFrame, 7, 0, 9, 11, 3, 12);
-    BGWinFrame_SetPalette(syswk->app->bgWinFrame, 7, 0, 12, 11, 3, 12);
+    DrawMenuButton(syswk, BOX2_WIN_MARK_CONFIRM, BtlPokeparamBoxMainSaveInit_Text_Confirm, FALSE);
+    DrawMenuButton(syswk, BOX2_WIN_MARK_CANCEL, BtlPokeparamBoxMainSaveInit_Text_Cancel_3, TRUE);
+    BGWinFrame_SetPalette(syswk->app->bgWinFrame, BOX2_FRAME_MARKINGS, 0, 9, 11, 3, 12);
+    BGWinFrame_SetPalette(syswk->app->bgWinFrame, BOX2_FRAME_MARKINGS, 0, 12, 11, 3, 12);
 }
 
 void Box2Bmp_InitMarkingFrame(Box2SysWork *syswk) {
-    BGWinFrame_WriteBmpWin(syswk->app->bgWinFrame, 7, syswk->app->windows[20].window);
-    BGWinFrame_WriteBmpWin(syswk->app->bgWinFrame, 7, syswk->app->windows[21].window);
+    BGWinFrame_WriteBmpWin(syswk->app->bgWinFrame, BOX2_FRAME_MARKINGS,
+                           syswk->app->windows[BOX2_WIN_MARK_CONFIRM].window);
+    BGWinFrame_WriteBmpWin(syswk->app->bgWinFrame, BOX2_FRAME_MARKINGS,
+                           syswk->app->windows[BOX2_WIN_MARK_CANCEL].window);
     InitMarkingButtons(syswk);
 }
 
@@ -540,11 +551,11 @@ void Box2Bmp_OpenMenu(Box2SysWork *syswk, const Box2MenuItem *items, u32 count) 
     u16 width, height;
     u32 i = 0;
 
-    BGWinFrame_GetSize(syswk->app->bgWinFrame, 0, &width, &height);
+    BGWinFrame_GetSize(syswk->app->bgWinFrame, BOX2_FRAME_MENU_FIRST, &width, &height);
     for (; i < count; i++) {
         const Box2MenuItem *item = &items[count - 1 - i];
 
-        if (item->type == 0) {
+        if (item->type == BOX2_MENU_ITEM_PLAIN) {
             DrawMenuButton(syswk, 19 - i, item->msgId, FALSE);
         } else {
             DrawMenuButton(syswk, 19 - i, item->msgId, TRUE);
@@ -768,14 +779,14 @@ void Box2Bmp_PrintDenyMsg(Box2SysWork *syswk, u32 type, u32 index) {
 
 void Box2Bmp_PrintTuckIn(Box2SysWork *syswk) {
     loadBoxPokemonNameToStrbuf(syswk->app->wordSet, 0, Box2Main_GetBoxPkm(syswk, syswk->tray, syswk->pos));
-    PrintBoxMsg(syswk, Box2Bmp_Text_WillTuckedOk, 27);
+    PrintBoxMsg(syswk, Box2Bmp_Text_WillTuckedOk, BOX2_WIN_MESSAGE_TALL);
 }
 
 void Box2Bmp_PrintBattleBoxLocked(Box2SysWork *syswk, BOOL items) {
     if (items == FALSE) {
-        PrintBoxMsg(syswk, Box2Bmp_Text_BattleBoxLockedCannot, 27);
+        PrintBoxMsg(syswk, Box2Bmp_Text_BattleBoxLockedCannot, BOX2_WIN_MESSAGE_TALL);
     } else {
-        PrintBoxMsg(syswk, Box2Bmp_Text_BattleBoxLockedItems, 27);
+        PrintBoxMsg(syswk, Box2Bmp_Text_BattleBoxLockedItems, BOX2_WIN_MESSAGE_TALL);
     }
 }
 
@@ -796,9 +807,9 @@ void Box2Bmp_PutRangeCount(Box2SysWork *syswk) {
     str = GFL_MsgDataLoadStrbufNew(syswk->app->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_7);
     WordSetNumber(syswk->app->wordSet, 0, count, 2, 1, TRUE);
     GFL_WordSetFormatStrbuf(syswk->app->wordSet, syswk->app->expandBuf, str);
-    GFL_BitmapFill(syswk->app->fontOam[9].bitmap, 0);
-    GFL_TextRendererDrawToBitmapEx(syswk->app->fontOam[9].bitmap, 0, 0, syswk->app->expandBuf, syswk->app->smallFont,
-                                   BOX2_COLOR_NORMAL);
+    GFL_BitmapFill(syswk->app->fontOam[BOX2_FONT_OAM_RANGE_COUNT].bitmap, 0);
+    GFL_TextRendererDrawToBitmapEx(syswk->app->fontOam[BOX2_FONT_OAM_RANGE_COUNT].bitmap, 0, 0, syswk->app->expandBuf,
+                                   syswk->app->smallFont, BOX2_COLOR_NORMAL);
     GFL_StrBufFree(str);
-    BmpOam_ActorBmpTrans(syswk->app->fontOam[9].oam);
+    BmpOam_ActorBmpTrans(syswk->app->fontOam[BOX2_FONT_OAM_RANGE_COUNT].oam);
 }

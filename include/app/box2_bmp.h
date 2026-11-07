@@ -18,6 +18,7 @@ enum {
     BOX2_RELEASE_MSG_WORRIED,
     BOX2_RELEASE_MSG_LAST_POKEMON,
     BOX2_RELEASE_MSG_FUSED_KYUREM,
+    BOX2_RELEASE_MSG_NONE = 0xffff,
 };
 
 // The prompts of Box2Bmp_PrintPrompt

@@ -8,6 +8,7 @@
 #include "gfl/key.h"
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
+#include "pml/poke_party.h"
 #include "system/cursor_move.h"
 
 // The PC box's cursor: the positions it moves between in each of the box's modes and what moving it and touching a
@@ -62,33 +63,33 @@ static u32 FindRectAt(const CursorMoveData *data, u32 count, u32 x, u32 y);
 // The end of a table of touch rectangles
 static const TouchRect sTouchRectEnd = { TOUCH_RECT_END, 0, 0, 0 };
 
-static const TouchRect sTouchRects_78cc[2] = {
+static const TouchRect sBoxListTouchRect[2] = {
     { 0, 191, 168, 255 },
     { TOUCH_RECT_END, 0, 0, 0 },
 };
 
-static const TouchRect sTouchRects_78d4[2] = {
+static const TouchRect sLeftPartyTouchRect[2] = {
     { 48, 167, 16, 103 },
     { TOUCH_RECT_END, 0, 0, 0 },
 };
 
-static const TouchRect sTouchRects_78c4[2] = {
+static const TouchRect sTrayTouchRect[2] = {
     { 40, 160, 0, 167 },
     { TOUCH_RECT_END, 0, 0, 0 },
 };
 
-static const TouchRect sTouchRects_78dc[2] = {
+static const TouchRect sRightPartyTouchRect[2] = {
     { 48, 167, 168, 255 },
     { TOUCH_RECT_END, 0, 0, 0 },
 };
 
-static const TouchRect sTouchRects_78f0[3] = {
+static const TouchRect sBoxListScrollTouchRects[3] = {
     { 0, 167, 228, 255 },
     { 0, 167, 168, 195 },
     { TOUCH_RECT_END, 0, 0, 0 },
 };
 
-static const TouchRect sTouchRects_78e4[3] = {
+static const TouchRect sBoxListArrowRects[3] = {
     { 0, 21, 173, 255 },
     { 148, 167, 173, 255 },
     { TOUCH_RECT_END, 0, 0, 0 },
@@ -206,7 +207,7 @@ static const CursorMoveCallbacks sCursorCallbacks0 = {
     Cursor0_Touch,
 };
 
-static const TouchRect sTouchRects_79fc[5] = {
+static const TouchRect sBoxListRowTouchRects[5] = {
     { 20, 50, 180, 254 },   { 51, 84, 180, 254 },        { 85, 119, 180, 254 },
     { 120, 150, 180, 254 }, { TOUCH_RECT_END, 0, 0, 0 },
 };
@@ -714,22 +715,22 @@ void Box2Ui_CreateCursor(Box2SysWork *syswk) {
     visible = GCTX_HIDIsUsingTouch() == TRUE ? FALSE : TRUE;
     switch (syswk->param->mode) {
     case BOX2_MODE_DEPOSIT:
-        id = 0;
+        id = BOX2_CURSOR_DEPOSIT_PARTY;
         break;
     case BOX2_MODE_WITHDRAW:
-        id = 2;
+        id = BOX2_CURSOR_WITHDRAW;
         break;
     case BOX2_MODE_MOVE_POKEMON:
-        id = 3;
+        id = BOX2_CURSOR_ARRANGE_TRAY;
         break;
     case BOX2_MODE_MOVE_ITEMS:
-        id = 7;
+        id = BOX2_CURSOR_ITEM_TRAY;
         break;
     case BOX2_MODE_BATTLE_BOX:
-        id = 13;
+        id = BOX2_CURSOR_BATTLE_BOX_TRAY;
         break;
     case BOX2_MODE_DREAM_WORLD:
-        id = 15;
+        id = BOX2_CURSOR_DREAM_WORLD;
         break;
     }
     Box2Ui_DeleteCursor(syswk);
@@ -763,7 +764,7 @@ void Box2Ui_DeleteCursor(Box2SysWork *syswk) {
 void Box2Ui_PlaceCursorActor(Box2SysWork *syswk, u32 pos) {
     const CursorMoveData *data = CursorMove_GetData(syswk->app->cursorMove, pos);
 
-    Box2Obj_SetPos(syswk->app, BOX2_ACTOR_CURSOR, data->x, data->y, 0);
+    Box2Obj_SetPos(syswk->app, BOX2_ACTOR_CURSOR, data->x, data->y, CLACT_SURFACE_MAIN);
 }
 
 static void MoveCursorTo(Box2SysWork *syswk, u32 pos) {
@@ -806,24 +807,24 @@ u32 Box2Ui_UpdateCursor0(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res >= 8 && res <= 12) {
+        if (res >= BOX2_DEPOSIT_PARTY_INPUT_DEPOSIT && res <= BOX2_DEPOSIT_PARTY_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 6;
+            return BOX2_DEPOSIT_PARTY_INPUT_CLOSE;
         }
-        if (res == 6) {
+        if (res == BOX2_DEPOSIT_PARTY_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 6;
+            return BOX2_DEPOSIT_PARTY_INPUT_CLOSE;
         }
-        if (res == 7) {
+        if (res == BOX2_DEPOSIT_PARTY_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 7;
+            return BOX2_DEPOSIT_PARTY_INPUT_BACK;
         }
-    } else if (res == 6 || res == 7) {
+    } else if (res == BOX2_DEPOSIT_PARTY_INPUT_CLOSE || res == BOX2_DEPOSIT_PARTY_INPUT_BACK) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -832,7 +833,7 @@ u32 Box2Ui_UpdateCursor0(Box2SysWork *syswk) {
 }
 
 static void Cursor0_Touch(void *work, int pos, int prevPos) {
-    if (pos != 6 && pos != 7) {
+    if (pos != BOX2_DEPOSIT_PARTY_INPUT_CLOSE && pos != BOX2_DEPOSIT_PARTY_INPUT_BACK) {
         MoveCursorTo(work, pos);
     }
 }
@@ -860,24 +861,24 @@ u32 Box2Ui_UpdateCursor2(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res >= 35 && res <= 39) {
+        if (res >= BOX2_WITHDRAW_INPUT_WITHDRAW && res <= BOX2_WITHDRAW_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 33;
+            return BOX2_WITHDRAW_INPUT_CLOSE;
         }
-        if (res == 33) {
+        if (res == BOX2_WITHDRAW_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 33;
+            return BOX2_WITHDRAW_INPUT_CLOSE;
         }
-        if (res == 34) {
+        if (res == BOX2_WITHDRAW_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 34;
+            return BOX2_WITHDRAW_INPUT_BACK;
         }
-    } else if (res == 33 || res == 34) {
+    } else if (res == BOX2_WITHDRAW_INPUT_CLOSE || res == BOX2_WITHDRAW_INPUT_BACK) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -885,18 +886,18 @@ u32 Box2Ui_UpdateCursor2(Box2SysWork *syswk) {
     if (res == CURSORMOVE_NONE) {
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_L) {
             Box2Main_ShowCursor(syswk);
-            return 31;
+            return BOX2_WITHDRAW_INPUT_SCROLL_LEFT;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_R) {
             Box2Main_ShowCursor(syswk);
-            return 32;
+            return BOX2_WITHDRAW_INPUT_SCROLL_RIGHT;
         }
     }
     return res;
 }
 
 static void Cursor2_Touch(void *work, int pos, int prevPos) {
-    if (pos != 33 && pos != 34) {
+    if (pos != BOX2_WITHDRAW_INPUT_CLOSE && pos != BOX2_WITHDRAW_INPUT_BACK) {
         MoveCursorTo(work, pos);
     }
 }
@@ -906,24 +907,25 @@ u32 Box2Ui_UpdateCursor3(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res >= 36 && res <= 41) {
+        if (res >= BOX2_ARRANGE_TRAY_INPUT_MOVE && res <= BOX2_ARRANGE_TRAY_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 34;
+            return BOX2_ARRANGE_TRAY_INPUT_CLOSE;
         }
-        if (res == 34) {
+        if (res == BOX2_ARRANGE_TRAY_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 34;
+            return BOX2_ARRANGE_TRAY_INPUT_CLOSE;
         }
-        if (res == 35) {
+        if (res == BOX2_ARRANGE_TRAY_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 35;
+            return BOX2_ARRANGE_TRAY_INPUT_BACK;
         }
-    } else if (res == 33 || res == 34 || res == 35 || res == 45) {
+    } else if (res == BOX2_ARRANGE_TRAY_INPUT_PARTY || res == BOX2_ARRANGE_TRAY_INPUT_CLOSE ||
+               res == BOX2_ARRANGE_TRAY_INPUT_BACK || res == BOX2_ARRANGE_TRAY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -931,11 +933,11 @@ u32 Box2Ui_UpdateCursor3(Box2SysWork *syswk) {
     if (res == CURSORMOVE_NONE) {
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_L) {
             Box2Main_ShowCursor(syswk);
-            return 31;
+            return BOX2_ARRANGE_TRAY_INPUT_SCROLL_LEFT;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_R) {
             Box2Main_ShowCursor(syswk);
-            return 32;
+            return BOX2_ARRANGE_TRAY_INPUT_SCROLL_RIGHT;
         }
     }
     return res;
@@ -952,10 +954,13 @@ static void Cursor3_Move(void *work, int pos, int prevPos) {
 static void Cursor3_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 34 || pos == 35 || pos == 42 || pos == 43 || pos == 44 || pos == 45) {
+    if (pos == BOX2_ARRANGE_TRAY_INPUT_CLOSE || pos == BOX2_ARRANGE_TRAY_INPUT_BACK ||
+        pos == BOX2_ARRANGE_TRAY_INPUT_MENU_MODE || pos == BOX2_ARRANGE_TRAY_INPUT_SINGLE_MODE ||
+        pos == BOX2_ARRANGE_TRAY_INPUT_RANGE_MODE || pos == BOX2_ARRANGE_TRAY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
-    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= 36 && pos <= 41) {
+    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= BOX2_ARRANGE_TRAY_INPUT_MOVE &&
+               pos <= BOX2_ARRANGE_TRAY_INPUT_CANCEL) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -965,31 +970,31 @@ static void Cursor3_Touch(void *work, int pos, int prevPos) {
 }
 
 void Box2Ui_SetButtonStates(Box2SysWork *syswk, u32 pos) {
-    u8 button1 = 0;
-    u8 button3 = 0;
-    u8 button4 = 0;
+    u8 backButtonState = BOX2_BUTTON_ENABLED;
+    u8 summaryButtonState = BOX2_BUTTON_ENABLED;
+    u8 searchButtonState = BOX2_BUTTON_ENABLED;
 
     if (syswk->pickState != BOX2_PICK_NONE) {
-        button1 = 2;
+        backButtonState = BOX2_BUTTON_DISABLED;
         if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
-            button3 = 1;
-            button4 = 1;
-        } else if (syswk->moveMode == 2) {
-            button3 = button1;
-            button4 = button1;
+            summaryButtonState = BOX2_BUTTON_HIDDEN;
+            searchButtonState = BOX2_BUTTON_HIDDEN;
+        } else if (syswk->moveMode == BOX2_MOVE_MODE_RANGE) {
+            summaryButtonState = backButtonState;
+            searchButtonState = backButtonState;
         }
     } else if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
-        button3 = 1;
-        button4 = 1;
+        summaryButtonState = BOX2_BUTTON_HIDDEN;
+        searchButtonState = BOX2_BUTTON_HIDDEN;
     } else if (pos >= BOX2_PARTY_POS) {
         if (Box2Frame_IsPartyAtRight(syswk->app->bgWinFrame) == FALSE ||
             Box2Main_GetPokeParam(syswk, pos, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) == 0) {
-            button3 = 2;
+            summaryButtonState = BOX2_BUTTON_DISABLED;
         }
     } else if (Box2Main_GetPokeParam(syswk, pos, syswk->tray, PKM_PARAM_SPECIES_VALID, NULL) == 0) {
-        button3 = 2;
+        summaryButtonState = BOX2_BUTTON_DISABLED;
     }
-    Box2Obj_SetButtons(syswk, button1, 1, button3, button4);
+    Box2Obj_SetButtons(syswk, backButtonState, BOX2_BUTTON_HIDDEN, summaryButtonState, searchButtonState);
 }
 
 static void Cursor4_Move(void *work, int pos, int prevPos) {
@@ -1004,10 +1009,13 @@ static void Cursor4_Move(void *work, int pos, int prevPos) {
 static void Cursor4_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 31 || pos == 32) {
-        CursorMove_SetPos(syswk->app->cursorMove, BOX2_PARTY_POS);
-        pos = BOX2_PARTY_POS;
-    } else if (pos == 33 || pos == 38 || pos == 40 || pos == 41 || pos == 42 || pos == 43 || pos == 44 || pos == 45) {
+    if (pos == BOX2_MOVE_BOXLIST_INPUT_SCROLL_LEFT || pos == BOX2_MOVE_BOXLIST_INPUT_SCROLL_RIGHT) {
+        CursorMove_SetPos(syswk->app->cursorMove, BOX2_MOVE_BOXLIST_INPUT_TITLE);
+        pos = BOX2_MOVE_BOXLIST_INPUT_TITLE;
+    } else if (pos == BOX2_MOVE_BOXLIST_INPUT_LIST_SCROLL_UP || pos == BOX2_MOVE_BOXLIST_INPUT_LIST_SCROLL_DOWN ||
+               pos == BOX2_MOVE_BOXLIST_INPUT_SUMMARY || pos == BOX2_MOVE_BOXLIST_INPUT_BACK ||
+               pos == BOX2_MOVE_BOXLIST_INPUT_MENU_MODE || pos == BOX2_MOVE_BOXLIST_INPUT_SINGLE_MODE ||
+               pos == BOX2_MOVE_BOXLIST_INPUT_RANGE_MODE || pos == BOX2_MOVE_BOXLIST_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1027,17 +1035,17 @@ u32 Box2Ui_UpdateCursor4(Box2SysWork *syswk) {
     if (res == CURSORMOVE_NONE) {
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_Y) {
             Box2Main_ShowCursor(syswk);
-            return 40;
+            return BOX2_MOVE_BOXLIST_INPUT_SUMMARY;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_L) {
             Box2Main_ShowCursor(syswk);
             Box2Main_UpdateRangeIconsPos(syswk, BOX2_PARTY_POS);
-            return 31;
+            return BOX2_MOVE_BOXLIST_INPUT_SCROLL_LEFT;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_R) {
             Box2Main_ShowCursor(syswk);
             Box2Main_UpdateRangeIconsPos(syswk, BOX2_PARTY_POS);
-            return 32;
+            return BOX2_MOVE_BOXLIST_INPUT_SCROLL_RIGHT;
         }
     }
     return res;
@@ -1048,24 +1056,25 @@ u32 Box2Ui_UpdateCursor5(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res >= 9 && res <= 14) {
+        if (res >= BOX2_ARRANGE_PARTY_INPUT_MOVE && res <= BOX2_ARRANGE_PARTY_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 7;
+            return BOX2_ARRANGE_PARTY_INPUT_CLOSE;
         }
-        if (res == 7) {
+        if (res == BOX2_ARRANGE_PARTY_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 7;
+            return BOX2_ARRANGE_PARTY_INPUT_CLOSE;
         }
-        if (res == 8) {
+        if (res == BOX2_ARRANGE_PARTY_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 8;
+            return BOX2_ARRANGE_PARTY_INPUT_BACK;
         }
-    } else if (res == 6 || res == 7 || res == 8 || res == 18) {
+    } else if (res == BOX2_ARRANGE_PARTY_INPUT_BOXES || res == BOX2_ARRANGE_PARTY_INPUT_CLOSE ||
+               res == BOX2_ARRANGE_PARTY_INPUT_BACK || res == BOX2_ARRANGE_PARTY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -1084,10 +1093,13 @@ static void Cursor5_Move(void *work, int pos, int prevPos) {
 static void Cursor5_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 7 || pos == 8 || pos == 15 || pos == 16 || pos == 17 || pos == 18) {
+    if (pos == BOX2_ARRANGE_PARTY_INPUT_CLOSE || pos == BOX2_ARRANGE_PARTY_INPUT_BACK ||
+        pos == BOX2_ARRANGE_PARTY_INPUT_MENU_MODE || pos == BOX2_ARRANGE_PARTY_INPUT_SINGLE_MODE ||
+        pos == BOX2_ARRANGE_PARTY_INPUT_RANGE_MODE || pos == BOX2_ARRANGE_PARTY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
-    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= 9 && pos <= 14) {
+    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= BOX2_ARRANGE_PARTY_INPUT_MOVE &&
+               pos <= BOX2_ARRANGE_PARTY_INPUT_CANCEL) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1102,17 +1114,17 @@ u32 Box2Ui_UpdateCursor6(Box2SysWork *syswk) {
     if (res == CURSORMOVE_NONE) {
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_Y) {
             Box2Main_ShowCursor(syswk);
-            return 40;
+            return BOX2_MOVE_PARTY_INPUT_SUMMARY;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_L) {
             Box2Main_ShowCursor(syswk);
             Box2Main_UpdateRangeIconsPos(syswk, BOX2_BOXLIST_POS);
-            return 37;
+            return BOX2_MOVE_PARTY_INPUT_SCROLL_LEFT;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_R) {
             Box2Main_ShowCursor(syswk);
             Box2Main_UpdateRangeIconsPos(syswk, BOX2_BOXLIST_POS);
-            return 38;
+            return BOX2_MOVE_PARTY_INPUT_SCROLL_RIGHT;
         }
     }
     return res;
@@ -1130,10 +1142,12 @@ static void Cursor6_Move(void *work, int pos, int prevPos) {
 static void Cursor6_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 37 || pos == 38) {
-        CursorMove_SetPos(syswk->app->cursorMove, BOX2_BOXLIST_POS);
-        pos = BOX2_BOXLIST_POS;
-    } else if (pos == 40 || pos == 41 || pos == 42 || pos == 43 || pos == 44 || pos == 45) {
+    if (pos == BOX2_MOVE_PARTY_INPUT_SCROLL_LEFT || pos == BOX2_MOVE_PARTY_INPUT_SCROLL_RIGHT) {
+        CursorMove_SetPos(syswk->app->cursorMove, BOX2_MOVE_PARTY_INPUT_TITLE);
+        pos = BOX2_MOVE_PARTY_INPUT_TITLE;
+    } else if (pos == BOX2_MOVE_PARTY_INPUT_SUMMARY || pos == BOX2_MOVE_PARTY_INPUT_BACK ||
+               pos == BOX2_MOVE_PARTY_INPUT_MENU_MODE || pos == BOX2_MOVE_PARTY_INPUT_SINGLE_MODE ||
+               pos == BOX2_MOVE_PARTY_INPUT_RANGE_MODE || pos == BOX2_MOVE_PARTY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1149,24 +1163,25 @@ u32 Box2Ui_UpdateCursor7(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res == 36 || res == 37 || res == 38) {
+        if (res == BOX2_ITEM_TRAY_INPUT_MOVE || res == BOX2_ITEM_TRAY_INPUT_BAG || res == BOX2_ITEM_TRAY_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 34;
+            return BOX2_ITEM_TRAY_INPUT_CLOSE;
         }
-        if (res == 34) {
+        if (res == BOX2_ITEM_TRAY_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 34;
+            return BOX2_ITEM_TRAY_INPUT_CLOSE;
         }
-        if (res == 35) {
+        if (res == BOX2_ITEM_TRAY_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 35;
+            return BOX2_ITEM_TRAY_INPUT_BACK;
         }
-    } else if (res == 33 || res == 34 || res == 35) {
+    } else if (res == BOX2_ITEM_TRAY_INPUT_PARTY || res == BOX2_ITEM_TRAY_INPUT_CLOSE ||
+               res == BOX2_ITEM_TRAY_INPUT_BACK) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -1174,11 +1189,11 @@ u32 Box2Ui_UpdateCursor7(Box2SysWork *syswk) {
     if (res == CURSORMOVE_NONE) {
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_L) {
             Box2Main_ShowCursor(syswk);
-            return 31;
+            return BOX2_ITEM_TRAY_INPUT_SCROLL_LEFT;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_R) {
             Box2Main_ShowCursor(syswk);
-            return 32;
+            return BOX2_ITEM_TRAY_INPUT_SCROLL_RIGHT;
         }
     }
     return res;
@@ -1195,7 +1210,8 @@ static void Cursor7_Move(void *work, int pos, int prevPos) {
 static void Cursor7_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 34 || pos == 35 || pos == 39 || pos == 40) {
+    if (pos == BOX2_ITEM_TRAY_INPUT_CLOSE || pos == BOX2_ITEM_TRAY_INPUT_BACK ||
+        pos == BOX2_ITEM_TRAY_INPUT_MENU_MODE || pos == BOX2_ITEM_TRAY_INPUT_SINGLE_MODE) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1209,24 +1225,26 @@ u32 Box2Ui_UpdateCursor8(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res == 9 || res == 10 || res == 11) {
+        if (res == BOX2_ITEM_PARTY_INPUT_MOVE || res == BOX2_ITEM_PARTY_INPUT_BAG ||
+            res == BOX2_ITEM_PARTY_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 7;
+            return BOX2_ITEM_PARTY_INPUT_CLOSE;
         }
-        if (res == 7) {
+        if (res == BOX2_ITEM_PARTY_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 7;
+            return BOX2_ITEM_PARTY_INPUT_CLOSE;
         }
-        if (res == 8) {
+        if (res == BOX2_ITEM_PARTY_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 8;
+            return BOX2_ITEM_PARTY_INPUT_BACK;
         }
-    } else if (res == 6 || res == 7 || res == 8) {
+    } else if (res == BOX2_ITEM_PARTY_INPUT_BOXES || res == BOX2_ITEM_PARTY_INPUT_CLOSE ||
+               res == BOX2_ITEM_PARTY_INPUT_BACK) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -1245,7 +1263,8 @@ static void Cursor8_Move(void *work, int pos, int prevPos) {
 static void Cursor8_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 7 || pos == 8 || pos == 12 || pos == 13) {
+    if (pos == BOX2_ITEM_PARTY_INPUT_CLOSE || pos == BOX2_ITEM_PARTY_INPUT_BACK ||
+        pos == BOX2_ITEM_PARTY_INPUT_MENU_MODE || pos == BOX2_ITEM_PARTY_INPUT_SINGLE_MODE) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1285,7 +1304,7 @@ static void Cursor11_Touch(void *work, int pos, int prevPos) {
 static void Cursor12_Move(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos >= 1 && pos <= 4) {
+    if (pos >= BOX2_BOX_JUMP_INPUT_BOX_ROW_FIRST && pos <= BOX2_BOX_JUMP_INPUT_BOX_ROW_LAST) {
         Box2Obj_ShowBoxNameFrame(syswk, pos - 1, TRUE);
     } else {
         Box2Obj_ShowBoxNameFrame(syswk, 0, FALSE);
@@ -1298,7 +1317,8 @@ static void Cursor12_Move(void *work, int pos, int prevPos) {
 static void Cursor12_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 0 || pos == 5 || pos == 6) {
+    if (pos == BOX2_BOX_JUMP_INPUT_SCROLL_UP || pos == BOX2_BOX_JUMP_INPUT_SCROLL_DOWN ||
+        pos == BOX2_BOX_JUMP_INPUT_BACK) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1312,24 +1332,26 @@ u32 Box2Ui_UpdateCursor13(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res >= 36 && res <= 39) {
+        if (res >= BOX2_BATTLE_BOX_TRAY_INPUT_MOVE && res <= BOX2_BATTLE_BOX_TRAY_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 34;
+            return BOX2_BATTLE_BOX_TRAY_INPUT_CLOSE;
         }
-        if (res == 34) {
+        if (res == BOX2_BATTLE_BOX_TRAY_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 34;
+            return BOX2_BATTLE_BOX_TRAY_INPUT_CLOSE;
         }
-        if (res == 35) {
+        if (res == BOX2_BATTLE_BOX_TRAY_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 35;
+            return BOX2_BATTLE_BOX_TRAY_INPUT_BACK;
         }
-    } else if (res == 30 || res == 33 || res == 34 || res == 35 || res == 43) {
+    } else if (res == BOX2_BATTLE_BOX_TRAY_INPUT_TITLE || res == BOX2_BATTLE_BOX_TRAY_INPUT_PARTY ||
+               res == BOX2_BATTLE_BOX_TRAY_INPUT_CLOSE || res == BOX2_BATTLE_BOX_TRAY_INPUT_BACK ||
+               res == BOX2_BATTLE_BOX_TRAY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -1337,11 +1359,11 @@ u32 Box2Ui_UpdateCursor13(Box2SysWork *syswk) {
     if (res == CURSORMOVE_NONE) {
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_L) {
             Box2Main_ShowCursor(syswk);
-            return 31;
+            return BOX2_BATTLE_BOX_TRAY_INPUT_SCROLL_LEFT;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_R) {
             Box2Main_ShowCursor(syswk);
-            return 32;
+            return BOX2_BATTLE_BOX_TRAY_INPUT_SCROLL_RIGHT;
         }
     }
     return res;
@@ -1358,10 +1380,13 @@ static void Cursor13_Move(void *work, int pos, int prevPos) {
 static void Cursor13_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 34 || pos == 35 || pos == 40 || pos == 41 || pos == 42 || pos == 43) {
+    if (pos == BOX2_BATTLE_BOX_TRAY_INPUT_CLOSE || pos == BOX2_BATTLE_BOX_TRAY_INPUT_BACK ||
+        pos == BOX2_BATTLE_BOX_TRAY_INPUT_MENU_MODE || pos == BOX2_BATTLE_BOX_TRAY_INPUT_SINGLE_MODE ||
+        pos == BOX2_BATTLE_BOX_TRAY_INPUT_RANGE_MODE || pos == BOX2_BATTLE_BOX_TRAY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
-    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= 36 && pos <= 39) {
+    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= BOX2_BATTLE_BOX_TRAY_INPUT_MOVE &&
+               pos <= BOX2_BATTLE_BOX_TRAY_INPUT_CANCEL) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1375,24 +1400,25 @@ u32 Box2Ui_UpdateCursor14(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res >= 9 && res <= 12) {
+        if (res >= BOX2_BATTLE_BOX_PARTY_INPUT_MOVE && res <= BOX2_BATTLE_BOX_PARTY_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_X) {
             GCTX_HIDSetUsingTouch(FALSE);
-            return 7;
+            return BOX2_BATTLE_BOX_PARTY_INPUT_CLOSE;
         }
-        if (res == 7) {
+        if (res == BOX2_BATTLE_BOX_PARTY_INPUT_CLOSE) {
             GCTX_HIDSetUsingTouch(TRUE);
-            return 7;
+            return BOX2_BATTLE_BOX_PARTY_INPUT_CLOSE;
         }
-        if (res == 8) {
+        if (res == BOX2_BATTLE_BOX_PARTY_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 8;
+            return BOX2_BATTLE_BOX_PARTY_INPUT_BACK;
         }
-    } else if (res == 6 || res == 7 || res == 8 || res == 16) {
+    } else if (res == BOX2_BATTLE_BOX_PARTY_INPUT_BOXES || res == BOX2_BATTLE_BOX_PARTY_INPUT_CLOSE ||
+               res == BOX2_BATTLE_BOX_PARTY_INPUT_BACK || res == BOX2_BATTLE_BOX_PARTY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -1411,10 +1437,13 @@ static void Cursor14_Move(void *work, int pos, int prevPos) {
 static void Cursor14_Touch(void *work, int pos, int prevPos) {
     Box2SysWork *syswk = work;
 
-    if (pos == 7 || pos == 8 || pos == 13 || pos == 14 || pos == 15 || pos == 16) {
+    if (pos == BOX2_BATTLE_BOX_PARTY_INPUT_CLOSE || pos == BOX2_BATTLE_BOX_PARTY_INPUT_BACK ||
+        pos == BOX2_BATTLE_BOX_PARTY_INPUT_MENU_MODE || pos == BOX2_BATTLE_BOX_PARTY_INPUT_SINGLE_MODE ||
+        pos == BOX2_BATTLE_BOX_PARTY_INPUT_RANGE_MODE || pos == BOX2_BATTLE_BOX_PARTY_INPUT_SEARCH) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
-    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= 9 && pos <= 12) {
+    } else if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE && pos >= BOX2_BATTLE_BOX_PARTY_INPUT_MOVE &&
+               pos <= BOX2_BATTLE_BOX_PARTY_INPUT_CANCEL) {
         CursorMove_SetPos(syswk->app->cursorMove, syswk->app->oldCurPos);
         pos = syswk->app->oldCurPos;
     } else {
@@ -1428,16 +1457,16 @@ u32 Box2Ui_UpdateCursor15(Box2SysWork *syswk) {
     u32 res = CursorMove_Update(syswk->app->cursorMove);
 
     if (Box2Frame_IsMenuOnScreen(syswk->app->bgWinFrame) == FALSE) {
-        if (res >= 34 && res <= 35) {
+        if (res >= BOX2_DREAM_WORLD_INPUT_TUCK_IN && res <= BOX2_DREAM_WORLD_INPUT_CANCEL) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
             MoveCursorTo(syswk, prev);
             return CURSORMOVE_NONE;
         }
-        if (res == 33) {
+        if (res == BOX2_DREAM_WORLD_INPUT_BACK) {
             CursorMove_SetPos(syswk->app->cursorMove, prev);
-            return 33;
+            return BOX2_DREAM_WORLD_INPUT_BACK;
         }
-    } else if (res == 30 || res == 33) {
+    } else if (res == BOX2_DREAM_WORLD_INPUT_TITLE || res == BOX2_DREAM_WORLD_INPUT_BACK) {
         CursorMove_SetPos(syswk->app->cursorMove, prev);
         MoveCursorTo(syswk, prev);
         return CURSORMOVE_NONE;
@@ -1445,11 +1474,11 @@ u32 Box2Ui_UpdateCursor15(Box2SysWork *syswk) {
     if (res == CURSORMOVE_NONE) {
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_L) {
             Box2Main_ShowCursor(syswk);
-            return 31;
+            return BOX2_DREAM_WORLD_INPUT_SCROLL_LEFT;
         }
         if (GCTX_HIDGetTypedKeys() & PAD_BUTTON_R) {
             Box2Main_ShowCursor(syswk);
-            return 32;
+            return BOX2_DREAM_WORLD_INPUT_SCROLL_RIGHT;
         }
     }
     return res;
@@ -1463,7 +1492,7 @@ static void Cursor15_Move(void *work, int pos, int prevPos) {
 }
 
 static void Cursor15_Touch(void *work, int pos, int prevPos) {
-    if (pos != 33) {
+    if (pos != BOX2_DREAM_WORLD_INPUT_BACK) {
         MoveCursorTo(work, pos);
     }
 }
@@ -1554,7 +1583,7 @@ u32 Box2Ui_GetTrayPokeAt(u32 x, u32 y) {
     return FindRectAt(sTrayCursorData[0], BOX2_TRAY_POKE_MAX, x, y);
 }
 
-u32 Box2Ui_GetMenuButtonTrigger(void) {
+u32 Box2Ui_GetLeftPartyPokeTrigger(void) {
     return FindTriggeredRect(sCursorData5, 6);
 }
 
@@ -1571,11 +1600,11 @@ u32 Box2Ui_GetTrayArrowHeld(void) {
 }
 
 u32 Box2Ui_GetBoxListArrowHeld(void) {
-    return GFL_HIDGetTouchHeldRect(sTouchRects_78e4);
+    return GFL_HIDGetTouchHeldRect(sBoxListArrowRects);
 }
 
 BOOL Box2Ui_GetBoxListScrollTouch(u32 *x, u32 *y) {
-    if (GFL_HIDGetTouchHeldRect(sTouchRects_78f0) != TOUCH_RECT_NONE) {
+    if (GFL_HIDGetTouchHeldRect(sBoxListScrollTouchRects) != TOUCH_RECT_NONE) {
         GFL_HIDGetTouchHeldPoint(x, y);
         return TRUE;
     }
@@ -1583,7 +1612,7 @@ BOOL Box2Ui_GetBoxListScrollTouch(u32 *x, u32 *y) {
 }
 
 BOOL Box2Ui_GetBoxListTouch(u32 *x, u32 *y) {
-    if (GFL_HIDGetTouchHeldRect(sTouchRects_78cc) != TOUCH_RECT_NONE) {
+    if (GFL_HIDGetTouchHeldRect(sBoxListTouchRect) != TOUCH_RECT_NONE) {
         GFL_HIDGetTouchHeldPoint(x, y);
         return TRUE;
     }
@@ -1591,7 +1620,7 @@ BOOL Box2Ui_GetBoxListTouch(u32 *x, u32 *y) {
 }
 
 int Box2Ui_GetBoxListRowAt(u32 x, u32 y) {
-    int res = GFL_HIDGetTouchRectAt(sTouchRects_79fc, x, y);
+    int res = GFL_HIDGetTouchRectAt(sBoxListRowTouchRects, x, y);
 
     if (res == TOUCH_RECT_NONE) {
         return TOUCH_RECT_NONE;
@@ -1609,14 +1638,14 @@ u32 Box2Ui_GetBoxListPosAt(u32 x, u32 y) {
 }
 
 BOOL Box2Ui_IsPartyLeftHeld(void) {
-    if (GFL_HIDGetTouchHeldRect(sTouchRects_78d4) != TOUCH_RECT_NONE) {
+    if (GFL_HIDGetTouchHeldRect(sLeftPartyTouchRect) != TOUCH_RECT_NONE) {
         return TRUE;
     }
     return FALSE;
 }
 
 BOOL Box2Ui_IsPartyRightHeld(void) {
-    if (GFL_HIDGetTouchHeldRect(sTouchRects_78dc) != TOUCH_RECT_NONE) {
+    if (GFL_HIDGetTouchHeldRect(sRightPartyTouchRect) != TOUCH_RECT_NONE) {
         return TRUE;
     }
     return FALSE;
@@ -1627,7 +1656,7 @@ u32 Box2Ui_GetSwitchButtonHeld(void) {
 }
 
 BOOL Box2Ui_IsTrayHeld(void) {
-    if (GFL_HIDGetTouchHeldRect(sTouchRects_78c4) != TOUCH_RECT_NONE) {
+    if (GFL_HIDGetTouchHeldRect(sTrayTouchRect) != TOUCH_RECT_NONE) {
         return TRUE;
     }
     return FALSE;

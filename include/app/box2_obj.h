@@ -5,7 +5,7 @@
 #include "app/box2_main.h"
 #include "struct_decls.h"
 
-// The PC box's actors, in box2_obj.c. Names are ours; none of these functions has a name yet
+// The PC box's actors, in box2_obj.c. Names are ours
 
 // The actors, by ID: those of sActorData first, then these groups
 #define BOX2_ACTOR_TYPE_ICON 32
@@ -13,7 +13,6 @@
 #define BOX2_ACTOR_POKEICON 55
 #define BOX2_ACTOR_ITEM_OUTLINE 121
 #define BOX2_ACTOR_RANGE_DOT 129
-#define BOX2_ACTOR_MAX 145
 // How many type icons and copies of the item icon that outline it there are
 #define BOX2_TYPE_ICON_MAX 17
 #define BOX2_ITEM_OUTLINE_MAX 8
@@ -88,7 +87,8 @@ void Box2Obj_ScrollBoxListY(Box2SysWork *syswk, s16 mv);
 void Box2Obj_StartHighlightScroll(Box2SysWork *syswk, s32 mv);
 void Box2Obj_PlaceTrayHighlight(Box2SysWork *syswk);
 void Box2Obj_ShowBoxNameFrame(Box2SysWork *syswk, u32 index, BOOL show);
-void Box2Obj_SetButtons(Box2SysWork *syswk, u8 button1, u8 button2, u8 button3, u8 button4);
+void Box2Obj_SetButtons(Box2SysWork *syswk, u8 backButtonState, u8 closeButtonState, u8 summaryButtonState,
+                        u8 searchButtonState);
 void Box2Obj_HideButtons(Box2SysWork *syswk);
 void Box2Obj_SetFontOamVisible(Box2AppWork *app, u32 index, BOOL visible);
 BOOL Box2Obj_IsFontOamVisible(Box2AppWork *app, u32 index);
@@ -106,5 +106,43 @@ void Box2Obj_ResetRangeIconPriority(Box2AppWork *app, u32 pos, u32 width, u32 he
 void Box2Obj_ShowRangeCount(Box2AppWork *app, BOOL visible);
 void Box2Obj_PutRangeCount(Box2AppWork *app, s16 x, s16 y);
 void Box2Obj_ShowRangeIcons(Box2SysWork *syswk, BOOL visible);
+
+// Ranges to dim, optionally checking held items or Dream World eligibility.
+enum {
+    BOX2_ICON_GROUP_TRAY = 1,
+    BOX2_ICON_GROUP_PARTY_AND_HELD = 2,
+    BOX2_ICON_CHECK_ELIGIBILITY = 128,
+};
+
+// Individual actors in sActorData, including the created but otherwise unused actor5.
+enum {
+    BOX2_ACTOR_SCROLL_LEFT = 0,
+    BOX2_ACTOR_SCROLL_RIGHT = 1,
+    BOX2_ACTOR_TRAY_HIGHLIGHT = 2,
+    BOX2_ACTOR_BOX_NAME_FRAME = 3,
+    BOX2_ACTOR_UNUSED = 5,
+    BOX2_ACTOR_BACK_BUTTON = 6,
+    BOX2_ACTOR_CLOSE_BUTTON = 7,
+    BOX2_ACTOR_SUMMARY_BUTTON = 8,
+    BOX2_ACTOR_MENU_MODE = 9,
+    BOX2_ACTOR_SINGLE_MODE = 10,
+    BOX2_ACTOR_RANGE_MODE = 11,
+    BOX2_ACTOR_POKE_GRA_FIRST = 13,
+    BOX2_ACTOR_POKE_GRA_SECOND = 14,
+    BOX2_ACTOR_MARK_MAIN = 15,
+    BOX2_ACTOR_MARK_SUB = 21,
+    BOX2_ACTOR_SHINY = 27,
+    BOX2_ACTOR_POKERUS_CURED = 28,
+    BOX2_ACTOR_POKERUS_ACTIVE = 29,
+    BOX2_ACTOR_SEARCH_BUTTON = 30,
+    BOX2_ACTOR_RANGE_COUNT = 31,
+};
+
+// Base cursor animations; SetCursorAnim adds the selected move-mode offset.
+enum {
+    BOX2_CURSOR_ANIM_READY = 6,
+    BOX2_CURSOR_ANIM_INTERACT = 7,
+    BOX2_CURSOR_ANIM_HOLDING = 8,
+};
 
 #endif // POKEBW2_APP_BOX2_OBJ_H
