@@ -40381,6 +40381,7 @@ overlays/ov326 0x021a300c sWinRecordBGSetups
 overlays/ov326 0x021a300c sWinRecordBGSetups
 overlays/ov326 0x021a316c T_DOWNLOAD_PROC_FUNCTIONS
 overlays/ov326 0x021a316c T_DOWNLOAD_PROC_FUNCTIONS
+overlays/ov326 0x021a3178 sTDownloadBGScroll
 overlays/ov326 0x021a317c sTDownloadSavedMenuMsgs
 overlays/ov326 0x021a3184 sTDownloadReceivedMenuMsgs
 overlays/ov326 0x021a318c sTDownloadModeBGChars

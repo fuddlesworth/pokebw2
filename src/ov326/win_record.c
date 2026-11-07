@@ -35,6 +35,9 @@
 #include "system/wordset.h"
 #include "text/system/win_record.h"
 
+// End marker for the byte-sized BG and actor resource tables.
+#define WIN_RECORD_TABLE_END 0xff
+
 // The Pokémon World Tournament's win record: the player, their total of wins, and a list of the wins in each
 // tournament that is open. The name is ours, after the ROM's "win_record_graphic.c", which draws it
 
@@ -234,7 +237,7 @@ static BOOL WinRecord_KeyInput(WinRecordWork *wk);
 static void WinRecord_GetTouchRect(WinRecordWork *wk, int index, TouchRect *rect);
 static BOOL WinRecord_TouchInput(WinRecordWork *wk);
 static void WinRecord_UpdateButtons(WinRecordWork *wk);
-static BOOL WinRecord_IsTournamentShown(WinRecordWork *wk, int tournament);
+static BOOL WinRecord_IsTournamentShown(WinRecordWork *wk, int recordIndex);
 static void WinRecord_InitList(WinRecordWork *wk);
 static u32 WinRecord_UpdateList(WinRecordWork *wk);
 static int WinRecord_ListResult(WinRecordWork *wk, u32 result);
@@ -269,7 +272,7 @@ static const WinRecordActorRes sWinRecordScrollActorRes = {
 static const WinRecordBGRes sWinRecordBGPltts[] = {
     { 4, 1, 0, 4 },
     { 0, 0, 0, 3 },
-    { 0xff },
+    { WIN_RECORD_TABLE_END },
 };
 
 static const FrameListCallbacks sWinRecordListCallbacks = {
@@ -279,25 +282,22 @@ static const FrameListCallbacks sWinRecordListCallbacks = {
 };
 
 static const WinRecordBGRes sWinRecordBGScreens[] = {
-    { 7, 10 }, { 6, 11 }, { 5, 12 }, { 3, 7 }, { 1, 8 }, { 0xff },
+    { 7, 10 }, { 6, 11 }, { 5, 12 }, { 3, 7 }, { 1, 8 }, { WIN_RECORD_TABLE_END },
 };
 
 static const WinRecordActorData sWinRecordScrollActors[] = {
     { 0, 0x30, 2, TRUE, 0, 1, 4 },
     { 1, 0x38, 2, TRUE, 0, 1, 14 },
-    { 0xff },
+    { WIN_RECORD_TABLE_END },
 };
 
 static const WinRecordBGRes sWinRecordBGChars[] = {
-    { 7, 4 }, { 6, 4 }, { 5, 4 }, { 3, 3 }, { 1, 3 }, { 0xff },
+    { 7, 4 }, { 6, 4 }, { 5, 4 }, { 3, 3 }, { 1, 3 }, { WIN_RECORD_TABLE_END },
 };
 
 static const WinRecordActorData sWinRecordButtonActors[] = {
-    { 4, 0x30, 1, TRUE, 0, 1, 7 },
-    { 5, 0x30, 1, TRUE, 0, 1, 8 },
-    { 0, 0x30, 1, TRUE, 0, 1, 9 },
-    { 1, 0x30, 1, TRUE, 0, 1, 10 },
-    { 0xff },
+    { 4, 0x30, 1, TRUE, 0, 1, 7 },  { 5, 0x30, 1, TRUE, 0, 1, 8 }, { 0, 0x30, 1, TRUE, 0, 1, 9 },
+    { 1, 0x30, 1, TRUE, 0, 1, 10 }, { WIN_RECORD_TABLE_END },
 };
 
 static const WinRecordObjRes sWinRecordObjRes = {
@@ -316,12 +316,12 @@ static const WinRecordButtonAnims sWinRecordButtonAnims[WIN_RECORD_BUTTON_COUNT]
 
 static const WinRecordActorData sWinRecordTrainerActors[] = {
     { 0, 0x30, 1, TRUE, 0, 1, 13 },
-    { 0xff },
+    { WIN_RECORD_TABLE_END },
 };
 
 static const WinRecordWindowData sWinRecordWindows[] = {
     { 0, 1, 1, 30, 2, 8 },  { 4, 2, 7, 16, 2, 2 },  { 4, 4, 9, 16, 2, 2 },
-    { 4, 2, 12, 20, 2, 2 }, { 4, 4, 14, 16, 2, 2 }, { 0xff },
+    { 4, 2, 12, 20, 2, 2 }, { 4, 4, 14, 16, 2, 2 }, { WIN_RECORD_TABLE_END },
 };
 
 // The rows and buttons of a list that doesn't scroll
@@ -365,7 +365,35 @@ const GameProcFunctions WIN_RECORD_PROC_FUNCTIONS = {
 
 // The tournaments in the order of the list, by their count in the save
 static const s16 sWinRecordTournaments[WIN_RECORD_TOURNAMENT_COUNT] = {
-    18, 19, 20, 21, 22, 23, 24, 17, 25, 26, 27, 28, 0, 9, 10, 11, 12, 14, 1, 3, 4, 2, 13, 6, 5, 7, 15, 16, 8,
+    WBT_RECORD_DRIFTVEIL,
+    WBT_RECORD_UNOVA_LEADERS,
+    WBT_RECORD_KANTO_LEADERS,
+    WBT_RECORD_JOHTO_LEADERS,
+    WBT_RECORD_HOENN_LEADERS,
+    WBT_RECORD_SINNOH_LEADERS,
+    WBT_RECORD_WORLD_LEADERS,
+    WBT_RECORD_CHAMPIONS,
+    WBT_RECORD_RENTAL,
+    WBT_RECORD_RENTAL_MASTER,
+    WBT_RECORD_MIX,
+    WBT_RECORD_MIX_MASTER,
+    0,
+    9,
+    10,
+    11,
+    12,
+    14,
+    1,
+    3,
+    4,
+    2,
+    13,
+    6,
+    5,
+    7,
+    15,
+    16,
+    8,
 };
 
 static BOOL WinRecord_Init(GameProc *proc, u32 *state, void *param, void *work) {
@@ -577,21 +605,21 @@ static void WinRecord_LoadBG(WinRecordWork *wk) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_WIN_RECORD, wk->heapId);
 
     for (i = 0; i < 8; i++) {
-        if (pltts->bg == 0xff) {
+        if (pltts->bg == WIN_RECORD_TABLE_END) {
             break;
         }
         GFL_G2DIOLoadArcNCLRDefault(arc, pltts->file, pltts->bg, pltts->offset * 32, pltts->size * 32, wk->heapId);
         pltts++;
     }
     for (i = 0; i < 8; i++) {
-        if (chars->bg == 0xff) {
+        if (chars->bg == WIN_RECORD_TABLE_END) {
             break;
         }
         GFL_BGSysLoadArcNCGRStatic(arc, chars->file, chars->bg, chars->offset, 0, FALSE, wk->heapId);
         chars++;
     }
     for (i = 0; i < 8; i++) {
-        if (screens->bg == 0xff) {
+        if (screens->bg == WIN_RECORD_TABLE_END) {
             break;
         }
         loadBGScrToVramByFileNoReserveNegAlign(arc, screens->file, screens->bg, screens->offset, 0, FALSE, wk->heapId);
@@ -624,7 +652,7 @@ static void WinRecord_CreateActors(WinRecordWork *wk, u32 surface, const WinReco
         actors = wk->trainer;
     }
     for (i = 0; i < count; i++) {
-        if (data->anim == 0xff) {
+        if (data->anim == WIN_RECORD_TABLE_END) {
             break;
         }
         pos = data->pos * 2;
@@ -792,7 +820,7 @@ static void WinRecord_InitWindows(WinRecordWork *wk) {
     ArcTool *arc;
 
     for (i = 0; i < WIN_RECORD_WINDOW_COUNT; i++) {
-        if (data->bg == 0xff) {
+        if (data->bg == WIN_RECORD_TABLE_END) {
             break;
         }
         wk->windows[i].window =
@@ -1046,14 +1074,14 @@ static void WinRecord_UpdateButtons(WinRecordWork *wk) {
     }
 }
 
-static BOOL WinRecord_IsTournamentShown(WinRecordWork *wk, int tournament) {
+static BOOL WinRecord_IsTournamentShown(WinRecordWork *wk, int recordIndex) {
     BOOL shown = FALSE;
 
-    if (wk->param->open[tournament] == TRUE) {
+    if (wk->param->open[recordIndex] == TRUE) {
         shown = TRUE;
     }
     // The save's count 18 is listed even when its tournament isn't open
-    if (tournament == 18) {
+    if (recordIndex == WBT_RECORD_DRIFTVEIL) {
         shown = TRUE;
     }
     return shown;

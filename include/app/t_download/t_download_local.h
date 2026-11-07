@@ -15,6 +15,119 @@
 #include "system/time_icon.h"
 #include "system/wordset.h"
 
+// The two details-page-arrow pending animations.
+#define T_DOWNLOAD_OBJ_FLAG_PAGE_ARROWS 0x30
+
+// The two list-arrow pending animations.
+#define T_DOWNLOAD_OBJ_FLAG_LIST_ARROWS 3
+
+// The pending pressed animation of this button.
+#define T_DOWNLOAD_OBJ_FLAG_BUTTON_TAB_DOWN 0x20
+
+// The pending pressed animation of this button.
+#define T_DOWNLOAD_OBJ_FLAG_BUTTON_TAB_UP 0x10
+
+// The pending pressed animation of this button.
+#define T_DOWNLOAD_OBJ_FLAG_BUTTON_X 8
+
+// The pending pressed animation of this button.
+#define T_DOWNLOAD_OBJ_FLAG_BUTTON_RETURN 4
+
+// The pending pressed animation of this button.
+#define T_DOWNLOAD_OBJ_FLAG_BUTTON_DOWN 2
+
+// The pending pressed animation of this button.
+#define T_DOWNLOAD_OBJ_FLAG_BUTTON_UP 1
+
+// Indices into the message table, rather than message-bank IDs.
+enum {
+    T_DOWNLOAD_MESSAGE_SELECT_INTRO = 0,
+    T_DOWNLOAD_MESSAGE_ENTER_PROMPT = 1,
+    T_DOWNLOAD_MESSAGE_ACTIONS_PROMPT = 2,
+    T_DOWNLOAD_MESSAGE_DELETE_PROMPT = 3,
+    T_DOWNLOAD_MESSAGE_DELETE_CONFIRM = 4,
+    T_DOWNLOAD_MESSAGE_RECEIVED_INTRO = 5,
+    T_DOWNLOAD_MESSAGE_ALREADY_SAVED = 6,
+    T_DOWNLOAD_MESSAGE_LEAVE_RECEIVED = 7,
+    T_DOWNLOAD_MESSAGE_QUIT_DELETING = 8,
+    T_DOWNLOAD_MESSAGE_SLOTS_FULL = 9,
+    T_DOWNLOAD_MESSAGE_DELETED = 10,
+    T_DOWNLOAD_MESSAGE_SAVING = 11,
+    T_DOWNLOAD_MESSAGE_SAVED = 12,
+};
+
+// The third item, when present, is the cancel/return entry.
+#define T_DOWNLOAD_MENU_RETURN_ITEM 2
+
+// End marker for the byte-sized BG, window and actor resource tables.
+#define T_DOWNLOAD_TABLE_END 0xff
+
+// No completed menu result yet.
+#define T_DOWNLOAD_MENU_PENDING -1
+
+// The downloaded-tournament action menus.
+enum {
+    T_DOWNLOAD_MENU_ENTER = 0,
+    T_DOWNLOAD_MENU_RECEIVED = 1,
+    T_DOWNLOAD_MENU_YES_NO = 2,
+    T_DOWNLOAD_MENU_DETAILS = 3,
+};
+
+// The result of translating FrameList_Main for the received screen.
+enum {
+    T_DOWNLOAD_LIST_NONE = 0,
+    T_DOWNLOAD_LIST_MOVED = 1,
+    T_DOWNLOAD_LIST_DECIDED = 2,
+    T_DOWNLOAD_LIST_ARROW = 3,
+    T_DOWNLOAD_LIST_JUMPED = 4,
+};
+
+// Button animation offsets: idle, pressed and disabled.
+enum {
+    T_DOWNLOAD_BUTTON_STATE_IDLE = -1,
+    T_DOWNLOAD_BUTTON_STATE_PRESSED = 0,
+    T_DOWNLOAD_BUTTON_STATE_DISABLED = 1,
+};
+
+// Which arrow pair shows the current range.
+enum {
+    T_DOWNLOAD_ARROWS_LIST = 0,
+    T_DOWNLOAD_ARROWS_PAGES = 1,
+};
+
+// The cursor follows received-list rows or saved-slot rows.
+enum {
+    T_DOWNLOAD_CURSOR_LIST = 0,
+    T_DOWNLOAD_CURSOR_SLOTS = 1,
+};
+
+// Which array supplies a tournament record.
+enum {
+    T_DOWNLOAD_SOURCE_SAVED = 0,
+    T_DOWNLOAD_SOURCE_RECEIVED = 1,
+};
+
+// The three details tabs list banned Pokemon, items and moves.
+enum {
+    T_DOWNLOAD_TAB_BANNED_POKEMON = 0,
+    T_DOWNLOAD_TAB_BANNED_ITEMS = 1,
+    T_DOWNLOAD_TAB_BANNED_MOVES = 2,
+};
+
+// Entry kinds returned by the tournament record; the third kind is a move.
+enum {
+    T_DOWNLOAD_ENTRY_SPECIES = 0,
+    T_DOWNLOAD_ENTRY_ITEMS = 1,
+    T_DOWNLOAD_ENTRY_MOVE = 2,
+};
+
+// The string fields that TDownloadSave_LoadString copies.
+enum {
+    T_DOWNLOAD_STRING_NAME = 0,
+    T_DOWNLOAD_STRING_AUTHOR = 1,
+    T_DOWNLOAD_STRING_TEXT = 2,
+};
+
 // The work of the downloaded tournaments, which t_download.c, t_download_util.c and t_download_save.c share. The
 // names are ours
 
@@ -26,7 +139,7 @@ enum {
     T_DOWNLOAD_MODE_RECEIVED,
     // The slots, to pick a tournament to enter
     T_DOWNLOAD_MODE_SELECT,
-    // The details of a tournament: its Pokémon, its items and its rules, a tab each
+    // The details of a tournament: its banned Pokémon, items and moves, a tab each
     T_DOWNLOAD_MODE_DETAIL,
     T_DOWNLOAD_MODE_COUNT,
 };
@@ -94,15 +207,16 @@ typedef struct {
     u16 name[T_DOWNLOAD_NAME_LENGTH];
     u16 author[T_DOWNLOAD_AUTHOR_LENGTH];
     u16 text[T_DOWNLOAD_TEXT_LENGTH];
-    u8 unk1C8[8];
-    // A bit for each species, item and move the tournament uses
-    u8 species[T_DOWNLOAD_SPECIES_BYTES];
-    u8 items[T_DOWNLOAD_ITEM_BYTES];
+    // The eight-byte regulation prefix of WbtDownloadedTournament, kept in its original byte-array type
+    u8 regulation[8];
+    // Bitsets of banned species and items; the banned move is one ID below
+    u8 bannedSpecies[T_DOWNLOAD_SPECIES_BYTES];
+    u8 bannedItems[T_DOWNLOAD_ITEM_BYTES];
     u8 unk26E;
-    // Bits 0 and 1 are the rules
-    u8 rules;
+    // The battle style in bits 0 and 1, matching WbtDownloadedTournament.battleType
+    u8 battleType;
     u8 unk270[2];
-    u16 move;
+    u16 bannedMove;
     u8 unk274[0x1210 - 0x274];
     // getCRC16 of everything before it
     u32 crc;

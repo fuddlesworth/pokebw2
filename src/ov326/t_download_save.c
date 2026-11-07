@@ -1,6 +1,7 @@
 #include "types.h"
 #include "app/t_download/t_download_local.h"
 #include "app/t_download/t_download_save.h"
+#include "gfl/backup_system.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
@@ -30,9 +31,9 @@ typedef struct {
 } TDownloadSaveBlock;
 
 static const TDownloadSaveBlock sTDownloadSaveBlocks[T_DOWNLOAD_SAVE_SLOTS] = {
-    { 0x11, 0 },
-    { 0x12, 0 },
-    { 0x13, 0 },
+    { SAVE_EXTRA_ID_TOURNAMENT_0, 0 },
+    { SAVE_EXTRA_ID_TOURNAMENT_1, 0 },
+    { SAVE_EXTRA_ID_TOURNAMENT_2, 0 },
 };
 
 static BOOL TDownloadSave_LoadSlot(TDownloadWork *wk, int slot);
@@ -90,11 +91,11 @@ int TDownloadSave_LoadDownloaded(TDownloadWork *wk) {
 }
 
 void TDownloadSave_LoadString(TDownloadWork *wk, const TDownloadTournament *data, int kind, StrBuf *strbuf) {
-    if (kind == 0) {
+    if (kind == T_DOWNLOAD_STRING_NAME) {
         GFL_StrBufLoadFixedString(strbuf, data->name, T_DOWNLOAD_NAME_LENGTH);
-    } else if (kind == 1) {
+    } else if (kind == T_DOWNLOAD_STRING_AUTHOR) {
         GFL_StrBufLoadFixedString(strbuf, data->author, T_DOWNLOAD_AUTHOR_LENGTH);
-    } else if (kind == 2) {
+    } else if (kind == T_DOWNLOAD_STRING_TEXT) {
         GFL_StrBufLoadFixedString(strbuf, data->text, T_DOWNLOAD_TEXT_LENGTH);
     }
 }
@@ -104,8 +105,8 @@ int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *dat
     int count = 0;
     const u8 *bits;
 
-    if (kind == 0) {
-        bits = data->species;
+    if (kind == T_DOWNLOAD_ENTRY_SPECIES) {
+        bits = data->bannedSpecies;
         for (i = 0; i < T_DOWNLOAD_SPECIES_BYTES; i++) {
             for (j = 0; j < 8; j++) {
                 if (bits[i] & (1 << j)) {
@@ -115,8 +116,8 @@ int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *dat
                 }
             }
         }
-    } else if (kind == 1) {
-        bits = data->items;
+    } else if (kind == T_DOWNLOAD_ENTRY_ITEMS) {
+        bits = data->bannedItems;
         for (i = 0; i < T_DOWNLOAD_ITEM_BYTES; i++) {
             for (j = 0; j < 8; j++) {
                 if (bits[i] & (1 << j)) {
@@ -124,9 +125,9 @@ int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *dat
                 }
             }
         }
-    } else if (kind == 2) {
+    } else if (kind == T_DOWNLOAD_ENTRY_MOVE) {
         for (i = 1; i < 560; i++) {
-            if ((u16)i == data->move) {
+            if ((u16)i == data->bannedMove) {
                 count++;
             }
         }
@@ -143,8 +144,8 @@ u32 TDownloadSave_GetEntry(TDownloadWork *wk, const TDownloadTournament *data, i
     const u8 *bits;
     const u8 *items;
 
-    if (kind == 0) {
-        bits = data->species;
+    if (kind == T_DOWNLOAD_ENTRY_SPECIES) {
+        bits = data->bannedSpecies;
         count = 0;
         for (i = 0; i < T_DOWNLOAD_SPECIES_BYTES; i++) {
             for (j = 0; j < 8; j++) {
@@ -158,8 +159,8 @@ u32 TDownloadSave_GetEntry(TDownloadWork *wk, const TDownloadTournament *data, i
                 }
             }
         }
-    } else if (kind == 1) {
-        items = data->items;
+    } else if (kind == T_DOWNLOAD_ENTRY_ITEMS) {
+        items = data->bannedItems;
         count = 0;
         for (i = 0; i < T_DOWNLOAD_ITEM_BYTES; i++) {
             for (j = 0; j < 8; j++) {
@@ -171,9 +172,9 @@ u32 TDownloadSave_GetEntry(TDownloadWork *wk, const TDownloadTournament *data, i
                 }
             }
         }
-    } else if (kind == 2) {
+    } else if (kind == T_DOWNLOAD_ENTRY_MOVE) {
         for (i = 1; i < 560; i++) {
-            if ((u16)i == data->move) {
+            if ((u16)i == data->bannedMove) {
                 return i;
             }
         }
@@ -219,7 +220,7 @@ BOOL TDownloadSave_UpdateSave(TDownloadWork *wk) {
     save = GameData_GetSaveControl(gameData);
     block = sTDownloadSaveBlocks[dest].block;
     state = GameData_UpdateSaveBlock(gameData, block);
-    if (state == 2 || state == 3) {
+    if (state == SAVE_RESULT_OK || state == SAVE_RESULT_NG) {
         freeIntermediateSaveExtraBlksAfterLoad(save, block);
         wk->saveFlags &= ~T_DOWNLOAD_SAVE_FLAG_SAVING;
         TDownloadSave_CopyToSlot(wk);
@@ -339,10 +340,10 @@ static int TDownloadSave_LoadReceived(TDownloadWork *wk) {
     return count;
 }
 
-int TDownloadSave_FindSlot(TDownloadWork *wk, int free) {
+int TDownloadSave_FindSlot(TDownloadWork *wk, int findFree) {
     int i;
 
-    if (free == 0) {
+    if (findFree == 0) {
         for (i = 0; i < T_DOWNLOAD_SAVE_SLOTS; i++) {
             if (wk->saveFlags & T_DOWNLOAD_SAVE_FLAG_SLOT(i)) {
                 return i;

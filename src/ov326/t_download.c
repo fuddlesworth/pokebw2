@@ -30,6 +30,104 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 
+// Key changes distinguish tab selection, a page button and a jump to either end.
+enum {
+    T_DOWNLOAD_DETAIL_KEY_INPUT_NONE = 0,
+    T_DOWNLOAD_DETAIL_KEY_INPUT_TAB = 1,
+    T_DOWNLOAD_DETAIL_KEY_INPUT_PAGE = 2,
+    T_DOWNLOAD_DETAIL_KEY_INPUT_JUMP = 3,
+};
+
+// Touch changes redraw a page, or drag the page scroll bar.
+enum {
+    T_DOWNLOAD_DETAIL_TOUCH_INPUT_NONE = 0,
+    T_DOWNLOAD_DETAIL_TOUCH_INPUT_CHANGED = 1,
+    T_DOWNLOAD_DETAIL_TOUCH_INPUT_DRAG = 2,
+};
+
+// Buttons processed by either details input handler.
+enum {
+    T_DOWNLOAD_DETAIL_BUTTON_NONE = 0,
+    T_DOWNLOAD_DETAIL_BUTTON_BACK = 1,
+    T_DOWNLOAD_DETAIL_BUTTON_PREVIOUS_PAGE = 2,
+    T_DOWNLOAD_DETAIL_BUTTON_NEXT_PAGE = 3,
+};
+
+// The details screen's touch controls, in its rectangle table order.
+enum {
+    T_DOWNLOAD_DETAIL_TOUCH_BACK = 1,
+    T_DOWNLOAD_DETAIL_TOUCH_NEXT_PAGE = 2,
+    T_DOWNLOAD_DETAIL_TOUCH_PREVIOUS_PAGE = 3,
+    T_DOWNLOAD_DETAIL_TOUCH_POKEMON_TAB = 4,
+    T_DOWNLOAD_DETAIL_TOUCH_ITEMS_TAB = 5,
+    T_DOWNLOAD_DETAIL_TOUCH_MOVES_TAB = 6,
+    T_DOWNLOAD_DETAIL_TOUCH_SCROLL_BAR = 7,
+};
+
+// The saved screen sequence; these values share wk->seq with the other screens.
+enum {
+    T_DOWNLOAD_SAVED_INIT = 0,
+    T_DOWNLOAD_SAVED_WAIT_INTRO = 10,
+    T_DOWNLOAD_SAVED_INPUT = 100,
+    T_DOWNLOAD_SAVED_WAIT_CLOSE_BUTTON = 110,
+    T_DOWNLOAD_SAVED_WAIT_CLOSE_MENU = 115,
+    T_DOWNLOAD_SAVED_WAIT_BUTTON = 120,
+    T_DOWNLOAD_SAVED_WAIT_PRINT = 130,
+    T_DOWNLOAD_SAVED_OPEN_ACTION_MENU = 200,
+    T_DOWNLOAD_SAVED_WAIT_DELETE_MENU = 210,
+    T_DOWNLOAD_SAVED_WAIT_DETAILS_MENU = 220,
+    T_DOWNLOAD_SAVED_WAIT_DELETE_CONFIRM = 240,
+    T_DOWNLOAD_SAVED_RETURN_RECEIVED = 300,
+    T_DOWNLOAD_SAVED_OPEN_DETAILS = 310,
+    T_DOWNLOAD_SAVED_WAIT_DELETED_MESSAGE = 400,
+    T_DOWNLOAD_SAVED_START_FREE_SAVE = 405,
+    T_DOWNLOAD_SAVED_START_SELECTED_SAVE = 410,
+    T_DOWNLOAD_SAVED_WAIT_SAVE = 500,
+    T_DOWNLOAD_SAVED_WAIT_SAVED_MESSAGE = 510,
+};
+
+// The received screen sequence; these values share wk->seq with the other screens.
+enum {
+    T_DOWNLOAD_RECEIVED_INIT = 0,
+    T_DOWNLOAD_RECEIVED_WAIT_LIST = 5,
+    T_DOWNLOAD_RECEIVED_WAIT_INTRO = 10,
+    T_DOWNLOAD_RECEIVED_INPUT = 100,
+    T_DOWNLOAD_RECEIVED_WAIT_CLOSE_BUTTON = 110,
+    T_DOWNLOAD_RECEIVED_WAIT_CLOSE_MENU = 115,
+    T_DOWNLOAD_RECEIVED_WAIT_ARROW = 120,
+    T_DOWNLOAD_RECEIVED_WAIT_PRINT = 130,
+    T_DOWNLOAD_RECEIVED_OPEN_ACTION_MENU = 200,
+    T_DOWNLOAD_RECEIVED_WAIT_ACTION_MENU = 210,
+    T_DOWNLOAD_RECEIVED_SHOW_ALREADY_SAVED = 230,
+    T_DOWNLOAD_RECEIVED_WAIT_ALREADY_SAVED = 240,
+    T_DOWNLOAD_RECEIVED_OPEN_DETAILS = 300,
+    T_DOWNLOAD_RECEIVED_OPEN_SAVE_SLOTS = 400,
+};
+
+// The detail screen sequence; these values share wk->seq with the other screens.
+enum {
+    T_DOWNLOAD_DETAIL_INIT = 0,
+    T_DOWNLOAD_DETAIL_INPUT = 100,
+    T_DOWNLOAD_DETAIL_WAIT_BACK_BUTTON = 110,
+    T_DOWNLOAD_DETAIL_WAIT_PREVIOUS_BUTTON = 120,
+    T_DOWNLOAD_DETAIL_WAIT_NEXT_BUTTON = 130,
+    T_DOWNLOAD_DETAIL_RETURN = 300,
+};
+
+// The select screen sequence; these values share wk->seq with the other screens.
+enum {
+    T_DOWNLOAD_SELECT_INIT = 0,
+    T_DOWNLOAD_SELECT_WAIT_INTRO = 10,
+    T_DOWNLOAD_SELECT_INPUT = 100,
+    T_DOWNLOAD_SELECT_WAIT_CLOSE_BUTTON = 110,
+    T_DOWNLOAD_SELECT_WAIT_BUTTON = 120,
+    T_DOWNLOAD_SELECT_WAIT_PRINT = 130,
+    T_DOWNLOAD_SELECT_OPEN_ACTION_MENU = 200,
+    T_DOWNLOAD_SELECT_WAIT_ACTION_MENU = 210,
+    T_DOWNLOAD_SELECT_OPEN_DETAILS = 300,
+    T_DOWNLOAD_SELECT_EMPTY = 500,
+};
+
 // The Pokémon World Tournament's downloaded tournaments: the tournaments received over Wi-Fi, which can be saved in one
 // of the save's three slots, the tournaments in the slots, and the details of one. The name is ours, after the ROM's
 // "t_download_graphic.c" and "t_download_save.c". Each screen steps through its own seq: 0 starts it, 100 is its main
@@ -46,9 +144,11 @@
 #define T_DOWNLOAD_FLAG_SELECT_SHOWN 0x800
 #define T_DOWNLOAD_FLAG_SELECTED 0x4000
 #define T_DOWNLOAD_FLAG_PAGE 0x8000
-#define T_DOWNLOAD_FLAG_SAVED_FULL 0x10000
+// Entering the saved screen saves directly into the first free slot.
+#define T_DOWNLOAD_FLAG_SAVE_TO_FREE_SLOT 0x10000
 #define T_DOWNLOAD_FLAG_SAVED 0x20000
-#define T_DOWNLOAD_FLAG_DELETED 0x40000
+// Returning from details resumes the saved screen without its initial prompt.
+#define T_DOWNLOAD_FLAG_RESUMING_SAVED 0x40000
 #define T_DOWNLOAD_FLAG_SELECT_MOVED 0x100000
 #define T_DOWNLOAD_FLAG_SAVED_MOVED 0x200000
 // The page of the tab can't change, as it has only one
@@ -237,7 +337,7 @@ static void TDownload_InitWork(TDownloadWork *wk) {
     }
     wk->lastSlot = -1;
     wk->palAnimCount = 0;
-    wk->tab = 0;
+    wk->tab = T_DOWNLOAD_TAB_BANNED_POKEMON;
     wk->returnMode = -1;
     wk->seqAfterList = 0;
     for (i = 0; i < T_DOWNLOAD_WINDOW_COUNT; i++) {
@@ -344,17 +444,17 @@ static void TDownload_InitSelect(TDownloadWork *wk) {
         wk->flags |= T_DOWNLOAD_FLAG_NO_SAVED;
     }
     for (i = 0; i < wk->listCount; i++) {
-        if (wk->saveFlags & (1 << (i + 4))) {
+        if (wk->saveFlags & (1 << (i + T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT))) {
             TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 6, TRUE);
         }
     }
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 0, FALSE);
-    TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+    TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
     if (wk->flags & T_DOWNLOAD_FLAG_NO_SAVED) {
         TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
     } else {
         TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, TRUE);
-        TDownloadUtil_MoveCursor(wk, 1, wk->slotPos);
+        TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_SLOTS, wk->slotPos);
         TDownloadUtil_SetCursorKeys(wk, FALSE);
     }
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_BUTTON, 2, FALSE);
@@ -362,23 +462,23 @@ static void TDownload_InitSelect(TDownloadWork *wk) {
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_BUTTON, 1, FALSE);
     TDownloadUtil_InitModeWindows(wk, wk->mode);
     for (i = 0; i < wk->listCount; i++) {
-        if (wk->saveFlags & (1 << (i + 4))) {
-            TDownloadUtil_PrintSlotName(wk, 0, i);
+        if (wk->saveFlags & (1 << (i + T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT))) {
+            TDownloadUtil_PrintSlotName(wk, T_DOWNLOAD_SOURCE_SAVED, i);
         }
     }
     if (wk->flags & T_DOWNLOAD_FLAG_NO_SAVED) {
-        wk->seq = 500;
+        wk->seq = T_DOWNLOAD_SELECT_EMPTY;
         return;
     }
     if (!(wk->flags & T_DOWNLOAD_FLAG_SELECT_SHOWN)) {
-        TDownloadUtil_PrintMessage(wk, 8, 0, TRUE);
+        TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_SELECT_INTRO, TRUE);
         TDownloadUtil_DimScreen(wk, TRUE);
         TDownloadUtil_PauseActors(wk, TRUE);
-        wk->seq = 10;
+        wk->seq = T_DOWNLOAD_SELECT_WAIT_INTRO;
         wk->flags |= T_DOWNLOAD_FLAG_SELECT_SHOWN;
     }
     TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
-    TDownloadUtil_PrintSlotInfo(wk, 0, wk->slotPos);
+    TDownloadUtil_PrintSlotInfo(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotPos);
 }
 
 static void TDownload_SelectMain(TDownloadWork *wk) {
@@ -387,8 +487,8 @@ static void TDownload_SelectMain(TDownloadWork *wk) {
             TDownload_SelectKeys(wk);
         }
         if (wk->flags & T_DOWNLOAD_FLAG_SELECT_MOVED) {
-            TDownloadUtil_MoveCursor(wk, 1, wk->slotPos);
-            TDownloadUtil_PrintSlotInfo(wk, 0, wk->slotPos);
+            TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_SLOTS, wk->slotPos);
+            TDownloadUtil_PrintSlotInfo(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotPos);
             wk->flags &= ~T_DOWNLOAD_FLAG_SELECT_MOVED;
         }
     }
@@ -407,7 +507,7 @@ static BOOL TDownload_SelectTouch(TDownloadWork *wk) {
     case 4:
     case 5:
         slot = touched - 3;
-        if (wk->saveFlags & (1 << (slot + 4))) {
+        if (wk->saveFlags & (1 << (slot + T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT))) {
             wk->slotPos = slot;
             moved = TRUE;
             GCTX_HIDSetUsingTouch(TRUE);
@@ -415,20 +515,20 @@ static BOOL TDownload_SelectTouch(TDownloadWork *wk) {
         break;
     }
     if (moved == FALSE && touched == 0) {
-        TDownloadUtil_PressButton(wk, 3, 0);
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
         input = T_DOWNLOAD_INPUT_TOUCH;
         GCTX_HIDSetUsingTouch(TRUE);
     }
     if (moved == TRUE) {
         wk->flags |= T_DOWNLOAD_FLAG_SELECT_MOVED;
         TDownloadUtil_SetCursorKeys(wk, TRUE);
-        wk->seq = 130;
+        wk->seq = T_DOWNLOAD_SELECT_WAIT_PRINT;
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         GCTX_HIDSetUsingTouch(TRUE);
     }
     if (input != 0) {
         TDownloadUtil_UpdateCursorMode(wk, FALSE, TRUE, FALSE);
-        wk->seq = 110;
+        wk->seq = T_DOWNLOAD_SELECT_WAIT_CLOSE_BUTTON;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         result = TRUE;
     }
@@ -466,11 +566,11 @@ static BOOL TDownload_SelectKeys(TDownloadWork *wk) {
             wk->slotPos = pos;
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
             TDownloadUtil_SetCursorKeys(wk, TRUE);
-            wk->seq = 130;
+            wk->seq = T_DOWNLOAD_SELECT_WAIT_PRINT;
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             GCTX_HIDSetUsingTouch(FALSE);
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
-            TDownloadUtil_PressButton(wk, 3, 0);
+            TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
             input = T_DOWNLOAD_INPUT_KEY;
             TDownloadUtil_UpdateCursorMode(wk, TRUE, FALSE, FALSE);
         }
@@ -481,7 +581,7 @@ static BOOL TDownload_SelectKeys(TDownloadWork *wk) {
     }
     if (input == T_DOWNLOAD_INPUT_KEY) {
         result = TRUE;
-        wk->seq = 110;
+        wk->seq = T_DOWNLOAD_SELECT_WAIT_CLOSE_BUTTON;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
     }
     return result;
@@ -505,50 +605,50 @@ static void TDownload_Select(TDownloadWork *wk) {
     int i;
 
     switch (wk->seq) {
-    case 0:
-        wk->seq = 100;
-    case 10:
+    case T_DOWNLOAD_SELECT_INIT:
+        wk->seq = T_DOWNLOAD_SELECT_INPUT;
+    case T_DOWNLOAD_SELECT_WAIT_INTRO:
         if (TDownloadUtil_UpdateMessage(wk) == FALSE) {
             TDownloadUtil_ClearMessage(wk, TRUE);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
-            TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-            wk->seq = 100;
+            TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+            wk->seq = T_DOWNLOAD_SELECT_INPUT;
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
         }
         break;
-    case 100:
+    case T_DOWNLOAD_SELECT_INPUT:
         TDownload_SelectMain(wk);
         break;
-    case 110:
+    case T_DOWNLOAD_SELECT_WAIT_CLOSE_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 0) == TRUE) {
             wk->seq = T_DOWNLOAD_SEQ_END;
         }
         break;
-    case 120:
+    case T_DOWNLOAD_SELECT_WAIT_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 1) == TRUE) {
             wk->objFlags |= T_DOWNLOAD_OBJ_FLAG_LIST_MOVED;
-            wk->seq = 100;
+            wk->seq = T_DOWNLOAD_SELECT_INPUT;
         }
         break;
-    case 130:
+    case T_DOWNLOAD_SELECT_WAIT_PRINT:
         if (PrintQueue_IsEmpty(wk->printQueue) == TRUE) {
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, TRUE);
-            wk->seq = 200;
+            wk->seq = T_DOWNLOAD_SELECT_OPEN_ACTION_MENU;
         }
         break;
-    case 200:
+    case T_DOWNLOAD_SELECT_OPEN_ACTION_MENU:
         if (TDownloadUtil_IsActorAnimating(wk, T_DOWNLOAD_ACTOR_OBJ, 2) == FALSE) {
-            TDownloadUtil_PrintMessage(wk, 7, 1, FALSE);
-            TDownloadUtil_InitTaskMenu(wk, 0);
+            TDownloadUtil_PrintMessage(wk, 7, T_DOWNLOAD_MESSAGE_ENTER_PROMPT, FALSE);
+            TDownloadUtil_InitTaskMenu(wk, T_DOWNLOAD_MENU_ENTER);
             TDownloadUtil_DimScreen(wk, TRUE);
             TDownloadUtil_PauseActors(wk, TRUE);
-            wk->seq = 210;
+            wk->seq = T_DOWNLOAD_SELECT_WAIT_ACTION_MENU;
         }
         break;
-    case 210:
+    case T_DOWNLOAD_SELECT_WAIT_ACTION_MENU:
         result = TDownloadUtil_UpdateTaskMenu(wk);
-        if (result != -1) {
+        if (result != T_DOWNLOAD_MENU_PENDING) {
             TDownloadUtil_FreeTaskMenu(wk);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
@@ -557,32 +657,32 @@ static void TDownload_Select(TDownloadWork *wk) {
                 wk->seq = T_DOWNLOAD_SEQ_END;
                 wk->flags |= T_DOWNLOAD_FLAG_SELECTED;
             } else if (result == 1) {
-                wk->seq = 300;
+                wk->seq = T_DOWNLOAD_SELECT_OPEN_DETAILS;
                 TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
                 for (i = 0; i < 3; i++) {
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 6, FALSE);
                 }
             } else {
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                wk->seq = 100;
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+                wk->seq = T_DOWNLOAD_SELECT_INPUT;
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
                 TDownloadUtil_SetCursorKeys(wk, FALSE);
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
         break;
-    case 300:
+    case T_DOWNLOAD_SELECT_OPEN_DETAILS:
         TDownloadUtil_ClearMessage(wk, FALSE);
         wk->returnMode = wk->mode;
         TDownload_ExitSelect(wk);
-        wk->seq = 0;
+        wk->seq = T_DOWNLOAD_DETAIL_INIT;
         wk->mode = T_DOWNLOAD_MODE_DETAIL;
         TDownload_InitMode(wk);
         break;
-    case 500:
+    case T_DOWNLOAD_SELECT_EMPTY:
         if (TDownload_WaitInput(wk) == TRUE) {
-            TDownloadUtil_PressButton(wk, 3, 0);
-            wk->seq = 110;
+            TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+            wk->seq = T_DOWNLOAD_SELECT_WAIT_CLOSE_BUTTON;
         }
         break;
     case T_DOWNLOAD_SEQ_END:
@@ -614,22 +714,22 @@ static void TDownload_InitDetail(TDownloadWork *wk) {
     TDownloadUtil_LoadModeBG(wk, wk->mode);
     TDownloadUtil_SetPaletteAnim(wk, TRUE);
     TDownloadUtil_InitModeWindows(wk, wk->mode);
-    wk->tab = 0;
+    wk->tab = T_DOWNLOAD_TAB_BANNED_POKEMON;
     wk->flags |= T_DOWNLOAD_FLAG_REDRAW;
     wk->flags |= T_DOWNLOAD_FLAG_TAB;
     wk->palAnimCount = 0x8000;
     if (wk->returnMode == T_DOWNLOAD_MODE_RECEIVED) {
-        TDownloadUtil_CountDetails(wk, 1, wk->listPos[2]);
-        TDownloadUtil_PrintDetails(wk, 1, wk->listPos[2], wk->tab);
+        TDownloadUtil_CountDetails(wk, T_DOWNLOAD_SOURCE_RECEIVED, wk->listPos[2]);
+        TDownloadUtil_PrintDetails(wk, T_DOWNLOAD_SOURCE_RECEIVED, wk->listPos[2], wk->tab);
     } else if (wk->returnMode == T_DOWNLOAD_MODE_SELECT) {
-        TDownloadUtil_CountDetails(wk, 0, wk->slotPos);
-        TDownloadUtil_PrintDetails(wk, 0, wk->slotPos, wk->tab);
+        TDownloadUtil_CountDetails(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotPos);
+        TDownloadUtil_PrintDetails(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotPos, wk->tab);
     } else {
-        TDownloadUtil_CountDetails(wk, 0, wk->slotCursor);
-        TDownloadUtil_PrintDetails(wk, 0, wk->slotCursor, wk->tab);
+        TDownloadUtil_CountDetails(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotCursor);
+        TDownloadUtil_PrintDetails(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotCursor, wk->tab);
     }
-    TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-    TDownloadUtil_UpdateArrows(wk, 1, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
+    TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+    TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_PAGES, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
 }
 
 static void TDownload_DetailMain(TDownloadWork *wk) {
@@ -639,11 +739,11 @@ static void TDownload_DetailMain(TDownloadWork *wk) {
         }
         if (wk->flags & T_DOWNLOAD_FLAG_REDRAW) {
             if (wk->returnMode == T_DOWNLOAD_MODE_RECEIVED) {
-                TDownloadUtil_PrintDetails(wk, 1, wk->listPos[2], wk->tab);
+                TDownloadUtil_PrintDetails(wk, T_DOWNLOAD_SOURCE_RECEIVED, wk->listPos[2], wk->tab);
             } else if (wk->returnMode == T_DOWNLOAD_MODE_SELECT) {
-                TDownloadUtil_PrintDetails(wk, 0, wk->slotPos, wk->tab);
+                TDownloadUtil_PrintDetails(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotPos, wk->tab);
             } else {
-                TDownloadUtil_PrintDetails(wk, 0, wk->slotCursor, wk->tab);
+                TDownloadUtil_PrintDetails(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotCursor, wk->tab);
             }
             if (wk->flags & T_DOWNLOAD_FLAG_TAB) {
                 TDownloadUtil_SetTab(wk, wk->tab);
@@ -664,117 +764,117 @@ static void TDownload_DetailMain(TDownloadWork *wk) {
 }
 
 static BOOL TDownload_DetailTouch(TDownloadWork *wk) {
-    int button = 0;
-    int input = 0;
+    int button = T_DOWNLOAD_DETAIL_BUTTON_NONE;
+    int input = T_DOWNLOAD_DETAIL_TOUCH_INPUT_NONE;
     BOOL result = FALSE;
     int page = wk->page[wk->tab];
     int touched = TDownloadUtil_GetTouch(wk, FALSE, wk->mode);
     int held = TDownloadUtil_GetTouch(wk, TRUE, wk->mode);
     int newPage;
 
-    if (touched == 1) {
-        TDownloadUtil_PressButton(wk, 3, 0);
-        button = 1;
+    if (touched == T_DOWNLOAD_DETAIL_TOUCH_BACK) {
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+        button = T_DOWNLOAD_DETAIL_BUTTON_BACK;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         GCTX_HIDSetUsingTouch(TRUE);
-    } else if (touched == 3) {
+    } else if (touched == T_DOWNLOAD_DETAIL_TOUCH_PREVIOUS_PAGE) {
         if (!(wk->flags & T_DOWNLOAD_FLAG_ONE_PAGE) && wk->page[wk->tab] != 0) {
             wk->page[wk->tab]--;
             if (wk->page[wk->tab] <= 0) {
                 wk->page[wk->tab] = 0;
             }
-            TDownloadUtil_PressButton(wk, 5, 0);
-            button = 2;
-            input = 1;
+            TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_DOWN, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+            button = T_DOWNLOAD_DETAIL_BUTTON_PREVIOUS_PAGE;
+            input = T_DOWNLOAD_DETAIL_TOUCH_INPUT_CHANGED;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             GCTX_HIDSetUsingTouch(TRUE);
         }
-    } else if (touched == 2) {
+    } else if (touched == T_DOWNLOAD_DETAIL_TOUCH_NEXT_PAGE) {
         if (!(wk->flags & T_DOWNLOAD_FLAG_ONE_PAGE) && wk->page[wk->tab] != wk->pageCount[wk->tab] - 1) {
             wk->page[wk->tab]++;
             if (wk->page[wk->tab] >= wk->pageCount[wk->tab] - 1) {
                 wk->page[wk->tab] = wk->pageCount[wk->tab] - 1;
             }
-            TDownloadUtil_PressButton(wk, 4, 0);
-            button = 3;
-            input = 1;
+            TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_UP, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+            button = T_DOWNLOAD_DETAIL_BUTTON_NEXT_PAGE;
+            input = T_DOWNLOAD_DETAIL_TOUCH_INPUT_CHANGED;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             GCTX_HIDSetUsingTouch(TRUE);
         }
-    } else if (touched == 4) {
-        wk->tab = 0;
-        input = 1;
+    } else if (touched == T_DOWNLOAD_DETAIL_TOUCH_POKEMON_TAB) {
+        wk->tab = T_DOWNLOAD_TAB_BANNED_POKEMON;
+        input = T_DOWNLOAD_DETAIL_TOUCH_INPUT_CHANGED;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         wk->flags |= T_DOWNLOAD_FLAG_TAB;
         GCTX_HIDSetUsingTouch(TRUE);
-    } else if (touched == 5) {
-        wk->tab = 1;
-        input = 1;
+    } else if (touched == T_DOWNLOAD_DETAIL_TOUCH_ITEMS_TAB) {
+        wk->tab = T_DOWNLOAD_TAB_BANNED_ITEMS;
+        input = T_DOWNLOAD_DETAIL_TOUCH_INPUT_CHANGED;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         wk->flags |= T_DOWNLOAD_FLAG_TAB;
         GCTX_HIDSetUsingTouch(TRUE);
-    } else if (touched == 6) {
-        input = 1;
-        wk->tab = 2;
+    } else if (touched == T_DOWNLOAD_DETAIL_TOUCH_MOVES_TAB) {
+        input = T_DOWNLOAD_DETAIL_TOUCH_INPUT_CHANGED;
+        wk->tab = T_DOWNLOAD_TAB_BANNED_MOVES;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         wk->flags |= T_DOWNLOAD_FLAG_TAB;
         GCTX_HIDSetUsingTouch(TRUE);
-    } else if (held == 7) {
+    } else if (held == T_DOWNLOAD_DETAIL_TOUCH_SCROLL_BAR) {
         if (wk->pageCount[wk->tab] > 1) {
-            input = 2;
+            input = T_DOWNLOAD_DETAIL_TOUCH_INPUT_DRAG;
             GCTX_HIDSetUsingTouch(TRUE);
         }
     }
-    if (input == 1) {
+    if (input == T_DOWNLOAD_DETAIL_TOUCH_INPUT_CHANGED) {
         TDownloadUtil_UpdatePageBar(wk, wk->tab, wk->page[wk->tab], FALSE);
         wk->flags |= T_DOWNLOAD_FLAG_REDRAW;
         wk->flags |= T_DOWNLOAD_FLAG_PAGE;
-        TDownloadUtil_UpdateArrows(wk, 1, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
-    } else if (input == 2) {
+        TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_PAGES, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
+    } else if (input == T_DOWNLOAD_DETAIL_TOUCH_INPUT_DRAG) {
         TDownloadUtil_UpdatePageBar(wk, wk->tab, 0, TRUE);
         newPage = TDownloadUtil_GetTouchedPage(wk, wk->tab);
         if (newPage != -1 && newPage != page) {
             wk->page[wk->tab] = newPage;
             wk->flags |= T_DOWNLOAD_FLAG_REDRAW;
-            TDownloadUtil_UpdateArrows(wk, 1, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
+            TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_PAGES, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
             GFL_SndSEPlay(SEQ_SE_SYS_06);
         }
     }
-    if (button != 0) {
+    if (button != T_DOWNLOAD_DETAIL_BUTTON_NONE) {
         result = TRUE;
-        if (button == 1) {
-            wk->seq = 110;
+        if (button == T_DOWNLOAD_DETAIL_BUTTON_BACK) {
+            wk->seq = T_DOWNLOAD_DETAIL_WAIT_BACK_BUTTON;
             GCTX_HIDSetUsingTouch(result);
-        } else if (button == 2) {
-            wk->seq = 120;
-        } else if (button == 3) {
-            wk->seq = 130;
+        } else if (button == T_DOWNLOAD_DETAIL_BUTTON_PREVIOUS_PAGE) {
+            wk->seq = T_DOWNLOAD_DETAIL_WAIT_PREVIOUS_BUTTON;
+        } else if (button == T_DOWNLOAD_DETAIL_BUTTON_NEXT_PAGE) {
+            wk->seq = T_DOWNLOAD_DETAIL_WAIT_NEXT_BUTTON;
         }
     }
     return result;
 }
 
 static BOOL TDownload_DetailKeys(TDownloadWork *wk) {
-    int button = 0;
-    int input = 0;
+    int button = T_DOWNLOAD_DETAIL_BUTTON_NONE;
+    int input = T_DOWNLOAD_DETAIL_KEY_INPUT_NONE;
     BOOL result = FALSE;
 
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
-        TDownloadUtil_PressButton(wk, 3, 0);
-        button = 1;
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+        button = T_DOWNLOAD_DETAIL_BUTTON_BACK;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_LEFT) {
         if (--wk->tab < 0) {
-            wk->tab = 2;
+            wk->tab = T_DOWNLOAD_TAB_BANNED_MOVES;
         }
-        input = 1;
+        input = T_DOWNLOAD_DETAIL_KEY_INPUT_TAB;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         wk->flags |= T_DOWNLOAD_FLAG_TAB;
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_RIGHT) {
         if (++wk->tab >= T_DOWNLOAD_TABS) {
-            wk->tab = 0;
+            wk->tab = T_DOWNLOAD_TAB_BANNED_POKEMON;
         }
-        input = 1;
+        input = T_DOWNLOAD_DETAIL_KEY_INPUT_TAB;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         wk->flags |= T_DOWNLOAD_FLAG_TAB;
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_UP) {
@@ -783,9 +883,9 @@ static BOOL TDownload_DetailKeys(TDownloadWork *wk) {
             if (wk->page[wk->tab] <= 0) {
                 wk->page[wk->tab] = 0;
             }
-            TDownloadUtil_PressButton(wk, 5, 0);
-            button = 2;
-            input = 2;
+            TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_DOWN, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+            button = T_DOWNLOAD_DETAIL_BUTTON_PREVIOUS_PAGE;
+            input = T_DOWNLOAD_DETAIL_KEY_INPUT_PAGE;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
         }
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_DOWN) {
@@ -794,43 +894,43 @@ static BOOL TDownload_DetailKeys(TDownloadWork *wk) {
             if (wk->page[wk->tab] >= wk->pageCount[wk->tab] - 1) {
                 wk->page[wk->tab] = wk->pageCount[wk->tab] - 1;
             }
-            TDownloadUtil_PressButton(wk, 4, 0);
-            button = 3;
-            input = 2;
+            TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_TAB_UP, T_DOWNLOAD_BUTTON_STATE_PRESSED);
+            button = T_DOWNLOAD_DETAIL_BUTTON_NEXT_PAGE;
+            input = T_DOWNLOAD_DETAIL_KEY_INPUT_PAGE;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
         }
     } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_R) {
         if (!(wk->flags & T_DOWNLOAD_FLAG_ONE_PAGE)) {
             wk->page[wk->tab] = wk->pageCount[wk->tab] - 1;
-            input = 3;
+            input = T_DOWNLOAD_DETAIL_KEY_INPUT_JUMP;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
         }
     } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_L) {
         if (!(wk->flags & T_DOWNLOAD_FLAG_ONE_PAGE)) {
             wk->page[wk->tab] = 0;
-            input = 3;
+            input = T_DOWNLOAD_DETAIL_KEY_INPUT_JUMP;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
         }
     }
-    if (input != 0) {
+    if (input != T_DOWNLOAD_DETAIL_KEY_INPUT_NONE) {
         TDownloadUtil_UpdatePageBar(wk, wk->tab, wk->page[wk->tab], FALSE);
         wk->flags |= T_DOWNLOAD_FLAG_REDRAW;
-        if (input == 1) {
+        if (input == T_DOWNLOAD_DETAIL_KEY_INPUT_TAB) {
             wk->flags |= T_DOWNLOAD_FLAG_PAGE;
         }
-        if (input == 1 || input == 3) {
-            TDownloadUtil_UpdateArrows(wk, 1, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
+        if (input == T_DOWNLOAD_DETAIL_KEY_INPUT_TAB || input == T_DOWNLOAD_DETAIL_KEY_INPUT_JUMP) {
+            TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_PAGES, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
         }
     }
-    if (button != 0) {
+    if (button != T_DOWNLOAD_DETAIL_BUTTON_NONE) {
         result = TRUE;
-        if (button == 1) {
-            wk->seq = 110;
+        if (button == T_DOWNLOAD_DETAIL_BUTTON_BACK) {
+            wk->seq = T_DOWNLOAD_DETAIL_WAIT_BACK_BUTTON;
             GCTX_HIDSetUsingTouch(FALSE);
-        } else if (button == 2) {
-            wk->seq = 120;
-        } else if (button == 3) {
-            wk->seq = 130;
+        } else if (button == T_DOWNLOAD_DETAIL_BUTTON_PREVIOUS_PAGE) {
+            wk->seq = T_DOWNLOAD_DETAIL_WAIT_PREVIOUS_BUTTON;
+        } else if (button == T_DOWNLOAD_DETAIL_BUTTON_NEXT_PAGE) {
+            wk->seq = T_DOWNLOAD_DETAIL_WAIT_NEXT_BUTTON;
         }
     }
     return result;
@@ -840,17 +940,17 @@ static void TDownload_Detail(TDownloadWork *wk) {
     int i;
 
     switch (wk->seq) {
-    case 0:
-        wk->seq = 100;
-    case 100:
+    case T_DOWNLOAD_DETAIL_INIT:
+        wk->seq = T_DOWNLOAD_DETAIL_INPUT;
+    case T_DOWNLOAD_DETAIL_INPUT:
         TDownload_DetailMain(wk);
         break;
-    case 110:
+    case T_DOWNLOAD_DETAIL_WAIT_BACK_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 0) == TRUE) {
             if (wk->returnMode == -1) {
                 wk->seq = T_DOWNLOAD_SEQ_END;
             } else {
-                wk->seq = 300;
+                wk->seq = T_DOWNLOAD_DETAIL_RETURN;
                 for (i = 0; i < 3; i++) {
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 3, FALSE);
                 }
@@ -859,19 +959,19 @@ static void TDownload_Detail(TDownloadWork *wk) {
             }
         }
         break;
-    case 120:
+    case T_DOWNLOAD_DETAIL_WAIT_PREVIOUS_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 1) == TRUE) {
-            wk->seq = 100;
-            TDownloadUtil_UpdateArrows(wk, 1, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
+            wk->seq = T_DOWNLOAD_DETAIL_INPUT;
+            TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_PAGES, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
         }
         break;
-    case 130:
+    case T_DOWNLOAD_DETAIL_WAIT_NEXT_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 1) == TRUE) {
-            wk->seq = 100;
-            TDownloadUtil_UpdateArrows(wk, 1, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
+            wk->seq = T_DOWNLOAD_DETAIL_INPUT;
+            TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_PAGES, 0, wk->pageCount[wk->tab] - 1, wk->page[wk->tab]);
         }
         break;
-    case 300:
+    case T_DOWNLOAD_DETAIL_RETURN:
         TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
         TDownload_ExitDetail(wk);
         wk->seq = 0;
@@ -922,19 +1022,19 @@ static void TDownload_InitReceived(TDownloadWork *wk) {
     }
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_BUTTON, 0, TRUE);
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_BUTTON, 1, TRUE);
-    TDownloadUtil_UpdateArrows(wk, 0, 0, wk->listCount - 1, wk->listPos[0]);
-    TDownloadUtil_MoveCursor(wk, 0, wk->listCursor[0]);
-    TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+    TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_LIST, 0, wk->listCount - 1, wk->listPos[0]);
+    TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_LIST, wk->listCursor[0]);
+    TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_BUTTON, 2, FALSE);
     TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
-    TDownloadUtil_PrintSlotInfo(wk, 1, wk->listPos[0]);
-    wk->seq = 5;
-    wk->seqAfterList = 100;
+    TDownloadUtil_PrintSlotInfo(wk, T_DOWNLOAD_SOURCE_RECEIVED, wk->listPos[0]);
+    wk->seq = T_DOWNLOAD_RECEIVED_WAIT_LIST;
+    wk->seqAfterList = T_DOWNLOAD_RECEIVED_INPUT;
     if (!(wk->flags & T_DOWNLOAD_FLAG_RECEIVED_SHOWN)) {
-        TDownloadUtil_PrintMessage(wk, 8, 5, TRUE);
+        TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_RECEIVED_INTRO, TRUE);
         TDownloadUtil_DimScreen(wk, TRUE);
         TDownloadUtil_PauseActors(wk, TRUE);
-        wk->seqAfterList = 10;
+        wk->seqAfterList = T_DOWNLOAD_RECEIVED_WAIT_INTRO;
         wk->flags |= T_DOWNLOAD_FLAG_RECEIVED_SHOWN;
     }
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
@@ -943,7 +1043,7 @@ static void TDownload_InitReceived(TDownloadWork *wk) {
         GFL_BGSysSetBGEnabled(2, TRUE);
         if (GCTX_HIDIsUsingTouch() == FALSE) {
             TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, TRUE);
-            TDownloadUtil_MoveCursor(wk, 0, wk->listCursor[0]);
+            TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_LIST, wk->listCursor[0]);
         }
     }
 }
@@ -958,19 +1058,19 @@ static void TDownload_ReceivedMain(TDownloadWork *wk) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
         }
         result = TDownloadUtil_ListResult(wk, TDownloadUtil_UpdateList(wk));
-        if (result != 0) {
+        if (result != T_DOWNLOAD_LIST_NONE) {
             handled = TRUE;
-            if (result != 2) {
+            if (result != T_DOWNLOAD_LIST_DECIDED) {
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
-        if (result == 2) {
+        if (result == T_DOWNLOAD_LIST_DECIDED) {
             handled = TRUE;
             TDownloadUtil_SetCursorKeys(wk, TRUE);
-            wk->seq = 130;
+            wk->seq = T_DOWNLOAD_RECEIVED_WAIT_PRINT;
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
-        } else if (result == 3) {
-            wk->seq = 120;
+        } else if (result == T_DOWNLOAD_LIST_ARROW) {
+            wk->seq = T_DOWNLOAD_RECEIVED_WAIT_ARROW;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             handled = TRUE;
         }
@@ -978,9 +1078,9 @@ static void TDownload_ReceivedMain(TDownloadWork *wk) {
             TDownload_ReceivedKeys(wk);
         }
         if (wk->objFlags & T_DOWNLOAD_OBJ_FLAG_LIST_MOVED) {
-            TDownloadUtil_PrintSlotInfo(wk, 1, wk->listPos[0]);
-            TDownloadUtil_MoveCursor(wk, 0, wk->listCursor[0]);
-            TDownloadUtil_UpdateArrows(wk, 0, 0, wk->listCount - 1, wk->listPos[0]);
+            TDownloadUtil_PrintSlotInfo(wk, T_DOWNLOAD_SOURCE_RECEIVED, wk->listPos[0]);
+            TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_LIST, wk->listCursor[0]);
+            TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_LIST, 0, wk->listCount - 1, wk->listPos[0]);
             wk->objFlags &= ~T_DOWNLOAD_OBJ_FLAG_LIST_MOVED;
         }
         TDownloadUtil_ClampScrollBar(wk);
@@ -992,12 +1092,12 @@ static BOOL TDownload_ReceivedTouch(TDownloadWork *wk) {
     BOOL result = FALSE;
 
     if (TDownloadUtil_GetTouch(wk, FALSE, wk->mode) == 1) {
-        TDownloadUtil_PressButton(wk, 3, 0);
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
         pressed = TRUE;
         GCTX_HIDSetUsingTouch(TRUE);
     }
     if (pressed) {
-        wk->seq = 110;
+        wk->seq = T_DOWNLOAD_RECEIVED_WAIT_CLOSE_BUTTON;
         result = TRUE;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         TDownloadUtil_UpdateCursorMode(wk, FALSE, TRUE, FALSE);
@@ -1010,17 +1110,17 @@ static BOOL TDownload_ReceivedKeys(TDownloadWork *wk) {
     BOOL result = FALSE;
 
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
-        TDownloadUtil_PressButton(wk, 3, 0);
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
         button = 1;
     }
     if (button != 0) {
         result = TRUE;
         TDownloadUtil_UpdateCursorMode(wk, TRUE, FALSE, FALSE);
         if (button == 1) {
-            wk->seq = 110;
+            wk->seq = T_DOWNLOAD_RECEIVED_WAIT_CLOSE_BUTTON;
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
         } else {
-            wk->seq = 120;
+            wk->seq = T_DOWNLOAD_RECEIVED_WAIT_ARROW;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
         }
     }
@@ -1031,9 +1131,9 @@ static void TDownload_Received(TDownloadWork *wk) {
     int result;
 
     switch (wk->seq) {
-    case 0:
-        wk->seq = 100;
-    case 5:
+    case T_DOWNLOAD_RECEIVED_INIT:
+        wk->seq = T_DOWNLOAD_RECEIVED_INPUT;
+    case T_DOWNLOAD_RECEIVED_WAIT_LIST:
         if (!(wk->flags & T_DOWNLOAD_FLAG_LIST_PRINTED)) {
             if (FrameList_Draw(wk->list) == FALSE) {
                 wk->flags |= T_DOWNLOAD_FLAG_LIST_PRINTED;
@@ -1041,38 +1141,38 @@ static void TDownload_Received(TDownloadWork *wk) {
                 GFL_BGSysSetBGEnabled(2, TRUE);
                 if (GCTX_HIDIsUsingTouch() == FALSE) {
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, TRUE);
-                    TDownloadUtil_MoveCursor(wk, 0, wk->listCursor[0]);
+                    TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_LIST, wk->listCursor[0]);
                 }
             }
         } else {
             wk->seq = wk->seqAfterList;
         }
         break;
-    case 10:
+    case T_DOWNLOAD_RECEIVED_WAIT_INTRO:
         if (TDownloadUtil_UpdateMessage(wk) == FALSE) {
             TDownloadUtil_ClearMessage(wk, TRUE);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
-            TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-            wk->seq = 100;
+            TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+            wk->seq = T_DOWNLOAD_RECEIVED_INPUT;
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
         }
         break;
-    case 100:
+    case T_DOWNLOAD_RECEIVED_INPUT:
         TDownload_ReceivedMain(wk);
         break;
-    case 110:
+    case T_DOWNLOAD_RECEIVED_WAIT_CLOSE_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 0) == TRUE) {
-            TDownloadUtil_PrintMessage(wk, 7, 7, FALSE);
-            TDownloadUtil_InitTaskMenu(wk, 2);
+            TDownloadUtil_PrintMessage(wk, 7, T_DOWNLOAD_MESSAGE_LEAVE_RECEIVED, FALSE);
+            TDownloadUtil_InitTaskMenu(wk, T_DOWNLOAD_MENU_YES_NO);
             TDownloadUtil_DimScreen(wk, TRUE);
             TDownloadUtil_PauseActors(wk, TRUE);
-            wk->seq = 115;
+            wk->seq = T_DOWNLOAD_RECEIVED_WAIT_CLOSE_MENU;
         }
         break;
-    case 115:
+    case T_DOWNLOAD_RECEIVED_WAIT_CLOSE_MENU:
         result = TDownloadUtil_UpdateTaskMenu(wk);
-        if (result != -1) {
+        if (result != T_DOWNLOAD_MENU_PENDING) {
             TDownloadUtil_FreeTaskMenu(wk);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
@@ -1080,106 +1180,106 @@ static void TDownload_Received(TDownloadWork *wk) {
                 wk->seq = T_DOWNLOAD_SEQ_END;
             } else {
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                wk->seq = 100;
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+                wk->seq = T_DOWNLOAD_RECEIVED_INPUT;
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
                 TDownloadUtil_SetCursorKeys(wk, FALSE);
                 wk->objFlags &= ~T_DOWNLOAD_OBJ_FLAG_RESULT;
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
         break;
-    case 120:
-        if (TDownloadUtil_UpdateList(wk) == -1 && TDownloadUtil_IsButtonDone(wk, 1) == TRUE) {
-            TDownloadUtil_UpdateArrows(wk, 0, 0, wk->listCount - 1, wk->listPos[0]);
-            wk->seq = 100;
+    case T_DOWNLOAD_RECEIVED_WAIT_ARROW:
+        if (TDownloadUtil_UpdateList(wk) == FRAMELIST_NONE && TDownloadUtil_IsButtonDone(wk, 1) == TRUE) {
+            TDownloadUtil_UpdateArrows(wk, T_DOWNLOAD_ARROWS_LIST, 0, wk->listCount - 1, wk->listPos[0]);
+            wk->seq = T_DOWNLOAD_RECEIVED_INPUT;
         }
         break;
-    case 130:
+    case T_DOWNLOAD_RECEIVED_WAIT_PRINT:
         if (PrintQueue_IsEmpty(wk->printQueue) == TRUE) {
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, TRUE);
-            wk->seq = 200;
+            wk->seq = T_DOWNLOAD_RECEIVED_OPEN_ACTION_MENU;
         }
         break;
-    case 200:
+    case T_DOWNLOAD_RECEIVED_OPEN_ACTION_MENU:
         if (TDownloadUtil_IsActorAnimating(wk, T_DOWNLOAD_ACTOR_OBJ, 2) == FALSE) {
-            TDownloadUtil_PrintMessage(wk, 7, 2, FALSE);
-            TDownloadUtil_InitTaskMenu(wk, 1);
+            TDownloadUtil_PrintMessage(wk, 7, T_DOWNLOAD_MESSAGE_ACTIONS_PROMPT, FALSE);
+            TDownloadUtil_InitTaskMenu(wk, T_DOWNLOAD_MENU_RECEIVED);
             TDownloadUtil_DimScreen(wk, TRUE);
             TDownloadUtil_PauseActors(wk, TRUE);
-            wk->seq = 210;
+            wk->seq = T_DOWNLOAD_RECEIVED_WAIT_ACTION_MENU;
         }
         break;
-    case 210:
+    case T_DOWNLOAD_RECEIVED_WAIT_ACTION_MENU:
         result = TDownloadUtil_UpdateTaskMenu(wk);
-        if (result != -1) {
+        if (result != T_DOWNLOAD_MENU_PENDING) {
             TDownloadUtil_FreeTaskMenu(wk);
             if (result == 0) {
                 if (TDownloadSave_IsSaved(wk, wk->listPos[0]) == TRUE) {
                     TDownloadUtil_ClearMessage(wk, TRUE);
-                    TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-                    wk->seq = 230;
+                    TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+                    wk->seq = T_DOWNLOAD_RECEIVED_SHOW_ALREADY_SAVED;
                 } else if (TDownloadSave_FindFreeSlot(wk) == -1) {
                     TDownloadUtil_DimScreen(wk, FALSE);
                     TDownloadUtil_PauseActors(wk, FALSE);
-                    wk->seq = 400;
+                    wk->seq = T_DOWNLOAD_RECEIVED_OPEN_SAVE_SLOTS;
                     TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 0, FALSE);
                     wk->slotCursor = 0;
                 } else {
                     TDownloadUtil_PauseActors(wk, FALSE);
-                    wk->seq = 400;
+                    wk->seq = T_DOWNLOAD_RECEIVED_OPEN_SAVE_SLOTS;
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 0, FALSE);
-                    wk->flags |= T_DOWNLOAD_FLAG_SAVED_FULL;
+                    wk->flags |= T_DOWNLOAD_FLAG_SAVE_TO_FREE_SLOT;
                 }
             } else if (result == 1) {
                 TDownloadUtil_DimScreen(wk, FALSE);
                 TDownloadUtil_PauseActors(wk, FALSE);
-                wk->seq = 300;
+                wk->seq = T_DOWNLOAD_RECEIVED_OPEN_DETAILS;
                 TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
             } else {
                 TDownloadUtil_DimScreen(wk, FALSE);
                 TDownloadUtil_PauseActors(wk, FALSE);
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                wk->seq = 100;
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+                wk->seq = T_DOWNLOAD_RECEIVED_INPUT;
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
                 TDownloadUtil_SetCursorKeys(wk, FALSE);
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
         break;
-    case 230:
+    case T_DOWNLOAD_RECEIVED_SHOW_ALREADY_SAVED:
         if (TDownloadUtil_IsActorAnimating(wk, T_DOWNLOAD_ACTOR_OBJ, 2) == FALSE) {
-            TDownloadUtil_PrintMessage(wk, 8, 6, TRUE);
+            TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_ALREADY_SAVED, TRUE);
             TDownloadUtil_DimScreen(wk, TRUE);
             TDownloadUtil_PauseActors(wk, TRUE);
-            wk->seq = 240;
+            wk->seq = T_DOWNLOAD_RECEIVED_WAIT_ALREADY_SAVED;
         }
         break;
-    case 240:
+    case T_DOWNLOAD_RECEIVED_WAIT_ALREADY_SAVED:
         if (TDownloadUtil_UpdateMessage(wk) == FALSE) {
             TDownloadUtil_ClearMessage(wk, TRUE);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
-            TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-            wk->seq = 100;
+            TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+            wk->seq = T_DOWNLOAD_RECEIVED_INPUT;
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
         }
         break;
-    case 300:
+    case T_DOWNLOAD_RECEIVED_OPEN_DETAILS:
         TDownloadUtil_ClearMessage(wk, FALSE);
         wk->returnMode = wk->mode;
         TDownload_ExitReceived(wk);
-        wk->seq = 0;
+        wk->seq = T_DOWNLOAD_DETAIL_INIT;
         wk->mode = T_DOWNLOAD_MODE_DETAIL;
         TDownload_InitMode(wk);
         break;
-    case 400:
+    case T_DOWNLOAD_RECEIVED_OPEN_SAVE_SLOTS:
         TDownloadUtil_ClearMessage(wk, TRUE);
         wk->returnMode = wk->mode;
         TDownload_ExitReceived(wk);
-        wk->seq = 0;
+        wk->seq = T_DOWNLOAD_SAVED_INIT;
         wk->mode = T_DOWNLOAD_MODE_SAVED;
         TDownload_InitMode(wk);
         break;
@@ -1211,35 +1311,35 @@ static void TDownload_InitSaved(TDownloadWork *wk) {
     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_BUTTON, 1, FALSE);
     TDownloadUtil_InitModeWindows(wk, wk->mode);
     for (i = 0; i < wk->listCount; i++) {
-        if (wk->saveFlags & (1 << (i + 4))) {
-            TDownloadUtil_PrintSlotName(wk, 0, i);
+        if (wk->saveFlags & (1 << (i + T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT))) {
+            TDownloadUtil_PrintSlotName(wk, T_DOWNLOAD_SOURCE_SAVED, i);
             TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 6, TRUE);
         }
     }
     if (!(wk->flags & T_DOWNLOAD_FLAG_NO_SAVED)) {
         TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, TRUE);
-        TDownloadUtil_MoveCursor(wk, 1, wk->slotCursor);
-        if (!(wk->flags & T_DOWNLOAD_FLAG_SAVED_FULL)) {
-            TDownloadUtil_PrintSlotInfo(wk, 0, wk->slotCursor);
+        TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_SLOTS, wk->slotCursor);
+        if (!(wk->flags & T_DOWNLOAD_FLAG_SAVE_TO_FREE_SLOT)) {
+            TDownloadUtil_PrintSlotInfo(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotCursor);
         }
     }
     TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
-    wk->seq = 100;
-    if (!(wk->flags & T_DOWNLOAD_FLAG_DELETED)) {
-        if (!(wk->flags & T_DOWNLOAD_FLAG_SAVED_FULL)) {
-            TDownloadUtil_PrintMessage(wk, 8, 9, TRUE);
+    wk->seq = T_DOWNLOAD_SAVED_INPUT;
+    if (!(wk->flags & T_DOWNLOAD_FLAG_RESUMING_SAVED)) {
+        if (!(wk->flags & T_DOWNLOAD_FLAG_SAVE_TO_FREE_SLOT)) {
+            TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_SLOTS_FULL, TRUE);
             TDownloadUtil_DimScreenUpload(wk, TRUE);
             TDownloadUtil_PauseActors(wk, TRUE);
-            wk->seq = 10;
+            wk->seq = T_DOWNLOAD_SAVED_WAIT_INTRO;
         } else {
-            TDownloadUtil_PrintMessage(wk, 8, 11, FALSE);
+            TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_SAVING, FALSE);
             TDownloadUtil_PauseActors(wk, TRUE);
-            wk->seq = 405;
+            wk->seq = T_DOWNLOAD_SAVED_START_FREE_SAVE;
             TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
         }
     }
-    TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-    wk->flags &= ~T_DOWNLOAD_FLAG_DELETED;
+    TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+    wk->flags &= ~T_DOWNLOAD_FLAG_RESUMING_SAVED;
 }
 
 static void TDownload_SavedMain(TDownloadWork *wk) {
@@ -1248,8 +1348,8 @@ static void TDownload_SavedMain(TDownloadWork *wk) {
             TDownload_SavedKeys(wk);
         }
         if (wk->flags & T_DOWNLOAD_FLAG_SAVED_MOVED) {
-            TDownloadUtil_MoveCursor(wk, 1, wk->slotCursor);
-            TDownloadUtil_PrintSlotInfo(wk, 0, wk->slotCursor);
+            TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_SLOTS, wk->slotCursor);
+            TDownloadUtil_PrintSlotInfo(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotCursor);
             wk->flags &= ~T_DOWNLOAD_FLAG_SAVED_MOVED;
         }
     }
@@ -1268,7 +1368,7 @@ static BOOL TDownload_SavedTouch(TDownloadWork *wk) {
     case 4:
     case 5:
         slot = touched - 3;
-        if (wk->saveFlags & (1 << (slot + 4))) {
+        if (wk->saveFlags & (1 << (slot + T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT))) {
             wk->slotCursor = slot;
             moved = TRUE;
             GCTX_HIDSetUsingTouch(TRUE);
@@ -1276,20 +1376,20 @@ static BOOL TDownload_SavedTouch(TDownloadWork *wk) {
         break;
     }
     if (moved == FALSE && touched == 0) {
-        TDownloadUtil_PressButton(wk, 3, 0);
+        TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
         input = T_DOWNLOAD_INPUT_TOUCH;
         GCTX_HIDSetUsingTouch(TRUE);
     }
     if (moved == TRUE) {
         wk->flags |= T_DOWNLOAD_FLAG_SAVED_MOVED;
         TDownloadUtil_SetCursorKeys(wk, TRUE);
-        wk->seq = 130;
+        wk->seq = T_DOWNLOAD_SAVED_WAIT_PRINT;
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         GCTX_HIDSetUsingTouch(TRUE);
     }
     if (input != 0) {
         result = TRUE;
-        wk->seq = 110;
+        wk->seq = T_DOWNLOAD_SAVED_WAIT_CLOSE_BUTTON;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         TDownloadUtil_UpdateCursorMode(wk, FALSE, TRUE, FALSE);
     }
@@ -1327,11 +1427,11 @@ static BOOL TDownload_SavedKeys(TDownloadWork *wk) {
             wk->slotCursor = pos;
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
             TDownloadUtil_SetCursorKeys(wk, TRUE);
-            wk->seq = 130;
+            wk->seq = T_DOWNLOAD_SAVED_WAIT_PRINT;
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             GCTX_HIDSetUsingTouch(FALSE);
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
-            TDownloadUtil_PressButton(wk, 3, 0);
+            TDownloadUtil_PressButton(wk, T_DOWNLOAD_BUTTON_X, T_DOWNLOAD_BUTTON_STATE_PRESSED);
             input = T_DOWNLOAD_INPUT_KEY;
         }
     }
@@ -1341,7 +1441,7 @@ static BOOL TDownload_SavedKeys(TDownloadWork *wk) {
     }
     if (input == T_DOWNLOAD_INPUT_KEY) {
         result = TRUE;
-        wk->seq = 110;
+        wk->seq = T_DOWNLOAD_SAVED_WAIT_CLOSE_BUTTON;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         TDownloadUtil_UpdateCursorMode(wk, TRUE, FALSE, FALSE);
     }
@@ -1353,41 +1453,41 @@ static void TDownload_Saved(TDownloadWork *wk) {
     int i;
 
     switch (wk->seq) {
-    case 0:
-        wk->seq = 100;
-    case 10:
+    case T_DOWNLOAD_SAVED_INIT:
+        wk->seq = T_DOWNLOAD_SAVED_INPUT;
+    case T_DOWNLOAD_SAVED_WAIT_INTRO:
         if (TDownloadUtil_UpdateMessage(wk) == FALSE) {
             TDownloadUtil_ClearMessage(wk, TRUE);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
-            TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-            wk->seq = 100;
+            TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+            wk->seq = T_DOWNLOAD_SAVED_INPUT;
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
         }
         break;
-    case 100:
+    case T_DOWNLOAD_SAVED_INPUT:
         TDownload_SavedMain(wk);
         break;
-    case 110:
+    case T_DOWNLOAD_SAVED_WAIT_CLOSE_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 0) == TRUE) {
             if (wk->flags & T_DOWNLOAD_FLAG_SAVED) {
-                wk->seq = 300;
+                wk->seq = T_DOWNLOAD_SAVED_RETURN_RECEIVED;
                 TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
                 for (i = 0; i < 3; i++) {
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 6, FALSE);
                 }
             } else {
-                TDownloadUtil_PrintMessage(wk, 7, 8, FALSE);
-                TDownloadUtil_InitTaskMenu(wk, 2);
+                TDownloadUtil_PrintMessage(wk, 7, T_DOWNLOAD_MESSAGE_QUIT_DELETING, FALSE);
+                TDownloadUtil_InitTaskMenu(wk, T_DOWNLOAD_MENU_YES_NO);
                 TDownloadUtil_DimScreen(wk, TRUE);
                 TDownloadUtil_PauseActors(wk, TRUE);
-                wk->seq = 115;
+                wk->seq = T_DOWNLOAD_SAVED_WAIT_CLOSE_MENU;
             }
         }
         break;
-    case 115:
+    case T_DOWNLOAD_SAVED_WAIT_CLOSE_MENU:
         result = TDownloadUtil_UpdateTaskMenu(wk);
-        if (result != -1) {
+        if (result != T_DOWNLOAD_MENU_PENDING) {
             TDownloadUtil_FreeTaskMenu(wk);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
@@ -1396,81 +1496,81 @@ static void TDownload_Saved(TDownloadWork *wk) {
                 if (wk->returnMode == -1) {
                     wk->seq = T_DOWNLOAD_SEQ_END;
                 } else {
-                    wk->seq = 300;
+                    wk->seq = T_DOWNLOAD_SAVED_RETURN_RECEIVED;
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
                     for (i = 0; i < 3; i++) {
                         TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 6, FALSE);
                     }
                 }
-                wk->flags &= ~(T_DOWNLOAD_FLAG_SAVED_FULL | T_DOWNLOAD_FLAG_SAVED);
+                wk->flags &= ~(T_DOWNLOAD_FLAG_SAVE_TO_FREE_SLOT | T_DOWNLOAD_FLAG_SAVED);
             } else {
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                wk->seq = 100;
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+                wk->seq = T_DOWNLOAD_SAVED_INPUT;
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
                 TDownloadUtil_SetCursorKeys(wk, FALSE);
                 wk->objFlags &= ~T_DOWNLOAD_OBJ_FLAG_RESULT;
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
         break;
-    case 120:
+    case T_DOWNLOAD_SAVED_WAIT_BUTTON:
         if (TDownloadUtil_IsButtonDone(wk, 1) == TRUE) {
             wk->objFlags |= T_DOWNLOAD_OBJ_FLAG_LIST_MOVED;
-            wk->seq = 100;
+            wk->seq = T_DOWNLOAD_SAVED_INPUT;
         }
         break;
-    case 130:
+    case T_DOWNLOAD_SAVED_WAIT_PRINT:
         if (PrintQueue_IsEmpty(wk->printQueue) == TRUE) {
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, TRUE);
-            wk->seq = 200;
+            wk->seq = T_DOWNLOAD_SAVED_OPEN_ACTION_MENU;
         }
         break;
-    case 200:
+    case T_DOWNLOAD_SAVED_OPEN_ACTION_MENU:
         if (TDownloadUtil_IsActorAnimating(wk, T_DOWNLOAD_ACTOR_OBJ, 2) == FALSE) {
             if (!(wk->flags & T_DOWNLOAD_FLAG_SAVED)) {
-                TDownloadUtil_PrintMessage(wk, 7, 3, FALSE);
-                TDownloadUtil_InitTaskMenu(wk, 2);
+                TDownloadUtil_PrintMessage(wk, 7, T_DOWNLOAD_MESSAGE_DELETE_PROMPT, FALSE);
+                TDownloadUtil_InitTaskMenu(wk, T_DOWNLOAD_MENU_YES_NO);
                 TDownloadUtil_DimScreen(wk, TRUE);
                 TDownloadUtil_PauseActors(wk, TRUE);
-                wk->seq = 210;
+                wk->seq = T_DOWNLOAD_SAVED_WAIT_DELETE_MENU;
             } else {
-                TDownloadUtil_PrintMessage(wk, 7, 2, FALSE);
-                TDownloadUtil_InitTaskMenu(wk, 3);
+                TDownloadUtil_PrintMessage(wk, 7, T_DOWNLOAD_MESSAGE_ACTIONS_PROMPT, FALSE);
+                TDownloadUtil_InitTaskMenu(wk, T_DOWNLOAD_MENU_DETAILS);
                 TDownloadUtil_DimScreen(wk, TRUE);
                 TDownloadUtil_PauseActors(wk, TRUE);
-                wk->seq = 220;
+                wk->seq = T_DOWNLOAD_SAVED_WAIT_DETAILS_MENU;
             }
         }
         break;
-    case 210:
+    case T_DOWNLOAD_SAVED_WAIT_DELETE_MENU:
         result = TDownloadUtil_UpdateTaskMenu(wk);
-        if (result != -1) {
+        if (result != T_DOWNLOAD_MENU_PENDING) {
             TDownloadUtil_FreeTaskMenu(wk);
             if (result == 0) {
-                TDownloadUtil_PrintMessage(wk, 7, 4, FALSE);
-                TDownloadUtil_InitTaskMenu(wk, 2);
-                wk->seq = 240;
+                TDownloadUtil_PrintMessage(wk, 7, T_DOWNLOAD_MESSAGE_DELETE_CONFIRM, FALSE);
+                TDownloadUtil_InitTaskMenu(wk, T_DOWNLOAD_MENU_YES_NO);
+                wk->seq = T_DOWNLOAD_SAVED_WAIT_DELETE_CONFIRM;
             } else {
                 TDownloadUtil_DimScreen(wk, FALSE);
                 TDownloadUtil_PauseActors(wk, FALSE);
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                wk->seq = 100;
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+                wk->seq = T_DOWNLOAD_SAVED_INPUT;
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
                 TDownloadUtil_SetCursorKeys(wk, FALSE);
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
         break;
-    case 220:
+    case T_DOWNLOAD_SAVED_WAIT_DETAILS_MENU:
         result = TDownloadUtil_UpdateTaskMenu(wk);
-        if (result != -1) {
+        if (result != T_DOWNLOAD_MENU_PENDING) {
             TDownloadUtil_FreeTaskMenu(wk);
             if (result == 0) {
                 TDownloadUtil_ClearMessage(wk, TRUE);
                 TDownloadUtil_DimScreen(wk, FALSE);
                 TDownloadUtil_PauseActors(wk, FALSE);
-                wk->seq = 310;
-                wk->flags |= T_DOWNLOAD_FLAG_DELETED;
+                wk->seq = T_DOWNLOAD_SAVED_OPEN_DETAILS;
+                wk->flags |= T_DOWNLOAD_FLAG_RESUMING_SAVED;
                 TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, 2, FALSE);
                 for (i = 0; i < 3; i++) {
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 6, FALSE);
@@ -1479,104 +1579,104 @@ static void TDownload_Saved(TDownloadWork *wk) {
                 TDownloadUtil_DimScreen(wk, FALSE);
                 TDownloadUtil_PauseActors(wk, FALSE);
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                wk->seq = 100;
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+                wk->seq = T_DOWNLOAD_SAVED_INPUT;
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
                 TDownloadUtil_SetCursorKeys(wk, FALSE);
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
         break;
-    case 240:
+    case T_DOWNLOAD_SAVED_WAIT_DELETE_CONFIRM:
         result = TDownloadUtil_UpdateTaskMenu(wk);
-        if (result != -1) {
+        if (result != T_DOWNLOAD_MENU_PENDING) {
             TDownloadUtil_FreeTaskMenu(wk);
             if (result == 0) {
                 for (i = 0; i < 6; i++) {
                     TDownloadUtil_ClearWindow(wk, i);
                 }
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
-                TDownloadUtil_PrintMessage(wk, 8, 10, TRUE);
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
+                TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_DELETED, TRUE);
                 TDownloadUtil_PauseActors(wk, TRUE);
                 TDownloadUtil_ShowSlot(wk, 1, wk->slotCursor);
-                wk->seq = 400;
+                wk->seq = T_DOWNLOAD_SAVED_WAIT_DELETED_MESSAGE;
             } else {
                 TDownloadUtil_DimScreen(wk, FALSE);
                 TDownloadUtil_PauseActors(wk, FALSE);
                 TDownloadUtil_ClearMessage(wk, TRUE);
-                wk->seq = 100;
-                TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+                wk->seq = T_DOWNLOAD_SAVED_INPUT;
+                TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
                 TDownloadUtil_SetCursorKeys(wk, FALSE);
                 TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
             }
         }
         break;
-    case 300:
+    case T_DOWNLOAD_SAVED_RETURN_RECEIVED:
         TDownloadUtil_ClearMessage(wk, FALSE);
         wk->returnMode = wk->mode;
         TDownload_ExitSaved(wk);
-        wk->seq = 0;
+        wk->seq = T_DOWNLOAD_RECEIVED_INIT;
         wk->mode = T_DOWNLOAD_MODE_RECEIVED;
         TDownload_InitMode(wk);
-        wk->flags &= ~(T_DOWNLOAD_FLAG_SAVED_FULL | T_DOWNLOAD_FLAG_SAVED);
+        wk->flags &= ~(T_DOWNLOAD_FLAG_SAVE_TO_FREE_SLOT | T_DOWNLOAD_FLAG_SAVED);
         break;
-    case 310:
+    case T_DOWNLOAD_SAVED_OPEN_DETAILS:
         TDownloadUtil_ClearMessage(wk, FALSE);
         wk->returnMode = wk->mode;
         TDownload_ExitSaved(wk);
-        wk->seq = 0;
+        wk->seq = T_DOWNLOAD_DETAIL_INIT;
         wk->mode = T_DOWNLOAD_MODE_DETAIL;
         TDownload_InitMode(wk);
-        wk->flags &= ~T_DOWNLOAD_FLAG_SAVED_FULL;
+        wk->flags &= ~T_DOWNLOAD_FLAG_SAVE_TO_FREE_SLOT;
         break;
-    case 400:
+    case T_DOWNLOAD_SAVED_WAIT_DELETED_MESSAGE:
         if (TDownloadUtil_UpdateMessage(wk) == FALSE) {
-            TDownloadUtil_PrintMessage(wk, 8, 11, FALSE);
-            wk->seq = 410;
+            TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_SAVING, FALSE);
+            wk->seq = T_DOWNLOAD_SAVED_START_SELECTED_SAVE;
         }
         break;
-    case 405:
+    case T_DOWNLOAD_SAVED_START_FREE_SAVE:
         if (PrintQueue_IsEmpty(wk->printQueue)) {
             TDownloadSave_StartSave(wk, wk->listPos[2], TDownloadSave_FindFreeSlot(wk));
             TDownloadSave_CreateWaitIcon(wk);
-            wk->seq = 500;
+            wk->seq = T_DOWNLOAD_SAVED_WAIT_SAVE;
         }
         break;
-    case 410:
+    case T_DOWNLOAD_SAVED_START_SELECTED_SAVE:
         if (PrintQueue_IsEmpty(wk->printQueue)) {
             TDownloadSave_StartSave(wk, wk->listPos[2], wk->slotCursor);
             TDownloadSave_CreateWaitIcon(wk);
-            wk->seq = 500;
+            wk->seq = T_DOWNLOAD_SAVED_WAIT_SAVE;
         }
         break;
-    case 500:
+    case T_DOWNLOAD_SAVED_WAIT_SAVE:
         if (TDownloadSave_UpdateSave(wk) == FALSE) {
             wk->listCount = wk->lastSlot + 1;
             wk->slotCursor = wk->copyDest;
             TDownloadSave_FreeWaitIcon(wk);
-            TDownloadUtil_PrintMessage(wk, 8, 12, TRUE);
-            wk->seq = 510;
+            TDownloadUtil_PrintMessage(wk, T_DOWNLOAD_WINDOW_MESSAGE, T_DOWNLOAD_MESSAGE_SAVED, TRUE);
+            wk->seq = T_DOWNLOAD_SAVED_WAIT_SAVED_MESSAGE;
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             TDownloadUtil_ShowSlot(wk, 0, wk->slotCursor);
             for (i = 0; i < wk->listCount; i++) {
-                if (wk->saveFlags & (1 << (i + 4))) {
-                    TDownloadUtil_PrintSlotName(wk, 0, i);
+                if (wk->saveFlags & (1 << (i + T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT))) {
+                    TDownloadUtil_PrintSlotName(wk, T_DOWNLOAD_SOURCE_SAVED, i);
                     TDownloadUtil_SetActorVisible(wk, T_DOWNLOAD_ACTOR_OBJ, i + 6, TRUE);
                 }
             }
-            TDownloadUtil_MoveCursor(wk, 1, wk->slotCursor);
+            TDownloadUtil_MoveCursor(wk, T_DOWNLOAD_CURSOR_SLOTS, wk->slotCursor);
             TDownloadUtil_PauseActors(wk, TRUE);
-            TDownloadUtil_PrintSlotInfo(wk, 0, wk->slotCursor);
+            TDownloadUtil_PrintSlotInfo(wk, T_DOWNLOAD_SOURCE_SAVED, wk->slotCursor);
         }
         break;
-    case 510:
+    case T_DOWNLOAD_SAVED_WAIT_SAVED_MESSAGE:
         if (TDownloadUtil_UpdateMessage(wk) == FALSE) {
             TDownloadUtil_ClearMessage(wk, TRUE);
             TDownloadUtil_DimScreen(wk, FALSE);
             TDownloadUtil_PauseActors(wk, FALSE);
-            TDownloadUtil_PrintTitle(wk, wk->mode, 0);
+            TDownloadUtil_PrintTitle(wk, wk->mode, T_DOWNLOAD_TAB_BANNED_POKEMON);
             TDownloadUtil_SetCursorKeys(wk, FALSE);
-            wk->seq = 100;
+            wk->seq = T_DOWNLOAD_SAVED_INPUT;
             wk->flags |= T_DOWNLOAD_FLAG_SAVED;
             TDownloadUtil_UpdateCursorMode(wk, FALSE, FALSE, FALSE);
         }

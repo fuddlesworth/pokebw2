@@ -25,7 +25,7 @@ void TDownloadSave_UpdateWaitIcon(TDownloadWork *wk);
 void TDownloadSave_FreeWaitIcon(TDownloadWork *wk);
 int TDownloadSave_FindFreeSlot(TDownloadWork *wk);
 BOOL TDownloadSave_IsSaved(TDownloadWork *wk, int index);
-int TDownloadSave_FindSlot(TDownloadWork *wk, int start);
+int TDownloadSave_FindSlot(TDownloadWork *wk, int findFree);
 int TDownloadSave_NextSlot(TDownloadWork *wk, BOOL down, int pos);
 
 #endif // POKEBW2_APP_T_DOWNLOAD_T_DOWNLOAD_SAVE_H
