@@ -19,7 +19,7 @@
 
 #define SPIN_TRADE_MEMBER_MAX UNION_APP_MEMBER_MAX
 
-// The base of the net commands, and the commands. The receipt screen sends the first five
+// The net commands: receipt-screen commands precede the main-screen commands
 #define SPIN_TRADE_NET_CMD_BASE 0x2800
 enum {
     // A member joined
@@ -28,19 +28,30 @@ enum {
     SPIN_TRADE_NET_CMD_SIGNAL,
     // The parent cancelled
     SPIN_TRADE_NET_CMD_CANCEL,
+    // No sender in the recovered code; the handler only reads the local net ID
     SPIN_TRADE_NET_CMD_3,
     // The parent closed the group, and the trade starts
     SPIN_TRADE_NET_CMD_START,
-    SPIN_TRADE_NET_CMD_5,
-    SPIN_TRADE_NET_CMD_6,
-    SPIN_TRADE_NET_CMD_7,
-    SPIN_TRADE_NET_CMD_8,
-    SPIN_TRADE_NET_CMD_9,
-    SPIN_TRADE_NET_CMD_10,
-    SPIN_TRADE_NET_CMD_11,
-    SPIN_TRADE_NET_CMD_12,
-    SPIN_TRADE_NET_CMD_13,
-    SPIN_TRADE_NET_CMD_14,
+    // The main screen's phase flags (SPIN_TRADE_MAIN_SIGNAL_*)
+    SPIN_TRADE_NET_CMD_MAIN_SIGNAL,
+    // A child joined the main screen
+    SPIN_TRADE_NET_CMD_MAIN_JOIN,
+    // A member pressed the button
+    SPIN_TRADE_NET_CMD_BUTTON,
+    // The parent's disc and Egg angles, and jump height
+    SPIN_TRADE_NET_CMD_GAME_DATA,
+    // A member's assigned position
+    SPIN_TRADE_NET_CMD_POSITION,
+    // The parent announces the player count
+    SPIN_TRADE_NET_CMD_PLAYER_COUNT,
+    // A member's selected party slot
+    SPIN_TRADE_NET_CMD_PARTY_INDEX,
+    // The parent's final result
+    SPIN_TRADE_NET_CMD_RESULT,
+    // A member found a bad Egg in one of the parties
+    SPIN_TRADE_NET_CMD_BAD_EGG_REPORT,
+    // A member checked all parties and found no bad Egg
+    SPIN_TRADE_NET_CMD_EGG_CHECK_OK,
     // A member's block of SPIN_TRADE_COMM_BLOCK_SIZE bytes, sent in chunks
     SPIN_TRADE_NET_CMD_BLOCK,
     SPIN_TRADE_NET_CMD_END,
@@ -105,7 +116,7 @@ enum {
     SPIN_TRADE_SIGNAL_LEAVE,
 };
 
-// What SpinTradeComm_Send sends: the data follows four bytes that go out with it
+// Temporary send storage: SpinTradeComm_Send starts at data and sends the payload size plus four bytes
 typedef struct {
     u32 unk0;
     u8 data[0x18];
@@ -127,14 +138,16 @@ struct SpinTradeCommWork {
     u8 unk3A[2];
     // Tested by the main screen when it ends after an error
     u32 unk3C;
-    // Net ID bits that the main screen's commands set
-    u16 unk40;
-    u16 unk42;
+    // SPIN_TRADE_MAIN_SIGNAL_* flags received by the main screen
+    u16 mainSignals;
+    // The net IDs that announced joining the main screen
+    u16 mainJoinedBits;
     u8 unk44[2];
     // The members whose block has arrived
     s16 blockBits;
-    u16 unk48;
-    u16 unk4A;
+    // The net IDs reporting a bad Egg in any party, or that all parties passed the check
+    u16 badEggReportBits;
+    u16 eggCheckOkBits;
     // SPIN_TRADE_COMM_BLOCK_SIZE bytes per member: where the chunks arrive, and the blocks that have arrived whole
     u8 *blockRecvBuffer;
     u8 *blocks;
@@ -144,8 +157,8 @@ struct SpinTradeCommWork {
 // The receipt screen's sequences, which the net commands set
 enum {
     SPIN_TRADE_RECEIPT_SEQ_INIT,
-    SPIN_TRADE_RECEIPT_SEQ_1,
-    SPIN_TRADE_RECEIPT_SEQ_2,
+    SPIN_TRADE_RECEIPT_SEQ_JOINED,
+    SPIN_TRADE_RECEIPT_SEQ_REOPEN_ENTRY,
     SPIN_TRADE_RECEIPT_SEQ_MAIN,
     SPIN_TRADE_RECEIPT_SEQ_CANCEL_YESNO_INIT,
     SPIN_TRADE_RECEIPT_SEQ_CANCEL_YESNO,
@@ -163,7 +176,7 @@ enum {
     SPIN_TRADE_RECEIPT_SEQ_NO_MEMBERS_MSG_WAIT,
     SPIN_TRADE_RECEIPT_SEQ_NO_MEMBERS_END,
     SPIN_TRADE_RECEIPT_SEQ_MEMBER_LEFT,
-    SPIN_TRADE_RECEIPT_SEQ_MEMBER_LEFT_2,
+    SPIN_TRADE_RECEIPT_SEQ_MEMBER_LEFT_CHECK,
     SPIN_TRADE_RECEIPT_SEQ_MEMBER_LEFT_WAIT,
     SPIN_TRADE_RECEIPT_SEQ_START_YESNO_INIT,
     SPIN_TRADE_RECEIPT_SEQ_START_YESNO,

@@ -65,6 +65,9 @@ enum {
     SPIN_TRADE_RECEIPT_ACTOR_LEAVE,
 };
 
+// End marker of the trainer palette animation.
+#define SPIN_TRADE_RECEIPT_PAL_ANIM_END 0xff
+
 #define SPIN_TRADE_RECEIPT_COLOR_NAME PRINT_COLOR(1, 4, 0)
 #define SPIN_TRADE_RECEIPT_COLOR_SELF PRINT_COLOR(2, 3, 0)
 
@@ -193,10 +196,10 @@ static int SpinTradeReceiptSeq_Init(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_Main(SpinTradeReceiptWork *wk, int procSeq);
 static void SpinTradeReceipt_CheckKeys(SpinTradeReceiptWork *wk);
 static void SpinTradeReceipt_SeqEnd(SpinTradeReceiptWork *wk);
-static int SpinTradeReceiptSeq_1(SpinTradeReceiptWork *wk, int procSeq);
+static int SpinTradeReceiptSeq_Joined(SpinTradeReceiptWork *wk, int procSeq);
 static void SpinTradeReceipt_SetMsgWait(SpinTradeReceiptWork *wk, int nextSeq);
 static int SpinTradeReceiptSeq_MsgWait(SpinTradeReceiptWork *wk, int procSeq);
-static int SpinTradeReceiptSeq_2(SpinTradeReceiptWork *wk, int procSeq);
+static int SpinTradeReceiptSeq_ReopenEntry(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_CancelYesNoInit(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_CancelYesNo(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_CancelSignalWait(SpinTradeReceiptWork *wk, int procSeq);
@@ -217,7 +220,7 @@ static int SpinTradeReceiptSeq_ParentCancelSyncWait(SpinTradeReceiptWork *wk, in
 static int SpinTradeReceiptSeq_NoMembersMsgWait(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_NoMembersEnd(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_MemberLeft(SpinTradeReceiptWork *wk, int procSeq);
-static int SpinTradeReceiptSeq_MemberLeft2(SpinTradeReceiptWork *wk, int procSeq);
+static int SpinTradeReceiptSeq_MemberLeftCheck(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_MemberLeftWait(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceiptSeq_Start(SpinTradeReceiptWork *wk, int procSeq);
 static int SpinTradeReceipt_CountMembers(SpinTradeReceiptWork *wk);
@@ -241,8 +244,8 @@ static const ConfirmDialogSetup sYesNoSetup = { 0, 23, 13, 13, 0xd8 };
 
 static const SpinTradeReceiptSeqFunc sSeqFuncs[SPIN_TRADE_RECEIPT_SEQ_COUNT] = {
     SpinTradeReceiptSeq_Init,
-    SpinTradeReceiptSeq_1,
-    SpinTradeReceiptSeq_2,
+    SpinTradeReceiptSeq_Joined,
+    SpinTradeReceiptSeq_ReopenEntry,
     SpinTradeReceiptSeq_Main,
     SpinTradeReceiptSeq_CancelYesNoInit,
     SpinTradeReceiptSeq_CancelYesNo,
@@ -260,7 +263,7 @@ static const SpinTradeReceiptSeqFunc sSeqFuncs[SPIN_TRADE_RECEIPT_SEQ_COUNT] = {
     SpinTradeReceiptSeq_NoMembersMsgWait,
     SpinTradeReceiptSeq_NoMembersEnd,
     SpinTradeReceiptSeq_MemberLeft,
-    SpinTradeReceiptSeq_MemberLeft2,
+    SpinTradeReceiptSeq_MemberLeftCheck,
     SpinTradeReceiptSeq_MemberLeftWait,
     SpinTradeReceiptSeq_StartYesNoInit,
     SpinTradeReceiptSeq_StartYesNo,
@@ -427,7 +430,7 @@ static const SpinTradeReceiptPalAnimStep sPalAnimSteps[] = {
     { 8, 3 },
     { 8, 4 },
     { 24, 0 },
-    { 0, 0xff },
+    { 0, SPIN_TRADE_RECEIPT_PAL_ANIM_END },
 };
 
 // clang-format on
@@ -439,7 +442,7 @@ static void SpinTradeReceipt_UpdatePalAnim(TCB *tcb, SpinTradeReceiptWork *wk) {
         if (anim->counter > sPalAnimSteps[anim->index].wait) {
             anim->counter = 0;
             anim->index++;
-            if (sPalAnimSteps[anim->index].palette == 0xff) {
+            if (sPalAnimSteps[anim->index].palette == SPIN_TRADE_RECEIPT_PAL_ANIM_END) {
                 anim->index = 0;
             }
             GX_LoadOBJPltt((u8 *)anim->palette->pRawData + sPalAnimSteps[anim->index].palette * 0x20, 0, 0x20);
@@ -831,8 +834,8 @@ static void SpinTradeReceipt_CheckKeys(SpinTradeReceiptWork *wk) {
 static void SpinTradeReceipt_SeqEnd(SpinTradeReceiptWork *wk) {
 }
 
-static int SpinTradeReceiptSeq_1(SpinTradeReceiptWork *wk, int procSeq) {
-    wk->seq = SPIN_TRADE_RECEIPT_SEQ_2;
+static int SpinTradeReceiptSeq_Joined(SpinTradeReceiptWork *wk, int procSeq) {
+    wk->seq = SPIN_TRADE_RECEIPT_SEQ_REOPEN_ENTRY;
     SpinTradeReceipt_SeqEnd(wk);
     return procSeq;
 }
@@ -850,7 +853,7 @@ static int SpinTradeReceiptSeq_MsgWait(SpinTradeReceiptWork *wk, int procSeq) {
     return procSeq;
 }
 
-static int SpinTradeReceiptSeq_2(SpinTradeReceiptWork *wk, int procSeq) {
+static int SpinTradeReceiptSeq_ReopenEntry(SpinTradeReceiptWork *wk, int procSeq) {
     if (NetSystem_GetNetId() == 0) {
         UnionApp_OpenEntry(SpinTradeReceipt_GetUnionApp(wk));
     }
@@ -1123,7 +1126,7 @@ static int SpinTradeReceiptSeq_NoMembersEnd(SpinTradeReceiptWork *wk, int procSe
 
 static int SpinTradeReceiptSeq_MemberLeft(SpinTradeReceiptWork *wk, int procSeq) {
     SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_HasLeft, 1);
-    wk->seq = SPIN_TRADE_RECEIPT_SEQ_MEMBER_LEFT_2;
+    wk->seq = SPIN_TRADE_RECEIPT_SEQ_MEMBER_LEFT_CHECK;
     NetSystem_GetNetId();
     wk->leftCount = UnionApp_CountJoined(SpinTradeReceipt_GetUnionApp(wk));
     wk->leftTimer = 300;
@@ -1131,7 +1134,7 @@ static int SpinTradeReceiptSeq_MemberLeft(SpinTradeReceiptWork *wk, int procSeq)
     return procSeq;
 }
 
-static int SpinTradeReceiptSeq_MemberLeft2(SpinTradeReceiptWork *wk, int procSeq) {
+static int SpinTradeReceiptSeq_MemberLeftCheck(SpinTradeReceiptWork *wk, int procSeq) {
     if (wk->leftCount != 0 && wk->leftCount != UnionApp_CountJoined(SpinTradeReceipt_GetUnionApp(wk))) {
         wk->leftCount = 0;
     }
@@ -1167,7 +1170,7 @@ static int SpinTradeReceiptSeq_Start(SpinTradeReceiptWork *wk, int procSeq) {
 
 void SpinTradeReceipt_SetSeq(SpinTradeReceiptWork *wk, int seq, u8 netId) {
     switch (seq) {
-    case SPIN_TRADE_RECEIPT_SEQ_2:
+    case SPIN_TRADE_RECEIPT_SEQ_REOPEN_ENTRY:
         SpinTradeReceipt_ClearMessage(wk);
         break;
     case SPIN_TRADE_RECEIPT_SEQ_PARENT_CANCEL_MSG:
@@ -1220,7 +1223,7 @@ void SpinTradeReceipt_SetSeq(SpinTradeReceiptWork *wk, int seq, u8 netId) {
 void SpinTradeReceipt_SetSeqOnJoin(SpinTradeReceiptWork *wk, int seq, u8 netId) {
     if (wk->seq == SPIN_TRADE_RECEIPT_SEQ_MAIN) {
         switch (seq) {
-        case SPIN_TRADE_RECEIPT_SEQ_1: {
+        case SPIN_TRADE_RECEIPT_SEQ_JOINED: {
             UnionAppMember *member = UnionApp_GetMember(SpinTradeReceipt_GetUnionApp(wk), netId);
 
             if (member != NULL) {
@@ -1242,7 +1245,7 @@ void SpinTradeReceipt_SetSeqOnJoin(SpinTradeReceiptWork *wk, int seq, u8 netId) 
             wk->seq = seq;
             break;
         }
-    } else if (seq == SPIN_TRADE_RECEIPT_SEQ_1) {
+    } else if (seq == SPIN_TRADE_RECEIPT_SEQ_JOINED) {
         wk->g2c->leavingBits = 0;
         wk->g2c->joinCount = UnionApp_CountJoined(SpinTradeReceipt_GetUnionApp(wk));
     }

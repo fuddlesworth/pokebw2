@@ -54,9 +54,10 @@
 #include "system/wordset.h"
 #include "text/system/ability_handlers.h"
 
-// spin_trade_main.c (the ROM's name, from its allocations): the Spin Trade's screen with the disc. The Eggs drop onto
-// the disc, which the parent spins while every player's touches of the button make the Eggs jump; when the time is up
-// each player takes the Egg in front of them, and those whose Egg stopped on a bonus area get a Berry. Names are ours
+// spin_trade_main.c (the ROM's guru2_main.c, from its allocations): the Spin Trade's screen with the disc. The Eggs
+// drop onto the disc, which the parent spins while every player's touches of the button make the Eggs jump; when the
+// time is up each player takes the Egg in front of them, and those whose Egg stopped on a bonus area get a Berry. Names
+// are ours
 
 // The class of the timing syncs
 #define SPIN_TRADE_SYNC_CLASS 0x28
@@ -176,6 +177,57 @@ enum {
     SEQ_RESULT_WAIT,
     SEQ_RESULT_CONTINUE,
     SEQ_RESULT_END,
+};
+
+// Each task keeps its own sequence values; the fields remain their original integer types.
+enum {
+    SPIN_TRADE_EGG_FALL_SEQ_INIT,
+    SPIN_TRADE_EGG_FALL_SEQ_FALL,
+    SPIN_TRADE_EGG_FALL_SEQ_LAND,
+    SPIN_TRADE_EGG_FALL_SEQ_COUNT,
+};
+
+enum {
+    SPIN_TRADE_EGG_JUMP_SEQ_INIT,
+    SPIN_TRADE_EGG_JUMP_SEQ_JUMP,
+};
+
+enum {
+    SPIN_TRADE_EGG_SPIN_SEQ_INIT,
+    SPIN_TRADE_EGG_SPIN_SEQ_SPIN,
+};
+
+enum {
+    SPIN_TRADE_EGG_SHAKE_SEQ_INIT,
+    SPIN_TRADE_EGG_SHAKE_SEQ_SHAKE,
+};
+
+enum {
+    SPIN_TRADE_DISC_BUMP_SEQ_IDLE,
+    SPIN_TRADE_DISC_BUMP_SEQ_START,
+    SPIN_TRADE_DISC_BUMP_SEQ_SINK,
+    SPIN_TRADE_DISC_BUMP_SEQ_RISE,
+    SPIN_TRADE_DISC_BUMP_SEQ_SHAKE,
+    SPIN_TRADE_DISC_BUMP_SEQ_WAIT_EGGS,
+};
+
+enum {
+    SPIN_TRADE_COUNTDOWN_SEQ_PLAY,
+    SPIN_TRADE_COUNTDOWN_SEQ_DELETE,
+};
+
+enum {
+    SPIN_TRADE_BUTTON_SEQ_IDLE,
+    SPIN_TRADE_BUTTON_SEQ_START,
+    SPIN_TRADE_BUTTON_SEQ_HALF_PRESS,
+    SPIN_TRADE_BUTTON_SEQ_PRESSED,
+    SPIN_TRADE_BUTTON_SEQ_HALF_RELEASE,
+};
+
+enum {
+    SPIN_TRADE_BONUS_SEQ_IDLE,
+    SPIN_TRADE_BONUS_SEQ_HOP,
+    SPIN_TRADE_BONUS_SEQ_WAIT,
 };
 
 typedef struct {
@@ -779,7 +831,7 @@ static const G3DSceneResourceSetup sCursor2Resources[] = {
 
 static const G3DSceneSetup sBGScene = { sBGResources, NELEMS(sBGResources), sBGActors, NELEMS(sBGActors) };
 
-static const SpinTradeEggFallFunc sEggFallFuncs[] = {
+static const SpinTradeEggFallFunc sEggFallFuncs[SPIN_TRADE_EGG_FALL_SEQ_COUNT] = {
     SpinTradeEggFallTask_Init,
     SpinTradeEggFallTask_Fall,
     SpinTradeEggFallTask_Land,
@@ -989,7 +1041,7 @@ static int SpinTradeMainSeq_ParentWaitChildren(SpinTradeMainWork *g2m) {
 static int SpinTradeMainSeq_ParentSendJoinSignal(SpinTradeMainWork *g2m) {
     u16 signal = SPIN_TRADE_MAIN_SIGNAL_JOIN;
 
-    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_5, &signal, sizeof(signal)) == TRUE) {
+    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_MAIN_SIGNAL, &signal, sizeof(signal)) == TRUE) {
         g2m->seq = SEQ_PARENT_WAIT_JOIN;
         return SEQ_RESULT_CONTINUE;
     }
@@ -1012,7 +1064,8 @@ static int SpinTradeMainSeq_ParentWaitJoin(SpinTradeMainWork *g2m) {
 
 static int SpinTradeMainSeq_ParentSendPlayerCount(SpinTradeMainWork *g2m) {
     g2m->playerCount = SpinTradeMain_CountChildren(g2m) + 1;
-    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_10, &g2m->playerCount, sizeof(g2m->playerCount)) == TRUE) {
+    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_PLAYER_COUNT, &g2m->playerCount, sizeof(g2m->playerCount)) ==
+        TRUE) {
         g2m->sendCount = 0;
         g2m->seq = SEQ_PARENT_SEND_POSITIONS;
     }
@@ -1028,18 +1081,18 @@ static int SpinTradeMainSeq_ParentSendPositions(SpinTradeMainWork *g2m) {
     if (g2m->sendCount == 0) {
         data.netId = 0;
         data.position = 0;
-        if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_9, &data, sizeof(data)) == TRUE) {
+        if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_POSITION, &data, sizeof(data)) == TRUE) {
             g2m->sendCount++;
         }
         return SEQ_RESULT_WAIT;
     }
 
     for (i = 1, count = 1; i < SPIN_TRADE_MEMBER_MAX; i++) {
-        if (g2m->g2c->unk42 & (1 << i)) {
+        if (g2m->g2c->mainJoinedBits & (1 << i)) {
             if (count >= g2m->sendCount) {
                 data.netId = i;
                 data.position = g2m->sendCount;
-                if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_9, &data, sizeof(data)) == TRUE) {
+                if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_POSITION, &data, sizeof(data)) == TRUE) {
                     g2m->sendCount++;
                 }
                 break;
@@ -1056,14 +1109,14 @@ static int SpinTradeMainSeq_ParentSendPositions(SpinTradeMainWork *g2m) {
 static int SpinTradeMainSeq_ParentSendStartSignal(SpinTradeMainWork *g2m) {
     u16 signal = SPIN_TRADE_MAIN_SIGNAL_START;
 
-    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_5, &signal, sizeof(signal)) == TRUE) {
+    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_MAIN_SIGNAL, &signal, sizeof(signal)) == TRUE) {
         g2m->seq = SEQ_SYNC_START;
     }
     return SEQ_RESULT_WAIT;
 }
 
 static int SpinTradeMainSeq_ChildSendJoin(SpinTradeMainWork *g2m) {
-    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_6, NULL, 0) == TRUE) {
+    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_MAIN_JOIN, NULL, 0) == TRUE) {
         g2m->seq = SEQ_CHILD_WAIT_START_SIGNAL;
         g2m->unk10 = 0;
         return SEQ_RESULT_WAIT;
@@ -1097,7 +1150,8 @@ static int SpinTradeMainSeq_SyncStartWait(SpinTradeMainWork *g2m) {
 }
 
 static int SpinTradeMainSeq_SendPartyIndex(SpinTradeMainWork *g2m) {
-    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_11, &g2m->g2p->partyIndex, sizeof(g2m->g2p->partyIndex))) {
+    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_PARTY_INDEX, &g2m->g2p->partyIndex,
+                           sizeof(g2m->g2p->partyIndex))) {
         g2m->seq = SEQ_SEND_PARTY;
     }
     return SEQ_RESULT_WAIT;
@@ -1118,10 +1172,10 @@ static int SpinTradeMainSeq_SendParty(SpinTradeMainWork *g2m) {
 static int SpinTradeMainSeq_WaitParties(SpinTradeMainWork *g2m) {
     if (g2m->playerCount == SpinTradeMain_CountParties(g2m)) {
         if (SpinTradeMain_AnyPartyHasBadEgg(g2m) == TRUE) {
-            SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_13, NULL, 0);
+            SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_BAD_EGG_REPORT, NULL, 0);
             g2m->seq = SEQ_BAD_EGG;
         } else {
-            SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_14, NULL, 0);
+            SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_EGG_CHECK_OK, NULL, 0);
             g2m->seq = SEQ_WAIT_EGG_CHECK;
         }
     }
@@ -1222,7 +1276,7 @@ static int SpinTradeMainSeq_CountdownBefore(SpinTradeMainWork *g2m) {
 static int SpinTradeMainSeq_ParentSendCountdownSignal(SpinTradeMainWork *g2m) {
     u16 signal = SPIN_TRADE_MAIN_SIGNAL_COUNTDOWN;
 
-    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_5, &signal, sizeof(signal)) == TRUE) {
+    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_MAIN_SIGNAL, &signal, sizeof(signal)) == TRUE) {
         g2m->seq = SEQ_SYNC_COUNTDOWN;
     }
     return SEQ_RESULT_WAIT;
@@ -1316,7 +1370,7 @@ static int SpinTradeMainSeq_Game(SpinTradeMainWork *g2m) {
             SpinTradeMain_PushButton(g2m);
         }
         if (g2m->buttonSend != 0) {
-            if (SpinTradeComm_Send(g2m->g2p->g2c, SPIN_TRADE_NET_CMD_7, &g2m->buttonSend, 1) == TRUE) {
+            if (SpinTradeComm_Send(g2m->g2p->g2c, SPIN_TRADE_NET_CMD_BUTTON, &g2m->buttonSend, 1) == TRUE) {
                 g2m->buttonSend = 0;
             }
         }
@@ -1344,7 +1398,7 @@ static int SpinTradeMainSeq_Game(SpinTradeMainWork *g2m) {
         for (i = 0; i < g2m->playerCount; i++) {
             data.eggAngles[i] = g2m->objects.eggs[i].angle / FX32_ONE;
         }
-        SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_8, &data, sizeof(data));
+        SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_GAME_DATA, &data, sizeof(data));
     }
     if (NetSystem_GetNetId() == 0) {
         fx32 speed = g2m->disc.speed;
@@ -1447,7 +1501,7 @@ static int SpinTradeMainSeq_ParentSendResult(SpinTradeMainWork *g2m) {
         }
     }
     data.bonusBits = g2m->bonusBits;
-    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_12, &data, sizeof(data)) == TRUE) {
+    if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_RESULT, &data, sizeof(data)) == TRUE) {
         g2m->seq = SEQ_RESULT_NAMES;
     }
     return SEQ_RESULT_WAIT;
@@ -2563,7 +2617,7 @@ static int SpinTradeEggFallTask_Init(SpinTradeEggFallTask *task) {
     egg->offset.y = FX32_CONST(192);
     SpinTradeMain_ShowEgg(task->g2m, egg);
     task->speed = FX32_CONST(8);
-    task->seq = 1;
+    task->seq = SPIN_TRADE_EGG_FALL_SEQ_FALL;
     return SEQ_RESULT_WAIT;
 }
 
@@ -2577,7 +2631,7 @@ static int SpinTradeEggFallTask_Fall(SpinTradeEggFallTask *task) {
     }
     if (egg->offset.y <= FX32_CONST(32)) {
         egg->offset.y = FX32_CONST(32);
-        task->seq = 2;
+        task->seq = SPIN_TRADE_EGG_FALL_SEQ_LAND;
     }
     return SEQ_RESULT_WAIT;
 }
@@ -2606,12 +2660,12 @@ static void SpinTradeEggJumpTask_Update(SpinTradeMainWork *g2m, SpinTradeEggJump
     SpinTradeEgg *egg = task->egg;
 
     switch (task->seq) {
-    case 0:
+    case SPIN_TRADE_EGG_JUMP_SEQ_INIT:
         SpinTradeMain_StartEggSpin(g2m, egg);
         task->speed = FX32_CONST(4);
         task->accel = -0x444;
         task->seq++;
-    case 1:
+    case SPIN_TRADE_EGG_JUMP_SEQ_JUMP:
         egg->jumpY += task->speed;
         task->speed += task->accel;
         task->frame++;
@@ -2694,11 +2748,11 @@ static void SpinTradeEggSpinTask_Update(SpinTradeEggSpinTask *task) {
     SpinTradeEgg *egg = task->egg;
 
     switch (task->seq) {
-    case 0:
+    case SPIN_TRADE_EGG_SPIN_SEQ_INIT:
         task->speed = FX32_CONST(24);
         egg->rotation.y = 0;
         task->seq++;
-    case 1:
+    case SPIN_TRADE_EGG_SPIN_SEQ_SPIN:
         SpinTradeMain_AddAngle(&egg->rotation.y, task->speed);
         if (egg->rotation.y < FX32_CONST(4)) {
             task->speed = (u32)task->speed >> 1;
@@ -2741,7 +2795,7 @@ static void SpinTradeMain_StartEggSpin(SpinTradeMainWork *g2m, SpinTradeEgg *egg
     task = tasks;
     for (i = 0; i < SPIN_TRADE_MEMBER_MAX; i++, task++) {
         if (task->active == TRUE && task->egg == egg) {
-            task->seq = 0;
+            task->seq = SPIN_TRADE_EGG_SPIN_SEQ_INIT;
             return;
         }
     }
@@ -2763,13 +2817,13 @@ static void SpinTradeEggShakeTask_Update(SpinTradeEggShakeTask *task) {
     fx32 rotation;
 
     switch (task->seq) {
-    case 0:
+    case SPIN_TRADE_EGG_SHAKE_SEQ_INIT:
         egg->rotation.z = 0;
         task->angle = 0;
         task->amplitude = FX32_CONST(30);
         task->speed = FX32_CONST(20);
         task->seq++;
-    case 1:
+    case SPIN_TRADE_EGG_SHAKE_SEQ_SHAKE:
         rotation = task->amplitude / FX32_ONE * GFL_MathSinDeg(task->angle / FX32_ONE);
         egg->rotation.z = 0;
         SpinTradeMain_AddAngle(&egg->rotation.z, rotation);
@@ -2835,19 +2889,19 @@ static void SpinTradeDiscBumpTask_Update(SpinTradeMainWork *g2m, SpinTradeDiscBu
     SpinTradeDisc *disc = &g2m->disc;
 
     switch (task->seq) {
-    case 0:
+    case SPIN_TRADE_DISC_BUMP_SEQ_IDLE:
         break;
-    case 1:
+    case SPIN_TRADE_DISC_BUMP_SEQ_START:
         task->shake = FX32_CONST(4);
         task->count = 0;
         task->seq++;
-    case 2:
+    case SPIN_TRADE_DISC_BUMP_SEQ_SINK:
         disc->offset.y -= FX32_ONE;
         if (disc->offset.y <= FX32_CONST(-8)) {
             task->seq++;
         }
         break;
-    case 3:
+    case SPIN_TRADE_DISC_BUMP_SEQ_RISE:
         disc->offset.y += FX32_CONST(2);
         if (disc->offset.y >= 0) {
             disc->offset.y = 0;
@@ -2857,7 +2911,7 @@ static void SpinTradeDiscBumpTask_Update(SpinTradeMainWork *g2m, SpinTradeDiscBu
             GFL_SndSEPlay(SEQ_SE_DANSA);
         }
         break;
-    case 4:
+    case SPIN_TRADE_DISC_BUMP_SEQ_SHAKE:
         disc->shake.y = task->shake;
         task->shake = -task->shake;
         task->count++;
@@ -2870,11 +2924,11 @@ static void SpinTradeDiscBumpTask_Update(SpinTradeMainWork *g2m, SpinTradeDiscBu
             }
         }
         break;
-    case 5:
+    case SPIN_TRADE_DISC_BUMP_SEQ_WAIT_EGGS:
         if (!SpinTradeMain_IsEggJumping(g2m)) {
             task->active = FALSE;
             task->jumping = FALSE;
-            task->seq = 0;
+            task->seq = SPIN_TRADE_DISC_BUMP_SEQ_IDLE;
             GFL_SndSEPlay(SEQ_SE_SYS_83);
         }
         break;
@@ -2900,7 +2954,7 @@ static void SpinTradeMain_StartDiscBump(SpinTradeMainWork *g2m) {
     SpinTradeDiscBumpTask *task = &g2m->bumpTask;
 
     task->active = TRUE;
-    task->seq = 1;
+    task->seq = SPIN_TRADE_DISC_BUMP_SEQ_START;
 }
 
 static BOOL SpinTradeMain_AreEggsJumping(SpinTradeMainWork *g2m) {
@@ -2916,7 +2970,7 @@ static void SpinTradeCountdownTask_Main(TCB *tcb, void *data) {
     SpinTradeCountdownTask *task = data;
 
     switch (task->seq) {
-    case 0:
+    case SPIN_TRADE_COUNTDOWN_SEQ_PLAY:
         if (task->count < 4) {
             u32 se[] = { SEQ_SE_SYS_52, SEQ_SE_SYS_52, SEQ_SE_SYS_52, SEQ_SE_SYS_53 };
 
@@ -2932,7 +2986,7 @@ static void SpinTradeCountdownTask_Main(TCB *tcb, void *data) {
             task->seq++;
         }
         break;
-    case 1:
+    case SPIN_TRADE_COUNTDOWN_SEQ_DELETE:
         ClActor_Delete(task->actor);
         GFL_HeapFree(task);
         GFL_TCBRemove(tcb);
@@ -2962,14 +3016,14 @@ static void SpinTradeMain_StartCountdown(SpinTradeMainWork *g2m) {
 // The button's push on the touch screen
 static void SpinTradeButtonTask_Update(SpinTradeMainWork *g2m, SpinTradeButtonTask *task) {
     switch (task->seq) {
-    case 0:
+    case SPIN_TRADE_BUTTON_SEQ_IDLE:
         break;
-    case 1:
+    case SPIN_TRADE_BUTTON_SEQ_START:
         SpinTradeMain_ShowButtonHalf(g2m);
         GFL_SndSEPlay(SEQ_SE_SYS_54);
         task->frame = 0;
         task->seq++;
-    case 2:
+    case SPIN_TRADE_BUTTON_SEQ_HALF_PRESS:
         task->frame++;
         if (task->frame >= 2) {
             task->frame = 0;
@@ -2977,7 +3031,7 @@ static void SpinTradeButtonTask_Update(SpinTradeMainWork *g2m, SpinTradeButtonTa
             SpinTradeMain_ShowButtonPushed(g2m);
         }
         break;
-    case 3:
+    case SPIN_TRADE_BUTTON_SEQ_PRESSED:
         task->frame++;
         if (task->frame >= 4) {
             SpinTradeMain_ShowButtonHalf(g2m);
@@ -2985,12 +3039,12 @@ static void SpinTradeButtonTask_Update(SpinTradeMainWork *g2m, SpinTradeButtonTa
             task->seq++;
         }
         break;
-    case 4:
+    case SPIN_TRADE_BUTTON_SEQ_HALF_RELEASE:
         task->frame++;
         if (task->frame >= 2) {
             SpinTradeMain_ShowButton(g2m);
             task->active = FALSE;
-            task->seq = 0;
+            task->seq = SPIN_TRADE_BUTTON_SEQ_IDLE;
         }
         break;
     }
@@ -3019,15 +3073,15 @@ static void SpinTradeMain_PushButton(SpinTradeMainWork *g2m) {
     SpinTradeButtonTask *task = &g2m->buttonTask;
 
     task->active = TRUE;
-    task->seq = 1;
+    task->seq = SPIN_TRADE_BUTTON_SEQ_START;
 }
 
 // An Egg hops on its bonus area, with a rest between the hops
 static void SpinTradeBonusTask_Update(SpinTradeMainWork *g2m, SpinTradeBonusTask *task) {
     switch (task->seq) {
-    case 0:
+    case SPIN_TRADE_BONUS_SEQ_IDLE:
         break;
-    case 1:
+    case SPIN_TRADE_BONUS_SEQ_HOP:
         task->egg->offset.y = sBonusHopHeights[task->frame] << FX32_SHIFT;
         task->frame++;
         if (task->frame >= (int)NELEMS(sBonusHopHeights)) {
@@ -3035,11 +3089,11 @@ static void SpinTradeBonusTask_Update(SpinTradeMainWork *g2m, SpinTradeBonusTask
             task->seq++;
         }
         break;
-    case 2:
+    case SPIN_TRADE_BONUS_SEQ_WAIT:
         task->wait++;
         if (task->wait >= 15) {
             task->wait = 0;
-            task->seq = 1;
+            task->seq = SPIN_TRADE_BONUS_SEQ_HOP;
         }
         break;
     }
@@ -3067,7 +3121,7 @@ static void SpinTradeMain_FreeBonus(SpinTradeMainWork *g2m) {
 static void SpinTradeMain_StartBonus(SpinTradeMainWork *g2m, SpinTradeEgg *egg) {
     SpinTradeBonusTask *task = &g2m->bonusTasks[egg->netId];
 
-    task->seq = 1;
+    task->seq = SPIN_TRADE_BONUS_SEQ_HOP;
     task->egg = egg;
 }
 
@@ -3180,7 +3234,7 @@ static void *SpinTradeMain_GetSeqWork(SpinTradeMainWork *g2m) {
 }
 
 static BOOL SpinTradeMain_HasSignal(SpinTradeMainWork *g2m, u32 signal) {
-    if (g2m->g2c->unk40 & signal) {
+    if (g2m->g2c->mainSignals & signal) {
         return TRUE;
     }
     return FALSE;
@@ -3190,7 +3244,7 @@ static BOOL SpinTradeMain_HasSignal(SpinTradeMainWork *g2m, u32 signal) {
 static BOOL SpinTradeMain_HaveChildrenJoined(SpinTradeMainWork *g2m) {
     int count = 0;
     int max = g2m->g2p->memberCount - 1;
-    u32 bits = g2m->g2c->unk42;
+    u32 bits = g2m->g2c->mainJoinedBits;
 
     while (bits != 0) {
         count += bits & 1;
@@ -3201,7 +3255,7 @@ static BOOL SpinTradeMain_HaveChildrenJoined(SpinTradeMainWork *g2m) {
 
 static int SpinTradeMain_CountChildren(SpinTradeMainWork *g2m) {
     int count = 0;
-    u32 bits = g2m->g2c->unk42;
+    u32 bits = g2m->g2c->mainJoinedBits;
 
     while (bits != 0) {
         count += bits & 1;
@@ -3224,7 +3278,7 @@ void SpinTradeMain_OnPlayerCount(SpinTradeMainWork *g2m, u32 value) {
 }
 
 static BOOL SpinTradeMain_IsMember(SpinTradeMainWork *g2m, int netId) {
-    if (netId != 0 && !(g2m->g2c->unk42 & (1 << netId))) {
+    if (netId != 0 && !(g2m->g2c->mainJoinedBits & (1 << netId))) {
         return FALSE;
     }
     return TRUE;
@@ -3327,7 +3381,7 @@ static BOOL SpinTradeMain_AnyPartyHasBadEgg(SpinTradeMainWork *g2m) {
 // How many members have found no bad Egg
 static int SpinTradeMain_CountEggChecks(SpinTradeMainWork *g2m) {
     int count = 0;
-    u32 bits = g2m->g2c->unk4A;
+    u32 bits = g2m->g2c->eggCheckOkBits;
 
     while (bits != 0) {
         count += bits & 1;
@@ -3337,7 +3391,7 @@ static int SpinTradeMain_CountEggChecks(SpinTradeMainWork *g2m) {
 }
 
 static BOOL SpinTradeMain_IsBadEggFound(SpinTradeMainWork *g2m) {
-    if (g2m->g2c->unk48 != 0) {
+    if (g2m->g2c->badEggReportBits != 0) {
         return TRUE;
     }
     return FALSE;
@@ -3372,6 +3426,6 @@ static void SpinTradeMain_ParentTurn(SpinTradeMainWork *g2m, fx32 angle) {
         for (i = 0; i < g2m->playerCount; i++) {
             data.eggAngles[i] = g2m->objects.eggs[i].angle / FX32_ONE;
         }
-        SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_8, &data, sizeof(data));
+        SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_GAME_DATA, &data, sizeof(data));
     }
 }
