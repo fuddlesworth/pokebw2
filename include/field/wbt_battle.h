@@ -8,6 +8,27 @@
 
 // wbt_battle.c, overlay 134, which the ROM names: the Pokémon World Tournament's rounds, their opponents and battles
 
+// The two possible picks from each side's party.
+enum {
+    WBT_PICK_PLAYER_FIRST = 0,
+    WBT_PICK_PLAYER_SECOND = 1,
+    WBT_PICK_OPPONENT_FIRST = 2,
+    WBT_PICK_OPPONENT_SECOND = 3,
+};
+
+// The Trainer's lines, including the stadium announcement and both kinds of battle result.
+enum {
+    WBT_TRAINER_LINE_FIRST_ROUND = 0,
+    WBT_TRAINER_LINE_SECOND_ROUND = 1,
+    WBT_TRAINER_LINE_FINAL_ROUND = 2,
+    WBT_TRAINER_LINE_DEFEAT = 3,
+    WBT_TRAINER_LINE_VICTORY = 4,
+    WBT_TRAINER_LINE_AFTER_DEFEAT = 5,
+    WBT_TRAINER_LINE_AFTER_VICTORY = 6,
+    WBT_TRAINER_LINE_INTRODUCTION = 7,
+    WBT_TRAINER_LINE_COUNT = 8,
+};
+
 void WbtBattle_SwapPickedPokemon(WbtSystem *sys);
 void WbtBattle_ResetPicks(WbtSystem *sys);
 void WbtBattle_SetPick(WbtSystem *sys, u32 index, u8 value);
