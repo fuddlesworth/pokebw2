@@ -94,14 +94,14 @@ static BOOL SpinTradeProc_Main(GameProc *proc, u32 *state, void *param, void *wo
     SpinTradeCallWork *wk = work;
 
     switch (GFL_ProcMgrUpdate(wk->procManager)) {
-    case 0:
+    case PROCMGR_DONE:
         if (sSpinTradeSeqFuncs[wk->seq](wk) == TRUE) {
             return TRUE;
         }
         break;
-    case 1:
+    case PROCMGR_RUNNING:
         break;
-    case 2:
+    case PROCMGR_PROC_ENDED:
         break;
     }
     return FALSE;
@@ -172,7 +172,7 @@ static BOOL SpinTradeSeq_WaitPokeList(SpinTradeCallWork *wk) {
     u32 index = wk->pokeList->index;
 
     GFL_HeapFree(wk->pokeList);
-    if (result == 1) {
+    if (result == POKELIST_RESULT_SUMMARY) {
         PokeDexSave *pokedex;
         PokeParty *party;
 
@@ -183,7 +183,7 @@ static BOOL SpinTradeSeq_WaitPokeList(SpinTradeCallWork *wk) {
         party = GameData_GetParty(wk->gameData);
         wk->pokeStatus->party = party;
         wk->pokeStatus->gameData = wk->gameData;
-        wk->pokeStatus->dataType = 1;
+        wk->pokeStatus->dataType = PSTATUS_DATA_PARTY;
         wk->pokeStatus->partyCount = PokeParty_GetPkmCount(party);
         wk->pokeStatus->partyIndex = 0;
         wk->pokeStatus->mode = PSTATUS_MODE_1;
