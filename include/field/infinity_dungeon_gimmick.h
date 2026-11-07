@@ -6,6 +6,18 @@
 #include "nitro/fx.h"
 #include "struct_decls.h"
 
+// Room changes within a floor, or arrival on another floor.
+enum {
+    INFINITY_DUNGEON_CHANGE_ROOM = 0,
+    INFINITY_DUNGEON_CHANGE_FLOOR = 1,
+};
+
+// Script operands: apply the event's transition handling, or leave it to the caller.
+enum {
+    INFINITY_DUNGEON_TRANSITION_SKIP = 7,
+    INFINITY_DUNGEON_TRANSITION_APPLY = 8,
+};
+
 // infinity_dungeon_gimmick.c, overlay 127, which the ROM names: the field gimmick of the Black Tower and White
 // Treehollow, which holds the dungeon and moves the player between its rooms
 
@@ -14,6 +26,8 @@ typedef struct {
     VecFx32 pos;
     u32 zoneId;
 } InfinityDungeonDestination;
+
+#define INFINITY_DUNGEON_DIR_ARRIVAL 4
 
 #define INFINITY_DUNGEON_OBJECT_COUNT 4
 #define INFINITY_DUNGEON_WALL_COUNT 4
@@ -49,10 +63,10 @@ struct InfinityDungeonRoomChange {
     MMSys *actorSystem;
     InfinityDungeon *dungeon;
     u16 heapId;
-    u8 mode;          // 0 for a room of the same floor, 1 for the arrival on a floor
-    u8 inTransition;  // 8 for the field's own transition into the room, 7 for the arrival on a floor
-    u8 outTransition; // the same out of the room
-    u16 direction;    // up, down, left, right, or 4 for the arrival
+    u8 mode;          // INFINITY_DUNGEON_CHANGE_*
+    u8 inTransition;  // INFINITY_DUNGEON_TRANSITION_*
+    u8 outTransition; // INFINITY_DUNGEON_TRANSITION_*
+    u16 direction;    // DIR_*, or INFINITY_DUNGEON_DIR_ARRIVAL
     InfinityDungeonDestination destination;
     const u16 *roomZones;
     u32 room;

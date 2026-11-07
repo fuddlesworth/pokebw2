@@ -6,6 +6,7 @@
 #include "types.h"
 #include "battle/trainer_data.h"
 #include "constants/items.h"
+#include "constants/pokemon.h"
 #include "constants/version.h"
 #include "field/battle_facility.h"
 #include "field/bsubway_scr.h"
@@ -24,6 +25,24 @@
 #include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+
+// Which side of the target room the current room occupies; equality follows the north branch.
+enum {
+    ROOM_SIDE_SOUTH = 0,
+    ROOM_SIDE_NORTH_OR_SAME = 1,
+    ROOM_SIDE_EAST = 2,
+    ROOM_SIDE_WEST = 3,
+    ROOM_SIDE_SOUTHEAST = 4,
+    ROOM_SIDE_SOUTHWEST = 5,
+    ROOM_SIDE_NORTHEAST = 6,
+    ROOM_SIDE_NORTHWEST = 7,
+};
+
+// The scripts request a message before battle (1) or after winning (0).
+enum {
+    NPC_BATTLE_MESSAGE_AFTER = 0,
+    NPC_BATTLE_MESSAGE_BEFORE = 1,
+};
 
 // The dungeon's trainer data and the Pokémon they use are files of these archives
 #define INFINITY_DUNGEON_ARC_POKEMON 0x105
@@ -109,85 +128,85 @@ static const u16 sWhite2Specials1[32] = {
 
 static const InfinityDungeonFloor sFloorBlack2Mode1 = {
     {
-        { 0x13, 0, { 0, 0, 1, 0 }, 0 },
-        { 0, 4, { 0, 0, 1, 1 }, 1 },
-        { 7, 4, { 0, 1, 0, 1 }, 2 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 3 },
-        { 0x13, 1, { 0, 1, 0, 0 }, 4 },
-        { 4, 4, { 0, 1, 1, 0 }, 5 },
-        { 0x13, 4, { 1, 0, 0, 1 }, 6 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 7 },
-        { 0x13, 4, { 1, 0, 1, 0 }, 8 },
-        { 1, 4, { 1, 0, 1, 1 }, 9 },
-        { 8, 4, { 0, 0, 0, 1 }, 10 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 11 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 12 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 13 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 14 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 15 },
+        { 0x13, ROOM_KIND_START, { 0, 0, 1, 0 }, 0 },
+        { 0, ROOM_KIND_ORDINARY, { 0, 0, 1, 1 }, 1 },
+        { 7, ROOM_KIND_ORDINARY, { 0, 1, 0, 1 }, 2 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 3 },
+        { 0x13, ROOM_KIND_GOAL, { 0, 1, 0, 0 }, 4 },
+        { 4, ROOM_KIND_ORDINARY, { 0, 1, 1, 0 }, 5 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 0, 0, 1 }, 6 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 7 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 0, 1, 0 }, 8 },
+        { 1, ROOM_KIND_ORDINARY, { 1, 0, 1, 1 }, 9 },
+        { 8, ROOM_KIND_ORDINARY, { 0, 0, 0, 1 }, 10 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 11 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 12 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 13 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 14 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 15 },
     },
 };
 
 static const InfinityDungeonFloor sFloorWhite2Mode0 = {
     {
-        { 0x13, 0, { 0, 1, 0, 0 }, 0 },
-        { 0x13, 1, { 0, 1, 0, 0 }, 1 },
-        { 0, 4, { 0, 1, 0, 0 }, 2 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 3 },
-        { 0, 4, { 1, 0, 1, 0 }, 4 },
-        { 0x13, 4, { 1, 1, 0, 1 }, 5 },
-        { 0, 4, { 1, 1, 0, 0 }, 6 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 7 },
-        { 3, 4, { 0, 0, 1, 0 }, 8 },
-        { 7, 4, { 1, 0, 1, 1 }, 9 },
-        { 0x13, 4, { 1, 0, 0, 1 }, 10 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 11 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 12 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 13 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 14 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 15 },
+        { 0x13, ROOM_KIND_START, { 0, 1, 0, 0 }, 0 },
+        { 0x13, ROOM_KIND_GOAL, { 0, 1, 0, 0 }, 1 },
+        { 0, ROOM_KIND_ORDINARY, { 0, 1, 0, 0 }, 2 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 3 },
+        { 0, ROOM_KIND_ORDINARY, { 1, 0, 1, 0 }, 4 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 1, 0, 1 }, 5 },
+        { 0, ROOM_KIND_ORDINARY, { 1, 1, 0, 0 }, 6 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 7 },
+        { 3, ROOM_KIND_ORDINARY, { 0, 0, 1, 0 }, 8 },
+        { 7, ROOM_KIND_ORDINARY, { 1, 0, 1, 1 }, 9 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 0, 0, 1 }, 10 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 11 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 12 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 13 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 14 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 15 },
     },
 };
 
 static const InfinityDungeonFloor sFloorWhite2Mode1 = {
     {
-        { 0x13, 0, { 0, 0, 1, 0 }, 0 },
-        { 0, 4, { 0, 0, 1, 1 }, 1 },
-        { 7, 4, { 0, 1, 0, 1 }, 2 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 3 },
-        { 0x13, 1, { 0, 1, 0, 0 }, 4 },
-        { 4, 4, { 0, 1, 1, 0 }, 5 },
-        { 0x13, 4, { 1, 0, 0, 1 }, 6 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 7 },
-        { 0x13, 4, { 1, 0, 1, 0 }, 8 },
-        { 1, 4, { 1, 0, 1, 1 }, 9 },
-        { 8, 4, { 0, 0, 0, 1 }, 10 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 11 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 12 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 13 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 14 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 15 },
+        { 0x13, ROOM_KIND_START, { 0, 0, 1, 0 }, 0 },
+        { 0, ROOM_KIND_ORDINARY, { 0, 0, 1, 1 }, 1 },
+        { 7, ROOM_KIND_ORDINARY, { 0, 1, 0, 1 }, 2 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 3 },
+        { 0x13, ROOM_KIND_GOAL, { 0, 1, 0, 0 }, 4 },
+        { 4, ROOM_KIND_ORDINARY, { 0, 1, 1, 0 }, 5 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 0, 0, 1 }, 6 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 7 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 0, 1, 0 }, 8 },
+        { 1, ROOM_KIND_ORDINARY, { 1, 0, 1, 1 }, 9 },
+        { 8, ROOM_KIND_ORDINARY, { 0, 0, 0, 1 }, 10 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 11 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 12 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 13 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 14 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 15 },
     },
 };
 
 static const InfinityDungeonFloor sFloorBlack2Mode0 = {
     {
-        { 0x13, 0, { 0, 1, 0, 0 }, 0 },
-        { 0x13, 1, { 0, 1, 0, 0 }, 1 },
-        { 0, 4, { 0, 1, 0, 0 }, 2 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 3 },
-        { 0, 4, { 1, 0, 1, 0 }, 4 },
-        { 0x13, 4, { 1, 1, 0, 1 }, 5 },
-        { 0, 4, { 1, 1, 0, 0 }, 6 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 7 },
-        { 3, 4, { 0, 0, 1, 0 }, 8 },
-        { 7, 4, { 1, 0, 1, 1 }, 9 },
-        { 0x13, 4, { 1, 0, 0, 1 }, 10 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 11 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 12 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 13 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 14 },
-        { 0x13, 4, { 0, 0, 0, 0 }, 15 },
+        { 0x13, ROOM_KIND_START, { 0, 1, 0, 0 }, 0 },
+        { 0x13, ROOM_KIND_GOAL, { 0, 1, 0, 0 }, 1 },
+        { 0, ROOM_KIND_ORDINARY, { 0, 1, 0, 0 }, 2 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 3 },
+        { 0, ROOM_KIND_ORDINARY, { 1, 0, 1, 0 }, 4 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 1, 0, 1 }, 5 },
+        { 0, ROOM_KIND_ORDINARY, { 1, 1, 0, 0 }, 6 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 7 },
+        { 3, ROOM_KIND_ORDINARY, { 0, 0, 1, 0 }, 8 },
+        { 7, ROOM_KIND_ORDINARY, { 1, 0, 1, 1 }, 9 },
+        { 0x13, ROOM_KIND_ORDINARY, { 1, 0, 0, 1 }, 10 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 11 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 12 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 13 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 14 },
+        { 0x13, ROOM_KIND_ORDINARY, { 0, 0, 0, 0 }, 15 },
     },
 };
 
@@ -214,22 +233,32 @@ void InfinityDungeonRoomChange_CreateWalls(InfinityDungeonRoomChange *roomChange
     MAT3_RotationEulerZYX(0, 0, 0, &matrix.rotation);
     if (room->kind != ROOM_KIND_GOAL) {
         if (room->kind != ROOM_KIND_START) {
-            if (!InfinityDungeon_IsBelowGoal(roomChange->dungeon, floor, roomIndex) && room->open[0] == 0) {
-                InfinityDungeonGimmick_SetWall(
-                    gimmick, FieldPropSystem_CreateHandleNew(roomChange->propSystem, props[0], &matrix), 0);
+            if (!InfinityDungeon_IsBelowGoal(roomChange->dungeon, floor, roomIndex) &&
+                room->open[INFINITY_DUNGEON_PASSAGE_NORTH] == 0) {
+                InfinityDungeonGimmick_SetWall(gimmick,
+                                               FieldPropSystem_CreateHandleNew(roomChange->propSystem,
+                                                                               props[INFINITY_DUNGEON_PASSAGE_NORTH],
+                                                                               &matrix),
+                                               INFINITY_DUNGEON_PASSAGE_NORTH);
             }
         }
-        if (room->open[1] == 0) {
+        if (room->open[INFINITY_DUNGEON_PASSAGE_SOUTH] == 0) {
             InfinityDungeonGimmick_SetWall(
-                gimmick, FieldPropSystem_CreateHandleNew(roomChange->propSystem, props[1], &matrix), 1);
+                gimmick,
+                FieldPropSystem_CreateHandleNew(roomChange->propSystem, props[INFINITY_DUNGEON_PASSAGE_SOUTH], &matrix),
+                INFINITY_DUNGEON_PASSAGE_SOUTH);
         }
-        if (room->open[3] == 0) {
+        if (room->open[INFINITY_DUNGEON_PASSAGE_WEST] == 0) {
             InfinityDungeonGimmick_SetWall(
-                gimmick, FieldPropSystem_CreateHandleNew(roomChange->propSystem, props[3], &matrix), 3);
+                gimmick,
+                FieldPropSystem_CreateHandleNew(roomChange->propSystem, props[INFINITY_DUNGEON_PASSAGE_WEST], &matrix),
+                INFINITY_DUNGEON_PASSAGE_WEST);
         }
-        if (room->open[2] == 0) {
+        if (room->open[INFINITY_DUNGEON_PASSAGE_EAST] == 0) {
             InfinityDungeonGimmick_SetWall(
-                gimmick, FieldPropSystem_CreateHandleNew(roomChange->propSystem, props[2], &matrix), 2);
+                gimmick,
+                FieldPropSystem_CreateHandleNew(roomChange->propSystem, props[INFINITY_DUNGEON_PASSAGE_EAST], &matrix),
+                INFINITY_DUNGEON_PASSAGE_EAST);
         }
     }
 }
@@ -245,7 +274,7 @@ void InfinityDungeonRoomChange_CreateTrainers(InfinityDungeonRoomChange *roomCha
         BOOL visited = InfinityDungeon_IsBelowGoal(roomChange->dungeon, roomChange->nextFloor, roomChange->nextRoom);
         BOOL cleared = InfinityDungeon_IsTargetDefeated(roomChange->dungeon, roomChange->keyData);
 
-        if (room->open[0] == 0 || (visited == TRUE && cleared == FALSE)) {
+        if (room->open[INFINITY_DUNGEON_PASSAGE_NORTH] == 0 || (visited == TRUE && cleared == FALSE)) {
             const InfinityDungeonPos *src = InfinityDungeon_GetTrainerPos(version, room->kind, 0);
             InfinityDungeonPos pos = *src;
 
@@ -264,10 +293,10 @@ void InfinityDungeonRoomChange_CreateTrainers(InfinityDungeonRoomChange *roomCha
             InfinityDungeonRoomChange_CreateTrainerActor(roomChange, &pos);
         }
     }
-    if (room->open[1] == 0) {
+    if (room->open[INFINITY_DUNGEON_PASSAGE_SOUTH] == 0) {
         InfinityDungeonRoomChange_CreateTrainerActor(roomChange, InfinityDungeon_GetTrainerPos(version, room->kind, 1));
     }
-    if (room->open[3] == 0) {
+    if (room->open[INFINITY_DUNGEON_PASSAGE_WEST] == 0) {
         const InfinityDungeonPos *src = InfinityDungeon_GetTrainerPos(version, room->kind, 2);
         InfinityDungeonPos pos = *src;
 
@@ -277,7 +306,7 @@ void InfinityDungeonRoomChange_CreateTrainers(InfinityDungeonRoomChange *roomCha
         pos.z = src->z + 1;
         InfinityDungeonRoomChange_CreateTrainerActor(roomChange, &pos);
     }
-    if (room->open[2] == 0) {
+    if (room->open[INFINITY_DUNGEON_PASSAGE_EAST] == 0) {
         const InfinityDungeonPos *src = InfinityDungeon_GetTrainerPos(version, room->kind, 3);
         InfinityDungeonPos pos = *src;
 
@@ -309,18 +338,18 @@ void InfinityDungeon_CreateCurrentWalls(GameSystem *gsys, InfinityDungeon *dunge
 
 u16 InfinityDungeon_GetEntryFacing(u16 direction) {
     switch (direction) {
-    case 0:
-        return 0;
-    case 1:
-        return 1;
-    case 2:
-        return 2;
-    case 3:
-        return 3;
-    case 4:
-        return 1;
+    case DIR_UP:
+        return DIR_UP;
+    case DIR_DOWN:
+        return DIR_DOWN;
+    case DIR_LEFT:
+        return DIR_LEFT;
+    case DIR_RIGHT:
+        return DIR_RIGHT;
+    case INFINITY_DUNGEON_DIR_ARRIVAL:
+        return DIR_DOWN;
     default:
-        return 1;
+        return DIR_DOWN;
     }
 }
 
@@ -443,7 +472,7 @@ static BOOL InfinityDungeon_SetFixedFloors(KeyDataSave *keyData, InfinityDungeon
                 InfinityDungeonRoom *room = &dungeon->floors[floor].rooms[i];
 
                 MI_CpuFill8(room, 0, sizeof(InfinityDungeonRoom));
-                room->kind = 4;
+                room->kind = ROOM_KIND_ORDINARY;
                 room->type = INFINITY_DUNGEON_ROOM_TYPE_NONE;
             }
         }
@@ -516,7 +545,7 @@ u32 InfinityDungeon_GetGoalFloor(InfinityDungeon *dungeon) {
 
     for (floor = 0; floor < INFINITY_DUNGEON_FLOOR_COUNT; floor++) {
         for (i = 0; i < INFINITY_DUNGEON_ROOM_COUNT; i++) {
-            if (dungeon->floors[floor].rooms[i].kind == 1) {
+            if (dungeon->floors[floor].rooms[i].kind == ROOM_KIND_GOAL) {
                 return floor;
             }
         }
@@ -530,7 +559,7 @@ static u32 InfinityDungeon_GetGoalRoom(InfinityDungeon *dungeon) {
 
     for (floor = 0; floor < INFINITY_DUNGEON_FLOOR_COUNT; floor++) {
         for (i = 0; i < INFINITY_DUNGEON_ROOM_COUNT; i++) {
-            if (dungeon->floors[floor].rooms[i].kind == 1) {
+            if (dungeon->floors[floor].rooms[i].kind == ROOM_KIND_GOAL) {
                 return i;
             }
         }
@@ -571,10 +600,10 @@ u32 InfinityDungeon_GetNpcScript(KeyDataSave *keyData, InfinityDungeon *dungeon,
     }
 }
 
-u32 InfinityDungeon_GetNpcScriptByResult(KeyDataSave *keyData, InfinityDungeon *dungeon, u16 objCode, u16 result) {
+u32 InfinityDungeon_GetNpcScriptByResult(KeyDataSave *keyData, InfinityDungeon *dungeon, u16 objCode, u16 battleStage) {
     u32 npcIndex = InfinityDungeon_GetNpcIndex(objCode);
 
-    if (result == 1) {
+    if (battleStage == NPC_BATTLE_MESSAGE_BEFORE) {
         return 0x1ec + npcIndex;
     }
     return 0x1f6 + npcIndex;
@@ -634,28 +663,28 @@ static u32 InfinityDungeonNpcScript_GoalDirection(InfinityDungeonNpcScriptArg *a
             goalY = goalRoom / INFINITY_DUNGEON_GRID_WIDTH;
         }
         switch (InfinityDungeon_GetSideOfRoom(x, y, goalX, goalY)) {
-        case 0:
+        case ROOM_SIDE_SOUTH:
             script = 0x210;
             break;
-        case 1:
+        case ROOM_SIDE_NORTH_OR_SAME:
             script = 0x218;
             break;
-        case 2:
+        case ROOM_SIDE_EAST:
             script = 0x228;
             break;
-        case 3:
+        case ROOM_SIDE_WEST:
             script = 0x220;
             break;
-        case 4:
+        case ROOM_SIDE_SOUTHEAST:
             script = 0x240;
             break;
-        case 5:
+        case ROOM_SIDE_SOUTHWEST:
             script = 0x230;
             break;
-        case 6:
+        case ROOM_SIDE_NORTHEAST:
             script = 0x248;
             break;
-        case 7:
+        case ROOM_SIDE_NORTHWEST:
             script = 0x238;
             break;
         default:
@@ -666,18 +695,18 @@ static u32 InfinityDungeonNpcScript_GoalDirection(InfinityDungeonNpcScriptArg *a
     return script + arg->npcIndex;
 }
 
-// Which of the eight sides of (targetX, targetY) the room (x, y) is on, 0 for the same room
+// Which side of the target the current room is on. Equal positions follow the north branch, returning 1.
 static u32 InfinityDungeon_GetSideOfRoom(u8 x, u8 y, u8 targetX, u8 targetY) {
     if (x == targetX) {
         return (u8)(y <= targetY);
     }
     if (y == targetY) {
-        return x < targetX ? 3 : 2;
+        return x < targetX ? ROOM_SIDE_WEST : ROOM_SIDE_EAST;
     }
     if (y > targetY) {
-        return x < targetX ? 5 : 4;
+        return x < targetX ? ROOM_SIDE_SOUTHWEST : ROOM_SIDE_SOUTHEAST;
     }
-    return x < targetX ? 7 : 6;
+    return x < targetX ? ROOM_SIDE_NORTHWEST : ROOM_SIDE_NORTHEAST;
 }
 
 static u32 InfinityDungeonNpcScript_Plain(InfinityDungeonNpcScriptArg *arg) {
@@ -742,28 +771,28 @@ static u32 InfinityDungeonNpcScript_TargetDirection(InfinityDungeonNpcScriptArg 
         targetY = targetRoom / INFINITY_DUNGEON_GRID_WIDTH;
     }
     switch (InfinityDungeon_GetSideOfRoom(x, y, targetX, targetY)) {
-    case 0:
+    case ROOM_SIDE_SOUTH:
         script = 0xc0;
         break;
-    case 1:
+    case ROOM_SIDE_NORTH_OR_SAME:
         script = 0xc8;
         break;
-    case 2:
+    case ROOM_SIDE_EAST:
         script = 0xd8;
         break;
-    case 3:
+    case ROOM_SIDE_WEST:
         script = 0xd0;
         break;
-    case 4:
+    case ROOM_SIDE_SOUTHEAST:
         script = 0xf0;
         break;
-    case 5:
+    case ROOM_SIDE_SOUTHWEST:
         script = 0xe0;
         break;
-    case 6:
+    case ROOM_SIDE_NORTHEAST:
         script = 0xf8;
         break;
-    case 7:
+    case ROOM_SIDE_NORTHWEST:
         script = 0xe8;
         break;
     default:
@@ -799,7 +828,7 @@ static u32 InfinityDungeonNpcScript_TargetTrainerSex(InfinityDungeonNpcScriptArg
     u16 trainerClass = trainerData[0];
 
     GFL_HeapFree(trainerData);
-    if (TrainerClass_GetSex(trainerClass) == 0) {
+    if (TrainerClass_GetSex(trainerClass) == GENDER_MALE) {
         return 0x120 + arg->npcIndex;
     }
     return 0x128 + arg->npcIndex;
@@ -851,7 +880,7 @@ u32 InfinityDungeon_FindSpecialTrainer(InfinityDungeon *dungeon, u16 trainerId) 
 }
 
 BOOL InfinityDungeonRoomChange_UsesFade(InfinityDungeonRoomChange *roomChange) {
-    if (roomChange->mode == 1 || roomChange->direction == 4) {
+    if (roomChange->mode == INFINITY_DUNGEON_CHANGE_FLOOR || roomChange->direction == INFINITY_DUNGEON_DIR_ARRIVAL) {
         return TRUE;
     }
     return FALSE;
@@ -878,7 +907,7 @@ BOOL InfinityDungeon_IsBelowGoal(InfinityDungeon *dungeon, u32 floor, u32 room) 
     if (above < 0) {
         return 0;
     }
-    if (dungeon->floors[floor].rooms[above].kind == 1) {
+    if (dungeon->floors[floor].rooms[above].kind == ROOM_KIND_GOAL) {
         return 1;
     }
     return 0;
@@ -916,15 +945,17 @@ static const u16 sRewardWeightsRank9[7] = {
 
 static void InfinityDungeon_PickReward(InfinityDungeon *dungeon, u32 rank, u32 seed) {
     u8 total = 0;
-    u8 counts[10] = { 1, 1, 1, 2, 2, 1, 1, 2, 2, 1 };
-    const u16 *items[10] = { sRewardItemsRank0to4, sRewardItemsRank0to4, sRewardItemsRank0to4, sRewardItemsRank0to4,
-                             sRewardItemsRank0to4, sRewardItemsRank5to8, sRewardItemsRank5to8, sRewardItemsRank5to8,
-                             sRewardItemsRank5to8, sRewardItemsRank9 };
-    const u16 *weights[10] = { sRewardWeightsRank0to4, sRewardWeightsRank0to4, sRewardWeightsRank0to4,
-                               sRewardWeightsRank0to4, sRewardWeightsRank0to4, sRewardWeightsRank5to8,
-                               sRewardWeightsRank5to8, sRewardWeightsRank5to8, sRewardWeightsRank5to8,
-                               sRewardWeightsRank9 };
-    const u16 itemCounts[10] = { 6, 6, 6, 6, 6, 7, 7, 7, 7, 7 };
+    u8 counts[INFINITY_DUNGEON_AREA_COUNT] = { 1, 1, 1, 2, 2, 1, 1, 2, 2, 1 };
+    const u16 *items[INFINITY_DUNGEON_AREA_COUNT] = { sRewardItemsRank0to4, sRewardItemsRank0to4, sRewardItemsRank0to4,
+                                                      sRewardItemsRank0to4, sRewardItemsRank0to4, sRewardItemsRank5to8,
+                                                      sRewardItemsRank5to8, sRewardItemsRank5to8, sRewardItemsRank5to8,
+                                                      sRewardItemsRank9 };
+    const u16 *weights[INFINITY_DUNGEON_AREA_COUNT] = { sRewardWeightsRank0to4, sRewardWeightsRank0to4,
+                                                        sRewardWeightsRank0to4, sRewardWeightsRank0to4,
+                                                        sRewardWeightsRank0to4, sRewardWeightsRank5to8,
+                                                        sRewardWeightsRank5to8, sRewardWeightsRank5to8,
+                                                        sRewardWeightsRank5to8, sRewardWeightsRank9 };
+    const u16 itemCounts[INFINITY_DUNGEON_AREA_COUNT] = { 6, 6, 6, 6, 6, 7, 7, 7, 7, 7 };
     MATHRandContext32 rand;
     u8 roll;
     int i;

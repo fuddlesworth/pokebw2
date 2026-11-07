@@ -30,6 +30,38 @@
 #include "system/game_event.h"
 #include "system/game_system.h"
 
+// The door animation.
+enum {
+    DOOR_EVENT_START_ANIMATION = 0,
+    DOOR_EVENT_WAIT_ANIMATION = 1,
+};
+
+// The machine animation and its sound.
+enum {
+    MACHINE_EVENT_START_ANIMATION = 0,
+    MACHINE_EVENT_WAIT_ANIMATION = 1,
+    MACHINE_EVENT_WAIT_SOUND = 2,
+};
+
+// The lift animation, camera and fades.
+enum {
+    LIFT_EVENT_FADE_OUT = 0,
+    LIFT_EVENT_FOCUS_CAMERA = 1,
+    LIFT_EVENT_START_ANIMATION = 2,
+    LIFT_EVENT_WAIT_ANIMATION = 3,
+    LIFT_EVENT_RESTORE_FIELD = 4,
+    LIFT_EVENT_WAIT_CAMERA = 5,
+    LIFT_EVENT_WAIT_FADE = 6,
+};
+
+// The map change and room setup.
+enum {
+    ROOM_CHANGE_EVENT_FADE_OUT = 0,
+    ROOM_CHANGE_EVENT_CHANGE_MAP = 1,
+    ROOM_CHANGE_EVENT_CREATE_ROOM = 2,
+    ROOM_CHANGE_EVENT_FINISH = 3,
+};
+
 // The field gimmick of the Black Tower and White Treehollow. It holds the dungeon, shows the models of a floor's
 // rooms (the doors, the lift to the next floor and the machine at the end), animates them in events, and moves the
 // player between rooms with the room change event
@@ -44,9 +76,6 @@ enum {
 
 // The kind of a door event that opens the door, where any other closes it
 #define DOOR_OPEN 1
-
-// The direction of the arrival on a floor
-#define DIR_ARRIVAL 4
 
 #define SCENE_ANM_COUNT 2
 
@@ -336,7 +365,7 @@ static GameEventReturnCode InfinityDungeonGimmick_DoorEvent(GameEvent *event, u3
     }
 
     switch (*state) {
-    case 0:
+    case DOOR_EVENT_START_ANIMATION:
         for (anm = 0; anm < SCENE_ANM_COUNT; anm++) {
             FieldExpObjAnm *info = FieldExpObj_GetAnmInfo(object->expObj, 0, object->actor, anm);
             FieldExpObj_SetAnmFrame(object->expObj, 0, object->actor, anm, startFrame);
@@ -345,7 +374,7 @@ static GameEventReturnCode InfinityDungeonGimmick_DoorEvent(GameEvent *event, u3
         GFL_SndSEPlay(se);
         (*state)++;
         break;
-    case 1:
+    case DOOR_EVENT_WAIT_ANIMATION:
         if (FieldExpObj_GetAnmFrame(object->expObj, 0, object->actor, 0) >= endFrame) {
             for (anm = 0; anm < SCENE_ANM_COUNT; anm++) {
                 FieldExpObjAnm_SetPaused(FieldExpObj_GetAnmInfo(object->expObj, 0, object->actor, anm), TRUE);
@@ -367,7 +396,7 @@ static GameEventReturnCode InfinityDungeonGimmick_MachineEvent(GameEvent *event,
     InfinityDungeonObject *machineA = &gimmick->objects[OBJECT_MACHINE_A];
 
     switch (*state) {
-    case 0:
+    case MACHINE_EVENT_START_ANIMATION:
         for (anm = 0; anm < SCENE_ANM_COUNT; anm++) {
             FieldExpObjAnm *info = FieldExpObj_GetAnmInfo(machineB->expObj, machineB->scene, machineB->actor, anm);
             FieldExpObj_SetAnmFrame(machineB->expObj, machineB->scene, machineB->actor, anm, 0);
@@ -376,7 +405,7 @@ static GameEventReturnCode InfinityDungeonGimmick_MachineEvent(GameEvent *event,
         GFL_SndSEPlay(SEQ_SE_SW_MDUN_BL_06);
         (*state)++;
         break;
-    case 1: {
+    case MACHINE_EVENT_WAIT_ANIMATION: {
         if (FieldExpObjAnm_IsPlaybackFinished(FieldExpObj_GetAnmInfo(machineB->expObj, 0, machineB->actor, 0)) ==
             TRUE) {
             FieldExpObj_SetActorHidden(machineB->expObj, machineB->scene, machineB->actor, TRUE);
@@ -385,7 +414,7 @@ static GameEventReturnCode InfinityDungeonGimmick_MachineEvent(GameEvent *event,
         }
         break;
     }
-    case 2:
+    case MACHINE_EVENT_WAIT_SOUND:
         if (!GFL_SndPlayerIsActiveAny()) {
             return GAMEEVENT_DONE;
         }
@@ -410,14 +439,14 @@ static GameEventReturnCode InfinityDungeonGimmick_LiftEvent(GameEvent *event, u3
     FieldCamera *camera;
 
     switch (*state) {
-    case 0:
+    case LIFT_EVENT_FADE_OUT:
         camera = Field_GetCameraSystem(lift->field);
         GFL_FadeSet(3, 0, 16, 4);
         FieldCamera_EVCameraInit(camera);
         FieldCamera_FinishDelay(camera);
         (*state)++;
         break;
-    case 1:
+    case LIFT_EVENT_FOCUS_CAMERA:
         camera = Field_GetCameraSystem(lift->field);
         if (FieldCamera_IsDelayActive(camera) || GFL_FadeIsRunning()) {
             break;
@@ -447,7 +476,7 @@ static GameEventReturnCode InfinityDungeonGimmick_LiftEvent(GameEvent *event, u3
         }
         (*state)++;
         break;
-    case 2:
+    case LIFT_EVENT_START_ANIMATION:
         if (FieldCamera_IsAnimating(Field_GetCameraSystem(lift->field)) || GFL_FadeIsRunning()) {
             break;
         }
@@ -459,14 +488,14 @@ static GameEventReturnCode InfinityDungeonGimmick_LiftEvent(GameEvent *event, u3
         }
         (*state)++;
         break;
-    case 3:
+    case LIFT_EVENT_WAIT_ANIMATION:
         if (!InfinityDungeonGimmick_LiftAnimationsFinished(lift) || GFL_SndPlayerIsActiveAny()) {
             break;
         }
         GFL_FadeSet(3, 0, 16, 4);
         (*state)++;
         break;
-    case 4:
+    case LIFT_EVENT_RESTORE_FIELD:
         if (GFL_FadeIsRunning()) {
             break;
         }
@@ -480,14 +509,14 @@ static GameEventReturnCode InfinityDungeonGimmick_LiftEvent(GameEvent *event, u3
         FieldCamera_ResetBind(camera);
         (*state)++;
         break;
-    case 5:
+    case LIFT_EVENT_WAIT_CAMERA:
         if (FieldCamera_IsAnimating(Field_GetCameraSystem(lift->field))) {
             break;
         }
         GFL_FadeSet(3, 16, 0, 4);
         (*state)++;
         break;
-    case 6:
+    case LIFT_EVENT_WAIT_FADE:
         if (GFL_FadeIsRunning()) {
             break;
         }
@@ -619,7 +648,7 @@ void InfinityDungeonGimmick_CallRoomChange(ScriptWork *work, GameSystem *gsys, I
     roomChange = GameEvent_GetData(event);
     roomChange->dungeon = dungeon;
     roomChange->direction = direction;
-    roomChange->mode = 0;
+    roomChange->mode = INFINITY_DUNGEON_CHANGE_ROOM;
     roomChange->inTransition = inTransition;
     roomChange->outTransition = outTransition;
 }
@@ -636,11 +665,11 @@ void InfinityDungeonGimmick_CallFloorChange(ScriptWork *work, GameSystem *gsys, 
     ScriptWork_CallEvent(work, event);
     roomChange = GameEvent_GetData(event);
     roomChange->nextFloor = InfinityDungeonGimmick_GetFloorInLevel(floor, level);
-    roomChange->mode = 1;
+    roomChange->mode = INFINITY_DUNGEON_CHANGE_FLOOR;
     roomChange->dungeon = dungeon;
-    roomChange->direction = 1;
-    roomChange->outTransition = 8;
-    roomChange->inTransition = 7;
+    roomChange->direction = DIR_DOWN;
+    roomChange->outTransition = INFINITY_DUNGEON_TRANSITION_APPLY;
+    roomChange->inTransition = INFINITY_DUNGEON_TRANSITION_SKIP;
     InfinityDungeonGimmick_SeedDungeon(dungeon, keyData);
 }
 
@@ -672,10 +701,10 @@ static GameEventReturnCode InfinityDungeonRoomChange_Event(GameEvent *event, u32
     InfinityDungeonRoomChange *roomChange = data;
 
     switch (*state) {
-    case 0:
+    case ROOM_CHANGE_EVENT_FADE_OUT:
         InfinityDungeonRoomChange_Init(roomChange, GameEvent_GetGameSystem(event));
         DisableAllActorsMovement(Field_GetActorSystem(roomChange->field));
-        if (roomChange->outTransition == 8) {
+        if (roomChange->outTransition == INFINITY_DUNGEON_TRANSITION_APPLY) {
             if (InfinityDungeonRoomChange_UsesFade(roomChange)) {
                 GFL_FadeSet(3, 0, 16, 4);
             } else {
@@ -685,7 +714,7 @@ static GameEventReturnCode InfinityDungeonRoomChange_Event(GameEvent *event, u32
         }
         (*state)++;
         break;
-    case 1: {
+    case ROOM_CHANGE_EVENT_CHANGE_MAP: {
         InfinityDungeonDestination *destination;
 
         if (GFL_FadeIsRunning()) {
@@ -694,7 +723,7 @@ static GameEventReturnCode InfinityDungeonRoomChange_Event(GameEvent *event, u32
         destination = &roomChange->destination;
         InfinityDungeonRoomChange_SetNextPosition(roomChange);
         ZoneChange_ResetStrengthRocks(Field_GetActorSystem(roomChange->field));
-        if (roomChange->direction == DIR_ARRIVAL) {
+        if (roomChange->direction == INFINITY_DUNGEON_DIR_ARRIVAL) {
             SetPlayerSpecialState(GameData_GetPlayerState(roomChange->gameData), 0);
             GameData_ResetPhenomenonSteps(roomChange->gameData);
         }
@@ -704,12 +733,12 @@ static GameEventReturnCode InfinityDungeonRoomChange_Event(GameEvent *event, u32
         (*state)++;
         break;
     }
-    case 2:
+    case ROOM_CHANGE_EVENT_CREATE_ROOM:
         if (FldActSys_IsAsyncLoadPending(Field_GetActorSystem(roomChange->field)) == TRUE) {
             break;
         }
         roomChange->dungeon = InfinityDungeonGimmick_GetDungeon(roomChange->field);
-        if (roomChange->direction != DIR_ARRIVAL) {
+        if (roomChange->direction != INFINITY_DUNGEON_DIR_ARRIVAL) {
             InfinityDungeonRoom *room = InfinityDungeonRoomChange_GetNextRoom(roomChange);
 
             if (room->kind != ROOM_KIND_GOAL) {
@@ -718,7 +747,7 @@ static GameEventReturnCode InfinityDungeonRoomChange_Event(GameEvent *event, u32
                 InfinityDungeonRoomChange_CreateNpcs(roomChange, room);
             }
         }
-        if (roomChange->inTransition == 8) {
+        if (roomChange->inTransition == INFINITY_DUNGEON_TRANSITION_APPLY) {
             if (InfinityDungeonRoomChange_UsesFade(roomChange)) {
                 FieldG3D_RestoreSurface(roomChange->field);
                 GFL_FadeSet(3, 16, 0, 4);
@@ -731,7 +760,7 @@ static GameEventReturnCode InfinityDungeonRoomChange_Event(GameEvent *event, u32
         }
         (*state)++;
         break;
-    case 3:
+    case ROOM_CHANGE_EVENT_FINISH:
         EnableAllActorsMovement(Field_GetActorSystem(roomChange->field));
         return GAMEEVENT_DONE;
     }
@@ -739,15 +768,15 @@ static GameEventReturnCode InfinityDungeonRoomChange_Event(GameEvent *event, u32
 }
 
 static void InfinityDungeonRoomChange_SetNextPosition(InfinityDungeonRoomChange *roomChange) {
-    if (roomChange->mode == 0) {
-        if (roomChange->direction != DIR_ARRIVAL) {
+    if (roomChange->mode == INFINITY_DUNGEON_CHANGE_ROOM) {
+        if (roomChange->direction != INFINITY_DUNGEON_DIR_ARRIVAL) {
             InfinityDungeonRoomChange_SetNextRoom(roomChange);
             InfinityDungeonRoomChange_SetRoomPosition(roomChange);
         } else {
             InfinityDungeonRoomChange_SetArrivalZone(roomChange);
             InfinityDungeonRoomChange_SetArrivalPosition(roomChange);
         }
-    } else if (roomChange->mode == 1) {
+    } else if (roomChange->mode == INFINITY_DUNGEON_CHANGE_FLOOR) {
         InfinityDungeonRoomChange_SetStartRoom(roomChange);
         InfinityDungeonRoomChange_SetFloorPosition(roomChange);
     }

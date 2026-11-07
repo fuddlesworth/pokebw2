@@ -54,7 +54,7 @@ static void InfinityDungeonWalk_Push(InfinityDungeonWalk *walk, const InfinityDu
 static void InfinityDungeonWalk_Pop(InfinityDungeonWalk *walk);
 static BOOL InfinityDungeon_AreAllRoomsDug(const InfinityDungeonRoom *rooms, int width, int height);
 
-static const u8 sIvs[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static const u8 sIvs[INFINITY_DUNGEON_AREA_COUNT] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static const u16 sBlack2Zones[6] = { ZONE_BLACK_TOWER_2, ZONE_BLACK_TOWER_3, ZONE_BLACK_TOWER_5,
                                      ZONE_BLACK_TOWER_4, ZONE_BLACK_TOWER_6, ZONE_BLACK_TOWER };
@@ -63,7 +63,7 @@ static const u16 sWhite2Zones[6] = { ZONE_WHITE_TREEHOLLOW_2, ZONE_WHITE_TREEHOL
                                      ZONE_WHITE_TREEHOLLOW_5, ZONE_WHITE_TREEHOLLOW_6, ZONE_WHITE_TREEHOLLOW };
 
 // clang-format off
-static const InfinityDungeonLevelRange sLevelRanges[10] = {
+static const InfinityDungeonLevelRange sLevelRanges[INFINITY_DUNGEON_AREA_COUNT] = {
     { 47, 50 },
     { 50, 53 },
     { 53, 56 },
@@ -78,17 +78,17 @@ static const InfinityDungeonLevelRange sLevelRanges[10] = {
 
 // clang-format on
 
-static const InfinityDungeonPos sPos2c20 = { 6, 0, 0 };
+static const InfinityDungeonPos sWhite2FloorPosition = { 6, 0, 0 };
 
-static const InfinityDungeonPos sPos2c38[2] = {
+static const InfinityDungeonPos sArrivalPositions[2] = {
     { 7, 0, 2 },
     { 11, 0, 2 },
 };
 
-static const InfinityDungeonPos sPos2c2c = { 6, 0, 0 };
+static const InfinityDungeonPos sBlack2FloorPosition = { 6, 0, 0 };
 
 // clang-format off
-static const InfinityDungeonSize sSizes[10] = {
+static const InfinityDungeonSize sSizes[INFINITY_DUNGEON_AREA_COUNT] = {
     { 3, 3 },
     { 3, 3 },
     { 3, 3 },
@@ -139,7 +139,7 @@ static const InfinityDungeonObjScript sObjScripts[30] = {
 
 // clang-format on
 
-static const u8 sTrainerClassSharesWhite2[10][30] = {
+static const u8 sTrainerClassSharesWhite2[INFINITY_DUNGEON_AREA_COUNT][30] = {
     { 0, 2, 1, 0, 2, 0, 1, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
     { 2, 1, 1, 1, 2, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
     { 0, 2, 3, 1, 0, 0, 0, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
@@ -152,7 +152,7 @@ static const u8 sTrainerClassSharesWhite2[10][30] = {
     { 1, 3, 3, 2, 2, 3, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
 };
 
-static const u8 sTrainerClassSharesBlack2[10][30] = {
+static const u8 sTrainerClassSharesBlack2[INFINITY_DUNGEON_AREA_COUNT][30] = {
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 2, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2, 0, 0, 0, 0, 2, 1, 1, 1, 0, 1, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 0, 1, 2, 1, 1, 0, 0, 0, 0, 0 },
@@ -165,7 +165,7 @@ static const u8 sTrainerClassSharesBlack2[10][30] = {
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 3, 2, 2, 1, 2, 2, 3, 2, 3, 2, 0, 0, 1, 1, 0, 0 },
 };
 
-static const InfinityDungeonPos sPosBlack2B[6][5] = {
+static const InfinityDungeonPos sBlack2TrainerPositions[6][5] = {
     {
         { 6, 0, 2 },
         { 6, 0, 13 },
@@ -210,7 +210,7 @@ static const InfinityDungeonPos sPosBlack2B[6][5] = {
     },
 };
 
-static const InfinityDungeonPos sPosWhite2B[6][5] = {
+static const InfinityDungeonPos sWhite2TrainerPositions[6][5] = {
     {
         { 6, 0, 2 },
         { 6, 0, 13 },
@@ -255,7 +255,7 @@ static const InfinityDungeonPos sPosWhite2B[6][5] = {
     },
 };
 
-static const InfinityDungeonPos sPosBlack2A[6][5] = {
+static const InfinityDungeonPos sBlack2RoomEntryPositions[6][5] = {
     {
         { 6, 0, 14 },
         { 6, 0, 1 },
@@ -300,7 +300,7 @@ static const InfinityDungeonPos sPosBlack2A[6][5] = {
     },
 };
 
-static const InfinityDungeonPos sPosWhite2A[6][5] = {
+static const InfinityDungeonPos sWhite2RoomEntryPositions[6][5] = {
     {
         { 6, 0, 14 },
         { 6, 0, 1 },
@@ -372,7 +372,7 @@ static const InfinityDungeonNpc sNpcs[21] = {
 
 // clang-format on
 
-static const u8 sRoomCountsWhite2[10][5][20] = {
+static const u8 sRoomCountsWhite2[INFINITY_DUNGEON_AREA_COUNT][5][20] = {
     {
         { 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -445,7 +445,7 @@ static const u8 sRoomCountsWhite2[10][5][20] = {
     },
 };
 
-static const u8 sRoomCountsBlack2[10][5][20] = {
+static const u8 sRoomCountsBlack2[INFINITY_DUNGEON_AREA_COUNT][5][20] = {
     {
         { 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -519,21 +519,21 @@ static const u8 sRoomCountsBlack2[10][5][20] = {
 };
 
 static const InfinityDungeonRoomTemplate sRoomTemplates[19] = {
-    { 0, 1, 4, { { 0, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 2, 4, { { 0, 8, 5 }, { 0, 4, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 3, 4, { { 0, 6, 5 }, { 0, 4, 8 }, { 0, 8, 8 }, { 0, 0, 0 } } },
-    { 0, 1, 4, { { 1, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 1, 4, { { 2, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 1, 4, { { 3, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 1, 4, { { 4, 4, 5 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 2, 4, { { 4, 4, 5 }, { 5, 8, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 1, 4, { { 8, 4, 5 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 2, 4, { { 8, 4, 5 }, { 9, 8, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 1, 4, { { 0xc, 4, 5 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 2, 4, { { 0xc, 4, 5 }, { 0xd, 8, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
-    { 0, 3, 4, { { 0x10, 7, 6 }, { 0x10, 9, 0xa }, { 0x10, 5, 0xa }, { 0, 0, 0 } } },
-    { 0, 3, 4, { { 0x11, 7, 6 }, { 0x11, 9, 0xa }, { 0x11, 5, 0xa }, { 0, 0, 0 } } },
-    { 0, 3, 4, { { 0x12, 7, 6 }, { 0x13, 9, 0xa }, { 0x13, 5, 0xa }, { 0, 0, 0 } } },
+    { 0, 1, ROOM_KIND_ORDINARY, { { 0, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 2, ROOM_KIND_ORDINARY, { { 0, 8, 5 }, { 0, 4, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 3, ROOM_KIND_ORDINARY, { { 0, 6, 5 }, { 0, 4, 8 }, { 0, 8, 8 }, { 0, 0, 0 } } },
+    { 0, 1, ROOM_KIND_ORDINARY, { { 1, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 1, ROOM_KIND_ORDINARY, { { 2, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 1, ROOM_KIND_ORDINARY, { { 3, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 1, ROOM_KIND_ORDINARY, { { 4, 4, 5 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 2, ROOM_KIND_ORDINARY, { { 4, 4, 5 }, { 5, 8, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 1, ROOM_KIND_ORDINARY, { { 8, 4, 5 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 2, ROOM_KIND_ORDINARY, { { 8, 4, 5 }, { 9, 8, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 1, ROOM_KIND_ORDINARY, { { 0xc, 4, 5 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 2, ROOM_KIND_ORDINARY, { { 0xc, 4, 5 }, { 0xd, 8, 9 }, { 0, 0, 0 }, { 0, 0, 0 } } },
+    { 0, 3, ROOM_KIND_ORDINARY, { { 0x10, 7, 6 }, { 0x10, 9, 0xa }, { 0x10, 5, 0xa }, { 0, 0, 0 } } },
+    { 0, 3, ROOM_KIND_ORDINARY, { { 0x11, 7, 6 }, { 0x11, 9, 0xa }, { 0x11, 5, 0xa }, { 0, 0, 0 } } },
+    { 0, 3, ROOM_KIND_ORDINARY, { { 0x12, 7, 6 }, { 0x13, 9, 0xa }, { 0x13, 5, 0xa }, { 0, 0, 0 } } },
     { 1, 1, 2, { { 0x14, 3, 4 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
     { 1, 1, 3, { { 0, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
     { 2, 1, 2, { { 0, 6, 7 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } } },
@@ -1231,27 +1231,27 @@ const u16 *InfinityDungeon_GetRoomZones(u8 version) {
 
 const InfinityDungeonPos *InfinityDungeon_GetFloorPos(u8 version) {
     if (version == VERSION_BLACK2) {
-        return &sPos2c2c;
+        return &sBlack2FloorPosition;
     }
-    return &sPos2c20;
+    return &sWhite2FloorPosition;
 }
 
 const InfinityDungeonPos *InfinityDungeon_GetArrivalPos(u32 index) {
-    return &sPos2c38[index];
+    return &sArrivalPositions[index];
 }
 
 const InfinityDungeonPos *InfinityDungeon_GetRoomEntryPos(u8 version, u8 kind, u16 direction) {
     if (version == VERSION_BLACK2) {
-        return &sPosBlack2A[kind][direction];
+        return &sBlack2RoomEntryPositions[kind][direction];
     }
-    return &sPosWhite2A[kind][direction];
+    return &sWhite2RoomEntryPositions[kind][direction];
 }
 
 const InfinityDungeonPos *InfinityDungeon_GetTrainerPos(u8 version, u8 kind, u8 index) {
     if (version == VERSION_BLACK2) {
-        return &sPosBlack2B[kind][index];
+        return &sBlack2TrainerPositions[kind][index];
     }
-    return &sPosWhite2B[kind][index];
+    return &sWhite2TrainerPositions[kind][index];
 }
 
 const InfinityDungeonLevelRange *InfinityDungeon_GetLevelRange(u16 mode) {
@@ -1410,8 +1410,8 @@ void InfinityDungeon_LayoutFloors(InfinityDungeon *dungeon, u32 rank, u32 seed, 
     InfinityDungeonGridPos starts[INFINITY_DUNGEON_FLOOR_COUNT];
     MATHRandContext32 rand;
     int rooms[INFINITY_DUNGEON_ROOM_COUNT];
-    int directions[4];
-    int extraDirections[4];
+    int directions[INFINITY_DUNGEON_PASSAGE_COUNT];
+    int extraDirections[INFINITY_DUNGEON_PASSAGE_COUNT];
     u8 types[INFINITY_DUNGEON_ROOM_COUNT];
     u8 goalTypes[INFINITY_DUNGEON_ROOM_COUNT];
     InfinityDungeonGridPos goal;
@@ -1428,9 +1428,9 @@ void InfinityDungeon_LayoutFloors(InfinityDungeon *dungeon, u32 rank, u32 seed, 
     for (floor = 0; floor < INFINITY_DUNGEON_FLOOR_COUNT; floor++) {
         for (i = 0; i < INFINITY_DUNGEON_ROOM_COUNT; i++) {
             dungeon->floors[floor].rooms[i].index = i;
-            dungeon->floors[floor].rooms[i].kind = 4;
+            dungeon->floors[floor].rooms[i].kind = ROOM_KIND_ORDINARY;
             dungeon->floors[floor].rooms[i].type = INFINITY_DUNGEON_ROOM_TYPE_NONE;
-            for (j = 0; j < 4; j++) {
+            for (j = 0; j < INFINITY_DUNGEON_PASSAGE_COUNT; j++) {
                 dungeon->floors[floor].rooms[i].open[j] = 0;
             }
         }
@@ -1438,7 +1438,7 @@ void InfinityDungeon_LayoutFloors(InfinityDungeon *dungeon, u32 rank, u32 seed, 
     for (floor = 0; floor < INFINITY_DUNGEON_FLOOR_COUNT; floor++) {
         InfinityDungeonRoom *first = dungeon->floors[floor].rooms;
 
-        first->kind = 0;
+        first->kind = ROOM_KIND_START;
         first->type = INFINITY_DUNGEON_ROOM_TYPE_NONE;
         starts[floor].x = 0;
         starts[floor].y = 0;
@@ -1453,7 +1453,7 @@ void InfinityDungeon_LayoutFloors(InfinityDungeon *dungeon, u32 rank, u32 seed, 
         count = InfinityDungeon_ListGoalCandidates(goalRooms, rooms, width, height);
         goalRoom = rooms[MATH_Rand32(&rand, count)];
         room = &goalRooms[goalRoom];
-        room->kind = 1;
+        room->kind = ROOM_KIND_GOAL;
         room->type = INFINITY_DUNGEON_ROOM_TYPE_NONE;
     }
     goal.x = goalRoom % INFINITY_DUNGEON_GRID_WIDTH;
@@ -1477,7 +1477,7 @@ void InfinityDungeon_LayoutFloors(InfinityDungeon *dungeon, u32 rank, u32 seed, 
         }
         if (goalFloor == floor) {
             walk.cur = goal;
-            InfinityDungeonWalk_Dig(1, &walk, floorRooms);
+            InfinityDungeonWalk_Dig(INFINITY_DUNGEON_PASSAGE_SOUTH, &walk, floorRooms);
         }
 
         extraWalk.top = -1;
@@ -1485,7 +1485,7 @@ void InfinityDungeon_LayoutFloors(InfinityDungeon *dungeon, u32 rank, u32 seed, 
             for (pos.x = 0; pos.x < width; pos.x++) {
                 extraWalk.cur = pos;
                 kind = InfinityDungeon_GetGridRoom(&pos, floorRooms)->kind;
-                if (kind != 0 && kind != 1) {
+                if (kind != ROOM_KIND_START && kind != ROOM_KIND_GOAL) {
                     count = InfinityDungeonWalk_GetDirections(&pos, floorRooms, extraDirections, width, height, TRUE);
                     InfinityDungeonWalk_Dig(extraDirections[(u8)MATH_Rand32(&rand, count)], &extraWalk, floorRooms);
                 }
@@ -1499,7 +1499,7 @@ void InfinityDungeon_LayoutFloors(InfinityDungeon *dungeon, u32 rank, u32 seed, 
         count = InfinityDungeon_ListRoomTypes(rank, i, dungeon->version, types);
         InfinityDungeon_ShuffleU8(types, count, &rand);
         for (j = 0; j < INFINITY_DUNGEON_ROOM_COUNT; j++) {
-            if (dungeon->floors[i].rooms[j].kind == 4) {
+            if (dungeon->floors[i].rooms[j].kind == ROOM_KIND_ORDINARY) {
                 int x = j % INFINITY_DUNGEON_GRID_WIDTH;
                 int y = j / INFINITY_DUNGEON_GRID_WIDTH;
 
@@ -1555,7 +1555,7 @@ static u8 InfinityDungeon_ListGoalRoomTypes(u32 rank, u8 floor, u8 version, u8 *
 
     MI_CpuFill8(types, INFINITY_DUNGEON_ROOM_TYPE_NONE, INFINITY_DUNGEON_ROOM_COUNT);
     for (i = 0; i < INFINITY_DUNGEON_ROOM_TYPE_NONE; i++) {
-        if (counts[i] != 0 && InfinityDungeon_GetRoomTemplate(i)->kind == 4) {
+        if (counts[i] != 0 && InfinityDungeon_GetRoomTemplate(i)->kind == ROOM_KIND_ORDINARY) {
             types[count++] = i;
         }
     }
@@ -1574,7 +1574,7 @@ static int InfinityDungeon_ListGoalCandidates(InfinityDungeonRoom *rooms, int *l
         for (x = 0; x < width; x++) {
             pos.x = x;
             pos.y = y;
-            if (InfinityDungeon_GetGridRoom(&pos, rooms)->kind != 0) {
+            if (InfinityDungeon_GetGridRoom(&pos, rooms)->kind != ROOM_KIND_START) {
                 list[count] = x + y * INFINITY_DUNGEON_GRID_WIDTH;
                 count++;
             }
@@ -1595,29 +1595,29 @@ static const InfinityDungeonRoom *InfinityDungeon_GetGridRoomConst(const Infinit
 // Opens a passage from the walk's room in the direction (up, down, left or right) and moves into the room beyond
 static void InfinityDungeonWalk_Dig(u8 direction, InfinityDungeonWalk *walk, InfinityDungeonRoom *rooms) {
     switch (direction) {
-    case 0:
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[0] = 1;
+    case INFINITY_DUNGEON_PASSAGE_NORTH:
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_NORTH] = 1;
         InfinityDungeonWalk_Push(walk, &walk->cur);
         walk->cur.y--;
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[1] = 1;
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_SOUTH] = 1;
         break;
-    case 1:
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[1] = 1;
+    case INFINITY_DUNGEON_PASSAGE_SOUTH:
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_SOUTH] = 1;
         InfinityDungeonWalk_Push(walk, &walk->cur);
         walk->cur.y++;
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[0] = 1;
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_NORTH] = 1;
         break;
-    case 3:
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[3] = 1;
+    case INFINITY_DUNGEON_PASSAGE_WEST:
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_WEST] = 1;
         InfinityDungeonWalk_Push(walk, &walk->cur);
         walk->cur.x--;
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[2] = 1;
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_EAST] = 1;
         break;
-    case 2:
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[2] = 1;
+    case INFINITY_DUNGEON_PASSAGE_EAST:
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_EAST] = 1;
         InfinityDungeonWalk_Push(walk, &walk->cur);
         walk->cur.x++;
-        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[3] = 1;
+        InfinityDungeon_GetGridRoom(&walk->cur, rooms)->open[INFINITY_DUNGEON_PASSAGE_WEST] = 1;
         break;
     }
 }
@@ -1632,30 +1632,30 @@ static int InfinityDungeonWalk_GetDirections(const InfinityDungeonGridPos *pos, 
     InfinityDungeonGridPos north;
     u8 kind;
 
-    MI_CpuFill8(directions, 4, 4 * sizeof(int));
+    MI_CpuFill8(directions, 4, INFINITY_DUNGEON_PASSAGE_COUNT * sizeof(int));
     east = *pos;
     east.x++;
-    if (east.x < width && InfinityDungeon_GetGridRoomConst(&east, rooms)->kind != 1) {
+    if (east.x < width && InfinityDungeon_GetGridRoomConst(&east, rooms)->kind != ROOM_KIND_GOAL) {
         if (allowVisited == 0) {
             if (InfinityDungeon_IsRoomUndug(&east, rooms)) {
-                directions[count] = 2;
+                directions[count] = INFINITY_DUNGEON_PASSAGE_EAST;
                 count++;
             }
         } else {
-            directions[count] = 2;
+            directions[count] = INFINITY_DUNGEON_PASSAGE_EAST;
             count++;
         }
     }
     west = *pos;
     west.x--;
-    if (west.x >= 0 && InfinityDungeon_GetGridRoomConst(&west, rooms)->kind != 1) {
+    if (west.x >= 0 && InfinityDungeon_GetGridRoomConst(&west, rooms)->kind != ROOM_KIND_GOAL) {
         if (allowVisited == 0) {
             if (InfinityDungeon_IsRoomUndug(&west, rooms)) {
-                directions[count] = 3;
+                directions[count] = INFINITY_DUNGEON_PASSAGE_WEST;
                 count++;
             }
         } else {
-            directions[count] = 3;
+            directions[count] = INFINITY_DUNGEON_PASSAGE_WEST;
             count++;
         }
     }
@@ -1663,29 +1663,29 @@ static int InfinityDungeonWalk_GetDirections(const InfinityDungeonGridPos *pos, 
     south.y++;
     if (south.y < height) {
         kind = InfinityDungeon_GetGridRoomConst(&south, rooms)->kind;
-        if (kind != 1 && kind != 0) {
+        if (kind != ROOM_KIND_GOAL && kind != ROOM_KIND_START) {
             if (allowVisited == 0) {
                 if (InfinityDungeon_IsRoomUndug(&south, rooms)) {
-                    directions[count] = 1;
+                    directions[count] = INFINITY_DUNGEON_PASSAGE_SOUTH;
                     count++;
                 }
             } else {
-                directions[count] = 1;
+                directions[count] = INFINITY_DUNGEON_PASSAGE_SOUTH;
                 count++;
             }
         }
     }
     north = *pos;
-    if (InfinityDungeon_GetGridRoomConst(&north, rooms)->kind != 0) {
+    if (InfinityDungeon_GetGridRoomConst(&north, rooms)->kind != ROOM_KIND_START) {
         north.y--;
-        if (InfinityDungeon_GetGridRoomConst(&north, rooms)->kind != 1 && north.y >= 0) {
+        if (InfinityDungeon_GetGridRoomConst(&north, rooms)->kind != ROOM_KIND_GOAL && north.y >= 0) {
             if (allowVisited == 0) {
                 if (InfinityDungeon_IsRoomUndug(&north, rooms)) {
-                    directions[count] = 0;
+                    directions[count] = INFINITY_DUNGEON_PASSAGE_NORTH;
                     count++;
                 }
             } else {
-                directions[count] = 0;
+                directions[count] = INFINITY_DUNGEON_PASSAGE_NORTH;
                 count++;
             }
         }
@@ -1698,7 +1698,7 @@ static BOOL InfinityDungeon_IsRoomUndug(const InfinityDungeonGridPos *pos, const
     const InfinityDungeonRoom *room = InfinityDungeon_GetGridRoomConst(pos, rooms);
     int i;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < INFINITY_DUNGEON_PASSAGE_COUNT; i++) {
         if (room->open[i] == 1) {
             return FALSE;
         }
@@ -1729,7 +1729,7 @@ static BOOL InfinityDungeon_AreAllRoomsDug(const InfinityDungeonRoom *rooms, int
         for (x = 0; x < width; x++) {
             InfinityDungeonGridPos pos = { x, y };
 
-            if (InfinityDungeon_GetGridRoomConst(&pos, rooms)->kind != 1 &&
+            if (InfinityDungeon_GetGridRoomConst(&pos, rooms)->kind != ROOM_KIND_GOAL &&
                 InfinityDungeon_IsRoomUndug(&pos, rooms) == TRUE) {
                 return FALSE;
             }

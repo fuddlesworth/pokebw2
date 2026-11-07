@@ -173,9 +173,9 @@ sFloorBlack2Mode0 kind:data(any) addr:0x021f2abc
 sIvs kind:data(any) addr:0x021f2c3c
 sBlack2Zones kind:data(any) addr:0x021f2c46
 sWhite2Zones kind:data(any) addr:0x021f2c52
-sPos2c20 kind:data(any) addr:0x021f2c60
-sPos2c2c kind:data(any) addr:0x021f2c6c
-sPos2c38 kind:data(any) addr:0x021f2c78
+sWhite2FloorPosition kind:data(any) addr:0x021f2c60
+sBlack2FloorPosition kind:data(any) addr:0x021f2c6c
+sArrivalPositions kind:data(any) addr:0x021f2c78
 sLevelRanges kind:data(any) addr:0x021f2c90
 sSizes kind:data(any) addr:0x021f2cb8
 data_ov127_021f2c7c kind:data(any) addr:0x021f2cbc
@@ -186,10 +186,10 @@ data_ov127_021f2d9d kind:data(any) addr:0x021f2ddd ambiguous
 sTrainerClassSharesWhite2 kind:data(any) addr:0x021f2df8
 data_ov127_021f2e85 kind:data(any) addr:0x021f2ec5 ambiguous
 sTrainerClassSharesBlack2 kind:data(any) addr:0x021f2f24
-sPosBlack2A kind:data(any) addr:0x021f3050
-sPosWhite2A kind:data(any) addr:0x021f31b8
-sPosBlack2B kind:data(any) addr:0x021f3320
-sPosWhite2B kind:data(any) addr:0x021f3488
+sBlack2RoomEntryPositions kind:data(any) addr:0x021f3050
+sWhite2RoomEntryPositions kind:data(any) addr:0x021f31b8
+sBlack2TrainerPositions kind:data(any) addr:0x021f3320
+sWhite2TrainerPositions kind:data(any) addr:0x021f3488
 sNpcs kind:data(any) addr:0x021f35f0
 sRoomCountsBlack2 kind:data(any) addr:0x021f37e8
 sRoomCountsWhite2 kind:data(any) addr:0x021f3bd0
@@ -203,10 +203,10 @@ data_ov127_021f43a3 kind:data(any) addr:0x021f43e3
 data_ov127_021f43b5 kind:data(any) addr:0x021f43f5 ambiguous
 data_ov127_021f43d1 kind:data(any) addr:0x021f4411 ambiguous
 data_ov127_021f4559 kind:data(any) addr:0x021f4599 ambiguous
-data_ov127_021f4da0 kind:data(any) addr:0x021f4de0
-data_ov127_021f4da8 kind:data(any) addr:0x021f4de8
-data_ov127_021f4dc8 kind:data(any) addr:0x021f4e08
-data_ov127_021f4de8 kind:data(any) addr:0x021f4e28
+sPlayerPaletteFiles kind:data(any) addr:0x021f4de0
+sMessageBGSetup kind:data(any) addr:0x021f4de8
+sMenuBGSetup kind:data(any) addr:0x021f4e08
+sFrameBGSetup kind:data(any) addr:0x021f4e28
 data_ov127_021f4e20 kind:data(any) addr:0x021f4e60
 data_ov127_021f4e38 kind:data(any) addr:0x021f4e78 ambiguous
 data_ov127_021f4e3c kind:data(any) addr:0x021f4e7c
