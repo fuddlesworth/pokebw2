@@ -49,6 +49,55 @@ typedef struct {
     s32 bottom;
 } Box2Rect;
 
+// Character-resource slots.
+enum {
+    BOX2_CHAR_POKE_ICON_FIRST = 0,
+    BOX2_CHAR_POKE_GRA_FIRST = 96,
+    BOX2_CHAR_POKE_GRA_SECOND = 97,
+    BOX2_CHAR_ITEM_ICON = 98,
+    BOX2_CHAR_TYPE_ICON_FIRST = 99,
+    BOX2_CHAR_TRAY_ICON_FIRST = 116,
+    BOX2_CHAR_BOX_UI = 122,
+    BOX2_CHAR_SUMMARY_BUTTON = 123,
+    BOX2_CHAR_TOUCH_BAR = 124,
+    BOX2_CHAR_MARK_MAIN = 125,
+    BOX2_CHAR_MARK_SUB = 126,
+    BOX2_CHAR_POKERUS = 127,
+    BOX2_CHAR_SEARCH_BUTTON = 128,
+};
+
+// Palette-resource slots.
+enum {
+    BOX2_PAL_POKE_ICON = 0,
+    BOX2_PAL_POKE_GRA_FIRST = 1,
+    BOX2_PAL_POKE_GRA_SECOND = 2,
+    BOX2_PAL_ITEM_ICON = 3,
+    BOX2_PAL_TYPE_ICON = 4,
+    BOX2_PAL_TRAY_ICON = 5,
+    BOX2_PAL_BOX_UI = 6,
+    BOX2_PAL_TOUCH_BAR = 7,
+    BOX2_PAL_MARK_MAIN = 8,
+    BOX2_PAL_MARK_SUB = 9,
+    BOX2_PAL_POKERUS = 10,
+};
+
+// Cell-animation resource slots.
+enum {
+    BOX2_CELL_POKE_ICON = 0,
+    BOX2_CELL_POKE_GRA_FIRST = 1,
+    BOX2_CELL_POKE_GRA_SECOND = 2,
+    BOX2_CELL_ITEM_ICON = 3,
+    BOX2_CELL_TYPE_ICON = 4,
+    BOX2_CELL_TRAY_ICON = 5,
+    BOX2_CELL_BOX_UI = 6,
+    BOX2_CELL_SUMMARY_BUTTON = 7,
+    BOX2_CELL_TOUCH_BAR = 8,
+    BOX2_CELL_MARK_MAIN = 9,
+    BOX2_CELL_MARK_SUB = 10,
+    BOX2_CELL_POKERUS = 11,
+    BOX2_CELL_SEARCH_BUTTON = 12,
+};
+
 static void CreateClActSys(Box2AppWork *app);
 static void LoadResources(Box2AppWork *app);
 static void FreeResources(Box2AppWork *app);
@@ -113,33 +162,33 @@ static const u8 sButtonAnims[3][3] = {
 };
 
 // Where the party's icons are on the party's frame
-static const u8 sPartyFramePokePos[6][2] = {
+static const u8 sPartyFramePokePos[PARTY_SIZE][2] = {
     { 24, 16 }, { 64, 24 }, { 24, 48 }, { 64, 56 }, { 24, 80 }, { 64, 88 },
 };
 
 // The type icons on the upper screen
 static const Box2ActorData sTypeIconData = {
-    { 160, 48, 0, 0, 1 }, 99, 4, 4, 0, 1,
+    { 160, 48, 0, 0, 1 }, BOX2_CHAR_TYPE_ICON_FIRST, BOX2_PAL_TYPE_ICON, BOX2_CELL_TYPE_ICON, 0, CLACT_SURFACE_SUB,
 };
 
 // The first of the tray's Pokémon icons
 static const Box2ActorData sPokeIconData = {
-    { 24, 48, 0, 10, 3 }, 0, 0, 0, 0, 0,
+    { 24, 48, 0, 10, 3 }, BOX2_CHAR_POKE_ICON_FIRST, BOX2_PAL_POKE_ICON, BOX2_CELL_POKE_ICON, 0, CLACT_SURFACE_MAIN,
 };
 
 // Where the party's icons are on the lower screen
-static const ClActorPos sPartyPokePos[6] = {
+static const ClActorPos sPartyPokePos[PARTY_SIZE] = {
     { 40, 208 }, { 80, 216 }, { 40, 240 }, { 80, 248 }, { 40, 272 }, { 80, 280 },
 };
 
 // The dots that run around the picked range
 static const Box2ActorData sRangeDotData = {
-    { 220, 120, 25, 19, 0 }, 122, 6, 6, 0, 0,
+    { 220, 120, 25, 19, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN,
 };
 
 // The tray icons of the box list
 static const Box2ActorData sTrayIconData = {
-    { 300, 0, 0, 80, 1 }, 116, 5, 5, 0, 0,
+    { 300, 0, 0, 80, 1 }, BOX2_CHAR_TRAY_ICON_FIRST, BOX2_PAL_TRAY_ICON, BOX2_CELL_TRAY_ICON, 0, CLACT_SURFACE_MAIN,
 };
 
 static const ClActSysSetup sClActSysSetup = {
@@ -155,38 +204,38 @@ static const u8 sTrayIconColors[24] = {
 // The actors that are created from one setup each, by their ID
 // clang-format off
 static const Box2ActorData sActorData[32] = {
-    { { 12, 28, 1, 0, 3 }, 122, 6, 6, 0, 0 },
-    { { 156, 28, 3, 0, 3 }, 122, 6, 6, 0, 0 },
-    { { 0, -21, 0, 6, 1 }, 122, 6, 6, 0, 0 },
-    { { 128, -40, 5, 40, 0 }, 122, 6, 6, 0, 0 },
-    { { 128, 128, 6, 0, 0 }, 122, 6, 6, 0, 0 },
-    { { 128, 160, 9, 0, 0 }, 122, 6, 6, 0, 0 },
-    { { 232, 168, 1, 64, 0 }, 124, 7, 8, 0, 0 },
-    { { 200, 168, 0, 64, 0 }, 124, 7, 8, 0, 0 },
-    { { 112, 168, 0, 64, 0 }, 123, 7, 7, 3, 0 },
-    { { 32, 7, 19, 100, 0 }, 122, 6, 6, 0, 0 },
-    { { 84, 7, 20, 100, 0 }, 122, 6, 6, 0, 0 },
-    { { 136, 7, 22, 100, 0 }, 122, 6, 6, 0, 0 },
-    { { 0, 0, 0, 0, 0 }, 98, 3, 3, 0, 0 },
-    { { 200, 56, 0, 10, 1 }, 96, 1, 1, 0, 1 },
-    { { 200, 56, 0, 10, 1 }, 97, 2, 2, 0, 1 },
-    { { 192, 200, 0, 10, 1 }, 125, 8, 9, 0, 0 },
-    { { 224, 200, 0, 10, 1 }, 125, 8, 9, 0, 0 },
-    { { 192, 224, 0, 10, 1 }, 125, 8, 9, 0, 0 },
-    { { 224, 224, 0, 10, 1 }, 125, 8, 9, 0, 0 },
-    { { 192, 248, 0, 10, 1 }, 125, 8, 9, 0, 0 },
-    { { 224, 248, 0, 10, 1 }, 125, 8, 9, 0, 0 },
-    { { 200, 103, 0, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 208, 103, 0, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 216, 103, 0, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 224, 103, 0, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 232, 103, 0, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 240, 103, 0, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 160, 103, 12, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 168, 103, 13, 10, 1 }, 126, 9, 10, 0, 1 },
-    { { 116, 104, 0, 10, 1 }, 127, 10, 11, 0, 1 },
-    { { 168, 168, 0, 64, 0 }, 128, 7, 12, 0, 0 },
-    { { 0, 0, 24, 50, 0 }, 122, 6, 6, 0, 0 },
+    { { 12, 28, 1, 0, 3 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 156, 28, 3, 0, 3 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 0, -21, 0, 6, 1 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 128, -40, 5, 40, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 128, 128, 6, 0, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 128, 160, 9, 0, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 232, 168, 1, 64, 0 }, BOX2_CHAR_TOUCH_BAR, BOX2_PAL_TOUCH_BAR, BOX2_CELL_TOUCH_BAR, 0, CLACT_SURFACE_MAIN },
+    { { 200, 168, 0, 64, 0 }, BOX2_CHAR_TOUCH_BAR, BOX2_PAL_TOUCH_BAR, BOX2_CELL_TOUCH_BAR, 0, CLACT_SURFACE_MAIN },
+    { { 112, 168, 0, 64, 0 }, BOX2_CHAR_SUMMARY_BUTTON, BOX2_PAL_TOUCH_BAR, BOX2_CELL_SUMMARY_BUTTON, 3, CLACT_SURFACE_MAIN },
+    { { 32, 7, 19, 100, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 84, 7, 20, 100, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 136, 7, 22, 100, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
+    { { 0, 0, 0, 0, 0 }, BOX2_CHAR_ITEM_ICON, BOX2_PAL_ITEM_ICON, BOX2_CELL_ITEM_ICON, 0, CLACT_SURFACE_MAIN },
+    { { 200, 56, 0, 10, 1 }, BOX2_CHAR_POKE_GRA_FIRST, BOX2_PAL_POKE_GRA_FIRST, BOX2_CELL_POKE_GRA_FIRST, 0, CLACT_SURFACE_SUB },
+    { { 200, 56, 0, 10, 1 }, BOX2_CHAR_POKE_GRA_SECOND, BOX2_PAL_POKE_GRA_SECOND, BOX2_CELL_POKE_GRA_SECOND, 0, CLACT_SURFACE_SUB },
+    { { 192, 200, 0, 10, 1 }, BOX2_CHAR_MARK_MAIN, BOX2_PAL_MARK_MAIN, BOX2_CELL_MARK_MAIN, 0, CLACT_SURFACE_MAIN },
+    { { 224, 200, 0, 10, 1 }, BOX2_CHAR_MARK_MAIN, BOX2_PAL_MARK_MAIN, BOX2_CELL_MARK_MAIN, 0, CLACT_SURFACE_MAIN },
+    { { 192, 224, 0, 10, 1 }, BOX2_CHAR_MARK_MAIN, BOX2_PAL_MARK_MAIN, BOX2_CELL_MARK_MAIN, 0, CLACT_SURFACE_MAIN },
+    { { 224, 224, 0, 10, 1 }, BOX2_CHAR_MARK_MAIN, BOX2_PAL_MARK_MAIN, BOX2_CELL_MARK_MAIN, 0, CLACT_SURFACE_MAIN },
+    { { 192, 248, 0, 10, 1 }, BOX2_CHAR_MARK_MAIN, BOX2_PAL_MARK_MAIN, BOX2_CELL_MARK_MAIN, 0, CLACT_SURFACE_MAIN },
+    { { 224, 248, 0, 10, 1 }, BOX2_CHAR_MARK_MAIN, BOX2_PAL_MARK_MAIN, BOX2_CELL_MARK_MAIN, 0, CLACT_SURFACE_MAIN },
+    { { 200, 103, 0, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 208, 103, 0, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 216, 103, 0, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 224, 103, 0, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 232, 103, 0, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 240, 103, 0, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 160, 103, 12, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 168, 103, 13, 10, 1 }, BOX2_CHAR_MARK_SUB, BOX2_PAL_MARK_SUB, BOX2_CELL_MARK_SUB, 0, CLACT_SURFACE_SUB },
+    { { 116, 104, 0, 10, 1 }, BOX2_CHAR_POKERUS, BOX2_PAL_POKERUS, BOX2_CELL_POKERUS, 0, CLACT_SURFACE_SUB },
+    { { 168, 168, 0, 64, 0 }, BOX2_CHAR_SEARCH_BUTTON, BOX2_PAL_TOUCH_BAR, BOX2_CELL_SEARCH_BUTTON, 0, CLACT_SURFACE_MAIN },
+    { { 0, 0, 24, 50, 0 }, BOX2_CHAR_BOX_UI, BOX2_PAL_BOX_UI, BOX2_CELL_BOX_UI, 0, CLACT_SURFACE_MAIN },
 };
 
 // clang-format on
@@ -195,7 +244,8 @@ void Box2Obj_Init(Box2SysWork *syswk) {
     CreateClActSys(syswk->app);
     LoadResources(syswk->app);
     CreateActors(syswk);
-    Box2Obj_SetButtons(syswk, syswk->button1, syswk->button2, syswk->button3, syswk->button4);
+    Box2Obj_SetButtons(syswk, syswk->backButtonState, syswk->closeButtonState, syswk->summaryButtonState,
+                       syswk->searchButtonState);
     CreateFontOams(syswk->app);
     InitRangeSelect(syswk);
     GFL_BGSysSetBGEnabledA(GX_PLANEMASK_OBJ, TRUE);
@@ -277,7 +327,7 @@ static void DeleteBoxActors(Box2AppWork *app) {
 void Box2Obj_UpdateAnim(Box2AppWork *app) {
     u32 i;
 
-    for (i = 0; i < 49; i++) {
+    for (i = 0; i < BOX2_ACTOR_TRAY_ICON; i++) {
         if (app->actors[i] != NULL && ClActor_IsAutoAnim(app->actors[i]) != TRUE) {
             ClActor_SetAnimSpeed(app->actors[i], FX32_ONE);
         }
@@ -352,40 +402,43 @@ static void LoadBoxResources(Box2AppWork *app) {
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_BOX2, HEAPID_BOX2_APP);
     for (i = 0; i < 6; i++) {
-        app->chrRes[116 + i] = ClActSys_LoadChars(arc, 71, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
+        app->chrRes[BOX2_CHAR_TRAY_ICON_FIRST + i] =
+            ClActSys_LoadChars(arc, 71, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
     }
-    app->palRes[5] = ClActSys_LoadPltt(arc, 72, CLACT_VRAM_MAIN, 0, HEAPID_BOX2_APP);
-    app->cellRes[5] = ClActSys_LoadCellAnims(arc, 73, 74, HEAPID_BOX2_APP);
+    app->palRes[BOX2_PAL_TRAY_ICON] = ClActSys_LoadPltt(arc, 72, CLACT_VRAM_MAIN, 0, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_TRAY_ICON] = ClActSys_LoadCellAnims(arc, 73, 74, HEAPID_BOX2_APP);
     for (j = 0; j < 96; j++) {
         app->chrRes[j] = ClActSys_LoadChars(arc, 75, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
     }
-    app->chrRes[122] = ClActSys_LoadChars(arc, 67, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
-    app->palRes[6] = ClActSys_LoadPltt(arc, 70, CLACT_VRAM_MAIN, 0xe0, HEAPID_BOX2_APP);
-    app->cellRes[6] = ClActSys_LoadCellAnims(arc, 68, 69, HEAPID_BOX2_APP);
-    app->chrRes[123] = ClActSys_LoadChars(arc, 64, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
-    app->cellRes[7] = ClActSys_LoadCellAnims(arc, 65, 66, HEAPID_BOX2_APP);
-    app->chrRes[98] = ClActSys_LoadChars(arc, 76, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
-    app->cellRes[3] = ClActSys_LoadCellAnims(arc, 77, 78, HEAPID_BOX2_APP);
+    app->chrRes[BOX2_CHAR_BOX_UI] = ClActSys_LoadChars(arc, 67, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
+    app->palRes[BOX2_PAL_BOX_UI] = ClActSys_LoadPltt(arc, 70, CLACT_VRAM_MAIN, 0xe0, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_BOX_UI] = ClActSys_LoadCellAnims(arc, 68, 69, HEAPID_BOX2_APP);
+    app->chrRes[BOX2_CHAR_SUMMARY_BUTTON] = ClActSys_LoadChars(arc, 64, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_SUMMARY_BUTTON] = ClActSys_LoadCellAnims(arc, 65, 66, HEAPID_BOX2_APP);
+    app->chrRes[BOX2_CHAR_ITEM_ICON] = ClActSys_LoadChars(arc, 76, TRUE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_ITEM_ICON] = ClActSys_LoadCellAnims(arc, 77, 78, HEAPID_BOX2_APP);
     GFL_ArcToolFree(arc);
 }
 
 static void LoadUiResources(Box2AppWork *app) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(getUINarcIdx(), HEAPID_BOX2_APP);
 
-    app->chrRes[124] =
+    app->chrRes[BOX2_CHAR_TOUCH_BAR] =
         ClActSys_LoadChars(arc, AppMenuCommon_GetTouchBarCharFile(), FALSE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
-    app->palRes[7] =
+    app->palRes[BOX2_PAL_TOUCH_BAR] =
         ClActSys_LoadPltt(arc, AppMenuCommon_GetTouchBarPaletteFile(), CLACT_VRAM_MAIN, 0x120, HEAPID_BOX2_APP);
-    app->cellRes[8] = ClActSys_LoadCellAnims(arc, AppMenuCommon_GetTouchBarCellFile(2),
-                                             AppMenuCommon_GetTouchBarAnimFile(2), HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_TOUCH_BAR] =
+        ClActSys_LoadCellAnims(arc, AppMenuCommon_GetTouchBarCellFile(BOX2_OBJ_MAPPING_128K),
+                               AppMenuCommon_GetTouchBarAnimFile(BOX2_OBJ_MAPPING_128K), HEAPID_BOX2_APP);
     GFL_ArcToolFree(arc);
 }
 
 static void LoadPokeIconResources(Box2AppWork *app) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_POKEICON, HEAPID_BOX2_APP);
 
-    app->palRes[0] = ClActSys_LoadPlttEx(arc, PokeIcon_GetAltPaletteFile(), CLACT_VRAM_MAIN, 0x60, HEAPID_BOX2_APP);
-    app->cellRes[0] =
+    app->palRes[BOX2_PAL_POKE_ICON] =
+        ClActSys_LoadPlttEx(arc, PokeIcon_GetAltPaletteFile(), CLACT_VRAM_MAIN, 0x60, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_POKE_ICON] =
         ClActSys_LoadCellAnims(arc, PokeIcon_GetCellFile_Main(), getOBJTileMapping_MainEng(), HEAPID_BOX2_APP);
     GFL_ArcToolFree(arc);
 }
@@ -449,17 +502,17 @@ static BOOL MatchesSearch(Box2SearchParam *search, BoxPkm *pkm) {
             return FALSE;
         }
     }
-    if (search->item == 1) {
+    if (search->item == BOX2_SEARCH_ITEM_WITHOUT) {
         if (PML_PkmGetParam(pkm, PKM_PARAM_ITEM, NULL) != 0 || egg != FALSE) {
             return FALSE;
         }
-    } else if (search->item == 2) {
+    } else if (search->item == BOX2_SEARCH_ITEM_WITH) {
         if (PML_PkmGetParam(pkm, PKM_PARAM_ITEM, NULL) == 0 || egg != FALSE) {
             return FALSE;
         }
     }
     if (search->nature != 0) {
-        if (search->nature - 1 != PML_PkmGetParam(pkm, 0x70, NULL) || egg != FALSE) {
+        if (search->nature - 1 != PML_PkmGetParam(pkm, PKM_PARAM_NATURE, NULL) || egg != FALSE) {
             return FALSE;
         }
     }
@@ -468,14 +521,14 @@ static BOOL MatchesSearch(Box2SearchParam *search, BoxPkm *pkm) {
             return FALSE;
         }
     }
-    if (search->sex != 0) {
+    if (search->sex != BOX2_SEARCH_GENDER_ANY) {
         if (search->sex - 1 != PML_PkmGetParam(pkm, PKM_PARAM_SEX, NULL) || egg != FALSE) {
             return FALSE;
         }
     }
     if (search->marks != 0) {
         marks = PML_PkmGetParam(pkm, PKM_PARAM_MARKINGS, NULL);
-        for (i = 0; i < 6; i++) {
+        for (i = 0; i < BOX2_MARK_COUNT; i++) {
             if ((search->marks & (1 << i)) && !(marks & (1 << i))) {
                 return FALSE;
             }
@@ -541,7 +594,7 @@ void Box2Obj_GetIconPos(u32 pos, s16 *x, s16 *y, u32 mode) {
         pos -= BOX2_TRAY_POKE_MAX;
         *x = sPartyPokePos[pos].x;
         *y = sPartyPokePos[pos].y - 144;
-        if (mode == 2) {
+        if (mode == BOX2_ICON_POS_PARTY_RIGHT) {
             *x += 152;
         }
     }
@@ -551,10 +604,10 @@ void Box2Obj_PutPartyIconsLeftBelow(Box2SysWork *syswk, BOOL hideGet) {
     u32 count = PokeParty_GetPkmCount(syswk->param->party);
     u32 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < PARTY_SIZE; i++) {
         u32 id = syswk->app->pokeIconId[BOX2_PARTY_POS + i];
 
-        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x, sPartyPokePos[i].y, 0);
+        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x, sPartyPokePos[i].y, CLACT_SURFACE_MAIN);
         Box2Obj_SetIconPriority(syswk->app, BOX2_PARTY_POS + i, TRUE);
         if (i < count && (hideGet == FALSE || syswk->pos != BOX2_PARTY_POS + i)) {
             Box2Obj_SetVisible(syswk->app, id, TRUE);
@@ -572,7 +625,7 @@ void Box2Obj_HidePartyRangeIcons(Box2SysWork *syswk) {
     if (syswk->pos >= BOX2_PARTY_POS) {
         pos = syswk->pos - BOX2_PARTY_POS;
         x = pos & 1;
-        for (i = 0; i < 6; i++) {
+        for (i = 0; i < PARTY_SIZE; i++) {
             if ((i & 1) >= x && (i & 1) < x + syswk->app->rangeWidth && (i >> 1) >= (pos >> 1) &&
                 (i >> 1) < (pos >> 1) + syswk->app->rangeHeight) {
                 Box2Obj_SetVisible(syswk->app, syswk->app->pokeIconId[BOX2_PARTY_POS + i], FALSE);
@@ -585,10 +638,10 @@ void Box2Obj_PutPartyIconsRightBelow(Box2SysWork *syswk) {
     u32 count = PokeParty_GetPkmCount(syswk->param->party);
     u32 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < PARTY_SIZE; i++) {
         u32 id = syswk->app->pokeIconId[BOX2_PARTY_POS + i];
 
-        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x + 152, sPartyPokePos[i].y, 0);
+        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x + 152, sPartyPokePos[i].y, CLACT_SURFACE_MAIN);
         Box2Obj_SetIconPriority(syswk->app, BOX2_PARTY_POS + i, TRUE);
         if (i < count) {
             Box2Obj_SetVisible(syswk->app, id, TRUE);
@@ -602,10 +655,10 @@ void Box2Obj_PutPartyIconsLeft(Box2SysWork *syswk) {
     u32 count = PokeParty_GetPkmCount(syswk->param->party);
     u32 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < PARTY_SIZE; i++) {
         u32 id = syswk->app->pokeIconId[BOX2_PARTY_POS + i];
 
-        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x, sPartyPokePos[i].y - 144, 0);
+        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x, sPartyPokePos[i].y - 144, CLACT_SURFACE_MAIN);
         Box2Obj_SetIconPriority(syswk->app, BOX2_PARTY_POS + i, TRUE);
         if (i < count) {
             Box2Obj_SetVisible(syswk->app, id, TRUE);
@@ -619,10 +672,10 @@ void Box2Obj_PutPartyIconsRight(Box2SysWork *syswk) {
     u32 count = PokeParty_GetPkmCount(syswk->param->party);
     u32 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < PARTY_SIZE; i++) {
         u32 id = syswk->app->pokeIconId[BOX2_PARTY_POS + i];
 
-        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x + 152, sPartyPokePos[i].y - 144, 0);
+        Box2Obj_SetPos(syswk->app, id, sPartyPokePos[i].x + 152, sPartyPokePos[i].y - 144, CLACT_SURFACE_MAIN);
         Box2Obj_SetIconPriority(syswk->app, BOX2_PARTY_POS + i, TRUE);
         if (i < count) {
             Box2Obj_SetVisible(syswk->app, id, TRUE);
@@ -681,7 +734,7 @@ void Box2Obj_ScrollTrayIcons(Box2SysWork *syswk, s32 mv) {
     }
     for (i = 0; i < BOX2_TRAY_POKE_MAX; i++) {
         id = syswk->app->pokeIconId[i];
-        Box2Obj_GetPos(syswk->app, id, &x, &y, 0);
+        Box2Obj_GetPos(syswk->app, id, &x, &y, CLACT_SURFACE_MAIN);
         x = x + mv;
         if (x == end) {
             x = start;
@@ -692,7 +745,7 @@ void Box2Obj_ScrollTrayIcons(Box2SysWork *syswk, s32 mv) {
                 SetIconBlendChecked(syswk, i);
             }
         }
-        Box2Obj_SetPos(syswk->app, id, x, y, 0);
+        Box2Obj_SetPos(syswk->app, id, x, y, CLACT_SURFACE_MAIN);
     }
 }
 
@@ -703,12 +756,12 @@ void Box2Obj_MovePartyIconsWithFrame(Box2SysWork *syswk) {
     s16 py;
     u16 i;
 
-    BGWinFrame_GetPos(syswk->app->bgWinFrame, 8, &x, &y);
+    BGWinFrame_GetPos(syswk->app->bgWinFrame, BOX2_FRAME_PARTY, &x, &y);
     py = y * 8;
     px = x * 8;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < PARTY_SIZE; i++) {
         Box2Obj_SetPos(syswk->app, syswk->app->pokeIconId[BOX2_PARTY_POS + i], px + sPartyFramePokePos[i][0],
-                       py + sPartyFramePokePos[i][1], 0);
+                       py + sPartyFramePokePos[i][1], CLACT_SURFACE_MAIN);
     }
 }
 
@@ -718,7 +771,7 @@ void Box2PokeFree_Start(Box2PokeFreeWork *wk) {
 
     wk->scale = 4096.0f;
     wk->scaleCnt = 0;
-    ClActor_SetAffineMode(wk->cap, 1);
+    ClActor_SetAffineMode(wk->cap, NNS_G2D_RND_AFFINE_OVERWRITE_NORMAL);
     scale.x = wk->scale;
     scale.y = wk->scale;
     ClActor_SetScale(wk->cap, &scale);
@@ -771,7 +824,7 @@ void Box2PokeFree_ResetActor(Box2PokeFreeWork *wk) {
     scale.x = FX32_ONE;
     scale.y = FX32_ONE;
     ClActor_SetScale(wk->cap, &scale);
-    ClActor_SetAffineMode(wk->cap, 0);
+    ClActor_SetAffineMode(wk->cap, NNS_G2D_RND_AFFINE_OVERWRITE_NONE);
 }
 
 static void SetIconsBlend(Box2SysWork *syswk, BOOL blend, u32 start, u32 end, BOOL check) {
@@ -806,15 +859,15 @@ static void SetIconsBlend(Box2SysWork *syswk, BOOL blend, u32 start, u32 end, BO
 void Box2Obj_SetIconsBlend(Box2SysWork *syswk, u32 flags, BOOL blend) {
     BOOL check;
 
-    if (flags & 0x80) {
+    if (flags & BOX2_ICON_CHECK_ELIGIBILITY) {
         check = TRUE;
     } else {
         check = FALSE;
     }
-    if (flags & 1) {
+    if (flags & BOX2_ICON_GROUP_TRAY) {
         SetIconsBlend(syswk, blend, 0, BOX2_TRAY_POKE_MAX, check);
     }
-    if (flags & 2) {
+    if (flags & BOX2_ICON_GROUP_PARTY_AND_HELD) {
         SetIconsBlend(syswk, blend, BOX2_TRAY_POKE_MAX, NELEMS(syswk->app->pokeIconId), check);
     }
 }
@@ -844,11 +897,11 @@ void Box2Obj_PickUpRangeIcons(Box2SysWork *syswk, u32 pos, int width, int height
     y = pos / rowWidth;
     for (j = 0; j < height; j++) {
         for (i = 0; i < width; i++) {
-            Box2Obj_GetPos(app, app->pokeIconId[x + (y + j) * rowWidth + i], &px, &py, 0);
+            Box2Obj_GetPos(app, app->pokeIconId[x + (y + j) * rowWidth + i], &px, &py, CLACT_SURFACE_MAIN);
             tmp = app->pokeIconId[BOX2_BOXLIST_POS + j * width + i];
             app->pokeIconId[BOX2_BOXLIST_POS + j * width + i] = app->pokeIconId[x + (y + j) * rowWidth + i];
             app->pokeIconId[x + (y + j) * rowWidth + i] = tmp;
-            Box2Obj_SetPos(app, app->pokeIconId[x + (y + j) * rowWidth + i], px, py, 0);
+            Box2Obj_SetPos(app, app->pokeIconId[x + (y + j) * rowWidth + i], px, py, CLACT_SURFACE_MAIN);
             Box2Obj_SetIconPriority(app, x + (y + j) * rowWidth + i, TRUE);
         }
     }
@@ -865,17 +918,17 @@ void Box2Obj_PutDownRangeIcons(Box2AppWork *app, u32 pos, int width, int height)
     int j;
     u8 tmp;
 
-    Box2Obj_GetPos(app, app->pokeIconId[BOX2_BOXLIST_POS], &px, &py, 0);
+    Box2Obj_GetPos(app, app->pokeIconId[BOX2_BOXLIST_POS], &px, &py, CLACT_SURFACE_MAIN);
     x = pos % 6;
     y = pos / 6;
     for (j = 0; j < height; j++) {
         for (i = 0; i < width; i++) {
-            Box2Obj_GetPos(app, app->pokeIconId[BOX2_BOXLIST_POS + j * 6 + i], &px, &py, 0);
+            Box2Obj_GetPos(app, app->pokeIconId[BOX2_BOXLIST_POS + j * 6 + i], &px, &py, CLACT_SURFACE_MAIN);
             tmp = app->pokeIconId[x + (y + j) * 6 + i];
             app->pokeIconId[x + (y + j) * 6 + i] = app->pokeIconId[BOX2_BOXLIST_POS + j * 6 + i];
             app->pokeIconId[BOX2_BOXLIST_POS + j * 6 + i] = tmp;
 
-            Box2Obj_SetPos(app, app->pokeIconId[BOX2_BOXLIST_POS + j * 6 + i], px, py, 0);
+            Box2Obj_SetPos(app, app->pokeIconId[BOX2_BOXLIST_POS + j * 6 + i], px, py, CLACT_SURFACE_MAIN);
         }
     }
 }
@@ -887,17 +940,17 @@ void Box2Obj_MoveHeldIcons(Box2SysWork *syswk) {
     int i;
 
     if (syswk->pickState != BOX2_PICK_NONE) {
-        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_CURSOR, &x, &y, 0);
+        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_CURSOR, &x, &y, CLACT_SURFACE_MAIN);
         if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
             y += 8;
-            Box2Obj_SetPos(syswk->app, BOX2_ACTOR_ITEM_ICON, x, y, 0);
+            Box2Obj_SetPos(syswk->app, BOX2_ACTOR_ITEM_ICON, x, y, CLACT_SURFACE_MAIN);
         } else {
             y += 4;
             for (j = 0; j < syswk->app->rangeHeight; j++) {
                 for (i = 0; i < syswk->app->rangeWidth; i++) {
                     Box2Obj_SetPos(syswk->app,
                                    syswk->app->pokeIconId[BOX2_BOXLIST_POS + j * syswk->app->rangeWidth + i],
-                                   x + i * 24, y + j * 24, 0);
+                                   x + i * 24, y + j * 24, CLACT_SURFACE_MAIN);
                 }
             }
             Box2Obj_PutRangeCount(syswk->app, x, y + 9);
@@ -905,13 +958,13 @@ void Box2Obj_MoveHeldIcons(Box2SysWork *syswk) {
         if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
             Box2Obj_MoveItemOutline(syswk->app);
         } else {
-            if (syswk->app->actors[121] == NULL) {
+            if (syswk->app->actors[BOX2_ACTOR_ITEM_OUTLINE] == NULL) {
                 Box2Obj_PutPokeOutline(syswk);
             }
-            if (syswk->moveMode != 2) {
+            if (syswk->moveMode != BOX2_MOVE_MODE_RANGE) {
                 Box2Obj_MoveOutlineToIcon(syswk->app, BOX2_BOXLIST_POS);
             } else {
-                Box2Obj_ShowPokeOutline(syswk, 0);
+                Box2Obj_ShowPokeOutline(syswk, FALSE);
             }
         }
     }
@@ -927,12 +980,12 @@ void Box2Obj_UpdatePokeIconPalette(Box2SysWork *syswk, u32 tray, u32 pos) {
 }
 
 static void ClearPokeGraResources(Box2AppWork *app) {
-    app->chrRes[96] = BOX2_RES_NONE;
-    app->palRes[1] = BOX2_RES_NONE;
-    app->cellRes[1] = BOX2_RES_NONE;
-    app->chrRes[97] = BOX2_RES_NONE;
-    app->palRes[2] = BOX2_RES_NONE;
-    app->cellRes[2] = BOX2_RES_NONE;
+    app->chrRes[BOX2_CHAR_POKE_GRA_FIRST] = BOX2_RES_NONE;
+    app->palRes[BOX2_PAL_POKE_GRA_FIRST] = BOX2_RES_NONE;
+    app->cellRes[BOX2_CELL_POKE_GRA_FIRST] = BOX2_RES_NONE;
+    app->chrRes[BOX2_CHAR_POKE_GRA_SECOND] = BOX2_RES_NONE;
+    app->palRes[BOX2_PAL_POKE_GRA_SECOND] = BOX2_RES_NONE;
+    app->cellRes[BOX2_CELL_POKE_GRA_SECOND] = BOX2_RES_NONE;
 }
 
 void Box2Obj_ShowPokeGra(Box2SysWork *syswk, Box2PokeInfo *info, u32 id) {
@@ -945,15 +998,15 @@ void Box2Obj_ShowPokeGra(Box2SysWork *syswk, Box2PokeInfo *info, u32 id) {
     BOOL encrypted;
 
     if (syswk->app->pokegraSwap == 0) {
-        chr = &syswk->app->chrRes[96];
-        pal = &syswk->app->palRes[1];
-        cell = &syswk->app->cellRes[1];
+        chr = &syswk->app->chrRes[BOX2_CHAR_POKE_GRA_FIRST];
+        pal = &syswk->app->palRes[BOX2_PAL_POKE_GRA_FIRST];
+        cell = &syswk->app->cellRes[BOX2_CELL_POKE_GRA_FIRST];
         palOffset = 0x60;
         other = id + 1;
     } else {
-        chr = &syswk->app->chrRes[97];
-        pal = &syswk->app->palRes[2];
-        cell = &syswk->app->cellRes[2];
+        chr = &syswk->app->chrRes[BOX2_CHAR_POKE_GRA_SECOND];
+        pal = &syswk->app->palRes[BOX2_PAL_POKE_GRA_SECOND];
+        cell = &syswk->app->cellRes[BOX2_CELL_POKE_GRA_SECOND];
         palOffset = 0x80;
         other = id;
         id++;
@@ -985,32 +1038,37 @@ static void LoadInfoResources(Box2AppWork *app) {
     u32 i;
 
     for (i = 0; i < 17; i++) {
-        app->chrRes[99 + i] =
+        app->chrRes[BOX2_CHAR_TYPE_ICON_FIRST + i] =
             ClActSys_LoadChars(arc, AppMenuCommon_GetTypeIconCharFile(i), FALSE, CLACT_VRAM_SUB, HEAPID_BOX2_APP);
     }
-    app->cellRes[4] = ClActSys_LoadCellAnims(arc, AppMenuCommon_GetTypeIconCellFile(2),
-                                             AppMenuCommon_GetTypeIconAnimFile(2), HEAPID_BOX2_APP);
-    app->palRes[4] = ClActSys_LoadPltt(arc, AppMenuCommon_GetTypeIconPaletteFile(), CLACT_VRAM_SUB, 0, HEAPID_BOX2_APP);
-    app->chrRes[126] =
-        ClActSys_LoadChars(arc, AppMenuCommon_GetMarkingIconCharFile(2), FALSE, CLACT_VRAM_SUB, HEAPID_BOX2_APP);
-    app->cellRes[10] = ClActSys_LoadCellAnims(arc, AppMenuCommon_GetMarkingIconCellFile(2),
-                                              AppMenuCommon_GetMarkingIconAnimFile(2), HEAPID_BOX2_APP);
-    app->palRes[9] =
+    app->cellRes[BOX2_CELL_TYPE_ICON] =
+        ClActSys_LoadCellAnims(arc, AppMenuCommon_GetTypeIconCellFile(BOX2_OBJ_MAPPING_128K),
+                               AppMenuCommon_GetTypeIconAnimFile(BOX2_OBJ_MAPPING_128K), HEAPID_BOX2_APP);
+    app->palRes[BOX2_PAL_TYPE_ICON] =
+        ClActSys_LoadPltt(arc, AppMenuCommon_GetTypeIconPaletteFile(), CLACT_VRAM_SUB, 0, HEAPID_BOX2_APP);
+    app->chrRes[BOX2_CHAR_MARK_SUB] = ClActSys_LoadChars(
+        arc, AppMenuCommon_GetMarkingIconCharFile(BOX2_OBJ_MAPPING_128K), FALSE, CLACT_VRAM_SUB, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_MARK_SUB] =
+        ClActSys_LoadCellAnims(arc, AppMenuCommon_GetMarkingIconCellFile(BOX2_OBJ_MAPPING_128K),
+                               AppMenuCommon_GetMarkingIconAnimFile(BOX2_OBJ_MAPPING_128K), HEAPID_BOX2_APP);
+    app->palRes[BOX2_PAL_MARK_SUB] =
         ClActSys_LoadPltt(arc, AppMenuCommon_GetMarkingIconPaletteFile(), CLACT_VRAM_SUB, 0xa0, HEAPID_BOX2_APP);
-    app->chrRes[127] =
-        ClActSys_LoadChars(arc, AppMenuCommon_GetPokerusIconCharFile(2), FALSE, CLACT_VRAM_SUB, HEAPID_BOX2_APP);
-    app->cellRes[11] = ClActSys_LoadCellAnims(arc, AppMenuCommon_GetPokerusIconCellFile(2),
-                                              AppMenuCommon_GetPokerusIconAnimFile(2), HEAPID_BOX2_APP);
-    app->palRes[10] =
+    app->chrRes[BOX2_CHAR_POKERUS] = ClActSys_LoadChars(
+        arc, AppMenuCommon_GetPokerusIconCharFile(BOX2_OBJ_MAPPING_128K), FALSE, CLACT_VRAM_SUB, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_POKERUS] =
+        ClActSys_LoadCellAnims(arc, AppMenuCommon_GetPokerusIconCellFile(BOX2_OBJ_MAPPING_128K),
+                               AppMenuCommon_GetPokerusIconAnimFile(BOX2_OBJ_MAPPING_128K), HEAPID_BOX2_APP);
+    app->palRes[BOX2_PAL_POKERUS] =
         ClActSys_LoadPltt(arc, AppMenuCommon_GetPokerusIconPaletteFile(), CLACT_VRAM_SUB, 0xc0, HEAPID_BOX2_APP);
-    app->chrRes[125] =
-        ClActSys_LoadChars(arc, AppMenuCommon_GetMarkingIconCharFile(2), FALSE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
-    app->cellRes[9] = ClActSys_LoadCellAnims(arc, AppMenuCommon_GetMarkingIconCellFile(2),
-                                             AppMenuCommon_GetMarkingIconAnimFile(2), HEAPID_BOX2_APP);
-    app->palRes[8] =
+    app->chrRes[BOX2_CHAR_MARK_MAIN] = ClActSys_LoadChars(
+        arc, AppMenuCommon_GetMarkingIconCharFile(BOX2_OBJ_MAPPING_128K), FALSE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_MARK_MAIN] =
+        ClActSys_LoadCellAnims(arc, AppMenuCommon_GetMarkingIconCellFile(BOX2_OBJ_MAPPING_128K),
+                               AppMenuCommon_GetMarkingIconAnimFile(BOX2_OBJ_MAPPING_128K), HEAPID_BOX2_APP);
+    app->palRes[BOX2_PAL_MARK_MAIN] =
         ClActSys_LoadPltt(arc, AppMenuCommon_GetMarkingIconPaletteFile(), CLACT_VRAM_MAIN, 0x1c0, HEAPID_BOX2_APP);
-    app->chrRes[128] = ClActSys_LoadChars(arc, 175, FALSE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
-    app->cellRes[12] = ClActSys_LoadCellAnims(arc, 174, 173, HEAPID_BOX2_APP);
+    app->chrRes[BOX2_CHAR_SEARCH_BUTTON] = ClActSys_LoadChars(arc, 175, FALSE, CLACT_VRAM_MAIN, HEAPID_BOX2_APP);
+    app->cellRes[BOX2_CELL_SEARCH_BUTTON] = ClActSys_LoadCellAnims(arc, 174, 173, HEAPID_BOX2_APP);
     GFL_ArcToolFree(arc);
 }
 
@@ -1019,9 +1077,9 @@ static void CreateTypeIconActors(Box2AppWork *app) {
     u32 i;
 
     for (i = 0; i < 17; i++) {
-        data.chr = 99 + i;
-        app->actors[32 + i] = CreateActor(app, &data);
-        ClActor_SetPalette(app->actors[32 + i], AppMenuCommon_GetTypeIconPaletteIndex(i), 1);
+        data.chr = BOX2_CHAR_TYPE_ICON_FIRST + i;
+        app->actors[BOX2_ACTOR_TYPE_ICON + i] = CreateActor(app, &data);
+        ClActor_SetPalette(app->actors[BOX2_ACTOR_TYPE_ICON + i], AppMenuCommon_GetTypeIconPaletteIndex(i), 1);
         Box2Obj_SetVisible(app, 32 + i, FALSE);
     }
 }
@@ -1030,11 +1088,11 @@ static void ShowTypeIcons(Box2AppWork *app, u32 type1, u32 type2) {
     u32 id = BOX2_ACTOR_TYPE_ICON + type1;
 
     Box2Obj_SetVisible(app, id, TRUE);
-    Box2Obj_SetPos(app, id, 88, 56, 1);
+    Box2Obj_SetPos(app, id, 88, 56, CLACT_SURFACE_SUB);
     if (type2 != 0 && type1 != type2) {
         id = BOX2_ACTOR_TYPE_ICON + type2;
         Box2Obj_SetVisible(app, id, TRUE);
-        Box2Obj_SetPos(app, id, 122, 56, 1);
+        Box2Obj_SetPos(app, id, 122, 56, CLACT_SURFACE_SUB);
     }
 }
 
@@ -1052,7 +1110,7 @@ void Box2Obj_PutTypeIcons(Box2AppWork *app, Box2PokeInfo *info) {
 static void LoadItemIconPalette(Box2AppWork *app) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_ITEMGRA, HEAPID_BOX2_APP);
 
-    app->palRes[3] =
+    app->palRes[BOX2_PAL_ITEM_ICON] =
         ClActSys_LoadPltt(arc, GetItemGraphicsDatID(0, ITEM_FILE_ICON_PLTT), CLACT_VRAM_MAIN, 0x1a0, HEAPID_BOX2_APP);
     GFL_ArcToolFree(arc);
 }
@@ -1076,7 +1134,7 @@ void Box2Obj_SetItemIconAffine(Box2AppWork *app, BOOL affine) {
     ClActorPos center;
 
     if (affine == TRUE) {
-        ClActor_SetAffineMode(app->actors[BOX2_ACTOR_ITEM_ICON], 1);
+        ClActor_SetAffineMode(app->actors[BOX2_ACTOR_ITEM_ICON], NNS_G2D_RND_AFFINE_OVERWRITE_NORMAL);
         center.x = 12;
         center.y = 12;
         ClActor_SetAffineCenter(app->actors[BOX2_ACTOR_ITEM_ICON], &center);
@@ -1084,12 +1142,12 @@ void Box2Obj_SetItemIconAffine(Box2AppWork *app, BOOL affine) {
         center.x = 0;
         center.y = 0;
         ClActor_SetAffineCenter(app->actors[BOX2_ACTOR_ITEM_ICON], &center);
-        ClActor_SetAffineMode(app->actors[BOX2_ACTOR_ITEM_ICON], 0);
+        ClActor_SetAffineMode(app->actors[BOX2_ACTOR_ITEM_ICON], NNS_G2D_RND_AFFINE_OVERWRITE_NONE);
     }
 }
 
 void Box2Obj_SetItemIconPos(Box2AppWork *app, s16 x, s16 y) {
-    Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_ICON, x, y, 0);
+    Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_ICON, x, y, CLACT_SURFACE_MAIN);
 }
 
 void Box2Obj_PutItemIconAtIcon(Box2AppWork *app, u32 pos, u32 mode) {
@@ -1115,13 +1173,13 @@ void Box2Obj_InitItemOutline(Box2AppWork *app) {
     u32 i;
 
     if (app->getItem != 0) {
-        Box2Obj_GetPos(app, BOX2_ACTOR_ITEM_ICON, &x, &y, 0);
+        Box2Obj_GetPos(app, BOX2_ACTOR_ITEM_ICON, &x, &y, CLACT_SURFACE_MAIN);
         if (app->actors[BOX2_ACTOR_ITEM_OUTLINE] == NULL) {
             data = sActorData[BOX2_ACTOR_ITEM_ICON];
             data.setup.priority = ClActor_GetPriority(app->actors[BOX2_ACTOR_ITEM_ICON]) + 1;
             data.setup.bgPriority = ClActor_GetBgPriority(app->actors[BOX2_ACTOR_ITEM_ICON]);
-            data.chr = 98;
-            data.pal = 6;
+            data.chr = BOX2_CHAR_ITEM_ICON;
+            data.pal = BOX2_PAL_BOX_UI;
             data.palette = 1;
             for (i = 0; i < 8; i++) {
                 data.setup.x = x + sItemOutlineX[i];
@@ -1135,7 +1193,8 @@ void Box2Obj_InitItemOutline(Box2AppWork *app) {
             u32 bgPriority = ClActor_GetBgPriority(app->actors[BOX2_ACTOR_ITEM_ICON]);
 
             for (i = 0; i < 8; i++) {
-                Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i], 0);
+                Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i],
+                               CLACT_SURFACE_MAIN);
                 SetSoftPriority(app, BOX2_ACTOR_ITEM_OUTLINE + i, priority + 1);
                 SetBgPriority(app, BOX2_ACTOR_ITEM_OUTLINE + i, bgPriority);
                 Box2Obj_SetVisible(app, BOX2_ACTOR_ITEM_OUTLINE + i, FALSE);
@@ -1158,9 +1217,10 @@ void Box2Obj_MoveItemOutline(Box2AppWork *app) {
     u32 i;
 
     if (app->actors[BOX2_ACTOR_ITEM_OUTLINE] != NULL) {
-        Box2Obj_GetPos(app, BOX2_ACTOR_ITEM_ICON, &x, &y, 0);
+        Box2Obj_GetPos(app, BOX2_ACTOR_ITEM_ICON, &x, &y, CLACT_SURFACE_MAIN);
         for (i = 0; i < 8; i++) {
-            Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i], 0);
+            Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i],
+                           CLACT_SURFACE_MAIN);
         }
     }
 }
@@ -1169,39 +1229,39 @@ static void CreateFixedActors(Box2SysWork *syswk) {
     Box2AppWork *app = syswk->app;
     u32 i;
 
-    app->actors[0] = CreateActor(app, &sActorData[0]);
-    app->actors[1] = CreateActor(app, &sActorData[1]);
-    app->actors[2] = CreateActor(app, &sActorData[2]);
-    app->actors[3] = CreateActor(app, &sActorData[3]);
-    app->actors[4] = CreateActor(app, &sActorData[4]);
-    app->actors[5] = CreateActor(app, &sActorData[5]);
-    app->actors[12] = CreateActor(app, &sActorData[12]);
-    app->actors[6] = CreateActor(app, &sActorData[6]);
-    app->actors[7] = CreateActor(app, &sActorData[7]);
-    app->actors[8] = CreateActor(app, &sActorData[8]);
-    app->actors[9] = CreateActor(app, &sActorData[9]);
-    app->actors[10] = CreateActor(app, &sActorData[10]);
-    app->actors[11] = CreateActor(app, &sActorData[11]);
+    app->actors[BOX2_ACTOR_SCROLL_LEFT] = CreateActor(app, &sActorData[BOX2_ACTOR_SCROLL_LEFT]);
+    app->actors[BOX2_ACTOR_SCROLL_RIGHT] = CreateActor(app, &sActorData[BOX2_ACTOR_SCROLL_RIGHT]);
+    app->actors[BOX2_ACTOR_TRAY_HIGHLIGHT] = CreateActor(app, &sActorData[BOX2_ACTOR_TRAY_HIGHLIGHT]);
+    app->actors[BOX2_ACTOR_BOX_NAME_FRAME] = CreateActor(app, &sActorData[BOX2_ACTOR_BOX_NAME_FRAME]);
+    app->actors[BOX2_ACTOR_CURSOR] = CreateActor(app, &sActorData[BOX2_ACTOR_CURSOR]);
+    app->actors[BOX2_ACTOR_UNUSED] = CreateActor(app, &sActorData[BOX2_ACTOR_UNUSED]);
+    app->actors[BOX2_ACTOR_ITEM_ICON] = CreateActor(app, &sActorData[BOX2_ACTOR_ITEM_ICON]);
+    app->actors[BOX2_ACTOR_BACK_BUTTON] = CreateActor(app, &sActorData[BOX2_ACTOR_BACK_BUTTON]);
+    app->actors[BOX2_ACTOR_CLOSE_BUTTON] = CreateActor(app, &sActorData[BOX2_ACTOR_CLOSE_BUTTON]);
+    app->actors[BOX2_ACTOR_SUMMARY_BUTTON] = CreateActor(app, &sActorData[BOX2_ACTOR_SUMMARY_BUTTON]);
+    app->actors[BOX2_ACTOR_MENU_MODE] = CreateActor(app, &sActorData[BOX2_ACTOR_MENU_MODE]);
+    app->actors[BOX2_ACTOR_SINGLE_MODE] = CreateActor(app, &sActorData[BOX2_ACTOR_SINGLE_MODE]);
+    app->actors[BOX2_ACTOR_RANGE_MODE] = CreateActor(app, &sActorData[BOX2_ACTOR_RANGE_MODE]);
     for (i = 0; i < 6; i++) {
-        app->actors[15 + i] = CreateActor(app, &sActorData[15 + i]);
-        app->actors[21 + i] = CreateActor(app, &sActorData[21 + i]);
+        app->actors[BOX2_ACTOR_MARK_MAIN + i] = CreateActor(app, &sActorData[BOX2_ACTOR_MARK_MAIN + i]);
+        app->actors[BOX2_ACTOR_MARK_SUB + i] = CreateActor(app, &sActorData[BOX2_ACTOR_MARK_SUB + i]);
     }
-    app->actors[27] = CreateActor(app, &sActorData[27]);
-    app->actors[28] = CreateActor(app, &sActorData[28]);
-    app->actors[29] = CreateActor(app, &sActorData[29]);
-    app->actors[30] = CreateActor(app, &sActorData[30]);
-    app->actors[31] = CreateActor(app, &sActorData[31]);
-    Box2Obj_SetVisible(app, 5, FALSE);
+    app->actors[BOX2_ACTOR_SHINY] = CreateActor(app, &sActorData[BOX2_ACTOR_SHINY]);
+    app->actors[BOX2_ACTOR_POKERUS_CURED] = CreateActor(app, &sActorData[BOX2_ACTOR_POKERUS_CURED]);
+    app->actors[BOX2_ACTOR_POKERUS_ACTIVE] = CreateActor(app, &sActorData[BOX2_ACTOR_POKERUS_ACTIVE]);
+    app->actors[BOX2_ACTOR_SEARCH_BUTTON] = CreateActor(app, &sActorData[BOX2_ACTOR_SEARCH_BUTTON]);
+    app->actors[BOX2_ACTOR_RANGE_COUNT] = CreateActor(app, &sActorData[BOX2_ACTOR_RANGE_COUNT]);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_UNUSED, FALSE);
     Box2Obj_SetVisible(app, BOX2_ACTOR_ITEM_ICON, FALSE);
-    Box2Obj_SetVisible(app, 27, FALSE);
-    Box2Obj_SetVisible(app, 28, FALSE);
-    Box2Obj_SetVisible(app, 29, FALSE);
-    Box2Obj_SetVisible(app, 31, FALSE);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_SHINY, FALSE);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_POKERUS_CURED, FALSE);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_POKERUS_ACTIVE, FALSE);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_RANGE_COUNT, FALSE);
     for (i = 0; i < 16; i++) {
         app->actors[BOX2_ACTOR_RANGE_DOT + i] = CreateActor(app, &sRangeDotData);
         Box2Obj_SetVisible(app, BOX2_ACTOR_RANGE_DOT + i, FALSE);
     }
-    Box2Obj_SetToolButtons(syswk, 9, TRUE);
+    Box2Obj_SetToolButtons(syswk, BOX2_ACTOR_MENU_MODE, TRUE);
 }
 
 void Box2Obj_SetToolButtons(Box2SysWork *syswk, unsigned int set, BOOL visible) {
@@ -1218,15 +1278,15 @@ void Box2Obj_SetToolButtons(Box2SysWork *syswk, unsigned int set, BOOL visible) 
             Box2Obj_SetVisible(syswk->app, 9 + i, visible);
         }
         if (syswk->param->mode == BOX2_MODE_MOVE_ITEMS) {
-            Box2Obj_SetVisible(syswk->app, 11, FALSE);
+            Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_RANGE_MODE, FALSE);
         }
     }
 }
 
 void Box2Obj_SetCursorAnim(Box2SysWork *syswk, u32 anim) {
-    if (syswk->moveMode == 1) {
+    if (syswk->moveMode == BOX2_MOVE_MODE_SINGLE) {
         anim += 4;
-    } else if (syswk->moveMode == 2) {
+    } else if (syswk->moveMode == BOX2_MOVE_MODE_RANGE) {
         anim += 9;
     }
     Box2Obj_SetAnim(syswk->app, BOX2_ACTOR_CURSOR, anim);
@@ -1258,13 +1318,13 @@ void Box2Obj_PutPokeOutlineAt(Box2SysWork *syswk, u32 pos) {
     if (pos != BOX2_GET_NONE) {
         app = syswk->app;
         id = app->pokeIconId[pos];
-        Box2Obj_GetPos(app, id, &x, &y, 0);
+        Box2Obj_GetPos(app, id, &x, &y, CLACT_SURFACE_MAIN);
         if (app->actors[BOX2_ACTOR_ITEM_OUTLINE] == NULL) {
             data = sPokeIconData;
             data.setup.priority = ClActor_GetPriority(app->actors[id]) + 1;
             data.setup.bgPriority = ClActor_GetBgPriority(app->actors[id]);
             data.chr = id - BOX2_ACTOR_POKEICON;
-            data.pal = 6;
+            data.pal = BOX2_PAL_BOX_UI;
             data.palette = 1;
             for (i = 0; i < 8; i++) {
                 data.setup.x = x + sItemOutlineX[i];
@@ -1281,7 +1341,8 @@ void Box2Obj_PutPokeOutlineAt(Box2SysWork *syswk, u32 pos) {
             bgPriority = ClActor_GetBgPriority(app->actors[id]);
             for (i = 0; i < 8; i++) {
                 ClActor_SetImageProxy(app->actors[BOX2_ACTOR_ITEM_OUTLINE + i], &proxy);
-                Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i], 0);
+                Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i],
+                               CLACT_SURFACE_MAIN);
                 SetSoftPriority(app, BOX2_ACTOR_ITEM_OUTLINE + i, priority + 1);
                 SetBgPriority(app, BOX2_ACTOR_ITEM_OUTLINE + i, bgPriority);
                 Box2Obj_SetVisible(app, BOX2_ACTOR_ITEM_OUTLINE + i, TRUE);
@@ -1327,9 +1388,10 @@ void Box2Obj_MoveOutlineToIcon(Box2AppWork *app, u32 pos) {
     u32 i;
 
     if (pos != BOX2_GET_NONE) {
-        Box2Obj_GetPos(app, app->pokeIconId[pos], &x, &y, 0);
+        Box2Obj_GetPos(app, app->pokeIconId[pos], &x, &y, CLACT_SURFACE_MAIN);
         for (i = 0; i < 8; i++) {
-            Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i], 0);
+            Box2Obj_SetPos(app, BOX2_ACTOR_ITEM_OUTLINE + i, x + sItemOutlineX[i], y + sItemOutlineY[i],
+                           CLACT_SURFACE_MAIN);
         }
     }
 }
@@ -1339,17 +1401,17 @@ static void CreateTrayIconActors(Box2AppWork *app) {
     Box2ActorData base = sTrayIconData;
     u32 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
         data = base;
         data.setup.y += (s16)(i * 34);
-        data.chr = 116 + i;
+        data.chr = BOX2_CHAR_TRAY_ICON_FIRST + i;
         app->actors[BOX2_ACTOR_TRAY_ICON + i] = CreateActor(app, &data);
     }
 }
 
 void Box2Obj_ShowScrollArrows(Box2AppWork *app, BOOL visible) {
-    Box2Obj_SetVisible(app, 0, visible);
-    Box2Obj_SetVisible(app, 1, visible);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_SCROLL_LEFT, visible);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_SCROLL_RIGHT, visible);
 }
 
 void Box2Obj_MoveMarkIcons(Box2SysWork *syswk) {
@@ -1359,11 +1421,11 @@ void Box2Obj_MoveMarkIcons(Box2SysWork *syswk) {
     s16 py;
     u32 i;
 
-    BGWinFrame_GetPos(syswk->app->bgWinFrame, 7, &x, &y);
+    BGWinFrame_GetPos(syswk->app->bgWinFrame, BOX2_FRAME_MARKINGS, &x, &y);
     py = y * 8 + 8;
     px = x * 8 + 23;
-    for (i = 0; i < 6; i++) {
-        Box2Obj_SetPos(syswk->app, 15 + i, px + (i % 2) * 32, py + (i / 2) * 24, 0);
+    for (i = 0; i < BOX2_MARK_COUNT; i++) {
+        Box2Obj_SetPos(syswk->app, 15 + i, px + (i % 2) * 32, py + (i / 2) * 24, CLACT_SURFACE_MAIN);
     }
 }
 
@@ -1377,18 +1439,18 @@ void Box2Obj_ScrollBoxListX(Box2SysWork *syswk, s32 mv) {
     s16 y;
     u32 i;
 
-    Box2Obj_GetPos(syswk->app, 2, &x, &y, 0);
-    Box2Obj_SetPos(syswk->app, 2, x - mv, y, 0);
-    for (i = 0; i < 6; i++) {
-        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, &x, &y, 0);
-        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x - mv, y, 0);
-        BmpOam_ActorGetPos(syswk->app->fontOam[1 + i].oam, &x, &y);
-        BmpOam_ActorSetPos(syswk->app->fontOam[1 + i].oam, x - mv, y);
+    Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, &x, &y, CLACT_SURFACE_MAIN);
+    Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, x - mv, y, CLACT_SURFACE_MAIN);
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
+        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, &x, &y, CLACT_SURFACE_MAIN);
+        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x - mv, y, CLACT_SURFACE_MAIN);
+        BmpOam_ActorGetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i].oam, &x, &y);
+        BmpOam_ActorSetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i].oam, x - mv, y);
     }
 }
 
 void Box2Obj_HideTrayHighlight(Box2AppWork *app) {
-    Box2Obj_SetPos(app, 2, 300, 34, 0);
+    Box2Obj_SetPos(app, BOX2_ACTOR_TRAY_HIGHLIGHT, 300, 34, CLACT_SURFACE_MAIN);
 }
 
 static void PlaceTrayIcons(Box2SysWork *syswk) {
@@ -1397,13 +1459,13 @@ static void PlaceTrayIcons(Box2SysWork *syswk) {
     u32 tray;
     s16 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
         tray = Box2Main_GetTrayScroll(syswk, i - 1);
         data = base;
         data.setup.y += (s16)(i * 34);
-        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, data.setup.x, data.setup.y, 0);
+        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, data.setup.x, data.setup.y, CLACT_SURFACE_MAIN);
         SetTrayIconChar(syswk, tray, BOX2_ACTOR_TRAY_ICON + i);
-        BmpOam_ActorSetPos(syswk->app->fontOam[1 + i].oam, 316, i * 34 + 2);
+        BmpOam_ActorSetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i].oam, 316, i * 34 + 2);
         Box2Bmp_PutTrayCount(syswk, tray, i + 1);
     }
 }
@@ -1412,8 +1474,8 @@ void Box2Obj_GetTrayIconPos(Box2AppWork *app, u32 row, s16 *x, s16 *y) {
     u32 i;
 
     row = (row + 1) * 34;
-    for (i = 0; i < 6; i++) {
-        Box2Obj_GetPos(app, BOX2_ACTOR_TRAY_ICON + i, x, y, 0);
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
+        Box2Obj_GetPos(app, BOX2_ACTOR_TRAY_ICON + i, x, y, CLACT_SURFACE_MAIN);
         if (row == *y) {
             return;
         }
@@ -1443,7 +1505,7 @@ void Box2Obj_MakeAllTrayIconChars(Box2SysWork *syswk) {
 void Box2Obj_RefreshTrayIcon(Box2SysWork *syswk, u32 tray) {
     s16 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
         u32 scroll = Box2Main_GetTrayScroll(syswk, i - 1);
 
         if (scroll == tray) {
@@ -1465,8 +1527,8 @@ static void RefreshTrayIconRow(Box2SysWork *syswk, u32 tray, u32 row) {
     u32 i;
 
     row *= 34;
-    for (i = 0; i < 6; i++) {
-        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, &x, &y, 0);
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
+        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, &x, &y, CLACT_SURFACE_MAIN);
         if (row == y) {
             SetTrayIconChar(syswk, tray, BOX2_ACTOR_TRAY_ICON + i);
             Box2Bmp_PutTrayCount(syswk, tray, i + 1);
@@ -1543,32 +1605,32 @@ void Box2Obj_ScrollBoxListY(Box2SysWork *syswk, s16 mv) {
     if (mv < 0) {
         speed *= -1;
     }
-    for (i = 0; i < 6; i++) {
-        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, &x, &y, 0);
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
+        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, &x, &y, CLACT_SURFACE_MAIN);
         ny = y + speed;
-        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x, ny, 0);
-        BmpOam_ActorGetPos(syswk->app->fontOam[1 + i].oam, &fx, &fy);
+        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x, ny, CLACT_SURFACE_MAIN);
+        BmpOam_ActorGetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i].oam, &fx, &fy);
         nfy = fy + speed;
-        BmpOam_ActorSetPos(syswk->app->fontOam[1 + i].oam, fx, nfy);
+        BmpOam_ActorSetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i].oam, fx, nfy);
         if (ny < -16) {
             u32 tray = Box2Main_GetTrayScroll(syswk, 4);
 
             SetTrayIconChar(syswk, tray, BOX2_ACTOR_TRAY_ICON + i);
-            Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x, ny + 204, 0);
+            Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x, ny + 204, CLACT_SURFACE_MAIN);
             Box2Bmp_PutTrayCount(syswk, tray, i + 1);
-            BmpOam_ActorSetPos(syswk->app->fontOam[1 + i].oam, fx, nfy + 204);
+            BmpOam_ActorSetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i].oam, fx, nfy + 204);
         } else if (ny >= 186) {
             u32 tray = Box2Main_GetTrayScroll(syswk, -1);
 
             SetTrayIconChar(syswk, tray, BOX2_ACTOR_TRAY_ICON + i);
-            Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x, ny - 204, 0);
+            Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_ICON + i, x, ny - 204, CLACT_SURFACE_MAIN);
             Box2Bmp_PutTrayCount(syswk, tray, i + 1);
-            BmpOam_ActorSetPos(syswk->app->fontOam[1 + i].oam, fx, nfy - 204);
+            BmpOam_ActorSetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i].oam, fx, nfy - 204);
         }
     }
-    if (Box2Obj_IsVisible(syswk->app, 2) == TRUE) {
-        Box2Obj_GetPos(syswk->app, 2, &x, &y, 0);
-        Box2Obj_SetPos(syswk->app, 2, x, y + speed, 0);
+    if (Box2Obj_IsVisible(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT) == TRUE) {
+        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, &x, &y, CLACT_SURFACE_MAIN);
+        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, x, y + speed, CLACT_SURFACE_MAIN);
     }
 }
 
@@ -1577,13 +1639,13 @@ void Box2Obj_StartHighlightScroll(Box2SysWork *syswk, s32 mv) {
     s16 y;
 
     if (mv < 0 && Box2Main_GetTrayScroll(syswk, -1) == syswk->tray) {
-        Box2Obj_GetPos(syswk->app, 2, &x, &y, 0);
-        Box2Obj_SetPos(syswk->app, 2, x, -34, 0);
-        Box2Obj_SetVisible(syswk->app, 2, TRUE);
+        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, &x, &y, CLACT_SURFACE_MAIN);
+        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, x, -34, CLACT_SURFACE_MAIN);
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, TRUE);
     } else if (mv > 0 && Box2Main_GetTrayScroll(syswk, 4) == syswk->tray) {
-        Box2Obj_GetPos(syswk->app, 2, &x, &y, 0);
-        Box2Obj_SetPos(syswk->app, 2, x, 204, 0);
-        Box2Obj_SetVisible(syswk->app, 2, TRUE);
+        Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, &x, &y, CLACT_SURFACE_MAIN);
+        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, x, 204, CLACT_SURFACE_MAIN);
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, TRUE);
     }
 }
 
@@ -1592,24 +1654,24 @@ void Box2Obj_PlaceTrayHighlight(Box2SysWork *syswk) {
     s16 y;
     u32 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
         if (Box2Main_GetTrayScroll(syswk, i - 1) == syswk->tray) {
-            Box2Obj_GetPos(syswk->app, 2, &x, &y, 0);
-            Box2Obj_SetPos(syswk->app, 2, x, i * 34, 0);
-            Box2Obj_SetVisible(syswk->app, 2, TRUE);
+            Box2Obj_GetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, &x, &y, CLACT_SURFACE_MAIN);
+            Box2Obj_SetPos(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, x, i * 34, CLACT_SURFACE_MAIN);
+            Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, TRUE);
             return;
         }
     }
-    Box2Obj_SetVisible(syswk->app, 2, FALSE);
+    Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_TRAY_HIGHLIGHT, FALSE);
 }
 
 static void PutBoxNameFrame(Box2SysWork *syswk, u32 index) {
     s16 y = sBoxNameY[index];
 
-    Box2Obj_SetPos(syswk->app, 3, 206, y, 0);
-    Box2Obj_SetVisible(syswk->app, 3, TRUE);
-    BmpOam_ActorSetPos(syswk->app->fontOam[0].oam, 158, y - 8);
-    BmpOam_ActorSetDrawEnable(syswk->app->fontOam[0].oam, TRUE);
+    Box2Obj_SetPos(syswk->app, BOX2_ACTOR_BOX_NAME_FRAME, 206, y, CLACT_SURFACE_MAIN);
+    Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_BOX_NAME_FRAME, TRUE);
+    BmpOam_ActorSetPos(syswk->app->fontOam[BOX2_FONT_OAM_BOX_NAME].oam, 158, y - 8);
+    BmpOam_ActorSetDrawEnable(syswk->app->fontOam[BOX2_FONT_OAM_BOX_NAME].oam, TRUE);
 }
 
 void Box2Obj_ShowBoxNameFrame(Box2SysWork *syswk, u32 index, BOOL show) {
@@ -1617,59 +1679,60 @@ void Box2Obj_ShowBoxNameFrame(Box2SysWork *syswk, u32 index, BOOL show) {
         Box2Bmp_DrawScrolledTrayName(syswk, index);
         PutBoxNameFrame(syswk, index);
     } else {
-        Box2Obj_SetVisible(syswk->app, 3, FALSE);
-        BmpOam_ActorSetDrawEnable(syswk->app->fontOam[0].oam, FALSE);
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_BOX_NAME_FRAME, FALSE);
+        BmpOam_ActorSetDrawEnable(syswk->app->fontOam[BOX2_FONT_OAM_BOX_NAME].oam, FALSE);
     }
 }
 
-void Box2Obj_SetButtons(Box2SysWork *syswk, u8 button1, u8 button2, u8 button3, u8 button4) {
-    syswk->button2 = button2;
-    syswk->button3 = button3;
-    syswk->button1 = button1;
-    syswk->button4 = button4;
-    if (button1 == 0) {
-        Box2Obj_SetVisible(syswk->app, 6, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 6, 1);
-    } else if (button1 == 1) {
-        Box2Obj_SetVisible(syswk->app, 6, FALSE);
+void Box2Obj_SetButtons(Box2SysWork *syswk, u8 backButtonState, u8 closeButtonState, u8 summaryButtonState,
+                        u8 searchButtonState) {
+    syswk->closeButtonState = closeButtonState;
+    syswk->summaryButtonState = summaryButtonState;
+    syswk->backButtonState = backButtonState;
+    syswk->searchButtonState = searchButtonState;
+    if (backButtonState == BOX2_BUTTON_ENABLED) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_BACK_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_BACK_BUTTON, 1);
+    } else if (backButtonState == BOX2_BUTTON_HIDDEN) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_BACK_BUTTON, FALSE);
     } else {
-        Box2Obj_SetVisible(syswk->app, 6, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 6, 15);
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_BACK_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_BACK_BUTTON, 15);
     }
-    if (button2 == 0) {
-        Box2Obj_SetVisible(syswk->app, 7, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 7, 0);
-    } else if (button2 == 1) {
-        Box2Obj_SetVisible(syswk->app, 7, FALSE);
+    if (closeButtonState == BOX2_BUTTON_ENABLED) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_CLOSE_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_CLOSE_BUTTON, 0);
+    } else if (closeButtonState == BOX2_BUTTON_HIDDEN) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_CLOSE_BUTTON, FALSE);
     } else {
-        Box2Obj_SetVisible(syswk->app, 7, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 7, 14);
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_CLOSE_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_CLOSE_BUTTON, 14);
     }
-    if (button3 == 0) {
-        Box2Obj_SetVisible(syswk->app, 8, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 8, 0);
-    } else if (button3 == 1) {
-        Box2Obj_SetVisible(syswk->app, 8, FALSE);
+    if (summaryButtonState == BOX2_BUTTON_ENABLED) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SUMMARY_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_SUMMARY_BUTTON, 0);
+    } else if (summaryButtonState == BOX2_BUTTON_HIDDEN) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SUMMARY_BUTTON, FALSE);
     } else {
-        Box2Obj_SetVisible(syswk->app, 8, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 8, 2);
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SUMMARY_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_SUMMARY_BUTTON, 2);
     }
-    if (button4 == 0) {
-        Box2Obj_SetVisible(syswk->app, 30, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 30, 0);
-    } else if (button4 == 1) {
-        Box2Obj_SetVisible(syswk->app, 30, FALSE);
+    if (searchButtonState == BOX2_BUTTON_ENABLED) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SEARCH_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_SEARCH_BUTTON, 0);
+    } else if (searchButtonState == BOX2_BUTTON_HIDDEN) {
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SEARCH_BUTTON, FALSE);
     } else {
-        Box2Obj_SetVisible(syswk->app, 30, TRUE);
-        Box2Obj_SetAnimAndPlay(syswk->app, 30, 2);
+        Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SEARCH_BUTTON, TRUE);
+        Box2Obj_SetAnimAndPlay(syswk->app, BOX2_ACTOR_SEARCH_BUTTON, 2);
     }
 }
 
 void Box2Obj_HideButtons(Box2SysWork *syswk) {
-    Box2Obj_SetVisible(syswk->app, 6, FALSE);
-    Box2Obj_SetVisible(syswk->app, 7, FALSE);
-    Box2Obj_SetVisible(syswk->app, 8, FALSE);
-    Box2Obj_SetVisible(syswk->app, 30, FALSE);
+    Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_BACK_BUTTON, FALSE);
+    Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_CLOSE_BUTTON, FALSE);
+    Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SUMMARY_BUTTON, FALSE);
+    Box2Obj_SetVisible(syswk->app, BOX2_ACTOR_SEARCH_BUTTON, FALSE);
 }
 
 static void CreateFontOams(Box2AppWork *app) {
@@ -1678,19 +1741,19 @@ static void CreateFontOams(Box2AppWork *app) {
     Box2FontOam *font;
 
     app->bmpOam = BmpOam_Init(HEAPID_BOX2_APP, app->clunit);
-    app->fontOam[0].bitmap = GFL_BitmapCreate(12, 2, 0x20, HEAPID_BOX2_APP);
-    setup.bitmap = app->fontOam[0].bitmap;
+    app->fontOam[BOX2_FONT_OAM_BOX_NAME].bitmap = GFL_BitmapCreate(12, 2, 0x20, HEAPID_BOX2_APP);
+    setup.bitmap = app->fontOam[BOX2_FONT_OAM_BOX_NAME].bitmap;
     setup.x = 0;
     setup.y = 0;
-    setup.palette = app->palRes[6];
+    setup.palette = app->palRes[BOX2_PAL_BOX_UI];
     setup.paletteOffset = 0;
     setup.priority = 30;
     setup.bgPriority = 0;
     setup.surface = 0xffff;
     setup.vramType = CLACT_VRAM_MAIN;
-    app->fontOam[0].oam = BmpOam_ActorAdd(app->bmpOam, &setup);
-    BmpOam_ActorSetDrawEnable(app->fontOam[0].oam, FALSE);
-    for (i = 7; i <= 8; i++) {
+    app->fontOam[BOX2_FONT_OAM_BOX_NAME].oam = BmpOam_ActorAdd(app->bmpOam, &setup);
+    BmpOam_ActorSetDrawEnable(app->fontOam[BOX2_FONT_OAM_BOX_NAME].oam, FALSE);
+    for (i = BOX2_FONT_OAM_TRAY_NAME_FIRST; i <= BOX2_FONT_OAM_TRAY_NAME_SECOND; i++) {
         font = &app->fontOam[i];
         font->bitmap = GFL_BitmapCreate(12, 2, 0x20, HEAPID_BOX2_APP);
         setup.bitmap = font->bitmap;
@@ -1699,8 +1762,8 @@ static void CreateFontOams(Box2AppWork *app) {
         setup.bgPriority = 3;
         font->oam = BmpOam_ActorAdd(app->bmpOam, &setup);
     }
-    for (i = 0; i < 6; i++) {
-        font = &app->fontOam[1 + i];
+    for (i = 0; i < BOX2_BOX_LIST_DRAW_ROWS; i++) {
+        font = &app->fontOam[BOX2_FONT_OAM_BOX_COUNT_FIRST + i];
         font->bitmap = GFL_BitmapCreate(2, 1, 0x20, HEAPID_BOX2_APP);
         setup.bitmap = font->bitmap;
         setup.x = 316;
@@ -1708,7 +1771,7 @@ static void CreateFontOams(Box2AppWork *app) {
         setup.bgPriority = 1;
         font->oam = BmpOam_ActorAdd(app->bmpOam, &setup);
     }
-    font = &app->fontOam[9];
+    font = &app->fontOam[BOX2_FONT_OAM_RANGE_COUNT];
     font->bitmap = GFL_BitmapCreate(2, 2, 0x20, HEAPID_BOX2_APP);
     setup.bitmap = font->bitmap;
     setup.x = 0;
@@ -1716,7 +1779,7 @@ static void CreateFontOams(Box2AppWork *app) {
     setup.priority = 45;
     setup.bgPriority = 0;
     font->oam = BmpOam_ActorAdd(app->bmpOam, &setup);
-    Box2Obj_SetFontOamVisible(app, 9, FALSE);
+    Box2Obj_SetFontOamVisible(app, BOX2_FONT_OAM_RANGE_COUNT, FALSE);
 }
 
 static void DeleteFontOams(Box2AppWork *app) {
@@ -1750,7 +1813,7 @@ void Box2Obj_ScrollFontOams(Box2AppWork *app, s32 mv) {
     s16 y;
     u32 i;
 
-    for (i = 7; i <= 8; i++) {
+    for (i = BOX2_FONT_OAM_TRAY_NAME_FIRST; i <= BOX2_FONT_OAM_TRAY_NAME_SECOND; i++) {
         BmpOam_ActorGetPos(app->fontOam[i].oam, &x, &y);
         BmpOam_ActorSetPos(app->fontOam[i].oam, x + mv, y);
         if (x + mv == -148 || x + mv == 220) {
@@ -1804,7 +1867,7 @@ void Box2Obj_UpdateRangeDots(Box2SysWork *syswk) {
     half = width + height;
     length = half * 2;
     if (syswk->pickState == BOX2_PICK_RANGE_HELD) {
-        Box2Obj_GetPos(syswk->app, syswk->app->pokeIconId[BOX2_BOXLIST_POS], &x, &y, 0);
+        Box2Obj_GetPos(syswk->app, syswk->app->pokeIconId[BOX2_BOXLIST_POS], &x, &y, CLACT_SURFACE_MAIN);
         left = x - 14;
         top = y - 6;
         right = left + width;
@@ -1830,7 +1893,7 @@ void Box2Obj_UpdateRangeDots(Box2SysWork *syswk) {
                 py = bottom - (pos - width);
             }
         }
-        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_RANGE_DOT + i, px, py, 0);
+        Box2Obj_SetPos(syswk->app, BOX2_ACTOR_RANGE_DOT + i, px, py, CLACT_SURFACE_MAIN);
     }
 }
 
@@ -2025,13 +2088,13 @@ static BOOL IsInPickedRange(Box2SysWork *syswk, u32 pos) {
 }
 
 void Box2Obj_ShowRangeCount(Box2AppWork *app, BOOL visible) {
-    Box2Obj_SetVisible(app, 31, visible);
-    Box2Obj_SetFontOamVisible(app, 9, visible);
+    Box2Obj_SetVisible(app, BOX2_ACTOR_RANGE_COUNT, visible);
+    Box2Obj_SetFontOamVisible(app, BOX2_FONT_OAM_RANGE_COUNT, visible);
 }
 
 void Box2Obj_PutRangeCount(Box2AppWork *app, s16 x, s16 y) {
-    Box2Obj_SetPos(app, 31, x, y, 0);
-    BmpOam_ActorSetPos(app->fontOam[9].oam, x - 16, y - 16);
+    Box2Obj_SetPos(app, BOX2_ACTOR_RANGE_COUNT, x, y, CLACT_SURFACE_MAIN);
+    BmpOam_ActorSetPos(app->fontOam[BOX2_FONT_OAM_RANGE_COUNT].oam, x - 16, y - 16);
 }
 
 void Box2Obj_ShowRangeIcons(Box2SysWork *syswk, BOOL visible) {
@@ -2039,7 +2102,7 @@ void Box2Obj_ShowRangeIcons(Box2SysWork *syswk, BOOL visible) {
     u16 j;
     u16 i;
 
-    if (syswk->moveMode == 2) {
+    if (syswk->moveMode == BOX2_MOVE_MODE_RANGE) {
         Box2Obj_ShowRangeCount(syswk->app, visible);
         visible ^= 1;
         rowWidth = Box2Main_GetRowWidth(syswk, syswk->app->rangeSelect.startPos);

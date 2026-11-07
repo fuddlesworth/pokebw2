@@ -76,6 +76,194 @@ enum {
 };
 
 // The Pokémon search's criteria, which the boxes' icons are filtered by
+#define BOX2_INITIAL_TRAY_COUNT 8
+#define BOX2_FIRST_EXPANSION_TRAY_COUNT 16
+
+// How Pokemon or items are picked: menu, single quick move, or range.
+enum {
+    BOX2_MOVE_MODE_MENU = 0,
+    BOX2_MOVE_MODE_SINGLE = 1,
+    BOX2_MOVE_MODE_RANGE = 2,
+};
+
+// Icon placement context; the right party shifts its x coordinate.
+enum {
+    BOX2_ICON_POS_TRAY = 0,
+    BOX2_ICON_POS_PARTY_LEFT = 1,
+    BOX2_ICON_POS_PARTY_RIGHT = 2,
+};
+
+// Where to resume after the summary, Bag, name entry, or search.
+enum {
+    BOX2_SUBRETURN_MENU_TRAY = 0,
+    BOX2_SUBRETURN_MENU_PARTY = 1,
+    BOX2_SUBRETURN_MOVE_TRAY = 2,
+    BOX2_SUBRETURN_MOVE_TRAY_HELD = 3,
+    BOX2_SUBRETURN_MOVE_PARTY = 4,
+    BOX2_SUBRETURN_MOVE_PARTY_HELD = 5,
+};
+
+// Indices into sSubProcs.
+enum {
+    BOX2_SUBPROC_SUMMARY = 0,
+    BOX2_SUBPROC_BAG = 1,
+    BOX2_SUBPROC_BOX_NAME = 2,
+    BOX2_SUBPROC_SEARCH = 3,
+};
+
+// Indices into sYesNoFuncs; each question has its own Yes and No callbacks.
+enum {
+    BOX2_YESNO_TAKE_ITEM = 0,
+    BOX2_YESNO_RELEASE = 1,
+    BOX2_YESNO_PUT_ITEM_IN_BAG = 2,
+    BOX2_YESNO_QUIT = 3,
+    BOX2_YESNO_CONTINUE = 4,
+    BOX2_YESNO_TUCK_IN = 5,
+};
+
+// Visibility and enabled state of Back, Close, Summary, and Search.
+enum {
+    BOX2_BUTTON_ENABLED = 0,
+    BOX2_BUTTON_HIDDEN = 1,
+    BOX2_BUTTON_DISABLED = 2,
+};
+
+// BGWinFrame entries created by Box2Frame_Create.
+enum {
+    BOX2_FRAME_MENU_FIRST = 0,
+    BOX2_FRAME_MENU_SECOND = 1,
+    BOX2_FRAME_MENU_THIRD = 2,
+    BOX2_FRAME_MENU_FOURTH = 3,
+    BOX2_FRAME_MENU_FIFTH = 4,
+    BOX2_FRAME_MENU_LAST = 5,
+    BOX2_FRAME_MESSAGE = 6,
+    BOX2_FRAME_MARKINGS = 7,
+    BOX2_FRAME_PARTY = 8,
+    BOX2_FRAME_BOX_LIST = 9,
+    BOX2_FRAME_PARTY_BUTTON = 10,
+    BOX2_FRAME_BOX_LIST_BUTTON = 11,
+};
+
+// Window indices in sWinData; message variants differ in size.
+enum {
+    BOX2_WIN_TITLE = 0,
+    BOX2_WIN_SPECIES = 1,
+    BOX2_WIN_NICKNAME = 2,
+    BOX2_WIN_LEVEL = 3,
+    BOX2_WIN_GENDER = 4,
+    BOX2_WIN_DEX_NUMBER = 5,
+    BOX2_WIN_NATURE = 6,
+    BOX2_WIN_ABILITY = 7,
+    BOX2_WIN_ITEM = 8,
+    BOX2_WIN_MOVES = 9,
+    BOX2_WIN_MOVES_LABEL = 10,
+    BOX2_WIN_NATURE_LABEL = 11,
+    BOX2_WIN_ABILITY_LABEL = 12,
+    BOX2_WIN_ITEM_LABEL = 13,
+    BOX2_WIN_MENU_FIRST = 14,
+    BOX2_WIN_MENU_SECOND = 15,
+    BOX2_WIN_MENU_THIRD = 16,
+    BOX2_WIN_MENU_FOURTH = 17,
+    BOX2_WIN_MENU_FIFTH = 18,
+    BOX2_WIN_MENU_LAST = 19,
+    BOX2_WIN_MARK_CONFIRM = 20,
+    BOX2_WIN_MARK_CANCEL = 21,
+    BOX2_WIN_PARTY_BUTTON = 22,
+    BOX2_WIN_BOX_LIST_BUTTON = 23,
+    BOX2_WIN_MESSAGE = 24,
+    BOX2_WIN_MESSAGE_TALL_NARROW = 25,
+    BOX2_WIN_DEPOSIT_PROMPT = 26,
+    BOX2_WIN_MESSAGE_TALL = 27,
+};
+
+// Whether a menu row has the forward arrow drawn by DrawButton.
+enum {
+    BOX2_MENU_ITEM_PLAIN = 0,
+    BOX2_MENU_ITEM_ARROW = 1,
+};
+
+// Wallpaper category; sScenery*, sMisc*, and sSpecial* menus establish the values.
+enum {
+    BOX2_WALLPAPER_THEME_MENU = 0,
+    BOX2_WALLPAPER_SCENERY_1 = 1,
+    BOX2_WALLPAPER_SCENERY_2 = 2,
+    BOX2_WALLPAPER_SCENERY_3 = 3,
+    BOX2_WALLPAPER_MISC = 4,
+    BOX2_WALLPAPER_SPECIAL_1 = 5,
+    BOX2_WALLPAPER_SPECIAL_2 = 6,
+};
+
+// BoxSaveAccessor_CheckFlags set IDs for extra-wallpaper pages.
+enum {
+    BOX2_WALLPAPER_UNLOCK_SPECIAL_1 = 1,
+    BOX2_WALLPAPER_UNLOCK_SPECIAL_2 = 2,
+};
+
+// Held-item filter, indexed by sItemCriterionMsgs.
+enum {
+    BOX2_SEARCH_ITEM_ANY = 0,
+    BOX2_SEARCH_ITEM_WITHOUT = 1,
+    BOX2_SEARCH_ITEM_WITH = 2,
+};
+
+// Gender filter: zero means any; other values are GENDER_* plus one.
+enum {
+    BOX2_SEARCH_GENDER_ANY = 0,
+    BOX2_SEARCH_GENDER_MALE = 1,
+    BOX2_SEARCH_GENDER_FEMALE = 2,
+    BOX2_SEARCH_GENDER_UNKNOWN = 3,
+};
+
+// Whether range icons share one vector or have individual vectors.
+enum {
+    BOX2_POKE_MOVE_GROUP = 0,
+    BOX2_POKE_MOVE_INDIVIDUAL = 1,
+};
+
+// Icon move action; HIDE_AFTER follows the scroll arrow and hides the proxy icon.
+enum {
+    BOX2_POKE_ICON_MOVE_NONE = 0,
+    BOX2_POKE_ICON_MOVE_VISIBLE = 1,
+    BOX2_POKE_ICON_MOVE_HIDE_AFTER = 2,
+};
+
+// Index of128KB OBJ mapping resources in AppMenuCommon file tables.
+enum {
+    BOX2_OBJ_MAPPING_128K = 2,
+};
+
+// Capacities of the box-owned arrays and frame collection.
+#define BOX2_WIN_MAX 28
+#define BOX2_FONT_OAM_MAX 10
+#define BOX2_POKE_MOVE_MAX 12
+#define BOX2_MARK_COUNT 6
+#define BOX2_FRAME_COUNT 12
+#define BOX2_POKE_ICON_COUNT 66
+#define BOX2_ACTOR_MAX 145
+#define BOX2_CHAR_RES_MAX 129
+#define BOX2_PAL_RES_MAX 11
+#define BOX2_CELL_RES_MAX 13
+
+// Text-object groups created by CreateFontOams.
+enum {
+    BOX2_FONT_OAM_BOX_NAME = 0,
+    BOX2_FONT_OAM_BOX_COUNT_FIRST = 1,
+    BOX2_FONT_OAM_BOX_COUNT_LAST = 6,
+    BOX2_FONT_OAM_TRAY_NAME_FIRST = 7,
+    BOX2_FONT_OAM_TRAY_NAME_SECOND = 8,
+    BOX2_FONT_OAM_RANGE_COUNT = 9,
+};
+
+#define BOX2_BOX_LIST_DRAW_ROWS 6
+#define BOX2_BOX_LIST_VISIBLE_ROWS 4
+
+// Displayed Pokerus status, from duration and infection-history checks.
+enum {
+    BOX2_POKERUS_NONE = 0,
+    BOX2_POKERUS_ACTIVE = 1,
+    BOX2_POKERUS_CURED = 2,
+};
+
 typedef struct {
     u16 species;
     // 1 when the Pokémon must hold no item, 2 when it must hold one
@@ -106,24 +294,24 @@ struct Box2SysWork {
     // A BOX2_PICK_*
     u8 pickState;
     u8 trayScroll;
-    // Box2Obj_GetIconPos's mode for the moving icons: 1 with the party's frame at the left, 2 at the right
+    // A BOX2_ICON_POS_* placement context for moving icons
     u8 iconPosMode;
     // Set when the move mode or the move started on the party's frame
     u8 fromParty;
     u8 moveMode : 4;
-    // Set when moveMode 1 was picked with the menu open, so the Pokémon of the menu is picked up
+    // Set when BOX2_MOVE_MODE_SINGLE was picked with the menu open, so its Pokemon is picked up
     u8 fromMenu : 2;
-    // Set when a move ended in moveMode 0, which then goes back to the main state
+    // Set when a BOX2_MOVE_MODE_MENU move ended and goes back to the main state
     u8 moveDone : 2;
     // The cursor's position that subProcReturn 3 and 5 put back
     u8 subProcCursorPos;
     // Set when the party's frame was at the left before the item arrangement brought it in
     u8 partyWasLeft;
     // What Box2Obj_SetButtons shows of the four buttons, kept to show them again
-    u8 button1;
-    u8 button2;
-    u8 button3;
-    u8 button4;
+    u8 backButtonState;
+    u8 closeButtonState;
+    u8 summaryButtonState;
+    u8 searchButtonState;
     u8 unk23;
     u32 curRcvPos;
     int nextSeq;
@@ -181,7 +369,7 @@ typedef struct {
 
 // The Pokémon that move at once, and where the move started and ends
 typedef struct {
-    Box2PokeMoveData data[12];
+    Box2PokeMoveData data[BOX2_POKE_MOVE_MAX];
     u16 cnt;
     u16 mode;
     u32 getPos;
@@ -288,7 +476,7 @@ typedef struct {
 
 struct Box2AppWork {
     BmpOamSys *bmpOam;
-    Box2FontOam fontOam[10];
+    Box2FontOam fontOam[BOX2_FONT_OAM_MAX];
     u32 keyRepeatWait;
     u32 keyRepeatStart;
     TCB *vtask;
@@ -304,7 +492,7 @@ struct Box2AppWork {
     StrBuf *expandBuf;
     PrintQueue *printQueue;
     u32 unk98;
-    PrintWindow windows[28];
+    PrintWindow windows[BOX2_WIN_MAX];
     u8 flushChar[4];
     u32 cursorChars;
     BOOL nationalDex;
@@ -317,15 +505,15 @@ struct Box2AppWork {
     ArcTool *pokeIconArc;
     u8 pokeIconChar[30][0x200];
     u8 pokeIconPal[30];
-    u8 pokeIconId[66];
+    u8 pokeIconId[BOX2_POKE_ICON_COUNT];
     BOOL pokeIconExist[30];
     u8 trayIconChar[BOX2_TRAY_MAX][0x400];
     ClActUnit *clunit;
-    ClActor *actors[145];
-    u32 chrRes[129];
+    ClActor *actors[BOX2_ACTOR_MAX];
+    u32 chrRes[BOX2_CHAR_RES_MAX];
     u8 unkA2E0[0x204];
-    u32 palRes[11];
-    u32 cellRes[13];
+    u32 palRes[BOX2_PAL_RES_MAX];
+    u32 cellRes[BOX2_CELL_RES_MAX];
     u16 pokegraSwap;
     u16 unkA546;
     u32 oldCurPos;
@@ -346,7 +534,7 @@ struct Box2AppWork {
     // Set while the box jump is open
     u8 boxJumpOpen;
     u8 wallpaperPos;
-    // The wallpaper menu's page: 0 for the themes, else the theme
+    // A BOX2_WALLPAPER_* category, or BOX2_WALLPAPER_THEME_MENU
     u8 wallpaperTheme;
     u8 unkA55D;
     // Where the hand puts a Pokémon or an item
@@ -478,10 +666,10 @@ BOOL Box2Main_VFuncItemArrangePutKey(Box2SysWork *syswk);
 BOOL Box2Main_VFuncItemArrangeKeyCancel(Box2SysWork *syswk);
 BOOL Box2Main_VFuncItemArrangeBoxPartyGetTouch(Box2SysWork *syswk);
 BOOL Box2Main_VFuncItemArrangeMenuCancel(Box2SysWork *syswk);
-BOOL Box2Main_VFuncBoxListScrollLeft(Box2SysWork *syswk);
-BOOL Box2Main_VFuncBoxListScrollRight(Box2SysWork *syswk);
-BOOL Box2Main_VFuncBoxMoveScrollLeft(Box2SysWork *syswk);
-BOOL Box2Main_VFuncBoxMoveScrollRight(Box2SysWork *syswk);
+BOOL Box2Main_VFuncBoxListScrollNext(Box2SysWork *syswk);
+BOOL Box2Main_VFuncBoxListScrollPrevious(Box2SysWork *syswk);
+BOOL Box2Main_VFuncBoxJumpScrollNext(Box2SysWork *syswk);
+BOOL Box2Main_VFuncBoxJumpScrollPrevious(Box2SysWork *syswk);
 BOOL Box2Main_VFuncRangeMoveTouch(Box2SysWork *syswk);
 void Box2Main_ClearRangeFlags(Box2SysWork *syswk);
 void Box2Main_SetRangeFlags(Box2SysWork *syswk);

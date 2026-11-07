@@ -32,9 +32,9 @@ static BOOL Box2Proc_Init(GameProc *proc, u32 *state, void *param, void *work) {
 
     // Once every box that is open holds a Pokémon, more boxes open
     if (syswk->trayMax != BOX2_TRAY_MAX) {
-        if (syswk->trayMax == 8) {
+        if (syswk->trayMax == BOX2_INITIAL_TRAY_COUNT) {
             count = 8;
-        } else if (syswk->trayMax == 16) {
+        } else if (syswk->trayMax == BOX2_FIRST_EXPANSION_TRAY_COUNT) {
             count = 16;
         }
         for (tray = 0; tray < count; tray++) {

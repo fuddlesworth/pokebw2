@@ -150,10 +150,10 @@ Box2Main_VFuncItemArrangePutKey kind:function(thumb,size=0xd4) addr:0x021c19a4
 Box2Main_VFuncItemArrangeKeyCancel kind:function(thumb,size=0xfc) addr:0x021c1a78
 Box2Main_VFuncItemArrangeBoxPartyGetTouch kind:function(thumb,size=0x364) addr:0x021c1b74
 Box2Main_VFuncItemArrangeMenuCancel kind:function(thumb,size=0x4c) addr:0x021c1ed8
-Box2Main_VFuncBoxListScrollLeft kind:function(thumb,size=0x52) addr:0x021c1f24
-Box2Main_VFuncBoxListScrollRight kind:function(thumb,size=0x4e) addr:0x021c1f78
-Box2Main_VFuncBoxMoveScrollLeft kind:function(thumb,size=0x52) addr:0x021c1fc8
-Box2Main_VFuncBoxMoveScrollRight kind:function(thumb,size=0x4e) addr:0x021c201c
+Box2Main_VFuncBoxListScrollNext kind:function(thumb,size=0x52) addr:0x021c1f24
+Box2Main_VFuncBoxListScrollPrevious kind:function(thumb,size=0x4e) addr:0x021c1f78
+Box2Main_VFuncBoxJumpScrollNext kind:function(thumb,size=0x52) addr:0x021c1fc8
+Box2Main_VFuncBoxJumpScrollPrevious kind:function(thumb,size=0x4e) addr:0x021c201c
 Box2Main_VFuncRangeMoveTouch kind:function(thumb,size=0x318) addr:0x021c206c
 Box2Main_ClearRangeFlags kind:function(thumb,size=0x18) addr:0x021c2384
 Box2Main_SetRangeFlags kind:function(thumb,size=0x88) addr:0x021c239c
@@ -265,7 +265,7 @@ Box2Seq_GivenItemMsg kind:function(thumb,size=0x26) addr:0x021cabd4
 Box2Seq_MarkingOpen kind:function(thumb,size=0xf0) addr:0x021cabfc
 Box2Seq_MarkingMain kind:function(thumb,size=0x120) addr:0x021cacec
 Box2Seq_MarkingClose kind:function(thumb,size=0xa8) addr:0x021cae0c
-Box2Seq_ReleaseStart kind:function(thumb,size=0xe) addr:0x021caeb4
+Box2Seq_MarkingCursorMoveEnd kind:function(thumb,size=0xe) addr:0x021caeb4
 Box2Seq_ReleaseCheck kind:function(thumb,size=0x19c) addr:0x021caec4
 Box2Seq_ReleaseCheckMoves kind:function(thumb,size=0x48) addr:0x021cb060
 Box2Seq_ReleaseDo kind:function(thumb,size=0x170) addr:0x021cb0a8
@@ -281,7 +281,7 @@ Box2Seq_WallpaperMenuOpen kind:function(thumb,size=0x184) addr:0x021cb9bc
 Box2Seq_WallpaperMenuMain kind:function(thumb,size=0x22c) addr:0x021cbb40
 Box2Seq_WallpaperChange kind:function(thumb,size=0xf0) addr:0x021cbd6c
 Box2Seq_CallNameInput kind:function(thumb,size=0xc) addr:0x021cbe5c
-Box2Seq_NameInputOpen kind:function(thumb,size=0x30) addr:0x021cbe68
+Box2Seq_AskContinue kind:function(thumb,size=0x30) addr:0x021cbe68
 Box2Seq_Goto kind:function(thumb,size=0x10) addr:0x021cbe98
 Box2Seq_WipeOut kind:function(thumb,size=0x30) addr:0x021cbea8
 Box2Seq_WipeIn kind:function(thumb,size=0x30) addr:0x021cbed8
@@ -351,7 +351,7 @@ Box2Seq_OpenItemMenu kind:function(thumb,size=0x54) addr:0x021cdcb4
 GetDepositBlock kind:function(thumb,size=0x3c) addr:0x021cdd08
 ToggleMark kind:function(thumb,size=0x20) addr:0x021cdd44
 Box2Seq_PickWallpaper kind:function(thumb,size=0x5c) addr:0x021cdd64
-DimActorsForNameInput kind:function(thumb,size=0x6e) addr:0x021cddc0
+DimActorsForContinuePrompt kind:function(thumb,size=0x6e) addr:0x021cddc0
 Box2Seq_NextMoveMode kind:function(thumb,size=0x98) addr:0x021cde30
 Box2Seq_SetMoveMode kind:function(thumb,size=0x4c) addr:0x021cdec8
 CancelRange kind:function(thumb,size=0x24) addr:0x021cdf14
@@ -602,7 +602,7 @@ FindRectAt kind:function(thumb,size=0x68) addr:0x021d34a8
 Box2Ui_GetTrayPokeTrigger kind:function(thumb,size=0x10) addr:0x021d3510
 Box2Ui_GetTrayPokeHeld kind:function(thumb,size=0x10) addr:0x021d3520
 Box2Ui_GetTrayPokeAt kind:function(thumb,size=0x14) addr:0x021d3530
-Box2Ui_GetMenuButtonTrigger kind:function(thumb,size=0x10) addr:0x021d3544
+Box2Ui_GetLeftPartyPokeTrigger kind:function(thumb,size=0x10) addr:0x021d3544
 Box2Ui_GetPartyPokeTrigger kind:function(thumb,size=0x10) addr:0x021d3554
 Box2Ui_GetPartyPokeHeld kind:function(thumb,size=0x10) addr:0x021d3564
 Box2Ui_GetTrayArrowHeld kind:function(thumb,size=0x10) addr:0x021d3574
@@ -786,8 +786,8 @@ BoxSearchClAct_VBlank kind:function(thumb,size=0x8) addr:0x021d6fa0
 BoxSearchClAct_GetUnit kind:function(thumb,size=0x4) addr:0x021d6fa8
 BOX2_PROC_FUNCTIONS kind:data(any) addr:0x021d6fac ambiguous
 sTrayPokeArea kind:data(any) addr:0x021d6fb8
-sPartyPokeAreaLeft kind:data(any) addr:0x021d6fbc
-sPartyPokeAreaRight kind:data(any) addr:0x021d6fd4
+sPartyPokeDropAreasRight kind:data(any) addr:0x021d6fbc
+sPartyPokeDropAreasLeft kind:data(any) addr:0x021d6fd4
 sVramBanks kind:data(any) addr:0x021d6fec
 data_ov255_021d6fdc kind:data(any) addr:0x021d701c
 data_ov255_021d6fec kind:data(any) addr:0x021d702c
@@ -854,12 +854,12 @@ data_ov255_021d7878 kind:data(any) addr:0x021d78b8
 data_ov255_021d7890 kind:data(any) addr:0x021d78d0
 data_ov255_021d78a8 kind:data(any) addr:0x021d78e8
 sTouchRectEnd kind:data(any) addr:0x021d7900
-sTouchRects_78c4 kind:data(any) addr:0x021d7904
-sTouchRects_78cc kind:data(any) addr:0x021d790c
-sTouchRects_78d4 kind:data(any) addr:0x021d7914
-sTouchRects_78dc kind:data(any) addr:0x021d791c
-sTouchRects_78e4 kind:data(any) addr:0x021d7924
-sTouchRects_78f0 kind:data(any) addr:0x021d7930
+sTrayTouchRect kind:data(any) addr:0x021d7904
+sBoxListTouchRect kind:data(any) addr:0x021d790c
+sLeftPartyTouchRect kind:data(any) addr:0x021d7914
+sRightPartyTouchRect kind:data(any) addr:0x021d791c
+sBoxListArrowRects kind:data(any) addr:0x021d7924
+sBoxListScrollTouchRects kind:data(any) addr:0x021d7930
 sCursorCallbacks2 kind:data(any) addr:0x021d793c
 sCursorCallbacks14 kind:data(any) addr:0x021d794c
 sCursorCallbacks5 kind:data(any) addr:0x021d795c
@@ -876,7 +876,7 @@ sCursorCallbacks15 kind:data(any) addr:0x021d79fc
 sCursorCallbacks10 kind:data(any) addr:0x021d7a0c
 sCursorCallbacks7 kind:data(any) addr:0x021d7a1c
 sCursorCallbacks13 kind:data(any) addr:0x021d7a2c
-sTouchRects_79fc kind:data(any) addr:0x021d7a3c
+sBoxListRowTouchRects kind:data(any) addr:0x021d7a3c
 sCursorData10 kind:data(any) addr:0x021d7a50
 sCursorData1 kind:data(any) addr:0x021d7a8c
 sCursorData11 kind:data(any) addr:0x021d7ad4
