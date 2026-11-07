@@ -10,13 +10,14 @@
 
 #define OVERLAY_OV306 OVERLAY_ID(306)
 
+// The fields have the same roles as BtlRecSelParam in app/btl_rec_sel.h. Existing types are retained.
 typedef struct {
     GameData *gameData;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    s32 unk14;
+    u32 compatible;
+    u32 comm;
+    u32 recorded;
+    u32 mode;
+    s32 counter;
 } Ov306Param;
 
 extern const GameProcFunctions BtlRecSelProcFunctions;

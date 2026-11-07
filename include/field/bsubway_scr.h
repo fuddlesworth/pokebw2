@@ -112,13 +112,15 @@ struct BSubwayScrWork {
     u16 unkC_4 : 1;
     // The partners entry of a multi train's partner, or 5 plus the gender of a wireless partner
     u16 partnerIndex : 3;
-    u16 unkC_8 : 1;
+    // Whether the scripts synchronize the wireless partners before returning to Nimbasa
+    u16 returnSyncRequired : 1;
     // Set when the network is already up, so that the train only adds its commands to it and removes them
     u16 useExistingNet : 1;
-    // Whether battle video slot 4 holds a video: 0 before it is checked, 1 when it doesn't, 2 when it does or one was
-    // saved
+    // Cached presence of Battle Video slot 0: 0 unchecked, 1 empty, 2 present. Starting a save attempt marks it
+    // present before that attempt finishes
     u16 videoState : 2;
-    u16 unkC_12 : 1;
+    // Disables the save-video choice after the save sequence or for an incompatible partner
+    u16 videoSaveDisabled : 1;
     u16 unkC_13 : 3;
     u16 winCount;
     // The header's counter, for BattleRec_FinishAndSaveSlot

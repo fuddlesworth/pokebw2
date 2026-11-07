@@ -874,21 +874,21 @@ static void *WifiBattleMatchSys_CreateResultParam(WifiBattleMatchChain *chain, H
         battleType = value * 2 + 0x21 + param0D;
     }
     param->gameData = sys->param.gameData;
-    param->unk4 = TRUE;
-    param->unk8 = FALSE;
-    param->unk10 = battleType;
-    param->unk14 = 0;
+    param->compatible = TRUE;
+    param->comm = FALSE;
+    param->mode = battleType;
+    param->counter = 0;
     if (sys->mode == 1) {
-        param->unkC = TRUE;
+        param->recorded = TRUE;
     } else {
-        param->unkC = (sys->battleResult.ownCommandCheckError != 0 || sys->battleResult.otherCommandCheckError != 0)
-                          ? FALSE
-                          : TRUE;
+        param->recorded = (sys->battleResult.ownCommandCheckError != 0 || sys->battleResult.otherCommandCheckError != 0)
+                              ? FALSE
+                              : TRUE;
     }
     if (BattleRec_IsVersionSupported(sys->otherPlayer->battleRecordVersion)) {
-        param->unk4 = TRUE;
+        param->compatible = TRUE;
     } else {
-        param->unk4 = FALSE;
+        param->compatible = FALSE;
     }
     return param;
 }

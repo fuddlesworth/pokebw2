@@ -260,11 +260,11 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
             saved = BattleRec_IsVersionSupported(battle->setup->commonVersion) ? TRUE : FALSE;
         }
         battle->ov306Param.gameData = battle->gameData;
-        battle->ov306Param.unk4 = saved;
-        battle->ov306Param.unk8 = 1;
-        battle->ov306Param.unkC = 1;
-        battle->ov306Param.unk10 = battle->rule;
-        battle->ov306Param.unk14 = battle->unk10;
+        battle->ov306Param.compatible = saved;
+        battle->ov306Param.comm = 1;
+        battle->ov306Param.recorded = 1;
+        battle->ov306Param.mode = battle->rule;
+        battle->ov306Param.counter = battle->unk10;
         QueueGameProc(procWork->manager, OVERLAY_ID(306), &BtlRecSelProcFunctions, &battle->ov306Param);
         *state = PROC_STEP_SAVE_SELECT_WAIT;
         break;
