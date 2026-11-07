@@ -429,14 +429,14 @@ static int Partner_SubSeqYesNo(WorldTradeWork *wk) {
 static int Partner_SubSeqYesNoSelect(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->subprocessSeq = PARTNER_SEQ_END;
         WorldTrade_SubProcessChange(wk, WORLDTRADE_MYBOX, WT_MODE_EXCHANGE_SELECT);
         Partner_PokeLabelPrint(wk->msgManager, &wk->infoWin[14], 0x53, &wk->print, 0x440);
         Partner_PokeLabelPrint(wk->msgManager, &wk->infoWin[9], 0x57, &wk->print, 0x3c40);
         Partner_ChangePage(wk);
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         BmpWin_ClearFrame(wk->msgWin, 0);
         wk->subprocessSeq = PARTNER_SEQ_MAIN;
@@ -505,7 +505,7 @@ static void Partner_SubSeqMessagePrint(WorldTradeWork *wk, int msgNo, int wait, 
 static void Partner_PokeLabelPrint(MsgData *msgManager, BmpWin **win, int msg, WorldTradePrint *print, u16 color) {
     StrBuf *str = GFL_MsgDataLoadStrbufNew(msgManager, msg);
 
-    WorldTrade_SysPrint(win[0], str, 0, 2, 0, color, print);
+    WorldTrade_SysPrint(win[0], str, 0, 2, WT_TEXT_ALIGN_LEFT, color, print);
     GFL_StrBufFree(str);
 }
 
@@ -513,7 +513,7 @@ static void Partner_TouchPrint(MsgData *msgManager, BmpWin **win, int msg, World
     StrBuf *str = GFL_MsgDataLoadStrbufNew(msgManager, msg);
     BmpWin *window;
 
-    WorldTrade_TouchPrint(win[0], str, 0, 0, 1, 0x3c40, print);
+    WorldTrade_TouchPrint(win[0], str, 0, 0, WT_TEXT_ALIGN_CENTER, 0x3c40, print);
     window = win[0];
     BmpWin_FlushChar(window);
     BmpWin_FlushMap(window);
@@ -544,10 +544,10 @@ static void Partner_TrainerInfoPrint(BmpWin **win, StrBuf *str1, StrBuf *str2, W
     GFL_BitmapFill(BmpWin_GetBitmap(win[0]), 0);
     GFL_BitmapFill(BmpWin_GetBitmap(win[1]), 0);
     if (str1 != NULL) {
-        WorldTrade_SysPrint(win[0], str1, 0, 0, 0, 0x440, print);
+        WorldTrade_SysPrint(win[0], str1, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
     }
     if (str2 != NULL) {
-        WorldTrade_SysPrint(win[1], str2, 0, 0, 0, 0x440, print);
+        WorldTrade_SysPrint(win[1], str2, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
     }
 }
 

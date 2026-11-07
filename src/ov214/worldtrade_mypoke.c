@@ -31,6 +31,12 @@
 #include "system/wordset.h"
 #include "worldtrade_local.h"
 
+// Actions of the deposited Pokemon menu, in selected-row-plus-one order.
+enum {
+    MYPOKE_MENU_TAKE_BACK = 1,
+    MYPOKE_MENU_QUIT = 2,
+};
+
 // The Global Trade Station's screen of the Pokémon the player deposited, where they can take it back. The file's name
 // is a guess, as the ROM doesn't give it, and so are the names of its functions
 
@@ -346,13 +352,13 @@ static int MyPoke_SubSeqYesNo(WorldTradeWork *wk) {
 static int MyPoke_SubSeqYesNoSelect(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->subprocessSeq = MYPOKE_SEQ_END;
         wk->subOutFlag = 1;
         WorldTrade_SubProcessChange(wk, WORLDTRADE_UPLOAD, WT_MODE_DOWNLOAD);
         MyPoke_WantPokePrintReWrite(wk);
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->subprocessSeq = MYPOKE_SEQ_START;
         BmpWin_ClearFrame(wk->msgWin, 0);
@@ -363,8 +369,8 @@ static int MyPoke_SubSeqYesNoSelect(WorldTradeWork *wk) {
 
 static int MyPoke_SubSeqSelectList(WorldTradeWork *wk) {
     wk->menuList = ListMenuCore_CreateOptionList(2, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x3d, 1, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x3e, 2, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x3d, MYPOKE_MENU_TAKE_BACK, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x3e, MYPOKE_MENU_QUIT, HEAPID_WORLDTRADE);
     WorldTrade_SelBoxInit(wk, 2, 2, 20);
     WorldTrade_SetPassiveKeepBG2(TRUE);
     wk->subprocessSeq = MYPOKE_SEQ_SELECT_WAIT;
@@ -375,12 +381,12 @@ static int MyPoke_SubSeqSelectWait(WorldTradeWork *wk) {
     PartyPkm *pkm;
     int ret = WorldTrade_SelBoxMain(wk);
 
-    if (ret == 1) {
+    if (ret == MYPOKE_MENU_TAKE_BACK) {
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
         pkm = WorldTradeData_GetPkmPtr(wk->param->worldtrade_data);
         // A Pokémon with mail goes to the party, which must have room
-        if (WorldTrade_PokemonMailCheck(pkm) && PokeParty_GetPkmCount(wk->param->myparty) == 6) {
+        if (WorldTrade_PokemonMailCheck(pkm) && PokeParty_GetPkmCount(wk->param->myparty) == PARTY_SIZE) {
             MyPoke_SubSeqMessagePrint(wk, 0x2a, 1, 0, 0xf0f, pkm);
             WorldTrade_SetNextSeq(wk, MYPOKE_SEQ_MESSAGE_WAIT, MYPOKE_SEQ_MAIN);
             return WT_SEQ_MAIN;
@@ -388,7 +394,7 @@ static int MyPoke_SubSeqSelectWait(WorldTradeWork *wk) {
         MyPoke_SubSeqMessagePrint(wk, 6, 1, 0, 0xf0f, pkm);
         WorldTrade_SetNextSeq(wk, MYPOKE_SEQ_MESSAGE_WAIT, MYPOKE_SEQ_YESNO);
         MyPoke_WantPokePrintReWrite(wk);
-    } else if (ret == 2 || ret == BMPMENULIST_CANCEL) {
+    } else if (ret == MYPOKE_MENU_QUIT || ret == BMPMENULIST_CANCEL) {
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
         wk->subprocessSeq = MYPOKE_SEQ_END;
@@ -438,9 +444,9 @@ static u16 MyPoke_SexMarkColor(int sex) {
     switch (sex) {
     case 0:
         return 0;
-    case 1:
+    case WT_POKEMON_SEX_MALE:
         return 0x14c0;
-    case 2:
+    case WT_POKEMON_SEX_FEMALE:
         return 0xc80;
     }
     return 0;
@@ -483,16 +489,16 @@ void WorldTrade_MyPokeInfoPrint(MsgData *msgManager, MsgData *monsNameManager, W
         GFL_BitmapFill(BmpWin_GetBitmap(win[i]), 0);
     }
 
-    WorldTrade_SysPrint(win[0], namebuf, 0, 0, 0, 0x440, print);
-    if (sex != 3 && showSex) {
-        WorldTrade_SysPrint(win[0], sexbuf, 64, 0, 0, MyPoke_SexMarkColor(sex), print);
+    WorldTrade_SysPrint(win[0], namebuf, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
+    if (sex != WT_POKEMON_SEX_GENDERLESS && showSex) {
+        WorldTrade_SysPrint(win[0], sexbuf, 64, 0, WT_TEXT_ALIGN_LEFT, MyPoke_SexMarkColor(sex), print);
     }
-    WorldTrade_SysPrint(win[1], strbuf, 7, 0, 0, 0x440, print);
-    WorldTrade_SysPrint(win[2], levelLabel, 0, 0, 0, 0x440, print);
-    WorldTrade_SysPrint(win[3], levelbuf, 0, 0, 0, 0x440, print);
-    WorldTrade_SysPrint(win[4], itemLabel, 0, 0, 0, 0x3c40, print);
-    WorldTrade_SysPrint(win[5], itembuf, 7, 0, 0, 0x440, print);
-    WorldTrade_SysPrint(win[6], nameLabel, 0, 0, 0, 0x3c40, print);
+    WorldTrade_SysPrint(win[1], strbuf, 7, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
+    WorldTrade_SysPrint(win[2], levelLabel, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
+    WorldTrade_SysPrint(win[3], levelbuf, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
+    WorldTrade_SysPrint(win[4], itemLabel, 0, 0, WT_TEXT_ALIGN_LEFT, 0x3c40, print);
+    WorldTrade_SysPrint(win[5], itembuf, 7, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
+    WorldTrade_SysPrint(win[6], nameLabel, 0, 0, WT_TEXT_ALIGN_LEFT, 0x3c40, print);
 
     GFL_StrBufFree(itemLabel);
     GFL_StrBufFree(itembuf);
@@ -518,10 +524,10 @@ void WorldTrade_PokeInfoPrint2(MsgData *msgManager, BmpWin **win, u16 *name, Par
     oyaLabel = GFL_MsgDataLoadStrbufNew(msgManager, 0xc2);
     PokeParty_GetParam(pkm, PKM_PARAM_OT_NAME, oyabuf);
 
-    WorldTrade_SysPrint(win[0], ownerLabel, 0, 0, 0, 0x3c40, print);
-    WorldTrade_SysPrint(win[1], ownerbuf, 0, 0, 0, 0x440, print);
-    WorldTrade_SysPrint(oyaWin[0], oyaLabel, 0, 0, 0, 0x3c40, print);
-    WorldTrade_SysPrint(oyaWin[1], oyabuf, 7, 0, 0, 0x440, print);
+    WorldTrade_SysPrint(win[0], ownerLabel, 0, 0, WT_TEXT_ALIGN_LEFT, 0x3c40, print);
+    WorldTrade_SysPrint(win[1], ownerbuf, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
+    WorldTrade_SysPrint(oyaWin[0], oyaLabel, 0, 0, WT_TEXT_ALIGN_LEFT, 0x3c40, print);
+    WorldTrade_SysPrint(oyaWin[1], oyabuf, 7, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
 
     GFL_StrBufFree(ownerLabel);
     GFL_StrBufFree(ownerbuf);

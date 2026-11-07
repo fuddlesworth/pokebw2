@@ -155,8 +155,8 @@ static BOOL WorldTradeProc_Main(GameProc *proc, u32 *state, void *param, void *w
     if (wk->clactUnit != NULL) {
         ClActSys_Draw();
     }
-    if (wk->unk12E8 > 0) {
-        wk->unk12E8--;
+    if (wk->searchResultDelay > 0) {
+        wk->searchResultDelay--;
     }
     return FALSE;
 }
@@ -228,7 +228,7 @@ static void WorldTrade_InitWork(WorldTradeWork *wk, WorldTradeParam *param) {
     wk->search.level_max = 0;
     wk->searchBackup.characterNo = 0;
     wk->demoEnd = 0;
-    wk->boxTrayNo = 0xff;
+    wk->boxTrayNo = BOX_TRAY_PARTY;
     wk->boxPokeNum = 0;
     wk->boxSearchFlag = 0;
     wk->subLcdTouchOK = 0;
@@ -379,16 +379,16 @@ void WorldTrade_TouchWinYesNoDel(WorldTradeWork *wk) {
 }
 
 u32 WorldTrade_TouchSwMain(WorldTradeWork *wk) {
-    u32 ret = 0;
+    u32 ret = WT_YESNO_WAIT;
 
     if (wk->task_work != NULL) {
         AppTaskMenu_Update(wk->task_work);
         if (AppTaskMenu_IsFlashFinished(wk->task_work)) {
             ret = AppTaskMenu_GetCursorPos(wk->task_work);
             if (ret == 0) {
-                ret = 1;
+                ret = WT_YESNO_YES;
             } else if (ret == 1) {
-                ret = 2;
+                ret = WT_YESNO_NO;
             }
             WorldTrade_ClearPassive();
         }

@@ -61,10 +61,10 @@ void WorldTrade_CopyPartyPkm(PartyPkm *src, PartyPkm *dest) {
 void WorldTrade_ClearWindow(BmpWin *win, int mode) {
     BmpWin_ClearScreen(win);
     switch (mode) {
-    case 0:
+    case WT_WINDOW_TRANSFER_NOW:
         GFL_BGSysLoadScr(BmpWin_GetBGIndex(win));
         break;
-    case 1:
+    case WT_WINDOW_TRANSFER_QUEUED:
         GFL_BGSysQueueScrLoad(BmpWin_GetBGIndex(win));
         break;
     }

@@ -226,15 +226,16 @@ int WorldTrade_Search_Init(WorldTradeWork *wk, int seq) {
 
     Search_WantLabelPrint(&wk->infoWin[0], wk->countryWin, wk->msgManager, &wk->print);
     Search_FriendViewButtonPrint(wk->infoWin[8], wk->msgManager, wk->subLcdTouchOK, &wk->print);
-    WorldTrade_PokeNamePrint(wk->infoWin[1], wk->monsNameManager, wk->search.characterNo, 0, 0, SEARCH_INFO_COLOR,
-                             &wk->print);
-    WorldTrade_SexPrint(wk->infoWin[3], wk->msgManager, wk->search.gender, 1, 0, 0, SEARCH_INFO_COLOR, &wk->print);
+    WorldTrade_PokeNamePrint(wk->infoWin[1], wk->monsNameManager, wk->search.characterNo, WT_TEXT_ALIGN_LEFT, 0,
+                             SEARCH_INFO_COLOR, &wk->print);
+    WorldTrade_SexPrint(wk->infoWin[3], wk->msgManager, wk->search.gender, 1, 0, WT_TEXT_ALIGN_LEFT, SEARCH_INFO_COLOR,
+                        &wk->print);
     WorldTrade_WantLevelPrint(
         wk->infoWin[5], wk->msgManager,
-        WorldTrade_LevelTermGet(wk->search.level_min, wk->search.level_max, LEVEL_PRINT_TBL_SEARCH), 0, 0,
-        SEARCH_INFO_COLOR, LEVEL_PRINT_TBL_SEARCH, &wk->print);
-    WorldTrade_CountryPrint(wk->countryWin[1], wk->countryNameManager, wk->msgManager, wk->countryCode, 0, 0,
-                            SEARCH_INFO_COLOR, &wk->print);
+        WorldTrade_LevelTermGet(wk->search.level_min, wk->search.level_max, LEVEL_PRINT_TBL_SEARCH), WT_TEXT_ALIGN_LEFT,
+        0, SEARCH_INFO_COLOR, LEVEL_PRINT_TBL_SEARCH, &wk->print);
+    WorldTrade_CountryPrint(wk->countryWin[1], wk->countryNameManager, wk->msgManager, wk->countryCode,
+                            WT_TEXT_ALIGN_LEFT, 0, SEARCH_INFO_COLOR, &wk->print);
 
     wk->vfunc2 = Search_SlideScreenVFunc;
     if (wk->subProcessMode == WT_MODE_SEARCH_FROM_TITLE) {
@@ -757,7 +758,7 @@ static int Search_SubSeqSearchCheck(WorldTradeWork *wk) {
         WorldTrade_SetNextSeq(wk, SEARCH_SEQ_MES_WAIT, SEARCH_SEQ_MAIN);
     } else {
         GFL_SndSEPlay(SEQ_SE_SYS_78);
-        wk->unk12E8 = 118;
+        wk->searchResultDelay = 118;
         Search_SubSeqMessagePrint(wk, 0xd, 1, 0, 0xf0f);
         WorldTrade_SetNextSeq(wk, SEARCH_SEQ_MES_WAIT, SEARCH_SEQ_SERVER_QUERY);
         if (wk->searchResult > 0) {
@@ -809,7 +810,7 @@ static int Search_SubSeqServerResult(WorldTradeWork *wk) {
             wk->searchResult = result;
             wk->subprocessSeq = SEARCH_SEQ_SEARCH_RESULT_MESSAGE;
             break;
-        case -2:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
             GFL_SndStop();
             wk->searchResult = 0;
@@ -819,11 +820,11 @@ static int Search_SubSeqServerResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             GFL_SndStop();
             WorldTrade_ShowFatalError(wk);
             break;
-        case -12:
+        case DPW_TR_RESULT_CANCELED:
         case -15:
             GFL_SndStop();
             wk->subprocessSeq = SEARCH_SEQ_SERVER_QUERY_FAILURE;
@@ -837,7 +838,7 @@ static int Search_SubSeqServerResult(WorldTradeWork *wk) {
 }
 
 static int Search_SubSeqSearchResultMessage(WorldTradeWork *wk) {
-    if (wk->unk12E8 == 0) {
+    if (wk->searchResultDelay == 0) {
         GFL_SndStop();
         WorldTrade_SubLcdMatchObjAppear(wk, wk->searchResult, 1);
         if (wk->searchResult == 0) {
@@ -1016,7 +1017,8 @@ static int Search_SubSeqPokenameSelectWait(WorldTradeWork *wk) {
         wk->search.characterNo = ret;
         wk->subprocessSeq = SEARCH_SEQ_START;
         GFL_BitmapFill(BmpWin_GetBitmap(wk->infoWin[1]), 0);
-        WorldTrade_PokeNamePrint(wk->infoWin[1], wk->monsNameManager, ret, 0, 0, SEARCH_INFO_COLOR, &wk->print);
+        WorldTrade_PokeNamePrint(wk->infoWin[1], wk->monsNameManager, ret, WT_TEXT_ALIGN_LEFT, 0, SEARCH_INFO_COLOR,
+                                 &wk->print);
         personal = PML_PersonalLoad(ret, 0, HEAPID_WORLDTRADE);
         sexSelection = PML_PersonalGetParam(personal, PERSONAL_SEX_RATIO);
         PML_PersonalFree(personal);
@@ -1025,8 +1027,8 @@ static int Search_SubSeqPokenameSelectWait(WorldTradeWork *wk) {
                                         wk->dw->nameListPos, wk->dw->namePos);
         if (WorldTrade_SexSelectionCheck(&wk->search, wk->dw->sexSelection)) {
             GFL_BitmapFill(BmpWin_GetBitmap(wk->infoWin[3]), 0);
-            WorldTrade_SexPrint(wk->infoWin[3], wk->msgManager, wk->search.gender, 1, 0, 0, SEARCH_INFO_COLOR,
-                                &wk->print);
+            WorldTrade_SexPrint(wk->infoWin[3], wk->msgManager, wk->search.gender, 1, 0, WT_TEXT_ALIGN_LEFT,
+                                SEARCH_INFO_COLOR, &wk->print);
         }
         break;
     }
@@ -1060,14 +1062,15 @@ static int Search_SubSeqSexSelectWait(WorldTradeWork *wk) {
         GFL_BGSysLoadScr(BmpWin_GetBGIndex(win));
         wk->subprocessSeq = SEARCH_SEQ_START;
         break;
-    case 0:
-    case 1:
-    case 2:
+    case WT_INPUT_SEX_MALE:
+    case WT_INPUT_SEX_FEMALE:
+    case WT_INPUT_SEX_ANY:
         Search_BgBlendSet(0);
         wk->search.gender = ret + 1;
         wk->subprocessSeq = SEARCH_SEQ_START;
         GFL_BitmapFill(BmpWin_GetBitmap(wk->infoWin[3]), 0);
-        WorldTrade_SexPrint(wk->infoWin[3], wk->msgManager, wk->search.gender, 1, 0, 0, SEARCH_INFO_COLOR, &wk->print);
+        WorldTrade_SexPrint(wk->infoWin[3], wk->msgManager, wk->search.gender, 1, 0, WT_TEXT_ALIGN_LEFT,
+                            SEARCH_INFO_COLOR, &wk->print);
         break;
     }
     return WT_SEQ_MAIN;
@@ -1080,7 +1083,7 @@ static int Search_SubSeqLevelSelectMes(WorldTradeWork *wk) {
 }
 
 static int Search_SubSeqLevelSelectList(WorldTradeWork *wk) {
-    wk->listpos = 0xffff;
+    wk->listpos = WT_LISTPOS_NONE;
     WorldTrade_Input_Start(wk->inputWork, INPUT_MODE_LEVEL);
     Search_BgBlendSet(9);
     wk->subprocessSeq = SEARCH_SEQ_LEVEL_SELECT_WAIT;
@@ -1103,8 +1106,8 @@ static int Search_SubSeqLevelSelectWait(WorldTradeWork *wk) {
         WorldTrade_LevelMinMaxSet(&wk->search, ret, LEVEL_PRINT_TBL_SEARCH);
         wk->subprocessSeq = SEARCH_SEQ_START;
         GFL_BitmapFill(BmpWin_GetBitmap(wk->infoWin[5]), 0);
-        WorldTrade_WantLevelPrint(wk->infoWin[5], wk->msgManager, ret, 0, 0, SEARCH_INFO_COLOR, LEVEL_PRINT_TBL_SEARCH,
-                                  &wk->print);
+        WorldTrade_WantLevelPrint(wk->infoWin[5], wk->msgManager, ret, WT_TEXT_ALIGN_LEFT, 0, SEARCH_INFO_COLOR,
+                                  LEVEL_PRINT_TBL_SEARCH, &wk->print);
         break;
     }
     return WT_SEQ_MAIN;
@@ -1117,7 +1120,7 @@ static int Search_SubSeqCountrySelectMes(WorldTradeWork *wk) {
 }
 
 static int Search_SubSeqCountrySelectList(WorldTradeWork *wk) {
-    wk->listpos = 0xffff;
+    wk->listpos = WT_LISTPOS_NONE;
     WorldTrade_Input_Start(wk->inputWork, INPUT_MODE_NATION);
     Search_BgBlendSet(9);
     wk->subprocessSeq = SEARCH_SEQ_COUNTRY_SELECT_WAIT;
@@ -1142,8 +1145,8 @@ static int Search_SubSeqCountrySelectWait(WorldTradeWork *wk) {
             WorldTrade_CountryCodeSet(wk, ret);
             wk->subprocessSeq = SEARCH_SEQ_START;
             GFL_BitmapFill(BmpWin_GetBitmap(wk->countryWin[1]), 0);
-            WorldTrade_CountryPrint(wk->countryWin[1], wk->countryNameManager, wk->msgManager, wk->countryCode, 0, 0,
-                                    SEARCH_INFO_COLOR, &wk->print);
+            WorldTrade_CountryPrint(wk->countryWin[1], wk->countryNameManager, wk->msgManager, wk->countryCode,
+                                    WT_TEXT_ALIGN_LEFT, 0, SEARCH_INFO_COLOR, &wk->print);
         }
     }
     return WT_SEQ_MAIN;
@@ -1158,7 +1161,7 @@ static int Search_SubSeqYesNo(WorldTradeWork *wk) {
 static int Search_SubSeqYesNoSelect(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->subprocessSeq = SEARCH_SEQ_END;
         WorldTrade_SubProcessChange(wk, WORLDTRADE_TITLE, 0);
@@ -1166,7 +1169,7 @@ static int Search_SubSeqYesNoSelect(WorldTradeWork *wk) {
             WorldTrade_SubLcdMatchObjHide(wk);
         }
         wk->searchResult = 0;
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->subprocessSeq = SEARCH_SEQ_START;
     }
@@ -1309,22 +1312,22 @@ static void Search_WantLabelPrint(BmpWin **win, BmpWin **countryWin, MsgData *ms
     StrBuf *str;
 
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0x43);
-    WorldTrade_SysPrint(win[0], str, 0, 0, 0, SEARCH_LABEL_COLOR, print);
+    WorldTrade_SysPrint(win[0], str, 0, 0, WT_TEXT_ALIGN_LEFT, SEARCH_LABEL_COLOR, print);
     GFL_StrBufFree(str);
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0x45);
-    WorldTrade_SysPrint(win[2], str, 0, 0, 0, SEARCH_LABEL_COLOR, print);
+    WorldTrade_SysPrint(win[2], str, 0, 0, WT_TEXT_ALIGN_LEFT, SEARCH_LABEL_COLOR, print);
     GFL_StrBufFree(str);
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0x47);
-    WorldTrade_SysPrint(win[4], str, 0, 0, 0, SEARCH_LABEL_COLOR, print);
+    WorldTrade_SysPrint(win[4], str, 0, 0, WT_TEXT_ALIGN_LEFT, SEARCH_LABEL_COLOR, print);
     GFL_StrBufFree(str);
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0xb9);
-    WorldTrade_SysPrint(countryWin[0], str, 0, 0, 0, SEARCH_LABEL_COLOR, print);
+    WorldTrade_SysPrint(countryWin[0], str, 0, 0, WT_TEXT_ALIGN_LEFT, SEARCH_LABEL_COLOR, print);
     GFL_StrBufFree(str);
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0x49);
-    WorldTrade_TouchPrint(win[6], str, 0, 0, 0, SEARCH_LABEL_COLOR, print);
+    WorldTrade_TouchPrint(win[6], str, 0, 0, WT_TEXT_ALIGN_LEFT, SEARCH_LABEL_COLOR, print);
     GFL_StrBufFree(str);
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0xfc);
-    WorldTrade_TouchPrint(win[7], str, 0, 0, 0, SEARCH_LABEL_COLOR, print);
+    WorldTrade_TouchPrint(win[7], str, 0, 0, WT_TEXT_ALIGN_LEFT, SEARCH_LABEL_COLOR, print);
     GFL_StrBufFree(str);
 }
 
@@ -1343,7 +1346,7 @@ static void Search_FriendViewButtonPrint(BmpWin *win, MsgData *msgManager, int f
     GFL_BGSysSetScrPaletteNo(1, 17, 2, 15, 4, palette);
     GFL_BGSysLoadScr(1);
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0x4b);
-    WorldTrade_TouchPrint(win, str, 0, 0, 0, color, print);
+    WorldTrade_TouchPrint(win, str, 0, 0, WT_TEXT_ALIGN_LEFT, color, print);
     GFL_StrBufFree(str);
 }
 

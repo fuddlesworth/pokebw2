@@ -77,16 +77,16 @@ void DpwTr_Process(void) {
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
             case 1:
-                sDpwTrWork.result = 0;
+                sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
             case 2:
-                sDpwTrWork.result = -5;
+                sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
             case 3:
-                sDpwTrWork.result = -4;
+                sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
             case 7:
-                sDpwTrWork.result = -1;
+                sDpwTrWork.result = DPW_TR_RESULT_CROWDED;
                 break;
             case 12:
                 sDpwTrWork.result = -6;
@@ -107,10 +107,10 @@ void DpwTr_Process(void) {
                 sDpwTrWork.result = -11;
                 break;
             case 14:
-                sDpwTrWork.result = -2;
+                sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
-                sDpwTrWork.result = -13;
+                sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -131,22 +131,22 @@ void DpwTr_Process(void) {
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
             case 1:
-                sDpwTrWork.result = 0;
+                sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
             case 2:
-                sDpwTrWork.result = -5;
+                sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
             case 3:
-                sDpwTrWork.result = -4;
+                sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
             case 5:
-                sDpwTrWork.result = -3;
+                sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                 break;
             case 14:
-                sDpwTrWork.result = -2;
+                sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
-                sDpwTrWork.result = -13;
+                sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -166,20 +166,20 @@ void DpwTr_Process(void) {
             answer = DWCi_EncSessionGetResponse(&size);
             memcpy(sDpwTrWork.resultData, answer, 0x128);
             if (size == 0x128) {
-                sDpwTrWork.result = 0;
+                sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
             } else {
                 switch (*(u8 *)sDpwTrWork.resultData) {
                 case 5:
-                    sDpwTrWork.result = -3;
+                    sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                     break;
                 case 3:
-                    sDpwTrWork.result = -4;
+                    sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                     break;
                 case 14:
-                    sDpwTrWork.result = -2;
+                    sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
-                    sDpwTrWork.result = -13;
+                    sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                     break;
                 }
             }
@@ -200,23 +200,23 @@ void DpwTr_Process(void) {
             answer = DWCi_EncSessionGetResponse(&size);
             memcpy(sDpwTrWork.resultData, answer, 0x128);
             if (size == 0x128) {
-                sDpwTrWork.result = 1;
+                sDpwTrWork.result = DPW_TR_TRADE_TRADED;
             } else {
                 switch (*(u8 *)sDpwTrWork.resultData) {
                 case 5:
-                    sDpwTrWork.result = -3;
+                    sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                     break;
                 case 3:
-                    sDpwTrWork.result = -4;
+                    sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                     break;
                 case 4:
-                    sDpwTrWork.result = 0;
+                    sDpwTrWork.result = DPW_TR_TRADE_NOT_TRADED;
                     break;
                 case 14:
-                    sDpwTrWork.result = -2;
+                    sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
-                    sDpwTrWork.result = -13;
+                    sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                     break;
                 }
             }
@@ -238,19 +238,19 @@ void DpwTr_Process(void) {
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
             case 1:
-                sDpwTrWork.result = 0;
+                sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
             case 5:
-                sDpwTrWork.result = -3;
+                sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                 break;
             case 3:
-                sDpwTrWork.result = -4;
+                sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
             case 14:
-                sDpwTrWork.result = -2;
+                sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
-                sDpwTrWork.result = -13;
+                sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -271,22 +271,22 @@ void DpwTr_Process(void) {
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
             case 1:
-                sDpwTrWork.result = 0;
+                sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
             case 5:
-                sDpwTrWork.result = -3;
+                sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                 break;
             case 2:
-                sDpwTrWork.result = -5;
+                sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
             case 3:
-                sDpwTrWork.result = -4;
+                sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
             case 14:
-                sDpwTrWork.result = -2;
+                sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
-                sDpwTrWork.result = -13;
+                sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -315,10 +315,10 @@ void DpwTr_Process(void) {
                 }
                 break;
             case 14:
-                sDpwTrWork.result = -2;
+                sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
-                sDpwTrWork.result = -13;
+                sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -338,11 +338,11 @@ void DpwTr_Process(void) {
             answer = DWCi_EncSessionGetResponse(&size);
             memcpy(sDpwTrWork.resultData, answer, 0x128);
             if (size == 0x128) {
-                sDpwTrWork.result = 0;
+                sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
             } else {
                 switch (*(u8 *)sDpwTrWork.resultData) {
                 case 2:
-                    sDpwTrWork.result = -5;
+                    sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                     break;
                 case 12:
                     sDpwTrWork.result = -6;
@@ -363,10 +363,10 @@ void DpwTr_Process(void) {
                     sDpwTrWork.result = -11;
                     break;
                 case 14:
-                    sDpwTrWork.result = -2;
+                    sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
-                    sDpwTrWork.result = -13;
+                    sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                     break;
                 }
             }
@@ -388,13 +388,13 @@ void DpwTr_Process(void) {
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
             case 1:
-                sDpwTrWork.result = 0;
+                sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
             case 2:
-                sDpwTrWork.result = -5;
+                sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
             case 14:
-                sDpwTrWork.result = -2;
+                sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -424,10 +424,10 @@ void DpwTr_Process(void) {
                 sDpwTrWork.result = 2;
                 break;
             case 14:
-                sDpwTrWork.result = -2;
+                sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
-                sDpwTrWork.result = -13;
+                sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -460,10 +460,10 @@ void DpwTr_Process(void) {
                     sDpwTrWork.result = 2;
                     break;
                 case 14:
-                    sDpwTrWork.result = -2;
+                    sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
-                    sDpwTrWork.result = -13;
+                    sDpwTrWork.result = DPW_TR_RESULT_ERROR;
                     break;
                 }
             }
@@ -487,7 +487,7 @@ void DpwTr_Process(void) {
     case 21:
     case 23:
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -12;
+        sDpwTrWork.result = DPW_TR_RESULT_CANCELED;
         DWCi_EncSessionShutdown();
         break;
     }
@@ -523,7 +523,7 @@ void DpwTr_Upload(const Dpw_Tr_Data *data, const void *sign, u32 size) {
         sDpwTrWork.state = 2;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -536,7 +536,7 @@ void DpwTr_UploadFinish(void) {
         sDpwTrWork.state = 4;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -548,7 +548,7 @@ void DpwTr_Download(Dpw_Tr_Data *result) {
         sDpwTrWork.state = 6;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -561,7 +561,7 @@ void DpwTr_GetTradeResult(Dpw_Tr_Data *result) {
         sDpwTrWork.state = 8;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -573,7 +573,7 @@ void DpwTr_DeleteFinish(void) {
         sDpwTrWork.state = 10;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -584,7 +584,7 @@ void DpwTr_ReturnFinish(void) {
         sDpwTrWork.state = 12;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -648,7 +648,7 @@ void DpwTr_Search(const Dpw_Tr_PokemonSearchData *search, s32 maxNum, Dpw_Tr_Dat
         sDpwTrWork.state = 14;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -661,7 +661,7 @@ void DpwTr_SearchEx(const Dpw_Tr_PokemonSearchDataEx *search, Dpw_Tr_Data *resul
         sDpwTrWork.state = 14;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -678,7 +678,7 @@ void DpwTr_Exchange(s32 id, const Dpw_Tr_Data *upload, Dpw_Tr_Data *result, cons
         sDpwTrWork.state = 16;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -691,7 +691,7 @@ void DpwTr_ExchangeFinish(void) {
         sDpwTrWork.state = 18;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -702,7 +702,7 @@ void DpwTr_GetServerState(void) {
         sDpwTrWork.state = 20;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -716,7 +716,7 @@ void DpwTr_SetProfile(Dpw_Common_Profile *profile, Dpw_Common_ProfileResult *res
         sDpwTrWork.state = 22;
     } else {
         sDpwTrWork.state = 0x18;
-        sDpwTrWork.result = -13;
+        sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -744,13 +744,13 @@ static int DpwTrMapGamestatsError(int group) {
         result = -14;
         break;
     case 7:
-        result = -13;
+        result = DPW_TR_RESULT_ERROR;
         break;
     default:
         result = -14;
         break;
     }
-    if (result != -13) {
+    if (result != DPW_TR_RESULT_ERROR) {
         if (DWC_UpdateConnection()) {
             result = -14;
         }

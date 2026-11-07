@@ -23,6 +23,21 @@
 #include "system/wordset.h"
 #include "worldtrade_local.h"
 
+// Internet/server/profile polling helper results; these are not WifiLogin callback results.
+enum {
+    ENTER_RESULT_WAIT = 0,
+    ENTER_RESULT_OK = 1,
+    ENTER_RESULT_FAILED = 2,
+};
+
+// Error shutdown steps; the following default step waits before finishing.
+enum {
+    ENTER_ERROR_BEGIN = 0,
+    ENTER_ERROR_WAIT_MESSAGE = 1,
+    ENTER_ERROR_AFTER_MESSAGE = 2,
+    ENTER_ERROR_SHUTDOWN = 3,
+};
+
 // The Global Trade Station's connection screen: logging in to Nintendo Wi-Fi Connection and the trade server, and
 // logging out, through the Wi-Fi login proc; and the text printing the other screens share. The names are ours,
 // guessed
@@ -149,14 +164,14 @@ static int Enter_InternetConnect(WorldTradeWork *wk) {
 
 static int Enter_InternetConnectWait(WorldTradeWork *wk) {
     switch (DWC_NASLoginProcess()) {
-    case 3:
-        return 1;
-    case 0:
-    case 4:
-    case 5:
-        return 2;
+    case DWC_NASLOGIN_STATE_SUCCESS:
+        return ENTER_RESULT_OK;
+    case DWC_NASLOGIN_STATE_DIRTY:
+    case DWC_NASLOGIN_STATE_ERROR:
+    case DWC_NASLOGIN_STATE_CANCELED:
+        return ENTER_RESULT_FAILED;
     }
-    return 0;
+    return ENTER_RESULT_WAIT;
 }
 
 static int Enter_DpwTrInit(WorldTradeWork *wk) {
@@ -184,36 +199,36 @@ static int Enter_ServerResult(WorldTradeWork *wk) {
         wk->timeoutCount = 0;
         switch (result) {
         case 0:
-            return 1;
+            return ENTER_RESULT_OK;
         case 1:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
+            return ENTER_RESULT_FAILED;
         case 2:
-        case -1:
+        case DPW_TR_RESULT_CROWDED:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
-        case -12:
+            return ENTER_RESULT_FAILED;
+        case DPW_TR_RESULT_CANCELED:
         case -15:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
-        case -2:
+            return ENTER_RESULT_FAILED;
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
-        case -3:
-        case -4:
-        case -5:
+            return ENTER_RESULT_FAILED;
+        case DPW_TR_RESULT_ALREADY_TRADED:
+        case DPW_TR_RESULT_NOT_FOUND:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
         case -6:
         case -7:
         case -8:
         case -9:
         case -10:
         case -11:
-        case -13:
+        case DPW_TR_RESULT_ERROR:
         default:
             WorldTrade_TimeIconDel(wk);
             WorldTrade_ShowFatalError(wk);
@@ -222,7 +237,7 @@ static int Enter_ServerResult(WorldTradeWork *wk) {
     } else if (++wk->timeoutCount == SERVER_TIMEOUT) {
         WorldTrade_ShowFatalError(wk);
     }
-    return 0;
+    return ENTER_RESULT_WAIT;
 }
 
 static int Enter_ProfileStart(WorldTradeWork *wk) {
@@ -246,16 +261,16 @@ static int Enter_ProfileResult(WorldTradeWork *wk) {
                 switch (wk->dcProfileResult.mailAddrAuthResult) {
                 case 0:
                     WorldTrade_SubProcessChange(wk, WORLDTRADE_TITLE, 0);
-                    return 1;
+                    return ENTER_RESULT_OK;
                 case 3:
                     wk->connectErrorNo = -5003;
-                    return 2;
+                    return ENTER_RESULT_FAILED;
                 case 1:
                     wk->connectErrorNo = -5000;
-                    return 2;
+                    return ENTER_RESULT_FAILED;
                 case 2:
                     wk->connectErrorNo = -5001;
-                    return 2;
+                    return ENTER_RESULT_FAILED;
                 default:
                     WorldTrade_ShowFatalError(wk);
                     break;
@@ -263,10 +278,10 @@ static int Enter_ProfileResult(WorldTradeWork *wk) {
                 break;
             case 1:
                 wk->connectErrorNo = -5004;
-                return 2;
+                return ENTER_RESULT_FAILED;
             case 2:
                 wk->connectErrorNo = -5005;
-                return 2;
+                return ENTER_RESULT_FAILED;
             default:
                 WorldTrade_TimeIconDel(wk);
                 WorldTrade_ShowFatalError(wk);
@@ -276,32 +291,32 @@ static int Enter_ProfileResult(WorldTradeWork *wk) {
         case 1:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
+            return ENTER_RESULT_FAILED;
         case 2:
-        case -1:
+        case DPW_TR_RESULT_CROWDED:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
-        case -12:
+            return ENTER_RESULT_FAILED;
+        case DPW_TR_RESULT_CANCELED:
         case -15:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
-        case -2:
+            return ENTER_RESULT_FAILED;
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
             WorldTrade_TimeIconDel(wk);
             wk->connectErrorNo = result;
-            return 2;
-        case -3:
-        case -4:
-        case -5:
+            return ENTER_RESULT_FAILED;
+        case DPW_TR_RESULT_ALREADY_TRADED:
+        case DPW_TR_RESULT_NOT_FOUND:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
         case -6:
         case -7:
         case -8:
         case -9:
         case -10:
         case -11:
-        case -13:
+        case DPW_TR_RESULT_ERROR:
         default:
             WorldTrade_TimeIconDel(wk);
             WorldTrade_ShowFatalError(wk);
@@ -310,7 +325,7 @@ static int Enter_ProfileResult(WorldTradeWork *wk) {
     } else if (++wk->timeoutCount == SERVER_TIMEOUT) {
         WorldTrade_ShowFatalError(wk);
     }
-    return 0;
+    return ENTER_RESULT_WAIT;
 }
 
 static int Enter_WifiConnectionLogin(WorldTradeWork *wk) {
@@ -394,10 +409,10 @@ static int Enter_LoginCallback(void *msgWork, void *data) {
         break;
     case LOGIN_INTERNET_CONNECT_WAIT:
         switch (Enter_InternetConnectWait(wk)) {
-        case 1:
+        case ENTER_RESULT_OK:
             wk->loginSeq++;
             break;
-        case 2:
+        case ENTER_RESULT_FAILED:
             wk->loginSeq = LOGIN_END;
             break;
         }
@@ -414,10 +429,10 @@ static int Enter_LoginCallback(void *msgWork, void *data) {
         break;
     case LOGIN_SERVER_RESULT:
         switch (Enter_ServerResult(wk)) {
-        case 1:
+        case ENTER_RESULT_OK:
             wk->loginSeq++;
             break;
-        case 2:
+        case ENTER_RESULT_FAILED:
             wk->loginSeq = LOGIN_SERVER_ERROR_PRINT;
             break;
         }
@@ -429,10 +444,10 @@ static int Enter_LoginCallback(void *msgWork, void *data) {
         break;
     case LOGIN_PROFILE_RESULT:
         switch (Enter_ProfileResult(wk)) {
-        case 1:
+        case ENTER_RESULT_OK:
             wk->loginSeq = LOGIN_INTERNET_CONNECT;
-            return 0;
-        case 2:
+            return WIFILOGIN_CALLBACK_DONE;
+        case ENTER_RESULT_FAILED:
             wk->loginSeq = LOGIN_SERVER_ERROR_PRINT;
             break;
         }
@@ -449,14 +464,14 @@ static int Enter_LoginCallback(void *msgWork, void *data) {
         break;
     case LOGIN_END:
         wk->loginSeq = LOGIN_INTERNET_CONNECT;
-        return 1;
+        return WIFILOGIN_CALLBACK_ERROR;
     }
-    return 2;
+    return WIFILOGIN_CALLBACK_RUNNING;
 }
 
 static int Enter_LogoutCallback(void *msgWork, void *data) {
     DpwTr_End();
-    return 0;
+    return WIFILOGIN_CALLBACK_DONE;
 }
 
 static int Enter_End(WorldTradeWork *wk) {
@@ -476,16 +491,16 @@ static int Enter_ServerErrorPrint(WorldTradeWork *wk, WifiLoginMessage *msgWork)
     case 2:
         msgNo = 0xa7;
         break;
-    case -1:
+    case DPW_TR_RESULT_CROWDED:
         msgNo = 0x9d;
         break;
-    case -2:
+    case DPW_TR_RESULT_SERVER_MAINTENANCE:
         msgNo = 0xa9;
         break;
-    case -3:
+    case DPW_TR_RESULT_ALREADY_TRADED:
         msgNo = 0xa2;
         break;
-    case -4:
+    case DPW_TR_RESULT_NOT_FOUND:
         msgNo = 0xa4;
         break;
     case -5:
@@ -509,10 +524,10 @@ static int Enter_ServerErrorPrint(WorldTradeWork *wk, WifiLoginMessage *msgWork)
     case -11:
         msgNo = 0x20;
         break;
-    case -12:
+    case DPW_TR_RESULT_CANCELED:
         msgNo = 0xa0;
         break;
-    case -13:
+    case DPW_TR_RESULT_ERROR:
         msgNo = 0xa5;
         break;
     case -14:
@@ -526,24 +541,24 @@ static int Enter_ServerErrorPrint(WorldTradeWork *wk, WifiLoginMessage *msgWork)
         break;
     }
     WifiLoginMessage_PrintFrom(msgWork, wk->msgManager, msgNo);
-    wk->localSeq = 0;
+    wk->localSeq = ENTER_ERROR_BEGIN;
     return TRUE;
 }
 
 static int Enter_ServerErrorWait(WorldTradeWork *wk, WifiLoginMessage *msgWork) {
     switch (wk->localSeq) {
-    case 0:
+    case ENTER_ERROR_BEGIN:
         wk->localSeq++;
         break;
-    case 1:
+    case ENTER_ERROR_WAIT_MESSAGE:
         if (WifiLoginMessage_IsDone(msgWork)) {
             wk->localSeq++;
         }
         break;
-    case 2:
+    case ENTER_ERROR_AFTER_MESSAGE:
         wk->localSeq++;
         break;
-    case 3:
+    case ENTER_ERROR_SHUTDOWN:
         DpwTr_End();
         DWC_ShutdownFriendsMatch();
         DWC_CleanupInet();
@@ -588,11 +603,11 @@ static int Enter_PrintCommonFunc(BmpWin *win, StrBuf *str, int x, int flag, u16 
     int length;
 
     switch (flag) {
-    case 1:
+    case WT_TEXT_ALIGN_CENTER:
         length = WorldTrade_GetStrWidth(print, font, str, 0);
         x = (BmpWin_GetSizeX(win) * 8 - length) / 2;
         break;
-    case 2:
+    case WT_TEXT_ALIGN_RIGHT:
         length = WorldTrade_GetStrWidth(print, font, str, 0);
         x = BmpWin_GetSizeX(win) * 8 - length;
         break;
@@ -615,7 +630,7 @@ static const u32 sExplainMsgTable[] = { 0xf7, 0xf8, 0xf9, 0xfa, 0xfb };
 void WorldTrade_ExplainPrint(BmpWin *win, MsgData *msgManager, int no, WorldTradePrint *print) {
     StrBuf *str = GFL_MsgDataLoadStrbufNew(msgManager, sExplainMsgTable[no]);
 
-    WorldTrade_SysPrint(win, str, 0, 0, 0, 0x440, print);
+    WorldTrade_SysPrint(win, str, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
     GFL_StrBufFree(str);
 }
 

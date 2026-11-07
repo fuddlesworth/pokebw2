@@ -4,6 +4,32 @@
 #include "types.h"
 #include "struct_decls.h"
 
+// DpwTr_Cancel completes the current request with this result.
+enum {
+    DPW_TR_RESULT_CANCELED = -12,
+};
+
+// Successful completion of upload, download, exchange and their finish operations; search returns a count.
+enum {
+    DPW_TR_RESULT_SUCCESS = 0,
+};
+
+// DpwTr_GetTradeResult outcomes, separate from the server/profile state and search-count domains.
+enum {
+    DPW_TR_TRADE_NOT_TRADED = 0,
+    DPW_TR_TRADE_TRADED = 1,
+};
+
+// Shared worldexchange outcomes; generic ERROR also covers failed request starts and unknown replies.
+enum {
+    DPW_TR_RESULT_CROWDED = -1,
+    DPW_TR_RESULT_SERVER_MAINTENANCE = -2,
+    DPW_TR_RESULT_ALREADY_TRADED = -3,
+    DPW_TR_RESULT_NOT_FOUND = -4,
+    DPW_TR_RESULT_ALREADY_DEPOSITED = -5,
+    DPW_TR_RESULT_ERROR = -13,
+};
+
 // The Global Trade Station's server library in overlay 189. The ROM has no strings of this library's own (only the
 // server's pages, "/web/worldexchange/*.asp"), so the DpwTr_ names of its functions, the header's name and the type and
 // field names are guesses, the functions' after the pages they ask for
@@ -43,7 +69,7 @@ typedef struct {
     Dpw_Tr_PokemonSearchData wantSimple;
     // The trainer's
     u8 gender;
-    u8 unkF7;
+    u8 ratingLevel;
     u8 postDate[8];
     u8 tradeDate[8];
     s32 id;
@@ -56,8 +82,8 @@ typedef struct {
     s8 isTrade;
     u8 versionCode;
     u8 langCode;
-    u8 unk126;
-    u8 unk127;
+    u8 hobby;
+    u8 countryCount;
 } Dpw_Tr_Data;
 
 // The player's profile, which the server keeps with their trades

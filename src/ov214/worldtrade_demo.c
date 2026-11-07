@@ -17,6 +17,12 @@
 #include "system/game_system.h"
 #include "worldtrade_local.h"
 
+// Subprocess steps while the trade demo and a resulting evolution run.
+enum {
+    DEMO_WAIT_TRADE = 0,
+    DEMO_WAIT_EVOLUTION = 1,
+};
+
 // The Global Trade Station's trade demo, and the evolution demo of a Pokémon that evolves by the trade. The names are
 // ours, guessed
 
@@ -84,7 +90,7 @@ int WorldTrade_Demo_Main(WorldTradeWork *wk, int seq) {
     EvolutionDemoParam *evolution;
 
     switch (wk->subprocessSeq) {
-    case 0:
+    case DEMO_WAIT_TRADE:
         if (wk->procResult) {
             break;
         }
@@ -118,7 +124,7 @@ int WorldTrade_Demo_Main(WorldTradeWork *wk, int seq) {
                 GFL_OvlUnload(OVERLAY_APP_UI);
                 QueueGameProc(wk->procManager, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS,
                               wk->subProcParam);
-                wk->subprocessSeq = 1;
+                wk->subprocessSeq = DEMO_WAIT_EVOLUTION;
             } else {
                 WorldTrade_SubProcessChange(wk, WORLDTRADE_TITLE, 0);
                 ret = WT_SEQ_FADEOUT;
@@ -162,7 +168,7 @@ int WorldTrade_Demo_Main(WorldTradeWork *wk, int seq) {
                     GFL_OvlUnload(OVERLAY_APP_UI);
                     QueueGameProc(wk->procManager, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS,
                                   wk->subProcParam);
-                    wk->subprocessSeq = 1;
+                    wk->subprocessSeq = DEMO_WAIT_EVOLUTION;
                 } else {
                     WorldTrade_SubProcessChange(wk, WORLDTRADE_TITLE, 0);
                     ret = WT_SEQ_FADEOUT;
@@ -177,7 +183,7 @@ int WorldTrade_Demo_Main(WorldTradeWork *wk, int seq) {
             ret = WT_SEQ_FADEOUT;
         }
         break;
-    case 1:
+    case DEMO_WAIT_EVOLUTION:
         if (wk->procResult) {
             break;
         }
@@ -253,7 +259,7 @@ static PartyPkm *Demo_GetTradePokemon(WorldTradeWork *wk, int mode) {
 static void Demo_StoreTradedPokemon(WorldTradeWork *wk) {
     PartyPkm *pkm = Demo_GetTradePokemon(wk, wk->subProcessMode);
 
-    if (wk->evoPokeInfo.boxNo == 0xff) {
+    if (wk->evoPokeInfo.boxNo == BOX_TRAY_PARTY) {
         WorldTrade_CopyPartyPkm(pkm, PokeParty_GetPkm(wk->param->myparty, wk->evoPokeInfo.pos));
     } else {
         int box = 0;
