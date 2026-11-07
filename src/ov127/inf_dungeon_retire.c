@@ -4,6 +4,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
+#include "field/app_call.h"
 #include "field/field.h"
 #include "field/subscreen.h"
 #include "gfl/arc.h"
@@ -25,6 +26,33 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wipe.h"
+
+// The event waits for the retire menu and then its requested subscreen.
+enum {
+    RETIRE_EVENT_OPEN_MENU = 0,
+    RETIRE_EVENT_WAIT_ANSWER = 1,
+    RETIRE_EVENT_WAIT_SUBSCREEN = 2,
+};
+
+// The menu waits for the wipe and selection flash before returning.
+enum {
+    RETIRE_MENU_SETUP = 0,
+    RETIRE_MENU_WAIT_WIPE = 1,
+    RETIRE_MENU_WAIT_SELECTION = 2,
+    RETIRE_MENU_RETURN = 3,
+};
+
+// The subscreen replies: resume the field to run the retire script, or cancel to the menu.
+enum {
+    RETIRE_SUBSCREEN_RETURN = 15,
+    RETIRE_SUBSCREEN_CANCEL = 16,
+};
+
+// The two menu entries, in displayed order.
+enum {
+    RETIRE_CHOICE_YES = 0,
+    RETIRE_CHOICE_NO = 1,
+};
 
 struct InfDungeonRetire {
     HeapID heapId; // never set, so 0
@@ -50,7 +78,6 @@ typedef struct {
 } RetireEvent;
 
 #define RETIRE_SUBSCREEN_MENU 0xc
-#define RETIRE_SUBSCREEN_RETURN 0xf
 
 static GameEventReturnCode InfDungeonRetire_EventMain(GameEvent *event, u32 *state, void *data);
 static void InfDungeonRetire_Init(InfDungeonRetire *work, HeapID heapId);
@@ -92,31 +119,31 @@ static GameEventReturnCode InfDungeonRetire_EventMain(GameEvent *event, u32 *sta
     u32 result;
 
     switch (*state) {
-    case 0:
+    case RETIRE_EVENT_OPEN_MENU:
         FieldSubscreen_ReqChange(Field_GetSubscreen(retire->field), RETIRE_SUBSCREEN_MENU);
         (*state)++;
         break;
-    case 1:
+    case RETIRE_EVENT_WAIT_ANSWER:
         returnScreen = FieldSubscreen_GetReturnSubscreen(Field_GetSubscreen(retire->field));
-        if (returnScreen != 0) {
+        if (returnScreen != FLD_SUBSCREEN_ID_DEFAULT) {
             FieldSubscreen_ResetReturnSubscreen(Field_GetSubscreen(retire->field));
             if (returnScreen == RETIRE_SUBSCREEN_RETURN) {
-                if (retire->screenId == 10 || retire->screenId == 4) {
+                if (retire->screenId == FLD_SUBSCREEN_ID_FUNFEST || retire->screenId == FLD_SUBSCREEN_ID_ENTRALINK) {
                     FieldSubscreen *subscreen = Field_GetSubscreen(retire->field);
                     FieldSubscreen_ReqChange(subscreen, retire->screenId);
                 } else {
-                    FieldSubscreen_ReqChange(Field_GetSubscreen(retire->field), 0);
+                    FieldSubscreen_ReqChange(Field_GetSubscreen(retire->field), FLD_SUBSCREEN_ID_DEFAULT);
                 }
-                result = 5;
+                result = FIELD_APP_RESULT_SCRIPT;
             } else {
-                FieldSubscreen_ReqChange(Field_GetSubscreen(retire->field), 1);
-                result = 0;
+                FieldSubscreen_ReqChange(Field_GetSubscreen(retire->field), FLD_SUBSCREEN_ID_FIELD_MENU);
+                result = FIELD_APP_RESULT_RETURN;
             }
             *retire->result = result;
             (*state)++;
         }
         break;
-    case 2:
+    case RETIRE_EVENT_WAIT_SUBSCREEN:
         if (FieldSubscreen_IsReady(Field_GetSubscreen(retire->field)) == TRUE) {
             return GAMEEVENT_DONE;
         }
@@ -138,27 +165,27 @@ InfDungeonRetire *InfDungeonRetire_Create(FieldSubscreen *subscreen, GameSystem 
 
 void InfDungeonRetire_Update(InfDungeonRetire *work) {
     switch (work->state) {
-    case 0:
+    case RETIRE_MENU_SETUP:
         InfDungeonRetire_PrintMessage(work, work->window, 0);
         InfDungeonRetire_CreateMenu(work, work->heapId);
         work->state++;
         break;
-    case 1:
+    case RETIRE_MENU_WAIT_WIPE:
         if (GFL_WipeIsFinished() == TRUE) {
             work->state++;
         }
         break;
-    case 2:
+    case RETIRE_MENU_WAIT_SELECTION:
         if (InfDungeonRetire_IsFlashFinished(work)) {
             work->state++;
         }
         break;
-    case 3:
-        if (InfDungeonRetire_GetCursorPos(work) == 0) {
+    case RETIRE_MENU_RETURN:
+        if (InfDungeonRetire_GetCursorPos(work) == RETIRE_CHOICE_YES) {
             FieldSubscreen_ResumeField(work->subscreen, work->heapId);
-            FieldSubscreen_SaveReturnSubscreen(work->subscreen, 0xf);
+            FieldSubscreen_SaveReturnSubscreen(work->subscreen, RETIRE_SUBSCREEN_RETURN);
         } else {
-            FieldSubscreen_SaveReturnSubscreen(work->subscreen, 0x10);
+            FieldSubscreen_SaveReturnSubscreen(work->subscreen, RETIRE_SUBSCREEN_CANCEL);
         }
         InfDungeonRetire_FreeMenu(work);
         break;
@@ -283,12 +310,12 @@ static void InfDungeonRetire_PrintMessage(InfDungeonRetire *work, BmpWin *window
 
 static void InfDungeonRetire_CreateMenu(InfDungeonRetire *work, u32 heapId) {
     sMenuInit.heapId = heapId;
-    sMenuItems[0].str = GFL_MsgDataLoadStrbufNew(work->msgData, 1);
-    sMenuItems[1].str = GFL_MsgDataLoadStrbufNew(work->msgData, 2);
+    sMenuItems[RETIRE_CHOICE_YES].str = GFL_MsgDataLoadStrbufNew(work->msgData, 1);
+    sMenuItems[RETIRE_CHOICE_NO].str = GFL_MsgDataLoadStrbufNew(work->msgData, 2);
     work->menu = AppTaskMenu_CreateFastFlash(&sMenuInit, work->menuRes);
     AppTaskMenu_SetLocked(work->menu, FALSE);
-    GFL_StrBufFree(sMenuItems[0].str);
-    GFL_StrBufFree(sMenuItems[1].str);
+    GFL_StrBufFree(sMenuItems[RETIRE_CHOICE_YES].str);
+    GFL_StrBufFree(sMenuItems[RETIRE_CHOICE_NO].str);
 }
 
 static void InfDungeonRetire_UpdateMenu(InfDungeonRetire *work) {

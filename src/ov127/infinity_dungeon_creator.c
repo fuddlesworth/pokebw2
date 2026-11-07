@@ -223,9 +223,9 @@ static int InfinityDungeonCreator_ListGoalCandidates(InfinityDungeon *dungeon, u
         u8 kind = dungeon->floors[floor].rooms[room].kind;
         u8 type = dungeon->floors[floor].rooms[room].type;
 
-        if (kind == 1) {
+        if (kind == ROOM_KIND_GOAL) {
             goal = room;
-        } else if (kind == 4) {
+        } else if (kind == ROOM_KIND_ORDINARY) {
             if (goal == -1 || goal != room - 4) {
                 u8 slot = InfinityDungeon_GetRoomNpcCount(type);
 
@@ -248,22 +248,22 @@ static void InfinityDungeonCreator_PickSpecialTrainers(InfinityDungeon *dungeon,
     int i;
 
     switch (rank) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
+    case INFINITY_DUNGEON_AREA_1:
+    case INFINITY_DUNGEON_AREA_2:
+    case INFINITY_DUNGEON_AREA_3:
+    case INFINITY_DUNGEON_AREA_4:
+    case INFINITY_DUNGEON_AREA_5:
         if (version == VERSION_BLACK2) {
             first = INFINITY_DUNGEON_SPECIAL_BLACK2;
         } else {
             first = INFINITY_DUNGEON_SPECIAL_WHITE2;
         }
         break;
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
+    case INFINITY_DUNGEON_AREA_6:
+    case INFINITY_DUNGEON_AREA_7:
+    case INFINITY_DUNGEON_AREA_8:
+    case INFINITY_DUNGEON_AREA_9:
+    case INFINITY_DUNGEON_AREA_10:
         if (version == VERSION_BLACK2) {
             first = INFINITY_DUNGEON_SPECIAL_BLACK2 + INFINITY_DUNGEON_SPECIAL_RANK_COUNT;
         } else {

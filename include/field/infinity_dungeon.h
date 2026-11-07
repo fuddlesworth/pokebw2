@@ -4,6 +4,30 @@
 #include "types.h"
 #include "struct_decls.h"
 
+// The ten areas, indexed from zero in the rank tables.
+enum {
+    INFINITY_DUNGEON_AREA_1 = 0,
+    INFINITY_DUNGEON_AREA_2 = 1,
+    INFINITY_DUNGEON_AREA_3 = 2,
+    INFINITY_DUNGEON_AREA_4 = 3,
+    INFINITY_DUNGEON_AREA_5 = 4,
+    INFINITY_DUNGEON_AREA_6 = 5,
+    INFINITY_DUNGEON_AREA_7 = 6,
+    INFINITY_DUNGEON_AREA_8 = 7,
+    INFINITY_DUNGEON_AREA_9 = 8,
+    INFINITY_DUNGEON_AREA_10 = 9,
+    INFINITY_DUNGEON_AREA_COUNT = 10,
+};
+
+// Passage indices differ from the field actor facing directions: east is 2, west is 3.
+enum {
+    INFINITY_DUNGEON_PASSAGE_NORTH = 0,
+    INFINITY_DUNGEON_PASSAGE_SOUTH = 1,
+    INFINITY_DUNGEON_PASSAGE_EAST = 2,
+    INFINITY_DUNGEON_PASSAGE_WEST = 3,
+    INFINITY_DUNGEON_PASSAGE_COUNT = 4,
+};
+
 // infinity_dungeon.c, overlay 127, which the ROM names: the Black Tower and White Treehollow, five floors of 4x4 rooms
 // that infinity_dungeon_creator.c lays out from a seed, with their trainers and the reward at the end. Script plugin
 // 61 drives it
@@ -18,13 +42,14 @@
 enum {
     ROOM_KIND_START,
     ROOM_KIND_GOAL,
+    ROOM_KIND_ORDINARY = 4,
 };
 
 // A room of a floor's grid, x + y * 4
 typedef struct {
     u8 type;
-    u8 kind;     // the template's class: 1 for the floor's goal room, 4 for an ordinary room not laid out yet
-    u32 open[4]; // the passages north, south, east and west
+    u8 kind; // ROOM_KIND_*; 4 also marks an ordinary room before its template is chosen
+    u32 open[INFINITY_DUNGEON_PASSAGE_COUNT]; // the passages north, south, east and west
     u8 index;
 } InfinityDungeonRoom;
 
@@ -102,7 +127,7 @@ void InfinityDungeon_CreateCurrentWalls(GameSystem *gsys, InfinityDungeon *gimmi
 GameEvent *InfinityDungeon_CreateBattleEvent(GameSystem *gsys, Field *field, u8 slot);
 u32 InfinityDungeon_GetGoalFloor(InfinityDungeon *gimmick);
 u32 InfinityDungeon_GetNpcScript(KeyDataSave *keyData, InfinityDungeon *gimmick, u16 objCode, u8 slot);
-u32 InfinityDungeon_GetNpcScriptByResult(KeyDataSave *keyData, InfinityDungeon *gimmick, u16 objCode, u16 result);
+u32 InfinityDungeon_GetNpcScriptByResult(KeyDataSave *keyData, InfinityDungeon *gimmick, u16 objCode, u16 battleStage);
 u32 InfinityDungeon_FindSpecialTrainer(InfinityDungeon *gimmick, u16 trainerId);
 u32 InfinityDungeon_CountTrainers(InfinityDungeon *gimmick);
 BOOL InfinityDungeon_IsBelowGoal(InfinityDungeon *gimmick, u32 floor, u32 room);
