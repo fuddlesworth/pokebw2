@@ -122,7 +122,7 @@ static BOOL WifiBattleMatchList_Init(GameProc *proc, u32 *state, void *param, vo
     wk->frames = 0;
     wk->lastVBlankCount = OS_GetVBlankCount();
     wk->state = 0;
-    list->result = 0;
+    list->result = WIFIBATTLEMATCH_LIST_RESULT_PICKED;
     return TRUE;
 }
 
@@ -163,7 +163,7 @@ static BOOL WifiBattleMatchList_Main(GameProc *proc, u32 *state, void *param, vo
         if (GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC) {
             if (GFL_NetErrCheck()) {
                 GFL_NetErrMarkShown();
-                list->result = 2;
+                list->result = WIFIBATTLEMATCH_LIST_RESULT_IRC_ERROR;
                 wk->pokeList.forceExit = 1;
                 wk->status.forceExit = TRUE;
             }
@@ -173,14 +173,14 @@ static BOOL WifiBattleMatchList_Main(GameProc *proc, u32 *state, void *param, vo
             case DWCRAP_RESULT_NET_ERROR:
                 break;
             case DWCRAP_RESULT_TIMEOUT:
-                list->result = 3;
+                list->result = WIFIBATTLEMATCH_LIST_RESULT_WIFI_TIMEOUT;
                 wk->pokeList.forceExit = 1;
                 wk->status.forceExit = TRUE;
                 break;
             case DWCRAP_RESULT_DISCONNECTED:
             case DWCRAP_RESULT_FAILED:
             default:
-                list->result = 1;
+                list->result = WIFIBATTLEMATCH_LIST_RESULT_WIFI_ERROR;
                 wk->pokeList.forceExit = 1;
                 wk->status.forceExit = TRUE;
                 break;
@@ -325,7 +325,7 @@ static BOOL WifiBattleMatchExchange_Init(GameProc *proc, u32 *state, void *param
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_WIFIBATTLEMATCH_SUBPROC, 0x10000);
     wk = GFL_ProcInitSubsystem(proc, sizeof(WifiBattleMatchExchangeWork), HEAPID_WIFIBATTLEMATCH_SUBPROC);
     MI_CpuFill8(wk, 0, sizeof(WifiBattleMatchExchangeWork));
-    exchange->result = 0;
+    exchange->result = WIFIBATTLEMATCH_EXCHANGE_RESULT_DONE;
     switch (exchange->mode) {
     case WIFIBATTLEMATCH_EXCHANGE_WIFI:
         WifiBattleMatchExchange_InitWifi(wk, exchange, heapId);
@@ -383,12 +383,12 @@ static BOOL WifiBattleMatchExchange_MainWifi(WifiBattleMatchExchangeWork *wk, Wi
             break;
         case DWCRAP_RESULT_DISCONNECTED:
         case DWCRAP_RESULT_TIMEOUT:
-            param->result = 3;
+            param->result = WIFIBATTLEMATCH_EXCHANGE_RESULT_WIFI_DISCONNECTED_OR_TIMEOUT;
             return TRUE;
         case DWCRAP_RESULT_FAILED:
         case DWCRAP_RESULT_NET_ERROR:
         default:
-            param->result = 1;
+            param->result = WIFIBATTLEMATCH_EXCHANGE_RESULT_WIFI_ERROR;
             return TRUE;
         }
     }
@@ -478,7 +478,7 @@ static BOOL WifiBattleMatchExchange_MainIrc(WifiBattleMatchExchangeWork *wk, Wif
                                             u32 *state) {
     if (GFL_NetErrCheck()) {
         GFL_NetErrMarkShown();
-        param->result = 2;
+        param->result = WIFIBATTLEMATCH_EXCHANGE_RESULT_IRC_ERROR;
         return TRUE;
     }
 

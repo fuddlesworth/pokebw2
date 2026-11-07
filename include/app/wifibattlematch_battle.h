@@ -13,9 +13,17 @@
 // The players of a battle, with what the ranking needs
 typedef struct {
     BattlePlayers base;
-    u32 unk50;
+    u32 competition;
     GameRecords *records;
 } WifiBattleMatchPlayers;
+
+// How the battle wrapper ended, separate from BtlSetup.result. ERROR also covers the BTL_RESULT_6 wait timeout.
+enum {
+    WIFIBATTLEMATCH_BATTLE_RESULT_FINISHED = 0,
+    WIFIBATTLEMATCH_BATTLE_RESULT_IRC_ERROR = 1,
+    WIFIBATTLEMATCH_BATTLE_RESULT_ERROR = 2,
+    WIFIBATTLEMATCH_BATTLE_RESULT_WIFI_TIMEOUT = 3,
+};
 
 // What the battle step gets
 typedef struct {

@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "app/battle_championship_flow.h"
+#include "app/comm_btl_demo.h"
 #include "app/livebattlematch_irc.h"
 #include "app/ov306.h"
 #include "app/wifi_login.h"
@@ -41,6 +42,25 @@
 // The heap of the proc that runs the battle
 #define HEAPID_WIFIBATTLEMATCH_BATTLE 0x58
 
+// The battle wrapper's steps; the unassigned no-op state 13 stays unexplained.
+enum {
+    BATTLE_START_INTRO = 0,
+    BATTLE_WAIT_INTRO = 1,
+    BATTLE_START_SYNC = 2,
+    BATTLE_WAIT_SYNC = 3,
+    BATTLE_START_PROC = 4,
+    BATTLE_WAIT_PROC = 5,
+    BATTLE_ADVANCE_TO_RESULT_SYNC = 6,
+    BATTLE_START_RESULT_SYNC = 7,
+    BATTLE_WAIT_RESULT_SYNC = 8,
+    BATTLE_START_RESULT_ACK = 9,
+    BATTLE_WAIT_RESULT_ACK = 10,
+    BATTLE_START_RESULT_DEMO = 11,
+    BATTLE_WAIT_RESULT_DEMO = 12,
+    BATTLE_END = 14,
+    BATTLE_WAIT_ERROR = 15,
+};
+
 // The battle proc's work
 typedef struct {
     GameProcManager *manager;
@@ -66,7 +86,7 @@ static BOOL WifiBattleMatchSys_BattleProcInit(GameProc *proc, u32 *state, void *
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_WIFIBATTLEMATCH_BATTLE, 0x150);
     wk = GFL_ProcInitSubsystem(proc, sizeof(WifiBattleMatchBattleWork), HEAPID_WIFIBATTLEMATCH_BATTLE);
     MI_CpuFill8(wk, 0, sizeof(WifiBattleMatchBattleWork));
-    battle->result = 0;
+    battle->result = WIFIBATTLEMATCH_BATTLE_RESULT_FINISHED;
     wk->manager = CreateGameProcManager(HEAPID_WIFIBATTLEMATCH_BATTLE);
     GFL_SndBGMFadeOut(0x10);
     return TRUE;
@@ -103,58 +123,58 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
     u32 source;
 
     switch (*state) {
-    case 0:
+    case BATTLE_START_INTRO:
         GFL_SndBGMPlay(battle->setup->fieldSituation.bgm, SND_CHANNEL_MASK_ALL);
-        battle->players->base.demoType = 1;
+        battle->players->base.demoType = COMM_BTL_DEMO_TYPE_SINGLE_START;
         QueueGameProc(wk->manager, OVERLAY_ID(305), &CommBtlDemoProc, battle->players);
-        running = 2;
-        *state = 1;
+        running = PROCMGR_PROC_ENDED;
+        *state = BATTLE_WAIT_INTRO;
         break;
-    case 1:
-        if (running == TRUE) {
+    case BATTLE_WAIT_INTRO:
+        if (running == PROCMGR_RUNNING) {
             break;
         }
-        *state = 2;
+        *state = BATTLE_START_SYNC;
         break;
-    case 2:
+    case BATTLE_START_SYNC:
         GFL_OvlLoad(OVERLAY_ID(167));
         wk->ov167Loaded = TRUE;
         NetCommand_AddTable(0x100, BTL_NET_COMMANDS, 9, NULL);
         wk->commandsSet = TRUE;
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xc8, 0x24);
-        *state = 3;
+        *state = BATTLE_WAIT_SYNC;
         break;
-    case 3:
+    case BATTLE_WAIT_SYNC:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xc8, 0x24)) {
-            *state = 4;
+            *state = BATTLE_START_PROC;
         }
         break;
-    case 4:
+    case BATTLE_START_PROC:
         QueueGameProc(wk->manager, OVERLAY_NONE, &BATTLE_PROC_FUNCTIONS, battle->setup);
-        running = 2;
-        *state = 5;
+        running = PROCMGR_PROC_ENDED;
+        *state = BATTLE_WAIT_PROC;
         break;
-    case 5:
-        if (running == TRUE) {
+    case BATTLE_WAIT_PROC:
+        if (running == PROCMGR_RUNNING) {
             break;
         }
-        *state = 6;
+        *state = BATTLE_ADVANCE_TO_RESULT_SYNC;
         break;
-    case 6:
-        *state = 7;
+    case BATTLE_ADVANCE_TO_RESULT_SYNC:
+        *state = BATTLE_START_RESULT_SYNC;
         break;
-    case 7:
+    case BATTLE_START_RESULT_SYNC:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xd2, 0x24);
         wk->timer = 0;
-        *state = 8;
+        *state = BATTLE_WAIT_RESULT_SYNC;
         break;
-    case 8:
+    case BATTLE_WAIT_RESULT_SYNC:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xd2, 0x24)) {
             NetCommand_RemoveTable(0x100);
             wk->commandsSet = FALSE;
             GFL_OvlUnload(OVERLAY_ID(167));
             wk->ov167Loaded = FALSE;
-            *state = 9;
+            *state = BATTLE_START_RESULT_ACK;
         }
         if (GFL_NetIsInitialized()) {
             if (GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC) {
@@ -163,56 +183,56 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
                     wk->commandsSet = FALSE;
                     GFL_OvlUnload(OVERLAY_ID(167));
                     wk->ov167Loaded = FALSE;
-                    *state = 9;
+                    *state = BATTLE_START_RESULT_ACK;
                     wk->timer = 0;
                 }
             }
         }
         break;
-    case 9:
+    case BATTLE_START_RESULT_ACK:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xd3, 0x24);
-        *state = 10;
+        *state = BATTLE_WAIT_RESULT_ACK;
         wk->timer = 0;
         break;
-    case 10:
+    case BATTLE_WAIT_RESULT_ACK:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xd3, 0x24)) {
-            *state = 11;
+            *state = BATTLE_START_RESULT_DEMO;
         }
         if (GFL_NetIsInitialized()) {
             if (GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC) {
                 if (wk->timer++ > 600) {
-                    *state = 11;
+                    *state = BATTLE_START_RESULT_DEMO;
                     wk->timer = 0;
                 }
             }
         }
         break;
-    case 11:
+    case BATTLE_START_RESULT_DEMO:
         queue = TRUE;
         if (battle->setup->fieldSituation.multiMode == 0) {
-            battle->players->base.demoType = 2;
+            battle->players->base.demoType = COMM_BTL_DEMO_TYPE_SINGLE_END;
         } else {
-            battle->players->base.demoType = 4;
+            battle->players->base.demoType = COMM_BTL_DEMO_TYPE_MULTI_END;
         }
         switch (battle->setup->result) {
         case BTL_RESULT_VICTORY:
         case BTL_RESULT_FLEE_FOE:
-            battle->players->base.result = 0;
+            battle->players->base.result = COMM_BTL_DEMO_RESULT_WIN;
             break;
         case BTL_RESULT_DEFEAT:
         case BTL_RESULT_FLEE:
-            battle->players->base.result = 1;
+            battle->players->base.result = COMM_BTL_DEMO_RESULT_LOSE;
             break;
         case BTL_RESULT_DRAW:
-            battle->players->base.result = 2;
+            battle->players->base.result = COMM_BTL_DEMO_RESULT_DRAW;
             break;
         case BTL_RESULT_6:
             wk->timer = 0;
             queue = FALSE;
-            *state = 15;
+            *state = BATTLE_WAIT_ERROR;
             break;
         default:
-            battle->players->base.result = 2;
+            battle->players->base.result = COMM_BTL_DEMO_RESULT_DRAW;
             break;
         }
         if (battle->setup->fieldSituation.multiMode == 0) {
@@ -248,33 +268,33 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
         }
         if (queue) {
             QueueGameProc(wk->manager, OVERLAY_ID(305), &CommBtlDemoProc, battle->players);
-            running = 2;
-            *state = 12;
+            running = PROCMGR_PROC_ENDED;
+            *state = BATTLE_WAIT_RESULT_DEMO;
         }
         break;
-    case 12:
-        if (running == TRUE) {
+    case BATTLE_WAIT_RESULT_DEMO:
+        if (running == PROCMGR_RUNNING) {
             break;
         }
-        *state = 14;
+        *state = BATTLE_END;
         break;
     case 13:
         break;
-    case 14:
+    case BATTLE_END:
         return TRUE;
-    case 15:
+    case BATTLE_WAIT_ERROR:
         if (wk->timer++ > 1800) {
             GFL_NetErrMarkShown();
-            battle->result = 2;
+            battle->result = WIFIBATTLEMATCH_BATTLE_RESULT_ERROR;
             return TRUE;
         }
         break;
     }
-    if (GFL_NetIsInitialized() && running != TRUE) {
+    if (GFL_NetIsInitialized() && running != PROCMGR_RUNNING) {
         if (GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC) {
             if (GFL_NetErrCheck()) {
                 GFL_NetErrMarkShown();
-                battle->result = 1;
+                battle->result = WIFIBATTLEMATCH_BATTLE_RESULT_IRC_ERROR;
                 return TRUE;
             }
         } else {
@@ -285,10 +305,10 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
             case DWCRAP_RESULT_FAILED:
             case DWCRAP_RESULT_NET_ERROR:
             default:
-                battle->result = 2;
+                battle->result = WIFIBATTLEMATCH_BATTLE_RESULT_ERROR;
                 return TRUE;
             case DWCRAP_RESULT_TIMEOUT:
-                battle->result = 3;
+                battle->result = WIFIBATTLEMATCH_BATTLE_RESULT_WIFI_TIMEOUT;
                 return TRUE;
             }
         }

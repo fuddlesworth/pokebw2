@@ -56,6 +56,13 @@ enum {
     WBM_TEAM_CHECK_RESULT_SERVER_ERROR = 3,
 };
 
+// The modes of the random matchups (WifiBattleMatchLinkParam.mode); the 2 is overlay 290's own
+enum {
+    LINK_MODE_RATING,
+    LINK_MODE_FREE,
+    LINK_MODE_QUIT = 3,
+};
+
 // Overlay 260's wifibattlematch_link.c, wifibattlematch_link_random.c and wifibattlematch_link_competition.c (all
 // descriptive names: the ROM names only the next file, wifibattlematch_net.c): the link of the Wi-Fi battle
 // competitions, which overlay 290 chains. wifibattlematch_link.c is the proc that overlay 290 runs, which runs one of

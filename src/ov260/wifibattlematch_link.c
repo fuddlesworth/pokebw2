@@ -10,12 +10,6 @@
 #include "gfl/sound.h"
 #include "gfl/std.h"
 
-// Where overlay 290 started the link from (WifiBattleMatchParam.startFrom)
-enum {
-    START_TITLE,
-    START_FIELD,
-};
-
 static BOOL WifiBattleMatchLink_Init(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL WifiBattleMatchLink_Exit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL WifiBattleMatchLink_Main(GameProc *proc, u32 *state, void *param, void *work);
