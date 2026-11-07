@@ -405,8 +405,8 @@ static BOOL WifiBattleMatchLink_RandomInit(GameProc *proc, u32 *state, void *par
     MI_CpuFill8(link, 0, sizeof(WifiBattleMatchLinkRandom));
     link->param = linkParam;
     link->graphic = WifiBattleMatchGraphic_Create(1, HEAPID_WIFIBATTLEMATCH_LINK);
-    link->res =
-        WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(link->graphic), 2, HEAPID_WIFIBATTLEMATCH_LINK);
+    link->res = WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(link->graphic), WIFIBATTLEMATCH_BG_RANDOM,
+                                          HEAPID_WIFIBATTLEMATCH_LINK);
     WifiBattleMatchLink_FillOwnPlayer(linkParam->player, link);
     link->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
     link->printQueue = PrintQueue_CreateDefault(HEAPID_WIFIBATTLEMATCH_LINK);
@@ -2319,10 +2319,10 @@ static void WifiBattleMatchLink_CreatePartnerCard(WifiBattleMatchLinkRandom *lin
         unit = WifiBattleMatchGraphic_GetClActUnit(link->graphic);
         if (link->param->mode == LINK_MODE_RATING) {
             shown = 1;
-            kind = 2;
+            kind = WIFIBATTLEMATCH_PARTNER_CARD_RATING;
         } else if (link->param->mode == LINK_MODE_FREE) {
             shown = 0;
-            kind = 3;
+            kind = WIFIBATTLEMATCH_PARTNER_CARD_FREE;
         }
         link->partnerCard =
             WifiBattleMatchPartnerCard_Create(partner, unit, link->res, link->font, link->printQueue, link->msgData,

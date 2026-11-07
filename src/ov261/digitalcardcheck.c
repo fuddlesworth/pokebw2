@@ -186,7 +186,7 @@ DigitalCardCheck *DigitalCardCheck_Create(const DigitalCardCheckParam *param, He
     MI_CpuFill8(check, 0, sizeof(DigitalCardCheck));
     check->param = *param;
     check->heapId = heapId;
-    WifiBattleMatchRes_LoadBG(check->param.seq, 3, heapId);
+    WifiBattleMatchRes_LoadBG(check->param.seq, WIFIBATTLEMATCH_BG_CARD, heapId);
     check->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING, heapId);
     check->wordSet = GFL_WordSetSystemCreate(8, 64, heapId);
     check->task = WifiBattleMatchTask_Create(check, DigitalCardCheck_TaskStart, heapId);

@@ -510,8 +510,8 @@ static BOOL WifiBattleMatchLink_CompetitionInit(GameProc *proc, u32 *state, void
     link->entry =
         TournamentBlock_GetEntry(getTournamentBlockAddress(GameData_GetSaveControl(linkParam->param->gameData)), 0);
     link->graphic = WifiBattleMatchGraphic_Create(1, HEAPID_WIFIBATTLEMATCH_LINK);
-    link->res =
-        WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(link->graphic), 0, HEAPID_WIFIBATTLEMATCH_LINK);
+    link->res = WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(link->graphic),
+                                          WIFIBATTLEMATCH_BG_WIFI_COMPETITION, HEAPID_WIFIBATTLEMATCH_LINK);
     link->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
     link->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
     link->printQueue = PrintQueue_CreateDefault(HEAPID_WIFIBATTLEMATCH_LINK);
@@ -938,9 +938,9 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
     case COMPETITION_ENTRY_CREATE_CARD:
         WifiBattleMatchLink_CompetitionCreateCard(link);
         if (BattleBoxSave_CheckFlags(getBattleBox(GameData_GetSaveControl(param->param->gameData)), 1)) {
-            WifiBattleMatchLink_CompetitionSetCardPage(link, 0);
+            WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_REGISTERED);
         } else {
-            WifiBattleMatchLink_CompetitionSetCardPage(link, 1);
+            WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
         }
         *seq = COMPETITION_ENTRY_WAIT_CARD_SHOWN;
         break;
@@ -1251,7 +1251,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
     switch (*seq) {
     case COMPETITION_REGISTER_CREATE_CARD_AND_TEAM:
         WifiBattleMatchLink_CompetitionCreateCard(link);
-        WifiBattleMatchLink_CompetitionSetCardPage(link, 2);
+        WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_EMPTY);
         WifiBattleMatchLink_CompetitionCreateTeamList(link);
         *seq = COMPETITION_REGISTER_WAIT_CARD_AND_TEAM;
         break;
@@ -1497,7 +1497,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         }
         break;
     case COMPETITION_REGISTER_SHOW_COMPLETE_MESSAGE:
-        WifiBattleMatchLink_CompetitionSetCardPage(link, 0);
+        WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_REGISTERED);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CompetitionRegistrationComplete,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_START_COMPETITION_MENU);
@@ -1539,7 +1539,7 @@ static void WifiBattleMatchLink_CompetitionTaskMenu(WifiBattleMatchTask *task, u
     case COMPETITION_MENU_FLOW_CREATE_CARD:
         if (link->card == NULL) {
             WifiBattleMatchLink_CompetitionCreateCard(link);
-            WifiBattleMatchLink_CompetitionSetCardPage(link, 0);
+            WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_REGISTERED);
             *seq = COMPETITION_MENU_FLOW_WAIT_CARD_SHOWN;
         } else {
             *seq = COMPETITION_MENU_FLOW_SHOW_BATTLE_PROMPT;
@@ -2833,7 +2833,7 @@ static void WifiBattleMatchLink_CompetitionTaskCheckPeriod(WifiBattleMatchTask *
         }
         break;
     case COMPETITION_PERIOD_SHOW_TEAM_UNLOCKED:
-        WifiBattleMatchLink_CompetitionSetCardPage(link, 1);
+        WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxHasBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
@@ -2970,7 +2970,7 @@ static void WifiBattleMatchLink_CompetitionTaskUnregister(WifiBattleMatchTask *t
         }
         break;
     case COMPETITION_UNREGISTER_SHOW_TEAM_UNLOCKED:
-        WifiBattleMatchLink_CompetitionSetCardPage(link, 1);
+        WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxHasBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
@@ -3125,7 +3125,8 @@ static void WifiBattleMatchLink_CompetitionCreatePartnerCard(WifiBattleMatchLink
     if (link->partnerCard == NULL) {
         unit = WifiBattleMatchGraphic_GetClActUnit(link->graphic);
         link->partnerCard = WifiBattleMatchPartnerCard_Create(
-            partner, unit, link->res, link->font, link->printQueue, link->msgData, link->wordSet, 0, 1,
+            partner, unit, link->res, link->font, link->printQueue, link->msgData, link->wordSet,
+            WIFIBATTLEMATCH_PARTNER_CARD_WIFI_COMPETITION, 1,
             TournamentEntry_GetField(link->entry, TOURNAMENT_FIELD_VARIANT), HEAPID_WIFIBATTLEMATCH_LINK);
     }
 }

@@ -340,7 +340,8 @@ static void BattleChampionshipFlow_UpdateNet(BattleChampionshipFlow *wk) {
 }
 
 static void BattleChampionshipFlow_CreateSeq(BattleChampionshipFlow *wk) {
-    wk->seq = WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(wk->net), TRUE, wk->heapId);
+    wk->seq = WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(wk->net), WIFIBATTLEMATCH_BG_CHAMPIONSHIP,
+                                        wk->heapId);
 }
 
 static void BattleChampionshipFlow_DeleteSeq(BattleChampionshipFlow *wk) {

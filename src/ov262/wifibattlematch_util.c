@@ -1,5 +1,6 @@
 #include "types.h"
 #include "app/wifibattlematch_util.h"
+#include "battle/btl_result.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"
@@ -20,6 +21,10 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/time_icon.h"
+
+enum {
+    WIFIBATTLEMATCH_MSG_IDLE = 4,
+};
 
 // The task runner, message p_wk and list menu that the Wi-Fi and live competition screens share, and the match counts
 // in the records (the file name is the ROM's own string)
@@ -77,7 +82,7 @@ WifiBattleMatchMsgBox *WifiBattleMatchMsgBox_Create(u32 bg, u32 palette, u16 fra
     p_wk->bgColor = MSGBOX_BG_COLOR;
     p_wk->font = font;
     p_wk->queue = PrintQueue_CreateDefault(heapId);
-    p_wk->mode = 4;
+    p_wk->mode = WIFIBATTLEMATCH_MSG_IDLE;
     p_wk->heapId = heapId;
     p_wk->strBuf = GFL_StrBufCreate(0x300, heapId);
     p_wk->window = BmpWin_CreateDynamic(bg, 1, 19, 30, 4, palette, TRUE);
@@ -115,14 +120,14 @@ void WifiBattleMatchMsgBox_Free(WifiBattleMatchMsgBox *p_wk) {
 void WifiBattleMatchMsgBox_Update(WifiBattleMatchMsgBox *p_wk) {
     PrintQueue_Main(p_wk->queue);
     switch (p_wk->mode) {
-    case 2:
+    case WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON:
         PrintWindow_Flush(&p_wk->printWindow, p_wk->queue);
         break;
-    case 0:
+    case WIFIBATTLEMATCH_MSG_QUEUE:
         PrintWindow_Flush(&p_wk->printWindow, p_wk->queue);
         p_wk->done = PrintWindow_IsPrinted(&p_wk->printWindow);
         break;
-    case 1:
+    case WIFIBATTLEMATCH_MSG_STREAM_KEY:
         if (p_wk->stream != NULL) {
             if (p_wk->p_keycursor != NULL) {
                 KeyCursor_Update(p_wk->p_keycursor, p_wk->stream, p_wk->window);
@@ -132,7 +137,7 @@ void WifiBattleMatchMsgBox_Update(WifiBattleMatchMsgBox *p_wk) {
             }
         }
         break;
-    case 3:
+    case WIFIBATTLEMATCH_MSG_STREAM:
         if (p_wk->stream != NULL) {
             BOOL done = FALSE;
 
@@ -145,7 +150,7 @@ void WifiBattleMatchMsgBox_Update(WifiBattleMatchMsgBox *p_wk) {
             }
         }
         break;
-    case 4:
+    case WIFIBATTLEMATCH_MSG_IDLE:
         break;
     }
     GFL_TCBExMgrUpdate(p_wk->tcbManager);
@@ -184,11 +189,11 @@ static void WifiBattleMatchUtil_MsgBoxStart(WifiBattleMatchMsgBox *p_wk, u32 mod
     case WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON:
         p_wk->waitIcon = WaitIcon_Create(GFL_VBlankGetTCBMgr(), p_wk->window, p_wk->bgColor, 16, p_wk->heapId);
         PrintWindow_PrintNoColor(&p_wk->printWindow, p_wk->queue, 0, 0, p_wk->strBuf, p_wk->font);
-        p_wk->mode = 0;
+        p_wk->mode = WIFIBATTLEMATCH_MSG_QUEUE;
         break;
     case WIFIBATTLEMATCH_MSG_QUEUE:
         PrintWindow_PrintNoColor(&p_wk->printWindow, p_wk->queue, 0, 0, p_wk->strBuf, p_wk->font);
-        p_wk->mode = 0;
+        p_wk->mode = WIFIBATTLEMATCH_MSG_QUEUE;
         break;
     case WIFIBATTLEMATCH_MSG_STREAM_KEY:
         GFL_ASSERT(p_wk->p_keycursor == NULL);
@@ -196,14 +201,14 @@ static void WifiBattleMatchUtil_MsgBoxStart(WifiBattleMatchMsgBox *p_wk, u32 mod
         p_wk->p_keycursor = KeyCursor_Create(p_wk->bgColor, TRUE, FALSE, p_wk->heapId);
         p_wk->stream = PrintStream_Create(p_wk->window, 0, 0, p_wk->strBuf, p_wk->font, TextSpeed_GetCurrentWait(),
                                           p_wk->tcbManager, 0, p_wk->heapId, p_wk->bgColor);
-        p_wk->mode = 1;
+        p_wk->mode = WIFIBATTLEMATCH_MSG_STREAM_KEY;
         break;
     case WIFIBATTLEMATCH_MSG_STREAM:
         GFL_ASSERT(p_wk->p_keycursor == NULL);
         AppPrintsysCommon_Init(&p_wk->printsys, APP_PRINTSYS_COMMON_KEYS);
         p_wk->stream = PrintStream_Create(p_wk->window, 0, 0, p_wk->strBuf, p_wk->font, TextSpeed_GetCurrentWait(),
                                           p_wk->tcbManager, 0, p_wk->heapId, p_wk->bgColor);
-        p_wk->mode = 3;
+        p_wk->mode = WIFIBATTLEMATCH_MSG_STREAM;
         break;
     }
     p_wk->done = FALSE;
@@ -342,15 +347,15 @@ void WifiBattleMatch_RecordResult(GameData *gameData, u32 mode) {
     GameRecords *records = getTrainerCardInfoBlkAddress(GameData_GetSaveControl(gameData));
 
     switch (mode) {
-    case 1:
-    case 4:
+    case BTL_RESULT_VICTORY:
+    case BTL_RESULT_FLEE_FOE:
         RecordAddOne(records, 0x12);
         break;
-    case 0:
-    case 3:
+    case BTL_RESULT_DEFEAT:
+    case BTL_RESULT_FLEE:
         RecordAddOne(records, 0x13);
         break;
-    case 2:
+    case BTL_RESULT_DRAW:
         RecordAddOne(records, 0x14);
         break;
     }
@@ -359,7 +364,7 @@ void WifiBattleMatch_RecordResult(GameData *gameData, u32 mode) {
 
 void WifiBattleMatch_RecordBattleTime(GameData *gameData, u32 mode) {
     RecordSave_UpdateMatchSeconds(getRecordBlkAddress(GameData_GetSaveControl(gameData)));
-    if (mode != 3 && mode != 6) {
+    if (mode != BTL_RESULT_FLEE && mode != BTL_RESULT_6) {
         GameData_IncCounter(gameData);
     }
 }
