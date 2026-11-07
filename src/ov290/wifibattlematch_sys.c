@@ -752,20 +752,20 @@ static void *WifiBattleMatchSys_CreateLoginParam(WifiBattleMatchChain *chain, He
 
     MI_CpuFill8(param, 0, sizeof(WifiLoginParam));
     param->gameData = sys->param.gameData;
-    param->unk4 = 0;
-    param->unk8 = 1;
+    param->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    param->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     param->buffer = sys->unk40;
     if (sys->param.startFrom == 0) {
-        serviceId = 0x24;
+        serviceId = WIFILOGIN_SERVICE_WIFI_BATTLE_MATCH;
     } else {
-        serviceId = 0x34;
+        serviceId = WIFILOGIN_SERVICE_RANDOM_MATCHUP;
     }
-    param->unkC = serviceId;
+    param->serviceId = serviceId;
     if (sys->relogin) {
         sys->relogin = FALSE;
-        param->unk14 = TRUE;
+        param->mode = WIFILOGIN_MODE_RETRY;
     } else {
-        param->unk14 = FALSE;
+        param->mode = WIFILOGIN_MODE_NORMAL;
     }
     return param;
 }
@@ -776,11 +776,11 @@ static BOOL WifiBattleMatchSys_FinishLogin(WifiBattleMatchChain *chain, void *pa
 
     GFL_HeapFree(login);
     switch (result) {
-    case 0:
+    case WIFILOGIN_RESULT_OK:
         sys->result = WBM_LINK_RESULT_INITIAL;
         WifiBattleMatchSys_ChainSetNext(chain, STEP_NET);
         break;
-    case 1:
+    case WIFILOGIN_RESULT_FAILED:
         if (sys->param.startFrom == 0) {
             WifiBattleMatchSys_ChainSetNext(chain, STEP_CHAMPIONSHIP);
         } else {
@@ -909,8 +909,8 @@ static void *WifiBattleMatchSys_CreateLogoutParam(WifiBattleMatchChain *chain, H
 
     MI_CpuFill8(param, 0, sizeof(WifiLogoutParam));
     param->gameData = sys->param.gameData;
-    param->unk4 = 0;
-    param->unk8 = 1;
+    param->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    param->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     if (sys->unk24) {
         param->wipeFlags = 0x12;
     }

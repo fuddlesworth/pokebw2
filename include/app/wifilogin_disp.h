@@ -9,8 +9,10 @@
 // in the style of the Dream World account screens, or a waving one in the style of Game Sync
 
 // The graphics the display is made of
-#define WIFILOGIN_DISP_STYLE_PDWACC 0
-#define WIFILOGIN_DISP_STYLE_GSYNC 1
+enum {
+    WIFILOGIN_DISP_STYLE_PDWACC = 0,
+    WIFILOGIN_DISP_STYLE_GSYNC = 1,
+};
 
 typedef struct WifiLoginDisp WifiLoginDisp;
 

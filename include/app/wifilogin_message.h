@@ -17,8 +17,10 @@
 
 // The screen the windows are on, which also picks the BGs: the Dream World account style's or Game Sync's, as in
 // wifilogin_disp.h
-#define WIFILOGIN_MESSAGE_STYLE_PDWACC 0
-#define WIFILOGIN_MESSAGE_STYLE_GSYNC 1
+enum {
+    WIFILOGIN_MESSAGE_STYLE_PDWACC = 0,
+    WIFILOGIN_MESSAGE_STYLE_GSYNC = 1,
+};
 
 // Where the yes/no menu goes on the screen
 enum {

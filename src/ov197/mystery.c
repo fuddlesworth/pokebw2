@@ -1311,15 +1311,15 @@ static void MysterySeq_WifiLogin(MysterySeq *seq, u32 *state, void *work) {
         wk->loginParam = GFL_HeapAllocate(HEAPID_MYSTERY, sizeof(WifiLoginParam), FALSE, "mystery.c", 2666);
         MI_CpuFill8(wk->loginParam, 0, sizeof(WifiLoginParam));
         wk->loginParam->gameData = wk->gameData;
-        wk->loginParam->unk4 = 0;
-        wk->loginParam->unk8 = 1;
+        wk->loginParam->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+        wk->loginParam->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
         wk->loginParam->buffer = NULL;
         wk->loginParam->keepBgm = 0;
-        wk->loginParam->unkC = 9;
+        wk->loginParam->serviceId = WIFILOGIN_SERVICE_MYSTERY_GIFT;
         if (MysteryGiftSave_GetKind(wk->giftSave) == 0) {
-            wk->loginParam->unk14 = 2;
+            wk->loginParam->mode = WIFILOGIN_MODE_NO_SAVE;
         } else {
-            wk->loginParam->unk14 = 0;
+            wk->loginParam->mode = WIFILOGIN_MODE_NORMAL;
         }
         GCTX_ProcMgrQueueProc(OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, wk->loginParam);
         *state = 5;
@@ -1349,7 +1349,7 @@ static void MysterySeq_WifiLogin(MysterySeq *seq, u32 *state, void *work) {
         }
         break;
     case 8:
-        if (wk->loginParam->result == 0) {
+        if (wk->loginParam->result == WIFILOGIN_RESULT_OK) {
             MysterySeq_SetNext(seq, MysterySeq_Receive);
         } else {
             MysterySeq_SetNext(seq, MysterySeq_Top);

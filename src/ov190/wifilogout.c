@@ -79,16 +79,16 @@ static BOOL WifiLogoutProc_Init(GameProc *proc, u32 *state, void *param, void *w
     if (logoutParam->wipeFlags == 0) {
         logoutParam->wipeFlags = 6;
     }
-    wk->disp = WifiLoginDisp_Create(wk->heapId, logoutParam->unk4, logoutParam->unk8);
-    wk->msg = WifiLoginMessage_Create(wk->heapId, TEXT_BANK_WIFI_ERROR, logoutParam->unk8);
+    wk->disp = WifiLoginDisp_Create(wk->heapId, logoutParam->displayStyle, logoutParam->messageStyle);
+    wk->msg = WifiLoginMessage_Create(wk->heapId, TEXT_BANK_WIFI_ERROR, logoutParam->messageStyle);
     WifiLogout_ChangeState(wk, WifiLogout_StateStartFadeIn, 173);
-    if (logoutParam->unk4 == 0) {
+    if (logoutParam->displayStyle == WIFILOGIN_DISP_STYLE_PDWACC) {
         WifiLoginMessage_PrintTitle(wk->msg, WifiError_Text_DisconnectFromNintendoWfc);
         if (logoutParam->keepBgm == 0) {
             GFL_SndBGMPlay(SEQ_BGM_WIFI_ACCESS, SND_CHANNEL_MASK_ALL);
         }
     }
-    if (logoutParam->unk8 == 0) {
+    if (logoutParam->messageStyle == WIFILOGIN_MESSAGE_STYLE_PDWACC) {
         GFL_NetSetIconScreen(FALSE, wk->heapId);
     } else {
         GFL_NetSetIconScreen(TRUE, wk->heapId);
@@ -100,7 +100,7 @@ static BOOL WifiLogoutProc_Exit(GameProc *proc, u32 *state, void *param, void *w
     WifiLogoutParam *logoutParam = param;
     WifiLogoutWork *wk = work;
 
-    if (logoutParam->unk4 == 0) {
+    if (logoutParam->displayStyle == WIFILOGIN_DISP_STYLE_PDWACC) {
         WifiLoginMessage_ClearTitle(wk->msg);
     }
     WifiLoginMessage_Free(wk->msg);

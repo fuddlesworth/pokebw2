@@ -75,13 +75,13 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
         break;
     case STEP_LOGIN:
         wk->login.buffer = wk->buffer;
-        wk->login.unkC = 0x33;
+        wk->login.serviceId = WIFILOGIN_SERVICE_GTS_NEGOTIATION;
         GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, &wk->login);
         (*state)++;
         break;
     case STEP_LOGIN_WAIT:
         if (!GSYS_GetProcMgrState(gsys)) {
-            if (wk->login.result == 0) {
+            if (wk->login.result == WIFILOGIN_RESULT_OK) {
                 (*state)++;
             } else {
                 *state = STEP_CLEANUP;
@@ -98,7 +98,7 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
             if (wk->nego.result == GTSNEGO_RESULT_EXIT) {
                 *state = STEP_LOGOUT;
             } else if (wk->nego.result == GTSNEGO_RESULT_RETRY_LOGIN) {
-                wk->login.unk14 = 1;
+                wk->login.mode = WIFILOGIN_MODE_RETRY;
                 *state = STEP_LOGIN;
             } else {
                 wk->trade.next = 0;
@@ -116,7 +116,7 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
     case STEP_TRADE_WAIT:
         if (!GSYS_GetProcMgrState(gsys)) {
             if (!GFL_NetIsInitialized()) {
-                wk->login.unk14 = 1;
+                wk->login.mode = WIFILOGIN_MODE_RETRY;
                 *state = STEP_LOGIN;
             } else if (wk->trade.next == TRADE_NEXT_NEGOTIATE) {
                 *state = STEP_NEGOTIATE;
@@ -164,7 +164,7 @@ GameEventReturnCode EventGtsNego_Callback(GameEvent *event, u32 *state, void *da
         if (!GSYS_GetProcMgrState(gsys)) {
             GFL_HeapFree(wk->trade.evolution);
             if (!GFL_NetIsInitialized()) {
-                wk->login.unk14 = 1;
+                wk->login.mode = WIFILOGIN_MODE_RETRY;
                 *state = STEP_LOGIN;
             } else {
                 wk->trade.next = TRADE_NEXT_EVOLVE;
@@ -221,11 +221,11 @@ EventGtsNego *EventGtsNego_Init(GameEvent *event, GameSystem *gsys, Field *field
 
     MI_CpuFill8(&wk->login, 0, sizeof(WifiLoginParam));
     wk->login.gameData = GSYS_GetGameData(gsys);
-    wk->login.unk4 = 0;
-    wk->login.unk8 = 1;
+    wk->login.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    wk->login.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     wk->logout.gameData = GSYS_GetGameData(gsys);
-    wk->logout.unk4 = 0;
-    wk->logout.unk8 = 1;
+    wk->logout.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    wk->logout.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     return wk;
 }
 

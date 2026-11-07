@@ -232,7 +232,7 @@ void EventWifiClub_SetBattleParty(EventWifiClub *wk, GameData *gameData, u32 unu
 void EventWifiClub_ResetForLogin(EventWifiClub *wk) {
     GFL_SndPlayerSetVolumeEx(SND_VOLUME_MAX, SND_PLAYER_MASK_ALL);
     PokeVoice_SetMasterVolume(SND_VOLUME_MAX);
-    wk->login.unk14 = 1;
+    wk->login.mode = WIFILOGIN_MODE_RETRY;
 }
 
 GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *data) {
@@ -284,13 +284,13 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
     case STEP_CLEAR_LOGIN:
         MI_CpuFill8(&wk->login, 0, sizeof(WifiLoginParam));
         *state = STEP_LOGIN;
-        wk->login.unk14 = 0;
+        wk->login.mode = WIFILOGIN_MODE_NORMAL;
         break;
     case STEP_LOGIN:
         wk->login.gameData = GSYS_GetGameData(gsys);
-        wk->login.unk8 = 1;
-        wk->login.unk4 = 0;
-        wk->login.unkC = 10;
+        wk->login.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
+        wk->login.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+        wk->login.serviceId = WIFILOGIN_SERVICE_WIFI_CLUB;
         wk->login.keepBgm = 1;
         GFL_SndBGMPlay(SEQ_BGM_WIFI_ACCESS, SND_CHANNEL_MASK_ALL);
         wk->procManager = CreateGameProcManager(HEAPID_GAMEEVENT);
@@ -304,12 +304,12 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
             return GAMEEVENT_CONTINUE;
         }
         FreeGameProcManager(wk->procManager);
-        if (wk->login.result == 1) {
+        if (wk->login.result == WIFILOGIN_RESULT_FAILED) {
             GFL_SndBGMFadeOut(6);
             *state = STEP_LEAVE;
         } else if (!WifiList_CountFriends(GameData_GetWifiList(wk->gameData))) {
             *state = STEP_LOGOUT;
-        } else if (wk->login.result == 0) {
+        } else if (wk->login.result == WIFILOGIN_RESULT_OK) {
             *state = STEP_CLUB;
             GFL_SndBGMFadeOut(6);
         } else {
@@ -319,8 +319,8 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         break;
     case STEP_LOGOUT:
         wk->logout.gameData = GSYS_GetGameData(gsys);
-        wk->logout.unk8 = 1;
-        wk->logout.unk4 = 0;
+        wk->logout.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
+        wk->logout.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
         wk->logout.keepBgm = 1;
         wk->logout.wipeFlags = 0;
         wk->logout.unk14 = 0;
@@ -352,7 +352,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
     case STEP_CLUB_RESULT:
         *state = sWifiClubModes[wk->club->mode].nextState;
         if (wk->club->mode == WIFICLUB_MODE_LOGIN) {
-            wk->login.unk14 = 1;
+            wk->login.mode = WIFILOGIN_MODE_RETRY;
             EventWifiClub_ResetForLogin(wk);
         }
         wk->battleMode = sWifiClubModes[wk->club->mode].battleMode;

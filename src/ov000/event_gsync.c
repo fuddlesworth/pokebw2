@@ -108,7 +108,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
             wk->gsyncResult = GSYNC_RESULT_NO_POKEMON;
             *state = 19;
         } else {
-            wk->login.unk14 = 0;
+            wk->login.mode = WIFILOGIN_MODE_NORMAL;
             GFL_SndBGMSetPaused(TRUE);
             GFL_SndBGMPush();
             wk->bgmPushed = TRUE;
@@ -123,7 +123,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
         break;
     case 18:
         if (!GSYS_GetProcMgrState(gsys)) {
-            if (wk->login.result == 1) {
+            if (wk->login.result == WIFILOGIN_RESULT_FAILED) {
                 *state = 10;
             } else if (!DreamWorldSave_IsPokemonAsleep(getDreamWorldStuffAddress(wk->save))) {
                 wk->gsyncResult = GSYNC_RESULT_WIFI_SETTINGS;
@@ -148,7 +148,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
             } else if (wk->gsyncResult == GSYNC_RESULT_NO_POKEMON) {
                 *state = 21;
             } else if (wk->gsyncResult == GSYNC_RESULT_RETRY_LOGIN) {
-                wk->login.unk14 = 1;
+                wk->login.mode = WIFILOGIN_MODE_RETRY;
                 *state = 17;
             } else {
                 *state = 23;
@@ -173,7 +173,7 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
         if (GFL_NetErrCheck()) {
             GFL_NetErrMarkShown();
             GFL_NetErrShow(0);
-            wk->login.unk14 = 1;
+            wk->login.mode = WIFILOGIN_MODE_RETRY;
             *state = 17;
         } else {
             wk->boxTray = wk->box.tray;
@@ -192,8 +192,8 @@ GameEventReturnCode EventGameSync_Callback(GameEvent *event, u32 *state, void *d
         break;
     case 23:
         wk->logout.gameData = GSYS_GetGameData(gsys);
-        wk->logout.unk4 = 1;
-        wk->logout.unk8 = 0;
+        wk->logout.displayStyle = WIFILOGIN_DISP_STYLE_GSYNC;
+        wk->logout.messageStyle = WIFILOGIN_MESSAGE_STYLE_PDWACC;
         GSYS_QueueProc(gsys, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
         (*state)++;
         break;
@@ -228,8 +228,8 @@ GameEvent *EventGameSync_Create(GameSystem *gsys) {
     wk->save = GameData_GetSaveControl(wk->gameData);
     wk->gsys = gsys;
     wk->login.gameData = GSYS_GetGameData(gsys);
-    wk->login.unk4 = 1;
-    wk->login.unk8 = 0;
-    wk->login.unkC = 0x31;
+    wk->login.displayStyle = WIFILOGIN_DISP_STYLE_GSYNC;
+    wk->login.messageStyle = WIFILOGIN_MESSAGE_STYLE_PDWACC;
+    wk->login.serviceId = WIFILOGIN_SERVICE_GAME_SYNC;
     return event;
 }
