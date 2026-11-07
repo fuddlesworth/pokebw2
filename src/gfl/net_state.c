@@ -733,21 +733,21 @@ int NetState_GetWifiStatus(void) {
     NetStateFunc func = _pNetState->func;
 
     if (func == NetState_WifiConnecting) {
-        return 0;
+        return NETSTATE_WIFI_STATUS_CONNECTING;
     }
     if (func == NetState_WifiConnected) {
-        return 1;
+        return NETSTATE_WIFI_STATUS_CONNECTED;
     }
     if (func == NetState_WifiUpdate) {
-        return 3;
+        return NETSTATE_WIFI_STATUS_UPDATE;
     }
     if (func == NetState_WifiMatchEnded) {
-        return 4;
+        return NETSTATE_WIFI_STATUS_MATCH_ENDED;
     }
     if (func == NetState_WifiFailed) {
-        return 5;
+        return NETSTATE_WIFI_STATUS_FAILED;
     }
-    return 2;
+    return NETSTATE_WIFI_STATUS_OTHER;
 }
 
 static void NetState_WifiReady(NetState *state) {

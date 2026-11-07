@@ -11,16 +11,44 @@
 #define OVERLAY_WIFICLUB OVERLAY_ID(203)
 #define OVERLAY_WIFICLUB_MAIN OVERLAY_ID(173)
 
+// How the match board's connection was made; retained when returning from an application.
+enum {
+    WIFICLUB_CONNECTION_NONE,
+    WIFICLUB_CONNECTION_RECRUIT,
+    WIFICLUB_CONNECTION_JOIN,
+    WIFICLUB_CONNECTION_REQUEST,
+    WIFICLUB_CONNECTION_RESPONSE,
+};
+
+// The match board returns these to its event when it leaves or needs to log in again.
+enum {
+    WIFICLUB_MODE_LEAVE,
+    WIFICLUB_MODE_LOGIN,
+};
+
+enum {
+    WIFICLUB_BATTLE_SINGLE = 7,
+    WIFICLUB_BATTLE_SINGLE_FLAT,
+    WIFICLUB_BATTLE_DOUBLE,
+    WIFICLUB_BATTLE_DOUBLE_FLAT,
+    WIFICLUB_BATTLE_TRIPLE,
+    WIFICLUB_BATTLE_TRIPLE_FLAT,
+    WIFICLUB_BATTLE_ROTATION,
+    WIFICLUB_BATTLE_ROTATION_FLAT,
+};
+
 typedef struct {
     WIFI_STATUS *buffer;
     GameData *gameData;
     SaveControl *save;
     // What the player chose in the Wi-Fi Club
     u32 mode;
-    u32 unk10;
+    // The connected friend's zero-based index from DWCRap_GetFriendIndex
+    u32 friendListIndex;
     PokeParty *parties[2];
     Regulation *regulation;
-    u8 unk20;
+    // The Wonder Launcher setting remembered by the battle rules menu
+    u8 launcherChoice;
     // The battle the players chose: its mode (single, double, triple, rotation) and its rule (no restrictions, flat)
     u8 battleMode;
     u8 battleRule;
@@ -29,11 +57,13 @@ typedef struct {
     u8 callCounter[0x20];
     // Whether each machine of the connection uses voice chat, by net ID
     u8 vchat[2];
-    u8 unk46;
+    // The player's persistent voice chat preference
+    u8 voiceChatEnabled;
     // The friend's index in the friend list, plus 1
     u8 friendIndex;
     u8 launcher;
-    u8 unk49;
+    // WIFICLUB_CONNECTION_*
+    u8 connectionResult;
     u8 unk4A[2];
 } WifiClubData;
 
