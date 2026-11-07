@@ -14426,7 +14426,7 @@ overlays/ov059 0x021e7c08 ResortCmd_ApplyEffortChange
 overlays/ov059 0x021e7c70 Scrcmd_Medalinfo_ShowMedalInfo
 overlays/ov059 0x021e7d68 ResortCmd_FreeMedalInfo
 overlays/ov059 0x021e7d7c ResortCmd_GetMedalPerson
-overlays/ov059 0x021e7db4 sUnk7db4
+overlays/ov059 0x021e7db4 sPlayerShopIdsByVersion
 overlays/ov060 0x021e58c0 Scrcmd_ResortShop_Open
 overlays/ov060 0x021e5c8c ResortShop_Run
 overlays/ov060 0x021e5d34 ResortShop_Init
