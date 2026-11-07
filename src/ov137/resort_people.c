@@ -20,9 +20,9 @@ typedef struct {
     MMSys *mmSys;
     ResortBinary *table;
     ResortShopData *shops;
-    ResortBinary *unk18;
+    ResortBinary *posOffsets;
     u32 unk1c;
-    BOOL unk20;
+    BOOL fromSlots;
 } ResortPersonSetup;
 
 // The functions of a type of person: the actor it is created as, and where the actor stands
@@ -34,16 +34,16 @@ typedef struct {
 struct ResortPerson {
     u32 type;
     u32 index;
-    u32 unk8;
+    u32 talking;
     BOOL visible;
-    BOOL unk10;
+    BOOL fromSlots;
     MMSys *mmSys;
     FieldActor *actor;
     ResortPersonData *data;
     const u16 *row;
     const ResortPersonType *funcs;
     ResortShopData *shops;
-    ResortBinary *unk2c;
+    ResortBinary *posOffsets;
 };
 
 struct ResortPeople {
@@ -65,7 +65,7 @@ static void ResortPerson_SetupListNpc(ResortPerson *person, const ResortPersonSe
 static void ResortPerson_SetupRecordNpc(ResortPerson *person, const ResortPersonSetup *setup, ZoneNPC *npc);
 static void ResortPerson_GetRecordPos(ResortPerson *person, u16 *x, u16 *z, u16 *dir);
 static void ResortPerson_CreateActor(ResortPerson *person, const ResortPersonSetup *setup);
-static ResortPerson *ResortPeople_AddPerson(ResortPeople *people, const ResortPersonSource *source, BOOL unk20,
+static ResortPerson *ResortPeople_AddPerson(ResortPeople *people, const ResortPersonSource *source, BOOL fromSlots,
                                             u16 index);
 static void ResortPeople_RemovePerson(ResortPeople *people, ResortPerson *person);
 static void ResortPeople_FreeAll(ResortPeople *people);
@@ -74,7 +74,7 @@ static void ResortPeople_MakeSetup(ResortPeople *people, const ResortPersonSourc
                                    ResortPersonSetup *setup);
 static BOOL ResortPeople_IsPersonUID(int uid);
 
-static const u32 sKinds[] = { 0, 4 };
+static const u32 sKinds[] = { RESORT_DATA_OCCUPANT, RESORT_DATA_ENTRY };
 // clang-format off
 static const ResortPersonType sTypes[] = {
     {ResortPerson_SetupOccupantNpc, ResortPerson_GetOccupantPos},
@@ -94,9 +94,9 @@ static ResortPerson *ResortPerson_Create(HeapID heapId, const ResortPersonSetup 
     person->index = setup->index;
     person->mmSys = setup->mmSys;
     person->data = setup->data;
-    person->unk10 = setup->unk20;
+    person->fromSlots = setup->fromSlots;
     person->shops = setup->shops;
-    person->unk2c = setup->unk18;
+    person->posOffsets = setup->posOffsets;
     person->type = ResortData_GetType(person->data);
     a = ResortData_GetParam(person->data, JOIN_AVE_PARAM_SHOP_KIND, NULL);
     b = ResortData_GetParam(person->data, JOIN_AVE_PARAM_GENDER, NULL);
@@ -133,7 +133,7 @@ void ResortPerson_UpdateObjCode(ResortPerson *person) {
 }
 
 void ResortPerson_SetTalking(ResortPerson *person, u32 value) {
-    person->unk8 = value;
+    person->talking = value;
 }
 
 static void ResortPerson_Recreate(ResortPerson *person, const ResortPersonSetup *setup) {
@@ -203,13 +203,13 @@ void ResortPerson_ApplyVisibility(ResortPerson *person, u32 mode) {
     FieldActor *actor = ResortPerson_GetActor(person);
     IsActorHidden(actor);
     switch (mode) {
-    case 0:
+    case RESORT_VISIBILITY_SHOW:
         SetActorHidden(actor, FALSE);
         break;
-    case 1:
+    case RESORT_VISIBILITY_HIDE:
         SetActorHidden(actor, TRUE);
         break;
-    case 2:
+    case RESORT_VISIBILITY_RESTORE:
         SetActorHidden(actor, person->visible == FALSE);
         break;
     }
@@ -225,10 +225,10 @@ u32 ResortPerson_GetParam(ResortPerson *person, JoinAvenuePersonParam param, voi
 
 u32 ResortPerson_GetAttr(ResortPerson *person, u32 which) {
     switch (which) {
-    case 0:
+    case RESORT_PERSON_ATTR_TYPE:
         return person->type;
-    case 1:
-        return person->unk10;
+    case RESORT_PERSON_ATTR_FROM_SLOTS:
+        return person->fromSlots;
     }
     return 0;
 }
@@ -261,8 +261,8 @@ static void ResortPerson_GetOccupantPos(ResortPerson *person, u16 *x, u16 *z, u1
         column = 1;
     }
     ResortLayout_GetOccupantPlace(ResortShopData_GetShopParam(row, column + 6), x, z, dir);
-    *x += ResortBinary_Get(person->unk2c, index, 1);
-    *z += ResortBinary_Get(person->unk2c, index, 2);
+    *x += ResortBinary_Get(person->posOffsets, index, 1);
+    *z += ResortBinary_Get(person->posOffsets, index, 2);
 }
 
 static void ResortPerson_SetupEntryNpc(ResortPerson *person, const ResortPersonSetup *setup, ZoneNPC *npc) {
@@ -317,7 +317,7 @@ void ResortPeople_Free(ResortPeople *people) {
         ResortPerson *person = ResortPeople_GetByIndex(people, i);
         if (person != NULL) {
             FieldActor *actor = ResortPerson_GetActor(person);
-            if (FldAct_GetAcmd(actor) == 0xbe) {
+            if (FldAct_GetAcmd(actor) == RESORT_SHOP_ACMD) {
                 FldAct_FreeAcmd(actor);
             }
         }
@@ -359,7 +359,7 @@ void ResortPeople_CreateFromDatas(ResortPeople *people) {
     while (TRUE) {
         BOOL create;
         u32 pos;
-        u16 unk;
+        u16 shopKind;
 
         data = ResortDatas_NextIter(people->setup.datas, &iter, sKinds, 2);
         if (data == NULL) {
@@ -373,9 +373,9 @@ void ResortPeople_CreateFromDatas(ResortPeople *people) {
         if (!ResortSlots_IsEmpty(people->setup.slots, row, pos)) {
             create = TRUE;
         }
-        unk = ResortData_GetParam(data, JOIN_AVE_PARAM_SHOP_KIND, NULL);
-        if (ResortData_GetKind(data) == 4) {
-            if (unk == 2 || unk == 3) {
+        shopKind = ResortData_GetParam(data, JOIN_AVE_PARAM_SHOP_KIND, NULL);
+        if (ResortData_GetKind(data) == RESORT_DATA_ENTRY) {
+            if (shopKind == 2 || shopKind == 3) {
                 create |= TRUE;
             } else {
                 create = FALSE;
@@ -395,12 +395,12 @@ static inline ResortPerson *ResortPeople_GetPerson(ResortPeople *people, int ind
     return people->persons[index];
 }
 
-static ResortPerson *ResortPeople_AddPerson(ResortPeople *people, const ResortPersonSource *source, BOOL unk20,
+static ResortPerson *ResortPeople_AddPerson(ResortPeople *people, const ResortPersonSource *source, BOOL fromSlots,
                                             u16 index) {
     if (ResortPeople_GetPerson(people, index) == NULL) {
         ResortPersonSetup setup;
         ResortPeople_MakeSetup(people, source, index, &setup);
-        setup.unk20 = unk20;
+        setup.fromSlots = fromSlots;
         people->persons[index] = ResortPerson_Create(people->heapId, &setup);
         ResortSlots_Fill(people->setup.slots);
         return people->persons[index];
@@ -410,7 +410,7 @@ static ResortPerson *ResortPeople_AddPerson(ResortPeople *people, const ResortPe
 
 ResortPerson *ResortPeople_AddAtEmptySlot(ResortPeople *people, const ResortPersonSource *source) {
     u32 pos = ResortSlots_FindEmpty(people->setup.slots, source->zone);
-    if (pos != 0xffff) {
+    if (pos != RESORT_SLOT_NONE) {
         return ResortPeople_AddPerson(people, source, FALSE, pos);
     }
     return NULL;
@@ -455,7 +455,7 @@ void ResortPeople_Recreate(ResortPeople *people, ResortPerson *person) {
     source.data = ResortPerson_GetData(person);
     source.zone = ResortPerson_GetParam(person, JOIN_AVE_PARAM_ROW, NULL);
     ResortPeople_MakeSetup(people, &source, pos, &setup);
-    setup.unk20 = ResortPerson_GetAttr(person, 1);
+    setup.fromSlots = ResortPerson_GetAttr(person, RESORT_PERSON_ATTR_FROM_SLOTS);
     ResortPerson_Recreate(person, &setup);
 }
 
@@ -526,7 +526,7 @@ static void ResortPeople_MakeSetup(ResortPeople *people, const ResortPersonSourc
     setup->table = people->table;
     setup->mmSys = people->setup.mmSys;
     setup->shops = people->setup.shops;
-    setup->unk18 = people->setup.unk18;
+    setup->posOffsets = people->setup.posOffsets;
 }
 
 static BOOL ResortPeople_IsPersonUID(int uid) {

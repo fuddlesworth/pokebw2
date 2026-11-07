@@ -118,7 +118,7 @@ BOOL Scrcmd_Resort_GetValue(VM *vm, FieldScriptEnv *env) {
         u16 a = ResortPerson_GetParam(person, JOIN_AVE_PARAM_SHOP_ID, NULL);
         u16 b = ResortPerson_GetParam(person, JOIN_AVE_PARAM_TRAINER_ID, NULL);
         u16 c = ResortPerson_GetParam(person, JOIN_AVE_PARAM_VERSION, NULL);
-        u16 d = ResortPerson_GetParam(person, JOIN_AVE_PARAM_UNK_18, NULL);
+        u16 d = ResortPerson_GetParam(person, JOIN_AVE_PARAM_KEEP_SHOP_LEVEL, NULL);
         u16 id1 = JoinAvenue_ChooseShop(a, b, c, d, info, shops);
         u16 id2 = JoinAvenueShop_GetField(ResortPerson_GetShop(person), 0);
         const u16 *row1 = ResortShopData_GetShop(shops, id1);
@@ -1540,7 +1540,7 @@ BOOL Scrcmd_Resort_GetOwnValue(VM *vm, FieldScriptEnv *env) {
         *var = JoinAvenuePerson_GetShopId(own, GetGameDataPlayerInfo(gameData));
         break;
     case 19:
-        *var = ResortSys_GetInfoFlag1b(sys);
+        *var = ResortSys_GetMaxLevelWeek(sys);
         break;
     case 20:
         *var = ResortSys_GetUnlock(sys, gameData);

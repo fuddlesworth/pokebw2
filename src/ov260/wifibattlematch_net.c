@@ -1838,7 +1838,7 @@ static void WifiBattleMatchNet_OnPersonReceived(int netId, int size, const void 
     if (handle == NetHandle_GetOwn() && netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
         JoinAvenuePerson *person = (JoinAvenuePerson *)data;
 
-        JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_UNK_26, 1);
+        JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_ARRIVAL_METHOD, JOIN_AVE_ARRIVAL_RANDOM_MATCHUP);
         if (p_wk->opponentNameRejected != 0) {
             MsgData *msgData =
                 GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, p_wk->msgHeapId);

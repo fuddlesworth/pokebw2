@@ -9,15 +9,6 @@
 // there, or else added to the people met or the entries. The ROM has no string for the file, so the name is
 // descriptive. Block 0x43.
 
-// What JoinAvenue_MergeExisting and JoinAvenue_MergeOrAdd return
-enum {
-    JOIN_AVE_ADD_FAILED = 0,
-    JOIN_AVE_ADD_MERGED = 1,
-    JOIN_AVE_ADD_ADDED = 2,
-    // Nobody matches, so the source is to be added
-    JOIN_AVE_ADD_NOT_FOUND = 3,
-};
-
 // The functions of a kind of source: whether it is valid, merging it into the person or the entry who matches, and
 // adding it to the people or to the entries
 typedef struct {

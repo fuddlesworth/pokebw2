@@ -17313,10 +17313,10 @@ overlays/ov137 0x021ef8e4 ResortWalker_StateStopAtShop
 overlays/ov137 0x021ef984 ResortWalker_RunStates
 overlays/ov137 0x021ef9a8 ResortWalker_FindStops
 overlays/ov137 0x021efa68 ResortWalker_CheckStop
-overlays/ov137 0x021efaf0 ResortWalkerMove_Unk4
+overlays/ov137 0x021efaf0 ResortWalkerMove_Init
 overlays/ov137 0x021efaf4 ResortWalkerMove_Update
-overlays/ov137 0x021efb48 ResortWalkerMove_Unk0C
-overlays/ov137 0x021efb4c ResortWalkerMove_Unk10
+overlays/ov137 0x021efb48 ResortWalkerMove_Delete
+overlays/ov137 0x021efb4c ResortWalkerMove_Return
 overlays/ov137 0x021efb50 ResortWalkerGroup_Init
 overlays/ov137 0x021efb78 ResortWalkerGroup_Clear
 overlays/ov137 0x021efb84 ResortWalkerGroup_Update
@@ -17483,7 +17483,7 @@ overlays/ov137 0x021f2e48 ResortSys_MatchCondition
 overlays/ov137 0x021f2fd0 ResortSys_GetPersonVisit
 overlays/ov137 0x021f312c ResortSys_AddPopularity
 overlays/ov137 0x021f3238 ResortSys_AddShopExperience
-overlays/ov137 0x021f3344 ResortSys_GetInfoFlag1b
+overlays/ov137 0x021f3344 ResortSys_GetMaxLevelWeek
 overlays/ov137 0x021f3354 ResortSys_AreAllShopsMaxLevel
 overlays/ov137 0x021f33b8 ResortSys_SetScriptWord
 overlays/ov137 0x021f3bd4 ResortSys_RollTier
@@ -17523,7 +17523,7 @@ overlays/ov137 0x021f522c ResortSys_HasShopKind
 overlays/ov137 0x021f5294 ResortSys_IsFull
 overlays/ov137 0x021f52b0 sWalkerOccupantKinds
 overlays/ov137 0x021f52b4 sCountByRank
-overlays/ov137 0x021f52b9 sCountByUnk
+overlays/ov137 0x021f52b9 sInitialEntriesByStars
 overlays/ov137 0x021f52c0 sSceneAnimations0
 overlays/ov137 0x021f52c8 sSceneAnimations1
 overlays/ov137 0x021f52d0 sCountByBadges
@@ -17545,7 +17545,7 @@ overlays/ov137 0x021f554c sKinds
 overlays/ov137 0x021f5554 sTypes
 overlays/ov137 0x021f5574 sNpcTemplate
 overlays/ov137 0x021f5598 sKindsOfScript
-overlays/ov137 0x021f55a8 sUnk021f55a8
+overlays/ov137 0x021f55a8 sMakeDataKinds
 overlays/ov137 0x021f55b8 sKinds
 overlays/ov137 0x021f55cc sTypes
 overlays/ov137 0x021f55e0 sRanges
@@ -17556,10 +17556,10 @@ overlays/ov137 0x021f5690 sShopKindTexts
 overlays/ov137 0x021f5698 sShopKindMultipliers
 overlays/ov137 0x021f56a4 sNewShopChances
 overlays/ov137 0x021f56b0 sEntryTypes
-overlays/ov137 0x021f56bc sUnk021f56bc
+overlays/ov137 0x021f56bc sShopUnlockIndexByRank
 overlays/ov137 0x021f56ca sRecordTypes
 overlays/ov137 0x021f56dc sHiddenTypes
-overlays/ov137 0x021f56fc sUnk021f56fc
+overlays/ov137 0x021f56fc sShopUnlockOrderByTrainerId
 overlays/ov137 0x021f5730 sMakeKinds
 overlays/ov137 0x021f5770 sPeopleRows
 overlays/ov137 0x021f57f0 sUnlocks

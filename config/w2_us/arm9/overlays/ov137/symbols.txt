@@ -51,10 +51,10 @@ ResortWalker_StateStopAtShop kind:function(thumb,size=0x9e) addr:0x021ef924
 ResortWalker_RunStates kind:function(thumb,size=0x24) addr:0x021ef9c4
 ResortWalker_FindStops kind:function(thumb,size=0xc0) addr:0x021ef9e8
 ResortWalker_CheckStop kind:function(thumb,size=0x86) addr:0x021efaa8
-ResortWalkerMove_Unk4 kind:function(thumb,size=0x2) addr:0x021efb30
+ResortWalkerMove_Init kind:function(thumb,size=0x2) addr:0x021efb30
 ResortWalkerMove_Update kind:function(thumb,size=0x54) addr:0x021efb34
-ResortWalkerMove_Unk0C kind:function(thumb,size=0x2) addr:0x021efb88
-ResortWalkerMove_Unk10 kind:function(thumb,size=0x2) addr:0x021efb8c
+ResortWalkerMove_Delete kind:function(thumb,size=0x2) addr:0x021efb88
+ResortWalkerMove_Return kind:function(thumb,size=0x2) addr:0x021efb8c
 ResortWalkerGroup_Init kind:function(thumb,size=0x28) addr:0x021efb90
 ResortWalkerGroup_Clear kind:function(thumb,size=0xc) addr:0x021efbb8
 ResortWalkerGroup_Update kind:function(thumb,size=0xf4) addr:0x021efbc4
@@ -222,7 +222,7 @@ ResortSys_MatchCondition kind:function(thumb,size=0x188) addr:0x021f2e88
 ResortSys_GetPersonVisit kind:function(thumb,size=0x15c) addr:0x021f3010
 ResortSys_AddPopularity kind:function(thumb,size=0x10a) addr:0x021f316c
 ResortSys_AddShopExperience kind:function(thumb,size=0x10c) addr:0x021f3278
-ResortSys_GetInfoFlag1b kind:function(thumb,size=0x10) addr:0x021f3384
+ResortSys_GetMaxLevelWeek kind:function(thumb,size=0x10) addr:0x021f3384
 ResortSys_AreAllShopsMaxLevel kind:function(thumb,size=0x64) addr:0x021f3394
 ResortSys_SetScriptWord kind:function(thumb,size=0x81c) addr:0x021f33f8
 ResortSys_RollTier kind:function(thumb,size=0x54) addr:0x021f3c14
@@ -262,7 +262,7 @@ ResortSys_HasShopKind kind:function(thumb,size=0x68) addr:0x021f5270
 ResortSys_IsFull kind:function(thumb,size=0x16) addr:0x021f52d8
 sWalkerOccupantKinds kind:data(any) addr:0x021f52f4
 sCountByRank kind:data(any) addr:0x021f52f8
-sCountByUnk kind:data(any) addr:0x021f52fd
+sInitialEntriesByStars kind:data(any) addr:0x021f52fd
 sSceneAnimations0 kind:data(any) addr:0x021f5304
 sSceneAnimations1 kind:data(any) addr:0x021f530c
 sCountByBadges kind:data(any) addr:0x021f5314
@@ -286,7 +286,7 @@ sKinds kind:data(any) addr:0x021f5590
 sTypes kind:data(any) addr:0x021f5598
 sNpcTemplate kind:data(any) addr:0x021f55b8
 sKindsOfScript kind:data(any) addr:0x021f55dc
-sUnk021f55a8 kind:data(any) addr:0x021f55ec
+sMakeDataKinds kind:data(any) addr:0x021f55ec
 sKinds kind:data(any) addr:0x021f55fc
 sTypes kind:data(any) addr:0x021f5610
 sRanges kind:data(any) addr:0x021f5624
@@ -298,10 +298,10 @@ data_ov137_021f5692 kind:data(any) addr:0x021f56d6
 sShopKindMultipliers kind:data(any) addr:0x021f56dc
 sNewShopChances kind:data(any) addr:0x021f56e8
 sEntryTypes kind:data(any) addr:0x021f56f4
-sUnk021f56bc kind:data(any) addr:0x021f5700
+sShopUnlockIndexByRank kind:data(any) addr:0x021f5700
 sRecordTypes kind:data(any) addr:0x021f570e
 sHiddenTypes kind:data(any) addr:0x021f5720
-sUnk021f56fc kind:data(any) addr:0x021f5740
+sShopUnlockOrderByTrainerId kind:data(any) addr:0x021f5740
 sMakeKinds kind:data(any) addr:0x021f5774
 sPeopleRows kind:data(any) addr:0x021f57b4
 data_ov137_021f5778 kind:data(any) addr:0x021f57bc

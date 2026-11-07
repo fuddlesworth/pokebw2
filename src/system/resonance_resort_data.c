@@ -393,7 +393,7 @@ static void JoinAvenueShopChoice_SetFromGameData(JoinAvenueShopChoice *choice, G
     playerInfo = GetGameDataPlayerInfo(gameData);
     choice->rank = JoinAvenue_GetParam(info, JOIN_AVE_INFO_RANK, NULL);
     choice->shopId = JoinAvenuePerson_GetShopId(player, playerInfo);
-    choice->unk0 = FALSE;
+    choice->keepShopLevel = FALSE;
 }
 
 static BOOL JoinAvenueShopChoice_IsValid(const JoinAvenueShopChoice *choice) {
@@ -403,7 +403,7 @@ static BOOL JoinAvenueShopChoice_IsValid(const JoinAvenueShopChoice *choice) {
     if (choice->rank > 100) {
         return FALSE;
     }
-    if (choice->unk0) {
+    if (choice->keepShopLevel) {
         return FALSE;
     }
     return TRUE;
@@ -731,7 +731,7 @@ static void JoinAvenuePerson_Stamp(JoinAvenuePerson *person) {
 
 static BOOL JoinAvenuePerson_SetFromVisitor(JoinAvenuePerson *person, const JoinAvenueVisitor *visitor) {
     JoinAvenuePerson_Clear(person);
-    JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_UNK_26, visitor->unk44);
+    JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_ARRIVAL_METHOD, visitor->arrivalMethod);
     person->profile = visitor->profile;
     if (visitor->dataIndex < JOIN_AVE_DATA_COUNT) {
         person->choice = visitor->choice;
@@ -852,8 +852,8 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
         return 0;
     case JOIN_AVE_PARAM_UNK_32:
         return 0;
-    case JOIN_AVE_PARAM_UNK_6:
-        return person->unkAB;
+    case JOIN_AVE_PARAM_VISIT_TYPE:
+        return person->visitType;
     case JOIN_AVE_PARAM_COUNTRY:
         return person->profile.country;
     case JOIN_AVE_PARAM_AREA:
@@ -872,8 +872,8 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
         return person->profile.version;
     case JOIN_AVE_PARAM_LANGUAGE:
         return person->profile.language;
-    case JOIN_AVE_PARAM_UNK_18:
-        return person->choice.unk0;
+    case JOIN_AVE_PARAM_KEEP_SHOP_LEVEL:
+        return person->choice.keepShopLevel;
     case JOIN_AVE_PARAM_RANK:
         return person->choice.rank;
     case JOIN_AVE_PARAM_SHOP_ID:
@@ -890,8 +890,8 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
         return person->hour;
     case JOIN_AVE_PARAM_MINUTE:
         return person->minute;
-    case JOIN_AVE_PARAM_UNK_26:
-        return person->unkA8;
+    case JOIN_AVE_PARAM_ARRIVAL_METHOD:
+        return person->arrivalMethod;
     case JOIN_AVE_PARAM_TALKING:
         return person->talking;
     case JOIN_AVE_PARAM_STATUS:
@@ -902,8 +902,8 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
         return person->unkA9_7;
     case JOIN_AVE_PARAM_UNK_37:
         return person->unkA9_0;
-    case JOIN_AVE_PARAM_UNK_38:
-        return person->unkA9_1;
+    case JOIN_AVE_PARAM_NO_EXPIRY:
+        return person->noExpiry;
     case JOIN_AVE_PARAM_SHOP_KIND:
         return person->shopKind;
     case JOIN_AVE_PARAM_DATA_MASK:
@@ -1024,8 +1024,8 @@ void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam p
     case JOIN_AVE_PARAM_ROW:
         person->row = value;
         break;
-    case JOIN_AVE_PARAM_UNK_6:
-        person->unkAB = value;
+    case JOIN_AVE_PARAM_VISIT_TYPE:
+        person->visitType = value;
         break;
     case JOIN_AVE_PARAM_COUNTRY:
         person->profile.country = value;
@@ -1069,8 +1069,8 @@ void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam p
     case JOIN_AVE_PARAM_GENDER:
         person->profile.gender = value;
         break;
-    case JOIN_AVE_PARAM_UNK_18:
-        person->choice.unk0 = value;
+    case JOIN_AVE_PARAM_KEEP_SHOP_LEVEL:
+        person->choice.keepShopLevel = value;
         break;
     case JOIN_AVE_PARAM_RANK:
         person->choice.rank = value;
@@ -1093,8 +1093,8 @@ void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam p
     case JOIN_AVE_PARAM_MINUTE:
         person->minute = value;
         break;
-    case JOIN_AVE_PARAM_UNK_26:
-        person->unkA8 = value;
+    case JOIN_AVE_PARAM_ARRIVAL_METHOD:
+        person->arrivalMethod = value;
         break;
     case JOIN_AVE_PARAM_TALKING:
         person->talking = value;
@@ -1116,8 +1116,8 @@ void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam p
     case JOIN_AVE_PARAM_UNK_37:
         person->unkA9_0 = value;
         break;
-    case JOIN_AVE_PARAM_UNK_38:
-        person->unkA9_1 = value;
+    case JOIN_AVE_PARAM_NO_EXPIRY:
+        person->noExpiry = value;
         break;
     case JOIN_AVE_PARAM_SHOP_KIND:
         person->shopKind = value;
@@ -1243,7 +1243,7 @@ static BOOL JoinAvenuePerson_IsExpired(const JoinAvenuePerson *person, s64 now) 
     u32 count;
     BOOL expired;
 
-    if (person->unkA9_1) {
+    if (person->noExpiry) {
         return FALSE;
     }
     expired = FALSE;
@@ -1256,7 +1256,7 @@ static BOOL JoinAvenuePerson_IsExpired(const JoinAvenuePerson *person, s64 now) 
     time.minute = person->minute;
     arrived = RTC_ConvertDateTimeToSecond(&date, &time);
     count = joinAveTextHandler(person, JOIN_AVE_PARAM_DATA_COUNT, NULL);
-    if (person->choice.unk0) {
+    if (person->choice.keepShopLevel) {
         if (now - arrived > JOIN_AVE_STAY_SHORT) {
             expired = TRUE;
         }
@@ -1285,7 +1285,7 @@ void JoinAvenueVisitor_Free(JoinAvenueVisitor *visitor) {
 void JoinAvenueVisitor_InitPlayer(JoinAvenueVisitor *visitor, int index, GameData *gameData) {
     JoinAvenueProfile_SetFromGameData(&visitor->profile, gameData);
     JoinAvenueShopChoice_SetFromGameData(&visitor->choice, gameData);
-    visitor->unk44 = 8;
+    visitor->arrivalMethod = JOIN_AVE_ARRIVAL_PASSERBY;
     if (index >= JOIN_AVE_DATA_COUNT) {
         index = 0;
     }
@@ -1299,12 +1299,12 @@ void JoinAvenueVisitor_StoreInBeacon(JoinAvenueVisitor *visitor, GameBeacon *bea
     beacon->arg.value = visitor->dataIndex;
 }
 
-void JoinAvenueVisitor_InitFromBeacon(JoinAvenueVisitor *visitor, const GameBeacon *beacon, u32 a2) {
+void JoinAvenueVisitor_InitFromBeacon(JoinAvenueVisitor *visitor, const GameBeacon *beacon, u32 arrivalMethod) {
     MI_CpuFill8(visitor, 0, sizeof(JoinAvenueVisitor));
-    visitor->unk44 = a2;
+    visitor->arrivalMethod = arrivalMethod;
     JoinAvenueProfile_SetFromBeacon(&visitor->profile, beacon);
     if (beacon->version == VERSION_WHITE2 || beacon->version == VERSION_BLACK2) {
-        if (a2 == 8) {
+        if (arrivalMethod == JOIN_AVE_ARRIVAL_PASSERBY) {
             MI_CpuCopy8(&GameBeacon_GetAvenuePayload(beacon)->choice, &visitor->choice, sizeof(JoinAvenueShopChoice));
             MI_CpuCopy8(&GameBeacon_GetAvenuePayload(beacon)->data, &visitor->data, sizeof(JoinAvenueData));
             visitor->dataIndex = beacon->arg.value;
@@ -1373,15 +1373,15 @@ void JoinAvenueEntry_Init(JoinAvenueEntry *entry, PlayerInfo *playerInfo, u16 sp
     JoinAvenueEntry_Clear(entry);
     switch (type) {
     default:
-        type = 6;
-    case 6:
+        type = JOIN_AVE_ARRIVAL_GTS;
+    case JOIN_AVE_ARRIVAL_GTS:
         entry->unk4E = 0;
         break;
-    case 7:
+    case JOIN_AVE_ARRIVAL_DREAM_WORLD:
         entry->unk4E = 1;
         break;
     }
-    entry->unk56 = type;
+    entry->arrivalMethod = type;
     trainerId = getTrainerID(playerInfo);
     version = PlayerInfo_GetVersion(playerInfo);
     entry->shopId = JoinAvenue_GetDefaultShop(trainerId, version);
@@ -1414,8 +1414,8 @@ u32 JoinAvenueEntry_GetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam param
         return entry->seed;
     case JOIN_AVE_PARAM_SHOP_KIND:
         return entry->unk4E;
-    case JOIN_AVE_PARAM_UNK_26:
-        return entry->unk56;
+    case JOIN_AVE_PARAM_ARRIVAL_METHOD:
+        return entry->arrivalMethod;
     case JOIN_AVE_PARAM_SHOP_ID:
         return entry->shopId;
     case JOIN_AVE_PARAM_COUNTRY:
@@ -1443,15 +1443,15 @@ u32 JoinAvenueEntry_GetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam param
         return 0;
     case JOIN_AVE_PARAM_DATA_COUNT:
         return 0;
-    case JOIN_AVE_PARAM_UNK_6:
-        return entry->unk52;
+    case JOIN_AVE_PARAM_VISIT_TYPE:
+        return entry->visitType;
     case JOIN_AVE_PARAM_YEAR:
         return entry->year;
     case JOIN_AVE_PARAM_MONTH:
         return entry->month;
     case JOIN_AVE_PARAM_DAY:
         return entry->day;
-    case JOIN_AVE_PARAM_UNK_18:
+    case JOIN_AVE_PARAM_KEEP_SHOP_LEVEL:
         return 0;
     case JOIN_AVE_PARAM_ENTRY_SPECIES:
         return entry->species;
@@ -1506,8 +1506,8 @@ void JoinAvenueEntry_SetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam para
     case JOIN_AVE_PARAM_SHOP_KIND:
         entry->unk4E = value;
         break;
-    case JOIN_AVE_PARAM_UNK_6:
-        entry->unk52 = value;
+    case JOIN_AVE_PARAM_VISIT_TYPE:
+        entry->visitType = value;
         break;
     case JOIN_AVE_PARAM_SHOP_ID:
         entry->shopId = value;
@@ -1524,7 +1524,7 @@ void JoinAvenueEntry_SetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam para
     case JOIN_AVE_PARAM_RAFFLED:
         entry->raffled = value;
         break;
-    case JOIN_AVE_PARAM_UNK_38:
+    case JOIN_AVE_PARAM_NO_EXPIRY:
         break;
     case JOIN_AVE_PARAM_ENTRY_SPECIES:
         break;
@@ -1542,7 +1542,7 @@ static BOOL JoinAvenueEntry_Merge(JoinAvenueEntry *entry, const JoinAvenueEntry 
         entry->profile = src->profile;
         entry->message1 = src->message1;
         entry->message2 = src->message2;
-        if (entry->unk56 == src->unk56) {
+        if (entry->arrivalMethod == src->arrivalMethod) {
             entry->species = src->species;
         }
     }
@@ -1860,8 +1860,8 @@ static void JoinAvenuePerson_SetupShop(JoinAvenuePerson *person, ResortShopData 
     u32 shopId = joinAveTextHandler(person, JOIN_AVE_PARAM_SHOP_ID, NULL);
     u32 trainerId = joinAveTextHandler(person, JOIN_AVE_PARAM_TRAINER_ID, NULL);
     u32 version = joinAveTextHandler(person, JOIN_AVE_PARAM_VERSION, NULL);
-    u32 unk18 = joinAveTextHandler(person, JOIN_AVE_PARAM_UNK_18, NULL);
-    u16 id = JoinAvenue_ChooseShop(shopId, trainerId, version, unk18, sJoinAvenue.info, shops);
+    u32 keepShopLevel = joinAveTextHandler(person, JOIN_AVE_PARAM_KEEP_SHOP_LEVEL, NULL);
+    u16 id = JoinAvenue_ChooseShop(shopId, trainerId, version, keepShopLevel, sJoinAvenue.info, shops);
     u16 level = ResortShopData_GetShopParam(ResortShopData_GetShop(shops, id), 2);
     JoinAvenueShop *shop = JoinAvenuePerson_GetShop(person);
 
@@ -2632,14 +2632,14 @@ static u32 gfRand(u32 seed) {
     return ((u64)seed * GF_RAND_MULTIPLIER + GF_RAND_INCREMENT) >> 32;
 }
 
-u16 JoinAvenue_ChooseShop(u16 shopId, u16 trainerId, u16 version, BOOL unk18, JoinAvenueInfo *info,
+u16 JoinAvenue_ChooseShop(u16 shopId, u16 trainerId, u16 version, BOOL keepShopLevel, JoinAvenueInfo *info,
                           ResortShopData *shops) {
     u32 unk13 = JoinAvenue_GetParam(info, JOIN_AVE_INFO_UNLOCKED_6, NULL);
     const u16 *shop = ResortShopData_GetShop(shops, shopId);
     u16 level = ResortShopData_GetShopParam(shop, 2);
     u16 kind = ResortShopData_GetShopParam(shop, 0);
 
-    if (shopId == 0 || (unk13 == 0 && kind == 5) || (level != 0 && !unk18)) {
+    if (shopId == 0 || (unk13 == 0 && kind == 5) || (level != 0 && !keepShopLevel)) {
         return JoinAvenue_GetDefaultShop(trainerId, version);
     }
     return shopId;

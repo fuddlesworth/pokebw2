@@ -25,6 +25,58 @@
 #include "system/resort_layout.h"
 #include "system/resort_work.h"
 
+// The sources of text displayed in a balloon
+enum {
+    RESORT_BUBBLE_GREETING = 0,
+    RESORT_BUBBLE_MESSAGE1 = 1,
+    RESORT_BUBBLE_MESSAGE2 = 2,
+    RESORT_BUBBLE_MESSAGE1_ALT = 3,
+    RESORT_BUBBLE_PLAYER_MESSAGE1 = 4,
+    RESORT_BUBBLE_PLAYER_MESSAGE2 = 5,
+    RESORT_BUBBLE_TITLE = 6,
+    RESORT_BUBBLE_FIXED_MESSAGE = 7,
+};
+
+// The function-table indices of sWalkerStates
+enum {
+    RESORT_WALKER_CHECK_STEPS = 0,
+    RESORT_WALKER_STEP = 1,
+    RESORT_WALKER_WAIT_STEP = 2,
+    RESORT_WALKER_LOOK_AROUND = 3,
+    RESORT_WALKER_STOP_AT_SHOP = 4,
+};
+
+// The balloon display cycle
+enum {
+    RESORT_BUBBLES_DELAY = 0,
+    RESORT_BUBBLES_SHOW = 1,
+    RESORT_BUBBLES_WAIT = 2,
+};
+
+// The steps of ResortWalker_StateStopAtShop
+enum {
+    RESORT_WALKER_STOP_FACE_SHOP,
+    RESORT_WALKER_STOP_WAIT_TURN,
+    RESORT_WALKER_STOP_START_ACTION,
+    RESORT_WALKER_STOP_WAIT_ACTION,
+};
+
+// The steps of ResortWalker_StateLookAround
+enum {
+    RESORT_WALKER_LOOK_TURN,
+    RESORT_WALKER_LOOK_WAIT_TURN,
+    RESORT_WALKER_LOOK_PAUSE,
+    RESORT_WALKER_LOOK_TURN_BACK,
+    RESORT_WALKER_LOOK_WAIT_TURN_BACK,
+    RESORT_WALKER_LOOK_PAUSE_BACK,
+};
+
+// The steps of ResortWalker_Update
+enum {
+    RESORT_WALKER_SHOP_ACTION_START,
+    RESORT_WALKER_SHOP_ACTION_WAIT,
+};
+
 // The gimmick of the avenue's main zone, made of the objects below, and of its other zone, which has only its people
 // and NPCs
 
@@ -37,7 +89,7 @@
 typedef struct ResortWalker ResortWalker;
 
 // Calls the callback of a watch on the people of the lists and the entries
-typedef BOOL (*ResortWatchCallback)(void *context, void *person, u32 a2, u32 event);
+typedef BOOL (*ResortWatchCallback)(void *context, void *person, u32 storageType, u32 event);
 
 typedef struct {
     JoinAvenuePersonList *list;
@@ -68,16 +120,16 @@ struct ResortWalker {
     u16 dir;
     u16 state;
     s16 steps;
-    u8 unk14;
-    u8 unk15;
+    u8 shopActionActive;
+    u8 shopActionDone;
     u16 objCodeChanged;
     void (*start)(ResortWalker *walker);
     void (*update)(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player);
     s16 waitTimer;
     s16 waitTime;
-    s16 unk24;
-    s16 unk26;
-    s16 unk28;
+    s16 lookCount;
+    s16 nextLookSteps;
+    s16 lookInterval;
     u8 lookState;
     u8 lookDir;
     u16 stopZ[RESORT_WALKER_STOPS];
@@ -85,7 +137,7 @@ struct ResortWalker {
     u16 stopState;
     u16 stopCount;
     u16 stop;
-    u32 unk54;
+    u32 shopActionState;
 };
 
 // The walkers that leave from a place at x, one at a time
@@ -105,7 +157,7 @@ typedef struct {
     FieldPlayer *player;
     MMSys *mmSys;
     ResortShopData *shops;
-    ResortBinary *unkb1c;
+    ResortBinary *posOffsets;
     JoinAvenueOccupants *occupants;
 } ResortWalkers;
 
@@ -133,7 +185,7 @@ typedef struct {
     s16 interval;
     s16 delay;
     s16 delayTime;
-    u32 unk10;
+    u32 messageKind;
     u16 shown;
     u16 count;
     u16 bubbleIndexes[3];
@@ -195,7 +247,7 @@ static void ResortWatch_MarkChanged(ResortWatch *watch);
 static void ResortWatch_CheckLists(ResortWatch *watch);
 static void ResortWatch_CheckEntries(ResortWatch *watch);
 static ResortWalkers *ResortWalkers_Create(HeapID heapId, MMSys *mmSys, FieldPlayer *player, ResortShopData *shops,
-                                           ResortBinary *unkb1c, JoinAvenueOccupants *occupants);
+                                           ResortBinary *posOffsets, JoinAvenueOccupants *occupants);
 static void ResortWalkers_Free(ResortWalkers *walkers);
 static void ResortWalkers_Update(ResortWalkers *walkers, Field *field);
 static void ResortWalkers_Place(ResortWalkers *walkers, u32 mode);
@@ -207,8 +259,8 @@ static ResortWalker *ResortWalkers_Find(ResortWalkers *walkers, ResortPerson *pe
 static void ResortWalker_Init(ResortWalker *walker, HeapID heapId);
 static void ResortWalker_Release(ResortWalker *walker);
 static void ResortWalker_Update(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player);
-static void ResortWalker_Assign(ResortWalker *walker, ResortPerson *person, ResortShopData *shops, ResortBinary *unkb1c,
-                                JoinAvenueOccupants *occupants);
+static void ResortWalker_Assign(ResortWalker *walker, ResortPerson *person, ResortShopData *shops,
+                                ResortBinary *posOffsets, JoinAvenueOccupants *occupants);
 static void ResortWalker_Clear(ResortWalker *walker);
 static BOOL ResortWalker_IsPerson(const ResortWalker *walker, ResortPerson *person);
 static BOOL ResortWalker_IsAssigned(const ResortWalker *walker);
@@ -226,13 +278,13 @@ static BOOL ResortWalker_StateWaitStep(ResortWalker *walker, MMSys *mmSys, Field
 static BOOL ResortWalker_StateLookAround(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player);
 static BOOL ResortWalker_StateStopAtShop(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player);
 static void ResortWalker_RunStates(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player);
-static void ResortWalker_FindStops(ResortWalker *walker, ResortShopData *shops, ResortBinary *unkb1c,
+static void ResortWalker_FindStops(ResortWalker *walker, ResortShopData *shops, ResortBinary *posOffsets,
                                    JoinAvenueOccupants *occupants);
 static BOOL ResortWalker_CheckStop(ResortWalker *walker, FieldPlayer *player);
-static void ResortWalkerMove_Unk4(FieldActor *actor);
+static void ResortWalkerMove_Init(FieldActor *actor);
 static void ResortWalkerMove_Update(FieldActor *actor);
-static void ResortWalkerMove_Unk0C(FieldActor *actor);
-static void ResortWalkerMove_Unk10(FieldActor *actor);
+static void ResortWalkerMove_Delete(FieldActor *actor);
+static void ResortWalkerMove_Return(FieldActor *actor);
 static void ResortWalkerGroup_Init(ResortWalkerGroup *group, u16 x, u16 dir, HeapID heapId);
 static void ResortWalkerGroup_Clear(ResortWalkerGroup *group);
 static void ResortWalkerGroup_Update(ResortWalkerGroup *group, FieldPlayer *player);
@@ -260,8 +312,8 @@ static void ResortBubble_Hide(ResortBubble *bubble, FieldMsgBG *msgBGSys);
 static void ResortBubble_Reset(ResortBubble *bubble);
 static BOOL ResortBubble_IsDone(ResortBubble *bubble);
 static ResortFieldPeople *ResortFieldPeople_Create(HeapID heapId, ResortSys *sys, MMSys *mmSys, FieldPlayer *player,
-                                                   BOOL flag, u32 a5);
-static void ResortFieldPeople_CreatePeople(ResortFieldPeople *people, BOOL flag, u32 a2);
+                                                   BOOL flag, u32 mapChangeFlag);
+static void ResortFieldPeople_CreatePeople(ResortFieldPeople *people, BOOL flag, u32 mapChangeFlag);
 static void ResortFieldPeople_Free(ResortFieldPeople *people);
 static void ResortFieldPeople_Update(ResortFieldPeople *people, Field *field);
 static void ResortFieldPeople_UseNormalWatch(ResortFieldPeople *people);
@@ -270,8 +322,8 @@ static void ResortFieldPeople_RemoveWalker(ResortFieldPeople *people, ResortPers
 static ResortWalkers *ResortFieldPeople_GetWalkers(ResortFieldPeople *people);
 static void ResortFieldPeople_PlaceAtShops(ResortFieldPeople *people, ResortSys *sys, ResortNPC *npc);
 static void ResortFieldPeople_MarkChanged(ResortFieldPeople *people);
-static BOOL ResortFieldPeople_WatchCallback(void *context, void *person, u32 a2, u32 event);
-static BOOL ResortFieldPeople_WatchCallbackFiltered(void *context, void *person, u32 a2, u32 event);
+static BOOL ResortFieldPeople_WatchCallback(void *context, void *person, u32 storageType, u32 event);
+static BOOL ResortFieldPeople_WatchCallbackFiltered(void *context, void *person, u32 storageType, u32 event);
 static ResortFieldScene *ResortFieldScene_Create(HeapID heapId, FieldExpObjSystem *expObj, FieldCamera *camera);
 static void ResortFieldScene_Free(ResortFieldScene *scene);
 static void ResortFieldScene_Update(ResortFieldScene *scene);
@@ -289,9 +341,9 @@ static void ResortField_AddSpecialEntry(ResortSys *sys, GameData *gameData, Heap
 
 // Not referenced, as reading it is folded: the angle of the scene's second animation
 const u32 RESORT_FIELD_SCENE_ANGLE = 0xdd00;
-static const u32 sWalkerOccupantKinds[] = { 0 };
+static const u32 sWalkerOccupantKinds[] = { RESORT_DATA_OCCUPANT };
 static const u8 sCountByRank[] = { 1, 2, 3, 4, 5 };
-static const u8 sCountByUnk[] = { 0, 1, 2, 3, 4, 5 };
+static const u8 sInitialEntriesByStars[] = { 0, 1, 2, 3, 4, 5 };
 static const G3DSceneAnimationSetup sSceneAnimations1[] = { { 4, 0 }, { 5, 0 } };
 static const G3DSceneAnimationSetup sSceneAnimations0[] = { { 1, 0 }, { 2, 0 } };
 static const u8 sCountByBadges[] = { 0, 1, 1, 1, 1, 2, 2, 2, 2 };
@@ -299,24 +351,25 @@ static const u16 sGroupXs[RESORT_WALKER_GROUPS] = { 12, 13, 14, 16, 17, 18 };
 static const u16 sGroupDirs[RESORT_WALKER_GROUPS] = { 0, 1, 0, 1, 0, 1 };
 // clang-format off
 static const ResortWalkerPlace sWalkerPlaces[] = {
-    {2, 0, 0, 0}, {2, 1, 1, 0}, {2, 2, 2, 0}, {2, 3, 3, 0}, {2, 4, 4, 0}, {2, 5, 5, 0}, {2, 6, 0, 1},
-    {2, 7, 1, 1}, {3, 0, 2, 1}, {3, 1, 3, 1}, {3, 2, 4, 1}, {3, 3, 5, 1}, {3, 4, 0, 2}, {3, 5, 1, 2},
-    {3, 6, 2, 2}, {3, 7, 3, 2}, {4, 0, 4, 2}, {4, 1, 5, 2}, {4, 2, 0, 3}, {4, 3, 1, 3}, {4, 4, 2, 3},
-    {4, 5, 3, 3}, {4, 6, 4, 3}, {4, 7, 5, 3}, {4, 8, 0, 4}, {4, 9, 1, 4}, {4, 10, 2, 4}, {4, 11, 3, 4},
+    {RESORT_DATA_LIST, 0, 0, 0}, {RESORT_DATA_LIST, 1, 1, 0}, {RESORT_DATA_LIST, 2, 2, 0}, {RESORT_DATA_LIST, 3, 3, 0}, {RESORT_DATA_LIST, 4, 4, 0}, {RESORT_DATA_LIST, 5, 5, 0}, {RESORT_DATA_LIST, 6, 0, 1},
+    {RESORT_DATA_LIST, 7, 1, 1}, {RESORT_DATA_LIST2, 0, 2, 1}, {RESORT_DATA_LIST2, 1, 3, 1}, {RESORT_DATA_LIST2, 2, 4, 1}, {RESORT_DATA_LIST2, 3, 5, 1}, {RESORT_DATA_LIST2, 4, 0, 2}, {RESORT_DATA_LIST2, 5, 1, 2},
+    {RESORT_DATA_LIST2, 6, 2, 2}, {RESORT_DATA_LIST2, 7, 3, 2}, {RESORT_DATA_ENTRY, 0, 4, 2}, {RESORT_DATA_ENTRY, 1, 5, 2}, {RESORT_DATA_ENTRY, 2, 0, 3}, {RESORT_DATA_ENTRY, 3, 1, 3}, {RESORT_DATA_ENTRY, 4, 2, 3},
+    {RESORT_DATA_ENTRY, 5, 3, 3}, {RESORT_DATA_ENTRY, 6, 4, 3}, {RESORT_DATA_ENTRY, 7, 5, 3}, {RESORT_DATA_ENTRY, 8, 0, 4}, {RESORT_DATA_ENTRY, 9, 1, 4}, {RESORT_DATA_ENTRY, 10, 2, 4}, {RESORT_DATA_ENTRY, 11, 3, 4},
 };
 
 // clang-format on
 static const u8 sBubbleYs[RESORT_BUBBLES] = { 6, 2, 19, 14, 17, 10, 14, 2, 10, 17, 10, 6, 2, 6, 14, 19 };
 static const u8 sBubbleXs1[RESORT_BUBBLES] = { 1, 16, 2, 15, 4, 16, 3, 13, 1, 13, 2, 16, 3, 15, 4, 14 };
 static const u8 sBubbleXs0[RESORT_BUBBLES] = { 1, 18, 2, 16, 4, 18, 3, 15, 1, 15, 2, 18, 3, 17, 4, 16 };
-static const u32 sBubbleIntervalKinds[] = { 0, 2, 3, 4 };
-static const u32 sBubbleKinds[] = { 0, 2, 3, 4 };
+static const u32 sBubbleIntervalKinds[] = { RESORT_DATA_OCCUPANT, RESORT_DATA_LIST, RESORT_DATA_LIST2,
+                                            RESORT_DATA_ENTRY };
+static const u32 sBubbleKinds[] = { RESORT_DATA_OCCUPANT, RESORT_DATA_LIST, RESORT_DATA_LIST2, RESORT_DATA_ENTRY };
 static BOOL (*const sWalkerStates[])(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player) = {
     ResortWalker_StateCheckSteps, ResortWalker_StateStep,       ResortWalker_StateWaitStep,
     ResortWalker_StateLookAround, ResortWalker_StateStopAtShop,
 };
 static const FieldActorMoveCode sWalkerMoveCode = {
-    MOVE_CODE_NONE, ResortWalkerMove_Unk4, ResortWalkerMove_Update, ResortWalkerMove_Unk0C, ResortWalkerMove_Unk10,
+    MOVE_CODE_NONE, ResortWalkerMove_Init, ResortWalkerMove_Update, ResortWalkerMove_Delete, ResortWalkerMove_Return,
 };
 static const ResortSceneAnim sSceneAnims[] = {
     { ResortSceneAnim0_Start, ResortSceneAnim0_Update, ResortSceneAnim0_End },
@@ -335,14 +388,14 @@ static const G3DSceneSetup sScene = { sSceneResources, 6, sSceneActors, 2 };
 void ResortField_Setup(Field *field) {
     HollowRivalSave *block;
     GameData *gameData;
-    ResortWork *unk;
+    ResortWork *resortWork;
     ResortFieldWork *work;
     HeapID heapId;
     JoinAvenueSave *joinAvenue;
     JoinAvenuePersonList **list2;
     ResortSysSetup sysSetup;
     BOOL flag;
-    u32 unk2;
+    u32 mapChangeFlag;
     MMSys *mmSys;
     ResortNPCSetup npcSetup;
     FieldMsgBG *msgBGSys;
@@ -356,7 +409,7 @@ void ResortField_Setup(Field *field) {
 
     heapId = Field_GetHeapID(field);
     gameData = GSYS_GetGameData(Field_GetGameSystem(field));
-    unk = GameData_GetResortWork(gameData);
+    resortWork = GameData_GetResortWork(gameData);
     work = Field_AllocGimmickWorkBlock(field, 1, heapId, sizeof(ResortFieldWork));
     bubblesEnabled = TRUE;
     joinAvenue = SaveControl_GetJoinAvenue(GameData_GetSaveControl(gameData));
@@ -367,14 +420,14 @@ void ResortField_Setup(Field *field) {
     sysSetup.list2 = *list2;
     sysSetup.entries = JoinAvenue_GetEntryList(joinAvenue);
     sysSetup.info = JoinAvenue_GetInfo(joinAvenue);
-    work->sys = ResortSys_Create(&sysSetup, unk, heapId);
+    work->sys = ResortSys_Create(&sysSetup, resortWork, heapId);
     flag = JoinAvenue_GetParam(ResortSys_GetInfo(work->sys), JOIN_AVE_INFO_UNOPENED, NULL);
     ResortField_AddSpecialEntry(work->sys, gameData, heapId);
     ResortField_AddInitialEntries(work->sys, gameData, heapId);
-    unk2 = ResortWork_Get(unk, 8);
+    mapChangeFlag = ResortWork_Get(resortWork, 8);
     mmSys = GameData_GetMMSys(gameData);
-    work->people = ResortFieldPeople_Create(heapId, work->sys, mmSys, Field_GetPlayer(field), flag, unk2);
-    ResortFieldPeople_CreatePeople(work->people, flag, unk2);
+    work->people = ResortFieldPeople_Create(heapId, work->sys, mmSys, Field_GetPlayer(field), flag, mapChangeFlag);
+    ResortFieldPeople_CreatePeople(work->people, flag, mapChangeFlag);
 
     MI_CpuFill8(&npcSetup, 0, sizeof(ResortNPCSetup));
     npcSetup.mmSys = GameData_GetMMSys(gameData);
@@ -523,7 +576,7 @@ static void ResortWatch_CheckLists(ResortWatch *watch) {
         u32 value = joinAveTextHandler(person, JOIN_AVE_PARAM_STATUS, NULL);
         if (!JoinAvenuePerson_IsEmpty(person) && value != JOIN_AVE_STATUS_NONE) {
             JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_STATUS, JOIN_AVE_STATUS_NONE);
-            if (!watch->setup.callback(watch->setup.context, person, 2, value)) {
+            if (!watch->setup.callback(watch->setup.context, person, RESORT_PERSON_VISITOR, value)) {
                 JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_STATUS, value);
             }
         }
@@ -533,7 +586,7 @@ static void ResortWatch_CheckLists(ResortWatch *watch) {
         u32 value = joinAveTextHandler(person, JOIN_AVE_PARAM_STATUS, NULL);
         if (!JoinAvenuePerson_IsEmpty(person) && value != JOIN_AVE_STATUS_NONE) {
             JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_STATUS, JOIN_AVE_STATUS_NONE);
-            if (!watch->setup.callback(watch->setup.context, person, 2, value)) {
+            if (!watch->setup.callback(watch->setup.context, person, RESORT_PERSON_VISITOR, value)) {
                 JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_STATUS, value);
             }
         }
@@ -546,7 +599,7 @@ static void ResortWatch_CheckEntries(ResortWatch *watch) {
         for (i = 0; i < JoinAvenueEntryList_GetCount(watch->entries); i++) {
             JoinAvenueEntry *entry = JoinAvenueEntryList_Get(watch->entries, i);
             if (!JoinAvenueEntry_IsEmpty(entry)) {
-                watch->setup.callback(watch->setup.context, entry, 1, 2);
+                watch->setup.callback(watch->setup.context, entry, RESORT_PERSON_ENTRY, JOIN_AVE_STATUS_ADDED);
             }
         }
         watch->changed = FALSE;
@@ -554,14 +607,14 @@ static void ResortWatch_CheckEntries(ResortWatch *watch) {
 }
 
 static ResortWalkers *ResortWalkers_Create(HeapID heapId, MMSys *mmSys, FieldPlayer *player, ResortShopData *shops,
-                                           ResortBinary *unkb1c, JoinAvenueOccupants *occupants) {
+                                           ResortBinary *posOffsets, JoinAvenueOccupants *occupants) {
     int i;
     ResortWalkers *walkers = GFL_HeapAllocate(heapId, sizeof(ResortWalkers), TRUE, "resort_field.c", 950);
 
     walkers->player = player;
     walkers->mmSys = mmSys;
     walkers->shops = shops;
-    walkers->unkb1c = unkb1c;
+    walkers->posOffsets = posOffsets;
     walkers->occupants = occupants;
     for (i = 0; i < RESORT_WALKERS; i++) {
         ResortWalker_Init(&walkers->walkers[i], heapId);
@@ -610,7 +663,8 @@ static void ResortWalkers_Add(ResortWalkers *walkers, ResortPerson *person) {
     if (ResortField_GetWalkerPlace(person, &group, &slot)) {
         for (i = 0; i < RESORT_WALKERS; i++) {
             if (!ResortWalker_IsAssigned(&walkers->walkers[i])) {
-                ResortWalker_Assign(&walkers->walkers[i], person, walkers->shops, walkers->unkb1c, walkers->occupants);
+                ResortWalker_Assign(&walkers->walkers[i], person, walkers->shops, walkers->posOffsets,
+                                    walkers->occupants);
                 ResortWalkerGroup_Add(&walkers->groups[group], slot, &walkers->walkers[i]);
                 return;
             }
@@ -677,16 +731,16 @@ static void ResortWalker_Release(ResortWalker *walker) {
 static void ResortWalker_Update(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player) {
     if (ResortWalker_IsAssigned(walker)) {
         FieldActor *actor = ResortPerson_GetActor(walker->person);
-        if (walker->unk14 && !walker->unk15) {
-            switch (walker->unk54) {
-            case 0:
-                FldAct_SetLocalAcmd(actor, 0xbe);
-                walker->unk54++;
-            case 1:
+        if (walker->shopActionActive && !walker->shopActionDone) {
+            switch (walker->shopActionState) {
+            case RESORT_WALKER_SHOP_ACTION_START:
+                FldAct_SetLocalAcmd(actor, RESORT_SHOP_ACMD);
+                walker->shopActionState++;
+            case RESORT_WALKER_SHOP_ACTION_WAIT:
                 if (FieldAcmdTCB_Update(actor)) {
-                    walker->unk54 = 0;
-                    walker->unk14 = FALSE;
-                    walker->unk15 = TRUE;
+                    walker->shopActionState = RESORT_WALKER_SHOP_ACTION_START;
+                    walker->shopActionActive = FALSE;
+                    walker->shopActionDone = TRUE;
                 }
                 break;
             }
@@ -698,16 +752,16 @@ static void ResortWalker_Update(ResortWalker *walker, MMSys *mmSys, FieldPlayer 
     }
 }
 
-static void ResortWalker_Assign(ResortWalker *walker, ResortPerson *person, ResortShopData *shops, ResortBinary *unkb1c,
-                                JoinAvenueOccupants *occupants) {
+static void ResortWalker_Assign(ResortWalker *walker, ResortPerson *person, ResortShopData *shops,
+                                ResortBinary *posOffsets, JoinAvenueOccupants *occupants) {
     ResortWalker_Clear(walker);
     walker->person = person;
     FldAct_SetMoveCodeFuncs(ResortPerson_GetActor(person), &sWalkerMoveCode);
     ResortPerson_SetVisible(walker->person, FALSE);
-    ResortWalker_FindStops(walker, shops, unkb1c, occupants);
-    switch (ResortPerson_GetAttr(walker->person, 0)) {
-    case 1:
-    case 2:
+    ResortWalker_FindStops(walker, shops, posOffsets, occupants);
+    switch (ResortPerson_GetAttr(walker->person, RESORT_PERSON_ATTR_TYPE)) {
+    case RESORT_PERSON_ENTRY:
+    case RESORT_PERSON_VISITOR:
         walker->start = ResortWalker_SetupWalk;
         walker->update = ResortWalker_RunStates;
         break;
@@ -740,7 +794,7 @@ static void ResortWalker_Start(ResortWalker *walker, u16 acmd, u16 dir, u16 x) {
 static void ResortWalker_StartAt(ResortWalker *walker, u16 acmd, u16 dir, u16 x, u16 z) {
     FieldActor *actor;
 
-    walker->state = 0;
+    walker->state = RESORT_WALKER_CHECK_STEPS;
     walker->active = TRUE;
     walker->acmd = acmd;
     walker->dir = dir;
@@ -797,7 +851,7 @@ static void ResortWalker_StartAt(ResortWalker *walker, u16 acmd, u16 dir, u16 x,
         }
     }
     ResortPerson_SetVisible(walker->person, TRUE);
-    ResortPerson_SetParam(walker->person, JOIN_AVE_PARAM_UNK_38, 1);
+    ResortPerson_SetParam(walker->person, JOIN_AVE_PARAM_NO_EXPIRY, 1);
     if (walker->start != NULL) {
         walker->start(walker);
     }
@@ -825,9 +879,9 @@ static void ResortWalker_MarkObjCodeChanged(ResortWalker *walker) {
 }
 
 static BOOL ResortWalker_IsFast(ResortWalker *walker) {
-    u32 type = ResortPerson_GetAttr(walker->person, 0);
+    u32 type = ResortPerson_GetAttr(walker->person, RESORT_PERSON_ATTR_TYPE);
     u32 value = ResortPerson_GetParam(walker->person, JOIN_AVE_PARAM_SHOP_KIND, NULL);
-    if (type == 1 && (value == 2 || value == 3)) {
+    if (type == RESORT_PERSON_ENTRY && (value == 2 || value == 3)) {
         return TRUE;
     }
     return FALSE;
@@ -841,37 +895,37 @@ static BOOL ResortWalker_IsBlocked(ResortWalker *walker, MMSys *mmSys, FieldPlay
 }
 
 static void ResortWalker_SetupWalk(ResortWalker *walker) {
-    s16 stepSpeed;
+    s16 lookCount;
     u16 speed = ResortPerson_GetParam(walker->person, JOIN_AVE_PARAM_DATA_COUNT, NULL);
 
-    if (ResortPerson_GetAttr(walker->person, 0) == 1) {
+    if (ResortPerson_GetAttr(walker->person, RESORT_PERSON_ATTR_TYPE) == RESORT_PERSON_ENTRY) {
         u32 value = ResortPerson_GetParam(walker->person, JOIN_AVE_PARAM_SHOP_KIND, NULL);
         if (value == 2 || value == 3) {
             speed = 7;
         }
     }
-    stepSpeed = walker->steps * speed / 69;
-    walker->lookState = 0;
+    lookCount = walker->steps * speed / 69;
+    walker->lookState = RESORT_WALKER_LOOK_TURN;
     walker->waitTimer = 0;
     walker->waitTime = 15;
-    walker->unk24 = stepSpeed;
-    walker->unk28 = walker->steps / walker->unk24 + 2 - GFL_RandomMTRange(5);
-    if (walker->unk28 <= 0) {
-        walker->unk28 = 1;
+    walker->lookCount = lookCount;
+    walker->lookInterval = walker->steps / walker->lookCount + 2 - GFL_RandomMTRange(5);
+    if (walker->lookInterval <= 0) {
+        walker->lookInterval = 1;
     }
-    walker->unk26 = walker->steps - walker->unk28;
+    walker->nextLookSteps = walker->steps - walker->lookInterval;
 }
 
 static BOOL ResortWalker_StateCheckSteps(ResortWalker *walker, MMSys *mmSys, FieldPlayer *player) {
     if (walker->steps <= 0) {
         walker->active = FALSE;
-        walker->state = 0;
+        walker->state = RESORT_WALKER_CHECK_STEPS;
         ResortPerson_SetVisible(walker->person, FALSE);
         ResortField_SetActorPos(ResortPerson_GetActor(walker->person), 0, 0);
-        ResortPerson_SetParam(walker->person, JOIN_AVE_PARAM_UNK_38, 0);
+        ResortPerson_SetParam(walker->person, JOIN_AVE_PARAM_NO_EXPIRY, 0);
         return FALSE;
     }
-    walker->state = 1;
+    walker->state = RESORT_WALKER_STEP;
     return TRUE;
 }
 
@@ -881,18 +935,18 @@ static BOOL ResortWalker_StateStep(ResortWalker *walker, MMSys *mmSys, FieldPlay
     if (ResortWalker_IsBlocked(walker, mmSys, player, 1, 0)) {
         FldAct_SetLocalAcmd(actor, 0x3f);
         FldAct_SetMoving(actor);
-        walker->state = 2;
+        walker->state = RESORT_WALKER_WAIT_STEP;
     } else if (ResortWalker_CheckStop(walker, player)) {
-        walker->state = 4;
-    } else if (walker->unk26 == walker->steps) {
-        walker->lookState = 0;
-        walker->state = 3;
+        walker->state = RESORT_WALKER_STOP_AT_SHOP;
+    } else if (walker->nextLookSteps == walker->steps) {
+        walker->lookState = RESORT_WALKER_LOOK_TURN;
+        walker->state = RESORT_WALKER_LOOK_AROUND;
     } else {
         FldAct_SetLocalAcmd(actor, GetAcmdForDir(walker->dir, walker->acmd));
         SetActorMotionDir(actor, walker->dir);
         FldAct_SetMoving(actor);
         walker->steps--;
-        walker->state = 2;
+        walker->state = RESORT_WALKER_WAIT_STEP;
     }
     return TRUE;
 }
@@ -901,7 +955,7 @@ static BOOL ResortWalker_StateWaitStep(ResortWalker *walker, MMSys *mmSys, Field
     FieldActor *actor = ResortPerson_GetActor(walker->person);
     if (FieldAcmdTCB_Update(actor)) {
         FldAct_ClearMoving(actor);
-        walker->state = 0;
+        walker->state = RESORT_WALKER_CHECK_STEPS;
     }
     return FALSE;
 }
@@ -910,39 +964,39 @@ static BOOL ResortWalker_StateLookAround(ResortWalker *walker, MMSys *mmSys, Fie
     FieldActor *actor = ResortPerson_GetActor(walker->person);
 
     switch (walker->lookState) {
-    case 0:
+    case RESORT_WALKER_LOOK_TURN:
         walker->lookDir = GFL_RandomMTRange(2) ? DIR_LEFT : DIR_RIGHT;
         FldAct_SetLocalAcmd(actor, walker->lookDir);
         walker->lookState++;
-    case 1:
+    case RESORT_WALKER_LOOK_WAIT_TURN:
         if (FieldAcmdTCB_Update(actor)) {
             walker->lookState++;
         } else {
             return FALSE;
         }
-    case 2:
+    case RESORT_WALKER_LOOK_PAUSE:
         if (walker->waitTimer++ >= walker->waitTime) {
             walker->waitTimer = 0;
             walker->lookState++;
         } else {
             return FALSE;
         }
-    case 3:
+    case RESORT_WALKER_LOOK_TURN_BACK:
         walker->lookDir = walker->lookDir == DIR_RIGHT ? DIR_LEFT : DIR_RIGHT;
         FldAct_SetLocalAcmd(actor, walker->lookDir);
         walker->lookState++;
-    case 4:
+    case RESORT_WALKER_LOOK_WAIT_TURN_BACK:
         if (FieldAcmdTCB_Update(actor)) {
             walker->lookState++;
         } else {
             return FALSE;
         }
-    case 5:
+    case RESORT_WALKER_LOOK_PAUSE_BACK:
         if (walker->waitTimer++ >= walker->waitTime) {
-            walker->lookState = 0;
+            walker->lookState = RESORT_WALKER_LOOK_TURN;
             walker->waitTimer = 0;
-            walker->unk26 = walker->steps - walker->unk28;
-            walker->state = 0;
+            walker->nextLookSteps = walker->steps - walker->lookInterval;
+            walker->state = RESORT_WALKER_CHECK_STEPS;
         } else {
             return FALSE;
         }
@@ -955,25 +1009,25 @@ static BOOL ResortWalker_StateStopAtShop(ResortWalker *walker, MMSys *mmSys, Fie
     FieldActor *actor = ResortPerson_GetActor(walker->person);
 
     switch (walker->stopState) {
-    case 0:
+    case RESORT_WALKER_STOP_FACE_SHOP:
         FldAct_ClearMoving(actor);
         FldAct_ClearMoveEnd(actor);
         FldAct_SetLocalAcmd(actor, walker->stopAcmd[walker->stop]);
         walker->stopState++;
-    case 1:
+    case RESORT_WALKER_STOP_WAIT_TURN:
         if (FieldAcmdTCB_Update(actor)) {
             walker->stopState++;
         } else {
             return FALSE;
         }
-    case 2:
-        walker->unk54 = 0;
-        walker->unk14 = TRUE;
-        walker->unk15 = FALSE;
+    case RESORT_WALKER_STOP_START_ACTION:
+        walker->shopActionState = RESORT_WALKER_SHOP_ACTION_START;
+        walker->shopActionActive = TRUE;
+        walker->shopActionDone = FALSE;
         walker->stopState++;
-    case 3:
-        if (walker->unk15) {
-            walker->state = 2;
+    case RESORT_WALKER_STOP_WAIT_ACTION:
+        if (walker->shopActionDone) {
+            walker->state = RESORT_WALKER_WAIT_STEP;
         } else {
             return FALSE;
         }
@@ -987,7 +1041,7 @@ static void ResortWalker_RunStates(ResortWalker *walker, MMSys *mmSys, FieldPlay
     }
 }
 
-static void ResortWalker_FindStops(ResortWalker *walker, ResortShopData *shops, ResortBinary *unkb1c,
+static void ResortWalker_FindStops(ResortWalker *walker, ResortShopData *shops, ResortBinary *posOffsets,
                                    JoinAvenueOccupants *occupants) {
     int i;
     u16 id = ResortPerson_GetParam(walker->person, JOIN_AVE_PARAM_SHOP_ID, NULL);
@@ -998,7 +1052,7 @@ static void ResortWalker_FindStops(ResortWalker *walker, ResortShopData *shops, 
         JoinAvenuePerson *occupant = JoinAvenueOccupants_GetPerson(occupants, i);
         if (!JoinAvenuePerson_IsEmpty(occupant) &&
             shop == ResortShopData_GetShopParam(ResortShopData_GetPersonShop(shops, occupant), 0)) {
-            u16 z = ResortBinary_Get(unkb1c, i, 2);
+            u16 z = ResortBinary_Get(posOffsets, i, 2);
             walker->stopZ[walker->stopCount] = z + GFL_RandomMTRange(7);
             walker->stopAcmd[walker->stopCount] = i % 2 == 0 ? DIR_RIGHT : DIR_LEFT;
             walker->stopCount++;
@@ -1022,7 +1076,7 @@ static BOOL ResortWalker_CheckStop(ResortWalker *walker, FieldPlayer *player) {
     }
     for (i = 0; i < walker->stopCount; i++) {
         if (walker->stopZ[i] == GetGPosZ(actor) && walker->stop != i) {
-            walker->stopState = 0;
+            walker->stopState = RESORT_WALKER_STOP_FACE_SHOP;
             walker->stop = i;
             return TRUE;
         }
@@ -1030,7 +1084,7 @@ static BOOL ResortWalker_CheckStop(ResortWalker *walker, FieldPlayer *player) {
     return FALSE;
 }
 
-static void ResortWalkerMove_Unk4(FieldActor *actor) {
+static void ResortWalkerMove_Init(FieldActor *actor) {
 }
 
 static void ResortWalkerMove_Update(FieldActor *actor) {
@@ -1046,10 +1100,10 @@ static void ResortWalkerMove_Update(FieldActor *actor) {
     }
 }
 
-static void ResortWalkerMove_Unk0C(FieldActor *actor) {
+static void ResortWalkerMove_Delete(FieldActor *actor) {
 }
 
-static void ResortWalkerMove_Unk10(FieldActor *actor) {
+static void ResortWalkerMove_Return(FieldActor *actor) {
 }
 
 static void ResortWalkerGroup_Init(ResortWalkerGroup *group, u16 x, u16 dir, HeapID heapId) {
@@ -1207,7 +1261,7 @@ static void ResortBubbles_Update(ResortBubbles *bubbles, Field *field) {
     }
     if (run) {
         switch (bubbles->state) {
-        case 0:
+        case RESORT_BUBBLES_DELAY:
             if (bubbles->timer++ < bubbles->interval) {
                 break;
             }
@@ -1217,14 +1271,14 @@ static void ResortBubbles_Update(ResortBubbles *bubbles, Field *field) {
             bubbles->delay = 0;
             if (bubbles->mode == FALSE) {
                 bubbles->delayTime = 30;
-                bubbles->unk10 = GFL_RandomMTRange(3);
+                bubbles->messageKind = GFL_RandomMTRange(3);
             } else {
                 bubbles->delayTime = 10;
             }
             bubbles->timer = 0;
             bubbles->state++;
             break;
-        case 1: {
+        case RESORT_BUBBLES_SHOW: {
             ResortPersonData *data;
             u16 bubble;
             u32 tries;
@@ -1248,7 +1302,7 @@ static void ResortBubbles_Update(ResortBubbles *bubbles, Field *field) {
                     bubble = GFL_RandomMTRange(RESORT_BUBBLES);
                     if (tries++ >= 30) {
                         bubbles->count--;
-                        bubbles->state = 2;
+                        bubbles->state = RESORT_BUBBLES_WAIT;
                         return;
                     }
                 } while (ResortBubble_Overlaps(bubble, bubbles->bubbleIndexes[0], bubbles->mode));
@@ -1258,7 +1312,7 @@ static void ResortBubbles_Update(ResortBubbles *bubbles, Field *field) {
                     bubble = GFL_RandomMTRange(RESORT_BUBBLES);
                     if (tries++ >= 30) {
                         bubbles->count--;
-                        bubbles->state = 2;
+                        bubbles->state = RESORT_BUBBLES_WAIT;
                         return;
                     }
                 } while (ResortBubble_Overlaps(bubble, bubbles->bubbleIndexes[0], bubbles->mode) ||
@@ -1267,22 +1321,22 @@ static void ResortBubbles_Update(ResortBubbles *bubbles, Field *field) {
             }
             bubbles->bubbleIndexes[bubbles->shown] = bubble;
             if (bubbles->mode == TRUE) {
-                bubbles->unk10 = GFL_RandomMTRange(4) + 4;
+                bubbles->messageKind = GFL_RandomMTRange(4) + 4;
             }
             ResortBubble_Show(&bubbles->bubbles[bubble], bubbles->msgBGSys, data, bubbles->info, bubbles->occupants,
-                              bubbles->msgData, bubbles->unk10, bubbles->mode);
+                              bubbles->msgData, bubbles->messageKind, bubbles->mode);
             if (bubbles->shown++ >= bubbles->count) {
-                bubbles->state = 2;
+                bubbles->state = RESORT_BUBBLES_WAIT;
             }
             break;
         }
-        case 2: {
+        case RESORT_BUBBLES_WAIT: {
             BOOL done = TRUE;
             for (i = 0; i < bubbles->count; i++) {
                 done &= ResortBubble_IsDone(&bubbles->bubbles[bubbles->bubbleIndexes[i]]);
             }
             if (done) {
-                bubbles->state = 0;
+                bubbles->state = RESORT_BUBBLES_DELAY;
                 bubbles->active = FALSE;
             }
             break;
@@ -1454,14 +1508,14 @@ static void ResortBubble_Show(ResortBubble *bubble, FieldMsgBG *msgBGSys, Resort
     bubble->timer = 0;
     style = 0;
     switch (kind) {
-    case 0: {
+    case RESORT_BUBBLE_GREETING: {
         u16 name[10];
         ResortData_GetParam(data, JOIN_AVE_PARAM_GREETING, name);
         GFL_StrBufLoadString(bubble->strbuf, name);
         break;
     }
-    case 1:
-    case 3:
+    case RESORT_BUBBLE_MESSAGE1:
+    case RESORT_BUBBLE_MESSAGE1_ALT:
     default: {
         u16 text[9];
         ResortData_GetParam(data, JOIN_AVE_PARAM_MESSAGE1, text);
@@ -1469,35 +1523,35 @@ static void ResortBubble_Show(ResortBubble *bubble, FieldMsgBG *msgBGSys, Resort
         style = 1;
         break;
     }
-    case 2: {
+    case RESORT_BUBBLE_MESSAGE2: {
         u16 text[9];
         ResortData_GetParam(data, JOIN_AVE_PARAM_MESSAGE2, text);
         GFL_StrBufLoadString(bubble->strbuf, text);
         style = 2;
         break;
     }
-    case 4: {
+    case RESORT_BUBBLE_PLAYER_MESSAGE1: {
         u16 text[9];
         joinAveTextHandler(JoinAvenueOccupants_GetPlayerPerson(occupants), JOIN_AVE_PARAM_MESSAGE1, text);
         GFL_StrBufLoadString(bubble->strbuf, text);
         style = 1;
         break;
     }
-    case 5: {
+    case RESORT_BUBBLE_PLAYER_MESSAGE2: {
         u16 text[9];
         joinAveTextHandler(JoinAvenueOccupants_GetPlayerPerson(occupants), JOIN_AVE_PARAM_MESSAGE2, text);
         GFL_StrBufLoadString(bubble->strbuf, text);
         style = 1;
         break;
     }
-    case 6: {
+    case RESORT_BUBBLE_TITLE: {
         u16 name[11];
         JoinAvenue_GetParam(info, JOIN_AVE_INFO_TITLE, name);
         GFL_StrBufLoadString(bubble->strbuf, name);
         style = 1;
         break;
     }
-    case 7:
+    case RESORT_BUBBLE_FIXED_MESSAGE:
         GFL_MsgDataLoadStrbuf(msgData, 29, bubble->strbuf);
         style = 1;
         break;
@@ -1531,7 +1585,7 @@ static BOOL ResortBubble_IsDone(ResortBubble *bubble) {
 }
 
 static ResortFieldPeople *ResortFieldPeople_Create(HeapID heapId, ResortSys *sys, MMSys *mmSys, FieldPlayer *player,
-                                                   BOOL flag, u32 a5) {
+                                                   BOOL flag, u32 mapChangeFlag) {
     ResortWatchSetup watchSetup;
     ResortPeopleSetup peopleSetup;
     ResortFieldPeople *people = GFL_HeapAllocate(heapId, sizeof(ResortFieldPeople), TRUE, "resort_field.c", 3601);
@@ -1553,14 +1607,14 @@ static ResortFieldPeople *ResortFieldPeople_Create(HeapID heapId, ResortSys *sys
     peopleSetup.count = 64;
     peopleSetup.zone = 1;
     peopleSetup.shops = ResortSys_GetShopData(sys);
-    peopleSetup.unk18 = ResortSys_GetPosOffsets(sys);
+    peopleSetup.posOffsets = ResortSys_GetPosOffsets(sys);
     people->people = ResortPeople_Create(&peopleSetup, heapId);
     people->walkers = ResortWalkers_Create(heapId, mmSys, player, ResortSys_GetShopData(sys),
                                            ResortSys_GetPosOffsets(sys), ResortSys_GetOccupants(sys));
     return people;
 }
 
-static void ResortFieldPeople_CreatePeople(ResortFieldPeople *people, BOOL flag, u32 a2) {
+static void ResortFieldPeople_CreatePeople(ResortFieldPeople *people, BOOL flag, u32 mapChangeFlag) {
     int i;
 
     if (flag) {
@@ -1648,27 +1702,27 @@ static void ResortFieldPeople_MarkChanged(ResortFieldPeople *people) {
     ResortWatch_MarkChanged(people->watch);
 }
 
-static BOOL ResortFieldPeople_WatchCallback(void *context, void *person, u32 a2, u32 event) {
+static BOOL ResortFieldPeople_WatchCallback(void *context, void *person, u32 storageType, u32 event) {
     ResortFieldPeople *people = context;
 
     switch (event) {
     default:
         return TRUE;
-    case 0:
+    case JOIN_AVE_STATUS_NONE:
         return TRUE;
-    case 3:
+    case JOIN_AVE_STATUS_CHANGED:
         ResortWalkers_MarkObjCodeChanged(people->walkers, ResortPeople_FindByJoinAvenuePerson(people->people, person));
         return TRUE;
-    case 4:
+    case JOIN_AVE_STATUS_UPDATED:
         return TRUE;
-    case 1: {
+    case JOIN_AVE_STATUS_NEW: {
         ResortPerson *resortPerson = ResortPeople_FindByJoinAvenuePerson(people->people, person);
         if (resortPerson != NULL) {
             ResortFieldPeople_RemoveWalker(people, resortPerson);
             ResortPeople_Delete(people->people, resortPerson);
         }
     }
-    case 2:
+    case JOIN_AVE_STATUS_ADDED:
         if (ResortPeople_FindByJoinAvenuePerson(people->people, person) == NULL) {
             ResortPersonSource source;
             MI_CpuFill8(&source, 0, sizeof(ResortPersonSource));
@@ -1681,17 +1735,17 @@ static BOOL ResortFieldPeople_WatchCallback(void *context, void *person, u32 a2,
     return TRUE;
 }
 
-static BOOL ResortFieldPeople_WatchCallbackFiltered(void *context, void *person, u32 a2, u32 event) {
+static BOOL ResortFieldPeople_WatchCallbackFiltered(void *context, void *person, u32 storageType, u32 event) {
     BOOL handle = FALSE;
 
-    if (a2 == 1) {
+    if (storageType == RESORT_PERSON_ENTRY) {
         u32 value = JoinAvenueEntry_GetParam(person, JOIN_AVE_PARAM_SHOP_KIND, NULL);
         if (value == 2 || value == 3) {
             handle = TRUE;
         }
     }
     if (handle) {
-        return ResortFieldPeople_WatchCallback(context, person, a2, event);
+        return ResortFieldPeople_WatchCallback(context, person, storageType, event);
     }
     return FALSE;
 }
@@ -1848,7 +1902,7 @@ static void ResortField_AddInitialEntries(ResortSys *sys, GameData *gameData, He
         SaveControl *save = GameData_GetSaveControl(gameData);
         JoinAvenueSave *joinAvenue = SaveControl_GetJoinAvenue(save);
         JoinAvenueEntry *entry;
-        u32 unk;
+        u32 stars;
         u8 badges;
         u8 rank;
         u32 count;
@@ -1857,12 +1911,12 @@ static void ResortField_AddInitialEntries(ResortSys *sys, GameData *gameData, He
 
         ResortSys_GetEntries(sys);
         entry = JoinAvenueEntry_Create(HEAPID_TAIL(heapId));
-        unk = TrainerCard_CountStars(gameData);
+        stars = TrainerCard_CountStars(gameData);
         badges = getBadgeCount(getTrainerGameInfoAddress(save));
         rank = MedalBox_GetRank(SaveControl_GetMedalBox(save));
         count = 0;
-        if (unk < NELEMS(sCountByUnk)) {
-            count += sCountByUnk[unk];
+        if (stars < NELEMS(sInitialEntriesByStars)) {
+            count += sInitialEntriesByStars[stars];
         } else {
             count += 5;
         }
@@ -1882,10 +1936,10 @@ static void ResortField_AddInitialEntries(ResortSys *sys, GameData *gameData, He
             u32 result;
             ResortSys_MakeShopEntry(sys, gameData, entry, 4, tries, heapId);
             result = JoinAvenue_Add(joinAvenue, gameData, entry, 2);
-            if (result == 2) {
+            if (result == JOIN_AVE_ADD_ADDED) {
                 added++;
             }
-            if (result == 0 || tries++ > 100) {
+            if (result == JOIN_AVE_ADD_FAILED || tries++ > 100) {
                 break;
             }
         }
@@ -1924,7 +1978,7 @@ static void ResortField_AddSpecialEntry(ResortSys *sys, GameData *gameData, Heap
         if (JoinAvenueInfo_Random(info, 21, 100) < chance) {
             JoinAvenueEntry *entry = JoinAvenueEntry_Create(HEAPID_TAIL(heapId));
             ResortSys_MakeShopEntry(sys, gameData, entry, 5, 0, heapId);
-            if (JoinAvenue_Add(joinAvenue, gameData, entry, 2) == 2) {
+            if (JoinAvenue_Add(joinAvenue, gameData, entry, 2) == JOIN_AVE_ADD_ADDED) {
                 JoinAvenueInfo_SetParam(info, JOIN_AVE_INFO_UNK_DC_13, 0);
             }
             JoinAvenueEntry_Free(entry);
@@ -1936,7 +1990,7 @@ void ResortField0_Setup(Field *field) {
     GameData *gameData;
     HeapID heapId;
     ResortFieldWork0 *work;
-    ResortWork *unk;
+    ResortWork *resortWork;
     BOOL fill;
     JoinAvenueSave *joinAvenue;
     ResortSysSetup sysSetup;
@@ -1946,7 +2000,7 @@ void ResortField0_Setup(Field *field) {
     heapId = Field_GetHeapID(field);
     gameData = GSYS_GetGameData(Field_GetGameSystem(field));
     SaveControl_GetJoinAvenue(GameData_GetSaveControl(gameData));
-    unk = GameData_GetResortWork(gameData);
+    resortWork = GameData_GetResortWork(gameData);
     fill = FALSE;
     work = Field_AllocGimmickWorkBlock(field, 0, heapId, sizeof(ResortFieldWork0));
     joinAvenue = SaveControl_GetJoinAvenue(GameData_GetSaveControl(gameData));
@@ -1956,7 +2010,7 @@ void ResortField0_Setup(Field *field) {
     sysSetup.list2 = NULL;
     sysSetup.entries = JoinAvenue_GetEntryList(joinAvenue);
     sysSetup.info = JoinAvenue_GetInfo(joinAvenue);
-    work->sys = ResortSys_Create(&sysSetup, unk, heapId);
+    work->sys = ResortSys_Create(&sysSetup, resortWork, heapId);
     if (JoinAvenue_GetParam(ResortSys_GetInfo(work->sys), JOIN_AVE_INFO_UNOPENED, NULL) == 0) {
         fill = TRUE;
     }
@@ -1968,7 +2022,7 @@ void ResortField0_Setup(Field *field) {
     peopleSetup.count = 16;
     peopleSetup.zone = 2;
     peopleSetup.shops = ResortSys_GetShopData(work->sys);
-    peopleSetup.unk18 = ResortSys_GetPosOffsets(work->sys);
+    peopleSetup.posOffsets = ResortSys_GetPosOffsets(work->sys);
     work->people = ResortPeople_Create(&peopleSetup, heapId);
     if (fill) {
         ResortPeople_CreateFromSlots(work->people);

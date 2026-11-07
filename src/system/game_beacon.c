@@ -58,7 +58,7 @@ static void GameBeaconSys_UpdateNotices(GameBeaconSystem *sys, const GameBeacon 
 static GameBeacon *GameBeaconSys_GetLogEntry(GameBeaconSystem *sys, int index, GameBeaconTime *time);
 static GameBeacon *GameBeaconSys_GetRecentEntry(GameBeaconSystem *sys, u32 n);
 static void GameBeacon_Init(GameBeacon *beacon, GameData *gameData);
-static BOOL GameBeaconSys_AddAvenueVisitor(GameBeaconSystem *sys, const GameBeacon *beacon, u32 a2);
+static BOOL GameBeaconSys_AddAvenueVisitor(GameBeaconSystem *sys, const GameBeacon *beacon, u32 arrivalMethod);
 static BOOL GameBeaconSys_UpdateAvenueVisitor(GameBeaconSystem *sys);
 static void GameBeaconSendSlot_ResetHeader(GameBeaconSendSlot *slot, u8 targetVersions);
 static void GameBeacon_StoreTextN(const StrBuf *str, u16 *dest, u32 length);
@@ -567,11 +567,12 @@ BOOL GameBeaconSys_Receive(const GameBeacon *beacon) {
     }
 
     if (beacon->type == 1) {
-        if (sys->avenueVisitorPending == FALSE && GameBeaconSys_AddAvenueVisitor(sys, beacon, 8)) {
+        if (sys->avenueVisitorPending == FALSE &&
+            GameBeaconSys_AddAvenueVisitor(sys, beacon, JOIN_AVE_ARRIVAL_PASSERBY)) {
             sys->avenueVisitorPending = TRUE;
         }
     } else if (GameBeacon_IsMissionType(beacon) && beacon->type != 0x3d && sys->avenueVisitorPending == FALSE &&
-               GameBeaconSys_AddAvenueVisitor(sys, beacon, 9)) {
+               GameBeaconSys_AddAvenueVisitor(sys, beacon, JOIN_AVE_ARRIVAL_FUNFEST)) {
         sys->avenueVisitorPending = TRUE;
     }
 
@@ -764,12 +765,12 @@ static void GameBeacon_Init(GameBeacon *beacon, GameData *gameData) {
     beacon->type = 0;
 }
 
-static BOOL GameBeaconSys_AddAvenueVisitor(GameBeaconSystem *sys, const GameBeacon *beacon, u32 a2) {
+static BOOL GameBeaconSys_AddAvenueVisitor(GameBeaconSystem *sys, const GameBeacon *beacon, u32 arrivalMethod) {
     JoinAvenueSave *joinAvenue;
 
     if (!GameData_CheckEventsPaused(sys->gameData)) {
         joinAvenue = SaveControl_GetJoinAvenue(GameData_GetSaveControl(sys->gameData));
-        JoinAvenueVisitor_InitFromBeacon(GameBeaconSys->avenueWork, beacon, a2);
+        JoinAvenueVisitor_InitFromBeacon(GameBeaconSys->avenueWork, beacon, arrivalMethod);
         JoinAvenue_ResetAddStep(joinAvenue);
         return TRUE;
     }
