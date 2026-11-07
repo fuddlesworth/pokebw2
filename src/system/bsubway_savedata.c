@@ -55,8 +55,8 @@ u32 BSubwayPlayData_GetData(BSubwayPlayData *data, u32 id, void *buffer) {
         return data->partnerIndex;
     case BSUBWAY_PLAY_USE_BATTLE_BOX:
         return data->useBattleBox;
-    case BSUBWAY_PLAY_UNK0_10:
-        return data->unk0_10;
+    case BSUBWAY_PLAY_WIFI_RANKED_CHALLENGE:
+        return data->wifiRankedChallenge;
     }
     return 0;
 }
@@ -96,8 +96,8 @@ void BSubwayPlayData_SetData(BSubwayPlayData *data, u32 id, const void *value) {
     case BSUBWAY_PLAY_USE_BATTLE_BOX:
         data->useBattleBox = *(const u8 *)value;
         break;
-    case BSUBWAY_PLAY_UNK0_10:
-        data->unk0_10 = *(const u8 *)value;
+    case BSUBWAY_PLAY_WIFI_RANKED_CHALLENGE:
+        data->wifiRankedChallenge = *(const u8 *)value;
         break;
     }
 }

@@ -236,7 +236,7 @@ u16 BsubwayScr_AddBattlePoints(BSubwayScrWork *bsw) {
 
     if (bsw->playMode == BSUBWAY_MODE_WIFI) {
         reward = 0;
-        if ((u16)BSubwayPlayData_GetData(bsw->playData, BSUBWAY_PLAY_UNK0_10, NULL) == 1) {
+        if ((u16)BSubwayPlayData_GetData(bsw->playData, BSUBWAY_PLAY_WIFI_RANKED_CHALLENGE, NULL) == 1) {
             index = (s8)BSubwayScoreData_GetWifiRank(bsw->scoreData);
             if (index < 0) {
                 index = 0;

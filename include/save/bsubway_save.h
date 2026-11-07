@@ -47,7 +47,7 @@ enum {
     BSUBWAY_PLAY_TRAINER_NOS,
     BSUBWAY_PLAY_PARTNER_INDEX,
     BSUBWAY_PLAY_USE_BATTLE_BOX,
-    BSUBWAY_PLAY_UNK0_10,
+    BSUBWAY_PLAY_WIFI_RANKED_CHALLENGE,
 };
 
 // What BSubwayScoreData_SetFlag does with a flag of the scores
@@ -69,7 +69,8 @@ struct BSubwayPlayData {
     u16 partnerIndex : 3;
     // Whether the Pokémon entered are the Battle Box's
     u16 useBattleBox : 1;
-    u16 unk0_10 : 1;
+    // Board a ranked Wi-Fi train rather than replay the previously downloaded train
+    u16 wifiRankedChallenge : 1;
     u16 : 5;
     u8 round;
     // The Wi-Fi train's record: the Pokémon lost, the turns taken and the damage taken
