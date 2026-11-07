@@ -110,13 +110,9 @@ enum {
     WBM_NET_ERROR_END_CONNECTION = 2,
 };
 
-enum {
-    WBM_SYNC_TIMING_HIGH = 36,
-};
+#define WBM_SYNC_TIMING_HIGH 36
 
-enum {
-    WBM_GAMESPY_GAME_ID = 2911,
-};
+#define WBM_GAMESPY_GAME_ID 2911
 
 enum {
     WBM_REPORT_FIELD_SINGLE_WINS = 5,
