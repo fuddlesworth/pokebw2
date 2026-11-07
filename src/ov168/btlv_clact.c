@@ -53,6 +53,14 @@ typedef struct {
 
 #define POPUP_SHOWING (1 << 31)
 
+// The popup waits for its animation, hides both actors, then removes its task.
+enum {
+    POPUP_SEQ_WAIT_ANIMATION = 0,
+    POPUP_SEQ_HIDE = 1,
+    POPUP_SEQ_REMOVE = 2,
+    POPUP_SEQ_DONE = 3,
+};
+
 static void BtlvClact_InitGauge(BtlvClact *wk);
 static void BtlvClact_ExitGauge(BtlvClact *wk);
 static void BtlvClact_AddMoveTask(BtlvClact *wk, int index, int type, VecFx32 *start, VecFx32 *end, int frames,
@@ -128,12 +136,12 @@ int BtlvClact_AddActorEx(BtlvClact *wk, u32 arcId, u32 charFileId, u32 plttFileI
     setup.base.y = y;
     if (scaleX == 0 && scaleY == 0) {
         wk->entries[i].actor = ClActor_Create(wk->unit, wk->entries[i].chars, wk->entries[i].palette,
-                                              wk->entries[i].cellAnims, &setup.base, 0, wk->heapId);
+                                              wk->entries[i].cellAnims, &setup.base, CLACT_SURFACE_MAIN, wk->heapId);
     } else {
         setup.scaleX = scaleX;
         setup.scaleY = scaleY;
         wk->entries[i].actor = ClActor_CreateEx(wk->unit, wk->entries[i].chars, wk->entries[i].palette,
-                                                wk->entries[i].cellAnims, &setup, 0, wk->heapId);
+                                                wk->entries[i].cellAnims, &setup, CLACT_SURFACE_MAIN, wk->heapId);
     }
     ClActor_SetAutoAnim(wk->entries[i].actor, TRUE);
     GFL_ArcToolFree(arc);
@@ -158,16 +166,16 @@ static void BtlvClact_InitGauge(BtlvClact *wk) {
     fade = BtlvEffect_GetPaletteFade();
     // BUG: The offset is the first effect actor's palette's, not the gauge's
 #ifdef BUGFIX
-    PaletteFade_LoadNCLR(fade, 11, 0x22a, wk->heapId, PALFADE_BUFFER_MAIN_OBJ, 0x20,
+    PaletteFade_LoadNCLR(fade, ARCID_BTLV, 0x22a, wk->heapId, PALFADE_BUFFER_MAIN_OBJ, 0x20,
                          (ClActSys_GetPlttVramAddr(wk->gauge[0].palette, FALSE) & 0x3ff) / 2);
 #else
-    PaletteFade_LoadNCLR(fade, 11, 0x22a, wk->heapId, PALFADE_BUFFER_MAIN_OBJ, 0x20,
+    PaletteFade_LoadNCLR(fade, ARCID_BTLV, 0x22a, wk->heapId, PALFADE_BUFFER_MAIN_OBJ, 0x20,
                          (ClActSys_GetPlttVramAddr(wk->entries[0].palette, FALSE) & 0x3ff) / 2);
 #endif
     for (i = 0; i < 22; i++) {
         setup.x = i * 8;
         wk->gauge[i].actor = ClActor_Create(wk->unit, wk->gauge[0].chars, wk->gauge[0].palette, wk->gauge[0].cellAnims,
-                                            &setup, 0, wk->heapId);
+                                            &setup, CLACT_SURFACE_MAIN, wk->heapId);
         ClActor_SetAutoAnim(wk->gauge[i].actor, TRUE);
     }
     BtlvClact_SetGauge(wk, 10, 0);
@@ -176,7 +184,7 @@ static void BtlvClact_InitGauge(BtlvClact *wk) {
     setupEx.base.y = 96;
     setupEx.affineMode = 1;
     wk->popup[0].actor = ClActor_CreateEx(wk->unit, wk->gauge[0].chars, wk->gauge[0].palette, wk->gauge[0].cellAnims,
-                                          &setupEx, 0, wk->heapId);
+                                          &setupEx, CLACT_SURFACE_MAIN, wk->heapId);
     ClActor_SetAutoAnim(wk->popup[0].actor, TRUE);
     ClActor_SetVisible(wk->popup[0].actor, FALSE);
     ClActor_SetSequence(wk->popup[0].actor, 20);
@@ -185,7 +193,7 @@ static void BtlvClact_InitGauge(BtlvClact *wk) {
     setup.x = 128;
     setup.y = 96;
     wk->popup[1].actor = ClActor_Create(wk->unit, wk->gauge[0].chars, wk->gauge[0].palette, wk->gauge[0].cellAnims,
-                                        &setup, 0, wk->heapId);
+                                        &setup, CLACT_SURFACE_MAIN, wk->heapId);
     ClActor_SetAutoAnim(wk->popup[1].actor, TRUE);
     ClActor_SetAutoAnim(wk->popup[1].actor, TRUE);
     ClActor_SetVisible(wk->popup[1].actor, FALSE);
@@ -267,7 +275,7 @@ void BtlvClact_StartMove(BtlvClact *wk, int index, int type, ClActorPos *pos, in
         start.x = current.x << FX32_SHIFT;
         start.y = current.y << FX32_SHIFT;
         start.z = 0;
-        if (type == 1) {
+        if (type == BTLV_EFFTOOL_MOVE_STEP) {
             end.x += start.x;
             end.y += start.y;
             end.z += start.z;
@@ -350,7 +358,7 @@ static void BtlvClact_AddMoveTask(BtlvClact *wk, int index, int type, VecFx32 *s
         break;
     }
 
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, func, task, 0), endFunc, 0);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, func, task, 0), endFunc, BTLV_EFFECT_TASK_PERSISTENT);
 }
 
 static void BtlvClact_MoveTask(TCB *tcb, void *data) {
@@ -398,17 +406,17 @@ static void BtlvClact_PopupTask(TCB *tcb, void *data) {
     BtlvClactMove *task = data;
 
     switch (task->move.count) {
-    case 0:
+    case POPUP_SEQ_WAIT_ANIMATION:
         if (ClActor_IsAnimActive(task->wk->popup[0].actor) == FALSE) {
             task->move.count++;
         }
         break;
-    case 1:
+    case POPUP_SEQ_HIDE:
         ClActor_SetVisible(task->wk->popup[0].actor, FALSE);
         ClActor_SetVisible(task->wk->popup[1].actor, FALSE);
         task->move.count++;
         break;
-    case 2:
+    case POPUP_SEQ_REMOVE:
         // BUG: The task's work is read after it is freed
 #ifdef BUGFIX
         task->wk->moveFlags &= ~POPUP_SHOWING;
@@ -420,7 +428,7 @@ static void BtlvClact_PopupTask(TCB *tcb, void *data) {
         task->wk->moveFlags &= ~POPUP_SHOWING;
 #endif
         break;
-    case 3:
+    case POPUP_SEQ_DONE:
         break;
     }
 }
@@ -432,7 +440,7 @@ static void BtlvClact_StartPopupTask(BtlvClact *wk, int number) {
     task->wk = wk;
     task->index = number;
     task->move.wait = 0;
-    task->move.count = 0;
+    task->move.count = POPUP_SEQ_WAIT_ANIMATION;
     GFL_TCBMgrAddTask(wk->tcbManager, BtlvClact_PopupTask, task, 0);
     wk->moveFlags |= POPUP_SHOWING;
 }

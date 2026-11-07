@@ -18,4 +18,10 @@ void BtlvTimer_SetVisible(BtlvTimer *timer, int which, BOOL visible, BOOL restar
 // Whether a countdown has run out
 BOOL BtlvTimer_IsTimeUp(BtlvTimer *timer, int which);
 
+// The battle countdown and command-selection countdown, respectively.
+enum {
+    BTLV_TIMER_BATTLE = 0,
+    BTLV_TIMER_COMMAND = 1,
+};
+
 #endif // POKEBW2_BATTLE_BTLV_TIMER_H

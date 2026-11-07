@@ -6,7 +6,7 @@
     ScriptVariant Effect032
 
 Effect032:
-    IfVarConst 55, EFFVM_CMP_EQ, 0, Effect032_011A
+    IfVarConst EFFVM_VAR_MESSAGE_IDLE_RESTORE, EFFVM_CMP_EQ, FALSE, Effect032_011A
     SetYield FALSE
     McssCameraMode 0, 0
     PaletteFade 2, 0, 16, 1, 0
@@ -27,6 +27,6 @@ Effect032:
     Wait EFFVM_WAIT_ALL
 
 Effect032_011A:
-    SetVar 55, 0
+    SetVar EFFVM_VAR_MESSAGE_IDLE_RESTORE, FALSE
     End
     .balign 4

@@ -6,7 +6,7 @@
     ScriptVariant Effect026
 
 Effect026:
-    SetVar 55, 1
+    SetVar EFFVM_VAR_MESSAGE_IDLE_RESTORE, TRUE
     SetYield FALSE
     CameraMovePreset 1, 8, 10, 0, 8
     Wait EFFVM_WAIT_ALL

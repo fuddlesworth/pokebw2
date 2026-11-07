@@ -67,7 +67,7 @@ static u32 BtlvStage_CountAnimations(const BtlvStageData *data, u32 stageId, u32
     int i;
 
     for (i = 1; i < 4; i++) {
-        if (data[stageId].resources[i][variant * 2] != 0xffff) {
+        if (data[stageId].resources[i][variant * 2] != BTLV_STAGE_RES_NONE) {
             count++;
         }
     }
@@ -104,7 +104,7 @@ BtlvStage *BtlvStage_Create(u32 battleStyle, u32 stageId, u8 variant, HeapID hea
     if (battleStyle == BTL_STYLE_ROTATION) {
         stage->models[0] = GFL_G3DSysReadArcSysResource(ARCID_BTLV, 0x161);
         stage->models[1] = GFL_G3DSysReadArcSysResource(ARCID_BTLV, 0x161);
-    } else if (data[stageId].resources[0][variant * 2] != 0xffff) {
+    } else if (data[stageId].resources[0][variant * 2] != BTLV_STAGE_RES_NONE) {
         stage->models[0] = GFL_G3DSysReadArcSysResource(ARCID_BTLV, data[stageId].resources[0][variant * 2]);
         stage->models[1] = GFL_G3DSysReadArcSysResource(ARCID_BTLV, data[stageId].resources[0][variant * 2 + 1]);
     } else {
@@ -142,7 +142,7 @@ BtlvStage *BtlvStage_Create(u32 battleStyle, u32 stageId, u8 variant, HeapID hea
             stage->anms[i] = GFL_HeapAllocate(stage->heapId, 3 * sizeof(BtlvStageAnm), TRUE, "btlv_stage.c", 0xf4);
         }
         for (i = 1; i <= 3; i++) {
-            if (data[stageId].resources[i][variant * 2] != 0xffff) {
+            if (data[stageId].resources[i][variant * 2] != BTLV_STAGE_RES_NONE) {
                 for (j = 0; j < 2; j++) {
                     stage->anmResources[j][anm] =
                         GFL_G3DSysReadArcSysResource(ARCID_BTLV, data[stageId].resources[i][variant * 2 + j]);

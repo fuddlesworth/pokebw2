@@ -270,7 +270,7 @@ static u32 PdcMain_ProcAsk(PdcMain *work) {
         break;
     case PDC_ASK_WAIT_MESSAGE:
         if (PdcMsg_Step(work->msg)) {
-            BtlvInput_SetScreen(work->input, 7, NULL);
+            BtlvInput_SetScreen(work->input, BTLV_INPUT_SCREEN_RECORDER_BUTTONS, NULL);
             work->seq++;
         }
         break;

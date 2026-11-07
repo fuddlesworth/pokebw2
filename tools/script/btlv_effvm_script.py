@@ -225,8 +225,11 @@ VARIABLES = [
     ("EFFVM_VAR_IS_MULTI", 38, 1, True),
     ("EFFVM_VAR_BATTLE_STYLE", 39, 1, False),
     ("EFFVM_VAR_TRAINER_TYPE", 40, 4, False),  # BtlvEffect_GetTrainerType of each trainer
+    ("EFFVM_VAR_STOP_CELL_FLAGS", 44, 8, False),  # BtlvMcss_GetStopCellFlags, a bitset
+    ("EFFVM_VAR_ATTACKER_STOP_CELL_FLAGS", 52, 1, False),
     ("EFFVM_VAR_MCSS_SCALED", 53, 1, True),
     ("EFFVM_VAR_CAMERA_SAVED", 54, 1, True),
+    ("EFFVM_VAR_MESSAGE_IDLE_RESTORE", 55, 1, True),
     ("EFFVM_VAR_CAMERA_LOCKED", 56, 1, True),
     ("EFFVM_VAR_DEFENDER", 57, 1, False),
     ("EFFVM_VAR_N_POKEMON", 58, 8, True),  # BTLV_MCSS_FLAG_N_POKEMON

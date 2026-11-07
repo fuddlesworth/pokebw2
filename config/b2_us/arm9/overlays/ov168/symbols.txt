@@ -303,7 +303,7 @@ BtlvMcss_SetFlatAll kind:function(thumb,size=0x44) addr:0x021e6ecc
 BtlvMcss_ClearFlatAll kind:function(thumb,size=0x44) addr:0x021e6f10
 BtlvMcss_SetFlat kind:function(thumb,size=0x34) addr:0x021e6f54
 BtlvMcss_ClearFlat kind:function(thumb,size=0x36) addr:0x021e6f88
-BtlvMcss_SetAnimStop kind:function(thumb,size=0x76) addr:0x021e6fc0
+BtlvMcss_SetFlipVMode kind:function(thumb,size=0x76) addr:0x021e6fc0
 BtlvMcss_IsAnimStopped kind:function(thumb,size=0x2a) addr:0x021e7038
 BtlvMcss_SetAnimPause kind:function(thumb,size=0x42) addr:0x021e7064
 BtlvMcss_GetVanish kind:function(thumb,size=0x2a) addr:0x021e70a8
@@ -766,9 +766,9 @@ data_ov168_021f3ffc kind:data(any) addr:0x021f3ffc
 sCamTargetSingle kind:data(any) addr:0x021f400c
 data_ov168_021f4010 kind:data(any) addr:0x021f4010
 data_ov168_021f4014 kind:data(any) addr:0x021f4014
-data_ov168_021f4024 kind:data(any) addr:0x021f4024
-data_ov168_021f4044 kind:data(any) addr:0x021f4044
-data_ov168_021f4064 kind:data(any) addr:0x021f4064
+sTripleDefaultDefenderEmitterCodes kind:data(any) addr:0x021f4024
+sTripleFoeSideEmitterCodes kind:data(any) addr:0x021f4044
+sTripleDefaultDefenderPositions kind:data(any) addr:0x021f4064
 sCamPosDouble kind:data(any) addr:0x021f4084
 data_ov168_021f4088 kind:data(any) addr:0x021f4088
 data_ov168_021f408c kind:data(any) addr:0x021f408c

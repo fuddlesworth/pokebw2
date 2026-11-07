@@ -11,6 +11,12 @@
 #include "gfl/touchpanel.h"
 #include "struct_decls.h"
 
+// Flags shared by input button sets and their producers.
+enum {
+    BTLV_INPUT_FLAG_CANCEL = 1,
+    BTLV_INPUT_FLAG_LATER_CANCEL = 2,
+};
+
 // A screen's buttons: their touch rectangles, a flag word per button (bit 0: a cancel, bit 1: a cancel for a later
 // Pokémon on the command screen) and the palette rows a press flashes (-1: none, bit 16: the input stays unlocked)
 typedef struct {
@@ -135,5 +141,35 @@ u32 BtlvInput_GetScreen(BtlvInput *work);
 void BtlvInput_SetTypeIconVisible(BtlvInput *work, BOOL visible, int index, int sequence);
 void BtlvInput_StartTypeIconAnim(BtlvInput *work, int index);
 u32 BtlvInput_GetTypeMask(BtlvInput *work);
+
+// The screen selected by SetScreen and returned by GetScreen; param is the matching screen parameter struct.
+enum {
+    BTLV_INPUT_SCREEN_STANDBY = 0,
+    BTLV_INPUT_SCREEN_COMMAND = 1,
+    BTLV_INPUT_SCREEN_MOVES = 2,
+    BTLV_INPUT_SCREEN_TARGET = 3,
+    BTLV_INPUT_SCREEN_YES_NO = 4,
+    BTLV_INPUT_SCREEN_ROTATION = 5,
+    BTLV_INPUT_SCREEN_RECORDER = 6,
+    BTLV_INPUT_SCREEN_RECORDER_BUTTONS = 7,
+};
+
+// Fade state maintained by the input fade starters and cleared by their task end.
+enum {
+    BTLV_INPUT_FADE_NONE = 0,
+    BTLV_INPUT_FADE_OUT = 1,
+    BTLV_INPUT_FADE_IN = 2,
+};
+
+// MoveScreenMain results beyond the four move slots; the rotation buttons are ordered by their touch rectangles.
+enum {
+    BTLV_INPUT_MOVE_CANCEL = 4,
+    BTLV_INPUT_MOVE_ROTATE_LEFT = 5,
+    BTLV_INPUT_MOVE_ROTATE_RIGHT = 6,
+    BTLV_INPUT_MOVE_STRUGGLE = 7,
+};
+
+// The selected move is requested with L held.
+#define BTLV_INPUT_MOVE_INFO_FLAG 0x8000
 
 #endif // POKEBW2_BATTLE_BTLV_INPUT_H

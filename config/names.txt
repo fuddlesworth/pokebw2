@@ -21661,7 +21661,7 @@ overlays/ov168 0x021e6ecc BtlvMcss_SetFlatAll
 overlays/ov168 0x021e6f10 BtlvMcss_ClearFlatAll
 overlays/ov168 0x021e6f54 BtlvMcss_SetFlat
 overlays/ov168 0x021e6f88 BtlvMcss_ClearFlat
-overlays/ov168 0x021e6fc0 BtlvMcss_SetAnimStop
+overlays/ov168 0x021e6fc0 BtlvMcss_SetFlipVMode
 overlays/ov168 0x021e7038 BtlvMcss_IsAnimStopped
 overlays/ov168 0x021e7064 BtlvMcss_SetAnimPause
 overlays/ov168 0x021e70a8 BtlvMcss_GetVanish
@@ -22071,6 +22071,9 @@ overlays/ov168 0x021f3f70 sStudioMovieShadows
 overlays/ov168 0x021f3fac sCamPosWide
 overlays/ov168 0x021f3ff4 sCamPosSingle
 overlays/ov168 0x021f400c sCamTargetSingle
+overlays/ov168 0x021f4024 sTripleDefaultDefenderEmitterCodes
+overlays/ov168 0x021f4044 sTripleFoeSideEmitterCodes
+overlays/ov168 0x021f4064 sTripleDefaultDefenderPositions
 overlays/ov168 0x021f4084 sCamPosDouble
 overlays/ov168 0x021f40b4 sCamTargetDouble
 overlays/ov168 0x021f40e4 sCamPosTriple

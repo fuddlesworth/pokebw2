@@ -36,29 +36,29 @@ typedef struct {
 
 // A sprite, 0x5c bytes
 typedef struct {
-    MCSS *mcss;         // 0x00
-    MCSSLoadInfo info;  // 0x04
-    TCB *idleTask;      // 0x28  BtlvMcss_IdleTask, the idle animation
-    BtlvMcssMon mon;    // 0x2c
-    u32 ball;           // 0x3c
-    u32 flags;          // 0x40  BTLV_MCSS_FLAG_*
-    BOOL animSet;       // 0x44  an animation was set and hasn't ended
-    s32 pos;            // 0x48  0xff for none
-    u32 frozen : 1;     // 0x4c  the animation was stopped for good (freeze)
-    u32 statusAnim : 1; //       a status condition's animation runs
-    u32 flat : 1;       //       BtlvMcss.flat when added
-    u32 idleCount : 2;  //       the chance of an idle animation when the animation ends goes up as it counts down
-    u32 hidden : 1;     //       hidden by BtlvMcss_SetVanish's mode 3, shown back by mode 4
-    u32 moved : 1;      //       BtlvMcss_ResetPosition put the sprite back
-    u32 fadeDone : 1;   //       the palette fade has ended
-    u32 fading : 1;     //       BtlvMcss_StartPaletteFade started a palette fade
-    u32 changed : 1;    //       BtlvMcss_ChangePokemon changed the Pokémon
-    u32 vanished : 1;   //       saved by BtlvMcss_SaveVanish
-    u32 animEnded : 1;  //       restart the animation next frame
-    u32 shadow : 1;     //       BtlvMcss.shadows when added
-    s32 statusEvy;      // 0x50  the status condition's palette blend, swinging between 0 and 12
-    s32 statusEvyStep;  // 0x54
-    s32 statusTimer;    // 0x58  frames until the next step
+    MCSS *mcss;          // 0x00
+    MCSSLoadInfo info;   // 0x04
+    TCB *idleTask;       // 0x28  BtlvMcss_IdleTask, the idle animation
+    BtlvMcssMon mon;     // 0x2c
+    u32 ball;            // 0x3c
+    u32 flags;           // 0x40  BTLV_MCSS_FLAG_*
+    BOOL animSet;        // 0x44  an animation was set and hasn't ended
+    s32 pos;             // 0x48  0xff for none
+    u32 flipVLocked : 1; // 0x4c  the flipV flag is locked
+    u32 statusAnim : 1;  //       a status condition's animation runs
+    u32 flat : 1;        //       BtlvMcss.flat when added
+    u32 idleCount : 2;   //       the chance of an idle animation when the animation ends goes up as it counts down
+    u32 hidden : 1;      //       hidden by BtlvMcss_SetVanish's mode 3, shown back by mode 4
+    u32 moved : 1;       //       BtlvMcss_ResetPosition put the sprite back
+    u32 fadeDone : 1;    //       the palette fade has ended
+    u32 fading : 1;      //       BtlvMcss_StartPaletteFade started a palette fade
+    u32 changed : 1;     //       BtlvMcss_ChangePokemon changed the Pokémon
+    u32 vanished : 1;    //       saved by BtlvMcss_SaveVanish
+    u32 animEnded : 1;   //       restart the animation next frame
+    u32 shadow : 1;      //       BtlvMcss.shadows when added
+    s32 statusEvy;       // 0x50  the status condition's palette blend, swinging between 0 and 12
+    s32 statusEvyStep;   // 0x54
+    s32 statusTimer;     // 0x58  frames until the next step
 } BtlvMcssEntry;
 
 // The sprites' work, 0x5b4 bytes. Each kind of task keeps a mask of the positions it runs on, and a counter by position
@@ -131,7 +131,21 @@ typedef struct {
     u16 rotZ; // MCSS_SetShadowRotZ's
 } BtlvMcssShadow;
 
-static void BtlvMcss_SetAnimStop(BtlvMcss *work, int pos, int mode);
+// The per-sprite idle task phases.
+enum {
+    MCSS_IDLE_STOP_NODES = 0,
+    MCSS_IDLE_WAIT = 1,
+    MCSS_IDLE_RESTORE_CALLBACK = 2,
+};
+
+// The rotation model task phases.
+enum {
+    MCSS_ROTATION_START = 0,
+    MCSS_ROTATION_MOVE = 1,
+    MCSS_ROTATION_FINISH = 2,
+};
+
+static void BtlvMcss_SetFlipVMode(BtlvMcss *work, int pos, int mode);
 static BOOL BtlvMcss_IsAnimStopped(BtlvMcss *work, int pos);
 static void BtlvMcss_SetPaletteBlend(BtlvMcss *work, int pos, u8 evy, GXRgb color);
 static void BtlvMcss_ResetPaletteBlend(BtlvMcss *work, int pos);
@@ -292,7 +306,7 @@ void BtlvMcss_Main(BtlvMcss *work) {
 
             if (BtlvMcss_Exists(work, pos) && GFL_RandomMTRange(100) == 0 &&
                 !(BtlvEffect_PosBit(pos) & work->blinkTasks) && !BtlvMcss_IsAnimStopped(work, pos)) {
-                BtlvMcss_Blink(work, pos, 2, 4, 1);
+                BtlvMcss_Blink(work, pos, BTLV_MCSS_BLINK_REPEAT, 4, 1);
             }
             if (!BtlvMcss_Exists(work, pos)) {
                 continue;
@@ -329,8 +343,8 @@ void BtlvMcss_Main(BtlvMcss *work) {
             switch (status) {
             case BTLV_GAUGE_STATUS_SLEEP:
                 BtlvMcss_ResetPaletteBlend(work, pos);
-                BtlvMcss_SetAnimStop(work, pos, 3);
-                BtlvMcss_SetAnimPause(work, pos, 3);
+                BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_LOCK);
+                BtlvMcss_SetAnimPause(work, pos, BTLV_MCSS_PAUSE_UNFREEZE);
                 BtlvMcss_SetAnimSpeed(work, pos, 0x555);
                 work->entries[index].statusAnim = TRUE;
                 break;
@@ -338,41 +352,41 @@ void BtlvMcss_Main(BtlvMcss *work) {
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, work->entries[index].statusEvy, GX_RGB(15, 15, 0));
                 }
-                BtlvMcss_SetAnimStop(work, pos, 4);
-                BtlvMcss_SetAnimPause(work, pos, 3);
+                BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_UNLOCK);
+                BtlvMcss_SetAnimPause(work, pos, BTLV_MCSS_PAUSE_UNFREEZE);
                 work->entries[index].statusAnim = TRUE;
                 break;
             case BTLV_GAUGE_STATUS_FREEZE:
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, 8, GX_RGB(15, 15, 31));
                 }
-                BtlvMcss_SetAnimStop(work, pos, 4);
-                BtlvMcss_SetAnimPause(work, pos, 2);
+                BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_UNLOCK);
+                BtlvMcss_SetAnimPause(work, pos, BTLV_MCSS_PAUSE_FREEZE);
                 work->entries[index].statusAnim = TRUE;
                 break;
             case BTLV_GAUGE_STATUS_BURN:
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, work->entries[index].statusEvy, GX_RGB(15, 0, 0));
                 }
-                BtlvMcss_SetAnimStop(work, pos, 4);
-                BtlvMcss_SetAnimPause(work, pos, 3);
+                BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_UNLOCK);
+                BtlvMcss_SetAnimPause(work, pos, BTLV_MCSS_PAUSE_UNFREEZE);
                 work->entries[index].statusAnim = TRUE;
                 break;
             case BTLV_GAUGE_STATUS_POISON:
-            case 7:
+            case BTLV_GAUGE_STATUS_BAD_POISON:
                 if (step == TRUE) {
                     BtlvMcss_SetPaletteBlend(work, pos, work->entries[index].statusEvy, GX_RGB(15, 0, 15));
                 }
-                BtlvMcss_SetAnimStop(work, pos, 4);
-                BtlvMcss_SetAnimPause(work, pos, 3);
+                BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_UNLOCK);
+                BtlvMcss_SetAnimPause(work, pos, BTLV_MCSS_PAUSE_UNFREEZE);
                 work->entries[index].statusAnim = TRUE;
                 break;
             case BTLV_GAUGE_STATUS_NONE:
             default:
                 if (work->entries[index].statusAnim == TRUE) {
                     BtlvMcss_ResetPaletteBlend(work, pos);
-                    BtlvMcss_SetAnimStop(work, pos, 4);
-                    BtlvMcss_SetAnimPause(work, pos, 3);
+                    BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_UNLOCK);
+                    BtlvMcss_SetAnimPause(work, pos, BTLV_MCSS_PAUSE_UNFREEZE);
                     work->entries[index].statusAnim = FALSE;
                     work->entries[index].statusEvyStep = 0;
                     work->entries[index].statusEvy = 0;
@@ -412,7 +426,7 @@ void BtlvMcss_AddPokemon(BtlvMcss *work, PartyPkm *pkm, int pos) {
         return;
     }
     work->entries[index].flags = 0;
-    work->entries[index].frozen = FALSE;
+    work->entries[index].flipVLocked = FALSE;
     work->entries[index].statusAnim = FALSE;
     work->entries[index].hidden = FALSE;
     work->entries[index].flat = work->flat;
@@ -557,26 +571,26 @@ void BtlvMcss_ClearFlat(BtlvMcss *work, int pos) {
     }
 }
 
-static void BtlvMcss_SetAnimStop(BtlvMcss *work, int pos, int mode) {
+static void BtlvMcss_SetFlipVMode(BtlvMcss *work, int pos, int mode) {
     int index = BtlvMcss_GetIndex(work, pos);
 
     if (index == -1 || work->entries[index].mcss == NULL) {
         return;
     }
-    if (mode == 4) {
+    if (mode == BTLV_MCSS_FLIP_V_UNLOCK) {
         MCSS_DisableFlipV(work->entries[index].mcss);
-        work->entries[index].frozen = FALSE;
+        work->entries[index].flipVLocked = FALSE;
     }
-    if (work->entries[index].frozen) {
+    if (work->entries[index].flipVLocked) {
         return;
     }
-    if (mode == 2) {
+    if (mode == BTLV_MCSS_FLIP_V_TOGGLE) {
         MCSS_ToggleFlipV(work->entries[index].mcss);
-    } else if (mode == 1) {
+    } else if (mode == BTLV_MCSS_FLIP_V_SET) {
         MCSS_EnableFlipV(work->entries[index].mcss);
-    } else if (mode == 3) {
+    } else if (mode == BTLV_MCSS_FLIP_V_LOCK) {
         MCSS_EnableFlipV(work->entries[index].mcss);
-        work->entries[index].frozen = TRUE;
+        work->entries[index].flipVLocked = TRUE;
     } else {
         MCSS_DisableFlipV(work->entries[index].mcss);
     }
@@ -600,11 +614,11 @@ void BtlvMcss_SetAnimPause(BtlvMcss *work, int pos, int mode) {
     if (index == -1 || work->entries[index].mcss == NULL) {
         return;
     }
-    if (mode == 1) {
+    if (mode == BTLV_MCSS_PAUSE_PAUSE) {
         MCSS_PauseAnimation(work->entries[index].mcss);
-    } else if (mode == 2) {
+    } else if (mode == BTLV_MCSS_PAUSE_FREEZE) {
         MCSS_FreezeAnimation(work->entries[index].mcss);
-    } else if (mode == 3) {
+    } else if (mode == BTLV_MCSS_PAUSE_UNFREEZE) {
         MCSS_UnfreezeAnimation(work->entries[index].mcss);
     } else {
         MCSS_ResumeAnimation(work->entries[index].mcss);
@@ -630,22 +644,22 @@ void BtlvMcss_SetVanish(BtlvMcss *work, int pos, int mode) {
         return;
     }
     switch (mode) {
-    case 2:
+    case BTLV_MCSS_VANISH_TOGGLE:
         MCSS_ToggleHidden(work->entries[index].mcss);
         break;
-    case 1:
+    case BTLV_MCSS_VANISH_HIDE:
         MCSS_Hide(work->entries[index].mcss);
         break;
-    case 0:
+    case BTLV_MCSS_VANISH_SHOW:
         MCSS_Show(work->entries[index].mcss);
         break;
-    case 3:
+    case BTLV_MCSS_VANISH_SAVE_HIDE:
         if (MCSS_IsHidden(work->entries[index].mcss)) {
             work->entries[index].hidden = TRUE;
         }
         MCSS_Hide(work->entries[index].mcss);
         break;
-    case 4:
+    case BTLV_MCSS_VANISH_RESTORE:
         if (work->entries[index].hidden) {
             work->entries[index].hidden = FALSE;
         } else {
@@ -663,14 +677,14 @@ void BtlvMcss_GetDefaultPosForStyle(BtlvMcss *work, VecFx32 *out, int pos, u32 b
     const VecFx32 *src;
 
     switch (pos) {
-    case 0:
-    case 1:
+    case BTLV_MCSS_POS_SINGLE_PLAYER:
+    case BTLV_MCSS_POS_SINGLE_ENEMY:
         src = &DEFAULT_POS_SINGLE[pos];
         break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    case BTLV_MCSS_POS_PLAYER_1:
+    case BTLV_MCSS_POS_ENEMY_1:
+    case BTLV_MCSS_POS_PLAYER_2:
+    case BTLV_MCSS_POS_ENEMY_2:
         if (battleStyle == BTL_STYLE_ROTATION) {
             src = &DEFAULT_POS_ROTATION[pos - 2];
         } else if (battleStyle == BTL_STYLE_TRIPLE) {
@@ -679,8 +693,8 @@ void BtlvMcss_GetDefaultPosForStyle(BtlvMcss *work, VecFx32 *out, int pos, u32 b
             src = &DEFAULT_POS_DOUBLE[pos - 2];
         }
         break;
-    case 6:
-    case 7:
+    case BTLV_MCSS_POS_PLAYER_3:
+    case BTLV_MCSS_POS_ENEMY_3:
         if (battleStyle == BTL_STYLE_ROTATION) {
             src = &DEFAULT_POS_ROTATION[pos - 2];
         } else {
@@ -732,7 +746,7 @@ void BtlvMcss_MovePosition(BtlvMcss *work, int pos, int type, VecFx32 *dest, s32
         return;
     }
     MCSS_GetPosition(work->entries[index].mcss, &start);
-    if (type == 1) {
+    if (type == BTLV_EFFTOOL_MOVE_STEP) {
         if (pos & 1) {
             dest->x = start.x - dest->x;
         } else {
@@ -741,15 +755,15 @@ void BtlvMcss_MovePosition(BtlvMcss *work, int pos, int type, VecFx32 *dest, s32
         dest->y += start.y;
         dest->z += start.z;
     }
-    if (type == 5) {
+    if (type == BTLV_MCSS_MOVE_RETURN) {
         BtlvMcss_GetDefaultPosImpl(work, dest, pos);
-        type = 1;
+        type = BTLV_EFFTOOL_MOVE_STEP;
     }
-    if (type == 6) {
+    if (type == BTLV_MCSS_MOVE_RESET) {
         BtlvMcss_GetDefaultPosImpl(work, dest, pos);
-        type = 0;
+        type = BTLV_EFFTOOL_MOVE_JUMP;
     }
-    if (type == 0) {
+    if (type == BTLV_EFFTOOL_MOVE_JUMP) {
         MCSS_SetPosition(work->entries[index].mcss, dest);
         return;
     }
@@ -832,11 +846,11 @@ void BtlvMcss_SwapPositions(BtlvMcss *work, int pos1, int pos2) {
         index[i] = BtlvMcss_GetIndex(work, pos[i]);
         if (BtlvMcss_Exists(work, pos[i])) {
             BtlvMcss_GetDefaultPosImpl(work, &dest, pos[i ^ 1]);
-            BtlvMcss_MovePosition(work, pos[i], 0, &dest, 0, 0, 0);
+            BtlvMcss_MovePosition(work, pos[i], BTLV_EFFTOOL_MOVE_JUMP, &dest, 0, 0, 0);
             BtlvGauge_HideStatus(BtlvEffect_GetGauge(), pos[i]);
             if (work->entries[index[i]].moved) {
                 work->entries[index[i]].moved = FALSE;
-                BtlvMcss_SetVanish(work, pos[i], 0);
+                BtlvMcss_SetVanish(work, pos[i], BTLV_MCSS_VANISH_SHOW);
             }
         }
     }
@@ -851,13 +865,13 @@ void BtlvMcss_Blink(BtlvMcss *work, int pos, int type, s32 wait, s32 count) {
     BtlvMcssMove *task;
 
     switch (type) {
-    case 3:
-        BtlvMcss_SetAnimStop(work, pos, 1);
+    case BTLV_MCSS_BLINK_SET:
+        BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_SET);
         break;
-    case 4:
-        BtlvMcss_SetAnimStop(work, pos, 0);
+    case BTLV_MCSS_BLINK_CLEAR:
+        BtlvMcss_SetFlipVMode(work, pos, BTLV_MCSS_FLIP_V_CLEAR);
         break;
-    case 2:
+    case BTLV_MCSS_BLINK_REPEAT:
         task = GFL_HeapAllocate(HEAPID_TAIL(work->heapId), sizeof(BtlvMcssMove), FALSE, "btlv_mcss.c", 0x62f);
         task->work = work;
         task->pos = pos;
@@ -868,7 +882,7 @@ void BtlvMcss_Blink(BtlvMcss *work, int pos, int type, s32 wait, s32 count) {
         work->blinkSeq[pos]++;
         task->seq = work->blinkSeq[pos];
         BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->tcbMgr, BtlvMcss_MoveTask_Blink, task, 0),
-                           BtlvMcss_MoveTaskEnd_Blink, 2);
+                           BtlvMcss_MoveTaskEnd_Blink, BTLV_EFFECT_TASK_MCSS);
         work->blinkTasks |= BtlvEffect_PosBit(pos);
         break;
     }
@@ -912,8 +926,10 @@ void BtlvMcss_MoveCircle(BtlvMcss *work, BtlvMcssCircle *param) {
     task->turnWaitLeft = 0;
     // Mirrored for the enemy side, but for the starts 2 and 3 on the y-z and x-y planes
     if (task->pos & 1) {
-        if (!((task->mode == 0 || task->mode == 1 || task->mode == 4 || task->mode == 5) &&
-              (param->start == 2 || param->start == 3))) {
+        if (!((task->mode == BTLV_MCSS_CIRCLE_ZY_FORWARD || task->mode == BTLV_MCSS_CIRCLE_ZY_REVERSE ||
+               task->mode == BTLV_MCSS_CIRCLE_XY_FORWARD || task->mode == BTLV_MCSS_CIRCLE_XY_REVERSE) &&
+              (param->start == BTLV_MCSS_CIRCLE_CENTER_POSITIVE_B ||
+               param->start == BTLV_MCSS_CIRCLE_CENTER_NEGATIVE_B))) {
             task->start ^= 1;
         }
     }
@@ -922,7 +938,7 @@ void BtlvMcss_MoveCircle(BtlvMcss *work, BtlvMcssCircle *param) {
     work->moveSeq[task->pos]++;
     task->seq = work->moveSeq[task->pos];
     BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->tcbMgr, BtlvMcss_MoveTask_Circle, task, 0), BtlvMcss_MoveTaskEnd_Circle,
-                       2);
+                       BTLV_EFFECT_TASK_MCSS);
     work->moveTasks |= BtlvEffect_PosBit(task->pos);
 }
 
@@ -940,7 +956,7 @@ void BtlvMcss_Shake(BtlvMcss *work, BtlvMcssShake *param) {
     work->moveSeq[task->pos]++;
     task->seq = work->moveSeq[task->pos];
     BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->tcbMgr, BtlvMcss_MoveTask_Shake, task, 0), BtlvMcss_MoveTaskEnd_Shake,
-                       2);
+                       BTLV_EFFECT_TASK_MCSS);
     work->moveTasks |= BtlvEffect_PosBit(task->pos);
 }
 
@@ -1066,7 +1082,7 @@ u16 BtlvMcss_GetWeight(BtlvMcss *work, int pos) {
 u32 BtlvMcss_GetFlags(BtlvMcss *work, int pos) {
     int index;
 
-    if (pos == 0xff) {
+    if (pos == BTLV_MCSS_POS_NONE) {
         return 0;
     }
     index = BtlvMcss_GetIndex(work, pos);
@@ -1107,7 +1123,7 @@ u8 BtlvMcss_GetStopCellFlags(BtlvMcss *work, int pos) {
     return MCSSSys_GetStopCellFlags(work->entries[index].mcss);
 }
 
-void BtlvMcss_SetSubstitute(BtlvMcss *work, int pos, BOOL substitute, BOOL flag) {
+void BtlvMcss_SetSubstitute(BtlvMcss *work, int pos, BOOL substitute, BOOL updateActiveFlag) {
     int index = BtlvMcss_GetIndex(work, pos);
     MCSSLoadInfo info;
 
@@ -1118,8 +1134,8 @@ void BtlvMcss_SetSubstitute(BtlvMcss *work, int pos, BOOL substitute, BOOL flag)
         MCSSSys_SetSpindaLoadCallback(work->mcssSys, work->entries[index].mon.personality);
         MCSS_Reload(work->mcssSys, work->entries[index].mcss, &work->entries[index].info);
         MCSS_SetAnimationEndCallback(work->entries[index].mcss, index, BtlvMcss_OnAnimationEnd, 1);
-        if (flag) {
-            work->entries[index].flags &= ~BTLV_MCSS_FLAG_UNK0;
+        if (updateActiveFlag) {
+            work->entries[index].flags &= ~BTLV_MCSS_FLAG_SUBSTITUTE_ACTIVE;
         }
         work->entries[index].flags &= ~BTLV_MCSS_FLAG_SUBSTITUTE;
     } else {
@@ -1134,8 +1150,8 @@ void BtlvMcss_SetSubstitute(BtlvMcss *work, int pos, BOOL substitute, BOOL flag)
         info.unk20 = 0;
         MCSS_Reload(work->mcssSys, work->entries[index].mcss, &info);
         BtlvMcss_ResetPaletteBlend(work, pos);
-        if (flag) {
-            work->entries[index].flags |= BTLV_MCSS_FLAG_UNK0;
+        if (updateActiveFlag) {
+            work->entries[index].flags |= BTLV_MCSS_FLAG_SUBSTITUTE_ACTIVE;
         }
         work->entries[index].flags |= BTLV_MCSS_FLAG_SUBSTITUTE;
     }
@@ -1204,14 +1220,14 @@ u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int chorusV
         return 0;
     }
     switch (pos) {
-    case 0:
-    case 1:
+    case BTLV_MCSS_POS_SINGLE_PLAYER:
+    case BTLV_MCSS_POS_SINGLE_ENEMY:
         pan = CRY_PAN_SINGLE[pos];
         break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    case BTLV_MCSS_POS_PLAYER_1:
+    case BTLV_MCSS_POS_ENEMY_1:
+    case BTLV_MCSS_POS_PLAYER_2:
+    case BTLV_MCSS_POS_ENEMY_2:
         if (work->rotation) {
             pan = CRY_PAN_ROTATION[pos - 2];
         } else if (work->triple) {
@@ -1220,8 +1236,8 @@ u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int chorusV
             pan = CRY_PAN_DOUBLE[pos - 2];
         }
         break;
-    case 6:
-    case 7:
+    case BTLV_MCSS_POS_PLAYER_3:
+    case BTLV_MCSS_POS_ENEMY_3:
         if (work->rotation) {
             pan = CRY_PAN_ROTATION[pos - 2];
         } else {
@@ -1258,12 +1274,13 @@ void BtlvMcss_StartRotation(BtlvMcss *work, int side, int dir, BOOL playSe) {
         GFL_HeapAllocate(HEAPID_TAIL(work->heapId), sizeof(BtlvMcssRotate), FALSE, "btlv_mcss.c", 0x94a);
 
     task->work = work;
-    task->seq = 0;
+    task->seq = MCSS_ROTATION_START;
     task->playSe = playSe;
     task->side = side;
     task->dir = dir;
     work->rotating = TRUE;
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->tcbMgr, BtlvMcss_RotationTask, task, 0), BtlvMcss_RotationTaskEnd, 2);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->tcbMgr, BtlvMcss_RotationTask, task, 0), BtlvMcss_RotationTaskEnd,
+                       BTLV_EFFECT_TASK_MCSS);
 }
 
 u32 BtlvMcss_GetBall(BtlvMcss *work, int pos) {
@@ -1367,17 +1384,17 @@ void BtlvMcss_SetReverse(BtlvMcss *work, int pos, BOOL byPos) {
             break;
         case BTL_STYLE_DOUBLE:
             switch (pos) {
-            case 3:
-            case 4:
+            case BTLV_MCSS_POS_ENEMY_1:
+            case BTLV_MCSS_POS_PLAYER_2:
                 flag = TRUE;
                 break;
             }
             break;
         case BTL_STYLE_TRIPLE:
             switch (pos) {
-            case 2:
-            case 5:
-            case 6:
+            case BTLV_MCSS_POS_PLAYER_1:
+            case BTLV_MCSS_POS_ENEMY_2:
+            case BTLV_MCSS_POS_PLAYER_3:
                 flag = TRUE;
                 break;
             }
@@ -1503,7 +1520,7 @@ static void BtlvMcss_StartMoveTask(BtlvMcss *work, int pos, int type, VecFx32 *s
         }
         break;
     }
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->tcbMgr, func, task, 0), endFunc, 2);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->tcbMgr, func, task, 0), endFunc, BTLV_EFFECT_TASK_MCSS);
 }
 
 static void BtlvMcss_MoveTask_Position(TCB *tcb, void *data) {
@@ -1691,9 +1708,9 @@ static void BtlvMcss_MoveTask_Blink(TCB *tcb, void *data) {
     }
     if (task->move.wait == 0) {
         task->move.wait = task->move.waitReset;
-        BtlvMcss_SetAnimStop(task->work, task->pos, 2);
+        BtlvMcss_SetFlipVMode(task->work, task->pos, BTLV_MCSS_FLIP_V_TOGGLE);
         if (--task->move.count == 0) {
-            BtlvMcss_SetAnimStop(task->work, task->pos, 0);
+            BtlvMcss_SetFlipVMode(task->work, task->pos, BTLV_MCSS_FLIP_V_CLEAR);
             BtlvEffect_EndTask(tcb);
         }
     } else {
@@ -1778,40 +1795,40 @@ static void BtlvMcss_MoveTask_Circle(TCB *tcb, void *data) {
             }
             if (task->count != 0) {
                 switch (task->start) {
-                case 0:
+                case BTLV_MCSS_CIRCLE_CENTER_POSITIVE_A:
                     idx = (u16)(task->angle + 0x4000);
                     a = -FX_Mul(FX_SinIdx(idx), task->radius1);
                     b = -FX_Mul(FX_CosIdx(idx), task->radius2);
                     a += task->radius1;
                     break;
-                case 1:
+                case BTLV_MCSS_CIRCLE_CENTER_NEGATIVE_A:
                     idx = (u16)(task->angle + 0x4000);
                     a = FX_Mul(FX_SinIdx(idx), task->radius1) - task->radius1;
                     b = FX_Mul(FX_CosIdx(idx), task->radius2);
                     break;
-                case 2:
+                case BTLV_MCSS_CIRCLE_CENTER_POSITIVE_B:
                     idx = task->angle;
                     a = -FX_Mul(FX_SinIdx(idx), task->radius1);
                     b = -FX_Mul(FX_CosIdx(idx), task->radius2);
                     b += task->radius2;
                     break;
-                case 3:
+                case BTLV_MCSS_CIRCLE_CENTER_NEGATIVE_B:
                     idx = task->angle;
                     a = FX_Mul(FX_SinIdx(idx), task->radius1);
                     b = FX_Mul(FX_CosIdx(idx), task->radius2) - task->radius2;
                     break;
                 }
                 switch ((task->mode & 7) >> 1) {
-                case 0:
+                case BTLV_MCSS_CIRCLE_PLANE_ZY:
                 default:
                     offset.z = a;
                     offset.y = b;
                     break;
-                case 1:
+                case BTLV_MCSS_CIRCLE_PLANE_XZ:
                     offset.x = a;
                     offset.z = b;
                     break;
-                case 2:
+                case BTLV_MCSS_CIRCLE_PLANE_XY:
                     offset.x = a;
                     offset.y = b;
                     break;
@@ -1934,13 +1951,13 @@ static void BtlvMcss_IdleTask(TCB *tcb, void *data) {
         return;
     }
     switch (idle->seq) {
-    case 0:
+    case MCSS_IDLE_STOP_NODES:
         MCSS_GetMultiCellAnimation(work->entries[index].mcss)->animCtrl.bActive = FALSE;
         MCSS_TraverseNodes(work->entries[index].mcss, index | 0x80000000, BtlvMcss_IdleNodeCallback);
         idle->seq++;
         idle->wait = sIdleWaits[GFL_RandomMTRange(3)];
         break;
-    case 1:
+    case MCSS_IDLE_WAIT:
         if (--idle->wait == 0 || work->rotationTasks != 0 || !BtlvEffvm_GetScriptKind(BtlvEffect_GetEffvm())) {
             MCSS_SetAnimation(work->entries[index].mcss, 0);
             MCSS_GetMultiCellAnimation(work->entries[index].mcss)->animCtrl.bActive = TRUE;
@@ -1948,7 +1965,7 @@ static void BtlvMcss_IdleTask(TCB *tcb, void *data) {
             idle->seq++;
         }
         break;
-    case 2:
+    case MCSS_IDLE_RESTORE_CALLBACK:
         MCSS_SetAnimationEndCallback(work->entries[index].mcss, index, BtlvMcss_OnAnimationEnd, 1);
         GFL_HeapFree(idle);
         GFL_TCBRemove(tcb);
@@ -1983,7 +2000,7 @@ static void BtlvMcss_RotationTask(TCB *tcb, void *data) {
     int i;
 
     switch (task->seq) {
-    case 0:
+    case MCSS_ROTATION_START:
         for (i = 0; i < 3; i++) {
             if (task->work->entries[positions[task->side][i]].idleTask != NULL) {
                 break;
@@ -1995,22 +2012,23 @@ static void BtlvMcss_RotationTask(TCB *tcb, void *data) {
         for (i = 0; i < 3; i++) {
             task->angle[i] = angles[task->side][i];
         }
-        BtlvStage_StartAnimation(BtlvEffect_GetStage(), task->side, 0, task->dir == 0 ? FX32_ONE : -FX32_ONE, 60);
-        task->speed = task->dir == 0 ? 0x16c : -0x16c;
+        BtlvStage_StartAnimation(BtlvEffect_GetStage(), task->side, 0,
+                                 task->dir == BTLV_MCSS_ROTATE_THIRD ? FX32_ONE : -FX32_ONE, 60);
+        task->speed = task->dir == BTLV_MCSS_ROTATE_THIRD ? 0x16c : -0x16c;
         task->frames = 60;
         if (task->playSe) {
             GFL_SEPlayKeepVol(SEQ_SE_FLD_59, 2);
         }
         task->seq++;
         break;
-    case 1:
+    case MCSS_ROTATION_MOVE:
         for (i = 0; i < 3; i++) {
             if (BtlvMcss_Exists(task->work, positions[task->side][i])) {
                 pos3d.x = FX_Mul(FX_SinIdx((u16)task->angle[i]), FX32_CONST(5));
                 pos3d.y = FX32_CONST(0.4);
                 pos3d.z = task->side == 0 ? FX32_CONST(12) : FX32_CONST(-13);
                 pos3d.z += FX_Mul(FX_CosIdx((u16)task->angle[i]), FX32_CONST(5));
-                BtlvMcss_MovePosition(task->work, positions[task->side][i], 0, &pos3d, 0, 0, 0);
+                BtlvMcss_MovePosition(task->work, positions[task->side][i], BTLV_EFFTOOL_MOVE_JUMP, &pos3d, 0, 0, 0);
             }
             task->angle[i] += task->speed;
         }
@@ -2018,13 +2036,13 @@ static void BtlvMcss_RotationTask(TCB *tcb, void *data) {
             for (i = 0; i < 3; i++) {
                 if (BtlvMcss_Exists(task->work, positions[task->side][i])) {
                     BtlvMcss_GetDefaultPosImpl(task->work, &dest, dests[task->dir][task->side][i]);
-                    BtlvMcss_MovePosition(task->work, positions[task->side][i], 0, &dest, 0, 0, 0);
+                    BtlvMcss_MovePosition(task->work, positions[task->side][i], BTLV_EFFTOOL_MOVE_JUMP, &dest, 0, 0, 0);
                 }
             }
             task->seq++;
         }
         break;
-    case 2:
+    case MCSS_ROTATION_FINISH:
         if (task->work->moveTasks != 0) {
             break;
         }
@@ -2133,14 +2151,14 @@ static void BtlvMcss_GetDefaultPosImpl(BtlvMcss *work, VecFx32 *out, int pos) {
     const VecFx32 *src;
 
     switch (pos) {
-    case 0:
-    case 1:
+    case BTLV_MCSS_POS_SINGLE_PLAYER:
+    case BTLV_MCSS_POS_SINGLE_ENEMY:
         src = &DEFAULT_POS_SINGLE[pos];
         break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    case BTLV_MCSS_POS_PLAYER_1:
+    case BTLV_MCSS_POS_ENEMY_1:
+    case BTLV_MCSS_POS_PLAYER_2:
+    case BTLV_MCSS_POS_ENEMY_2:
         if (work->rotation) {
             src = &DEFAULT_POS_ROTATION[pos - 2];
         } else if (work->triple) {
@@ -2149,20 +2167,20 @@ static void BtlvMcss_GetDefaultPosImpl(BtlvMcss *work, VecFx32 *out, int pos) {
             src = &DEFAULT_POS_DOUBLE[pos - 2];
         }
         break;
-    case 6:
-    case 7:
+    case BTLV_MCSS_POS_PLAYER_3:
+    case BTLV_MCSS_POS_ENEMY_3:
         if (work->rotation) {
             src = &DEFAULT_POS_ROTATION[pos - 2];
         } else {
             src = &DEFAULT_POS_TRIPLE[pos - 2];
         }
         break;
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_1:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_1:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_2:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_2:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_3:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_3:
         src = &DEFAULT_POS_TRAINER[pos - 8];
         break;
     }
@@ -2174,13 +2192,13 @@ static void BtlvMcss_GetDefaultPosImpl(BtlvMcss *work, VecFx32 *out, int pos) {
 static fx32 BtlvMcss_GetDefaultScaleImpl(BtlvMcss *work, int pos, BOOL flat) {
     if (!flat) {
         switch (pos) {
-        case 0:
-        case 1:
+        case BTLV_MCSS_POS_SINGLE_PLAYER:
+        case BTLV_MCSS_POS_SINGLE_ENEMY:
             return DEFAULT_SCALE_SINGLE[pos];
-        case 2:
-        case 3:
-        case 4:
-        case 5:
+        case BTLV_MCSS_POS_PLAYER_1:
+        case BTLV_MCSS_POS_ENEMY_1:
+        case BTLV_MCSS_POS_PLAYER_2:
+        case BTLV_MCSS_POS_ENEMY_2:
             if (work->rotation) {
                 return DEFAULT_SCALE_ROTATION[pos - 2];
             }
@@ -2188,18 +2206,18 @@ static fx32 BtlvMcss_GetDefaultScaleImpl(BtlvMcss *work, int pos, BOOL flat) {
                 return DEFAULT_SCALE_TRIPLE[pos - 2];
             }
             return DEFAULT_SCALE_DOUBLE[pos - 2];
-        case 6:
-        case 7:
+        case BTLV_MCSS_POS_PLAYER_3:
+        case BTLV_MCSS_POS_ENEMY_3:
             if (work->rotation) {
                 return DEFAULT_SCALE_ROTATION[pos - 2];
             }
             return DEFAULT_SCALE_TRIPLE[pos - 2];
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
+        case BTLV_MCSS_POS_TRAINER_PLAYER_1:
+        case BTLV_MCSS_POS_TRAINER_ENEMY_1:
+        case BTLV_MCSS_POS_TRAINER_PLAYER_2:
+        case BTLV_MCSS_POS_TRAINER_ENEMY_2:
+        case BTLV_MCSS_POS_TRAINER_PLAYER_3:
+        case BTLV_MCSS_POS_TRAINER_ENEMY_3:
             return DEFAULT_SCALE_TRAINER[pos - 8];
         }
     } else if (pos < 8) {

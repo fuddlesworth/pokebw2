@@ -8,6 +8,7 @@
 #include "battle/btlv.h"
 #include "battle/btlv_effect.h"
 #include "battle/btlv_input.h"
+#include "battle/btlv_mcss.h"
 #include "constants/battle.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
@@ -49,11 +50,11 @@ enum {
 // The move screen's buttons after the four moves (the rotation screen's are numbered the same), and the bit the input
 // sets on the button pressed with L held, which marks the action with BattleAction_SetMoveInfoFlag
 enum {
-    MOVE_BUTTON_BACK = 4,
+    MOVE_BUTTON_BACK = BTLV_INPUT_MOVE_CANCEL,
     MOVE_BUTTON_SHIFT,
-    MOVE_BUTTON_STRUGGLE = 7,
+    MOVE_BUTTON_STRUGGLE = BTLV_INPUT_MOVE_STRUGGLE,
 };
-#define MOVE_BUTTON_L_HELD 0x8000
+#define MOVE_BUTTON_L_HELD BTLV_INPUT_MOVE_INFO_FLAG
 
 // The target screen's back button, after the panels of a double and of a triple battle
 enum {
@@ -251,7 +252,7 @@ const u8 BTLV_SCD_TARGET_STOP_COUNTS_DOUBLE[2][15] = {
     { 4, 3, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4 },
 };
 static const u8 sCommandResults[4] = { BTLV_COMMAND_FIGHT, BTLV_COMMAND_BAG, BTLV_COMMAND_POKEMON, BTLV_COMMAND_RUN };
-static const s32 sMoveFlagsShift[6] = { 0, 0, 0, 0, 1, 0 };
+static const s32 sMoveFlagsShift[6] = { 0, 0, 0, 0, BTLV_INPUT_FLAG_CANCEL, 0 };
 static const s32 sTargetFlashRowsTripleFoes[7] = { 0x380, 0x380, 0x380, 0x380, 0x380, 0x380, 0x10 };
 static const s32 sTargetFlashRowsDoubleAll[5] = { 0x780, 0x780, 0x780, 0x780, 0x10 };
 static const s32 sTargetFlashRowsTripleAdjacentFoesRight[7] = { 0x300, 0x300, 0x300, 0x300, 0x300, 0x300, 0x10 };
@@ -385,11 +386,11 @@ static const TouchRect sRecorderRects[4] = {
     { 0x98, 0xc0, 0x58, 0xa8 },
     { TOUCH_RECT_END, 0x00, 0x00, 0x00 },
 };
-static const s32 sCommandFlags[4] = { 0, 0, 0, 2 };
+static const s32 sCommandFlags[4] = { 0, 0, 0, BTLV_INPUT_FLAG_LATER_CANCEL };
 static const s32 sRecorderFlags[3] = { 0, 0, 0 };
 static const s32 sYesNoFlags[2] = { 0, 0 };
-static const s32 sTargetFlagsTriple[7] = { 0, 0, 0, 0, 0, 0, 3 };
-static const s32 sTargetFlagsDouble[5] = { 0, 0, 0, 0, 1 };
+static const s32 sTargetFlagsTriple[7] = { 0, 0, 0, 0, 0, 0, BTLV_INPUT_FLAG_CANCEL | BTLV_INPUT_FLAG_LATER_CANCEL };
+static const s32 sTargetFlagsDouble[5] = { 0, 0, 0, 0, BTLV_INPUT_FLAG_CANCEL };
 static const BtlvInputButtonSet sTargetButtonsDoubleAll = { sTargetRectsDouble, sTargetFlagsDouble,
                                                             sTargetFlashRowsDoubleAll };
 static const BtlvInputButtonSet sTargetButtonsTripleAllAdjacentLeft = { sTargetRectsTriple, sTargetFlagsTriple,
@@ -424,7 +425,7 @@ const BtlvInputKeyStop *BTLV_SCD_TARGET_STOPS_DOUBLE[2][15] = {
       sTargetStopsDoubleAll, sTargetStopsDoubleRight, sTargetStopsDoubleAll, sTargetStopsDoubleFoes,
       sTargetStopsDoubleUserSide, sTargetStopsDoubleRight, sTargetStopsDoubleSelectedRight },
 };
-static const s32 sMoveFlags[5] = { 0, 0, 0, 0, 1 };
+static const s32 sMoveFlags[5] = { 0, 0, 0, 0, BTLV_INPUT_FLAG_CANCEL };
 static const BtlvInputButtonSet sTargetButtonsDoubleAllAdjacentLeft = { sTargetRectsDouble, sTargetFlagsDouble,
                                                                         sTargetFlashRowsDoubleAllAdjacentLeft };
 static const BtlvInputButtonSet sCommandButtons = { sCommandRects, sCommandFlags, sCommandFlashRows };
@@ -585,13 +586,13 @@ static void BtlvScd_Nop(BtlvScd *scd) {
 }
 
 void BtlvScd_ResetScreenIfShown(BtlvScd *scd) {
-    if (BtlvInput_GetScreen(scd->input) != 0) {
+    if (BtlvInput_GetScreen(scd->input) != BTLV_INPUT_SCREEN_STANDBY) {
         BtlvScd_ResetScreen(scd);
     }
 }
 
 void BtlvScd_ResetScreen(BtlvScd *scd) {
-    BtlvInput_SetScreen(scd->input, 0, NULL);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_STANDBY, NULL);
     BtlvEffect_GaugeAction(8);
     BtlvEffect_StopIdleEffect();
 }
@@ -871,7 +872,7 @@ static BOOL BtlvScd_CommandInit(s32 *seq, void *arg) {
     }
     param.laterPoke = scd->slot;
     param.ballSlide = BattleClient_GetWeather(scd->client);
-    BtlvInput_SetScreen(scd->input, 1, &param);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_COMMAND, &param);
     return TRUE;
 }
 
@@ -886,7 +887,7 @@ static BOOL BtlvScd_CommandMain(s32 *seq, void *arg) {
             scd->result = sCommandResults[input];
             if (scd->result == BTLV_COMMAND_RUN) {
                 BattleAction_SetEscape(scd->action);
-                BtlvInput_SetScreen(scd->input, 0, NULL);
+                BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_STANDBY, NULL);
                 BtlvEffect_GaugeAction(8);
                 BtlvEffect_StopIdleEffect();
                 (*seq)++;
@@ -936,7 +937,7 @@ static BOOL BtlvScd_MoveInit(s32 *seq, void *arg) {
     }
     param.pos =
         BattlePosToViewPos(scd->mainModule, MonIDToBattlePos(scd->mainModule, scd->pokeCon, GetMonID(scd->mon)));
-    BtlvInput_SetScreen(scd->input, 2, &param);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_MOVES, &param);
     return TRUE;
 }
 
@@ -949,12 +950,12 @@ static BOOL BtlvScd_MoveMain(s32 *seq, void *arg) {
     BOOL flagged;
 
     pos = BattlePosToViewPos(scd->mainModule, MonIDToBattlePos(scd->mainModule, scd->pokeCon, GetMonID(scd->mon)));
-    if (BtlSetup_GetBattleStyle(scd->mainModule) == BTL_STYLE_TRIPLE && pos != 4) {
+    if (BtlSetup_GetBattleStyle(scd->mainModule) == BTL_STYLE_TRIPLE && pos != BTLV_MCSS_POS_PLAYER_2) {
         set = &sMoveButtonsShift;
     } else {
         set = &sMoveButtons;
     }
-    if (BtlSetup_GetBattleStyle(scd->mainModule) == BTL_STYLE_TRIPLE && pos != 4) {
+    if (BtlSetup_GetBattleStyle(scd->mainModule) == BTL_STYLE_TRIPLE && pos != BTLV_MCSS_POS_PLAYER_2) {
         stops = sMoveStopsShift;
     } else {
         stops = sMoveStops;
@@ -994,7 +995,7 @@ static BOOL BtlvScd_RotationInit(s32 *seq, void *arg) {
             param.moveUsable[i][j] = scd->targetParam->mons[i].selectable[j];
         }
     }
-    BtlvInput_SetScreen(scd->input, 5, &param);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_ROTATION, &param);
     return TRUE;
 }
 
@@ -1121,7 +1122,7 @@ static void BtlvScd_SetTargetScreen(const u8 *positions, u8 count, u32 kind, Btl
         }
         positions++;
     }
-    BtlvInput_SetScreen(scd->input, 3, &param);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_TARGET, &param);
 }
 
 static void BtlvScd_ShowTargetScreen(BtlvScdTargetList *list, BtlvScd *scd) {
@@ -1257,7 +1258,7 @@ static void BtlvScd_BuildTargetList(BtlvScdTargetList *list, BtlvScd *scd) {
 }
 
 void BtlvScd_ShowRotationScreen(BtlvScd *scd, BtlvInputRotationParam *param) {
-    BtlvInput_SetScreen(scd->input, 5, param);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_ROTATION, param);
 }
 
 BOOL BtlvScd_PollRotationInput(BtlvScd *scd, u8 *button) {
@@ -1271,13 +1272,13 @@ BOOL BtlvScd_PollRotationInput(BtlvScd *scd, u8 *button) {
 }
 
 void BtlvScd_HideRotationScreen(BtlvScd *scd) {
-    BtlvInput_SetScreen(scd->input, 0, NULL);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_STANDBY, NULL);
     BtlvEffect_GaugeAction(8);
     BtlvEffect_StopIdleEffect();
 }
 
 void BtlvScd_ShowYesNo(BtlvScd *scd, void *param) {
-    BtlvInput_SetScreen(scd->input, 4, param);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_YES_NO, param);
     scd->yesNoSeq = YES_NO_SEQ_SELECT;
 }
 
@@ -1289,7 +1290,7 @@ BOOL BtlvScd_PollYesNo(BtlvScd *scd, u32 *answer) {
         input = BtlvInput_CheckInput(scd->input, &sYesNoButtons, sYesNoStops);
         if (input != -1) {
             scd->answer = input;
-            BtlvInput_SetScreen(scd->input, 0, NULL);
+            BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_STANDBY, NULL);
             scd->yesNoSeq++;
         }
         break;
@@ -1322,7 +1323,7 @@ BOOL BtlvScd_IsForceQuitInputDone(BtlvScd *scd) {
         }
         break;
     case FORCE_QUIT_STEP_CLOSE:
-        BtlvInput_SetScreen(scd->input, 0, NULL);
+        BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_STANDBY, NULL);
         BtlvEffect_GaugeAction(8);
         BtlvEffect_StopIdleEffect();
         scd->step++;
@@ -1340,7 +1341,7 @@ BOOL BtlvScd_IsForceQuitInputDone(BtlvScd *scd) {
 }
 
 void BtlvScd_ShowRecorderScreen(BtlvScd *scd, void *param) {
-    BtlvInput_SetScreen(scd->input, 6, param);
+    BtlvInput_SetScreen(scd->input, BTLV_INPUT_SCREEN_RECORDER, param);
 }
 
 u32 BtlvScd_CheckRecorderInput(BtlvScd *scd) {

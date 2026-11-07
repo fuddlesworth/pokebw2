@@ -80,8 +80,8 @@ BOOL BtlvFingerCursor_Start(BtlvFingerCursor *cursor, s32 x, s32 y, u32 wait, s3
     }
     setup.base.x = x;
     setup.base.y = y;
-    cursor->actor =
-        ClActor_CreateEx(cursor->unit, cursor->chars, cursor->palette, cursor->cellAnims, &setup, 1, cursor->heapId);
+    cursor->actor = ClActor_CreateEx(cursor->unit, cursor->chars, cursor->palette, cursor->cellAnims, &setup,
+                                     CLACT_SURFACE_SUB, cursor->heapId);
     ClActor_SetSequence(cursor->actor, 0);
     ClActor_SetAnimTime(cursor->actor, 0);
     ClActor_SetAutoAnim(cursor->actor, TRUE);
