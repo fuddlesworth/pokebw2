@@ -900,8 +900,8 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
         return person->unkAA_0;
     case JOIN_AVE_PARAM_UNK_30:
         return person->unkA9_7;
-    case JOIN_AVE_PARAM_UNK_37:
-        return person->unkA9_0;
+    case JOIN_AVE_PARAM_SHOP_CHANGE_BLOCKED:
+        return person->shopChangeBlocked;
     case JOIN_AVE_PARAM_NO_EXPIRY:
         return person->noExpiry;
     case JOIN_AVE_PARAM_SHOP_KIND:
@@ -1113,8 +1113,8 @@ void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam p
     case JOIN_AVE_PARAM_UNK_30:
         person->unkA9_7 = value;
         break;
-    case JOIN_AVE_PARAM_UNK_37:
-        person->unkA9_0 = value;
+    case JOIN_AVE_PARAM_SHOP_CHANGE_BLOCKED:
+        person->shopChangeBlocked = value;
         break;
     case JOIN_AVE_PARAM_NO_EXPIRY:
         person->noExpiry = value;
@@ -2149,7 +2149,7 @@ void JoinAvenueOccupants_ResetDaily(JoinAvenueOccupants *occupants, BOOL fullDay
             JoinAvenueShop *shop = JoinAvenuePerson_GetShop(person);
 
             JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_UNK_30, 0);
-            JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_UNK_37, 0);
+            JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_SHOP_CHANGE_BLOCKED, 0);
             JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_SEED,
                                       gfRand(joinAveTextHandler(person, JOIN_AVE_PARAM_SEED, NULL)));
             JoinAvenueShop_SetField(shop, 3, 0);

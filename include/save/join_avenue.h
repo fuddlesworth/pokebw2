@@ -90,7 +90,8 @@ typedef enum {
     JOIN_AVE_PARAM_DATA_COUNT = 34,
     JOIN_AVE_PARAM_DATA_RECEIVED = 35,
     JOIN_AVE_PARAM_UNK_36 = 36,
-    JOIN_AVE_PARAM_UNK_37 = 37,
+    // Blocks another shop change until the daily reset
+    JOIN_AVE_PARAM_SHOP_CHANGE_BLOCKED = 37,
     JOIN_AVE_PARAM_NO_EXPIRY = 38,
     JOIN_AVE_PARAM_UNK_39 = 39,
     // Extra data 0: the adventure
@@ -217,7 +218,7 @@ struct JoinAvenuePerson {
     u8 hour;
     u8 minute;
     u8 arrivalMethod;
-    u8 unkA9_0 : 1;
+    u8 shopChangeBlocked : 1;
     // Never leaves
     u8 noExpiry : 1;
     u8 unkA9_2 : 1;
