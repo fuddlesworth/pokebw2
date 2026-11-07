@@ -12,11 +12,13 @@
 #include "app/wifibattlematch_net.h"
 #include "app/wifibattlematch_util.h"
 #include "app/wifibattlematch_view.h"
+#include "battle/btl_result.h"
 #include "battle/regulation.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "dwc/dwc.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/dwc_rapcommon.h"
 #include "gfl/fade.h"
@@ -49,6 +51,321 @@
 #include "system/wordset.h"
 #include "text/system/event_fishing.h"
 
+enum {
+    COMPETITION_PHASE_FADE_IN = 0,
+    COMPETITION_PHASE_WAIT_FADE_IN = 1,
+    COMPETITION_PHASE_RUN_TASK = 2,
+    COMPETITION_PHASE_FADE_OUT = 3,
+    COMPETITION_PHASE_WAIT_FADE_OUT = 4,
+};
+
+enum {
+    COMPETITION_ACCOUNT_CHECK_GAME_SYNC_ID = 0,
+    COMPETITION_ACCOUNT_SHOW_SEARCH_MESSAGE = 1,
+    COMPETITION_ACCOUNT_REQUEST_ACCOUNT = 2,
+    COMPETITION_ACCOUNT_WAIT_ACCOUNT = 3,
+    COMPETITION_ACCOUNT_CHECK_REGISTRATION = 4,
+    COMPETITION_ACCOUNT_SHOW_UNREGISTERED_MESSAGE = 5,
+    COMPETITION_ACCOUNT_WAIT_UNREGISTERED_MESSAGE = 6,
+    COMPETITION_ACCOUNT_WAIT_LOGIN_COOLDOWN = 7,
+    COMPETITION_ACCOUNT_LOGIN = 8,
+    COMPETITION_ACCOUNT_START_ENTRY = 9,
+};
+
+enum {
+    COMPETITION_ENTRY_CHECK_RESET_REQUEST = 0,
+    COMPETITION_ENTRY_RESET_ACCOUNT_ENTRY = 1,
+    COMPETITION_ENTRY_WAIT_ACCOUNT_RESET = 2,
+    COMPETITION_ENTRY_CHECK_LOCAL_REGISTRATION = 3,
+    COMPETITION_ENTRY_CHECK_CLOSED_REGISTRATION = 4,
+    COMPETITION_ENTRY_SHOW_ENDED_MESSAGE = 5,
+    COMPETITION_ENTRY_SHOW_UNAVAILABLE_MESSAGE = 6,
+    COMPETITION_ENTRY_UPDATE_SERVER_REGISTRATION = 7,
+    COMPETITION_ENTRY_WAIT_REGISTRATION_UPDATE = 8,
+    COMPETITION_ENTRY_RETURN_TO_UNAVAILABLE_MESSAGE = 9,
+    COMPETITION_ENTRY_WAIT_PREVIOUS_WRITE = 10,
+    COMPETITION_ENTRY_SHOW_DOWNLOAD_MESSAGE = 11,
+    COMPETITION_ENTRY_START_DOWNLOAD = 12,
+    COMPETITION_ENTRY_WAIT_DOWNLOAD = 13,
+    COMPETITION_ENTRY_CHECK_SERVER_REGISTRATION = 14,
+    COMPETITION_ENTRY_CHECK_STORED_COMPETITION = 15,
+    COMPETITION_ENTRY_CHECK_PERIOD_BEFORE_DOWNLOAD = 16,
+    COMPETITION_ENTRY_WAIT_PERIOD_BEFORE_DOWNLOAD = 17,
+    COMPETITION_ENTRY_SHOW_NO_CURRENT_COMPETITION = 18,
+    COMPETITION_ENTRY_CHECK_REPLACED_COMPETITION = 19,
+    COMPETITION_ENTRY_CREATE_CARD = 20,
+    COMPETITION_ENTRY_WAIT_CARD_SHOWN = 21,
+    COMPETITION_ENTRY_CHECK_BATTLE_BOX = 22,
+    COMPETITION_ENTRY_PROMPT_UPDATE_REGISTERED_BOX = 23,
+    COMPETITION_ENTRY_CREATE_REGISTERED_UPDATE_MENU = 24,
+    COMPETITION_ENTRY_WAIT_REGISTERED_UPDATE_MENU = 25,
+    COMPETITION_ENTRY_EXPLAIN_REGISTERED_UPDATE_REQUIRED = 26,
+    COMPETITION_ENTRY_CREATE_REGISTERED_QUIT_MENU = 27,
+    COMPETITION_ENTRY_WAIT_REGISTERED_QUIT_MENU = 28,
+    COMPETITION_ENTRY_PROMPT_UPDATE_ENTRY = 29,
+    COMPETITION_ENTRY_CREATE_ENTRY_UPDATE_MENU = 30,
+    COMPETITION_ENTRY_WAIT_ENTRY_UPDATE_MENU = 31,
+    COMPETITION_ENTRY_EXPLAIN_ENTRY_UPDATE_REQUIRED = 32,
+    COMPETITION_ENTRY_CREATE_ENTRY_QUIT_MENU = 33,
+    COMPETITION_ENTRY_WAIT_ENTRY_QUIT_MENU = 34,
+    COMPETITION_ENTRY_HIDE_OLD_CARD = 35,
+    COMPETITION_ENTRY_DELETE_OLD_CARD = 36,
+    COMPETITION_ENTRY_SHOW_UPLOAD_MESSAGE = 37,
+    COMPETITION_ENTRY_UPLOAD_EMPTY_PARTY = 38,
+    COMPETITION_ENTRY_WAIT_EMPTY_PARTY_UPLOAD = 39,
+    COMPETITION_ENTRY_POST_ENTRY_CREATED = 40,
+    COMPETITION_ENTRY_WAIT_ENTRY_CREATED = 41,
+    COMPETITION_ENTRY_SHOW_ID_UPDATE_MESSAGE = 42,
+    COMPETITION_ENTRY_SAVE_NEW_COMPETITION = 43,
+    COMPETITION_ENTRY_WAIT_NEW_COMPETITION_SAVE = 44,
+    COMPETITION_ENTRY_SHOW_SAVE_FAILED = 45,
+    COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE = 46,
+    COMPETITION_ENTRY_DOWNLOAD_RECORD = 47,
+    COMPETITION_ENTRY_WAIT_RECORD_DOWNLOAD = 48,
+    COMPETITION_ENTRY_COMPARE_RECORD_RATING = 49,
+    COMPETITION_ENTRY_SHOW_RECORD_UPDATE_MESSAGE = 50,
+    COMPETITION_ENTRY_SAVE_UPDATED_RECORD = 51,
+    COMPETITION_ENTRY_WAIT_UPDATED_RECORD_SAVE = 52,
+    COMPETITION_ENTRY_START_TEAM_REGISTRATION = 53,
+    COMPETITION_ENTRY_START_COMPETITION_MENU = 54,
+    COMPETITION_ENTRY_END = 55,
+    COMPETITION_ENTRY_WAIT_MESSAGE = 56,
+};
+
+enum {
+    COMPETITION_REGISTER_CREATE_CARD_AND_TEAM = 0,
+    COMPETITION_REGISTER_WAIT_CARD_AND_TEAM = 1,
+    COMPETITION_REGISTER_PROMPT_REGISTER_TEAM = 2,
+    COMPETITION_REGISTER_CREATE_REGISTER_MENU = 3,
+    COMPETITION_REGISTER_WAIT_REGISTER_MENU = 4,
+    COMPETITION_REGISTER_PROMPT_QUIT_REGISTRATION = 5,
+    COMPETITION_REGISTER_CREATE_QUIT_MENU = 6,
+    COMPETITION_REGISTER_WAIT_QUIT_MENU = 7,
+    COMPETITION_REGISTER_CONFIRM_QUIT_COMPETITION = 8,
+    COMPETITION_REGISTER_CREATE_CONFIRM_QUIT_MENU = 9,
+    COMPETITION_REGISTER_WAIT_CONFIRM_QUIT_MENU = 10,
+    COMPETITION_REGISTER_HIDE_CANCELLED_TEAM = 11,
+    COMPETITION_REGISTER_CHECK_TEAM = 12,
+    COMPETITION_REGISTER_SHOW_INVALID_TEAM = 13,
+    COMPETITION_REGISTER_SHOW_EMPTY_TEAM = 14,
+    COMPETITION_REGISTER_HIDE_CHECKED_TEAM = 15,
+    COMPETITION_REGISTER_SHOW_CHECKING_MESSAGE = 16,
+    COMPETITION_REGISTER_START_SERVER_CHECK = 17,
+    COMPETITION_REGISTER_WAIT_SERVER_CHECK = 18,
+    COMPETITION_REGISTER_SHOW_SERVER_REJECTION = 19,
+    COMPETITION_REGISTER_UPLOAD_TEAM = 20,
+    COMPETITION_REGISTER_WAIT_TEAM_UPLOAD = 21,
+    COMPETITION_REGISTER_LOCK_TEAM = 22,
+    COMPETITION_REGISTER_START_SAVE = 23,
+    COMPETITION_REGISTER_WAIT_SAVE = 24,
+    COMPETITION_REGISTER_POST_REGISTRATION = 25,
+    COMPETITION_REGISTER_WAIT_REGISTRATION_POST = 26,
+    COMPETITION_REGISTER_SHOW_COMPLETE_MESSAGE = 27,
+    COMPETITION_REGISTER_START_COMPETITION_MENU = 28,
+    COMPETITION_REGISTER_LOGOUT = 29,
+    COMPETITION_REGISTER_WAIT_MESSAGE = 30,
+};
+
+enum {
+    COMPETITION_MENU_FLOW_CHECK_CONNECTION = 0,
+    COMPETITION_MENU_FLOW_CREATE_CARD = 1,
+    COMPETITION_MENU_FLOW_WAIT_CARD_SHOWN = 2,
+    COMPETITION_MENU_FLOW_SHOW_BATTLE_PROMPT = 3,
+    COMPETITION_MENU_FLOW_CREATE_BATTLE_MENU = 4,
+    COMPETITION_MENU_FLOW_WAIT_BATTLE_MENU = 5,
+    COMPETITION_MENU_FLOW_START_CANCEL = 6,
+    COMPETITION_MENU_FLOW_START_UNREGISTER = 7,
+    COMPETITION_MENU_FLOW_WAIT_UNREGISTER = 8,
+    COMPETITION_MENU_FLOW_START_LOGOUT = 9,
+    COMPETITION_MENU_FLOW_SHOW_TEAM_CHECK_MESSAGE = 10,
+    COMPETITION_MENU_FLOW_START_TEAM_CHECK = 11,
+    COMPETITION_MENU_FLOW_WAIT_TEAM_CHECK = 12,
+    COMPETITION_MENU_FLOW_START_MATCH = 13,
+    COMPETITION_MENU_FLOW_SHOW_INVALID_TEAM = 14,
+    COMPETITION_MENU_FLOW_LOGOUT_INVALID_TEAM = 15,
+    COMPETITION_MENU_FLOW_WAIT_MESSAGE = 16,
+};
+
+enum {
+    COMPETITION_MATCH_SHOW_PREPARATION_MESSAGE = 0,
+    COMPETITION_MATCH_CHECK_PERIOD_CONNECTION = 1,
+    COMPETITION_MATCH_WAIT_PERIOD = 2,
+    COMPETITION_MATCH_LOGOUT = 3,
+    COMPETITION_MATCH_DOWNLOAD_RECORD = 4,
+    COMPETITION_MATCH_WAIT_RECORD = 5,
+    COMPETITION_MATCH_DELAY_CARD_REFRESH = 6,
+    COMPETITION_MATCH_HIDE_CARD = 7,
+    COMPETITION_MATCH_CREATE_CARD = 8,
+    COMPETITION_MATCH_WAIT_CARD_SHOWN = 9,
+    COMPETITION_MATCH_SHOW_SEARCH_MESSAGE = 10,
+    COMPETITION_MATCH_START_SEARCH = 11,
+    COMPETITION_MATCH_WAIT_MATCH = 12,
+    COMPETITION_MATCH_SEND_PLAYER_INFO = 13,
+    COMPETITION_MATCH_RECEIVE_PLAYER_INFO = 14,
+    COMPETITION_MATCH_CHECK_COMPETITION_ID = 15,
+    COMPETITION_MATCH_CHECK_OPPONENT_TEAM = 16,
+    COMPETITION_MATCH_DOWNLOAD_OPPONENT_TEAM = 17,
+    COMPETITION_MATCH_WAIT_OPPONENT_TEAM = 18,
+    COMPETITION_MATCH_SYNC_TEAM_DOWNLOAD = 19,
+    COMPETITION_MATCH_WAIT_TEAM_DOWNLOAD_SYNC = 20,
+    COMPETITION_MATCH_VERIFY_OPPONENT_TEAM = 21,
+    COMPETITION_MATCH_SEND_VALIDATION_RESULT = 22,
+    COMPETITION_MATCH_RECEIVE_VALIDATION_RESULT = 23,
+    COMPETITION_MATCH_CHECK_VALIDATION_RESULTS = 24,
+    COMPETITION_MATCH_START_NAME_CHECK = 25,
+    COMPETITION_MATCH_WAIT_NAME_CHECK = 26,
+    COMPETITION_MATCH_SYNC_VALIDATED_PLAYERS = 27,
+    COMPETITION_MATCH_WAIT_VALIDATED_PLAYERS_SYNC = 28,
+    COMPETITION_MATCH_SYNC_MATCH_READY = 29,
+    COMPETITION_MATCH_WAIT_MATCH_READY_SYNC = 30,
+    COMPETITION_MATCH_SHOW_OPPONENT_FOUND = 31,
+    COMPETITION_MATCH_WAIT_OPPONENT_FOUND_DELAY = 32,
+    COMPETITION_MATCH_WAIT_PARTNER_CARD = 33,
+    COMPETITION_MATCH_WAIT_PARTNER_CARD_DELAY = 34,
+    COMPETITION_MATCH_START_SESSION_REPORT = 35,
+    COMPETITION_MATCH_WAIT_SESSION_REPORT = 36,
+    COMPETITION_MATCH_SHOW_TEAM_SELECTION_MESSAGE = 37,
+    COMPETITION_MATCH_WAIT_TEAM_SELECTION_DELAY = 38,
+    COMPETITION_MATCH_CANCEL_SESSION = 39,
+    COMPETITION_MATCH_PROMPT_QUIT = 40,
+    COMPETITION_MATCH_CREATE_QUIT_MENU = 41,
+    COMPETITION_MATCH_WAIT_QUIT_MENU = 42,
+    COMPETITION_MATCH_PROMPT_CONTINUE = 43,
+    COMPETITION_MATCH_CREATE_CONTINUE_MENU = 44,
+    COMPETITION_MATCH_WAIT_CONTINUE_MENU = 45,
+    COMPETITION_MATCH_DELAY_PERIOD_RECHECK = 46,
+    COMPETITION_MATCH_CHECK_PERIOD_RECONNECTION = 47,
+    COMPETITION_MATCH_WAIT_PERIOD_RECHECK = 48,
+    COMPETITION_MATCH_SEND_CANCEL_COMMAND = 49,
+    COMPETITION_MATCH_CANCEL_AND_RETRY = 50,
+    COMPETITION_MATCH_START_DISCONNECT = 51,
+    COMPETITION_MATCH_WAIT_DISCONNECT = 52,
+    COMPETITION_MATCH_WAIT_MESSAGE = 53,
+};
+
+enum {
+    COMPETITION_RESULT_CREATE_REPORT_HEAP = 0,
+    COMPETITION_RESULT_SHOW_REPORT_MESSAGE = 1,
+    COMPETITION_RESULT_START_REPORT = 2,
+    COMPETITION_RESULT_WAIT_REPORT = 3,
+    COMPETITION_RESULT_FINISH_REPORT = 4,
+    COMPETITION_RESULT_RECORD_MET_TRAINER = 5,
+    COMPETITION_RESULT_WAIT_DISCONNECT = 6,
+    COMPETITION_RESULT_UPLOAD_RESULTS = 7,
+    COMPETITION_RESULT_WAIT_RESULTS_UPLOAD = 8,
+    COMPETITION_RESULT_SHOW_RESULTS_SENT = 9,
+    COMPETITION_RESULT_SHOW_RESULT_SCREEN = 10,
+    COMPETITION_RESULT_WAIT_MESSAGE = 13,
+};
+
+enum {
+    COMPETITION_AFTER_BATTLE_SHOW_SAVE_MESSAGE = 0,
+    COMPETITION_AFTER_BATTLE_START_SAVE = 1,
+    COMPETITION_AFTER_BATTLE_WAIT_SAVE = 2,
+    COMPETITION_AFTER_BATTLE_CHECK_PERIOD_CONNECTION = 3,
+    COMPETITION_AFTER_BATTLE_WAIT_PERIOD = 4,
+    COMPETITION_AFTER_BATTLE_WAIT_MESSAGE = 5,
+};
+
+enum {
+    COMPETITION_CONTINUE_CHECK_CONNECTION = 0,
+    COMPETITION_CONTINUE_SHOW_BATTLE_PROMPT = 1,
+    COMPETITION_CONTINUE_CREATE_MENU = 2,
+    COMPETITION_CONTINUE_WAIT_MENU = 3,
+    COMPETITION_CONTINUE_START_UNREGISTER = 4,
+    COMPETITION_CONTINUE_WAIT_UNREGISTER = 5,
+    COMPETITION_CONTINUE_LOGOUT = 6,
+    COMPETITION_CONTINUE_WAIT_MESSAGE = 7,
+};
+
+enum {
+    COMPETITION_CANCEL_PROMPT_QUIT = 0,
+    COMPETITION_CANCEL_CREATE_MENU = 1,
+    COMPETITION_CANCEL_WAIT_MENU = 2,
+    COMPETITION_CANCEL_WAIT_MESSAGE = 3,
+};
+
+enum {
+    COMPETITION_LOGOUT_SHOW_SAVE_MESSAGE = 0,
+    COMPETITION_LOGOUT_START_SAVE = 1,
+    COMPETITION_LOGOUT_WAIT_SAVE = 2,
+    COMPETITION_LOGOUT_SHOW_UPLOAD_MESSAGE = 3,
+    COMPETITION_LOGOUT_UPLOAD_LOGOUT = 4,
+    COMPETITION_LOGOUT_WAIT_LOGOUT_UPLOAD = 5,
+    COMPETITION_LOGOUT_END = 6,
+    COMPETITION_LOGOUT_WAIT_MESSAGE = 7,
+};
+
+enum {
+    COMPETITION_QUIT_CHECK_PERIOD_CONNECTION = 0,
+    COMPETITION_QUIT_WAIT_PERIOD = 1,
+    COMPETITION_QUIT_LOGOUT = 2,
+    COMPETITION_QUIT_WAIT_MESSAGE = 3,
+};
+
+enum {
+    COMPETITION_PERIOD_DELAY_DATE_CHECK = 0,
+    COMPETITION_PERIOD_CHECK_DATES = 1,
+    COMPETITION_PERIOD_SHOW_NOT_STARTED = 2,
+    COMPETITION_PERIOD_SHOW_ENDED = 3,
+    COMPETITION_PERIOD_CHECK_REGISTRATION = 4,
+    COMPETITION_PERIOD_SHOW_SAVE_MESSAGE = 5,
+    COMPETITION_PERIOD_UNLOCK_TEAM_AND_SAVE = 6,
+    COMPETITION_PERIOD_WAIT_SAVE = 7,
+    COMPETITION_PERIOD_CHECK_TEAM_WAS_LOCKED = 8,
+    COMPETITION_PERIOD_SHOW_TEAM_UNLOCKED = 9,
+    COMPETITION_PERIOD_SHOW_UPLOAD_MESSAGE = 10,
+    COMPETITION_PERIOD_POST_PERIOD_ENDED = 11,
+    COMPETITION_PERIOD_WAIT_PERIOD_POST = 12,
+    COMPETITION_PERIOD_END = 13,
+    COMPETITION_PERIOD_WAIT_MESSAGE = 14,
+};
+
+enum {
+    COMPETITION_UNREGISTER_CHECK_REGISTRATION = 0,
+    COMPETITION_UNREGISTER_SHOW_NOT_REGISTERED = 1,
+    COMPETITION_UNREGISTER_PROMPT_UNREGISTER = 2,
+    COMPETITION_UNREGISTER_CREATE_UNREGISTER_MENU = 3,
+    COMPETITION_UNREGISTER_WAIT_UNREGISTER_MENU = 4,
+    COMPETITION_UNREGISTER_PROMPT_CONFIRM_UNREGISTER = 5,
+    COMPETITION_UNREGISTER_CREATE_CONFIRM_MENU = 6,
+    COMPETITION_UNREGISTER_WAIT_CONFIRM_MENU = 7,
+    COMPETITION_UNREGISTER_SHOW_SAVE_MESSAGE = 8,
+    COMPETITION_UNREGISTER_UNLOCK_TEAM_AND_SAVE = 9,
+    COMPETITION_UNREGISTER_WAIT_SAVE = 10,
+    COMPETITION_UNREGISTER_SHOW_TEAM_UNLOCKED = 11,
+    COMPETITION_UNREGISTER_SHOW_UPLOAD_MESSAGE = 12,
+    COMPETITION_UNREGISTER_POST_UNREGISTER = 13,
+    COMPETITION_UNREGISTER_WAIT_UNREGISTER_POST = 14,
+    COMPETITION_UNREGISTER_END = 15,
+    COMPETITION_UNREGISTER_WAIT_MESSAGE = 16,
+};
+
+enum {
+    COMPETITION_TEAM_CHECK_DELAY = 0,
+    COMPETITION_TEAM_CHECK_START_CHECK = 1,
+    COMPETITION_TEAM_CHECK_WAIT_CHECK = 2,
+    COMPETITION_TEAM_CHECK_COPY_SIGNATURE = 3,
+    COMPETITION_TEAM_CHECK_END = 4,
+};
+
+enum {
+    COMPETITION_SEARCH_CANCEL_IDLE = 0,
+    COMPETITION_SEARCH_CANCEL_SHOW_QUIT_PROMPT = 1,
+    COMPETITION_SEARCH_CANCEL_WAIT_QUIT_PROMPT = 2,
+    COMPETITION_SEARCH_CANCEL_CREATE_MENU = 3,
+    COMPETITION_SEARCH_CANCEL_WAIT_MENU = 4,
+    COMPETITION_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE = 5,
+    COMPETITION_SEARCH_CANCEL_DISCONNECT = 6,
+    COMPETITION_SEARCH_CANCEL_CONFIRMED = 7,
+};
+
+enum {
+    COMPETITION_MENU_SELECTION_BATTLE = 0,
+    COMPETITION_MENU_SELECTION_UNREGISTER = 1,
+    COMPETITION_MENU_SELECTION_QUIT = 2,
+};
+
 #define HEAPID_WIFIBATTLEMATCH 0x56
 
 // The menus
@@ -75,8 +392,8 @@ enum {
 // What a request to the server's account takes
 typedef struct {
     u8 unk0;
-    u8 unk1;
-    u32 unk4;
+    u8 registrationState;
+    u32 profileId;
 } WifiBattleMatchLinkRequest;
 
 // The work of the Wi-Fi competition
@@ -100,8 +417,8 @@ typedef struct {
     u32 subTaskResult;
     WifiBattleMatchNetCheck signature;
     u32 timer;
-    u32 unkE4;
-    u32 unkE8;
+    u32 opponentValidationErrors;
+    u32 peerValidationErrors;
     u32 cancelSeq;
     u32 idleTimer;
     u32 exchangeResult;
@@ -195,13 +512,13 @@ static BOOL WifiBattleMatchLink_CompetitionInit(GameProc *proc, u32 *state, void
     link->graphic = WifiBattleMatchGraphic_Create(1, HEAPID_WIFIBATTLEMATCH_LINK);
     link->res =
         WifiBattleMatchRes_Create(WifiBattleMatchGraphic_GetClActUnit(link->graphic), 0, HEAPID_WIFIBATTLEMATCH_LINK);
-    link->font = GFL_FontCreate(0x17, 0, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
-    link->smallFont = GFL_FontCreate(0x17, 3, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
+    link->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
+    link->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
     link->printQueue = PrintQueue_CreateDefault(HEAPID_WIFIBATTLEMATCH_LINK);
     link->msgData =
         GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING, HEAPID_WIFIBATTLEMATCH_LINK);
     link->wordSet = GFL_WordSetSystemCreate(8, 0x40, HEAPID_WIFIBATTLEMATCH_LINK);
-    link->net = WifiBattleMatchNet_Create(link->param->unk3C, linkParam->param->gameData, linkParam->unk1C,
+    link->net = WifiBattleMatchNet_Create(link->param->netData, linkParam->param->gameData, linkParam->loginBuffer,
                                           HEAPID_WIFIBATTLEMATCH_LINK);
     link->msgBox =
         WifiBattleMatchMsgBox_Create(0, 15, 14, 10, link->printQueue, link->font, HEAPID_WIFIBATTLEMATCH_LINK);
@@ -250,26 +567,26 @@ static BOOL WifiBattleMatchLink_CompetitionMain(GameProc *proc, u32 *state, void
     WifiBattleMatchLinkCompetition *link = work;
 
     switch (*state) {
-    case 0:
-        GFL_FadeSet(3, 16, 0, 0);
-        *state = 1;
+    case COMPETITION_PHASE_FADE_IN:
+        GFL_FadeSet((FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK), 16, 0, 0);
+        *state = COMPETITION_PHASE_WAIT_FADE_IN;
         break;
-    case 1:
+    case COMPETITION_PHASE_WAIT_FADE_IN:
         if (!GFL_FadeIsRunning()) {
-            *state = 2;
+            *state = COMPETITION_PHASE_RUN_TASK;
         }
         break;
-    case 2:
+    case COMPETITION_PHASE_RUN_TASK:
         WifiBattleMatchTask_Run(link->task);
         if (WifiBattleMatchTask_IsEnded(link->task)) {
-            *state = 3;
+            *state = COMPETITION_PHASE_FADE_OUT;
         }
         break;
-    case 3:
-        GFL_FadeSet(3, 0, 16, 0);
-        *state = 4;
+    case COMPETITION_PHASE_FADE_OUT:
+        GFL_FadeSet((FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK), 0, 16, 0);
+        *state = COMPETITION_PHASE_WAIT_FADE_OUT;
         break;
-    case 4:
+    case COMPETITION_PHASE_WAIT_FADE_OUT:
         if (!GFL_FadeIsRunning()) {
             return TRUE;
         }
@@ -297,17 +614,17 @@ static void WifiBattleMatchLink_CompetitionTaskStart(WifiBattleMatchTask *task, 
     WifiBattleMatchLinkCompetition *link = work;
 
     switch (link->param->result) {
-    case 0:
+    case WBM_LINK_RESULT_INITIAL:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskAccount);
         return;
-    case 2:
+    case WBM_LINK_RESULT_CANCELLED:
         WifiBattleMatchNet_CancelMatch(link->net);
         // fall through
-    case 1:
+    case WBM_LINK_RESULT_BATTLE_FINISHED:
         WifiBattleMatchLink_CompetitionShowCard(link);
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskResult);
         return;
-    case 3:
+    case WBM_LINK_RESULT_RESULT_SHOWN:
         WifiBattleMatchLink_CompetitionShowCard(link);
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskAfterBattle);
         break;
@@ -320,84 +637,84 @@ static void WifiBattleMatchLink_CompetitionTaskAccount(WifiBattleMatchTask *task
     u32 ready;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_ACCOUNT_CHECK_GAME_SYNC_ID:
         if (DreamWorldSave_GetIDShown(getDreamWorldStuffAddress(GameData_GetSaveControl(param->param->gameData)))) {
-            *seq = 1;
+            *seq = COMPETITION_ACCOUNT_SHOW_SEARCH_MESSAGE;
         } else {
-            *seq = 5;
+            *seq = COMPETITION_ACCOUNT_SHOW_UNREGISTERED_MESSAGE;
         }
         break;
-    case 1:
+    case COMPETITION_ACCOUNT_SHOW_SEARCH_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingCompetitionData,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 2;
+        *seq = COMPETITION_ACCOUNT_REQUEST_ACCOUNT;
         break;
-    case 2:
+    case COMPETITION_ACCOUNT_REQUEST_ACCOUNT:
         MI_CpuFill8(param->account, 0, sizeof(WifiBattleMatchLinkAccount));
         WifiBattleMatchNet_StartAccountRequest(link->net, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 3;
+        *seq = COMPETITION_ACCOUNT_WAIT_ACCOUNT;
         break;
-    case 3:
+    case COMPETITION_ACCOUNT_WAIT_ACCOUNT:
         ready = WifiBattleMatchNet_AccountRequestMain(link->net);
-        if (ready == 1) {
+        if (ready == WBM_NET_SUCCESS) {
             WifiBattleMatchNet_GetAccountValues(link->net, link->param->account);
-            *seq = 4;
+            *seq = COMPETITION_ACCOUNT_CHECK_REGISTRATION;
             break;
         }
-        if (ready == 3) {
+        if (ready == WBM_NET_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 4:
+    case COMPETITION_ACCOUNT_CHECK_REGISTRATION:
         if (param->account->registered != 0) {
-            *seq = 7;
+            *seq = COMPETITION_ACCOUNT_WAIT_LOGIN_COOLDOWN;
         } else {
-            *seq = 5;
+            *seq = COMPETITION_ACCOUNT_SHOW_UNREGISTERED_MESSAGE;
         }
         break;
-    case 5:
+    case COMPETITION_ACCOUNT_SHOW_UNREGISTERED_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_GameSyncIdHas,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 6;
+        *seq = COMPETITION_ACCOUNT_WAIT_UNREGISTERED_MESSAGE;
         break;
-    case 6:
+    case COMPETITION_ACCOUNT_WAIT_UNREGISTERED_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskEnd);
         }
         break;
-    case 7:
-        if (*link->param->unk20 == 0) {
+    case COMPETITION_ACCOUNT_WAIT_LOGIN_COOLDOWN:
+        if (*link->param->recordRequestCooldown == 0) {
             WifiBattleMatchNet_ResetLogin(link->net);
-            *seq = 8;
+            *seq = COMPETITION_ACCOUNT_LOGIN;
         }
         break;
-    case 8:
+    case COMPETITION_ACCOUNT_LOGIN:
         ready = WifiBattleMatchNet_LoginMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
-            *seq = 9;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
+            *seq = COMPETITION_ACCOUNT_START_ENTRY;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 9:
+    case COMPETITION_ACCOUNT_START_ENTRY:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskEntry);
         break;
     }
@@ -413,498 +730,498 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
     u8 accountState;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_ENTRY_CHECK_RESET_REQUEST:
         if (param->account->unk4 == 1) {
-            *seq = 1;
+            *seq = COMPETITION_ENTRY_RESET_ACCOUNT_ENTRY;
         } else {
-            *seq = 3;
+            *seq = COMPETITION_ENTRY_CHECK_LOCAL_REGISTRATION;
         }
         break;
-    case 1: {
+    case COMPETITION_ENTRY_RESET_ACCOUNT_ENTRY: {
         WifiBattleMatchLinkRequest request;
 
         MI_CpuFill8(&request, 0, sizeof(request));
-        request.unk1 = 0;
+        request.registrationState = WBM_REGISTRATION_NONE;
         request.unk0 = link->param->account->unk4;
-        request.unk4 = WifiBattleMatchNet_GetGSID(link->net);
-        link->param->account->unk5 = 0;
+        request.profileId = WifiBattleMatchNet_GetGSID(link->net);
+        link->param->account->registrationState = WBM_REGISTRATION_NONE;
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 2;
+        *seq = COMPETITION_ENTRY_WAIT_ACCOUNT_RESET;
         break;
     }
-    case 2:
+    case COMPETITION_ENTRY_WAIT_ACCOUNT_RESET:
         ready = WifiBattleMatchNet_PostRequestMain(link->net);
-        if (ready == 1) {
-            *seq = 11;
-        } else if (ready == 3) {
+        if (ready == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_ENTRY_SHOW_DOWNLOAD_MESSAGE;
+        } else if (ready == WBM_NET_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 3:
-        if (link->param->account->unk5 == TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B)) {
-            *seq = 4;
-        } else if (TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B) == 4 ||
+    case COMPETITION_ENTRY_CHECK_LOCAL_REGISTRATION:
+        if (link->param->account->registrationState == TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B)) {
+            *seq = COMPETITION_ENTRY_CHECK_CLOSED_REGISTRATION;
+        } else if (TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B) == WBM_REGISTRATION_WITHDRAWN ||
                    TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B) == 5) {
-            *seq = 7;
+            *seq = COMPETITION_ENTRY_UPDATE_SERVER_REGISTRATION;
         } else {
-            *seq = 4;
+            *seq = COMPETITION_ENTRY_CHECK_CLOSED_REGISTRATION;
         }
         break;
-    case 4:
-        accountState = param->account->unk5;
-        if (accountState == 3) {
-            *seq = 5;
-        } else if (accountState == 4 || accountState == 5) {
-            *seq = 6;
+    case COMPETITION_ENTRY_CHECK_CLOSED_REGISTRATION:
+        accountState = param->account->registrationState;
+        if (accountState == WBM_REGISTRATION_PERIOD_ENDED) {
+            *seq = COMPETITION_ENTRY_SHOW_ENDED_MESSAGE;
+        } else if (accountState == WBM_REGISTRATION_WITHDRAWN || accountState == 5) {
+            *seq = COMPETITION_ENTRY_SHOW_UNAVAILABLE_MESSAGE;
         } else {
-            *seq = 11;
+            *seq = COMPETITION_ENTRY_SHOW_DOWNLOAD_MESSAGE;
         }
         break;
-    case 5:
+    case COMPETITION_ENTRY_SHOW_ENDED_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_NoCompetitionsHaveBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 46);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 6:
+    case COMPETITION_ENTRY_SHOW_UNAVAILABLE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_NoCompetitionsHaveBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 46);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 7: {
+    case COMPETITION_ENTRY_UPDATE_SERVER_REGISTRATION: {
         WifiBattleMatchLinkRequest request;
 
         MI_CpuFill8(&request, 0, sizeof(request));
-        request.unk1 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
-        request.unk4 = WifiBattleMatchNet_GetGSID(link->net);
-        link->param->account->unk5 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
+        request.registrationState = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
+        request.profileId = WifiBattleMatchNet_GetGSID(link->net);
+        link->param->account->registrationState = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 8;
+        *seq = COMPETITION_ENTRY_WAIT_REGISTRATION_UPDATE;
         break;
     }
-    case 8:
+    case COMPETITION_ENTRY_WAIT_REGISTRATION_UPDATE:
         ready = WifiBattleMatchNet_PostRequestMain(link->net);
-        if (ready == 1) {
-            *seq = 9;
-        } else if (ready == 3) {
+        if (ready == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_ENTRY_RETURN_TO_UNAVAILABLE_MESSAGE;
+        } else if (ready == WBM_NET_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 9:
-        *seq = 6;
+    case COMPETITION_ENTRY_RETURN_TO_UNAVAILABLE_MESSAGE:
+        *seq = COMPETITION_ENTRY_SHOW_UNAVAILABLE_MESSAGE;
         break;
-    case 10:
+    case COMPETITION_ENTRY_WAIT_PREVIOUS_WRITE:
         ready = WifiBattleMatchNet_WriteMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
-            *seq = 6;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
+            *seq = COMPETITION_ENTRY_SHOW_UNAVAILABLE_MESSAGE;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 11:
+    case COMPETITION_ENTRY_SHOW_DOWNLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CheckingCompetitionDetails,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 12);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_START_DOWNLOAD);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 12:
+    case COMPETITION_ENTRY_START_DOWNLOAD:
         WifiBattleMatchNet_InitDownload(link->net, param->account->profileId);
-        *seq = 13;
+        *seq = COMPETITION_ENTRY_WAIT_DOWNLOAD;
         break;
-    case 13:
+    case COMPETITION_ENTRY_WAIT_DOWNLOAD:
         ready = WifiBattleMatchNet_DownloadMain(link->net);
-        if (ready == 1) {
+        if (ready == WBM_DOWNLOAD_SUCCESS) {
             WifiBattleMatchNet_GetDownload(link->net, &link->serverEntry);
             if (TournamentEntry_CheckCRC(&link->serverEntry)) {
-                *seq = 14;
+                *seq = COMPETITION_ENTRY_CHECK_SERVER_REGISTRATION;
             } else {
-                *seq = 15;
+                *seq = COMPETITION_ENTRY_CHECK_STORED_COMPETITION;
             }
-        } else if (ready == 2) {
-            *seq = 15;
+        } else if (ready == WBM_DOWNLOAD_NO_FILE) {
+            *seq = COMPETITION_ENTRY_CHECK_STORED_COMPETITION;
         }
-        if (ready == 0) {
+        if (ready == WBM_DOWNLOAD_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 15:
+    case COMPETITION_ENTRY_CHECK_STORED_COMPETITION:
         if (TournamentEntry_GetField(entry, TOURNAMENT_FIELD_CUP_ID) == 0) {
-            *seq = 18;
+            *seq = COMPETITION_ENTRY_SHOW_NO_CURRENT_COMPETITION;
         } else {
-            *seq = 16;
+            *seq = COMPETITION_ENTRY_CHECK_PERIOD_BEFORE_DOWNLOAD;
         }
         break;
-    case 16:
+    case COMPETITION_ENTRY_CHECK_PERIOD_BEFORE_DOWNLOAD:
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
-        case 0:
+        case WBM_RESULT_OK:
             WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskCheckPeriod);
-            *seq = 17;
+            *seq = COMPETITION_ENTRY_WAIT_PERIOD_BEFORE_DOWNLOAD;
             break;
         }
         break;
-    case 17:
+    case COMPETITION_ENTRY_WAIT_PERIOD_BEFORE_DOWNLOAD:
         ready = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
         if (ready != SUB_TASK_RUNNING) {
-            *seq = 46;
+            *seq = COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE;
         }
-        if (ready == 3) {
+        if (ready == WBM_PERIOD_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 18:
+    case COMPETITION_ENTRY_SHOW_NO_CURRENT_COMPETITION:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereNoCurrentCompetitions,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 55);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_END);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 14:
-        if (param->account->unk5 == 0) {
-            *seq = 19;
-        } else if (param->account->unk5 == 1) {
-            *seq = 53;
-        } else if (param->account->unk5 == 2) {
-            *seq = 54;
+    case COMPETITION_ENTRY_CHECK_SERVER_REGISTRATION:
+        if (param->account->registrationState == WBM_REGISTRATION_NONE) {
+            *seq = COMPETITION_ENTRY_CHECK_REPLACED_COMPETITION;
+        } else if (param->account->registrationState == WBM_REGISTRATION_TEAM_REQUIRED) {
+            *seq = COMPETITION_ENTRY_START_TEAM_REGISTRATION;
+        } else if (param->account->registrationState == WBM_REGISTRATION_COMPLETE) {
+            *seq = COMPETITION_ENTRY_START_COMPETITION_MENU;
         } else {
-            *seq = 55;
+            *seq = COMPETITION_ENTRY_END;
         }
         break;
-    case 19:
+    case COMPETITION_ENTRY_CHECK_REPLACED_COMPETITION:
         if (TournamentEntry_GetField(entry, TOURNAMENT_FIELD_CUP_ID) == 0) {
-            *seq = 42;
+            *seq = COMPETITION_ENTRY_SHOW_ID_UPDATE_MESSAGE;
         } else {
-            *seq = 20;
+            *seq = COMPETITION_ENTRY_CREATE_CARD;
         }
         break;
-    case 20:
+    case COMPETITION_ENTRY_CREATE_CARD:
         WifiBattleMatchLink_CompetitionCreateCard(link);
         if (BattleBoxSave_CheckFlags(getBattleBox(GameData_GetSaveControl(param->param->gameData)), 1)) {
             WifiBattleMatchLink_CompetitionSetCardPage(link, 0);
         } else {
             WifiBattleMatchLink_CompetitionSetCardPage(link, 1);
         }
-        *seq = 21;
+        *seq = COMPETITION_ENTRY_WAIT_CARD_SHOWN;
         break;
-    case 21:
+    case COMPETITION_ENTRY_WAIT_CARD_SHOWN:
         if (WifiBattleMatchLink_CompetitionIsCardShown(link)) {
-            *seq = 22;
+            *seq = COMPETITION_ENTRY_CHECK_BATTLE_BOX;
         }
         break;
-    case 22:
+    case COMPETITION_ENTRY_CHECK_BATTLE_BOX:
         if (BattleBoxSave_CheckFlags(getBattleBox(GameData_GetSaveControl(param->param->gameData)), 1)) {
-            *seq = 23;
+            *seq = COMPETITION_ENTRY_PROMPT_UPDATE_REGISTERED_BOX;
         } else {
-            *seq = 29;
+            *seq = COMPETITION_ENTRY_PROMPT_UPDATE_ENTRY;
         }
         break;
-    case 23:
+    case COMPETITION_ENTRY_PROMPT_UPDATE_REGISTERED_BOX:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ParticipateWiFiCompetition_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 24);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_REGISTERED_UPDATE_MENU);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 24:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 25;
+    case COMPETITION_ENTRY_CREATE_REGISTERED_UPDATE_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_ENTRY_WAIT_REGISTERED_UPDATE_MENU;
         break;
-    case 25:
+    case COMPETITION_ENTRY_WAIT_REGISTERED_UPDATE_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 35;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_ENTRY_HIDE_OLD_CARD;
             break;
-        case 1:
-            *seq = 26;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_ENTRY_EXPLAIN_REGISTERED_UPDATE_REQUIRED;
             break;
         }
         break;
-    case 26:
+    case COMPETITION_ENTRY_EXPLAIN_REGISTERED_UPDATE_REQUIRED:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CannotParticipateWithoutUpdating,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 27);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_REGISTERED_QUIT_MENU);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 27:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 28;
+    case COMPETITION_ENTRY_CREATE_REGISTERED_QUIT_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_ENTRY_WAIT_REGISTERED_QUIT_MENU;
         break;
-    case 28:
+    case COMPETITION_ENTRY_WAIT_REGISTERED_QUIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 55;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_ENTRY_END;
             break;
-        case 1:
-            *seq = 23;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_ENTRY_PROMPT_UPDATE_REGISTERED_BOX;
             break;
         }
         break;
-    case 29:
+    case COMPETITION_ENTRY_PROMPT_UPDATE_ENTRY:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ParticipateWiFiCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 30);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_ENTRY_UPDATE_MENU);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 30:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 31;
+    case COMPETITION_ENTRY_CREATE_ENTRY_UPDATE_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_ENTRY_WAIT_ENTRY_UPDATE_MENU;
         break;
-    case 31:
+    case COMPETITION_ENTRY_WAIT_ENTRY_UPDATE_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 35;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_ENTRY_HIDE_OLD_CARD;
             break;
-        case 1:
-            *seq = 32;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_ENTRY_EXPLAIN_ENTRY_UPDATE_REQUIRED;
             break;
         }
         break;
-    case 32:
+    case COMPETITION_ENTRY_EXPLAIN_ENTRY_UPDATE_REQUIRED:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CannotParticipateWithoutUpdating,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 33);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_ENTRY_QUIT_MENU);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 33:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 34;
+    case COMPETITION_ENTRY_CREATE_ENTRY_QUIT_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_ENTRY_WAIT_ENTRY_QUIT_MENU;
         break;
-    case 34:
+    case COMPETITION_ENTRY_WAIT_ENTRY_QUIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 55;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_ENTRY_END;
             break;
-        case 1:
-            *seq = 29;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_ENTRY_PROMPT_UPDATE_ENTRY;
             break;
         }
         break;
-    case 35:
+    case COMPETITION_ENTRY_HIDE_OLD_CARD:
         if (WifiBattleMatchLink_CompetitionIsCardHidden(link)) {
-            *seq = 36;
+            *seq = COMPETITION_ENTRY_DELETE_OLD_CARD;
         }
         break;
-    case 36:
+    case COMPETITION_ENTRY_DELETE_OLD_CARD:
         WifiBattleMatchLink_CompetitionDeleteCard(link);
-        *seq = 42;
+        *seq = COMPETITION_ENTRY_SHOW_ID_UPDATE_MESSAGE;
         break;
-    case 37:
+    case COMPETITION_ENTRY_SHOW_UPLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 38);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_UPLOAD_EMPTY_PARTY);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 38:
-        if (*link->param->unk20 == 0) {
-            MI_CpuFill8(&param->unk34->body, 0, sizeof(param->unk34->body));
-            WifiBattleMatchNet_StartWrite(link->net, 0, &link->param->unk34->body);
-            *seq = 39;
+    case COMPETITION_ENTRY_UPLOAD_EMPTY_PARTY:
+        if (*link->param->recordRequestCooldown == 0) {
+            MI_CpuFill8(&param->ranking->partyData, 0, sizeof(param->ranking->partyData));
+            WifiBattleMatchNet_StartWrite(link->net, WBM_WRITE_WIFICUP, &link->param->ranking->partyData);
+            *seq = COMPETITION_ENTRY_WAIT_EMPTY_PARTY_UPLOAD;
         }
         break;
-    case 39:
+    case COMPETITION_ENTRY_WAIT_EMPTY_PARTY_UPLOAD:
         ready = WifiBattleMatchNet_WriteMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
-            *seq = 40;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
+            *seq = COMPETITION_ENTRY_POST_ENTRY_CREATED;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 40: {
+    case COMPETITION_ENTRY_POST_ENTRY_CREATED: {
         WifiBattleMatchLinkRequest request;
 
         MI_CpuFill8(&request, 0, sizeof(request));
         request.unk0 = 0;
-        request.unk1 = 1;
-        request.unk4 = WifiBattleMatchNet_GetGSID(link->net);
-        link->param->account->unk5 = 1;
+        request.registrationState = WBM_REGISTRATION_TEAM_REQUIRED;
+        request.profileId = WifiBattleMatchNet_GetGSID(link->net);
+        link->param->account->registrationState = WBM_REGISTRATION_TEAM_REQUIRED;
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 41;
+        *seq = COMPETITION_ENTRY_WAIT_ENTRY_CREATED;
         break;
     }
-    case 41:
+    case COMPETITION_ENTRY_WAIT_ENTRY_CREATED:
         ready = WifiBattleMatchNet_PostRequestMain(link->net);
-        if (ready == 1) {
-            *seq = 53;
-        } else if (ready == 3) {
+        if (ready == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_ENTRY_START_TEAM_REGISTRATION;
+        } else if (ready == WBM_NET_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 42:
+    case COMPETITION_ENTRY_SHOW_ID_UPDATE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PlayerIdWillUpdated,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 43);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SAVE_NEW_COMPETITION);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 43: {
+    case COMPETITION_ENTRY_SAVE_NEW_COMPETITION: {
         SaveControl *save = GameData_GetSaveControl(param->param->gameData);
         BattleBoxSave *battleBox = getBattleBox(save);
         TournamentTeam *previous = TournamentBlock_GetTeam(getTournamentBlockAddress(save), 0);
 
         MI_CpuCopy8(&link->serverEntry, link->entry, sizeof(link->serverEntry));
         BattleBoxSave_ClearFlags(battleBox, 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, 1);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_TEAM_REQUIRED);
         RndMatchData_SetParam(param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING, 0);
         RndMatchData_SetParam(param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN, 0);
         RndMatchData_SetParam(param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE, 0);
         TournamentTeam_Clear(previous);
         GameData_StartSave(param->param->gameData);
-        *seq = 44;
+        *seq = COMPETITION_ENTRY_WAIT_NEW_COMPETITION_SAVE;
         break;
     }
-    case 44:
+    case COMPETITION_ENTRY_WAIT_NEW_COMPETITION_SAVE:
         state = GameData_UpdateSave(param->param->gameData);
-        if (state == 2) {
-            *seq = 37;
-        } else if (state == 3) {
-            *seq = 45;
+        if (state == SAVE_RESULT_OK) {
+            *seq = COMPETITION_ENTRY_SHOW_UPLOAD_MESSAGE;
+        } else if (state == SAVE_RESULT_NG) {
+            *seq = COMPETITION_ENTRY_SHOW_SAVE_FAILED;
         }
         break;
-    case 45:
+    case COMPETITION_ENTRY_SHOW_SAVE_FAILED:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_UnableUpdateDigitalPlayer,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 55);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_END);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 46:
+    case COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataDontTurn,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 47);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_DOWNLOAD_RECORD);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 47:
-        if (*link->param->unk20 == 0) {
-            WifiBattleMatchNet_StartRead(link->net, -1, 1, param->unk34);
-            *seq = 48;
+    case COMPETITION_ENTRY_DOWNLOAD_RECORD:
+        if (*link->param->recordRequestCooldown == 0) {
+            WifiBattleMatchNet_StartRead(link->net, -1, WBM_READ_WIFICUP, param->ranking);
+            *seq = COMPETITION_ENTRY_WAIT_RECORD_DOWNLOAD;
         }
         break;
-    case 48:
+    case COMPETITION_ENTRY_WAIT_RECORD_DOWNLOAD:
         ready = WifiBattleMatchNet_ReadMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
-            *seq = 49;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
+            *seq = COMPETITION_ENTRY_COMPARE_RECORD_RATING;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 49:
-        if (link->param->unk34->unk10 !=
+    case COMPETITION_ENTRY_COMPARE_RECORD_RATING:
+        if (link->param->ranking->rating !=
             RndMatchData_GetParam(param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING)) {
-            *seq = 50;
+            *seq = COMPETITION_ENTRY_SHOW_RECORD_UPDATE_MESSAGE;
         } else {
-            *seq = 55;
+            *seq = COMPETITION_ENTRY_END;
         }
         break;
-    case 50:
+    case COMPETITION_ENTRY_SHOW_RECORD_UPDATE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PlayerIdWillUpdated,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 51);
-        *seq = 56;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SAVE_UPDATED_RECORD);
+        *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
-    case 51:
-        WifiBattleMatchLink_CompetitionUpdateRecord(link, param->unk34);
+    case COMPETITION_ENTRY_SAVE_UPDATED_RECORD:
+        WifiBattleMatchLink_CompetitionUpdateRecord(link, param->ranking);
         GameData_StartSave(param->param->gameData);
-        *seq = 52;
+        *seq = COMPETITION_ENTRY_WAIT_UPDATED_RECORD_SAVE;
         break;
-    case 52:
-        if (GameData_UpdateSave(param->param->gameData) == 2) {
-            *seq = 55;
+    case COMPETITION_ENTRY_WAIT_UPDATED_RECORD_SAVE:
+        if (GameData_UpdateSave(param->param->gameData) == SAVE_RESULT_OK) {
+            *seq = COMPETITION_ENTRY_END;
         }
         break;
-    case 53:
+    case COMPETITION_ENTRY_START_TEAM_REGISTRATION:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRegister);
         break;
-    case 54:
+    case COMPETITION_ENTRY_START_COMPETITION_MENU:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
         break;
-    case 55:
+    case COMPETITION_ENTRY_END:
         param->action = WIFIBATTLEMATCH_LINK_ACTION_LOGOUT;
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskEnd);
         break;
-    case 56:
+    case COMPETITION_ENTRY_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -932,105 +1249,105 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
     int zeroCount;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_REGISTER_CREATE_CARD_AND_TEAM:
         WifiBattleMatchLink_CompetitionCreateCard(link);
         WifiBattleMatchLink_CompetitionSetCardPage(link, 2);
         WifiBattleMatchLink_CompetitionCreateTeamList(link);
-        *seq = 1;
+        *seq = COMPETITION_REGISTER_WAIT_CARD_AND_TEAM;
         break;
-    case 1:
+    case COMPETITION_REGISTER_WAIT_CARD_AND_TEAM:
         ready = TRUE;
         ready &= WifiBattleMatchLink_CompetitionIsCardShown(link);
         if (WifiBattleMatchLink_CompetitionIsTeamListShown(link) & ready) {
-            *seq = 2;
+            *seq = COMPETITION_REGISTER_PROMPT_REGISTER_TEAM;
         }
         break;
-    case 2:
+    case COMPETITION_REGISTER_PROMPT_REGISTER_TEAM:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxWillRegistered,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 3);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_CREATE_REGISTER_MENU);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 3:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 2);
-        *seq = 4;
+    case COMPETITION_REGISTER_CREATE_REGISTER_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_REGISTER);
+        *seq = COMPETITION_REGISTER_WAIT_REGISTER_MENU;
         break;
-    case 4:
+    case COMPETITION_REGISTER_WAIT_REGISTER_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 12;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_REGISTER_CHECK_TEAM;
             break;
-        case 1:
-            *seq = 5;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_REGISTER_PROMPT_QUIT_REGISTRATION;
             break;
         }
         break;
-    case 5:
+    case COMPETITION_REGISTER_PROMPT_QUIT_REGISTRATION:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitRegistration,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 6);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_CREATE_QUIT_MENU);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 6:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 7;
+    case COMPETITION_REGISTER_CREATE_QUIT_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_REGISTER_WAIT_QUIT_MENU;
         break;
-    case 7:
+    case COMPETITION_REGISTER_WAIT_QUIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 8;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_REGISTER_CONFIRM_QUIT_COMPETITION;
             break;
-        case 1:
-            *seq = 2;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_REGISTER_PROMPT_REGISTER_TEAM;
             break;
         }
         break;
-    case 8:
+    case COMPETITION_REGISTER_CONFIRM_QUIT_COMPETITION:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitCompetitionRegistration,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 9);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_CREATE_CONFIRM_QUIT_MENU);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 9:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 10;
+    case COMPETITION_REGISTER_CREATE_CONFIRM_QUIT_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_REGISTER_WAIT_CONFIRM_QUIT_MENU;
         break;
-    case 10:
+    case COMPETITION_REGISTER_WAIT_CONFIRM_QUIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 11;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_REGISTER_HIDE_CANCELLED_TEAM;
             break;
-        case 1:
-            *seq = 2;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_REGISTER_PROMPT_REGISTER_TEAM;
             break;
         }
         break;
-    case 11:
+    case COMPETITION_REGISTER_HIDE_CANCELLED_TEAM:
         if (WifiBattleMatchLink_CompetitionIsTeamListHidden(link)) {
             WifiBattleMatchLink_CompetitionDeleteTeamList(link);
-            *seq = 29;
+            *seq = COMPETITION_REGISTER_LOGOUT;
         }
         break;
-    case 12:
+    case COMPETITION_REGISTER_CHECK_TEAM:
         player = param->player;
         WifiBattleMatchLink_CompetitionFillBattleBoxParty(player, link);
         if (howManyPokesAreAbleToFight((PokeParty *)player->partyData) == 0) {
-            *seq = 14;
+            *seq = COMPETITION_REGISTER_SHOW_EMPTY_TEAM;
             break;
         }
         invalidFlags = 0;
@@ -1038,162 +1355,162 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         invalid = PokeRegulation_CheckParty(regulation, (PokeParty *)player->partyData, &invalidFlags);
         otherInvalid = PokeRegulation_PartyHasEgg(regulation, (PokeParty *)player->partyData);
         if (invalid == 0 && otherInvalid == 0) {
-            *seq = 15;
+            *seq = COMPETITION_REGISTER_HIDE_CHECKED_TEAM;
         } else {
-            *seq = 13;
+            *seq = COMPETITION_REGISTER_SHOW_INVALID_TEAM;
         }
         break;
-    case 13:
+    case COMPETITION_REGISTER_SHOW_INVALID_TEAM:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ConditionsTournamentHaveNot,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 29);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_LOGOUT);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 14:
+    case COMPETITION_REGISTER_SHOW_EMPTY_TEAM:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereNoPokemonBattle,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 29);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_LOGOUT);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 15:
+    case COMPETITION_REGISTER_HIDE_CHECKED_TEAM:
         if (WifiBattleMatchLink_CompetitionIsTeamListHidden(link)) {
             WifiBattleMatchLink_CompetitionDeleteTeamList(link);
-            *seq = 16;
+            *seq = COMPETITION_REGISTER_SHOW_CHECKING_MESSAGE;
         }
         break;
-    case 16:
+    case COMPETITION_REGISTER_SHOW_CHECKING_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 17);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_START_SERVER_CHECK);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 17:
-        WifiBattleMatchNet_StartPokemonCheck(link->net, param->player->partyData, TRUE);
+    case COMPETITION_REGISTER_START_SERVER_CHECK:
+        WifiBattleMatchNet_StartPokemonCheck(link->net, param->player->partyData, WBM_POKEMON_CHECK_PARTY);
         MI_CpuFill8(&link->signature, 0, sizeof(link->signature));
-        *seq = 18;
+        *seq = COMPETITION_REGISTER_WAIT_SERVER_CHECK;
         break;
-    case 18:
+    case COMPETITION_REGISTER_WAIT_SERVER_CHECK:
         ret = WifiBattleMatchNet_PokemonCheckMain(link->net, &link->signature);
-        if (ret == 1) {
+        if (ret == WBM_NET_SUCCESS) {
             count = PokeParty_GetPkmCount((PokeParty *)param->player->partyData);
             zeroCount = 0;
             for (i = 0; i < count; i++) {
-                if (link->signature.result[i] == 0) {
+                if (link->signature.result[i] == WBM_POKEMON_VALIDATION_OK) {
                     zeroCount++;
                 }
             }
-            if (link->signature.status == 0 && zeroCount == count) {
-                *seq = 20;
+            if (link->signature.status == WBM_POKEMON_VALIDATION_OK && zeroCount == count) {
+                *seq = COMPETITION_REGISTER_UPLOAD_TEAM;
             } else {
-                *seq = 19;
+                *seq = COMPETITION_REGISTER_SHOW_SERVER_REJECTION;
             }
-        } else if (ret == 3) {
+        } else if (ret == WBM_NET_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
-            *seq = 0;
+        case WBM_RESULT_DISCONNECTED:
+            *seq = COMPETITION_REGISTER_CREATE_CARD_AND_TEAM;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 19:
+    case COMPETITION_REGISTER_SHOW_SERVER_REJECTION:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereProblemPokemonThey,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 29);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_LOGOUT);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 20:
-        if (*link->param->unk20 == 0) {
-            WifiBattleMatchNet_StartWrite(link->net, 0, param->player->partyData);
-            *seq = 21;
+    case COMPETITION_REGISTER_UPLOAD_TEAM:
+        if (*link->param->recordRequestCooldown == 0) {
+            WifiBattleMatchNet_StartWrite(link->net, WBM_WRITE_WIFICUP, param->player->partyData);
+            *seq = COMPETITION_REGISTER_WAIT_TEAM_UPLOAD;
         }
         break;
-    case 21:
+    case COMPETITION_REGISTER_WAIT_TEAM_UPLOAD:
         ready = WifiBattleMatchNet_WriteMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
-            *seq = 22;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
+            *seq = COMPETITION_REGISTER_LOCK_TEAM;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
-            *seq = 0;
+        case WBM_RESULT_DISCONNECTED:
+            *seq = COMPETITION_REGISTER_CREATE_CARD_AND_TEAM;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 22:
+    case COMPETITION_REGISTER_LOCK_TEAM:
         save = GameData_GetSaveControl(param->param->gameData);
         battleBox = getBattleBox(save);
         previous = TournamentBlock_GetTeam(getTournamentBlockAddress(save), 0);
         party = convertBoxedPokeSetToParty(battleBox, HEAPID_TAIL(HEAPID_WIFIBATTLEMATCH));
         BattleBoxSave_SetFlags(battleBox, 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, 2);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_COMPLETE);
         TournamentTeam_SetFromParty(previous, party);
         GFL_HeapFree(party);
-        *seq = 23;
+        *seq = COMPETITION_REGISTER_START_SAVE;
         break;
-    case 23:
+    case COMPETITION_REGISTER_START_SAVE:
         GameData_StartSave(param->param->gameData);
-        *seq = 24;
+        *seq = COMPETITION_REGISTER_WAIT_SAVE;
         break;
-    case 24:
+    case COMPETITION_REGISTER_WAIT_SAVE:
         ret = GameData_UpdateSave(param->param->gameData);
-        if (ret == 2) {
-            *seq = 25;
-        } else if (ret == 3) {
-            *seq = 29;
+        if (ret == SAVE_RESULT_OK) {
+            *seq = COMPETITION_REGISTER_POST_REGISTRATION;
+        } else if (ret == SAVE_RESULT_NG) {
+            *seq = COMPETITION_REGISTER_LOGOUT;
         }
         break;
-    case 25: {
+    case COMPETITION_REGISTER_POST_REGISTRATION: {
         WifiBattleMatchLinkRequest request;
 
         MI_CpuFill8(&request, 0, sizeof(request));
-        request.unk1 = 2;
-        request.unk4 = WifiBattleMatchNet_GetGSID(link->net);
-        link->param->account->unk5 = 2;
+        request.registrationState = WBM_REGISTRATION_COMPLETE;
+        request.profileId = WifiBattleMatchNet_GetGSID(link->net);
+        link->param->account->registrationState = WBM_REGISTRATION_COMPLETE;
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 26;
+        *seq = COMPETITION_REGISTER_WAIT_REGISTRATION_POST;
         break;
     }
-    case 26:
+    case COMPETITION_REGISTER_WAIT_REGISTRATION_POST:
         ret = WifiBattleMatchNet_PostRequestMain(link->net);
-        if (ret == 1) {
-            *seq = 27;
-        } else if (ret == 3) {
+        if (ret == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_REGISTER_SHOW_COMPLETE_MESSAGE;
+        } else if (ret == WBM_NET_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
-            *seq = 0;
+        case WBM_RESULT_DISCONNECTED:
+            *seq = COMPETITION_REGISTER_CREATE_CARD_AND_TEAM;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 27:
+    case COMPETITION_REGISTER_SHOW_COMPLETE_MESSAGE:
         WifiBattleMatchLink_CompetitionSetCardPage(link, 0);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CompetitionRegistrationComplete,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 28);
-        *seq = 30;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_START_COMPETITION_MENU);
+        *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
-    case 28:
+    case COMPETITION_REGISTER_START_COMPETITION_MENU:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
         break;
-    case 29:
+    case COMPETITION_REGISTER_LOGOUT:
         param->action = WIFIBATTLEMATCH_LINK_ACTION_LOGOUT;
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
         break;
-    case 30:
+    case COMPETITION_REGISTER_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1208,128 +1525,128 @@ static void WifiBattleMatchLink_CompetitionTaskMenu(WifiBattleMatchTask *task, u
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_MENU_FLOW_CHECK_CONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 0:
-            *seq = 1;
+        case WBM_RESULT_OK:
+            *seq = COMPETITION_MENU_FLOW_CREATE_CARD;
             break;
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 1:
+    case COMPETITION_MENU_FLOW_CREATE_CARD:
         if (link->card == NULL) {
             WifiBattleMatchLink_CompetitionCreateCard(link);
             WifiBattleMatchLink_CompetitionSetCardPage(link, 0);
-            *seq = 2;
+            *seq = COMPETITION_MENU_FLOW_WAIT_CARD_SHOWN;
         } else {
-            *seq = 3;
+            *seq = COMPETITION_MENU_FLOW_SHOW_BATTLE_PROMPT;
         }
         break;
-    case 2:
+    case COMPETITION_MENU_FLOW_WAIT_CARD_SHOWN:
         if (WifiBattleMatchLink_CompetitionIsCardShown(link)) {
-            *seq = 3;
+            *seq = COMPETITION_MENU_FLOW_SHOW_BATTLE_PROMPT;
         }
         break;
-    case 3:
+    case COMPETITION_MENU_FLOW_SHOW_BATTLE_PROMPT:
         GFL_BGSysSetBGEnabled(0, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PokemonCompetitionOverNintendo,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        WifiBattleMatchTask_SetReturnSeq(task, 4);
-        *seq = 16;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MENU_FLOW_CREATE_BATTLE_MENU);
+        *seq = COMPETITION_MENU_FLOW_WAIT_MESSAGE;
         break;
-    case 4:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 3);
-        *seq = 5;
+    case COMPETITION_MENU_FLOW_CREATE_BATTLE_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_BATTLE);
+        *seq = COMPETITION_MENU_FLOW_WAIT_BATTLE_MENU;
         break;
-    case 5:
+    case COMPETITION_MENU_FLOW_WAIT_BATTLE_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 10;
+        case COMPETITION_MENU_SELECTION_BATTLE:
+            *seq = COMPETITION_MENU_FLOW_SHOW_TEAM_CHECK_MESSAGE;
             break;
-        case 1:
-            *seq = 7;
+        case COMPETITION_MENU_SELECTION_UNREGISTER:
+            *seq = COMPETITION_MENU_FLOW_START_UNREGISTER;
             break;
-        case 2:
-            *seq = 6;
+        case COMPETITION_MENU_SELECTION_QUIT:
+            *seq = COMPETITION_MENU_FLOW_START_CANCEL;
             break;
         }
         break;
-    case 6:
+    case COMPETITION_MENU_FLOW_START_CANCEL:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskCancel);
         break;
-    case 7:
+    case COMPETITION_MENU_FLOW_START_UNREGISTER:
         WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskUnregister);
-        *seq = 8;
+        *seq = COMPETITION_MENU_FLOW_WAIT_UNREGISTER;
         break;
-    case 8:
+    case COMPETITION_MENU_FLOW_WAIT_UNREGISTER:
         ret = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
-        if (ret == 1 || ret == 2) {
-            *seq = 1;
-        } else if (ret == 0) {
-            *seq = 9;
-        } else if (ret == 3) {
+        if (ret == WBM_UNREGISTER_RESULT_NOT_CHANGED || ret == WBM_UNREGISTER_RESULT_NOT_REGISTERED) {
+            *seq = COMPETITION_MENU_FLOW_CREATE_CARD;
+        } else if (ret == WBM_UNREGISTER_RESULT_DONE) {
+            *seq = COMPETITION_MENU_FLOW_START_LOGOUT;
+        } else if (ret == WBM_UNREGISTER_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 9:
+    case COMPETITION_MENU_FLOW_START_LOGOUT:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
         break;
-    case 10:
+    case COMPETITION_MENU_FLOW_SHOW_TEAM_CHECK_MESSAGE:
         WifiBattleMatchLink_CompetitionFillBattleBoxParty(param->player, link);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataPleaseWait,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 11);
-        *seq = 16;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MENU_FLOW_START_TEAM_CHECK);
+        *seq = COMPETITION_MENU_FLOW_WAIT_MESSAGE;
         break;
-    case 11:
+    case COMPETITION_MENU_FLOW_START_TEAM_CHECK:
         WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskSignTeam);
-        *seq = 12;
+        *seq = COMPETITION_MENU_FLOW_WAIT_TEAM_CHECK;
         break;
-    case 12:
+    case COMPETITION_MENU_FLOW_WAIT_TEAM_CHECK:
         ret = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
-        if (ret == 0) {
-            *seq = 13;
-        } else if (ret == 1) {
-            *seq = 13;
-        } else if (ret == 3) {
+        if (ret == WBM_TEAM_CHECK_RESULT_VALID) {
+            *seq = COMPETITION_MENU_FLOW_START_MATCH;
+        } else if (ret == WBM_TEAM_CHECK_RESULT_INVALID) {
+            *seq = COMPETITION_MENU_FLOW_START_MATCH;
+        } else if (ret == WBM_TEAM_CHECK_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 13:
+    case COMPETITION_MENU_FLOW_START_MATCH:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMatch);
         break;
-    case 14:
+    case COMPETITION_MENU_FLOW_SHOW_INVALID_TEAM:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereProblemPokemonThey_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 15);
+        *seq = COMPETITION_MENU_FLOW_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MENU_FLOW_LOGOUT_INVALID_TEAM);
         break;
-    case 15:
+    case COMPETITION_MENU_FLOW_LOGOUT_INVALID_TEAM:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
         break;
-    case 16:
+    case COMPETITION_MENU_FLOW_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1343,7 +1660,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
     WifiBattleMatchNetKeys condition;
     void *received;
     u32 flags;
-    BOOL matchFound;
+    BOOL opponentNameRejected;
     char ownName[8];
     char otherName[8];
     WifiBattleMatchPlayer *player;
@@ -1362,166 +1679,168 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
     s32 selected;
     int i;
 
-    if ((s32)*seq >= 12 && (s32)*seq < 27) {
+    if ((s32)*seq >= COMPETITION_MATCH_WAIT_MATCH && (s32)*seq < COMPETITION_MATCH_SYNC_VALIDATED_PLAYERS) {
         canCancel = TRUE;
     }
-    canDisconnect = ((s32)*seq < 25 || (s32)*seq > 26) && ((s32)*seq < 17 || (s32)*seq > 18);
+    canDisconnect =
+        ((s32)*seq < COMPETITION_MATCH_START_NAME_CHECK || (s32)*seq > COMPETITION_MATCH_WAIT_NAME_CHECK) &&
+        ((s32)*seq < COMPETITION_MATCH_DOWNLOAD_OPPONENT_TEAM || (s32)*seq > COMPETITION_MATCH_WAIT_OPPONENT_TEAM);
     cancel = WifiBattleMatchLink_CompetitionUpdateCancel(link, canCancel, canDisconnect);
     if (cancel == CANCEL_CONFIRMED) {
-        *seq = 40;
+        *seq = COMPETITION_MATCH_PROMPT_QUIT;
         return;
     }
     switch (*seq) {
-    case 0:
+    case COMPETITION_MATCH_SHOW_PREPARATION_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataPleaseWait,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
-        *seq = 53;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_CHECK_PERIOD_CONNECTION);
+        *seq = COMPETITION_MATCH_WAIT_MESSAGE;
         break;
-    case 1:
+    case COMPETITION_MATCH_CHECK_PERIOD_CONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
-        case 0:
+        case WBM_RESULT_OK:
             WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskCheckPeriod);
-            *seq = 2;
+            *seq = COMPETITION_MATCH_WAIT_PERIOD;
             break;
         }
         break;
-    case 2:
+    case COMPETITION_MATCH_WAIT_PERIOD:
         ret = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
-        if (ret == 0) {
-            *seq = 4;
-        } else if (ret == 1 || ret == 2) {
-            *seq = 3;
-        } else if (ret == 3) {
+        if (ret == WBM_PERIOD_RESULT_ACTIVE) {
+            *seq = COMPETITION_MATCH_DOWNLOAD_RECORD;
+        } else if (ret == WBM_PERIOD_RESULT_EXPIRED || ret == WBM_PERIOD_RESULT_NOT_STARTED) {
+            *seq = COMPETITION_MATCH_LOGOUT;
+        } else if (ret == WBM_PERIOD_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 3:
+    case COMPETITION_MATCH_LOGOUT:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
         break;
-    case 4:
-        if (*link->param->unk20 != 0) {
+    case COMPETITION_MATCH_DOWNLOAD_RECORD:
+        if (*link->param->recordRequestCooldown != 0) {
             break;
         }
-        WifiBattleMatchNet_StartRead(link->net, -1, 1, link->param->unk34);
-        *seq = 5;
+        WifiBattleMatchNet_StartRead(link->net, -1, WBM_READ_WIFICUP, link->param->ranking);
+        *seq = COMPETITION_MATCH_WAIT_RECORD;
         break;
-    case 5:
+    case COMPETITION_MATCH_WAIT_RECORD:
         ret = WifiBattleMatchNet_ReadMain(link->net);
-        if (ret == 1) {
+        if (ret == WBM_NET_SUCCESS) {
             player = param->player;
-            *link->param->unk20 = 0;
+            *link->param->recordRequestCooldown = 0;
             WifiBattleMatchLink_CompetitionFillPlayer(player, link);
-            *link->param->unk28 = link->param->unk34->unk14;
-            if (WifiBattleMatchLink_CompetitionUpdateRecord(link, link->param->unk34)) {
-                *seq = 6;
+            *link->param->recordSaveIndex = link->param->ranking->recordSaveIndex;
+            if (WifiBattleMatchLink_CompetitionUpdateRecord(link, link->param->ranking)) {
+                *seq = COMPETITION_MATCH_DELAY_CARD_REFRESH;
             } else {
-                *seq = 10;
+                *seq = COMPETITION_MATCH_SHOW_SEARCH_MESSAGE;
             }
         }
-        if (ret == 0) {
+        if (ret == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 6:
-        *seq = 7;
+    case COMPETITION_MATCH_DELAY_CARD_REFRESH:
+        *seq = COMPETITION_MATCH_HIDE_CARD;
         break;
-    case 7:
+    case COMPETITION_MATCH_HIDE_CARD:
         if (WifiBattleMatchLink_CompetitionIsCardHidden(link)) {
             WifiBattleMatchLink_CompetitionDeleteCard(link);
-            *seq = 8;
+            *seq = COMPETITION_MATCH_CREATE_CARD;
         }
         break;
-    case 8:
+    case COMPETITION_MATCH_CREATE_CARD:
         WifiBattleMatchLink_CompetitionCreateCard(link);
-        *seq = 9;
+        *seq = COMPETITION_MATCH_WAIT_CARD_SHOWN;
         break;
-    case 9:
+    case COMPETITION_MATCH_WAIT_CARD_SHOWN:
         if (WifiBattleMatchLink_CompetitionIsCardShown(link)) {
-            *seq = 10;
+            *seq = COMPETITION_MATCH_SHOW_SEARCH_MESSAGE;
         }
         break;
-    case 10:
-        link->cancelSeq = 0;
+    case COMPETITION_MATCH_SHOW_SEARCH_MESSAGE:
+        link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingOpponent_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE);
-        *seq = 53;
-        WifiBattleMatchTask_SetReturnSeq(task, 11);
+        *seq = COMPETITION_MATCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_START_SEARCH);
         break;
-    case 11:
+    case COMPETITION_MATCH_START_SEARCH:
         entry = link->entry;
         MI_CpuFill8(&condition, 0, sizeof(condition));
-        condition.rating = link->param->unk34->unk10;
-        condition.disconnects = link->param->unk34->unk4;
+        condition.rating = link->param->ranking->rating;
+        condition.disconnects = link->param->ranking->disconnectsCounter;
         condition.cup = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_CUP_ID);
-        condition.matches = link->param->unk34->unk8 + link->param->unk34->unkC;
-        WifiBattleMatchNet_StartMatch(link->net, 0, 0, param->param->battleType, &condition);
-        link->unkE4 = 0;
-        link->unkE8 = 0;
-        *seq = 12;
+        condition.matches = link->param->ranking->wins + link->param->ranking->losses;
+        WifiBattleMatchNet_StartMatch(link->net, WBM_MATCH_MODE_COMPETITION, 0, param->param->battleType, &condition);
+        link->opponentValidationErrors = 0;
+        link->peerValidationErrors = 0;
+        *seq = COMPETITION_MATCH_WAIT_MATCH;
         break;
-    case 12:
+    case COMPETITION_MATCH_WAIT_MATCH:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         ret = WifiBattleMatchNet_MatchMain(link->net);
-        if (ret == 1) {
-            *seq = 13;
-        } else if (ret == 2) {
-            *seq = 11;
+        if (ret == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_MATCH_SEND_PLAYER_INFO;
+        } else if (ret == WBM_NET_FAILED) {
+            *seq = COMPETITION_MATCH_START_SEARCH;
         }
         break;
-    case 13:
+    case COMPETITION_MATCH_SEND_PLAYER_INFO:
         if (cancel == CANCEL_NONE) {
             if (WifiBattleMatchNet_SendPlayerInfo(link->net, param->player)) {
-                *seq = 14;
+                *seq = COMPETITION_MATCH_RECEIVE_PLAYER_INFO;
                 link->idleTimer = 0;
             }
         } else {
             switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-            case 1:
-            case 4:
-                link->cancelSeq = 0;
+            case WBM_RESULT_DISCONNECTED:
+            case WBM_RESULT_TIMEOUT:
+                link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
                 WifiBattleMatchLink_CompetitionDeleteMenu(link);
                 WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
                 WifiBattleMatchLink_CompetitionResetCancel(link);
                 break;
-            case 2:
+            case WBM_RESULT_FAILED:
                 WifiBattleMatchLink_CompetitionDeleteMenu(link);
                 WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
@@ -1529,7 +1848,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
             }
         }
         break;
-    case 14:
+    case COMPETITION_MATCH_RECEIVE_PLAYER_INFO:
         if (WifiBattleMatchNet_TakePlayerInfo(link->net, &received)) {
             MI_CpuCopy8(received, param->otherPlayer, PokeParty_GetSaveDataSize() + sizeof(WifiBattleMatchPlayer));
             otherPlayer = param->otherPlayer;
@@ -1573,11 +1892,11 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
             if (fixCount == 0) {
                 getPalPadFriendListAddress(GameData_GetSaveControl(param->param->gameData));
             }
-            *seq = 15;
+            *seq = COMPETITION_MATCH_CHECK_COMPETITION_ID;
         }
         countIdle = TRUE;
         break;
-    case 15:
+    case COMPETITION_MATCH_CHECK_COMPETITION_ID:
         player = param->player;
         StrUnicodeToSjis(player->info.name, ownName, 8);
         party = (PokeParty *)player->partyData;
@@ -1592,99 +1911,100 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
         }
         if (param->player->entryField2 == param->otherPlayer->entryField2 &&
             param->player->checksum == param->otherPlayer->checksum) {
-            *seq = 16;
+            *seq = COMPETITION_MATCH_CHECK_OPPONENT_TEAM;
         } else {
-            *seq = 51;
+            *seq = COMPETITION_MATCH_START_DISCONNECT;
         }
         break;
-    case 16:
+    case COMPETITION_MATCH_CHECK_OPPONENT_TEAM:
         flags = 0;
         regulation = TournamentEntry_GetRegulation(link->entry);
         if (PokeRegulation_CheckParty(regulation, (PokeParty *)param->otherPlayer->partyData, &flags) == 0) {
-            *seq = 17;
+            *seq = COMPETITION_MATCH_DOWNLOAD_OPPONENT_TEAM;
         } else {
-            link->unkE4++;
-            *seq = 22;
+            link->opponentValidationErrors++;
+            *seq = COMPETITION_MATCH_SEND_VALIDATION_RESULT;
         }
         break;
-    case 17:
-        if (*link->param->unk20 == 0) {
-            WifiBattleMatchNet_StartRead(link->net, link->param->otherPlayer->unk4C, 3, link->party);
-            *seq = 18;
+    case COMPETITION_MATCH_DOWNLOAD_OPPONENT_TEAM:
+        if (*link->param->recordRequestCooldown == 0) {
+            WifiBattleMatchNet_StartRead(link->net, link->param->otherPlayer->recordId, WBM_READ_WIFICUP_PARTY,
+                                         link->party);
+            *seq = COMPETITION_MATCH_WAIT_OPPONENT_TEAM;
         }
         break;
-    case 18:
+    case COMPETITION_MATCH_WAIT_OPPONENT_TEAM:
         ret = WifiBattleMatchNet_ReadMain(link->net);
-        if (ret == 1) {
-            *link->param->unk20 = 3600;
-            *seq = 19;
+        if (ret == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 3600;
+            *seq = COMPETITION_MATCH_SYNC_TEAM_DOWNLOAD;
         }
-        if (ret == 0) {
+        if (ret == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 19:
-        WifiBattleMatchNet_StartSync(link->net, 23);
-        *seq = 20;
+    case COMPETITION_MATCH_SYNC_TEAM_DOWNLOAD:
+        WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_TEAM_DOWNLOADED);
+        *seq = COMPETITION_MATCH_WAIT_TEAM_DOWNLOAD_SYNC;
         break;
-    case 20:
+    case COMPETITION_MATCH_WAIT_TEAM_DOWNLOAD_SYNC:
         if (WifiBattleMatchNet_CheckSync(link->net)) {
-            *seq = 21;
+            *seq = COMPETITION_MATCH_VERIFY_OPPONENT_TEAM;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 21:
+    case COMPETITION_MATCH_VERIFY_OPPONENT_TEAM:
         if (!WifiBattleMatchLink_CompetitionCompareParties(link->party,
                                                            (PokeParty *)link->param->otherPlayer->partyData)) {
-            link->unkE4++;
+            link->opponentValidationErrors++;
         }
         if (!WifiBattleMatchLink_CompetitionCheckSignature(link->param->otherPlayer,
                                                            (PokeParty *)link->param->otherPlayer->partyData,
                                                            HEAPID_WIFIBATTLEMATCH_LINK)) {
-            link->unkE4++;
+            link->opponentValidationErrors++;
         }
-        *seq = 22;
+        *seq = COMPETITION_MATCH_SEND_VALIDATION_RESULT;
         break;
-    case 22:
+    case COMPETITION_MATCH_SEND_VALIDATION_RESULT:
         if (cancel == CANCEL_NONE) {
-            if (WifiBattleMatchNet_SendValue4(link->net, &link->unkE4)) {
-                *seq = 23;
+            if (WifiBattleMatchNet_SendValidationErrors(link->net, &link->opponentValidationErrors)) {
+                *seq = COMPETITION_MATCH_RECEIVE_VALIDATION_RESULT;
                 link->idleTimer = 0;
             }
         } else {
             switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-            case 1:
-            case 4:
-                link->cancelSeq = 0;
+            case WBM_RESULT_DISCONNECTED:
+            case WBM_RESULT_TIMEOUT:
+                link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
                 WifiBattleMatchLink_CompetitionDeleteMenu(link);
                 WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
                 WifiBattleMatchLink_CompetitionResetCancel(link);
                 break;
-            case 2:
+            case WBM_RESULT_FAILED:
                 WifiBattleMatchLink_CompetitionDeleteMenu(link);
                 WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
@@ -1692,124 +2012,124 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
             }
         }
         break;
-    case 23:
-        if (WifiBattleMatchNet_TakeValue4(link->net, &link->unkE8)) {
-            *seq = 24;
+    case COMPETITION_MATCH_RECEIVE_VALIDATION_RESULT:
+        if (WifiBattleMatchNet_TakeValidationErrors(link->net, &link->peerValidationErrors)) {
+            *seq = COMPETITION_MATCH_CHECK_VALIDATION_RESULTS;
         } else {
             countIdle = TRUE;
         }
         break;
-    case 24:
-        if (link->unkE8 == 0 && link->unkE4 == 0) {
-            *seq = 25;
+    case COMPETITION_MATCH_CHECK_VALIDATION_RESULTS:
+        if (link->peerValidationErrors == 0 && link->opponentValidationErrors == 0) {
+            *seq = COMPETITION_MATCH_START_NAME_CHECK;
         } else {
-            *seq = 51;
+            *seq = COMPETITION_MATCH_START_DISCONNECT;
         }
         break;
-    case 25:
+    case COMPETITION_MATCH_START_NAME_CHECK:
         WifiBattleMatchNet_StartNameCheck(link->net, &param->otherPlayer->info, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 26;
+        *seq = COMPETITION_MATCH_WAIT_NAME_CHECK;
         break;
-    case 26:
-        if (WifiBattleMatchNet_NameCheckMain(link->net, &matchFound)) {
-            *link->param->unk40 = matchFound;
-            *seq = 27;
+    case COMPETITION_MATCH_WAIT_NAME_CHECK:
+        if (WifiBattleMatchNet_NameCheckMain(link->net, &opponentNameRejected)) {
+            *link->param->opponentNameRejected = opponentNameRejected;
+            *seq = COMPETITION_MATCH_SYNC_VALIDATED_PLAYERS;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 27:
+    case COMPETITION_MATCH_SYNC_VALIDATED_PLAYERS:
         if (cancel == CANCEL_NONE) {
-            WifiBattleMatchNet_StartSync(link->net, 21);
+            WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_VALIDATED_PLAYERS);
             link->idleTimer = 0;
-            *seq = 28;
+            *seq = COMPETITION_MATCH_WAIT_VALIDATED_PLAYERS_SYNC;
         }
         break;
-    case 28:
-        if (!WifiBattleMatchNet_TakeCmd2402(link->net) && WifiBattleMatchNet_CheckSync(link->net)) {
-            *seq = 29;
+    case COMPETITION_MATCH_WAIT_VALIDATED_PLAYERS_SYNC:
+        if (!WifiBattleMatchNet_TakeCancelSearch(link->net) && WifiBattleMatchNet_CheckSync(link->net)) {
+            *seq = COMPETITION_MATCH_SYNC_MATCH_READY;
         }
         countIdle = TRUE;
         break;
-    case 29:
-        WifiBattleMatchNet_StartSync(link->net, 22);
-        *seq = 30;
+    case COMPETITION_MATCH_SYNC_MATCH_READY:
+        WifiBattleMatchNet_StartSync(link->net, WBM_SYNC_MATCH_READY);
+        *seq = COMPETITION_MATCH_WAIT_MATCH_READY_SYNC;
         link->idleTimer = 0;
         break;
-    case 30:
+    case COMPETITION_MATCH_WAIT_MATCH_READY_SYNC:
         if (WifiBattleMatchNet_CheckSync(link->net)) {
-            *seq = 31;
+            *seq = COMPETITION_MATCH_SHOW_OPPONENT_FOUND;
         }
         countIdle = TRUE;
         break;
-    case 31:
+    case COMPETITION_MATCH_SHOW_OPPONENT_FOUND:
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
         GFL_SndSEPlay(SEQ_SE_SYS_74);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_OpponentHasBeenFound_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 53;
-        WifiBattleMatchTask_SetReturnSeq(task, 32);
+        *seq = COMPETITION_MATCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_WAIT_OPPONENT_FOUND_DELAY);
         link->timer = 0;
         break;
-    case 32:
+    case COMPETITION_MATCH_WAIT_OPPONENT_FOUND_DELAY:
         if (link->timer++ > 120) {
             link->timer = 0;
             GFL_BGSysSetBGEnabled(0, FALSE);
             WifiBattleMatchLink_CompetitionCreatePartnerCard(link, param->otherPlayer);
-            *seq = 33;
+            *seq = COMPETITION_MATCH_WAIT_PARTNER_CARD;
         }
         break;
-    case 33:
+    case COMPETITION_MATCH_WAIT_PARTNER_CARD:
         if (WifiBattleMatchLink_CompetitionIsPartnerCardDone(link)) {
-            *seq = 34;
+            *seq = COMPETITION_MATCH_WAIT_PARTNER_CARD_DELAY;
         }
         break;
-    case 34:
+    case COMPETITION_MATCH_WAIT_PARTNER_CARD_DELAY:
         if (link->timer++ != 0) {
             link->timer = 0;
-            *seq = 35;
+            *seq = COMPETITION_MATCH_START_SESSION_REPORT;
         }
         break;
-    case 35:
+    case COMPETITION_MATCH_START_SESSION_REPORT:
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_WIFIBATTLEMATCH_LINK_DWC, 0x60000);
         DWCRapCommon_SetSubHeapEx(HEAPID_DEVICE_ALLOC, 0x60000, 1000, HEAPID_WIFIBATTLEMATCH_LINK_DWC);
         DWCRapCommon_SetSubHeapOwner(HEAPID_WIFIBATTLEMATCH_LINK_DWC);
         WifiBattleMatchNet_StartReport(link->net, WBM_REPORT_MODE_START, WBM_MATCH_MODE_COMPETITION, 0, NULL, 0);
         link->exchangeResult = 0;
-        *seq = 36;
+        *seq = COMPETITION_MATCH_WAIT_SESSION_REPORT;
         link->timer = 0;
-        link->exchangeDone = 0;
+        link->exchangeDone = WBM_NET_RUNNING;
         break;
-    case 36:
-        if (link->exchangeDone == 0) {
+    case COMPETITION_MATCH_WAIT_SESSION_REPORT:
+        if (link->exchangeDone == WBM_NET_RUNNING) {
             link->exchangeDone = WifiBattleMatchNet_ReportMain(link->net, &link->exchangeResult);
         }
-        if (link->exchangeDone == 1) {
-            *seq = 37;
+        if (link->exchangeDone == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_MATCH_SHOW_TEAM_SELECTION_MESSAGE;
         }
-        if (link->exchangeDone != 0) {
+        if (link->exchangeDone != WBM_NET_RUNNING) {
             switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-            case 1:
+            case WBM_RESULT_DISCONNECTED:
                 WifiBattleMatchNet_CancelMatch(link->net);
                 // fall through
-            case 2:
-            case 4:
+            case WBM_RESULT_FAILED:
+            case WBM_RESULT_TIMEOUT:
                 DWCRapCommon_EndSubHeap();
                 WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
                 WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
                 break;
-            case 0:
-                if (link->exchangeDone == 2) {
+            case WBM_RESULT_OK:
+                if (link->exchangeDone == WBM_NET_FAILED) {
                     if (link->timer++ > 3600) {
                         GFL_ASSERT(0);
                     }
@@ -1818,25 +2138,25 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
             }
         }
         break;
-    case 37:
+    case COMPETITION_MATCH_SHOW_TEAM_SELECTION_MESSAGE:
         DWCRapCommon_EndSubHeap();
         GFL_BGSysSetBGEnabled(0, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PleaseChoosePokemon,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 53;
-        WifiBattleMatchTask_SetReturnSeq(task, 38);
+        *seq = COMPETITION_MATCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_WAIT_TEAM_SELECTION_DELAY);
         break;
-    case 38:
+    case COMPETITION_MATCH_WAIT_TEAM_SELECTION_DELAY:
         if (link->timer++ > 60) {
             link->timer = 0;
             param->action = WIFIBATTLEMATCH_LINK_ACTION_TEAM_LIST;
             WifiBattleMatchTask_End(task);
         }
         break;
-    case 39:
+    case COMPETITION_MATCH_CANCEL_SESSION:
         WifiBattleMatchNet_CancelMatch(link->net);
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
-        param->result = 2;
+        param->result = WBM_LINK_RESULT_CANCELLED;
         link->hadExchangeResult = TRUE;
         if (link->exchangeResult != 0) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskResult);
@@ -1844,113 +2164,113 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
         }
         break;
-    case 40:
+    case COMPETITION_MATCH_PROMPT_QUIT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 53;
-        WifiBattleMatchTask_SetReturnSeq(task, 41);
+        *seq = COMPETITION_MATCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_CREATE_QUIT_MENU);
         break;
-    case 41:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 42;
+    case COMPETITION_MATCH_CREATE_QUIT_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_MATCH_WAIT_QUIT_MENU;
         break;
-    case 42:
+    case COMPETITION_MATCH_WAIT_QUIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskQuit);
             break;
-        case 1:
-            *seq = 43;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_MATCH_PROMPT_CONTINUE;
             break;
         }
         break;
-    case 43:
+    case COMPETITION_MATCH_PROMPT_CONTINUE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WantContinueBattling,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 53;
-        WifiBattleMatchTask_SetReturnSeq(task, 44);
+        *seq = COMPETITION_MATCH_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_CREATE_CONTINUE_MENU);
         break;
-    case 44:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 45;
+    case COMPETITION_MATCH_CREATE_CONTINUE_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_MATCH_WAIT_CONTINUE_MENU;
         break;
-    case 45:
+    case COMPETITION_MATCH_WAIT_CONTINUE_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 46;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_MATCH_DELAY_PERIOD_RECHECK;
             break;
-        case 1:
-            *seq = 40;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_MATCH_PROMPT_QUIT;
             break;
         }
         break;
-    case 46:
-        *seq = 47;
+    case COMPETITION_MATCH_DELAY_PERIOD_RECHECK:
+        *seq = COMPETITION_MATCH_CHECK_PERIOD_RECONNECTION;
         break;
-    case 47:
+    case COMPETITION_MATCH_CHECK_PERIOD_RECONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
-        case 0:
+        case WBM_RESULT_OK:
             WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskCheckPeriod);
-            *seq = 48;
+            *seq = COMPETITION_MATCH_WAIT_PERIOD_RECHECK;
             break;
         }
         break;
-    case 48:
+    case COMPETITION_MATCH_WAIT_PERIOD_RECHECK:
         ret = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
-        if (ret == 0) {
-            *seq = 10;
-        } else if (ret == 1 || ret == 2) {
-            *seq = 3;
-        } else if (ret == 3) {
+        if (ret == WBM_PERIOD_RESULT_ACTIVE) {
+            *seq = COMPETITION_MATCH_SHOW_SEARCH_MESSAGE;
+        } else if (ret == WBM_PERIOD_RESULT_EXPIRED || ret == WBM_PERIOD_RESULT_NOT_STARTED) {
+            *seq = COMPETITION_MATCH_LOGOUT;
+        } else if (ret == WBM_PERIOD_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMenu);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 49:
-        if (WifiBattleMatchNet_SendCmd2402(link->net)) {
-            *seq = 50;
+    case COMPETITION_MATCH_SEND_CANCEL_COMMAND:
+        if (WifiBattleMatchNet_SendCancelSearch(link->net)) {
+            *seq = COMPETITION_MATCH_CANCEL_AND_RETRY;
         }
         break;
-    case 50:
+    case COMPETITION_MATCH_CANCEL_AND_RETRY:
         WifiBattleMatchNet_CancelMatch(link->net);
-        *seq = 10;
+        *seq = COMPETITION_MATCH_SHOW_SEARCH_MESSAGE;
         break;
-    case 51:
+    case COMPETITION_MATCH_START_DISCONNECT:
         WifiBattleMatchNet_ResetEnd(link->net);
-        *seq = 52;
+        *seq = COMPETITION_MATCH_WAIT_DISCONNECT;
         link->idleTimer = 0;
         break;
-    case 52:
+    case COMPETITION_MATCH_WAIT_DISCONNECT:
         countIdle = TRUE;
         if (WifiBattleMatchNet_EndMain(link->net)) {
-            *seq = 11;
+            *seq = COMPETITION_MATCH_START_SEARCH;
         }
         break;
-    case 53:
+    case COMPETITION_MATCH_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1962,7 +2282,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
             link->idleTimer = 0;
             timedOut = TRUE;
         }
-        if (WifiBattleMatchNet_TakeCmd2402(link->net)) {
+        if (WifiBattleMatchNet_TakeCancelSearch(link->net)) {
             timedOut = TRUE;
         }
         if (timedOut) {
@@ -1970,16 +2290,16 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
             if (!GFL_NetErrCheck() && GFL_NetIsInitialized()) {
                 DWC_CloseAllConnectionsHard();
             }
-            *seq = 10;
+            *seq = COMPETITION_MATCH_SHOW_SEARCH_MESSAGE;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             WifiBattleMatchLink_CompetitionResetCancel(link);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
@@ -1995,8 +2315,8 @@ static void WifiBattleMatchLink_CompetitionTaskResult(WifiBattleMatchTask *task,
     u32 ready;
 
     switch (*seq) {
-    case 0:
-        if (param->result == 2 && link->hadExchangeResult == 0) {
+    case COMPETITION_RESULT_CREATE_REPORT_HEAP:
+        if (param->result == WBM_LINK_RESULT_CANCELLED && link->hadExchangeResult == 0) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskAfterBattle);
             return;
         }
@@ -2004,113 +2324,114 @@ static void WifiBattleMatchLink_CompetitionTaskResult(WifiBattleMatchTask *task,
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_WIFIBATTLEMATCH_LINK_DWC, 0x60000);
         DWCRapCommon_SetSubHeapEx(HEAPID_DEVICE_ALLOC, 0x60000, 1000, HEAPID_WIFIBATTLEMATCH_LINK_DWC);
         DWCRapCommon_SetSubHeapOwner(HEAPID_WIFIBATTLEMATCH_LINK_DWC);
-        *seq = 1;
+        *seq = COMPETITION_RESULT_SHOW_REPORT_MESSAGE;
         break;
-    case 1:
+    case COMPETITION_RESULT_SHOW_REPORT_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 13;
-        WifiBattleMatchTask_SetReturnSeq(task, 2);
+        *seq = COMPETITION_RESULT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_RESULT_START_REPORT);
         break;
-    case 2:
+    case COMPETITION_RESULT_START_REPORT:
         WifiBattleMatchNet_StartReport(link->net, WBM_REPORT_MODE_RESULT, WBM_MATCH_MODE_COMPETITION,
-                                       param->param->battleType, param->battleResult, param->result == 2);
-        link->exchangeDone = 0;
+                                       param->param->battleType, param->battleResult,
+                                       param->result == WBM_LINK_RESULT_CANCELLED);
+        link->exchangeDone = WBM_NET_RUNNING;
         link->exchangeResult = 0;
-        *seq = 3;
+        *seq = COMPETITION_RESULT_WAIT_REPORT;
         break;
-    case 3:
-        if (link->exchangeDone == 0) {
+    case COMPETITION_RESULT_WAIT_REPORT:
+        if (link->exchangeDone == WBM_NET_RUNNING) {
             link->exchangeDone = WifiBattleMatchNet_ReportMain(link->net, &link->exchangeResult);
-            if (link->exchangeDone != 0 && link->exchangeResult != 0) {
+            if (link->exchangeDone != WBM_NET_RUNNING && link->exchangeResult != 0) {
                 WifiBattleMatch_RecordResult(param->param->gameData, param->battleResult->result);
             }
         }
-        if (link->exchangeDone == 1) {
-            param->battleResult->unk14 = WifiBattleMatchNet_GetReceivedValue(link->net);
-            *seq = 4;
+        if (link->exchangeDone == WBM_NET_SUCCESS) {
+            param->battleResult->otherCommandCheckError = WifiBattleMatchNet_GetPeerCommandCheckError(link->net);
+            *seq = COMPETITION_RESULT_FINISH_REPORT;
         }
-        if (link->exchangeDone == 0) {
+        if (link->exchangeDone == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchNet_CancelMatch(link->net);
             // fall through
-        case 2:
-        case 4:
+        case WBM_RESULT_FAILED:
+        case WBM_RESULT_TIMEOUT:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             DWCRapCommon_EndSubHeap();
             return;
         }
         break;
-    case 4:
+    case COMPETITION_RESULT_FINISH_REPORT:
         DWCRapCommon_EndSubHeap();
-        if (param->result == 2) {
+        if (param->result == WBM_LINK_RESULT_CANCELLED) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskAfterBattle);
             return;
         }
-        *seq = 5;
+        *seq = COMPETITION_RESULT_RECORD_MET_TRAINER;
         break;
-    case 5:
+    case COMPETITION_RESULT_RECORD_MET_TRAINER:
         rivalData = getHollow_RivalData(GameData_GetSaveControl(param->param->gameData));
         Misc_AddMetTrainer(rivalData, getIDAsUInt(&param->otherPlayer->info));
         WifiBattleMatchNet_ResetEnd(link->net);
-        *seq = 6;
+        *seq = COMPETITION_RESULT_WAIT_DISCONNECT;
         break;
-    case 6:
+    case COMPETITION_RESULT_WAIT_DISCONNECT:
         if (WifiBattleMatchNet_EndMain(link->net)) {
-            *seq = 7;
+            *seq = COMPETITION_RESULT_UPLOAD_RESULTS;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 1:
-        case 4:
-            *seq = 7;
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
+            *seq = COMPETITION_RESULT_UPLOAD_RESULTS;
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             return;
         }
         break;
-    case 7:
-        if (*link->param->unk20 != 0) {
+    case COMPETITION_RESULT_UPLOAD_RESULTS:
+        if (*link->param->recordRequestCooldown != 0) {
             break;
         }
         MI_CpuFill8(&reportBuf, 0, sizeof(reportBuf));
         reportBuf.report = *link->param->report;
-        reportBuf.unk50 = *link->param->unk28;
-        WifiBattleMatchNet_StartWrite(link->net, 3, &reportBuf);
-        *seq = 8;
+        reportBuf.recordSaveIndex = *link->param->recordSaveIndex;
+        WifiBattleMatchNet_StartWrite(link->net, WBM_WRITE_RECORD_DATA, &reportBuf);
+        *seq = COMPETITION_RESULT_WAIT_RESULTS_UPLOAD;
         break;
-    case 8:
+    case COMPETITION_RESULT_WAIT_RESULTS_UPLOAD:
         ready = WifiBattleMatchNet_WriteMain(link->net);
-        if (ready == 1) {
-            *link->param->unk20 = 1800;
-            *seq = 9;
+        if (ready == WBM_NET_SUCCESS) {
+            *link->param->recordRequestCooldown = 1800;
+            *seq = COMPETITION_RESULT_SHOW_RESULTS_SENT;
         }
-        if (ready == 0) {
+        if (ready == WBM_NET_RUNNING) {
             break;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             return;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             return;
         }
         break;
-    case 9:
+    case COMPETITION_RESULT_SHOW_RESULTS_SENT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleResultsWereSent,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 13;
-        WifiBattleMatchTask_SetReturnSeq(task, 10);
+        *seq = COMPETITION_RESULT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_RESULT_SHOW_RESULT_SCREEN);
         break;
-    case 10:
+    case COMPETITION_RESULT_SHOW_RESULT_SCREEN:
         param->action = WIFIBATTLEMATCH_LINK_ACTION_RESULT;
         WifiBattleMatchTask_End(task);
         break;
-    case 13:
+    case COMPETITION_RESULT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2124,61 +2445,61 @@ static void WifiBattleMatchLink_CompetitionTaskAfterBattle(WifiBattleMatchTask *
     u32 ret;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_AFTER_BATTLE_SHOW_SAVE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 5;
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
+        *seq = COMPETITION_AFTER_BATTLE_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_AFTER_BATTLE_START_SAVE);
         break;
-    case 1:
-        if (param->result != 2) {
+    case COMPETITION_AFTER_BATTLE_START_SAVE:
+        if (param->result != WBM_LINK_RESULT_CANCELLED) {
             WifiBattleMatch_RecordBattleTime(param->param->gameData, param->battleResult->result);
         }
-        WifiBattleMatchLink_CompetitionUpdateRecord(link, link->param->unk34);
+        WifiBattleMatchLink_CompetitionUpdateRecord(link, link->param->ranking);
         GameData_StartSave(param->param->gameData);
-        *seq = 2;
+        *seq = COMPETITION_AFTER_BATTLE_WAIT_SAVE;
         break;
-    case 2:
+    case COMPETITION_AFTER_BATTLE_WAIT_SAVE:
         ret = GameData_UpdateSave(param->param->gameData);
-        if (ret == 2) {
-            *seq = 3;
-        } else if (ret == 3) {
+        if (ret == SAVE_RESULT_OK) {
+            *seq = COMPETITION_AFTER_BATTLE_CHECK_PERIOD_CONNECTION;
+        } else if (ret == SAVE_RESULT_NG) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
         }
         break;
-    case 3:
+    case COMPETITION_AFTER_BATTLE_CHECK_PERIOD_CONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
-        case 0:
+        case WBM_RESULT_OK:
             WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskCheckPeriod);
-            *seq = 4;
+            *seq = COMPETITION_AFTER_BATTLE_WAIT_PERIOD;
             break;
         }
         break;
-    case 4:
+    case COMPETITION_AFTER_BATTLE_WAIT_PERIOD:
         ret = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
-        if (ret == 0) {
+        if (ret == WBM_PERIOD_RESULT_ACTIVE) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
-        } else if (ret == 1 || ret == 2) {
+        } else if (ret == WBM_PERIOD_RESULT_EXPIRED || ret == WBM_PERIOD_RESULT_NOT_STARTED) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
-        } else if (ret == 3) {
+        } else if (ret == WBM_PERIOD_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
+        case WBM_RESULT_DISCONNECTED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 5:
+    case COMPETITION_AFTER_BATTLE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2192,69 +2513,69 @@ static void WifiBattleMatchLink_CompetitionTaskContinue(WifiBattleMatchTask *tas
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_CONTINUE_CHECK_CONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, TRUE)) {
-        case 0:
-        case 1:
-        case 4:
-            *seq = 1;
+        case WBM_RESULT_OK:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_TIMEOUT:
+            *seq = COMPETITION_CONTINUE_SHOW_BATTLE_PROMPT;
             break;
-        case 2:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 1:
+    case COMPETITION_CONTINUE_SHOW_BATTLE_PROMPT:
         GFL_BGSysSetBGEnabled(0, TRUE);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PokemonWiFiCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 7;
-        WifiBattleMatchTask_SetReturnSeq(task, 2);
+        *seq = COMPETITION_CONTINUE_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_CONTINUE_CREATE_MENU);
         break;
-    case 2:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 4);
-        *seq = 3;
+    case COMPETITION_CONTINUE_CREATE_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_BATTLE_AGAIN);
+        *seq = COMPETITION_CONTINUE_WAIT_MENU;
         break;
-    case 3:
+    case COMPETITION_CONTINUE_WAIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
+        case COMPETITION_MENU_SELECTION_BATTLE:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMatch);
             break;
-        case 1:
-            *seq = 4;
+        case COMPETITION_MENU_SELECTION_UNREGISTER:
+            *seq = COMPETITION_CONTINUE_START_UNREGISTER;
             break;
-        case 2:
+        case COMPETITION_MENU_SELECTION_QUIT:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskCancel);
             break;
         }
         break;
-    case 4:
+    case COMPETITION_CONTINUE_START_UNREGISTER:
         WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskUnregister);
-        *seq = 5;
+        *seq = COMPETITION_CONTINUE_WAIT_UNREGISTER;
         break;
-    case 5:
+    case COMPETITION_CONTINUE_WAIT_UNREGISTER:
         ret = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
-        if (ret == 1 || ret == 2) {
-            *seq = 1;
-        } else if (ret == 0) {
-            *seq = 6;
+        if (ret == WBM_UNREGISTER_RESULT_NOT_CHANGED || ret == WBM_UNREGISTER_RESULT_NOT_REGISTERED) {
+            *seq = COMPETITION_CONTINUE_SHOW_BATTLE_PROMPT;
+        } else if (ret == WBM_UNREGISTER_RESULT_DONE) {
+            *seq = COMPETITION_CONTINUE_LOGOUT;
         }
         switch (WifiBattleMatchNet_CheckError(link->net, FALSE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 6:
+    case COMPETITION_CONTINUE_LOGOUT:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
         break;
-    case 7:
+    case COMPETITION_CONTINUE_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2267,32 +2588,32 @@ static void WifiBattleMatchLink_CompetitionTaskCancel(WifiBattleMatchTask *task,
     s32 selected;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_CANCEL_PROMPT_QUIT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 3;
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
+        *seq = COMPETITION_CANCEL_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_CANCEL_CREATE_MENU);
         break;
-    case 1:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
-        *seq = 2;
+    case COMPETITION_CANCEL_CREATE_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
+        *seq = COMPETITION_CANCEL_WAIT_MENU;
         break;
-    case 2:
+    case COMPETITION_CANCEL_WAIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
+        case WBM_MENU_YES:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskQuit);
             break;
-        case 1:
+        case WBM_MENU_NO:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskContinue);
             break;
         }
         break;
-    case 3:
+    case COMPETITION_CANCEL_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2305,44 +2626,44 @@ static void WifiBattleMatchLink_CompetitionTaskLogout(WifiBattleMatchTask *task,
     WifiBattleMatchLinkParam *param = link->param;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_LOGOUT_SHOW_SAVE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 1);
-        *seq = 7;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_LOGOUT_START_SAVE);
+        *seq = COMPETITION_LOGOUT_WAIT_MESSAGE;
         break;
-    case 1:
+    case COMPETITION_LOGOUT_START_SAVE:
         GameData_StartSave(param->param->gameData);
-        *seq = 2;
+        *seq = COMPETITION_LOGOUT_WAIT_SAVE;
         break;
-    case 2:
-        if (GameData_UpdateSave(param->param->gameData) == 2) {
-            *seq = 3;
+    case COMPETITION_LOGOUT_WAIT_SAVE:
+        if (GameData_UpdateSave(param->param->gameData) == SAVE_RESULT_OK) {
+            *seq = COMPETITION_LOGOUT_SHOW_UPLOAD_MESSAGE;
         }
         break;
-    case 3:
+    case COMPETITION_LOGOUT_SHOW_UPLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        WifiBattleMatchTask_SetReturnSeq(task, 4);
-        *seq = 7;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_LOGOUT_UPLOAD_LOGOUT);
+        *seq = COMPETITION_LOGOUT_WAIT_MESSAGE;
         break;
-    case 4:
-        if (*link->param->unk20 == 0) {
-            WifiBattleMatchNet_StartWrite(link->net, 2, NULL);
-            *seq = 5;
+    case COMPETITION_LOGOUT_UPLOAD_LOGOUT:
+        if (*link->param->recordRequestCooldown == 0) {
+            WifiBattleMatchNet_StartWrite(link->net, WBM_WRITE_PROFILE, NULL);
+            *seq = COMPETITION_LOGOUT_WAIT_LOGOUT_UPLOAD;
         }
         break;
-    case 5:
+    case COMPETITION_LOGOUT_WAIT_LOGOUT_UPLOAD:
         if (WifiBattleMatchNet_WriteMain(link->net)) {
-            *link->param->unk20 = 1800;
-            *seq = 6;
+            *link->param->recordRequestCooldown = 1800;
+            *seq = COMPETITION_LOGOUT_END;
             WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE);
         }
         break;
-    case 6:
+    case COMPETITION_LOGOUT_END:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskEnd);
         break;
-    case 7:
+    case COMPETITION_LOGOUT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2355,37 +2676,37 @@ static void WifiBattleMatchLink_CompetitionTaskQuit(WifiBattleMatchTask *task, u
     u32 ret;
 
     switch (*seq) {
-    case 0:
+    case COMPETITION_QUIT_CHECK_PERIOD_CONNECTION:
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
-        case 0:
+        case WBM_RESULT_OK:
             WifiBattleMatchLink_CompetitionStartSubTask(link, WifiBattleMatchLink_CompetitionTaskCheckPeriod);
-            *seq = 1;
+            *seq = COMPETITION_QUIT_WAIT_PERIOD;
             break;
         }
         break;
-    case 1:
+    case COMPETITION_QUIT_WAIT_PERIOD:
         ret = WifiBattleMatchLink_CompetitionUpdateSubTask(link);
         if (ret != SUB_TASK_RUNNING) {
-            *seq = 2;
+            *seq = COMPETITION_QUIT_LOGOUT;
         }
-        if (ret == 3) {
+        if (ret == WBM_PERIOD_RESULT_SERVER_ERROR) {
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
         }
         switch (WifiBattleMatchNet_CheckError(link->net, TRUE, FALSE)) {
-        case 1:
-        case 2:
+        case WBM_RESULT_DISCONNECTED:
+        case WBM_RESULT_FAILED:
             WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskRelogin);
             break;
         }
         break;
-    case 2:
+    case COMPETITION_QUIT_LOGOUT:
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskLogout);
         break;
-    case 3:
+    case COMPETITION_QUIT_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2426,10 +2747,10 @@ static void WifiBattleMatchLink_CompetitionTaskCheckPeriod(WifiBattleMatchTask *
     WifiBattleMatchLinkRequest request;
 
     switch (*seq) {
-    case 0:
-        *seq = 1;
+    case COMPETITION_PERIOD_DELAY_DATE_CHECK:
+        *seq = COMPETITION_PERIOD_CHECK_DATES;
         break;
-    case 1:
+    case COMPETITION_PERIOD_CHECK_DATES:
         entry = link->entry;
         if (!GFL_NetIsInitialized()) {
             GFL_NetErrAbort();
@@ -2450,101 +2771,101 @@ static void WifiBattleMatchLink_CompetitionTaskCheckPeriod(WifiBattleMatchTask *
         endDay = RTC_ConvertDateToDay(&endDate);
         today = RTC_ConvertDateToDay(&date);
         if (valid && today < startDay) {
-            link->subTaskResult = 2;
-            *seq = 2;
+            link->subTaskResult = WBM_PERIOD_RESULT_NOT_STARTED;
+            *seq = COMPETITION_PERIOD_SHOW_NOT_STARTED;
             return;
         }
         if (valid && startDay <= today && today <= endDay) {
-            link->subTaskResult = 0;
-            *seq = 13;
+            link->subTaskResult = WBM_PERIOD_RESULT_ACTIVE;
+            *seq = COMPETITION_PERIOD_END;
             return;
         }
-        link->subTaskResult = 1;
-        *seq = 3;
+        link->subTaskResult = WBM_PERIOD_RESULT_EXPIRED;
+        *seq = COMPETITION_PERIOD_SHOW_ENDED;
         break;
-    case 2:
+    case COMPETITION_PERIOD_SHOW_NOT_STARTED:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CompetitionYouveRegisteredNot,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 13);
+        *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_END);
         break;
-    case 3:
+    case COMPETITION_PERIOD_SHOW_ENDED:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CompetitionTimeHasRun,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 4);
+        *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_CHECK_REGISTRATION);
         break;
-    case 4:
-        accountState = param->account->unk5;
-        if (accountState == 1 || accountState == 2) {
-            *seq = 5;
+    case COMPETITION_PERIOD_CHECK_REGISTRATION:
+        accountState = param->account->registrationState;
+        if (accountState == WBM_REGISTRATION_TEAM_REQUIRED || accountState == WBM_REGISTRATION_COMPLETE) {
+            *seq = COMPETITION_PERIOD_SHOW_SAVE_MESSAGE;
         } else {
-            *seq = 13;
+            *seq = COMPETITION_PERIOD_END;
         }
         break;
-    case 5:
+    case COMPETITION_PERIOD_SHOW_SAVE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 6);
+        *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_UNLOCK_TEAM_AND_SAVE);
         break;
-    case 6: {
+    case COMPETITION_PERIOD_UNLOCK_TEAM_AND_SAVE: {
         BattleBoxSave *battleBox = getBattleBox(GameData_GetSaveControl(param->param->gameData));
 
         link->hadBattleBox = BattleBoxSave_CheckFlags(battleBox, 1);
         BattleBoxSave_ClearFlags(battleBox, 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, 3);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_PERIOD_ENDED);
         GameData_StartSave(param->param->gameData);
-        *seq = 7;
+        *seq = COMPETITION_PERIOD_WAIT_SAVE;
         break;
     }
-    case 7:
-        if (GameData_UpdateSave(param->param->gameData) == 2) {
-            *seq = 8;
+    case COMPETITION_PERIOD_WAIT_SAVE:
+        if (GameData_UpdateSave(param->param->gameData) == SAVE_RESULT_OK) {
+            *seq = COMPETITION_PERIOD_CHECK_TEAM_WAS_LOCKED;
         }
         break;
-    case 8:
+    case COMPETITION_PERIOD_CHECK_TEAM_WAS_LOCKED:
         getBattleBox(GameData_GetSaveControl(param->param->gameData));
         if (link->hadBattleBox != 0) {
-            *seq = 9;
+            *seq = COMPETITION_PERIOD_SHOW_TEAM_UNLOCKED;
         } else {
-            *seq = 10;
+            *seq = COMPETITION_PERIOD_SHOW_UPLOAD_MESSAGE;
         }
         break;
-    case 9:
+    case COMPETITION_PERIOD_SHOW_TEAM_UNLOCKED:
         WifiBattleMatchLink_CompetitionSetCardPage(link, 1);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxHasBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 10);
+        *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_SHOW_UPLOAD_MESSAGE);
         break;
-    case 10:
+    case COMPETITION_PERIOD_SHOW_UPLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 14;
-        WifiBattleMatchTask_SetReturnSeq(task, 11);
+        *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_POST_PERIOD_ENDED);
         break;
-    case 11:
+    case COMPETITION_PERIOD_POST_PERIOD_ENDED:
         MI_CpuFill8(&request, 0, sizeof(request));
-        request.unk1 = 3;
-        request.unk4 = WifiBattleMatchNet_GetGSID(link->net);
-        link->param->account->unk5 = 3;
+        request.registrationState = WBM_REGISTRATION_PERIOD_ENDED;
+        request.profileId = WifiBattleMatchNet_GetGSID(link->net);
+        link->param->account->registrationState = WBM_REGISTRATION_PERIOD_ENDED;
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 12;
+        *seq = COMPETITION_PERIOD_WAIT_PERIOD_POST;
         break;
-    case 12:
+    case COMPETITION_PERIOD_WAIT_PERIOD_POST:
         ret = WifiBattleMatchNet_PostRequestMain(link->net);
-        if (ret == 1) {
-            *seq = 13;
-        } else if (ret == 3) {
-            link->subTaskResult = 3;
-            *seq = 13;
+        if (ret == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_PERIOD_END;
+        } else if (ret == WBM_NET_SERVER_ERROR) {
+            link->subTaskResult = WBM_PERIOD_RESULT_SERVER_ERROR;
+            *seq = COMPETITION_PERIOD_END;
         }
         break;
-    case 13:
+    case COMPETITION_PERIOD_END:
         WifiBattleMatchTask_End(task);
         break;
-    case 14:
+    case COMPETITION_PERIOD_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2561,127 +2882,127 @@ static void WifiBattleMatchLink_CompetitionTaskUnregister(WifiBattleMatchTask *t
     s32 selected;
 
     switch (*seq) {
-    case 0:
-        accountState = param->account->unk5;
-        if (accountState == 1 || accountState == 2) {
-            link->subTaskResult = 1;
-            *seq = 2;
+    case COMPETITION_UNREGISTER_CHECK_REGISTRATION:
+        accountState = param->account->registrationState;
+        if (accountState == WBM_REGISTRATION_TEAM_REQUIRED || accountState == WBM_REGISTRATION_COMPLETE) {
+            link->subTaskResult = WBM_UNREGISTER_RESULT_NOT_CHANGED;
+            *seq = COMPETITION_UNREGISTER_PROMPT_UNREGISTER;
         } else {
-            link->subTaskResult = 2;
-            *seq = 1;
+            link->subTaskResult = WBM_UNREGISTER_RESULT_NOT_REGISTERED;
+            *seq = COMPETITION_UNREGISTER_SHOW_NOT_REGISTERED;
         }
         break;
-    case 1:
+    case COMPETITION_UNREGISTER_SHOW_NOT_REGISTERED:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CurrentlyHaveRegisteredNo,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 15);
+        *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_END);
         break;
-    case 2:
+    case COMPETITION_UNREGISTER_PROMPT_UNREGISTER:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_OnceUnregisteredWillNot,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 3);
+        *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_CREATE_UNREGISTER_MENU);
         break;
-    case 3:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 5);
-        *seq = 4;
+    case COMPETITION_UNREGISTER_CREATE_UNREGISTER_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO_NO_FIRST);
+        *seq = COMPETITION_UNREGISTER_WAIT_UNREGISTER_MENU;
         break;
-    case 4:
+    case COMPETITION_UNREGISTER_WAIT_UNREGISTER_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 5;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_UNREGISTER_PROMPT_CONFIRM_UNREGISTER;
             break;
-        case 1:
-            *seq = 15;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_UNREGISTER_END;
             break;
         }
         break;
-    case 5:
+    case COMPETITION_UNREGISTER_PROMPT_CONFIRM_UNREGISTER:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WillUnregisteredSureAbout,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 6);
+        *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_CREATE_CONFIRM_MENU);
         break;
-    case 6:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 5);
-        *seq = 7;
+    case COMPETITION_UNREGISTER_CREATE_CONFIRM_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO_NO_FIRST);
+        *seq = COMPETITION_UNREGISTER_WAIT_CONFIRM_MENU;
         break;
-    case 7:
+    case COMPETITION_UNREGISTER_WAIT_CONFIRM_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            *seq = 8;
+        case WBM_MENU_YES:
+            *seq = COMPETITION_UNREGISTER_SHOW_SAVE_MESSAGE;
             break;
-        case 1:
-            *seq = 15;
+        case WBM_MENU_NO:
+            *seq = COMPETITION_UNREGISTER_END;
             break;
         }
         break;
-    case 8:
+    case COMPETITION_UNREGISTER_SHOW_SAVE_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 9);
+        *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_UNLOCK_TEAM_AND_SAVE);
         break;
-    case 9:
+    case COMPETITION_UNREGISTER_UNLOCK_TEAM_AND_SAVE:
         BattleBoxSave_ClearFlags(getBattleBox(GameData_GetSaveControl(param->param->gameData)), 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, 4);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_WITHDRAWN);
         GameData_StartSave(param->param->gameData);
-        *seq = 10;
+        *seq = COMPETITION_UNREGISTER_WAIT_SAVE;
         break;
-    case 10:
+    case COMPETITION_UNREGISTER_WAIT_SAVE:
         ret = GameData_UpdateSave(param->param->gameData);
-        if (ret == 2) {
-            link->subTaskResult = 0;
-            *seq = 11;
-        } else if (ret == 3) {
-            *seq = 15;
+        if (ret == SAVE_RESULT_OK) {
+            link->subTaskResult = WBM_UNREGISTER_RESULT_DONE;
+            *seq = COMPETITION_UNREGISTER_SHOW_TEAM_UNLOCKED;
+        } else if (ret == SAVE_RESULT_NG) {
+            *seq = COMPETITION_UNREGISTER_END;
         }
         break;
-    case 11:
+    case COMPETITION_UNREGISTER_SHOW_TEAM_UNLOCKED:
         WifiBattleMatchLink_CompetitionSetCardPage(link, 1);
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxHasBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 12);
+        *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_SHOW_UPLOAD_MESSAGE);
         break;
-    case 12:
+    case COMPETITION_UNREGISTER_SHOW_UPLOAD_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
-        *seq = 16;
-        WifiBattleMatchTask_SetReturnSeq(task, 13);
+        *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_POST_UNREGISTER);
         break;
-    case 13:
+    case COMPETITION_UNREGISTER_POST_UNREGISTER:
         MI_CpuFill8(&request, 0, sizeof(request));
-        request.unk1 = 4;
-        request.unk4 = WifiBattleMatchNet_GetGSID(link->net);
-        link->param->account->unk5 = 4;
+        request.registrationState = WBM_REGISTRATION_WITHDRAWN;
+        request.profileId = WifiBattleMatchNet_GetGSID(link->net);
+        link->param->account->registrationState = WBM_REGISTRATION_WITHDRAWN;
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
-        *seq = 14;
+        *seq = COMPETITION_UNREGISTER_WAIT_UNREGISTER_POST;
         break;
-    case 14:
+    case COMPETITION_UNREGISTER_WAIT_UNREGISTER_POST:
         ret = WifiBattleMatchNet_PostRequestMain(link->net);
-        if (ret == 1) {
-            *seq = 15;
-        } else if (ret == 3) {
-            link->subTaskResult = 3;
-            *seq = 15;
+        if (ret == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_UNREGISTER_END;
+        } else if (ret == WBM_NET_SERVER_ERROR) {
+            link->subTaskResult = WBM_UNREGISTER_RESULT_SERVER_ERROR;
+            *seq = COMPETITION_UNREGISTER_END;
         }
         break;
-    case 15:
+    case COMPETITION_UNREGISTER_END:
         WifiBattleMatchTask_End(task);
         break;
-    case 16:
+    case COMPETITION_UNREGISTER_WAIT_MESSAGE:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -2695,37 +3016,37 @@ static void WifiBattleMatchLink_CompetitionTaskSignTeam(WifiBattleMatchTask *tas
     u32 ret;
 
     switch (*seq) {
-    case 0:
-        *seq = 1;
+    case COMPETITION_TEAM_CHECK_DELAY:
+        *seq = COMPETITION_TEAM_CHECK_START_CHECK;
         break;
-    case 1:
+    case COMPETITION_TEAM_CHECK_START_CHECK:
         MI_CpuFill8(&link->signature, 0, sizeof(link->signature));
-        WifiBattleMatchNet_StartPokemonCheck(link->net, player->partyData, TRUE);
-        *seq = 2;
+        WifiBattleMatchNet_StartPokemonCheck(link->net, player->partyData, WBM_POKEMON_CHECK_PARTY);
+        *seq = COMPETITION_TEAM_CHECK_WAIT_CHECK;
         break;
-    case 2:
+    case COMPETITION_TEAM_CHECK_WAIT_CHECK:
         ret = WifiBattleMatchNet_PokemonCheckMain(link->net, &link->signature);
-        if (ret == 1) {
-            *seq = 3;
-        } else if (ret == 2) {
-            link->subTaskResult = 2;
-            *seq = 4;
-        } else if (ret == 3) {
-            link->subTaskResult = 3;
-            *seq = 4;
+        if (ret == WBM_NET_SUCCESS) {
+            *seq = COMPETITION_TEAM_CHECK_COPY_SIGNATURE;
+        } else if (ret == WBM_NET_FAILED) {
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_REQUEST_FAILED;
+            *seq = COMPETITION_TEAM_CHECK_END;
+        } else if (ret == WBM_NET_SERVER_ERROR) {
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_SERVER_ERROR;
+            *seq = COMPETITION_TEAM_CHECK_END;
         }
         break;
-    case 3:
-        if (link->signature.status == 0) {
+    case COMPETITION_TEAM_CHECK_COPY_SIGNATURE:
+        if (link->signature.status == WBM_POKEMON_VALIDATION_OK) {
             WifiBattleMatchLink_CompetitionCopySignature(player, &link->signature);
-            link->subTaskResult = 0;
-            *seq = 4;
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_VALID;
+            *seq = COMPETITION_TEAM_CHECK_END;
         } else {
-            link->subTaskResult = 1;
-            *seq = 4;
+            link->subTaskResult = WBM_TEAM_CHECK_RESULT_INVALID;
+            *seq = COMPETITION_TEAM_CHECK_END;
         }
         break;
-    case 4:
+    case COMPETITION_TEAM_CHECK_END:
         WifiBattleMatchTask_End(task);
         break;
     }
@@ -2737,7 +3058,7 @@ static void WifiBattleMatchLink_CompetitionCreateCard(WifiBattleMatchLinkCompeti
     ClActUnit *unit;
     TournamentTeam *previous;
     TournamentEntry *entry;
-    u32 first;
+    u32 wins;
 
     if (link->card != NULL) {
         return;
@@ -2756,12 +3077,13 @@ static void WifiBattleMatchLink_CompetitionCreateCard(WifiBattleMatchLinkCompeti
                                                  TournamentEntry_GetField(entry, TOURNAMENT_FIELD_END_MONTH),
                                                  TournamentEntry_GetField(entry, TOURNAMENT_FIELD_END_DAY));
     info.look = PlayerInfo_GetUnionView(playerInfo);
-    info.unkA0 = RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING);
-    first = RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN);
-    info.unkA4 = first + RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE);
+    info.rating = RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING);
+    wins = RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN);
+    info.matchCount =
+        wins + RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE);
     info.variant = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_VARIANT);
-    if (info.unkA4 == 0 && info.unkA0 == 0) {
-        info.unkA0 = 1500;
+    if (info.matchCount == 0 && info.rating == 0) {
+        info.rating = 1500;
     }
     link->card =
         WifiBattleMatchWifiCard_Create(&info, 0, playerInfo, unit, link->res, link->font, link->printQueue,
@@ -2860,10 +3182,10 @@ static void WifiBattleMatchLink_CompetitionCreateMenu(WifiBattleMatchLinkCompeti
     menuParam.framePalette = 13;
     menuParam.frameChar = 1;
     switch (kind) {
-    case 5:
+    case COMPETITION_MENU_YES_NO_NO_FIRST:
         menuParam.cursorRow = 1;
         // fall through
-    case 0:
+    case COMPETITION_MENU_YES_NO:
         menuParam.msgIds[0] = EventFishing_Text_Yes_2;
         menuParam.msgIds[1] = EventFishing_Text_No_2;
         menuParam.count = 2;
@@ -2871,7 +3193,7 @@ static void WifiBattleMatchLink_CompetitionCreateMenu(WifiBattleMatchLinkCompeti
         menuParam.cancelValue = 1;
         link->menu = WifiBattleMatchMenu_CreateBottomRight(&menuParam, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
-    case 1:
+    case COMPETITION_MENU_JOIN_INFO_CANCEL:
         menuParam.msgIds[0] = EventFishing_Text_Join;
         menuParam.msgIds[1] = EventFishing_Text_Info;
         menuParam.msgIds[2] = EventFishing_Text_Cancel;
@@ -2880,7 +3202,7 @@ static void WifiBattleMatchLink_CompetitionCreateMenu(WifiBattleMatchLinkCompeti
         menuParam.cancelValue = 2;
         link->menu = WifiBattleMatchMenu_CreateBottomRight(&menuParam, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
-    case 2:
+    case COMPETITION_MENU_REGISTER:
         menuParam.msgIds[0] = EventFishing_Text_Yes_3;
         menuParam.msgIds[1] = EventFishing_Text_No_3;
         menuParam.count = 2;
@@ -2888,7 +3210,7 @@ static void WifiBattleMatchLink_CompetitionCreateMenu(WifiBattleMatchLinkCompeti
         menuParam.cancelValue = 1;
         link->menu = WifiBattleMatchMenu_CreateBottomRight(&menuParam, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
-    case 3:
+    case COMPETITION_MENU_BATTLE:
         menuParam.msgIds[0] = EventFishing_Text_Battle;
         menuParam.msgIds[1] = EventFishing_Text_CancelParticipation;
         menuParam.msgIds[2] = EventFishing_Text_Cancel_2;
@@ -2897,7 +3219,7 @@ static void WifiBattleMatchLink_CompetitionCreateMenu(WifiBattleMatchLinkCompeti
         menuParam.cancelValue = 2;
         link->menu = WifiBattleMatchMenu_Create(&menuParam, 3, 6, 26, 6, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
-    case 4:
+    case COMPETITION_MENU_BATTLE_AGAIN:
         menuParam.msgIds[0] = EventFishing_Text_Battle_2;
         menuParam.msgIds[1] = EventFishing_Text_CancelParticipation_2;
         menuParam.msgIds[2] = EventFishing_Text_Cancel_3;
@@ -2947,7 +3269,7 @@ static void WifiBattleMatchLink_CompetitionFillBattleBoxParty(WifiBattleMatchPla
     PokeParty_Init((PokeParty *)player->partyData);
     MI_CpuCopy8(party, player->partyData, PokeParty_GetSaveDataSize());
     GFL_HeapFree(party);
-    player->unk44 = 100;
+    player->battleRecordVersion = 100;
 }
 
 static void WifiBattleMatchLink_CompetitionFillPlayer(WifiBattleMatchPlayer *player,
@@ -2959,10 +3281,10 @@ static void WifiBattleMatchLink_CompetitionFillPlayer(WifiBattleMatchPlayer *pla
     PlayerInfo_Copy(GetGameDataPlayerInfo(link->param->param->gameData), &player->info);
     CGearPhrases_Get(CGearPhrases_GetBlock(save), 0, &player->sentence);
     param = link->param;
-    player->record1 = param->unk34->unk8;
-    player->record2 = param->unk34->unkC;
-    player->unk34 = param->unk34->unk10;
-    player->unk4C = WifiBattleMatchNet_GetRecordId(link->net);
+    player->record1 = param->ranking->wins;
+    player->record2 = param->ranking->losses;
+    player->rating = param->ranking->rating;
+    player->recordId = WifiBattleMatchNet_GetRecordId(link->net);
     player->gsid = WifiList_GetMyGSID(GameData_GetWifiList(link->param->param->gameData));
     entry = link->entry;
     player->entryField2 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_CUP_ID);
@@ -3015,52 +3337,52 @@ static u32 WifiBattleMatchLink_CompetitionUpdateCancel(WifiBattleMatchLinkCompet
     s32 selected;
 
     switch (link->cancelSeq) {
-    case 0:
+    case COMPETITION_SEARCH_CANCEL_IDLE:
         if (canCancel && (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B)) {
             GFL_SndSEPlay(SEQ_SE_MESSAGE);
             link->cancelSeq++;
         }
         break;
-    case 1:
+    case COMPETITION_SEARCH_CANCEL_SHOW_QUIT_PROMPT:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitSearchingSomeoneBattle,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         link->cancelSeq++;
         break;
-    case 2:
+    case COMPETITION_SEARCH_CANCEL_WAIT_QUIT_PROMPT:
         if (WifiBattleMatchMsgBox_IsDone(link->msgBox)) {
             link->cancelSeq++;
         }
         break;
-    case 3:
-        WifiBattleMatchLink_CompetitionCreateMenu(link, 0);
+    case COMPETITION_SEARCH_CANCEL_CREATE_MENU:
+        WifiBattleMatchLink_CompetitionCreateMenu(link, COMPETITION_MENU_YES_NO);
         link->cancelSeq++;
         break;
-    case 4:
+    case COMPETITION_SEARCH_CANCEL_WAIT_MENU:
         selected = WifiBattleMatchLink_CompetitionGetMenuSelection(link);
-        if (selected == -1) {
+        if (selected == WBM_MENU_NO_SELECTION) {
             break;
         }
         WifiBattleMatchLink_CompetitionDeleteMenu(link);
         switch (selected) {
-        case 0:
-            link->cancelSeq = 5;
+        case WBM_MENU_YES:
+            link->cancelSeq = COMPETITION_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE;
             break;
-        case 1:
+        case WBM_MENU_NO:
             WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingOpponent,
                                         WIFIBATTLEMATCH_MSG_QUEUE);
-            link->cancelSeq = 0;
+            link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
             return CANCEL_DECLINED;
             break;
         }
         break;
-    case 5:
+    case COMPETITION_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE:
         WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_AwaitingCommunicationPleaseStand,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         link->cancelSeq++;
         break;
-    case 6:
+    case COMPETITION_SEARCH_CANCEL_DISCONNECT:
         if (canDisconnect) {
-            WifiBattleMatchNet_SendCmd2402(link->net);
+            WifiBattleMatchNet_SendCancelSearch(link->net);
             link->cancelSeq++;
             WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
             WifiBattleMatchNet_CancelMatch(link->net);
@@ -3069,15 +3391,15 @@ static u32 WifiBattleMatchLink_CompetitionUpdateCancel(WifiBattleMatchLinkCompet
             }
         }
         break;
-    case 7:
-        link->cancelSeq = 0;
+    case COMPETITION_SEARCH_CANCEL_CONFIRMED:
+        link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
         return CANCEL_CONFIRMED;
     }
-    return link->cancelSeq == 0 ? CANCEL_NONE : CANCEL_BUSY;
+    return link->cancelSeq == COMPETITION_SEARCH_CANCEL_IDLE ? CANCEL_NONE : CANCEL_BUSY;
 }
 
 static void WifiBattleMatchLink_CompetitionResetCancel(WifiBattleMatchLinkCompetition *link) {
-    link->cancelSeq = 0;
+    link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
     WifiBattleMatchLink_CompetitionDeleteMenu(link);
 }
 
@@ -3085,14 +3407,15 @@ static BOOL WifiBattleMatchLink_CompetitionUpdateRecord(WifiBattleMatchLinkCompe
                                                         WifiBattleMatchLinkRanking *ranking) {
     BOOL changed = FALSE;
 
-    if (ranking->unk10 !=
+    if (ranking->rating !=
             RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING) ||
-        ranking->unk8 != RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN) ||
-        ranking->unkC != RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE)) {
+        ranking->wins != RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN) ||
+        ranking->losses !=
+            RndMatchData_GetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE)) {
         changed = TRUE;
     }
-    RndMatchData_SetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING, ranking->unk10);
-    RndMatchData_SetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN, ranking->unk8);
-    RndMatchData_SetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE, ranking->unkC);
+    RndMatchData_SetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING, ranking->rating);
+    RndMatchData_SetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN, ranking->wins);
+    RndMatchData_SetParam(link->param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE, ranking->losses);
     return changed;
 }

@@ -196,7 +196,7 @@ static BOOL WifiBattleMatchSys_Init(GameProc *proc, u32 *state, void *param, voi
     sys = GFL_ProcInitSubsystem(proc, sizeof(WifiBattleMatchSys), HEAPID_WIFIBATTLEMATCH);
     MI_CpuFill8(sys, 0, sizeof(WifiBattleMatchSys));
     MI_CpuCopy8(matchParam, &sys->param, sizeof(WifiBattleMatchParam));
-    sys->result = 0;
+    sys->result = WBM_LINK_RESULT_INITIAL;
     if (sys->param.gameData == NULL) {
         sys->param.gameData = GameData_Create(HEAPID_USER);
         sys->ownsGameData = TRUE;
@@ -367,16 +367,16 @@ static void *WifiBattleMatchSys_CreateNetParam(WifiBattleMatchChain *chain, Heap
     param->mode = sys->mode - 2;
     param->player = sys->player;
     param->otherPlayer = sys->otherPlayer;
-    param->unk1C = sys->unk40;
-    param->unk20 = &sys->unk1CC;
+    param->loginBuffer = sys->unk40;
+    param->recordRequestCooldown = &sys->unk1CC;
     param->report = &sys->report;
-    param->unk3C = &sys->unk7D4;
-    param->unk28 = &sys->unk8A8;
+    param->netData = &sys->unk7D4;
+    param->recordSaveIndex = &sys->unk8A8;
     param->battleResult = &sys->battleResult;
     param->account = &sys->account;
-    param->unk34 = &sys->ranking;
+    param->ranking = &sys->ranking;
     param->ratings = &sys->ratings;
-    param->unk40 = &sys->unk8AC;
+    param->opponentNameRejected = &sys->unk8AC;
     param->record = RecordSave_GetRndMatchData(getRecordBlkAddress(GameData_GetSaveControl(sys->param.gameData)));
     if (GFL_SndBGMGetID() != SEQ_BGM_WCS) {
         GFL_SndBGMPlay(SEQ_BGM_WCS, SND_CHANNEL_MASK_ALL);
@@ -502,7 +502,7 @@ static BOOL WifiBattleMatchSys_FinishList(WifiBattleMatchChain *chain, void *par
             WifiBattleMatchSys_ChainSetNext(chain, STEP_LOGIN);
             break;
         case 3:
-            sys->result = 2;
+            sys->result = WBM_LINK_RESULT_CANCELLED;
             WifiBattleMatchSys_ChainSetNext(chain, STEP_NET);
             break;
         }
@@ -541,11 +541,11 @@ static void *WifiBattleMatchSys_CreateBattleParam(WifiBattleMatchChain *chain, H
     player = &param->players->base.players[0];
     player->info = &sys->player->info;
     player->party = sys->party;
-    player->unk08[1] = sys->player->unk44;
+    player->unk08[1] = sys->player->battleRecordVersion;
     player = &param->players->base.players[1];
     player->info = &sys->otherPlayer->info;
     player->party = sys->otherParty;
-    player->unk08[1] = sys->otherPlayer->unk44;
+    player->unk08[1] = sys->otherPlayer->battleRecordVersion;
     param->setup = BtlSetup_Create(heapId);
     GFL_OvlLoad(OVERLAY_ID(167));
     if (sys->mode - 2 <= 1) {
@@ -689,7 +689,7 @@ static BOOL WifiBattleMatchSys_FinishBattle(WifiBattleMatchChain *chain, void *p
 
     sys->battleResult.battleStyle = setup->battleStyle;
     sys->battleResult.result = setup->result;
-    sys->battleResult.unk10 = setup->cmdCheckError;
+    sys->battleResult.ownCommandCheckError = setup->cmdCheckError;
     sys->battleResult.result = setup->result;
     WifiBattleMatchSys_CountAlive(battle->setup, &aliveOwn, &aliveOther);
     sys->battleResult.aliveOwn = aliveOwn;
@@ -730,7 +730,7 @@ static BOOL WifiBattleMatchSys_FinishBattle(WifiBattleMatchChain *chain, void *p
     } else {
         switch (result) {
         case 0:
-            sys->result = 1;
+            sys->result = WBM_LINK_RESULT_BATTLE_FINISHED;
             WifiBattleMatchSys_ChainSetNext(chain, STEP_NET);
             break;
         case 2:
@@ -738,7 +738,7 @@ static BOOL WifiBattleMatchSys_FinishBattle(WifiBattleMatchChain *chain, void *p
             WifiBattleMatchSys_ChainSetNext(chain, STEP_LOGIN);
             break;
         case 3:
-            sys->result = 2;
+            sys->result = WBM_LINK_RESULT_CANCELLED;
             WifiBattleMatchSys_ChainSetNext(chain, STEP_NET);
             break;
         }
@@ -777,7 +777,7 @@ static BOOL WifiBattleMatchSys_FinishLogin(WifiBattleMatchChain *chain, void *pa
     GFL_HeapFree(login);
     switch (result) {
     case 0:
-        sys->result = 0;
+        sys->result = WBM_LINK_RESULT_INITIAL;
         WifiBattleMatchSys_ChainSetNext(chain, STEP_NET);
         break;
     case 1:
@@ -835,7 +835,7 @@ static BOOL WifiBattleMatchSys_FinishExchange(WifiBattleMatchChain *chain, void 
             WifiBattleMatchSys_ChainSetNext(chain, STEP_LOGIN);
             break;
         case 3:
-            sys->result = 2;
+            sys->result = WBM_LINK_RESULT_CANCELLED;
             WifiBattleMatchSys_ChainSetNext(chain, STEP_NET);
             break;
         }
@@ -881,9 +881,11 @@ static void *WifiBattleMatchSys_CreateResultParam(WifiBattleMatchChain *chain, H
     if (sys->mode == 1) {
         param->unkC = TRUE;
     } else {
-        param->unkC = (sys->battleResult.unk10 != 0 || sys->battleResult.unk14 != 0) ? FALSE : TRUE;
+        param->unkC = (sys->battleResult.ownCommandCheckError != 0 || sys->battleResult.otherCommandCheckError != 0)
+                          ? FALSE
+                          : TRUE;
     }
-    if (BattleRec_IsVersionSupported(sys->otherPlayer->unk44)) {
+    if (BattleRec_IsVersionSupported(sys->otherPlayer->battleRecordVersion)) {
         param->unk4 = TRUE;
     } else {
         param->unk4 = FALSE;
@@ -896,7 +898,7 @@ static BOOL WifiBattleMatchSys_FinishResult(WifiBattleMatchChain *chain, void *p
     if (sys->mode == 1) {
         WifiBattleMatchSys_ChainSetNext(chain, STEP_CHAMPIONSHIP);
     } else {
-        sys->result = 3;
+        sys->result = WBM_LINK_RESULT_RESULT_SHOWN;
         WifiBattleMatchSys_ChainSetNext(chain, STEP_NET);
     }
     return TRUE;

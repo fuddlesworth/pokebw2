@@ -60,7 +60,7 @@ int WifiBattleMatchNet_GetWifiCupFieldCount(void) {
 }
 
 const char *WifiBattleMatchNet_GetArenaFieldName(WifiBattleMatchNetArenaField field) {
-    if (field <= 0) {
+    if (field <= ARENA_FIELD_NONE) {
         return "";
     }
     if (field == ARENA_ADVANCED_MODIFIER) {

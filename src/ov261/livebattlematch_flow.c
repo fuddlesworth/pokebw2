@@ -780,7 +780,7 @@ static void LiveBattleMatchFlow_StepMenu(WifiBattleMatchTask *task, u32 *seq, vo
         }
         break;
     case 19:
-        if (BattleRec_IsVersionSupported((u8)wk->param.partnerData->unk44)) {
+        if (BattleRec_IsVersionSupported((u8)wk->param.partnerData->battleRecordVersion)) {
             *seq = 20;
         } else {
             *seq = 21;
@@ -1231,7 +1231,7 @@ static void LiveBattleMatchFlow_StepQuit(WifiBattleMatchTask *task, u32 *seq, vo
         }
         break;
     case 11:
-        if (BattleRec_IsVersionSupported((u8)wk->param.partnerData->unk44)) {
+        if (BattleRec_IsVersionSupported((u8)wk->param.partnerData->battleRecordVersion)) {
             *seq = 12;
         } else {
             *seq = 13;
@@ -1484,7 +1484,7 @@ static void LiveBattleMatchFlow_FillPlayerData(WifiBattleMatchPlayer *data, Live
     GameData *gameData = wk->param.gameData;
     PokeParty *party;
 
-    data->unk44 = 100;
+    data->battleRecordVersion = 100;
     MI_CpuCopy8(GetGameDataPlayerInfo(gameData), data, PlayerInfo_GetSize());
     OS_GetMacAddress(data->mac);
     CGearPhrases_Get(CGearPhrases_GetBlock(GameData_GetSaveControl(gameData)), 0, &data->sentence);

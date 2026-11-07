@@ -380,7 +380,7 @@ WifiBattleMatchCard *WifiBattleMatchRankCard_Create(const WifiBattleMatchRankInf
     card->surface = CLACT_VRAM_SUB;
     G2x_SetBlendAlpha_(REG_DB_BLDCNT_ADDR, GX_PLANEMASK_BG2, GX_PLANEMASK_BG3, 15, 3);
     colorKind = 1;
-    stars = WifiBattleMatchView_GetStarCount(info->unkC, info->unk10, info->unk12);
+    stars = WifiBattleMatchView_GetStarCount(info->matchCount, info->wins, info->losses);
     if (stars != 5) {
         colorKind = 0;
     }
@@ -817,7 +817,7 @@ static void WifiBattleMatchView_RankCardWindows(WifiBattleMatchCard *card, u32 t
         case 4:
             if (titleMsg != 0) {
                 GFL_MsgDataLoadStrbuf(msgData, 9, format);
-                WordSetNumber(wordSet, 0, info->unk4, 4, 1, TRUE);
+                WordSetNumber(wordSet, 0, info->rating, 4, 1, TRUE);
                 GFL_WordSetFormatStrbuf(wordSet, text, format);
             } else {
                 draw = FALSE;
@@ -828,7 +828,7 @@ static void WifiBattleMatchView_RankCardWindows(WifiBattleMatchCard *card, u32 t
             break;
         case 6:
             GFL_MsgDataLoadStrbuf(msgData, 11, format);
-            WordSetNumber(wordSet, 0, info->unkC, 6, 1, TRUE);
+            WordSetNumber(wordSet, 0, info->matchCount, 6, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
         case 7:
@@ -836,7 +836,7 @@ static void WifiBattleMatchView_RankCardWindows(WifiBattleMatchCard *card, u32 t
             break;
         case 8:
             GFL_MsgDataLoadStrbuf(msgData, 13, format);
-            WordSetNumber(wordSet, 0, info->unk10, 5, 1, TRUE);
+            WordSetNumber(wordSet, 0, info->wins, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
         case 9:
@@ -844,7 +844,7 @@ static void WifiBattleMatchView_RankCardWindows(WifiBattleMatchCard *card, u32 t
             break;
         case 10:
             GFL_MsgDataLoadStrbuf(msgData, 15, format);
-            WordSetNumber(wordSet, 0, info->unk12, 5, 1, TRUE);
+            WordSetNumber(wordSet, 0, info->losses, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
         }
@@ -916,7 +916,7 @@ static void WifiBattleMatchView_WifiCardWindows(WifiBattleMatchCard *card, u32 r
             break;
         case 4:
             GFL_MsgDataLoadStrbuf(msgData, 9, format);
-            WordSetNumber(wordSet, 0, info->unkA0, 4, 1, TRUE);
+            WordSetNumber(wordSet, 0, info->rating, 4, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
         case 5:
@@ -924,12 +924,12 @@ static void WifiBattleMatchView_WifiCardWindows(WifiBattleMatchCard *card, u32 r
             break;
         case 6:
             if (ratio != 0) {
-                WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->unkA4, info->unkA8,
+                WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->matchCount, info->unkA8,
                                                 heapId);
                 draw = FALSE;
             } else {
                 GFL_MsgDataLoadStrbuf(msgData, 11, format);
-                WordSetNumber(wordSet, 0, info->unkA4, 6, 1, TRUE);
+                WordSetNumber(wordSet, 0, info->matchCount, 6, 1, TRUE);
                 GFL_WordSetFormatStrbuf(wordSet, text, format);
             }
             break;
@@ -1195,7 +1195,7 @@ static void WifiBattleMatchView_CardFreeMark(WifiBattleMatchCard *card) {
 
 static void WifiBattleMatchView_CardLoadStars(WifiBattleMatchCard *card, const WifiBattleMatchRankInfo *info,
                                               ClActUnit *unit, WifiBattleMatchRes *res, HeapID heapId) {
-    u32 count = WifiBattleMatchView_GetStarCount(info->unkC, info->unk10, info->unk12);
+    u32 count = WifiBattleMatchView_GetStarCount(info->matchCount, info->wins, info->losses);
     ClActorSetup setup;
     u32 i;
 
@@ -1400,7 +1400,7 @@ static void WifiBattleMatchView_PartnerWindows(WifiBattleMatchPartnerCard *card,
                 color = PRINT_COLOR(15, 2, 0);
             } else if (card->shown != 0) {
                 GFL_MsgDataLoadStrbuf(msgData, 9, format);
-                WordSetNumber(wordSet, 0, data->unk34, 4, 1, TRUE);
+                WordSetNumber(wordSet, 0, data->rating, 4, 1, TRUE);
                 GFL_WordSetFormatStrbuf(wordSet, text, format);
                 color = PRINT_COLOR(15, 2, 0);
             } else {

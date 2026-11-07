@@ -621,9 +621,9 @@ static void DigitalCardCheck_CreateCard(DigitalCardCheck *check) {
         MI_CpuFill8(&info, 0, sizeof(WifiBattleMatchWifiCardInfo));
         MI_CpuCopy8(TournamentEntry_GetCardData(entry), &info, 0x92);
         results = RecordSave_GetRndMatch(record);
-        info.unkA0 = RndMatchData_GetParam(results, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING);
+        info.rating = RndMatchData_GetParam(results, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING);
         first = RndMatchData_GetParam(results, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN);
-        info.unkA4 = first + RndMatchData_GetParam(results, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE);
+        info.matchCount = first + RndMatchData_GetParam(results, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE);
         info.look = PlayerInfo_GetUnionView(playerInfo);
         info.startDate = DigitalCardCheck_PackBytes(TournamentEntry_GetField(entry, TOURNAMENT_FIELD_START_YEAR),
                                                     TournamentEntry_GetField(entry, TOURNAMENT_FIELD_START_MONTH),
