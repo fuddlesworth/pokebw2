@@ -60,7 +60,7 @@ WbtEntrant_HasSpecialPokemon kind:function(thumb,size=0x8) addr:0x021e5e4c
 WbtSystem_SetPickedParty kind:function(thumb,size=0xe4) addr:0x021e5e54
 WbtSystem_GetRegulationId kind:function(thumb,size=0x40) addr:0x021e5f38
 WbtSystem_GetRegulation kind:function(thumb,size=0xac) addr:0x021e5f78
-func_ov055_021e6024 kind:function(thumb,size=0x58) addr:0x021e6024
+WbtSystem_GetExtraRule kind:function(thumb,size=0x58) addr:0x021e6024
 WbtSystem_GetOpponentSeat kind:function(thumb,size=0xd0) addr:0x021e607c
 WbtMatch_Play kind:function(thumb,size=0x164) addr:0x021e614c
 WbtSystem_PlayFirstRounds kind:function(thumb,size=0x86) addr:0x021e62b0
@@ -95,7 +95,7 @@ WbtSetup_Free kind:function(thumb,size=0x36) addr:0x021e6870
 WbtSetup_Load kind:function(thumb,size=0xb4) addr:0x021e68a8
 WbtSetup_SetEntrant kind:function(thumb,size=0x52) addr:0x021e695c
 WbtSetup_SetMatches kind:function(thumb,size=0x64) addr:0x021e69b0
-func_ov055_021e6a14 kind:function(thumb,size=0x18) addr:0x021e6a14
+WbtSetup_GetBillboardFace kind:function(thumb,size=0x18) addr:0x021e6a14
 WbtSetup_LoadActorConfig kind:function(thumb,size=0x38) addr:0x021e6a2c
 WbtSetup_CreateWinRecordParam kind:function(thumb,size=0x5c) addr:0x021e6a64
 WbtSetup_FreeWinRecordParam kind:function(thumb,size=0x8) addr:0x021e6ac0
@@ -121,19 +121,19 @@ WbtParty_MakeParty kind:function(thumb,size=0x1c8) addr:0x021e6f74
 WbtParty_MakeRentalParty kind:function(thumb,size=0xb0) addr:0x021e713c
 WbtParty_MakeOpponentParty kind:function(thumb,size=0x78) addr:0x021e71ec
 WBT_SCRIPT_COMMANDS kind:data(any) addr:0x021e7264 ambiguous
-sRegulations kind:data(any) addr:0x021e735c
-sDoubleRegulations kind:data(any) addr:0x021e7360
+sUnrestrictedRegulations kind:data(any) addr:0x021e735c
+sRestrictedRegulations kind:data(any) addr:0x021e7360
 sScores kind:data(any) addr:0x021e7364
 sSecondMatches kind:data(any) addr:0x021e7374
 sFirstOpponents kind:data(any) addr:0x021e7394
 sThirdMatches kind:data(any) addr:0x021e73b4
 sTypeChart kind:data(any) addr:0x021e73d4
 sTrainerArcs kind:data(any) addr:0x021e74f8
-sUnk74fe kind:data(any) addr:0x021e74fe
+sDownloadedTrainerClasses kind:data(any) addr:0x021e74fe
 sBattleStyles kind:data(any) addr:0x021e751c
 data_ov055_021e751e kind:data(any) addr:0x021e751e
 data_ov055_021e7520 kind:data(any) addr:0x021e7520
-sScoreUnk kind:data(any) addr:0x021e753c
+sMatchScoreMessages kind:data(any) addr:0x021e753c
 data_ov055_021e7560 kind:data(any) addr:0x021e7560
 data_ov055_021e7570 kind:data(any) addr:0x021e7570
 data_ov055_021e757c kind:data(any) addr:0x021e757c

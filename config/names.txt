@@ -14266,6 +14266,7 @@ overlays/ov055 0x021e5e4c WbtEntrant_HasSpecialPokemon
 overlays/ov055 0x021e5e54 WbtSystem_SetPickedParty
 overlays/ov055 0x021e5f38 WbtSystem_GetRegulationId
 overlays/ov055 0x021e5f78 WbtSystem_GetRegulation
+overlays/ov055 0x021e6024 WbtSystem_GetExtraRule
 overlays/ov055 0x021e607c WbtSystem_GetOpponentSeat
 overlays/ov055 0x021e614c WbtMatch_Play
 overlays/ov055 0x021e62b0 WbtSystem_PlayFirstRounds
@@ -14300,6 +14301,7 @@ overlays/ov055 0x021e6870 WbtSetup_Free
 overlays/ov055 0x021e68a8 WbtSetup_Load
 overlays/ov055 0x021e695c WbtSetup_SetEntrant
 overlays/ov055 0x021e69b0 WbtSetup_SetMatches
+overlays/ov055 0x021e6a14 WbtSetup_GetBillboardFace
 overlays/ov055 0x021e6a2c WbtSetup_LoadActorConfig
 overlays/ov055 0x021e6a64 WbtSetup_CreateWinRecordParam
 overlays/ov055 0x021e6ac0 WbtSetup_FreeWinRecordParam
@@ -14325,17 +14327,17 @@ overlays/ov055 0x021e6f74 WbtParty_MakeParty
 overlays/ov055 0x021e713c WbtParty_MakeRentalParty
 overlays/ov055 0x021e71ec WbtParty_MakeOpponentParty
 overlays/ov055 0x021e7264 WBT_SCRIPT_COMMANDS
-overlays/ov055 0x021e735c sRegulations
-overlays/ov055 0x021e7360 sDoubleRegulations
+overlays/ov055 0x021e735c sUnrestrictedRegulations
+overlays/ov055 0x021e7360 sRestrictedRegulations
 overlays/ov055 0x021e7364 sScores
 overlays/ov055 0x021e7374 sSecondMatches
 overlays/ov055 0x021e7394 sFirstOpponents
 overlays/ov055 0x021e73b4 sThirdMatches
 overlays/ov055 0x021e73d4 sTypeChart
 overlays/ov055 0x021e74f8 sTrainerArcs
-overlays/ov055 0x021e74fe sUnk74fe
+overlays/ov055 0x021e74fe sDownloadedTrainerClasses
 overlays/ov055 0x021e751c sBattleStyles
-overlays/ov055 0x021e753c sScoreUnk
+overlays/ov055 0x021e753c sMatchScoreMessages
 overlays/ov055 0x021e7588 sRentalFiles
 overlays/ov056 0x021e75c0 WbtEntrance_GetBSubwayScoreData
 overlays/ov056 0x021e75d4 Scrcmd_WbtEntrance_AwardBattlePoints

@@ -11,6 +11,78 @@
 // The Pokémon World Tournament: overlay 55's wbt_system.c, wbt_tool.c, wbt_setup.c and wbt_party.c, and the script
 // plugins 6 (the entrance, with overlay 56) and 7 (the stadium, with overlay 57) that share overlay 55
 
+// Tournament IDs, in PWT_TOURNAMENT_INFO order; the first Driftveil visit uses a separate ID.
+enum {
+    WBT_TOURNAMENT_NONE = 0,
+    WBT_TOURNAMENT_CHAMPIONS = 1,
+    WBT_TOURNAMENT_TYPE_EXPERT = 2,
+    WBT_TOURNAMENT_DOWNLOADED = 3,
+    WBT_TOURNAMENT_DRIFTVEIL = 4,
+    WBT_TOURNAMENT_UNOVA_LEADERS = 5,
+    WBT_TOURNAMENT_KANTO_LEADERS = 6,
+    WBT_TOURNAMENT_JOHTO_LEADERS = 7,
+    WBT_TOURNAMENT_HOENN_LEADERS = 8,
+    WBT_TOURNAMENT_SINNOH_LEADERS = 9,
+    WBT_TOURNAMENT_WORLD_LEADERS = 10,
+    WBT_TOURNAMENT_DRIFTVEIL_FIRST = 11,
+    WBT_TOURNAMENT_RENTAL = 12,
+    WBT_TOURNAMENT_RENTAL_MASTER = 13,
+    WBT_TOURNAMENT_MIX = 14,
+    WBT_TOURNAMENT_MIX_MASTER = 15,
+    WBT_TOURNAMENT_MAX = 16,
+};
+
+// Save records 0 to 16 are the Type Expert Tournament's Pokemon types.
+enum {
+    WBT_RECORD_CHAMPIONS = 17,
+    WBT_RECORD_DRIFTVEIL = 18,
+    WBT_RECORD_UNOVA_LEADERS = 19,
+    WBT_RECORD_KANTO_LEADERS = 20,
+    WBT_RECORD_JOHTO_LEADERS = 21,
+    WBT_RECORD_HOENN_LEADERS = 22,
+    WBT_RECORD_SINNOH_LEADERS = 23,
+    WBT_RECORD_WORLD_LEADERS = 24,
+    WBT_RECORD_RENTAL = 25,
+    WBT_RECORD_RENTAL_MASTER = 26,
+    WBT_RECORD_MIX = 27,
+    WBT_RECORD_MIX_MASTER = 28,
+    WBT_RECORD_MAX = 29,
+};
+
+// Rule groups: the unrestricted and restricted regulation tables, type rules, or a download.
+enum {
+    WBT_TOURNAMENT_KIND_UNRESTRICTED = 0,
+    WBT_TOURNAMENT_KIND_RESTRICTED = 1,
+    WBT_TOURNAMENT_KIND_TYPE_EXPERT = 2,
+    WBT_TOURNAMENT_KIND_DOWNLOADED = 4,
+};
+
+// The four battle styles; MAX is the initial, unselected value.
+enum {
+    WBT_STYLE_SINGLE = 0,
+    WBT_STYLE_DOUBLE = 1,
+    WBT_STYLE_TRIPLE = 2,
+    WBT_STYLE_ROTATION = 3,
+    WBT_STYLE_MAX = 4,
+};
+
+// Script stages: preview before the first match, the three matches, then completion.
+enum {
+    WBT_ROUND_NONE = 0,
+    WBT_ROUND_PREVIEW = 1,
+    WBT_ROUND_FIRST = 2,
+    WBT_ROUND_SEMIFINAL = 3,
+    WBT_ROUND_FINAL = 4,
+    WBT_ROUND_COMPLETE = 5,
+};
+
+// Rental file pools; mixed mode takes three from the second pool before the first.
+enum {
+    WBT_RENTAL_MODE_FIRST_POOL = 0,
+    WBT_RENTAL_MODE_SECOND_POOL = 1,
+    WBT_RENTAL_MODE_MIXED_POOLS = 2,
+};
+
 // A Trainer of the tournaments, from arc 247
 typedef struct {
     u8 type;
@@ -77,6 +149,8 @@ typedef struct {
     u8 score;
 } WbtMatch;
 
+// This recovered layout has two separate uses: downloaded Trainer slots and an extra regulation rule.
+// In the latter use rank is banMoves and index is move; keep the Trainer fields distinct.
 typedef struct {
     u8 type;
     u8 rank;
@@ -99,8 +173,8 @@ typedef struct {
     u8 battleType;
     // Set for a World Championships tournament, which has their music and its own battle background
     u8 isWcs;
-    u8 unkA9;
-    u16 unkAA;
+    u8 requiredType;
+    u16 bannedMove;
 } WbtDownloadedTournament;
 
 // A Pokémon of a Trainer of a downloaded tournament, which becomes a party Pokémon
@@ -161,7 +235,8 @@ typedef struct {
 struct WbtSystem {
     HeapID heapId;
     u8 unk2[2];
-    BOOL unk4;
+    // Clear the saved opponent slots even when the player wins.
+    BOOL clearOpponentSlots;
     WbtTrainers *trainers;
     u32 tournament;
     // The battle style, which starts out as 4, out of range
@@ -179,7 +254,8 @@ struct WbtSystem {
     WbtEntrant entrants[8];
     WbtMatch matches[7];
     Regulation regulation;
-    WbtUnk18A unk18A;
+    // Passed to the party screen as a RegulationExtraRule without changing this recovered layout.
+    WbtUnk18A extraRule;
     u8 unk18E[2];
     // Whether the downloaded tournament of the slot downloadSlot is in the save and its checksum holds
     BOOL downloadValid;
@@ -196,9 +272,10 @@ struct WbtSystem {
     u16 listIndex;
     u16 listResult;
     u8 unk13BA[2];
-    PokeParty *partyBC;
-    PokeParty *partyC0;
-    PokeParty *partyC4;
+    PokeParty *playerParty;
+    PokeParty *opponentParty;
+    // All rental candidates before entry, then the original selected team restored when picks reset.
+    PokeParty *initialParty;
     u8 picks[4];
     WbtPartyList *partyList;
     u8 unk13D0[4];
@@ -264,7 +341,7 @@ typedef struct {
 } WbtSetup;
 
 // wbt_system.c
-WbtSystem *WbtSystem_Create(HeapID heapId, BOOL a1);
+WbtSystem *WbtSystem_Create(HeapID heapId, BOOL clearOpponentSlots);
 void WbtSystem_Free(WbtSystem *sys);
 void WbtSystem_SetTournament(WbtSystem *sys, u32 tournament);
 u32 WbtSystem_GetTournament(WbtSystem *sys);
@@ -303,7 +380,7 @@ u32 WbtEntrant_HasSpecialPokemon(WbtEntrant *entrant);
 void WbtSystem_SetPickedParty(WbtSystem *sys, GameData *gameData);
 u8 WbtSystem_GetRegulationId(WbtSystem *sys);
 Regulation *WbtSystem_GetRegulation(WbtSystem *sys);
-WbtUnk18A *func_ov055_021e6024(WbtSystem *sys);
+WbtUnk18A *WbtSystem_GetExtraRule(WbtSystem *sys);
 u32 WbtSystem_GetOpponentSeat(WbtSystem *sys);
 void WbtSystem_PlayFirstRounds(WbtSystem *sys, MATHRandContext32 *rand);
 
@@ -342,7 +419,8 @@ u8 WbtTool_GetDownloadedTrainerClass(u32 index);
 // What wbt_setup.c fills in for overlay 326's screens
 typedef struct {
     u32 unk0;
-    u16 *unk4;
+    // TRUE when the record screen closes with X, FALSE when it closes with Return or B.
+    u16 *closedWithXVar;
     WbtSave *save;
     PlayerInfo *playerInfo;
     // Whether the tournament of each of the save's counts is open
@@ -351,7 +429,8 @@ typedef struct {
 
 typedef struct {
     GameSystem *gsys;
-    u32 unk4;
+    // Address of the twelve received tournament records; its original integer type is retained.
+    u32 downloadBuffer;
     u32 mode;
     // The script variables that get whether the player answered yes, and the slot picked from 1, or 0
     u16 *yesVar;
@@ -368,10 +447,10 @@ WbtOv326Param2 *WbtSetup_CreateDownloadParam(HeapID heapId, GameSystem *gsys, u3
 void WbtSetup_FreeDownloadParam(WbtOv326Param2 *param);
 
 // wbt_party.c
-// What a party picked from the Battle Subway's Pokémon may not repeat: the species, unless unk0 is set, the held
-// items and the Pokémon files, each a list of 12
+// What a party picked from the Battle Subway's Pokémon may not repeat: the species, unless allowSameSpecies is set, the
+// held items and the Pokémon files, each a list of 12
 typedef struct {
-    u32 unk0;
+    u32 allowSameSpecies;
     u16 speciesCount;
     u16 itemCount;
     u16 fileCount;
@@ -389,7 +468,7 @@ void WbtPartyFilter_AddFile(WbtPartyFilter *filter, s16 file);
 // Picks count of the files at random, as the filter allows, and adds them to the filter
 void WbtParty_PickFiles(u16 *dest, WbtPartyFilter *filter, HeapID heapId, u16 fileCount, const u16 *files, u32 arcId,
                         u8 count, MATHRandContext32 *rand);
-void WbtParty_MakeRentalParty(WbtSystem *sys, u32 a1, PlayerInfo *playerInfo, u16 placeName);
+void WbtParty_MakeRentalParty(WbtSystem *sys, u32 rentalMode, PlayerInfo *playerInfo, u16 placeName);
 void WbtParty_MakeOpponentParty(WbtSystem *sys);
 
 #endif // POKEBW2_FIELD_WBT_H

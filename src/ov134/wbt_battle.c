@@ -90,15 +90,15 @@ static u16 *WbtBattle_GetDownloadedLine(WbtSystem *sys, u8 round, u32 index, u16
 void WbtBattle_SwapPickedPokemon(WbtSystem *sys) {
     HeapID heapId = HEAPID_TAIL(sys->heapId);
     PartyPkm *tmp = GFL_HeapAllocate(heapId, PokeParty_GetPkmRawSize(), FALSE, "wbt_battle.c", 251);
-    PartyPkm *first = PokeParty_GetPkm(sys->partyBC, sys->picks[0]);
-    PartyPkm *second = PokeParty_GetPkm(sys->partyC0, sys->picks[2]);
+    PartyPkm *first = PokeParty_GetPkm(sys->playerParty, sys->picks[0]);
+    PartyPkm *second = PokeParty_GetPkm(sys->opponentParty, sys->picks[2]);
 
     copyPartyPkm(first, tmp);
     copyPartyPkm(second, first);
     copyPartyPkm(tmp, second);
     if (sys->style == 2) {
-        first = PokeParty_GetPkm(sys->partyBC, sys->picks[1]);
-        second = PokeParty_GetPkm(sys->partyC0, sys->picks[3]);
+        first = PokeParty_GetPkm(sys->playerParty, sys->picks[1]);
+        second = PokeParty_GetPkm(sys->opponentParty, sys->picks[3]);
         copyPartyPkm(first, tmp);
         copyPartyPkm(second, first);
         copyPartyPkm(tmp, second);
@@ -109,7 +109,7 @@ void WbtBattle_SwapPickedPokemon(WbtSystem *sys) {
 #define WBT_PICK_NONE 0xff
 
 void WbtBattle_ResetPicks(WbtSystem *sys) {
-    PokeParty_Copy(sys->partyC4, sys->partyBC);
+    PokeParty_Copy(sys->initialParty, sys->playerParty);
     sys->picks[0] = GFL_RandomLC(WbtSystem_GetEntryCount(sys));
     sys->picks[1] = WBT_PICK_NONE;
     sys->picks[2] = WBT_PICK_NONE;
@@ -385,16 +385,16 @@ void WbtBattle_MakeOpponentParty(WbtSystem *sys, GameSystem *gsys, const WbtEntr
     switch (opponent->kind) {
     case 0:
         if (opponent->trainerClass == TRAINER_CLASS_PKMN_TRAINER_RIVAL) {
-            TrainerUtil_LoadParty(WbtBattle_GetRivalTrainerId(gsys), sys->partyC0, heapId);
+            TrainerUtil_LoadParty(WbtBattle_GetRivalTrainerId(gsys), sys->opponentParty, heapId);
             return;
         }
         // The getters of wbt_system.c that this reaches don't take a const entrant
-        WbtBattle_MakeTournamentParty(sys->partyC0, (WbtEntrant *)opponent, WbtSystem_GetTournament(sys), count,
+        WbtBattle_MakeTournamentParty(sys->opponentParty, (WbtEntrant *)opponent, WbtSystem_GetTournament(sys), count,
                                       heapId);
         return;
     case 1:
     case 2:
-        WbtBattle_MakeDownloadedParty(sys->partyC0, &sys->download, opponent->downloadedRound, count, heapId);
+        WbtBattle_MakeDownloadedParty(sys->opponentParty, &sys->download, opponent->downloadedRound, count, heapId);
         break;
     case 3:
         break;
@@ -428,13 +428,13 @@ static inline void BtlSetup_SetLines(BtlSetup *setup, StrBuf *loseMsg, StrBuf *w
 BtlSetup *WbtBattle_SetupBattle(WbtSystem *sys, GameSystem *gsys) {
     u32 mode = WbtStyle_GetBattleMode(WbtSystem_GetStyle(sys));
     WbtEntrant *opponent = WbtBattle_GetOpponent(sys);
-    BtlSetup *setup = BtlSetup_SetTrainerRental(gsys, sys->partyBC, mode);
+    BtlSetup *setup = BtlSetup_SetTrainerRental(gsys, sys->playerParty, mode);
 
     if (WbtSystem_GetTournament(sys) != 11) {
         PokeRegulation_ApplyLevelToParty(WbtSystem_GetRegulation(sys), setup->party[0]);
     }
     WbtBattle_SetBattleTrainer(setup->trainers[1], opponent);
-    PokeParty_Copy(sys->partyC0, setup->party[1]);
+    PokeParty_Copy(sys->opponentParty, setup->party[1]);
     PokeRegulation_ApplyLevelToParty(WbtSystem_GetRegulation(sys), setup->party[1]);
     setup->trainerNames[1] = opponent->className;
     sys->trainerLoseMsg = GFL_StrBufCreate(0x130, sys->heapId);
@@ -538,7 +538,7 @@ void WbtBattle_EndBattle(WbtSystem *sys, GameData *gameData, BtlSetup *setup) {
     } else if (sys->tournament == 11 && opponent->trainerId == 56) {
         WbtSave_SetTrainerBeaten(save, 0);
     }
-    if (result == 0 || sys->unk4 == 1) {
+    if (result == 0 || sys->clearOpponentSlots == 1) {
         for (i = 0; i < 3; i++) {
             WbtSave_SetSlot(save, i, 0xff);
         }
