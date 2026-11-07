@@ -234,9 +234,7 @@ enum {
 };
 
 // No held icon destination has been recorded in PokeIconBufPosChange.
-enum {
-    BOX2_HELD_POS_NONE = 65535,
-};
+#define BOX2_HELD_POS_NONE 65535
 
 static void Box2Main_VBlank(TCB *tcb, void *data);
 static void PokeDataSwapBoxParty(Box2SysWork *syswk, Box2PokeMoveData *box, Box2PokeMoveData *party);
