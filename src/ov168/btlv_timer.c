@@ -19,6 +19,15 @@
 // The highest limit, 99:59
 #define TIMER_MAX_SECONDS (99 * 60 + 59)
 
+// The label, colon and digit sequence IDs; warning graphics are one bank after the normal sequences.
+enum {
+    TIMER_SEQ_BATTLE_LABEL = 0,
+    TIMER_SEQ_COMMAND_LABEL = 1,
+    TIMER_SEQ_COLON = 2,
+    TIMER_SEQ_FIRST_DIGIT = 3,
+    TIMER_SEQ_WARNING_OFFSET = 13,
+};
+
 // The timer's work, 0x78 bytes
 struct BtlvTimer {
     ClActUnit *units[2];   // 0x00  one per countdown
@@ -44,8 +53,8 @@ BtlvTimer *BtlvTimer_Create(HeapID heapId) {
 
     timer->heapId = heapId;
     arc = GFL_ArcSysCreateFileHandle(ARCID_BTLV, HEAPID_TAIL(timer->heapId));
-    timer->units[0] = ClActUnit_Create(TIMER_ACTOR_COUNT, 0, timer->heapId);
-    timer->units[1] = ClActUnit_Create(TIMER_ACTOR_COUNT, 0, timer->heapId);
+    timer->units[BTLV_TIMER_BATTLE] = ClActUnit_Create(TIMER_ACTOR_COUNT, 0, timer->heapId);
+    timer->units[BTLV_TIMER_COMMAND] = ClActUnit_Create(TIMER_ACTOR_COUNT, 0, timer->heapId);
     timer->chars = ClActSys_LoadChars(arc, 0x1ab, FALSE, CLACT_VRAM_MAIN, timer->heapId);
     timer->cellAnims = ClActSys_LoadCellAnims(arc, 0x1ac, 0x1ad, timer->heapId);
     timer->palette = ClActSys_LoadPltt(arc, BtlvGauge_PaletteFile(), CLACT_VRAM_MAIN, 0xe0, timer->heapId);
@@ -60,8 +69,8 @@ void BtlvTimer_Delete(BtlvTimer *timer) {
     ClActSys_FreeChars(timer->chars);
     ClActSys_FreeCellAnims(timer->cellAnims);
     ClActSys_FreePltt(timer->palette);
-    ClActUnit_Delete(timer->units[0]);
-    ClActUnit_Delete(timer->units[1]);
+    ClActUnit_Delete(timer->units[BTLV_TIMER_BATTLE]);
+    ClActUnit_Delete(timer->units[BTLV_TIMER_COMMAND]);
     GFL_HeapFree(timer);
 }
 
@@ -69,17 +78,22 @@ void BtlvTimer_Start(BtlvTimer *timer, s32 battleLimit, s32 commandLimit) {
     ClActorSetup setup = { 0, 0, 0, 0, 0 };
     const s32 xs[TIMER_ACTOR_COUNT] = { 0, 64, 68, 72, 78, 82 };
     const s32 ys[2] = { 128, 136 };
-    const s32 sequences[2][TIMER_ACTOR_COUNT] = { { 0, 3, 3, 2, 3, 3 }, { 1, 3, 3, 2, 3, 3 } };
+    const s32 sequences[2][TIMER_ACTOR_COUNT] = {
+        { TIMER_SEQ_BATTLE_LABEL, TIMER_SEQ_FIRST_DIGIT, TIMER_SEQ_FIRST_DIGIT, TIMER_SEQ_COLON, TIMER_SEQ_FIRST_DIGIT,
+          TIMER_SEQ_FIRST_DIGIT },
+        { TIMER_SEQ_COMMAND_LABEL, TIMER_SEQ_FIRST_DIGIT, TIMER_SEQ_FIRST_DIGIT, TIMER_SEQ_COLON, TIMER_SEQ_FIRST_DIGIT,
+          TIMER_SEQ_FIRST_DIGIT },
+    };
     int i, j;
 
     for (i = 0; i < 2; i++) {
-        if ((i == 0 && battleLimit != 0) || (i == 1 && commandLimit != 0)) {
+        if ((i == BTLV_TIMER_BATTLE && battleLimit != 0) || (i == BTLV_TIMER_COMMAND && commandLimit != 0)) {
             for (j = 0; j < TIMER_ACTOR_COUNT; j++) {
                 setup.x = xs[j];
                 setup.y = ys[i];
                 setup.sequence = sequences[i][j];
                 timer->actors[i][j] = ClActor_Create(timer->units[i], timer->chars, timer->palette, timer->cellAnims,
-                                                     &setup, 0, timer->heapId);
+                                                     &setup, CLACT_SURFACE_MAIN, timer->heapId);
                 ClActor_SetAutoAnim(timer->actors[i][j], TRUE);
             }
         }
@@ -90,11 +104,11 @@ void BtlvTimer_Start(BtlvTimer *timer, s32 battleLimit, s32 commandLimit) {
     if (commandLimit > TIMER_MAX_SECONDS) {
         commandLimit = TIMER_MAX_SECONDS;
     }
-    timer->limits[0] = battleLimit;
-    timer->limits[1] = commandLimit;
-    timer->startTicks[0] = timer->startTicks[1] = OS_GetTick();
-    BtlvTimer_SetVisible(timer, 0, FALSE, FALSE);
-    BtlvTimer_SetVisible(timer, 1, FALSE, FALSE);
+    timer->limits[BTLV_TIMER_BATTLE] = battleLimit;
+    timer->limits[BTLV_TIMER_COMMAND] = commandLimit;
+    timer->startTicks[BTLV_TIMER_BATTLE] = timer->startTicks[BTLV_TIMER_COMMAND] = OS_GetTick();
+    BtlvTimer_SetVisible(timer, BTLV_TIMER_BATTLE, FALSE, FALSE);
+    BtlvTimer_SetVisible(timer, BTLV_TIMER_COMMAND, FALSE, FALSE);
     timer->task = GFL_TCBMgrAddTask(BtlvEffect_GetTCBManager(), BtlvTimer_Task, timer, 0);
 }
 
@@ -136,16 +150,10 @@ BOOL BtlvTimer_IsTimeUp(BtlvTimer *timer, int which) {
     return left <= 0;
 }
 
-// The label actor's sequences: the battle's time and the time to choose a command
-enum {
-    TIMER_SEQ_BATTLE_LABEL,
-    TIMER_SEQ_COMMAND_LABEL,
-};
-
 // Draws a countdown's time left
 static void BtlvTimer_Draw(BtlvTimer *timer, int which) {
     const s32 warnTimes[2] = { 300, 15 };
-    int label = which == 0 ? TIMER_SEQ_BATTLE_LABEL : TIMER_SEQ_COMMAND_LABEL;
+    int label = which == BTLV_TIMER_BATTLE ? TIMER_SEQ_BATTLE_LABEL : TIMER_SEQ_COMMAND_LABEL;
     s32 left = timer->limits[which] - (s32)OS_TicksToSeconds(OS_GetTick() - timer->startTicks[which]);
     int minutes, seconds, minuteTens, minuteOnes, secondTens, secondOnes;
 
@@ -162,14 +170,14 @@ static void BtlvTimer_Draw(BtlvTimer *timer, int which) {
     secondTens = seconds / 10;
     secondOnes = seconds % 10;
     if (left == warnTimes[which]) {
-        timer->seqBase[which] = 13;
+        timer->seqBase[which] = TIMER_SEQ_WARNING_OFFSET;
     }
     ClActor_SetSequence(timer->actors[which][0], label + timer->seqBase[which]);
     if (minuteTens == 0) {
         ClActor_SetVisible(timer->actors[which][1], FALSE);
     } else {
         ClActor_SetVisible(timer->actors[which][1], TRUE);
-        ClActor_SetSequence(timer->actors[which][1], minuteTens + 3 + timer->seqBase[which]);
+        ClActor_SetSequence(timer->actors[which][1], minuteTens + TIMER_SEQ_FIRST_DIGIT + timer->seqBase[which]);
     }
     if (minuteTens == 0 && minuteOnes == 0) {
         ClActor_SetVisible(timer->actors[which][2], FALSE);
@@ -177,21 +185,21 @@ static void BtlvTimer_Draw(BtlvTimer *timer, int which) {
     } else {
         ClActor_SetVisible(timer->actors[which][2], TRUE);
         ClActor_SetVisible(timer->actors[which][3], TRUE);
-        ClActor_SetSequence(timer->actors[which][2], minuteOnes + 3 + timer->seqBase[which]);
-        ClActor_SetSequence(timer->actors[which][3], timer->seqBase[which] + 2);
+        ClActor_SetSequence(timer->actors[which][2], minuteOnes + TIMER_SEQ_FIRST_DIGIT + timer->seqBase[which]);
+        ClActor_SetSequence(timer->actors[which][3], timer->seqBase[which] + TIMER_SEQ_COLON);
     }
     if (minuteTens == 0 && minuteOnes == 0 && secondTens == 0) {
         ClActor_SetVisible(timer->actors[which][4], FALSE);
     } else {
         ClActor_SetVisible(timer->actors[which][4], TRUE);
-        ClActor_SetSequence(timer->actors[which][4], secondTens + 3 + timer->seqBase[which]);
+        ClActor_SetSequence(timer->actors[which][4], secondTens + TIMER_SEQ_FIRST_DIGIT + timer->seqBase[which]);
     }
-    ClActor_SetSequence(timer->actors[which][5], secondOnes + 3 + timer->seqBase[which]);
+    ClActor_SetSequence(timer->actors[which][5], secondOnes + TIMER_SEQ_FIRST_DIGIT + timer->seqBase[which]);
 }
 
 static void BtlvTimer_Task(TCB *tcb, void *data) {
     BtlvTimer *timer = data;
 
-    BtlvTimer_Draw(timer, 0);
-    BtlvTimer_Draw(timer, 1);
+    BtlvTimer_Draw(timer, BTLV_TIMER_BATTLE);
+    BtlvTimer_Draw(timer, BTLV_TIMER_COMMAND);
 }

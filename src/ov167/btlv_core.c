@@ -1586,7 +1586,7 @@ void BtlvCore_HideRotationScreen(BtlvCore *core) {
 void BtlvCore_StartRotation(BtlvCore *core, u8 clientId, u8 dir) {
     BtlvRotateWork *work;
 
-    if (dir != 1) {
+    if (dir != BTLV_EFFECT_ROTATE_NONE) {
         work = BtlvCore_GetWork(core, sizeof(BtlvRotateWork));
         work->clientId = clientId;
         work->dir = dir;

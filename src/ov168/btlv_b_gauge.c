@@ -58,6 +58,13 @@ typedef struct {
     s16 frameY;
 } BtlvBGaugePos;
 
+// Ball-gauge animations selected by the empty state and each side frame.
+enum {
+    BALL_SEQ_EMPTY = 9,
+    BALL_SEQ_ENEMY_FRAME = 10,
+    BALL_SEQ_PLAYER_FRAME = 11,
+};
+
 static void BtlvBGauge_LoadResources(BtlvBGauge *work);
 static void BtlvBGauge_FreeResources(BtlvBGauge *work);
 static void BtlvBGauge_SlideTask(TCB *tcb, void *data);
@@ -66,7 +73,9 @@ static void BtlvBGauge_SlideTaskEnd(TCB *tcb);
 static const BtlvBGaugePos SIDE_POSITIONS[2] = { { 166, 112, 184, 120 }, { 90, 40, 56, 48 } };
 
 // The animations by ball state: a ball's while it slides on each side, then once it stopped; column 4 is the frame's
-static const u32 BALL_SEQUENCES[3][5] = { { 9, 3, 5, 4, 11 }, { 9, 0, 2, 1, 10 }, { 9, 6, 8, 7, 10 } };
+static const u32 BALL_SEQUENCES[3][5] = { { BALL_SEQ_EMPTY, 3, 5, 4, BALL_SEQ_PLAYER_FRAME },
+                                          { BALL_SEQ_EMPTY, 0, 2, 1, BALL_SEQ_ENEMY_FRAME },
+                                          { BALL_SEQ_EMPTY, 6, 8, 7, BALL_SEQ_ENEMY_FRAME } };
 
 BtlvBGauge *BtlvBGauge_Create(const BtlvBGaugeParam *param, HeapID heapId) {
     BtlvBGauge *work;
@@ -83,7 +92,7 @@ BtlvBGauge *BtlvBGauge_Create(const BtlvBGaugeParam *param, HeapID heapId) {
     task = GFL_HeapAllocate(HEAPID_TAIL(heapId), sizeof(BtlvBGaugeTask), FALSE, "btlv_b_gauge.c", 0x8b);
     task->gauge = work;
     BtlvEffect_AddTask(GFL_TCBMgrAddTask(BtlvEffect_GetTCBManager(), BtlvBGauge_SlideTask, task, 0),
-                       BtlvBGauge_SlideTaskEnd, 0);
+                       BtlvBGauge_SlideTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
     work->busy = TRUE;
     GFL_SndSEPlay(SEQ_SE_TB_START);
     return work;
@@ -110,10 +119,11 @@ static void BtlvBGauge_LoadResources(BtlvBGauge *work) {
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_BTLV, HEAPID_TAIL(work->heapId));
     work->loaded = TRUE;
-    work->chars = ClActSys_LoadChars(arc, 0x1cb, FALSE, 0, work->heapId);
+    work->chars = ClActSys_LoadChars(arc, 0x1cb, FALSE, CLACT_VRAM_MAIN, work->heapId);
     work->cellAnims = ClActSys_LoadCellAnims(arc, 0x1cd, 0x1ce, work->heapId);
-    work->palette = ClActSys_LoadPltt(arc, 0x1cc, 0, 0xc0, work->heapId);
-    PaletteFade_LoadFromVRAM(BtlvEffect_GetPaletteFade(), 2, ClActSys_GetPlttVramAddr(work->palette, FALSE) / 2, 0x20);
+    work->palette = ClActSys_LoadPltt(arc, 0x1cc, CLACT_VRAM_MAIN, 0xc0, work->heapId);
+    PaletteFade_LoadFromVRAM(BtlvEffect_GetPaletteFade(), PALFADE_VRAM_MAIN_OBJ,
+                             ClActSys_GetPlttVramAddr(work->palette, FALSE) / 2, 0x20);
 
     {
         ClActorSetup setup = { 0, 0, 0, 0, 0 };
@@ -123,9 +133,9 @@ static void BtlvBGauge_LoadResources(BtlvBGauge *work) {
         setup.x = x + (param->side == 0 ? 0x80 : -0x80);
         setup.y = SIDE_POSITIONS[param->side].ballY;
         for (i = 0; i < 6; i++) {
-            work->balls[i].actor =
-                ClActor_Create(work->unit, work->chars, work->palette, work->cellAnims, &setup, 0, work->heapId);
-            ClActor_GetSurfacePos(work->balls[i].actor, &work->balls[i].pos, 0);
+            work->balls[i].actor = ClActor_Create(work->unit, work->chars, work->palette, work->cellAnims, &setup,
+                                                  CLACT_SURFACE_MAIN, work->heapId);
+            ClActor_GetSurfacePos(work->balls[i].actor, &work->balls[i].pos, CLACT_SURFACE_MAIN);
             ClActor_SetAutoAnim(work->balls[i].actor, TRUE);
             ClActor_SetSequence(work->balls[i].actor, BALL_SEQUENCES[param->side][param->balls[i]]);
             work->balls[i].sequence = BALL_SEQUENCES[2][param->balls[i]];
@@ -138,9 +148,9 @@ static void BtlvBGauge_LoadResources(BtlvBGauge *work) {
 
         setup.x = SIDE_POSITIONS[param->side].frameX + (param->side == 0 ? 0x80 : -0x80);
         setup.y = SIDE_POSITIONS[param->side].frameY;
-        work->balls[i].actor =
-            ClActor_Create(work->unit, work->chars, work->palette, work->cellAnims, &setup, 0, work->heapId);
-        ClActor_GetSurfacePos(work->balls[i].actor, &work->balls[i].pos, 0);
+        work->balls[i].actor = ClActor_Create(work->unit, work->chars, work->palette, work->cellAnims, &setup,
+                                              CLACT_SURFACE_MAIN, work->heapId);
+        ClActor_GetSurfacePos(work->balls[i].actor, &work->balls[i].pos, CLACT_SURFACE_MAIN);
         ClActor_SetAutoAnim(work->balls[i].actor, TRUE);
         ClActor_SetSequence(work->balls[i].actor, BALL_SEQUENCES[param->side][4]);
         work->balls[i].sequence = BALL_SEQUENCES[param->side][4];
@@ -195,15 +205,15 @@ static void BtlvBGauge_SlideTask(TCB *tcb, void *data) {
                     task->gauge->balls[i].pos.x = task->gauge->balls[i].slideEndX;
                     task->gauge->balls[i].speed = 0;
                 }
-                ClActor_SetSurfacePos(task->gauge->balls[i].actor, &task->gauge->balls[i].pos, 0);
+                ClActor_SetSurfacePos(task->gauge->balls[i].actor, &task->gauge->balls[i].pos, CLACT_SURFACE_MAIN);
                 if (task->gauge->balls[i].speed == 0) {
                     ClActor_SetSequence(task->gauge->balls[i].actor, task->gauge->balls[i].sequence);
                     switch (task->gauge->balls[i].sequence) {
-                    case 9:
+                    case BALL_SEQ_EMPTY:
                         se = SEQ_SE_TB_KARA;
                         break;
-                    case 10:
-                    case 11:
+                    case BALL_SEQ_ENEMY_FRAME:
+                    case BALL_SEQ_PLAYER_FRAME:
                         se = 0;
                         break;
                     default:
@@ -236,7 +246,7 @@ static void BtlvBGauge_SlideTask(TCB *tcb, void *data) {
                 }
                 moving = TRUE;
             }
-            ClActor_SetSurfacePos(task->gauge->balls[i].actor, &task->gauge->balls[i].pos, 0);
+            ClActor_SetSurfacePos(task->gauge->balls[i].actor, &task->gauge->balls[i].pos, CLACT_SURFACE_MAIN);
         }
         if (moving == FALSE) {
             BtlvEffect_EndTask(tcb);

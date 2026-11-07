@@ -62,8 +62,8 @@ static void BtlvField_FreeResources(BtlvField *field);
 // more
 static const u8 FIELD_PARAM_VARIANTS[] = { 0, 4, 5, 6, 7 };
 
-BtlvField *BtlvField_Create(BOOL arg0, u8 fieldId, u8 variant, HeapID heapId, u32 studioMode, s32 fieldParam,
-                            BOOL arg6) {
+BtlvField *BtlvField_Create(BOOL unused, u8 fieldId, u8 variant, HeapID heapId, u32 studioMode, s32 fieldParam,
+                            BOOL alternateFieldVariant) {
     BtlvField *field;
     BtlvFieldResIds *table;
     u32 palSize;
@@ -89,7 +89,7 @@ BtlvField *BtlvField_Create(BOOL arg0, u8 fieldId, u8 variant, HeapID heapId, u3
         }
         field->fieldParam = fieldId | (variant << 8);
     }
-    if (arg6 && fieldId == 0x2e) {
+    if (alternateFieldVariant && fieldId == 0x2e) {
         variant = 4;
     }
 

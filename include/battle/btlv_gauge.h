@@ -58,4 +58,13 @@ BOOL BtlvGauge_GetStatus(BtlvGauge *gauge, int index, u32 *color, u32 *status);
 void BtlvGauge_RequestNumberToggle(BtlvGauge *gauge);
 void BtlvGauge_HideStatus(BtlvGauge *gauge, int index);
 
+// The separate icon used for badly poisoned Pokemon (condition code6).
+#define BTLV_GAUGE_STATUS_BAD_POISON 7
+
+// SetSideVisible applies to both sides for this value.
+#define BTLV_GAUGE_SIDE_BOTH 2
+
+// StartShake stops the previous gauge shake without selecting a new gauge.
+#define BTLV_GAUGE_SHAKE_STOP 8
+
 #endif // POKEBW2_BATTLE_BTLV_GAUGE_H

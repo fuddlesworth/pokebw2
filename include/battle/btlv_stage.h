@@ -26,4 +26,7 @@ void BtlvStage_SetVanish(BtlvStage *stage, u32 side, BOOL hide);
 void BtlvStage_StartAnimation(BtlvStage *stage, u32 side, u32 anm, fx32 speed, s32 frames);
 BOOL BtlvStage_IsAnimating(BtlvStage *stage);
 
+// An absent model or animation in the stage resource table.
+#define BTLV_STAGE_RES_NONE 0xffff
+
 #endif // POKEBW2_BATTLE_BTLV_STAGE_H

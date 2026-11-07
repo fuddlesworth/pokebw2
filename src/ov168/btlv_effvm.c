@@ -15,6 +15,7 @@
 #include "battle/btlv_mcss.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
+#include "constants/moves.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -28,6 +29,7 @@
 #include "gfl/tcb.h"
 #include "nitro/fx.h"
 #include "nitro/gx.h"
+#include "nitro/hw.h"
 #include "nnsys/g3d.h"
 #include "pml/item.h"
 #include "system/palanm.h"
@@ -42,56 +44,57 @@ struct BtlvEffvm {
     u32 alphaBlend : 1;  // bit 5   the blend was changed; the end restores it
     u32 isEffect
         : 1; // bit 6   the script is an effect's, from ARCID_BTLV_EFFVM_EFFECT_SCRIPTS, rather than a move's, from 65
-    u32 paused : 1;            // bit 7   until BtlvEffvm_Resume
-    u32 windowTask : 1;        // bit 8   BtlvEffect_QueueCommands' window task runs
-    u32 bgmLowered : 1;        // bit 9
-    u32 bgmLowerRequested : 1; // bit 10
-    u32 cryDelayed : 1;        // bit 11
-    u32 sePlayed : 1;          // bit 12  the end stops the sounds
-    u32 mcssScaled : 1;        // bit 13
-    u32 unk0_14 : 1;           // bit 14  never used
-    u32 cameraLocked : 1;      // bit 15  the camera commands do nothing
-    u32 particleLoading : 1;   // bit 16  a particle resource uploads in the V-blank
-    u32 substituteRestore : 1; // bit 17
-    u32 unk0_18 : 1;           // bit 18  set for effect 0x27e, cleared for 0x291; while set the end keeps the Pokémon
-    u32 paletteAnim : 1;       // bit 19
+    u32 paused : 1;             // bit 7   until BtlvEffvm_Resume
+    u32 windowTask : 1;         // bit 8   BtlvEffect_QueueCommands' window task runs
+    u32 bgmLowered : 1;         // bit 9
+    u32 bgmLowerRequested : 1;  // bit 10
+    u32 cryDelayed : 1;         // bit 11
+    u32 sePlayed : 1;           // bit 12  the end stops the sounds
+    u32 mcssScaled : 1;         // bit 13
+    u32 unk0_14 : 1;            // bit 14  never used
+    u32 cameraLocked : 1;       // bit 15  the camera commands do nothing
+    u32 particleLoading : 1;    // bit 16  a particle resource uploads in the V-blank
+    u32 substituteRestore : 1;  // bit 17
+    u32 skipReverseRestore : 1; // bit 18  set for effect 0x27e, cleared for 0x291; suppresses the automatic
+                                // SetPokemonReverse(TRUE) at script end
+    u32 paletteAnim : 1;        // bit 19
     u32 unk0_20 : 12;
-    s32 value;                     // 0x004  the scripts' register, variable 17
-    TCBManager *tcbManager;        // 0x008
-    ParticleSystem *particles[16]; // 0x00c
-    s32 particleIds[16];           // 0x04c  each particle system's file, -1 for none
-    u32 emitterCounts[16];         // 0x08c  each particle resource's count of emitters
-    s32 clactIndexes[4];           // 0x0cc  -1 for none
-    int attacker;                  // 0x0dc  a position, or BTLV_MCSS_POS_NONE
-    int defender;                  // 0x0e0
-    u32 callAttackers[16];         // 0x0e4  the call stack, by callDepth
-    u32 callDefenders[16];         // 0x124
-    void *callScripts[16];         // 0x164
-    s32 callValues[16];            // 0x1a4
-    s32 waitTimer;                 // 0x1e4
-    void *script;                  // 0x1e8
-    void *savedScript;             // 0x1ec  the move's script while the substitute's runs first
-    u32 savedOffset;               // 0x1f0
-    void *allocs[16];              // 0x1f4  the emitters' works, freed with the effect's end
-    int allocCount;                // 0x234
-    HeapID heapId;                 // 0x238
-    BOOL ret;                      // 0x23c  what the commands return, TRUE to make VM_Run return
-    u32 waitKind;                  // 0x240  what BtlvEffvm_WaitNative waits for
-    u32 mcssCameraMode;            // 0x244  McssCameraMode's type: 1 makes BtlvEffvm_ResetMcss clear the Pokémon's flat
-                                   //        mode, others set it
-    BtlvEffvmParam param;          // 0x248
-    u16 move;                      // 0x258  a move, or an effect from BTLV_EFFECT_FIRST
-    u32 ballSource;                // 0x25c  whose ball the ball particles show: 8 for param's item, 9 the attacker's
-    u32 callDepth;                 // 0x260
-    int bgX;                       // 0x264  BG 3's offset before the effect
-    int bgY;                       // 0x268
-    s32 voices[6];                 // 0x26c  PokeVoice handles, -1 for none
-    BOOL camSaved;                 // 0x284
-    VecFx32 camPos;                // 0x288
-    VecFx32 camTarget;             // 0x294
-    u32 unk2A0;                    // 0x2a0  variable 0x37
-    u32 lastMove;                  // 0x2a4  effects 0x261 and 0x262 don't repeat for the same attacker
-    u32 lastAttacker;              // 0x2a8
+    s32 value;                                          // 0x004  the scripts' value register, variable 16
+    TCBManager *tcbManager;                             // 0x008
+    ParticleSystem *particles[EFFVM_PARTICLE_CAPACITY]; // 0x00c
+    s32 particleIds[EFFVM_PARTICLE_CAPACITY];           // 0x04c  each particle system's file, -1 for none
+    u32 emitterCounts[EFFVM_PARTICLE_CAPACITY];         // 0x08c  each particle resource's count of emitters
+    s32 clactIndexes[4];                                // 0x0cc  -1 for none
+    int attacker;                                       // 0x0dc  a position, or BTLV_MCSS_POS_NONE
+    int defender;                                       // 0x0e0
+    u32 callAttackers[16];                              // 0x0e4  the call stack, by callDepth
+    u32 callDefenders[16];                              // 0x124
+    void *callScripts[16];                              // 0x164
+    s32 callValues[16];                                 // 0x1a4
+    s32 waitTimer;                                      // 0x1e4
+    void *script;                                       // 0x1e8
+    void *savedScript;                                  // 0x1ec  the move's script while the substitute's runs first
+    u32 savedOffset;                                    // 0x1f0
+    void *allocs[16];                                   // 0x1f4  the emitters' works, freed with the effect's end
+    int allocCount;                                     // 0x234
+    HeapID heapId;                                      // 0x238
+    BOOL ret;                                           // 0x23c  what the commands return, TRUE to make VM_Run return
+    u32 waitKind;                                       // 0x240  what BtlvEffvm_WaitNative waits for
+    u32 mcssCameraMode;   // 0x244  McssCameraMode's type: 1 makes BtlvEffvm_ResetMcss clear the Pokémon's flat
+                          //        mode, others set it
+    BtlvEffvmParam param; // 0x248
+    u16 move;             // 0x258  a move, or an effect from BTLV_EFFECT_FIRST
+    u32 ballSource;       // 0x25c  whose ball the ball particles show: 8 for param's item, 9 the attacker's
+    u32 callDepth;        // 0x260
+    int bgX;              // 0x264  BG 3's offset before the effect
+    int bgY;              // 0x268
+    s32 voices[EFFVM_VOICE_CAPACITY]; // 0x26c  PokeVoice handles, -1 for none
+    BOOL camSaved;                    // 0x284
+    VecFx32 camPos;                   // 0x288
+    VecFx32 camTarget;                // 0x294
+    u32 messageIdleNeedsRestore;      // 0x2a0  effects025/026 set it; effect032 restores the view and clears it
+    u32 lastMove;                     // 0x2a4  effects 0x261 and 0x262 don't repeat for the same attacker
+    u32 lastAttacker;                 // 0x2a8
 };
 
 #define BTLV_EFFECT_FIRST 0x231
@@ -253,6 +256,39 @@ typedef struct {
     fx32 step;     // 0xc
 } BtlvEffvmBgmFadeWork;
 
+// The window task initializes the masks once, then adjusts its bounds.
+enum {
+    EFFVM_WINDOW_INIT = 0,
+    EFFVM_WINDOW_MOVE = 1,
+};
+
+// Window bound and palette-animation format sentinels; these are unrelated to sprite positions.
+enum {
+    EFFVM_WINDOW_RIGHT_MAX = 255,
+    EFFVM_PAL_ANIM_INITIAL_TIMER = 255,
+    EFFVM_PAL_ANIM_PALETTES_END = 255,
+    EFFVM_PAL_ANIM_DURATIONS_END = 65432,
+};
+
+// The palette animation task primes its timer, then loads the timed palettes.
+enum {
+    EFFVM_PAL_ANIM_INIT = 0,
+    EFFVM_PAL_ANIM_PLAY = 1,
+};
+
+// Ball IDs returned by PML_ItemGetMonsBallID, matching pml_item.c MONS_BALL_ITEMS.
+enum {
+    EFFVM_BALL_NONE = 0,
+    EFFVM_BALL_POKE = 4,
+    EFFVM_BALL_CHERISH = 16,
+    EFFVM_BALL_DREAM = 25,
+};
+
+// The Dream Ball uses sprite pair17 in the VM actor archive.
+enum {
+    EFFVM_DREAM_BALL_SPRITE = 17,
+};
+
 static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env);
 static BOOL BtlvEffvm_CmdCameraMove(VM *vm, void *env);
 static BOOL BtlvEffvm_CmdCameraRotate(VM *vm, void *env);
@@ -336,7 +372,7 @@ static BOOL BtlvEffvm_WaitTimerNative(VM *vm, void *env);
 static BOOL BtlvEffvm_WaitResumeNative(VM *vm, void *env);
 static BOOL BtlvEffvm_WaitParticleLoadNative(VM *vm, void *env);
 static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions);
-static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int code, int *positions);
+static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int unusedCode, int *positions);
 static int BtlvEffvm_GetTargetPosition(VM *vm, int code);
 static int BtlvEffvm_CheckPosition(BtlvEffvm *wk, int pos);
 static int BtlvEffvm_SwapSide(VM *vm, int pos);
@@ -482,13 +518,16 @@ static VecFx32 sCamPosRotation = { FX32_CONST(6.7), FX32_CONST(7.7), FX32_CONST(
 static VecFx32 sCamPosSingle[2] = { { 0x5ca6, FX32_CONST(5.95), 0x13cc3 }, { 0x6994, FX32_CONST(6.95), 0x6e79 } };
 static VecFx32 sCamTargetRotation = { 0, FX32_CONST(3.6), FX32_CONST(13.5) };
 static VecFx32 sCamTargetSingle[2] = { { -0xe8d, FX32_CONST(1.85), 0x27f6 }, { -0x19f, FX32_CONST(2.85), -0xa654 } };
-static s32 data_ov168_021f4044[8] = { 0, 0, 17, 16, 0, 0, 15, 14 };
-static s32 data_ov168_021f4064[8] = { 0, 0, 5, 4, 0, 0, 3, 2 };
+static s32 sTripleFoeSideEmitterCodes[8] = { 0, 0, EFFVM_EMIT_DOUBLE_ENEMY_2, EFFVM_EMIT_DOUBLE_PLAYER_2,
+                                             0, 0, EFFVM_EMIT_DOUBLE_ENEMY_1, EFFVM_EMIT_DOUBLE_PLAYER_1 };
+static s32 sTripleDefaultDefenderPositions[8] = { 0, 0, BTLV_MCSS_POS_ENEMY_2, BTLV_MCSS_POS_PLAYER_2,
+                                                  0, 0, BTLV_MCSS_POS_ENEMY_1, BTLV_MCSS_POS_PLAYER_1 };
 static VecFx32 sCamPosDouble[4] = { { FX32_CONST(2.7), FX32_CONST(5.2), FX32_CONST(17.3) },
                                     { 0x8994, FX32_CONST(6.95), 0x6e79 },
                                     { FX32_CONST(6.7), FX32_CONST(5.2), FX32_CONST(17.3) },
                                     { 0x4994, FX32_CONST(6.95), 0x6e79 } };
-static s32 data_ov168_021f4024[8] = { 0, 0, 17, 16, 0, 0, 15, 14 };
+static s32 sTripleDefaultDefenderEmitterCodes[8] = { 0, 0, EFFVM_EMIT_DOUBLE_ENEMY_2, EFFVM_EMIT_DOUBLE_PLAYER_2,
+                                                     0, 0, EFFVM_EMIT_DOUBLE_ENEMY_1, EFFVM_EMIT_DOUBLE_PLAYER_1 };
 static VecFx32 sCamTargetDouble[4] = { { FX32_CONST(-4), FX32_CONST(1.1), 0 },
                                        { 0x219f, FX32_CONST(2.85), -0xa654 },
                                        { 0, FX32_CONST(1.1), 0 },
@@ -514,14 +553,14 @@ VM *BtlvEffvm_Create(TCBManager *tcbManager, HeapID heapId) {
     wk->heapId = heapId;
     wk->tcbManager = tcbManager;
     wk->ret = TRUE;
-    wk->mcssCameraMode = 1;
-    for (i = 0; i < 16; i++) {
+    wk->mcssCameraMode = EFFVM_MCSS_CAMERA_DEPTH;
+    for (i = 0; i < EFFVM_PARTICLE_CAPACITY; i++) {
         wk->particleIds[i] = -1;
     }
     for (i = 0; i < 4; i++) {
         wk->clactIndexes[i] = -1;
     }
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < EFFVM_VOICE_CAPACITY; i++) {
         wk->voices[i] = -1;
     }
     vm = VM_Create(heapId, &EFFVM_VM_INIT_PARAM);
@@ -537,7 +576,7 @@ BOOL BtlvEffvm_Main(VM *vm) {
         return FALSE;
     }
     if (!running && wk->script != NULL) {
-        BtlvEffect_SetGaugeDrawEnableBySide(1, 2);
+        BtlvEffect_SetGaugeDrawEnableBySide(1, BTLV_GAUGE_SIDE_BOTH);
         if (!wk->isEffect) {
             BtlvEffvm_StartBgmFade(wk, 0x6b000, 0x7f000, 20);
         }
@@ -562,7 +601,7 @@ void BtlvEffvm_Start(VM *vm, u32 attacker, u32 defender, u16 move, BtlvEffvmPara
     void *script;
 
     wk->script = NULL;
-    BtlvEffect_EndTaskGroup(1);
+    BtlvEffect_EndTaskGroup(BTLV_EFFECT_TASK_SCRIPT);
     if (param != NULL) {
         wk->param = *param;
     } else {
@@ -570,7 +609,7 @@ void BtlvEffvm_Start(VM *vm, u32 attacker, u32 defender, u16 move, BtlvEffvmPara
     }
     wk->attacker = attacker;
     wk->defender = defender;
-    wk->mcssCameraMode = 1;
+    wk->mcssCameraMode = EFFVM_MCSS_CAMERA_DEPTH;
     wk->move = move;
     if (wk->move >= BTLV_EFFECT_FIRST && (wk->move == 0x261 || wk->move == 0x262) && wk->lastMove == wk->move &&
         wk->lastAttacker == attacker) {
@@ -583,8 +622,8 @@ void BtlvEffvm_Start(VM *vm, u32 attacker, u32 defender, u16 move, BtlvEffvmPara
     }
     if (wk->move < BTLV_EFFECT_FIRST) {
         wk->script = GFL_ArcSysReadHeapNew(ARCID_BTLV_EFFVM_MOVE_SCRIPTS, move, HEAPID_TAIL(wk->heapId));
-        if (wk->move != 144 && wk->move != 119 && wk->move != 267) {
-            BtlvEffect_SetGaugeDrawEnableBySide(0, 2);
+        if (wk->move != MOVE_TRANSFORM && wk->move != MOVE_MIRROR_MOVE && wk->move != MOVE_NATURE_POWER) {
+            BtlvEffect_SetGaugeDrawEnableBySide(0, BTLV_GAUGE_SIDE_BOTH);
         }
         GFL_BGSysSetBGEnabled(1, FALSE);
         GFL_BGSysSetBGEnabled(2, FALSE);
@@ -608,17 +647,17 @@ void BtlvEffvm_Start(VM *vm, u32 attacker, u32 defender, u16 move, BtlvEffvmPara
     }
     visible = FALSE;
     if (BtlvMcss_Exists(BtlvEffect_GetMcss(), wk->attacker)) {
-        if (((wk->move == 248 || wk->move == 353) && param->variant == 1) || wk->move == 144 || wk->move == 119 ||
-            wk->move == 267) {
+        if (((wk->move == MOVE_FUTURE_SIGHT || wk->move == MOVE_DOOM_DESIRE) && param->variant == 1) ||
+            wk->move == MOVE_TRANSFORM || wk->move == MOVE_MIRROR_MOVE || wk->move == MOVE_NATURE_POWER) {
         } else {
-            visible = BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & 1;
+            visible = BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & BTLV_MCSS_FLAG_SUBSTITUTE_ACTIVE;
         }
     }
     if (wk->move == 0x27e) {
-        wk->unk0_18 = TRUE;
+        wk->skipReverseRestore = TRUE;
     }
     if (wk->move == 0x291) {
-        wk->unk0_18 = FALSE;
+        wk->skipReverseRestore = FALSE;
     }
     if (wk->move == 0x27e && visible) {
         wk->savedScript = wk->script;
@@ -627,7 +666,7 @@ void BtlvEffvm_Start(VM *vm, u32 attacker, u32 defender, u16 move, BtlvEffvmPara
         wk->isEffect = TRUE;
         wk->substituteRestore = TRUE;
         offset = 4;
-    } else if (!wk->isEffect && wk->move != 144 && !wk->substituteRestore && visible) {
+    } else if (!wk->isEffect && wk->move != MOVE_TRANSFORM && !wk->substituteRestore && visible) {
         wk->savedScript = wk->script;
         wk->savedOffset = offset;
         wk->script = GFL_ArcSysReadHeapNew(ARCID_BTLV_EFFVM_EFFECT_SCRIPTS, 51, HEAPID_TAIL(wk->heapId));
@@ -637,7 +676,7 @@ void BtlvEffvm_Start(VM *vm, u32 attacker, u32 defender, u16 move, BtlvEffvmPara
     script = wk->script;
     wk->value = 0;
     wk->sePlayed = FALSE;
-    wk->ballSource = 8;
+    wk->ballSource = EFFVM_BALL_SOURCE_ITEM;
     VM_LoadScript(vm, (u8 *)wk->script + *(u32 *)((u8 *)script + offset));
 }
 
@@ -686,9 +725,9 @@ void BtlvEffvm_PlaySEAt(VM *vm, u32 se, u32 player, u32 pan, int pitch, int volu
         return;
     }
     wk->sePlayed = TRUE;
-    if (pan == 2) {
+    if (pan == EFFVM_PAN_CENTER) {
         pan = 0;
-    } else if (pan <= 1) {
+    } else if (pan <= EFFVM_PAN_RIGHT) {
         pan = (pan & 1) ? 127 : -128;
     } else {
         pan = (BtlvEffvm_GetTargetPosition(vm, pan) & 1) ? 127 : -128;
@@ -714,7 +753,8 @@ void BtlvEffvm_PlaySEAt(VM *vm, u32 se, u32 player, u32 pan, int pitch, int volu
     work->modDepth = modDepth;
     work->modSpeed = modSpeed;
     wk->seDelayed = TRUE;
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SeWaitTask, work, 0), BtlvEffvm_SeWaitTaskRemove, 1);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SeWaitTask, work, 0), BtlvEffvm_SeWaitTaskRemove,
+                       BTLV_EFFECT_TASK_SCRIPT);
 }
 
 void BtlvEffvm_SlideSE(VM *vm, u32 player, u32 type, u32 param, int start, int end, int delay, int frames, int stepWait,
@@ -735,12 +775,13 @@ void BtlvEffvm_SlideSE(VM *vm, u32 player, u32 type, u32 param, int start, int e
     work->stepWait = 0;
     work->stepWaitReset = stepWait;
     work->count = count * 2;
-    if (type == 1 && work->count == 0) {
+    if (type == EFFVM_SE_MOVE_SWING && work->count == 0) {
         work->count = 2;
     }
     work->value = FX32_CONST(work->start);
     work->step = FX_Div(FX32_CONST(work->end - work->start), FX32_CONST(work->frames));
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SeMoveTask, work, 0), BtlvEffvm_SeMoveTaskRemove, 1);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SeMoveTask, work, 0), BtlvEffvm_SeMoveTaskRemove,
+                       BTLV_EFFECT_TASK_SCRIPT);
     wk->seSliding = TRUE;
 }
 
@@ -748,7 +789,7 @@ void BtlvEffvm_ReleaseVoices(VM *vm) {
     BtlvEffvm *wk = VM_GetEnv(vm);
     int i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < EFFVM_VOICE_CAPACITY; i++) {
         if (wk->voices[i] != -1) {
             PokeVoice_Release(wk->voices[i]);
         }
@@ -777,101 +818,102 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
     if (wk->cameraLocked) {
         return wk->ret;
     }
-    if (posType == 13 && wk->camSaved == FALSE) {
-        posType = 8;
+    if (posType == EFFVM_CAMERA_SAVED && wk->camSaved == FALSE) {
+        posType = EFFVM_CAMERA_DEFAULT;
     }
-    if (posType != 8 && posType != 15 && posType != 16 && posType != 14 && posType != 17) {
+    if (posType != EFFVM_CAMERA_DEFAULT && posType != EFFVM_CAMERA_ATTACKER_SLOT &&
+        posType != EFFVM_CAMERA_DEFENDER_SLOT && posType != EFFVM_CAMERA_WIDE && posType != EFFVM_CAMERA_DEFAULT_ALT) {
         BtlvEffvm_ResetMcss(wk);
     } else {
         wk->cameraReset = TRUE;
     }
     switch (posType) {
-    case 15:
-    case 16:
+    case EFFVM_CAMERA_ATTACKER_SLOT:
+    case EFFVM_CAMERA_DEFENDER_SLOT:
         rule = BtlvEffect_GetBattleStyle();
-        battler = posType == 15 ? wk->attacker : wk->defender;
+        battler = posType == EFFVM_CAMERA_ATTACKER_SLOT ? wk->attacker : wk->defender;
         switch (rule) {
         case BTL_STYLE_SINGLE:
             return wk->ret;
         case BTL_STYLE_DOUBLE:
         case BTL_STYLE_TRIPLE:
             switch (battler) {
-            case 2:
-                posType = 2;
+            case BTLV_MCSS_POS_PLAYER_1:
+                posType = EFFVM_CAMERA_PLAYER_1;
                 break;
-            case 3:
-                posType = 8;
+            case BTLV_MCSS_POS_ENEMY_1:
+                posType = EFFVM_CAMERA_DEFAULT;
                 if (rule != BTL_STYLE_DOUBLE) {
-                    posType = 18;
+                    posType = EFFVM_CAMERA_TRIPLE_ENEMY_1;
                 }
                 break;
-            case 4:
-                posType = 4;
+            case BTLV_MCSS_POS_PLAYER_2:
+                posType = EFFVM_CAMERA_PLAYER_2;
                 if (rule != BTL_STYLE_DOUBLE) {
-                    posType = 8;
+                    posType = EFFVM_CAMERA_DEFAULT;
                 }
                 break;
-            case 5:
-                posType = 8;
+            case BTLV_MCSS_POS_ENEMY_2:
+                posType = EFFVM_CAMERA_DEFAULT;
                 break;
-            case 6:
-                posType = 8;
+            case BTLV_MCSS_POS_PLAYER_3:
+                posType = EFFVM_CAMERA_DEFAULT;
                 if (rule != BTL_STYLE_DOUBLE) {
-                    posType = 6;
+                    posType = EFFVM_CAMERA_PLAYER_3;
                 }
                 break;
-            case 0:
-            case 1:
-            case 7:
+            case BTLV_MCSS_POS_SINGLE_PLAYER:
+            case BTLV_MCSS_POS_SINGLE_ENEMY:
+            case BTLV_MCSS_POS_ENEMY_3:
             default:
                 return wk->ret;
             }
             break;
         case BTL_STYLE_ROTATION:
-            if (battler == 4 || battler == 6) {
-                posType = 19;
+            if (battler == BTLV_MCSS_POS_PLAYER_2 || battler == BTLV_MCSS_POS_PLAYER_3) {
+                posType = EFFVM_CAMERA_ROTATION_BENCH;
             }
             break;
         }
         break;
-    case 14:
+    case EFFVM_CAMERA_WIDE:
         rule = BtlvEffect_GetBattleStyle();
         if (rule == BTL_STYLE_SINGLE || rule == BTL_STYLE_ROTATION) {
             return wk->ret;
         }
         break;
-    case 20:
+    case EFFVM_CAMERA_WIDE_OR_FLAT:
         rule = BtlvEffect_GetBattleStyle();
         if (rule == BTL_STYLE_SINGLE || rule == BTL_STYLE_ROTATION) {
             BtlvMcss_SetFlatAll(BtlvEffect_GetMcss());
             return wk->ret;
         } else {
-            posType = 14;
+            posType = EFFVM_CAMERA_WIDE;
         }
         break;
-    case 21:
+    case EFFVM_CAMERA_ATTACKER_SIDE:
         rule = BtlvEffect_GetBattleStyle();
         if (rule == BTL_STYLE_SINGLE || rule == BTL_STYLE_ROTATION) {
             posType = wk->attacker;
         } else if (wk->attacker & 1) {
-            posType = 1;
+            posType = EFFVM_CAMERA_SINGLE_ENEMY;
         } else {
-            posType = 14;
+            posType = EFFVM_CAMERA_WIDE;
         }
         break;
-    case 17:
-        posType = 8;
+    case EFFVM_CAMERA_DEFAULT_ALT:
+        posType = EFFVM_CAMERA_DEFAULT;
         break;
-    case 9:
-    case 10:
+    case EFFVM_CAMERA_ATTACKER:
+    case EFFVM_CAMERA_ATTACKER_ALT:
         rule = BtlvEffect_GetBattleStyle();
         posType = wk->attacker;
-        if (rule == BTL_STYLE_ROTATION && (posType == 4 || posType == 6)) {
-            posType = 19;
+        if (rule == BTL_STYLE_ROTATION && (posType == EFFVM_CAMERA_PLAYER_2 || posType == EFFVM_CAMERA_PLAYER_3)) {
+            posType = EFFVM_CAMERA_ROTATION_BENCH;
         }
         break;
-    case 11:
-    case 12:
+    case EFFVM_CAMERA_DEFENDER:
+    case EFFVM_CAMERA_DEFENDER_ALT:
         switch (wk->param.target) {
         case MOVE_TARGET_SELECTED:
         case MOVE_TARGET_USER_OR_ALLY:
@@ -905,15 +947,15 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
             if (rule == BTL_STYLE_SINGLE || rule == BTL_STYLE_ROTATION) {
                 posType = (wk->attacker & 1) ^ 1;
             } else {
-                posType = 14;
+                posType = EFFVM_CAMERA_WIDE;
             }
             break;
         }
         break;
     }
     switch (posType) {
-    case 0:
-    case 1:
+    case EFFVM_CAMERA_SINGLE_PLAYER:
+    case EFFVM_CAMERA_SINGLE_ENEMY:
         pos.x = sCamPosSingle[posType].x;
         pos.y = sCamPosSingle[posType].y;
         pos.z = sCamPosSingle[posType].z;
@@ -921,10 +963,10 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
         target.y = sCamTargetSingle[posType].y;
         target.z = sCamTargetSingle[posType].z;
         break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    case EFFVM_CAMERA_PLAYER_1:
+    case EFFVM_CAMERA_ENEMY_1:
+    case EFFVM_CAMERA_PLAYER_2:
+    case EFFVM_CAMERA_ENEMY_2:
         rule = BtlvEffect_GetBattleStyle();
         if (rule == BTL_STYLE_ROTATION) {
             pos.x = sCamPosSingle[posType - 2].x;
@@ -951,8 +993,8 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
         target.y = sCamTargetTriple[posType - 2].y;
         target.z = sCamTargetTriple[posType - 2].z;
         break;
-    case 6:
-    case 7:
+    case EFFVM_CAMERA_PLAYER_3:
+    case EFFVM_CAMERA_ENEMY_3:
         pos.x = sCamPosTriple[posType - 2].x;
         pos.y = sCamPosTriple[posType - 2].y;
         pos.z = sCamPosTriple[posType - 2].z;
@@ -960,7 +1002,7 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
         target.y = sCamTargetTriple[posType - 2].y;
         target.z = sCamTargetTriple[posType - 2].z;
         break;
-    case 13:
+    case EFFVM_CAMERA_SAVED:
         pos.x = wk->camPos.x;
         pos.y = wk->camPos.y;
         pos.z = wk->camPos.z;
@@ -968,7 +1010,7 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
         target.y = wk->camTarget.y;
         target.z = wk->camTarget.z;
         break;
-    case 14:
+    case EFFVM_CAMERA_WIDE:
         pos.x = sCamPosWide.x;
         pos.y = sCamPosWide.y;
         pos.z = sCamPosWide.z;
@@ -980,7 +1022,7 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
             wk->mcssScaled = TRUE;
         }
         break;
-    case 19:
+    case EFFVM_CAMERA_ROTATION_BENCH:
         pos.x = sCamPosRotation.x;
         pos.y = sCamPosRotation.y;
         pos.z = sCamPosRotation.z;
@@ -992,7 +1034,7 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
             wk->mcssScaled = TRUE;
         }
         break;
-    case 18:
+    case EFFVM_CAMERA_TRIPLE_ENEMY_1:
         pos.x = sCamPosTriple3.x;
         pos.y = sCamPosTriple3.y;
         pos.z = sCamPosTriple3.z;
@@ -1009,10 +1051,10 @@ static BOOL BtlvEffvm_CmdCameraMovePreset(VM *vm, void *env) {
         break;
     }
     switch (moveType) {
-    case 0:
+    case EFFVM_CAMERA_MOVE_SET:
         BtlvCamera_SetPosTarget(BtlvEffect_GetCamera(), &pos, &target);
         break;
-    case 1:
+    case EFFVM_CAMERA_MOVE_TO:
         BtlvCamera_MoveTo(BtlvEffect_GetCamera(), &pos, &target, frames, wait, brakeFrames);
         break;
     }
@@ -1041,13 +1083,13 @@ static BOOL BtlvEffvm_CmdCameraMove(VM *vm, void *env) {
     brakeFrames = VM_Read32(vm);
     BtlvEffvm_ResetMcss(wk);
     switch (moveType) {
-    case 0:
+    case EFFVM_CAMERA_MOVE_SET:
         BtlvCamera_SetPosTarget(BtlvEffect_GetCamera(), &pos, &target);
         break;
-    case 1:
+    case EFFVM_CAMERA_MOVE_TO:
         BtlvCamera_MoveTo(BtlvEffect_GetCamera(), &pos, &target, frames, wait, brakeFrames);
         break;
-    case 2:
+    case EFFVM_CAMERA_MOVE_BY:
         BtlvCamera_GetPosTarget(BtlvEffect_GetCamera(), &curPos, &curTarget);
         VEC_Add(&curPos, &pos, &pos);
         VEC_Add(&curTarget, &target, &target);
@@ -1070,10 +1112,10 @@ static BOOL BtlvEffvm_CmdCameraRotate(VM *vm, void *env) {
 
     BtlvEffvm_ResetMcss(wk);
     switch (moveType) {
-    case 0:
+    case EFFVM_CAMERA_MOVE_SET:
         BtlvCamera_Rotate(BtlvEffect_GetCamera(), pitch, yaw);
         break;
-    case 1:
+    case EFFVM_CAMERA_MOVE_TO:
         BtlvCamera_CalcRotatedPos(BtlvEffect_GetCamera(), pitch, yaw, &pos, &target);
         BtlvCamera_MoveTo(BtlvEffect_GetCamera(), &pos, &target, frames, wait, brakeFrames);
         break;
@@ -1105,10 +1147,10 @@ static BOOL BtlvEffvm_CmdMcssCameraMode(VM *vm, void *env) {
         wk->mcssCameraMode = type;
         BtlvEffvm_ResetMcss(wk);
     } else {
-        count = BtlvEffvm_GetTargetPositions(wk, 14, positions);
+        count = BtlvEffvm_GetTargetPositions(wk, EFFVM_ATTACKER, positions);
         if (count != 0) {
             for (i = 0; i < count; i++) {
-                if (type == 1) {
+                if (type == EFFVM_MCSS_CAMERA_DEPTH) {
                     BtlvMcss_ClearFlat(BtlvEffect_GetMcss(), positions[i]);
                 } else {
                     BtlvMcss_SetFlat(BtlvEffect_GetMcss(), positions[i]);
@@ -1148,7 +1190,8 @@ static BOOL BtlvEffvm_CmdParticleLoad(VM *vm, void *env) {
                 vblank->particle = wk->particles[index];
                 vblank->resource = resource;
                 wk->particleLoading = TRUE;
-                BtlvEffect_AddTask(GFL_VBlankTCBAdd(BtlvEffvm_ParticleUploadTask, vblank, 0), NULL, 1);
+                BtlvEffect_AddTask(GFL_VBlankTCBAdd(BtlvEffvm_ParticleUploadTask, vblank, 0), NULL,
+                                   BTLV_EFFECT_TASK_SCRIPT);
                 VM_SetNativeCallback(vm, BtlvEffvm_WaitParticleLoadNative);
                 BtlvEffvm_SetEmitterCount(wk, index, resource);
             }
@@ -1185,10 +1228,10 @@ static BOOL BtlvEffvm_CmdEmitterAdd(VM *vm, void *env) {
     param->lifeTimeScale = VM_Read32(vm);
     param->scaleScale = VM_Read32(vm);
     param->cameraScale = VM_Read32(vm);
-    if (param->to == 8) {
+    if (param->to == EFFVM_EMIT_EXPLICIT) {
         param->to = param->from;
     }
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         BtlvEffvm_AddEmitters(wk, param, index, resourceId);
     }
     GFL_HeapFree(param);
@@ -1203,8 +1246,8 @@ static BOOL BtlvEffvm_CmdEmitterAddAt(VM *vm, void *env) {
     int resourceId = VM_Read32(vm);
 
     param->vm = vm;
-    param->from = 8;
-    param->to = 8;
+    param->from = EFFVM_EMIT_EXPLICIT;
+    param->to = EFFVM_EMIT_EXPLICIT;
     param->fromPos.x = VM_Read32(vm);
     param->fromPos.y = VM_Read32(vm);
     param->fromPos.z = VM_Read32(vm);
@@ -1220,7 +1263,7 @@ static BOOL BtlvEffvm_CmdEmitterAddAt(VM *vm, void *env) {
     param->lifeTimeScale = VM_Read32(vm);
     param->scaleScale = VM_Read32(vm);
     param->cameraScale = VM_Read32(vm);
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         if (Particle_CreateEmitterWithCallback(wk->particles[index], resourceId, BtlvEffvm_InitEmitter, param) ==
             (SPLEmitter *)-1) {
             GFL_HeapFree(param);
@@ -1248,15 +1291,15 @@ static BOOL BtlvEffvm_CmdEmitterAddOrtho(VM *vm, void *env) {
     param->lifeTimeScale = VM_Read32(vm);
     param->scaleScale = VM_Read32(vm);
     param->cameraScale = VM_Read32(vm);
-    param->offsetMode = 1;
-    if (param->from == 13) {
-        param->from = 9;
-        param->offsetMode = 2;
+    param->offsetMode = EFFVM_EMITTER_PROJECT_MIRROR;
+    if (param->from == EFFVM_EMIT_SCREEN_ATTACKER) {
+        param->from = EFFVM_EMIT_ATTACKER;
+        param->offsetMode = EFFVM_EMITTER_PROJECT;
     }
-    if (param->to == 8) {
+    if (param->to == EFFVM_EMIT_EXPLICIT) {
         param->to = param->from;
     }
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         G3DCameraProjection projection;
         VecFx32 pos = { 0, 0, 0 };
         VecFx32 up = EMITTER_ADD_ORTHO_UP;
@@ -1301,7 +1344,7 @@ static BOOL BtlvEffvm_CmdEmitterAddAll(VM *vm, void *env) {
     param->lifeTimeScale = VM_Read32(vm);
     param->scaleScale = VM_Read32(vm);
     param->cameraScale = VM_Read32(vm);
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         if (ortho) {
             G3DCameraProjection projection;
             VecFx32 pos = { 0, 0, 0 };
@@ -1321,9 +1364,9 @@ static BOOL BtlvEffvm_CmdEmitterAddAll(VM *vm, void *env) {
                 Particle_SetCamera(wk->particles[index], &projection, 0x2000, &pos, &up, &target,
                                    HEAPID_TAIL(wk->heapId));
             }
-            param->offsetMode = 2;
+            param->offsetMode = EFFVM_EMITTER_PROJECT;
         }
-        if (param->to == 8) {
+        if (param->to == EFFVM_EMIT_EXPLICIT) {
             param->to = param->from;
         }
         for (i = 0; i < count; i++) {
@@ -1338,7 +1381,7 @@ static BOOL BtlvEffvm_CmdParticleDelete(VM *vm, void *env) {
     BtlvEffvm *wk = env;
     int index = BtlvEffvm_FindParticleId(wk, BtlvEffvm_GetBallParticleId(wk, VM_Read32(vm)));
 
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         BtlvEffvm_DeleteParticle(wk->particles[index]);
         wk->particles[index] = NULL;
         wk->particleIds[index] = -1;
@@ -1370,7 +1413,7 @@ static BOOL BtlvEffvm_CmdEmitterMove(VM *vm, void *env) {
     if (param->turns == 0) {
         param->turns = 1;
     }
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         if (Particle_CreateEmitterWithCallback(wk->particles[index], resourceId, BtlvEffvm_InitEmitter, param) ==
             (SPLEmitter *)-1) {
             GFL_HeapFree(param);
@@ -1390,7 +1433,7 @@ static BOOL BtlvEffvm_CmdEmitterMoveFrom(VM *vm, void *env) {
 
     param->vm = vm;
     param->motionType = VM_Read32(vm);
-    param->from = 8;
+    param->from = EFFVM_EMIT_EXPLICIT;
     param->fromPos.x = VM_Read32(vm);
     param->fromPos.y = VM_Read32(vm);
     param->fromPos.z = VM_Read32(vm);
@@ -1408,7 +1451,7 @@ static BOOL BtlvEffvm_CmdEmitterMoveFrom(VM *vm, void *env) {
     if (param->turns == 0) {
         param->turns = 1;
     }
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         if (Particle_CreateEmitterWithCallback(wk->particles[index], resourceId, BtlvEffvm_InitEmitter, param) ==
             (SPLEmitter *)-1) {
             GFL_HeapFree(param);
@@ -1440,11 +1483,11 @@ static BOOL BtlvEffvm_CmdEmitterMoveOrtho(VM *vm, void *env) {
     param->scaleScale = FX32_CONST(0.75);
     param->cameraScale = VM_Read32(vm);
     param->turns = VM_Read32(vm);
-    param->offsetMode = 3;
+    param->offsetMode = EFFVM_EMITTER_PROJECT_START;
     if (param->turns == 0) {
         param->turns = 1;
     }
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         G3DCameraProjection projection;
         VecFx32 pos = { 0, 0, 0 };
         VecFx32 up = EMITTER_MOVE_ORTHO_UP;
@@ -1481,7 +1524,7 @@ static BOOL BtlvEffvm_CmdEmitterMoveFromOrtho(VM *vm, void *env) {
 
     param->vm = vm;
     param->motionType = VM_Read32(vm);
-    param->from = 8;
+    param->from = EFFVM_EMIT_EXPLICIT;
     param->fromPos.x = VM_Read32(vm);
     param->fromPos.y = VM_Read32(vm);
     param->fromPos.z = VM_Read32(vm);
@@ -1495,8 +1538,8 @@ static BOOL BtlvEffvm_CmdEmitterMoveFromOrtho(VM *vm, void *env) {
     param->lifeTimeScale = VM_Read32(vm);
     param->cameraScale = VM_Read32(vm);
     param->scaleScale = VM_Read32(vm);
-    param->offsetMode = 3;
-    if (index != 16) {
+    param->offsetMode = EFFVM_EMITTER_PROJECT_START;
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         G3DCameraProjection projection;
         VecFx32 pos = { 0, 0, 0 };
         VecFx32 up = EMITTER_MOVE_FROM_ORTHO_UP;
@@ -1755,7 +1798,7 @@ static BOOL BtlvEffvm_CmdMcssSetMode(VM *vm, void *env) {
     int mode = VM_Read32(vm);
     int i;
 
-    if (mode == 5) {
+    if (mode == EFFVM_MCSS_VANISH_RESTORE_ALL) {
         BtlvMcss_RestoreVanish(BtlvEffect_GetMcss());
     } else if (count != 0) {
         for (i = 0; i < count; i++) {
@@ -1882,7 +1925,8 @@ static BOOL BtlvEffvm_CmdLoadBg(VM *vm, void *env) {
     GFL_BGSysSetBGPriority(3, 1);
     GFL_BGSysLoadNCGRStatic(ARCID_BTLV_EFFVM_BG, fileId + 1, 3, 0, 0, FALSE, HEAPID_TAIL(wk->heapId));
     loadBGScrToVramByNarcNoReserveNegAlign(ARCID_BTLV_EFFVM_BG, fileId, 3, 0, 0, FALSE, HEAPID_TAIL(wk->heapId));
-    PaletteFade_LoadNCLREx(BtlvEffect_GetPaletteFade(), 94, fileId + 2, HEAPID_TAIL(wk->heapId), 0, 0, 0x80, 0);
+    PaletteFade_LoadNCLREx(BtlvEffect_GetPaletteFade(), ARCID_BTLV_EFFVM_BG, fileId + 2, HEAPID_TAIL(wk->heapId),
+                           PALFADE_BUFFER_MAIN_BG, 0, 0x80, 0);
     wk->bgX = GFL_BGSysGetBGOffsetX(3);
     wk->bgY = GFL_BGSysGetBGOffsetY(3);
     BtlvBg_SetOffsetReq(BtlvEffect_GetBg(), 0, 0);
@@ -1898,7 +1942,7 @@ static BOOL BtlvEffvm_CmdBgMove(VM *vm, void *env) {
     s32 frames = VM_Read32(vm);
     s32 wait = VM_Read32(vm);
     s32 count = VM_Read32(vm);
-    u32 pos = BtlvEffvm_GetTargetPosition(vm, 14);
+    u32 pos = BtlvEffvm_GetTargetPosition(vm, EFFVM_ATTACKER);
 
     BtlvBg_StartMove(BtlvEffect_GetBg(), pos, mode, x, y, frames, wait, count);
     return wk->ret;
@@ -1933,14 +1977,14 @@ static BOOL BtlvEffvm_CmdBgPalAnim(VM *vm, void *env) {
     data = GFL_ArcSysReadHeapNewLZ(ARCID_BTLV_EFFVM_PAL_ANIM, fileId, FALSE, HEAPID_TAIL(wk->heapId));
     work->fileId = fileId + 1;
     palettes = data;
-    for (i = 0; *palettes != 0xff; i++) {
+    for (i = 0; *palettes != EFFVM_PAL_ANIM_PALETTES_END; i++) {
         work->palettes[i] = *palettes;
         palettes++;
     }
     work->count = i;
     i = 0;
     durations = (u16 *)(data + 0x80);
-    while (*durations != 0xff98) {
+    while (*durations != EFFVM_PAL_ANIM_DURATIONS_END) {
         work->durations[i] = *durations;
         durations++;
         i++;
@@ -1948,7 +1992,7 @@ static BOOL BtlvEffvm_CmdBgPalAnim(VM *vm, void *env) {
     GFL_HeapFree(data);
     wk->paletteAnim = TRUE;
     BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_PalAnimTask, work, 0), BtlvEffvm_PalAnimTaskRemove,
-                       1);
+                       BTLV_EFFECT_TASK_SCRIPT);
     return wk->ret;
 }
 
@@ -1971,9 +2015,15 @@ static BOOL BtlvEffvm_CmdSetAlphaBlend(VM *vm, void *env) {
     VM_Read32(vm);
     VM_Read32(vm);
     if (alpha == 31) {
-        G2x_SetBlendAlpha_(0x4000050, 2, 0x3d, 31, 7);
+        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG1,
+                           GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG2 | GX_BLEND_PLANEMASK_BG3 |
+                               GX_BLEND_PLANEMASK_OBJ | GX_BLEND_PLANEMASK_BD,
+                           31, 7);
     } else {
-        G2x_SetBlendAlpha_(0x4000050, 10, 0x35, 31, alpha);
+        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG3,
+                           GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG2 | GX_BLEND_PLANEMASK_OBJ |
+                               GX_BLEND_PLANEMASK_BD,
+                           31, alpha);
     }
     wk->alphaBlend = TRUE;
     return wk->ret;
@@ -2015,7 +2065,8 @@ BOOL BtlvEffect_QueueCommands(VM *vm, void *env) {
     work->keepWindow = VM_Read32(vm);
     GFL_BGSysSetBGEnabled(1, FALSE);
     GFL_BGSysSetBGEnabled(2, FALSE);
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_WindowTask, work, 0), BtlvEffvm_WindowTaskRemove, 1);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_WindowTask, work, 0), BtlvEffvm_WindowTaskRemove,
+                       BTLV_EFFECT_TASK_SCRIPT);
     wk->windowTask = TRUE;
     return wk->ret;
 }
@@ -2118,13 +2169,13 @@ static BOOL BtlvEffvm_CmdGauge(VM *vm, void *env) {
     int count;
     int i;
 
-    if (mode <= 1) {
+    if (mode <= EFFVM_GAUGE_SHOW) {
         switch (target) {
-        case 3:
+        case EFFVM_GAUGE_ATTACKER:
             BtlvEffect_SetGaugeDrawEnable(mode, wk->attacker);
             break;
-        case 4:
-            count = BtlvEffvm_GetTargetPositions(wk, 16, targets);
+        case EFFVM_GAUGE_DEFENDER:
+            count = BtlvEffvm_GetTargetPositions(wk, EFFVM_DEFENDER, targets);
             if (count != 0) {
                 for (i = 0; i < count; i++) {
                     // BUG: every call passes the entry past the last target, which was never written
@@ -2143,7 +2194,7 @@ static BOOL BtlvEffvm_CmdGauge(VM *vm, void *env) {
     } else {
         count = 0;
         switch (target) {
-        case 0:
+        case EFFVM_GAUGE_PLAYER:
             for (i = 0; i < 8; i += 2) {
                 if (BtlvEffect_CheckExist(i)) {
                     positions[count] = i;
@@ -2151,7 +2202,7 @@ static BOOL BtlvEffvm_CmdGauge(VM *vm, void *env) {
                 }
             }
             break;
-        case 1:
+        case EFFVM_GAUGE_ENEMY:
             for (i = 1; i < 8; i += 2) {
                 if (BtlvEffect_CheckExist(i)) {
                     positions[count] = i;
@@ -2159,7 +2210,7 @@ static BOOL BtlvEffvm_CmdGauge(VM *vm, void *env) {
                 }
             }
             break;
-        case 2:
+        case EFFVM_GAUGE_BOTH:
             for (i = 0; i < 8; i++) {
                 if (BtlvEffect_CheckExist(i)) {
                     positions[count] = i;
@@ -2167,12 +2218,12 @@ static BOOL BtlvEffvm_CmdGauge(VM *vm, void *env) {
                 }
             }
             break;
-        case 3:
+        case EFFVM_GAUGE_ATTACKER:
             count = 1;
             positions[0] = wk->attacker;
             break;
-        case 4:
-            count = BtlvEffvm_GetTargetPositions(wk, 16, positions);
+        case EFFVM_GAUGE_DEFENDER:
+            count = BtlvEffvm_GetTargetPositions(wk, EFFVM_DEFENDER, positions);
             break;
         }
         if (count != 0) {
@@ -2180,7 +2231,7 @@ static BOOL BtlvEffvm_CmdGauge(VM *vm, void *env) {
                 ClActorPos offset = { 0, 0 };
                 int *pos;
 
-                offset.x = mode == 2 ? 128 : -16;
+                offset.x = mode == EFFVM_GAUGE_OFFSCREEN ? 128 : -16;
                 pos = &positions[i];
                 if (*pos & 1) {
                     offset.x *= -1;
@@ -2212,7 +2263,7 @@ static BOOL BtlvEffvm_CmdStopSE(VM *vm, void *env) {
     BtlvEffvm *wk = env;
     s32 player = VM_Read32(vm);
 
-    if (player == 5) {
+    if (player == EFFVM_SE_STOP_ALL) {
         GFL_SndStop();
     } else {
         GFL_SndPlayerStop(player);
@@ -2230,7 +2281,7 @@ static BOOL BtlvEffvm_CmdPanSE(VM *vm, void *env) {
     work->wk = wk;
     work->player = VM_Read32(vm);
     work->type = VM_Read32(vm);
-    work->param = 2;
+    work->param = EFFVM_SE_PARAM_PAN;
     from = BtlvEffvm_GetTargetPosition(vm, VM_Read32(vm));
     to = BtlvEffvm_GetTargetPosition(vm, VM_Read32(vm));
     work->start = (from & 1) ? 127 : -128;
@@ -2240,12 +2291,13 @@ static BOOL BtlvEffvm_CmdPanSE(VM *vm, void *env) {
     work->stepWait = 0;
     work->stepWaitReset = VM_Read32(vm);
     work->count = VM_Read32(vm) * 2;
-    if (work->type == 1 && work->count == 0) {
+    if (work->type == EFFVM_SE_MOVE_SWING && work->count == 0) {
         work->count = 2;
     }
     work->value = FX32_CONST(work->start);
     work->step = FX_Div(FX32_CONST(work->end - work->start), FX32_CONST(work->frames));
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SeMoveTask, work, 0), BtlvEffvm_SeMoveTaskRemove, 1);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SeMoveTask, work, 0), BtlvEffvm_SeMoveTaskRemove,
+                       BTLV_EFFECT_TASK_SCRIPT);
     wk->seSliding = TRUE;
     return wk->ret;
 }
@@ -2317,32 +2369,32 @@ static void BtlvEffvm_JumpIf(VM *vm, int value, int target, int cond, int offset
     BOOL jump = FALSE;
 
     switch (cond) {
-    case 0:
+    case EFFVM_CMP_EQ:
         if (value == target) {
             jump = TRUE;
         }
         break;
-    case 1:
+    case EFFVM_CMP_NE:
         if (value != target) {
             jump = TRUE;
         }
         break;
-    case 2:
+    case EFFVM_CMP_LT:
         if (value < target) {
             jump = TRUE;
         }
         break;
-    case 3:
+    case EFFVM_CMP_GT:
         if (value > target) {
             jump = TRUE;
         }
         break;
-    case 4:
+    case EFFVM_CMP_LE:
         if (value <= target) {
             jump = TRUE;
         }
         break;
-    case 5:
+    case EFFVM_CMP_GE:
         if (value >= target) {
             jump = TRUE;
         }
@@ -2385,37 +2437,37 @@ static BOOL BtlvEffvm_CmdSetVar(VM *vm, void *env) {
     int value = VM_Read32(vm);
 
     switch (id) {
-    case 9:
+    case EFFVM_VAR_TARGET:
         wk->param.target = value;
         break;
-    case 10:
+    case EFFVM_VAR_VARIANT:
         wk->param.variant = value;
         break;
-    case 11:
+    case EFFVM_VAR_PARAM_2:
         wk->param.unk2 = value;
         break;
-    case 12:
+    case EFFVM_VAR_SHAKES:
         wk->param.shakes = value;
         break;
-    case 13:
+    case EFFVM_VAR_CAUGHT:
         wk->param.caught = value;
         break;
-    case 14:
+    case EFFVM_VAR_CRITICAL:
         wk->param.critical = value;
         break;
-    case 15:
+    case EFFVM_VAR_ITEM:
         wk->param.itemNo = value;
         break;
-    case 53:
+    case EFFVM_VAR_MCSS_SCALED:
         wk->mcssScaled = value;
         break;
-    case 54:
+    case EFFVM_VAR_CAMERA_SAVED:
         wk->camSaved = value;
         break;
-    case 55:
-        wk->unk2A0 = value;
+    case EFFVM_VAR_MESSAGE_IDLE_RESTORE:
+        wk->messageIdleNeedsRestore = value;
         break;
-    case 56:
+    case EFFVM_VAR_CAMERA_LOCKED:
         wk->cameraLocked = value;
         break;
     }
@@ -2471,7 +2523,8 @@ static BOOL BtlvEffvm_CmdPlayCry(VM *vm, void *env) {
                                                               FALSE, "btlv_effvm.c", 4540);
 
                 work->wk = wk;
-                BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_CryWaitTask, work, 0), NULL, 0);
+                BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_CryWaitTask, work, 0), NULL,
+                                   BTLV_EFFECT_TASK_PERSISTENT);
             }
         } else {
             for (i = 0; i < count; i++) {
@@ -2488,7 +2541,7 @@ static BOOL BtlvEffvm_CmdPlayCry(VM *vm, void *env) {
                 work->delay = delay;
                 wk->cryDelayed = TRUE;
                 BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_CryDelayTask, work, 0),
-                                   BtlvEffvm_CryDelayTaskRemove, 1);
+                                   BtlvEffvm_CryDelayTaskRemove, BTLV_EFFECT_TASK_SCRIPT);
             }
         }
     }
@@ -2520,11 +2573,11 @@ static BOOL BtlvEffvm_CmdBallAdd(VM *vm, void *env) {
     world.y += offsetY;
     NNS_G3dWorldPosToScrPos(&world, &x, &y);
     ball = PML_ItemGetMonsBallID(wk->param.itemNo);
-    if (ball == 0 || ball > 25) {
-        ball = 4;
+    if (ball == EFFVM_BALL_NONE || ball > EFFVM_BALL_DREAM) {
+        ball = EFFVM_BALL_POKE;
     }
-    if (ball == 25) {
-        ball = 17;
+    if (ball == EFFVM_BALL_DREAM) {
+        ball = EFFVM_DREAM_BALL_SPRITE;
     }
     wk->clactIndexes[index] = BtlvClact_AddActorEx(BtlvEffect_GetClact(), ARCID_BTLV_EFFVM_BG, ball * 2 + 231,
                                                    ball * 2 + 232, 231, 232, x, y, scaleX, scaleY);
@@ -2541,10 +2594,10 @@ static BOOL BtlvEffvm_CmdCall(VM *vm, void *env) {
     wk->callDefenders[wk->callDepth] = wk->defender;
     wk->callScripts[wk->callDepth] = wk->script;
     wk->callValues[wk->callDepth] = wk->value;
-    if (attacker != 14) {
+    if (attacker != EFFVM_ATTACKER) {
         wk->attacker = attacker;
     }
-    if (defender != 16) {
+    if (defender != EFFVM_DEFENDER) {
         wk->defender = defender;
     }
     wk->value = 0;
@@ -2612,7 +2665,8 @@ static BOOL BtlvEffvm_CmdWaitSide(VM *vm, void *env) {
     work->wk = wk;
     work->side = side;
     work->doneMask = 0;
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SideResetTask, work, 0), NULL, 1);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_SideResetTask, work, 0), NULL,
+                       BTLV_EFFECT_TASK_SCRIPT);
     return wk->ret;
 }
 
@@ -2628,7 +2682,7 @@ static BOOL BtlvEffvm_CmdEnd(VM *vm, void *env) {
     int i;
     BOOL visible;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EFFVM_PARTICLE_CAPACITY; i++) {
         if (wk->particles[i] != NULL) {
             BtlvEffvm_DeleteParticle(wk->particles[i]);
             wk->particles[i] = NULL;
@@ -2645,10 +2699,10 @@ static BOOL BtlvEffvm_CmdEnd(VM *vm, void *env) {
         GFL_HeapFree(wk->allocs[i]);
     }
     wk->allocCount = 0;
-    BtlvEffect_EndTaskGroup(1);
+    BtlvEffect_EndTaskGroup(BTLV_EFFECT_TASK_SCRIPT);
     BtlvEffvm_ResetMcssAll(wk);
     BtlvEffvm_ClearMcssFlagAll(wk);
-    if (!wk->unk0_18) {
+    if (!wk->skipReverseRestore) {
         BtlvEffect_SetPokemonReverse(1);
     }
     VM_Halt(vm);
@@ -2665,7 +2719,10 @@ static BOOL BtlvEffvm_CmdEnd(VM *vm, void *env) {
         GFL_BGSysMoveBG(3, BG_MOVE_SET_Y, wk->bgY);
     }
     if (wk->alphaBlend) {
-        G2x_SetBlendAlpha_(0x4000050, 2, 0x3d, 0x1f, 7);
+        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG1,
+                           GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG2 | GX_BLEND_PLANEMASK_BG3 |
+                               GX_BLEND_PLANEMASK_OBJ | GX_BLEND_PLANEMASK_BD,
+                           0x1f, 7);
         wk->alphaBlend = FALSE;
     }
     if (wk->sePlayed) {
@@ -2673,10 +2730,10 @@ static BOOL BtlvEffvm_CmdEnd(VM *vm, void *env) {
     }
     visible = FALSE;
     if (BtlvMcss_Exists(BtlvEffect_GetMcss(), wk->attacker)) {
-        if (((wk->move == 248 || wk->move == 353) && wk->param.variant == 1) || wk->move == 144 || wk->move == 119 ||
-            wk->move == 267) {
+        if (((wk->move == MOVE_FUTURE_SIGHT || wk->move == MOVE_DOOM_DESIRE) && wk->param.variant == 1) ||
+            wk->move == MOVE_TRANSFORM || wk->move == MOVE_MIRROR_MOVE || wk->move == MOVE_NATURE_POWER) {
         } else {
-            visible = BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & 1;
+            visible = BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & BTLV_MCSS_FLAG_SUBSTITUTE_ACTIVE;
         }
     }
     if (wk->savedScript != NULL) {
@@ -2706,10 +2763,10 @@ static BOOL BtlvEffvm_CmdEnd(VM *vm, void *env) {
         VM_LoadScript(vm, (u8 *)wk->script + ((u32 *)wk->script)[1]);
         return TRUE;
     }
-    if ((wk->move == 0x286 || !wk->isEffect) && wk->move != 144 && wk->move != 226 && !wk->substituteRestore &&
-        visible) {
-        if (wk->move == 0x1f6) {
-            BtlvMcss_SetVanish(BtlvEffect_GetMcss(), wk->attacker, 0);
+    if ((wk->move == 0x286 || !wk->isEffect) && wk->move != MOVE_TRANSFORM && wk->move != MOVE_BATON_PASS &&
+        !wk->substituteRestore && visible) {
+        if (wk->move == MOVE_ALLY_SWITCH) {
+            BtlvMcss_SetVanish(BtlvEffect_GetMcss(), wk->attacker, BTLV_MCSS_VANISH_SHOW);
         }
         GFL_HeapFree(wk->script);
         wk->move = 52;
@@ -2733,24 +2790,24 @@ static BOOL BtlvEffvm_WaitNative(VM *vm, void *env) {
     int i;
     BtlvMcssPos pos;
 
-    if (wk->waitKind <= 1) {
+    if (wk->waitKind <= EFFVM_WAIT_CAMERA) {
         if (BtlvCamera_IsMoving(BtlvEffect_GetCamera()) == TRUE) {
             return FALSE;
         }
         if (wk->cameraReset) {
             wk->cameraReset = FALSE;
-            wk->mcssCameraMode = 1;
+            wk->mcssCameraMode = EFFVM_MCSS_CAMERA_DEPTH;
             BtlvMcss_SetFlatAll(BtlvEffect_GetMcss());
         }
     }
-    if (wk->waitKind == 0 || wk->waitKind == 3) {
+    if (wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_MCSS) {
         for (pos = 0; pos < 14; pos++) {
             if (BtlvMcss_IsBusy(BtlvEffect_GetMcss(), pos) == TRUE) {
                 return FALSE;
             }
         }
     }
-    if (wk->waitKind == 4) {
+    if (wk->waitKind == EFFVM_WAIT_TRAINER_ANIM) {
         for (pos = 8; pos < 14; pos++) {
             if (BtlvMcss_Exists(BtlvEffect_GetMcss(), pos) &&
                 BtlvMcss_IsAnimationSet(BtlvEffect_GetMcss(), pos) == TRUE) {
@@ -2758,68 +2815,70 @@ static BOOL BtlvEffvm_WaitNative(VM *vm, void *env) {
             }
         }
     }
-    if (wk->waitKind == 0 || wk->waitKind == 5) {
+    if (wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_BG) {
         if (BtlvBg_IsMoving(BtlvEffect_GetBg()) == TRUE) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 0 || wk->waitKind == 2) {
-        for (i = 0; i < 16; i++) {
+    if (wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_PARTICLES) {
+        for (i = 0; i < EFFVM_PARTICLE_CAPACITY; i++) {
             if (wk->particles[i] != NULL && Particle_GetEmitterCount(wk->particles[i])) {
                 return FALSE;
             }
         }
     }
-    if (wk->waitKind == 0 || wk->waitKind == 6 || wk->waitKind == 8) {
+    if (wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_STAGE_FADE ||
+        wk->waitKind == EFFVM_WAIT_STAGE_FIELD_FADE) {
         if (BtlvEffect_IsPaletteFading(BTLV_EFFECT_FADE_STAGE)) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 0 || wk->waitKind == 7 || wk->waitKind == 8) {
+    if (wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_FIELD_FADE ||
+        wk->waitKind == EFFVM_WAIT_STAGE_FIELD_FADE) {
         if (BtlvEffect_IsPaletteFading(BTLV_EFFECT_FADE_FIELD)) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 0 || wk->waitKind == 9) {
+    if (wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_PALETTE_FADE) {
         if (BtlvEffect_IsPaletteFading(BTLV_EFFECT_FADE_PALETTES)) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 10) {
+    if (wk->waitKind == EFFVM_WAIT_SE) {
         if (GFL_SndPlayerIsActiveAny() || wk->seDelayed || wk->seSliding) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 11) {
+    if (wk->waitKind == EFFVM_WAIT_SE_PLAYER_1) {
         if (GFL_SndPlayerIsActive(1) || wk->seDelayed || wk->seSliding) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 12) {
+    if (wk->waitKind == EFFVM_WAIT_SE_PLAYER_2) {
         if (GFL_SndPlayerIsActive(2) || wk->seDelayed || wk->seSliding) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 13) {
+    if (wk->waitKind == EFFVM_WAIT_SE_PLAYER_4) {
         if (GFL_SndPlayerIsActive(4) || wk->seDelayed || wk->seSliding) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 14) {
+    if (wk->waitKind == EFFVM_WAIT_SE_PLAYER_3) {
         if (GFL_SndPlayerIsActive(3) || wk->seDelayed || wk->seSliding) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 15) {
+    if (wk->waitKind == EFFVM_WAIT_SE_PLAYER_0) {
         if (GFL_SndPlayerIsActive(0) || wk->seDelayed || wk->seSliding) {
             return FALSE;
         }
     }
-    if (wk->waitKind == 16) {
+    if (wk->waitKind == EFFVM_WAIT_CRY) {
         if (wk->cryDelayed) {
             return FALSE;
         }
-        for (i = 0; i < 6; i++) {
+        for (i = 0; i < EFFVM_VOICE_CAPACITY; i++) {
             if (wk->voices[i] != -1) {
                 if (PokeVoice_IsPlaying(wk->voices[i])) {
                     return FALSE;
@@ -2828,13 +2887,13 @@ static BOOL BtlvEffvm_WaitNative(VM *vm, void *env) {
             }
         }
     }
-    if ((wk->waitKind == 0 || wk->waitKind == 17) && wk->windowTask) {
+    if ((wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_WINDOW) && wk->windowTask) {
         return FALSE;
     }
-    if ((wk->waitKind == 0 || wk->waitKind == 18) && wk->paletteAnim) {
+    if ((wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_PAL_ANIM) && wk->paletteAnim) {
         return FALSE;
     }
-    if (wk->waitKind == 0 || wk->waitKind == 19) {
+    if (wk->waitKind == EFFVM_WAIT_ALL || wk->waitKind == EFFVM_WAIT_BG_WAVE) {
         if (BtlvBg_IsWaving(BtlvEffect_GetBg()) == TRUE) {
             return FALSE;
         }
@@ -2876,23 +2935,23 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
     int end;
 
     switch (code) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
+    case BTLV_MCSS_POS_SINGLE_PLAYER:
+    case BTLV_MCSS_POS_SINGLE_ENEMY:
+    case BTLV_MCSS_POS_PLAYER_1:
+    case BTLV_MCSS_POS_ENEMY_1:
+    case BTLV_MCSS_POS_PLAYER_2:
+    case BTLV_MCSS_POS_ENEMY_2:
+    case BTLV_MCSS_POS_PLAYER_3:
+    case BTLV_MCSS_POS_ENEMY_3:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_1:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_1:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_2:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_2:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_3:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_3:
         positions[0] = code;
         break;
-    case 14:
+    case EFFVM_ATTACKER:
         positions[0] = wk->attacker;
         if (positions[0] == BTLV_MCSS_POS_NONE) {
             if (BtlvEffect_CheckExist(0) == TRUE) {
@@ -2911,14 +2970,14 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
             }
         }
         break;
-    case 15:
+    case EFFVM_ATTACKER_PARTNER:
         if (wk->attacker > 1) {
             positions[0] = wk->attacker ^ 2;
         } else {
             positions[0] = BTLV_MCSS_POS_NONE;
         }
         break;
-    case 16:
+    case EFFVM_DEFENDER:
         positions[0] = wk->defender;
         if (positions[0] != BTLV_MCSS_POS_NONE) {
             break;
@@ -2949,7 +3008,8 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
         case MOVE_TARGET_FOE:
             break;
         case MOVE_TARGET_ALL_ADJACENT:
-            if (rule == BTL_STYLE_TRIPLE && wk->attacker != 4 && wk->attacker != 5) {
+            if (rule == BTL_STYLE_TRIPLE && wk->attacker != BTLV_MCSS_POS_PLAYER_2 &&
+                wk->attacker != BTLV_MCSS_POS_ENEMY_2) {
                 int targets[4][3] = {
                     { 4, 5, 7 },
                     { 4, 5, 6 },
@@ -3022,14 +3082,14 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
             break;
         }
         break;
-    case 17:
+    case EFFVM_DEFENDER_PARTNER:
         if (wk->defender > 1) {
             positions[0] = wk->defender ^ 2;
         } else {
             positions[0] = BTLV_MCSS_POS_NONE;
         }
         break;
-    case 18:
+    case EFFVM_ALL:
         count = 0;
         for (pos = 0; pos <= 7; pos++) {
             if (BtlvEffect_CheckExist(pos)) {
@@ -3038,10 +3098,10 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
             }
         }
         break;
-    case 19:
-    case 20:
+    case EFFVM_PLAYER_SIDE:
+    case EFFVM_ENEMY_SIDE:
         start = 0;
-        if (code != 19) {
+        if (code != EFFVM_PLAYER_SIDE) {
             start = 1;
         }
         count = 0;
@@ -3064,7 +3124,7 @@ static int BtlvEffvm_GetTargetPositions(BtlvEffvm *wk, int code, int *positions)
     return count;
 }
 
-static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int code, int *positions) {
+static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int unusedCode, int *positions) {
     int count = 1;
     int rule;
     int i;
@@ -3097,7 +3157,8 @@ static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int code, int *position
             case MOVE_TARGET_FOE:
                 break;
             case MOVE_TARGET_ALL_ADJACENT:
-                if (rule == BTL_STYLE_TRIPLE && wk->attacker != 4 && wk->attacker != 5) {
+                if (rule == BTL_STYLE_TRIPLE && wk->attacker != BTLV_MCSS_POS_PLAYER_2 &&
+                    wk->attacker != BTLV_MCSS_POS_ENEMY_2) {
                     int targets[4][3] = {
                         { 4, 5, 7 },
                         { 4, 5, 6 },
@@ -3130,8 +3191,8 @@ static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int code, int *position
                 if (rule == BTL_STYLE_DOUBLE) {
                     positions[0] = (wk->attacker & 1) ? BTLV_MCSS_POS_SINGLE_PLAYER : BTLV_MCSS_POS_SINGLE_ENEMY;
                     count = 1;
-                } else if (wk->attacker != 4 && wk->attacker != 5) {
-                    positions[0] = data_ov168_021f4024[wk->attacker];
+                } else if (wk->attacker != BTLV_MCSS_POS_PLAYER_2 && wk->attacker != BTLV_MCSS_POS_ENEMY_2) {
+                    positions[0] = sTripleDefaultDefenderEmitterCodes[wk->attacker];
                     count = 1;
                 } else {
                     count = 1;
@@ -3142,8 +3203,8 @@ static int BtlvEffvm_GetDefenderPositions(BtlvEffvm *wk, int code, int *position
                 if (rule == BTL_STYLE_DOUBLE) {
                     positions[0] = (wk->attacker & 1) ? BTLV_MCSS_POS_SINGLE_PLAYER : BTLV_MCSS_POS_SINGLE_ENEMY;
                     count = 1;
-                } else if (wk->attacker != 4 && wk->attacker != 5) {
-                    positions[0] = data_ov168_021f4044[wk->attacker];
+                } else if (wk->attacker != BTLV_MCSS_POS_PLAYER_2 && wk->attacker != BTLV_MCSS_POS_ENEMY_2) {
+                    positions[0] = sTripleFoeSideEmitterCodes[wk->attacker];
                     count = 1;
                 } else {
                     count = 1;
@@ -3179,23 +3240,23 @@ static int BtlvEffvm_GetTargetPosition(VM *vm, int code) {
     int pos;
 
     switch (code) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
+    case BTLV_MCSS_POS_SINGLE_PLAYER:
+    case BTLV_MCSS_POS_SINGLE_ENEMY:
+    case BTLV_MCSS_POS_PLAYER_1:
+    case BTLV_MCSS_POS_ENEMY_1:
+    case BTLV_MCSS_POS_PLAYER_2:
+    case BTLV_MCSS_POS_ENEMY_2:
+    case BTLV_MCSS_POS_PLAYER_3:
+    case BTLV_MCSS_POS_ENEMY_3:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_1:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_1:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_2:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_2:
+    case BTLV_MCSS_POS_TRAINER_PLAYER_3:
+    case BTLV_MCSS_POS_TRAINER_ENEMY_3:
         pos = code;
         break;
-    case 14:
+    case EFFVM_ATTACKER:
         pos = wk->attacker;
         if (pos == BTLV_MCSS_POS_NONE) {
             if (BtlvEffect_CheckExist(2) == TRUE) {
@@ -3210,14 +3271,14 @@ static int BtlvEffvm_GetTargetPosition(VM *vm, int code) {
             return 0;
         }
         break;
-    case 15:
+    case EFFVM_ATTACKER_PARTNER:
         if (wk->attacker > 1) {
             pos = wk->attacker ^ 2;
         } else {
             pos = BTLV_MCSS_POS_NONE;
         }
         break;
-    case 16:
+    case EFFVM_DEFENDER:
         pos = wk->defender;
         if (pos == BTLV_MCSS_POS_NONE) {
             if (wk->attacker & 1) {
@@ -3244,7 +3305,7 @@ static int BtlvEffvm_GetTargetPosition(VM *vm, int code) {
             return 1;
         }
         break;
-    case 17:
+    case EFFVM_DEFENDER_PARTNER:
         if (wk->defender > 1) {
             pos = wk->defender ^ 2;
         } else {
@@ -3292,9 +3353,9 @@ static int BtlvEffvm_GetDefenderForEmitter(VM *vm, int *pos) {
                 if (ret == BTL_STYLE_DOUBLE) {
                     ret = 0;
                     *pos = (wk->attacker & 1) ? ret : 1;
-                } else if (wk->attacker != 4 && wk->attacker != 5) {
+                } else if (wk->attacker != BTLV_MCSS_POS_PLAYER_2 && wk->attacker != BTLV_MCSS_POS_ENEMY_2) {
                     ret = 1;
-                    *pos = data_ov168_021f4064[wk->attacker];
+                    *pos = sTripleDefaultDefenderPositions[wk->attacker];
                 } else {
                     *pos = wk->attacker ^ 1;
                 }
@@ -3323,14 +3384,14 @@ static BOOL BtlvEffvm_FindOrAddParticleId(BtlvEffvm *wk, u32 id, int *index) {
     int i;
     BOOL isNew = TRUE;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EFFVM_PARTICLE_CAPACITY; i++) {
         if (id == wk->particleIds[i]) {
             isNew = FALSE;
             break;
         }
     }
-    if (i == 16) {
-        for (i = 0; i < 16; i++) {
+    if (i == EFFVM_PARTICLE_CAPACITY) {
+        for (i = 0; i < EFFVM_PARTICLE_CAPACITY; i++) {
             if (wk->particleIds[i] == -1) {
                 wk->particleIds[i] = id;
                 break;
@@ -3348,7 +3409,7 @@ static void BtlvEffvm_SetEmitterCount(BtlvEffvm *wk, int index, void *resource) 
 static int BtlvEffvm_FindParticleId(BtlvEffvm *wk, u32 id) {
     int i;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < EFFVM_PARTICLE_CAPACITY; i++) {
         if (id == wk->particleIds[i]) {
             break;
         }
@@ -3380,127 +3441,127 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
     u32 rule;
 
     switch (param->from) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
+    case BTLV_MCSS_POS_SINGLE_PLAYER:
+    case BTLV_MCSS_POS_SINGLE_ENEMY:
+    case BTLV_MCSS_POS_PLAYER_1:
+    case BTLV_MCSS_POS_ENEMY_1:
+    case BTLV_MCSS_POS_PLAYER_2:
+    case BTLV_MCSS_POS_ENEMY_2:
+    case BTLV_MCSS_POS_PLAYER_3:
+    case BTLV_MCSS_POS_ENEMY_3:
         param->from = BtlvEffvm_SwapSide(param->vm, param->from);
         break;
-    case 9:
-    case 11:
+    case EFFVM_EMIT_ATTACKER:
+    case EFFVM_EMIT_DEFENDER:
         param->from = BtlvEffvm_GetTargetPosition(param->vm, param->from + 5);
         break;
-    case 8:
+    case EFFVM_EMIT_EXPLICIT:
         from.x = param->fromPos.x;
         from.y = param->fromPos.y;
         from.z = param->fromPos.z;
         break;
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &from, param->from - 12, 1);
+    case EFFVM_EMIT_DOUBLE_PLAYER_1:
+    case EFFVM_EMIT_DOUBLE_ENEMY_1:
+    case EFFVM_EMIT_DOUBLE_PLAYER_2:
+    case EFFVM_EMIT_DOUBLE_ENEMY_2:
+        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &from, param->from - 12, BTL_STYLE_DOUBLE);
         param->from = -1;
         break;
-    case 18:
-    case 19:
-    case 20:
-    case 21:
-        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &from, param->from - 16, 1);
+    case EFFVM_EMIT_DOUBLE_PLAYER_1_OFFSET:
+    case EFFVM_EMIT_DOUBLE_ENEMY_1_OFFSET:
+    case EFFVM_EMIT_DOUBLE_PLAYER_2_OFFSET:
+    case EFFVM_EMIT_DOUBLE_ENEMY_2_OFFSET:
+        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &from, param->from - 16, BTL_STYLE_DOUBLE);
         switch (param->from) {
-        case 18:
+        case EFFVM_EMIT_DOUBLE_PLAYER_1_OFFSET:
             from.z += 0x1a00;
             break;
-        case 19:
+        case EFFVM_EMIT_DOUBLE_ENEMY_1_OFFSET:
             from.z += 0x2600;
             break;
-        case 20:
+        case EFFVM_EMIT_DOUBLE_PLAYER_2_OFFSET:
             from.z += 0x600;
             break;
-        case 21:
+        case EFFVM_EMIT_DOUBLE_ENEMY_2_OFFSET:
             from.z += 0x3900;
             break;
         }
         param->from = -1;
         break;
     }
-    if (param->from != -1 && param->from != 8) {
+    if (param->from != -1 && param->from != EFFVM_EMIT_EXPLICIT) {
         BtlvMcss_GetDefaultPos(BtlvEffect_GetMcss(), &from, param->from);
     }
     switch (param->to) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
+    case BTLV_MCSS_POS_SINGLE_PLAYER:
+    case BTLV_MCSS_POS_SINGLE_ENEMY:
+    case BTLV_MCSS_POS_PLAYER_1:
+    case BTLV_MCSS_POS_ENEMY_1:
+    case BTLV_MCSS_POS_PLAYER_2:
+    case BTLV_MCSS_POS_ENEMY_2:
+    case BTLV_MCSS_POS_PLAYER_3:
+    case BTLV_MCSS_POS_ENEMY_3:
         param->to = BtlvEffvm_SwapSide(param->vm, param->to);
         break;
-    case 9:
+    case EFFVM_EMIT_ATTACKER:
         param->to = BtlvEffvm_GetTargetPosition(param->vm, param->to + 5);
         break;
-    case 10:
+    case EFFVM_EMIT_ATTACKER_MIRRORED:
         flip = TRUE;
         param->to = BtlvEffvm_GetTargetPosition(param->vm, param->to + 4);
         break;
-    case 12:
+    case EFFVM_EMIT_DEFENDER_MIRRORED:
         flip = TRUE;
-    case 11:
+    case EFFVM_EMIT_DEFENDER:
         rule = BtlvEffvm_GetDefenderForEmitter(param->vm, &param->to);
         BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &to, param->to, rule);
         param->to = -1;
         break;
-    case 8:
+    case EFFVM_EMIT_EXPLICIT:
         to.x = param->toPos.x;
         to.y = param->toPos.y;
         to.z = param->toPos.z;
         break;
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &to, param->to - 12, 1);
+    case EFFVM_EMIT_DOUBLE_PLAYER_1:
+    case EFFVM_EMIT_DOUBLE_ENEMY_1:
+    case EFFVM_EMIT_DOUBLE_PLAYER_2:
+    case EFFVM_EMIT_DOUBLE_ENEMY_2:
+        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &to, param->to - 12, BTL_STYLE_DOUBLE);
         param->to = -1;
         break;
-    case 18:
-    case 19:
-    case 20:
-    case 21:
-        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &to, param->to - 16, 1);
+    case EFFVM_EMIT_DOUBLE_PLAYER_1_OFFSET:
+    case EFFVM_EMIT_DOUBLE_ENEMY_1_OFFSET:
+    case EFFVM_EMIT_DOUBLE_PLAYER_2_OFFSET:
+    case EFFVM_EMIT_DOUBLE_ENEMY_2_OFFSET:
+        BtlvMcss_GetDefaultPosForStyle(BtlvEffect_GetMcss(), &to, param->to - 16, BTL_STYLE_DOUBLE);
         // The start's code, not the target's, picks the height, and the start's is no longer 18-21 by now
         switch (param->from) {
-        case 18:
+        case EFFVM_EMIT_DOUBLE_PLAYER_1_OFFSET:
             to.z += 0x1a00;
             break;
-        case 19:
+        case EFFVM_EMIT_DOUBLE_ENEMY_1_OFFSET:
             to.z += 0x2600;
             break;
-        case 20:
+        case EFFVM_EMIT_DOUBLE_PLAYER_2_OFFSET:
             to.z += 0x600;
             break;
-        case 21:
+        case EFFVM_EMIT_DOUBLE_ENEMY_2_OFFSET:
             to.z += 0x3900;
             break;
         }
         param->to = -1;
         break;
     }
-    if (param->to != -1 && param->to != 8) {
+    if (param->to != -1 && param->to != EFFVM_EMIT_EXPLICIT) {
         BtlvMcss_GetDefaultPos(BtlvEffect_GetMcss(), &to, param->to);
     }
     BtlvEffect_GetBattleStyle();
     from.z += 0x500;
     to.z += 0x500;
-    if (param->offsetMode == 1 || param->offsetMode == 2) {
+    if (param->offsetMode == EFFVM_EMITTER_PROJECT_MIRROR || param->offsetMode == EFFVM_EMITTER_PROJECT) {
         BtlvEffvm_ProjectToScreen(&from, &param->offset);
         BtlvEffvm_ProjectToScreen(&to, &param->offset);
-    } else if (param->offsetMode == 3) {
+    } else if (param->offsetMode == EFFVM_EMITTER_PROJECT_START) {
         start.x = from.x;
         start.y = from.y;
         start.z = from.z;
@@ -3510,7 +3571,7 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
         from.y += param->offset.y;
     }
     to.y += param->offset.y;
-    if (param->motionType != 0) {
+    if (param->motionType != EFFVM_EMITTER_STILL) {
         BtlvEffvm *wk = VM_GetEnv(param->vm);
         BtlvEffvmEmitterMotionWork *work;
 
@@ -3527,9 +3588,9 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
         work->type = param->motionType;
         work->frames = param->motionFrames >> FX32_SHIFT;
         work->offsetMode = param->offsetMode;
-        if (param->motionType == 3) {
+        if (param->motionType == EFFVM_EMITTER_ARC_DELAYED) {
             work->angleStep = FX_Div(0x6000 * FX32_ONE, param->motionFrames);
-        } else if (param->motionType == 5 || param->motionType == 6) {
+        } else if (param->motionType == EFFVM_EMITTER_WAVE_Y || param->motionType == EFFVM_EMITTER_WAVE_Z) {
             work->angleStep = FX_Div(0x8000 * FX32_ONE, param->motionFrames);
             work->angle2Step = FX_Div(0x10000 * FX32_ONE, param->motionFrames);
             work->angle2Step = FX_Mul(work->angle2Step, param->turns);
@@ -3540,12 +3601,12 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
             work->angleStep = 1;
         }
         work->radius = VEC_Distance(&from, &to) / 2;
-        if (param->motionType == 1 || param->motionType == 4) {
+        if (param->motionType == EFFVM_EMITTER_FLAT || param->motionType == EFFVM_EMITTER_FLAT_FROM_TARGET) {
             work->height = 0;
         } else {
             work->height = param->motionHeight;
         }
-        if (param->motionType == 4) {
+        if (param->motionType == EFFVM_EMITTER_FLAT_FROM_TARGET) {
             fx32 x;
             fx32 y;
             fx32 z;
@@ -3575,7 +3636,7 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
         work->mtx.rt.trans.y = from.y;
         work->mtx.rt.trans.z = from.z;
     }
-    if (param->from != 8 && param->to != 8 && param->from != param->to) {
+    if (param->from != EFFVM_EMIT_EXPLICIT && param->to != EFFVM_EMIT_EXPLICIT && param->from != param->to) {
         spinAxis = 2;
         to.x -= from.x;
         to.y -= from.y;
@@ -3613,8 +3674,8 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
         ParticleEmitter_SetSpinAxis(emitter, &spinAxis);
         ParticleEmitter_SetAxis(emitter, &emitterAxis);
     }
-    if ((param->offsetMode != 0 && (param->from & 1)) || param->offsetMode == 0 || param->offsetMode == 2 ||
-        param->offsetMode == 3) {
+    if ((param->offsetMode != EFFVM_EMITTER_WORLD && (param->from & 1)) || param->offsetMode == EFFVM_EMITTER_WORLD ||
+        param->offsetMode == EFFVM_EMITTER_PROJECT || param->offsetMode == EFFVM_EMITTER_PROJECT_START) {
         fx32 radius = ParticleEmitter_GetRadius(emitter);
         fx32 lifeTime = ParticleEmitter_GetParticleLifeTime(emitter) << FX32_SHIFT;
         fx16 scale = ParticleEmitter_GetBaseScale(emitter);
@@ -3645,7 +3706,7 @@ static void BtlvEffvm_InitEmitter(SPLEmitter *emitter) {
             ParticleEmitter_SetInitVelAxisAmplifier(emitter, (fx16)FX_MUL(amplifier, param->cameraScale));
         }
     }
-    if (param->offsetMode == 3) {
+    if (param->offsetMode == EFFVM_EMITTER_PROJECT_START) {
         ParticleEmitter_SetPosition(emitter, &start);
     } else {
         ParticleEmitter_SetPosition(emitter, &from);
@@ -3660,7 +3721,7 @@ static void BtlvEffvm_MoveEmitterArc(SPLEmitter *emitter, u32 type) {
     u16 angle2;
 
     if (work->frames != 0 && type != 0) {
-        if (work->type == 3) {
+        if (work->type == EFFVM_EMITTER_ARC_DELAYED) {
             if (work->wait != 0) {
                 work->wait--;
                 return;
@@ -3677,11 +3738,11 @@ static void BtlvEffvm_MoveEmitterArc(SPLEmitter *emitter, u32 type) {
         pos.x = FX_SinIdx(angle);
         pos.x = FX_Mul(pos.x, work->radius);
         pos.x += work->radius;
-        if (work->type == 6) {
+        if (work->type == EFFVM_EMITTER_WAVE_Z) {
             pos.z = FX_CosIdx(angle2);
             pos.z = FX_Mul(pos.z, work->height);
             pos.y = 0;
-        } else if (work->type == 5) {
+        } else if (work->type == EFFVM_EMITTER_WAVE_Y) {
             pos.y = FX_CosIdx(angle2);
             pos.y = FX_Mul(pos.y, work->height);
             pos.z = 0;
@@ -3691,7 +3752,7 @@ static void BtlvEffvm_MoveEmitterArc(SPLEmitter *emitter, u32 type) {
             pos.z = 0;
         }
         MTX_MultVec43(&pos, &work->mtx, &pos);
-        if (work->offsetMode != 0) {
+        if (work->offsetMode != EFFVM_EMITTER_WORLD) {
             BtlvEffvm_ProjectToScreen(&pos, NULL);
         }
         ParticleEmitter_SetPosition(emitter, &pos);
@@ -3756,7 +3817,7 @@ static void BtlvEffvm_DeleteParticle(ParticleSystem *particle) {
 }
 
 static void BtlvEffvm_ResetMcss(BtlvEffvm *wk) {
-    if (wk->mcssCameraMode == 1) {
+    if (wk->mcssCameraMode == EFFVM_MCSS_CAMERA_DEPTH) {
         BtlvMcss_ClearFlatAll(BtlvEffect_GetMcss());
     } else {
         BtlvMcss_SetFlatAll(BtlvEffect_GetMcss());
@@ -3764,7 +3825,7 @@ static void BtlvEffvm_ResetMcss(BtlvEffvm *wk) {
 }
 
 static void BtlvEffvm_PlaySENow(u32 se, u32 player, int pan, int pitch, int volume, int modDepth, int modSpeed) {
-    if (player == 5) {
+    if (player == EFFVM_SE_PLAYER_AUTO) {
         GFL_SndSEPlay(se);
         player = GFL_SndSeqGetPlayerIndex(se);
     } else {
@@ -3782,128 +3843,128 @@ static void BtlvEffvm_PlaySENow(u32 se, u32 player, int pan, int pitch, int volu
 // A script variable; an unknown id returns whatever r0 holds, as the original does
 static u32 BtlvEffvm_GetVariable(BtlvEffvm *wk, int id) {
     switch (id) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
+    case EFFVM_VAR_WEIGHT:
+    case EFFVM_VAR_WEIGHT + 1:
+    case EFFVM_VAR_WEIGHT + 2:
+    case EFFVM_VAR_WEIGHT + 3:
+    case EFFVM_VAR_WEIGHT + 4:
+    case EFFVM_VAR_WEIGHT + 5:
+    case EFFVM_VAR_WEIGHT + 6:
+    case EFFVM_VAR_WEIGHT + 7:
         return BtlvMcss_GetWeight(BtlvEffect_GetMcss(), id);
-    case 8:
+    case EFFVM_VAR_ATTACKER_WEIGHT:
         return BtlvMcss_GetWeight(BtlvEffect_GetMcss(), wk->attacker);
-    case 9:
+    case EFFVM_VAR_TARGET:
         return wk->param.target;
-    case 10:
+    case EFFVM_VAR_VARIANT:
         return wk->param.variant;
-    case 11:
+    case EFFVM_VAR_PARAM_2:
         return wk->param.unk2;
-    case 12:
+    case EFFVM_VAR_SHAKES:
         return wk->param.shakes;
-    case 13:
+    case EFFVM_VAR_CAUGHT:
         return wk->param.caught;
-    case 14:
+    case EFFVM_VAR_CRITICAL:
         return wk->param.critical;
-    case 15:
+    case EFFVM_VAR_ITEM:
         return wk->param.itemNo;
-    case 16:
+    case EFFVM_VAR_VALUE:
         return wk->value;
-    case 17:
+    case EFFVM_VAR_ATTACKER:
         return wk->attacker;
-    case 18:
+    case EFFVM_VAR_ATTACKER_VANISH:
         return BtlvMcss_GetVanish(BtlvEffect_GetMcss(), wk->attacker);
-    case 19:
+    case EFFVM_VAR_ATTACKER_SIDE:
         return wk->attacker & 1;
-    case 20:
-    case 21:
-    case 22:
-    case 23:
-    case 24:
-    case 25:
-    case 26:
-    case 27:
-        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), id - 20) & 2) {
+    case EFFVM_VAR_RARE:
+    case EFFVM_VAR_RARE + 1:
+    case EFFVM_VAR_RARE + 2:
+    case EFFVM_VAR_RARE + 3:
+    case EFFVM_VAR_RARE + 4:
+    case EFFVM_VAR_RARE + 5:
+    case EFFVM_VAR_RARE + 6:
+    case EFFVM_VAR_RARE + 7:
+        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), id - EFFVM_VAR_RARE) & BTLV_MCSS_FLAG_RARE) {
             return TRUE;
         }
         return FALSE;
-    case 28:
-        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & 2) {
+    case EFFVM_VAR_ATTACKER_RARE:
+        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & BTLV_MCSS_FLAG_RARE) {
             return TRUE;
         }
         return FALSE;
-    case 29:
-    case 30:
-    case 31:
-    case 32:
-    case 33:
-    case 34:
-    case 35:
-    case 36:
-        return BtlvMcss_IsNoBounce(BtlvEffect_GetMcss(), id - 29);
-    case 37:
+    case EFFVM_VAR_NO_BOUNCE:
+    case EFFVM_VAR_NO_BOUNCE + 1:
+    case EFFVM_VAR_NO_BOUNCE + 2:
+    case EFFVM_VAR_NO_BOUNCE + 3:
+    case EFFVM_VAR_NO_BOUNCE + 4:
+    case EFFVM_VAR_NO_BOUNCE + 5:
+    case EFFVM_VAR_NO_BOUNCE + 6:
+    case EFFVM_VAR_NO_BOUNCE + 7:
+        return BtlvMcss_IsNoBounce(BtlvEffect_GetMcss(), id - EFFVM_VAR_NO_BOUNCE);
+    case EFFVM_VAR_ATTACKER_NO_BOUNCE:
         return BtlvMcss_IsNoBounce(BtlvEffect_GetMcss(), wk->attacker);
-    case 38:
+    case EFFVM_VAR_IS_MULTI:
         return BtlvEffect_IsMulti();
-    case 39:
+    case EFFVM_VAR_BATTLE_STYLE:
         return BtlvEffect_GetBattleStyle();
-    case 40:
-    case 41:
-    case 42:
-    case 43:
-        return BtlvEffect_GetTrainerType(id - 40);
-    case 44:
-    case 45:
-    case 46:
-    case 47:
-    case 48:
-    case 49:
-    case 50:
-    case 51:
-        return BtlvMcss_GetStopCellFlags(BtlvEffect_GetMcss(), id - 44);
-    case 52:
+    case EFFVM_VAR_TRAINER_TYPE:
+    case EFFVM_VAR_TRAINER_TYPE + 1:
+    case EFFVM_VAR_TRAINER_TYPE + 2:
+    case EFFVM_VAR_TRAINER_TYPE + 3:
+        return BtlvEffect_GetTrainerType(id - EFFVM_VAR_TRAINER_TYPE);
+    case EFFVM_VAR_STOP_CELL_FLAGS:
+    case EFFVM_VAR_STOP_CELL_FLAGS + 1:
+    case EFFVM_VAR_STOP_CELL_FLAGS + 2:
+    case EFFVM_VAR_STOP_CELL_FLAGS + 3:
+    case EFFVM_VAR_STOP_CELL_FLAGS + 4:
+    case EFFVM_VAR_STOP_CELL_FLAGS + 5:
+    case EFFVM_VAR_STOP_CELL_FLAGS + 6:
+    case EFFVM_VAR_STOP_CELL_FLAGS + 7:
+        return BtlvMcss_GetStopCellFlags(BtlvEffect_GetMcss(), id - EFFVM_VAR_STOP_CELL_FLAGS);
+    case EFFVM_VAR_ATTACKER_STOP_CELL_FLAGS:
         return BtlvMcss_GetStopCellFlags(BtlvEffect_GetMcss(), wk->attacker);
-    case 53:
+    case EFFVM_VAR_MCSS_SCALED:
         return wk->mcssScaled;
-    case 54:
+    case EFFVM_VAR_CAMERA_SAVED:
         return wk->camSaved;
-    case 55:
-        return wk->unk2A0;
-    case 56:
+    case EFFVM_VAR_MESSAGE_IDLE_RESTORE:
+        return wk->messageIdleNeedsRestore;
+    case EFFVM_VAR_CAMERA_LOCKED:
         return wk->cameraLocked;
-    case 57:
+    case EFFVM_VAR_DEFENDER:
         return wk->defender;
-    case 58:
-    case 59:
-    case 60:
-    case 61:
-    case 62:
-    case 63:
-    case 64:
-    case 65:
-        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), id - 58) & 8) {
+    case EFFVM_VAR_N_POKEMON:
+    case EFFVM_VAR_N_POKEMON + 1:
+    case EFFVM_VAR_N_POKEMON + 2:
+    case EFFVM_VAR_N_POKEMON + 3:
+    case EFFVM_VAR_N_POKEMON + 4:
+    case EFFVM_VAR_N_POKEMON + 5:
+    case EFFVM_VAR_N_POKEMON + 6:
+    case EFFVM_VAR_N_POKEMON + 7:
+        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), id - EFFVM_VAR_N_POKEMON) & BTLV_MCSS_FLAG_N_POKEMON) {
             return TRUE;
         }
         return FALSE;
-    case 66:
-        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & 8) {
+    case EFFVM_VAR_ATTACKER_N_POKEMON:
+        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & BTLV_MCSS_FLAG_N_POKEMON) {
             return TRUE;
         }
         return FALSE;
-    case 67:
-    case 68:
-    case 69:
-    case 70:
-    case 71:
-    case 72:
-    case 73:
-    case 74:
-        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), id - 67) & 16) {
+    case EFFVM_VAR_FAMOUS:
+    case EFFVM_VAR_FAMOUS + 1:
+    case EFFVM_VAR_FAMOUS + 2:
+    case EFFVM_VAR_FAMOUS + 3:
+    case EFFVM_VAR_FAMOUS + 4:
+    case EFFVM_VAR_FAMOUS + 5:
+    case EFFVM_VAR_FAMOUS + 6:
+    case EFFVM_VAR_FAMOUS + 7:
+        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), id - EFFVM_VAR_FAMOUS) & BTLV_MCSS_FLAG_FAMOUS) {
             return TRUE;
         }
         return FALSE;
-    case 75:
-        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & 16) {
+    case EFFVM_VAR_ATTACKER_FAMOUS:
+        if (BtlvMcss_GetFlags(BtlvEffect_GetMcss(), wk->attacker) & BTLV_MCSS_FLAG_FAMOUS) {
             return TRUE;
         }
         return FALSE;
@@ -3914,14 +3975,14 @@ static void BtlvEffvm_AddEmitters(BtlvEffvm *wk, BtlvEffvmEmitParam *param, int 
     int i;
     BtlvEffvmEmitParam *emit;
 
-    if (param->to == param->from && (param->to == 11 || param->to == 12)) {
+    if (param->to == param->from && (param->to == EFFVM_EMIT_DEFENDER || param->to == EFFVM_EMIT_DEFENDER_MIRRORED)) {
         int positions[8];
         int count;
 
-        if (param->to == 12) {
+        if (param->to == EFFVM_EMIT_DEFENDER_MIRRORED) {
             param->flip = TRUE;
         }
-        count = BtlvEffvm_GetDefenderPositions(wk, 16, positions);
+        count = BtlvEffvm_GetDefenderPositions(wk, EFFVM_DEFENDER, positions);
         if (count != 0) {
             for (i = 0; i < count; i++) {
                 emit =
@@ -3936,25 +3997,26 @@ static void BtlvEffvm_AddEmitters(BtlvEffvm *wk, BtlvEffvmEmitParam *param, int 
             }
         }
     } else if (param->to == param->from && wk->param.target == MOVE_TARGET_USER_SIDE && !wk->isEffect &&
-               wk->move != 366 && (param->to == 9 || param->to == 10)) {
+               wk->move != MOVE_TAILWIND &&
+               (param->to == EFFVM_EMIT_ATTACKER || param->to == EFFVM_EMIT_ATTACKER_MIRRORED)) {
         int targets[8];
         int count;
 
-        if (param->to == 10) {
+        if (param->to == EFFVM_EMIT_ATTACKER_MIRRORED) {
             param->flip = TRUE;
         }
         switch (BtlvEffect_GetBattleStyle()) {
-        case 0:
-        case 3:
+        case BTL_STYLE_SINGLE:
+        case BTL_STYLE_ROTATION:
         default:
             targets[0] = wk->attacker;
             count = 1;
             break;
-        case 1:
+        case BTL_STYLE_DOUBLE:
             targets[0] = (wk->attacker & 1) ? 1 : 0;
             count = 1;
             break;
-        case 2:
+        case BTL_STYLE_TRIPLE:
             targets[0] = (wk->attacker & 1) ? 19 : 18;
             targets[1] = (wk->attacker & 1) ? 21 : 20;
             count = 2;
@@ -4008,7 +4070,7 @@ static BOOL BtlvEffvm_AddCircleEmitter(VM *vm, BtlvEffvm *wk, BOOL ortho) {
     work->delayReset = VM_Read32(vm);
     work->angleStep = 0x10000 / work->frames;
     work->ortho = ortho;
-    if (index != 16) {
+    if (index != EFFVM_PARTICLE_CAPACITY) {
         if (ortho == TRUE && Particle_GetCamera(wk->particles[index]) == NULL) {
             G3DCameraProjection projection;
             VecFx32 camPos = { 0, 0, 0 };
@@ -4027,18 +4089,18 @@ static BOOL BtlvEffvm_AddCircleEmitter(VM *vm, BtlvEffvm *wk, BOOL ortho) {
                                HEAPID_TAIL(wk->heapId));
         }
         switch (work->type) {
-        case 0:
-        case 1:
-            pos = BtlvEffvm_GetTargetPosition(vm, 14);
+        case EFFVM_ORBIT_ATTACKER_FORWARD:
+        case EFFVM_ORBIT_ATTACKER_REVERSE:
+            pos = BtlvEffvm_GetTargetPosition(vm, EFFVM_ATTACKER);
             BtlvMcss_GetDefaultPos(BtlvEffect_GetMcss(), &work->center, pos);
             break;
-        case 2:
-        case 3:
-            pos = BtlvEffvm_GetTargetPosition(vm, 16);
+        case EFFVM_ORBIT_DEFENDER_FORWARD:
+        case EFFVM_ORBIT_DEFENDER_REVERSE:
+            pos = BtlvEffvm_GetTargetPosition(vm, EFFVM_DEFENDER);
             BtlvMcss_GetDefaultPos(BtlvEffect_GetMcss(), &work->center, pos);
             break;
-        case 4:
-        case 5:
+        case EFFVM_ORBIT_ORIGIN_FORWARD:
+        case EFFVM_ORBIT_ORIGIN_REVERSE:
             work->center.x = 0;
             work->center.y = 0;
             work->center.z = 0;
@@ -4093,15 +4155,15 @@ static u32 BtlvEffvm_GetBallParticleId(BtlvEffvm *wk, u32 id) {
     u32 ball;
     u32 source = wk->ballSource;
 
-    if (source == 9) {
+    if (source == EFFVM_BALL_SOURCE_ATTACKER) {
         ball = BtlvMcss_GetBall(BtlvEffect_GetMcss(), wk->attacker);
-    } else if (source != 8) {
+    } else if (source != EFFVM_BALL_SOURCE_ITEM) {
         ball = BtlvMcss_GetBall(BtlvEffect_GetMcss(), source);
     } else {
         ball = PML_ItemGetMonsBallID(wk->param.itemNo);
     }
-    if (ball == 0 || ball > 25) {
-        ball = 4;
+    if (ball == EFFVM_BALL_NONE || ball > EFFVM_BALL_DREAM) {
+        ball = EFFVM_BALL_POKE;
     }
     ball--;
     switch (id) {
@@ -4109,9 +4171,9 @@ static u32 BtlvEffvm_GetBallParticleId(BtlvEffvm *wk, u32 id) {
         id += ball;
         break;
     case 29:
-        if (ball + 1 == 25) {
+        if (ball + 1 == EFFVM_BALL_DREAM) {
             ball = 16;
-        } else if (ball + 1 >= 16) {
+        } else if (ball + 1 >= EFFVM_BALL_CHERISH) {
             ball = 3;
         }
         id += ball;
@@ -4143,18 +4205,19 @@ static void BtlvEffvm_StartBgmFade(BtlvEffvm *wk, fx32 start, fx32 end, int fram
     work->target = end;
     work->wk = wk;
     BtlvEffTool_CalcStep(work->volume, work->target, &work->step, FX32_CONST(frames));
-    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_BgmFadeTask, work, 0), NULL, 1);
+    BtlvEffect_AddTask(GFL_TCBMgrAddTask(wk->tcbManager, BtlvEffvm_BgmFadeTask, work, 0), NULL,
+                       BTLV_EFFECT_TASK_SCRIPT);
 }
 
 static int BtlvEffvm_GetFreeVoiceSlot(BtlvEffvm *wk) {
     int i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < EFFVM_VOICE_CAPACITY; i++) {
         if (wk->voices[i] == -1) {
             break;
         }
     }
-    if (i == 6) {
+    if (i == EFFVM_VOICE_CAPACITY) {
         i = 0;
     }
     return i;
@@ -4228,23 +4291,23 @@ static void BtlvEffvm_SeMoveTask(TCB *tcb, void *data) {
         }
         work->value = FX32_CONST(value);
         switch (work->param) {
-        case 0:
+        case EFFVM_SE_PARAM_PITCH:
             GFL_SndPlayerSetParams(work->player, -1, value, -1);
             break;
-        case 1:
+        case EFFVM_SE_PARAM_VOLUME:
             NNS_SndPlayerSetVolume(GFL_SndPlayerGetHandle(work->player), value);
             break;
-        case 2:
+        case EFFVM_SE_PARAM_PAN:
             GFL_SndPlayerSetParams(work->player, -1, -1, value);
             break;
         }
         if (work->frames == 0) {
             work->frames = work->framesReset;
             switch (work->type) {
-            case 0:
+            case EFFVM_SE_MOVE_ONCE:
                 done = TRUE;
                 break;
-            case 1:
+            case EFFVM_SE_MOVE_SWING:
                 if (--work->count != 0) {
                     work->step *= -1;
                 } else {
@@ -4283,7 +4346,8 @@ static void BtlvEffvm_CryDelayTask(TCB *tcb, void *data) {
             wait = GFL_HeapAllocate(HEAPID_TAIL(work->wk->heapId), sizeof(BtlvEffvmCryWaitWork), FALSE, "btlv_effvm.c",
                                     8044);
             wait->wk = work->wk;
-            BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->wk->tcbManager, BtlvEffvm_CryWaitTask, wait, 0), NULL, 0);
+            BtlvEffect_AddTask(GFL_TCBMgrAddTask(work->wk->tcbManager, BtlvEffvm_CryWaitTask, wait, 0), NULL,
+                               BTLV_EFFECT_TASK_PERSISTENT);
         }
         BtlvEffect_EndTask(tcb);
     }
@@ -4310,36 +4374,36 @@ static void BtlvEffvm_WindowTask(TCB *tcb, void *data) {
     BtlvEffvmWindowWork *work = data;
 
     switch (work->state) {
-    case 0:
+    case EFFVM_WINDOW_INIT:
         G2_SetWnd0InsidePlane((u8)work->winInOut, FALSE);
         G2_SetWnd1InsidePlane(work->winInOut & 0xff, FALSE);
         G2_SetWndOutsidePlane((work->winInOut & 0xff00) >> 8, FALSE);
         GX_SetVisibleWnd(GX_WNDMASK_W0 | GX_WNDMASK_W1);
         G2_SetWnd1Position(0, 0, 0, 0);
         work->state++;
-    case 1:
+    case EFFVM_WINDOW_MOVE:
         if (work->wait == 0) {
             work->wait = work->waitReload;
             switch (work->dir) {
-            case 0:
+            case EFFVM_WINDOW_EXPAND_Y:
                 work->winV -= 0x100;
                 work->winV++;
                 break;
-            case 1:
+            case EFFVM_WINDOW_CONTRACT_Y:
                 work->winV += 0x100;
                 work->winV--;
                 break;
-            case 2:
+            case EFFVM_WINDOW_EXPAND_X:
                 work->winH -= 0x100;
                 work->winH++;
                 break;
-            case 3:
+            case EFFVM_WINDOW_CONTRACT_X:
                 work->winH += 0x100;
                 work->winH--;
                 break;
             }
             G2_SetWnd0Position(work->winH >> 8, work->winV >> 8, work->winH & 0xff, work->winV & 0xff);
-            if ((u8)work->winH == BTLV_MCSS_POS_NONE) {
+            if ((u8)work->winH == EFFVM_WINDOW_RIGHT_MAX) {
                 G2_SetWnd1Position(1, work->winV >> 8, 256, work->winV & 0xff);
             } else {
                 G2_SetWnd1Position(0, 0, 0, 0);
@@ -4367,7 +4431,7 @@ static void BtlvEffvm_CryWaitTask(TCB *tcb, void *data) {
     BtlvEffvmCryWaitWork *work = data;
     int i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < EFFVM_VOICE_CAPACITY; i++) {
         if (work->wk->voices[i] != -1) {
             if (PokeVoice_IsPlaying(work->wk->voices[i])) {
                 return;
@@ -4393,7 +4457,7 @@ static void BtlvEffvm_SideResetTask(TCB *tcb, void *data) {
             if (BtlvEffect_PosBit(pos) & work->doneMask) {
                 continue;
             }
-            BtlvMcss_SetAnimPause(BtlvEffect_GetMcss(), pos, 0);
+            BtlvMcss_SetAnimPause(BtlvEffect_GetMcss(), pos, BTLV_MCSS_PAUSE_RESUME);
             BtlvMcss_SetShadowVanish(BtlvEffect_GetMcss(), pos, 0);
             work->doneMask |= BtlvEffect_PosBit(pos);
         } else {
@@ -4423,10 +4487,10 @@ static void BtlvEffvm_PalAnimTask(TCB *tcb, void *data) {
     u16 offset;
 
     switch (work->state) {
-    case 0:
-        work->timer = BTLV_MCSS_POS_NONE;
+    case EFFVM_PAL_ANIM_INIT:
+        work->timer = EFFVM_PAL_ANIM_INITIAL_TIMER;
         work->state++;
-    case 1:
+    case EFFVM_PAL_ANIM_PLAY:
         if (work->timer < work->durations[work->index] - 2) {
             work->timer++;
             return;
@@ -4434,8 +4498,8 @@ static void BtlvEffvm_PalAnimTask(TCB *tcb, void *data) {
         offset = (work->palettes[work->index] - 8) * 16;
         file = GFL_G2DIOReadNCLR(ARCID_BTLV_EFFVM_PAL_ANIM, work->fileId, &palette, HEAPID_TAIL(work->wk->heapId));
         MIi_CpuCopy16((u16 *)palette->pRawData + offset,
-                      PaletteFade_GetUnfadedBuffer(BtlvEffect_GetPaletteFade(), 0) + 0x80, 0x20);
-        PaletteFade_ApplyPalette(BtlvEffect_GetPaletteFade(), 8, 0);
+                      PaletteFade_GetUnfadedBuffer(BtlvEffect_GetPaletteFade(), PALFADE_BUFFER_MAIN_BG) + 0x80, 0x20);
+        PaletteFade_ApplyPalette(BtlvEffect_GetPaletteFade(), 8, PALFADE_BUFFER_MAIN_BG);
         GFL_HeapFree(file);
         work->timer = 0;
         if (work->index >= work->count - 1) {

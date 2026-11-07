@@ -149,6 +149,27 @@ typedef struct {
     u32 count;
 } BtlvGaugeFlashTask;
 
+// Which tile bar DrawBar updates.
+enum {
+    GAUGE_BAR_HP = 0,
+    GAUGE_BAR_EXP = 1,
+};
+
+// The level-up gauge sound, one-frame wait and redraw phases.
+enum {
+    LEVEL_UP_SEQ_SOUND = 0,
+    LEVEL_UP_SEQ_WAIT = 1,
+    LEVEL_UP_SEQ_REDRAW = 2,
+};
+
+// The repeated HP-damage palette flash phases.
+enum {
+    FLASH_SEQ_WAIT_DAMAGE = 0,
+    FLASH_SEQ_FADE_IN = 1,
+    FLASH_SEQ_FADE_OUT = 2,
+    FLASH_SEQ_WAIT_HP = 3,
+};
+
 static void BtlvGauge_LoadResources(BtlvGauge *gauge);
 static void BtlvGauge_FreeResources(BtlvGauge *gauge);
 static u32 BtlvGauge_BackPaletteFile(void);
@@ -239,7 +260,7 @@ void BtlvGauge_Update(BtlvGauge *gauge) {
                         BtlvGauge_ShowHpParts(gauge, i, TRUE);
                         BtlvGauge_StepGauge(gauge->entries[i].mon.maxHp, gauge->entries[i].mon.hp, 0,
                                             &gauge->entries[i].mon.hpAnim, 6, 1);
-                        BtlvGauge_DrawBar(gauge, i, 0);
+                        BtlvGauge_DrawBar(gauge, i, GAUGE_BAR_HP);
                     }
                 }
             }
@@ -320,7 +341,7 @@ void BtlvGauge_SetBattleMon(BtlvGauge *gauge, BtlMainModule *mainModule, BattleM
     gauge->entries[index].mon.unk2e = 0;
     gauge->entries[index].mon.caught = IsMonCaught(mainModule, mon);
     if (PokeParty_GetParam(BattleMon_GetViewSrcData(mon), PKM_PARAM_SHOW_SEX, NULL) == 0) {
-        gauge->entries[index].mon.sex = 2;
+        gauge->entries[index].mon.sex = GENDER_UNKNOWN;
     } else {
         gauge->entries[index].mon.sex = PokeParty_GetSex(BattleMon_GetViewSrcData(mon));
     }
@@ -369,7 +390,7 @@ void BtlvGauge_SetPartyPkm(BtlvGauge *gauge, PokeDexSave *pokedex, PartyPkm *pkm
     if (species != SPECIES_NIDORAN_M && species != SPECIES_NIDORAN_F) {
         gauge->entries[index].mon.sex = PokeParty_GetSex(pkm);
     } else {
-        gauge->entries[index].mon.sex = 2;
+        gauge->entries[index].mon.sex = GENDER_UNKNOWN;
     }
     BtlvGauge_SetStatus(gauge, GetStatusCond(pkm), index);
     BtlvGauge_SetPos(gauge, index, NULL);
@@ -609,11 +630,11 @@ static void BtlvGauge_DeleteActors(BtlvGauge *gauge, int index) {
 static void BtlvGauge_Show(BtlvGauge *gauge, u32 type, int index, PartyPkm *pkm) {
     BtlvGauge_StepGauge(gauge->entries[index].mon.maxHp, gauge->entries[index].mon.hp, 0,
                         &gauge->entries[index].mon.hpAnim, 6, 1);
-    BtlvGauge_DrawBar(gauge, index, 0);
+    BtlvGauge_DrawBar(gauge, index, GAUGE_BAR_HP);
     if (gauge->entries[index].expActor != NULL) {
         BtlvGauge_StepGauge(gauge->entries[index].mon.expMax, gauge->entries[index].mon.exp, 0,
                             &gauge->entries[index].mon.expAnim, 10, 1);
-        BtlvGauge_DrawBar(gauge, index, 1);
+        BtlvGauge_DrawBar(gauge, index, GAUGE_BAR_EXP);
     }
     BtlvGauge_DrawName(gauge, &gauge->entries[index], pkm);
     BtlvGauge_DrawSex(gauge, &gauge->entries[index]);
@@ -758,7 +779,7 @@ void BtlvGauge_StartLevelUp(BtlvGauge *gauge, BattleMon *mon, int index) {
                         GetBattleMonStat(mon, BATTLEMON_LEVEL));
     PML_UtilGetPkmLvExp(GetBattleMonSpecies(mon), GetBattleMonStat(mon, BATTLEMON_FORM),
                         GetBattleMonStat(mon, BATTLEMON_LEVEL) - 1);
-    gauge->entries[index].mon.levelUpSeq = 0;
+    gauge->entries[index].mon.levelUpSeq = LEVEL_UP_SEQ_SOUND;
     gauge->entries[index].mon.levelUp = TRUE;
     gauge->entries[index].mon.expSeFrames = 0;
     gauge->entries[index].mon.expSe = TRUE;
@@ -781,7 +802,7 @@ void BtlvGauge_SetSideVisible(BtlvGauge *gauge, BOOL visible, u32 side) {
     BtlvGaugePos i;
 
     for (i = 0; i < BTLV_GAUGE_POS_MAX; i++) {
-        if ((side == 2 || side == gauge->entries[i].mon.side) && gauge->entries[i].mon.shown) {
+        if ((side == BTLV_GAUGE_SIDE_BOTH || side == gauge->entries[i].mon.side) && gauge->entries[i].mon.shown) {
             BtlvGauge_SetVisible(gauge, visible, i);
         }
     }
@@ -853,7 +874,7 @@ static void BtlvGauge_UpdateHp(BtlvGauge *gauge, int index) {
     s32 hp = BtlvGauge_StepGauge(entry->mon.maxHp, entry->mon.hp, entry->mon.hpDelta, &entry->mon.hpAnim, 6,
                                  entry->mon.hpSpeed);
 
-    BtlvGauge_DrawBar(gauge, index, 0);
+    BtlvGauge_DrawBar(gauge, index, GAUGE_BAR_HP);
     if (hp == -1) {
         entry->mon.hp -= entry->mon.hpDelta;
         BtlvGauge_DrawHpNumbers(gauge, entry, entry->mon.hp);
@@ -903,7 +924,7 @@ static void BtlvGauge_UpdateExp(BtlvGauge *gauge, int index) {
         speed = 1;
     }
     exp = BtlvGauge_StepGauge(entry->mon.expMax, entry->mon.exp, entry->mon.expDelta, &entry->mon.expAnim, 10, speed);
-    BtlvGauge_DrawBar(gauge, index, 1);
+    BtlvGauge_DrawBar(gauge, index, GAUGE_BAR_EXP);
     if (exp == -1) {
         entry->mon.exp -= entry->mon.expDelta;
         entry->mon.expMoving = FALSE;
@@ -1097,7 +1118,7 @@ static void BtlvGauge_DrawSex(BtlvGauge *gauge, BtlvGaugeEntry *entry) {
     u32 top = entry->mon.sex * 0x40 + 0x380;
     u32 bottom = entry->mon.sex * 0x40 + 0x3a0;
 
-    if (entry->mon.sex == 2) {
+    if (entry->mon.sex == GENDER_UNKNOWN) {
         top = GAUGE_TILE_BLANK;
         bottom = GAUGE_TILE_BLANK;
     }
@@ -1136,7 +1157,7 @@ static void BtlvGauge_DrawBar(BtlvGauge *gauge, int index, int bar) {
         return;
     }
     switch (bar) {
-    case 0:
+    case GAUGE_BAR_HP:
         if (gauge->showNumbers && !(index & 1)) {
             return;
         }
@@ -1169,7 +1190,7 @@ static void BtlvGauge_DrawBar(BtlvGauge *gauge, int index, int bar) {
             BtlvGauge_DrawDamage(gauge, entry, dots);
         }
         break;
-    case 1:
+    case GAUGE_BAR_EXP:
         if (entry->expActor == NULL) {
             return;
         }
@@ -1323,22 +1344,22 @@ static void BtlvGauge_UpdateLevelUp(BtlvGauge *gauge, int index) {
 
     if (!entry->mon.expMoving) {
         switch (entry->mon.levelUpSeq) {
-        case 0:
+        case LEVEL_UP_SEQ_SOUND:
             GFL_SndSEPlay(SEQ_SE_EXPMAX);
             entry->mon.levelUpSeq++;
             break;
-        case 1:
+        case LEVEL_UP_SEQ_WAIT:
             entry->mon.levelUpSeq++;
             break;
-        case 2:
+        case LEVEL_UP_SEQ_REDRAW:
             entry->mon.exp = 0;
             entry->mon.expMax = entry->mon.nextExpMax;
             entry->mon.expAnim = GAUGE_ANIM_START;
             entry->mon.expDelta = 0;
             BtlvGauge_StepGauge(entry->mon.maxHp, entry->mon.hp, 0, &entry->mon.hpAnim, 6, 1);
             BtlvGauge_StepGauge(entry->mon.expMax, entry->mon.exp, 0, &entry->mon.expAnim, 10, 1);
-            BtlvGauge_DrawBar(gauge, index, 0);
-            BtlvGauge_DrawBar(gauge, index, 1);
+            BtlvGauge_DrawBar(gauge, index, GAUGE_BAR_HP);
+            BtlvGauge_DrawBar(gauge, index, GAUGE_BAR_EXP);
             BtlvGauge_DrawHpNumbers(gauge, entry, entry->mon.hp);
             BtlvGauge_DrawLevel(gauge, entry);
             entry->mon.levelUp = FALSE;
@@ -1358,13 +1379,8 @@ static void BtlvGauge_UpdateShake(BtlvGauge *gauge, int index) {
 
 void BtlvGauge_SetStatus(BtlvGauge *gauge, u32 status, int index) {
     const u32 sequences[7] = {
-        BTLV_GAUGE_STATUS_NONE,
-        BTLV_GAUGE_STATUS_PARALYSIS,
-        BTLV_GAUGE_STATUS_SLEEP,
-        BTLV_GAUGE_STATUS_FREEZE,
-        BTLV_GAUGE_STATUS_BURN,
-        BTLV_GAUGE_STATUS_POISON,
-        7,
+        BTLV_GAUGE_STATUS_NONE, BTLV_GAUGE_STATUS_PARALYSIS, BTLV_GAUGE_STATUS_SLEEP,      BTLV_GAUGE_STATUS_FREEZE,
+        BTLV_GAUGE_STATUS_BURN, BTLV_GAUGE_STATUS_POISON,    BTLV_GAUGE_STATUS_BAD_POISON,
     };
 
     if (gauge->studioMode == BTL_STUDIO_MODE_PLAYBACK) {
@@ -1393,7 +1409,7 @@ void BtlvGauge_StartShake(BtlvGauge *gauge, int index) {
             BtlvGauge_SetPos(gauge, i, &pos);
         }
     }
-    if (index != 8) {
+    if (index != BTLV_GAUGE_SHAKE_STOP) {
         gauge->entries[index].mon.shaking = TRUE;
         gauge->shakeAngle = 0;
     }
@@ -1549,7 +1565,7 @@ static void BtlvGauge_FlashTask(TCB *tcb, void *data) {
     int i;
 
     switch (work->seq) {
-    case 0:
+    case FLASH_SEQ_WAIT_DAMAGE:
         work->paletteMask = 0;
         for (i = 0; i < 8; i++) {
             if (work->gauge->entries[i].mon.hpMoving && work->gauge->entries[i].mon.hpDelta > 0) {
@@ -1559,34 +1575,34 @@ static void BtlvGauge_FlashTask(TCB *tcb, void *data) {
         if (work->paletteMask != 0) {
             PaletteFade_StartFade(BtlvEffect_GetPaletteFade(), 1 << PALFADE_BUFFER_MAIN_OBJ, work->paletteMask, 0, 0, 8,
                                   0x10, BtlvEffect_GetTCBManager());
-            work->seq = 1;
+            work->seq = FLASH_SEQ_FADE_IN;
         }
         break;
-    case 1:
+    case FLASH_SEQ_FADE_IN:
         if (PaletteFade_GetActiveMask(BtlvEffect_GetPaletteFade()) == 0) {
             PaletteFade_StartFade(BtlvEffect_GetPaletteFade(), 1 << PALFADE_BUFFER_MAIN_OBJ, work->paletteMask, 0, 8, 0,
                                   0x10, BtlvEffect_GetTCBManager());
-            work->seq = 2;
+            work->seq = FLASH_SEQ_FADE_OUT;
         }
         break;
-    case 2:
+    case FLASH_SEQ_FADE_OUT:
         if (PaletteFade_GetActiveMask(BtlvEffect_GetPaletteFade()) == 0) {
             if (++work->count == 3) {
                 work->count = 0;
-                work->seq = 3;
+                work->seq = FLASH_SEQ_WAIT_HP;
             } else {
-                work->seq = 0;
+                work->seq = FLASH_SEQ_WAIT_DAMAGE;
             }
         }
         break;
-    case 3:
+    case FLASH_SEQ_WAIT_HP:
         for (i = 0; i < 8; i++) {
             if (work->gauge->entries[i].mon.hpMoving) {
                 break;
             }
         }
         if (i == 8) {
-            work->seq = 0;
+            work->seq = FLASH_SEQ_WAIT_DAMAGE;
         }
         break;
     }

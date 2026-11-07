@@ -25,11 +25,11 @@ typedef enum {
 } BtlvMcssPos;
 
 // What BtlvMcss_GetFlags returns of a sprite
-#define BTLV_MCSS_FLAG_UNK0 (1 << 0)       // set and cleared with the substitute
-#define BTLV_MCSS_FLAG_RARE (1 << 1)       // shiny
-#define BTLV_MCSS_FLAG_SUBSTITUTE (1 << 2) // the sprite shows the substitute
-#define BTLV_MCSS_FLAG_N_POKEMON (1 << 3)  // one of N's Pokémon
-#define BTLV_MCSS_FLAG_FAMOUS (1 << 4)     // a Pokéstar fame of 4 or more
+#define BTLV_MCSS_FLAG_SUBSTITUTE_ACTIVE (1 << 0) // substitute remains active even while its doll sprite is hidden
+#define BTLV_MCSS_FLAG_RARE (1 << 1)              // shiny
+#define BTLV_MCSS_FLAG_SUBSTITUTE (1 << 2)        // the sprite shows the substitute
+#define BTLV_MCSS_FLAG_N_POKEMON (1 << 3)         // one of N's Pokémon
+#define BTLV_MCSS_FLAG_FAMOUS (1 << 4)            // a Pokéstar fame of 4 or more
 
 // A move of a sprite around a circle, which BtlvMcss_MoveCircle copies from pos on into its task. The alignment of
 // work, here and in BtlvMcssShake, is a guess: it changes no layout, only how MWCC compiles accesses through the
@@ -108,7 +108,7 @@ u16 BtlvMcss_GetWeight(BtlvMcss *work, int pos);
 u32 BtlvMcss_GetFlags(BtlvMcss *work, int pos);
 BOOL BtlvMcss_IsNoBounce(BtlvMcss *work, int pos);
 u8 BtlvMcss_GetStopCellFlags(BtlvMcss *work, int pos);
-void BtlvMcss_SetSubstitute(BtlvMcss *work, int pos, BOOL substitute, BOOL flag);
+void BtlvMcss_SetSubstitute(BtlvMcss *work, int pos, BOOL substitute, BOOL updateActiveFlag);
 void BtlvMcss_Transform(BtlvMcss *work, int targetPos, int pos);
 void BtlvMcss_ReloadSprite(BtlvMcss *work, int pos, const MCSSLoadInfo *info);
 u32 BtlvMcss_PlayCry(BtlvMcss *work, int pos, int speed, int volume, int chorusVolume, int chorusSpeed, int reverse);
@@ -125,5 +125,91 @@ void BtlvMcss_SetReverse(BtlvMcss *work, int pos, BOOL byPos);
 BOOL BtlvMcss_CheckChanged(BtlvMcss *work, int pos);
 void BtlvMcss_SaveVanish(BtlvMcss *work);
 void BtlvMcss_RestoreVanish(BtlvMcss *work);
+
+// Slots of the non-single position tables and their trainers; numbering follows the table, not screen order.
+enum {
+    BTLV_MCSS_POS_PLAYER_1 = 2,
+    BTLV_MCSS_POS_ENEMY_1 = 3,
+    BTLV_MCSS_POS_PLAYER_2 = 4,
+    BTLV_MCSS_POS_ENEMY_2 = 5,
+    BTLV_MCSS_POS_PLAYER_3 = 6,
+    BTLV_MCSS_POS_ENEMY_3 = 7,
+    BTLV_MCSS_POS_TRAINER_PLAYER_1 = 8,
+    BTLV_MCSS_POS_TRAINER_ENEMY_1 = 9,
+    BTLV_MCSS_POS_TRAINER_PLAYER_2 = 10,
+    BTLV_MCSS_POS_TRAINER_ENEMY_2 = 11,
+    BTLV_MCSS_POS_TRAINER_PLAYER_3 = 12,
+    BTLV_MCSS_POS_TRAINER_ENEMY_3 = 13,
+};
+
+// SetAnimPause resumes, pauses, freezes or unfreezes the sprite animation.
+enum {
+    BTLV_MCSS_PAUSE_RESUME = 0,
+    BTLV_MCSS_PAUSE_PAUSE = 1,
+    BTLV_MCSS_PAUSE_FREEZE = 2,
+    BTLV_MCSS_PAUSE_UNFREEZE = 3,
+};
+
+// The private flipV-mode helper controls MCSS's flipV flag and its persistent lock.
+enum {
+    BTLV_MCSS_FLIP_V_CLEAR = 0,
+    BTLV_MCSS_FLIP_V_SET = 1,
+    BTLV_MCSS_FLIP_V_TOGGLE = 2,
+    BTLV_MCSS_FLIP_V_LOCK = 3,
+    BTLV_MCSS_FLIP_V_UNLOCK = 4,
+};
+
+// SetVanish visibility modes; SAVE_HIDE remembers a previously hidden sprite.
+enum {
+    BTLV_MCSS_VANISH_SHOW = 0,
+    BTLV_MCSS_VANISH_HIDE = 1,
+    BTLV_MCSS_VANISH_TOGGLE = 2,
+    BTLV_MCSS_VANISH_SAVE_HIDE = 3,
+    BTLV_MCSS_VANISH_RESTORE = 4,
+};
+
+// Blink toggles the flipV flag repeatedly or sets/clears it immediately.
+enum {
+    BTLV_MCSS_BLINK_REPEAT = 2,
+    BTLV_MCSS_BLINK_SET = 3,
+    BTLV_MCSS_BLINK_CLEAR = 4,
+};
+
+// MovePosition extensions: step to the default position or set it immediately.
+enum {
+    BTLV_MCSS_MOVE_RETURN = 5,
+    BTLV_MCSS_MOVE_RESET = 6,
+};
+
+// The local ellipse center lies along positive/negative a or b from its initial point; a/b map to the chosen plane.
+enum {
+    BTLV_MCSS_CIRCLE_CENTER_POSITIVE_A = 0,
+    BTLV_MCSS_CIRCLE_CENTER_NEGATIVE_A = 1,
+    BTLV_MCSS_CIRCLE_CENTER_POSITIVE_B = 2,
+    BTLV_MCSS_CIRCLE_CENTER_NEGATIVE_B = 3,
+};
+
+// The coordinate pair used after extracting the circle plane from mode bits1-2.
+enum {
+    BTLV_MCSS_CIRCLE_PLANE_ZY = 0,
+    BTLV_MCSS_CIRCLE_PLANE_XZ = 1,
+    BTLV_MCSS_CIRCLE_PLANE_XY = 2,
+};
+
+// Circle mode combines its coordinate plane with the angle direction in bit0.
+enum {
+    BTLV_MCSS_CIRCLE_ZY_FORWARD = 0,
+    BTLV_MCSS_CIRCLE_ZY_REVERSE = 1,
+    BTLV_MCSS_CIRCLE_XZ_FORWARD = 2,
+    BTLV_MCSS_CIRCLE_XZ_REVERSE = 3,
+    BTLV_MCSS_CIRCLE_XY_FORWARD = 4,
+    BTLV_MCSS_CIRCLE_XY_REVERSE = 5,
+};
+
+// Rotation direction-table indices; these differ from StartRotation selection modes.
+enum {
+    BTLV_MCSS_ROTATE_THIRD = 0,
+    BTLV_MCSS_ROTATE_SECOND = 1,
+};
 
 #endif // POKEBW2_BATTLE_BTLV_MCSS_H

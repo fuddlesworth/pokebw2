@@ -385,7 +385,7 @@ static void PokedexNickname_UpdateInput(PokedexNickname *nickname) {
         param.strs[0] = GFL_MsgDataLoadStrbufNew(msgData, YesNo_Text_Yes);
         param.strs[1] = GFL_MsgDataLoadStrbufNew(msgData, YesNo_Text_No);
         param.canCancel = TRUE;
-        BtlvInput_SetScreen(nickname->input, 4, &param);
+        BtlvInput_SetScreen(nickname->input, BTLV_INPUT_SCREEN_YES_NO, &param);
         GFL_StrBufFree(param.strs[0]);
         GFL_StrBufFree(param.strs[1]);
         GFL_MsgDataFree(msgData);
@@ -396,7 +396,7 @@ static void PokedexNickname_UpdateInput(PokedexNickname *nickname) {
         s32 button = BtlvInput_CheckInput(nickname->input, &sPokedexNicknameButtonSet, sPokedexNicknameKeyStops);
 
         if (button != -1) {
-            BtlvInput_SetScreen(nickname->input, 0, NULL);
+            BtlvInput_SetScreen(nickname->input, BTLV_INPUT_SCREEN_STANDBY, NULL);
             nickname->inputStep = INPUT_ANSWERED;
             if (button == 0) {
                 nickname->answer = POKEDEX_NICKNAME_YES;

@@ -19,6 +19,7 @@
 #include "battle/btlv_effect.h"
 #include "battle/btlv_input.h"
 #include "battle/btlv_mcss.h"
+#include "battle/btlv_timer.h"
 #include "battle/pokewood_cutin.h"
 #include "battle/tr_ai.h"
 #include "battle/trainer_data.h"
@@ -1228,7 +1229,7 @@ void BattleClient_GetClientIDList(BtlClient *client, BtlClientIDList *list) {
 BOOL BattleClient_IsGameTimeUp(BtlClient *client) {
     if (client->clientType != BTL_CLIENT_TYPE_REC_PLAY) {
         if (client->gameLimitTime != 0) {
-            return BtlvEffect_IsTimeUp(0);
+            return BtlvEffect_IsTimeUp(BTLV_TIMER_BATTLE);
         }
         return FALSE;
     }
@@ -1266,7 +1267,7 @@ static BOOL BattleClient_SetupView(BtlClient *client, s32 *seq) {
             if (client->cmdLimitTime != 0 || client->gameLimitTime != 0) {
                 BtlvEffect_CreateTimer(client->gameLimitTime, client->cmdLimitTime);
                 if (client->gameLimitTime != 0) {
-                    BtlvEffect_SetTimerVisible(0, 1, 1);
+                    BtlvEffect_SetTimerVisible(BTLV_TIMER_BATTLE, 1, 1);
                 }
             }
             BattleClient_SaveFrontMonHp(client);
@@ -1402,14 +1403,14 @@ static BOOL BattleClient_AISelectRotation(BtlClient *client, s32 *seq) {
 
 static void BattleClient_StartCmdLimitTimer(BtlClient *client) {
     if (client->cmdLimitTime != 0) {
-        BtlvEffect_SetTimerVisible(1, 1, 1);
+        BtlvEffect_SetTimerVisible(BTLV_TIMER_COMMAND, 1, 1);
         client->cmdLimitOver = FALSE;
     }
 }
 
 static BOOL CheckIfOverCmdLimit(BtlClient *client) {
     if (client->cmdLimitTime != 0) {
-        if (!client->cmdLimitOver && BtlvEffect_IsTimeUp(1)) {
+        if (!client->cmdLimitOver && BtlvEffect_IsTimeUp(BTLV_TIMER_COMMAND)) {
             client->cmdLimitOver = TRUE;
         }
         return client->cmdLimitOver;
@@ -1429,7 +1430,7 @@ static BOOL CheckActionSelectForceQuit(BtlClient *client, BtlClientCmdProc proc)
 
 static void BattleClient_HideCmdLimitTimer(BtlClient *client) {
     if (client->cmdLimitTime != 0) {
-        BtlvEffect_SetTimerVisible(1, 0, 0);
+        BtlvEffect_SetTimerVisible(BTLV_TIMER_COMMAND, 0, 0);
     }
 }
 

@@ -230,4 +230,18 @@ BOOL BtlvEffTool_Move(BtlvEffToolMove *move, VecFx32 *value);
 u32 BtlvEffect_PosBit(u32 bit);
 void BtlvEffect_UpdateTexPaletteFade(BtlvTexPaletteFade *fade);
 
+// Rotation selection: keep the front Pokemon or bring the second/third slot to the front.
+enum {
+    BTLV_EFFECT_ROTATE_NONE = 1,
+    BTLV_EFFECT_ROTATE_SECOND = 2,
+    BTLV_EFFECT_ROTATE_THIRD = 3,
+};
+
+// Group0 persists across scripts; EndTaskGroup clears script tasks (1) or sprite motions (2) selectively.
+enum {
+    BTLV_EFFECT_TASK_PERSISTENT = 0,
+    BTLV_EFFECT_TASK_SCRIPT = 1,
+    BTLV_EFFECT_TASK_MCSS = 2,
+};
+
 #endif // POKEBW2_BATTLE_BTLV_EFFECT_H

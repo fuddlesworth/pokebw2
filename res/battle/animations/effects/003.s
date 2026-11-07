@@ -16,7 +16,7 @@ Effect003:
     McssSetValue 0, 1
     IfVarConst EFFVM_VAR_NO_BOUNCE, EFFVM_CMP_EQ, TRUE, Effect003_00E0
     McssMoveXY 0, 1, 0, 0x4000, 1, 0, 0
-    IfVarConst 44, EFFVM_CMP_EQ, 1, Effect003_00E0
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS, EFFVM_CMP_EQ, 1, Effect003_00E0
     SetValue 0
 
 Effect003_00E0:
@@ -27,7 +27,7 @@ Effect003_00E0:
     McssSetValue 2, 1
     IfVarConst EFFVM_VAR_NO_BOUNCE + 2, EFFVM_CMP_EQ, TRUE, Effect003_0172
     McssMoveXY 2, 1, 0, 0x4000, 1, 0, 0
-    IfVarConst 46, EFFVM_CMP_EQ, 1, Effect003_0172
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 2, EFFVM_CMP_EQ, 1, Effect003_0172
     SetValue 0
 
 Effect003_0172:
@@ -38,7 +38,7 @@ Effect003_0172:
     McssSetValue 4, 1
     IfVarConst EFFVM_VAR_NO_BOUNCE + 4, EFFVM_CMP_EQ, TRUE, Effect003_0204
     McssMoveXY 4, 1, 0, 0x4000, 1, 0, 0
-    IfVarConst 48, EFFVM_CMP_EQ, 1, Effect003_0204
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 4, EFFVM_CMP_EQ, 1, Effect003_0204
     SetValue 0
 
 Effect003_0204:
@@ -49,7 +49,7 @@ Effect003_0204:
     McssSetValue 6, 1
     IfVarConst EFFVM_VAR_NO_BOUNCE + 6, EFFVM_CMP_EQ, TRUE, Effect003_0296
     McssMoveXY 6, 1, 0, 0x4000, 1, 0, 0
-    IfVarConst 50, EFFVM_CMP_EQ, 1, Effect003_0296
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 6, EFFVM_CMP_EQ, 1, Effect003_0296
     SetValue 0
 
 Effect003_0296:
@@ -226,7 +226,7 @@ Effect003_0A8A:
     IfPokeExists 0, FALSE, Effect003_0B62
     IfVarConst EFFVM_VAR_NO_BOUNCE, EFFVM_CMP_EQ, TRUE, Effect003_0B62
     McssMoveXY 0, 1, 0, -0x3000, 10, 0, 0
-    IfVarConst 44, EFFVM_CMP_EQ, 1, Effect003_0B62
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS, EFFVM_CMP_EQ, 1, Effect003_0B62
     IfVarConst EFFVM_VAR_WEIGHT, EFFVM_CMP_LT, 1500, Effect003_0B38
     EmitterAdd 325, 2, 0, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     SetValue 2
@@ -240,7 +240,7 @@ Effect003_0B62:
     IfPokeExists 2, FALSE, Effect003_0C22
     IfVarConst EFFVM_VAR_NO_BOUNCE + 2, EFFVM_CMP_EQ, TRUE, Effect003_0C22
     McssMoveXY 2, 1, 0, -0x3000, 10, 0, 0
-    IfVarConst 46, EFFVM_CMP_EQ, 1, Effect003_0C22
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 2, EFFVM_CMP_EQ, 1, Effect003_0C22
     IfVarConst EFFVM_VAR_WEIGHT + 2, EFFVM_CMP_LT, 1500, Effect003_0BF8
     EmitterAdd 325, 2, 2, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     SetValue 2
@@ -254,7 +254,7 @@ Effect003_0C22:
     IfPokeExists 4, FALSE, Effect003_0CE2
     IfVarConst EFFVM_VAR_NO_BOUNCE + 4, EFFVM_CMP_EQ, TRUE, Effect003_0CE2
     McssMoveXY 4, 1, 0, -0x3000, 10, 0, 0
-    IfVarConst 48, EFFVM_CMP_EQ, 1, Effect003_0CE2
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 4, EFFVM_CMP_EQ, 1, Effect003_0CE2
     IfVarConst EFFVM_VAR_WEIGHT + 4, EFFVM_CMP_LT, 1500, Effect003_0CB8
     EmitterAdd 325, 2, 4, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     SetValue 2
@@ -268,7 +268,7 @@ Effect003_0CE2:
     IfPokeExists 6, FALSE, Effect003_0DA2
     IfVarConst EFFVM_VAR_NO_BOUNCE + 6, EFFVM_CMP_EQ, TRUE, Effect003_0DA2
     McssMoveXY 6, 1, 0, -0x3000, 10, 0, 0
-    IfVarConst 50, EFFVM_CMP_EQ, 1, Effect003_0DA2
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 6, EFFVM_CMP_EQ, 1, Effect003_0DA2
     IfVarConst EFFVM_VAR_WEIGHT + 6, EFFVM_CMP_LT, 1500, Effect003_0D78
     EmitterAdd 325, 2, 6, 8, 0x1000, 0, 0, 0x1000, 0x1000, 0x1000, 0x1000
     SetValue 2
@@ -282,22 +282,22 @@ Effect003_0DA2:
     WaitFrames 10
     SetYield FALSE
     IfPokeExists 0, FALSE, Effect003_0DE8
-    IfVarConst 44, EFFVM_CMP_NE, 1, Effect003_0DE8
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS, EFFVM_CMP_NE, 1, Effect003_0DE8
     McssShake 0, 1, 0x7fff800, 0xffff000, 0x800, 24
 
 Effect003_0DE8:
     IfPokeExists 2, FALSE, Effect003_0E22
-    IfVarConst 46, EFFVM_CMP_NE, 1, Effect003_0E22
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 2, EFFVM_CMP_NE, 1, Effect003_0E22
     McssShake 2, 1, 0x7fff800, 0xffff000, 0x800, 24
 
 Effect003_0E22:
     IfPokeExists 4, FALSE, Effect003_0E5C
-    IfVarConst 48, EFFVM_CMP_NE, 1, Effect003_0E5C
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 4, EFFVM_CMP_NE, 1, Effect003_0E5C
     McssShake 4, 1, 0x7fff800, 0xffff000, 0x800, 24
 
 Effect003_0E5C:
     IfPokeExists 6, FALSE, Effect003_0E96
-    IfVarConst 50, EFFVM_CMP_NE, 1, Effect003_0E96
+    IfVarConst EFFVM_VAR_STOP_CELL_FLAGS + 6, EFFVM_CMP_NE, 1, Effect003_0E96
     McssShake 6, 1, 0x7fff800, 0xffff000, 0x800, 24
 
 Effect003_0E96:

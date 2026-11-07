@@ -4,6 +4,7 @@
 #include "battle/btl_string.h"
 #include "battle/btlv.h"
 #include "battle/btlv_effect.h"
+#include "battle/btlv_timer.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
 #include "constants/sound.h"
@@ -2483,7 +2484,7 @@ void BtlvScu_StartAbilityWinShow(BtlvScu *scu, u8 pos, BOOL flash) {
     BtlvScuSide side = BtlvScu_GetSide(scu->mainModule, pos);
 
     if (side == BTLV_SCU_SIDE_PLAYER) {
-        BtlvEffect_SetTimerVisible(0, 0, 0);
+        BtlvEffect_SetTimerVisible(BTLV_TIMER_BATTLE, 0, 0);
     }
     BtlvEffect_ClearVoices();
     BtlvScuAbilityWin_StartShow(&scu->abilityWins[side], pos, flash);
@@ -2498,7 +2499,7 @@ void BtlvScu_StartAbilityWinHide(BtlvScu *scu, u8 pos) {
 
     BtlvScuAbilityWin_Hide(&scu->abilityWins[side]);
     if (side == BTLV_SCU_SIDE_PLAYER) {
-        BtlvEffect_SetTimerVisible(0, 1, 0);
+        BtlvEffect_SetTimerVisible(BTLV_TIMER_BATTLE, 1, 0);
     }
 }
 

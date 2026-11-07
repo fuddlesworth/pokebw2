@@ -20,6 +20,7 @@
 #include "battle/btlv_timer.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
+#include "constants/sound.h"
 #include "constants/trainer_classes.h"
 #include "field/field_light_status.h"
 #include "gfl/arc.h"
@@ -161,6 +162,30 @@ enum {
     BLINK_SEQ_SHOW,
 };
 
+// The sprite-change task hides the old sprite, reloads it and restores the view.
+enum {
+    CHANGE_SEQ_START_HIDE = 0,
+    CHANGE_SEQ_WAIT_HIDE = 1,
+    CHANGE_SEQ_MOSAIC_OUT = 2,
+    CHANGE_SEQ_RELOAD = 3,
+    CHANGE_SEQ_MOSAIC_IN = 4,
+    CHANGE_SEQ_WAIT_MOSAIC_IN = 5,
+    CHANGE_SEQ_SHOW = 6,
+    CHANGE_SEQ_WAIT_SHOW = 7,
+};
+
+// A rotation waits for other effects, starts the models, then waits for them.
+enum {
+    ROTATE_SEQ_WAIT_EFFECTS = 0,
+    ROTATE_SEQ_START = 1,
+    ROTATE_SEQ_WAIT_ANIMATION = 2,
+};
+
+// GetAllyClientID returns4 when that client does not exist.
+enum {
+    EFFECT_CLIENT_NONE = 4,
+};
+
 static u32 BtlvEffect_GetStudioMode(BtlMainModule *mainModule);
 static u32 BtlvEffect_GetStudioParam(BtlMainModule *mainModule);
 static void BtlvEffect_Stop(void);
@@ -242,7 +267,7 @@ BtlvEffectSetup *BtlvEffect_CreateSetup(BtlMainModule *mainModule, BtlvScu *scu,
         u8 partnerId = GetPlayerAllyClientID(mainModule);
 
         trainerTypes[side * 2] = GetClientTrainerClass(mainModule, playerId);
-        if (partnerId != 4) {
+        if (partnerId != EFFECT_CLIENT_NONE) {
             trainerTypes[(side ^ 1) * 2] = GetClientTrainerClass(mainModule, partnerId);
         }
         trainerTypes[1] = GetClientTrainerClass(mainModule, GetPlayerOpponentClientID(mainModule, 0));
@@ -405,7 +430,7 @@ void BtlvEffect_Start(u32 effNo) {
         queued->defPos = 0xff;
         queued->effNo = effNo;
         BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_DelayedMoveTask, queued, 0),
-                           BtlvEffect_DelayedMoveTaskEnd, 0);
+                           BtlvEffect_DelayedMoveTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
     }
 }
 
@@ -421,7 +446,7 @@ void BtlvEffect_StartPos(u32 pos, u32 effNo) {
         queued->defPos = 0xff;
         queued->effNo = effNo;
         BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_DelayedMoveTask, queued, 0),
-                           BtlvEffect_DelayedMoveTaskEnd, 0);
+                           BtlvEffect_DelayedMoveTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
     }
 }
 
@@ -437,7 +462,7 @@ void BtlvEffect_StartAtkDef(u32 atkPos, u32 defPos, u32 effNo) {
         queued->defPos = defPos;
         queued->effNo = effNo;
         BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_DelayedMoveTask, queued, 0),
-                           BtlvEffect_DelayedMoveTaskEnd, 0);
+                           BtlvEffect_DelayedMoveTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
     }
 }
 
@@ -463,7 +488,7 @@ void BtlvEffect_StartMove(const BtlvMoveEffectParam *param) {
         queued->param->variant = param->variant;
         queued->param->unk2 = param->unk0D;
         BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_DelayedMoveTask, queued, 0),
-                           BtlvEffect_DelayedMoveTaskEnd, 0);
+                           BtlvEffect_DelayedMoveTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
     }
 }
 
@@ -493,7 +518,7 @@ void BtlvEffect_StartDamage(u32 pos, u16 move) {
     }
     sBtlvEffect->damageTasks |= BtlvEffect_PosBit(pos);
     BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_BlinkTask, damage, 0),
-                       BtlvEffect_DamageTaskEnd, 0);
+                       BtlvEffect_DamageTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
 }
 
 void BtlvEffect_StartEffect23B(u8 viewPos) {
@@ -526,13 +551,13 @@ void BtlvEffect_StartChangeSprite(PartyPkm *pkm, u32 viewPos) {
     BtlvEffectChange *change =
         GFL_HeapAllocate(HEAPID_TAIL(sBtlvEffect->heapId), sizeof(BtlvEffectChange), FALSE, "btlv_effect.c", 0x36a);
 
-    change->seq = 0;
+    change->seq = CHANGE_SEQ_START_HIDE;
     change->viewPos = viewPos;
     BtlvMcss_ChangePokemon(sBtlvEffect->mcss, viewPos, pkm);
     BtlvMcss_SetupPokemonLoadInfo(sBtlvEffect->mcss, pkm, &change->info, viewPos);
     sBtlvEffect->changeTasks |= BtlvEffect_PosBit(viewPos);
     BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_SubstituteTask, change, 0),
-                       BtlvEffect_ChangeTaskEnd, 0);
+                       BtlvEffect_ChangeTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
 }
 
 void BtlvEffect_ChangeSprite(PartyPkm *pkm, u32 viewPos) {
@@ -662,13 +687,13 @@ void BtlvEffect_SetPokeAnimeSpeed(u8 viewPos, fx32 speed) {
 void BtlvEffect_AddGauge(BtlMainModule *mainModule, BattleMon *mon, u32 viewPos) {
     switch (sBtlvEffect->setup.battleStyle) {
     case BTL_STYLE_TRIPLE:
-        BtlvGauge_SetBattleMon(sBtlvEffect->gauge, mainModule, mon, 2, viewPos);
+        BtlvGauge_SetBattleMon(sBtlvEffect->gauge, mainModule, mon, BTL_STYLE_TRIPLE, viewPos);
         break;
     case BTL_STYLE_ROTATION:
-        BtlvGauge_SetBattleMon(sBtlvEffect->gauge, mainModule, mon, 3, viewPos);
+        BtlvGauge_SetBattleMon(sBtlvEffect->gauge, mainModule, mon, BTL_STYLE_ROTATION, viewPos);
         break;
     default:
-        BtlvGauge_SetBattleMon(sBtlvEffect->gauge, mainModule, mon, 0, viewPos);
+        BtlvGauge_SetBattleMon(sBtlvEffect->gauge, mainModule, mon, BTL_STYLE_SINGLE, viewPos);
         break;
     }
 }
@@ -676,13 +701,13 @@ void BtlvEffect_AddGauge(BtlMainModule *mainModule, BattleMon *mon, u32 viewPos)
 void BtlvEffect_AddGaugeByPkm(PokeDexSave *pokedex, PartyPkm *pkm, u32 viewPos) {
     switch (sBtlvEffect->setup.battleStyle) {
     case BTL_STYLE_TRIPLE:
-        BtlvGauge_SetPartyPkm(sBtlvEffect->gauge, pokedex, pkm, 2, viewPos);
+        BtlvGauge_SetPartyPkm(sBtlvEffect->gauge, pokedex, pkm, BTL_STYLE_TRIPLE, viewPos);
         break;
     case BTL_STYLE_ROTATION:
-        BtlvGauge_SetPartyPkm(sBtlvEffect->gauge, pokedex, pkm, 3, viewPos);
+        BtlvGauge_SetPartyPkm(sBtlvEffect->gauge, pokedex, pkm, BTL_STYLE_ROTATION, viewPos);
         break;
     default:
-        BtlvGauge_SetPartyPkm(sBtlvEffect->gauge, pokedex, pkm, 0, viewPos);
+        BtlvGauge_SetPartyPkm(sBtlvEffect->gauge, pokedex, pkm, BTL_STYLE_SINGLE, viewPos);
         break;
     }
 }
@@ -813,14 +838,14 @@ void BtlvEffect_StartRotation(u8 mode, u32 side, u32 playSe) {
         GFL_HeapAllocate(HEAPID_TAIL(sBtlvEffect->heapId), sizeof(BtlvEffectRotateWork), FALSE, "btlv_effect.c", 0x602);
 
     // BUG: mode 1 starts no task, so nothing frees its work
-    if (mode != 1) {
-        work->seq = 0;
-        work->dir = mode != 3;
+    if (mode != BTLV_EFFECT_ROTATE_NONE) {
+        work->seq = ROTATE_SEQ_WAIT_EFFECTS;
+        work->dir = mode != BTLV_EFFECT_ROTATE_THIRD;
         work->side = side;
         work->playSe = playSe;
         sBtlvEffect->rotateTasks |= BtlvEffect_PosBit(side);
         BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_RotateTask, work, 0),
-                           BtlvEffect_RotateTaskEnd, 0);
+                           BtlvEffect_RotateTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
 #ifdef BUGFIX
     } else {
         GFL_HeapFree(work);
@@ -872,16 +897,16 @@ void BtlvEffect_ZoomCamera(u32 pos, u32 mode, int frames, int wait, int brakeFra
             BtlvEffect_Start(0x23f);
             break;
         case BTL_STYLE_DOUBLE:
-            if (pos == 2) {
+            if (pos == BTLV_MCSS_POS_PLAYER_1) {
                 BtlvEffect_Start(0x240);
             } else {
                 BtlvEffect_Start(0x241);
             }
             break;
         case BTL_STYLE_TRIPLE:
-            if (pos == 2) {
+            if (pos == BTLV_MCSS_POS_PLAYER_1) {
                 BtlvEffect_Start(0x242);
-            } else if (pos == 4) {
+            } else if (pos == BTLV_MCSS_POS_PLAYER_2) {
                 BtlvEffect_Start(0x23f);
             } else {
                 BtlvEffect_Start(0x243);
@@ -1220,54 +1245,54 @@ static void BtlvEffect_SubstituteTask(TCB *tcb, void *data) {
     BtlvEffectChange *work = data;
 
     switch (work->seq) {
-    case 0:
+    case CHANGE_SEQ_START_HIDE:
         BtlvEffvm_Start(sBtlvEffect->effvm, work->viewPos, 0xff, 0x253, NULL);
         sBtlvEffect->executing = TRUE;
         work->seq++;
         break;
-    case 1:
+    case CHANGE_SEQ_WAIT_HIDE:
         if (sBtlvEffect->executing) {
             break;
         }
-        if (BtlvMcss_GetFlags(sBtlvEffect->mcss, work->viewPos) & BTLV_MCSS_FLAG_UNK0) {
+        if (BtlvMcss_GetFlags(sBtlvEffect->mcss, work->viewPos) & BTLV_MCSS_FLAG_SUBSTITUTE_ACTIVE) {
             BtlvEffvm_Start(sBtlvEffect->effvm, work->viewPos, 0xff, 0x264, NULL);
             sBtlvEffect->executing = TRUE;
         }
         work->seq++;
         break;
-    case 2:
+    case CHANGE_SEQ_MOSAIC_OUT:
         if (sBtlvEffect->executing) {
             break;
         }
-        BtlvMcss_MoveAlpha(sBtlvEffect->mcss, work->viewPos, 0, 16, 0, 0, 0);
-        BtlvMcss_MoveLevel(sBtlvEffect->mcss, work->viewPos, 1, 8, 8, 1, 0);
-        BtlvEffvm_PlaySEAt(sBtlvEffect->effvm, 0x5aa, 1, 14, -500, 127, 0, 0, 0);
-        BtlvEffvm_SlideSE(sBtlvEffect->effvm, 1, 0, 1, 127, 0, 30, 10, 0, 0);
+        BtlvMcss_MoveAlpha(sBtlvEffect->mcss, work->viewPos, BTLV_EFFTOOL_MOVE_JUMP, 16, 0, 0, 0);
+        BtlvMcss_MoveLevel(sBtlvEffect->mcss, work->viewPos, BTLV_EFFTOOL_MOVE_STEP, 8, 8, 1, 0);
+        BtlvEffvm_PlaySEAt(sBtlvEffect->effvm, SEQ_SE_W048_01, 1, EFFVM_ATTACKER, -500, 127, 0, 0, 0);
+        BtlvEffvm_SlideSE(sBtlvEffect->effvm, 1, EFFVM_SE_MOVE_ONCE, EFFVM_SE_PARAM_VOLUME, 127, 0, 30, 10, 0, 0);
         work->seq++;
         break;
-    case 3:
+    case CHANGE_SEQ_RELOAD:
         if (!BtlvMcss_IsBusy(sBtlvEffect->mcss, work->viewPos)) {
             BtlvMcss_ReloadSprite(sBtlvEffect->mcss, work->viewPos, &work->info);
             work->seq++;
         }
         break;
-    case 4:
-        BtlvMcss_MoveLevel(sBtlvEffect->mcss, work->viewPos, 1, 0, 8, 1, 0);
+    case CHANGE_SEQ_MOSAIC_IN:
+        BtlvMcss_MoveLevel(sBtlvEffect->mcss, work->viewPos, BTLV_EFFTOOL_MOVE_STEP, 0, 8, 1, 0);
         work->seq++;
         break;
-    case 5:
+    case CHANGE_SEQ_WAIT_MOSAIC_IN:
         if (BtlvMcss_IsBusy(sBtlvEffect->mcss, work->viewPos)) {
             break;
         }
-        BtlvEffvm_PlaySEAt(sBtlvEffect->effvm, 0x560, 1, 14, 0, 0, 0, 0, 0);
-        BtlvMcss_MoveAlpha(sBtlvEffect->mcss, work->viewPos, 0, 31, 0, 0, 0);
-        if (BtlvMcss_GetFlags(sBtlvEffect->mcss, work->viewPos) & BTLV_MCSS_FLAG_UNK0) {
+        BtlvEffvm_PlaySEAt(sBtlvEffect->effvm, SEQ_SE_DUMMY5, 1, EFFVM_ATTACKER, 0, 0, 0, 0, 0);
+        BtlvMcss_MoveAlpha(sBtlvEffect->mcss, work->viewPos, BTLV_EFFTOOL_MOVE_JUMP, 31, 0, 0, 0);
+        if (BtlvMcss_GetFlags(sBtlvEffect->mcss, work->viewPos) & BTLV_MCSS_FLAG_SUBSTITUTE_ACTIVE) {
             BtlvEffvm_Start(sBtlvEffect->effvm, work->viewPos, 0xff, 0x265, NULL);
             sBtlvEffect->executing = TRUE;
         }
         work->seq++;
         break;
-    case 6:
+    case CHANGE_SEQ_SHOW:
         if (sBtlvEffect->executing) {
             break;
         }
@@ -1275,7 +1300,7 @@ static void BtlvEffect_SubstituteTask(TCB *tcb, void *data) {
         sBtlvEffect->executing = TRUE;
         work->seq++;
         break;
-    case 7:
+    case CHANGE_SEQ_WAIT_SHOW:
         if (!sBtlvEffect->executing) {
             BtlvEffect_EndTask(tcb);
         }
@@ -1293,17 +1318,17 @@ static void BtlvEffect_RotateTask(TCB *tcb, void *data) {
     BtlvEffectRotateWork *work = data;
 
     switch (work->seq) {
-    case 0:
+    case ROTATE_SEQ_WAIT_EFFECTS:
         if ((sBtlvEffect->damageTasks | sBtlvEffect->executing | sBtlvEffect->changeTasks) != 0) {
             break;
         }
         work->seq++;
         // fallthrough
-    case 1:
+    case ROTATE_SEQ_START:
         BtlvMcss_StartRotation(sBtlvEffect->mcss, work->side, work->dir, work->playSe);
         work->seq++;
         break;
-    case 2:
+    case ROTATE_SEQ_WAIT_ANIMATION:
         if (!BtlvStage_IsAnimating(sBtlvEffect->stage) && !BtlvMcss_IsAnyBusy(sBtlvEffect->mcss)) {
             BtlvEffect_EndTask(tcb);
         }
