@@ -8,6 +8,13 @@
 #include "gfl/heap.h"
 #include "gfl/std.h"
 
+// A message starts, waits for its face, then finishes
+enum {
+    LOCAL_TVT_RIVAL_TALK_START,
+    LOCAL_TVT_RIVAL_TALK_WAIT,
+    LOCAL_TVT_RIVAL_TALK_FINISH,
+};
+
 // What the rival says in a call on the Xtransceiver, named after the ROM's "local_tvt_person_rival.c"
 
 struct LocalTvtRival {
@@ -58,18 +65,18 @@ static BOOL LocalTvtRival_Greet(LocalTvtPerson *person, const LocalTvtPersonSetu
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (rival->step) {
-    case 0:
+    case LOCAL_TVT_RIVAL_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetGreetingMsg(setup->callData, LOCAL_TVT_CALL_RIVAL));
         rival->step++;
         break;
-    case 1:
+    case LOCAL_TVT_RIVAL_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             rival->step++;
         }
         break;
-    case 2:
-        rival->step = 0;
+    case LOCAL_TVT_RIVAL_TALK_FINISH:
+        rival->step = LOCAL_TVT_RIVAL_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -81,18 +88,18 @@ static BOOL LocalTvtRival_Chat(LocalTvtPerson *person, const LocalTvtPersonSetup
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (rival->step) {
-    case 0:
+    case LOCAL_TVT_RIVAL_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetChatMsg(setup->callData, LOCAL_TVT_CALL_RIVAL));
         rival->step++;
         break;
-    case 1:
+    case LOCAL_TVT_RIVAL_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             rival->step++;
         }
         break;
-    case 2:
-        rival->step = 0;
+    case LOCAL_TVT_RIVAL_TALK_FINISH:
+        rival->step = LOCAL_TVT_RIVAL_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -104,18 +111,18 @@ static BOOL LocalTvtRival_Extra(LocalTvtPerson *person, const LocalTvtPersonSetu
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (rival->step) {
-    case 0:
+    case LOCAL_TVT_RIVAL_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetExtraMsg(setup->callData, LOCAL_TVT_CALL_RIVAL));
         rival->step++;
         break;
-    case 1:
+    case LOCAL_TVT_RIVAL_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             rival->step++;
         }
         break;
-    case 2:
-        rival->step = 0;
+    case LOCAL_TVT_RIVAL_TALK_FINISH:
+        rival->step = LOCAL_TVT_RIVAL_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -126,20 +133,20 @@ static BOOL LocalTvtRival_Bye(LocalTvtPerson *person, const LocalTvtPersonSetup 
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (rival->step) {
-    case 0: {
+    case LOCAL_TVT_RIVAL_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
 
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetByeMsg(setup->callData, LOCAL_TVT_CALL_RIVAL));
         rival->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_RIVAL_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             rival->step++;
         }
         break;
-    case 2:
-        rival->step = 0;
+    case LOCAL_TVT_RIVAL_TALK_FINISH:
+        rival->step = LOCAL_TVT_RIVAL_TALK_START;
         LocalTvtPerson_End(person);
         return TRUE;
     }

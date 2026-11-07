@@ -6,6 +6,28 @@
 #include "gfl/heap.h"
 #include "gfl/std.h"
 
+// The steps of LocalTvtPerson_SeqTopic
+enum {
+    LOCAL_TVT_PERSON_TOPIC_TOPIC,
+    LOCAL_TVT_PERSON_TOPIC_MENU,
+};
+
+// The steps of LocalTvtPerson_SeqMenu
+enum {
+    LOCAL_TVT_PERSON_MENU_PROMPT,
+    LOCAL_TVT_PERSON_MENU_WAIT_PROMPT,
+    LOCAL_TVT_PERSON_MENU_DELAY,
+    LOCAL_TVT_PERSON_MENU_CREATE_MENU,
+    LOCAL_TVT_PERSON_MENU_SELECT_TOPIC,
+    LOCAL_TVT_PERSON_MENU_START_TOPIC,
+};
+
+// The steps of LocalTvtPerson_SeqGreet
+enum {
+    LOCAL_TVT_PERSON_GREET_GREET,
+    LOCAL_TVT_PERSON_GREET_MENU,
+};
+
 // The call with a person on the Xtransceiver, named after the ROM's "local_tvt_person.c": the person greets, then
 // asks what to talk about and talks about the topic the player picks, until a topic ends the call. What a person
 // says is in its own file
@@ -59,12 +81,12 @@ static void LocalTvtPerson_SeqGreet(LocalTvtSeq *seq, int *step, void *work) {
     LocalTvtPerson *person = work;
 
     switch (*step) {
-    case 0:
+    case LOCAL_TVT_PERSON_GREET_GREET:
         if (person->funcs.greet(person, &person->setup, person->funcs.work)) {
             (*step)++;
         }
         break;
-    case 1:
+    case LOCAL_TVT_PERSON_GREET_MENU:
         LocalTvtSeq_SetNext(seq, LocalTvtPerson_SeqMenu);
         break;
     }
@@ -76,22 +98,22 @@ static void LocalTvtPerson_SeqMenu(LocalTvtSeq *seq, int *step, void *work) {
     LocalTvtFace *face = LocalTvtChara_GetFace(person->setup.chara, 0);
 
     switch (*step) {
-    case 0:
+    case LOCAL_TVT_PERSON_MENU_PROMPT:
         LocalTvtFace_Talk(face, person->funcs.msgData, person->funcs.menuMsg);
         (*step)++;
         break;
-    case 1:
+    case LOCAL_TVT_PERSON_MENU_WAIT_PROMPT:
         if (LocalTvtFace_UpdateTalk(face, person->setup.chara)) {
             person->timer = 0;
             (*step)++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_PERSON_MENU_DELAY:
         if (person->timer++ > 15) {
             (*step)++;
         }
         break;
-    case 3: {
+    case LOCAL_TVT_PERSON_MENU_CREATE_MENU: {
         LocalTvtMenuSetup setup;
 
         MI_CpuFill8(&setup, 0, sizeof(setup));
@@ -107,14 +129,14 @@ static void LocalTvtPerson_SeqMenu(LocalTvtSeq *seq, int *step, void *work) {
         (*step)++;
         break;
     }
-    case 4:
+    case LOCAL_TVT_PERSON_MENU_SELECT_TOPIC:
         LocalTvtMenu_Main(person->menu);
         if (LocalTvtMenu_IsEnd(person->menu)) {
             person->selected = LocalTvtMenu_GetSelected(person->menu);
             (*step)++;
         }
         break;
-    case 5:
+    case LOCAL_TVT_PERSON_MENU_START_TOPIC:
         LocalTvtMenu_Free(person->menu);
         LocalTvtSeq_SetNext(seq, LocalTvtPerson_SeqTopic);
         break;
@@ -125,12 +147,12 @@ static void LocalTvtPerson_SeqTopic(LocalTvtSeq *seq, int *step, void *work) {
     LocalTvtPerson *person = work;
 
     switch (*step) {
-    case 0:
+    case LOCAL_TVT_PERSON_TOPIC_TOPIC:
         if (person->funcs.topics[person->selected](person, &person->setup, person->funcs.work)) {
             (*step)++;
         }
         break;
-    case 1:
+    case LOCAL_TVT_PERSON_TOPIC_MENU:
         LocalTvtSeq_SetNext(seq, LocalTvtPerson_SeqMenu);
         break;
     }

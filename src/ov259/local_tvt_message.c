@@ -248,12 +248,12 @@ void LocalTvtMessage_PrintPokemon(LocalTvtMessage *message, BmpWin *window, Part
     }
     if (!PokeParty_GetParam(pkm, PKM_PARAM_IS_EGG, NULL)) {
         switch (PokeParty_GetParam(pkm, PKM_PARAM_SEX, NULL)) {
-        case 0:
+        case GENDER_MALE:
             GFL_MsgDataLoadStrbuf(message->pokemonMsgData, 7, message->strbuf);
             PrintQueue_PrintColor(message->queue, BmpWin_GetBitmap(window), 96, 8, message->strbuf, message->font,
                                   PRINT_COLOR(5, 6, 0));
             break;
-        case 1:
+        case GENDER_FEMALE:
             GFL_MsgDataLoadStrbuf(message->pokemonMsgData, 8, message->strbuf);
             PrintQueue_PrintColor(message->queue, BmpWin_GetBitmap(window), 96, 8, message->strbuf, message->font,
                                   PRINT_COLOR(3, 4, 0));

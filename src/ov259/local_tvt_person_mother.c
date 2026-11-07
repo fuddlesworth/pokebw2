@@ -14,6 +14,13 @@
 #include "gfl/std.h"
 #include "system/game_data.h"
 
+// A message starts, waits for its face, then finishes
+enum {
+    LOCAL_TVT_MOTHER_TALK_START,
+    LOCAL_TVT_MOTHER_TALK_WAIT,
+    LOCAL_TVT_MOTHER_TALK_FINISH,
+};
+
 // What the player's mother says in a call on the Xtransceiver, named after the ROM's "local_tvt_person_mother.c":
 // she tells about the place the player is at
 
@@ -73,18 +80,18 @@ static BOOL LocalTvtMother_Greet(LocalTvtPerson *person, const LocalTvtPersonSet
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (mother->step) {
-    case 0:
+    case LOCAL_TVT_MOTHER_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetGreetingMsg(setup->callData, LOCAL_TVT_CALL_MOTHER));
         mother->step++;
         break;
-    case 1:
+    case LOCAL_TVT_MOTHER_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             mother->step++;
         }
         break;
-    case 2:
-        mother->step = 0;
+    case LOCAL_TVT_MOTHER_TALK_FINISH:
+        mother->step = LOCAL_TVT_MOTHER_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -96,18 +103,18 @@ static BOOL LocalTvtMother_Chat(LocalTvtPerson *person, const LocalTvtPersonSetu
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (mother->step) {
-    case 0:
+    case LOCAL_TVT_MOTHER_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetChatMsg(setup->callData, LOCAL_TVT_CALL_MOTHER));
         mother->step++;
         break;
-    case 1:
+    case LOCAL_TVT_MOTHER_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             mother->step++;
         }
         break;
-    case 2:
-        mother->step = 0;
+    case LOCAL_TVT_MOTHER_TALK_FINISH:
+        mother->step = LOCAL_TVT_MOTHER_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -119,19 +126,19 @@ static BOOL LocalTvtMother_Place(LocalTvtPerson *person, const LocalTvtPersonSet
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (mother->step) {
-    case 0:
+    case LOCAL_TVT_MOTHER_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, mother->placeMsgData,
                           ZoneData_GetPlaceNameID(PlayerState_GetZoneID(GameData_GetPlayerState(mother->gameData))));
         mother->step++;
         break;
-    case 1:
+    case LOCAL_TVT_MOTHER_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             mother->step++;
         }
         break;
-    case 2:
-        mother->step = 0;
+    case LOCAL_TVT_MOTHER_TALK_FINISH:
+        mother->step = LOCAL_TVT_MOTHER_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -142,20 +149,20 @@ static BOOL LocalTvtMother_Bye(LocalTvtPerson *person, const LocalTvtPersonSetup
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (mother->step) {
-    case 0: {
+    case LOCAL_TVT_MOTHER_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
 
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetByeMsg(setup->callData, LOCAL_TVT_CALL_MOTHER));
         mother->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_MOTHER_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             mother->step++;
         }
         break;
-    case 2:
-        mother->step = 0;
+    case LOCAL_TVT_MOTHER_TALK_FINISH:
+        mother->step = LOCAL_TVT_MOTHER_TALK_START;
         LocalTvtPerson_End(person);
         return TRUE;
     }

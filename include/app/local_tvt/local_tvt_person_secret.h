@@ -16,7 +16,7 @@ u16 LocalTvtSecret_GetNameMsg(LocalTvtCallData *data);
 u32 LocalTvtSecret_GetRingCount(LocalTvtCallData *data);
 // The stage of the calls with the person for a count of calls, and what a stage has
 u32 LocalTvtSecret_GetStage(int callCount);
-u32 LocalTvtSecret_GetStage0378(u32 stage);
+u32 LocalTvtSecret_CanCallStage(u32 stage);
 u32 LocalTvtSecret_GetStageCount(u32 stage);
 
 #endif // POKEBW2_APP_LOCAL_TVT_LOCAL_TVT_PERSON_SECRET_H

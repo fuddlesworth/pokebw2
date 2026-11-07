@@ -19,6 +19,28 @@
 #include "save/survey_savedata.h"
 #include "system/game_data.h"
 
+// The steps of LocalTvtSecret_WholeCall
+enum {
+    LOCAL_TVT_SECRET_WHOLE_CALL_GREETING,
+    LOCAL_TVT_SECRET_WHOLE_CALL_CHAT,
+    LOCAL_TVT_SECRET_WHOLE_CALL_BYE,
+    LOCAL_TVT_SECRET_WHOLE_CALL_FINISH,
+};
+
+// The steps of LocalTvtSecret_Chat
+enum {
+    LOCAL_TVT_SECRET_CHAT_CHAT,
+    LOCAL_TVT_SECRET_CHAT_BYE,
+    LOCAL_TVT_SECRET_CHAT_FINISH,
+};
+
+// A message starts, waits for its face, then finishes
+enum {
+    LOCAL_TVT_SECRET_TALK_START,
+    LOCAL_TVT_SECRET_TALK_WAIT,
+    LOCAL_TVT_SECRET_TALK_FINISH,
+};
+
 // What the person of LOCAL_TVT_CALL_SECRET says in a call on the Xtransceiver, named after the ROM's
 // "local_tvt_person_secret.c". The player learns who the person is over many calls: the count of calls made picks
 // a stage, which has the kind of call, the face and how long the person lets it ring. The first calls each ask
@@ -60,8 +82,8 @@ struct LocalTvtSecretStage {
     int callCountMax;
     u32 callType;
     u32 face;
-    u32 unk10;
-    u32 unk14;
+    u32 meeting;
+    u32 canCall;
     u32 ringCount;
 };
 
@@ -78,7 +100,7 @@ static BOOL LocalTvtSecret_TalkBye(LocalTvtPerson *person, const LocalTvtPersonS
                                    int *step);
 static BOOL LocalTvtSecret_ShortCall(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
 static BOOL LocalTvtSecret_WholeCall(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
-static u32 LocalTvtSecret_GetStage10(LocalTvtCallData *data);
+static u32 LocalTvtSecret_GetMeeting(LocalTvtCallData *data);
 static u32 LocalTvtSecret_GetChatMsg(u8 *surveyAnswers, LocalTvtCallData *data, LocalTvtMessage *message);
 static void LocalTvtSecret_SetWords(LocalTvtCallData *data, LocalTvtMessage *message, u32 callCount, u32 answerMsg,
                                     BOOL answered);
@@ -88,7 +110,7 @@ static void LocalTvtSecret_GetSurveyAnswer(u8 *surveyAnswers, u8 callCount, u32 
                                            BOOL *asked);
 static u32 LocalTvtSecret_GetStageCallType(u32 stage);
 static u32 LocalTvtSecret_GetStageFace(u32 stage);
-static u32 LocalTvtSecret_GetStage10Of(u32 stage);
+static u32 LocalTvtSecret_GetStageMeeting(u32 stage);
 static u32 LocalTvtSecret_GetStageRingCount(u32 stage);
 
 // The types of the first Pokémon, by the work that keeps which one the player chose
@@ -210,18 +232,18 @@ static BOOL LocalTvtSecret_Chat(LocalTvtPerson *person, const LocalTvtPersonSetu
     LocalTvtSecret *secret = work;
 
     switch (secret->step) {
-    case 0:
+    case LOCAL_TVT_SECRET_CHAT_CHAT:
         if (LocalTvtSecret_TalkChat(person, setup, secret, &secret->talkStep)) {
             secret->step++;
         }
         break;
-    case 1:
+    case LOCAL_TVT_SECRET_CHAT_BYE:
         if (LocalTvtSecret_TalkBye(person, setup, secret, &secret->talkStep)) {
             secret->step++;
         }
         break;
-    case 2:
-        secret->step = 0;
+    case LOCAL_TVT_SECRET_CHAT_FINISH:
+        secret->step = LOCAL_TVT_SECRET_CHAT_CHAT;
         return TRUE;
     }
     return FALSE;
@@ -239,7 +261,7 @@ static BOOL LocalTvtSecret_TalkGreeting(LocalTvtPerson *person, const LocalTvtPe
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (*step) {
-    case 0: {
+    case LOCAL_TVT_SECRET_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         BOOL male = LocalTvtCallData_IsPlayerMale(setup->callData);
 
@@ -252,13 +274,13 @@ static BOOL LocalTvtSecret_TalkGreeting(LocalTvtPerson *person, const LocalTvtPe
         (*step)++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_SECRET_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             (*step)++;
         }
         break;
-    case 2:
-        *step = 0;
+    case LOCAL_TVT_SECRET_TALK_FINISH:
+        *step = LOCAL_TVT_SECRET_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -270,7 +292,7 @@ static BOOL LocalTvtSecret_TalkChat(LocalTvtPerson *person, const LocalTvtPerson
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (*step) {
-    case 0: {
+    case LOCAL_TVT_SECRET_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         u32 messageId;
 
@@ -289,13 +311,13 @@ static BOOL LocalTvtSecret_TalkChat(LocalTvtPerson *person, const LocalTvtPerson
         (*step)++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_SECRET_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             (*step)++;
         }
         break;
-    case 2:
-        *step = 0;
+    case LOCAL_TVT_SECRET_TALK_FINISH:
+        *step = LOCAL_TVT_SECRET_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -306,13 +328,13 @@ static BOOL LocalTvtSecret_TalkBye(LocalTvtPerson *person, const LocalTvtPersonS
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (*step) {
-    case 0: {
+    case LOCAL_TVT_SECRET_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         BOOL male = LocalTvtCallData_IsPlayerMale(setup->callData);
         u16 messageId = LocalTvtCallData_GetByeMsg(setup->callData, LOCAL_TVT_CALL_SECRET);
-        u32 unk10 = LocalTvtSecret_GetStage10(setup->callData);
+        u32 meeting = LocalTvtSecret_GetMeeting(setup->callData);
 
-        if ((unk10 == 1 || unk10 == 2) && secret->chatted) {
+        if ((meeting == 1 || meeting == 2) && secret->chatted) {
             messageId = 245;
         }
         if (male == TRUE) {
@@ -322,22 +344,22 @@ static BOOL LocalTvtSecret_TalkBye(LocalTvtPerson *person, const LocalTvtPersonS
         (*step)++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_SECRET_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             (*step)++;
         }
         break;
-    case 2:
-        *step = 0;
+    case LOCAL_TVT_SECRET_TALK_FINISH:
+        *step = LOCAL_TVT_SECRET_TALK_START;
         // A call counts once the person has chatted
         if (secret->chatted) {
-            u32 unk10;
+            u32 meeting;
 
             LocalTvtSecret_GetStage(LocalTvtCallData_GetCallCount(setup->callData, LOCAL_TVT_CALL_SECRET));
-            unk10 = LocalTvtSecret_GetStage10(setup->callData);
-            if (unk10 != 0) {
-                LocalTvtCallData_SetMeeting(setup->callData, unk10);
-                if (unk10 == 1 || unk10 == 2) {
+            meeting = LocalTvtSecret_GetMeeting(setup->callData);
+            if (meeting != 0) {
+                LocalTvtCallData_SetMeeting(setup->callData, meeting);
+                if (meeting == 1 || meeting == 2) {
                     LocalTvtCallData_SetMeetingToday(setup->callData);
                 }
             }
@@ -357,7 +379,7 @@ static BOOL LocalTvtSecret_ShortCall(LocalTvtPerson *person, const LocalTvtPerso
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (secret->step) {
-    case 0: {
+    case LOCAL_TVT_SECRET_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         BOOL male = LocalTvtCallData_IsPlayerMale(setup->callData);
 
@@ -369,13 +391,13 @@ static BOOL LocalTvtSecret_ShortCall(LocalTvtPerson *person, const LocalTvtPerso
         secret->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_SECRET_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             secret->step++;
         }
         break;
-    case 2:
-        secret->step = 0;
+    case LOCAL_TVT_SECRET_TALK_FINISH:
+        secret->step = LOCAL_TVT_SECRET_TALK_START;
         LocalTvtCallData_AddCall(setup->callData, LOCAL_TVT_CALL_SECRET, SECRET_CALL_MAX);
         LocalTvtPerson_End(person);
         return TRUE;
@@ -388,42 +410,42 @@ static BOOL LocalTvtSecret_WholeCall(LocalTvtPerson *person, const LocalTvtPerso
     LocalTvtSecret *secret = work;
 
     switch (secret->step) {
-    case 0:
+    case LOCAL_TVT_SECRET_WHOLE_CALL_GREETING:
         if (LocalTvtSecret_TalkGreeting(person, setup, secret, &secret->talkStep)) {
             secret->step++;
         }
         break;
-    case 1:
+    case LOCAL_TVT_SECRET_WHOLE_CALL_CHAT:
         if (LocalTvtSecret_TalkChat(person, setup, secret, &secret->talkStep)) {
             secret->step++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_SECRET_WHOLE_CALL_BYE:
         if (LocalTvtSecret_TalkBye(person, setup, secret, &secret->talkStep)) {
             secret->step++;
         }
         break;
-    case 3:
-        secret->step = 0;
+    case LOCAL_TVT_SECRET_WHOLE_CALL_FINISH:
+        secret->step = LOCAL_TVT_SECRET_WHOLE_CALL_GREETING;
         return TRUE;
     }
     return FALSE;
 }
 
-static u32 LocalTvtSecret_GetStage10(LocalTvtCallData *data) {
-    u32 unk10 = LocalTvtSecret_GetStage10Of(
+static u32 LocalTvtSecret_GetMeeting(LocalTvtCallData *data) {
+    u32 meeting = LocalTvtSecret_GetStageMeeting(
         LocalTvtSecret_GetStage(LocalTvtCallData_GetCallCount(data, LOCAL_TVT_CALL_SECRET)));
 
     if (LocalTvtCallData_IsMeetingToday(data)) {
-        unk10 = 0;
+        meeting = 0;
     }
-    return unk10;
+    return meeting;
 }
 
 static u32 LocalTvtSecret_GetChatMsg(u8 *surveyAnswers, LocalTvtCallData *data, LocalTvtMessage *message) {
     u32 callCount;
     u32 callType;
-    u32 unk10;
+    u32 meeting;
     BOOL answered;
     BOOL asked;
     u32 answerMsg;
@@ -431,10 +453,10 @@ static u32 LocalTvtSecret_GetChatMsg(u8 *surveyAnswers, LocalTvtCallData *data, 
     LocalTvtCallData_IsPlayerMale(data);
     callCount = LocalTvtCallData_GetCallCount(data, LOCAL_TVT_CALL_SECRET);
     callType = LocalTvtSecret_GetStageCallType(LocalTvtSecret_GetStage(callCount));
-    unk10 = LocalTvtSecret_GetStage10(data);
+    meeting = LocalTvtSecret_GetMeeting(data);
     LocalTvtSecret_GetSurveyAnswer(surveyAnswers, callCount, &answerMsg, &answered, &asked);
     LocalTvtSecret_SetWords(data, message, callCount, answerMsg, answered);
-    if (unk10 == 2) {
+    if (meeting == 2) {
         return 244;
     }
     switch (callType) {
@@ -539,12 +561,12 @@ static u32 LocalTvtSecret_GetStageFace(u32 stage) {
     return sLocalTvtSecretStages[stage].face;
 }
 
-static u32 LocalTvtSecret_GetStage10Of(u32 stage) {
-    return sLocalTvtSecretStages[stage].unk10;
+static u32 LocalTvtSecret_GetStageMeeting(u32 stage) {
+    return sLocalTvtSecretStages[stage].meeting;
 }
 
-u32 LocalTvtSecret_GetStage0378(u32 stage) {
-    return sLocalTvtSecretStages[stage].unk14;
+u32 LocalTvtSecret_CanCallStage(u32 stage) {
+    return sLocalTvtSecretStages[stage].canCall;
 }
 
 static u32 LocalTvtSecret_GetStageRingCount(u32 stage) {

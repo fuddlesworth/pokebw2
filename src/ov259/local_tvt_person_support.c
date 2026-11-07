@@ -14,6 +14,27 @@
 #include "save/event_work.h"
 #include "system/game_data.h"
 
+// The party selection and explanation of a selected Pokemon
+enum {
+    LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT,
+    LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_PROMPT,
+    LOCAL_TVT_SUPPORT_EXPLAIN_DELAY,
+    LOCAL_TVT_SUPPORT_EXPLAIN_OPEN_PARTY,
+    LOCAL_TVT_SUPPORT_EXPLAIN_SELECT,
+    LOCAL_TVT_SUPPORT_EXPLAIN_CANCEL,
+    LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN,
+    LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_EXPLANATION,
+    LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN_FULL_STATS,
+    LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_FULL_STATS,
+};
+
+// A message starts, waits for its face, then finishes
+enum {
+    LOCAL_TVT_SUPPORT_TALK_START,
+    LOCAL_TVT_SUPPORT_TALK_WAIT,
+    LOCAL_TVT_SUPPORT_TALK_FINISH,
+};
+
 // What the person of LOCAL_TVT_CALL_SUPPORT says in a call on the Xtransceiver, named after the ROM's
 // "local_tvt_person_support.c": how friendly a Pokémon of the party is and, once a flag is set, how its effort
 // values are
@@ -81,18 +102,18 @@ static BOOL LocalTvtSupport_Greet(LocalTvtPerson *person, const LocalTvtPersonSe
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (support->step) {
-    case 0:
+    case LOCAL_TVT_SUPPORT_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetGreetingMsg(setup->callData, LOCAL_TVT_CALL_SUPPORT));
         support->step++;
         break;
-    case 1:
+    case LOCAL_TVT_SUPPORT_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             support->step++;
         }
         break;
-    case 2:
-        support->step = 0;
+    case LOCAL_TVT_SUPPORT_TALK_FINISH:
+        support->step = LOCAL_TVT_SUPPORT_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -104,18 +125,18 @@ static BOOL LocalTvtSupport_Chat(LocalTvtPerson *person, const LocalTvtPersonSet
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (support->step) {
-    case 0:
+    case LOCAL_TVT_SUPPORT_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetChatMsg(setup->callData, LOCAL_TVT_CALL_SUPPORT));
         support->step++;
         break;
-    case 1:
+    case LOCAL_TVT_SUPPORT_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             support->step++;
         }
         break;
-    case 2:
-        support->step = 0;
+    case LOCAL_TVT_SUPPORT_TALK_FINISH:
+        support->step = LOCAL_TVT_SUPPORT_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -127,22 +148,22 @@ static BOOL LocalTvtSupport_Happiness(LocalTvtPerson *person, const LocalTvtPers
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (support->step) {
-    case 0:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT:
         LocalTvtFace_Talk(face, LocalTvtMessage_GetTalkMsgData(setup->message), 30);
         support->step++;
         break;
-    case 1:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_PROMPT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             support->timer = 0;
             support->step++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_DELAY:
         if (support->timer++ > 15) {
             support->step++;
         }
         break;
-    case 3:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_OPEN_PARTY:
         if (support->select != NULL) {
             LocalTvtPokeSelect_SetActive(support->select, TRUE);
             LocalTvtPokeSelect_Restart(support->select);
@@ -157,24 +178,24 @@ static BOOL LocalTvtSupport_Happiness(LocalTvtPerson *person, const LocalTvtPers
         }
         support->step++;
         break;
-    case 4:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_SELECT:
         LocalTvtPokeSelect_Main(support->select);
         switch (LocalTvtPokeSelect_GetResult(support->select)) {
         case LOCAL_TVT_POKE_SELECT_DECIDE:
             LocalTvtPokeSelect_SetActive(support->select, FALSE);
-            support->step = 6;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN;
             break;
         case LOCAL_TVT_POKE_SELECT_CANCEL:
-            support->step = 5;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_CANCEL;
             break;
         }
         break;
-    case 5:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_CANCEL:
         LocalTvtPokeSelect_Free(support->select);
         support->select = NULL;
-        support->step = 0;
+        support->step = LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT;
         return TRUE;
-    case 6: {
+    case LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(support->select);
         u32 happiness = PokeParty_GetParam(pkm, PKM_PARAM_HAPPINESS, NULL);
@@ -200,9 +221,9 @@ static BOOL LocalTvtSupport_Happiness(LocalTvtPerson *person, const LocalTvtPers
         support->step++;
         break;
     }
-    case 7:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_EXPLANATION:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
-            support->step = 0;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT;
         }
         break;
     }
@@ -216,22 +237,22 @@ static BOOL LocalTvtSupport_EffortValues(LocalTvtPerson *person, const LocalTvtP
     int i;
 
     switch (support->step) {
-    case 0:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT:
         LocalTvtFace_Talk(face, LocalTvtMessage_GetTalkMsgData(setup->message), 38);
         support->step++;
         break;
-    case 1:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_PROMPT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             support->timer = 0;
             support->step++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_DELAY:
         if (support->timer++ > 15) {
             support->step++;
         }
         break;
-    case 3:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_OPEN_PARTY:
         if (support->select != NULL) {
             LocalTvtPokeSelect_SetActive(support->select, TRUE);
             LocalTvtPokeSelect_Restart(support->select);
@@ -246,24 +267,24 @@ static BOOL LocalTvtSupport_EffortValues(LocalTvtPerson *person, const LocalTvtP
         }
         support->step++;
         break;
-    case 4:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_SELECT:
         LocalTvtPokeSelect_Main(support->select);
         switch (LocalTvtPokeSelect_GetResult(support->select)) {
         case LOCAL_TVT_POKE_SELECT_DECIDE:
             LocalTvtPokeSelect_SetActive(support->select, FALSE);
-            support->step = 6;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN;
             break;
         case LOCAL_TVT_POKE_SELECT_CANCEL:
-            support->step = 5;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_CANCEL;
             break;
         }
         break;
-    case 5:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_CANCEL:
         LocalTvtPokeSelect_Free(support->select);
         support->select = NULL;
-        support->step = 0;
+        support->step = LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT;
         return TRUE;
-    case 6: {
+    case LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(support->select);
 
@@ -282,12 +303,12 @@ static BOOL LocalTvtSupport_EffortValues(LocalTvtPerson *person, const LocalTvtP
         support->step++;
         break;
     }
-    case 7:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_EXPLANATION:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
-            support->step = 8;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN_FULL_STATS;
         }
         break;
-    case 8: {
+    case LOCAL_TVT_SUPPORT_EXPLAIN_EXPLAIN_FULL_STATS: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(support->select);
         int total = 0;
@@ -317,16 +338,16 @@ static BOOL LocalTvtSupport_EffortValues(LocalTvtPerson *person, const LocalTvtP
                 messageId = 50;
             }
         } else {
-            support->step = 0;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT;
             break;
         }
         LocalTvtFace_Talk(face, msgData, messageId);
         support->step++;
         break;
     }
-    case 9:
+    case LOCAL_TVT_SUPPORT_EXPLAIN_WAIT_FULL_STATS:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
-            support->step = 0;
+            support->step = LOCAL_TVT_SUPPORT_EXPLAIN_PROMPT;
         }
         break;
     }
@@ -338,20 +359,20 @@ static BOOL LocalTvtSupport_Bye(LocalTvtPerson *person, const LocalTvtPersonSetu
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (support->step) {
-    case 0: {
+    case LOCAL_TVT_SUPPORT_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
 
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetByeMsg(setup->callData, LOCAL_TVT_CALL_SUPPORT));
         support->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_SUPPORT_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             support->step++;
         }
         break;
-    case 2:
-        support->step = 0;
+    case LOCAL_TVT_SUPPORT_TALK_FINISH:
+        support->step = LOCAL_TVT_SUPPORT_TALK_START;
         LocalTvtPerson_End(person);
         return TRUE;
     }
