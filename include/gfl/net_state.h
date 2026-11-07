@@ -33,6 +33,16 @@ BOOL NetState_WaitWifiMatch(void);
 BOOL NetState_WaitGtsMatch(void);
 void NetState_ConnectWifiAny(void);
 // Where the Wi-Fi connection is: 0 connecting, 1 connected, 3 to 5 failed, 2 otherwise
+enum {
+    NETSTATE_WIFI_STATUS_CONNECTING,
+    NETSTATE_WIFI_STATUS_CONNECTED,
+    NETSTATE_WIFI_STATUS_OTHER,
+    NETSTATE_WIFI_STATUS_UPDATE,
+    NETSTATE_WIFI_STATUS_MATCH_ENDED,
+    NETSTATE_WIFI_STATUS_FAILED,
+};
+
+// Returns a NETSTATE_WIFI_STATUS_* value for the current connection state.
 int NetState_GetWifiStatus(void);
 void NetState_WifiDisconnect(BOOL a0);
 u8 NetState_IsDisconnectReceived(void);

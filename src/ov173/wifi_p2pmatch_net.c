@@ -7,19 +7,6 @@
 // The command table of the Wi-Fi Club's match board. The ROM has no name for this file, and the name is a guess; the
 // handlers that do something are in wifi_p2pmatch.c
 
-enum {
-    WIFIP2PMATCH_NET_CMD_UNUSED0,
-    WIFIP2PMATCH_NET_CMD_UNUSED1,
-    WIFIP2PMATCH_NET_CMD_UNUSED2,
-    WIFIP2PMATCH_NET_CMD_3,
-    WIFIP2PMATCH_NET_CMD_4,
-    WIFIP2PMATCH_NET_CMD_5,
-    WIFIP2PMATCH_NET_CMD_6,
-    WIFIP2PMATCH_NET_CMD_7,
-    WIFIP2PMATCH_NET_CMD_8,
-    WIFIP2PMATCH_NET_CMD_NUM,
-};
-
 static const NetCommand *WifiP2PMatchNet_CommandTableGet(void);
 static int WifiP2PMatchNet_CommandNumGet(void);
 static void WifiP2PMatchNet_RecvUnused0(int netId, int size, const void *data, void *work, NetHandle *handle);

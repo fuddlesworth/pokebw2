@@ -13,6 +13,9 @@
 // The game modes of a status (WIFI_STATUS_GetGameMode) that have a name. The eight battles follow
 // WIFIP2PMATCH_GAMEMODE_BATTLE, by battle mode and rule
 enum {
+    WIFIP2PMATCH_GAMEMODE_NONE = 0,
+    WIFIP2PMATCH_GAMEMODE_WAIT = 2,
+    WIFIP2PMATCH_GAMEMODE_CALL,
     WIFIP2PMATCH_GAMEMODE_VCHAT = 4,
     WIFIP2PMATCH_GAMEMODE_TVT,
     WIFIP2PMATCH_GAMEMODE_TRADE,
