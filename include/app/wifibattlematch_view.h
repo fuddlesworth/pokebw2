@@ -27,6 +27,20 @@ enum {
     WIFIBATTLEMATCH_CARD_PAGE_EMPTY = 2,
 };
 
+enum {
+    WIFIBATTLEMATCH_BG_WIFI_COMPETITION = 0,
+    WIFIBATTLEMATCH_BG_CHAMPIONSHIP = 1,
+    WIFIBATTLEMATCH_BG_RANDOM = 2,
+    WIFIBATTLEMATCH_BG_CARD = 3,
+};
+
+enum {
+    WIFIBATTLEMATCH_PARTNER_CARD_WIFI_COMPETITION = 0,
+    WIFIBATTLEMATCH_PARTNER_CARD_LIVE = 1,
+    WIFIBATTLEMATCH_PARTNER_CARD_RATING = 2,
+    WIFIBATTLEMATCH_PARTNER_CARD_FREE = 3,
+};
+
 // What the digital card is made from, for the Wi-Fi competition and for the live one
 typedef struct {
     // The entry's data, which starts with the player's name

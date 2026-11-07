@@ -322,7 +322,7 @@ LiveBattleMatchFlow *LiveBattleMatchFlow_Create(const LiveBattleMatchFlowParam *
     wk->param = *param;
     wk->heapId = heapId;
     wk->hasVideo = BattleRec_HasVideo();
-    WifiBattleMatchRes_LoadBG(wk->param.seq, TRUE, heapId);
+    WifiBattleMatchRes_LoadBG(wk->param.seq, WIFIBATTLEMATCH_BG_CHAMPIONSHIP, heapId);
     wk->wordSet = GFL_WordSetSystemCreate(8, 0x40, heapId);
     wk->msgMain = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_PHRASE_INPUT, heapId);
     wk->msgCard = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING, heapId);
@@ -1643,9 +1643,9 @@ static void LiveBattleMatchFlow_PartnerCardCreate(LiveBattleMatchFlow *wk, WifiB
         ClActUnit *link = WifiBattleMatchGraphic_GetClActUnit(wk->param.net);
         u32 field11 = TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_VARIANT);
 
-        wk->partnerCard =
-            WifiBattleMatchPartnerCard_Create(data, link, wk->param.seq, wk->param.font, wk->param.printQueue,
-                                              wk->msgCard, wk->wordSet, 1, 0, field11, wk->heapId);
+        wk->partnerCard = WifiBattleMatchPartnerCard_Create(data, link, wk->param.seq, wk->param.font,
+                                                            wk->param.printQueue, wk->msgCard, wk->wordSet,
+                                                            WIFIBATTLEMATCH_PARTNER_CARD_LIVE, 0, field11, wk->heapId);
     }
 }
 

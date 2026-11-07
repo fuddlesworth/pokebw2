@@ -35,6 +35,59 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+enum {
+    RANK_WINDOW_MODE_TITLE = 0,
+    RANK_WINDOW_BATTLE_STYLE = 1,
+    RANK_WINDOW_PLAYER_NAME = 2,
+    RANK_WINDOW_RATING_LABEL = 3,
+    RANK_WINDOW_RATING = 4,
+    RANK_WINDOW_MATCH_COUNT_LABEL = 5,
+    RANK_WINDOW_MATCH_COUNT = 6,
+    RANK_WINDOW_WINS_LABEL = 7,
+    RANK_WINDOW_WINS = 8,
+    RANK_WINDOW_LOSSES_LABEL = 9,
+    RANK_WINDOW_LOSSES = 10,
+    RANK_WINDOW_COUNT = 11,
+};
+
+enum {
+    WIFI_CARD_WINDOW_COMPETITION_NAME = 0,
+    WIFI_CARD_WINDOW_DATES = 1,
+    WIFI_CARD_WINDOW_PLAYER_NAME = 2,
+    WIFI_CARD_WINDOW_RATING_LABEL = 3,
+    WIFI_CARD_WINDOW_RATING = 4,
+    WIFI_CARD_WINDOW_MATCH_COUNT_LABEL = 5,
+    WIFI_CARD_WINDOW_MATCH_COUNT = 6,
+    WIFI_CARD_WINDOW_TEAM_LABEL = 7,
+    WIFI_CARD_WINDOW_COUNT = 8,
+};
+
+enum {
+    LIVE_CARD_WINDOW_COMPETITION_NAME = 0,
+    LIVE_CARD_WINDOW_DATES = 1,
+    LIVE_CARD_WINDOW_PLAYER_NAME = 2,
+    LIVE_CARD_WINDOW_WINS_LABEL = 3,
+    LIVE_CARD_WINDOW_WINS = 4,
+    LIVE_CARD_WINDOW_LOSSES_LABEL = 5,
+    LIVE_CARD_WINDOW_LOSSES = 6,
+    LIVE_CARD_WINDOW_MATCH_COUNT_LABEL = 7,
+    LIVE_CARD_WINDOW_MATCH_COUNT = 8,
+    LIVE_CARD_WINDOW_TEAM_LABEL = 9,
+    LIVE_CARD_WINDOW_COUNT = 10,
+};
+
+enum {
+    PARTNER_WINDOW_PLAYER_NAME = 0,
+    PARTNER_WINDOW_RECORD_LABEL = 1,
+    PARTNER_WINDOW_RECORD = 2,
+    PARTNER_WINDOW_LOCATION_LABEL = 3,
+    PARTNER_WINDOW_COUNTRY = 4,
+    PARTNER_WINDOW_PROVINCE = 5,
+    PARTNER_WINDOW_GREETING_LABEL = 6,
+    PARTNER_WINDOW_GREETING = 7,
+    PARTNER_WINDOW_COUNT = 8,
+};
+
 // The backdrop of the Wi-Fi and live competition screens and what they show on it: the digital cards of the players,
 // the other player's card, the icon of the link and the list of the team (the file name is the ROM's own string)
 
@@ -56,15 +109,14 @@ enum {
 
 // The resources of the backdrop, by index: its palettes, characters and cells, of the main screen and then of the sub
 // screen
-#define RES_PALETTE 0
-#define RES_CHARS 2
-#define RES_CELLS 4
+enum {
+    RES_PALETTE = 0,
+    RES_CHARS = 2,
+    RES_CELLS = 4,
+};
 
 #define TEAM_ACTOR_COUNT 14
 #define TEAM_ACTOR_ITEM 7
-
-#define PARTNER_WINDOW_COUNT 8
-#define PARTNER_WINDOW_PMS 7
 
 struct WifiBattleMatchRes {
     u32 res[6];
@@ -179,7 +231,7 @@ static void WifiBattleMatchView_PartnerFreeBadge(WifiBattleMatchPartnerCard *car
 static void WifiBattleMatchView_PartnerLoadStars(WifiBattleMatchPartnerCard *card, const WifiBattleMatchPlayer *data,
                                                  ClActUnit *unit, WifiBattleMatchRes *res, HeapID heapId);
 static void WifiBattleMatchView_PartnerFreeStars(WifiBattleMatchPartnerCard *card);
-static u32 WifiBattleMatchView_GetStarCount(u32 unk0, u32 count, u32 unk2);
+static u32 WifiBattleMatchView_GetStarCount(u32 matchCount, u32 wins, u32 losses);
 
 // The first palette of the badge's colors that each look uses
 static const u8 sBadgePaletteStarts[16] = {
@@ -264,14 +316,14 @@ void WifiBattleMatchRes_LoadBG(WifiBattleMatchRes *res, u32 kind, HeapID heapId)
     loadBGScrToVramByFileNoReserveNegAlign(arc, 5, 3, 0, 0, FALSE, HEAPID_TAIL(heapId));
     loadBGScrToVramByFileNoReserveNegAlign(arc, 6, 7, 0, 0, FALSE, HEAPID_TAIL(heapId));
     switch (kind) {
-    case 2:
+    case WIFIBATTLEMATCH_BG_RANDOM:
         loadBGScrToVramByFileNoReserveNegAlign(arc, 8, 6, 0, 0, FALSE, HEAPID_TAIL(heapId));
         break;
-    case 3:
+    case WIFIBATTLEMATCH_BG_CARD:
         loadBGScrToVramByFileNoReserveNegAlign(arc, 10, 2, 0, 0, FALSE, HEAPID_TAIL(heapId));
         break;
-    case 0:
-    case 1:
+    case WIFIBATTLEMATCH_BG_WIFI_COMPETITION:
+    case WIFIBATTLEMATCH_BG_CHAMPIONSHIP:
         loadBGScrToVramByFileNoReserveNegAlign(arc, 10, 6, 0, 0, FALSE, HEAPID_TAIL(heapId));
         break;
     }
@@ -381,7 +433,7 @@ WifiBattleMatchCard *WifiBattleMatchRankCard_Create(const WifiBattleMatchRankInf
     G2x_SetBlendAlpha_(REG_DB_BLDCNT_ADDR, GX_PLANEMASK_BG2, GX_PLANEMASK_BG3, 15, 3);
     colorKind = 1;
     stars = WifiBattleMatchView_GetStarCount(info->matchCount, info->wins, info->losses);
-    if (stars != 5) {
+    if (stars != CARD_STAR_MAX) {
         colorKind = 0;
     }
     WifiBattleMatchView_RankCardWindows(card, titleMsg, info, playerInfo, font, printQueue, msgData, wordSet, colorKind,
@@ -479,7 +531,7 @@ void WifiBattleMatchWifiCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
     s32 x;
     int i;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(card->windows[7]), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(card->windows[WIFI_CARD_WINDOW_TEAM_LABEL]), 0);
     WifiBattleMatchView_CardFreeIcons(card);
     WifiBattleMatchView_CardLoadIcons(card, card->unit, card->records, card->heapId);
     x = 32 - GFL_BGSysGetBGOffsetX(card->bg);
@@ -507,7 +559,8 @@ void WifiBattleMatchWifiCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
         ClActor_SetVisible(card->actors[CARD_ACTOR_MARK], TRUE);
         text = GFL_MsgDataLoadStrbufNew(msgData, 17);
-        PrintWindow_Print(&card->printWindows[7], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
+        PrintWindow_Print(&card->printWindows[WIFI_CARD_WINDOW_TEAM_LABEL], printQueue, 0, 0, text, font,
+                          PRINT_COLOR(15, 2, 0));
         break;
     case WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
@@ -520,7 +573,8 @@ void WifiBattleMatchWifiCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
         ClActor_SetVisible(card->actors[CARD_ACTOR_MARK], FALSE);
         text = GFL_MsgDataLoadStrbufNew(msgData, 18);
-        PrintWindow_Print(&card->printWindows[7], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
+        PrintWindow_Print(&card->printWindows[WIFI_CARD_WINDOW_TEAM_LABEL], printQueue, 0, 0, text, font,
+                          PRINT_COLOR(15, 2, 0));
         break;
     case WIFIBATTLEMATCH_CARD_PAGE_EMPTY:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
@@ -533,7 +587,8 @@ void WifiBattleMatchWifiCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
         ClActor_SetVisible(card->actors[CARD_ACTOR_MARK], FALSE);
         text = GFL_MsgDataLoadStrbufNew(msgData, 19);
-        PrintWindow_Print(&card->printWindows[7], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
+        PrintWindow_Print(&card->printWindows[WIFI_CARD_WINDOW_TEAM_LABEL], printQueue, 0, 0, text, font,
+                          PRINT_COLOR(15, 2, 0));
         break;
     }
 #ifdef BUGFIX
@@ -618,7 +673,7 @@ void WifiBattleMatchLiveCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
     s32 x;
     int i;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(card->windows[9]), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(card->windows[LIVE_CARD_WINDOW_TEAM_LABEL]), 0);
     WifiBattleMatchView_CardFreeIcons(card);
     WifiBattleMatchView_CardLoadIcons(card, card->unit, card->records, card->heapId);
     x = 32 - GFL_BGSysGetBGOffsetX(card->bg);
@@ -646,7 +701,8 @@ void WifiBattleMatchLiveCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
         ClActor_SetVisible(card->actors[CARD_ACTOR_MARK], TRUE);
         text = GFL_MsgDataLoadStrbufNew(msgData, 17);
-        PrintWindow_Print(&card->printWindows[9], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
+        PrintWindow_Print(&card->printWindows[LIVE_CARD_WINDOW_TEAM_LABEL], printQueue, 0, 0, text, font,
+                          PRINT_COLOR(15, 2, 0));
         break;
     case WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
@@ -659,7 +715,8 @@ void WifiBattleMatchLiveCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
         ClActor_SetVisible(card->actors[CARD_ACTOR_MARK], FALSE);
         text = GFL_MsgDataLoadStrbufNew(msgData, 18);
-        PrintWindow_Print(&card->printWindows[9], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
+        PrintWindow_Print(&card->printWindows[LIVE_CARD_WINDOW_TEAM_LABEL], printQueue, 0, 0, text, font,
+                          PRINT_COLOR(15, 2, 0));
         break;
     case WIFIBATTLEMATCH_CARD_PAGE_EMPTY:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
@@ -672,7 +729,8 @@ void WifiBattleMatchLiveCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
         ClActor_SetVisible(card->actors[CARD_ACTOR_MARK], FALSE);
         text = GFL_MsgDataLoadStrbufNew(msgData, 19);
-        PrintWindow_Print(&card->printWindows[9], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
+        PrintWindow_Print(&card->printWindows[LIVE_CARD_WINDOW_TEAM_LABEL], printQueue, 0, 0, text, font,
+                          PRINT_COLOR(15, 2, 0));
         break;
     }
 #ifdef BUGFIX
@@ -773,7 +831,7 @@ static void WifiBattleMatchView_RankCardWindows(WifiBattleMatchCard *card, u32 t
     u16 color;
     BmpWin *window;
 
-    card->windowCount = 11;
+    card->windowCount = RANK_WINDOW_COUNT;
     for (i = 0; i < card->windowCount; i++) {
         card->windows[i] = BmpWin_CreateDynamic(5, sRankCardRects[i][0], sRankCardRects[i][1], sRankCardRects[i][2],
                                                 sRankCardRects[i][3], 15, TRUE);
@@ -788,33 +846,33 @@ static void WifiBattleMatchView_RankCardWindows(WifiBattleMatchCard *card, u32 t
     }
     format = GFL_StrBufCreate(128, heapId);
     text = GFL_StrBufCreate(128, heapId);
-    for (j = 0; j < 11; j++) {
+    for (j = 0; j < RANK_WINDOW_COUNT; j++) {
         color = colorKind == 1 ? PRINT_COLOR(15, 2, 0) : PRINT_COLOR(1, 2, 0);
         draw = TRUE;
 
         switch (j) {
-        case 0:
+        case RANK_WINDOW_MODE_TITLE:
             GFL_MsgDataLoadStrbuf(msgData, titleMsg, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 1:
+        case RANK_WINDOW_BATTLE_STYLE:
             GFL_MsgDataLoadStrbuf(msgData, info->titleMsg + 2, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 2:
+        case RANK_WINDOW_PLAYER_NAME:
             GFL_MsgDataLoadStrbuf(msgData, 7, format);
             copyVarForText(wordSet, 0, playerInfo);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 3:
+        case RANK_WINDOW_RATING_LABEL:
             if (titleMsg != 0) {
                 GFL_MsgDataLoadStrbuf(msgData, 8, text);
             } else {
                 draw = FALSE;
             }
             break;
-        case 4:
+        case RANK_WINDOW_RATING:
             if (titleMsg != 0) {
                 GFL_MsgDataLoadStrbuf(msgData, 9, format);
                 WordSetNumber(wordSet, 0, info->rating, 4, 1, TRUE);
@@ -823,26 +881,26 @@ static void WifiBattleMatchView_RankCardWindows(WifiBattleMatchCard *card, u32 t
                 draw = FALSE;
             }
             break;
-        case 5:
+        case RANK_WINDOW_MATCH_COUNT_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 10, text);
             break;
-        case 6:
+        case RANK_WINDOW_MATCH_COUNT:
             GFL_MsgDataLoadStrbuf(msgData, 11, format);
             WordSetNumber(wordSet, 0, info->matchCount, 6, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
-        case 7:
+        case RANK_WINDOW_WINS_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 12, text);
             break;
-        case 8:
+        case RANK_WINDOW_WINS:
             GFL_MsgDataLoadStrbuf(msgData, 13, format);
             WordSetNumber(wordSet, 0, info->wins, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
-        case 9:
+        case RANK_WINDOW_LOSSES_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 14, text);
             break;
-        case 10:
+        case RANK_WINDOW_LOSSES:
             GFL_MsgDataLoadStrbuf(msgData, 15, format);
             WordSetNumber(wordSet, 0, info->losses, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
@@ -868,7 +926,7 @@ static void WifiBattleMatchView_WifiCardWindows(WifiBattleMatchCard *card, u32 r
     u16 color;
     BmpWin *window;
 
-    card->windowCount = 8;
+    card->windowCount = WIFI_CARD_WINDOW_COUNT;
     for (i = 0; i < card->windowCount; i++) {
         card->windows[i] = BmpWin_CreateDynamic(card->bg, sWifiCardRects[i][0], sWifiCardRects[i][1],
                                                 sWifiCardRects[i][2], sWifiCardRects[i][3], card->palette, TRUE);
@@ -883,16 +941,16 @@ static void WifiBattleMatchView_WifiCardWindows(WifiBattleMatchCard *card, u32 r
     }
     format = GFL_StrBufCreate(128, heapId);
     text = GFL_StrBufCreate(128, heapId);
-    for (j = 0; j < 8; j++) {
+    for (j = 0; j < WIFI_CARD_WINDOW_COUNT; j++) {
         draw = TRUE;
         color = PRINT_COLOR(1, 2, 0);
 
         switch (j) {
-        case 0:
+        case WIFI_CARD_WINDOW_COMPETITION_NAME:
             GFL_StrBufLoadString(text, (const u16 *)info->data);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 1: {
+        case WIFI_CARD_WINDOW_DATES: {
             u32 start = info->startDate;
             u32 end = info->endDate;
 
@@ -907,22 +965,22 @@ static void WifiBattleMatchView_WifiCardWindows(WifiBattleMatchCard *card, u32 r
             color = PRINT_COLOR(15, 2, 0);
             break;
         }
-        case 2:
+        case WIFI_CARD_WINDOW_PLAYER_NAME:
             textCopy(playerInfo->name, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 3:
+        case WIFI_CARD_WINDOW_RATING_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 8, text);
             break;
-        case 4:
+        case WIFI_CARD_WINDOW_RATING:
             GFL_MsgDataLoadStrbuf(msgData, 9, format);
             WordSetNumber(wordSet, 0, info->rating, 4, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
-        case 5:
+        case WIFI_CARD_WINDOW_MATCH_COUNT_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 10, text);
             break;
-        case 6:
+        case WIFI_CARD_WINDOW_MATCH_COUNT:
             if (ratio != 0) {
                 WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->matchCount, info->unkA8,
                                                 heapId);
@@ -933,7 +991,7 @@ static void WifiBattleMatchView_WifiCardWindows(WifiBattleMatchCard *card, u32 r
                 GFL_WordSetFormatStrbuf(wordSet, text, format);
             }
             break;
-        case 7:
+        case WIFI_CARD_WINDOW_TEAM_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 17, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
@@ -957,7 +1015,7 @@ static void WifiBattleMatchView_LiveCardWindows(WifiBattleMatchCard *card, const
     u16 color;
     BmpWin *window;
 
-    card->windowCount = 10;
+    card->windowCount = LIVE_CARD_WINDOW_COUNT;
     for (i = 0; i < card->windowCount; i++) {
         card->windows[i] = BmpWin_CreateDynamic(card->bg, sLiveCardRects[i][0], sLiveCardRects[i][1],
                                                 sLiveCardRects[i][2], sLiveCardRects[i][3], card->palette, TRUE);
@@ -972,16 +1030,16 @@ static void WifiBattleMatchView_LiveCardWindows(WifiBattleMatchCard *card, const
     }
     format = GFL_StrBufCreate(128, heapId);
     text = GFL_StrBufCreate(128, heapId);
-    for (j = 0; j < 10; j++) {
+    for (j = 0; j < LIVE_CARD_WINDOW_COUNT; j++) {
         draw = TRUE;
         color = PRINT_COLOR(1, 2, 0);
 
         switch (j) {
-        case 0:
+        case LIVE_CARD_WINDOW_COMPETITION_NAME:
             GFL_StrBufLoadString(text, (const u16 *)info->data);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 1: {
+        case LIVE_CARD_WINDOW_DATES: {
             u32 start = info->startDate;
             u32 end = info->endDate;
 
@@ -996,35 +1054,35 @@ static void WifiBattleMatchView_LiveCardWindows(WifiBattleMatchCard *card, const
             color = PRINT_COLOR(15, 2, 0);
             break;
         }
-        case 2:
+        case LIVE_CARD_WINDOW_PLAYER_NAME:
             textCopy(playerInfo->name, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 3:
+        case LIVE_CARD_WINDOW_WINS_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 12, text);
             break;
-        case 4:
+        case LIVE_CARD_WINDOW_WINS:
             GFL_MsgDataLoadStrbuf(msgData, 13, format);
             WordSetNumber(wordSet, 0, info->wins, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
-        case 5:
+        case LIVE_CARD_WINDOW_LOSSES_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 14, text);
             break;
-        case 6:
+        case LIVE_CARD_WINDOW_LOSSES:
             GFL_MsgDataLoadStrbuf(msgData, 15, format);
             WordSetNumber(wordSet, 0, info->losses, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
-        case 7:
+        case LIVE_CARD_WINDOW_MATCH_COUNT_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 10, text);
             break;
-        case 8:
+        case LIVE_CARD_WINDOW_MATCH_COUNT:
             WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->matchCount,
                                             info->maxBattles, heapId);
             draw = FALSE;
             break;
-        case 9:
+        case LIVE_CARD_WINDOW_TEAM_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 17, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
@@ -1241,23 +1299,23 @@ WifiBattleMatchPartnerCard *WifiBattleMatchPartnerCard_Create(const WifiBattleMa
     PMSDraw_SetFollowScroll(card->pmsDraw, TRUE);
     PMSDraw_SetBackColor(card->pmsDraw, 0);
     stars = WifiBattleMatchView_GetStarCount(data->record0, data->record1, data->record2);
-    if (kind == 2 || kind == 3) {
-        colorKind = stars == 5;
+    if (kind == WIFIBATTLEMATCH_PARTNER_CARD_RATING || kind == WIFIBATTLEMATCH_PARTNER_CARD_FREE) {
+        colorKind = stars == CARD_STAR_MAX;
     }
     WifiBattleMatchView_PartnerWindows(card, data, font, printQueue, msgData, wordSet, colorKind, heapId);
     WifiBattleMatchView_PartnerLoadBadge(card, PlayerInfo_GetUnionView((PlayerInfo *)&data->info), unit, heapId);
     loadBGScrToVramByNarcNoReserveNegAlign(ARCID_WIFIBATTLEMATCH, 9, 2, 0, 0, FALSE, HEAPID_TAIL(heapId));
     switch (kind) {
-    case 2:
-    case 3:
+    case WIFIBATTLEMATCH_PARTNER_CARD_RATING:
+    case WIFIBATTLEMATCH_PARTNER_CARD_FREE:
         WifiBattleMatchView_PartnerLoadStars(card, data, unit, res, heapId);
         GFL_BGSysSetScrPaletteNo(2, 0, 0, 32, 2, 1);
         GFL_BGSysSetScrPaletteNo(2, 0, 3, 32, 32, stars + 3);
         GFL_BGSysSetScrPaletteNo(2, 0, 3, 1, 2, 1);
         GFL_BGSysSetScrPaletteNo(2, 31, 3, 1, 2, 1);
         break;
-    case 0:
-    case 1:
+    case WIFIBATTLEMATCH_PARTNER_CARD_WIFI_COMPETITION:
+    case WIFIBATTLEMATCH_PARTNER_CARD_LIVE:
         GFL_BGSysLoadScrArea(2, 0, 0, 32, 2, GFL_BGSysIsScrHeapExists(2), 0, 24, 32, 32);
         switch (variant) {
         case 0:
@@ -1285,11 +1343,11 @@ WifiBattleMatchPartnerCard *WifiBattleMatchPartnerCard_Create(const WifiBattleMa
 void WifiBattleMatchPartnerCard_Free(WifiBattleMatchPartnerCard *card) {
     G2_BlendNone();
     switch (card->kind) {
-    case 0:
-    case 1:
+    case WIFIBATTLEMATCH_PARTNER_CARD_WIFI_COMPETITION:
+    case WIFIBATTLEMATCH_PARTNER_CARD_LIVE:
         break;
-    case 2:
-    case 3:
+    case WIFIBATTLEMATCH_PARTNER_CARD_RATING:
+    case WIFIBATTLEMATCH_PARTNER_CARD_FREE:
         WifiBattleMatchView_PartnerFreeStars(card);
         break;
     }
@@ -1367,7 +1425,7 @@ static void WifiBattleMatchView_PartnerWindows(WifiBattleMatchPartnerCard *card,
         BmpWin_FlushChar(window);
         BmpWin_FlushMap(window);
         GFL_BGSysLoadScr(BmpWin_GetBGIndex(window));
-        if (i != PARTNER_WINDOW_PMS) {
+        if (i != PARTNER_WINDOW_GREETING) {
             PrintWindow_Init(&card->printWindows[i], card->windows[i]);
         }
     }
@@ -1378,12 +1436,12 @@ static void WifiBattleMatchView_PartnerWindows(WifiBattleMatchPartnerCard *card,
         draw = TRUE;
 
         switch (j) {
-        case 0:
+        case PARTNER_WINDOW_PLAYER_NAME:
             GFL_StrBufLoadString(text, GetPlayerName((PlayerInfo *)&data->info));
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 1:
-            if (card->kind == 3) {
+        case PARTNER_WINDOW_RECORD_LABEL:
+            if (card->kind == WIFIBATTLEMATCH_PARTNER_CARD_FREE) {
                 GFL_MsgDataLoadStrbuf(msgData, 12, text);
                 color = PRINT_COLOR(15, 2, 0);
             } else if (card->shown != 0) {
@@ -1393,8 +1451,8 @@ static void WifiBattleMatchView_PartnerWindows(WifiBattleMatchPartnerCard *card,
                 draw = FALSE;
             }
             break;
-        case 2:
-            if (card->kind == 3) {
+        case PARTNER_WINDOW_RECORD:
+            if (card->kind == WIFIBATTLEMATCH_PARTNER_CARD_FREE) {
                 GFL_MsgDataLoadStrbuf(msgData, 13, format);
                 WordSetNumber(wordSet, 0, data->record1, 5, 1, TRUE);
                 GFL_WordSetFormatStrbuf(wordSet, text, format);
@@ -1408,16 +1466,16 @@ static void WifiBattleMatchView_PartnerWindows(WifiBattleMatchPartnerCard *card,
                 draw = FALSE;
             }
             break;
-        case 3:
+        case PARTNER_WINDOW_LOCATION_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 20, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 4:
+        case PARTNER_WINDOW_COUNTRY:
             GFL_MsgDataLoadStrbuf(msgData, 22, format);
             loadCountryToStrbuf(wordSet, 0, UnityTowerVisitor_GetCountry((PlayerInfo *)&data->info));
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
-        case 5: {
+        case PARTNER_WINDOW_PROVINCE: {
             u32 country;
 
             GFL_MsgDataLoadStrbuf(msgData, 23, format);
@@ -1426,11 +1484,11 @@ static void WifiBattleMatchView_PartnerWindows(WifiBattleMatchPartnerCard *card,
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
         }
-        case 6:
+        case PARTNER_WINDOW_GREETING_LABEL:
             GFL_MsgDataLoadStrbuf(msgData, 21, text);
             color = PRINT_COLOR(15, 2, 0);
             break;
-        case 7:
+        case PARTNER_WINDOW_GREETING:
             PMSDraw_SetColor(card->pmsDraw, color);
             PMSDraw_Print(card->pmsDraw, card->windows[j], &data->sentence, 0);
             draw = FALSE;
@@ -1449,7 +1507,7 @@ static BOOL WifiBattleMatchView_PartnerFlush(WifiBattleMatchPartnerCard *card, P
     int i;
 
     for (i = 0; i < PARTNER_WINDOW_COUNT; i++) {
-        if (i != PARTNER_WINDOW_PMS) {
+        if (i != PARTNER_WINDOW_GREETING) {
             PrintWindow_Flush(&card->printWindows[i], printQueue);
             done &= !card->printWindows[i].flushPending;
         } else {
@@ -1525,21 +1583,21 @@ static void WifiBattleMatchView_PartnerFreeStars(WifiBattleMatchPartnerCard *car
     }
 }
 
-// The number of stars of a rank, by the number of matches
-static u32 WifiBattleMatchView_GetStarCount(u32 unk0, u32 count, u32 unk2) {
-    if (count >= 1000) {
+// The number of stars of a rank, by its wins; the other two record counts are unused
+static u32 WifiBattleMatchView_GetStarCount(u32 matchCount, u32 wins, u32 losses) {
+    if (wins >= 1000) {
         return 5;
     }
-    if (count >= 500) {
+    if (wins >= 500) {
         return 4;
     }
-    if (count >= 200) {
+    if (wins >= 200) {
         return 3;
     }
-    if (count >= 100) {
+    if (wins >= 100) {
         return 2;
     }
-    if (count >= 50) {
+    if (wins >= 50) {
         return 1;
     }
     return 0;
