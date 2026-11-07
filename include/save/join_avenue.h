@@ -5,6 +5,29 @@
 #include "gfl/heap.h"
 #include "struct_decls.h"
 
+// Results of adding or merging a visitor, person or entry
+enum {
+    JOIN_AVE_ADD_FAILED = 0,
+    JOIN_AVE_ADD_MERGED = 1,
+    JOIN_AVE_ADD_ADDED = 2,
+    // Nobody matches, so the source is to be added
+    JOIN_AVE_ADD_NOT_FOUND = 3,
+};
+
+// How a visitor arrived, as the connection producers and greeting messages identify it
+enum {
+    JOIN_AVE_ARRIVAL_NONE = 0,
+    JOIN_AVE_ARRIVAL_RANDOM_MATCHUP = 1,
+    JOIN_AVE_ARRIVAL_GTS_NEGOTIATIONS = 2,
+    JOIN_AVE_ARRIVAL_UNION_ROOM = 3,
+    JOIN_AVE_ARRIVAL_INFRARED = 4,
+    JOIN_AVE_ARRIVAL_ENTRALINK = 5,
+    JOIN_AVE_ARRIVAL_GTS = 6,
+    JOIN_AVE_ARRIVAL_DREAM_WORLD = 7,
+    JOIN_AVE_ARRIVAL_PASSERBY = 8,
+    JOIN_AVE_ARRIVAL_FUNFEST = 9,
+};
+
 // The Join Avenue's saved data (resonance_resort_data.c). Names from swan (https://github.com/ds-pokemon-hacking/swan,
 // GPL-3.0): JoinAvenuePerson_IsEmpty, joinAveTextHandler, JoinAvenuePerson_SetParam, JoinAvenuePersonList_Create,
 // JoinAvenuePersonList_Free, JoinAvenuePersonList_GetCount, JoinAvenuePersonList_Get, JoinAvenue_GetParam,
@@ -30,7 +53,7 @@ typedef enum {
     JOIN_AVE_PARAM_TRAINER_TYPE = 3,
     JOIN_AVE_PARAM_NAME = 4,
     JOIN_AVE_PARAM_GREETING = 5,
-    JOIN_AVE_PARAM_UNK_6 = 6,
+    JOIN_AVE_PARAM_VISIT_TYPE = 6,
     JOIN_AVE_PARAM_SEED = 7,
     JOIN_AVE_PARAM_COUNTRY = 8,
     JOIN_AVE_PARAM_AREA = 9,
@@ -42,7 +65,7 @@ typedef enum {
     JOIN_AVE_PARAM_VERSION = 15,
     JOIN_AVE_PARAM_LANGUAGE = 16,
     JOIN_AVE_PARAM_RANK = 17,
-    JOIN_AVE_PARAM_UNK_18 = 18,
+    JOIN_AVE_PARAM_KEEP_SHOP_LEVEL = 18,
     JOIN_AVE_PARAM_SHOP_ID = 19,
     // Set once the person's shop item was raffled (Scrcmd_Resort_MarkRaffled); entries and records keep it too
     JOIN_AVE_PARAM_RAFFLED = 20,
@@ -52,7 +75,7 @@ typedef enum {
     JOIN_AVE_PARAM_DAY = 23,
     JOIN_AVE_PARAM_HOUR = 24,
     JOIN_AVE_PARAM_MINUTE = 25,
-    JOIN_AVE_PARAM_UNK_26 = 26,
+    JOIN_AVE_PARAM_ARRIVAL_METHOD = 26,
     // Set while the player talks to the person, when a visitor can't be merged into them
     JOIN_AVE_PARAM_TALKING = 27,
     // How the person last came, a JOIN_AVE_STATUS_*; setting it keeps the lowest
@@ -68,7 +91,7 @@ typedef enum {
     JOIN_AVE_PARAM_DATA_RECEIVED = 35,
     JOIN_AVE_PARAM_UNK_36 = 36,
     JOIN_AVE_PARAM_UNK_37 = 37,
-    JOIN_AVE_PARAM_UNK_38 = 38,
+    JOIN_AVE_PARAM_NO_EXPIRY = 38,
     JOIN_AVE_PARAM_UNK_39 = 39,
     // Extra data 0: the adventure
     JOIN_AVE_PARAM_MEDAL_RANK = 40,
@@ -123,7 +146,7 @@ typedef struct {
 
 // The avenue's rank where the person comes from, and the shop the person would like to run
 typedef struct {
-    u8 unk0 : 1;
+    u8 keepShopLevel : 1;
     u8 rank : 7;
     u16 shopId;
 } JoinAvenueShopChoice;
@@ -193,15 +216,15 @@ struct JoinAvenuePerson {
     u8 day;
     u8 hour;
     u8 minute;
-    u8 unkA8;
+    u8 arrivalMethod;
     u8 unkA9_0 : 1;
     // Never leaves
-    u8 unkA9_1 : 1;
+    u8 noExpiry : 1;
     u8 unkA9_2 : 1;
     u8 : 4;
     u8 unkA9_7 : 1;
     u8 unkAA_0 : 1;
-    u8 unkAB;
+    u8 visitType;
     JoinAvenueShop shop;
     u32 unkB8;
     u32 dataMask : 9;
@@ -249,11 +272,11 @@ struct JoinAvenueEntry {
     u8 unk4E;
     u8 raffled;
     u16 species;
-    u16 unk52;
+    u16 visitType;
     u8 row;
     u8 slot;
     // 6 or 7
-    u8 unk56;
+    u8 arrivalMethod;
     u8 year;
     u8 month;
     u8 day;
@@ -280,7 +303,7 @@ struct JoinAvenueVisitor {
     JoinAvenueData data;
     // Which extra data it is, or JOIN_AVE_DATA_COUNT for none
     s32 dataIndex;
-    u32 unk44;
+    u32 arrivalMethod;
 };
 
 struct JoinAvenueOccupants {
@@ -461,7 +484,7 @@ void JoinAvenueVisitor_Free(JoinAvenueVisitor *visitor);
 // Fills the visitor with the player's data and the extra data of the index, and puts the extra data in the beacon
 void JoinAvenueVisitor_InitPlayer(JoinAvenueVisitor *visitor, int index, GameData *gameData);
 void JoinAvenueVisitor_StoreInBeacon(JoinAvenueVisitor *visitor, GameBeacon *beacon);
-void JoinAvenueVisitor_InitFromBeacon(JoinAvenueVisitor *visitor, const GameBeacon *beacon, u32 a2);
+void JoinAvenueVisitor_InitFromBeacon(JoinAvenueVisitor *visitor, const GameBeacon *beacon, u32 arrivalMethod);
 BOOL JoinAvenueVisitor_IsValid(JoinAvenueVisitor *visitor);
 JoinAvenueEntry *JoinAvenueEntry_Create(HeapID heapId);
 void JoinAvenueEntry_Free(JoinAvenueEntry *entry);
@@ -521,7 +544,7 @@ u32 JoinAvenueRecord_Random(JoinAvenueRecord *record, int count, u32 max);
 
 // The shop a person runs: the shop of the ID, or the default one of the trainer ID and version when there is none or
 // it may not be run
-u16 JoinAvenue_ChooseShop(u16 shopId, u16 trainerId, u16 version, BOOL unk18, JoinAvenueInfo *info,
+u16 JoinAvenue_ChooseShop(u16 shopId, u16 trainerId, u16 version, BOOL keepShopLevel, JoinAvenueInfo *info,
                           ResortShopData *shops);
 // A random number of the count-th step of the generator from the seed: below max, or any if max is 0
 u32 JoinAvenue_RandomFromSeed(u32 seed, int count, u32 max);

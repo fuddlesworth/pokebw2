@@ -5,6 +5,9 @@
 #include "save/join_avenue.h"
 #include "system/resort_binary.h"
 
+// The raffle result with no winning prize
+#define RESORT_RAFFLE_NO_PRIZE 10
+
 #define RESORT_DATA_COUNT 40
 #define RESORT_KIND_COUNT 5
 
@@ -62,10 +65,12 @@ typedef struct {
 
 static void ResortData_Init(ResortPersonData *data, void *person, u32 kind, u16 index);
 
-static const u32 sUnk021f55a8[] = { 0, 4, 2, 1 };
-static const u32 sKindsOfScript[] = { 0, 4, 2, 1 };
-static const u32 sTypes[RESORT_KIND_COUNT] = { 0, 3, 2, 2, 1 };
-static const u32 sKinds[RESORT_KIND_COUNT] = { 0, 1, 2, 3, 4 };
+static const u32 sMakeDataKinds[] = { RESORT_DATA_OCCUPANT, RESORT_DATA_ENTRY, RESORT_DATA_LIST, RESORT_DATA_RECORD };
+static const u32 sKindsOfScript[] = { RESORT_DATA_OCCUPANT, RESORT_DATA_ENTRY, RESORT_DATA_LIST, RESORT_DATA_RECORD };
+static const u32 sTypes[RESORT_KIND_COUNT] = { RESORT_PERSON_OCCUPANT, RESORT_PERSON_RECORD, RESORT_PERSON_VISITOR,
+                                               RESORT_PERSON_VISITOR, RESORT_PERSON_ENTRY };
+static const u32 sKinds[RESORT_KIND_COUNT] = { RESORT_DATA_OCCUPANT, RESORT_DATA_RECORD, RESORT_DATA_LIST,
+                                               RESORT_DATA_LIST2, RESORT_DATA_ENTRY };
 // clang-format off
 static const ResortDataRange sRanges[RESORT_KIND_COUNT] = {
     {0, 8, 8},
@@ -171,7 +176,7 @@ u16 ResortData_GetTypeOfKind(u32 kind) {
 }
 
 u32 ResortData_GetMakeKind(u32 kind) {
-    return sUnk021f55a8[kind];
+    return sMakeDataKinds[kind];
 }
 
 BOOL ResortSlots_IsEmpty(ResortSlots *slots, u32 row, u32 pos) {
@@ -209,7 +214,7 @@ u16 ResortData_RaffleShopItem(ResortPersonData *data, ResortBinary *raffles, Res
         u16 shopRow = ResortBinary_Get(ranks, row, 7);
         u32 prize =
             join_ave_raffle_shop(raffles, shopRow, ResortData_Roll(data, 1, ResortBinary_Get(raffles, shopRow, 0)));
-        if (prize != 10) {
+        if (prize != RESORT_RAFFLE_NO_PRIZE) {
             return ResortBinary_Get(raffles, shopRow, prize * 2 + 3);
         }
     }
@@ -286,29 +291,32 @@ ResortPersonData **ResortDatas_Create(const ResortSysSetup *setup, HeapID heapId
     for (i = 0; i < 8; i++) {
         u16 index = i;
 
-        datas[i] = ResortData_Create(heapId, JoinAvenueOccupants_GetPerson(setup->occupants, index), 0, index);
+        datas[i] = ResortData_Create(heapId, JoinAvenueOccupants_GetPerson(setup->occupants, index),
+                                     RESORT_DATA_OCCUPANT, index);
     }
     for (i = 8; i < 12; i++) {
         u16 index = i - 8;
 
-        datas[i] = ResortData_Create(heapId, JoinAvenueOccupants_GetRecord(setup->occupants, index), 1, index);
+        datas[i] = ResortData_Create(heapId, JoinAvenueOccupants_GetRecord(setup->occupants, index), RESORT_DATA_RECORD,
+                                     index);
     }
     for (i = 12; i < 20; i++) {
         u16 index = i - 12;
 
-        datas[i] = ResortData_Create(heapId, JoinAvenuePersonList_Get(setup->list, index), 2, index);
+        datas[i] = ResortData_Create(heapId, JoinAvenuePersonList_Get(setup->list, index), RESORT_DATA_LIST, index);
     }
     if (setup->list2 != NULL) {
         for (i = 20; i < 28; i++) {
             u16 index = i - 20;
 
-            datas[i] = ResortData_Create(heapId, JoinAvenuePersonList_Get(setup->list2, index), 3, index);
+            datas[i] =
+                ResortData_Create(heapId, JoinAvenuePersonList_Get(setup->list2, index), RESORT_DATA_LIST2, index);
         }
     }
     for (i = 28; i < 40; i++) {
         u16 index = i - 28;
 
-        datas[i] = ResortData_Create(heapId, JoinAvenueEntryList_Get(setup->entries, index), 4, index);
+        datas[i] = ResortData_Create(heapId, JoinAvenueEntryList_Get(setup->entries, index), RESORT_DATA_ENTRY, index);
     }
     return datas;
 }
@@ -362,11 +370,11 @@ ResortPersonData *ResortDatas_Get(ResortPersonData **datas, u32 kind, u16 index)
 
 ResortPersonData *ResortDatas_GetByScript(ResortPersonData **datas, u32 which, u16 index) {
     u32 kind;
-    if (which == 2) {
+    if (which == RESORT_PERSON_VISITOR) {
         if (index < 8) {
-            kind = 2;
+            kind = RESORT_DATA_LIST;
         } else {
-            kind = 3;
+            kind = RESORT_DATA_LIST2;
             index -= 8;
         }
     } else {

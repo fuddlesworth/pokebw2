@@ -7,6 +7,217 @@
 #include "save/join_avenue.h"
 #include "struct_decls.h"
 
+// The two hidden-type rows, or the people row with the camera predicate
+enum {
+    RESORT_HIDE_WALKERS = 0,
+    RESORT_HIDE_PEOPLE = 1,
+    RESORT_HIDE_CAMERA_FILTERED = 2,
+};
+
+// The local action a walker performs while paused at a shop
+#define RESORT_SHOP_ACMD 0xbe
+
+// The results of adding shop experience
+enum {
+    RESORT_EXPERIENCE_NONE = 0,
+    RESORT_EXPERIENCE_LEVEL = 1,
+    RESORT_EXPERIENCE_LAYOUT = 2,
+    RESORT_EXPERIENCE_MAX = 3,
+};
+
+// The results of adding avenue popularity
+enum {
+    RESORT_POPULARITY_NONE = 0,
+    RESORT_POPULARITY_RANK = 1,
+    RESORT_POPULARITY_MAX = 2,
+    RESORT_POPULARITY_UNLOCK = 3,
+    RESORT_POPULARITY_RANK_TEXT = 4,
+    RESORT_POPULARITY_UNLOCK_TEXT = 5,
+};
+
+// The ranking pages, in the order of global_10685 messages2173 through2181
+enum {
+    RESORT_RECORD_LINK_TRADES = 0,
+    RESORT_RECORD_NICKNAMES = 1,
+    RESORT_RECORD_AVENUE_CUSTOMERS = 2,
+    RESORT_RECORD_SHOPPING_MONEY = 3,
+    RESORT_RECORD_PASSERSBY = 4,
+    RESORT_RECORD_LINK_BATTLES = 5,
+    RESORT_RECORD_POKEMON_CAUGHT = 6,
+    RESORT_RECORD_EGGS_HATCHED = 7,
+    RESORT_RECORD_MEDALS = 8,
+};
+
+// The person already selected by the field script
+#define RESORT_WORD_CURRENT_PERSON 0xfe
+
+// A script word that does not need a person
+#define RESORT_WORD_NO_PERSON 0xff
+
+// The words and numbers formatted by ResortSys_SetScriptWord
+enum {
+    RESORT_WORD_PERSON_NAME = 0,
+    RESORT_WORD_SHOP_NAME = 1,
+    RESORT_WORD_SHOP_KIND = 2,
+    RESORT_WORD_GREETING = 3,
+    RESORT_WORD_AVENUE_TITLE = 4,
+    RESORT_WORD_ARRIVAL_METHOD = 5,
+    RESORT_WORD_MESSAGE1 = 6,
+    RESORT_WORD_SHOP_KIND_DESCRIPTION = 7,
+    RESORT_WORD_AVENUE_NAME = 8,
+    RESORT_WORD_SHOP_EXPERIENCE_REMAINING = 9,
+    RESORT_WORD_SHOP_LEVEL = 10,
+    RESORT_WORD_AVENUE_RANK = 11,
+    RESORT_WORD_AVENUE_RANK_TITLE = 12,
+    RESORT_WORD_POPULARITY_REMAINING = 13,
+    RESORT_WORD_DESIRED_SHOP_NAME = 14,
+    RESORT_WORD_DESIRED_SHOP_KIND = 15,
+    RESORT_WORD_PLAYER_SHOP_KIND = 16,
+    RESORT_WORD_PROMOTION_DAYS = 17,
+    RESORT_WORD_MESSAGE2 = 18,
+    RESORT_WORD_PLAYER_MESSAGE1 = 19,
+    RESORT_WORD_PLAYER_MESSAGE2 = 20,
+    RESORT_WORD_YEAR = 21,
+    RESORT_WORD_MONTH = 22,
+    RESORT_WORD_DAY = 23,
+};
+
+// The values of ResortSys_GetScriptValue, by their text or the data each formats
+enum {
+    RESORT_QUERY_RECENT_ACTIVITY_0 = 0,
+    RESORT_QUERY_RECENT_ACTIVITY_1 = 1,
+    RESORT_QUERY_RECENT_ACTIVITY_2 = 2,
+    RESORT_QUERY_RECENT_ACTIVITY_3 = 3,
+    RESORT_QUERY_VISIT_REQUEST = 4,
+    RESORT_QUERY_DESIRED_SHOP = 5,
+    RESORT_QUERY_SHOP_DESCRIPTION = 6,
+    RESORT_QUERY_SHOW_MEDAL = 8,
+    RESORT_QUERY_NO_MEDAL = 9,
+    RESORT_QUERY_MORE_TO_SAY = 10,
+    RESORT_QUERY_NO_RECENT_ACTIVITY = 11,
+    RESORT_QUERY_OCCUPANT_WELCOME_0 = 12,
+    RESORT_QUERY_OCCUPANT_WELCOME_1 = 13,
+    RESORT_QUERY_OCCUPANT_WELCOME_2 = 14,
+    RESORT_QUERY_OCCUPANT_WELCOME_3 = 15,
+    RESORT_QUERY_OCCUPANT_WELCOME_4 = 16,
+    RESORT_QUERY_OCCUPANT_WELCOME_5 = 17,
+    RESORT_QUERY_OCCUPANT_WELCOME_6 = 18,
+    RESORT_QUERY_OCCUPANT_WELCOME_7 = 19,
+    RESORT_QUERY_ARRIVAL_GREETING = 50,
+    RESORT_QUERY_ORIGIN = 51,
+    RESORT_QUERY_RECRUIT_ACCEPTED = 52,
+    RESORT_QUERY_RECRUIT_THANKS = 53,
+    RESORT_QUERY_RECRUIT_RANK_TOO_LOW = 54,
+    RESORT_QUERY_RECRUIT_REFUSED = 55,
+    RESORT_QUERY_DEPARTURE = 56,
+    RESORT_QUERY_SOUVENIR = 57,
+    RESORT_QUERY_MESSAGE1 = 58,
+    RESORT_QUERY_THANKS = 59,
+    RESORT_QUERY_PERSON_NAME = 60,
+    RESORT_QUERY_RECOMMEND_THANKS = 62,
+    RESORT_QUERY_CALL_PLAYER = 80,
+    RESORT_QUERY_CALL_PERSON = 81,
+    RESORT_QUERY_CHANGE_SHOP_PROMPT = 82,
+    RESORT_QUERY_CHANGE_SHOP_CONFIRM = 83,
+    RESORT_QUERY_CHANGE_SHOP_ACCEPTED = 84,
+    RESORT_QUERY_KEEP_SHOP = 85,
+    RESORT_QUERY_SHOP_RANK = 86,
+    RESORT_QUERY_PROMOTION = 87,
+    RESORT_QUERY_RECORD_RANK = 88,
+    RESORT_QUERY_RECOMMEND_SHOP = 89,
+    RESORT_QUERY_RECOMMEND_VISIT = 90,
+    RESORT_QUERY_RECOMMEND_MESSAGE = 91,
+    RESORT_QUERY_RECOMMEND_NEXT_TIME = 92,
+    RESORT_QUERY_BIG_SMILE = 93,
+    RESORT_QUERY_SMILE = 94,
+    RESORT_QUERY_GRIN = 95,
+    RESORT_QUERY_MOTIVATION = 96,
+    RESORT_QUERY_ASSISTANT_GREETING = 100,
+    RESORT_QUERY_ASSISTANT_ACKNOWLEDGE = 101,
+    RESORT_QUERY_AVENUE_RANK = 102,
+    RESORT_QUERY_CHANGE_ASSISTANT_ROLE = 103,
+    RESORT_QUERY_REORDER_SHOPS = 104,
+    RESORT_QUERY_CEILING_COLOR_CHANGED = 105,
+    RESORT_QUERY_CHOOSE_CEILING_COLOR = 106,
+    RESORT_QUERY_CHOOSE_RECORD_PAGE = 107,
+    RESORT_QUERY_AVENUE_PROMOTION = 108,
+    RESORT_QUERY_AVENUE_BUSY = 112,
+    RESORT_QUERY_CHANGE_TITLE = 113,
+    RESORT_QUERY_CHANGE_NAME = 114,
+    RESORT_QUERY_CHANGE_GREETING = 115,
+    RESORT_QUERY_CANNOT_REORDER_SHOPS = 116,
+    RESORT_QUERY_FAN_GREETING = 120,
+    RESORT_QUERY_NEW_AVENUE_SHOPKEEPER = 125,
+    RESORT_QUERY_NEW_AVENUE_CUSTOMER = 130,
+    RESORT_QUERY_RAFFLE_PRIZE = 140,
+    RESORT_QUERY_RAFFLE_LOST = 141,
+    RESORT_QUERY_RAFFLE_ALREADY_PLAYED = 142,
+    RESORT_QUERY_RAFFLE_DRAW = 143,
+    RESORT_QUERY_RAFFLE_CONGRATULATIONS = 144,
+    RESORT_QUERY_RAFFLE_RUNNING = 145,
+    RESORT_QUERY_GROOM_DONE = 150,
+    RESORT_QUERY_GROOM_SELECT = 151,
+    RESORT_QUERY_MEAL_DONE = 152,
+    RESORT_QUERY_MEAL_SELECT = 153,
+    RESORT_QUERY_TRAINING_DONE = 154,
+    RESORT_QUERY_TRAINING_SELECT = 155,
+    RESORT_QUERY_EGG_READY = 156,
+    RESORT_QUERY_EGG_SELECT = 157,
+    RESORT_QUERY_EGG_ANY_SECOND = 158,
+    RESORT_QUERY_EGG_SOON = 159,
+    RESORT_QUERY_EGG_CLOSE = 160,
+    RESORT_QUERY_EGG_NOT_CLOSE = 161,
+    RESORT_QUERY_EGG_LONG_TIME = 162,
+    RESORT_QUERY_PAYMENT = 163,
+    RESORT_QUERY_CANNOT_SELECT_EGG = 164,
+    RESORT_QUERY_NOT_AN_EGG = 165,
+    RESORT_QUERY_ALREADY_STRONG = 166,
+    RESORT_QUERY_ALREADY_FRIENDLY = 167,
+    RESORT_QUERY_ALREADY_FRIENDLY_ALT = 168,
+    RESORT_QUERY_MAXIMUM_LEVEL = 169,
+    RESORT_QUERY_TRAINER_TEXT_11 = 170,
+    RESORT_QUERY_TRAINER_TEXT_17 = 171,
+    RESORT_QUERY_TRAINER_TEXT_18 = 172,
+    RESORT_QUERY_TRAINER_TEXT_19 = 173,
+    RESORT_QUERY_TRAINER_TEXT_20 = 174,
+    RESORT_QUERY_TRAINER_TEXT_21 = 175,
+    RESORT_QUERY_UNWELL = 176,
+};
+
+// No available slot in a row
+#define RESORT_SLOT_NONE 0xffff
+
+// Temporary visibility changes, or restoration of the saved visibility
+enum {
+    RESORT_VISIBILITY_SHOW = 0,
+    RESORT_VISIBILITY_HIDE = 1,
+    RESORT_VISIBILITY_RESTORE = 2,
+};
+
+// The attributes of ResortPerson_GetAttr
+enum {
+    RESORT_PERSON_ATTR_TYPE = 0,
+    RESORT_PERSON_ATTR_FROM_SLOTS = 1,
+};
+
+// The four function tables of ResortPerson and ResortPersonData
+enum {
+    RESORT_PERSON_OCCUPANT = 0,
+    RESORT_PERSON_ENTRY = 1,
+    RESORT_PERSON_VISITOR = 2,
+    RESORT_PERSON_RECORD = 3,
+    RESORT_PERSON_TYPE_MAX = 4,
+};
+
+// The five data ranges of ResortDatas_Create
+enum {
+    RESORT_DATA_OCCUPANT = 0,
+    RESORT_DATA_RECORD = 1,
+    RESORT_DATA_LIST = 2,
+    RESORT_DATA_LIST2 = 3,
+    RESORT_DATA_ENTRY = 4,
+};
+
 // The Join Avenue's gimmick, overlay 137, whose files are resort_field.c, resort_people.c, resort_data_manager.c,
 // resort_npc.c and resort_sys.c. Script plugin 8 (overlays 58 to 60) drives it. The objects are named after the file
 // they come from: the system of resort_sys.c, and the people of resort_people.c, each with its data, which reads and
@@ -41,7 +252,7 @@ typedef struct {
     u32 zone;
     ResortShopData *shops;
     // A table whose columns 1 and 2 are added to a person's x and z, by the person's index
-    ResortBinary *unk18;
+    ResortBinary *posOffsets;
 } ResortPeopleSetup;
 
 // A data and the zone of the person it makes
@@ -205,14 +416,14 @@ ResortWork *ResortSys_GetWork(ResortSys *sys);
 // The answer to a question of the scripts: a message of SCRIPT_TEXT_GLOBAL_10685 for the person, or a number
 u16 ResortSys_GetScriptValue(u32 query, ResortSys *sys, ResortPersonData *data, GameData *gameData, WordSet *wordSet,
                              HeapID heapId);
-BOOL ResortSys_GetPersonVisit(ResortPersonData *data, JoinAvenuePerson *person, ResortSys *sys, u16 *message, u16 *a4,
-                              u16 *a5);
+BOOL ResortSys_GetPersonVisit(ResortPersonData *data, JoinAvenuePerson *person, ResortSys *sys, u16 *message,
+                              u16 *shopMessage, u16 *points);
 // Adds popularity points to the avenue: 0 nothing came of it, 1 a new rank, 2 no more ranks, 3 a new shop, 4 a new
 // rank with new texts, 5 both
 u32 ResortSys_AddPopularity(ResortSys *sys, GameData *gameData, u32 points, u16 *rank);
 // Adds experience to a person's shop: 0 nothing, 1 a new level, 2 a new level of another kind of shop, 3 the highest
 u32 ResortSys_AddShopExperience(JoinAvenuePerson *person, ResortSys *sys, u32 points, u16 *level);
-u32 ResortSys_GetInfoFlag1b(ResortSys *sys);
+u32 ResortSys_GetMaxLevelWeek(ResortSys *sys);
 // Whether the occupants' shops are all at the highest level
 BOOL ResortSys_AreAllShopsMaxLevel(ResortSys *sys);
 void ResortSys_SetScriptWord(u32 type, u32 who, u16 index, u32 wordIndex, ResortSys *sys, ResortPerson *person,
@@ -234,12 +445,12 @@ void ResortSys_MakeShopEntry(ResortSys *sys, GameData *gameData, JoinAvenueEntry
                              HeapID heapId);
 // Adds an entry (mode 1) or a record (mode 3) of a kind of shop
 void ResortSys_AddEntryOrRecord(ResortSys *sys, PlayerInfo *playerInfo, u32 mode, u32 shopKind, HeapID heapId);
-void ResortSys_ChooseVisitGroup(ResortSys *sys, ResortPersonData *a1, ResortPersonData *data);
-BOOL ResortSys_PickPersonToMeet(ResortSys *sys, ResortPersonData *a1, ResortPersonData *data, u32 *out);
+void ResortSys_ChooseVisitGroup(ResortSys *sys, ResortPersonData *occupant, ResortPersonData *data);
+BOOL ResortSys_PickPersonToMeet(ResortSys *sys, ResortPersonData *occupant, ResortPersonData *data, u32 *out);
 u32 ResortSys_GetVisitPoints(ResortSys *sys, ResortPersonData *data);
 u32 ResortSys_GetVisitScore(ResortSys *sys, ResortPersonData *data);
-void ResortSys_MarkMet(ResortSys *sys, ResortPersonData *a1, u32 a2);
-BOOL ResortSys_HasShopKind(ResortSys *sys, GameData *gameData, u32 a2);
+void ResortSys_MarkMet(ResortSys *sys, ResortPersonData *occupant, u32 index);
+BOOL ResortSys_HasShopKind(ResortSys *sys, GameData *gameData, u32 shopKind);
 // Whether all eight of the avenue's people are there
 BOOL ResortSys_IsFull(ResortSys *sys);
 

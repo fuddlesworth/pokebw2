@@ -416,7 +416,7 @@ void UnionNet_RecvJoinAvenue(int netId, int size, const void *data, void *work, 
 
     if (netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
         self->mycomm.joinAvenueReceived = 1;
-        JoinAvenuePerson_SetParam((JoinAvenuePerson *)data, JOIN_AVE_PARAM_UNK_26, 3);
+        JoinAvenuePerson_SetParam((JoinAvenuePerson *)data, JOIN_AVE_PARAM_ARRIVAL_METHOD, JOIN_AVE_ARRIVAL_UNION_ROOM);
         JoinAvenue_Add(joinAvenue, unisys->param->gameData, (void *)data, TRUE);
     }
 }

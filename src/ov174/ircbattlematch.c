@@ -559,7 +559,8 @@ static void IrcBattleMatch_RecvJoinAvenuePerson(int netId, int size, const void 
 
     if (handle == NetHandle_GetOwn()) {
         if (netId != NetSystem_GetNetId()) {
-            JoinAvenuePerson_SetParam((JoinAvenuePerson *)data, JOIN_AVE_PARAM_UNK_26, 4);
+            JoinAvenuePerson_SetParam((JoinAvenuePerson *)data, JOIN_AVE_PARAM_ARRIVAL_METHOD,
+                                      JOIN_AVE_ARRIVAL_INFRARED);
             JoinAvenue_Add(joinAvenue, gameData, (void *)data, 1);
         }
     }

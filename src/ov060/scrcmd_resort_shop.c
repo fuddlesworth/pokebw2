@@ -1933,13 +1933,13 @@ static void ResortShop_GetModelTexture(ArcTool *handle, u16 objCode, u8 *texture
 }
 
 // A price with the avenue's discount, which grows with its rank up to 39 and is 40% from rank 40, 75% more with
-// ResortSys_GetInfoFlag1b, and rounded to 10
+// ResortSys_GetMaxLevelWeek, and rounded to 10
 static u32 ResortShop_GetDiscountedPrice(ResortShopWork *wk, u32 price) {
     fx32 rate;
     u32 rank;
     u32 discount;
 
-    if (ResortSys_GetInfoFlag1b(wk->sys)) {
+    if (ResortSys_GetMaxLevelWeek(wk->sys)) {
         rate = FX32_CONST(1.75);
     } else {
         rate = FX32_ONE;
