@@ -624,7 +624,7 @@ static inline void Title_ClearWin(BmpWin *win) {
 static int Title_SubSeqYesNoSelect(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         // Leaves the station
         WorldTrade_TouchWinYesNoDel(wk);
         BmpWin_ClearFrame(wk->talkWin, 2);
@@ -634,7 +634,7 @@ static int Title_SubSeqYesNoSelect(WorldTradeWork *wk) {
         ClActor_SetVisible(wk->promptDsAct, FALSE);
         WorldTrade_SubProcessChange(wk, WORLDTRADE_ENTER, WT_MODE_LOGOUT);
         wk->subprocessSeq = TITLE_SEQ_END_DEMO;
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         BmpWin_ClearFrame(wk->talkWin, 2);
         Title_ClearWin(wk->talkWin);

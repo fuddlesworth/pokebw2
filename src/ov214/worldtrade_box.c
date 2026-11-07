@@ -32,15 +32,45 @@
 #include "system/wordset.h"
 #include "worldtrade_local.h"
 
+// Box_PokemonCheck results; an egg includes a bad egg.
+enum {
+    BOX_POKEMON_EMPTY = 0,
+    BOX_POKEMON_NON_EGG = 1,
+    BOX_POKEMON_EGG = 2,
+};
+
+// Touch rectangles after the thirty Pokemon and the Quit button.
+enum {
+    BOX_TOUCH_NEXT_PAGE = 31,
+    BOX_TOUCH_PREVIOUS_PAGE = 32,
+};
+
+// Keyboard cursor actions in the box-name row.
+enum {
+    BOX_CURSOR_PREVIOUS_PAGE = 99,
+    BOX_CURSOR_NEXT_PAGE = 101,
+};
+
+// Deposit menu choices, returned as the selected row plus one.
+enum {
+    BOX_DEPOSIT_SUMMARY = 1,
+    BOX_DEPOSIT_PROCEED = 2,
+    BOX_DEPOSIT_CANCEL = 3,
+};
+
+// Exchange menu choices, returned as the selected row plus one.
+enum {
+    BOX_EXCHANGE_SUMMARY = 1,
+    BOX_EXCHANGE_PROCEED = 2,
+    BOX_EXCHANGE_CANCEL = 3,
+};
+
 // The Global Trade Station's box screen, where the player picks a Pokémon of the party or the boxes to deposit or to
 // offer in a trade. The names are ours, guessed
 
 // The cursor's positions past the page's 30 Pokémon
 #define BOX_CURSOR_END_POS 30
 #define BOX_CURSOR_TRAY_POS 31
-
-// The box page of the party
-#define BOX_TRAY_PARTY 0xff
 
 // A search's gender that takes either
 #define SEARCH_GENDER_ANY 3
@@ -451,7 +481,7 @@ static void Box_BmpWinInit(WorldTradeWork *wk) {
     BmpWin_FlushChar(win);
     BmpWin_FlushMap(win);
     GFL_BGSysLoadScr(BmpWin_GetBGIndex(win));
-    WorldTrade_SysPrint(wk->menuWin[1], wk->endString, 0, 1, 1, 0x3dc4, &wk->print);
+    WorldTrade_SysPrint(wk->menuWin[1], wk->endString, 0, 1, WT_TEXT_ALIGN_CENTER, 0x3dc4, &wk->print);
 
     if (wk->subProcessMode == WT_MODE_DEPOSIT_SELECT) {
         WorldTrade_SubLcdExplainPut(wk, 3);
@@ -516,7 +546,7 @@ static void Box_DepositDecideFunc(WorldTradeWork *wk) {
         GFL_SndSEPlay(0x551);
     } else if (wk->boxCursorPos != BOX_CURSOR_TRAY_POS) {
         switch (Box_PokemonCheck(wk->param->myparty, wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos)) {
-        case 1:
+        case BOX_POKEMON_NON_EGG:
             GFL_SndSEPlay(0x54c);
             if (Box_CheckPocket(wk->param->myparty, wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos)) {
                 WorldTrade_SetBoxPkmNickname(
@@ -529,7 +559,7 @@ static void Box_DepositDecideFunc(WorldTradeWork *wk) {
                 WorldTrade_SetNextSeq(wk, BOX_SEQ_MESSAGE_CLEAR_WAIT, BOX_SEQ_MAIN);
             }
             break;
-        case 2:
+        case BOX_POKEMON_EGG:
             GFL_SndSEPlay(0x54c);
             Box_SubSeqMessagePrint(wk, 0x21, 1, 0, 0xf0f, 1);
             WorldTrade_SetNextSeq(wk, BOX_SEQ_MESSAGE_CLEAR_WAIT, BOX_SEQ_MAIN);
@@ -548,7 +578,7 @@ static void Box_ExchangeDecideFunc(WorldTradeWork *wk) {
         GFL_SndSEPlay(0x551);
     } else if (wk->boxCursorPos != BOX_CURSOR_TRAY_POS) {
         switch (Box_PokemonCheck(wk->param->myparty, wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos)) {
-        case 1:
+        case BOX_POKEMON_NON_EGG:
             pkm = WorldTrade_GetPokePtr(wk->param->myparty, wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos);
             if (Box_WantPokeCheck(pkm, &wk->downloadPokemonData[wk->touchTrainerPos].wantSimple)) {
                 if (Box_CheckPocket(wk->param->myparty, wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos)) {
@@ -564,8 +594,8 @@ static void Box_ExchangeDecideFunc(WorldTradeWork *wk) {
                 GFL_SndSEPlay(0x551);
             }
             break;
-        case 0:
-        case 2:
+        case BOX_POKEMON_EMPTY:
+        case BOX_POKEMON_EGG:
             GFL_SndSEPlay(0x551);
             break;
         }
@@ -608,14 +638,14 @@ static int Box_SubSeqMain(WorldTradeWork *wk) {
 
     if (touch != -1) {
         switch (touch) {
-        case 31:
+        case BOX_TOUCH_NEXT_PAGE:
             ClActor_SetAutoAnim(wk->boxArrowAct[0], TRUE);
             ClActor_SetSequence(wk->boxArrowAct[0], 38);
             wk->boxTrayNo = Box_RoundWork(wk->boxTrayNo, wk->boxCount, 1);
             Box_NowBoxPageInfoGet(wk, wk->boxTrayNo);
             GFL_SndSEPlay(0x548);
             break;
-        case 32:
+        case BOX_TOUCH_PREVIOUS_PAGE:
             ClActor_SetAutoAnim(wk->boxArrowAct[1], TRUE);
             ClActor_SetSequence(wk->boxArrowAct[1], 39);
             wk->boxTrayNo = Box_RoundWork(wk->boxTrayNo, wk->boxCount, -1);
@@ -667,13 +697,38 @@ static int Box_SubSeqMain(WorldTradeWork *wk) {
 
 // Where the cursor goes from each position, up, down, left and right. 99 and 101 turn the page
 static const u8 sCursorMoveTable[][4] = {
-    { 31, 6, 5, 1 },    { 31, 7, 0, 2 },    { 31, 8, 1, 3 },    { 31, 9, 2, 4 },    { 31, 10, 3, 5 },
-    { 31, 11, 4, 0 },   { 0, 12, 11, 7 },   { 1, 13, 6, 8 },    { 2, 14, 7, 9 },    { 3, 15, 8, 10 },
-    { 4, 16, 9, 11 },   { 5, 17, 10, 6 },   { 6, 18, 17, 13 },  { 7, 19, 12, 14 },  { 8, 20, 13, 15 },
-    { 9, 21, 14, 16 },  { 10, 22, 15, 17 }, { 11, 23, 16, 12 }, { 12, 24, 23, 19 }, { 13, 25, 18, 20 },
-    { 14, 26, 19, 21 }, { 15, 27, 20, 22 }, { 16, 28, 21, 23 }, { 17, 29, 22, 18 }, { 18, 31, 30, 25 },
-    { 19, 31, 24, 26 }, { 20, 31, 25, 27 }, { 21, 31, 26, 28 }, { 22, 31, 27, 29 }, { 23, 31, 28, 30 },
-    { 30, 30, 29, 24 }, { 26, 2, 99, 101 },
+    { BOX_CURSOR_TRAY_POS, 6, 5, 1 },
+    { BOX_CURSOR_TRAY_POS, 7, 0, 2 },
+    { BOX_CURSOR_TRAY_POS, 8, 1, 3 },
+    { BOX_CURSOR_TRAY_POS, 9, 2, 4 },
+    { BOX_CURSOR_TRAY_POS, 10, 3, 5 },
+    { BOX_CURSOR_TRAY_POS, 11, 4, 0 },
+    { 0, 12, 11, 7 },
+    { 1, 13, 6, 8 },
+    { 2, 14, 7, 9 },
+    { 3, 15, 8, 10 },
+    { 4, 16, 9, 11 },
+    { 5, 17, 10, 6 },
+    { 6, 18, 17, 13 },
+    { 7, 19, 12, 14 },
+    { 8, 20, 13, 15 },
+    { 9, 21, 14, 16 },
+    { 10, 22, 15, 17 },
+    { 11, 23, 16, 12 },
+    { 12, 24, 23, 19 },
+    { 13, 25, 18, 20 },
+    { 14, 26, 19, 21 },
+    { 15, 27, 20, 22 },
+    { 16, 28, 21, 23 },
+    { 17, 29, 22, 18 },
+    { 18, BOX_CURSOR_TRAY_POS, 30, 25 },
+    { 19, BOX_CURSOR_TRAY_POS, 24, 26 },
+    { 20, BOX_CURSOR_TRAY_POS, 25, 27 },
+    { 21, BOX_CURSOR_TRAY_POS, 26, 28 },
+    { 22, BOX_CURSOR_TRAY_POS, 27, 29 },
+    { 23, BOX_CURSOR_TRAY_POS, 28, 30 },
+    { 30, 30, 29, 24 },
+    { 26, 2, BOX_CURSOR_PREVIOUS_PAGE, BOX_CURSOR_NEXT_PAGE },
 };
 
 static void Box_CursorControl(WorldTradeWork *wk) {
@@ -701,8 +756,8 @@ static void Box_CursorControl(WorldTradeWork *wk) {
         u8 next = sCursorMoveTable[wk->boxCursorPos][move - 1];
 
         if (next != wk->boxCursorPos) {
-            if (next == 99 || next == 101) {
-                u8 arrow = next == 101 ? 0 : 1;
+            if (next == BOX_CURSOR_PREVIOUS_PAGE || next == BOX_CURSOR_NEXT_PAGE) {
+                u8 arrow = next == BOX_CURSOR_NEXT_PAGE ? 0 : 1;
 
                 ClActor_SetAutoAnim(wk->boxArrowAct[arrow], TRUE);
                 ClActor_SetSequence(wk->boxArrowAct[arrow], arrow + 38);
@@ -752,9 +807,9 @@ static int Box_RoundWork(int num, int max, int move) {
 
 static int Box_SubSeqSelectList(WorldTradeWork *wk) {
     wk->menuList = ListMenuCore_CreateOptionList(3, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x68, 1, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x69, 2, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x6a, 3, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x68, BOX_DEPOSIT_SUMMARY, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x69, BOX_DEPOSIT_PROCEED, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x6a, BOX_DEPOSIT_CANCEL, HEAPID_WORLDTRADE);
     WorldTrade_SelBoxInit(wk, 0, 3, 20);
     wk->subprocessSeq = BOX_SEQ_SELECT_WAIT;
     return WT_SEQ_MAIN;
@@ -765,14 +820,14 @@ static int Box_SubSeqSelectWait(WorldTradeWork *wk) {
     BoxPkm *pkm;
 
     switch (ret) {
-    case 1:
+    case BOX_DEPOSIT_SUMMARY:
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
         BmpWin_ClearFrame(wk->msgWin, 0);
         wk->subprocessSeq = BOX_SEQ_END;
         WorldTrade_SubProcessChange(wk, WORLDTRADE_STATUS, WT_MODE_DEPOSIT_SELECT);
         break;
-    case 2:
+    case BOX_DEPOSIT_PROCEED:
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
         pkm = WorldTrade_GetPokePtr(wk->param->myparty, wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos);
@@ -795,7 +850,7 @@ static int Box_SubSeqSelectWait(WorldTradeWork *wk) {
             WorldTrade_SubProcessChange(wk, WORLDTRADE_DEPOSIT, 0);
         }
         break;
-    case 3:
+    case BOX_DEPOSIT_CANCEL:
     case BMPMENULIST_CANCEL:
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
@@ -808,9 +863,9 @@ static int Box_SubSeqSelectWait(WorldTradeWork *wk) {
 
 static int Box_SubSeqExchangeSelectList(WorldTradeWork *wk) {
     wk->menuList = ListMenuCore_CreateOptionList(3, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x5d, 1, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x5e, 2, HEAPID_WORLDTRADE);
-    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x5f, 3, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x5d, BOX_EXCHANGE_SUMMARY, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x5e, BOX_EXCHANGE_PROCEED, HEAPID_WORLDTRADE);
+    ListMenuCore_AppendMsgOption(wk->menuList, wk->msgManager, 0x5f, BOX_EXCHANGE_CANCEL, HEAPID_WORLDTRADE);
     WorldTrade_SelBoxInit(wk, 0, 3, 20);
     wk->subprocessSeq = BOX_SEQ_EXCHANGE_SELECT_WAIT;
     return WT_SEQ_MAIN;
@@ -821,13 +876,13 @@ static int Box_SubSeqExchangeSelectWait(WorldTradeWork *wk) {
     BoxPkm *pkm;
 
     switch (ret) {
-    case 1:
+    case BOX_EXCHANGE_SUMMARY:
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
         wk->subprocessSeq = BOX_SEQ_END;
         WorldTrade_SubProcessChange(wk, WORLDTRADE_STATUS, WT_MODE_EXCHANGE_SELECT);
         break;
-    case 2:
+    case BOX_EXCHANGE_PROCEED:
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
         BmpWin_ClearFrame(wk->msgWin, 0);
@@ -852,7 +907,7 @@ static int Box_SubSeqExchangeSelectWait(WorldTradeWork *wk) {
             Box_ExchangeCheck(wk);
         }
         break;
-    case 3:
+    case BOX_EXCHANGE_CANCEL:
     case BMPMENULIST_CANCEL:
         WorldTrade_SelBoxEnd(wk);
         ListMenuCore_FreeOptionList(wk->menuList);
@@ -885,11 +940,11 @@ static int Box_SubSeqYesNoSelect(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
     GFL_ASSERT(0);
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->subprocessSeq = BOX_SEQ_END;
         WorldTrade_SubProcessChange(wk, WORLDTRADE_ENTER, 0);
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->subprocessSeq = BOX_SEQ_START;
     }
@@ -911,10 +966,10 @@ static int Box_SubSeqCBallYesNo(WorldTradeWork *wk) {
 static int Box_SubSeqCBallYesNoSelect(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         WorldTrade_TouchWinYesNoDel(wk);
         Box_ExchangeCheck(wk);
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         BmpWin_ClearFrame(wk->talkWin, 0);
         wk->subprocessSeq = BOX_SEQ_MAIN;
@@ -924,7 +979,7 @@ static int Box_SubSeqCBallYesNoSelect(WorldTradeWork *wk) {
 
 static int Box_ExchangeCheck(WorldTradeWork *wk) {
     if (WorldTrade_PokemonMailCheck((PartyPkm *)wk->downloadPokemonData[wk->touchTrainerPos].postData) &&
-        wk->boxTrayNo != BOX_TRAY_PARTY && PokeParty_GetPkmCount(wk->param->myparty) == 6) {
+        wk->boxTrayNo != BOX_TRAY_PARTY && PokeParty_GetPkmCount(wk->param->myparty) == PARTY_SIZE) {
         Box_SubSeqMessagePrint(wk, 0x29, 1, 0, 0xf0f, 1);
         WorldTrade_SetNextSeq(wk, BOX_SEQ_MESSAGE_CLEAR_WAIT, BOX_SEQ_MAIN);
         return FALSE;
@@ -953,12 +1008,12 @@ static int Box_SubSeqCBallDepositYesNo(WorldTradeWork *wk) {
 static int Box_SubSeqCBallDepositYesNoSelect(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         WorldTrade_TouchWinYesNoDel(wk);
         wk->depositPkm = WorldTrade_GetPokePtr(wk->param->myparty, wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos);
         wk->subprocessSeq = BOX_SEQ_END;
         WorldTrade_SubProcessChange(wk, WORLDTRADE_DEPOSIT, 0);
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         BmpWin_ClearFrame(wk->talkWin, 0);
         wk->subprocessSeq = BOX_SEQ_MAIN;
@@ -1145,7 +1200,7 @@ static void Box_NowBoxPageInfoGet(WorldTradeWork *wk, int now) {
     GFL_ArcToolFree(handle);
 
     GFL_BitmapFill(BmpWin_GetBitmap(wk->subWin), 0);
-    WorldTrade_SysPrint(wk->subWin, wk->boxTrayNameString, 0, 5, 1, 0x440, &wk->print);
+    WorldTrade_SysPrint(wk->subWin, wk->boxTrayNameString, 0, 5, WT_TEXT_ALIGN_CENTER, 0x440, &wk->print);
     if (wk->subProcessMode == WT_MODE_EXCHANGE_SELECT) {
         Box_PokeIconPalSet(wk->boxWork, wk->pokeIconAct, &wk->downloadPokemonData[wk->touchTrainerPos].wantSimple,
                            pbuf);
@@ -1218,15 +1273,15 @@ static int Box_PokemonCheck(PokeParty *party, BoxSaveAccessor *box, int tray, in
     BoxPkm *pkm = WorldTrade_GetPokePtr(party, box, tray, pos);
 
     if (pkm == NULL) {
-        return 0;
+        return BOX_POKEMON_EMPTY;
     }
     if (PML_PkmGetParam(pkm, PKM_PARAM_SPECIES_VALID, NULL) == 0) {
-        return 0;
+        return BOX_POKEMON_EMPTY;
     }
-    if (PML_PkmGetParam(pkm, 0xaa, NULL)) {
-        return 2;
+    if (PML_PkmGetParam(pkm, PKM_PARAM_EGG_OR_BAD_EGG, NULL)) {
+        return BOX_POKEMON_EGG;
     }
-    return 1;
+    return BOX_POKEMON_NON_EGG;
 }
 
 static BOOL Box_CompareSearchData(Dpw_Tr_PokemonDataSimple *poke, Dpw_Tr_PokemonSearchData *search) {

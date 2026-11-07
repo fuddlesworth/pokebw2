@@ -11,6 +11,22 @@
 #include "nitro/os.h"
 #include "worldtrade_local.h"
 
+// Steps of WorldTrade_HeroDemo.
+enum {
+    HERO_ENTER_WALK_TO_STOP = 0,
+    HERO_ENTER_WAIT_ANIMATION = 1,
+    HERO_ENTER_WALK_TO_END = 2,
+    HERO_ENTER_FINISH = 3,
+};
+
+// Steps of WorldTrade_ReturnHeroDemo.
+enum {
+    HERO_RETURN_WALK_TO_STOP = 0,
+    HERO_RETURN_WAIT_ANIMATION = 1,
+    HERO_RETURN_WALK_OUT = 2,
+    HERO_RETURN_FINISH = 3,
+};
+
 // The Global Trade Station's lower screen, the trade room: the player, who walks in and out, and the people that
 // stand for the trainers a search found. The names are ours, guessed
 
@@ -114,7 +130,7 @@ void WorldTrade_HeroDemo(WorldTradeWork *wk) {
     wk->heroDemoWork = GFL_HeapAllocate(HEAPID_WORLDTRADE, sizeof(SubLcdHeroDemo), FALSE, "worldtrade_sublcd.c", 212);
     wk->demoTask = GFL_TCBMgrAddTask(wk->tcbManager, SubLcd_HeroDemoTask, wk->heroDemoWork, 5);
     demo = GFL_TCBGetData(wk->demoTask);
-    demo->seq = 0;
+    demo->seq = HERO_ENTER_WALK_TO_STOP;
     demo->y = -40;
     demo->wk = wk;
     wk->demoEnd = 0;
@@ -131,32 +147,32 @@ static void SubLcd_HeroDemoTask(TCB *tcb, void *data) {
     WorldTradeWork *wk = demo->wk;
 
     switch (demo->seq) {
-    case 0:
+    case HERO_ENTER_WALK_TO_STOP:
         if (demo->y > 160) {
             demo->y = 160;
-            demo->seq = 1;
+            demo->seq = HERO_ENTER_WAIT_ANIMATION;
             SubLcd_HeroAnimSet(demo, 1);
         }
         demo->y += 2;
         SubLcd_ActPos(wk->subAct[0], 128, demo->y);
         break;
-    case 1:
+    case HERO_ENTER_WAIT_ANIMATION:
         if (!ClActor_IsAnimActive(wk->subAct[0])) {
             SubLcd_HeroAnimSet(demo, 2);
-            demo->seq = 2;
+            demo->seq = HERO_ENTER_WALK_TO_END;
         }
         break;
-    case 2:
+    case HERO_ENTER_WALK_TO_END:
         if (demo->y <= 138) {
             demo->y = 138;
-            demo->seq = 3;
+            demo->seq = HERO_ENTER_FINISH;
             SubLcd_HeroAnimSet(demo, 3);
         } else {
             demo->y--;
         }
         SubLcd_ActPos(wk->subAct[0], 128, demo->y);
         break;
-    case 3:
+    case HERO_ENTER_FINISH:
         GFL_SndSEPlay(SEQ_SE_PC_LOGIN);
         demo->wk->demoEnd = 1;
         GFL_HeapFree(demo);
@@ -171,7 +187,7 @@ void WorldTrade_ReturnHeroDemo(WorldTradeWork *wk) {
     wk->heroDemoWork = GFL_HeapAllocate(HEAPID_WORLDTRADE, sizeof(SubLcdHeroDemo), FALSE, "worldtrade_sublcd.c", 336);
     wk->demoTask = GFL_TCBMgrAddTask(wk->tcbManager, SubLcd_ReturnHeroDemoTask, wk->heroDemoWork, 5);
     demo = GFL_TCBGetData(wk->demoTask);
-    demo->seq = 0;
+    demo->seq = HERO_RETURN_WALK_TO_STOP;
     demo->y = 138;
     demo->wk = wk;
     SubLcd_HeroAnimSet(demo, 5);
@@ -183,31 +199,31 @@ static void SubLcd_ReturnHeroDemoTask(TCB *tcb, void *data) {
     WorldTradeWork *wk = demo->wk;
 
     switch (demo->seq) {
-    case 0:
+    case HERO_RETURN_WALK_TO_STOP:
         if (demo->y > 160) {
             demo->y = 160;
-            demo->seq = 1;
+            demo->seq = HERO_RETURN_WAIT_ANIMATION;
             SubLcd_HeroAnimSet(demo, 6);
         }
         demo->y += 1;
         SubLcd_ActPos(wk->subAct[0], 128, demo->y);
         break;
-    case 1:
+    case HERO_RETURN_WAIT_ANIMATION:
         if (!ClActor_IsAnimActive(wk->subAct[0])) {
             SubLcd_HeroAnimSet(demo, 0);
-            demo->seq = 2;
+            demo->seq = HERO_RETURN_WALK_OUT;
             GFL_SndSEPlay(SEQ_SE_SYS_87);
         }
         break;
-    case 2:
+    case HERO_RETURN_WALK_OUT:
         if (demo->y < -20) {
-            demo->seq = 3;
+            demo->seq = HERO_RETURN_FINISH;
             SubLcd_HeroAnimSet(demo, 3);
         }
         demo->y -= 2;
         SubLcd_ActPos(wk->subAct[0], 128, demo->y);
         break;
-    case 3:
+    case HERO_RETURN_FINISH:
         wk->demoEnd = 1;
         GFL_HeapFree(demo);
         GFL_TCBRemove(tcb);

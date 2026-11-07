@@ -478,7 +478,7 @@ static int Deposit_SubSeqHeadwordSelectWait(WorldTradeWork *wk) {
     case BMPMENULIST_CANCEL:
         BmpMenuList_Free(wk->bmpListWork, &wk->dw->headwordListPos, &wk->dw->headwordPos);
         ListMenuCore_FreeOptionList(wk->menuList);
-        WorldTrade_ClearWindow(wk->menuWin[0], 0);
+        WorldTrade_ClearWindow(wk->menuWin[0], WT_WINDOW_TRANSFER_NOW);
         BmpWin_ClearFrame(wk->msgWin, 0);
         BmpWin_Free(wk->menuWin[0]);
         BmpWin_Free(wk->menuWin[1]);
@@ -493,21 +493,21 @@ static int Deposit_SubSeqHeadwordSelectWait(WorldTradeWork *wk) {
 static int Deposit_SubSeqPokeNameSelectList(WorldTradeWork *wk) {
     wk->bmpListWork = WorldTrade_PokeNameListMake(wk, &wk->menuList, wk->menuWin[1], wk->msgManager,
                                                   wk->monsNameManager, wk->dw, wk->param->pokedex);
-    wk->listpos = 0xffff;
+    wk->listpos = WT_LISTPOS_NONE;
     wk->subprocessSeq = DEPOSIT_SEQ_POKENAME_SELECT_WAIT;
     return WT_SEQ_MAIN;
 }
 
 BOOL WorldTrade_SexSelectionCheck(Dpw_Tr_PokemonSearchData *dtps, int sexSelection) {
     switch (sexSelection) {
-    case 0:
-        dtps->gender = 1;
+    case GENDER_RATIO_MALE_ONLY:
+        dtps->gender = WT_SEARCH_GENDER_MALE;
         return TRUE;
-    case 254:
-        dtps->gender = 2;
+    case GENDER_RATIO_FEMALE_ONLY:
+        dtps->gender = WT_SEARCH_GENDER_FEMALE;
         return TRUE;
-    case 255:
-        dtps->gender = 3;
+    case GENDER_RATIO_GENDERLESS:
+        dtps->gender = SEARCH_GENDER_ANY;
         return TRUE;
     }
     return FALSE;
@@ -558,7 +558,7 @@ static int Deposit_SubSeqSexSelectMessage(WorldTradeWork *wk) {
 }
 
 static int Deposit_SubSeqSexSelectList(WorldTradeWork *wk) {
-    wk->listpos = 0xffff;
+    wk->listpos = WT_LISTPOS_NONE;
     WorldTrade_Input_Start(wk->inputWork, INPUT_MODE_SEX);
     wk->subprocessSeq = DEPOSIT_SEQ_SEX_SELECT_WAIT;
     return WT_SEQ_MAIN;
@@ -572,9 +572,9 @@ static int Deposit_SubSeqSexSelectWait(WorldTradeWork *wk) {
         BmpWin_ClearFrame(wk->msgWin, 0);
         wk->subprocessSeq = DEPOSIT_SEQ_START;
         break;
-    case 0:
-    case 1:
-    case 2:
+    case WT_INPUT_SEX_MALE:
+    case WT_INPUT_SEX_FEMALE:
+    case WT_INPUT_SEX_ANY:
         wk->want.gender = ret + 1;
         wk->subprocessSeq = DEPOSIT_SEQ_LEVEL_SELECT_MES;
         WorldTrade_PokeWantPrint(wk->msgManager, wk->monsNameManager, wk->wordSet, &wk->infoWin[0],
@@ -592,7 +592,7 @@ static int Deposit_SubSeqLevelSelectMessage(WorldTradeWork *wk) {
 
 static int Deposit_SubSeqLevelSelectList(WorldTradeWork *wk) {
     WorldTrade_Input_Start(wk->inputWork, INPUT_MODE_LEVEL);
-    wk->listpos = 0xffff;
+    wk->listpos = WT_LISTPOS_NONE;
     wk->subprocessSeq = DEPOSIT_SEQ_LEVEL_SELECT_WAIT;
     return WT_SEQ_MAIN;
 }
@@ -638,13 +638,13 @@ static int Deposit_SubSeqDepositOkYesNo(WorldTradeWork *wk) {
 static int Deposit_SubSeqDepositOkYesNoWait(WorldTradeWork *wk) {
     u32 ret = WorldTrade_TouchSwMain(wk);
 
-    if (ret == 1) {
+    if (ret == WT_YESNO_YES) {
         WorldTrade_TouchWinYesNoDel(wk);
         WorldTrade_SubProcessChange(wk, WORLDTRADE_UPLOAD, WT_MODE_UPLOAD);
         wk->subprocessSeq = DEPOSIT_SEQ_END;
         wk->subOutFlag = 1;
         Deposit_DepositPokemonDataMake(&wk->uploadPokemonData, wk);
-    } else if (ret == 2) {
+    } else if (ret == WT_YESNO_NO) {
         WorldTrade_TouchWinYesNoDel(wk);
         WorldTrade_SubProcessChange(wk, WORLDTRADE_MYBOX, WT_MODE_DEPOSIT_SELECT);
         wk->subprocessSeq = DEPOSIT_SEQ_END;
@@ -672,9 +672,9 @@ static int Deposit_SubSeqMessageWait(WorldTradeWork *wk) {
 
 static u16 Deposit_GetSexBaseColor(int sex) {
     switch (sex) {
-    case 0:
+    case GENDER_MALE:
         return 0x14c0;
-    case 1:
+    case GENDER_FEMALE:
         return 0xc80;
     }
     return 0;
@@ -718,11 +718,11 @@ void WorldTrade_CountryPrint(BmpWin *win, MsgData *nameManager, MsgData *msgMana
 }
 
 static u16 Deposit_GetSexColor(int sex, u16 color) {
-    if (sex == 1) {
-        return Deposit_GetSexBaseColor(0);
+    if (sex == WT_SEARCH_GENDER_MALE) {
+        return Deposit_GetSexBaseColor(GENDER_MALE);
     }
-    if (sex == 2) {
-        color = Deposit_GetSexBaseColor(1);
+    if (sex == WT_SEARCH_GENDER_FEMALE) {
+        color = Deposit_GetSexBaseColor(GENDER_FEMALE);
     }
     return color;
 }
@@ -737,7 +737,7 @@ void WorldTrade_SexPrint(BmpWin *win, MsgData *msgManager, int sex, int flag, in
     str = GFL_MsgDataLoadStrbufNew(msgManager, WorldTrade_SexStringTable[sex]);
     // A print flag past 3 is an x position
     if (printFlag > 3) {
-        WorldTrade_SysPrint(win, str, printFlag, y, 0, Deposit_GetSexColor(sex, color), print);
+        WorldTrade_SysPrint(win, str, printFlag, y, WT_TEXT_ALIGN_LEFT, Deposit_GetSexColor(sex, color), print);
     } else {
         WorldTrade_SysPrint(win, str, 0, y, printFlag, Deposit_GetSexColor(sex, color), print);
     }
@@ -763,9 +763,9 @@ void WorldTrade_WantLevelPrint(BmpWin *win, MsgData *msgManager, int level, int 
 
 // Not referred to
 WorldTradeSelectItem WorldTrade_SexSelectTable[] = {
-    { 0x82, 2 },
-    { 0x83, 0 },
-    { 0x84, 1 },
+    { 0x82, WT_INPUT_SEX_ANY },
+    { 0x83, WT_INPUT_SEX_MALE },
+    { 0x84, WT_INPUT_SEX_FEMALE },
     { 0x85, BMPMENULIST_CANCEL },
 };
 
@@ -804,21 +804,21 @@ void WorldTrade_PokeWantPrint(MsgData *msgManager, MsgData *monsNameManager, Wor
 
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0x6b);
 
-    WorldTrade_SysPrint(win[0], str, 1, 0, 0, 0x440, print);
+    WorldTrade_SysPrint(win[0], str, 1, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
     for (i = 1; i < 3; i++) {
         GFL_BitmapFill(BmpWin_GetBitmap(win[i]), 0);
     }
-    WorldTrade_PokeNamePrint(win[1], monsNameManager, monsno, 0, 0, 0x440, print);
+    WorldTrade_PokeNamePrint(win[1], monsNameManager, monsno, WT_TEXT_ALIGN_LEFT, 0, 0x440, print);
     // The names of the Nidoran show their gender already
-    if (monsno == SPECIES_NIDORAN_F && sex == 2) {
+    if (monsno == SPECIES_NIDORAN_F && sex == WT_SEARCH_GENDER_FEMALE) {
         printSex = FALSE;
-    } else if (monsno == SPECIES_NIDORAN_M && sex == 1) {
+    } else if (monsno == SPECIES_NIDORAN_M && sex == WT_SEARCH_GENDER_MALE) {
         printSex = FALSE;
     }
-    if (printSex && (sex == 1 || sex == 2)) {
+    if (printSex && (sex == WT_SEARCH_GENDER_MALE || sex == WT_SEARCH_GENDER_FEMALE)) {
         WorldTrade_SexPrint(win[1], msgManager, sex, 0, 0, 70, 0x440, print);
     }
-    WorldTrade_WantLevelPrint(win[2], msgManager, level, 2, 0, 0x440, LEVEL_PRINT_TBL_DEPOSIT, print);
+    WorldTrade_WantLevelPrint(win[2], msgManager, level, WT_TEXT_ALIGN_RIGHT, 0, 0x440, LEVEL_PRINT_TBL_DEPOSIT, print);
     GFL_StrBufFree(str);
 }
 
@@ -830,20 +830,20 @@ void WorldTrade_MyPokeWantPrint(MsgData *msgManager, MsgData *monsNameManager, W
 
     str = GFL_MsgDataLoadStrbufNew(msgManager, 0x6b);
 
-    WorldTrade_SysPrint(win[0], str, 0, 0, 0, 0x440, print);
+    WorldTrade_SysPrint(win[0], str, 0, 0, WT_TEXT_ALIGN_LEFT, 0x440, print);
     for (i = 1; i < 3; i++) {
         GFL_BitmapFill(BmpWin_GetBitmap(win[i]), 0);
     }
-    WorldTrade_PokeNamePrint(win[1], monsNameManager, monsno, 0, 0, 0x440, print);
-    if (monsno == SPECIES_NIDORAN_F && sex == 2) {
+    WorldTrade_PokeNamePrint(win[1], monsNameManager, monsno, WT_TEXT_ALIGN_LEFT, 0, 0x440, print);
+    if (monsno == SPECIES_NIDORAN_F && sex == WT_SEARCH_GENDER_FEMALE) {
         printSex = FALSE;
-    } else if (monsno == SPECIES_NIDORAN_M && sex == 1) {
+    } else if (monsno == SPECIES_NIDORAN_M && sex == WT_SEARCH_GENDER_MALE) {
         printSex = FALSE;
     }
-    if (printSex && (sex == 1 || sex == 2)) {
+    if (printSex && (sex == WT_SEARCH_GENDER_MALE || sex == WT_SEARCH_GENDER_FEMALE)) {
         WorldTrade_SexPrint(win[1], msgManager, sex, 0, 0, 70, 0x440, print);
     }
-    WorldTrade_WantLevelPrint(win[2], msgManager, level, 0, 0, 0x440, LEVEL_PRINT_TBL_DEPOSIT, print);
+    WorldTrade_WantLevelPrint(win[2], msgManager, level, WT_TEXT_ALIGN_LEFT, 0, 0x440, LEVEL_PRINT_TBL_DEPOSIT, print);
     GFL_StrBufFree(str);
 }
 
@@ -861,21 +861,21 @@ void WorldTrade_PokeInfoPrint(MsgData *msgManager, WordSet *wordSet, BmpWin **wi
     PML_PkmGetParam(pkm, PKM_PARAM_NICKNAME, name);
     sex = PML_PkmGetParam(pkm, PKM_PARAM_SEX, NULL) + 1;
     level = PML_PkmGetLevel(pkm);
-    showSex = PML_PkmGetParam(pkm, 0xad, NULL);
+    showSex = PML_PkmGetParam(pkm, PKM_PARAM_SHOW_SEX, NULL);
     title = GFL_MsgDataLoadStrbufNew(msgManager, 0x6e);
     WordSetNumber(wordSet, 3, level, 3, 0, TRUE);
     levelStr = WorldTrade_ExpandMessage(wordSet, msgManager, 0x72, HEAPID_WORLDTRADE);
-    if (sex != SEARCH_GENDER_ANY) {
+    if (sex != WT_POKEMON_SEX_GENDERLESS) {
         GFL_MsgDataLoadStrbuf(msgManager, WorldTrade_SexStringTable[sex], sexStr);
     }
     for (i = 0; i < 3; i++) {
         GFL_BitmapFill(BmpWin_GetBitmap(win[i]), 0);
     }
-    WorldTrade_SysPrint(win[0], title, 1, 0, 0, 0x3c40, print);
-    WorldTrade_SysPrint(win[1], name, 0, 0, 0, 0x3c40, print);
-    WorldTrade_SysPrint(win[2], levelStr, 0, 0, 2, 0x3c40, print);
-    if (sex != SEARCH_GENDER_ANY && showSex) {
-        WorldTrade_SysPrint(win[1], sexStr, 70, 0, 0, Deposit_GetSexBaseColor(sex - 1), print);
+    WorldTrade_SysPrint(win[0], title, 1, 0, WT_TEXT_ALIGN_LEFT, 0x3c40, print);
+    WorldTrade_SysPrint(win[1], name, 0, 0, WT_TEXT_ALIGN_LEFT, 0x3c40, print);
+    WorldTrade_SysPrint(win[2], levelStr, 0, 0, WT_TEXT_ALIGN_RIGHT, 0x3c40, print);
+    if (sex != WT_POKEMON_SEX_GENDERLESS && showSex) {
+        WorldTrade_SysPrint(win[1], sexStr, 70, 0, WT_TEXT_ALIGN_LEFT, Deposit_GetSexBaseColor(sex - 1), print);
     }
     post->characterNo = PML_PkmGetParam(pkm, PKM_PARAM_SPECIES, NULL);
     post->gender = sex;
@@ -958,9 +958,9 @@ void WorldTrade_PostPokemonBaseDataMake(Dpw_Tr_Data *dtd, WorldTradeWork *wk) {
     dtd->versionCode = VERSION_WHITE2;
 #endif
     dtd->langCode = 2;
-    dtd->unk126 = getPlayerSurveys(wk->param->wifihistory);
-    dtd->unk127 = UnityTower_GetCountryCount(wk->param->wifihistory);
-    dtd->unkF7 = UnityTower_GetRatingLevel(wk->param->wifihistory);
+    dtd->hobby = getPlayerSurveys(wk->param->wifihistory);
+    dtd->countryCount = UnityTower_GetCountryCount(wk->param->wifihistory);
+    dtd->ratingLevel = UnityTower_GetRatingLevel(wk->param->wifihistory);
 }
 
 static void Deposit_DepositPokemonDataMake(Dpw_Tr_Data *dtd, WorldTradeWork *wk) {
@@ -1105,7 +1105,7 @@ static u32 Deposit_BmpListMain(BmpMenuList *list, u16 *posBackup) {
 
     BmpMenuList_GetCursorIndex(list, &pos);
     if (*posBackup != pos) {
-        if (*posBackup != 0xffff) {
+        if (*posBackup != WT_LISTPOS_NONE) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
         }
         *posBackup = pos;

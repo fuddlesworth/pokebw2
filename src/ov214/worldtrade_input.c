@@ -18,6 +18,31 @@
 #include "system/bmp_menulist.h"
 #include "worldtrade_local.h"
 
+// Separate Back positions in the initial picker and the gender picker.
+enum {
+    INPUT_HEAD2_BACK = 3,
+    INPUT_SEX_BACK = 3,
+};
+
+// Touch controls after the four Pokemon-name or level rows.
+enum {
+    INPUT_LIST_BACK = 4,
+    INPUT_LIST_PREVIOUS_PAGE = 5,
+    INPUT_LIST_NEXT_PAGE = 6,
+};
+
+// Touch controls after the five country rows.
+enum {
+    INPUT_NATION_BACK = 5,
+    INPUT_NATION_PREVIOUS_PAGE = 6,
+    INPUT_NATION_NEXT_PAGE = 7,
+};
+
+// Any-country choice above the initial groups; its result becomes country zero.
+enum {
+    INPUT_NATION_ANY = 10,
+};
+
 // The Global Trade Station's input of a Pokémon's name, gender and level and of a country, in a window that slides
 // over the lower screen, for the deposit and search screens. A name is chosen by its initial's group, then the
 // initial, then the name, and a country the same way. The names are ours, guessed
@@ -204,10 +229,13 @@ static const u8 sNationCursorPos[6][2] = { { 136, 16 }, { 136, 40 },  { 136, 64 
 static const u8 sNationWinPos[6][2] = { { 3, 1 }, { 3, 4 }, { 3, 7 }, { 3, 10 }, { 3, 13 }, { 24, 17 } };
 
 // The gender each choice searches for: either, male or female, and the Back button
-static const int sSexSelectTable[4] = { 2, 0, 1, INPUT_CANCEL };
+static const int sSexSelectTable[4] = { WT_INPUT_SEX_ANY, WT_INPUT_SEX_MALE, WT_INPUT_SEX_FEMALE, INPUT_CANCEL };
 
 // Where the cursor goes from each choice of the initials with up, down, left and right
-static const u8 sHead2KeyTable[4][4] = { { 3, 3, 2, 1 }, { 3, 3, 0, 2 }, { 3, 3, 1, 0 }, { 2, 2, 3, 3 } };
+static const u8 sHead2KeyTable[4][4] = { { INPUT_HEAD2_BACK, INPUT_HEAD2_BACK, 2, 1 },
+                                         { INPUT_HEAD2_BACK, INPUT_HEAD2_BACK, 0, 2 },
+                                         { INPUT_HEAD2_BACK, INPUT_HEAD2_BACK, 1, 0 },
+                                         { 2, 2, INPUT_HEAD2_BACK, INPUT_HEAD2_BACK } };
 
 static const TouchRect sSexTouchTbl[5] = {
     { 24, 44, 136, 248 }, { 56, 76, 136, 248 }, { 88, 108, 136, 248 }, { 133, 154, 197, 250 }, { TOUCH_RECT_END },
@@ -243,8 +271,16 @@ static const TouchRect sNationTouchTbl[9] = {
 static const int sHeadOffset[9] = { 0, 3, 6, 9, 12, 15, 18, 21, 24 };
 
 static const u8 sHead1KeyTable[10][4] = {
-    { 9, 3, 2, 1 }, { 9, 4, 0, 2 }, { 9, 5, 1, 0 }, { 0, 6, 5, 4 }, { 1, 7, 3, 5 },
-    { 2, 8, 4, 3 }, { 3, 9, 8, 7 }, { 4, 9, 6, 8 }, { 5, 9, 7, 6 }, { 8, 2, 9, 9 },
+    { INPUT_HEAD_CANCEL, 3, 2, 1 },
+    { INPUT_HEAD_CANCEL, 4, 0, 2 },
+    { INPUT_HEAD_CANCEL, 5, 1, 0 },
+    { 0, 6, 5, 4 },
+    { 1, 7, 3, 5 },
+    { 2, 8, 4, 3 },
+    { 3, INPUT_HEAD_CANCEL, 8, 7 },
+    { 4, INPUT_HEAD_CANCEL, 6, 8 },
+    { 5, INPUT_HEAD_CANCEL, 7, 6 },
+    { 8, 2, INPUT_HEAD_CANCEL, INPUT_HEAD_CANCEL },
 };
 static const TouchRect sHead1TouchTbl[11] = {
     { 39, 56, 142, 167 },  { 39, 56, 174, 199 },   { 39, 56, 206, 231 },  { 63, 80, 142, 167 },
@@ -252,8 +288,17 @@ static const TouchRect sHead1TouchTbl[11] = {
     { 87, 104, 206, 231 }, { 133, 154, 197, 250 }, { TOUCH_RECT_END },
 };
 static const u8 sNationHead1KeyTable[11][4] = {
-    { 10, 3, 2, 1 }, { 10, 4, 0, 2 }, { 10, 5, 1, 0 }, { 0, 6, 5, 4 },  { 1, 7, 3, 5 },   { 2, 8, 4, 3 },
-    { 3, 9, 8, 7 },  { 4, 9, 6, 8 },  { 5, 9, 7, 6 },  { 8, 10, 9, 9 }, { 9, 0, 10, 10 },
+    { INPUT_NATION_ANY, 3, 2, 1 },
+    { INPUT_NATION_ANY, 4, 0, 2 },
+    { INPUT_NATION_ANY, 5, 1, 0 },
+    { 0, 6, 5, 4 },
+    { 1, 7, 3, 5 },
+    { 2, 8, 4, 3 },
+    { 3, INPUT_HEAD_CANCEL, 8, 7 },
+    { 4, INPUT_HEAD_CANCEL, 6, 8 },
+    { 5, INPUT_HEAD_CANCEL, 7, 6 },
+    { 8, INPUT_NATION_ANY, INPUT_HEAD_CANCEL, INPUT_HEAD_CANCEL },
+    { INPUT_HEAD_CANCEL, 0, INPUT_NATION_ANY, INPUT_NATION_ANY },
 };
 static const TouchRect sNationHead1TouchTbl[12] = {
     { 39, 56, 142, 167 },  { 39, 56, 174, 199 },   { 39, 56, 206, 231 },  { 63, 80, 142, 167 },
@@ -480,7 +525,7 @@ WorldTradeInputWork *WorldTrade_Input_Init(WorldTradeInputHeader *header, int fr
     wk->head2 = 0;
     wk->poke = 0;
     wk->nation = 0;
-    wk->sex = 0;
+    wk->sex = WT_INPUT_SEX_MALE;
     wk->level = 0;
     wk->listpos = 0;
     wk->listposBackupX = 0;
@@ -656,7 +701,7 @@ static u32 Input_WordHeadSelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
 }
 
 static u32 Input_Head2DecideFunc(WorldTradeInputWork *wk, int decide) {
-    if (decide != 3) {
+    if (decide != INPUT_HEAD2_BACK) {
         if (wk->head1 <= 8) {
             if (decide >= sHeadwordRange[wk->head1].count) {
                 decide = INPUT_NULL;
@@ -672,7 +717,7 @@ static u32 Input_WordHead2SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
     int pos = wk->listpos;
     u32 hit;
 
-    if (pos < 3) {
+    if (pos < INPUT_HEAD2_BACK) {
         wk->listposBackupX = pos;
     }
     if (GCTX_HIDGetPressedKeys() != 0 && GCTX_HIDIsUsingTouch() == TRUE) {
@@ -692,12 +737,12 @@ static u32 Input_WordHead2SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
             wk->listpos = sHead2KeyTable[wk->listpos][3];
         }
     }
-    if (pos == 3 && wk->listpos < 3) {
+    if (pos == INPUT_HEAD2_BACK && wk->listpos < INPUT_HEAD2_BACK) {
         wk->listpos = wk->listposBackupX;
     }
     if (pos != wk->listpos) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
-        if (wk->listpos == 3) {
+        if (wk->listpos == INPUT_HEAD2_BACK) {
             WorldTrade_CLACT_PosChange(wk->cursorAct, 192, 136);
             ClActor_SetSequence(wk->cursorAct, 5);
         } else {
@@ -709,7 +754,7 @@ static u32 Input_WordHead2SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
 
     hit = Input_TouchPanelFunc(wk, INPUT_MODE_HEADWORD_2);
     if (hit != (u32)TOUCH_RECT_NONE) {
-        if (hit == 3) {
+        if (hit == INPUT_HEAD2_BACK) {
             WorldTrade_CLACT_PosChange(wk->cursorAct, 192, 136);
             ClActor_SetSequence(wk->cursorAct, 5);
         } else {
@@ -763,12 +808,12 @@ static int Input_ListPageNum(int num, int inPage) {
 
 static u32 Input_NameDecideFunc(WorldTradeInputWork *wk, int decide) {
     switch (decide) {
-    case 4:
+    case INPUT_LIST_BACK:
         return INPUT_CANCEL;
-    case 5:
+    case INPUT_LIST_PREVIOUS_PAGE:
         Input_NamePageRefresh(wk, -1);
         return INPUT_NULL;
-    case 6:
+    case INPUT_LIST_NEXT_PAGE:
         Input_NamePageRefresh(wk, 1);
         return INPUT_NULL;
     default: {
@@ -827,10 +872,10 @@ static u32 Input_PokeNameSelectMain(WorldTradeInputWork *wk) {
             if (wk->listpos != 0) {
                 wk->listpos--;
             } else {
-                wk->listpos = 4;
+                wk->listpos = INPUT_LIST_BACK;
             }
         } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_DOWN) {
-            if (wk->listpos != 4) {
+            if (wk->listpos != INPUT_LIST_BACK) {
                 wk->listpos++;
             } else {
                 wk->listpos = 0;
@@ -844,7 +889,7 @@ static u32 Input_PokeNameSelectMain(WorldTradeInputWork *wk) {
     if (pos != wk->listpos) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         WorldTrade_CLACT_PosChange(wk->cursorAct, sNameCursorPos[wk->listpos][0], sNameCursorPos[wk->listpos][1]);
-        if (wk->listpos == 4) {
+        if (wk->listpos == INPUT_LIST_BACK) {
             ClActor_SetSequence(wk->cursorAct, 5);
         } else {
             ClActor_SetSequence(wk->cursorAct, 6);
@@ -855,7 +900,7 @@ static u32 Input_PokeNameSelectMain(WorldTradeInputWork *wk) {
     if (hit != (u32)TOUCH_RECT_NONE) {
         if (hit < 5) {
             WorldTrade_CLACT_PosChange(wk->cursorAct, sNameCursorPos[hit][0], sNameCursorPos[hit][1]);
-            if (hit == 4) {
+            if (hit == INPUT_LIST_BACK) {
                 ClActor_SetSequence(wk->cursorAct, 5);
             } else {
                 wk->listpos = hit;
@@ -898,10 +943,10 @@ static u32 Input_SexSelectMain(WorldTradeInputWork *wk) {
             if (wk->listpos != 0) {
                 wk->listpos--;
             } else {
-                wk->listpos = 3;
+                wk->listpos = INPUT_SEX_BACK;
             }
         } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_DOWN) {
-            if (wk->listpos != 3) {
+            if (wk->listpos != INPUT_SEX_BACK) {
                 wk->listpos++;
             } else {
                 wk->listpos = 0;
@@ -911,7 +956,7 @@ static u32 Input_SexSelectMain(WorldTradeInputWork *wk) {
     if (pos != wk->listpos) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         WorldTrade_CLACT_PosChange(wk->cursorAct, sSexCursorPos[wk->listpos][0], sSexCursorPos[wk->listpos][1]);
-        if (wk->listpos == 3) {
+        if (wk->listpos == INPUT_SEX_BACK) {
             ClActor_SetSequence(wk->cursorAct, 5);
         } else {
             ClActor_SetSequence(wk->cursorAct, 6);
@@ -922,7 +967,7 @@ static u32 Input_SexSelectMain(WorldTradeInputWork *wk) {
     if (hit != (u32)TOUCH_RECT_NONE) {
         GCTX_HIDSetUsingTouch(TRUE);
         WorldTrade_CLACT_PosChange(wk->cursorAct, sSexCursorPos[hit][0], sSexCursorPos[hit][1]);
-        if (hit == 3) {
+        if (hit == INPUT_SEX_BACK) {
             ClActor_SetSequence(wk->cursorAct, 5);
         } else {
             ClActor_SetSequence(wk->cursorAct, 6);
@@ -979,13 +1024,13 @@ static void Input_LevelPageRefresh(WorldTradeInputWork *wk, int move) {
 
 static u32 Input_LevelDecideFunc(WorldTradeInputWork *wk, int decide) {
     switch (decide) {
-    case 4:
+    case INPUT_LIST_BACK:
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         return INPUT_CANCEL;
-    case 5:
+    case INPUT_LIST_PREVIOUS_PAGE:
         Input_LevelPageRefresh(wk, -1);
         return INPUT_NULL;
-    case 6:
+    case INPUT_LIST_NEXT_PAGE:
         Input_LevelPageRefresh(wk, 1);
         return INPUT_NULL;
     default:
@@ -1012,10 +1057,10 @@ static u32 Input_LevelSelectMain(WorldTradeInputWork *wk) {
             if (wk->listpos != 0) {
                 wk->listpos--;
             } else {
-                wk->listpos = 4;
+                wk->listpos = INPUT_LIST_BACK;
             }
         } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_DOWN) {
-            if (wk->listpos != 4) {
+            if (wk->listpos != INPUT_LIST_BACK) {
                 wk->listpos++;
             } else {
                 wk->listpos = 0;
@@ -1029,7 +1074,7 @@ static u32 Input_LevelSelectMain(WorldTradeInputWork *wk) {
     if (pos != wk->listpos) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         WorldTrade_CLACT_PosChange(wk->cursorAct, sLevelCursorPos[wk->listpos][0], sLevelCursorPos[wk->listpos][1]);
-        if (wk->listpos == 4) {
+        if (wk->listpos == INPUT_LIST_BACK) {
             ClActor_SetSequence(wk->cursorAct, 5);
         } else {
             ClActor_SetSequence(wk->cursorAct, 6);
@@ -1040,7 +1085,7 @@ static u32 Input_LevelSelectMain(WorldTradeInputWork *wk) {
     if (hit != (u32)TOUCH_RECT_NONE) {
         if (hit < 5) {
             WorldTrade_CLACT_PosChange(wk->cursorAct, sLevelCursorPos[hit][0], sLevelCursorPos[hit][1]);
-            if (hit == 4) {
+            if (hit == INPUT_LIST_BACK) {
                 ClActor_SetSequence(wk->cursorAct, 5);
             } else {
                 wk->listpos = hit;
@@ -1069,10 +1114,10 @@ static u32 Input_LevelSelectMain(WorldTradeInputWork *wk) {
 
 static u32 Input_NationHead1DecideFunc(WorldTradeInputWork *wk, int decide) {
     switch (decide) {
-    case 9:
+    case INPUT_HEAD_CANCEL:
         return INPUT_CANCEL;
-    case 10:
-        return 10;
+    case INPUT_NATION_ANY:
+        return INPUT_NATION_ANY;
     }
     return decide;
 }
@@ -1119,10 +1164,10 @@ static u32 Input_NationHead1SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
         WorldTrade_CLACT_PosChange(wk->cursorAct, (sNationHead1CursorPos[wk->listpos][0] + 16) * 8,
                                    sNationHead1CursorPos[wk->listpos][1] * 8);
         switch (wk->listpos) {
-        case 9:
+        case INPUT_HEAD_CANCEL:
             ClActor_SetSequence(wk->cursorAct, 5);
             break;
-        case 10:
+        case INPUT_NATION_ANY:
             ClActor_SetSequence(wk->cursorAct, 6);
             break;
         default:
@@ -1136,10 +1181,10 @@ static u32 Input_NationHead1SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
         WorldTrade_CLACT_PosChange(wk->cursorAct, (sNationHead1CursorPos[hit][0] + 16) * 8,
                                    sNationHead1CursorPos[hit][1] * 8);
         switch (hit) {
-        case 9:
+        case INPUT_HEAD_CANCEL:
             ClActor_SetSequence(wk->cursorAct, 5);
             break;
-        case 10:
+        case INPUT_NATION_ANY:
             ClActor_SetSequence(wk->cursorAct, 6);
             break;
         default:
@@ -1150,7 +1195,7 @@ static u32 Input_NationHead1SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
         hit = Input_NationHead1DecideFunc(wk, hit);
         if (hit == INPUT_CANCEL) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-        } else if (hit == 10 || seeCheck == NULL || seeCheck[hit] != 0) {
+        } else if (hit == INPUT_NATION_ANY || seeCheck == NULL || seeCheck[hit] != 0) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         } else {
             hit = INPUT_NULL;
@@ -1168,7 +1213,7 @@ static u32 Input_NationHead1SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             return hit;
         }
-        if (hit == 10 || seeCheck == NULL || seeCheck[hit] != 0) {
+        if (hit == INPUT_NATION_ANY || seeCheck == NULL || seeCheck[hit] != 0) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             return hit;
         }
@@ -1183,13 +1228,13 @@ static u32 Input_NationHead1SelectMain(WorldTradeInputWork *wk, u8 *seeCheck) {
 
 static u32 Input_NationDecideFunc(WorldTradeInputWork *wk, int decide) {
     switch (decide) {
-    case 5:
+    case INPUT_NATION_BACK:
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         return INPUT_CANCEL;
-    case 6:
+    case INPUT_NATION_PREVIOUS_PAGE:
         Input_NationPageRefresh(wk, -1);
         return INPUT_NULL;
-    case 7:
+    case INPUT_NATION_NEXT_PAGE:
         Input_NationPageRefresh(wk, 1);
         return INPUT_NULL;
     default: {
@@ -1248,10 +1293,10 @@ static u32 Input_NationSelectMain(WorldTradeInputWork *wk) {
             if (wk->listpos != 0) {
                 wk->listpos--;
             } else {
-                wk->listpos = 5;
+                wk->listpos = INPUT_NATION_BACK;
             }
         } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_DOWN) {
-            if (wk->listpos != 5) {
+            if (wk->listpos != INPUT_NATION_BACK) {
                 wk->listpos++;
             } else {
                 wk->listpos = 0;
@@ -1265,7 +1310,7 @@ static u32 Input_NationSelectMain(WorldTradeInputWork *wk) {
     if (pos != wk->listpos) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         WorldTrade_CLACT_PosChange(wk->cursorAct, sNationCursorPos[wk->listpos][0], sNationCursorPos[wk->listpos][1]);
-        if (wk->listpos == 5) {
+        if (wk->listpos == INPUT_NATION_BACK) {
             ClActor_SetSequence(wk->cursorAct, 5);
         } else {
             ClActor_SetSequence(wk->cursorAct, 7);
@@ -1276,7 +1321,7 @@ static u32 Input_NationSelectMain(WorldTradeInputWork *wk) {
     if (hit != (u32)TOUCH_RECT_NONE) {
         if (hit < 6) {
             WorldTrade_CLACT_PosChange(wk->cursorAct, sNationCursorPos[hit][0], sNationCursorPos[hit][1]);
-            if (hit == 5) {
+            if (hit == INPUT_NATION_BACK) {
                 ClActor_SetSequence(wk->cursorAct, 5);
             } else {
                 wk->listpos = hit;
@@ -1367,9 +1412,9 @@ static void Input_LevelSelectInit(WorldTradeInputWork *wk) {
     BGWinFrame_GetScreen(wk->bgWinFrm, 0);
     Input_SelectBmpWinAdd(wk, INPUT_MODE_LEVEL);
     if (wk->situation == INPUT_SITUATION_SEARCH) {
-        wk->listMax = WorldTrade_LevelListAdd(&wk->nameList, wk->msgManager, 1);
+        wk->listMax = WorldTrade_LevelListAdd(&wk->nameList, wk->msgManager, LEVEL_PRINT_TBL_SEARCH);
     } else if (wk->situation == INPUT_SITUATION_DEPOSIT) {
-        wk->listMax = WorldTrade_LevelListAdd(&wk->nameList, wk->msgManager, 0);
+        wk->listMax = WorldTrade_LevelListAdd(&wk->nameList, wk->msgManager, LEVEL_PRINT_TBL_DEPOSIT);
     }
     Input_PokeNameListPrint(wk, 0, wk->listMax);
     wk->page = 0;
@@ -1796,7 +1841,7 @@ static u32 Input_SeqNationHead1Init(WorldTradeInputWork *wk) {
     BGWinFrame_StartMove(wk->bgWinFrm, 0, -4, 0, 4);
     wk->seq = WI_SEQ_WININ;
     wk->next = WI_SEQ_NATION_HEAD1_MAIN;
-    wk->listpos = 10;
+    wk->listpos = INPUT_NATION_ANY;
     wk->head1 = -1;
     WorldTrade_CLACT_PosChange(wk->cursorAct, (sNationHead1CursorPos[wk->listpos][0] + 16) * 8,
                                sNationHead1CursorPos[wk->listpos][1] * 8);
@@ -1815,7 +1860,7 @@ static u32 Input_SeqNationHead1Main(WorldTradeInputWork *wk) {
         wk->next = WI_SEQ_NATION_HEAD1_EXIT;
         wk->head1 = -1;
         break;
-    case 10:
+    case INPUT_NATION_ANY:
         ClActor_SetVisible(wk->cursorAct, TRUE);
         ClActor_SetSequence(wk->cursorAct, ClActor_GetSequence(wk->cursorAct) + 9);
         wk->seq = WI_SEQ_WINOUT;

@@ -8,6 +8,7 @@
 #include "dwc/dwc.h"
 #include "field/unity_tower.h"
 #include "gfl/arc_util.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"
@@ -47,6 +48,19 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "worldtrade_local.h"
+
+// Whether a received Pokemon fits, with mail requiring a party slot.
+enum {
+    UPLOAD_STORAGE_AVAILABLE = 0,
+    UPLOAD_STORAGE_FULL = 1,
+    UPLOAD_STORAGE_MAIL_PARTY_FULL = 2,
+};
+
+// Which saved date is recorded: a completed deposit trade or a direct exchange.
+enum {
+    UPLOAD_DATE_DEPOSIT_TRADE = 0,
+    UPLOAD_DATE_EXCHANGE = 1,
+};
 
 // The Global Trade Station's server exchanges: depositing a Pokémon, taking it back, trading for a Pokémon found by a
 // search, checking whether the deposited Pokémon was traded, and the saves after each. The file's name is a guess, as
@@ -531,7 +545,7 @@ static int Upload_SubSeqEvilCheckResult(WorldTradeWork *wk) {
             }
             break;
         }
-    } else if (ret != 15) {
+    } else if (ret != NHTTP_STATUS_RUNNING) {
         wk->connectErrorNo = -15;
         wk->subprocessSeq = UPLOAD_SEQ_ERROR_MESSAGE;
         NHttpRap_FreePostData(wk->evilCheck);
@@ -573,7 +587,7 @@ static int Upload_SubSeqNameCheckStart(WorldTradeWork *wk) {
 }
 
 static int Upload_SubSeqNameCheckWait(WorldTradeWork *wk) {
-    BOOL done = DWC_CheckProfanityProcess() == 2;
+    BOOL done = DWC_CheckProfanityProcess() == DWC_PROF_STATE_SUCCESS;
     BOOL bad;
 
     if (done) {
@@ -623,12 +637,12 @@ static int Upload_SubSeqUploadResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             Upload_UploadPokemonDataDelete(wk, TRUE);
             RecordAddOne(wk->param->record, 0x1c);
             wk->subprocessSeq = UPLOAD_SEQ_SAVE;
             break;
-        case -1:
+        case DPW_TR_RESULT_CROWDED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_ERROR_MESSAGE;
             GFL_NetErrShutdown();
@@ -636,7 +650,7 @@ static int Upload_SubSeqUploadResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -5:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
         case -6:
         case -7:
         case -8:
@@ -646,12 +660,12 @@ static int Upload_SubSeqUploadResult(WorldTradeWork *wk) {
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_RETURN_TITLE_MESSAGE;
             break;
-        case -4:
-        case -12:
+        case DPW_TR_RESULT_NOT_FOUND:
+        case DPW_TR_RESULT_CANCELED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_RETURN_TITLE_MESSAGE;
             break;
-        case -2:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
         case -15:
             wk->connectErrorNo = result;
@@ -661,7 +675,7 @@ static int Upload_SubSeqUploadResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -685,24 +699,24 @@ static int Upload_SubSeqUploadFinishResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             wk->serverWaitTime = 0;
             wk->subprocessSeq = UPLOAD_SEQ_SAVE_LAST;
             break;
-        case -4:
-        case -12:
+        case DPW_TR_RESULT_NOT_FOUND:
+        case DPW_TR_RESULT_CANCELED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_RETURN_TITLE_MESSAGE;
             break;
-        case -1:
-        case -2:
-        case -3:
-        case -5:
+        case DPW_TR_RESULT_CROWDED:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
+        case DPW_TR_RESULT_ALREADY_TRADED:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
         case -14:
         case -15:
             WorldTrade_ShowFatalError(wk);
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -726,7 +740,7 @@ static int Upload_SubSeqDownloadResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             if (wk->uploadPokemonData.isTrade) {
                 // Traded in the meantime: take back the Pokémon it was traded for
                 wk->subprocessSeq = UPLOAD_SEQ_SERVER_TRADE_CHECK;
@@ -737,25 +751,25 @@ static int Upload_SubSeqDownloadResult(WorldTradeWork *wk) {
                 wk->subprocessSeq = UPLOAD_SEQ_SAVE;
             }
             break;
-        case -3:
+        case DPW_TR_RESULT_ALREADY_TRADED:
             wk->subprocessSeq = UPLOAD_SEQ_ERROR_MESSAGE;
             GFL_NetErrShutdown();
             NetState_ClearWifiError();
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -4:
+        case DPW_TR_RESULT_NOT_FOUND:
             wk->subprocessSeq = UPLOAD_SEQ_ERROR_MESSAGE;
             GFL_NetErrShutdown();
             NetState_ClearWifiError();
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -12:
+        case DPW_TR_RESULT_CANCELED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_RETURN_TITLE_MESSAGE;
             break;
-        case -2:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
         case -15:
             wk->connectErrorNo = result;
@@ -765,7 +779,7 @@ static int Upload_SubSeqDownloadResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -788,21 +802,21 @@ static int Upload_SubSeqDownloadFinishResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             wk->subprocessSeq = UPLOAD_SEQ_SAVE_LAST;
             break;
-        case -5:
-        case -4:
-        case -3:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
+        case DPW_TR_RESULT_NOT_FOUND:
+        case DPW_TR_RESULT_ALREADY_TRADED:
             WorldTrade_ShowFatalError(wk);
             break;
         case -15:
         case -14:
-        case -12:
-        case -2:
+        case DPW_TR_RESULT_CANCELED:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
             WorldTrade_ShowFatalError(wk);
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -827,7 +841,7 @@ static int Upload_SubSeqExchangeResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             wk->subprocessSeq = UPLOAD_SEQ_SAVE;
             Upload_UploadPokemonDataDelete(wk, FALSE);
             Upload_ExchangePokemonDataAdd(wk, (PartyPkm *)wk->exchangePokemonData.postData, &wk->uploadPokemonData,
@@ -836,7 +850,7 @@ static int Upload_SubSeqExchangeResult(WorldTradeWork *wk) {
             Upload_MakeTradeExchangeInfo(wk, (PartyPkm *)wk->exchangePokemonData.postData, &wk->exchangePokemonData,
                                          (PartyPkm *)wk->uploadPokemonData.postData);
             break;
-        case -5:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_EXCHANGE_FAILED_MESSAGE;
             break;
@@ -849,11 +863,11 @@ static int Upload_SubSeqExchangeResult(WorldTradeWork *wk) {
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_RETURN_TITLE_MESSAGE;
             break;
-        case -12:
+        case DPW_TR_RESULT_CANCELED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_RETURN_TITLE_MESSAGE;
             break;
-        case -2:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
         case -15:
             wk->connectErrorNo = result;
@@ -863,7 +877,7 @@ static int Upload_SubSeqExchangeResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -886,19 +900,19 @@ static int Upload_SubSeqExchangeFinishResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             wk->subprocessSeq = UPLOAD_SEQ_SAVE_LAST;
             break;
-        case -5:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
             WorldTrade_ShowFatalError(wk);
             break;
         case -15:
         case -14:
-        case -12:
-        case -2:
+        case DPW_TR_RESULT_CANCELED:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
             WorldTrade_ShowFatalError(wk);
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -921,32 +935,32 @@ static int Upload_SubSeqServerTradeCheckResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_TRADE_NOT_TRADED:
             // Not traded
             wk->subprocessSeq = UPLOAD_SEQ_SERVER_DOWNLOAD;
             break;
-        case 1:
+        case DPW_TR_TRADE_TRADED:
             // Traded: check that the Pokémon received fits
             wk->depositFlag = 1;
             switch (Upload_MyPokemonPocketFullCheck(wk, &wk->uploadPokemonData)) {
-            case 1:
+            case UPLOAD_STORAGE_FULL:
                 WorldTrade_TimeIconDel(wk);
                 Enter_MessagePrintNoStream(wk, wk->msgManager, 0x23, 1, 0xf0f);
                 WorldTrade_SetNextSeq(wk, UPLOAD_SEQ_MES_WAIT_BUTTON, UPLOAD_SEQ_SERVER_TRADE_CHECK_END);
                 break;
-            case 2:
+            case UPLOAD_STORAGE_MAIL_PARTY_FULL:
                 WorldTrade_TimeIconDel(wk);
                 Enter_MessagePrintNoStream(wk, wk->msgManager, 0x29, 1, 0xf0f);
                 WorldTrade_SetNextSeq(wk, UPLOAD_SEQ_MES_WAIT_BUTTON, UPLOAD_SEQ_SERVER_TRADE_CHECK_END);
                 break;
-            case 0:
+            case UPLOAD_STORAGE_AVAILABLE:
                 wk->subprocessSeq = UPLOAD_SEQ_DOWNLOAD_EX_START;
                 wk->subOutFlag = 1;
                 wk->checkEvolution = 1;
                 break;
             }
             break;
-        case -3:
+        case DPW_TR_RESULT_ALREADY_TRADED:
             // The deposited Pokémon is gone from the server: take back the save's copy
             wk->depositFlag = 0;
             if (WorldTradeData_GetFlag(wk->param->worldtrade_data)) {
@@ -963,7 +977,7 @@ static int Upload_SubSeqServerTradeCheckResult(WorldTradeWork *wk) {
                 Upload_ReturnProcess(wk);
             }
             break;
-        case -4:
+        case DPW_TR_RESULT_NOT_FOUND:
             wk->depositFlag = 0;
             if (WorldTradeData_GetFlag(wk->param->worldtrade_data)) {
                 PartyPkm *pkm = WorldTrade_AllocPartyPkm(HEAPID_WORLDTRADE);
@@ -976,8 +990,8 @@ static int Upload_SubSeqServerTradeCheckResult(WorldTradeWork *wk) {
                 GFL_HeapFree(pkm);
             }
             break;
-        case -2:
-        case -12:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
+        case DPW_TR_RESULT_CANCELED:
         case -14:
         case -15:
             wk->connectErrorNo = result;
@@ -987,7 +1001,7 @@ static int Upload_SubSeqServerTradeCheckResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -1016,7 +1030,7 @@ static int Upload_SubSeqServerDownloadResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             if (Upload_DuplicateCheck(wk)) {
                 // The server still has the Pokémon the save took back: delete it there
                 wk->subprocessSeq = UPLOAD_SEQ_SERVER_POKE_DELETE;
@@ -1025,11 +1039,11 @@ static int Upload_SubSeqServerDownloadResult(WorldTradeWork *wk) {
             }
             wk->depositFlag = 1;
             break;
-        case -3:
+        case DPW_TR_RESULT_ALREADY_TRADED:
             wk->depositFlag = 0;
             break;
-        case -2:
-        case -12:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
+        case DPW_TR_RESULT_CANCELED:
         case -14:
         case -15:
             wk->connectErrorNo = result;
@@ -1039,12 +1053,12 @@ static int Upload_SubSeqServerDownloadResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             return WT_SEQ_MAIN;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             return WT_SEQ_MAIN;
-        case -1:
-        case -4:
-        case -5:
+        case DPW_TR_RESULT_CROWDED:
+        case DPW_TR_RESULT_NOT_FOUND:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
         case -6:
         case -7:
         case -8:
@@ -1099,9 +1113,9 @@ static void Upload_MakeTradeExchangeInfo(WorldTradeWork *wk, PartyPkm *received,
         sent != NULL ? (u16)PokeParty_GetParam(sent, PKM_PARAM_SPECIES, NULL) : (u16)trData->postSimple.characterNo;
     otherColor = FALSE;
     visitor.receivedSpecies = PokeParty_GetParam(received, PKM_PARAM_SPECIES, NULL);
-    visitor.hobby = trData->unk126;
-    visitor.ratingLevel = trData->unkF7;
-    visitor.countryCount = trData->unk127;
+    visitor.hobby = trData->hobby;
+    visitor.ratingLevel = trData->ratingLevel;
+    visitor.countryCount = trData->countryCount;
     UnityTowerSurvey_RegisterTrade(wk->param->wifihistory, &visitor);
     GFL_HeapFree(visitorInfo);
 
@@ -1133,15 +1147,15 @@ static int Upload_SubSeqCancel(WorldTradeWork *wk) {
 static int Upload_SubSeqCancelWait(WorldTradeWork *wk) {
     if (DpwTr_IsFinished()) {
         switch (DpwTr_GetResult()) {
-        case -12:
+        case DPW_TR_RESULT_CANCELED:
             wk->subprocessSeq = UPLOAD_SEQ_SERVER_SERVICE_END;
             break;
-        case -2:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
         case -15:
             wk->subprocessSeq = UPLOAD_SEQ_SERVER_SERVICE_END;
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -1184,10 +1198,10 @@ static int Upload_SubSeqDownloadExFinishResult(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             wk->subprocessSeq = UPLOAD_SEQ_SAVE_LAST;
             break;
-        case -3:
+        case DPW_TR_RESULT_ALREADY_TRADED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_ERROR_MESSAGE;
             GFL_NetErrShutdown();
@@ -1195,16 +1209,16 @@ static int Upload_SubSeqDownloadExFinishResult(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -4:
-        case -12:
+        case DPW_TR_RESULT_NOT_FOUND:
+        case DPW_TR_RESULT_CANCELED:
             wk->connectErrorNo = result;
             // fallthrough
-        case -2:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
         case -14:
         case -15:
             WorldTrade_ShowFatalError(wk);
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -1258,16 +1272,16 @@ static int Upload_SubSeqServerPokeDeleteWait(WorldTradeWork *wk) {
 
         wk->timeoutCount = 0;
         switch (result) {
-        case 0:
+        case DPW_TR_RESULT_SUCCESS:
             Upload_ReturnProcess(wk);
             break;
-        case -3:
+        case DPW_TR_RESULT_ALREADY_TRADED:
             Upload_ReturnProcess(wk);
             // fallthrough
-        case -4:
+        case DPW_TR_RESULT_NOT_FOUND:
             Upload_ReturnProcess(wk);
             // fallthrough
-        case -5:
+        case DPW_TR_RESULT_ALREADY_DEPOSITED:
             wk->connectErrorNo = result;
             wk->subprocessSeq = UPLOAD_SEQ_ERROR_MESSAGE;
             GFL_NetErrShutdown();
@@ -1275,13 +1289,13 @@ static int Upload_SubSeqServerPokeDeleteWait(WorldTradeWork *wk) {
             GFL_NetErrClear();
             NetState_ClearError();
             break;
-        case -2:
-        case -12:
+        case DPW_TR_RESULT_SERVER_MAINTENANCE:
+        case DPW_TR_RESULT_CANCELED:
         case -14:
         case -15:
             WorldTrade_ShowFatalError(wk);
             break;
-        case -13:
+        case DPW_TR_RESULT_ERROR:
             WorldTrade_ShowFatalError(wk);
             break;
         }
@@ -1304,16 +1318,16 @@ static void Upload_PrintError(WorldTradeWork *wk) {
     int msgNo;
 
     switch (wk->connectErrorNo) {
-    case -1:
+    case DPW_TR_RESULT_CROWDED:
         msgNo = 0x9d;
         break;
-    case -2:
+    case DPW_TR_RESULT_SERVER_MAINTENANCE:
         msgNo = 0xa9;
         break;
-    case -3:
+    case DPW_TR_RESULT_ALREADY_TRADED:
         msgNo = 0xa2;
         break;
-    case -4:
+    case DPW_TR_RESULT_NOT_FOUND:
         msgNo = 0xa4;
         break;
     case -5:
@@ -1337,10 +1351,10 @@ static void Upload_PrintError(WorldTradeWork *wk) {
     case -11:
         msgNo = 0x20;
         break;
-    case -12:
+    case DPW_TR_RESULT_CANCELED:
         msgNo = 0xa0;
         break;
-    case -13:
+    case DPW_TR_RESULT_ERROR:
         msgNo = 0xa5;
         break;
     case -14:
@@ -1410,14 +1424,14 @@ static int Upload_SubSeqSaveRandomWait(WorldTradeWork *wk) {
 }
 
 static int Upload_SubSeqSaveWait(WorldTradeWork *wk) {
-    if (GameData_UpdateSave(GSYS_GetGameData(wk->param->gsys)) == 1) {
+    if (GameData_UpdateSave(GSYS_GetGameData(wk->param->gsys)) == SAVE_RESULT_LAST) {
         wk->subprocessSeq = wk->saveNextSeq1st;
     }
     return WT_SEQ_MAIN;
 }
 
 static int Upload_SubSeqSaveLast(WorldTradeWork *wk) {
-    if (GameData_UpdateSave(GSYS_GetGameData(wk->param->gsys)) == 2) {
+    if (GameData_UpdateSave(GSYS_GetGameData(wk->param->gsys)) == SAVE_RESULT_OK) {
         wk->subprocessSeq = wk->saveNextSeq2nd;
         WorldTrade_TimeIconDel(wk);
     }
@@ -1431,7 +1445,7 @@ static int Upload_SubSeqTimeoutSave(WorldTradeWork *wk) {
 }
 
 static int Upload_SubSeqTimeoutSaveWait(WorldTradeWork *wk) {
-    if (GameData_UpdateSave(GSYS_GetGameData(wk->param->gsys)) == 2) {
+    if (GameData_UpdateSave(GSYS_GetGameData(wk->param->gsys)) == SAVE_RESULT_OK) {
         WorldTrade_SubProcessChange(wk, WORLDTRADE_TITLE, 0);
         WorldTrade_TimeIconDel(wk);
         Enter_MessagePrintNoStream(wk, wk->msgManager, wk->errorMesNo, 1, 0xf0f);
@@ -1472,7 +1486,7 @@ static int Upload_SubSeqMessageWaitButton(WorldTradeWork *wk) {
 
 // Takes the Pokémon to deposit or trade out of its box or the party, keeping a copy in the save when keep is set
 static void Upload_UploadPokemonDataDelete(WorldTradeWork *wk, BOOL keep) {
-    if (wk->boxTrayNo != 0xff) {
+    if (wk->boxTrayNo != BOX_TRAY_PARTY) {
         PartyPkm *pkm = WorldTrade_AllocPartyPkm(HEAPID_WORLDTRADE);
 
         WorldTrade_BoxPkmToPartyPkm(BoxSaveAccessor_GetPkm(wk->param->mybox, wk->boxTrayNo, wk->boxCursorPos), pkm);
@@ -1501,8 +1515,8 @@ static void Upload_UploadPokemonDataDelete(WorldTradeWork *wk, BOOL keep) {
 static void Upload_DownloadPokemonDataAdd(WorldTradeWork *wk, PartyPkm *pkm, int boxNo, BOOL traded) {
     PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
     addPkmToDex(wk->param->pokedex, pkm);
-    boxNo = 0xff;
-    if (PokeParty_GetPkmCount(wk->param->myparty) == 6) {
+    boxNo = BOX_TRAY_PARTY;
+    if (PokeParty_GetPkmCount(wk->param->myparty) == PARTY_SIZE) {
         boxNo = 0;
     }
     if (traded) {
@@ -1511,14 +1525,14 @@ static void Upload_DownloadPokemonDataAdd(WorldTradeWork *wk, PartyPkm *pkm, int
                            PML_UtilDerivePkmSex(PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL),
                                                 PokeParty_GetParam(pkm, PKM_PARAM_FORM, NULL),
                                                 PokeParty_GetParam(pkm, PKM_PARAM_PID, NULL)));
-        Upload_TradeDateUpDate(wk->param->worldtrade_data, 0);
+        Upload_TradeDateUpDate(wk->param->worldtrade_data, UPLOAD_DATE_DEPOSIT_TRADE);
     }
-    if (boxNo == 0xff) {
+    if (boxNo == BOX_TRAY_PARTY) {
         int count;
 
         PokeParty_AddPkm(wk->param->myparty, pkm);
         count = PokeParty_GetPkmCount(wk->param->myparty);
-        wk->evoPokeInfo.boxNo = 0xff;
+        wk->evoPokeInfo.boxNo = BOX_TRAY_PARTY;
         wk->evoPokeInfo.pos = count - 1;
     } else {
         int pos = 0;
@@ -1534,8 +1548,8 @@ static void Upload_DownloadPokemonDataAdd(WorldTradeWork *wk, PartyPkm *pkm, int
 static void Upload_ExchangePokemonDataAdd(WorldTradeWork *wk, PartyPkm *pkm, Dpw_Tr_Data *upload, Dpw_Tr_Data *exchange,
                                           int boxNo) {
     addPkmToDex(wk->param->pokedex, pkm);
-    boxNo = 0xff;
-    if (PokeParty_GetPkmCount(wk->param->myparty) == 6) {
+    boxNo = BOX_TRAY_PARTY;
+    if (PokeParty_GetPkmCount(wk->param->myparty) == PARTY_SIZE) {
         boxNo = 0;
     }
     PokeParty_SetParam(pkm, PKM_PARAM_HAPPINESS, 70);
@@ -1543,12 +1557,12 @@ static void Upload_ExchangePokemonDataAdd(WorldTradeWork *wk, PartyPkm *pkm, Dpw
                        PML_UtilDerivePkmSex(PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL),
                                             PokeParty_GetParam(pkm, PKM_PARAM_FORM, NULL),
                                             PokeParty_GetParam(pkm, PKM_PARAM_PID, NULL)));
-    if (boxNo == 0xff) {
+    if (boxNo == BOX_TRAY_PARTY) {
         int count;
 
         PokeParty_AddPkm(wk->param->myparty, pkm);
         count = PokeParty_GetPkmCount(wk->param->myparty);
-        wk->evoPokeInfo.boxNo = 0xff;
+        wk->evoPokeInfo.boxNo = BOX_TRAY_PARTY;
         wk->evoPokeInfo.pos = count - 1;
     } else {
         int pos = 0;
@@ -1558,7 +1572,7 @@ static void Upload_ExchangePokemonDataAdd(WorldTradeWork *wk, PartyPkm *pkm, Dpw
         wk->evoPokeInfo.boxNo = boxNo;
         wk->evoPokeInfo.pos = pos;
     }
-    Upload_TradeDateUpDate(wk->param->worldtrade_data, 1);
+    Upload_TradeDateUpDate(wk->param->worldtrade_data, UPLOAD_DATE_EXCHANGE);
 }
 
 // Records the date of a deposit or a trade
@@ -1569,7 +1583,7 @@ static void Upload_TradeDateUpDate(WorldTradeData *data, int type) {
 
     DWC_GetDateTime(&date, &time);
     value = (date.year << 24) | ((date.month & 0xff) << 16) | ((date.day & 0xff) << 8) | date.week;
-    if (type == 1) {
+    if (type == UPLOAD_DATE_EXCHANGE) {
         WorldTradeData_SetExchangeDate(data, value);
     } else {
         WorldTradeData_SetDepositTradeDate(data, value);
@@ -1587,13 +1601,14 @@ static void Upload_WifiHistoryDataSet(UnityTowerSurveySave *save, Dpw_Tr_Data *t
 
 // Whether the Pokémon received has no room: 2 for a Pokémon with mail and a full party, 1 for full boxes and party
 static int Upload_MyPokemonPocketFullCheck(WorldTradeWork *wk, Dpw_Tr_Data *trData) {
-    if (WorldTrade_PokemonMailCheck((PartyPkm *)trData->postData) && PokeParty_GetPkmCount(wk->param->myparty) == 6) {
-        return 2;
+    if (WorldTrade_PokemonMailCheck((PartyPkm *)trData->postData) &&
+        PokeParty_GetPkmCount(wk->param->myparty) == PARTY_SIZE) {
+        return UPLOAD_STORAGE_MAIL_PARTY_FULL;
     }
-    if (wk->boxPokeNum == 24 * BOX_POKE_NUM && PokeParty_GetPkmCount(wk->param->myparty) == 6) {
-        return 1;
+    if (wk->boxPokeNum == 24 * BOX_POKE_NUM && PokeParty_GetPkmCount(wk->param->myparty) == PARTY_SIZE) {
+        return UPLOAD_STORAGE_FULL;
     }
-    return 0;
+    return UPLOAD_STORAGE_AVAILABLE;
 }
 
 static void Upload_SetSaveNextSequence(WorldTradeWork *wk, u16 nextSeq1st, u16 nextSeq2nd) {

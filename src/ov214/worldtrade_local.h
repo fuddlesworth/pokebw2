@@ -20,6 +20,52 @@
 #include "system/time_icon.h"
 #include "system/wordset.h"
 
+// WorldTrade_TouchSwMain results, after its selection animation ends.
+enum {
+    WT_YESNO_WAIT = 0,
+    WT_YESNO_YES = 1,
+    WT_YESNO_NO = 2,
+};
+
+// Gender choices returned by the input window, before conversion to the search wire value.
+enum {
+    WT_INPUT_SEX_MALE = 0,
+    WT_INPUT_SEX_FEMALE = 1,
+    WT_INPUT_SEX_ANY = 2,
+};
+
+// Search wire genders; SEARCH_GENDER_ANY is the third choice, including genderless species.
+enum {
+    WT_SEARCH_GENDER_MALE = 1,
+    WT_SEARCH_GENDER_FEMALE = 2,
+};
+
+// Posted Pokemon genders: PKM_PARAM_SEX plus one; 3 here is genderless, unlike a search.
+enum {
+    WT_POKEMON_SEX_MALE = 1,
+    WT_POKEMON_SEX_FEMALE = 2,
+    WT_POKEMON_SEX_GENDERLESS = 3,
+};
+
+// How WorldTrade_ClearWindow transfers its cleared screen.
+enum {
+    WT_WINDOW_TRANSFER_NOW = 0,
+    WT_WINDOW_TRANSFER_QUEUED = 1,
+};
+
+// Alignment accepted by WorldTrade_SysPrint and WorldTrade_TouchPrint.
+enum {
+    WT_TEXT_ALIGN_LEFT = 0,
+    WT_TEXT_ALIGN_CENTER = 1,
+    WT_TEXT_ALIGN_RIGHT = 2,
+};
+
+// The box page of the party.
+#define BOX_TRAY_PARTY 0xff
+
+// No previous menu cursor position.
+#define WT_LISTPOS_NONE 0xffff
+
 // The Global Trade Station's work and the functions its files share. The header's name is a guess, as are the
 // names of the sequences, screens, fields and functions, except task_res and task_work, which the overlay's asserts
 // print. The ROM names eight of the files; worldtrade_title.c, worldtrade_mypoke.c, worldtrade_partner.c and
@@ -388,7 +434,7 @@ struct WorldTradeWork {
     // Set once the lower screen's BGs are set up, and while a screen keeps them for the next one
     int subLcdBgInit;
     int subLcdBgKeep;
-    int unk12E8;
+    int searchResultDelay;
     // The step of the login, which the Wi-Fi login proc calls back for
     int loginSeq;
     GameProcManager *procManager;
