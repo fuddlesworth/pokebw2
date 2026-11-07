@@ -35,6 +35,21 @@
 #include "system/poke_icon.h"
 #include "system/rtc.h"
 
+// The steps of LocalTvtPokeSelect_Main
+enum {
+    LOCAL_TVT_PARTY_INPUT,
+    LOCAL_TVT_PARTY_FLASH,
+    LOCAL_TVT_PARTY_CANCEL,
+    LOCAL_TVT_PARTY_FINISH,
+};
+
+// The steps of LocalTvtMenu_Main
+enum {
+    LOCAL_TVT_MENU_INPUT,
+    LOCAL_TVT_MENU_FLASH,
+    LOCAL_TVT_MENU_FINISH,
+};
+
 // What the parts of the Xtransceiver's calls with the game's characters share: the backgrounds, the return button, the
 // sequences, the menu of topics, the list of the party and the input of the lists, named after the ROM's
 // "local_tvt_util.c". That the first function is this file's is a guess: nothing ties it to a file
@@ -430,12 +445,12 @@ void LocalTvtMenu_Main(LocalTvtMenu *menu) {
     int i;
 
     switch (menu->seq) {
-    case 0:
+    case LOCAL_TVT_MENU_INPUT:
         LocalTvtKeyTouch_Main(menu->input);
         if (LocalTvtKeyTouch_IsDecided(menu->input)) {
             menu->timer = 0;
             menu->angle = 0;
-            menu->seq = 1;
+            menu->seq = LOCAL_TVT_MENU_FLASH;
             GFL_BGSysUploadStdPalette(BG_SUB_WINDOW, menu->paletteSelected, sizeof(menu->paletteSelected),
                                       PALETTE_SELECTED * 0x20);
             for (i = 0; i < menu->setup.count; i++) {
@@ -457,7 +472,7 @@ void LocalTvtMenu_Main(LocalTvtMenu *menu) {
         LocalTvtUtil_BlendPalette(NNS_GFD_DST_2D_BG_PLTT_SUB, menu->paletteAnim, menu->angle, PALETTE_SELECTED,
                                   menu->palette, menu->paletteSelected);
         break;
-    case 1: {
+    case LOCAL_TVT_MENU_FLASH: {
         BmpWin *window = menu->windows[menu->selected];
         u8 x = BmpWin_GetPosX(window) - 1;
         u8 y = BmpWin_GetPosY(window) - 1;
@@ -473,11 +488,11 @@ void LocalTvtMenu_Main(LocalTvtMenu *menu) {
         GFL_BGSysSetScrPaletteNo(BG_SUB_WINDOW, x, y, width, height, palette);
         GFL_BGSysLoadScr(BG_SUB_WINDOW);
         if (menu->timer++ > FLASH_FRAMES) {
-            menu->seq = 2;
+            menu->seq = LOCAL_TVT_MENU_FINISH;
         }
         break;
     }
-    case 2:
+    case LOCAL_TVT_MENU_FINISH:
         menu->end = TRUE;
         break;
     }
@@ -705,7 +720,7 @@ void LocalTvtPokeSelect_Main(LocalTvtPokeSelect *select) {
         return;
     }
     switch (select->seq) {
-    case 0: {
+    case LOCAL_TVT_PARTY_INPUT: {
         const u16 *from;
 
         LocalTvtKeyTouch_Main(select->input);
@@ -713,14 +728,14 @@ void LocalTvtPokeSelect_Main(LocalTvtPokeSelect *select) {
         if (LocalTvtKeyTouch_IsDecided(select->input)) {
             select->timer = 0;
             select->angle = 0;
-            select->seq = 1;
+            select->seq = LOCAL_TVT_PARTY_FLASH;
             GFL_BGSysUploadStdPalette(BG_SUB_PANEL, select->paletteSelected, sizeof(select->paletteSelected),
                                       PALETTE_SELECTED * 0x20);
             LocalTvtPokeSelect_DrawPanels(select, FALSE);
             break;
         }
         if (LocalTvtReturnBar_IsPressed(select->returnBar)) {
-            select->seq = 2;
+            select->seq = LOCAL_TVT_PARTY_CANCEL;
         }
         if (select->touched) {
             if (select->angle + PULSE_SPEED >= 0x8000) {
@@ -742,7 +757,7 @@ void LocalTvtPokeSelect_Main(LocalTvtPokeSelect *select) {
                                   from, select->paletteSelected);
         break;
     }
-    case 1: {
+    case LOCAL_TVT_PARTY_FLASH: {
         u8 x = (u32)sLocalTvtPokeSelectRects[select->cursor].left / 8;
         u8 y = (u32)sLocalTvtPokeSelectRects[select->cursor].top / 8;
         u8 width = (u32)sLocalTvtPokeSelectRects[select->cursor].right / 8 - x + 1;
@@ -758,18 +773,18 @@ void LocalTvtPokeSelect_Main(LocalTvtPokeSelect *select) {
         if (select->timer++ > FLASH_FRAMES) {
             GFL_BGSysSetScrPaletteNo(BG_SUB_PANEL, x, y, width, height, PALETTE_SELECTED);
             select->result = LOCAL_TVT_POKE_SELECT_DECIDE;
-            select->seq = 3;
+            select->seq = LOCAL_TVT_PARTY_FINISH;
         }
         GFL_BGSysLoadScr(BG_SUB_PANEL);
         break;
     }
-    case 2:
+    case LOCAL_TVT_PARTY_CANCEL:
         if (LocalTvtReturnBar_IsAnimEnd(select->returnBar)) {
             select->result = LOCAL_TVT_POKE_SELECT_CANCEL;
-            select->seq = 3;
+            select->seq = LOCAL_TVT_PARTY_FINISH;
         }
         break;
-    case 3:
+    case LOCAL_TVT_PARTY_FINISH:
         break;
     }
 }
@@ -797,7 +812,7 @@ void LocalTvtPokeSelect_SetActive(LocalTvtPokeSelect *select, BOOL active) {
 
 void LocalTvtPokeSelect_Restart(LocalTvtPokeSelect *select) {
     select->result = LOCAL_TVT_POKE_SELECT_NONE;
-    select->seq = 0;
+    select->seq = LOCAL_TVT_PARTY_INPUT;
     LocalTvtKeyTouch_Reset(select->input);
 }
 

@@ -120,11 +120,11 @@ u16 LocalTvtCallData_GetExtraMsg(LocalTvtCallData *data, u16 person) {
 
 BOOL LocalTvtCallData_CanCall(LocalTvtCallData *data, u16 person) {
     if (person == LOCAL_TVT_CALL_SECRET) {
-        BOOL unk74 = HollowRivalSave_GetMeeting(data->save) == 0;
+        BOOL noMeeting = HollowRivalSave_GetMeeting(data->save) == 0;
         BOOL flag = HollowRivalSave_GetFlag(data->save, LOCAL_TVT_CALL_SECRET);
         u32 callCount = LocalTvtCallData_GetCallCount(data, LOCAL_TVT_CALL_SECRET);
         u32 stage = LocalTvtSecret_GetStage(callCount);
-        u32 unk0378 = LocalTvtSecret_GetStage0378(stage);
+        u32 canCallStage = LocalTvtSecret_CanCallStage(stage);
         u32 zoneId = PlayerState_GetZoneID(GameData_GetPlayerState(data->gameData));
         BOOL inZone = GameData_IsSecretCallZone(data->gameData, zoneId);
 
@@ -138,7 +138,7 @@ BOOL LocalTvtCallData_CanCall(LocalTvtCallData *data, u16 person) {
                 }
             }
         }
-        if (unk74 && flag && inZone && unk0378) {
+        if (noMeeting && flag && inZone && canCallStage) {
             return TRUE;
         }
         return FALSE;
@@ -186,24 +186,24 @@ u32 LocalTvtCallData_GetZoneBackground(LocalTvtCallData *data, u16 zoneId) {
 
 u32 LocalTvtCallData_GetZoneObject(LocalTvtCallData *data, u16 zoneId) {
     switch (GetWeatherAll(data->gsys, zoneId)) {
-    case 0:
-    case 9:
-    case 10:
-    case 11:
-    case 13:
-    case 14:
+    case WEATHER_SUNNY:
+    case WEATHER_TINT_9:
+    case WEATHER_TINT_10:
+    case WEATHER_TINT_11:
+    case WEATHER_TINT_13:
+    case WEATHER_TINT_14:
         return LOCAL_TVT_OBJECT_NONE;
-    case 1:
-    case 4:
-    case 5:
-    case 8:
+    case WEATHER_FLAKE:
+    case WEATHER_BLIZZARD:
+    case WEATHER_FLUTTER:
+    case WEATHER_DIAMOND_DUST:
         return 2;
-    case 2:
-    case 6:
-    case 7:
+    case WEATHER_RAIN:
+    case WEATHER_THUNDERSTORM:
+    case WEATHER_GUSTY_RAIN:
         return 0;
-    case 3:
-    case 12:
+    case WEATHER_SANDSTORM:
+    case WEATHER_SANDSTORM_2:
         return 1;
     }
     return LOCAL_TVT_OBJECT_NONE;

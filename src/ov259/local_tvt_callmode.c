@@ -31,6 +31,53 @@
 #include "system/printsys.h"
 #include "system/time_icon.h"
 
+// The steps of LocalTvtCallMode_SeqFadeOut
+enum {
+    LOCAL_TVT_CALL_FADE_OUT_START,
+    LOCAL_TVT_CALL_FADE_OUT_WAIT_FADE,
+    LOCAL_TVT_CALL_FADE_OUT_FINISH,
+};
+
+// The steps of LocalTvtCallMode_SeqCall
+enum {
+    LOCAL_TVT_CALL_CALL_CREATE_PERSON,
+    LOCAL_TVT_CALL_CALL_WAIT_FACES,
+    LOCAL_TVT_CALL_CALL_CALL,
+    LOCAL_TVT_CALL_CALL_FREE_PERSON,
+    LOCAL_TVT_CALL_CALL_DELAY,
+};
+
+// The steps of LocalTvtCallMode_SeqCalling
+enum {
+    LOCAL_TVT_CALL_CALLING_START,
+    LOCAL_TVT_CALL_CALLING_RING,
+    LOCAL_TVT_CALL_CALLING_CALL,
+};
+
+// The steps of LocalTvtCallMode_SeqSelect
+enum {
+    LOCAL_TVT_CALL_SELECT_CREATE_LIST,
+    LOCAL_TVT_CALL_SELECT_SELECT,
+    LOCAL_TVT_CALL_SELECT_CALL,
+    LOCAL_TVT_CALL_SELECT_EXIT,
+};
+
+// The steps of LocalTvtCallMode_SeqFadeInCall
+enum {
+    LOCAL_TVT_CALL_FADE_IN_CALL_CREATE_PERSON,
+    LOCAL_TVT_CALL_FADE_IN_CALL_WAIT_FACES,
+    LOCAL_TVT_CALL_FADE_IN_CALL_FADE,
+    LOCAL_TVT_CALL_FADE_IN_CALL_WAIT_FADE,
+    LOCAL_TVT_CALL_FADE_IN_CALL_CALL,
+};
+
+// The steps of LocalTvtCallMode_SeqFadeInSelect
+enum {
+    LOCAL_TVT_CALL_FADE_IN_SELECT_CREATE_LIST,
+    LOCAL_TVT_CALL_FADE_IN_SELECT_WAIT_FADE,
+    LOCAL_TVT_CALL_FADE_IN_SELECT_SELECT,
+};
+
 // The calls the player makes on the Xtransceiver, named after the ROM's "local_tvt_callmode.c": the list of the
 // persons, the ringing, and the call with the person picked
 
@@ -244,7 +291,7 @@ static void LocalTvtCallMode_SeqFadeInSelect(LocalTvtSeq *seq, int *step, void *
     LocalTvtCallMode *mode = work;
 
     switch (*step) {
-    case 0: {
+    case LOCAL_TVT_CALL_FADE_IN_SELECT_CREATE_LIST: {
         LocalTvtCallSelectSetup setup;
 
         LocalTvtCallMode_GetSelectSetup(mode, &setup);
@@ -254,12 +301,12 @@ static void LocalTvtCallMode_SeqFadeInSelect(LocalTvtSeq *seq, int *step, void *
         (*step)++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_CALL_FADE_IN_SELECT_WAIT_FADE:
         if (!GFL_FadeIsRunning()) {
             (*step)++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CALL_FADE_IN_SELECT_SELECT:
         LocalTvtSeq_SetNext(seq, LocalTvtCallMode_SeqSelect);
         break;
     }
@@ -269,7 +316,7 @@ static void LocalTvtCallMode_SeqFadeInCall(LocalTvtSeq *seq, int *step, void *wo
     LocalTvtCallMode *mode = work;
 
     switch (*step) {
-    case 0: {
+    case LOCAL_TVT_CALL_FADE_IN_CALL_CREATE_PERSON: {
         LocalTvtPersonFuncs funcs;
         LocalTvtPersonSetup setup;
 
@@ -283,22 +330,22 @@ static void LocalTvtCallMode_SeqFadeInCall(LocalTvtSeq *seq, int *step, void *wo
         (*step)++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_CALL_FADE_IN_CALL_WAIT_FACES:
         if (LocalTvtChara_IsReady(mode->setup.chara)) {
             LocalTvtChara_SetVisible(mode->setup.chara, TRUE);
             (*step)++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CALL_FADE_IN_CALL_FADE:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
         (*step)++;
         break;
-    case 3:
+    case LOCAL_TVT_CALL_FADE_IN_CALL_WAIT_FADE:
         if (!GFL_FadeIsRunning()) {
             (*step)++;
         }
         break;
-    case 4:
+    case LOCAL_TVT_CALL_FADE_IN_CALL_CALL:
         LocalTvtSeq_SetNext(seq, LocalTvtCallMode_SeqCall);
         break;
     }
@@ -308,7 +355,7 @@ static void LocalTvtCallMode_SeqSelect(LocalTvtSeq *seq, int *step, void *work) 
     LocalTvtCallMode *mode = work;
 
     switch (*step) {
-    case 0:
+    case LOCAL_TVT_CALL_SELECT_CREATE_LIST:
         if (mode->select == NULL) {
             LocalTvtCallSelectSetup setup;
 
@@ -318,21 +365,21 @@ static void LocalTvtCallMode_SeqSelect(LocalTvtSeq *seq, int *step, void *work) 
         }
         (*step)++;
         break;
-    case 1:
+    case LOCAL_TVT_CALL_SELECT_SELECT:
         LocalTvtCallSelect_Main(mode->select);
         if (LocalTvtCallSelect_GetResult(mode->select) == LOCAL_TVT_SELECT_CALL) {
-            *step = 2;
+            *step = LOCAL_TVT_CALL_SELECT_CALL;
         } else if (LocalTvtCallSelect_GetResult(mode->select) == LOCAL_TVT_SELECT_EXIT) {
-            *step = 3;
+            *step = LOCAL_TVT_CALL_SELECT_EXIT;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CALL_SELECT_CALL:
         mode->selected = LocalTvtCallSelect_GetSelected(mode->select);
         LocalTvtCallSelect_Free(mode->select);
         mode->select = NULL;
         LocalTvtSeq_SetNext(seq, LocalTvtCallMode_SeqCalling);
         break;
-    case 3:
+    case LOCAL_TVT_CALL_SELECT_EXIT:
         LocalTvtCallSelect_Free(mode->select);
         mode->select = NULL;
         LocalTvtSeq_SetNext(seq, LocalTvtCallMode_SeqFadeOut);
@@ -344,20 +391,20 @@ static void LocalTvtCallMode_SeqCalling(LocalTvtSeq *seq, int *step, void *work)
     LocalTvtCallMode *mode = work;
 
     switch (*step) {
-    case 0:
+    case LOCAL_TVT_CALL_CALLING_START:
         if (mode->persons[mode->selected] == LOCAL_TVT_CALL_SECRET) {
             mode->ringCount = LocalTvtSecret_GetRingCount(mode->callData);
         }
         LocalTvtCalling_Init(&mode->calling, mode->setup.message, mode->ringCount, mode->heapId);
         (*step)++;
         break;
-    case 1:
+    case LOCAL_TVT_CALL_CALLING_RING:
         LocalTvtCalling_Main(&mode->calling);
         if (LocalTvtCalling_IsFinished(&mode->calling)) {
             (*step)++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CALL_CALLING_CALL:
         LocalTvtCalling_Exit(&mode->calling);
         LocalTvtSeq_SetNext(seq, LocalTvtCallMode_SeqCall);
         break;
@@ -368,7 +415,7 @@ static void LocalTvtCallMode_SeqCall(LocalTvtSeq *seq, int *step, void *work) {
     LocalTvtCallMode *mode = work;
 
     switch (*step) {
-    case 0:
+    case LOCAL_TVT_CALL_CALL_CREATE_PERSON:
         if (mode->person == NULL) {
             LocalTvtPersonFuncs funcs;
             LocalTvtPersonSetup setup;
@@ -382,29 +429,29 @@ static void LocalTvtCallMode_SeqCall(LocalTvtSeq *seq, int *step, void *work) {
             mode->person = LocalTvtPerson_Create(&funcs, &setup, mode->heapId);
             (*step)++;
         } else {
-            *step = 2;
+            *step = LOCAL_TVT_CALL_CALL_CALL;
         }
         break;
-    case 1:
+    case LOCAL_TVT_CALL_CALL_WAIT_FACES:
         if (LocalTvtChara_IsReady(mode->setup.chara)) {
             LocalTvtChara_SetVisible(mode->setup.chara, TRUE);
             GFL_SndSEPlay(SEQ_SE_SYS_72);
             (*step)++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CALL_CALL_CALL:
         LocalTvtPerson_Main(mode->person);
         if (LocalTvtPerson_IsEnd(mode->person)) {
             (*step)++;
         }
         break;
-    case 3:
+    case LOCAL_TVT_CALL_CALL_FREE_PERSON:
         LocalTvtPerson_Free(mode->person);
         mode->person = NULL;
         mode->timer = 0;
         (*step)++;
         break;
-    case 4:
+    case LOCAL_TVT_CALL_CALL_DELAY:
         if (mode->timer++ > 30) {
             GFL_SndSEPlay(SEQ_SE_SYS_72);
             if (mode->setup.mode == LOCAL_TVT_CALL_MODE_SELECT) {
@@ -420,16 +467,16 @@ static void LocalTvtCallMode_SeqCall(LocalTvtSeq *seq, int *step, void *work) {
 
 static void LocalTvtCallMode_SeqFadeOut(LocalTvtSeq *seq, int *step, void *work) {
     switch (*step) {
-    case 0:
+    case LOCAL_TVT_CALL_FADE_OUT_START:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
         (*step)++;
         break;
-    case 1:
+    case LOCAL_TVT_CALL_FADE_OUT_WAIT_FADE:
         if (!GFL_FadeIsRunning()) {
             (*step)++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CALL_FADE_OUT_FINISH:
         LocalTvtSeq_End(seq);
         break;
     }

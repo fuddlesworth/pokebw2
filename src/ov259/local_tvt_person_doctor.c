@@ -26,6 +26,39 @@
 #include "save/save_control.h"
 #include "system/game_data.h"
 
+// The steps of LocalTvtDoctor_Pokedex
+enum {
+    LOCAL_TVT_DOCTOR_POKEDEX_COUNT,
+    LOCAL_TVT_DOCTOR_POKEDEX_WAIT_COUNT,
+    LOCAL_TVT_DOCTOR_POKEDEX_JINGLE,
+    LOCAL_TVT_DOCTOR_POKEDEX_WAIT_JINGLE,
+    LOCAL_TVT_DOCTOR_POKEDEX_FINISH_COUNT,
+    LOCAL_TVT_DOCTOR_POKEDEX_EVALUATE,
+    LOCAL_TVT_DOCTOR_POKEDEX_WAIT_EVALUATION,
+    LOCAL_TVT_DOCTOR_POKEDEX_AWARD,
+    LOCAL_TVT_DOCTOR_POKEDEX_WAIT_AWARD,
+    LOCAL_TVT_DOCTOR_POKEDEX_FINISH,
+};
+
+// The party selection and explanation of a selected Pokemon
+enum {
+    LOCAL_TVT_DOCTOR_EXPLAIN_PROMPT,
+    LOCAL_TVT_DOCTOR_EXPLAIN_WAIT_PROMPT,
+    LOCAL_TVT_DOCTOR_EXPLAIN_DELAY,
+    LOCAL_TVT_DOCTOR_EXPLAIN_OPEN_PARTY,
+    LOCAL_TVT_DOCTOR_EXPLAIN_SELECT,
+    LOCAL_TVT_DOCTOR_EXPLAIN_CANCEL,
+    LOCAL_TVT_DOCTOR_EXPLAIN_EXPLAIN,
+    LOCAL_TVT_DOCTOR_EXPLAIN_WAIT_EXPLANATION,
+};
+
+// A message starts, waits for its face, then finishes
+enum {
+    LOCAL_TVT_DOCTOR_TALK_START,
+    LOCAL_TVT_DOCTOR_TALK_WAIT,
+    LOCAL_TVT_DOCTOR_TALK_FINISH,
+};
+
 // What the Professor says in a call on the Xtransceiver, named after the ROM's "local_tvt_person_doctor.c": how a
 // Pokémon of the party evolves, and how the Pokédex is coming along
 
@@ -141,20 +174,20 @@ static BOOL LocalTvtDoctor_Greet(LocalTvtPerson *person, const LocalTvtPersonSet
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (doctor->step) {
-    case 0: {
+    case LOCAL_TVT_DOCTOR_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
 
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetGreetingMsg(setup->callData, LOCAL_TVT_CALL_DOCTOR));
         doctor->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_DOCTOR_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             doctor->step++;
         }
         break;
-    case 2:
-        doctor->step = 0;
+    case LOCAL_TVT_DOCTOR_TALK_FINISH:
+        doctor->step = LOCAL_TVT_DOCTOR_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -165,20 +198,20 @@ static BOOL LocalTvtDoctor_Chat(LocalTvtPerson *person, const LocalTvtPersonSetu
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (doctor->step) {
-    case 0: {
+    case LOCAL_TVT_DOCTOR_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
 
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetChatMsg(setup->callData, LOCAL_TVT_CALL_DOCTOR));
         doctor->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_DOCTOR_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             doctor->step++;
         }
         break;
-    case 2:
-        doctor->step = 0;
+    case LOCAL_TVT_DOCTOR_TALK_FINISH:
+        doctor->step = LOCAL_TVT_DOCTOR_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -190,22 +223,22 @@ static BOOL LocalTvtDoctor_Evolution(LocalTvtPerson *person, const LocalTvtPerso
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (doctor->step) {
-    case 0:
+    case LOCAL_TVT_DOCTOR_EXPLAIN_PROMPT:
         LocalTvtFace_Talk(face, LocalTvtMessage_GetTalkMsgData(setup->message), 13);
         doctor->step++;
         break;
-    case 1:
+    case LOCAL_TVT_DOCTOR_EXPLAIN_WAIT_PROMPT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             doctor->timer = 0;
             doctor->step++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_DOCTOR_EXPLAIN_DELAY:
         if (doctor->timer++ > 15) {
             doctor->step++;
         }
         break;
-    case 3:
+    case LOCAL_TVT_DOCTOR_EXPLAIN_OPEN_PARTY:
         if (doctor->select != NULL) {
             LocalTvtPokeSelect_SetActive(doctor->select, TRUE);
             LocalTvtPokeSelect_Restart(doctor->select);
@@ -220,24 +253,24 @@ static BOOL LocalTvtDoctor_Evolution(LocalTvtPerson *person, const LocalTvtPerso
         }
         doctor->step++;
         break;
-    case 4:
+    case LOCAL_TVT_DOCTOR_EXPLAIN_SELECT:
         LocalTvtPokeSelect_Main(doctor->select);
         switch (LocalTvtPokeSelect_GetResult(doctor->select)) {
         case LOCAL_TVT_POKE_SELECT_DECIDE:
             LocalTvtPokeSelect_SetActive(doctor->select, FALSE);
-            doctor->step = 6;
+            doctor->step = LOCAL_TVT_DOCTOR_EXPLAIN_EXPLAIN;
             break;
         case LOCAL_TVT_POKE_SELECT_CANCEL:
-            doctor->step = 5;
+            doctor->step = LOCAL_TVT_DOCTOR_EXPLAIN_CANCEL;
             break;
         }
         break;
-    case 5:
+    case LOCAL_TVT_DOCTOR_EXPLAIN_CANCEL:
         LocalTvtPokeSelect_Free(doctor->select);
         doctor->select = NULL;
-        doctor->step = 0;
+        doctor->step = LOCAL_TVT_DOCTOR_EXPLAIN_PROMPT;
         return TRUE;
-    case 6: {
+    case LOCAL_TVT_DOCTOR_EXPLAIN_EXPLAIN: {
         PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(doctor->select);
 
         messageId =
@@ -248,9 +281,9 @@ static BOOL LocalTvtDoctor_Evolution(LocalTvtPerson *person, const LocalTvtPerso
         doctor->step++;
         break;
     }
-    case 7:
+    case LOCAL_TVT_DOCTOR_EXPLAIN_WAIT_EXPLANATION:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
-            doctor->step = 0;
+            doctor->step = LOCAL_TVT_DOCTOR_EXPLAIN_PROMPT;
         }
         break;
     }
@@ -262,7 +295,7 @@ static BOOL LocalTvtDoctor_Pokedex(LocalTvtPerson *person, const LocalTvtPersonS
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (doctor->step) {
-    case 0: {
+    case LOCAL_TVT_DOCTOR_POKEDEX_COUNT: {
         PokeDexSave *pokedex = GameData_GetPokedex(doctor->gameData);
         EventWork *eventWork = getConstDataBlock(GameData_GetSaveControl(doctor->gameData));
         u16 startMsg;
@@ -274,47 +307,47 @@ static BOOL LocalTvtDoctor_Pokedex(LocalTvtPerson *person, const LocalTvtPersonS
         doctor->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_DOCTOR_POKEDEX_WAIT_COUNT:
         LocalTvtFace_UpdateTalk(face, setup->chara);
         if (LocalTvtMessage_IsTalkDone(setup->message)) {
             doctor->step++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_DOCTOR_POKEDEX_JINGLE:
         GFL_SndBGMPush();
         GFL_SndBGMPlay(doctor->pokedexJingle, 0xffff);
         doctor->step++;
         break;
-    case 3:
+    case LOCAL_TVT_DOCTOR_POKEDEX_WAIT_JINGLE:
         if (!GFL_SndBGMIsPlaying()) {
             LocalTvtMessage_AllowTalkEnd(setup->message);
             GFL_SndBGMPop();
             doctor->step++;
         }
         break;
-    case 4:
+    case LOCAL_TVT_DOCTOR_POKEDEX_FINISH_COUNT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             doctor->step++;
         }
         break;
-    case 5:
+    case LOCAL_TVT_DOCTOR_POKEDEX_EVALUATE:
         LocalTvtFace_Talk(face, doctor->pokedexMsgData, doctor->pokedexMsg);
         doctor->step++;
         break;
-    case 6:
+    case LOCAL_TVT_DOCTOR_POKEDEX_WAIT_EVALUATION:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             if (doctor->award) {
                 doctor->step++;
             } else {
-                doctor->step = 9;
+                doctor->step = LOCAL_TVT_DOCTOR_POKEDEX_FINISH;
             }
         }
         break;
-    case 7:
+    case LOCAL_TVT_DOCTOR_POKEDEX_AWARD:
         LocalTvtFace_TalkKeyWait(face, doctor->pokedexMsgData, 34);
         doctor->step++;
         break;
-    case 8:
+    case LOCAL_TVT_DOCTOR_POKEDEX_WAIT_AWARD:
         if (LocalTvtMessage_IsTalkDone(setup->message)) {
             LocalTvtMessage_AllowTalkEnd(setup->message);
         }
@@ -322,8 +355,8 @@ static BOOL LocalTvtDoctor_Pokedex(LocalTvtPerson *person, const LocalTvtPersonS
             doctor->step++;
         }
         break;
-    case 9:
-        doctor->step = 0;
+    case LOCAL_TVT_DOCTOR_POKEDEX_FINISH:
+        doctor->step = LOCAL_TVT_DOCTOR_POKEDEX_COUNT;
         return TRUE;
     }
     return FALSE;
@@ -334,20 +367,20 @@ static BOOL LocalTvtDoctor_Bye(LocalTvtPerson *person, const LocalTvtPersonSetup
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (doctor->step) {
-    case 0: {
+    case LOCAL_TVT_DOCTOR_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
 
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetByeMsg(setup->callData, LOCAL_TVT_CALL_DOCTOR));
         doctor->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_DOCTOR_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             doctor->step++;
         }
         break;
-    case 2:
-        doctor->step = 0;
+    case LOCAL_TVT_DOCTOR_TALK_FINISH:
+        doctor->step = LOCAL_TVT_DOCTOR_TALK_START;
         LocalTvtPerson_End(person);
         return TRUE;
     }

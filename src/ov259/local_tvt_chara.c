@@ -59,6 +59,7 @@ enum {
 
 #define BACKGROUND_COUNT 7
 #define OBJECT_COUNT 3
+#define FACE_RESOURCE_NONE 0xff
 
 struct LocalTvtFace {
     u8 index;
@@ -411,9 +412,9 @@ static LocalTvtFace *LocalTvtFace_Create(LocalTvtChara *chara, const LocalTvtFac
     face->namePending = FALSE;
     face->talking = FALSE;
     face->blinkTimer = GFL_RandomLCAlt(75);
-    face->objectPalette = 0xff;
-    face->objectChars = 0xff;
-    face->objectCellAnims = 0xff;
+    face->objectPalette = FACE_RESOURCE_NONE;
+    face->objectChars = FACE_RESOURCE_NONE;
+    face->objectCellAnims = FACE_RESOURCE_NONE;
     if (face->person == LOCAL_TVT_PERSON_PLAYER && getTrainerGender(chara->setup.playerInfo) == 1) {
         face->person = LOCAL_TVT_PERSON_PLAYER_FEMALE;
     }
@@ -716,17 +717,17 @@ static void LocalTvtFace_FreeObject(LocalTvtFace *face) {
         ClActor_Delete(face->objectActor);
         face->objectActor = NULL;
     }
-    if (face->objectPalette != 0xff) {
+    if (face->objectPalette != FACE_RESOURCE_NONE) {
         ClActSys_FreePltt(face->objectPalette);
-        face->objectPalette = 0xff;
+        face->objectPalette = FACE_RESOURCE_NONE;
     }
-    if (face->objectChars != 0xff) {
+    if (face->objectChars != FACE_RESOURCE_NONE) {
         ClActSys_FreeChars(face->objectChars);
-        face->objectChars = 0xff;
+        face->objectChars = FACE_RESOURCE_NONE;
     }
-    if (face->objectCellAnims != 0xff) {
+    if (face->objectCellAnims != FACE_RESOURCE_NONE) {
         ClActSys_FreeCellAnims(face->objectCellAnims);
-        face->objectCellAnims = 0xff;
+        face->objectCellAnims = FACE_RESOURCE_NONE;
     }
 }
 

@@ -15,6 +15,25 @@
 #include "pml/poke_party.h"
 #include "system/game_data.h"
 
+// The party selection and explanation of a selected Pokemon
+enum {
+    LOCAL_TVT_CHELEN_EXPLAIN_PROMPT,
+    LOCAL_TVT_CHELEN_EXPLAIN_WAIT_PROMPT,
+    LOCAL_TVT_CHELEN_EXPLAIN_DELAY,
+    LOCAL_TVT_CHELEN_EXPLAIN_OPEN_PARTY,
+    LOCAL_TVT_CHELEN_EXPLAIN_SELECT,
+    LOCAL_TVT_CHELEN_EXPLAIN_CANCEL,
+    LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN,
+    LOCAL_TVT_CHELEN_EXPLAIN_WAIT_EXPLANATION,
+};
+
+// A message starts, waits for its face, then finishes
+enum {
+    LOCAL_TVT_CHELEN_TALK_START,
+    LOCAL_TVT_CHELEN_TALK_WAIT,
+    LOCAL_TVT_CHELEN_TALK_FINISH,
+};
+
 // What the person of LOCAL_TVT_CALL_CHELEN says in a call on the Xtransceiver, named after the ROM's
 // "local_tvt_person_chelen.c": what the types of a Pokémon of the party are weak to, and what its Ability does
 
@@ -85,18 +104,18 @@ static BOOL LocalTvtChelen_Greet(LocalTvtPerson *person, const LocalTvtPersonSet
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (chelen->step) {
-    case 0:
+    case LOCAL_TVT_CHELEN_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetGreetingMsg(setup->callData, LOCAL_TVT_CALL_CHELEN));
         chelen->step++;
         break;
-    case 1:
+    case LOCAL_TVT_CHELEN_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             chelen->step++;
         }
         break;
-    case 2:
-        chelen->step = 0;
+    case LOCAL_TVT_CHELEN_TALK_FINISH:
+        chelen->step = LOCAL_TVT_CHELEN_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -108,18 +127,18 @@ static BOOL LocalTvtChelen_Chat(LocalTvtPerson *person, const LocalTvtPersonSetu
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (chelen->step) {
-    case 0:
+    case LOCAL_TVT_CHELEN_TALK_START:
         msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetChatMsg(setup->callData, LOCAL_TVT_CALL_CHELEN));
         chelen->step++;
         break;
-    case 1:
+    case LOCAL_TVT_CHELEN_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             chelen->step++;
         }
         break;
-    case 2:
-        chelen->step = 0;
+    case LOCAL_TVT_CHELEN_TALK_FINISH:
+        chelen->step = LOCAL_TVT_CHELEN_TALK_START;
         return TRUE;
     }
     return FALSE;
@@ -130,22 +149,22 @@ static BOOL LocalTvtChelen_Types(LocalTvtPerson *person, const LocalTvtPersonSet
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (chelen->step) {
-    case 0:
+    case LOCAL_TVT_CHELEN_EXPLAIN_PROMPT:
         LocalTvtFace_Talk(face, LocalTvtMessage_GetTalkMsgData(setup->message), 23);
         chelen->step++;
         break;
-    case 1:
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_PROMPT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             chelen->timer = 0;
             chelen->step++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CHELEN_EXPLAIN_DELAY:
         if (chelen->timer++ > 15) {
             chelen->step++;
         }
         break;
-    case 3:
+    case LOCAL_TVT_CHELEN_EXPLAIN_OPEN_PARTY:
         if (chelen->select != NULL) {
             LocalTvtPokeSelect_SetActive(chelen->select, TRUE);
             LocalTvtPokeSelect_Restart(chelen->select);
@@ -160,24 +179,24 @@ static BOOL LocalTvtChelen_Types(LocalTvtPerson *person, const LocalTvtPersonSet
         }
         chelen->step++;
         break;
-    case 4:
+    case LOCAL_TVT_CHELEN_EXPLAIN_SELECT:
         LocalTvtPokeSelect_Main(chelen->select);
         switch (LocalTvtPokeSelect_GetResult(chelen->select)) {
         case LOCAL_TVT_POKE_SELECT_DECIDE:
             LocalTvtPokeSelect_SetActive(chelen->select, FALSE);
-            chelen->step = 6;
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN;
             break;
         case LOCAL_TVT_POKE_SELECT_CANCEL:
-            chelen->step = 5;
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_CANCEL;
             break;
         }
         break;
-    case 5:
+    case LOCAL_TVT_CHELEN_EXPLAIN_CANCEL:
         LocalTvtPokeSelect_Free(chelen->select);
         chelen->select = NULL;
-        chelen->step = 0;
+        chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
         return TRUE;
-    case 6: {
+    case LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN: {
         PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(chelen->select);
         u32 type1 = PokeParty_GetParam(pkm, PKM_PARAM_TYPE1, NULL);
         u32 type2 = PokeParty_GetParam(pkm, PKM_PARAM_TYPE2, NULL);
@@ -189,9 +208,9 @@ static BOOL LocalTvtChelen_Types(LocalTvtPerson *person, const LocalTvtPersonSet
         chelen->step++;
         break;
     }
-    case 7:
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_EXPLANATION:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
-            chelen->step = 0;
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
         }
         break;
     }
@@ -204,22 +223,22 @@ static BOOL LocalTvtChelen_Ability(LocalTvtPerson *person, const LocalTvtPersonS
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (chelen->step) {
-    case 0:
+    case LOCAL_TVT_CHELEN_EXPLAIN_PROMPT:
         LocalTvtFace_Talk(face, LocalTvtMessage_GetTalkMsgData(setup->message), 24);
         chelen->step++;
         break;
-    case 1:
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_PROMPT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             chelen->timer = 0;
             chelen->step++;
         }
         break;
-    case 2:
+    case LOCAL_TVT_CHELEN_EXPLAIN_DELAY:
         if (chelen->timer++ > 15) {
             chelen->step++;
         }
         break;
-    case 3:
+    case LOCAL_TVT_CHELEN_EXPLAIN_OPEN_PARTY:
         if (chelen->select != NULL) {
             LocalTvtPokeSelect_SetActive(chelen->select, TRUE);
             LocalTvtPokeSelect_Restart(chelen->select);
@@ -234,24 +253,24 @@ static BOOL LocalTvtChelen_Ability(LocalTvtPerson *person, const LocalTvtPersonS
         }
         chelen->step++;
         break;
-    case 4:
+    case LOCAL_TVT_CHELEN_EXPLAIN_SELECT:
         LocalTvtPokeSelect_Main(chelen->select);
         switch (LocalTvtPokeSelect_GetResult(chelen->select)) {
         case LOCAL_TVT_POKE_SELECT_DECIDE:
             LocalTvtPokeSelect_SetActive(chelen->select, FALSE);
-            chelen->step = 6;
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN;
             break;
         case LOCAL_TVT_POKE_SELECT_CANCEL:
-            chelen->step = 5;
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_CANCEL;
             break;
         }
         break;
-    case 5:
+    case LOCAL_TVT_CHELEN_EXPLAIN_CANCEL:
         LocalTvtPokeSelect_Free(chelen->select);
         chelen->select = NULL;
-        chelen->step = 0;
+        chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
         return TRUE;
-    case 6: {
+    case LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN: {
         PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(chelen->select);
 
         messageId = PokeParty_GetParam(pkm, PKM_PARAM_ABILITY, NULL);
@@ -261,9 +280,9 @@ static BOOL LocalTvtChelen_Ability(LocalTvtPerson *person, const LocalTvtPersonS
         chelen->step++;
         break;
     }
-    case 7:
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_EXPLANATION:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
-            chelen->step = 0;
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
         }
         break;
     }
@@ -275,20 +294,20 @@ static BOOL LocalTvtChelen_Bye(LocalTvtPerson *person, const LocalTvtPersonSetup
     LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
 
     switch (chelen->step) {
-    case 0: {
+    case LOCAL_TVT_CHELEN_TALK_START: {
         MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
 
         LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetByeMsg(setup->callData, LOCAL_TVT_CALL_CHELEN));
         chelen->step++;
         break;
     }
-    case 1:
+    case LOCAL_TVT_CHELEN_TALK_WAIT:
         if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
             chelen->step++;
         }
         break;
-    case 2:
-        chelen->step = 0;
+    case LOCAL_TVT_CHELEN_TALK_FINISH:
+        chelen->step = LOCAL_TVT_CHELEN_TALK_START;
         LocalTvtPerson_End(person);
         return TRUE;
     }

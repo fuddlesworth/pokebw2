@@ -32818,7 +32818,7 @@ overlays/ov259 0x0219fee0 LocalTvtSecret_TalkChat
 overlays/ov259 0x0219ff68 LocalTvtSecret_TalkBye
 overlays/ov259 0x021a003c LocalTvtSecret_ShortCall
 overlays/ov259 0x021a00bc LocalTvtSecret_WholeCall
-overlays/ov259 0x021a0110 LocalTvtSecret_GetStage10
+overlays/ov259 0x021a0110 LocalTvtSecret_GetMeeting
 overlays/ov259 0x021a0134 LocalTvtSecret_GetChatMsg
 overlays/ov259 0x021a01e0 LocalTvtSecret_SetWords
 overlays/ov259 0x021a0278 LocalTvtSecret_GetSurveyChatMsg
@@ -32828,8 +32828,8 @@ overlays/ov259 0x021a02f8 LocalTvtSecret_GetRingCount
 overlays/ov259 0x021a030c LocalTvtSecret_GetStage
 overlays/ov259 0x021a0348 LocalTvtSecret_GetStageCallType
 overlays/ov259 0x021a0358 LocalTvtSecret_GetStageFace
-overlays/ov259 0x021a0368 LocalTvtSecret_GetStage10Of
-overlays/ov259 0x021a0378 LocalTvtSecret_GetStage0378
+overlays/ov259 0x021a0368 LocalTvtSecret_GetStageMeeting
+overlays/ov259 0x021a0378 LocalTvtSecret_CanCallStage
 overlays/ov259 0x021a0388 LocalTvtSecret_GetStageRingCount
 overlays/ov259 0x021a0398 LocalTvtSecret_GetStageCount
 overlays/ov259 0x021a039c XTRANSCEIVER_PROC_FUNCTIONS
