@@ -17,6 +17,13 @@ typedef struct {
     u32 dataNum;
 } DeliveryIrcInit;
 
+enum {
+    DELIVERY_IRC_RESULT_RUNNING = 0,
+    DELIVERY_IRC_RESULT_SUCCESS = 1,
+    DELIVERY_IRC_RESULT_DAMAGED = 2,
+    DELIVERY_IRC_RESULT_NO_DATA = 3,
+};
+
 DeliveryIrcWork *DeliveryIrc_Init(const DeliveryIrcInit *init);
 // Starts the network, unless it is busy
 BOOL DeliveryIrc_RecvStart(DeliveryIrcWork *work);
