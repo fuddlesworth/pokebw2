@@ -48,9 +48,7 @@ typedef struct {
 
 // clang-format off
 // Regional dex table sentinel; the table uses999 for species without a number.
-enum {
-    BOX2_REGIONAL_DEX_NONE = 999,
-};
+#define BOX2_REGIONAL_DEX_NONE 999
 
 
 static const Box2WinData sWinData[BOX2_WIN_MAX] = {
