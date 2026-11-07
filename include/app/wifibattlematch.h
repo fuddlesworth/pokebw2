@@ -14,6 +14,12 @@
 
 #define OVERLAY_WIFIBATTLEMATCH OVERLAY_ID(290)
 
+// Where overlay 290 started the link from (WifiBattleMatchParam.startFrom)
+enum {
+    START_TITLE,
+    START_FIELD,
+};
+
 // A player as the two machines exchange it, which overlay 290 keeps for each side and the Wi-Fi link (overlay 260) and
 // the live competition (overlay 261) fill and send whole: the trainer info, the last results, what the records and the
 // tournament say, and the team picked with the signature that the check of the Pokémon made
@@ -79,13 +85,19 @@ typedef struct {
     u32 hour : 5;
     u32 minute : 6;
     u32 unk : 4;
-    u32 unkFlag : 1;
-    u32 unk48;
+    u32 launcher : 1;
+    u32 cupId;
     u8 result;
     u8 battleType;
     u8 aliveOwn : 4;
     u8 aliveOther : 4;
 } WifiBattleMatchReport;
+
+// Where WifiBattleMatchParam.teamSource takes the team from.
+enum {
+    WIFIBATTLEMATCH_TEAM_PARTY = 0,
+    WIFIBATTLEMATCH_TEAM_BATTLE_BOX = 1,
+};
 
 typedef struct {
     // The game data to play with; the title screen's menu has none, so the proc makes one and resets the game at the
@@ -98,7 +110,7 @@ typedef struct {
     // Where the team comes from, 0 for the party and 1 for the battle box
     u32 teamSource;
     // Set when the proc has to free the parameters itself
-    u32 unk10;
+    u32 freeParam;
 } WifiBattleMatchParam;
 
 extern const GameProcFunctions WIFIBATTLEMATCH_PROC_FUNCTIONS;

@@ -392,8 +392,8 @@ static BOOL StartMenu_Exit(GameProc *proc, u32 *state, void *param, void *work) 
     case ITEM_BATTLE_COMPETITION:
         battleMatchParam = GFL_HeapAllocate(HEAPID_USER, sizeof(WifiBattleMatchParam), FALSE, "startmenu.c", 583);
         MI_CpuFill8(battleMatchParam, 0, sizeof(WifiBattleMatchParam));
-        battleMatchParam->startFrom = 0;
-        battleMatchParam->unk10 = 1;
+        battleMatchParam->startFrom = START_TITLE;
+        battleMatchParam->freeParam = TRUE;
         GCTX_ProcMgrReplaceProc(OVERLAY_ID(290), &WIFIBATTLEMATCH_PROC_FUNCTIONS, battleMatchParam);
         break;
     case ITEM_GAME_SYNC_SETTINGS:

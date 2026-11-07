@@ -10,6 +10,14 @@
 // party list and overlay 207's summary screen, the other sends the team picked to the other player and receives
 // theirs, through Wi-Fi (overlay 260) or infrared (overlay 261). Swan has none of these; the names are ours
 
+// Team-selection results, from the actual Wi-Fi and infrared error paths.
+enum {
+    WIFIBATTLEMATCH_LIST_RESULT_PICKED = 0,
+    WIFIBATTLEMATCH_LIST_RESULT_WIFI_ERROR = 1,
+    WIFIBATTLEMATCH_LIST_RESULT_IRC_ERROR = 2,
+    WIFIBATTLEMATCH_LIST_RESULT_WIFI_TIMEOUT = 3,
+};
+
 // What overlay 290 fills in for the team selection
 typedef struct {
     Regulation *regulation;
@@ -31,6 +39,14 @@ enum {
     WIFIBATTLEMATCH_EXCHANGE_IRC,
 };
 
+// Team-exchange results. Unlike team selection, both Wi-Fi disconnection and timeout produce 3.
+enum {
+    WIFIBATTLEMATCH_EXCHANGE_RESULT_DONE = 0,
+    WIFIBATTLEMATCH_EXCHANGE_RESULT_WIFI_ERROR = 1,
+    WIFIBATTLEMATCH_EXCHANGE_RESULT_IRC_ERROR = 2,
+    WIFIBATTLEMATCH_EXCHANGE_RESULT_WIFI_DISCONNECTED_OR_TIMEOUT = 3,
+};
+
 // What overlay 290 fills in for the exchange of the teams
 typedef struct {
     // Points to overlay 290's parameters, which start with the GameData
@@ -44,7 +60,7 @@ typedef struct {
     // Gets the other player's team
     PokeParty *otherParty;
     WifiBattleMatchNetData *netData;
-    u32 *unk18;
+    u32 *recordSaveIndex;
 } WifiBattleMatchExchangeParam;
 
 extern const GameProcFunctions WIFIBATTLEMATCH_LIST_PROC_FUNCTIONS;

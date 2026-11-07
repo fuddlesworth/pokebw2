@@ -289,13 +289,6 @@ enum {
     RANDOM_MODE_SELECTION_QUIT = 2,
 };
 
-// The modes of the random matchups (WifiBattleMatchLinkParam.mode); the 2 is overlay 290's own
-enum {
-    LINK_MODE_RATING,
-    LINK_MODE_FREE,
-    LINK_MODE_QUIT = 3,
-};
-
 // The menus
 enum {
     MENU_YES_NO,

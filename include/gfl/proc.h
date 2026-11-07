@@ -15,6 +15,13 @@ struct GameProcFunctions {
     GameProcFunc exit;
 };
 
+// What GFL_ProcMgrUpdateCore returns
+enum {
+    PROCMGR_DONE,
+    PROCMGR_RUNNING,
+    PROCMGR_PROC_ENDED,
+};
+
 // The game's process manager (procsys.c), and the update of a frame, which returns 0 once no process is left
 void GCTX_ProcMgrInit(HeapID heapId);
 u32 GCTX_ProcMgrUpdate(void);

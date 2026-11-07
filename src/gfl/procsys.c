@@ -12,13 +12,6 @@ enum {
     PROC_STATE_EXIT,
 };
 
-// What GFL_ProcMgrUpdateCore returns
-enum {
-    PROCMGR_DONE,
-    PROCMGR_RUNNING,
-    PROCMGR_PROC_ENDED,
-};
-
 struct GameProc {
     const GameProcFunctions *functions;
     s32 overlayId;
