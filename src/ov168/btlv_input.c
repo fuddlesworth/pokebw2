@@ -49,9 +49,7 @@
 #include "text/system/btlv_input.h"
 
 // Slots of the input task registry; when full it replaces its first task.
-enum {
-    INPUT_TASK_CAPACITY = 8,
-};
+#define INPUT_TASK_CAPACITY 8
 
 // An actor slot; the second word is never touched
 typedef struct {
@@ -409,10 +407,8 @@ enum {
 };
 
 // The previous-cursor sentinel and the return-stop list terminator.
-enum {
-    INPUT_CURSOR_UNSET = 15,
-    INPUT_RETURN_STOPS_END = 255,
-};
+#define INPUT_CURSOR_UNSET 15
+#define INPUT_RETURN_STOPS_END 255
 
 // The six cursor actors, including a second pair of bottom corners for an extra rectangle.
 enum {

@@ -263,12 +263,10 @@ enum {
 };
 
 // Window bound and palette-animation format sentinels; these are unrelated to sprite positions.
-enum {
-    EFFVM_WINDOW_RIGHT_MAX = 255,
-    EFFVM_PAL_ANIM_INITIAL_TIMER = 255,
-    EFFVM_PAL_ANIM_PALETTES_END = 255,
-    EFFVM_PAL_ANIM_DURATIONS_END = 65432,
-};
+#define EFFVM_WINDOW_RIGHT_MAX 255
+#define EFFVM_PAL_ANIM_INITIAL_TIMER 255
+#define EFFVM_PAL_ANIM_PALETTES_END 255
+#define EFFVM_PAL_ANIM_DURATIONS_END 65432
 
 // The palette animation task primes its timer, then loads the timed palettes.
 enum {

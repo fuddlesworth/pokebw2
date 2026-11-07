@@ -25,8 +25,9 @@ enum {
     TIMER_SEQ_COMMAND_LABEL = 1,
     TIMER_SEQ_COLON = 2,
     TIMER_SEQ_FIRST_DIGIT = 3,
-    TIMER_SEQ_WARNING_OFFSET = 13,
 };
+
+#define TIMER_SEQ_WARNING_OFFSET 13
 
 // The timer's work, 0x78 bytes
 struct BtlvTimer {
