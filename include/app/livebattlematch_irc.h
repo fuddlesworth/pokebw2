@@ -9,7 +9,8 @@
 // Overlay 261's livebattlematch_irc.c (named by its embedded string): the infrared link of the live competitions. It
 // starts the network, sends the player's data, team and ready flag to the other machine and hands the other's over,
 // and receives a Wi-Fi Download Station's competition data (the delivery). Its functions are called by
-// livebattlematch_flow.c and, for the team exchange, by overlay 263. None has a name yet
+// livebattlematch_flow.c and, for the team exchange, by overlay 263. The link and delivery results have separate value
+// sets
 
 // The bit of the competition data's versions (field 1 of a tournament entry, and the mask of the delivery's data) that
 // is this game's: Black 2's is one above White 2's
@@ -18,6 +19,19 @@
 #else
 #define LIVEBATTLEMATCH_VERSION_MASK (1 << 22)
 #endif
+
+enum {
+    LIVE_IR_RESULT_WAIT = 0,
+    LIVE_IR_RESULT_CONNECTED = 1,
+    LIVE_IR_RESULT_LOST = 2,
+};
+
+enum {
+    LIVE_IR_DELIVERY_RESULT_WAIT = 0,
+    LIVE_IR_DELIVERY_RESULT_RECEIVED = 1,
+    LIVE_IR_DELIVERY_RESULT_DAMAGED = 2,
+    LIVE_IR_DELIVERY_RESULT_NO_DATA = 3,
+};
 
 typedef struct LiveBattleMatchIrc LiveBattleMatchIrc;
 

@@ -1,10 +1,12 @@
 #include "types.h"
 #include "app/livebattlematch_flow.h"
 #include "app/livebattlematch_irc.h"
+#include "battle/btl_result.h"
 #include "battle/regulation.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/heap.h"
 #include "gfl/key.h"
@@ -26,6 +28,215 @@
 #include "system/gf_font.h"
 #include "system/pms.h"
 #include "system/wordset.h"
+
+enum {
+    LIVE_CHOICE_YES = 0,
+    LIVE_CHOICE_NO = 1,
+};
+
+enum {
+    LIVE_ACTIVE_CHOICE_BATTLE = 0,
+    LIVE_ACTIVE_CHOICE_REPLAY = 1,
+    LIVE_ACTIVE_CHOICE_RESULT = 2,
+    LIVE_ACTIVE_CHOICE_QUIT = 3,
+};
+
+enum {
+    LIVE_ACTIVE_NO_VIDEO_CHOICE_BATTLE = 0,
+    LIVE_ACTIVE_NO_VIDEO_CHOICE_QUIT = 1,
+};
+
+enum {
+    LIVE_FINISHED_CHOICE_REPLAY = 0,
+    LIVE_FINISHED_CHOICE_RESULT = 1,
+    LIVE_FINISHED_CHOICE_EXIT = 2,
+};
+
+enum {
+    LIVE_FINISHED_NO_VIDEO_CHOICE_EXIT = 0,
+};
+
+enum {
+    LIVE_ENTRY_CHECK_ENTRY = 0,
+    LIVE_ENTRY_SHOW_CARD = 1,
+    LIVE_ENTRY_WAIT_CARD = 2,
+    LIVE_ENTRY_CHECK_BOX = 3,
+    LIVE_ENTRY_SHOW_TEAM_UNLOCKED = 4,
+    LIVE_ENTRY_SHOW_TEAM_LOCKED = 5,
+    LIVE_ENTRY_OPEN_REPLACE_MENU = 6,
+    LIVE_ENTRY_WAIT_REPLACE_MENU = 7,
+    LIVE_ENTRY_WAIT_CARD_REPLACE = 8,
+    LIVE_ENTRY_DELETE_CARD_REPLACE = 9,
+    LIVE_ENTRY_WAIT_CARD_EXIT = 10,
+    LIVE_ENTRY_DELETE_CARD_EXIT = 11,
+    LIVE_ENTRY_SHOW_DELIVERY_INTRO = 12,
+    LIVE_ENTRY_SHOW_DELIVERY_PROMPT = 13,
+    LIVE_ENTRY_START_DELIVERY = 14,
+    LIVE_ENTRY_WAIT_DELIVERY = 15,
+    LIVE_ENTRY_CANCEL_DELIVERY = 16,
+    LIVE_ENTRY_WAIT_CANCEL = 17,
+    LIVE_ENTRY_SHOW_CANCELLED = 18,
+    LIVE_ENTRY_OPEN_CANCEL_MENU = 19,
+    LIVE_ENTRY_WAIT_CANCEL_MENU = 20,
+    LIVE_ENTRY_CHECK_DELIVERY = 21,
+    LIVE_ENTRY_SHOW_SAVING = 22,
+    LIVE_ENTRY_STORE_ENTRY = 23,
+    LIVE_ENTRY_WAIT_SAVE = 24,
+    LIVE_ENTRY_SHOW_INVALID_DATA = 25,
+    LIVE_ENTRY_SHOW_INCOMPATIBLE = 26,
+    LIVE_ENTRY_SHOW_UNREGISTERED = 27,
+    LIVE_ENTRY_SHOW_FINISHED = 28,
+    LIVE_ENTRY_START_TEAM = 29,
+    LIVE_ENTRY_EXIT = 30,
+    LIVE_ENTRY_WAIT_MESSAGE = 31,
+};
+
+enum {
+    LIVE_TEAM_SHOW_CARD_AND_TEAM = 0,
+    LIVE_TEAM_WAIT_CARD_AND_TEAM = 1,
+    LIVE_TEAM_SHOW_REGISTER_PROMPT = 2,
+    LIVE_TEAM_OPEN_REGISTER_MENU = 3,
+    LIVE_TEAM_WAIT_REGISTER_MENU = 4,
+    LIVE_TEAM_SHOW_CANCEL_PROMPT = 5,
+    LIVE_TEAM_OPEN_CANCEL_MENU = 6,
+    LIVE_TEAM_WAIT_CANCEL_MENU = 7,
+    LIVE_TEAM_HIDE_TEAM = 8,
+    LIVE_TEAM_CHECK_TEAM = 9,
+    LIVE_TEAM_SHOW_PROBLEM = 10,
+    LIVE_TEAM_SHOW_NO_POKEMON = 11,
+    LIVE_TEAM_HIDE_CARD = 12,
+    LIVE_TEAM_STORE_TEAM = 13,
+    LIVE_TEAM_SHOW_SAVING = 14,
+    LIVE_TEAM_START_SAVE = 15,
+    LIVE_TEAM_WAIT_SAVE = 16,
+    LIVE_TEAM_SHOW_REGISTERED = 17,
+    LIVE_TEAM_START_MENU = 18,
+    LIVE_TEAM_HIDE_CARD_AND_TEAM = 19,
+    LIVE_TEAM_EXIT = 20,
+    LIVE_TEAM_WAIT_MESSAGE = 21,
+    LIVE_TEAM_NEXT_PROBLEM = 22,
+    LIVE_TEAM_SHOW_PROBLEMS_END = 23,
+};
+
+enum {
+    LIVE_MENU_SHOW_CARD = 0,
+    LIVE_MENU_WAIT_CARD = 1,
+    LIVE_MENU_CHECK_DISCONNECT = 2,
+    LIVE_MENU_SHOW_DISCONNECT = 3,
+    LIVE_MENU_CHECK_MATCH_LIMIT = 4,
+    LIVE_MENU_SHOW_PROMPT = 5,
+    LIVE_MENU_OPEN_MENU = 6,
+    LIVE_MENU_WAIT_MENU = 7,
+    LIVE_MENU_SHOW_QUIT_PROMPT = 8,
+    LIVE_MENU_OPEN_QUIT_MENU = 9,
+    LIVE_MENU_WAIT_QUIT_MENU = 10,
+    LIVE_MENU_SHOW_QUIT_CONFIRM = 11,
+    LIVE_MENU_OPEN_QUIT_CONFIRM = 12,
+    LIVE_MENU_WAIT_QUIT_CONFIRM = 13,
+    LIVE_MENU_SHOW_SAVING = 14,
+    LIVE_MENU_UNREGISTER = 15,
+    LIVE_MENU_WAIT_SAVE = 16,
+    LIVE_MENU_SHOW_UNREGISTERED = 17,
+    LIVE_MENU_HIDE_CARD = 18,
+    LIVE_MENU_CHECK_VIDEO = 19,
+    LIVE_MENU_SHOW_VIDEO_PROMPT = 20,
+    LIVE_MENU_SHOW_VIDEO_UNSUPPORTED = 21,
+    LIVE_MENU_REPLAY = 22,
+    LIVE_MENU_START_LINK = 23,
+    LIVE_MENU_EXIT = 24,
+    LIVE_MENU_WAIT_MESSAGE = 25,
+    LIVE_MENU_SHOW_RESULT = 26,
+};
+
+enum {
+    LIVE_LINK_SHOW_INTRO = 0,
+    LIVE_LINK_SHOW_LINK_PROMPT = 1,
+    LIVE_LINK_RESET_LINK = 2,
+    LIVE_LINK_WAIT_LINK = 3,
+    LIVE_LINK_CANCEL_LINK = 4,
+    LIVE_LINK_WAIT_CANCEL = 5,
+    LIVE_LINK_SHOW_CANCELLED = 6,
+    LIVE_LINK_OPEN_CANCEL_MENU = 7,
+    LIVE_LINK_WAIT_CANCEL_MENU = 8,
+    LIVE_LINK_CANCEL_LOST_LINK = 9,
+    LIVE_LINK_WAIT_LOST_LINK = 10,
+    LIVE_LINK_SHOW_LOST_LINK = 11,
+    LIVE_LINK_RETURN_AFTER_LOST_LINK = 12,
+    LIVE_LINK_SEND_PLAYER_DATA = 13,
+    LIVE_LINK_RECEIVE_PLAYER_DATA = 14,
+    LIVE_LINK_CHECK_COMPETITION = 15,
+    LIVE_LINK_SYNC_READY = 16,
+    LIVE_LINK_WAIT_SYNC_READY = 17,
+    LIVE_LINK_SEND_READY = 18,
+    LIVE_LINK_RECEIVE_READY = 19,
+    LIVE_LINK_CHECK_READY = 20,
+    LIVE_LINK_RESET_WRONG_COMPETITION = 21,
+    LIVE_LINK_WAIT_WRONG_COMPETITION = 22,
+    LIVE_LINK_SHOW_WRONG_COMPETITION = 23,
+    LIVE_LINK_RESET_REMATCH = 24,
+    LIVE_LINK_WAIT_REMATCH = 25,
+    LIVE_LINK_SHOW_REMATCH_DISALLOWED = 26,
+    LIVE_LINK_SHOW_PARTNER_FOUND = 27,
+    LIVE_LINK_WAIT_PARTNER_DELAY = 28,
+    LIVE_LINK_SHOW_PARTNER_CARD = 29,
+    LIVE_LINK_WAIT_PARTNER_CARD = 30,
+    LIVE_LINK_WAIT_PARTNER_DISPLAY = 31,
+    LIVE_LINK_SHOW_BATTLE_PROMPT = 32,
+    LIVE_LINK_SHOW_STARTING = 33,
+    LIVE_LINK_SYNC_START = 34,
+    LIVE_LINK_WAIT_SYNC_START = 35,
+    LIVE_LINK_SHOW_BATTLE_WAIT = 36,
+    LIVE_LINK_WAIT_BATTLE_DELAY = 37,
+    LIVE_LINK_START_BATTLE = 38,
+    LIVE_LINK_RETURN_MENU = 39,
+    LIVE_LINK_WAIT_MESSAGE = 40,
+};
+
+enum {
+    LIVE_RECORD_RECORD_TRAINER = 0,
+    LIVE_RECORD_RESET_LINK_END = 1,
+    LIVE_RECORD_WAIT_LINK_END = 2,
+    LIVE_RECORD_RECORD_RESULT = 3,
+    LIVE_RECORD_SHOW_SAVING = 4,
+    LIVE_RECORD_START_SAVE = 5,
+    LIVE_RECORD_WAIT_SAVE = 6,
+    LIVE_RECORD_EXIT = 7,
+    LIVE_RECORD_WAIT_MESSAGE = 8,
+};
+
+enum {
+    LIVE_QUIT_SHOW_CARD = 0,
+    LIVE_QUIT_CHECK_MATCH_LIMIT = 1,
+    LIVE_QUIT_SHOW_SAVING = 2,
+    LIVE_QUIT_FINISH_ENTRY = 3,
+    LIVE_QUIT_WAIT_SAVE = 4,
+    LIVE_QUIT_SHOW_FINISHED = 5,
+    LIVE_QUIT_SHOW_PROMPT = 6,
+    LIVE_QUIT_OPEN_MENU = 7,
+    LIVE_QUIT_WAIT_MENU = 8,
+    LIVE_QUIT_SHOW_EXIT = 9,
+    LIVE_QUIT_HIDE_CARD = 10,
+    LIVE_QUIT_CHECK_VIDEO = 11,
+    LIVE_QUIT_SHOW_VIDEO_PROMPT = 12,
+    LIVE_QUIT_SHOW_VIDEO_UNSUPPORTED = 13,
+    LIVE_QUIT_REPLAY = 14,
+    LIVE_QUIT_EXIT = 15,
+    LIVE_QUIT_RETURN_MENU = 16,
+    LIVE_QUIT_WAIT_MESSAGE = 17,
+    LIVE_QUIT_SHOW_RESULT = 18,
+};
+
+enum {
+    LIVE_FLOW_MENU_YES_NO = 0,
+    LIVE_FLOW_MENU_ACTIVE = 1,
+    LIVE_FLOW_MENU_FINISHED = 2,
+    LIVE_FLOW_MENU_YES_NO_DEFAULT_NO = 3,
+};
+
+enum {
+    LIVE_FLOW_LAYOUT_CENTER = 0,
+    LIVE_FLOW_LAYOUT_RIGHT = 1,
+};
 
 // A heap that the team is read into for a moment
 #define HEAPID_LIVEBATTLEMATCH_TEAM HEAPID_TAIL(0x56)
@@ -81,7 +292,7 @@ static void LiveBattleMatchFlow_PlayerCardCreateWait(LiveBattleMatchFlow *wk);
 static void LiveBattleMatchFlow_PlayerCardDelete(LiveBattleMatchFlow *wk);
 static BOOL LiveBattleMatchFlow_PlayerCardIsReady(LiveBattleMatchFlow *wk);
 static BOOL LiveBattleMatchFlow_PlayerCardIsDone(LiveBattleMatchFlow *wk);
-static void LiveBattleMatchFlow_PlayerCardShow(LiveBattleMatchFlow *wk, u32 a1);
+static void LiveBattleMatchFlow_PlayerCardShow(LiveBattleMatchFlow *wk, u32 page);
 static void LiveBattleMatchFlow_PartnerCardCreate(LiveBattleMatchFlow *wk, WifiBattleMatchPlayer *data);
 static void LiveBattleMatchFlow_PartnerCardDelete(LiveBattleMatchFlow *wk);
 static BOOL LiveBattleMatchFlow_PartnerCardIsDone(LiveBattleMatchFlow *wk);
@@ -124,7 +335,7 @@ LiveBattleMatchFlow *LiveBattleMatchFlow_Create(const LiveBattleMatchFlowParam *
     wk->entry = TournamentBlock_GetEntry(getTournamentBlockAddress(GameData_GetSaveControl(wk->param.gameData)), 1);
     wk->record = RecordSave_GetLiveMatch(getRecordBlkAddress(GameData_GetSaveControl(wk->param.gameData)));
     wk->party = PokeParty_Create(heapId);
-    if (wk->param.mode == 0) {
+    if (wk->param.mode == LIVE_FLOW_MODE_JOIN) {
         GCTX_HIDBlockSoftReset(8);
     }
     return wk;
@@ -132,7 +343,7 @@ LiveBattleMatchFlow *LiveBattleMatchFlow_Create(const LiveBattleMatchFlowParam *
 
 void LiveBattleMatchFlow_Delete(LiveBattleMatchFlow *wk) {
     GFL_HeapFree(wk->party);
-    if (wk->result == 1) {
+    if (wk->result == LIVE_FLOW_RESULT_MENU) {
         GCTX_HIDUnblockSoftReset(8);
     }
     LiveBattleMatchFlow_PlayerCardDelete(wk);
@@ -166,7 +377,7 @@ u32 LiveBattleMatchFlow_GetResult(LiveBattleMatchFlow *wk) {
     if (WifiBattleMatchTask_IsEnded(wk->task)) {
         return wk->result;
     }
-    return 0;
+    return LIVE_FLOW_RESULT_RUNNING;
 }
 
 // Picks the step to start with
@@ -174,20 +385,20 @@ static void LiveBattleMatchFlow_StepInit(WifiBattleMatchTask *task, u32 *seq, vo
     LiveBattleMatchFlow *wk = work;
 
     switch (wk->param.mode) {
-    case 0:
+    case LIVE_FLOW_MODE_JOIN:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepEntry);
         break;
-    case 1:
+    case LIVE_FLOW_MODE_MENU:
         if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B) == 3) {
             WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepQuit);
         } else {
             WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
         }
         break;
-    case 2:
+    case LIVE_FLOW_MODE_AFTER_MATCH:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepRecord);
         break;
-    case 3:
+    case LIVE_FLOW_MODE_QUIT:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepQuit);
         break;
     default:
@@ -208,16 +419,16 @@ static void LiveBattleMatchFlow_StepEntry(WifiBattleMatchTask *task, u32 *seq, v
     u32 pressed;
 
     switch (*seq) {
-    case 0:
+    case LIVE_ENTRY_CHECK_ENTRY:
         switch (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B)) {
         case 0:
         case 3:
         case 4:
         case 5:
             if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_CUP_ID) == 0) {
-                *seq = 12;
+                *seq = LIVE_ENTRY_SHOW_DELIVERY_INTRO;
             } else {
-                *seq = 1;
+                *seq = LIVE_ENTRY_SHOW_CARD;
             }
             break;
         case 1:
@@ -228,131 +439,132 @@ static void LiveBattleMatchFlow_StepEntry(WifiBattleMatchTask *task, u32 *seq, v
             break;
         }
         break;
-    case 1:
+    case LIVE_ENTRY_SHOW_CARD:
         LiveBattleMatchFlow_PlayerCardCreate(wk);
-        LiveBattleMatchFlow_PlayerCardShow(wk, 1);
-        *seq = 2;
+        LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
+        *seq = LIVE_ENTRY_WAIT_CARD;
         break;
-    case 2:
+    case LIVE_ENTRY_WAIT_CARD:
         if (LiveBattleMatchFlow_PlayerCardIsReady(wk)) {
-            *seq = 3;
+            *seq = LIVE_ENTRY_CHECK_BOX;
         }
         break;
-    case 3:
+    case LIVE_ENTRY_CHECK_BOX:
         if (BattleBoxSave_CheckFlags(getBattleBox(GameData_GetSaveControl(wk->param.gameData)), 2)) {
-            *seq = 5;
+            *seq = LIVE_ENTRY_SHOW_TEAM_LOCKED;
         } else {
-            *seq = 4;
+            *seq = LIVE_ENTRY_SHOW_TEAM_UNLOCKED;
         }
         break;
-    case 4:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 0, TRUE, 31, 6);
+    case LIVE_ENTRY_SHOW_TEAM_UNLOCKED:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 0, TRUE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_OPEN_REPLACE_MENU);
         break;
-    case 5:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 1, TRUE, 31, 6);
+    case LIVE_ENTRY_SHOW_TEAM_LOCKED:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 1, TRUE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_OPEN_REPLACE_MENU);
         break;
-    case 6:
-        LiveBattleMatchFlow_MenuStart(wk, 0);
-        *seq = 7;
+    case LIVE_ENTRY_OPEN_REPLACE_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_YES_NO);
+        *seq = LIVE_ENTRY_WAIT_REPLACE_MENU;
         break;
-    case 7:
+    case LIVE_ENTRY_WAIT_REPLACE_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
         }
         LiveBattleMatchFlow_MenuFree(wk);
         switch (selection) {
-        case 0:
-            *seq = 8;
+        case LIVE_CHOICE_YES:
+            *seq = LIVE_ENTRY_WAIT_CARD_REPLACE;
             break;
-        case 1:
-            *seq = 10;
+        case LIVE_CHOICE_NO:
+            *seq = LIVE_ENTRY_WAIT_CARD_EXIT;
             break;
         }
         break;
-    case 8:
+    case LIVE_ENTRY_WAIT_CARD_REPLACE:
         if (LiveBattleMatchFlow_PlayerCardIsDone(wk)) {
-            *seq = 9;
+            *seq = LIVE_ENTRY_DELETE_CARD_REPLACE;
         }
         break;
-    case 9:
+    case LIVE_ENTRY_DELETE_CARD_REPLACE:
         LiveBattleMatchFlow_PlayerCardDelete(wk);
-        *seq = 12;
+        *seq = LIVE_ENTRY_SHOW_DELIVERY_INTRO;
         break;
-    case 10:
+    case LIVE_ENTRY_WAIT_CARD_EXIT:
         if (LiveBattleMatchFlow_PlayerCardIsDone(wk)) {
-            *seq = 11;
+            *seq = LIVE_ENTRY_DELETE_CARD_EXIT;
         }
         break;
-    case 11:
+    case LIVE_ENTRY_DELETE_CARD_EXIT:
         LiveBattleMatchFlow_PlayerCardDelete(wk);
-        LiveBattleMatchFlow_Exit(wk, 1);
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_MENU);
         break;
-    case 12:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 2, TRUE, 31, 13);
+    case LIVE_ENTRY_SHOW_DELIVERY_INTRO:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 2, TRUE, LIVE_ENTRY_WAIT_MESSAGE,
+                                         LIVE_ENTRY_SHOW_DELIVERY_PROMPT);
         break;
-    case 13:
+    case LIVE_ENTRY_SHOW_DELIVERY_PROMPT:
         WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, TRUE);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 32, FALSE, 31, 14);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 32, FALSE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_START_DELIVERY);
         break;
-    case 14:
+    case LIVE_ENTRY_START_DELIVERY:
         LiveBattleMatchIrc_StartDelivery(wk->irc, &wk->delivered);
-        *seq = 15;
+        *seq = LIVE_ENTRY_WAIT_DELIVERY;
         break;
-    case 15:
+    case LIVE_ENTRY_WAIT_DELIVERY:
         status = LiveBattleMatchIrc_StepDelivery(wk->irc);
-        if (status != 0) {
+        if (status != LIVE_IR_DELIVERY_RESULT_WAIT) {
             WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
-            if (status == 1) {
-                *seq = 21;
+            if (status == LIVE_IR_DELIVERY_RESULT_RECEIVED) {
+                *seq = LIVE_ENTRY_CHECK_DELIVERY;
             } else {
-                *seq = 26;
+                *seq = LIVE_ENTRY_SHOW_INCOMPATIBLE;
             }
         }
         if (LiveBattleMatchIrc_CheckError(wk->irc) == TRUE) {
             WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
-            *seq = 12;
+            *seq = LIVE_ENTRY_SHOW_DELIVERY_INTRO;
             break;
         }
         pressed = GCTX_HIDGetPressedKeys();
         if (pressed & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_MESSAGE);
-            *seq = 16;
+            *seq = LIVE_ENTRY_CANCEL_DELIVERY;
         }
         break;
-    case 16:
+    case LIVE_ENTRY_CANCEL_DELIVERY:
         LiveBattleMatchIrc_ResetDeliveryEnd(wk->irc);
-        *seq = 17;
+        *seq = LIVE_ENTRY_WAIT_CANCEL;
         break;
-    case 17:
+    case LIVE_ENTRY_WAIT_CANCEL:
         if (LiveBattleMatchIrc_StepDeliveryEnd(wk->irc)) {
-            *seq = 18;
+            *seq = LIVE_ENTRY_SHOW_CANCELLED;
         }
         break;
-    case 18:
+    case LIVE_ENTRY_SHOW_CANCELLED:
         WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 21, TRUE, 31, 19);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 21, TRUE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_OPEN_CANCEL_MENU);
         break;
-    case 19:
-        LiveBattleMatchFlow_MenuStart(wk, 0);
-        *seq = 20;
+    case LIVE_ENTRY_OPEN_CANCEL_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_YES_NO);
+        *seq = LIVE_ENTRY_WAIT_CANCEL_MENU;
         break;
-    case 20:
+    case LIVE_ENTRY_WAIT_CANCEL_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
         }
         LiveBattleMatchFlow_MenuFree(wk);
         switch (selection) {
-        case 0:
-            *seq = 30;
+        case LIVE_CHOICE_YES:
+            *seq = LIVE_ENTRY_EXIT;
             break;
-        case 1:
-            *seq = 12;
+        case LIVE_CHOICE_NO:
+            *seq = LIVE_ENTRY_SHOW_DELIVERY_INTRO;
             break;
         }
         break;
-    case 21:
+    case LIVE_ENTRY_CHECK_DELIVERY:
         if (TournamentEntry_CheckCRC(&wk->delivered)) {
             if (TournamentEntry_GetField(&wk->delivered, TOURNAMENT_FIELD_VERSION_MASK) &
                 LIVEBATTLEMATCH_VERSION_MASK) {
@@ -360,30 +572,30 @@ static void LiveBattleMatchFlow_StepEntry(WifiBattleMatchTask *task, u32 *seq, v
                     TournamentEntry_GetField(&wk->delivered, TOURNAMENT_FIELD_CUP_ID)) {
                     switch (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B)) {
                     case 4:
-                        *seq = 27;
+                        *seq = LIVE_ENTRY_SHOW_UNREGISTERED;
                         break;
                     case 3:
-                        *seq = 28;
+                        *seq = LIVE_ENTRY_SHOW_FINISHED;
                         break;
                     default:
-                        *seq = 22;
+                        *seq = LIVE_ENTRY_SHOW_SAVING;
                         break;
                     }
                 } else {
-                    *seq = 22;
+                    *seq = LIVE_ENTRY_SHOW_SAVING;
                 }
             } else {
-                *seq = 26;
+                *seq = LIVE_ENTRY_SHOW_INCOMPATIBLE;
             }
         } else {
-            *seq = 25;
+            *seq = LIVE_ENTRY_SHOW_INVALID_DATA;
         }
         break;
-    case 22:
+    case LIVE_ENTRY_SHOW_SAVING:
         clearVSPlayer();
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, 31, 23);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_STORE_ENTRY);
         break;
-    case 23: {
+    case LIVE_ENTRY_STORE_ENTRY: {
         TournamentBlock *block = getTournamentBlockAddress(GameData_GetSaveControl(wk->param.gameData));
         TournamentTeam *records = TournamentBlock_GetTeam(block, 1);
 
@@ -392,33 +604,33 @@ static void LiveBattleMatchFlow_StepEntry(WifiBattleMatchTask *task, u32 *seq, v
         TournamentTeam_Clear(records);
         TournamentBlock_SetEntry(block, 1, &wk->delivered);
         GameData_StartSave(wk->param.gameData);
-        *seq = 24;
+        *seq = LIVE_ENTRY_WAIT_SAVE;
         break;
     }
-    case 24:
-        if (GameData_UpdateSave(wk->param.gameData) == 2) {
-            *seq = 29;
+    case LIVE_ENTRY_WAIT_SAVE:
+        if (GameData_UpdateSave(wk->param.gameData) == SAVE_RESULT_OK) {
+            *seq = LIVE_ENTRY_START_TEAM;
         }
         break;
-    case 25:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 26, TRUE, 31, 30);
+    case LIVE_ENTRY_SHOW_INVALID_DATA:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 26, TRUE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_EXIT);
         break;
-    case 26:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 27, TRUE, 31, 30);
+    case LIVE_ENTRY_SHOW_INCOMPATIBLE:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 27, TRUE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_EXIT);
         break;
-    case 27:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 3, TRUE, 31, 30);
+    case LIVE_ENTRY_SHOW_UNREGISTERED:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 3, TRUE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_EXIT);
         break;
-    case 28:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 4, TRUE, 31, 30);
+    case LIVE_ENTRY_SHOW_FINISHED:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 4, TRUE, LIVE_ENTRY_WAIT_MESSAGE, LIVE_ENTRY_EXIT);
         break;
-    case 29:
+    case LIVE_ENTRY_START_TEAM:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepTeam);
         break;
-    case 30:
-        LiveBattleMatchFlow_Exit(wk, 1);
+    case LIVE_ENTRY_EXIT:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_MENU);
         break;
-    case 31:
+    case LIVE_ENTRY_WAIT_MESSAGE:
         if (LiveBattleMatchFlow_IsMessageDone(wk)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -432,78 +644,78 @@ static void LiveBattleMatchFlow_StepTeam(WifiBattleMatchTask *task, u32 *seq, vo
     s32 selection;
 
     switch (*seq) {
-    case 0:
+    case LIVE_TEAM_SHOW_CARD_AND_TEAM:
         LiveBattleMatchFlow_PlayerCardCreate(wk);
-        LiveBattleMatchFlow_PlayerCardShow(wk, 2);
+        LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_EMPTY);
         LiveBattleMatchFlow_TeamListCreate(wk);
-        *seq = 1;
+        *seq = LIVE_TEAM_WAIT_CARD_AND_TEAM;
         break;
-    case 1: {
+    case LIVE_TEAM_WAIT_CARD_AND_TEAM: {
         BOOL ready = TRUE;
 
         ready &= LiveBattleMatchFlow_PlayerCardIsReady(wk);
         if (LiveBattleMatchFlow_TeamListIsReady(wk) & ready) {
-            *seq = 2;
+            *seq = LIVE_TEAM_SHOW_REGISTER_PROMPT;
         }
         break;
     }
-    case 2:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 5, TRUE, 21, 3);
+    case LIVE_TEAM_SHOW_REGISTER_PROMPT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 5, TRUE, LIVE_TEAM_WAIT_MESSAGE, LIVE_TEAM_OPEN_REGISTER_MENU);
         break;
-    case 3:
-        LiveBattleMatchFlow_MenuStart(wk, 0);
-        *seq = 4;
+    case LIVE_TEAM_OPEN_REGISTER_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_YES_NO);
+        *seq = LIVE_TEAM_WAIT_REGISTER_MENU;
         break;
-    case 4:
+    case LIVE_TEAM_WAIT_REGISTER_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
         }
         LiveBattleMatchFlow_MenuFree(wk);
         switch (selection) {
-        case 0:
-            *seq = 8;
+        case LIVE_CHOICE_YES:
+            *seq = LIVE_TEAM_HIDE_TEAM;
             break;
-        case 1:
-            *seq = 5;
+        case LIVE_CHOICE_NO:
+            *seq = LIVE_TEAM_SHOW_CANCEL_PROMPT;
             break;
         }
         break;
-    case 5:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 8, TRUE, 21, 6);
+    case LIVE_TEAM_SHOW_CANCEL_PROMPT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 8, TRUE, LIVE_TEAM_WAIT_MESSAGE, LIVE_TEAM_OPEN_CANCEL_MENU);
         break;
-    case 6:
-        LiveBattleMatchFlow_MenuStart(wk, 0);
-        *seq = 7;
+    case LIVE_TEAM_OPEN_CANCEL_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_YES_NO);
+        *seq = LIVE_TEAM_WAIT_CANCEL_MENU;
         break;
-    case 7:
+    case LIVE_TEAM_WAIT_CANCEL_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
         }
         LiveBattleMatchFlow_MenuFree(wk);
         switch (selection) {
-        case 0:
-            *seq = 19;
+        case LIVE_CHOICE_YES:
+            *seq = LIVE_TEAM_HIDE_CARD_AND_TEAM;
             break;
-        case 1:
-            *seq = 2;
+        case LIVE_CHOICE_NO:
+            *seq = LIVE_TEAM_SHOW_REGISTER_PROMPT;
             break;
         }
         break;
-    case 8:
+    case LIVE_TEAM_HIDE_TEAM:
         if (LiveBattleMatchFlow_TeamListIsDone(wk)) {
             LiveBattleMatchFlow_TeamListDelete(wk);
-            *seq = 9;
+            *seq = LIVE_TEAM_CHECK_TEAM;
         }
         break;
-    case 9: {
+    case LIVE_TEAM_CHECK_TEAM: {
         Regulation *regulation = TournamentEntry_GetRegulation(wk->entry);
         u32 problem;
 
         LiveBattleMatchFlow_LoadTeam(wk, wk->party);
         if (howManyPokesAreAbleToFight(wk->party) == 0) {
-            *seq = 11;
+            *seq = LIVE_TEAM_SHOW_NO_POKEMON;
             break;
         }
         problem = PokeRegulation_CheckParty(regulation, wk->party, &wk->pickFlags);
@@ -516,13 +728,13 @@ static void LiveBattleMatchFlow_StepTeam(WifiBattleMatchTask *task, u32 *seq, vo
         }
         wk->pickIndex = 0;
         if (problem == 0) {
-            *seq = 13;
+            *seq = LIVE_TEAM_STORE_TEAM;
             break;
         }
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 41, TRUE, 21, 10);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 41, TRUE, LIVE_TEAM_WAIT_MESSAGE, LIVE_TEAM_SHOW_PROBLEM);
         break;
     }
-    case 10: {
+    case LIVE_TEAM_SHOW_PROBLEM: {
         int index = wk->pickIndex;
         int mask = 1 << index;
 
@@ -534,13 +746,14 @@ static void LiveBattleMatchFlow_StepTeam(WifiBattleMatchTask *task, u32 *seq, vo
             mask = 1 << index;
         }
         if (mask <= 0x100) {
-            LiveBattleMatchFlow_PrintAndWait(wk, task, seq, index + 42, TRUE, 21, 22);
+            LiveBattleMatchFlow_PrintAndWait(wk, task, seq, index + 42, TRUE, LIVE_TEAM_WAIT_MESSAGE,
+                                             LIVE_TEAM_NEXT_PROBLEM);
         } else {
-            *seq = 22;
+            *seq = LIVE_TEAM_NEXT_PROBLEM;
         }
         break;
     }
-    case 22: {
+    case LIVE_TEAM_NEXT_PROBLEM: {
         int index = ++wk->pickIndex;
         int mask = 1 << index;
 
@@ -552,25 +765,25 @@ static void LiveBattleMatchFlow_StepTeam(WifiBattleMatchTask *task, u32 *seq, vo
             mask = 1 << index;
         }
         if (mask <= 0x100) {
-            *seq = 10;
+            *seq = LIVE_TEAM_SHOW_PROBLEM;
         } else {
-            *seq = 23;
+            *seq = LIVE_TEAM_SHOW_PROBLEMS_END;
         }
         break;
     }
-    case 23:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 51, TRUE, 21, 12);
+    case LIVE_TEAM_SHOW_PROBLEMS_END:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 51, TRUE, LIVE_TEAM_WAIT_MESSAGE, LIVE_TEAM_HIDE_CARD);
         break;
-    case 11:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 37, TRUE, 21, 12);
+    case LIVE_TEAM_SHOW_NO_POKEMON:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 37, TRUE, LIVE_TEAM_WAIT_MESSAGE, LIVE_TEAM_HIDE_CARD);
         break;
-    case 12:
+    case LIVE_TEAM_HIDE_CARD:
         if (LiveBattleMatchFlow_PlayerCardIsDone(wk)) {
             LiveBattleMatchFlow_PlayerCardDelete(wk);
-            *seq = 20;
+            *seq = LIVE_TEAM_EXIT;
         }
         break;
-    case 13: {
+    case LIVE_TEAM_STORE_TEAM: {
         SaveControl *save = GameData_GetSaveControl(wk->param.gameData);
         BattleBoxSave *battleBox = getBattleBox(save);
         TournamentTeam *records = TournamentBlock_GetTeam(getTournamentBlockAddress(save), 1);
@@ -580,43 +793,43 @@ static void LiveBattleMatchFlow_StepTeam(WifiBattleMatchTask *task, u32 *seq, vo
         TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_UNK15B, 2);
         TournamentTeam_SetFromParty(records, party);
         GFL_HeapFree(party);
-        *seq = 14;
+        *seq = LIVE_TEAM_SHOW_SAVING;
         break;
     }
-    case 14:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, 21, 15);
+    case LIVE_TEAM_SHOW_SAVING:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, LIVE_TEAM_WAIT_MESSAGE, LIVE_TEAM_START_SAVE);
         break;
-    case 15:
+    case LIVE_TEAM_START_SAVE:
         GameData_StartSave(wk->param.gameData);
-        *seq = 16;
+        *seq = LIVE_TEAM_WAIT_SAVE;
         break;
-    case 16:
-        if (GameData_UpdateSave(wk->param.gameData) == 2) {
-            *seq = 17;
+    case LIVE_TEAM_WAIT_SAVE:
+        if (GameData_UpdateSave(wk->param.gameData) == SAVE_RESULT_OK) {
+            *seq = LIVE_TEAM_SHOW_REGISTERED;
         }
         break;
-    case 17:
-        LiveBattleMatchFlow_PlayerCardShow(wk, 0);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 11, TRUE, 21, 18);
+    case LIVE_TEAM_SHOW_REGISTERED:
+        LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_REGISTERED);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 11, TRUE, LIVE_TEAM_WAIT_MESSAGE, LIVE_TEAM_START_MENU);
         break;
-    case 18:
+    case LIVE_TEAM_START_MENU:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
         break;
-    case 19: {
+    case LIVE_TEAM_HIDE_CARD_AND_TEAM: {
         BOOL done = TRUE;
 
         done &= LiveBattleMatchFlow_PlayerCardIsDone(wk);
         if (LiveBattleMatchFlow_TeamListIsDone(wk) & done) {
             LiveBattleMatchFlow_PlayerCardDelete(wk);
             LiveBattleMatchFlow_TeamListDelete(wk);
-            *seq = 20;
+            *seq = LIVE_TEAM_EXIT;
         }
         break;
     }
-    case 20:
-        LiveBattleMatchFlow_Exit(wk, 1);
+    case LIVE_TEAM_EXIT:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_MENU);
         break;
-    case 21:
+    case LIVE_TEAM_WAIT_MESSAGE:
         if (LiveBattleMatchFlow_IsMessageDone(wk)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -630,50 +843,50 @@ static void LiveBattleMatchFlow_StepMenu(WifiBattleMatchTask *task, u32 *seq, vo
     s32 selection;
 
     switch (*seq) {
-    case 0:
+    case LIVE_MENU_SHOW_CARD:
         LiveBattleMatchFlow_FillPlayerData(wk->param.playerData, wk);
         if (wk->playerCard != NULL) {
-            *seq = 4;
+            *seq = LIVE_MENU_CHECK_MATCH_LIMIT;
             break;
         }
         LiveBattleMatchFlow_PlayerCardCreate(wk);
-        LiveBattleMatchFlow_PlayerCardShow(wk, 0);
-        *seq = 1;
+        LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_REGISTERED);
+        *seq = LIVE_MENU_WAIT_CARD;
         break;
-    case 1:
+    case LIVE_MENU_WAIT_CARD:
         if (LiveBattleMatchFlow_PlayerCardIsReady(wk)) {
-            *seq = 2;
+            *seq = LIVE_MENU_CHECK_DISCONNECT;
         }
         break;
-    case 2:
+    case LIVE_MENU_CHECK_DISCONNECT:
         if (wk->param.matchResult->disconnected) {
-            *seq = 3;
+            *seq = LIVE_MENU_SHOW_DISCONNECT;
         } else {
-            *seq = 4;
+            *seq = LIVE_MENU_CHECK_MATCH_LIMIT;
         }
         break;
-    case 3:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 39, TRUE, 25, 4);
+    case LIVE_MENU_SHOW_DISCONNECT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 39, TRUE, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_CHECK_MATCH_LIMIT);
         break;
-    case 4: {
+    case LIVE_MENU_CHECK_MATCH_LIMIT: {
         Regulation *regulation = TournamentEntry_GetRegulation(wk->entry);
         u32 played = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_PLAYED);
 
         if (played >= Regulation_GetParam(regulation, REGULATION_PARAM_MAX_BATTLES)) {
             WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepQuit);
         } else {
-            *seq = 5;
+            *seq = LIVE_MENU_SHOW_PROMPT;
         }
         break;
     }
-    case 5:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 12, TRUE, 25, 6);
+    case LIVE_MENU_SHOW_PROMPT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 12, TRUE, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_OPEN_MENU);
         break;
-    case 6:
-        LiveBattleMatchFlow_MenuStart(wk, 1);
-        *seq = 7;
+    case LIVE_MENU_OPEN_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_ACTIVE);
+        *seq = LIVE_MENU_WAIT_MENU;
         break;
-    case 7:
+    case LIVE_MENU_WAIT_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
@@ -681,135 +894,135 @@ static void LiveBattleMatchFlow_StepMenu(WifiBattleMatchTask *task, u32 *seq, vo
         LiveBattleMatchFlow_MenuFree(wk);
         if (wk->hasVideo && !wk->param.matchResult->disconnected) {
             switch (selection) {
-            case 0:
-                *seq = 23;
+            case LIVE_ACTIVE_CHOICE_BATTLE:
+                *seq = LIVE_MENU_START_LINK;
                 break;
-            case 1:
-                *seq = 19;
+            case LIVE_ACTIVE_CHOICE_REPLAY:
+                *seq = LIVE_MENU_CHECK_VIDEO;
                 break;
-            case 2:
-                *seq = 26;
+            case LIVE_ACTIVE_CHOICE_RESULT:
+                *seq = LIVE_MENU_SHOW_RESULT;
                 break;
-            case 3:
-                *seq = 8;
+            case LIVE_ACTIVE_CHOICE_QUIT:
+                *seq = LIVE_MENU_SHOW_QUIT_PROMPT;
                 break;
             }
         } else {
             switch (selection) {
-            case 0:
-                *seq = 23;
+            case LIVE_ACTIVE_NO_VIDEO_CHOICE_BATTLE:
+                *seq = LIVE_MENU_START_LINK;
                 break;
-            case 1:
-                *seq = 8;
+            case LIVE_ACTIVE_NO_VIDEO_CHOICE_QUIT:
+                *seq = LIVE_MENU_SHOW_QUIT_PROMPT;
                 break;
             }
         }
         break;
-    case 8:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 17, TRUE, 25, 9);
+    case LIVE_MENU_SHOW_QUIT_PROMPT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 17, TRUE, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_OPEN_QUIT_MENU);
         break;
-    case 9:
-        LiveBattleMatchFlow_MenuStart(wk, 3);
-        *seq = 10;
+    case LIVE_MENU_OPEN_QUIT_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_YES_NO_DEFAULT_NO);
+        *seq = LIVE_MENU_WAIT_QUIT_MENU;
         break;
-    case 10:
+    case LIVE_MENU_WAIT_QUIT_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
         }
         LiveBattleMatchFlow_MenuFree(wk);
         switch (selection) {
-        case 0:
-            *seq = 11;
+        case LIVE_CHOICE_YES:
+            *seq = LIVE_MENU_SHOW_QUIT_CONFIRM;
             break;
-        case 1:
-            *seq = 5;
+        case LIVE_CHOICE_NO:
+            *seq = LIVE_MENU_SHOW_PROMPT;
             break;
         }
         break;
-    case 11:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 18, TRUE, 25, 12);
+    case LIVE_MENU_SHOW_QUIT_CONFIRM:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 18, TRUE, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_OPEN_QUIT_CONFIRM);
         break;
-    case 12:
-        LiveBattleMatchFlow_MenuStart(wk, 3);
-        *seq = 13;
+    case LIVE_MENU_OPEN_QUIT_CONFIRM:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_YES_NO_DEFAULT_NO);
+        *seq = LIVE_MENU_WAIT_QUIT_CONFIRM;
         break;
-    case 13:
+    case LIVE_MENU_WAIT_QUIT_CONFIRM:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
         }
         LiveBattleMatchFlow_MenuFree(wk);
         switch (selection) {
-        case 0:
-            *seq = 14;
+        case LIVE_CHOICE_YES:
+            *seq = LIVE_MENU_SHOW_SAVING;
             break;
-        case 1:
-            *seq = 5;
+        case LIVE_CHOICE_NO:
+            *seq = LIVE_MENU_SHOW_PROMPT;
             break;
         }
         break;
-    case 14:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, 25, 15);
+    case LIVE_MENU_SHOW_SAVING:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_UNREGISTER);
         break;
-    case 15:
+    case LIVE_MENU_UNREGISTER:
         TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_UNK15B, 4);
         BattleBoxSave_ClearFlags(getBattleBox(GameData_GetSaveControl(wk->param.gameData)), 2);
         GameData_StartSave(wk->param.gameData);
-        *seq = 16;
+        *seq = LIVE_MENU_WAIT_SAVE;
         break;
-    case 16:
+    case LIVE_MENU_WAIT_SAVE:
         switch (GameData_UpdateSave(wk->param.gameData)) {
-        case 0:
-        case 1:
+        case SAVE_RESULT_CONTINUE:
+        case SAVE_RESULT_LAST:
             break;
-        case 2:
-        case 3:
-            *seq = 17;
+        case SAVE_RESULT_OK:
+        case SAVE_RESULT_NG:
+            *seq = LIVE_MENU_SHOW_UNREGISTERED;
             break;
         }
         break;
-    case 17:
-        LiveBattleMatchFlow_PlayerCardShow(wk, 1);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 19, TRUE, 25, 18);
+    case LIVE_MENU_SHOW_UNREGISTERED:
+        LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 19, TRUE, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_HIDE_CARD);
         break;
-    case 18:
+    case LIVE_MENU_HIDE_CARD:
         if (LiveBattleMatchFlow_PlayerCardIsDone(wk)) {
             LiveBattleMatchFlow_PlayerCardDelete(wk);
-            *seq = 24;
+            *seq = LIVE_MENU_EXIT;
         }
         break;
-    case 19:
+    case LIVE_MENU_CHECK_VIDEO:
         if (BattleRec_IsVersionSupported((u8)wk->param.partnerData->battleRecordVersion)) {
-            *seq = 20;
+            *seq = LIVE_MENU_SHOW_VIDEO_PROMPT;
         } else {
-            *seq = 21;
+            *seq = LIVE_MENU_SHOW_VIDEO_UNSUPPORTED;
         }
         break;
-    case 20:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 16, TRUE, 25, 22);
+    case LIVE_MENU_SHOW_VIDEO_PROMPT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 16, TRUE, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_REPLAY);
         break;
-    case 21:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 34, TRUE, 25, 5);
+    case LIVE_MENU_SHOW_VIDEO_UNSUPPORTED:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 34, TRUE, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_SHOW_PROMPT);
         break;
-    case 22:
-        LiveBattleMatchFlow_Exit(wk, 4);
+    case LIVE_MENU_REPLAY:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_REPLAY);
         break;
-    case 23:
+    case LIVE_MENU_START_LINK:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepLink);
         break;
-    case 24:
-        LiveBattleMatchFlow_Exit(wk, 1);
+    case LIVE_MENU_EXIT:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_MENU);
         break;
-    case 25:
+    case LIVE_MENU_WAIT_MESSAGE:
         if (LiveBattleMatchFlow_IsMessageDone(wk)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
         break;
-    case 26:
+    case LIVE_MENU_SHOW_RESULT:
         LiveBattleMatchFlow_PrintResult(wk);
-        *seq = 25;
-        WifiBattleMatchTask_SetReturnSeq(task, 5);
+        *seq = LIVE_MENU_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, LIVE_MENU_SHOW_PROMPT);
         break;
     }
 }
@@ -826,228 +1039,229 @@ static void LiveBattleMatchFlow_StepLink(WifiBattleMatchTask *task, u32 *seq, vo
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
     }
     switch (*seq) {
-    case 0:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 20, TRUE, 40, 1);
+    case LIVE_LINK_SHOW_INTRO:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 20, TRUE, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_SHOW_LINK_PROMPT);
         break;
-    case 1:
+    case LIVE_LINK_SHOW_LINK_PROMPT:
         LiveBattleMatchFlow_PrintMessage(wk, 33, FALSE);
         WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, TRUE);
         GFL_SndSEPlay(SEQ_SE_SYS_102);
         wk->readySent = FALSE;
         wk->readyReceived = FALSE;
-        *seq = 40;
-        WifiBattleMatchTask_SetReturnSeq(task, 2);
+        *seq = LIVE_LINK_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, LIVE_LINK_RESET_LINK);
         break;
-    case 2:
+    case LIVE_LINK_RESET_LINK:
         if (LiveBattleMatchIrc_ResetLink(wk->irc)) {
-            *seq = 3;
+            *seq = LIVE_LINK_WAIT_LINK;
         }
         break;
-    case 3:
+    case LIVE_LINK_WAIT_LINK:
         linked = LiveBattleMatchIrc_StepLink(wk->irc);
         switch (linked) {
-        case 1:
-            *seq = 13;
+        case LIVE_IR_RESULT_CONNECTED:
+            *seq = LIVE_LINK_SEND_PLAYER_DATA;
             break;
-        case 2:
-            *seq = 9;
+        case LIVE_IR_RESULT_LOST:
+            *seq = LIVE_LINK_CANCEL_LOST_LINK;
             break;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_MESSAGE);
-            *seq = 4;
+            *seq = LIVE_LINK_CANCEL_LINK;
         }
         break;
-    case 4:
+    case LIVE_LINK_CANCEL_LINK:
         LiveBattleMatchIrc_CancelLink(wk->irc);
-        *seq = 5;
+        *seq = LIVE_LINK_WAIT_CANCEL;
         break;
-    case 5:
+    case LIVE_LINK_WAIT_CANCEL:
         if (LiveBattleMatchIrc_StepCancel(wk->irc)) {
-            *seq = 6;
+            *seq = LIVE_LINK_SHOW_CANCELLED;
         }
         break;
-    case 6:
+    case LIVE_LINK_SHOW_CANCELLED:
         WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 21, TRUE, 40, 7);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 21, TRUE, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_OPEN_CANCEL_MENU);
         break;
-    case 7:
-        LiveBattleMatchFlow_MenuStart(wk, 0);
-        *seq = 8;
+    case LIVE_LINK_OPEN_CANCEL_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_YES_NO);
+        *seq = LIVE_LINK_WAIT_CANCEL_MENU;
         break;
-    case 8:
+    case LIVE_LINK_WAIT_CANCEL_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
         }
         LiveBattleMatchFlow_MenuFree(wk);
         switch (selection) {
-        case 0:
+        case LIVE_CHOICE_YES:
             WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
             WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
             break;
-        case 1:
-            *seq = 1;
+        case LIVE_CHOICE_NO:
+            *seq = LIVE_LINK_SHOW_LINK_PROMPT;
             break;
         }
         break;
-    case 9:
+    case LIVE_LINK_CANCEL_LOST_LINK:
         WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
         LiveBattleMatchIrc_CancelLink(wk->irc);
-        *seq = 10;
+        *seq = LIVE_LINK_WAIT_LOST_LINK;
         break;
-    case 10:
+    case LIVE_LINK_WAIT_LOST_LINK:
         if (LiveBattleMatchIrc_StepCancel(wk->irc)) {
-            *seq = 11;
+            *seq = LIVE_LINK_SHOW_LOST_LINK;
         }
         break;
-    case 11:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 28, TRUE, 40, 12);
+    case LIVE_LINK_SHOW_LOST_LINK:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 28, TRUE, LIVE_LINK_WAIT_MESSAGE,
+                                         LIVE_LINK_RETURN_AFTER_LOST_LINK);
         break;
-    case 12:
+    case LIVE_LINK_RETURN_AFTER_LOST_LINK:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
         break;
-    case 13:
+    case LIVE_LINK_SEND_PLAYER_DATA:
         LiveBattleMatchFlow_SetEntryField2(wk->param.playerData, wk);
         if (LiveBattleMatchIrc_SendPlayerData(wk->irc, wk->param.playerData)) {
-            *seq = 14;
+            *seq = LIVE_LINK_RECEIVE_PLAYER_DATA;
         }
         break;
-    case 14:
+    case LIVE_LINK_RECEIVE_PLAYER_DATA:
         if (LiveBattleMatchIrc_TakePlayerData(wk->irc, &received)) {
             MI_CpuCopy8(received, wk->param.partnerData, PokeParty_GetSaveDataSize() + sizeof(WifiBattleMatchPlayer));
-            *seq = 15;
+            *seq = LIVE_LINK_CHECK_COMPETITION;
         }
         break;
-    case 15:
+    case LIVE_LINK_CHECK_COMPETITION:
         if (wk->param.playerData->entryField2 == wk->param.partnerData->entryField2) {
             u32 field12 = TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_ALLOW_REMATCH);
             BOOL known = LiveMatchData_HasOpponent(wk->record, wk->param.partnerData->mac);
 
             wk->readySent = (field12 != 0 || (field12 == 0 && !known));
-            *seq = 16;
+            *seq = LIVE_LINK_SYNC_READY;
         } else {
             WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
             GFL_SndStop();
-            *seq = 21;
+            *seq = LIVE_LINK_RESET_WRONG_COMPETITION;
         }
         break;
-    case 16:
+    case LIVE_LINK_SYNC_READY:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x48, 0x1f);
-        *seq = 17;
+        *seq = LIVE_LINK_WAIT_SYNC_READY;
         break;
-    case 17:
+    case LIVE_LINK_WAIT_SYNC_READY:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0x48, 0x1f)) {
-            *seq = 18;
+            *seq = LIVE_LINK_SEND_READY;
         }
         break;
-    case 18:
+    case LIVE_LINK_SEND_READY:
         if (LiveBattleMatchIrc_SendReady(wk->irc, &wk->readySent)) {
-            *seq = 19;
+            *seq = LIVE_LINK_RECEIVE_READY;
         }
         break;
-    case 19:
+    case LIVE_LINK_RECEIVE_READY:
         if (LiveBattleMatchIrc_TakeReady(wk->irc, &wk->readyReceived)) {
-            *seq = 20;
+            *seq = LIVE_LINK_CHECK_READY;
         }
         break;
-    case 20:
+    case LIVE_LINK_CHECK_READY:
         WifiBattleMatchLinkIcon_SetShown(wk->linkIcon, FALSE);
         GFL_SndStop();
         if (wk->readyReceived != 0 && wk->readySent != 0) {
             GFL_SndSEPlay(SEQ_SE_SYS_74);
-            *seq = 27;
+            *seq = LIVE_LINK_SHOW_PARTNER_FOUND;
         } else {
-            *seq = 24;
+            *seq = LIVE_LINK_RESET_REMATCH;
         }
         break;
-    case 21:
+    case LIVE_LINK_RESET_WRONG_COMPETITION:
         if (LiveBattleMatchIrc_ResetEnd(wk->irc)) {
-            *seq = 22;
+            *seq = LIVE_LINK_WAIT_WRONG_COMPETITION;
         }
         break;
-    case 22:
+    case LIVE_LINK_WAIT_WRONG_COMPETITION:
         if (LiveBattleMatchIrc_StepEnd(wk->irc)) {
-            *seq = 23;
+            *seq = LIVE_LINK_SHOW_WRONG_COMPETITION;
         }
         break;
-    case 23:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 22, TRUE, 40, 39);
+    case LIVE_LINK_SHOW_WRONG_COMPETITION:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 22, TRUE, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_RETURN_MENU);
         break;
-    case 24:
+    case LIVE_LINK_RESET_REMATCH:
         if (LiveBattleMatchIrc_ResetEnd(wk->irc)) {
-            *seq = 25;
+            *seq = LIVE_LINK_WAIT_REMATCH;
         }
         break;
-    case 25:
+    case LIVE_LINK_WAIT_REMATCH:
         if (LiveBattleMatchIrc_StepEnd(wk->irc)) {
-            *seq = 26;
+            *seq = LIVE_LINK_SHOW_REMATCH_DISALLOWED;
         }
         break;
-    case 26:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 36, TRUE, 40, 39);
+    case LIVE_LINK_SHOW_REMATCH_DISALLOWED:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 36, TRUE, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_RETURN_MENU);
         break;
-    case 27:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 23, TRUE, 40, 28);
+    case LIVE_LINK_SHOW_PARTNER_FOUND:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 23, TRUE, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_WAIT_PARTNER_DELAY);
         break;
-    case 28:
+    case LIVE_LINK_WAIT_PARTNER_DELAY:
         if (wk->frames++ > 120) {
             wk->frames = 0;
             GFL_BGSysSetBGEnabled(0, FALSE);
-            *seq = 29;
+            *seq = LIVE_LINK_SHOW_PARTNER_CARD;
         }
         break;
-    case 29:
+    case LIVE_LINK_SHOW_PARTNER_CARD:
         LiveBattleMatchFlow_PartnerCardCreate(wk, wk->param.partnerData);
-        *seq = 30;
+        *seq = LIVE_LINK_WAIT_PARTNER_CARD;
         break;
-    case 30:
+    case LIVE_LINK_WAIT_PARTNER_CARD:
         if (LiveBattleMatchFlow_PartnerCardIsDone(wk)) {
-            *seq = 31;
+            *seq = LIVE_LINK_WAIT_PARTNER_DISPLAY;
         }
         break;
-    case 31:
+    case LIVE_LINK_WAIT_PARTNER_DISPLAY:
         if (wk->frames++ > 300) {
             wk->frames = 0;
-            *seq = 32;
+            *seq = LIVE_LINK_SHOW_BATTLE_PROMPT;
         }
         break;
-    case 32:
+    case LIVE_LINK_SHOW_BATTLE_PROMPT:
         GFL_BGSysSetBGEnabled(0, TRUE);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 24, TRUE, 40, 33);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 24, TRUE, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_SHOW_STARTING);
         break;
-    case 33:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 35, 2, 40, 34);
+    case LIVE_LINK_SHOW_STARTING:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 35, 2, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_SYNC_START);
         break;
-    case 34:
+    case LIVE_LINK_SYNC_START:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x47, 0x1f);
-        *seq = 35;
+        *seq = LIVE_LINK_WAIT_SYNC_START;
         break;
-    case 35:
+    case LIVE_LINK_WAIT_SYNC_START:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0x47, 0x1f)) {
-            *seq = 36;
+            *seq = LIVE_LINK_SHOW_BATTLE_WAIT;
         }
         break;
-    case 36:
+    case LIVE_LINK_SHOW_BATTLE_WAIT:
         GFL_BGSysSetBGEnabled(0, TRUE);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 38, 2, 40, 37);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 38, 2, LIVE_LINK_WAIT_MESSAGE, LIVE_LINK_WAIT_BATTLE_DELAY);
         break;
-    case 37:
+    case LIVE_LINK_WAIT_BATTLE_DELAY:
         if (wk->frames++ > 60) {
             Regulation *regulation = TournamentEntry_GetRegulation(wk->entry);
 
             wk->frames = 0;
             Regulation_GetParam(regulation, REGULATION_PARAM_SHOW_PARTNERS);
-            *seq = 38;
+            *seq = LIVE_LINK_START_BATTLE;
         }
         break;
-    case 38:
-        LiveBattleMatchFlow_Exit(wk, 2);
+    case LIVE_LINK_START_BATTLE:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_BATTLE);
         break;
-    case 39:
+    case LIVE_LINK_RETURN_MENU:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
         break;
-    case 40:
+    case LIVE_LINK_WAIT_MESSAGE:
         if (LiveBattleMatchFlow_IsMessageDone(wk)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1064,24 +1278,24 @@ static void LiveBattleMatchFlow_StepRecord(WifiBattleMatchTask *task, u32 *seq, 
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
     }
     switch (*seq) {
-    case 0: {
+    case LIVE_RECORD_RECORD_TRAINER: {
         RivalDataSave *rival = getHollow_RivalData(GameData_GetSaveControl(wk->param.gameData));
 
         Misc_AddMetTrainer(rival, getIDAsUInt(&wk->param.partnerData->info));
-        *seq = 1;
+        *seq = LIVE_RECORD_RESET_LINK_END;
         break;
     }
-    case 1:
+    case LIVE_RECORD_RESET_LINK_END:
         if (LiveBattleMatchIrc_ResetEnd(wk->irc)) {
-            *seq = 2;
+            *seq = LIVE_RECORD_WAIT_LINK_END;
         }
         break;
-    case 2:
+    case LIVE_RECORD_WAIT_LINK_END:
         if (LiveBattleMatchIrc_StepEnd(wk->irc)) {
-            *seq = 3;
+            *seq = LIVE_RECORD_RECORD_RESULT;
         }
         break;
-    case 3: {
+    case LIVE_RECORD_RECORD_RESULT: {
         u8 won;
         u8 lost;
         u8 played = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_PLAYED);
@@ -1094,15 +1308,15 @@ static void LiveBattleMatchFlow_StepRecord(WifiBattleMatchTask *task, u32 *seq, 
         won = 0;
         lost = 0;
         switch (wk->param.matchResult->result) {
-        case 1:
-        case 4:
+        case BTL_RESULT_VICTORY:
+        case BTL_RESULT_FLEE_FOE:
             won = 1;
             break;
-        case 0:
-        case 3:
+        case BTL_RESULT_DEFEAT:
+        case BTL_RESULT_FLEE:
             lost = 1;
             break;
-        case 2:
+        case BTL_RESULT_DRAW:
             break;
         default:
             GFL_ASSERT_MSG(FALSE, "\x83\x6f\x83\x67\x83\x8b\x8c\x8b\x89\xca\x95\x73\x90\xb3\x92\x6c %d\n",
@@ -1113,25 +1327,25 @@ static void LiveBattleMatchFlow_StepRecord(WifiBattleMatchTask *task, u32 *seq, 
         LiveMatchData_AddCount(wk->record, LIVEMATCH_COUNT_LOST, lost);
         LiveMatchData_AddCount(wk->record, LIVEMATCH_COUNT_PLAYED, 1);
         LiveBattleMatchFlow_PlayerCardCreateWait(wk);
-        *seq = 4;
+        *seq = LIVE_RECORD_SHOW_SAVING;
         break;
     }
-    case 4:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, 8, 5);
+    case LIVE_RECORD_SHOW_SAVING:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, LIVE_RECORD_WAIT_MESSAGE, LIVE_RECORD_START_SAVE);
         break;
-    case 5:
+    case LIVE_RECORD_START_SAVE:
         GameData_StartSave(wk->param.gameData);
-        *seq = 6;
+        *seq = LIVE_RECORD_WAIT_SAVE;
         break;
-    case 6:
-        if (GameData_UpdateSave(wk->param.gameData) == 2) {
-            *seq = 7;
+    case LIVE_RECORD_WAIT_SAVE:
+        if (GameData_UpdateSave(wk->param.gameData) == SAVE_RESULT_OK) {
+            *seq = LIVE_RECORD_EXIT;
         }
         break;
-    case 7:
-        LiveBattleMatchFlow_Exit(wk, 3);
+    case LIVE_RECORD_EXIT:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_RECORDED);
         break;
-    case 8:
+    case LIVE_RECORD_WAIT_MESSAGE:
         if (LiveBattleMatchFlow_IsMessageDone(wk)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
@@ -1145,61 +1359,61 @@ static void LiveBattleMatchFlow_StepQuit(WifiBattleMatchTask *task, u32 *seq, vo
     s32 selection;
 
     switch (*seq) {
-    case 0:
+    case LIVE_QUIT_SHOW_CARD:
         if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B) == 3) {
             LiveBattleMatchFlow_PlayerCardCreate(wk);
-            LiveBattleMatchFlow_PlayerCardShow(wk, 1);
+            LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
             while (!LiveBattleMatchFlow_PlayerCardIsReady(wk)) {
             }
-            *seq = 6;
+            *seq = LIVE_QUIT_SHOW_PROMPT;
         } else {
             LiveBattleMatchFlow_PlayerCardCreateWait(wk);
-            *seq = 1;
+            *seq = LIVE_QUIT_CHECK_MATCH_LIMIT;
         }
         break;
-    case 1: {
+    case LIVE_QUIT_CHECK_MATCH_LIMIT: {
         Regulation *regulation = TournamentEntry_GetRegulation(wk->entry);
         u32 played = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_PLAYED);
 
         if (played >= Regulation_GetParam(regulation, REGULATION_PARAM_MAX_BATTLES)) {
-            *seq = 2;
+            *seq = LIVE_QUIT_SHOW_SAVING;
         } else {
-            *seq = 16;
+            *seq = LIVE_QUIT_RETURN_MENU;
         }
         break;
     }
-    case 2:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, 17, 3);
+    case LIVE_QUIT_SHOW_SAVING:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, LIVE_QUIT_WAIT_MESSAGE, LIVE_QUIT_FINISH_ENTRY);
         break;
-    case 3:
+    case LIVE_QUIT_FINISH_ENTRY:
         TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_UNK15B, 3);
         BattleBoxSave_ClearFlags(getBattleBox(GameData_GetSaveControl(wk->param.gameData)), 2);
         GameData_StartSave(wk->param.gameData);
-        *seq = 4;
+        *seq = LIVE_QUIT_WAIT_SAVE;
         break;
-    case 4:
+    case LIVE_QUIT_WAIT_SAVE:
         switch (GameData_UpdateSave(wk->param.gameData)) {
-        case 0:
-        case 1:
+        case SAVE_RESULT_CONTINUE:
+        case SAVE_RESULT_LAST:
             break;
-        case 2:
-        case 3:
-            *seq = 5;
+        case SAVE_RESULT_OK:
+        case SAVE_RESULT_NG:
+            *seq = LIVE_QUIT_SHOW_FINISHED;
             break;
         }
         break;
-    case 5:
-        LiveBattleMatchFlow_PlayerCardShow(wk, 1);
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 25, TRUE, 17, 6);
+    case LIVE_QUIT_SHOW_FINISHED:
+        LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 25, TRUE, LIVE_QUIT_WAIT_MESSAGE, LIVE_QUIT_SHOW_PROMPT);
         break;
-    case 6:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 29, TRUE, 17, 7);
+    case LIVE_QUIT_SHOW_PROMPT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 29, TRUE, LIVE_QUIT_WAIT_MESSAGE, LIVE_QUIT_OPEN_MENU);
         break;
-    case 7:
-        LiveBattleMatchFlow_MenuStart(wk, 2);
-        *seq = 8;
+    case LIVE_QUIT_OPEN_MENU:
+        LiveBattleMatchFlow_MenuStart(wk, LIVE_FLOW_MENU_FINISHED);
+        *seq = LIVE_QUIT_WAIT_MENU;
         break;
-    case 8:
+    case LIVE_QUIT_WAIT_MENU:
         selection = LiveBattleMatchFlow_MenuGetSelection(wk);
         if (selection == -1) {
             break;
@@ -1207,60 +1421,60 @@ static void LiveBattleMatchFlow_StepQuit(WifiBattleMatchTask *task, u32 *seq, vo
         LiveBattleMatchFlow_MenuFree(wk);
         if (wk->hasVideo && !wk->param.matchResult->disconnected) {
             switch (selection) {
-            case 0:
-                *seq = 11;
+            case LIVE_FINISHED_CHOICE_REPLAY:
+                *seq = LIVE_QUIT_CHECK_VIDEO;
                 break;
-            case 1:
-                *seq = 18;
+            case LIVE_FINISHED_CHOICE_RESULT:
+                *seq = LIVE_QUIT_SHOW_RESULT;
                 break;
-            case 2:
-                *seq = 9;
+            case LIVE_FINISHED_CHOICE_EXIT:
+                *seq = LIVE_QUIT_SHOW_EXIT;
                 break;
             }
-        } else if (selection == 0) {
-            *seq = 9;
+        } else if (selection == LIVE_FINISHED_NO_VIDEO_CHOICE_EXIT) {
+            *seq = LIVE_QUIT_SHOW_EXIT;
         }
         break;
-    case 9:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 31, TRUE, 17, 10);
+    case LIVE_QUIT_SHOW_EXIT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 31, TRUE, LIVE_QUIT_WAIT_MESSAGE, LIVE_QUIT_HIDE_CARD);
         break;
-    case 10:
+    case LIVE_QUIT_HIDE_CARD:
         if (LiveBattleMatchFlow_PlayerCardIsDone(wk)) {
             LiveBattleMatchFlow_PlayerCardDelete(wk);
-            *seq = 15;
+            *seq = LIVE_QUIT_EXIT;
         }
         break;
-    case 11:
+    case LIVE_QUIT_CHECK_VIDEO:
         if (BattleRec_IsVersionSupported((u8)wk->param.partnerData->battleRecordVersion)) {
-            *seq = 12;
+            *seq = LIVE_QUIT_SHOW_VIDEO_PROMPT;
         } else {
-            *seq = 13;
+            *seq = LIVE_QUIT_SHOW_VIDEO_UNSUPPORTED;
         }
         break;
-    case 12:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 16, TRUE, 17, 14);
+    case LIVE_QUIT_SHOW_VIDEO_PROMPT:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 16, TRUE, LIVE_QUIT_WAIT_MESSAGE, LIVE_QUIT_REPLAY);
         break;
-    case 13:
-        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 34, TRUE, 17, 6);
+    case LIVE_QUIT_SHOW_VIDEO_UNSUPPORTED:
+        LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 34, TRUE, LIVE_QUIT_WAIT_MESSAGE, LIVE_QUIT_SHOW_PROMPT);
         break;
-    case 14:
-        LiveBattleMatchFlow_Exit(wk, 4);
+    case LIVE_QUIT_REPLAY:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_REPLAY);
         break;
-    case 15:
-        LiveBattleMatchFlow_Exit(wk, 1);
+    case LIVE_QUIT_EXIT:
+        LiveBattleMatchFlow_Exit(wk, LIVE_FLOW_RESULT_MENU);
         break;
-    case 16:
+    case LIVE_QUIT_RETURN_MENU:
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
         break;
-    case 17:
+    case LIVE_QUIT_WAIT_MESSAGE:
         if (LiveBattleMatchFlow_IsMessageDone(wk)) {
             WifiBattleMatchTask_ReturnToSeq(task);
         }
         break;
-    case 18:
+    case LIVE_QUIT_SHOW_RESULT:
         LiveBattleMatchFlow_PrintResult(wk);
-        *seq = 17;
-        WifiBattleMatchTask_SetReturnSeq(task, 6);
+        *seq = LIVE_QUIT_WAIT_MESSAGE;
+        WifiBattleMatchTask_SetReturnSeq(task, LIVE_QUIT_SHOW_PROMPT);
         break;
     }
 }
@@ -1280,17 +1494,17 @@ static void LiveBattleMatchFlow_MenuStart(LiveBattleMatchFlow *wk, u32 kind) {
     param.font = wk->param.font;
     param.printQueue = wk->param.printQueue;
     switch (kind) {
-    case 3:
+    case LIVE_FLOW_MENU_YES_NO_DEFAULT_NO:
         param.cursorRow = 1;
-    case 0:
+    case LIVE_FLOW_MENU_YES_NO:
         param.msgIds[0] = 6;
         param.msgIds[1] = 7;
         param.count = 2;
         param.canCancel = 1;
         param.cancelValue = 1;
-        corner = 1;
+        corner = LIVE_FLOW_LAYOUT_RIGHT;
         break;
-    case 1:
+    case LIVE_FLOW_MENU_ACTIVE:
         param.canCancel = 0;
         if (wk->hasVideo && !wk->param.matchResult->disconnected) {
             param.msgIds[0] = 13;
@@ -1303,9 +1517,9 @@ static void LiveBattleMatchFlow_MenuStart(LiveBattleMatchFlow *wk, u32 kind) {
             param.msgIds[1] = 15;
             param.count = 2;
         }
-        corner = 0;
+        corner = LIVE_FLOW_LAYOUT_CENTER;
         break;
-    case 2:
+    case LIVE_FLOW_MENU_FINISHED:
         param.canCancel = 0;
         if (wk->hasVideo && !wk->param.matchResult->disconnected) {
             param.msgIds[0] = 14;
@@ -1316,7 +1530,7 @@ static void LiveBattleMatchFlow_MenuStart(LiveBattleMatchFlow *wk, u32 kind) {
             param.msgIds[0] = 30;
             param.count = 1;
         }
-        corner = 0;
+        corner = LIVE_FLOW_LAYOUT_CENTER;
         break;
     }
     param.bg = 0;
@@ -1324,13 +1538,13 @@ static void LiveBattleMatchFlow_MenuStart(LiveBattleMatchFlow *wk, u32 kind) {
     param.framePalette = 13;
     param.frameChar = 1;
     switch (corner) {
-    case 0:
+    case LIVE_FLOW_LAYOUT_CENTER:
         width = 28;
         height = param.count * 2;
         x = 2;
         y = 9 - height / 2;
         break;
-    case 1:
+    case LIVE_FLOW_LAYOUT_RIGHT:
         width = 12;
         height = param.count * 2;
         x = 19;
@@ -1379,10 +1593,10 @@ static void LiveBattleMatchFlow_PlayerCardCreate(LiveBattleMatchFlow *wk) {
         WifiBattleMatchLiveCardInfo card;
 
         MI_CpuFill8(&card, 0, sizeof(WifiBattleMatchLiveCardInfo));
-        card.unkA0 = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_WON);
-        card.unkA2 = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_LOST);
-        card.unkA4 = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_PLAYED);
-        card.unkA6 = Regulation_GetParam(regulation, REGULATION_PARAM_MAX_BATTLES);
+        card.wins = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_WON);
+        card.losses = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_LOST);
+        card.matchCount = LiveMatchData_GetCount(wk->record, LIVEMATCH_COUNT_PLAYED);
+        card.maxBattles = Regulation_GetParam(regulation, REGULATION_PARAM_MAX_BATTLES);
         card.look = PlayerInfo_GetUnionView(info);
         MI_CpuCopy8(TournamentEntry_GetCardData(wk->entry), card.data, sizeof(card.data));
         card.startDate = LiveBattleMatchFlow_PackCode(TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_START_YEAR),
@@ -1419,8 +1633,9 @@ static BOOL LiveBattleMatchFlow_PlayerCardIsDone(LiveBattleMatchFlow *wk) {
     return WifiBattleMatchCard_SlideOut(wk->playerCard);
 }
 
-static void LiveBattleMatchFlow_PlayerCardShow(LiveBattleMatchFlow *wk, u32 a1) {
-    WifiBattleMatchLiveCard_ShowPage(wk->playerCard, a1, wk->msgCard, wk->param.printQueue, wk->param.font, wk->heapId);
+static void LiveBattleMatchFlow_PlayerCardShow(LiveBattleMatchFlow *wk, u32 page) {
+    WifiBattleMatchLiveCard_ShowPage(wk->playerCard, page, wk->msgCard, wk->param.printQueue, wk->param.font,
+                                     wk->heapId);
 }
 
 static void LiveBattleMatchFlow_PartnerCardCreate(LiveBattleMatchFlow *wk, WifiBattleMatchPlayer *data) {
@@ -1504,18 +1719,18 @@ static void LiveBattleMatchFlow_SetEntryField2(WifiBattleMatchPlayer *data, Live
 // The message for how the last match ended
 static u32 LiveBattleMatchFlow_GetResultMessageId(LiveBattleMatchFlow *wk) {
     switch (wk->param.matchResult->result) {
-    case 4:
+    case BTL_RESULT_FLEE_FOE:
         return 56;
-    case 1:
+    case BTL_RESULT_VICTORY:
         return 52;
-    case 3:
+    case BTL_RESULT_FLEE:
         return 55;
-    case 0:
+    case BTL_RESULT_DEFEAT:
         return 53;
     default:
         GFL_ASSERT_MSG(FALSE, "\x83\x6f\x83\x67\x83\x8b\x8c\x8b\x89\xca\x95\x73\x90\xb3\x92\x6c %d\n",
                        wk->param.matchResult->result);
-    case 2:
+    case BTL_RESULT_DRAW:
         return 54;
     }
 }

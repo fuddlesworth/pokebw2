@@ -496,7 +496,7 @@ void WifiBattleMatchWifiCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
     }
     switch (page) {
-    case 0:
+    case WIFIBATTLEMATCH_CARD_PAGE_REGISTERED:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
             if (card->actors[CARD_ACTOR_ITEM + i] != NULL) {
                 ClActor_SetVisible(card->actors[CARD_ACTOR_ITEM + i], TRUE);
@@ -509,7 +509,7 @@ void WifiBattleMatchWifiCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         text = GFL_MsgDataLoadStrbufNew(msgData, 17);
         PrintWindow_Print(&card->printWindows[7], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
         break;
-    case 1:
+    case WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
             if (card->actors[CARD_ACTOR_ITEM + i] != NULL) {
                 ClActor_SetVisible(card->actors[CARD_ACTOR_ITEM + i], TRUE);
@@ -522,7 +522,7 @@ void WifiBattleMatchWifiCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         text = GFL_MsgDataLoadStrbufNew(msgData, 18);
         PrintWindow_Print(&card->printWindows[7], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
         break;
-    case 2:
+    case WIFIBATTLEMATCH_CARD_PAGE_EMPTY:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
             if (card->actors[CARD_ACTOR_ITEM + i] != NULL) {
                 ClActor_SetVisible(card->actors[CARD_ACTOR_ITEM + i], FALSE);
@@ -635,7 +635,7 @@ void WifiBattleMatchLiveCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         }
     }
     switch (page) {
-    case 0:
+    case WIFIBATTLEMATCH_CARD_PAGE_REGISTERED:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
             if (card->actors[CARD_ACTOR_ITEM + i] != NULL) {
                 ClActor_SetVisible(card->actors[CARD_ACTOR_ITEM + i], TRUE);
@@ -648,7 +648,7 @@ void WifiBattleMatchLiveCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         text = GFL_MsgDataLoadStrbufNew(msgData, 17);
         PrintWindow_Print(&card->printWindows[9], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
         break;
-    case 1:
+    case WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
             if (card->actors[CARD_ACTOR_ITEM + i] != NULL) {
                 ClActor_SetVisible(card->actors[CARD_ACTOR_ITEM + i], TRUE);
@@ -661,7 +661,7 @@ void WifiBattleMatchLiveCard_ShowPage(WifiBattleMatchCard *card, u32 page, MsgDa
         text = GFL_MsgDataLoadStrbufNew(msgData, 18);
         PrintWindow_Print(&card->printWindows[9], printQueue, 0, 0, text, font, PRINT_COLOR(15, 2, 0));
         break;
-    case 2:
+    case WIFIBATTLEMATCH_CARD_PAGE_EMPTY:
         for (i = 0; i < CARD_PARTY_COUNT; i++) {
             if (card->actors[CARD_ACTOR_ITEM + i] != NULL) {
                 ClActor_SetVisible(card->actors[CARD_ACTOR_ITEM + i], FALSE);
@@ -1005,7 +1005,7 @@ static void WifiBattleMatchView_LiveCardWindows(WifiBattleMatchCard *card, const
             break;
         case 4:
             GFL_MsgDataLoadStrbuf(msgData, 13, format);
-            WordSetNumber(wordSet, 0, info->unkA0, 5, 1, TRUE);
+            WordSetNumber(wordSet, 0, info->wins, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
         case 5:
@@ -1013,14 +1013,15 @@ static void WifiBattleMatchView_LiveCardWindows(WifiBattleMatchCard *card, const
             break;
         case 6:
             GFL_MsgDataLoadStrbuf(msgData, 15, format);
-            WordSetNumber(wordSet, 0, info->unkA2, 5, 1, TRUE);
+            WordSetNumber(wordSet, 0, info->losses, 5, 1, TRUE);
             GFL_WordSetFormatStrbuf(wordSet, text, format);
             break;
         case 7:
             GFL_MsgDataLoadStrbuf(msgData, 10, text);
             break;
         case 8:
-            WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->unkA4, info->unkA6, heapId);
+            WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->matchCount,
+                                            info->maxBattles, heapId);
             draw = FALSE;
             break;
         case 9:

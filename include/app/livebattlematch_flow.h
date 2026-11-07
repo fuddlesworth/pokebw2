@@ -11,8 +11,23 @@
 #include "save/tournament_block.h"
 #include "struct_decls.h"
 
-// Overlay 261's livebattlematch_flow.c (named by its embedded string): the flow of the live competitions. Only what
-// battle_championship_flow.c calls is declared so far, and none has a name yet
+// Overlay 261's livebattlematch_flow.c (named by its embedded string): the flow of the live competitions. It handles
+// entry, team registration, infrared matching and the results of each match
+
+enum {
+    LIVE_FLOW_MODE_JOIN = 0,
+    LIVE_FLOW_MODE_MENU = 1,
+    LIVE_FLOW_MODE_AFTER_MATCH = 2,
+    LIVE_FLOW_MODE_QUIT = 3,
+};
+
+enum {
+    LIVE_FLOW_RESULT_RUNNING = 0,
+    LIVE_FLOW_RESULT_MENU = 1,
+    LIVE_FLOW_RESULT_BATTLE = 2,
+    LIVE_FLOW_RESULT_RECORDED = 3,
+    LIVE_FLOW_RESULT_REPLAY = 4,
+};
 
 typedef struct LiveBattleMatchFlow LiveBattleMatchFlow;
 

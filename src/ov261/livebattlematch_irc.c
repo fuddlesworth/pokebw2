@@ -11,6 +11,40 @@
 #include "pml/poke_party.h"
 #include "system/version.h"
 
+enum {
+    LIVE_IR_LINK_INIT = 0,
+    LIVE_IR_LINK_WAIT_INIT = 1,
+    LIVE_IR_LINK_REGISTER_COMMANDS = 2,
+    LIVE_IR_LINK_CONNECT = 3,
+    LIVE_IR_LINK_WAIT_CONNECT = 4,
+    LIVE_IR_LINK_CONNECTED = 5,
+    LIVE_IR_LINK_LOST = 6,
+};
+
+enum {
+    LIVE_IR_CANCEL_START = 0,
+    LIVE_IR_CANCEL_WAIT_END = 1,
+    LIVE_IR_CANCEL_DONE = 2,
+};
+
+enum {
+    LIVE_IR_END_START = 0,
+    LIVE_IR_END_WAIT_END = 1,
+    LIVE_IR_END_DONE = 2,
+};
+
+enum {
+    LIVE_IR_DELIVERY_START = 0,
+    LIVE_IR_DELIVERY_WAIT_RESULT = 1,
+    LIVE_IR_DELIVERY_END = 2,
+    LIVE_IR_DELIVERY_WAIT_END = 3,
+};
+
+enum {
+    LIVE_IR_DELIVERY_END_START = 0,
+    LIVE_IR_DELIVERY_END_WAIT_END = 1,
+};
+
 // The commands of the link, the game's command base 0x1f and a number
 enum {
     LIVEBATTLEMATCH_IRC_COMMAND_PLAYER_DATA = 0x1f00,
@@ -138,97 +172,97 @@ BOOL LiveBattleMatchIrc_CheckError(LiveBattleMatchIrc *irc) {
 }
 
 BOOL LiveBattleMatchIrc_ResetLink(LiveBattleMatchIrc *irc) {
-    irc->state = 0;
+    irc->state = LIVE_IR_LINK_INIT;
     return TRUE;
 }
 
 int LiveBattleMatchIrc_StepLink(LiveBattleMatchIrc *irc) {
     switch (irc->state) {
-    case 0:
+    case LIVE_IR_LINK_INIT:
         GFL_NetInit(&sLiveBattleMatchIrcNetInit, NULL, NULL);
         sLiveBattleMatchIrcIsLinked = TRUE;
-        irc->state = 1;
+        irc->state = LIVE_IR_LINK_WAIT_INIT;
         break;
-    case 1:
+    case LIVE_IR_LINK_WAIT_INIT:
         if (GFL_NetIsInitialized()) {
-            irc->state = 2;
+            irc->state = LIVE_IR_LINK_REGISTER_COMMANDS;
         }
         break;
-    case 2:
+    case LIVE_IR_LINK_REGISTER_COMMANDS:
         NetCommand_AddTable(LIVEBATTLEMATCH_IRC_COMMAND_PLAYER_DATA, sLiveBattleMatchIrcCommands,
                             LIVEBATTLEMATCH_IRC_COMMAND_NUM, irc);
         NetDevIrc_SetPeerFilter(LiveBattleMatchIrc_OnLinkChanged);
-        irc->state = 3;
+        irc->state = LIVE_IR_LINK_CONNECT;
         break;
-    case 3:
+    case LIVE_IR_LINK_CONNECT:
         GFL_NetChangeoverConnect(NULL);
-        irc->state = 4;
+        irc->state = LIVE_IR_LINK_WAIT_CONNECT;
         break;
-    case 4:
+    case LIVE_IR_LINK_WAIT_CONNECT:
         if (GFL_NetGetNegotiatedCount() > 1) {
-            irc->state = 5;
+            irc->state = LIVE_IR_LINK_CONNECTED;
         }
         if (!sLiveBattleMatchIrcIsLinked) {
-            irc->state = 6;
+            irc->state = LIVE_IR_LINK_LOST;
         }
         break;
-    case 5:
+    case LIVE_IR_LINK_CONNECTED:
         NetDevIrc_SetPeerFilter(NULL);
-        return 1;
-    case 6:
+        return LIVE_IR_RESULT_CONNECTED;
+    case LIVE_IR_LINK_LOST:
         NetDevIrc_SetPeerFilter(NULL);
-        return 2;
+        return LIVE_IR_RESULT_LOST;
     }
-    return 0;
+    return LIVE_IR_RESULT_WAIT;
 }
 
 void LiveBattleMatchIrc_CancelLink(LiveBattleMatchIrc *irc) {
-    if (irc->state >= 2) {
+    if (irc->state >= LIVE_IR_LINK_REGISTER_COMMANDS) {
         NetCommand_RemoveTable(LIVEBATTLEMATCH_IRC_COMMAND_PLAYER_DATA);
     }
     NetDevIrc_SetPeerFilter(NULL);
-    irc->state = 0;
+    irc->state = LIVE_IR_CANCEL_START;
 }
 
 BOOL LiveBattleMatchIrc_StepCancel(LiveBattleMatchIrc *irc) {
     switch (irc->state) {
-    case 0:
+    case LIVE_IR_CANCEL_START:
         if (GFL_NetIsInitialized()) {
             GFL_NetExit(NULL);
-            irc->state = 1;
+            irc->state = LIVE_IR_CANCEL_WAIT_END;
         } else {
-            irc->state = 2;
+            irc->state = LIVE_IR_CANCEL_DONE;
         }
         break;
-    case 1:
+    case LIVE_IR_CANCEL_WAIT_END:
         if (GFL_NetIsEnded()) {
-            irc->state = 2;
+            irc->state = LIVE_IR_CANCEL_DONE;
         }
         break;
-    case 2:
+    case LIVE_IR_CANCEL_DONE:
         return TRUE;
     }
     return FALSE;
 }
 
 BOOL LiveBattleMatchIrc_ResetEnd(LiveBattleMatchIrc *irc) {
-    irc->state = 0;
+    irc->state = LIVE_IR_END_START;
     return TRUE;
 }
 
 BOOL LiveBattleMatchIrc_StepEnd(LiveBattleMatchIrc *irc) {
     switch (irc->state) {
-    case 0:
+    case LIVE_IR_END_START:
         NetCommand_RemoveTable(LIVEBATTLEMATCH_IRC_COMMAND_PLAYER_DATA);
         GFL_NetExit(NULL);
-        irc->state = 1;
+        irc->state = LIVE_IR_END_WAIT_END;
         break;
-    case 1:
+    case LIVE_IR_END_WAIT_END:
         if (GFL_NetIsEnded()) {
-            irc->state = 2;
+            irc->state = LIVE_IR_END_DONE;
         }
         break;
-    case 2:
+    case LIVE_IR_END_DONE:
         return TRUE;
     }
     return FALSE;
@@ -302,7 +336,7 @@ void LiveBattleMatchIrc_StartDelivery(LiveBattleMatchIrc *p_wk, TournamentEntry 
     init.dataNum = 1;
     GFL_ASSERT(p_wk->p_delivery == NULL);
     p_wk->p_delivery = DeliveryIrc_Init(&init);
-    p_wk->state = 0;
+    p_wk->state = LIVE_IR_DELIVERY_START;
 }
 
 int LiveBattleMatchIrc_StepDelivery(LiveBattleMatchIrc *irc) {
@@ -310,40 +344,40 @@ int LiveBattleMatchIrc_StepDelivery(LiveBattleMatchIrc *irc) {
         DeliveryIrc_Main(irc->p_delivery);
     }
     switch (irc->state) {
-    case 0:
+    case LIVE_IR_DELIVERY_START:
         DeliveryIrc_RecvStart(irc->p_delivery);
         irc->state++;
         break;
-    case 1:
+    case LIVE_IR_DELIVERY_WAIT_RESULT:
         irc->deliveryResult = DeliveryIrc_GetResult(irc->p_delivery);
-        if (irc->deliveryResult != 0) {
+        if (irc->deliveryResult != DELIVERY_IRC_RESULT_RUNNING) {
             irc->state++;
         }
         break;
-    case 2:
+    case LIVE_IR_DELIVERY_END:
         DeliveryIrc_End(irc->p_delivery);
         irc->p_delivery = NULL;
         irc->state++;
         break;
-    case 3:
+    case LIVE_IR_DELIVERY_WAIT_END:
         if (GFL_NetIsNotInitialized()) {
             switch (irc->deliveryResult) {
-            case 1:
-                return 1;
-            case 3:
-                return 3;
-            case 2:
+            case DELIVERY_IRC_RESULT_SUCCESS:
+                return LIVE_IR_DELIVERY_RESULT_RECEIVED;
+            case DELIVERY_IRC_RESULT_NO_DATA:
+                return LIVE_IR_DELIVERY_RESULT_NO_DATA;
+            case DELIVERY_IRC_RESULT_DAMAGED:
             default:
-                return 2;
+                return LIVE_IR_DELIVERY_RESULT_DAMAGED;
             }
         }
         break;
     }
-    return 0;
+    return LIVE_IR_DELIVERY_RESULT_WAIT;
 }
 
 void LiveBattleMatchIrc_ResetDeliveryEnd(LiveBattleMatchIrc *irc) {
-    irc->state = 0;
+    irc->state = LIVE_IR_DELIVERY_END_START;
 }
 
 BOOL LiveBattleMatchIrc_StepDeliveryEnd(LiveBattleMatchIrc *irc) {
@@ -351,14 +385,14 @@ BOOL LiveBattleMatchIrc_StepDeliveryEnd(LiveBattleMatchIrc *irc) {
         DeliveryIrc_Main(irc->p_delivery);
     }
     switch (irc->state) {
-    case 0:
+    case LIVE_IR_DELIVERY_END_START:
         if (irc->p_delivery != NULL) {
             DeliveryIrc_End(irc->p_delivery);
             irc->p_delivery = NULL;
         }
         irc->state++;
         break;
-    case 1:
+    case LIVE_IR_DELIVERY_END_WAIT_END:
         if (GFL_NetIsNotInitialized()) {
             return TRUE;
         }
