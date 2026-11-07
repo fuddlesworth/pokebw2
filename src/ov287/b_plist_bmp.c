@@ -3,7 +3,9 @@
 #include "battle/b_plist_bmp.h"
 #include "battle/b_plist_main.h"
 #include "constants/arc.h"
+#include "constants/battle.h"
 #include "constants/moves.h"
+#include "constants/pokemon.h"
 #include "constants/text_banks.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
@@ -22,8 +24,9 @@
 #include "system/wordset.h"
 
 // The battle party list's windows and text (overlay 287). The ROM doesn't name this file: b_plist_bmp.c is a guess
-// after the ROM's b_plist_main.c and b_plist_anm.c and the b_plist_bmp.c of Diamond and Pearl. None of these functions
-// has a name yet.
+// after the ROM's b_plist_main.c and b_plist_anm.c and the b_plist_bmp.c of Diamond and Pearl.
+
+#define BPLIST_TEXT_CENTER_X 0xffff
 
 #define BPLIST_COLOR_WHITE PRINT_COLOR(15, 14, 0)
 #define BPLIST_COLOR_BLACK PRINT_COLOR(1, 2, 0)
@@ -84,65 +87,65 @@ static void BPlistBmp_DrawForgetPage(BPlistWork *work);
 static void BPlistBmp_DrawForgetInfoPage(BPlistWork *work);
 static void BPlistBmp_DrawPPRestorePage(BPlistWork *work);
 
-static const u8 data_ov287_021fae2c[] = { 0, 1, 2, 3, 0xff };
-static const u8 data_ov287_021fae31[] = { 0, 1, 2, 3, 4, 0xff };
+static const u8 sBPlistSelectedPageFlushOrder[] = { 0, 1, 2, 3, 0xff };
+static const u8 sBPlistPPRestorePageFlushOrder[] = { 0, 1, 2, 3, 4, 0xff };
 // Declared in this order for MWCC's sort to lay the two out in the ROM's order
-static const u8 data_ov287_021fae3e[] = { 0, 1, 2, 3, 4, 5, 0xff };
-static const u8 data_ov287_021fae37[] = { 0, 1, 2, 3, 4, 5, 0xff };
-static const u8 data_ov287_021fae45[] = { 0, 1, 2, 3, 4, 5, 0xff };
+static const u8 sBPlistMovesPageFlushOrder[] = { 0, 1, 2, 3, 4, 5, 0xff };
+static const u8 sBPlistPartyPageFlushOrder[] = { 0, 1, 2, 3, 4, 5, 0xff };
+static const u8 sBPlistForgetPageFlushOrder[] = { 0, 1, 2, 3, 4, 5, 0xff };
 
-static const BPlistWinData data_ov287_021fae4c[2] = {
+static const BPlistWinData sBPlistMessageWindowLayouts[2] = {
     { 4, 2, 21, 22, 2, 13 },
     { 4, 2, 19, 27, 4, 13 },
 };
 
-static const u8 data_ov287_021fae58[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0xff };
-static const u8 data_ov287_021fae64[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0xff };
-static const u32 data_ov287_021fae74[] = { 0x47, 0x4a, 0x4d, 0x50, 0x53 };
-static const u8 data_ov287_021fae88[] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,
-                                          12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0xff };
-static const u32 data_ov287_021faea0[] = { 0, 1, 2, 3, 4, 5 };
+static const u8 sBPlistMoveInfoPageFlushOrder[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0xff };
+static const u8 sBPlistConfirmForgetPageFlushOrder[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0xff };
+static const u32 sBPlistMoveNameMessageIDs[] = { 0x47, 0x4a, 0x4d, 0x50, 0x53 };
+static const u8 sBPlistSummaryPageFlushOrder[] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11,
+                                                   12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0xff };
+static const u32 sBPlistPokemonNameMessageIDs[] = { 0, 1, 2, 3, 4, 5 };
 
-static const BPlistWinData data_ov287_021faeb8[4] = {
+static const BPlistWinData sBPlistSelectedPageWindowLayouts[4] = {
     { 5, 10, 4, 12, 3, 9 },
     { 5, 11, 12, 10, 3, 9 },
     { 5, 1, 20, 11, 3, 9 },
     { 5, 14, 20, 11, 3, 9 },
 };
 
-static const BPlistWinData data_ov287_021faed0[5] = {
+static const BPlistWinData sBPlistPPRestorePageWindowLayouts[5] = {
     { 5, 5, 1, 9, 2, 9 },   { 5, 1, 6, 14, 5, 9 },   { 5, 17, 6, 14, 5, 9 },
     { 5, 1, 12, 14, 5, 9 }, { 5, 17, 12, 14, 5, 9 },
 };
 
-static const BPlistWinData data_ov287_021faeee[6] = {
+static const BPlistWinData sBPlistForgetPageWindowLayouts[6] = {
     { 5, 5, 1, 9, 2, 9 },   { 5, 1, 6, 14, 5, 9 },   { 5, 17, 6, 14, 5, 9 },
     { 5, 1, 12, 14, 5, 9 }, { 5, 17, 12, 14, 5, 9 }, { 5, 9, 18, 14, 5, 9 },
 };
 
-static const BPlistWinData data_ov287_021faf12[6] = {
+static const BPlistWinData sBPlistPartyPageWindowLayouts[6] = {
     { 5, 0, 0, 15, 5, 9 },  { 5, 16, 1, 15, 5, 9 }, { 5, 0, 6, 15, 5, 9 },
     { 5, 16, 7, 15, 5, 9 }, { 5, 0, 12, 15, 5, 9 }, { 5, 16, 13, 15, 5, 9 },
 };
 
-static const BPlistWinData data_ov287_021faf36[6] = {
+static const BPlistWinData sBPlistMovesPageWindowLayouts[6] = {
     { 5, 5, 1, 9, 2, 9 },   { 5, 1, 6, 14, 5, 9 },   { 5, 17, 6, 14, 5, 9 },
     { 5, 1, 12, 14, 5, 9 }, { 5, 17, 12, 14, 5, 9 }, { 5, 13, 20, 11, 3, 9 },
 };
 
-static const BPlistWinData data_ov287_021faf5c[11] = {
+static const BPlistWinData sBPlistMoveInfoPageWindowLayouts[11] = {
     { 5, 4, 4, 11, 2, 9 },  { 5, 23, 4, 5, 2, 9 }, { 5, 25, 9, 3, 2, 9 }, { 5, 25, 7, 3, 2, 9 },
     { 5, 1, 12, 30, 6, 9 }, { 5, 6, 9, 8, 2, 9 },  { 5, 5, 1, 9, 2, 9 },  { 5, 20, 4, 2, 2, 9 },
     { 5, 16, 9, 8, 2, 9 },  { 5, 16, 7, 8, 2, 9 }, { 5, 4, 7, 9, 2, 9 },
 };
 
-static const BPlistWinData data_ov287_021fafa0[12] = {
+static const BPlistWinData sBPlistConfirmForgetPageWindowLayouts[12] = {
     { 5, 5, 1, 9, 2, 9 },   { 5, 4, 4, 11, 2, 9 }, { 5, 20, 4, 2, 2, 9 }, { 5, 23, 4, 5, 2, 9 },
     { 5, 16, 9, 8, 2, 9 },  { 5, 16, 7, 8, 2, 9 }, { 5, 25, 9, 3, 2, 9 }, { 5, 25, 7, 3, 2, 9 },
     { 5, 1, 12, 30, 6, 9 }, { 5, 4, 7, 9, 2, 9 },  { 5, 6, 9, 8, 2, 9 },  { 5, 7, 20, 12, 3, 9 },
 };
 
-static const BPlistWinData data_ov287_021fafe8[22] = {
+static const BPlistWinData sBPlistSummaryPageWindowLayouts[22] = {
     { 5, 5, 1, 9, 2, 9 },   { 5, 1, 9, 11, 2, 9 },   { 5, 2, 11, 18, 4, 9 }, { 5, 4, 16, 12, 2, 9 },
     { 5, 24, 4, 7, 2, 9 },  { 5, 28, 7, 3, 2, 9 },   { 5, 28, 9, 3, 2, 9 },  { 5, 28, 15, 3, 2, 9 },
     { 5, 28, 11, 3, 2, 9 }, { 5, 28, 13, 3, 2, 9 },  { 5, 25, 6, 6, 1, 9 },  { 5, 5, 4, 3, 2, 9 },
@@ -152,7 +155,7 @@ static const BPlistWinData data_ov287_021fafe8[22] = {
 };
 
 void BPlistBmp_Init(BPlistWork *work) {
-    const BPlistWinData *data = data_ov287_021fae4c;
+    const BPlistWinData *data = sBPlistMessageWindowLayouts;
     u32 i;
 
     for (i = 0; i < 2; i++) {
@@ -171,37 +174,37 @@ void BPlistBmp_CreatePageWindows(BPlistWork *work, u8 page) {
     BPlistBmp_ToggleDummyWindow(work);
 
     switch (page) {
-    case 0:
-    case 8:
-        data = data_ov287_021faf12;
+    case BPLIST_PAGE_PARTY:
+    case BPLIST_PAGE_SWITCH_POSITION:
+        data = sBPlistPartyPageWindowLayouts;
         work->windowCount = 6;
         break;
-    case 1:
-        data = data_ov287_021faeb8;
+    case BPLIST_PAGE_SELECTED:
+        data = sBPlistSelectedPageWindowLayouts;
         work->windowCount = 4;
         break;
-    case 2:
-        data = data_ov287_021fafe8;
+    case BPLIST_PAGE_SUMMARY:
+        data = sBPlistSummaryPageWindowLayouts;
         work->windowCount = 22;
         break;
-    case 3:
-        data = data_ov287_021faf36;
+    case BPLIST_PAGE_MOVES:
+        data = sBPlistMovesPageWindowLayouts;
         work->windowCount = 6;
         break;
-    case 4:
-        data = data_ov287_021faf5c;
+    case BPLIST_PAGE_MOVE_INFO:
+        data = sBPlistMoveInfoPageWindowLayouts;
         work->windowCount = 11;
         break;
-    case 5:
-        data = data_ov287_021faed0;
+    case BPLIST_PAGE_PP_RESTORE:
+        data = sBPlistPPRestorePageWindowLayouts;
         work->windowCount = 5;
         break;
-    case 6:
-        data = data_ov287_021faeee;
+    case BPLIST_PAGE_FORGET_MOVE:
+        data = sBPlistForgetPageWindowLayouts;
         work->windowCount = 6;
         break;
-    case 7:
-        data = data_ov287_021fafa0;
+    case BPLIST_PAGE_CONFIRM_FORGET:
+        data = sBPlistConfirmForgetPageWindowLayouts;
         work->windowCount = 12;
         break;
     }
@@ -255,7 +258,7 @@ void BPlistBmp_Exit(BPlistWork *work) {
 
 void BPlistBmp_DrawPage(BPlistWork *work, u8 page) {
     switch (page) {
-    case 0:
+    case BPLIST_PAGE_PARTY:
         BPlistBmp_DrawPartyPage(work);
         if (work->param->mode == BPLIST_MODE_ITEM) {
             BPlistBmp_PrintInfo(work, 7);
@@ -265,29 +268,29 @@ void BPlistBmp_DrawPage(BPlistWork *work, u8 page) {
             BPlistBmp_PrintInfo(work, 6);
         }
         break;
-    case 8:
+    case BPLIST_PAGE_SWITCH_POSITION:
         BPlistBmp_DrawPartyPage(work);
         BPlistBmp_PrintInfo(work, 10);
         break;
-    case 1:
+    case BPLIST_PAGE_SELECTED:
         BPlistBmp_DrawSelectPage(work);
         break;
-    case 2:
+    case BPLIST_PAGE_SUMMARY:
         BPlistBmp_DrawStatusPage(work);
         break;
-    case 3:
+    case BPLIST_PAGE_MOVES:
         BPlistBmp_DrawMovesPage(work);
         break;
-    case 4:
+    case BPLIST_PAGE_MOVE_INFO:
         BPlistBmp_DrawMoveInfoPage(work);
         break;
-    case 5:
+    case BPLIST_PAGE_PP_RESTORE:
         BPlistBmp_DrawPPRestorePage(work);
         break;
-    case 6:
+    case BPLIST_PAGE_FORGET_MOVE:
         BPlistBmp_DrawForgetPage(work);
         break;
-    case 7:
+    case BPLIST_PAGE_CONFIRM_FORGET:
         BPlistBmp_DrawForgetInfoPage(work);
         break;
     }
@@ -304,7 +307,7 @@ static void BPlistBmp_PrintName(BPlistWork *work, u32 winIdx, u16 pos, u8 x, u8 
     palette = BmpWin_GetPalette(win);
     pokemon = &work->pokemon[BPlistMain_GetPartySlot(work, pos)];
     str = GFL_StrBufCreate(12, work->param->heapId);
-    tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, data_ov287_021faea0[pos]);
+    tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, sBPlistPokemonNameMessageIDs[pos]);
     loadPokemonNicknameToStrbuf(work->wordSet, 0, pokemon->pkm);
     GFL_WordSetFormatStrbuf(work->wordSet, str, tmpl);
     if (palette == 9) {
@@ -318,7 +321,7 @@ static void BPlistBmp_PrintName(BPlistWork *work, u32 winIdx, u16 pos, u8 x, u8 
     if (pokemon->hideSex || pokemon->isEgg) {
         return;
     }
-    if (pokemon->sex == 0) {
+    if (pokemon->sex == GENDER_MALE) {
         tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, 22);
         sexX = BmpWin_GetSizeX(win) * 8 - GFL_FontGetBlockWidth(tmpl, work->param->font, 0);
         if (palette == 9) {
@@ -329,7 +332,7 @@ static void BPlistBmp_PrintName(BPlistWork *work, u32 winIdx, u16 pos, u8 x, u8 
                               BPLIST_COLOR_MALE);
         }
         GFL_StrBufFree(tmpl);
-    } else if (pokemon->sex == 1) {
+    } else if (pokemon->sex == GENDER_FEMALE) {
         tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, 23);
         sexX = BmpWin_GetSizeX(win) * 8 - GFL_FontGetBlockWidth(tmpl, work->param->font, 0);
         if (palette == 9) {
@@ -439,7 +442,7 @@ static void BPlistBmp_PrintMoveName(BPlistWork *work, u32 move, u32 winIdx, u32 
 
     loadMoveNameToStrbuf(work->wordSet, 0, move);
     GFL_WordSetFormatStrbuf(work->wordSet, str, tmpl);
-    if (x == 0xffff) {
+    if (x == BPLIST_TEXT_CENTER_X) {
         x = (BmpWin_GetSizeX(win) * 8 - GFL_FontGetBlockWidth(str, work->param->font, 0)) / 2;
     }
     PrintWindow_Print(&work->windows[winIdx], work->printQueue, x, y, str, work->param->font, color);
@@ -464,11 +467,11 @@ static void BPlistBmp_PrintInfo(BPlistWork *work, u32 msgId) {
     work->infoWinFramePending = 1;
 }
 
-void BPlistBmp_PrintInfo9(BPlistWork *work) {
+void BPlistBmp_PrintChoosePokemonPrompt(BPlistWork *work) {
     BPlistBmp_PrintInfo(work, 9);
 }
 
-void BPlistBmp_PrintInfo10(BPlistWork *work) {
+void BPlistBmp_PrintChooseSwitchPositionPrompt(BPlistWork *work) {
     BPlistBmp_PrintInfo(work, 10);
 }
 
@@ -759,13 +762,13 @@ static void BPlistBmp_PrintCategory(BPlistWork *work, u32 winIdx, u32 category) 
     StrBuf *str;
 
     switch (category) {
-    case 0:
+    case MOVE_CATEGORY_STATUS:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, 65);
         break;
-    case 1:
+    case MOVE_CATEGORY_PHYSICAL:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, 64);
         break;
-    case 2:
+    case MOVE_CATEGORY_SPECIAL:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, 66);
         break;
     }
@@ -811,7 +814,7 @@ static void BPlistBmp_PrintForgetButton(BPlistWork *work, u32 winIdx) {
     StrBuf *str;
     u32 width;
 
-    if (work->param->slot == 4) {
+    if (work->param->slot == BPLIST_MOVE_SLOT_NONE) {
         str = GFL_MsgDataLoadStrbufNew(work->msgData, 69);
     } else {
         str = GFL_MsgDataLoadStrbufNew(work->msgData, 68);
@@ -866,7 +869,7 @@ static void BPlistBmp_PrintPlatePP(BPlistWork *work, BPlistMove *move, u32 winId
 static void BPlistBmp_DrawPartyPage(BPlistWork *work) {
     s16 i;
 
-    work->flushList = data_ov287_021fae37;
+    work->flushList = sBPlistPartyPageFlushOrder;
     for (i = 0; i < 6; i++) {
         u8 idx;
 
@@ -903,17 +906,17 @@ static void BPlistBmp_DrawSelectPage(BPlistWork *work) {
     int result;
     u32 msgId;
 
-    work->flushList = data_ov287_021fae2c;
+    work->flushList = sBPlistSelectedPageFlushOrder;
     BPlistBmp_ClearPageWindows(work);
     BPlistBmp_PrintCenteredName(work, work->param->partyIndex);
     result = BPlistMain_GetSwitchError(work);
-    if (result == 2) {
+    if (result == BPLIST_SWITCH_FAINTED) {
         msgId = 26;
-    } else if (result == 3) {
+    } else if (result == BPLIST_SWITCH_IN_BATTLE) {
         msgId = 27;
-    } else if (result == 4) {
+    } else if (result == BPLIST_SWITCH_CHOSEN) {
         msgId = 28;
-    } else if (result == 1) {
+    } else if (result == BPLIST_SWITCH_PARTNER) {
         msgId = 29;
     } else {
         msgId = 21;
@@ -932,7 +935,7 @@ static void BPlistBmp_PrintCenteredName(BPlistWork *work, u8 pos) {
     BmpWin *win = work->windows[0].window;
     BPlistPokemon *pokemon = &work->pokemon[BPlistMain_GetPartySlot(work, pos)];
     StrBuf *str = GFL_StrBufCreate(12, work->param->heapId);
-    StrBuf *tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, data_ov287_021faea0[pos]);
+    StrBuf *tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, sBPlistPokemonNameMessageIDs[pos]);
     StrBuf *sexStr = NULL;
     u8 nameWidth;
     u8 sexWidth;
@@ -944,9 +947,9 @@ static void BPlistBmp_PrintCenteredName(BPlistWork *work, u8 pos) {
     GFL_StrBufFree(tmpl);
 
     if (!pokemon->hideSex && !pokemon->isEgg) {
-        if (pokemon->sex == 0) {
+        if (pokemon->sex == GENDER_MALE) {
             sexStr = GFL_MsgDataLoadStrbufNew(work->msgData, 22);
-        } else if (pokemon->sex == 1) {
+        } else if (pokemon->sex == GENDER_FEMALE) {
             sexStr = GFL_MsgDataLoadStrbufNew(work->msgData, 23);
         }
     }
@@ -964,7 +967,7 @@ static void BPlistBmp_PrintCenteredName(BPlistWork *work, u8 pos) {
     GFL_StrBufFree(str);
 
     if (sexStr != NULL) {
-        if (pokemon->sex == 0) {
+        if (pokemon->sex == GENDER_MALE) {
             PrintWindow_Print(&work->windows[0], work->printQueue, x + nameWidth + gap, 8, sexStr, work->param->font,
                               BPLIST_COLOR_MALE);
         } else {
@@ -978,7 +981,7 @@ static void BPlistBmp_PrintCenteredName(BPlistWork *work, u8 pos) {
 static void BPlistBmp_DrawMovesPage(BPlistWork *work) {
     u32 i;
 
-    work->flushList = data_ov287_021fae3e;
+    work->flushList = sBPlistMovesPageFlushOrder;
     BPlistBmp_ClearPageWindows(work);
     BPlistBmp_PrintName(work, 0, work->param->partyIndex, 0, 0);
     for (i = 0; i < 4; i++) {
@@ -988,14 +991,15 @@ static void BPlistBmp_DrawMovesPage(BPlistWork *work) {
             work->windows[1 + i].flushPending = TRUE;
             continue;
         }
-        BPlistBmp_PrintMoveName(work, move->move, 1 + i, data_ov287_021fae74[i], 0xffff, 7, BPLIST_COLOR_WHITE);
+        BPlistBmp_PrintMoveName(work, move->move, 1 + i, sBPlistMoveNameMessageIDs[i], BPLIST_TEXT_CENTER_X, 7,
+                                BPLIST_COLOR_WHITE);
         BPlistBmp_PrintPlatePP(work, move, 1 + i);
     }
     BPlistBmp_PrintButtonLabel(work, 5, 24);
 }
 
 static void BPlistBmp_DrawStatusPage(BPlistWork *work) {
-    work->flushList = data_ov287_021fae88;
+    work->flushList = sBPlistSummaryPageFlushOrder;
     BPlistBmp_ClearPageWindows(work);
     BPlistBmp_PrintName(work, 0, work->param->partyIndex, 0, 0);
     BPlistBmp_PrintStatusHP(work, work->param->partyIndex);
@@ -1017,13 +1021,14 @@ static void BPlistBmp_DrawMoveInfoPage(BPlistWork *work) {
     BPlistParam *param;
     BPlistMove *move;
 
-    work->flushList = data_ov287_021fae58;
+    work->flushList = sBPlistMoveInfoPageFlushOrder;
     BPlistBmp_ClearPageWindows(work);
     param = work->param;
     move = &work->pokemon[BPlistMain_GetPartySlot(work, param->partyIndex)].moves[param->slot];
     BPlistBmp_PrintName(work, 6, param->partyIndex, 0, 0);
     BPlistBmp_PrintTypeLabel(work, 7, 0, 0);
-    BPlistBmp_PrintMoveName(work, move->move, 0, data_ov287_021fae74[work->param->slot], 0, 0, BPLIST_COLOR_WHITE);
+    BPlistBmp_PrintMoveName(work, move->move, 0, sBPlistMoveNameMessageIDs[work->param->slot], 0, 0,
+                            BPLIST_COLOR_WHITE);
     BPlistBmp_PrintAccuracyLabel(work, 8);
     BPlistBmp_PrintAccuracy(work, 2, move->accuracy);
     BPlistBmp_PrintPowerLabel(work, 9);
@@ -1038,7 +1043,7 @@ static void BPlistBmp_DrawForgetPage(BPlistWork *work) {
     u32 i;
     BPlistMove newMove;
 
-    work->flushList = data_ov287_021fae45;
+    work->flushList = sBPlistForgetPageFlushOrder;
     BPlistBmp_ClearPageWindows(work);
     BPlistBmp_PrintName(work, 0, work->param->partyIndex, 0, 0);
     for (i = 0; i < 4; i++) {
@@ -1048,10 +1053,12 @@ static void BPlistBmp_DrawForgetPage(BPlistWork *work) {
             work->windows[1 + i].flushPending = TRUE;
             continue;
         }
-        BPlistBmp_PrintMoveName(work, move->move, 1 + i, data_ov287_021fae74[i], 0xffff, 7, BPLIST_COLOR_WHITE);
+        BPlistBmp_PrintMoveName(work, move->move, 1 + i, sBPlistMoveNameMessageIDs[i], BPLIST_TEXT_CENTER_X, 7,
+                                BPLIST_COLOR_WHITE);
         BPlistBmp_PrintPlatePP(work, move, 1 + i);
     }
-    BPlistBmp_PrintMoveName(work, work->param->move, 5, data_ov287_021fae74[4], 0xffff, 7, BPLIST_COLOR_WHITE);
+    BPlistBmp_PrintMoveName(work, work->param->move, 5, sBPlistMoveNameMessageIDs[4], BPLIST_TEXT_CENTER_X, 7,
+                            BPLIST_COLOR_WHITE);
     newMove.pp = PML_MoveGetParam(work->param->move, MOVE_PARAM_PP);
     newMove.maxPp = newMove.pp;
     BPlistBmp_PrintPlatePP(work, &newMove, 5);
@@ -1060,7 +1067,7 @@ static void BPlistBmp_DrawForgetPage(BPlistWork *work) {
 static void BPlistBmp_DrawForgetInfoPage(BPlistWork *work) {
     u8 slot;
 
-    work->flushList = data_ov287_021fae64;
+    work->flushList = sBPlistConfirmForgetPageFlushOrder;
     BPlistBmp_ClearPageWindows(work);
     BPlistBmp_PrintName(work, 0, work->param->partyIndex, 0, 0);
     BPlistBmp_PrintTypeLabel(work, 2, 0, 0);
@@ -1071,7 +1078,7 @@ static void BPlistBmp_DrawForgetInfoPage(BPlistWork *work) {
     if (slot < 4) {
         BPlistMove *move = &work->pokemon[BPlistMain_GetPartySlot(work, work->param->partyIndex)].moves[slot];
 
-        BPlistBmp_PrintMoveName(work, move->move, 1, data_ov287_021fae74[slot], 0, 0, BPLIST_COLOR_WHITE);
+        BPlistBmp_PrintMoveName(work, move->move, 1, sBPlistMoveNameMessageIDs[slot], 0, 0, BPLIST_COLOR_WHITE);
         BPlistBmp_PrintAccuracy(work, 6, move->accuracy);
         BPlistBmp_PrintPower(work, 7, move->power);
         BPlistBmp_PrintMoveInfo(work, 8, move->move);
@@ -1080,7 +1087,7 @@ static void BPlistBmp_DrawForgetInfoPage(BPlistWork *work) {
     } else {
         u32 pp = PML_MoveGetParam(work->param->move, MOVE_PARAM_PP);
 
-        BPlistBmp_PrintMoveName(work, work->param->move, 1, data_ov287_021fae74[4], 0, 0, BPLIST_COLOR_WHITE);
+        BPlistBmp_PrintMoveName(work, work->param->move, 1, sBPlistMoveNameMessageIDs[4], 0, 0, BPLIST_COLOR_WHITE);
         BPlistBmp_PrintMoveInfo(work, 8, work->param->move);
         if (PML_MoveIsAlwaysHit(work->param->move) == TRUE) {
             BPlistBmp_PrintAccuracy(work, 6, 0);
@@ -1097,7 +1104,7 @@ static void BPlistBmp_DrawForgetInfoPage(BPlistWork *work) {
 static void BPlistBmp_DrawPPRestorePage(BPlistWork *work) {
     u32 i;
 
-    work->flushList = data_ov287_021fae31;
+    work->flushList = sBPlistPPRestorePageFlushOrder;
     BPlistBmp_ClearPageWindows(work);
     BPlistBmp_PrintName(work, 0, work->param->partyIndex, 0, 0);
     for (i = 0; i < 4; i++) {
@@ -1107,7 +1114,8 @@ static void BPlistBmp_DrawPPRestorePage(BPlistWork *work) {
             work->windows[1 + i].flushPending = TRUE;
             continue;
         }
-        BPlistBmp_PrintMoveName(work, move->move, 1 + i, data_ov287_021fae74[i], 0xffff, 7, BPLIST_COLOR_WHITE);
+        BPlistBmp_PrintMoveName(work, move->move, 1 + i, sBPlistMoveNameMessageIDs[i], BPLIST_TEXT_CENTER_X, 7,
+                                BPLIST_COLOR_WHITE);
         BPlistBmp_PrintPlatePP(work, move, 1 + i);
     }
     if (GetItemParam(work->param->item, ITEM_PARAM_PP_RESTORE_ALL, work->param->heapId) == 0) {
