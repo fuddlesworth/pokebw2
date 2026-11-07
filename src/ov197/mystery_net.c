@@ -16,6 +16,62 @@
 #include "save/mystery_gift.h"
 #include "system/version.h"
 
+enum {
+    WIRELESS_START_STATE_INIT = 0,
+    WIRELESS_START_STATE_WAIT_INIT = 1,
+    WIRELESS_START_STATE_READY = 2,
+};
+
+enum {
+    WIRELESS_END_STATE_DESTROY_WORK = 0,
+    WIRELESS_END_STATE_EXIT_NET = 1,
+    WIRELESS_END_STATE_WAIT_EXIT = 2,
+    WIRELESS_END_STATE_IDLE = 3,
+};
+
+enum {
+    BEACON_START_STATE_INIT = 0,
+    BEACON_START_STATE_WAIT_INIT = 1,
+    BEACON_START_STATE_READY = 2,
+};
+
+enum {
+    BEACON_END_STATE_END = 0,
+    BEACON_END_STATE_WAIT_END = 1,
+    BEACON_END_STATE_IDLE = 2,
+};
+
+enum {
+    IRC_START_STATE_INIT = 0,
+    IRC_START_STATE_WAIT_INIT = 1,
+    IRC_START_STATE_READY = 2,
+};
+
+enum {
+    IRC_END_STATE_END = 0,
+    IRC_END_STATE_WAIT_END = 1,
+    IRC_END_STATE_IDLE = 2,
+};
+
+enum {
+    DOWNLOAD_STATE_INIT = 0,
+    DOWNLOAD_STATE_SET_ATTR = 1,
+    DOWNLOAD_STATE_FILTER_FILES = 2,
+    DOWNLOAD_STATE_GET_FILE_LIST = 3,
+    DOWNLOAD_STATE_SELECT_FILE = 4,
+    DOWNLOAD_STATE_GET_FILE = 5,
+    DOWNLOAD_STATE_WAIT_FILE = 6,
+    DOWNLOAD_STATE_CANCEL = 7,
+    DOWNLOAD_STATE_CLEANUP = 8,
+    DOWNLOAD_STATE_END = 9,
+};
+
+enum {
+    WIFI_END_STATE_EXIT_NET = 0,
+    WIFI_END_STATE_WAIT_EXIT = 1,
+    WIFI_END_STATE_IDLE = 2,
+};
+
 // Mystery Gift's receiving of gifts: by local wireless beacons and by infrared through overlay 12's delivery_beacon.c
 // and delivery_irc.c, and by Wi-Fi through NitroDWC's download library. Our names; swan has none for this overlay
 
@@ -116,7 +172,7 @@ static void MysteryNet_OnNdEvent(DWCNdCallbackReason reason, DWCNdError error, i
 static void MysteryNet_SetNdDone(void);
 static u32 Mystery_ParseHex(const char *str);
 static BOOL Mystery_IsZero(const u32 *data, u32 size);
-static u32 MysteryNet_OnDwcEvent(void *work, int a1, int event, int a3);
+static u32 MysteryNet_OnDwcEvent(void *work, int code, int errorType, int error);
 
 static const MysteryHexDigit sHexDigits[] = {
     { '0', 0 },  { '1', 1 },  { '2', 2 },  { '3', 3 },  { '4', 4 },  { '5', 5 },  { '6', 6 },   { '7', 7 },
@@ -283,14 +339,14 @@ u32 MysteryNet_GetError(MysteryNet *net) {
 
     if (GFL_NetIsInitialized()) {
         switch (GFL_NetGetInitData()->bNetType) {
-        case 0:
-        case 5:
+        case GFL_NET_TYPE_WIRELESS:
+        case GFL_NET_TYPE_WIRELESS_LISTEN:
             error = MysteryNet_CheckErrorWireless(net);
             break;
-        case 1:
+        case GFL_NET_TYPE_WIFI:
             error = MysteryNet_CheckErrorWifi(net);
             break;
-        case 3:
+        case GFL_NET_TYPE_IRC:
             error = MysteryNet_CheckErrorIrc(net);
             break;
         }
@@ -312,12 +368,12 @@ static u32 MysteryNet_CheckErrorWifi(MysteryNet *net) {
 
     if (GFL_NetErrCheck()) {
         switch (NetState_GetErrorInfo()->errorType) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
+        case DWC_ETYPE_LIGHT:
+        case DWC_ETYPE_SHOW_ERROR:
+        case DWC_ETYPE_SHUTDOWN_FM:
+        case DWC_ETYPE_SHUTDOWN_GHTTP:
+        case DWC_ETYPE_SHUTDOWN_ND:
+        case DWC_ETYPE_DISCONNECT:
             if (net->download.initialized == TRUE) {
                 return error;
             }
@@ -328,10 +384,10 @@ static u32 MysteryNet_CheckErrorWifi(MysteryNet *net) {
             GFL_NetErrClear();
             error = MYSTERY_NET_ERROR_FATAL;
             break;
-        case 7:
+        case DWC_ETYPE_FATAL:
             NetState_ClearWifiError();
             GFL_NetErrAbort();
-            error = 3;
+            error = MYSTERY_NET_ERROR_ABORT;
             break;
         }
     }
@@ -369,20 +425,20 @@ static void MysteryNet_WirelessStart(MysteryNetSeq *seq, int *state, void *work)
     MysteryNet *net = work;
 
     switch (*state) {
-    case 0:
+    case WIRELESS_START_STATE_INIT:
         GFL_NetInit(&sNetInit, NULL, net);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, FALSE);
-        *state = 1;
+        *state = WIRELESS_START_STATE_WAIT_INIT;
         break;
-    case 1:
+    case WIRELESS_START_STATE_WAIT_INIT:
         if (GFL_NetIsInitialized()) {
             GFL_NetSetIconScreen(TRUE, net->heapId);
             net->wifiWork = WihDwc_Create(4, net->heapId);
             GFL_NetStartScan();
-            *state = 2;
+            *state = WIRELESS_START_STATE_READY;
         }
         break;
-    case 2:
+    case WIRELESS_START_STATE_READY:
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, TRUE);
         MysteryNetSeq_SetNext(seq, MysteryNet_WirelessReady);
         break;
@@ -393,25 +449,25 @@ static void MysteryNet_WirelessEnd(MysteryNetSeq *seq, int *state, void *work) {
     MysteryNet *net = work;
 
     switch (*state) {
-    case 0:
+    case WIRELESS_END_STATE_DESTROY_WORK:
         WihDwc_Destroy(net->wifiWork);
         net->wifiWork = NULL;
-        *state = 1;
+        *state = WIRELESS_END_STATE_EXIT_NET;
         break;
-    case 1:
+    case WIRELESS_END_STATE_EXIT_NET:
         if (GFL_NetExit(MysteryNet_OnExit)) {
-            *state = 2;
+            *state = WIRELESS_END_STATE_WAIT_EXIT;
         } else {
-            *state = 3;
+            *state = WIRELESS_END_STATE_IDLE;
         }
         break;
-    case 2:
+    case WIRELESS_END_STATE_WAIT_EXIT:
         if (net->exited) {
             net->exited = FALSE;
-            *state = 3;
+            *state = WIRELESS_END_STATE_IDLE;
         }
         break;
-    case 3:
+    case WIRELESS_END_STATE_IDLE:
         MysteryNetSeq_SetNext(seq, MysteryNet_Idle);
         break;
     }
@@ -429,7 +485,7 @@ static void MysteryNet_BeaconStart(MysteryNetSeq *seq, int *state, void *work) {
     DeliveryInit init;
 
     switch (*state) {
-    case 0:
+    case BEACON_START_STATE_INIT:
         MI_CpuFill8(&init, 0, sizeof(DeliveryInit));
         init.code = 9;
         init.data[0].datasize = sizeof(MysteryGiftRecvData);
@@ -443,16 +499,16 @@ static void MysteryNet_BeaconStart(MysteryNetSeq *seq, int *state, void *work) {
         DeliveryBeacon_RecvStart(net->beacon);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, FALSE);
         net->result = MYSTERY_NET_RECV_NONE;
-        *state = 1;
+        *state = BEACON_START_STATE_WAIT_INIT;
         break;
-    case 1:
+    case BEACON_START_STATE_WAIT_INIT:
         if (GFL_NetIsInitialized()) {
             GFL_NetSetIconScreen(TRUE, net->heapId);
             GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, TRUE);
-            *state = 2;
+            *state = BEACON_START_STATE_READY;
         }
         break;
-    case 2:
+    case BEACON_START_STATE_READY:
         MysteryNetSeq_SetNext(seq, MysteryNet_BeaconWait);
         break;
     }
@@ -462,16 +518,16 @@ static void MysteryNet_BeaconEnd(MysteryNetSeq *seq, int *state, void *work) {
     MysteryNet *net = work;
 
     switch (*state) {
-    case 0:
+    case BEACON_END_STATE_END:
         DeliveryBeacon_End(net->beacon);
-        *state = 1;
+        *state = BEACON_END_STATE_WAIT_END;
         break;
-    case 1:
+    case BEACON_END_STATE_WAIT_END:
         if (GFL_NetIsNotInitialized()) {
-            *state = 2;
+            *state = BEACON_END_STATE_IDLE;
         }
         break;
-    case 2:
+    case BEACON_END_STATE_IDLE:
         MysteryNetSeq_SetNext(seq, MysteryNet_Idle);
         break;
     }
@@ -492,7 +548,7 @@ static void MysteryNet_IrcStart(MysteryNetSeq *seq, int *state, void *work) {
     DeliveryIrcInit init;
 
     switch (*state) {
-    case 0:
+    case IRC_START_STATE_INIT:
         MI_CpuFill8(&init, 0, sizeof(DeliveryIrcInit));
         init.code = 9;
         init.data[0].datasize = sizeof(MysteryGiftRecvData);
@@ -505,15 +561,15 @@ static void MysteryNet_IrcStart(MysteryNetSeq *seq, int *state, void *work) {
         net->irc = DeliveryIrc_Init(&init);
         DeliveryIrc_RecvStart(net->irc);
         net->result = MYSTERY_NET_RECV_NONE;
-        *state = 1;
+        *state = IRC_START_STATE_WAIT_INIT;
         break;
-    case 1:
+    case IRC_START_STATE_WAIT_INIT:
         if (GFL_NetIsInitialized()) {
             GFL_NetSetIconScreen(TRUE, net->heapId);
-            *state = 2;
+            *state = IRC_START_STATE_READY;
         }
         break;
-    case 2:
+    case IRC_START_STATE_READY:
         MysteryNetSeq_SetNext(seq, MysteryNet_IrcWait);
         break;
     }
@@ -523,16 +579,16 @@ static void MysteryNet_IrcEnd(MysteryNetSeq *seq, int *state, void *work) {
     MysteryNet *net = work;
 
     switch (*state) {
-    case 0:
+    case IRC_END_STATE_END:
         DeliveryIrc_End(net->irc);
-        *state = 1;
+        *state = IRC_END_STATE_WAIT_END;
         break;
-    case 1:
+    case IRC_END_STATE_WAIT_END:
         if (GFL_NetIsNotInitialized()) {
-            *state = 2;
+            *state = IRC_END_STATE_IDLE;
         }
         break;
-    case 2:
+    case IRC_END_STATE_IDLE:
         MysteryNetSeq_SetNext(seq, MysteryNet_Idle);
         break;
     }
@@ -544,13 +600,13 @@ static void MysteryNet_IrcWait(MysteryNetSeq *seq, int *state, void *work) {
 
     DeliveryIrc_Main(net->irc);
     ret = DeliveryIrc_GetResult(net->irc);
-    if (ret != 0) {
+    if (ret != DELIVERY_IRC_RESULT_RUNNING) {
         switch (ret) {
-        case 1:
+        case DELIVERY_IRC_RESULT_SUCCESS:
             net->result = MYSTERY_NET_RECV_OK;
             break;
-        case 2:
-        case 3:
+        case DELIVERY_IRC_RESULT_DAMAGED:
+        case DELIVERY_IRC_RESULT_NO_DATA:
             net->result = MYSTERY_NET_RECV_ERROR;
             break;
         }
@@ -564,7 +620,7 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
     int i;
 
     switch (*state) {
-    case 0:
+    case DOWNLOAD_STATE_INIT:
         DWCRap_SetEventFunc(MysteryNet_OnDwcEvent, download);
         MI_CpuFill8(download, 0, sizeof(MysteryNetDownload));
         download->cancel = FALSE;
@@ -574,34 +630,34 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
         net->result = MYSTERY_NET_RECV_NONE;
         if (!DWC_NdInitAsync(MysteryNet_OnNdEvent, "IRAO", "WX9x7Zh6J3aBC4zQ")) {
             net->result = MYSTERY_NET_RECV_ERROR;
-            *state = 9;
+            *state = DOWNLOAD_STATE_END;
             return;
         }
         download->initialized = TRUE;
-        MysteryNetDownload_Wait(download, state, 1);
+        MysteryNetDownload_Wait(download, state, DOWNLOAD_STATE_SET_ATTR);
         break;
-    case 1:
+    case DOWNLOAD_STATE_SET_ATTR:
         if (download->cancelled) {
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 3, state, 7, 7);
+            MysteryNetDownload_Cleanup(download, 3, state, DOWNLOAD_STATE_CANCEL, DOWNLOAD_STATE_CANCEL);
             return;
         }
         if (!DWC_NdSetAttr("MYSTERY_E", "", "")) {
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 4, state, 9, 9);
+            MysteryNetDownload_Cleanup(download, 4, state, DOWNLOAD_STATE_END, DOWNLOAD_STATE_END);
             return;
         }
-        *state = 3;
+        *state = DOWNLOAD_STATE_GET_FILE_LIST;
         break;
-    case 3:
+    case DOWNLOAD_STATE_GET_FILE_LIST:
         if (!DWC_NdGetFileListAsync(download->files, 0, MYSTERY_NET_FILE_MAX)) {
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 4, state, 9, 9);
+            MysteryNetDownload_Cleanup(download, 4, state, DOWNLOAD_STATE_END, DOWNLOAD_STATE_END);
             return;
         }
-        MysteryNetDownload_Wait(download, state, 2);
+        MysteryNetDownload_Wait(download, state, DOWNLOAD_STATE_FILTER_FILES);
         break;
-    case 2:
+    case DOWNLOAD_STATE_FILTER_FILES:
         for (i = 0; i < MYSTERY_NET_FILE_MAX; i++) {
             if (!Mystery_IsZero((u32 *)&download->files[i], sizeof(DWCNdFileInfo))) {
                 if (Mystery_ParseHex(download->files[i].param2) & (1 << GAME_VERSION)) {
@@ -619,9 +675,9 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
                 download->count++;
             }
         }
-        *state = 4;
+        *state = DOWNLOAD_STATE_SELECT_FILE;
         break;
-    case 4:
+    case DOWNLOAD_STATE_SELECT_FILE:
         if (download->count == 1) {
             for (i = 0; i < MYSTERY_NET_FILE_MAX; i++) {
                 if (download->available[i]) {
@@ -645,34 +701,34 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
             download->selected = i;
         } else {
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 1, state, 8, 8);
+            MysteryNetDownload_Cleanup(download, 1, state, DOWNLOAD_STATE_CLEANUP, DOWNLOAD_STATE_CLEANUP);
             return;
         }
-        *state = 5;
+        *state = DOWNLOAD_STATE_GET_FILE;
         break;
-    case 5:
+    case DOWNLOAD_STATE_GET_FILE:
         if (!DWC_NdGetFileAsync(&download->files[download->selected], download->buffer, MYSTERY_NET_BUFFER_SIZE)) {
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 4, state, 9, 9);
+            MysteryNetDownload_Cleanup(download, 4, state, DOWNLOAD_STATE_END, DOWNLOAD_STATE_END);
             return;
         }
         download->percent = 0;
         sNdState.ready = FALSE;
         sNdState.error = 0;
         download->timeout = 0;
-        *state = 6;
+        *state = DOWNLOAD_STATE_WAIT_FILE;
         break;
-    case 6:
+    case DOWNLOAD_STATE_WAIT_FILE:
         NdReportResults();
         if (download->timeout++ > 7200) {
             NetState_RecordError(0, 0, 0, 1013);
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 3, state, 7, 7);
+            MysteryNetDownload_Cleanup(download, 3, state, DOWNLOAD_STATE_CANCEL, DOWNLOAD_STATE_CANCEL);
         }
         if (!sNdState.ready) {
             if (download->cancel) {
                 net->result = MYSTERY_NET_RECV_ERROR;
-                MysteryNetDownload_Cleanup(download, 3, state, 7, 7);
+                MysteryNetDownload_Cleanup(download, 3, state, DOWNLOAD_STATE_CANCEL, DOWNLOAD_STATE_CANCEL);
                 return;
             }
             if (DWC_NdGetProgress(&download->received, &download->contentLength) == TRUE) {
@@ -684,23 +740,23 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
             }
         } else if (sNdState.error != 0) {
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 4, state, 9, 9);
+            MysteryNetDownload_Cleanup(download, 4, state, DOWNLOAD_STATE_END, DOWNLOAD_STATE_END);
         } else if (!download->cancelled) {
             net->result = MYSTERY_NET_RECV_OK;
-            MysteryNetDownload_Cleanup(download, 1, state, 8, 8);
+            MysteryNetDownload_Cleanup(download, 1, state, DOWNLOAD_STATE_CLEANUP, DOWNLOAD_STATE_CLEANUP);
         } else {
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 3, state, 8, 8);
+            MysteryNetDownload_Cleanup(download, 3, state, DOWNLOAD_STATE_CLEANUP, DOWNLOAD_STATE_CLEANUP);
         }
         break;
-    case 7:
+    case DOWNLOAD_STATE_CANCEL:
         DWC_NdCancelAsync();
-        *state = 8;
+        *state = DOWNLOAD_STATE_CLEANUP;
         break;
-    case 8:
-        *state = 9;
+    case DOWNLOAD_STATE_CLEANUP:
+        *state = DOWNLOAD_STATE_END;
         break;
-    case 9:
+    case DOWNLOAD_STATE_END:
         download->initialized = FALSE;
         DWCRap_SetEventFunc(NULL, NULL);
         MysteryNetSeq_SetNext(seq, MysteryNet_WifiEnd);
@@ -710,13 +766,13 @@ static void MysteryNet_WifiDownload(MysteryNetSeq *seq, int *state, void *work) 
         if (download->timeout++ > 7200) {
             NetState_RecordError(0, 0, 0, 1013);
             net->result = MYSTERY_NET_RECV_ERROR;
-            MysteryNetDownload_Cleanup(download, 3, state, 9, 9);
+            MysteryNetDownload_Cleanup(download, 3, state, DOWNLOAD_STATE_END, DOWNLOAD_STATE_END);
         }
         if (sNdState.ready) {
             sNdState.ready = FALSE;
             if (sNdState.error != 0) {
                 net->result = MYSTERY_NET_RECV_ERROR;
-                MysteryNetDownload_Cleanup(download, 3, state, 9, 9);
+                MysteryNetDownload_Cleanup(download, 3, state, DOWNLOAD_STATE_END, DOWNLOAD_STATE_END);
                 return;
             }
             *state = download->nextState;
@@ -748,20 +804,20 @@ static void MysteryNet_WifiEnd(MysteryNetSeq *seq, int *state, void *work) {
     MysteryNet *net = work;
 
     switch (*state) {
-    case 0:
+    case WIFI_END_STATE_EXIT_NET:
         if (GFL_NetExit(NULL)) {
-            *state = 1;
+            *state = WIFI_END_STATE_WAIT_EXIT;
         } else {
-            *state = 2;
+            *state = WIFI_END_STATE_IDLE;
         }
         break;
-    case 1:
+    case WIFI_END_STATE_WAIT_EXIT:
         if (!GFL_NetIsInitialized()) {
             net->exited = FALSE;
-            *state = 2;
+            *state = WIFI_END_STATE_IDLE;
         }
         break;
-    case 2:
+    case WIFI_END_STATE_IDLE:
         MysteryNetSeq_SetNext(seq, MysteryNet_Idle);
         break;
     }
@@ -883,13 +939,13 @@ static BOOL Mystery_IsZero(const u32 *data, u32 size) {
     return TRUE;
 }
 
-static u32 MysteryNet_OnDwcEvent(void *work, int a1, int event, int a3) {
+static u32 MysteryNet_OnDwcEvent(void *work, int code, int errorType, int error) {
     MysteryNetDownload *download = work;
 
-    switch (event) {
-    case 3:
-    case 5:
-    case 6:
+    switch (errorType) {
+    case DWC_ETYPE_SHUTDOWN_FM:
+    case DWC_ETYPE_SHUTDOWN_ND:
+    case DWC_ETYPE_DISCONNECT:
         return download->initialized;
     }
     return 0;

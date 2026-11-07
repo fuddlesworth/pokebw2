@@ -11,8 +11,13 @@
 #include "struct_decls.h"
 #include "system/printsys.h"
 
+enum {
+    MYSTERY_CARD_VIEW_MODE_ALBUM = 0,
+    MYSTERY_CARD_VIEW_MODE_MAKE_ROOM = 1,
+};
+
 typedef struct {
-    // 0 to look at the album, 1 to throw a card away when the album is full
+    // A MYSTERY_CARD_VIEW_MODE_*
     u32 mode;
     u32 unk4;
     ClActUnit *unit;

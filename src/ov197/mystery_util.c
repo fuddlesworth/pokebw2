@@ -694,7 +694,7 @@ MysteryList *MysteryList_Create(const MysteryListSetup *setup, HeapID heapId) {
 }
 
 void MysteryList_Delete(MysteryList *list) {
-    if (list->cursorPos != NULL && list->pos != 3) {
+    if (list->cursorPos != NULL && list->pos != MYSTERY_LIST_BACK) {
         *list->cursorPos = list->pos;
     }
     ClActor_SetVisible(list->cursor, FALSE);
@@ -736,7 +736,7 @@ u32 MysteryList_Update(MysteryList *list) {
         if (list->count == 1) {
             return MYSTERY_MENU_CANCEL;
         }
-        if (list->pos != 3) {
+        if (list->pos != MYSTERY_LIST_BACK) {
             *list->cursorPos = list->pos;
         }
         list->pos = list->count - 1;
@@ -746,7 +746,7 @@ u32 MysteryList_Update(MysteryList *list) {
         pos.x = sListCursorPositions[list->pos].x;
         pos.y = sListCursorPositions[list->pos].y + list->offsetY * 8;
         ClActor_SetSurfacePos(list->cursor, &pos, 0);
-        if (list->pos == 3) {
+        if (list->pos == MYSTERY_LIST_BACK) {
             ClActor_SetSequence(list->cursor, 2);
         } else {
             ClActor_SetSequence(list->cursor, list->cursorSequence);

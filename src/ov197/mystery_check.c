@@ -39,14 +39,14 @@ static u32 MysteryCheck_CountGiftErrors(MysteryGift *gift, GameData *gameData, H
     if (unterminated) {
         errors++;
     }
-    if (gift->id >= 2048) {
+    if (gift->id >= MG_ID_MAX) {
         errors++;
     }
-    if (gift->kind == 0 || gift->kind >= 5) {
+    if (gift->kind == MYSTERY_GIFT_KIND_NONE || gift->kind >= MYSTERY_GIFT_KIND_MAX) {
         errors++;
     }
     switch (gift->kind) {
-    case 1:
+    case MYSTERY_GIFT_KIND_POKEMON:
         pkm = Mystery_CreateGiftPokemon(gift, heapId, gameData);
         if (pkm == NULL) {
             errors++;
@@ -54,17 +54,17 @@ static u32 MysteryCheck_CountGiftErrors(MysteryGift *gift, GameData *gameData, H
             GFL_HeapFree(pkm);
         }
         break;
-    case 2:
+    case MYSTERY_GIFT_KIND_ITEM:
         if (Mystery_GetGiftItem(gift) == MYSTERY_GIFT_ITEM_NONE) {
             errors++;
         }
         break;
-    case 3:
+    case MYSTERY_GIFT_KIND_PASS_POWER:
         if (Mystery_GetGiftPassPower(gift) == MYSTERY_GIFT_PASS_POWER_NONE) {
             errors++;
         }
         break;
-    case 4:
+    case MYSTERY_GIFT_KIND_ONE_SHOT:
         if (Mystery_GetGiftOneShotPower(gift) == MYSTERY_GIFT_ONE_SHOT_NONE) {
             errors++;
         }

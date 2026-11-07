@@ -16,6 +16,7 @@
 #include "constants/version.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/clact.h"
 #include "gfl/fade.h"
@@ -49,6 +50,204 @@
 #include "system/printsys.h"
 #include "system/version.h"
 #include "system/wordset.h"
+
+enum {
+    TOP_CHOICE_RECEIVE = 0,
+    TOP_CHOICE_ALBUM = 1,
+    TOP_CHOICE_INFO = 2,
+    TOP_CHOICE_QUIT = 3,
+    TOP_CHOICE_MAX = 4,
+};
+
+enum {
+    RECEIVE_CHOICE_WIRELESS = 0,
+    RECEIVE_CHOICE_WIFI = 1,
+    RECEIVE_CHOICE_INFRARED = 2,
+    RECEIVE_CHOICE_BACK = 3,
+    RECEIVE_CHOICE_MAX = 4,
+};
+
+enum {
+    ABOUT_CHOICE_GIFT = 0,
+    ABOUT_CHOICE_ALBUM = 1,
+    ABOUT_CHOICE_FULL_ALBUM = 2,
+    ABOUT_CHOICE_BACK = 3,
+    ABOUT_CHOICE_MAX = 4,
+};
+
+enum {
+    RECEIVED_CHOICE_CARD = 0,
+    RECEIVED_CHOICE_MAX = 1,
+};
+
+enum {
+    FADE_IN_STATE_START = 0,
+    FADE_IN_STATE_WAIT = 1,
+    FADE_IN_STATE_FINISH = 2,
+};
+
+enum {
+    FADE_OUT_STATE_START = 0,
+    FADE_OUT_STATE_WAIT = 1,
+    FADE_OUT_STATE_FINISH = 2,
+};
+
+enum {
+    TOP_STATE_SHOW_MENU = 0,
+    TOP_STATE_WAIT_MENU = 1,
+    TOP_STATE_SHOW_RECEIVE_PROMPT = 2,
+    TOP_STATE_OPEN_RECEIVE_CONFIRM = 3,
+    TOP_STATE_WAIT_RECEIVE_CONFIRM = 4,
+    TOP_STATE_START_WIRELESS = 5,
+    TOP_STATE_WAIT_WIRELESS = 6,
+    TOP_STATE_SHOW_METHOD_MENU = 7,
+    TOP_STATE_WAIT_METHOD_MENU = 8,
+    TOP_STATE_SHOW_METHOD_PROMPT = 9,
+    TOP_STATE_OPEN_METHOD_CONFIRM = 10,
+    TOP_STATE_WAIT_METHOD_CONFIRM = 11,
+    TOP_STATE_STOP_WIRELESS = 12,
+    TOP_STATE_WAIT_WIRELESS_STOP = 13,
+    TOP_STATE_STOP_CANCELLED_WIRELESS = 14,
+    TOP_STATE_WAIT_CANCELLED_STOP = 15,
+    TOP_STATE_SHOW_FULL_PROMPT = 16,
+    TOP_STATE_OPEN_FULL_CONFIRM = 17,
+    TOP_STATE_WAIT_FULL_CONFIRM = 18,
+    TOP_STATE_WAIT_MESSAGE = 19,
+};
+
+enum {
+    ABOUT_STATE_SHOW_MENU = 0,
+    ABOUT_STATE_WAIT_MENU = 2,
+    ABOUT_STATE_WAIT_MESSAGE = 3,
+};
+
+enum {
+    RECEIVE_STATE_START = 0,
+    RECEIVE_STATE_WAIT_DATA = 1,
+    RECEIVE_STATE_SHOW_STOPPING = 2,
+    RECEIVE_STATE_WAIT_STOPPING = 3,
+    RECEIVE_STATE_RETURN_TOP = 4,
+    RECEIVE_STATE_SHOW_CARD = 5,
+    RECEIVE_STATE_WAIT_CARD = 6,
+    RECEIVE_STATE_OPEN_ACCEPT_CONFIRM = 7,
+    RECEIVE_STATE_WAIT_ACCEPT_CONFIRM = 8,
+    RECEIVE_STATE_OPEN_CANCEL_CONFIRM = 9,
+    RECEIVE_STATE_WAIT_CANCEL_CONFIRM = 10,
+    RECEIVE_STATE_SHOW_ALREADY_RECEIVED = 11,
+    RECEIVE_STATE_SHOW_INVALID = 12,
+    RECEIVE_STATE_CLEANUP = 13,
+    RECEIVE_STATE_WAIT_MESSAGE = 14,
+};
+
+enum {
+    RECEIVED_STATE_START_EFFECT = 0,
+    RECEIVED_STATE_ENABLE_EFFECT_BG = 1,
+    RECEIVED_STATE_WAIT_MESSAGE = 2,
+    RECEIVED_STATE_RUN_EFFECT = 3,
+    RECEIVED_STATE_START_SAVE = 4,
+    RECEIVED_STATE_WAIT_SAVE = 5,
+    RECEIVED_STATE_START_FADE_BACK = 6,
+    RECEIVED_STATE_RUN_FADE_BACK = 7,
+    RECEIVED_STATE_SHOW_SAVED = 8,
+    RECEIVED_STATE_WAIT_SAVED = 9,
+    RECEIVED_STATE_CLEANUP_EFFECT = 10,
+    RECEIVED_STATE_RESTORE_MENU_BG = 11,
+    RECEIVED_STATE_CREATE_ALBUM = 12,
+    RECEIVED_STATE_OPEN_ALBUM = 13,
+    RECEIVED_STATE_WAIT_ALBUM = 14,
+    RECEIVED_STATE_WAIT_KEY = 15,
+    RECEIVED_STATE_CREATE_KEY_HINT = 16,
+    RECEIVED_STATE_WAIT_KEY_HINT = 17,
+    RECEIVED_STATE_FINISH = 18,
+};
+
+enum {
+    ALBUM_SEQ_STATE_FADE_OUT = 0,
+    ALBUM_SEQ_STATE_CREATE_VIEW = 1,
+    ALBUM_SEQ_STATE_FADE_IN = 2,
+    ALBUM_SEQ_STATE_RUN_VIEW = 3,
+    ALBUM_SEQ_STATE_FADE_OUT_VIEW = 4,
+    ALBUM_SEQ_STATE_RESTORE_MENU = 5,
+    ALBUM_SEQ_STATE_FADE_IN_MENU = 6,
+    ALBUM_SEQ_STATE_RETURN_TOP = 7,
+    ALBUM_SEQ_STATE_WAIT_FADE = 8,
+};
+
+enum {
+    FULL_ALBUM_SEQ_STATE_FADE_OUT = 0,
+    FULL_ALBUM_SEQ_STATE_CREATE_VIEW = 1,
+    FULL_ALBUM_SEQ_STATE_FADE_IN = 2,
+    FULL_ALBUM_SEQ_STATE_RUN_VIEW = 3,
+    FULL_ALBUM_SEQ_STATE_FADE_OUT_VIEW = 4,
+    FULL_ALBUM_SEQ_STATE_RESTORE_MENU = 5,
+    FULL_ALBUM_SEQ_STATE_FADE_IN_MENU = 6,
+    FULL_ALBUM_SEQ_STATE_RESUME_RECEIVE = 7,
+    FULL_ALBUM_SEQ_STATE_WAIT_FADE = 8,
+};
+
+enum {
+    WIFI_LOGIN_STATE_FADE_OUT = 0,
+    WIFI_LOGIN_STATE_WAIT_FADE_OUT = 1,
+    WIFI_LOGIN_STATE_FREE_GRAPHICS = 2,
+    WIFI_LOGIN_STATE_QUEUE_LOGIN = 3,
+    WIFI_LOGIN_STATE_RESUME = 4,
+    WIFI_LOGIN_STATE_CREATE_GRAPHICS = 5,
+    WIFI_LOGIN_STATE_FADE_IN = 6,
+    WIFI_LOGIN_STATE_WAIT_FADE_IN = 7,
+    WIFI_LOGIN_STATE_CHECK_RESULT = 8,
+};
+
+enum {
+    WIRELESS_OFF_STATE_SHOW_MESSAGE = 0,
+    WIRELESS_OFF_STATE_WAIT_MESSAGE = 1,
+};
+
+enum {
+    MYSTERY_BG_MENU = 0,
+    MYSTERY_BG_CARD_TEXT = 1,
+    MYSTERY_BG_EFFECT = 2,
+};
+
+enum {
+    MYSTERY_SCROLL_SLOW = 0,
+    MYSTERY_SCROLL_FAST = 1,
+};
+
+enum {
+    MYSTERY_EFFECT_FALL = 0,
+    MYSTERY_EFFECT_FADE_BACK = 1,
+};
+
+enum {
+    FALL_STATE_LOAD_BG = 0,
+    FALL_STATE_SHOW_BG = 1,
+    FALL_STATE_FADE_BG = 2,
+    FALL_STATE_WAIT_FALL = 3,
+    FALL_STATE_FALL_ICON = 4,
+    FALL_STATE_WAIT_END = 5,
+    FALL_STATE_END = 6,
+};
+
+enum {
+    SPECIAL_FALL_STATE_LOAD_PARTICLES = 0,
+    SPECIAL_FALL_STATE_SHOW_BG = 1,
+    SPECIAL_FALL_STATE_FADE_BG = 2,
+    SPECIAL_FALL_STATE_START_PARTICLES = 3,
+    SPECIAL_FALL_STATE_SHOW_ICON = 4,
+    SPECIAL_FALL_STATE_FADE_ICON = 5,
+    SPECIAL_FALL_STATE_WAIT_PARTICLES = 6,
+    SPECIAL_FALL_STATE_WAIT_ICON = 7,
+    SPECIAL_FALL_STATE_WAIT_PALETTE = 8,
+    SPECIAL_FALL_STATE_FADE_PALETTE = 9,
+    SPECIAL_FALL_STATE_WAIT_END = 10,
+    SPECIAL_FALL_STATE_END = 11,
+};
+
+enum {
+    FADE_BACK_STATE_START = 0,
+    FADE_BACK_STATE_FADE = 1,
+    FADE_BACK_STATE_END = 2,
+};
 
 // Mystery Gift, from the start menu: receiving gifts by wireless, infrared or Wi-Fi, the effect of a received gift
 // and the album of cards. Our names; swan has none for this overlay
@@ -290,7 +489,7 @@ static BOOL MysteryProc_Init(GameProc *proc, u32 *state, void *param, void *work
     MysteryMsgWin_DrawFrame(wk->msgWin, 10, 14);
     wk->net = MysteryNet_Create(GameData_GetSaveControl(wk->gameData), HEAPID_MYSTERY);
     MysteryBgScroll_Init(&wk->scroll, &wk->actors, HEAPID_MYSTERY);
-    MysteryBgScroll_SetSpeed(&wk->scroll, 0);
+    MysteryBgScroll_SetSpeed(&wk->scroll, MYSTERY_SCROLL_SLOW);
     MysteryBgScroll_SetEnabled(&wk->scroll, TRUE);
     GFL_SndBGMPlay(SEQ_BGM_WIFI_PRESENT, 0xffff);
     return TRUE;
@@ -356,7 +555,7 @@ static BOOL MysteryProc_Main(GameProc *proc, u32 *state, void *param, void *work
 static void MysteryBg_Init(MysteryBg *bg, HeapID heapId) {
     MI_CpuFill8(bg, 0, sizeof(MysteryBg));
     bg->heapId = heapId;
-    MysteryBg_Load(bg, 0);
+    MysteryBg_Load(bg, MYSTERY_BG_MENU);
     GFL_BGSysSetBGEnabled(6, TRUE);
 }
 
@@ -368,7 +567,7 @@ static void MysteryBg_Load(MysteryBg *bg, u32 mode) {
     ArcTool *arc;
 
     switch (mode) {
-    case 0:
+    case MYSTERY_BG_MENU:
         arc = GFL_ArcSysCreateFileHandle(ARCID_MYSTERY, heapId);
         GFL_G2DIOLoadArcNCLRDefault(arc, 6, sBgPalTypes[0], 0, 0, heapId);
         GFL_G2DIOLoadArcNCLRDefault(arc, 6, sBgPalTypes[1], 0, 0x80, heapId);
@@ -387,14 +586,14 @@ static void MysteryBg_Load(MysteryBg *bg, u32 mode) {
         GFL_BGSysClearCharCore(1, 0x20, 0, heapId);
         GFL_BGSysClearCharCore(0, 0x20, 0, heapId);
         break;
-    case 1:
+    case MYSTERY_BG_CARD_TEXT:
         arc = GFL_ArcSysCreateFileHandle(ARCID_MYSTERY, heapId);
         GFL_G2DIOLoadArcNCLRDefault(arc, 6, sBgPalTypes[1], 0, 0xc0, heapId);
         GFL_BGSysLoadArcNCGRStatic(arc, 15, 6, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(arc, 21, 6, 0, 0, FALSE, heapId);
         GFL_ArcToolFree(arc);
         break;
-    case 2:
+    case MYSTERY_BG_EFFECT:
         arc = GFL_ArcSysCreateFileHandle(ARCID_MYSTERY, heapId);
         GFL_BGSysLoadArcNCGRStatic(arc, 11, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(arc, 28, 2, 0, 0, FALSE, heapId);
@@ -521,16 +720,16 @@ static void MysterySeq_Start(MysterySeq *seq, u32 *state, void *work) {
 
 static void MysterySeq_FadeIn(MysterySeq *seq, u32 *state, void *work) {
     switch (*state) {
-    case 0:
+    case FADE_IN_STATE_START:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
-        *state = 1;
+        *state = FADE_IN_STATE_WAIT;
         break;
-    case 1:
+    case FADE_IN_STATE_WAIT:
         if (!GFL_FadeIsRunning()) {
-            *state = 2;
+            *state = FADE_IN_STATE_FINISH;
         }
         break;
-    case 2:
+    case FADE_IN_STATE_FINISH:
         MysterySeq_SetNext(seq, MysterySeq_Top);
         break;
     }
@@ -538,17 +737,17 @@ static void MysterySeq_FadeIn(MysterySeq *seq, u32 *state, void *work) {
 
 static void MysterySeq_FadeOut(MysterySeq *seq, u32 *state, void *work) {
     switch (*state) {
-    case 0:
+    case FADE_OUT_STATE_START:
         GFL_FadeSet(FADE_ENGINE_A_WHITE | FADE_ENGINE_B_WHITE, 0, 16, 0);
         GFL_SndBGMFadeOut(8);
-        *state = 1;
+        *state = FADE_OUT_STATE_WAIT;
         break;
-    case 1:
+    case FADE_OUT_STATE_WAIT:
         if (!GFL_FadeIsRunning()) {
-            *state = 2;
+            *state = FADE_OUT_STATE_FINISH;
         }
         break;
-    case 2:
+    case FADE_OUT_STATE_FINISH:
         MysterySeq_SetNext(seq, MysterySeq_Exit);
         break;
     }
@@ -559,24 +758,24 @@ static void MysterySeq_Top(MysterySeq *seq, u32 *state, void *work) {
     u32 ret;
 
     switch (*state) {
-    case 0:
+    case TOP_STATE_SHOW_MENU:
         if (wk->resumeReceive) {
             wk->resumeReceive = FALSE;
-            *state = 2;
+            *state = TOP_STATE_SHOW_RECEIVE_PROMPT;
             break;
         }
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0, MYSTERY_PRINT_QUEUE);
         if (wk->list == NULL) {
             Mystery_CreateList(wk, LIST_TOP, HEAPID_MYSTERY);
         }
-        *state = 1;
+        *state = TOP_STATE_WAIT_MENU;
         break;
-    case 1:
+    case TOP_STATE_WAIT_MENU:
         ret = Mystery_UpdateList(wk);
         if (ret == MYSTERY_MENU_NONE) {
             break;
         }
-        if (ret == 0) {
+        if (ret == TOP_CHOICE_RECEIVE) {
             // With the album full, a card can only be thrown away to make room once its gift was picked up
             BOOL noneDelivered = TRUE;
             BOOL full;
@@ -594,64 +793,65 @@ static void MysterySeq_Top(MysterySeq *seq, u32 *state, void *work) {
             if (full) {
                 if (noneDelivered) {
                     MysteryMsgWin_Print(wk->msgWin, wk->msgData,
-                                        MysteryGiftSave_GetKind(wk->giftSave) == 0 ? 0x43 : 0x3a, MYSTERY_PRINT_STREAM);
-                    MysterySeq_SetReturn(seq, 0);
-                    *state = 19;
+                                        MysteryGiftSave_GetKind(wk->giftSave) == MG_DATA_OUTSIDE ? 0x43 : 0x3a,
+                                        MYSTERY_PRINT_STREAM);
+                    MysterySeq_SetReturn(seq, TOP_STATE_SHOW_MENU);
+                    *state = TOP_STATE_WAIT_MESSAGE;
                 } else {
-                    *state = 16;
+                    *state = TOP_STATE_SHOW_FULL_PROMPT;
                 }
             } else if (!isWirelessEnabled()) {
                 MysterySeq_SetNext(seq, MysterySeq_WirelessOff);
             } else {
-                *state = 2;
+                *state = TOP_STATE_SHOW_RECEIVE_PROMPT;
             }
-        } else if (ret == 1) {
+        } else if (ret == TOP_CHOICE_ALBUM) {
             Mystery_DeleteList(wk);
             MysterySeq_SetNext(seq, MysterySeq_Album);
-        } else if (ret == 2) {
+        } else if (ret == TOP_CHOICE_INFO) {
             Mystery_DeleteList(wk);
             MysterySeq_SetNext(seq, MysterySeq_About);
-        } else if (ret == 3) {
+        } else if (ret == TOP_CHOICE_QUIT) {
             MysterySeq_SetNext(seq, MysterySeq_FadeOut);
         }
         break;
-    case 2:
+    case TOP_STATE_SHOW_RECEIVE_PROMPT:
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 4, MYSTERY_PRINT_STREAM);
-        MysterySeq_SetReturn(seq, 3);
-        *state = 19;
+        MysterySeq_SetReturn(seq, TOP_STATE_OPEN_RECEIVE_CONFIRM);
+        *state = TOP_STATE_WAIT_MESSAGE;
         break;
-    case 3:
+    case TOP_STATE_OPEN_RECEIVE_CONFIRM:
         Mystery_CreateYesNo(wk, 0, HEAPID_MYSTERY);
-        *state = 4;
+        *state = TOP_STATE_WAIT_RECEIVE_CONFIRM;
         break;
-    case 4:
+    case TOP_STATE_WAIT_RECEIVE_CONFIRM:
         ret = MysteryYesNo_Update(wk->yesNo);
         if (ret == MYSTERY_MENU_NONE) {
             break;
         }
         Mystery_DeleteYesNo(wk);
-        if (ret == 0) {
-            *state = 5;
-        } else if (ret == 1) {
-            *state = 0;
+        if (ret == MYSTERY_CONFIRM_YES) {
+            *state = TOP_STATE_START_WIRELESS;
+        } else if (ret == MYSTERY_CONFIRM_NO) {
+            *state = TOP_STATE_SHOW_MENU;
         }
         break;
-    case 5:
+    case TOP_STATE_START_WIRELESS:
         MysteryNet_ChangeState(wk->net, MYSTERY_NET_STATE_WIRELESS_START);
-        *state = 6;
+        *state = TOP_STATE_WAIT_WIRELESS;
         break;
-    case 6:
+    case TOP_STATE_WAIT_WIRELESS:
         if (MysteryNet_GetState(wk->net) == MYSTERY_NET_STATE_WIRELESS_READY) {
-            *state = 7;
+            *state = TOP_STATE_SHOW_METHOD_MENU;
         }
         break;
-    case 7:
+    case TOP_STATE_SHOW_METHOD_MENU:
         Mystery_DeleteList(wk);
         Mystery_CreateList(wk, LIST_RECEIVE, HEAPID_MYSTERY);
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 7, MYSTERY_PRINT_QUEUE);
-        *state = 8;
+        *state = TOP_STATE_WAIT_METHOD_MENU;
         break;
-    case 8:
+    case TOP_STATE_WAIT_METHOD_MENU:
         if (MysteryNet_GetBeaconFlags(wk->net) & 0x20) {
             MysteryList_SetItemGrayed(wk->list, 0, TRUE);
         } else {
@@ -663,62 +863,62 @@ static void MysterySeq_Top(MysterySeq *seq, u32 *state, void *work) {
         }
         Mystery_DeleteList(wk);
         switch (ret) {
-        case 0:
+        case RECEIVE_CHOICE_WIRELESS:
             wk->receiveMode = RECEIVE_WIRELESS;
-            *state = 9;
+            *state = TOP_STATE_SHOW_METHOD_PROMPT;
             break;
-        case 1:
+        case RECEIVE_CHOICE_WIFI:
             wk->receiveMode = RECEIVE_WIFI;
-            *state = 12;
+            *state = TOP_STATE_STOP_WIRELESS;
             break;
-        case 2:
+        case RECEIVE_CHOICE_INFRARED:
             wk->receiveMode = RECEIVE_INFRARED;
-            *state = 9;
+            *state = TOP_STATE_SHOW_METHOD_PROMPT;
             break;
-        case 3:
-            *state = 14;
+        case RECEIVE_CHOICE_BACK:
+            *state = TOP_STATE_STOP_CANCELLED_WIRELESS;
             break;
         }
         break;
-    case 9:
+    case TOP_STATE_SHOW_METHOD_PROMPT:
         switch (wk->receiveMode) {
         case RECEIVE_WIRELESS:
             MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x11, MYSTERY_PRINT_STREAM);
-            MysterySeq_SetReturn(seq, 10);
-            *state = 19;
+            MysterySeq_SetReturn(seq, TOP_STATE_OPEN_METHOD_CONFIRM);
+            *state = TOP_STATE_WAIT_MESSAGE;
             break;
         case RECEIVE_WIFI:
             break;
         case RECEIVE_INFRARED:
             MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x17, MYSTERY_PRINT_STREAM);
-            MysterySeq_SetReturn(seq, 10);
-            *state = 19;
+            MysterySeq_SetReturn(seq, TOP_STATE_OPEN_METHOD_CONFIRM);
+            *state = TOP_STATE_WAIT_MESSAGE;
             break;
         }
         break;
-    case 10:
+    case TOP_STATE_OPEN_METHOD_CONFIRM:
         Mystery_CreateYesNo(wk, 0, HEAPID_MYSTERY);
-        *state = 11;
+        *state = TOP_STATE_WAIT_METHOD_CONFIRM;
         break;
-    case 11:
+    case TOP_STATE_WAIT_METHOD_CONFIRM:
         ret = MysteryYesNo_Update(wk->yesNo);
         if (ret == MYSTERY_MENU_NONE) {
             break;
         }
         Mystery_DeleteYesNo(wk);
-        if (ret == 0) {
-            *state = 12;
-        } else if (ret == 1) {
-            *state = 7;
+        if (ret == MYSTERY_CONFIRM_YES) {
+            *state = TOP_STATE_STOP_WIRELESS;
+        } else if (ret == MYSTERY_CONFIRM_NO) {
+            *state = TOP_STATE_SHOW_METHOD_MENU;
         }
         break;
-    case 12:
+    case TOP_STATE_STOP_WIRELESS:
         if (MysteryNet_GetState(wk->net) == MYSTERY_NET_STATE_WIRELESS_READY) {
             MysteryNet_ChangeState(wk->net, MYSTERY_NET_STATE_WIRELESS_END);
-            *state = 13;
+            *state = TOP_STATE_WAIT_WIRELESS_STOP;
         }
         break;
-    case 13:
+    case TOP_STATE_WAIT_WIRELESS_STOP:
         if (MysteryNet_GetState(wk->net) == MYSTERY_NET_STATE_IDLE) {
             if (wk->receiveMode == RECEIVE_WIFI) {
                 MysterySeq_SetNext(seq, MysterySeq_WifiLogin);
@@ -727,41 +927,41 @@ static void MysterySeq_Top(MysterySeq *seq, u32 *state, void *work) {
             }
         }
         break;
-    case 14:
+    case TOP_STATE_STOP_CANCELLED_WIRELESS:
         if (MysteryNet_GetState(wk->net) == MYSTERY_NET_STATE_WIRELESS_READY) {
             MysteryNet_ChangeState(wk->net, MYSTERY_NET_STATE_WIRELESS_END);
-            *state = 15;
+            *state = TOP_STATE_WAIT_CANCELLED_STOP;
         } else {
-            *state = 0;
+            *state = TOP_STATE_SHOW_MENU;
         }
         break;
-    case 15:
+    case TOP_STATE_WAIT_CANCELLED_STOP:
         if (MysteryNet_GetState(wk->net) == MYSTERY_NET_STATE_IDLE) {
-            *state = 0;
+            *state = TOP_STATE_SHOW_MENU;
         }
         break;
-    case 16:
+    case TOP_STATE_SHOW_FULL_PROMPT:
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x3e, MYSTERY_PRINT_STREAM);
-        MysterySeq_SetReturn(seq, 17);
-        *state = 19;
+        MysterySeq_SetReturn(seq, TOP_STATE_OPEN_FULL_CONFIRM);
+        *state = TOP_STATE_WAIT_MESSAGE;
         break;
-    case 17:
+    case TOP_STATE_OPEN_FULL_CONFIRM:
         Mystery_CreateYesNo(wk, 0, HEAPID_MYSTERY);
-        *state = 18;
+        *state = TOP_STATE_WAIT_FULL_CONFIRM;
         break;
-    case 18:
+    case TOP_STATE_WAIT_FULL_CONFIRM:
         ret = MysteryYesNo_Update(wk->yesNo);
         if (ret == MYSTERY_MENU_NONE) {
             break;
         }
         Mystery_DeleteYesNo(wk);
-        if (ret == 0) {
+        if (ret == MYSTERY_CONFIRM_YES) {
             MysterySeq_SetNext(seq, MysterySeq_AlbumFull);
-        } else if (ret == 1) {
-            *state = 0;
+        } else if (ret == MYSTERY_CONFIRM_NO) {
+            *state = TOP_STATE_SHOW_MENU;
         }
         break;
-    case 19:
+    case TOP_STATE_WAIT_MESSAGE:
         if (MysteryMsgWin_IsDone(wk->msgWin)) {
             MysterySeq_Return(seq);
         }
@@ -774,34 +974,34 @@ static void MysterySeq_About(MysterySeq *seq, u32 *state, void *work) {
     u32 ret;
 
     switch (*state) {
-    case 0:
+    case ABOUT_STATE_SHOW_MENU:
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x2f, MYSTERY_PRINT_QUEUE);
         Mystery_CreateList(wk, LIST_ABOUT, HEAPID_MYSTERY);
-        *state = 2;
+        *state = ABOUT_STATE_WAIT_MENU;
         break;
-    case 2:
+    case ABOUT_STATE_WAIT_MENU:
         ret = Mystery_UpdateList(wk);
         if (ret == MYSTERY_MENU_NONE) {
             break;
         }
         Mystery_DeleteList(wk);
-        if (ret == 0) {
+        if (ret == ABOUT_CHOICE_GIFT) {
             MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x35, MYSTERY_PRINT_STREAM);
-            MysterySeq_SetReturn(seq, 0);
-            *state = 3;
-        } else if (ret == 1) {
+            MysterySeq_SetReturn(seq, ABOUT_STATE_SHOW_MENU);
+            *state = ABOUT_STATE_WAIT_MESSAGE;
+        } else if (ret == ABOUT_CHOICE_ALBUM) {
             MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x36, MYSTERY_PRINT_STREAM);
-            MysterySeq_SetReturn(seq, 0);
-            *state = 3;
-        } else if (ret == 2) {
+            MysterySeq_SetReturn(seq, ABOUT_STATE_SHOW_MENU);
+            *state = ABOUT_STATE_WAIT_MESSAGE;
+        } else if (ret == ABOUT_CHOICE_FULL_ALBUM) {
             MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x37, MYSTERY_PRINT_STREAM);
-            MysterySeq_SetReturn(seq, 0);
-            *state = 3;
-        } else if (ret == 3) {
+            MysterySeq_SetReturn(seq, ABOUT_STATE_SHOW_MENU);
+            *state = ABOUT_STATE_WAIT_MESSAGE;
+        } else if (ret == ABOUT_CHOICE_BACK) {
             MysterySeq_SetNext(seq, MysterySeq_Top);
         }
         break;
-    case 3:
+    case ABOUT_STATE_WAIT_MESSAGE:
         if (MysteryMsgWin_IsDone(wk->msgWin)) {
             MysterySeq_Return(seq);
         }
@@ -816,7 +1016,7 @@ static void MysterySeq_Receive(MysterySeq *seq, u32 *state, void *work) {
     RTCDate date;
 
     switch (*state) {
-    case 0:
+    case RECEIVE_STATE_START:
         switch (wk->receiveMode) {
         case RECEIVE_WIFI:
             MysteryNet_ChangeState(wk->net, MYSTERY_NET_STATE_WIFI);
@@ -830,20 +1030,20 @@ static void MysterySeq_Receive(MysterySeq *seq, u32 *state, void *work) {
         }
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x1a, MYSTERY_PRINT_QUEUE);
         wk->wait = 0;
-        *state = 1;
+        *state = RECEIVE_STATE_WAIT_DATA;
         break;
-    case 1:
+    case RECEIVE_STATE_WAIT_DATA:
         if (MysteryNet_GetState(wk->net) == MYSTERY_NET_STATE_IDLE) {
             ret = MysteryNet_GetRecvData(wk->net, &wk->recv, sizeof(wk->recv));
             if (ret == MYSTERY_NET_RECV_OK) {
                 if (Mystery_IsRecvDataValid(
                         &wk->recv, MysteryCheck_CountErrors(&wk->recv, wk->gameData, HEAPID_TAIL(HEAPID_MYSTERY)))) {
-                    *state = 5;
+                    *state = RECEIVE_STATE_SHOW_CARD;
                 } else {
-                    *state = 12;
+                    *state = RECEIVE_STATE_SHOW_INVALID;
                 }
             } else if (ret == MYSTERY_NET_RECV_ERROR) {
-                *state = 2;
+                *state = RECEIVE_STATE_SHOW_STOPPING;
             }
         }
         switch (MysteryNet_GetError(wk->net)) {
@@ -876,42 +1076,42 @@ static void MysterySeq_Receive(MysterySeq *seq, u32 *state, void *work) {
                 break;
             }
             if (cancel) {
-                *state = 2;
+                *state = RECEIVE_STATE_SHOW_STOPPING;
                 wk->wait = 0;
             }
         }
         break;
-    case 2:
+    case RECEIVE_STATE_SHOW_STOPPING:
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x39, MYSTERY_PRINT_WAIT_ICON);
-        MysterySeq_SetReturn(seq, 3);
-        *state = 14;
+        MysterySeq_SetReturn(seq, RECEIVE_STATE_WAIT_STOPPING);
+        *state = RECEIVE_STATE_WAIT_MESSAGE;
         break;
-    case 3:
+    case RECEIVE_STATE_WAIT_STOPPING:
         wk->wait++;
         if (MysteryNet_GetState(wk->net) == MYSTERY_NET_STATE_IDLE && wk->wait > 30) {
             wk->wait = 0;
             MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x3c, MYSTERY_PRINT_STREAM);
-            MysterySeq_SetReturn(seq, 4);
-            *state = 14;
+            MysterySeq_SetReturn(seq, RECEIVE_STATE_RETURN_TOP);
+            *state = RECEIVE_STATE_WAIT_MESSAGE;
         }
         break;
-    case 4:
+    case RECEIVE_STATE_RETURN_TOP:
         MysterySeq_SetNext(seq, MysterySeq_Top);
         break;
-    case 5:
+    case RECEIVE_STATE_SHOW_CARD:
         Mystery_CreateList(wk, LIST_RECEIVED, HEAPID_MYSTERY);
         Mystery_CreateCardWin(wk, HEAPID_MYSTERY);
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x1b, MYSTERY_PRINT_QUEUE);
-        *state = 6;
+        *state = RECEIVE_STATE_WAIT_CARD;
         break;
-    case 6:
+    case RECEIVE_STATE_WAIT_CARD:
         cancel = FALSE;
         ret = Mystery_UpdateList(wk);
         if (ret != MYSTERY_MENU_NONE) {
-            if (ret == 0) {
+            if (ret == RECEIVED_CHOICE_CARD) {
                 MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x1f, MYSTERY_PRINT_STREAM);
-                MysterySeq_SetReturn(seq, 7);
-                *state = 14;
+                MysterySeq_SetReturn(seq, RECEIVE_STATE_OPEN_ACCEPT_CONFIRM);
+                *state = RECEIVE_STATE_WAIT_MESSAGE;
             } else if (ret == MYSTERY_MENU_CANCEL) {
                 cancel = TRUE;
             }
@@ -920,24 +1120,24 @@ static void MysterySeq_Receive(MysterySeq *seq, u32 *state, void *work) {
         }
         if (cancel) {
             MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x1c, MYSTERY_PRINT_STREAM);
-            MysterySeq_SetReturn(seq, 9);
-            *state = 14;
+            MysterySeq_SetReturn(seq, RECEIVE_STATE_OPEN_CANCEL_CONFIRM);
+            *state = RECEIVE_STATE_WAIT_MESSAGE;
         }
         break;
-    case 7:
+    case RECEIVE_STATE_OPEN_ACCEPT_CONFIRM:
         Mystery_CreateYesNo(wk, 0, HEAPID_MYSTERY);
-        *state = 8;
+        *state = RECEIVE_STATE_WAIT_ACCEPT_CONFIRM;
         break;
-    case 8:
+    case RECEIVE_STATE_WAIT_ACCEPT_CONFIRM:
         ret = MysteryYesNo_Update(wk->yesNo);
         if (ret == MYSTERY_MENU_NONE) {
             break;
         }
         Mystery_DeleteYesNo(wk);
-        if (ret == 0) {
+        if (ret == MYSTERY_CONFIRM_YES) {
             Mystery_DeleteList(wk);
             if (wk->recv.gift.once && MysteryGiftSave_IsIdReceived(wk->giftSave, wk->recv.gift.id)) {
-                *state = 11;
+                *state = RECEIVE_STATE_SHOW_ALREADY_RECEIVED;
                 break;
             }
             RTC_GetCachedDate(&date);
@@ -945,44 +1145,44 @@ static void MysterySeq_Receive(MysterySeq *seq, u32 *state, void *work) {
             MysteryGiftSave_AddCard(wk->giftSave, &wk->recv.gift);
             MysteryGiftSave_SetIdReceived(wk->giftSave, wk->recv.gift.id);
             MysterySeq_SetNext(seq, MysterySeq_Received);
-        } else if (ret == 1) {
-            *state = 5;
+        } else if (ret == MYSTERY_CONFIRM_NO) {
+            *state = RECEIVE_STATE_SHOW_CARD;
         }
         break;
-    case 9:
+    case RECEIVE_STATE_OPEN_CANCEL_CONFIRM:
         Mystery_CreateYesNo(wk, 0, HEAPID_MYSTERY);
-        *state = 10;
+        *state = RECEIVE_STATE_WAIT_CANCEL_CONFIRM;
         break;
-    case 10:
+    case RECEIVE_STATE_WAIT_CANCEL_CONFIRM:
         ret = MysteryYesNo_Update(wk->yesNo);
         if (ret == MYSTERY_MENU_NONE) {
             break;
         }
         Mystery_DeleteYesNo(wk);
-        if (ret == 0) {
+        if (ret == MYSTERY_CONFIRM_YES) {
             Mystery_DeleteList(wk);
             Mystery_DeleteCardWin(wk);
             MysterySeq_SetNext(seq, MysterySeq_Top);
-        } else if (ret == 1) {
-            *state = 5;
+        } else if (ret == MYSTERY_CONFIRM_NO) {
+            *state = RECEIVE_STATE_SHOW_CARD;
         }
         break;
-    case 11:
+    case RECEIVE_STATE_SHOW_ALREADY_RECEIVED:
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x3b, MYSTERY_PRINT_STREAM);
-        MysterySeq_SetReturn(seq, 13);
-        *state = 14;
+        MysterySeq_SetReturn(seq, RECEIVE_STATE_CLEANUP);
+        *state = RECEIVE_STATE_WAIT_MESSAGE;
         break;
-    case 12:
+    case RECEIVE_STATE_SHOW_INVALID:
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x41, MYSTERY_PRINT_STREAM);
-        MysterySeq_SetReturn(seq, 13);
-        *state = 14;
+        MysterySeq_SetReturn(seq, RECEIVE_STATE_CLEANUP);
+        *state = RECEIVE_STATE_WAIT_MESSAGE;
         break;
-    case 13:
+    case RECEIVE_STATE_CLEANUP:
         Mystery_DeleteList(wk);
         Mystery_DeleteCardWin(wk);
         MysterySeq_SetNext(seq, MysterySeq_Top);
         break;
-    case 14:
+    case RECEIVE_STATE_WAIT_MESSAGE:
         if (MysteryMsgWin_IsDone(wk->msgWin)) {
             MysterySeq_Return(seq);
         }
@@ -994,60 +1194,60 @@ static void MysterySeq_Received(MysterySeq *seq, u32 *state, void *work) {
     MysteryWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case RECEIVED_STATE_START_EFFECT:
         MysteryGraphic_Start3D(wk->graphic);
         GFL_BGSysSetBGEnabled(1, TRUE);
         GFL_BGSysSetBGEnabled(3, TRUE);
         MysteryEffect_Init(&wk->effect, MysteryGraphic_GetClactUnit(wk->graphic), &wk->recv, wk->gameData, &wk->actors,
                            &wk->bg, &wk->scroll, HEAPID_MYSTERY);
-        MysteryEffect_Start(&wk->effect, 0);
+        MysteryEffect_Start(&wk->effect, MYSTERY_EFFECT_FALL);
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x22, MYSTERY_PRINT_WAIT_ICON);
-        *state = 1;
+        *state = RECEIVED_STATE_ENABLE_EFFECT_BG;
         break;
-    case 1:
+    case RECEIVED_STATE_ENABLE_EFFECT_BG:
         GFL_BGSysSetBGEnabled(0, TRUE);
-        *state = 2;
+        *state = RECEIVED_STATE_WAIT_MESSAGE;
         break;
-    case 2:
+    case RECEIVED_STATE_WAIT_MESSAGE:
         if (MysteryMsgWin_IsDone(wk->msgWin)) {
-            *state = 3;
+            *state = RECEIVED_STATE_RUN_EFFECT;
         }
         break;
-    case 3:
+    case RECEIVED_STATE_RUN_EFFECT:
         MysteryEffect_Main(&wk->effect);
         if (MysteryEffect_IsEnd(&wk->effect)) {
-            *state = 4;
+            *state = RECEIVED_STATE_START_SAVE;
         }
         break;
-    case 4:
+    case RECEIVED_STATE_START_SAVE:
         MysteryGiftSave_StartSave(wk->giftSave, wk->gameData);
-        *state = 5;
+        *state = RECEIVED_STATE_WAIT_SAVE;
         break;
-    case 5:
-        if (MysteryGiftSave_SaveStep(wk->giftSave, wk->gameData) == 2) {
-            *state = 6;
+    case RECEIVED_STATE_WAIT_SAVE:
+        if (MysteryGiftSave_SaveStep(wk->giftSave, wk->gameData) == SAVE_RESULT_OK) {
+            *state = RECEIVED_STATE_START_FADE_BACK;
         }
         break;
-    case 6:
-        MysteryEffect_Start(&wk->effect, 1);
-        *state = 7;
+    case RECEIVED_STATE_START_FADE_BACK:
+        MysteryEffect_Start(&wk->effect, MYSTERY_EFFECT_FADE_BACK);
+        *state = RECEIVED_STATE_RUN_FADE_BACK;
         break;
-    case 7:
+    case RECEIVED_STATE_RUN_FADE_BACK:
         MysteryEffect_Main(&wk->effect);
         if (MysteryEffect_IsEnd(&wk->effect)) {
-            *state = 8;
+            *state = RECEIVED_STATE_SHOW_SAVED;
         }
         break;
-    case 8:
+    case RECEIVED_STATE_SHOW_SAVED:
         MysteryMsgWin_Print(wk->msgWin, wk->msgData, 0x23, MYSTERY_PRINT_STREAM);
-        *state = 9;
+        *state = RECEIVED_STATE_WAIT_SAVED;
         break;
-    case 9:
+    case RECEIVED_STATE_WAIT_SAVED:
         if (MysteryMsgWin_IsDone(wk->msgWin)) {
-            *state = 10;
+            *state = RECEIVED_STATE_CLEANUP_EFFECT;
         }
         break;
-    case 10:
+    case RECEIVED_STATE_CLEANUP_EFFECT:
         MysteryEffect_Exit(&wk->effect);
         MysteryMsgWin_Delete(wk->msgWin);
         wk->msgWin = NULL;
@@ -1056,13 +1256,13 @@ static void MysterySeq_Received(MysterySeq *seq, u32 *state, void *work) {
         MysteryGraphic_End3D(wk->graphic);
         GFL_BGSysSetBGEnabled(1, TRUE);
         GFL_BGSysSetBGEnabled(3, TRUE);
-        *state = 11;
+        *state = RECEIVED_STATE_RESTORE_MENU_BG;
         break;
-    case 11:
+    case RECEIVED_STATE_RESTORE_MENU_BG:
         GFL_BGSysSetBGEnabled(0, TRUE);
-        *state = 12;
+        *state = RECEIVED_STATE_CREATE_ALBUM;
         break;
-    case 12: {
+    case RECEIVED_STATE_CREATE_ALBUM: {
         MysteryCardResSetup setup;
 
         GFL_BGSysSetBGEnabled(1, FALSE);
@@ -1082,46 +1282,46 @@ static void MysterySeq_Received(MysterySeq *seq, u32 *state, void *work) {
         wk->cardRes = MysteryCardRes_Create(&setup, HEAPID_MYSTERY);
         wk->album = MysteryAlbum_CreateReceived(&wk->recv.gift, wk->cardRes, wk->gameData, HEAPID_MYSTERY);
         MysteryAlbum_SetVisible(wk->album, FALSE);
-        *state = 13;
+        *state = RECEIVED_STATE_OPEN_ALBUM;
         break;
     }
-    case 13:
+    case RECEIVED_STATE_OPEN_ALBUM:
         MysteryAlbum_Main(wk->album);
         MysteryAlbum_StartOpen(wk->album);
-        *state = 14;
+        *state = RECEIVED_STATE_WAIT_ALBUM;
         break;
-    case 14:
+    case RECEIVED_STATE_WAIT_ALBUM:
         MysteryAlbum_Main(wk->album);
         if (MysteryAlbum_IsOpened(wk->album)) {
             wk->wait = 0;
-            *state = 15;
+            *state = RECEIVED_STATE_WAIT_KEY;
         }
         break;
-    case 15:
+    case RECEIVED_STATE_WAIT_KEY:
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
-            *state = 18;
+            *state = RECEIVED_STATE_FINISH;
         }
         if (wk->wait++ > 240) {
             wk->wait = 0;
-            *state = 16;
+            *state = RECEIVED_STATE_CREATE_KEY_HINT;
         }
         break;
-    case 16:
+    case RECEIVED_STATE_CREATE_KEY_HINT:
         MysteryOamMsg_Init(&wk->oamMsg, &wk->actors, MysteryGraphic_GetClactUnit(wk->graphic), wk->queue, wk->msgData,
                            0x4c, wk->font, HEAPID_MYSTERY);
         MysteryOamMsg_Update(&wk->oamMsg);
-        *state = 17;
+        *state = RECEIVED_STATE_WAIT_KEY_HINT;
         break;
-    case 17:
+    case RECEIVED_STATE_WAIT_KEY_HINT:
         MysteryOamMsg_Update(&wk->oamMsg);
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             MysteryOamMsg_Exit(&wk->oamMsg);
-            *state = 18;
+            *state = RECEIVED_STATE_FINISH;
         }
         break;
-    case 18:
+    case RECEIVED_STATE_FINISH:
         MysterySeq_SetNext(seq, MysterySeq_FadeOut);
         break;
     }
@@ -1132,18 +1332,18 @@ static void MysterySeq_Album(MysterySeq *seq, u32 *state, void *work) {
     MysteryCardViewSetup setup;
 
     switch (*state) {
-    case 0:
+    case ALBUM_SEQ_STATE_FADE_OUT:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, -1);
-        MysterySeq_SetReturn(seq, 1);
-        *state = 8;
+        MysterySeq_SetReturn(seq, ALBUM_SEQ_STATE_CREATE_VIEW);
+        *state = ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 1:
+    case ALBUM_SEQ_STATE_CREATE_VIEW:
         MysteryBgScroll_SetEnabled(&wk->scroll, FALSE);
         Mystery_DeleteList(wk);
         MysteryMsgWin_Delete(wk->msgWin);
         wk->msgWin = NULL;
         MI_CpuFill8(&setup, 0, sizeof(setup));
-        setup.mode = 0;
+        setup.mode = MYSTERY_CARD_VIEW_MODE_ALBUM;
         setup.unit = MysteryGraphic_GetClactUnit(wk->graphic);
         setup.giftSave = wk->giftSave;
         setup.font = wk->font;
@@ -1152,45 +1352,45 @@ static void MysterySeq_Album(MysterySeq *seq, u32 *state, void *work) {
         setup.msgData = wk->msgData;
         setup.gameData = wk->gameData;
         wk->cardView = MysteryCardView_Create(&setup, HEAPID_MYSTERY);
-        *state = 2;
+        *state = ALBUM_SEQ_STATE_FADE_IN;
         break;
-    case 2:
+    case ALBUM_SEQ_STATE_FADE_IN:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, -1);
-        MysterySeq_SetReturn(seq, 3);
-        *state = 8;
+        MysterySeq_SetReturn(seq, ALBUM_SEQ_STATE_RUN_VIEW);
+        *state = ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 3:
+    case ALBUM_SEQ_STATE_RUN_VIEW:
         MysteryCardView_Main(wk->cardView);
         if (MysteryCardView_IsEnd(wk->cardView)) {
-            *state = 4;
+            *state = ALBUM_SEQ_STATE_FADE_OUT_VIEW;
         }
         break;
-    case 4:
+    case ALBUM_SEQ_STATE_FADE_OUT_VIEW:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
-        MysterySeq_SetReturn(seq, 5);
-        *state = 8;
+        MysterySeq_SetReturn(seq, ALBUM_SEQ_STATE_RESTORE_MENU);
+        *state = ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 5:
+    case ALBUM_SEQ_STATE_RESTORE_MENU:
         MysteryBgScroll_SetEnabled(&wk->scroll, TRUE);
         MysteryCardView_Delete(wk->cardView);
         wk->cardView = NULL;
-        MysteryBg_Load(&wk->bg, 0);
+        MysteryBg_Load(&wk->bg, MYSTERY_BG_MENU);
         MysteryActors_LoadPalette(&wk->actors, HEAPID_MYSTERY);
         wk->msgWin = MysteryMsgWin_Create(1, 15, wk->queue, wk->font, HEAPID_MYSTERY);
         MysteryMsgWin_DrawFrame(wk->msgWin, 10, 14);
         Mystery_CreateList(wk, LIST_TOP, HEAPID_MYSTERY);
         G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 4, 0x18, 15, 3);
-        *state = 6;
+        *state = ALBUM_SEQ_STATE_FADE_IN_MENU;
         break;
-    case 6:
+    case ALBUM_SEQ_STATE_FADE_IN_MENU:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
-        MysterySeq_SetReturn(seq, 7);
-        *state = 8;
+        MysterySeq_SetReturn(seq, ALBUM_SEQ_STATE_RETURN_TOP);
+        *state = ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 7:
+    case ALBUM_SEQ_STATE_RETURN_TOP:
         MysterySeq_SetNext(seq, MysterySeq_Top);
         break;
-    case 8:
+    case ALBUM_SEQ_STATE_WAIT_FADE:
         if (!GFL_FadeIsRunning()) {
             MysterySeq_Return(seq);
         }
@@ -1206,18 +1406,18 @@ static void MysterySeq_AlbumFull(MysterySeq *seq, u32 *state, void *work) {
     MysteryCardViewSetup setup;
 
     switch (*state) {
-    case 0:
+    case FULL_ALBUM_SEQ_STATE_FADE_OUT:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, -1);
-        MysterySeq_SetReturn(seq, 1);
-        *state = 8;
+        MysterySeq_SetReturn(seq, FULL_ALBUM_SEQ_STATE_CREATE_VIEW);
+        *state = FULL_ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 1:
+    case FULL_ALBUM_SEQ_STATE_CREATE_VIEW:
         MysteryBgScroll_SetEnabled(&wk->scroll, FALSE);
         Mystery_DeleteList(wk);
         MysteryMsgWin_Delete(wk->msgWin);
         wk->msgWin = NULL;
         MI_CpuFill8(&setup, 0, sizeof(setup));
-        setup.mode = 1;
+        setup.mode = MYSTERY_CARD_VIEW_MODE_MAKE_ROOM;
         setup.unit = MysteryGraphic_GetClactUnit(wk->graphic);
         setup.giftSave = wk->giftSave;
         setup.font = wk->font;
@@ -1226,45 +1426,45 @@ static void MysterySeq_AlbumFull(MysterySeq *seq, u32 *state, void *work) {
         setup.msgData = wk->msgData;
         setup.gameData = wk->gameData;
         wk->cardView = MysteryCardView_Create(&setup, HEAPID_MYSTERY);
-        *state = 2;
+        *state = FULL_ALBUM_SEQ_STATE_FADE_IN;
         break;
-    case 2:
+    case FULL_ALBUM_SEQ_STATE_FADE_IN:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, -1);
-        MysterySeq_SetReturn(seq, 3);
-        *state = 8;
+        MysterySeq_SetReturn(seq, FULL_ALBUM_SEQ_STATE_RUN_VIEW);
+        *state = FULL_ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 3:
+    case FULL_ALBUM_SEQ_STATE_RUN_VIEW:
         MysteryCardView_Main(wk->cardView);
         if (MysteryCardView_IsEnd(wk->cardView)) {
-            *state = 4;
+            *state = FULL_ALBUM_SEQ_STATE_FADE_OUT_VIEW;
         }
         break;
-    case 4:
+    case FULL_ALBUM_SEQ_STATE_FADE_OUT_VIEW:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
-        MysterySeq_SetReturn(seq, 5);
-        *state = 8;
+        MysterySeq_SetReturn(seq, FULL_ALBUM_SEQ_STATE_RESTORE_MENU);
+        *state = FULL_ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 5:
+    case FULL_ALBUM_SEQ_STATE_RESTORE_MENU:
         MysteryBgScroll_SetEnabled(&wk->scroll, TRUE);
         MysteryCardView_Delete(wk->cardView);
         wk->cardView = NULL;
-        MysteryBg_Load(&wk->bg, 0);
+        MysteryBg_Load(&wk->bg, MYSTERY_BG_MENU);
         MysteryActors_LoadPalette(&wk->actors, HEAPID_MYSTERY);
         wk->msgWin = MysteryMsgWin_Create(1, 15, wk->queue, wk->font, HEAPID_MYSTERY);
         MysteryMsgWin_DrawFrame(wk->msgWin, 10, 14);
         G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 4, 0x18, 15, 3);
-        *state = 6;
+        *state = FULL_ALBUM_SEQ_STATE_FADE_IN_MENU;
         break;
-    case 6:
+    case FULL_ALBUM_SEQ_STATE_FADE_IN_MENU:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
-        MysterySeq_SetReturn(seq, 7);
-        *state = 8;
+        MysterySeq_SetReturn(seq, FULL_ALBUM_SEQ_STATE_RESUME_RECEIVE);
+        *state = FULL_ALBUM_SEQ_STATE_WAIT_FADE;
         break;
-    case 7:
+    case FULL_ALBUM_SEQ_STATE_RESUME_RECEIVE:
         wk->resumeReceive = MysteryGiftSave_HasFreeSlot(wk->giftSave);
         MysterySeq_SetNext(seq, MysterySeq_Top);
         break;
-    case 8:
+    case FULL_ALBUM_SEQ_STATE_WAIT_FADE:
         if (!GFL_FadeIsRunning()) {
             MysterySeq_Return(seq);
         }
@@ -1286,17 +1486,17 @@ static void MysterySeq_WifiLogin(MysterySeq *seq, u32 *state, void *work) {
         break;
     }
     switch (*state) {
-    case 0:
+    case WIFI_LOGIN_STATE_FADE_OUT:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
-        *state = 1;
+        *state = WIFI_LOGIN_STATE_WAIT_FADE_OUT;
         break;
-    case 1:
+    case WIFI_LOGIN_STATE_WAIT_FADE_OUT:
         if (!GFL_FadeIsRunning()) {
             MysteryBgScroll_SetEnabled(&wk->scroll, FALSE);
-            *state = 2;
+            *state = WIFI_LOGIN_STATE_FREE_GRAPHICS;
         }
         break;
-    case 2:
+    case WIFI_LOGIN_STATE_FREE_GRAPHICS:
         if (wk->msgWin != NULL) {
             MysteryMsgWin_Delete(wk->msgWin);
             wk->msgWin = NULL;
@@ -1305,9 +1505,9 @@ static void MysterySeq_WifiLogin(MysterySeq *seq, u32 *state, void *work) {
         MysteryBg_Exit(&wk->bg);
         MysteryGraphic_Delete(wk->graphic);
         wk->graphic = NULL;
-        *state = 3;
+        *state = WIFI_LOGIN_STATE_QUEUE_LOGIN;
         break;
-    case 3:
+    case WIFI_LOGIN_STATE_QUEUE_LOGIN:
         wk->loginParam = GFL_HeapAllocate(HEAPID_MYSTERY, sizeof(WifiLoginParam), FALSE, "mystery.c", 2666);
         MI_CpuFill8(wk->loginParam, 0, sizeof(WifiLoginParam));
         wk->loginParam->gameData = wk->gameData;
@@ -1316,15 +1516,15 @@ static void MysterySeq_WifiLogin(MysterySeq *seq, u32 *state, void *work) {
         wk->loginParam->buffer = NULL;
         wk->loginParam->keepBgm = 0;
         wk->loginParam->serviceId = WIFILOGIN_SERVICE_MYSTERY_GIFT;
-        if (MysteryGiftSave_GetKind(wk->giftSave) == 0) {
+        if (MysteryGiftSave_GetKind(wk->giftSave) == MG_DATA_OUTSIDE) {
             wk->loginParam->mode = WIFILOGIN_MODE_NO_SAVE;
         } else {
             wk->loginParam->mode = WIFILOGIN_MODE_NORMAL;
         }
         GCTX_ProcMgrQueueProc(OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, wk->loginParam);
-        *state = 5;
+        *state = WIFI_LOGIN_STATE_CREATE_GRAPHICS;
         break;
-    case 5:
+    case WIFI_LOGIN_STATE_CREATE_GRAPHICS:
         wk->graphic = MysteryGraphic_Create(1, HEAPID_MYSTERY);
         MysteryBg_Init(&wk->bg, HEAPID_MYSTERY);
         MysteryActors_Init(&wk->actors, MysteryGraphic_GetClactUnit(wk->graphic), HEAPID_MYSTERY);
@@ -1334,21 +1534,21 @@ static void MysterySeq_WifiLogin(MysterySeq *seq, u32 *state, void *work) {
         GFL_NetSetIconScreen(TRUE, HEAPID_MYSTERY);
         GFL_SndBGMPlay(SEQ_BGM_WIFI_PRESENT, 0xffff);
         MysteryBgScroll_SetEnabled(&wk->scroll, TRUE);
-        *state = 4;
+        *state = WIFI_LOGIN_STATE_RESUME;
         break;
-    case 4:
-        *state = 6;
+    case WIFI_LOGIN_STATE_RESUME:
+        *state = WIFI_LOGIN_STATE_FADE_IN;
         break;
-    case 6:
+    case WIFI_LOGIN_STATE_FADE_IN:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
-        *state = 7;
+        *state = WIFI_LOGIN_STATE_WAIT_FADE_IN;
         break;
-    case 7:
+    case WIFI_LOGIN_STATE_WAIT_FADE_IN:
         if (!GFL_FadeIsRunning()) {
-            *state = 8;
+            *state = WIFI_LOGIN_STATE_CHECK_RESULT;
         }
         break;
-    case 8:
+    case WIFI_LOGIN_STATE_CHECK_RESULT:
         if (wk->loginParam->result == WIFILOGIN_RESULT_OK) {
             MysterySeq_SetNext(seq, MysterySeq_Receive);
         } else {
@@ -1376,11 +1576,11 @@ static void MysterySeq_WirelessOff(MysterySeq *seq, u32 *state, void *work) {
     MysteryWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case WIRELESS_OFF_STATE_SHOW_MESSAGE:
         MysteryMsgWin_Print(wk->msgWin, wk->scriptMsgData, 0x16, MYSTERY_PRINT_STREAM);
-        *state = 1;
+        *state = WIRELESS_OFF_STATE_WAIT_MESSAGE;
         break;
-    case 1:
+    case WIRELESS_OFF_STATE_WAIT_MESSAGE:
         if (MysteryMsgWin_IsDone(wk->msgWin)) {
             MysterySeq_SetNext(seq, MysterySeq_Top);
         }
@@ -1396,9 +1596,9 @@ static void Mystery_CreateYesNo(MysteryWork *wk, u32 unused, HeapID heapId) {
         setup.msgData = wk->msgData;
         setup.font = wk->font;
         setup.queue = wk->queue;
-        setup.msgIds[0] = 5;
-        setup.msgIds[1] = 6;
-        setup.count = 2;
+        setup.msgIds[MYSTERY_CONFIRM_YES] = 5;
+        setup.msgIds[MYSTERY_CONFIRM_NO] = 6;
+        setup.count = MYSTERY_CONFIRM_MAX;
         setup.bg = 0;
         setup.palette = 15;
         setup.framePalette = 14;
@@ -1437,36 +1637,36 @@ static void Mystery_CreateList(MysteryWork *wk, u32 type, HeapID heapId) {
         switch (type) {
         case LIST_TOP:
             setup.msgData = wk->msgData;
-            setup.items[0] = 1;
-            setup.items[1] = 2;
-            setup.items[2] = 0x34;
-            setup.items[3] = 3;
-            setup.count = 4;
+            setup.items[TOP_CHOICE_RECEIVE] = 1;
+            setup.items[TOP_CHOICE_ALBUM] = 2;
+            setup.items[TOP_CHOICE_INFO] = 0x34;
+            setup.items[TOP_CHOICE_QUIT] = 3;
+            setup.count = TOP_CHOICE_MAX;
             break;
         case LIST_RECEIVE:
             setup.msgData = wk->msgData;
-            setup.items[0] = 8;
-            setup.items[1] = 9;
-            setup.items[2] = 10;
-            setup.items[3] = 11;
-            setup.count = 4;
+            setup.items[RECEIVE_CHOICE_WIRELESS] = 8;
+            setup.items[RECEIVE_CHOICE_WIFI] = 9;
+            setup.items[RECEIVE_CHOICE_INFRARED] = 10;
+            setup.items[RECEIVE_CHOICE_BACK] = 11;
+            setup.count = RECEIVE_CHOICE_MAX;
             break;
         case LIST_RECEIVED:
             setup.msgData = NULL;
-            setup.items[0] = (u32)GFL_StrBufCreate(37, heapId);
-            GFL_StrBufLoadFixedString((StrBuf *)setup.items[0], wk->recv.gift.title, 37);
-            setup.count = 1;
+            setup.items[RECEIVED_CHOICE_CARD] = (u32)GFL_StrBufCreate(37, heapId);
+            GFL_StrBufLoadFixedString((StrBuf *)setup.items[RECEIVED_CHOICE_CARD], wk->recv.gift.title, 37);
+            setup.count = RECEIVED_CHOICE_MAX;
             setup.offsetY = -1;
             setup.offsetX = -2;
             setup.cursorSequence = 10;
             break;
         case LIST_ABOUT:
             setup.msgData = wk->msgData;
-            setup.items[0] = 0x30;
-            setup.items[1] = 0x31;
-            setup.items[2] = 0x32;
-            setup.items[3] = 0x33;
-            setup.count = 4;
+            setup.items[ABOUT_CHOICE_GIFT] = 0x30;
+            setup.items[ABOUT_CHOICE_ALBUM] = 0x31;
+            setup.items[ABOUT_CHOICE_FULL_ALBUM] = 0x32;
+            setup.items[ABOUT_CHOICE_BACK] = 0x33;
+            setup.count = ABOUT_CHOICE_MAX;
             break;
         }
         arc = GFL_ArcSysCreateFileHandle(ARCID_MYSTERY, heapId);
@@ -1531,7 +1731,7 @@ static void Mystery_CreateCardWin(MysteryWork *wk, HeapID heapId) {
         wk->cardWin = MysteryTextWin_Create(0, entries, 2, 4, 15, wk->queue, wk->msgData, wk->font, heapId);
         GFL_StrBufFree(entries[0].str);
         GFL_StrBufFree(entries[1].str);
-        MysteryBg_Load(&wk->bg, 1);
+        MysteryBg_Load(&wk->bg, MYSTERY_BG_CARD_TEXT);
         GFL_BGSysLoadScr(6);
         GFL_BGSysSetBGEnabled(6, TRUE);
         G2x_SetBlendAlpha_(REG_DB_BLDCNT_ADDR, 4, 0x18, 15, 3);
@@ -1583,9 +1783,9 @@ static void MysteryEffect_Init(MysteryEffect *effect, ClActUnit *unit, const Mys
         ClActor_SetPalette(MysteryActors_GetActor(actors, ACTOR_STARS + i), (u8)palNo, 0);
     }
     switch (recv->gift.kind) {
-    case 0:
+    case MYSTERY_GIFT_KIND_NONE:
         break;
-    case 1:
+    case MYSTERY_GIFT_KIND_POKEMON:
         pkm = Mystery_CreateGiftPokemon(&recv->gift, HEAPID_TAIL(heapId), gameData);
         arc = MakePokeGraArcHandle(heapId);
         effect->palette =
@@ -1598,7 +1798,7 @@ static void MysteryEffect_Init(MysteryEffect *effect, ClActUnit *unit, const Mys
         GFL_ArcToolFree(arc);
         GFL_HeapFree(pkm);
         break;
-    case 2:
+    case MYSTERY_GIFT_KIND_ITEM:
         arc = GFL_ArcSysCreateFileHandle(ARCID_ITEMGRA, heapId);
         effect->palette = ClActSys_LoadPltt(arc, GetItemGraphicsDatID(recv->gift.value, ITEM_FILE_ICON_PLTT),
                                             CLACT_VRAM_MAIN, 0x1c0, heapId);
@@ -1609,8 +1809,8 @@ static void MysteryEffect_Init(MysteryEffect *effect, ClActUnit *unit, const Mys
         effect->offsetX = 4;
         effect->height = 8;
         break;
-    case 3:
-    case 4:
+    case MYSTERY_GIFT_KIND_PASS_POWER:
+    case MYSTERY_GIFT_KIND_ONE_SHOT:
         arc = GFL_ArcSysCreateFileHandle(ARCID_MYSTERY, heapId);
         effect->palette = ClActSys_LoadPltt(arc, 3, CLACT_VRAM_MAIN, 0x1c0, heapId);
         effect->cellAnims = ClActSys_LoadCellAnims(arc, 33, 36, heapId);
@@ -1640,14 +1840,14 @@ static void MysteryEffect_Start(MysteryEffect *effect, u32 mode) {
     effect->state = 0;
     effect->frame = 0;
     switch (mode) {
-    case 0:
+    case MYSTERY_EFFECT_FALL:
         if (effect->recv->special) {
             effect->func = MysteryEffect_FallSpecial;
         } else {
             effect->func = MysteryEffect_Fall;
         }
         break;
-    case 1:
+    case MYSTERY_EFFECT_FADE_BACK:
         effect->func = MysteryEffect_FadeBack;
         break;
     }
@@ -1692,18 +1892,18 @@ static void MysteryEffect_Fall(MysteryEffect *effect) {
     s16 y;
 
     switch (effect->state) {
-    case 0:
+    case FALL_STATE_LOAD_BG:
         GFL_BGSysSetBGEnabled(2, FALSE);
-        MysteryBg_Load(effect->bg, 2);
-        effect->state = 1;
+        MysteryBg_Load(effect->bg, MYSTERY_BG_EFFECT);
+        effect->state = FALL_STATE_SHOW_BG;
         break;
-    case 1:
+    case FALL_STATE_SHOW_BG:
         G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 4, 8, 0, 16);
         GFL_BGSysSetBGEnabled(2, TRUE);
         effect->frame = 0;
-        effect->state = 2;
+        effect->state = FALL_STATE_FADE_BG;
         break;
-    case 2:
+    case FALL_STATE_FADE_BG:
         alpha = effect->frame * 16 / 120;
         Mystery_SetBlendAlpha(alpha, 16 - alpha);
         effect->blend = effect->frame * 0x7fff / 120;
@@ -1711,18 +1911,18 @@ static void MysteryEffect_Fall(MysteryEffect *effect) {
         MysteryPal_Blend(31, effect->subFadeColors, effect->blend, 0, effect->kindColors, effect->baseColors);
         if (effect->frame++ > 120) {
             G2_BlendNone();
-            MysteryBgScroll_SetSpeed(effect->scroll, 1);
+            MysteryBgScroll_SetSpeed(effect->scroll, MYSTERY_SCROLL_FAST);
             effect->frame = 0;
-            effect->state = 3;
+            effect->state = FALL_STATE_WAIT_FALL;
         }
         break;
-    case 3:
+    case FALL_STATE_WAIT_FALL:
         if (effect->frame++ > 180) {
             effect->frame = 0;
-            effect->state = 4;
+            effect->state = FALL_STATE_FALL_ICON;
         }
         break;
-    case 4:
+    case FALL_STATE_FALL_ICON:
         y = (214 - effect->height) * effect->frame / 60 - 96;
         ClActor_SetSurfacePosAxis(effect->actor, y, 0, 1);
         if (y >= -48 && y <= 192) {
@@ -1730,18 +1930,18 @@ static void MysteryEffect_Fall(MysteryEffect *effect) {
         }
         if (effect->frame++ >= 60) {
             GFL_SndSEPlay(SEQ_SE_SYS_50);
-            MysteryBgScroll_SetSpeed(effect->scroll, 0);
+            MysteryBgScroll_SetSpeed(effect->scroll, MYSTERY_SCROLL_SLOW);
             effect->frame = 0;
-            effect->state = 5;
+            effect->state = FALL_STATE_WAIT_END;
         }
         break;
-    case 5:
+    case FALL_STATE_WAIT_END:
         if (effect->frame++ > 60) {
             effect->frame = 0;
-            effect->state = 6;
+            effect->state = FALL_STATE_END;
         }
         break;
-    case 6:
+    case FALL_STATE_END:
         effect->done = TRUE;
         break;
     }
@@ -1752,20 +1952,20 @@ static void MysteryEffect_FallSpecial(MysteryEffect *effect) {
     ClActorPos pos;
 
     switch (effect->state) {
-    case 0:
+    case SPECIAL_FALL_STATE_LOAD_PARTICLES:
         MysteryParticle_Init(&effect->particle, effect->heapId);
         MysteryParticle_Load(&effect->particle, ARCID_MYSTERY, 38, effect->heapId);
         GFL_BGSysSetBGEnabled(2, FALSE);
-        MysteryBg_Load(effect->bg, 2);
-        effect->state = 1;
+        MysteryBg_Load(effect->bg, MYSTERY_BG_EFFECT);
+        effect->state = SPECIAL_FALL_STATE_SHOW_BG;
         break;
-    case 1:
+    case SPECIAL_FALL_STATE_SHOW_BG:
         G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 4, 8, 0, 16);
         GFL_BGSysSetBGEnabled(2, TRUE);
         effect->frame = 0;
-        effect->state = 2;
+        effect->state = SPECIAL_FALL_STATE_FADE_BG;
         break;
-    case 2:
+    case SPECIAL_FALL_STATE_FADE_BG:
         alpha = effect->frame * 16 / 120;
         Mystery_SetBlendAlpha(alpha, 16 - alpha);
         effect->blend = effect->frame * 0x7fff / 120;
@@ -1774,13 +1974,13 @@ static void MysteryEffect_FallSpecial(MysteryEffect *effect) {
         if (effect->frame++ > 120) {
             G2_BlendNone();
             effect->frame = 0;
-            effect->state = 3;
+            effect->state = SPECIAL_FALL_STATE_START_PARTICLES;
         }
         break;
-    case 3:
+    case SPECIAL_FALL_STATE_START_PARTICLES:
         if (effect->frame++ > 180) {
             effect->frame = 0;
-            effect->state = 6;
+            effect->state = SPECIAL_FALL_STATE_WAIT_PARTICLES;
             G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 1, 31, 0, 16);
             MysteryParticle_Emit(&effect->particle, 0);
             MysteryParticle_Emit(&effect->particle, 1);
@@ -1788,61 +1988,61 @@ static void MysteryEffect_FallSpecial(MysteryEffect *effect) {
             GFL_SndSEPlay(SEQ_SE_SYS_88);
         }
         break;
-    case 6:
+    case SPECIAL_FALL_STATE_WAIT_PARTICLES:
         if (effect->frame++ > 120) {
             GFL_SndSEPlay(SEQ_SE_SYS_89);
             effect->frame = 0;
-            effect->state = 4;
-            MysteryBgScroll_SetSpeed(effect->scroll, 1);
+            effect->state = SPECIAL_FALL_STATE_SHOW_ICON;
+            MysteryBgScroll_SetSpeed(effect->scroll, MYSTERY_SCROLL_FAST);
         }
         break;
-    case 4:
+    case SPECIAL_FALL_STATE_SHOW_ICON:
         pos.x = 128;
         pos.y = 118 - effect->height;
         ClActor_SetSurfacePos(effect->actor, &pos, 0);
         ClActor_SetVisible(effect->actor, TRUE);
         effect->subFrame = 0;
-        effect->state = 5;
+        effect->state = SPECIAL_FALL_STATE_FADE_ICON;
         break;
-    case 5:
+    case SPECIAL_FALL_STATE_FADE_ICON:
         alpha = effect->subFrame * 16 / 10;
         Mystery_SetBlendAlpha(alpha, 16 - alpha);
         effect->frame++;
         if (effect->subFrame++ > 10) {
             effect->subFrame = 0;
-            effect->state = 7;
+            effect->state = SPECIAL_FALL_STATE_WAIT_ICON;
         }
         break;
-    case 7:
+    case SPECIAL_FALL_STATE_WAIT_ICON:
         if (effect->frame++ > 90) {
             G2_BlendNone();
             effect->frame = 0;
-            effect->state = 8;
+            effect->state = SPECIAL_FALL_STATE_WAIT_PALETTE;
         }
         break;
-    case 8:
+    case SPECIAL_FALL_STATE_WAIT_PALETTE:
         if (effect->frame++ > 10) {
             effect->frame = 0;
-            effect->state = 9;
+            effect->state = SPECIAL_FALL_STATE_FADE_PALETTE;
         }
         break;
-    case 9:
+    case SPECIAL_FALL_STATE_FADE_PALETTE:
         effect->blend = effect->frame * 0x7fff / 120;
         MysteryPal_Blend(14, effect->objFadeColors, effect->blend, 14, effect->objColors, effect->whiteColors);
         if (effect->frame++ > 120) {
-            MysteryBgScroll_SetSpeed(effect->scroll, 0);
+            MysteryBgScroll_SetSpeed(effect->scroll, MYSTERY_SCROLL_SLOW);
             effect->frame = 0;
-            effect->state = 10;
+            effect->state = SPECIAL_FALL_STATE_WAIT_END;
         }
         break;
-    case 10:
+    case SPECIAL_FALL_STATE_WAIT_END:
         if (effect->frame++ > 60) {
             GFL_SndSEPlay(SEQ_SE_SYS_50);
             effect->frame = 0;
-            effect->state = 11;
+            effect->state = SPECIAL_FALL_STATE_END;
         }
         break;
-    case 11:
+    case SPECIAL_FALL_STATE_END:
         G2_BlendNone();
         effect->done = TRUE;
         break;
@@ -1851,19 +2051,19 @@ static void MysteryEffect_FallSpecial(MysteryEffect *effect) {
 
 static void MysteryEffect_FadeBack(MysteryEffect *effect) {
     switch (effect->state) {
-    case 0:
-        effect->state = 1;
+    case FADE_BACK_STATE_START:
+        effect->state = FADE_BACK_STATE_FADE;
         break;
-    case 1:
+    case FADE_BACK_STATE_FADE:
         effect->blend = effect->frame * 0x7fff / 60;
         MysteryPal_Blend(15, effect->bgFadeColors, effect->blend, 0, effect->baseColors, effect->kindColors);
         MysteryPal_Blend(31, effect->subFadeColors, effect->blend, 0, effect->baseColors, effect->kindColors);
         if (effect->frame++ > 60) {
             effect->frame = 0;
-            effect->state = 2;
+            effect->state = FADE_BACK_STATE_END;
         }
         break;
-    case 2:
+    case FADE_BACK_STATE_END:
         effect->done = TRUE;
         break;
     }
@@ -1900,10 +2100,10 @@ static void MysteryBgScroll_SetSpeed(MysteryBgScroll *scroll, u32 mode) {
     scroll->frame = 0;
     scroll->startSpeed = scroll->speed;
     switch (mode) {
-    case 0:
+    case MYSTERY_SCROLL_SLOW:
         scroll->func = MysteryBgScroll_Slow;
         break;
-    case 1:
+    case MYSTERY_SCROLL_FAST:
         scroll->func = MysteryBgScroll_Fast;
         break;
     }

@@ -12,6 +12,16 @@
 // A step of a sequence, called each frame with the sequence's state and work
 typedef void (*MysterySeqFunc)(MysterySeq *seq, u32 *state, void *work);
 
+// Results of the two-option confirmation menus. Other menus use their own entries.
+enum {
+    MYSTERY_CONFIRM_YES = 0,
+    MYSTERY_CONFIRM_NO = 1,
+    MYSTERY_CONFIRM_MAX = 2,
+};
+
+// The last position of the four-entry lists, which goes back or leaves
+#define MYSTERY_LIST_BACK 3
+
 // The answers of the menus' updates while they wait
 #define MYSTERY_MENU_NONE ((u32) - 1)
 #define MYSTERY_MENU_CANCEL ((u32) - 2)
