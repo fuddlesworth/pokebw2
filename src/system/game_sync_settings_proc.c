@@ -66,15 +66,15 @@ static BOOL GameSyncSettings_Main(GameProc *proc, u32 *state, void *param, void 
     switch (wk->state) {
     case GAME_SYNC_SETTINGS_LOGIN:
         wk->login.gameData = wk->gameData;
-        wk->login.unk4 = 0;
-        wk->login.unk8 = 1;
-        wk->login.unkC = 0x32;
+        wk->login.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+        wk->login.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
+        wk->login.serviceId = WIFILOGIN_SERVICE_GAME_SYNC_ACCOUNT;
         wk->login.buffer = wk->loginBuffer;
         GCTX_ProcMgrQueueProc(OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, &wk->login);
         wk->state++;
         break;
     case GAME_SYNC_SETTINGS_ACCOUNT:
-        if (wk->login.result == 1) {
+        if (wk->login.result == WIFILOGIN_RESULT_FAILED) {
             wk->state = GAME_SYNC_SETTINGS_END;
         } else {
             wk->account.gameData = wk->gameData;
@@ -95,12 +95,12 @@ static BOOL GameSyncSettings_Main(GameProc *proc, u32 *state, void *param, void 
     case GAME_SYNC_SETTINGS_LOGOUT:
         // Without a connection left, it logs in again
         if (!GFL_NetIsInitialized() || wk->account.disconnected == TRUE) {
-            wk->login.unk14 = 1;
+            wk->login.mode = WIFILOGIN_MODE_RETRY;
             wk->state = GAME_SYNC_SETTINGS_LOGIN;
         } else {
             wk->logout.gameData = wk->gameData;
-            wk->logout.unk4 = 0;
-            wk->logout.unk8 = 1;
+            wk->logout.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+            wk->logout.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
             GCTX_ProcMgrQueueProc(OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
             wk->state++;
         }

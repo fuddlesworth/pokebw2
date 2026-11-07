@@ -1057,15 +1057,15 @@ static void DataConvert_SeqWifiLogin(KeySystemSeq *seq, int *state, void *work) 
         KeySystem_Teardown(wk, FALSE);
         param = GFL_HeapAllocate(HEAPID_KEY_SYSTEM, sizeof(WifiLoginParam), TRUE, "data_convert_flow.c", 1705);
         param->gameData = wk->param->gameData;
-        param->unk4 = 0;
-        param->unk8 = 1;
+        param->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+        param->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
         param->buffer = wk->loginBuffer;
         param->keepBgm = 0;
-        param->unkC = 0x38;
+        param->serviceId = WIFILOGIN_SERVICE_MEMORY_LINK;
         if (SaveControl_IsDataAlreadyPresent(GameData_GetSaveControl(wk->param->gameData))) {
-            param->unk14 = 0;
+            param->mode = WIFILOGIN_MODE_NORMAL;
         } else {
-            param->unk14 = 2;
+            param->mode = WIFILOGIN_MODE_NO_SAVE;
         }
         wk->subProcParam = param;
         GCTX_ProcMgrQueueProc(OVERLAY_ID(190), &WIFILOGIN_PROC_FUNCTIONS, param);
@@ -1075,7 +1075,7 @@ static void DataConvert_SeqWifiLogin(KeySystemSeq *seq, int *state, void *work) 
         (*state)++;
         break;
     case 2:
-        if (((WifiLoginParam *)wk->subProcParam)->result == 0) {
+        if (((WifiLoginParam *)wk->subProcParam)->result == WIFILOGIN_RESULT_OK) {
             wk->loggedIn = TRUE;
         } else {
             wk->loggedIn = FALSE;
@@ -1103,8 +1103,8 @@ static void DataConvert_SeqWifiLogout(KeySystemSeq *seq, int *state, void *work)
         KeySystem_Teardown(wk, FALSE);
         param = GFL_HeapAllocate(HEAPID_KEY_SYSTEM, sizeof(WifiLogoutParam), TRUE, "data_convert_flow.c", 1789);
         param->gameData = wk->param->gameData;
-        param->unk4 = 0;
-        param->unk8 = 1;
+        param->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+        param->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
         param->keepBgm = 0;
         param->wipeFlags = 0;
         wk->subProcParam = param;

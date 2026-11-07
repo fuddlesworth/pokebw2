@@ -435,7 +435,7 @@ static BOOL WifiBSubway_ProcMain(GameProc *proc, u32 *state, void *param, void *
         (*state)++;
         break;
     case STATE_LOGIN_WAIT:
-        if (WifiBSubway_GetLoginResult(wk) == 0) {
+        if (WifiBSubway_GetLoginResult(wk) == WIFILOGIN_RESULT_OK) {
             (*state)++;
         } else {
             wk->param->result = WIFI_BSUBWAY_RESULT_CANCEL;
@@ -1102,10 +1102,10 @@ static u32 WifiBSubway_GetCodeInNumber(WifiBSubwayWork *wk) {
 
 static void WifiBSubway_CallLogin(WifiBSubwayWork *wk) {
     wk->login.gameData = wk->gameData;
-    wk->login.unk4 = 0;
+    wk->login.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
     wk->login.keepBgm = TRUE;
-    wk->login.unk8 = 1;
-    wk->login.unkC = 0x2c;
+    wk->login.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
+    wk->login.serviceId = WIFILOGIN_SERVICE_BATTLE_SUBWAY;
     wk->login.buffer = wk->loginBuffer;
     GSYS_QueueProc(wk->param->gsys, OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, &wk->login);
 }
@@ -1119,8 +1119,8 @@ static u32 WifiBSubway_GetLoginResult(const WifiBSubwayWork *wk) {
 
 static void WifiBSubway_CallLogout(WifiBSubwayWork *wk) {
     wk->logout.gameData = wk->gameData;
-    wk->logout.unk4 = 0;
-    wk->logout.unk8 = 1;
+    wk->logout.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    wk->logout.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     wk->logout.keepBgm = 1;
     GSYS_QueueProc(wk->param->gsys, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
 }

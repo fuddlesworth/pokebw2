@@ -210,17 +210,17 @@ static void *WbtDownload_SetupLogin(HeapID heapId, WbtDownloadWork *wk, u32 prev
     WifiLoginParam *login = GFL_HeapAllocate(heapId, sizeof(WifiLoginParam), TRUE, "wbt_download_sys.c", 494);
 
     login->gameData = wk->param->gameData;
-    login->unk4 = 0;
-    login->unk8 = 1;
+    login->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    login->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     login->buffer = NULL;
     login->keepBgm = 1;
-    login->unkC = 0x36;
+    login->serviceId = WIFILOGIN_SERVICE_TOURNAMENT_DOWNLOAD;
     if (prevStep == WBT_DOWNLOAD_STEP_DOWNLOAD) {
-        login->unk14 = 1;
+        login->mode = WIFILOGIN_MODE_RETRY;
     } else {
         GFL_SndBGMPlay(SEQ_BGM_WIFI_ACCESS, SND_CHANNEL_MASK_ALL);
         GFL_SndBGMFadeIn(6);
-        login->unk14 = 0;
+        login->mode = WIFILOGIN_MODE_NORMAL;
     }
     return login;
 }
@@ -229,10 +229,10 @@ static void WbtDownload_FinishLogin(void *param, WbtDownloadWork *wk) {
     WifiLoginParam *login = param;
 
     switch (login->result) {
-    case 0:
+    case WIFILOGIN_RESULT_OK:
         WbtDownloadSeq_SetNext(&wk->seq, WBT_DOWNLOAD_STEP_DOWNLOAD);
         break;
-    case 1:
+    case WIFILOGIN_RESULT_FAILED:
         GFL_SndBGMPop();
         break;
     }
@@ -243,8 +243,8 @@ static void *WbtDownload_SetupLogout(HeapID heapId, WbtDownloadWork *wk, u32 pre
     WifiLogoutParam *logout = GFL_HeapAllocate(heapId, sizeof(WifiLogoutParam), TRUE, "wbt_download_sys.c", 559);
 
     logout->gameData = wk->param->gameData;
-    logout->unk4 = 0;
-    logout->unk8 = 1;
+    logout->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    logout->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     logout->keepBgm = 1;
     logout->wipeFlags = 0;
     return logout;

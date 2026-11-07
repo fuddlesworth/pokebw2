@@ -320,17 +320,17 @@ static int Enter_WifiConnectionLogin(WorldTradeWork *wk) {
     MI_CpuFill8(wk->subProcParam, 0, sizeof(WifiLoginParam));
     param = wk->subProcParam;
     param->gameData = GSYS_GetGameData(wk->param->gsys);
-    param->unk4 = 0;
-    param->unk8 = 1;
+    param->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    param->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     param->buffer = wk->wifiLoginBuffer;
-    param->unkC = 30;
+    param->serviceId = WIFILOGIN_SERVICE_GTS;
     param->callback = Enter_LoginCallback;
     param->callbackData = wk;
     wk->loginSeq = LOGIN_INTERNET_CONNECT;
     if (wk->subProcessMode == WT_MODE_RELOGIN) {
-        param->unk14 = 1;
+        param->mode = WIFILOGIN_MODE_RETRY;
     } else {
-        param->unk14 = 0;
+        param->mode = WIFILOGIN_MODE_NORMAL;
     }
     QueueGameProc(wk->procManager, OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, wk->subProcParam);
     GFL_NetErrShow(0);
@@ -343,10 +343,10 @@ static int Enter_WifiConnectionLoginWait(WorldTradeWork *wk) {
 
     if (!wk->procResult) {
         switch (param->result) {
-        case 0:
+        case WIFILOGIN_RESULT_OK:
             wk->subprocessSeq = ENTER_START;
             break;
-        case 1:
+        case WIFILOGIN_RESULT_FAILED:
             WorldTrade_SubProcessChange(wk, WORLDTRADE_ENTER, 0);
             wk->subprocessSeq = ENTER_END;
             break;
@@ -363,8 +363,8 @@ static int Enter_WifiConnectionLogout(WorldTradeWork *wk) {
     MI_CpuFill8(wk->subProcParam, 0, sizeof(WifiLogoutParam));
     param = wk->subProcParam;
     param->gameData = GSYS_GetGameData(wk->param->gsys);
-    param->unk4 = 0;
-    param->unk8 = 1;
+    param->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+    param->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     // The header's types for the callback and its data
     param->unk14 = (u32)Enter_LogoutCallback;
     param->unk18 = (u32)wk;

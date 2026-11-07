@@ -87,14 +87,14 @@ static BOOL BattleVideo_Main(GameProc *proc, u32 *state, void *param, void *work
 
         MI_CpuFill8(&wk->sub.login, 0, sizeof(WifiLoginParam));
         wk->sub.login.gameData = wk->param->gameData;
-        wk->sub.login.unk4 = 0;
-        wk->sub.login.unk8 = 1;
+        wk->sub.login.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+        wk->sub.login.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
         wk->sub.login.buffer = wk->loginBuffer;
-        wk->sub.login.unkC = 0x21;
+        wk->sub.login.serviceId = WIFILOGIN_SERVICE_BATTLE_RECORDER;
         if (retry) {
-            wk->sub.login.unk14 = 1;
+            wk->sub.login.mode = WIFILOGIN_MODE_RETRY;
         } else {
-            wk->sub.login.unk14 = 0;
+            wk->sub.login.mode = WIFILOGIN_MODE_NORMAL;
         }
         QueueGameProc(wk->manager, OVERLAY_WIFILOGIN, &WIFILOGIN_PROC_FUNCTIONS, &wk->sub.login);
         (*state)++;
@@ -102,7 +102,7 @@ static BOOL BattleVideo_Main(GameProc *proc, u32 *state, void *param, void *work
     }
     case BATTLE_VIDEO_WAIT_LOGIN:
         if (status == 0) {
-            if (wk->sub.login.result == 0) {
+            if (wk->sub.login.result == WIFILOGIN_RESULT_OK) {
                 wk->online = TRUE;
                 (*state)++;
             } else {
@@ -130,8 +130,8 @@ static BOOL BattleVideo_Main(GameProc *proc, u32 *state, void *param, void *work
     case BATTLE_VIDEO_LOGOUT:
         MI_CpuFill8(&wk->sub.logout, 0, sizeof(WifiLogoutParam));
         wk->sub.logout.gameData = wk->param->gameData;
-        wk->sub.logout.unk4 = 0;
-        wk->sub.logout.unk8 = 1;
+        wk->sub.logout.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
+        wk->sub.logout.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
         QueueGameProc(wk->manager, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->sub.logout);
         wk->online = FALSE;
         (*state)++;
