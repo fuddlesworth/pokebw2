@@ -61,14 +61,14 @@ static int BPlistMain_StateForgetPage(BPlistWork *work);
 static int BPlistMain_StateConfirmPage(BPlistWork *work);
 static int BPlistMain_StateHMMessage(BPlistWork *work);
 static int BPlistMain_StatePPRestorePage(BPlistWork *work);
-static int BPlistMain_StateToPage0(BPlistWork *work);
-static int BPlistMain_StateToPage1(BPlistWork *work);
-static int BPlistMain_StateToPage2(BPlistWork *work);
-static int BPlistMain_StateToPage3(BPlistWork *work);
-static int BPlistMain_StateToPage4(BPlistWork *work);
-static int BPlistMain_StateToPage6(BPlistWork *work);
-static int BPlistMain_StateToPage7(BPlistWork *work);
-static int BPlistMain_StateToPage5(BPlistWork *work);
+static int BPlistMain_StateToPartyPage(BPlistWork *work);
+static int BPlistMain_StateToSelectedPage(BPlistWork *work);
+static int BPlistMain_StateToSummaryPage(BPlistWork *work);
+static int BPlistMain_StateToMovesPage(BPlistWork *work);
+static int BPlistMain_StateToMoveInfoPage(BPlistWork *work);
+static int BPlistMain_StateToForgetMovePage(BPlistWork *work);
+static int BPlistMain_StateToConfirmForgetPage(BPlistWork *work);
+static int BPlistMain_StateToPPRestorePage(BPlistWork *work);
 static int BPlistMain_StateRedrawPage(BPlistWork *work);
 static int BPlistMain_StateOpenSwitchMessage(BPlistWork *work);
 static int BPlistMain_StateCloseMessage(BPlistWork *work);
@@ -103,7 +103,7 @@ static void BPlistMain_SwapOrder(BPlistWork *work, u8 pos1, u8 pos2);
 static BOOL BPlistMain_IsSlotChosen(BPlistWork *work, u8 slot);
 static void BPlistMain_SetChosenSlot(BPlistWork *work, u8 idx, u8 pos);
 static void BPlistMain_PushSwap(BPlistWork *work, u8 pos1, u8 pos2);
-static int BPlistMain_StateToPage8(BPlistWork *work);
+static int BPlistMain_StateToSwitchPositionPage(BPlistWork *work);
 static BOOL BPlistMain_CanPlace(BPlistWork *work);
 static int BPlistMain_StatePositionPage(BPlistWork *work);
 static int BPlistMain_StateCloseSwapMessage(BPlistWork *work);
@@ -121,17 +121,54 @@ static void BPlistMain_PlaySE(BPlistWork *work, u32 se);
 static void BPlistMain_PlayMessageSE(BPlistWork *work, u32 se);
 
 // The NSCR files of BGs 6 and 7, by page
-static const u32 data_ov287_021fb50c[9][2] = {
+static const u32 sBPlistPageScreenFiles[9][2] = {
     { 1, 0 }, { 15, 14 }, { 5, 4 }, { 3, 2 }, { 7, 6 }, { 9, 8 }, { 11, 10 }, { 13, 12 }, { 1, 0 },
 };
 
 // The list position of each party slot in a multi battle, by the player's column
-static const u8 data_ov287_021fb470[2][6] = {
+static const u8 sBPlistMultiBattlePartyOrder[2][6] = {
     { 0, 3, 1, 4, 2, 5 },
     { 3, 0, 4, 1, 5, 2 },
 };
 
-static int (*const data_ov287_021fb554[])(BPlistWork *work) = {
+enum {
+    BPLIST_STATE_INIT = 0,
+    BPLIST_STATE_START_WIPE = 1,
+    BPLIST_STATE_WAIT_WIPE = 2,
+    BPLIST_STATE_PARTY_PAGE = 3,
+    BPLIST_STATE_SELECTED_PAGE = 4,
+    BPLIST_STATE_SUMMARY_PAGE = 5,
+    BPLIST_STATE_MOVES_PAGE = 6,
+    BPLIST_STATE_MOVE_INFO_PAGE = 7,
+    BPLIST_STATE_POSITION_PAGE = 8,
+    BPLIST_STATE_SWAP_ANM = 9,
+    BPLIST_STATE_CLOSE_SWAP_MESSAGE = 10,
+    BPLIST_STATE_TO_PARTY = 11,
+    BPLIST_STATE_TO_SELECTED = 12,
+    BPLIST_STATE_TO_SUMMARY = 13,
+    BPLIST_STATE_TO_MOVES = 14,
+    BPLIST_STATE_TO_MOVE_INFO = 15,
+    BPLIST_STATE_TO_FORGET = 16,
+    BPLIST_STATE_TO_CONFIRM = 17,
+    BPLIST_STATE_TO_PP_RESTORE = 18,
+    BPLIST_STATE_TO_POSITION = 19,
+    BPLIST_STATE_REDRAW_PAGE = 20,
+    BPLIST_STATE_OPEN_SWITCH_MESSAGE = 21,
+    BPLIST_STATE_CLOSE_MESSAGE = 22,
+    BPLIST_STATE_PRINT_MESSAGE = 23,
+    BPLIST_STATE_WAIT_MESSAGE_KEY = 24,
+    BPLIST_STATE_FORGET_PAGE = 25,
+    BPLIST_STATE_CONFIRM_PAGE = 26,
+    BPLIST_STATE_HM_MESSAGE = 27,
+    BPLIST_STATE_PP_RESTORE_PAGE = 28,
+    BPLIST_STATE_WAIT_BUTTON_ANM = 29,
+    BPLIST_STATE_MOVE_INFO_ONLY = 30,
+    BPLIST_STATE_START_EXIT = 31,
+    BPLIST_STATE_WAIT_FADE_OUT = 32,
+    BPLIST_STATE_EXIT = 33,
+};
+
+static int (*const sBPlistStateFunctions[])(BPlistWork *work) = {
     BPlistMain_StateInit,
     BPlistMain_StateStartWipe,
     BPlistMain_StateWaitWipe,
@@ -143,15 +180,15 @@ static int (*const data_ov287_021fb554[])(BPlistWork *work) = {
     BPlistMain_StatePositionPage,
     BPlistMain_StateSwapAnm,
     BPlistMain_StateCloseSwapMessage,
-    BPlistMain_StateToPage0,
-    BPlistMain_StateToPage1,
-    BPlistMain_StateToPage2,
-    BPlistMain_StateToPage3,
-    BPlistMain_StateToPage4,
-    BPlistMain_StateToPage6,
-    BPlistMain_StateToPage7,
-    BPlistMain_StateToPage5,
-    BPlistMain_StateToPage8,
+    BPlistMain_StateToPartyPage,
+    BPlistMain_StateToSelectedPage,
+    BPlistMain_StateToSummaryPage,
+    BPlistMain_StateToMovesPage,
+    BPlistMain_StateToMoveInfoPage,
+    BPlistMain_StateToForgetMovePage,
+    BPlistMain_StateToConfirmForgetPage,
+    BPlistMain_StateToPPRestorePage,
+    BPlistMain_StateToSwitchPositionPage,
     BPlistMain_StateRedrawPage,
     BPlistMain_StateOpenSwitchMessage,
     BPlistMain_StateCloseMessage,
@@ -182,7 +219,7 @@ void BPlistMain_Start(BPlistParam *param) {
         param->partyIndex++;
     }
     work->paletteFade = param->paletteFade;
-    work->seq = 0;
+    work->seq = BPLIST_STATE_INIT;
     work->startPos = param->partyIndex;
     work->initialized = FALSE;
 }
@@ -192,12 +229,12 @@ static void BPlistMain_Task(TCB *tcb, void *data) {
 
     if (work->param->abort == 1) {
         BPlistMain_ClearChosen(work);
-        work->seq = 0x21;
+        work->seq = BPLIST_STATE_EXIT;
     }
-    if (work->seq != 0x21) {
-        work->seq = data_ov287_021fb554[work->seq](work);
+    if (work->seq != BPLIST_STATE_EXIT) {
+        work->seq = sBPlistStateFunctions[work->seq](work);
     }
-    if (work->seq == 0x21 && BPlistMain_Exit(tcb, work) == TRUE) {
+    if (work->seq == BPLIST_STATE_EXIT && BPlistMain_Exit(tcb, work) == TRUE) {
         return;
     }
     GFL_TCBExMgrUpdate(work->tcbExMgr);
@@ -211,11 +248,11 @@ static int BPlistMain_StateInit(BPlistWork *work) {
     GXS_SetMasterBrightness(-16);
     work->tcbExMgr = GFL_TCBExMgrCreate(work->param->heapId, work->param->heapId, 1, 4);
     if (work->param->mode == BPLIST_MODE_FORGET_MOVE) {
-        work->page = 6;
+        work->page = BPLIST_PAGE_FORGET_MOVE;
     } else if (work->param->mode == BPLIST_MODE_MOVE_INFO) {
-        work->page = 4;
+        work->page = BPLIST_PAGE_MOVE_INFO;
     } else {
-        work->page = 0;
+        work->page = BPLIST_PAGE_PARTY;
     }
     work->cursor = BAppCursor_Create(work->param->heapId);
     BPlistMain_InitOrder(work);
@@ -240,7 +277,7 @@ static int BPlistMain_StateInit(BPlistWork *work) {
         work->cursorVisible = FALSE;
     }
     BAppCursor_SetVisible(work->cursor, work->cursorVisible);
-    if (work->page == 0) {
+    if (work->page == BPLIST_PAGE_PARTY) {
         if (BPlistMain_IsPartnerSlot(work, BPlistMain_GetPartySlot(work, 0)) == TRUE) {
             work->param->partyIndex = 1;
         }
@@ -253,28 +290,28 @@ static int BPlistMain_StateInit(BPlistWork *work) {
     BPlistMain_DrawExpBar(work, work->page);
     PaletteFade_StartFade(work->paletteFade, 0xa, 0xffff, 0, 16, 0, 0, work->param->tcbManager);
     work->initialized = TRUE;
-    return 1;
+    return BPLIST_STATE_START_WIPE;
 }
 
 static int BPlistMain_StateStartWipe(BPlistWork *work) {
     if (PrintQueue_IsEmpty(work->printQueue) == TRUE) {
         GFL_WipeSet(WIPE_MODE_SUB, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, work->param->heapId);
-        return 2;
+        return BPLIST_STATE_WAIT_WIPE;
     }
-    return 1;
+    return BPLIST_STATE_START_WIPE;
 }
 
 static int BPlistMain_StateWaitWipe(BPlistWork *work) {
     if (GFL_WipeIsFinished() == TRUE) {
         if (work->param->mode == BPLIST_MODE_FORGET_MOVE) {
-            return 0x19;
+            return BPLIST_STATE_FORGET_PAGE;
         }
         if (work->param->mode == BPLIST_MODE_MOVE_INFO) {
-            return 0x1e;
+            return BPLIST_STATE_MOVE_INFO_ONLY;
         }
-        return 3;
+        return BPLIST_STATE_PARTY_PAGE;
     }
-    return 2;
+    return BPLIST_STATE_WAIT_WIPE;
 }
 
 static int BPlistMain_StatePartyPage(BPlistWork *work) {
@@ -282,13 +319,13 @@ static int BPlistMain_StatePartyPage(BPlistWork *work) {
     u8 pos2;
 
     if (PaletteFade_GetActiveMask(work->paletteFade) != 0) {
-        return 3;
+        return BPLIST_STATE_PARTY_PAGE;
     }
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     if (BPlistMain_UpdatePartyCursor(work) == TRUE) {
-        if (work->param->partyIndex == 6) {
+        if (work->param->partyIndex == BPLIST_PARTY_CANCEL) {
             if (work->param->mode == BPLIST_MODE_FAINTED) {
                 if (BPlistMain_PopSwap(work, &pos1, &pos2, TRUE) == TRUE) {
                     if (pos1 < pos2) {
@@ -300,13 +337,13 @@ static int BPlistMain_StatePartyPage(BPlistWork *work) {
                     work->swapAnimPos[1] = pos2;
                     work->animSeq = 0;
                     BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-                    return 9;
+                    return BPLIST_STATE_SWAP_ANM;
                 }
             } else if (work->param->mode != BPLIST_MODE_MID_TURN) {
                 BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-                BPlistAnm_StartButtonAnm(work, 6);
+                BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
                 BPlistMain_ClearChosen(work);
-                return 0x1f;
+                return BPLIST_STATE_START_EXIT;
             }
         } else {
             BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
@@ -314,11 +351,11 @@ static int BPlistMain_StatePartyPage(BPlistWork *work) {
             if (work->param->mode == BPLIST_MODE_ITEM) {
                 return BPlistMain_SelectItemTarget(work);
             }
-            work->nextSeq = 0xc;
-            return 0x1d;
+            work->nextSeq = BPLIST_STATE_TO_SELECTED;
+            return BPLIST_STATE_WAIT_BUTTON_ANM;
         }
     }
-    return 3;
+    return BPLIST_STATE_PARTY_PAGE;
 }
 
 static int BPlistMain_SelectItemTarget(BPlistWork *work) {
@@ -327,79 +364,79 @@ static int BPlistMain_SelectItemTarget(BPlistWork *work) {
     if (work->pokemon[BPlistMain_GetPartySlot(work, param->partyIndex)].isEgg) {
         GFL_MsgDataLoadStrbuf(work->msgData, EggDemo_Text_WontHaveAnyEffect, work->strBuf);
         BPlistBmp_OpenMessage(work);
-        work->param->partyIndex = 6;
-        work->nextSeq = 0x1f;
+        work->param->partyIndex = BPLIST_PARTY_CANCEL;
+        work->nextSeq = BPLIST_STATE_START_EXIT;
         BPlistMain_ClearChosen(work);
-        return 0x17;
+        return BPLIST_STATE_PRINT_MESSAGE;
     }
     if (param->embargo[BPlistMain_GetPartySlot(work, param->partyIndex)] != 0) {
         BPlistBmp_SetEmbargoMessage(work);
         BPlistBmp_OpenMessage(work);
-        work->param->partyIndex = 6;
-        work->nextSeq = 0x1f;
+        work->param->partyIndex = BPLIST_PARTY_CANCEL;
+        work->nextSeq = BPLIST_STATE_START_EXIT;
         BPlistMain_ClearChosen(work);
-        return 0x17;
+        return BPLIST_STATE_PRINT_MESSAGE;
     }
     if (GetItemParam(param->item, ITEM_PARAM_PP_RESTORE, param->heapId) != 0 &&
         GetItemParam(param->item, ITEM_PARAM_PP_RESTORE_ALL, param->heapId) == 0) {
-        work->nextSeq = 0x12;
-        return 0x1d;
+        work->nextSeq = BPLIST_STATE_TO_PP_RESTORE;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     }
     param->chosen[0] = BPlistMain_GetPartySlot(work, param->partyIndex);
-    return 0x1f;
+    return BPLIST_STATE_START_EXIT;
 }
 
 static int BPlistMain_StateSelectedPage(BPlistWork *work) {
     BPlistParam *param;
 
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     switch (CursorMove_Update(work->cursorMove)) {
-    case 0:
+    case BPLIST_SELECTED_CURSOR_SWITCH:
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 7);
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_SWITCH);
         if (BPlistMain_CanSwitch(work) == TRUE) {
             param = work->param;
             if (param->mode != BPLIST_MODE_FAINTED) {
                 param->chosen[param->switchOutPos] = BPlistMain_GetPartySlot(work, param->partyIndex);
-                return 0x1f;
+                return BPLIST_STATE_START_EXIT;
             }
             if (BPlistMain_HasTwoFainted(work) == FALSE) {
                 BPlistMain_ChooseFaintedPos(work);
-                return 0x1f;
+                return BPLIST_STATE_START_EXIT;
             }
-            work->nextSeq = 0x13;
-            return 0x1d;
+            work->nextSeq = BPLIST_STATE_TO_POSITION;
+            return BPLIST_STATE_WAIT_BUTTON_ANM;
         }
-        work->nextSeq = 0x15;
-        return 0x1d;
-    case 1:
+        work->nextSeq = BPLIST_STATE_OPEN_SWITCH_MESSAGE;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_SELECTED_CURSOR_SUMMARY:
         if (BPlistMain_IsEgg(work) == TRUE) {
             break;
         }
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 8);
-        work->nextSeq = 0xd;
-        return 0x1d;
-    case 2:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_SELECTED_SUMMARY);
+        work->nextSeq = BPLIST_STATE_TO_SUMMARY;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_SELECTED_CURSOR_MOVES:
         if (BPlistMain_IsEgg(work) == TRUE) {
             break;
         }
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 10);
-        work->nextSeq = 0xe;
-        return 0x1d;
-    case 3:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_SELECTED_MOVES);
+        work->nextSeq = BPLIST_STATE_TO_MOVES;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_SELECTED_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->nextSeq = 0xb;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->nextSeq = BPLIST_STATE_TO_PARTY;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->nextSeq = 0xb;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->nextSeq = BPLIST_STATE_TO_PARTY;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -411,53 +448,53 @@ static int BPlistMain_StateSelectedPage(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 4;
+    return BPLIST_STATE_SELECTED_PAGE;
 }
 
 static int BPlistMain_StateSummaryPage(BPlistWork *work) {
     u8 pos;
 
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     switch (CursorMove_Update(work->cursorMove)) {
-    case 0:
+    case BPLIST_SUMMARY_CURSOR_PREV:
         pos = BPlistMain_GetNextPos(work, work->param->partyIndex, -1);
         if (pos == BPLIST_NONE) {
             break;
         }
         work->param->partyIndex = pos;
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 12);
-        work->nextSeq = 0x14;
-        return 0x1d;
-    case 1:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_PREV_POKEMON);
+        work->nextSeq = BPLIST_STATE_REDRAW_PAGE;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_SUMMARY_CURSOR_NEXT:
         pos = BPlistMain_GetNextPos(work, work->param->partyIndex, 1);
         if (pos == BPLIST_NONE) {
             break;
         }
         work->param->partyIndex = pos;
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 13);
-        work->nextSeq = 0x14;
-        return 0x1d;
-    case 2:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_NEXT_POKEMON);
+        work->nextSeq = BPLIST_STATE_REDRAW_PAGE;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_SUMMARY_CURSOR_MOVES:
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 11);
-        work->nextSeq = 0xe;
-        return 0x1d;
-    case 3:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_SUMMARY_MOVES);
+        work->nextSeq = BPLIST_STATE_TO_MOVES;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_SUMMARY_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->page1Pos = 1;
-        work->nextSeq = 0xc;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->page1Pos = BPLIST_SELECTED_CURSOR_SUMMARY;
+        work->nextSeq = BPLIST_STATE_TO_SELECTED;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->page1Pos = 1;
-        work->nextSeq = 0xc;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->page1Pos = BPLIST_SELECTED_CURSOR_SUMMARY;
+        work->nextSeq = BPLIST_STATE_TO_SELECTED;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -469,7 +506,7 @@ static int BPlistMain_StateSummaryPage(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 5;
+    return BPLIST_STATE_SUMMARY_PAGE;
 }
 
 static int BPlistMain_StateMovesPage(BPlistWork *work) {
@@ -477,59 +514,59 @@ static int BPlistMain_StateMovesPage(BPlistWork *work) {
     u8 pos;
 
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     ret = CursorMove_Update(work->cursorMove);
     switch (ret) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
+    case BPLIST_MOVES_CURSOR_MOVE_0:
+    case BPLIST_MOVES_CURSOR_MOVE_1:
+    case BPLIST_MOVES_CURSOR_MOVE_2:
+    case BPLIST_MOVES_CURSOR_MOVE_3:
         if (work->pokemon[BPlistMain_GetPartySlot(work, work->param->partyIndex)].moves[ret].move == 0) {
             break;
         }
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, ret + 14);
+        BPlistAnm_StartButtonAnm(work, ret + BPLIST_BUTTON_MOVE_INFO_0);
         work->param->slot = ret;
-        work->nextSeq = 0xf;
-        return 0x1d;
-    case 4:
+        work->nextSeq = BPLIST_STATE_TO_MOVE_INFO;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_MOVES_CURSOR_PREV:
         pos = BPlistMain_GetNextPos(work, work->param->partyIndex, -1);
         if (pos == BPLIST_NONE) {
             break;
         }
         work->param->partyIndex = pos;
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 12);
-        work->nextSeq = 0x14;
-        return 0x1d;
-    case 5:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_PREV_POKEMON);
+        work->nextSeq = BPLIST_STATE_REDRAW_PAGE;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_MOVES_CURSOR_NEXT:
         pos = BPlistMain_GetNextPos(work, work->param->partyIndex, 1);
         if (pos == BPLIST_NONE) {
             break;
         }
         work->param->partyIndex = pos;
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 13);
-        work->nextSeq = 0x14;
-        return 0x1d;
-    case 6:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_NEXT_POKEMON);
+        work->nextSeq = BPLIST_STATE_REDRAW_PAGE;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_MOVES_CURSOR_SUMMARY:
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 9);
-        work->nextSeq = 0xd;
-        return 0x1d;
-    case 7:
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_MOVES_SUMMARY);
+        work->nextSeq = BPLIST_STATE_TO_SUMMARY;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_MOVES_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->page1Pos = 2;
-        work->nextSeq = 0xc;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->page1Pos = BPLIST_SELECTED_CURSOR_MOVES;
+        work->nextSeq = BPLIST_STATE_TO_SELECTED;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->page1Pos = 2;
-        work->nextSeq = 0xc;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->page1Pos = BPLIST_SELECTED_CURSOR_MOVES;
+        work->nextSeq = BPLIST_STATE_TO_SELECTED;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -541,21 +578,21 @@ static int BPlistMain_StateMovesPage(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 6;
+    return BPLIST_STATE_MOVES_PAGE;
 }
 
 static int BPlistMain_StateMoveInfoPage(BPlistWork *work) {
     u32 ret;
 
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     ret = CursorMove_Update(work->cursorMove);
     switch (ret) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
+    case BPLIST_MOVE_CURSOR_0:
+    case BPLIST_MOVE_CURSOR_1:
+    case BPLIST_MOVE_CURSOR_2:
+    case BPLIST_MOVE_CURSOR_3:
         if (work->param->slot == ret) {
             break;
         }
@@ -564,17 +601,17 @@ static int BPlistMain_StateMoveInfoPage(BPlistWork *work) {
         }
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
         work->param->slot = ret;
-        return 0xf;
-    case 4:
+        return BPLIST_STATE_TO_MOVE_INFO;
+    case BPLIST_MOVE_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->nextSeq = 0xe;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->nextSeq = BPLIST_STATE_TO_MOVES;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->nextSeq = 0xe;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->nextSeq = BPLIST_STATE_TO_MOVES;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -586,24 +623,24 @@ static int BPlistMain_StateMoveInfoPage(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 7;
+    return BPLIST_STATE_MOVE_INFO_PAGE;
 }
 
 static int BPlistMain_StateMoveInfoOnly(BPlistWork *work) {
     u32 ret;
 
     if (PaletteFade_GetActiveMask(work->paletteFade) != 0) {
-        return 0x1e;
+        return BPLIST_STATE_MOVE_INFO_ONLY;
     }
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     ret = CursorMove_Update(work->cursorMove);
     switch (ret) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
+    case BPLIST_MOVE_CURSOR_0:
+    case BPLIST_MOVE_CURSOR_1:
+    case BPLIST_MOVE_CURSOR_2:
+    case BPLIST_MOVE_CURSOR_3:
         if (work->param->slot == ret) {
             break;
         }
@@ -612,15 +649,15 @@ static int BPlistMain_StateMoveInfoOnly(BPlistWork *work) {
         }
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
         work->param->slot = ret;
-        return 0xf;
-    case 4:
+        return BPLIST_STATE_TO_MOVE_INFO;
+    case BPLIST_MOVE_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        return 0x1f;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        return BPLIST_STATE_START_EXIT;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        return 0x1f;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        return BPLIST_STATE_START_EXIT;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -632,38 +669,38 @@ static int BPlistMain_StateMoveInfoOnly(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 0x1e;
+    return BPLIST_STATE_MOVE_INFO_ONLY;
 }
 
 static int BPlistMain_StateForgetPage(BPlistWork *work) {
     u32 ret;
 
     if (PaletteFade_GetActiveMask(work->paletteFade) != 0) {
-        return 0x19;
+        return BPLIST_STATE_FORGET_PAGE;
     }
     ret = CursorMove_Update(work->cursorMove);
     switch (ret) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
+    case BPLIST_FORGET_CURSOR_MOVE_0:
+    case BPLIST_FORGET_CURSOR_MOVE_1:
+    case BPLIST_FORGET_CURSOR_MOVE_2:
+    case BPLIST_FORGET_CURSOR_MOVE_3:
+    case BPLIST_FORGET_CURSOR_NEW_MOVE:
         work->param->slot = ret;
         work->page6Pos = ret;
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, ret + 22);
-        work->nextSeq = 0x11;
-        return 0x1d;
-    case 5:
+        BPlistAnm_StartButtonAnm(work, ret + BPLIST_BUTTON_FORGET_0);
+        work->nextSeq = BPLIST_STATE_TO_CONFIRM;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_FORGET_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        work->param->slot = 4;
-        BPlistAnm_StartButtonAnm(work, 6);
-        return 0x1f;
+        work->param->slot = BPLIST_MOVE_SLOT_NONE;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        return BPLIST_STATE_START_EXIT;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        work->param->slot = 4;
-        BPlistAnm_StartButtonAnm(work, 6);
-        return 0x1f;
+        work->param->slot = BPLIST_MOVE_SLOT_NONE;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        return BPLIST_STATE_START_EXIT;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -675,32 +712,32 @@ static int BPlistMain_StateForgetPage(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 0x19;
+    return BPLIST_STATE_FORGET_PAGE;
 }
 
 static int BPlistMain_StateConfirmPage(BPlistWork *work) {
     switch (CursorMove_Update(work->cursorMove)) {
-    case 0:
+    case BPLIST_CONFIRM_CURSOR_CONFIRM:
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, 27);
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_CONFIRM_FORGET);
         if (BPlistMain_IsHMMove(work) == FALSE) {
-            work->nextSeq = 0x1f;
+            work->nextSeq = BPLIST_STATE_START_EXIT;
         } else {
-            work->nextSeq = 0x1b;
+            work->nextSeq = BPLIST_STATE_HM_MESSAGE;
         }
-        return 0x1d;
-    case 1:
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
+    case BPLIST_CONFIRM_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->page7Pos = 0;
-        work->nextSeq = 0x10;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->page7Pos = BPLIST_CONFIRM_CURSOR_CONFIRM;
+        work->nextSeq = BPLIST_STATE_TO_FORGET;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->page7Pos = 0;
-        work->nextSeq = 0x10;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->page7Pos = BPLIST_CONFIRM_CURSOR_CONFIRM;
+        work->nextSeq = BPLIST_STATE_TO_FORGET;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -712,14 +749,14 @@ static int BPlistMain_StateConfirmPage(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 0x1a;
+    return BPLIST_STATE_CONFIRM_PAGE;
 }
 
 static int BPlistMain_StateHMMessage(BPlistWork *work) {
     BPlistBmp_PrintMessage(work);
     work->msgWinOpen = TRUE;
-    work->nextSeq = 0x1a;
-    return 0x17;
+    work->nextSeq = BPLIST_STATE_CONFIRM_PAGE;
+    return BPLIST_STATE_PRINT_MESSAGE;
 }
 
 static int BPlistMain_StatePPRestorePage(BPlistWork *work) {
@@ -727,14 +764,14 @@ static int BPlistMain_StatePPRestorePage(BPlistWork *work) {
     u8 slot;
 
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     ret = CursorMove_Update(work->cursorMove);
     switch (ret) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
+    case BPLIST_MOVE_CURSOR_0:
+    case BPLIST_MOVE_CURSOR_1:
+    case BPLIST_MOVE_CURSOR_2:
+    case BPLIST_MOVE_CURSOR_3:
         slot = BPlistMain_GetPartySlot(work, work->param->partyIndex);
         if (work->pokemon[slot].moves[ret].move == 0) {
             break;
@@ -742,18 +779,18 @@ static int BPlistMain_StatePPRestorePage(BPlistWork *work) {
         work->param->slot = ret;
         work->param->chosen[0] = slot;
         BPlistMain_PlaySE(work, SEQ_SE_DECIDE2);
-        BPlistAnm_StartButtonAnm(work, ret + 18);
-        return 0x1f;
-    case 4:
+        BPlistAnm_StartButtonAnm(work, ret + BPLIST_BUTTON_PP_RESTORE_0);
+        return BPLIST_STATE_START_EXIT;
+    case BPLIST_MOVE_CURSOR_BACK:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->nextSeq = 0xb;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->nextSeq = BPLIST_STATE_TO_PARTY;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_CANCEL:
         BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-        BPlistAnm_StartButtonAnm(work, 6);
-        work->nextSeq = 0xb;
-        return 0x1d;
+        BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
+        work->nextSeq = BPLIST_STATE_TO_PARTY;
+        return BPLIST_STATE_WAIT_BUTTON_ANM;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
         BPlistMain_PlaySE(work, SEQ_SE_SELECT1);
@@ -765,66 +802,66 @@ static int BPlistMain_StatePPRestorePage(BPlistWork *work) {
     case CURSOR_MOVE_EDGE_UP:
         break;
     }
-    return 0x1c;
+    return BPLIST_STATE_PP_RESTORE_PAGE;
 }
 
-static int BPlistMain_StateToPage0(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 0) == FALSE) {
-        return 0xb;
+static int BPlistMain_StateToPartyPage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_PARTY) == FALSE) {
+        return BPLIST_STATE_TO_PARTY;
     }
-    return 3;
+    return BPLIST_STATE_PARTY_PAGE;
 }
 
-static int BPlistMain_StateToPage1(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 1) == FALSE) {
-        return 0xc;
+static int BPlistMain_StateToSelectedPage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_SELECTED) == FALSE) {
+        return BPLIST_STATE_TO_SELECTED;
     }
-    return 4;
+    return BPLIST_STATE_SELECTED_PAGE;
 }
 
-static int BPlistMain_StateToPage2(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 2) == FALSE) {
-        return 0xd;
+static int BPlistMain_StateToSummaryPage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_SUMMARY) == FALSE) {
+        return BPLIST_STATE_TO_SUMMARY;
     }
-    return 5;
+    return BPLIST_STATE_SUMMARY_PAGE;
 }
 
-static int BPlistMain_StateToPage3(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 3) == FALSE) {
-        return 0xe;
+static int BPlistMain_StateToMovesPage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_MOVES) == FALSE) {
+        return BPLIST_STATE_TO_MOVES;
     }
-    return 6;
+    return BPLIST_STATE_MOVES_PAGE;
 }
 
-static int BPlistMain_StateToPage4(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 4) == FALSE) {
-        return 0xf;
+static int BPlistMain_StateToMoveInfoPage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_MOVE_INFO) == FALSE) {
+        return BPLIST_STATE_TO_MOVE_INFO;
     }
     if (work->param->mode == BPLIST_MODE_MOVE_INFO) {
-        return 0x1e;
+        return BPLIST_STATE_MOVE_INFO_ONLY;
     }
-    return 7;
+    return BPLIST_STATE_MOVE_INFO_PAGE;
 }
 
-static int BPlistMain_StateToPage6(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 6) == FALSE) {
-        return 0x10;
+static int BPlistMain_StateToForgetMovePage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_FORGET_MOVE) == FALSE) {
+        return BPLIST_STATE_TO_FORGET;
     }
-    return 0x19;
+    return BPLIST_STATE_FORGET_PAGE;
 }
 
-static int BPlistMain_StateToPage7(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 7) == FALSE) {
-        return 0x11;
+static int BPlistMain_StateToConfirmForgetPage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_CONFIRM_FORGET) == FALSE) {
+        return BPLIST_STATE_TO_CONFIRM;
     }
-    return 0x1a;
+    return BPLIST_STATE_CONFIRM_PAGE;
 }
 
-static int BPlistMain_StateToPage5(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 5) == FALSE) {
-        return 0x12;
+static int BPlistMain_StateToPPRestorePage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_PP_RESTORE) == FALSE) {
+        return BPLIST_STATE_TO_PP_RESTORE;
     }
-    return 0x1c;
+    return BPLIST_STATE_PP_RESTORE_PAGE;
 }
 
 static int BPlistMain_StateRedrawPage(BPlistWork *work) {
@@ -832,21 +869,21 @@ static int BPlistMain_StateRedrawPage(BPlistWork *work) {
     BPlistBmp_DrawPage(work, work->page);
     BPlistAnm_PutPageButtons(work, work->page);
     BPlistMain_DrawExpBar(work, work->page);
-    if (work->page == 2) {
-        return 5;
+    if (work->page == BPLIST_PAGE_SUMMARY) {
+        return BPLIST_STATE_SUMMARY_PAGE;
     }
-    return 6;
+    return BPLIST_STATE_MOVES_PAGE;
 }
 
 static int BPlistMain_StateOpenSwitchMessage(BPlistWork *work) {
     BPlistBmp_OpenMessage(work);
-    work->nextSeq = 0x16;
-    return 0x17;
+    work->nextSeq = BPLIST_STATE_CLOSE_MESSAGE;
+    return BPLIST_STATE_PRINT_MESSAGE;
 }
 
 static int BPlistMain_StateCloseMessage(BPlistWork *work) {
     BmpWin_ClearFrame(work->msgWins[1].window, 0);
-    return 4;
+    return BPLIST_STATE_SELECTED_PAGE;
 }
 
 static int BPlistMain_StatePrintMessage(BPlistWork *work) {
@@ -869,14 +906,14 @@ static int BPlistMain_StatePrintMessage(BPlistWork *work) {
         PrintStream_Delete(work->printStream);
         work->printStream = NULL;
         work->streamAdvanced = FALSE;
-        return 0x18;
+        return BPLIST_STATE_WAIT_MESSAGE_KEY;
     }
-    return 0x17;
+    return BPLIST_STATE_PRINT_MESSAGE;
 }
 
 static int BPlistMain_StateWaitMessageKey(BPlistWork *work) {
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed() == TRUE) {
         if (work->msgWinOpen == TRUE) {
@@ -885,29 +922,29 @@ static int BPlistMain_StateWaitMessageKey(BPlistWork *work) {
         }
         return work->nextSeq;
     }
-    return 0x18;
+    return BPLIST_STATE_WAIT_MESSAGE_KEY;
 }
 
 static int BPlistMain_StateWaitButtonAnm(BPlistWork *work) {
     if (work->animActive == FALSE) {
         return work->nextSeq;
     }
-    return 0x1d;
+    return BPLIST_STATE_WAIT_BUTTON_ANM;
 }
 
 static int BPlistMain_StateStartExit(BPlistWork *work) {
-    if (BPlistMain_IsMulti(work) == TRUE && work->param->partyIndex != 6) {
+    if (BPlistMain_IsMulti(work) == TRUE && work->param->partyIndex != BPLIST_PARTY_CANCEL) {
         work->param->partyIndex /= 2;
     }
     PaletteFade_StartFade(work->paletteFade, 0xa, 0xffff, 0, 0, 16, 0, work->param->tcbManager);
-    return 0x20;
+    return BPLIST_STATE_WAIT_FADE_OUT;
 }
 
 static int BPlistMain_StateWaitFadeOut(BPlistWork *work) {
     if (PaletteFade_GetActiveMask(work->paletteFade) == 0) {
-        return 0x21;
+        return BPLIST_STATE_EXIT;
     }
-    return 0x20;
+    return BPLIST_STATE_WAIT_FADE_OUT;
 }
 
 static BOOL BPlistMain_Exit(TCB *tcb, BPlistWork *work) {
@@ -1185,22 +1222,22 @@ static BOOL BPlistMain_UpdatePartyCursor(BPlistWork *work) {
     u32 ret = CursorMove_Update(work->cursorMove);
 
     switch (ret) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-        if (BPlistMain_CheckPos(work, ret) == 0) {
+    case BPLIST_PARTY_CURSOR_0:
+    case BPLIST_PARTY_CURSOR_1:
+    case BPLIST_PARTY_CURSOR_2:
+    case BPLIST_PARTY_CURSOR_3:
+    case BPLIST_PARTY_CURSOR_4:
+    case BPLIST_PARTY_CURSOR_5:
+        if (BPlistMain_CheckPos(work, ret) == BPLIST_POS_EMPTY) {
             break;
         }
         work->param->partyIndex = ret;
         return TRUE;
-    case 6:
-        work->param->partyIndex = 6;
+    case BPLIST_PARTY_CURSOR_BACK:
+        work->param->partyIndex = BPLIST_PARTY_CANCEL;
         return TRUE;
     case CURSOR_MOVE_CANCEL:
-        work->param->partyIndex = 6;
+        work->param->partyIndex = BPLIST_PARTY_CANCEL;
         return TRUE;
     case CURSOR_MOVE_MOVED:
     case CURSOR_MOVE_CURSOR_ON:
@@ -1218,12 +1255,12 @@ static BOOL BPlistMain_UpdatePartyCursor(BPlistWork *work) {
 
 int BPlistMain_CheckPos(BPlistWork *work, int pos) {
     if (work->pokemon[BPlistMain_GetPartySlot(work, pos)].species == 0) {
-        return 0;
+        return BPLIST_POS_EMPTY;
     }
     if (BPlistMain_IsInBattle(work, pos) == TRUE) {
-        return 1;
+        return BPLIST_POS_IN_BATTLE;
     }
-    return 2;
+    return BPLIST_POS_RESERVE;
 }
 
 static u8 BPlistMain_GetNextPos(BPlistWork *work, int pos, int dir) {
@@ -1249,7 +1286,8 @@ static u8 BPlistMain_GetNextPos(BPlistWork *work, int pos, int dir) {
             if (start == next) {
                 break;
             }
-            if (BPlistMain_CheckPos(work, next) != 0 && !work->pokemon[BPlistMain_GetPartySlot(work, next)].isEgg) {
+            if (BPlistMain_CheckPos(work, next) != BPLIST_POS_EMPTY &&
+                !work->pokemon[BPlistMain_GetPartySlot(work, next)].isEgg) {
                 return next;
             }
         }
@@ -1264,7 +1302,8 @@ static u8 BPlistMain_GetNextPos(BPlistWork *work, int pos, int dir) {
             if (start == pos) {
                 break;
             }
-            if (BPlistMain_CheckPos(work, pos) != 0 && !work->pokemon[BPlistMain_GetPartySlot(work, pos)].isEgg) {
+            if (BPlistMain_CheckPos(work, pos) != BPLIST_POS_EMPTY &&
+                !work->pokemon[BPlistMain_GetPartySlot(work, pos)].isEgg) {
                 return pos;
             }
         }
@@ -1280,7 +1319,7 @@ static void BPlistMain_DrawExpBar(BPlistWork *work, u8 page) {
     u16 tile;
     u8 i;
 
-    if (page != 2) {
+    if (page != BPLIST_PAGE_SUMMARY) {
         return;
     }
     row = &work->pokemon[BPlistMain_GetPartySlot(work, work->param->partyIndex)];
@@ -1349,7 +1388,7 @@ static void BPlistMain_LoadPageScrn(BPlistWork *work, u8 page) {
     u32 i;
 
     for (i = 0; i < 2; i++) {
-        buf = GFL_G2DIOReadNSCR(ARCID_B_PLIST, data_ov287_021fb50c[page][i], TRUE, &scrn, work->param->heapId);
+        buf = GFL_G2DIOReadNSCR(ARCID_B_PLIST, sBPlistPageScreenFiles[page][i], TRUE, &scrn, work->param->heapId);
         GFL_BGSysLoadScrAreaAll(i + 6, scrn->rawData, 0, 0, 32, 24);
         GFL_BGSysQueueScrLoad(i + 6);
         GFL_HeapFree(buf);
@@ -1361,24 +1400,24 @@ int BPlistMain_GetSwitchError(BPlistWork *work) {
     BPlistPokemon *row = &work->pokemon[slot];
 
     if (BPlistMain_IsPartnerSlot(work, slot) == TRUE) {
-        return 1;
+        return BPLIST_SWITCH_PARTNER;
     }
     if (row->hp == 0) {
-        return 2;
+        return BPLIST_SWITCH_FAINTED;
     }
     if (BPlistMain_IsInBattle(work, work->param->partyIndex) == TRUE) {
-        return 3;
+        return BPLIST_SWITCH_IN_BATTLE;
     }
     if (BPlistMain_IsEgg(work) == TRUE) {
-        return 5;
+        return BPLIST_SWITCH_EGG;
     }
     if (BPlistMain_IsChosen(work, work->param->partyIndex) == TRUE) {
-        return 4;
+        return BPLIST_SWITCH_CHOSEN;
     }
     if (work->param->move != 0) {
-        return 6;
+        return BPLIST_SWITCH_TRAPPED;
     }
-    return 0;
+    return BPLIST_SWITCH_OK;
 }
 
 static BOOL BPlistMain_CanSwitch(BPlistWork *work) {
@@ -1386,30 +1425,30 @@ static BOOL BPlistMain_CanSwitch(BPlistWork *work) {
     BPlistPokemon *row = &work->pokemon[BPlistMain_GetPartySlot(work, work->param->partyIndex)];
 
     switch (BPlistMain_GetSwitchError(work)) {
-    case 1:
+    case BPLIST_SWITCH_PARTNER:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, EggDemo_Text_CannotDecidePartner);
         break;
-    case 2:
+    case BPLIST_SWITCH_FAINTED:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, EggDemo_Text_HasNoEnergyLeft);
         loadPokemonNicknameToStrbuf(work->wordSet, 0, row->pkm);
         break;
-    case 3:
+    case BPLIST_SWITCH_IN_BATTLE:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, EggDemo_Text_AlreadyBattle);
         loadPokemonNicknameToStrbuf(work->wordSet, 0, row->pkm);
         break;
-    case 4:
+    case BPLIST_SWITCH_CHOSEN:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, EggDemo_Text_HasAlreadyBeenSelected);
         loadPokemonNicknameToStrbuf(work->wordSet, 0, row->pkm);
         break;
-    case 5:
+    case BPLIST_SWITCH_EGG:
         str = GFL_MsgDataLoadStrbufNew(work->msgData, EggDemo_Text_EggCantBattle);
         break;
-    case 6:
+    case BPLIST_SWITCH_TRAPPED:
         row = &work->pokemon[work->param->switchOutPos];
         str = GFL_MsgDataLoadStrbufNew(work->msgData, EggDemo_Text_CantSwitchedOut);
         loadPokemonNicknameToStrbuf(work->wordSet, 0, row->pkm);
         break;
-    case 0:
+    case BPLIST_SWITCH_OK:
         return TRUE;
     }
     GFL_WordSetFormatStrbuf(work->wordSet, work->strBuf, str);
@@ -1435,7 +1474,7 @@ BOOL BPlistMain_IsPartnerSlot(BPlistWork *work, u32 idx) {
 static BOOL BPlistMain_IsHMMove(BPlistWork *work) {
     BPlistParam *param = work->param;
 
-    if (param->slot == 4) {
+    if (param->slot == BPLIST_MOVE_SLOT_NONE) {
         return FALSE;
     }
     return isPkmMoveHmMove(param->gameData, work->pokemon[param->partyIndex].moves[param->slot].move, param->heapId);
@@ -1480,28 +1519,28 @@ static void BPlistMain_InitPageCursor(BPlistWork *work, u8 page) {
     u8 pos;
 
     switch (page) {
-    case 0:
-    case 8:
-        work->page1Pos = 0;
+    case BPLIST_PAGE_PARTY:
+    case BPLIST_PAGE_SWITCH_POSITION:
+        work->page1Pos = BPLIST_SELECTED_CURSOR_SWITCH;
         work->param->slot = 0;
         pos = work->param->partyIndex;
         break;
-    case 1:
+    case BPLIST_PAGE_SELECTED:
         work->param->slot = 0;
         pos = work->page1Pos;
         break;
-    case 3:
-    case 4:
+    case BPLIST_PAGE_MOVES:
+    case BPLIST_PAGE_MOVE_INFO:
         pos = work->param->slot;
         break;
-    case 6:
+    case BPLIST_PAGE_FORGET_MOVE:
         pos = work->page6Pos;
         break;
-    case 7:
+    case BPLIST_PAGE_CONFIRM_FORGET:
         pos = work->page7Pos;
         break;
-    case 2:
-    case 5:
+    case BPLIST_PAGE_SUMMARY:
+    case BPLIST_PAGE_PP_RESTORE:
         pos = 0;
         break;
     }
@@ -1513,7 +1552,7 @@ static void BPlistMain_InitOrder(BPlistWork *work) {
 
     if (work->param->isMulti == TRUE) {
         for (i = 0; i < 6; i++) {
-            work->partyOrder[i] = data_ov287_021fb470[work->param->multiTrainerIndex][i];
+            work->partyOrder[i] = sBPlistMultiBattlePartyOrder[work->param->multiTrainerIndex][i];
         }
     } else {
         for (i = 0; i < 6; i++) {
@@ -1584,12 +1623,12 @@ BOOL BPlistMain_PopSwap(BPlistWork *work, u8 *pos1, u8 *pos2, BOOL clear) {
     return FALSE;
 }
 
-static int BPlistMain_StateToPage8(BPlistWork *work) {
-    if (BPlistMain_ChangePage(work, 8) == FALSE) {
+static int BPlistMain_StateToSwitchPositionPage(BPlistWork *work) {
+    if (BPlistMain_ChangePage(work, BPLIST_PAGE_SWITCH_POSITION) == FALSE) {
         work->swapPos = work->param->partyIndex;
-        return 0x13;
+        return BPLIST_STATE_TO_POSITION;
     }
-    return 8;
+    return BPLIST_STATE_POSITION_PAGE;
 }
 
 static BOOL BPlistMain_CanPlace(BPlistWork *work) {
@@ -1633,21 +1672,21 @@ static BOOL BPlistMain_CanPlace(BPlistWork *work) {
 
 static int BPlistMain_StatePositionPage(BPlistWork *work) {
     if (PaletteFade_GetActiveMask(work->paletteFade) != 0) {
-        return 8;
+        return BPLIST_STATE_POSITION_PAGE;
     }
     if (BPlistMain_CheckQuit(work) == TRUE) {
-        return 0x1f;
+        return BPLIST_STATE_START_EXIT;
     }
     if (BPlistMain_UpdatePartyCursor(work) == TRUE) {
-        if (work->param->partyIndex == 6) {
+        if (work->param->partyIndex == BPLIST_PARTY_CANCEL) {
             BPlistMain_PlaySE(work, SEQ_SE_CANCEL2);
-            BPlistAnm_StartButtonAnm(work, 6);
+            BPlistAnm_StartButtonAnm(work, BPLIST_BUTTON_BACK);
             work->param->partyIndex = work->swapPos;
-            work->nextSeq = 0xc;
-            return 0x1d;
+            work->nextSeq = BPLIST_STATE_TO_SELECTED;
+            return BPLIST_STATE_WAIT_BUTTON_ANM;
         }
         if (work->param->partyIndex == work->swapPos) {
-            return 0xc;
+            return BPLIST_STATE_TO_SELECTED;
         }
         if (BPlistMain_CanPlace(work) == TRUE) {
             BPlistMain_PushSwap(work, work->param->partyIndex, work->swapPos);
@@ -1655,20 +1694,20 @@ static int BPlistMain_StatePositionPage(BPlistWork *work) {
             work->swapAnimPos[0] = work->param->partyIndex;
             work->swapAnimPos[1] = work->swapPos;
             work->animSeq = 0;
-            return 9;
+            return BPLIST_STATE_SWAP_ANM;
         }
         BPlistBmp_OpenMessage(work);
-        work->nextSeq = 0xa;
-        return 0x17;
+        work->nextSeq = BPLIST_STATE_CLOSE_SWAP_MESSAGE;
+        return BPLIST_STATE_PRINT_MESSAGE;
     }
-    return 8;
+    return BPLIST_STATE_POSITION_PAGE;
 }
 
 static int BPlistMain_StateCloseSwapMessage(BPlistWork *work) {
     BmpWin_ClearFrame(work->msgWins[1].window, 0);
-    BPlistBmp_PrintInfo10(work);
+    BPlistBmp_PrintChooseSwitchPositionPrompt(work);
     BPlistBmp_DrawInfoFrame(work);
-    return 8;
+    return BPLIST_STATE_POSITION_PAGE;
 }
 
 static void BPlistMain_GetPlatePos(u8 *x, u8 *y, u8 pos) {
@@ -1830,14 +1869,14 @@ static BOOL BPlistMain_SwapPlatesAnm(BPlistWork *work) {
 static int BPlistMain_StateSwapAnm(BPlistWork *work) {
     if (BPlistMain_SwapPlatesAnm(work) == FALSE) {
         if (BPlistMain_HasReserve(work) == FALSE) {
-            return 0x1f;
+            return BPLIST_STATE_START_EXIT;
         }
         BPlistAnm_PutReturnButton(work);
-        BPlistBmp_PrintInfo9(work);
+        BPlistBmp_PrintChoosePokemonPrompt(work);
         BPlistBmp_DrawInfoFrame(work);
-        return 3;
+        return BPLIST_STATE_PARTY_PAGE;
     }
-    return 9;
+    return BPLIST_STATE_SWAP_ANM;
 }
 
 static BOOL BPlistMain_HasTwoFainted(BPlistWork *work) {

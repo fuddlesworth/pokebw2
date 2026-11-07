@@ -37,6 +37,145 @@ enum {
 // No party slot, in BPlistParam's chosen
 #define BPLIST_NONE 0xff
 
+// Pages shared by the task, tilemaps, text, sprites and cursor layouts.
+enum {
+    BPLIST_PAGE_PARTY = 0,
+    BPLIST_PAGE_SELECTED = 1,
+    BPLIST_PAGE_SUMMARY = 2,
+    BPLIST_PAGE_MOVES = 3,
+    BPLIST_PAGE_MOVE_INFO = 4,
+    BPLIST_PAGE_PP_RESTORE = 5,
+    BPLIST_PAGE_FORGET_MOVE = 6,
+    BPLIST_PAGE_CONFIRM_FORGET = 7,
+    BPLIST_PAGE_SWITCH_POSITION = 8,
+};
+
+// A button ID is distinct from the cursor index on any particular page.
+enum {
+    BPLIST_BUTTON_PARTY_0 = 0,
+    BPLIST_BUTTON_PARTY_1 = 1,
+    BPLIST_BUTTON_PARTY_2 = 2,
+    BPLIST_BUTTON_PARTY_3 = 3,
+    BPLIST_BUTTON_PARTY_4 = 4,
+    BPLIST_BUTTON_PARTY_5 = 5,
+    BPLIST_BUTTON_BACK = 6,
+    BPLIST_BUTTON_SWITCH = 7,
+    BPLIST_BUTTON_SELECTED_SUMMARY = 8,
+    BPLIST_BUTTON_MOVES_SUMMARY = 9,
+    BPLIST_BUTTON_SELECTED_MOVES = 10,
+    BPLIST_BUTTON_SUMMARY_MOVES = 11,
+    BPLIST_BUTTON_PREV_POKEMON = 12,
+    BPLIST_BUTTON_NEXT_POKEMON = 13,
+    BPLIST_BUTTON_MOVE_INFO_0 = 14,
+    BPLIST_BUTTON_MOVE_INFO_1 = 15,
+    BPLIST_BUTTON_MOVE_INFO_2 = 16,
+    BPLIST_BUTTON_MOVE_INFO_3 = 17,
+    BPLIST_BUTTON_PP_RESTORE_0 = 18,
+    BPLIST_BUTTON_PP_RESTORE_1 = 19,
+    BPLIST_BUTTON_PP_RESTORE_2 = 20,
+    BPLIST_BUTTON_PP_RESTORE_3 = 21,
+    BPLIST_BUTTON_FORGET_0 = 22,
+    BPLIST_BUTTON_FORGET_1 = 23,
+    BPLIST_BUTTON_FORGET_2 = 24,
+    BPLIST_BUTTON_FORGET_3 = 25,
+    BPLIST_BUTTON_FORGET_NEW_MOVE = 26,
+    BPLIST_BUTTON_CONFIRM_FORGET = 27,
+    BPLIST_BUTTON_MOVE_TAB_0 = 28,
+    BPLIST_BUTTON_MOVE_TAB_1 = 29,
+    BPLIST_BUTTON_MOVE_TAB_2 = 30,
+    BPLIST_BUTTON_MOVE_TAB_3 = 31,
+};
+
+enum {
+    BPLIST_BUTTON_NORMAL = 0,
+    BPLIST_BUTTON_PRESSED = 1,
+    BPLIST_BUTTON_SELECTED = 2,
+    BPLIST_BUTTON_DISABLED = 3,
+};
+
+enum {
+    BPLIST_PLATE_IN_BATTLE = 0,
+    BPLIST_PLATE_RESERVE = 1,
+};
+
+// Cursor entries before the CURSOR_MOVE_* control results.
+enum {
+    BPLIST_PARTY_CURSOR_0 = 0,
+    BPLIST_PARTY_CURSOR_1 = 1,
+    BPLIST_PARTY_CURSOR_2 = 2,
+    BPLIST_PARTY_CURSOR_3 = 3,
+    BPLIST_PARTY_CURSOR_4 = 4,
+    BPLIST_PARTY_CURSOR_5 = 5,
+    BPLIST_PARTY_CURSOR_BACK = 6,
+};
+
+enum {
+    BPLIST_SELECTED_CURSOR_SWITCH = 0,
+    BPLIST_SELECTED_CURSOR_SUMMARY = 1,
+    BPLIST_SELECTED_CURSOR_MOVES = 2,
+    BPLIST_SELECTED_CURSOR_BACK = 3,
+};
+
+enum {
+    BPLIST_SUMMARY_CURSOR_PREV = 0,
+    BPLIST_SUMMARY_CURSOR_NEXT = 1,
+    BPLIST_SUMMARY_CURSOR_MOVES = 2,
+    BPLIST_SUMMARY_CURSOR_BACK = 3,
+};
+
+enum {
+    BPLIST_MOVES_CURSOR_MOVE_0 = 0,
+    BPLIST_MOVES_CURSOR_MOVE_1 = 1,
+    BPLIST_MOVES_CURSOR_MOVE_2 = 2,
+    BPLIST_MOVES_CURSOR_MOVE_3 = 3,
+    BPLIST_MOVES_CURSOR_PREV = 4,
+    BPLIST_MOVES_CURSOR_NEXT = 5,
+    BPLIST_MOVES_CURSOR_SUMMARY = 6,
+    BPLIST_MOVES_CURSOR_BACK = 7,
+};
+
+enum {
+    BPLIST_MOVE_CURSOR_0 = 0,
+    BPLIST_MOVE_CURSOR_1 = 1,
+    BPLIST_MOVE_CURSOR_2 = 2,
+    BPLIST_MOVE_CURSOR_3 = 3,
+    BPLIST_MOVE_CURSOR_BACK = 4,
+};
+
+enum {
+    BPLIST_FORGET_CURSOR_MOVE_0 = 0,
+    BPLIST_FORGET_CURSOR_MOVE_1 = 1,
+    BPLIST_FORGET_CURSOR_MOVE_2 = 2,
+    BPLIST_FORGET_CURSOR_MOVE_3 = 3,
+    BPLIST_FORGET_CURSOR_NEW_MOVE = 4,
+    BPLIST_FORGET_CURSOR_BACK = 5,
+};
+
+enum {
+    BPLIST_CONFIRM_CURSOR_CONFIRM = 0,
+    BPLIST_CONFIRM_CURSOR_BACK = 1,
+};
+
+// The party position and switch checks return these value sets.
+enum {
+    BPLIST_POS_EMPTY = 0,
+    BPLIST_POS_IN_BATTLE = 1,
+    BPLIST_POS_RESERVE = 2,
+};
+
+enum {
+    BPLIST_SWITCH_OK = 0,
+    BPLIST_SWITCH_PARTNER = 1,
+    BPLIST_SWITCH_FAINTED = 2,
+    BPLIST_SWITCH_IN_BATTLE = 3,
+    BPLIST_SWITCH_CHOSEN = 4,
+    BPLIST_SWITCH_EGG = 5,
+    BPLIST_SWITCH_TRAPPED = 6,
+};
+
+#define BPLIST_PARTY_CANCEL 6
+#define BPLIST_MOVE_SLOT_NONE 4
+
 typedef struct {
     GameData *gameData;
     PokeParty *party;
@@ -59,6 +198,7 @@ typedef struct {
     u8 battlePosCount;
     u8 unk23;
     u16 item;
+    // The new move in forget mode; a nonzero switch-block flag in the battle party menu.
     u16 move;
     TCBManager *tcbManager;
     PaletteFade *paletteFade;
@@ -122,7 +262,7 @@ enum {
     BPLIST_ACTOR_ITEM = 0,
     BPLIST_ACTOR_POKE = 7,
     BPLIST_ACTOR_STATUS = 13,
-    BPLIST_ACTOR_UNK1F08 = 19,
+    BPLIST_ACTOR_HP_BAR = 19,
     BPLIST_ACTOR_POKE_TYPE = 25,
     BPLIST_ACTOR_MOVE_TYPE = 29,
     BPLIST_ACTOR_CATEGORY = 39,
@@ -167,7 +307,7 @@ struct BPlistWork {
             ClActor *itemIcons[7];      // 0x1ebc  by party slot, then one more for page 2
             ClActor *pokeIcons[6];      // 0x1ed8
             ClActor *statusIcons[6];    // 0x1ef0
-            ClActor *unk1f08[6];        // 0x1f08  a getUINarcIdx icon per non-egg member, purpose unknown
+            ClActor *hpBarActors[6];    // 0x1f08  the common HP-bar actors, one per party member
             ClActor *pokeTypeIcons[4];  // 0x1f20  two pairs, by pokeTypeIconBuf
             ClActor *moveTypeIcons[10]; // 0x1f30  two sets of five, by typeIconBuf
             ClActor *categoryIcons[2];  // 0x1f58  by categoryIconBuf
