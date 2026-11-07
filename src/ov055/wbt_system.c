@@ -1,4 +1,6 @@
 #include "types.h"
+#include "constants/moves.h"
+#include "constants/types.h"
 #include "field/wbt.h"
 #include "field/wbt_makematch.h"
 #include "gfl/heap.h"
@@ -8,29 +10,51 @@
 #include "nitro/math.h"
 #include "pml/poke_party.h"
 
+enum {
+    WBT_TYPE_DAMAGE_IMMUNE = 0,
+    WBT_TYPE_DAMAGE_RESISTED = 2,
+    WBT_TYPE_DAMAGE_NEUTRAL = 4,
+    WBT_TYPE_DAMAGE_SUPER_EFFECTIVE = 8,
+};
+
+enum {
+    WBT_TYPE_EFFECT_IMMUNE = 0,
+    WBT_TYPE_EFFECT_RESISTED = 1,
+    WBT_TYPE_EFFECT_NEUTRAL = 2,
+    WBT_TYPE_EFFECT_SUPER_EFFECTIVE = 3,
+};
+
+enum {
+    WBT_MATCH_TOP_RANKS = 0,
+    WBT_MATCH_LARGE_RANK_WIN = 1,
+    WBT_MATCH_SMALL_RANK_WIN = 2,
+    WBT_MATCH_EQUAL_RANKS = 3,
+    WBT_MATCH_UPSET = 4,
+};
+
 static void WbtEntrant_Init(WbtEntrant *entrant, HeapID heapId);
 static void WbtEntrant_Free(WbtEntrant *entrant);
 static void WbtMatch_Play(WbtMatch *match, MATHRandContext32 *rand, WbtEntrant *first, WbtEntrant *second);
 static u8 WbtMatch_GetTypeEffectiveness(u32 attackType, u32 defenseType);
 
-WbtSystem *WbtSystem_Create(HeapID heapId, BOOL a1) {
+WbtSystem *WbtSystem_Create(HeapID heapId, BOOL clearOpponentSlots) {
     int i;
     WbtSystem *sys = GFL_HeapAllocate(heapId, sizeof(WbtSystem), TRUE, "wbt_system.c", 51);
 
     sys->heapId = heapId;
-    sys->unk4 = a1;
-    sys->tournament = 0;
-    sys->style = 4;
-    sys->round = 0;
+    sys->clearOpponentSlots = clearOpponentSlots;
+    sys->tournament = WBT_TOURNAMENT_NONE;
+    sys->style = WBT_STYLE_MAX;
+    sys->round = WBT_ROUND_NONE;
     sys->seed = ((u64)GFL_RandomMT() << 32) + GFL_RandomMT();
     MATH_InitRand32(&sys->rand, sys->seed);
     sys->season = GFL_RandomLC(4);
     for (i = 0; i < 8; i++) {
         WbtEntrant_Init(&sys->entrants[i], heapId);
     }
-    sys->partyBC = PokeParty_Create(sys->heapId);
-    sys->partyC0 = PokeParty_Create(sys->heapId);
-    sys->partyC4 = PokeParty_Create(sys->heapId);
+    sys->playerParty = PokeParty_Create(sys->heapId);
+    sys->opponentParty = PokeParty_Create(sys->heapId);
+    sys->initialParty = PokeParty_Create(sys->heapId);
     sys->battleBoxParty = NULL;
     sys->trainers = WbtTrainers_Load(sys->heapId);
     return sys;
@@ -40,9 +64,9 @@ void WbtSystem_Free(WbtSystem *sys) {
     int i;
 
     WbtTrainers_Free(sys->trainers);
-    GFL_HeapFree(sys->partyC4);
-    GFL_HeapFree(sys->partyBC);
-    GFL_HeapFree(sys->partyC0);
+    GFL_HeapFree(sys->initialParty);
+    GFL_HeapFree(sys->playerParty);
+    GFL_HeapFree(sys->opponentParty);
     if (sys->battleBoxParty != NULL) {
         GFL_HeapFree(sys->battleBoxParty);
     }
@@ -137,7 +161,7 @@ WbtEntrant *WbtSystem_GetPlayerEntrant(WbtSystem *sys) {
     int i;
 
     for (i = 0; i < 8; i++) {
-        if (sys->entrants[i].kind == 3) {
+        if (sys->entrants[i].kind == WBT_ENTRANT_KIND_PLAYER) {
             return &sys->entrants[i];
         }
     }
@@ -145,7 +169,7 @@ WbtEntrant *WbtSystem_GetPlayerEntrant(WbtSystem *sys) {
 }
 
 void WbtSystem_LoadTournamentName(WbtSystem *sys, u32 tournament, StrBuf *strbuf) {
-    if (tournament == 3) {
+    if (tournament == WBT_TOURNAMENT_DOWNLOADED) {
         GFL_StrBufLoadFixedString(strbuf, sys->download.name, NELEMS(sys->download.name));
     } else {
         LoadPWTTournamentTypeText(sys->heapId, tournament, strbuf);
@@ -153,11 +177,11 @@ void WbtSystem_LoadTournamentName(WbtSystem *sys, u32 tournament, StrBuf *strbuf
 }
 
 PokeParty *WbtSystem_GetPlayerParty(WbtSystem *sys) {
-    return sys->partyBC;
+    return sys->playerParty;
 }
 
 PokeParty *WbtSystem_GetOpponentParty(WbtSystem *sys) {
-    return sys->partyC0;
+    return sys->opponentParty;
 }
 
 u32 WbtSystem_GetEntryCount(WbtSystem *sys) {
@@ -165,7 +189,7 @@ u32 WbtSystem_GetEntryCount(WbtSystem *sys) {
 }
 
 static void WbtEntrant_Init(WbtEntrant *entrant, HeapID heapId) {
-    entrant->kind = 0;
+    entrant->kind = WBT_ENTRANT_KIND_TABLE;
     entrant->gender = 0;
     entrant->rank = 1;
     entrant->hasSpecialPokemon = 0;
@@ -235,7 +259,7 @@ void WbtSystem_SetPickedParty(WbtSystem *sys, GameData *gameData) {
     n = 0;
     PokeParty_ClearPkm(copy);
     count = WbtSystem_GetEntryCount(sys);
-    if (WbtTournament_GetKind(sys->tournament) == 4) {
+    if (WbtTournament_GetKind(sys->tournament) == WBT_TOURNAMENT_KIND_DOWNLOADED) {
         for (i = 0; i < NELEMS(sys->castSlots); i++) {
             if (sys->castSlots[i] != 0) {
                 n++;
@@ -251,39 +275,39 @@ void WbtSystem_SetPickedParty(WbtSystem *sys, GameData *gameData) {
         copyPartyPkm(PokeParty_GetPkm(src, slot - 1), copy);
         PokeParty_AddPkm(party, copy);
     }
-    PokeParty_Copy(party, sys->partyBC);
-    PokeParty_Copy(party, sys->partyC4);
+    PokeParty_Copy(party, sys->playerParty);
+    PokeParty_Copy(party, sys->initialParty);
     GFL_HeapFree(party);
     GFL_HeapFree(copy);
 }
 
-static const u8 sRegulations[] = { 29, 30, 31, 32 };
-static const u8 sDoubleRegulations[] = { 33, 34, 35, 36 };
+static const u8 sUnrestrictedRegulations[] = { 29, 30, 31, 32 };
+static const u8 sRestrictedRegulations[] = { 33, 34, 35, 36 };
 
 // The tournament's regulation, in arc 106
 u8 WbtSystem_GetRegulationId(WbtSystem *sys) {
     const u8 *regulations;
 
-    if (sys->tournament == 11) {
+    if (sys->tournament == WBT_TOURNAMENT_DRIFTVEIL_FIRST) {
         return 37;
     }
     switch (WbtTournament_GetKind(sys->tournament)) {
-    case 0:
+    case WBT_TOURNAMENT_KIND_UNRESTRICTED:
     case 3:
-    case 4:
+    case WBT_TOURNAMENT_KIND_DOWNLOADED:
     default:
-        regulations = sRegulations;
+        regulations = sUnrestrictedRegulations;
         break;
-    case 1:
-    case 2:
-        regulations = sDoubleRegulations;
+    case WBT_TOURNAMENT_KIND_RESTRICTED:
+    case WBT_TOURNAMENT_KIND_TYPE_EXPERT:
+        regulations = sRestrictedRegulations;
         break;
     }
     return regulations[sys->style];
 }
 
 Regulation *WbtSystem_GetRegulation(WbtSystem *sys) {
-    if (sys->tournament == 3) {
+    if (sys->tournament == WBT_TOURNAMENT_DOWNLOADED) {
         WbtDownloadedTournament *downloaded = &sys->download.tournament;
         int i;
 
@@ -304,38 +328,38 @@ Regulation *WbtSystem_GetRegulation(WbtSystem *sys) {
         sys->regulation.battleType = downloaded->battleType;
     } else {
         PokeRegulation_Load(WbtSystem_GetRegulationId(sys), &sys->regulation);
-        if (sys->tournament == 11 || sys->tournament == 4) {
+        if (sys->tournament == WBT_TOURNAMENT_DRIFTVEIL_FIRST || sys->tournament == WBT_TOURNAMENT_DRIFTVEIL) {
             sys->regulation.level = 25;
         }
     }
     return &sys->regulation;
 }
 
-WbtUnk18A *func_ov055_021e6024(WbtSystem *sys) {
-    u8 type = 17;
-    u16 value = 0;
+WbtUnk18A *WbtSystem_GetExtraRule(WbtSystem *sys) {
+    u8 type = TYPE_NULL;
+    u16 move = MOVE_NONE;
 
     switch (WbtTournament_GetKind(sys->tournament)) {
-    case 0:
+    case WBT_TOURNAMENT_KIND_UNRESTRICTED:
         break;
-    case 1:
-        value = 507;
+    case WBT_TOURNAMENT_KIND_RESTRICTED:
+        move = MOVE_SKY_DROP;
         break;
-    case 2:
+    case WBT_TOURNAMENT_KIND_TYPE_EXPERT:
         type = sys->type;
-        value = 507;
+        move = MOVE_SKY_DROP;
         break;
     case 3:
         break;
-    case 4:
-        type = sys->download.tournament.unkA9;
-        value = sys->download.tournament.unkAA;
+    case WBT_TOURNAMENT_KIND_DOWNLOADED:
+        type = sys->download.tournament.requiredType;
+        move = sys->download.tournament.bannedMove;
         break;
     }
-    sys->unk18A.type = type;
-    sys->unk18A.rank = 0;
-    sys->unk18A.index = value;
-    return &sys->unk18A;
+    sys->extraRule.type = type;
+    sys->extraRule.rank = 0;
+    sys->extraRule.index = move;
+    return &sys->extraRule;
 }
 
 // The score of a match, by how it was won and how the Trainers' types matched up
@@ -370,23 +394,23 @@ u32 WbtSystem_GetOpponentSeat(WbtSystem *sys) {
         secondWinners[i] = firstWinners[seat];
     }
     for (i = 0; i < 8; i++) {
-        if (sys->entrants[i].kind == 3) {
+        if (sys->entrants[i].kind == WBT_ENTRANT_KIND_PLAYER) {
             player = i;
             break;
         }
     }
     switch (WbtSystem_GetRound(sys)) {
-    case 1:
-    case 2:
+    case WBT_ROUND_PREVIEW:
+    case WBT_ROUND_FIRST:
         opponent = sFirstOpponents[player];
         break;
-    case 3:
+    case WBT_ROUND_SEMIFINAL:
         opponent = firstWinners[sSecondMatches[player]];
         break;
-    case 4:
+    case WBT_ROUND_FINAL:
         opponent = secondWinners[sThirdMatches[player]];
         break;
-    case 5:
+    case WBT_ROUND_COMPLETE:
         break;
     }
     return opponent;
@@ -412,21 +436,21 @@ static void WbtMatch_Play(WbtMatch *match, MATHRandContext32 *rand, WbtEntrant *
     } else {
         match->firstWon = firstRank > secondRank;
     }
-    if (first->kind == 3) {
+    if (first->kind == WBT_ENTRANT_KIND_PLAYER) {
         match->firstWon = TRUE;
-    } else if (second->kind == 3) {
+    } else if (second->kind == WBT_ENTRANT_KIND_PLAYER) {
         match->firstWon = FALSE;
     }
     if (firstRank >= 4 && secondRank >= 4) {
-        kind = 0;
+        kind = WBT_MATCH_TOP_RANKS;
     } else if ((firstRank - secondRank >= 2 && match->firstWon == TRUE) ||
                (secondRank - firstRank >= 2 && match->firstWon == FALSE)) {
-        kind = 1;
+        kind = WBT_MATCH_LARGE_RANK_WIN;
     } else if ((firstRank - secondRank == 1 && match->firstWon == TRUE) ||
                (secondRank - firstRank == 1 && match->firstWon == FALSE)) {
-        kind = 2;
+        kind = WBT_MATCH_SMALL_RANK_WIN;
     } else {
-        kind = firstRank == secondRank ? 3 : 4;
+        kind = firstRank == secondRank ? WBT_MATCH_EQUAL_RANKS : WBT_MATCH_UPSET;
     }
     if (firstEffect > secondEffect) {
         sign = -1;
@@ -491,18 +515,18 @@ static const u8 sTypeChart[17][17] = {
 // How well one type attacks another: 0 not at all, 1 not very well, 2 normally and 3 super effectively. Type 17 is
 // no type
 static u8 WbtMatch_GetTypeEffectiveness(u32 attackType, u32 defenseType) {
-    if (attackType == 17 || defenseType == 17) {
-        return 2;
+    if (attackType == TYPE_NULL || defenseType == TYPE_NULL) {
+        return WBT_TYPE_EFFECT_NEUTRAL;
     }
     switch (sTypeChart[attackType][defenseType]) {
-    case 0:
-        return 0;
-    case 2:
-        return 1;
-    case 4:
-        return 2;
-    case 8:
-        return 3;
+    case WBT_TYPE_DAMAGE_IMMUNE:
+        return WBT_TYPE_EFFECT_IMMUNE;
+    case WBT_TYPE_DAMAGE_RESISTED:
+        return WBT_TYPE_EFFECT_RESISTED;
+    case WBT_TYPE_DAMAGE_NEUTRAL:
+        return WBT_TYPE_EFFECT_NEUTRAL;
+    case WBT_TYPE_DAMAGE_SUPER_EFFECTIVE:
+        return WBT_TYPE_EFFECT_SUPER_EFFECTIVE;
     }
-    return 0;
+    return WBT_TYPE_EFFECT_IMMUNE;
 }

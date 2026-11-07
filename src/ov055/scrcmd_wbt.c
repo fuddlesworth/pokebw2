@@ -1,4 +1,5 @@
 #include "types.h"
+#include "constants/types.h"
 #include "field/event_wbt.h"
 #include "field/field_script.h"
 #include "field/scrcmd_wbt.h"
@@ -25,7 +26,7 @@ static void WbtCmd_IncrementWinCount(WbtSystem *sys, FieldScriptEnv *env) {
     WbtSave *save = GameData_GetWbtSave(FieldScriptEnv_GetGameData(env));
     int record = WbtTournament_GetRecord(WbtSystem_GetTournament(sys), WbtSystem_GetType(sys));
 
-    if (record < 29) {
+    if (record < WBT_TOURNAMENT_COUNT) {
         WbtSave_IncrementCount(save, record);
     }
 }
@@ -39,11 +40,11 @@ static u16 WbtCmd_CountWins(FieldScriptEnv *env, int tournament, u8 type) {
     u32 end;
     u32 i;
 
-    if (tournament == 0 || tournament >= 16) {
+    if (tournament == WBT_TOURNAMENT_NONE || tournament >= WBT_TOURNAMENT_MAX) {
         start = 0;
-        end = 29;
-    } else if (tournament == 2) {
-        if (type == 17) {
+        end = WBT_TOURNAMENT_COUNT;
+    } else if (tournament == WBT_TOURNAMENT_TYPE_EXPERT) {
+        if (type == TYPE_NULL) {
             start = total;
             end = 17;
         } else {
@@ -56,8 +57,8 @@ static u16 WbtCmd_CountWins(FieldScriptEnv *env, int tournament, u8 type) {
     }
     for (i = start; i < end; i++) {
         total += WbtSave_GetCount(save, i);
-        if (total >= 9999) {
-            total = 9999;
+        if (total >= WBT_COUNT_MAX) {
+            total = WBT_COUNT_MAX;
             break;
         }
     }

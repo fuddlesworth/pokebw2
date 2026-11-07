@@ -2,6 +2,7 @@
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/text_banks.h"
+#include "constants/types.h"
 #include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
@@ -16,11 +17,11 @@
 typedef struct {
     u16 name;
     u8 count;
-    u32 unk4;
+    u32 battleMode;
 } WbtBattleStyle;
 
 static const u16 sTrainerArcs[] = { 248, 251, 254 };
-static const u8 sUnk74fe[] = {
+static const u8 sDownloadedTrainerClasses[] = {
     2, 50, 24, 17, 52, 74, 57, 15, 3, 49, 25, 18, 46, 65, 62, 14, 27, 28, 70, 71, 4, 5, 35, 36, 51, 64, 66, 67, 48, 87,
 };
 static const WbtBattleStyle sBattleStyles[] = {
@@ -88,7 +89,7 @@ int WbtTrainers_GetRank(WbtTrainers *trainers, u8 index) {
 
 // Meant to keep the style in range, but it can never change it
 static int WbtStyle_GetIndex(int style) {
-    if (style < 0 && style > 3) {
+    if (style < WBT_STYLE_SINGLE && style > WBT_STYLE_ROTATION) {
         style = 0;
     }
     return style;
@@ -110,7 +111,7 @@ u8 WbtStyle_GetPokemonCount(int style) {
 }
 
 u32 WbtStyle_GetBattleMode(int style) {
-    return sBattleStyles[WbtStyle_GetIndex(style)].unk4;
+    return sBattleStyles[WbtStyle_GetIndex(style)].battleMode;
 }
 
 int WbtStyle_Clamp(int style) {
@@ -135,10 +136,10 @@ u8 WbtTool_GetPartyMainType(PokeParty *party, u64 seed) {
         pkm = PokeParty_GetPkm(party, i);
         type1 = PokeParty_GetParam(pkm, PKM_PARAM_TYPE1, NULL);
         type2 = PokeParty_GetParam(pkm, PKM_PARAM_TYPE2, NULL);
-        if (type1 != 17) {
+        if (type1 != TYPE_NULL) {
             counts[type1]++;
         }
-        if (type1 != type2 && type2 != 17) {
+        if (type1 != type2 && type2 != TYPE_NULL) {
             counts[type2]++;
         }
     }
@@ -164,7 +165,7 @@ static void WbtTournament_LoadWinCounts(GameData *gameData, u16 *counts) {
     void *save = GameData_GetWbtSave(gameData);
     int i;
 
-    for (i = 0; i < 29; i++) {
+    for (i = 0; i < WBT_TOURNAMENT_COUNT; i++) {
         counts[i] = WbtSave_GetCount(save, i);
     }
 }
@@ -178,45 +179,45 @@ static BOOL WbtTournament_IsOpenByCounts(GameData *gameData, u32 tournament, u16
     BOOL throughJohto = FALSE;
     BOOL throughKanto = FALSE;
 
-    if (counts[19] != 0 && counts[20] != 0) {
+    if (counts[WBT_RECORD_UNOVA_LEADERS] != 0 && counts[WBT_RECORD_KANTO_LEADERS] != 0) {
         throughKanto = TRUE;
     }
-    if (throughKanto && counts[21] != 0) {
+    if (throughKanto && counts[WBT_RECORD_JOHTO_LEADERS] != 0) {
         throughJohto = TRUE;
     }
-    if (throughJohto && counts[22] != 0) {
+    if (throughJohto && counts[WBT_RECORD_HOENN_LEADERS] != 0) {
         throughHoenn = TRUE;
     }
-    if (throughHoenn && counts[23] != 0) {
+    if (throughHoenn && counts[WBT_RECORD_SINNOH_LEADERS] != 0) {
         allLeaders = TRUE;
     }
     switch (tournament) {
-    case 0:
+    case WBT_TOURNAMENT_NONE:
         break;
-    case 1:
-        return counts[24] >= 10;
-    case 2:
+    case WBT_TOURNAMENT_CHAMPIONS:
+        return counts[WBT_RECORD_WORLD_LEADERS] >= 10;
+    case WBT_TOURNAMENT_TYPE_EXPERT:
         return allLeaders;
-    case 3:
-        return counts[18] != 0;
-    case 11:
-        return counts[18] == 0;
-    case 4:
-    case 12:
-    case 14:
-        return counts[18] != 0;
-    case 5:
+    case WBT_TOURNAMENT_DOWNLOADED:
+        return counts[WBT_RECORD_DRIFTVEIL] != 0;
+    case WBT_TOURNAMENT_DRIFTVEIL_FIRST:
+        return counts[WBT_RECORD_DRIFTVEIL] == 0;
+    case WBT_TOURNAMENT_DRIFTVEIL:
+    case WBT_TOURNAMENT_RENTAL:
+    case WBT_TOURNAMENT_MIX:
+        return counts[WBT_RECORD_DRIFTVEIL] != 0;
+    case WBT_TOURNAMENT_UNOVA_LEADERS:
         return EventWork_FlagGet(eventWork, 2400);
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-        return counts[19] != 0;
-    case 13:
-        return counts[25] != 0 && allLeaders;
-    case 15:
-        return counts[27] != 0 && allLeaders;
-    case 10:
+    case WBT_TOURNAMENT_KANTO_LEADERS:
+    case WBT_TOURNAMENT_JOHTO_LEADERS:
+    case WBT_TOURNAMENT_HOENN_LEADERS:
+    case WBT_TOURNAMENT_SINNOH_LEADERS:
+        return counts[WBT_RECORD_UNOVA_LEADERS] != 0;
+    case WBT_TOURNAMENT_RENTAL_MASTER:
+        return counts[WBT_RECORD_RENTAL] != 0 && allLeaders;
+    case WBT_TOURNAMENT_MIX_MASTER:
+        return counts[WBT_RECORD_MIX] != 0 && allLeaders;
+    case WBT_TOURNAMENT_WORLD_LEADERS:
         return allLeaders;
     }
     return FALSE;
@@ -238,7 +239,7 @@ BOOL WbtTournament_WouldOpen(GameData *gameData, u32 won, u32 tournament) {
     WbtTournament_LoadWinCounts(gameData, counts);
     before = WbtTournament_IsOpenByCounts(gameData, tournament, counts);
     record = WbtTournament_GetRecord(won, 0);
-    if (record != 29) {
+    if (record != WBT_RECORD_MAX) {
         counts[record]++;
     }
     after = WbtTournament_IsOpenByCounts(gameData, tournament, counts);
@@ -249,7 +250,7 @@ BOOL WbtTournament_WouldOpen(GameData *gameData, u32 won, u32 tournament) {
 }
 
 u32 WbtTournament_GetRecord(u32 tournament, u32 type) {
-    if (tournament != 2) {
+    if (tournament != WBT_TOURNAMENT_TYPE_EXPERT) {
         type = GetPWTTournamentInfo(tournament)->record;
     }
     return type;
@@ -258,15 +259,15 @@ u32 WbtTournament_GetRecord(u32 tournament, u32 type) {
 u32 WbtTournament_FromRecord(int record) {
     u32 i;
 
-    if (record <= 16) {
-        return 2;
+    if (record <= TYPE_DARK) {
+        return WBT_TOURNAMENT_TYPE_EXPERT;
     }
     for (i = 0; i < NELEMS(PWT_TOURNAMENT_INFO); i++) {
         if (record == PWT_TOURNAMENT_INFO[i].record) {
             return i + 1;
         }
     }
-    return 4;
+    return WBT_TOURNAMENT_DRIFTVEIL;
 }
 
 u32 WbtTournament_GetKind(u32 tournament) {
@@ -293,8 +294,8 @@ u32 WbtTournament_GetBattlePoints(u32 tournament, int style) {
 }
 
 u8 WbtTool_GetDownloadedTrainerClass(u32 index) {
-    if (index >= NELEMS(sUnk74fe)) {
+    if (index >= NELEMS(sDownloadedTrainerClasses)) {
         index = 0;
     }
-    return sUnk74fe[index];
+    return sDownloadedTrainerClasses[index];
 }

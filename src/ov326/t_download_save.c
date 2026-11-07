@@ -328,7 +328,7 @@ static int TDownloadSave_LoadReceived(TDownloadWork *wk) {
     TDownloadTournament *data;
 
     for (i = 0; i < T_DOWNLOAD_RECEIVED_MAX; i++) {
-        data = (TDownloadTournament *)wk->param->unk4 + i;
+        data = (TDownloadTournament *)wk->param->downloadBuffer + i;
         if (TDownloadSave_IsValid(data) == TRUE) {
             wk->receivedData[count] =
                 GFL_HeapAllocate(HEAPID_TAIL(wk->heapId), T_DOWNLOAD_TOURNAMENT_SIZE, TRUE, "t_download_save.c", 695);

@@ -68,12 +68,6 @@ enum {
     WBT_SLOT_NUMBER,
 };
 
-// The tournaments that have a name here; the rest go by their number
-enum {
-    WBT_TOURNAMENT_TYPE_EXPERT = 2,
-    WBT_TOURNAMENT_DOWNLOADED,
-};
-
 // Any, for the count of Trainers the player has beaten
 #define WBT_ANY 2
 
@@ -572,7 +566,7 @@ static void WbtEntrant_SetPlayer(WbtEntrant *entrant, WbtSystem *sys, GameData *
         isFemale = 1;
     }
     WbtEntrant_Set(entrant, WBT_ENTRANT_KIND_PLAYER, 0, gender, rank, 0, 0, FALSE,
-                   WbtTool_GetPartyMainType(sys->partyBC, sys->seed), objCode, isFemale, 1);
+                   WbtTool_GetPartyMainType(sys->playerParty, sys->seed), objCode, isFemale, 1);
     textCopy(playerInfo->name, entrant->name);
 }
 
@@ -766,7 +760,7 @@ void WbtMakeMatch_ReadPick(WbtSystem *sys, PokeListParam *param) {
 
 PokeParty *WbtMakeMatch_GetParty(WbtSystem *sys, GameData *gameData) {
     if (sys->tournament == 12 || sys->tournament == 13) {
-        return sys->partyC4;
+        return sys->initialParty;
     }
     if (sys->useBattleBox == 0) {
         return GameData_GetParty(gameData);
@@ -802,7 +796,7 @@ void WbtMakeMatch_SetupPokeList(WbtSystem *sys, GameData *gameData, PokeListPara
         break;
     }
     param->regulation = WbtSystem_GetRegulation(sys);
-    param->extraRule = func_ov055_021e6024(sys);
+    param->extraRule = WbtSystem_GetExtraRule(sys);
     param->unk48 = mode;
 }
 

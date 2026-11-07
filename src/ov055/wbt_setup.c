@@ -12,11 +12,11 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 
-static const u16 sScoreUnk[] = { 8, 13, 18, 23, 28 };
+static const u16 sMatchScoreMessages[] = { 8, 13, 18, 23, 28 };
 
 static void WbtSetup_SetEntrant(HeapID heapId, GameData *gameData, WbtSetupEntrant *dest, const WbtEntrant *entrant);
 static void WbtSetup_SetMatches(WbtSystem *sys, WbtSetup *setup);
-static u8 func_ov055_021e6a14(u32 index);
+static u8 WbtSetup_GetBillboardFace(u32 index);
 static void WbtSetup_LoadActorConfig(ArcTool *handle, u16 objCode, u8 *face, s16 *resIndex);
 
 WbtSetup *WbtSetup_Create(HeapID heapId, GameSystem *gsys) {
@@ -66,13 +66,13 @@ void WbtSetup_Load(GameSystem *gsys, WbtSystem *sys, WbtSetup *setup) {
     WbtSetup_SetMatches(sys, setup);
     switch (WbtSystem_GetRound(sys)) {
     default:
-    case 1:
+    case WBT_ROUND_PREVIEW:
         round = 0;
         break;
-    case 2:
+    case WBT_ROUND_FIRST:
         round = 1;
         break;
-    case 3:
+    case WBT_ROUND_SEMIFINAL:
         round = 2;
         break;
     }
@@ -85,7 +85,7 @@ static void WbtSetup_SetEntrant(HeapID heapId, GameData *gameData, WbtSetupEntra
     ArcTool *handle;
     u16 objCode;
 
-    dest->isPlayer = entrant->kind == 3 ? TRUE : FALSE;
+    dest->isPlayer = entrant->kind == WBT_ENTRANT_KIND_PLAYER ? TRUE : FALSE;
     dest->rank = entrant->rank;
     dest->type = entrant->type;
     dest->gender = entrant->gender;
@@ -105,17 +105,17 @@ static void WbtSetup_SetMatches(WbtSystem *sys, WbtSetup *setup) {
         dest = &setup->firstRound[i];
         match = &sys->matches[i];
         dest->firstWon = match->firstWon;
-        dest->message = sScoreUnk[match->score];
+        dest->message = sMatchScoreMessages[match->score];
     }
     for (i = 0; i < 2; i++) {
         dest = &setup->secondRound[i];
         match = &sys->matches[i + 4];
         dest->firstWon = match->firstWon;
-        dest->message = sScoreUnk[match->score];
+        dest->message = sMatchScoreMessages[match->score];
     }
 }
 
-static u8 func_ov055_021e6a14(u32 index) {
+static u8 WbtSetup_GetBillboardFace(u32 index) {
     return FIELD_BILLBOARD_ANIM_SETS[index].animations[1]->face;
 }
 
@@ -124,7 +124,7 @@ static void WbtSetup_LoadActorConfig(ArcTool *handle, u16 objCode, u8 *face, s16
     u32 offset = GetIndexOfObjID(objCode) * sizeof(FieldActorConfig) + 4;
 
     GFL_ArcToolReadRange(handle, 0, offset, sizeof(record), &record);
-    *face = func_ov055_021e6a14(record.spriteControllerType);
+    *face = WbtSetup_GetBillboardFace(record.spriteControllerType);
     *resIndex = record.rscIndices.res1;
 }
 
@@ -136,10 +136,10 @@ WbtOv326Param *WbtSetup_CreateWinRecordParam(HeapID heapId, GameSystem *gsys, u1
     param->unk0 = 0;
     param->save = GameData_GetWbtSave(gameData);
     param->playerInfo = GetGameDataPlayerInfo(gameData);
-    for (i = 0; i < 29; i++) {
+    for (i = 0; i < WBT_TOURNAMENT_COUNT; i++) {
         param->open[i] = WbtTournament_IsOpen(gameData, WbtTournament_FromRecord(i));
     }
-    param->unk4 = var;
+    param->closedWithXVar = var;
     return param;
 }
 

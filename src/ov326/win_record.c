@@ -492,12 +492,12 @@ static void WinRecord_Update(WinRecordWork *wk) {
 
 static void WinRecord_ExitWork(WinRecordWork *wk) {
     if (wk->flags & WIN_RECORD_FLAG_X) {
-        if (wk->param->unk4 != NULL) {
-            *wk->param->unk4 = TRUE;
+        if (wk->param->closedWithXVar != NULL) {
+            *wk->param->closedWithXVar = TRUE;
         }
     } else {
-        if (wk->param->unk4 != NULL) {
-            *wk->param->unk4 = FALSE;
+        if (wk->param->closedWithXVar != NULL) {
+            *wk->param->closedWithXVar = FALSE;
         }
     }
     GFL_HeapFree(wk->positions);

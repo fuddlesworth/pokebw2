@@ -18,6 +18,11 @@
 #include "pml/poke_party.h"
 #include "text/system/scrcmd_bsubway_wbt_party.h"
 
+// The exclusion lists and their unused file marker.
+#define WBT_PARTY_FILTER_CAPACITY 12
+#define WBT_PARTY_FILE_NONE 0xffff
+#define WBT_RENTAL_MIXED_SECOND_POOL_COUNT 3
+
 typedef struct {
     u8 available;
     u16 file;
@@ -46,7 +51,7 @@ static void WbtPartyChoices_Pick(u16 *dest, WbtPartyChoices *choices, u32 count,
                                  MATHRandContext32 *rand, HeapID heapId);
 static void WbtParty_GetRentalFileRange(u32 tournament, u32 group, u16 *first, u16 *last);
 static u16 *WbtParty_CreateRentalFiles(u32 tournament, u32 group, HeapID heapId, u16 *count);
-static void WbtParty_MakeParty(WbtSystem *sys, PokeParty *party, u32 a2, u8 a3, u8 count, const u16 *species);
+static void WbtParty_MakeParty(WbtSystem *sys, PokeParty *party, u32 id, u8 iv, u8 count, const u16 *species);
 
 // A random number below 0x10000, from rand, or from GFL_RandomLC without it
 static u16 WbtParty_Random(MATHRandContext32 *rand) {
@@ -59,17 +64,17 @@ static u16 WbtParty_Random(MATHRandContext32 *rand) {
 WbtPartyFilter *WbtPartyFilter_Create(HeapID heapId, u32 tournament) {
     WbtPartyFilter *filter = GFL_HeapAllocate(heapId, sizeof(WbtPartyFilter), TRUE, "wbt_party.c", 127);
 
-    filter->unk0 = FALSE;
-    if (tournament != 12 && WbtTournament_GetKind(tournament) == 0) {
-        filter->unk0 = TRUE;
+    filter->allowSameSpecies = FALSE;
+    if (tournament != WBT_TOURNAMENT_RENTAL && WbtTournament_GetKind(tournament) == WBT_TOURNAMENT_KIND_UNRESTRICTED) {
+        filter->allowSameSpecies = TRUE;
     }
-    filter->speciesCount = 12;
-    filter->itemCount = 12;
-    filter->fileCount = 12;
-    filter->species = GFL_HeapAllocate(heapId, 12 * sizeof(u16), TRUE, "wbt_party.c", 136);
-    filter->items = GFL_HeapAllocate(heapId, 12 * sizeof(u16), TRUE, "wbt_party.c", 137);
-    filter->files = GFL_HeapAllocate(heapId, 12 * sizeof(u16), FALSE, "wbt_party.c", 138);
-    MIi_CpuClear16(0xffff, filter->files, 12 * sizeof(u16));
+    filter->speciesCount = WBT_PARTY_FILTER_CAPACITY;
+    filter->itemCount = WBT_PARTY_FILTER_CAPACITY;
+    filter->fileCount = WBT_PARTY_FILTER_CAPACITY;
+    filter->species = GFL_HeapAllocate(heapId, WBT_PARTY_FILTER_CAPACITY * sizeof(u16), TRUE, "wbt_party.c", 136);
+    filter->items = GFL_HeapAllocate(heapId, WBT_PARTY_FILTER_CAPACITY * sizeof(u16), TRUE, "wbt_party.c", 137);
+    filter->files = GFL_HeapAllocate(heapId, WBT_PARTY_FILTER_CAPACITY * sizeof(u16), FALSE, "wbt_party.c", 138);
+    MIi_CpuClear16(WBT_PARTY_FILE_NONE, filter->files, WBT_PARTY_FILTER_CAPACITY * sizeof(u16));
     return filter;
 }
 
@@ -106,7 +111,7 @@ void WbtPartyFilter_AddFile(WbtPartyFilter *filter, s16 file) {
     int i;
 
     for (i = 0; i < filter->fileCount; i++) {
-        if (filter->files[i] == 0xffff) {
+        if (filter->files[i] == WBT_PARTY_FILE_NONE) {
             filter->files[i] = file;
             return;
         }
@@ -120,7 +125,7 @@ static BOOL WbtPartyFilter_Excludes(const WbtPartyFilter *filter, u16 species, u
     if (filter == NULL) {
         return TRUE;
     }
-    if (filter->unk0 == FALSE) {
+    if (filter->allowSameSpecies == FALSE) {
         for (i = 0; i < filter->speciesCount; i++) {
             if (species != 0 && species == filter->species[i]) {
                 return TRUE;
@@ -133,7 +138,7 @@ static BOOL WbtPartyFilter_Excludes(const WbtPartyFilter *filter, u16 species, u
         }
     }
     for (i = 0; i < filter->fileCount; i++) {
-        if (file != 0xffff && file == filter->files[i]) {
+        if (file != WBT_PARTY_FILE_NONE && file == filter->files[i]) {
             return TRUE;
         }
     }
@@ -231,11 +236,11 @@ static void WbtParty_GetRentalFileRange(u32 tournament, u32 group, u16 *first, u
     int master;
 
     switch (tournament) {
-    case 12:
+    case WBT_TOURNAMENT_RENTAL:
     default:
         master = 0;
         break;
-    case 13:
+    case WBT_TOURNAMENT_RENTAL_MASTER:
         master = 1;
         break;
     }
@@ -271,7 +276,7 @@ void WbtParty_PickFiles(u16 *dest, WbtPartyFilter *filter, HeapID heapId, u16 fi
     OS_GetTick();
 }
 
-static void WbtParty_MakeParty(WbtSystem *sys, PokeParty *party, u32 a2, u8 a3, u8 count, const u16 *species) {
+static void WbtParty_MakeParty(WbtSystem *sys, PokeParty *party, u32 id, u8 iv, u8 count, const u16 *species) {
     HeapID heapId = HEAPID_TAIL(sys->heapId);
     WbtPartyFilter *filter = WbtPartyFilter_Create(heapId, sys->tournament);
     u16 fileCount;
@@ -287,24 +292,25 @@ static void WbtParty_MakeParty(WbtSystem *sys, PokeParty *party, u32 a2, u8 a3, 
     }
     MI_CpuFill8(picked, 0, sizeof(picked));
     switch (sys->rentalMode) {
-    case 0:
+    case WBT_RENTAL_MODE_FIRST_POOL:
     default:
         files = WbtParty_CreateRentalFiles(sys->tournament, 0, heapId, &fileCount);
         WbtParty_PickFiles(picked, filter, heapId, fileCount, files, 257, count, NULL);
         GFL_HeapFree(files);
         break;
-    case 1:
+    case WBT_RENTAL_MODE_SECOND_POOL:
         files = WbtParty_CreateRentalFiles(sys->tournament, 1, heapId, &fileCount);
         WbtParty_PickFiles(picked, filter, heapId, fileCount, files, 257, count, NULL);
         GFL_HeapFree(files);
         break;
-    case 2:
+    case WBT_RENTAL_MODE_MIXED_POOLS:
         files = WbtParty_CreateRentalFiles(sys->tournament, 1, heapId, &fileCount);
-        WbtParty_PickFiles(picked, filter, heapId, fileCount, files, 257, 3, NULL);
+        WbtParty_PickFiles(picked, filter, heapId, fileCount, files, 257, WBT_RENTAL_MIXED_SECOND_POOL_COUNT, NULL);
         GFL_HeapFree(files);
-        if (count > 3) {
+        if (count > WBT_RENTAL_MIXED_SECOND_POOL_COUNT) {
             files = WbtParty_CreateRentalFiles(sys->tournament, 0, heapId, &fileCount);
-            WbtParty_PickFiles(&picked[3], filter, heapId, fileCount, files, 257, count - 3, NULL);
+            WbtParty_PickFiles(&picked[WBT_RENTAL_MIXED_SECOND_POOL_COUNT], filter, heapId, fileCount, files, 257,
+                               count - WBT_RENTAL_MIXED_SECOND_POOL_COUNT, NULL);
             GFL_HeapFree(files);
         }
         break;
@@ -312,21 +318,21 @@ static void WbtParty_MakeParty(WbtSystem *sys, PokeParty *party, u32 a2, u8 a3, 
     WbtPartyFilter_Free(filter);
     pkms = GFL_HeapAllocate(HEAPID_TAIL(heapId), 6 * sizeof(BSubwayPokemon), FALSE, "wbt_party.c", 626);
     for (i = 0; i < count; i++) {
-        BtlInst_MakeRomPokemon(&pkms[i], 257, picked[i], a2, 0, a3, i, 0, heapId);
+        BtlInst_MakeRomPokemon(&pkms[i], 257, picked[i], id, 0, iv, i, 0, heapId);
     }
     BtlInst_MakeParty(party, pkms, 50, count, heapId);
     GFL_HeapFree(pkms);
 }
 
 // Makes the rental party
-void WbtParty_MakeRentalParty(WbtSystem *sys, u32 a1, PlayerInfo *playerInfo, u16 placeName) {
+void WbtParty_MakeRentalParty(WbtSystem *sys, u32 rentalMode, PlayerInfo *playerInfo, u16 placeName) {
     HeapID heapId;
     StrBuf *name;
     MsgData *msgData;
     PartyPkm *pkm;
     int i;
 
-    WbtParty_MakeParty(sys, sys->partyC4, 41122, 20, 6, NULL);
+    WbtParty_MakeParty(sys, sys->initialParty, 41122, 20, 6, NULL);
     heapId = HEAPID_TAIL(sys->heapId);
     name = GFL_StrBufCreate(14, heapId);
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_WBT_PARTY, heapId);
@@ -335,7 +341,7 @@ void WbtParty_MakeRentalParty(WbtSystem *sys, u32 a1, PlayerInfo *playerInfo, u1
         GFL_MsgDataFree(msgData);
     }
     for (i = 0; i < 6; i++) {
-        pkm = PokeParty_GetPkm(sys->partyC4, i);
+        pkm = PokeParty_GetPkm(sys->initialParty, i);
         PokeParty_SetupMetData(pkm, 0, playerInfo, placeName, heapId);
         PokeParty_SetParam(pkm, PKM_PARAM_OT_NAME, (u32)name);
         PokeParty_SetParam(pkm, PKM_PARAM_OT_GENDER, 0);
@@ -347,14 +353,14 @@ void WbtParty_MakeRentalParty(WbtSystem *sys, u32 a1, PlayerInfo *playerInfo, u1
 // Makes the party of the player's opponent, without the species of the player's party
 void WbtParty_MakeOpponentParty(WbtSystem *sys) {
     u32 count = WbtSystem_GetEntryCount(sys);
-    int n = PokeParty_GetPkmCount(sys->partyBC);
-    u8 a3 = WbtEntrant_GetIv(WbtBattle_GetOpponent(sys));
+    int n = PokeParty_GetPkmCount(sys->playerParty);
+    u8 iv = WbtEntrant_GetIv(WbtBattle_GetOpponent(sys));
     u16 species[6];
     int i;
 
     MI_CpuFill8(species, 0, sizeof(species));
     for (i = 0; i < n; i++) {
-        species[i] = PokeParty_GetParam(PokeParty_GetPkm(sys->partyBC, i), PKM_PARAM_SPECIES, NULL);
+        species[i] = PokeParty_GetParam(PokeParty_GetPkm(sys->playerParty, i), PKM_PARAM_SPECIES, NULL);
     }
-    WbtParty_MakeParty(sys, sys->partyC0, 12345, a3, count, species);
+    WbtParty_MakeParty(sys, sys->opponentParty, 12345, iv, count, species);
 }
