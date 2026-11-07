@@ -8,10 +8,12 @@
 #include "constants/text_banks.h"
 #include "dpw/dpw_bt.h"
 #include "dwc/dwc.h"
+#include "dwc/dwc_encsession.h"
 #include "field/bsubway_scr.h"
 #include "field/unity_tower.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"
@@ -143,6 +145,87 @@ enum {
     CHECK_ERROR_STATUS,
     // The request failed, with an HTTP status
     CHECK_ERROR_HTTP,
+};
+
+// Sending the record, including the optional second team check.
+enum {
+    UPLOAD_PRINT_SENDING = 0,
+    UPLOAD_CHECK_TEAM = 1,
+    UPLOAD_WAIT_CHECK_TEAM = 2,
+    UPLOAD_RECHECK_TEAM = 3,
+    UPLOAD_WAIT_RECHECK_TEAM = 4,
+    UPLOAD_SEND_RECORD = 5,
+    UPLOAD_WAIT_SEND_RECORD = 6,
+    UPLOAD_SAVE_SENT_RECORD = 7,
+    UPLOAD_WAIT_SAVE = 8,
+    UPLOAD_WAIT_SENT_MESSAGE = 9,
+    UPLOAD_END = 10,
+};
+
+// Downloading a train to challenge; an already-taken train returns to the room prompt.
+enum {
+    TRAIN_REQUEST_COUNT = 0,
+    TRAIN_WAIT_COUNT = 1,
+    TRAIN_PRINT_ROOM_PROMPT = 2,
+    TRAIN_WAIT_ROOM_PROMPT = 3,
+    TRAIN_FADE_OUT = 4,
+    TRAIN_WAIT_FADE_OUT = 5,
+    TRAIN_CALL_ROOM_INPUT = 6,
+    TRAIN_RESTORE_VIEW = 7,
+    TRAIN_CHECK_ROOM_INPUT = 8,
+    TRAIN_WAIT_DOWNLOAD = 9,
+    TRAIN_SAVE_TRAIN = 10,
+    TRAIN_WAIT_SAVE = 11,
+    TRAIN_WAIT_RECEIVED_MESSAGE = 12,
+    TRAIN_END = 13,
+    TRAIN_PRINT_ALREADY_TAKEN = 14,
+    TRAIN_WAIT_ALREADY_TAKEN = 15,
+    TRAIN_PRINT_CANCEL_PROMPT = 16,
+    TRAIN_WAIT_CANCEL_PROMPT = 17,
+    TRAIN_START_CANCEL_MENU = 18,
+    TRAIN_WAIT_CANCEL_MENU = 19,
+};
+
+// Downloading leaders; declining cancellation restarts at the rank prompt.
+enum {
+    LEADERS_PRINT_RANK_PROMPT = 0,
+    LEADERS_WAIT_RANK_PROMPT = 1,
+    LEADERS_FADE_OUT_RANK = 2,
+    LEADERS_WAIT_FADE_OUT_RANK = 3,
+    LEADERS_CALL_RANK_INPUT = 4,
+    LEADERS_RESTORE_RANK_VIEW = 5,
+    LEADERS_CHECK_RANK_INPUT = 6,
+    LEADERS_WAIT_COUNT = 7,
+    LEADERS_WAIT_ROOM_PROMPT = 8,
+    LEADERS_FADE_OUT_ROOM = 9,
+    LEADERS_WAIT_FADE_OUT_ROOM = 10,
+    LEADERS_CALL_ROOM_INPUT = 11,
+    LEADERS_RESTORE_ROOM_VIEW = 12,
+    LEADERS_CHECK_ROOM_INPUT = 13,
+    LEADERS_WAIT_DOWNLOAD = 14,
+    LEADERS_SAVE_LEADERS = 15,
+    LEADERS_WAIT_SAVE = 16,
+    LEADERS_WAIT_RECEIVED_MESSAGE = 17,
+    LEADERS_END = 18,
+    LEADERS_PRINT_CANCEL_PROMPT = 19,
+    LEADERS_WAIT_CANCEL_PROMPT = 20,
+    LEADERS_START_CANCEL_MENU = 21,
+    LEADERS_WAIT_CANCEL_MENU = 22,
+};
+
+// HTTP response statuses returned by NHttpRap_GetStatus.
+enum {
+    HTTP_STATUS_OK = 200,
+    HTTP_STATUS_BAD_REQUEST = 400,
+    HTTP_STATUS_UNAUTHORIZED = 401,
+    HTTP_STATUS_REQUEST_TIMEOUT = 408,
+};
+
+// Results of WaitCheckName, separate from DWCProfState.
+enum {
+    NAME_CHECK_WAIT = 0,
+    NAME_CHECK_DONE = 1,
+    NAME_CHECK_REPLACED = 2,
 };
 
 // The server library's types, which are the DS Wi-Fi library's Dpw_Bt_Player, Dpw_Bt_Leader and Dpw_Bt_Room. The
@@ -708,14 +791,14 @@ static void WifiBSubwayUpload_CheckName(WifiBSubwayUpload *upload, GameData *gam
 
 // Returns 0 until the check ends, 1 once it does, and 2 when the name was replaced
 static u32 WifiBSubwayUpload_WaitCheckName(WifiBSubwayUpload *upload, HeapID heapId) {
-    BOOL done = DWC_CheckProfanityProcess() == 2;
+    BOOL done = DWC_CheckProfanityProcess() == DWC_PROF_STATE_SUCCESS;
     BOOL bad;
 
     if (done) {
         bad = upload->nameCheck.badWordCount > 0;
     }
     if (!done) {
-        return 0;
+        return NAME_CHECK_WAIT;
     }
     if (done == TRUE && bad == TRUE) {
         MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, heapId);
@@ -724,9 +807,9 @@ static u32 WifiBSubwayUpload_WaitCheckName(WifiBSubwayUpload *upload, HeapID hea
         GFL_MsgDataFree(msgData);
         copyTrainerNameFromStrbuf(upload->playerInfo, name);
         GFL_StrBufFree(name);
-        return 2;
+        return NAME_CHECK_REPLACED;
     }
-    return 1;
+    return NAME_CHECK_DONE;
 }
 
 // Sends the player's profile and fills the record
@@ -811,7 +894,7 @@ static u32 WifiBSubwayUpload_WaitCheckPokemon(WifiBSubwayUpload *upload, WifiBSu
     void *answer;
     int i;
 
-    if (status != 200 && poll == 0) {
+    if (status != HTTP_STATUS_OK && poll == 0) {
         WifiBSubwayError_SetHttpError(error, status);
         NHttpRap_EndRequest(upload->nhttp);
         NHttpRap_FreePostData(upload->nhttp);
@@ -924,7 +1007,7 @@ static BOOL WifiBSubwayError_WaitDpw(WifiBSubwayError *error, s32 *result) {
         switch (dpwResult) {
         case -7:
         case -6:
-        case -4:
+        case DPW_BT_RESULT_CANCELED:
         case -3:
         case -2:
         case -1:
@@ -979,7 +1062,7 @@ static u32 WifiBSubwayError_GetMessage(const WifiBSubwayError *error) {
         case -7:
             message = WifiBsubway_Text_WereDisconnectedFromWi_2;
             break;
-        case -4:
+        case DPW_BT_RESULT_CANCELED:
             message = WifiBsubway_Text_WereDisconnectedFromWi;
             break;
         case -3:
@@ -1019,14 +1102,14 @@ static BOOL WifiBSubwayError_ShowHttpError(const WifiBSubwayError *error) {
         u32 message;
 
         switch (error->httpStatus) {
-        case 200:
-        case 400:
+        case HTTP_STATUS_OK:
+        case HTTP_STATUS_BAD_REQUEST:
             message = 0x41;
             break;
-        case 401:
+        case HTTP_STATUS_UNAUTHORIZED:
             message = 0x42;
             break;
-        case 408:
+        case HTTP_STATUS_REQUEST_TIMEOUT:
             message = 0x44;
             break;
         default:
@@ -1064,13 +1147,14 @@ static void WifiBSubwayError_CountHttp(WifiBSubwayError *error) {
 // Opens the code input screen for a train's number
 static void WifiBSubway_CallRoomInput(WifiBSubwayWork *wk, HeapID heapId) {
     sWifiBSubwayRoomBlocks[0] = WifiBSubwayRoom_GetCountDigits(&wk->room);
-    wk->codeIn = CodeInParam_Create(heapId, 1, WifiBSubwayRoom_GetCount(&wk->room), 3, sWifiBSubwayRoomBlocks);
+    wk->codeIn =
+        CodeInParam_Create(heapId, CODEIN_MODE_TRAIN, WifiBSubwayRoom_GetCount(&wk->room), 3, sWifiBSubwayRoomBlocks);
     GSYS_QueueProc(wk->param->gsys, OVERLAY_CODEIN, &CODEIN_PROC_FUNCTIONS, wk->codeIn);
 }
 
 // Opens the code input screen for a rank
 static void WifiBSubway_CallRankInput(WifiBSubwayWork *wk, HeapID heapId) {
-    wk->codeIn = CodeInParam_Create(heapId, 2, RANK_MAX, 2, sWifiBSubwayRankBlocks);
+    wk->codeIn = CodeInParam_Create(heapId, CODEIN_MODE_RANK, RANK_MAX, 2, sWifiBSubwayRankBlocks);
     GSYS_QueueProc(wk->param->gsys, OVERLAY_CODEIN, &CODEIN_PROC_FUNCTIONS, wk->codeIn);
 }
 
@@ -1121,7 +1205,7 @@ static void WifiBSubway_CallLogout(WifiBSubwayWork *wk) {
     wk->logout.gameData = wk->gameData;
     wk->logout.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
     wk->logout.messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
-    wk->logout.keepBgm = 1;
+    wk->logout.keepBgm = TRUE;
     GSYS_QueueProc(wk->param->gsys, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
 }
 
@@ -1142,60 +1226,60 @@ static u32 WifiBSubway_RunMode(WifiBSubwayWork *wk, HeapID heapId) {
 // Sends the record: the team's Pokémon are checked, a second time if one failed, and the record sent and marked sent
 static u32 WifiBSubway_UploadMain(WifiBSubwayWork *wk, HeapID heapId) {
     switch (wk->seq) {
-    case 0:
+    case UPLOAD_PRINT_SENDING:
         WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_SendingRecordDataDont);
         wk->seq++;
         break;
-    case 1:
+    case UPLOAD_CHECK_TEAM:
         WifiBSubwayUpload_CheckPokemon(&wk->upload, &wk->error, wk->loginBuffer, heapId);
         wk->seq++;
         break;
-    case 2: {
+    case UPLOAD_WAIT_CHECK_TEAM: {
         u32 result = WifiBSubwayUpload_WaitCheckPokemon(&wk->upload, &wk->error, FALSE);
 
         if (result == CHECK_RESULT_OK) {
-            wk->seq = 5;
+            wk->seq = UPLOAD_SEND_RECORD;
         } else if (result == CHECK_RESULT_NG) {
-            wk->seq = 3;
+            wk->seq = UPLOAD_RECHECK_TEAM;
         }
         break;
     }
-    case 3:
+    case UPLOAD_RECHECK_TEAM:
         WifiBSubwayUpload_CheckPokemon(&wk->upload, &wk->error, wk->loginBuffer, heapId);
         wk->seq++;
         break;
-    case 4:
+    case UPLOAD_WAIT_RECHECK_TEAM:
         if (WifiBSubwayUpload_WaitCheckPokemon(&wk->upload, &wk->error, TRUE) == CHECK_RESULT_OK) {
-            wk->seq = 5;
+            wk->seq = UPLOAD_SEND_RECORD;
         }
         break;
-    case 5:
+    case UPLOAD_SEND_RECORD:
         WifiBSubwayUpload_Send(&wk->upload, &wk->error);
         wk->seq++;
         break;
-    case 6:
+    case UPLOAD_WAIT_SEND_RECORD:
         if (WifiBSubwayUpload_WaitSend(&wk->upload, &wk->error) && WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 7:
+    case UPLOAD_SAVE_SENT_RECORD:
         BSubwayScoreData_SetFlag(wk->score, 1, BSUBWAY_FLAG_RESET);
         WifiBSubway_StartSave(wk);
         wk->seq++;
         break;
-    case 8:
+    case UPLOAD_WAIT_SAVE:
         if (WifiBSubway_WaitSave(wk)) {
             WifiBSubwayView_StopWaitIcon(&wk->view);
             WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_DataHasBeenSent);
             wk->seq++;
         }
         break;
-    case 9:
+    case UPLOAD_WAIT_SENT_MESSAGE:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 10:
+    case UPLOAD_END:
         return MODE_RESULT_END;
     }
     return MODE_RESULT_CONTINUE;
@@ -1207,49 +1291,49 @@ static u32 WifiBSubway_DownloadTrainMain(WifiBSubwayWork *wk, HeapID heapId) {
     RTCDate date;
 
     switch (wk->seq) {
-    case 0:
+    case TRAIN_REQUEST_COUNT:
         WifiBSubwayRoom_RequestCount(&wk->room, &wk->error, BSubwayScoreData_GetWifiRank(wk->score));
         wk->seq++;
         break;
-    case 1:
+    case TRAIN_WAIT_COUNT:
         if (WifiBSubwayRoom_WaitCount(&wk->room, &wk->error)) {
             wk->seq++;
         }
         break;
-    case 2:
+    case TRAIN_PRINT_ROOM_PROMPT:
         WifiBSubwayView_StopWaitIcon(&wk->view);
         WifiBSubwayView_SetNumber(&wk->view, 0, WifiBSubwayRoom_GetCount(&wk->room),
                                   WifiBSubwayRoom_GetCountDigits(&wk->room));
         WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_EnterTrainNumber01);
         wk->seq++;
         break;
-    case 3:
+    case TRAIN_WAIT_ROOM_PROMPT:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 4:
+    case TRAIN_FADE_OUT:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 1);
         wk->seq++;
         break;
-    case 5:
+    case TRAIN_WAIT_FADE_OUT:
         if (!GFL_FadeIsRunning()) {
             WifiBSubwayView_Free(&wk->view);
             wk->seq++;
         }
         break;
-    case 6:
+    case TRAIN_CALL_ROOM_INPUT:
         WifiBSubway_CallRoomInput(wk, heapId);
         wk->seq++;
         break;
-    case 7:
+    case TRAIN_RESTORE_VIEW:
         wk->inputNumber = WifiBSubway_GetCodeInNumber(wk);
         WifiBSubway_FreeCodeIn(wk);
         WifiBSubwayView_Init(&wk->view, heapId);
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 1);
         wk->seq++;
         break;
-    case 8:
+    case TRAIN_CHECK_ROOM_INPUT:
         if (!GFL_FadeIsRunning()) {
             u32 rank = WifiBSubwayRoom_GetRank(&wk->room);
             u32 number = wk->inputNumber;
@@ -1257,9 +1341,9 @@ static u32 WifiBSubway_DownloadTrainMain(WifiBSubwayWork *wk, HeapID heapId) {
 
             DWC_GetDateTime(&date, &time);
             if (number < 1 || number > count) {
-                wk->seq = 16;
+                wk->seq = TRAIN_PRINT_CANCEL_PROMPT;
             } else if (BSubwayWifiData_GetRoomFlag(wk->wifiData, rank, number, &date)) {
-                wk->seq = 14;
+                wk->seq = TRAIN_PRINT_ALREADY_TAKEN;
             } else {
                 WifiBSubwayRoom_Download(&wk->room, &wk->error, wk->inputNumber);
                 WifiBSubwayView_SetNumber(&wk->view, 0, WifiBSubwayRoom_GetNumber(&wk->room),
@@ -1271,61 +1355,61 @@ static u32 WifiBSubway_DownloadTrainMain(WifiBSubwayWork *wk, HeapID heapId) {
             }
         }
         break;
-    case 9:
+    case TRAIN_WAIT_DOWNLOAD:
         if (WifiBSubwayRoom_WaitDownload(&wk->room, &wk->error) && WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 10:
+    case TRAIN_SAVE_TRAIN:
         WifiBSubwayRoom_FixData(&wk->room);
         WifiBSubwayRoom_SavePlayers(&wk->room, wk->wifiData);
         WifiBSubwayRoom_SaveLeaders(&wk->room, wk->wifiData);
         WifiBSubway_StartSave(wk);
         wk->seq++;
         break;
-    case 11:
+    case TRAIN_WAIT_SAVE:
         if (WifiBSubway_WaitSave(wk)) {
             WifiBSubwayView_StopWaitIcon(&wk->view);
             WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_DataHasBeenReceived);
             wk->seq++;
         }
         break;
-    case 12:
+    case TRAIN_WAIT_RECEIVED_MESSAGE:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 13:
+    case TRAIN_END:
         return MODE_RESULT_END;
-    case 14:
+    case TRAIN_PRINT_ALREADY_TAKEN:
         WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_MayNotChallengeTrain);
         wk->seq++;
         break;
-    case 15:
+    case TRAIN_WAIT_ALREADY_TAKEN:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
-            wk->seq = 2;
+            wk->seq = TRAIN_PRINT_ROOM_PROMPT;
         }
         break;
-    case 16:
+    case TRAIN_PRINT_CANCEL_PROMPT:
         WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_CancelChallenge);
         wk->seq++;
         break;
-    case 17:
+    case TRAIN_WAIT_CANCEL_PROMPT:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 18:
+    case TRAIN_START_CANCEL_MENU:
         WifiBSubwayView_StartYesNo(&wk->view);
         wk->seq++;
         break;
-    case 19: {
+    case TRAIN_WAIT_CANCEL_MENU: {
         u32 result = WifiBSubwayView_UpdateYesNo(&wk->view);
 
         if (result == 0) {
             return MODE_RESULT_CANCEL;
         } else if (result == BMPMENU_CANCEL) {
-            wk->seq = 2;
+            wk->seq = TRAIN_PRINT_ROOM_PROMPT;
         }
         break;
     }
@@ -1336,38 +1420,38 @@ static u32 WifiBSubway_DownloadTrainMain(WifiBSubwayWork *wk, HeapID heapId) {
 // Downloads the leaders of a train: the player types its rank and its number
 static u32 WifiBSubway_DownloadLeadersMain(WifiBSubwayWork *wk, HeapID heapId) {
     switch (wk->seq) {
-    case 0:
+    case LEADERS_PRINT_RANK_PROMPT:
         WifiBSubwayView_StopWaitIcon(&wk->view);
         WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_EnterRankTrain01);
         wk->seq++;
         break;
-    case 1:
+    case LEADERS_WAIT_RANK_PROMPT:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 2:
+    case LEADERS_FADE_OUT_RANK:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 1);
         wk->seq++;
         break;
-    case 3:
+    case LEADERS_WAIT_FADE_OUT_RANK:
         if (!GFL_FadeIsRunning()) {
             WifiBSubwayView_Free(&wk->view);
             wk->seq++;
         }
         break;
-    case 4:
+    case LEADERS_CALL_RANK_INPUT:
         WifiBSubway_CallRankInput(wk, heapId);
         wk->seq++;
         break;
-    case 5:
+    case LEADERS_RESTORE_RANK_VIEW:
         wk->inputNumber = WifiBSubway_GetCodeInNumber(wk);
         WifiBSubway_FreeCodeIn(wk);
         WifiBSubwayView_Init(&wk->view, heapId);
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 1);
         wk->seq++;
         break;
-    case 6:
+    case LEADERS_CHECK_RANK_INPUT:
         if (!GFL_FadeIsRunning()) {
             if (wk->inputNumber >= 1 && wk->inputNumber <= RANK_MAX) {
                 WifiBSubwayRoom_RequestCount(&wk->room, &wk->error, wk->inputNumber);
@@ -1375,11 +1459,11 @@ static u32 WifiBSubway_DownloadLeadersMain(WifiBSubwayWork *wk, HeapID heapId) {
                 WifiBSubwayView_StartWaitIcon(&wk->view);
                 wk->seq++;
             } else {
-                wk->seq = 19;
+                wk->seq = LEADERS_PRINT_CANCEL_PROMPT;
             }
         }
         break;
-    case 7:
+    case LEADERS_WAIT_COUNT:
         if (WifiBSubwayRoom_WaitCount(&wk->room, &wk->error)) {
             WifiBSubwayView_StopWaitIcon(&wk->view);
             WifiBSubwayView_SetNumber(&wk->view, 0, WifiBSubwayRoom_GetCount(&wk->room),
@@ -1388,38 +1472,38 @@ static u32 WifiBSubway_DownloadLeadersMain(WifiBSubwayWork *wk, HeapID heapId) {
             wk->seq++;
         }
         break;
-    case 8:
+    case LEADERS_WAIT_ROOM_PROMPT:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 9:
+    case LEADERS_FADE_OUT_ROOM:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 1);
         wk->seq++;
         break;
-    case 10:
+    case LEADERS_WAIT_FADE_OUT_ROOM:
         if (!GFL_FadeIsRunning()) {
             WifiBSubwayView_Free(&wk->view);
             wk->seq++;
         }
         break;
-    case 11:
+    case LEADERS_CALL_ROOM_INPUT:
         WifiBSubway_CallRoomInput(wk, heapId);
         wk->seq++;
         break;
-    case 12:
+    case LEADERS_RESTORE_ROOM_VIEW:
         wk->inputNumber = WifiBSubway_GetCodeInNumber(wk);
         WifiBSubway_FreeCodeIn(wk);
         WifiBSubwayView_Init(&wk->view, heapId);
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 1);
         wk->seq++;
         break;
-    case 13:
+    case LEADERS_CHECK_ROOM_INPUT:
         if (!GFL_FadeIsRunning()) {
             u32 count = WifiBSubwayRoom_GetCount(&wk->room);
 
             if (wk->inputNumber < 1 || wk->inputNumber > count) {
-                wk->seq = 19;
+                wk->seq = LEADERS_PRINT_CANCEL_PROMPT;
             } else {
                 WifiBSubwayRoom_Download(&wk->room, &wk->error, wk->inputNumber);
                 WifiBSubwayView_SetNumber(&wk->view, 0, WifiBSubwayRoom_GetNumber(&wk->room),
@@ -1431,52 +1515,52 @@ static u32 WifiBSubway_DownloadLeadersMain(WifiBSubwayWork *wk, HeapID heapId) {
             }
         }
         break;
-    case 14:
+    case LEADERS_WAIT_DOWNLOAD:
         if (WifiBSubwayRoom_WaitDownload(&wk->room, &wk->error) && WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 15:
+    case LEADERS_SAVE_LEADERS:
         WifiBSubwayRoom_FixData(&wk->room);
         WifiBSubwayRoom_SaveLeaders(&wk->room, wk->wifiData);
         WifiBSubway_StartSave(wk);
         wk->seq++;
         break;
-    case 16:
+    case LEADERS_WAIT_SAVE:
         if (WifiBSubway_WaitSave(wk)) {
             WifiBSubwayView_StopWaitIcon(&wk->view);
             WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_DataHasBeenReceived);
             wk->seq++;
         }
         break;
-    case 17:
+    case LEADERS_WAIT_RECEIVED_MESSAGE:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 18:
+    case LEADERS_END:
         return MODE_RESULT_END;
-    case 19:
+    case LEADERS_PRINT_CANCEL_PROMPT:
         WifiBSubwayView_Print(&wk->view, WifiBsubway_Text_WouldLikeCancelData);
         wk->seq++;
         break;
-    case 20:
+    case LEADERS_WAIT_CANCEL_PROMPT:
         if (WifiBSubwayView_WaitPrint(&wk->view)) {
             wk->seq++;
         }
         break;
-    case 21:
+    case LEADERS_START_CANCEL_MENU:
         WifiBSubwayView_StartYesNo(&wk->view);
         wk->seq++;
         break;
-    case 22: {
+    case LEADERS_WAIT_CANCEL_MENU: {
         u32 result = WifiBSubwayView_UpdateYesNo(&wk->view);
 
         if (result == 0) {
             return MODE_RESULT_CANCEL;
         } else if (result == BMPMENU_CANCEL) {
             WifiBSubwayRoom_Init(&wk->room);
-            wk->seq = 0;
+            wk->seq = LEADERS_PRINT_RANK_PROMPT;
         }
         break;
     }
@@ -1491,7 +1575,7 @@ static void WifiBSubway_Connect(WifiBSubwayWork *wk) {
 
     PlayerInfo_InitProfileId(wk->playerInfo, WifiList_GetMyGSID(wk->wifiList));
     profileId = PlayerInfo_GetProfileId(wk->playerInfo);
-    DpwBt_Init(profileId, DWC_CreateFriendKey(userData), 0);
+    DpwBt_Init(profileId, DWC_CreateFriendKey(userData), GAMESTATS_SERVER_LIVE);
     DpwBt_GetServerState();
     WifiBSubwayError_StartDpw(&wk->error);
     wk->dpwActive = TRUE;
@@ -1784,7 +1868,7 @@ static BOOL WifiBSubway_WaitSave(WifiBSubwayWork *wk) {
     if (!wk->saving) {
         return TRUE;
     }
-    if (GameData_UpdateSave(wk->gameData) == 2) {
+    if (GameData_UpdateSave(wk->gameData) == SAVE_RESULT_OK) {
         wk->saving = FALSE;
         return TRUE;
     }

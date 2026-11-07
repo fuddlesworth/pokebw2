@@ -228,7 +228,7 @@ void DpwBt_Process(void) {
     case 9:
     case 11:
         sDpwBtWork.state = 0xc;
-        sDpwBtWork.result = -4;
+        sDpwBtWork.result = DPW_BT_RESULT_CANCELED;
         DWCi_EncSessionShutdown();
         break;
     case 0:
