@@ -52,6 +52,89 @@
 // menu over the field: mode 0 is a shop's items, mode 1 the four records, and mode 2 the order of the records (sub
 // mode 0) or of the avenue's people (sub mode 1)
 
+// The outer callback lifecycle.
+enum {
+    RESORT_SHOP_STATE_FADE_IN = 0,
+    RESORT_SHOP_STATE_UPDATE = 1,
+    RESORT_SHOP_STATE_FADE_OUT = 2,
+    RESORT_SHOP_STATE_FREE = 3,
+};
+
+// The initial work state is shared by the three mode-specific state machines.
+enum {
+    RESORT_SHOP_WORK_INITIAL = 0,
+};
+
+// The buying state machine.
+enum {
+    RESORT_BUY_STATE_LIST = 0,
+    RESORT_BUY_STATE_UNUSED = 1,
+    RESORT_BUY_STATE_RESTORE_LIST = 2,
+    RESORT_BUY_STATE_CONFIRM = 3,
+    RESORT_BUY_STATE_CONFIRM_WITHOUT_COUNT = 4,
+    RESORT_BUY_STATE_WAIT_CONFIRM = 5,
+    RESORT_BUY_STATE_BUY = 6,
+    RESORT_BUY_STATE_GIVE_RANDOM_ITEM = 7,
+    RESORT_BUY_STATE_MESSAGE = 8,
+    RESORT_BUY_STATE_FINISH = 9,
+};
+
+// The record/person selection state machine.
+enum {
+    RESORT_SELECT_STATE_LIST = 0,
+    RESORT_SELECT_STATE_UNUSED = 1,
+    RESORT_SELECT_STATE_RESTORE_LIST = 2,
+    RESORT_SELECT_STATE_CONFIRM = 3,
+    RESORT_SELECT_STATE_CONFIRM_DUPLICATE = 4,
+    RESORT_SELECT_STATE_WAIT_CONFIRM = 5,
+    RESORT_SELECT_STATE_ACCEPT = 6,
+    RESORT_SELECT_STATE_MESSAGE = 7,
+    RESORT_SELECT_STATE_FINISH = 8,
+};
+
+// The reordering state machine.
+enum {
+    RESORT_REORDER_STATE_PROMPT = 0,
+    RESORT_REORDER_STATE_LIST = 1,
+    RESORT_REORDER_STATE_UNUSED = 2,
+    RESORT_REORDER_STATE_RESTORE_LIST = 3,
+    RESORT_REORDER_STATE_SWAP = 4,
+    RESORT_REORDER_STATE_CONFIRM = 5,
+    RESORT_REORDER_STATE_CONFIRM_DUPLICATE = 6,
+    RESORT_REORDER_STATE_WAIT_CONFIRM = 7,
+    RESORT_REORDER_STATE_MESSAGE = 8,
+    RESORT_REORDER_STATE_FINISH = 9,
+};
+
+// The fade-in sequence.
+enum {
+    RESORT_SHOP_FADE_IN_BLACKEN = 0,
+    RESORT_SHOP_FADE_IN_WAIT_BLACK = 1,
+    RESORT_SHOP_FADE_IN_POSITION = 2,
+    RESORT_SHOP_FADE_IN_CREATE = 3,
+    RESORT_SHOP_FADE_IN_WAIT_LIST = 4,
+    RESORT_SHOP_FADE_IN_REVEAL = 5,
+    RESORT_SHOP_FADE_IN_WAIT_REVEAL = 6,
+};
+
+// The fade-out sequence.
+enum {
+    RESORT_SHOP_FADE_OUT_BLACKEN = 0,
+    RESORT_SHOP_FADE_OUT_WAIT_BLACK = 1,
+    RESORT_SHOP_FADE_OUT_RESTORE = 2,
+    RESORT_SHOP_FADE_OUT_WAIT_REVEAL = 3,
+};
+
+// The windows with a known role; slot 4 is created but unused.
+enum {
+    RESORT_SHOP_WINDOW_MONEY_LABEL = 0,
+    RESORT_SHOP_WINDOW_MONEY = 1,
+    RESORT_SHOP_WINDOW_LIST = 2,
+    RESORT_SHOP_WINDOW_BAG_COUNT = 3,
+    RESORT_SHOP_WINDOW_DESCRIPTION = 5,
+    RESORT_SHOP_WINDOW_MESSAGE = 6,
+};
+
 // A row of the menu. For the people, item is the object code
 typedef struct {
     u16 id;
@@ -132,7 +215,7 @@ struct ResortShopWork {
     BmpMenuListPrintCallback printCallback;
     u16 mode;
     u16 msgs[3];
-    BOOL unk300;
+    BOOL restrictedGoodsUnlocked;
     u8 moveFrom;
     u8 moveTo;
     BOOL moving;
@@ -195,14 +278,14 @@ typedef struct {
 // Reading the layouts before their definitions keeps the unused entries in MWCC's
 // shared constant pool, as in the original. This inline accessor emits no code.
 const ResortShopWindowSetup sUnk021e8a6c;
-const ResortShopWindowSetup sWindow0;
-const ResortShopWindowSetup sWindow2;
-const ResortShopWindowSetup sWindow3;
+const ResortShopWindowSetup sMoneyLabelWindowSetup;
+const ResortShopWindowSetup sListWindowSetup;
+const ResortShopWindowSetup sBagCountWindowSetup;
 const ResortShopWindowSetup sUnk021e8a60;
-const ResortShopWindowSetup sWindow6;
-const ResortShopWindowSetup sWindow5;
+const ResortShopWindowSetup sMessageWindowSetup;
+const ResortShopWindowSetup sDescriptionWindowSetup;
 const ResortShopWindowSetup sUnk021e8ab4;
-const ResortShopWindowSetup sWindow1;
+const ResortShopWindowSetup sMoneyWindowSetup;
 const ResortShopWindowSetup sWindow4;
 const u8 sUnk021e8acc[16];
 
@@ -211,21 +294,21 @@ static inline u32 ResortShop_GetLayoutBG(u32 index) {
     case 0:
         return sUnk021e8a6c.bg;
     case 1:
-        return sWindow0.bg;
+        return sMoneyLabelWindowSetup.bg;
     case 2:
-        return sWindow2.bg;
+        return sListWindowSetup.bg;
     case 3:
-        return sWindow3.bg;
+        return sBagCountWindowSetup.bg;
     case 4:
         return sUnk021e8a60.bg;
     case 5:
-        return sWindow6.bg;
+        return sMessageWindowSetup.bg;
     case 6:
-        return sWindow5.bg;
+        return sDescriptionWindowSetup.bg;
     case 7:
         return sUnk021e8ab4.bg;
     case 8:
-        return sWindow1.bg;
+        return sMoneyWindowSetup.bg;
     case 9:
         return sWindow4.bg;
     default:
@@ -237,23 +320,23 @@ static const ConfirmDialogSetup sConfirmDialogSetup = { 1, 24, 13, 11, 25 };
 
 const ResortShopWindowSetup sUnk021e8a6c = { 1, 1, 18, 30, 6, 11, 469 };
 
-const ResortShopWindowSetup sWindow2 = { 1, 12, 1, 19, 16, 2, 54 };
+const ResortShopWindowSetup sListWindowSetup = { 1, 12, 1, 19, 16, 2, 54 };
 
-const ResortShopWindowSetup sWindow6 = { 1, 1, 19, 30, 4, 11, 631 };
+const ResortShopWindowSetup sMessageWindowSetup = { 1, 1, 19, 30, 4, 11, 631 };
 
 const ResortShopWindowSetup sWindow4 = { 1, 18, 15, 13, 2, 11, 447 };
 
-const ResortShopWindowSetup sWindow1 = { 1, 1, 3, 9, 2, 11, 38 };
+const ResortShopWindowSetup sMoneyWindowSetup = { 1, 1, 3, 9, 2, 11, 38 };
 
 const ResortShopWindowSetup sUnk021e8ab4 = { 1, 2, 2, 8, 2, 11, 38 };
 
-const ResortShopWindowSetup sWindow5 = { 1, 5, 18, 27, 6, 11, 469 };
+const ResortShopWindowSetup sDescriptionWindowSetup = { 1, 5, 18, 27, 6, 11, 469 };
 
-const ResortShopWindowSetup sWindow0 = { 1, 1, 1, 9, 2, 11, 20 };
+const ResortShopWindowSetup sMoneyLabelWindowSetup = { 1, 1, 1, 9, 2, 11, 20 };
 
 const ResortShopWindowSetup sUnk021e8a60 = { 1, 5, 2, 5, 2, 11, 38 };
 
-const ResortShopWindowSetup sWindow3 = { 1, 1, 15, 15, 2, 11, 415 };
+const ResortShopWindowSetup sBagCountWindowSetup = { 1, 1, 15, 15, 2, 11, 415 };
 
 const u8 sUnk021e8acc[] = { 2, 3, 6, 5, 4, 5, 2, 0, 1, 3, 6, 5, 4, 7, 7, 0 };
 
@@ -289,7 +372,8 @@ static const ClActorSetup sActorSetups[] = {
 // clang-format on
 
 static const ResortShopWindowSetup *sWindowSetups[] = {
-    &sWindow0, &sWindow1, &sWindow2, &sWindow3, &sWindow4, &sWindow5, &sWindow6,
+    &sMoneyLabelWindowSetup,  &sMoneyWindowSetup,   &sListWindowSetup, &sBagCountWindowSetup, &sWindow4,
+    &sDescriptionWindowSetup, &sMessageWindowSetup,
 };
 
 static BOOL ResortShop_Run(VM *vm, void *env);
@@ -341,15 +425,15 @@ static ResortPeople *ResortShop_GetPeople(Field *field);
 static ResortNPC *ResortShop_GetNPC(Field *field);
 static void ResortShop_CreateItemList(GameSystem *gsys, ResortShopWork *wk, u8 mode, u8 subMode);
 static void ResortShop_DestroyItemList(GameSystem *gsys, ResortShopWork *wk, u8 mode, u8 subMode);
-static void ResortShop_ItemCursorCallback(BmpMenuList *list, s32 value, u8 a2);
+static void ResortShop_ItemCursorCallback(BmpMenuList *list, s32 value, u8 init);
 static void ResortShop_CreateRecordList(GameSystem *gsys, ResortShopWork *wk, u8 mode, u8 subMode);
 static void ResortShop_DestroyRecordList(GameSystem *gsys, ResortShopWork *wk, u8 mode, u8 subMode);
 static void ResortShop_CreatePersonList(GameSystem *gsys, ResortShopWork *wk, u8 mode, u8 subMode);
 static void ResortShop_DestroyPersonList(GameSystem *gsys, ResortShopWork *wk, u8 mode, u8 subMode);
 static StrBuf *ResortShop_MakePersonDescription(ResortShopWork *wk, JoinAvenuePerson *person);
 static void ResortShop_MakePersonEntry(ResortShopWork *wk, ResortPersonData *data, u32 index, ResortShopEntry *entry);
-static void ResortShop_ModelCursorCallback(BmpMenuList *list, s32 value, u8 a2);
-static void ResortShop_OrderCursorCallback(BmpMenuList *list, s32 value, u8 a2);
+static void ResortShop_ModelCursorCallback(BmpMenuList *list, s32 value, u8 init);
+static void ResortShop_OrderCursorCallback(BmpMenuList *list, s32 value, u8 init);
 static void ResortShop_UpdateMoveArrow(ResortShopWork *wk);
 static void ResortShop_ApplyRecordOrder(ResortShopWork *wk, u8 mode, u8 subMode);
 static void ResortShop_ApplyPersonOrder(ResortShopWork *wk, u8 mode, u8 subMode);
@@ -364,11 +448,11 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
     u16 mode = ScriptReadAny(vm, env);
     u16 subMode = ScriptReadAny(vm, env);
     u16 cameraMode = ScriptReadAny(vm, env);
-    u16 *var0 = ScriptReadVar(vm, env);
-    u16 *var1 = ScriptReadVar(vm, env);
-    u16 *var2 = ScriptReadVar(vm, env);
-    u16 *var3 = ScriptReadVar(vm, env);
-    u16 *var4 = ScriptReadVar(vm, env);
+    u16 *resultOut = ScriptReadVar(vm, env);
+    u16 *itemOut = ScriptReadVar(vm, env);
+    u16 *countOut = ScriptReadVar(vm, env);
+    u16 *entryIdOut = ScriptReadVar(vm, env);
+    u16 *priceOut = ScriptReadVar(vm, env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     GameData *gameData = GSYS_GetGameData(gsys);
     Field *field = GSYS_GetField(gsys);
@@ -383,11 +467,11 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
     shop->work.heapId = HEAPID_FIELDMAP;
     shop->work.bag = GameData_GetBag(gameData);
     shop->work.records = GameData_GetRecords(gameData);
-    shop->work.vars[0] = var0;
-    shop->work.vars[1] = var1;
-    shop->work.vars[2] = var2;
-    shop->work.vars[3] = var3;
-    shop->work.vars[4] = var4;
+    shop->work.vars[RESORT_SHOP_OUT_RESULT] = resultOut;
+    shop->work.vars[RESORT_SHOP_OUT_ITEM] = itemOut;
+    shop->work.vars[RESORT_SHOP_OUT_COUNT] = countOut;
+    shop->work.vars[RESORT_SHOP_OUT_ENTRY_ID] = entryIdOut;
+    shop->work.vars[RESORT_SHOP_OUT_PRICE] = priceOut;
     shop->work.shops = ResortSys_GetShopData(sys);
     shop->work.table = ResortSys_GetRaffles(sys);
     shop->work.occupants = ResortSys_GetOccupants(sys);
@@ -400,17 +484,17 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
     shop->gsys = gsys;
     shop->work.person = ResortSys_GetScriptPerson(env, shop->work.people);
     if (JoinAvenue_GetParam(shop->work.info, JOIN_AVE_INFO_UNLOCKED_6, 0) != 0) {
-        shop->work.unk300 = TRUE;
+        shop->work.restrictedGoodsUnlocked = TRUE;
     } else {
-        shop->work.unk300 = FALSE;
+        shop->work.restrictedGoodsUnlocked = FALSE;
     }
     shop->fadeIn = ResortShop_FadeIn;
     shop->fadeOut = ResortShop_FadeOut;
     shop->work.msgBase = ResortPerson_GetParam(shop->work.person, JOIN_AVE_PARAM_GENDER, NULL);
-    *shop->work.vars[0] = 0;
+    *shop->work.vars[RESORT_SHOP_OUT_RESULT] = 0;
     shop->work.mode = mode;
     switch (mode) {
-    case 0:
+    case RESORT_SHOP_MODE_BUY:
     default:
         GameBeacon_BroadcastJoinAvenueShopping();
         shop->mode = mode;
@@ -424,12 +508,12 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
         shop->work.row =
             ResortShopData_GetPersonShop(shop->work.shops, ResortPerson_GetJoinAvenuePerson(shop->work.person));
         break;
-    case 1:
+    case RESORT_SHOP_MODE_SELECT:
         shop->mode = mode;
         shop->subMode = subMode;
         shop->work.update = ResortShop_UpdateRecords;
         switch (subMode) {
-        case 0:
+        case RESORT_SHOP_SELECT_RECORD:
         default:
             shop->work.create = ResortShop_CreateRecordList;
             shop->work.destroy = ResortShop_DestroyRecordList;
@@ -438,7 +522,7 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
             shop->work.cursorCallback = ResortShop_ModelCursorCallback;
             shop->work.printCallback = NULL;
             break;
-        case 1:
+        case RESORT_SHOP_SELECT_RECORD_ALT:
             shop->work.create = ResortShop_CreateRecordList;
             shop->work.destroy = ResortShop_DestroyRecordList;
             shop->work.msgs[1] = 50;
@@ -446,7 +530,7 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
             shop->work.cursorCallback = ResortShop_ModelCursorCallback;
             shop->work.printCallback = NULL;
             break;
-        case 2:
+        case RESORT_SHOP_SELECT_PERSON:
             shop->work.create = ResortShop_CreatePersonList;
             shop->work.destroy = ResortShop_DestroyPersonList;
             shop->work.msgs[1] = 54;
@@ -454,7 +538,7 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
             shop->work.cursorCallback = ResortShop_ModelCursorCallback;
             shop->work.printCallback = NULL;
             break;
-        case 3:
+        case RESORT_SHOP_SELECT_PERSON_ALT:
             shop->work.create = ResortShop_CreatePersonList;
             shop->work.destroy = ResortShop_DestroyPersonList;
             shop->work.msgs[1] = 56;
@@ -464,12 +548,12 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
             break;
         }
         break;
-    case 2:
+    case RESORT_SHOP_MODE_REORDER:
         shop->mode = mode;
         shop->subMode = subMode;
         shop->work.update = ResortShop_UpdateOrder;
         switch (subMode) {
-        case 0:
+        case RESORT_SHOP_REORDER_RECORDS:
             shop->work.create = ResortShop_CreateRecordList;
             shop->work.destroy = ResortShop_DestroyRecordList;
             shop->work.swapEntries = ResortShop_SwapRecordEntries;
@@ -480,7 +564,7 @@ BOOL Scrcmd_ResortShop_Open(VM *vm, FieldScriptEnv *env) {
             shop->work.cursorCallback = ResortShop_OrderCursorCallback;
             shop->work.printCallback = NULL;
             break;
-        case 1:
+        case RESORT_SHOP_REORDER_PEOPLE:
             shop->work.create = ResortShop_CreatePersonList;
             shop->work.destroy = ResortShop_DestroyPersonList;
             shop->work.swapEntries = ResortShop_SwapPersonEntries;
@@ -506,25 +590,25 @@ static BOOL ResortShop_Run(VM *vm, void *env) {
 
     Field_GetCameraSystem(field);
     switch (shop->state) {
-    case 0:
+    case RESORT_SHOP_STATE_FADE_IN:
         if (shop->fadeIn(shop, field, &shop->seq)) {
             setAlphaBlend_wrapper(FALSE);
-            shop->work.state = 0;
+            shop->work.state = RESORT_SHOP_WORK_INITIAL;
             shop->state++;
         }
         break;
-    case 1:
+    case RESORT_SHOP_STATE_UPDATE:
         if (shop->work.update(gsys, &shop->work, shop->mode, shop->subMode)) {
             shop->state++;
         }
         break;
-    case 2:
+    case RESORT_SHOP_STATE_FADE_OUT:
         if (shop->fadeOut(shop, field, &shop->seq)) {
             setAlphaBlend_wrapper(TRUE);
             shop->state++;
         }
         break;
-    case 3:
+    case RESORT_SHOP_STATE_FREE:
         GFL_HeapFree(*ptr);
         return TRUE;
     }
@@ -554,35 +638,35 @@ static void ResortShop_TryBuy(ResortShopWork *wk) {
     u32 cash = ResortShop_GetCash(wk);
 
     if (JoinAvenueShop_GetFlag(wk->flags, wk->selected->id) == TRUE) {
-        if (wk->selected->kind == 0) {
+        if (wk->selected->kind == RESORT_SHOP_GOODS_ITEM) {
             ResortShop_PrintMessage(wk, wk->msgBase + 17);
         } else {
             ResortShop_PrintMessage(wk, wk->msgBase + 21);
         }
-        wk->state = 8;
-        wk->nextState = 2;
+        wk->state = RESORT_BUY_STATE_MESSAGE;
+        wk->nextState = RESORT_BUY_STATE_RESTORE_LIST;
         return;
     }
-    if (wk->selected->kind == 0 &&
+    if (wk->selected->kind == RESORT_SHOP_GOODS_ITEM &&
         !BagSave_CheckAvailItemSpace(wk->bag, wk->selected->item, wk->selected->count, wk->heapId)) {
         ResortShop_PrintMessage(wk, wk->msgBase + 10);
-        wk->state = 8;
-        wk->nextState = 2;
+        wk->state = RESORT_BUY_STATE_MESSAGE;
+        wk->nextState = RESORT_BUY_STATE_RESTORE_LIST;
         return;
     }
     if (cash < wk->selected->price) {
         ResortShop_PrintMessage(wk, wk->msgBase);
-        wk->state = 8;
-        wk->nextState = 2;
+        wk->state = RESORT_BUY_STATE_MESSAGE;
+        wk->nextState = RESORT_BUY_STATE_RESTORE_LIST;
         return;
     }
-    if (wk->selected->kind == 0) {
+    if (wk->selected->kind == RESORT_SHOP_GOODS_ITEM) {
         ResortShop_PrintEntryMessage(wk, wk->msgBase + 4, wk->selected);
     } else {
         ResortShop_PrintEntryMessage(wk, wk->msgBase + 6, wk->selected);
     }
-    wk->state = 8;
-    wk->nextState = 3;
+    wk->state = RESORT_BUY_STATE_MESSAGE;
+    wk->nextState = RESORT_BUY_STATE_CONFIRM;
 }
 
 static void ResortShop_UpdateItemList(ResortShopWork *wk) {
@@ -593,7 +677,7 @@ static void ResortShop_UpdateItemList(ResortShopWork *wk) {
     }
     if (result == BMPMENULIST_CANCEL) {
         wk->selected = NULL;
-        wk->state = 9;
+        wk->state = RESORT_BUY_STATE_FINISH;
         return;
     }
     wk->selected = &wk->entries[result];
@@ -608,13 +692,13 @@ static void ResortShop_UpdateRecordList(ResortShopWork *wk) {
     }
     if (result == BMPMENULIST_CANCEL) {
         wk->selected = NULL;
-        wk->state = 8;
+        wk->state = RESORT_SELECT_STATE_FINISH;
         return;
     }
     wk->selected = &wk->entries[result];
     ResortShop_PrintEntryMessage(wk, wk->msgs[1], wk->selected);
-    wk->state = 7;
-    wk->nextState = 3;
+    wk->state = RESORT_SELECT_STATE_MESSAGE;
+    wk->nextState = RESORT_SELECT_STATE_CONFIRM;
 }
 
 // The list of mode 2, where the first choice picks an entry up and the second puts it down
@@ -627,7 +711,7 @@ static void ResortShop_UpdateOrderList(ResortShopWork *wk) {
     if (result == BMPMENULIST_CANCEL) {
         if (!wk->moving) {
             wk->selected = NULL;
-            wk->state = 9;
+            wk->state = RESORT_REORDER_STATE_FINISH;
             return;
         }
         wk->moving = FALSE;
@@ -638,7 +722,7 @@ static void ResortShop_UpdateOrderList(ResortShopWork *wk) {
         wk->moveTo = result;
         if (wk->moveTo != wk->moveFrom) {
             wk->moved = TRUE;
-            wk->state = 4;
+            wk->state = RESORT_REORDER_STATE_SWAP;
         }
         return;
     }
@@ -654,7 +738,7 @@ static u8 ResortShop_UpdateMessage(ResortShopWork *wk) {
     u32 state = PrintStream_GetState(wk->printStream);
 
     if (wk->keyCursor != NULL) {
-        KeyCursor_Update(wk->keyCursor, wk->printStream, wk->windows[6]);
+        KeyCursor_Update(wk->keyCursor, wk->printStream, wk->windows[RESORT_SHOP_WINDOW_MESSAGE]);
     }
     if (state == PRINT_STREAM_DONE) {
         PrintStream_Delete(wk->printStream);
@@ -694,7 +778,7 @@ static void ResortShop_Create(ResortShop *shop) {
 
     ResortShop_Init(shop->gsys, wk, shop->mode, shop->subMode);
     ResortShop_LoadBG(wk, shop->mode);
-    if (shop->mode == 0) {
+    if (shop->mode == RESORT_SHOP_MODE_BUY) {
         ResortShop_PrintMoneyLabel(wk);
         ResortShop_PrintMoney(wk);
     }
@@ -709,7 +793,7 @@ static BOOL ResortShop_ShowList(ResortShop *shop) {
         return FALSE;
     }
     if (wk->listShown == 0) {
-        BmpWin_TransferNow(wk->windows[2]);
+        BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         wk->listShown++;
         return TRUE;
     }
@@ -733,76 +817,76 @@ static BOOL ResortShop_UpdateShop(GameSystem *gsys, ResortShopWork *wk, u8 mode,
     u32 result;
 
     switch (wk->state) {
-    case 0:
+    case RESORT_BUY_STATE_LIST:
         ResortShop_UpdateItemList(wk);
         break;
-    case 1:
+    case RESORT_BUY_STATE_UNUSED:
         break;
-    case 2:
+    case RESORT_BUY_STATE_RESTORE_LIST:
         ResortShop_ClearListScreen(0);
-        BmpWin_FlushMap(wk->windows[2]);
-        BmpWin_FlushMap(wk->windows[5]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_DESCRIPTION]);
         GFL_BGSysQueueScrLoad(1);
         ClActor_SetVisible(wk->actors[3], FALSE);
         BmpMenuList_Redraw(wk->list);
-        wk->state = 0;
+        wk->state = RESORT_BUY_STATE_LIST;
         break;
-    case 3:
+    case RESORT_BUY_STATE_CONFIRM:
         ResortShop_ClearListScreen(1);
-        BmpWin_FlushMap(wk->windows[2]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         ClActor_SetVisible(wk->actors[3], FALSE);
         wk->confirmDialog = ShopUI_CreateConfirmDialog(&sConfirmDialogSetup, 1, 9, 0, wk->heapId);
-        if (wk->selected->kind == 0) {
+        if (wk->selected->kind == RESORT_SHOP_GOODS_ITEM) {
             ResortShop_PrintBagCount(wk, wk->selected->item);
         }
-        wk->state = 5;
+        wk->state = RESORT_BUY_STATE_WAIT_CONFIRM;
         break;
-    case 4:
+    case RESORT_BUY_STATE_CONFIRM_WITHOUT_COUNT:
         ResortShop_ClearListScreen(1);
-        BmpWin_FlushMap(wk->windows[2]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         ClActor_SetVisible(wk->actors[3], FALSE);
         wk->confirmDialog = ShopUI_CreateConfirmDialog(&sConfirmDialogSetup, 1, 9, 0, wk->heapId);
-        wk->state = 5;
+        wk->state = RESORT_BUY_STATE_WAIT_CONFIRM;
         break;
-    case 5:
+    case RESORT_BUY_STATE_WAIT_CONFIRM:
         result = ConfirmDialog_Update(wk->confirmDialog);
         if (result != BMPMENU_NULL) {
             if (result == 0) {
-                wk->state = 6;
+                wk->state = RESORT_BUY_STATE_BUY;
                 ResortShop_ClearListScreen(1);
                 BmpMenuList_Redraw(wk->list);
-                BmpWin_FlushMap(wk->windows[2]);
+                BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
                 GFL_BGSysQueueScrLoad(1);
             } else if (result == BMPMENU_CANCEL) {
-                wk->state = 2;
+                wk->state = RESORT_BUY_STATE_RESTORE_LIST;
             }
         }
         break;
-    case 6:
-        if (wk->selected->kind == 0) {
+    case RESORT_BUY_STATE_BUY:
+        if (wk->selected->kind == RESORT_SHOP_GOODS_ITEM) {
             GFL_SndSEPlay(1621);
             ResortShop_PrintItemMessage(wk, wk->msgBase + 8, wk->selected->item, wk->selected->count);
             ResortShop_Pay(wk, wk->selected->price);
             ResortShop_PrintMoney(wk);
             BagSave_AddItem(wk->bag, wk->selected->item, wk->selected->count, wk->heapId);
             JoinAvenueShop_SetFlag(wk->flags, wk->selected->id, TRUE);
-            wk->state = 8;
-            wk->nextState = 2;
-        } else if (wk->selected->kind == 11) {
+            wk->state = RESORT_BUY_STATE_MESSAGE;
+            wk->nextState = RESORT_BUY_STATE_RESTORE_LIST;
+        } else if (wk->selected->kind == RESORT_SHOP_GOODS_RANDOM_ITEM) {
             GFL_SndSEPlay(1621);
             ResortShop_PrintEntryMessage(wk, wk->msgBase + 61, wk->selected);
             ResortShop_Pay(wk, wk->selected->price);
             ResortShop_PrintMoney(wk);
             JoinAvenueShop_SetFlag(wk->flags, wk->selected->id, TRUE);
-            wk->state = 8;
-            wk->nextState = 7;
+            wk->state = RESORT_BUY_STATE_MESSAGE;
+            wk->nextState = RESORT_BUY_STATE_GIVE_RANDOM_ITEM;
         } else {
             ResortShop_PrintMessage(wk, wk->msgBase + 15);
-            wk->state = 8;
-            wk->nextState = 9;
+            wk->state = RESORT_BUY_STATE_MESSAGE;
+            wk->nextState = RESORT_BUY_STATE_FINISH;
         }
         break;
-    case 7: {
+    case RESORT_BUY_STATE_GIVE_RANDOM_ITEM: {
         u16 row = wk->selected->item;
         ResortPersonData *data = ResortPerson_GetData(wk->person);
         u32 prize = ResortBinary_Get(
@@ -819,26 +903,26 @@ static BOOL ResortShop_UpdateShop(GameSystem *gsys, ResortShopWork *wk, u8 mode,
         } else {
             ResortShop_PrintItemMessage(wk, wk->msgBase + 65, prize, 1);
         }
-        wk->state = 8;
-        wk->nextState = 2;
+        wk->state = RESORT_BUY_STATE_MESSAGE;
+        wk->nextState = RESORT_BUY_STATE_RESTORE_LIST;
         break;
     }
-    case 8:
+    case RESORT_BUY_STATE_MESSAGE:
         wk->state = ResortShop_UpdateMessage(wk);
         break;
-    case 9:
+    case RESORT_BUY_STATE_FINISH:
         if (wk->selected != NULL) {
-            *wk->vars[0] = wk->selected->kind;
-            *wk->vars[1] = wk->selected->item;
-            *wk->vars[2] = wk->selected->count;
-            *wk->vars[3] = wk->selected->id;
-            *wk->vars[4] = wk->selected->price / 10;
+            *wk->vars[RESORT_SHOP_OUT_RESULT] = wk->selected->kind;
+            *wk->vars[RESORT_SHOP_OUT_ITEM] = wk->selected->item;
+            *wk->vars[RESORT_SHOP_OUT_COUNT] = wk->selected->count;
+            *wk->vars[RESORT_SHOP_OUT_ENTRY_ID] = wk->selected->id;
+            *wk->vars[RESORT_SHOP_OUT_PRICE] = wk->selected->price / 10;
         } else {
-            *wk->vars[0] = 0xff;
-            *wk->vars[1] = 0;
-            *wk->vars[2] = 0;
-            *wk->vars[3] = 0;
-            *wk->vars[4] = 0;
+            *wk->vars[RESORT_SHOP_OUT_RESULT] = RESORT_SHOP_SELECTION_CANCEL;
+            *wk->vars[RESORT_SHOP_OUT_ITEM] = 0;
+            *wk->vars[RESORT_SHOP_OUT_COUNT] = 0;
+            *wk->vars[RESORT_SHOP_OUT_ENTRY_ID] = 0;
+            *wk->vars[RESORT_SHOP_OUT_PRICE] = 0;
         }
         return TRUE;
     }
@@ -854,49 +938,49 @@ static BOOL ResortShop_UpdateRecords(GameSystem *gsys, ResortShopWork *wk, u8 mo
     u32 result;
 
     switch (wk->state) {
-    case 0:
+    case RESORT_SELECT_STATE_LIST:
         ResortShop_UpdateRecordList(wk);
         break;
-    case 1:
+    case RESORT_SELECT_STATE_UNUSED:
         break;
-    case 2:
+    case RESORT_SELECT_STATE_RESTORE_LIST:
         ResortShop_ClearListScreen(0);
-        BmpWin_FlushMap(wk->windows[2]);
-        BmpWin_FlushMap(wk->windows[5]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_DESCRIPTION]);
         GFL_BGSysQueueScrLoad(1);
         ClActor_SetVisible(wk->actors[3], FALSE);
         BmpMenuList_Redraw(wk->list);
-        wk->state = 0;
+        wk->state = RESORT_SELECT_STATE_LIST;
         break;
-    case 3:
+    case RESORT_SELECT_STATE_CONFIRM:
         ResortShop_ClearListScreen(1);
-        BmpWin_FlushMap(wk->windows[2]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         ClActor_SetVisible(wk->actors[3], FALSE);
         wk->confirmDialog = ShopUI_CreateConfirmDialog(&sConfirmDialogSetup, 1, 9, 0, wk->heapId);
-        wk->state = 5;
+        wk->state = RESORT_SELECT_STATE_WAIT_CONFIRM;
         break;
-    case 4:
+    case RESORT_SELECT_STATE_CONFIRM_DUPLICATE:
         ResortShop_ClearListScreen(1);
-        BmpWin_FlushMap(wk->windows[2]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         ClActor_SetVisible(wk->actors[3], FALSE);
         wk->confirmDialog = ShopUI_CreateConfirmDialog(&sConfirmDialogSetup, 1, 9, 0, wk->heapId);
-        wk->state = 5;
+        wk->state = RESORT_SELECT_STATE_WAIT_CONFIRM;
         break;
-    case 5:
+    case RESORT_SELECT_STATE_WAIT_CONFIRM:
         result = ConfirmDialog_Update(wk->confirmDialog);
         if (result != BMPMENU_NULL) {
             if (result == 0) {
-                wk->state = 6;
+                wk->state = RESORT_SELECT_STATE_ACCEPT;
                 ResortShop_ClearListScreen(1);
                 BmpMenuList_Redraw(wk->list);
-                BmpWin_FlushMap(wk->windows[2]);
+                BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
                 GFL_BGSysQueueScrLoad(1);
             } else if (result == BMPMENU_CANCEL) {
-                wk->state = 2;
+                wk->state = RESORT_SELECT_STATE_RESTORE_LIST;
             }
         }
         break;
-    case 6: {
+    case RESORT_SELECT_STATE_ACCEPT: {
         StrBuf *strbuf = GFL_StrBufCreate(64, wk->heapId);
         u16 name[8];
         u8 gender;
@@ -907,26 +991,26 @@ static BOOL ResortShop_UpdateRecords(GameSystem *gsys, ResortShopWork *wk, u8 mo
         GFL_WordSetSetStrbuf(wk->wordSet, 2, strbuf, gender, 1, 2);
         GFL_StrBufFree(strbuf);
         ResortShop_PrintMessage(wk, wk->msgs[2]);
-        wk->state = 7;
-        wk->nextState = 8;
+        wk->state = RESORT_SELECT_STATE_MESSAGE;
+        wk->nextState = RESORT_SELECT_STATE_FINISH;
         break;
     }
-    case 7:
+    case RESORT_SELECT_STATE_MESSAGE:
         wk->state = ResortShop_UpdateMessage(wk);
         break;
-    case 8:
+    case RESORT_SELECT_STATE_FINISH:
         if (wk->selected != NULL) {
-            *wk->vars[0] = wk->selected->kind;
-            *wk->vars[1] = 0;
-            *wk->vars[2] = 0;
-            *wk->vars[3] = wk->selected->id;
-            *wk->vars[4] = wk->selected->price;
+            *wk->vars[RESORT_SHOP_OUT_RESULT] = wk->selected->kind;
+            *wk->vars[RESORT_SHOP_OUT_ITEM] = 0;
+            *wk->vars[RESORT_SHOP_OUT_COUNT] = 0;
+            *wk->vars[RESORT_SHOP_OUT_ENTRY_ID] = wk->selected->id;
+            *wk->vars[RESORT_SHOP_OUT_PRICE] = wk->selected->price;
         } else {
-            *wk->vars[0] = 0xff;
-            *wk->vars[1] = 0;
-            *wk->vars[2] = 0;
-            *wk->vars[3] = 0;
-            *wk->vars[4] = 0;
+            *wk->vars[RESORT_SHOP_OUT_RESULT] = RESORT_SHOP_SELECTION_CANCEL;
+            *wk->vars[RESORT_SHOP_OUT_ITEM] = 0;
+            *wk->vars[RESORT_SHOP_OUT_COUNT] = 0;
+            *wk->vars[RESORT_SHOP_OUT_ENTRY_ID] = 0;
+            *wk->vars[RESORT_SHOP_OUT_PRICE] = 0;
         }
         return TRUE;
     }
@@ -942,67 +1026,68 @@ static BOOL ResortShop_UpdateOrder(GameSystem *gsys, ResortShopWork *wk, u8 mode
     u32 result;
 
     switch (wk->state) {
-    case 0:
+    case RESORT_REORDER_STATE_PROMPT:
         ResortShop_PrintMessageNoWait(wk, wk->msgs[0]);
-        wk->state = 8;
-        wk->nextState = 3;
+        wk->state = RESORT_REORDER_STATE_MESSAGE;
+        wk->nextState = RESORT_REORDER_STATE_RESTORE_LIST;
         break;
-    case 1:
+    case RESORT_REORDER_STATE_LIST:
         ResortShop_UpdateOrderList(wk);
         break;
-    case 2:
+    case RESORT_REORDER_STATE_UNUSED:
         break;
-    case 3:
+    case RESORT_REORDER_STATE_RESTORE_LIST:
         ResortShop_ClearListScreen(0);
-        BmpWin_FlushMap(wk->windows[2]);
-        BmpWin_FlushMap(wk->windows[5]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_DESCRIPTION]);
         GFL_BGSysQueueScrLoad(1);
         ClActor_SetVisible(wk->actors[3], FALSE);
         BmpMenuList_Redraw(wk->list);
-        wk->state = 1;
+        wk->state = RESORT_REORDER_STATE_LIST;
         break;
-    case 4:
+    case RESORT_REORDER_STATE_SWAP:
         wk->swapEntries(wk, mode, subMode);
         wk->moving = FALSE;
         ClActor_SetVisible(wk->actors[5], FALSE);
         ResortShop_FreeList(wk);
         ResortShop_CreateList(wk, wk->cursorCallback, wk->printCallback);
-        BmpWin_FlushMap(wk->windows[2]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         GFL_BGSysQueueScrLoad(1);
         ResortShop_PrintMessage(wk, wk->msgs[2]);
-        wk->state = 8;
-        wk->nextState = 3;
+        wk->state = RESORT_REORDER_STATE_MESSAGE;
+        wk->nextState = RESORT_REORDER_STATE_RESTORE_LIST;
         break;
-    case 5:
+    case RESORT_REORDER_STATE_CONFIRM:
         ResortShop_ClearListScreen(1);
-        BmpWin_FlushMap(wk->windows[2]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         ClActor_SetVisible(wk->actors[3], FALSE);
         wk->confirmDialog = ShopUI_CreateConfirmDialog(&sConfirmDialogSetup, 1, 9, 0, wk->heapId);
-        wk->state = 7;
+        wk->state = RESORT_REORDER_STATE_WAIT_CONFIRM;
         break;
-    case 6:
+    case RESORT_REORDER_STATE_CONFIRM_DUPLICATE:
         ResortShop_ClearListScreen(1);
-        BmpWin_FlushMap(wk->windows[2]);
+        BmpWin_FlushMap(wk->windows[RESORT_SHOP_WINDOW_LIST]);
         ClActor_SetVisible(wk->actors[3], FALSE);
         wk->confirmDialog = ShopUI_CreateConfirmDialog(&sConfirmDialogSetup, 1, 9, 0, wk->heapId);
-        wk->state = 7;
+        wk->state = RESORT_REORDER_STATE_WAIT_CONFIRM;
         break;
-    case 7:
+    case RESORT_REORDER_STATE_WAIT_CONFIRM:
         result = ConfirmDialog_Update(wk->confirmDialog);
         if (result != BMPMENU_NULL) {
             if (result == 0) {
-                wk->state = 4;
+                wk->state = RESORT_REORDER_STATE_SWAP;
             } else if (result == BMPMENU_CANCEL) {
-                wk->state = 3;
+                wk->state = RESORT_REORDER_STATE_RESTORE_LIST;
             }
         }
         break;
-    case 8:
+    case RESORT_REORDER_STATE_MESSAGE:
         wk->state = ResortShop_UpdateMessage(wk);
         break;
-    case 9:
+    case RESORT_REORDER_STATE_FINISH:
         wk->applyOrder(wk, mode, subMode);
-        *wk->vars[0] = GFL_STD_MemCmp(wk->order, wk->initialOrder, sizeof(wk->order)) != 0 ? TRUE : FALSE;
+        *wk->vars[RESORT_SHOP_OUT_RESULT] =
+            GFL_STD_MemCmp(wk->order, wk->initialOrder, sizeof(wk->order)) != 0 ? TRUE : FALSE;
         return TRUE;
     }
     PrintQueue_Main(wk->printQueue);
@@ -1030,7 +1115,7 @@ static void ResortShop_MakeItemEntries(ResortShopWork *wk, u8 mode, u8 subMode) 
         const u16 *item = ResortShopData_GetGoods(wk->shops, wk->row, i);
         u16 price = ResortShopData_GetGoodsParam(item, 4);
 
-        if (ResortShopData_GetGoodsParam(item, 0) != 0 && !wk->unk300) {
+        if (ResortShopData_GetGoodsParam(item, 0) != 0 && !wk->restrictedGoodsUnlocked) {
             continue;
         }
         wk->entries[n].id = i;
@@ -1072,9 +1157,9 @@ static void ResortShop_MakeRecordEntries(ResortShopWork *wk, u8 mode, u8 subMode
     n = 0;
     for (i = 0; i < 4; i++) {
         void *record = JoinAvenueOccupants_GetRecord(wk->occupants, i);
-        u16 a;
-        u16 b;
-        u16 c;
+        u16 year;
+        u16 month;
+        u16 day;
         StrBuf *labelFormat;
         StrBuf *descriptionFormat;
         u8 gender;
@@ -1093,9 +1178,9 @@ static void ResortShop_MakeRecordEntries(ResortShopWork *wk, u8 mode, u8 subMode
         wk->entries[n].item = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_TRAINER_TYPE, NULL);
         wk->entries[n].count = 0;
         wk->entries[n].person = record;
-        a = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_YEAR, NULL);
-        b = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_MONTH, NULL);
-        c = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_DAY, NULL);
+        year = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_YEAR, NULL);
+        month = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_MONTH, NULL);
+        day = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_DAY, NULL);
         labelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty_10);
         descriptionFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, n + 37);
         gender = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_GENDER, NULL);
@@ -1107,9 +1192,9 @@ static void ResortShop_MakeRecordEntries(ResortShopWork *wk, u8 mode, u8 subMode
         WordSetNumber(wk->wordSet, 1, n + 1, 1, NUM_PAD_NONE, 1);
         GFL_WordSetSetStrbuf(wk->wordSet, 0, nameBuf, gender, 1, 2);
         GFL_WordSetFormatStrbuf(wk->wordSet, label, labelFormat);
-        WordSetNumber(wk->wordSet, 4, a, 2, NUM_PAD_ZERO, 1);
-        WordSetNumber(wk->wordSet, 5, b, 2, NUM_PAD_NONE, 1);
-        WordSetNumber(wk->wordSet, 6, c, 2, NUM_PAD_NONE, 1);
+        WordSetNumber(wk->wordSet, 4, year, 2, NUM_PAD_ZERO, 1);
+        WordSetNumber(wk->wordSet, 5, month, 2, NUM_PAD_NONE, 1);
+        WordSetNumber(wk->wordSet, 6, day, 2, NUM_PAD_NONE, 1);
         GFL_WordSetFormatStrbuf(wk->wordSet, description, descriptionFormat);
         wk->entries[n].label = label;
         wk->entries[n].name = GFL_StrBufClone(nameBuf, wk->heapId);
@@ -1173,9 +1258,9 @@ static void ResortShop_SwapRecordEntries(ResortShopWork *wk, u8 mode, u8 subMode
         StrBuf *labelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Empty_10);
         StrBuf *descriptionFormat = GFL_MsgDataLoadStrbufNew(wk->msgData, i + 37);
         u8 gender = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_GENDER, NULL);
-        u16 a = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_YEAR, NULL);
-        u16 b = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_MONTH, NULL);
-        u16 c = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_DAY, NULL);
+        u16 year = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_YEAR, NULL);
+        u16 month = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_MONTH, NULL);
+        u16 day = JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_DAY, NULL);
         StrBuf *nameBuf;
 
         JoinAvenueRecord_GetParam(record, JOIN_AVE_PARAM_NAME, name);
@@ -1183,9 +1268,9 @@ static void ResortShop_SwapRecordEntries(ResortShopWork *wk, u8 mode, u8 subMode
         GFL_StrBufLoadString(nameBuf, name);
         WordSetNumber(wk->wordSet, 1, i + 1, 1, NUM_PAD_NONE, 1);
         GFL_WordSetSetStrbuf(wk->wordSet, 0, nameBuf, gender, 1, 2);
-        WordSetNumber(wk->wordSet, 4, a, 2, NUM_PAD_ZERO, 1);
-        WordSetNumber(wk->wordSet, 5, b, 2, NUM_PAD_NONE, 1);
-        WordSetNumber(wk->wordSet, 6, c, 2, NUM_PAD_NONE, 1);
+        WordSetNumber(wk->wordSet, 4, year, 2, NUM_PAD_ZERO, 1);
+        WordSetNumber(wk->wordSet, 5, month, 2, NUM_PAD_NONE, 1);
+        WordSetNumber(wk->wordSet, 6, day, 2, NUM_PAD_NONE, 1);
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->entries[i].label, labelFormat);
         // The copy goes into the new name, rather than from it
         GFL_StrBufCopy(nameBuf, wk->entries[i].name);
@@ -1269,7 +1354,7 @@ static void ResortShop_LoadBG(ResortShopWork *wk, u32 mode) {
     LoadSysMsgBox(1, 228, 9, 0, wk->heapId);
     GFL_BGSysClearScr(1);
     GFL_BGSysSetBGPriority(2, 1);
-    if (mode == 1 || mode == 2) {
+    if (mode == RESORT_SHOP_MODE_SELECT || mode == RESORT_SHOP_MODE_REORDER) {
         GFL_BGSysFillScrArea(2, 0, 0, 0, 11, 17, 16);
         GFL_BGSysLoadScr(2);
     }
@@ -1328,7 +1413,7 @@ static void ResortShop_ShowPersonModel(ResortShopWork *wk, u16 objCode) {
     u8 texture;
     u16 fileId;
 
-    if (objCode != 0xffff) {
+    if (objCode != RESORT_SHOP_ICON_NONE) {
         arc = GFL_ArcSysCreateFileHandle(ARCID_MMODEL_TBL, wk->heapId);
         ResortShop_GetModelTexture(arc, objCode, &texture, &fileId);
         GFL_ArcToolFree(arc);
@@ -1402,18 +1487,19 @@ static void ResortShop_CreateWindows(ResortShopWork *wk) {
         wk->windows[i] =
             BmpWin_CreateDynamic(setup->bg, setup->x, setup->y, setup->width, setup->height, setup->palette, 1);
     }
-    wk->printWindow.window = wk->windows[2];
+    wk->printWindow.window = wk->windows[RESORT_SHOP_WINDOW_LIST];
     wk->printWindow.flushPending = FALSE;
     wk->printQueue = PrintQueue_CreateDefault(wk->heapId);
-    BmpWin_TransferNow(wk->windows[1]);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_MONEY]);
 }
 
 static void ResortShop_PrintMoneyLabel(ResortShopWork *wk) {
     StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, ScrcmdResortShop_Text_Money);
 
-    GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[0]), 0, 0, strbuf, wk->font, PRINT_COLOR(15, 2, 15));
+    GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_MONEY_LABEL]), 0, 0, strbuf,
+                                   wk->font, PRINT_COLOR(15, 2, 15));
     GFL_StrBufFree(strbuf);
-    BmpWin_TransferNow(wk->windows[0]);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_MONEY_LABEL]);
 }
 
 static void ResortShop_FreeWindows(ResortShopWork *wk) {
@@ -1434,10 +1520,10 @@ static void ResortShop_PrintMoney(ResortShopWork *wk) {
 
     WordSetNumber(wk->wordSet, 0, getCash(wk->trainerCard), 7, 1, 1);
     GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
-    bitmap = BmpWin_GetBitmap(wk->windows[1]);
+    bitmap = BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_MONEY]);
     GFL_BitmapFill(bitmap, 0);
     GFL_TextRendererDrawToBitmapEx(bitmap, 0, 0, strbuf, wk->font, PRINT_COLOR(15, 2, 15));
-    BmpWin_TransferNow(wk->windows[1]);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_MONEY]);
     GFL_StrBufFree(strbuf);
     GFL_StrBufFree(format);
 }
@@ -1448,26 +1534,26 @@ static void ResortShop_PrintBagCount(ResortShopWork *wk, u16 item) {
     StrBuf *strbuf = GFL_StrBufCreate(20, wk->heapId);
     GFLBitmap *bitmap;
 
-    BmpWin_DrawFrame(wk->windows[3], WINFRAME_TRANSFER_NONE, 228, 9);
+    BmpWin_DrawFrame(wk->windows[RESORT_SHOP_WINDOW_BAG_COUNT], WINFRAME_TRANSFER_NONE, 228, 9);
     WordSetNumber(wk->wordSet, 0, BagSave_GetItemCountByID(wk->bag, item, wk->heapId), 3, NUM_PAD_NONE, 1);
     GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
-    bitmap = BmpWin_GetBitmap(wk->windows[3]);
+    bitmap = BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_BAG_COUNT]);
     GFL_BitmapFill(bitmap, 15);
     GFL_TextRendererDrawToBitmapEx(bitmap, 0, 0, strbuf, wk->font, PRINT_COLOR(1, 2, 15));
-    BmpWin_TransferNow(wk->windows[3]);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_BAG_COUNT]);
     GFL_StrBufFree(strbuf);
     GFL_StrBufFree(format);
 }
 
 // The description of the entry at the cursor
 static void ResortShop_PrintDescription(ResortShopWork *wk, StrBuf *strbuf) {
-    GFLBitmap *bitmap = BmpWin_GetBitmap(wk->windows[5]);
+    GFLBitmap *bitmap = BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_DESCRIPTION]);
 
     GFL_BitmapFill(bitmap, 0);
     if (strbuf != NULL) {
         GFL_TextRendererDrawToBitmapEx(bitmap, 0, 0, strbuf, wk->font, PRINT_COLOR(15, 2, 0));
     }
-    BmpWin_TransferNow(wk->windows[5]);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_DESCRIPTION]);
 }
 
 static void ResortShop_CreateList(ResortShopWork *wk, BmpMenuListCursorCallback cursorCallback,
@@ -1523,24 +1609,24 @@ static void ResortShop_PrintPrice(BmpMenuList *list, s32 value, u8 y) {
     }
     if (JoinAvenueShop_GetFlag(wk->flags, wk->entries[value].id)) {
         width = GFL_FontGetBlockWidth(wk->boughtLabel, wk->font, 0);
-        windowWidth = GFL_BitmapGetWidth(BmpWin_GetBitmap(wk->windows[2]));
-        ResortShop_PrintToRow(wk->printQueue, BmpWin_GetBitmap(wk->windows[2]), windowWidth - width, y, wk->boughtLabel,
-                              wk->font, PRINT_COLOR(12, 13, 0));
+        windowWidth = GFL_BitmapGetWidth(BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_LIST]));
+        ResortShop_PrintToRow(wk->printQueue, BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_LIST]),
+                              windowWidth - width, y, wk->boughtLabel, wk->font, PRINT_COLOR(12, 13, 0));
         return;
     }
     WordSetNumber(wk->wordSet, 1, wk->entries[value].price, 5, 1, 1);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->message, wk->priceFormat);
     width = GFL_FontGetBlockWidth(wk->message, wk->font, 0);
-    windowWidth = GFL_BitmapGetWidth(BmpWin_GetBitmap(wk->windows[2]));
-    ResortShop_PrintToRow(wk->printQueue, BmpWin_GetBitmap(wk->windows[2]), windowWidth - width, y, wk->message,
-                          wk->font, PRINT_COLOR(12, 13, 0));
+    windowWidth = GFL_BitmapGetWidth(BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_LIST]));
+    ResortShop_PrintToRow(wk->printQueue, BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_LIST]), windowWidth - width,
+                          y, wk->message, wk->font, PRINT_COLOR(12, 13, 0));
 }
 
 static void ResortShop_FreeList(ResortShopWork *wk) {
-    u16 a1;
-    u16 a2;
+    u16 listTop;
+    u16 cursorRow;
 
-    BmpMenuList_Free(wk->list, &a1, &a2);
+    BmpMenuList_Free(wk->list, &listTop, &cursorRow);
 }
 
 static BOOL ResortShop_PrintStreamCallback(u32 event) {
@@ -1561,35 +1647,35 @@ static void ResortShop_PrintMessage(ResortShopWork *wk, u32 msgId) {
     StrBuf *strbuf;
     BmpWin *window;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[6]), 15);
-    BmpWin_DrawFrame(wk->windows[6], WINFRAME_TRANSFER_NOW, 228, 9);
+    GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_MESSAGE]), 15);
+    BmpWin_DrawFrame(wk->windows[RESORT_SHOP_WINDOW_MESSAGE], WINFRAME_TRANSFER_NOW, 228, 9);
     strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, msgId);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->message, strbuf);
     GFL_StrBufFree(strbuf);
-    wk->printStream =
-        PrintStream_CreateWithCallback(wk->windows[6], 0, 0, wk->message, wk->font, TextSpeed_GetCurrentWait(),
-                                       wk->tcbManager, 0, wk->heapId, 0xffff, ResortShop_PrintStreamCallback);
+    wk->printStream = PrintStream_CreateWithCallback(wk->windows[RESORT_SHOP_WINDOW_MESSAGE], 0, 0, wk->message,
+                                                     wk->font, TextSpeed_GetCurrentWait(), wk->tcbManager, 0,
+                                                     wk->heapId, 0xffff, ResortShop_PrintStreamCallback);
     if (wk->keyCursor != NULL) {
         KeyCursor_Free(wk->keyCursor);
         wk->keyCursor = NULL;
     }
     wk->keyCursor = KeyCursor_Create(15, TRUE, FALSE, wk->heapId);
-    BmpWin_TransferNow(wk->windows[6]);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_MESSAGE]);
 }
 
 // The same without waiting for a button
 static void ResortShop_PrintMessageNoWait(ResortShopWork *wk, u32 msgId) {
     StrBuf *strbuf;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[6]), 15);
-    BmpWin_DrawFrame(wk->windows[6], WINFRAME_TRANSFER_NOW, 228, 9);
+    GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[RESORT_SHOP_WINDOW_MESSAGE]), 15);
+    BmpWin_DrawFrame(wk->windows[RESORT_SHOP_WINDOW_MESSAGE], WINFRAME_TRANSFER_NOW, 228, 9);
     strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, msgId);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->message, strbuf);
     GFL_StrBufFree(strbuf);
-    wk->printStream =
-        PrintStream_CreateWithCallback(wk->windows[6], 0, 0, wk->message, wk->font, TextSpeed_GetCurrentWait(),
-                                       wk->tcbManager, 0, wk->heapId, 0xffff, ResortShop_PrintStreamCallback);
-    BmpWin_TransferNow(wk->windows[6]);
+    wk->printStream = PrintStream_CreateWithCallback(wk->windows[RESORT_SHOP_WINDOW_MESSAGE], 0, 0, wk->message,
+                                                     wk->font, TextSpeed_GetCurrentWait(), wk->tcbManager, 0,
+                                                     wk->heapId, 0xffff, ResortShop_PrintStreamCallback);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_MESSAGE]);
 }
 
 static void ResortShop_DrawMessageFrame(BmpWin *window) {
@@ -1604,20 +1690,20 @@ static void ResortShop_PrintMessageInFrame(ResortShopWork *wk, u32 msgId) {
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->message, strbuf);
     GFL_StrBufFree(strbuf);
     wk->printStream =
-        PrintStream_CreateWithCallback(wk->windows[6], 0, 0, wk->message, wk->font, TextSpeed_GetCurrentWait(),
-                                       wk->tcbManager, 0, wk->heapId, 0xffff, NULL);
+        PrintStream_CreateWithCallback(wk->windows[RESORT_SHOP_WINDOW_MESSAGE], 0, 0, wk->message, wk->font,
+                                       TextSpeed_GetCurrentWait(), wk->tcbManager, 0, wk->heapId, 0xffff, NULL);
     if (wk->keyCursor != NULL) {
         KeyCursor_Free(wk->keyCursor);
         wk->keyCursor = NULL;
     }
     wk->keyCursor = KeyCursor_Create(15, TRUE, FALSE, wk->heapId);
-    BmpWin_TransferNow(wk->windows[6]);
+    BmpWin_TransferNow(wk->windows[RESORT_SHOP_WINDOW_MESSAGE]);
 }
 
 // A message about an entry, with its name, count and price in the word set
 static void ResortShop_PrintEntryMessage(ResortShopWork *wk, u32 msgId, ResortShopEntry *entry) {
-    ResortShop_DrawMessageFrame(wk->windows[6]);
-    if (entry->kind == 0 && wk->mode == 0) {
+    ResortShop_DrawMessageFrame(wk->windows[RESORT_SHOP_WINDOW_MESSAGE]);
+    if (entry->kind == RESORT_SHOP_GOODS_ITEM && wk->mode == RESORT_SHOP_MODE_BUY) {
         loadItemNameToStrbuf(wk->wordSet, 0, entry->item);
     } else {
         GFL_WordSetSetStrbuf(wk->wordSet, 0, entry->name, 2, 1, 2);
@@ -1664,7 +1750,7 @@ static void ResortShop_DestroyItemList(GameSystem *gsys, ResortShopWork *wk, u8 
 }
 
 // Moves the cursor's arrow, and shows the entry's description and icon
-static void ResortShop_ItemCursorCallback(BmpMenuList *list, s32 value, u8 a2) {
+static void ResortShop_ItemCursorCallback(BmpMenuList *list, s32 value, u8 init) {
     ResortShopWork *wk = BmpMenuList_GetWork(list);
     u16 top;
     u16 cursor;
@@ -1676,14 +1762,14 @@ static void ResortShop_ItemCursorCallback(BmpMenuList *list, s32 value, u8 a2) {
     ClActor_SetSurfacePos(wk->actors[0], &pos, 0);
     if (value < NELEMS(wk->entries)) {
         ResortShop_PrintDescription(wk, wk->entries[value].description);
-        if (wk->entries[value].kind == 0) {
+        if (wk->entries[value].kind == RESORT_SHOP_GOODS_ITEM) {
             ResortShop_ShowItemIcon(wk, wk->entries[value].item);
         } else {
-            ResortShop_ShowItemIcon(wk, 0xffff);
+            ResortShop_ShowItemIcon(wk, RESORT_SHOP_ICON_NONE);
         }
     } else {
         ResortShop_PrintDescription(wk, NULL);
-        ResortShop_ShowItemIcon(wk, 0xffff);
+        ResortShop_ShowItemIcon(wk, RESORT_SHOP_ICON_NONE);
     }
 }
 
@@ -1713,17 +1799,17 @@ static StrBuf *ResortShop_MakePersonDescription(ResortShopWork *wk, JoinAvenuePe
     MsgData *msgData =
         GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10685, HEAPID_TAIL(wk->heapId));
     StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, shop + 42);
-    u16 a = joinAveTextHandler(person, JOIN_AVE_PARAM_YEAR, NULL);
-    u16 b = joinAveTextHandler(person, JOIN_AVE_PARAM_MONTH, NULL);
-    u16 c = joinAveTextHandler(person, JOIN_AVE_PARAM_DAY, NULL);
+    u16 year = joinAveTextHandler(person, JOIN_AVE_PARAM_YEAR, NULL);
+    u16 month = joinAveTextHandler(person, JOIN_AVE_PARAM_MONTH, NULL);
+    u16 day = joinAveTextHandler(person, JOIN_AVE_PARAM_DAY, NULL);
     u32 level = JoinAvenueShop_GetField(flags, 1);
     StrBuf *shopName = GFL_MsgDataLoadStrbufNew(msgData, shop + 280);
 
     GFL_WordSetSetStrbuf(wk->wordSet, 1, shopName, 2, 1, 2);
     WordSetNumber(wk->wordSet, 2, level + 1, 2, NUM_PAD_NONE, 1);
-    WordSetNumber(wk->wordSet, 4, a, 2, NUM_PAD_ZERO, 1);
-    WordSetNumber(wk->wordSet, 5, b, 2, NUM_PAD_NONE, 1);
-    WordSetNumber(wk->wordSet, 6, c, 2, NUM_PAD_NONE, 1);
+    WordSetNumber(wk->wordSet, 4, year, 2, NUM_PAD_ZERO, 1);
+    WordSetNumber(wk->wordSet, 5, month, 2, NUM_PAD_NONE, 1);
+    WordSetNumber(wk->wordSet, 6, day, 2, NUM_PAD_NONE, 1);
     GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
     GFL_WordSetFormatStrbuf(wk->wordSet, strbuf, format);
     GFL_StrBufFree(shopName);
@@ -1761,7 +1847,7 @@ static void ResortShop_MakePersonEntry(ResortShopWork *wk, ResortPersonData *dat
 }
 
 // Moves the cursor's arrow, and shows the entry's description and model
-static void ResortShop_ModelCursorCallback(BmpMenuList *list, s32 value, u8 a2) {
+static void ResortShop_ModelCursorCallback(BmpMenuList *list, s32 value, u8 init) {
     ResortShopWork *wk = BmpMenuList_GetWork(list);
     u16 top;
     u16 cursor;
@@ -1776,12 +1862,12 @@ static void ResortShop_ModelCursorCallback(BmpMenuList *list, s32 value, u8 a2) 
         ResortShop_ShowPersonModel(wk, wk->entries[value].item);
     } else {
         ResortShop_PrintDescription(wk, NULL);
-        ResortShop_ShowPersonModel(wk, 0xffff);
+        ResortShop_ShowPersonModel(wk, RESORT_SHOP_ICON_NONE);
     }
 }
 
 // The same, and moves the arrow of the entry being moved
-static void ResortShop_OrderCursorCallback(BmpMenuList *list, s32 value, u8 a2) {
+static void ResortShop_OrderCursorCallback(BmpMenuList *list, s32 value, u8 init) {
     ResortShopWork *wk = BmpMenuList_GetWork(list);
     u16 top;
     u16 cursor;
@@ -1796,7 +1882,7 @@ static void ResortShop_OrderCursorCallback(BmpMenuList *list, s32 value, u8 a2) 
         ResortShop_ShowPersonModel(wk, wk->entries[value].item);
     } else {
         ResortShop_PrintDescription(wk, NULL);
-        ResortShop_ShowPersonModel(wk, 0xffff);
+        ResortShop_ShowPersonModel(wk, RESORT_SHOP_ICON_NONE);
     }
     if (wk->moving) {
         ResortShop_UpdateMoveArrow(wk);
@@ -1849,24 +1935,24 @@ static void ResortShop_ApplyRecordOrder(ResortShopWork *wk, u8 mode, u8 subMode)
         for (i = 0; i < wk->entryCount; i++) {
             if (i != wk->entries[i].id) {
                 u16 otherId = wk->entries[wk->entries[i].id].id;
-                void *a = JoinAvenueOccupants_GetRecord(wk->occupants, wk->entries[i].id);
-                u32 a1 = JoinAvenueRecord_GetParam(a, JOIN_AVE_PARAM_ROW, NULL);
-                u16 a0 = JoinAvenueRecord_GetParam(a, JOIN_AVE_PARAM_SLOT, NULL);
-                u16 a31 = JoinAvenueRecord_GetParam(a, JOIN_AVE_PARAM_SHOP_KIND, NULL);
-                void *b = JoinAvenueOccupants_GetRecord(wk->occupants, otherId);
-                u32 b1 = JoinAvenueRecord_GetParam(b, JOIN_AVE_PARAM_ROW, NULL);
-                u16 b0 = JoinAvenueRecord_GetParam(b, JOIN_AVE_PARAM_SLOT, NULL);
-                u16 b31 = JoinAvenueRecord_GetParam(b, JOIN_AVE_PARAM_SHOP_KIND, NULL);
+                void *recordA = JoinAvenueOccupants_GetRecord(wk->occupants, wk->entries[i].id);
+                u32 rowA = JoinAvenueRecord_GetParam(recordA, JOIN_AVE_PARAM_ROW, NULL);
+                u16 slotA = JoinAvenueRecord_GetParam(recordA, JOIN_AVE_PARAM_SLOT, NULL);
+                u16 shopKindA = JoinAvenueRecord_GetParam(recordA, JOIN_AVE_PARAM_SHOP_KIND, NULL);
+                void *recordB = JoinAvenueOccupants_GetRecord(wk->occupants, otherId);
+                u32 rowB = JoinAvenueRecord_GetParam(recordB, JOIN_AVE_PARAM_ROW, NULL);
+                u16 slotB = JoinAvenueRecord_GetParam(recordB, JOIN_AVE_PARAM_SLOT, NULL);
+                u16 shopKindB = JoinAvenueRecord_GetParam(recordB, JOIN_AVE_PARAM_SHOP_KIND, NULL);
 
-                JoinAvenueRecord_SetParam(a, JOIN_AVE_PARAM_SLOT, b0);
-                JoinAvenueRecord_SetParam(a, JOIN_AVE_PARAM_ROW, b1);
-                JoinAvenueRecord_SetParam(a, JOIN_AVE_PARAM_SHOP_KIND, b31);
-                JoinAvenueRecord_SetParam(b, JOIN_AVE_PARAM_SLOT, a0);
-                JoinAvenueRecord_SetParam(b, JOIN_AVE_PARAM_ROW, a1);
-                JoinAvenueRecord_SetParam(b, JOIN_AVE_PARAM_SHOP_KIND, a31);
-                MI_CpuCopy8(a, record, sizeof(record));
-                MI_CpuCopy8(b, a, sizeof(record));
-                MI_CpuCopy8(record, b, sizeof(record));
+                JoinAvenueRecord_SetParam(recordA, JOIN_AVE_PARAM_SLOT, slotB);
+                JoinAvenueRecord_SetParam(recordA, JOIN_AVE_PARAM_ROW, rowB);
+                JoinAvenueRecord_SetParam(recordA, JOIN_AVE_PARAM_SHOP_KIND, shopKindB);
+                JoinAvenueRecord_SetParam(recordB, JOIN_AVE_PARAM_SLOT, slotA);
+                JoinAvenueRecord_SetParam(recordB, JOIN_AVE_PARAM_ROW, rowA);
+                JoinAvenueRecord_SetParam(recordB, JOIN_AVE_PARAM_SHOP_KIND, shopKindA);
+                MI_CpuCopy8(recordA, record, sizeof(record));
+                MI_CpuCopy8(recordB, recordA, sizeof(record));
+                MI_CpuCopy8(record, recordB, sizeof(record));
                 tmp = wk->order[i];
                 wk->order[i] = wk->order[wk->entries[i].id];
                 wk->order[wk->entries[i].id] = tmp;
@@ -1894,20 +1980,20 @@ static void ResortShop_ApplyPersonOrder(ResortShopWork *wk, u8 mode, u8 subMode)
 
             if (i != j) {
                 u16 otherId = ResortShop_GetEntry(wk, j)->id;
-                JoinAvenuePerson *a = JoinAvenueOccupants_GetPerson(wk->occupants, wk->entries[i].id);
-                u32 a1 = joinAveTextHandler(a, JOIN_AVE_PARAM_ROW, NULL);
-                u16 a0 = joinAveTextHandler(a, JOIN_AVE_PARAM_SLOT, NULL);
-                JoinAvenuePerson *b = JoinAvenueOccupants_GetPerson(wk->occupants, otherId);
-                u32 b1 = joinAveTextHandler(b, JOIN_AVE_PARAM_ROW, NULL);
-                u16 b0 = joinAveTextHandler(b, JOIN_AVE_PARAM_SLOT, NULL);
+                JoinAvenuePerson *personA = JoinAvenueOccupants_GetPerson(wk->occupants, wk->entries[i].id);
+                u32 rowA = joinAveTextHandler(personA, JOIN_AVE_PARAM_ROW, NULL);
+                u16 slotA = joinAveTextHandler(personA, JOIN_AVE_PARAM_SLOT, NULL);
+                JoinAvenuePerson *personB = JoinAvenueOccupants_GetPerson(wk->occupants, otherId);
+                u32 rowB = joinAveTextHandler(personB, JOIN_AVE_PARAM_ROW, NULL);
+                u16 slotB = joinAveTextHandler(personB, JOIN_AVE_PARAM_SLOT, NULL);
 
-                JoinAvenuePerson_SetParam(a, JOIN_AVE_PARAM_SLOT, b0);
-                JoinAvenuePerson_SetParam(a, JOIN_AVE_PARAM_ROW, b1);
-                JoinAvenuePerson_SetParam(b, JOIN_AVE_PARAM_SLOT, a0);
-                JoinAvenuePerson_SetParam(b, JOIN_AVE_PARAM_ROW, a1);
-                MI_CpuCopy8(a, person, sizeof(person));
-                MI_CpuCopy8(b, a, sizeof(person));
-                MI_CpuCopy8(person, b, sizeof(person));
+                JoinAvenuePerson_SetParam(personA, JOIN_AVE_PARAM_SLOT, slotB);
+                JoinAvenuePerson_SetParam(personA, JOIN_AVE_PARAM_ROW, rowB);
+                JoinAvenuePerson_SetParam(personB, JOIN_AVE_PARAM_SLOT, slotA);
+                JoinAvenuePerson_SetParam(personB, JOIN_AVE_PARAM_ROW, rowA);
+                MI_CpuCopy8(personA, person, sizeof(person));
+                MI_CpuCopy8(personB, personA, sizeof(person));
+                MI_CpuCopy8(person, personB, sizeof(person));
                 tmp = wk->order[i];
                 wk->order[i] = wk->order[j];
                 wk->order[j] = tmp;
@@ -1976,7 +2062,7 @@ static void ResortShop_SetCamera(ResortShop *shop, Field *field, u16 cameraMode)
     FieldCamera_SetUseBoundaryEnable(camera, FALSE);
     FieldCamera_ClearBind(camera);
     switch (cameraMode) {
-    case 1: {
+    case RESORT_SHOP_CAMERA_SHOP_SIDE: {
         JoinAvenuePerson *person = ResortPerson_GetJoinAvenuePerson(shop->work.person);
 
         for (camIndex = 0; camIndex < 8; camIndex++) {
@@ -1991,7 +2077,7 @@ static void ResortShop_SetCamera(ResortShop *shop, Field *field, u16 cameraMode)
         }
         break;
     }
-    case 0:
+    case RESORT_SHOP_CAMERA_PLAYER_AREA:
     default: {
         FieldPlayer *player = Field_GetPlayer(field);
         u32 dir = FieldPlayer_GetFaceDir(player);
@@ -2009,7 +2095,7 @@ static void ResortShop_SetCamera(ResortShop *shop, Field *field, u16 cameraMode)
         }
         break;
     }
-    case 2:
+    case RESORT_SHOP_CAMERA_FIXED:
         camIndex = 1;
         break;
     }
@@ -2022,36 +2108,37 @@ static void ResortShop_SetCamera(ResortShop *shop, Field *field, u16 cameraMode)
 
 static BOOL ResortShop_FadeIn(ResortShop *shop, Field *field, int *seq) {
     switch (*seq) {
-    case 0:
-        GFL_FadeSet(3, 0, 16, 1);
+    case RESORT_SHOP_FADE_IN_BLACKEN:
+        GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 1);
         (*seq)++;
         break;
-    case 1:
+    case RESORT_SHOP_FADE_IN_WAIT_BLACK:
         if (!GFL_FadeIsRunning()) {
             (*seq)++;
         }
         break;
-    case 2:
+    case RESORT_SHOP_FADE_IN_POSITION:
         ResortShop_SetCamera(shop, field, shop->work.cameraMode);
-        ResortSys_HideOverlappingActors(shop->work.people, shop->work.npc, field, shop->work.person, 0);
+        ResortSys_HideOverlappingActors(shop->work.people, shop->work.npc, field, shop->work.person,
+                                        RESORT_HIDE_WALKERS);
         (*seq)++;
         break;
-    case 3:
+    case RESORT_SHOP_FADE_IN_CREATE:
         ResortShop_Create(shop);
         (*seq)++;
         break;
-    case 4:
+    case RESORT_SHOP_FADE_IN_WAIT_LIST:
         if (ResortShop_ShowList(shop)) {
             (*seq)++;
         }
         break;
-    case 5:
-        GFL_FadeSet(3, 16, 0, 1);
+    case RESORT_SHOP_FADE_IN_REVEAL:
+        GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 1);
         (*seq)++;
         break;
-    case 6:
+    case RESORT_SHOP_FADE_IN_WAIT_REVEAL:
         if (!GFL_FadeIsRunning()) {
-            *seq = 0;
+            *seq = RESORT_SHOP_FADE_IN_BLACKEN;
             return TRUE;
         }
         break;
@@ -2063,28 +2150,28 @@ static BOOL ResortShop_FadeOut(ResortShop *shop, Field *field, int *seq) {
     FieldCamera *camera = Field_GetCameraSystem(field);
 
     switch (*seq) {
-    case 0:
-        GFL_FadeSet(3, 0, 16, 1);
+    case RESORT_SHOP_FADE_OUT_BLACKEN:
+        GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 1);
         (*seq)++;
         break;
-    case 1:
+    case RESORT_SHOP_FADE_OUT_WAIT_BLACK:
         if (!GFL_FadeIsRunning()) {
             (*seq)++;
         }
         break;
-    case 2:
+    case RESORT_SHOP_FADE_OUT_RESTORE:
         ResortPeople_ApplyVisibility(shop->work.people);
         ResortNPC_SetVisible(shop->work.npc, 1);
         ResortShop_Destroy(shop);
         FieldCamera_LoadDefaults(camera);
         FieldCamera_ResetBind(camera);
         FieldCamera_SetUseBoundaryEnable(camera, shop->useBoundary);
-        GFL_FadeSet(3, 16, 0, 1);
+        GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 1);
         (*seq)++;
         break;
-    case 3:
+    case RESORT_SHOP_FADE_OUT_WAIT_REVEAL:
         if (!GFL_FadeIsRunning()) {
-            *seq = 0;
+            *seq = RESORT_SHOP_FADE_OUT_BLACKEN;
             return TRUE;
         }
         break;
