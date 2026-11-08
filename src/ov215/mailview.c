@@ -23,16 +23,13 @@
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/pms_draw.h"
+#include "system/pms_word.h"
 #include "system/printsys.h"
 #include "text/system/btl_server_flow_3.h"
 
 // The mail screen's graphics (overlay 215's mailview.c): its BGs, palettes, windows, buttons and the mail's text,
 // loaded a step at a time by MailView_Load. The names are ours
 
-// The files of a design in ARCID_MAILBOX, the mail graphics' archive: its palette, its characters
-// MAIL_FILE_CHAR_BASE files on, and its screen MAIL_FILE_SCREEN_BASE files on
-#define MAIL_FILE_CHAR_BASE 12
-#define MAIL_FILE_SCREEN_BASE 24
 // The screen of the buttons, with the write phase's frame
 #define MAIL_FILE_WRITE_SCREEN 36
 
@@ -230,12 +227,12 @@ static void MailView_CreateWindows(MailSysWork *work) {
 
     BmpWin_InitAllocator(work->heapId);
     work->windows[0] = BmpWin_CreateDynamic(1, 0, 0, 1, 1, 5, 0);
-    work->windows[1] = BmpWin_CreateDynamic(1, 3, 3, 26, 4, 1, 0);
+    work->windows[MAIL_SYS_WIN_FIRST_SENTENCE] = BmpWin_CreateDynamic(1, 3, 3, 26, 4, 1, 0);
     work->windows[2] = BmpWin_CreateDynamic(1, 3, 8, 26, 4, 1, 0);
     work->windows[3] = BmpWin_CreateDynamic(1, 3, 13, 26, 4, 1, 0);
-    work->windows[4] = BmpWin_CreateDynamic(1, 8, 19, 11, 2, 1, 0);
-    work->windows[5] = BmpWin_CreateDynamic(1, 21, 19, 8, 2, 1, 0);
-    work->windows[6] = BmpWin_CreateDynamic(0, 2, 1, 28, 4, 5, 1);
+    work->windows[MAIL_SYS_WIN_STAMP] = BmpWin_CreateDynamic(1, 8, 19, 11, 2, 1, 0);
+    work->windows[MAIL_SYS_WIN_AUTHOR] = BmpWin_CreateDynamic(1, 21, 19, 8, 2, 1, 0);
+    work->windows[MAIL_SYS_WIN_MESSAGE] = BmpWin_CreateDynamic(0, 2, 1, 28, 4, 5, 1);
     for (i = 0; i < 6; i++) {
         work->entries[i].win = work->windows[i];
         work->entries[i].drawn = FALSE;
@@ -285,22 +282,22 @@ static void MailView_PrintMail(MailSysWork *work) {
 
     for (i = 0; i < MAIL_WORD_COUNT; i++) {
         if (PMSData_IsNotEmpty(&work->edit->words[i])) {
-            PMSDraw_Print(work->pmsDraw, work->windows[i + 1], &work->edit->words[i], i);
+            PMSDraw_Print(work->pmsDraw, work->windows[i + MAIL_SYS_WIN_FIRST_SENTENCE], &work->edit->words[i], i);
         }
     }
-    if (work->edit->word != 0xffff) {
-        work->pmsWord.type = 6;
+    if (work->edit->word != PMS_WORD_NULL) {
+        work->pmsWord.type = PMS_SENTENCE_TYPE_WORD_FORMAT;
         work->pmsWord.id = 0;
         work->pmsWord.words[0] = work->edit->word;
-        PMSDraw_Print(work->pmsDraw, work->windows[4], &work->pmsWord, 3);
+        PMSDraw_Print(work->pmsDraw, work->windows[MAIL_SYS_WIN_STAMP], &work->pmsWord, 3);
     }
     if (work->phase == MAIL_PHASE_VIEW) {
         PrintQueue *queue = work->printQueue;
 
-        PrintQueue_PrintColor(queue, BmpWin_GetBitmap(work->entries[5].win), 0, 2, work->edit->name, work->font,
-                              PRINT_COLOR(1, 2, 0));
-        work->entries[5].drawn = TRUE;
-        BmpWin_TransferNow(work->windows[5]);
+        PrintQueue_PrintColor(queue, BmpWin_GetBitmap(work->entries[MAIL_SYS_WIN_AUTHOR].win), 0, 2, work->edit->name,
+                              work->font, PRINT_COLOR(1, 2, 0));
+        work->entries[MAIL_SYS_WIN_AUTHOR].drawn = TRUE;
+        BmpWin_TransferNow(work->windows[MAIL_SYS_WIN_AUTHOR]);
     }
 }
 

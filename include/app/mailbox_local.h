@@ -23,6 +23,21 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// Palette-effect phases.
+enum {
+    MAILBOX_PALETTE_FX_APPLY_FIRST = 0,
+    MAILBOX_PALETTE_FX_WAIT_FIRST = 1,
+    MAILBOX_PALETTE_FX_WAIT_SECOND = 2,
+};
+
+// Mailbox touch-button rectangle indices.
+enum {
+    MAILBOX_TOUCH_PREVIOUS_PAGE = 0,
+    MAILBOX_TOUCH_NEXT_PAGE = 1,
+    MAILBOX_TOUCH_RETURN = 2,
+    MAILBOX_TOUCH_CLOSE = 3,
+};
+
 // The mailbox screen: the 20 mails of the save's mailbox, ten to a page, on the touch screen's list, and the menu that
 // reads, erases or gives one to a Pokémon. A state machine, one function per state, with the party list and the
 // mail writing screen run as child processes. Names are ours, guessed

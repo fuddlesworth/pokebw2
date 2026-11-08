@@ -14,6 +14,24 @@
 #include "system/pms_data.h"
 #include "system/printsys.h"
 
+// Yes/No menu item positions.
+enum {
+    MAIL_ANSWER_YES = 0,
+    MAIL_ANSWER_NO = 1,
+};
+
+// Mail editor windows. The three sentence windows start at FIRST_SENTENCE.
+enum {
+    MAIL_SYS_WIN_FIRST_SENTENCE = 1,
+    MAIL_SYS_WIN_STAMP = 4,
+    MAIL_SYS_WIN_AUTHOR = 5,
+    MAIL_SYS_WIN_MESSAGE = 6,
+};
+
+// Shared design-file offsets in ARCID_MAILBOX.
+#define MAIL_FILE_CHAR_BASE 12
+#define MAIL_FILE_SCREEN_BASE 24
+
 // The mail screen (overlay 215's mailsys.c and mailview.c): shows a mail, or has the player write one. The names are
 // ours, guessed
 

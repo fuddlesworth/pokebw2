@@ -316,13 +316,13 @@ void MailBox_CreateYesNoMenu(MailBoxWork *work) {
 }
 
 void MailBox_CreateMenuResources(MailBoxWork *work) {
-    static const MailBoxMenuItem menuItems[4] = {
+    static const MailBoxMenuItem sMailBoxMainMenuItems[4] = {
         { BtlServerFlow2_Text_Read, 0 },
         { BtlServerFlow2_Text_Erase, 0 },
         { BtlServerFlow2_Text_Give, 0 },
         { BtlServerFlow2_Text_Cancel_2, APP_TASKMENU_ITEM_RETURN },
     };
-    static const MailBoxMenuItem yesNoItems[2] = {
+    static const MailBoxMenuItem sMailBoxYesNoItems[2] = {
         { BtlServerFlow2_Text_Yes, 0 },
         { BtlServerFlow2_Text_No, 0 },
     };
@@ -330,14 +330,15 @@ void MailBox_CreateMenuResources(MailBoxWork *work) {
 
     work->view->menuRes = AppTaskMenuRes_Create(0, 5, work->font, work->view->printQueue, HEAPID_MAILBOX_VIEW);
     for (i = 0; i < 4; i++) {
-        work->view->menuItems[i].str = GFL_MsgDataLoadStrbufNew(work->view->msgData, menuItems[i].messageId);
+        work->view->menuItems[i].str =
+            GFL_MsgDataLoadStrbufNew(work->view->msgData, sMailBoxMainMenuItems[i].messageId);
         work->view->menuItems[i].color = PRINT_COLOR(14, 15, 3);
-        work->view->menuItems[i].type = menuItems[i].type;
+        work->view->menuItems[i].type = sMailBoxMainMenuItems[i].type;
     }
     for (i = 0; i < 2; i++) {
-        work->view->yesNoItems[i].str = GFL_MsgDataLoadStrbufNew(work->view->msgData, yesNoItems[i].messageId);
+        work->view->yesNoItems[i].str = GFL_MsgDataLoadStrbufNew(work->view->msgData, sMailBoxYesNoItems[i].messageId);
         work->view->yesNoItems[i].color = PRINT_COLOR(14, 15, 3);
-        work->view->yesNoItems[i].type = yesNoItems[i].type;
+        work->view->yesNoItems[i].type = sMailBoxYesNoItems[i].type;
     }
 }
 
@@ -347,8 +348,8 @@ void MailBox_FreeMenuResources(MailBoxWork *work) {
     for (i = 0; i < 4; i++) {
         GFL_StrBufFree(work->view->menuItems[i].str);
     }
-    GFL_StrBufFree(work->view->yesNoItems[0].str);
-    GFL_StrBufFree(work->view->yesNoItems[1].str);
+    GFL_StrBufFree(work->view->yesNoItems[MAIL_ANSWER_YES].str);
+    GFL_StrBufFree(work->view->yesNoItems[MAIL_ANSWER_NO].str);
     AppTaskMenuRes_Free(work->view->menuRes);
 }
 
@@ -425,7 +426,7 @@ BOOL MailBox_UpdatePaletteFx(MailBoxWork *work) {
     MailBoxPaletteFx *fx = &work->view->paletteFx;
 
     switch (fx->phase) {
-    case 0:
+    case MAILBOX_PALETTE_FX_APPLY_FIRST:
         if (!fx->onScreen) {
             ClActor_SetPalette(work->view->actors[fx->target], fx->firstPalette, TRUE);
         } else {
@@ -434,7 +435,7 @@ BOOL MailBox_UpdatePaletteFx(MailBoxWork *work) {
         }
         fx->phase++;
         break;
-    case 1:
+    case MAILBOX_PALETTE_FX_WAIT_FIRST:
         fx->timer++;
         if (fx->timer == 4) {
             if (!fx->onScreen) {
@@ -447,7 +448,7 @@ BOOL MailBox_UpdatePaletteFx(MailBoxWork *work) {
             fx->phase++;
         }
         break;
-    case 2:
+    case MAILBOX_PALETTE_FX_WAIT_SECOND:
         fx->timer++;
         if (fx->timer == 2) {
             return FALSE;
@@ -461,9 +462,9 @@ void MailBox_LoadMailGraphics(MailBoxWork *work) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_MAILBOX, HEAPID_MAILBOX_VIEW);
     u8 design = MailData_GetDesign(work->view->mails[work->mailIndex]);
 
-    GFL_BGSysLoadArcNCGRStatic(arc, design + 12, 5, 0, 0, TRUE, HEAPID_MAILBOX_VIEW);
+    GFL_BGSysLoadArcNCGRStatic(arc, design + MAIL_FILE_CHAR_BASE, 5, 0, 0, TRUE, HEAPID_MAILBOX_VIEW);
     GFL_G2DIOLoadArcNCLRDefault(arc, design, PALTYPE_SUB_BG, 0, 0x40, HEAPID_MAILBOX_VIEW);
-    loadBGScrToVramByFileNoReserveNegAlign(arc, design + 24, 5, 0, 0, TRUE, HEAPID_MAILBOX_VIEW);
+    loadBGScrToVramByFileNoReserveNegAlign(arc, design + MAIL_FILE_SCREEN_BASE, 5, 0, 0, TRUE, HEAPID_MAILBOX_VIEW);
     GFL_ArcToolFree(arc);
 }
 

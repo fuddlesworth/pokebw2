@@ -187,8 +187,8 @@ data_ov215_021ab125 kind:data(any) addr:0x021ab165 ambiguous
 data_ov215_021ab135 kind:data(any) addr:0x021ab175 ambiguous
 MAILBOX_PROC_FUNCTIONS kind:data(any) addr:0x021ab198 ambiguous
 data_ov215_021ab159 kind:data(any) addr:0x021ab199 ambiguous
-data_ov215_021ab164 kind:data(any) addr:0x021ab1a4
-data_ov215_021ab174 kind:data(any) addr:0x021ab1b4
+sMailBoxYesNoItems kind:data(any) addr:0x021ab1a4
+sMailBoxMainMenuItems kind:data(any) addr:0x021ab1b4
 data_ov215_021ab179 kind:data(any) addr:0x021ab1b9 ambiguous
 data_ov215_021ab191 kind:data(any) addr:0x021ab1d1 ambiguous
 MailBox_VRAMConfig kind:data(any) addr:0x021ab1d4

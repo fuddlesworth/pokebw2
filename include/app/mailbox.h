@@ -6,6 +6,12 @@
 #include "gfl/proc.h"
 #include "struct_decls.h"
 
+// Mailbox button results, also written when returning from the mail viewer.
+enum {
+    MAILBOX_RESULT_RETURN = 0,
+    MAILBOX_RESULT_CLOSE = 1,
+};
+
 // The mailbox, overlay 215 (mailsys.c, mailtool.c and mailview.c)
 #define OVERLAY_MAILBOX OVERLAY_ID(215)
 

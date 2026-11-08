@@ -6,6 +6,12 @@
 #include "gfl/str.h"
 #include "struct_decls.h"
 
+// Sentence banks for mail templates and word formatting; word-format record 1 is blank.
+enum {
+    PMS_SENTENCE_TYPE_MAIL_TEMPLATES = 5,
+    PMS_SENTENCE_TYPE_WORD_FORMAT = 6,
+};
+
 // Sentences (pms_data.c, a guessed name): a sentence from one of the message files of sentence types, with up to two
 // words filled into its word set commands, as trainers' greetings and the mail use them
 
