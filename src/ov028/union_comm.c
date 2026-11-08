@@ -39,16 +39,26 @@ static void *UnionComm_GetBeacon(void *work);
 static void UnionComm_BuildBeacon(UnionSystem *unisys, UnionBeacon *beacon);
 static int UnionComm_GetBeaconSize(void *work);
 static BOOL UnionComm_IsBeaconJoinable(u8 gameCommandBase, u8 beaconCommandBase, void *work);
-static void UnionComm_NetCallback24(NetHandle *handle, int a1, void *work);
-static void UnionComm_NetCallback2C(void *work);
+static void UnionComm_OnNetError(NetHandle *handle, int error, void *work);
+static void UnionComm_OnNetEnd(void *work);
 static void UnionComm_InitSelf(UnionSystem *unisys);
 static void UnionComm_InitVisitors(UnionVisitorList *list);
 
-static const NetCommand data_ov028_02172d04[22];
+static const NetCommand sUnionNetCommands[22];
+
+enum {
+    UNION_GAME_COMMAND_ROOM = 20,
+    UNION_GAME_COMMAND_DRAW = 22,
+    UNION_GAME_COMMAND_MULTI = 23,
+    UNION_GAME_COMMAND_MULTI_NO_LAUNCHER = 24,
+    UNION_GAME_COMMAND_MULTI_FLAT = 25,
+    UNION_GAME_COMMAND_MULTI_FLAT_NO_LAUNCHER = 26,
+    UNION_GAME_COMMAND_SPIN_TRADE = 27,
+};
 
 // clang-format off
-static const GFLNetInitData data_ov028_02172c94 = {
-    data_ov028_02172d04,
+static const GFLNetInitData sUnionNetInitData = {
+    sUnionNetCommands,
     22,
     NULL,
     NULL,
@@ -57,9 +67,9 @@ static const GFLNetInitData data_ov028_02172c94 = {
     UnionComm_GetBeacon,
     UnionComm_GetBeaconSize,
     UnionComm_IsBeaconJoinable,
-    UnionComm_NetCallback24,
+    UnionComm_OnNetError,
     NULL,
-    UnionComm_NetCallback2C,
+    UnionComm_OnNetEnd,
     NULL,
     {0},
     NULL,
@@ -79,7 +89,7 @@ static const GFLNetInitData data_ov028_02172c94 = {
     0,
     GFL_NET_TYPE_WIRELESS,
     1,
-    0x14,
+    UNION_GAME_COMMAND_ROOM,
     {0x2c, 1, 0, 0},
     0,
     0,
@@ -87,7 +97,7 @@ static const GFLNetInitData data_ov028_02172c94 = {
 
 // clang-format on
 
-static const NetCommand data_ov028_02172d04[22] = {
+static const NetCommand sUnionNetCommands[22] = {
     { UnionNet_RecvGroupDone, NULL },
     { UnionNet_RecvActivity, NULL },
     { UnionNet_RecvActivityReply, NULL },
@@ -139,16 +149,16 @@ static void UnionComm_Free(void *param, UnionSystem *unisys) {
 void *UnionComm_Init(u32 *seq, void *param) {
     UnionSystem *unisys = UnionComm_Create(param);
 
-    unisys->commState = 1;
-    GFL_NetInit(&data_ov028_02172c94, UnionComm_OnNetReady, unisys);
+    unisys->commState = UNION_COMM_STATE_INIT;
+    GFL_NetInit(&sUnionNetInitData, UnionComm_OnNetReady, unisys);
     return unisys;
 }
 
 BOOL UnionComm_InitWait(u32 *seq, void *param, void *work) {
     UnionSystem *unisys = work;
 
-    if (unisys->commState >= 2) {
-        unisys->commState = 3;
+    if (unisys->commState >= UNION_COMM_STATE_READY) {
+        unisys->commState = UNION_COMM_STATE_SEARCHING;
         GFL_NetStartSearch(0);
         return TRUE;
     }
@@ -158,7 +168,7 @@ BOOL UnionComm_InitWait(u32 *seq, void *param, void *work) {
 void UnionComm_OnNetReady(void *work) {
     UnionSystem *unisys = work;
 
-    unisys->commState = 2;
+    unisys->commState = UNION_COMM_STATE_READY;
     GFL_NetSetRejectNegotiated(FALSE);
 }
 
@@ -166,10 +176,10 @@ BOOL UnionComm_Exit(u32 *seq, void *param, void *work) {
     UnionSystem *unisys = work;
 
     unisys->exiting = TRUE;
-    if (unisys->commState < 3) {
+    if (unisys->commState < UNION_COMM_STATE_SEARCHING) {
         return FALSE;
     }
-    unisys->commState = 4;
+    unisys->commState = UNION_COMM_STATE_EXIT;
     if (!GFL_NetExit(UnionComm_SetEnded)) {
         UnionComm_SetEnded(unisys);
     }
@@ -179,7 +189,7 @@ BOOL UnionComm_Exit(u32 *seq, void *param, void *work) {
 BOOL UnionComm_ExitWait(u32 *seq, void *param, void *work) {
     UnionSystem *unisys = work;
 
-    if (unisys->commState == 5) {
+    if (unisys->commState == UNION_COMM_STATE_ENDED) {
         UnionComm_Free(param, unisys);
         if (GFL_NetErrCheck()) {
             GFL_NetErrClear();
@@ -192,32 +202,32 @@ BOOL UnionComm_ExitWait(u32 *seq, void *param, void *work) {
 static void UnionComm_SetEnded(void *work) {
     UnionSystem *unisys = work;
 
-    unisys->commState = 5;
+    unisys->commState = UNION_COMM_STATE_ENDED;
 }
 
 void UnionComm_RequestLink0(UnionSystem *unisys) {
-    if (unisys->linkState == 0) {
-        unisys->linkState = 1;
-        unisys->linkMode = 0;
+    if (unisys->linkState == UNION_LINK_STEP_IDLE) {
+        unisys->linkState = UNION_LINK_STEP_SELECT_MODE;
+        unisys->linkMode = UNION_LINK_MODE_RESTART;
     }
 }
 
 void UnionComm_RequestLink1(UnionSystem *unisys) {
-    if (unisys->linkState == 0) {
-        unisys->linkState = 1;
-        unisys->linkMode = 1;
+    if (unisys->linkState == UNION_LINK_STEP_IDLE) {
+        unisys->linkState = UNION_LINK_STEP_SELECT_MODE;
+        unisys->linkMode = UNION_LINK_MODE_STOP;
     }
 }
 
 void UnionComm_RequestLink2(UnionSystem *unisys) {
-    if (unisys->linkState == 0) {
-        unisys->linkState = 1;
-        unisys->linkMode = 2;
+    if (unisys->linkState == UNION_LINK_STEP_IDLE) {
+        unisys->linkState = UNION_LINK_STEP_SELECT_MODE;
+        unisys->linkMode = UNION_LINK_MODE_START;
     }
 }
 
 BOOL UnionComm_IsLinkRequested(UnionSystem *unisys) {
-    if (unisys->linkState != 0) {
+    if (unisys->linkState != UNION_LINK_STEP_IDLE) {
         return TRUE;
     }
     return FALSE;
@@ -225,51 +235,51 @@ BOOL UnionComm_IsLinkRequested(UnionSystem *unisys) {
 
 static BOOL UnionComm_UpdateLink(UnionSystem *unisys) {
     switch (unisys->linkState) {
-    case 0:
-        if (unisys->linkMode == 1) {
+    case UNION_LINK_STEP_IDLE:
+        if (unisys->linkMode == UNION_LINK_MODE_STOP) {
             return TRUE;
         }
         return FALSE;
-    case 1:
+    case UNION_LINK_STEP_SELECT_MODE:
         switch (unisys->linkMode) {
-        case 0:
-        case 1:
-            unisys->linkState = 2;
+        case UNION_LINK_MODE_RESTART:
+        case UNION_LINK_MODE_STOP:
+            unisys->linkState = UNION_LINK_STEP_EXIT;
             break;
-        case 2:
-            unisys->linkState = 4;
+        case UNION_LINK_MODE_START:
+            unisys->linkState = UNION_LINK_STEP_INIT;
             break;
         default:
-            unisys->linkState = 0;
+            unisys->linkState = UNION_LINK_STEP_IDLE;
             break;
         }
         break;
-    case 2:
-        unisys->commState = 4;
+    case UNION_LINK_STEP_EXIT:
+        unisys->commState = UNION_COMM_STATE_EXIT;
         if (!GFL_NetExit(UnionComm_SetEnded)) {
             UnionComm_SetEnded(unisys);
         }
         unisys->linkState++;
         break;
-    case 3:
-        if (unisys->commState == 5) {
-            if (unisys->linkMode == 1) {
-                unisys->linkState = 0;
+    case UNION_LINK_STEP_WAIT_EXIT:
+        if (unisys->commState == UNION_COMM_STATE_ENDED) {
+            if (unisys->linkMode == UNION_LINK_MODE_STOP) {
+                unisys->linkState = UNION_LINK_STEP_IDLE;
             } else {
                 unisys->linkState++;
             }
         }
         break;
-    case 4:
-        unisys->commState = 1;
-        GFL_NetInit(&data_ov028_02172c94, UnionComm_OnNetReady, unisys);
+    case UNION_LINK_STEP_INIT:
+        unisys->commState = UNION_COMM_STATE_INIT;
+        GFL_NetInit(&sUnionNetInitData, UnionComm_OnNetReady, unisys);
         unisys->linkState++;
         break;
-    case 5:
-        if (unisys->commState >= 2) {
-            unisys->commState = 3;
+    case UNION_LINK_STEP_WAIT_INIT:
+        if (unisys->commState >= UNION_COMM_STATE_READY) {
+            unisys->commState = UNION_COMM_STATE_SEARCHING;
             GFL_NetStartSearch(0);
-            unisys->linkState = 0;
+            unisys->linkState = UNION_LINK_STEP_IDLE;
         }
         break;
     }
@@ -317,18 +327,18 @@ static void UnionComm_UpdateGroup(UnionSystem *unisys) {
         return;
     }
     switch (self->mycomm.step) {
-    case 0:
+    case UNION_GROUP_STEP_SEND_DONE:
         if (UnionMain_SendGroupDone() == TRUE) {
             self->mycomm.step++;
         }
         break;
-    case 1:
+    case UNION_GROUP_STEP_WAIT_DONE:
         if (MATH_CountPopulation(self->mycomm.doneMask) >= GFL_NetGetNegotiatedCount()) {
             GFL_NetSetDisconnectError(FALSE);
             self->mycomm.step++;
         }
         break;
-    case 2:
+    case UNION_GROUP_STEP_STOP_LINK:
         if (GFL_NetIsParent() == TRUE) {
             if (GFL_NetGetNegotiatedCount() > 1) {
                 break;
@@ -519,7 +529,7 @@ static BOOL UnionComm_IsBeaconJoinable(u8 gameCommandBase, u8 beaconCommandBase,
     UnionSystem *unisys = work;
 
     if (unisys->situ.mycomm.sameActivityOnly == 1) {
-        if (gameCommandBase == 0x14 || beaconCommandBase == 0x14) {
+        if (gameCommandBase == UNION_GAME_COMMAND_ROOM || beaconCommandBase == UNION_GAME_COMMAND_ROOM) {
             return FALSE;
         }
         if (gameCommandBase == beaconCommandBase) {
@@ -527,16 +537,16 @@ static BOOL UnionComm_IsBeaconJoinable(u8 gameCommandBase, u8 beaconCommandBase,
         }
         return FALSE;
     }
-    if (beaconCommandBase >= 0x14 && beaconCommandBase <= 0x1b) {
+    if (beaconCommandBase >= UNION_GAME_COMMAND_ROOM && beaconCommandBase <= UNION_GAME_COMMAND_SPIN_TRADE) {
         return TRUE;
     }
     return FALSE;
 }
 
-static void UnionComm_NetCallback24(NetHandle *handle, int a1, void *work) {
+static void UnionComm_OnNetError(NetHandle *handle, int error, void *work) {
 }
 
-static void UnionComm_NetCallback2C(void *work) {
+static void UnionComm_OnNetEnd(void *work) {
 }
 
 void UnionComm_ClearBeacons(UnionSystem *unisys) {
@@ -599,7 +609,7 @@ static void UnionComm_InitSelf(UnionSystem *unisys) {
     MI_CpuFill8(self, 0, sizeof(UnionSelf));
     self->counter = GFL_RandomLC(0xffff);
     self->state = 1;
-    self->step = 2;
+    self->step = UNION_STEP_NONE;
     UnionGroup_Init(unisys, &self->mycomm);
 }
 
@@ -703,22 +713,22 @@ void UnionComm_SetState(UnionSystem *unisys, u8 state) {
 void UnionComm_SetCommandBase(u32 activity) {
     switch (activity) {
     case UNION_ACTIVITY_MULTI:
-        GFL_NetSetGameCommandBase(0x17, 5);
+        GFL_NetSetGameCommandBase(UNION_GAME_COMMAND_MULTI, 5);
         break;
     case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
-        GFL_NetSetGameCommandBase(0x18, 5);
+        GFL_NetSetGameCommandBase(UNION_GAME_COMMAND_MULTI_NO_LAUNCHER, 5);
         break;
     case UNION_ACTIVITY_MULTI_FLAT:
-        GFL_NetSetGameCommandBase(0x19, 5);
+        GFL_NetSetGameCommandBase(UNION_GAME_COMMAND_MULTI_FLAT, 5);
         break;
     case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
-        GFL_NetSetGameCommandBase(0x1a, 5);
+        GFL_NetSetGameCommandBase(UNION_GAME_COMMAND_MULTI_FLAT_NO_LAUNCHER, 5);
         break;
     case UNION_ACTIVITY_DRAW:
-        GFL_NetSetGameCommandBase(0x16, 5);
+        GFL_NetSetGameCommandBase(UNION_GAME_COMMAND_DRAW, 5);
         break;
     case UNION_ACTIVITY_SPIN_TRADE:
-        GFL_NetSetGameCommandBase(0x1b, 5);
+        GFL_NetSetGameCommandBase(UNION_GAME_COMMAND_SPIN_TRADE, 5);
         break;
     }
 }

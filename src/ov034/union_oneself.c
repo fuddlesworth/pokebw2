@@ -56,7 +56,7 @@ typedef struct {
     PokeParty *party;
     SaveControl *save;
     GameRecords *records;
-    u32 unk14;
+    u32 spinTradeStarted;
 } UnionBattleParam;
 
 // A step of the machine
@@ -2379,7 +2379,7 @@ static BOOL UnionOneself_StepColosseumLeaveRun(UnionSystem *unisys, UnionSelf *s
     }
     switch (*seq) {
     case 0:
-        Colosseum_SetMyVote(clsys, 0xff);
+        Colosseum_SetMyVote(clsys, COLOSSEUM_VOTE_NONE);
         (*seq)++;
         break;
     case 1:
@@ -2388,7 +2388,7 @@ static BOOL UnionOneself_StepColosseumLeaveRun(UnionSystem *unisys, UnionSelf *s
         }
         break;
     case 2:
-        if (Colosseum_GetMyVoteReply(clsys) != 0xff) {
+        if (Colosseum_GetMyVoteReply(clsys) != COLOSSEUM_VOTE_REPLY_NONE) {
             (*seq)++;
         }
         break;

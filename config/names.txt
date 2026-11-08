@@ -9406,8 +9406,8 @@ overlays/ov028 0x021709cc UnionComm_GetBeacon
 overlays/ov028 0x021709e0 UnionComm_BuildBeacon
 overlays/ov028 0x02170b48 UnionComm_GetBeaconSize
 overlays/ov028 0x02170b4c UnionComm_IsBeaconJoinable
-overlays/ov028 0x02170b84 UnionComm_NetCallback24
-overlays/ov028 0x02170b88 UnionComm_NetCallback2C
+overlays/ov028 0x02170b84 UnionComm_OnNetError
+overlays/ov028 0x02170b88 UnionComm_OnNetEnd
 overlays/ov028 0x02170b8c UnionComm_ClearBeacons
 overlays/ov028 0x02170ba4 UnionComm_FreeResources
 overlays/ov028 0x02170c2c UnionComm_SetSelf
@@ -9536,6 +9536,8 @@ overlays/ov028 0x02172b4c Colosseum_ClearParties
 overlays/ov028 0x02172b8c Colosseum_BuildBattlePlayers
 overlays/ov028 0x02172c60 Colosseum_ClearPlayers
 overlays/ov028 0x02172c6c Colosseum_SetPlayer
+overlays/ov028 0x02172c94 sUnionNetInitData
+overlays/ov028 0x02172d04 sUnionNetCommands
 overlays/ov028 0x02172db4 sUnionCommands
 overlays/ov028 0x02172ea4 sColosseumCommands
 overlays/ov029 0x021922c0 InitHardware

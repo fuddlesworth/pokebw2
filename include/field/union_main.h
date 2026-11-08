@@ -19,7 +19,8 @@
 typedef struct {
     UnionApp *app;
     u8 unk04[0x10];
-    u32 unk14;
+    // SpinTradeParam.started: the Spin Trade main screen ran and changed the music.
+    u32 spinTradeStarted;
 } UnionProcParam;
 
 // The argument of the colosseum's party select: the party list, then the summary of a Pokémon in it, and the battle

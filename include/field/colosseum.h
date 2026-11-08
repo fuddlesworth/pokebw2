@@ -14,6 +14,10 @@
 
 #define COLOSSEUM_MEMBER_MAX 4
 
+// No entry spot is selected, or no vote reply is available.
+#define COLOSSEUM_VOTE_NONE 0xff
+#define COLOSSEUM_VOTE_REPLY_NONE 0xff
+
 // What a player sends the others (0x14 bytes, command 0x1503)
 typedef struct {
     u32 unk00[5];
@@ -26,7 +30,8 @@ typedef struct {
     u8 present; // TRUE once the player's info is here
     // Whether the parent's entry menu takes the player in without asking: FALSE for one who joined a recruit
     u8 autoAccept;
-    u8 unk28;
+    // Copied to BattlePlayer.unk08[1], also filled from WifiBattleMatchPlayer.battleRecordVersion.
+    u8 battleRecordVersion;
 } ColosseumMember;
 
 // How the parent's entry menu ended, which it sends the others
