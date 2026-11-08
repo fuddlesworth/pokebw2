@@ -9,6 +9,9 @@
 // The PC Box
 #define OVERLAY_BOX2 OVERLAY_ID(255)
 
+// No tray or position
+#define BOX2_GET_NONE 0xff
+
 // What the box is opened for, which picks its title: the messages from Box2Bmp_Text_DepositPokemon on are in this
 // order
 enum {
