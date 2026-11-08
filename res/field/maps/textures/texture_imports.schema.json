@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "A map texture set's imported textures: res/field/maps/textures/<set>/imports.json",
+    "description": "Textures of other map texture sets that this set gains, after its own, each its image and palette as the other set encodes them (tools/data/map_texture_data.py, nitro_texture_writer.py), so that a model moved to an area whose set lacks some of its textures keeps them. A copy of each PNG beside the set's own lets Blender show the model; the packer doesn't read it.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [ "textures" ],
+    "properties": {
+        "$schema": { "type": "string", "description": "This schema, for editors" },
+        "textures": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [ "texture", "from" ],
+                "properties": {
+                    "texture": { "type": "string", "description": "The texture's name, as the other set has it" },
+                    "from": { "type": "string", "x-constant": "MAP_TEXTURE_SET_", "description": "The set it comes from" }
+                }
+            }
+        }
+    }
+}

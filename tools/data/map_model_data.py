@@ -24,9 +24,10 @@ import tempfile
 from pathlib import Path
 
 from narc import read_narc, write_narc
-from map_texture_data import decode, decode_png, palette_for, read_png, resources
+from map_texture_data import decode, decode_png, palette_for, read_png, resources, with_imports
 from map_terrain_data import export_terrains, patch_terrains
 from nitro_dictionary import build_dictionary, replace_names
+import nitro_model_writer
 from graphics_paths import directories
 
 
@@ -58,8 +59,8 @@ def u32(data, offset):
 def models(directory, count):
     """Returns the map models' directories, in archive order, and their data, which name their texture sets."""
     folders = directories("a/0/0/8", directory)
-    if len(folders) != count:
-        raise ValueError(f"a/0/0/8 has {count} map models and map_models.txt {len(folders)}")
+    if len(folders) < count:
+        raise ValueError(f"a/0/0/8 has {count} map models and map_models.txt only {len(folders)}")
     schema = load_schema(ROOT / "res/field/maps/models/map_model.schema.json")
     return [(folder, load(folder / "data.json", schema)) for folder in folders]
 
@@ -1131,6 +1132,109 @@ def rebuild_topology(chunk, doc, primitives, binary, mapping, name):
     return bytes(result)
 
 
+def glb_texture_name(doc, material, by_name, name):
+    """Returns the set's texture that a GLB material shows, or None for an untextured one."""
+    binding = material.get("pbrMetallicRoughness", {}).get("baseColorTexture")
+    if binding is None:
+        return None
+    image = doc["images"][doc["textures"][binding["index"]]["source"]]
+    image_name = Path(image["uri"]).name if "uri" in image else image.get("name")
+    if not image_name:
+        raise ValueError(f"{name}: GLB texture needs an image name or PNG URI")
+    filename = image_name if image_name.endswith(".png") else image_name + ".png"
+    return Path(canonical_texture_name(filename, by_name)).stem
+
+
+def written_model(original, doc, primitives, binary, texture_blob, name):
+    """Returns the whole model a GLB draws (nitro_model_writer.py): a material for each GLB material, named as it is
+    and bound to the set's texture its image names, and a draw call for each primitive. A material the original model
+    has by name keeps its record (its lights, flags and texture matrix); a new one starts from the writer's default.
+    patch_materials gives them the GLB's colors, opacity and sides afterwards."""
+    textures, palettes = resources(texture_blob)
+    by_name = {texture["name"]: (index, texture) for index, texture in enumerate(textures)}
+    old = nitro_model_writer.read_model(original)
+    kept = dict(old.materials)
+    scale = old.info[8] / 4096
+    materials = []
+    slots = {}
+    draws = []
+    for primitive in primitives:
+        current = primitive.get("material")
+        if current is None or current >= len(doc.get("materials", [])):
+            raise ValueError(f"{name}: GLB material is missing")
+        if current not in slots:
+            material = doc["materials"][current]
+            material_name = material.get("name") or f"material{current}"
+            texture_name = glb_texture_name(doc, material, by_name, name)
+            record = bytearray(kept.get(material_name, nitro_model_writer.DEFAULT_MATERIAL))
+            if material_name not in kept and "NORMAL" in primitive.get("attributes", {}):
+                # A new material whose vertices have normals is lit by light 0, as the game's are: with no light on,
+                # the GPU colors a vertex that has a normal with the material's emission alone, which is black
+                record[12] |= nitro_model_writer.POLYGON_LIGHT0
+            palette = None
+            if texture_name is not None:
+                index, texture = by_name[texture_name]
+                palette = palette_for(texture, palettes, index)["name"] if texture["kind"] != 7 else None
+                struct.pack_into("<HH", record, 32, texture["width"], texture["height"])
+            slots[current] = len(materials)
+            materials.append((material_name, texture_name, palette, bytes(record)))
+        draws.append((slots[current], glb_triangles(doc, primitive, binary, materials[slots[current]][3], scale,
+                                                    name)))
+    model = nitro_model_writer.draw_model(model_name(original), materials, draws, round(scale))
+    return nitro_model_writer.write_model(model)
+
+
+def glb_triangles(doc, primitive, binary, record, scale, name):
+    """Returns a primitive's triangles as the writer's vertices, in display-list units."""
+    attributes = primitive["attributes"]
+    indices = [value[0] for value in accessor_values(doc, binary, primitive["indices"])]
+    if not indices or len(indices) % 3:
+        raise ValueError(f"{name}: a draw call needs whole triangles")
+    positions = accessor_values(doc, binary, attributes["POSITION"])
+    uvs = accessor_values(doc, binary, attributes["TEXCOORD_0"]) if "TEXCOORD_0" in attributes else None
+    colors = accessor_values(doc, binary, attributes["COLOR_0"]) if "COLOR_0" in attributes else None
+    normals = accessor_values(doc, binary, attributes["NORMAL"]) if "NORMAL" in attributes else None
+    if colors is not None and normals is not None and all(
+            gltf_color(doc, attributes["COLOR_0"], colors, i, name) == 0x7fff for i in set(indices)):
+        # Apicula exports white vertex colors for a lit shape, which draws by its normals instead
+        colors = None
+    width, height = struct.unpack_from("<HH", record, 32)
+    flags = struct.unpack_from("<H", record, 30)[0] & 15
+    uv_scale = tuple(v / 4096 for v in struct.unpack_from("<ii", record, 44)) if flags == 13 else (1.0, 1.0)
+    vertices = []
+    for vertex in indices:
+        coords = tuple(round(value * 4096 / scale) for value in positions[vertex])
+        if any(not -32768 <= value <= 32767 for value in coords):
+            raise ValueError(f"{name}: a vertex is outside the model's range")
+        texcoord = color = normal = None
+        if colors is not None:
+            color = gltf_color(doc, attributes["COLOR_0"], colors, vertex, name)
+        if normals is not None:
+            # A zero normal exports as NaN
+            normal = sum((max(-512, min(511, round(value * 512) if math.isfinite(value) else 0)) & 0x3ff)
+                         << (axis * 10) for axis, value in enumerate(normals[vertex]))
+        if uvs is not None:
+            u, v = uvs[vertex]
+            raw = (round(u * width * 16 / uv_scale[0]), round(v * height * 16 / uv_scale[1]))
+            if any(not -32768 <= value <= 32767 for value in raw):
+                raise ValueError(f"{name}: a UV is outside Nitro's range")
+            texcoord = (raw[0] & 0xffff) | ((raw[1] & 0xffff) << 16)
+        vertices.append(nitro_model_writer.Vertex(coords, texcoord, color, normal))
+    return [tuple(vertices[i:i + 3]) for i in range(0, len(vertices), 3)]
+
+
+def replace_model(chunk, bmd):
+    """Returns the chunk with its model replaced and the sections after it, whose offsets follow the model's at 4,
+    moved."""
+    data = bytearray(chunk)
+    start = u32(data, 4)
+    old_size = u32(data, start + 8)
+    delta = len(bmd) - old_size
+    for field in {b"WB": (8, 12, 16), b"GC": (8, 12, 16, 20), b"NG": (8, 12), b"RD": (8, 12, 16)}[bytes(data[:2])]:
+        struct.pack_into("<I", data, field, u32(data, field) + delta)
+    return bytes(data[:start] + bmd + data[start + old_size:])
+
+
 def export(apicula, output, selected=None):
     archive = read_narc((ROOT / "extract/b2_us/files/a/0/0/8").read_bytes())
     textures = read_narc((ROOT / "extract/b2_us/files/a/0/1/4").read_bytes())
@@ -1229,27 +1333,49 @@ def pack(directory, game, output):
     version = {"black2": "b2_us", "white2": "w2_us"}[game]
     source = ROOT / "extract" / version / "files/a/0/0/8"
     archive = read_narc(source.read_bytes())
-    texture_archive = read_narc((ROOT / "extract" / version / "files/a/0/1/4").read_bytes())
     texture_dirs = directories("a/0/1/4")
-    for chunk_id, (model_dir, data) in enumerate(models(directory, len(archive))):
+    # With the textures that the sets import from others (imports.json), which models bind to by name like their own
+    texture_archive = with_imports(read_narc((ROOT / "extract" / version / "files/a/0/1/4").read_bytes()),
+                                   texture_dirs)
+    game_models = len(archive)
+    for chunk_id, (model_dir, data) in enumerate(models(directory, game_models)):
+        if chunk_id >= game_models:
+            # A map model added after the game's copies its template's chunk: its type, its collision's size and
+            # layers and its props' section; its model is written whole from the GLB
+            if "template" not in data or not data.get("written"):
+                raise ValueError(f"{model_dir}: a new map model needs a template and \"written\": true")
+            template = value(data["template"], str(model_dir))
+            if template >= game_models:
+                raise ValueError(f"{model_dir}: its template must be one of the game's map models")
+            archive.append(archive[template])
+        elif "template" in data:
+            raise ValueError(f"{model_dir}: only a new map model has a template")
         original = archive[chunk_id]
         name = model_name(model_bytes(original))
         mapping = {"direct": not data.get("transformed", False)}
         doc, primitives, binary = mesh_primitives(model_dir, name)
         texture_id = texture_set(data, str(model_dir))
-        bound, _ = patch_material_bindings(
-            original, doc, primitives, texture_archive[texture_id] if texture_id is not None else None,
-            name, binary, texture_dirs[texture_id] if texture_id is not None else None)
-        if data["texture_set"] is None and bound != original:
-            raise ValueError(f"{name}: texture bindings need an unambiguous map texture set")
-        try:
-            positions, direct, _ = positions_from_gltf(model_dir, name, model_bytes(original), mapping)
-            edited = patch_model(bound, positions, name) if direct else bound
-            edited = patch_uvs(edited, doc, primitives, binary, name)
-        except ValueError as error:
-            if not any(reason in str(error) for reason in FALLBACK_ERRORS):
-                raise
-            edited = rebuild_topology(bound, doc, primitives, binary, mapping, name)
+        if data.get("written"):
+            if texture_id is None:
+                raise ValueError(f"{name}: a written model needs its texture_set")
+            if not mapping["direct"]:
+                raise ValueError(f"{name}: a written model needs the GLB's positions as the model draws them")
+            edited = replace_model(original, written_model(model_bytes(original), doc, primitives, binary,
+                                                           texture_archive[texture_id], name))
+        else:
+            bound, _ = patch_material_bindings(
+                original, doc, primitives, texture_archive[texture_id] if texture_id is not None else None,
+                name, binary, texture_dirs[texture_id] if texture_id is not None else None)
+            if data["texture_set"] is None and bound != original:
+                raise ValueError(f"{name}: texture bindings need an unambiguous map texture set")
+            try:
+                positions, direct, _ = positions_from_gltf(model_dir, name, model_bytes(original), mapping)
+                edited = patch_model(bound, positions, name) if direct else bound
+                edited = patch_uvs(edited, doc, primitives, binary, name)
+            except ValueError as error:
+                if not any(reason in str(error) for reason in FALLBACK_ERRORS):
+                    raise
+                edited = rebuild_topology(bound, doc, primitives, binary, mapping, name)
         archive[chunk_id] = edited
         archive[chunk_id] = patch_materials(archive[chunk_id], doc, primitives, name)
         archive[chunk_id] = patch_terrains(archive[chunk_id], model_dir)

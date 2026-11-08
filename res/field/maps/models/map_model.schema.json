@@ -15,6 +15,14 @@
             "type": "string", "x-constant": "MAP_TEXTURE_SET_",
             "description": "For a model with no texture_set, one of the sets that has every texture and palette it names, which its GLB shows in Blender"
         },
+        "written": {
+            "enum": [ true ],
+            "description": "Set when the packer writes the whole model from the GLB (tools/data/nitro_model_writer.py) instead of editing the game's: a material for each GLB material, bound by its image to the texture_set's texture, and a draw call for each primitive, so the GLB can add materials and draw calls. The model needs its texture_set, and the GLB's positions as the model draws them"
+        },
+        "template": {
+            "type": "string", "x-constant": "MAP_MODEL_",
+            "description": "For a map model added after the game's in generated/map_models.txt: the game's map model whose chunk it copies (its type, its collision's size and layers, its props' section) and whose model name its GLB's mesh has. Its model is written whole (\"written\": true)"
+        },
         "transformed": {
             "enum": [ true ],
             "description": "Set when the GLB's positions went through the model's node transforms on export, which the packer reverses"

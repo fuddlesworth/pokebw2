@@ -1070,6 +1070,25 @@ the new texture was not already listed by the model. Blender may embed preview i
 packer resolves those by image name. Texture pixels are sourced from the shared PNGs, so save pixel edits there.
 The packer accepts embedded pixel edits when the matching shared PNG is saved, and rejects unsaved
 embedded edits instead of silently ignoring them.
+
+A model whose `data.json` has `"written": true` is written whole from its GLB instead
+(`tools/data/nitro_model_writer.py`): a material for each GLB material, bound by its image to the `texture_set`'s
+texture, and a draw call for each primitive, so the GLB may add materials and draw calls the game's model lacks. A
+material of the game's model by the same name keeps its lights, flags and texture matrix; a new one is opaque, fogged,
+front-faced and repeats its texture, lit by light 0 where its vertices have normals. The model needs its
+`texture_set` and positions as the model draws them (no `"transformed"`). The display lists are strips or quads,
+whichever is shorter; every one of the game's 17,129 shapes draws the same triangles when written this way, and
+`nitro_model_writer.py check` reads and writes back all 1,065 models byte for byte. A map model added after the game's
+in `generated/map_models.txt` has a `"template"`, one of the game's map models, whose chunk it copies (its type, its
+collision's size and layers, its props) and whose model name its GLB's mesh has, and is always written.
+
+A map texture set's directory may hold `imports.json` (`texture_imports.schema.json`): textures of other sets, each
+`{"texture": NAME, "from": MAP_TEXTURE_SET_...}`, that the set gains after its own, their images and palettes copied as
+the other set encodes them, its PNG edits included (`tools/data/nitro_texture_writer.py`; a 4×4-compressed texture
+can't be imported yet). A model moved to an area
+whose set lacks some of its textures keeps them so; a copy of each PNG beside the set's own lets Blender show it, and
+the packer reads only the other set's. The whole-model writer, new models and imports are bjayers's, from
+[Paper White 2](https://github.com/bjayers/paperwhite2).
 Other Nitro material settings retain their original values.
 Adding material slots or draw calls is not yet supported. Every map model contains only an
 `MDL0` block; its textures come from the shared texture archive.
