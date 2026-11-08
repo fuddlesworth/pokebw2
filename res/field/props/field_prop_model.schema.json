@@ -18,7 +18,7 @@
         "positions": {
             "type": "array",
             "items": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "type": "number" } },
-            "description": "For a transformed model whose transforms the packer can't yet work out from the GLB's joints, its vertices' positions as exported"
+            "description": "For a transformed model whose transforms the packer can't yet work out from the GLB's joints, so that it makes something else of the GLB without them, its vertices' positions as exported: the shortest decimals that read back as the GLB's float32s"
         },
         "glb_sha256": {
             "type": "string", "pattern": "^[0-9a-f]{64}$",

@@ -1018,8 +1018,9 @@ The binary glTF (`.glb`) holds the model geometry and its buffer in one file and
 For example, `MAP_MODEL_MAP_OUTGRASS` is a four-vertex ground plane, and `MAP_MODEL_NACRENE_CITY_6_M_WHOUSE01_00_00` a
 house from Nacrene City's map matrix, with 736 vertices and ten materials. A `data.json` with `"transformed": true`
 marks a model whose GLB positions went through its scene transforms on export, which the packer reverses from the GLB
-and the original Nitro model. Seven unusual prop models also keep their `positions` as exported, because their
-transforms cannot yet be reconstructed. These fields come from the export; edits belong in the GLB or PNG. The packer
+and the original Nitro model. Six unusual prop models also keep their `positions` as exported, because their
+transforms cannot yet be reconstructed, as the shortest decimals that read back as the GLB's float32s; a model keeps
+them only where the packer makes something else of its GLB without them. These fields come from the export; edits belong in the GLB or PNG. The packer
 derives the original triangle and vertex order from Nitro commands, so a Blender export can reindex vertices while
 the packer still maps edits to the right commands.
 
@@ -1530,7 +1531,8 @@ A model's GLB and PNGs are edited and packed as the field props' are (see "Map m
 converters. `dump` has [Apicula](https://github.com/scurest/apicula) convert each model, from `PATH` or `--apicula
 PATH`; `pack`, which the build runs, needs only Python. The model's `data.json` is a prop's without the resource ID:
 `glb_sha256`, the hash of the GLB as extracted, and `transformed` and `positions` where the GLB's positions went through
-the model's node transforms. A GLB that still has its hash packs the game's model, and an edited one is converted back
+the model's node transforms: `positions` only where the packer makes something else of the GLB without them (101 of
+the archives' models), not where it refuses the model's edits with them or without. A GLB that still has its hash packs the game's model, and an edited one is converted back
 into it: its positions, UVs, material colors and texture bindings, as for a prop. An edited PNG packs into the model's
 textures as a texture set's does, in the texture's format and its shared palette. The GLB gives each of the model's draw
 calls a material of its own, copying a material that several share (`awa_1.001`), since Blender joins the draw calls of

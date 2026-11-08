@@ -70,14 +70,41 @@ def wrapped(model):
     return struct.pack("<2sHIII", b"NG", 0, 16, end, end) + model
 
 
-def needs_baseline(model_dir, name, nitro):
-    """Whether a transformed model's GLB, unedited, packs back into something else than its Nitro model when the packer
-    works out the exported positions from the GLB's joints, so that it needs them as exported."""
+def unedited_geometry(model_dir, name, nitro, mapping):
+    """Returns what edit_model makes of the positions of a model's GLB, unedited, with mapping: the model with them
+    written, the model as it is where they aren't direct, or the triangles encoded again; None where it refuses them."""
     try:
-        positions, direct, _ = positions_from_gltf(model_dir, name, nitro, {"direct": False})
-        return not direct or patch_model(wrapped(nitro), positions, name) != wrapped(nitro)
+        positions, direct, _ = positions_from_gltf(model_dir, name, nitro, mapping)
+        return patch_model(wrapped(nitro), positions, name) if direct else wrapped(nitro)
+    except ValueError as error:
+        if not any(reason in str(error) for reason in FALLBACK_ERRORS):
+            return None
+    doc, primitives, binary = mesh_primitives(model_dir, name)
+    try:
+        return rebuild_topology(wrapped(nitro), doc, primitives, binary, mapping, name)
     except ValueError:
-        return True
+        return None
+
+
+def needs_baseline(model_dir, name, nitro, positions):
+    """Returns whether a transformed model needs its GLB's positions as exported: whether the packer makes something
+    else of the GLB, unedited, when it works them out from the GLB's joints. A model that packs the same either way,
+    such as one whose edits the packer refuses with them or without, doesn't, as they would only take room."""
+    return (unedited_geometry(model_dir, name, nitro, {"direct": False})
+            != unedited_geometry(model_dir, name, nitro, {"direct": False, "positions": positions}))
+
+
+def float32(value):
+    """Returns a value as the float32 that a GLB holds."""
+    return struct.unpack("<f", struct.pack("<f", value))[0]
+
+
+def shortest_float32(value):
+    """Returns the shortest decimal that reads back as a float32, so that the positions as exported take the room of
+    their float32s, not of the doubles that hold them; float32() reads them back exactly."""
+    exact = float32(value)
+    return next(float(text) for text in (f"{exact:.{digits}g}" for digits in range(1, 10))
+                if float32(float(text)) == exact)
 
 
 def export_one(apicula, model_dir, texture_dir, entry, texture_blob):
@@ -137,8 +164,8 @@ def glb_fields(model_dir, name, nitro):
     data = {}
     if not direct:
         data["transformed"] = True
-        if needs_baseline(model_dir, name, nitro):
-            data["positions"] = positions
+        if needs_baseline(model_dir, name, nitro, positions):
+            data["positions"] = [[shortest_float32(value) for value in position] for position in positions]
     data["glb_sha256"] = hashlib.sha256((model_dir / "model.glb").read_bytes()).hexdigest()
     return data
 
@@ -217,7 +244,7 @@ def edit_model(model_dir, name, original, texture_blob, data, texture_directory=
         return original
     mapping = {"direct": not data.get("transformed", False)}
     if "positions" in data:
-        mapping["positions"] = data["positions"]
+        mapping["positions"] = [tuple(float32(value) for value in position) for position in data["positions"]]
     doc, primitives, binary = mesh_primitives(model_dir, name)
     wrapped_original = wrapped(original)
     bound, _ = patch_material_bindings(wrapped_original, doc, primitives, texture_blob, name,
