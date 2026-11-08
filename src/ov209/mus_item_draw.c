@@ -1,4 +1,5 @@
 #include "types.h"
+#include "app/musical/mus_item_data.h"
 #include "app/musical/mus_item_draw.h"
 #include "constants/arc.h"
 #include "field/musical.h"
@@ -131,12 +132,12 @@ BOOL MusItemDraw_IsItemOfPos(MusItemDrawSys *sys, u16 itemId, s32 pos) {
     return MusItemData_IsCategoryOfGroup(MusItemData_GetItem(sys->itemData, itemId), pos);
 }
 
-BOOL MusItemDraw_GetItemFlag7(MusItemDraw *item) {
-    return MusItemData_GetFlag7(item->data);
+BOOL MusItemDraw_UsesLowerDrawDepth(MusItemDraw *item) {
+    return MusItemData_UsesLowerDrawDepth(item->data);
 }
 
-BOOL MusItemDraw_GetItemFlag9(MusItemDraw *item) {
-    return MusItemData_GetFlag9(item->data);
+BOOL MusItemDraw_UsesMarkerFlip(MusItemDraw *item) {
+    return MusItemData_UsesMarkerFlip(item->data);
 }
 
 G3DResource *MusItemDraw_LoadTexResource(u16 itemId) {

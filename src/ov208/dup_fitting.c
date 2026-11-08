@@ -59,8 +59,6 @@ typedef enum {
     DUP_FITTING_EQUIP_MAX = 9,
     DUP_FITTING_EQUIP_NONE = 10,
 } DupFittingEquipPos;
-// The category that shows the props in the order they are kept in
-#define DUP_FITTING_CATEGORY_ORIGINAL 8
 #define DUP_FITTING_MSG_ID_NONE 0xff
 
 enum {
@@ -113,18 +111,6 @@ enum {
     DUP_FITTING_DEMO_DRAG_BACK,
     DUP_FITTING_DEMO_DRAG_BACK_WAIT,
     DUP_FITTING_DEMO_END,
-};
-
-// The kinds of prop, which the category messages are named after; the second of the ears and of the arms is its own
-enum {
-    DUP_FITTING_CATEGORY_EAR,
-    DUP_FITTING_CATEGORY_EAR_2,
-    DUP_FITTING_CATEGORY_HEAD,
-    DUP_FITTING_CATEGORY_FACE,
-    DUP_FITTING_CATEGORY_BODY,
-    DUP_FITTING_CATEGORY_WAIST,
-    DUP_FITTING_CATEGORY_ARM,
-    DUP_FITTING_CATEGORY_ARM_2,
 };
 
 struct DupFittingWork {
@@ -1467,7 +1453,7 @@ static void DupFitting_UpdateHeldItem(DupFittingWork *work, BOOL playSound) {
         target.y = (s32)FX_FX32_TO_F32(equip->info.pos.y + equip->info.offset.y) + 96;
         rotation = equip->info.cellRotation;
         MusItemDraw_SetUseOffset(work->itemSys, draw, TRUE);
-        if (MusItemDraw_GetItemFlag7(draw) == TRUE) {
+        if (MusItemDraw_UsesLowerDrawDepth(draw) == TRUE) {
             vec.z = 26 * FX32_ONE;
         }
         if (DupFitting_HasWornInCategory(work, work->hoverPos) == FALSE) {
@@ -1669,7 +1655,7 @@ static void DupFitting_WearItem(DupFittingWork *work) {
         VecFx32 nodePos;
 
         MusItemDraw_GetPosition(work->itemSys, nodeDraw, &nodePos);
-        if (MusItemDraw_GetItemFlag7(nodeDraw) == TRUE) {
+        if (MusItemDraw_UsesLowerDrawDepth(nodeDraw) == TRUE) {
             DupFitting_SetWornDepth(&nodePos, z, 0x66);
         } else if (DupFittingItemNode_GetEquipPos(node) == 7 || DupFittingItemNode_GetEquipPos(node) == 8) {
             DupFitting_SetWornDepth(&nodePos, z, 0xde);
@@ -1710,7 +1696,7 @@ static void DupFitting_ReleaseHeld(DupFittingWork *work) {
         target.y = (s32)FX_FX32_TO_F32(equip->info.pos.y + equip->info.offset.y) + 96;
         vec.x = FX32_CONST(target.x);
         vec.y = FX32_CONST(target.y);
-        if (MusItemDraw_GetItemFlag7(draw) == TRUE) {
+        if (MusItemDraw_UsesLowerDrawDepth(draw) == TRUE) {
             base = 0x66;
         } else if (DupFittingItemNode_GetEquipPos(work->heldNode) == 7 ||
                    DupFittingItemNode_GetEquipPos(work->heldNode) == 8) {
