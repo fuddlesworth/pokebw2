@@ -1,4 +1,5 @@
 #include "types.h"
+#include "field/c_gear_power_onoff.h"
 #include "field/event_cgear_shutdown.h"
 #include "field/field.h"
 #include "field/subscreen.h"
@@ -33,7 +34,7 @@ GameEventReturnCode EventCGearShutdown_Callback(GameEvent *event, u32 *state, vo
         (*state)++;
         break;
     case CGEAR_SHUTDOWN_STEP_WAIT:
-        if (FieldSubscreen_GetReturnSubscreen(data->subscreen) != 0xe) {
+        if (FieldSubscreen_GetReturnSubscreen(data->subscreen) != CGEAR_POWER_ONOFF_DONE) {
             break;
         }
         FieldSubscreen_ResetReturnSubscreen(data->subscreen);

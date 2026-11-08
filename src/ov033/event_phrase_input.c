@@ -169,6 +169,15 @@ BOOL Scrcmd_PhraseInput_CheckWifiListFlags(VM *vm, FieldScriptEnv *env) {
     return FALSE;
 }
 
+// The script operations on the saved Wi-Fi result list and its existing flag.
+enum {
+    PHRASE_WIFI_LIST_OP_CHECK_ALL_RESULTS = 0,
+    PHRASE_WIFI_LIST_OP_CHECK_RESULT_INDEX = 1,
+    PHRASE_WIFI_LIST_OP_CHECK_FLAG = 2,
+    PHRASE_WIFI_LIST_OP_CLEAR_FLAG = 3,
+    PHRASE_WIFI_LIST_OP_SET_RESULT_INDEX = 4,
+};
+
 BOOL Scrcmd_PhraseInput_WifiListOperation(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work;
     GameSystem *gsys;
@@ -189,35 +198,35 @@ BOOL Scrcmd_PhraseInput_WifiListOperation(VM *vm, FieldScriptEnv *env) {
     result = ScriptReadVar(vm, env);
     save = GameData_GetDreamWorldSave(gameData);
     switch (input) {
-    case 0:
+    case PHRASE_WIFI_LIST_OP_CHECK_ALL_RESULTS:
         *result = 1;
         for (i = 0; i < 5; i++) {
             value = DreamWorldSave_GetResult(save, i);
             if (value == NULL) {
                 *result = 0;
-            } else if (*value == 0x7e || *value == 0) {
+            } else if (*value == DREAM_WORLD_RESULT_NONE || *value == 0) {
                 *result = 0;
             }
         }
         break;
-    case 1:
-        if (DreamWorldSave_GetResultIndex(save) == 0x7f) {
+    case PHRASE_WIFI_LIST_OP_CHECK_RESULT_INDEX:
+        if (DreamWorldSave_GetResultIndex(save) == DREAM_WORLD_RESULT_INDEX_NONE) {
             *result = 0;
         } else {
             *result = 1;
         }
         break;
-    case 2:
+    case PHRASE_WIFI_LIST_OP_CHECK_FLAG:
         if (DreamWorldSave_GetFlag(save) == 1) {
             *result = 1;
         } else {
             *result = 0;
         }
         break;
-    case 3:
+    case PHRASE_WIFI_LIST_OP_CLEAR_FLAG:
         DreamWorldSave_SetFlag(save, 0);
         break;
-    case 4:
+    case PHRASE_WIFI_LIST_OP_SET_RESULT_INDEX:
         DreamWorldSave_SetResultIndex(save, input2);
         break;
     }
@@ -245,7 +254,7 @@ BOOL Scrcmd_PhraseInput_SetWifiFriendNameWord(VM *vm, FieldScriptEnv *env) {
     input = ScriptReadAny(vm, env);
     index = ScriptReadAny(vm, env);
     phrase = DreamWorldSave_GetResult(save, index);
-    if (phrase != NULL && *phrase != 0x7e && *phrase != 0) {
+    if (phrase != NULL && *phrase != DREAM_WORLD_RESULT_NONE && *phrase != 0) {
         strbuf = GFL_StrBufCreate(14, heapId);
         GFL_StrBufLoadFixedString(strbuf, phrase + 1, 13);
         GFL_WordSetSetStrbuf(wordSet, input, strbuf, 0, 0, 2);

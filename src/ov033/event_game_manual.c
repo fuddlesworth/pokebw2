@@ -26,19 +26,25 @@ GameEvent *EventGameManual_Create(GameSystem *gsys, u16 *result) {
     return event;
 }
 
+// Run the manual proc, copy its result and release its parameters.
+enum {
+    GAME_MANUAL_STEP_START_PROC = 0,
+    GAME_MANUAL_STEP_FINISH = 1,
+};
+
 GameEventReturnCode EventGameManual_Main(GameEvent *event, u32 *state, void *data) {
     GameManualEventWork *work;
     GameEvent *next;
 
     work = data;
     switch (*state) {
-    case 0:
+    case GAME_MANUAL_STEP_START_PROC:
         next =
             EventFieldSubprocessTransition_Create(work->gsys, work->field, 0x13f, &gManualProcFunctions, work->subwork);
         GameEvent_ChainNext(event, next);
         (*state)++;
         break;
-    case 1:
+    case GAME_MANUAL_STEP_FINISH:
         EventGameManual_SetResult(work);
         GFL_HeapFree(work->subwork);
         return GAMEEVENT_DONE;

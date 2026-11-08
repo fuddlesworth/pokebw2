@@ -46,7 +46,7 @@ GameEvent *EventSweetScent_CreateFromPartySlot(GameSystem *gsys, Field *field, u
 enum {
     SWEET_SCENT_STEP_START,
     SWEET_SCENT_STEP_WAIT_FORM_CHANGE,
-    SWEET_SCENT_STEP_WAIT_ANIME,
+    SWEET_SCENT_STEP_WAIT_ANIMATION,
     SWEET_SCENT_STEP_RETURN_FORM,
     SWEET_SCENT_STEP_WAIT_RETURN_FORM,
     SWEET_SCENT_STEP_CHECK_WEATHER,
@@ -76,7 +76,7 @@ GameEventReturnCode EventSweetScent_Callback(GameEvent *event, u32 *state, void 
         FldAct_SetAcmd(FieldPlayer_GetActor(work->player), 0xa2);
         (*state)++;
         break;
-    case SWEET_SCENT_STEP_WAIT_ANIME:
+    case SWEET_SCENT_STEP_WAIT_ANIMATION:
         if (FldAct_EndAcmd(FieldPlayer_GetActor(work->player)) != TRUE) {
             break;
         }

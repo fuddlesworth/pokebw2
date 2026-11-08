@@ -1,4 +1,5 @@
 #include "types.h"
+#include "app/hall_of_fame_pc.h"
 #include "constants/sound.h"
 #include "field/field.h"
 #include "field/field_event.h"
@@ -16,7 +17,7 @@ struct PCSubprocessEventData {
     Field *field;
     GameData *gameData;
     u16 option;
-    u16 selection;
+    u16 appResult;
     u16 *result;
 };
 
@@ -53,12 +54,12 @@ GameEventReturnCode Scrcmd_SubProcEventMain(GameEvent *event, u32 *state, void *
         (*state)++;
         break;
     case PC_SUBPROC_STEP_END:
-        switch (data->selection) {
-        case 0:
-            *data->result = 0;
+        switch (data->appResult) {
+        case HALL_OF_FAME_PC_RESULT_RETURN:
+            *data->result = HALL_OF_FAME_PC_RESULT_RETURN;
             break;
-        case 1:
-            *data->result = 1;
+        case HALL_OF_FAME_PC_RESULT_CLOSE:
+            *data->result = HALL_OF_FAME_PC_RESULT_CLOSE;
             break;
         }
         return GAMEEVENT_DONE;
@@ -223,7 +224,7 @@ GameEventReturnCode pcLogOffSound(GameEvent *event, u32 *state, void *eventData)
     return GAMEEVENT_CONTINUE;
 }
 
-GameEvent *FieldDoorAnime_StartClose(GameEvent *parent, GameSystem *gsys, Field *field, u32 skipSound) {
+GameEvent *CreatePCLogOffCallEvent(GameEvent *parent, GameSystem *gsys, Field *field, u32 skipSound) {
     GameEvent *event;
     struct PCSoundEventData *data;
 

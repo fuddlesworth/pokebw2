@@ -391,7 +391,7 @@ u32 ScrcmdPokemonFld_GetGiftReceiveType(u32 kind, FieldScriptEnv *env, GameData 
     if (gift != NULL && handler != NULL) {
         return handler(env, gameData, gift);
     }
-    return 0;
+    return PDW_POSTMAN_RECEIVE_TYPE_NONE;
 }
 
 u16 GetActorIDOfMysteryGiftDeliveryMan(Field *field, GameData *gameData) {
@@ -507,14 +507,14 @@ u32 ScrcmdPokemonFld_GetGiftMonReceiveType(FieldScriptEnv *env, GameData *gameDa
 
     pkm = ScrcmdPokemonFld_CreateGiftMon(env, gift);
     if (pkm == NULL) {
-        return 1;
+        return PDW_POSTMAN_RECEIVE_TYPE_POKEMON;
     }
     isEgg = PokeParty_GetParam(pkm, PKM_PARAM_IS_EGG, NULL);
     GFL_HeapFree(pkm);
     if (isEgg == TRUE) {
-        return 2;
+        return PDW_POSTMAN_RECEIVE_TYPE_EGG;
     }
-    return 1;
+    return PDW_POSTMAN_RECEIVE_TYPE_POKEMON;
 }
 
 u32 ScrcmdPokemonFld_PrepareGiftMonMessage(WordSet *wordSet, MysteryGift *gift, FieldScriptEnv *env) {
@@ -562,9 +562,9 @@ void ScrcmdPokemonFld_ReceiveGiftItem(FieldScriptEnv *env, GameData *gameData, M
 
 u32 ScrcmdPokemonFld_GetGiftItemReceiveType(FieldScriptEnv *env, GameData *gameData, MysteryGift *gift) {
     if (ScrcmdPokemonFld_IsLibertyPassGift(gift, gift->kind) == TRUE) {
-        return 4;
+        return PDW_POSTMAN_RECEIVE_TYPE_LIBERTY_PASS;
     }
-    return 3;
+    return PDW_POSTMAN_RECEIVE_TYPE_ITEM;
 }
 
 u32 ScrcmdPokemonFld_PrepareGiftItemMessage(WordSet *wordSet, MysteryGift *gift, FieldScriptEnv *env) {
@@ -592,7 +592,7 @@ void ScrcmdPokemonFld_ReceiveGiftFlag(FieldScriptEnv *env, GameData *gameData, M
 }
 
 u32 ScrcmdPokemonFld_GetGiftFlagReceiveType(FieldScriptEnv *env, GameData *gameData, MysteryGift *gift) {
-    return 5;
+    return PDW_POSTMAN_RECEIVE_TYPE_PASS_POWER;
 }
 
 u32 ScrcmdPokemonFld_PrepareGiftFlagMessage(WordSet *wordSet, MysteryGift *gift, FieldScriptEnv *env) {
@@ -649,7 +649,7 @@ void ScrcmdPokemonFld_ReceiveGiftOneShot(FieldScriptEnv *env, GameData *gameData
 }
 
 u32 ScrcmdPokemonFld_GetGiftOneShotReceiveType(FieldScriptEnv *env, GameData *gameData, MysteryGift *gift) {
-    return 6;
+    return PDW_POSTMAN_RECEIVE_TYPE_ONE_SHOT;
 }
 
 u32 ScrcmdPokemonFld_PrepareGiftOneShotMessage(WordSet *wordSet, MysteryGift *gift, FieldScriptEnv *env) {

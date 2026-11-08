@@ -509,7 +509,7 @@ u32 EventChatterCall_Check(PlayerActionPossibilities *context) {
 
 GameEvent *EventChatterCall_Create(HiddenEventArgs *args, PlayerActionPossibilities *context) {
     GameBeacon_BroadcastFieldMove(MOVE_CHATTER);
-    return EventPerapRecord_Create(context->gsys, context->field, args->partySlot);
+    return EventChatotRecord_Create(context->gsys, context->field, args->partySlot);
 }
 
 GameEventReturnCode EventRuinsStrengthCall_Callback(GameEvent *event, u32 *state, void *data) {

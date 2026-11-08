@@ -31,9 +31,9 @@
 // The fishing form's own animations, the draw statuses after DRAW_STATUS_STOP that the fishing gives the player: the
 // line reeled in with nothing on it, a bite, and a hooked Pokémon that the battle starts with
 enum {
-    FISHING_ANIME_REEL_IN_EMPTY = 1,
-    FISHING_ANIME_BITE,
-    FISHING_ANIME_HOOKED,
+    FISHING_ANIMATION_REEL_IN_EMPTY = 1,
+    FISHING_ANIMATION_BITE,
+    FISHING_ANIMATION_HOOKED,
 };
 
 BOOL CreateSurfPos(GameData *context, Field *field, VecFx32 *position) {
@@ -84,7 +84,7 @@ GameEvent *EventFieldFishing_Create(Field *field, GameSystem *gsys) {
     FishingEventWork *work;
     MapTerrainBuf terrain;
     VecFx32 position;
-    u32 flag;
+    u32 hideReflection;
 
     event = GameEvent_Create(gsys, NULL, EventFieldFishing_Callback, sizeof(FishingEventWork));
     work = GameEvent_GetData(event);
@@ -108,14 +108,14 @@ GameEvent *EventFieldFishing_Create(Field *field, GameSystem *gsys) {
     work->gridZ = (work->fishingPos.z >> 4) / 4096;
     position = work->playerPos;
     ExpandVecInGridDir(1, &position, 0x10000);
-    flag = 1;
+    hideReflection = 1;
     if (!FieldG3DMapper_GetTerrain(Field_GetG3DMapper(field), &position, &terrain)) {
-        work->flag5B = flag;
+        work->hideReflection = hideReflection;
     } else {
         if (GetTileFlags(terrain.tileType) & 0x40) {
-            flag = 0;
+            hideReflection = 0;
         }
-        work->flag5B = flag;
+        work->hideReflection = hideReflection;
     }
     if (EncountState_CheckSpecialEncountPos(work->encountSystem, &work->gridX)) {
         work->isPhenomenon = TRUE;
@@ -165,7 +165,7 @@ GameEventReturnCode EventFieldFishing_Callback(GameEvent *event, u32 *state, voi
     case FISHING_STEP_WAIT_FORM_CHANGE:
         if (FieldPlayer_StepFormChange(work->player) == TRUE) {
             FldAct_SetDrawStatus(work->actor, DRAW_STATUS_STOP);
-            SetActorReflectionHidden(work->actor, work->flag5B);
+            SetActorReflectionHidden(work->actor, work->hideReflection);
             GFL_SndSEPlay(SEQ_SE_FLD_19);
             ++*state;
         }
@@ -196,7 +196,7 @@ GameEventReturnCode EventFieldFishing_Callback(GameEvent *event, u32 *state, voi
             Fishing_DeleteBubble(work);
             if (result == FISHING_WAIT_PRESSED) {
                 Fishing_DeleteLine(work);
-                FldAct_SetDrawStatus(work->actor, FISHING_ANIME_HOOKED);
+                FldAct_SetDrawStatus(work->actor, FISHING_ANIMATION_HOOKED);
                 party = BtlSetup_GetParty(work->battleSetup, 1);
                 pkm = PokeParty_GetPkm(party, 0);
                 species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
@@ -226,7 +226,7 @@ GameEventReturnCode EventFieldFishing_Callback(GameEvent *event, u32 *state, voi
             }
             BtlSetup_Free(work->battleSetup);
         }
-        FldAct_SetDrawStatus(work->actor, FISHING_ANIME_REEL_IN_EMPTY);
+        FldAct_SetDrawStatus(work->actor, FISHING_ANIMATION_REEL_IN_EMPTY);
         EventScriptCall_Start(event, 0x2792 + *state, NULL, 0, HEAPID_FIELDMAP);
         *state = FISHING_STEP_RETURN_FORM;
         break;
@@ -281,7 +281,7 @@ void Fishing_ShowBite(FishingEventWork *work) {
     void *effects;
 
     effects = Field_GetFieldEffects(work->field);
-    FldAct_SetDrawStatus(work->actor, FISHING_ANIME_BITE);
+    FldAct_SetDrawStatus(work->actor, FISHING_ANIMATION_BITE);
     work->bubble = FldeffEmotionBubble_SetActor(effects, work->actor, 0, 1);
     FldeffFishing_SetAnimeSpeed(work->line, 1);
 }

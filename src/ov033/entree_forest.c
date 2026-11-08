@@ -113,7 +113,7 @@ PartyPkm *EntreeForest_CreateSymbolMon(HeapID heapId, GameData *gameData, const 
     PokeParty_SetHiddenAbil(pkm, pokemon->species, pokemon->form);
     PokeParty_ChangeForme(pkm, pokemon->form);
     if (pokemon->move != 0) {
-        if (PokeParty_LearnMove(pkm, pokemon->move) == 0xffff) {
+        if (PokeParty_LearnMove(pkm, pokemon->move) == LEARN_MOVE_FULL) {
             PokeParty_SetLastMove(pkm, pokemon->move);
         }
     }

@@ -53,4 +53,9 @@ u32 FieldTradeInput_GetWantedSpecies(FieldTradeInput *input);
 u32 FieldTradeInput_GetWantedSex(FieldTradeInput *input);
 StrBuf *FieldTradeInput_LoadName(u32 heapId, u32 messageId);
 
+// An offer leaves its sex, nature or an IV to the Pokemon generator.
+enum {
+    FIELD_TRADE_VALUE_RANDOM = 255,
+};
+
 #endif // POKEBW2_FIELD_FLD_TRADE_H

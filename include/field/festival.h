@@ -188,4 +188,7 @@ void FesGimmick_OnZoneEnter(FesGimmick *gimmick);
 
 FestMissionWork *LinkFestival_GetMissionWork(LinkFestival *festival);
 
+// GetNormalChangeBGMID leaves the current music in place.
+#define LINK_FESTIVAL_BGM_NO_CHANGE 0xffffffff
+
 #endif // POKEBW2_FIELD_FESTIVAL_H

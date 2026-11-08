@@ -126,9 +126,10 @@ void Scrcmd_CollectPartnersByLanguage(UnityTowerSurveySave *save, UnityTowerFloo
 // The survey's index of the floor's candidate, or UNITY_TOWER_HISTORY_INDEX_NONE when there is none
 #define UNITY_TOWER_HISTORY_INDEX_NONE 0xff
 u32 Scrcmd_GetPartnerCandidateHistoryIndex(UnityTowerFloor *output, u32 index);
-u32 Scrcmd_CalcPartnerGreetingIndex(u32 gender, u32 id, u32 ratingLevel, u32 a3, u32 hasProvince);
+u32 Scrcmd_CalcPartnerGreetingIndex(u32 gender, u32 id, u32 ratingLevel, u32 useBaseGreeting, u32 hasProvince);
 void UnityTowerSave_Init(UnityTowerFloor *save);
-u32 Scrcmd_GetPartnerGreetingMessage(WordSet *wordSet, GameSystem *gsys, UnityTowerFloor *save, s32 index, u32 param);
+u32 Scrcmd_GetPartnerGreetingMessage(WordSet *wordSet, GameSystem *gsys, UnityTowerFloor *save, s32 index,
+                                     u32 useBaseGreeting);
 
 void LoadUnityTowerVisitorWordSet(WordSet *wordSet, GameData *gameData, u32 index);
 

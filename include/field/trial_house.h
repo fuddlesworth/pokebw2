@@ -48,9 +48,9 @@ void TrialHouse_LoadDeliveryState(GameSystem *gsys, struct TrialHouseWork *work)
 void TrialHouseWorkDelete(void *unused, struct TrialHouseWork **work);
 void TrialHouse_SetBattleMode(TrialHouseWork *work, u32 mode);
 void TrialHouse_SetSelectionFlag(TrialHouseWork *work, u32 selectionFlag);
-u32 TrialHouse_LoadTrainer(GameSystem *gsys, TrialHouseWork *work, u32 mode);
-void TrialHouse_BuildTrainerFromMode(TrialHouseWork *work, u32 mode);
-void TrialHouse_LoadDeliveredTrainer(GameSystem *gsys, TrialHouseWork *work, u32 mode);
+u32 TrialHouse_LoadTrainer(GameSystem *gsys, TrialHouseWork *work, u32 trainerIndex);
+void TrialHouse_BuildTrainerFromMode(TrialHouseWork *work, u32 trainerIndex);
+void TrialHouse_LoadDeliveredTrainer(GameSystem *gsys, TrialHouseWork *work, u32 trainerIndex);
 u32 TrialHouse_GetTrainerObjCode(TrialHouseWork *work);
 // The Trainer's message in a balloon over the actor
 GameEvent *TrialHouse_CreateTrainerMsgEvent(GameSystem *gsys, TrialHouseWork *work, u32 index, u32 actorId);
@@ -72,5 +72,28 @@ GameEvent *CallTrialHouseBattle(GameSystem *gsys, TrialHouseWork *work);
 void SyncTrialHouseWkStatsFromBattle(TrialHouseWork *work, BtlSetup *setup);
 // Overlay 313's results screen
 GameEvent *CallTrialHouseResults(GameSystem *gsys, u32 downloaded, u32 playJingle);
+
+// Which valid examination was found in the downloaded save block.
+enum {
+    TRIAL_HOUSE_DELIVERY_NONE = 0,
+    TRIAL_HOUSE_DELIVERY_SINGLE = 1,
+    TRIAL_HOUSE_DELIVERY_DOUBLE = 2,
+};
+
+// The delivery task result: no examination, accepted data, duplicate data or B cancellation.
+enum {
+    TRIAL_HOUSE_RECEIVE_NOT_RECEIVED = 0,
+    TRIAL_HOUSE_RECEIVE_RECEIVED = 1,
+    TRIAL_HOUSE_RECEIVE_ALREADY_RECEIVED = 2,
+    TRIAL_HOUSE_RECEIVE_CANCELED = 3,
+};
+
+// Which regular/downloaded result slots are present; the two presence bits combine.
+enum {
+    TRIAL_HOUSE_RECORDS_NONE = 0,
+    TRIAL_HOUSE_RECORDS_REGULAR = 1,
+    TRIAL_HOUSE_RECORDS_DOWNLOADED = 2,
+    TRIAL_HOUSE_RECORDS_BOTH = 3,
+};
 
 #endif // POKEBW2_FIELD_TRIAL_HOUSE_H

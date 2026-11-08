@@ -103,4 +103,15 @@ MysteryGift *PdwPostman_FindMysteryCard(MysteryGiftSave *save, u32 *slot, Myster
 void PdwPostman_SetCardDelivered(MysteryGiftSave *save, u32 slot);
 u8 PdwPostman_GetMysteryCardKind(MysteryGiftSave *save);
 
+// The gift category returned to the delivery script.
+enum {
+    PDW_POSTMAN_RECEIVE_TYPE_NONE = 0,
+    PDW_POSTMAN_RECEIVE_TYPE_POKEMON = 1,
+    PDW_POSTMAN_RECEIVE_TYPE_EGG = 2,
+    PDW_POSTMAN_RECEIVE_TYPE_ITEM = 3,
+    PDW_POSTMAN_RECEIVE_TYPE_LIBERTY_PASS = 4,
+    PDW_POSTMAN_RECEIVE_TYPE_PASS_POWER = 5,
+    PDW_POSTMAN_RECEIVE_TYPE_ONE_SHOT = 6,
+};
+
 #endif // POKEBW2_FIELD_PDW_POSTMAN_H

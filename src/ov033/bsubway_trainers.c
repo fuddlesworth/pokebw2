@@ -42,6 +42,7 @@ BtlSetup *BsubwayScr_CreateBtlSetup(BSubwayScrWork *bsw, GameSystem *gsys) {
     return result;
 }
 
+// The legacy getter forwards opaque storage to the wireless-battle proc, which currently ignores it.
 void *BsubwayScr_GetNameInputEncounterWork(BSubwayScrWork *bsw) {
     return bsw->unk74C;
 }

@@ -76,7 +76,7 @@ void EventFieldTrade_CreatePkm(GameData *gameData, HeapID heapId, PartyPkm *pkm,
     u32 pid;
     StrBuf *name;
 
-    if (sexMode == 0xff) {
+    if (sexMode == FIELD_TRADE_VALUE_RANDOM) {
         sexMode = 2;
     }
     pid = PML_GenPID(offer->trainerId, (u16)offer->species, (u16)offer->form, sexMode, offer->abilitySlot,
@@ -89,28 +89,28 @@ void EventFieldTrade_CreatePkm(GameData *gameData, HeapID heapId, PartyPkm *pkm,
     PokeParty_SetParam(pkm, PKM_PARAM_NICKNAME, (u32)name);
     GFL_StrBufFree(name);
 
-    if (offer->ivs[0] != 0xff) {
+    if (offer->ivs[0] != FIELD_TRADE_VALUE_RANDOM) {
         PokeParty_SetParam(pkm, PKM_PARAM_IV_HP, offer->ivs[0]);
     }
-    if (offer->ivs[1] != 0xff) {
+    if (offer->ivs[1] != FIELD_TRADE_VALUE_RANDOM) {
         PokeParty_SetParam(pkm, PKM_PARAM_IV_ATTACK, offer->ivs[1]);
     }
-    if (offer->ivs[2] != 0xff) {
+    if (offer->ivs[2] != FIELD_TRADE_VALUE_RANDOM) {
         PokeParty_SetParam(pkm, PKM_PARAM_IV_DEFENSE, offer->ivs[2]);
     }
-    if (offer->ivs[3] != 0xff) {
+    if (offer->ivs[3] != FIELD_TRADE_VALUE_RANDOM) {
         PokeParty_SetParam(pkm, PKM_PARAM_IV_SPEED, offer->ivs[3]);
     }
-    if (offer->ivs[4] != 0xff) {
+    if (offer->ivs[4] != FIELD_TRADE_VALUE_RANDOM) {
         PokeParty_SetParam(pkm, PKM_PARAM_IV_SP_ATTACK, offer->ivs[4]);
     }
-    if (offer->ivs[5] != 0xff) {
+    if (offer->ivs[5] != FIELD_TRADE_VALUE_RANDOM) {
         PokeParty_SetParam(pkm, PKM_PARAM_IV_SP_DEFENSE, offer->ivs[5]);
     }
     if (offer->abilitySlot == ABILITY_SLOT_HIDDEN) {
         PokeParty_SetHiddenAbil(pkm, offer->species, offer->form);
     }
-    if (offer->nature != 0xff) {
+    if (offer->nature != FIELD_TRADE_VALUE_RANDOM) {
         PokeParty_SetParam(pkm, PKM_PARAM_NATURE, offer->nature);
     }
 
@@ -127,49 +127,58 @@ void EventFieldTrade_CreatePkm(GameData *gameData, HeapID heapId, PartyPkm *pkm,
     PokeParty_SetParam(pkm, PKM_PARAM_OT_GENDER, offer->trainerGender);
     PokeParty_SetParam(pkm, PKM_PARAM_REGION, offer->region);
     PokeParty_SetupMetData(pkm, 1, GetGameDataPlayerInfo(gameData), 0x7532, heapId);
-    PokeParty_SetParam(pkm, 9, 0x46);
+    PokeParty_SetParam(pkm, PKM_PARAM_HAPPINESS, 0x46);
     EventFieldTrade_DebugLogPkm(pkm);
     PokeParty_RecalcStats(pkm);
 }
 
 void EventFieldTrade_DebugLogPkm(PartyPkm *pkm) {
-    PokeParty_GetParam(pkm, 0, NULL);
-    PokeParty_GetParam(pkm, 5, NULL);
-    PokeParty_GetParam(pkm, 0x6f, NULL);
-    PokeParty_GetParam(pkm, 6, NULL);
-    PokeParty_GetParam(pkm, 7, NULL);
-    PokeParty_GetParam(pkm, 8, NULL);
-    PokeParty_GetParam(pkm, 9, NULL);
-    PokeParty_GetParam(pkm, 10, NULL);
-    PokeParty_GetParam(pkm, 0x6e, NULL);
-    PokeParty_GetParam(pkm, 0x70, NULL);
-    PokeParty_GetParam(pkm, 11, NULL);
-    PokeParty_GetParam(pkm, 12, NULL);
-    PokeParty_GetParam(pkm, 13, NULL);
-    PokeParty_GetParam(pkm, 14, NULL);
-    PokeParty_GetParam(pkm, 15, NULL);
-    PokeParty_GetParam(pkm, 16, NULL);
-    PokeParty_GetParam(pkm, 17, NULL);
-    PokeParty_GetParam(pkm, 18, NULL);
-    PokeParty_GetParam(pkm, 19, NULL);
-    PokeParty_GetParam(pkm, 20, NULL);
-    PokeParty_GetParam(pkm, 21, NULL);
-    PokeParty_GetParam(pkm, 22, NULL);
-    PokeParty_GetParam(pkm, 23, NULL);
-    PokeParty_GetParam(pkm, 24, NULL);
-    PokeParty_GetParam(pkm, 0x46, NULL);
-    PokeParty_GetParam(pkm, 0x47, NULL);
-    PokeParty_GetParam(pkm, 0x48, NULL);
-    PokeParty_GetParam(pkm, 0x49, NULL);
-    PokeParty_GetParam(pkm, 0x4a, NULL);
-    PokeParty_GetParam(pkm, 0x4b, NULL);
-    PokeParty_GetParam(pkm, 0x9a, NULL);
-    PokeParty_GetParam(pkm, 0x9e, NULL);
-    PokeParty_GetParam(pkm, 0x95, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_PID, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_FORM, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_ID, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EXP, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_HAPPINESS, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_ABILITY, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_SEX, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_NATURE, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_MARKINGS, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_REGION, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EV_HP, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EV_ATTACK, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EV_DEFENSE, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EV_SPEED, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EV_SP_ATTACK, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EV_SP_DEFENSE, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_CONTEST_COOL, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_CONTEST_BEAUTY, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_CONTEST_CUTE, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_CONTEST_SMART, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_CONTEST_TOUGH, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_CONTEST_SHEEN, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_IV_HP, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_IV_ATTACK, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_IV_DEFENSE, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_IV_SPEED, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_IV_SP_ATTACK, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_IV_SP_DEFENSE, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_OT_GENDER, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_LEVEL, NULL);
+    PokeParty_GetParam(pkm, PKM_PARAM_EGG_LOCATION, NULL);
 }
 
 void FieldTradeInput_DumpTradeData(FieldTradeOfferData *param) {
 }
+
+// The trade sequence; CHECK_EVOLUTION stays dormant because UPDATE_PARTY jumps to FINISH.
+enum {
+    FIELD_TRADE_STEP_CREATE_OFFER = 0,
+    FIELD_TRADE_STEP_START_TRADE = 1,
+    FIELD_TRADE_STEP_UPDATE_PARTY = 2,
+    FIELD_TRADE_STEP_CHECK_EVOLUTION = 3,
+    FIELD_TRADE_STEP_FINISH = 4,
+};
 
 GameEventReturnCode EventFieldTrade_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldTradeWork *work;
@@ -191,15 +200,15 @@ GameEventReturnCode EventFieldTrade_Callback(GameEvent *event, u32 *state, void 
     pkm = PokeParty_GetPkm(party, work->partyIndex);
 
     switch (*state) {
-    case 0:
+    case FIELD_TRADE_STEP_CREATE_OFFER:
         work->input = FieldTradeInput_Create(HEAPID_GAMEEVENT, work->offerIndex);
         EventFieldTrade_CreatePkm(gameData, HEAPID_GAMEEVENT, work->input->tradeData, work->input->offerData,
                                   work->offerIndex);
         EventFieldTrade_DebugLogPkm(work->input->tradeData);
         FieldTradeInput_DumpTradeData(work->input->offerData);
-        *state = 1;
+        *state = FIELD_TRADE_STEP_START_TRADE;
         break;
-    case 1:
+    case FIELD_TRADE_STEP_START_TRADE:
         field = GSYS_GetField(gsys);
         work->transitionGameData = gameData;
         work->playerInfo = GetGameDataPlayerInfo(gameData);
@@ -209,16 +218,16 @@ GameEventReturnCode EventFieldTrade_Callback(GameEvent *event, u32 *state, void 
         GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_ID(194),
                                                                          &POKEMONTRADE_IRCDEMO_PROC_FUNCTIONS,
                                                                          work->subprocessData));
-        *state = 2;
+        *state = FIELD_TRADE_STEP_UPDATE_PARTY;
         break;
-    case 2:
+    case FIELD_TRADE_STEP_UPDATE_PARTY:
         copyPkmIntoPartyBlk(party, work->partyIndex, work->input->tradeData);
         pokedex = GameData_GetPokedex(gameData);
         PokeDex_RegistPkm(pokedex, work->input->tradeData);
         addPkmToDex(pokedex, work->input->tradeData);
-        *state = 4;
+        *state = FIELD_TRADE_STEP_FINISH;
         break;
-    case 3:
+    case FIELD_TRADE_STEP_CHECK_EVOLUTION:
         species = CheckEvolveSpecies(party, pkm, 1, 0, GameData_GetSeason(gameData), &method, HEAPID_GAMEEVENT);
         if (species != 0) {
             evolutionParam =
@@ -235,9 +244,9 @@ GameEventReturnCode EventFieldTrade_Callback(GameEvent *event, u32 *state, void 
                                 EventFieldSubprocessTransition_Create(gsys, field, OVERLAY_ID(284),
                                                                       &EVOLUTION_DEMO_PROC_FUNCTIONS, evolutionParam));
         }
-        *state = 4;
+        *state = FIELD_TRADE_STEP_FINISH;
         break;
-    case 4:
+    case FIELD_TRADE_STEP_FINISH:
         if (work->evolutionParam != NULL) {
             GFL_HeapFree(work->evolutionParam);
         }

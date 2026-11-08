@@ -20,7 +20,7 @@ GameEvent *CreatePCSoundCallEvent(GameEvent *parent, GameSystem *gsys, Field *fi
 GameEventReturnCode pcIdle(GameEvent *event, u32 *state, void *data);
 GameEvent *CreatePCIdleCallEvent(GameEvent *parent, GameSystem *gsys, Field *field);
 GameEventReturnCode pcLogOffSound(GameEvent *event, u32 *state, void *data);
-GameEvent *FieldDoorAnime_StartClose(GameEvent *parent, GameSystem *gsys, Field *field, u32 skipSound);
+GameEvent *CreatePCLogOffCallEvent(GameEvent *parent, GameSystem *gsys, Field *field, u32 skipSound);
 GameEvent *Scrcmd_CreateSubProcEvent(GameSystem *gsys, u16 option, u16 *result);
 GameEventReturnCode Scrcmd_SubProcEventMain(GameEvent *event, u32 *state, void *data);
 

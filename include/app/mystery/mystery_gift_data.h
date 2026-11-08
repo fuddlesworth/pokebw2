@@ -129,7 +129,7 @@ static inline PartyPkm *Mystery_CreateGiftPokemon(const MysteryGift *gift, HeapI
     for (i = 0; i < 4; i++) {
         move = moves[i];
         if (move != 0 && move < 560) {
-            if (PokeParty_LearnMove(pkm, move) == 0xffff) {
+            if (PokeParty_LearnMove(pkm, move) == LEARN_MOVE_FULL) {
                 PokeParty_SetLastMove(pkm, move);
             }
         }

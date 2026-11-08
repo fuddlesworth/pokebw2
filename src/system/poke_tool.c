@@ -800,7 +800,7 @@ static void PML_UtilPkmSetDefaultMoves(BoxPkm *pkm) {
             break;
         }
         move = LearnsetEntry_GetMove(sDefaultMovesLearnset[n]);
-        if (PML_PkmLearnMove(pkm, move) == 0xffff) {
+        if (PML_PkmLearnMove(pkm, move) == LEARN_MOVE_FULL) {
             PML_PkmSetLastMove(pkm, move);
         }
     }
@@ -814,7 +814,7 @@ u16 PokeParty_LearnMove(PartyPkm *pkm, u16 move) {
 // Teaches a move in the first free slot. Returns the move, LEARN_MOVE_KNOWN if the Pokémon already knows it, and
 // 0xffff if it has no free slot
 static u16 PML_PkmLearnMove(BoxPkm *pkm, u16 move) {
-    u16 result = 0xffff;
+    u16 result = LEARN_MOVE_FULL;
     BOOL wasEncrypted = PML_PkmDecrypt(pkm);
     int i;
 
@@ -905,7 +905,7 @@ u16 PokeParty_LearnMoveTutor(PartyPkm *pkm, u16 move) {
 
 // PML_PkmLearnMove for the move tutors
 static u16 PML_PkmLearnMoveTutor(BoxPkm *pkm, u16 move) {
-    u16 result = 0xffff;
+    u16 result = LEARN_MOVE_FULL;
     BOOL wasEncrypted = PML_PkmDecrypt(pkm);
     int i;
 
@@ -965,7 +965,7 @@ u16 PokeParty_LearnNextLevelMove(PartyPkm *pkm, u32 *index, HeapID heapId) {
     while (!LearnsetEntry_IsEnd(learnset[*index])) {
         if (LearnsetEntry_GetLevel(learnset[*index]) == level) {
             result = PokeParty_LearnMove(pkm, LearnsetEntry_GetMove(learnset[*index]));
-            if (result == 0xffff) {
+            if (result == LEARN_MOVE_FULL) {
                 result = LearnsetEntry_GetMove(learnset[*index]) | LEARN_MOVE_NO_SLOT;
                 (*index)++;
                 break;
