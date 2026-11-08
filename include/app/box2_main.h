@@ -20,8 +20,6 @@
 
 // The number of boxes once all are open
 #define BOX2_TRAY_MAX 24
-// No tray or position
-#define BOX2_GET_NONE 0xff
 // Positions: a tray's 30 Pokémon, then the party's 6, then the boxes of the box list
 #define BOX2_TRAY_POKE_MAX 30
 #define BOX2_PARTY_POS 30
