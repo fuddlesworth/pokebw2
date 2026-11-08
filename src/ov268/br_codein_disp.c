@@ -41,17 +41,17 @@ void BrCodeInDisp_GetResources(BrCodeInWork *wk) {
     BrResObjData data;
     BOOL ret;
 
-    ret = BrRes_GetObjData(wk->param.res, 11, &data);
+    ret = BrRes_GetObjData(wk->param.res, BR_RES_OBJ_CODEIN_CODE, &data);
     GFL_ASSERT(ret);
     wk->plttRes[BR_CODEIN_RES_CODE] = data.plt;
     wk->charRes[BR_CODEIN_RES_CODE] = data.chr;
     wk->cellAnimRes[BR_CODEIN_RES_CODE] = data.cell;
-    ret = BrRes_GetObjData(wk->param.res, 12, &data);
+    ret = BrRes_GetObjData(wk->param.res, BR_RES_OBJ_CODEIN_CURSOR, &data);
     GFL_ASSERT(ret);
     wk->plttRes[BR_CODEIN_RES_CURSOR] = data.plt;
     wk->charRes[BR_CODEIN_RES_CURSOR] = data.chr;
     wk->cellAnimRes[BR_CODEIN_RES_CURSOR] = data.cell;
-    ret = BrRes_GetObjData(wk->param.res, 6, &data);
+    ret = BrRes_GetObjData(wk->param.res, BR_RES_OBJ_CONTROLS_S, &data);
     GFL_ASSERT(ret);
     wk->plttRes[BR_CODEIN_RES_BUTTON] = data.plt;
     wk->charRes[BR_CODEIN_RES_BUTTON] = data.chr;

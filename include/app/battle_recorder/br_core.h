@@ -92,8 +92,8 @@ typedef struct {
 // The data that outlives the core proc, while a battle video plays. br_main.c holds it
 typedef struct {
     BrOutlineData outline;
-    // The value that came with the video downloaded to play
-    u64 unk_1720;
+    // The server video number's low 32 bits, stored after an s32 cast; currently unread.
+    u64 downloadedVideoNumberLowWord;
     BrProcSysRecovery procRecovery;
     u32 recordMode;
     BrRecordInfo recordInfo;
@@ -139,7 +139,7 @@ typedef struct {
 
 typedef struct {
     int menuID;
-    u32 unk4;
+    u32 nextProcID;
     // What the screen that the menu starts does, such as the record screen's mode
     u32 nextMode;
     u32 fadeType;
@@ -155,7 +155,7 @@ typedef struct {
 typedef struct {
     // 1 to play the video
     u32 result;
-    u32 unk4;
+    u32 isSecure;
     int mode;
     BrFade *fade;
     BrRes *res;
@@ -164,11 +164,11 @@ typedef struct {
     u64 videoNumber;
     BrNet *net;
     GameData *gameData;
-    u64 *unk2C;
+    u64 *downloadedVideoNumberLowWord;
     BrOutlineData *outline;
     BOOL isRecovery;
     BrRecordInfo *recordInfo;
-    u32 *unk3C;
+    u32 *recReadComplete;
 } BrRecordProcParam;
 
 typedef struct {
@@ -253,7 +253,7 @@ typedef struct {
     GameData *gameData;
     BrRecordInfo *recordInfo;
     u64 videoNumber;
-    u32 unk24;
+    u32 isSecure;
     // TRUE if the video was saved, to the slot
     BOOL isSave;
     u32 saveSlot;
@@ -273,5 +273,10 @@ extern const GameProcFunctions BR_BVDELETE_PROC_FUNCTIONS;
 extern const GameProcFunctions BR_BVSAVE_PROC_FUNCTIONS;
 
 extern const GameProcFunctions BR_CORE_PROC_FUNCTIONS;
+
+enum {
+    BR_RECORD_RESULT_NONE = 0,
+    BR_RECORD_RESULT_PLAY_VIDEO = 1,
+};
 
 #endif // POKEBW2_APP_BATTLE_RECORDER_BR_CORE_H

@@ -221,7 +221,7 @@ static void BrBvSave_SeqDownload(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
 
         MI_CpuFill8(&req, 0, sizeof(BrNetRequestParam));
         req.dataNumber = p_wk->p_param->videoNumber;
-        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_3, &req);
+        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_DOWNLOAD_VIDEO, &req);
         p_wk->cnt = 0;
         *p_seq = SEQ_DOWNLOAD_WAIT;
         break;
@@ -542,7 +542,7 @@ static void BrBvSave_SeqSave(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         (*p_seq)++;
         break;
     case SEQ_SAVE_MAIN: {
-        u32 ret = BattleRecOv_SaveVideo(p_wk->p_param->gameData, p_wk->select + 1, (u8)p_wk->p_param->unk24,
+        u32 ret = BattleRecOv_SaveVideo(p_wk->p_param->gameData, p_wk->select + 1, (u8)p_wk->p_param->isSecure,
                                         &p_wk->saveSeq, &p_wk->saveSeq2, p_wk->heapId);
 
         if (ret == 2 || ret == 3) {
@@ -558,7 +558,7 @@ static void BrBvSave_SeqSave(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
 
         MI_CpuFill8(&req, 0, sizeof(BrNetRequestParam));
         req.dataNumber = BattleRec_GetHeaderValue(BattleRec_GetHeader(), BATTLE_REC_HEADER_DATA_NUMBER, 0);
-        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_8, &req);
+        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_FAVORITE_VIDEO, &req);
         BrText_Print(p_wk->text, p_wk->p_param->res, 0x13f);
         p_wk->netCnt = 0;
         p_wk->cnt++;
@@ -655,7 +655,7 @@ static void BrBvSave_CreateConfirm(BrBvSaveWork *p_wk, BrBvSaveProcParam *p_para
     GFL_StrBufFree(str);
     GFL_StrBufFree(src);
 
-    BrRes_LoadBG(p_param->res, 0x1e, p_wk->heapId);
+    BrRes_LoadBG(p_param->res, BR_RES_BG_CONFIRM, p_wk->heapId);
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
     for (i = 0; i < MSGWIN_MAX; i++) {
@@ -676,7 +676,7 @@ static void BrBvSave_DeleteConfirm(BrBvSaveWork *p_wk, BrBvSaveProcParam *p_para
         }
     }
     GFL_BGSysLoadScr(4);
-    BrRes_UnloadBG(p_param->res, 0x1e);
+    BrRes_UnloadBG(p_param->res, BR_RES_BG_CONFIRM);
     if (p_wk->text != NULL) {
         BrText_Exit(p_wk->text, p_param->res);
         p_wk->text = NULL;

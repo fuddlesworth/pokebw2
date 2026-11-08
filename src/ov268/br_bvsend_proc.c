@@ -186,7 +186,7 @@ static void BrBvSend_SeqMain(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
     case SEQ_UPLOAD_START:
         p_wk->cnt = 0;
-        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_2, NULL);
+        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_UPLOAD_VIDEO, NULL);
         *p_seq = SEQ_UPLOAD_WAIT;
         break;
     case SEQ_UPLOAD_WAIT:
@@ -199,7 +199,7 @@ static void BrBvSend_SeqMain(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
                 u32 msgID;
                 u32 ret = BrNet_GetResultMsg(p_wk->p_param->net, &msgID);
 
-                if (ret == 0) {
+                if (ret == BR_NET_RESULT_NONE) {
                     if (BrNet_GetUploadVideoNumber(p_wk->p_param->net, &number)) {
                         MsgData *msg = BrRes_GetMsgData(p_wk->p_param->res);
                         WordSet *wordSet = BrRes_GetWordSet(p_wk->p_param->res);
@@ -216,7 +216,7 @@ static void BrBvSend_SeqMain(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
                         GFL_StrBufFree(str);
                         GFL_StrBufFree(src);
                     }
-                } else if (ret == 3) {
+                } else if (ret == BR_NET_RESULT_FATAL_ERROR) {
                     BrProcSys_Abort(p_wk->p_param->procSys);
                     BrSeq_End(p_seqwk);
                     return;

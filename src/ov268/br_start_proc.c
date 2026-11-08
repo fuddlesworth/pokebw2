@@ -152,7 +152,7 @@ static void BrStart_SeqOpen(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         font = BrRes_GetFont(wk->param->res);
         msg = BrRes_GetMsgData(wk->param->res);
         BrMsgWin_Print(wk->msgWin, msg, 0xe4, font, 0x440);
-        BrFade_StartFadeEx(wk->param->fade, BR_FADE_TYPE_PLTT, 0xf, BR_FADE_DIR_OUT, 4);
+        BrFade_StartFadeEx(wk->param->fade, BR_FADE_TYPE_PLTT, BR_FADE_PLTT_SUB_BG12_13_WHITE, BR_FADE_DIR_OUT, 4);
         *p_seq = SEQ_MSG_FADEIN_WAIT;
         break;
     }
@@ -162,7 +162,7 @@ static void BrStart_SeqOpen(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         }
         break;
     case SEQ_MSG_FADEIN2_START:
-        BrFade_StartFadeEx(wk->param->fade, BR_FADE_TYPE_PLTT, 0xf, BR_FADE_DIR_IN, 4);
+        BrFade_StartFadeEx(wk->param->fade, BR_FADE_TYPE_PLTT, BR_FADE_PLTT_SUB_BG12_13_WHITE, BR_FADE_DIR_IN, 4);
         *p_seq = SEQ_MSG_FADEIN2_WAIT;
         break;
     case SEQ_MSG_FADEIN2_WAIT:

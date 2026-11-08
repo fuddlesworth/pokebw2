@@ -31,7 +31,6 @@
 
 // The button graphics and the sub screen's BG, from br_res.c
 #define BR_RES_OBJ_MUSICAL_LOOK_BTN 6
-#define BR_RES_BG_MUSICAL_LOOK 0x16
 
 typedef struct {
     BrPokeSearch *search;
@@ -305,7 +304,7 @@ static void BrMusicalLook_SeqDownload(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adr
         MI_CpuFill8(&req, 0, sizeof(BrNetRequestParam));
         req.species = wk->species;
         wk->cnt = 0;
-        BrNet_StartRequest(wk->param->net, 1, &req);
+        BrNet_StartRequest(wk->param->net, BR_NET_REQUEST_DOWNLOAD_MUSICAL_SHOT, &req);
         *p_seq = SEQ_DOWNLOAD_WAIT;
         break;
     }
@@ -667,7 +666,7 @@ static void BrMusicalLook_SeqChangeView(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_a
 static void BrMusicalLook_CreatePhoto(BrMusicalLookWork *wk, BrMusicalLookProcParam *param) {
     if (wk->photo == NULL) {
         BrSidebar_SetVisible(param->sidebar, CLACT_SURFACE_MAIN, FALSE);
-        BrRes_UnloadBG(param->res, 0);
+        BrRes_UnloadBG(param->res, BR_RES_BG_COMMON_M);
         BrRes_UnloadCommonPltt(param->res, CLACT_VRAM_MAIN);
         BrGraphic_StartMain3D(param->graphic, wk->heapId);
         wk->photo = MusShotPhoto_Create(&wk->recv[wk->idx]->shot, wk->heapId);
@@ -680,7 +679,7 @@ static void BrMusicalLook_DeletePhoto(BrMusicalLookWork *wk, BrMusicalLookProcPa
         wk->photo = NULL;
         BrGraphic_EndMain3D(param->graphic, wk->heapId);
         BrRes_LoadCommonPltt(param->res, CLACT_VRAM_MAIN, wk->heapId);
-        BrRes_LoadBG(param->res, 0, wk->heapId);
+        BrRes_LoadBG(param->res, BR_RES_BG_COMMON_M, wk->heapId);
         BrSidebar_SetVisible(param->sidebar, CLACT_SURFACE_MAIN, TRUE);
     }
 }

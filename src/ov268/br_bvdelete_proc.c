@@ -325,7 +325,7 @@ static void BrBvDelete_CreateConfirm(BrBvDeleteWork *p_wk, BrBvDeleteProcParam *
     GFL_StrBufFree(str);
     GFL_StrBufFree(src);
 
-    BrRes_LoadBG(p_param->res, 0x1e, p_wk->heapId);
+    BrRes_LoadBG(p_param->res, BR_RES_BG_CONFIRM, p_wk->heapId);
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
     for (i = 0; i < MSGWIN_MAX; i++) {
@@ -353,7 +353,7 @@ static void BrBvDelete_DeleteConfirm(BrBvDeleteWork *p_wk, BrBvDeleteProcParam *
         }
     }
     GFL_BGSysLoadScr(4);
-    BrRes_UnloadBG(p_param->res, 0x1e);
+    BrRes_UnloadBG(p_param->res, BR_RES_BG_CONFIRM);
 }
 
 // The answers of the question

@@ -204,7 +204,7 @@ static BOOL BrBvSearch_ProcInit(GameProc *proc, u32 *state, void *param, void *w
     p_param->search.area = BR_NET_VIDEO_SEARCH_AREA_NONE;
     p_param->search.mode = BR_NET_VIDEO_SEARCH_MODE_NONE;
 
-    BrRes_LoadOBJ(p_param->res, 6, p_wk->heapId);
+    BrRes_LoadOBJ(p_param->res, BR_RES_OBJ_CONTROLS_S, p_wk->heapId);
     BrBvSearch_CreateMainDisplay(p_wk, p_param);
     return TRUE;
 }
@@ -215,7 +215,7 @@ static BOOL BrBvSearch_ProcExit(GameProc *proc, u32 *state, void *param, void *w
     int i;
 
     BrBvSearch_DeleteMainDisplay(p_wk, p_param);
-    BrRes_UnloadOBJ(p_param->res, 6);
+    BrRes_UnloadOBJ(p_param->res, BR_RES_OBJ_CONTROLS_S);
     for (i = 0; i < 2; i++) {
         BrBallEff_Exit(p_wk->ballEff[i]);
     }
@@ -345,10 +345,10 @@ static BOOL BrBvSearch_MenuInit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
 
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
-    BrRes_LoadBG(p_param->res, 0x1a, p_wk->heapId);
+    BrRes_LoadBG(p_param->res, BR_RES_BG_BV_SEARCH_MENU, p_wk->heapId);
 
     MI_CpuFill8(&setup, 0, sizeof(ClActorSetup));
-    BrRes_GetObjData(p_param->res, 6, &obj);
+    BrRes_GetObjData(p_param->res, BR_RES_OBJ_CONTROLS_S, &obj);
     for (i = 0; i < BR_BVSEARCH_BTN_MAX; i++) {
         setup.x = sBrBvSearchMenuBtns[i].x;
         setup.y = sBrBvSearchMenuBtns[i].y;
@@ -385,7 +385,7 @@ static BOOL BrBvSearch_MenuExit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
         }
     }
     GFL_BGSysLoadScr(4);
-    BrRes_UnloadBG(p_param->res, 0x1a);
+    BrRes_UnloadBG(p_param->res, BR_RES_BG_BV_SEARCH_MENU);
     return TRUE;
 }
 
@@ -512,7 +512,7 @@ static BOOL BrBvSearch_ModeInit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
 
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
-    BrRes_LoadBG(p_param->res, 0x1b, p_wk->heapId);
+    BrRes_LoadBG(p_param->res, BR_RES_BG_BV_SEARCH_MODE, p_wk->heapId);
 
     p_wk->p_list_data = ListMenuCore_CreateOptionList(BR_NET_VIDEO_SEARCH_MODE_NONE, p_wk->heapId);
     for (i = 0; i < BR_NET_VIDEO_SEARCH_MODE_NONE; i++) {
@@ -527,7 +527,7 @@ static BOOL BrBvSearch_ModeInit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
     p_wk->p_list = BrList_Init(&param, p_wk->heapId);
 
     MI_CpuFill8(&setup, 0, sizeof(ClActorSetup));
-    BrRes_GetObjData(p_param->res, 6, &obj);
+    BrRes_GetObjData(p_param->res, BR_RES_OBJ_CONTROLS_S, &obj);
     for (i = 0; i < 1; i++) {
         setup.x = sBrBvSearchModeBtns[i].x;
         setup.y = sBrBvSearchModeBtns[i].y;
@@ -548,7 +548,7 @@ static BOOL BrBvSearch_ModeExit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
     p_wk->p_list = NULL;
     ListMenuCore_FreeOptionList(p_wk->p_list_data);
     p_wk->p_list_data = NULL;
-    BrRes_UnloadBG(p_param->res, 0x1b);
+    BrRes_UnloadBG(p_param->res, BR_RES_BG_BV_SEARCH_MODE);
     GFL_BGSysLoadScr(4);
     return TRUE;
 }
@@ -644,7 +644,7 @@ static BOOL BrBvSearch_AreaInit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
 
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
-    BrRes_LoadBG(p_param->res, 0x1c, p_wk->heapId);
+    BrRes_LoadBG(p_param->res, BR_RES_BG_BV_SEARCH_AREA, p_wk->heapId);
 
     str = GFL_StrBufCreate(0x80, p_wk->heapId);
     player = GetGameDataPlayerInfo(p_param->gameData);
@@ -672,7 +672,7 @@ static BOOL BrBvSearch_AreaInit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
     p_wk->p_list = BrList_Init(&param, p_wk->heapId);
 
     MI_CpuFill8(&setup, 0, sizeof(ClActorSetup));
-    BrRes_GetObjData(p_param->res, 6, &obj);
+    BrRes_GetObjData(p_param->res, BR_RES_OBJ_CONTROLS_S, &obj);
     for (i = 0; i < 1; i++) {
         setup.x = sBrBvSearchAreaBtns[i].x;
         setup.y = sBrBvSearchAreaBtns[i].y;
@@ -693,7 +693,7 @@ static BOOL BrBvSearch_AreaExit(BrBvSearchWork *p_wk, BrBvSearchProcParam *p_par
     p_wk->p_list = NULL;
     ListMenuCore_FreeOptionList(p_wk->p_list_data);
     p_wk->p_list_data = NULL;
-    BrRes_UnloadBG(p_param->res, 0x1c);
+    BrRes_UnloadBG(p_param->res, BR_RES_BG_BV_SEARCH_AREA);
     GFL_BGSysLoadScr(4);
     return TRUE;
 }
@@ -750,7 +750,7 @@ static void BrBvSearch_CreateMainDisplay(BrBvSearchWork *p_wk, BrBvSearchProcPar
 
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
-    BrRes_LoadBG(p_param->res, 0x19, p_wk->heapId);
+    BrRes_LoadBG(p_param->res, BR_RES_BG_BV_SEARCH_MAIN, p_wk->heapId);
 
     for (i = 0; i < BR_BVSEARCH_MSGWIN_MAX; i++) {
         const BrBvSearchMsgWinData *data = &sBrBvSearchMsgWins[i];
@@ -770,7 +770,7 @@ static void BrBvSearch_DeleteMainDisplay(BrBvSearchWork *p_wk, BrBvSearchProcPar
             p_wk->msgWin[i] = NULL;
         }
     }
-    BrRes_UnloadBG(p_param->res, 0x19);
+    BrRes_UnloadBG(p_param->res, BR_RES_BG_BV_SEARCH_MAIN);
     GFL_BGSysLoadScr(1);
 }
 

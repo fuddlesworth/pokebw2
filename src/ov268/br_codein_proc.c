@@ -48,10 +48,10 @@ static BOOL BrCodeInProc_Init(GameProc *proc, u32 *state, void *param, void *wor
     MI_CpuFill8(wk, 0, sizeof(BrCodeInProcWork));
     wk->heapId = BrProcSys_GetHeapID(p->procSys);
 
-    BrRes_LoadBG(p->res, 29, wk->heapId);
-    BrRes_LoadOBJ(p->res, 11, wk->heapId);
-    BrRes_LoadOBJ(p->res, 12, wk->heapId);
-    BrRes_LoadOBJ(p->res, 6, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_CODEIN, wk->heapId);
+    BrRes_LoadOBJ(p->res, BR_RES_OBJ_CODEIN_CODE, wk->heapId);
+    BrRes_LoadOBJ(p->res, BR_RES_OBJ_CODEIN_CURSOR, wk->heapId);
+    BrRes_LoadOBJ(p->res, BR_RES_OBJ_CONTROLS_S, wk->heapId);
 
     wk->ballEff = BrBallEff_Init(p->unit, p->res, CLACT_SURFACE_SUB, wk->heapId);
     blocks[0] = 2;
@@ -76,10 +76,10 @@ static BOOL BrCodeInProc_Exit(GameProc *proc, u32 *state, void *param, void *wor
     BrCodeInParam_Free(wk->codeInParam);
     PrintQueue_Free(wk->que);
     BrBallEff_Exit(wk->ballEff);
-    BrRes_UnloadBG(p->res, 29);
-    BrRes_UnloadOBJ(p->res, 6);
-    BrRes_UnloadOBJ(p->res, 12);
-    BrRes_UnloadOBJ(p->res, 11);
+    BrRes_UnloadBG(p->res, BR_RES_BG_CODEIN);
+    BrRes_UnloadOBJ(p->res, BR_RES_OBJ_CONTROLS_S);
+    BrRes_UnloadOBJ(p->res, BR_RES_OBJ_CODEIN_CURSOR);
+    BrRes_UnloadOBJ(p->res, BR_RES_OBJ_CODEIN_CODE);
     GFL_ProcReleaseSubsystem(proc);
     return TRUE;
 }

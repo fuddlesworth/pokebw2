@@ -27,8 +27,6 @@
 #define BR_POKESEARCH_ARC_FILE 5
 
 // BR_RES_BG_* of the letter buttons' screen and of the list's
-#define BR_POKESEARCH_BG_LETTER 0x14
-#define BR_POKESEARCH_BG_LIST 0x15
 
 // The steps of BrPokeSearch_Main
 enum {
@@ -202,7 +200,7 @@ void BrPokeSearch_Main(BrPokeSearch *p_wk) {
         }
         case BR_POKESEARCH_SEQ_FADE_OUT_WAIT:
             if (BrBallEff_IsEnd(p_wk->ball_sub)) {
-                BrFade_StartFade(p_wk->fade, 2, 2, 1);
+                BrFade_StartFade(p_wk->fade, BR_FADE_TYPE_ALPHA_BG012, BR_FADE_DISPLAY_SUB, BR_FADE_DIR_OUT);
                 p_wk->seq++;
             }
             break;
@@ -226,7 +224,7 @@ void BrPokeSearch_Main(BrPokeSearch *p_wk) {
                 }
                 BrPokeSearch_InitLetterWin(p_wk);
             }
-            BrFade_StartFade(p_wk->fade, 2, 2, 0);
+            BrFade_StartFade(p_wk->fade, BR_FADE_TYPE_ALPHA_BG012, BR_FADE_DISPLAY_SUB, BR_FADE_DIR_IN);
             p_wk->seq++;
             break;
         case BR_POKESEARCH_SEQ_FADE_IN:
@@ -300,7 +298,7 @@ static void BrPokeSearch_InitBtn(BrPokeSearch *p_wk) {
     setup.priority = 1;
 
     // The back button
-    ret = BrRes_GetObjData(p_wk->res, 6, &obj);
+    ret = BrRes_GetObjData(p_wk->res, BR_RES_OBJ_CONTROLS_S, &obj);
     GFL_ASSERT(ret);
     p_wk->btn = BrBtn_InitEx(&setup, 4, 96, 1, p_wk->unit, p_wk->bmpoam, font, msg, &obj, p_wk->heap_id);
 }

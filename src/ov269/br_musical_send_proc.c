@@ -34,7 +34,6 @@ enum {
 
 // The button graphics, from br_res.c
 #define BR_RES_OBJ_MUSICAL_SEND_BTN 6
-#define BR_RES_BG_MUSICAL_SEND 0x17
 
 typedef struct {
     MusShotPhoto *photo;
@@ -283,7 +282,7 @@ static void BrMusicalSend_SeqSend(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
 
         MI_CpuFill8(&req, 0, sizeof(BrNetRequestParam));
         req.data = wk->shot;
-        BrNet_StartRequest(wk->param->net, 0, &req);
+        BrNet_StartRequest(wk->param->net, BR_NET_REQUEST_UPLOAD_MUSICAL_SHOT, &req);
         wk->cnt = 0;
         *p_seq = SEQ_SEND_WAIT;
         break;
@@ -341,7 +340,7 @@ static void BrMusicalSend_SeqSend(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
 static void BrMusicalSend_CreatePhoto(BrMusicalSendWork *wk, BrMusicalSendProcParam *param) {
     if (wk->photo == NULL) {
         BrSidebar_SetVisible(param->sidebar, CLACT_SURFACE_MAIN, FALSE);
-        BrRes_UnloadBG(param->res, 0);
+        BrRes_UnloadBG(param->res, BR_RES_BG_COMMON_M);
         BrRes_UnloadCommonPltt(param->res, CLACT_VRAM_MAIN);
         BrGraphic_StartMain3D(param->graphic, wk->heapId);
         wk->photo = MusShotPhoto_Create(wk->shot, wk->heapId);
@@ -354,7 +353,7 @@ static void BrMusicalSend_DeletePhoto(BrMusicalSendWork *wk, BrMusicalSendProcPa
         wk->photo = NULL;
         BrGraphic_EndMain3D(param->graphic, wk->heapId);
         BrRes_LoadCommonPltt(param->res, CLACT_VRAM_MAIN, wk->heapId);
-        BrRes_LoadBG(param->res, 0, wk->heapId);
+        BrRes_LoadBG(param->res, BR_RES_BG_COMMON_M, wk->heapId);
         BrSidebar_SetVisible(param->sidebar, CLACT_SURFACE_MAIN, TRUE);
     }
 }

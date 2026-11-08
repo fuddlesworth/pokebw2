@@ -43,7 +43,6 @@ enum {
 #define BR_BTLSUBWAY_PRINT_COLOR 0x3da0
 
 // The graphics of the Battle Points, from br_res.c
-#define BR_RES_OBJ_BTLSUBWAY_BP 13
 
 // The player's Battle Points: the icon and the digits
 typedef struct {
@@ -346,7 +345,7 @@ static void BrBtlSubway_CreateTop(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *p) 
 
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
-    BrRes_LoadBG(p->res, 0xe, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_BTLSUBWAY_TOP, wk->heapId);
 
     for (i = 0; i < 1; i++) {
         const BrBtlSubwayMsgWinData *data = &sBrBtlSubwayTopWins[i];
@@ -383,7 +382,7 @@ static void BrBtlSubway_CreateSingle(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
-    BrRes_LoadBG(p->res, 0xa, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_BTLSUBWAY_SINGLE, wk->heapId);
 
     if (BrBtlSubway_IsSuperSingle(p->score, p->gameData)) {
         mode = 5;
@@ -453,7 +452,7 @@ static void BrBtlSubway_CreateDouble(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
-    BrRes_LoadBG(p->res, 0xb, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_BTLSUBWAY_DOUBLE, wk->heapId);
 
     if (BrBtlSubway_IsSuperDouble(p->score, p->gameData)) {
         mode = 6;
@@ -524,7 +523,7 @@ static void BrBtlSubway_CreateMulti(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *p
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
-    BrRes_LoadBG(p->res, 0xc, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_BTLSUBWAY_MULTI, wk->heapId);
 
     if (BrBtlSubway_IsSuperMulti(p->score, p->gameData)) {
         mode = 7;
@@ -620,7 +619,7 @@ static void BrBtlSubway_CreateWifi(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *p)
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
-    BrRes_LoadBG(p->res, 0xd, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_BTLSUBWAY_WIFI, wk->heapId);
 
     for (i = 0; i < 5; i++) {
         const BrBtlSubwayMsgWinData *data = &sBrBtlSubwayWifiWins[i];
@@ -656,7 +655,7 @@ static void BrBtlSubway_DeletePage(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *p)
             wk->msgWin[i] = NULL;
         }
     }
-    BrRes_UnloadBG(p->res, 0xa);
+    BrRes_UnloadBG(p->res, BR_RES_BG_BTLSUBWAY_SINGLE);
     if (wk->text != NULL) {
         BrText_Exit(wk->text, p->res);
         wk->text = NULL;
@@ -672,8 +671,8 @@ static void BrBtlSubway_CreateMenu(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *p)
     int i;
     u32 msgID;
 
-    BrRes_LoadOBJ(p->res, 6, wk->heapId);
-    BrRes_LoadBG(p->res, 9, wk->heapId);
+    BrRes_LoadOBJ(p->res, BR_RES_OBJ_CONTROLS_S, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_BTLSUBWAY_MENU, wk->heapId);
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
 
@@ -682,7 +681,7 @@ static void BrBtlSubway_CreateMenu(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *p)
     setup.y = 168;
     setup.sequence = 0;
     setup.priority = 1;
-    BrRes_GetObjData(p->res, 6, &obj);
+    BrRes_GetObjData(p->res, BR_RES_OBJ_CONTROLS_S, &obj);
     wk->btn = BrBtn_InitEx(&setup, 4, 96, CLACT_SURFACE_SUB, p->unit, wk->bmpoam, font, msg, &obj, wk->heapId);
 
     for (i = 0; i < BR_BTLSUBWAY_MENU_MAX; i++) {
@@ -732,8 +731,8 @@ static void BrBtlSubway_DeleteMenu(BrBtlSubwayWork *wk, BrBtlSubwayProcParam *p)
         BrBtn_Exit(wk->btn);
         wk->btn = NULL;
     }
-    BrRes_UnloadOBJ(p->res, 6);
-    BrRes_UnloadBG(p->res, 9);
+    BrRes_UnloadOBJ(p->res, BR_RES_OBJ_CONTROLS_S);
+    BrRes_UnloadBG(p->res, BR_RES_BG_BTLSUBWAY_MENU);
 }
 
 // The line of the menu that the touch is on, other than the one shown, or BR_BTLSUBWAY_PAGE_TOP

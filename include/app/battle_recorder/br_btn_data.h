@@ -11,8 +11,17 @@
 // musical photos
 enum {
     BR_MENUID_BROWSE_TOP,
+    BR_MENUID_BROWSE_RECORD = 1,
+    BR_MENUID_BROWSE_OTHER = 2,
+    BR_MENUID_BROWSE_DELETE = 3,
+    BR_MENUID_BROWSE_DELETE_OTHER = 4,
     BR_MENUID_GBV_TOP = 5,
+    BR_MENUID_GBV_BROWSE = 6,
+    BR_MENUID_GBV_LIST = 7,
+    BR_MENUID_GBV_UPLOAD_CONFIRM = 8,
+    BR_MENUID_GBV_EXIT_CONFIRM = 9,
     BR_MENUID_MUSICAL_TOP = 10,
+    BR_MENUID_MUSICAL_EXIT_CONFIRM = 11,
     BR_MENUID_MAX = 12,
 };
 
@@ -81,5 +90,10 @@ u32 BrBtnData_GetMaxNum(const BrBtnDataSys *cp_wk);
 u16 BrBtnData_GetParam(const BrBtnData *cp_data, int paramID);
 // The button's label, with the player's name for a saved video
 StrBuf *BrBtnData_CreateStr(const BrBtnDataSys *cp_wk, const BrBtnData *cp_data, MsgData *msg, HeapID heapId);
+
+enum {
+    BR_BTN_INVALID_TYPE_NONE = 0,
+    BR_BTN_INVALID_TYPE_INFO = 1,
+};
 
 #endif // POKEBW2_APP_BATTLE_RECORDER_BR_BTN_DATA_H

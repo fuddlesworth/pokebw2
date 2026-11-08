@@ -263,6 +263,14 @@ static inline int BrSidebar_GetDir(BOOL dir) {
 }
 
 // Shakes in place, then slides to its end and shrinks
+enum {
+    BR_SIDEBAR_OPEN_STEP_INIT = 0,
+    BR_SIDEBAR_OPEN_STEP_WAIT = 1,
+    BR_SIDEBAR_OPEN_STEP_SHAKE = 2,
+    BR_SIDEBAR_OPEN_STEP_SLIDE = 3,
+    BR_SIDEBAR_OPEN_STEP_BOUND = 4,
+};
+
 static void BrSidebarWork_Move_Open(BrSidebarWork *p_wk) {
     p_wk->wait = (p_wk->wait + 1) % 2;
     if (p_wk->wait != 0) {
@@ -270,26 +278,26 @@ static void BrSidebarWork_Move_Open(BrSidebarWork *p_wk) {
     }
 
     switch (p_wk->seq) {
-    case 0:
+    case BR_SIDEBAR_OPEN_STEP_INIT:
         ClActor_SetVisible(p_wk->clwk, TRUE);
         p_wk->cnt = 0;
         p_wk->scale = p_wk->data.scale;
-        p_wk->seq = 1;
+        p_wk->seq = BR_SIDEBAR_OPEN_STEP_WAIT;
         break;
-    case 1:
+    case BR_SIDEBAR_OPEN_STEP_WAIT:
         if (p_wk->cnt == 3) {
-            p_wk->seq = 2;
+            p_wk->seq = BR_SIDEBAR_OPEN_STEP_SHAKE;
             p_wk->now_x = FX32_CONST(ClActor_GetSurfacePosAxis(p_wk->clwk, p_wk->data.display, 0));
             p_wk->cnt = 0;
         } else {
             p_wk->cnt++;
         }
         break;
-    case 2: {
+    case BR_SIDEBAR_OPEN_STEP_SHAKE: {
         s8 dir = BrSidebar_GetDir(p_wk->data.dir);
 
         if (p_wk->cnt == 4) {
-            p_wk->seq = 3;
+            p_wk->seq = BR_SIDEBAR_OPEN_STEP_SLIDE;
             p_wk->cnt = 0;
         } else {
             u16 rot = 0xffff * p_wk->theta / 360;
@@ -302,7 +310,7 @@ static void BrSidebarWork_Move_Open(BrSidebarWork *p_wk) {
         }
         break;
     }
-    case 3: {
+    case BR_SIDEBAR_OPEN_STEP_SLIDE: {
         s16 x = ClActor_GetSurfacePosAxis(p_wk->clwk, p_wk->data.display, 0);
 
         if (p_wk->cnt == 0) {
@@ -311,7 +319,7 @@ static void BrSidebarWork_Move_Open(BrSidebarWork *p_wk) {
             p_wk->cnt++;
         } else if (p_wk->cnt == p_wk->data.sync + 1) {
             x = p_wk->data.end_x;
-            p_wk->seq = 4;
+            p_wk->seq = BR_SIDEBAR_OPEN_STEP_BOUND;
         } else {
             x += (s16)p_wk->dx;
             p_wk->cnt++;
@@ -319,18 +327,23 @@ static void BrSidebarWork_Move_Open(BrSidebarWork *p_wk) {
         ClActor_SetSurfacePosAxis(p_wk->clwk, x, p_wk->data.display, 0);
         break;
     }
-    case 4:
+    case BR_SIDEBAR_OPEN_STEP_BOUND:
         BrSidebarWork_StartMove(p_wk, BR_SIDEBAR_MOVE_BOUND);
         break;
     }
 
-    if (p_wk->seq == 3 && p_wk->scale > BR_SIDEBAR_SCALE_END) {
+    if (p_wk->seq == BR_SIDEBAR_OPEN_STEP_SLIDE && p_wk->scale > BR_SIDEBAR_SCALE_END) {
         p_wk->scale -= BR_SIDEBAR_SCALE_END;
         ClActor_SetScaleAxis(p_wk->clwk, p_wk->scale, 0);
     }
 }
 
 // Sways about its end
+enum {
+    BR_SIDEBAR_BOUND_STEP_INIT = 0,
+    BR_SIDEBAR_BOUND_STEP_SWAY = 1,
+};
+
 static void BrSidebarWork_Move_Bound(BrSidebarWork *p_wk) {
     p_wk->wait = (p_wk->wait + 1) % 2;
     if (p_wk->wait != 0) {
@@ -338,14 +351,14 @@ static void BrSidebarWork_Move_Bound(BrSidebarWork *p_wk) {
     }
 
     switch (p_wk->seq) {
-    case 0:
+    case BR_SIDEBAR_BOUND_STEP_INIT:
         ClActor_SetVisible(p_wk->clwk, TRUE);
         ClActor_SetSurfacePosAxis(p_wk->clwk, p_wk->data.end_x, p_wk->data.display, 0);
         p_wk->now_x = FX32_CONST(p_wk->data.end_x);
         p_wk->theta = p_wk->data.theta;
-        p_wk->seq = 1;
+        p_wk->seq = BR_SIDEBAR_BOUND_STEP_SWAY;
         break;
-    case 1: {
+    case BR_SIDEBAR_BOUND_STEP_SWAY: {
         s8 dir = BrSidebar_GetDir(p_wk->data.dir);
         u16 rot;
         fx32 x;
@@ -366,6 +379,12 @@ static void BrSidebarWork_Move_Bound(BrSidebarWork *p_wk) {
 }
 
 // Slides back to its start, growing back
+enum {
+    BR_SIDEBAR_CLOSE_STEP_INIT = 0,
+    BR_SIDEBAR_CLOSE_STEP_SLIDE = 1,
+    BR_SIDEBAR_CLOSE_STEP_STOP = 2,
+};
+
 static void BrSidebarWork_Move_Close(BrSidebarWork *p_wk) {
     p_wk->wait = (p_wk->wait + 1) % 2;
     if (p_wk->wait != 0) {
@@ -373,12 +392,12 @@ static void BrSidebarWork_Move_Close(BrSidebarWork *p_wk) {
     }
 
     switch (p_wk->seq) {
-    case 0:
+    case BR_SIDEBAR_CLOSE_STEP_INIT:
         ClActor_SetVisible(p_wk->clwk, TRUE);
         p_wk->cnt = 0;
-        p_wk->seq = 1;
+        p_wk->seq = BR_SIDEBAR_CLOSE_STEP_SLIDE;
         break;
-    case 1: {
+    case BR_SIDEBAR_CLOSE_STEP_SLIDE: {
         s16 x = ClActor_GetSurfacePosAxis(p_wk->clwk, p_wk->data.display, 0);
         fx32 scale = ClActor_GetScaleAxis(p_wk->clwk, 0);
 
@@ -391,7 +410,7 @@ static void BrSidebarWork_Move_Close(BrSidebarWork *p_wk) {
         } else if (p_wk->cnt == p_wk->data.sync + 1) {
             x = p_wk->data.x;
             scale = p_wk->data.scale;
-            p_wk->seq = 2;
+            p_wk->seq = BR_SIDEBAR_CLOSE_STEP_STOP;
         } else {
             x += (s16)p_wk->dx;
             scale += p_wk->dscale;
@@ -401,7 +420,7 @@ static void BrSidebarWork_Move_Close(BrSidebarWork *p_wk) {
         ClActor_SetScaleAxis(p_wk->clwk, scale, 0);
         break;
     }
-    case 2:
+    case BR_SIDEBAR_CLOSE_STEP_STOP:
         BrSidebarWork_StartMove(p_wk, BR_SIDEBAR_MOVE_NONE);
         break;
     }

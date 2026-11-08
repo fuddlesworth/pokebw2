@@ -83,7 +83,7 @@ static BOOL BattleVideo_Main(GameProc *proc, u32 *state, void *param, void *work
         break;
     case BATTLE_VIDEO_LOGIN: {
         // Whether the Battle Recorder lost the connection, and so comes back here
-        BOOL retry = wk->sub.recorder.result == 2;
+        BOOL retry = wk->sub.recorder.result == BR_RESULT_NETWORK_FAILED;
 
         MI_CpuFill8(&wk->sub.login, 0, sizeof(WifiLoginParam));
         wk->sub.login.gameData = wk->param->gameData;
@@ -114,13 +114,13 @@ static BOOL BattleVideo_Main(GameProc *proc, u32 *state, void *param, void *work
         MI_CpuFill8(&wk->sub.recorder, 0, sizeof(BattleRecorderParam));
         wk->sub.recorder.mode = wk->param->mode;
         wk->sub.recorder.gameData = wk->param->gameData;
-        wk->sub.recorder.unk8 = (u32)wk->loginBuffer;
+        wk->sub.recorder.loginBuffer = (u32)wk->loginBuffer;
         QueueGameProc(wk->manager, OVERLAY_ID(272), &BR_MAIN_PROC_FUNCTIONS, &wk->sub.recorder);
         (*state)++;
         break;
     case BATTLE_VIDEO_WAIT_RECORDER:
         if (status == 0) {
-            if (wk->sub.recorder.result == 2) {
+            if (wk->sub.recorder.result == BR_RESULT_NETWORK_FAILED) {
                 *state = BATTLE_VIDEO_LOGIN;
             } else {
                 (*state)++;

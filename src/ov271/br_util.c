@@ -19,6 +19,7 @@
 #include "nitro/fx.h"
 #include "nitro/math.h"
 #include "pml/poke_party.h"
+#include "save/player_info.h"
 #include "system/pms_data.h"
 #include "system/pms_draw.h"
 #include "system/wordset.h"
@@ -358,13 +359,13 @@ BrList *BrList_Init(const BrListParam *cp_param, HeapID heapId) {
 
         MI_CpuFill8(&setup, 0, sizeof(ClActorSetup));
         if (cp_param->frame < BGSYS_BG_SUB) {
-            BrRes_LoadOBJ(p_wk->param.res, 7, heapId);
-            ret = BrRes_GetObjData(p_wk->param.res, 7, &obj);
+            BrRes_LoadOBJ(p_wk->param.res, BR_RES_OBJ_SCROLL_ARROW_M, heapId);
+            ret = BrRes_GetObjData(p_wk->param.res, BR_RES_OBJ_SCROLL_ARROW_M, &obj);
             GFL_ASSERT(ret);
             display = CLACT_SURFACE_MAIN;
         } else {
-            BrRes_LoadOBJ(p_wk->param.res, 8, heapId);
-            ret = BrRes_GetObjData(p_wk->param.res, 8, &obj);
+            BrRes_LoadOBJ(p_wk->param.res, BR_RES_OBJ_SCROLL_ARROW_S, heapId);
+            ret = BrRes_GetObjData(p_wk->param.res, BR_RES_OBJ_SCROLL_ARROW_S, &obj);
             GFL_ASSERT(ret);
             display = CLACT_SURFACE_SUB;
         }
@@ -392,7 +393,7 @@ BrList *BrList_Init(const BrListParam *cp_param, HeapID heapId) {
         setup.y = 72;
         setup.sequence = 5;
         setup.priority = 0;
-        ret = BrRes_GetObjData(p_wk->param.res, 6, &obj);
+        ret = BrRes_GetObjData(p_wk->param.res, BR_RES_OBJ_CONTROLS_S, &obj);
         GFL_ASSERT(ret);
         for (i = 2; i < 4; i++) {
             setup.x = i == 2 ? 24 : 232;
@@ -450,9 +451,9 @@ void BrList_Exit(BrList *p_wk) {
     BmpWin_ClearScreen(p_wk->bmpwin);
     BmpWin_Free(p_wk->bmpwin);
     if (p_wk->param.frame < BGSYS_BG_SUB) {
-        BrRes_UnloadOBJ(p_wk->param.res, 7);
+        BrRes_UnloadOBJ(p_wk->param.res, BR_RES_OBJ_SCROLL_ARROW_M);
     } else {
-        BrRes_UnloadOBJ(p_wk->param.res, 8);
+        BrRes_UnloadOBJ(p_wk->param.res, BR_RES_OBJ_SCROLL_ARROW_S);
     }
     if (p_wk->param.pos != NULL) {
         p_wk->param.pos->list = p_wk->list;
@@ -643,7 +644,7 @@ static void BrList_Decide_Cursor(BrList *p_wk) {
 BrMsgWin *BrText_Init(BrRes *res, PrintQueue *que, HeapID heapId) {
     BrMsgWin *p_wk;
 
-    BrRes_LoadBG(res, 2, heapId);
+    BrRes_LoadBG(res, BR_RES_BG_TEXT, heapId);
     p_wk = BrMsgWin_Init(0, 1, 19, 30, 4, 2, que, heapId);
     p_wk->clear_color = 12;
     return p_wk;
@@ -651,7 +652,7 @@ BrMsgWin *BrText_Init(BrRes *res, PrintQueue *que, HeapID heapId) {
 
 void BrText_Exit(BrMsgWin *p_wk, BrRes *res) {
     BrMsgWin_Exit(p_wk);
-    BrRes_UnloadBG(res, 2);
+    BrRes_UnloadBG(res, BR_RES_BG_TEXT);
 }
 
 void BrText_Print(BrMsgWin *p_wk, BrRes *res, u32 msgID) {
@@ -668,6 +669,14 @@ BOOL BrText_Main(BrMsgWin *p_wk) {
     return BrMsgWin_Main(p_wk);
 }
 
+enum {
+    BR_PROFILE_WIN_NAME = 0,
+    BR_PROFILE_WIN_BIRTH_MONTH = 1,
+    BR_PROFILE_WIN_COUNTRY = 3,
+    BR_PROFILE_WIN_REGION = 4,
+    BR_PROFILE_WIN_INTRODUCTION = 6,
+};
+
 BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, PrintQueue *que, u32 type,
                           HeapID heapId) {
     BrProfile *p_wk;
@@ -682,7 +691,7 @@ BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, P
     font = BrRes_GetFont(res);
     p_wk->pms = PMSDraw_Create(unit, CLACT_VRAM_MAIN, que, font, 7, 1, heapId);
     PMSDraw_SetObjMode(p_wk->pms, 0, TRUE);
-    BrRes_LoadBG(p_wk->res, 8, heapId);
+    BrRes_LoadBG(p_wk->res, BR_RES_BG_PROFILE, heapId);
     msg = BrRes_GetMsgData(res);
     wordset = BrRes_GetWordSet(res);
 
@@ -697,7 +706,7 @@ BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, P
         isPrint = TRUE;
 
         switch (i) {
-        case 0: {
+        case BR_PROFILE_WIN_NAME: {
             StrBuf *name;
 
             str = GFL_StrBufCreate(128, heapId);
@@ -709,7 +718,7 @@ BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, P
             GFL_StrBufFree(src);
             break;
         }
-        case 1: {
+        case BR_PROFILE_WIN_BIRTH_MONTH: {
             u32 month = GdsProfile_GetBirthMonth(cp_profile);
 
             str = GFL_StrBufCreate(128, heapId);
@@ -719,7 +728,7 @@ BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, P
             GFL_StrBufFree(src);
             break;
         }
-        case 3: {
+        case BR_PROFILE_WIN_COUNTRY: {
             u32 country = GdsProfile_GetCountry(cp_profile);
 
             str = GFL_StrBufCreate(128, heapId);
@@ -730,7 +739,7 @@ BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, P
             BrMsgWin_SetPos(p_wk->msgwin[i], 8, 1, BR_MSGWIN_POS_ABSOLUTE);
             break;
         }
-        case 4: {
+        case BR_PROFILE_WIN_REGION: {
             u32 country = GdsProfile_GetCountry(cp_profile);
             u32 area = GdsProfile_GetRegion(cp_profile);
 
@@ -742,7 +751,7 @@ BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, P
             BrMsgWin_SetPos(p_wk->msgwin[i], 8, 1, BR_MSGWIN_POS_ABSOLUTE);
             break;
         }
-        case 6: {
+        case BR_PROFILE_WIN_INTRODUCTION: {
             PMSData pms;
 
             src = GdsProfile_GetIntroduction(cp_profile, &pms, heapId);
@@ -805,7 +814,7 @@ BrProfile *BrProfile_Init(GdsProfile *cp_profile, BrRes *res, ClActUnit *unit, P
         u32 cel, chr, plt, anm;
         ArcTool *handle;
 
-        if (GdsProfile_GetSex(cp_profile) == 0) {
+        if (GdsProfile_GetSex(cp_profile) == GENDER_MALE) {
             chr = 20;
             plt = 4;
             cel = 18;
@@ -871,7 +880,7 @@ void BrProfile_Exit(BrProfile *p_wk) {
         }
     }
     PMSDraw_Delete(p_wk->pms);
-    BrRes_UnloadBG(p_wk->res, 8);
+    BrRes_UnloadBG(p_wk->res, BR_RES_BG_PROFILE);
     GFL_HeapFree(p_wk);
     GFL_BGSysLoadScr(1);
 }
@@ -933,14 +942,14 @@ BrBallEffect *BrBallEff_Init(ClActUnit *unit, BrRes *res, u32 display, HeapID he
     p_wk->res = res;
     p_wk->display = display;
     p_wk->seq = BrSeq_Init(p_wk, BrBallEff_Seq_Wait, heapId);
-    BrRes_LoadOBJ(p_wk->res, display + 9, heapId);
+    BrRes_LoadOBJ(p_wk->res, display + BR_RES_OBJ_BALL_M, heapId);
     {
         ClActorSetup setup;
         BrResObjData obj;
         BOOL ret;
 
         MI_CpuFill8(&setup, 0, sizeof(ClActorSetup));
-        ret = BrRes_GetObjData(p_wk->res, display + 9, &obj);
+        ret = BrRes_GetObjData(p_wk->res, display + BR_RES_OBJ_BALL_M, &obj);
         GFL_ASSERT(ret);
         for (i = 0; i < BR_BALL_NUM; i++) {
             p_wk->clwk[i] = ClActor_Create(unit, obj.chr, obj.plt, obj.cell, &setup, display, heapId);
@@ -957,7 +966,7 @@ void BrBallEff_Exit(BrBallEffect *p_wk) {
     for (i = 0; i < BR_BALL_NUM; i++) {
         ClActor_Delete(p_wk->clwk[i]);
     }
-    BrRes_UnloadOBJ(p_wk->res, p_wk->display + 9);
+    BrRes_UnloadOBJ(p_wk->res, p_wk->display + BR_RES_OBJ_BALL_M);
     BrSeq_Exit(p_wk->seq);
     GFL_HeapFree(p_wk);
 }
@@ -1018,37 +1027,48 @@ void BrBallEff_SetAnmSeq(BrBallEffect *p_wk, u32 seq) {
     }
 }
 
+enum {
+    BR_BALL_WAIT_STEP_HIDE = 0,
+    BR_BALL_WAIT_STEP_IDLE = 1,
+};
+
 static void BrBallEff_Seq_Wait(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_WAIT_STEP_HIDE:
         for (i = 0; i < BR_BALL_NUM; i++) {
             ClActor_SetVisible(p_wk->clwk[i], FALSE);
         }
         p_wk->is_end = TRUE;
-        *p_seq = 1;
+        *p_seq = BR_BALL_WAIT_STEP_IDLE;
         break;
-    case 1:
+    case BR_BALL_WAIT_STEP_IDLE:
         break;
     }
 }
+
+enum {
+    BR_BALL_SPREAD_STEP_SETUP = 0,
+    BR_BALL_SPREAD_STEP_SPREAD = 1,
+    BR_BALL_SPREAD_STEP_HIDE = 2,
+};
 
 static void BrBallEff_Seq_Spread(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_SPREAD_STEP_SETUP:
         p_wk->cnt = 0;
         for (i = 0; i < 6; i++) {
             BrBallCircle_Init(&p_wk->move[i].circle, &p_wk->pos, 8, 20, 0xffff * i / 6, 0xffff * i / 6 + 0x3333, 15);
             ClActor_SetVisible(p_wk->clwk[i], TRUE);
         }
-        *p_seq = 1;
+        *p_seq = BR_BALL_SPREAD_STEP_SPREAD;
         // fallthrough
-    case 1:
+    case BR_BALL_SPREAD_STEP_SPREAD:
         for (i = 0; i < 6; i++) {
             BrPoint now;
             ClActorPos pos;
@@ -1059,14 +1079,20 @@ static void BrBallEff_Seq_Spread(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             ClActor_SetSurfacePos(p_wk->clwk[i], &pos, p_wk->display);
         }
         if (p_wk->cnt++ > 15) {
-            *p_seq = 2;
+            *p_seq = BR_BALL_SPREAD_STEP_HIDE;
         }
         break;
-    case 2:
+    case BR_BALL_SPREAD_STEP_HIDE:
         BrSeq_SetNext(p_wk->seq, BrBallEff_Seq_Wait);
         break;
     }
 }
+
+enum {
+    BR_BALL_LINE_STEP_SETUP = 0,
+    BR_BALL_LINE_STEP_FOLLOW_LINE = 1,
+    BR_BALL_LINE_STEP_HIDE = 2,
+};
 
 static void BrBallEff_Seq_Line(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
@@ -1075,7 +1101,7 @@ static void BrBallEff_Seq_Line(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BOOL isEnd;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_LINE_STEP_SETUP:
         p_wk->cnt = 0;
         for (i = 0; i < BR_BALL_NUM; i++) {
             p_wk->ball[i] = sc_ball_pos_top;
@@ -1085,9 +1111,9 @@ static void BrBallEff_Seq_Line(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         for (i = 1; i < BR_BALL_NUM; i++) {
             BrBallFollow_Init(&p_wk->move[i].follow, &p_wk->ball[i - 1], &p_wk->ball[i], FX32_CONST(4) - 0x666 * i / 2);
         }
-        *p_seq = 1;
+        *p_seq = BR_BALL_LINE_STEP_FOLLOW_LINE;
         // fallthrough
-    case 1:
+    case BR_BALL_LINE_STEP_FOLLOW_LINE:
         isEnd = TRUE;
         p_wk->is_end = BrBallLine_Main(&p_wk->move[0].line, &p_wk->ball[0], p_wk->cnt);
         isEnd &= p_wk->is_end;
@@ -1101,21 +1127,28 @@ static void BrBallEff_Seq_Line(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         }
         p_wk->cnt++;
         if (isEnd) {
-            *p_seq = 2;
+            *p_seq = BR_BALL_LINE_STEP_HIDE;
         }
         break;
-    case 2:
+    case BR_BALL_LINE_STEP_HIDE:
         BrSeq_SetNext(p_wk->seq, BrBallEff_Seq_Wait);
         break;
     }
 }
+
+enum {
+    BR_BALL_LINE_ROT_STEP_SETUP_LINE = 0,
+    BR_BALL_LINE_ROT_STEP_MOVE_LINE = 1,
+    BR_BALL_LINE_ROT_STEP_SETUP_ROTATION = 2,
+    BR_BALL_LINE_ROT_STEP_ROTATE_AND_FOLLOW = 3,
+};
 
 static void BrBallEff_Seq_LineRot(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_LINE_ROT_STEP_SETUP_LINE:
         p_wk->cnt = 0;
         for (i = 0; i < 6; i++) {
             p_wk->ball[i] = sc_ball_pos_above;
@@ -1126,9 +1159,9 @@ static void BrBallEff_Seq_LineRot(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             BrBallFollow_Init(&p_wk->move[i].follow, &p_wk->ball[i - 1], &p_wk->ball[i],
                               FX32_CONST(3.5) - 0xb33 * i / 2);
         }
-        *p_seq = 1;
+        *p_seq = BR_BALL_LINE_ROT_STEP_MOVE_LINE;
         // fallthrough
-    case 1:
+    case BR_BALL_LINE_ROT_STEP_MOVE_LINE:
         p_wk->is_move_end[0] = BrBallLine_Main(&p_wk->move[0].line, &p_wk->ball[0], p_wk->cnt);
         for (i = 1; i < 6; i++) {
             p_wk->is_move_end[i] = BrBallFollow_Main(&p_wk->move[i].follow, &p_wk->ball[i]);
@@ -1143,18 +1176,18 @@ static void BrBallEff_Seq_LineRot(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         p_wk->cnt++;
         if (p_wk->is_move_end[0]) {
             ClActor_SetVisible(p_wk->clwk[0], FALSE);
-            *p_seq = 2;
+            *p_seq = BR_BALL_LINE_ROT_STEP_SETUP_ROTATION;
         }
         break;
-    case 2:
+    case BR_BALL_LINE_ROT_STEP_SETUP_ROTATION:
         p_wk->cnt = 0;
         for (i = 6; i < BR_BALL_NUM; i++) {
             BrBallRot_Init(&p_wk->move[i].rot, &sc_ball_pos_center, 15, 0xffff * (i - 6) / 6, 90);
             ClActor_SetVisible(p_wk->clwk[i], TRUE);
         }
-        *p_seq = 3;
+        *p_seq = BR_BALL_LINE_ROT_STEP_ROTATE_AND_FOLLOW;
         // fallthrough
-    case 3:
+    case BR_BALL_LINE_ROT_STEP_ROTATE_AND_FOLLOW:
         for (i = 6; i < BR_BALL_NUM; i++) {
             BrBallRot_Main(&p_wk->move[i].rot, &p_wk->ball[i], p_wk->cnt);
         }
@@ -1177,21 +1210,26 @@ static void BrBallEff_Seq_LineRot(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
 }
 
+enum {
+    BR_BALL_ROT_STEP_SETUP = 0,
+    BR_BALL_ROT_STEP_ROTATE = 1,
+};
+
 static void BrBallEff_Seq_Rot(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_ROT_STEP_SETUP:
         p_wk->cnt = 0;
         for (i = 0; i < 6; i++) {
             BrBallRot_Init(&p_wk->move[i].rot, &p_wk->pos, 15, 0xffff * i / 6, 90);
             ClActor_SetVisible(p_wk->clwk[i], TRUE);
         }
         GFL_SndSEPlay(0x705);
-        *p_seq = 1;
+        *p_seq = BR_BALL_ROT_STEP_ROTATE;
         // fallthrough
-    case 1:
+    case BR_BALL_ROT_STEP_ROTATE:
         for (i = 0; i < 6; i++) {
             BrPoint now;
             ClActorPos pos;
@@ -1206,20 +1244,25 @@ static void BrBallEff_Seq_Rot(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
 }
 
+enum {
+    BR_BALL_ROT_SMALL_STEP_SETUP = 0,
+    BR_BALL_ROT_SMALL_STEP_ROTATE = 1,
+};
+
 static void BrBallEff_Seq_RotSmall(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_ROT_SMALL_STEP_SETUP:
         p_wk->cnt = 0;
         for (i = 0; i < 6; i++) {
             BrBallRot_Init(&p_wk->move[i].rot, &p_wk->pos, 10, 0xffff * i / 6, 90);
             ClActor_SetVisible(p_wk->clwk[i], TRUE);
         }
-        *p_seq = 1;
+        *p_seq = BR_BALL_ROT_SMALL_STEP_ROTATE;
         // fallthrough
-    case 1:
+    case BR_BALL_ROT_SMALL_STEP_ROTATE:
         for (i = 0; i < 6; i++) {
             BrPoint now;
             ClActorPos pos;
@@ -1237,20 +1280,29 @@ static void BrBallEff_Seq_RotSmall(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) 
 static void BrBallEff_Seq_Stop(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
 }
 
+enum {
+    BR_BALL_TOUCH_STEP_SETUP_SPREAD = 0,
+    BR_BALL_TOUCH_STEP_SPREAD = 1,
+    BR_BALL_TOUCH_STEP_WAIT_FRAME = 2,
+    BR_BALL_TOUCH_STEP_SETUP_FOLLOW = 3,
+    BR_BALL_TOUCH_STEP_FOLLOW = 4,
+    BR_BALL_TOUCH_STEP_HIDE = 5,
+};
+
 static void BrBallEff_Seq_Touch(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_TOUCH_STEP_SETUP_SPREAD:
         p_wk->cnt = 0;
         for (i = 0; i < 6; i++) {
             BrBallCircle_Init(&p_wk->move[i].circle, &p_wk->pos, 8, 20, 0xffff * i / 6, 0xffff * i / 6 + 0x3333, 16);
             ClActor_SetVisible(p_wk->clwk[i], TRUE);
         }
-        *p_seq = 1;
+        *p_seq = BR_BALL_TOUCH_STEP_SPREAD;
         // fallthrough
-    case 1:
+    case BR_BALL_TOUCH_STEP_SPREAD:
         for (i = 0; i < 6; i++) {
             ClActorPos pos;
 
@@ -1260,19 +1312,19 @@ static void BrBallEff_Seq_Touch(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             ClActor_SetSurfacePos(p_wk->clwk[i], &pos, p_wk->display);
         }
         if (p_wk->cnt++ > 16) {
-            *p_seq = 2;
+            *p_seq = BR_BALL_TOUCH_STEP_WAIT_FRAME;
         }
         break;
-    case 2:
-        *p_seq = 3;
+    case BR_BALL_TOUCH_STEP_WAIT_FRAME:
+        *p_seq = BR_BALL_TOUCH_STEP_SETUP_FOLLOW;
         break;
-    case 3:
+    case BR_BALL_TOUCH_STEP_SETUP_FOLLOW:
         for (i = 0; i < 6; i++) {
             BrBallFollow_Init(&p_wk->move[i].follow, p_wk->p_follow, &p_wk->ball[i], FX32_CONST(4) - 0x99a * i / 2);
         }
-        *p_seq = 4;
+        *p_seq = BR_BALL_TOUCH_STEP_FOLLOW;
         // fallthrough
-    case 4: {
+    case BR_BALL_TOUCH_STEP_FOLLOW: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < 6; i++) {
@@ -1284,22 +1336,28 @@ static void BrBallEff_Seq_Touch(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             ClActor_SetSurfacePos(p_wk->clwk[i], &pos, p_wk->display);
         }
         if (isEnd) {
-            *p_seq = 5;
+            *p_seq = BR_BALL_TOUCH_STEP_HIDE;
         }
         break;
     }
-    case 5:
+    case BR_BALL_TOUCH_STEP_HIDE:
         BrSeq_SetNext(p_seqwk, BrBallEff_Seq_Wait);
         break;
     }
 }
+
+enum {
+    BR_BALL_RING_STEP_SETUP = 0,
+    BR_BALL_RING_STEP_CONTRACT = 1,
+    BR_BALL_RING_STEP_HIDE = 2,
+};
 
 static void BrBallEff_Seq_Ring(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBallEffect *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BALL_RING_STEP_SETUP:
         BrBallEff_SetAnmSeq(p_wk, 0);
         for (i = 6; i < BR_BALL_NUM; i++) {
             // BUG: BrBallRot_Main turns by 0xffff * cnt / sync_max, so the ring starts from each ball's first angle
@@ -1314,9 +1372,9 @@ static void BrBallEff_Seq_Ring(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             ClActor_SetObjMode(p_wk->clwk[i], FALSE);
         }
         p_wk->cnt = 0;
-        *p_seq = 1;
+        *p_seq = BR_BALL_RING_STEP_CONTRACT;
         // fallthrough
-    case 1:
+    case BR_BALL_RING_STEP_CONTRACT:
         for (i = 6; i < BR_BALL_NUM; i++) {
             BrPoint now;
             ClActorPos pos;
@@ -1327,10 +1385,10 @@ static void BrBallEff_Seq_Ring(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             ClActor_SetSurfacePos(p_wk->clwk[i], &pos, p_wk->display);
         }
         if (p_wk->cnt++ > 60) {
-            *p_seq = 2;
+            *p_seq = BR_BALL_RING_STEP_HIDE;
         }
         break;
-    case 2:
+    case BR_BALL_RING_STEP_HIDE:
         BrSeq_SetNext(p_seqwk, BrBallEff_Seq_Wait);
         break;
     }

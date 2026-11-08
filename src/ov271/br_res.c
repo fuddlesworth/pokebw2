@@ -79,59 +79,59 @@ void BrRes_LoadBG(BrRes *p_wk, u32 bgID, HeapID heapId) {
     ArcTool *handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
 
     switch (bgID) {
-    case 0:
+    case BR_RES_BG_COMMON_M:
         GFL_BGSysLoadArcNCGRStatic(handle, 38, 3, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 40, 3, 0, 0, FALSE, heapId);
         break;
-    case 1:
+    case BR_RES_BG_COMMON_S:
         GFL_BGSysLoadArcNCGRStatic(handle, 38, 6, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 40, 6, 0, 0, FALSE, heapId);
         break;
-    case 2:
+    case BR_RES_BG_TEXT:
         GFL_BGSysLoadArcNCGRStatic(handle, 107, 0, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 2, 0, 0, 0, FALSE, heapId);
         break;
-    case 3:
+    case BR_RES_BG_MENU_BROWSE:
         GFL_BGSysLoadArcNCGRStatic(handle, 38, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 39, 2, 0, 0, FALSE, heapId);
         break;
-    case 4:
+    case BR_RES_BG_MENU_ONLINE:
         GFL_BGSysLoadArcNCGRStatic(handle, 38, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 26, 2, 0, 0, FALSE, heapId);
         break;
-    case 5:
+    case BR_RES_BG_RECORD_CONTROLS:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 5, 5, 0, 0, FALSE, heapId);
         break;
-    case 6:
+    case BR_RES_BG_RECORD_INFO:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 45, 2, 0, 0, FALSE, heapId);
         break;
-    case 7:
+    case BR_RES_BG_RECORD_INFO_SMALL_TEAM:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 44, 2, 0, 0, FALSE, heapId);
         break;
-    case 8:
+    case BR_RES_BG_PROFILE:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 43, 2, 0, 0, FALSE, heapId);
         break;
-    case 9:
+    case BR_RES_BG_BTLSUBWAY_MENU:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 97, 5, 0, 0, FALSE, heapId);
         break;
-    case 10:
+    case BR_RES_BG_BTLSUBWAY_SINGLE:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 99, 2, 0, 0, FALSE, heapId);
         break;
-    case 11:
+    case BR_RES_BG_BTLSUBWAY_DOUBLE:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 100, 2, 0, 0, FALSE, heapId);
         break;
-    case 12:
+    case BR_RES_BG_BTLSUBWAY_MULTI:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 101, 2, 0, 0, FALSE, heapId);
         break;
-    case 13:
+    case BR_RES_BG_BTLSUBWAY_WIFI:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 102, 2, 0, 0, FALSE, heapId);
         break;
@@ -139,11 +139,11 @@ void BrRes_LoadBG(BrRes *p_wk, u32 bgID, HeapID heapId) {
         GFL_BGSysLoadArcNCGRStatic(handle, 107, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 2, 2, 0, 0, FALSE, heapId);
         break;
-    case 14:
+    case BR_RES_BG_BTLSUBWAY_TOP:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 98, 2, 0, 0, FALSE, heapId);
         break;
-    case 15:
+    case BR_RES_BG_RNDMATCH_MENU:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 103, 5, 0, 0, FALSE, heapId);
         break;
@@ -151,57 +151,57 @@ void BrRes_LoadBG(BrRes *p_wk, u32 bgID, HeapID heapId) {
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 104, 2, 0, 0, FALSE, heapId);
         break;
-    case 17:
+    case BR_RES_BG_RNDMATCH_RECORDS:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 105, 2, 0, 0, FALSE, heapId);
         break;
-    case 16:
+    case BR_RES_BG_RNDMATCH_RATING:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 106, 2, 0, 0, FALSE, heapId);
         break;
-    case 20:
+    case BR_POKESEARCH_BG_LETTER:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 31, 5, 0, 0, FALSE, heapId);
         break;
-    case 21:
+    case BR_POKESEARCH_BG_LIST:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 29, 5, 0, 0, FALSE, heapId);
         break;
-    case 22:
+    case BR_RES_BG_MUSICAL_LOOK:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 13, 5, 0, 0, FALSE, heapId);
         break;
-    case 23:
+    case BR_RES_BG_MUSICAL_SEND:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 14, 5, 0, 0, FALSE, heapId);
         break;
-    case 24:
+    case BR_RES_BG_BV_LIST:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 3, 2, 0, 0, FALSE, heapId);
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 6, 5, 0, 0, FALSE, heapId);
         break;
-    case 25:
+    case BR_RES_BG_BV_SEARCH_MAIN:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 2, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 27, 2, 0, 0, FALSE, heapId);
         break;
-    case 26:
+    case BR_RES_BG_BV_SEARCH_MENU:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 30, 5, 0, 0, FALSE, heapId);
         break;
-    case 28:
+    case BR_RES_BG_BV_SEARCH_AREA:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 28, 5, 0, 0, FALSE, heapId);
         break;
-    case 27:
+    case BR_RES_BG_BV_SEARCH_MODE:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 32, 5, 0, 0, FALSE, heapId);
         break;
-    case 29:
+    case BR_RES_BG_CODEIN:
         GFL_BGSysLoadArcNCGRStatic(handle, 38, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 18, 5, 0, 0, FALSE, heapId);
         break;
-    case 30:
+    case BR_RES_BG_CONFIRM:
         GFL_BGSysLoadArcNCGRStatic(handle, 33, 5, 0, 0, FALSE, heapId);
         loadBGScrToVramByFileNoReserveNegAlign(handle, 47, 5, 0, 0, FALSE, heapId);
         break;
@@ -211,53 +211,53 @@ void BrRes_LoadBG(BrRes *p_wk, u32 bgID, HeapID heapId) {
 
 void BrRes_UnloadBG(BrRes *p_wk, u32 bgID) {
     switch (bgID) {
-    case 24:
+    case BR_RES_BG_BV_LIST:
         GFL_BGSysClearScr(2);
         GFL_BGSysLoadScr(2);
         GFL_BGSysClearScr(5);
         GFL_BGSysLoadScr(5);
         break;
-    case 0:
+    case BR_RES_BG_COMMON_M:
         GFL_BGSysClearScr(3);
         GFL_BGSysLoadScr(3);
         break;
-    case 1:
+    case BR_RES_BG_COMMON_S:
         GFL_BGSysClearScr(6);
         GFL_BGSysLoadScr(6);
         break;
-    case 2:
+    case BR_RES_BG_TEXT:
         GFL_BGSysClearScr(0);
         GFL_BGSysLoadScr(0);
         break;
-    case 5:
-    case 9:
-    case 15:
-    case 20:
-    case 21:
-    case 22:
-    case 23:
-    case 26:
-    case 27:
-    case 28:
-    case 29:
-    case 30:
+    case BR_RES_BG_RECORD_CONTROLS:
+    case BR_RES_BG_BTLSUBWAY_MENU:
+    case BR_RES_BG_RNDMATCH_MENU:
+    case BR_POKESEARCH_BG_LETTER:
+    case BR_POKESEARCH_BG_LIST:
+    case BR_RES_BG_MUSICAL_LOOK:
+    case BR_RES_BG_MUSICAL_SEND:
+    case BR_RES_BG_BV_SEARCH_MENU:
+    case BR_RES_BG_BV_SEARCH_MODE:
+    case BR_RES_BG_BV_SEARCH_AREA:
+    case BR_RES_BG_CODEIN:
+    case BR_RES_BG_CONFIRM:
         GFL_BGSysClearScr(5);
         GFL_BGSysLoadScr(5);
         break;
-    case 3:
-    case 4:
-    case 6:
-    case 7:
-    case 8:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 16:
-    case 17:
+    case BR_RES_BG_MENU_BROWSE:
+    case BR_RES_BG_MENU_ONLINE:
+    case BR_RES_BG_RECORD_INFO:
+    case BR_RES_BG_RECORD_INFO_SMALL_TEAM:
+    case BR_RES_BG_PROFILE:
+    case BR_RES_BG_BTLSUBWAY_SINGLE:
+    case BR_RES_BG_BTLSUBWAY_DOUBLE:
+    case BR_RES_BG_BTLSUBWAY_MULTI:
+    case BR_RES_BG_BTLSUBWAY_WIFI:
+    case BR_RES_BG_RNDMATCH_RATING:
+    case BR_RES_BG_RNDMATCH_RECORDS:
     case 18:
     case 19:
-    case 25:
+    case BR_RES_BG_BV_SEARCH_MAIN:
         GFL_BGSysClearScr(2);
         GFL_BGSysLoadScr(2);
         break;
@@ -315,56 +315,56 @@ void BrRes_LoadOBJ(BrRes *p_wk, u32 objID, HeapID heapId) {
         p_data->cell = ClActSys_LoadCellAnims(handle, 61, 62, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 6:
+    case BR_RES_OBJ_CONTROLS_S:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = p_wk->common_obj_plt[CLACT_VRAM_SUB];
         p_data->chr = ClActSys_LoadChars(handle, 35, FALSE, CLACT_VRAM_SUB, heapId);
         p_data->cell = ClActSys_LoadCellAnims(handle, 7, 8, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 8:
+    case BR_RES_OBJ_SCROLL_ARROW_S:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = p_wk->common_obj_plt[CLACT_VRAM_SUB];
         p_data->chr = ClActSys_LoadChars(handle, 86, FALSE, CLACT_VRAM_SUB, heapId);
         p_data->cell = ClActSys_LoadCellAnims(handle, 85, 84, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 7:
+    case BR_RES_OBJ_SCROLL_ARROW_M:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = p_wk->common_obj_plt[CLACT_VRAM_MAIN];
         p_data->chr = ClActSys_LoadChars(handle, 86, FALSE, CLACT_VRAM_MAIN, heapId);
         p_data->cell = ClActSys_LoadCellAnims(handle, 85, 84, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 11:
+    case BR_RES_OBJ_CODEIN_CODE:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = ClActSys_LoadPlttRange(handle, 19, CLACT_VRAM_SUB, 0x80, 0, 1, heapId);
         p_data->chr = ClActSys_LoadChars(handle, 15, FALSE, CLACT_VRAM_SUB, heapId);
         p_data->cell = ClActSys_LoadCellAnims(handle, 16, 17, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 12:
+    case BR_RES_OBJ_CODEIN_CURSOR:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = ClActSys_LoadPlttRange(handle, 51, CLACT_VRAM_SUB, 0xa0, 0, 1, heapId);
         p_data->chr = ClActSys_LoadChars(handle, 50, FALSE, CLACT_VRAM_SUB, heapId);
         p_data->cell = ClActSys_LoadCellAnims(handle, 48, 49, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 9:
+    case BR_RES_OBJ_BALL_M:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = p_wk->common_obj_plt[CLACT_VRAM_MAIN];
         p_data->chr = ClActSys_LoadChars(handle, 54, FALSE, CLACT_VRAM_MAIN, heapId);
         p_data->cell = ClActSys_LoadCellAnims(handle, 52, 53, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 10:
+    case BR_RES_OBJ_BALL_S:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = p_wk->common_obj_plt[CLACT_VRAM_SUB];
         p_data->chr = ClActSys_LoadChars(handle, 54, FALSE, CLACT_VRAM_SUB, heapId);
         p_data->cell = ClActSys_LoadCellAnims(handle, 52, 53, heapId);
         GFL_ArcToolFree(handle);
         break;
-    case 13:
+    case BR_RES_OBJ_BTLSUBWAY_BP:
         handle = GFL_ArcSysCreateFileHandle(ARCID_BR_RES, heapId);
         p_data->plt = p_wk->common_obj_plt[CLACT_VRAM_MAIN];
         p_data->cell = ClActSys_LoadCellAnims(handle, 41, 42, heapId);
@@ -380,8 +380,8 @@ void BrRes_UnloadOBJ(BrRes *p_wk, u32 objID) {
     BrResObjData *p_data = &p_wk->obj[objID];
 
     switch (objID) {
-    case 11:
-    case 12:
+    case BR_RES_OBJ_CODEIN_CODE:
+    case BR_RES_OBJ_CODEIN_CURSOR:
         ClActSys_FreePltt(p_data->plt);
         ClActSys_FreeChars(p_data->chr);
         ClActSys_FreeCellAnims(p_data->cell);
@@ -390,12 +390,12 @@ void BrRes_UnloadOBJ(BrRes *p_wk, u32 objID) {
     case BR_RES_OBJ_BROWSE_BTN_S:
     case BR_RES_OBJ_MUSICAL_BTN_M:
     case BR_RES_OBJ_MUSICAL_BTN_S:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 13:
+    case BR_RES_OBJ_CONTROLS_S:
+    case BR_RES_OBJ_SCROLL_ARROW_M:
+    case BR_RES_OBJ_SCROLL_ARROW_S:
+    case BR_RES_OBJ_BALL_M:
+    case BR_RES_OBJ_BALL_S:
+    case BR_RES_OBJ_BTLSUBWAY_BP:
         ClActSys_FreeChars(p_data->chr);
         ClActSys_FreeCellAnims(p_data->cell);
         break;

@@ -4,6 +4,7 @@
 
 #include "types.h"
 #include "app/battle_recorder/br_btn.h"
+#include "app/battle_recorder/br_btn_data.h"
 #include "app/battle_recorder/br_core.h"
 #include "app/battle_recorder/br_fade.h"
 #include "app/battle_recorder/br_menu_proc.h"
@@ -53,10 +54,10 @@ static BOOL BrMenu_ProcInit(GameProc *proc, u32 *state, void *param, void *work)
     BrRes_UnloadCommonPltt(p->res, CLACT_SURFACE_SUB);
     BrRes_LoadCommonPltt(p->res, CLACT_SURFACE_MAIN, wk->heapId);
     BrRes_LoadCommonPltt(p->res, CLACT_SURFACE_SUB, wk->heapId);
-    if (p->menuID < 5) {
-        BrRes_LoadBG(p->res, 3, wk->heapId);
+    if (p->menuID < BR_MENUID_GBV_TOP) {
+        BrRes_LoadBG(p->res, BR_RES_BG_MENU_BROWSE, wk->heapId);
     } else {
-        BrRes_LoadBG(p->res, 4, wk->heapId);
+        BrRes_LoadBG(p->res, BR_RES_BG_MENU_ONLINE, wk->heapId);
     }
 
     wk->ballEff = BrBallEff_Init(p->unit, p->res, CLACT_SURFACE_SUB, wk->heapId);
@@ -74,10 +75,10 @@ static BOOL BrMenu_ProcExit(GameProc *proc, u32 *state, void *param, void *work)
     BrMenuProcParam *p = param;
     BrMenuWork *wk = work;
 
-    if (p->menuID < 5) {
-        BrRes_UnloadBG(p->res, 3);
+    if (p->menuID < BR_MENUID_GBV_TOP) {
+        BrRes_UnloadBG(p->res, BR_RES_BG_MENU_BROWSE);
     } else {
-        BrRes_UnloadBG(p->res, 4);
+        BrRes_UnloadBG(p->res, BR_RES_BG_MENU_ONLINE);
     }
     BrBtnSys_Exit(wk->btnSys);
     BrBallEff_Exit(wk->ballEff);
@@ -117,7 +118,7 @@ static BOOL BrMenu_ProcMain(GameProc *proc, u32 *state, void *param, void *work)
         break;
     case SEQ_MAIN:
         // Only the top menus change the color, when a sidebar is touched
-        if (p->menuID <= 4 && !BrBtnSys_IsBusy(wk->btnSys)) {
+        if (p->menuID <= BR_MENUID_BROWSE_DELETE_OTHER && !BrBtnSys_IsBusy(wk->btnSys)) {
             u32 x;
             u32 y;
 
@@ -128,12 +129,12 @@ static BOOL BrMenu_ProcMain(GameProc *proc, u32 *state, void *param, void *work)
             }
         }
         BrBtnSys_Main(wk->btnSys);
-        if (BrBtnSys_GetInput(wk->btnSys, &p->unk4, &p->nextMode) != 0) {
+        if (BrBtnSys_GetInput(wk->btnSys, &p->nextProcID, &p->nextMode) != BR_BTN_INPUT_NONE) {
             *state = SEQ_FADEOUT_START;
         }
         break;
     case SEQ_FADEOUT_START:
-        if (p->unk4 == BR_PROCID_MUSICAL_SEND) {
+        if (p->nextProcID == BR_PROCID_MUSICAL_SEND) {
             BrFade_StartFade(p->fade, BR_FADE_TYPE_MASTER_BRIGHT_AND_ALPHA, BR_FADE_DISPLAY_BOTH, BR_FADE_DIR_OUT);
         } else {
             BrFade_StartFade(p->fade, BR_FADE_TYPE_ALPHA_BG012, BR_FADE_DISPLAY_BOTH, BR_FADE_DIR_OUT);
@@ -146,13 +147,13 @@ static BOOL BrMenu_ProcMain(GameProc *proc, u32 *state, void *param, void *work)
         }
         break;
     case SEQ_END:
-        switch (BrBtnSys_GetInput(wk->btnSys, &p->unk4, &p->nextMode)) {
-        case 1:
-            BrProcSys_Push(p->procSys, p->unk4);
+        switch (BrBtnSys_GetInput(wk->btnSys, &p->nextProcID, &p->nextMode)) {
+        case BR_BTN_INPUT_SELECT:
+            BrProcSys_Push(p->procSys, p->nextProcID);
             return TRUE;
-        case 2:
+        case BR_BTN_INPUT_EXIT:
             BrProcSys_Pop(p->procSys);
-            *p->result = BrBtnSys_GetUnk54(wk->btnSys);
+            *p->result = BrBtnSys_GetExitResult(wk->btnSys);
             return TRUE;
         }
         break;

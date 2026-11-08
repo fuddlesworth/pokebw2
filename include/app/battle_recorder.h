@@ -22,11 +22,16 @@ enum {
 typedef struct {
     u32 mode;
     GameData *gameData;
-    u32 unk8;
+    u32 loginBuffer;
     // 2 when the online connection failed
     u32 result;
 } BattleRecorderParam;
 
 extern const GameProcFunctions BR_MAIN_PROC_FUNCTIONS;
+
+enum {
+    BR_RESULT_EXIT = 0,
+    BR_RESULT_NETWORK_FAILED = 2,
+};
 
 #endif // POKEBW2_APP_BATTLE_RECORDER_H
