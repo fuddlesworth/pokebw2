@@ -5,19 +5,22 @@
 #include "gfl/heap.h"
 #include "struct_decls.h"
 
+// A texture or palette offset for which no resource was created
+#define EL_SCOREBOARD_OFFSET_NONE (-1)
+
 struct ElScoreboard {
     u32 unk0;
-    u16 unk4;
-    u16 unk6;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    u32 unk14;
+    u16 widthIndex;
+    u16 heightIndex;
+    u32 texVramKey;
+    u32 plttVramKey;
+    u32 texOffset;
+    u32 plttOffset;
     u32 frame;
 };
 
 struct ElScoreboardPaletteTarget {
-    u32 palette;
+    u32 plttVramKey;
     u32 vramOffset;
 };
 
@@ -38,17 +41,17 @@ ElScoreboard *ElScoreboard_Create(G3DResource *texture, const char *texName, con
     ElScoreboard *board = GFL_HeapAllocate(heapId, sizeof(ElScoreboard), TRUE, "el_scoreboard.c", 412);
 
     board->unk0 = 0;
-    board->unk4 = G3DTextDraw_GetTexDimCount() - 1;
-    board->unk6 = G3DTextDraw_GetTexDimCount() - 1;
-    board->unk10 = -1;
-    board->unk14 = -1;
+    board->widthIndex = G3DTextDraw_GetTexDimCount() - 1;
+    board->heightIndex = G3DTextDraw_GetTexDimCount() - 1;
+    board->texOffset = EL_SCOREBOARD_OFFSET_NONE;
+    board->plttOffset = EL_SCOREBOARD_OFFSET_NONE;
     if (G3DTextDraw_CreateResource(texture, texName, 0, plName, text, x, y, 0xc40, heapId, &resource)) {
-        board->unk8 = resource.texVramKey;
-        board->unkC = resource.plttVramKey;
-        board->unk10 = resource.texOffset;
-        board->unk4 = resource.widthIndex;
-        board->unk6 = resource.heightIndex;
-        board->unk14 = resource.plttOffset;
+        board->texVramKey = resource.texVramKey;
+        board->plttVramKey = resource.plttVramKey;
+        board->texOffset = resource.texOffset;
+        board->widthIndex = resource.widthIndex;
+        board->heightIndex = resource.heightIndex;
+        board->plttOffset = resource.plttOffset;
         board->frame = 0;
     }
     return board;
@@ -62,14 +65,14 @@ void ElScoreboard_Update(ElScoreboard *board) {
     ElScoreboardPaletteTarget target;
 
     board->frame++;
-    if (board->unk14 != -1) {
-        target.palette = board->unkC;
-        target.vramOffset = board->unk14;
+    if (board->plttOffset != EL_SCOREBOARD_OFFSET_NONE) {
+        target.plttVramKey = board->plttVramKey;
+        target.vramOffset = board->plttOffset;
         ElScoreboard_UploadPalette(&target, board->frame);
     }
 }
 
 void ElScoreboard_UploadPalette(ElScoreboardPaletteTarget *target, s32 frame) {
-    NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_3D_TEX_PLTT, target->vramOffset + (u16)target->palette * 8,
+    NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_3D_TEX_PLTT, target->vramOffset + (u16)target->plttVramKey * 8,
                                        sScoreboardPalettes[(frame & 0x1f) / 8], 8);
 }

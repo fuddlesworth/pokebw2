@@ -166,7 +166,7 @@ GameEvent *EventSeasonBanner_CreateStandalone(GameSystem *gsys, u8 startSeason, 
 
     wk->gsys = gsys;
     wk->field = NULL;
-    wk->heapId = 4;
+    wk->heapId = HEAPID_GAMEEVENT;
     wk->type = SEASON_BANNER_TYPE_STANDALONE;
     wk->cancelled = FALSE;
     wk->endSeason = endSeason;
@@ -240,23 +240,23 @@ void EventSeasonBanner_LoadGraphics(u8 season, HeapID heapId) {
     void *file;
 
     switch (season) {
-    case 0:
+    case SEASON_SPRING:
     default:
         paletteId = 0;
         characterId = 1;
         screenId = 2;
         break;
-    case 1:
+    case SEASON_SUMMER:
         paletteId = 3;
         characterId = 4;
         screenId = 5;
         break;
-    case 2:
+    case SEASON_AUTUMN:
         paletteId = 6;
         characterId = 7;
         screenId = 8;
         break;
-    case 3:
+    case SEASON_WINTER:
         paletteId = 9;
         characterId = 10;
         screenId = 11;

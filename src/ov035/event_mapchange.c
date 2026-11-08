@@ -12,6 +12,7 @@
 #include "field/event_sound.h"
 #include "field/field.h"
 #include "field/field_actor.h"
+#include "field/field_controller.h"
 #include "field/field_event.h"
 #include "field/field_lens_flare.h"
 #include "field/field_map.h"
@@ -21,6 +22,7 @@
 #include "field/intrude_work.h"
 #include "field/player_state.h"
 #include "field/shaymin_form.h"
+#include "field/subscreen.h"
 #include "field/union_main.h"
 #include "field/zone.h"
 #include "field/zone_change.h"
@@ -77,6 +79,15 @@ struct EventFieldContinue {
     BOOL continueFromSave;
 };
 
+// The map-change bookkeeping performed after loading the destination zone
+enum {
+    MAPCHANGE_MODE_NORMAL = 0,
+    MAPCHANGE_MODE_FLY = 1,
+    MAPCHANGE_MODE_ESCAPE = 2,
+    MAPCHANGE_MODE_TELEPORT = 3,
+    MAPCHANGE_MODE_UNION_ROOM = 4,
+};
+
 struct EventMapChange {
     GameSystem *gsys;
     GameData *gameData;
@@ -86,7 +97,7 @@ struct EventMapChange {
     // The transition type of the warp the player leaves by
     u32 departureTransitionType;
     u8 mode;
-    VecFx32 unk34;
+    VecFx32 effectPos;
     // Whether a change of season that the map change finds is applied
     BOOL canChangeSeason;
     BOOL seasonChanged;
@@ -227,8 +238,11 @@ void EventFieldFirst_SetupCity(GameSystem *gsys) {
 
 enum {
     FIRST_LOAD_ZONE = 0,
+    FIRST_CHANGE_BGM = 1,
     FIRST_OPEN_FIELD = 2,
+    FIRST_RUN_OPEN_SCRIPT = 3,
     FIRST_FADE_IN = 4,
+    FIRST_RUN_POST_FADE_SCRIPT = 5,
     FIRST_DONE = 6,
 };
 
@@ -246,7 +260,7 @@ GameEventReturnCode EventFieldFirst_Callback(GameEvent *event, u32 *state, void 
         GameBeacon_SetZone(wk->spawn.zoneId, gameData);
         (*state)++;
         break;
-    case 1:
+    case FIRST_CHANGE_BGM:
         GameEvent_ChainNext(
             event,
             EventBGMChange_Create(
@@ -257,7 +271,7 @@ GameEventReturnCode EventFieldFirst_Callback(GameEvent *event, u32 *state, void 
         GameEvent_ChainNext(event, EventFieldOpen_Create(gsys));
         (*state)++;
         break;
-    case 3:
+    case FIRST_RUN_OPEN_SCRIPT:
         SetActorFlag(FieldPlayer_GetActor(Field_GetPlayer(GSYS_GetField(gsys))), 4);
         EventScriptCall_Start(event, 0x1d, NULL, 0, HEAPID_USER);
         (*state)++;
@@ -267,7 +281,7 @@ GameEventReturnCode EventFieldFirst_Callback(GameEvent *event, u32 *state, void 
                                                                     FIELD_TRANSITION_FADE_BLACK, 0, 1, 0, 0));
         (*state)++;
         break;
-    case 5:
+    case FIRST_RUN_POST_FADE_SCRIPT:
         EventScriptCall_Start(event, 0x1e, NULL, 0, HEAPID_USER);
         (*state)++;
         break;
@@ -316,6 +330,7 @@ enum {
     CONTINUE_CHANGE_BGM = 1,
     CONTINUE_OPEN_FIELD = 2,
     CONTINUE_RESUME_SCRIPT = 3,
+    CONTINUE_SHOW_PLACE_NAME = 4,
 };
 
 GameEventReturnCode EventFieldContinue_Callback(GameEvent *event, u32 *state, void *data) {
@@ -375,7 +390,7 @@ GameEventReturnCode EventFieldContinue_Callback(GameEvent *event, u32 *state, vo
         }
         (*state)++;
         break;
-    case 4: {
+    case CONTINUE_SHOW_PLACE_NAME: {
         Field *field = GSYS_GetField(gsys);
 
         if (Field_GetPlaceName(field) != NULL) {
@@ -487,10 +502,12 @@ void EventMapChange_SetupWarpSequenceIn(EventMapChange *wk, GameEvent *parent) {
 }
 
 enum {
+    CORE_CLOSE_FIELD = 0,
     CORE_LOAD_DSPROT = 1,
-    CORE_WAIT_BOOT = 2,
+    CORE_WAIT_COMM_END = 2,
     CORE_RUN_CHECKS = 3,
     CORE_OPEN_FIELD = 4,
+    CORE_START_FIELD_EFFECTS = 5,
     CORE_DONE = 6,
 };
 
@@ -503,7 +520,7 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
     GameCommSys *comm = GSYS_GetGameCommSystem(gsys);
 
     switch (*state) {
-    case 0: {
+    case CORE_CLOSE_FIELD: {
         FieldLensFlare *lensFlare;
         u32 fog;
 
@@ -519,16 +536,16 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
         GFL_OvlLoad(OVERLAY_DSPROT);
         DSProt_Init();
         if (IsZoneGameCommDisabled(wk->spawn.zoneId) == TRUE) {
-            u8 status = GameCommSys_BootCheck(comm);
-            if (status == 1 || status == 2) {
+            u8 commNo = GameCommSys_BootCheck(comm);
+            if (commNo == GAME_COMM_NO_BEACON_SEARCH || commNo == GAME_COMM_NO_INTRUDE) {
                 GameCommSys_ExitReq(comm);
-                *state = 2;
+                *state = CORE_WAIT_COMM_END;
                 break;
             }
         }
         *state = CORE_RUN_CHECKS;
         break;
-    case CORE_WAIT_BOOT:
+    case CORE_WAIT_COMM_END:
         if (!GameCommSys_BootCheck(comm)) {
             *state = CORE_RUN_CHECKS;
         }
@@ -552,21 +569,21 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
         FieldMapControl_LoadZone(gsys, wk->spawn.zoneId);
         GameData_UpdateZoneChangeFlag(gameData, wk->spawn.zoneId, wk->zoneId);
         FieldMapControl_InitSpawn(gsys, &wk->spawn);
-        if (wk->mode != 4) {
+        if (wk->mode != MAPCHANGE_MODE_UNION_ROOM) {
             GameBeacon_SetZone(wk->spawn.zoneId, gameData);
         }
         switch (wk->mode) {
-        case 1:
+        case MAPCHANGE_MODE_FLY:
             ZoneChange_OnFly(gameData, wk->spawn.zoneId);
             break;
-        case 2:
+        case MAPCHANGE_MODE_ESCAPE:
             ZoneChange_OnEscape(gameData, wk->spawn.zoneId);
             break;
-        case 3:
+        case MAPCHANGE_MODE_TELEPORT:
             ZoneChange_OnTeleport(gameData, wk->spawn.zoneId);
             break;
         }
-        if (wk->mode != 0) {
+        if (wk->mode != MAPCHANGE_MODE_NORMAL) {
             ShutdownFollowWork(wk->gameData);
         }
         GFL_OvlUnload(OVERLAY_DSPROT);
@@ -577,7 +594,7 @@ GameEventReturnCode EventMapChangeCore_Callback(GameEvent *event, u32 *state, vo
         GameEvent_ChainNext(event, EventFieldOpen_Create(gsys));
         (*state)++;
         break;
-    case 5: {
+    case CORE_START_FIELD_EFFECTS: {
         Field *currentField = GSYS_GetField(gsys);
 
         if (GameData_IsLensFlareRequested(gameData)) {
@@ -627,7 +644,7 @@ GameEventReturnCode EventMapChangeWarp_Callback(GameEvent *event, u32 *state, vo
         (*state)++;
         return GAMEEVENT_CONTINUE_DIRECT;
     case WARP_RUN_CORE:
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 0));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_NORMAL));
         (*state)++;
         break;
     case WARP_IN_SEQUENCE:
@@ -703,7 +720,9 @@ GameEventReturnCode EventMapChangeEnding_Callback(GameEvent *event, u32 *state, 
 
 enum {
     FAKE_WARP_PREPARE = 0,
+    FAKE_WARP_OUT_TRANSITION = 1,
     FAKE_WARP_RUN_CORE = 2,
+    FAKE_WARP_IN_TRANSITION = 3,
     FAKE_WARP_DONE = 4,
 };
 
@@ -718,7 +737,7 @@ GameEventReturnCode EventMapChangeFakeWarp_Callback(GameEvent *event, u32 *state
         GameEvent_ChainNext(event, CallEventPrepareResidentActorsForZoneChange(gsys, field));
         (*state)++;
         break;
-    case 1:
+    case FAKE_WARP_OUT_TRANSITION:
         if (wk->canChangeSeason && wk->seasonChanged) {
             GameEvent_ChainNext(event,
                                 CallFieldMapEntranceOutTransitionDefault(gsys, field, FIELD_TRANSITION_FADE_BLACK, 0));
@@ -733,7 +752,7 @@ GameEventReturnCode EventMapChangeFakeWarp_Callback(GameEvent *event, u32 *state
         GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, wk->mode));
         (*state)++;
         break;
-    case 3:
+    case FAKE_WARP_IN_TRANSITION:
         if (wk->canChangeSeason && wk->seasonChanged) {
             GameEvent_ChainNext(event, CallFieldMapEntranceInTransition(gsys, field, FIELD_TRANSITION_SEASON, 0, 0,
                                                                         wk->prevSeason, wk->season));
@@ -772,7 +791,7 @@ GameEventReturnCode EventMapChangeQuicksand_Callback(GameEvent *event, u32 *stat
         (*state)++;
         break;
     case QUICKSAND_DRAW_IN:
-        GameEvent_ChainNext(event, EventQuicksandDrawIn_Create(event, gsys, field, &wk->unk34));
+        GameEvent_ChainNext(event, EventQuicksandDrawIn_Create(event, gsys, field, &wk->effectPos));
         (*state)++;
         break;
     case QUICKSAND_SET_BGM:
@@ -781,7 +800,7 @@ GameEventReturnCode EventMapChangeQuicksand_Callback(GameEvent *event, u32 *stat
         (*state)++;
         break;
     case QUICKSAND_RUN_CORE:
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 0));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_NORMAL));
         (*state)++;
         break;
     case QUICKSAND_ARRIVE:
@@ -827,7 +846,7 @@ GameEventReturnCode EventMapChangeEscapeRope_Callback(GameEvent *event, u32 *sta
         (*state)++;
         break;
     case ESCAPE_ROPE_RUN_CORE:
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 2));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_ESCAPE));
         (*state)++;
         break;
     case ESCAPE_ROPE_ARRIVE:
@@ -875,7 +894,7 @@ GameEventReturnCode EventMapChangeDig_Callback(GameEvent *event, u32 *state, voi
         (*state)++;
         break;
     case DIG_RUN_CORE:
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 2));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_ESCAPE));
         (*state)++;
         break;
     case DIG_ARRIVE:
@@ -916,13 +935,13 @@ GameEventReturnCode EventMapChangeTeleport_Callback(GameEvent *event, u32 *state
         (*state)++;
         break;
     case TELEPORT_SET_BGM:
-        SetPlayerSpecialState(GameData_GetPlayerState(gameData), 0);
+        SetPlayerSpecialState(GameData_GetPlayerState(gameData), FLD_PLAYER_EXSTATE_NONE);
         FieldSnd_SetZoneBGM(fieldSound, gameData, wk->spawn.zoneId, wk->season);
         FieldSnd_FadeInImmediate(fieldSound, gameData);
         (*state)++;
         break;
     case TELEPORT_RUN_CORE:
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 3));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_TELEPORT));
         (*state)++;
         break;
     case TELEPORT_ARRIVE:
@@ -963,7 +982,7 @@ GameEventReturnCode EventMapChangeDiveOut_Callback(GameEvent *event, u32 *state,
         }
         break;
     case DIVE_OUT_RUN_CORE:
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 0));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_NORMAL));
         (*state)++;
         break;
     case DIVE_OUT_FADE_IN:
@@ -1049,7 +1068,7 @@ GameEventReturnCode EventMapChangeWarpPad_Callback(GameEvent *event, u32 *state,
     case WARP_PAD_SET_BGM:
         FieldSnd_SetZoneBGM(fieldSound, gameData, wk->spawn.zoneId, wk->season);
         FieldSnd_FadeInImmediate(fieldSound, gameData);
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 0));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_NORMAL));
         (*state)++;
         break;
     case WARP_PAD_SPIN_DOWN:
@@ -1082,7 +1101,7 @@ GameEventReturnCode EventMapChangeUnionRoomExit_Callback(GameEvent *event, u32 *
         (*state)++;
         break;
     case UNION_EXIT_RUN_CORE:
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 0));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_NORMAL));
         (*state)++;
         break;
     case UNION_EXIT_SWAP_OVERLAY:
@@ -1123,7 +1142,7 @@ GameEventReturnCode EventUnionRoomWarp_Callback(GameEvent *event, u32 *state, vo
     case UNION_WARP_SWAP_OVERLAY:
         GFL_OvlUnload(OVERLAY_ID(27));
         GFL_OvlLoad(OVERLAY_ID(28));
-        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, 4));
+        GameEvent_ChainNext(event, EventMapChangeCore_Create(wk, MAPCHANGE_MODE_UNION_ROOM));
         (*state)++;
         break;
     case UNION_WARP_BOOT:
@@ -1204,7 +1223,7 @@ GameEvent *EventMapChangeQuicksand_Create(GameSystem *gsys, Field *field, const 
 
     InitMapChangeEvent(wk, gsys);
     CreateZoneChangeData(&wk->spawn, zoneId, WARP_DIR_UP, pos->x, pos->y, pos->z);
-    VEC_Set(&wk->unk34, effectPos->x, effectPos->y, effectPos->z);
+    VEC_Set(&wk->effectPos, effectPos->x, effectPos->y, effectPos->z);
     wk->departureTransitionType = WARP_TRANSITION_NONE;
     return event;
 }
@@ -1349,7 +1368,7 @@ GameEvent *EventEntralinkWarp_CreateOut(GameSystem *gsys) {
 void EventEntralinkWarp_CreateReturnLocation(ZoneSpawnInfo *spawn, Field *field) {
     FieldPlayer *player = Field_GetPlayer(field);
 
-    if (Field_GetResolvedControllerTypeID(field) == 0) {
+    if (Field_GetResolvedControllerTypeID(field) == FIELDMAP_CTRL_TYPE_GRID) {
         VecFx32 *pos = GetMModelWPosPtr(FieldPlayer_GetActor(player));
 
         CreateZoneChangeData(spawn, Field_GetPlayerStateZoneID(field), WARP_DIR_DOWN, pos->x, pos->y, pos->z);
@@ -1404,7 +1423,7 @@ GameEvent *EventMapChange_CreateGrid(GameSystem *gsys, Field *field, u8 mode, u1
 }
 
 GameEvent *EventMapChange_CreateGridDefault(GameSystem *gsys, Field *field, u16 zoneId, VecFx32 *pos, u16 dir) {
-    return EventMapChange_CreateGrid(gsys, field, 0, zoneId, pos, dir);
+    return EventMapChange_CreateGrid(gsys, field, MAPCHANGE_MODE_NORMAL, zoneId, pos, dir);
 }
 
 GameEvent *EventMapChange_CreateForFly(GameSystem *gsys, Field *field, u32 unused, ZoneSpawnInfo *spawn, u16 warpDir) {
@@ -1412,14 +1431,14 @@ GameEvent *EventMapChange_CreateForFly(GameSystem *gsys, Field *field, u32 unuse
     GameEvent *event;
     EventMapChange *wk;
 
-    SetPlayerSpecialState(GameData_GetPlayerState(gameData), 0);
+    SetPlayerSpecialState(GameData_GetPlayerState(gameData), FLD_PLAYER_EXSTATE_NONE);
     event = GameEvent_Create(gsys, NULL, EventMapChange_Callback, sizeof(EventMapChange));
     wk = GameEvent_GetData(event);
     InitMapChangeEvent(wk, gsys);
     wk->spawn = *spawn;
     wk->spawn.warpDir = warpDir;
     wk->departureTransitionType = WARP_TRANSITION_NONE;
-    wk->mode = 1;
+    wk->mode = MAPCHANGE_MODE_FLY;
     GameData_UpdateEscapeRopeZone(gameData, &wk->spawn);
     return event;
 }
@@ -1444,7 +1463,7 @@ GameEvent *EventMapChangeEnding_Create(GameSystem *gsys, Field *field, u16 zoneI
     dir = ConvDirToWarpDir(dir);
     CreateZoneChangeData(&wk->spawn, zoneId, dir, pos->x, pos->y, pos->z);
     wk->departureTransitionType = WARP_TRANSITION_NONE;
-    wk->mode = 0;
+    wk->mode = MAPCHANGE_MODE_NORMAL;
     wk->lensFlareStarted = TRUE;
     return event;
 }
@@ -1482,7 +1501,7 @@ GameEventReturnCode EventMapChangeBlackout_Callback(GameEvent *event, u32 *state
         (*state)++;
         break;
     case BLACKOUT_RESET_STATE:
-        SetPlayerSpecialState(GameData_GetPlayerState(GSYS_GetGameData(wk->gsys)), 0);
+        SetPlayerSpecialState(GameData_GetPlayerState(GSYS_GetGameData(wk->gsys)), FLD_PLAYER_EXSTATE_NONE);
         ISSSwitchSys_ResetSwitches(ISS_GetSwitchSys(GameSystem_GetISS(wk->gsys)));
         GameEvent_ChainNext(event, EventBGMChange_Create(wk->gsys,
                                                          GetMapBGMIDByPlayerState2(wk->gameData, wk->spawn.zoneId,
@@ -1602,7 +1621,7 @@ void GameData_DeleteAllActors(GameData *gameData) {
 
 // Allocates a list of people while in Join Avenue and frees it elsewhere, then resets the people in it and in the save
 void GameData_UpdateJoinAvenueForZone(GameData *gameData, u16 zoneId) {
-    ResortWork *unk = GameData_GetResortWork(gameData);
+    ResortWork *resortWork = GameData_GetResortWork(gameData);
     JoinAvenuePersonList **personList;
 
     if (IsZoneJoinAvenue(zoneId) || IsZoneJoinAvenueSubZone(zoneId)) {
@@ -1625,7 +1644,7 @@ void GameData_UpdateJoinAvenueForZone(GameData *gameData, u16 zoneId) {
         JoinAvenue_RecordActivity(0x18);
     }
 
-    ResortWork_Set(unk, 8, 0);
+    ResortWork_Set(resortWork, 8, 0);
     {
         JoinAvenueSave *joinAvenue = SaveControl_GetJoinAvenue(GameData_GetSaveControl(gameData));
         JoinAvenuePersonList *lists[2] = { NULL, NULL };
@@ -1654,10 +1673,10 @@ void GameData_UpdateJoinAvenueForZone(GameData *gameData, u16 zoneId) {
 
 // Sets flag 8 when the zone changed, which GameData_UpdateJoinAvenueForZone clears
 void GameData_UpdateZoneChangeFlag(GameData *gameData, u16 zoneId, u16 prevZoneId) {
-    ResortWork *unk = GameData_GetResortWork(gameData);
+    ResortWork *resortWork = GameData_GetResortWork(gameData);
 
     if (zoneId != prevZoneId) {
-        ResortWork_Set(unk, 8, 1);
+        ResortWork_Set(resortWork, 8, 1);
     }
 }
 
@@ -1686,22 +1705,25 @@ void FieldMapControl_LoadZone(GameSystem *gsys, u16 zoneId) {
     }
 
     if (GetZoneIsUnionRoom(zoneId)) {
-        GameData_SetLastSubscreen(gameData, 2);
+        GameData_SetLastSubscreen(gameData, FLD_SUBSCREEN_ID_UNION_ROOM_STANDBY);
     } else if (IsZone150Or151(zoneId) || GetZoneIsMusicalTheater(zoneId) || IsZoneRoyalUnova(zoneId)) {
-        GameData_SetLastSubscreen(gameData, 5);
+        GameData_SetLastSubscreen(gameData, FLD_SUBSCREEN_ID_BLANK_STANDBY_2);
     } else if (GetZoneIsPWTBattleStage(zoneId)) {
-        GameData_SetLastSubscreen(gameData, 11);
+        GameData_SetLastSubscreen(gameData, FLD_SUBSCREEN_ID_PWT);
     } else {
         u32 subscreen;
 
-        if (GameData_IsForceSeasonSync(gameData) == TRUE && GameData_GetLastSubscreen(gameData) != 3) {
-            GameData_SetLastSubscreen(gameData, 3);
-        } else if (GameData_IsForceSeasonSync(gameData) == FALSE && GameData_GetLastSubscreen(gameData) == 3) {
-            GameData_SetLastSubscreen(gameData, 0);
+        if (GameData_IsForceSeasonSync(gameData) == TRUE &&
+            GameData_GetLastSubscreen(gameData) != FLD_SUBSCREEN_ID_BLANK_STANDBY) {
+            GameData_SetLastSubscreen(gameData, FLD_SUBSCREEN_ID_BLANK_STANDBY);
+        } else if (GameData_IsForceSeasonSync(gameData) == FALSE &&
+                   GameData_GetLastSubscreen(gameData) == FLD_SUBSCREEN_ID_BLANK_STANDBY) {
+            GameData_SetLastSubscreen(gameData, FLD_SUBSCREEN_ID_DEFAULT);
         }
         subscreen = GameData_GetLastSubscreen(gameData);
-        if (subscreen != 3 && subscreen != 4 && subscreen != 10 && subscreen != 6) {
-            GameData_SetLastSubscreen(gameData, 0);
+        if (subscreen != FLD_SUBSCREEN_ID_BLANK_STANDBY && subscreen != FLD_SUBSCREEN_ID_ENTRALINK &&
+            subscreen != FLD_SUBSCREEN_ID_FUNFEST && subscreen != FLD_SUBSCREEN_ID_DOWSING) {
+            GameData_SetLastSubscreen(gameData, FLD_SUBSCREEN_ID_DEFAULT);
         }
     }
 
@@ -1833,7 +1855,8 @@ GameEventReturnCode EventEntralinkWarp_Callback(GameEvent *event, u32 *state, vo
 }
 
 enum {
-    ENTRALINK_IN_WAIT_BOOT = 1,
+    ENTRALINK_IN_CHECK_ALLOWED = 0,
+    ENTRALINK_IN_WAIT_COMM_END = 1,
     ENTRALINK_IN_DONE = 2,
 };
 
@@ -1842,30 +1865,30 @@ GameEventReturnCode EventEntralinkWarpIn_Callback(GameEvent *event, u32 *state, 
     GameCommSys *comm = GSYS_GetGameCommSystem(wk->gsys);
 
     switch (*state) {
-    case 0: {
+    case ENTRALINK_IN_CHECK_ALLOWED: {
         u32 scriptId;
 
         if (!EventEntralinkWarpIn_CheckAllowed(wk->gsys)) {
             scriptId = 0x279c;
-            *state = 2;
+            *state = ENTRALINK_IN_DONE;
         } else if (GameData_CheckPairFlag(wk->gameData)) {
             scriptId = 0x27a1;
-            *state = 2;
+            *state = ENTRALINK_IN_DONE;
         } else {
             scriptId = 0x279a;
             GameCommSys_ExitReq(comm);
-            *state = 1;
+            *state = ENTRALINK_IN_WAIT_COMM_END;
         }
         EventScriptCall_Start(event, scriptId, NULL, 0, Field_GetHeapID(wk->field));
         break;
     }
-    case ENTRALINK_IN_WAIT_BOOT:
+    case ENTRALINK_IN_WAIT_COMM_END:
         if (!GameCommSys_BootCheck(comm)) {
             GameCommSys_ClearCounter(comm);
             GameData_SetForceSeasonSync(wk->gameData, TRUE);
             GameData_SetNetID(wk->gameData, NetSystem_GetNetId());
             GameEvent_ChainNext(event, EventEntralinkWarp_Create(wk->gsys, wk->field, &wk->spawn));
-            *state = 2;
+            *state = ENTRALINK_IN_DONE;
         }
         break;
     case ENTRALINK_IN_DONE:
@@ -1906,10 +1929,10 @@ void AdjustEscapeRopeSpawn(GameData *gameData, ZoneSpawnInfo *spawn) {
 void GameData_AdjustPlayerStateOnDiveOut(GameData *gameData) {
     PlayerState *playerState = GameData_GetPlayerState(gameData);
 
-    if (FieldPlayerState_GetExState(playerState) != 3) {
-        SetPlayerSpecialState(playerState, 0);
+    if (FieldPlayerState_GetExState(playerState) != FLD_PLAYER_EXSTATE_DIVE) {
+        SetPlayerSpecialState(playerState, FLD_PLAYER_EXSTATE_NONE);
     } else {
-        SetPlayerSpecialState(playerState, 2);
+        SetPlayerSpecialState(playerState, FLD_PLAYER_EXSTATE_SURF);
     }
 }
 
