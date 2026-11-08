@@ -70,10 +70,10 @@ enum {
 };
 
 // Packed bracket entry: index 0, with the PLAYER kind in its high byte.
-enum { WBT_BRACKET_PLAYER_VALUE = 0xff00 };
+#define WBT_BRACKET_PLAYER_VALUE 0xff00
 
 // The table entry whose displayed name comes from the player's rival-name save.
-enum { WBT_RIVAL_TRAINER_INDEX = 0x37 };
+#define WBT_RIVAL_TRAINER_INDEX 0x37
 
 // Any, for the count of Trainers the player has beaten
 #define WBT_ANY 2
